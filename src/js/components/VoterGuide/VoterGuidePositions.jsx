@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Button } from "react-bootstrap";
 import { calculateBallotBaseUrl, capitalizeString } from "../../utils/textFormat";
 import Helmet from "react-helmet";
 import BallotActions from "../../actions/BallotActions";
@@ -8,6 +9,7 @@ import BallotStore from "../../stores/BallotStore";
 import FooterDoneBar from "../Navigation/FooterDoneBar";
 import { historyPush } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
+import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
@@ -338,6 +340,15 @@ export default class VoterGuidePositions extends Component {
         </span> :
         null
       }
+      <OpenExternalWebSite url="https://api.wevoteusa.org/vg/create/"
+                           className="opinions-followed__missing-org-link"
+                           target="_blank"
+                           title="Endorsements Missing?"
+                           body={<Button className="u-stack--xs" bsStyle="primary">Endorsements Missing?</Button>}
+      />
+      <div className="opinions-followed__missing-org-text u-stack--lg u-no-break">
+        Are there endorsements from {organization_name} that you expected to see?
+      </div>
     </div>;
   }
 }

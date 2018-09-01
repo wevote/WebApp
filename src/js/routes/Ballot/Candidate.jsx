@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Button } from "react-bootstrap";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateItem from "../../components/Ballot/CandidateItem";
@@ -200,6 +201,15 @@ export default class Candidate extends Component {
           }
         </div>
       </section>
+      <OpenExternalWebSite url="https://api.wevoteusa.org/vg/create/"
+                           className="opinions-followed__missing-org-link"
+                           target="_blank"
+                           title="Endorsements Missing?"
+                           body={<Button className="u-margin-top--sm u-stack--xs" bsStyle="primary">Endorsements Missing?</Button>}
+      />
+      <div className="opinions-followed__missing-org-text u-no-break">
+        Are there endorsements for {candidateName} that you expected to see?
+      </div>
       <br />
       <ThisIsMeAction twitter_handle_being_viewed={this.state.candidate.twitter_handle}
                     name_being_viewed={this.state.candidate.ballot_item_display_name}
