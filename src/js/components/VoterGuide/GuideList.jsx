@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Button } from "react-bootstrap";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import CandidateStore from "../../stores/CandidateStore";
 import FollowToggle from "../Widgets/FollowToggle";
 import MeasureStore from "../../stores/MeasureStore";
+import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import OrganizationActions from "../../actions/OrganizationActions";
 import VoterGuideDisplayForList from "./VoterGuideDisplayForList";
 import { showToastSuccess } from "../../utils/showToast";
@@ -99,7 +101,23 @@ export default class GuideList extends Component {
 
     return <div className="guidelist card-child__list-group">
         <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-          {organization_list}
+          { organization_list.length ?
+            organization_list :
+            <div className="u-flex u-flex-column u-items-center">
+              <div className="u-margin-top--sm u-stack--sm u-no-break">
+                No results found.
+              </div>
+              <OpenExternalWebSite url="https://api.wevoteusa.org/vg/create/"
+                                   className="opinions-followed__missing-org-link"
+                                   target="_blank"
+                                   title="Organization Missing?"
+                                   body={<Button className="u-stack--xs" bsStyle="primary">Organization Missing?</Button>}
+              />
+              <div className="opinions-followed__missing-org-text u-stack--sm u-no-break">
+                Don’t see an organization you want to Listen to?
+              </div>
+            </div>
+          }
         </ReactCSSTransitionGroup>
       </div>;
   }
