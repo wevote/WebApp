@@ -136,7 +136,7 @@ class BallotStore extends ReduceStore {
     return ballot_remaining_choices.length || 0;
   }
 
-  get ballot_supported () {
+  get ballot_decided () {
     if (!this.isLoaded()){ return undefined; }
 
     return this.ballot_filtered_unsupported_candidates().filter( ballot_item => {
@@ -188,8 +188,8 @@ class BallotStore extends ReduceStore {
     switch (filter_type) {
       case "filterRemaining":
         return this.ballot_remaining_choices;
-      case "filterSupport":
-        return this.ballot_supported;
+      case "filterDecided":
+        return this.ballot_decided;
       case "filterReadyToVote":
         return this.ballot;
       default :
@@ -201,8 +201,8 @@ class BallotStore extends ReduceStore {
     switch (filter_type) {
       case "filterRemaining":
         return "CHOICES_REMAINING";
-      case "filterSupport":
-        return "WHAT_I_SUPPORT";
+      case "filterDecided":
+        return "ITEMS_DECIDED";
       case "filterReadyToVote":
         return "READY_TO_VOTE";
       default :

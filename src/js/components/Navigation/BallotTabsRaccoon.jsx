@@ -46,8 +46,8 @@ export default class BallotTabsRaccoon extends Component {
 
       { show_decisions_made ?
         <li className="tab__item">
-          <Link to={{ pathname: pathname, query: { type: "filterSupport" } }}
-                className={this.props.ballot_type === "WHAT_I_SUPPORT" ? "tab tab--active" : "tab tab--default"}>
+          <Link to={{ pathname: pathname, query: { type: "filterDecided" } }}
+                className={this.props.ballot_type === "ITEMS_DECIDED" ? "tab tab--active" : "tab tab--default"}>
             {/* Desktop */}
             <span className="hidden-xs">Items Decided ({items_decided_count})</span>
             {/* Mobile */}
