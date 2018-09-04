@@ -505,7 +505,7 @@ export default class VoterGuideBallot extends Component {
     switch (filter_type) {
       case "filterRemaining":
         return "You already chose a candidate or position for each ballot item";
-      case "filterSupport":
+      case "filterDecided":
         return "You haven't supported any candidates or measures yet.";
       default:
         return "";

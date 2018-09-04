@@ -103,3 +103,9 @@ $network-card-margin-mobile: (-$space-md) (-$space-md) $space-none (-$space-md);
     margin: $network-card-margin-mobile;
   }
 }
+
+.opinions-followed {
+  &__missing-org-text {
+    font-size: 12px;
+  }
+}

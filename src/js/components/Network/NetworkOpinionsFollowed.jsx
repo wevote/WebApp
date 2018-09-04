@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 import { renderLog } from "../../utils/logging";
 import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationActions from "../../actions/OrganizationActions";
+import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import OpinionsFollowedListCompressed from "../Organization/OpinionsFollowedListCompressed";
 
 export default class NetworkOpinionsFollowed extends Component {
@@ -88,6 +90,15 @@ export default class NetworkOpinionsFollowed extends Component {
                   <span>You are not listening to any organizations yet.</span>
               }
             </div>
+          </div>
+          <OpenExternalWebSite url="https://api.wevoteusa.org/vg/create/"
+                               className="opinions-followed__missing-org-link"
+                               target="_blank"
+                               title="Suggest Organization"
+                               body={<Button className="u-stack--xs" bsStyle="primary">Suggest Organization</Button>}
+          />
+          <div className="opinions-followed__missing-org-text u-no-break">
+            Don’t see your favorite organization?
           </div>
           <br />
         </div>
