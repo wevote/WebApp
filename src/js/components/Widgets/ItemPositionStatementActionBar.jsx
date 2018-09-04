@@ -246,18 +246,6 @@ export default class ItemPositionStatementActionBar extends Component {
     }
 
     return <div className={ this.props.shown_in_list ? "position-statement__container__in-list" : "position-statement__container"}>
-      {/* { this.props.stance_display_off ?
-        null :
-        <div className="position-statement__overview u-flex items-center u-stack--sm">
-          { this.state.supportProps.is_support || this.state.supportProps.is_oppose ? <Icon className="u-push--xs" name={user_position_icon} width={24} height={24} /> : null }
-          { user_position_text }
-          <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
-                                type={this.props.type}
-                                supportProps={this.props.supportProps}
-                                className="u-flex-auto u-tr hidden-print" />
-        </div>
-      } */}
-
       { // Show the edit box (Viewing self)
         edit_mode ?
           <form onSubmit={this.savePositionStatement.bind(this)}>

@@ -47,7 +47,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     this.state = {
       ballotItem: {},
       ballot_item_display_name: "",
-      ballot_item_type: "",
+      ballotItemType: "",
       ballot_item_we_vote_id: "",
       can_scroll_desktop: false,
       can_scroll_mobile: false,
@@ -74,14 +74,14 @@ export default class ItemSupportOpposeRaccoon extends Component {
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
-    let ballot_item_type;
+    let ballotItemType;
     let is_candidate = false;
     let is_measure = false;
     if (stringContains("cand", this.props.ballotItemWeVoteId)) {
-      ballot_item_type = "CANDIDATE";
+      ballotItemType = "CANDIDATE";
       is_candidate = true;
     } else if (stringContains("meas", this.props.ballotItemWeVoteId)) {
-      ballot_item_type = "MEASURE";
+      ballotItemType = "MEASURE";
       is_measure = true;
     }
 
@@ -104,7 +104,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     this.setState({
       ballotItem: ballotItem,
       ballot_item_display_name: this.props.ballot_item_display_name,
-      ballot_item_type: ballot_item_type,
+      ballotItemType: ballotItemType,
       ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
       is_candidate: is_candidate,
       is_measure: is_measure,
@@ -117,14 +117,14 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    let ballot_item_type;
+    let ballotItemType;
     let is_candidate = false;
     let is_measure = false;
     if (stringContains("cand", nextProps.ballotItemWeVoteId)) {
-      ballot_item_type = "CANDIDATE";
+      ballotItemType = "CANDIDATE";
       is_candidate = true;
     } else if (stringContains("meas", nextProps.ballotItemWeVoteId)) {
-      ballot_item_type = "MEASURE";
+      ballotItemType = "MEASURE";
       is_measure = true;
     }
     let ballotItem;
@@ -142,7 +142,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     this.setState({
       ballotItem: ballotItem,
       ballot_item_display_name: nextProps.ballot_item_display_name,
-      ballot_item_type: ballot_item_type,
+      ballotItemType: ballotItemType,
       ballot_item_we_vote_id: nextProps.ballotItemWeVoteId,
       is_candidate: is_candidate,
       is_measure: is_measure,
@@ -448,40 +448,21 @@ export default class ItemSupportOpposeRaccoon extends Component {
       commentBoxIsVisible = true;
     }
     let item_action_bar;
-    if (this.state.is_candidate) {
-      item_action_bar = <span>
-        <ItemActionBar ballot_item_display_name={this.state.ballot_item_display_name}
-                       ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
-                       commentButtonHide={commentBoxIsVisible}
-                       commentButtonHideInMobile
-                       currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                       shareButtonHide
-                       supportProps={ballotItemSupportStore}
-                       supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
-                       toggleFunction={this.togglePositionStatement.bind(this)}
-                       transitioning={this.state.transitioning}
-                       type="CANDIDATE"
-                       urlWithoutHash={this.props.urlWithoutHash}
-                       we_vote_id={this.props.we_vote_id} />
-      </span>;
-    } else if (this.state.is_measure) {
-      item_action_bar = <span>
-        <ItemActionBar ballot_item_display_name={this.state.ballot_item_display_name}
-                       ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
-                       commentButtonHide={commentBoxIsVisible}
-                       commentButtonHideInMobile
-                       currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                       shareButtonHide
-                       supportProps={ballotItemSupportStore}
-                       supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
-                       toggleFunction={this.togglePositionStatement.bind(this)}
-                       transitioning={this.state.transitioning}
-                       type="MEASURE"
-                       urlWithoutHash={this.props.urlWithoutHash}
-                       we_vote_id={this.props.we_vote_id}/>
-      </span>;
-    }
-
+    item_action_bar = <span>
+      <ItemActionBar ballot_item_display_name={this.state.ballot_item_display_name}
+                     ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
+                     commentButtonHide={commentBoxIsVisible}
+                     commentButtonHideInMobile
+                     currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                     shareButtonHide
+                     supportProps={ballotItemSupportStore}
+                     supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
+                     toggleFunction={this.togglePositionStatement.bind(this)}
+                     transitioning={this.state.transitioning}
+                     type={this.state.ballotItemType}
+                     urlWithoutHash={this.props.urlWithoutHash}
+                     we_vote_id={this.props.we_vote_id} />
+    </span>;
 
     let comment_display_raccoon_desktop = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text || this.state.showPositionStatement ?
       <div className="hidden-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
@@ -492,7 +473,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                                           supportProps={ballotItemSupportStore}
                                           shouldFocus={this.state.shouldFocusCommentArea}
                                           transitioning={this.state.transitioning}
-                                          type="CANDIDATE"
+                                          type={this.state.ballotItemType}
                                           shown_in_list />
         </div>
       </div> :
@@ -506,7 +487,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                                           supportProps={ballotItemSupportStore}
                                           shouldFocus={this.state.shouldFocusCommentArea}
                                           transitioning={this.state.transitioning}
-                                          type="CANDIDATE"
+                                          type={this.state.ballotItemType}
                                           shown_in_list />
         </div>
       </div> :
