@@ -553,9 +553,9 @@ export default class Ballot extends Component {
   getEmptyMessageByFilterType (filter_type) {
     switch (filter_type) {
       case "filterRemaining":
-        return "You already chose a candidate or position for each ballot item";
+        return "You have chosen a candidate for every office and decided on all measures.";
       case "filterDecided":
-        return "You haven't supported any candidates or measures yet.";
+        return "You haven't supported any candidates or decided on any measures yet.";
       default:
         return "";
     }
