@@ -35,8 +35,8 @@ export default class PositionPublicToggle extends Component {
   }
 
   componentDidMount () {
-    this._onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     let isPublicOpinion = this.props.supportProps && this.props.supportProps.is_public_position;
     this.setState({
       showToThePublicOn: isPublicOpinion || false,
@@ -47,7 +47,7 @@ export default class PositionPublicToggle extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
@@ -55,12 +55,14 @@ export default class PositionPublicToggle extends Component {
     this.setState({
       showToThePublicOn: false,
     });
+    // console.log("PositionPublicToggle-showItemToFriendsOnly, this.props.type:", this.props.type);
     SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, "FRIENDS_ONLY");
     showToastSuccess("Position now visible to friends only!");
   }
 
   showItemToPublic () {
     let voter = this.state.voter;
+    // console.log("PositionPublicToggle-showItemToPublic, this.props.type:", this.props.type);
     if (voter && voter.is_signed_in) {
       this.setState({
         showToThePublicOn: true,
