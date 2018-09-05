@@ -654,7 +654,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         </Popover>;
     }
 
-    const positionsPopover =
+    const positionsPopover = positions_count ?
       <Popover id="positions-popover-trigger-click-root-close"
                title={<span>Opinions{this.state.ballot_item_display_name ? "  about " + this.state.ballot_item_display_name : ""} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closePositionsPopover}
@@ -665,6 +665,12 @@ export default class ItemSupportOpposeRaccoon extends Component {
                                                width="20" height="20" /> oppose</span>{this.state.ballot_item_display_name ? " " + this.state.ballot_item_display_name : ""}.
         Click on the logo
         and <strong>Listen</strong> to an organization to add their opinion to the <strong>Score in Your Network</strong>.
+      </Popover> :
+      <Popover id="positions-popover-trigger-click-root-close"
+               title={<span>Opinions{this.state.ballot_item_display_name ? "  about " + this.state.ballot_item_display_name : ""} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+               onClick={this.closePositionsPopover}
+               className="card-popover">
+        There are no opinions{this.state.ballot_item_display_name ? " about " + this.state.ballot_item_display_name : ""} yet.
       </Popover>;
 
     const positionsLabel =
