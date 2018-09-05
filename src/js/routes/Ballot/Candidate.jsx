@@ -188,7 +188,8 @@ export default class Candidate extends Component {
             <div>
               <PositionList position_list={this.state.position_list_from_advisers_followed_by_voter}
                             hideSimpleSupportOrOppose
-                            ballot_item_display_name={this.state.candidate.ballot_item_display_name} />
+                            ballot_item_display_name={this.state.candidate.ballot_item_display_name}
+                            positionListExistsTitle={<div><h3 className="card__additional-heading">{"Your Network's Opinions"}</h3></div>}/>
             </div> :
             null
           }

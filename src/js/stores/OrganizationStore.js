@@ -484,7 +484,7 @@ class OrganizationStore extends ReduceStore {
               all_cached_organizations_dict: all_cached_organizations_dict
             };
           }
-        } else // positionListForOpinionMaker
+        } else // positionListForOpinionMaker, else for action.res.friends_vs_public === "FRIENDS_ONLY"
         if (action.res.filter_for_voter) {
           var position_list_for_one_election = action.res.position_list;
           all_cached_organizations_dict = state.all_cached_organizations_dict;

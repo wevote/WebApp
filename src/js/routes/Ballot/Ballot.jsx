@@ -571,6 +571,7 @@ export default class Ballot extends Component {
 
   render () {
     renderLog(__filename);
+    // console.log("Ballot render");
 
     let text_for_map_search = VoterStore.getTextForMapSearch();
     let issues_voter_can_follow = IssueStore.getIssuesVoterCanFollow(); // Don't auto-open intro until Issues are loaded

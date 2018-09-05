@@ -376,6 +376,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
         {/* Desktop */}
         <span className="hidden-xs">
           <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE" />
+          {/* Turning off the "show more" on Desktop for now
           <span className="hidden-print pull-right u-push--lg">
             { this.state.display_office_unfurled ?
               null :
@@ -386,6 +387,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
               </Link>
             }
           </span>
+          */}
         </span>
         {/* Mobile - "show more" and "show less" not used */}
 
@@ -637,7 +639,9 @@ export default class OfficeItemCompressedRaccoon extends Component {
         { !this.state.display_all_candidates_flag && this.state.display_office_unfurled && remaining_candidates_to_display_count ?
           <Link onClick={this.toggleDisplayAllCandidates}>
             <span className="u-items-center u-no-break hidden-print">
-              Click to show {remaining_candidates_to_display_count} more candidate{ remaining_candidates_to_display_count !== 1 ? "s" : null }...</span>
+              <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
+              <span> Show {remaining_candidates_to_display_count} more candidate{ remaining_candidates_to_display_count !== 1 ? "s" : null }</span>
+            </span>
           </Link> : null
         }
         {/* this.state.display_all_candidates_flag && this.state.candidateList.length > NUMBER_OF_CANDIDATES_TO_DISPLAY ?
@@ -648,15 +652,15 @@ export default class OfficeItemCompressedRaccoon extends Component {
         */}
         { this.state.display_office_unfurled ?
           <Link onClick={this.toggleExpandDetails}>
-            <div className="BallotItem__view-more u-items-center u-no-break hidden-print">
-              Show less...</div>
+            <span className="BallotItem__view-more u-items-center pull-right u-no-break hidden-print">
+              show fewer</span>
           </Link> :
           <Link onClick={this.toggleExpandDetails}>
             <div className="BallotItem__view-more u-items-center u-no-break hidden-print">
               <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
               { total_number_of_candidates_to_display > 1 ?
-                <span> View all {total_number_of_candidates_to_display} candidates...</span> :
-                <span> View candidate...</span>
+                <span> View all {total_number_of_candidates_to_display} candidates</span> :
+                <span> View candidate</span>
               }
             </div>
           </Link>

@@ -7,6 +7,7 @@ export default class PositionList extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string.isRequired,
     position_list: PropTypes.array.isRequired,
+    positionListExistsTitle: PropTypes.object,
     hideSimpleSupportOrOppose: PropTypes.bool
   };
 
@@ -28,9 +29,20 @@ export default class PositionList extends Component {
     if (!this.state.position_list) {
       return null;
     }
+    let showTitle = false;
+    let count;
     if (this.props.hideSimpleSupportOrOppose) {
       // Only show a position if it has a comment associated with it
+      for (count = 0; count < this.state.position_list.length; count++) {
+        if (this.state.position_list[count].statement_text || this.state.position_list[count].has_video) {
+          showTitle = true;
+        }
+      }
       return <div>
+        { showTitle ?
+          <span>{this.props.positionListExistsTitle}</span> :
+          null
+        }
         <ul className="card-child__list-group">
           { this.state.position_list.map(one_position =>
             <span key={one_position.position_we_vote_id} >
@@ -43,7 +55,14 @@ export default class PositionList extends Component {
         </ul>
       </div>;
     } else {
+      for (count = 0; count < this.state.position_list.length; count++) {
+        showTitle = true;
+      }
       return <div>
+        { showTitle ?
+          <span>{this.props.positionListExistsTitle}</span> :
+          null
+        }
         <ul className="card-child__list-group">
           { this.state.position_list.map(one_position =>
             <PositionItem key={one_position.position_we_vote_id}
