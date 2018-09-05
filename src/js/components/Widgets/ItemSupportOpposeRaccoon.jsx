@@ -19,6 +19,7 @@ import OrganizationCard from "../VoterGuide/OrganizationCard";
 import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 import SupportStore from "../../stores/SupportStore";
 import { stringContains } from "../../utils/textFormat";
+import VoterStore from "../../stores/VoterStore";
 
 export default class ItemSupportOpposeRaccoon extends Component {
   static propTypes = {
@@ -113,6 +114,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       organizations_to_follow_oppose: this.props.organizationsToFollowOppose,
       position_list_from_advisers_followed_by_voter: position_list_from_advisers_followed_by_voter,
       supportProps: this.props.supportProps,
+      voter: VoterStore.getVoter(), // We only set this once since the info we need isn't dynamic
     });
   }
 
@@ -654,7 +656,10 @@ export default class ItemSupportOpposeRaccoon extends Component {
         </Popover>;
     }
 
-    const positionsPopover = positions_count ?
+    let voter_decided_item = this.state.supportProps && this.state.voter &&
+    (this.state.supportProps.is_support || this.state.supportProps.is_oppose);
+
+    const positionsPopover = positions_count > 1 || positions_count && !voter_decided_item ?
       <Popover id="positions-popover-trigger-click-root-close"
                title={<span>Opinions{this.state.ballot_item_display_name ? "  about " + this.state.ballot_item_display_name : ""} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closePositionsPopover}
@@ -665,6 +670,13 @@ export default class ItemSupportOpposeRaccoon extends Component {
                                                width="20" height="20" /> oppose</span>{this.state.ballot_item_display_name ? " " + this.state.ballot_item_display_name : ""}.
         Click on the logo
         and <strong>Listen</strong> to an organization to add their opinion to the <strong>Score in Your Network</strong>.
+      </Popover> :
+      positions_count && voter_decided_item ?
+      <Popover id="positions-popover-trigger-click-root-close"
+               title={<span>Opinions{this.state.ballot_item_display_name ? "  about " + this.state.ballot_item_display_name : ""} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+               onClick={this.closePositionsPopover}
+               className="card-popover">
+        You have the only opinion{this.state.ballot_item_display_name ? " about " + this.state.ballot_item_display_name : ""} so far.
       </Popover> :
       <Popover id="positions-popover-trigger-click-root-close"
                title={<span>Opinions{this.state.ballot_item_display_name ? "  about " + this.state.ballot_item_display_name : ""} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
