@@ -348,7 +348,7 @@ class BallotStore extends ReduceStore {
         if (action.res.status === "SIMPLE_ADDRESS_SAVE") {
           return state;
         } else {
-          newBallots = state.ballots;
+          newBallots = state.ballots || {};
           google_civic_election_id = action.res.google_civic_election_id || 0;
           google_civic_election_id = parseInt(google_civic_election_id, 10);
           if (google_civic_election_id !== 0) {
