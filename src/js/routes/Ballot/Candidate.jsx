@@ -80,6 +80,17 @@ export default class Candidate extends Component {
     SupportActions.retrievePositionsCountsForOneBallotItem(this.props.params.candidate_we_vote_id);
     OrganizationActions.organizationsFollowedRetrieve();
 
+    // We want to make sure we have all of the position information so that comments show up
+    let voter_guides_to_follow_for_this_ballot_item = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.candidate_we_vote_id);
+
+    if (voter_guides_to_follow_for_this_ballot_item) {
+      voter_guides_to_follow_for_this_ballot_item.forEach(one_voter_guide => {
+        // console.log("one_voter_guide: ", one_voter_guide);
+        OrganizationActions.positionListForOpinionMaker(one_voter_guide.organization_we_vote_id, false, true, one_voter_guide.google_civic_election_id);
+      });
+
+    }
+
     // Display the candidate's name in the search box
     let searchBoxText = this.state.candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
     SearchAllActions.exitSearch(searchBoxText); // TODO: still not used :)
@@ -89,7 +100,7 @@ export default class Candidate extends Component {
       organizationWeVoteId: organizationWeVoteId,
       position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(this.props.params.candidate_we_vote_id),
       voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
-      voter_guides_to_follow_for_this_ballot_item: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.candidate_we_vote_id),
+      voter_guides_to_follow_for_this_ballot_item: voter_guides_to_follow_for_this_ballot_item,
     });
   }
 
