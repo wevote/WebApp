@@ -90,7 +90,7 @@ export default class IssueFollowToggleSquare extends Component {
     } else {
       return this.state.is_following ?
         <div className={this.props.grid + " intro-modal__square u-cursor--pointer"} onClick={this.onIssueStopFollowing}>
-          <ImageHandler sizeClassName="intro-modal__square-image intro-modal__square-following"
+          <ImageHandler sizeClassName="intro-modal__square-image intro-modal__square-following image-issue-photo-placeholder"
                         imageUrl={ issue_image_url }
                         alt={this.props.issue_name}
                         kind_of_image="ISSUE-PHOTO" />
@@ -106,7 +106,7 @@ export default class IssueFollowToggleSquare extends Component {
           }
         </div> :
         <div className={this.props.grid + " intro-modal__square u-cursor--pointer"} onClick={this.onIssueFollow}>
-          <ImageHandler sizeClassName="intro-modal__square-image"
+          <ImageHandler sizeClassName="intro-modal__square-image image-issue-photo-placeholder"
                         imageUrl={ issue_image_url }
                         alt={this.props.issue_name}
                         kind_of_image="ISSUE-PHOTO" />
