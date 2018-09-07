@@ -26,6 +26,7 @@ export default class NetworkIssuesFollowed extends Component {
     }
 
     this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange.bind(this));
+    this._onIssueStoreChange();
   }
 
   componentWillUnmount () {
