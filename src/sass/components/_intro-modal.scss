@@ -383,6 +383,11 @@ $slick-dot-character: '\2022' !default;
       right: 8px;
     }
   }
+
+  &__address-box {
+    align-self: center;
+    width: 80%;
+  }
 }
 
 // Intro Modal shadow
