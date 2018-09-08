@@ -68,11 +68,12 @@ $candidate-font-size: .875rem;
     }
 
     &__avatar-compressed {
-      max-width: 40px;
+      background-image: url('/img/global/svg-icons/avatar-generic.svg');
+      width: 40px;
       border-radius: $radius-xs;
       .card-main & {
         @include breakpoints(mid-small) {
-          max-width: 40px;
+          width: 40px;
         }
         border-radius: $radius-rounded;
       }
