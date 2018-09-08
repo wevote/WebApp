@@ -118,7 +118,7 @@ export default class BallotIntroFollowAdvisers extends Component {
     }
 
     let organizations_shown_count = 0;
-    let maximum_number_of_organizations_to_show = 24; // Only show the first 6 * 4 = 24 issues so as to not overwhelm voter
+    let maximum_number_of_organizations_to_show = 12; // Only show the first 6 * 2 = 12 issues so as to not overwhelm voter
     const voter_guides_to_follow_by_issues_for_display = voter_guides_to_follow_by_issues_followed.map((voter_guide) => {
       if (organizations_shown_count < maximum_number_of_organizations_to_show) {
         organizations_shown_count++;
