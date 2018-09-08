@@ -118,7 +118,7 @@ export default class BallotIntroFollowAdvisers extends Component {
     }
 
     let organizations_shown_count = 0;
-    let maximum_number_of_organizations_to_show = 9;  // Please reset to 24 once we have this fixed: https://github.com/wevote/WebApp/issues/1636
+    let maximum_number_of_organizations_to_show = 12; // Only show the first 6 * 2 = 12 issues so as to not overwhelm voter
     const voter_guides_to_follow_by_issues_for_display = voter_guides_to_follow_by_issues_followed.map((voter_guide) => {
       if (organizations_shown_count < maximum_number_of_organizations_to_show) {
         organizations_shown_count++;
@@ -179,29 +179,30 @@ export default class BallotIntroFollowAdvisers extends Component {
       });
 
     return <div className="intro-modal">
-      <div className="intro-modal__h1">Opinions You Trust?</div>
-        <div>
-          <div className="intro-modal__top-description">
-            { this.state.description_text ?
-              this.state.description_text :
-              <span>Click to see who they endorse on your ballot. Or skip ahead!</span>
+      <div className="intro-modal__h1">
+        Opinions You Trust?
+      </div>
+      <div className="intro-modal__top-description">
+        { this.state.description_text ?
+          this.state.description_text :
+          <span>Click to see who they endorse on your ballot. Or skip ahead!</span>
+        }
+      </div>
+      <div className="intro-modal-vertical-scroll-contain">
+        <div className="intro-modal-vertical-scroll card">
+          <div className="row intro-modal__grid">
+            { voter_guides_to_follow_by_issues_for_display.length ? voter_guides_to_follow_by_issues_for_display : null }
+            { voter_guides_to_follow_all_for_display.length ? voter_guides_to_follow_all_for_display : null }
+            { voter_guides_to_follow_by_issues_for_display.length || voter_guides_to_follow_all_for_display.length ?
+              null :
+              <h4 className="intro-modal__default-text">There are no more organizations to listen to!</h4>
             }
           </div>
-          <div className="intro-modal-vertical-scroll-contain">
-            <div className="intro-modal-vertical-scroll card">
-              <div className="row intro-modal__grid">
-                { voter_guides_to_follow_by_issues_for_display.length ? voter_guides_to_follow_by_issues_for_display : null }
-                { voter_guides_to_follow_all_for_display.length ? voter_guides_to_follow_all_for_display : null }
-                { voter_guides_to_follow_by_issues_for_display.length || voter_guides_to_follow_all_for_display.length ?
-                  null :
-                  <h4 className="intro-modal__default-text">There are no more organizations to listen to!</h4>
-                }
-              </div>
-            </div>
-          </div>
-          <div className="intro-modal-shadow" />
         </div>
-      <br/>
+      </div>
+      <div className="intro-modal-shadow-wrap">
+        <div className="intro-modal-shadow" />
+      </div>
       <div className="intro-modal__button-wrap">
         <Button type="submit" className="btn btn-success intro-modal__button" onClick={this.onNext}>
           <span>{this.state.next_button_text}</span>
