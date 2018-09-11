@@ -46,7 +46,7 @@ class CandidateStore extends ReduceStore {
     }
   }
 
-  createCandidatePosition(one_candidate_we_vote_id, one_voter_guide) {
+  createCandidatePosition (one_candidate_we_vote_id, one_voter_guide) {
     let candidateObject = this.getCandidate(one_candidate_we_vote_id);
     // console.log("candidateObject: ", candidateObject);
     let onePosition = {
@@ -223,13 +223,12 @@ class CandidateStore extends ReduceStore {
 
       case "positionListForOpinionMaker":
         // console.log("CandidateStore, positionListForOpinionMaker response");
-        let ballot_item_we_vote_id;
         let organization_we_vote_id = action.res.opinion_maker_we_vote_id;
         var position_list = action.res.position_list;
         all_cached_positions_about_candidates = state.all_cached_positions_about_candidates;
 
-        position_list.forEach(one_position => {
-          ballot_item_we_vote_id = one_position.ballot_item_we_vote_id;
+        position_list.forEach(one_position_here => {
+          ballot_item_we_vote_id = one_position_here.ballot_item_we_vote_id;
 
           if (!all_cached_positions_about_candidates[ballot_item_we_vote_id]) {
             all_cached_positions_about_candidates[ballot_item_we_vote_id] = {};
@@ -239,8 +238,8 @@ class CandidateStore extends ReduceStore {
             all_cached_positions_about_candidates[ballot_item_we_vote_id][organization_we_vote_id] = {};
           }
 
-          // console.log("CandidateStore one_position: ", one_position);
-          all_cached_positions_about_candidates[ballot_item_we_vote_id][organization_we_vote_id] = one_position;
+          // console.log("CandidateStore one_position_here: ", one_position_here);
+          all_cached_positions_about_candidates[ballot_item_we_vote_id][organization_we_vote_id] = one_position_here;
         });
         return {
           ...state,
@@ -254,7 +253,6 @@ class CandidateStore extends ReduceStore {
 
         // console.log("CandidateStore voterGuidesToFollowRetrieve");
         voter_guides = action.res.voter_guides;
-        let candidateObject;
         let is_empty = voter_guides.length === 0;
         let search_term_exists = action.res.search_string !== "";
         ballot_item_we_vote_id = action.res.ballot_item_we_vote_id || "";

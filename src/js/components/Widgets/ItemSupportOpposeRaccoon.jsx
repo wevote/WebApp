@@ -593,9 +593,9 @@ export default class ItemSupportOpposeRaccoon extends Component {
                    className="card-popover"
                    title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                    onClick={this.closeIssueScorePopover}>
-            Follow <strong>Related Issues</strong> below to see get your personalized <strong>Issue Score</strong> for {this.state.ballot_item_display_name}.
-            We add up the opinions from all
-            organizations tagged with your issues. Whew, that's a mouthful!
+            Follow <strong><img src={cordovaDot("/img/global/svg-icons/issues-v1-64x42.svg")}
+                                width="24px"/> Issues</strong> (at the top of the page) to get a personalized <strong>Score</strong> for {this.state.ballot_item_display_name}.
+            We add up the opinions from all organizations tagged with your issues. Whew, that's a mouthful!
           </Popover>;
         issuesPopoverPlacement = "top";
       } else {
@@ -652,7 +652,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
           src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
           width="20" height="20"/> opposes</span> subtracts
           1 from this <strong>Score</strong>. <strong>Listen</strong> to an
-          organization to add their opinion to the <strong>Score in Your Network</strong>.
+          organization to add their opinion to your personalized <strong>Score</strong>.
         </Popover>;
     }
 
@@ -669,7 +669,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
                                                width="20" height="20" /> oppose</span>{this.state.ballot_item_display_name ? " " + this.state.ballot_item_display_name : ""}.
         Click on the logo
-        and <strong>Listen</strong> to an organization to add their opinion to the <strong>Score in Your Network</strong>.
+        and <strong>Listen</strong> to an organization to add their opinion to your personalized <strong>Score</strong>.
       </Popover> :
       positions_count && voter_decided_item ?
       <Popover id="positions-popover-trigger-click-root-close"
