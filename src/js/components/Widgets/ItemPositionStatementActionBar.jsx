@@ -56,12 +56,13 @@ export default class ItemPositionStatementActionBar extends Component {
     this.setState({
       showEditPositionStatementInput: this.props.comment_edit_mode_on,
       voter_full_name: VoterStore.getFullName(),
+      voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
       voter_photo_url_medium: VoterStore.getVoterPhotoUrlMedium(),
     });
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
-
+  
   componentWillReceiveProps (nextProps) {
     if (nextProps.supportProps !== undefined) {
       this.setState({
@@ -136,6 +137,7 @@ export default class ItemPositionStatementActionBar extends Component {
   _onVoterStoreChange () {
     this.setState({
       voter_full_name: VoterStore.getFullName(),
+      voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
       voter_photo_url_medium: VoterStore.getVoterPhotoUrlMedium(),
     });
   }
@@ -194,7 +196,10 @@ export default class ItemPositionStatementActionBar extends Component {
 
     // Currently this "Post" text is the same given we display the visibility setting, but we may want to change this
     //  here if the near by visibility setting text changes
-    let post_button_text = "Post";
+    let post_button_text = "Save";
+    if (this.state.voterIsSignedIn) {
+      post_button_text = "Post";
+    }
 
     // if (is_public_position) {
     //   post_button_text = <span>Post</span>;
