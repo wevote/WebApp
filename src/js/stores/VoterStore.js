@@ -118,6 +118,10 @@ class VoterStore extends ReduceStore {
   getTwitterHandle () {
     return this.getState().voter.twitter_handle || "";
   }
+  
+  getVoterIsSignedIn () {
+    return this.getState().voter.is_signed_in || false;
+  }
 
   // Could be either Facebook photo or Twitter photo
   getVoterPhotoUrlLarge () {
