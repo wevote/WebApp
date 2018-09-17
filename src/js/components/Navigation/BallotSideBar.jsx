@@ -16,7 +16,7 @@ export default class BallotSideBar extends Component {
     displaySubtitles: PropTypes.bool,
     onClick: PropTypes.func,
     pathname: PropTypes.string,
-    rawUrlVariablesString: PropTypes.string
+    rawUrlVariablesString: PropTypes.string,
   };
 
   static defaultProps = {
@@ -39,9 +39,7 @@ export default class BallotSideBar extends Component {
 
   componentDidMount () {
     this.onBallotStoreChange();
-    this.ballotStoreListener = BallotStore.addListener(
-      this.onBallotStoreChange.bind(this)
-    );
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
   }
 
   componentWillUnmount () {
@@ -50,7 +48,9 @@ export default class BallotSideBar extends Component {
 
   onBallotStoreChange () {
     let unsorted = BallotStore.ballot;
-    this.setState({ ballot: this._sortBallots(unsorted) });
+    this.setState({
+      ballot: this._sortBallots(unsorted),
+    });
   }
 
   _sortBallots (unsorted) {
@@ -141,7 +141,7 @@ export default class BallotSideBar extends Component {
     let { ballotWithAllItemsByFilterType, displaySubtitles } = this.props;
     if (ballot && ballot.length) {
       let ballotWithAllItemIdsByFilterType = [];
-      ballotWithAllItemsByFilterType.forEach((itemByFilterType)=>{
+      ballotWithAllItemsByFilterType.forEach(itemByFilterType => {
           ballotWithAllItemIdsByFilterType.push(itemByFilterType.we_vote_id);
       });
       return (
@@ -162,8 +162,7 @@ export default class BallotSideBar extends Component {
                                      label={item.ballot_item_display_name}
                                      subtitle={item.measure_subtitle}
                                      displaySubtitles={displaySubtitles}
-                                     onClick={click}
-                  />
+                                     onClick={click} />
                 </div>
               );
             } else {
@@ -175,14 +174,19 @@ export default class BallotSideBar extends Component {
             <br />
             <Link to="/more/terms">
               Terms of Service
-            </Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">
+            </Link>
+            &nbsp;&nbsp;&nbsp;
+            <Link to="/more/privacy">
               Privacy Policy
-            </Link>&nbsp;&nbsp;&nbsp;<a onClick={this.showNPSInput}>
+            </Link>
+            &nbsp;&nbsp;&nbsp;
+            <a onClick={this.showNPSInput}>
               Send Feedback
             </a>
           </span>
           { this.state.showNPSInput ?
-            <NPSInput onSubmit={this.onNPSSubmit} onDismissed={this.onNPSDismissed}>
+            <NPSInput onSubmit={this.onNPSSubmit}
+                      onDismissed={this.onNPSDismissed}>
               {({ score }) => {
                 if (this.state.formSubmitted) {
                   return <p>Thank you! Your feedback has been submitted.</p>;
