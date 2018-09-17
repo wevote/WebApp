@@ -138,6 +138,8 @@ export default class BallotSideBar extends Component {
 
   render () {
     renderLog(__filename);
+    let turnedOnNPSInput = false;
+
     let click = this.handleClick;
     let ballot = this.state.ballot;
     let { ballotWithAllItemsByFilterType, displaySubtitles } = this.props;
@@ -181,12 +183,17 @@ export default class BallotSideBar extends Component {
             <Link to="/more/privacy">
               Privacy Policy
             </Link>
-            &nbsp;&nbsp;&nbsp;
-            <a onClick={this.showNPSInput}>
-              Send Feedback
-            </a>
+            { turnedOnNPSInput ?
+              <span>
+                &nbsp;&nbsp;&nbsp;
+                <a onClick={this.showNPSInput}>
+                  Send Feedback
+                </a>
+              </span> :
+              null
+            }
           </span>
-          { this.state.showNPSInput ?
+          { turnedOnNPSInput && this.state.showNPSInput ?
             <NPSInput onSubmit={this.onNPSSubmit}
                       onDismissed={this.onNPSDismissed}>
               {({ score }) => {
