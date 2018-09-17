@@ -76,6 +76,10 @@ $slick-dot-character: '\2022' !default;
     /* stylelint-enable */
   }
 
+  &__close-anchor-iphonex {
+    top: 20px;
+  }
+
   &__small {
     font-size: 12px;
     margin: $space-none;

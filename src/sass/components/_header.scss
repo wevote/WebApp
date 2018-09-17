@@ -1,7 +1,8 @@
 @import '../base/variables';
 
 $space-header-height:  20px;
-$space-search-right: 10%;
+$space-header-x-height: 40px;
+$space-search-right:   10%;
 
 .page-header {
   // required overrides for Bootstrap :(
@@ -49,6 +50,12 @@ $space-search-right: 10%;
     margin: $space-none;
     padding-bottom: $space-xs;
   }
+
+  &__cordova-iphonex {
+    margin: $space-none;
+    padding-bottom: $space-xs;
+    padding-top: $space-md;
+  }
 }
 
 .page-header-cordova-ios {
@@ -59,11 +66,26 @@ $space-search-right: 10%;
   width: 100%;
 }
 
+.search-cordova-iphonex {
+  width: 100%;
+  padding-top: $space-header-height;
+}
+
 // To cover the space under the iPhone top line menu "Carrier" or "ATT" etc.
 .ios7plus-spacer {
   top: $space-none;
   position: fixed;
   height: $space-header-height;
+  background: $brand-blue;
+  width: 100%;
+  opacity: 1;
+  z-index: 3;
+}
+
+.ios-x-spacer {
+  top: $space-none;
+  position: fixed;
+  height: $space-header-x-height;
   background: $brand-blue;
   width: 100%;
   opacity: 1;

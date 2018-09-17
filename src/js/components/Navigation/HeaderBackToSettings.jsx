@@ -6,7 +6,7 @@ import BallotStore from "../../stores/BallotStore";
 import BookmarkStore from "../../stores/BookmarkStore";
 import CandidateStore from "../../stores/CandidateStore";
 import cookies from "../../utils/cookies";
-import { historyPush, isWebApp } from "../../utils/cordovaUtils";
+import { historyPush, isIPhoneX, isWebApp } from "../../utils/cordovaUtils";
 import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -254,7 +254,7 @@ export default class HeaderBackToSettings extends Component {
     let backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 30);
 
     return (
-      <header className={ isWebApp() ? "page-header" : "page-header page-header__cordova" }>
+      <header className={ isWebApp() ? "page-header" : isIPhoneX() ? "page-header page-header__cordova-iphonex" : "page-header page-header__cordova" }>
         <Button className={"btn btn-sm btn-default page-header__backToButton hidden-xs"}
                 onClick={ () => historyPush(backToLink) }>
           <span className="fa fa-arrow-left"/> {backToOrganizationLinkText}

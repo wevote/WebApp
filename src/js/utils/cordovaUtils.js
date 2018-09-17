@@ -110,6 +110,20 @@ export function isIOS () {
   return isCordova() && window.device && device.platform === "iOS";
 }
 
+export function isIPhoneX () {
+  // Get the device pixel ratio
+  var ratio = window.devicePixelRatio || 1;
+
+  // Define the users device screen dimensions
+  var screen = {
+    width: window.screen.width * ratio,
+    height: window.screen.height * ratio,
+  };
+
+  // iPhone X Detection -- x and xs are 1125 x 2436, xs max is 1242 x 2688
+  return isIOS() && (screen.width === 1125 || screen.width === 1242) && (screen.height === 2436 || screen.height === 2688);
+}
+
 export function isAndroid () {
   return isCordova() && window.device && device.platform === "Android";
 }

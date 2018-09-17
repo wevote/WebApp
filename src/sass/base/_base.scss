@@ -44,6 +44,10 @@ body {
   user-select: none;
 }
 
+.cordova-base-iphonex {
+  padding-top: $space-lg;
+}
+
 *,
 *::before,
 *::after {
