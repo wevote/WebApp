@@ -108,6 +108,7 @@ export default class BallotSideBar extends Component {
   }
 
   onNPSDismissed () {
+    clearTimeout(this.formCloseTimer);
     this.setState({
       showNPSInput: false,
       formSubmitted: false,
@@ -132,6 +133,7 @@ export default class BallotSideBar extends Component {
     this.setState({
       formSubmitted: true,
     });
+    this.formCloseTimer = setTimeout(this.onNPSDismissed, 3000);
   }
 
   render () {
