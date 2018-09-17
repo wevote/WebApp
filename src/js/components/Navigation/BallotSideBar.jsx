@@ -201,7 +201,7 @@ export default class BallotSideBar extends Component {
                   return <p>Thank you! Your feedback has been submitted.</p>;
                 } else {
                   return <form onSubmit={this.onFormSubmit.bind(this)}>
-                    <p>Thank you for your rating! You just gave us a {score}.</p>
+                    <p>Thank you for your rating! You just gave us a{score === 8 ? "n" : null} {score}.</p>
                     <p>Any additional comments you would like to provide? (optional)</p>
                     <Textarea onChange={this.updateFeedbackText.bind(this)}
                       name="feedback_text"
