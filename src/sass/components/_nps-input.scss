@@ -1,0 +1,126 @@
+// copied from https://github.com/SamyPesse/react-nps-input/blob/master/stylesheets/main.less
+
+$NPSInput-Value-color:       #f2f5fd;
+$NPSInput-Value-hover-color: #3884ff;
+$NPSInput-Value-size:        32px;
+$NPSInput-Value-padding:     3px;
+$NPSInput-Value-width:       ($NPSInput-Value-size + 2 * $NPSInput-Value-padding) * 11;
+
+.NPSInput {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  border-top: 1px solid #e5e5e5;
+  background: #fff;
+  box-shadow: 0px -10px 10px rgba(200, 200, 200, 0.08);
+
+  &.animated {
+    animation-duration: 0.7s;
+    animation-name: NPSInput-slidein;
+  }
+
+  .NPSInput-Close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    outline: none;
+    display: inline-block;
+    zoom: 1;
+    line-height: normal;
+    white-space: nowrap;
+    vertical-align: baseline;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    font-family: inherit;
+    font-size: 100%;
+    padding: 0.5em 1em;
+    text-decoration: none;
+    border: 0;
+    opacity: 0.4;
+    font-size: 16px;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .NPSInput-Inner {
+    width: 100%;
+    max-width: 1000px;
+    margin: 20px auto;
+    text-align: center;
+  }
+
+  .NPSScale {
+    width: $NPSInput-Value-width;
+    margin: 0px auto;
+
+    .NPSScale-Values {
+      .NPSScale-Value {
+        padding: 0px 3px;
+        display: inline-block;
+
+        div {
+          background: $NPSInput-Value-color;
+          width: $NPSInput-Value-size;
+          height: $NPSInput-Value-size;
+          line-height: $NPSInput-Value-size;
+          border-radius: $NPSInput-Value-size;
+          cursor: pointer;
+          transition: 0.15s ease all;
+          color: #999;
+        }
+
+        &.selected {
+          div {
+            background: $NPSInput-Value-hover-color;
+            color: #fff;
+          }
+        }
+
+        &:hover {
+          div {
+            transform: scale(1.25);
+          }
+        }
+      }
+    }
+
+    .NPSScale-Legend {
+      display: flex;
+      margin-top: 12px;
+
+      .NPSScale-Label {
+        flex: 1;
+        color: #999;
+        font-size: 12px;
+
+        &.left {
+          text-align: left;
+        }
+        &.right {
+          text-align: right;
+        }
+      }
+    }
+  }
+
+  .NPSInput-Message {
+    margin: 0px;
+    margin-bottom: 15px;
+    font-size: 16px;
+  }
+}
+
+@keyframes NPSInput-slidein {
+  from {
+    bottom: -100%;
+  }
+
+  to {
+    bottom: 0px;
+  }
+}
