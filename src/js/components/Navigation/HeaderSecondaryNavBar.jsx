@@ -5,7 +5,7 @@ import AnalyticsActions from "../../actions/AnalyticsActions";
 import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
 import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
 import BallotIntroVerifyAddress from "../../components/Ballot/BallotIntroVerifyAddress";
-import { cordovaDot, isWebApp } from "../../utils/cordovaUtils";
+import { cordovaDot, isIPhoneX, isWebApp } from "../../utils/cordovaUtils";
 import SecondaryNavBarItem from "./SecondaryNavBarItem";
 import EmailBallotModal from "../Ballot/EmailBallotModal";
 import EmailBallotToFriendsModal from "../Ballot/EmailBallotToFriendsModal";
@@ -170,13 +170,14 @@ export default class HeaderSecondaryNavBar extends Component {
 
     // Have all of the 6 major steps been taken?
     let voterThoroughOrientationComplete = false;
+    let closeAnchorClass = isIPhoneX() ? "intro-modal__close-anchor intro-modal__close-anchor-iphonex" : "intro-modal__close-anchor";
     const BallotIntroFollowIssuesModal = <Modal bsClass="background-brand-blue modal"
                                                 id="ballotIntroFollowIssuesId"
                                                 show={this.state.showBallotIntroFollowIssues}
                                                 onHide={() => this._toggleBallotIntroFollowIssues(this)}>
         <Modal.Body>
           <div className="intro-modal__close">
-            <a onClick={this._toggleBallotIntroFollowIssues} className="intro-modal__close-anchor">
+            <a onClick={this._toggleBallotIntroFollowIssues} className={closeAnchorClass}>
               <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
             </a>
           </div>
@@ -193,7 +194,7 @@ export default class HeaderSecondaryNavBar extends Component {
                                   onHide={() => this._openEmailModal(this)}>
       <Modal.Body>
        <div className="intro-modal__close">
-         <a onClick={this._openEmailModal} className="intro-modal__close-anchor">
+         <a onClick={this._openEmailModal} className={closeAnchorClass}>
            <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
          </a>
        </div>
@@ -220,7 +221,7 @@ export default class HeaderSecondaryNavBar extends Component {
                                   onHide={() => this._openFacebookModal(this)}>
       <Modal.Body>
         <div className="intro-modal__close">
-          <a onClick={this._openFacebookModal} className="intro-modal__close-anchor">
+          <a onClick={this._openFacebookModal} className={closeAnchorClass}>
             <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
           </a>
         </div>

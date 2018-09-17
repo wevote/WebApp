@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
-import { historyPush, isAndroid, isCordova, isIOS,
-  isWebApp } from "./utils/cordovaUtils";
+import { historyPush, isAndroid, isCordova, isIOS, isIPhoneX, isWebApp } from "./utils/cordovaUtils";
 import ElectionActions from "./actions/ElectionActions";
 import FooterBarCordova from "./components/Navigation/FooterBarCordova";
 import FriendActions from "./actions/FriendActions";
@@ -391,6 +390,14 @@ export default class Application extends Component {
     }
 
     let footerStyle = this.state.showFooter ? "footroom-wrapper" : "footroom-wrapper__hide";
+    let appBaseClass = "app-base";
+    if (isCordova()) {
+      if (isIPhoneX()) {
+        appBaseClass += " cordova-base-iphonex";
+      } else {
+        appBaseClass += " cordova-base";
+      }
+    }
 
     if (inTheaterMode) {
       // console.log("inTheaterMode", inTheaterMode);
@@ -409,9 +416,9 @@ export default class Application extends Component {
       // console.log("voterGuideMode", voterGuideMode);
       let hideGettingStartedButtons = voterGuideShowGettingStartedNavigation;
 
-      return <div className={`app-base ${isCordova() && "cordova-base"}`} id="app-base-id">
+      return <div className={appBaseClass} id="app-base-id">
         <ToastContainer closeButton={false} />
-        { isCordova() && isIOS() && <div className={"ios7plus-spacer"} /> }
+        { isCordova() && isIOS() && isIPhoneX() ? <div className={"ios-x-spacer"} /> : <div className={"ios7plus-spacer"} /> }
         <div className={headRoomSize}>
           <div ref="pageHeader" className={pageHeaderStyle}>
             { showBackToHeader ?
@@ -445,7 +452,7 @@ export default class Application extends Component {
     } else if (settingsMode) {
       // console.log("settingsMode", settingsMode);
 
-      return <div className={`app-base ${isCordova() && "cordova-base"}`} id="app-base-id">
+      return <div className={appBaseClass} id="app-base-id">
         <ToastContainer closeButton={false} />
         { isCordova() && isIOS() && <div className={"ios7plus-spacer"} /> }
         <div className={headRoomSize}>
@@ -482,7 +489,7 @@ export default class Application extends Component {
     }
 
     // This handles other pages, like Welcome and the Ballot display
-    return <div className={`app-base ${isCordova() && "cordova-base"}`} id="app-base-id">
+    return <div className={appBaseClass} id="app-base-id">
       <ToastContainer closeButton={false} />
       { isCordova() && isIOS() && <div className={"ios7plus-spacer"} /> }
       <div className={headRoomSize}>

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import BallotActions from "../../actions/BallotActions";
 import classNames from "classnames";
-import { historyPush, isCordova, isWebApp } from "../../utils/cordovaUtils";
+import { historyPush, isCordova, isIPhoneX } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import SearchAllActions from "../../actions/SearchAllActions";
 import SearchAllStore from "../../stores/SearchAllStore";
@@ -42,11 +42,11 @@ export default class SearchAllBox extends Component {
     this.navigateToSelectedLink = this.navigateToSelectedLink.bind(this);
   }
 
-  componentDidMount () {
-    this.siteLogoText = $(".page-logo:nth-child(1)");
-    this.ballot = $(".header-nav__item:nth-child(1)");
-    this.network = $(".header-nav__item:nth-child(2)");
-    this.avatar = $("#js-header-avatar");
+  componentDidMount () {                                // jscs:disable requireDollarBeforejQueryAssignment
+    this.siteLogoText = $(".page-logo:nth-child(1)");   // jscs:disable requireDollarBeforejQueryAssignment
+    this.ballot = $(".header-nav__item:nth-child(1)");  // jscs:disable requireDollarBeforejQueryAssignment
+    this.network = $(".header-nav__item:nth-child(2)"); // jscs:disable requireDollarBeforejQueryAssignment
+    this.avatar = $("#js-header-avatar");               // jscs:disable requireDollarBeforejQueryAssignment
     this.about = document.getElementsByClassName("header-nav__item--about")[0];
     this.donate = document.getElementsByClassName("header-nav__item--donate")[0];
 
@@ -301,12 +301,17 @@ export default class SearchAllBox extends Component {
     });
     let clearButtonClasses = classNames({
       "site-search__clear": true,
-      "btn": true,
+      "btn": true,                // jscs:ignore disallowQuotedKeysInObjects
       "btn-default": true,
       "site-search__clear__hidden": !this.state.textFromSearchField.length,
     });
 
-    let searchStyle = isWebApp() ? "page-header__search" : "page-header__search search-cordova";
+    let searchStyle = "page-header__search";
+    if (isIPhoneX()) {
+      searchStyle += " search-cordova-iphonex";
+    } else if (isCordova()) {
+      searchStyle += " search-cordova";
+    }
 
     return <div className={searchStyle}>
       <form onSubmit={this.onSearchFormSubmit} role="search">
