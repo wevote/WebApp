@@ -30,6 +30,7 @@
   "ignoreFiles": [
     "**/vendor/**/*.scss",
     "**/_normalize.scss",
-    "**/overrides/_print.scss"
+    "**/overrides/_print.scss",
+    "**/components/_nps-input.scss"
   ]
 }
