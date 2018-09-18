@@ -19,6 +19,7 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
     issueListToDisplay: PropTypes.array,
     instantRefreshOn: PropTypes.bool,
     maximumIssuesToDisplay: PropTypes.number,
+    popoverBottom: PropTypes.bool,
     toFollow: PropTypes.bool,
     overlayTriggerOnClickOnly: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
@@ -171,7 +172,7 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
                                onExiting={() => this.onTriggerLeave(issueWeVoteId)}
                                trigger={this.props.overlayTriggerOnClickOnly ? "click" : ["focus", "hover", "click"]}
                                rootClose
-                               placement="bottom"
+                               placement={this.props.popoverBottom ? "bottom" : "top"}
                                overlay={issuePopover}
                 >
           <span className="">
