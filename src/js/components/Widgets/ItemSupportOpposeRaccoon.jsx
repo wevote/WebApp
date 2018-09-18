@@ -56,6 +56,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       can_scroll_left_mobile: false,
       can_scroll_right_desktop: true,
       can_scroll_right_mobile: true,
+      componentDidMountFinished: false,
       showPositionStatement: false,
       shouldFocusCommentArea: false,
       maximum_organization_display: 0,
@@ -107,6 +108,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       ballot_item_display_name: this.props.ballot_item_display_name,
       ballotItemType: ballotItemType,
       ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
+      componentDidMountFinished: true,
       is_candidate: is_candidate,
       is_measure: is_measure,
       maximum_organization_display: this.props.maximumOrganizationDisplay,
@@ -155,6 +157,50 @@ export default class ItemSupportOpposeRaccoon extends Component {
       supportProps: nextProps.supportProps,
     });
   }
+
+  // TODO find and remove unnecessary renders to improve performance
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+  //   // console.log("ItemSupportOpposeRaccoon, shouldComponentUpdate");
+  //   if (this.state.componentDidMountFinished === false) {
+  //     // console.log("shouldComponentUpdate: componentDidMountFinished === false");
+  //     return true;
+  //   }
+  //
+  //   if (nextProps.ballotItemWeVoteId !== undefined && nextProps.ballotItemWeVoteId && nextProps.ballotItemWeVoteId !== this.state.ballot_item_we_vote_id) {
+  //     // console.log("shouldComponentUpdate: ballotItemWeVoteId");
+  //     return true;
+  //   }
+  //
+  //   if (nextProps.organizations_to_follow_support !== undefined && nextProps.organizations_to_follow_support && nextProps.organizations_to_follow_support.length !== this.state.organizations_to_follow_support.length) {
+  //     // console.log("shouldComponentUpdate: organizations_to_follow_support");
+  //     return true;
+  //   }
+  //
+  //   if (nextProps.organizations_to_follow_oppose !== undefined && nextProps.organizations_to_follow_oppose && nextProps.organizations_to_follow_oppose.length !== this.state.organizations_to_follow_oppose.length) {
+  //     // console.log("shouldComponentUpdate: organizations_to_follow_oppose");
+  //     return true;
+  //   }
+  //
+  //   if (nextState.position_list_from_advisers_followed_by_voter !== undefined && nextState.position_list_from_advisers_followed_by_voter && nextState.position_list_from_advisers_followed_by_voter.length !== this.state.position_list_from_advisers_followed_by_voter.length) {
+  //     // console.log("shouldComponentUpdate: position_list_from_advisers_followed_by_voter");
+  //     return true;
+  //   }
+  //
+  //   // Only proceed if we have valid supportProps
+  //   if (nextProps.supportProps !== undefined && nextProps.supportProps) {
+  //     if (nextProps.supportProps.support_count !== undefined && nextProps.supportProps.support_count !== this.state.supportProps.support_count) {
+  //       // console.log("shouldComponentUpdate: support_count");
+  //       return true;
+  //     }
+  //     if (nextProps.supportProps.oppose_count !== undefined && nextProps.supportProps.oppose_count !== this.state.supportProps.support_count) {
+  //       // console.log("shouldComponentUpdate: oppose_count");
+  //       return true;
+  //     }
+  //   }
+  //
+  //   return false;
+  // }
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
@@ -381,6 +427,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
   render () {
     renderLog(__filename);
+    // console.log("ItemSupportOpposeRaccoon render");
+
     let ballotItemSupportStore = SupportStore.get(this.state.ballot_item_we_vote_id);
     // Issue Score
     let voterIssuesScore = IssueStore.getIssuesScoreByBallotItemWeVoteId(this.state.ballot_item_we_vote_id);

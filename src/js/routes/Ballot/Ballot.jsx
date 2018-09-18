@@ -284,6 +284,52 @@ export default class Ballot extends Component {
     }
   }
 
+  // TODO find and remove unnecessary Ballot renders to improve performance
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+  //   // console.log("Ballot, shouldComponentUpdate");
+  //   if (nextProps.params !== undefined && nextProps.params.ballot_returned_we_vote_id && nextProps.params.ballot_returned_we_vote_id !== this.state.ballot_returned_we_vote_id) {
+  //     // console.log("shouldComponentUpdate: Ballot, ballot_returned_we_vote_id");
+  //     return true;
+  //   }
+  //   if (nextProps.params !== undefined && nextProps.params.ballot_location_shortcut && nextProps.params.ballot_location_shortcut !== this.state.ballot_location_shortcut) {
+  //     // console.log("shouldComponentUpdate: Ballot, ballot_location_shortcut");
+  //     return true;
+  //   }
+  //   if (nextProps.params !== undefined && nextProps.params.google_civic_election_id && nextProps.params.google_civic_election_id !== this.state.google_civic_election_id) {
+  //     // console.log("shouldComponentUpdate: Ballot, google_civic_election_id");
+  //     return true;
+  //   }
+  //
+  //   if (this.state.filter_type !== nextState.filter_type) {
+  //     // console.log("shouldComponentUpdate: Ballot, filter_type different");
+  //     return true;
+  //   }
+  //
+  //   if (this.state.showBallotIntroModal !== nextState.showBallotIntroModal) {
+  //     // console.log("shouldComponentUpdate: Ballot, showBallotIntroModal different");
+  //     return true;
+  //   }
+  //   if (this.state.showCandidateModal !== nextState.showCandidateModal) {
+  //     // console.log("shouldComponentUpdate: Ballot, showCandidateModal different");
+  //     return true;
+  //   }
+  //   if (this.state.showMeasureModal !== nextState.showMeasureModal) {
+  //     // console.log("shouldComponentUpdate: Ballot, showMeasureModal different");
+  //     return true;
+  //   }
+  //   if (this.state.showSelectBallotModal !== nextState.showSelectBallotModal) {
+  //     // console.log("shouldComponentUpdate: Ballot, showSelectBallotModal different");
+  //     return true;
+  //   }
+  //   if (this.state.showBallotSummaryModal !== nextState.showBallotSummaryModal) {
+  //     // console.log("shouldComponentUpdate: Ballot, showBallotSummaryModal different");
+  //     return true;
+  //   }
+  //
+  //   return false;
+  // }
+
   componentDidUpdate (prevProps, prevState) {
     // console.log('Ballot componentDidUpdate()', 'prevState.lastHashUsedInLinkScroll:', prevState.lastHashUsedInLinkScroll,'this.state.lastHashUsedInLinkScroll:', this.state.lastHashUsedInLinkScroll);
     if (this.state.lastHashUsedInLinkScroll && this.state.lastHashUsedInLinkScroll !== prevState.lastHashUsedInLinkScroll) {

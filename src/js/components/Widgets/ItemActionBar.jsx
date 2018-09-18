@@ -397,6 +397,7 @@ export default class ItemActionBar extends Component {
 
   render () {
     renderLog(__filename);
+    // console.log("ItemActionBar render");
 
     // // let { support_count: supportCount, oppose_count: opposeCount } = this.props.supportProps;
     if (this.state.supportCount === undefined ||

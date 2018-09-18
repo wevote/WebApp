@@ -23,12 +23,30 @@ export default class BallotItemCompressed extends Component {
     updateOfficeDisplayUnfurledTracker: PropTypes.func,
   };
 
+  shouldComponentUpdate (nextProps) {
+    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    // console.log("BallotItemCompressed, shouldComponentUpdate");
+    if (nextProps.we_vote_id !== undefined && nextProps.we_vote_id && nextProps.we_vote_id !== this.props.we_vote_id) {
+      // console.log("shouldComponentUpdate: we_vote_id");
+      return true;
+    }
+
+    if (nextProps.organization && nextProps.organization.organization_we_vote_id && nextProps.organization.organization_we_vote_id !== this.props.organization.organization_we_vote_id) {
+      // console.log("shouldComponentUpdate: organization_we_vote_id");
+      return true;
+    }
+
+    return false;
+  }
+
   isMeasure () {
     return this.props.kind_of_ballot_item === TYPES.MEASURE;
   }
 
   render () {
     renderLog(__filename);
+    // console.log("BallotItemCompressed render");
+
     return <div className="BallotItem card" id={this.props.we_vote_id}>
         { this.isMeasure() ?
           <MeasureItemCompressed {...this.props}
