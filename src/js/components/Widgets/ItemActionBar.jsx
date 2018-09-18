@@ -35,7 +35,7 @@ export default class ItemActionBar extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      ballotItemWeVoteId: this.props.ballot_item_we_vote_id,
+      ballotItemWeVoteId: "",
       componentDidMountFinished: false,
       isOpposeAPIState: undefined,
       isOpposeLocalState: undefined,
@@ -61,7 +61,6 @@ export default class ItemActionBar extends Component {
 
   componentDidMount () {
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
-    this.onMeasureStoreChange();
     // console.log("itemActionBar, NEW componentDidMount");
     let isOpposeAPIState = false;
     let isPublicPosition = false;
@@ -77,6 +76,7 @@ export default class ItemActionBar extends Component {
     }
 
     this.setState({
+      ballotItemWeVoteId: this.props.ballot_item_we_vote_id,
       componentDidMountFinished: true,
       isOpposeAPIState: isOpposeAPIState,
       isPublicPosition: isPublicPosition,
@@ -84,6 +84,7 @@ export default class ItemActionBar extends Component {
       supportCount: supportCount,
       opposeCount: opposeCount,
     });
+    this.onMeasureStoreChange();
   }
 
   componentWillReceiveProps (nextProps) {
