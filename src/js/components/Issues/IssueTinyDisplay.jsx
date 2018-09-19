@@ -12,7 +12,7 @@ import VoterGuideStore from "../../stores/VoterGuideStore";
 import { removeTwitterNameFromDescription } from "../../utils/textFormat";
 import { renderLog } from "../../utils/logging";
 
-export default class OrganizationListUnderIssue extends Component {
+export default class IssueTinyDisplay extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     currentBallotIdInUrl: PropTypes.string,
@@ -39,7 +39,7 @@ export default class OrganizationListUnderIssue extends Component {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     let voter_guides_for_this_issue = IssueStore.getVoterGuidesForOneIssue(this.props.issue_we_vote_id);
-    // console.log("OrganizationListUnderIssue, componentDidMount, voter_guides_for_this_issue: ", voter_guides_for_this_issue);
+    // console.log("IssueTinyDisplay, componentDidMount, voter_guides_for_this_issue: ", voter_guides_for_this_issue);
     this.setState({
       issue_we_vote_id: this.props.issue_we_vote_id,
       voter_guides_for_this_issue: voter_guides_for_this_issue,
@@ -53,7 +53,7 @@ export default class OrganizationListUnderIssue extends Component {
 
   onIssueStoreChange () {
     let voter_guides_for_this_issue = IssueStore.getVoterGuidesForOneIssue(this.state.issue_we_vote_id);
-    // console.log("OrganizationListUnderIssue, onIssueStoreChange, voter_guides_for_this_issue: ", voter_guides_for_this_issue);
+    // console.log("IssueTinyDisplay, onIssueStoreChange, voter_guides_for_this_issue: ", voter_guides_for_this_issue);
     this.setState({
       voter_guides_for_this_issue: voter_guides_for_this_issue,
     });
@@ -62,7 +62,7 @@ export default class OrganizationListUnderIssue extends Component {
   onVoterGuideStoreChange () {
     // We just want to trigger a re-render
     let voter_guides_for_this_issue = IssueStore.getVoterGuidesForOneIssue(this.state.issue_we_vote_id);
-    // console.log("OrganizationListUnderIssue, onVoterGuideStoreChange, voter_guides_for_this_issue: ", voter_guides_for_this_issue);
+    // console.log("IssueTinyDisplay, onVoterGuideStoreChange, voter_guides_for_this_issue: ", voter_guides_for_this_issue);
     this.setState({
       voter_guides_for_this_issue: voter_guides_for_this_issue,
     });
@@ -124,7 +124,7 @@ export default class OrganizationListUnderIssue extends Component {
 
   render () {
     renderLog(__filename);
-    // console.log("OrganizationListUnderIssue render, issue_we_vote_id: ", this.state.issue_we_vote_id, ", this.state.voter_guides_for_this_issue: ", this.state.voter_guides_for_this_issue);
+    // console.log("IssueTinyDisplay render, issue_we_vote_id: ", this.state.issue_we_vote_id, ", this.state.voter_guides_for_this_issue: ", this.state.voter_guides_for_this_issue);
     if (!this.state.voter_guides_for_this_issue || !this.state.voter_guides_for_this_issue.length){
       return null;
     }
