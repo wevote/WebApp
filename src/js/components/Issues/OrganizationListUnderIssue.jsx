@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { OverlayTrigger, Popover } from "react-bootstrap";
+import { isCordova } from "../../utils/cordovaUtils";
 import FollowToggle from "../Widgets/FollowToggle";
 import ImageHandler from "../../components/ImageHandler";
+import IssueCard from "./IssueCard";
+import IssueImageDisplay from "./IssueImageDisplay";
 import IssueStore from "../../stores/IssueStore";
 import ReadMore from "../../components/Widgets/ReadMore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
@@ -10,14 +14,21 @@ import { renderLog } from "../../utils/logging";
 
 export default class OrganizationListUnderIssue extends Component {
   static propTypes = {
+    ballotItemWeVoteId: PropTypes.string,
     currentBallotIdInUrl: PropTypes.string,
+    issue: PropTypes.object,
+    issueImageSize: PropTypes.string,
     issue_we_vote_id: PropTypes.string.isRequired,
+    overlayTriggerOnClickOnly: PropTypes.bool,
+    popoverBottom: PropTypes.bool,
+    toFollow: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
     we_vote_id: PropTypes.string
   };
 
   constructor (props) {
     super(props);
+    this.popover_state = {};
     this.state = {
       issue_we_vote_id: "",
       organizations_for_this_issue: [],
@@ -55,6 +66,60 @@ export default class OrganizationListUnderIssue extends Component {
     this.setState({
       voter_guides_for_this_issue: voter_guides_for_this_issue,
     });
+  }
+
+  onTriggerEnter (issueWeVoteId) {
+    if (this.refs[`issue-overlay-${issueWeVoteId}`]) {
+      this.refs[`issue-overlay-${issueWeVoteId}`].show();
+    }
+
+    if (!this.popover_state[issueWeVoteId]) {
+      // If it wasn't created, create it now
+      this.popover_state[issueWeVoteId] = { show: false, timer: null };
+    }
+
+    clearTimeout(this.popover_state[issueWeVoteId].timer);
+    if (!this.popover_state[issueWeVoteId]) {
+      // If it wasn't created, create it now
+      this.popover_state[issueWeVoteId] = { show: false, timer: null };
+    }
+
+    this.popover_state[issueWeVoteId].show = true;
+  }
+
+  onTriggerLeave (issueWeVoteId) {
+    if (!this.popover_state[issueWeVoteId]) {
+      // If it wasn't created, create it now
+      this.popover_state[issueWeVoteId] = { show: false, timer: null };
+    }
+
+    this.popover_state[issueWeVoteId].show = false;
+    clearTimeout(this.popover_state[issueWeVoteId].timer);
+    this.popover_state[issueWeVoteId].timer = setTimeout(() => {
+      if (!this.popover_state[issueWeVoteId].show) {
+        if (this.refs[`issue-overlay-${issueWeVoteId}`]) {
+          this.refs[`issue-overlay-${issueWeVoteId}`].hide();
+        }
+      }
+    }, 100);
+  }
+
+  onTriggerToggle (e, issueWeVoteId) {
+    if (this.mobile) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (!this.popover_state[issueWeVoteId]) {
+        // If it wasn't created, create it now
+        this.popover_state[issueWeVoteId] = { show: false, timer: null };
+      }
+
+      if (this.popover_state[issueWeVoteId].show) {
+        this.onTriggerLeave(issueWeVoteId);
+      } else {
+        this.onTriggerEnter(issueWeVoteId);
+      }
+    }
   }
 
   render () {
@@ -101,8 +166,44 @@ export default class OrganizationListUnderIssue extends Component {
       </div>;
     });
 
-    return <span className="guidelist card-child__list-group">
-        {organizations_not_shown_display}
-      </span>;
+    this.popover_state[this.props.issue_we_vote_id] = { show: false, timer: null };
+
+    let issuePopover = <Popover id={`issue-popover-${this.props.issue_we_vote_id}`}
+                                onMouseOver={() => this.onTriggerEnter(this.props.issue_we_vote_id)}
+                                onMouseOut={() => this.onTriggerLeave(this.props.issue_we_vote_id)}
+                                className="card-popover" title={<span onClick={() => this.onTriggerLeave(this.props.issue_we_vote_id)}> &nbsp;
+                                  <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" /> </span>}
+                                >
+        <IssueCard ballotItemWeVoteId={this.props.ballotItemWeVoteId}
+                   currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                   followToggleOn={this.props.toFollow}
+                   issue={this.props.issue}
+                   issueImageSize={"MEDIUM"}
+                   urlWithoutHash={this.props.urlWithoutHash}
+                   we_vote_id={this.props.we_vote_id}
+        />
+        <span className="guidelist card-child__list-group">
+          {organizations_not_shown_display}
+        </span>
+      </Popover>;
+
+    // onClick={(e) => this.onTriggerToggle(e, this.props.issue_we_vote_id)}
+
+    return <OverlayTrigger ref={`issue-overlay-${this.props.issue_we_vote_id}`}
+                           onMouseOver={() => this.onTriggerEnter(this.props.issue_we_vote_id)}
+                           onMouseOut={() => this.onTriggerLeave(this.props.issue_we_vote_id)}
+                           onExiting={() => this.onTriggerLeave(this.props.issue_we_vote_id)}
+                           trigger={this.props.overlayTriggerOnClickOnly ? "click" : ["focus", "hover", "click"]}
+                           rootClose
+                           placement={this.props.popoverBottom ? "bottom" : "top"}
+                           overlay={issuePopover}
+            >
+      <span className="">
+        <IssueImageDisplay issue={this.props.issue}
+                           issueImageSize={this.props.issueImageSize}
+                           showPlaceholderImage
+                           isVoterFollowingThisIssue={IssueStore.isVoterFollowingThisIssue(this.props.issue_we_vote_id)} />
+      </span>
+    </OverlayTrigger>;
   }
 }
