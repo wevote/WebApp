@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-// import { Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 import AddressBox from "../../components/AddressBox";
 import AnalyticsActions from "../../actions/AnalyticsActions";
@@ -571,10 +571,23 @@ export default class Ballot extends Component {
     });
   }
 
+  setBallotItemFilterType (type) {
+    if (type === this.state.ballot_item_filter_type) {
+      this.setState({
+        ballot_item_filter_type: "All",
+      });
+    } else {
+      this.setState({
+        ballot_item_filter_type: type,
+      });
+    }
+  }
+
   render () {
     renderLog(__filename);
     // console.log("Ballot render");
 
+    const BALLOT_ITEM_FILTER_TYPES = ["Federal", "State", "Local", "Measure"];
     let text_for_map_search = VoterStore.getTextForMapSearch();
     let issues_voter_can_follow = IssueStore.getIssuesVoterCanFollow(); // Don't auto-open intro until Issues are loaded
     let issues_voter_can_follow_exist = issues_voter_can_follow && issues_voter_can_follow.length;
@@ -768,6 +781,28 @@ export default class Ballot extends Component {
                   </div>
                 </div> :
                 <div>
+                  { this.state.ballotWithAllItemsByFilterType && this.state.ballotWithAllItemsByFilterType.length ?
+                    <div className="row u-stack--md">
+                      { BALLOT_ITEM_FILTER_TYPES.map(one_type => {
+                          let ballotItemsByFilterType = this.state.ballotWithAllItemsByFilterType.filter(item => {
+                            if (one_type === "Measure") {
+                              return item.kind_of_ballot_item === "MEASURE";
+                            } else {
+                              return one_type === item.race_office_level;
+                            }
+                          });
+                          let ballotItemsByFilterTypeLength = ballotItemsByFilterType.length;
+                          return <div className="col-6 col-sm-3" key={one_type}>
+                            <Button block active={one_type === this.state.ballot_item_filter_type}
+                                    onClick={() => this.setBallotItemFilterType(one_type)}>
+                              {one_type}&nbsp;({ballotItemsByFilterTypeLength})
+                            </Button>
+                          </div>;
+                        })
+                      }
+                    </div> :
+                    null
+                  }
                   <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
                     { this.state.ballotWithAllItemsByFilterType.map( (item) => {
                         // console.log(this.state.ballot_item_filter_type);
