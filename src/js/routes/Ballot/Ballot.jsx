@@ -53,6 +53,7 @@ export default class Ballot extends Component {
     this.state = {
       ballotElectionList: [],
       ballotWithAllItemsByFilterType: [],
+      ballot_item_filter_type: "",
       ballot_returned_we_vote_id: "",
       ballot_location_shortcut: "",
       candidate_for_modal: {
@@ -230,6 +231,7 @@ export default class Ballot extends Component {
 
     this.setState({
       ballotElectionList: BallotStore.ballotElectionList(),
+      ballot_item_filter_type: "All",
       ballot_returned_we_vote_id: ballot_returned_we_vote_id,
       ballot_location_shortcut: ballot_location_shortcut,
       google_civic_election_id: parseInt(google_civic_election_id, 10),
@@ -767,15 +769,24 @@ export default class Ballot extends Component {
                 </div> :
                 <div>
                   <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
-                    {this.state.ballotWithAllItemsByFilterType.map( (item) => <BallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
-                                                                                                    toggleMeasureModal={this.toggleMeasureModal}
-                                                                                                    key={item.we_vote_id}
-                                                                                                    updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
-                                                                                                    allBallotItemsCount={this.state.ballotWithAllItemsByFilterType.length}
-                                                                                                    urlWithoutHash={this.props.location.pathname + this.props.location.search}
-                                                                                                    currentBallotIdInUrl={this.props.location.hash.slice(1)}
-                                                                                                    ref={ref => { this.ballotItems[item.we_vote_id] = ref; }}
-                                                                                                    {...item} />)
+                    { this.state.ballotWithAllItemsByFilterType.map( (item) => {
+                        // console.log(this.state.ballot_item_filter_type);
+                        if (this.state.ballot_item_filter_type === "All" ||
+                            item.kind_of_ballot_item === "MEASURE" && this.state.ballot_item_filter_type === "Measure" ||
+                            this.state.ballot_item_filter_type === item.race_office_level) {
+                          return <BallotItemCompressed toggleCandidateModal={this.toggleCandidateModal}
+                                                       toggleMeasureModal={this.toggleMeasureModal}
+                                                       key={item.we_vote_id}
+                                                       updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
+                                                       allBallotItemsCount={this.state.ballotWithAllItemsByFilterType.length}
+                                                       urlWithoutHash={this.props.location.pathname + this.props.location.search}
+                                                       currentBallotIdInUrl={this.props.location.hash.slice(1)}
+                                                       ref={ref => { this.ballotItems[item.we_vote_id] = ref; }}
+                                                       {...item} />;
+                        } else {
+                          return null;
+                        }
+                      })
                     }
                   </div>
                 </div>
