@@ -86,13 +86,20 @@
 .u-inset__stretch--md { padding: $space-md $space-sm; } // 16px 8px
 .u-inset__stretch--lg { padding: $space-lg $space-md; } // 32px 16px
 
-// Inset Vertical
 // stylelint-disable declaration-block-single-line-max-declarations
+// Inset Vertical
 .u-inset__v--xs { padding-top: $space-xs; padding-bottom: $space-xs; }
 .u-inset__v--sm { padding-top: $space-sm; padding-bottom: $space-sm; }
 .u-inset__v--md { padding-top: $space-md; padding-bottom: $space-md; }
 .u-inset__v--lg { padding-top: $space-lg; padding-bottom: $space-lg; }
 .u-inset__v--xl { padding-top: $space-xl; padding-bottom: $space-xl; }
+
+// Inset Horizontal
+.u-inset__h--xs { padding-left: $space-xs; padding-right: $space-xs; }
+.u-inset__h--sm { padding-left: $space-sm; padding-right: $space-sm; }
+.u-inset__h--md { padding-left: $space-md; padding-right: $space-md; }
+.u-inset__h--lg { padding-left: $space-lg; padding-right: $space-lg; }
+.u-inset__h--xl { padding-left: $space-xl; padding-right: $space-xl; }
 // stylelint-enable
 
 // .u-clear { clear: both; }

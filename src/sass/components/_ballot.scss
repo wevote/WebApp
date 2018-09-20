@@ -10,6 +10,7 @@ $minus-header-extension-top-voter-guide: -1%;
 $scrollbar-height: 20px;
 $tab-height: 47px;
 $tab-height-visible: $tab-height - $scrollbar-height;
+$neg-space-xs: -$space-xs;
 $neg-space-lg: -$space-lg;
 $bottom-spacing-cordova: 50px;
 
@@ -120,6 +121,11 @@ $bottom-spacing-cordova: 50px;
 
   &__body {
     margin-top: $space-lg;
+  }
+
+  &__item-filter-tabs {
+    margin-left: $neg-space-xs;
+    margin-right: $neg-space-xs;
   }
 
   &__edit-address-preview {
