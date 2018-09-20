@@ -231,7 +231,7 @@ export default class Ballot extends Component {
 
     this.setState({
       ballotElectionList: BallotStore.ballotElectionList(),
-      ballot_item_filter_type: "All",
+      ballot_item_filter_type: "Federal",
       ballot_returned_we_vote_id: ballot_returned_we_vote_id,
       ballot_location_shortcut: ballot_location_shortcut,
       google_civic_election_id: parseInt(google_civic_election_id, 10),
