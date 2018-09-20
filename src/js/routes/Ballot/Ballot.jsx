@@ -782,7 +782,7 @@ export default class Ballot extends Component {
                 </div> :
                 <div>
                   { this.state.ballotWithAllItemsByFilterType && this.state.ballotWithAllItemsByFilterType.length ?
-                    <div className="row u-stack--md ballot__item-filter-tabs">
+                    <div className="row ballot__item-filter-tabs">
                       { BALLOT_ITEM_FILTER_TYPES.map(one_type => {
                           let ballotItemsByFilterType = this.state.ballotWithAllItemsByFilterType.filter(item => {
                             if (one_type === "Measure") {
@@ -792,7 +792,7 @@ export default class Ballot extends Component {
                             }
                           });
                           let ballotItemsByFilterTypeLength = ballotItemsByFilterType.length;
-                          return <div className="col-6 col-sm-3 u-inset__h--xs" key={one_type}>
+                          return <div className="col-6 col-sm-3 u-stack--md u-inset__h--xs" key={one_type}>
                             <Button block active={one_type === this.state.ballot_item_filter_type}
                                     onClick={() => this.setBallotItemFilterType(one_type)}>
                               {one_type}&nbsp;({ballotItemsByFilterTypeLength})
