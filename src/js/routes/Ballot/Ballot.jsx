@@ -792,7 +792,7 @@ export default class Ballot extends Component {
                             }
                           });
                           let ballotItemsByFilterTypeLength = ballotItemsByFilterType.length;
-                          return <div className="col-6 col-sm-3" key={one_type}>
+                          return <div className="col-6 col-sm-3 u-inset__h--xs" key={one_type}>
                             <Button block active={one_type === this.state.ballot_item_filter_type}
                                     onClick={() => this.setBallotItemFilterType(one_type)}>
                               {one_type}&nbsp;({ballotItemsByFilterTypeLength})
