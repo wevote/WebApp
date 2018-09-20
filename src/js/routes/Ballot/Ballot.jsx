@@ -782,7 +782,7 @@ export default class Ballot extends Component {
                 </div> :
                 <div>
                   { this.state.ballotWithAllItemsByFilterType && this.state.ballotWithAllItemsByFilterType.length ?
-                    <div className="row u-stack--md">
+                    <div className="row u-stack--md ballot__item-filter-tabs">
                       { BALLOT_ITEM_FILTER_TYPES.map(one_type => {
                           let ballotItemsByFilterType = this.state.ballotWithAllItemsByFilterType.filter(item => {
                             if (one_type === "Measure") {
