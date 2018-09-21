@@ -59,6 +59,21 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
       padding-top: $space-sm;
     }
 
+    &__group {
+      margin-bottom: $space-md;
+    }
+
+    &__group-title {
+      font-family: $heading-font-stack;
+      font-size: 16px;
+      color: $gray-dark;
+      padding-bottom: $space-sm;
+    }
+
+    &__list {
+      padding-inline-start: $space-md;
+    }
+
     &__item {
       display: block;
       white-space: nowrap;
@@ -81,7 +96,7 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
       align-items: center;
       position: relative;
       margin-top: $space-none;
-      margin-bottom: $space-md;
+      margin-bottom: $space-xs;
     }
   }
 }

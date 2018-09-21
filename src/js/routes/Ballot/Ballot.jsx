@@ -544,11 +544,24 @@ export default class Ballot extends Component {
     }
   }
 
-  ballotItemLinkHasBeenClicked (selectedBallotItemId){
+  toggleExpandBallotItemDetails (selectedBallotItemId) {
     if (this.ballotItems[selectedBallotItemId] &&
         this.ballotItems[selectedBallotItemId].ballotItem &&
-        this.ballotItems[selectedBallotItemId].ballotItem.toggleExpandDetails){
+        this.ballotItems[selectedBallotItemId].ballotItem.toggleExpandDetails) {
       this.ballotItems[selectedBallotItemId].ballotItem.toggleExpandDetails(true);
+    }
+  }
+
+  ballotItemLinkHasBeenClicked (selectedBallotItemId) {
+    let ballot_item = this.state.ballotWithAllItemsByFilterType.find(item => item.we_vote_id === selectedBallotItemId);
+    if (ballot_item && ballot_item.kind_of_ballot_item === "MEASURE") {
+      this.setState({
+        ballot_item_filter_type: "Measure",
+      }, () => this.toggleExpandBallotItemDetails(selectedBallotItemId));
+    } else {
+      this.setState({
+        ballot_item_filter_type: ballot_item.race_office_level,
+      }, () => this.toggleExpandBallotItemDetails(selectedBallotItemId));
     }
   }
 
@@ -587,7 +600,7 @@ export default class Ballot extends Component {
     renderLog(__filename);
     // console.log("Ballot render");
 
-    const BALLOT_ITEM_FILTER_TYPES = ["Federal", "State", "Local", "Measure"];
+    const BALLOT_ITEM_FILTER_TYPES = ["Federal", "State", "Measure", "Local"];
     let text_for_map_search = VoterStore.getTextForMapSearch();
     let issues_voter_can_follow = IssueStore.getIssuesVoterCanFollow(); // Don't auto-open intro until Issues are loaded
     let issues_voter_can_follow_exist = issues_voter_can_follow && issues_voter_can_follow.length;
