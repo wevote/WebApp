@@ -136,43 +136,65 @@ export default class BallotSideBar extends Component {
     this.formCloseTimer = setTimeout(this.onNPSDismissed, 3000);
   }
 
+  filteredBallotToRender (ballot, ballotWithAllItemIdsByFilterType, type) {
+    return ballot.filter(item => {
+      if (item.kind_of_ballot_item === "MEASURE") {
+        return type === "Measure";
+      } else {
+        return type === item.race_office_level;
+      }
+    }).map((item, key) => {
+      if (
+        item.kind_of_ballot_item === "OFFICE" ||
+        item.kind_of_ballot_item === "MEASURE"
+      ) {
+        return (
+          <li className="BallotItem__summary__list-item" key={key}>
+            <BallotSideBarLink url={this.renderUrl(item.we_vote_id, ballotWithAllItemIdsByFilterType)}
+                                      ballotItemLinkHasBeenClicked={this.props.ballotItemLinkHasBeenClicked}
+                                      label={item.ballot_item_display_name}
+                                      subtitle={item.measure_subtitle}
+                                      displaySubtitles={this.props.displaySubtitles}
+                                      onClick={this.handleClick} />
+          </li>
+        );
+      } else {
+        return <span />;
+      }
+    });
+  }
+
   render () {
     renderLog(__filename);
     let turnedOnNPSInput = false;
+    const BALLOT_ITEM_FILTER_TYPES = ["Federal", "State", "Measure", "Local"];
 
-    let click = this.handleClick;
     let ballot = this.state.ballot;
-    let { ballotWithAllItemsByFilterType, displaySubtitles } = this.props;
+    let { ballotWithAllItemsByFilterType } = this.props;
     if (ballot && ballot.length) {
       let ballotWithAllItemIdsByFilterType = [];
       ballotWithAllItemsByFilterType.forEach(itemByFilterType => {
           ballotWithAllItemIdsByFilterType.push(itemByFilterType.we_vote_id);
       });
+
       return (
         <div className="container-fluid card">
-          {this.props.displayTitle ?
+          { this.props.displayTitle ?
             <div className="BallotItem__summary__title">
               Summary of Ballot Items
-            </div> : null}
-          {ballot.map((item, key) => {
-            if (
-              item.kind_of_ballot_item === "OFFICE" ||
-              item.kind_of_ballot_item === "MEASURE"
-            ) {
-              return (
-                <div key={key}>
-                  <BallotSideBarLink url={this.renderUrl(item.we_vote_id, ballotWithAllItemIdsByFilterType)}
-                                     ballotItemLinkHasBeenClicked={this.props.ballotItemLinkHasBeenClicked}
-                                     label={item.ballot_item_display_name}
-                                     subtitle={item.measure_subtitle}
-                                     displaySubtitles={displaySubtitles}
-                                     onClick={click} />
-                </div>
-              );
-            } else {
-              return <span />;
-            }
-          })}
+            </div> :
+            null
+          }
+          { BALLOT_ITEM_FILTER_TYPES.map((type, key) =>
+            <div className="BallotItem__summary__group" key={key}>
+              <div className="BallotItem__summary__group-title">
+                {type === "Measure" ? "Ballot Measures" : type}
+              </div>
+              <ul className="BallotItem__summary__list">
+                {this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type)}
+              </ul>
+            </div>
+          )}
           <h4 className="text-left" />
           <span className="terms-and-privacy">
             <br />
