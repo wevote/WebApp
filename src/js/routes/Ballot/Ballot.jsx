@@ -825,7 +825,7 @@ export default class Ballot extends Component {
                                 return one_type === item.race_office_level;
                               }
                             });
-                            return <div className="col-6 col-sm-3 u-stack--md u-inset__h--xs" key={one_type}>
+                            return <div className="col-6 col-sm-3 u-stack--md u-inset__h--sm" key={one_type}>
                               <Button block active={one_type === this.state.ballot_item_filter_type}
                                       onClick={() => this.setBallotItemFilterType(one_type)}>
                                 {one_type}&nbsp;({ballotItemsByFilterType.length})
