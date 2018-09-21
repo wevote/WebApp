@@ -600,7 +600,7 @@ export default class Ballot extends Component {
     renderLog(__filename);
     // console.log("Ballot render");
 
-    const BALLOT_ITEM_FILTER_TYPES = ["Federal", "State", "Local", "Measure"];
+    const BALLOT_ITEM_FILTER_TYPES = ["Federal", "State", "Measure", "Local"];
     let text_for_map_search = VoterStore.getTextForMapSearch();
     let issues_voter_can_follow = IssueStore.getIssuesVoterCanFollow(); // Don't auto-open intro until Issues are loaded
     let issues_voter_can_follow_exist = issues_voter_can_follow && issues_voter_can_follow.length;
