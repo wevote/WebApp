@@ -210,6 +210,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
                                                            issueImageSize={"MEDIUM"}
                                                            issueListToDisplay={this.state.issues_under_this_ballot_item_voter_is_following}
                                                            overlayTriggerOnClickOnly={this.props.overlayTriggerOnClickOnly}
+                                                           popoverBottom={this.props.popoverBottom}
                                                            toFollow
                                                            urlWithoutHash={this.props.urlWithoutHash}
                                                            we_vote_id={this.props.we_vote_id} />
@@ -219,6 +220,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
                                                            issueImageSize={"MEDIUM"}
                                                            issueListToDisplay={this.state.issues_under_this_ballot_item_voter_not_following}
                                                            overlayTriggerOnClickOnly={this.props.overlayTriggerOnClickOnly}
+                                                           popoverBottom={this.props.popoverBottom}
                                                            toFollow
                                                            urlWithoutHash={this.props.urlWithoutHash}
                                                            we_vote_id={this.props.we_vote_id} />
@@ -236,6 +238,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
                                                            issueImageSize={"MEDIUM"}
                                                            issueListToDisplay={this.state.issues_under_this_ballot_item_voter_is_following}
                                                            overlayTriggerOnClickOnly
+                                                           popoverBottom={this.props.popoverBottom}
                                                            toFollow
                                                            urlWithoutHash={this.props.urlWithoutHash}
                                                            we_vote_id={this.props.we_vote_id} />
@@ -245,6 +248,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
                                                            issueImageSize={"MEDIUM"}
                                                            issueListToDisplay={this.state.issues_under_this_ballot_item_voter_not_following}
                                                            overlayTriggerOnClickOnly
+                                                           popoverBottom={this.props.popoverBottom}
                                                            toFollow
                                                            urlWithoutHash={this.props.urlWithoutHash}
                                                            we_vote_id={this.props.we_vote_id} />
