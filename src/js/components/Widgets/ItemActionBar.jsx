@@ -83,8 +83,7 @@ export default class ItemActionBar extends Component {
       isSupportAPIState: isSupportAPIState,
       supportCount: supportCount,
       opposeCount: opposeCount,
-    });
-    this.onMeasureStoreChange();
+    }, this.onMeasureStoreChange);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -93,7 +92,7 @@ export default class ItemActionBar extends Component {
       // console.log("itemActionBar, ballotItemWeVoteId setState");
       this.setState({
         ballotItemWeVoteId: nextProps.ballot_item_we_vote_id,
-      });
+      }, this.onMeasureStoreChange);
     }
     // Only proceed if we have valid supportProps
     if (nextProps.supportProps !== undefined && nextProps.supportProps) {
@@ -226,14 +225,6 @@ export default class ItemActionBar extends Component {
       // console.log("shouldComponentUpdate: itemActionBar, showSupportOrOpposeHelpModal different");
       return true;
     }
-    if (this.state.yesVoteDescription !== nextState.yesVoteDescription) {
-      // console.log("shouldComponentUpdate: itemActionBar, yesVoteDescription different");
-      return true;
-    }
-    if (this.state.noVoteDescription !== nextState.noVoteDescription) {
-      // console.log("shouldComponentUpdate: itemActionBar, noVoteDescription different");
-      return true;
-    }
     if (this.state.yesVoteDescriptionExists !== nextState.yesVoteDescriptionExists) {
       // console.log("shouldComponentUpdate: itemActionBar, yesVoteDescriptionExists different");
       return true;
@@ -253,9 +244,12 @@ export default class ItemActionBar extends Component {
     if (this.isMeasure()) {
       this.setState({
         yesVoteDescription: MeasureStore.getYesVoteDescription(this.state.ballotItemWeVoteId),
-        yesVoteDescriptionExists: this.state.yesVoteDescription && this.state.yesVoteDescription.length,
         noVoteDescription: MeasureStore.getNoVoteDescription(this.state.ballotItemWeVoteId),
-        noVoteDescriptionExists: this.state.noVoteDescription && this.state.noVoteDescription.length,
+      }, () => {
+        this.setState({
+          yesVoteDescriptionExists: this.state.yesVoteDescription && this.state.yesVoteDescription.length,
+          noVoteDescriptionExists: this.state.noVoteDescription && this.state.noVoteDescription.length,
+        });
       });
     }
   }

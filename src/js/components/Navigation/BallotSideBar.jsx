@@ -136,32 +136,47 @@ export default class BallotSideBar extends Component {
     this.formCloseTimer = setTimeout(this.onNPSDismissed, 3000);
   }
 
-  filteredBallotToRender (ballot, ballotWithAllItemIdsByFilterType, type) {
-    return ballot.filter(item => {
+  filteredBallotToRender (ballot, ballotWithAllItemIdsByFilterType, type, key) {
+    let filteredBallot = ballot.filter(item => {
       if (item.kind_of_ballot_item === "MEASURE") {
         return type === "Measure";
       } else {
         return type === item.race_office_level;
       }
-    }).map((item, key) => {
+    });
+
+    if (!filteredBallot.length) {
+      return null;
+    }
+
+    let filteredBallotListItems = filteredBallot.map((item, itemKey) => {
       if (
         item.kind_of_ballot_item === "OFFICE" ||
         item.kind_of_ballot_item === "MEASURE"
       ) {
         return (
-          <li className="BallotItem__summary__list-item" key={key}>
+          <li className="BallotItem__summary__list-item" key={itemKey}>
             <BallotSideBarLink url={this.renderUrl(item.we_vote_id, ballotWithAllItemIdsByFilterType)}
-                                      ballotItemLinkHasBeenClicked={this.props.ballotItemLinkHasBeenClicked}
-                                      label={item.ballot_item_display_name}
-                                      subtitle={item.measure_subtitle}
-                                      displaySubtitles={this.props.displaySubtitles}
-                                      onClick={this.handleClick} />
+                               ballotItemLinkHasBeenClicked={this.props.ballotItemLinkHasBeenClicked}
+                               label={item.ballot_item_display_name}
+                               subtitle={item.measure_subtitle}
+                               displaySubtitles={this.props.displaySubtitles}
+                               onClick={this.handleClick} />
           </li>
         );
       } else {
         return <span />;
       }
     });
+
+    return <div className="BallotItem__summary__group" key={key}>
+      <div className="BallotItem__summary__group-title">
+        {type === "Measure" ? "Ballot Measures" : type}
+      </div>
+      <ul className="BallotItem__summary__list">
+        {filteredBallotListItems}
+      </ul>
+    </div>;
   }
 
   render () {
@@ -186,14 +201,7 @@ export default class BallotSideBar extends Component {
             null
           }
           { BALLOT_ITEM_FILTER_TYPES.map((type, key) =>
-            <div className="BallotItem__summary__group" key={key}>
-              <div className="BallotItem__summary__group-title">
-                {type === "Measure" ? "Ballot Measures" : type}
-              </div>
-              <ul className="BallotItem__summary__list">
-                {this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type)}
-              </ul>
-            </div>
+            this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key)
           )}
           <h4 className="text-left" />
           <span className="terms-and-privacy">

@@ -52,6 +52,7 @@ export default class Ballot extends Component {
     super(props);
     this.state = {
       ballotElectionList: [],
+      ballotWithAllItems: [],
       ballotWithAllItemsByFilterType: [],
       ballot_item_filter_type: "",
       ballot_returned_we_vote_id: "",
@@ -113,10 +114,20 @@ export default class Ballot extends Component {
     let ballotWithAllItemsByFilterType = BallotStore.getBallotByFilterType(filter_type);
     if (ballotWithAllItemsByFilterType !== undefined) {
       // console.log("ballotWithAllItemsByFilterType !== undefined");
-      this.setState({
-        ballotWithAllItemsByFilterType: ballotWithAllItemsByFilterType,
-        filter_type: filter_type,
-      });
+      if (filter_type === "all") {
+        this.setState({
+          ballotWithAllItems: ballotWithAllItemsByFilterType,
+          ballotWithAllItemsByFilterType: ballotWithAllItemsByFilterType,
+          filter_type: filter_type,
+        });
+      } else {
+        let ballotWithAllItems = BallotStore.getBallotByFilterType("all");
+        this.setState({
+          ballotWithAllItems: ballotWithAllItems,
+          ballotWithAllItemsByFilterType: ballotWithAllItemsByFilterType,
+          filter_type: filter_type,
+        });
+      }
     }
 
     let google_civic_election_id_from_url = this.props.params.google_civic_election_id || 0;
@@ -264,6 +275,7 @@ export default class Ballot extends Component {
     // Were there any actual changes?
     if (ballot_returned_we_vote_id !== this.state.ballot_returned_we_vote_id || ballot_location_shortcut !== this.state.ballot_location_shortcut || google_civic_election_id !== this.state.google_civic_election_id || filter_type !== this.state.filter_type) {
       this.setState({
+        ballotWithAllItems: BallotStore.getBallotByFilterType("all"),
         ballotWithAllItemsByFilterType: BallotStore.getBallotByFilterType(filter_type),
         ballot_returned_we_vote_id: ballot_returned_we_vote_id,
         ballot_location_shortcut: ballot_location_shortcut,
@@ -418,6 +430,7 @@ export default class Ballot extends Component {
         let prior_filter_type = this.state.filter_type || "all";
         let new_filter_type = this.state.location && this.state.location.query && this.state.location.query.type !== "" ? this.state.location.query.type : prior_filter_type;
         this.setState({
+          ballotWithAllItems: BallotStore.getBallotByFilterType("all"),
           ballotWithAllItemsByFilterType: BallotStore.getBallotByFilterType(new_filter_type),
           filter_type: new_filter_type,
         });
@@ -797,20 +810,30 @@ export default class Ballot extends Component {
                   { this.state.ballotWithAllItemsByFilterType && this.state.ballotWithAllItemsByFilterType.length ?
                     <div className="row ballot__item-filter-tabs">
                       { BALLOT_ITEM_FILTER_TYPES.map(one_type => {
-                          let ballotItemsByFilterType = this.state.ballotWithAllItemsByFilterType.filter(item => {
+                          let allBallotItemsByFilterType = this.state.ballotWithAllItems.filter(item => {
                             if (one_type === "Measure") {
                               return item.kind_of_ballot_item === "MEASURE";
                             } else {
                               return one_type === item.race_office_level;
                             }
                           });
-                          let ballotItemsByFilterTypeLength = ballotItemsByFilterType.length;
-                          return <div className="col-6 col-sm-3 u-stack--md u-inset__h--xs" key={one_type}>
-                            <Button block active={one_type === this.state.ballot_item_filter_type}
-                                    onClick={() => this.setBallotItemFilterType(one_type)}>
-                              {one_type}&nbsp;({ballotItemsByFilterTypeLength})
-                            </Button>
-                          </div>;
+                          if (allBallotItemsByFilterType.length) {
+                            let ballotItemsByFilterType = this.state.ballotWithAllItemsByFilterType.filter(item => {
+                              if (one_type === "Measure") {
+                                return item.kind_of_ballot_item === "MEASURE";
+                              } else {
+                                return one_type === item.race_office_level;
+                              }
+                            });
+                            return <div className="col-6 col-sm-3 u-stack--md u-inset__h--sm" key={one_type}>
+                              <Button block active={one_type === this.state.ballot_item_filter_type}
+                                      onClick={() => this.setBallotItemFilterType(one_type)}>
+                                {one_type}&nbsp;({ballotItemsByFilterType.length})
+                              </Button>
+                            </div>;
+                          } else {
+                            return null;
+                          }
                         })
                       }
                     </div> :
