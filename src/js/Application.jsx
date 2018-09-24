@@ -399,6 +399,13 @@ export default class Application extends Component {
       }
     }
 
+    let iPhoneSpacer = "";
+    if (isCordova() && isIOS() && isIPhoneX()) {
+      iPhoneSpacer = <div className={"ios-x-spacer"} />;
+    } else if (isCordova() && isIOS() && !isIPhoneX()) {
+      iPhoneSpacer = <div className={"ios7plus-spacer"} />;
+    }
+
     if (inTheaterMode) {
       // console.log("inTheaterMode", inTheaterMode);
       return <div className="app-base" id="app-base-id">
@@ -418,7 +425,7 @@ export default class Application extends Component {
 
       return <div className={appBaseClass} id="app-base-id">
         <ToastContainer closeButton={false} />
-        { isCordova() && isIOS() && isIPhoneX() ? <div className={"ios-x-spacer"} /> : <div className={"ios7plus-spacer"} /> }
+        { iPhoneSpacer }
         <div className={headRoomSize}>
           <div ref="pageHeader" className={pageHeaderStyle}>
             { showBackToHeader ?
@@ -454,7 +461,7 @@ export default class Application extends Component {
 
       return <div className={appBaseClass} id="app-base-id">
         <ToastContainer closeButton={false} />
-        { isCordova() && isIOS() && <div className={"ios7plus-spacer"} /> }
+        { iPhoneSpacer }
         <div className={headRoomSize}>
           <div ref="pageHeader" className={pageHeaderStyle}>
             { showBackToSettings ?
@@ -491,7 +498,7 @@ export default class Application extends Component {
     // This handles other pages, like Welcome and the Ballot display
     return <div className={appBaseClass} id="app-base-id">
       <ToastContainer closeButton={false} />
-      { isCordova() && isIOS() && <div className={"ios7plus-spacer"} /> }
+      { iPhoneSpacer }
       <div className={headRoomSize}>
         <div ref="pageHeader" className={pageHeaderStyle}>
           { showBackToHeader ?
