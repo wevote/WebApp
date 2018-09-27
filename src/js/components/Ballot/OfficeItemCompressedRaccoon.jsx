@@ -419,11 +419,6 @@ export default class OfficeItemCompressedRaccoon extends Component {
             let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidate_we_vote_id);
             let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidate_we_vote_id);
             let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + ". " : "";
-            let candidate_twitter_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
-            let ballotpediaCandidateSummary = one_candidate.ballotpedia_candidate_summary && one_candidate.ballotpedia_candidate_summary.length ? " " + one_candidate.ballotpedia_candidate_summary : "";
-            // Strip away any HTML tags
-            ballotpediaCandidateSummary = ballotpediaCandidateSummary.split(/<[^<>]*>/).join("");
-            let candidate_text = candidate_party_text + candidate_twitter_description_text + ballotpediaCandidateSummary;
 
             let positions_display_raccoon = <div>
               <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
@@ -471,7 +466,9 @@ export default class OfficeItemCompressedRaccoon extends Component {
                   {/* Description under candidate name */}
                   <LearnMore on_click={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(one_candidate.we_vote_id) : null}
                              num_of_lines={3}
-                             text_to_display={candidate_text}
+                             text_to_display={candidate_party_text}
+                             always_show_external_link
+                             learn_more_text={"Learn more"}
                              />
                   {/* DESKTOP: If voter has taken position, offer the comment bar */}
                   {/* comment_display_raccoon_desktop */}
