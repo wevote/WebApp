@@ -79,6 +79,7 @@ import VoterGuidesMenuMobile from "./routes/Settings/VoterGuidesMenuMobile";
 import VerifyRegistration from "./routes/More/VerifyRegistration";
 import VerifyThisIsMe from "./routes/VoterGuide/VerifyThisIsMe";
 import Welcome from "./routes/Welcome";
+import WeVoteBallotEmbed from "./routes/More/WeVoteBallotEmbed";
 import YourPage from "./routes/YourPage";
 import { isWebApp } from "./utils/cordovaUtils";
 
@@ -152,6 +153,7 @@ const routes = () =>
     <Route path="/more/about" component={About} />
     <Route path="/more/absentee" component={AbsenteeBallot} />
     <Route path="/more/alerts" component={ElectionReminder} />
+    <Route path="/more/myballot" component={WeVoteBallotEmbed} />
     <Route path="/more/connect" component={Connect} />
     <Route path="/more/credits" component={Credits} />
     <Route path="/more/donate" component={Donate} />

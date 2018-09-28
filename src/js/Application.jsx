@@ -309,6 +309,7 @@ export default class Application extends Component {
         pathname === "/more/about" ||
         pathname === "/more/absentee" ||
         pathname === "/more/alerts" ||
+        pathname === "/more/myballot" ||
         pathname === "/more/connect" ||
         pathname === "/more/credits" ||
         pathname === "/more/donate" ||
@@ -349,13 +350,14 @@ export default class Application extends Component {
     }
 
     let showBackToHeader = false;
-
     let showBackToSettings = false;
     let showBackToVoterGuides = false;
     if (stringContains("/btdb/", pathname) ||
         stringContains("/btdo/", pathname) ||
         stringContains("/bto/", pathname) ||
-        stringContains("/btvg/", pathname)) {
+        stringContains("/btvg/", pathname) ||
+        stringContains("/more/myballot", pathname)
+        ) {
       // If here, we want the top header to be "Back To..."
       // "/btdb/" stands for "Back To Default Ballot Page"
       // "/btdo/" stands for "Back To Default Office Page"
