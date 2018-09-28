@@ -62,7 +62,7 @@ export default class ItemPositionStatementActionBar extends Component {
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
-  
+
   componentWillReceiveProps (nextProps) {
     if (nextProps.supportProps !== undefined) {
       this.setState({

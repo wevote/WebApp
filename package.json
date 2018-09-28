@@ -1,7 +1,7 @@
 {
   "name": "wevoteusa",
   "version": "1.0.0",
-  "description": "We Vote USA front end application",
+  "description": "We Vote front end application",
   "private": true,
   "main": "server.js",
   "license": "MIT",
