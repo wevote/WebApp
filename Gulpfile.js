@@ -204,6 +204,7 @@ gulp.task("watch", PRODUCTION ? ()=> {} : function (done) {
 // Default
 gulp.task("default", gulp.series(
   "clean:build",
+  "build",
   "watch",
   "server"
 ));
