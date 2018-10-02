@@ -2,9 +2,9 @@
 const watchify = require("watchify");
 const gulp = require("gulp");
 const sass = require("gulp-sass");
-const autoprefixer = require('gulp-autoprefixer');
+const autoprefixer = require("gulp-autoprefixer");
 const uglify = require("gulp-uglify");
-const sourcemaps = require('gulp-sourcemaps');
+const sourcemaps = require("gulp-sourcemaps");
 const browserSync = require("browser-sync").create();
 const browserify = require("browserify");
 const babelify = require("babelify");
@@ -16,9 +16,9 @@ const assign = require("lodash.assign");
 const cssmin = require("gulp-cssnano");
 
 const config = {
-    bootstrapDir: './node_modules/bootstrap-sass',
-    bootstrap4Dir: './node_modules/bootstrap'
-};
+    bootstrapDir: "./node_modules/bootstrap-sass",
+    bootstrap4Dir: "./node_modules/bootstrap",
+  };
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 
@@ -28,14 +28,14 @@ gulp.task("browserify", function () {
     entries: "js/index.js",
     extensions: [".js", ".jsx"],
     basedir: "./src",
-    transform: [babelify]
+    transform: [babelify],
   };
 
   // 2017-04-05 Watchify is causing too many problems, so we are turning it off until we can resolve Issue 757
   // var opsWatchify = assign({ cache: {}, packageCache: {} }, watchify.args, ops);
   // var browserifyWithWatchify = watchify(browserify(opsWatchify));
 
-  function err (e){
+  function err (e) {
     console.error(e.toString());
     this.emit("end");
   }
@@ -72,44 +72,44 @@ gulp.task("server", PRODUCTION ? () => server(PRODUCTION) : function () {
     ghostMode: {
       clicks: true,
       forms: true,
-      scroll: true
+      scroll: true,
     },
-    logPrefix: `${new Date().toString().split(" ")[4]} - We Vote USA`
+    logPrefix: `${new Date().toString().split(" ")[4]} - We Vote USA`,
   });
 });
 
 // Compile Bootstrap allowing for custom variables and selective imports
-gulp.task('compile-bootstrap', function() {
-    return gulp.src('./src/sass/bootstrap.scss')
+gulp.task("compile-bootstrap", function () {
+    return gulp.src("./src/sass/bootstrap.scss")
     .pipe(sass({
-        includePaths: [config.bootstrapDir + '/assets/stylesheets',
-                      config.bootstrap4Dir]
-    }))
+        includePaths: [config.bootstrapDir + "/assets/stylesheets",
+                      config.bootstrap4Dir,],
+      }))
     .pipe(cssmin())
     .pipe(gulp.dest("./build/css/"));
-});
+  });
 
 // Compile main stylesheet and copy to Build directory
 gulp.task("sass", function () {
   return gulp.src("./src/sass/{main,loading-screen}.scss")
   .pipe(sourcemaps.init())
   .on("error", function (err) { console.error(err); })
-  .pipe(sass({ style: 'expanded' }))
-  //.pipe(autoprefixer('last 2 version'))
+  .pipe(sass({ style: "expanded" }))
+  .pipe(autoprefixer('last 2 version'))
   .pipe(cssmin())
   .pipe(sourcemaps.write(".")) // --> working directory is /build/css
   .pipe(gulp.dest("./build/css"))
   .pipe(browserSync.stream());
 });
 
-gulp.task('lint-css', function lintCssTask() {
-  const gulpStylelint = require('gulp-stylelint');
+gulp.task("lint-css", function lintCssTask() {
+  const gulpStylelint = require("gulp-stylelint");
   return gulp
-    .src('./src/sass/**/*.scss')
+    .src("./src/sass/**/*.scss")
     .pipe(gulpStylelint({
       reporters: [
-        {formatter: 'string', console: true}
-      ]
+        { formatter: "string", console: true, },
+      ],
     }));
 });
 
@@ -157,7 +157,7 @@ gulp.task("copy-javascript", function () {
 gulp.task("build", ["copy-fonts", "copy-index", "compile-bootstrap", "copy-css", "copy-img", "copy-javascript", "browserify", "sass"]);
 
 // Watch tasks
-gulp.task("watch", ["build"], PRODUCTION ? ()=>{} : function () {
+gulp.task("watch", ["build"], PRODUCTION ? ()=> {} : function () {
   gulp.watch(["./src/index.html"], ["copy-index"]);
   gulp.watch(["./src/sass/base/base/fonts/**"], ["copy-fonts"]);
   gulp.watch(["./src/sass/bootstrap/**"], ["compile-bootstrap"]);
@@ -172,6 +172,7 @@ gulp.task("watch", ["build"], PRODUCTION ? ()=>{} : function () {
 // Default
 gulp.task("default", [
   "clean:build",
+  "build",
   "watch",
-  "server"
+  "server",
 ]);
