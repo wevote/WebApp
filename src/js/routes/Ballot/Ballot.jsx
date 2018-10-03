@@ -104,9 +104,11 @@ export default class Ballot extends Component {
         showBallotIntroModal: false,
       });
     } else {
+      // hide_intro_modal is the default now
+      // showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
       this.setState({
         mounted: true,
-        showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
+        showBallotIntroModal: false,
       });
     }
 
@@ -406,9 +408,11 @@ export default class Ballot extends Component {
 
       // console.log("Ballot.jsx onVoterStoreChange VoterStore.getVoter: ", VoterStore.getVoter());
       if (consider_opening_ballot_intro_modal) {
+        // hide_intro_modal is the default now
+        // showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
         this.setState({
           voter: VoterStore.getVoter(),
-          showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
+          showBallotIntroModal: false,
           google_civic_election_id: parseInt(VoterStore.election_id(), 10),
         });
       } else {
