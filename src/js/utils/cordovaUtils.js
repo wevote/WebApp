@@ -28,6 +28,7 @@ export function cordovaDot (path) {
 }
 
 function cordovaOpenSafariViewSub (requestURL) {
+
   // console.log("cordovaOpenSafariView -1- requestURL: " + requestURL);
   SafariViewController.isAvailable(function () {            // eslint-disable-line no-undef
     oAuthLog("cordovaOpenSafariView requestURL: " + requestURL);
@@ -110,18 +111,40 @@ export function isIOS () {
   return isCordova() && window.device && device.platform === "iOS";
 }
 
-export function isIPhoneX () {
+export function isIPhoneXorXS () {
   // Get the device pixel ratio
-  var ratio = window.devicePixelRatio || 1;
+  let ratio = window.devicePixelRatio || 1;
 
   // Define the users device screen dimensions
-  var screen = {
+  let screen = {
     width: window.screen.width * ratio,
     height: window.screen.height * ratio,
   };
 
-  // iPhone X Detection -- x and xs are 1125 x 2436, xs max is 1242 x 2688
-  return isIOS() && (screen.width === 1125 || screen.width === 1242) && (screen.height === 2436 || screen.height === 2688);
+  // iPhone X and XS are 1125 x 2436
+  return isIOS() && (screen.width === 1125 || screen.width === 1242);
+}
+
+export function isIPhoneXR () {
+  let ratio = window.devicePixelRatio || 1;
+  let screen = {
+    width: window.screen.width * ratio,
+    height: window.screen.height * ratio,
+  };
+  return isIOS() && screen.width === 828 && screen.height === 1792;
+}
+
+export function isIPhoneXSMax () {
+  let ratio = window.devicePixelRatio || 1;
+  let screen = {
+    width: window.screen.width * ratio,
+    height: window.screen.height * ratio,
+  };
+  return isIOS() && screen.width === 1242 && screen.height === 2688;
+}
+
+export function hasIPhoneNotch () {
+  return isIPhoneXorXS() || isIPhoneXR() || isIPhoneXSMax();
 }
 
 export function isAndroid () {

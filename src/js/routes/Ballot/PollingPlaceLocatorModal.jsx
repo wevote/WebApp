@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { cordovaDot, cordovaOpenSafariView, historyPush, isIPhoneX, isWebApp } from "../../utils/cordovaUtils";
+import { cordovaDot, cordovaOpenSafariView, hasIPhoneNotch, historyPush, isWebApp } from "../../utils/cordovaUtils";
 import { Modal } from "react-bootstrap";
 import { renderLog } from "../../utils/logging";
 import PollingPlaceLocator from "../../components/Ballot/PollingPlaceLocator";
@@ -22,7 +22,6 @@ export default class PollingPlaceLocatorModal extends Component {
 
   render () {
     renderLog(__filename);
-    let closeAnchorClass = isIPhoneX() ? "intro-modal__close-anchor intro-modal__close-anchor-iphonex" : "intro-modal__close-anchor";
 
     if (isWebApp()) {
       return (
@@ -31,7 +30,8 @@ export default class PollingPlaceLocatorModal extends Component {
                onHide={() => this._openPollingLocatorModal(this)}>
           <Modal.Body>
             <div className="intro-modal__close">
-              <a onClick={this._openPollingLocatorModal} className={closeAnchorClass}>
+              <a onClick={this._openPollingLocatorModal}
+                 className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}>
                 <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close"/>
               </a>
             </div>

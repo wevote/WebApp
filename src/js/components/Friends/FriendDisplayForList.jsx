@@ -55,7 +55,7 @@ export default class FriendDisplayForList extends Component {
             <Link to={voterGuideLink} className="u-no-underline">
               {voter_display_name_formatted}
             </Link> :
-            <span>{voter_display_name_formatted}</span> } is your Friend
+            <span>&nbsp; {voter_display_name_formatted}</span> } is your Friend
           { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> :
             null}
           { voterGuideLink ?
