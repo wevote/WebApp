@@ -4,6 +4,7 @@ import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
 import ReactBootstrapToggle from "react-bootstrap-toggle";
 import Icon from "react-svg-icons";
 import { renderLog } from "../../utils/logging";
+import { hasIPhoneNotch } from "../../utils/cordovaUtils";
 import { showToastSuccess } from "../../utils/showToast";
 import SettingsAccount from "../../components/Settings/SettingsAccount";
 import SupportActions from "../../actions/SupportActions";
@@ -55,6 +56,7 @@ export default class PositionPublicToggle extends Component {
     this.setState({
       showToThePublicOn: false,
     });
+
     // console.log("PositionPublicToggle-showItemToFriendsOnly, this.props.type:", this.props.type);
     SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, "FRIENDS_ONLY");
     showToastSuccess("Position now visible to friends only!");
@@ -62,6 +64,7 @@ export default class PositionPublicToggle extends Component {
 
   showItemToPublic () {
     let voter = this.state.voter;
+
     // console.log("PositionPublicToggle-showItemToPublic, this.props.type:", this.props.type);
     if (voter && voter.is_signed_in) {
       this.setState({
@@ -159,46 +162,49 @@ export default class PositionPublicToggle extends Component {
     // This modal is shown when the user clicks on public position toggle either when not signed in
     // or for the first time after being signed in.
     let voter = this.state.voter;
+    let localModalStyle = hasIPhoneNotch() ? { marginTop: 20 } : {};
     let modalSupportProps = { isPublicPosition: false };
-    const PositionPublicToggleHelpModal = <Modal show={this.state.showPositionPublicHelpModal}
+    const PositionPublicToggleHelpModal =
+      <Modal show={this.state.showPositionPublicHelpModal}
                                                  enforceFocus={false}
-                                                 onHide={()=> { this.togglePositionPublicHelpModal(); }} >
+                                                 onHide={()=> { this.togglePositionPublicHelpModal(); }}>
 
-      <Modal.Header closeButton>
-        <Modal.Title>
-          <div className="text-center">Make Your Positions Public</div>
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <section className="card">
-          <div className="text-center">
-            {voter && voter.is_signed_in ?
-              <div>
-                <div className="u-f2">You have just made your position visible to anyone on We Vote.</div>
-                <div className="u-f4">If you do NOT want to share your position publicly, click the toggle again to restrict visibility to We Vote friends only.</div>
-              </div> :
-              <div>
-                { !this.state.voter.is_signed_in ?
-                  <SettingsAccount /> :
-                  null }
-              </div>}
-            <br />
-            We Vote makes it easy to share your views either publicly, or privately with your We Vote friends.<br />
-            <br />
-            Test the privacy toggle here:<br />
-            <br />
-            <PositionPublicToggle ballot_item_we_vote_id="null"
-                                  className="null"
-                                  type="MEASURE"
-                                  supportProps={modalSupportProps}
-                                  inTestMode
-            />
-            {this.state.positionPublicToggleCurrentState}
-            <br />
-          </div>
-        </section>
-      </Modal.Body>
-    </Modal>;
+        <Modal.Header closeButton style={ localModalStyle }>
+          <Modal.Title>
+            <div className="text-center">Make Your Positions Public</div>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <section className="card">
+            <div className="text-center">
+              {voter && voter.is_signed_in ?
+                <div>
+                  <div className="u-f2">You have just made your position visible to anyone on We Vote.</div>
+                  <div className="u-f4">If you do NOT want to share your position publicly, click the toggle again to restrict visibility to We Vote friends only.</div>
+                </div> :
+                <div>
+                  { !this.state.voter.is_signed_in ?
+                    <SettingsAccount /> :
+                    null }
+                </div>
+              }
+              <br />
+              We Vote makes it easy to share your views either publicly, or privately with your We Vote friends.<br />
+              <br />
+              Test the privacy toggle here:<br />
+              <br />
+              <PositionPublicToggle ballot_item_we_vote_id="null"
+                                    className="null"
+                                    type="MEASURE"
+                                    supportProps={modalSupportProps}
+                                    inTestMode
+              />
+              {this.state.positionPublicToggleCurrentState}
+              <br />
+            </div>
+          </section>
+        </Modal.Body>
+      </Modal>;
 
     return <div className={this.props.className}>
       <div style={{ display: "inline-block" }}>

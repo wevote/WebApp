@@ -20,6 +20,7 @@ export default class Friends extends Component {
       search_filter: false,
       search_term: "",
       current_friend_list_filtered_by_search: [],
+      editMode: false,
     };
   }
 
@@ -27,52 +28,53 @@ export default class Friends extends Component {
     if (this.state.current_friend_list) {
       FriendActions.currentFriends();
     }
+
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
   }
 
   _onFriendStoreChange () {
     this.setState({
-      current_friend_list: FriendStore.currentFriends()
+      current_friend_list: FriendStore.currentFriends(),
     });
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.friendStoreListener.remove();
   }
 
   searchFriends (event) {
-    let search_term = event.target.value;
-    if (search_term.length === 0) {
+    let searchTerm = event.target.value;
+    if (searchTerm.length === 0) {
       this.setState({
         search_filter: false,
         search_term: "",
         current_friend_list_filtered_by_search: [],
       });
     } else {
-      let search_term_lowercase = search_term.toLowerCase();
-      var searched_friend_list = _.filter(this.state.current_friend_list,
+      let searchTermLowercase = searchTerm.toLowerCase();
+      var searchedFriendList = _.filter(this.state.current_friend_list,
         function (user) {
-            return user.voter_display_name.toLowerCase().includes(search_term_lowercase);
+            return user.voter_display_name.toLowerCase().includes(searchTermLowercase);
           });
 
       this.setState({
         search_filter: true,
-        search_term: search_term,
-        current_friend_list_filtered_by_search: searched_friend_list,
+        search_term: searchTerm,
+        current_friend_list_filtered_by_search: searchedFriendList,
       });
     }
   }
 
-  getCurrentRoute (){
-    var current_route = "/friends";
-    return current_route;
+  getCurrentRoute () {
+    var currentRoute = "/friends";
+    return currentRoute;
   }
 
-  toggleEditMode (){
-    this.setState({editMode: !this.state.editMode});
+  toggleEditMode () {
+    this.setState({ editMode: !this.state.editMode });
   }
 
-  getFollowingType (){
+  getFollowingType () {
     switch (this.getCurrentRoute()) {
       case "/friends":
       default :
@@ -82,11 +84,11 @@ export default class Friends extends Component {
 
   render () {
     renderLog(__filename);
-    var current_friend_list = [];
+    let currentFriendList;
     if (!this.state.search_filter) {
-      current_friend_list = this.state.current_friend_list;
+      currentFriendList = this.state.current_friend_list;
     } else {
-      current_friend_list = this.state.current_friend_list_filtered_by_search;
+      currentFriendList = this.state.current_friend_list_filtered_by_search;
     }
 
     return <div className="opinion-view">
@@ -110,11 +112,11 @@ export default class Friends extends Component {
                     placeholder="Search by name..."
                     onChange={this.searchFriends.bind(this)} />
                 <br />
-                { this.state.search_filter && current_friend_list.length === 0 ?
+                { this.state.search_filter && currentFriendList.length === 0 ?
                   <p>"{this.state.search_term}" not found</p> : null
                 }
                 <div className="card">
-                  <FriendList friendList={current_friend_list}
+                  <FriendList friendList={currentFriendList}
                           editMode={this.state.editMode}
                           />
                 </div>

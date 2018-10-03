@@ -6,7 +6,7 @@ import { renderLog } from "../../utils/logging";
 export default class IntroNetworkScore extends Component {
   static propTypes = {
     history: PropTypes.object,
-    next: React.PropTypes.func,
+    next: PropTypes.func,
   };
 
   constructor (props) {

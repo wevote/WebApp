@@ -34,7 +34,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
     organization_we_vote_id: PropTypes.string,
     toggleCandidateModal: PropTypes.func,
     updateOfficeDisplayUnfurledTracker: PropTypes.func,
-    urlWithoutHash: PropTypes.string
+    urlWithoutHash: PropTypes.string,
   };
 
   constructor (props) {
@@ -76,14 +76,14 @@ export default class OfficeItemCompressedRaccoon extends Component {
       });
     }
 
-    if (this.props.we_vote_id) {
-      // console.log("OfficeItemCompressedRaccoon componentDidMount getNumberOfCandidatesRetrievedByOffice:", CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id));
-      // DALE 2018-07-31 We now retrieve the full candidate data in voterBallotItemsRetrieve
-      // if (CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id) === 0) {
-      //   // console.log("Calling candidatesRetrieve: ", this.props.we_vote_id);
-      //   CandidateActions.candidatesRetrieve(this.props.we_vote_id);
-      // }
-    }
+    // if (this.props.we_vote_id) {
+    //   console.log("OfficeItemCompressedRaccoon componentDidMount getNumberOfCandidatesRetrievedByOffice:", CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id));
+    //   DALE 2018-07-31 We now retrieve the full candidate data in voterBallotItemsRetrieve
+    //   if (CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id) === 0) {
+    //     // console.log("Calling candidatesRetrieve: ", this.props.we_vote_id);
+    //     CandidateActions.candidatesRetrieve(this.props.we_vote_id);
+    //   }
+    // }
 
     // If there three or fewer offices on this ballot, unfurl them
     if (this.props.allBallotItemsCount && this.props.allBallotItemsCount <= 3) {
@@ -93,7 +93,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
     } else {
       //read from BallotStore
       this.setState({
-        display_office_unfurled: BallotStore.getBallotItemUnfurledStatus(this.props.we_vote_id)
+        display_office_unfurled: BallotStore.getBallotItemUnfurledStatus(this.props.we_vote_id),
       });
     }
   }
@@ -135,6 +135,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
       this.setState({
         candidateList: new_candidate_list,
       });
+
       // console.log(this.props.candidate_list);
     }
   }
@@ -340,6 +341,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
         </span>;
         // advisorsThatMakeVoterIssuesScoreCount = organizationNameIssueSupportList.length + organizationNameIssueOpposeList.length;
       }
+
       if (candidateWeVoteWithMostSupportFromNetwork) {
         // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
         let nameNetworkSupportList = SupportStore.getNameSupportListUnderThisBallotItem(candidateWeVoteWithMostSupportFromNetwork);
