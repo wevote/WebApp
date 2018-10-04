@@ -69,26 +69,29 @@ export default class Application extends Component {
   }
 
   initFacebook () {
-    window.fbAsyncInit = function () {
-      window.FB.init({
-        appId: webAppConfig.FACEBOOK_APP_ID,
-        xfbml: true,
-        version: "v2.8",
-        status: true,    // set this status to true, this will fixed popup blocker issue
-      });
-    };
+    if (webAppConfig.ENABLE_FACEBOOK) {
+      window.fbAsyncInit = function () {
+        window.FB.init({
+          appId: webAppConfig.FACEBOOK_APP_ID,
+          xfbml: true,
+          version: "v2.8",
+          status: true,    // set this status to true, this will fixed popup blocker issue
+        });
+      };
 
-    (function (d, s, id) {
-      let js;
-      let fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {
-        return;
-      }
+      (function (d, s, id) {
+        let js;
+        let fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
 
-      js = d.createElement(s); js.id = id;
-      js.src = "https://connect.facebook.net/en_US/sdk.js";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, "script", "facebook-jssdk"));
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, "script", "facebook-jssdk"));
+    }
   }
 
   componentDidMount () {
@@ -267,7 +270,7 @@ export default class Application extends Component {
 
     if (this.state.voter === undefined || location === undefined) {
       return <div style={loadingScreenStyles} >
-                <div>
+                <div style={{ padding: 30 }}>
                   <h1 className="h1">Loading We Vote...</h1>
                   { isCordova() &&
                     <h2 className="h1">Does your phone have access to the internet?</h2>

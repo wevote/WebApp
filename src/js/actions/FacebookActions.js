@@ -51,6 +51,11 @@ export default {
 
   // https://developers.facebook.com/docs/graph-api/reference/v2.6/user
   getFacebookData: function () {
+    if (!webAppConfig.ENABLE_FACEBOOK) {
+      console.log("FacebookActions.getFacebookData was not invoked, see ENABLE_FACEBOOK in config.js");
+      return;
+    }
+
     this.facebookApi().api(
       "/me?fields=id,email,first_name,middle_name,last_name,cover", (response) => {
       oAuthLog("getFacebookData response", response);
@@ -90,6 +95,11 @@ export default {
   },
 
   getFacebookProfilePicture: function () {
+    if (!webAppConfig.ENABLE_FACEBOOK) {
+      console.log("FacebookActions.getFacebookProfilePicture was not invoked, see ENABLE_FACEBOOK in config.js");
+      return;
+    }
+
     if (this.facebookApi()) {
       this.facebookApi().api(
         "/me?fields=picture.type(large)", "GET", {},
@@ -105,6 +115,11 @@ export default {
   },
 
   getFacebookInvitableFriendsList: function (pictureWidth, pictureHeight) {
+    if (!webAppConfig.ENABLE_FACEBOOK) {
+      console.log("FacebookActions.getFacebookInvitableFriendsList was not invoked, see ENABLE_FACEBOOK in config.js");
+      return;
+    }
+
     let fbApiForInvitableFriends = `/me?fields=invitable_friends.limit(1000){name,id,picture.width(${pictureWidth}).height(${pictureHeight})}`;
     this.facebookApi().api(
       fbApiForInvitableFriends,
@@ -119,6 +134,11 @@ export default {
   },
 
   readFacebookAppRequests: function () {
+    if (!webAppConfig.ENABLE_FACEBOOK) {
+      console.log("FacebookActions.readFacebookAppRequests was not invoked, see ENABLE_FACEBOOK in config.js");
+      return;
+    }
+
     let fbApiForReadingAppRequests = "me?fields=apprequests.limit(10){from,to,created_time,id}";
     this.facebookApi().api(
       fbApiForReadingAppRequests,
@@ -133,6 +153,11 @@ export default {
   },
 
   deleteFacebookAppRequest: function (requestId) {
+    if (!webAppConfig.ENABLE_FACEBOOK) {
+      console.log("FacebookActions.deleteFacebookAppRequest was not invoked, see ENABLE_FACEBOOK in config.js");
+      return;
+    }
+
     console.log("deleteFacebookAppRequest requestId: ", requestId);
     this.facebookApi().api(
       requestId,
@@ -150,6 +175,11 @@ export default {
   login: function () {
     if (!webAppConfig.FACEBOOK_APP_ID) {
       console.log("ERROR: Missing FACEBOOK_APP_ID from src/js/config.js");   // DO NOT REMOVE THIS!
+    }
+
+    if (!webAppConfig.ENABLE_FACEBOOK) {
+      console.log("FacebookActions.login was not invoked, see ENABLE_FACEBOOK in config.js");
+      return;
     }
 
     // FB.getLoginStatus does an ajax call and when you call FB.login on it's response, the popup that would open
@@ -194,6 +224,11 @@ export default {
   },
 
   logout: function () {
+    if (!webAppConfig.ENABLE_FACEBOOK) {
+      console.log("FacebookActions.logout was not invoked, see ENABLE_FACEBOOK in config.js");
+      return;
+    }
+
     this.facebookApi().logout(
       (response) => {
         oAuthLog("FacebookActions logout response: ", response);
