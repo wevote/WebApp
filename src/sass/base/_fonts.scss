@@ -7,12 +7,12 @@
 
 @font-face {
   font-family: 'app-fonts';
-  src: url('../fonts/app-fonts.eot');
+  src: url('./fonts/app-fonts.eot');
   src:
-    url('../fonts/app-fonts.eot?#iefix') format('embedded-opentype'),
-    url('../fonts/app-fonts.woff') format('woff'),
-    url('../fonts/app-fonts.ttf') format('truetype'),
-    url('../fonts/app-fonts.svg#app-fonts') format('svg');
+    url('./fonts/app-fonts.eot?#iefix') format('embedded-opentype'),
+    url('./fonts/app-fonts.woff') format('woff'),
+    url('./fonts/app-fonts.ttf') format('truetype'),
+    url('./fonts/app-fonts.svg#app-fonts') format('svg');
   font-weight: normal;
   font-style: normal;
 }

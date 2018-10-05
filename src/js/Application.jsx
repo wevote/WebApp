@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
-import { historyPush, isAndroid, isCordova, isIOS, isIPhoneX, isWebApp } from "./utils/cordovaUtils";
+import { hasIPhoneNotch, historyPush, isAndroid, isCordova, isIOS, isWebApp } from "./utils/cordovaUtils";
 import ElectionActions from "./actions/ElectionActions";
 import FooterBarCordova from "./components/Navigation/FooterBarCordova";
 import FriendActions from "./actions/FriendActions";
@@ -394,7 +394,7 @@ export default class Application extends Component {
     let footerStyle = this.state.showFooter ? "footroom-wrapper" : "footroom-wrapper__hide";
     let appBaseClass = "app-base";
     if (isCordova()) {
-      if (isIPhoneX()) {
+      if (hasIPhoneNotch()) {
         appBaseClass += " cordova-base-iphonex";
       } else {
         appBaseClass += " cordova-base";
@@ -402,9 +402,9 @@ export default class Application extends Component {
     }
 
     let iPhoneSpacer = "";
-    if (isCordova() && isIOS() && isIPhoneX()) {
+    if (isCordova() && isIOS() && hasIPhoneNotch()) {
       iPhoneSpacer = <div className={"ios-x-spacer"} />;
-    } else if (isCordova() && isIOS() && !isIPhoneX()) {
+    } else if (isCordova() && isIOS() && !hasIPhoneNotch()) {
       iPhoneSpacer = <div className={"ios7plus-spacer"} />;
     }
 

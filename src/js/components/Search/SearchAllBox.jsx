@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import BallotActions from "../../actions/BallotActions";
 import classNames from "classnames";
-import { historyPush, isCordova, isIPhoneX } from "../../utils/cordovaUtils";
+import { hasIPhoneNotch, historyPush, isCordova } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import SearchAllActions from "../../actions/SearchAllActions";
 import SearchAllStore from "../../stores/SearchAllStore";
@@ -47,6 +47,7 @@ export default class SearchAllBox extends Component {
     this.ballot = $(".header-nav__item:nth-child(1)");  // jscs:disable requireDollarBeforejQueryAssignment
     this.network = $(".header-nav__item:nth-child(2)"); // jscs:disable requireDollarBeforejQueryAssignment
     this.avatar = $("#js-header-avatar");               // jscs:disable requireDollarBeforejQueryAssignment
+
     this.about = document.getElementsByClassName("header-nav__item--about")[0];
     this.donate = document.getElementsByClassName("header-nav__item--donate")[0];
 
@@ -131,12 +132,24 @@ export default class SearchAllBox extends Component {
     // TODO: convert to flux action
     // for the global nav
 
-    this.siteLogoText.addClass("hidden");
-    this.ballot.addClass("hidden-xs");
-    this.network.addClass("hidden-xs");
-    this.about.className += " hidden";
-    this.donate.className += " hidden";
-    this.displayResults();
+    // TODO:  Do not Bury parent dependencies in components.  This caused an avoidable bug in production.  PLEASE don't copy this code
+    let allowParentObjectDirectAccess = true;
+    if (allowParentObjectDirectAccess) {
+      this.siteLogoText.addClass("hidden");
+      this.ballot.addClass("hidden-xs");
+      this.network.addClass("hidden-xs");
+
+      // The SearchAllBox is used on the candidate page, that doesn't have about or donate
+      if (this.about) {
+        this.about.className += " hidden";
+      }
+
+      if (this.donate) {
+        this.donate.className += " hidden";
+      }
+
+      this.displayResults();
+    }
   }
 
   onSearchBlur () {
@@ -307,7 +320,7 @@ export default class SearchAllBox extends Component {
     });
 
     let searchStyle = "page-header__search";
-    if (isIPhoneX()) {
+    if (hasIPhoneNotch()) {
       searchStyle += " search-cordova-iphonex";
     } else if (isCordova()) {
       searchStyle += " search-cordova";

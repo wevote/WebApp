@@ -626,6 +626,10 @@ $backdrop-border-radius: 0 0 8px 8px;
     text-align: right;
   }
 
+  &__iphone-xr-xs {
+    margin-right: $space-none;
+  }
+
   &-vertical-scroll-contain { // There is also intro-modal-vertical-scroll-contain (CSS needs to be cleaned up)
     height: 300px;
     overflow-y: auto;
