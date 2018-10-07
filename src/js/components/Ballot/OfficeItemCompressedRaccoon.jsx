@@ -2,21 +2,28 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import { Link } from "react-router";
-import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
+import { Modal } from "react-bootstrap";
+import { cordovaDot, historyPush, isIPhoneX } from "../../utils/cordovaUtils";
 import TextTruncate from "react-text-truncate";
 import { toTitleCase } from "../../utils/textFormat";
+import AnalyticsActions from "../../actions/AnalyticsActions";
+import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
+import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
+import BallotIntroVerifyAddress from "../../components/Ballot/BallotIntroVerifyAddress";
+import BallotStore from "../../stores/BallotStore";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateStore from "../../stores/CandidateStore";
 import ImageHandler from "../ImageHandler";
-// import IssuesFollowedByBallotItemDisplayList from "../Issues/IssuesFollowedByBallotItemDisplayList";
 import IssueStore from "../../stores/IssueStore";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
 import LearnMore from "../Widgets/LearnMore";
 import { renderLog } from "../../utils/logging";
 import OrganizationStore from "../../stores/OrganizationStore";
+import Slider from "react-slick";
 import SupportStore from "../../stores/SupportStore";
+import VoterActions from "../../actions/VoterActions";
+import VoterStore from "../../stores/VoterStore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
-import BallotStore from "../../stores/BallotStore";
 
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 5;
 
@@ -46,6 +53,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
       editMode: false,
       maximum_organization_display: 4,
       organization: {},
+      showBallotIntroFollowIssues: false,
       show_position_statement: true,
       transitioning: false,
     };
@@ -58,6 +66,8 @@ export default class OfficeItemCompressedRaccoon extends Component {
     this.goToCandidateLink = this.goToCandidateLink.bind(this);
     this.goToOfficeLink = this.goToOfficeLink.bind(this);
     this.openCandidateModal = this.openCandidateModal.bind(this);
+    this._nextSliderPage = this._nextSliderPage.bind(this);
+    this._toggleBallotIntroFollowIssues = this._toggleBallotIntroFollowIssues.bind(this);
     this.toggleDisplayAllCandidates = this.toggleDisplayAllCandidates.bind(this);
     this.toggleExpandDetails = this.toggleExpandDetails.bind(this);
   }
@@ -166,6 +176,20 @@ export default class OfficeItemCompressedRaccoon extends Component {
       organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
       transitioning: false,
     });
+  }
+
+  _toggleBallotIntroFollowIssues () {
+    VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
+    if (!this.state.showBallotIntroFollowIssues) {
+      AnalyticsActions.saveActionModalIssues(VoterStore.election_id());
+    }
+
+    this.setState({ showBallotIntroFollowIssues: !this.state.showBallotIntroFollowIssues });
+  }
+
+  _nextSliderPage () {
+    VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
+    this.refs.slider.slickNext();
   }
 
   toggleDisplayAllCandidates () {
@@ -358,19 +382,42 @@ export default class OfficeItemCompressedRaccoon extends Component {
       }
     }
 
-    const yourNetworkIsUndecidedPopover =
-      <Popover id="popover-trigger-click-root-close"
-               title={<span>Your Network is Undecided <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-               onClick={this.closeYourNetworkIsUndecidedPopover}>
-        Your friends, and the organizations you listen to, are <strong>Your Network</strong>.
-        Everyone in your network
-        that <span className="u-no-break"> <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /> supports</span> a
-        candidate adds
-        +1 to that candidate's <strong>Score in Your Network</strong>. None of the candidates running
-        for {ballot_item_display_name} have more support in your network than the other candidates.
-      </Popover>;
+    let sliderSettings = {
+      dots: true,
+      infinite: false,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      swipe: true,
+      accessibility: true,
+      afterChange: this.afterChangeHandler,
+      arrows: false,
+    };
+    let candidatePreviewCount = 0;
+    let candidatePreviewLimit = 5;
+    let candidatePreviewList = [];
+    let oneCandidateDisplay = <span />;
+    let closeAnchorClass = isIPhoneX() ? "intro-modal__close-anchor intro-modal__close-anchor-iphonex" : "intro-modal__close-anchor";
+    const BallotIntroFollowIssuesModal = <Modal bsClass="background-brand-blue modal"
+                                                id="ballotIntroFollowIssuesId"
+                                                show={this.state.showBallotIntroFollowIssues}
+                                                onHide={() => this._toggleBallotIntroFollowIssues(this)}>
+        <Modal.Body>
+          <div className="intro-modal__close">
+            <a onClick={this._toggleBallotIntroFollowIssues} className={closeAnchorClass}>
+              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
+            </a>
+          </div>
+          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...sliderSettings}>
+            <div key={1}><BallotIntroFollowIssues next={this._nextSliderPage}/></div>
+            <div key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div>
+            <div key={3}><BallotIntroVerifyAddress next={this._toggleBallotIntroFollowIssues} manualFocus={this.state.current_page_index === 2} /></div>
+          </Slider>
+        </Modal.Body>
+      </Modal>;
 
     return <div className="card-main office-item">
+      { BallotIntroFollowIssuesModal }
       <a className="anchor-under-header" name={we_vote_id} />
       <div className="card-main__content">
         {/* Desktop */}
@@ -507,6 +554,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
               if (atLeastOneCandidateChosenByNetwork) {
                 let yourNetworkSupportsPopover;
                 if (advisorsThatMakeVoterNetworkScoreCount > 0) {
+                  // console.log("OfficeItemCompressedRaccoon - Generate yourNetworkSupportsPopover 1");
                   yourNetworkSupportsPopover =
                     <Popover id="popover-trigger-click-root-close"
                              title={<span>Your Network Supports <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
@@ -516,6 +564,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                       {advisorsThatMakeVoterNetworkScoreDisplay}
                     </Popover>;
                 } else {
+                  // console.log("OfficeItemCompressedRaccoon - Generate yourNetworkSupportsPopover 2");
                   yourNetworkSupportsPopover =
                     <Popover id="popover-trigger-click-root-close"
                              title={<span>Your Network Supports <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
@@ -528,6 +577,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                     </Popover>;
                 }
 
+                // console.log("OfficeItemCompressedRaccoon - networkOrIssueScoreSupport");
                 networkOrIssueScoreSupport = candidateWithMostSupportFromNetwork === one_candidate.ballot_item_display_name ?
                   <div className="u-flex u-items-center">
                     <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
@@ -552,40 +602,70 @@ export default class OfficeItemCompressedRaccoon extends Component {
                   </div> :
                   null;
               } else if (atLeastOneCandidateChosenByIssueScore) {
-                const hasHighestIssueScorePopover =
-                  <Popover id="popover-trigger-click-root-close"
-                           title={<span>Highest Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-                           onClick={this.closeHighestIssueScorePopover}>
-                    We took the issues you are following, and added up the opinions of all of the organizations
-                    under those issues. <strong>{one_candidate.ballot_item_display_name}</strong> has
-                    the most support from these
-                    organizations.<br />
-                    {advisorsThatMakeVoterIssuesScoreDisplay}
-                    <Link onClick={this.toggleExpandDetails}> learn more</Link>
-                  </Popover>;
-                networkOrIssueScoreSupport = candidateWithHighestIssueScore === one_candidate.ballot_item_display_name ?
-                  <div className="u-flex u-items-center">
-                    <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
+                if (candidateWithHighestIssueScore === one_candidate.ballot_item_display_name) {
+                  // console.log("OfficeItemCompressedRaccoon - atLeastOneCandidateChosenByIssueScore");
+                  const hasHighestIssueScorePopover =
+                    <Popover id="popover-trigger-click-root-close"
+                             title={<span>Highest Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+                             onClick={this.closeHighestIssueScorePopover}>
+                      We took the issues you are following, and added up the opinions of all of the organizations
+                      under those issues. <strong>{one_candidate.ballot_item_display_name}</strong> has
+                      the most support from these
+                      organizations.<br />
+                      {advisorsThatMakeVoterIssuesScoreDisplay}
+                      <Link onClick={this.toggleExpandDetails}> learn more</Link>
+                    </Popover>;
+                  networkOrIssueScoreSupport = <div className="u-flex u-items-center">
+                      <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
                       this.toggleExpandDetails : null }>
-                      <h2 className="h5">
-                        {one_candidate.ballot_item_display_name}
-                      </h2>
-                    </div>
-                    <div className="u-flex-none u-justify-end">
-                      <OverlayTrigger trigger="click"
-                                      ref="highest-issue-score-overlay"
-                                      onExit={this.closeHighestIssueScorePopover}
-                                      rootClose
-                                      placement="top"
-                                      overlay={hasHighestIssueScorePopover}>
-                        <div>
-                          <span className="u-push--xs u-cursor--pointer">Has the highest <strong>Issue Score</strong></span>
-                          <img src={cordovaDot("/img/global/icons/up-arrow-color-icon.svg")} className="network-positions__support-icon" width="20" height="20" />
+                        <h2 className="h5">
+                          {one_candidate.ballot_item_display_name}
+                        </h2>
+                      </div>
+                      <div className="u-flex-none u-justify-end">
+                        <OverlayTrigger trigger="click"
+                                        ref="highest-issue-score-overlay"
+                                        onExit={this.closeHighestIssueScorePopover}
+                                        rootClose
+                                        placement="top"
+                                        overlay={hasHighestIssueScorePopover}>
+                          <div>
+                            <span className="u-push--xs u-cursor--pointer">Has the highest <strong>Issue Score</strong></span>
+                            <img src={cordovaDot("/img/global/icons/up-arrow-color-icon.svg")}
+                                 className="network-positions__support-icon" width="20" height="20"/>
+                          </div>
+                        </OverlayTrigger>
+                      </div>
+                    </div>;
+                }
+                /* END OF if (atLeastOneCandidateChosenByNetwork) / else if (atLeastOneCandidateChosenByIssueScore) */
+              } else {
+                // If here, candidate was not chosen by Network or Issue so we add them to a preview list
+                // If at the end the candidates, none were chosen by voter, by network, or by issue, we use this
+                // preview list.
+                candidatePreviewCount += 1;
+                if (candidatePreviewCount <= candidatePreviewLimit) {
+                  oneCandidateDisplay = <div key={ "candidate_preview-" + one_candidate.we_vote_id } className="u-stack--md u-gray-border-bottom">
+                      <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+                        {/* Candidate Photo, only shown in Desktop */}
+                        {this.state.display_office_unfurled ?
+                          <div onClick={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(one_candidate.we_vote_id) : null}>
+                            <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
+                                          sizeClassName="icon-candidate-small u-push--sm "
+                                          imageUrl={one_candidate.candidate_photo_url_large}
+                                          alt="candidate-photo"
+                                          kind_of_ballot_item="CANDIDATE" />
+                          </div> :
+                          null
+                        }
+                        <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+                          {/* Candidate Name */}
+                          <h4 className="card-main__candidate-name u-f5">{one_candidate.ballot_item_display_name}</h4>
                         </div>
-                      </OverlayTrigger>
-                    </div>
-                  </div> :
-                  null;
+                      </div>
+                    </div>;
+                  candidatePreviewList.push(oneCandidateDisplay);
+                }
               }
 
               return <div key={one_candidate.we_vote_id}>
@@ -610,21 +690,22 @@ export default class OfficeItemCompressedRaccoon extends Component {
               </div>;
               })
             }
-            {/* Now that we are out of the candidate loop... */}
+            {/* Now that we are out of the candidate loop we want to add option if a candidate isn't suggested
+                by network or issues. */}
             { voterSupportsAtLeastOneCandidate ?
               null :
               <span>
                 { atLeastOneCandidateChosenByNetwork || atLeastOneCandidateChosenByIssueScore ?
                   null :
-                  <div className="u-tr">
-                    <OverlayTrigger trigger="click"
-                                  ref="undecided-overlay"
-                                  onExit={this.closeYourNetworkIsUndecidedPopover}
-                                  rootClose
-                                  placement="top"
-                                  overlay={yourNetworkIsUndecidedPopover}>
-                      <span className=" u-cursor--pointer">Your network is undecided <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
-                    </OverlayTrigger>
+                  <div>
+                    <span onClick={this.toggleExpandDetails}>
+                      { candidatePreviewList }
+                    </span>
+                    <div className="u-tr">
+                      <Link onClick={this._toggleBallotIntroFollowIssues}>
+                        <span className=" u-cursor--pointer">Follow issues or organizations for advice <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
+                      </Link>
+                    </div>
                   </div>
                 }
               </span>
