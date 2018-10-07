@@ -142,6 +142,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
           new_candidate_list.push(CandidateStore.getCandidate(candidate.we_vote_id));
         }
       });
+      // console.log("OfficeItemCompressedRaccoon, new_candidate_list: ", new_candidate_list);
       this.setState({
         candidateList: new_candidate_list,
       });
@@ -423,20 +424,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
         {/* Desktop */}
         <span className="hidden-xs">
           <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE" />
-          {/* Turning off the "show more" on Desktop for now
-          <span className="hidden-print pull-right u-push--lg">
-            { this.state.display_office_unfurled ?
-              null :
-              <Link onClick={this.toggleExpandDetails}>
-                <span className="BallotItem__view-more u-items-center u-no-break hidden-print">
-                  show more
-                </span>
-              </Link>
-            }
-          </span>
-          */}
         </span>
-        {/* Mobile - "show more" and "show less" not used */}
 
         <h2 className="u-f3 card-main__ballot-name u-gray-dark u-stack--sm">
           <span className="hidden-print" onClick={this.toggleExpandDetails}>
@@ -489,17 +477,14 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
             return <div key={candidate_we_vote_id} className="u-stack--md u-gray-border-bottom">
               <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-                {/* Candidate Photo, only shown in Desktop */}
-                {this.state.display_office_unfurled ?
-                  <div onClick={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(one_candidate.we_vote_id) : null}>
-                    <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
-                                  sizeClassName="icon-candidate-small u-push--sm "
-                                  imageUrl={one_candidate.candidate_photo_url_large}
-                                  alt="candidate-photo"
-                                  kind_of_ballot_item="CANDIDATE" />
-                  </div> :
-                  null
-                }
+                {/* Candidate Photo */}
+                <div onClick={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(one_candidate.we_vote_id) : null}>
+                  <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
+                                sizeClassName="icon-candidate-small u-push--sm "
+                                imageUrl={one_candidate.candidate_photo_url_large}
+                                alt="candidate-photo"
+                                kind_of_ballot_item="CANDIDATE" />
+                </div>
                 <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
                   {/* Candidate Name */}
                   <h4 className="card-main__candidate-name u-f5">
@@ -535,15 +520,6 @@ export default class OfficeItemCompressedRaccoon extends Component {
         ************************* */}
         { !this.state.display_office_unfurled ?
           <div>
-            {/* <span className="hidden-print">
-              <IssuesFollowedByBallotItemDisplayList ballot_item_display_name={this.props.ballot_item_display_name}
-                                                     ballotItemWeVoteId={this.props.we_vote_id}
-                                                     overlayTriggerOnClickOnly
-                                                     placement={"bottom"}
-                                                     urlWithoutHash={this.props.urlWithoutHash}
-                                                     currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                                     we_vote_id={this.props.we_vote_id} />
-            </span> */}
             { this.state.candidateList.map( (one_candidate) => {
 
               if (!one_candidate || !one_candidate.we_vote_id) { return null; }
@@ -578,13 +554,24 @@ export default class OfficeItemCompressedRaccoon extends Component {
                 }
 
                 // console.log("OfficeItemCompressedRaccoon - networkOrIssueScoreSupport");
+                // Your network supports
                 networkOrIssueScoreSupport = candidateWithMostSupportFromNetwork === one_candidate.ballot_item_display_name ?
                   <div className="u-flex u-items-center">
-                    <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
-                      this.toggleExpandDetails : null }>
-                      <h2 className="h5">
-                        {one_candidate.ballot_item_display_name}
-                      </h2>
+                    <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm u-cursor--pointer"
+                         onClick={ this.props.link_to_ballot_item_page ?
+                                   this.toggleExpandDetails : null }>
+                      {/* Candidate Image */}
+                      <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
+                                    sizeClassName="icon-candidate-small u-push--sm "
+                                    imageUrl={one_candidate.candidate_photo_url_large}
+                                    alt="candidate-photo"
+                                    kind_of_ballot_item="CANDIDATE" />
+                      {/* Candidate Name */}
+                      <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+                        <h2 className="h5">
+                          {one_candidate.ballot_item_display_name}
+                        </h2>
+                      </div>
                     </div>
                     <div className="u-flex-none u-justify-end">
                       <OverlayTrigger trigger="click"
@@ -616,11 +603,21 @@ export default class OfficeItemCompressedRaccoon extends Component {
                       <Link onClick={this.toggleExpandDetails}> learn more</Link>
                     </Popover>;
                   networkOrIssueScoreSupport = <div className="u-flex u-items-center">
-                      <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
-                      this.toggleExpandDetails : null }>
-                        <h2 className="h5">
-                          {one_candidate.ballot_item_display_name}
-                        </h2>
+                      <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm u-cursor--pointer"
+                           onClick={ this.props.link_to_ballot_item_page ?
+                                     this.toggleExpandDetails : null }>
+                        {/* Candidate Image */}
+                        <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
+                                      sizeClassName="icon-candidate-small u-push--sm "
+                                      imageUrl={one_candidate.candidate_photo_url_large}
+                                      alt="candidate-photo"
+                                      kind_of_ballot_item="CANDIDATE" />
+                        {/* Candidate Name */}
+                        <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+                          <h2 className="h5">
+                            {one_candidate.ballot_item_display_name}
+                          </h2>
+                        </div>
                       </div>
                       <div className="u-flex-none u-justify-end">
                         <OverlayTrigger trigger="click"
@@ -646,20 +643,15 @@ export default class OfficeItemCompressedRaccoon extends Component {
                 candidatePreviewCount += 1;
                 if (candidatePreviewCount <= candidatePreviewLimit) {
                   oneCandidateDisplay = <div key={ "candidate_preview-" + one_candidate.we_vote_id } className="u-stack--md u-gray-border-bottom">
-                      <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-                        {/* Candidate Photo, only shown in Desktop */}
-                        {this.state.display_office_unfurled ?
-                          <div onClick={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(one_candidate.we_vote_id) : null}>
-                            <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
-                                          sizeClassName="icon-candidate-small u-push--sm "
-                                          imageUrl={one_candidate.candidate_photo_url_large}
-                                          alt="candidate-photo"
-                                          kind_of_ballot_item="CANDIDATE" />
-                          </div> :
-                          null
-                        }
+                      <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm u-cursor--pointer">
+                        {/* Candidate Image */}
+                        <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
+                                      sizeClassName="icon-candidate-small u-push--sm "
+                                      imageUrl={one_candidate.candidate_photo_url_large}
+                                      alt="candidate-photo"
+                                      kind_of_ballot_item="CANDIDATE" />
+                        {/* Candidate Name */}
                         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-                          {/* Candidate Name */}
                           <h4 className="card-main__candidate-name u-f5">{one_candidate.ballot_item_display_name}</h4>
                         </div>
                       </div>
@@ -672,11 +664,21 @@ export default class OfficeItemCompressedRaccoon extends Component {
                 {/* *** Candidate name *** */}
                 { voter_supports_this_candidate ?
                   <div className="u-flex u-items-center">
-                    <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
-                    this.toggleExpandDetails : null }>
-                      <h2 className="h5">
-                      {one_candidate.ballot_item_display_name}
-                      </h2>
+                    <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm u-cursor--pointer"
+                         onClick={ this.props.link_to_ballot_item_page ?
+                                   this.toggleExpandDetails : null }>
+                      {/* Candidate Image */}
+                      <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
+                                    sizeClassName="icon-candidate-small u-push--sm "
+                                    imageUrl={one_candidate.candidate_photo_url_large}
+                                    alt="candidate-photo"
+                                    kind_of_ballot_item="CANDIDATE" />
+                      {/* Candidate Name */}
+                      <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+                        <h2 className="h5">
+                        {one_candidate.ballot_item_display_name}
+                        </h2>
+                      </div>
                     </div>
 
                     <div className="u-flex-none u-justify-end">
@@ -722,12 +724,6 @@ export default class OfficeItemCompressedRaccoon extends Component {
             </span>
           </Link> : null
         }
-        {/* this.state.display_all_candidates_flag && this.state.candidateList.length > NUMBER_OF_CANDIDATES_TO_DISPLAY ?
-          <BallotSideBarLink url={"#" + this.props.we_vote_id}
-                             label={"Click to show fewer candidates..."}
-                             displaySubtitles={false}
-                             onClick={this.toggleDisplayAllCandidates} /> : null
-        */}
         { this.state.display_office_unfurled ?
           <Link onClick={this.toggleExpandDetails}>
             <span className="BallotItem__view-more u-items-center pull-right u-no-break hidden-print">
