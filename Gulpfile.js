@@ -117,6 +117,7 @@ gulp.task("lint-css", function () {
   return gulp
     .src("./src/sass/**/*.scss")
     .pipe(gulpStylelint({
+      failAfterError: false,
       reporters: [
         { formatter: "string", console: true },
       ],
