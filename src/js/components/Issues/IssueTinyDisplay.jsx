@@ -171,7 +171,7 @@ export default class IssueTinyDisplay extends Component {
     let issuePopover = <Popover id={`issue-popover-${this.props.issue_we_vote_id}`}
                                 onMouseOver={() => this.onTriggerEnter(this.props.issue_we_vote_id)}
                                 onMouseOut={() => this.onTriggerLeave(this.props.issue_we_vote_id)}
-                                className="card-popover" title={<span onClick={() => this.onTriggerLeave(this.props.issue_we_vote_id)}> &nbsp;
+                                bsPrefix="card-popover" title={<span onClick={() => this.onTriggerLeave(this.props.issue_we_vote_id)}> &nbsp;
                                   <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" /> </span>}
                                 >
         <IssueCard ballotItemWeVoteId={this.props.ballotItemWeVoteId}

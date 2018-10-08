@@ -365,7 +365,7 @@ export default class FacebookInvitableFriends extends Component {
                        defaultValue="Please join me on We Vote." />
               </span>
               <br />
-              <Button bsStyle="primary" type="submit">Send</Button>
+              <Button variant="primary" type="submit">Send</Button>
             </form>
           </div>
         </div>

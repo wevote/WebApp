@@ -104,11 +104,9 @@ export default class Ballot extends Component {
         showBallotIntroModal: false,
       });
     } else {
-      // hide_intro_modal is the default now
-      // showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
       this.setState({
         mounted: true,
-        showBallotIntroModal: false,
+        showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
       });
     }
 
@@ -408,11 +406,9 @@ export default class Ballot extends Component {
 
       // console.log("Ballot.jsx onVoterStoreChange VoterStore.getVoter: ", VoterStore.getVoter());
       if (consider_opening_ballot_intro_modal) {
-        // hide_intro_modal is the default now
-        // showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
         this.setState({
           voter: VoterStore.getVoter(),
-          showBallotIntroModal: false,
+          showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
           google_civic_election_id: parseInt(VoterStore.election_id(), 10),
         });
       } else {
@@ -650,7 +646,7 @@ export default class Ballot extends Component {
     const emptyBallotButton = this.state.filter_type !== "none" && !missing_address ?
         <span>
           {/* <Link to="/ballot">
-              <Button bsStyle="primary">View Full Ballot</Button>
+              <Button variant="primary">View Full Ballot</Button>
           </Link> */}
         </span> :
         <div className="container-fluid well u-stack--md u-inset--md">

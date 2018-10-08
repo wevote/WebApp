@@ -140,7 +140,7 @@ export default class VoterGuideFollowing extends Component {
                  tabIndex="0"
                  onKeyDown={this.onKeyDownEditMode.bind(this)}
                  onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit"}</a> :
-              <Button bsStyle="success" bsSize="small" className="fa-pull-right u-push--md"
+              <Button variant="success" size="small" bsPrefix="fa-pull-right u-push--md"
                   onClick={this.followAllOrganizations.bind(this)}><span>Listen to All</span></Button>
               }
               { !this.state.search_filter ?

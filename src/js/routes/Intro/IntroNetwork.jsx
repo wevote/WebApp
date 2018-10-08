@@ -15,14 +15,15 @@ export default class IntroNetwork extends Component {
 
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
+    this.slider = React.createRef();
   }
 
   next () {
-    this.refs.slider.slickNext();
+    this.slider.slickNext();
   }
 
   previous () {
-    this.refs.slider.slickPrev();
+    this.slider.slickPrev();
   }
 
   static goToBallotLink () {
@@ -62,11 +63,10 @@ export default class IntroNetwork extends Component {
              onClick={IntroNetwork.goToBallotLink}
              className={ isWebApp() ? "x-close" : "x-close x-close__cordova" }
              alt={"close"} />
-        <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...settings}>
+        <Slider {...settings}dotsClass="slick-dots intro-modal__gray-dots" ref={this.slider} >
           <div key={1}><IntroNetworkSafety next={this.next}/></div>
           <div key={2}><IntroNetworkDefinition next={this.next}/></div>
-          {/* <div key={3}><IntroNetworkScore next={this.next}/></div> */}
-          <div key={4}><IntroNetworkBallotIsNext next={this.next}/></div>
+          <div key={3}><IntroNetworkBallotIsNext next={this.next}/></div>
        </Slider>
       </div>
     </div>;

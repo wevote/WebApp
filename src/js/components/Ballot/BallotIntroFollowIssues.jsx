@@ -197,7 +197,7 @@ export default class BallotIntroFollowIssues extends Component {
       </div>
       <div className="intro-modal__button-wrap">
         <Button type="submit"
-          className={ this.remainingIssues() ? "btn intro-modal__button disabled btn-secondary" : "btn btn-success intro-modal__button"}
+                bsPrefix={ this.remainingIssues() ? "btn intro-modal__button disabled btn-secondary" : "btn btn-success intro-modal__button"}
           onClick={this.onNext}>
           <span>{this.state.next_button_text}</span>
         </Button>

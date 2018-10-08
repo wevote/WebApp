@@ -51,7 +51,7 @@ export default class IssueLinkToggle extends Component {
     let supportButtonPopoverTooltip;
     if (this.props.incompatibleIssues !== undefined){
       const incomtableIssues = <span>{`You cannot link because the issue is incompatible with the following issues: ${this.props.incompatibleIssues.map(issue => issue.issue_name).join(", ")}`}</span>;
-      supportButtonPopoverTooltip = <Popover className="card-popover"
+      supportButtonPopoverTooltip = <Popover bsPrefix="card-popover"
                                              title="Incompatible Issues"
                                              id="supportButtonTooltip">
                                              {incomtableIssues}
@@ -71,7 +71,7 @@ export default class IssueLinkToggle extends Component {
             <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm settingsIssues__description">{this.props.issue.issue_description}</p>
           </span>
         <div className="col-3 col-sm-2">
-          <Button bsStyle="warning" bsSize="small" onClick={this.onIssueUnlink}>
+          <Button variant="warning" size="small" onClick={this.onIssueUnlink}>
             <span>Unlink</span>
           </Button>
         </div>
@@ -89,7 +89,7 @@ export default class IssueLinkToggle extends Component {
         </span>
         <div className="col-3 col-sm-2">
           {this.props.incompatibleIssues === undefined ?
-            <Button bsStyle="info" bsSize="small" onClick={this.onIssueLink}>
+            <Button variant="info" size="small" onClick={this.onIssueLink}>
               <span>Link</span>
             </Button> :
             <OverlayTrigger
@@ -98,7 +98,7 @@ export default class IssueLinkToggle extends Component {
                   placement="bottom"
                   overlay={supportButtonPopoverTooltip}>
               <div style={{display: "inline-block"}}>
-                <Button className="card-main__button-linked" bsStyle="info" bsSize="small" onClick={this.onIssueLink} disabled>
+                <Button bsPrefix="card-main__button-linked" variant="info" size="small" onClick={this.onIssueLink} disabled>
                   <span className="hidden-xs">Incompatible</span>
                   <span className="visible-xs">Link</span>
                 </Button>

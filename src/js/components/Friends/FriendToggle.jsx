@@ -60,12 +60,12 @@ export default class FriendToggle extends Component {
 
     return <span style={floatRight}>
       {is_friend ?
-        <Button bsStyle="warning"
-                bsSize="small"
+        <Button variant="warning"
+                size="small"
                 onClick={unFriend}>
                 <span>Remove Friend</span>
         </Button> :
-        <Button bsStyle="info" bsSize="small" onClick={acceptFriendInvite}><span>Add Friend</span></Button>
+        <Button variant="info" size="small" onClick={acceptFriendInvite}><span>Add Friend</span></Button>
       }
       </span>;
   }

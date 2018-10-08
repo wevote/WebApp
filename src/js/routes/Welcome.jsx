@@ -216,10 +216,10 @@ export default class Intro extends Component {
       <section className="hero__section__container">
         <div className="hero__section" style={isCordova() ? { backgroundImage: "url(./img/welcome/header-image-desktop.png)" } : null} >
           <div className="container">
-            <Row className="hero__section__row">
+            <Row bsPrefix="hero__section__row">
               <div className="col-md-12">
                 {/* Mobile View */}
-                <Row className="visible-xs">
+                <Row bsPrefix="visible-xs">
                   <h1 className="col-sm-12 u-f1 u-stack--md">
                     View your ballot.<br />
                     Learn from friends.<br />
@@ -252,7 +252,7 @@ export default class Intro extends Component {
                   </h1>
                 </Row>
                 {/* Desktop View */}
-                <Row className="hidden-xs">
+                <Row bsPrefix="hidden-xs">
                   <h1 className="col-md-6 u-f1 u-stack--lg">
                     View your ballot.<br />
                     Learn from friends.
@@ -305,7 +305,7 @@ export default class Intro extends Component {
                         <h2 className="form__header">Sign up to get updates about We Vote.</h2>
 
                         <form className="row form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
-                          <FormGroup className="col-md-4">
+                          <FormGroup bsPrefix="col-md-4">
                             <label className="sr-only" htmlFor="name">Name</label>
                             <input className="form-control"
                                    type="text"
@@ -315,7 +315,7 @@ export default class Intro extends Component {
                                    onChange={this.updateVoterFullName.bind(this)}
                                    placeholder="Name"/>
                           </FormGroup>
-                          <FormGroup className="col-md-4">
+                          <FormGroup bsPrefix="col-md-4">
                             <label className="sr-only" htmlFor="exampleEmail">Email</label>
                             <input className="form-control"
                                    type="email"
@@ -325,15 +325,15 @@ export default class Intro extends Component {
                                    onChange={this.updateVoterEmailAddress.bind(this)}
                                    placeholder="Email Address"/>
                           </FormGroup>
-                          <FormGroup className="col-md-4">
+                          <FormGroup bsPrefix="col-md-4">
                             {this.state.submit_enabled ?
-                              <Button className="form-control"
-                                      bsStyle="success"
+                              <Button bsPrefix="form-control"
+                                      variant="success"
                                       type="submit"
                                       onClick={this.voterEmailAddressSignUpSave.bind(this)}
                               >Sign Up</Button> :
-                              <Button className="form-control form__button--disabled"
-                                      bsStyle="success"
+                              <Button bsPrefix="form-control form__button--disabled"
+                                      variant="success"
                                       type="submit"
                                       disabled
                                       onClick={this.voterEmailAddressSignUpSave.bind(this)}
@@ -360,7 +360,7 @@ export default class Intro extends Component {
               <span className="visible-xs h4">Make the world a better place.</span>
             </div>
           </div>
-          <Row className="u-stack--lg">
+          <Row bsPrefix="u-stack--lg">
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row1" onClick={this._toggleBallotFeature}>
                 <Link to={"/wevoteintro/network"}>
@@ -421,7 +421,7 @@ export default class Intro extends Component {
             </div>
           </Row>
 
-          <Button bsStyle="danger" bsSize="large" className="u-stack--md center-block" onClick={this.goToGetStarted}>Get Started</Button>
+          <Button variant="danger" size="large" bsPrefix="u-stack--md center-block" onClick={this.goToGetStarted}>Get Started</Button>
         </div>
       </section>
 
@@ -447,8 +447,8 @@ export default class Intro extends Component {
             <span>
               <h3 className="u-f3 u-stack--lg">{pleaseShareString}</h3>
               <div className="u-stack--lg">
-                <Button className="btn btn-social btn-facebook u-push--sm"
-                        bsStyle="danger"
+                <Button bsPrefix="btn btn-social btn-facebook u-push--sm"
+                        variant="danger"
                         type="submit"
                         onClick={this.shareToFacebookButton}>
                   <span className="fa fa-facebook"/> Facebook
@@ -456,8 +456,8 @@ export default class Intro extends Component {
                 <OpenExternalWebSite url={twitterIntent}
                                      target="_blank"
                                      title="Share to Twitter"
-                                     body={<Button className="btn btn-social btn-twitter u-push--sm"
-                                                   bsStyle="danger">
+                                     body={<Button bsPrefix="btn btn-social btn-twitter u-push--sm"
+                                                   variant="danger">
                                               <span className="fa fa-twitter" /><span> Twitter</span>
                                            </Button>}
                 />

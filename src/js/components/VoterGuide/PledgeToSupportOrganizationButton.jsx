@@ -65,8 +65,8 @@ export default class PledgeToSupportOrganizationButton extends Component {
 
     return <span>
       <Button block
-              bsSize={"large"}
-              bsStyle={"danger"}
+              size={"large"}
+              variant={"danger"}
               onClick={() => { this.props.pledgeToVoteAction(); }} >
         <span className="voter-guide__pledge-to-support__i-stand-with-button hidden-xs">{i_stand_with_text}</span>
         <span className="voter-guide__pledge-to-support__i-stand-with-button visible-xs">{i_stand_with_text_mobile}</span>

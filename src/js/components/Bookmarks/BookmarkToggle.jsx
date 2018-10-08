@@ -112,9 +112,9 @@ export default class BookmarkToggle extends Component {
               onKeyDown={this.BookmarkKeyDown.bind(this)}
               title="Bookmark for later">
               {this.state.is_bookmarked ?
-                <Icon alt="Is Bookmarked" name="bookmark-icon" width={24} height={24} fill="#999" stroke="none" /> :
+                <Icon alt="Is Bookmarked" name="bookmark-icon" width={24} height={24} fill="#999" stroke="none" color="#999" /> :
                 <OverlayTrigger placement="top" overlay={bookmarkToolTip}>
-                  <Icon alt="Bookmark for later" name="bookmark-icon" width={24} height={24} fill="none" stroke="#ccc" strokeWidth={2} />
+                  <Icon alt="Bookmark for later" name="bookmark-icon" width={24} height={24} fill="none" stroke="#ccc" strokeWidth={2} color="#ccc" />
                 </OverlayTrigger>
               }
             </span>

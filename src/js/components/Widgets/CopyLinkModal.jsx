@@ -46,7 +46,7 @@ export default class CopyLinkModal extends Component {
       copy_btn_className = "copy-btn hidden-xs"; // display: none; in mobile view
     }
 
-    return <Modal {...this.props} bsSize="large" aria-labelledby="contained-modal-title-lg">
+    return <Modal {...this.props} size="large" aria-labelledby="contained-modal-title-lg">
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-lg">Copy link to clipboard</Modal.Title>
       </Modal.Header>

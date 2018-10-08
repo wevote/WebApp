@@ -91,7 +91,7 @@ export default class CurrentFriends extends Component {
             id={`friend-popover-${friend_id}`}
             onMouseOver={() => this.onTriggerEnter(friend_id)}
             onMouseOut={() => this.onTriggerLeave(friend_id)}
-            className="card-popover">
+            bsPrefix="card-popover">
             <div className="card">
               <div className="card-main">
                 <FriendDisplayForList

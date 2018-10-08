@@ -74,7 +74,7 @@ export default class TwitterHandleBox extends Component {
           <InputGroup.Button>
             <Button
               onClick={this.submitTwitterHandle.bind(this)}
-              bsStyle="primary">
+              variant="primary">
               {claim_your_page_button_text}</Button>
           </InputGroup.Button>
         </InputGroup>

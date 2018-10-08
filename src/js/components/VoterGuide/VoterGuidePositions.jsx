@@ -344,7 +344,7 @@ export default class VoterGuidePositions extends Component {
                            className="opinions-followed__missing-org-link"
                            target="_blank"
                            title="Endorsements Missing?"
-                           body={<Button className="u-stack--xs" bsStyle="primary">Endorsements Missing?</Button>}
+                           body={<Button bsPrefix="u-stack--xs" variant="primary">Endorsements Missing?</Button>}
       />
       <div className="opinions-followed__missing-org-text u-stack--lg u-no-break">
         Are there endorsements from {organization_name} that you expected to see?

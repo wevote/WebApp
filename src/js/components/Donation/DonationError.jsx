@@ -6,7 +6,7 @@ import { renderLog } from "../../utils/logging";
 export default class DonationError extends Component {
 
   static propTypes = {
-    errorMessage: PropTypes.string.isRequired
+    errorMessage: PropTypes.string.isRequired,
   };
 
   constructor (props) {
@@ -16,7 +16,7 @@ export default class DonationError extends Component {
   render () {
     renderLog(__filename);
     return <div>
-      <Label bsStyle="warning">{this.props.errorMessage}</Label>
+      <Label variant="warning">{this.props.errorMessage}</Label>
     </div>;
   }
 }

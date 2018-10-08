@@ -76,7 +76,7 @@ export default class IssueFollowToggle extends Component {
           <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue_description}</p>
         </span>
         { this.props.edit_mode ?
-          <Button bsStyle="warning" bsSize="small" onClick={this.onIssueStopFollowing}>
+          <Button variant="warning" size="small" onClick={this.onIssueStopFollowing}>
             <span>Following</span>
           </Button> :
           null }
@@ -103,7 +103,7 @@ export default class IssueFollowToggle extends Component {
         }
 
         { this.props.edit_mode ?
-          <Button bsStyle="info" bsSize="small" onClick={this.onIssueFollow}>
+          <Button variant="info" size="small" onClick={this.onIssueFollow}>
             <span>Follow</span>
           </Button> :
           null }

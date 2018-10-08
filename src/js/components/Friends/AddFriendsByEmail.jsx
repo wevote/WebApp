@@ -529,7 +529,7 @@ export default class AddFriendsByEmail extends Component {
                     tabIndex="0"
                     onKeyDown={this.onKeyDown.bind(this)}
                     onClick={this.AddFriendsByEmailStepsManager.bind(this)}
-                    bsStyle="primary"
+                    variant="primary"
                     disabled={!this.state.friend1_email_address || !this.AllEnteredEmailsVerified() }
                   >
                     { this.hasValidEmail() ?
@@ -559,7 +559,7 @@ export default class AddFriendsByEmail extends Component {
                   tabIndex="0"
                   onKeyDown={this.onKeyDown.bind(this)}
                   onClick={this.AddFriendsByEmailStepsManager.bind(this)}
-                  bsStyle="primary"
+                  variant="primary"
                   disabled={!this.state.sender_email_address || !this.senderEmailAddressVerified() } >
                   <span>Send</span>
                 </Button>

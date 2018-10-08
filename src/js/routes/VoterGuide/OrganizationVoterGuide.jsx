@@ -180,7 +180,7 @@ export default class OrganizationVoterGuide extends Component {
       return <div className="card">
           <div style={{ margin: 10 }}>
             <span style={floatRight}>
-              <Link to="/ballot"><Button bsStyle="primary">Go to Ballot &#x21AC;</Button></Link>
+              <Link to="/ballot"><Button variant="primary">Go to Ballot &#x21AC;</Button></Link>
             </span>
             <p>Find voter guides you can follow.
               These voter guides have been created by nonprofits, public figures, your friends, and more. (OrganizationVoterGuide)</p>
@@ -213,7 +213,7 @@ export default class OrganizationVoterGuide extends Component {
           <div className="card">
             <div className="card-main">
               { isVoterOwner ?
-                <Button bsStyle="warning" bsSize="small" className="pull-right" onClick={this.onEdit}>
+                <Button variant="warning" size="small" bsPrefix="pull-right" onClick={this.onEdit}>
                   <span>Edit</span>
                 </Button> :
                 <FollowToggle we_vote_id={this.state.organization.organization_we_vote_id} />

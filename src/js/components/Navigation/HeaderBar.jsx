@@ -134,9 +134,9 @@ export default class HeaderBar extends Component {
   imagePlaceholder (speakerType) {
     let imagePlaceholderString = "";
     if (isSpeakerTypeOrganization(speakerType)) {
-      imagePlaceholderString = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} /></div>;
+      imagePlaceholderString = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
     } else {
-      imagePlaceholderString = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} /></div>;
+      imagePlaceholderString = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
     }
 
     return imagePlaceholderString;

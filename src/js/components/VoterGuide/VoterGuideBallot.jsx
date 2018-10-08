@@ -569,7 +569,7 @@ export default class VoterGuideBallot extends Component {
     const emptyBallotButton = this.state.filter_type !== "none" && !missing_address ?
         <span>
           <Link to={ballotBaseUrl}>
-              <Button bsStyle="primary">View Full Ballot</Button>
+              <Button variant="primary">View Full Ballot</Button>
           </Link>
         </span> :
         <div className="container-fluid well u-stack--md u-inset--md">

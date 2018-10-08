@@ -96,13 +96,13 @@ export default class Donate extends Component {
           <br />
           Gift Type:
           <FormGroup>
-            <Radio name="radioGroup" bsClass="radio" value="monthly"
+            <Radio name="radioGroup" bsPrefix="radio" value="monthly"
                    onChange={this._toggleDonateMonthly} inline
                    checked={this.state.radioSelected === "monthly"}>
               Monthly
             </Radio>
             {" "}
-            <Radio name="radioGroup" bsClass="radio" value="once"
+            <Radio name="radioGroup" bsPrefix="radio" value="once"
                    onChange={this._toggleDonateMonthly} inline
                    checked={this.state.radioSelected === "once"}>
               One-Time
@@ -122,7 +122,7 @@ export default class Donate extends Component {
           <DonationForm donationAmount={10000} donateButtonText="$100"
                         donateMonthly={this.state.donateMonthly} />
 
-          <Button className="btn_donate" bsStyle="success" onClick={this._toggleCustomAmount}>
+          <Button bsPrefix="btn_donate" variant="success" onClick={this._toggleCustomAmount}>
             Other Amount
           </Button>
           <div className="hidden-xs">

@@ -308,8 +308,8 @@ export default class FacebookBallotModal extends Component {
                       <div className="hidden-xs">
                         <span >Send a link to this ballot to the email address you use for Facebook.</span>
                         <div className="u-inset--xs"/>
-                        <Button className="btn btn-social btn-facebook u-push--sm"
-                                bsStyle="danger"
+                        <Button bsPrefix="btn btn-social btn-facebook u-push--sm"
+                                variant="danger"
                                 type="submit"
                                 onClick={this.sendDirectMessageToSelfFacebook.bind(this)}>
                           <span className="fa fa-facebook" />Send to Your Facebook Email &gt;
@@ -319,8 +319,8 @@ export default class FacebookBallotModal extends Component {
                         <div>
                           <span>Send a link to this ballot to the email address you use for Facebook.</span>
                           <div className="u-inset--xs"/>
-                          <Button className="btn btn-social btn-facebook u-push--sm"
-                                  bsStyle="danger"
+                          <Button bsPrefix="btn btn-social btn-facebook u-push--sm"
+                                  variant="danger"
                                   type="submit"
                                   onClick={this.shareOnFacebook.bind(this)}>
                             <span className="fa fa-facebook"/>Send to Your Email &gt;

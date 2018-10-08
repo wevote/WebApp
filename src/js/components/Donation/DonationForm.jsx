@@ -68,7 +68,7 @@ export default class DonationForm extends Component {
     }
 
     return <span>
-      <Button className={this.props.donateOther ? "" : "btn_donate"} bsStyle="success"
+      <Button bsPrefix={this.props.donateOther ? "" : "btn_donate"} variant="success"
               onClick={this._openStripeModal}>
         {donate_button_text}
       </Button>

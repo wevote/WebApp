@@ -211,9 +211,9 @@ export default class ItemPositionStatementActionBar extends Component {
     let image_placeholder = "";
     let speaker_type = "V";  // TODO DALE make this dynamic
     if (isSpeakerTypeOrganization(speaker_type)) {
-      image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
+      image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></span>;
     } else {
-      image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} /></span>;
+      image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0"/></span>;
     }
 
     // The short version can be used to cut-off an exceedingly long comment. This applies to entries by the viewer,

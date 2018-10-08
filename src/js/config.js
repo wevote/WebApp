@@ -24,9 +24,11 @@ module.exports = {
     text_for_map_search: "",
   },
 
+  ENABLE_FACEBOOK: true,
+
   // We currently store the Google Places API key in /src/index.html
 
-  FACEBOOK_APP_ID: "",
+  FACEBOOK_APP_ID: "1097389196952441",
 
-  STRIPE_API_KEY: "",
+  STRIPE_API_KEY: "pk_live_zpl7eSkLnySR2i4vtJQ1lJmi",
 };

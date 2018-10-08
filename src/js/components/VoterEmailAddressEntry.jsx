@@ -126,7 +126,7 @@ export default class VoterEmailAddressEntry extends Component {
     const emailAddressStatusHtml = <span>
       { this.state.email_address_status.email_address_already_owned_by_other_voter &&
         !this.state.email_address_status.link_to_sign_in_email_sent ?
-        <Alert bsStyle="warning">
+        <Alert variant="warning">
           That email is already being used by another account.<br />
           <br />
           Please click "Send Login Link in an Email" below to sign into that account.
@@ -137,7 +137,7 @@ export default class VoterEmailAddressEntry extends Component {
         this.state.email_address_status.email_ownership_is_verified ||
         this.state.email_address_status.verification_email_sent ||
         this.state.email_address_status.link_to_sign_in_email_sent ?
-        <Alert bsStyle="success">
+        <Alert variant="success">
           { this.state.email_address_status.email_address_created &&
             !this.state.email_address_status.verification_email_sent ? <span>Your email address was saved. </span> : null }
           { this.state.email_address_status.email_address_deleted ? <span>Your email address was deleted. </span> : null }
@@ -160,7 +160,7 @@ export default class VoterEmailAddressEntry extends Component {
     const enterEmailHtml = <div>
       <div><strong>{enterEmailTitle}.</strong> {enterEmailExplanation}</div>
           <form className="form-inline" onSubmit={this.voterEmailAddressSave.bind(this)}>
-            <FormGroup className="u-push--sm">
+            <FormGroup bsPrefix="u-push--sm">
               <label className="sr-only" htmlFor="exampleEmail">Email</label>
               <input className="form-control"
                      type="email"
@@ -170,7 +170,7 @@ export default class VoterEmailAddressEntry extends Component {
                      onChange={this.updateVoterEmailAddress.bind(this)}
                      placeholder="Email Address"/>
             </FormGroup>
-            <Button bsStyle="success"
+            <Button variant="success"
                     type="submit"
                     onClick={this.voterEmailAddressSave.bind(this)}
                     >Send Magic Link</Button>

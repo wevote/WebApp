@@ -6,7 +6,7 @@ import BallotStore from "../../stores/BallotStore";
 import BookmarkStore from "../../stores/BookmarkStore";
 import CandidateStore from "../../stores/CandidateStore";
 import cookies from "../../utils/cookies";
-import { historyPush, isIPhoneX, isWebApp } from "../../utils/cordovaUtils";
+import { hasIPhoneNotch, historyPush, isWebApp } from "../../utils/cordovaUtils";
 import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -194,9 +194,9 @@ export default class HeaderBackToSettings extends Component {
   imagePlaceholder (speakerType) {
     let imagePlaceholderString = "";
     if (isSpeakerTypeOrganization(speakerType)) {
-      imagePlaceholderString = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} /></div>;
+      imagePlaceholderString = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
     } else {
-      imagePlaceholderString = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} /></div>;
+      imagePlaceholderString = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
     }
 
     return imagePlaceholderString;
@@ -254,12 +254,12 @@ export default class HeaderBackToSettings extends Component {
     let backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 30);
 
     return (
-      <header className={ isWebApp() ? "page-header" : isIPhoneX() ? "page-header page-header__cordova-iphonex" : "page-header page-header__cordova" }>
-        <Button className={"btn btn-sm btn-default page-header__backToButton hidden-xs"}
+      <header className={ isWebApp() ? "page-header" : hasIPhoneNotch() ? "page-header page-header__cordova-iphonex" : "page-header page-header__cordova" }>
+        <Button bsPrefix={`btn btn-sm btn-default page-header__backToButton hidden-xs ${hasIPhoneNotch() ? "page-header__backToButtonIPhoneX" : ""}`}
                 onClick={ () => historyPush(backToLink) }>
           <span className="fa fa-arrow-left"/> {backToOrganizationLinkText}
         </Button>
-        <Button className={"btn btn-sm btn-default page-header__backToButton visible-xs"}
+        <Button bsPrefix={`btn btn-sm btn-default page-header__backToButton visible-xs ${hasIPhoneNotch() ? "page-header__backToButtonIPhoneX" : ""}`}
                 onClick={ () => historyPush(backToLink) }>
           <span className="fa fa-arrow-left"/> {backToOrganizationLinkTextMobile}
         </Button>

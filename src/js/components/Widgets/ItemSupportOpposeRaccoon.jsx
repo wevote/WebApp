@@ -261,7 +261,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
         this.popover_state[org_id] = {show: false, timer: null};
 
-        let organizationPopover = <Popover className="card-popover"
+        let organizationPopover = <Popover bsPrefix="card-popover"
                                            id={`organization-popover-${org_id}-${visible_tag}`}
                                            onMouseOver={() => this.onTriggerEnter(org_id, visible_tag)}
                                            onMouseOut={() => this.onTriggerLeave(org_id, visible_tag)}
@@ -568,7 +568,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         // There is a voterIssuesScore, and we have some advisers to display
         scoreFromYourIssuesPopover =
           <Popover id="score-popover-trigger-click-root-close"
-                   className="card-popover"
+                   bsPrefix="card-popover"
                    title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                    onClick={this.closeIssueScorePopover}>
             We've added up the opinions about {this.state.ballot_item_display_name} from all the organizations tagged with your issues:
@@ -579,7 +579,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         // At this point the Issue Score is showing, but the issues haven't loaded yet
         scoreFromYourIssuesPopover =
           <Popover id="score-popover-trigger-click-root-close"
-                   className="card-popover"
+                   bsPrefix="card-popover"
                    title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                    onClick={this.closeIssueScorePopover}>
             We've added up the opinions about {this.state.ballot_item_display_name} from all the organizations tagged with your issues. Loading issues now...
@@ -590,7 +590,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         // Encourage voter to follow Issues
         scoreFromYourIssuesPopover =
           <Popover id="score-popover-trigger-click-root-close"
-                   className="card-popover"
+                   bsPrefix="card-popover"
                    title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                    onClick={this.closeIssueScorePopover}>
             Follow <strong><img src={cordovaDot("/img/global/svg-icons/issues-v1-64x42.svg")}
@@ -602,7 +602,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         // There is a voterIssuesScore, and we have some advisers to display
         scoreFromYourIssuesPopover =
           <Popover id="score-popover-trigger-click-root-close"
-                   className="card-popover"
+                   bsPrefix="card-popover"
                    title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                    onClick={this.closeIssueScorePopover}>
             We've added up the opinions about {this.state.ballot_item_display_name} from all the organizations tagged with your issues:
@@ -663,7 +663,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       <Popover id="positions-popover-trigger-click-root-close"
                title={<span>Opinions{this.state.ballot_item_display_name ? "  about " + this.state.ballot_item_display_name : ""} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closePositionsPopover}
-               className="card-popover">
+               bsPrefix="card-popover">
         These organizations <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")}
                                                width="20" height="20" /> support</span> or&nbsp;
         <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
@@ -675,13 +675,13 @@ export default class ItemSupportOpposeRaccoon extends Component {
       <Popover id="positions-popover-trigger-click-root-close"
                title={<span>Opinions{this.state.ballot_item_display_name ? "  about " + this.state.ballot_item_display_name : ""} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closePositionsPopover}
-               className="card-popover">
+               bsPrefix="card-popover">
         You have the only opinion{this.state.ballot_item_display_name ? " about " + this.state.ballot_item_display_name : ""} so far.
       </Popover> :
       <Popover id="positions-popover-trigger-click-root-close"
                title={<span>Opinions{this.state.ballot_item_display_name ? "  about " + this.state.ballot_item_display_name : ""} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closePositionsPopover}
-               className="card-popover">
+               bsPrefix="card-popover">
         There are no opinions{this.state.ballot_item_display_name ? " about " + this.state.ballot_item_display_name : ""} yet.
       </Popover>;
 

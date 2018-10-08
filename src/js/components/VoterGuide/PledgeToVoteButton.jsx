@@ -36,11 +36,11 @@ export default class PledgeToVoteButton extends Component {
     });
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.voterGuideStoreListener.remove();
   }
 
-  onVoterGuideStoreChange (){
+  onVoterGuideStoreChange () {
     this.setState({
       voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id())
     });
@@ -62,8 +62,8 @@ export default class PledgeToVoteButton extends Component {
 
     return <div className="u-stack--sm">
       <Button block
-              bsSize={"large"}
-              bsStyle={"danger"}
+              size={"large"}
+              variant={"danger"}
               onClick={() => { this.props.pledgeToVoteAction(); }} >
         <span className="voter-guide__pledge-to-support__i-stand-with-button hidden-xs">{i_stand_with_text}</span>
         <span className="voter-guide__pledge-to-support__i-stand-with-button visible-xs">{i_stand_with_text_mobile}</span>

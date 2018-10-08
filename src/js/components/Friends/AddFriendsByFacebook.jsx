@@ -150,7 +150,7 @@ export default class AddFriendsByFacebook extends Component {
                   tabIndex="0"
                   onKeyDown={this.onKeyDown.bind(this)}
                   onClick={this.AddFriendsByFacebookStepsManager.bind(this)}
-                  bsStyle="primary"
+                  variant="primary"
                   disabled={!this.state.email_addresses}
                 >
                   { this.hasValidEmail() ?

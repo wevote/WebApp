@@ -76,8 +76,8 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
 
     // let show_progress_bar = number_of_supporters_goal > 1 && number_of_supporters > 1;
     //
-    // const progress_bar = <ProgressBar bsStyle={"danger"}
-    //                                   className="u-stack--xs"
+    // const progress_bar = <ProgressBar variant={"danger"}
+    //                                   bsPrefix="u-stack--xs"
     //                                   striped
     //                                   now={percent_complete}
     //                                   label={`${number_of_supporters} supporters`} />;

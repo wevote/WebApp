@@ -595,8 +595,8 @@ export default class FacebookBallotToFriendsModal extends Component {
                       <div className="hidden-xs">
                         <span>Send this ballot to specific friends through Facebook. The friends you choose will see what you support or oppose.</span>
                         <div className="u-inset--xs"/>
-                        <Button className="btn btn-social btn-facebook u-push--sm"
-                                bsStyle="danger"
+                        <Button bsPrefix="btn btn-social btn-facebook u-push--sm"
+                                variant="danger"
                                 type="submit"
                                 onClick={this.sendDirectMessageToFacebookFriends.bind(this)}>
                           <span className="fa fa-facebook" />Send Ballot Through Facebook
@@ -609,8 +609,8 @@ export default class FacebookBallotToFriendsModal extends Component {
                         <div>
                           <span>Share this ballot to your (or a friend's) Facebook Timeline, or as a private message through Facebook.</span>
                           <div className="u-inset--xs"/>
-                          <Button className="btn btn-social btn-facebook u-push--sm"
-                                  bsStyle="danger"
+                          <Button bsPrefix="btn btn-social btn-facebook u-push--sm"
+                                  variant="danger"
                                   type="submit"
                                   onClick={this.shareOnFacebook.bind(this)}>
                             <span className="fa fa-facebook"/>Share Ballot on Facebook
@@ -652,7 +652,7 @@ export default class FacebookBallotToFriendsModal extends Component {
                                 tabIndex="0"
                                 onKeyDown={this.onKeyDown.bind(this)}
                                 onClick={this.ballotEmailSendStepsManager.bind(this)}
-                                bsStyle="primary"
+                                variant="primary"
                                 disabled={!this.state.sender_email_address} >
                           <span>Send</span>
                         </Button>

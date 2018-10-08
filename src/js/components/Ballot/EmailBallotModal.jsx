@@ -227,7 +227,7 @@ export default class EmailBallotModal extends Component {
                         tabIndex="0"
                         onKeyDown={this.onKeyDown.bind(this)}
                         onClick={this.ballotEmailSendStepsManager.bind(this)}
-                        bsStyle="primary"
+                        variant="primary"
                       >
                         <span>Send This Ballot &gt;</span>
                       </Button>
@@ -239,7 +239,7 @@ export default class EmailBallotModal extends Component {
                       tabIndex="0"
                       onKeyDown={this.onKeyDown.bind(this)}
                       onClick={this.ballotEmailSendStepsManager.bind(this)}
-                      bsStyle="primary"
+                      variant="primary"
                     >
                       <span>Send</span>
                     </Button>
