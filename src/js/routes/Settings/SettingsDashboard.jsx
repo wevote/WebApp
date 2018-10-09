@@ -169,19 +169,19 @@ export default class SettingsDashboard extends Component {
     return <div className={ isWebApp() ? "settings-dashboard" : "settings-dashboard SettingsCardBottomCordova" } >
       {/* Header Spacing for Desktop */}
       { isWebApp() &&
-        <div className={isWebApp() ? "col-md-12 hidden-xs hidden-print" : "col-md-12 hidden-print"}>
+        <div className={isWebApp() ? "col-md-12 d-none d-sm-block d-print-none" : "col-md-12 d-print-none"}>
           <SettingsBannerAndOrganizationCard organization={this.state.organization}/>
         </div>
       }
       {/* Header Spacing for Mobile */}
-      <div className={ isWebApp() ? "visible-xs hidden-print" : "hidden-print" } >
+      <div className={ isWebApp() ? "d-block d-sm-none d-print-none" : "d-print-none" } >
         <SettingsBannerAndOrganizationCard organization={this.state.organization} />
       </div>
 
       {/* Desktop left navigation + Settings content.
           WebApp only, since the dashboard doesn't go well with the HamburgerMenu on iPad */}
       { isWebApp() &&
-        <div className="hidden-xs">
+        <div className="d-none d-sm-block">
           <div className="container-fluid">
             <div className="row">
               {/* Desktop mode left navigation */}
@@ -207,7 +207,7 @@ export default class SettingsDashboard extends Component {
 
       {/* Mobile Settings content */}
       { isWebApp() ?
-        <div className="visible-xs">
+        <div className="d-block d-sm-none">
           {/* Mobile mode content */}
           <div className="col-12">
             {settingsComponentToDisplay}

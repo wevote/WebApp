@@ -146,7 +146,7 @@ export default class VoterGuideFollowing extends Component {
               { !this.state.search_filter ?
                 <span>
                   {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ?
-                    <h4 className="card__additional-heading">You Are Listening To<span className={"hidden-xs"}> {this.state.voter_guide_followed_list.length} Organizations or People</span></h4> :
+                    <h4 className="card__additional-heading">You Are Listening To<span className={"d-none d-sm-block"}> {this.state.voter_guide_followed_list.length} Organizations or People</span></h4> :
                     <h4 className="card__additional-heading">{this.state.organization.organization_name} is Listening To</h4>
                   }
                 </span> :

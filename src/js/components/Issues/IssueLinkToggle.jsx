@@ -99,8 +99,8 @@ export default class IssueLinkToggle extends Component {
                   overlay={supportButtonPopoverTooltip}>
               <div style={{display: "inline-block"}}>
                 <Button bsPrefix="card-main__button-linked" variant="info" size="small" onClick={this.onIssueLink} disabled>
-                  <span className="hidden-xs">Incompatible</span>
-                  <span className="visible-xs">Link</span>
+                  <span className="d-none d-sm-block">Incompatible</span>
+                  <span className="d-block d-sm-none">Link</span>
                 </Button>
               </div>
             </OverlayTrigger>

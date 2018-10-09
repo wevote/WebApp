@@ -80,7 +80,7 @@ export default class ItemSupportOpposeCounts extends Component {
 
     const nonSupportOpposePopoverTooltip = <Tooltip id="nonSupportOpposeTooltip">{nonSupportOpposePopoverText}</Tooltip>;
 
-    return <div className={ this.state.guideProps && this.state.guideProps.length && isEmpty ? "hidden-xs hidden-print network-positions" : "network-positions" }>
+    return <div className={ this.state.guideProps && this.state.guideProps.length && isEmpty ? "d-none d-sm-block d-print-none network-positions" : "network-positions" }>
       {/* <div className="network-positions__bar-label">
        { !isEmpty ?
        "Positions in your network" :

@@ -34,7 +34,7 @@ export default class RatingPopover extends Component {
 
     return <div className="card-main__description card-main__rating-description u-margin-top--xs">
       <div onClick={toggle_description} className="card-main__rating-description__header u-cursor--pointer">
-        (rating source: VoteSmart.org) { show_description ? <span className="glyphicon glyphicon-triangle-bottom hidden-print" /> : null }
+        (rating source: VoteSmart.org) { show_description ? <span className="glyphicon glyphicon-triangle-bottom d-print-none" /> : null }
       </div>
       { show_description ? ratingDescription : null }
     </div>;

@@ -167,16 +167,16 @@ export default class VoterGuideSettingsDashboard extends Component {
 
     return <div className="settings-dashboard">
       {/* Header Spacing for Desktop */}
-      <div className="col-md-12 hidden-xs hidden-print">
+      <div className="col-md-12 d-none d-sm-block d-print-none">
         <SettingsBannerAndOrganizationCard organization={this.state.organization} />
       </div>
       {/* Header Spacing for Mobile */}
-      <div className="visible-xs hidden-print">
+      <div className="d-block d-sm-none d-print-none">
         <SettingsBannerAndOrganizationCard organization={this.state.organization} />
       </div>
 
       {/* Desktop left navigation + Settings content */}
-      <div className="hidden-xs">
+      <div className="d-none d-sm-block">
         <div className="container-fluid">
           <div className="row">
             {/* Desktop mode left navigation */}
@@ -194,7 +194,7 @@ export default class VoterGuideSettingsDashboard extends Component {
       </div>
 
       {/* Mobile Settings content */}
-      <div className="visible-xs">
+      <div className="d-block d-sm-none">
         {/* Mobile mode content */}
         <div className="col-12">
           {settingsComponentToDisplay}

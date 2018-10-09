@@ -65,7 +65,7 @@ export default class About extends Component {
                   <div className="media-body">
                     <h4 className="team-member__name"><strong>{item.name}</strong></h4>
                     <p className="team-member__title">{item.title[0]}</p>
-                    <p className="xx-small hidden-xs">{item.title[1]}</p>
+                    <p className="xx-small d-none d-sm-block">{item.title[1]}</p>
                   </div>
                 </div>
               </div>)
@@ -82,7 +82,7 @@ export default class About extends Component {
                   <div className="media-body">
                     <h4 className="team-member__name"><strong>{item.name}</strong></h4>
                     <p className="team-member__title">{item.title[0]}</p>
-                    <p className="xx-small hidden-xs">{item.title[1]}</p>
+                    <p className="xx-small d-none d-sm-block">{item.title[1]}</p>
                   </div>
                 </div>
               </div>)

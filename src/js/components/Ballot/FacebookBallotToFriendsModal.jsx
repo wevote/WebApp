@@ -592,7 +592,7 @@ export default class FacebookBallotToFriendsModal extends Component {
                     </div> : null
                   }
                     <div className="text-center col-12">
-                      <div className="hidden-xs">
+                      <div className="d-none d-sm-block">
                         <span>Send this ballot to specific friends through Facebook. The friends you choose will see what you support or oppose.</span>
                         <div className="u-inset--xs"/>
                         <Button bsPrefix="btn btn-social btn-facebook u-push--sm"

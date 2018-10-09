@@ -305,7 +305,7 @@ export default class FacebookBallotModal extends Component {
                   null }
                 {this.state.on_enter_email_addresses_step ? <div className="row invite-inputs">
                     <div className="text-center col-12">
-                      <div className="hidden-xs">
+                      <div className="d-none d-sm-block">
                         <span >Send a link to this ballot to the email address you use for Facebook.</span>
                         <div className="u-inset--xs"/>
                         <Button bsPrefix="btn btn-social btn-facebook u-push--sm"

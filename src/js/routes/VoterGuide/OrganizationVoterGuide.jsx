@@ -190,25 +190,25 @@ export default class OrganizationVoterGuide extends Component {
 
     return <div>
       {/* Header Banner Spacing for Desktop */}
-      <div className="col-md-12 hidden-xs hidden-print">
+      <div className="col-md-12 d-none d-sm-block d-print-none">
         { this.state.organization.organization_banner_url !== "" ?
-          <div className="organization-banner-image-div hidden-print">
+          <div className="organization-banner-image-div d-print-none">
             <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
           </div> :
           <div className="organization-banner-image-non-twitter-users" />
         }
       </div>
       {/* Header Banner Spacing for Mobile */}
-      <div className="visible-xs hidden-print">
+      <div className="d-block d-sm-none d-print-none">
         { this.state.organization.organization_banner_url !== "" ?
-          <div className="organization-banner-image-div hidden-print">
+          <div className="organization-banner-image-div d-print-none">
             <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
           </div> :
           <div className="organization-banner-image-non-twitter-users" />
         }
       </div>
 
-      <div className="visible-xs">
+      <div className="d-block d-sm-none">
         <div className="col-12">
           <div className="card">
             <div className="card-main">
@@ -226,7 +226,7 @@ export default class OrganizationVoterGuide extends Component {
 
         <div className="container-fluid">
           <div className="row">
-            <div className="hidden-xs col-md-4" >
+            <div className="d-none d-sm-block col-md-4" >
               <div className="card">
                 <div className="card-main">
                   <OrganizationVoterGuideCard organization={this.state.organization} is_voter_owner={isVoterOwner} />

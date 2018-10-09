@@ -140,7 +140,7 @@ export default class FollowToggle extends Component {
     }
 
     return this.state.is_following ?
-      <span className="hidden-print">
+      <span className="d-print-none">
         { this.props.hide_stop_following_button ?
           null :
           <Button variant="warning"
@@ -151,7 +151,7 @@ export default class FollowToggle extends Component {
           </Button>
         }
       </span> :
-      <span className="hidden-print">
+      <span className="d-print-none">
         <Button variant="success"
                 size="small"
                 bsPrefix={classNameOverride.length ? classNameOverride : "pull-right"}

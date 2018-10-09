@@ -30,9 +30,9 @@ export default class BallotTabsRaccoon extends Component {
           <Link to={{ pathname: pathname, query: { type: "filterRemaining" } }}
                 className={this.props.ballot_type === "CHOICES_REMAINING" ? "tab tab--active" : "tab tab--default"}>
             {/* Desktop */}
-            <span className="hidden-xs">Remaining Decisions ({this.props.length_remaining})</span>
+            <span className="d-none d-sm-block">Remaining Decisions ({this.props.length_remaining})</span>
             {/* Mobile */}
-            <span className="visible-xs-block">Decisions ({this.props.length_remaining})</span>
+            <span className="d-block d-sm-none-block">Decisions ({this.props.length_remaining})</span>
           </Link>
         </li> :
         null
@@ -49,9 +49,9 @@ export default class BallotTabsRaccoon extends Component {
           <Link to={{ pathname: pathname, query: { type: "filterDecided" } }}
                 className={this.props.ballot_type === "ITEMS_DECIDED" ? "tab tab--active" : "tab tab--default"}>
             {/* Desktop */}
-            <span className="hidden-xs">Items Decided ({items_decided_count})</span>
+            <span className="d-none d-sm-block">Items Decided ({items_decided_count})</span>
             {/* Mobile */}
-            <span className="visible-xs-block">Decided ({items_decided_count})</span>
+            <span className="d-block d-sm-none-block">Decided ({items_decided_count})</span>
           </Link>
         </li> :
         null

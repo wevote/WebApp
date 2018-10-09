@@ -471,10 +471,10 @@ export default class Application extends Component {
           <div ref="pageHeader" className={pageHeaderStyle}>
             { showBackToSettings ?
               <span>
-                <span className="visible-xs">
+                <span className="d-block d-sm-none">
                   <HeaderBackToSettings location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/>
                 </span>
-                <span className="hidden-xs">
+                <span className="d-none d-sm-block">
                   <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
                 </span>
               </span> :

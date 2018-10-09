@@ -263,7 +263,7 @@ export default class VoterGuidePositions extends Component {
             null }
           <h4 className="h4 card__additional-heading">
              <span className="u-push--sm">{ election_name ? election_name : "This Election"}</span>
-            {/*{this.state.ballot_election_list.length > 1 ? <img src={cordovaDot("/img/global/icons/gear-icon.png")} className="hidden-print" role="button" onClick={this.toggleSelectBallotModal}
+            {/*{this.state.ballot_election_list.length > 1 ? <img src={cordovaDot("/img/global/icons/gear-icon.png")} className="d-print-none" role="button" onClick={this.toggleSelectBallotModal}
               alt='view your ballots' /> : null}*/}
           </h4>
           { looking_at_self ?
@@ -335,7 +335,7 @@ export default class VoterGuidePositions extends Component {
         null
       }
       {this.state.searchIsUnderway ?
-        <span className="visible-xs">
+        <span className="d-block d-sm-none">
           <FooterDoneBar doneFunction={this.clearSearch} doneButtonText={"Clear Search"}/>
         </span> :
         null

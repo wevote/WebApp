@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import { Button, FormGroup, Radio, InputGroup, FormControl } from "react-bootstrap";
 import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
@@ -92,7 +92,7 @@ export default class Donate extends Component {
           {this.state.donationErrorMessage.length > 0 ?
             <DonationError errorMessage={this.state.donationErrorMessage} /> :
             <p>Please give what you can to help us reach more voters.</p>}
-          <div className="hidden-xs"><br /></div>
+          <div className="d-none d-sm-block"><br /></div>
           <br />
           Gift Type:
           <FormGroup>
@@ -125,7 +125,7 @@ export default class Donate extends Component {
           <Button bsPrefix="btn_donate" variant="success" onClick={this._toggleCustomAmount}>
             Other Amount
           </Button>
-          <div className="hidden-xs">
+          <div className="d-none d-sm-block">
             <br />
             <br />
           </div>
@@ -156,7 +156,7 @@ export default class Donate extends Component {
             <span>
               <p>Please enter a valid number</p>
             </span> : null}
-          <div className="hidden-xs"><br /></div>
+          <div className="d-none d-sm-block"><br /></div>
           <br />
           These contributions or gifts are not tax deductible. These donations are for We Vote's 501(c)(4) nonprofit.
           We Vote's 501(c)(3) nonprofit also {/* This is a mailto! */}<a href={donateMailtoUrl} title="Donate to We Vote's 501(c)(3)">accepts tax deductible donations.</a><br />

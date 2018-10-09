@@ -81,6 +81,7 @@ export default class SearchBar extends Component {
         <div className="search-bar-options">
           <button className={this.props.clearButton && this.state.searchString && this.state.searchString.length > 0 ? "search-options-btn" : "hidden"}
                   onClick={this.clearQuery}>
+            {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
             <i className="glyphicon glyphicon-remove-circle u-gray-light" />
           </button>
           <button className={this.props.searchButton ? "search-options-btn" : "hidden"}>

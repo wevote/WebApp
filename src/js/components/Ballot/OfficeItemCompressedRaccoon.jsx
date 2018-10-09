@@ -376,14 +376,14 @@ export default class OfficeItemCompressedRaccoon extends Component {
       <a className="anchor-under-header" name={we_vote_id} />
       <div className="card-main__content">
         {/* Desktop */}
-        <span className="hidden-xs">
+        <span className="d-none d-sm-block">
           <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE" />
           {/* Turning off the "show more" on Desktop for now
-          <span className="hidden-print pull-right u-push--lg">
+          <span className="d-print-none pull-right u-push--lg">
             { this.state.display_office_unfurled ?
               null :
               <Link onClick={this.toggleExpandDetails}>
-                <span className="BallotItem__view-more u-items-center u-no-break hidden-print">
+                <span className="BallotItem__view-more u-items-center u-no-break d-print-none">
                   show more
                 </span>
               </Link>
@@ -394,10 +394,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
         {/* Mobile - "show more" and "show less" not used */}
 
         <h2 className="u-f3 card-main__ballot-name u-gray-dark u-stack--sm">
-          <span className="hidden-print" onClick={this.toggleExpandDetails}>
+          <span className="d-print-none" onClick={this.toggleExpandDetails}>
+            {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
             { this.state.display_office_unfurled ?
-              <span className="glyphicon glyphicon-triangle-bottom u-font-size6 hidden-print u-push--xs"/> :
-              <span className="glyphicon glyphicon-triangle-right u-font-size6 hidden-print u-push--xs"/>
+              <span className="glyphicon glyphicon-triangle-bottom u-font-size6 d-print-none u-push--xs"/> :
+              <span className="glyphicon glyphicon-triangle-right u-font-size6 d-print-none u-push--xs"/>
             }
             {ballot_item_display_name}
           </span>
@@ -493,7 +494,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
         ************************* */}
         { !this.state.display_office_unfurled ?
           <div>
-            {/* <span className="hidden-print">
+            {/* <span className="d-print-none">
               <IssuesFollowedByBallotItemDisplayList ballot_item_display_name={this.props.ballot_item_display_name}
                                                      ballotItemWeVoteId={this.props.we_vote_id}
                                                      overlayTriggerOnClickOnly
@@ -628,7 +629,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                                   rootClose
                                   placement="top"
                                   overlay={yourNetworkIsUndecidedPopover}>
-                      <span className=" u-cursor--pointer">Your network is undecided <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
+                      <span className=" u-cursor--pointer">Your network is undecided <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" /></span>
                     </OverlayTrigger>
                   </div>
                 }
@@ -640,7 +641,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
         { !this.state.display_all_candidates_flag && this.state.display_office_unfurled && remaining_candidates_to_display_count ?
           <Link onClick={this.toggleDisplayAllCandidates}>
-            <span className="u-items-center u-no-break hidden-print">
+            <span className="u-items-center u-no-break d-print-none">
               <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
               <span> Show {remaining_candidates_to_display_count} more candidate{ remaining_candidates_to_display_count !== 1 ? "s" : null }</span>
             </span>
@@ -654,11 +655,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
         */}
         { this.state.display_office_unfurled ?
           <Link onClick={this.toggleExpandDetails}>
-            <span className="BallotItem__view-more u-items-center pull-right u-no-break hidden-print">
+            <span className="BallotItem__view-more u-items-center pull-right u-no-break d-print-none">
               show fewer</span>
           </Link> :
           <Link onClick={this.toggleExpandDetails}>
-            <div className="BallotItem__view-more u-items-center u-no-break hidden-print">
+            <div className="BallotItem__view-more u-items-center u-no-break d-print-none">
               <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
               { total_number_of_candidates_to_display > 1 ?
                 <span> View all {total_number_of_candidates_to_display} candidates</span> :

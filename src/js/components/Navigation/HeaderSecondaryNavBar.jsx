@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
 import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
@@ -300,13 +300,13 @@ export default class HeaderSecondaryNavBar extends Component {
                                    iconFacebook/>
             }
 
-            <span className="visible-xs">
+            <span className="d-block d-sm-none">
               <SecondaryNavBarItem url={twitterIntent}
                                    title="Tweet"
                                    iconTwitter
                                    isExternal/>
             </span>
-            <span className="hidden-xs">
+            <span className="d-none d-sm-block">
               <SecondaryNavBarItem url={twitterIntent}
                                    title="Tweet Ballot"
                                    iconTwitter

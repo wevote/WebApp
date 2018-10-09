@@ -209,7 +209,7 @@ export default class PositionPublicToggle extends Component {
     return <div className={this.props.className}>
       <div style={{ display: "inline-block" }}>
         {/* Mobile Mode */}
-        <span className="visible-xs">
+        <span className="d-block d-sm-none">
           <div tabIndex="0" onKeyDown={onKeyDown}>{/* tabIndex and onKeyDown are for accessibility */}
             <ReactBootstrapToggle on={publicIcon}
                                   off={friendsIcon}
@@ -224,7 +224,7 @@ export default class PositionPublicToggle extends Component {
         </span>
 
         {/* Desktop Mode */}
-        <span className="hidden-xs">
+        <span className="d-none d-sm-block">
           <OverlayTrigger className="trigger"
                           enforceFocus={false}
                           placement="top"

@@ -333,14 +333,14 @@ export default class VoterGuideSettingsPositions extends Component {
       <div className="fa-pull-right">
         <button type="button" className="btn btn-lg btn-success"
                 onClick={this.goToVoterGuideDisplay}>
-          <span className="hidden-xs">See Full Ballot to Enter More Positions&nbsp;&nbsp;&gt;</span>
-          <span className="visible-xs">Enter More Positions&nbsp;&nbsp;&gt;</span>
+          <span className="d-none d-sm-block">See Full Ballot to Enter More Positions&nbsp;&nbsp;&gt;</span>
+          <span className="d-block d-sm-none">Enter More Positions&nbsp;&nbsp;&gt;</span>
         </button>
       </div>
 
 
       {this.state.searchIsUnderway ?
-        <span className="visible-xs">
+        <span className="d-block d-sm-none">
           <FooterDoneBar doneFunction={this.clearSearch} doneButtonText={"Clear Search"}/>
         </span> :
         null

@@ -206,7 +206,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
       }
     });
 
-    return <span className={ is_empty ? "guidelist card-child__list-group" : "hidden-xs hidden-print guidelist card-child__list-group" }>
+    return <span className={ is_empty ? "guidelist card-child__list-group" : "hidden-xs d-print-none guidelist card-child__list-group" }>
           {organizations_to_display}
       </span>;
   }

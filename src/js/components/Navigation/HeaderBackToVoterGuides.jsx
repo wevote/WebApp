@@ -271,16 +271,16 @@ export default class HeaderBackToVoterGuides extends Component {
     return (
       <header className={ isWebApp() ? "page-header" : "page-header page-header__cordova" }>
 
-        <Button bsPrefix={`btn btn-sm btn-default page-header__backToButton hidden-xs ${hasIPhoneNotch() ? "page-header__backToButtonIPhoneX" : ""}`}
+        <Button bsPrefix={`btn btn-sm btn-default page-header__backToButton d-none d-sm-block ${hasIPhoneNotch() ? "page-header__backToButtonIPhoneX" : ""}`}
                 onClick={ () => historyPush(backToLink) }>
           <span className="fa fa-arrow-left"/> {backToOrganizationLinkText}
         </Button>
-        <Button bsPrefix={`btn btn-sm btn-default page-header__backToButton visible-xs ${hasIPhoneNotch() ? "page-header__backToButtonIPhoneX" : ""}`}
+        <Button bsPrefix={`btn btn-sm btn-default page-header__backToButton d-block d-sm-none ${hasIPhoneNotch() ? "page-header__backToButtonIPhoneX" : ""}`}
                 onClick={ () => historyPush(backToLink) }>
           <span className="fa fa-arrow-left"/> {backToOrganizationLinkTextMobile}
         </Button>
 
-        <span className="hidden-xs">
+        <span className="d-none d-sm-block">
           <SearchAllBox />
         </span>
 

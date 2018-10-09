@@ -254,7 +254,7 @@ export default class ItemPositionStatementActionBar extends Component {
       { // Show the edit box (Viewing self)
         edit_mode ?
           <form onSubmit={this.savePositionStatement.bind(this)}>
-            <div className="position-statement hidden-print">
+            <div className="position-statement d-print-block">
               { speaker_image_url_https ?
                 <img className="position-statement__avatar"
                      src={speaker_image_url_https}
@@ -273,7 +273,7 @@ export default class ItemPositionStatementActionBar extends Component {
                   <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
                                         type={this.props.type}
                                         supportProps={this.props.supportProps}
-                                        className="u-flex-auto u-tr hidden-print" />
+                                        className="u-flex-auto u-tr d-print-block" />
                   <button className="position-statement__post-button btn btn-default btn-sm" type="submit">{post_button_text}</button>
                 </div>
               </span>
@@ -316,7 +316,7 @@ export default class ItemPositionStatementActionBar extends Component {
               <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
                                     type={this.props.type}
                                     supportProps={this.props.supportProps}
-                                    className="u-flex-auto u-tr hidden-print" />
+                                    className="u-flex-auto u-tr d-print-block" />
             </div>
           </div>
         </div>

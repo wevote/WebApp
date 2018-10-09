@@ -142,7 +142,7 @@ export default class MeasureItemCompressed extends Component {
               </div>
               <div className="card-main__ballot-name-item">
                 <a onClick={() => this.goToMeasureLink(measure_we_vote_id)}>
-                  <span className="card-main__ballot-read-more-link hidden-xs">learn&nbsp;more</span>
+                  <span className="card-main__ballot-read-more-link d-none d-sm-block">learn&nbsp;more</span>
                 </a>
               </div>
             </div> :

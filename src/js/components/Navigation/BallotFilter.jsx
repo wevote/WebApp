@@ -35,9 +35,9 @@ export default class BallotFilter extends Component {
           <Link to={{ pathname: pathname, query: { type: "filterRemaining" } }}
                 className={this.props.ballot_type === "CHOICES_REMAINING" ? "tab tab--active" : "tab tab--default"}>
             {/* Desktop */}
-            <span className="hidden-xs">Remaining Decisions ({this.props.length_remaining})</span>
+            <span className="d-none d-sm-block">Remaining Decisions ({this.props.length_remaining})</span>
             {/* Mobile */}
-            <span className="visible-xs-block">Decisions ({this.props.length_remaining})</span>
+            <span className="d-block d-sm-none-block">Decisions ({this.props.length_remaining})</span>
           </Link>
         </li> :
         null

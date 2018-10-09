@@ -68,10 +68,10 @@ export default class DonationList extends Component {
             <tr>
               <th style={styles.td}>Date</th>
               <th style={styles.th}>Amount</th>
-              <th className={"hidden-xs"} style={styles.th}>Payment</th>
-              <th className={"hidden-xs"} style={styles.th}>Card</th>
-              <th className={"hidden-xs"} style={styles.th}>Expires</th>
-              <th className={"hidden-xs"} style={styles.th}>Status</th>
+              <th className={"d-none d-sm-block"} style={styles.th}>Payment</th>
+              <th className={"d-none d-sm-block"} style={styles.th}>Card</th>
+              <th className={"d-none d-sm-block"} style={styles.th}>Expires</th>
+              <th className={"d-none d-sm-block"} style={styles.th}>Status</th>
               <th style={styles.th}>Info</th>
             </tr>
             </thead>
@@ -84,14 +84,14 @@ export default class DonationList extends Component {
                 return <tr key={key}>
                   <td style={styles.td}>{moment.utc(item.created).local().format("MMM D, YYYY")}</td>
                   <td style={styles.td}>{item.amount}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{item.record_enum === "PAYMENT_FROM_UI" ? "One time" :
+                  <td className={"d-none d-sm-block"} style={styles.td}>{item.record_enum === "PAYMENT_FROM_UI" ? "One time" :
                       "Subscription"}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{item.brand}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{"... " + item.last4}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{item.exp_month + "/" + item.exp_year}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{item.stripe_status === "succeeded" ? "Paid" :
+                  <td className={"d-none d-sm-block"} style={styles.td}>{item.brand}</td>
+                  <td className={"d-none d-sm-block"} style={styles.td}>{"... " + item.last4}</td>
+                  <td className={"d-none d-sm-block"} style={styles.td}>{item.exp_month + "/" + item.exp_year}</td>
+                  <td className={"d-none d-sm-block"} style={styles.td}>{item.stripe_status === "succeeded" ? "Paid" :
                       item.stripe_status}</td>
-                  <td className={"hidden-xs"} style={styles.td} />
+                  <td className={"d-none d-sm-block"} style={styles.td} />
                   <td style={styles.td}>{active ?
                     <DonationCancelOrRefund item={item} refundDonation={donations} /> : null }
                   </td>
@@ -108,14 +108,14 @@ export default class DonationList extends Component {
           <Table striped condensed hover responsive>{ /* Subscriptions */ }
             <thead>
             <tr>
-              <th className={"hidden-xs"} style={styles.th}>Active</th>
+              <th className={"d-none d-sm-block"} style={styles.th}>Active</th>
               <th style={styles.th}>Started</th>
               <th style={styles.th}>Monthly</th>
-              <th className={"hidden-xs"} style={styles.th}>Last Charged</th>
-              <th className={"hidden-xs"} style={styles.th}>Card</th>
-              <th className={"hidden-xs"} style={styles.th}>Ends with</th>
-              <th className={"hidden-xs"} style={styles.th}>Expires</th>
-              <th className={"hidden-xs"} style={styles.th}>Canceled</th>
+              <th className={"d-none d-sm-block"} style={styles.th}>Last Charged</th>
+              <th className={"d-none d-sm-block"} style={styles.th}>Card</th>
+              <th className={"d-none d-sm-block"} style={styles.th}>Ends with</th>
+              <th className={"d-none d-sm-block"} style={styles.th}>Expires</th>
+              <th className={"d-none d-sm-block"} style={styles.th}>Canceled</th>
               <th style={styles.th}>Info</th>
             </tr>
             </thead>
@@ -128,15 +128,15 @@ export default class DonationList extends Component {
                   moment.utc(item.last_charged).format("MMM D, YYYY");
                 let waiting = item.amount === "0.00";
                 return <tr key={key}>
-                  <td className={"hidden-xs"} style={styles.td}>{active ? "Active" : "----"}</td>
+                  <td className={"d-none d-sm-block"} style={styles.td}>{active ? "Active" : "----"}</td>
                   <td style={styles.td}>{moment.utc(item.created).format("MMM D, YYYY")}</td>
                   <td style={styles.td}>{!waiting ? item.amount : "waiting"}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{!waiting ? lastcharged : "waiting"}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{!waiting ? item.brand : "waiting"}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{!waiting ? "... " + item.last4 : "waiting"}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{!waiting > 0 ?
+                  <td className={"d-none d-sm-block"} style={styles.td}>{!waiting ? lastcharged : "waiting"}</td>
+                  <td className={"d-none d-sm-block"} style={styles.td}>{!waiting ? item.brand : "waiting"}</td>
+                  <td className={"d-none d-sm-block"} style={styles.td}>{!waiting ? "... " + item.last4 : "waiting"}</td>
+                  <td className={"d-none d-sm-block"} style={styles.td}>{!waiting > 0 ?
                     item.exp_month + "/" + item.exp_year : "waiting"}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{cancel}</td>
+                  <td className={"d-none d-sm-block"} style={styles.td}>{cancel}</td>
                   <td style={styles.td}>
                     {active ? <DonationCancelOrRefund item={item} refundDonation={donations}/> :
                       cancel.length > 0 ? "canceled" : null}</td>

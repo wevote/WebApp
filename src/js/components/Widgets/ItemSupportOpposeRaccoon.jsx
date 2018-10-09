@@ -467,7 +467,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     </span>;
 
     let comment_display_raccoon_desktop = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text || this.state.showPositionStatement ?
-      <div className="hidden-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+      <div className="d-none d-sm-block o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
                                           ballot_item_display_name={this.state.ballot_item_display_name}
@@ -482,7 +482,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       null;
 
     let comment_display_raccoon_mobile = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text ?
-      <div className="visible-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+      <div className="d-block d-sm-none o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballot_item_we_vote_id}
                                           ballot_item_display_name={this.state.ballot_item_display_name}
@@ -692,7 +692,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                       overlay={positionsPopover}>
         <span className="network-positions-stacked__support-label u-cursor--pointer u-no-break">
           <span>{ positions_count ? positions_count : "No" } Network<br />Opinion{ positions_count !== 1 ? "s" : null }</span>
-          <span>&nbsp;<i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" />&nbsp;</span>
+          <span>&nbsp;<i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" />&nbsp;</span>
         </span>
       </OverlayTrigger>;
 
@@ -713,17 +713,17 @@ export default class ItemSupportOpposeRaccoon extends Component {
       <div className="network-positions-stacked__support-list u-flex u-justify-between u-items-center">
         {/* Click to scroll left through list Desktop */}
         { this.state.can_scroll_desktop && this.state.can_scroll_left_desktop ?
-          <i className="fa fa-1x fa-chevron-left network-positions-stacked__support-list__scroll-icon network-positions-stacked__support-list__scroll-icon--small u-cursor--pointer hidden-xs hidden-print" aria-hidden="true" onClick={this.scrollLeft.bind(this, "desktop")} /> :
-          <i className="fa fa-1x fa-chevron-left network-positions-stacked__support-list__scroll-icon--disabled-small hidden-xs hidden-print" aria-hidden="true" />
+          <i className="fa fa-1x fa-chevron-left network-positions-stacked__support-list__scroll-icon network-positions-stacked__support-list__scroll-icon--small u-cursor--pointer d-none d-sm-block d-print-none" aria-hidden="true" onClick={this.scrollLeft.bind(this, "desktop")} /> :
+          <i className="fa fa-1x fa-chevron-left network-positions-stacked__support-list__scroll-icon--disabled-small d-none d-sm-block d-print-none" aria-hidden="true" />
         }
         {/* Click to scroll left through list Mobile */}
         { this.state.can_scroll_mobile && this.state.can_scroll_left_mobile ?
-          <i className="fa fa-1x fa-chevron-left network-positions-stacked__support-list__scroll-icon network-positions-stacked__support-list__scroll-icon--small u-cursor--pointer visible-xs hidden-print" aria-hidden="true" onClick={this.scrollLeft.bind(this, "mobile")} /> :
-          <i className="fa fa-1x fa-chevron-left network-positions-stacked__support-list__scroll-icon--disabled-small visible-xs hidden-print" aria-hidden="true" />
+          <i className="fa fa-1x fa-chevron-left network-positions-stacked__support-list__scroll-icon network-positions-stacked__support-list__scroll-icon--small u-cursor--pointer d-block d-sm-none d-print-none" aria-hidden="true" onClick={this.scrollLeft.bind(this, "mobile")} /> :
+          <i className="fa fa-1x fa-chevron-left network-positions-stacked__support-list__scroll-icon--disabled-small d-block d-sm-none d-print-none" aria-hidden="true" />
         }
         <div className="network-positions-stacked__support-list__container-wrap">
           {/* Show a break-down of the current positions in your network */}
-          <span ref={`${this.state.ballot_item_we_vote_id}-org-list-desktop`} className="network-positions-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs hidden-xs">
+          <span ref={`${this.state.ballot_item_we_vote_id}-org-list-desktop`} className="network-positions-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs d-none d-sm-block">
             <ul className="network-positions-stacked__support-list__items">
               <li className="network-positions-stacked__support-list__item">
                 { positionsLabel }
@@ -754,7 +754,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
               </li>
             </ul>
           </span>
-          <span ref={`${this.state.ballot_item_we_vote_id}-org-list-mobile`} className="network-positions-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs visible-xs">
+          <span ref={`${this.state.ballot_item_we_vote_id}-org-list-mobile`} className="network-positions-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs d-block d-sm-none">
             <ul className="network-positions-stacked__support-list__items">
               <li className="network-positions-stacked__support-list__item">
                 { positionsLabel }
@@ -788,13 +788,13 @@ export default class ItemSupportOpposeRaccoon extends Component {
         </div>
         {/* Click to scroll right through list Desktop */}
         { this.state.can_scroll_desktop && this.state.can_scroll_right_desktop ?
-          <i className="fa fa-1x fa-chevron-right network-positions-stacked__support-list__scroll-icon network-positions-stacked__support-list__scroll-icon--small u-cursor--pointer hidden-xs hidden-print" aria-hidden="true" onClick={this.scrollRight.bind(this, "desktop")} /> :
-          <i className="fa fa-1x fa-chevron-right network-positions-stacked__support-list__scroll-icon--disabled hidden-xs hidden-print" aria-hidden="true" />
+          <i className="fa fa-1x fa-chevron-right network-positions-stacked__support-list__scroll-icon network-positions-stacked__support-list__scroll-icon--small u-cursor--pointer d-none d-sm-block d-print-none" aria-hidden="true" onClick={this.scrollRight.bind(this, "desktop")} /> :
+          <i className="fa fa-1x fa-chevron-right network-positions-stacked__support-list__scroll-icon--disabled d-none d-sm-block d-print-none" aria-hidden="true" />
         }
         {/* Click to scroll right through list Mobile */}
         { this.state.can_scroll_mobile && this.state.can_scroll_right_mobile ?
-          <i className="fa fa-1x fa-chevron-right network-positions-stacked__support-list__scroll-icon network-positions-stacked__support-list__scroll-icon--small u-cursor--pointer visible-xs hidden-print" aria-hidden="true" onClick={this.scrollRight.bind(this, "mobile")} /> :
-          <i className="fa fa-1x fa-chevron-right network-positions-stacked__support-list__scroll-icon--disabled visible-xs hidden-print" aria-hidden="true" />
+          <i className="fa fa-1x fa-chevron-right network-positions-stacked__support-list__scroll-icon network-positions-stacked__support-list__scroll-icon--small u-cursor--pointer d-block d-sm-none d-print-none" aria-hidden="true" onClick={this.scrollRight.bind(this, "mobile")} /> :
+          <i className="fa fa-1x fa-chevron-right network-positions-stacked__support-list__scroll-icon--disabled d-block d-sm-none d-print-none" aria-hidden="true" />
         }
       </div>
 
@@ -811,7 +811,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                           placement={issuesPopoverPlacement}
                           overlay={scoreFromYourIssuesPopover}>
             <span className={ showNetworkScore ?
-                              "network-positions-stacked__support-score u-cursor--pointer u-no-break hidden-xs" :
+                              "network-positions-stacked__support-score u-cursor--pointer u-no-break d-none d-sm-block" :
                               "network-positions-stacked__support-score u-cursor--pointer u-no-break" }>
               { voterIssuesScore === 0 ?
                 <span className="u-margin-left--md">{ voterIssuesScoreWithSign }&nbsp;</span> :
@@ -819,7 +819,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
               }
               <span className="network-positions-stacked__support-score-label">
                 <span>Issue<br />Score</span>
-                <span>&nbsp;<i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" />&nbsp;</span>
+                <span>&nbsp;<i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" />&nbsp;</span>
               </span>
             </span>
           </OverlayTrigger> :
@@ -840,10 +840,10 @@ export default class ItemSupportOpposeRaccoon extends Component {
                 <span className="u-margin-left--xs">{ total_network_score_with_sign }&nbsp;</span>
               }
               <span className="network-positions-stacked__support-score-label">
-                <span className="visible-xs">Network<br />
-                  Score <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
-                <span className="hidden-xs">Score in<br />
-                  Your Network <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
+                <span className="d-block d-sm-none">Network<br />
+                  Score <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" /></span>
+                <span className="d-none d-sm-block">Score in<br />
+                  Your Network <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" /></span>
               </span>
             </span>
           </OverlayTrigger> :

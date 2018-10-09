@@ -241,21 +241,6 @@ $container-margin: -15px;
 }
 
 
-// Custom styling for ba
-.header-nav {
-  .badge-total {
-    $badge-color: #db4437;
-    position: absolute;
-    font-family: $body-font-stack;
-    background-color: $badge-color; // Override for Bootstrap class .badge
-    top: $space-none;
-    right: $space-none;
-    &--overLimit {
-      right: -.5em;
-    }
-  }
-}
-
 .header-secondary-nav {
   $nav-item-secondary-nav-background-hover-color: darken($page-header-secondary-nav-background-color, 5%);
   $nav-item-secondary-nav-background-active-color: darken($page-header-secondary-nav-background-color, 10%);

@@ -138,11 +138,11 @@ export default class SearchAllBox extends Component {
       }
 
       if (this.ballot) {
-        this.ballot.addClass("hidden-xs");
+        this.ballot.addClass("d-none d-sm-block");
       }
 
       if (this.network) {
-        this.network.addClass("hidden-xs");
+        this.network.addClass("d-none d-sm-block");
       }
 
       // The SearchAllBox is used on the candidate page, that doesn't have about or donate
@@ -171,11 +171,11 @@ export default class SearchAllBox extends Component {
       }
 
       if (this.ballot) {
-        $(".header-nav__item--ballot").removeClass("hidden-xs");
+        $(".header-nav__item--ballot").removeClass("d-none d-sm-block");
       }
 
       if (this.network) {
-        $(".header-nav__item--network").removeClass("hidden-xs");
+        $(".header-nav__item--network").removeClass("d-none d-sm-block");
       }
 
       if (this.about) {
@@ -362,12 +362,13 @@ export default class SearchAllBox extends Component {
                  onKeyDown={this.onSearchKeyDown}
                  value={this.state.textFromSearchField}
                  ref="searchAllBox" />
-          <div className="input-group-btn">
+          <div className="input-group-btn"> {/* Oct 2018: input-group-btn defined in the old bootstrap.css */}
             <button className={clearButtonClasses} onClick={this.onClearSearch}>
+              {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
               <i className="glyphicon glyphicon-remove-circle u-gray-light" />
             </button>
             <button className="site-search__button btn btn-default" type="submit">
-              <i className="glyphicon glyphicon-search" />
+              <i className="fa fa-search" />
             </button>
           </div>
         </div>

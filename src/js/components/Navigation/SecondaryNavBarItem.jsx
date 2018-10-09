@@ -32,23 +32,24 @@ export default class SecondaryNavBarItem extends Component {
 
     let icon;
     if (this.props.iconPrint) {
-      icon = <span className="glyphicon glyphicon-print fa-2x"/>;
+      icon = <i className="fa fa-print fa-2x"/>;
     } else if (this.props.iconEmail) {
-      icon = <span className="glyphicon glyphicon-envelope fa-2x"/>;
+      icon = <i className="fa fa-envelope fa-2x"/>;
     } else if (this.props.iconFacebook) {
       icon = <i className="fa fa-facebook-square fa-2x"/>;
     } else if (this.props.iconTwitter) {
       icon = <i className="fa fa-twitter fa-2x"/>;
     } else if (this.props.iconMapMarker) {
-      icon = <span className="glyphicon glyphicon-map-marker fa-2x"/>;
+      icon = <i className="fa fa-map-marker fa-2x"/>;
     } else {
+      // October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work
       icon = <img className={`glyphicon nav-secondary-nav__image${this.props.completed ? "--fade" : ""}`} src={this.props.source}/>;
     }
 
     return this.props.isExternal ?
       <OpenExternalWebSite url={this.props.url}
                            target="_blank"
-                           className={(this.props.iconPrint || this.props.completed ? "hidden-xs " : "") + "header-secondary-nav__item header-secondary-nav__item--has-icon"}
+                           className={(this.props.iconPrint || this.props.completed ? "d-none d-sm-block " : "") + "header-secondary-nav__item header-secondary-nav__item--has-icon"}
                            body={
           <span>
             <span className="header-secondary-nav__item-image-wrapper" title={this.props.title}>
@@ -57,16 +58,16 @@ export default class SecondaryNavBarItem extends Component {
                 <img className={`glyphicon nav-secondary-nav__image${this.props.completed ? "--fade" : ""}`}
                      src={this.props.source}/> : null}
             </span>
-            <span className={`visible-xs header-secondary-nav__label${this.props.completed ? "--fade" : ""}`}>
+            <span className={`d-block d-sm-none header-secondary-nav__label${this.props.completed ? "--fade" : ""}`}>
                {this.props.titleMobile ? this.props.titleMobile : this.props.title}
             </span>
-            <span className={`hidden-xs header-secondary-nav__label${this.props.completed ? "--fade" : ""}`}>
+            <span className={`d-none d-sm-block header-secondary-nav__label${this.props.completed ? "--fade" : ""}`}>
                {this.props.titleDesktop ? this.props.titleDesktop : this.props.title}
             </span>
           </span>}
       /> :
       <Link onClick={this.props.show}
-            className={(this.props.iconPrint ? "hidden-xs " : "") + "header-secondary-nav__item header-secondary-nav__item--has-icon"}>
+            className={(this.props.iconPrint ? "d-none d-sm-block " : "") + "header-secondary-nav__item header-secondary-nav__item--has-icon"}>
         <span className="header-secondary-nav__item-image-wrapper" title={this.props.title}>
           {this.props.completed ?
             <img className="glyphicon nav-secondary-nav__image--checked"
@@ -75,10 +76,10 @@ export default class SecondaryNavBarItem extends Component {
           }
           {icon}
         </span>
-        <span className={`visible-xs header-secondary-nav__label${this.props.completed ? "--fade" : ""}`}>
+        <span className={`d-block d-sm-none header-secondary-nav__label${this.props.completed ? "--fade" : ""}`}>
            {this.props.titleMobile ? this.props.titleMobile : this.props.title}
         </span>
-        <span className={`hidden-xs header-secondary-nav__label${this.props.completed ? "--fade" : ""}`}>
+        <span className={`d-none d-sm-block header-secondary-nav__label${this.props.completed ? "--fade" : ""}`}>
            {this.props.titleDesktop ? this.props.titleDesktop : this.props.title}
         </span>
       </Link>;
