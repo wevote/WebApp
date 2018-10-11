@@ -53,7 +53,7 @@ export default class HeaderBarProfilePopUp extends Component {
               </Link>
             </li>
             {/* Mobile only */}
-            <li className="d-block d-sm-none">
+            <li className="navli d-block d-sm-none">
               <Link onClick={this.hideProfilePopUp} to="/settings/menu">
                 <div>
                   <span className="header-slide-out-menu-text-left">Your Settings</span>
@@ -61,7 +61,7 @@ export default class HeaderBarProfilePopUp extends Component {
               </Link>
             </li>
             {/* Desktop only */}
-            <li className="d-none d-sm-block">
+            <li className="navli d-block d-sm-none">
               <Link onClick={this.hideProfilePopUp} to="/settings/voterguidelist">
                 <div>
                   <span className="header-slide-out-menu-text-left">Your Voter Guides</span>
@@ -69,7 +69,7 @@ export default class HeaderBarProfilePopUp extends Component {
               </Link>
             </li>
             {/* Mobile only */}
-            <li className="d-block d-sm-none">
+            <li className="navli d-block d-sm-none">
               <Link onClick={this.hideProfilePopUp} to="/settings/voterguidesmenu">
                 <div>
                   <span className="header-slide-out-menu-text-left">Your Voter Guides</span>

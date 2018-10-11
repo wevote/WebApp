@@ -170,12 +170,13 @@ export default class HeaderSecondaryNavBar extends Component {
     };
     let sliderSettingsWithSwipe = { ...sliderSettings, swipe: true };
 
-    // Have all of the 6 major steps been taken?
-    let voterThoroughOrientationComplete = false;
-    const zzzBallotIntroFollowIssuesModal = <Modal bsPrefix="background-brand-blue modal"
-                                                id="ballotIntroFollowIssuesId"
-                                                show={this.state.showBallotIntroFollowIssues}
-                                                onHide={() => this._toggleBallotIntroFollowIssues(this)}>
+
+    let voterThoroughOrientationComplete = false;  // Have all of the 3 (this once was 6) major steps been taken?
+    const BallotIntroFollowIssuesModal =
+      <Modal  bsPrefix="background-brand-blue modal"
+              id="ballotIntroFollowIssuesId"
+              show={this.state.showBallotIntroFollowIssues}
+              onHide={this._toggleBallotIntroFollowIssues}>
         <Modal.Body>
           <div className="intro-modal__close">
             <a onClick={this._toggleBallotIntroFollowIssues} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}>
@@ -189,25 +190,6 @@ export default class HeaderSecondaryNavBar extends Component {
           </Slider>
         </Modal.Body>
       </Modal>;
-
-            // animation={false}
-    const BallotIntroFollowIssuesModal = <Modal  bsPrefix="background-brand-blue modal" show={this.state.showBallotIntroFollowIssues}
-                                                       onHide={this._toggleBallotIntroFollowIssues}>
-      <Modal.Header>
-        <div className="intro-modal__close">
-          <a onClick={this._toggleBallotIntroFollowIssues} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}>
-            <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
-          </a>
-        </div>
-      </Modal.Header>
-              <Modal.Body bsPrefix="background-brand-blue modal">
-                <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...sliderSettings}>
-                  <div key={1}><BallotIntroFollowIssues next={this._nextSliderPage}/></div>
-                  <div key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div>
-                  <div key={3}><BallotIntroVerifyAddress next={this._toggleBallotIntroFollowIssues} manualFocus={this.state.current_page_index === 2} /></div>
-                </Slider>
-              </Modal.Body>
-            </Modal>;
 
     const SendEmailModal = <Modal bsPrefix="background-brand-blue modal"
                                   show={this.state.showEmailModal}

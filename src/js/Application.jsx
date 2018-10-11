@@ -54,9 +54,6 @@ export default class Application extends Component {
       showFooter: true,
     };
     this.loadedHeader = false;
-    this.initFacebook();
-    this.initCordova();
-    this.preloadIssueImages = this.preloadIssueImages.bind(this);
   }
 
   initCordova () {
@@ -95,6 +92,11 @@ export default class Application extends Component {
   }
 
   componentDidMount () {
+    console.log("React Application ---------------   componentDidMount ()");
+    this.initFacebook();
+    this.initCordova();
+    this.preloadIssueImages = this.preloadIssueImages.bind(this);
+
     let voterDeviceId = VoterStore.voterDeviceId();
     VoterActions.voterRetrieve();
 

@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import { renderLog } from "../../utils/logging";
+import Icon from "react-svg-icons";
 
 export default class SecondaryNavBarItem extends Component {
 
@@ -32,17 +33,21 @@ export default class SecondaryNavBarItem extends Component {
 
     let icon;
     if (this.props.iconPrint) {
-      icon = <i className="fa fa-print fa-2x"/>;
+      // icon = <span className="glyphicon glyphicon-print fa-2x"/>;
+      icon = <Icon name="glyphicons-pro-halflings/glyphicons-halflings-45-print" color={"#51708e"} width={36} height={36} />;
     } else if (this.props.iconEmail) {
-      icon = <i className="fa fa-envelope fa-2x"/>;
+      // icon = <span className="glyphicon glyphicon-envelope fa-2x"/>;
+      // icon = <i className="fa fa-envelope fa-2x"/>;
+      icon = <Icon name="glyphicons-pro-halflings/glyphicons-halflings-4-envelope" color={"#51708e"} width={40} height={40} />;
     } else if (this.props.iconFacebook) {
       icon = <i className="fa fa-facebook-square fa-2x"/>;
     } else if (this.props.iconTwitter) {
       icon = <i className="fa fa-twitter fa-2x"/>;
     } else if (this.props.iconMapMarker) {
-      icon = <i className="fa fa-map-marker fa-2x"/>;
+      // icon = <span className="glyphicon glyphicon-map-marker fa-2x"/>;
+      // icon = <i className="fa fa-map-marker fa-2x"/>;
+      icon = <Icon name="glyphicons-pro-halflings/glyphicons-halflings-62-map-marker" color={"#51708e"} width={40} height={40}  />;
     } else {
-      // October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work
       icon = <img className={`glyphicon nav-secondary-nav__image${this.props.completed ? "--fade" : ""}`} src={this.props.source}/>;
     }
 

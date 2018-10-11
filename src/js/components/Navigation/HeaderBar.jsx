@@ -68,7 +68,7 @@ export default class HeaderBar extends Component {
 
   static ballot (active) {
     return <Link to="/ballot" className={ "header-nav__item--donate header-nav__item header-nav__item--has-icon d-none d-sm-block" + (active ? " active-icon" : "")}>
-      <img className="glyphicon" style ={{ height: 28, width: 28 }} src={cordovaDot("/img/global/svg-icons/glyphicons-pro/glyphicons-halflings-32we-list-alt.svg")} />
+      <Icon name="glyphicons-pro-halflings/glyphicons-halflings-32-list-alt" color="#e6e6e6" width={28} height={28} />
       <span className="header-nav__label">
         Ballot
       </span>
