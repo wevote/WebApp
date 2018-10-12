@@ -11,13 +11,13 @@ import TwitterActions from "../../actions/TwitterActions";
 const returnURL = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + "/twitter_sign_in";
 
 class TwitterSignIn extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
     };
   }
 
-  twitterSignInWebApp () {
+  twitterSignInWebApp() {
     let brandingOff = cookies.getItem("we_vote_branding_off") || 0;
     console.log("twitterSignInWebApp isWebApp(): " + isWebApp());
     $ajax({
@@ -50,7 +50,7 @@ class TwitterSignIn extends Component {
     });
   }
 
-  twitterSignInWebAppCordova () {
+  twitterSignInWebAppCordova() {
     const requestURL = webAppConfig.WE_VOTE_SERVER_API_ROOT_URL + "twitterSignInStart" +
       "?cordova=true&voter_device_id=" + cookies.getItem("voter_device_id") + "&return_url=http://nonsense.com";
     oAuthLog("twitterSignInWebAppCordova requestURL: " + requestURL);
@@ -76,7 +76,7 @@ class TwitterSignIn extends Component {
   }
 
   // TODO: April 17, 2018, this is used by Twitter and SignIn by Email, and should be refactored out of here.  It is really the handleOpenURL function.
-  static handleTwitterOpenURL (url) {
+  static handleTwitterOpenURL(url) {
     oAuthLog("---------------xxxxxx-------- Application handleTwitterOpenUrl: " + url);
     if (url.startsWith("wevotetwitterscheme://")) {
       oAuthLog("handleTwitterOpenURL received wevotetwitterscheme: " + url);
@@ -137,11 +137,11 @@ class TwitterSignIn extends Component {
     }
   }
 
-  render () {
+  render() {
     renderLog(__filename);
     return <Button className={this.props.className ? this.props.className : "btn btn-social btn-twitter"}
-            onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova }>
-      <span className="fa fa-twitter"/> {this.props.buttonText ? this.props.buttonText : "Sign In"}
+      onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova}>
+      <span className="fa fa-twitter" /> {this.props.buttonText ? this.props.buttonText : "Sign in"}
     </Button>;
   }
 }
