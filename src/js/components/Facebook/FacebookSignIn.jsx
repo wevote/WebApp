@@ -23,7 +23,7 @@ class FacebookSignIn extends React.Component {
     return <a tabIndex="0" onKeyDown={this.onKeyDown.bind(this)}
               className="btn btn-social btn-lg btn-facebook"
               onClick={this.didClickFacebookSignInButton}>
-      <i className="fa fa-facebook" />Sign in
+      <i className="fa fa-facebook" />Sign In
     </a>;
   }
 }
