@@ -28,7 +28,7 @@ module.exports = {
 
   // We currently store the Google Places API key in /src/index.html
 
-  FACEBOOK_APP_ID: "1097389196952441",
+  FACEBOOK_APP_ID: "",
 
-  STRIPE_API_KEY: "pk_live_zpl7eSkLnySR2i4vtJQ1lJmi",
+  STRIPE_API_KEY: "",
 };
