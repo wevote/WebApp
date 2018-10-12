@@ -1,209 +1,211 @@
 import webAppConfig from "../../config";
+import { cordovaDot } from "../../utils/cordovaUtils";
 
 if (window.cordova) {  // Static constants are initialized before the app starts
   webAppConfig.IS_CORDOVA = true;
 }
-const photoPath = webAppConfig.IS_CORDOVA ? "./img/global/photos/" : "../../../img/global/photos/";
 
-export const weVoteBoard = [ {
+const photoPath = cordovaDot("/img/global/photos/");
+
+export const weVoteBoard = [{
     name: "Jenifer Fernandez Ancona",
     image: photoPath + "Jenifer_Fernandez_Ancona-200x200.jpg",
     title: [
       "Co-Founder & c4 Board Chair",
-      "VP, Strategy & Member Engagement at the Women Donors Network."
-    ]
+      "VP, Strategy & Member Engagement at the Women Donors Network.",
+    ],
   }, {
     name: "Debra Cleaver",
     image: photoPath + "Debra_Cleaver-200x200.jpg",
     title: [
       "c3 Board Member",
-      "Founder & CEO of VOTE.org, the web's most heavily trafficked site for accurate voting information."
-    ]
+      "Founder & CEO of VOTE.org, the web's most heavily trafficked site for accurate voting information.",
+    ],
   }, {
     name: "Tiana Epps-Johnson",
     image: photoPath + "Tiana_Epps_Johnson-200x200.jpg",
     title: [
       "Senior Adviser",
-      "Exec. Dir. of CTCL, software for election administrators. Former Voting Info Project Harvard Ash Center for Democratic Governance and Innovation."
-    ]
+      "Exec. Dir. of CTCL, software for election administrators. Former Voting Info Project Harvard Ash Center for Democratic Governance and Innovation.",
+  ],
   }, {
     name: "Tory Gavito",
     image: photoPath + "Tory_Gavito-200x200.jpg",
     title: [
       "c4 Board Member",
-      "Exec. Dir. at Texas Future Project."
-    ]
+      "Exec. Dir. at Texas Future Project.",
+    ],
   }, {
     name: "Lawrence Grodeska",
     image: photoPath + "Lawrence_Grodeska-200x200.jpg",
     title: [
       "c3 Board Chair",
-      "Civic Tech communications and innovation at CivicMakers. Formerly at Change.org."
-    ]
+      "Civic Tech communications and innovation at CivicMakers. Formerly at Change.org.",
+    ],
   }, {
     name: "Dale John McGrew",
     image: photoPath + "Dale_McGrew-200x200.jpg",
     title: [
       "Co-Founder / CTO & c3 + c4 Board Member",
-      "Managed large software projects for companies like Disney and over 60 nonprofits."
-    ]
+      "Managed large software projects for companies like Disney and over 60 nonprofits.",
+    ],
   }, {
     name: "Alicia Kolar Prevost",
     image: photoPath + "Alicia_Prevost-200x200.jpg",
     title: [
       "Senior Adviser",
-      "Led Defend Our Future (Environmental Defense Fund), mobilizing young people around climate action. PhD in political science, American University."
-    ]
+      "Led Defend Our Future (Environmental Defense Fund), mobilizing young people around climate action. PhD in political science, American University.",
+    ],
   }, {
     name: "Barbara Shannon",
     image: photoPath + "Barbara_Shannon-200x200.jpg",
     title: [
       "c3 Board Member",
-      "Adviser to entrepreneurs and C-level Fortune 500 leaders. MBA The Wharton School."
-    ]
+      "Adviser to entrepreneurs and C-level Fortune 500 leaders. MBA The Wharton School.",
+    ],
   }, {
     name: "Anat Shenker-Osorio",
     image: photoPath + "Anat_Shenker_Osario-200x200.jpg",
     title: [
       "c4 Board Member",
-      "Communications expert, researcher and political pundit."
-    ]
+      "Communications expert, researcher and political pundit.",
+    ],
   }, {
     name: "Betsy Sikma",
     image: photoPath + "Betsy_Sikma-200x200.jpg",
     title: [
       "c3 Board Member",
-      ""
-    ]
+      "",
+    ],
   }, {
     name: "Billy Wimsatt",
     image: photoPath + "Billy_Wimsatt-200x200.jpg",
     title: [
       "Senior Adviser",
-      "Author and political activist. Founder of Gamechanger Labs, the League of Young Voters & TheBallot.org."
-    ]
+      "Author and political activist. Founder of Gamechanger Labs, the League of Young Voters & TheBallot.org.",
+    ],
   }, {
     name: "William Winters",
     image: photoPath + "William_Winters-200x200.jpg",
     title: [
       "c4 Board Member",
-      "Campaign Manager. Courage Campaign, Color Of Change, CEL & Change.org."
-    ]
-  }
+      "Campaign Manager. Courage Campaign, Color Of Change, CEL & Change.org.",
+    ],
+  },
 ];
 
-export const weVoteStaff = [ {
+export const weVoteStaff = [{
     name: "Dale John McGrew",
     image: photoPath + "Dale_McGrew-200x200.jpg",
     title: [
-      "Executive Director / Co-Founder / CTO"
-    ]
+      "Executive Director / Co-Founder / CTO",
+    ],
   }, {
     name: "Rohan Bhambhoria",
     image: photoPath + "Rohan_Bhambhoria-200x200.jpg",
     title: [
-      "Engineering Intern"
-    ]
+      "Engineering Intern",
+    ],
   }, {
     name: "Yuanhsin Chang",
     image: photoPath + "Yuanhsin_Chang-200x200.jpg",
     title: [
-      "User Experience Design Intern"
-    ]
+      "User Experience Design Intern",
+    ],
   }, {
     name: "Sarah Clements",
     image: photoPath + "Sarah_Clements-200x200.jpg",
     title: [
-      "Engineering Intern"
-    ]
+      "Engineering Intern",
+    ],
   }, {
     name: "Mansi Desai",
     image: photoPath + "Mansi_Desai-200x200.jpg",
     title: [
-      "Digital Marketing Intern"
-    ]
+      "Digital Marketing Intern",
+    ],
   }, {
     name: "Neil Dullaghan",
     image: photoPath + "Neil_Dullaghan-200x200.jpg",
     title: [
-      "Political Data Manager"
-    ]
+      "Political Data Manager",
+    ],
   }, {
     name: "Irene Florez",
     image: photoPath + "Irene_Florez-200x200.jpg",
     title: [
-      "Marketing Manager"
-    ]
+      "Marketing Manager",
+    ],
   }, {
     name: "Jeff French",
     image: photoPath + "Jeff_French-200x200.jpg",
     title: [
-      "Lead Designer"
-    ]
+      "Lead Designer",
+    ],
   }, {
     name: "Anisha Jain",
     image: photoPath + "Anisha_Jain-200x200.jpg",
     title: [
-      "Sr. Software Engineer"
-    ]
+      "Sr. Software Engineer",
+    ],
   }, {
     name: "Elizabeth Janeczko",
     image: photoPath + "Elizabeth_Janeczko-200x200.jpg",
     title: [
-      "Sr. Writer & Content Marketing Manager"
-    ]
+      "Sr. Writer & Content Marketing Manager",
+    ],
   }, {
     name: "Judy Johnson",
     image: photoPath + "Judy_Johnson-200x200.jpg",
     title: [
-      "Operations"
-    ]
+      "Operations",
+    ],
   }, {
     name: "Neelam Joshi",
     image: photoPath + "Neelam_Joshi-200x200.jpg",
     title: [
-      "Sr. Software Engineer"
-    ]
+      "Sr. Software Engineer",
+    ],
   }, {
     name: "Ciero Kilpatrick",
     image: photoPath + "Ciero_Kilpatrick-200x200.jpg",
     title: [
-      "User Experience Design Intern"
-    ]
+      "User Experience Design Intern",
+    ],
   }, {
     name: "Michael Kushman",
     image: photoPath + "Michael_Kushman-200x200.jpg",
     title: [
-      "Product Marketing"
-    ]
+      "Product Marketing",
+    ],
   }, {
     name: "Edward Ly",
     image: photoPath + "Edward_Ly-200x200.jpg",
     title: [
-      "Engineering Intern"
-    ]
+      "Engineering Intern",
+    ],
   }, {
     name: "Eric Ogawa",
     image: photoPath + "Eric_Ogawa-200x200.jpg",
     title: [
-      "User Experience Design Intern"
-    ]
+      "User Experience Design Intern",
+    ],
   }, {
     name: "Steve Podell",
     image: photoPath + "Steve_Podell-200x200.jpg",
     title: [
-      "Volunteer"
-    ]
+      "Volunteer",
+    ],
   }, {
     name: "Bharath Reddy",
     image: photoPath + "Bharath_Reddy-200x200.jpg",
     title: [
-      "Software Engineer"
-    ]
-  }
+      "Software Engineer",
+    ],
+  },
 ];
 
-export const organizationalDonors = [ {
+export const organizationalDonors = [{
     name: "Amazon Web Services",
     title: "Servers",
   }, {
@@ -263,12 +265,12 @@ export const organizationalDonors = [ {
   }, {
     name: "Wikipedia",
     title: "Data",
-  }
+  },
 ];
 
-export const teamOfVolunteers = [ {
+export const teamOfVolunteers = [{
     name: "Dale McGrew",
-    title: "Oakland, CA"
+    title: "Oakland, CA",
   }, {
     name: "Jenifer Fernandez Ancona",
     title: "Oakland, CA",
@@ -527,5 +529,5 @@ export const teamOfVolunteers = [ {
   }, {
     name: "Mark Rosenthal",
     title: "Oakland, CA",
-  }
+  },
 ];
