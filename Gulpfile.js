@@ -91,7 +91,8 @@ gulp.task("compile-bootstrap", function () {
   return gulp.src("./node_modules/bootstrap/scss/bootstrap.scss")
     .pipe(sourcemaps.init())
     .on("error", function (err) { console.error(err); })
-    .pipe(sass({ style: "expanded" }))
+    .pipe(sass({ style: "expanded",
+      includePaths: [config.bootstrapDir + "/assets/stylesheets",], }))
     .pipe(autoprefixer("last 2 version"))
     .pipe(cssmin())
     .pipe(sourcemaps.write(".")) // --> working directory is /build/css
@@ -101,7 +102,10 @@ gulp.task("compile-bootstrap", function () {
 
 // Compile main stylesheet and copy to Build directory
 gulp.task("sass", function () {
-  return gulp.src("./src/sass/{main,loading-screen}.scss")
+  return gulp.src(["./src/sass/main.scss",
+                   "./src/sass/loading-screen.scss",
+                   "./src/sass/bootstrap2-toggle.css",
+    ])
     .pipe(sourcemaps.init())
     .on("error", function (err) { console.error(err); })
     .pipe(sass({ style: "expanded" }))

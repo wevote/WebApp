@@ -26,9 +26,8 @@
 // 3. Vendor
 // ===============================================
 
-// * Bootstrap is currently compiled + linked as a separate stylesheet, but should get pulled in here once we do more to customize/integrate styling.
-@import 'vendor/react-bootstrap-toggle';
-
+// @debug 'gulp before inclusion of bootstrap2-toggle.css';
+@import 'bootstrap2-toggle.css';
 
 // ===============================================
 // 4. Utility & Helpers
