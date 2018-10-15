@@ -45,7 +45,7 @@ export default class HeaderBarProfilePopUp extends Component {
           <h4 className="text-left"/>
           <ul className="nav nav-stacked">
             {/* Desktop only */}
-            <li className="hidden-xs">
+            <li className="d-none d-sm-block">
               <Link onClick={this.hideProfilePopUp} to="/settings/profile">
                 <div>
                   <span className="header-slide-out-menu-text-left">Your Settings</span>
@@ -53,7 +53,7 @@ export default class HeaderBarProfilePopUp extends Component {
               </Link>
             </li>
             {/* Mobile only */}
-            <li className="visible-xs">
+            <li className="navli d-block d-sm-none">
               <Link onClick={this.hideProfilePopUp} to="/settings/menu">
                 <div>
                   <span className="header-slide-out-menu-text-left">Your Settings</span>
@@ -61,7 +61,7 @@ export default class HeaderBarProfilePopUp extends Component {
               </Link>
             </li>
             {/* Desktop only */}
-            <li className="hidden-xs">
+            <li className="navli d-block d-sm-none">
               <Link onClick={this.hideProfilePopUp} to="/settings/voterguidelist">
                 <div>
                   <span className="header-slide-out-menu-text-left">Your Voter Guides</span>
@@ -69,7 +69,7 @@ export default class HeaderBarProfilePopUp extends Component {
               </Link>
             </li>
             {/* Mobile only */}
-            <li className="visible-xs">
+            <li className="navli d-block d-sm-none">
               <Link onClick={this.hideProfilePopUp} to="/settings/voterguidesmenu">
                 <div>
                   <span className="header-slide-out-menu-text-left">Your Voter Guides</span>
@@ -98,7 +98,7 @@ export default class HeaderBarProfilePopUp extends Component {
               null
             }
             {this.props.weVoteBrandingOff || isWebApp() &&
-              <li className="visible-xs-block">
+              <li className="d-block d-sm-none-block">
                 <Link onClick={this.hideProfilePopUp} to="/more/howtouse">
                   <div>
                     <span className="header-slide-out-menu-text-left">Getting Started</span>
@@ -107,7 +107,7 @@ export default class HeaderBarProfilePopUp extends Component {
               </li>
             }
             {this.props.weVoteBrandingOff || isCordova() ? null :
-              <li className="visible-xs-block">
+              <li className="d-block d-sm-none-block">
                 <Link onClick={this.hideProfilePopUp} to="/more/about">
                   <div>
                     <span className="header-slide-out-menu-text-left">About We Vote</span>
@@ -116,7 +116,7 @@ export default class HeaderBarProfilePopUp extends Component {
               </li>
             }
             {this.props.weVoteBrandingOff || isCordova() ? null :
-              <li className="visible-xs-block">
+              <li className="d-block d-sm-none-block">
                 <Link onClick={this.hideProfilePopUp} to="/more/donate">
                   <div>
                     <span className="header-slide-out-menu-text-left">Donate</span>

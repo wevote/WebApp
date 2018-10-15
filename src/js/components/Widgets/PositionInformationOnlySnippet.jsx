@@ -133,7 +133,7 @@ export default class PositionInformationOnlySnippet extends Component {
               <ReactPlayer className="explicit-position__media-player" url={`${video_url}`} width="100%" height="100%"/> :
               null }
             {moreInfoUrl ?
-              <div className="hidden-xs">
+              <div className="d-none d-sm-block">
                 {/* default: open in new tab*/}
                 <OpenExternalWebSite url={moreInfoUrl}
                                      target="_blank"

@@ -8,7 +8,7 @@ import { renderLog } from "../../utils/logging";
 
 export default class SuggestedFriendToggle extends Component {
   static propTypes = {
-    other_voter_we_vote_id: PropTypes.string.isRequired
+    other_voter_we_vote_id: PropTypes.string.isRequired,
   };
 
   constructor (props) {
@@ -16,12 +16,12 @@ export default class SuggestedFriendToggle extends Component {
     this.state = {
       other_voter_we_vote_id: "",
       voter: {
-        we_vote_id: ""
-      }
+        we_vote_id: "",
+      },
     };
   }
 
-  componentDidMount (){
+  componentDidMount () {
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     this._onFriendStoreChange();
@@ -64,7 +64,7 @@ export default class SuggestedFriendToggle extends Component {
     return <span style={floatRight}>
       {is_friend ?
         <span>Already Friend!</span> :
-        <Button bsStyle="info" bsSize="small" onClick={sendFriendInvite}><span>Add Friend</span></Button>
+        <Button variant="info" size="small" onClick={sendFriendInvite}><span>Add Friend</span></Button>
       }
       </span>;
   }

@@ -6,7 +6,7 @@ import { renderLog } from "../../utils/logging";
 export default class BrowserPushMessage extends Component {
   static propTypes = {
     type: PropTypes.string,
-    incomingProps: PropTypes.object //needs more specificity
+    incomingProps: PropTypes.object, //needs more specificity
   };
 
   constructor (props) {
@@ -25,7 +25,7 @@ export default class BrowserPushMessage extends Component {
     }
   }
 
-	render () {
+  render () {
     renderLog(__filename);
     let { browser_history_message, browser_history_message_name, browser_history_message_type } = this.state;
 
@@ -40,10 +40,10 @@ export default class BrowserPushMessage extends Component {
 
     return <span>
       {browser_history_message ?
-        <Alert bsStyle={browser_history_message_type}>
+        <Alert variant={browser_history_message_type}>
           {browser_history_message}
         </Alert> :
         null }
       </span>;
-	}
+  }
 }

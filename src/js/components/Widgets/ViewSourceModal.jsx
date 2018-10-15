@@ -31,7 +31,7 @@ export default class ViewSourceModal extends Component {
     renderLog(__filename);
     let content = "";
     // might be easier to store content in local variable instead of inserting via jquery method
-    return <Modal {...this.props} bsSize="large" aria-labelledby="contained-modal-title-lg">
+    return <Modal {...this.props} size="large" aria-labelledby="contained-modal-title-lg">
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-lg">Source of position</Modal.Title>
       </Modal.Header>

@@ -192,7 +192,7 @@ export default class SettingsAccount extends Component {
                 {this.state.voter.signed_in_twitter && (this.state.voter.signed_in_facebook || this.state.voter.signed_in_with_email) ?
                   <span>{this.state.show_twitter_disconnect ?
                     <div>
-                      <Button bsStyle="danger"
+                      <Button variant="danger"
                           type="submit"
                           onClick={this.voterSplitIntoTwoAccounts.bind(this)}
                           >Disconnect @{this.state.voter.twitter_screen_name} from this account</Button>

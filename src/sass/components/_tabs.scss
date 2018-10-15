@@ -21,7 +21,7 @@
 // return (
 //   <div>
 //     <div className="tabs__tabs-container-wrap">
-//       <div className="tabs__tabs-container hidden-print">
+//       <div className="tabs__tabs-container d-print-none">
 //         <ul className="nav tabs__tabs">
 //           <li className="tab-item">
 //             <{ a onClick={function} / Link to={path} } className={this.state.watch_variable === "{Value 1}" ? "tab tab-active" : "tab tab-default"}>

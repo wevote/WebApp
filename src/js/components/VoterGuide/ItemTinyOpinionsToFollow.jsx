@@ -139,7 +139,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
           let organizationPopover = <Popover id={`organization-popover-${orgs_not_shown_count}`}
                                              onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
                                              onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
-                                             className="card-popover">
+                                             bsPrefix="card-popover">
               <OrganizationsNotShownList orgs_not_shown_list={orgs_not_shown_list} />
             </Popover>;
 
@@ -181,7 +181,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
         let organizationPopover = <Popover id={`organization-popover-${org_id}`}
                                            onMouseOver={() => this.onTriggerEnter(org_id)}
                                            onMouseOut={() => this.onTriggerLeave(org_id)}
-                                           className="card-popover">
+                                           bsPrefix="card-popover">
             <OrganizationCard organization={one_organization_for_organization_card}
                               ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
                               followToggleOn />
@@ -206,7 +206,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
       }
     });
 
-    return <span className={ is_empty ? "guidelist card-child__list-group" : "hidden-xs hidden-print guidelist card-child__list-group" }>
+    return <span className={ is_empty ? "guidelist card-child__list-group" : "hidden-xs d-print-none guidelist card-child__list-group" }>
           {organizations_to_display}
       </span>;
   }

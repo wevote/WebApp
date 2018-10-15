@@ -653,7 +653,7 @@ export default class EmailBallotToFriendsModal extends Component {
                           tabIndex="0"
                           onKeyDown={this.onKeyDown.bind(this)}
                           onClick={this.ballotEmailSendStepsManager.bind(this)}
-                          bsStyle="success"
+                          variant="success"
                         >
                           { this.hasValidEmail() ?
                             <span>Send &gt;</span> :
@@ -692,7 +692,7 @@ export default class EmailBallotToFriendsModal extends Component {
                               tabIndex="0"
                               onKeyDown={this.onKeyDown.bind(this)}
                               onClick={this.ballotEmailSendStepsManager.bind(this)}
-                              bsStyle="primary"
+                              variant="primary"
                               disabled={!this.state.sender_email_address} >
                         <span>Send</span>
                       </Button>

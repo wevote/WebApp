@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import SuggestedFriendDisplayForList from "./SuggestedFriendDisplayForList";
-import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { renderLog } from "../../utils/logging";
 
 export default class SuggestedFriendList extends Component {
@@ -13,19 +13,19 @@ export default class SuggestedFriendList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      suggested_friend_list: this.props.friendList
+      suggested_friend_list: this.props.friendList,
     };
   }
 
   componentDidMount () {
     this.setState({
-      suggested_friend_list: this.props.friendList
+      suggested_friend_list: this.props.friendList,
     });
   }
 
-  componentWillReceiveProps (nextProps){
+  componentWillReceiveProps (nextProps) {
     this.setState({
-      suggested_friend_list: nextProps.friendList
+      suggested_friend_list: nextProps.friendList,
     });
   }
 
@@ -35,14 +35,14 @@ export default class SuggestedFriendList extends Component {
       return null;
     }
 
-    const friend_list = this.state.suggested_friend_list.map( (friend) => {
-        return <SuggestedFriendDisplayForList key={friend.voter_we_vote_id} {...friend} />;
-    });
-
     return <div className="guidelist card-child__list-group">
-        <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={2000} transitionLeaveTimeout={2000}>
-          {friend_list}
-        </ReactCSSTransitionGroup>
+        <TransitionGroup className="org-ignore">
+          {this.state.suggested_friend_list.map((friend) =>
+            <CSSTransition key={friend.voter_we_vote_id} timeout={500} classNames="fade">
+              <SuggestedFriendDisplayForList key={friend.voter_we_vote_id} {...friend} />
+            </CSSTransition>)
+          }
+        </TransitionGroup>
       </div>;
   }
 }

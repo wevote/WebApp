@@ -1,50 +1,53 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import FriendDisplayForList from "./FriendDisplayForList";
-import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { renderLog } from "../../utils/logging";
 
 export default class FriendList extends Component {
 
   static propTypes = {
     friendList: PropTypes.array,
-    editMode: PropTypes.bool
+    editMode: PropTypes.bool,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      friend_list: this.props.friendList
+      friendList: this.props.friendList,
     };
   }
 
   componentDidMount () {
     this.setState({
-      friend_list: this.props.friendList
+      friendList: this.props.friendList,
     });
   }
 
-  componentWillReceiveProps (nextProps){
+  componentWillReceiveProps (nextProps) {
     this.setState({
-      friend_list: nextProps.friendList
+      friend_list: nextProps.friendList,
     });
   }
 
   render () {
     renderLog(__filename);
-    if (this.state.friend_list === undefined) {
+    let friends = this.props.friendList;  // 10/1//18:  This should not be necessary, but was needed after React 16.
+    if (!friends)                         //    There is some other undiagnosed issue.
+      friends = this.state.friend_list;
+    if (!friends) {
       return null;
     }
 
-    const friend_list_for_display = this.state.friend_list.map( (friend) => {
-      return <FriendDisplayForList editMode={this.props.editMode}
-                                   key={friend.voter_we_vote_id} {...friend} />;
-    });
-
     return <div className="guidelist card-child__list-group">
-        <ReactCSSTransitionGroup transitionName="org-ignore" transitionEnterTimeout={4000} transitionLeaveTimeout={2000}>
-          {friend_list_for_display}
-        </ReactCSSTransitionGroup>
+        <TransitionGroup className="org-ignore">
+          {friends.map((friend) =>
+            <CSSTransition key={friend.voter_we_vote_id} timeout={500} classNames="fade">
+              <FriendDisplayForList editMode={this.props.editMode}
+                                    key={friend.voter_we_vote_id} {...friend} />
+            </CSSTransition>)
+          }
+        </TransitionGroup>
       </div>;
   }
 

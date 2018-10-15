@@ -11,10 +11,13 @@ export default class DonationListForm extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      activeKey: 1,
+    };
   }
 
   componentDidMount () {
+
     this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     // VoterActions.voterRefreshDonations();
@@ -40,11 +43,11 @@ export default class DonationListForm extends Component {
 
   render () {
     renderLog(__filename);
-    if (this.state.journal && this.state.journal.length > 0) {
+    if (this.state && this.state.journal && this.state.journal.length > 0) {
       return (
         <div>
           <input type="hidden" value={this.state.activeKey} />
-          <Tabs defaultActiveKey={1} activeKey={this.state.activeKey} onSelect={this.handleSelect} id="tabbed_donation_history">
+          <Tabs defaultActiveKey={1} activeKey={this.state.activeKey} onSelect={this.handleSelect.bind(this)} id="tabbed_donation_history">
               <Tab eventKey={1} title="Donations"><DonationList displayDonations/></Tab>
               <Tab eventKey={2} title="Subscriptions"><DonationList displayDonations={false}/></Tab>
           </Tabs>

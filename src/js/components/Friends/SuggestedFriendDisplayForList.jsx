@@ -72,20 +72,15 @@ export default class SuggestedFriendDisplayForList extends Component {
             <Link to={voterGuideLink} className="u-no-underline">
               {voter_display_name_formatted}
             </Link> :
-            <span>{voter_display_name_formatted}</span> }
+            <span>&nbsp;{voter_display_name_formatted}</span> }
           { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> :
             null}
         </div>
         <div className="card-child__additional">
           <div className="card-child__follow-buttons">
             <span>
+              &nbsp;
               <SuggestedFriendToggle other_voter_we_vote_id={voter_we_vote_id}/>
-              {/*
-              <button className="btn btn-default btn-sm"
-                onClick={this.ignoreSuggestedFriend.bind(this, voter_we_vote_id)}>
-                Remove
-              </button>
-              */}
             </span>
           </div>
           {voter_twitter_followers_count ?

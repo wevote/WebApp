@@ -213,7 +213,7 @@ export default class OrganizationVoterGuideTabs extends Component {
     return (
       <div className="">
         <div className="tabs__tabs-container-wrap">
-          <div className="tabs__tabs-container hidden-print">
+          <div className="tabs__tabs-container d-print-none">
             <ul className="nav tabs__tabs">
               <li className="tab-item">
                 <a onClick={() => this.switchTab("ballot")} className={this.state.active_route === "ballot" ? "tab tab-active" : "tab tab-default"}>
@@ -230,8 +230,8 @@ export default class OrganizationVoterGuideTabs extends Component {
               <li className="tab-item">
                 <a onClick={() => this.switchTab("following")} className={this.state.active_route === "following" ? "tab tab-active" : "tab tab-default"}>
                   <span>
-                    <span className="hidden-xs">{following_title_long}</span>
-                    <span className="visible-xs">{following_title_short}</span>
+                    <span className="d-none d-sm-block">{following_title_long}</span>
+                    <span className="d-block d-sm-none">{following_title_short}</span>
                   </span>
                 </a>
               </li>

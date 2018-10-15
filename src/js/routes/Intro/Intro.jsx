@@ -83,17 +83,21 @@ export default class Intro extends Component {
 
             <ul className="list-group">
               <li className="list-group-item">
+                {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
                 <span className="glyphicon glyphicon-small glyphicon-ok-sign" /> &nbsp;Neutral and private
               </li>
               <li className="list-group-item">
+                {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
                 <span className="glyphicon glyphicon-small glyphicon-ok-sign" />
                   &nbsp; {numberWithCommas(voterCount)} voters
               </li>
               <li className="list-group-item">
+                {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
                 <span className="glyphicon glyphicon-small glyphicon-ok-sign" />
                   &nbsp; {numberWithCommas(orgCount)} not-for-profit organizations
               </li>
               <li className="list-group-item">
+                {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
                 <span className="glyphicon glyphicon-small glyphicon-ok-sign" />
                   &nbsp; and you.
               </li>

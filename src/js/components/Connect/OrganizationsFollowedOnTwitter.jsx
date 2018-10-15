@@ -96,7 +96,7 @@ export default class OrganizationsFollowedOnTwitter extends Component {
             twitter_followers_count: one_organization.twitter_followers_count,
           };
 
-        let organizationPopover = <Popover className="card-popover"
+        let organizationPopover = <Popover bsPrefix="card-popover"
                                            id={`organization-popover-${org_id}`}
                                            onMouseOver={() => this.onTriggerEnter(org_id)}
                                            onMouseOut={() => this.onTriggerLeave(org_id)}

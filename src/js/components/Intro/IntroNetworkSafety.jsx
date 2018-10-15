@@ -13,10 +13,11 @@ then you can't use relative paths."
 */
 
 export default class IntroNetworkSafety extends Component {
-  static propTypes = {
-    history: PropTypes.object,
-    next: React.PropTypes.func,
-  };
+  // Oct 1, 2018: Seems to cause the compenent to initialize too early with React 16
+  // static propTypes = {
+  //   history: PropTypes.object,
+  //   next: PropTypes.func,
+  // };
 
   constructor (props) {
     super(props);

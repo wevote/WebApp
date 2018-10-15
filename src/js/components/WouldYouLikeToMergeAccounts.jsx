@@ -23,7 +23,7 @@ export default class WouldYouLikeToMergeAccounts extends Component {
     const { cancelMergeFunction, pleaseMergeAccountsFunction } = this.props;
 
     const merge_status_html = <span>
-        <Alert bsStyle="warning">
+        <Alert variant="warning">
           The choices you've made in this browser (when not signed in) can be merged with choices stored the previous time you signed in.<br />
           <br />
           Press "Cancel Sign In" to stop signing in, and keep your recent changes.<br />
@@ -37,12 +37,12 @@ export default class WouldYouLikeToMergeAccounts extends Component {
 
         <div className="u-stack--md">
           <Button onClick={cancelMergeFunction}
-                  bsStyle="default"
-                  bsSize="small">
+                  variant="default"
+                  size="small">
             Cancel Sign In
           </Button>
           <Button onClick={pleaseMergeAccountsFunction}
-                  bsStyle="primary">
+                  variant="primary">
             Sign In and Merge My Offline Changes</Button>
         </div>
       </div>;

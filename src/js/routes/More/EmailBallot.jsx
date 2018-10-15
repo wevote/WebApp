@@ -36,7 +36,7 @@ export default class EmailBallot extends Component {
 						See <Link to="privacy">privacy policy</Link>.
 						<br />
 						<Link to="add_friends_confirmed">
-							<Button bsStyle="primary">Send</Button>
+							<Button variant="primary">Send</Button>
 						</Link><br />
 						<br />
 						<br />
@@ -44,8 +44,8 @@ export default class EmailBallot extends Component {
 						<br />
 						<br />
 						<Link to="add_friends_confirmed">
-							<span><Button bsStyle="primary">Sign in with Facebook</Button><br /></span>
-							<Button bsStyle="primary">Sign in with Twitter</Button>
+							<span><Button variant="primary">Sign in with Facebook</Button><br /></span>
+							<Button variant="primary">Sign in with Twitter</Button>
 						</Link>
 						<br />
 					</div>

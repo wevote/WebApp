@@ -23,16 +23,21 @@ export default class DonationForm extends Component {
 
   componentDidMount () {
     let self = this;
-    this.stripeHandler = window.StripeCheckout.configure({
-      key: webAppConfig.STRIPE_API_KEY,
-      image: cordovaDot("https://stripe.com/img/documentation/checkout/marketplace.png"),
-      locale: "auto",
-      token: function (token) {
-        // console.log("token generated " + token.id + " token.email " + token.email);
-        DonateActions.donationWithStripe(token.id, token.email, self.props.donationAmount, self.props.donateMonthly);
-        historyPush("/more/processing_donation");
-      },
-    });
+    if (window.StripeCheckout !== undefined) {
+      console.log("StripeCheckout is defined  ", window.StripeCheckout);
+      this.stripeHandler = window.StripeCheckout.configure({
+        key: webAppConfig.STRIPE_API_KEY,
+        image: cordovaDot("https://stripe.com/img/documentation/checkout/marketplace.png"),
+        locale: "auto",
+        token: function (token) {
+          // console.log("token generated " + token.id + " token.email " + token.email);
+          DonateActions.donationWithStripe(token.id, token.email, self.props.donationAmount, self.props.donateMonthly);
+          historyPush("/more/processing_donation");
+        },
+      });
+    } else {
+      console.log("StripeCheckout is NOT defined ", window.StripeCheckout);
+    }
   }
 
   componentWillUnmount () {
@@ -62,15 +67,15 @@ export default class DonationForm extends Component {
 
   render () {
     renderLog(__filename);
-    let donate_button_text = "Donate Now";
+    let donateButtonText = "Donate Now";
     if (this.props.donateButtonText) {
-      donate_button_text = this.props.donateButtonText;
+      donateButtonText = this.props.donateButtonText;
     }
 
     return <span>
-      <Button className={this.props.donateOther ? "" : "btn_donate"} bsStyle="success"
+      <Button bsPrefix={this.props.donateOther ? "" : "btn_donate btn btn-success"} variant="success"
               onClick={this._openStripeModal}>
-        {donate_button_text}
+        {donateButtonText}
       </Button>
   </span>;
   }

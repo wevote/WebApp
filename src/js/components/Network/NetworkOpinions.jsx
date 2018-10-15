@@ -63,15 +63,15 @@ export default class NetworkOpinions extends Component {
     <Helmet title="Listen to Organizations - We Vote" />
       <section className="card">
         <div className="card-main">
-          <p className="hidden-print">
+          <p className="d-print-none">
             Find opinions about your ballot (ordered by Twitter followers).
             Listen to those you trust. Stop Listening at any time.
             Listening won't add you to mailing lists.
-            <span style={floatRight} className="hidden-print">
+            <span style={floatRight} className="d-print-none">
               <Link to="/opinions_followed" className="u-margin-left--md u-no-break">See organizations you listen to</Link>
             </span>
           </p>
-          <div className="hidden-print">
+          <div className="d-print-none">
             <SearchGuidesToFollowBox />
           </div>
           { ballot_has_guides ?
@@ -81,7 +81,7 @@ export default class NetworkOpinions extends Component {
           <div className="card">
             <GuideList organizationsToFollow={voter_guides_to_follow_all} instantRefreshOn />
           </div>
-          <Link className="pull-right hidden-print" to="/opinions_ignored">Organizations you are ignoring</Link><br />
+          <Link className="pull-right d-print-none" to="/opinions_ignored">Organizations you are ignoring</Link><br />
         </div>
       </section>
     </div>;

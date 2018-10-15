@@ -54,8 +54,9 @@ export default class BallotLocationButton extends Component {
       } else {
         ballot_location_display_name = "My Address";
       }
+
       return <span className="u-push--md">
-        <Button bsStyle={ballot_location_shortcut_matches || ballot_returned_we_vote_id_matches ? "info" : "default"}
+        <Button variant={ballot_location_shortcut_matches || ballot_returned_we_vote_id_matches ? "info" : "default"}
                 onClick={() => { this.props.goToDifferentBallot(ballot_location.ballot_returned_we_vote_id, ballot_location.ballot_location_shortcut); }} >
           <span>{ballot_location_display_name}</span>
         </Button>

@@ -16,7 +16,7 @@ export default class NetworkFriendRequests extends Component {
       friend_invitations_sent_by_me: [],
       friend_invitations_sent_to_me: [],
       friend_invitations_processed: [],
-      suggested_friend_list: []
+      suggested_friend_list: [],
     };
   }
 
@@ -33,7 +33,7 @@ export default class NetworkFriendRequests extends Component {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
   }
@@ -44,7 +44,7 @@ export default class NetworkFriendRequests extends Component {
       friend_invitations_sent_by_me: FriendStore.friendInvitationsSentByMe(),
       friend_invitations_sent_to_me: FriendStore.friendInvitationsSentToMe(),
       friend_invitations_processed: FriendStore.friendInvitationsProcessed(),
-      suggested_friend_list: FriendStore.suggestedFriendList()
+      suggested_friend_list: FriendStore.suggestedFriendList(),
     });
   }
 

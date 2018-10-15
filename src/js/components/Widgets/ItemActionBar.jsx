@@ -511,7 +511,7 @@ export default class ItemActionBar extends Component {
       }
     </button>;
 
-    const opposeButton = <button className={(this.props.opposeHideInMobile ? "hidden-xs " : "") + "item-actionbar__btn item-actionbar__btn--oppose btn btn-default" + (this.isOpposeCalculated() ? " oppose-at-state" : "")} onClick={() => this.opposeItem()}>
+    const opposeButton = <button className={(this.props.opposeHideInMobile ? "d-none d-sm-block " : "") + "item-actionbar__btn item-actionbar__btn--oppose btn btn-default" + (this.isOpposeCalculated() ? " oppose-at-state" : "")} onClick={() => this.opposeItem()}>
       <span className="btn__icon">
         <Icon name="thumbs-down-icon" width={iconSize} height={iconSize} color={opposeIconColor} />
       </span>
@@ -523,32 +523,32 @@ export default class ItemActionBar extends Component {
       }
     </button>;
 
-    return <div className={ this.props.shareButtonHide ? "item-actionbar--inline hidden-print" : "item-actionbar hidden-print" }>
+    return <div className={ this.props.shareButtonHide ? "item-actionbar--inline d-print-none" : "item-actionbar d-print-none" }>
       <div className={(this.state.yesVoteDescriptionExists || this.state.noVoteDescriptionExists ? "" : "btn-group") + (!this.props.shareButtonHide ? " u-push--sm" : "")}>
 
         {/* Start of Support Button */}
-        <div className="hidden-xs item-actionbar__position-bar">
+        <div className="d-none d-sm-block item-actionbar__position-bar">
           <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>{supportButton}</OverlayTrigger>
           {this.state.yesVoteDescriptionExists ? <span className="item-actionbar__following-text">{this.state.yesVoteDescription}</span> : null}
         </div>
-        <div className="visible-xs item-actionbar__position-bar item-actionbar__position-bar--mobile">
+        <div className="d-block d-sm-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
           {supportButton}
           {this.state.yesVoteDescriptionExists ? <span className="item-actionbar__following-text">{this.state.yesVoteDescription}</span> : null}
         </div>
 
         {/* Start of Oppose Button */}
-        <div className="hidden-xs item-actionbar__position-bar">
+        <div className="d-none d-sm-block item-actionbar__position-bar">
           <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>{opposeButton}</OverlayTrigger>
           {this.state.noVoteDescriptionExists ? <span className="item-actionbar__following-text">{this.state.noVoteDescription}</span> : null}
         </div>
-        <div className="visible-xs item-actionbar__position-bar item-actionbar__position-bar--mobile">
+        <div className="d-block d-sm-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
           {opposeButton}
           {this.state.noVoteDescriptionExists ? <span className="item-actionbar__following-text">{this.state.noVoteDescription}</span> : null}
         </div>
       { this.props.commentButtonHide ?
         null :
         <div>
-          <button className={"item-actionbar__btn item-actionbar__btn--comment btn btn-default u-push--sm" + (this.props.commentButtonHideInMobile ? " hidden-xs" : null)}
+          <button className={"item-actionbar__btn item-actionbar__btn--comment btn btn-default u-push--sm" + (this.props.commentButtonHideInMobile ? " d-none d-sm-block" : null)}
                   onClick={this.props.toggleFunction}>
             <span className="btn__icon">
               <Icon name="comment-icon" width={iconSize} height={iconSize} color={iconColor} />

@@ -282,6 +282,7 @@ export default class SignIn extends Component {
                   {this.state.voter.signed_in_with_email &&
                     <span>
                       <span className="btn btn-warning btn-lg">
+                      {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
                       <span className="glyphicon glyphicon-envelope" /></span>
                     </span>
                   }
@@ -289,7 +290,7 @@ export default class SignIn extends Component {
                 {this.state.voter.signed_in_twitter && (this.state.voter.signed_in_facebook || this.state.voter.signed_in_with_email) ?
                   <span>{this.state.show_twitter_disconnect ?
                     <div>
-                      <Button bsStyle="danger"
+                      <Button variant="danger"
                           type="submit"
                           onClick={this.voterSplitIntoTwoAccounts.bind(this)}
                           >Disconnect @{this.state.voter.twitter_screen_name} from this account</Button>

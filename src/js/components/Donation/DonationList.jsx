@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Table, Panel } from "react-bootstrap";
+import { Table, Card } from "react-bootstrap";
 import moment from "moment";
 import VoterStore from "../../stores/VoterStore";
 import { renderLog } from "../../utils/logging";
@@ -10,17 +10,17 @@ import VoterActions from "../../actions/VoterActions";
 
 const styles = {
   table: {
-    verticalAlign: "middle",
-    textAlign: "center",
+    // verticalAlign: "middle",
+    // textAlign: "center",
   },
   td: {
-    verticalAlign: "middle",
-    textAlign: "center",
+    // verticalAlign: "middle",
+    // textAlign: "center",
   },
   th: {
-    textAlign: "center",
+    // textAlign: "center",
   },
-  Panel: {
+  Card: {
     borderTopColor: "transparent",
     height: "500px",
     overflowY: "auto",
@@ -34,7 +34,10 @@ export default class DonationList extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      journal: null,
+    };
+    this.isNotMobile = this.isNotMobile.bind(this);
   }
 
   componentDidMount () {
@@ -56,98 +59,111 @@ export default class DonationList extends Component {
     this.setState({ journal: VoterStore.getVoterDonationHistory() });
   }
 
+  // October 2018: This is a workaround, since the current react-bootstrap does not handle the "d-none d-sm-block" correctly in th and td styles
+  isNotMobile () {
+    let bootstrapDetectedSizeXs = $('#users-device-size').find('div:visible').first().attr('id');
+    return bootstrapDetectedSizeXs === undefined;
+  }
+
   render () {
     renderLog(__filename);
     if (this.state.journal && this.state.journal.length > 0) {
       let donations = this.props.displayDonations;
+      let isNotMobile = this.isNotMobile();
 
       if (donations) {
-        return <Panel style={styles.Panel}>
-          <Table striped condensed hover responsive>{ /* Donations */ }
-            <thead>
-            <tr>
-              <th style={styles.td}>Date</th>
-              <th style={styles.th}>Amount</th>
-              <th className={"hidden-xs"} style={styles.th}>Payment</th>
-              <th className={"hidden-xs"} style={styles.th}>Card</th>
-              <th className={"hidden-xs"} style={styles.th}>Expires</th>
-              <th className={"hidden-xs"} style={styles.th}>Status</th>
-              <th style={styles.th}>Info</th>
-            </tr>
-            </thead>
-            <tbody>{this.state.journal.map(function (item, key) {
-              if (item.record_enum === "PAYMENT_FROM_UI" || item.record_enum === "PAYMENT_AUTO_SUBSCRIPTION") {
-                let refundDays = parseInt(item.refund_days_limit, 10);
-                let active =
-                  moment.utc(item.created).local().isAfter(moment(new Date()).subtract(refundDays, "days")) &&
-                  ! item.stripe_status.includes("refund");
-                return <tr key={key}>
-                  <td style={styles.td}>{moment.utc(item.created).local().format("MMM D, YYYY")}</td>
-                  <td style={styles.td}>{item.amount}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{item.record_enum === "PAYMENT_FROM_UI" ? "One time" :
-                      "Subscription"}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{item.brand}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{"... " + item.last4}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{item.exp_month + "/" + item.exp_year}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{item.stripe_status === "succeeded" ? "Paid" :
-                      item.stripe_status}</td>
-                  <td className={"hidden-xs"} style={styles.td} />
-                  <td style={styles.td}>{active ?
-                    <DonationCancelOrRefund item={item} refundDonation={donations} /> : null }
-                  </td>
-                </tr>;
-              } else {
-                return null;
+        return <Card style={styles.Card}>
+          <Card.Body>
+            <Table striped hover size="sm">{ /* Donations */ }
+              <thead>
+              <tr>
+                <th >Date</th>
+                <th >Amount</th>
+              <th hidden={isNotMobile}>Payment</th>
+              <th hidden={isNotMobile}>Card</th>
+              <th hidden={isNotMobile}>Expires</th>
+              <th hidden={isNotMobile}>Status</th>
+                <th >Info</th>
+              </tr>
+              </thead>
+              <tbody>{this.state.journal.map(function (item, key) {
+                if (item.record_enum === "PAYMENT_FROM_UI" || item.record_enum === "PAYMENT_AUTO_SUBSCRIPTION") {
+                  let refundDays = parseInt(item.refund_days_limit, 10);
+                  let active =
+                    moment.utc(item.created).local().isAfter(moment(new Date()).subtract(refundDays, "days")) &&
+                    !item.stripe_status.includes("refund");
+                  return <tr key={key}>
+                    <td >{moment.utc(item.created).local().format("MMM D, YYYY")}</td>
+                    <td >{item.amount}</td>
+                    <td hidden={isNotMobile}>{item.record_enum === "PAYMENT_FROM_UI" ? "One time" :
+                        "Subscription"}</td>
+                    <td hidden={isNotMobile}>{item.brand}</td>
+                    <td hidden={isNotMobile}>{"... " + item.last4}</td>
+                    <td hidden={isNotMobile}>{item.exp_month + "/" + item.exp_year}</td>
+                    <td hidden={isNotMobile}>{item.stripe_status === "succeeded" ? "Paid" :
+                        item.stripe_status}</td>
+                    <td hidden={isNotMobile}/>
+                    <td >{active ?
+                      <DonationCancelOrRefund item={item} refundDonation={donations} /> : null }
+                    </td>
+                  </tr>;
+                } else {
+                  return null;
+                }
               }
-            })}
-            </tbody>
-          </Table>
-        </Panel>;
+              )}
+              </tbody>
+            </Table>
+          </Card.Body>
+        </Card>;
       } else {
-        return <Panel style={styles.Panel}>
-          <Table striped condensed hover responsive>{ /* Subscriptions */ }
-            <thead>
-            <tr>
-              <th className={"hidden-xs"} style={styles.th}>Active</th>
-              <th style={styles.th}>Started</th>
-              <th style={styles.th}>Monthly</th>
-              <th className={"hidden-xs"} style={styles.th}>Last Charged</th>
-              <th className={"hidden-xs"} style={styles.th}>Card</th>
-              <th className={"hidden-xs"} style={styles.th}>Ends with</th>
-              <th className={"hidden-xs"} style={styles.th}>Expires</th>
-              <th className={"hidden-xs"} style={styles.th}>Canceled</th>
-              <th style={styles.th}>Info</th>
-            </tr>
-            </thead>
-            <tbody>{this.state.journal.map(function (item, key) {
-              if (item.record_enum === "SUBSCRIPTION_SETUP_AND_INITIAL") {
-                let active = item.subscription_canceled_at === "None" && item.subscription_ended_at === "None";
-                let cancel = item.subscription_canceled_at !== "None" ?
-                  moment.utc(item.subscription_canceled_at).format("MMM D, YYYY") : "";
-                let lastcharged = item.last_charged === "None" ? "" :
-                  moment.utc(item.last_charged).format("MMM D, YYYY");
-                let waiting = item.amount === "0.00";
-                return <tr key={key}>
-                  <td className={"hidden-xs"} style={styles.td}>{active ? "Active" : "----"}</td>
-                  <td style={styles.td}>{moment.utc(item.created).format("MMM D, YYYY")}</td>
-                  <td style={styles.td}>{!waiting ? item.amount : "waiting"}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{!waiting ? lastcharged : "waiting"}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{!waiting ? item.brand : "waiting"}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{!waiting ? "... " + item.last4 : "waiting"}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{!waiting > 0 ?
-                    item.exp_month + "/" + item.exp_year : "waiting"}</td>
-                  <td className={"hidden-xs"} style={styles.td}>{cancel}</td>
-                  <td style={styles.td}>
-                    {active ? <DonationCancelOrRefund item={item} refundDonation={donations}/> :
-                      cancel.length > 0 ? "canceled" : null}</td>
-                </tr>;
-              } else {
-                return null;
+        return <Card style={styles.Card}>
+          <Card.Body>
+            <Table striped hover size="sm">{ /* Subscriptions */ }
+              <thead>
+                <tr>
+                  <th hidden={isNotMobile}>Active</th>
+                  <th >Started</th>
+                  <th >Monthly</th>
+                  <th hidden={isNotMobile}>Last Charged</th>
+                  <th hidden={isNotMobile}>Card</th>
+                  <th hidden={isNotMobile}>Ends with</th>
+                  <th hidden={isNotMobile}>Expires</th>
+                  <th hidden={isNotMobile}>Canceled</th>
+                  <th >Info</th>
+                </tr>
+              </thead>
+              <tbody>{this.state.journal.map(function (item, key) {
+                if (item.record_enum === "SUBSCRIPTION_SETUP_AND_INITIAL") {
+                  let active = item.subscription_canceled_at === "None" && item.subscription_ended_at === "None";
+                  let cancel = item.subscription_canceled_at !== "None" ?
+                    moment.utc(item.subscription_canceled_at).format("MMM D, YYYY") : "";
+                  let lastcharged = item.last_charged === "None" ? "" :
+                    moment.utc(item.last_charged).format("MMM D, YYYY");
+                  let waiting = item.amount === "0.00";
+                  return <tr key={key}>
+                    <td hidden={isNotMobile}>{active ? "Active" : "----"}</td>
+                    <td >{moment.utc(item.created).format("MMM D, YYYY")}</td>
+                    <td >{!waiting ? item.amount : "waiting"}</td>
+                    <td hidden={isNotMobile}>{!waiting ? lastcharged : "waiting"}</td>
+                    <td hidden={isNotMobile}>{!waiting ? item.brand : "waiting"}</td>
+                    <td hidden={isNotMobile}>{!waiting ? "... " + item.last4 : "waiting"}</td>
+                    <td >{!waiting > 0 ?
+                      item.exp_month + "/" + item.exp_year : "waiting"}</td>
+                    <td hidden={isNotMobile}>{cancel}</td>
+                    <td >
+                      {active ? <DonationCancelOrRefund item={item} refundDonation={donations}/> :
+                        cancel.length > 0 ? "canceled" : null}</td>
+                  </tr>;
+                } else {
+                  return null;
+                }
               }
-            })}
-            </tbody>
-          </Table>
-        </Panel>;
+              )}
+              </tbody>
+            </Table>
+          </Card.Body>
+        </Card>;
       }
     } else {
       return null;

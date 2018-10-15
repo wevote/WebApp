@@ -6,7 +6,7 @@ import BallotStore from "../../stores/BallotStore";
 import BookmarkStore from "../../stores/BookmarkStore";
 import CandidateStore from "../../stores/CandidateStore";
 import cookies from "../../utils/cookies";
-import { historyPush, isWebApp } from "../../utils/cordovaUtils";
+import { hasIPhoneNotch, historyPush, isWebApp } from "../../utils/cordovaUtils";
 import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -196,9 +196,9 @@ export default class HeaderBackToVoterGuides extends Component {
   imagePlaceholder (speakerType) {
     let imagePlaceholderString = "";
     if (isSpeakerTypeOrganization(speakerType)) {
-      imagePlaceholderString = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} /></div>;
+      imagePlaceholderString = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
     } else {
-      imagePlaceholderString = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} /></div>;
+      imagePlaceholderString = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
     }
 
     return imagePlaceholderString;
@@ -240,14 +240,14 @@ export default class HeaderBackToVoterGuides extends Component {
     let backToLink = "/settings/voterguidelist"; //default
     let backToOrganizationLinkText = "Back to Voter Guides";
 
-    if (stringContains("/settings/menu", this.props.pathname)){
+    if (stringContains("/settings/menu", this.props.pathname)) {
       backToOrganizationLinkText = "Back to Your Voter Guides";
       if (isWebApp()) {
         backToLink = isMobile() ? "/settings/voterguidesmenu" : "/settings/voterguidelist";
       } else {
         backToLink = "/settings/voterguidesmenu";
       }
-    } else if (stringContains("/settings/general", this.props.pathname) || stringContains("/settings/positions", this.props.pathname)){
+    } else if (stringContains("/settings/general", this.props.pathname) || stringContains("/settings/positions", this.props.pathname)) {
       let voterGuideWeVoteId = this.props.params.voter_guide_we_vote_id;
       if (isMobile()) {
         backToOrganizationLinkText = "Voter Guide Options";
@@ -260,7 +260,7 @@ export default class HeaderBackToVoterGuides extends Component {
 
         backToLink = "/settings/voterguidelist";
       }
-    } else if (stringContains("/vg/", this.props.pathname) && stringContains("/settings", this.props.pathname)){
+    } else if (stringContains("/vg/", this.props.pathname) && stringContains("/settings", this.props.pathname)) {
       backToOrganizationLinkText = "Back to Your Voter Guides";
 
       backToLink = "/settings/voterguidelist";
@@ -271,16 +271,16 @@ export default class HeaderBackToVoterGuides extends Component {
     return (
       <header className={ isWebApp() ? "page-header" : "page-header page-header__cordova" }>
 
-        <Button className={"btn btn-sm btn-default page-header__backToButton  hidden-xs"}
+        <Button bsPrefix={`btn btn-sm btn-default page-header__backToButton d-none d-sm-block ${hasIPhoneNotch() ? "page-header__backToButtonIPhoneX" : ""}`}
                 onClick={ () => historyPush(backToLink) }>
           <span className="fa fa-arrow-left"/> {backToOrganizationLinkText}
         </Button>
-        <Button className={"btn btn-sm btn-default page-header__backToButton visible-xs"}
+        <Button bsPrefix={`btn btn-sm btn-default page-header__backToButton d-block d-sm-none ${hasIPhoneNotch() ? "page-header__backToButtonIPhoneX" : ""}`}
                 onClick={ () => historyPush(backToLink) }>
           <span className="fa fa-arrow-left"/> {backToOrganizationLinkTextMobile}
         </Button>
 
-        <span className="hidden-xs">
+        <span className="d-none d-sm-block">
           <SearchAllBox />
         </span>
 

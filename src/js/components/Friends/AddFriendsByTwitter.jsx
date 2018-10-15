@@ -164,7 +164,7 @@ export default class AddFriendsByTwitter extends Component {
                   tabIndex="0"
                   onKeyDown={this.onKeyDown.bind(this)}
                   onClick={this.AddFriendsByTwitterStepsManager.bind(this)}
-                  bsStyle="primary"
+                  variant="primary"
                   disabled={!this.state.twitter_handles}
                 >
                   { this.hasValidEmail() ?

@@ -144,16 +144,16 @@ export default class BallotLocationChoices extends Component {
     // console.log("In BallotLocationChoices render, ballot_location_list: ", this.state.ballot_location_list);
     if (this.state.ballot_location_list && this.state.ballot_location_list.length) {
       //  className="container-fluid card"
-      return <div className="u-stack--sm ballot-locations hidden-print">
+      return <div className="u-stack--sm ballot-locations d-print-none">
         { this.props.showElectionName ?
           <h4 className="h4">
-            {electionName} <span className="hidden-xs">&mdash; </span>
+            {electionName} <span className="d-none d-sm-block">&mdash; </span>
             <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
           </h4> :
           null }
         <div className="btn-group">
           {/* Mobile display of buttons */}
-          <div className="visible-xs">
+          <div className="d-block d-sm-none">
             {this.state.ballot_location_list.slice(0, default_number_of_ballot_locations_mobile).map((ballot_location, key) => {
               return <BallotLocationButton key={key} ballot_location={ballot_location} goToDifferentBallot={this.goToDifferentBallot} />;
             })}
@@ -172,7 +172,7 @@ export default class BallotLocationChoices extends Component {
           </div>
 
           {/* Desktop display of buttons */}
-          <div className="hidden-xs">
+          <div className="d-none d-sm-block">
             {this.state.ballot_location_list.slice(0, default_number_of_ballot_locations_desktop).map((ballot_location, key) => {
               return <BallotLocationButton key={key} ballot_location={ballot_location} goToDifferentBallot={this.goToDifferentBallot} />;
             })}

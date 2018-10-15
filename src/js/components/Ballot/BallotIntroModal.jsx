@@ -5,7 +5,7 @@ import Slider from "react-slick";
 import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
 import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
 import BallotIntroVerifyAddress from "../../components/Ballot/BallotIntroVerifyAddress";
-import { cordovaDot, isIPhoneX } from "../../utils/cordovaUtils";
+import { cordovaDot, hasIPhoneNotch } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import VoterActions from "../../actions/VoterActions";
 
@@ -56,14 +56,12 @@ export default class BallotIntroModal extends Component {
       arrows: false,
     };
 
-    let closeAnchorClass = isIPhoneX() ? "intro-modal__close-anchor intro-modal__close-anchor-iphonex" : "intro-modal__close-anchor";
-
-    return <Modal bsClass="background-brand-blue modal"
+    return <Modal bsPrefix="background-brand-blue modal"
                   show={this.props.show}
                   onHide={this.props.toggleFunction}>
       <Modal.Body>
         <div className="intro-modal__close">
-          <a onClick={this.props.toggleFunction} className={closeAnchorClass}>
+          <a onClick={this.props.toggleFunction} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}>
             <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
           </a>
         </div>

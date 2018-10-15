@@ -132,11 +132,11 @@ export default class VoterGuideListDashboard extends Component {
 
     return <div className="settings-dashboard">
       {/* Header Spacing for Desktop */}
-      <div className="hidden-xs hidden-print">
+      <div className="d-none d-sm-block d-print-none">
         <SettingsBannerAndOrganizationCard organization={this.state.organization} />
       </div>
       {/* Header Spacing for Mobile */}
-      <div className="visible-xs hidden-print">
+      <div className="d-block d-sm-none d-print-none">
         <SettingsBannerAndOrganizationCard organization={this.state.organization} />
       </div>
 
@@ -147,7 +147,7 @@ export default class VoterGuideListDashboard extends Component {
             <SelectVoterGuidesSideBar />
           </div>
 
-          <div className="hidden-xs col-md-8">
+          <div className="d-none d-sm-block col-md-8">
             { !this.state.voter.is_signed_in ?
               <SettingsAccount /> :
               null }

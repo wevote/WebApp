@@ -127,7 +127,7 @@ export default class Network extends Component {
           <h3 className="h3 text-center">Build Your We Vote Network</h3>
 
           {/* Desktop view */}
-          <div className="hidden-xs buttons-container">
+          <div className="d-none d-sm-block buttons-container">
             { this.state.voter.signed_in_twitter ?
               null :
               <div className="network-btn">
@@ -187,19 +187,19 @@ export default class Network extends Component {
       <div className="row">
         <div className="col-sm-12 col-md-8">
           <div className="tabs__tabs-container-wrap">
-            <div className="tabs__tabs-container hidden-print">
+            <div className="tabs__tabs-container d-print-none">
               <ul className="nav tabs__tabs">
                 <li className="tab-item">
                   <Link to={{ pathname: "/more/network/friends" }} className={this.state.edit_mode === "friends" ? "tab tab-active" : "tab tab-default"}>
-                    <span className="visible-xs">Requests</span>
-                    <span className="hidden-xs">Friend Requests</span>
+                    <span className="d-block d-sm-none">Requests</span>
+                    <span className="d-none d-sm-block">Friend Requests</span>
                   </Link>
                 </li>
 
                 <li className="tab-item">
                   <Link to="/more/network/organizations" className={this.state.edit_mode === "organizations" ? "tab tab-active" : "tab tab-default"}>
-                    <span className="visible-xs">Organizations</span>
-                    <span className="hidden-xs">Listen to Organizations</span>
+                    <span className="d-block d-sm-none">Organizations</span>
+                    <span className="d-none d-sm-block">Listen to Organizations</span>
                   </Link>
                 </li>
               </ul>
@@ -208,7 +208,7 @@ export default class Network extends Component {
           {networkComponentToDisplay}
         </div>
 
-        <div className="col-md-4 hidden-xs">
+        <div className="col-md-4 d-none d-sm-block">
           <NetworkOpinionsFollowed />
           <NetworkFriends />
           <NetworkIssuesFollowed />

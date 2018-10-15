@@ -27,8 +27,8 @@ export default class ItemSupportOpposeCounts extends Component {
   }
 
   percentageMajority () {
-    const { support_count, oppose_count } = this.state.supportProps;
-    return Math.round(100 * Math.max(support_count, oppose_count) / (support_count + oppose_count));
+    const { support_count: supportCount, oppose_count: opposeCount } = this.state.supportProps;
+    return supportCount + opposeCount > 0 ? Math.round(100 * Math.max(supportCount, opposeCount) / (supportCount + opposeCount)) : 0;
   }
 
   render () {
@@ -37,76 +37,78 @@ export default class ItemSupportOpposeCounts extends Component {
       return null;
     }
 
-    let { support_count, oppose_count, is_support, is_oppose } = this.state.supportProps;
-    if (support_count === undefined || oppose_count === undefined || is_support === undefined || is_oppose === undefined) {
+    let { support_count: supportCount, oppose_count: opposeCount, is_support: isSupport, is_oppose: isOppose } = this.state.supportProps;
+    if (supportCount === undefined || opposeCount === undefined || isSupport === undefined || isOppose === undefined) {
       return null;
     }
 
-    let bar_style = {
+    let barStyle = {
       width: this.percentageMajority() + "%",
     };
 
-    let empty_bar_style = {
+    let emptyBarStyle = {
       borderWidth: "0",
       width: "100%",
     };
 
-    let is_empty = support_count === 0 && oppose_count === 0;
-    let is_support_and_oppose = support_count !== 0 && oppose_count !== 0;
-    let is_majority_support = support_count >= oppose_count;
+    let isEmpty = supportCount === 0 && opposeCount === 0;
+    let isSupportAndOppose = supportCount !== 0 && opposeCount !== 0;
+    let isMajoritySupport = supportCount >= opposeCount;
 
-    let background_bar_class_name;
-    if (is_support_and_oppose && is_majority_support) {
+    let backgroundBarClassName;
+    if (isSupportAndOppose && isMajoritySupport) {
       // If there are both support and oppose positions, change the color of the bar background to the minority position
-      background_bar_class_name = "network-positions__bar-well red-bar";
-    } else if (is_support_and_oppose && !is_majority_support) {
+      backgroundBarClassName = "network-positions__bar-well red-bar";
+    } else if (isSupportAndOppose && !isMajoritySupport) {
       // If there are both support and oppose positions, change the color of the bar background to the minority position
-      background_bar_class_name = "network-positions__bar-well green-bar";
+      backgroundBarClassName = "network-positions__bar-well green-bar";
     } else {
-      background_bar_class_name = "network-positions__bar-well";
+      backgroundBarClassName = "network-positions__bar-well";
     }
 
     let supportOpposePopoverText = "This is a summary of the “support” and “oppose” positions from your network.";
     if (!this.props.positionBarIsClickable) {
       supportOpposePopoverText += " Click to see more detail.";
     }
+
     const supportOpposePopoverTooltip = <Tooltip id="supportOpposeTooltip">{supportOpposePopoverText}</Tooltip>;
 
     let nonSupportOpposePopoverText = "This will show a summary of the “support” and “oppose” positions from your network.";
     if (!this.props.positionBarIsClickable) {
       nonSupportOpposePopoverText += " Click to see voter guides you can listen to.";
     }
+
     const nonSupportOpposePopoverTooltip = <Tooltip id="nonSupportOpposeTooltip">{nonSupportOpposePopoverText}</Tooltip>;
 
-    return <div className={ this.state.guideProps && this.state.guideProps.length && is_empty ? "hidden-xs hidden-print network-positions" : "network-positions" }>
+    return <div className={ this.state.guideProps && this.state.guideProps.length && isEmpty ? "d-none d-sm-block d-print-none network-positions" : "network-positions" }>
       {/* <div className="network-positions__bar-label">
-       { !is_empty ?
+       { !isEmpty ?
        "Positions in your network" :
        "No positions in your network"
        }
        </div> */}
       <div className="network-positions__support">
-        <img src={ !is_empty && is_majority_support ? cordovaDot("/img/global/icons/up-arrow-color-icon.svg") : cordovaDot("/img/global/icons/up-arrow-gray-icon.svg") }
+        <img src={ !isEmpty && isMajoritySupport ? cordovaDot("/img/global/icons/up-arrow-color-icon.svg") : cordovaDot("/img/global/icons/up-arrow-gray-icon.svg") }
              className="network-positions__support-icon u-push--xs" width="20" height="20" />
         <div className="network-positions__count">
-          { !is_empty ? support_count : null }
+          { !isEmpty ? supportCount : null }
           <span className="sr-only"> Support</span>
         </div>
       </div>
-      {is_empty ?
-        <div className={background_bar_class_name}>
+      {isEmpty ?
+        <div className={backgroundBarClassName}>
           <OverlayTrigger container={this} placement="top" overlay={nonSupportOpposePopoverTooltip}>
-            <div className="network-positions__bar" style={ !is_empty ? bar_style : empty_bar_style } >
+            <div className="network-positions__bar" style={ !isEmpty ? barStyle : emptyBarStyle } >
               <span className="sr-only">Empty position bar</span>
             </div>
           </OverlayTrigger>
         </div> :
-        <div className={background_bar_class_name}>
+        <div className={backgroundBarClassName}>
           <OverlayTrigger container={this} placement="top" overlay={supportOpposePopoverTooltip}>
-            <div className={ is_majority_support ?
+            <div className={ isMajoritySupport ?
               "network-positions__bar network-positions__bar--majority network-positions__bar--support" :
               "network-positions__bar network-positions__bar--majority network-positions__bar--oppose" }
-                 style={ !is_empty ? bar_style : empty_bar_style }>
+                 style={ !isEmpty ? barStyle : emptyBarStyle }>
               <span className="sr-only">{this.percentageMajority()}% Supports</span>
             </div>
           </OverlayTrigger>
@@ -115,10 +117,10 @@ export default class ItemSupportOpposeCounts extends Component {
 
       <div className="network-positions__oppose">
         <div className="network-positions__count u-push--xs">
-          { !is_empty ? oppose_count : null }
+          { !isEmpty ? opposeCount : null }
           <span className="sr-only"> Oppose</span>
         </div>
-        <img src={ !is_empty && !is_majority_support ? cordovaDot("/img/global/icons/down-arrow-color-icon.svg") : cordovaDot("/img/global/icons/down-arrow-gray-icon.svg") }
+        <img src={ !isEmpty && !isMajoritySupport ? cordovaDot("/img/global/icons/down-arrow-color-icon.svg") : cordovaDot("/img/global/icons/down-arrow-gray-icon.svg") }
              className="network-positions__oppose-icon" width="20" height="20" />
       </div>
     </div>;

@@ -216,10 +216,10 @@ export default class Intro extends Component {
       <section className="hero__section__container">
         <div className="hero__section" style={isCordova() ? { backgroundImage: "url(./img/welcome/header-image-desktop.png)" } : null} >
           <div className="container">
-            <Row className="hero__section__row">
+            <Row bsPrefix="hero__section__row">
               <div className="col-md-12">
                 {/* Mobile View */}
-                <Row className="visible-xs">
+                <Row bsPrefix="d-block d-sm-none">
                   <h1 className="col-sm-12 u-f1 u-stack--md">
                     View your ballot.<br />
                     Learn from friends.<br />
@@ -252,7 +252,7 @@ export default class Intro extends Component {
                   </h1>
                 </Row>
                 {/* Desktop View */}
-                <Row className="hidden-xs">
+                <Row bsPrefix="d-none d-sm-block">
                   <h1 className="col-md-6 u-f1 u-stack--lg">
                     View your ballot.<br />
                     Learn from friends.
@@ -305,7 +305,7 @@ export default class Intro extends Component {
                         <h2 className="form__header">Sign up to get updates about We Vote.</h2>
 
                         <form className="row form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
-                          <FormGroup className="col-md-4">
+                          <FormGroup bsPrefix="col-md-4">
                             <label className="sr-only" htmlFor="name">Name</label>
                             <input className="form-control"
                                    type="text"
@@ -315,7 +315,7 @@ export default class Intro extends Component {
                                    onChange={this.updateVoterFullName.bind(this)}
                                    placeholder="Name"/>
                           </FormGroup>
-                          <FormGroup className="col-md-4">
+                          <FormGroup bsPrefix="col-md-4">
                             <label className="sr-only" htmlFor="exampleEmail">Email</label>
                             <input className="form-control"
                                    type="email"
@@ -325,15 +325,15 @@ export default class Intro extends Component {
                                    onChange={this.updateVoterEmailAddress.bind(this)}
                                    placeholder="Email Address"/>
                           </FormGroup>
-                          <FormGroup className="col-md-4">
+                          <FormGroup bsPrefix="col-md-4">
                             {this.state.submit_enabled ?
-                              <Button className="form-control"
-                                      bsStyle="success"
+                              <Button bsPrefix="form-control"
+                                      variant="success"
                                       type="submit"
                                       onClick={this.voterEmailAddressSignUpSave.bind(this)}
                               >Sign Up</Button> :
-                              <Button className="form-control form__button--disabled"
-                                      bsStyle="success"
+                              <Button bsPrefix="form-control form__button--disabled"
+                                      variant="success"
                                       type="submit"
                                       disabled
                                       onClick={this.voterEmailAddressSignUpSave.bind(this)}
@@ -356,17 +356,17 @@ export default class Intro extends Component {
         <div className="container">
           <div className="features-your-mission__block">
             <div className="features__title">Your Mission:<br />
-              <span className="hidden-xs h2">Vote your values to make the world a better place.</span>
-              <span className="visible-xs h4">Make the world a better place.</span>
+              <span className="d-none d-sm-block h2">Vote your values to make the world a better place.</span>
+              <span className="d-block d-sm-none h4">Make the world a better place.</span>
             </div>
           </div>
-          <Row className="u-stack--lg">
+          <Row bsPrefix="u-stack--lg">
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row1" onClick={this._toggleBallotFeature}>
                 <Link to={"/wevoteintro/network"}>
-                  <img className={ this.state.show_features_ballot ? "hidden-xs features__image" : "features__image" } src={cordovaDot("/img/welcome/benefits/view-your-ballot.svg")} width="55%" />
+                  <img className={ this.state.show_features_ballot ? "d-none d-sm-block features__image" : "features__image" } src={cordovaDot("/img/welcome/benefits/view-your-ballot.svg")} width="55%" />
                   <h3 className="features__h3">View Your Ballot</h3>
-                  <p className={ this.state.show_features_ballot ? "features__p" : "features__p hidden-xs" }>See your actual ballot, including candidates and measures.</p>
+                  <p className={ this.state.show_features_ballot ? "features__p" : "features__p d-none d-sm-block" }>See your actual ballot, including candidates and measures.</p>
 
                 </Link>
               </div>
@@ -375,9 +375,9 @@ export default class Intro extends Component {
               <div className="features__block features__block__row1" onClick={this._toggleOrganizationsFeature}>
                 <Link to={"/more/network/issues"}>
 
-                    <img className={ this.state.show_features_organizations ? "hidden-xs features__image" : "features__image" } src={cordovaDot("/img/welcome/benefits/learn-issues-orgs.svg")} width="60%" />
+                    <img className={ this.state.show_features_organizations ? "d-none d-sm-block features__image" : "features__image" } src={cordovaDot("/img/welcome/benefits/learn-issues-orgs.svg")} width="60%" />
                     <h3 className="features__h3">Learn From Issues and Organizations</h3>
-                    <p className={ this.state.show_features_organizations ? "features__p" : "features__p hidden-xs" }>Follow the issues and Listen to the voter guides of groups you trust. See what they support or oppose.</p>
+                    <p className={ this.state.show_features_organizations ? "features__p" : "features__p d-none d-sm-block" }>Follow the issues and Listen to the voter guides of groups you trust. See what they support or oppose.</p>
 
                 </Link>
               </div>
@@ -385,43 +385,43 @@ export default class Intro extends Component {
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row2" onClick={this._togglePositionsFeature}>
                 <Link to={"/ballot"}>
-                  <img className={ this.state.show_features_positions ? "hidden-xs features__image" : "features__image" } src={ cordovaDot("/img/welcome/benefits/network-position.svg") } />
+                  <img className={ this.state.show_features_positions ? "d-none d-sm-block features__image" : "features__image" } src={ cordovaDot("/img/welcome/benefits/network-position.svg") } />
 
                   <h3 className="features__h3">See Your Network's Positions</h3>
-                  <p className={ this.state.show_features_positions ? "features__p" : "features__p hidden-xs" }>See how many in your network support or oppose each candidate or measure.</p>
+                  <p className={ this.state.show_features_positions ? "features__p" : "features__p d-none d-sm-block" }>See how many in your network support or oppose each candidate or measure.</p>
                 </Link>
               </div>
             </div>
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row2" onClick={this._toggleNetworkFeature}>
                 <Link to={"/more/network/friends"}>
-                  <img className={ this.state.show_features_network ? "hidden-xs features__image" : "features__image" } src={ cordovaDot("/img/welcome/benefits/choose-friends.svg")} width="60%" />
+                  <img className={ this.state.show_features_network ? "d-none d-sm-block features__image" : "features__image" } src={ cordovaDot("/img/welcome/benefits/choose-friends.svg")} width="60%" />
                   <h3 className="features__h3">Invite Friends to Your We Vote Network</h3>
-                  <p className={ this.state.show_features_network ? "features__p" : "features__p hidden-xs" }>Talk politics with friends who share your values. Avoid flame wars!</p>
+                  <p className={ this.state.show_features_network ? "features__p" : "features__p d-none d-sm-block" }>Talk politics with friends who share your values. Avoid flame wars!</p>
                 </Link>
               </div>
             </div>
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row3" onClick={this._toggleVisionFeature}>
                 <Link to={"/voterguidegetstarted"}>
-                  <img className={ this.state.show_features_vision ? "hidden-xs features__image" : "features__image" } src={ cordovaDot("/img/welcome/benefits/share-vision.svg")} width="55%" />
+                  <img className={ this.state.show_features_vision ? "d-none d-sm-block features__image" : "features__image" } src={ cordovaDot("/img/welcome/benefits/share-vision.svg")} width="55%" />
                   <h3 className="features__h3">Share Your Vision</h3>
-                  <p className={ this.state.show_features_vision ? "features__p" : "features__p hidden-xs" }>Empower other voters with what you've learned. Help your friends.</p>
+                  <p className={ this.state.show_features_vision ? "features__p" : "features__p d-none d-sm-block" }>Empower other voters with what you've learned. Help your friends.</p>
                 </Link>
               </div>
             </div>
             <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
               <div className="features__block features__block__row3" onClick={this._toggleVoteFeature}>
                 <Link to={"/wevoteintro/network"}>
-                  <img className={ this.state.show_features_vote ? "hidden-xs features__image" : "features__image" } src={ cordovaDot("/img/welcome/benefits/decide.svg")} width="60%" />
+                  <img className={ this.state.show_features_vote ? "d-none d-sm-block features__image" : "features__image" } src={ cordovaDot("/img/welcome/benefits/decide.svg")} width="60%" />
                   <h3 className="features__h3">Decide & Vote</h3>
-                  <p className={ this.state.show_features_vote ? "features__p" : "features__p hidden-xs" }>Cast your vote with confidence after using We Vote.</p>
+                  <p className={ this.state.show_features_vote ? "features__p" : "features__p d-none d-sm-block" }>Cast your vote with confidence after using We Vote.</p>
                 </Link>
               </div>
             </div>
           </Row>
 
-          <Button bsStyle="danger" bsSize="large" className="u-stack--md center-block" onClick={this.goToGetStarted}>Get Started</Button>
+          <Button variant="danger" size="large" bsPrefix="u-stack--md center-block" onClick={this.goToGetStarted}>Get Started</Button>
         </div>
       </section>
 
@@ -447,8 +447,8 @@ export default class Intro extends Component {
             <span>
               <h3 className="u-f3 u-stack--lg">{pleaseShareString}</h3>
               <div className="u-stack--lg">
-                <Button className="btn btn-social btn-facebook u-push--sm"
-                        bsStyle="danger"
+                <Button bsPrefix="btn btn-social btn-facebook u-push--sm"
+                        variant="danger"
                         type="submit"
                         onClick={this.shareToFacebookButton}>
                   <span className="fa fa-facebook"/> Facebook
@@ -456,8 +456,8 @@ export default class Intro extends Component {
                 <OpenExternalWebSite url={twitterIntent}
                                      target="_blank"
                                      title="Share to Twitter"
-                                     body={<Button className="btn btn-social btn-twitter u-push--sm"
-                                                   bsStyle="danger">
+                                     body={<Button bsPrefix="btn btn-social btn-twitter u-push--sm"
+                                                   variant="danger">
                                               <span className="fa fa-twitter" /><span> Twitter</span>
                                            </Button>}
                 />
