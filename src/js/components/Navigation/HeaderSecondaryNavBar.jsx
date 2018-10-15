@@ -173,10 +173,10 @@ export default class HeaderSecondaryNavBar extends Component {
 
     let voterThoroughOrientationComplete = false;  // Have all of the 3 (this once was 6) major steps been taken?
     const BallotIntroFollowIssuesModal =
-      <Modal  bsPrefix="background-brand-blue modal"
-              id="ballotIntroFollowIssuesId"
-              show={this.state.showBallotIntroFollowIssues}
-              onHide={this._toggleBallotIntroFollowIssues}>
+      <Modal bsPrefix="background-brand-blue modal"
+             id="ballotIntroFollowIssuesId"
+             show={this.state.showBallotIntroFollowIssues}
+             onHide={this._toggleBallotIntroFollowIssues}>
         <Modal.Body>
           <div className="intro-modal__close">
             <a onClick={this._toggleBallotIntroFollowIssues} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}>

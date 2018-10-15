@@ -46,7 +46,7 @@ export default class SecondaryNavBarItem extends Component {
     } else if (this.props.iconMapMarker) {
       // icon = <span className="glyphicon glyphicon-map-marker fa-2x"/>;
       // icon = <i className="fa fa-map-marker fa-2x"/>;
-      icon = <Icon name="glyphicons-pro-halflings/glyphicons-halflings-62-map-marker" color={"#51708e"} width={40} height={40}  />;
+      icon = <Icon name="glyphicons-pro-halflings/glyphicons-halflings-62-map-marker" color={"#51708e"} width={40} height={40} />;
     } else {
       icon = <img className={`glyphicon nav-secondary-nav__image${this.props.completed ? "--fade" : ""}`} src={this.props.source}/>;
     }

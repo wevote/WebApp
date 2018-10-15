@@ -5,13 +5,18 @@
   ],
   "rules": {
     "at-rule-empty-line-before": null,
+    "at-rule-no-unknown": [true, {
+      "ignoreAtRules": ["content", "each", "else", "error", "extend", "for", "function", "if", "include", "mixin", "return", "warn", "while"]
+    }],
     "block-closing-brace-newline-after": ["always-multi-line", {
       "ignoreAtRules": ["if", "else"]
     }],
     "block-opening-brace-space-before": "always-multi-line",
     "color-hex-case": "lower",
     "declaration-empty-line-before": null,
+    "font-family-no-missing-generic-family-keyword": null,
     "max-empty-lines": 3,
+    "no-descending-specificity": null,
     "number-leading-zero": "never",
     "rule-empty-line-before": null,
     "selector-max-id": 0,
@@ -32,6 +37,7 @@
     "**/vendor/**/*.scss",
     "**/_normalize.scss",
     "**/overrides/_print.scss",
+    "**/components/_bootstrap3LeftBehind.scss",
     "**/components/_nps-input.scss"
   ]
 }

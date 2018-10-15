@@ -30,7 +30,8 @@ export default class Organization extends Component {
           <ToolBar />
 
           <br />
-          <ReactPlayer url="https://player.vimeo.com/video/121315141" width="400px" height="308px"/>
+          <ReactPlayer url="https://www.youtube.com/embed/s8fGNj_nvWs" width="300px" height="168px"/>
+          {/* <ReactPlayer url="https://player.vimeo.com/video/121315141" width="400px" height="308px"/> */}
           <br />
           We Vote is building the next generation of voting tech. We're creating a digital voter guide
           informed by issues you care about and people you trust. Through our nonpartisan, open source platform,
