@@ -6,6 +6,7 @@ module.exports = {
   WE_VOTE_SERVER_ROOT_URL: "https://api.wevoteusa.org/",
   WE_VOTE_SERVER_ADMIN_ROOT_URL: "https://api.wevoteusa.org/admin/",
   WE_VOTE_SERVER_API_ROOT_URL: "https://api.wevoteusa.org/apis/v1/",
+  WE_VOTE_SERVER_API_CDN_ROOT_URL: "https://cdn.wevoteusa.org/apis/v1/",
 
   DEBUG_MODE: false,
 

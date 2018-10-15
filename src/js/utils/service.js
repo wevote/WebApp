@@ -9,6 +9,7 @@ import { httpLog } from "../utils/logging";
 const defaults = {
   dataType: "json",
   baseUrl: webAppConfig.WE_VOTE_SERVER_API_ROOT_URL,
+  baseCdnUrl: webAppConfig.WE_VOTE_SERVER_API_CDN_ROOT_URL,
   url: webAppConfig.WE_VOTE_SERVER_API_ROOT_URL,
   query: {},
   type: "GET",
@@ -35,11 +36,16 @@ const defaults = {
 export function $ajax (options) {
   if (!options.endpoint) throw new Error("$ajax missing endpoint option");
 
-  options.data = assign({}, defaults.data(), options.data || {});
   options.crossDomain = true;
   options.success = options.success || defaults.success;
   options.error = options.error || defaults.error;
-  options.url = url.resolve(defaults.baseUrl, options.endpoint) + "/";
+  if (options.endpoint === "TBD_CDN_API_CALL") {
+    options.data = assign({}, options.data || {});  // Do not pass voter_device_id
+    options.url = url.resolve(defaults.baseCdnUrl, options.endpoint) + "/";
+  } else {
+    options.data = assign({}, defaults.data(), options.data || {});
+    options.url = url.resolve(defaults.baseUrl, options.endpoint) + "/";
+  }
 
   httpLog("AJAX URL: " + options.url);
   if (options.endpoint === "voterRetrieve") {

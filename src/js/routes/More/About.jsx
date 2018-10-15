@@ -32,7 +32,8 @@ export default class About extends Component {
         <ToolBar hideGitHub />
 
         <div className="u-inset--sm"/>
-        <ReactPlayer url="https://player.vimeo.com/video/121315141" width="300px" height="231px"/>
+        <ReactPlayer url="https://www.youtube.com/embed/s8fGNj_nvWs" width="300px" height="168px"/>
+        {/* <ReactPlayer url="https://player.vimeo.com/video/121315141" width="300px" height="231px"/> */}
         <div className="our-story">
           <h3 className="h3">A Nonprofit Startup</h3>
           <p>

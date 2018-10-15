@@ -179,6 +179,7 @@ class VoterGuideStore extends ReduceStore {
     let all_cached_voter_guides_by_election;
     let all_cached_voter_guides_by_organization;
     let all_cached_voter_guides_by_voter_guide;
+    let is_empty;
     let google_civic_election_id;
     let organization_we_vote_id;
     let replaced_existing_voter_guide;
@@ -289,7 +290,7 @@ class VoterGuideStore extends ReduceStore {
 
       case "voterGuidesToFollowRetrieve":
         voter_guides = action.res.voter_guides;
-        let is_empty = voter_guides.length === 0;
+        is_empty = voter_guides.length === 0;
         let search_term_exists = action.res.search_string !== "";
         let election_id_exists = action.res.google_civic_election_id !== 0;
         let ballot_item_we_vote_id_exists = action.res.ballot_item_we_vote_id !== "";
@@ -440,6 +441,160 @@ class VoterGuideStore extends ReduceStore {
             };
           }
         }
+
+      // case "voterGuidesUpcomingRetrieve": // New, static list of all public voter guides
+      //   voter_guides = action.res.voter_guides;
+      //   is_empty = voter_guides.length === 0;
+      //   let search_term_exists = action.res.search_string !== "";
+      //   let election_id_exists = action.res.google_civic_election_id !== 0;
+      //   let ballot_item_we_vote_id_exists = action.res.ballot_item_we_vote_id !== "";
+      //   let filter_voter_guides_by_issue = action.res.filter_voter_guides_by_issue;
+      //
+      //   // If no voter guides found , and it's not a search query, retrieve results for all elections
+      //   if (is_empty && election_id_exists && !search_term_exists ) {
+      //     // console.log("VoterGuideStore CALLING voterGuidesToFollowRetrieve again");
+      //     VoterGuideActions.voterGuidesToFollowRetrieve(0);
+      //     return state;
+      //   }
+      //
+      //   all_cached_voter_guides = state.all_cached_voter_guides;
+      //   all_cached_voter_guides_by_election = state.all_cached_voter_guides_by_election;
+      //   var organization_we_vote_id_list_from_voter_guides_returned = [];
+      //   voter_guides.forEach( one_voter_guide => {
+      //     // console.log("VoterGuideStore voterGuidesToFollowRetrieve one_voter_guide.google_civic_election_id: ", one_voter_guide.google_civic_election_id);
+      //     all_cached_voter_guides[one_voter_guide.organization_we_vote_id] = one_voter_guide;
+      //     if (all_cached_voter_guides_by_election[one_voter_guide.organization_we_vote_id] === undefined) {
+      //       all_cached_voter_guides_by_election[one_voter_guide.organization_we_vote_id] = [];
+      //     }
+      //     all_cached_voter_guides_by_election[one_voter_guide.organization_we_vote_id][one_voter_guide.google_civic_election_id] = one_voter_guide;
+      //     organization_we_vote_id_list_from_voter_guides_returned.push(one_voter_guide.organization_we_vote_id);
+      //   });
+      //
+      //   // Now store the voter_guide information by ballot_item (i.e., which organizations have positions on each ballot_item)
+      //   // let existing_voter_guide_ids_for_one_ballot_item;
+      //   let updated_voter_guide_ids_for_one_ballot_item = [];
+      //   let organization_we_vote_ids_to_follow_by_issues_followed = [];
+      //   // Start with previous list
+      //   let organization_we_vote_ids_to_follow_ballot_items_dict = state.organization_we_vote_ids_to_follow_ballot_items_dict;
+      //   if (ballot_item_we_vote_id_exists) {
+      //     // Go through each of the voter_guides that was just returned. If the existing_voter_guides does not contain
+      //     //  that voter_guide organization_we_vote_id, then add it.
+      //     voter_guides.forEach( one_voter_guide => {
+      //       // Add voter guides if they don't already exist
+      //       if (!updated_voter_guide_ids_for_one_ballot_item.includes(one_voter_guide.organization_we_vote_id)) {
+      //         updated_voter_guide_ids_for_one_ballot_item.push(one_voter_guide.organization_we_vote_id);
+      //       }
+      //     });
+      //     // And finally update new_ballot_items with all voter guide ids that can be followed
+      //     organization_we_vote_ids_to_follow_ballot_items_dict[action.res.ballot_item_we_vote_id] = updated_voter_guide_ids_for_one_ballot_item;
+      //     // console.log("updated_voter_guide_ids_for_one_ballot_item: ", updated_voter_guide_ids_for_one_ballot_item);
+      //
+      //     return {
+      //       ...state,
+      //       ballot_has_guides: search_term_exists || election_id_exists,
+      //       organization_we_vote_ids_to_follow_for_latest_ballot_item: updated_voter_guide_ids_for_one_ballot_item,
+      //       organization_we_vote_ids_to_follow_ballot_items_dict: organization_we_vote_ids_to_follow_ballot_items_dict,
+      //       all_cached_voter_guides: all_cached_voter_guides,
+      //       all_cached_voter_guides_by_election: all_cached_voter_guides_by_election,
+      //       voterGuidesToFollowRetrieveStopped: false,
+      //     };
+      //   } else {
+      //     // Go voter_guide-by-voter_guide and add them to each ballot_item
+      //     // We assume here that we have a complete set of voter guides, so for every ballot_item we_vote_id
+      //     //  we bring in, we clear out all earlier organization we_vote_id's at start
+      //     // console.log("Object.keys: ", Object.keys(organization_we_vote_ids_to_follow_ballot_items_dict));
+      //     let ballot_items_we_are_tracking = Object.keys(organization_we_vote_ids_to_follow_ballot_items_dict);
+      //     let current_list = [];
+      //     let new_list = [];
+      //     let guide_we_vote_ids_processed = [];
+      //
+      //     voter_guides.forEach( one_voter_guide => {
+      //       if (one_voter_guide.ballot_item_we_vote_ids_this_org_supports) {
+      //         one_voter_guide.ballot_item_we_vote_ids_this_org_supports.forEach(one_ballot_item_we_vote_id => {
+      //           if (ballot_items_we_are_tracking.includes(one_ballot_item_we_vote_id)) {
+      //             current_list = organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id];
+      //             current_list.push(one_voter_guide.organization_we_vote_id);
+      //             organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id] = current_list;
+      //           } else {
+      //             new_list = [];
+      //             new_list.push(one_voter_guide.organization_we_vote_id);
+      //             organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id] = new_list;
+      //           }
+      //           ballot_items_we_are_tracking = Object.keys(organization_we_vote_ids_to_follow_ballot_items_dict);
+      //         });
+      //       }
+      //       if (one_voter_guide.ballot_item_we_vote_ids_this_org_info_only) {
+      //         one_voter_guide.ballot_item_we_vote_ids_this_org_info_only.forEach(one_ballot_item_we_vote_id => {
+      //           if (ballot_items_we_are_tracking.includes(one_ballot_item_we_vote_id)) {
+      //             current_list = organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id];
+      //             current_list.push(one_voter_guide.organization_we_vote_id);
+      //             organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id] = current_list;
+      //           } else {
+      //             new_list = [];
+      //             new_list.push(one_voter_guide.organization_we_vote_id);
+      //             organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id] = new_list;
+      //           }
+      //           ballot_items_we_are_tracking = Object.keys(organization_we_vote_ids_to_follow_ballot_items_dict);
+      //         });
+      //       }
+      //       if (one_voter_guide.ballot_item_we_vote_ids_this_org_opposes) {
+      //         one_voter_guide.ballot_item_we_vote_ids_this_org_opposes.forEach(one_ballot_item_we_vote_id => {
+      //           if (ballot_items_we_are_tracking.includes(one_ballot_item_we_vote_id)) {
+      //             current_list = organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id];
+      //             current_list.push(one_voter_guide.organization_we_vote_id);
+      //             organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id] = current_list;
+      //           } else {
+      //             new_list = [];
+      //             new_list.push(one_voter_guide.organization_we_vote_id);
+      //             organization_we_vote_ids_to_follow_ballot_items_dict[one_ballot_item_we_vote_id] = new_list;
+      //           }
+      //           ballot_items_we_are_tracking = Object.keys(organization_we_vote_ids_to_follow_ballot_items_dict);
+      //         });
+      //       }
+      //
+      //       if (filter_voter_guides_by_issue) {
+      //         organization_we_vote_id = one_voter_guide.organization_we_vote_id;
+      //         if (guide_we_vote_ids_processed.indexOf(organization_we_vote_id) === -1) {
+      //           if (!organization_we_vote_ids_to_follow_by_issues_followed.includes(one_voter_guide.organization_we_vote_id)) {
+      //             organization_we_vote_ids_to_follow_by_issues_followed.push(one_voter_guide.organization_we_vote_id);
+      //           }
+      //           if (!guide_we_vote_ids_processed.includes(organization_we_vote_id)) {
+      //             guide_we_vote_ids_processed.push(organization_we_vote_id);
+      //           }
+      //         }
+      //       }
+      //     });
+      //
+      //     if (filter_voter_guides_by_issue) {
+      //       return {
+      //         ...state,
+      //         ballot_has_guides: search_term_exists || election_id_exists,
+      //         organization_we_vote_ids_to_follow_ballot_items_dict: organization_we_vote_ids_to_follow_ballot_items_dict,
+      //         organization_we_vote_ids_to_follow_by_issues_followed: organization_we_vote_ids_to_follow_by_issues_followed,
+      //         all_cached_voter_guides: all_cached_voter_guides,
+      //         voterGuidesToFollowRetrieveStopped: false,
+      //       };
+      //     } else {
+      //       let retrieveAnotherPageOfResults;
+      //       let maximum_number_to_retrieve = 350; // This needs to match the variable in VoterGuideActions
+      //       let start_retrieve_at_this_number = action.res.start_retrieve_at_this_number + maximum_number_to_retrieve;
+      //       let received_maximum_possible_voter_guides = action.res.number_retrieved && action.res.number_retrieved === maximum_number_to_retrieve;
+      //       if (action.res.google_civic_election_id && received_maximum_possible_voter_guides) {
+      //         retrieveAnotherPageOfResults = true;
+      //       }
+      //       if (retrieveAnotherPageOfResults) {
+      //         VoterGuideActions.voterGuidesToFollowRetrieve(action.res.google_civic_election_id, 0, false, start_retrieve_at_this_number);
+      //       }
+      //       return {
+      //         ...state,
+      //         ballot_has_guides: search_term_exists || election_id_exists,
+      //         organization_we_vote_ids_to_follow_all: organization_we_vote_id_list_from_voter_guides_returned,
+      //         organization_we_vote_ids_to_follow_ballot_items_dict: organization_we_vote_ids_to_follow_ballot_items_dict,
+      //         all_cached_voter_guides: all_cached_voter_guides,
+      //         voterGuidesToFollowRetrieveStopped: false,
+      //       };
+      //     }
+      //   }
 
       case "voterGuidesFollowedRetrieve":
         // In OrganizationStore, we listen for a response to "organizationsFollowedRetrieve" instead of "voterGuidesFollowedRetrieve"
