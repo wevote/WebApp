@@ -62,21 +62,6 @@ export default class FriendInvitationDisplayForList extends Component {
     // console.log("FriendInvitationDisplayForList, this.props.voter_we_vote_id:", this.props.voter_we_vote_id);
 
     let delete_invitation_html = "";
-    // if (voter_email_address) {
-    //   delete_invitation_html = <span>
-    //       <button className="btn btn-default btn-sm"
-    //         onClick={this.deleteFriendInviteEmail.bind(this, voter_email_address)}>
-    //         Delete Email Invitation
-    //       </button>
-    //     </span>;
-    // } else {
-    //   delete_invitation_html = <span>
-    //       <button className="btn btn-default btn-sm"
-    //         onClick={this.deleteFriendInviteVoter.bind(this, voter_we_vote_id)}>
-    //         Delete Invitation
-    //       </button>
-    //     </span>;
-    // }
 
     return <div className="position-item card-child card-child--not-followed">
       <div className="card-child__avatar">

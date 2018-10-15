@@ -81,12 +81,6 @@ export default class SuggestedFriendDisplayForList extends Component {
             <span>
               &nbsp;
               <SuggestedFriendToggle other_voter_we_vote_id={voter_we_vote_id}/>
-              {/*
-              <button className="btn btn-default btn-sm"
-                onClick={this.ignoreSuggestedFriend.bind(this, voter_we_vote_id)}>
-                Remove
-              </button>
-              */}
             </span>
           </div>
           {voter_twitter_followers_count ?

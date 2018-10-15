@@ -92,7 +92,7 @@ export default class GuideList extends Component {
                 <FollowToggle we_vote_id={organization.organization_we_vote_id} hide_stop_following_button={this.props.hide_stop_following_button}/>
                 { this.props.hide_ignore_button ?
                   null :
-                  <Button bsPrefix="btn btn-default btn-sm" onClick={this.handleIgnore.bind(this, organization.organization_we_vote_id)}>
+                  <Button variant="outline-secondary" size="sm" onClick={this.handleIgnore.bind(this, organization.organization_we_vote_id)}>
                     Ignore
                   </Button>
                 }

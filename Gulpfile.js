@@ -13,11 +13,6 @@ const del = require("del");
 const server = require("./server");
 const cssmin = require("gulp-cssnano");
 
-const config = {
-  bootstrapDir: "./node_modules/bootstrap/scss",
-  bootstrap4Dir: "./node_modules/bootstrap/scss",
-};
-
 const PRODUCTION = process.env.NODE_ENV === "production";
 
 gulp.task("browserify", function () {
@@ -77,22 +72,18 @@ gulp.task("server", PRODUCTION ? () => server(PRODUCTION) : function () {
   });
 });
 
-// Compile Bootstrap allowing for custom variables and selective imports
-// gulp.task("compile-bootstrap", function () {
-//   return gulp.src("./src/sass/bootstrap.scss")
-//     .pipe(sass({
-//       includePaths: [config.bootstrapDir + "/assets/stylesheets", config.bootstrap4Dir],
-//     }))
-//     .pipe(cssmin())
-//     .pipe(gulp.dest("./build/css/"));
-// });
-
+// October 2018: bootstrap-sccs is styling for bootstrap 3, so we no longer use it.
+// Pull all bootstrap styling from the node_modules package boootstrap (v4)
 gulp.task("compile-bootstrap", function () {
   return gulp.src("./node_modules/bootstrap/scss/bootstrap.scss")
     .pipe(sourcemaps.init())
     .on("error", function (err) { console.error(err); })
     .pipe(sass({ style: "expanded",
-      includePaths: [config.bootstrapDir + "/assets/stylesheets",], }))
+      includePaths: [
+        "./node_modules/bootstrap/sccs",
+        "./node_modules/bootstrap/sccs/utilities",
+        "./node_modules/bootstrap/sccs/mixins",
+      ], }))
     .pipe(autoprefixer("last 2 version"))
     .pipe(cssmin())
     .pipe(sourcemaps.write(".")) // --> working directory is /build/css
