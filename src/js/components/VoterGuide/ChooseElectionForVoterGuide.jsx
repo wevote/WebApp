@@ -132,10 +132,10 @@ export default class ChooseElectionForVoterGuide extends Component {
                     onClick={this.saveVoterGuideForElection.bind(this, item.google_civic_election_id)}>
               {/* Mobile */}
               { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ?
-                <span className="visible-xs">{item.election_description_text}&nbsp;<img
+                <span className="d-block d-sm-none">{item.election_description_text}&nbsp;<img
                   src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span> :
                 <span
-                  className="visible-xs">{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;
+                  className="d-block d-sm-none">{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;
                   <img src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span>
               }
               {/* Desktop */}

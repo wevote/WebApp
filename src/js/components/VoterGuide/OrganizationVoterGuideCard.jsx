@@ -64,7 +64,7 @@ export default class OrganizationVoterGuideCard extends Component {
         }
       <br/>
       { this.props.is_voter_owner ?
-        <Button bsStyle="warning" bsSize="small" className="pull-right" onClick={this.onEdit}>
+        <Button variant="warning" size="small" bsPrefix="pull-right" onClick={this.onEdit}>
           <span>Edit Your Voter Guide</span>
         </Button> :
         <FollowToggle we_vote_id={organization_we_vote_id} />

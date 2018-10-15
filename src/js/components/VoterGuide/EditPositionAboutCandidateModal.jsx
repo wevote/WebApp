@@ -146,7 +146,8 @@ export default class EditPositionAboutCandidateModal extends Component {
             </div>
           </div>;
     }
-    return <Modal {...this.props} bsSize="large" aria-labelledby="contained-modal-title-lg">
+
+    return <Modal {...this.props} size="large" aria-labelledby="contained-modal-title-lg">
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-lg">&nbsp;</Modal.Title>
       </Modal.Header>

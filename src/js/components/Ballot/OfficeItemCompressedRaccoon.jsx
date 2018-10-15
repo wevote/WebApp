@@ -34,7 +34,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
     organization_we_vote_id: PropTypes.string,
     toggleCandidateModal: PropTypes.func,
     updateOfficeDisplayUnfurledTracker: PropTypes.func,
-    urlWithoutHash: PropTypes.string
+    urlWithoutHash: PropTypes.string,
   };
 
   constructor (props) {
@@ -76,14 +76,14 @@ export default class OfficeItemCompressedRaccoon extends Component {
       });
     }
 
-    if (this.props.we_vote_id) {
-      // console.log("OfficeItemCompressedRaccoon componentDidMount getNumberOfCandidatesRetrievedByOffice:", CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id));
-      // DALE 2018-07-31 We now retrieve the full candidate data in voterBallotItemsRetrieve
-      // if (CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id) === 0) {
-      //   // console.log("Calling candidatesRetrieve: ", this.props.we_vote_id);
-      //   CandidateActions.candidatesRetrieve(this.props.we_vote_id);
-      // }
-    }
+    // if (this.props.we_vote_id) {
+    //   console.log("OfficeItemCompressedRaccoon componentDidMount getNumberOfCandidatesRetrievedByOffice:", CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id));
+    //   DALE 2018-07-31 We now retrieve the full candidate data in voterBallotItemsRetrieve
+    //   if (CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id) === 0) {
+    //     // console.log("Calling candidatesRetrieve: ", this.props.we_vote_id);
+    //     CandidateActions.candidatesRetrieve(this.props.we_vote_id);
+    //   }
+    // }
 
     // If there three or fewer offices on this ballot, unfurl them
     if (this.props.allBallotItemsCount && this.props.allBallotItemsCount <= 3) {
@@ -93,7 +93,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
     } else {
       //read from BallotStore
       this.setState({
-        display_office_unfurled: BallotStore.getBallotItemUnfurledStatus(this.props.we_vote_id)
+        display_office_unfurled: BallotStore.getBallotItemUnfurledStatus(this.props.we_vote_id),
       });
     }
   }
@@ -135,6 +135,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
       this.setState({
         candidateList: new_candidate_list,
       });
+
       // console.log(this.props.candidate_list);
     }
   }
@@ -340,6 +341,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
         </span>;
         // advisorsThatMakeVoterIssuesScoreCount = organizationNameIssueSupportList.length + organizationNameIssueOpposeList.length;
       }
+
       if (candidateWeVoteWithMostSupportFromNetwork) {
         // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
         let nameNetworkSupportList = SupportStore.getNameSupportListUnderThisBallotItem(candidateWeVoteWithMostSupportFromNetwork);
@@ -374,14 +376,14 @@ export default class OfficeItemCompressedRaccoon extends Component {
       <a className="anchor-under-header" name={we_vote_id} />
       <div className="card-main__content">
         {/* Desktop */}
-        <span className="hidden-xs">
+        <span className="d-none d-sm-block">
           <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE" />
           {/* Turning off the "show more" on Desktop for now
-          <span className="hidden-print pull-right u-push--lg">
+          <span className="d-print-none pull-right u-push--lg">
             { this.state.display_office_unfurled ?
               null :
               <Link onClick={this.toggleExpandDetails}>
-                <span className="BallotItem__view-more u-items-center u-no-break hidden-print">
+                <span className="BallotItem__view-more u-items-center u-no-break d-print-none">
                   show more
                 </span>
               </Link>
@@ -392,10 +394,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
         {/* Mobile - "show more" and "show less" not used */}
 
         <h2 className="u-f3 card-main__ballot-name u-gray-dark u-stack--sm">
-          <span className="hidden-print" onClick={this.toggleExpandDetails}>
+          <span className="d-print-none" onClick={this.toggleExpandDetails}>
+            {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
             { this.state.display_office_unfurled ?
-              <span className="glyphicon glyphicon-triangle-bottom u-font-size6 hidden-print u-push--xs"/> :
-              <span className="glyphicon glyphicon-triangle-right u-font-size6 hidden-print u-push--xs"/>
+              <span className="glyphicon glyphicon-triangle-bottom u-font-size6 d-print-none u-push--xs"/> :
+              <span className="glyphicon glyphicon-triangle-right u-font-size6 d-print-none u-push--xs"/>
             }
             {ballot_item_display_name}
           </span>
@@ -419,6 +422,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
             let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidate_we_vote_id);
             let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidate_we_vote_id);
             let candidate_party_text = one_candidate.party && one_candidate.party.length ? one_candidate.party + ". " : "";
+            let candidate_twitter_description_text = one_candidate.twitter_description && one_candidate.twitter_description.length ? one_candidate.twitter_description : "";
+            let ballotpediaCandidateSummary = one_candidate.ballotpedia_candidate_summary && one_candidate.ballotpedia_candidate_summary.length ? " " + one_candidate.ballotpedia_candidate_summary : "";
+            // Strip away any HTML tags
+            ballotpediaCandidateSummary = ballotpediaCandidateSummary.split(/<[^<>]*>/).join("");
+            let candidate_text = candidate_party_text + candidate_twitter_description_text + ballotpediaCandidateSummary;
 
             let positions_display_raccoon = <div>
               <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
@@ -466,9 +474,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                   {/* Description under candidate name */}
                   <LearnMore on_click={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(one_candidate.we_vote_id) : null}
                              num_of_lines={3}
-                             text_to_display={candidate_party_text}
-                             always_show_external_link
-                             learn_more_text={"Learn more"}
+                             text_to_display={candidate_text}
                              />
                   {/* DESKTOP: If voter has taken position, offer the comment bar */}
                   {/* comment_display_raccoon_desktop */}
@@ -488,7 +494,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
         ************************* */}
         { !this.state.display_office_unfurled ?
           <div>
-            {/* <span className="hidden-print">
+            {/* <span className="d-print-none">
               <IssuesFollowedByBallotItemDisplayList ballot_item_display_name={this.props.ballot_item_display_name}
                                                      ballotItemWeVoteId={this.props.we_vote_id}
                                                      overlayTriggerOnClickOnly
@@ -623,7 +629,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                                   rootClose
                                   placement="top"
                                   overlay={yourNetworkIsUndecidedPopover}>
-                      <span className=" u-cursor--pointer">Your network is undecided <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
+                      <span className=" u-cursor--pointer">Your network is undecided <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" /></span>
                     </OverlayTrigger>
                   </div>
                 }
@@ -635,7 +641,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
         { !this.state.display_all_candidates_flag && this.state.display_office_unfurled && remaining_candidates_to_display_count ?
           <Link onClick={this.toggleDisplayAllCandidates}>
-            <span className="u-items-center u-no-break hidden-print">
+            <span className="u-items-center u-no-break d-print-none">
               <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
               <span> Show {remaining_candidates_to_display_count} more candidate{ remaining_candidates_to_display_count !== 1 ? "s" : null }</span>
             </span>
@@ -649,11 +655,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
         */}
         { this.state.display_office_unfurled ?
           <Link onClick={this.toggleExpandDetails}>
-            <span className="BallotItem__view-more u-items-center pull-right u-no-break hidden-print">
+            <span className="BallotItem__view-more u-items-center pull-right u-no-break d-print-none">
               show fewer</span>
           </Link> :
           <Link onClick={this.toggleExpandDetails}>
-            <div className="BallotItem__view-more u-items-center u-no-break hidden-print">
+            <div className="BallotItem__view-more u-items-center u-no-break d-print-none">
               <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
               { total_number_of_candidates_to_display > 1 ?
                 <span> View all {total_number_of_candidates_to_display} candidates</span> :

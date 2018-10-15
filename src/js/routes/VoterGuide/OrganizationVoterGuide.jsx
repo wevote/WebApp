@@ -180,7 +180,7 @@ export default class OrganizationVoterGuide extends Component {
       return <div className="card">
           <div style={{ margin: 10 }}>
             <span style={floatRight}>
-              <Link to="/ballot"><Button bsStyle="primary">Go to Ballot &#x21AC;</Button></Link>
+              <Link to="/ballot"><Button variant="primary">Go to Ballot &#x21AC;</Button></Link>
             </span>
             <p>Find voter guides you can follow.
               These voter guides have been created by nonprofits, public figures, your friends, and more. (OrganizationVoterGuide)</p>
@@ -190,30 +190,30 @@ export default class OrganizationVoterGuide extends Component {
 
     return <div>
       {/* Header Banner Spacing for Desktop */}
-      <div className="col-md-12 hidden-xs hidden-print">
+      <div className="col-md-12 d-none d-sm-block d-print-none">
         { this.state.organization.organization_banner_url !== "" ?
-          <div className="organization-banner-image-div hidden-print">
+          <div className="organization-banner-image-div d-print-none">
             <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
           </div> :
           <div className="organization-banner-image-non-twitter-users" />
         }
       </div>
       {/* Header Banner Spacing for Mobile */}
-      <div className="visible-xs hidden-print">
+      <div className="d-block d-sm-none d-print-none">
         { this.state.organization.organization_banner_url !== "" ?
-          <div className="organization-banner-image-div hidden-print">
+          <div className="organization-banner-image-div d-print-none">
             <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
           </div> :
           <div className="organization-banner-image-non-twitter-users" />
         }
       </div>
 
-      <div className="visible-xs">
+      <div className="d-block d-sm-none">
         <div className="col-12">
           <div className="card">
             <div className="card-main">
               { isVoterOwner ?
-                <Button bsStyle="warning" bsSize="small" className="pull-right" onClick={this.onEdit}>
+                <Button variant="warning" size="small" bsPrefix="pull-right" onClick={this.onEdit}>
                   <span>Edit</span>
                 </Button> :
                 <FollowToggle we_vote_id={this.state.organization.organization_we_vote_id} />
@@ -226,7 +226,7 @@ export default class OrganizationVoterGuide extends Component {
 
         <div className="container-fluid">
           <div className="row">
-            <div className="hidden-xs col-md-4" >
+            <div className="d-none d-sm-block col-md-4" >
               <div className="card">
                 <div className="card-main">
                   <OrganizationVoterGuideCard organization={this.state.organization} is_voter_owner={isVoterOwner} />

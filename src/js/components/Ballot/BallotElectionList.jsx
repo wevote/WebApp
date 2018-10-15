@@ -164,17 +164,17 @@ export default class BallotElectionList extends Component {
                     onClick={this.goToDifferentElection.bind(this, item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}>
               {/* Mobile */}
               { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ?
-                <span className="visible-xs">{item.election_description_text}&nbsp;<img
+                <span className="d-block d-sm-none">{item.election_description_text}&nbsp;<img
                   src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span> :
                 <span
-                  className="visible-xs">{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;
+                  className="d-block d-sm-none">{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;
                   <img src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span>
               }
               {/* Desktop */}
-              <span className="hidden-xs">{moment(item.election_day_text).format("MMMM Do, YYYY")} - {item.election_description_text}&nbsp;<img
+              <span className="d-none d-sm-block">{moment(item.election_day_text).format("MMMM Do, YYYY")} - {item.election_description_text}&nbsp;<img
                 src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span>
 
-              <div className="visible-xs ballot-election-list__h2">{moment(item.election_day_text).format("MMMM Do, YYYY")}</div>
+              <div className="d-block d-sm-none ballot-election-list__h2">{moment(item.election_day_text).format("MMMM Do, YYYY")}</div>
             </button>
           </dl>
         </div> :
@@ -195,17 +195,17 @@ export default class BallotElectionList extends Component {
                     onClick={this.goToDifferentElection.bind(this, item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}>
               {/* Mobile */}
               { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ?
-                <span className="visible-xs">{item.election_description_text}&nbsp;<img
+                <span className="d-block d-sm-none">{item.election_description_text}&nbsp;<img
                   src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span> :
                 <span
-                  className="visible-xs">{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;
+                  className="d-block d-sm-none">{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;
                   <img src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span>
               }
               {/* Desktop */}
-              <span className="hidden-xs">{moment(item.election_day_text).format("MMMM Do, YYYY")} - {item.election_description_text}&nbsp;<img
+              <span className="d-none d-sm-block">{moment(item.election_day_text).format("MMMM Do, YYYY")} - {item.election_description_text}&nbsp;<img
                 src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span>
 
-              <div className="visible-xs ballot-election-list__h2">{moment(item.election_day_text).format("MMMM Do, YYYY")}</div>
+              <div className="d-block d-sm-none ballot-election-list__h2">{moment(item.election_day_text).format("MMMM Do, YYYY")}</div>
             </button>
           </dl>
         </div>;

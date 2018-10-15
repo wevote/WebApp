@@ -92,7 +92,7 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
 
     const merge_status_html = <span>
       { !this.state.email_sign_in_status.yes_please_merge_accounts ?
-        <Alert bsStyle="danger">
+        <Alert variant="danger">
           The choices you've made in this browser (when not signed in) can be merged with choices stored the previous time you signed in.<br />
           <br />
           Press "Cancel Sign In" to stop signing in, and keep your recent changes.<br />
@@ -101,7 +101,7 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
         </Alert> :
         null }
       { this.state.email_sign_in_status.email_address_created ?
-        <Alert bsStyle="success">
+        <Alert variant="success">
           { this.state.email_sign_in_status.email_address_created ? <span>Your email address was saved. </span> : null }
         </Alert> :
         null }
@@ -110,11 +110,11 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
     let merge_action_button;
     if (this.props.emailSecretKey && this.props.emailSecretKey !== "") {
       merge_action_button = <Button onClick={this.voterEmailAddressSignInConfirm.bind(this, this.props.emailSecretKey)}
-                  bsStyle="primary">
+                  variant="primary">
             Sign In and Merge My Offline Changes</Button>;
     } else {
       merge_action_button = <Button onClick={this.voterFacebookSignInConfirm.bind(this)}
-                  bsStyle="primary">
+                  variant="primary">
             Sign In and Merge My Offline Changes</Button>;
     }
 
@@ -123,8 +123,8 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
 
         <div className="u-stack--md">
           <Button onClick={this.cancelMerge.bind(this)}
-                  bsStyle="default"
-                  bsSize="small">
+                  variant="default"
+                  size="small">
             Cancel Sign In
           </Button>
           {merge_action_button}

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
-import { historyPush, isAndroid, isCordova, isIOS, isIPhoneX, isWebApp } from "./utils/cordovaUtils";
+import { hasIPhoneNotch, historyPush, isAndroid, isCordova, isIOS, isWebApp } from "./utils/cordovaUtils";
 import ElectionActions from "./actions/ElectionActions";
 import FooterBarCordova from "./components/Navigation/FooterBarCordova";
 import FriendActions from "./actions/FriendActions";
@@ -54,9 +54,6 @@ export default class Application extends Component {
       showFooter: true,
     };
     this.loadedHeader = false;
-    this.initFacebook();
-    this.initCordova();
-    this.preloadIssueImages = this.preloadIssueImages.bind(this);
   }
 
   initCordova () {
@@ -69,29 +66,37 @@ export default class Application extends Component {
   }
 
   initFacebook () {
-    window.fbAsyncInit = function () {
-      window.FB.init({
-        appId: webAppConfig.FACEBOOK_APP_ID,
-        xfbml: true,
-        version: "v2.8",
-        status: true,    // set this status to true, this will fixed popup blocker issue
-      });
-    };
+    if (webAppConfig.ENABLE_FACEBOOK) {
+      window.fbAsyncInit = function () {
+        window.FB.init({
+          appId: webAppConfig.FACEBOOK_APP_ID,
+          xfbml: true,
+          version: "v2.8",
+          status: true,    // set this status to true, this will fixed popup blocker issue
+        });
+      };
 
-    (function (d, s, id) {
-      let js;
-      let fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {
-        return;
-      }
+      (function (d, s, id) {
+        let js;
+        let fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
 
-      js = d.createElement(s); js.id = id;
-      js.src = "https://connect.facebook.net/en_US/sdk.js";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, "script", "facebook-jssdk"));
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, "script", "facebook-jssdk"));
+    }
   }
 
   componentDidMount () {
+    console.log("React Application ---------------   componentDidMount ()");
+    this.initFacebook();
+    this.initCordova();
+    this.preloadIssueImages = this.preloadIssueImages.bind(this);
+
     let voterDeviceId = VoterStore.voterDeviceId();
     VoterActions.voterRetrieve();
 
@@ -267,7 +272,7 @@ export default class Application extends Component {
 
     if (this.state.voter === undefined || location === undefined) {
       return <div style={loadingScreenStyles} >
-                <div>
+                <div style={{ padding: 30 }}>
                   <h1 className="h1">Loading We Vote...</h1>
                   { isCordova() &&
                     <h2 className="h1">Does your phone have access to the internet?</h2>
@@ -394,7 +399,7 @@ export default class Application extends Component {
     let footerStyle = this.state.showFooter ? "footroom-wrapper" : "footroom-wrapper__hide";
     let appBaseClass = "app-base";
     if (isCordova()) {
-      if (isIPhoneX()) {
+      if (hasIPhoneNotch()) {
         appBaseClass += " cordova-base-iphonex";
       } else {
         appBaseClass += " cordova-base";
@@ -402,9 +407,9 @@ export default class Application extends Component {
     }
 
     let iPhoneSpacer = "";
-    if (isCordova() && isIOS() && isIPhoneX()) {
+    if (isCordova() && isIOS() && hasIPhoneNotch()) {
       iPhoneSpacer = <div className={"ios-x-spacer"} />;
-    } else if (isCordova() && isIOS() && !isIPhoneX()) {
+    } else if (isCordova() && isIOS() && !hasIPhoneNotch()) {
       iPhoneSpacer = <div className={"ios7plus-spacer"} />;
     }
 
@@ -468,10 +473,10 @@ export default class Application extends Component {
           <div ref="pageHeader" className={pageHeaderStyle}>
             { showBackToSettings ?
               <span>
-                <span className="visible-xs">
+                <span className="d-block d-sm-none">
                   <HeaderBackToSettings location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/>
                 </span>
-                <span className="hidden-xs">
+                <span className="d-none d-sm-block">
                   <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
                 </span>
               </span> :

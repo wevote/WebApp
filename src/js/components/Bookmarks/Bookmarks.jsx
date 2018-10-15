@@ -72,16 +72,16 @@ export default class Bookmarks extends Component {
                     <h1 className="h1 ballot__header__title">
                       <span className="u-push--sm">{election_name}</span>
                     </h1>
-                    <span className="hidden-xs hidden-print pull-right ballot__header__address">
+                    <span className="d-none d-sm-block d-print-none pull-right ballot__header__address">
                       <EditAddress address={voter_address_object} toggleSelectAddressModal={this.toggleSelectAddressModal} />
                     </span>
                   </header>
                 </OverlayTrigger>
-                <div className="visible-xs-block hidden-print ballot__header__address--xs">
+                <div className="d-block d-sm-none-block d-print-none ballot__header__address--xs">
                   <EditAddress address={voter_address_object} toggleSelectAddressModal={this.toggleSelectAddressModal} />
                 </div>
                 <div className="ballot__filter__container">
-                  <div className="ballot__filter hidden-print">
+                  <div className="ballot__filter d-print-none">
                     <BallotFilter ballot_type="BOOKMARKS"
                                   length={BallotStore.ballotLength}
                                   length_remaining={BallotStore.ballot_remaining_choices_length} />

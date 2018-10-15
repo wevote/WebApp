@@ -32,6 +32,7 @@ export default class ToolBar extends Component {
                              target="_blank"
                              className="btn btn--email"
                              body={<span>
+                               {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
                                     <span className="btn--email__icon glyphicon glyphicon-envelope" /> Join Newsletter</span>
                              } />
 

@@ -51,7 +51,7 @@ export default class HeaderBarProfileSlideIn extends Component {
             />
           </div> :
           <div id= "anonIcon" className="header-nav__avatar">
-            <Icon name="avatar-generic" width={34} height={34} />
+            <Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" />
           </div>
         }
       </span>

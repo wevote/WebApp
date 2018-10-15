@@ -17,8 +17,8 @@
   .container-settings {
     width: 100%;
   }
-  // 'No print' utility class from Bootstrap is .hidden-print
-  %hidden-print {
+  // 'No print' utility class from Bootstrap is .d-print-none
+  %d-print-none {
     display: none;
   }
   a[href]::after {

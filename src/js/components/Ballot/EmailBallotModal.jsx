@@ -221,25 +221,25 @@ export default class EmailBallotModal extends Component {
                                   {/*placeholder="This is WeVote Ballot data for the upcoming election."/>*/}
                       {/*</span>*/}
                     {/*</form>*/}
-                  <div className="share-modal__button--send hidden-xs">
+                  <div className="share-modal__button--send d-none d-sm-block">
                     <span style={floatRight}>
                       <Button
                         tabIndex="0"
                         onKeyDown={this.onKeyDown.bind(this)}
                         onClick={this.ballotEmailSendStepsManager.bind(this)}
-                        bsStyle="primary"
+                        variant="primary"
                       >
                         <span>Send This Ballot &gt;</span>
                       </Button>
                     </span>
                   </div>
-                <div className="share-modal__button--send visible-xs">
+                <div className="share-modal__button--send d-block d-sm-none">
                   <span style={floatRight}>
                     <Button
                       tabIndex="0"
                       onKeyDown={this.onKeyDown.bind(this)}
                       onClick={this.ballotEmailSendStepsManager.bind(this)}
-                      bsStyle="primary"
+                      variant="primary"
                     >
                       <span>Send</span>
                     </Button>

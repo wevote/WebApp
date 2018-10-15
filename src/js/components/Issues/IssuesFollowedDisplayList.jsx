@@ -55,12 +55,12 @@ export default class IssuesFollowedDisplayList extends Component {
     let issues_voter_is_following_desktop = this.state.issues_voter_is_following.slice(0, 4);
     return <span className="">
       {/* We want to display the images of the issues in the list we pass in */}
-      <span className="visible-xs">
+      <span className="d-block d-sm-none">
         <IssuesDisplayListWithOrganizationPopovers issueImageSize={"LARGE"}
                                                    issueListToDisplay={issues_voter_is_following_mobile}
                                                    popoverBottom />
       </span>
-      <span className="hidden-xs">
+      <span className="d-none d-sm-block">
         <IssuesDisplayListWithOrganizationPopovers issueImageSize={"LARGE"}
                                                    issueListToDisplay={issues_voter_is_following_desktop}
                                                    popoverBottom />

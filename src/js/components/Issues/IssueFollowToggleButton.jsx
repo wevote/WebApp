@@ -39,13 +39,15 @@ export default class IssueFollowToggleButton extends Component {
   onIssueFollow () {
     // This check is necessary as we enable follow when user clicks on Issue text
     if (!this.state.is_following) {
-      this.setState({is_following: true});
+      this.setState({ is_following: true });
       IssueActions.issueFollow(this.props.issue_we_vote_id, VoterStore.election_id());
       if (this.props.on_issue_follow) {
         this.props.on_issue_follow(this.props.issue_we_vote_id);
       }
+
       showToastSuccess(`Now following ${this.props.issue_name}!`);
     }
+
     let { currentBallotIdInUrl, urlWithoutHash, we_vote_id } = this.props;
     if (currentBallotIdInUrl !== we_vote_id) {
       historyPush(urlWithoutHash + "#" + this.props.we_vote_id);
@@ -76,12 +78,12 @@ export default class IssueFollowToggleButton extends Component {
 
     return this.state.is_following ?
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
-        <Button bsStyle="warning" bsSize="small" onClick={this.onIssueStopFollowing}>
+        <Button variant="warning" size="small" onClick={this.onIssueStopFollowing}>
           <span>Following</span>
         </Button>
       </div> :
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
-        <Button bsStyle="success" bsSize="small" onClick={this.onIssueFollow}>
+        <Button variant="success" size="small" onClick={this.onIssueFollow}>
           <span>Follow</span>
         </Button>
       </div>;

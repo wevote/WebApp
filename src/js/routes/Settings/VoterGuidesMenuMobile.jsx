@@ -125,11 +125,11 @@ export default class VoterGuidesMenuMobile extends Component {
 
     return <div className="settings-dashboard">
       {/* Header Spacing for Desktop */}
-      <div className="hidden-xs hidden-print">
+      <div className="d-none d-sm-block d-print-none">
         <SettingsBannerAndOrganizationCard organization={this.state.organization} />
       </div>
       {/* Header Spacing for Mobile */}
-      <div className="visible-xs hidden-print">
+      <div className="d-block d-sm-none d-print-none">
         <SettingsBannerAndOrganizationCard organization={this.state.organization} />
       </div>
 

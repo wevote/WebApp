@@ -5,7 +5,7 @@ import AnalyticsActions from "../../actions/AnalyticsActions";
 import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
 import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
 import BallotIntroVerifyAddress from "../../components/Ballot/BallotIntroVerifyAddress";
-import { cordovaDot, isIPhoneX, isWebApp } from "../../utils/cordovaUtils";
+import { cordovaDot, hasIPhoneNotch, isWebApp } from "../../utils/cordovaUtils";
 import SecondaryNavBarItem from "./SecondaryNavBarItem";
 import EmailBallotModal from "../Ballot/EmailBallotModal";
 import EmailBallotToFriendsModal from "../Ballot/EmailBallotToFriendsModal";
@@ -101,6 +101,8 @@ export default class HeaderSecondaryNavBar extends Component {
       AnalyticsActions.saveActionModalIssues(VoterStore.election_id());
     }
 
+    console.log("STEVE STEVE _toggleBallotIntroFollowIssues () was " + this.state.showBallotIntroFollowIssues);
+
     this.setState({ showBallotIntroFollowIssues: !this.state.showBallotIntroFollowIssues });
   }
 
@@ -168,16 +170,16 @@ export default class HeaderSecondaryNavBar extends Component {
     };
     let sliderSettingsWithSwipe = { ...sliderSettings, swipe: true };
 
-    // Have all of the 6 major steps been taken?
-    let voterThoroughOrientationComplete = false;
-    let closeAnchorClass = isIPhoneX() ? "intro-modal__close-anchor intro-modal__close-anchor-iphonex" : "intro-modal__close-anchor";
-    const BallotIntroFollowIssuesModal = <Modal bsClass="background-brand-blue modal"
-                                                id="ballotIntroFollowIssuesId"
-                                                show={this.state.showBallotIntroFollowIssues}
-                                                onHide={() => this._toggleBallotIntroFollowIssues(this)}>
+
+    let voterThoroughOrientationComplete = false;  // Have all of the 3 (this once was 6) major steps been taken?
+    const BallotIntroFollowIssuesModal =
+      <Modal  bsPrefix="background-brand-blue modal"
+              id="ballotIntroFollowIssuesId"
+              show={this.state.showBallotIntroFollowIssues}
+              onHide={this._toggleBallotIntroFollowIssues}>
         <Modal.Body>
           <div className="intro-modal__close">
-            <a onClick={this._toggleBallotIntroFollowIssues} className={closeAnchorClass}>
+            <a onClick={this._toggleBallotIntroFollowIssues} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}>
               <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
             </a>
           </div>
@@ -189,12 +191,13 @@ export default class HeaderSecondaryNavBar extends Component {
         </Modal.Body>
       </Modal>;
 
-    const SendEmailModal = <Modal bsClass="background-brand-blue modal"
+    const SendEmailModal = <Modal bsPrefix="background-brand-blue modal"
                                   show={this.state.showEmailModal}
                                   onHide={() => this._openEmailModal(this)}>
       <Modal.Body>
        <div className="intro-modal__close">
-         <a onClick={this._openEmailModal} className={closeAnchorClass}>
+         <a onClick={this._openEmailModal}
+            className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}>
            <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
          </a>
        </div>
@@ -216,12 +219,13 @@ export default class HeaderSecondaryNavBar extends Component {
       </Modal.Body>
     </Modal>;
 
-    const SendFacebookModal = <Modal bsClass="background-brand-blue modal"
+    const SendFacebookModal = <Modal bsPrefix="background-brand-blue modal"
                                   show={this.state.showFacebookModal}
                                   onHide={() => this._openFacebookModal(this)}>
       <Modal.Body>
         <div className="intro-modal__close">
-          <a onClick={this._openFacebookModal} className={closeAnchorClass}>
+          <a onClick={this._openFacebookModal}
+             className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}>
             <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
           </a>
         </div>
@@ -278,13 +282,13 @@ export default class HeaderSecondaryNavBar extends Component {
                                    iconFacebook/>
             }
 
-            <span className="visible-xs">
+            <span className="d-block d-sm-none">
               <SecondaryNavBarItem url={twitterIntent}
                                    title="Tweet"
                                    iconTwitter
                                    isExternal/>
             </span>
-            <span className="hidden-xs">
+            <span className="d-none d-sm-block">
               <SecondaryNavBarItem url={twitterIntent}
                                    title="Tweet Ballot"
                                    iconTwitter
@@ -299,8 +303,7 @@ export default class HeaderSecondaryNavBar extends Component {
           </div>
         </header>
       }
-      { BallotIntroFollowIssuesModal }
-      {/* this.state.showBallotIntroOrganizations ? BallotIntroOrganizationsModal : null */}
+      { this.state.showBallotIntroFollowIssues ? BallotIntroFollowIssuesModal : null }
       { this.state.showEmailModal ? SendEmailModal : null }
       { this.state.showFacebookModal ? SendFacebookModal : null }
       { this.state.showPollingLocatorModal &&

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import BallotActions from "../../actions/BallotActions";
 import classNames from "classnames";
-import { historyPush, isCordova, isIPhoneX } from "../../utils/cordovaUtils";
+import { hasIPhoneNotch, historyPush, isCordova } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import SearchAllActions from "../../actions/SearchAllActions";
 import SearchAllStore from "../../stores/SearchAllStore";
@@ -67,11 +67,9 @@ export default class SearchAllBox extends Component {
       SearchAllActions.searchAll(textFromSearchField);
     }
 
-    this.searchAllStoreListener = SearchAllStore.addListener(this._onSearchAllStoreChange.bind(this));
-  }
-
-  componentWillReceiveProps () {
     this._onSearchAllStoreChange();
+
+    this.searchAllStoreListener = SearchAllStore.addListener(this._onSearchAllStoreChange.bind(this));
   }
 
   componentWillUnmount () {
@@ -125,18 +123,39 @@ export default class SearchAllBox extends Component {
   }
 
   onSearchFocus () {
-    this.refs.searchAllBox.setSelectionRange(0, 999);
+    let input = document.getElementById("SearchAllBox-input");
+    input.setSelectionRange(0, 999);
 
     // Hide the site name
     // TODO: convert to flux action
     // for the global nav
 
-    this.siteLogoText.addClass("hidden");
-    this.ballot.addClass("hidden-xs");
-    this.network.addClass("hidden-xs");
-    this.about.className += " hidden";
-    this.donate.className += " hidden";
-    this.displayResults();
+    // TODO:  Do not Bury parent dependencies in components.  This caused an avoidable bug in production.  PLEASE don't copy this code
+    let allowParentObjectDirectAccess = true;
+    if (allowParentObjectDirectAccess && !isCordova()) {
+      if (this.siteLogoText) {
+        this.siteLogoText.addClass("hidden");
+      }
+
+      if (this.ballot) {
+        this.ballot.addClass("d-none d-sm-block");
+      }
+
+      if (this.network) {
+        this.network.addClass("d-none d-sm-block");
+      }
+
+      // The SearchAllBox is used on the candidate page, that doesn't have about or donate
+      if (this.about) {
+        this.about.className += " hidden";
+      }
+
+      if (this.donate) {
+        this.donate.className += " hidden";
+      }
+
+      this.displayResults();
+    }
   }
 
   onSearchBlur () {
@@ -147,11 +166,26 @@ export default class SearchAllBox extends Component {
 
     // Delay closing the drop down so that a click on the Link can have time to work
     setTimeout(() => {
-      $(".page-logo-full-size").removeClass("hidden");
-      $(".header-nav__item--ballot").removeClass("hidden-xs");
-      $(".header-nav__item--network").removeClass("hidden-xs");
-      $(".header-nav__item--about").removeClass("hidden");
-      $(".header-nav__item--donate").removeClass("hidden");
+      if (this.siteLogoText) {
+        $(".page-logo-full-size").removeClass("hidden");
+      }
+
+      if (this.ballot) {
+        $(".header-nav__item--ballot").removeClass("d-none d-sm-block");
+      }
+
+      if (this.network) {
+        $(".header-nav__item--network").removeClass("d-none d-sm-block");
+      }
+
+      if (this.about) {
+        $(".header-nav__item--about").removeClass("hidden");
+      }
+
+      if (this.donate) {
+        $(".header-nav__item--donate").removeClass("hidden");
+      }
+
       this.hideResults();
     }, 250);
   }
@@ -307,7 +341,7 @@ export default class SearchAllBox extends Component {
     });
 
     let searchStyle = "page-header__search";
-    if (isIPhoneX()) {
+    if (hasIPhoneNotch()) {
       searchStyle += " search-cordova-iphonex";
     } else if (isCordova()) {
       searchStyle += " search-cordova";
@@ -328,12 +362,13 @@ export default class SearchAllBox extends Component {
                  onKeyDown={this.onSearchKeyDown}
                  value={this.state.textFromSearchField}
                  ref="searchAllBox" />
-          <div className="input-group-btn">
+          <div className="input-group-btn"> {/* Oct 2018: input-group-btn defined in the old bootstrap.css */}
             <button className={clearButtonClasses} onClick={this.onClearSearch}>
+              {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
               <i className="glyphicon glyphicon-remove-circle u-gray-light" />
             </button>
             <button className="site-search__button btn btn-default" type="submit">
-              <i className="glyphicon glyphicon-search" />
+              <i className="fa fa-search" />
             </button>
           </div>
         </div>

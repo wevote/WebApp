@@ -104,11 +104,9 @@ export default class Ballot extends Component {
         showBallotIntroModal: false,
       });
     } else {
-      // hide_intro_modal is the default now
-      // showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
       this.setState({
         mounted: true,
-        showBallotIntroModal: false,
+        showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
       });
     }
 
@@ -408,11 +406,9 @@ export default class Ballot extends Component {
 
       // console.log("Ballot.jsx onVoterStoreChange VoterStore.getVoter: ", VoterStore.getVoter());
       if (consider_opening_ballot_intro_modal) {
-        // hide_intro_modal is the default now
-        // showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
         this.setState({
           voter: VoterStore.getVoter(),
-          showBallotIntroModal: false,
+          showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
           google_civic_election_id: parseInt(VoterStore.election_id(), 10),
         });
       } else {
@@ -650,7 +646,7 @@ export default class Ballot extends Component {
     const emptyBallotButton = this.state.filter_type !== "none" && !missing_address ?
         <span>
           {/* <Link to="/ballot">
-              <Button bsStyle="primary">View Full Ballot</Button>
+              <Button variant="primary">View Full Ballot</Button>
           </Link> */}
         </span> :
         <div className="container-fluid well u-stack--md u-inset--md">
@@ -738,19 +734,19 @@ export default class Ballot extends Component {
                   <h1 className="h1 ballot__header__title">
                     { electionName ?
                        <span className="u-push--sm">
-                         {electionName} <span className="hidden-xs">&mdash; </span>
+                         {electionName} <span className="d-none d-sm-block">&mdash; </span>
                          <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
                        </span> :
                        <span className="u-push--sm">
                          Loading Election...
                        </span> }
                     {/* We always show the change election option */}
-                    <span className="u-no-break hidden-print u-cursor--pointer"
+                    <span className="u-no-break d-print-none u-cursor--pointer"
                           onClick={this.toggleSelectBallotModal} >
-                      <span className="u-no-break u-f8 hidden-xs"><img src={cordovaDot("/img/global/icons/gear-icon.png")}
+                      <span className="u-no-break u-f8 d-none d-sm-block"><img src={cordovaDot("/img/global/icons/gear-icon.png")}
                            role="button"
                            alt={"change address or election"}/> change address or election</span>
-                      <span className="u-no-break u-f6 visible-xs"><img src={cordovaDot("/img/global/icons/gear-icon.png")}
+                      <span className="u-no-break u-f6 d-block d-sm-none"><img src={cordovaDot("/img/global/icons/gear-icon.png")}
                            role="button"
                            alt={"change address or election"}/> change address or election</span>
                     </span>
@@ -775,7 +771,7 @@ export default class Ballot extends Component {
 
                 { text_for_map_search || this.state.ballotWithAllItemsByFilterType.length > 0 ?
                   <div className="ballot__filter__container">
-                    <div className="ballot__filter hidden-print">
+                    <div className="ballot__filter d-print-none">
                       <BallotTabsRaccoon pathname={this.state.pathname}
                                          ballot_type={BallotStore.getBallotTypeByFilterType(this.state.filter_type)}
                                          election_day_text={ElectionStore.getElectionDayText(this.state.google_civic_election_id)}
@@ -797,7 +793,7 @@ export default class Ballot extends Component {
             <div className="col-xs-12 col-md-8">
               { in_ready_to_vote_mode ?
                 <div>
-                  <div className="alert alert-success hidden-print">
+                  <div className="alert alert-success d-print-none">
                     <a href="#" className="close" data-dismiss="alert">&times;</a>
                     We Vote helps you get ready to vote, <strong>but you cannot use We Vote to cast your vote</strong>.
                     Make sure to return your official ballot to your polling
@@ -868,7 +864,7 @@ export default class Ballot extends Component {
               }
               {/* Show links to this candidate in the admin tools */}
               { this.state.voter && polling_location_we_vote_id_source && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ?
-                <span className="u-wrap-links hidden-print"><span>Admin:</span>
+                <span className="u-wrap-links d-print-none"><span>Admin:</span>
                   <OpenExternalWebSite url={ballot_returned_admin_edit_url}
                                        target="_blank"
                                        body={<span>Ballot copied from polling location "{polling_location_we_vote_id_source}"</span>} />
@@ -879,7 +875,7 @@ export default class Ballot extends Component {
 
             { this.state.ballotWithAllItemsByFilterType.length === 0 || isCordova() ?
               null :
-              <div className="col-md-4 hidden-xs sidebar-menu">
+              <div className="col-md-4 d-none d-sm-block sidebar-menu">
                 <BallotSideBar displayTitle displaySubtitles
                                rawUrlVariablesString={this.props.location.search}
                                ballotWithAllItemsByFilterType={this.state.ballotWithAllItemsByFilterType}

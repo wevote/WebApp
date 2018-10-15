@@ -175,7 +175,7 @@ export default class OrganizationVoterGuideCandidate extends Component {
       <br />
     {/* Show links to this candidate in the admin tools */}
     { voter.is_admin || voter.is_verified_volunteer ?
-      <span className="u-wrap-links hidden-print">Admin:
+      <span className="u-wrap-links d-print-none">Admin:
         <OpenExternalWebSite url={candidateAdminEditUrl}
                              target="_blank"
                              className="open-web-site open-web-site__no-right-padding"

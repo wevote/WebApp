@@ -84,7 +84,7 @@ export default class EditAddress extends Component {
                               voter_specific_ballot_from_google_civic={this.state.voter_specific_ballot_from_google_civic} /> :
           <span>{ this.state.text_for_map_search.length ? shortenText(this.state.text_for_map_search, maximumAddressDisplayLength) : noAddressMessage }</span>
         }
-        <span className="hidden-print">(<a onClick={this.props.toggleSelectAddressModal}>Edit</a>)</span>
+        <span className="d-print-none">(<a onClick={this.props.toggleSelectAddressModal}>Edit</a>)</span>
       </span>
     );
   }

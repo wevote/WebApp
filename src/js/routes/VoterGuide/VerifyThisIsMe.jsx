@@ -144,9 +144,9 @@ export default class VerifyThisIsMe extends Component {
           <br />
         </div>
         { signed_in_twitter ?
-          <Link to="/twittersigninprocess/signinswitchstart"><Button bsStyle="primary">Sign In
+          <Link to="/twittersigninprocess/signinswitchstart"><Button variant="primary">Sign In
             With @{this.props.params.twitter_handle} Account</Button></Link> :
-          <Link to="/twittersigninprocess/signinswitchstart"><Button bsStyle="primary">Sign Into
+          <Link to="/twittersigninprocess/signinswitchstart"><Button variant="primary">Sign Into
             Twitter</Button></Link>
         }
       </span>;
@@ -171,9 +171,9 @@ export default class VerifyThisIsMe extends Component {
             <p className="h4">Verify that you represent @{this.props.params.twitter_handle} by signing into this Twitter account.</p>
           </div>
           { signed_in_twitter ?
-            <Link to="/twittersigninprocess/signinswitchstart"><Button bsStyle="primary">Sign In
+            <Link to="/twittersigninprocess/signinswitchstart"><Button variant="primary">Sign In
               With @{this.props.params.twitter_handle} Account</Button></Link> :
-            <Link to="/twittersigninprocess/signinswitchstart"><Button bsStyle="primary">Sign Into
+            <Link to="/twittersigninprocess/signinswitchstart"><Button variant="primary">Sign Into
               Twitter</Button></Link>
           }
         </span>;
@@ -189,9 +189,9 @@ export default class VerifyThisIsMe extends Component {
           <br />
         </div>
         { signed_in_twitter ?
-          <Link to="/twittersigninprocess/signinswitchstart"><Button bsStyle="primary">Sign In
+          <Link to="/twittersigninprocess/signinswitchstart"><Button variant="primary">Sign In
             With @{this.props.params.twitter_handle} Account</Button></Link> :
-          <Link to="/twittersigninprocess/signinswitchstart"><Button bsStyle="primary">Sign Into
+          <Link to="/twittersigninprocess/signinswitchstart"><Button variant="primary">Sign Into
             Twitter</Button></Link>
         }
       </div>;

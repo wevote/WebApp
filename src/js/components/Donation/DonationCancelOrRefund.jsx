@@ -41,8 +41,8 @@ export default class DonationCancelOrRefund extends Component {
     renderLog(__filename);
     const { item, refundDonation } = this.props;
     let label = refundDonation ? "Refund Donation" : "Cancel Subscription";
-      return <div>
-        <Button bsSize="small" onClick={this.open.bind(this)} >{label}</Button>
+    return <div>
+        <Button size="small" onClick={this.open.bind(this)} >{label}</Button>
 
         <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
           <Modal.Header closeButton>

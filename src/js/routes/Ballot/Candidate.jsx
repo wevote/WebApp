@@ -223,7 +223,7 @@ export default class Candidate extends Component {
                            className="opinions-followed__missing-org-link"
                            target="_blank"
                            title="Endorsements Missing?"
-                           body={<Button className="u-margin-top--sm u-stack--xs" bsStyle="primary">Endorsements Missing?</Button>}
+                           body={<Button bsPrefix="u-margin-top--sm u-stack--xs" variant="primary">Endorsements Missing?</Button>}
       />
       <div className="opinions-followed__missing-org-text u-no-break">
         Are there endorsements for {candidateName} that you expected to see?
@@ -235,7 +235,7 @@ export default class Candidate extends Component {
       <br />
     {/* Show links to this candidate in the admin tools */}
     { voter.is_admin || voter.is_verified_volunteer ?
-      <span className="u-wrap-links hidden-print">Admin:
+      <span className="u-wrap-links d-print-none">Admin:
         <OpenExternalWebSite url={candidateAdminEditUrl}
                              target="_blank"
                              className="open-web-site open-web-site__no-right-padding"

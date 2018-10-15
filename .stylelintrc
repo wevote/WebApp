@@ -25,9 +25,10 @@
       "/margin/",
       "/padding/"
     ]],
-    "string-quotes": "single",
+    "string-quotes": "single"
   },
   "ignoreFiles": [
+    "**/index.html",
     "**/vendor/**/*.scss",
     "**/_normalize.scss",
     "**/overrides/_print.scss",

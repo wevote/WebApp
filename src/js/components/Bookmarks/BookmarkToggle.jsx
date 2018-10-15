@@ -105,16 +105,16 @@ export default class BookmarkToggle extends Component {
     </Modal>;
     const bookmarkPopoverText = "Bookmark for later";
     const bookmarkToolTip = <Tooltip id="bookmarkTooltip">{ bookmarkPopoverText }</Tooltip>;
-    return <div className="hidden-print">
+    return <div className="d-print-none">
         <span tabIndex="0"
               className="bookmark-action"
               onClick={this.BookmarkClick.bind(this)}
               onKeyDown={this.BookmarkKeyDown.bind(this)}
               title="Bookmark for later">
               {this.state.is_bookmarked ?
-                <Icon alt="Is Bookmarked" name="bookmark-icon" width={24} height={24} fill="#999" stroke="none" /> :
+                <Icon alt="Is Bookmarked" name="bookmark-icon" width={24} height={24} fill="#999" stroke="none" color="#999" /> :
                 <OverlayTrigger placement="top" overlay={bookmarkToolTip}>
-                  <Icon alt="Bookmark for later" name="bookmark-icon" width={24} height={24} fill="none" stroke="#ccc" strokeWidth={2} />
+                  <Icon alt="Bookmark for later" name="bookmark-icon" width={24} height={24} fill="none" stroke="#ccc" strokeWidth={2} color="#ccc" />
                 </OverlayTrigger>
               }
             </span>

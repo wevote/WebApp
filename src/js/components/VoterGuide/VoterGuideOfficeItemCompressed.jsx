@@ -297,16 +297,16 @@ export default class VoterGuideOfficeItemCompressed extends Component {
       <a className="anchor-under-header" name={we_vote_id} />
       <div className="card-main__content">
         {/* Desktop */}
-        <span className="hidden-xs">
+        <span className="d-none d-sm-block">
           <BookmarkToggle we_vote_id={we_vote_id} type="OFFICE" />
         </span>
         {/* Mobile - "show more" and "show less" not used */}
 
         {/* On the voter guide, we bring the size of the office name down so we can emphasize the candidate being supported */}
         <h2 className="h4 u-f5 card-main__ballot-name u-gray-dark u-stack--sm">
-          <span className="hidden-print" onClick={this.toggleExpandDetails}>
+          <span className="d-print-none" onClick={this.toggleExpandDetails}>
             { this.state.display_office_unfurled ?
-              <span className="glyphicon glyphicon-triangle-bottom u-font-size6 hidden-print u-push--xs"/> :
+              <span className="glyphicon glyphicon-triangle-bottom u-font-size6 d-print-none u-push--xs"/> :
               null
             }
             {ballot_item_display_name}
@@ -338,7 +338,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
               <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
                 {/* Candidate Photo, only shown in Desktop */}
                 {this.state.display_office_unfurled ?
-                  <div className="hidden-xs" onClick={this.props.link_to_ballot_item_page ? this.toggleExpandDetails : null}>
+                  <div className="d-none d-sm-block" onClick={this.props.link_to_ballot_item_page ? this.toggleExpandDetails : null}>
                     <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
                                   sizeClassName="icon-candidate-small u-push--sm "
                                   imageUrl={one_candidate.candidate_photo_url_large}
@@ -461,7 +461,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                         null }
                       {/* MOBILE: If voter has taken position, offer the comment bar */}
                       {is_support || is_oppose || voter_statement_text ?
-                        <div className="visible-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+                        <div className="d-block d-sm-none o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
                           <div
                             className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
                           </div>
@@ -494,7 +494,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                                   rootClose
                                   placement="top"
                                   overlay={yourNetworkIsUndecidedPopover}>
-                      <span className=" u-cursor--pointer">Your network is undecided <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
+                      <span className=" u-cursor--pointer">Your network is undecided <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" /></span>
                     </OverlayTrigger>
                   </div>
                 }
@@ -506,7 +506,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
 
         { !this.state.display_all_candidates_flag && this.state.display_office_unfurled && remaining_candidates_to_display_count ?
           <Link onClick={this.toggleDisplayAllCandidates}>
-            <span className="u-items-center u-no-break hidden-print">
+            <span className="u-items-center u-no-break d-print-none">
               Click to show {remaining_candidates_to_display_count} more candidate{ remaining_candidates_to_display_count !== 1 ? "s" : null }...</span>
           </Link> : null
         }
@@ -518,11 +518,11 @@ export default class VoterGuideOfficeItemCompressed extends Component {
         */}
         { this.state.display_office_unfurled ?
           <Link onClick={this.toggleExpandDetails}>
-            <div className="BallotItem__view-more u-items-center u-no-break hidden-print">
+            <div className="BallotItem__view-more u-items-center u-no-break d-print-none">
               Show less...</div>
           </Link> :
           <Link onClick={this.toggleExpandDetails}>
-            <div className="BallotItem__view-more u-items-center u-no-break hidden-print">
+            <div className="BallotItem__view-more u-items-center u-no-break d-print-none">
               <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
               { total_number_of_candidates_to_display > 1 ?
                 <span> View all {total_number_of_candidates_to_display} candidates...</span> :

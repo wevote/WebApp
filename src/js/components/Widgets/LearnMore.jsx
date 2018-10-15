@@ -12,7 +12,6 @@ export default class LearnMore extends Component {
     learn_more_text: PropTypes.node,
     num_of_lines: PropTypes.number,
     on_click: PropTypes.func,
-    always_show_external_link: PropTypes.bool
   };
 
   constructor (props) {
@@ -43,8 +42,7 @@ export default class LearnMore extends Component {
 
   render () {
     renderLog(__filename);
-    let { text_to_display: textToDisplay, show_more_text: showMoreText, num_of_lines: numOfLines,
-      learn_more_link: learnMoreLink, learn_more_text: learnMoreText, on_click: onClick, always_show_external_link: alwaysShowExternalLink} = this.props;
+    let { text_to_display: textToDisplay, show_more_text: showMoreText, num_of_lines: numOfLines, learn_more_link: learnMoreLink, learn_more_text: learnMoreText, on_click: onClick } = this.props;
 
     // default prop values
     if (numOfLines === undefined) {
@@ -105,21 +103,8 @@ export default class LearnMore extends Component {
       }
     });
 
-    const externalLink = learnMoreLink ?
-    <OpenExternalWebSite url={learnMoreLink}
-                         target="_blank"
-                         body={<span>{learnMoreText}&nbsp;<i className="fa fa-external-link" /></span>} /> :
-    <a tabIndex="0"
-      onClick={onClick}
-      onKeyDown={this.onKeyDown.bind(this)}>
-      {learnMoreText}
-    </a>;
-
     if (notEnoughTextToTruncate) {
-      return <span>{expandedTextToDisplay}{
-        alwaysShowExternalLink &&
-        externalLink
-      }</span>;
+      return <span>{expandedTextToDisplay}</span>;
     }
 
     if (this.state.readMore) {
@@ -138,8 +123,15 @@ export default class LearnMore extends Component {
        </span>;
     } else {
       return <span tabIndex="0"> {expandedTextToDisplay}&nbsp;&nbsp;
-        {
-          externalLink
+        { learnMoreLink ?
+          <OpenExternalWebSite url={learnMoreLink}
+                               target="_blank"
+                               body={<span>{learnMoreText}&nbsp;<i className="fa fa-external-link" /></span>} /> :
+          <a tabIndex="0"
+            onClick={onClick}
+            onKeyDown={this.onKeyDown.bind(this)}>
+            {learnMoreText}
+          </a>
         }
       </span>;
     }

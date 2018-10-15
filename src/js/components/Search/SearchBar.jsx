@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { renderLog } from "../../utils/logging";
+import {cordovaDot} from "../../utils/cordovaUtils";
+import {Link} from "react-router";
+import Icon from "react-svg-icons";
+
 
 export default class SearchBar extends Component {
   static propTypes = {
@@ -81,10 +85,12 @@ export default class SearchBar extends Component {
         <div className="search-bar-options">
           <button className={this.props.clearButton && this.state.searchString && this.state.searchString.length > 0 ? "search-options-btn" : "hidden"}
                   onClick={this.clearQuery}>
-            <i className="glyphicon glyphicon-remove-circle u-gray-light" />
+             <Icon name="glyphicons-pro-halflings/glyphicons-halflings-88-remove-circle" color="#ccc" width={28} height={28} />
+
           </button>
           <button className={this.props.searchButton ? "search-options-btn" : "hidden"}>
-            <i className="glyphicon glyphicon-search" />
+            {/*<i className="glyphicon glyphicon-search" />*/}
+            <i className="fa fa-search" />
           </button>
         </div>
       </div>

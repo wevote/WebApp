@@ -569,7 +569,7 @@ export default class VoterGuideBallot extends Component {
     const emptyBallotButton = this.state.filter_type !== "none" && !missing_address ?
         <span>
           <Link to={ballotBaseUrl}>
-              <Button bsStyle="primary">View Full Ballot</Button>
+              <Button variant="primary">View Full Ballot</Button>
           </Link>
         </span> :
         <div className="container-fluid well u-stack--md u-inset--md">
@@ -668,7 +668,7 @@ export default class VoterGuideBallot extends Component {
                        </span> :
                       null }
               {/* We always show the change election option */}
-              <span className="u-no-break hidden-print u-f8 u-cursor--pointer"
+              <span className="u-no-break d-print-none u-f8 u-cursor--pointer"
                     onClick={this.toggleSelectBallotModal}>
                 <img src={cordovaDot("/img/global/icons/gear-icon.png")}
                      role="button"
@@ -678,7 +678,7 @@ export default class VoterGuideBallot extends Component {
             </h1>
           </header>
 
-          <div className="hidden-print">
+          <div className="d-print-none">
             { ballot_with_organization_items.length ?
               <PledgeToSupportOrganizationStatusBar organization={this.state.organization} /> :
               null
@@ -687,7 +687,7 @@ export default class VoterGuideBallot extends Component {
              <PledgeToVoteStatusBar organization={this.state.organization} /> */}
           </div>
 
-          <div className="hidden-print">
+          <div className="d-print-none">
             { ballot_with_organization_items.length ?
               <PledgeToSupportOrganizationButton organization={this.state.organization}
                                                pledgeToVoteAction={this.pledgeToVoteWithVoterGuide} /> :
@@ -760,7 +760,7 @@ export default class VoterGuideBallot extends Component {
               {/* Show link to this organization in the admin tools */}
               { this.state.voter && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) &&
                 this.props.organization && this.props.organization.organization_we_vote_id ?
-                <div className="u-wrap-links hidden-print">Admin link:
+                <div className="u-wrap-links d-print-none">Admin link:
                   <OpenExternalWebSite url={organization_admin_url}
                                        target="_blank"
                                        body={<span>Open this organization in Admin interface ("{this.props.organization.organization_we_vote_id}")</span>} />
@@ -769,7 +769,7 @@ export default class VoterGuideBallot extends Component {
 
               {/* Show links to the polling location this was copied from in the admin tools */}
               { this.state.voter && polling_location_we_vote_id_source && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ?
-                <div className="u-wrap-links hidden-print">Admin link:
+                <div className="u-wrap-links d-print-none">Admin link:
                   <OpenExternalWebSite url={ballot_returned_admin_edit_url}
                                        target="_blank"
                                        body={<span>This ballot copied from polling location "{polling_location_we_vote_id_source}"</span>} />

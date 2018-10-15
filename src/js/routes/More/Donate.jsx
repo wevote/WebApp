@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import { Button, FormGroup, Radio, InputGroup, FormControl } from "react-bootstrap";
+import React, { Component } from "react";
+import { Button, FormGroup, Form, InputGroup, FormControl } from "react-bootstrap";
 import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import DonationForm from "../../components/Donation/DonationForm";
@@ -8,6 +8,25 @@ import DonateStore from "../../stores/DonateStore";
 import DonationListForm from "../../components/Donation/DonationListForm";
 import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
+
+const styles = {
+  formCheck: {
+    verticalAlign: "middle",
+    textAlign: "center",
+  },
+  td: {
+    verticalAlign: "middle",
+    textAlign: "center",
+  },
+  th: {
+    textAlign: "center",
+  },
+  Card: {
+    borderTopColor: "transparent",
+    height: "500px",
+    overflowY: "auto",
+  },
+};
 
 export default class Donate extends Component {
   constructor (props) {
@@ -21,6 +40,7 @@ export default class Donate extends Component {
     };
 
     this._toggleCustomAmount = this._toggleCustomAmount.bind(this);
+    this._handleKeyPress = this._handleKeyPress.bind(this);
     this._updateCustomAmount = this._updateCustomAmount.bind(this);
     this._toggleDonateMonthly = this._toggleDonateMonthly.bind(this);
     this._donateStoreChange = this._donateStoreChange.bind(this);
@@ -86,29 +106,26 @@ export default class Donate extends Component {
     return <div className="Donate">
       <Helmet title="Donate - We Vote"/>
       <div className="container-fluid card">
-        <div>
+        <div style={{ marginTop: 0, marginBottom: 0 }}>
           <h1 className="h4">Your donations keep us going. Thank you!</h1>
 
           {this.state.donationErrorMessage.length > 0 ?
             <DonationError errorMessage={this.state.donationErrorMessage} /> :
             <p>Please give what you can to help us reach more voters.</p>}
-          <div className="hidden-xs"><br /></div>
+          <div className="d-none d-sm-block"><br /></div>
           <br />
           Gift Type:
-          <FormGroup>
-            <Radio name="radioGroup" bsClass="radio" value="monthly"
-                   onChange={this._toggleDonateMonthly} inline
-                   checked={this.state.radioSelected === "monthly"}>
-              Monthly
-            </Radio>
+          <Form className="d-flex flex-row">
+            {/*<div key={'default-radio'} */}
+            <Form.Check type="radio" label="Monthly" bsPrefix="radio" value="monthly" style={{ margin: 24 }}
+                   onChange={this._toggleDonateMonthly}
+                   checked={this.state.radioSelected === "monthly"} />
             {" "}
-            <Radio name="radioGroup" bsClass="radio" value="once"
-                   onChange={this._toggleDonateMonthly} inline
-                   checked={this.state.radioSelected === "once"}>
-              One-Time
-            </Radio>
+            <Form.Check type="radio" label="One-Time" name="radioGroup" bsPrefix="radio" value="once" style={{ margin: 24 }}
+                   onChange={this._toggleDonateMonthly}
+                   checked={this.state.radioSelected === "once"} />
             {" "}
-          </FormGroup>
+          </Form>
           Select an Amount:
           <br/>
           <DonationForm donationAmount={500} donateButtonText="$5"
@@ -122,46 +139,46 @@ export default class Donate extends Component {
           <DonationForm donationAmount={10000} donateButtonText="$100"
                         donateMonthly={this.state.donateMonthly} />
 
-          <Button className="btn_donate" bsStyle="success" onClick={this._toggleCustomAmount}>
+          <Button bsPrefix="btn_donate btn btn-success" variant="success" onClick={this._toggleCustomAmount}>
             Other Amount
           </Button>
-          <div className="hidden-xs">
-            <br />
-            <br />
-          </div>
 
           {this.state.showCustomInput ?
             <span>
-              <form className="form-inline">
-                <FormGroup>
-                  <InputGroup>
-                    <InputGroup.Addon>$</InputGroup.Addon>
-                    <FormControl type="text"
-                                 onKeyPress={this._handleKeyPress}
-                                 onChange={this._updateCustomAmount}
-                                 value={this.state.custom_amount}
-                                 placeholder="250.00" />
-                    <InputGroup.Button>
-                      <DonationForm donationAmount={parseInt(parseFloat(
-                          this.state.custom_amount.replace(/[^0-9.]+/g, "")) * 100, 10)}
-                                    donateMonthly={this.state.donateMonthly}
-                                    donateButtonText="Go" donateOther />
-                    </InputGroup.Button>
-                  </InputGroup>
-                </FormGroup>
-              </form>
-            </span> : null }
+              <InputGroup className="mb-3" style={{ width: "50%" }}>
+                <InputGroup.Prepend>
+                  <InputGroup.Text>$</InputGroup.Text>
+                </InputGroup.Prepend>
+                {/*<FormControl aria-label="Amount" />*/}
+                <FormControl type="text"
+                  onKeyPress={this._handleKeyPress}
+                  onChange={this._updateCustomAmount}
+                  value={this.state.custom_amount}
+                  placeholder="250.00" />
+
+                <InputGroup.Append>
+                  <DonationForm
+                    donationAmount={parseInt(parseFloat(this.state.custom_amount.replace(/[^0-9.]+/g, "")) * 100, 10)}
+                    donateMonthly={this.state.donateMonthly}
+                    donateButtonText="Go" donateOther />
+                </InputGroup.Append>
+              </InputGroup>
+            </span> : null
+          }
 
           {isNaN(this.state.custom_amount) || this.state.custom_amount === "0" ?
             <span>
               <p>Please enter a valid number</p>
             </span> : null}
-          <div className="hidden-xs"><br /></div>
+          <div className="d-none d-sm-block"><br /></div>
           <br />
           These contributions or gifts are not tax deductible. These donations are for We Vote's 501(c)(4) nonprofit.
           We Vote's 501(c)(3) nonprofit also {/* This is a mailto! */}<a href={donateMailtoUrl} title="Donate to We Vote's 501(c)(3)">accepts tax deductible donations.</a><br />
           <br />
           <DonationListForm />
+        </div>
+        <div id="users-device-size">
+          <div id="xs" className="d-none d-sm-block" />
         </div>
       </div>
     </div>;

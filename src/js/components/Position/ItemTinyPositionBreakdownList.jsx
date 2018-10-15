@@ -123,7 +123,8 @@ export default class ItemTinyPositionBreakdownList extends Component {
                                                                      showOppose={showOppose}
                                                                      {...one_organization} />;
         } else {
-          voter_organization_tiny_display = <span key="anonIconKey" className={support_oppose_class + "position-rating__source with-popover"}><Icon name="avatar-generic" width={24} height={24} />You</span>;
+          voter_organization_tiny_display = <span key="anonIconKey" className={support_oppose_class + "position-rating__source with-popover"}>
+            <Icon name="avatar-generic" width={24} height={24} color="#c0c0c0" />You</span>;
         }
         organizations_to_display.push(voter_organization_tiny_display);
       }
@@ -173,7 +174,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
           //  we want to show a "drop down" with the remaining organizations.
           if (local_counter === MAXIMUM_ORGANIZATION_DISPLAY + 1) {
             // If here we want to show how many organizations there are to follow
-            let organizationPopover = <Popover className="card-popover"
+            let organizationPopover = <Popover bsPrefix="card-popover"
                                                id={`organization-popover-${orgs_not_shown_count}`}
                                                onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
                                                onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
@@ -214,7 +215,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
             twitter_followers_count: 0,
           };
           let organization_we_vote_id = one_organization.organization_we_vote_id;
-          let organizationPopover = <Popover className="card-popover"
+          let organizationPopover = <Popover bsPrefix="card-popover"
                                              id={`organization-popover-${organization_we_vote_id}`}
                                              onMouseOver={() => this.onTriggerEnter(organization_we_vote_id)}
                                              onMouseOut={() => this.onTriggerLeave(organization_we_vote_id)}

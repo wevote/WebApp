@@ -75,7 +75,7 @@ export default class OrganizationFollowToggle extends Component {
         <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.organization_name}</h4>
         { this.props.organization_description && this.props.organization_description.length ?
           <OverlayTrigger placement="top" overlay={<Tooltip id="organizationDescriptionTooltip">{this.props.organization_description}</Tooltip>}>
-            <i className="fa fa-info-circle fa-lg hidden-xs intro-modal__square-details" aria-hidden="true" />
+            <i className="fa fa-info-circle fa-lg d-none d-sm-block intro-modal__square-details" aria-hidden="true" />
           </OverlayTrigger> :
           null
         }

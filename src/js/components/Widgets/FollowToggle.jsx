@@ -140,21 +140,21 @@ export default class FollowToggle extends Component {
     }
 
     return this.state.is_following ?
-      <span className="hidden-print">
+      <span className="d-print-none">
         { this.props.hide_stop_following_button ?
           null :
-          <Button bsStyle="warning"
-                  bsSize="small"
-                  className={classNameOverride.length ? classNameOverride : "pull-right"}
+          <Button variant="warning"
+                  size="small"
+                  bsPrefix={classNameOverride.length ? classNameOverride : "pull-right"}
                   onClick={()=>this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, office_we_vote_id)}>
             <span>Listening</span>
           </Button>
         }
       </span> :
-      <span className="hidden-print">
-        <Button bsStyle="success"
-                bsSize="small"
-                className={classNameOverride.length ? classNameOverride : "pull-right"}
+      <span className="d-print-none">
+        <Button variant="success"
+                size="small"
+                bsPrefix={classNameOverride.length ? classNameOverride : "pull-right"}
                 onClick={()=>this.followInstantly(followFunc, currentBallotIdInUrl, urlWithoutHash, office_we_vote_id)}>
           <span>Listen</span>
         </Button>

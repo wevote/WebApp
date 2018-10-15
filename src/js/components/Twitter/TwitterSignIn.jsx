@@ -139,7 +139,7 @@ class TwitterSignIn extends Component {
 
   render () {
     renderLog(__filename);
-    return <Button className={this.props.className ? this.props.className : "btn btn-social btn-twitter"}
+    return <Button bsPrefix={this.props.className ? this.props.className : "btn btn-social btn-twitter"}
             onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova }>
       <span className="fa fa-twitter"/> {this.props.buttonText ? this.props.buttonText : "Sign In"}
     </Button>;

@@ -66,7 +66,7 @@ export default class Opinions extends Component {
         Find opinions about your ballot (ordered by Twitter followers).
         Listen to those you trust. Stop Listening at any time.
         Listening won't add you to mailing lists.
-        <span style={floatRight} className="hidden-print">
+        <span style={floatRight} className="d-print-none">
           <Link to="/opinions_followed" className="u-margin-left--md u-no-break">See organizations you listen to</Link>
         </span>
       </p>
