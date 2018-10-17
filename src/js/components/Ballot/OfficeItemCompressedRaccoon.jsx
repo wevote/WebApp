@@ -694,8 +694,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                 }
                 {/* *** "Positions in your Network" bar OR items you can follow *** */}
               </div>;
-              })
-            }
+              })}
             {/* Now that we are out of the candidate loop we want to add option if a candidate isn't suggested
                 by network or issues. */}
             { voterSupportsAtLeastOneCandidate ?

@@ -228,7 +228,7 @@ class OrganizationStore extends ReduceStore {
           search_string = "";
           add_voter_guides_not_from_election = false;
           // Whenever a voter follows a new org, update list
-          VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voter_guides_not_from_election);
+          // VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voter_guides_not_from_election);  // DEBUG=1
         }
         // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
         VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
@@ -313,7 +313,7 @@ class OrganizationStore extends ReduceStore {
         search_string = "";
         add_voter_guides_not_from_election = false;
         // Whenever a voter follows a new org, update list
-        VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voter_guides_not_from_election);
+        // VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voter_guides_not_from_election); // DEBUG=1
         // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
         // 2018-05-02 NOT calling this for optimization (not critical)
         // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
