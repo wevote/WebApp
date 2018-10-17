@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { renderLog } from "../../utils/logging";
-import {cordovaDot} from "../../utils/cordovaUtils";
-import {Link} from "react-router";
 import Icon from "react-svg-icons";
 
 

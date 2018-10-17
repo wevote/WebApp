@@ -232,15 +232,15 @@ export default class ItemTinyPositionBreakdownList extends Component {
             </Popover>;
 
           return <OverlayTrigger
-              key={`trigger-${organization_we_vote_id}`}
-              ref={`position-overlay-${organization_we_vote_id}`}
-              onMouseOver={() => this.onTriggerEnter(organization_we_vote_id)}
-              onMouseOut={() => this.onTriggerLeave(organization_we_vote_id)}
-              onExiting={() => this.onTriggerLeave(organization_we_vote_id)}
-              trigger={this.props.visibility === "mobile" ? "click" : ["focus", "hover", "click"]}
-              rootClose
-              placement="bottom"
-              overlay={organizationPopover}>
+            key={`trigger-${organization_we_vote_id}`}
+            ref={`position-overlay-${organization_we_vote_id}`}
+            onMouseOver={() => this.onTriggerEnter(organization_we_vote_id)}
+            onMouseOut={() => this.onTriggerLeave(organization_we_vote_id)}
+            onExiting={() => this.onTriggerLeave(organization_we_vote_id)}
+            trigger={this.props.visibility === "mobile" ? "click" : ["focus", "hover", "click"]}
+            rootClose
+            placement="bottom"
+            overlay={organizationPopover}>
             <span className="position-rating__source with-popover">
               <OrganizationTinyDisplay {...one_organization}
                                        showPlaceholderImage

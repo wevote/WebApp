@@ -40,7 +40,7 @@ export default class FriendInvitationProcessedList extends Component {
 
     return <div className="guidelist card-child__list-group">
         <TransitionGroup transitionName="org-ignore" transitionEnterTimeout={2000} transitionLeaveTimeout={2000}>
-          {friendInvitationsList.map((friend) => {
+          {this.state.friendInvitationsList.map((friend) => {
             if (this.props.invitationsSentByMe) {
               return <CSSTransition key={++counter} timeout={500} classNames="fade">
                   <FriendInvitationProcessedDisplayForList key={counter} {...friend}

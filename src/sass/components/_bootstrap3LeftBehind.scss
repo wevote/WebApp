@@ -1,6 +1,4 @@
 // Some css that was in the old react-bootstrap-sass prior to October 2018
-// eslint turned off in /WebApp/.stylelintrc
-//$white:    #fff !default;
 $gray-100: #f8f9fa !default;
 $gray-200: #e9ecef !default;
 $gray-300: #dee2e6 !default;
@@ -10,7 +8,7 @@ $gray-600: #6c757d !default;
 $gray-700: #495057 !default;
 $gray-800: #343a40 !default;
 $gray-900: #212529 !default;
-//$black:    #000 !default;
+$body-color:                $gray-900 !default;
 
 $padding-base-vertical:     6px !default;
 $padding-base-horizontal:   12px !default;
@@ -24,41 +22,64 @@ $padding-small-horizontal:  10px !default;
 $padding-xs-vertical:       1px !default;
 $padding-xs-horizontal:     5px !default;
 
-$border-width:                1px !default;
-$border-color:                $gray-300 !default;
+$border-width:              1px !default;
+$border-color:              $gray-300 !default;
 
-$font-size-base:              1rem !default;  // assumes the browser derault, typically 16px
-$font-size-large:         ceil(($font-size-base * 1.25)) !default; // ~18px
-$font-size-small:         ceil(($font-size-base * .85)) !default; // ~12px
+$font-size-base:            1rem !default;  // assumes the browser derault, typically 16px
+$font-size-large:           ceil(($font-size-base * 1.25)) !default; // ~18px
+$font-size-small:           ceil(($font-size-base * .85)) !default; // ~12px
 
-$border-radius:               .25rem !default;
-$border-radius-lg:            .3rem !default;
-$border-radius-sm:            .2rem !default;
+$border-radius:             .25rem !default;
+$border-radius-lg:          .3rem !default;
+$border-radius-sm:          .2rem !default;
 
-$input-border-radius:                   $border-radius !default;
-$input-border-radius-lg:                $border-radius-lg !default;
-$input-border-radius-sm:                $border-radius-sm !default;
+$input-border-radius:       $border-radius !default;
+$input-border-radius-lg:    $border-radius-lg !default;
+$input-border-radius-sm:    $border-radius-sm !default;
 $line-height-large:         1.3333333 !default; // extra decimals for Win 8.1 Chrome
 $line-height-small:         1.5 !default;
 
 // Hacks within hacks October 2018
 $input-height-small:        18px;  //     (floor($font-size-small * $line-height-small) + ($padding-small-vertical * 2) + 2) !default;
-$input-border-radius-small:    $input-border-radius-sm;
-$input-border-radius-large:        $input-border-radius-lg;
+$input-border-radius-small: $input-border-radius-sm;
+$input-border-radius-large: $input-border-radius-lg;
 // End hacks within hacks October 2018
 
 
-$input-btn-border-width:      $border-width !default;
-$input-color:                           $gray-700 !default;
-$input-border-color:                    $gray-400 !default;
-$input-border-width:                    $input-btn-border-width !default;
-$input-box-shadow:                      inset 0 1px 1px rgba($black, .075) !default;
+$input-btn-border-width:    $border-width !default;
+$input-color:               $gray-700 !default;
+$input-border-color:        $gray-400 !default;
+$input-border-width:        $input-btn-border-width !default;
+$input-box-shadow:          inset 0 1px 1px rgba($black, .075) !default;
 
 
-$input-group-addon-color:               $input-color !default;
-$input-group-addon-bg:                  $gray-200 !default;
-$input-group-addon-border-color:        $input-border-color !default;
+$input-group-addon-color:           $input-color !default;
+$input-group-addon-bg:              $gray-200 !default;
+$input-group-addon-border-color:    $input-border-color !default;
 
+$popover-font-size:                 $font-size-small !default;
+$popover-bg:                        $white !default;
+$popover-max-width:                 276px !default;
+$popover-border-width:              $border-width !default;
+$popover-border-color:              rgba($black, .2) !default;
+$popover-border-radius:             $border-radius-lg !default;
+$popover-box-shadow:                0 .25rem .5rem rgba($black, .2) !default;
+
+$headings-color:                    inherit !default;
+$popover-header-bg:                 darken($popover-bg, 3%) !default;
+$popover-header-color:              $headings-color !default;
+$popover-header-padding-y:          .5rem !default;
+$popover-header-padding-x:          .75rem !default;
+
+$popover-body-color:                $body-color !default;
+$popover-body-padding-y:            $popover-header-padding-y !default;
+$popover-body-padding-x:            $popover-header-padding-x !default;
+
+$popover-arrow-width:               1rem !default;
+$popover-arrow-height:              .5rem !default;
+$popover-arrow-color:               $popover-bg !default;
+
+$popover-arrow-outer-color:         fade-in($popover-border-color, .05) !default;
 
 .nav>li>a {
   padding: 10px 15px;
@@ -228,6 +249,7 @@ a {
     }
   }
 }
+
 .site-search__button, .site-search__clear {
   border: none;
   height: 34px;
@@ -235,6 +257,31 @@ a {
     background-color: #fff;
     border-color: #ccc;
 }
+
+.candidate-h2 {
+  margin-top: 10px;
+}
+
+.bs-popover-bottom {
+  margin-top: $popover-arrow-height;
+  border-radius: .3rem;
+  border: 1px solid $brand-blue;
+  box-shadow: 2px 2px 4px 2px $gray-light;
+
+  .arrow {
+    top: calc((#{$popover-arrow-height} + #{$popover-border-width}) * -1);
+  }
+
+  .arrow::before,
+  .arrow::after {
+    border-width: 0 ($popover-arrow-width / 2) $popover-arrow-height ($popover-arrow-width / 2);
+  }
+}
+
+.card-popover-body {
+  padding: $space-inset-xs;
+}
+
 
 //
 //.input-group-btn:last-child>.btn, .input-group-btn:last-child>.btn-group {
@@ -277,3 +324,4 @@ a {
 //  -ms-user-select: none;
 //  user-select: none;
 //}
+
