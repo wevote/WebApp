@@ -67,6 +67,35 @@ export default class HeaderSecondaryNavBar extends Component {
     this.voterStoreListener.remove();
   }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    if (this.state.componentDidMountFinished === false) {
+      // console.log("shouldComponentUpdate: componentDidMountFinished === false");
+      return true;
+    }
+    if (this.state.showBallotIntroFollowIssues === true || nextState.showBallotIntroFollowIssues === true) {
+      // console.log("shouldComponentUpdate: this.state.showBallotIntroFollowIssues", this.state.showBallotIntroFollowIssues, ", nextState.showBallotIntroFollowIssues", nextState.showBallotIntroFollowIssues);
+      return true;
+    }
+    if (this.state.showBallotIntroOrganizations === true || nextState.showBallotIntroOrganizations === true) {
+      // console.log("shouldComponentUpdate: this.state.showBallotIntroOrganizations", this.state.showBallotIntroOrganizations, ", nextState.showBallotIntroOrganizations", nextState.showBallotIntroOrganizations);
+      return true;
+    }
+    if (this.state.showEmailModal === true || nextState.showEmailModal === true) {
+      // console.log("shouldComponentUpdate: this.state.showEmailModal", this.state.showEmailModal, ", nextState.showEmailModal", nextState.showEmailModal);
+      return true;
+    }
+    if (this.state.showFacebookModal === true || nextState.showFacebookModal === true) {
+      // console.log("shouldComponentUpdate: this.state.showFacebookModal", this.state.showFacebookModal, ", nextState.showFacebookModal", nextState.showFacebookModal);
+      return true;
+    }
+    if (this.state.showPollingLocatorModal === true || nextState.showPollingLocatorModal === true) {
+      // console.log("shouldComponentUpdate: this.state.showPollingLocatorModal", this.state.showPollingLocatorModal, ", nextState.showPollingLocatorModal", nextState.showPollingLocatorModal);
+      return true;
+    }
+    return false;
+  }
+
   _onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter(),
@@ -156,6 +185,7 @@ export default class HeaderSecondaryNavBar extends Component {
   }
 
   render () {
+    console.log("HeaderSecondaryNavBar render");
     renderLog(__filename);
     let sliderSettings = {
       dots: true,
@@ -247,6 +277,9 @@ export default class HeaderSecondaryNavBar extends Component {
       </Modal.Body>
     </Modal>;
 
+    const ShowPollingLocatorModal = <PollingPlaceLocatorModal show={this.state.showPollingLocatorModal}
+                                  onHide={() => this._openPollingLocatorModal(this)}/>;
+
     let currentPathname = this.props.pathname ? this.props.pathname : "/ballot";
     let ballotBaseUrl = webAppConfig.WE_VOTE_URL_PROTOCOL + (isWebApp() ? webAppConfig.WE_VOTE_HOSTNAME : "WeVote.US") + currentPathname;
 
@@ -306,10 +339,7 @@ export default class HeaderSecondaryNavBar extends Component {
       { this.state.showBallotIntroFollowIssues ? BallotIntroFollowIssuesModal : null }
       { this.state.showEmailModal ? SendEmailModal : null }
       { this.state.showFacebookModal ? SendFacebookModal : null }
-      { this.state.showPollingLocatorModal &&
-        <PollingPlaceLocatorModal show={this.state.showPollingLocatorModal}
-                                  onHide={() => this._openPollingLocatorModal(this)}/>
-      }
+      { this.state.showPollingLocatorModal ? ShowPollingLocatorModal : null }
     </div>;
   }
 }

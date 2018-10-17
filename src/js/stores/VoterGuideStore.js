@@ -80,7 +80,7 @@ class VoterGuideStore extends ReduceStore {
     return this.sortVoterGuidesByDate(unsortedVoterGuides);
   }
 
-  getVoterGuidesToFollowAll () {
+  getVoterGuidesToFollowAll (limit=100) {
     // Start with the full list of we_vote_ids that can be followed
     let organizationWeVoteIdsToFollow = this.getState().organization_we_vote_ids_to_follow_all || [];
     // Take the list that we are already following
@@ -89,7 +89,8 @@ class VoterGuideStore extends ReduceStore {
     organizationWeVoteIdsToFollow = organizationWeVoteIdsToFollow.filter( function ( el ) {
       return !organizationWeVoteIdsFollowed.includes( el );
     });
-    return this.returnVoterGuidesFromListOfIds(organizationWeVoteIdsToFollow) || [];
+    let organizationWeVoteIdsToFollowWithLimit = organizationWeVoteIdsToFollow.slice(0, limit);
+    return this.returnVoterGuidesFromListOfIds(organizationWeVoteIdsToFollowWithLimit) || [];
   }
 
   getVoterGuidesToFollowForLatestBallotItem () {

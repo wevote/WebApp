@@ -91,7 +91,7 @@ export default {
     }
     // The CDN only (currently) works without any URL variables. Testing changes.
     Dispatcher.loadEndpoint("voterGuidesUpcomingRetrieve", {
-      // google_civic_election_id_list: google_civic_election_id_list,
+      google_civic_election_id_list: google_civic_election_id_list,
       // maximum_number_to_retrieve: maximum_number_to_retrieve,
     });
   },
