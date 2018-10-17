@@ -12,9 +12,9 @@ import HeaderBarAboutMenu from "./HeaderBarAboutMenu";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
-import SearchAllBox from "../../components/Search/SearchAllBox";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
+// import SearchAllBox from "../../components/Search/SearchAllBox";
 
 export default class HeaderBar extends Component {
   static propTypes = {
@@ -30,30 +30,45 @@ export default class HeaderBar extends Component {
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
     this.state = {
       aboutMenuOpen: false,
-      profilePopUpOpen: false,
       bookmarks: [],
+      componentDidMountFinished: false,
+      profilePopUpOpen: false,
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
     };
   }
 
   componentDidMount () {
-    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    // this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.bookmarkStoreListener = BookmarkStore.addListener(this.onBallotStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
-    this.onBallotStoreChange();
+    //this.onBallotStoreChange();
 
     // this.props.location &&
     let weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
     let weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
     this.setState({
+      componentDidMountFinished: true,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
 
   componentWillUnmount () {
-    this.ballotStoreListener.remove();
+    // this.ballotStoreListener.remove();
     this.bookmarkStoreListener.remove();
     this.friendStoreListener.remove();
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    if (this.state.componentDidMountFinished === false) {
+      // console.log("shouldComponentUpdate: componentDidMountFinished === false");
+      return true;
+    }
+    if (this.state.profilePopUpOpen === true || nextState.profilePopUpOpen === true) {
+      console.log("shouldComponentUpdate: this.state.profilePopUpOpen", this.state.profilePopUpOpen, ", nextState.profilePopUpOpen", nextState.profilePopUpOpen);
+      return true;
+    }
+    return false;
   }
 
   onBallotStoreChange () {
@@ -67,8 +82,8 @@ export default class HeaderBar extends Component {
   }
 
   static ballot (active) {
-    return <Link to="/ballot" className={ "header-nav__item--donate header-nav__item header-nav__item--has-icon d-none d-sm-block" + (active ? " active-icon" : "")}>
-      <Icon name="glyphicons-pro-halflings/glyphicons-halflings-32-list-alt" color="#e6e6e6" width={28} height={28} />
+    return <Link to="/ballot" className={ "header-nav__item--ballot header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
+      <Icon name="glyphicons-pro-halflings/glyphicons-halflings-32-list-alt" color="#e6e6e6" className={"header-nav__icon--ballot"} />
       <span className="header-nav__label">
         Ballot
       </span>
@@ -146,6 +161,7 @@ export default class HeaderBar extends Component {
   }
 
   render () {
+    console.log("HeaderBar render");
     renderLog(__filename);
     let { pathname } = this.props;
     let voter = this.props.voter;
@@ -212,7 +228,7 @@ export default class HeaderBar extends Component {
           }
         </div>
 
-        { (showFullNavigation || isCordova()) && <SearchAllBox /> }
+        {/* (showFullNavigation || isCordova()) && <SearchAllBox /> */}
 
         { showFullNavigation && isWebApp() &&
           <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleProfilePopUp}>

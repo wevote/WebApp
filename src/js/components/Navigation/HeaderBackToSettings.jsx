@@ -264,9 +264,7 @@ export default class HeaderBackToSettings extends Component {
           <span className="fa fa-arrow-left"/> {backToOrganizationLinkTextMobile}
         </Button>
 
-        <span className="d-none d-sm-block">
-          <SearchAllBox />
-        </span>
+        {/* <span className="d-none d-sm-block"><SearchAllBox /></span> */}
 
         {this.state.profilePopUpOpen &&
           <HeaderBarProfilePopUp {...this.props}
