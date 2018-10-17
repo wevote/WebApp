@@ -4,5 +4,6 @@
     "excludeFiles": ["build/**", "node_modules"],
     "maximumLineLength": null,
     "maxErrors": 200,
-    "disallowSpacesInFunctionDeclaration": null
+    "disallowSpacesInFunctionDeclaration": null,
+    "requirePaddingNewLinesBeforeLineComments": null
 }

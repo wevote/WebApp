@@ -830,8 +830,9 @@ export default class Ballot extends Component {
                               }
                             });
                             return <div className="col-6 col-sm-3 u-stack--md u-inset__h--sm" key={one_type}>
-                              <Button block active={one_type === this.state.ballot_item_filter_type}
-                                      onClick={() => this.setBallotItemFilterType(one_type)}>
+                              <Button variant="outline-secondary" block active={one_type === this.state.ballot_item_filter_type}
+                                      onClick={() => this.setBallotItemFilterType(one_type)}
+                                      className={"btn_ballot_filter"}>
                                 {one_type}&nbsp;({ballotItemsByFilterType.length})
                               </Button>
                             </div>;

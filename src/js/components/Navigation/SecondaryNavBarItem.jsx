@@ -38,7 +38,7 @@ export default class SecondaryNavBarItem extends Component {
     } else if (this.props.iconEmail) {
       // icon = <span className="glyphicon glyphicon-envelope fa-2x"/>;
       // icon = <i className="fa fa-envelope fa-2x"/>;
-      icon = <Icon name="glyphicons-pro-halflings/glyphicons-halflings-4-envelope" color={"#51708e"} width={40} height={40} />;
+      icon = <Icon name="glyphicons-pro-halflings/glyphicons-halflings-4-envelope" className={{margin: -10}} color={"#51708e"} width={40} height={40} />;
     } else if (this.props.iconFacebook) {
       icon = <i className="fa fa-facebook-square fa-2x"/>;
     } else if (this.props.iconTwitter) {

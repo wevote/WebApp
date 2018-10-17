@@ -404,6 +404,7 @@ $candidate-font-size: .875rem;
   padding-top: $space-none;
   padding-left: $space-none;
   padding-right: $space-none;
+  background-color: white;
   max-width: 350px;
   @include breakpoints (max mid-small) {
     max-width: 290px;
@@ -412,4 +413,9 @@ $candidate-font-size: .875rem;
   &__width--minimum {
     width: 90vw;
   }
+}
+
+.card-popover-header {
+  background-color: $brand-blue;
+  color: white;
 }
