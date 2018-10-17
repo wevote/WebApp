@@ -29,6 +29,6 @@ export default class SearchGuidesToFollowBox extends Component {
                        placeholder="Search by name or Twitter handle"
                        searchFunction={this.searchFunction}
                        clearFunction={this.clearFunction}
-                       searchUpdateDelayTime={500} />;
+                       searchUpdateDelayTime={1000} />;
   }
 }

@@ -689,7 +689,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
       <OverlayTrigger trigger="click"
                       rootClose
                       placement={this.props.popoverBottom ? "bottom" : "top"}
-                      overlay={positionsPopover}>
+                      overlay={positionsPopover}
+                      >
         <span className="network-positions-stacked__support-label u-cursor--pointer u-no-break">
           <span>{ positions_count ? positions_count : "No" } Network<br />Opinion{ positions_count !== 1 ? "s" : null }</span>
           <span>&nbsp;<i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" />&nbsp;</span>

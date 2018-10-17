@@ -39,7 +39,8 @@ export function $ajax (options) {
   options.crossDomain = true;
   options.success = options.success || defaults.success;
   options.error = options.error || defaults.error;
-  if (options.endpoint === "TBD_CDN_API_CALL") {
+  // console.log("service.js, options.endpoint: ", options.endpoint);
+  if (options.endpoint === "voterGuidesUpcomingRetrieve") {
     options.data = assign({}, options.data || {});  // Do not pass voter_device_id
     options.url = url.resolve(defaults.baseCdnUrl, options.endpoint) + "/";
   } else {
