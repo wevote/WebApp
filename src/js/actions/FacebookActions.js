@@ -198,8 +198,7 @@ export default {
           } else {
             let api = isWebApp() ? window.FB : window.facebookConnectPlugin;  // eslint-disable-line no-undef
             api.login(
-              ["public_profile", "email", "user_friends"],
-              (successResponse) => {
+              function (successResponse) {
                 if (successResponse.authResponse) {
                   oAuthLog("FacebookActions loginSuccess userData: ", successResponse);
                   Dispatcher.dispatch({
@@ -215,8 +214,7 @@ export default {
 
               (errorResponse) => {
                 oAuthLog("FacebookActions loginFailure error response: ", errorResponse);
-              }
-            );
+              }, {scope: "public_profile, email, user_friends"});
           }
         }
       );
