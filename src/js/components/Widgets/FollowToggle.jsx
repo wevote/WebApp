@@ -129,7 +129,7 @@ export default class FollowToggle extends Component {
     if (!this.state) { return <div />; }
 
     let { we_vote_id: weVoteId, organization_for_display: organizationForDisplay } = this.props;
-    let classNameOverride = this.props.classNameOverride || "";
+    // let classNameOverride = this.props.classNameOverride || "";
     let isLookingAtSelf = this.state.voter.linked_organization_we_vote_id === weVoteId;
 
     // You should not be able to follow yourself

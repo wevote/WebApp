@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, FormGroup, Form, InputGroup, FormControl } from "react-bootstrap";
+import { Button, Form, InputGroup, FormControl } from "react-bootstrap";
 import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import DonationForm from "../../components/Donation/DonationForm";
@@ -8,25 +8,6 @@ import DonateStore from "../../stores/DonateStore";
 import DonationListForm from "../../components/Donation/DonationListForm";
 import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
-
-const styles = {
-  formCheck: {
-    verticalAlign: "middle",
-    textAlign: "center",
-  },
-  td: {
-    verticalAlign: "middle",
-    textAlign: "center",
-  },
-  th: {
-    textAlign: "center",
-  },
-  Card: {
-    borderTopColor: "transparent",
-    height: "500px",
-    overflowY: "auto",
-  },
-};
 
 export default class Donate extends Component {
   constructor (props) {

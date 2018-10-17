@@ -353,11 +353,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
         // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
         let organizationNameIssueSupportList = IssueStore.getOrganizationNameSupportListUnderThisBallotItem(candidateWeVoteIdWithHighestIssueScore);
         let organizationNameIssueSupportListDisplay = organizationNameIssueSupportList.map(organizationName => {
-          <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{organizationName} <strong>+1</strong></span></span>;
+          return <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{organizationName} <strong>+1</strong></span></span>;
         });
         let organizationNameIssueOpposeList = IssueStore.getOrganizationNameOpposeListUnderThisBallotItem(candidateWeVoteIdWithHighestIssueScore);
         let organizationNameIssueOpposeListDisplay = organizationNameIssueOpposeList.map(organizationName => {
-          <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{organizationName}<strong>-1</strong></span></span>;
+          return <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{organizationName}<strong>-1</strong></span></span>;
         });
         advisorsThatMakeVoterIssuesScoreDisplay = <span>
           { organizationNameIssueSupportList.length ? <span>{organizationNameIssueSupportListDisplay}</span> : null}
@@ -370,11 +370,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
         // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
         let nameNetworkSupportList = SupportStore.getNameSupportListUnderThisBallotItem(candidateWeVoteWithMostSupportFromNetwork);
         let nameNetworkSupportListDisplay = nameNetworkSupportList.map(speakerDisplayName => {
-          <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{speakerDisplayName} <strong>+1</strong></span></span>;
+          return <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{speakerDisplayName} <strong>+1</strong></span></span>;
         });
         let nameNetworkOpposeList = SupportStore.getNameOpposeListUnderThisBallotItem(candidateWeVoteWithMostSupportFromNetwork);
         let nameNetworkOpposeListDisplay = nameNetworkOpposeList.map(speakerDisplayName => {
-          <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{speakerDisplayName} <strong>-1</strong></span></span>;
+          return <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{speakerDisplayName} <strong>-1</strong></span></span>;
         });
         advisorsThatMakeVoterNetworkScoreDisplay = <span>
           { nameNetworkSupportList.length ? <span>{nameNetworkSupportListDisplay}</span> : null}
@@ -399,7 +399,6 @@ export default class OfficeItemCompressedRaccoon extends Component {
     let candidatePreviewLimit = 5;
     let candidatePreviewList = [];
     let oneCandidateDisplay = <span />;
-    let closeAnchorClass = hasIPhoneNotch() ? "intro-modal__close-anchor intro-modal__close-anchor-iphonex" : "intro-modal__close-anchor";
     const BallotIntroFollowIssuesModal = <Modal bsPrefix="background-brand-blue modal"
                                                 id="ballotIntroFollowIssuesId"
                                                 show={this.state.showBallotIntroFollowIssues}
