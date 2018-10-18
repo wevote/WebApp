@@ -352,13 +352,19 @@ export default class OfficeItemCompressedRaccoon extends Component {
       if (atLeastOneCandidateChosenByIssueScore) {
         // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
         let organizationNameIssueSupportList = IssueStore.getOrganizationNameSupportListUnderThisBallotItem(candidateWeVoteIdWithHighestIssueScore);
-        let organizationNameIssueSupportListDisplay = organizationNameIssueSupportList.map(organizationName => {
-          return <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{organizationName} <strong>+1</strong></span></span>;
-        });
+        let organizationNameIssueSupportListDisplay =
+          organizationNameIssueSupportList.map(organizationName => <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start">
+            <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" />
+            <span>&nbsp;</span>
+            <span>{organizationName} <strong>+1</strong></span>
+          </span>);
         let organizationNameIssueOpposeList = IssueStore.getOrganizationNameOpposeListUnderThisBallotItem(candidateWeVoteIdWithHighestIssueScore);
-        let organizationNameIssueOpposeListDisplay = organizationNameIssueOpposeList.map(organizationName => {
-          return <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{organizationName}<strong>-1</strong></span></span>;
-        });
+        let organizationNameIssueOpposeListDisplay =
+          organizationNameIssueOpposeList.map(organizationName => <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start">
+            <img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" />
+            <span>&nbsp;</span>
+            <span>{organizationName}<strong>-1</strong></span>
+          </span>);
         advisorsThatMakeVoterIssuesScoreDisplay = <span>
           { organizationNameIssueSupportList.length ? <span>{organizationNameIssueSupportListDisplay}</span> : null}
           { organizationNameIssueOpposeList.length ? <span>{organizationNameIssueOpposeListDisplay}</span> : null}
@@ -369,13 +375,19 @@ export default class OfficeItemCompressedRaccoon extends Component {
       if (candidateWeVoteWithMostSupportFromNetwork) {
         // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
         let nameNetworkSupportList = SupportStore.getNameSupportListUnderThisBallotItem(candidateWeVoteWithMostSupportFromNetwork);
-        let nameNetworkSupportListDisplay = nameNetworkSupportList.map(speakerDisplayName => {
-          return <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{speakerDisplayName} <strong>+1</strong></span></span>;
-        });
+        let nameNetworkSupportListDisplay =
+          nameNetworkSupportList.map(speakerDisplayName => <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start">
+            <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" />
+            <span>&nbsp;</span>
+            <span>{speakerDisplayName} <strong>+1</strong></span>
+          </span>);
         let nameNetworkOpposeList = SupportStore.getNameOpposeListUnderThisBallotItem(candidateWeVoteWithMostSupportFromNetwork);
-        let nameNetworkOpposeListDisplay = nameNetworkOpposeList.map(speakerDisplayName => {
-          return <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{speakerDisplayName} <strong>-1</strong></span></span>;
-        });
+        let nameNetworkOpposeListDisplay =
+          nameNetworkOpposeList.map(speakerDisplayName => <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start">
+            <img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" />
+            <span>&nbsp;</span>
+            <span>{speakerDisplayName} <strong>-1</strong></span>
+          </span>);
         advisorsThatMakeVoterNetworkScoreDisplay = <span>
           { nameNetworkSupportList.length ? <span>{nameNetworkSupportListDisplay}</span> : null}
           { nameNetworkOpposeList.length ? <span>{nameNetworkOpposeListDisplay}</span> : null}
@@ -538,7 +550,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                   yourNetworkSupportsPopover =
                   <Popover id="popover-positioned-right"
                            title={<span>Your Network Supports <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-                           onClick={this.closeYourNetworkSupportsPopover}>LINE 538 aaaaaaaaaa POPOVER<br/>
+                           onClick={this.closeYourNetworkSupportsPopover}>
                     <strong>{oneCandidate.ballot_item_display_name}</strong> has
                     the highest <strong>Score in Your Network</strong>, based on these friends and organizations:<br />
                     {advisorsThatMakeVoterNetworkScoreDisplay}
@@ -548,7 +560,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                   yourNetworkSupportsPopover =
                     <Popover id="popover-positioned-right"
                              title={<span>Your Network Supports <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-                             onClick={this.closeYourNetworkSupportsPopover}>LINE 548 ddddddddd POPOVER<br/>
+                             onClick={this.closeYourNetworkSupportsPopover}>
                       Your friends, and the organizations you listen to, are <strong>Your Network</strong>.
                       Everyone in your network
                       that <span className="u-no-break"> <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /> supports</span> {oneCandidate.ballot_item_display_name} adds
@@ -598,7 +610,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                   const hasHighestIssueScorePopover =
                   <Popover id="popover-positioned-right"
                            title={<span>Highest Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-                           onClick={this.closeHighestIssueScorePopover}>LINE 598 vvvvvvvvvvv POPOVER<br/>
+                           onClick={this.closeHighestIssueScorePopover}>
                     We took the issues you are following, and added up the opinions of all of the organizations
                     under those issues. <strong>{oneCandidate.ballot_item_display_name}</strong> has
                     the most support from these
