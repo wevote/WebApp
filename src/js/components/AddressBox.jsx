@@ -142,30 +142,27 @@ export default class AddressBox extends Component {
     }
 
     return <div>
-        <form onSubmit={this.voterAddressSave}>
+        <form onSubmit={this.voterAddressSave} class="form-inline">
           <input
             type="text"
             value={this.state.text_for_map_search}
             onKeyDown={this.handleKeyPress}
             onChange={this.updateVoterAddress}
             name="address"
-            className="form-control"
+            className="form-control col-sm-9 mr-sm-3"
             ref="autocomplete"
             placeholder="Enter address where you are registered to vote"
             autoFocus={!isCordova() && !this.props.disableAutoFocus}
           />
-        </form>
-        <div>
-        <br/>
           <Button
-            bsPrefix="pull-right"
+            bsPrefix="btn"
             onClick={this.voterAddressSave}
             variant="primary">
             Save</Button>
           { this.props.cancelEditAddress ?
             <span className="pull-right u-f5 u-push--md"><a href="#" onClick={this.props.cancelEditAddress}>cancel</a> </span> :
             null }
-        </div>
+        </form>
       <p/><h4>{this.state.ballotCaveat}</h4>
       </div>;
   }
