@@ -142,7 +142,7 @@ export default class AddressBox extends Component {
     }
 
     return <div>
-        <form onSubmit={this.voterAddressSave} class="form-inline">
+        <form onSubmit={this.voterAddressSave} className="form-inline">
           <input
             type="text"
             value={this.state.text_for_map_search}
