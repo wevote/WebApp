@@ -23,6 +23,7 @@ export default class BallotStatusMessage extends Component {
     this.state = {
       ballot_location_chosen: false,
       ballot_location_display_name: "",
+      componentDidMountFinished: false,
       election_day_text: "",
       election_is_upcoming: false,
       elections_with_ballot_status_message_closed: [],
@@ -45,6 +46,7 @@ export default class BallotStatusMessage extends Component {
     this.setState({
       ballot_location_chosen: this.props.ballot_location_chosen,
       ballot_location_display_name: this.props.ballot_location_display_name,
+      componentDidMountFinished: true,
       election_day_text: this.props.election_day_text,
       election_is_upcoming: this.props.election_is_upcoming,
       google_civic_data_exists: this.props.google_civic_data_exists,
@@ -71,6 +73,35 @@ export default class BallotStatusMessage extends Component {
     });
   }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    if (this.state.componentDidMountFinished === false) {
+      // console.log("shouldComponentUpdate: componentDidMountFinished === false");
+      return true;
+    }
+    if (this.state.ballot_location_chosen !== nextState.ballot_location_chosen) {
+      // console.log("shouldComponentUpdate: changed, this.state.ballot_location_chosen: ", this.state.ballot_location_chosen, ", nextState.ballot_location_chosen", nextState.ballot_location_chosen);
+      return true;
+    }
+    if (this.state.election_day_text !== nextState.election_day_text) {
+      // console.log("shouldComponentUpdate: changed, this.state.election_day_text: ", this.state.election_day_text, ", nextState.election_day_text", nextState.election_day_text);
+      return true;
+    }
+    if (this.state.substituted_address_nearby !== nextState.substituted_address_nearby) {
+      // console.log("shouldComponentUpdate: changed, this.state.substituted_address_nearby: ", this.state.substituted_address_nearby, ", nextState.substituted_address_nearby", nextState.substituted_address_nearby);
+      return true;
+    }
+    if (this.state.voter_entered_address !== nextState.voter_entered_address) {
+      // console.log("shouldComponentUpdate: changed, this.state.voter_entered_address: ", this.state.voter_entered_address, ", nextState.voter_entered_address", nextState.voter_entered_address);
+      return true;
+    }
+    if (this.state.voter_specific_ballot_from_google_civic !== nextState.voter_specific_ballot_from_google_civic) {
+      // console.log("shouldComponentUpdate: changed, this.state.voter_specific_ballot_from_google_civic: ", this.state.voter_specific_ballot_from_google_civic, ", nextState.voter_specific_ballot_from_google_civic", nextState.voter_specific_ballot_from_google_civic);
+      return true;
+    }
+    return false;
+  }
+
   handleMessageClose () {
     //setting cookie to track the elections where user has closed the warning messages for them
     if (this.props.google_civic_election_id) {
@@ -84,6 +115,7 @@ export default class BallotStatusMessage extends Component {
   }
 
   render () {
+    // console.log("BallotStatusMessage render");
     renderLog(__filename);
     let messageString = "";
     let ballotStatusStyle;

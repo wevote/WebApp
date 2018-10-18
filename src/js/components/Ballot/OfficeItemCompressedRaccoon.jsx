@@ -266,6 +266,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
   }
 
   render () {
+    // console.log("OfficeItemCompressedRaccoon render");
     renderLog(__filename);
     let { ballot_item_display_name: ballotItemDisplayName, we_vote_id: weVoteId } = this.props;
 

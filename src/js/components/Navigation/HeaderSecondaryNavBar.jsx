@@ -185,7 +185,6 @@ export default class HeaderSecondaryNavBar extends Component {
   }
 
   render () {
-    console.log("HeaderSecondaryNavBar render");
     renderLog(__filename);
     let sliderSettings = {
       dots: true,
