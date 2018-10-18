@@ -161,7 +161,6 @@ export default class HeaderBar extends Component {
   }
 
   render () {
-    console.log("HeaderBar render");
     renderLog(__filename);
     let { pathname } = this.props;
     let voter = this.props.voter;

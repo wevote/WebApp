@@ -12,7 +12,25 @@ export default class BallotTabsRaccoon extends Component {
     length_remaining: PropTypes.number,
   };
 
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    if (this.props.ballot_type !== nextProps.ballot_type) {
+      // console.log("shouldComponentUpdate: this.props.ballot_type", this.props.ballot_type, ", nextProps.ballot_type", nextProps.ballot_type);
+      return true;
+    }
+    if (this.props.length !== nextProps.length) {
+      // console.log("shouldComponentUpdate: this.props.length", this.props.length, ", nextProps.length", nextProps.length);
+      return true;
+    }
+    if (this.props.length_remaining !== nextProps.length_remaining) {
+      // console.log("shouldComponentUpdate: this.props.length_remaining", this.props.length_remaining, ", nextProps.length_remaining", nextProps.length_remaining);
+      return true;
+    }
+    return false;
+  }
+
   render () {
+    // console.log("BallotTabsRaccoon render");
     renderLog(__filename);
     let pathname = "/ballot";
     if (this.props.pathname && this.props.pathname !== "") {

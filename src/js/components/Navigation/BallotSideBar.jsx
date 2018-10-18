@@ -29,6 +29,7 @@ export default class BallotSideBar extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      componentDidMountFinished: false,
       feedbackScore: undefined,
       feedbackText: "",
       formSubmitted: false,
@@ -43,12 +44,47 @@ export default class BallotSideBar extends Component {
   }
 
   componentDidMount () {
-    this.onBallotStoreChange();
+    let unsorted = BallotStore.ballot;
+    this.setState({
+      ballot: this._sortBallots(unsorted),
+      componentDidMountFinished: true,
+    });
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.ballotStoreListener.remove();
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    if (this.state.componentDidMountFinished === false) {
+      // console.log("shouldComponentUpdate: componentDidMountFinished === false");
+      return true;
+    }
+    if (this.props.ballot === undefined && nextProps.ballot !== undefined) {
+        // console.log("shouldComponentUpdate: new ballot found");
+        return true;
+    }
+    if (this.props.ballot !== undefined) {
+      if (this.props.ballot.length !== nextProps.ballot.length) {
+        // console.log("shouldComponentUpdate: changed this.props.ballot.length", this.props.ballot.length, ", nextState.ballot.length", nextProps.ballot.length);
+        return true;
+      }
+    }
+    if (this.props.ballotWithAllItemsByFilterType.length !== nextProps.ballotWithAllItemsByFilterType.length) {
+      // console.log("shouldComponentUpdate: changed this.props.ballotWithAllItemsByFilterType.length", this.props.ballotWithAllItemsByFilterType.length, ", nextState.ballotWithAllItemsByFilterType.length", nextProps.ballotWithAllItemsByFilterType.length);
+      return true;
+    }
+    if (this.props.displayTitle !== nextProps.displayTitle) {
+      // console.log("shouldComponentUpdate: changed this.props.displayTitle", this.props.displayTitle, ", nextState.displayTitle", nextProps.displayTitle);
+      return true;
+    }
+    if (this.props.pathname !== nextProps.pathname) {
+      // console.log("shouldComponentUpdate: changed this.props.pathname", this.props.pathname, ", nextState.pathname", nextProps.pathname);
+      return true;
+    }
+    return false;
   }
 
   onBallotStoreChange () {
@@ -185,6 +221,7 @@ export default class BallotSideBar extends Component {
   }
 
   render () {
+    // console.log("BallotSideBar render");
     renderLog(__filename);
 
     // let turnedOnNPSInput = false;

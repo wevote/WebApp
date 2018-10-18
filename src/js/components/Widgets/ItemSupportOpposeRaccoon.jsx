@@ -56,6 +56,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       can_scroll_left_mobile: false,
       can_scroll_right_desktop: true,
       can_scroll_right_mobile: true,
+      componentDidMountFinished: false,
       showPositionStatement: false,
       shouldFocusCommentArea: false,
       maximum_organization_display: 0,
@@ -107,6 +108,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       ballot_item_display_name: this.props.ballot_item_display_name,
       ballotItemType: ballotItemType,
       ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
+      componentDidMountFinished: true,
       is_candidate: is_candidate,
       is_measure: is_measure,
       maximum_organization_display: this.props.maximumOrganizationDisplay,
@@ -156,6 +158,56 @@ export default class ItemSupportOpposeRaccoon extends Component {
     });
   }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    if (this.state.componentDidMountFinished === false) {
+      // console.log("shouldComponentUpdate: componentDidMountFinished === false");
+      return true;
+    }
+    if (this.state.forceReRender === true) {
+      if (this.state.voterIssuesScore !== nextState.voterIssuesScore) {
+        // console.log("shouldComponentUpdate: forceReRender === true and voterIssuesScore change");
+        return true;
+      }
+    }
+    if (this.state.ballot_item_display_name !== nextState.ballot_item_display_name) {
+      // console.log("shouldComponentUpdate: this.state.ballot_item_display_name", this.state.ballot_item_display_name, ", nextState.ballot_item_display_name", nextState.ballot_item_display_name);
+      return true;
+    }
+    if (this.state.ballot_item_we_vote_id !== nextState.ballot_item_we_vote_id) {
+      // console.log("shouldComponentUpdate: this.state.ballot_item_we_vote_id", this.state.ballot_item_we_vote_id, ", nextState.ballot_item_we_vote_id", nextState.ballot_item_we_vote_id);
+      return true;
+    }
+    if (this.state.organizations_to_follow_support.length !== nextState.organizations_to_follow_support.length) {
+      // console.log("shouldComponentUpdate: this.state.organizations_to_follow_support.length", this.state.organizations_to_follow_support.length, ", nextState.organizations_to_follow_support.length", nextState.organizations_to_follow_support.length);
+      return true;
+    }
+    if (this.state.organizations_to_follow_oppose.length !== nextState.organizations_to_follow_oppose.length) {
+      // console.log("shouldComponentUpdate: this.state.organizations_to_follow_oppose.length", this.state.organizations_to_follow_oppose.length, ", nextState.organizations_to_follow_oppose.length", nextState.organizations_to_follow_oppose.length);
+      return true;
+    }
+    if (this.state.supportProps !== undefined && nextState.supportProps !== undefined) {
+      let currentNetworkSupportCount = parseInt(this.state.supportProps.support_count) || 0;
+      let nextNetworkSupportCount = parseInt(nextState.supportProps.support_count) || 0;
+      let currentNetworkOpposeCount = parseInt(this.state.supportProps.oppose_count) || 0;
+      let nextNetworkOpposeCount = parseInt(nextState.supportProps.oppose_count) || 0;
+      if (currentNetworkSupportCount !== nextNetworkSupportCount || currentNetworkOpposeCount !== nextNetworkOpposeCount) {
+        // console.log("shouldComponentUpdate: support or oppose count change");
+        return true;
+      }
+    }
+    if (this.props.showPositionStatementActionBar !== nextProps.showPositionStatementActionBar) {
+      // console.log("shouldComponentUpdate: this.props.showPositionStatementActionBar change");
+      return true;
+    }
+    if (this.state.showPositionStatement !== nextState.showPositionStatement) {
+      // console.log("shouldComponentUpdate: this.state.showPositionStatement change");
+      return true;
+    }
+
+    return false;
+  }
+
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.issueStoreListener.remove();
@@ -193,6 +245,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     // We want to re-render so issue data can update
     this.setState({
       forceReRender: true,
+      voterIssuesScore: IssueStore.getIssuesScoreByBallotItemWeVoteId(this.state.ballot_item_we_vote_id),
     });
   }
 
@@ -380,6 +433,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   render () {
+    // console.log("ItemSupportOpposeRaccoon render, we_vote_id:", this.props.we_vote_id);
     renderLog(__filename);
     let ballotItemSupportStore = SupportStore.get(this.state.ballot_item_we_vote_id);
     // Issue Score
