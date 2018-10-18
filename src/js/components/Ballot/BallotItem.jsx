@@ -23,7 +23,6 @@ export default class BallotItem extends Component {
   }
 
   render () {
-    console.log('aarons log', this.props.kind_of_ballot_item)
     renderLog(__filename);
     return <div className="BallotItem" id={this.props.we_vote_id}>
         { this.isMeasure() ?
