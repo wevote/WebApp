@@ -21,14 +21,15 @@ export default class IntroStory extends Component {
 
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
+    this.slider = React.createRef();
   }
 
   next () {
-    this.refs.slider.slickNext();
+    this.slider.current.slickNext();
   }
 
   previous () {
-    this.refs.slider.slickPrev();
+    this.slider.current.slickPrev();
   }
 
   goToBallotLink () {
@@ -74,7 +75,7 @@ export default class IntroStory extends Component {
       <Helmet title="Welcome to We Vote" />
       <div className="intro-story container-fluid well u-inset--md">
         <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
-        <Slider ref="slider" {...settings}>
+        <Slider ref={this.slider} {...settings}>
           <div key={1}><AnimationStory1 next={this.next}/></div>
           <div key={2}><AnimationStory2 next={this.next}/></div>
           <div key={3}><AnimationStory3 next={this.next}/></div>

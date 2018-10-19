@@ -216,7 +216,8 @@ export default class Candidate extends Component {
         <div className="card__additional u-inset__squish--md">
           <IssuesFollowedByBallotItemDisplayList ballot_item_display_name={this.state.candidate.ballot_item_display_name}
                                                  ballotItemWeVoteId={this.state.candidate_we_vote_id}
-                                                 overlayTriggerOnClickOnly />
+                                                 overlayTriggerOnClickOnly 
+                                                 popoverBottom={false}/>
         </div>
       </section>
       <OpenExternalWebSite url="https://api.wevoteusa.org/vg/create/"

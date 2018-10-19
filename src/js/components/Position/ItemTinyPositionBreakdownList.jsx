@@ -53,12 +53,14 @@ export default class ItemTinyPositionBreakdownList extends Component {
   }
 
   onTriggerEnter (organizationWeVoteId) {
+    // console.log("onTriggerEnter")
     this.refs[`position-overlay-${organizationWeVoteId}`].show();
     this.show_popover = true;
     clearTimeout(this.hide_popover_timer);
   }
 
   onTriggerLeave (organizationWeVoteId) {
+    // console.log("onTriggerLeave")
     this.show_popover = false;
     clearTimeout(this.hide_popover_timer);
     this.hide_popover_timer = setTimeout(() => {
@@ -69,6 +71,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
   }
 
   render () {
+    // console.log("ItemTinyPositionBreakdownList render");
     renderLog(__filename);
     if (!this.state.position_list && !this.state.voter_support_oppose_properties) {
       // If neither position_list nor supportProps exist, then return null
@@ -176,37 +179,30 @@ export default class ItemTinyPositionBreakdownList extends Component {
           //  we want to show a "drop down" with the remaining organizations.
           if (localCounter === MAXIMUM_ORGANIZATION_DISPLAY + 1) {
             // If here we want to show how many organizations there are to follow
-            let organizationPopover =
-              <Popover style={"card-popover"}
-                       id="popover-positioned-bottom"
-                       title={<span className="card-popover-header fa fa-times pull-right u-cursor--pointer" aria-hidden="true" />}
-                       onMouseOver={() => this.onTriggerEnter(orgsNotShownCount)}
-                       onMouseOut={() => this.onTriggerLeave(orgsNotShownCount)}
-                       onClick={() => this.onTriggerLeave(orgsNotShownCount)}>
-              {/*<Popover bsPrefix="card-popover"*/}
-                                               {/*id={`organization-popover-${orgsNotShownCount}`}*/}
-                                               {/*onMouseOver={() => this.onTriggerEnter(orgsNotShownCount)}*/}
-                                               {/*onMouseOut={() => this.onTriggerLeave(orgsNotShownCount)}*/}
-                                               {/*placement="auto"*/}
-                                               {/*constraints={{ to: "scrollParent", pin: true }}*/}
-                                               {/*outOfBoundaries={() => console.log("outOfBoundaries outOfBoundaries outOfBoundaries")}*/}
-                                               {/*title={<span onClick={() => this.onTriggerLeave(orgsNotShownCount)}>&nbsp;*/}
-                                                 {/*<span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" /> </span>}*/}
-                                               {/*>*/}
+            // Removed bsPrefix="card-popover"
+            // onMouseOver={() => this.onTriggerEnter(orgsNotShownCount)}
+            // onMouseOut={() => this.onTriggerLeave(orgsNotShownCount)}
+            // outOfBoundaries={() => console.log("outOfBoundaries outOfBoundaries outOfBoundaries")}
+            let organizationPopover = <Popover id={`organization-popover-${orgsNotShownCount}`}
+                                               constraints={{ to: "scrollParent", pin: true }}
+                                               placement="auto"
+                                               title={<span onClick={() => this.onTriggerLeave(orgsNotShownCount)}>&nbsp;
+                                                 <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" /> </span>}
+                                               >
                 <PositionsNotShownList ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
                                        positions_not_shown_list={positionsNotShownList} />
               </Popover>;
 
-            return <OverlayTrigger
-                key={`trigger-${orgsNotShownCount}`}
-                ref={`position-overlay-${orgsNotShownCount}`}
-                onMouseOver={() => this.onTriggerEnter(orgsNotShownCount)}
-                onMouseOut={() => this.onTriggerLeave(orgsNotShownCount)}
-                onExiting={() => this.onTriggerLeave(orgsNotShownCount)}
-                trigger={this.props.visibility === "mobile" ? "click" : ["focus", "hover", "click"]}
-                rootClose
-                placement="bottom"
-                overlay={organizationPopover}>
+            // onMouseOver={() => this.onTriggerEnter(orgsNotShownCount)}
+            // onMouseOut={() => this.onTriggerLeave(orgsNotShownCount)}
+            // onExiting={() => this.onTriggerLeave(orgsNotShownCount)}
+            // trigger={this.props.visibility === "mobile" ? "click" : ["focus", "hover", "click"]}
+            return <OverlayTrigger key={`trigger-${orgsNotShownCount}`}
+                                   ref={`position-overlay-${orgsNotShownCount}`}
+                                   overlay={organizationPopover}
+                                   placement="bottom"
+                                   rootClose
+                                   trigger="click">
                 <span className="position-rating__source with-popover"> +{orgsNotShownCount} </span>
             </OverlayTrigger>;
           } else {
@@ -226,52 +222,34 @@ export default class ItemTinyPositionBreakdownList extends Component {
             twitter_followers_count: 0,
           };
           let organizationWeVoteId = oneOrganization.organization_we_vote_id;
-          // October 17, 2018, passing anything in bsPrefix to "react-bootstrap": "^1.0.0-beta.1" (bootstrap 4)
-          // causes the popper.js to create a translate3d style that finds that the html dom element's scrollWidth
-          // is greater than the screen width, and renders some of the popup off of the visible screen.  Waiting for a fix.
-          let organizationPopover =
-            <Popover style={"card-popover"}
-                     id="popover-positioned-bottom"
-                     title={<span className="card-popover-header fa fa-times pull-right u-cursor--pointer" aria-hidden="true" />}
-                     onMouseOver={() => this.onTriggerEnter(organizationWeVoteId)}
-                     onMouseOut={() => this.onTriggerLeave(organizationWeVoteId)}
-                     onClick={() => this.onTriggerLeave(organizationWeVoteId)}>
-              <OrganizationCard ballotItemWeVoteId={this.props.ballotItemWeVoteId}
-                                currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                followToggleOn
-                                organization={oneOrganization}
-                                urlWithoutHash={this.props.urlWithoutHash}
-                                we_vote_id={this.props.we_vote_id} />
-            </Popover>;
-          // October 2018, we do want to get the styling fixed at some point, the popover above is a compromise
-          // let organizationPopover = <Popover bsPrefix="card-popover"
-          //                                     id={`organization-popover-${organizationWeVoteId}`}
-          //                                     onMouseOver={() => this.onTriggerEnter(organizationWeVoteId)}
-          //                                     onMouseOut={() => this.onTriggerLeave(organizationWeVoteId)}
-          //                                     placement="auto"
-          //                                     title={<span onClick={() => this.onTriggerLeave(organizationWeVoteId)}>&nbsp;
-          //                                       <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" /> </span>}
-          //                                     >
-          //      <OrganizationCard ballotItemWeVoteId={this.props.ballotItemWeVoteId}
-          //                        currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-          //                        followToggleOn
-          //                        organization={oneOrganization}
-          //                        urlWithoutHash={this.props.urlWithoutHash}
-          //                        we_vote_id={this.props.we_vote_id} />
-          //    </Popover>;
+          // Removed bsPrefix="card-popover"
+          // onMouseOver={() => this.onTriggerEnter(organizationWeVoteId)}
+          // onMouseOut={() => this.onTriggerLeave(organizationWeVoteId)}
+          // WAS placement="auto"
+          let organizationPopover = <Popover id={`organization-popover-${organizationWeVoteId}`}
+                                             placement="bottom"
+                                             title={<span onClick={() => this.onTriggerLeave(organizationWeVoteId)}>&nbsp; <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" /> </span>}
+                                             >
+               <OrganizationCard ballotItemWeVoteId={this.props.ballotItemWeVoteId}
+                                 currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                                 followToggleOn
+                                 organization={oneOrganization}
+                                 urlWithoutHash={this.props.urlWithoutHash}
+                                 we_vote_id={this.props.we_vote_id} />
+             </Popover>;
 
-          return <OverlayTrigger
-            key={`trigger-${organizationWeVoteId}`}
-            ref={`position-overlay-${organizationWeVoteId}`}
-            onMouseOver={() => this.onTriggerEnter(organizationWeVoteId)}
-            onMouseOut={() => this.onTriggerLeave(organizationWeVoteId)}
-            onExiting={() => this.onTriggerLeave(organizationWeVoteId)}
-            trigger={this.props.visibility === "mobile" ? "click" : ["focus", "hover", "click"]}
-            rootClose
-            placement="bottom"
-            overlay={organizationPopover}>
+          // Removed from OverlayTrigger
+          // onMouseOver={() => this.onTriggerEnter(organizationWeVoteId)}
+          // onMouseOut={() => this.onTriggerLeave(organizationWeVoteId)}
+          // onExiting={() => this.onTriggerLeave(organizationWeVoteId)}
+          // trigger={this.props.visibility === "mobile" ? "click" : ["focus", "hover", "click"]}
+          return <OverlayTrigger key={`trigger-${organizationWeVoteId}`}
+                                 ref={`position-overlay-${organizationWeVoteId}`}
+                                 overlay={organizationPopover}
+                                 placement="bottom"
+                                 rootClose
+                                 trigger="click" >
             <span className="position-rating__source with-popover">
-              {/*{//console.log("Popover line 250")}*/}
               <OrganizationTinyDisplay {...oneOrganization}
                                        showPlaceholderImage
                                        showSupport={this.props.showSupport}

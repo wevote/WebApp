@@ -105,6 +105,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
   }
 
   render () {
+    console.log("ItemTinyOpinionsToFollow render");
     renderLog(__filename);
     if (this.state.organizations_to_follow === undefined) {
       return null;
@@ -136,23 +137,24 @@ export default class ItemTinyOpinionsToFollow extends Component {
         if (local_counter === this.state.maximum_organization_display + 1) {
           // If here, we want to show how many organizations there are to follow
           this.popover_state[orgs_not_shown_count] = {show: false, timer: null};
-          let organizationPopover = <Popover id={`organization-popover-${orgs_not_shown_count}`}
-                                             onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
-                                             onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
-                                             bsPrefix="card-popover">
+          // Removed bsPrefix="card-popover"
+          // onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
+          // onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
+          let organizationPopover = <Popover id={`organization-popover-${orgs_not_shown_count}`} >
               <OrganizationsNotShownList orgs_not_shown_list={orgs_not_shown_list} />
             </Popover>;
 
-          return <OverlayTrigger
-              key={`trigger-${orgs_not_shown_count}`}
-              ref={`to-follow-overlay-${orgs_not_shown_count}`}
-              onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
-              onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
-              onExiting={() => this.onTriggerLeave(orgs_not_shown_count)}
-              trigger={["focus", "hover"]}
-              rootClose
-              placement="bottom"
-              overlay={organizationPopover}>
+          // Removed from OverlayTrigger
+          // onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
+          // onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
+          // onExiting={() => this.onTriggerLeave(orgs_not_shown_count)}
+          // trigger={["focus", "hover"]}
+          return <OverlayTrigger key={`trigger-${orgs_not_shown_count}`}
+                                 ref={`to-follow-overlay-${orgs_not_shown_count}`}
+                                 overlay={organizationPopover}
+                                 placement="bottom"
+                                 rootClose
+                                 trigger="click">
             <span className="position-rating__source with-popover">
               <Link to="/opinions"> +{orgs_not_shown_count}</Link>
             </span>
@@ -161,6 +163,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
           return "";
         }
       } else {
+        // console.log("One organization ItemTinyOpinionsToFollow");
         one_organization_for_organization_card = {
             organization_we_vote_id: one_organization.organization_we_vote_id,
             organization_name: one_organization.voter_guide_display_name,
@@ -178,27 +181,36 @@ export default class ItemTinyOpinionsToFollow extends Component {
                                   "/" + one_organization.organization_twitter_handle :
                                   "/voterguide/" + one_organization.organization_we_vote_id;
 
+        // Removed bsPrefix="card-popover"
+        // onMouseOver={() => this.onTriggerEnter(org_id)}
+        // onMouseOut={() => this.onTriggerLeave(org_id)}
         let organizationPopover = <Popover id={`organization-popover-${org_id}`}
-                                           onMouseOver={() => this.onTriggerEnter(org_id)}
-                                           onMouseOut={() => this.onTriggerLeave(org_id)}
-                                           bsPrefix="card-popover">
+                                           outOfBoundaries={undefined}
+                                           >
             <OrganizationCard organization={one_organization_for_organization_card}
                               ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
-                              followToggleOn />
+                              followToggleOn
+                              />
           </Popover>;
 
+        // Removed from OverlayTrigger:
+        // onMouseOver={() => this.onTriggerEnter(org_id)}
+        // onMouseOut={() => this.onTriggerLeave(org_id)}
+        // onExiting={() => this.onTriggerLeave(org_id)}
+        // trigger={["focus", "hover"]}
         return <OverlayTrigger
             key={`trigger-${org_id}`}
             ref={`to-follow-overlay-${org_id}`}
-            onMouseOver={() => this.onTriggerEnter(org_id)}
-            onMouseOut={() => this.onTriggerLeave(org_id)}
-            onExiting={() => this.onTriggerLeave(org_id)}
-            trigger={["focus", "hover"]}
             rootClose
             placement="bottom"
+            trigger="click"
             overlay={organizationPopover}>
           <span className="position-rating__source with-popover">
-            <Link key={`tiny-link-${org_id}`} to={voterGuideLink} onClick={(e) => this.onTriggerToggle(e, org_id)} className="u-no-underline">
+            <Link key={`tiny-link-${org_id}`}
+                  className="u-no-underline"
+                  onClick={(e) => this.onTriggerToggle(e, org_id)}
+                  to={voterGuideLink}
+                  >
               <OrganizationTinyDisplay {...one_organization} showPlaceholderImage />
             </Link>
           </span>

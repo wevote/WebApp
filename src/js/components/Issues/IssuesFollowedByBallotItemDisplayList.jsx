@@ -165,12 +165,13 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
       return null;
     }
 
+    // Removed bsPrefix="card-popover"
     const issuesLabelPopover =
       <Popover id="positions-popover-trigger-click-root-close"
                title={<span>Issues related to {this.state.ballot_item_display_name}
                   <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" /></span>}
                onClick={this.closeIssuesLabelPopover}
-               bsPrefix="card-popover">
+               >
         See opinions about {this.state.ballot_item_display_name}, organized by issues you care about.
       </Popover>;
 
