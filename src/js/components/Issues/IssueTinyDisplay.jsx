@@ -123,6 +123,7 @@ export default class IssueTinyDisplay extends Component {
   }
 
   render () {
+    // console.log("IssueTinyDisplay");
     renderLog(__filename);
     // console.log("IssueTinyDisplay render, issue_we_vote_id: ", this.state.issue_we_vote_id, ", this.state.voter_guides_for_this_issue: ", this.state.voter_guides_for_this_issue);
     if (!this.state.voter_guides_for_this_issue || !this.state.voter_guides_for_this_issue.length){
@@ -168,10 +169,11 @@ export default class IssueTinyDisplay extends Component {
 
     this.popover_state[this.props.issue_we_vote_id] = { show: false, timer: null };
 
+    // Removed bsPrefix="card-popover"
     let issuePopover = <Popover id={`issue-popover-${this.props.issue_we_vote_id}`}
                                 onMouseOver={() => this.onTriggerEnter(this.props.issue_we_vote_id)}
                                 onMouseOut={() => this.onTriggerLeave(this.props.issue_we_vote_id)}
-                                bsPrefix="card-popover" title={<span onClick={() => this.onTriggerLeave(this.props.issue_we_vote_id)}> &nbsp;
+                                title={<span onClick={() => this.onTriggerLeave(this.props.issue_we_vote_id)}> &nbsp;
                                   <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" /> </span>}
                                 >
         <IssueCard ballotItemWeVoteId={this.props.ballotItemWeVoteId}
@@ -189,13 +191,14 @@ export default class IssueTinyDisplay extends Component {
 
     // onClick={(e) => this.onTriggerToggle(e, this.props.issue_we_vote_id)}
 
+    // onMouseOver={() => this.onTriggerEnter(this.props.issue_we_vote_id)}
+    // onMouseOut={() => this.onTriggerLeave(this.props.issue_we_vote_id)}
+    // onExiting={() => this.onTriggerLeave(this.props.issue_we_vote_id)}
+    // trigger={this.props.overlayTriggerOnClickOnly ? "click" : ["focus", "hover", "click"]}
     return <OverlayTrigger ref={`issue-overlay-${this.props.issue_we_vote_id}`}
-                           onMouseOver={() => this.onTriggerEnter(this.props.issue_we_vote_id)}
-                           onMouseOut={() => this.onTriggerLeave(this.props.issue_we_vote_id)}
-                           onExiting={() => this.onTriggerLeave(this.props.issue_we_vote_id)}
-                           trigger={this.props.overlayTriggerOnClickOnly ? "click" : ["focus", "hover", "click"]}
                            rootClose
                            placement={this.props.popoverBottom ? "bottom" : "top"}
+                           trigger="click"
                            overlay={issuePopover}
             >
       <span className="">

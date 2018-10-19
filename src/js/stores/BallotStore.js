@@ -296,6 +296,7 @@ class BallotStore extends ReduceStore {
             }
           });
 
+          // Sort measures alphabetically
           let alphanumeric_filtered_items = []; 
           let unfiltered_items = [];          
           for (let i = 0; i < filtered_ballot_items.length; i++) {
@@ -305,14 +306,11 @@ class BallotStore extends ReduceStore {
               unfiltered_items.push(filtered_ballot_items[i]);
             }
           }
-
           alphanumeric_filtered_items.sort(function (a, b) {
             return a.ballot_item_display_name.localeCompare(b.ballot_item_display_name, undefined, {numeric: true, sensitivity: "base"});
           });
-
-          let filtered_items_concat = alphanumeric_filtered_items.concat(unfiltered_items);
-          newBallots[google_civic_election_id].ballot_item_list = filtered_items_concat;
-
+          newBallots[google_civic_election_id].ballot_item_list = alphanumeric_filtered_items.concat(unfiltered_items);
+          
           //tracking displaying raccoon flags for offices
           newBallots[google_civic_election_id].ballot_item_list.forEach(ballot_item => {
             if (ballot_item.kind_of_ballot_item === "OFFICE") {

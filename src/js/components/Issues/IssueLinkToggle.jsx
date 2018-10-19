@@ -50,11 +50,11 @@ export default class IssueLinkToggle extends Component {
     renderLog(__filename);
     let supportButtonPopoverTooltip;
     if (this.props.incompatibleIssues !== undefined){
-      const incomtableIssues = <span>{`You cannot link because the issue is incompatible with the following issues: ${this.props.incompatibleIssues.map(issue => issue.issue_name).join(", ")}`}</span>;
-      supportButtonPopoverTooltip = <Popover bsPrefix="card-popover"
-                                             title="Incompatible Issues"
+      // Removed bsPrefix="card-popover"
+      const incompatibleIssues = <span>{`You cannot link because the issue is incompatible with the following issues: ${this.props.incompatibleIssues.map(issue => issue.issue_name).join(", ")}`}</span>;
+      supportButtonPopoverTooltip = <Popover title="Incompatible Issues"
                                              id="supportButtonTooltip">
-                                             {incomtableIssues}
+                                             {incompatibleIssues}
                                     </Popover>;
     }
 
@@ -94,10 +94,11 @@ export default class IssueLinkToggle extends Component {
             </Button> :
             <OverlayTrigger
                   key={this.props.issue.issue_we_vote_id}
-                  trigger={["focus", "hover", "click"]}
                   placement="bottom"
+                  trigger="click"
                   overlay={supportButtonPopoverTooltip}>
-              <div style={{display: "inline-block"}}>
+               {/* trigger={["focus", "hover", "click"]} */}
+             <div style={{display: "inline-block"}}>
                 <Button bsPrefix="card-main__button-linked" variant="info" size="small" onClick={this.onIssueLink} disabled>
                   <span className="d-none d-sm-block">Incompatible</span>
                   <span className="d-block d-sm-none">Link</span>

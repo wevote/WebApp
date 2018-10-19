@@ -24,7 +24,7 @@ $white-text-color: $white;
 }
 
 // Used to change the bootstrap popover title background color to WeVote blue and the text to white.
-.popover-title {
+.popover-header {
   background-color: $brand-blue;
   color: $white-text-color;
 }
@@ -33,7 +33,6 @@ $white-text-color: $white;
 .popover.bottom .arrow::after {
   border-bottom-color: $brand-blue;
 }
-
 
 .glyphicon {
   position: relative;

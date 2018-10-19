@@ -61,6 +61,7 @@ export default class OrganizationsFollowedOnTwitter extends Component {
   }
 
   render () {
+    // console.log("OrganizationsFollowedOnTwitter render")
     renderLog(__filename);
     if (this.state.organizations_followed_on_twitter === undefined) {
       return null;
@@ -96,10 +97,10 @@ export default class OrganizationsFollowedOnTwitter extends Component {
             twitter_followers_count: one_organization.twitter_followers_count,
           };
 
-        let organizationPopover = <Popover bsPrefix="card-popover"
-                                           id={`organization-popover-${org_id}`}
-                                           onMouseOver={() => this.onTriggerEnter(org_id)}
-                                           onMouseOut={() => this.onTriggerLeave(org_id)}
+        // Removed bsPrefix="card-popover"
+        // onMouseOver={() => this.onTriggerEnter(org_id)}
+        // onMouseOut={() => this.onTriggerLeave(org_id)}
+        let organizationPopover = <Popover id={`organization-popover-${org_id}`}
                                            >
             <div className="card">
               <div className="card-main">
@@ -112,11 +113,11 @@ export default class OrganizationsFollowedOnTwitter extends Component {
           "/" + one_organization.organization_twitter_handle :
           "/voterguide/" + one_organization.organization_we_vote_id;
         let placement = "bottom";
+        // onMouseOver={() => this.onTriggerEnter(org_id)}
+        // onMouseOut={() => this.onTriggerLeave(org_id)}
         return <OverlayTrigger
             key={`trigger-${org_id}`}
             ref={`overlay-${org_id}`}
-            onMouseOver={() => this.onTriggerEnter(org_id)}
-            onMouseOut={() => this.onTriggerLeave(org_id)}
             rootClose
             placement={placement}
             overlay={organizationPopover}>
