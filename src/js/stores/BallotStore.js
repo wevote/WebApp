@@ -295,6 +295,7 @@ class BallotStore extends ReduceStore {
               new_ballot_item_unfurled_tracker[ballot_item.we_vote_id] = false;
             }
           });
+
           // Sort measures alphabetically
           let alphanumeric_filtered_items = []; 
           let unfiltered_items = [];          
@@ -305,7 +306,7 @@ class BallotStore extends ReduceStore {
               unfiltered_items.push(filtered_ballot_items[i]);
             }
           }
-           alphanumeric_filtered_items.sort(function (a, b) {
+          alphanumeric_filtered_items.sort(function (a, b) {
             return a.ballot_item_display_name.localeCompare(b.ballot_item_display_name, undefined, {numeric: true, sensitivity: "base"});
           });
           newBallots[google_civic_election_id].ballot_item_list = alphanumeric_filtered_items.concat(unfiltered_items);
