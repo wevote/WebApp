@@ -4,8 +4,10 @@ $icon-color-hover: $gray-dark;
 $glyph-icon-color: #51708e;
 $header-height: 54px;
 $header-height-cordova-ios: 70px;
+$header-height-cordova-ios-iphone-xr: 60px;
 $header-height-cordova-android: 50px;
 $header-height-secondary-nav: 104px;
+$header-height-secondary-nav-iphone-xr: 60px;
 $nav-item-secondary-nav-background-hover-color: darken($page-header-secondary-nav-background-color, 5%);
 $nav-item-secondary-nav-background-active-color: darken($page-header-secondary-nav-background-color, 10%);
 $footer-menu-margin: 130px;
@@ -135,6 +137,13 @@ $container-margin: -15px;
   margin-top: $header-height-secondary-nav;
 }
 
+.headroom-secondary-nav__margin-iphone-xr {
+  @include print {
+    margin-top: $space-none;
+  }
+  margin-top: $header-height-secondary-nav-iphone-xr;
+}
+
 .nav-secondary-nav__image {
   height: 26px;
   &--fade {
@@ -241,6 +250,11 @@ $container-margin: -15px;
       margin-bottom: $space-xs;
     }
   }
+
+  &__avatar-iphone-xr {
+    overflow: unset;
+  }
+
   &__avatar-wrapper {
     z-index: 3; //to float above the account/ProfilePopUp menu option grey div
   }
@@ -316,6 +330,10 @@ $container-margin: -15px;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  &__iphone-x-vertical-spacing {
+    margin-top: 18px;
   }
 }
 

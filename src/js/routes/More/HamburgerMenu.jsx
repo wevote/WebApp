@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import Icon from "react-svg-icons";
 import { Table } from "react-bootstrap";
 
-import { isWebApp } from "../../utils/cordovaUtils";
+import { isIPhoneXR, isWebApp } from "../../utils/cordovaUtils";
 import VoterStore from "../../stores/VoterStore";
 import BallotStore from "../../stores/BallotStore";
 import HamburgerMenuRow from "../../components/Navigation/HamburgerMenuRow";
@@ -39,7 +39,7 @@ export default class HamburgerMenu extends Component {
       <span className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none"
             onClick={this.toggleProfilePopUp} >
         {voterPhotoUrlMedium ?
-          <div id="js-header-avatar" className="header-nav__avatar-container" >
+          <div id="js-header-avatar" className={`header-nav__avatar ${isIPhoneXR() && "header-nav__avatar-iphone-xr"}`} >
             <img className={isWebApp() ? "header-nav__avatar" : "header-nav__avatar "}
                  src={voterPhotoUrlMedium}
                  height={34}
@@ -47,7 +47,7 @@ export default class HamburgerMenu extends Component {
             />
           </div> :
           <div id= "anonIcon" className={isWebApp() ? "header-nav__avatar" : "header-nav__avatar header-nav__cordova"}>
-            <Icon name="avatar-generic" width={34} height={34} />
+            <Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" />
           </div>
         }
       </span>
@@ -66,7 +66,7 @@ export default class HamburgerMenu extends Component {
 
     return <div>
       <Helmet title="Settings Menu"/>
-      <Table condensed hover responsive className={"hamburger-menu__table"}>
+      <Table hover responsive className={"hamburger-menu__table"}>
         <tbody>
           <tr className={"hamburger-menu__tr"}>
             <td colSpan={3} style={{ padding: 15, color: "DarkGrey" }}>

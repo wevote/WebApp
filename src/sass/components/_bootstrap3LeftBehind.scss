@@ -282,6 +282,15 @@ a {
   padding: $space-inset-xs;
 }
 
+@mixin center-block() {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.center-block {
+  @include center-block;
+}
+
 
 //
 //.input-group-btn:last-child>.btn, .input-group-btn:last-child>.btn-group {
