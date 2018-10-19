@@ -83,16 +83,16 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
       // Once we have more organizations than we want to show, put them into a drop-down
       if (localCounter <= this.state.maximum_issues_display) {
         return <IssueTinyDisplay key={`trigger-${issueWeVoteId}`}
-                                           ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-                                           currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                           issue={oneIssue}
-                                           issueImageSize={this.state.issueImageSize}
-                                           issue_we_vote_id={issueWeVoteId}
-                                           overlayTriggerOnClickOnly={this.props.overlayTriggerOnClickOnly}
-                                           popoverBottom={this.props.popoverBottom}
-                                           toFollow={this.props.toFollow}
-                                           urlWithoutHash={this.props.urlWithoutHash}
-                                           we_vote_id={this.props.we_vote_id} />;
+                                 ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+                                 currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                                 issue={oneIssue}
+                                 issueImageSize={this.state.issueImageSize}
+                                 issue_we_vote_id={issueWeVoteId}
+                                 overlayTriggerOnClickOnly={this.props.overlayTriggerOnClickOnly}
+                                 popoverBottom={this.props.popoverBottom}
+                                 toFollow={this.props.toFollow}
+                                 urlWithoutHash={this.props.urlWithoutHash}
+                                 we_vote_id={this.props.we_vote_id} />;
       } else {
         return null;
       }

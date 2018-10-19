@@ -113,6 +113,7 @@ export default class OrganizationCard extends Component {
   }
 
   render () {
+    // console.log("OrganizationCard render");
     renderLog(__filename);
     if (!this.state.organization_we_vote_id.length) {
       return <div className="card-popover__width--minimum">{LoadingWheel}</div>;

@@ -448,13 +448,6 @@ export default class OfficeItemCompressedRaccoon extends Component {
             }
             {ballotItemDisplayName}
           </span>
-
-          {/* Print */}
-          {/* TODO DEBUG=1
-          <span className="u-f3 visible-print">
-            {ballotItemDisplayName}
-          </span>
-           */}
         </h2>
 
         {/* *************************

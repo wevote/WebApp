@@ -100,11 +100,12 @@ export default class FacebookFriendsDisplay extends Component {
             return "";
           }
         } else {
+          // Removed bsPrefix="card-popover"
           let friendPopover = <Popover
               id={`friend-popover-${friend_id}`}
               onMouseOver={() => this.onTriggerEnter(friend_id)}
               onMouseOut={() => this.onTriggerLeave(friend_id)}
-              bsPrefix="card-popover">
+              >
               <div className="card">
                 <div className="card-main">
                   <FacebookFriendCard {...one_friend} />
