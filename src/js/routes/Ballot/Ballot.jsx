@@ -18,7 +18,16 @@ import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateModal from "../../components/Ballot/CandidateModal";
 import cookies from "../../utils/cookies";
-import { cordovaDot, historyPush, isCordova, isWebApp } from "../../utils/cordovaUtils";
+import {
+  cordovaDot,
+  hasIPhoneNotch,
+  historyPush,
+  isCordova,
+  isIPhone678Plus,
+  isIPhoneXorXS,
+  isIPhoneXSMax,
+  isWebApp
+} from "../../utils/cordovaUtils";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
 import Helmet from "react-helmet";
@@ -718,6 +727,17 @@ export default class Ballot extends Component {
       historyPush(this.state.pathname);
     }
 
+    let ballotHeading = "ballot__heading";
+    if (isCordova()) {
+      if (isIPhoneXSMax() || isIPhone678Plus() || isIPhoneXorXS()) {
+        ballotHeading = "ballot__heading ballot__heading-cordova-md";
+      } else if (hasIPhoneNotch()) {
+        ballotHeading = "ballot__heading ballot__heading-cordova-sm";
+      } else {
+        ballotHeading = "ballot__heading ballot__heading-cordova-lg";
+      }
+    }
+
     // console.log("Ballot.jsx, this.state.google_civic_election_id: ", this.state.google_civic_election_id);
 
     return <div className="ballot">
@@ -727,7 +747,7 @@ export default class Ballot extends Component {
       { this.state.showSelectBallotModal ? <SelectBallotModal show={this.state.showSelectBallotModal} toggleFunction={this.toggleSelectBallotModal} ballotElectionList={this.state.ballotElectionList} pathname={this.state.pathname} ballotBaseUrl="/ballot" google_civic_election_id={this.state.google_civic_election_id} location={this.state.location} /> : null }
       { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this.toggleBallotSummaryModal} /> : null }
 
-      <div className={ isWebApp() ? "ballot__heading" : "ballot__heading ballot__heading-cordova" } >
+      <div className={ballotHeading} >
         <div className="page-content-container">
           <div className="container-fluid">
             <div className="row">

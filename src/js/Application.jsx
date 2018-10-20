@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
-import { hasIPhoneNotch, historyPush, isAndroid, isCordova, isIOS, isWebApp } from "./utils/cordovaUtils";
+import { hasIPhoneNotch, historyPush, isAndroid, isCordova, isIOS, isIPhoneXR, isWebApp } from "./utils/cordovaUtils";
 import ElectionActions from "./actions/ElectionActions";
 import FooterBarCordova from "./components/Navigation/FooterBarCordova";
 import FriendActions from "./actions/FriendActions";
@@ -386,8 +386,18 @@ export default class Application extends Component {
       showBackToHeader = true;
     }
 
-    const headRoomSize = voterGuideShowGettingStartedNavigation || stringContains("/ballot", pathname) || pathname === "/bookmarks" ?
-      "headroom-secondary-nav__margin" : isWebApp() ? "headroom-wrapper" : isIOS() ? "headroom-wrapper__cordova-ios" : "headroom-wrapper__cordova-android";
+    let headRoomSize;
+    if (voterGuideShowGettingStartedNavigation || stringContains("/ballot", pathname) || pathname === "/bookmarks") {
+      headRoomSize = isIPhoneXR() ? "headroom-secondary-nav__margin-iphone-xr" : "headroom-secondary-nav__margin";
+    } else {
+      if (isWebApp()) {
+        headRoomSize = "headroom-wrapper";
+      } else if (isIOS()) {
+        headRoomSize = "headroom-wrapper__cordova-ios";
+      } else {
+        headRoomSize = "headroom-wrapper__cordova-android";
+      }
+    }
 
     let pageHeaderStyle = this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom";
     if (isIOS()) {
@@ -399,7 +409,7 @@ export default class Application extends Component {
     let footerStyle = this.state.showFooter ? "footroom-wrapper" : "footroom-wrapper__hide";
     let appBaseClass = "app-base";
     if (isCordova()) {
-      if (hasIPhoneNotch()) {
+      if (!hasIPhoneNotch()) {
         appBaseClass += " cordova-base-iphonex";
       } else {
         appBaseClass += " cordova-base";

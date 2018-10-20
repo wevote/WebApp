@@ -20,6 +20,7 @@ export default class OrganizationTinyDisplay extends Component {
   };
 
   render () {
+    // console.log("OrganizationTinyDisplay render");
     renderLog(__filename);
     let display_name;
     if (this.props.voter_guide_display_name) {

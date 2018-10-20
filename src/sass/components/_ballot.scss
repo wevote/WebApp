@@ -4,7 +4,9 @@ $tab-spacing-desktop: 24px;
 $tab-spacing-mobile: $space-md;
 $header-extension-top: 41%;
 $minus-header-extension-top: -40%;
-$minus-header-extension-top-cordova: -43%;
+$minus-header-extension-top-cordova-sm: -35%;
+$minus-header-extension-top-cordova-md: -43%;
+$minus-header-extension-top-cordova-lg: -60%;
 $header-extension-top-voter-guide: 2%;
 $minus-header-extension-top-voter-guide: -1%;
 $scrollbar-height: 20px;
@@ -40,8 +42,16 @@ $bottom-spacing-cordova: 50px;
     overflow: hidden;
   }
 
-  &__heading-cordova {
-    margin-top: $minus-header-extension-top-cordova;
+  &__heading-cordova-sm {
+    margin-top: $minus-header-extension-top-cordova-sm;
+  }
+
+  &__heading-cordova-md {
+    margin-top: $minus-header-extension-top-cordova-md;
+  }
+
+  &__heading-cordova-lg {
+    margin-top: $minus-header-extension-top-cordova-lg;
   }
 
   &__header {

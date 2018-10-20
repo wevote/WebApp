@@ -73,26 +73,32 @@ export default class HeaderSecondaryNavBar extends Component {
       // console.log("shouldComponentUpdate: componentDidMountFinished === false");
       return true;
     }
+
     if (this.state.showBallotIntroFollowIssues === true || nextState.showBallotIntroFollowIssues === true) {
       // console.log("shouldComponentUpdate: this.state.showBallotIntroFollowIssues", this.state.showBallotIntroFollowIssues, ", nextState.showBallotIntroFollowIssues", nextState.showBallotIntroFollowIssues);
       return true;
     }
+
     if (this.state.showBallotIntroOrganizations === true || nextState.showBallotIntroOrganizations === true) {
       // console.log("shouldComponentUpdate: this.state.showBallotIntroOrganizations", this.state.showBallotIntroOrganizations, ", nextState.showBallotIntroOrganizations", nextState.showBallotIntroOrganizations);
       return true;
     }
+
     if (this.state.showEmailModal === true || nextState.showEmailModal === true) {
       // console.log("shouldComponentUpdate: this.state.showEmailModal", this.state.showEmailModal, ", nextState.showEmailModal", nextState.showEmailModal);
       return true;
     }
+
     if (this.state.showFacebookModal === true || nextState.showFacebookModal === true) {
       // console.log("shouldComponentUpdate: this.state.showFacebookModal", this.state.showFacebookModal, ", nextState.showFacebookModal", nextState.showFacebookModal);
       return true;
     }
+
     if (this.state.showPollingLocatorModal === true || nextState.showPollingLocatorModal === true) {
       // console.log("shouldComponentUpdate: this.state.showPollingLocatorModal", this.state.showPollingLocatorModal, ", nextState.showPollingLocatorModal", nextState.showPollingLocatorModal);
       return true;
     }
+
     return false;
   }
 
@@ -185,7 +191,6 @@ export default class HeaderSecondaryNavBar extends Component {
   }
 
   render () {
-    console.log("HeaderSecondaryNavBar render");
     renderLog(__filename);
     let sliderSettings = {
       dots: true,
@@ -199,7 +204,6 @@ export default class HeaderSecondaryNavBar extends Component {
       arrows: false,
     };
     let sliderSettingsWithSwipe = { ...sliderSettings, swipe: true };
-
 
     let voterThoroughOrientationComplete = false;  // Have all of the 3 (this once was 6) major steps been taken?
     const BallotIntroFollowIssuesModal =
@@ -292,7 +296,7 @@ export default class HeaderSecondaryNavBar extends Component {
       { voterThoroughOrientationComplete ?
         null :
         <header className={searchStyle}>
-          <div className="header-secondary-nav">
+          <div className={`header-secondary-nav ${hasIPhoneNotch() ? "header-secondary-nav__iphone-x-vertical-spacing" : ""}`}>
             {/* Issues Icon & Modal */}
             {/* {!this.props.hideGettingStartedIssuesButton ? null : null } No longer hiding Issue Button */}
             {/* completed={this.state.ballot_intro_issues_completed} No longer using completed state */}

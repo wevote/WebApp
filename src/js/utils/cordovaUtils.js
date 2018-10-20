@@ -125,6 +125,15 @@ export function isIPhoneXorXS () {
   return isIOS() && (screen.width === 1125 || screen.width === 1242);
 }
 
+export function isIPhone678Plus () {
+  let ratio = window.devicePixelRatio || 1;
+  let screen = {
+    width: window.screen.width * ratio,
+    height: window.screen.height * ratio,
+  };
+  return isIOS() && screen.width === 1242 && screen.height === 2208;
+}
+
 export function isIPhoneXR () {
   let ratio = window.devicePixelRatio || 1;
   let screen = {

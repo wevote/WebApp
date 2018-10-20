@@ -30,6 +30,7 @@ export default class MeasureItemCompressed extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      componentDidMountFinished: false,
       maximum_organization_display: 4,
       organization: {},
       showModal: false,
@@ -45,6 +46,7 @@ export default class MeasureItemCompressed extends Component {
     this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.setState({
+      componentDidMountFinished: true,
       supportProps: SupportStore.get(this.props.we_vote_id)
     });
     if (this.props.organization && this.props.organization.organization_we_vote_id) {
@@ -60,6 +62,29 @@ export default class MeasureItemCompressed extends Component {
         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
       });
     }
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    if (this.state.componentDidMountFinished === false) {
+      // console.log("shouldComponentUpdate: componentDidMountFinished === false");
+      return true;
+    }
+    if (this.state.ballot_item_display_name !== nextState.ballot_item_display_name) {
+      // console.log("shouldComponentUpdate: this.state.ballot_item_display_name", this.state.ballot_item_display_name, ", nextState.ballot_item_display_name", nextState.ballot_item_display_name);
+      return true;
+    }
+    if (this.state.supportProps !== undefined && nextState.supportProps !== undefined) {
+      let currentNetworkSupportCount = parseInt(this.state.supportProps.support_count) || 0;
+      let nextNetworkSupportCount = parseInt(nextState.supportProps.support_count) || 0;
+      let currentNetworkOpposeCount = parseInt(this.state.supportProps.oppose_count) || 0;
+      let nextNetworkOpposeCount = parseInt(nextState.supportProps.oppose_count) || 0;
+      if (currentNetworkSupportCount !== nextNetworkSupportCount || currentNetworkOpposeCount !== nextNetworkOpposeCount) {
+        // console.log("shouldComponentUpdate: support or oppose count change");
+        return true;
+      }
+    }
+    return false;
   }
 
   componentWillUnmount () {
@@ -105,6 +130,7 @@ export default class MeasureItemCompressed extends Component {
   }
 
   render () {
+    // console.log("MeasureItemCompressed render");
     renderLog(__filename);
     let { ballot_item_display_name, measure_subtitle, measure_text, we_vote_id } = this.props;
     let measure_we_vote_id = we_vote_id;

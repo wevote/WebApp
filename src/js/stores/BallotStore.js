@@ -295,8 +295,22 @@ class BallotStore extends ReduceStore {
               new_ballot_item_unfurled_tracker[ballot_item.we_vote_id] = false;
             }
           });
-          newBallots[google_civic_election_id].ballot_item_list = filtered_ballot_items;
 
+          // Sort measures alphabetically
+          let alphanumeric_filtered_items = []; 
+          let unfiltered_items = [];          
+          for (let i = 0; i < filtered_ballot_items.length; i++) {
+            if (filtered_ballot_items[i].kind_of_ballot_item === "MEASURE"){
+              alphanumeric_filtered_items.push(filtered_ballot_items[i]);
+            } else {
+              unfiltered_items.push(filtered_ballot_items[i]);
+            }
+          }
+          alphanumeric_filtered_items.sort(function (a, b) {
+            return a.ballot_item_display_name.localeCompare(b.ballot_item_display_name, undefined, {numeric: true, sensitivity: "base"});
+          });
+          newBallots[google_civic_election_id].ballot_item_list = alphanumeric_filtered_items.concat(unfiltered_items);
+          
           //tracking displaying raccoon flags for offices
           newBallots[google_civic_election_id].ballot_item_list.forEach(ballot_item => {
             if (ballot_item.kind_of_ballot_item === "OFFICE") {

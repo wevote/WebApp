@@ -121,7 +121,7 @@ export default class Friends extends Component {
                           />
                 </div>
               </span> :
-              <p>You don't have any Friends.</p>
+              <p>Your friends will be shown here.</p>
             }
           </div>
         </div>
