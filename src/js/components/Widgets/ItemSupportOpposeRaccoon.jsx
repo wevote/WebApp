@@ -281,6 +281,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     this.setState({ shouldFocusCommentArea: true});
   }
 
+  // This is used for organizations to Follow (not currently followed by the voter)
   organizationsToDisplay (organizations_to_follow, maximum_organization_display, ballot_item_we_vote_id, visible_tag, supports_this_ballot_item = false, opposes_this_ballot_item = false) {
     if (!maximum_organization_display || maximum_organization_display === 0) {
       return [];
