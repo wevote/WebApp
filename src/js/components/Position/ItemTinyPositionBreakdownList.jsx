@@ -9,7 +9,8 @@ import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 import PositionsNotShownList from "../Ballot/PositionsNotShownList";
 import VoterStore from "../../stores/VoterStore";
 
-// This component can be used to show either supporters, opposers, or groups with info only
+// This component can be used to show either supporters, opposers, or groups with info only that the Voter
+// is already listening to
 export default class ItemTinyPositionBreakdownList extends Component {
 
   static propTypes = {
@@ -209,7 +210,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
             return null;
           }
         } else {
-          // If we made it to here, then we want to display the organization in a popover
+          // If we made it to here, then we want to display the organizations that the voter is listening to in a popover
           // console.log("ItemTinyPositionBreakdownList, onePosition:", onePosition);
           oneOrganization = {
             organization_we_vote_id: onePosition.speaker_we_vote_id,
