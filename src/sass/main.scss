@@ -26,9 +26,6 @@
 // 3. Vendor
 // ===============================================
 
-// @debug 'gulp before inclusion of bootstrap2-toggle.css';
-@import 'bootstrap2-toggle.css';
-
 // ===============================================
 // 4. Utility & Helpers
 // ===============================================
@@ -112,3 +109,9 @@
 
 @import 'overrides/overrides.scss';
 @import 'overrides/print.scss';
+
+// ===============================================
+// 7. If you know a better way, then feel free to change how we pull in these styles
+// ===============================================
+
+@import 'vendor/react-toggle-style';
