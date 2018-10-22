@@ -857,6 +857,7 @@ export default class Ballot extends Component {
                   }
                   <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
                     { this.state.ballotWithAllItemsByFilterType.map( (item) => {
+                      //ballot limited by items by filter type
                         // console.log(this.state.ballot_item_filter_type);
                         if (this.state.ballot_item_filter_type === "All" ||
                             item.kind_of_ballot_item === "MEASURE" && this.state.ballot_item_filter_type === "Measure" ||
