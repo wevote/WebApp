@@ -1,6 +1,5 @@
 // April 2018: Something in our sass processing chain is messing up the utf-8 char in slick-theme.css within Cordova, so force it here.
 $slick-dot-character: '\2022' !default;
-$description-padding: 10px;
 $backdrop-border-radius: 0 0 8px 8px;
 
 .intro-modal {
@@ -332,27 +331,21 @@ $backdrop-border-radius: 0 0 8px 8px;
 
   &__square-name {
     position: absolute;
-    bottom: 2px;
-    font-size: 1rem;
+    left: 2px;
+    bottom: -6px;
+    font-size: .9rem;
     word-wrap: break-word;
     text-shadow: 1px 1px 2px rgba($black, .6);
     background: rgba(0, 0, 0, .5);
-    padding: $description-padding;
+    padding: $space-xs;
     width: calc(100% - 4px);
     border-radius: $backdrop-border-radius;
 
-    @include breakpoints (xsmall-bootstrap small-bootstrap) {
-      right: 8px;
-      bottom: 8px;
-      left: 8px;
-      font-size: .9rem;
+    @include breakpoints (mid-small xsmall-bootstrap) {
+      padding: $space-sm;
     }
 
     @include breakpoints (iphone5 mid-small) {
-      right: 10px;
-      bottom: 10px;
-      left: 10px;
-      font-size: .9rem;
       -webkit-hyphens: auto;
       -moz-hyphens: auto;
       -ms-hyphens: auto;
@@ -360,9 +353,6 @@ $backdrop-border-radius: 0 0 8px 8px;
     }
 
     @include breakpoints (max iphone5) {
-      right: 8px;
-      bottom: 8px;
-      left: 8px;
       font-size: .85rem;
       -webkit-hyphens: auto;
       -moz-hyphens: auto;
