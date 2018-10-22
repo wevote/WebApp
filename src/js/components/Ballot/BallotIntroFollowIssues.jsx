@@ -168,7 +168,7 @@ export default class BallotIntroFollowIssues extends Component {
           on_issue_follow={this.onIssueFollow}
           on_issue_stop_following={this.onIssueStopFollowing}
           edit_mode={edit_mode}
-          grid="col-4 col-sm-2" />;
+          grid="col-4 col-sm-3" />;
       } else {
         return null;
       }
