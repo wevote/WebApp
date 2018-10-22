@@ -1,7 +1,7 @@
 $icon-color-base: $gray-mid;
 $icon-color-active: $link-color;
 $icon-color-hover: $gray-dark;
-$glyph-icon-color: #51708e;
+$glyph-icon-color: $brand-blue;
 $header-height: 54px;
 $header-height-cordova-ios: 70px;
 $header-height-cordova-ios-iphone-xr: 60px;
@@ -145,7 +145,7 @@ $container-margin: -15px;
 }
 
 .nav-secondary-nav__image {
-  height: 26px;
+  height: 28px;
   &--fade {
     @extend .nav-secondary-nav__image;
     opacity: .3;
@@ -278,7 +278,7 @@ $container-margin: -15px;
     font-size: 10px;
     &--fade {
       @extend .header-secondary-nav__label;
-      opacity: .3;
+      opacity: .5;
     }
   }
 
@@ -318,10 +318,13 @@ $container-margin: -15px;
   }
 
   &__item-image-wrapper {
-    height: 29px;
+    height: 24px;
     @include breakpoints(small mid-small) {
-      transform: scale(.8);
+      // transform: scale(.8);
     }
+  }
+  .fa { // override to customize Font Awesome icon size in Secondary nav
+    font-size: 1.5rem;
   }
 
   .nav-icon {
