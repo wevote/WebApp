@@ -497,7 +497,7 @@ $backdrop-border-radius: 0 0 8px 8px;
   height: 100%;
 }
 
-.slick-slide > div {
+.slick-slide > div { // stylelint-disable-line selector-max-type
   height: 100%;
 }
 

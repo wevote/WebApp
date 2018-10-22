@@ -80,7 +80,7 @@ class VoterGuideStore extends ReduceStore {
     return this.sortVoterGuidesByDate(unsortedVoterGuides);
   }
 
-  getVoterGuidesToFollowAll (limit=100) {
+  getVoterGuidesToFollowAll (limit = 100) {
     // Start with the full list of we_vote_ids that can be followed
     let organizationWeVoteIdsToFollow = this.getState().organization_we_vote_ids_to_follow_all || [];
     // Take the list that we are already following

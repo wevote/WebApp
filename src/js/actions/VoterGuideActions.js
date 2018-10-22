@@ -83,7 +83,7 @@ export default {
     } );
   },
 
-  voterGuidesUpcomingRetrieve: function (google_civic_election_id=0) {
+  voterGuidesUpcomingRetrieve: function (google_civic_election_id = 0) {
     let maximum_number_to_retrieve = 500;
     let google_civic_election_id_list = [];
     if (google_civic_election_id !== 0) {

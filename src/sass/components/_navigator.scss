@@ -333,7 +333,7 @@ $container-margin: -15px;
   }
 
   &__iphone-x-vertical-spacing {
-    margin-top: 18px;
+    margin-top: 18px;  // stylelint-disable-line sh-waqar/declaration-use-variable
   }
 }
 
