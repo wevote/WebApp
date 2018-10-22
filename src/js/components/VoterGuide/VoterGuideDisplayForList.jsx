@@ -14,6 +14,7 @@ import ReadMore from "../../components/Widgets/ReadMore";
 // Please see VoterGuide/OrganizationCard for the Component displayed by TwitterHandle
 export default class VoterGuideDisplayForList extends Component {
   static propTypes = {
+    children: PropTypes.array,
     organization_we_vote_id: PropTypes.string,
     voter_guide_image_url_large: PropTypes.string,
     voter_guide_display_name: PropTypes.string,

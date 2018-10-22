@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Alert, Button, FormGroup } from "react-bootstrap";
+import { Alert, Button } from "react-bootstrap";
 import { isWebApp } from "../utils/cordovaUtils";
 import LoadingWheel from "../components/LoadingWheel";
 import { renderLog } from "../utils/logging";
