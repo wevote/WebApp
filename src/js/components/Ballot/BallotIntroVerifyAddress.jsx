@@ -28,7 +28,7 @@ export default class BallotIntroVerifyAddress extends Component {
 
     return <div className="intro-modal">
       <div className="intro-modal__h1">Verify your Address</div>
-      <div className="intro-modal__h3">Please enter your full address so we can look up your full ballot.</div>
+      <div className="intro-modal__top-description">Please enter your full address so we can look up your full ballot.</div>
       <div className={ isWebApp() ? "intro-modal__address-box u-padding-bottom--md" : "SettingsCardBottomCordova" } >
         <AddressBox {...this.props} saveUrl="/ballot" waitingMessage="Thank you! Click 'See Your Ballot' below." disableAutoFocus />
       </div>
