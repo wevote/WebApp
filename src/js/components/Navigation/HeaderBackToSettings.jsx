@@ -12,7 +12,6 @@ import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import { renderLog } from "../../utils/logging";
-import SearchAllBox from "../../components/Search/SearchAllBox";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import { shortenText } from "../../utils/textFormat";
@@ -263,8 +262,6 @@ export default class HeaderBackToSettings extends Component {
                 onClick={ () => historyPush(backToLink) }>
           <span className="fa fa-arrow-left"/> {backToOrganizationLinkTextMobile}
         </Button>
-
-        {/* <span className="d-none d-sm-block"><SearchAllBox /></span> */}
 
         {this.state.profilePopUpOpen &&
           <HeaderBarProfilePopUp {...this.props}

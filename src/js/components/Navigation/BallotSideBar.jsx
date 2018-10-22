@@ -13,6 +13,7 @@ import { arrayContains } from "../../utils/textFormat";
 
 export default class BallotSideBar extends Component {
   static propTypes = {
+    ballot: PropTypes.array,  // Check to see if any calls to this component pass in "ballot"
     ballotWithAllItemsByFilterType: PropTypes.array,
     ballotItemLinkHasBeenClicked: PropTypes.func,
     displayTitle: PropTypes.bool,
