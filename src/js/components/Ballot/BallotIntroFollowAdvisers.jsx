@@ -203,6 +203,7 @@ export default class BallotIntroFollowAdvisers extends Component {
       <div className="intro-modal-shadow-wrap">
         <div className="intro-modal-shadow" />
       </div>
+      <div className="u-flex-auto" />
       <div className="intro-modal__button-wrap">
         <Button type="submit" bsPrefix="btn btn-success intro-modal__button" onClick={this.onNext}>
           <span>{this.state.next_button_text}</span>

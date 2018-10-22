@@ -32,8 +32,7 @@ export default class BallotIntroVerifyAddress extends Component {
       <div className={ isWebApp() ? "intro-modal__address-box u-padding-bottom--md" : "SettingsCardBottomCordova" } >
         <AddressBox {...this.props} saveUrl="/ballot" waitingMessage="Thank you! Click 'See Your Ballot' below." disableAutoFocus />
       </div>
-
-      <div className="intro-modal__h2"><br /></div>
+      <div className="u-flex-auto" />
       <div className="intro-modal__button-wrap">
         <button type="button" className="btn btn-success intro-modal__button" onClick={this.props.next}>See Your Ballot&nbsp;&gt;</button>
       </div>

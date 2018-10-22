@@ -11,7 +11,7 @@ $backdrop-border-radius: 0 0 8px 8px;
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
 
   &__h1 {
     font-weight: 700;

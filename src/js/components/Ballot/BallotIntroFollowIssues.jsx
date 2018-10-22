@@ -195,6 +195,7 @@ export default class BallotIntroFollowIssues extends Component {
       <div className="intro-modal-shadow-wrap">
         <div className="intro-modal-shadow" />
       </div>
+      <div className="u-flex-auto" />
       <div className="intro-modal__button-wrap">
         <Button type="submit"
                 bsPrefix={ this.remainingIssues() ? "btn intro-modal__button disabled btn-secondary" : "btn btn-success intro-modal__button"}
