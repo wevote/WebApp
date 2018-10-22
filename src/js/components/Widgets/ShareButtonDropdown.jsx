@@ -59,7 +59,7 @@ export default class ShareButtonDropdown extends Component {
 
   onButtonBlur () {
     // Delay closing the drop down so that onClick has time to work
-    setTimeout(function () {
+    setTimeout(() => {
       this.closeDropdown();
     }, 250);
   }
@@ -79,13 +79,13 @@ export default class ShareButtonDropdown extends Component {
           {shareIcon} {shareText} <span className="caret" />
         </button>
         {this.state.open ?
-          <ul className="dropdown-menu">
-            <li>
+          <ul className="dropdown-menu d-block">
+            <li className="dropdown-item">
               <a onClick={onCopyLinkClick}>
                   Copy link
               </a>
             </li>
-            <li>
+            <li className="dropdown-item">
               <a onClick={this.shareFacebookComment.bind(this)}>
                   Share on Facebook
               </a>
