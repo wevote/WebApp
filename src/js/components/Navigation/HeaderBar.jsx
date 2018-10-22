@@ -65,7 +65,22 @@ export default class HeaderBar extends Component {
       return true;
     }
     if (this.state.profilePopUpOpen === true || nextState.profilePopUpOpen === true) {
-      console.log("shouldComponentUpdate: this.state.profilePopUpOpen", this.state.profilePopUpOpen, ", nextState.profilePopUpOpen", nextState.profilePopUpOpen);
+      // console.log("shouldComponentUpdate: this.state.profilePopUpOpen", this.state.profilePopUpOpen, ", nextState.profilePopUpOpen", nextState.profilePopUpOpen);
+      return true;
+    }
+    if (this.state.aboutMenuOpen === true || nextState.aboutMenuOpen === true) {
+      // console.log("shouldComponentUpdate: this.state.aboutMenuOpen", this.state.aboutMenuOpen, ", nextState.aboutMenuOpen", nextState.aboutMenuOpen);
+      return true;
+    }
+    let currentPathnameExists = this.props.location && this.props.location.pathname;
+    let nextPathnameExists = nextProps.location && nextProps.location.pathname;
+    // One exists, and the other doesn't
+    if ((currentPathnameExists && !nextPathnameExists) || (!currentPathnameExists && nextPathnameExists)) {
+      // console.log("shouldComponentUpdate: PathnameExistsDifference");
+      return true;
+    }
+    if (currentPathnameExists && nextPathnameExists && this.props.location.pathname !== nextProps.location.pathname) {
+      // console.log("shouldComponentUpdate: this.props.location.pathname", this.props.location.pathname, ", nextProps.location.pathname", nextProps.location.pathname);
       return true;
     }
     return false;
