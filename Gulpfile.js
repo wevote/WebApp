@@ -73,7 +73,7 @@ gulp.task("server", PRODUCTION ? () => server(PRODUCTION) : function () {
 });
 
 // October 2018: bootstrap-sccs is styling for bootstrap 3, so we no longer use it.
-// Pull all bootstrap styling from the node_modules package boootstrap (v4)
+// Pull all bootstrap styling from the node_modules package bootstrap (v4)
 gulp.task("compile-bootstrap", function () {
   return gulp.src("./node_modules/bootstrap/scss/bootstrap.scss")
     .pipe(sourcemaps.init())
@@ -91,11 +91,10 @@ gulp.task("compile-bootstrap", function () {
     .pipe(browserSync.stream());
 });
 
-// Compile main stylesheet and copy to Build directory
+// Compile main and loading-screen, then copy them to the /build/css directory
 gulp.task("sass", function () {
   return gulp.src(["./src/sass/main.scss",
                    "./src/sass/loading-screen.scss",
-                   "./src/sass/bootstrap2-toggle.css",
     ])
     .pipe(sourcemaps.init())
     .on("error", function (err) { console.error(err); })

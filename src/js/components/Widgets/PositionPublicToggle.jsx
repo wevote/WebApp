@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
-import ReactBootstrapToggle from "react-bootstrap-toggle";
+import Toggle from "react-toggle";
 import Icon from "react-svg-icons";
 import { renderLog } from "../../utils/logging";
 import { hasIPhoneNotch } from "../../utils/cordovaUtils";
@@ -122,8 +122,8 @@ export default class PositionPublicToggle extends Component {
     let { is_public_position: isPublicPosition } = this.props.supportProps;
     let visibilityPublic = "Currently visible to public";
     let visibilityFriendsOnly = "Currently only shared with We Vote friends";
-    const publicIcon = <Icon alt="Visible to Public" name="public-icon" color="#fff" width={18} height={18} />;
-    const friendsIcon = <Icon alt="Visible to Friends Only" name="group-icon" color="#555" width={18} height={18} />;
+    const publicIcon = <Icon alt="Visible to Public" name="public-icon" color="#000" width={18} height={18} />;
+    const friendsIcon = <Icon alt="Visible to Friends Only" name="group-icon" color="#fff" width={18} height={18} />;
     let tooltip = <Tooltip id="visibility-tooltip">{isPublicPosition ? visibilityPublic : visibilityFriendsOnly}</Tooltip>;
     let noTooltip = <span />;
 
@@ -211,15 +211,14 @@ export default class PositionPublicToggle extends Component {
         {/* Mobile Mode */}
         <span className="d-block d-sm-none">
           <div tabIndex="0" onKeyDown={onKeyDown}>{/* tabIndex and onKeyDown are for accessibility */}
-            <ReactBootstrapToggle on={publicIcon}
-                                  off={friendsIcon}
-                                  onChange={onChange}
-                                  active={this.state.showToThePublicOn}
-                                  onstyle="success"
-                                  size="mini"
-                                  width="38px"
-                                  height="20px"
-                                  />
+            <Toggle
+              defaultChecked={this.state.showToThePublicOn}
+              className="toggle-override"
+              icons={{
+                checked: publicIcon,
+                unchecked: friendsIcon,
+              }}
+              onChange={onChange} />
           </div>
         </span>
 
@@ -230,16 +229,15 @@ export default class PositionPublicToggle extends Component {
                           placement="top"
                           overlay={inTestMode ? noTooltip : tooltip}>
             <div tabIndex="0" onKeyDown={onKeyDown}>{/* tabIndex and onKeyDown are for accessibility */}
-              <ReactBootstrapToggle on={publicIcon}
-                                    off={friendsIcon}
-                                    onChange={onChange}
-                                    active={this.state.showToThePublicOn}
-                                    onstyle="success"
-                                    size="mini"
-                                    width="38px"
-                                    height="20px"
-                                    />
-            </div>
+              <Toggle
+                defaultChecked={this.state.showToThePublicOn}
+                className="toggle-override"
+                icons={{
+                  checked: publicIcon,
+                  unchecked: friendsIcon,
+                }}
+                onChange={onChange} />
+              </div>
           </OverlayTrigger>
         </span>
       </div>

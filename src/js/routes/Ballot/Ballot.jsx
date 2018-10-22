@@ -749,7 +749,7 @@ export default class Ballot extends Component {
                   <h1 className="h1 ballot__header__title">
                     { electionName ?
                        <span className="u-push--sm">
-                         {electionName} <span className="d-none d-sm-block">&mdash; </span>
+                         {electionName} <span className="d-none d-sm-inline">&mdash; </span>
                          <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
                        </span> :
                        <span className="u-push--sm">
@@ -758,10 +758,10 @@ export default class Ballot extends Component {
                     {/* We always show the change election option */}
                     <span className="u-no-break d-print-none u-cursor--pointer"
                           onClick={this.toggleSelectBallotModal} >
-                      <span className="u-no-break u-f8 d-none d-sm-block"><img src={cordovaDot("/img/global/icons/gear-icon.png")}
+                      <span className="u-no-break u-f8 d-none d-sm-inline"><img src={cordovaDot("/img/global/icons/gear-icon.png")}
                            role="button"
                            alt={"change address or election"}/> change address or election</span>
-                      <span className="u-no-break u-f6 d-block d-sm-none"><img src={cordovaDot("/img/global/icons/gear-icon.png")}
+                      <span className="u-no-break u-f6 d-inline d-sm-none"><img src={cordovaDot("/img/global/icons/gear-icon.png")}
                            role="button"
                            alt={"change address or election"}/> change address or election</span>
                     </span>
