@@ -497,6 +497,10 @@ $backdrop-border-radius: 0 0 8px 8px;
   height: 100%;
 }
 
+.slick-slide > div {
+  height: 100%;
+}
+
 .slick-dots {
   bottom: 0;
   content: $slick-dot-character;
