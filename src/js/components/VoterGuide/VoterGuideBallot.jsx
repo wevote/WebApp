@@ -663,7 +663,7 @@ export default class VoterGuideBallot extends Component {
             <h1 className="h3 ballot__header__title-voter-guide">
                   { electionName ?
                        <span className="u-push--sm">
-                         {electionName} <span className="hidden-xs">&mdash; </span>
+                         {electionName} <span className="d-none d-sm-block">&mdash; </span>
                          <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
                        </span> :
                       null }
@@ -693,7 +693,7 @@ export default class VoterGuideBallot extends Component {
                                                pledgeToVoteAction={this.pledgeToVoteWithVoterGuide} /> :
               null
             }
-            {/* Turned off for now:
+            {/* Turned off for now:  This button is almost exactly like the PledgeToSupportOrganizationButton and should be merged together
              <PledgeToVoteButton organization={this.state.organization}
                                  pledgeToVoteAction={this.pledgeToVoteWithVoterGuide} />*/}
           </div>

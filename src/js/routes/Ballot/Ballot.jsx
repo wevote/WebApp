@@ -611,8 +611,9 @@ export default class Ballot extends Component {
   }
 
   setBallotItemFilterType (type) {
-    this.setState({ballot_item_filter_type: type,})
+    this.setState({ballot_item_filter_type: type, });
   }
+
   render () {
     renderLog(__filename);
     // console.log("Ballot render");
@@ -746,7 +747,7 @@ export default class Ballot extends Component {
                 <Helmet title="Ballot - We Vote" />
                 <BrowserPushMessage incomingProps={this.props} />
                 <header className="ballot__header__group">
-                  <h1 className="h1 ballot__header__title">
+                  <h1 className={`ballot__header__title${isCordova() && "__cordova"}`}>
                     { electionName ?
                        <span className="u-push--sm">
                          {electionName} <span className="d-none d-sm-inline">&mdash; </span>
