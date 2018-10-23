@@ -10,6 +10,7 @@ export default class OpinionsIgnoredList extends Component {
 
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
+    // children: PropTypes.array,
     organizationsIgnored: PropTypes.array,
     instantRefreshOn: PropTypes.bool,
     editMode: PropTypes.bool,
@@ -47,7 +48,7 @@ export default class OpinionsIgnoredList extends Component {
     }
 
     let counter = 0;
-    let children = [];
+    // let children = [];
 
     // zachmonteith: extra span tags inside of VoterGuideDisplayForList are to ensure that {org} gets passed in
     // as an array rather than an object, so that our propTypes validations in VoterGuideDisplayForList work.
