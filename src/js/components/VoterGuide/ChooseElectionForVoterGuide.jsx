@@ -139,7 +139,7 @@ export default class ChooseElectionForVoterGuide extends Component {
                   <img src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span>
               }
               {/* Desktop */}
-              <span className="hidden-xs">{item.election_description_text}&nbsp;<img
+              <span className="d-none d-sm-block">{item.election_description_text}&nbsp;<img
                 src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span>
 
               <div className="ballot-election-list__h2">{moment(item.election_day_text).format("MMMM Do, YYYY")}</div>

@@ -416,7 +416,7 @@ class CandidateStore extends ReduceStore {
           ...state,
           all_cached_positions_about_candidates: all_cached_positions_about_candidates,
         };
-      
+
       case "voterGuidesUpcomingRetrieve":
         // This code harvests the support/oppose positions that are passed in along with voter guides
 

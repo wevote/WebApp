@@ -168,7 +168,7 @@ export default class BallotIntroFollowIssues extends Component {
           on_issue_follow={this.onIssueFollow}
           on_issue_stop_following={this.onIssueStopFollowing}
           edit_mode={edit_mode}
-          grid="col-4 col-sm-2" />;
+          grid="col-4 col-sm-3" />;
       } else {
         return null;
       }
@@ -195,6 +195,7 @@ export default class BallotIntroFollowIssues extends Component {
       <div className="intro-modal-shadow-wrap">
         <div className="intro-modal-shadow" />
       </div>
+      <div className="u-flex-auto" />
       <div className="intro-modal__button-wrap">
         <Button type="submit"
                 bsPrefix={ this.remainingIssues() ? "btn intro-modal__button disabled btn-secondary" : "btn btn-success intro-modal__button"}

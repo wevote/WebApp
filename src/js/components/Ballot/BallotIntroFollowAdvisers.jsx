@@ -6,7 +6,6 @@ import { renderLog } from "../../utils/logging";
 import OrganizationFollowToggle from "./OrganizationFollowToggle";
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from "../../utils/organization-functions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
-import VoterStore from "../../stores/VoterStore";
 
 const NEXT_BUTTON_TEXT = "Next >";
 const SKIP_BUTTON_TEXT = "Skip >";
@@ -130,7 +129,7 @@ export default class BallotIntroFollowAdvisers extends Component {
           organization_image_url={voter_guide.voter_guide_image_url_large}
           on_organization_follow={this.onOrganizationFollow}
           on_organization_stop_following={this.onOrganizationStopFollowing}
-          grid="col-4 col-sm-2"/>;
+          grid="col-4 col-sm-3"/>;
       }
       return null;
     });
@@ -173,7 +172,7 @@ export default class BallotIntroFollowAdvisers extends Component {
           organization_image_url={voter_guide.voter_guide_image_url_large}
           on_organization_follow={this.onOrganizationFollow}
           on_organization_stop_following={this.onOrganizationStopFollowing}
-          grid="col-4 col-sm-2"/>;
+          grid="col-4 col-sm-3"/>;
         }
         return null;
       });
@@ -203,6 +202,7 @@ export default class BallotIntroFollowAdvisers extends Component {
       <div className="intro-modal-shadow-wrap">
         <div className="intro-modal-shadow" />
       </div>
+      <div className="u-flex-auto" />
       <div className="intro-modal__button-wrap">
         <Button type="submit" bsPrefix="btn btn-success intro-modal__button" onClick={this.onNext}>
           <span>{this.state.next_button_text}</span>

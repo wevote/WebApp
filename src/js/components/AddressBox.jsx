@@ -1,7 +1,6 @@
 /* global google */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
 import BallotStore from "../stores/BallotStore";
 import { historyPush } from "../utils/cordovaUtils";
 import { isCordova } from "../utils/cordovaUtils";
@@ -135,14 +134,19 @@ export default class AddressBox extends Component {
       if (this.props.waitingMessage) {
         waitingMessage = this.props.waitingMessage;
       }
+
       return <div>
             <h2>{waitingMessage}</h2>
             {LoadingWheel}
           </div>;
     }
 
+    // TODO: Oct 22, 2018: If you change the following line from "class" to "className" you will get a Cordova app crash for later iPhones with notches
+    // We are just going to have to live with the javascript console warning for now...
+    // ERROR: Warning: Invalid DOM property `class`. Did you mean `className`?
+    /* eslint-disable react/no-unknown-property */
     return <div class="container">
-        <form onSubmit={this.voterAddressSave} class="row">
+        <form onSubmit={this.voterAddressSave} className="row">
           <input
             type="text"
             value={this.state.text_for_map_search}
@@ -154,18 +158,22 @@ export default class AddressBox extends Component {
             placeholder="Enter address where you are registered to vote"
             autoFocus={!isCordova() && !this.props.disableAutoFocus}
           />
-          <div class="col-sm-3 text-right pr-0 mt-sm-0 mt-3">
+          <div className="col-sm-3 text-right pr-0 mt-sm-0 mt-3">
             <button
               onClick={this.voterAddressSave}
-              class="btn btn-primary">
+              className="btn btn-primary">
               Save</button>
             <br />
             { this.props.cancelEditAddress ?
-              <span className="u-f5"><a href="#" onClick={this.props.cancelEditAddress}>cancel</a> </span> :
-              null }
+              <span className="u-f5">
+                <a href="#" onClick={this.props.cancelEditAddress}>cancel</a>
+              </span> :
+              null
+            }
           </div>
         </form>
-      <p/><h4>{this.state.ballotCaveat}</h4>
+        <p />
+        <h4>{this.state.ballotCaveat}</h4>
       </div>;
   }
 }

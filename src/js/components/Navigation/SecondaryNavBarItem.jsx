@@ -4,7 +4,6 @@ import { Link } from "react-router";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import { renderLog } from "../../utils/logging";
-import Icon from "react-svg-icons";
 
 export default class SecondaryNavBarItem extends Component {
 
