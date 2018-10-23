@@ -14,17 +14,23 @@ import ReadMore from "../../components/Widgets/ReadMore";
 // Please see VoterGuide/OrganizationCard for the Component displayed by TwitterHandle
 export default class VoterGuideDisplayForList extends Component {
   static propTypes = {
-    children: PropTypes.array,
+    children: PropTypes.array,  // A list of the tags in OrganizationDisplayForList when called (from GuideList for example)
     organization_we_vote_id: PropTypes.string,
     voter_guide_image_url_large: PropTypes.string,
     voter_guide_display_name: PropTypes.string,
+    candidate_name: PropTypes.string,
+    speaker_display_name: PropTypes.string,
     twitter_description: PropTypes.string,
     twitter_followers_count: PropTypes.number,
     twitter_handle: PropTypes.string,
     is_support: PropTypes.bool,
+    is_positive_rating: PropTypes.bool,
     is_oppose: PropTypes.bool,
+    is_negative_rating: PropTypes.bool,
     is_information_only: PropTypes.bool,
     vote_smart_rating: PropTypes.string,
+    speaker_text: PropTypes.string,
+    more_info_url: PropTypes.string,
   };
 
   render () {
@@ -44,6 +50,7 @@ export default class VoterGuideDisplayForList extends Component {
     let numOfLines = 2;
     let voterGuideDisplayName = this.props.voter_guide_display_name ? this.props.voter_guide_display_name : "";
     let twitterDescription = this.props.twitter_description ? this.props.twitter_description : "";
+    // console.log("VoterGuideDisplayForList twitterDescription: ", twitterDescription);
 
     // If the voter_guide_display_name is in the twitter_description, remove it
     let twitterDescriptionMinusName = removeTwitterNameFromDescription(voterGuideDisplayName, twitterDescription);

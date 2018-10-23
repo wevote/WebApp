@@ -13,6 +13,7 @@ import BallotIntroVerifyAddress from "../../components/Ballot/BallotIntroVerifyA
 import BallotStore from "../../stores/BallotStore";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateStore from "../../stores/CandidateStore";
+import Icon from "react-svg-icons";
 import ImageHandler from "../ImageHandler";
 import IssueStore from "../../stores/IssueStore";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
@@ -440,11 +441,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
         </span>
 
         <h2 className="u-f3 card-main__ballot-name u-gray-dark u-stack--sm">
-          <span className="" onClick={this.toggleExpandDetails}>
+          <span className="u-cursor--pointer" onClick={this.toggleExpandDetails}>
             {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
             { this.state.display_office_unfurled ?
-              <span className="glyphicon glyphicon-triangle-bottom u-font-size6 d-print-none u-push--xs"/> :
-              <span className="glyphicon glyphicon-triangle-right u-font-size6 d-print-none u-push--xs"/>
+              <span className="d-print-none u-push--xs"><Icon name="glyphicons-pro-halflings/glyphicons-halflings-252-triangle-bottom" width={32} height={32} color="" /></span> :
+              <span className="d-print-none u-push--xs"><Icon name="glyphicons-pro-halflings/glyphicons-halflings-250-triangle-right" width={32} height={32} color="" /></span>
             }
             {ballotItemDisplayName}
           </span>

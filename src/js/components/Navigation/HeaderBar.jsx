@@ -75,7 +75,7 @@ export default class HeaderBar extends Component {
     let currentPathnameExists = this.props.location && this.props.location.pathname;
     let nextPathnameExists = nextProps.location && nextProps.location.pathname;
     // One exists, and the other doesn't
-    if ((currentPathnameExists && !nextPathnameExists) || (!currentPathnameExists && nextPathnameExists)) {
+    if (currentPathnameExists && !nextPathnameExists || !currentPathnameExists && nextPathnameExists) {
       // console.log("shouldComponentUpdate: PathnameExistsDifference");
       return true;
     }
