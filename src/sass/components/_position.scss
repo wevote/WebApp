@@ -1,5 +1,5 @@
 // Positions: Explicit & Ratings
-
+$react-toggle-track: 2px;
 
 // Explicit Positions
 
@@ -85,5 +85,14 @@
 .edit-position-action {
   &:hover {
     cursor: pointer;
+  }
+}
+
+.toggle-override {
+  .react-toggle-track-x {
+    margin-top: $space-xxs;
+  }
+  .react-toggle-track-check {
+    margin-top: $space-xxs;
   }
 }

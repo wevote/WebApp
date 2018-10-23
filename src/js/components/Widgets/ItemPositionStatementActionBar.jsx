@@ -1,6 +1,7 @@
 // This file is flooded with non-camel case, so don't flag for now, in order to find more important issues
 // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
 import React, { Component } from "react";
+import { Button } from "react-bootstrap";
 import PropTypes from "prop-types";
 import ReactPlayer from "react-player";
 import Icon from "react-svg-icons";
@@ -89,13 +90,13 @@ export default class ItemPositionStatementActionBar extends Component {
 
   componentDidUpdate (prevProps) {
     if (this.textarea && prevProps.supportProps && this.state.supportProps) {
-      if (prevProps.supportProps.is_oppose === true && this.state.supportProps.is_support === true){  //oppose to support
+      if (prevProps.supportProps.is_oppose === true && this.state.supportProps.is_support === true) {  //oppose to support
         this.textarea.focus();
-      } else if (prevProps.supportProps.is_support === true && this.state.supportProps.is_oppose === true){ //support to oppose
+      } else if (prevProps.supportProps.is_support === true && this.state.supportProps.is_oppose === true) { //support to oppose
         this.textarea.focus();
-      } else if (prevProps.supportProps.is_oppose === false && prevProps.supportProps.is_support === false && this.state.supportProps.is_support === true){ //comment to support
+      } else if (prevProps.supportProps.is_oppose === false && prevProps.supportProps.is_support === false && this.state.supportProps.is_support === true) { //comment to support
         this.textarea.focus();
-      } else if (prevProps.supportProps.is_oppose === false && prevProps.supportProps.is_support === false && this.state.supportProps.is_oppose === true){ //comment to oppose
+      } else if (prevProps.supportProps.is_oppose === false && prevProps.supportProps.is_support === false && this.state.supportProps.is_oppose === true) { //comment to oppose
         this.textarea.focus();
       }
     }
@@ -196,13 +197,13 @@ export default class ItemPositionStatementActionBar extends Component {
 
     // Currently this "Post" text is the same given we display the visibility setting, but we may want to change this
     //  here if the near by visibility setting text changes
-    let post_button_text = "Save";
+    let postButtonText = "Save";
     if (this.state.voterIsSignedIn) {
-      post_button_text = "Post";
+      postButtonText = "Post";
     }
 
     // if (is_public_position) {
-    //   post_button_text = <span>Post</span>;
+    //   postButtonText = <span>Post</span>;
     // }
 
     let speaker_image_url_https = voter_photo_url_medium;
@@ -274,7 +275,7 @@ export default class ItemPositionStatementActionBar extends Component {
                                         type={this.props.type}
                                         supportProps={this.props.supportProps}
                                         className="u-flex-auto u-tr d-print-block" />
-                  <button className="position-statement__post-button btn btn-default btn-sm" type="submit">{post_button_text}</button>
+                  <Button variant="outline-secondary" size="sm">{postButtonText}</Button>
                 </div>
               </span>
             </div>

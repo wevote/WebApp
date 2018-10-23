@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import { shortenText } from "../../utils/textFormat";
+import { renderLog } from "../../utils/logging";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
-import { renderLog } from "../../utils/logging";
 
 export default class PledgeToSupportOrganizationButton extends Component {
   static propTypes = {
@@ -42,7 +42,7 @@ export default class PledgeToSupportOrganizationButton extends Component {
 
   onVoterGuideStoreChange () {
     this.setState({
-      voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id())
+      voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id()),
     });
     // console.log("voter_guide object ", this.state.voter_guide.we_vote_id);
   }
@@ -60,16 +60,17 @@ export default class PledgeToSupportOrganizationButton extends Component {
 
     // console.log("PledgeToSupportOrganizationButton, this.state.voter_guide: ", this.state.voter_guide);
 
-    let i_stand_with_text = "I Stand With " + this.props.organization.organization_name;
-    let i_stand_with_text_mobile = shortenText(i_stand_with_text, 32);
+    let iStandWithText = "I Stand With " + this.props.organization.organization_name;
+    let iStandWithTextMobile = shortenText(iStandWithText, 32);
 
     return <span>
       <Button block
               size={"large"}
               variant={"danger"}
-              onClick={() => { this.props.pledgeToVoteAction(); }} >
-        <span className="voter-guide__pledge-to-support__i-stand-with-button hidden-xs">{i_stand_with_text}</span>
-        <span className="voter-guide__pledge-to-support__i-stand-with-button d-block d-sm-none">{i_stand_with_text_mobile}</span>
+              onClick={() => { this.props.pledgeToVoteAction(); }
+              }>
+        <span className="voter-guide__pledge-to-support__i-stand-with-button d-none d-sm-block">{iStandWithText}</span>
+        <span className="voter-guide__pledge-to-support__i-stand-with-button d-block d-sm-none">{iStandWithTextMobile}</span>
       </Button>
       <div className="voter-guide__pledge-to-support__i-stand-with-button-description u-stack--md">
         {"Click this button to match what " + this.props.organization.organization_name + " supports or opposes."}

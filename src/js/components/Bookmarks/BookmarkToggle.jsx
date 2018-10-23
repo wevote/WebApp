@@ -20,8 +20,37 @@ export default class BookmarkToggle extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      componentDidMountFinished: false,
       showBookmarkToggleHelpModal: false,
     };
+  }
+
+  componentDidMount () {
+    this.token = BookmarkStore.addListener(this._onChange.bind(this));
+    this._onChange();
+    this.setState({
+      componentDidMountFinished: true,
+    });
+
+    this._onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    if (this.state.componentDidMountFinished === false) {
+      // console.log("shouldComponentUpdate: componentDidMountFinished === false");
+      return true;
+    }
+    if (this.state.isBookmarked !== nextState.isBookmarked) {
+      // console.log("shouldComponentUpdate: this.state.isBookmarked", this.state.isBookmarked, ", nextState.isBookmarked", nextState.isBookmarked);
+      return true;
+    }
+    if (this.state.showBookmarkToggleHelpModal !== nextState.showBookmarkToggleHelpModal) {
+      // console.log("shouldComponentUpdate: this.state.showBookmarkToggleHelpModal", this.state.showBookmarkToggleHelpModal, ", nextState.showBookmarkToggleHelpModal", nextState.showBookmarkToggleHelpModal);
+      return true;
+    }
+    return false;
   }
 
   componentWillUnmount () {
@@ -29,16 +58,8 @@ export default class BookmarkToggle extends Component {
     this.voterStoreListener.remove();
   }
 
-  componentDidMount () {
-    this.token = BookmarkStore.addListener(this._onChange.bind(this));
-    this._onChange();
-
-    this._onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-  }
-
   _onChange () {
-    this.setState({ is_bookmarked: BookmarkStore.get(this.props.we_vote_id) || false});
+    this.setState({ isBookmarked: BookmarkStore.get(this.props.we_vote_id) || false});
     // console.log(this.state);
   }
 
@@ -47,15 +68,13 @@ export default class BookmarkToggle extends Component {
   }
 
   BookmarkClick () {
-    var we_vote_id = this.props.we_vote_id;
-    var bookmarked = this.state.is_bookmarked;
-    if (bookmarked) {
-      BookmarkActions.voterBookmarkOffSave(we_vote_id, this.props.type);
+    if (this.state.isBookmarked) {
+      BookmarkActions.voterBookmarkOffSave(this.props.we_vote_id, this.props.type);
       showToastError("Bookmark removed!");
     } else {
       let bookmark_action_modal_has_been_shown = VoterStore.getInterfaceFlagState(VoterConstants.BOOKMARK_ACTION_MODAL_SHOWN);
 
-      BookmarkActions.voterBookmarkOnSave(we_vote_id, this.props.type);
+      BookmarkActions.voterBookmarkOnSave(this.props.we_vote_id, this.props.type);
 
       if (!bookmark_action_modal_has_been_shown) {
         this.toggleBookmarkToggleHelpModal();
@@ -80,8 +99,9 @@ export default class BookmarkToggle extends Component {
   }
 
   render () {
+    // console.log("BookmarkToggle render");
     renderLog(__filename);
-    if (this.state.is_bookmarked === undefined){
+    if (this.state.isBookmarked === undefined){
       return <span className="bookmark-action" />;
     }
 
@@ -111,7 +131,7 @@ export default class BookmarkToggle extends Component {
               onClick={this.BookmarkClick.bind(this)}
               onKeyDown={this.BookmarkKeyDown.bind(this)}
               title="Bookmark for later">
-              {this.state.is_bookmarked ?
+              {this.state.isBookmarked ?
                 <Icon alt="Is Bookmarked" name="bookmark-icon" width={24} height={24} fill="#999" stroke="none" color="#999" /> :
                 <OverlayTrigger placement="top" overlay={bookmarkToolTip}>
                   <Icon alt="Bookmark for later" name="bookmark-icon" width={24} height={24} fill="none" stroke="#ccc" strokeWidth={2} color="#ccc" />

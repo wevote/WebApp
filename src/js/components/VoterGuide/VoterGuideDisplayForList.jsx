@@ -14,6 +14,7 @@ import ReadMore from "../../components/Widgets/ReadMore";
 // Please see VoterGuide/OrganizationCard for the Component displayed by TwitterHandle
 export default class VoterGuideDisplayForList extends Component {
   static propTypes = {
+    children: PropTypes.array,
     organization_we_vote_id: PropTypes.string,
     voter_guide_image_url_large: PropTypes.string,
     voter_guide_display_name: PropTypes.string,
@@ -77,7 +78,7 @@ export default class VoterGuideDisplayForList extends Component {
         </div>
         <div className="card-child__additional">
           <div className="card-child__follow-buttons">
-            {this.props.children}
+            {/*{this.props.children}*/}
           {/* twitter_followers_count ?
             <span className="twitter-followers__badge">
               <span className="fa fa-twitter twitter-followers__icon" />

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Alert, Button, FormGroup } from "react-bootstrap";
+import { Alert, Button } from "react-bootstrap";
 import { isWebApp } from "../utils/cordovaUtils";
 import LoadingWheel from "../components/LoadingWheel";
 import { renderLog } from "../utils/logging";
@@ -160,16 +160,13 @@ export default class VoterEmailAddressEntry extends Component {
     const enterEmailHtml = <div>
       <div><strong>{enterEmailTitle}.</strong> {enterEmailExplanation}</div>
           <form className="form-inline" onSubmit={this.voterEmailAddressSave.bind(this)}>
-            <FormGroup bsPrefix="u-push--sm">
-              <label className="sr-only" htmlFor="exampleEmail">Email</label>
-              <input className="form-control"
+              <input className="form-control col-sm-8 mr-sm-3"
                      type="email"
                      name="voter_email_address"
                      id=""
                      value={this.state.voter_email_address}
                      onChange={this.updateVoterEmailAddress.bind(this)}
                      placeholder="Email Address"/>
-            </FormGroup>
             <Button variant="success"
                     type="submit"
                     onClick={this.voterEmailAddressSave.bind(this)}

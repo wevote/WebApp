@@ -556,12 +556,12 @@ export default class ItemActionBar extends Component {
             <span className="item-actionbar__position-btn-label">Comment</span>
           </button>
         </div> }
-      </div>
 
       { this.props.shareButtonHide ?
         null :
         <ShareButtonDropdown urlBeingShared={urlBeingShared} shareIcon={shareIcon} shareText={"Share"} /> }
       { this.state.showSupportOrOpposeHelpModal ? SupportOrOpposeHelpModal : null}
+      </div>
     </div>;
   }
 }

@@ -13,7 +13,6 @@ import OrganizationStore from "../../stores/OrganizationStore";
 import isMobile from "../../utils/isMobile";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import { renderLog } from "../../utils/logging";
-import SearchAllBox from "../../components/Search/SearchAllBox";
 import { stringContains } from "../../utils/textFormat";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
@@ -279,8 +278,6 @@ export default class HeaderBackToVoterGuides extends Component {
                 onClick={ () => historyPush(backToLink) }>
           <span className="fa fa-arrow-left"/> {backToOrganizationLinkTextMobile}
         </Button>
-
-        {/* <span className="d-none d-sm-block"><SearchAllBox /> </span> */}
 
         {this.state.profilePopUpOpen &&
           <HeaderBarProfilePopUp {...this.props}

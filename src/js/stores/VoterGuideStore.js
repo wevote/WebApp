@@ -197,7 +197,7 @@ class VoterGuideStore extends ReduceStore {
     let all_cached_voter_guides_by_election;
     let all_cached_voter_guides_by_organization;
     let all_cached_voter_guides_by_voter_guide;
-    let is_empty;
+    // let is_empty;
     let google_civic_election_id;
     let organization_we_vote_id;
     let organization_we_vote_id_list_from_voter_guides_returned;
@@ -313,7 +313,7 @@ class VoterGuideStore extends ReduceStore {
 
       case "voterGuidesToFollowRetrieve":
         voter_guides = action.res.voter_guides;
-        is_empty = voter_guides.length === 0;
+        // is_empty = voter_guides.length === 0;
         let search_term_exists = action.res.search_string !== "";
         let election_id_exists = action.res.google_civic_election_id !== 0;
         let ballot_item_we_vote_id_exists = action.res.ballot_item_we_vote_id !== "";
@@ -469,7 +469,7 @@ class VoterGuideStore extends ReduceStore {
 
       case "voterGuidesUpcomingRetrieve": // New, static list of all public voter guides
         voter_guides = action.res.voter_guides;
-        is_empty = voter_guides.length === 0;
+        // is_empty = voter_guides.length === 0;
         let ballot_has_guides = voter_guides.length !== 0;
 
         all_cached_voter_guides = state.all_cached_voter_guides;

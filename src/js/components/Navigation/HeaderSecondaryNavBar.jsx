@@ -301,16 +301,17 @@ export default class HeaderSecondaryNavBar extends Component {
             {/* {!this.props.hideGettingStartedIssuesButton ? null : null } No longer hiding Issue Button */}
             {/* completed={this.state.ballot_intro_issues_completed} No longer using completed state */}
             <SecondaryNavBarItem show={this._toggleBallotIntroFollowIssues}
-                                 source={cordovaDot("/img/global/svg-icons/issues-v1-64x42.svg")}
+                                 source={cordovaDot("/img/global/svg-icons/nav/issues-16.svg")}
                                  title="Issues" />
 
             <SecondaryNavBarItem show={this._openPrintModal}
+                                 source={cordovaDot("/img/global/svg-icons/nav/print-16.svg")}
                                  title="Print"
                                  iconPrint/>
 
             <SecondaryNavBarItem show={this._openEmailModal}
-                                 title="Email Ballot"
-                                 iconEmail/>
+                                 source={cordovaDot("/img/global/svg-icons/nav/email-16.svg")}
+                                 title="Email Ballot"/>
 
             {/* July 10, 2018 Steve:  Disable Share Ballot via Facebook, in Cordova, until it is fixed for the Webapp */}
             {isWebApp() &&
@@ -333,9 +334,9 @@ export default class HeaderSecondaryNavBar extends Component {
             </span>
             <div>
               <SecondaryNavBarItem show={this._openPollingLocatorModal}
+                                   source={cordovaDot("/img/global/svg-icons/nav/location-16.svg")}
                                    titleDesktop="Polling Location"
-                                   titleMobile="Vote"
-                                   iconMapMarker/>
+                                   titleMobile="Vote"/>
             </div>
           </div>
         </header>

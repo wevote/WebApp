@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { renderLog } from "../../utils/logging";
 import Icon from "react-svg-icons";
 
-
 export default class SearchBar extends Component {
   static propTypes = {
     clearButton: PropTypes.bool,
@@ -42,12 +41,9 @@ export default class SearchBar extends Component {
     if (nextProps.clearSearchTextNow) {
       this.props.clearFunction();
       this.setState({
-        searchString: ""
+        searchString: "",
       });
     }
-  }
-
-  componentWillUnmount (){
   }
 
   clearQuery () {
