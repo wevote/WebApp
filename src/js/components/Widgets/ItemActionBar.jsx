@@ -527,21 +527,25 @@ export default class ItemActionBar extends Component {
       <div className={(this.state.yesVoteDescriptionExists || this.state.noVoteDescriptionExists ? "" : "btn-group") + (!this.props.shareButtonHide ? " u-push--sm" : "")}>
 
         {/* Start of Support Button */}
-        <div className="d-none d-sm-block item-actionbar__position-bar">
-          <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>{supportButton}</OverlayTrigger>
+        {/* Hide on screens smaller than large*/}
+        <div className="d-block d-none d-lg-block item-actionbar__position-bar">
+          {/* <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>{supportButton}</OverlayTrigger>  */}
           {this.state.yesVoteDescriptionExists ? <span className="item-actionbar__following-text">{this.state.yesVoteDescription}</span> : null}
         </div>
-        <div className="d-block d-sm-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
+         {/* Hide on screens wider than medium */}
+        <div className="d-block d-md-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
           {supportButton}
           {this.state.yesVoteDescriptionExists ? <span className="item-actionbar__following-text">{this.state.yesVoteDescription}</span> : null}
         </div>
 
         {/* Start of Oppose Button */}
-        <div className="d-none d-sm-block item-actionbar__position-bar">
+        {/* Hide on screens smaller than large*/}
+        <div className="d-block d-none d-lg-block  item-actionbar__position-bar">
           <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>{opposeButton}</OverlayTrigger>
           {this.state.noVoteDescriptionExists ? <span className="item-actionbar__following-text">{this.state.noVoteDescription}</span> : null}
         </div>
-        <div className="d-block d-sm-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
+        {/* Hide on screens wider than medium */}
+        <div className="d-block d-md-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
           {opposeButton}
           {this.state.noVoteDescriptionExists ? <span className="item-actionbar__following-text">{this.state.noVoteDescription}</span> : null}
         </div>
