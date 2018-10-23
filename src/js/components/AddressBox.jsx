@@ -165,16 +165,13 @@ export default class AddressBox extends Component {
               Save</button>
             <br />
             { this.props.cancelEditAddress ?
-              <span className="u-f5"><a href="#" onClick={this.props.cancelEditAddress}>cancel</a> </span> :
-              null }
+              <span className="u-f5">
+                <a href="#" onClick={this.props.cancelEditAddress}>cancel</a>
+              </span> :
+              null
+            }
           </div>
         </form>
-        { this.props.cancelEditAddress ?
-          <span className="pull-right u-f5 u-push--md">
-            <a href="#" onClick={this.props.cancelEditAddress}>cancel</a>
-          </span> :
-          null
-        }
         <p />
         <h4>{this.state.ballotCaveat}</h4>
       </div>;
