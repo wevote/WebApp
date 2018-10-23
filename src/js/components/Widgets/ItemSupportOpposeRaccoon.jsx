@@ -768,7 +768,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         null
       }
 
-      <div className="network-positions-stacked__support-list u-flex u-justify-between u-items-center">
+      <div className="d-print-none network-positions-stacked__support-list u-flex u-justify-between u-items-center">
         {/* Click to scroll left through list Desktop */}
         { this.state.can_scroll_desktop && this.state.can_scroll_left_desktop ?
           <i className="fa fa-1x fa-chevron-left network-positions-stacked__support-list__scroll-icon network-positions-stacked__support-list__scroll-icon--small u-cursor--pointer d-none d-sm-block d-print-none" aria-hidden="true" onClick={this.scrollLeft.bind(this, "desktop")} /> :

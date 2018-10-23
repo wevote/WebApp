@@ -2,9 +2,12 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
+import CandidateStore from "../../stores/CandidateStore";
 import FollowToggle from "../Widgets/FollowToggle";
+import MeasureStore from "../../stores/MeasureStore";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import OrganizationActions from "../../actions/OrganizationActions";
+import { stringContains } from "../../utils/textFormat";
 import VoterGuideDisplayForList from "./VoterGuideDisplayForList";
 import { showToastSuccess } from "../../utils/showToast";
 import { renderLog } from "../../utils/logging";
@@ -54,6 +57,7 @@ export default class GuideList extends Component {
   }
 
   render () {
+    // console.log("GuideList this.state.organizationsToFollow: ", this.state.organizationsToFollow);
     renderLog(__filename);
     if (this.state.organizations_to_follow === undefined) {
       // console.log("GuideList this.state.organizations_to_follow === undefined");
@@ -62,6 +66,7 @@ export default class GuideList extends Component {
 
     // console.log("GuideList organizationsToFollow: ", this.state.organizationsToFollow);
     let counter = 0;
+    let organizationPositionForThisBallotItem = {};
 
     if (this.state.organizationsToFollow === undefined) {
       return <div className="guidelist card-child__list-group">
@@ -84,11 +89,23 @@ export default class GuideList extends Component {
 
     return <div className="guidelist card-child__list-group">
       <TransitionGroup className="org-ignore">
-        {this.state.organizationsToFollow.map((organization) =>
-          <CSSTransition key={++counter} timeout={500} classNames="fade">
+        {this.state.organizationsToFollow.map((organization) => {
+          organizationPositionForThisBallotItem = {};
+          if (!organization.is_support_or_positive_rating && !organization.is_oppose_or_negative_rating && !organization.is_information_only && this.state.ballot_item_we_vote_id && organization.organization_we_vote_id) {
+            if (stringContains("cand", this.state.ballot_item_we_vote_id)) {
+              organizationPositionForThisBallotItem = CandidateStore.getPositionAboutCandidateFromOrganization(this.state.ballot_item_we_vote_id, organization.organization_we_vote_id);
+              // Didn't work
+              // organizationPositionForThisBallotItem = OrganizationStore.getOrganizationPositionByWeVoteId(organization.organization_we_vote_id, this.state.ballot_item_we_vote_id);
+            } else if (stringContains("meas", this.state.ballot_item_we_vote_id)) {
+              organizationPositionForThisBallotItem = MeasureStore.getPositionAboutMeasureFromOrganization(this.state.ballot_item_we_vote_id, organization.organization_we_vote_id);
+            }
+          }
+
+          return <CSSTransition key={++counter} timeout={500} classNames="fade">
             <span>
-              <VoterGuideDisplayForList organization_we_vote_id={organization.organization_we_vote_id} voter_guide_image_url_large={organization.voter_guide_image_url_large}
-                                        voter_guide_display_name={organization.voter_guide_display_name} twitter_handle={organization.twitter_handle}>
+              <VoterGuideDisplayForList key={organization.organization_we_vote_id}
+                                        {...organization}
+                                        {...organizationPositionForThisBallotItem}>
                 <FollowToggle we_vote_id={organization.organization_we_vote_id} hide_stop_following_button={this.props.hide_stop_following_button}/>
                 { this.props.hide_ignore_button ?
                   null :
@@ -98,7 +115,8 @@ export default class GuideList extends Component {
                 }
               </VoterGuideDisplayForList>
             </span>
-          </CSSTransition>)
+          </CSSTransition>;
+          })
         }
       </TransitionGroup>
     </div>;

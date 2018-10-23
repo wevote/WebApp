@@ -611,7 +611,7 @@ export default class Ballot extends Component {
   }
 
   setBallotItemFilterType (type) {
-    this.setState({ballot_item_filter_type: type,})
+    this.setState({ballot_item_filter_type: type, });
   }
   render () {
     renderLog(__filename);

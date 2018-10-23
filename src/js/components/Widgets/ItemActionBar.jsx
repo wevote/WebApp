@@ -523,13 +523,13 @@ export default class ItemActionBar extends Component {
       }
     </button>;
 
-    return <div className={ this.props.shareButtonHide ? "item-actionbar--inline d-print-none" : "item-actionbar d-print-none" }>
+    return <div className={ this.props.shareButtonHide ? "item-actionbar--inline" : "item-actionbar" }>
       <div className={(this.state.yesVoteDescriptionExists || this.state.noVoteDescriptionExists ? "" : "btn-group") + (!this.props.shareButtonHide ? " u-push--sm" : "")}>
 
         {/* Start of Support Button */}
         {/* Visible on desktop screens */}
         <div className="d-none d-lg-block item-actionbar__position-bar">
-          <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>{supportButton}</OverlayTrigger> 
+          <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>{supportButton}</OverlayTrigger>
           {this.state.yesVoteDescriptionExists ? <span className="item-actionbar__following-text">{this.state.yesVoteDescription}</span> : null}
         </div>
          {/* Visible on mobile devices and tablets */}
