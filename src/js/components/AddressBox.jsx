@@ -144,7 +144,7 @@ export default class AddressBox extends Component {
     // TODO: Oct 22, 2018: If you change the following line from "class" to "className" you will get a Cordova app crash for later iPhones with notches
     // We are just going to have to live with the javascript console warning for now...
     // ERROR: Warning: Invalid DOM property `class`. Did you mean `className`?
-    /* eslint-disable react/no-unknown-property */
+    // eslint-disable-next-line react/no-unknown-property
     return <div class="container">
         <form onSubmit={this.voterAddressSave} className="row">
           <input

@@ -111,4 +111,11 @@ $backdrop-border-radius: 0 0 8px 8px;
   &__missing-org-text {
     font-size: 12px;
   }
+
+  //&__container {
+  //}
+
+  &__container-cordova {
+    padding-bottom: $space-xl;
+  }
 }

@@ -136,8 +136,6 @@ export default class HeaderSecondaryNavBar extends Component {
       AnalyticsActions.saveActionModalIssues(VoterStore.election_id());
     }
 
-    console.log("STEVE STEVE _toggleBallotIntroFollowIssues () was " + this.state.showBallotIntroFollowIssues);
-
     this.setState({ showBallotIntroFollowIssues: !this.state.showBallotIntroFollowIssues });
   }
 

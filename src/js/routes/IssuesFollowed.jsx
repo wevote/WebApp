@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
 import { _ } from "lodash";
+import { isCordova } from "../utils/cordovaUtils";
 import IssueActions from "../actions/IssueActions";
 import IssueFollowToggleSquare from "../components/Issues/IssueFollowToggleSquare";
 import IssueStore from "../stores/IssueStore";
@@ -20,7 +21,7 @@ export default class IssuesFollowed extends Component {
     this.state = {
       edit_mode: false,
       issues_followed: [],
-      search_query: "",
+      searchQuery: "",
     };
 
     this.searchFunction = this.searchFunction.bind(this);
@@ -66,8 +67,8 @@ export default class IssuesFollowed extends Component {
     }
   }
 
-  searchFunction (search_query) {
-    this.setState({ search_query: search_query });
+  searchFunction (searchQuery) {
+    this.setState({ searchQuery: searchQuery });
   }
 
   clearFunction () {
@@ -76,36 +77,36 @@ export default class IssuesFollowed extends Component {
 
   render () {
     renderLog(__filename);
-    let issue_list = [];
+    let issueList = [];
     if (this.state.issues_followed) {
-      issue_list = this.state.issues_followed;
+      issueList = this.state.issues_followed;
     }
 
-    if (this.state.search_query.length > 0) {
-      const search_query_lowercase = this.state.search_query.toLowerCase();
-      issue_list = _.filter(issue_list,
-        function (one_issue) {
-          return one_issue.issue_name.toLowerCase().includes(search_query_lowercase) ||
-            one_issue.issue_description.toLowerCase().includes(search_query_lowercase);
+    if (this.state.searchQuery.length > 0) {
+      const searchQueryLowercase = this.state.searchQuery.toLowerCase();
+      issueList = _.filter(issueList,
+        function (oneIssue) {
+          return oneIssue.issue_name.toLowerCase().includes(searchQueryLowercase) ||
+            oneIssue.issue_description.toLowerCase().includes(searchQueryLowercase);
         });
     }
 
-    let is_following = true;
-    const issue_list_for_display = issue_list.map((issue) => {
-      return <IssueFollowToggleSquare
+    let isFollowing = true;
+    const issueListForDisplay = issueList.map((issue) =>
+      <IssueFollowToggleSquare
         key={issue.issue_we_vote_id}
         issue_we_vote_id={issue.issue_we_vote_id}
         issue_name={issue.issue_name}
         issue_description={issue.issue_description}
         issue_image_url={issue.issue_image_url}
         edit_mode={this.state.edit_mode}
-        is_following={is_following}
+        is_following={isFollowing}
         grid="col-4 col-sm-2"
         read_only
-      />;
-    });
+      />
+    );
 
-    return <div className="opinions-followed__container">
+    return <div className={`opinions-followed__container ${isCordova() && "opinions-followed__container-cordova"}`}>
       <Helmet title="Issues You Follow - We Vote" />
       <section className="card">
         <div className="card-main">
@@ -126,8 +127,8 @@ export default class IssuesFollowed extends Component {
                      searchUpdateDelayTime={0} />
           <br />
           <div className="network-issues-list voter-guide-list card">
-            { issue_list.length ?
-              issue_list_for_display :
+            { issueList.length ?
+              issueListForDisplay :
               <h4 className="intro-modal__default-text">You are not following any issues yet.</h4>
             }
           </div>

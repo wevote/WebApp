@@ -11,6 +11,9 @@ $space-footer-top: 10px;
   bottom: 0;
   height: 54px;
   width: 100%;
+  &__iosNotch {
+    height: 65px;
+  }
 }
 
 
