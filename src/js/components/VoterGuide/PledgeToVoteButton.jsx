@@ -57,16 +57,17 @@ export default class PledgeToVoteButton extends Component {
       return null;
     }
 
-    let i_stand_with_text = "I Will Vote";
-    let i_stand_with_text_mobile = shortenText(i_stand_with_text, 32);
+    let iStandWithText = "I Will Vote";
+    let iStandWithTextMobile = shortenText(iStandWithText, 32);
 
     return <div className="u-stack--sm">
       <Button block
               size={"large"}
               variant={"danger"}
-              onClick={() => { this.props.pledgeToVoteAction(); }} >
-        <span className="voter-guide__pledge-to-support__i-stand-with-button hidden-xs">{i_stand_with_text}</span>
-        <span className="voter-guide__pledge-to-support__i-stand-with-button d-block d-sm-none">{i_stand_with_text_mobile}</span>
+              onClick={() => { this.props.pledgeToVoteAction(); }
+              }>
+        <span className="voter-guide__pledge-to-support__i-stand-with-button d-none d-sm-block">{iStandWithText}</span>
+        <span className="voter-guide__pledge-to-support__i-stand-with-button d-block d-sm-none">{iStandWithTextMobile}</span>
       </Button>
     </div>;
   }

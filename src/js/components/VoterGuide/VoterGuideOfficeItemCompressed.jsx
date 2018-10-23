@@ -445,7 +445,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                       </div>
                       {/* DESKTOP: If voter has taken position, offer the comment bar */}
                       {is_support || is_oppose || voter_statement_text ?
-                        <div className="hidden-xs o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+                        <div className="d-none d-sm-block o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
                           <div
                             className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
                           </div>

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { cordovaDot } from "../utils/cordovaUtils";
 import { renderLog } from "../utils/logging";
+import Icon from "react-svg-icons";
 
 export default class ImageHandler extends Component {
   static propTypes = {
@@ -25,54 +26,53 @@ export default class ImageHandler extends Component {
 
   render () {
     renderLog(__filename);
-    let this_class = this.props.className || "";
+    let thisClass = this.props.className || "";
     let alt = this.props.alt || "icon";
     let replacementClass = "";
     let sizeClassName = this.props.sizeClassName || "";
-    let show_placeholder_if_image_missing = !this.props.hidePlaceholder;
-    let place_holder_image_url = "";
-    const {kind_of_ballot_item} = this.props;
-    const kind_of_image = this.props.kind_of_image ? this.props.kind_of_image : kind_of_ballot_item;
+    let showPlaceholderIfImageMissing = !this.props.hidePlaceholder;
+    let placeHolderImageUrl = "";
+    const { kind_of_ballot_item: kindOfBallotItem } = this.props;
+    const kindOfImage = this.props.kind_of_image ? this.props.kind_of_image : kindOfBallotItem;
+    let imagePlaceholderIcon = null;
 
     //handles setting the placeholder image by "kind_of_image" or "ballot item" type.
-    switch (kind_of_image) {
+    switch (kindOfImage) {
       case "CANDIDATE":
         replacementClass = "icon-main image-person-placeholder";
-        place_holder_image_url = cordovaDot("/img/global/svg-icons/avatar-generic.svg");
+        imagePlaceholderIcon = <Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" />;
         break;
       case "MEASURE" || "OFFICE":
         // TODO: Refactor to remove font icons
         return <i className="search-image__filler" />;
       case "ISSUE":
         replacementClass = "icon-main image-person-placeholder";
-        place_holder_image_url = cordovaDot("/img/global/svg-icons/issue-generic.svg");
+        placeHolderImageUrl = cordovaDot("/img/global/svg-icons/issue-generic.svg");
         break;
       case "ISSUE-PHOTO":
         replacementClass = "image-issue-photo-placeholder";
-        place_holder_image_url = cordovaDot("/img/global/svg-icons/issue-photo-generic.svg");
+        placeHolderImageUrl = cordovaDot("/img/global/svg-icons/issue-photo-generic.svg");
         break;
       default:
         replacementClass = "icon-main image-organization-placeholder";
-        place_holder_image_url = cordovaDot("/img/global/svg-icons/organization-icon.svg");
+        placeHolderImageUrl = cordovaDot("/img/global/svg-icons/organization-icon.svg");
         break;
     }
 
-    if (show_placeholder_if_image_missing) {
+    if (showPlaceholderIfImageMissing) {
       // This branch is for situations where we want to show a placeholder image in case the image is broken or missing
-      const image_or_placeholder = this.state.error || !this.props.imageUrl || this.props.imageUrl === "" ?
-        <img className={`${sizeClassName} ${this_class} ${replacementClass}`} src={place_holder_image_url}/> :
-        <img className={`${sizeClassName} ${this_class}`} src={this.props.imageUrl} alt={alt}
-             onError={this.brokenLink.bind(this)}/>;
-      return image_or_placeholder;
+      return this.state.error || !this.props.imageUrl || this.props.imageUrl === "" ?
+        imagePlaceholderIcon ? imagePlaceholderIcon :
+          <img className={`${sizeClassName} ${thisClass} ${replacementClass}`} src={placeHolderImageUrl}/> :
+          <img className={`${sizeClassName} ${thisClass}`} src={this.props.imageUrl} alt={alt} onError={this.brokenLink.bind(this)}/>;
     } else {
       // Only show an image if one exists
-      const image = this.state.error || this.props.imageUrl === "" ?
+      return this.state.error || this.props.imageUrl === "" ?
         null :
-        <img className={`${sizeClassName} ${this_class}`}
+        <img className={`${sizeClassName} ${thisClass}`}
              src={this.props.imageUrl}
              alt={alt}
              onError={this.brokenLink.bind(this)}/>;
-      return image;
     }
   }
 
