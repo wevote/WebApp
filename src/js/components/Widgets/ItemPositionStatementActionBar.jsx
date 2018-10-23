@@ -50,7 +50,7 @@ export default class ItemPositionStatementActionBar extends Component {
         supportProps: this.props.supportProps,
       });
     }
-    if (this.props.shouldFocus && this.textarea){
+    if (this.props.shouldFocus && this.textarea) {
       this.textarea.focus();
     }
 
@@ -251,7 +251,8 @@ export default class ItemPositionStatementActionBar extends Component {
       statement_text_no_url = statement_text_to_be_saved.replace(video_url, "");
     }
 
-    return <div className={ this.props.shown_in_list ? "position-statement__container__in-list" : "position-statement__container"}>
+    // eslint-disable-next-line react/no-unknown-property
+    return <div class={ this.props.shown_in_list ? "position-statement__container__in-list" : "position-statement__container"}>
       { // Show the edit box (Viewing self)
         edit_mode ?
           <form onSubmit={this.savePositionStatement.bind(this)}>
@@ -275,7 +276,7 @@ export default class ItemPositionStatementActionBar extends Component {
                                         type={this.props.type}
                                         supportProps={this.props.supportProps}
                                         className="u-flex-auto u-tr d-print-block" />
-                  <Button variant="outline-secondary" size="sm">{postButtonText}</Button>
+                  <Button variant="outline-secondary" size="sm" type="submit">{postButtonText}</Button>
                 </div>
               </span>
             </div>

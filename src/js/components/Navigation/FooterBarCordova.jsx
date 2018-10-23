@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router";
 import BallotStore from "../../stores/BallotStore";
 import BookmarkStore from "../../stores/BookmarkStore";
-import { isCordova, isWebApp } from "../../utils/cordovaUtils";
+import { hasIPhoneNotch, isCordova, isWebApp } from "../../utils/cordovaUtils";
 import cookies from "../../utils/cookies";
 import FriendStore from "../../stores/FriendStore";
 import HeaderBar from "./HeaderBar";
@@ -103,7 +103,7 @@ export default class FooterBarCordova extends Component {
     let weVoteBrandingOff = this.state.we_vote_branding_off === null ? false : this.state.we_vote_branding_off;
     let inNetworkSection = pathname === "/more/network" || pathname === "/more/network/organizations" || pathname === "/more/network/issues" || pathname === "/more/network/friends";
 
-    return <div className= "pageFooter">
+    return <div className={`pageFooter ${hasIPhoneNotch() && "pageFooter__iosNotch"}`}>
       <div className= "innerFooterContainer" >
         <div className= "footerNav">
           {(showFullNavigation || isCordova()) && <span>{HeaderBar.ballot(pathname === "/ballot")}</span>}
