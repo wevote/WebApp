@@ -262,6 +262,7 @@ a {
   margin-top: 10px;
 }
 
+// Related to bsPrefix="card-popover"
 .bs-popover-bottom {
   margin-top: $popover-arrow-height;
   border-radius: .3rem;
@@ -276,10 +277,6 @@ a {
   .arrow::after {
     border-width: 0 ($popover-arrow-width / 2) $popover-arrow-height ($popover-arrow-width / 2);
   }
-}
-
-.card-popover-body {
-  padding: $space-inset-xs;
 }
 
 @mixin center-block() {

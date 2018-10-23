@@ -61,7 +61,7 @@ export default class HeaderBarProfilePopUp extends Component {
               </Link>
             </li>
             {/* Desktop only */}
-            <li className="navli d-block d-sm-none">
+            <li className="navli d-none d-sm-block">
               <Link onClick={this.hideProfilePopUp} to="/settings/voterguidelist">
                 <div>
                   <span className="header-slide-out-menu-text-left">Your Voter Guides</span>

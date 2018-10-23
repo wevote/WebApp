@@ -415,6 +415,10 @@ $candidate-font-size: .875rem;
   }
 }
 
+.card-popover-body {
+  padding: $space-inset-xs;
+}
+
 .card-popover-header {
   background-color: $brand-blue;
   color: $white;
