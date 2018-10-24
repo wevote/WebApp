@@ -19,6 +19,7 @@ export default class BallotItemCompressed extends Component {
     organization_we_vote_id: PropTypes.string,
     toggleCandidateModal: PropTypes.func,
     toggleMeasureModal: PropTypes.func,
+    urlWithoutHash: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired,
     updateOfficeDisplayUnfurledTracker: PropTypes.func,
   };

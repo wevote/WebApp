@@ -26,6 +26,7 @@ export default class FollowToggle extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      componentDidMountFinished: false,
       voter: {
         we_vote_id: "",
       },
@@ -38,6 +39,7 @@ export default class FollowToggle extends Component {
   componentDidMount () {
     // console.log("componentDidMount, this.props: ", this.props);
     this.setState({
+      componentDidMountFinished: true,
       is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.we_vote_id),
       organization: OrganizationStore.getOrganizationByWeVoteId(this.props.we_vote_id),
     });
@@ -54,6 +56,20 @@ export default class FollowToggle extends Component {
     this.voterGuideStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    if (this.state.componentDidMountFinished === false) {
+      // console.log("shouldComponentUpdate: componentDidMountFinished === false");
+      return true;
+    }
+
+    if (this.state.is_following !== nextState.is_following) {
+      // console.log("shouldComponentUpdate: this.state.showBallotIntroFollowIssues", this.state.showBallotIntroFollowIssues, ", nextState.showBallotIntroFollowIssues", nextState.showBallotIntroFollowIssues);
+      return true;
+    }
+    return false;
   }
 
   onVoterGuideStoreChange () {
@@ -125,6 +141,7 @@ export default class FollowToggle extends Component {
   }
 
   render () {
+    // console.log("FollowToggle render");
     renderLog(__filename);
     if (!this.state) { return <div />; }
 

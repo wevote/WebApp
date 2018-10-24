@@ -57,7 +57,7 @@ export default class GuideList extends Component {
   }
 
   render () {
-    // console.log("GuideList this.state.organizationsToFollow: ", this.state.organizationsToFollow);
+    // console.log("GuideList render");
     renderLog(__filename);
     if (this.state.organizations_to_follow === undefined) {
       // console.log("GuideList this.state.organizations_to_follow === undefined");
@@ -86,7 +86,10 @@ export default class GuideList extends Component {
         </div>
       </div>;
     }
-
+    // Updated version for Bootstrap 4?
+    //           <Button variant="outline-secondary" size="sm" onClick={this.handleIgnore.bind(this, organization.organization_we_vote_id)}>
+    //             Ignore
+    //           </Button>
     return <div className="guidelist card-child__list-group">
       <TransitionGroup className="org-ignore">
         {this.state.organizationsToFollow.map((organization) => {
@@ -106,12 +109,14 @@ export default class GuideList extends Component {
               <VoterGuideDisplayForList key={organization.organization_we_vote_id}
                                         {...organization}
                                         {...organizationPositionForThisBallotItem}>
-                <FollowToggle we_vote_id={organization.organization_we_vote_id} hide_stop_following_button={this.props.hide_stop_following_button}/>
+                <FollowToggle we_vote_id={organization.organization_we_vote_id}
+                              hide_stop_following_button={this.props.hide_stop_following_button}/>
                 { this.props.hide_ignore_button ?
                   null :
-                  <Button variant="outline-secondary" size="sm" onClick={this.handleIgnore.bind(this, organization.organization_we_vote_id)}>
+                  <button className="btn btn-default btn-sm"
+                          onClick={this.handleIgnore.bind(this, organization.organization_we_vote_id)}>
                     Ignore
-                  </Button>
+                  </button>
                 }
               </VoterGuideDisplayForList>
             </span>

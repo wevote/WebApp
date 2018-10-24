@@ -226,7 +226,7 @@ export default class Candidate extends Component {
                            title="Endorsements Missing?"
                            body={<Button bsPrefix="u-margin-top--sm u-stack--xs" variant="primary">Endorsements Missing?</Button>}
       />
-      <div className="opinions-followed__missing-org-text u-no-break">
+      <div className="opinions-followed__missing-org-text">
         Are there endorsements for {candidateName} that you expected to see?
       </div>
       <br />

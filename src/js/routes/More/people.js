@@ -230,6 +230,9 @@ export const organizationalDonors = [{
     name: "Facebook",
     title: "Authentication & Data",
   }, {
+    name: "Fastly.com",
+    title: "Scalable Content Delivery (CDN)",
+  }, {
     name: "Google Civic",
     title: "Data",
   }, {
