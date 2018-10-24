@@ -87,15 +87,6 @@ export default class OfficeItemCompressedRaccoon extends Component {
       });
     }
 
-    // if (this.props.we_vote_id) {
-    //   console.log("OfficeItemCompressedRaccoon componentDidMount getNumberOfCandidatesRetrievedByOffice:", CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id));
-    //   DALE 2018-07-31 We now retrieve the full candidate data in voterBallotItemsRetrieve
-    //   if (CandidateStore.getNumberOfCandidatesRetrievedByOffice(this.props.we_vote_id) === 0) {
-    //     // console.log("Calling candidatesRetrieve: ", this.props.we_vote_id);
-    //     CandidateActions.candidatesRetrieve(this.props.we_vote_id);
-    //   }
-    // }
-
     // If there three or fewer offices on this ballot, unfurl them
     if (this.props.allBallotItemsCount && this.props.allBallotItemsCount <= 3) {
       this.setState({
@@ -151,7 +142,6 @@ export default class OfficeItemCompressedRaccoon extends Component {
   }
 
   onIssueStoreChange () {
-    // console.log("OfficeItemCompressedRaccoon, onIssueStoreChange");
     this.setState({
       transitioning: false,
     });
@@ -351,6 +341,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
           atLeastOneCandidateChosenByIssueScore = true;
         }
       });
+      // Candidate chosen by issue score
       if (atLeastOneCandidateChosenByIssueScore) {
         // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
         let organizationNameIssueSupportList = IssueStore.getOrganizationNameSupportListUnderThisBallotItem(candidateWeVoteIdWithHighestIssueScore);
@@ -398,6 +389,9 @@ export default class OfficeItemCompressedRaccoon extends Component {
       }
     }
 
+    let candidateWeVoteId;
+    let candidateSupportStore;
+
     let sliderSettings = {
       dots: true,
       infinite: false,
@@ -423,10 +417,10 @@ export default class OfficeItemCompressedRaccoon extends Component {
               <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
             </a>
           </div>
-          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height" ref="slider" {...sliderSettings}>
-            <div key={1}><BallotIntroFollowIssues next={this._nextSliderPage}/></div>
-            <div key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div>
-            <div key={3}><BallotIntroVerifyAddress next={this._toggleBallotIntroFollowIssues} manualFocus={this.state.current_page_index === 2} /></div>
+          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height intro-modal__height-full" ref="slider" {...sliderSettings}>
+            <div className="intro-modal__height-full" key={1}><BallotIntroFollowIssues next={this._nextSliderPage}/></div>
+            <div className="intro-modal__height-full" key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div>
+            <div className="intro-modal__height-full" key={3}><BallotIntroVerifyAddress next={this._toggleBallotIntroFollowIssues} manualFocus={this.state.current_page_index === 2} /></div>
           </Slider>
         </Modal.Body>
       </Modal>;
@@ -459,8 +453,8 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
             if (!oneCandidate || !oneCandidate.we_vote_id) { return null; }
 
-            let candidateWeVoteId = oneCandidate.we_vote_id;
-            let candidateSupportStore = SupportStore.get(candidateWeVoteId);
+            candidateWeVoteId = oneCandidate.we_vote_id;
+            candidateSupportStore = SupportStore.get(candidateWeVoteId);
             let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidateWeVoteId);
             let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidateWeVoteId);
             let candidatePartyText = oneCandidate.party && oneCandidate.party.length ? oneCandidate.party + ". " : "";

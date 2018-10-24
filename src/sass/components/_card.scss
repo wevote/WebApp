@@ -46,7 +46,7 @@ $candidate-font-size: .875rem;
     &__media-object {
       // additional styling set with 'media-object' mixin
       @include breakpoints (mid-small) {
-        min-width: 320px;
+        min-width: 260px; // Reset to 320px when bsPrefix="card-popover" bug is fixed
       }
     }
 
@@ -400,6 +400,7 @@ $candidate-font-size: .875rem;
   }
 }
 
+// October 2018 There is a problem with bsPrefix="card-popover" -- this code will be used when that is fixed
 .card-popover {
   padding-top: $space-none;
   padding-left: $space-none;
@@ -411,11 +412,13 @@ $candidate-font-size: .875rem;
   }
 
   &__width--minimum {
+    max-width: 290px; // Remove when bsPrefix="card-popover" bug is fixed
     width: 90vw;
   }
 }
 
 .card-popover-body {
+  max-width: 290px; // Remove when bsPrefix="card-popover" bug is fixed
   padding: $space-inset-xs;
 }
 

@@ -35,6 +35,7 @@ $space-search-right:   10%;
   &__backToButton {
     background-color: $page-header-color;
     color: $white;
+    margin: $space-xs;
 
     &:focus {
       background-color: $page-header-color !important;

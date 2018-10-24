@@ -780,11 +780,13 @@ export default class ItemSupportOpposeRaccoon extends Component {
           <i className="fa fa-1x fa-chevron-left network-positions-stacked__support-list__scroll-icon--disabled-small d-block d-sm-none d-print-none" aria-hidden="true" />
         }
         <div className="network-positions-stacked__support-list__container-wrap">
-          {/* Show a break-down of the current positions in your network */}
-          <span ref={`${this.state.ballot_item_we_vote_id}-org-list-desktop`} className="network-positions-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs d-none d-sm-block">
+          {/* Network Positions - Desktop */}
+          <span ref={`${this.state.ballot_item_we_vote_id}-org-list-desktop`}
+                className="network-positions-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs d-none d-sm-block">
             <ul className="network-positions-stacked__support-list__items">
               <li className="network-positions-stacked__support-list__item">
                 { positionsLabel }
+                {/* Show a break-down of the current positions in your network - Desktop */}
                 <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                                ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
                                                currentBallotIdInUrl={this.props.currentBallotIdInUrl}
@@ -812,11 +814,13 @@ export default class ItemSupportOpposeRaccoon extends Component {
               </li>
             </ul>
           </span>
+          {/* Network Positions - Mobile */}
           <span ref={`${this.state.ballot_item_we_vote_id}-org-list-mobile`}
                 className="network-positions-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs d-block d-sm-none">
             <ul className="network-positions-stacked__support-list__items">
               <li className="network-positions-stacked__support-list__item">
                 { positionsLabel }
+                {/* Show a break-down of the current positions in your network - Mobile */}
                 <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
                                                ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
                                                currentBallotIdInUrl={this.props.currentBallotIdInUrl}

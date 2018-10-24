@@ -346,7 +346,7 @@ export default class VoterGuidePositions extends Component {
                            title="Endorsements Missing?"
                            body={<Button bsPrefix="u-stack--xs" variant="primary">Endorsements Missing?</Button>}
       />
-      <div className="opinions-followed__missing-org-text u-stack--lg u-no-break">
+      <div className="opinions-followed__missing-org-text u-stack--lg">
         Are there endorsements from {organization_name} that you expected to see?
       </div>
     </div>;

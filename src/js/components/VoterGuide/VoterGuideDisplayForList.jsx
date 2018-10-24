@@ -85,7 +85,7 @@ export default class VoterGuideDisplayForList extends Component {
         </div>
         <div className="card-child__additional">
           <div className="card-child__follow-buttons">
-            {/*{this.props.children}*/}
+            {this.props.children}
           {/* twitter_followers_count ?
             <span className="twitter-followers__badge">
               <span className="fa fa-twitter twitter-followers__icon" />

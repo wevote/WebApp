@@ -31,6 +31,7 @@ export default class OrganizationVoterGuideCard extends Component {
   }
 
   render () {
+    // console.log("OrganizationVoterGuideCard render");
     renderLog(__filename);
     if (!this.props.organization) {
       return <div>{LoadingWheel}</div>;

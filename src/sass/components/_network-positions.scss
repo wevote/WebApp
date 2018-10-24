@@ -177,8 +177,8 @@
 
     &__container {
       white-space: nowrap;
-      overflow-x: scroll;
-      overflow-y: hidden;
+      // overflow-x: scroll; // Oct 2018 Causes problems with popover placement (card-popover related)
+      // overflow-y: hidden; // Oct 2018 Causes problems with popover placement (card-popover related)
       height: $list-height;
     }
 
