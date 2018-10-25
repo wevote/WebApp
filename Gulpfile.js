@@ -37,6 +37,7 @@ gulp.task("browserify", function () {
 
     // production build with minification
     browserify(ops)
+      .transform('uglifyify', { global: true })
       .bundle()
       .on("error", err)
       .pipe(source("bundle.js"))
