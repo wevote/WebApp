@@ -119,17 +119,32 @@ $space-search-right:   10%;
 }
 
 .page-logo {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 120px;
+  width: 45px;
 
-  @include breakpoints(max medium) {
-    display: none;
-    width: 45px;
-    padding: $space-none;
-    margin: $space-none $space-none $space-xs $space-none;
+  @include breakpoints(xsmall-bootstrap) {
+    width: 120px;
   }
+}
+
+.page-logo > .beta-marker {
+    position: relative;
+}
+
+.page-logo > .beta-marker > .beta-marker-inner {
+  position: absolute;
+  font-size: 10px;
+  color: $white;
+  text-transform: capitalize;
+}
+
+.page-logo-full-size > .beta-marker > .beta-marker-inner {
+  right: 0px;
+  top: 18px;
+}
+
+.page-logo-short > .beta-marker > .beta-marker-inner {
+  right: -10px;
+  top: 24px;
 }
 
 .site-search {
