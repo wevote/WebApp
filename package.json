@@ -20,7 +20,7 @@
     "lint-css": "gulp lint-css",
     "test": "npm run lint && npm run lint-css",
     "start": "gulp",
-    "prod": "NODE_ENV=production gulp",
+    "prod": "NODE_ENV=production gulp build",
     "deps": "npm run deps:missing && npm run deps:extra",
     "deps:missing": "dependency-check package.json",
     "deps:extra": "dependency-check package.json --extra --no-dev --ignore",
@@ -71,7 +71,8 @@
     "react-toggle": "^4.0.2",
     "react-transition-group": "^2.5.0",
     "stylelint": "^9.6.0",
-    "superagent": "^3.8.3"
+    "superagent": "^3.8.3",
+    "uglifyify": "^5.0.1"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.1.0",
