@@ -9,6 +9,7 @@ import cookies from "../../utils/cookies";
 import FriendStore from "../../stores/FriendStore";
 import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
 import HeaderBarAboutMenu from "./HeaderBarAboutMenu";
+import HeaderBarLogo from "./HeaderBarLogo";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
@@ -189,22 +190,7 @@ export default class HeaderBar extends Component {
 
     return (
       <header className={ isWebApp() ? "page-header" : "page-header page-header__cordova" }>
-        {!weVoteBrandingOff && isWebApp() &&
-          <span>
-            <Link to="/welcome" className={ "page-logo page-logo-full-size d-none d-sm-block"}>
-              <img src={cordovaDot("/img/global/svg-icons/we-vote-logo-horizontal-color.svg")} />
-            </Link>
-            <span>
-              { showFullNavigation && isWebApp() ?
-                <Link to="/welcome" className="page-logo page-logo-short h4 d-block d-sm-none wikiki">
-                  <img className="glyphicon" src={cordovaDot("/img/global/svg-icons/we-vote-icon-square-color.svg")} />
-                </Link> :
-                <Link to="/welcome" className="page-logo page-logo-short h4 d-block d-sm-none WAKAKA">
-                  <img className="glyphicon" src={cordovaDot("/img/global/svg-icons/we-vote-icon-square-color.svg")} />
-                </Link>
-              }
-            </span>
-          </span>
+        {!weVoteBrandingOff && isWebApp() && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />
         }
         <div className="header-nav">
           { showFullNavigation && isWebApp() && HeaderBar.ballot(pathname === "/ballot") }
