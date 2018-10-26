@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
 import CandidateStore from "../../stores/CandidateStore";
 import FollowToggle from "../Widgets/FollowToggle";
 import MeasureStore from "../../stores/MeasureStore";
@@ -65,7 +64,6 @@ export default class GuideList extends Component {
     }
 
     // console.log("GuideList organizationsToFollow: ", this.state.organizationsToFollow);
-    let counter = 0;
     let organizationPositionForThisBallotItem = {};
 
     if (this.state.organizationsToFollow === undefined) {
