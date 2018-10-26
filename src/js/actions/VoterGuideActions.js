@@ -17,7 +17,7 @@ export default {
 
   voterGuidesToFollowRetrieve: function (election_id, search_string, add_voter_guides_not_from_election, start_retrieve_at_this_number = 0) {
     let maximum_number_to_retrieve = 50;
-    Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", {
+    return Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", {
       google_civic_election_id: election_id,
       start_retrieve_at_this_number: start_retrieve_at_this_number,
       maximum_number_to_retrieve: maximum_number_to_retrieve,
