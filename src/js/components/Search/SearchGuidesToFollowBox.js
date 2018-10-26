@@ -9,13 +9,22 @@ export default class SearchGuidesToFollowBox extends Component {
   constructor (props) {
     super(props);
 
+    this.state = {
+      searchPending: null
+    };
+
     this.searchFunction = this.searchFunction.bind(this);
     this.clearFunction = this.clearFunction.bind(this);
   }
 
   searchFunction (search_query) {
+    if (this.state.searchPending && this.state.searchPending.state() === "pending") {
+      this.state.searchPending.abort();
+    }
     let election_id = search_query === "" ? VoterStore.election_id() : 0;
-    VoterGuideActions.voterGuidesToFollowRetrieve(election_id, search_query);
+    this.setState({
+      searchPending: VoterGuideActions.voterGuidesToFollowRetrieve(election_id, search_query)
+    });
   }
 
   clearFunction () {
@@ -29,6 +38,6 @@ export default class SearchGuidesToFollowBox extends Component {
                        placeholder="Search by name or Twitter handle"
                        searchFunction={this.searchFunction}
                        clearFunction={this.clearFunction}
-                       searchUpdateDelayTime={1000} />;
+                       searchUpdateDelayTime={100} />;
   }
 }
