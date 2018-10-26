@@ -37,13 +37,9 @@ export default class HeaderBarProfilePopUp extends Component {
       <div className={profilePopUpOpen}>
         <div className="page-overlay" onClick={this.hideProfilePopUp} />
         <div className={isWebApp() ? "profile-menu" : "profile-foot-menu"} >
-          <ul className="nav nav-stacked">
-            <li>
-              <div><span className="we-vote-promise">Our Promise: We'll never sell your email.</span></div>
-            </li>
-          </ul>
+          <span className="we-vote-promise">Our Promise: We'll never sell your email.</span>
           <h4 className="text-left"/>
-          <ul className="nav nav-stacked">
+          <ul className="nav flex-column">
             {/* Desktop only */}
             <li className="d-none d-sm-block">
               <Link onClick={this.hideProfilePopUp} to="/settings/profile">

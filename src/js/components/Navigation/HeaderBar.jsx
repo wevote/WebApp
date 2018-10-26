@@ -241,20 +241,19 @@ export default class HeaderBar extends Component {
                  />
             </div> : this.imagePlaceholder(speakerType)
           }
+          {/* Was AccountMenu */}
+          {this.state.profilePopUpOpen &&
+            <HeaderBarProfilePopUp {...this.props}
+                                  onClick={this.toggleProfilePopUp}
+                                  profilePopUpOpen={this.state.profilePopUpOpen}
+                                  bookmarks={this.state.bookmarks}
+                                  weVoteBrandingOff={this.state.we_vote_branding_off}
+                                  toggleProfilePopUp={this.toggleProfilePopUp}
+                                  hideProfilePopUp={this.hideProfilePopUp}
+                                  transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
+                                  signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)} />
+          }
          </div>
-        }
-        {/* Was AccountMenu */}
-        {this.state.profilePopUpOpen && isWebApp() ?
-          <HeaderBarProfilePopUp {...this.props}
-                                 onClick={this.toggleProfilePopUp}
-                                 profilePopUpOpen={this.state.profilePopUpOpen}
-                                 bookmarks={this.state.bookmarks}
-                                 weVoteBrandingOff={this.state.we_vote_branding_off}
-                                 toggleProfilePopUp={this.toggleProfilePopUp}
-                                 hideProfilePopUp={this.hideProfilePopUp}
-                                 transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
-                                 signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
-          /> : null
         }
       </header>
     );

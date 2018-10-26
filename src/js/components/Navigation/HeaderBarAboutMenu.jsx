@@ -23,26 +23,20 @@ export default class HeaderBarAboutMenu extends Component {
       <div className={aboutMenuOpen}>
       <div className="page-overlay" onClick={this.toggleAboutMenu} />
       <div className="about-menu">
-          <ul className="nav nav-stacked">
+          <ul className="nav flex-column text-left">
               <li>
                 <Link onClick={this.toggleAboutMenu} to={"/more/howtouse"}>
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Getting Started</span>
-                  </div>
+                  <span className="header-slide-out-menu-text-left">Getting&nbsp;Started</span>
                 </Link>
               </li>
               <li>
                 <Link onClick={this.toggleAboutMenu} to={"/more/organization"}>
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Organization</span>
-                  </div>
+                  <span className="header-slide-out-menu-text-left">Organization</span>
                 </Link>
               </li>
             <li>
               <Link onClick={this.toggleAboutMenu} to={"/more/team"}>
-                <div>
-                  <span className="header-slide-out-menu-text-left">Our Team</span>
-                </div>
+                <span className="header-slide-out-menu-text-left">Our Team</span>
               </Link>
             </li>
           </ul>
