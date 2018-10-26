@@ -84,7 +84,7 @@ export default class OrganizationVoterGuide extends Component {
       active_route: this.props.active_route,
     });
 
-    let ballotWithAllItemsByFilterType = BallotStore.getBallotByFilterType();
+    let ballotWithAllItemsByFilterType = BallotStore.getBallotByCompletionLevelFilterType();
     if (ballotWithAllItemsByFilterType !== undefined) {
       this.setState({ ballotWithAllItemsByFilterType });
     }

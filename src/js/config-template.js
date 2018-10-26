@@ -31,5 +31,6 @@ module.exports = {
 
   FACEBOOK_APP_ID: "1097389196952441",
 
-  STRIPE_API_KEY: "pk_live_zpl7eSkLnySR2i4vtJQ1lJmi",
+  // This is the publishable key (not secret)
+  STRIPE_API_KEY: "pk_live_41XHHJy1KH0zS2Dik5ktL1KM",
 };
