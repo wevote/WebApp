@@ -91,7 +91,6 @@ export default class GuideList extends Component {
     //             Ignore
     //           </Button>
     return <div className="guidelist card-child__list-group">
-      <TransitionGroup className="org-ignore">
         {this.state.organizationsToFollow.map((organization) => {
           organizationPositionForThisBallotItem = {};
           if (!organization.is_support_or_positive_rating && !organization.is_oppose_or_negative_rating && !organization.is_information_only && this.state.ballot_item_we_vote_id && organization.organization_we_vote_id) {
@@ -104,26 +103,23 @@ export default class GuideList extends Component {
             }
           }
 
-          return <CSSTransition key={++counter} timeout={500} classNames="fade">
-            <span>
-              <VoterGuideDisplayForList key={organization.organization_we_vote_id}
-                                        {...organization}
-                                        {...organizationPositionForThisBallotItem}>
-                <FollowToggle we_vote_id={organization.organization_we_vote_id}
-                              hide_stop_following_button={this.props.hide_stop_following_button}/>
-                { this.props.hide_ignore_button ?
-                  null :
-                  <button className="btn btn-default btn-sm"
-                          onClick={this.handleIgnore.bind(this, organization.organization_we_vote_id)}>
-                    Ignore
-                  </button>
-                }
-              </VoterGuideDisplayForList>
-            </span>
-          </CSSTransition>;
-          })
+          return (
+            <VoterGuideDisplayForList key={organization.organization_we_vote_id}
+                                      {...organization}
+                                      {...organizationPositionForThisBallotItem}>
+              <FollowToggle we_vote_id={organization.organization_we_vote_id}
+                            hide_stop_following_button={this.props.hide_stop_following_button}/>
+              { this.props.hide_ignore_button ?
+                null :
+                <button className="btn btn-default btn-sm"
+                        onClick={this.handleIgnore.bind(this, organization.organization_we_vote_id)}>
+                  Ignore
+                </button>
+              }
+            </VoterGuideDisplayForList>
+          );
+        })
         }
-      </TransitionGroup>
     </div>;
   }
 }
