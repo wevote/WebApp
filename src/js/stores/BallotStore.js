@@ -170,8 +170,8 @@ class BallotStore extends ReduceStore {
     });
   }
 
-  //Filters out the unsupported candidates if the user has either not decided or does not support
-  //all the candidates in the ballot_item.
+  // Filters out the unsupported candidates if the user has either not decided or does not support
+  // all the candidates in the ballot_item.
   filtered_ballot_item (ballot_item) {
     for (let i = 0; i < ballot_item.candidate_list.length; i++){
       let candidate = ballot_item.candidate_list[i];
@@ -184,30 +184,40 @@ class BallotStore extends ReduceStore {
     return assign({}, ballot_item, {candidate_list: [] });
   }
 
-  getBallotByFilterType (filter_type){
-    switch (filter_type) {
+  getBallotByCompletionLevelFilterType (completionLevelFilterType){
+    switch (completionLevelFilterType) {
       case "filterRemaining":
         return this.ballot_remaining_choices;
       case "filterDecided":
         return this.ballot_decided;
       case "filterReadyToVote":
         return this.ballot;
-      default :
+      default:
         return this.ballot;
     }
   }
 
-  getBallotTypeByFilterType (filter_type){
-    switch (filter_type) {
+  cleanCompletionLevelFilterType (completionLevelFilterType){
+    switch (completionLevelFilterType) {
       case "filterRemaining":
-        return "CHOICES_REMAINING";
+        return "filterRemaining";
       case "filterDecided":
-        return "ITEMS_DECIDED";
+        return "filterDecided";
       case "filterReadyToVote":
-        return "READY_TO_VOTE";
-      default :
-        return "ALL_BALLOT_ITEMS";
+        return "filterReadyToVote";
+      default:
+        return "filterAllBallotItems";
     }
+  }
+
+  getCompletionLevelFilterTypeSaved () {
+    // console.log("getCompletionLevelFilterTypeSaved:", this.getState().completionLevelFilterTypeSaved);
+    return this.getState().completionLevelFilterTypeSaved || "";
+  }
+
+  getRaceLevelFilterTypeSaved () {
+    // console.log("getRaceLevelFilterTypeSaved:", this.getState().raceLevelFilterTypeSaved);
+    return this.getState().raceLevelFilterTypeSaved || "";
   }
 
   getTopLevelBallotItemWeVoteIds () {
@@ -262,6 +272,21 @@ class BallotStore extends ReduceStore {
         return {
           ...state,
           position_list_has_been_retrieved_once_by_ballot_item: position_list_has_been_retrieved_once_by_ballot_item
+        };
+
+      case "raceLevelFilterTypeSave":
+        // console.log("raceLevelFilterTypeSave action.res", action.res);
+        return {
+          ...state,
+          raceLevelFilterTypeSaved: action.res.race_level_filter_type_saved,
+        };
+
+
+      case "completionLevelFilterTypeSave":
+        // console.log("completionLevelFilterTypeSave action.res", action.res);
+        return {
+          ...state,
+          completionLevelFilterTypeSaved: action.res.completion_level_filter_type_saved,
         };
 
       case "voterAddressRetrieve":

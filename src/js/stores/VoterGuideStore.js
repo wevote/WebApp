@@ -24,6 +24,7 @@ class VoterGuideStore extends ReduceStore {
       organization_we_vote_ids_to_follow_organization_recommendation_dict: {}, // This is a dictionary with organization_we_vote_id as key and list of organization_we_vote_id's as value
       voterGuidesFollowedRetrieveStopped: false, // While this is set to true, don't allow any more calls to this API
       voterGuidesToFollowRetrieveStopped: false, // While this is set to true, don't allow any more calls to this API
+      voterGuidesUpcomingStopped: false, // While this is set to true, don't allow any more calls to this API
     };
   }
 
@@ -192,6 +193,11 @@ class VoterGuideStore extends ReduceStore {
     return this.getState().voterGuidesToFollowRetrieveStopped;
   }
 
+  voterGuidesUpcomingStopped () {
+    // While this is set to true, don't allow any more calls to this API
+    return this.getState().voterGuidesUpcomingStopped;
+  }
+
   reduce (state, action) {
     let all_cached_voter_guides;
     let all_cached_voter_guides_by_election;
@@ -249,21 +255,24 @@ class VoterGuideStore extends ReduceStore {
         if (action.res.status === "SIMPLE_ADDRESS_SAVE") {
           return state;
         } else {
+          revisedState = state;
           google_civic_election_id = action.res.google_civic_election_id;
-          VoterGuideActions.voterGuidesUpcomingRetrieve(google_civic_election_id);
-          // VoterGuideActions.voterGuidesToFollowRetrieve(google_civic_election_id);  // DEBUG=1 Remove
+          if (!this.voterGuidesUpcomingStopped()) {
+            VoterGuideActions.voterGuidesUpcomingRetrieve(google_civic_election_id);
+            revisedState = Object.assign({}, revisedState, { voterGuidesUpcomingStopped: true });
+          }
+
           VoterGuideActions.voterGuidesFollowedRetrieve(google_civic_election_id);
-          return state;
+          return revisedState;
         }
 
       case "voterAddressRetrieve": // refresh guides when you change address
         google_civic_election_id = action.res.google_civic_election_id;
         revisedState = state;
         // This is to prevent the same call from going out multiple times
-        if (!this.voterGuidesToFollowRetrieveStopped()) {
+        if (!this.voterGuidesUpcomingStopped()) {
           VoterGuideActions.voterGuidesUpcomingRetrieve(google_civic_election_id);
-          // VoterGuideActions.voterGuidesToFollowRetrieve(google_civic_election_id);  // DEBUG=1 Remove
-          revisedState = Object.assign({}, revisedState, { voterGuidesToFollowRetrieveStopped: true });
+          revisedState = Object.assign({}, revisedState, { voterGuidesUpcomingStopped: true });
         }
         if (!this.voterGuidesFollowedRetrieveStopped()) {
           VoterGuideActions.voterGuidesFollowedRetrieve(google_civic_election_id);
@@ -277,11 +286,9 @@ class VoterGuideStore extends ReduceStore {
         google_civic_election_id = parseInt(google_civic_election_id, 10);
         revisedState = state;
         if (google_civic_election_id !== 0) {
-          // console.log("VoterGuideStore voterBallotItemsRetrieve response, VoterGuideStore.voterGuidesToFollowRetrieveStopped():", this.voterGuidesToFollowRetrieveStopped());
-          if (!this.voterGuidesToFollowRetrieveStopped()) {
+          if (!this.voterGuidesUpcomingStopped()) {
             VoterGuideActions.voterGuidesUpcomingRetrieve(google_civic_election_id);
-            // VoterGuideActions.voterGuidesToFollowRetrieve(google_civic_election_id);  // DEBUG=1 Remove
-            revisedState = Object.assign({}, revisedState, { voterGuidesToFollowRetrieveStopped: true });
+            revisedState = Object.assign({}, revisedState, { voterGuidesUpcomingStopped: true });
           }
           if (!this.voterGuidesFollowedRetrieveStopped()) {
             VoterGuideActions.voterGuidesFollowedRetrieve(google_civic_election_id);
@@ -546,7 +553,7 @@ class VoterGuideStore extends ReduceStore {
           organization_we_vote_ids_to_follow_all: organization_we_vote_id_list_from_voter_guides_returned,
           organization_we_vote_ids_to_follow_ballot_items_dict: organization_we_vote_ids_to_follow_ballot_items_dict,
           all_cached_voter_guides: all_cached_voter_guides,
-          voterGuidesToFollowRetrieveStopped: false,
+          // voterGuidesUpcomingRetrieveStopped: false, // We only ever want to retrieve voterGuidesUpcoming once
         };
 
       case "voterGuidesFollowedRetrieve":

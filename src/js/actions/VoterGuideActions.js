@@ -89,7 +89,6 @@ export default {
     if (google_civic_election_id !== 0) {
       google_civic_election_id_list.push(google_civic_election_id);
     }
-    // The CDN only (currently) works without any URL variables. Testing changes.
     Dispatcher.loadEndpoint("voterGuidesUpcomingRetrieve", {
       google_civic_election_id_list: google_civic_election_id_list,
       // maximum_number_to_retrieve: maximum_number_to_retrieve,

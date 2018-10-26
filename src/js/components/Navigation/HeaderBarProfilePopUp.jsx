@@ -98,7 +98,7 @@ export default class HeaderBarProfilePopUp extends Component {
               null
             }
             {this.props.weVoteBrandingOff || isWebApp() &&
-              <li className="d-block d-sm-none-block">
+              <li className="d-block d-sm-none">
                 <Link onClick={this.hideProfilePopUp} to="/more/howtouse">
                   <div>
                     <span className="header-slide-out-menu-text-left">Getting Started</span>
@@ -107,7 +107,7 @@ export default class HeaderBarProfilePopUp extends Component {
               </li>
             }
             {this.props.weVoteBrandingOff || isCordova() ? null :
-              <li className="d-block d-sm-none-block">
+              <li className="d-block d-sm-none">
                 <Link onClick={this.hideProfilePopUp} to="/more/about">
                   <div>
                     <span className="header-slide-out-menu-text-left">About We Vote</span>
@@ -116,7 +116,7 @@ export default class HeaderBarProfilePopUp extends Component {
               </li>
             }
             {this.props.weVoteBrandingOff || isCordova() ? null :
-              <li className="d-block d-sm-none-block">
+              <li className="d-block d-sm-none">
                 <Link onClick={this.hideProfilePopUp} to="/more/donate">
                   <div>
                     <span className="header-slide-out-menu-text-left">Donate</span>

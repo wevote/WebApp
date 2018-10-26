@@ -77,7 +77,7 @@ export default class Bookmarks extends Component {
                     </span>
                   </header>
                 </OverlayTrigger>
-                <div className="d-block d-sm-none-block d-print-none ballot__header__address--xs">
+                <div className="d-block d-sm-none d-print-none ballot__header__address--xs">
                   <EditAddress address={voter_address_object} toggleSelectAddressModal={this.toggleSelectAddressModal} />
                 </div>
                 <div className="ballot__filter__container">

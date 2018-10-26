@@ -6,6 +6,7 @@ import { renderLog } from "../../utils/logging";
 import { showToastError, showToastSuccess } from "../../utils/showToast";
 import { stringContains } from "../../utils/textFormat";
 import MeasureStore from "../../stores/MeasureStore";
+import ReadMore from "../Widgets/ReadMore";
 import ShareButtonDropdown from "./ShareButtonDropdown";
 import SupportActions from "../../actions/SupportActions";
 import VoterActions from "../../actions/VoterActions";
@@ -530,24 +531,38 @@ export default class ItemActionBar extends Component {
         {/* Visible on desktop screens */}
         <div className="d-none d-lg-block item-actionbar__position-bar">
           <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>{supportButton}</OverlayTrigger>
-          {this.state.yesVoteDescriptionExists ? <span className="item-actionbar__following-text">{this.state.yesVoteDescription}</span> : null}
+          {this.state.yesVoteDescriptionExists ?
+            <span className="item-actionbar__following-text">
+              {this.state.yesVoteDescription}
+            </span> : null}
         </div>
          {/* Visible on mobile devices and tablets */}
         <div className="d-lg-none d-xl-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
           {supportButton}
-          {this.state.yesVoteDescriptionExists ? <span className="item-actionbar__following-text">{this.state.yesVoteDescription}</span> : null}
+          {this.state.yesVoteDescriptionExists ?
+            <span className="item-actionbar__following-text">
+              <ReadMore num_of_lines={2}
+                        text_to_display={this.state.yesVoteDescription} />
+            </span> : null}
         </div>
 
         {/* Start of Oppose Button */}
         {/* Visible on desktop screens */}
         <div className="d-none d-lg-block item-actionbar__position-bar">
           <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>{opposeButton}</OverlayTrigger>
-          {this.state.noVoteDescriptionExists ? <span className="item-actionbar__following-text">{this.state.noVoteDescription}</span> : null}
+          {this.state.noVoteDescriptionExists ?
+            <span className="item-actionbar__following-text">
+              {this.state.noVoteDescription}
+            </span> : null}
         </div>
         {/* Visible on mobile devices and tablets */}
         <div className="d-lg-none d-xl-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
           {opposeButton}
-          {this.state.noVoteDescriptionExists ? <span className="item-actionbar__following-text">{this.state.noVoteDescription}</span> : null}
+          {this.state.noVoteDescriptionExists ?
+            <span className="item-actionbar__following-text">
+              <ReadMore num_of_lines={2}
+                        text_to_display={this.state.noVoteDescription} />
+            </span> : null}
         </div>
       { this.props.commentButtonHide ?
         null :

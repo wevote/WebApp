@@ -69,7 +69,7 @@ export default class VoterGuideBallot extends Component {
       ballot_item_unfurled_tracker: {},
       ballotWithAllItems: [],
       ballotWithAllItemsByFilterType: [],
-      ballot_item_filter_type: "",
+      raceLevelFilterType: "",
       ballot_returned_we_vote_id: "",
       ballot_location_shortcut: "",
       candidate_for_modal: {
@@ -130,7 +130,7 @@ export default class VoterGuideBallot extends Component {
     }
 
     let filter_type = this.props.location && this.props.location.query ? this.props.location.query.type : "all";
-    let ballotWithAllItemsByFilterType = BallotStore.getBallotByFilterType(filter_type);
+    let ballotWithAllItemsByFilterType = BallotStore.getBallotByCompletionLevelFilterType(filter_type);
     if (ballotWithAllItemsByFilterType !== undefined) {
       // console.log("ballotWithAllItemsByFilterType !== undefined");
       if (filter_type === "all") {
@@ -140,7 +140,7 @@ export default class VoterGuideBallot extends Component {
           filter_type: filter_type,
         });
       } else {
-        let ballotWithAllItems = BallotStore.getBallotByFilterType("all");
+        let ballotWithAllItems = BallotStore.getBallotByCompletionLevelFilterType("all");
         this.setState({
           ballotWithAllItems: ballotWithAllItems,
           ballotWithAllItemsByFilterType: ballotWithAllItemsByFilterType,
@@ -253,7 +253,7 @@ export default class VoterGuideBallot extends Component {
 
     this.setState({
       ballotElectionList: BallotStore.ballotElectionList(),
-      ballot_item_filter_type: "Federal",
+      raceLevelFilterType: "Federal",
       ballot_returned_we_vote_id: ballot_returned_we_vote_id,
       ballot_location_shortcut: ballot_location_shortcut,
       google_civic_election_id: parseInt(google_civic_election_id, 10),
@@ -287,8 +287,8 @@ export default class VoterGuideBallot extends Component {
     if (ballot_returned_we_vote_id !== this.state.ballot_returned_we_vote_id || ballot_location_shortcut !== this.state.ballot_location_shortcut || google_civic_election_id !== this.state.google_civic_election_id || filter_type !== this.state.filter_type) {
       // console.log("VoterGuideBallot componentWillReceiveProps - change found, nextProps: ", nextProps);
       this.setState({
-        ballotWithAllItems: BallotStore.getBallotByFilterType("all"),
-        ballotWithAllItemsByFilterType: BallotStore.getBallotByFilterType(filter_type),
+        ballotWithAllItems: BallotStore.getBallotByCompletionLevelFilterType("all"),
+        ballotWithAllItemsByFilterType: BallotStore.getBallotByCompletionLevelFilterType(filter_type),
         ballot_returned_we_vote_id: ballot_returned_we_vote_id,
         ballot_location_shortcut: ballot_location_shortcut,
         filter_type: filter_type,
@@ -447,8 +447,8 @@ export default class VoterGuideBallot extends Component {
         let prior_filter_type = this.state.filter_type || "all";
         let new_filter_type = this.state.location && this.state.location.query && this.state.location.query.type !== "" ? this.state.location.query.type : prior_filter_type;
         this.setState({
-          ballotWithAllItems: BallotStore.getBallotByFilterType("all"),
-          ballotWithAllItemsByFilterType: BallotStore.getBallotByFilterType(new_filter_type),
+          ballotWithAllItems: BallotStore.getBallotByCompletionLevelFilterType("all"),
+          ballotWithAllItemsByFilterType: BallotStore.getBallotByCompletionLevelFilterType(new_filter_type),
           filter_type: new_filter_type,
         });
       }
@@ -550,7 +550,7 @@ export default class VoterGuideBallot extends Component {
       });
     }
   }
-  
+
   // Needed to scroll to anchor tags based on hash in url (as done for bookmarks)
   hashLinkScroll () {
     const { hash } = window.location;
@@ -586,11 +586,11 @@ export default class VoterGuideBallot extends Component {
     let ballot_item = this.state.ballotWithAllItemsByFilterType.find(item => item.we_vote_id === selectedBallotItemId);
     if (ballot_item && ballot_item.kind_of_ballot_item === "MEASURE") {
       this.setState({
-        ballot_item_filter_type: "Measure",
+        raceLevelFilterType: "Measure",
       }, () => this.toggleExpandBallotItemDetails(selectedBallotItemId));
     } else {
       this.setState({
-        ballot_item_filter_type: ballot_item.race_office_level,
+        raceLevelFilterType: ballot_item.race_office_level,
       }, () => this.toggleExpandBallotItemDetails(selectedBallotItemId));
     }
   }
@@ -628,7 +628,7 @@ export default class VoterGuideBallot extends Component {
   }
 
   setBallotItemFilterType (type) {
-    this.setState({ballot_item_filter_type: type, });
+    this.setState({raceLevelFilterType: type, });
   }
   render () {
     renderLog(__filename);
@@ -880,7 +880,7 @@ export default class VoterGuideBallot extends Component {
                               }
                             });
                             return <div className="col-6 col-sm-3 u-stack--md u-inset__h--sm" key={one_type}>
-                              <Button variant="outline-secondary" block active={one_type === this.state.ballot_item_filter_type}
+                              <Button variant="outline-secondary" block active={one_type === this.state.raceLevelFilterType}
                                       onClick={() => this.setBallotItemFilterType(one_type)}
                                       className={"btn_ballot_filter"}>
                                 {one_type}&nbsp;({ballotItemsByFilterType.length})
@@ -898,10 +898,10 @@ export default class VoterGuideBallot extends Component {
                   <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
                   {ballotWithRemainingItems.map( (item) => {
                       //ballot limited by items by filter type
-                        // console.log(this.state.ballot_item_filter_type);
-                        if (this.state.ballot_item_filter_type === "All" ||
-                            item.kind_of_ballot_item === "MEASURE" && this.state.ballot_item_filter_type === "Measure" ||
-                            this.state.ballot_item_filter_type === item.race_office_level) {
+                        // console.log(this.state.raceLevelFilterType);
+                        if (this.state.raceLevelFilterType === "All" ||
+                            item.kind_of_ballot_item === "MEASURE" && this.state.raceLevelFilterType === "Measure" ||
+                            this.state.raceLevelFilterType === item.race_office_level) {
                           return <BallotItemCompressed currentBallotIdInUrl={this.props.location.hash.slice(1)}
                                                        key={item.we_vote_id}
                                                        organization={this.props.organization}
