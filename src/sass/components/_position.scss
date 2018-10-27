@@ -88,11 +88,15 @@ $react-toggle-track: 2px;
   }
 }
 
+$toggle-icon-margin-top: 3px;
+
 .toggle-override {
   .react-toggle-track-x {
-    margin-top: $space-xxs;
+    margin-top: $toggle-icon-margin-top;
+    right: 13px;
   }
   .react-toggle-track-check {
-    margin-top: $space-xxs;
+    margin-top: $toggle-icon-margin-top;
+    left: 6px;
   }
 }
