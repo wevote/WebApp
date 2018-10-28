@@ -112,7 +112,10 @@ export default class Ballot extends Component {
     let issues_voter_can_follow_exist = issues_voter_can_follow && issues_voter_can_follow.length;
     // console.log("Ballot componentDidMount issues_voter_can_follow_exist: ", issues_voter_can_follow_exist);
 
-    if (wait_until_voter_sign_in_completes !== undefined || hide_intro_modal_from_cookie || hide_intro_modal_from_url || !issues_voter_can_follow_exist) {
+    if (wait_until_voter_sign_in_completes !== undefined ||
+        hide_intro_modal_from_cookie ||
+        hide_intro_modal_from_url ||
+        !issues_voter_can_follow_exist) {
       this.setState({
         componentDidMountFinished: true,
         mounted: true,
@@ -128,9 +131,6 @@ export default class Ballot extends Component {
       });
     }
 
-    // let completionLevelFilterTypeSavedOrDefault = BallotStore.getCompletionLevelFilterTypeSaved() || "all";
-    // let completionLevelFilterType = this.props.location && this.props.location.query ? this.props.location.query.type : completionLevelFilterTypeSavedOrDefault;
-    // console.log("Ballot.jsx, componentDidMount completionLevelFilterTypeSavedOrDefault: ", completionLevelFilterTypeSavedOrDefault, " completionLevelFilterType:", completionLevelFilterType);
     let completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || "all";
     let ballotWithAllItemsByFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
     if (ballotWithAllItemsByFilterType !== undefined) {
@@ -280,9 +280,6 @@ export default class Ballot extends Component {
 
   componentWillReceiveProps (nextProps) {
     // console.log("Ballot componentWillReceiveProps");
-    // let completionLevelFilterTypeSavedOrDefault = BallotStore.getCompletionLevelFilterTypeSaved() || "all";
-    // let completionLevelFilterType = nextProps.location && nextProps.location.query ? nextProps.location.query.type : completionLevelFilterTypeSavedOrDefault;
-    // console.log("Ballot.jsx, componentWillReceiveProps completionLevelFilterTypeSavedOrDefault: ", completionLevelFilterTypeSavedOrDefault, " completionLevelFilterType:", completionLevelFilterType);
 
     // We don't want to let the google_civic_election_id disappear
     let google_civic_election_id = nextProps.params.google_civic_election_id || this.state.google_civic_election_id;
@@ -561,7 +558,6 @@ export default class Ballot extends Component {
     this.setState({
       ballotElectionList: BallotStore.ballotElectionList(),
       completionLevelFilterType: completionLevelFilterType,
-
     });
 
     if (this.state.ballotLength !== BallotStore.ballotLength) {
@@ -714,8 +710,6 @@ export default class Ballot extends Component {
 
   render () {
     renderLog(__filename);
-    // console.log("Ballot render");
-
     const BALLOT_ITEM_FILTER_TYPES = ["Federal", "State", "Measure", "Local"];
     let ballotBaseUrl = "/ballot";
 
@@ -727,7 +721,9 @@ export default class Ballot extends Component {
     if (!this.state.ballotWithAllItemsByFilterType) {
       return <div className="ballot container-fluid well u-stack--md u-inset--md">
         { this.state.showBallotIntroModal && issues_voter_can_follow_exist ?
-          <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
+          <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> :
+          null
+        }
         <div className={ isWebApp() ? "ballot__header" : "ballot__header ballot__header__top-cordova"} >
           <BrowserPushMessage incomingProps={this.props} />
           <p className="ballot__date_location">
@@ -831,9 +827,6 @@ export default class Ballot extends Component {
       }
     }
 
-    // console.log("Ballot.jsx, this.state.google_civic_election_id: ", this.state.google_civic_election_id);
-
-    // console.log("Ballot.jsx this.state.completionLevelFilterType: ", this.state.completionLevelFilterType, "BallotStore.cleanCompletionLevelFilterType(this.state.completionLevelFilterType: ", BallotStore.cleanCompletionLevelFilterType(this.state.completionLevelFilterType));
     return <div className="ballot">
       { this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
       { this.state.showMeasureModal ? <MeasureModal show={this.state.showMeasureModal} toggleFunction={this.toggleMeasureModal} measure={this.state.measure_for_modal}/> : null }

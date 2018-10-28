@@ -657,7 +657,10 @@ export default class OfficeItemCompressedRaccoon extends Component {
                                       kind_of_ballot_item="CANDIDATE" />
                         {/* Candidate Name */}
                         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-                          <h4 className="card-main__candidate-name u-f5">{oneCandidate.ballot_item_display_name}</h4>
+                          <h4 className="card-main__candidate-name u-f5">
+                            {oneCandidate.ballot_item_display_name}
+                            <span className="card-main__ballot-read-more-link">see&nbsp;more</span>
+                          </h4>
                         </div>
                       </div>
                     </div>;
