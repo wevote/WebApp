@@ -57,6 +57,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
       editMode: false,
       maximum_organization_display: 4,
       organization: {},
+      showBallotIntroFollowIssues: false,
       show_position_statement: true,
       transitioning: false,
     };
@@ -172,7 +173,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   }
 
   _toggleBallotIntroFollowIssues () {
-    VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
+    // VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
     if (!this.state.showBallotIntroFollowIssues) {
       AnalyticsActions.saveActionModalIssues(VoterStore.election_id());
     }
@@ -268,7 +269,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   }
 
   render () {
-    // console.log("OfficeItemCompressedRaccoon render");
+    // console.log("VoterGuideOfficeItemCompressed render");
     renderLog(__filename);
     let { ballot_item_display_name: ballotItemDisplayName, we_vote_id: weVoteId } = this.props;
 
