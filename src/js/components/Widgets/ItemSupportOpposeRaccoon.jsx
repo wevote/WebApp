@@ -862,9 +862,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
       </div>
 
       <div className="network-positions-stacked__support">
-        {/* Support toggle here */}
-        {item_action_bar}
-
         {/* Issue Score here */}
         { showIssueScore ?
           <OverlayTrigger trigger="click"
@@ -917,6 +914,11 @@ export default class ItemSupportOpposeRaccoon extends Component {
           {total_network_score > 0 ? total_network_score + " Support" : null }
           {total_network_score < 0 ? total_network_score + " Oppose" : null }
         </span>
+      </div>
+
+      <div className="network-positions-stacked__support">
+        {/* Support/Oppose/Comment toggle here */}
+        {item_action_bar}
       </div>
       { comment_display_raccoon_desktop }
       { comment_display_raccoon_mobile }
