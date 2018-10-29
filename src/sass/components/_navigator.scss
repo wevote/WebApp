@@ -210,10 +210,6 @@ $container-margin: -15px;
     &:hover {
       background-color: $nav-item-hover-color;
     }
-    //
-    //&--ballot {
-    //  color: red;
-    //}
 
     &.donate {
       padding: $space-none;
@@ -225,14 +221,22 @@ $container-margin: -15px;
   }
   .nav-icon {
     font-size: 1rem;
-    height: 36px;
+    height: 24px;
+    width: 24px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
   &__icon {
+    height: 24px;
+    width: 24px;
     &--about {
       font-size: .8rem;
+      font-weight: 700;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     &--ballot {
       justify-content: center;
