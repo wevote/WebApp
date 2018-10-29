@@ -18,16 +18,7 @@ import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateModal from "../../components/Ballot/CandidateModal";
 import cookies from "../../utils/cookies";
-import {
-  cordovaDot,
-  historyPush, isAndroid,
-  isCordova,
-  isIPhone678Plus,
-  isIPhoneXorXS,
-  isIPhoneXR,
-  isIPhoneXSMax,
-  isWebApp
-} from "../../utils/cordovaUtils";
+import { cordovaDot, getHeadingSize, historyPush, isCordova, isWebApp } from "../../utils/cordovaUtils";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
 import Helmet from "react-helmet";
@@ -816,22 +807,22 @@ export default class Ballot extends Component {
       historyPush(this.state.pathname);
     }
 
-    let ballotHeading = "ballot__heading";
-    if (isCordova()) {
-      if (isIPhoneXSMax()) {
-        ballotHeading += " ballot__heading-cordova-xs-max";
-      } else if (isIPhoneXorXS()) {
-        ballotHeading += " ballot__heading-cordova-x";
-      } else if (isIPhoneXR()) {
-        ballotHeading += " ballot__heading-cordova-xr";
-      } else if (isIPhone678Plus()) {
-        ballotHeading += " ballot__heading-cordova-i678plus";
-      } else if (isAndroid()) {
-        ballotHeading += " ballot__heading-cordova-android";
-      } else {
-        ballotHeading += " ballot__heading-cordova-default";
-      }
-    }
+    // let ballotHeading = "ballot__heading";
+    // if (isCordova()) {
+    //   if (isIPhoneXSMax()) {
+    //     ballotHeading += " ballot__heading-cordova-xs-max";
+    //   } else if (isIPhoneXorXS()) {
+    //     ballotHeading += " ballot__heading-cordova-x";
+    //   } else if (isIPhoneXR()) {
+    //     ballotHeading += " ballot__heading-cordova-xr";
+    //   } else if (isIPhone678Plus()) {
+    //     ballotHeading += " ballot__heading-cordova-i678plus";
+    //   } else if (isAndroid()) {
+    //     ballotHeading += " ballot__heading-cordova-android";
+    //   } else {
+    //     ballotHeading += " ballot__heading-cordova-default";
+    //   }
+    // }
 
     return <div className="ballot">
       { this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
@@ -847,7 +838,7 @@ export default class Ballot extends Component {
                                                               /> : null }
       { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this.toggleBallotSummaryModal} /> : null }
 
-      <div className={ballotHeading} >
+      <div className={`ballot__heading ${isCordova() && " ballot__heading-cordova-" + getHeadingSize()}`} >
         <div className="page-content-container">
           <div className="container-fluid">
             <div className="row">
