@@ -122,7 +122,7 @@ export function isIPhoneXorXS () {
   };
 
   // iPhone X and XS are 1125 x 2436
-  return isIOS() && (screen.width === 1125 || screen.width === 1242);
+  return isIOS() && (screen.width === 1125 && screen.width === 1242);
 }
 
 export function isIPhone678Plus () {

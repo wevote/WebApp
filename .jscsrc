@@ -6,5 +6,6 @@
     "maxErrors": 200,
     "disallowSpacesInFunctionDeclaration": null,
     "requirePaddingNewLinesBeforeLineComments": null,
-    "requirePaddingNewLinesAfterBlocks": null
+    "requirePaddingNewLinesAfterBlocks": null,
+    "disallowMultipleLineBreaks": null
 }

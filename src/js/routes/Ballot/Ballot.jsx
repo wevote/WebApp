@@ -20,11 +20,11 @@ import CandidateModal from "../../components/Ballot/CandidateModal";
 import cookies from "../../utils/cookies";
 import {
   cordovaDot,
-  hasIPhoneNotch,
-  historyPush,
+  historyPush, isAndroid,
   isCordova,
   isIPhone678Plus,
   isIPhoneXorXS,
+  isIPhoneXR,
   isIPhoneXSMax,
   isWebApp
 } from "../../utils/cordovaUtils";
@@ -818,12 +818,18 @@ export default class Ballot extends Component {
 
     let ballotHeading = "ballot__heading";
     if (isCordova()) {
-      if (isIPhoneXSMax() || isIPhone678Plus() || isIPhoneXorXS()) {
-        ballotHeading = "ballot__heading ballot__heading-cordova-md";
-      } else if (hasIPhoneNotch()) {
-        ballotHeading = "ballot__heading ballot__heading-cordova-sm";
+      if (isIPhoneXSMax()) {
+        ballotHeading += " ballot__heading-cordova-xs-max";
+      } else if (isIPhoneXorXS()) {
+        ballotHeading += " ballot__heading-cordova-x";
+      } else if (isIPhoneXR()) {
+        ballotHeading += " ballot__heading-cordova-xr";
+      } else if (isIPhone678Plus()) {
+        ballotHeading += " ballot__heading-cordova-i678plus";
+      } else if (isAndroid()) {
+        ballotHeading += " ballot__heading-cordova-android";
       } else {
-        ballotHeading = "ballot__heading ballot__heading-cordova-lg";
+        ballotHeading += " ballot__heading-cordova-default";
       }
     }
 
