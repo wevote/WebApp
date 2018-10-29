@@ -98,8 +98,8 @@ export default class HeaderBar extends Component {
   }
 
   static ballot (active) {
-    return <Link to="/ballot" className={ "header-nav__item--ballot header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
-      <Icon name="glyphicons-pro-halflings/glyphicons-halflings-32-list-alt" color="#e6e6e6" className={"header-nav__icon--ballot"} />
+    return <Link to="/ballot" className={"header-nav__item" + (active ? " active-icon" : "")}>
+      <Icon name="nav/ballot-icon-24" color="#ffffff" className={"header-nav__icon--ballot"} />
       <span className="header-nav__label">
         Ballot
       </span>
@@ -107,15 +107,15 @@ export default class HeaderBar extends Component {
   }
 
   static network (active, numberOfIncomingFriendRequests) {
-    return <Link to="/more/network" className={ "header-nav__item--network header-nav__item header-nav__item--has-icon" + (active ? " active-icon" : "")}>
-      <span title="Network">
-        <img className="glyphicon" src={cordovaDot("/img/global/svg-icons/network-icon.svg")} />
+    return <Link to="/more/network" className={ "header-nav__item" + (active ? " active-icon" : "")}>
+      <div title="Network">
+        <Icon name="nav/network-icon-24" color="#ffffff" className={"header-nav__icon"} />
         {numberOfIncomingFriendRequests ?
           numberOfIncomingFriendRequests < 9 ?
             <span className="badge-total badge footerNav.badge-total">{numberOfIncomingFriendRequests}</span> :
             <span className="badge-total badge-total--overLimit badge">9+</span> :
           null }
-      </span>
+      </div>
       <span className="header-nav__label">
         Network
         </span>
@@ -123,8 +123,8 @@ export default class HeaderBar extends Component {
   }
 
   static donate (active) {
-    return <Link to="/more/donate" className={ "header-nav__item--donate header-nav__item header-nav__item--has-icon d-none d-sm-block" + (active ? " active-icon" : "")}>
-      <img className="glyphicon" src={cordovaDot("/img/global/svg-icons/glyphicons-20-heart-empty.svg")} />
+    return <Link to="/more/donate" className={ "header-nav__item--donate header-nav__item d-none d-sm-block" + (active ? " active-icon" : "")}>
+      <Icon name="nav/donate-icon-24" color="#ffffff" className={"header-nav__icon"} />
       <span className="header-nav__label">
         Donate
       </span>
@@ -200,7 +200,7 @@ export default class HeaderBar extends Component {
           { weVoteBrandingOff || isCordova() ? null :
             <span>
               { showFullNavigation ?
-                <span onClick={this.toggleAboutMenu} className={ "header-nav__item header-nav__item--about header-nav__item--has-icon d-none d-sm-block" + (pathname === "/more/about" ? " active-icon" : "")}>
+                <span onClick={this.toggleAboutMenu} className={ "header-nav__item header-nav__item--about d-none d-sm-block" + (pathname === "/more/about" ? " active-icon" : "")}>
                   <span className="header-nav__icon--about">About</span>
                   <span className="header-nav__label">We Vote</span>
                   <HeaderBarAboutMenu toggleAboutMenu={this.toggleAboutMenu} aboutMenuOpen={this.state.aboutMenuOpen} />
