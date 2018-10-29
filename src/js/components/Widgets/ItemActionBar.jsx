@@ -519,7 +519,7 @@ export default class ItemActionBar extends Component {
 
     const measureYesButton = <button className={"item-actionbar__btn item-actionbar__btn--support btn btn-default" + (this.isSupportCalculated() ? " support-at-state" : "")} onClick={() => this.supportItem()}>
       <span className="btn__icon">
-        <Icon name="thumbs-up-icon" width="18" height="18" color={chooseIconColor} />
+        <Icon name="thumbs-up-icon" width={18} height={18} color={chooseIconColor} />
       </span>
       { this.isSupportCalculated() ?
         <span
@@ -551,7 +551,7 @@ export default class ItemActionBar extends Component {
 
     const measureNoButton = <button className={(this.props.opposeHideInMobile ? "d-none d-sm-block " : "") + "item-actionbar__btn item-actionbar__btn--oppose btn btn-default" + (this.isOpposeCalculated() ? " oppose-at-state" : "")} onClick={() => this.opposeItem()}>
       <span className="btn__icon">
-        <Icon name="thumbs-down-icon" width="18" height="18" color={opposeIconColor} />
+        <Icon name="thumbs-down-icon" width={18} height={18} color={opposeIconColor} />
       </span>
       { this.isOpposeCalculated() ?
         <span

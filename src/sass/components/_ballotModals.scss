@@ -1,3 +1,5 @@
+$cordova-ballot-top-margin: 5vh;
+
 .ballot-election-list,
 .select-address {
   font-size: 12px;
@@ -23,6 +25,9 @@
       @include breakpoints(small mid-small) {
         top: 0;
       }
+    }
+    &-cordova {
+      margin-top: $cordova-ballot-top-margin;
     }
   }
 

@@ -61,6 +61,7 @@ export default class DonationList extends Component {
 
   // October 2018: This is a workaround, since the current react-bootstrap does not handle the "d-none d-sm-block" correctly in th and td styles
   isNotMobile () {
+    // eslint-disable-next-line no-undef
     let bootstrapDetectedSizeXs = $("#users-device-size").find("div:visible").first().attr("id");
     return bootstrapDetectedSizeXs === undefined;
   }

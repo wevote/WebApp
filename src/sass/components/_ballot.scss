@@ -3,12 +3,15 @@ $address-spacing-mobile: -$space-xs $space-none $space-sm $space-none;
 $tab-spacing-desktop: 24px;
 $tab-spacing-mobile: $space-md;
 $header-extension-top: 41%;
-$minus-header-extension-top: -40%;
-$minus-header-extension-top-cordova-sm: -35%;
-$minus-header-extension-top-cordova-md: -43%;
-$minus-header-extension-top-cordova-lg: -60%;
+$header-correction: -40%;
+$header-correction-cordova-xs-max:  -21vh;
+$header-correction-cordova-x:       -21vh;
+$header-correction-cordova-xr:      -16vh;
+$header-correction-cordova-iplus:   -32vh;
+$header-correction-cordova-android: -39vh;
+$header-correction-cordova-default: -33vh;
 $header-extension-top-voter-guide: 2%;
-$minus-header-extension-top-voter-guide: -1%;
+$header-correction-voter-guide: -1%;
 $scrollbar-height: 20px;
 $tab-height: 47px;
 $tab-height-visible: $tab-height - $scrollbar-height;
@@ -38,20 +41,32 @@ $bottom-spacing-cordova: 50px;
     background-color: $white;
     border-bottom: 1px solid #aaa;
     padding-top: $header-extension-top;
-    margin-top: $minus-header-extension-top;
+    margin-top: $header-correction;
     overflow: hidden;
   }
 
-  &__heading-cordova-sm {
-    margin-top: $minus-header-extension-top-cordova-sm;
+  &__heading-cordova-xs-max {
+    margin-top: $header-correction-cordova-xs-max;
   }
 
-  &__heading-cordova-md {
-    margin-top: $minus-header-extension-top-cordova-md;
+  &__heading-cordova-x {
+    margin-top: $header-correction-cordova-x;
   }
 
-  &__heading-cordova-lg {
-    margin-top: $minus-header-extension-top-cordova-lg;
+  &__heading-cordova-xr {
+    margin-top: $header-correction-cordova-xr;
+  }
+
+  &__heading-cordova-i678plus {
+    margin-top: $header-correction-cordova-iplus;
+  }
+
+  &__heading-cordova-android {
+    margin-top: $header-correction-cordova-android;
+  }
+
+  &__heading-cordova-default {
+    margin-top: $header-correction-cordova-default;
   }
 
   &__header {

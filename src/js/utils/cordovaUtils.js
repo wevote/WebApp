@@ -122,7 +122,7 @@ export function isIPhoneXorXS () {
   };
 
   // iPhone X and XS are 1125 x 2436
-  return isIOS() && (screen.width === 1125 || screen.width === 1242);
+  return isIOS() && (screen.width === 1125 && screen.height === 2436);
 }
 
 export function isIPhone678Plus () {
@@ -159,4 +159,25 @@ export function hasIPhoneNotch () {
 export function isAndroid () {
   return isCordova() && window.device && device.platform === "Android";
 }
+
+export function getHeadingSize () {
+  let sizeString = "";
+  if (isCordova()) {
+    if (isIPhoneXSMax()) {
+      sizeString = "xs-max";
+    } else if (isIPhoneXorXS()) {
+      sizeString = "x";
+    } else if (isIPhoneXR()) {
+      sizeString = "xr";
+    } else if (isIPhone678Plus()) {
+      sizeString = "i678plus";
+    } else if (isAndroid()) {
+      sizeString = "android";
+    } else {
+      sizeString = "default";
+    }
+  }
+  return sizeString;
+}
+
 

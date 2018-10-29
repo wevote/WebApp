@@ -17,12 +17,8 @@ import CandidateModal from "../../components/Ballot/CandidateModal";
 import cookies from "../../utils/cookies";
 import {
   cordovaDot,
-  hasIPhoneNotch,
   historyPush,
   isCordova,
-  isIPhone678Plus,
-  isIPhoneXorXS,
-  isIPhoneXSMax,
   isWebApp
 } from "../../utils/cordovaUtils";
 import ElectionActions from "../../actions/ElectionActions";
@@ -804,17 +800,6 @@ export default class VoterGuideBallot extends Component {
 
     if (this.state.ballotWithAllItemsByFilterType.length === 0 && in_remaining_decisions_mode) {
       historyPush(this.state.pathname);
-    }
-
-    let ballotHeading = "ballot__heading";
-    if (isCordova()) {
-      if (isIPhoneXSMax() || isIPhone678Plus() || isIPhoneXorXS()) {
-        ballotHeading = "ballot__heading ballot__heading-cordova-md";
-      } else if (hasIPhoneNotch()) {
-        ballotHeading = "ballot__heading ballot__heading-cordova-sm";
-      } else {
-        ballotHeading = "ballot__heading ballot__heading-cordova-lg";
-      }
     }
 
     // Split up the ballot into items that the organization is highlighting vs. the items NOT being discussed
