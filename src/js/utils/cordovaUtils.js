@@ -176,8 +176,8 @@ export function getHeadingSize () {
     } else {
       sizeString = "default";
     }
-    return sizeString;
   }
+  return sizeString;
 }
 
 
