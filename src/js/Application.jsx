@@ -389,12 +389,16 @@ export default class Application extends Component {
     let headRoomSize;
     if (voterGuideShowGettingStartedNavigation || stringContains("/ballot", pathname) || pathname === "/bookmarks") {
       headRoomSize = isIPhoneXR() ? "headroom-secondary-nav__margin-iphone-xr" : "headroom-secondary-nav__margin";
-    } else if (isWebApp()) {
-      headRoomSize = "headroom-wrapper";
-    } else if (isIOS()) {
-      headRoomSize = "headroom-wrapper__cordova-ios";
-    } else {
-      headRoomSize = "headroom-wrapper__cordova-android";
+    } else if (stringContains("/network", pathname)) {
+      if (isWebApp()) {
+        headRoomSize = "headroom-wrapper";
+      } else if (hasIPhoneNotch()) {
+        headRoomSize = "headroom-wrapper__cordova-ios-network-notch";
+      } else if (isIOS()) {
+        headRoomSize = "headroom-wrapper__cordova-ios-network";
+      } else {
+        headRoomSize = "headroom-wrapper__cordova-android";
+      }
     }
 
     let pageHeaderStyle = this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom";

@@ -32,9 +32,9 @@ export default class HeaderSecondaryNavBar extends Component {
     super(props);
     this._toggleBallotIntroFollowIssues = this._toggleBallotIntroFollowIssues.bind(this);
     this._toggleBallotIntroOrganizations = this._toggleBallotIntroOrganizations.bind(this);
-    this._openEmailModal = this._openEmailModal.bind(this);
-    this._openFacebookModal = this._openFacebookModal.bind(this);
-    this._openPollingLocatorModal = this._openPollingLocatorModal.bind(this);
+    this._toggleEmailModal = this._toggleEmailModal.bind(this);
+    this._toggleFacebookModal = this._toggleFacebookModal.bind(this);
+    this._togglePollingLocatorModal = this._togglePollingLocatorModal.bind(this);
     this._nextSliderPage = this._nextSliderPage.bind(this);
     this.afterChangeHandler = this.afterChangeHandler.bind(this);
     this.ballotEmailWasSent = this.ballotEmailWasSent.bind(this);
@@ -51,6 +51,7 @@ export default class HeaderSecondaryNavBar extends Component {
       showBallotIntroOrganizations: false,
       showEmailModal: false,
       showFacebookModal: false,
+      showPollingLocatorModal: false,
       successMessage: undefined,  //Used by EmailBallotModal and EmailBallotToFriendsModal
       sender_email_address: "",   //Used by EmailBallotModal and EmailBallotToFriendsModal
       verification_email_sent: false, //Used by EmailBallotModal and EmailBallotToFriendsModal
@@ -118,15 +119,15 @@ export default class HeaderSecondaryNavBar extends Component {
     window.print();
   }
 
-  _openEmailModal () {
+  _toggleEmailModal () {
     this.setState({ showEmailModal: !this.state.showEmailModal });
   }
 
-  _openFacebookModal () {
+  _toggleFacebookModal () {
     this.setState({ showFacebookModal: !this.state.showFacebookModal });
   }
 
-  _openPollingLocatorModal () {
+  _togglePollingLocatorModal () {
     this.setState({ showPollingLocatorModal: !this.state.showPollingLocatorModal });
   }
 
@@ -225,10 +226,10 @@ export default class HeaderSecondaryNavBar extends Component {
 
     const SendEmailModal = <Modal bsPrefix="background-brand-blue modal"
                                   show={this.state.showEmailModal}
-                                  onHide={() => this._openEmailModal(this)}>
+                                  onHide={() => this._toggleEmailModal(this)}>
       <Modal.Body>
        <div className="intro-modal__close">
-         <a onClick={this._openEmailModal}
+         <a onClick={this._toggleEmailModal}
             className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}>
            <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
          </a>
@@ -253,10 +254,10 @@ export default class HeaderSecondaryNavBar extends Component {
 
     const SendFacebookModal = <Modal bsPrefix="background-brand-blue modal"
                                   show={this.state.showFacebookModal}
-                                  onHide={() => this._openFacebookModal(this)}>
+                                  onHide={() => this._toggleFacebookModal(this)}>
       <Modal.Body>
         <div className="intro-modal__close">
-          <a onClick={this._openFacebookModal}
+          <a onClick={this._toggleFacebookModal}
              className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}>
             <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
           </a>
@@ -279,8 +280,9 @@ export default class HeaderSecondaryNavBar extends Component {
       </Modal.Body>
     </Modal>;
 
+    // October, 2018 - Bootstrap4: See https://react-bootstrap.netlify.com/components/modal
     const ShowPollingLocatorModal = <PollingPlaceLocatorModal show={this.state.showPollingLocatorModal}
-                                  onHide={() => this._openPollingLocatorModal(this)}/>;
+                                                              onExit={this._togglePollingLocatorModal}/>;
 
     let currentPathname = this.props.pathname ? this.props.pathname : "/ballot";
     let ballotBaseUrl = webAppConfig.WE_VOTE_URL_PROTOCOL + (isWebApp() ? webAppConfig.WE_VOTE_HOSTNAME : "WeVote.US") + currentPathname;
@@ -307,13 +309,13 @@ export default class HeaderSecondaryNavBar extends Component {
                                  title="Print"
                                  iconPrint/>
 
-            <SecondaryNavBarItem show={this._openEmailModal}
+            <SecondaryNavBarItem show={this._toggleEmailModal}
                                  source={cordovaDot("/img/global/svg-icons/nav/email-16.svg")}
                                  title="Email Ballot"/>
 
             {/* July 10, 2018 Steve:  Disable Share Ballot via Facebook, in Cordova, until it is fixed for the Webapp */}
             {isWebApp() &&
-              <SecondaryNavBarItem show={this._openFacebookModal}
+              <SecondaryNavBarItem show={this._toggleFacebookModal}
                                    title="Share Ballot"
                                    iconFacebook/>
             }
@@ -331,7 +333,7 @@ export default class HeaderSecondaryNavBar extends Component {
                                    isExternal/>
             </span>
             <div>
-              <SecondaryNavBarItem show={this._openPollingLocatorModal}
+              <SecondaryNavBarItem show={this._togglePollingLocatorModal}
                                    source={cordovaDot("/img/global/svg-icons/nav/location-16.svg")}
                                    titleDesktop="Polling Location"
                                    titleMobile="Vote"/>
