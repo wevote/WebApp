@@ -30,7 +30,7 @@ export default class ItemActionBar extends Component {
     ballot_item_display_name: PropTypes.string,
     supportOrOpposeHasBeenClicked: PropTypes.func,
     urlWithoutHash: PropTypes.string,
-    we_vote_id: PropTypes.string
+    we_vote_id: PropTypes.string,
   };
 
   constructor (props) {
@@ -261,8 +261,8 @@ export default class ItemActionBar extends Component {
 
   supportItem () {
     // Button to support this item was clicked
-    let { currentBallotIdInUrl, urlWithoutHash, we_vote_id } = this.props;
-    if (currentBallotIdInUrl !== we_vote_id) {
+    let { currentBallotIdInUrl, urlWithoutHash, we_vote_id: weVoteId } = this.props;
+    if (currentBallotIdInUrl !== weVoteId) {
       historyPush(urlWithoutHash + "#" + this.props.we_vote_id);
     }
 
@@ -314,8 +314,8 @@ export default class ItemActionBar extends Component {
   }
 
   opposeItem () {
-    let { currentBallotIdInUrl, urlWithoutHash, we_vote_id } = this.props;
-    if (currentBallotIdInUrl !== we_vote_id) {
+    let { currentBallotIdInUrl, urlWithoutHash, we_vote_id: weVoteId } = this.props;
+    if (currentBallotIdInUrl !== weVoteId) {
       historyPush(urlWithoutHash + "#" + this.props.we_vote_id);
     }
     if (this.props.supportOrOpposeHasBeenClicked) {
@@ -398,7 +398,7 @@ export default class ItemActionBar extends Component {
       this.state.opposeCount === undefined ||
       this.state.isOpposeAPIState === undefined ||
       this.state.isPublicPosition === undefined ||
-      this.state.isSupportAPIState === undefined ) {
+      this.state.isSupportAPIState === undefined) {
       // Do not render until componentDidMount has set the initial states
       return null;
     }

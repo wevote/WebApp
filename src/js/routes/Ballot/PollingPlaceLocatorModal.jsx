@@ -3,9 +3,12 @@ import { cordovaDot, cordovaOpenSafariView, hasIPhoneNotch, historyPush, isWebAp
 import { Modal } from "react-bootstrap";
 import { renderLog } from "../../utils/logging";
 import PollingPlaceLocator from "../../components/Ballot/PollingPlaceLocator";
+import PropTypes from "prop-types";
 
 export default class PollingPlaceLocatorModal extends Component {
-  static propTypes = {};
+  static propTypes = {
+    onExit: PropTypes.func,
+  };
 
   constructor (props) {
     super(props);
@@ -42,7 +45,7 @@ export default class PollingPlaceLocatorModal extends Component {
     } else {
       return (
         <div>
-          { cordovaOpenSafariView("https://s3-us-west-1.amazonaws.com/wevote/vip.html", 50) }
+          { cordovaOpenSafariView("https://s3-us-west-1.amazonaws.com/wevote/vip.html", this.props.onExit, 50) }
         </div>
       );
     }

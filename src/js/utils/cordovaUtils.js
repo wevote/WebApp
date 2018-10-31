@@ -27,7 +27,7 @@ export function cordovaDot (path) {
   }
 }
 
-function cordovaOpenSafariViewSub (requestURL) {
+function cordovaOpenSafariViewSub (requestURL, onExit) {
 
   // console.log("cordovaOpenSafariView -1- requestURL: " + requestURL);
   SafariViewController.isAvailable(function () {            // eslint-disable-line no-undef
@@ -38,11 +38,14 @@ function cordovaOpenSafariViewSub (requestURL) {
 
       function (result) {
         if (result.event === "opened") {
-          oAuthLog("cordovaOpenSafariView opened url " + requestURL);
+          oAuthLog("cordovaOpenSafariView opened url: " + requestURL);
         } else if (result.event === "loaded") {
-          oAuthLog("cordovaOpenSafariView loaded url " + JSON.stringify(result));
+          oAuthLog("cordovaOpenSafariView loaded url: " + JSON.stringify(result));
         } else if (result.event === "closed") {
-          oAuthLog("cordovaOpenSafariView closed" + JSON.stringify(result));
+          oAuthLog("cordovaOpenSafariView closed: " + JSON.stringify(result));
+          if (onExit) {
+            onExit();
+          }
         }
       },
 
@@ -60,8 +63,8 @@ function cordovaOpenSafariViewSub (requestURL) {
  * @param requestURL, the URL to open
  * @param timeout, a hack delay before invoking, but it fails without the timeout
  */
-export function cordovaOpenSafariView (requestURL, timeout) {
-  setTimeout(cordovaOpenSafariViewSub, timeout, requestURL);
+export function cordovaOpenSafariView (requestURL, onExit, timeout) {
+  setTimeout(cordovaOpenSafariViewSub, timeout, requestURL, onExit);
 }
 
 /*
@@ -160,6 +163,33 @@ export function isAndroid () {
   return isCordova() && window.device && device.platform === "Android";
 }
 
+export function getAndroidSize () {
+  let ratio = window.devicePixelRatio || 1;
+  let screen = {
+    width: window.screen.width * ratio,
+    height: window.screen.height * ratio,
+  };
+
+  let size = screen.width * screen.height;
+  let sizeString = "default";
+
+  /* sm = 480*800 = 384,000      Nexus One
+     md = 1080*1920 = 2,073,600  PixelXL, Nexus5X, Moto G5
+     lg = 1440*2560 = 3,686,400  Nexus6P
+     xl = 2560*1600 = 4,096,000  Nexus10 Tablet   */
+
+  if (size > 3.7E6) {
+    sizeString = "android-xl";
+  } else if (size > 3E6) {
+    sizeString = "android-lg";
+  } else if (size > 1E6) {
+    sizeString = "android-md";
+  } else {
+    sizeString = "android-sm";
+  }
+  return sizeString;
+}
+
 export function getHeadingSize () {
   let sizeString = "";
   if (isCordova()) {
@@ -172,7 +202,7 @@ export function getHeadingSize () {
     } else if (isIPhone678Plus()) {
       sizeString = "i678plus";
     } else if (isAndroid()) {
-      sizeString = "android";
+      sizeString = getAndroidSize();
     } else {
       sizeString = "default";
     }
