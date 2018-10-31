@@ -19,15 +19,15 @@
   }
 
   &__position-btn-label {
-    color: $gray-dark;
+    color: $gray-darker;
     // Oct 2018 Showing support/oppose everywhere
     //@include breakpoints (max mid-small) {
     //  display: none; // Hide Support/Oppose button labels on small screens
     //}
-  }
 
-  &__position-at-state {
-    color: $gray-pale;
+    &--at-state {
+      color: $white;
+    }
   }
 
   &__following-text {
@@ -52,10 +52,15 @@
   flex: auto;
 
   &__position-btn-label {
+    color: $gray-darker;
     // Oct 2018 Showing support/oppose everywhere
     //@include breakpoints (max large) {
     //  display: none; // Hide Support/Oppose button labels on all screens
     //}
+
+    &--at-state {
+      color: $white;
+    }
   }
 
   .btn-group {

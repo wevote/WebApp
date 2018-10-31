@@ -59,7 +59,7 @@ export default class OpinionsFollowedListCompressed extends Component {
     const orgs = this.state.organizations_followed.map( (org) => {
       if (this.props.editMode) {
         return <OrganizationDisplayForListCompressed key={org.organization_we_vote_id} {...org}>
-              <FollowToggle we_vote_id={org.organization_we_vote_id} /><span />
+              <FollowToggle organizationWeVoteId={org.organization_we_vote_id} /><span />
             </OrganizationDisplayForListCompressed>;
       } else {
         return <OrganizationDisplayForListCompressed key={org.organization_we_vote_id} {...org}>

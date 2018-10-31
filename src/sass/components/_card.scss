@@ -106,6 +106,10 @@ $candidate-font-size: .875rem;
       font-weight: 600;
     }
 
+    &__candidate-name-link {
+      color: $link-color;
+    }
+
     &__candidate-party-description {
       font-size: $candidate-font-size;
       color: $gray-dark;
@@ -218,6 +222,10 @@ $candidate-font-size: .875rem;
 
     &__ballot-name-item {
       float: left;
+    }
+
+    &__ballot-name-link {
+      color: $link-color;
     }
 
     &__ballot-name {

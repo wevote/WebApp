@@ -1,21 +1,20 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { OverlayTrigger, Popover } from "react-bootstrap";
 import { findDOMNode } from "react-dom";
 import $ from "jquery";
-import { isCordova } from "../../utils/cordovaUtils";
+import { cordovaDot } from "../../utils/cordovaUtils";
 import VoterGuideStore from "../../stores/VoterGuideStore";
-import IssuesDisplayListWithOrganizationPopovers from "../Issues/IssuesDisplayListWithOrganizationPopovers";
 import IssueStore from "../../stores/IssueStore";
 import { renderLog } from "../../utils/logging";
+import SupportStore from "../../stores/SupportStore";
 
-// Show a voter a horizontal list of all of the issues they are following that relate to this ballot item,
-//  with a dropdown under each one that has all of the organizations they can follow underneath.
-export default class IssuesFollowedByBallotItemDisplayList extends Component {
+// Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
+export default class IssuesByBallotItemDisplayList extends Component {
   static propTypes = {
     ballotItemDisplayName: PropTypes.string,
     ballotItemWeVoteId: PropTypes.string.isRequired,
     currentBallotIdInUrl: PropTypes.string,
+    issuesListHidden: PropTypes.bool,
     overlayTriggerOnClickOnly: PropTypes.bool,
     popoverBottom: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
@@ -35,6 +34,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
       issuesUnderThisBallotItemVoterIsFollowing: [],
       issuesUnderThisBallotItemVoterIsNotFollowing: [],
       issuesVoterIsFollowing: [],
+      maximumNumberOfIssuesToDisplay: 26,
       showModal: false,
       transitioning: false,
     };
@@ -90,12 +90,10 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
   onVoterGuideStoreChange () {
     // We just want to trigger a re-render
     this.setState({ transitioning: false });
-
-    // console.log("onVoterGuideStoreChange");
   }
 
   scrollLeft (visibleTag) {
-    const element = findDOMNode(this.refs[`${this.props.ballotItemWeVoteId}-issue-list-${visibleTag}`]);
+    const element = findDOMNode(this.refs[`${this.state.ballotItemWeVoteId}-issue-list-${visibleTag}`]);
     let position = $(element).scrollLeft();
     let width = Math.round($(element).width());
     $(element).animate({
@@ -117,7 +115,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
   }
 
   scrollRight (visibleTag) {
-    const element = findDOMNode(this.refs[`${this.props.ballotItemWeVoteId}-issue-list-${visibleTag}`]);
+    const element = findDOMNode(this.refs[`${this.state.ballotItemWeVoteId}-issue-list-${visibleTag}`]);
     let position = $(element).scrollLeft();
     let width = Math.round($(element).width());
     $(element).animate({
@@ -139,8 +137,8 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
   }
 
   setScrollState () {
-    const desktopList = findDOMNode(this.refs[`${this.props.ballotItemWeVoteId}-issue-list-desktop`]);
-    const mobileList = findDOMNode(this.refs[`${this.props.ballotItemWeVoteId}-issue-list-mobile`]);
+    const desktopList = findDOMNode(this.refs[`${this.state.ballotItemWeVoteId}-issue-list-desktop`]);
+    const mobileList = findDOMNode(this.refs[`${this.state.ballotItemWeVoteId}-issue-list-mobile`]);
     let desktopListVisibleWidth = $(desktopList).width();
     let desktopListWidth = $(desktopList).children().eq(0).children().eq(0).width();
     let mobileListVisibleWidth = $(mobileList).width();
@@ -164,108 +162,144 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
       return null;
     }
 
-    // Removed bsPrefix="card-popover"
-    const issuesLabelPopover =
-      <Popover id="positions-popover-trigger-click-root-close"
-               title={<span>Issues related to {this.state.ballotItemDisplayName}
-                  <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" /></span>}
-               onClick={this.closeIssuesLabelPopover}
-               >
-        See opinions about {this.state.ballotItemDisplayName}, organized by issues you care about.
-      </Popover>;
+    let localCounter = 0;
+    const issuesVoterIsFollowingHtml = this.state.issuesUnderThisBallotItemVoterIsFollowing.map((oneIssue) => {
+      if (!oneIssue) {
+        return null;
+      }
+      localCounter++;
+      if (localCounter <= this.state.maximumNumberOfIssuesToDisplay) {
+        return <span className="u-push--sm issue-icon-list__issue-block"
+                     key={`issue-icon-${oneIssue.issue_we_vote_id}`}
+                     >
+          {/* <img src={cordovaDot("/img/global/svg-icons/issue-generic.svg")}
+                 className="issue-icon-list__issue-icon"
+                 /> */}
+            <span className="u-margin-left--xs issue-icon-list__issue-label-name">{oneIssue.issue_name}</span>
+          </span>;
+      } else {
+        return null;
+      }
+    });
+    localCounter = 0;
+    const issuesVoterIsNotFollowingHtml = this.state.issuesUnderThisBallotItemVoterIsNotFollowing.map((oneIssue) => {
+      if (!oneIssue) {
+        return null;
+      }
+      localCounter++;
+      if (localCounter <= this.state.maximumNumberOfIssuesToDisplay) {
+        return <span className="u-push--sm issue-icon-list__issue-block"
+                     key={`issue-icon-${oneIssue.issue_we_vote_id}`}
+                     >
+          {/* <img src={cordovaDot("/img/global/svg-icons/issue-generic.svg")}
+                 className="issue-icon-list__issue-icon"
+                 /> */}
+            <span className="u-margin-left--xs issue-icon-list__issue-label-name">{oneIssue.issue_name}</span>
+          </span>;
+      } else {
+        return null;
+      }
+    });
 
-    const issuesLabel =
-      <OverlayTrigger trigger="click"
-                      rootClose
-                      placement={this.props.popoverBottom ? "bottom" : "top"}
-                      overlay={issuesLabelPopover}>
-        <span className="issues-list-stacked__support-label u-cursor--pointer u-no-break">
-          <span>Related<br />Issues</span>
-          <span>&nbsp;<i className="fa fa-info-circle fa-md issues-list-stacked__info-icon-for-popover d-print-none" aria-hidden="true" />&nbsp;</span>
+    let ballotItemSupportProps = SupportStore.get(this.state.ballotItemWeVoteId);
+    let networkSupportCount = parseInt(ballotItemSupportProps.support_count) || 0;
+    let networkOpposeCount = parseInt(ballotItemSupportProps.oppose_count) || 0;
+    let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(this.state.ballotItemWeVoteId);
+    let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(this.state.ballotItemWeVoteId);
+    let totalSupportCount = networkSupportCount + organizationsToFollowSupport.length;
+    let totalOpposeCount = networkOpposeCount + organizationsToFollowOppose.length;
+
+    const endorsementsLabel =
+      <span className="issues-list-stacked__support-label u-no-break">
+        <span className="u-push--md">
+          { totalSupportCount ?
+            <span className="u-no-break u-push--xs issue-icon-list__endorsements-label"><img
+              src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")}
+              className="u-push--xs"
+              width="20"
+              height="20"/>{totalSupportCount}</span> :
+            null
+          }
+          { totalOpposeCount ?
+            <span className="u-no-break u-push--xs issue-icon-list__endorsements-label"><img
+              src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
+              className="u-push--xs"
+              width="20"
+              height="20"/>{totalOpposeCount}</span> :
+            null
+          }
+          { totalSupportCount || totalOpposeCount ?
+            <span className="issue-icon-list__endorsements-label">Endorsements</span> :
+            null
+          }
         </span>
-      </OverlayTrigger>;
+      </span>;
 
     return (
       <div className="issues-list-stacked__support-list u-flex u-justify-between u-items-center">
         {/* Click to scroll left through list Desktop */}
+        {/*
+        */}
         { this.state.canScrollDesktop && this.state.canScrollLeftDesktop ?
           <i className="fa fa-2x fa-chevron-left issues-list-stacked__support-list__scroll-icon u-cursor--pointer d-none d-sm-block d-print-none" aria-hidden="true" onClick={this.scrollLeft.bind(this, "desktop")} /> :
           <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list__scroll-icon--disabled d-none d-sm-block d-print-none" aria-hidden="true" />
         }
         {/* Click to scroll left through list Mobile */}
+        {/*
+        */}
         { this.state.canScrollMobile && this.state.canScrollLeftMobile ?
           <i className="fa fa-2x fa-chevron-left issues-list-stacked__support-list__scroll-icon u-cursor--pointer d-block d-sm-none d-print-none" aria-hidden="true" onClick={this.scrollLeft.bind(this, "mobile")} /> :
           <i className="fa fa-2x fa-chevron-left network-positions-stacked__support-list__scroll-icon--disabled d-block d-sm-none d-print-none" aria-hidden="true" />
         }
         <div className="issues-list-stacked__support-list__container-wrap">
           {/* Show a break-down of the current positions in your network */}
-          <span ref={`${this.props.ballotItemWeVoteId}-issue-list-desktop`} className="issues-list-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs d-none d-sm-block">
+          <span ref={`${this.state.ballotItemWeVoteId}-issue-list-desktop`} className="issues-list-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs d-none d-sm-block">
             <ul className="issues-list-stacked__support-list__items">
               <li className="issues-list-stacked__support-list__item">
-                {issuesLabel}
-
-                {/* Issues the voter is already following */}
-                <IssuesDisplayListWithOrganizationPopovers ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-                                                           currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                                           issueImageSize={"MEDIUM"}
-                                                           issueListToDisplay={this.state.issuesUnderThisBallotItemVoterIsFollowing}
-                                                           overlayTriggerOnClickOnly={this.props.overlayTriggerOnClickOnly}
-                                                           popoverBottom={this.props.popoverBottom}
-                                                           toFollow
-                                                           urlWithoutHash={this.props.urlWithoutHash}
-                                                           />
-                {/* Issues the voter is not following yet */}
-                <IssuesDisplayListWithOrganizationPopovers ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-                                                           currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                                           issueImageSize={"MEDIUM"}
-                                                           issueListToDisplay={this.state.issuesUnderThisBallotItemVoterIsNotFollowing}
-                                                           overlayTriggerOnClickOnly={this.props.overlayTriggerOnClickOnly}
-                                                           popoverBottom={this.props.popoverBottom}
-                                                           toFollow
-                                                           urlWithoutHash={this.props.urlWithoutHash}
-                                                           />
+                {endorsementsLabel}
+                { this.props.issuesListHidden ?
+                  null :
+                  <span>
+                    {/* Issues the voter is already following */}
+                    {issuesVoterIsFollowingHtml}
+                    {/* Issues the voter is not following yet */}
+                    {issuesVoterIsNotFollowingHtml}
+                  </span>
+                }
               </li>
             </ul>
           </span>
-          <span ref={`${this.props.ballotItemWeVoteId}-issue-list-mobile`} className="issues-list-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs d-block d-sm-none">
+          <span ref={`${this.state.ballotItemWeVoteId}-issue-list-mobile`} className="issues-list-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs d-block d-sm-none">
             <ul className="issues-list-stacked__support-list__items">
               <li className="issues-list-stacked__support-list__item">
-                {issuesLabel}
-
-                {/* Issues the voter is already following */}
-                <IssuesDisplayListWithOrganizationPopovers ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-                                                           currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                                           issueImageSize={"MEDIUM"}
-                                                           issueListToDisplay={this.state.issuesUnderThisBallotItemVoterIsFollowing}
-                                                           overlayTriggerOnClickOnly
-                                                           popoverBottom={this.props.popoverBottom}
-                                                           toFollow
-                                                           urlWithoutHash={this.props.urlWithoutHash}
-                                                           />
-                {/* Issues the voter is not following yet */}
-                <IssuesDisplayListWithOrganizationPopovers ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-                                                           currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                                           issueImageSize={"MEDIUM"}
-                                                           issueListToDisplay={this.state.issuesUnderThisBallotItemVoterIsNotFollowing}
-                                                           overlayTriggerOnClickOnly
-                                                           popoverBottom={this.props.popoverBottom}
-                                                           toFollow
-                                                           urlWithoutHash={this.props.urlWithoutHash}
-                                                           />
+                {endorsementsLabel}
+                { this.props.issuesListHidden ?
+                  null :
+                  <span>
+                    {/* Issues the voter is already following */}
+                    {issuesVoterIsFollowingHtml}
+                    {/* Issues the voter is not following yet */}
+                    {issuesVoterIsNotFollowingHtml}
+                  </span>
+                }
               </li>
             </ul>
           </span>
         </div>
         {/* Click to scroll right through list Desktop */}
+        {/*
         { this.state.canScrollDesktop && this.state.canScrollRightDesktop ?
           <i className="fa fa-2x fa-chevron-right issues-list-stacked__support-list__scroll-icon u-cursor--pointer d-none d-sm-block d-print-none" aria-hidden="true" onClick={this.scrollRight.bind(this, "desktop")} /> :
           <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list__scroll-icon--disabled d-none d-sm-block d-print-none" aria-hidden="true" />
         }
+        */}
         {/* Click to scroll right through list Mobile */}
+        {/*
         { this.state.canScrollMobile && this.state.canScrollRightMobile ?
           <i className="fa fa-2x fa-chevron-right issues-list-stacked__support-list__scroll-icon u-cursor--pointer d-block d-sm-none d-print-none" aria-hidden="true" onClick={this.scrollRight.bind(this, "mobile")} /> :
           <i className="fa fa-2x fa-chevron-right network-positions-stacked__support-list__scroll-icon--disabled d-block d-sm-none d-print-none" aria-hidden="true" />
         }
+        */}
       </div>
     );
   }

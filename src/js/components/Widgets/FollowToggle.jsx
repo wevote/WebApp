@@ -15,12 +15,12 @@ export default class FollowToggle extends Component {
     classNameOverride: PropTypes.string,
     currentBallotIdInUrl: PropTypes.string,
     hide_stop_following_button: PropTypes.bool,
-    office_we_vote_id: PropTypes.string,
+    ballotItemWeVoteId: PropTypes.string,
     organization_for_display: PropTypes.object,
     opposesThisBallotItem: PropTypes.bool,
     supportsThisBallotItem: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
-    we_vote_id: PropTypes.string.isRequired,
+    organizationWeVoteId: PropTypes.string.isRequired,
   };
 
   constructor (props) {
@@ -40,8 +40,8 @@ export default class FollowToggle extends Component {
     // console.log("componentDidMount, this.props: ", this.props);
     this.setState({
       componentDidMountFinished: true,
-      is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.we_vote_id),
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.props.we_vote_id),
+      is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.organizationWeVoteId),
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.props.organizationWeVoteId),
     });
     this._onVoterStoreChange();
 
@@ -52,7 +52,7 @@ export default class FollowToggle extends Component {
   }
 
   componentWillUnmount () {
-    // console.log("componentWillUnmount, this.props.we_vote_id: ", this.props.we_vote_id);
+    // console.log("componentWillUnmount, this.props.organizationWeVoteId: ", this.props.organizationWeVoteId);
     this.voterGuideStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
@@ -73,18 +73,18 @@ export default class FollowToggle extends Component {
   }
 
   onVoterGuideStoreChange () {
-    // console.log("FollowToggle, onVoterGuideStoreChange, organization_we_vote_id: ", this.props.we_vote_id);
+    // console.log("FollowToggle, onVoterGuideStoreChange, organization_we_vote_id: ", this.props.organizationWeVoteId);
     this.setState({
-      is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.we_vote_id),
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.props.we_vote_id),
+      is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.organizationWeVoteId),
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.props.organizationWeVoteId),
     });
   }
 
   _onOrganizationStoreChange () {
-    // console.log("FollowToggle, _onOrganizationStoreChange, organization_we_vote_id: ", this.props.we_vote_id);
+    // console.log("FollowToggle, _onOrganizationStoreChange, organization_we_vote_id: ", this.props.organizationWeVoteId);
     this.setState({
-      is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.we_vote_id),
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.props.we_vote_id),
+      is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.organizationWeVoteId),
+      organization: OrganizationStore.getOrganizationByWeVoteId(this.props.organizationWeVoteId),
     });
   }
 
@@ -100,10 +100,10 @@ export default class FollowToggle extends Component {
     this.setState({ is_following: false });
   }
 
-  stopFollowingInstantly (stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, officeWeVoteId) {
+  stopFollowingInstantly (stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId) {
     if (currentBallotIdInUrl && urlWithoutHash && urlWithoutHash) {
-      if (currentBallotIdInUrl !== officeWeVoteId) {
-        historyPush(this.props.urlWithoutHash + "#" + this.props.office_we_vote_id);
+      if (currentBallotIdInUrl !== ballotItemWeVoteId) {
+        historyPush(this.props.urlWithoutHash + "#" + this.props.ballotItemWeVoteId);
       }
     }
 
@@ -120,10 +120,10 @@ export default class FollowToggle extends Component {
     this.stopFollowingLocalState();
   }
 
-  followInstantly (followFunc, currentBallotIdInUrl, urlWithoutHash, officeWeVoteId) {
+  followInstantly (followFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId) {
     if (currentBallotIdInUrl && urlWithoutHash && urlWithoutHash) {
-      if (currentBallotIdInUrl !== officeWeVoteId) {
-        historyPush(this.props.urlWithoutHash + "#" + this.props.office_we_vote_id);
+      if (currentBallotIdInUrl !== ballotItemWeVoteId) {
+        historyPush(this.props.urlWithoutHash + "#" + this.props.ballotItemWeVoteId);
       }
     }
 
@@ -145,20 +145,20 @@ export default class FollowToggle extends Component {
     renderLog(__filename);
     if (!this.state) { return <div />; }
 
-    let { we_vote_id: weVoteId, organization_for_display: organizationForDisplay } = this.props;
+    let { organizationWeVoteId: weVoteId, organization_for_display: organizationForDisplay } = this.props;
     // let classNameOverride = this.props.classNameOverride || "";
     let isLookingAtSelf = this.state.voter.linked_organization_we_vote_id === weVoteId;
 
     // You should not be able to follow yourself
     if (isLookingAtSelf) { return <div />; }
 
-    let { currentBallotIdInUrl, urlWithoutHash, office_we_vote_id: officeWeVoteId } = this.props;
+    let { currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId } = this.props;
     const followFunc = OrganizationActions.organizationFollow.bind(this, weVoteId);
     const stopFollowingFunc = OrganizationActions.organizationStopFollowing.bind(this, weVoteId);
 
     // NOTE: We want to leave this as showing only if this.props.organization_for_display comes in
     if (organizationForDisplay) {
-      return <span onClick={()=>this.followInstantly(followFunc, currentBallotIdInUrl, urlWithoutHash, officeWeVoteId)}>
+      return <span onClick={()=>this.followInstantly(followFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
         <OrganizationTinyDisplay {...organizationForDisplay}
                                  showPlaceholderImage
                                  toFollow
@@ -173,14 +173,14 @@ export default class FollowToggle extends Component {
           null :
           <Button variant="warning"
                   size="sm"
-                  onClick={()=>this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, officeWeVoteId)}>
+                  onClick={()=>this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
             Listening
           </Button>
         }
       </span> :
       <span className="d-print-none">
         <Button variant="success" size="sm"
-                onClick={()=>this.followInstantly(followFunc, currentBallotIdInUrl, urlWithoutHash, officeWeVoteId)}>
+                onClick={()=>this.followInstantly(followFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
           Listen
         </Button>
       </span>;
