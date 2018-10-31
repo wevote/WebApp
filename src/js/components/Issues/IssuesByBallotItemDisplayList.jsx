@@ -3,10 +3,11 @@ import PropTypes from "prop-types";
 import { findDOMNode } from "react-dom";
 import $ from "jquery";
 import { cordovaDot } from "../../utils/cordovaUtils";
-import VoterGuideStore from "../../stores/VoterGuideStore";
+import Icon from "react-svg-icons";
 import IssueStore from "../../stores/IssueStore";
 import { renderLog } from "../../utils/logging";
 import SupportStore from "../../stores/SupportStore";
+import VoterGuideStore from "../../stores/VoterGuideStore";
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
 export default class IssuesByBallotItemDisplayList extends Component {
@@ -172,11 +173,15 @@ export default class IssuesByBallotItemDisplayList extends Component {
         return <span className="u-push--sm issue-icon-list__issue-block"
                      key={`issue-icon-${oneIssue.issue_we_vote_id}`}
                      >
-          {/* <img src={cordovaDot("/img/global/svg-icons/issue-generic.svg")}
-                 className="issue-icon-list__issue-icon"
-                 /> */}
-            <span className="u-margin-left--xs issue-icon-list__issue-label-name">{oneIssue.issue_name}</span>
-          </span>;
+          { oneIssue.issue_icon_local_path ?
+            <Icon name={"issues/" + oneIssue.issue_icon_local_path}
+                  width={20}
+                  height={20}
+                  color={"#555"}/> :
+            null
+          }
+          <span className="u-margin-left--xxs issue-icon-list__issue-label-name">{oneIssue.issue_name}</span>
+        </span>;
       } else {
         return null;
       }
@@ -191,30 +196,35 @@ export default class IssuesByBallotItemDisplayList extends Component {
         return <span className="u-push--sm issue-icon-list__issue-block"
                      key={`issue-icon-${oneIssue.issue_we_vote_id}`}
                      >
-          {/* <img src={cordovaDot("/img/global/svg-icons/issue-generic.svg")}
-                 className="issue-icon-list__issue-icon"
-                 /> */}
-            <span className="u-margin-left--xs issue-icon-list__issue-label-name">{oneIssue.issue_name}</span>
-          </span>;
+          { oneIssue.issue_icon_local_path ?
+            <Icon name={"issues/" + oneIssue.issue_icon_local_path}
+                  width={20}
+                  height={20}
+                  color={"#999"}/> :
+            null
+          }
+          <span className="u-margin-left--xxs issue-icon-list__issue-label-name">{oneIssue.issue_name}</span>
+        </span>;
       } else {
         return null;
       }
     });
 
     let ballotItemSupportProps = SupportStore.get(this.state.ballotItemWeVoteId);
-    let networkSupportCount = parseInt(ballotItemSupportProps.support_count) || 0;
-    let networkOpposeCount = parseInt(ballotItemSupportProps.oppose_count) || 0;
+    let networkSupportCount = parseInt(ballotItemSupportProps.support_count || 0);
+    let networkOpposeCount = parseInt(ballotItemSupportProps.oppose_count || 0);
     let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(this.state.ballotItemWeVoteId);
     let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(this.state.ballotItemWeVoteId);
     let totalSupportCount = networkSupportCount + organizationsToFollowSupport.length;
     let totalOpposeCount = networkOpposeCount + organizationsToFollowOppose.length;
+    let totalEndorsementCount = totalSupportCount + totalOpposeCount;
 
     const endorsementsLabel =
       <span className="issues-list-stacked__support-label u-no-break">
         <span className="u-push--md">
           { totalSupportCount ?
             <span className="u-no-break u-push--xs issue-icon-list__endorsements-label"><img
-              src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")}
+              src={cordovaDot("/img/global/svg-icons/issues/thumbs-up-circle-icon.svg")}
               className="u-push--xs"
               width="20"
               height="20"/>{totalSupportCount}</span> :
@@ -222,14 +232,14 @@ export default class IssuesByBallotItemDisplayList extends Component {
           }
           { totalOpposeCount ?
             <span className="u-no-break u-push--xs issue-icon-list__endorsements-label"><img
-              src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
+              src={cordovaDot("/img/global/svg-icons/issues/thumbs-down-circle-icon.svg")}
               className="u-push--xs"
               width="20"
               height="20"/>{totalOpposeCount}</span> :
             null
           }
           { totalSupportCount || totalOpposeCount ?
-            <span className="issue-icon-list__endorsements-label">Endorsements</span> :
+            <span className="issue-icon-list__endorsements-label">Endorsement{ totalEndorsementCount > 1 ? "s" : ""}</span> :
             null
           }
         </span>
