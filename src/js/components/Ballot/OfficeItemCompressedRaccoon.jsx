@@ -15,6 +15,7 @@ import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateStore from "../../stores/CandidateStore";
 import Icon from "react-svg-icons";
 import ImageHandler from "../ImageHandler";
+import IssuesByBallotItemDisplayList from "../../components/Issues/IssuesByBallotItemDisplayList";
 import IssueStore from "../../stores/IssueStore";
 import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
 import LearnMore from "../Widgets/LearnMore";
@@ -441,7 +442,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
               <span className="d-print-none u-push--xs"><Icon name="glyphicons-pro-halflings/glyphicons-halflings-252-triangle-bottom" width={32} height={32} color="" /></span> :
               <span className="d-print-none u-push--xs"><Icon name="glyphicons-pro-halflings/glyphicons-halflings-250-triangle-right" width={32} height={32} color="" /></span>
             }
-            {ballotItemDisplayName}
+            <span className="card-main__ballot-name-link">{ballotItemDisplayName}</span>
           </span>
         </h2>
 
@@ -491,7 +492,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                 </div>
                 <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
                   {/* Candidate Name */}
-                  <h4 className="card-main__candidate-name u-f5">
+                  <h4 className="card-main__candidate-name card-main__candidate-name-link u-f5">
                     <a onClick={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(oneCandidate.we_vote_id) : null}>
                       <TextTruncate line={1}
                                     truncateText="…"
@@ -530,6 +531,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                 }
 
                 const voterSupportsThisCandidate = SupportStore.get(oneCandidate.we_vote_id) && SupportStore.get(oneCandidate.we_vote_id).is_support;
+                let candidatePartyText = oneCandidate.party && oneCandidate.party.length ? oneCandidate.party + ". " : "";
 
                 let networkOrIssueScoreSupport;
                 if (atLeastOneCandidateChosenByNetwork) {
@@ -573,8 +575,9 @@ export default class OfficeItemCompressedRaccoon extends Component {
                                     kind_of_ballot_item="CANDIDATE" />
                       {/* Candidate Name */}
                       <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-                        <h2 className="h5">
+                        <h2 className="card-main__candidate-name-link h5">
                           {oneCandidate.ballot_item_display_name}
+                          <span className="u-margin-left--sm card-main__candidate-party-description">{candidatePartyText}</span>
                         </h2>
                       </div>
                     </div>
@@ -619,24 +622,25 @@ export default class OfficeItemCompressedRaccoon extends Component {
                                       kind_of_ballot_item="CANDIDATE" />
                         {/* Candidate Name */}
                         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-                          <h2 className="h5">
+                          <h2 className="card-main__candidate-name-link h5">
                             {oneCandidate.ballot_item_display_name}
+                            <span className="u-margin-left--sm card-main__candidate-party-description">{candidatePartyText}</span>
                           </h2>
-                        </div>
-                      </div>
-                      <div className="u-flex-none u-justify-end">
-                        <OverlayTrigger trigger="click"
-                                        ref="highest-issue-score-overlay"
-                                        onExit={this.closeHighestIssueScorePopover}
-                                        rootClose
-                                        placement="top"
-                                        overlay={hasHighestIssueScorePopover}>
                           <div>
-                            <span className="u-push--xs u-cursor--pointer">Has the highest <strong>Issue Score</strong></span>
-                            <img src={cordovaDot("/img/global/icons/up-arrow-color-icon.svg")}
-                                 className="network-positions__support-icon" width="20" height="20"/>
+                            <OverlayTrigger trigger="click"
+                                            ref="highest-issue-score-overlay"
+                                            onExit={this.closeHighestIssueScorePopover}
+                                            rootClose
+                                            placement="top"
+                                            overlay={hasHighestIssueScorePopover}>
+                              <div>
+                                <span className="u-push--xs u-cursor--pointer">Has the highest <strong>Issue Score</strong></span>
+                                <img src={cordovaDot("/img/global/icons/up-arrow-color-icon.svg")}
+                                     className="network-positions__support-icon" width="20" height="20"/>
+                              </div>
+                            </OverlayTrigger>
                           </div>
-                        </OverlayTrigger>
+                        </div>
                       </div>
                     </div>;
                   }
@@ -657,10 +661,20 @@ export default class OfficeItemCompressedRaccoon extends Component {
                                       kind_of_ballot_item="CANDIDATE" />
                         {/* Candidate Name */}
                         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-                          <h4 className="card-main__candidate-name u-f5">
+                          <h4 className="card-main__candidate-name card-main__candidate-name-link u-f5">
                             {oneCandidate.ballot_item_display_name}
-                            <span className="card-main__ballot-read-more-link">see&nbsp;more</span>
+                            <span className="u-margin-left--sm card-main__candidate-party-description">{candidatePartyText}</span>
                           </h4>
+                          <div>
+                            {/* Issues related to this Candidate */}
+                            <IssuesByBallotItemDisplayList ballotItemDisplayName={oneCandidate.ballot_item_display_name}
+                                                           ballotItemWeVoteId={oneCandidate.we_vote_id}
+                                                           currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                                                           overlayTriggerOnClickOnly
+                                                           placement={"bottom"}
+                                                           urlWithoutHash={this.props.urlWithoutHash}
+                                                           />
+                          </div>
                         </div>
                       </div>
                     </div>;
@@ -738,9 +752,9 @@ export default class OfficeItemCompressedRaccoon extends Component {
           <Link onClick={this.toggleExpandDetails}>
             <div className="BallotItem__view-more u-items-center u-no-break d-print-none">
               <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
-              { totalNumberOfCandidatesToDisplay > 1 ?
+              { totalNumberOfCandidatesToDisplay > NUMBER_OF_CANDIDATES_TO_DISPLAY ?
                 <span> View all {totalNumberOfCandidatesToDisplay} candidates</span> :
-                <span> View candidate</span>
+                <span> View details</span>
               }
             </div>
           </Link>

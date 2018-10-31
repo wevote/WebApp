@@ -5,7 +5,7 @@ import { isCordova } from "../../utils/cordovaUtils";
 import FollowToggle from "../Widgets/FollowToggle";
 import ImageHandler from "../../components/ImageHandler";
 import IssueCard from "./IssueCard";
-import IssueImageDisplay from "./IssueImageDisplay";
+import IssueImageDisplay from "../../components/Issues/IssueImageDisplay";
 import IssueStore from "../../stores/IssueStore";
 import ReadMore from "../../components/Widgets/ReadMore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
@@ -23,7 +23,6 @@ export default class IssueTinyDisplay extends Component {
     popoverBottom: PropTypes.bool,
     toFollow: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
-    we_vote_id: PropTypes.string
   };
 
   constructor (props) {
@@ -158,8 +157,8 @@ export default class IssueTinyDisplay extends Component {
         <div className="card-child__additional">
           <div className="card-child__follow-buttons">
             <FollowToggle currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                          office_we_vote_id={this.props.we_vote_id}
-                          we_vote_id={organization_we_vote_id}
+                          ballotItemWeVoteId={this.props.ballotItemWeVoteId}
+                          organizationWeVoteId={organization_we_vote_id}
                           urlWithoutHash={this.props.urlWithoutHash}
              />
           </div>
@@ -182,7 +181,6 @@ export default class IssueTinyDisplay extends Component {
                    issue={this.props.issue}
                    issueImageSize={"MEDIUM"}
                    urlWithoutHash={this.props.urlWithoutHash}
-                   we_vote_id={this.props.we_vote_id}
         />
         <span className="guidelist card-child__list-group">
           {organizations_not_shown_display}

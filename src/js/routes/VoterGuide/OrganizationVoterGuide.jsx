@@ -216,7 +216,7 @@ export default class OrganizationVoterGuide extends Component {
                 <Button variant="warning" size="small" bsPrefix="pull-right" onClick={this.onEdit}>
                   <span>Edit</span>
                 </Button> :
-                <FollowToggle we_vote_id={this.state.organization.organization_we_vote_id} />
+                <FollowToggle organizationWeVoteId={this.state.organization.organization_we_vote_id} />
               }
               <OrganizationCard organization={this.state.organization} />
             </div>

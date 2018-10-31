@@ -163,7 +163,7 @@ export default class VerifyThisIsMe extends Component {
         <Helmet title="Claim This Page - We Vote" />
           <div className="card">
             <div className="card-main">
-              <FollowToggle we_vote_id={this.props.params.we_vote_id} />
+              <FollowToggle organizationWeVoteId={this.props.params.we_vote_id} />
               <OrganizationCard organization={organization} />
             </div>
           </div>

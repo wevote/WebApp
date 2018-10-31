@@ -58,7 +58,7 @@ export default class OpinionsIgnoredList extends Component {
         {this.state.organizations_ignored.map((org) =>
             <CSSTransition key={counter++} timeout={500} classNames="fade">
               <VoterGuideDisplayForList key={org.organization_we_vote_id} {...org}>
-                { this.props.editMode ? <FollowToggle we_vote_id={org.organization_we_vote_id}/> : <span><span/><span/></span> }
+                { this.props.editMode ? <FollowToggle organizationWeVoteId={org.organization_we_vote_id}/> : <span><span/><span/></span> }
               </VoterGuideDisplayForList>
             </CSSTransition>
           )

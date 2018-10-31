@@ -105,7 +105,7 @@ export default class GuideList extends Component {
             <VoterGuideDisplayForList key={organization.organization_we_vote_id}
                                       {...organization}
                                       {...organizationPositionForThisBallotItem}>
-              <FollowToggle we_vote_id={organization.organization_we_vote_id}
+              <FollowToggle organizationWeVoteId={organization.organization_we_vote_id}
                             hide_stop_following_button={this.props.hide_stop_following_button}/>
               { this.props.hide_ignore_button ?
                 null :

@@ -1,102 +1,30 @@
-// Network Positions bar (ItemSupportOpposeCounts)
+// Issue related styles
 
-.network-positions {
-  $bar-height: 10px;
-  $icon-size: 20px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  flex: 5 0 130px;
-  min-width: 130px; // flex-basis not being respected (Chrome)
-
-  &__bar-well {
-    display: block;
-    position: relative;
-    margin-right: $space-sm;
-    margin-left: $space-sm;
-    flex: 5 0 48px;
-    height: $bar-height;
-    border-radius: $radius-rounded;
-    background-color: $gray-light;
-    overflow: hidden;
-  }
-
-  &__bar-label {
-    position: absolute;
-    margin-top: $icon-size;
-    width: 100%;
-    text-align: center;
+.issue-icon-list {
+  &__endorsements-label {
     color: $gray-mid;
-    @include breakpoints(max 300px) {
-      display: none;
-    }
   }
-
-  &__bar {
-    position: absolute;
-    display: block;
-    height: $bar-height;
-    width: 0;
-    transition: width .2s ease-out;
-    box-sizing: content-box;
+  &__issue-block {
+    overflow-x: hidden;
+    width: 40px;
   }
-
-  &__support,
-  &__oppose {
-    display: flex;
-    align-items: center;
-    flex: none;
+  &__issue-icon {
+    color: $gray-mid;
+    height: 20px;
+    width: 20px;
   }
-
-  &__count {
-    text-align: center;
-    color: $gray-dark;
-  }
-
-  &__bar--support {
-    left: 0;
-    background-color: $green;
-    background: linear-gradient(to bottom, $green, darken($green, 5%)); // stylelint-disable-line declaration-block-no-shorthand-property-overrides
-    border-right: 2px solid #fff;
-  }
-
-  &__bar--oppose {
-    right: 0;
-    background-color: $red;
-    background: linear-gradient(to bottom, $red, darken($red, 5%)); // stylelint-disable-line declaration-block-no-shorthand-property-overrides
-    border-left: 2px solid #fff;
-  }
-
-  &__support-score {
-    font-size: 2rem;
-    font-weight: 500;
-    justify-content: center;
-    align-items: center;
-  }
-
-  &__show-support-underline {
-    border-bottom: solid;
-    border-bottom-color: $support-green;
-  }
-
-  &__show-oppose-underline {
-    border-bottom: solid;
-    border-bottom-color: $oppose-red;
-  }
-
-  &__to-follow-fade {
-    opacity: .4;
-    filter: alpha(opacity=40); /* For IE8 and earlier */
-  }
-
-  &__to-follow-fade:hover {
-    opacity: .6;
-    // filter: alpha(opacity=100); /* For IE8 and earlier */
-    filter: alpha(opacity=60); /* For IE8 and earlier */
+  &__issue-label-name {
+    color: $gray-mid;
+    font-size: .7rem;
+    // Trying to get name to wrap to two lines
+    //height: 3em; /* height is 2x line-height, so two lines will display */
+    //line-height: 1.5em;
+    //overflow: hidden;  /* prevents extra lines from being visible */
+    //width: 100px;
   }
 }
 
-.network-positions-stacked {
+.issues-list-stacked {
   $bar-height: 10px;
   $icon-size: 20px;
   position: relative;
@@ -154,11 +82,11 @@
     }
   }
 
-  // Tiny Organization Position Breakdown List
+  // Issues Display List
 
   &__support-list {
     $scrollbar-height: 21px;
-    $list-height: 76px;
+    $list-height: 47px;
     $list-height-visible: $list-height - $scrollbar-height;
     $scroll-icon-margin: $space-none $space-sm;
     $scroll-icon-margin-small: $space-none 13px;
@@ -175,7 +103,7 @@
     }
 
     &__container {
-      white-space: nowrap;
+      // white-space: nowrap;
       // overflow-x: scroll; // Oct 2018 Causes problems with popover placement (card-popover related)
       // overflow-y: hidden; // Oct 2018 Causes problems with popover placement (card-popover related)
       height: $list-height;
@@ -218,12 +146,4 @@
       }
     }
   }
-}
-
-.red-bar {
-  background-color: $red;
-}
-
-.green-bar {
-  background-color: $green;
 }

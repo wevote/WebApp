@@ -76,7 +76,7 @@ export default class PositionListForFriends extends Component {
 
         <div className="card">
           <div className="card-main">
-            <FollowToggle we_vote_id={organization_we_vote_id} />
+            <FollowToggle organizationWeVoteId={organization_we_vote_id} />
             <OrganizationCard organization={this.state.organization} />
           </div>
           <ul className="list-group">

@@ -18,7 +18,6 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
     toFollow: PropTypes.bool,
     overlayTriggerOnClickOnly: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
-    we_vote_id: PropTypes.string
   };
 
   constructor (props) {
@@ -92,7 +91,7 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
                                  popoverBottom={this.props.popoverBottom}
                                  toFollow={this.props.toFollow}
                                  urlWithoutHash={this.props.urlWithoutHash}
-                                 we_vote_id={this.props.we_vote_id} />;
+                                 />;
       } else {
         return null;
       }

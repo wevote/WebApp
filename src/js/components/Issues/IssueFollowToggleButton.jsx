@@ -19,7 +19,6 @@ export default class IssueFollowToggleButton extends Component {
     on_issue_follow: PropTypes.func,
     on_issue_stop_following: PropTypes.func,
     urlWithoutHash: PropTypes.string,
-    we_vote_id: PropTypes.string
   };
 
   constructor (props) {
@@ -48,9 +47,9 @@ export default class IssueFollowToggleButton extends Component {
       showToastSuccess(`Now following ${this.props.issue_name}!`);
     }
 
-    let { currentBallotIdInUrl, urlWithoutHash, we_vote_id } = this.props;
-    if (currentBallotIdInUrl !== we_vote_id) {
-      historyPush(urlWithoutHash + "#" + this.props.we_vote_id);
+    let { currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId } = this.props;
+    if (currentBallotIdInUrl !== ballotItemWeVoteId) {
+      historyPush(urlWithoutHash + "#" + this.props.ballotItemWeVoteId);
     }
   }
 
@@ -66,9 +65,9 @@ export default class IssueFollowToggleButton extends Component {
       this.props.on_issue_stop_following(this.props.issue_we_vote_id);
     }
     showToastError(`You've stopped following ${this.props.issue_name}.`);
-    let { currentBallotIdInUrl, urlWithoutHash, we_vote_id } = this.props;
-    if (currentBallotIdInUrl !== we_vote_id) {
-      historyPush(urlWithoutHash + "#" + this.props.we_vote_id);
+    let { currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId } = this.props;
+    if (currentBallotIdInUrl !== ballotItemWeVoteId) {
+      historyPush(urlWithoutHash + "#" + this.props.ballotItemWeVoteId);
     }
   }
 

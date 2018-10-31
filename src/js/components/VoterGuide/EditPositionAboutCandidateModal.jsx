@@ -121,7 +121,7 @@ export default class EditPositionAboutCandidateModal extends Component {
     } else if (organization !== undefined) {
       modal_contents = <div className="card">
               <div className="card-main candidate-card">
-                <FollowToggle we_vote_id={organization.organization_we_vote_id}/>
+                <FollowToggle organizationWeVoteId={organization.organization_we_vote_id}/>
                 <OrganizationCard organization={organization}
                                   turnOffDescription
                                   followToggleOn/>

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import { historyPush } from "../../utils/cordovaUtils";
+import IssuesByBallotItemDisplayList from "../../components/Issues/IssuesByBallotItemDisplayList";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import { renderLog } from "../../utils/logging";
@@ -28,8 +29,8 @@ export default class MeasureItemCompressed extends Component {
     position_list: PropTypes.array,
     showPositionStatementActionBar: PropTypes.bool,
     toggleMeasureModal: PropTypes.func,
+    urlWithoutHash: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired,
-    urlWithoutHash: PropTypes.string
   };
 
   constructor (props) {
@@ -266,14 +267,9 @@ export default class MeasureItemCompressed extends Component {
         <h2 className="card-main__display-name">
           { this.props.link_to_ballot_item_page ?
             <div className="card-main__ballot-name-group">
-              <div className="card-main__ballot-name-item card-main__ballot-name">
+              <div className="card-main__ballot-name-item card-main__ballot-name card-main__ballot-name-link">
                 <a onClick={() => this.goToMeasureLink(measure_we_vote_id)}>
                   {ballot_item_display_name}
-                </a>
-              </div>
-              <div className="card-main__ballot-name-item">
-                <a onClick={() => this.goToMeasureLink(measure_we_vote_id)}>
-                  <span className="card-main__ballot-read-more-link">learn&nbsp;more</span>
                 </a>
               </div>
             </div> :
@@ -281,6 +277,17 @@ export default class MeasureItemCompressed extends Component {
           }
         </h2>
         <BookmarkToggle we_vote_id={measure_we_vote_id} type="MEASURE" />
+        <div>
+          {/* Issues related to this Measure */}
+          <IssuesByBallotItemDisplayList ballotItemDisplayName={ballot_item_display_name}
+                                         ballotItemWeVoteId={measure_we_vote_id}
+                                         currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                                         issuesListHidden
+                                         overlayTriggerOnClickOnly
+                                         placement={"bottom"}
+                                         urlWithoutHash={this.props.urlWithoutHash}
+                                         />
+        </div>
         {/* Measure information */}
         <div className={ this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null }
              onClick={ this.props.link_to_ballot_item_page ? () => this.goToMeasureLink(measure_we_vote_id) : null }>

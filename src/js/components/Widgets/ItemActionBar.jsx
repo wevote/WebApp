@@ -412,7 +412,7 @@ export default class ItemActionBar extends Component {
     const iconSize = 18;
     let iconColor = "#999";
     const chooseIconSize = 24;
-    let chooseIconColor = this.isSupportCalculated() ? "white" : "#555";
+    let chooseIconColor = this.isSupportCalculated() ? "white" : "#76d00b";
     const opposeIconSize = 24;
     let opposeIconColor = this.isOpposeCalculated() ? "white" : "#ff4921";
 
@@ -507,8 +507,8 @@ export default class ItemActionBar extends Component {
       </span>
       { this.isSupportCalculated() ?
         <span
-          className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" :
-                      "item-actionbar__position-btn-label item-actionbar__position-at-state"
+          className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label--at-state" :
+                      "item-actionbar__position-btn-label--at-state"
                     }>Choose</span> :
         <span
           className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" :
@@ -523,8 +523,8 @@ export default class ItemActionBar extends Component {
       </span>
       { this.isSupportCalculated() ?
         <span
-          className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" :
-                      "item-actionbar__position-btn-label item-actionbar__position-at-state"
+          className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label--at-state" :
+                      "item-actionbar__position-btn-label--at-state"
                     }>Vote Yes</span> :
         <span
           className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" :
@@ -539,8 +539,8 @@ export default class ItemActionBar extends Component {
       </span>
       { this.isOpposeCalculated() ?
         <span
-          className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" :
-                    "item-actionbar__position-btn-label item-actionbar__position-at-state"
+          className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label--at-state" :
+                    "item-actionbar__position-btn-label--at-state"
                     }>Oppose</span> :
         <span
           className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" :
@@ -555,8 +555,8 @@ export default class ItemActionBar extends Component {
       </span>
       { this.isOpposeCalculated() ?
         <span
-          className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" :
-                    "item-actionbar__position-btn-label item-actionbar__position-at-state"
+          className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label--at-state" :
+                    "item-actionbar__position-btn-label--at-state"
                     }>Vote No</span> :
         <span
           className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" :
@@ -565,12 +565,22 @@ export default class ItemActionBar extends Component {
       }
     </button>;
 
+    const commentButton = <button className={(this.props.commentButtonHideInMobile ? "d-none d-sm-block " : null) + "item-actionbar__btn item-actionbar__btn--comment btn btn-default"}
+                                  onClick={this.props.toggleFunction}>
+      <span className="btn__icon">
+        <Icon name="comment-icon" width={18} height={18} color={iconColor} />
+      </span>
+      <span className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" :
+                    "item-actionbar__position-btn-label"
+                    }>Comment</span>
+    </button>;
+
     return <div className={ this.props.shareButtonHide ? "item-actionbar--inline" : "item-actionbar" }>
       <div className={(this.state.yesVoteDescriptionExists || this.state.noVoteDescriptionExists ? "" : "btn-group") + (!this.props.shareButtonHide ? " u-push--sm" : "")}>
 
         {/* Start of Support Button */}
         {/* Visible on desktop screens */}
-        <div className="d-none d-lg-block item-actionbar__position-bar">
+        <div className="u-push--xs d-none d-lg-block item-actionbar__position-bar">
           <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
             {this.props.type === "CANDIDATE" ? supportButton :
               measureYesButton
@@ -582,7 +592,7 @@ export default class ItemActionBar extends Component {
             </span> : null}
         </div>
          {/* Visible on mobile devices and tablets */}
-        <div className="d-lg-none d-xl-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
+        <div className="u-push--xs d-lg-none d-xl-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
             {this.props.type === "CANDIDATE" ? supportButton :
               measureYesButton
             }
@@ -595,7 +605,7 @@ export default class ItemActionBar extends Component {
 
         {/* Start of Oppose Button */}
         {/* Visible on desktop screens */}
-        <div className="d-none d-lg-block item-actionbar__position-bar">
+        <div className="u-push--xs d-none d-lg-block item-actionbar__position-bar">
           <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
             {this.props.type === "CANDIDATE" ? opposeButton :
               measureNoButton
@@ -607,7 +617,7 @@ export default class ItemActionBar extends Component {
             </span> : null}
         </div>
         {/* Visible on mobile devices and tablets */}
-        <div className="d-lg-none d-xl-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
+        <div className="u-push--xs d-lg-none d-xl-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
           {this.props.type === "CANDIDATE" ? opposeButton :
             measureNoButton
           }
@@ -619,15 +629,10 @@ export default class ItemActionBar extends Component {
         </div>
       { this.props.commentButtonHide ?
         null :
-        <div>
-          <button className={"item-actionbar__btn item-actionbar__btn--comment btn btn-default u-push--sm" + (this.props.commentButtonHideInMobile ? " d-none d-sm-block" : null)}
-                  onClick={this.props.toggleFunction}>
-            <span className="btn__icon">
-              <Icon name="comment-icon" width={iconSize} height={iconSize} color={iconColor} />
-            </span>
-            <span className="item-actionbar__position-btn-label">Comment</span>
-          </button>
-        </div> }
+        <div className="u-push--sm item-actionbar__position-bar">
+          {commentButton}
+        </div>
+       }
 
       { this.props.shareButtonHide ?
         null :

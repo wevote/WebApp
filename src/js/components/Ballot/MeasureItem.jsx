@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { historyPush } from "../../utils/cordovaUtils";
+import IssuesByBallotItemDisplayList from "../../components/Issues/IssuesByBallotItemDisplayList";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
@@ -13,20 +14,22 @@ import { capitalizeString } from "../../utils/textFormat";
 
 export default class MeasureItem extends Component {
   static propTypes = {
+    ballot_item_display_name: PropTypes.string.isRequired,
     commentButtonHide: PropTypes.bool,
-    we_vote_id: PropTypes.string.isRequired,
+    currentBallotIdInUrl: PropTypes.string,
+    election_display_name: PropTypes.string,
+    kind_of_ballot_item: PropTypes.string.isRequired,
+    link_to_ballot_item_page: PropTypes.bool,
     measure_subtitle: PropTypes.string,
     measure_text: PropTypes.string,
-    kind_of_ballot_item: PropTypes.string.isRequired,
-    ballot_item_display_name: PropTypes.string.isRequired,
-    link_to_ballot_item_page: PropTypes.bool,
     measure_url: PropTypes.string,
     state_code: PropTypes.string,
-    election_display_name: PropTypes.string,
     position_list: PropTypes.array,
     regional_display_name: PropTypes.string,
     state_display_name: PropTypes.string,
     showPositionsInYourNetworkBreakdown: PropTypes.bool,
+    urlWithoutHash: PropTypes.string,
+    we_vote_id: PropTypes.string.isRequired,
   };
   constructor (props) {
     super(props);
@@ -109,6 +112,19 @@ export default class MeasureItem extends Component {
           <div className="row" style={{ paddingBottom: "0.5rem" }}>
             <div className="col-12" />
           </div>
+
+          <div>
+            {/* Issues related to this Measure */}
+            <IssuesByBallotItemDisplayList ballotItemDisplayName={ballot_item_display_name}
+                                           ballotItemWeVoteId={we_vote_id}
+                                           currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                                           issuesListHidden
+                                           overlayTriggerOnClickOnly
+                                           placement={"bottom"}
+                                           urlWithoutHash={this.props.urlWithoutHash}
+                                           />
+          </div>
+
           <div className={ this.props.link_to_ballot_item_page ?
                   "u-cursor--pointer" :
                   null }

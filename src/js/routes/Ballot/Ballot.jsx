@@ -856,7 +856,7 @@ export default class Ballot extends Component {
                          Loading Election...
                        </span> }
                     {/* We always show the change election option */}
-                    <span className="u-no-break d-print-none u-cursor--pointer"
+                    <div className="u-no-break d-print-none u-cursor--pointer"
                           onClick={this.toggleSelectBallotModal} >
                       <span className="u-no-break u-f8 d-none d-sm-inline"><img src={cordovaDot("/img/global/icons/gear-icon.png")}
                            role="button"
@@ -864,7 +864,7 @@ export default class Ballot extends Component {
                       <span className="u-no-break u-f6 d-inline d-sm-none"><img src={cordovaDot("/img/global/icons/gear-icon.png")}
                            role="button"
                            alt={"change address or election"}/> change address or election</span>
-                    </span>
+                    </div>
                   </h1>
                 </header>
 

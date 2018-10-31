@@ -104,7 +104,7 @@ export default class OrganizationsFollowedOnTwitter extends Component {
                                            >
             <div className="card">
               <div className="card-main">
-                <FollowToggle we_vote_id={one_organization.organization_we_vote_id} />
+                <FollowToggle organizationWeVoteId={one_organization.organization_we_vote_id} />
                 <OrganizationCard organization={one_organization_for_organization_card} />
               </div>
             </div>

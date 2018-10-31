@@ -142,7 +142,6 @@ export default class IssueCard extends Component {
                                      issue_name={this.state.issue.issue_name}
                                      issue_we_vote_id={this.state.issue_we_vote_id}
                                      urlWithoutHash={this.props.urlWithoutHash}
-                                     we_vote_id={this.props.we_vote_id}
                                      />
           </div> :
           null}
