@@ -60,7 +60,7 @@ export default class SelectBallotModal extends Component {
                   show={this.props.show}
                   >
       <Modal.Header closeButton onHide={() => this.props.toggleFunction(this.state.pathname)}>
-        <Modal.Title bsPrefix="ballot-election-list__h1">Change to Another Ballot</Modal.Title>
+        <Modal.Title bsPrefix="ballot-election-list__h1">Change Address or Election</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <EditAddressInPlace address={voterAddressObject}

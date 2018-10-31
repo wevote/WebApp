@@ -399,6 +399,8 @@ export default class Application extends Component {
       } else {
         headRoomSize = "headroom-wrapper__cordova-android";
       }
+    } else if (isWebApp()) {
+      headRoomSize = "headroom-wrapper";
     }
 
     let pageHeaderStyle = this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom";

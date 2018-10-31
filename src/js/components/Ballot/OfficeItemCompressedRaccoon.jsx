@@ -747,14 +747,14 @@ export default class OfficeItemCompressedRaccoon extends Component {
         { this.state.display_office_unfurled ?
           <Link onClick={this.toggleExpandDetails}>
             <span className="BallotItem__view-more u-items-center pull-right u-no-break d-print-none">
-              show fewer</span>
+              Show less detail</span>
           </Link> :
           <Link onClick={this.toggleExpandDetails}>
             <div className="BallotItem__view-more u-items-center u-no-break d-print-none">
               <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
               { totalNumberOfCandidatesToDisplay > NUMBER_OF_CANDIDATES_TO_DISPLAY ?
                 <span> View all {totalNumberOfCandidatesToDisplay} candidates</span> :
-                <span> View details</span>
+                <span> Show more detail</span>
               }
             </div>
           </Link>
