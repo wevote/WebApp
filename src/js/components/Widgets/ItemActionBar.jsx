@@ -412,9 +412,9 @@ export default class ItemActionBar extends Component {
     const iconSize = 18;
     let iconColor = "#999";
     const chooseIconSize = 24;
-    let chooseIconColor = this.isSupportCalculated() ? "white" : "#76d00b";
+    let chooseIconColor = this.isSupportCalculated() ? "white" : "#555";
     const opposeIconSize = 24;
-    let opposeIconColor = this.isOpposeCalculated() ? "white" : "#ff4921";
+    let opposeIconColor = this.isOpposeCalculated() ? "white" : "#555";
 
     let urlBeingShared;
     if (this.props.type === "CANDIDATE") {

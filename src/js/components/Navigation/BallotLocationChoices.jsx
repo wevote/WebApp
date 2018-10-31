@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import BallotActions from "../../actions/BallotActions";
 import BallotLocationButton from "./BallotLocationButton";
 import BallotStore from "../../stores/BallotStore";
+import { isCordova } from "../../utils/cordovaUtils";
 import ElectionStore from "../../stores/ElectionStore";
 import { historyPush } from "../../utils/cordovaUtils";
 import moment from "moment";
@@ -143,16 +144,18 @@ export default class BallotLocationChoices extends Component {
     const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format("MMM Do, YYYY")}</span> : <span />;
     // console.log("In BallotLocationChoices render, ballot_location_list: ", this.state.ballot_location_list);
     if (this.state.ballot_location_list && this.state.ballot_location_list.length) {
-      //  className="container-fluid card"
       return <div className="u-stack--sm ballot-locations d-print-none">
         { this.props.showElectionName ?
-          <h4 className="h4">
-            {electionName} <span className="d-none d-sm-block">&mdash; </span>
-            <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
+          <h4 className={`ballot__header__title${isCordova() && "__cordova"}` + "h4"}>
+            <span className="u-push--sm">
+              {electionName} <span className="d-none d-sm-inline">&mdash; </span>
+              <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
+            </span>
           </h4> :
           null }
+        {/* Commented out for 2018 Election
         <div className="btn-group">
-          {/* Mobile display of buttons */}
+          Mobile display of buttons
           <div className="d-block d-sm-none">
             {this.state.ballot_location_list.slice(0, default_number_of_ballot_locations_mobile).map((ballot_location, key) => {
               return <BallotLocationButton key={key} ballot_location={ballot_location} goToDifferentBallot={this.goToDifferentBallot} />;
@@ -171,7 +174,7 @@ export default class BallotLocationChoices extends Component {
               null }
           </div>
 
-          {/* Desktop display of buttons */}
+          Desktop display of buttons
           <div className="d-none d-sm-block">
             {this.state.ballot_location_list.slice(0, default_number_of_ballot_locations_desktop).map((ballot_location, key) => {
               return <BallotLocationButton key={key} ballot_location={ballot_location} goToDifferentBallot={this.goToDifferentBallot} />;
@@ -189,7 +192,7 @@ export default class BallotLocationChoices extends Component {
               </span> :
               null }
           </div>
-        </div>
+        </div>  */}
       </div>;
     } else {
       return <div />;
