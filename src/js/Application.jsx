@@ -3,7 +3,15 @@ import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
-import { hasIPhoneNotch, historyPush, isAndroid, isCordova, isIOS, isIPhoneXR, isWebApp } from "./utils/cordovaUtils";
+import {
+  getHeadingSize,
+  hasIPhoneNotch,
+  historyPush,
+  isAndroid,
+  isCordova,
+  isIOS,
+  isWebApp
+} from "./utils/cordovaUtils";
 import ElectionActions from "./actions/ElectionActions";
 import FooterBarCordova from "./components/Navigation/FooterBarCordova";
 import FriendActions from "./actions/FriendActions";
@@ -388,7 +396,7 @@ export default class Application extends Component {
 
     let headRoomSize;
     if (voterGuideShowGettingStartedNavigation || stringContains("/ballot", pathname) || pathname === "/bookmarks") {
-      headRoomSize = isIPhoneXR() ? "headroom-secondary-nav__margin-iphone-xr" : "headroom-secondary-nav__margin";
+      headRoomSize = "headroom" + getHeadingSize();
     } else if (stringContains("/network", pathname)) {
       if (isWebApp()) {
         headRoomSize = "headroom-wrapper";
@@ -417,6 +425,15 @@ export default class Application extends Component {
         appBaseClass += " cordova-base-iphonex";
       } else {
         appBaseClass += " cordova-base";
+      }
+    }
+
+    let containerMainStyle = "container-main";
+    if (isIOS()) {
+      if (hasIPhoneNotch()) {
+        containerMainStyle += "__candidate-ios-notch";
+      } else {
+        containerMainStyle += "__candidate-ios-older";
       }
     }
 
@@ -532,10 +549,10 @@ export default class Application extends Component {
         </div>
       </div>
       { pathname === "/welcome" || !contentFullWidthMode ?
-        <div>{ this.props.children }</div> :
+        <div className="welcome-or-not-full-width">{ this.props.children }</div> :
         <div className="page-content-container">
           <div className="container-fluid">
-            <div className="container-main">
+            <div className={containerMainStyle}>
               { this.props.children }
             </div>
           </div>

@@ -211,8 +211,8 @@ export default class IssuesByBallotItemDisplayList extends Component {
     });
 
     let ballotItemSupportProps = SupportStore.get(this.state.ballotItemWeVoteId);
-    let networkSupportCount = parseInt(ballotItemSupportProps.support_count || 0);
-    let networkOpposeCount = parseInt(ballotItemSupportProps.oppose_count || 0);
+    let networkSupportCount = ballotItemSupportProps.support_count ? parseInt(ballotItemSupportProps.support_count || 0) : 0;
+    let networkOpposeCount = ballotItemSupportProps.oppose_count ? parseInt(ballotItemSupportProps.oppose_count || 0) : 0;
     let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(this.state.ballotItemWeVoteId);
     let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(this.state.ballotItemWeVoteId);
     let totalSupportCount = networkSupportCount + organizationsToFollowSupport.length;
