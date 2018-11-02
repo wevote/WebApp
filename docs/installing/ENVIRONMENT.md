@@ -55,10 +55,10 @@ If you are already using Node and npm, confirm that your installation is at leas
 versions:
 
     $ node -v
-    v7.9.0
+    v10.12.0
 
     $ npm -v
-    4.5.0
+    6.4.1
     
 IF you find that your Mac, does not have Node installed, install it with brew. (If you want to have
 a fresh install of Node you can `brew unlink node` first.)  A fresh or initial install of Node,
