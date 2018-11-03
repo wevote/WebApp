@@ -101,28 +101,10 @@ export const weVoteStaff = [{
       "Executive Director / Co-Founder / CTO",
     ],
   }, {
-    name: "Rohan Bhambhoria",
-    image: photoPath + "Rohan_Bhambhoria-200x200.jpg",
-    title: [
-      "Engineering Intern",
-    ],
-  }, {
     name: "Yuanhsin Chang",
     image: photoPath + "Yuanhsin_Chang-200x200.jpg",
     title: [
       "User Experience Design Intern",
-    ],
-  }, {
-    name: "Sarah Clements",
-    image: photoPath + "Sarah_Clements-200x200.jpg",
-    title: [
-      "Engineering Intern",
-    ],
-  }, {
-    name: "Mansi Desai",
-    image: photoPath + "Mansi_Desai-200x200.jpg",
-    title: [
-      "Digital Marketing Intern",
     ],
   }, {
     name: "Neil Dullaghan",
@@ -161,34 +143,10 @@ export const weVoteStaff = [{
       "Operations",
     ],
   }, {
-    name: "Neelam Joshi",
-    image: photoPath + "Neelam_Joshi-200x200.jpg",
-    title: [
-      "Sr. Software Engineer",
-    ],
-  }, {
-    name: "Ciero Kilpatrick",
-    image: photoPath + "Ciero_Kilpatrick-200x200.jpg",
-    title: [
-      "User Experience Design Intern",
-    ],
-  }, {
-    name: "Michael Kushman",
-    image: photoPath + "Michael_Kushman-200x200.jpg",
-    title: [
-      "Product Marketing",
-    ],
-  }, {
     name: "Edward Ly",
     image: photoPath + "Edward_Ly-200x200.jpg",
     title: [
       "Engineering Intern",
-    ],
-  }, {
-    name: "Eric Ogawa",
-    image: photoPath + "Eric_Ogawa-200x200.jpg",
-    title: [
-      "User Experience Design Intern",
     ],
   }, {
     name: "Steve Podell",
@@ -197,10 +155,10 @@ export const weVoteStaff = [{
       "Volunteer",
     ],
   }, {
-    name: "Bharath Reddy",
-    image: photoPath + "Bharath_Reddy-200x200.jpg",
+    name: "Aaron Travis",
+    image: photoPath + "Aaron_Travis-200x200.jpg",
     title: [
-      "Software Engineer",
+      "Experience Director",
     ],
   },
 ];

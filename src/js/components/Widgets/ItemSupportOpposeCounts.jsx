@@ -27,8 +27,11 @@ export default class ItemSupportOpposeCounts extends Component {
   }
 
   percentageMajority () {
-    const { support_count: supportCount, oppose_count: opposeCount } = this.state.supportProps;
-    return supportCount + opposeCount > 0 ? Math.round(100 * Math.max(supportCount, opposeCount) / (supportCount + opposeCount)) : 0;
+    if (this.state.supportProps !== undefined) {
+      const {support_count: supportCount, oppose_count: opposeCount} = this.state.supportProps;
+      return supportCount + opposeCount > 0 ? Math.round(100 * Math.max(supportCount, opposeCount) / (supportCount + opposeCount)) : 0;
+    }
+    return 0;
   }
 
   render () {

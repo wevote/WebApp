@@ -744,8 +744,12 @@ export default class ItemSupportOpposeRaccoon extends Component {
       </Popover>;
 
     let ballotItemSupportProps = SupportStore.get(this.state.ballotItemWeVoteId);
-    let networkSupportCount = parseInt(ballotItemSupportProps.support_count) || 0;
-    let networkOpposeCount = parseInt(ballotItemSupportProps.oppose_count) || 0;
+    let networkSupportCount = 0;
+    let networkOpposeCount = 0;
+    if (ballotItemSupportProps !== undefined) {
+      networkSupportCount = parseInt(ballotItemSupportProps.support_count) || 0;
+      networkOpposeCount = parseInt(ballotItemSupportProps.oppose_count) || 0;
+    }
     let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(this.state.ballotItemWeVoteId);
     let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(this.state.ballotItemWeVoteId);
     let totalSupportCount = networkSupportCount + organizationsToFollowSupport.length;
