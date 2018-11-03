@@ -122,7 +122,7 @@ export default class OfficeItemReadyToVote extends Component {
                   </div>
 
                   <div className="u-flex-none u-justify-end">
-                    <span className="u-push--xs">Supported by you</span>
+                    <span className="u-push--xs">Chosen by you</span>
                     <img src={cordovaDot("/img/global/svg-icons/thumbs-up-color-icon.svg")} width="24" height="24" />
                   </div>
                 </div> :

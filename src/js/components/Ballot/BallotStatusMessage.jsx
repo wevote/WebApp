@@ -83,7 +83,15 @@ export default class BallotStatusMessage extends Component {
       // console.log("shouldComponentUpdate: changed, this.state.ballot_location_chosen: ", this.state.ballot_location_chosen, ", nextState.ballot_location_chosen", nextState.ballot_location_chosen);
       return true;
     }
+    if (this.state.ballot_location_display_name !== nextState.ballot_location_display_name) {
+      // console.log("shouldComponentUpdate: changed, this.state.ballot_location_display_name: ", this.state.ballot_location_display_name, ", nextState.ballot_location_display_name", nextState.ballot_location_display_name);
+      return true;
+    }
     if (this.state.election_day_text !== nextState.election_day_text) {
+      // console.log("shouldComponentUpdate: changed, this.state.election_day_text: ", this.state.election_day_text, ", nextState.election_day_text", nextState.election_day_text);
+      return true;
+    }
+    if (this.state.election_is_upcoming !== nextState.election_is_upcoming) {
       // console.log("shouldComponentUpdate: changed, this.state.election_day_text: ", this.state.election_day_text, ", nextState.election_day_text", nextState.election_day_text);
       return true;
     }
@@ -150,7 +158,7 @@ export default class BallotStatusMessage extends Component {
       if (this.state.election_day_text) {
         messageInPastString = "This election was held on " + moment(this.state.election_day_text).format("MMM Do, YYYY") + ".";
       } else {
-        messageInPastString = "This election has passed.";
+        messageInPastString = ""; // Was "This election has passed." but it showed up inaccurately.
       }
 
       if (this.state.voter_specific_ballot_from_google_civic) {

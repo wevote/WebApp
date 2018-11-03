@@ -47,9 +47,12 @@ $white-text-color: $white;
 }
 
 // Bootstrap overrides
-$btn-margin-bottom: 0;
-$input-group-btn-margin-left: -1px;
-$space-inset__squish-btn: 6px 12px;
+$btn-margin-bottom:              0;
+$input-group-btn-margin-left:    -1px;
+$space-inset__squish-btn:        6px 12px;
+$btn-primary-color:              #fff !default;
+$btn-primary-bg:                 $link-color;
+$btn-primary-border:             darken($btn-primary-bg, 5%) !default;
 
 .input-group-btn:last-child > .btn,
 .input-group-btn:last-child > .btn-group {
@@ -76,7 +79,24 @@ $space-inset__squish-btn: 6px 12px;
 .btn-default {
   color: $gray-darker;
   background-color: $white;
-  border-color: $gray-light;
+  border-color: $white; // Was $gray-light
+}
+.btn-primary {
+  background-color: $btn-primary-bg;
+  border-color: $btn-primary-border;
+  color: $btn-primary-color;
+  &:active {
+    background-color: $btn-primary-bg;
+    color: $btn-primary-color;
+  }
+  &:hover {
+    background-color: $btn-primary-bg;
+    color: $btn-primary-color;
+  }
+  &:link {
+    background-color: $btn-primary-bg;
+    color: $btn-primary-color;
+  }
 }
 .btn {
   display: inline-block;

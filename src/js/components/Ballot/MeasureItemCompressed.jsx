@@ -278,6 +278,12 @@ export default class MeasureItemCompressed extends Component {
         </h2>
         <BookmarkToggle we_vote_id={measure_we_vote_id} type="MEASURE" />
         <div>
+        <div className="u-stack--md u-cursor--pointer" onClick={() => this.goToMeasureLink(measure_we_vote_id)}>
+          Click to see more details about this measure.
+        </div>
+
+        </div>
+        <div>
           {/* Issues related to this Measure */}
           <IssuesByBallotItemDisplayList ballotItemDisplayName={ballot_item_display_name}
                                          ballotItemWeVoteId={measure_we_vote_id}

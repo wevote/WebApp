@@ -322,28 +322,29 @@ export default class BallotElectionList extends Component {
 
         { this.state.show_prior_elections_list ?
           <div className="ballot-election-list__prior">
-            <h4 className="h4">
-              Prior Election
-              { priorElectionListInState && priorElectionListInState.length !== 1 &&
-                !this.state.show_more_prior_elections ||
+            { priorElectionListInState && priorElectionListInState.length ?
+              <h4 className="h4">
+                Prior Election
+                { priorElectionListInState && priorElectionListInState.length !== 1 && !this.state.show_more_prior_elections ||
                 priorElectionList && priorElectionList.length !== 1 &&
                 this.state.show_more_prior_elections ?
-                "s" :
-                null
-              }
-              { this.state.state_name && this.state.state_name.length &&
-                !this.state.show_more_prior_elections ?
+                  "s" :
+                  null
+                }
+                { this.state.state_name && this.state.state_name.length && !this.state.show_more_prior_elections ?
                 " in " + this.state.state_name :
-                null
-              }
-            </h4>
+                  null
+                }
+              </h4> :
+              null
+            }
             { this.state.show_more_prior_elections ?
               priorElectionList && priorElectionList.length ?
               priorElectionList :
-              "There are no prior elections at this time." :
+              null :
               priorElectionListInState && priorElectionListInState.length ?
               priorElectionListInState :
-              "There are no prior elections at this time."
+              null
             }
             { priorElectionListOutsideCount ?
               this.state.show_more_prior_elections ?
@@ -367,24 +368,30 @@ export default class BallotElectionList extends Component {
     } else {
       return <div className="ballot-election-list__list">
         <div className="ballot-election-list__upcoming">
-          <h4 className="h4">
-            Upcoming Election
-            { upcomingElectionList && upcomingElectionList.length !== 1 ? "s" : null }
-          </h4>
+          { upcomingElectionList && upcomingElectionList.length ?
+            <h4 className="h4">
+              Upcoming Election
+              { upcomingElectionList && upcomingElectionList.length !== 1 ? "s" : null }
+            </h4> :
+            null
+          }
           { upcomingElectionList && upcomingElectionList.length ?
             upcomingElectionList :
-            "There are no upcoming elections at this time."
+            null
           }
         </div>
 
         <div className="ballot-election-list__prior">
-          <h4 className="h4">
-            Prior Election
-            { priorElectionList && priorElectionList.length !== 1 ? "s" : null }
-          </h4>
+          { priorElectionList && priorElectionList.length ?
+            <h4 className="h4">
+              Prior Election
+              { priorElectionList && priorElectionList.length !== 1 ? "s" : null }
+            </h4> :
+            null
+          }
           { priorElectionList && priorElectionList.length ?
             priorElectionList :
-            "There are no prior elections at this time."
+            null
           }
         </div>
       </div>;
