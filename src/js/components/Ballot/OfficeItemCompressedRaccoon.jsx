@@ -27,7 +27,7 @@ import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 
-const NUMBER_OF_CANDIDATES_TO_DISPLAY = 5;
+const NUMBER_OF_CANDIDATES_TO_DISPLAY = 10;
 
 // This is related to components/VoterGuide/VoterGuideOfficeItemCompressed
 export default class OfficeItemCompressedRaccoon extends Component {
@@ -405,7 +405,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
       arrows: false,
     };
     let candidatePreviewCount = 0;
-    let candidatePreviewLimit = 5;
+    let candidatePreviewLimit = NUMBER_OF_CANDIDATES_TO_DISPLAY;
     let candidatePreviewList = [];
     let oneCandidateDisplay = <span />;
     const BallotIntroFollowIssuesModal = <Modal bsPrefix="background-brand-blue modal"
@@ -437,7 +437,6 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
         <h2 className="u-f3 card-main__ballot-name u-gray-dark u-stack--sm">
           <span className="u-cursor--pointer" onClick={this.toggleExpandDetails}>
-            {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
             { this.state.display_office_unfurled ?
               <span className="d-print-none u-push--xs"><Icon name="glyphicons-pro-halflings/glyphicons-halflings-252-triangle-bottom" width={32} height={32} color="" /></span> :
               <span className="d-print-none u-push--xs"><Icon name="glyphicons-pro-halflings/glyphicons-halflings-250-triangle-right" width={32} height={32} color="" /></span>
@@ -445,12 +444,16 @@ export default class OfficeItemCompressedRaccoon extends Component {
             <span className="card-main__ballot-name-link">{ballotItemDisplayName}</span>
           </span>
         </h2>
+        { this.state.display_office_unfurled ?
+          <div className="u-stack--md">Want to remember your choice? Click <strong>Choose</strong> below.</div> :
+          <div className="u-stack--md u-cursor--pointer" onClick={this.toggleExpandDetails}>Click to see more details about the candidates running for this office.</div>
+        }
 
         {/* *************************
         Only show the candidates if the Office is "unfurled"
         ************************* */}
         { this.state.display_office_unfurled ?
-          <span>{limitedCandidateList.map((oneCandidate) => {
+          <div>{limitedCandidateList.map((oneCandidate) => {
 
             if (!oneCandidate || !oneCandidate.we_vote_id) { return null; }
 
@@ -516,7 +519,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                 {/* comment_display_raccoon_mobile */}
               </div>
             </div>;
-          })}</span> :
+          })}</div> :
           null
         }
 
@@ -703,7 +706,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                       </div>
 
                       <div className="u-flex-none u-justify-end">
-                        <span className="u-push--xs">Supported by you</span>
+                        <span className="u-push--xs">Chosen by you</span>
                         <img src={cordovaDot("/img/global/svg-icons/thumbs-up-color-icon.svg")} width="24" height="24" />
                       </div>
                     </div> :

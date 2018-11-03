@@ -410,11 +410,11 @@ export default class ItemActionBar extends Component {
     // }
 
     const iconSize = 18;
-    let iconColor = "#999";
+    let iconColor = "#00749e"; // $link-color
     const chooseIconSize = 24;
-    let chooseIconColor = this.isSupportCalculated() ? "white" : "#555";
+    let chooseIconColor = this.isSupportCalculated() ? "white" : "#00749e"; // $link-color
     const opposeIconSize = 24;
-    let opposeIconColor = this.isOpposeCalculated() ? "white" : "#555";
+    let opposeIconColor = this.isOpposeCalculated() ? "white" : "#00749e"; // $link-color
 
     let urlBeingShared;
     if (this.props.type === "CANDIDATE") {
@@ -501,18 +501,18 @@ export default class ItemActionBar extends Component {
     const supportButtonPopoverTooltip = <Tooltip id="supportButtonTooltip">{this.isSupportCalculated() ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }</Tooltip>;
     const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip">{this.isOpposeCalculated() ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
 
-    const supportButton = <button className={"item-actionbar__btn item-actionbar__btn--support btn btn-default" + (this.isSupportCalculated() ? " support-at-state" : "")} onClick={() => this.supportItem()}>
+    const supportButton = <button className={"item-actionbar__btn item-actionbar__btn--support btn btn-primary" + (this.isSupportCalculated() ? " support-at-state" : "")} onClick={() => this.supportItem()}>
       <span className="btn__icon">
-        <Icon name="glyphicons-pro-halflings/glyphicons-halflings-262-tick" width={chooseIconSize} height={chooseIconSize} color={chooseIconColor} />
+        <Icon name="glyphicons-pro-halflings/glyphicons-halflings-262-tick" width={chooseIconSize} height={chooseIconSize} color={"white"} />
       </span>
       { this.isSupportCalculated() ?
         <span
-          className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label--at-state" :
-                      "item-actionbar__position-btn-label--at-state"
-                    }>Choose</span> :
+          className={ this.props.shareButtonHide ? "item-actionbar--inline__position-choose-btn-label--at-state" :
+                      "item-actionbar__position-choose-btn-label--at-state"
+                    }>Chosen</span> :
         <span
-          className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" :
-                    "item-actionbar__position-btn-label"
+          className={ this.props.shareButtonHide ? "item-actionbar--inline__position-choose-btn-label" :
+                    "item-actionbar__position-choose-btn-label"
                     }>Choose</span>
       }
     </button>;
@@ -525,7 +525,7 @@ export default class ItemActionBar extends Component {
         <span
           className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label--at-state" :
                       "item-actionbar__position-btn-label--at-state"
-                    }>Vote Yes</span> :
+                    }>Voting Yes</span> :
         <span
           className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" :
                     "item-actionbar__position-btn-label"
@@ -557,7 +557,7 @@ export default class ItemActionBar extends Component {
         <span
           className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label--at-state" :
                     "item-actionbar__position-btn-label--at-state"
-                    }>Vote No</span> :
+                    }>Voting No</span> :
         <span
           className={ this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" :
                     "item-actionbar__position-btn-label"
