@@ -163,7 +163,7 @@ export default class Network extends Component {
           </div>
 
           {/* Mobile view */}
-          <div className="mobile-container">
+          <div className="d-flex d-sm-none mobile-container">
             { this.state.voter.signed_in_twitter ?
               null :
               <div className="network-btn">
