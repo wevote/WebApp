@@ -2,20 +2,29 @@
 
 .issue-icon-list {
   &__endorsements-label {
-    color: $gray-mid;
+    color: $gray-dark;
   }
   &__issue-block {
-    overflow-x: hidden;
-    width: 40px;
+    display: flex;
+    flex: 1 0 auto;
+    align-items: start;
   }
   &__issue-icon {
     color: $gray-mid;
-    height: 20px;
-    width: 20px;
+    height: calc(24px + $space-xs);
+    width: calc(24px + $space-xs);
+    flex: none;
+    margin-right: $space-xs;
+    border: 1px solid $gray-mid;
+    border-radius: $radius-rounded;
+    padding: $space-xxs;
   }
   &__issue-label-name {
     color: $gray-mid;
     font-size: .7rem;
+    text-transform: uppercase;
+    min-width: 40px;
+    max-width: 120px;
     // Trying to get name to wrap to two lines
     //height: 3em; /* height is 2x line-height, so two lines will display */
     //line-height: 1.5em;
@@ -96,9 +105,7 @@
     margin-right: $support-list-margin-right;
 
     &__container-wrap {
-      box-sizing: content-box;
-      overflow: hidden;
-      height: $list-height-visible;
+      // height: $list-height-visible;
       flex-grow: 1;
     }
 
@@ -113,12 +120,12 @@
       padding: $space-none;
       margin-bottom: $space-md;
       list-style: none;
+      display: inline-flex;
     }
 
     &__item {
       position: relative;
-      display: inline-block;
-      float: none;
+      display: inline-flex;
     }
 
     &__scroll-icon {

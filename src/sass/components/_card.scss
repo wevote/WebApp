@@ -9,6 +9,7 @@ $candidate-font-size: .875rem;
   border-radius: $radius-xs;
   box-shadow: $default-box-shadow;
   margin-bottom: $space-md;
+  overflow: hidden;
   @include clearfix;
   @include breakpoints(max mid-small) {
     margin-bottom: $space-sm;
@@ -19,7 +20,7 @@ $candidate-font-size: .875rem;
     }
   }
   &__body {
-    padding: $space-md;
+    padding: $item-padding;
   }
 
   // ----------------------------------------
