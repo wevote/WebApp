@@ -18,7 +18,7 @@ import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateModal from "../../components/Ballot/CandidateModal";
 import cookies from "../../utils/cookies";
-import { cordovaDot, getHeadingSize, historyPush, isCordova, isWebApp } from "../../utils/cordovaUtils";
+import { cordovaDot, historyPush, isCordova, isWebApp } from "../../utils/cordovaUtils";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
 import Helmet from "react-helmet";
@@ -715,7 +715,7 @@ export default class Ballot extends Component {
           <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> :
           null
         }
-        <div className={ isWebApp() ? "ballot__header" : "ballot__header ballot__header__top-cordova"} >
+        <div className={ isWebApp() ? "ballot__header ballot__heading-webapp" : "ballot__header ballot__header__top-cordova"} >
           <BrowserPushMessage incomingProps={this.props} />
           <p className="ballot__date_location">
             If your ballot does not appear momentarily, please <Link to="/settings/location">change your address</Link>.
@@ -807,23 +807,6 @@ export default class Ballot extends Component {
       historyPush(this.state.pathname);
     }
 
-    // let ballotHeading = "ballot__heading";
-    // if (isCordova()) {
-    //   if (isIPhoneXSMax()) {
-    //     ballotHeading += " ballot__heading-cordova-xs-max";
-    //   } else if (isIPhoneXorXS()) {
-    //     ballotHeading += " ballot__heading-cordova-x";
-    //   } else if (isIPhoneXR()) {
-    //     ballotHeading += " ballot__heading-cordova-xr";
-    //   } else if (isIPhone678Plus()) {
-    //     ballotHeading += " ballot__heading-cordova-i678plus";
-    //   } else if (isAndroid()) {
-    //     ballotHeading += " ballot__heading-cordova-android";
-    //   } else {
-    //     ballotHeading += " ballot__heading-cordova-default";
-    //   }
-    // }
-
     return <div className="ballot">
       { this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
       { this.state.showMeasureModal ? <MeasureModal show={this.state.showMeasureModal} toggleFunction={this.toggleMeasureModal} measure={this.state.measure_for_modal}/> : null }
@@ -838,7 +821,7 @@ export default class Ballot extends Component {
                                                               /> : null }
       { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this.toggleBallotSummaryModal} /> : null }
 
-      <div className={`ballot__heading ${isCordova() && " ballot__heading-cordova-" + getHeadingSize()}`} >
+      <div className={`ballot__heading ${isWebApp() && "ballot__heading-webapp"}`} >
         <div className="page-content-container">
           <div className="container-fluid">
             <div className="row">
