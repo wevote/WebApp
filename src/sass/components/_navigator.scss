@@ -3,22 +3,12 @@ $icon-color-active: $link-color;
 $icon-color-hover: $gray-dark;
 $glyph-icon-color: $brand-blue;
 $header-height: 54px;
-$header-height-cordova-network-ios-notch: 4vh;
-$header-height-cordova-network-ios:       -4vh;
-$header-height-cordova-android:           -5vh;
-
-$headroom-webapp:           104px;
-$headroom-xs-max:           9vh;
-$headroom-xr:               9vh;
-$headroom-x:                9vh;
-$headroom-678-plus:         4vh;
-$headroom-678:              4vh;
-$headroom-default:          4vh;
-$headroom-android-sm:       2vh;
-$headroom-android-md:       2vh;
-$headroom-android-lg:       2vh;
-$headroom-android-xl:       2vh;
-$headroom-cordova-default:  -5vh;
+$header-height-cordova-ballot-ios:        -1vh;
+$header-height-cordova-network-ios-notch: 5vh;
+$header-height-cordova-network-ios:       -1vh;
+$header-height-cordova-android:           -5px;
+$header-height-secondary-nav: 104px;
+$header-height-secondary-nav-iphone-xr: 60px;
 
 $iphone-x-vertical-spacing: 18px;
 $nav-item-secondary-nav-background-hover-color: darken($page-header-secondary-nav-background-color, 5%);
@@ -128,6 +118,9 @@ $container-margin: -15px;
 
 .headroom-wrapper {
   margin-top: $header-height;
+  &__cordova-ios {
+    margin-top: $header-height-cordova-ballot-ios;
+  }
   &__cordova-ios-network-notch {
     margin-top: $header-height-cordova-network-ios-notch;
   }
@@ -150,47 +143,14 @@ $container-margin: -15px;
   @include print {
     margin-top: $space-none;
   }
-  margin-top: $headroom-webapp;
+  margin-top: $header-height-secondary-nav;
 }
 
-.headroom-cordova-ios-xs-max {
-  margin-top: $headroom-xs-max;
-}
-
-.headroom-cordova-ios-xr {
-  margin-top: $headroom-xr;
-}
-
-.headroom-cordova-ios-x {
-  margin-top: $headroom-x;
-}
-
-.headroom-cordova-ios-678-plus {
-  margin-top: $headroom-678-plus;
-}
-
-.headroom-cordova-ios-678 {
-  margin-top: $headroom-678;
-}
-
-.headroom-cordova-android-sm {
-  margin-top: $headroom-android-sm;
-}
-
-.headroom-cordova-android-md {
-  margin-top: $headroom-android-md;
-}
-
-.headroom-cordova-android-lg {
-  margin-top: $headroom-android-lg;
-}
-
-.headroom-cordova-android-xl {
-  margin-top: $headroom-android-xl;
-}
-
-.headroom-cordova-default {
-  margin-top: $headroom-cordova-default;
+.headroom-secondary-nav__margin-iphone-xr {
+  @include print {
+    margin-top: $space-none;
+  }
+  margin-top: $header-height-secondary-nav-iphone-xr;
 }
 
 .nav-secondary-nav__image {

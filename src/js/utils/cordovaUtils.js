@@ -137,15 +137,6 @@ export function isIPhone678Plus () {
   return isIOS() && screen.width === 1242 && screen.height === 2208;
 }
 
-export function isIPhone678 () {
-  let ratio = window.devicePixelRatio || 1;
-  let screen = {
-    width: window.screen.width * ratio,
-    height: window.screen.height * ratio,
-  };
-  return isIOS() && screen.width === 750 && screen.height === 1334;
-}
-
 export function isIPhoneXR () {
   let ratio = window.devicePixelRatio || 1;
   let screen = {
@@ -188,13 +179,13 @@ export function getAndroidSize () {
      xl = 2560*1600 = 4,096,000  Nexus10 Tablet   */
 
   if (size > 3.7E6) {
-    sizeString = "-cordova-android-xl";
+    sizeString = "android-xl";
   } else if (size > 3E6) {
-    sizeString = "-cordova-android-lg";
+    sizeString = "android-lg";
   } else if (size > 1E6) {
-    sizeString = "-cordova-android-md";
+    sizeString = "android-md";
   } else {
-    sizeString = "-cordova-android-sm";
+    sizeString = "android-sm";
   }
   return sizeString;
 }
@@ -203,19 +194,17 @@ export function getHeadingSize () {
   let sizeString = "";
   if (isCordova()) {
     if (isIPhoneXSMax()) {
-      sizeString = "-cordova-ios-xs-max";
+      sizeString = "xs-max";
     } else if (isIPhoneXorXS()) {
-      sizeString = "-cordova-ios-x";
+      sizeString = "x";
     } else if (isIPhoneXR()) {
-      sizeString = "-cordova-ios-xr";
+      sizeString = "xr";
     } else if (isIPhone678Plus()) {
-      sizeString = "-cordova-ios-678-plus";
-    } else if (isIPhone678()) {
-      sizeString = "-cordova-ios-678";
+      sizeString = "i678plus";
     } else if (isAndroid()) {
       sizeString = getAndroidSize();
     } else {
-      sizeString = "-cordova-default";
+      sizeString = "default";
     }
   }
   return sizeString;

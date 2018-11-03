@@ -1,6 +1,4 @@
 // stylelint-disable selector-max-type
-$cordova-container-main-top-margin-ios:       3vh;
-$cordova-container-main-top-margin-ios-notch: 8vh;
 
 html {
   box-sizing: border-box;
@@ -30,12 +28,6 @@ body {
 .container-main {
   padding-top: $space-md;
   padding-bottom: $space-xl;
-  &__candidate-ios-notch {
-    padding-top: $cordova-container-main-top-margin-ios-notch;
-  }
-  &__candidate-ios-older {
-    padding-top: $cordova-container-main-top-margin-ios;
-  }
 }
 
 .container-settings {
