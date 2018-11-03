@@ -3,7 +3,7 @@ $address-spacing-mobile: -$space-xs $space-none $space-sm $space-none;
 $tab-spacing-desktop: 24px;
 $tab-spacing-mobile: $space-md;
 $header-extension-top: 41%;
-$header-correction-webapp:             -15vh;
+$header-correction: -40%;
 $header-correction-cordova-xs-max:     -21vh;
 $header-correction-cordova-x:          -21vh;
 $header-correction-cordova-xr:         -16vh;
@@ -44,11 +44,6 @@ $bottom-spacing-cordova: 50px;
     background-color: $white;
     border-bottom: 1px solid #aaa;
     overflow: hidden;
-  }
-
-  &__heading-webapp {
-    padding-top: $header-extension-top;
-    margin-top: $header-correction-webapp;
   }
 
   &__heading-cordova-xs-max {
