@@ -36,8 +36,9 @@ class ElectionStore extends ReduceStore {
   }
 
   getElectionDayText (google_civic_election_id) {
+    let google_civic_election_id_int = parseInt(google_civic_election_id, 10);
+    // console.log("ElectionStore, googleCivicDataExists, google_civic_election_id:", google_civic_election_id, "google_civic_election_id_int:", google_civic_election_id_int);
     if (this.getState().election_list_by_google_civic_election_id) {
-      let google_civic_election_id_int = parseInt(google_civic_election_id, 10);
       let one_election = this.getState().election_list_by_google_civic_election_id[google_civic_election_id_int];
       if (one_election) {
         return one_election.election_day_text || "";
@@ -47,10 +48,10 @@ class ElectionStore extends ReduceStore {
   }
 
   googleCivicDataExists (google_civic_election_id) {
+    let google_civic_election_id_int = parseInt(google_civic_election_id, 10);
+    // console.log("ElectionStore, googleCivicDataExists, google_civic_election_id:", google_civic_election_id, "google_civic_election_id_int:", google_civic_election_id_int);
     if (this.getState().election_list_by_google_civic_election_id) {
-      let google_civic_election_id_int = parseInt(google_civic_election_id, 10);
       let one_election = this.getState().election_list_by_google_civic_election_id[google_civic_election_id_int];
-      // console.log("googleCivicDataExists, one_election:", one_election);
       if (one_election) {
         // If more than 20 ballot_returned entries exist, we assume the data came from google civic
         return one_election.ballot_returned_count > 20;
@@ -60,10 +61,10 @@ class ElectionStore extends ReduceStore {
   }
 
   isElectionUpcoming (google_civic_election_id) {
+    let google_civic_election_id_int = parseInt(google_civic_election_id, 10);
+    // console.log("ElectionStore, googleCivicDataExists, google_civic_election_id:", google_civic_election_id, "google_civic_election_id_int:", google_civic_election_id_int);
     // console.log("ElectionStore, isElectionUpcoming, this.getState().election_list_by_google_civic_election_id:", this.getState().election_list_by_google_civic_election_id);
     if (this.getState().election_list_by_google_civic_election_id) {
-      let google_civic_election_id_int = parseInt(google_civic_election_id, 10);
-      // console.log("ElectionStore, isElectionUpcoming, google_civic_election_id:", google_civic_election_id);
       let one_election = this.getState().election_list_by_google_civic_election_id[google_civic_election_id_int];
       if (one_election) {
         return one_election.election_is_upcoming || false;

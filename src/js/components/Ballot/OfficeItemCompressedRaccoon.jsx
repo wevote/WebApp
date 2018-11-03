@@ -445,8 +445,13 @@ export default class OfficeItemCompressedRaccoon extends Component {
           </span>
         </h2>
         { this.state.display_office_unfurled ?
-          <div className="u-stack--md">Want to remember your choice? Click <strong>Choose</strong> below.</div> :
-          <div className="u-stack--md u-cursor--pointer" onClick={this.toggleExpandDetails}>Click to see more details about the candidates running for this office.</div>
+          <div className="d-print-none u-stack--md">
+            {/* Desktop */}
+            <span className="d-none d-sm-block">Want to remember your choice? Click <strong>Choose</strong>, <strong>Oppose</strong> or <strong>Comment</strong> below.</span>
+            {/* Mobile */}
+            <span className="d-block d-sm-none">Want to remember your choice? Click <strong>Choose</strong> or <strong>Oppose</strong> below.</span>
+          </div> :
+          <div className="d-print-none u-stack--md u-cursor--pointer" onClick={this.toggleExpandDetails}>Click to see more details about the candidates running for this office.</div>
         }
 
         {/* *************************
