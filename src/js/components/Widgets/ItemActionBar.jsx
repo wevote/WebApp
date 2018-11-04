@@ -458,7 +458,7 @@ export default class ItemActionBar extends Component {
     </Modal>;
 
     const ballotItemDisplayName = this.props.ballot_item_display_name || "";
-    let supportButtonSelectedPopOverText = "Click to support";
+    let supportButtonSelectedPopOverText = "Click to choose";
     if (ballotItemDisplayName.length > 0) {
       supportButtonSelectedPopOverText += " " + ballotItemDisplayName + ".";
     } else {
@@ -466,12 +466,12 @@ export default class ItemActionBar extends Component {
     }
 
     if (this.state.isPublicPosition) {
-      supportButtonSelectedPopOverText += " Your support will be visible to the public.";
+      supportButtonSelectedPopOverText += " Your choice will be visible to the public.";
     } else {
-      supportButtonSelectedPopOverText += " Only your We Vote friends will see your support.";
+      supportButtonSelectedPopOverText += " Only your We Vote friends will see your choice.";
     }
 
-    let supportButtonUnselectedPopOverText = "Click to remove your support";
+    let supportButtonUnselectedPopOverText = "Click to remove your choice";
     if (ballotItemDisplayName.length > 0) {
       supportButtonUnselectedPopOverText += " for " + ballotItemDisplayName + ".";
     } else {
