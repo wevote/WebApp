@@ -501,9 +501,9 @@ export default class ItemActionBar extends Component {
     const supportButtonPopoverTooltip = <Tooltip id="supportButtonTooltip">{this.isSupportCalculated() ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }</Tooltip>;
     const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip">{this.isOpposeCalculated() ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
 
-    const supportButton = <button className={"item-actionbar__btn item-actionbar__btn--support btn btn-primary" + (this.isSupportCalculated() ? " support-at-state" : "")} onClick={() => this.supportItem()}>
+    const supportButton = <button className={"item-actionbar__btn item-actionbar__btn--support btn btn-outline-primary" + (this.isSupportCalculated() ? " support-at-state" : "")} onClick={() => this.supportItem()}>
       <span className="btn__icon">
-        <Icon name="glyphicons-pro-halflings/glyphicons-halflings-262-tick" width={chooseIconSize} height={chooseIconSize} color={"white"} />
+        <Icon name="glyphicons-pro-halflings/glyphicons-halflings-262-tick" width={chooseIconSize} height={chooseIconSize} color={chooseIconColor} />
       </span>
       { this.isSupportCalculated() ?
         <span
