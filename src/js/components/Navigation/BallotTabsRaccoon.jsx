@@ -49,7 +49,7 @@ export default class BallotTabsRaccoon extends Component {
           {/* Desktop */}
           <span className="d-none d-sm-block">All Items ({this.props.length})</span>
           {/* Mobile */}
-          <span className="d-block d-sm-none">All Items ({this.props.length})</span>
+          <span className="d-block d-sm-none">All ({this.props.length})</span>
         </Link>
       </li>
 
