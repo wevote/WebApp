@@ -316,7 +316,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
       <div className="issues-list-stacked__support-label u-no-break">
         <div className="u-push--md">
           {totalSupportCount ? (
-            <span className="u-no-break u-push--xs issue-icon-list__endorsements-label"><img src={cordovaDot("/img/global/svg-icons/issues/thumbs-up-circle-icon.svg")}	              
+            <span className="u-no-break u-push--xs issue-icon-list__endorsements-label"><img src={cordovaDot("/img/global/svg-icons/issues/thumbs-up-circle-icon.svg")}
               className="u-push--xs"
               width="20"
               height="20"/>
@@ -324,7 +324,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
             </span>
           ) : null}
           {totalOpposeCount ? (
-            <span className="u-no-break u-push--xs issue-icon-list__endorsements-label"><img src={cordovaDot("/img/global/svg-icons/issues/thumbs-down-circle-icon.svg")}	              
+            <span className="u-no-break u-push--xs issue-icon-list__endorsements-label"><img src={cordovaDot("/img/global/svg-icons/issues/thumbs-down-circle-icon.svg")}
               className="u-push--xs"
               width="20"
               height="20"/>
