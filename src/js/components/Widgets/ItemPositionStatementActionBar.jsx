@@ -179,7 +179,7 @@ export default class ItemPositionStatementActionBar extends Component {
     let statementPlaceholderText;
     if (this.state.supportProps.is_support) {
       if (this.props.ballot_item_display_name) {
-        statementPlaceholderText = "Why you support " + this.props.ballot_item_display_name + "\u2026";
+        statementPlaceholderText = "Why you chose " + this.props.ballot_item_display_name + "\u2026";
       } else {
         statementPlaceholderText = "Why you support\u2026";
       }

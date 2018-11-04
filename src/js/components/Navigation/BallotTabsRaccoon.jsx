@@ -58,9 +58,9 @@ export default class BallotTabsRaccoon extends Component {
           <Link onClick={() => this.goToDifferentCompletionLevelTab("filterRemaining")}
                 className={this.props.completionLevelFilterType === "filterRemaining" ? "tab tab--active" : "tab tab--default"}>
             {/* Desktop */}
-            <span className="d-none d-sm-block">Remaining Decisions ({this.props.length_remaining})</span>
+            <span className="d-none d-sm-block">Remaining Choices ({this.props.length_remaining})</span>
             {/* Mobile */}
-            <span className="d-block d-sm-none">Decisions ({this.props.length_remaining})</span>
+            <span className="d-block d-sm-none">Choices ({this.props.length_remaining})</span>
           </Link>
         </li> :
         null

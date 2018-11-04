@@ -670,7 +670,7 @@ export default class VoterGuideBallot extends Component {
       case "filterRemaining":
         return "You have chosen a candidate for every office and decided on all measures.";
       case "filterDecided":
-        return "You haven't supported any candidates or decided on any measures yet.";
+        return "You haven't chosen any candidates or decided on any measures yet.";
       default:
         return "";
     }
