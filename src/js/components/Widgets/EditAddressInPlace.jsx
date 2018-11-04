@@ -69,8 +69,8 @@ export default class EditAddressInPlace extends Component {
     } else {
       return <span>
           <h4 className="h4">Your Address</h4>
-          <span className="ballot__edit-address-preview">{ this.state.text_for_map_search.length ? shortenText(this.state.text_for_map_search, maximumAddressDisplayLength) : noAddressMessage }</span>
-          <span className="d-print-none ballot__edit-address-preview-link u-padding-left--sm"> (<a onClick={this.toggleEditingAddress}>Edit</a>)</span>
+          <span className="ballot__edit-address-preview">{ this.state.text_for_map_search.length ? shortenText(this.state.text_for_map_search, maximumAddressDisplayLength) : noAddressMessage }  </span>
+          <span className="d-print-none ballot__edit-address-preview-link u-padding-left--sm"><button className="btn btn-primary" onClick={this.toggleEditingAddress}>Edit</button></span>
         </span>;
     }
   }
