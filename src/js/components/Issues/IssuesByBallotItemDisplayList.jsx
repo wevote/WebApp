@@ -15,6 +15,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
     ballotItemDisplayName: PropTypes.string,
     ballotItemWeVoteId: PropTypes.string.isRequired,
     currentBallotIdInUrl: PropTypes.string,
+    endorsementsLabelHidden: PropTypes.bool,
     issuesListHidden: PropTypes.bool,
     overlayTriggerOnClickOnly: PropTypes.bool,
     popoverBottom: PropTypes.bool,
@@ -379,7 +380,10 @@ export default class IssuesByBallotItemDisplayList extends Component {
             ref={`${this.state.ballotItemWeVoteId}-issue-list-desktop`}
             className="issues-list-stacked__support-list__container u-flex u-items-start u-inset__v--xs d-none d-sm-flex"
           >
-            {endorsementsLabel}
+            {this.props.endorsementsLabelHidden ?
+              null :
+              <span>{endorsementsLabel}</span>
+            }
             {this.props.issuesListHidden ? null : (
               <ul className="issues-list-stacked__support-list__items">
                 {/* Issues the voter is already following */}
@@ -393,8 +397,10 @@ export default class IssuesByBallotItemDisplayList extends Component {
             ref={`${this.state.ballotItemWeVoteId}-issue-list-mobile`}
             className="issues-list-stacked__support-list__container u-flex u-items-center u-inset__v--xs d-flex d-sm-none"
           >
-            {endorsementsLabel}
-
+            {this.props.endorsementsLabelHidden ?
+              null :
+              <span>{endorsementsLabel}</span>
+            }
             {this.props.issuesListHidden ? null : (
               <ul className="issues-list-stacked__support-list__items">
                 {/* Issues the voter is already following */}
