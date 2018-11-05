@@ -400,7 +400,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
           </div>
           <div
             ref={`${this.state.ballotItemWeVoteId}-issue-list-mobile`}
-            className="issues-list-stacked__support-list__container u-flex u-items-center u-inset__v--xs d-flex d-sm-none"
+            className="issues-list-stacked__support-list__container u-flex u-items-start u-inset__v--xs d-flex d-sm-none"
           >
             {this.props.endorsementsLabelHidden ? null : endorsementsLabel }
             {this.props.issuesListHidden ? null : (
