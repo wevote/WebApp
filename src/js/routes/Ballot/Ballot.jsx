@@ -669,8 +669,12 @@ export default class Ballot extends Component {
         raceLevelFilterType: "Measure",
       }, () => this.toggleExpandBallotItemDetails(selectedBallotItemId));
     } else {
+      let race_office_level = "Federal";
+      if (ballot_item) {
+        race_office_level = ballot_item.race_office_level;
+      }
       this.setState({
-        raceLevelFilterType: ballot_item.race_office_level,
+        raceLevelFilterType: race_office_level,
       }, () => this.toggleExpandBallotItemDetails(selectedBallotItemId));
     }
   }
