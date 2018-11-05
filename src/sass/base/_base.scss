@@ -38,15 +38,41 @@ body {
 // Disable cut and paste in Cordova, if not in an input field.  Otherwise it is a giveaway that this is a hybrid app (a wrapper).
 .cordova-base {
   -webkit-user-select: none;
-  -khtml-user-select: none;
+  -html-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
 }
 
-.cordova-base-iphonex {
-  padding-top: $space-lg;
-}
+// stylelint-disable sh-waqar/declaration-use-variable
+.headroom-webapp-secondary      { margin-top: 9vh; }
+.headroom-webapp-backto         { margin-top: 3vh; }
+.headroom-webapp-full           { margin-top: 3vh; }
+.headroom-ios-notch-secondary   { margin-top: 10vh; }
+.headroom-ios-notch-backto      { margin-top: 8vh; }
+.headroom-ios-notch-full        { margin-top: -2vh; }
+.headroom-ios-678-secondary     { margin-top: 10vh; }
+.headroom-ios-678-backto        { margin-top: -1vh; }
+.headroom-ios-678-full          { margin-top: -5vh; }
+.headroom-ios-678plus-secondary { margin-top: 10vh; }
+.headroom-ios-678plus-backto    { margin-top: 6vh; }
+.headroom-ios-678plus-full      { margin-top: -4vh; }
+.headroom-ios-ipad-secondary    { margin-top: 7vh; }
+.headroom-ios-ipad-backto       { margin-top: 3vh; }
+.headroom-ios-ipad-full         { margin-top: 1vh; }
+.headroom-android-xl-secondary  { margin-top: 7vh; }
+.headroom-android-xl-backto     { margin-top: -3vh; }
+.headroom-android-xl-full       { margin-top: -8vh; }
+.headroom-android-lg-secondary  { margin-top: 8vh; }
+.headroom-android-lg-backto     { margin-top: -3vh; }
+.headroom-android-lg-full       { margin-top: -8vh; }
+.headroom-android-md-secondary  { margin-top: 8vh; }
+.headroom-android-md-backto     { margin-top: -3vh; }
+.headroom-android-md-full       { margin-top: -8vh; }
+.headroom-android-sm-secondary  { margin-top: 10vh; }
+.headroom-android-sm-backto     { margin-top: -5vh; }
+.headroom-android-sm-full       { margin-top: -10vh; }
+// stylelint-enable sh-waqar/declaration-use-variable
 
 *,
 *::before,

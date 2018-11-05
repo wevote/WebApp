@@ -137,6 +137,15 @@ export function isIPhone678Plus () {
   return isIOS() && screen.width === 1242 && screen.height === 2208;
 }
 
+export function isIPhone678 () {
+  let ratio = window.devicePixelRatio || 1;
+  let screen = {
+    width: window.screen.width * ratio,
+    height: window.screen.height * ratio,
+  };
+  return isIOS() && screen.width === 750 && screen.height === 1334;
+}
+
 export function isIPhoneXR () {
   let ratio = window.devicePixelRatio || 1;
   let screen = {
@@ -152,7 +161,25 @@ export function isIPhoneXSMax () {
     width: window.screen.width * ratio,
     height: window.screen.height * ratio,
   };
+  // console.log("DEVICE width: " + screen.width + ",  height: " + screen.height);
   return isIOS() && screen.width === 1242 && screen.height === 2688;
+}
+
+export function isIPad () {
+  let ratio = window.devicePixelRatio || 1;
+  let screen = {
+    width: window.screen.width * ratio,
+    height: window.screen.height * ratio,
+  };
+
+  /* eslint-disable no-extra-parens */
+  return isIOS() && (
+    (screen.width === 768 && screen.height === 1024) ||   // iPad, 9.7" 2010 and Gen 2, 2011 and Mini 2012
+    (screen.width === 1536 && screen.height === 2048) ||  // iPad, 9.7" Gen 3 2012, Gen 4 2013, 2018 iPad, iPad Pro 2016, iPad Air 2013, and Mini Retina 2013
+    (screen.width === 1668 && screen.height === 2224) ||  // iPad Pro 10.5" Gen 2  2017
+    (screen.width === 1668 && screen.height === 2388) ||  // iPad Pro 11", iPad Pro 12.9" October 2018
+    (screen.width === 2048 && screen.height === 2732)     // iPad Pro 12.9" Gen 2, 2018
+  );
 }
 
 export function hasIPhoneNotch () {
@@ -179,13 +206,13 @@ export function getAndroidSize () {
      xl = 2560*1600 = 4,096,000  Nexus10 Tablet   */
 
   if (size > 3.7E6) {
-    sizeString = "android-xl";
+    sizeString = "-xl";
   } else if (size > 3E6) {
-    sizeString = "android-lg";
+    sizeString = "-lg";
   } else if (size > 1E6) {
-    sizeString = "android-md";
+    sizeString = "-md";
   } else {
-    sizeString = "android-sm";
+    sizeString = "-sm";
   }
   return sizeString;
 }
@@ -194,19 +221,20 @@ export function getHeadingSize () {
   let sizeString = "";
   if (isCordova()) {
     if (isIPhoneXSMax()) {
-      sizeString = "xs-max";
+      sizeString = "-xs-max";
     } else if (isIPhoneXorXS()) {
-      sizeString = "x";
+      sizeString = "-x";
     } else if (isIPhoneXR()) {
-      sizeString = "xr";
+      sizeString = "-xr";
     } else if (isIPhone678Plus()) {
-      sizeString = "i678plus";
+      sizeString = "-i678plus";
     } else if (isAndroid()) {
       sizeString = getAndroidSize();
     } else {
       sizeString = "default";
     }
   }
+  // console.log("CordovaUtils.getHeadingSize: " + sizeString);
   return sizeString;
 }
 
