@@ -73,7 +73,7 @@ export default class ReadMore extends Component {
         if (expanded_text_array.length <= num_of_lines && all_lines_short) {
           not_enough_text_to_truncate = true;
         }
-        // wrap text in array in seperate spans with html line breaks
+        // wrap text in array in separate spans with html line breaks
         let expanded_text_to_display = expanded_text_array.map(function (item, key){
           if (key === 0) {
             return <span key={key}>
@@ -92,7 +92,7 @@ export default class ReadMore extends Component {
         });
 
         if (not_enough_text_to_truncate) {
-          return <span>{expanded_text_to_display}</span>;
+          return <span className={this.props.className}>{expanded_text_to_display}</span>;
         }
         if (this.state.readMore) {
           return <span>
