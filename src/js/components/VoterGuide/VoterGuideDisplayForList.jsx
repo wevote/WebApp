@@ -79,7 +79,10 @@ export default class VoterGuideDisplayForList extends Component {
           <Link to={voterGuideLink}>
             <h4 className="card-child__display-name">{voterGuideDisplayName}</h4>
           </Link>
-          { twitterDescriptionMinusName ? <ReadMore text_to_display={twitterDescriptionMinusName} num_of_lines={numOfLines} /> :
+          { twitterDescriptionMinusName ?
+            <ReadMore className={"card-child__organization-description"}
+                      text_to_display={twitterDescriptionMinusName}
+                      num_of_lines={numOfLines} /> :
             null}
           { positionDescription }
         </div>

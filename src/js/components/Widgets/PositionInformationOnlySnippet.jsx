@@ -101,18 +101,16 @@ export default class PositionInformationOnlySnippet extends Component {
       }
     }
 
-    let noPositionIcon = <Icon name="no-position-icon" width={24} height={24} className={className} alt={alt} />;
     let labelText = "This position is information-only, as opposed to “support” or “oppose”";
     const tooltip = <Tooltip id="tooltip">{labelText}</Tooltip>;
-    const noPositionIndicator = <OverlayTrigger placement="top" overlay={tooltip}>
-      <div className="public-friends-indicator">{noPositionIcon}</div>
-    </OverlayTrigger>;
     return <div className="explicit-position">
-      {stance_display_off ? null : noPositionIndicator}
       <div className="explicit-position__text">
         { stance_display_off ?
           null :
           <span>
+            <OverlayTrigger placement="top" overlay={tooltip}>
+              <div className="public-friends-indicator"><Icon name="no-position-icon" width={24} height={24} className={className} alt={alt} /></div>
+            </OverlayTrigger>
             {this.props.is_on_ballot_item_page ?
               <span>
                 <span className="explicit-position__position-label">{positionLabel}</span>

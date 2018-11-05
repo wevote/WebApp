@@ -293,9 +293,15 @@ $candidate-font-size: .875rem;
 
     &__avatar { // placed on the actual image
       max-width: 50px;
+      @include breakpoints(max mid-small) {
+        max-width: 32px;
+      }
       &--round {
         border-radius: $radius-rounded;
         max-width: 50px;
+        @include breakpoints(max mid-small) {
+          max-width: 32px;
+        }
         @include print {
           max-width: 50px; // TODO TESTING - not working
         }
@@ -335,6 +341,10 @@ $candidate-font-size: .875rem;
       // font-size: 18px;
       margin-bottom: $space-xs;
       flex: auto;
+    }
+
+    &__organization-description {
+      color: $gray-mid;
     }
 
     &__follow-buttons {
