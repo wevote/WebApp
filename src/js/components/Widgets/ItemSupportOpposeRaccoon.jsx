@@ -755,26 +755,45 @@ export default class ItemSupportOpposeRaccoon extends Component {
     let totalSupportCount = networkSupportCount + organizationsToFollowSupport.length;
     let totalOpposeCount = networkOpposeCount + organizationsToFollowOppose.length;
 
-    const endorsementsLabel = <span className="issues-list-stacked__support-label u-cursor--pointer u-no-break">
-                  <span className="u-push--xs">
-                    { totalSupportCount ?
-                      <span className="u-no-break u-push--xs issue-icon-list__endorsements-label"><img
-                        src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")}
-                        width="20" height="20"/> {totalSupportCount}</span> :
-                      null
-                    }
-                    { totalOpposeCount ?
-                      <span className="u-no-break u-push--xs issue-icon-list__endorsements-label"><img
-                        src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
-                        width="20" height="20"/> {totalOpposeCount}</span> :
-                      null
-                    }
-                    { totalSupportCount || totalOpposeCount ?
-                      <span className="issue-icon-list__endorsements-label">Endorsements</span> :
-                      <span className="issue-icon-list__endorsements-label">No Endorsements</span>
-                    }
+    const endorsementsLabel = (
+      <span className="issues-list-stacked__support-label u-cursor--pointer u-no-break">
+        {totalSupportCount ? (
+          <span className="u-no-break issue-icon-list__endorsements-label">
+            <img
+              src={cordovaDot(
+                "/img/global/svg-icons/issues/thumbs-up-icon.svg"
+              )}
+              className="issue-icon-list__endorsement-icon"
+              width="20"
+              height="20"
+            />
+            <span className="issue-icon-list__endorsement-count">
+              {totalSupportCount}
+            </span>
+          </span>
+        ) : null}
+        {totalOpposeCount ? (
+          <span className="u-no-break issue-icon-list__endorsements-label">
+            <img
+              src={cordovaDot(
+                "/img/global/svg-icons/issues/thumbs-down-icon.svg"
+              )}
+              className="issue-icon-list__endorsement-icon"
+              width="20"
+              height="20"
+            />
+            <span className="issue-icon-list__endorsement-count">
+              -{totalOpposeCount}
                   </span>
-                </span>;
+          </span>
+        ) : null}
+        {totalSupportCount || totalOpposeCount ? (
+          <span>Endorsements</span>
+        ) : (
+          <span>No Endorsements</span>
+        )}
+      </span>
+    );
 
     const positionsLabel =
       <OverlayTrigger trigger="click"
