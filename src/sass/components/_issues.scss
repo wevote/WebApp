@@ -2,7 +2,30 @@
 
 .issue-icon-list {
   &__endorsements-label {
-    color: $gray-dark;
+    display: flex;
+    flex: none;
+    align-items: center;
+    padding: $space-xxs $space-xs;
+    border-radius: $radius-rounded;
+    border: 1px solid $gray-lighter;
+    // background-color: $gray-lighter;
+    margin-right: $space-xs;
+  }
+  &__endorsement-icon {
+    padding: $space-none $space-xxs;
+    box-sizing: border-box; // this shouldn't be necessary. Defaults are getting messed up.
+  }
+  &__endorsement-count {
+    min-width: 1em;
+    padding: $space-xxs;
+    text-align: center;
+    font-weight: bold;
+    color: $gray-mid;
+    margin-left: $space-xxs;
+    background-color: $white;
+    border-radius: $radius-rounded;
+    display: flex;
+    align-content: center;
   }
   &__issue-block {
     display: flex;
@@ -85,6 +108,8 @@
     display: inline-flex;
     flex-direction: row;
     align-items: center;
+    margin-right: $space-sm;
+    flex: none;
 
     @include breakpoints (small mid-small) {
       font-size: .875rem;
