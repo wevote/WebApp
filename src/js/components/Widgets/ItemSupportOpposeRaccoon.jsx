@@ -7,7 +7,7 @@ import $ from "jquery";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
 import {cordovaDot, isCordova} from "../../utils/cordovaUtils";
-import IssuesFollowedByBallotItemDisplayList from "../../components/Issues/IssuesFollowedByBallotItemDisplayList";
+import IssuesByBallotItemDisplayList from "../../components/Issues/IssuesByBallotItemDisplayList";
 import IssueStore from "../../stores/IssueStore";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
@@ -651,7 +651,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                    title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                    onClick={this.closeIssueScorePopover}>
             Follow <strong><img src={cordovaDot("/img/global/svg-icons/issues-v1-64x42.svg")}
-                                width="24px"/> Issues</strong> (at the top of the page) to get a personalized <strong>Score</strong> for {this.state.ballot_item_display_name}.
+                                width="24px"/> Issues</strong> to get a personalized <strong>Score</strong> for {this.state.ballot_item_display_name}.
             We add up the opinions from all organizations tagged with your issues. Whew, that's a mouthful!
           </Popover>;
         issuesPopoverPlacement = "top";
@@ -719,7 +719,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     // Removed bsPrefix="card-popover"
     const positionsPopover = positions_count > 1 || positions_count && !voter_decided_item ?
       <Popover id="positions-popover-trigger-click-root-close"
-               title={<span>Opinions{this.state.ballot_item_display_name ? "  about " + this.state.ballot_item_display_name : ""} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+               title={<span className="u-f4 u-no-break">Opinions{this.state.ballot_item_display_name ? " about " + this.state.ballot_item_display_name : ""} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closePositionsPopover}
                >
         These organizations <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")}
@@ -731,13 +731,13 @@ export default class ItemSupportOpposeRaccoon extends Component {
       </Popover> :
       positions_count && voter_decided_item ?
       <Popover id="positions-popover-trigger-click-root-close"
-               title={<span>Opinions{this.state.ballot_item_display_name ? "  about " + this.state.ballot_item_display_name : ""} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+               title={<span className="u-f4 u-no-break">Opinions{this.state.ballot_item_display_name ? " about " + this.state.ballot_item_display_name : ""} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closePositionsPopover}
                >
         You have the only opinion{this.state.ballot_item_display_name ? " about " + this.state.ballot_item_display_name : ""} so far.
       </Popover> :
       <Popover id="positions-popover-trigger-click-root-close"
-               title={<span>Opinions{this.state.ballot_item_display_name ? "  about " + this.state.ballot_item_display_name : ""} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
+               title={<span className="u-f4 u-no-break">Opinions{this.state.ballot_item_display_name ? " about " + this.state.ballot_item_display_name : ""} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
                onClick={this.closePositionsPopover}
                >
         There are no opinions{this.state.ballot_item_display_name ? " about " + this.state.ballot_item_display_name : ""} yet.
@@ -789,18 +789,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
       </OverlayTrigger>;
 
     return <div className="network-positions-stacked">
-      {/* Issues that have a score related to this ballot item */}
-      { this.props.showIssueList ?
-        <IssuesFollowedByBallotItemDisplayList ballotItemDisplayName={this.state.ballot_item_display_name}
-                                               ballotItemWeVoteId={this.props.ballotItemWeVoteId}
-                                               currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                               overlayTriggerOnClickOnly
-                                               placement={this.props.popoverBottom ? "bottom" : "top"}
-                                               urlWithoutHash={this.props.urlWithoutHash}
-        /> :
-        null
-      }
-
       <div className="d-print-none network-positions-stacked__support-list u-flex u-justify-between u-items-center">
         {/* Click to scroll left through list Desktop */}
         { this.state.can_scroll_desktop && this.state.can_scroll_left_desktop ?
@@ -893,6 +881,24 @@ export default class ItemSupportOpposeRaccoon extends Component {
           <i className="fa fa-1x fa-chevron-right network-positions-stacked__support-list__scroll-icon--disabled d-block d-sm-none d-print-none" aria-hidden="true" />
         }
       </div>
+
+      {/* Issues that have a score related to this ballot item */}
+      { this.props.showIssueList ?
+        <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between u-padding-bottom--sm">
+          <div>
+            {/* We use this component to show the label showing number of endorsements */}
+            <IssuesByBallotItemDisplayList ballotItemDisplayName={this.state.ballot_item_display_name}
+                                           ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+                                           currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                                           endorsementsLabelHidden
+                                           overlayTriggerOnClickOnly
+                                           placement={"bottom"}
+                                           urlWithoutHash={this.props.urlWithoutHash}
+                                           />
+          </div>
+        </div> :
+        null
+      }
 
       <div className="network-positions-stacked__support">
         {/* Issue Score here */}
