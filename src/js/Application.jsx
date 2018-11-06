@@ -9,7 +9,7 @@ import {
   historyPush,
   isAndroid,
   isCordova,
-  isIOS,
+  isIOS, isIPad,
   isIPhone678,
   isIPhone678Plus,
   isWebApp
@@ -452,6 +452,82 @@ export default class Application extends Component {
       appBaseClass += "-backto";
     } else {
       appBaseClass += "-full";
+    }
+    // console.log("Determine the headroom space classname:" + appBaseClass);
+    // End of headroom space determination
+
+
+    // Determine the headroom space at the top of the scrollable pane (not related to headroom.js)
+    // console.log("Determine the headroom space pathname:" + pathname);
+    let isSecondary = stringContains("/ballot", pathname);
+    let isBackto =
+      stringContains("/candidate/", pathname) ||
+      (stringContains("/settings/", pathname) && isCordova()) ||
+      stringContains("/measure/", pathname);
+    let isFull = !(isSecondary || isBackto);
+    let androidSize = getAndroidSize();
+    // let appBaseClass = "";
+
+    if (isWebApp()) {
+      if (isSecondary) {
+        appBaseClass = "app-base headroom-webapp-secondary";
+      } else if (isBackto) {
+        appBaseClass = "app-base headroom-webapp-backto";
+      } else {
+        appBaseClass = "app-base headroom-webapp-full";
+      }
+    } else if (isAndroid()) {
+      if (androidSize === "-xl" && isSecondary) {
+        appBaseClass = "app-base cordova-base headroom-android-xl-secondary";
+      } else if (androidSize === "-lg" && isSecondary) {
+        appBaseClass = "app-base cordova-base headroom-android-lg-secondary";
+      } else if (androidSize === "-md" && isSecondary) {
+        appBaseClass = "app-base cordova-base headroom-android-md-secondary";
+      } else if (androidSize === "-sm" && isSecondary) {
+        appBaseClass = "app-base cordova-base headroom-android-sm-secondary";
+      } else if (androidSize === "-xl" && isBackto) {
+        appBaseClass = "app-base cordova-base headroom-android-xl-backto";
+      } else if (androidSize === "-lg" && isBackto) {
+        appBaseClass = "app-base cordova-base headroom-android-lg-backto";
+      } else if (androidSize === "-md" && isBackto) {
+        appBaseClass = "app-base cordova-base headroom-android-md-backto";
+      } else if (androidSize === "-sm" && isBackto) {
+        appBaseClass = "app-base cordova-base headroom-android-sm-backto";
+      } else if (androidSize === "-xl" && isFull) {
+        appBaseClass = "app-base cordova-base headroom-android-xl-full";
+      } else if (androidSize === "-lg" && isFull) {
+        appBaseClass = "app-base cordova-base headroom-android-lg-full";
+      } else if (androidSize === "-md" && isFull) {
+        appBaseClass = "app-base cordova-base headroom-android-md-full";
+      } else if (androidSize === "-sm" && isFull) {
+        appBaseClass = "app-base cordova-base headroom-android-sm-full";
+      }
+    } else if (isIOS()) {
+      if (hasIPhoneNotch() && isSecondary) {
+        appBaseClass = "app-base cordova-base headroom-ios-notch-secondary";
+      } else if (hasIPhoneNotch() && isBackto) {
+        appBaseClass = "app-base cordova-base headroom-ios-notch-backto";
+      } else if (hasIPhoneNotch() && isFull) {
+        appBaseClass = "app-base cordova-base headroom-ios-notch-full";
+      } else if (isIPhone678() && isSecondary) {
+        appBaseClass = "app-base cordova-base headroom-ios-678-secondary";
+      } else if (isIPhone678() && isBackto) {
+        appBaseClass = "app-base cordova-base headroom-ios-678-backto";
+      } else if (isIPhone678() && isFull) {
+        appBaseClass = "app-base cordova-base headroom-ios-678-full";
+      } else if (isIPhone678Plus() && isSecondary) {
+        appBaseClass = "app-base cordova-base headroom-ios-678plus-secondary";
+      } else if (isIPhone678Plus() && isBackto) {
+        appBaseClass = "app-base cordova-base headroom-ios-678plus-backto";
+      } else if (isIPhone678Plus() && isFull) {
+        appBaseClass = "app-base cordova-base headroom-ios-678plus-full";
+      } else if (isIPad() && isSecondary) {
+        appBaseClass = "app-base cordova-base headroom-ios-ipad-secondary";
+      } else if (isIPad() && isBackto) {
+        appBaseClass = "app-base cordova-base headroom-ios-ipad-backto";
+      } else if (isIPad() && isFull) {
+        appBaseClass = "app-base cordova-base headroom-ios-ipad-full";
+      }
     }
     // console.log("Determine the headroom space classname:" + appBaseClass);
     // End of headroom space determination
