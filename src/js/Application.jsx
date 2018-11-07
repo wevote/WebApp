@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
-import { hasIPhoneNotch, historyPush, isAndroid, isCordova, isIOS, isIPhoneXR, isWebApp } from "./utils/cordovaUtils";
+import { getAppBaseClass, hasIPhoneNotch, historyPush, isAndroid, isCordova, isIOS, isWebApp } from "./utils/cordovaUtils";
 import ElectionActions from "./actions/ElectionActions";
 import FooterBarCordova from "./components/Navigation/FooterBarCordova";
 import FriendActions from "./actions/FriendActions";
@@ -113,16 +113,32 @@ export default class Application extends Component {
     IssueActions.retrieveIssuesToFollow();
     this.issueStoreListener = IssueStore.addListener(this.preloadIssueImages);
     if (isCordova()) {
-      window.addEventListener("keyboardDidShow", this.keyboardDidShow.bind(this));
+      window.addEventListener("keyboardWillShow", this.keyboardWillShow.bind(this));
       window.addEventListener("keyboardDidHide", this.keyboardDidHide.bind(this));
     }
+
+    // November 2, 2018:  Polyfill for "Object.entries"
+    //   react-bootstrap 1.0 (bootstrap 4) relies on Object.entries in splitComponentProps.js
+    //   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries#Polyfill
+    if (!Object.entries) {
+      Object.entries = function (obj) {
+        let localProps = Object.keys(obj);
+        let i = localProps.length;
+        let resArray = new Array(i); // preallocate the Array
+        while (i--)
+          resArray[i] = [localProps[i], obj[localProps[i]]];
+
+        return resArray;
+      };
+    }
+
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
     this.loadedHeader = false;
     if (isCordova()) {
-      this.keyboardDidShow.removeEventListener();
+      this.keyboardWillShow.removeEventListener();
       this.keyboardDidHide.removeEventListener();
     }
   }
@@ -149,7 +165,9 @@ export default class Application extends Component {
     this.loadedHeader = true;
   }
 
-  keyboardDidShow () {
+  keyboardWillShow () {
+    // This is for Cordova only, please do not remove the console.log()
+    console.log("keyboardWillShow height " + $("body").height());  // eslint-disable-line no-undef
     this.setState({
       showFooter: false,
     });
@@ -349,8 +367,6 @@ export default class Application extends Component {
       settingsMode = true;
     } else {
       voterGuideMode = true;
-
-      // Consider limiting "HeaderSecondaryNavBar" to ballot tab only
       voterGuideShowGettingStartedNavigation = true;
     }
 
@@ -386,23 +402,6 @@ export default class Application extends Component {
       showBackToHeader = true;
     }
 
-    let headRoomSize;
-    if (voterGuideShowGettingStartedNavigation || stringContains("/ballot", pathname) || pathname === "/bookmarks") {
-      headRoomSize = isIPhoneXR() ? "headroom-secondary-nav__margin-iphone-xr" : "headroom-secondary-nav__margin";
-    } else if (stringContains("/network", pathname)) {
-      if (isWebApp()) {
-        headRoomSize = "headroom-wrapper";
-      } else if (hasIPhoneNotch()) {
-        headRoomSize = "headroom-wrapper__cordova-ios-network-notch";
-      } else if (isIOS()) {
-        headRoomSize = "headroom-wrapper__cordova-ios-network";
-      } else {
-        headRoomSize = "headroom-wrapper__cordova-android";
-      }
-    } else if (isWebApp()) {
-      headRoomSize = "headroom-wrapper";
-    }
-
     let pageHeaderStyle = this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom";
     if (isIOS()) {
       pageHeaderStyle = "page-header__container headroom page-header-cordova-ios";   // Note March 2018: no headroom.js for Cordova
@@ -411,14 +410,6 @@ export default class Application extends Component {
     }
 
     let footerStyle = this.state.showFooter ? "footroom-wrapper" : "footroom-wrapper__hide";
-    let appBaseClass = "app-base";
-    if (isCordova()) {
-      if (!hasIPhoneNotch()) {
-        appBaseClass += " cordova-base-iphonex";
-      } else {
-        appBaseClass += " cordova-base";
-      }
-    }
 
     let iPhoneSpacer = "";
     if (isCordova() && isIOS() && hasIPhoneNotch()) {
@@ -444,10 +435,10 @@ export default class Application extends Component {
       // console.log("voterGuideMode", voterGuideMode);
       let hideGettingStartedButtons = voterGuideShowGettingStartedNavigation;
 
-      return <div className={appBaseClass} id="app-base-id">
+      return <div className={getAppBaseClass(pathname)} id="app-base-id">
         <ToastContainer closeButton={false} />
         { iPhoneSpacer }
-        <div className={headRoomSize}>
+        <div className={isWebApp ? "headroom-wrapper" : ""}>
           <div ref="pageHeader" className={pageHeaderStyle}>
             { showBackToHeader ?
               <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
@@ -480,10 +471,10 @@ export default class Application extends Component {
     } else if (settingsMode) {
       // console.log("settingsMode", settingsMode);
 
-      return <div className={appBaseClass} id="app-base-id">
+      return <div className={getAppBaseClass(pathname)} id="app-base-id">
         <ToastContainer closeButton={false} />
         { iPhoneSpacer }
-        <div className={headRoomSize}>
+        <div className={isWebApp ? "headroom-wrapper" : ""}>
           <div ref="pageHeader" className={pageHeaderStyle}>
             { showBackToSettings ?
               <span>
@@ -517,10 +508,10 @@ export default class Application extends Component {
     }
 
     // This handles other pages, like Welcome and the Ballot display
-    return <div className={appBaseClass} id="app-base-id">
+    return <div className={getAppBaseClass(pathname)} id="app-base-id">
       <ToastContainer closeButton={false} />
       { iPhoneSpacer }
-      <div className={headRoomSize}>
+      <div className={isWebApp ? "headroom-wrapper" : ""}>
         <div ref="pageHeader" className={pageHeaderStyle}>
           { showBackToHeader ?
             <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
@@ -532,10 +523,10 @@ export default class Application extends Component {
         </div>
       </div>
       { pathname === "/welcome" || !contentFullWidthMode ?
-        <div>{ this.props.children }</div> :
+        <div className="welcome-or-not-full-width">{ this.props.children }</div> :
         <div className="page-content-container">
           <div className="container-fluid">
-            <div className={"container-main"}>
+            <div className="container-main">
               { this.props.children }
             </div>
           </div>

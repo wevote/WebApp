@@ -125,8 +125,8 @@ export default class CandidateModal extends Component {
               <span>
                 {/* Show a break-down of the positions in your network */}
                 { this.state.candidateSupportProps &&
-                  ( this.state.candidateSupportProps.oppose_count ||
-                    this.state.candidateSupportProps.support_count) ?
+                  (this.state.candidateSupportProps.oppose_count ||
+                   this.state.candidateSupportProps.support_count) ?
                   <div className="u-flex u-justify-between u-inset__v--xs">
                   {/* In desktop mode, align left with position bar */}
                   {/* In mobile mode, turn on green up-arrow before icons */}

@@ -137,8 +137,9 @@ export default class BallotLocationChoices extends Component {
 
   render () {
     renderLog(__filename);
-    const default_number_of_ballot_locations_mobile = 5;
-    const default_number_of_ballot_locations_desktop = 5;
+    // Commented out for 2018 Election
+    // const default_number_of_ballot_locations_mobile = 5;
+    // const default_number_of_ballot_locations_desktop = 5;
     const electionName = BallotStore.currentBallotElectionName;
     const electionDayText = BallotStore.currentBallotElectionDate;
     const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format("MMM Do, YYYY")}</span> : <span />;
