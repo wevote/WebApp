@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import { cordovaDot, isCordova } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 
 export default class IntroNetworkDefinition extends Component {
-  // Oct 1, 2018: Seems to cause the compenent to initialize too early with React 16
-  // static propTypes = {
-  //   history: PropTypes.object,
-  //   next: PropTypes.func,
-  // };
+  static propTypes = {
+    history: PropTypes.object,
+    next: PropTypes.func,
+  };
 
   constructor (props) {
     super(props);
