@@ -377,7 +377,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
             className="issues-list-stacked__support-list__container u-flex u-items-start u-inset__v--xs d-none d-sm-flex"
           >
             {this.props.endorsementsLabelHidden ? null : endorsementsLabel }
-            {this.props.issuesListHidden ? null : (
+            {this.props.issuesListHidden ? null :
               <ul className="issues-list-stacked__support-list__items">
                 {/* Issues the voter is already following */}
                 {issuesVoterIsFollowingHtml}
