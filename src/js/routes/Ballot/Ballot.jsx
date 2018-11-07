@@ -18,7 +18,7 @@ import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateModal from "../../components/Ballot/CandidateModal";
 import cookies from "../../utils/cookies";
-import { cordovaDot, getHeadingSize, historyPush, isCordova, isWebApp } from "../../utils/cordovaUtils";
+import { cordovaDot, historyPush, isCordova, isWebApp } from "../../utils/cordovaUtils";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
 import Helmet from "react-helmet";

@@ -107,6 +107,17 @@ export default class ItemPositionStatementActionBar extends Component {
     this.voterStoreListener.remove();
   }
 
+  // See https://reactjs.org/docs/error-boundaries.html
+  static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars
+    // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
+    return { hasError: true };
+  }
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error("ItemPositionStatementActionBar caught error: ", error + " with info: ", info);
+  }
+
   onSupportStoreChange () {
     let supportProps = SupportStore.get(this.props.ballot_item_we_vote_id);
     let statement_text_to_be_saved = "";
@@ -251,8 +262,7 @@ export default class ItemPositionStatementActionBar extends Component {
       statement_text_no_url = statement_text_to_be_saved.replace(video_url, "");
     }
 
-    // eslint-disable-next-line react/no-unknown-property
-    return <div class={ this.props.shown_in_list ? "position-statement__container__in-list" : "position-statement__container"}>
+    return <div className={ this.props.shown_in_list ? "position-statement__container__in-list" : "position-statement__container"}>
       { // Show the edit box (Viewing self)
         edit_mode ?
           <form onSubmit={this.savePositionStatement.bind(this)}>

@@ -1,5 +1,6 @@
 import { browserHistory, hashHistory } from "react-router";
 import { oAuthLog } from "./logging";
+import { stringContains } from "./textFormat";
 
 export function isWebApp () {
   return window.cordova === undefined;
@@ -206,36 +207,58 @@ export function getAndroidSize () {
      xl = 2560*1600 = 4,096,000  Nexus10 Tablet   */
 
   if (size > 3.7E6) {
-    sizeString = "-xl";
+    sizeString = "--xl";
   } else if (size > 3E6) {
-    sizeString = "-lg";
+    sizeString = "--lg";
   } else if (size > 1E6) {
-    sizeString = "-md";
+    sizeString = "--md";
   } else {
-    sizeString = "-sm";
+    sizeString = "--sm";
   }
   return sizeString;
 }
 
-export function getHeadingSize () {
-  let sizeString = "";
-  if (isCordova()) {
-    if (isIPhoneXSMax()) {
-      sizeString = "-xs-max";
-    } else if (isIPhoneXorXS()) {
-      sizeString = "-x";
-    } else if (isIPhoneXR()) {
-      sizeString = "-xr";
-    } else if (isIPhone678Plus()) {
-      sizeString = "-i678plus";
-    } else if (isAndroid()) {
-      sizeString = getAndroidSize();
+/**
+ * Determine the headroom space at the top of the scrollable pane for the Application.jsx
+ * This is not related to headroom.js
+ * @param pathname
+ * @returns {string}
+ */
+export function getAppBaseClass (pathname) {
+  // console.log("Determine the headroom space pathname:" + pathname);
+  let appBaseClass = "app-base";
+  if (isWebApp()) {
+    appBaseClass += " headroom-webapp";
+  } else {
+    appBaseClass += " cordova-base";
+    if (isIOS()) {
+      appBaseClass += " headroom-ios";
+      if (hasIPhoneNotch()) {
+        appBaseClass += "--notch";
+      } else if (isIPhone678()) {
+        appBaseClass += "--678";
+      } else if (isIPhone678Plus()) {
+        appBaseClass += "--678plus";
+      } else {  // iPad
+        appBaseClass += "--ipad";
+      }
     } else {
-      sizeString = "default";
+      appBaseClass += " headroom-android";
+      appBaseClass += getAndroidSize();
     }
   }
-  // console.log("CordovaUtils.getHeadingSize: " + sizeString);
-  return sizeString;
+  if (stringContains("/ballot", pathname)) {
+    appBaseClass += "--secondary";
+  } else if (stringContains("/candidate/", pathname) ||
+    (stringContains("/settings/", pathname) && isCordova()) ||
+    stringContains("/measure/", pathname)) {
+    appBaseClass += "--backto";
+  } else {
+    appBaseClass += "--full";
+  }
+
+  console.log("Determine the headroom space classname:" + appBaseClass);
+  return appBaseClass;
 }
 
 
