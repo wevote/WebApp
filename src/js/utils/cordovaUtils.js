@@ -257,7 +257,7 @@ export function getAppBaseClass (pathname) {
     appBaseClass += "--full";
   }
 
-  console.log("Determine the headroom space classname:" + appBaseClass);
+  // console.log("Determine the headroom space classname:" + appBaseClass);
   return appBaseClass;
 }
 

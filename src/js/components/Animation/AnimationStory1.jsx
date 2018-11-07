@@ -1,15 +1,14 @@
 import React, { Component } from "react";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 
 export default class AnimationStory1 extends Component {
-  // Oct 1, 2018: Seems to cause the component to initialize too early with Slider under React 16
-  // static propTypes = {
-  //   history: PropTypes.object,
-  //   timeline1: PropTypes.object,
-  //   next: PropTypes.func,
-  // };
+  static propTypes = {
+    history: PropTypes.object,
+    timeline1: PropTypes.object,
+    next: PropTypes.func,
+  };
 
   constructor (props) {
     super(props);
