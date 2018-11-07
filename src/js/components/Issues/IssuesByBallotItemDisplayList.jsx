@@ -15,6 +15,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
     ballotItemDisplayName: PropTypes.string,
     ballotItemWeVoteId: PropTypes.string.isRequired,
     currentBallotIdInUrl: PropTypes.string,
+    endorsementsLabelHidden: PropTypes.bool,
     issuesListHidden: PropTypes.bool,
     overlayTriggerOnClickOnly: PropTypes.bool,
     popoverBottom: PropTypes.bool,
@@ -304,27 +305,38 @@ export default class IssuesByBallotItemDisplayList extends Component {
 
     const endorsementsLabel =
       <div className="issues-list-stacked__support-label u-no-break">
-        <div className="u-push--md">
-          {totalSupportCount ?
-            <span className="u-no-break u-push--xs issue-icon-list__endorsements-label"><img src={cordovaDot("/img/global/svg-icons/issues/thumbs-up-circle-icon.svg")}
-              className="u-push--xs"
+        {totalSupportCount ? (
+          <span className="u-no-break issue-icon-list__endorsements-label">
+            <img
+              src={cordovaDot(
+                "/img/global/svg-icons/issues/thumbs-up-icon.svg"
+              )}
+              className="issue-icon-list__endorsement-icon"
               width="20"
-              height="20"/>
-              {totalSupportCount}
-            </span> : null}
-          {totalOpposeCount ?
-            <span className="u-no-break u-push--xs issue-icon-list__endorsements-label"><img src={cordovaDot("/img/global/svg-icons/issues/thumbs-down-circle-icon.svg")}
-              className="u-push--xs"
+              height="20"
+            />
+            <span className="issue-icon-list__endorsement-count">{totalSupportCount}</span>
+          </span>
+        ) : null}
+        {totalOpposeCount ? (
+          <span className="u-no-break issue-icon-list__endorsements-label">
+            <img
+              src={cordovaDot(
+                "/img/global/svg-icons/issues/thumbs-down-icon.svg"
+              )}
+              className="issue-icon-list__endorsement-icon"
               width="20"
-              height="20"/>
-              {totalOpposeCount}
-            </span> : null}
-          {totalSupportCount || totalOpposeCount ?
-            <span className="issue-icon-list__endorsements-label">
-              Endorsement
-              {totalEndorsementCount > 1 ? "s" : ""}
-            </span> : null}
-        </div>
+              height="20"
+            />
+            <span className="issue-icon-list__endorsement-count">-{totalOpposeCount}</span>
+          </span>
+        ) : null}
+        {totalSupportCount || totalOpposeCount ? (
+          <span>
+            Endorsement
+            {totalEndorsementCount > 1 ? "s" : ""}
+          </span>
+        ) : null}
       </div>
     ;
 
@@ -364,8 +376,8 @@ export default class IssuesByBallotItemDisplayList extends Component {
             ref={`${this.state.ballotItemWeVoteId}-issue-list-desktop`}
             className="issues-list-stacked__support-list__container u-flex u-items-start u-inset__v--xs d-none d-sm-flex"
           >
-            {endorsementsLabel}
-            {this.props.issuesListHidden ? null :
+            {this.props.endorsementsLabelHidden ? null : endorsementsLabel }
+            {this.props.issuesListHidden ? null : (
               <ul className="issues-list-stacked__support-list__items">
                 {/* Issues the voter is already following */}
                 {issuesVoterIsFollowingHtml}
@@ -376,11 +388,10 @@ export default class IssuesByBallotItemDisplayList extends Component {
           </div>
           <div
             ref={`${this.state.ballotItemWeVoteId}-issue-list-mobile`}
-            className="issues-list-stacked__support-list__container u-flex u-items-center u-inset__v--xs d-flex d-sm-none"
+            className="issues-list-stacked__support-list__container u-flex u-items-start u-inset__v--xs d-flex d-sm-none"
           >
-            {endorsementsLabel}
-
-            {this.props.issuesListHidden ? null :
+            {this.props.endorsementsLabelHidden ? null : endorsementsLabel }
+            {this.props.issuesListHidden ? null : (
               <ul className="issues-list-stacked__support-list__items">
                 {/* Issues the voter is already following */}
                 {issuesVoterIsFollowingHtml}

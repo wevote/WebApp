@@ -1,3 +1,5 @@
+// organization-functions
+
 export function isSpeakerTypeIndividual (speaker_type) {
   var is_individual = false;
   switch (speaker_type) {

@@ -482,26 +482,6 @@ export default class OfficeItemCompressedRaccoon extends Component {
             let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidateWeVoteId);
             let candidatePartyText = oneCandidate.party && oneCandidate.party.length ? oneCandidate.party + ". " : "";
 
-            let positionsDisplayRaccoon = <div>
-              <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
-                {/* Positions in Your Network and Possible Voter Guides to Follow */}
-                <ItemSupportOpposeRaccoon ballotItemWeVoteId={candidateWeVoteId}
-                                          ballot_item_display_name={oneCandidate.ballot_item_display_name}
-                                          currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                          display_raccoon_details_flag={this.state.display_office_unfurled}
-                                          goToCandidate={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
-                                          maximumOrganizationDisplay={this.state.maximum_organization_display}
-                                          organizationsToFollowSupport={organizationsToFollowSupport}
-                                          organizationsToFollowOppose={organizationsToFollowOppose}
-                                          popoverBottom
-                                          supportProps={candidateSupportStore}
-                                          type="CANDIDATE"
-                                          urlWithoutHash={this.props.urlWithoutHash}
-                                          we_vote_id={this.props.we_vote_id}
-                                          />
-              </div>
-            </div>;
-
             return <div key={candidateWeVoteId} className="u-stack--md u-gray-border-bottom">
               <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
                 {/* Candidate Photo */}
@@ -529,10 +509,27 @@ export default class OfficeItemCompressedRaccoon extends Component {
                              always_show_external_link
                              learn_more_text={"Learn more"}
                              />
-                  {/* DESKTOP: If voter has taken position, offer the comment bar */}
-                  {/* comment_display_raccoon_desktop */}
                   {/* Organization's Followed AND to Follow Items */}
-                  {positionsDisplayRaccoon}
+                  <div>
+                    <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
+                      {/* Positions in Your Network and Possible Voter Guides to Follow */}
+                      <ItemSupportOpposeRaccoon ballotItemWeVoteId={candidateWeVoteId}
+                                                ballot_item_display_name={oneCandidate.ballot_item_display_name}
+                                                currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                                                display_raccoon_details_flag={this.state.display_office_unfurled}
+                                                goToCandidate={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
+                                                maximumOrganizationDisplay={this.state.maximum_organization_display}
+                                                organizationsToFollowSupport={organizationsToFollowSupport}
+                                                organizationsToFollowOppose={organizationsToFollowOppose}
+                                                popoverBottom
+                                                showIssueList
+                                                supportProps={candidateSupportStore}
+                                                type="CANDIDATE"
+                                                urlWithoutHash={this.props.urlWithoutHash}
+                                                we_vote_id={this.props.we_vote_id}
+                                                />
+                    </div>
+                  </div>
                 </div>
                 {/* MOBILE: If voter has taken position, offer the comment bar */}
                 {/* comment_display_raccoon_mobile */}

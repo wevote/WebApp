@@ -50,7 +50,8 @@ export default class PositionSupportOpposeSnippet extends Component {
     let { is_looking_at_self, more_info_url } = this.props;
     let moreInfoUrl = more_info_url;
     let statement_text = this.props.statement_text || "";
-    let statement_text_html = <ReadMore text_to_display={statement_text} />;
+    let statement_text_html = <ReadMore num_of_lines={5}
+                                        text_to_display={statement_text} />;
     // onViewSourceClick is onClick function for view source modal in mobile browser
     // const onViewSourceClick = this.state.showViewSourceModal ? this.closeViewSourceModal.bind(this) : this.openViewSourceModal.bind(this);
 
@@ -112,11 +113,11 @@ export default class PositionSupportOpposeSnippet extends Component {
     }
 
     return <div className="explicit-position">
-      { stance_display_off ? null : <img src={stance_icon_src} width="24" height="24" className={className} alt={alt} /> }
       { stance_display_off ?
         null :
         <div className="explicit-position__text">
           <span className="explicit-position__voter-guide-increase">
+            <img src={stance_icon_src} width="24" height="24" className={className} alt={alt} />
             {this.props.is_on_ballot_item_page ?
               <span>
                 <span className="explicit-position__position-label">{actorSupportsBallotItemLabel}</span>

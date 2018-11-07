@@ -38,3 +38,50 @@
   border-color: $gray-border;
   color: $black;
 }
+
+// Needed for the Oppose button
+.btn-default {
+  $btn-primary-color:              $gray-darker;
+  $btn-primary-bg:                 $white;
+  $btn-primary-border:             $white;
+  $btn-primary-border-at:          $gray-light;
+  background-color: $btn-primary-bg;
+  border-color: $btn-primary-border; // Was $gray-light
+  color: $btn-primary-color;
+  &:active {
+    border-color: $btn-primary-border-at;
+  }
+  &:hover {
+    border-color: $btn-primary-border-at;
+  }
+  &:link {
+    border-color: $btn-primary-border-at;
+  }
+}
+
+// Needed for the Choose button
+.btn-outline-primary {
+  $btn-margin-bottom:              0;
+  $input-group-btn-margin-left:    -1px;
+  $space-inset__squish-btn:        6px 12px;
+  $btn-primary-color:              $link-color !default;
+  $btn-primary-color-at:           #fff; // White
+  $btn-primary-bg:                 $white;
+  $btn-primary-bg-at:              #76d00b; // Green
+  $btn-primary-border:             darken($btn-primary-color, 5%) !default;
+  background-color: $btn-primary-bg;
+  border-color: $btn-primary-border;
+  color: $btn-primary-color;
+  &:active {
+    background-color: $btn-primary-bg-at;
+    color: $btn-primary-color-at;
+  }
+  &:hover {
+    background-color: $btn-primary-bg-at;
+    color: $btn-primary-color-at;
+  }
+  &:link {
+    background-color: $btn-primary-bg-at;
+    color: $btn-primary-color-at;
+  }
+}
