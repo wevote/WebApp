@@ -21,10 +21,6 @@
   &__position-btn-label {
     color: $link-color;
     text-transform: uppercase;
-    // Oct 2018 Showing support/oppose everywhere
-    //@include breakpoints (max mid-small) {
-    //  display: none; // Hide Support/Oppose button labels on small screens
-    //}
 
     &--at-state {
       color: $white;
@@ -33,12 +29,8 @@
   }
 
   &__position-choose-btn-label {
-    // color: $white;
+    color: $link-color;
     text-transform: uppercase;
-    // Oct 2018 Showing support/oppose everywhere
-    //@include breakpoints (max mid-small) {
-    //  display: none; // Hide Support/Oppose button labels on small screens
-    //}
 
     &--at-state {
       // color: $white;
@@ -51,6 +43,7 @@
   }
 
   .support-at-state {
+    color: $white;
     background-color: $green;
   }
 
@@ -70,10 +63,6 @@
   &__position-btn-label {
     color: $link-color;
     text-transform: uppercase;
-    // Oct 2018 Showing support/oppose everywhere
-    //@include breakpoints (max large) {
-    //  display: none; // Hide Support/Oppose button labels on all screens
-    //}
 
     &--at-state {
       color: $white;
@@ -82,12 +71,8 @@
   }
 
   &__position-choose-btn-label {
-    // color: $white;
+    color: $link-color;
     text-transform: uppercase;
-    // Oct 2018 Showing support/oppose everywhere
-    //@include breakpoints (max mid-small) {
-    //  display: none; // Hide Support/Oppose button labels on small screens
-    //}
 
     &--at-state {
       // color: $white;
@@ -101,6 +86,7 @@
   }
 
   .support-at-state {
+    color: $white;
     background-color: $green;
     border-color: $green;
   }

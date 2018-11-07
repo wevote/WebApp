@@ -9,7 +9,6 @@ import { capitalizeString } from "../../utils/textFormat";
 import GuideList from "../../components/VoterGuide/GuideList";
 import Helmet from "react-helmet";
 import IssueActions from "../../actions/IssueActions";
-import IssuesFollowedByBallotItemDisplayList from "../../components/Issues/IssuesFollowedByBallotItemDisplayList";
 import IssueStore from "../../stores/IssueStore";
 import LoadingWheel from "../../components/LoadingWheel";
 import { renderLog } from "../../utils/logging";
@@ -212,12 +211,6 @@ export default class Candidate extends Component {
                        ballotItemWeVoteId={this.state.candidate_we_vote_id}
                        organizationsToFollow={this.state.voter_guides_to_follow_for_this_ballot_item}/></div>
           }
-        </div>
-        <div className="card__additional u-inset__squish--md">
-          <IssuesFollowedByBallotItemDisplayList ballotItemDisplayName={this.state.candidate.ballot_item_display_name}
-                                                 ballotItemWeVoteId={this.state.candidate_we_vote_id}
-                                                 overlayTriggerOnClickOnly
-                                                 popoverBottom={false}/>
         </div>
       </section>
       <OpenExternalWebSite url="https://api.wevoteusa.org/vg/create/"
