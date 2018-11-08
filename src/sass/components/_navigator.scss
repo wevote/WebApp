@@ -3,6 +3,9 @@ $icon-color-active: $link-color;
 $icon-color-hover: $gray-dark;
 $glyph-icon-color: $brand-blue;
 $header-height: 54px;
+$headroom-wrapper-webapp-ballot: 104px;
+$headroom-wrapper-webapp-default: 54px;
+$headroom-wrapper-webapp-voter-guide: 104px;
 $headroom-webapp: 104px;
 $header-height-cordova-ballot-ios: -1vh;
 
@@ -133,8 +136,16 @@ $container-margin: -15px;
   pointer-events: all;
 }
 
-.headroom-wrapper {
-  margin-top: $header-height;
+.headroom-wrapper-webapp {
+  &__ballot {
+    margin-top: $headroom-wrapper-webapp-ballot;
+  }
+  &__default {
+    margin-top: $headroom-wrapper-webapp-default;
+  }
+  &__voter-guide {
+    margin-top: $headroom-wrapper-webapp-voter-guide;
+  }
   &__cordova-ios {
     margin-top: $header-height-cordova-ballot-ios;
   }
