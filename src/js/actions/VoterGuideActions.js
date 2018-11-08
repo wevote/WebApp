@@ -16,6 +16,7 @@ export default {
   },
 
   voterGuidesToFollowRetrieve: function (election_id, search_string, add_voter_guides_not_from_election, start_retrieve_at_this_number = 0) {
+    // We have migrated to a newer API call that we cache by CDN: voterGuidesUpcomingRetrieve
     let maximum_number_to_retrieve = 50;
     return Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", {
       google_civic_election_id: election_id,
@@ -85,12 +86,10 @@ export default {
 
   voterGuidesUpcomingRetrieve: function (google_civic_election_id = 0) {
     // let maximum_number_to_retrieve = 500;
-    let google_civic_election_id_list = [];
-    if (google_civic_election_id !== 0) {
-      google_civic_election_id_list.push(google_civic_election_id);
-    }
+    // For now, just pass one google_civic_election_id into list. If we want multiple, we will need to dispatch
+    // with multiple "google_civic_election_id_list" entries (or comma separate)?
     Dispatcher.loadEndpoint("voterGuidesUpcomingRetrieve", {
-      google_civic_election_id_list: google_civic_election_id_list,
+      google_civic_election_id_list: google_civic_election_id,
       // maximum_number_to_retrieve: maximum_number_to_retrieve,
     });
   },

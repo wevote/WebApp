@@ -438,7 +438,7 @@ export default class Application extends Component {
       return <div className={getAppBaseClass(pathname)} id="app-base-id">
         <ToastContainer closeButton={false} />
         { iPhoneSpacer }
-        <div className={isWebApp ? "headroom-wrapper" : ""}>
+        <div className={isWebApp ? "headroom-wrapper-webapp__voter-guide" : ""}>
           <div ref="pageHeader" className={pageHeaderStyle}>
             { showBackToHeader ?
               <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
@@ -474,7 +474,7 @@ export default class Application extends Component {
       return <div className={getAppBaseClass(pathname)} id="app-base-id">
         <ToastContainer closeButton={false} />
         { iPhoneSpacer }
-        <div className={isWebApp ? "headroom-wrapper" : ""}>
+        <div className={isWebApp ? "headroom-wrapper-webapp__default" : ""}>
           <div ref="pageHeader" className={pageHeaderStyle}>
             { showBackToSettings ?
               <span>
@@ -511,7 +511,9 @@ export default class Application extends Component {
     return <div className={getAppBaseClass(pathname)} id="app-base-id">
       <ToastContainer closeButton={false} />
       { iPhoneSpacer }
-      <div className={isWebApp ? "headroom-wrapper" : ""}>
+      <div className={isWebApp ?
+                      pathname === "/ballot" ? "headroom-wrapper-webapp__ballot" : "headroom-wrapper-webapp__default" :
+                      ""}>
         <div ref="pageHeader" className={pageHeaderStyle}>
           { showBackToHeader ?
             <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
