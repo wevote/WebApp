@@ -38,7 +38,7 @@ export default class OpenExternalWebSite extends Component {
       return (
         <span className={classNameString}
               title={this.props.title ? this.props.title : ""}
-              onClick={() => cordovaOpenSafariView(this.props.url, integerDelay)} >
+              onClick={() => cordovaOpenSafariView(this.props.url, null, integerDelay)} >
           {this.props.body ? this.props.body : ""}
         </span>
       );

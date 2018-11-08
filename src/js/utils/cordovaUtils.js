@@ -62,6 +62,7 @@ function cordovaOpenSafariViewSub (requestURL, onExit) {
  * https://medium.com/@jlchereau/stop-using-inappbrowser-for-your-cordova-phonegap-oauth-flow-a806b61a2dc5
  * Sample: https://github.com/primashah/RHMAP-Keycloak-Crodova-Client/blob/03f31a2a0a23fb243b3d5095cd6ca6145b69df7b/www/js/keycloak.js
  * @param requestURL, the URL to open
+ * @param onExit
  * @param timeout, a hack delay before invoking, but it fails without the timeout
  */
 export function cordovaOpenSafariView (requestURL, onExit, timeout) {

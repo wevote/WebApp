@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import Icon from "react-svg-icons";
 import { Table } from "react-bootstrap";
 
-import { isIPhoneXR, isWebApp } from "../../utils/cordovaUtils";
+import { isWebApp } from "../../utils/cordovaUtils";
 import VoterStore from "../../stores/VoterStore";
 import BallotStore from "../../stores/BallotStore";
 import HamburgerMenuRow from "../../components/Navigation/HamburgerMenuRow";
@@ -39,14 +39,13 @@ export default class HamburgerMenu extends Component {
       <span className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none"
             onClick={this.toggleProfilePopUp} >
         {voterPhotoUrlMedium ?
-          <div id="js-header-avatar" className={`header-nav__avatar ${isIPhoneXR() && "header-nav__avatar-iphone-xr"}`} >
-            <img className={isWebApp() ? "header-nav__avatar" : "header-nav__avatar "}
-                 src={voterPhotoUrlMedium}
+          <div id="js-header-avatar" className={isWebApp() ? "header-nav__avatar" : "header-nav__avatar-cordova header-nav__cordova"} >
+            <img src={voterPhotoUrlMedium}
                  height={34}
                  width={34}
             />
           </div> :
-          <div id= "anonIcon" className={isWebApp() ? "header-nav__avatar" : "header-nav__avatar header-nav__cordova"}>
+          <div id= "anonIcon" className={isWebApp() ? "header-nav__avatar" : "header-nav__avatar-cordova header-nav__cordova"}>
             <Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" />
           </div>
         }
