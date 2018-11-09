@@ -309,9 +309,12 @@ export default class HeaderSecondaryNavBar extends Component {
                                  title="Print"
                                  iconPrint/>
 
-            <SecondaryNavBarItem show={this._toggleEmailModal}
-                                 source={cordovaDot("/img/global/svg-icons/nav/email-16.svg")}
-                                 title="Email Ballot"/>
+            {/* 11/8/18, problem with text fields within slick slider on Cordova iOS */}
+            {isWebApp() &&
+              <SecondaryNavBarItem show={this._toggleEmailModal}
+                                   source={cordovaDot("/img/global/svg-icons/nav/email-16.svg")}
+                                   title="Email Ballot"/>
+            }
 
             {/* July 10, 2018 Steve:  Disable Share Ballot via Facebook, in Cordova, until it is fixed for the Webapp */}
             {isWebApp() &&
