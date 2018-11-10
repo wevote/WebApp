@@ -34,8 +34,8 @@
   }
   &__issue-icon {
     color: $gray-mid;
-    height: calc(24px + $space-xs);
-    width: calc(24px + $space-xs);
+    height: calc(24px + #{$space-xs});
+    width: calc(24px + #{$space-xs});
     flex: none;
     margin-right: $space-xs;
     border: 1px solid $gray-mid;

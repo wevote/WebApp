@@ -70,6 +70,17 @@ export default class AddressBox extends Component {
     }
   }
 
+  // See https://reactjs.org/docs/error-boundaries.html
+  static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars
+    // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
+    return { hasError: true };
+  }
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error("AddressBox caught error: ", error + " with info: ", info);
+  }
+
   onVoterStoreChange () {
     // console.log("AddressBox, onVoterStoreChange, this.state:", this.state);
     if (this.props.toggleSelectAddressModal) {
@@ -141,11 +152,7 @@ export default class AddressBox extends Component {
           </div>;
     }
 
-    // TODO: Oct 22, 2018: If you change the following line from "class" to "className" you will get a Cordova app crash for later iPhones with notches
-    // We are just going to have to live with the javascript console warning for now...
-    // ERROR: Warning: Invalid DOM property `class`. Did you mean `className`?
-    // eslint-disable-next-line react/no-unknown-property
-    return <div class="container">
+    return <div className="container">
         <form onSubmit={this.voterAddressSave} className="row">
           <input
             type="text"

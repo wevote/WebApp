@@ -126,15 +126,28 @@ export default class OfficeItemCompressedRaccoon extends Component {
     this.voterGuideStoreListener.remove();
   }
 
+  // See https://reactjs.org/docs/error-boundaries.html
+  static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars
+    // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
+    return { hasError: true };
+  }
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error("OfficeItemCompressedRaccoon caught error: ", error + " with info: ", info);
+  }
+
   onCandidateStoreChange () {
     if (this.props.candidate_list && this.props.candidate_list.length && this.props.we_vote_id) {
       // console.log("onCandidateStoreChange");
       let newCandidateList = [];
-      this.props.candidate_list.forEach(candidate => {
-        if (candidate && candidate.we_vote_id) {
-          newCandidateList.push(CandidateStore.getCandidate(candidate.we_vote_id));
-        }
-      });
+      if (this.props.candidate_list) {
+        this.props.candidate_list.forEach(candidate => {
+          if (candidate && candidate.we_vote_id) {
+            newCandidateList.push(CandidateStore.getCandidate(candidate.we_vote_id));
+          }
+        });
+      }
       this.setState({
         candidateList: newCandidateList,
       });
@@ -211,6 +224,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
   openCandidateModal (candidate) {
     // console.log("this.state.candidate: ", this.state.candidate);
     if (candidate && candidate.we_vote_id) {
+      // console.log("openCandidateModal this.props.toggleCandidateModal: " + this.props.toggleCandidateModal);
       this.props.toggleCandidateModal(candidate);
     }
   }
@@ -263,7 +277,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
     let { ballot_item_display_name: ballotItemDisplayName, we_vote_id: weVoteId } = this.props;
 
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
-    let unsortedCandidateList = this.state.candidateList.slice(0);
+    let unsortedCandidateList = this.state.candidateList ? this.state.candidateList.slice(0) : {};
     let totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
     let remainingCandidatesToDisplayCount = 0;
     let advisorsThatMakeVoterIssuesScoreDisplay;

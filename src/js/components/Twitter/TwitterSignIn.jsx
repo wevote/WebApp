@@ -55,7 +55,7 @@ class TwitterSignIn extends Component {
       "?cordova=true&voter_device_id=" + cookies.getItem("voter_device_id") + "&return_url=http://nonsense.com";
     oAuthLog("twitterSignInWebAppCordova requestURL: " + requestURL);
     if (isIOS()) {
-      cordovaOpenSafariView(requestURL, 50);
+      cordovaOpenSafariView(requestURL, null, 50);
     } else if (isAndroid()) {
       // April 6, 2018: Needs Steve's PR to handle customscheme
       // https://github.com/apache/cordova-plugin-inappbrowser/pull/263
@@ -90,7 +90,7 @@ class TwitterSignIn extends Component {
         if (isIOS()) {
           // eslint-disable-next-line no-undef
           SafariViewController.hide();  // Hide the previous WKWebView
-          cordovaOpenSafariView(redirectURL, 500);
+          cordovaOpenSafariView(redirectURL, null, 500);
         } else {
           oAuthLog("redirectURL: ", redirectURL);
           let inAppBrowserRef = cordova.InAppBrowser.open(redirectURL, "_blank", "toolbar=no,location=yes,hardwareback=no");

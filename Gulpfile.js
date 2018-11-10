@@ -134,7 +134,7 @@ gulp.task("copy-fonts", function (done) {
 
 // Copy Index page to Build directory
 gulp.task("copy-index", function (done) {
-  gulp.src("./src/index.html")
+  gulp.src("./src/*.html")
     .pipe(gulp.dest("./build"))
     .pipe(browserSync.stream());
   done();

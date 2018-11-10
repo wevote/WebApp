@@ -347,6 +347,12 @@ $candidate-font-size: .875rem;
       color: $gray-mid;
     }
 
+    &__fine_print {
+      font-size: .75em;
+      color: $gray-dark;
+      margin-top: $space-md;
+    }
+
     &__follow-buttons {
       display: flex;
       align-items: flex-end;

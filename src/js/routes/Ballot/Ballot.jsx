@@ -18,7 +18,7 @@ import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateModal from "../../components/Ballot/CandidateModal";
 import cookies from "../../utils/cookies";
-import { cordovaDot, getHeadingSize, historyPush, isCordova, isWebApp } from "../../utils/cordovaUtils";
+import { cordovaDot, historyPush, isCordova, isWebApp } from "../../utils/cordovaUtils";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
 import Helmet from "react-helmet";
@@ -195,7 +195,7 @@ export default class Ballot extends Component {
         let ballotElectionUrl2 = ballotBaseUrl + "/election/" + google_civic_election_id;
         historyPush(ballotElectionUrl2);
       }
-    } else if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
+    } else if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false) { // No ballot found
       // console.log("if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false");
       historyPush("/settings/location");
     } else if (ballotWithAllItemsByFilterType === undefined) {
@@ -319,9 +319,9 @@ export default class Ballot extends Component {
     // console.log("Ballot componentWillUnmount");
 
     //this.setState({mounted: false});
-    if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false) {
-      // No ballot found
-    }
+    // if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false) {
+    //   // No ballot found
+    // }
 
     this.ballotStoreListener.remove();
     this.electionListListener.remove();
@@ -402,6 +402,17 @@ export default class Ballot extends Component {
     }
 
     return false;
+  }
+
+  // See https://reactjs.org/docs/error-boundaries.html
+  static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars
+    // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
+    return { hasError: true };
+  }
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error("Ballot caught error: ", error + " with info: ", info);
   }
 
   toggleCandidateModal (candidate_for_modal) {
@@ -790,7 +801,7 @@ export default class Ballot extends Component {
                                                               /> : null }
       { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this.toggleBallotSummaryModal} /> : null }
 
-      <div className={`ballot__heading ${isCordova() && " ballot__heading-cordova-" + getHeadingSize()}`} >
+      <div className="ballot__heading">
         <div className="page-content-container">
           <div className="container-fluid">
             <div className="row">

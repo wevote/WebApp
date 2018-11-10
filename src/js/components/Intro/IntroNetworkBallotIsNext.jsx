@@ -5,7 +5,6 @@ import Helmet from "react-helmet";
 import { renderLog } from "../../utils/logging";
 
 export default class IntroNetworkBallotIsNext extends Component {
-
   constructor (props) {
     super(props);
     this.state = {};

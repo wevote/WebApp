@@ -102,7 +102,7 @@ export default {
 
     if (this.facebookApi()) {
       this.facebookApi().api(
-        "/me?fields=picture.type(large)", "GET", {},
+        "/me?fields=picture.type(large)", ["public_profile", "email"],
         function (response) {
           oAuthLog("getFacebookProfilePicture response", response);
           Dispatcher.dispatch({
@@ -208,13 +208,12 @@ export default {
                 } else {
                   // Check if successResponse.authResponse is null indicating cancelled login attempt
                   oAuthLog("FacebookActions null authResponse indicating cancelled login attempt: ", successResponse);
-                  return;
                 }
               },
 
               (errorResponse) => {
                 oAuthLog("FacebookActions loginFailure error response: ", errorResponse);
-              }, {scope: "public_profile, email, user_friends"});
+              }, { scope: "public_profile, email, user_friends" });
           }
         }
       );

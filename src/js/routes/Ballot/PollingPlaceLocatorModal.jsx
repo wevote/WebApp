@@ -45,7 +45,7 @@ export default class PollingPlaceLocatorModal extends Component {
     } else {
       return (
         <div>
-          { cordovaOpenSafariView("https://s3-us-west-1.amazonaws.com/wevote/vip.html", this.props.onExit, 50) }
+          { cordovaOpenSafariView("https://wevote.us/vip.html", this.props.onExit, 50) }
         </div>
       );
     }
