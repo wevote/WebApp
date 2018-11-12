@@ -26,7 +26,6 @@ export default class SettingsAddress extends Component {
   }
 
   componentDidMount () {
-    // Steve March 2018, removed 50 lines of non-functional copied code.  Does the following line and componentDidMount, add value?
     AnalyticsActions.saveActionElections(VoterStore.election_id());
   }
 

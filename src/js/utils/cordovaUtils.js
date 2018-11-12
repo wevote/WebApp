@@ -1,6 +1,7 @@
 import { browserHistory, hashHistory } from "react-router";
 import { oAuthLog } from "./logging";
 import { stringContains } from "./textFormat";
+/* global $ */
 
 export function isWebApp () {
   return window.cordova === undefined;
@@ -262,4 +263,27 @@ export function getAppBaseClass (pathname) {
   return appBaseClass;
 }
 
+export function prepareForCordovaKeyboard (callerString) {
+  if (callerString) {
+    callerString = callerString.substr(callerString.lastIndexOf('/') + 1);
+    console.log("prepareForCordovaKeyboard ^^^^^^^^^^ " + callerString);
+  }
+  if (isCordova()) {
+    $("#app").removeClass("app-wrapper").addClass("app-wrapper__cordova");
+    $("body").css("height", "");
+    $(".footroom-wrapper").css("display", "none");
+  }
+}
+
+export function restoreStylesAfterCordovaKeyboard (callerString) {
+  if (callerString) {
+    callerString = callerString.substr(callerString.lastIndexOf('/') + 1);
+    console.log("restoreStylesAfterCordovaKeyboard vvvvvvvvvv " + callerString);
+  }
+  if (isCordova()) {
+    $("#app").removeClass("app-wrapper__cordova").addClass("app-wrapper");
+    $("body").css("height", "100%");
+    $(".footroom-wrapper").css("display", "");
+  }
+}
 

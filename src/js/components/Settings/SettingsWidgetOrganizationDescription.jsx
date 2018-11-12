@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../../utils/cordovaUtils";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import LoadingWheel from "../../components/LoadingWheel";
 import { renderLog } from "../../utils/logging";
@@ -30,6 +31,10 @@ export default class SettingsWidgetOrganizationDescription extends Component {
     this.updateOrganizationDescription = this.updateOrganizationDescription.bind(this);
   }
 
+  componentWillMount () {
+    prepareForCordovaKeyboard(__filename);
+  }
+
   componentDidMount () {
     this.onVoterStoreChange();
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -41,9 +46,10 @@ export default class SettingsWidgetOrganizationDescription extends Component {
     this.voterStoreListener.remove();
     this.timer = null;
     this.clearStatusTimer = null;
+    restoreStylesAfterCordovaKeyboard(__filename);
   }
 
-  onOrganizationStoreChange (){
+  onOrganizationStoreChange () {
     let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
     if (organization && organization.organization_we_vote_id) {
       this.setState({
@@ -58,11 +64,11 @@ export default class SettingsWidgetOrganizationDescription extends Component {
     if (VoterStore.isVoterFound()) {
       let voter = VoterStore.getVoter();
       this.setState({
-        voter: voter
+        voter: voter,
       });
       if (voter && voter.linked_organization_we_vote_id) {
         this.setState({
-          linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id
+          linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id,
         });
         if (voter.linked_organization_we_vote_id !== this.state.linkedOrganizationWeVoteId) {
           let organization = OrganizationStore.getOrganizationByWeVoteId(voter.linked_organization_we_vote_id);
@@ -85,7 +91,7 @@ export default class SettingsWidgetOrganizationDescription extends Component {
     }
     this.timer = setTimeout(() => {
       OrganizationActions.organizationDescriptionSave(this.state.linkedOrganizationWeVoteId, this.state.organizationDescription);
-      this.setState({organizationDescriptionSavedStatus: "Saved"});
+      this.setState({ organizationDescriptionSavedStatus: "Saved" });
     }, delayBeforeApiUpdateCall);
   }
 
@@ -93,13 +99,13 @@ export default class SettingsWidgetOrganizationDescription extends Component {
     if (event.target.name === "organizationDescription") {
       this.setState({
         organizationDescription: event.target.value,
-        organizationDescriptionSavedStatus: "Saving description..."
+        organizationDescriptionSavedStatus: "Saving description...",
       });
     }
     // After some time, clear saved message
     clearTimeout(this.clearStatusTimer);
     this.clearStatusTimer = setTimeout(() => {
-      this.setState({organizationDescriptionSavedStatus: ""});
+      this.setState({ organizationDescriptionSavedStatus: "" });
     }, delayBeforeRemovingSavedStatus);
   }
 

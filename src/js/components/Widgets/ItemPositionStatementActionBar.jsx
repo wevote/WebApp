@@ -15,6 +15,7 @@ import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
 import { vimeo_reg, youtube_reg } from "../../utils/textFormat";
 import { stringContains } from "../../utils/textFormat";
+import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../../utils/cordovaUtils";
 
 
 export default class ItemPositionStatementActionBar extends Component {
@@ -280,6 +281,8 @@ export default class ItemPositionStatementActionBar extends Component {
                   minRows={2}
                   placeholder={statementPlaceholderText}
                   defaultValue={statement_text_to_be_saved}
+                  onFocus={() => prepareForCordovaKeyboard(__filename)}
+                  onBlur={() => restoreStylesAfterCordovaKeyboard(__filename)}
                   inputRef={tag => {this.textarea = tag;}} />
                 <div className="u-flex u-flex-column u-justify-between u-items-end">
                   <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}

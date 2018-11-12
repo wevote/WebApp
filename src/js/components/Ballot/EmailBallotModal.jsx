@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
-import { deviceTypeString } from "../../utils/cordovaUtils";
+import { deviceTypeString, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../../utils/cordovaUtils";
+import { renderLog } from "../../utils/logging";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
 import LoadingWheel from "../LoadingWheel";
@@ -46,9 +47,14 @@ export default class EmailBallotModal extends Component {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
+  componentWillMount () {
+    prepareForCordovaKeyboard(__filename);
+  }
+
   componentWillUnmount () {
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
+    restoreStylesAfterCordovaKeyboard(__filename);
   }
 
   _onVoterStoreChange () {
@@ -177,6 +183,7 @@ export default class EmailBallotModal extends Component {
   }
 
   render () {
+    renderLog(__filename);
     let { loading } = this.state;
     if (loading) {
       return LoadingWheel;
