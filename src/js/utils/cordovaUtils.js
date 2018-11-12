@@ -265,8 +265,8 @@ export function getAppBaseClass (pathname) {
 
 export function prepareForCordovaKeyboard (callerString) {
   if (callerString) {
-    callerString = callerString.substr(callerString.lastIndexOf('/') + 1);
-    console.log("prepareForCordovaKeyboard ^^^^^^^^^^ " + callerString);
+    let fileName = callerString.substr(callerString.lastIndexOf("/") + 1);
+    console.log("prepareForCordovaKeyboard ^^^^^^^^^^ " + fileName);
   }
   if (isCordova()) {
     $("#app").removeClass("app-wrapper").addClass("app-wrapper__cordova");
@@ -277,8 +277,8 @@ export function prepareForCordovaKeyboard (callerString) {
 
 export function restoreStylesAfterCordovaKeyboard (callerString) {
   if (callerString) {
-    callerString = callerString.substr(callerString.lastIndexOf('/') + 1);
-    console.log("restoreStylesAfterCordovaKeyboard vvvvvvvvvv " + callerString);
+    let fileName = callerString.substr(callerString.lastIndexOf("/") + 1);
+    console.log("restoreStylesAfterCordovaKeyboard vvvvvvvvvv " + fileName);
   }
   if (isCordova()) {
     $("#app").removeClass("app-wrapper__cordova").addClass("app-wrapper");
