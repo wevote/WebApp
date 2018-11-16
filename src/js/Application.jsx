@@ -51,7 +51,6 @@ export default class Application extends Component {
     this.state = {
       // Do not define voter here. We rely on it being undefined
       voter_initial_retrieve_needed: true,
-      showFooter: true,
     };
     this.loadedHeader = false;
   }
@@ -112,10 +111,10 @@ export default class Application extends Component {
     // Preload Issue images. Note that for brand new browsers that don't have a voterDeviceId yet, we retrieve all issues
     IssueActions.retrieveIssuesToFollow();
     this.issueStoreListener = IssueStore.addListener(this.preloadIssueImages);
-    if (isCordova()) {
-      window.addEventListener("keyboardWillShow", this.keyboardWillShow.bind(this));
-      window.addEventListener("keyboardDidHide", this.keyboardDidHide.bind(this));
-    }
+    // if (isCordova()) {
+    //   window.addEventListener("keyboardWillShow", this.keyboardWillShow.bind(this));
+    //   window.addEventListener("keyboardDidHide", this.keyboardDidHide.bind(this));
+    // }
 
     // November 2, 2018:  Polyfill for "Object.entries"
     //   react-bootstrap 1.0 (bootstrap 4) relies on Object.entries in splitComponentProps.js
@@ -137,10 +136,10 @@ export default class Application extends Component {
   componentWillUnmount () {
     this.voterStoreListener.remove();
     this.loadedHeader = false;
-    if (isCordova()) {
-      this.keyboardWillShow.removeEventListener();
-      this.keyboardDidHide.removeEventListener();
-    }
+    // if (isCordova()) {
+    //   this.keyboardWillShow.removeEventListener();
+    //   this.keyboardDidHide.removeEventListener();
+    // }
   }
 
   componentDidUpdate () {
@@ -163,24 +162,6 @@ export default class Application extends Component {
     }
 
     this.loadedHeader = true;
-  }
-
-  keyboardWillShow () {
-    // This is for Cordova only, please do not remove the console.log()
-    console.log("keyboardWillShow height " + $("body").height());  // eslint-disable-line no-undef
-    this.setState({
-      showFooter: false,
-    });
-
-    // March 26, 2018, these might be valuable when we polish scrolling after selecting an entry field on phones
-    // document.activeElement.scrollTop -= 60;
-    // document.activeElement.scrollIntoView();
-  }
-
-  keyboardDidHide () {
-    this.setState({
-      showFooter: true,
-    });
   }
 
   _onVoterStoreChange () {
@@ -409,8 +390,6 @@ export default class Application extends Component {
       pageHeaderStyle = "page-header__container headroom";
     }
 
-    let footerStyle = this.state.showFooter ? "footroom-wrapper" : "footroom-wrapper__hide";
-
     let iPhoneSpacer = "";
     if (isCordova() && isIOS() && hasIPhoneNotch()) {
       iPhoneSpacer = <div className={"ios-x-spacer"} />;
@@ -463,7 +442,7 @@ export default class Application extends Component {
           </div>
         </div>
         { isCordova() &&
-          <div className={footerStyle}>
+          <div className="footroom-wrapper">
             <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter}/>
           </div>
         }
@@ -500,7 +479,7 @@ export default class Application extends Component {
           </div>
         </div>
         { isCordova() &&
-          <div className={footerStyle }>
+          <div className="footroom-wrapper">
             <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter}/>
           </div>
         }
@@ -535,7 +514,7 @@ export default class Application extends Component {
         </div>
       }
       { isCordova() &&
-        <div className={footerStyle}>
+        <div className="footroom-wrapper">
           <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter}/>
         </div>
       }

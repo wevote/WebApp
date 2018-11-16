@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../../utils/cordovaUtils";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";
@@ -49,14 +50,19 @@ export default class SettingsWidgetFirstLastName extends Component {
     });
   }
 
+  componentWillMount () {
+    prepareForCordovaKeyboard(__filename);
+  }
+
   componentWillUnmount () {
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
     this.timer = null;
     this.clearStatusTimer = null;
+    restoreStylesAfterCordovaKeyboard(__filename);
   }
 
-  onOrganizationStoreChange (){
+  onOrganizationStoreChange () {
     let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
     if (organization && organization.organization_type) {
       this.setState({
@@ -71,7 +77,7 @@ export default class SettingsWidgetFirstLastName extends Component {
     if (VoterStore.isVoterFound()) {
       let voter = VoterStore.getVoter();
       this.setState({
-        voter: voter
+        voter: voter,
       });
       if (!this.state.initial_name_loaded) {
         this.setState({
@@ -82,7 +88,7 @@ export default class SettingsWidgetFirstLastName extends Component {
       }
       if (voter && voter.linked_organization_we_vote_id) {
         this.setState({
-          linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id
+          linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id,
         });
         if (voter.linked_organization_we_vote_id !== this.state.linkedOrganizationWeVoteId) {
           let organization = OrganizationStore.getOrganizationByWeVoteId(voter.linked_organization_we_vote_id);
