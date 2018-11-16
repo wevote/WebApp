@@ -252,7 +252,7 @@ export default class Intro extends Component {
                   </h1>
                 </Row>
                 {/* Desktop View */}
-                <Row bsPrefix="d-none d-sm-block">
+                <Row bsPrefix="d-none d-sm-flex">
                   <h1 className="col-md-6 u-f1 u-stack--lg">
                     View your ballot.<br />
                     Learn from friends.
