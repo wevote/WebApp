@@ -35,6 +35,8 @@ const defaults = {
 
 export function $ajax (options) {
   if (!options.endpoint) throw new Error("$ajax missing endpoint option");
+  if (!defaults.baseCdnUrl) throw new Error("$ajax missing base CDN url option");
+  if (!defaults.baseUrl) throw new Error("$ajax missing base url option");
 
   options.crossDomain = true;
   options.success = options.success || defaults.success;

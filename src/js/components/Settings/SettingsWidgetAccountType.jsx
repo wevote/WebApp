@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import AnalyticsActions from "../../actions/AnalyticsActions";
+import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../../utils/cordovaUtils";
 import LoadingWheel from "../../components/LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import VoterStore from "../../stores/VoterStore";
 import { renderLog } from "../../utils/logging";
 
-const delay_before_removing_saved_status = 2000;
+const delayBeforeRemovingSavedStatus = 2000;
 
 
 export default class SettingsWidgetAccountType extends Component {
@@ -33,6 +34,10 @@ export default class SettingsWidgetAccountType extends Component {
     this.updateOrganizationType = this.updateOrganizationType.bind(this);
   }
 
+  componentWillMount () {
+    prepareForCordovaKeyboard(__filename);
+  }
+
   componentDidMount () {
     this.onVoterStoreChange();
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -51,9 +56,10 @@ export default class SettingsWidgetAccountType extends Component {
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
     this.clearTimer = null;
+    restoreStylesAfterCordovaKeyboard(__filename);
   }
 
-  onOrganizationStoreChange (){
+  onOrganizationStoreChange () {
     let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
     if (organization && organization.organization_we_vote_id) {
       this.setState({
@@ -67,11 +73,11 @@ export default class SettingsWidgetAccountType extends Component {
     if (VoterStore.isVoterFound()) {
       let voter = VoterStore.getVoter();
       this.setState({
-        voter: voter
+        voter: voter,
       });
       if (voter && voter.linked_organization_we_vote_id) {
         this.setState({
-          linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id
+          linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id,
         });
         if (voter.linked_organization_we_vote_id !== this.state.linkedOrganizationWeVoteId) {
           let organization = OrganizationStore.getOrganizationByWeVoteId(voter.linked_organization_we_vote_id);
@@ -86,7 +92,7 @@ export default class SettingsWidgetAccountType extends Component {
     }
   }
 
-  displayOrganizationType (organizationType){
+  displayOrganizationType (organizationType) {
     switch (organizationType) {
       case "I":
         return "Individual";
@@ -124,7 +130,7 @@ export default class SettingsWidgetAccountType extends Component {
       OrganizationActions.organizationTypeSave(this.state.linkedOrganizationWeVoteId, event.target.value);
       this.setState({
         organizationType: event.target.value,
-        organizationTypeSavedStatus: "Saved"
+        organizationTypeSavedStatus: "Saved",
       });
       if (this.state.closeEditFormOnChoice) {
         this.toggleEditForm();
@@ -135,8 +141,8 @@ export default class SettingsWidgetAccountType extends Component {
       // After some time, clear saved message
       clearTimeout(this.clearTimer);
       this.clearTimer = setTimeout(() => {
-        this.setState({organizationTypeSavedStatus: ""});
-      }, delay_before_removing_saved_status);
+        this.setState({ organizationTypeSavedStatus: "" });
+      }, delayBeforeRemovingSavedStatus);
     }
   }
 

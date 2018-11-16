@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import BallotStore from "../stores/BallotStore";
-import { historyPush } from "../utils/cordovaUtils";
+import {historyPush, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard} from "../utils/cordovaUtils";
 import { isCordova } from "../utils/cordovaUtils";
 import LoadingWheel from "../components/LoadingWheel";
 import { renderLog } from "../utils/logging";
@@ -34,6 +34,10 @@ export default class AddressBox extends Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
   }
 
+  componentWillMount () {
+    prepareForCordovaKeyboard(__filename);
+  }
+
   componentDidMount () {
     this.setState({
       text_for_map_search: VoterStore.getTextForMapSearch(),
@@ -54,6 +58,7 @@ export default class AddressBox extends Component {
     } else {
       console.log("Google Maps Error: DeletedApiProjectMapError");
     }
+    restoreStylesAfterCordovaKeyboard(__filename);
   }
 
   componentDidUpdate () {
