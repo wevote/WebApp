@@ -63,15 +63,13 @@ export default class BallotSideBar extends Component {
       // console.log("shouldComponentUpdate: componentDidMountFinished === false");
       return true;
     }
-    if (this.props.ballot === undefined && nextProps.ballot !== undefined) {
-        // console.log("shouldComponentUpdate: new ballot found");
-        return true;
+    if (this.state.ballot === undefined && nextState.ballot !== undefined) {
+      // console.log("shouldComponentUpdate: new ballot found");
+      return true;
     }
-    if (this.props.ballot !== undefined) {
-      if (this.props.ballot.length !== nextProps.ballot.length) {
-        // console.log("shouldComponentUpdate: changed this.props.ballot.length", this.props.ballot.length, ", nextState.ballot.length", nextProps.ballot.length);
-        return true;
-      }
+    if (this.state.ballot !== undefined && this.state.ballot.length !== nextState.ballot.length) {
+      // console.log("shouldComponentUpdate: changed this.props.ballot.length", this.state.ballot.length, ", nextState.ballot.length", nextState.ballot.length);
+      return true;
     }
     if (this.props.ballotWithAllItemsByFilterType.length !== nextProps.ballotWithAllItemsByFilterType.length) {
       // console.log("shouldComponentUpdate: changed this.props.ballotWithAllItemsByFilterType.length", this.props.ballotWithAllItemsByFilterType.length, ", nextState.ballotWithAllItemsByFilterType.length", nextProps.ballotWithAllItemsByFilterType.length);
