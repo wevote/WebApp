@@ -351,6 +351,13 @@ export default class Application extends Component {
       voterGuideShowGettingStartedNavigation = true;
     }
 
+    // Choose to show/hide zendesk help widget based on route
+    if (["/ballot", "/more/network", "/settings"].some((match) => pathname.startsWith(match))) {
+      global.zE("webWidget", "show");
+    } else {
+      global.zE("webWidget", "hide");
+    }
+
     let showBackToHeader = false;
     let showBackToSettings = false;
     let showBackToVoterGuides = false;
