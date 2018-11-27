@@ -21,6 +21,9 @@ displays the (WRONG) note "This is the official plugin for Facebook in Apache Co
 
 export default {
   facebookApi: function () {
+    /**  @namespace window.FB */
+    /**  @namespace window.facebookConnectPlugin */
+
     return isWebApp() ? window.FB : window.facebookConnectPlugin;  // eslint-disable-line no-undef
   },
 
@@ -66,8 +69,13 @@ export default {
       });
   },
 
-  // Save incoming data from Facebook
-  // For offsets, see https://developers.facebook.com/docs/graph-api/reference/cover-photo/
+  /**
+   * Save incoming data from Facebook
+   * For offsets, see https://developers.facebook.com/docs/graph-api/reference/cover-photo/
+   * @param data
+   * @param data.cover.offset_x
+   * @param data.cover.offset_y
+   */
   voterFacebookSignInData: function (data) {
     // console.log("FacebookActions voterFacebookSignInData, data:", data);
     let background = false;
@@ -216,6 +224,8 @@ export default {
     }
   },
 
+  // November 2018: To debug login from Cordova, you may have to switch from our main facebook id,
+  // to the test environment id, which allows http connections.
   login: function () {
     if (!webAppConfig.FACEBOOK_APP_ID) {
       console.log("ERROR: Missing FACEBOOK_APP_ID from src/js/config.js");   // DO NOT REMOVE THIS!
