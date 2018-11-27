@@ -58,12 +58,12 @@ export default {
 
     this.facebookApi().api(
       "/me?fields=id,email,first_name,middle_name,last_name,cover", (response) => {
-      oAuthLog("getFacebookData response", response);
-      Dispatcher.dispatch({
-        type: FacebookConstants.FACEBOOK_RECEIVED_DATA,
-        data: response,
+        oAuthLog("getFacebookData response", response);
+        Dispatcher.dispatch({
+          type: FacebookConstants.FACEBOOK_RECEIVED_DATA,
+          data: response,
+        });
       });
-    });
   },
 
   // Save incoming data from Facebook
@@ -172,54 +172,6 @@ export default {
     );
   },
 
-  login: function () {
-    if (!webAppConfig.FACEBOOK_APP_ID) {
-      console.log("ERROR: Missing FACEBOOK_APP_ID from src/js/config.js");   // DO NOT REMOVE THIS!
-    }
-
-    if (!webAppConfig.ENABLE_FACEBOOK) {
-      console.log("FacebookActions.login was not invoked, see ENABLE_FACEBOOK in config.js");
-      return;
-    }
-
-    // FB.getLoginStatus does an ajax call and when you call FB.login on it's response, the popup that would open
-    // as a result of this call is blocked. A solution to this problem would be to to specify status: true in the
-    // options object of FB.init and you need to be confident that login status has already loaded.
-    oAuthLog("this.facebookApi().login");
-
-    if (this.facebookApi()) {
-      this.facebookApi().getLoginStatus(
-        function (response) {
-          if (response.status === "connected") {
-            Dispatcher.dispatch({
-              type: FacebookConstants.FACEBOOK_LOGGED_IN,
-              data: response,
-            });
-          } else {
-            let api = isWebApp() ? window.FB : window.facebookConnectPlugin;  // eslint-disable-line no-undef
-            api.login(
-              function (successResponse) {
-                if (successResponse.authResponse) {
-                  oAuthLog("FacebookActions loginSuccess userData: ", successResponse);
-                  Dispatcher.dispatch({
-                    type: FacebookConstants.FACEBOOK_LOGGED_IN,
-                    data: successResponse,
-                  });
-                } else {
-                  // Check if successResponse.authResponse is null indicating cancelled login attempt
-                  oAuthLog("FacebookActions null authResponse indicating cancelled login attempt: ", successResponse);
-                }
-              },
-
-              (errorResponse) => {
-                oAuthLog("FacebookActions loginFailure error response: ", errorResponse);
-              }, { scope: "public_profile, email, user_friends" });
-          }
-        }
-      );
-    }
-  },
-
   logout: function () {
     if (!webAppConfig.ENABLE_FACEBOOK) {
       console.log("FacebookActions.logout was not invoked, see ENABLE_FACEBOOK in config.js");
@@ -235,6 +187,69 @@ export default {
         });
       }
     );
+  },
+
+  loginSuccess: function (successResponse) {
+    if (successResponse.authResponse) {
+      oAuthLog("FacebookActions loginSuccess userData: ", successResponse);
+      Dispatcher.dispatch({
+        type: FacebookConstants.FACEBOOK_LOGGED_IN,
+        data: successResponse,
+      });
+    } else {
+      // Check if successResponse.authResponse is null indicating cancelled login attempt
+      oAuthLog("FacebookActions null authResponse indicating cancelled login attempt: ", successResponse);
+    }
+  },
+
+  loginFailure: function (errorResponse) {
+    oAuthLog("FacebookActions loginFailure error response: ", errorResponse);
+  },
+
+  getPermissions: function () {
+    if (isWebApp()) {
+      return {
+        scope: "public_profile, email, user_friends",
+      };
+    } else {
+      return ["public_profile", "email", "user_friends"];
+    }
+  },
+
+  login: function () {
+    if (!webAppConfig.FACEBOOK_APP_ID) {
+      console.log("ERROR: Missing FACEBOOK_APP_ID from src/js/config.js");   // DO NOT REMOVE THIS!
+    }
+
+    if (!webAppConfig.ENABLE_FACEBOOK) {
+      console.log("FacebookActions.login was not invoked, see ENABLE_FACEBOOK in config.js");  // DO NOT REMOVE THIS!
+      return;
+    }
+
+    // FB.getLoginStatus does an ajax call and when you call FB.login on it's response, the popup that would open
+    // as a result of this call is blocked. A solution to this problem would be to to specify status: true in the
+    // options object of FB.init and you need to be confident that login status has already loaded.
+    oAuthLog("this.facebookApi().login");
+
+    if (this.facebookApi()) {
+      let _this = this;
+      this.facebookApi().getLoginStatus(
+        function (response) {
+          if (response.status === "connected") {
+            Dispatcher.dispatch({
+              type: FacebookConstants.FACEBOOK_LOGGED_IN,
+              data: response,
+            });
+          } else {
+            if (isWebApp()) {         // eslint-disable-line no-lonely-if
+              window.FB.login(_this.loginSuccess, _this.loginFailure, _this.getPermissions());
+            } else {
+              window.facebookConnectPlugin.login(_this.getPermissions(), _this.loginSuccess, _this.loginFailure);
+            }
+          }
+        }
+      );
+    }
   },
 
   // July 2017: Not called from anywhere
