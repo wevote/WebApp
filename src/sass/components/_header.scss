@@ -77,7 +77,7 @@ $space-search-right:   10%;
 }
 
 // To cover the space under the iPhone top line menu "Carrier" or "ATT" etc.
-.ios7plus-spacer {
+.ios-no-notch-spacer {
   top: $space-none;
   position: fixed;
   height: $space-header-height;
@@ -87,7 +87,7 @@ $space-search-right:   10%;
   z-index: 3;
 }
 
-.ios-x-spacer {
+.ios-notched-spacer {
   top: $space-none;
   position: fixed;
   height: $space-header-x-height;

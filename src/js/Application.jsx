@@ -1,23 +1,19 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
+import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from "./utils/applicationUtils";
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
-import { getAppBaseClass, hasIPhoneNotch, historyPush, isAndroid, isCordova, isIOS, isWebApp } from "./utils/cordovaUtils";
+import { getAppBaseClass, historyPush, isCordova, isWebApp } from "./utils/cordovaUtils";
 import ElectionActions from "./actions/ElectionActions";
 import FooterBarCordova from "./components/Navigation/FooterBarCordova";
 import FriendActions from "./actions/FriendActions";
-import HeaderBackToBar from "./components/Navigation/HeaderBackToBar";
-import HeaderBackToSettings from "./components/Navigation/HeaderBackToSettings";
-import HeaderBackToVoterGuides from "./components/Navigation/HeaderBackToVoterGuides";
-import HeaderBar from "./components/Navigation/HeaderBar";
-import HeaderSecondaryNavBar from "./components/Navigation/HeaderSecondaryNavBar";
+import Header from "./components/Navigation/Header";
 import Headroom from "headroom.js";
 import IssueActions from "./actions/IssueActions";
 import IssueStore from "././stores/IssueStore";
 import { renderLog, routingLog } from "./utils/logging";
 import OrganizationActions from "./actions/OrganizationActions";
-import { stringContains } from "./utils/textFormat";
 import TwitterSignIn from "./components/Twitter/TwitterSignIn";
 import VoterActions from "./actions/VoterActions";
 import VoterStore from "./stores/VoterStore";
@@ -71,7 +67,7 @@ export default class Application extends Component {
           appId: webAppConfig.FACEBOOK_APP_ID,
           xfbml: true,
           version: "v2.8",
-          status: true,    // set this status to true, this will fixed popup blocker issue
+          status: true,    // set this status to true, this will fix popup blocker issue
         });
       };
 
@@ -92,6 +88,7 @@ export default class Application extends Component {
 
   componentDidMount () {
     console.log("React Application ---------------   componentDidMount ()");
+    polyfillObjectEntries();
     this.initFacebook();
     this.initCordova();
     this.preloadIssueImages = this.preloadIssueImages.bind(this);
@@ -111,35 +108,12 @@ export default class Application extends Component {
     // Preload Issue images. Note that for brand new browsers that don't have a voterDeviceId yet, we retrieve all issues
     IssueActions.retrieveIssuesToFollow();
     this.issueStoreListener = IssueStore.addListener(this.preloadIssueImages);
-    // if (isCordova()) {
-    //   window.addEventListener("keyboardWillShow", this.keyboardWillShow.bind(this));
-    //   window.addEventListener("keyboardDidHide", this.keyboardDidHide.bind(this));
-    // }
-
-    // November 2, 2018:  Polyfill for "Object.entries"
-    //   react-bootstrap 1.0 (bootstrap 4) relies on Object.entries in splitComponentProps.js
-    //   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries#Polyfill
-    if (!Object.entries) {
-      Object.entries = function (obj) {
-        let localProps = Object.keys(obj);
-        let i = localProps.length;
-        let resArray = new Array(i); // preallocate the Array
-        while (i--)
-          resArray[i] = [localProps[i], obj[localProps[i]]];
-
-        return resArray;
-      };
-    }
 
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
     this.loadedHeader = false;
-    // if (isCordova()) {
-    //   this.keyboardWillShow.removeEventListener();
-    //   this.keyboardDidHide.removeEventListener();
-    // }
   }
 
   componentDidUpdate () {
@@ -188,6 +162,9 @@ export default class Application extends Component {
     // console.log("SignedIn Voter in Application _onVoterStoreChange voter: ", VoterStore.getVoter().full_name);
   }
 
+  /** @namespace this.props.location.query.hide_intro_modal */
+  /** @namespace this.props.location.query.auto_follow */
+  /** @namespace this.props.location.query.voter_address */
   incomingVariableManagement () {
     // console.log("Application, incomingVariableManagement, this.props.location.query: ", this.props.location.query);
     if (this.props.location.query) {
@@ -204,7 +181,7 @@ export default class Application extends Component {
         cookies.setItem("show_full_navigation", "1", Infinity, "/");
       }
 
-      this.setState({ we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie });
+      this.setState({ weVoteBrandingOff: !!(weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie) });  // '!!' forces it to a boolean
 
       let hideIntroModalFromUrl = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
       let hideIntroModalFromUrlTrue = hideIntroModalFromUrl === 1 || hideIntroModalFromUrl === "1" || hideIntroModalFromUrl === "true";
@@ -270,139 +247,21 @@ export default class Application extends Component {
     let { location: { pathname } } = this.props;
 
     if (this.state.voter === undefined || location === undefined) {
-      return <div style={loadingScreenStyles} >
-                <div style={{ padding: 30 }}>
-                  <h1 className="h1">Loading We Vote...</h1>
-                  { isCordova() &&
-                    <h2 className="h1">Does your phone have access to the internet?</h2>
-                  }
-                  <div className="u-loading-spinner u-loading-spinner--light" />
-                </div>
-              </div>;
+      return <div style={loadingScreenStyles}>
+        <div style={{ padding: 30 }}>
+          <h1 className="h1">Loading We Vote...</h1>
+          { isCordova() &&
+          <h2 className="h1">Does your phone have access to the internet?</h2>
+          }
+          <div className="u-loading-spinner u-loading-spinner--light"/>
+        </div>
+      </div>;
     }
 
     routingLog(pathname);
+    setZenDeskHelpVisibility(pathname);
 
-    // We have to do all this, because we allow urls like https://wevote.us/aclu
-    // where "aclu" is a twitter account.
-
-    // Based on the path, decide if we want theaterMode, contentFullWidthMode, or voterGuideMode
-    let inTheaterMode = false;
-    let contentFullWidthMode = false;
-    let settingsMode = false;
-    let voterGuideMode = false;
-    let voterGuideShowGettingStartedNavigation = false;
-    if (pathname === "/intro/story" ||
-        pathname === "/intro/sample_ballot" ||
-        pathname === "/intro/get_started" ||
-        pathname === "/voterguidechooseelection" ||
-        pathname === "/voterguidegetstarted" ||
-        pathname === "/voterguideorgtype" ||
-        pathname === "/voterguideorginfo" ||
-        pathname.startsWith("/voterguidepositions") ||
-        pathname === "/wevoteintro/network") {
-      inTheaterMode = true;
-    } else if (pathname.startsWith("/candidate/") ||
-        pathname === "/facebook_invitable_friends" ||
-        pathname === "/friends" ||
-        pathname === "/friends/invitebyemail" ||
-        pathname === "/intro" ||
-        pathname === "/issues_followed" ||
-        pathname === "/issues_to_follow" ||
-        pathname.startsWith("/measure/") ||
-        pathname === "/more/about" ||
-        pathname === "/more/absentee" ||
-        pathname === "/more/alerts" ||
-        pathname === "/more/myballot" ||
-        pathname === "/more/connect" ||
-        pathname === "/more/credits" ||
-        pathname === "/more/donate" ||
-        pathname === "/more/donate_thank_you" ||
-        pathname === "/more/elections" ||
-        pathname === "/more/howtouse" ||
-        pathname.startsWith("/office/") ||
-        pathname === "/more/network" ||
-        pathname === "/more/network/friends" ||
-        pathname === "/more/network/issues" ||
-        pathname === "/more/network/organizations" ||
-        pathname === "/more/organization" ||
-        pathname === "/more/privacy" ||
-        pathname === "/more/register" ||
-        pathname === "/more/sign_in" ||
-        pathname === "/more/team" ||
-        pathname === "/more/terms" ||
-        pathname === "/more/tools" ||
-        pathname === "/more/verify" ||
-        pathname === "/more/vision" ||
-        pathname === "/opinions" ||
-        pathname === "/opinions_followed" ||
-        pathname === "/opinions_ignored" ||
-        pathname.startsWith("/verifythisisme/") ||
-        pathname === "/welcome") {
-      contentFullWidthMode = true;
-    } else if (pathname.startsWith("/ballot") || pathname === "/bookmarks") {
-      contentFullWidthMode = false;
-    } else if (stringContains("/settings", pathname) ||
-        pathname === "/more/hamburger") {
-      contentFullWidthMode = true;
-      settingsMode = true;
-    } else {
-      voterGuideMode = true;
-      voterGuideShowGettingStartedNavigation = true;
-    }
-
-    // Choose to show/hide zendesk help widget based on route
-    if (["/ballot", "/more/network", "/settings"].some((match) => pathname.startsWith(match))) {
-      global.zE("webWidget", "show");
-    } else {
-      global.zE("webWidget", "hide");
-    }
-
-    let showBackToHeader = false;
-    let showBackToSettings = false;
-    let showBackToVoterGuides = false;
-    if (stringContains("/btdb/", pathname) ||
-        stringContains("/btdo/", pathname) ||
-        stringContains("/bto/", pathname) ||
-        stringContains("/btvg/", pathname) ||
-        stringContains("/more/myballot", pathname)
-        ) {
-      // If here, we want the top header to be "Back To..."
-      // "/btdb/" stands for "Back To Default Ballot Page"
-      // "/btdo/" stands for "Back To Default Office Page"
-      // "/btvg/" stands for "Back To Voter Guide Page"
-      // "/bto/" stands for "Back To Voter Guide Office Page"
-      showBackToHeader = true;
-    } else if (pathname === "/settings/account" ||
-        pathname === "/settings/address" ||
-        pathname === "/settings/election" ||
-        pathname === "/settings/issues" ||
-        pathname === "/settings/notifications" ||
-        pathname === "/settings/profile" ||
-        pathname === "/settings/voterguidesmenu" ||
-        pathname === "/settings/voterguidelist") {
-      showBackToSettings = true;
-    } else if (stringContains("/vg/", pathname)) {
-      showBackToVoterGuides = true;
-    }
-
-    if (pathname.startsWith("/measure") && isCordova()) {
-      showBackToHeader = true;
-    }
-
-    let pageHeaderStyle = this.state.we_vote_branding_off ? "page-header__container_branding_off headroom" : "page-header__container headroom";
-    if (isIOS()) {
-      pageHeaderStyle = "page-header__container headroom page-header-cordova-ios";   // Note March 2018: no headroom.js for Cordova
-    } else if (isAndroid()) {
-      pageHeaderStyle = "page-header__container headroom";
-    }
-
-    let iPhoneSpacer = "";
-    if (isCordova() && isIOS() && hasIPhoneNotch()) {
-      iPhoneSpacer = <div className={"ios-x-spacer"} />;
-    } else if (isCordova() && isIOS() && !hasIPhoneNotch()) {
-      iPhoneSpacer = <div className={"ios7plus-spacer"} />;
-    }
+    const { inTheaterMode, contentFullWidthMode, settingsMode, voterGuideMode, } = getApplicationViewBooleans(pathname);
 
     if (inTheaterMode) {
       // console.log("inTheaterMode", inTheaterMode);
@@ -411,7 +270,7 @@ export default class Application extends Component {
           <div className="container-fluid">
             <div className="row">
               <div className="col-12 container-main">
-                { this.props.children }
+                {this.props.children}
               </div>
             </div>
           </div>
@@ -419,112 +278,63 @@ export default class Application extends Component {
       </div>;
     } else if (voterGuideMode) {
       // console.log("voterGuideMode", voterGuideMode);
-      let hideGettingStartedButtons = voterGuideShowGettingStartedNavigation;
-
       return <div className={getAppBaseClass(pathname)} id="app-base-id">
-        <ToastContainer closeButton={false} />
-        { iPhoneSpacer }
-        <div className={isWebApp ? "headroom-wrapper-webapp__voter-guide" : ""}>
-          <div ref="pageHeader" className={pageHeaderStyle}>
-            { showBackToHeader ?
-              <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
-              <span>
-                {showBackToVoterGuides ?
-                  <HeaderBackToVoterGuides location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
-                  <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
-                }
-              </span>
-             }
-            { voterGuideShowGettingStartedNavigation || stringContains("/ballot", pathname) ?
-              <HeaderSecondaryNavBar hideGettingStartedOrganizationsButton={hideGettingStartedButtons}
-                                       hideGettingStartedIssuesButton={hideGettingStartedButtons}
-                                       pathname={pathname}
-                                       voter={this.state.voter}/> :
-              null }
-          </div>
-        </div>
+        <ToastContainer closeButton={false}/>
+        <Header params={this.props.params} location={this.props.location}
+                pathname={pathname} voter={this.state.voter}
+                weVoteBrandingOff={this.state.weVoteBrandingOff}/>
         <div className="page-content-container">
           <div className="container-voter-guide">
-            { this.props.children }
+            {this.props.children}
           </div>
         </div>
-        { isCordova() &&
-          <div className="footroom-wrapper">
-            <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter}/>
-          </div>
+        {isCordova() &&
+        <div className="footroom-wrapper">
+          <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter}/>
+        </div>
         }
       </div>;
     } else if (settingsMode) {
       // console.log("settingsMode", settingsMode);
-
       return <div className={getAppBaseClass(pathname)} id="app-base-id">
-        <ToastContainer closeButton={false} />
-        { iPhoneSpacer }
-        <div className={isWebApp ? "headroom-wrapper-webapp__default" : ""}>
-          <div ref="pageHeader" className={pageHeaderStyle}>
-            { showBackToSettings ?
-              <span>
-                <span className="d-block d-sm-none">
-                  <HeaderBackToSettings location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/>
-                </span>
-                <span className="d-none d-sm-block">
-                  <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
-                </span>
-              </span> :
-              <span>
-                { showBackToVoterGuides ?
-                  <HeaderBackToVoterGuides location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
-                  <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
-                }
-              </span>
-            }
-          </div>
-        </div>
+        <ToastContainer closeButton={false}/>
+        <Header params={this.props.params} location={this.props.location}
+                pathname={pathname} voter={this.state.voter}
+                weVoteBrandingOff={this.state.weVoteBrandingOff}/>
         <div className="page-content-container">
           <div className="container-settings">
-            { this.props.children }
+            {this.props.children}
           </div>
         </div>
-        { isCordova() &&
-          <div className="footroom-wrapper">
-            <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter}/>
-          </div>
-        }
-      </div>;
-    }
-
-    // This handles other pages, like Welcome and the Ballot display
-    return <div className={getAppBaseClass(pathname)} id="app-base-id">
-      <ToastContainer closeButton={false} />
-      { iPhoneSpacer }
-      <div className={isWebApp ?
-                      pathname === "/ballot" ? "headroom-wrapper-webapp__ballot" : "headroom-wrapper-webapp__default" :
-                      ""}>
-        <div ref="pageHeader" className={pageHeaderStyle}>
-          { showBackToHeader ?
-            <HeaderBackToBar location={this.props.location} params={this.props.params} pathname={pathname} voter={this.state.voter}/> :
-            <HeaderBar location={this.props.location} pathname={pathname} voter={this.state.voter}/>
-          }
-          { stringContains("/ballot", pathname) || pathname === "/bookmarks" ?
-            <HeaderSecondaryNavBar pathname={pathname} voter={this.state.voter}/> :
-            null }
-        </div>
-      </div>
-      { pathname === "/welcome" || !contentFullWidthMode ?
-        <div className="welcome-or-not-full-width">{ this.props.children }</div> :
-        <div className="page-content-container">
-          <div className="container-fluid">
-            <div className="container-main">
-              { this.props.children }
-            </div>
-          </div>
-        </div>
-      }
-      { isCordova() &&
+        {isCordova() &&
         <div className="footroom-wrapper">
           <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter}/>
         </div>
-      }
-    </div>;
+        }
+      </div>;
+    } else {
+      // This handles other pages, like Welcome and the Ballot display
+      return <div className={getAppBaseClass(pathname)} id="app-base-id">
+        <ToastContainer closeButton={false}/>
+        <Header params={this.props.params} location={this.props.location}
+                pathname={pathname} voter={this.state.voter}
+                weVoteBrandingOff={this.state.weVoteBrandingOff}/>
+        {pathname === "/welcome" || !contentFullWidthMode ?
+          <div className="welcome-or-not-full-width">{this.props.children}</div> :
+          <div className="page-content-container">
+            <div className="container-fluid">
+              <div className="container-main">
+                {this.props.children}
+              </div>
+            </div>
+          </div>
+        }
+        {isCordova() &&
+        <div className="footroom-wrapper">
+          <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter}/>
+        </div>
+        }
+      </div>;
+    }
   }
 }
