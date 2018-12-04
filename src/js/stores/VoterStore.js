@@ -213,7 +213,7 @@ class VoterStore extends ReduceStore {
     let voter_device_id;
     let google_civic_election_id;
     let address;
-    const facebook_photo_retrieve_loop_count = state.facebook_photo_retrieve_loop_count;
+    const { facebook_photo_retrieve_loop_count } = state;
     // Preserve address within voter
     const incoming_voter = action.res;
     const current_voter_device_id = cookies.getItem("voter_device_id");

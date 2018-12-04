@@ -89,13 +89,15 @@ const firstVisit = !cookies.getItem("voter_device_id");
 const routes = () => (
   <Route path="/" component={Application}>
     <Route component={Intro} />
-    {() => {
-      if (isWebApp()) {
-        return <IndexRedirect to="/ballot" />;
-      } else {
-        return firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ballot" />;
+    {                       // 12/4/18: Not sure why we need the following diable
+      (function redir () {  // eslint-disable-line wrap-iife
+        if (isWebApp()) {
+          return <IndexRedirect to="/ballot" />;
+        } else {
+          return firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ballot" />;
+        }
       }
-    }
+      )()
     }
     <Route path="/welcome" component={Welcome} />
     <Route path="/activity" component={Activity} />
