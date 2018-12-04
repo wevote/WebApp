@@ -7,7 +7,7 @@
 import { toast } from "react-toastify";
 import { hasIPhoneNotch } from "./cordovaUtils";
 
-let DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS = {
   autoClose: 2000,
   bodyClassName: {
     fontFamily: "'Source Sans Pro', sans-serif",

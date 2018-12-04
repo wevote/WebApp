@@ -6,7 +6,7 @@ import { renderLog } from "../../utils/logging";
 export default class BrowserPushMessage extends Component {
   static propTypes = {
     type: PropTypes.string,
-    incomingProps: PropTypes.object, //needs more specificity
+    incomingProps: PropTypes.object, // needs more specificity
   };
 
   constructor (props) {
@@ -20,14 +20,15 @@ export default class BrowserPushMessage extends Component {
       this.setState({
         browser_history_message: nextProps.incomingProps.location.state.message,
         browser_history_message_name: nextProps.incomingProps.location.state.message_name,
-        browser_history_message_type: nextProps.incomingProps.location.state.message_type
+        browser_history_message_type: nextProps.incomingProps.location.state.message_type,
       });
     }
   }
 
   render () {
     renderLog(__filename);
-    let { browser_history_message, browser_history_message_name, browser_history_message_type } = this.state;
+    let { browser_history_message, browser_history_message_type } = this.state;
+    const { browser_history_message_name } = this.state;
 
     if (browser_history_message_name === "test") {
       browser_history_message_type = "danger";
@@ -38,12 +39,15 @@ export default class BrowserPushMessage extends Component {
       browser_history_message_type = "info";
     }
 
-    return <span>
-      {browser_history_message ?
-        <Alert variant={browser_history_message_type}>
-          {browser_history_message}
-        </Alert> :
-        null }
-      </span>;
+    return (
+      <span>
+        {browser_history_message ? (
+          <Alert variant={browser_history_message_type}>
+            {browser_history_message}
+          </Alert>
+        ) :
+          null }
+      </span>
+    );
   }
 }

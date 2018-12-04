@@ -41,7 +41,7 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
 
     this.setState({
       ballotItemWeVoteId: this.props.ballotItemWeVoteId,
-      issueImageSize: issueImageSize,
+      issueImageSize,
       issues_to_display: this.props.issueListToDisplay,
       maximum_issues_display: this.props.maximumIssuesToDisplay ? this.props.maximumIssuesToDisplay : 20,
     });
@@ -56,7 +56,7 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
 
     this.setState({
       ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
-      issueImageSize: issueImageSize,
+      issueImageSize,
       issues_to_display: nextProps.issueListToDisplay,
       maximum_issues_display: nextProps.maximumIssuesToDisplay ? nextProps.maximumIssuesToDisplay : 20,
     });
@@ -77,28 +77,33 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
       localCounter++;
 
       // console.log("IssuesDisplayListWithOrganizationPopovers oneIssue: ", oneIssue);
-      let issueWeVoteId = oneIssue.issue_we_vote_id;
+      const issueWeVoteId = oneIssue.issue_we_vote_id;
 
       // Once we have more organizations than we want to show, put them into a drop-down
       if (localCounter <= this.state.maximum_issues_display) {
-        return <IssueTinyDisplay key={`trigger-${issueWeVoteId}`}
-                                 ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-                                 currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                 issue={oneIssue}
-                                 issueImageSize={this.state.issueImageSize}
-                                 issue_we_vote_id={issueWeVoteId}
-                                 overlayTriggerOnClickOnly={this.props.overlayTriggerOnClickOnly}
-                                 popoverBottom={this.props.popoverBottom}
-                                 toFollow={this.props.toFollow}
-                                 urlWithoutHash={this.props.urlWithoutHash}
-                                 />;
+        return (
+          <IssueTinyDisplay
+            key={`trigger-${issueWeVoteId}`}
+            ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+            currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+            issue={oneIssue}
+            issueImageSize={this.state.issueImageSize}
+            issue_we_vote_id={issueWeVoteId}
+            overlayTriggerOnClickOnly={this.props.overlayTriggerOnClickOnly}
+            popoverBottom={this.props.popoverBottom}
+            toFollow={this.props.toFollow}
+            urlWithoutHash={this.props.urlWithoutHash}
+          />
+        );
       } else {
         return null;
       }
     });
 
-    return <span>
-          {issuesHtmlToDisplay}
-      </span>;
+    return (
+      <span>
+        {issuesHtmlToDisplay}
+      </span>
+    );
   }
 }

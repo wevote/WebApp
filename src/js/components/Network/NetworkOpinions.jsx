@@ -14,7 +14,7 @@ export default class NetworkOpinions extends Component {
     children: PropTypes.object,
   };
 
-  constructor (props){
+  constructor (props) {
     super(props);
     this.state = {
       ballot_has_guides: VoterGuideStore.ballotHasGuides(),
@@ -33,21 +33,21 @@ export default class NetworkOpinions extends Component {
     });
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.voterGuideStoreListener.remove();
   }
 
-  getCurrentRoute (){
-    var current_route = "/opinions";
+  getCurrentRoute () {
+    const current_route = "/opinions";
     return current_route;
   }
 
-  getFollowingType (){
+  getFollowingType () {
     switch (this.getCurrentRoute()) {
       case "/opinions":
         return "WHO_YOU_CAN_FOLLOW";
       case "/opinions_followed":
-      default :
+      default:
         return "WHO_YOU_FOLLOW";
     }
   }
@@ -55,35 +55,38 @@ export default class NetworkOpinions extends Component {
   render () {
     renderLog(__filename);
     const { ballot_has_guides, voter_guides_to_follow_all } = this.state;
-    let floatRight = {
-        float: "right",
+    const floatRight = {
+      float: "right",
     };
 
-    return <div className="opinions-followed__container">
-    <Helmet title="Listen to Organizations - We Vote" />
-      <section className="card">
-        <div className="card-main">
-          <p className="d-print-none">
-            Find opinions about your ballot (ordered by Twitter followers).
-            Listen to those you trust. Stop Listening at any time.
-            Listening won't add you to mailing lists.
-            <span style={floatRight} className="d-print-none">
-              <Link to="/opinions_followed" className="u-margin-left--md u-no-break">See organizations you listen to</Link>
-            </span>
-          </p>
-          <div className="d-print-none">
-            <SearchGuidesToFollowBox />
+    return (
+      <div className="opinions-followed__container">
+        <Helmet title="Listen to Organizations - We Vote" />
+        <section className="card">
+          <div className="card-main">
+            <p className="d-print-none">
+              Find opinions about your ballot (ordered by Twitter followers).
+              Listen to those you trust. Stop Listening at any time.
+              Listening won&apos;t add you to mailing lists.
+              <span style={floatRight} className="d-print-none">
+                <Link to="/opinions_followed" className="u-margin-left--md u-no-break">See organizations you listen to</Link>
+              </span>
+            </p>
+            <div className="d-print-none">
+              <SearchGuidesToFollowBox />
+            </div>
+            { ballot_has_guides ?
+              <p /> :
+              <p>There are no organizations with opinions on your ballot. Here are some popular organizations</p>
+            }
+            <div className="card">
+              <GuideList organizationsToFollow={voter_guides_to_follow_all} instantRefreshOn />
+            </div>
+            <Link className="pull-right d-print-none" to="/opinions_ignored">Organizations you are ignoring</Link>
+            <br />
           </div>
-          { ballot_has_guides ?
-            <p /> :
-            <p>There are no organizations with opinions on your ballot. Here are some popular organizations</p>
-          }
-          <div className="card">
-            <GuideList organizationsToFollow={voter_guides_to_follow_all} instantRefreshOn />
-          </div>
-          <Link className="pull-right d-print-none" to="/opinions_ignored">Organizations you are ignoring</Link><br />
-        </div>
-      </section>
-    </div>;
+        </section>
+      </div>
+    );
   }
 }

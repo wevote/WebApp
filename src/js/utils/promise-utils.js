@@ -1,14 +1,12 @@
-export function factory ( promiseFactory ) {
+export default function factory (promiseFactory) {
   if (promiseFactory instanceof Array !== true) throw new Error("wrong type");
 
-  var firstPromiseFn = promiseFactory.shift();
+  const firstPromiseFn = promiseFactory.shift();
 
-  if ( firstPromiseFn instanceof Function !== true ) throw new Error("first promise is not function");
+  if (firstPromiseFn instanceof Function !== true) throw new Error("first promise is not function");
 
-  promiseFactory.reduce( function (curr, next) {
-    if ( next instanceof Function !== true ) throw new Error("next is not a function");
-    return curr.then( function (data) {
-      return new Promise(next.bind(data));
-    });
+  promiseFactory.reduce((curr, next) => {
+    if (next instanceof Function !== true) throw new Error("next is not a function");
+    return curr.then(data => new Promise(next.bind(data)));
   }, new Promise(firstPromiseFn));
 }

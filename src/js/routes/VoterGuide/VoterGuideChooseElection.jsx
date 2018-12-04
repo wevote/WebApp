@@ -46,17 +46,17 @@ export default class VoterGuideChooseElection extends Component {
     });
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // Get Voter and Voter's Organization
-    let voter = VoterStore.getVoter();
-    let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    const voter = VoterStore.getVoter();
+    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log("SettingsDashboard componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId) {
       this.setState({
-        linkedOrganizationWeVoteId: linkedOrganizationWeVoteId,
+        linkedOrganizationWeVoteId,
       });
-      let organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
+      const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
       if (organization && organization.organization_we_vote_id) {
         this.setState({
-          organization: organization,
+          organization,
         });
       } else {
         OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
@@ -72,7 +72,7 @@ export default class VoterGuideChooseElection extends Component {
   }
 
   onOrganizationStoreChange () {
-    let twitterHandleFound = OrganizationStore.getOrganizationSearchResultsTwitterHandle();
+    const twitterHandleFound = OrganizationStore.getOrganizationSearchResultsTwitterHandle();
 
     let twitterSearchStatus = "";
     if (this.state.twitterHandleEntered.length) {
@@ -90,18 +90,18 @@ export default class VoterGuideChooseElection extends Component {
       searchResultsOrganizationName: OrganizationStore.getOrganizationSearchResultsOrganizationName(),
       searchResultsTwitterHandle: OrganizationStore.getOrganizationSearchResultsTwitterHandle(),
       searchResultsWebsite: OrganizationStore.getOrganizationSearchResultsWebsite(),
-      twitterSearchStatus: twitterSearchStatus,
+      twitterSearchStatus,
       twitterHandle: twitterHandleFound,
     });
   }
 
   onVoterStoreChange () {
-    let voter = VoterStore.getVoter();
-    let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    const voter = VoterStore.getVoter();
+    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log("SettingsDashboard onVoterStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
       OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
-      this.setState({ linkedOrganizationWeVoteId: linkedOrganizationWeVoteId });
+      this.setState({ linkedOrganizationWeVoteId });
     }
   }
 
@@ -116,12 +116,12 @@ export default class VoterGuideChooseElection extends Component {
   }
 
   goToBallotLink () {
-    let sampleBallotLink = "/ballot";
+    const sampleBallotLink = "/ballot";
     historyPush(sampleBallotLink);
   }
 
   goToVoterGuideChoosePositions (voterGuideWeVoteId) {
-    let voterGuideBallotItems = "/voterguidepositions/" + voterGuideWeVoteId;
+    const voterGuideBallotItems = `/voterguidepositions/${voterGuideWeVoteId}`;
     historyPush(voterGuideBallotItems);
   }
 
@@ -135,10 +135,11 @@ export default class VoterGuideChooseElection extends Component {
   render () {
     renderLog(__filename);
 
-    return <div>
-      <Helmet title="Choose Election - We Vote" />
+    return (
+      <div>
+        <Helmet title="Choose Election - We Vote" />
         <div className="create-voter-guide container well">
-          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
+          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt="close" />
           <div className="create-voter-guide__h1 xs-text-left">Choose Election</div>
           <div className="create-voter-guide__steps xs-text-left">
             Step 4 of 5
@@ -152,6 +153,7 @@ export default class VoterGuideChooseElection extends Component {
             <div className="col-1 col-md-2">&nbsp;</div>
           </div>
         </div>
-      </div>;
+      </div>
+    );
   }
 }

@@ -36,10 +36,10 @@ export default class OrganizationVoterGuideEdit extends Component {
     let continueLookingForLocalVoterGuide = true;
     if (organizationWeVoteId && googleCivicElectionId) {
       // Simplest case where we get both variables
-      let voterGuide = VoterGuideStore.getVoterGuideForOrganizationIdAndElection(organizationWeVoteId, googleCivicElectionId);
+      const voterGuide = VoterGuideStore.getVoterGuideForOrganizationIdAndElection(organizationWeVoteId, googleCivicElectionId);
       // console.log("voterGuide: ", voterGuide);
       if (voterGuide && voterGuide.we_vote_id && isProperlyFormattedVoterGuideWeVoteId(voterGuide.we_vote_id)) {
-        historyPush("/vg/" + voterGuide.we_vote_id + "/settings/positions");
+        historyPush(`/vg/${voterGuide.we_vote_id}/settings/positions`);
         continueLookingForLocalVoterGuide = false;
       } else {
         continueLookingForLocalVoterGuide = false;
@@ -48,7 +48,7 @@ export default class OrganizationVoterGuideEdit extends Component {
     }
 
     if (continueLookingForLocalVoterGuide) {
-      let voter = VoterStore.getVoter();
+      const voter = VoterStore.getVoter();
       if (!organizationWeVoteId) {
         // If here, an organization wasn't specified
         if (voter && voter.linked_organization_we_vote_id) {
@@ -63,10 +63,10 @@ export default class OrganizationVoterGuideEdit extends Component {
       // Now that we have gathered the org id or election id from local stores, try getting the Voter Guide again
       if (organizationWeVoteId && googleCivicElectionId) {
         // Simplest case where we get both variables
-        let voterGuide = VoterGuideStore.getVoterGuideForOrganizationIdAndElection(organizationWeVoteId, googleCivicElectionId);
+        const voterGuide = VoterGuideStore.getVoterGuideForOrganizationIdAndElection(organizationWeVoteId, googleCivicElectionId);
         // console.log("voterGuide: ", voterGuide);
         if (voterGuide && voterGuide.we_vote_id && isProperlyFormattedVoterGuideWeVoteId(voterGuide.we_vote_id)) {
-          historyPush("/vg/" + voterGuide.we_vote_id + "/settings/positions");
+          historyPush(`/vg/${voterGuide.we_vote_id}/settings/positions`);
         } else {
           tryToCreateVoterGuide = true;
         }
@@ -75,8 +75,8 @@ export default class OrganizationVoterGuideEdit extends Component {
 
     // Cache what we have for when we get a response from VoterGuide store
     this.setState({
-      googleCivicElectionId: googleCivicElectionId,
-      organizationWeVoteId: organizationWeVoteId,
+      googleCivicElectionId,
+      organizationWeVoteId,
     });
 
     // console.log("OrganizationVoterGuideEdit, componentDidMount, googleCivicElectionId:", googleCivicElectionId);
@@ -97,13 +97,13 @@ export default class OrganizationVoterGuideEdit extends Component {
   }
 
   onVoterGuideStoreChange () {
-    let voterGuide = VoterGuideStore.getVoterGuideSaveResults();
+    const voterGuide = VoterGuideStore.getVoterGuideSaveResults();
     this.setState({
-      voterGuide: voterGuide,
+      voterGuide,
     });
     // console.log("onVoterGuideStoreChange voterGuide:", voterGuide);
     if (voterGuide && voterGuide.we_vote_id && isProperlyFormattedVoterGuideWeVoteId(voterGuide.we_vote_id)) {
-      historyPush("/vg/" + voterGuide.we_vote_id + "/settings/positions");
+      historyPush(`/vg/${voterGuide.we_vote_id}/settings/positions`);
     }
   }
 
@@ -125,7 +125,7 @@ export default class OrganizationVoterGuideEdit extends Component {
       return <div>{LoadingWheel}</div>;
     }
 
-    let is_voter_owner = this.state.organization.organization_we_vote_id !== undefined &&
+    const is_voter_owner = this.state.organization.organization_we_vote_id !== undefined &&
       this.state.organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;
 
     if (!is_voter_owner) {

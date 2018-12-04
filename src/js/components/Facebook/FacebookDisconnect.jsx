@@ -3,9 +3,6 @@ import FacebookActions from "../../actions/FacebookActions";
 import { renderLog } from "../../utils/logging";
 
 class FacebookDisconnect extends React.Component {
-  constructor (props) {
-    super(props);
-  }
 
   didClickDisconnectFromFacebookButton () {
     console.log("didClickDisconnectFromFacebookButton");
@@ -14,11 +11,14 @@ class FacebookDisconnect extends React.Component {
 
   render () {
     renderLog(__filename);
-    return <span>
-            <a className="btn btn-social btn-lg btn-facebook" onClick={this.didClickDisconnectFromFacebookButton}>
-                <i className="fa fa-facebook" />Disconnect from Facebook
-            </a>
-        </span>;
+    return (
+      <span>
+        <a className="btn btn-social btn-lg btn-facebook" onClick={this.didClickDisconnectFromFacebookButton}>
+          <i className="fa fa-facebook" />
+          Disconnect from Facebook
+        </a>
+      </span>
+    );
   }
 }
 

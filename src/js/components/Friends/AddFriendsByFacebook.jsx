@@ -17,7 +17,7 @@ export default class AddFriendsByFacebook extends Component {
     this.state = {
       add_friends_message: "Please join me in preparing for the upcoming election.",
       email_addresses: "",
-      redirect_url_upon_save: "/friends/sign_in",  // TODO DALE Remove this?
+      redirect_url_upon_save: "/friends/sign_in", // TODO DALE Remove this?
       loading: false,
       on_enter_email_addresses_step: true,
       on_request_email_step: false,
@@ -32,7 +32,7 @@ export default class AddFriendsByFacebook extends Component {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
   }
@@ -53,13 +53,13 @@ export default class AddFriendsByFacebook extends Component {
   cacheEmailAddresses (e) {
     this.setState({
       email_addresses: e.target.value,
-      on_friend_invitations_sent_step: false
+      on_friend_invitations_sent_step: false,
     });
   }
 
   cacheAddFriendsByFacebookMessage (e) {
     this.setState({
-      add_friends_message: e.target.value
+      add_friends_message: e.target.value,
     });
   }
 
@@ -71,18 +71,18 @@ export default class AddFriendsByFacebook extends Component {
       email_addresses: "",
       on_enter_email_addresses_step: true,
       on_request_email_step: false,
-      on_friend_invitations_sent_step: true
+      on_friend_invitations_sent_step: true,
     });
   }
 
   hasValidEmail () {
-    let { voter } = this.state;
+    const { voter } = this.state;
     return voter !== undefined ? voter.has_valid_email : false;
   }
 
   onKeyDown (event) {
-    let enterAndSpaceKeyCodes = [13, 32];
-    let scope = this;
+    const enterAndSpaceKeyCodes = [13, 32];
+    const scope = this;
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       scope.AddFriendsByFacebookStepsManager(event).bind(scope);
     }
@@ -105,7 +105,7 @@ export default class AddFriendsByFacebook extends Component {
       this.setState({
         loading: false,
         email_addresses_error: true,
-        error_message: error_message
+        error_message,
       });
     } else if (!this.hasValidEmail()) {
       console.log("AddFriendsByFacebookStepsManager, NOT hasValidEmail");
@@ -119,32 +119,34 @@ export default class AddFriendsByFacebook extends Component {
     }
   }
 
-	render () {
+  render () {
     renderLog(__filename);
-    var { loading } = this.state;
-    if (loading){
+    const { loading } = this.state;
+    if (loading) {
       return LoadingWheel;
     }
-    var floatRight = {
-        float: "right"
+    const floatRight = {
+      float: "right",
     };
 
-		return <div>
-      {this.state.on_friend_invitations_sent_step ?
-        <div className="alert alert-success">
-          Invitations sent. Is there anyone else you'd like to invite?
-        </div> :
-        null }
-
-      {this.state.on_enter_email_addresses_step ?
-        <div>
-          <form onSubmit={this.AddFriendsByFacebookStepsManager.bind(this)} className="u-stack--md">
-          <div>
-            ADD_FRIENDS_BY_FACEBOOK - NOT FINISHED YET
+    return (
+      <div>
+        {this.state.on_friend_invitations_sent_step ? (
+          <div className="alert alert-success">
+          Invitations sent. Is there anyone else you&apos;d like to invite?
           </div>
-          </form>
+        ) : null
+        }
 
+        {this.state.on_enter_email_addresses_step ? (
           <div>
+            <form onSubmit={this.AddFriendsByFacebookStepsManager.bind(this)} className="u-stack--md">
+              <div>
+            ADD_FRIENDS_BY_FACEBOOK - NOT FINISHED YET
+              </div>
+            </form>
+
+            <div>
               <span style={floatRight}>
                 <Button
                   tabIndex="0"
@@ -160,15 +162,18 @@ export default class AddFriendsByFacebook extends Component {
                 </Button>
               </span>
               <p>These friends will see what you support, oppose, and which opinions you listen to.</p>
+            </div>
           </div>
-        </div> :
-        null }
+        ) : null
+        }
 
-      {this.state.on_request_email_step ?
-        <div>
+        {this.state.on_request_email_step ? (
+          <div>
           ON REQUEST EMAIL STEP
-        </div> :
-        null }
-		</div>;
-	}
+          </div>
+        ) : null
+        }
+      </div>
+    );
+  }
 }

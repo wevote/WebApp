@@ -32,9 +32,9 @@ export default class GuideList extends Component {
 
   componentDidMount () {
     // console.log("GuideList componentDidMount");
-    let organizationsToFollow = this.sortOrganizations(this.props.organizationsToFollow, this.state.ballotItemWeVoteId);
+    const organizationsToFollow = this.sortOrganizations(this.props.organizationsToFollow, this.state.ballotItemWeVoteId);
     this.setState({
-      organizationsToFollow: organizationsToFollow,
+      organizationsToFollow,
       ballotItemWeVoteId: this.props.ballotItemWeVoteId,
     });
   }
@@ -42,9 +42,9 @@ export default class GuideList extends Component {
   componentWillReceiveProps (nextProps) {
     // console.log("GuideList componentWillReceiveProps");
     // Do not update the state if the organizationsToFollow list looks the same, and the ballotItemWeVoteId hasn't changed
-    let organizationsToFollow = this.sortOrganizations(nextProps.organizationsToFollow, this.state.ballotItemWeVoteId);
+    const organizationsToFollow = this.sortOrganizations(nextProps.organizationsToFollow, this.state.ballotItemWeVoteId);
     this.setState({
-      organizationsToFollow: organizationsToFollow,
+      organizationsToFollow,
       ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
     });
   }
@@ -53,7 +53,8 @@ export default class GuideList extends Component {
     OrganizationActions.organizationFollowIgnore(id);
     this.setState({
       organizationsToFollow: this.state.organizationsToFollow.filter(
-        (org) => org.organization_we_vote_id !== id),
+        org => org.organization_we_vote_id !== id,
+      ),
     });
     showToastSuccess("Added to ignore list.");
   }
@@ -62,12 +63,12 @@ export default class GuideList extends Component {
     // console.log("sortOrganizations: ", organizationsList, "ballotItemWeVoteId: ", ballotItemWeVoteId);
     if (organizationsList && ballotItemWeVoteId) {
       // console.log("Checking for resort");
-      var arrayLength = organizationsList.length;
+      const arrayLength = organizationsList.length;
       let organization;
       let organizationPositionForThisBallotItem;
-      let sortedOrganizations = [];
+      const sortedOrganizations = [];
       let atLeastOneOrganizationReordered = false;
-      for (var i = 0; i < arrayLength; i++) {
+      for (let i = 0; i < arrayLength; i++) {
         organization = organizationsList[i];
         organizationPositionForThisBallotItem = null;
         if (ballotItemWeVoteId && organization.organization_we_vote_id) {
@@ -108,28 +109,32 @@ export default class GuideList extends Component {
     let organizationPositionForThisBallotItem = {};
 
     if (this.state.organizationsToFollow === undefined) {
-      return <div className="guidelist card-child__list-group">
-        <div className="u-flex u-flex-column u-items-center">
-          <div className="u-margin-top--sm u-stack--sm u-no-break">
-            No results found.
-          </div>
-          <OpenExternalWebSite url="https://api.wevoteusa.org/vg/create/"
-                               className="opinions-followed__missing-org-link"
-                               target="_blank"
-                               title="Organization Missing?"
-                               body={<Button className="u-stack--xs">Organization Missing?</Button>}
-          />
-          <div className="opinions-followed__missing-org-text u-stack--sm u-no-break">
-            Don’t see an organization you want to Listen to?
+      return (
+        <div className="guidelist card-child__list-group">
+          <div className="u-flex u-flex-column u-items-center">
+            <div className="u-margin-top--sm u-stack--sm u-no-break">
+              No results found.
+            </div>
+            <OpenExternalWebSite
+              url="https://api.wevoteusa.org/vg/create/"
+              className="opinions-followed__missing-org-link"
+              target="_blank"
+              title="Organization Missing?"
+              body={<Button className="u-stack--xs">Organization Missing?</Button>}
+            />
+            <div className="opinions-followed__missing-org-text u-stack--sm u-no-break">
+              Don’t see an organization you want to Listen to?
+            </div>
           </div>
         </div>
-      </div>;
+      );
     }
     // Updated version for Bootstrap 4?
     //           <Button variant="outline-secondary" size="sm" onClick={this.handleIgnore.bind(this, organization.organization_we_vote_id)}>
     //             Ignore
     //           </Button>
-    return <div className="guidelist card-child__list-group">
+    return (
+      <div className="guidelist card-child__list-group">
         {this.state.organizationsToFollow.map((organization) => {
           organizationPositionForThisBallotItem = {};
           if (!organization.is_support_or_positive_rating && !organization.is_oppose_or_negative_rating && !organization.is_information_only && this.state.ballotItemWeVoteId && organization.organization_we_vote_id) {
@@ -143,22 +148,30 @@ export default class GuideList extends Component {
           }
 
           return (
-            <VoterGuideDisplayForList key={organization.organization_we_vote_id}
-                                      {...organization}
-                                      {...organizationPositionForThisBallotItem}>
-              <FollowToggle organizationWeVoteId={organization.organization_we_vote_id}
-                            hide_stop_following_button={this.props.hide_stop_following_button}/>
+            <VoterGuideDisplayForList
+              key={organization.organization_we_vote_id}
+              {...organization}
+              {...organizationPositionForThisBallotItem}
+            >
+              <FollowToggle
+                organizationWeVoteId={organization.organization_we_vote_id}
+                hide_stop_following_button={this.props.hide_stop_following_button}
+              />
               { this.props.hide_ignore_button ?
-                null :
-                <button className="btn btn-default btn-sm"
-                        onClick={this.handleIgnore.bind(this, organization.organization_we_vote_id)}>
-                  Ignore
-                </button>
+                null : (
+                  <button
+                    className="btn btn-default btn-sm"
+                    onClick={this.handleIgnore.bind(this, organization.organization_we_vote_id)}
+                  >
+                    Ignore
+                  </button>
+                )
               }
             </VoterGuideDisplayForList>
           );
         })
         }
-    </div>;
+      </div>
+    );
   }
 }

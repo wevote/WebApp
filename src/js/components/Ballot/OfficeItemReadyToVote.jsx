@@ -14,12 +14,13 @@ export default class OfficeItemReadyToVote extends Component {
     kind_of_ballot_item: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
-    candidate_list: PropTypes.array
+    candidate_list: PropTypes.array,
   };
+
   constructor (props) {
     super(props);
     this.state = {
-      transitioning: false
+      transitioning: false,
     };
   }
 
@@ -35,7 +36,7 @@ export default class OfficeItemReadyToVote extends Component {
     this.supportStoreListener.remove();
   }
 
-  onVoterGuideStoreChange (){
+  onVoterGuideStoreChange () {
     // We just want to trigger a re-render
     this.setState({ transitioning: false });
     // console.log("onVoterGuideStoreChange");
@@ -49,10 +50,11 @@ export default class OfficeItemReadyToVote extends Component {
 
   render () {
     renderLog(__filename);
-    let { ballot_item_display_name, we_vote_id } = this.props;
-    let officeLink = "/office/" + we_vote_id;
-    let goToOfficeLink = function () { historyPush(officeLink); };
-    let is_support_array = [];
+    let { ballot_item_display_name } = this.props;
+    const { we_vote_id: weVoteId } = this.props;
+    const officeLink = `/office/${weVoteId}`;
+    const goToOfficeLink = function () { historyPush(officeLink); };
+    const is_support_array = [];
     let candidate_with_most_support = null;
     let voter_supports_at_least_one_candidate = false;
     let supportProps;
@@ -77,7 +79,7 @@ export default class OfficeItemReadyToVote extends Component {
     let largest_support_count = 0;
     let at_least_one_candidate_chosen = false;
 
-    if (is_support_array.length === 0){
+    if (is_support_array.length === 0) {
       let network_support_count;
       let network_oppose_count;
 
@@ -98,64 +100,77 @@ export default class OfficeItemReadyToVote extends Component {
       });
     }
 
-    return <div className="card-main office-item">
-      <div className="card-main__content">
-        <h2 className="card-main__display-name">
-          { this.props.link_to_ballot_item_page ?
-            <Link to={officeLink}>{ballot_item_display_name}</Link> :
+    return (
+      <div className="card-main office-item">
+        <div className="card-main__content">
+          <h2 className="card-main__display-name">
+            { this.props.link_to_ballot_item_page ?
+              <Link to={officeLink}>{ballot_item_display_name}</Link> :
               ballot_item_display_name
+            }
+          </h2>
+
+          <div className={this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null}>
+            { this.props.candidate_list.map( one_candidate => (
+              <div key={one_candidate.we_vote_id}>
+                {/* *** Candidate name *** */}
+                { SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support ? (  // eslint-disable-line no-nested-ternary
+                  <div className="u-flex u-items-center">
+                    <div
+                      className="u-flex-auto u-cursor--pointer"
+                      onClick={this.props.link_to_ballot_item_page ?
+                        goToOfficeLink : null}
+                    >
+                      <h2 className="h5">
+                        {one_candidate.ballot_item_display_name}
+                      </h2>
+                    </div>
+
+                    <div className="u-flex-none u-justify-end">
+                      <span className="u-push--xs">Chosen by you</span>
+                      <img src={cordovaDot("/img/global/svg-icons/thumbs-up-color-icon.svg")} width="24" height="24" />
+                    </div>
+                  </div>
+                ) :
+                  candidate_with_most_support === one_candidate.ballot_item_display_name ? (        // eslint-disable-line no-nested-ternary
+                    <div className="u-flex u-items-center">
+                      <div className="u-flex-auto u-cursor--pointer"
+                           onClick={this.props.link_to_ballot_item_page ?
+                             goToOfficeLink : null}
+                      >
+                        <h2 className="h5">
+                          {one_candidate.ballot_item_display_name}
+                        </h2>
+                      </div>
+                      <div className="u-flex-none u-justify-end">
+                        <span className="u-push--xs">Your network supports</span>
+                        <img src={cordovaDot("/img/global/icons/up-arrow-color-icon.svg")} className="network-positions__support-icon" width="20" height="20" />
+                      </div>
+                    </div>
+                  ) :
+                    is_support_array === 0 && candidate_with_most_support !== one_candidate.ballot_item_display_name && !voter_supports_at_least_one_candidate ?
+                      <div className="u-flex-none u-justify-end">Your network is undecided</div> :
+                      null
+                }
+                {/* *** "Positions in your Network" bar OR items you can follow *** */}
+              </div>
+            ))
           }
-        </h2>
-
-      <div className={ this.props.link_to_ballot_item_page ?
-                "u-cursor--pointer" : null } >
-          { this.props.candidate_list.map( (one_candidate) =>
-            <div key={one_candidate.we_vote_id}>
-              {/* *** Candidate name *** */}
-              { SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support ?
-                <div className="u-flex u-items-center">
-                  <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
-                  goToOfficeLink : null }>
-                    <h2 className="h5">
-                    {one_candidate.ballot_item_display_name}
-                    </h2>
-                  </div>
-
-                  <div className="u-flex-none u-justify-end">
-                    <span className="u-push--xs">Chosen by you</span>
-                    <img src={cordovaDot("/img/global/svg-icons/thumbs-up-color-icon.svg")} width="24" height="24" />
-                  </div>
-                </div> :
-
-                  candidate_with_most_support === one_candidate.ballot_item_display_name ?
-
-                <div className="u-flex u-items-center">
-                  <div className="u-flex-auto u-cursor--pointer" onClick={ this.props.link_to_ballot_item_page ?
-                    goToOfficeLink : null }>
-                    <h2 className="h5">
-                      {one_candidate.ballot_item_display_name}
-                    </h2>
-                  </div>
-                  <div className="u-flex-none u-justify-end">
-                    <span className="u-push--xs">Your network supports</span>
-                    <img src={cordovaDot("/img/global/icons/up-arrow-color-icon.svg")} className="network-positions__support-icon" width="20" height="20" />
-                  </div>
-                </div> :
-                  is_support_array === 0 && candidate_with_most_support !== one_candidate.ballot_item_display_name && !voter_supports_at_least_one_candidate ?
-                  <div className="u-flex-none u-justify-end">Your network is undecided</div> :
-                    null}
-              {/* *** "Positions in your Network" bar OR items you can follow *** */}
-          </div>)
-          }
-          { voter_supports_at_least_one_candidate ?
-            null :
-            <span>
-              { at_least_one_candidate_chosen ?
-                null :
-                <div className="u-tr">Your network is undecided</div> }
-            </span> }
+            { () => {
+              if (voter_supports_at_least_one_candidate) {
+                return null;
+              } else {
+                return (
+                  <span>
+                    {at_least_one_candidate_chosen ? null : <div className="u-tr">Your network is undecided</div>}
+                  </span>
+                );
+              }
+            }
+            }
+          </div>
         </div>
       </div>
-    </div>;
+    );
   }
 }

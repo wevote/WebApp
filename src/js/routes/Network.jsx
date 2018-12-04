@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import Helmet from "react-helmet";
 import AnalyticsActions from "../actions/AnalyticsActions";
 import BrowserPushMessage from "../components/Widgets/BrowserPushMessage";
 import FriendActions from "../actions/FriendActions";
 import FriendStore from "../stores/FriendStore";
-import Helmet from "react-helmet";
 import LoadingWheel from "../components/LoadingWheel";
 import { renderLog } from "../utils/logging";
 import NetworkFriendRequests from "../components/Network/NetworkFriendRequests";
@@ -55,13 +55,13 @@ export default class Network extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (this.state.friend_invitations_sent_to_me.length > 0) {  // has invitations
+    if (this.state.friend_invitations_sent_to_me.length > 0) { // has invitations
       if (nextProps.location.pathname === "/more/network" || !nextProps.params.edit_mode) {
         this.setState({ edit_mode: "friends" });
       } else {
         this.setState({ edit_mode: nextProps.params.edit_mode });
       }
-    } else if (this.state.suggested_friend_list.length > 0) {  // has suggested friends
+    } else if (this.state.suggested_friend_list.length > 0) { // has suggested friends
       if (nextProps.location.pathname === "/more/network" || !nextProps.params.edit_mode) {
         this.setState({ edit_mode: "friends" });
       } else {
@@ -78,14 +78,14 @@ export default class Network extends Component {
   }
 
   onFriendStoreChange () {
-    let newState = {
+    const newState = {
       friend_invitations_sent_by_me: FriendStore.friendInvitationsSentByMe(),
       friend_invitations_sent_to_me: FriendStore.friendInvitationsSentToMe(),
       friend_invitations_processed: FriendStore.friendInvitationsProcessed(),
       suggested_friend_list: FriendStore.suggestedFriendList(),
     };
 
-    if (newState.friend_invitations_sent_to_me.length > 0) {  //has invitations
+    if (newState.friend_invitations_sent_to_me.length > 0) { // has invitations
       if (this.state.pathname === "/more/network") {
         newState.edit_mode = "friends";
       } else {
@@ -119,28 +119,30 @@ export default class Network extends Component {
         break;
     }
 
-    return <span>
-      <Helmet title="Your Network - We Vote" />
-      <BrowserPushMessage incomingProps={this.props} />
-      <section className="card network__card">
-        <div className="card-main">
-          <h3 className="h3 text-center">Build Your We Vote Network</h3>
+    return (
+      <span>
+        <Helmet title="Your Network - We Vote" />
+        <BrowserPushMessage incomingProps={this.props} />
+        <section className="card network__card">
+          <div className="card-main">
+            <h3 className="h3 text-center">Build Your We Vote Network</h3>
 
-          {/* Desktop view */}
-          <div className="d-none d-sm-block buttons-container">
-            { this.state.voter.signed_in_twitter ?
-              null :
-              <div className="network-btn">
-                <TwitterSignIn className="btn btn-social btn-lg btn-twitter text-center" buttonText="Find Voter Guides" />
-                <ReadMore
-                  className="social-btn-description"
-                  text_to_display={twitterInfoText}
-                  num_of_lines={2}
-                />
-              </div>
-            }
-            {/* Commented out since choose Friends via Facebook is currently broken */}
-            {/* <div className="network-btn">
+            {/* Desktop view */}
+            <div className="d-none d-sm-block buttons-container">
+              { this.state.voter.signed_in_twitter ?
+                null : (
+                  <div className="network-btn">
+                    <TwitterSignIn className="btn btn-social btn-lg btn-twitter text-center" buttonText="Find Voter Guides" />
+                    <ReadMore
+                      className="social-btn-description"
+                      text_to_display={twitterInfoText}
+                      num_of_lines={2}
+                    />
+                  </div>
+                )
+              }
+              {/* Commented out since choose Friends via Facebook is currently broken */}
+              {/* <div className="network-btn">
               <Link to="/facebook_invitable_friends" className="btn btn-social btn-lg btn-facebook text-center">
                 <i className="fa fa-facebook"/>Choose Friends
               </Link>
@@ -150,70 +152,73 @@ export default class Network extends Component {
                 num_of_lines={2}
               />
             </div> */}
-            <div className="network-btn">
-            <Link to="/friends/invitebyemail" className="btn btn-social btn-lg btn--email text-center">
-              <i className="fa fa-envelope" />Invite Friends
-            </Link>
-            <ReadMore
-              className="social-btn-description"
-              text_to_display={EmailInfoText}
-              num_of_lines={2}
-            />
-            </div>
-          </div>
-
-          {/* Mobile view */}
-          <div className="d-flex d-sm-none mobile-container">
-            { this.state.voter.signed_in_twitter ?
-              null :
               <div className="network-btn">
-                <TwitterSignIn buttonText="Find" className="btn btn-social btn-md btn-twitter" />
+                <Link to="/friends/invitebyemail" className="btn btn-social btn-lg btn--email text-center">
+                  <i className="fa fa-envelope" />
+                  Invite Friends
+                </Link>
+                <ReadMore
+                  className="social-btn-description"
+                  text_to_display={EmailInfoText}
+                  num_of_lines={2}
+                />
               </div>
-            }
-            {/* Commented out since choose Friends via Facebook is currently broken */}
-            {/* <div className="network-btn">
-              <Link to="/facebook_invitable_friends" className="btn btn-social btn-md btn-facebook">
-                <i className="fa fa-facebook"/>Choose
-              </Link>
-            </div> */}
-            <div className="network-btn">
-              <Link to="/friends/invitebyemail" className="btn btn-social btn-md btn--email">
-                <i className="fa fa-envelope" />Invite
-              </Link>
+            </div>
+
+            {/* Mobile view */}
+            <div className="d-flex d-sm-none mobile-container">
+              { this.state.voter.signed_in_twitter ?
+                null : (
+                  <div className="network-btn">
+                    <TwitterSignIn buttonText="Find" className="btn btn-social btn-md btn-twitter" />
+                  </div>
+                )
+              }
+              {/* Commented out since choose Friends via Facebook is currently broken */}
+              {/* <div className="network-btn">
+                <Link to="/facebook_invitable_friends" className="btn btn-social btn-md btn-facebook">
+                 <i className="fa fa-facebook"/>Choose
+                </Link>
+              </div> */}
+              <div className="network-btn">
+                <Link to="/friends/invitebyemail" className="btn btn-social btn-md btn--email">
+                  <i className="fa fa-envelope" />
+                  Invite
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-      <div className="row">
-        <div className="col-sm-12 col-md-8">
-          <div className="tabs__tabs-container-wrap">
-            <div className="tabs__tabs-container d-print-none">
-              <ul className="nav tabs__tabs">
-                <li className="tab-item">
-                  <Link to={{ pathname: "/more/network/friends" }} className={this.state.edit_mode === "friends" ? "tab tab-active" : "tab tab-default"}>
-                    <span className="d-block d-sm-none">Requests</span>
-                    <span className="d-none d-sm-block">Friend Requests</span>
-                  </Link>
-                </li>
-
-                <li className="tab-item">
-                  <Link to="/more/network/organizations" className={this.state.edit_mode === "organizations" ? "tab tab-active" : "tab tab-default"}>
-                    <span className="d-block d-sm-none">Organizations</span>
-                    <span className="d-none d-sm-block">Listen to Organizations</span>
-                  </Link>
-                </li>
-              </ul>
+        </section>
+        <div className="row">
+          <div className="col-sm-12 col-md-8">
+            <div className="tabs__tabs-container-wrap">
+              <div className="tabs__tabs-container d-print-none">
+                <ul className="nav tabs__tabs">
+                  <li className="tab-item">
+                    <Link to={{ pathname: "/more/network/friends" }} className={this.state.edit_mode === "friends" ? "tab tab-active" : "tab tab-default"}>
+                      <span className="d-block d-sm-none">Requests</span>
+                      <span className="d-none d-sm-block">Friend Requests</span>
+                    </Link>
+                  </li>
+                  <li className="tab-item">
+                    <Link to="/more/network/organizations" className={this.state.edit_mode === "organizations" ? "tab tab-active" : "tab tab-default"}>
+                      <span className="d-block d-sm-none">Organizations</span>
+                      <span className="d-none d-sm-block">Listen to Organizations</span>
+                    </Link>
+                  </li>
+                </ul>
+              </div>
             </div>
+            {networkComponentToDisplay}
           </div>
-          {networkComponentToDisplay}
-        </div>
 
-        <div className="col-md-4 d-none d-sm-block">
-          <NetworkOpinionsFollowed />
-          <NetworkFriends />
-          <NetworkIssuesFollowed />
+          <div className="col-md-4 d-none d-sm-block">
+            <NetworkOpinionsFollowed />
+            <NetworkFriends />
+            <NetworkIssuesFollowed />
+          </div>
         </div>
-      </div>
-    </span>;
+      </span>
+    );
   }
 }

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Helmet from "react-helmet";
 import { capitalizeString } from "../../utils/textFormat";
 import GuideList from "../../components/VoterGuide/GuideList";
-import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
 import { renderLog } from "../../utils/logging";
 import MeasureItem from "../../components/Ballot/MeasureItem";
@@ -33,11 +33,11 @@ export default class Measure extends Component {
       // Eventually we could use this getVoterGuidesToFollowForBallotItemId with measure_we_vote_id, but we can't now
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
       // guides_to_follow_list: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.measure_we_vote_id)
-      voter_guides_to_follow_for_latest_ballot_item: []
+      voter_guides_to_follow_for_latest_ballot_item: [],
     };
   }
 
-  componentDidMount (){
+  componentDidMount () {
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     MeasureActions.measureRetrieve(this.props.params.measure_we_vote_id);
     MeasureActions.positionListForBallotItem(this.props.params.measure_we_vote_id);
@@ -92,7 +92,7 @@ export default class Measure extends Component {
   }
 
   onVoterGuideStoreChange () {
-    //MeasureActions.measureRetrieve(this.state.measure_we_vote_id);
+    // MeasureActions.measureRetrieve(this.state.measure_we_vote_id);
     MeasureActions.positionListForBallotItem(this.state.measure_we_vote_id);
     // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
 
@@ -112,54 +112,76 @@ export default class Measure extends Component {
     const electionId = VoterStore.election_id();
     const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to listen to related to this measure.";
 
-    if (!this.state.measure || !this.state.measure.ballot_item_display_name){
+    if (!this.state.measure || !this.state.measure.ballot_item_display_name) {
       // TODO DALE If the measure_we_vote_id is not valid, we need to update this with a notice
-      return <div className="container-fluid well u-stack--md u-inset--md">
-                <div>{LoadingWheel}</div>
-                <br />
-            </div>;
+      return (
+        <div className="container-fluid well u-stack--md u-inset--md">
+          <div>{LoadingWheel}</div>
+          <br />
+        </div>
+      );
     }
 
-    let measureName = capitalizeString(this.state.measure.ballot_item_display_name);
-    let titleText = measureName + " - We Vote";
-    let descriptionText = "Information about " + measureName;
-    let voter = VoterStore.getVoter();
-    let measureAdminEditUrl = webAppConfig.WE_VOTE_SERVER_ROOT_URL + "m/" + this.state.measure.id + "/edit/?google_civic_election_id=" + VoterStore.election_id() + "&state_code=";
+    const measureName = capitalizeString(this.state.measure.ballot_item_display_name);
+    const titleText = `${measureName} - We Vote`;
+    const descriptionText = `Information about ${measureName}`;
+    const voter = VoterStore.getVoter();
+    const measureAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}m/${this.state.measure.id}/edit/?google_civic_election_id=${VoterStore.election_id()}&state_code=`;
 
-    return <section className="card">
-      <Helmet title={titleText}
-              meta={[{ "name": "description", "content": descriptionText }]}
+    return (
+      <section className="card">
+        <Helmet
+          title={titleText}
+          meta={[{ name: "description", content: descriptionText }]}
+        />
+        <MeasureItem
+          {...this.state.measure}
+          position_list={this.state.position_list_from_advisers_followed_by_voter}
+          commentButtonHide
+          showPositionsInYourNetworkBreakdown
+        />
+        <div className="card__additional">
+          { this.state.position_list_from_advisers_followed_by_voter ? (
+            <div>
+              <PositionList
+                position_list={this.state.position_list_from_advisers_followed_by_voter}
+                hideSimpleSupportOrOppose
+                ballot_item_display_name={this.state.measure.ballot_item_display_name}
               />
-          <MeasureItem {...this.state.measure}
-                       position_list={this.state.position_list_from_advisers_followed_by_voter}
-                       commentButtonHide
-                       showPositionsInYourNetworkBreakdown />
-          <div className="card__additional">
-            { this.state.position_list_from_advisers_followed_by_voter ?
-              <div>
-                <PositionList position_list={this.state.position_list_from_advisers_followed_by_voter}
-                              hideSimpleSupportOrOppose
-                              ballot_item_display_name={this.state.measure.ballot_item_display_name} />
-              </div> :
-              null
-            }
-            {this.state.voter_guides_to_follow_for_latest_ballot_item.length === 0 ?
-              <div className="card__additional-text">{NO_VOTER_GUIDES_TEXT}</div> :
-              <div><h3 className="card__additional-heading">{"More opinions about " + this.state.measure.ballot_item_display_name}</h3>
-              <GuideList id={electionId}
-                         ballotItemWeVoteId={this.state.measure_we_vote_id}
-                         organizationsToFollow={this.state.voter_guides_to_follow_for_latest_ballot_item}/></div>
-            }
-          </div>
-          {/* Show links to this candidate in the admin tools */}
-          { voter.is_admin || voter.is_verified_volunteer ?
-            <span className="u-wrap-links d-print-none">Admin:
-              <OpenExternalWebSite url={measureAdminEditUrl}
-                                   target="_blank"
-                                   className="open-web-site open-web-site__no-right-padding"
-                                   body={<span>edit {measureName}</span>} />
-            </span> : null
+            </div>
+          ) : null
           }
-        </section>;
+          {this.state.voter_guides_to_follow_for_latest_ballot_item.length === 0 ?
+            <div className="card__additional-text">{NO_VOTER_GUIDES_TEXT}</div> : (
+              <div>
+                <h3 className="card__additional-heading">{`More opinions about ${this.state.measure.ballot_item_display_name}`}</h3>
+                <GuideList
+                  id={electionId}
+                  ballotItemWeVoteId={this.state.measure_we_vote_id}
+                  organizationsToFollow={this.state.voter_guides_to_follow_for_latest_ballot_item}
+                />
+              </div>
+            )}
+        </div>
+        {/* Show links to this candidate in the admin tools */}
+        { voter.is_admin || voter.is_verified_volunteer ? (
+          <span className="u-wrap-links d-print-none">
+            Admin:
+            <OpenExternalWebSite
+              url={measureAdminEditUrl}
+              target="_blank"
+              className="open-web-site open-web-site__no-right-padding"
+              body={(
+                <span>
+                  edit
+                  {measureName}
+                </span>
+              )}
+            />
+          </span>
+        ) : null
+        }
+      </section>
+    );
   }
 }

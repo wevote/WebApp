@@ -5,12 +5,12 @@ import BallotActions from "../../actions/BallotActions";
 import BallotStore from "../../stores/BallotStore";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
-import LoadingWheel from "../../components/LoadingWheel";
+import LoadingWheel from "../LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
 import { cleanArray } from "../../utils/textFormat";
-import { convertStateCodeToStateText } from "../../utils/address-functions";
+import convertStateCodeToStateText from "../../utils/address-functions";
 
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 36;
 
@@ -31,15 +31,15 @@ export default class BallotElectionList extends Component {
     } else if (VoterStore.election_id()) {
       prior_election_id = VoterStore.election_id();
     }
-    let state_code = VoterStore.getStateCodeFromIPAddress();
+    const state_code = VoterStore.getStateCodeFromIPAddress();
 
     this.state = {
       loading_new_ballot_items: false,
-      prior_election_id: prior_election_id,
+      prior_election_id,
       show_more_upcoming_elections: false,
       show_more_prior_elections: false,
       show_prior_elections_list: false,
-      state_code: state_code,
+      state_code,
       state_name: convertStateCodeToStateText(state_code),
       updated_election_id: "",
     };
@@ -49,26 +49,26 @@ export default class BallotElectionList extends Component {
   }
 
   goToDifferentElection (ballot_location_shortcut, ballot_returned_we_vote_id, googleCivicElectionId, originalTextForMapSearch = "") {
-    let ballot_base_url = this.props.ballotBaseUrl || "/ballot";
+    const ballot_base_url = this.props.ballotBaseUrl || "/ballot";
     let destinationUrlForHistoryPush = "";
     if (ballot_location_shortcut && ballot_location_shortcut !== "" && ballot_location_shortcut !== "none") {
       // console.log("goToDifferentElection, ballot_location_shortcut: ", ballot_location_shortcut);
       BallotActions.voterBallotItemsRetrieve(0, "", ballot_location_shortcut);
-      destinationUrlForHistoryPush = ballot_base_url + "/" + ballot_location_shortcut; // Used with historyPush once modal is closed
+      destinationUrlForHistoryPush = `${ballot_base_url}/${ballot_location_shortcut}`; // Used with historyPush once modal is closed
     } else if (ballot_returned_we_vote_id && ballot_returned_we_vote_id !== "" && ballot_returned_we_vote_id !== "none") {
       // console.log("goToDifferentElection, ballot_returned_we_vote_id: ", ballot_returned_we_vote_id);
       BallotActions.voterBallotItemsRetrieve(0, ballot_returned_we_vote_id, "");
-      destinationUrlForHistoryPush = ballot_base_url + "/id/" + ballot_returned_we_vote_id; // Used with historyPush once modal is closed
+      destinationUrlForHistoryPush = `${ballot_base_url}/id/${ballot_returned_we_vote_id}`; // Used with historyPush once modal is closed
     } else if (originalTextForMapSearch && originalTextForMapSearch !== "") {
       // Do we still want to be updating addresses? Maybe instead just update google_civic_election_id?
       // console.log("goToDifferentElection, originalTextForMapSearch: ", originalTextForMapSearch);
-      let simple_save = false;
+      const simple_save = false;
       VoterActions.voterAddressSave(originalTextForMapSearch, simple_save, googleCivicElectionId);
       destinationUrlForHistoryPush = ballot_base_url; // Used with historyPush once modal is closed
     } else if (googleCivicElectionId && googleCivicElectionId !== 0) {
       BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, "", "");
       // console.log("goToDifferentElection, googleCivicElectionId: ", googleCivicElectionId);
-      destinationUrlForHistoryPush = ballot_base_url + "/election/" + googleCivicElectionId; // Used with historyPush once modal is closed
+      destinationUrlForHistoryPush = `${ballot_base_url}/election/${googleCivicElectionId}`; // Used with historyPush once modal is closed
     }
 
     // Request positions for the different election
@@ -81,7 +81,7 @@ export default class BallotElectionList extends Component {
       // console.log("goToDifferentElection, loading_new_ballot_items: ", this.state.loading_new_ballot_items);
       // console.log("goToDifferentElection, prior_election_id: ", this.state.prior_election_id, ", updated_election_id: ", this.state.updated_election_id);
       this.setState({
-        destinationUrlForHistoryPush: destinationUrlForHistoryPush,
+        destinationUrlForHistoryPush,
         loading_new_ballot_items: true,
         prior_election_id: BallotStore.ballot_properties.google_civic_election_id || VoterStore.election_id() || 0,
         updated_election_id: 0,
@@ -120,10 +120,10 @@ export default class BallotElectionList extends Component {
     if (VoterStore.election_id() && VoterStore.election_id() !== this.state.prior_election_id) {
       if (this.state.loading_new_ballot_items && this.props.toggleFunction) {
         // console.log("onVoterStoreChange--------- loading_new_ballot_items:", this.state.loading_new_ballot_items);
-        let state_code = VoterStore.getStateCodeFromIPAddress();
+        const state_code = VoterStore.getStateCodeFromIPAddress();
         this.setState({
           loading_new_ballot_items: false,
-          state_code: state_code,
+          state_code,
           state_name: convertStateCodeToStateText(state_code),
           updated_election_id: VoterStore.election_id(),
         });
@@ -142,7 +142,7 @@ export default class BallotElectionList extends Component {
   // }
 
   isElectionInState (election) {
-    let election_name = election.election_description_text;
+    const election_name = election.election_description_text;
     if (this.state.state_name.length && election_name.includes(this.state.state_name)) {
       return true;
     }
@@ -154,61 +154,103 @@ export default class BallotElectionList extends Component {
   }
 
   renderUpcomingElectionList (list, current_date) {
-    let rendered_list = list.map((item, index) => {
-      let electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
-      let electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
-      return electionDateTomorrow > current_date ?
+    const rendered_list = list.map((item, index) => {
+      const electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
+      const electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
+      return electionDateTomorrow > current_date ? (
         <div key={index}>
           <dl className="list-unstyled text-center">
-            <button type="button" className="btn btn-success ballot-election-list__button"
-                    onClick={this.goToDifferentElection.bind(this, item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}>
+            <button
+              type="button"
+              className="btn btn-success ballot-election-list__button"
+              onClick={this.goToDifferentElection.bind(this, item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}
+            >
               {/* Mobile */}
-              { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ?
-                <span className="d-block d-sm-none">{item.election_description_text}&nbsp;<img
-                  src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span> :
+              { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
+                <span className="d-block d-sm-none">
+                  {item.election_description_text}&nbsp;
+                  <img
+                    src={cordovaDot("/img/global/icons/Circle-Arrow.png")}
+                  />
+                </span>
+              ) : (
                 <span
-                  className="d-block d-sm-none">{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;
-                  <img src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span>
-              }
+                  className="d-block d-sm-none"
+                >
+                  {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
+                  ...&nbsp;
+                  <img src={cordovaDot("/img/global/icons/Circle-Arrow.png")} />
+                </span>
+              )}
               {/* Desktop */}
-              <span className="d-none d-sm-block">{moment(item.election_day_text).format("MMMM Do, YYYY")} - {item.election_description_text}&nbsp;<img
-                src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span>
+              <span className="d-none d-sm-block">
+                {moment(item.election_day_text).format("MMMM Do, YYYY")}
+                {" "}
+                -
+                {" "}
+                {item.election_description_text}&nbsp;
+                <img
+                  src={cordovaDot("/img/global/icons/Circle-Arrow.png")}
+                />
+              </span>
 
               <div className="d-block d-sm-none ballot-election-list__h2">{moment(item.election_day_text).format("MMMM Do, YYYY")}</div>
             </button>
           </dl>
-        </div> :
+        </div>
+      ) :
         null;
     });
     return cleanArray(rendered_list);
   }
 
   renderPriorElectionList (list, current_date) {
-    let rendered_list = list.map((item, index) => {
-      let electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
-      let electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
+    const rendered_list = list.map((item, index) => {
+      const electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
+      const electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
       return electionDateTomorrow > current_date ?
-        null :
-        <div key={index}>
-          <dl className="list-unstyled text-center">
-            <button type="button" className="btn btn-success ballot-election-list__button"
-                    onClick={this.goToDifferentElection.bind(this, item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}>
-              {/* Mobile */}
-              { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ?
-                <span className="d-block d-sm-none">{item.election_description_text}&nbsp;<img
-                  src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span> :
-                <span
-                  className="d-block d-sm-none">{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;
-                  <img src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span>
-              }
-              {/* Desktop */}
-              <span className="d-none d-sm-block">{moment(item.election_day_text).format("MMMM Do, YYYY")} - {item.election_description_text}&nbsp;<img
-                src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span>
+        null : (
+          <div key={index}>
+            <dl className="list-unstyled text-center">
+              <button
+                type="button"
+                className="btn btn-success ballot-election-list__button"
+                onClick={this.goToDifferentElection.bind(this, item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}
+              >
+                {/* Mobile */}
+                { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
+                  <span className="d-block d-sm-none">
+                    {item.election_description_text}&nbsp;
+                    <img
+                      src={cordovaDot("/img/global/icons/Circle-Arrow.png")}
+                    />
+                  </span>
+                ) : (
+                  <span
+                    className="d-block d-sm-none"
+                  >
+                    {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
+                    ...&nbsp;
+                    <img src={cordovaDot("/img/global/icons/Circle-Arrow.png")} />
+                  </span>
+                )}
+                {/* Desktop */}
+                <span className="d-none d-sm-block">
+                  {moment(item.election_day_text).format("MMMM Do, YYYY")}
+                  {" "}
+                  -
+                  {" "}
+                  {item.election_description_text}&nbsp;
+                  <img
+                    src={cordovaDot("/img/global/icons/Circle-Arrow.png")}
+                  />
+                </span>
 
-              <div className="d-block d-sm-none ballot-election-list__h2">{moment(item.election_day_text).format("MMMM Do, YYYY")}</div>
-            </button>
-          </dl>
-        </div>;
+                <div className="d-block d-sm-none ballot-election-list__h2">{moment(item.election_day_text).format("MMMM Do, YYYY")}</div>
+              </button>
+            </dl>
+          </div>
+        );
     });
     return cleanArray(rendered_list);
   }
@@ -234,167 +276,179 @@ export default class BallotElectionList extends Component {
   render () {
     renderLog(__filename);
     if (this.state.loading_new_ballot_items) {
-      return <div>
-        <h1 className="h1">Switching ballot data now...</h1>
-        <br />
-        {LoadingWheel}
-      </div>;
+      return (
+        <div>
+          <h1 className="h1">Switching ballot data now...</h1>
+          <br />
+          {LoadingWheel}
+        </div>
+      );
     }
 
-    let currentDate = moment().format("YYYY-MM-DD");
+    const currentDate = moment().format("YYYY-MM-DD");
 
-    let ballotElectionListUpcomingSorted = this.props.ballotElectionList.concat();
+    const ballotElectionListUpcomingSorted = this.props.ballotElectionList.concat();
     // We want to sort ascending so the next upcoming election is first
     ballotElectionListUpcomingSorted.sort((a, b) => {
-      let election_day_text_A = a.election_day_text.toLowerCase();
-      let election_day_text_B = b.election_day_text.toLowerCase();
-      if (election_day_text_A < election_day_text_B) //sort string ascending
+      const election_day_text_A = a.election_day_text.toLowerCase();
+      const election_day_text_B = b.election_day_text.toLowerCase();
+      if (election_day_text_A < election_day_text_B) { // sort string ascending
         return -1;
-      if (election_day_text_A > election_day_text_B)
-        return 1;
-      return 0; //default return value (no sorting)
+      }
+      if (election_day_text_A > election_day_text_B) return 1;
+      return 0; // default return value (no sorting)
     });
 
-    let ballotElectionListPastSorted = this.props.ballotElectionList.concat();
+    const ballotElectionListPastSorted = this.props.ballotElectionList.concat();
     // We want to sort descending so the most recent election is first
     ballotElectionListPastSorted.sort((a, b) => {
-      let election_day_text_A = a.election_day_text.toLowerCase();
-      let election_day_text_B = b.election_day_text.toLowerCase();
-      if (election_day_text_A < election_day_text_B) //sort string descending
+      const election_day_text_A = a.election_day_text.toLowerCase();
+      const election_day_text_B = b.election_day_text.toLowerCase();
+      if (election_day_text_A < election_day_text_B) { // sort string descending
         return 1;
-      if (election_day_text_A > election_day_text_B)
-        return -1;
-      return 0; //default return value (no sorting)
+      }
+      if (election_day_text_A > election_day_text_B) return -1;
+      return 0; // default return value (no sorting)
     });
 
-    let upcomingElectionList = this.renderUpcomingElectionList(ballotElectionListUpcomingSorted, currentDate);
-    let priorElectionList = this.renderPriorElectionList(ballotElectionListPastSorted, currentDate);
+    const upcomingElectionList = this.renderUpcomingElectionList(ballotElectionListUpcomingSorted, currentDate);
+    const priorElectionList = this.renderPriorElectionList(ballotElectionListPastSorted, currentDate);
 
     if (this.props.showRelevantElections) {
-      let upcomingBallotElectionListInState = this.filterElectionsInState(ballotElectionListUpcomingSorted);
-      let priorBallotElectionListInState = this.filterElectionsInState(ballotElectionListPastSorted);
+      const upcomingBallotElectionListInState = this.filterElectionsInState(ballotElectionListUpcomingSorted);
+      const priorBallotElectionListInState = this.filterElectionsInState(ballotElectionListPastSorted);
 
-      let upcomingElectionListInState = this.renderUpcomingElectionList(upcomingBallotElectionListInState, currentDate);
-      let priorElectionListInState = this.renderPriorElectionList(priorBallotElectionListInState, currentDate);
+      const upcomingElectionListInState = this.renderUpcomingElectionList(upcomingBallotElectionListInState, currentDate);
+      const priorElectionListInState = this.renderPriorElectionList(priorBallotElectionListInState, currentDate);
 
-      let upcomingElectionListOutsideCount = upcomingElectionList.length - upcomingElectionListInState.length;
-      let priorElectionListOutsideCount = priorElectionList.length - priorElectionListInState.length;
+      const upcomingElectionListOutsideCount = upcomingElectionList.length - upcomingElectionListInState.length;
+      const priorElectionListOutsideCount = priorElectionList.length - priorElectionListInState.length;
 
-      return <div className="ballot-election-list__list">
-        <div className="ballot-election-list__upcoming">
-          <h4 className="h4">
+      // December 2018, these nested ternary expression should get fixed at some point
+      return (
+        <div className="ballot-election-list__list">
+          <div className="ballot-election-list__upcoming">
+            <h4 className="h4">
             Upcoming Election
-            { upcomingElectionListInState && upcomingElectionListInState.length !== 1 &&
-              !this.state.show_more_upcoming_elections ||
-              upcomingElectionList && upcomingElectionList.length !== 1 &&
-              this.state.show_more_upcoming_elections ?
-              "s" :
-              null
-            }
-            { this.state.state_name && this.state.state_name.length &&
-              !this.state.show_more_upcoming_elections ?
-              " in " + this.state.state_name :
-              null
-            }
-          </h4>
-          { this.state.show_more_upcoming_elections ?
-            upcomingElectionList && upcomingElectionList.length ?
-            upcomingElectionList :
-            "There are no upcoming elections at this time." :
-            upcomingElectionListInState && upcomingElectionListInState.length ?
-            upcomingElectionListInState :
-            "There are no upcoming elections at this time."
-          }
-          { upcomingElectionListOutsideCount ?
-            this.state.show_more_upcoming_elections ?
-            <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
-              { this.state.state_name && this.state.state_name.length ?
-                "Only show elections in " + this.state.state_name :
-                "Hide state elections"
+              { (upcomingElectionListInState && upcomingElectionListInState.length !== 1 && !this.state.show_more_upcoming_elections) ||
+                (upcomingElectionList && upcomingElectionList.length !== 1 && this.state.show_more_upcoming_elections) ? "s" : null
               }
-            </a> :
-            <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
-              Show all states - { upcomingElectionListOutsideCount } more election{ upcomingElectionListOutsideCount !== 1 ? "s" : null }
-            </a> :
-            null
+              { this.state.state_name && this.state.state_name.length && !this.state.show_more_upcoming_elections ?
+                ` in ${this.state.state_name}` :
+                null
+              }
+            </h4>
+            { this.state.show_more_upcoming_elections ?    // eslint-disable-line no-nested-ternary
+              upcomingElectionList && upcomingElectionList.length ?
+                upcomingElectionList :
+                "There are no upcoming elections at this time." :
+              upcomingElectionListInState && upcomingElectionListInState.length ?
+                upcomingElectionListInState :
+                "There are no upcoming elections at this time."
+            }
+            { upcomingElectionListOutsideCount ?          // eslint-disable-line no-nested-ternary
+              this.state.show_more_upcoming_elections ? (
+                <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
+                  { this.state.state_name && this.state.state_name.length ?
+                    `Only show elections in ${this.state.state_name}` :
+                    "Hide state elections"
+              }
+                </a>
+              ) : (
+                <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
+                  Show all states -
+                  {" "}
+                  { upcomingElectionListOutsideCount }
+                  {" "}
+                  more election
+                  { upcomingElectionListOutsideCount !== 1 ? "s" : null }
+                </a>
+              ) :
+              null
           }
-        </div>
+          </div>
 
-        { this.state.show_prior_elections_list ?
+          { this.state.show_prior_elections_list ? (
+            <div className="ballot-election-list__prior">
+              { priorElectionListInState && priorElectionListInState.length ? (
+                <h4 className="h4">
+                Prior Election
+                  { (priorElectionListInState && priorElectionListInState.length !== 1 && !this.state.show_more_prior_elections) ||
+                    (priorElectionList && priorElectionList.length !== 1 && this.state.show_more_prior_elections ?
+                      "s" :
+                      null
+                    )
+                  }
+                  { this.state.state_name && this.state.state_name.length && !this.state.show_more_prior_elections ?
+                    ` in ${this.state.state_name}` :
+                    null
+                  }
+                </h4>
+              ) : null
+              }
+              { this.state.show_more_prior_elections ?    // eslint-disable-line no-nested-ternary
+                priorElectionList && priorElectionList.length ?
+                  priorElectionList :
+                  null :
+                priorElectionListInState && priorElectionListInState.length ?
+                  priorElectionListInState :
+                  null
+              }
+              { priorElectionListOutsideCount ?          // eslint-disable-line no-nested-ternary
+                this.state.show_more_prior_elections ? (
+                  <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMorePriorElections.bind(this)}>
+                    { this.state.state_name && this.state.state_name.length ?
+                      `Only show elections in ${this.state.state_name}` :
+                      "Hide state elections"
+                    }
+                  </a>
+                ) : (
+                  <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMorePriorElections.bind(this)}>
+                    Show all states -
+                    {" "}
+                    { priorElectionListOutsideCount }
+                    {" "}
+                    more election
+                    { priorElectionListOutsideCount !== 1 ? "s" : null }
+                  </a>
+                ) : null
+              }
+            </div>
+          ) : (
+            <a className="ballot-election-list__toggle-link" onClick={this.toggleShowPriorElectionsList.bind(this)}>
+              Show prior elections
+            </a>
+          )}
+        </div>
+      );
+    } else {
+      return (
+        <div className="ballot-election-list__list">
+          <div className="ballot-election-list__upcoming">
+            { upcomingElectionList && upcomingElectionList.length ? (
+              <h4 className="h4">
+                Upcoming Election
+                { upcomingElectionList && upcomingElectionList.length !== 1 ? "s" : null }
+              </h4>
+            ) :
+              null
+            }
+            { upcomingElectionList && upcomingElectionList.length ? upcomingElectionList : null }
+          </div>
+
           <div className="ballot-election-list__prior">
-            { priorElectionListInState && priorElectionListInState.length ?
+            { priorElectionList && priorElectionList.length ? (
               <h4 className="h4">
                 Prior Election
-                { priorElectionListInState && priorElectionListInState.length !== 1 && !this.state.show_more_prior_elections ||
-                priorElectionList && priorElectionList.length !== 1 &&
-                this.state.show_more_prior_elections ?
-                  "s" :
-                  null
-                }
-                { this.state.state_name && this.state.state_name.length && !this.state.show_more_prior_elections ?
-                " in " + this.state.state_name :
-                  null
-                }
-              </h4> :
+                { priorElectionList && priorElectionList.length !== 1 ? "s" : null }
+              </h4>
+            ) :
               null
             }
-            { this.state.show_more_prior_elections ?
-              priorElectionList && priorElectionList.length ?
-              priorElectionList :
-              null :
-              priorElectionListInState && priorElectionListInState.length ?
-              priorElectionListInState :
-              null
-            }
-            { priorElectionListOutsideCount ?
-              this.state.show_more_prior_elections ?
-              <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMorePriorElections.bind(this)}>
-                { this.state.state_name && this.state.state_name.length ?
-                  "Only show elections in " + this.state.state_name :
-                  "Hide state elections"
-                }
-              </a> :
-              <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMorePriorElections.bind(this)}>
-                Show all states - { priorElectionListOutsideCount } more election{ priorElectionListOutsideCount !== 1 ? "s" : null }
-              </a> :
-              null
-            }
-          </div> :
-          <a className="ballot-election-list__toggle-link" onClick={this.toggleShowPriorElectionsList.bind(this)}>
-            Show prior elections
-          </a>
-        }
-      </div>;
-    } else {
-      return <div className="ballot-election-list__list">
-        <div className="ballot-election-list__upcoming">
-          { upcomingElectionList && upcomingElectionList.length ?
-            <h4 className="h4">
-              Upcoming Election
-              { upcomingElectionList && upcomingElectionList.length !== 1 ? "s" : null }
-            </h4> :
-            null
-          }
-          { upcomingElectionList && upcomingElectionList.length ?
-            upcomingElectionList :
-            null
-          }
+            { priorElectionList && priorElectionList.length ? priorElectionList : null }
+          </div>
         </div>
-
-        <div className="ballot-election-list__prior">
-          { priorElectionList && priorElectionList.length ?
-            <h4 className="h4">
-              Prior Election
-              { priorElectionList && priorElectionList.length !== 1 ? "s" : null }
-            </h4> :
-            null
-          }
-          { priorElectionList && priorElectionList.length ?
-            priorElectionList :
-            null
-          }
-        </div>
-      </div>;
+      );
     }
   }
 }

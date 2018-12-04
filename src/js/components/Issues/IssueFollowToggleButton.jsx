@@ -31,8 +31,8 @@ export default class IssueFollowToggleButton extends Component {
   }
 
   componentDidMount () {
-    let is_following = IssueStore.isVoterFollowingThisIssue(this.props.issue_we_vote_id);
-    this.setState({is_following: is_following});
+    const is_following = IssueStore.isVoterFollowingThisIssue(this.props.issue_we_vote_id);
+    this.setState({ is_following });
   }
 
   onIssueFollow () {
@@ -47,14 +47,13 @@ export default class IssueFollowToggleButton extends Component {
       showToastSuccess(`Now following ${this.props.issue_name}!`);
     }
 
-    let { currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId } = this.props;
+    const { currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId } = this.props;
     if (currentBallotIdInUrl !== ballotItemWeVoteId) {
-      historyPush(urlWithoutHash + "#" + this.props.ballotItemWeVoteId);
+      historyPush(`${urlWithoutHash}#${this.props.ballotItemWeVoteId}`);
     }
   }
 
   onIssueStopFollowing () {
-
     this.setState({ is_following: false });
     IssueActions.issueStopFollowing(this.props.issue_we_vote_id, VoterStore.election_id());
     // console.log("IssueFollowToggleButton, this.props.ballotItemWeVoteId:", this.props.ballotItemWeVoteId);
@@ -65,9 +64,9 @@ export default class IssueFollowToggleButton extends Component {
       this.props.on_issue_stop_following(this.props.issue_we_vote_id);
     }
     showToastError(`You've stopped following ${this.props.issue_name}.`);
-    let { currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId } = this.props;
+    const { currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId } = this.props;
     if (currentBallotIdInUrl !== ballotItemWeVoteId) {
-      historyPush(urlWithoutHash + "#" + this.props.ballotItemWeVoteId);
+      historyPush(`${urlWithoutHash}#${this.props.ballotItemWeVoteId}`);
     }
   }
 
@@ -75,16 +74,18 @@ export default class IssueFollowToggleButton extends Component {
     renderLog(__filename);
     if (!this.state) { return <div />; }
 
-    return this.state.is_following ?
+    return this.state.is_following ? (
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
         <Button variant="warning" size="small" onClick={this.onIssueStopFollowing}>
           <span>Following</span>
         </Button>
-      </div> :
+      </div>
+    ) : (
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
         <Button variant="success" size="small" onClick={this.onIssueFollow}>
           <span>Follow</span>
         </Button>
-      </div>;
+      </div>
+    );
   }
 }

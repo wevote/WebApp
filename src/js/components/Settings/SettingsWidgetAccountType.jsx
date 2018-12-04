@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../../utils/cordovaUtils";
-import LoadingWheel from "../../components/LoadingWheel";
+import LoadingWheel from "../LoadingWheel";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import VoterStore from "../../stores/VoterStore";
@@ -60,10 +60,10 @@ export default class SettingsWidgetAccountType extends Component {
   }
 
   onOrganizationStoreChange () {
-    let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
+    const organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
     if (organization && organization.organization_we_vote_id) {
       this.setState({
-        organization: organization,
+        organization,
         organizationType: organization.organization_type,
       });
     }
@@ -71,19 +71,19 @@ export default class SettingsWidgetAccountType extends Component {
 
   onVoterStoreChange () {
     if (VoterStore.isVoterFound()) {
-      let voter = VoterStore.getVoter();
+      const voter = VoterStore.getVoter();
       this.setState({
-        voter: voter,
+        voter,
       });
       if (voter && voter.linked_organization_we_vote_id) {
         this.setState({
           linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id,
         });
         if (voter.linked_organization_we_vote_id !== this.state.linkedOrganizationWeVoteId) {
-          let organization = OrganizationStore.getOrganizationByWeVoteId(voter.linked_organization_we_vote_id);
+          const organization = OrganizationStore.getOrganizationByWeVoteId(voter.linked_organization_we_vote_id);
           if (organization && organization.organization_we_vote_id) {
             this.setState({
-              organization: organization,
+              organization,
               organizationType: organization.organization_type,
             });
           }
@@ -114,7 +114,7 @@ export default class SettingsWidgetAccountType extends Component {
         return "Company";
       case "U":
         return "Not specified (Individual vs. Organization)";
-      default :
+      default:
         return "";
     }
   }
@@ -147,22 +147,25 @@ export default class SettingsWidgetAccountType extends Component {
   }
 
   renderOrganizationType (organizationType, organizationTypeCurrentState, organizationTypeLabel, organizationTypeId) {
-    let organizationTypeTrimmed = organizationType ? organizationType.trim() : "";
-    let organizationTypeCurrentStateTrimmed = organizationTypeCurrentState ? organizationTypeCurrentState.trim() : "";
-    let organizationTypeChecked = organizationTypeCurrentStateTrimmed === organizationTypeTrimmed;
-    return <div className="form-check create-voter-guide__radio">
-            <input className="form-check-input"
-                   checked={organizationTypeChecked}
-                   id={organizationTypeId}
-                   name="organizationType"
-                   onChange={this.updateOrganizationType}
-                   type="radio"
-                   value={organizationType}
-            />
-            <label className="form-check-label create-voter-guide__radio-label" htmlFor={organizationTypeId} >
-              {organizationTypeLabel}
-            </label>
-          </div>;
+    const organizationTypeTrimmed = organizationType ? organizationType.trim() : "";
+    const organizationTypeCurrentStateTrimmed = organizationTypeCurrentState ? organizationTypeCurrentState.trim() : "";
+    const organizationTypeChecked = organizationTypeCurrentStateTrimmed === organizationTypeTrimmed;
+    return (
+      <div className="form-check create-voter-guide__radio">
+        <input
+          className="form-check-input"
+          checked={organizationTypeChecked}
+          id={organizationTypeId}
+          name="organizationType"
+          onChange={this.updateOrganizationType}
+          type="radio"
+          value={organizationType}
+        />
+        <label className="form-check-label create-voter-guide__radio-label" htmlFor={organizationTypeId}>
+          {organizationTypeLabel}
+        </label>
+      </div>
+    );
   }
 
   render () {
@@ -172,34 +175,52 @@ export default class SettingsWidgetAccountType extends Component {
       return LoadingWheel;
     }
 
-    return <div className="">
-      <div>
-        <span className="pull-right u-gray-mid">{this.state.organizationTypeSavedStatus}</span>
-        <h3 className="h3">Type of Profile</h3>
-        { this.state.editFormOpen ?
-          <span>
-            <div className="create-voter-guide__organization-container">
-              <div className="">
-                {this.state.showEditToggleOption ? <span className="pull-right">(<a className="" onClick={() => this.toggleEditForm()}>close</a>)</span> : null}
+    return (
+      <div className="">
+        <div>
+          <span className="pull-right u-gray-mid">{this.state.organizationTypeSavedStatus}</span>
+          <h3 className="h3">Type of Profile</h3>
+          { this.state.editFormOpen ? (
+            <span>
+              <div className="create-voter-guide__organization-container">
+                <div className="">
+                  {this.state.showEditToggleOption ? (
+                    <span className="pull-right">
+                      (
+                      <a className="" onClick={() => this.toggleEditForm()}>close</a>
+                      )
+                    </span>
+                  ) : null}
+                </div>
+                {this.renderOrganizationType("I", this.state.organizationType, "Individual", "organizationTypeIdIndividual")}
+                {this.renderOrganizationType("C3", this.state.organizationType, "Nonprofit 501(c)(3)", "organizationTypeIdC3")}
+                {this.renderOrganizationType("C4", this.state.organizationType, "Nonprofit 501(c)(4)", "organizationTypeIdC4")}
+                {this.renderOrganizationType("P", this.state.organizationType, "Political Action Committee", "organizationTypeIdPAC")}
+                {this.renderOrganizationType("NP", this.state.organizationType, "Other Nonprofit", "organizationTypeIdNonprofit")}
+                {this.renderOrganizationType("G", this.state.organizationType, "Other Group or Club (10+ people)", "organizationTypeIdGroup")}
+                {this.renderOrganizationType("PF", this.state.organizationType, "Politician", "organizationTypeIdPolitician")}
+                {this.renderOrganizationType("NW", this.state.organizationType, "News Organization", "organizationTypeIdNews")}
+                {this.renderOrganizationType("C", this.state.organizationType, "Company", "organizationTypeIdCompany")}
+                {this.renderOrganizationType("U", this.state.organizationType, "Other", "organizationTypeIdUnknown")}
               </div>
-              {this.renderOrganizationType("I", this.state.organizationType, "Individual", "organizationTypeIdIndividual")}
-              {this.renderOrganizationType("C3", this.state.organizationType, "Nonprofit 501(c)(3)", "organizationTypeIdC3")}
-              {this.renderOrganizationType("C4", this.state.organizationType, "Nonprofit 501(c)(4)", "organizationTypeIdC4")}
-              {this.renderOrganizationType("P", this.state.organizationType, "Political Action Committee", "organizationTypeIdPAC")}
-              {this.renderOrganizationType("NP", this.state.organizationType, "Other Nonprofit", "organizationTypeIdNonprofit")}
-              {this.renderOrganizationType("G", this.state.organizationType, "Other Group or Club (10+ people)", "organizationTypeIdGroup")}
-              {this.renderOrganizationType("PF", this.state.organizationType, "Politician", "organizationTypeIdPolitician")}
-              {this.renderOrganizationType("NW", this.state.organizationType, "News Organization", "organizationTypeIdNews")}
-              {this.renderOrganizationType("C", this.state.organizationType, "Company", "organizationTypeIdCompany")}
-              {this.renderOrganizationType("U", this.state.organizationType, "Other", "organizationTypeIdUnknown")}
+            </span>
+          ) : (
+            <div className="">
+              <span className="pull-right u-gray-mid">{this.state.organizationTypeSavedStatus}</span>
+              <span className="u-f4 u-bold">{this.displayOrganizationType(this.state.organizationType)}</span>
+              {this.state.showEditToggleOption ? (
+                <span className="">
+                  {" "}
+(
+                  <a className="" onClick={() => this.toggleEditForm()}>edit</a>
+)
+                </span>
+              ) : null
+              }
             </div>
-          </span> :
-          <div className="">
-            <span className="pull-right u-gray-mid">{this.state.organizationTypeSavedStatus}</span>
-            <span className="u-f4 u-bold">{this.displayOrganizationType(this.state.organizationType)}</span>
-            {this.state.showEditToggleOption ? <span className=""> (<a className="" onClick={() => this.toggleEditForm()}>edit</a>)</span> : null}
-          </div> }
+          )}
+        </div>
       </div>
-    </div>;
+    );
   }
 }

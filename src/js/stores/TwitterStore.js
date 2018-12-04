@@ -48,19 +48,19 @@ class TwitterStore extends ReduceStore {
     };
   }
 
-  get kindOfOwner (){
+  get kindOfOwner () {
     return this.getState().kind_of_owner;
   }
 
-  get ownerWeVoteId (){
+  get ownerWeVoteId () {
     return this.getState().owner_we_vote_id;
   }
 
-  get twitterHandle (){
+  get twitterHandle () {
     return this.getState().twitter_handle;
   }
 
-  get status (){
+  get status () {
     return this.getState().status;
   }
 
@@ -80,15 +80,9 @@ class TwitterStore extends ReduceStore {
 
   reduce (state, action) {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
-    // if (!action.res || !action.res.success) {
-    //   console.log("exited in twitter store: " + action.type + " : " + action.res.status);
-    //   if(action.type === "twitterSignInRetrieve" )
-    //     console.log("BAD!  Í exited in twitter store: " + action.type + " : " + action.res.status);
-    //   return state;
-    // }
+    if (!action.res || !action.res.success) return state;
 
     switch (action.type) {
-
       case "twitterIdentityRetrieve":
         if (action.res.kind_of_owner === "ORGANIZATION") {
           OrganizationActions.organizationRetrieve(action.res.owner_we_vote_id);
@@ -107,7 +101,7 @@ class TwitterStore extends ReduceStore {
           twitter_name: action.res.twitter_name,
           twitter_photo_url: action.res.twitter_photo_url,
           twitter_user_website: action.res.twitter_user_website,
-          status: action.res.status
+          status: action.res.status,
         };
 
       case "twitterNativeSignInSave":
@@ -116,7 +110,7 @@ class TwitterStore extends ReduceStore {
         }
 
         return {
-          //...state,
+          // ...state,
           voter_device_id: action.res.voter_device_id,
           twitter_handle: action.res.twitter_handle,
           twitter_handle_found: action.res.twitter_handle_found,
@@ -153,7 +147,7 @@ class TwitterStore extends ReduceStore {
 
       default:
         return {
-          ...state
+          ...state,
         };
     }
   }

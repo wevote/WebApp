@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { findDOMNode } from "react-dom";
 import $ from "jquery";
-import { cordovaDot } from "../../utils/cordovaUtils";
 import Icon from "react-svg-icons";
+import { cordovaDot } from "../../utils/cordovaUtils";
 import IssueStore from "../../stores/IssueStore";
 import { renderLog } from "../../utils/logging";
 import SupportStore from "../../stores/SupportStore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
+
+// December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
+/* eslint react/no-find-dom-node: 1 */
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
 export default class IssuesByBallotItemDisplayList extends Component {
@@ -45,10 +48,10 @@ export default class IssuesByBallotItemDisplayList extends Component {
 
   componentDidMount () {
     this.issueStoreListener = IssueStore.addListener(
-      this.onIssueStoreChange.bind(this)
+      this.onIssueStoreChange.bind(this),
     );
     this.voterGuideStoreListener = VoterGuideStore.addListener(
-      this.onVoterGuideStoreChange.bind(this)
+      this.onVoterGuideStoreChange.bind(this),
     );
     this.onVoterGuideStoreChange();
     this.setScrollState();
@@ -56,15 +59,15 @@ export default class IssuesByBallotItemDisplayList extends Component {
       ballotItemWeVoteId: this.props.ballotItemWeVoteId,
       ballotItemDisplayName: this.props.ballotItemDisplayName ? this.props.ballotItemDisplayName : "this candidate",
       issuesUnderThisBallotItem: IssueStore.getIssuesUnderThisBallotItem(
-        this.props.ballotItemWeVoteId
+        this.props.ballotItemWeVoteId,
       ),
       issuesUnderThisBallotItemVoterIsFollowing: IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(
-        this.props.ballotItemWeVoteId
+        this.props.ballotItemWeVoteId,
       ),
       issuesUnderThisBallotItemVoterIsNotFollowing: IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(
-        this.props.ballotItemWeVoteId
+        this.props.ballotItemWeVoteId,
       ),
-      issuesVoterIsFollowing: IssueStore.getIssuesVoterIsFollowing()
+      issuesVoterIsFollowing: IssueStore.getIssuesVoterIsFollowing(),
     });
   }
 
@@ -74,15 +77,15 @@ export default class IssuesByBallotItemDisplayList extends Component {
       ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
       ballotItemDisplayName: nextProps.ballotItemDisplayName ? nextProps.ballotItemDisplayName : "this candidate",
       issuesUnderThisBallotItem: IssueStore.getIssuesUnderThisBallotItem(
-        nextProps.ballotItemWeVoteId
+        nextProps.ballotItemWeVoteId,
       ),
       issuesUnderThisBallotItemVoterIsFollowing: IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(
-        nextProps.ballotItemWeVoteId
+        nextProps.ballotItemWeVoteId,
       ),
       issuesUnderThisBallotItemVoterIsNotFollowing: IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(
-        nextProps.ballotItemWeVoteId
+        nextProps.ballotItemWeVoteId,
       ),
-      issuesVoterIsFollowing: IssueStore.getIssuesVoterIsFollowing()
+      issuesVoterIsFollowing: IssueStore.getIssuesVoterIsFollowing(),
     });
   }
 
@@ -99,15 +102,15 @@ export default class IssuesByBallotItemDisplayList extends Component {
     this.setScrollState();
     this.setState({
       issuesUnderThisBallotItem: IssueStore.getIssuesUnderThisBallotItem(
-        this.state.ballotItemWeVoteId
+        this.state.ballotItemWeVoteId,
       ),
       issuesUnderThisBallotItemVoterIsFollowing: IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(
-        this.state.ballotItemWeVoteId
+        this.state.ballotItemWeVoteId,
       ),
       issuesUnderThisBallotItemVoterIsNotFollowing: IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(
-        this.state.ballotItemWeVoteId
+        this.state.ballotItemWeVoteId,
       ),
-      issuesVoterIsFollowing: IssueStore.getIssuesVoterIsFollowing()
+      issuesVoterIsFollowing: IssueStore.getIssuesVoterIsFollowing(),
     });
   }
 
@@ -117,18 +120,19 @@ export default class IssuesByBallotItemDisplayList extends Component {
   }
 
   scrollLeft (visibleTag) {
+    // todo: design out findDOMNode see https://github.com/yannickcr/eslint-plugin-react/issues/678
     const element = findDOMNode(
-      this.refs[`${this.state.ballotItemWeVoteId}-issue-list-${visibleTag}`]
+      this.refs[`${this.state.ballotItemWeVoteId}-issue-list-${visibleTag}`],
     );
-    let position = $(element).scrollLeft();
-    let width = Math.round($(element).width());
+    const position = $(element).scrollLeft();
+    const width = Math.round($(element).width());
     $(element).animate(
       {
         scrollLeft: position - width,
       },
       350,
       () => {
-        let newPosition = $(element).scrollLeft();
+        const newPosition = $(element).scrollLeft();
         if (visibleTag === "desktop") {
           this.setState({
             canScrollLeftDesktop: newPosition > 0,
@@ -140,23 +144,23 @@ export default class IssuesByBallotItemDisplayList extends Component {
             canScrollRightMobile: true,
           });
         }
-      }
+      },
     );
   }
 
   scrollRight (visibleTag) {
     const element = findDOMNode(
-      this.refs[`${this.state.ballotItemWeVoteId}-issue-list-${visibleTag}`]
+      this.refs[`${this.state.ballotItemWeVoteId}-issue-list-${visibleTag}`],
     );
-    let position = $(element).scrollLeft();
-    let width = Math.round($(element).width());
+    const position = $(element).scrollLeft();
+    const width = Math.round($(element).width());
     $(element).animate(
       {
         scrollLeft: position + width,
       },
       350,
       () => {
-        let newPosition = $(element).scrollLeft();
+        const newPosition = $(element).scrollLeft();
         if (visibleTag === "desktop") {
           this.setState({
             canScrollLeftDesktop: newPosition > 0,
@@ -168,26 +172,26 @@ export default class IssuesByBallotItemDisplayList extends Component {
             canScrollRightMobile: position + width === newPosition,
           });
         }
-      }
+      },
     );
   }
 
   setScrollState () {
     const desktopList = findDOMNode(
-      this.refs[`${this.state.ballotItemWeVoteId}-issue-list-desktop`]
+      this.refs[`${this.state.ballotItemWeVoteId}-issue-list-desktop`],
     );
     const mobileList = findDOMNode(
-      this.refs[`${this.state.ballotItemWeVoteId}-issue-list-mobile`]
+      this.refs[`${this.state.ballotItemWeVoteId}-issue-list-mobile`],
     );
-    let desktopListVisibleWidth = $(desktopList).width();
-    let desktopListWidth = $(desktopList)
+    const desktopListVisibleWidth = $(desktopList).width();
+    const desktopListWidth = $(desktopList)
       .children()
       .eq(0)
       .children()
       .eq(0)
       .width();
-    let mobileListVisibleWidth = $(mobileList).width();
-    let mobileListWidth = $(mobileList)
+    const mobileListVisibleWidth = $(mobileList).width();
+    const mobileListWidth = $(mobileList)
       .children()
       .eq(0)
       .children()
@@ -201,10 +205,10 @@ export default class IssuesByBallotItemDisplayList extends Component {
 
   render () {
     renderLog(__filename);
-    let issuesUnderThisBallotItemVoterIsFollowingFound =
+    const issuesUnderThisBallotItemVoterIsFollowingFound =
       this.state.issuesUnderThisBallotItemVoterIsFollowing &&
       this.state.issuesUnderThisBallotItemVoterIsFollowing.length;
-    let issuesUnderThisBallotItemVoterIsNotFollowingFound =
+    const issuesUnderThisBallotItemVoterIsNotFollowingFound =
       this.state.issuesUnderThisBallotItemVoterIsNotFollowing &&
       this.state.issuesUnderThisBallotItemVoterIsNotFollowing.length;
 
@@ -221,7 +225,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
 
     let localCounter = 0;
     const issuesVoterIsFollowingHtml = this.state.issuesUnderThisBallotItemVoterIsFollowing.map(
-      oneIssue => {
+      (oneIssue) => {
         if (!oneIssue) {
           return null;
         }
@@ -232,14 +236,16 @@ export default class IssuesByBallotItemDisplayList extends Component {
               className="u-push--sm issue-icon-list__issue-block"
               key={`issue-icon-${oneIssue.issue_we_vote_id}`}
             >
-              {oneIssue.issue_icon_local_path ?
+              {oneIssue.issue_icon_local_path ? (
                 <Icon
-                  name={"issues/" + oneIssue.issue_icon_local_path}
+                  name={`issues/${oneIssue.issue_icon_local_path}`}
                   width={24}
                   height={24}
-                  className={"issue-icon-list__issue-icon"}
-                  color={"#555"}
-                /> : null}
+                  className="issue-icon-list__issue-icon"
+                  color="#555"
+                />
+              ) : null
+              }
               <div className="u-margin-left--xxs issue-icon-list__issue-label-name">
                 {oneIssue.issue_name}
               </div>
@@ -248,11 +254,11 @@ export default class IssuesByBallotItemDisplayList extends Component {
         } else {
           return null;
         }
-      }
+      },
     );
     localCounter = 0;
     const issuesVoterIsNotFollowingHtml = this.state.issuesUnderThisBallotItemVoterIsNotFollowing.map(
-      oneIssue => {
+      (oneIssue) => {
         if (!oneIssue) {
           return null;
         }
@@ -263,14 +269,16 @@ export default class IssuesByBallotItemDisplayList extends Component {
               className="u-push--sm issue-icon-list__issue-block"
               key={`issue-icon-${oneIssue.issue_we_vote_id}`}
             >
-              {oneIssue.issue_icon_local_path ?
+              {oneIssue.issue_icon_local_path ? (
                 <Icon
-                  name={"issues/" + oneIssue.issue_icon_local_path}
+                  name={`issues/${oneIssue.issue_icon_local_path}`}
                   width={24}
                   height={24}
-                  className={"issue-icon-list__issue-icon"}
-                  color={"#999"}
-                /> : null}
+                  className="issue-icon-list__issue-icon"
+                  color="#999"
+                />
+              ) : null
+              }
               <div className="u-margin-left--xxs issue-icon-list__issue-label-name">
                 {oneIssue.issue_name}
               </div>
@@ -279,11 +287,11 @@ export default class IssuesByBallotItemDisplayList extends Component {
         } else {
           return null;
         }
-      }
+      },
     );
 
-    let ballotItemSupportProps = SupportStore.get(
-      this.state.ballotItemWeVoteId
+    const ballotItemSupportProps = SupportStore.get(
+      this.state.ballotItemWeVoteId,
     );
     let networkSupportCount = 0;
     let networkOpposeCount = 0;
@@ -291,25 +299,25 @@ export default class IssuesByBallotItemDisplayList extends Component {
       networkSupportCount = ballotItemSupportProps.support_count ? parseInt(ballotItemSupportProps.support_count || 0) : 0;
       networkOpposeCount = ballotItemSupportProps.oppose_count ? parseInt(ballotItemSupportProps.oppose_count || 0) : 0;
     }
-    let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(
-      this.state.ballotItemWeVoteId
+    const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(
+      this.state.ballotItemWeVoteId,
     );
-    let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(
-      this.state.ballotItemWeVoteId
+    const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(
+      this.state.ballotItemWeVoteId,
     );
-    let totalSupportCount =
+    const totalSupportCount =
       networkSupportCount + organizationsToFollowSupport.length;
-    let totalOpposeCount =
+    const totalOpposeCount =
       networkOpposeCount + organizationsToFollowOppose.length;
-    let totalEndorsementCount = totalSupportCount + totalOpposeCount;
+    const totalEndorsementCount = totalSupportCount + totalOpposeCount;
 
-    const endorsementsLabel =
+    const endorsementsLabel = (
       <div className="issues-list-stacked__support-label u-no-break">
         {totalSupportCount ? (
           <span className="u-no-break issue-icon-list__endorsements-label">
             <img
               src={cordovaDot(
-                "/img/global/svg-icons/issues/thumbs-up-icon.svg"
+                "/img/global/svg-icons/issues/thumbs-up-icon.svg",
               )}
               className="issue-icon-list__endorsement-icon"
               width="20"
@@ -322,13 +330,16 @@ export default class IssuesByBallotItemDisplayList extends Component {
           <span className="u-no-break issue-icon-list__endorsements-label">
             <img
               src={cordovaDot(
-                "/img/global/svg-icons/issues/thumbs-down-icon.svg"
+                "/img/global/svg-icons/issues/thumbs-down-icon.svg",
               )}
               className="issue-icon-list__endorsement-icon"
               width="20"
               height="20"
             />
-            <span className="issue-icon-list__endorsement-count">-{totalOpposeCount}</span>
+            <span className="issue-icon-list__endorsement-count">
+              -
+              {totalOpposeCount}
+            </span>
           </span>
         ) : null}
         {totalSupportCount || totalOpposeCount ? (
@@ -336,40 +347,43 @@ export default class IssuesByBallotItemDisplayList extends Component {
             Endorsement
             {totalEndorsementCount > 1 ? "s" : ""}
           </span>
-        ) : null}
+        ) : null
+        }
       </div>
-    ;
+    );
 
     return (
       <div className="issues-list-stacked__support-list u-flex u-justify-between u-items-center">
         {/* Click to scroll left through list Desktop */}
         {/*
         */}
-        {this.state.canScrollDesktop && this.state.canScrollLeftDesktop ?
+        {this.state.canScrollDesktop && this.state.canScrollLeftDesktop ? (
           <i
             className="fa fa-2x fa-chevron-left issues-list-stacked__support-list__scroll-icon u-cursor--pointer d-none d-sm-block d-print-none"
             aria-hidden="true"
             onClick={this.scrollLeft.bind(this, "desktop")}
-          /> :
+          />
+        ) : (
           <i
             className="fa fa-2x fa-chevron-left network-positions-stacked__support-list__scroll-icon--disabled d-none d-sm-block d-print-none"
             aria-hidden="true"
           />
-        }
+        )}
         {/* Click to scroll left through list Mobile */}
         {/*
         */}
-        {this.state.canScrollMobile && this.state.canScrollLeftMobile ?
+        {this.state.canScrollMobile && this.state.canScrollLeftMobile ? (
           <i
             className="fa fa-2x fa-chevron-left issues-list-stacked__support-list__scroll-icon u-cursor--pointer d-block d-sm-none d-print-none"
             aria-hidden="true"
             onClick={this.scrollLeft.bind(this, "mobile")}
-          /> :
+          />
+        ) : (
           <i
             className="fa fa-2x fa-chevron-left network-positions-stacked__support-list__scroll-icon--disabled d-block d-sm-none d-print-none"
             aria-hidden="true"
           />
-        }
+        )}
         <div className="issues-list-stacked__support-list__container-wrap">
           {/* Show a break-down of the current positions in your network */}
           <div
@@ -377,28 +391,28 @@ export default class IssuesByBallotItemDisplayList extends Component {
             className="issues-list-stacked__support-list__container u-flex u-items-start u-inset__v--xs d-none d-sm-flex"
           >
             {this.props.endorsementsLabelHidden ? null : endorsementsLabel }
-            {this.props.issuesListHidden ? null :
+            {this.props.issuesListHidden ? null : (
               <ul className="issues-list-stacked__support-list__items">
                 {/* Issues the voter is already following */}
                 {issuesVoterIsFollowingHtml}
                 {/* Issues the voter is not following yet */}
                 {issuesVoterIsNotFollowingHtml}
               </ul>
-            }
+            )}
           </div>
           <div
             ref={`${this.state.ballotItemWeVoteId}-issue-list-mobile`}
             className="issues-list-stacked__support-list__container u-flex u-items-start u-inset__v--xs d-flex d-sm-none"
           >
             {this.props.endorsementsLabelHidden ? null : endorsementsLabel }
-            {this.props.issuesListHidden ? null :
+            {this.props.issuesListHidden ? null : (
               <ul className="issues-list-stacked__support-list__items">
                 {/* Issues the voter is already following */}
                 {issuesVoterIsFollowingHtml}
                 {/* Issues the voter is not following yet */}
                 {issuesVoterIsNotFollowingHtml}
               </ul>
-            }
+            )}
           </div>
         </div>
         {/* Click to scroll right through list Desktop */}

@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import BallotActions from "../../actions/BallotActions";
-import BallotItemSearchResult from "../../components/Ballot/BallotItemSearchResult";
-import BallotStore from "../../stores/BallotStore";
 import Icon from "react-svg-icons";
+import BallotActions from "../../actions/BallotActions";
+import BallotItemSearchResult from "./BallotItemSearchResult";
+import BallotStore from "../../stores/BallotStore";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
-import SearchBar from "../../components/Search/SearchBar";
+import SearchBar from "../Search/SearchBar";
 
 
 export default class BallotSearchResults extends Component {
@@ -45,21 +45,21 @@ export default class BallotSearchResults extends Component {
     });
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     // console.log("BallotSearchResults componentWillUnmount");
     this.ballotStoreListener.remove();
     // this.voterGuideStoreListener.remove();
     // Cannot call in componentWillUnmount: BallotActions.ballotItemOptionsClear();
   }
 
-  onBallotStoreChange (){
+  onBallotStoreChange () {
     // console.log("BallotSearchResults onBallotStoreChange, BallotStore.ballot_properties: ", BallotStore.ballot_properties);
     this.setState({
-      ballotItemSearchResultsList: BallotStore.ballotItemSearchResultsList()
+      ballotItemSearchResultsList: BallotStore.ballotItemSearchResultsList(),
     });
   }
 
-  onVoterGuideStoreChange (){
+  onVoterGuideStoreChange () {
     // console.log("BallotSearchResults onVoterGuideStoreChange");
   }
 
@@ -74,7 +74,7 @@ export default class BallotSearchResults extends Component {
     }
     this.setState({
       clearSearchTextNow: false,
-      searchString: searchString,
+      searchString,
     });
   }
 
@@ -97,46 +97,80 @@ export default class BallotSearchResults extends Component {
     }
 
     const icon_size = 18;
-    let icon_color = "#999";
+    const icon_color = "#999";
+    const noSearchResultsPossibility = this.state.searchString && this.state.searchString !== "" ?
+      <div>No search results found.</div> : null;
 
-    let actionDescription = <div className="u-stack--md">
-        Click <span className="u-no-break"><span className="btn__icon"><Icon name="thumbs-up-icon"
-                                                                             width={icon_size} height={icon_size} color={icon_color} /></span> Support</span> or&nbsp;
-        <span className="u-no-break"><span className="btn__icon"><Icon name="thumbs-down-icon"
-                                                                       width={icon_size} height={icon_size} color={icon_color} /></span> Oppose</span> to
-        add an item to your ballot.
-      </div>;
+    const actionDescription = (
+      <div className="u-stack--md">
+        Click
+        {" "}
+        <span className="u-no-break">
+          <span className="btn__icon">
+            <Icon
+              name="thumbs-up-icon"
+              width={icon_size}
+              height={icon_size}
+              color={icon_color}
+            />
+          </span>
+          {" "}
+          Support
+        </span>
+        {" "}
+        or&nbsp;
+        <span className="u-no-break">
+          <span className="btn__icon">
+            <Icon
+              name="thumbs-down-icon"
+              width={icon_size}
+              height={icon_size}
+              color={icon_color}
+            />
+          </span>
+          {" "}
+          Oppose
+        </span>
+        {" "}
+        to add an item to your ballot.
+      </div>
+    );
 
-    let searchResults = this.state.ballotItemSearchResultsList.map( ballotItem => {
-            return <BallotItemSearchResult key={ballotItem.we_vote_id}
-                                           allBallotItemsCount={this.state.ballotItemSearchResultsList.length}
-                                           {...ballotItem} />;
-            });
+    const searchResults = this.state.ballotItemSearchResultsList.map( ballotItem => (
+      <BallotItemSearchResult
+        key={ballotItem.we_vote_id}
+        allBallotItemsCount={this.state.ballotItemSearchResultsList.length}
+        {...ballotItem}
+      />
+    ));
 
-    return <div className="ballot_search">
-      <div>
-        <div className="u-padding-bottom--sm">
-          <SearchBar clearButton
-                     clearFunction={this.clearFunction}
-                     clearSearchTextNow={this.state.clearSearchTextNow}
-                     placeholder="Search to add Candidates or Measures"
-                     searchButton
-                     searchFunction={this.searchFunction}
-                     searchUpdateDelayTime={500} />
+    return (
+      <div className="ballot_search">
+        <div>
+          <div className="u-padding-bottom--sm">
+            <SearchBar
+              clearButton
+              clearFunction={this.clearFunction}
+              clearSearchTextNow={this.state.clearSearchTextNow}
+              placeholder="Search to add Candidates or Measures"
+              searchButton
+              searchFunction={this.searchFunction}
+              searchUpdateDelayTime={500}
+            />
 
-        </div>
-        <div className="ballot_search__results_list">
-          {this.state.ballotItemSearchResultsList && this.state.ballotItemSearchResultsList.length ?
-            <div>
-              {actionDescription}
-              {searchResults}
-            </div> :
-            this.state.searchString && this.state.searchString !== "" ?
-              <div>No search results found.</div> :
-              null
-          }
+          </div>
+          <div className="ballot_search__results_list">
+            {this.state.ballotItemSearchResultsList && this.state.ballotItemSearchResultsList.length ? (
+              <div>
+                {actionDescription}
+                {searchResults}
+              </div>
+            ) :
+              {noSearchResultsPossibility}
+            }
+          </div>
         </div>
       </div>
-    </div>;
+    );
   }
 }

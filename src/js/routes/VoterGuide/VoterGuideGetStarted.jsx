@@ -39,20 +39,20 @@ export default class VoterGuideGetStarted extends Component {
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // Get Voter and Voter's Organization
-    let voter = VoterStore.getVoter();
+    const voter = VoterStore.getVoter();
     this.setState({
-      voter: voter,
+      voter,
     });
-    let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log("VoterGuideGetStarted componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId) {
       this.setState({
-        linkedOrganizationWeVoteId: linkedOrganizationWeVoteId,
+        linkedOrganizationWeVoteId,
       });
-      let organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
+      const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
       if (organization && organization.organization_we_vote_id) {
         this.setState({
-          organization: organization,
+          organization,
         });
         this.leaveThisComponentIfProfileComplete(voter, organization);
       } else {
@@ -69,7 +69,7 @@ export default class VoterGuideGetStarted extends Component {
   }
 
   onOrganizationStoreChange () {
-    let twitterHandleFound = OrganizationStore.getOrganizationSearchResultsTwitterHandle();
+    const twitterHandleFound = OrganizationStore.getOrganizationSearchResultsTwitterHandle();
     let twitterSearchStatus = "";
     if (this.state.twitterHandleEntered.length) {
       if (twitterHandleFound.length) {
@@ -78,32 +78,32 @@ export default class VoterGuideGetStarted extends Component {
         twitterSearchStatus += "Voter guide not found.";
       }
     }
-    let voter = VoterStore.getVoter();
-    let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
+    const voter = VoterStore.getVoter();
+    const organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
     this.leaveThisComponentIfProfileComplete(voter, organization);
     this.setState({
       isLoadingTwitterData: false,
-      isTwitterHandleValid: twitterHandleFound ? true : false,
-      organization: organization,
+      isTwitterHandleValid: !!twitterHandleFound,
+      organization,
       searchResultsOrganizationName: OrganizationStore.getOrganizationSearchResultsOrganizationName(),
       searchResultsTwitterHandle: OrganizationStore.getOrganizationSearchResultsTwitterHandle(),
       searchResultsWebsite: OrganizationStore.getOrganizationSearchResultsWebsite(),
-      twitterSearchStatus: twitterSearchStatus,
+      twitterSearchStatus,
       twitterHandle: twitterHandleFound,
     });
 
-    if (twitterHandleFound.length && this.state.didUserPressEnter){
+    if (twitterHandleFound.length && this.state.didUserPressEnter) {
       // console.log("okay to redirect");
       setTimeout(this.goToOrganizationInfo.bind(this), 0);
     }
   }
 
   onVoterStoreChange () {
-    let voter = VoterStore.getVoter();
+    const voter = VoterStore.getVoter();
     this.setState({
-      voter: voter,
+      voter,
     });
-    let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log("VoterGuideGetStarted onVoterStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
       OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
@@ -122,7 +122,7 @@ export default class VoterGuideGetStarted extends Component {
   }
 
   goToBallotLink () {
-    let sampleBallotLink = "/ballot";
+    const sampleBallotLink = "/ballot";
     historyPush(sampleBallotLink);
   }
 
@@ -152,7 +152,7 @@ export default class VoterGuideGetStarted extends Component {
 
   leaveThisComponentIfProfileComplete (voter, organization) {
     if (voter && organization) {
-      let validOrganizationNameExists = this.validOrganizationNameExists(voter, organization);
+      const validOrganizationNameExists = this.validOrganizationNameExists(voter, organization);
       if (voter && voter.is_signed_in) {
         // If voter is signed in, skip "/voterguideorgtype"
         historyPush("/voterguideorginfo");
@@ -212,20 +212,42 @@ export default class VoterGuideGetStarted extends Component {
 
     let actionButtonHtml;
     if (this.state.isLoadingTwitterData) {
-      actionButtonHtml = <button type="button" className="btn btn-lg btn-success"
-                    disabled >One Moment...</button>;
+      actionButtonHtml = (
+        <button
+          type="button"
+          className="btn btn-lg btn-success"
+          disabled
+        >
+          One Moment...
+        </button>
+      );
     } else if (this.state.isTwitterHandleValid) {
-      actionButtonHtml = <button type="button" className="btn btn-lg btn-success"
-                    onClick={this.goToOrganizationInfo}>Use This Information&nbsp;&nbsp;&gt;</button>;
+      actionButtonHtml = (
+        <button
+          type="button"
+          className="btn btn-lg btn-success"
+          onClick={this.goToOrganizationInfo}
+        >
+          Use This Information&nbsp;&nbsp;&gt;
+        </button>
+      );
     } else {
-      actionButtonHtml = <button type="button" className="btn btn-lg btn-success"
-                    onClick={this.goToOrganizationType}>Skip Twitter&nbsp;&nbsp;&gt;</button>;
+      actionButtonHtml = (
+        <button
+          type="button"
+          className="btn btn-lg btn-success"
+          onClick={this.goToOrganizationType}
+        >
+          Skip Twitter&nbsp;&nbsp;&gt;
+        </button>
+      );
     }
 
-    return <div>
-      <Helmet title="Create Your Voter Guide - We Vote" />
+    return (
+      <div>
+        <Helmet title="Create Your Voter Guide - We Vote" />
         <div className="intro-story container well u-inset--md">
-          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
+          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt="close" />
           <div className="create-voter-guide__h1 xs-text-left">Create Your Voter Guide</div>
           <div className="create-voter-guide__steps xs-text-left">
             Step 1 of 5
@@ -234,26 +256,30 @@ export default class VoterGuideGetStarted extends Component {
           <div className="row">
             <div className="col-2">&nbsp;</div>
             <div className="col-8">
-              <form onSubmit={(e) => {this.formSubmitHandler(e);}}>
+              <form onSubmit={(e) => { this.formSubmitHandler(e); }}>
                 <div className="form-group">
-                  { this.state.twitterSearchStatus.length ?
-                    <p className={ !this.state.isLoadingTwitterData ?
-                                     this.state.isTwitterHandleValid ?
-                                     "voter-guide-get-started__status-success" :
-                                     "voter-guide-get-started__status-error" :
-                                   "u-stack--md" }>
+                  { this.state.twitterSearchStatus.length ? (
+                    <p className={!this.state.isLoadingTwitterData ?     // eslint-disable-line no-nested-ternary
+                      this.state.isTwitterHandleValid ?
+                        "voter-guide-get-started__status-success" :
+                        "voter-guide-get-started__status-error" :
+                      "u-stack--md"}
+                    >
                       {this.state.twitterSearchStatus}
-                    </p> :
+                    </p>
+                  ) :
                     <p className="u-stack--md">See if your voter guide already exists.</p>
                   }
-                  <input type="text"
-                         className={this.state.twitterSearchStatus.length ?
-                                     "form-control input-lg " :
-                                     "form-control input-lg u-margin-top--sm" }
-                         name="twitterHandle"
-                         placeholder="Enter Twitter Handle"
-                         onChange={this.validateTwitterHandle}
-                         autoFocus />
+                  <input
+                    type="text"
+                    className={this.state.twitterSearchStatus.length ?
+                      "form-control input-lg " :
+                      "form-control input-lg u-margin-top--sm"}
+                    name="twitterHandle"
+                    placeholder="Enter Twitter Handle"
+                    onChange={this.validateTwitterHandle}
+                    autoFocus
+                  />
                 </div>
               </form>
             </div>
@@ -264,7 +290,13 @@ export default class VoterGuideGetStarted extends Component {
             <div className="col-xs-8 col-md-4">
               <div>
                 <div className="u-margin-top--lg u-f2">{this.state.searchResultsOrganizationName}</div>
-                {this.state.searchResultsTwitterHandle ? <div className="u-f2">@{this.state.searchResultsTwitterHandle}</div> : null }
+                {this.state.searchResultsTwitterHandle ? (
+                  <div className="u-f2">
+                    @
+                    {this.state.searchResultsTwitterHandle}
+                  </div>
+                ) : null
+                }
                 {this.state.searchResultsWebsite ? <div className="u-f2">{this.state.searchResultsWebsite}</div> : null }
               </div>
             </div>
@@ -274,6 +306,7 @@ export default class VoterGuideGetStarted extends Component {
             {actionButtonHtml}
           </footer>
         </div>
-      </div>;
+      </div>
+    );
   }
 }

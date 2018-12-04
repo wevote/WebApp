@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
-import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
-import LoadingWheel from "../../components/LoadingWheel";
+import BrowserPushMessage from "../Widgets/BrowserPushMessage";
+import LoadingWheel from "../LoadingWheel";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
-import SettingsWidgetAccountType from "../../components/Settings/SettingsWidgetAccountType";
-import SettingsWidgetFirstLastName from "../../components/Settings/SettingsWidgetFirstLastName";
-import SettingsWidgetOrganizationDescription from "../../components/Settings/SettingsWidgetOrganizationDescription";
-import SettingsWidgetOrganizationWebsite from "../../components/Settings/SettingsWidgetOrganizationWebsite";
+import SettingsWidgetAccountType from "./SettingsWidgetAccountType";
+import SettingsWidgetFirstLastName from "./SettingsWidgetFirstLastName";
+import SettingsWidgetOrganizationDescription from "./SettingsWidgetOrganizationDescription";
+import SettingsWidgetOrganizationWebsite from "./SettingsWidgetOrganizationWebsite";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
@@ -45,26 +45,26 @@ export default class VoterGuideSettingsGeneral extends Component {
       voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.props.voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
-          voterGuide: voterGuide,
+          voterGuide,
           voterGuideName: voterGuide.voter_guide_display_name,
         });
         voterGuideFound = true;
       }
     }
     // Get Voter and Voter's Organization
-    let voter = VoterStore.getVoter();
+    const voter = VoterStore.getVoter();
     if (voter && voter.we_vote_id) {
-      this.setState({ voter: voter });
-      let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+      this.setState({ voter });
+      const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
       // console.log("VoterGuideSettingsDashboard componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
       if (linkedOrganizationWeVoteId) {
         this.setState({
-          linkedOrganizationWeVoteId: linkedOrganizationWeVoteId,
+          linkedOrganizationWeVoteId,
         });
-        let organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
+        const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
         if (organization && organization.organization_we_vote_id) {
           this.setState({
-            organization: organization,
+            organization,
           });
         } else {
           OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
@@ -94,26 +94,26 @@ export default class VoterGuideSettingsGeneral extends Component {
       voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(nextProps.voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
-          voterGuide: voterGuide,
-          voterGuideName: voterGuide.voter_guide_display_name
+          voterGuide,
+          voterGuideName: voterGuide.voter_guide_display_name,
         });
         voterGuideFound = true;
       }
     }
     // Get Voter and Voter's Organization
-    let voter = VoterStore.getVoter();
+    const voter = VoterStore.getVoter();
     if (voter && voter.we_vote_id) {
-      this.setState({ voter: voter });
-      let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+      this.setState({ voter });
+      const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
       // console.log("VoterGuideSettingsDashboard componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
       if (linkedOrganizationWeVoteId) {
         this.setState({
-          linkedOrganizationWeVoteId: linkedOrganizationWeVoteId,
+          linkedOrganizationWeVoteId,
         });
-        let organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
+        const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
         if (organization && organization.organization_we_vote_id) {
           this.setState({
-            organization: organization,
+            organization,
           });
         } else {
           OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
@@ -132,7 +132,7 @@ export default class VoterGuideSettingsGeneral extends Component {
     this.voterStoreListener.remove();
   }
 
-  onOrganizationStoreChange (){
+  onOrganizationStoreChange () {
     // console.log("VoterGuideSettingsGeneral onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId),
@@ -140,17 +140,17 @@ export default class VoterGuideSettingsGeneral extends Component {
   }
 
   onVoterStoreChange () {
-    this.setState({voter: VoterStore.getVoter()});
+    this.setState({ voter: VoterStore.getVoter() });
   }
 
-  onVoterGuideStoreChange (){
+  onVoterGuideStoreChange () {
     // console.log("VoterGuideSettingsGeneral onVoterGuideStoreChange");
     if (this.state.voterGuideWeVoteId) {
-      let voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.state.voterGuideWeVoteId);
+      const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.state.voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
-          voterGuide: voterGuide,
-          voterGuideName: voterGuide.voter_guide_display_name
+          voterGuide,
+          voterGuideName: voterGuide.voter_guide_display_name,
         });
       }
     }
@@ -162,19 +162,23 @@ export default class VoterGuideSettingsGeneral extends Component {
       return LoadingWheel;
     }
 
-    return <div className="">
-      <Helmet title={"Voter Guide Settings - We Vote"} />
-      <BrowserPushMessage incomingProps={this.props} />
-      <div className="card">
-        <div className="card-main">
-          <h3 className="h3">Voter Guide Settings</h3>
-          <SettingsWidgetFirstLastName hideFirstLastName />
-          <SettingsWidgetOrganizationWebsite />
-          <SettingsWidgetOrganizationDescription />
-          <SettingsWidgetAccountType closeEditFormOnChoice
-                                     showEditToggleOption />
+    return (
+      <div className="">
+        <Helmet title="Voter Guide Settings - We Vote" />
+        <BrowserPushMessage incomingProps={this.props} />
+        <div className="card">
+          <div className="card-main">
+            <h3 className="h3">Voter Guide Settings</h3>
+            <SettingsWidgetFirstLastName hideFirstLastName />
+            <SettingsWidgetOrganizationWebsite />
+            <SettingsWidgetOrganizationDescription />
+            <SettingsWidgetAccountType
+              closeEditFormOnChoice
+              showEditToggleOption
+            />
+          </div>
         </div>
       </div>
-    </div>;
+    );
   }
 }

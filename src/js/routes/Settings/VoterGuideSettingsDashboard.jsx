@@ -46,10 +46,10 @@ export default class VoterGuideSettingsDashboard extends Component {
       this.setState({
         voterGuideWeVoteId: this.props.params.voter_guide_we_vote_id,
       });
-      let voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.props.params.voter_guide_we_vote_id);
+      const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.props.params.voter_guide_we_vote_id);
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
-          voterGuide: voterGuide,
+          voterGuide,
         });
         voterGuideFound = true;
         if (voterGuide.google_civic_election_id && voterGuide.google_civic_election_id !== BallotStore.currentBallotGoogleCivicElectionId) {
@@ -59,19 +59,19 @@ export default class VoterGuideSettingsDashboard extends Component {
       }
     }
     // Get Voter and Voter's Organization
-    let voter = VoterStore.getVoter();
+    const voter = VoterStore.getVoter();
     if (voter) {
-      this.setState({ voter: voter });
-      let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+      this.setState({ voter });
+      const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
       // console.log("VoterGuideSettingsDashboard componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
       if (linkedOrganizationWeVoteId) {
         this.setState({
-          linkedOrganizationWeVoteId: linkedOrganizationWeVoteId,
+          linkedOrganizationWeVoteId,
         });
-        let organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
+        const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
         if (organization && organization.organization_we_vote_id) {
           this.setState({
-            organization: organization,
+            organization,
           });
         } else {
           OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
@@ -99,13 +99,13 @@ export default class VoterGuideSettingsDashboard extends Component {
     }
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
-  onOrganizationStoreChange (){
+  onOrganizationStoreChange () {
     // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId),
@@ -115,11 +115,11 @@ export default class VoterGuideSettingsDashboard extends Component {
   onVoterGuideStoreChange () {
     // console.log("VoterGuideSettingsDashboard onVoterGuideStoreChange, this.state.voterGuideWeVoteId", this.state.voterGuideWeVoteId);
     if (this.state.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(this.state.voterGuideWeVoteId)) {
-      let voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.state.voterGuideWeVoteId);
+      const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.state.voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
         // console.log("VoterGuideSettingsDashboard onVoterGuideStoreChange voterGuide FOUND");
         this.setState({
-          voterGuide: voterGuide,
+          voterGuide,
         });
         // May not be necessary
         // if (voterGuide.google_civic_election_id && voterGuide.google_civic_election_id !== BallotStore.currentBallotGoogleCivicElectionId) {
@@ -131,13 +131,13 @@ export default class VoterGuideSettingsDashboard extends Component {
   }
 
   onVoterStoreChange () {
-    let voter = VoterStore.getVoter();
-    let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    const voter = VoterStore.getVoter();
+    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log("VoterGuideSettingsDashboard onVoterStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
       OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
       this.setState({
-        linkedOrganizationWeVoteId: linkedOrganizationWeVoteId,
+        linkedOrganizationWeVoteId,
       });
     }
     if (linkedOrganizationWeVoteId) {
@@ -165,41 +165,45 @@ export default class VoterGuideSettingsDashboard extends Component {
         break;
     }
 
-    return <div className="settings-dashboard">
-      {/* Header Spacing for Desktop */}
-      <div className="col-md-12 d-none d-sm-block d-print-none">
-        <SettingsBannerAndOrganizationCard organization={this.state.organization} />
-      </div>
-      {/* Header Spacing for Mobile */}
-      <div className="d-block d-sm-none d-print-none">
-        <SettingsBannerAndOrganizationCard organization={this.state.organization} />
-      </div>
+    return (
+      <div className="settings-dashboard">
+        {/* Header Spacing for Desktop */}
+        <div className="col-md-12 d-none d-sm-block d-print-none">
+          <SettingsBannerAndOrganizationCard organization={this.state.organization} />
+        </div>
+        {/* Header Spacing for Mobile */}
+        <div className="d-block d-sm-none d-print-none">
+          <SettingsBannerAndOrganizationCard organization={this.state.organization} />
+        </div>
 
-      {/* Desktop left navigation + Settings content */}
-      <div className="d-none d-sm-block">
-        <div className="container-fluid">
-          <div className="row">
-            {/* Desktop mode left navigation */}
-            <div className="col-4 sidebar-menu">
-              <VoterGuideSettingsSideBar editMode={this.state.editMode}
-                                         organization={this.state.organization}
-                                         voterGuide={this.state.voterGuide} />
-            </div>
-            {/* Desktop mode content */}
-            <div className="col-8">
-              {settingsComponentToDisplay}
+        {/* Desktop left navigation + Settings content */}
+        <div className="d-none d-sm-block">
+          <div className="container-fluid">
+            <div className="row">
+              {/* Desktop mode left navigation */}
+              <div className="col-4 sidebar-menu">
+                <VoterGuideSettingsSideBar
+                  editMode={this.state.editMode}
+                  organization={this.state.organization}
+                  voterGuide={this.state.voterGuide}
+                />
+              </div>
+              {/* Desktop mode content */}
+              <div className="col-8">
+                {settingsComponentToDisplay}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Mobile Settings content */}
-      <div className="d-block d-sm-none">
-        {/* Mobile mode content */}
-        <div className="col-12">
-          {settingsComponentToDisplay}
+        {/* Mobile Settings content */}
+        <div className="d-block d-sm-none">
+          {/* Mobile mode content */}
+          <div className="col-12">
+            {settingsComponentToDisplay}
+          </div>
         </div>
       </div>
-    </div>;
+    );
   }
 }

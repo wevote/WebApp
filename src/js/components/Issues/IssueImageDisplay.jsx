@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import ImageHandler from "../../components/ImageHandler";
+import ImageHandler from "../ImageHandler";
 import { renderLog } from "../../utils/logging";
 
 // IssueImageDisplay is used by IssuesDisplayListWithOrganizationPopovers for viewing the icons for issues
@@ -43,7 +43,7 @@ export default class IssueImageDisplay extends Component {
       voterIsNotFollowingThisIssueClass = "network-positions__to-follow-fade ";
     }
 
-    let hide_placeholder = !this.props.showPlaceholderImage;
+    const hide_placeholder = !this.props.showPlaceholderImage;
 
     const imageSizes = new Set(["SMALL", "MEDIUM", "LARGE"]);
     let issueImageSize = "SMALL"; // Set the default
@@ -53,23 +53,35 @@ export default class IssueImageDisplay extends Component {
 
     let issueImage;
     if (issueImageSize === "SMALL") {
-      issueImage = <ImageHandler alt={issue_name}
-                                 className={"card-main__org-avatar " + supportOrOpposeClass + voterIsNotFollowingThisIssueClass}
-                                 hidePlaceholder={hide_placeholder}
-                                 imageUrl={this.props.issue.issue_photo_url_tiny}
-                                 sizeClassName="issue__image--small "/>;
+      issueImage = (
+        <ImageHandler
+          alt={issue_name}
+          className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
+          hidePlaceholder={hide_placeholder}
+          imageUrl={this.props.issue.issue_photo_url_tiny}
+          sizeClassName="issue__image--small "
+        />
+      );
     } else if (issueImageSize === "MEDIUM") {
-      issueImage = <ImageHandler alt={issue_name}
-                                 className={"card-main__org-avatar " + supportOrOpposeClass + voterIsNotFollowingThisIssueClass}
-                                 hidePlaceholder={hide_placeholder}
-                                 imageUrl={this.props.issue.issue_photo_url_medium}
-                                 sizeClassName="issue__image--medium "/>;
+      issueImage = (
+        <ImageHandler
+          alt={issue_name}
+          className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
+          hidePlaceholder={hide_placeholder}
+          imageUrl={this.props.issue.issue_photo_url_medium}
+          sizeClassName="issue__image--medium "
+        />
+      );
     } else if (issueImageSize === "LARGE") {
-      issueImage = <ImageHandler alt={issue_name}
-                                 className={"card-main__org-avatar " + supportOrOpposeClass + voterIsNotFollowingThisIssueClass}
-                                 hidePlaceholder={hide_placeholder}
-                                 imageUrl={this.props.issue.issue_photo_url_large}
-                                 sizeClassName="issue__image--large "/>;
+      issueImage = (
+        <ImageHandler
+          alt={issue_name}
+          className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
+          hidePlaceholder={hide_placeholder}
+          imageUrl={this.props.issue.issue_photo_url_large}
+          sizeClassName="issue__image--large "
+        />
+      );
     }
 
     return <span className="issue__image-modal">{issueImage}</span>;

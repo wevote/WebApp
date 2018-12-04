@@ -13,12 +13,11 @@ import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 
 export default class InviteByEmail extends Component {
-	static propTypes = {
+  static propTypes = {
+  };
 
-	};
-
-	constructor (props) {
-		super(props);
+  constructor (props) {
+    super(props);
     this.state = {
       add_friends_type: "ADD_FRIENDS_BY_EMAIL",
       current_friends_list: FriendStore.currentFriends(),
@@ -30,7 +29,7 @@ export default class InviteByEmail extends Component {
       facebook_invitable_friends_image_width: 24,
       facebook_invitable_friends_image_height: 24,
     };
-	}
+  }
 
   componentDidMount () {
     if (this.state.current_friends_list) {
@@ -40,58 +39,54 @@ export default class InviteByEmail extends Component {
     AnalyticsActions.saveActionInviteByEmail(VoterStore.election_id());
   }
 
-  _onFriendStoreChange () {
-    this.setState({
-      current_friends_list: FriendStore.currentFriends()
-    });
-  }
-
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.friendStoreListener.remove();
   }
 
-	static getProps () {
-		return {};
-	}
-
-  getCurrentRoute (){
-    var current_route = "/more/connect";
-    return current_route;
+  static getProps () {
+    return {};
   }
 
-	onKeyDownEditMode (event) {
-		let enterAndSpaceKeyCodes = [13, 32];
-		let scope = this;
-		if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-			scope.setState({editMode: !this.state.editMode});
-		}
-	}
 
-	render () {
+  getCurrentRoute () {
+    return "/more/connect";
+  }
+
+  _onFriendStoreChange () {
+    this.setState({
+      current_friends_list: FriendStore.currentFriends(),
+    });
+  }
+
+  render () {
     renderLog(__filename);
-		return <div>
-			<Helmet title="Build Your We Vote Network" />
-      <h1 className="h1">Add Friends by Email</h1>
+    return (
+      <div>
+        <Helmet title="Build Your We Vote Network" />
+        <h1 className="h1">Add Friends by Email</h1>
 
-			<div className="container-fluid well u-stack--md u-inset--md">
-        <AddFriendsByEmail />
-      </div>
-
-      { this.state.current_friends_list && this.state.current_friends_list.length ?
         <div className="container-fluid well u-stack--md u-inset--md">
-          <Link className="u-cursor--pointer u-no-underline" to="/friends">
-            <h4 className="text-left">Your Current Friends</h4>
-          </Link>
-          <div className="card-child__list-group">
-            {
-              <CurrentFriends
-                    currentFriendsList={this.state.current_friends_list}
-                    maximumFriendDisplay={this.state.maximum_friend_display} />
-            }
-            <Link className="pull-right" to="/friends">See Full Friend List</Link>
-          </div>
-        </div> : null }
+          <AddFriendsByEmail />
+        </div>
 
-		</div>;
-	}
+        { this.state.current_friends_list && this.state.current_friends_list.length ? (
+          <div className="container-fluid well u-stack--md u-inset--md">
+            <Link className="u-cursor--pointer u-no-underline" to="/friends">
+              <h4 className="text-left">Your Current Friends</h4>
+            </Link>
+            <div className="card-child__list-group">
+              {
+                <CurrentFriends
+                  currentFriendsList={this.state.current_friends_list}
+                  maximumFriendDisplay={this.state.maximum_friend_display}
+                />
+              }
+              <Link className="pull-right" to="/friends">See Full Friend List</Link>
+            </div>
+          </div>
+        ) : null
+        }
+      </div>
+    );
+  }
 }

@@ -17,12 +17,12 @@ export default class AddFriendsByTwitter extends Component {
     this.state = {
       add_friends_message: "Please join me in preparing for the upcoming election.",
       twitter_handles: "",
-      redirect_url_upon_save: "/friends/sign_in",  // TODO DALE Remove this?
+      redirect_url_upon_save: "/friends/sign_in", // TODO DALE Remove this?
       loading: false,
       on_enter_twitter_handles_step: true,
       on_request_email_step: false,
       on_friend_invitations_sent_step: false,
-      voter: {}
+      voter: {},
     };
   }
 
@@ -32,7 +32,7 @@ export default class AddFriendsByTwitter extends Component {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
   }
@@ -76,13 +76,13 @@ export default class AddFriendsByTwitter extends Component {
   }
 
   hasValidEmail () {
-    let { voter } = this.state;
+    const { voter } = this.state;
     return voter !== undefined ? voter.has_valid_email : false;
   }
 
   onKeyDown (event) {
-    let enterAndSpaceKeyCodes = [13, 32];
-    let scope = this;
+    const enterAndSpaceKeyCodes = [13, 32];
+    const scope = this;
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       scope.AddFriendsByTwitterStepsManager(event).bind(scope);
     }
@@ -105,7 +105,7 @@ export default class AddFriendsByTwitter extends Component {
       this.setState({
         loading: false,
         twitter_handles_error: true,
-        error_message: error_message,
+        error_message,
       });
     } else if (!this.hasValidEmail()) {
       console.log("AddFriendsByTwitterStepsManager, NOT hasValidEmail");
@@ -121,28 +121,30 @@ export default class AddFriendsByTwitter extends Component {
 
   render () {
     renderLog(__filename);
-    let { loading } = this.state;
+    const { loading } = this.state;
     if (loading) {
       return LoadingWheel;
     }
 
-    let floatRight = {
+    const floatRight = {
       float: "right",
     };
 
-    return <div>
-      {this.state.on_friend_invitations_sent_step ?
-        <div className="alert alert-success">
-          Invitations sent. Is there anyone else you'd like to invite?
-        </div> :
-        null }
+    return (
+      <div>
+        {this.state.on_friend_invitations_sent_step ? (
+          <div className="alert alert-success">
+          Invitations sent. Is there anyone else you&apos;d like to invite?
+          </div>
+        ) : null
+        }
 
-      {this.state.on_enter_twitter_handles_step ?
-        <div>
-          <form onSubmit={this.AddFriendsByTwitterStepsManager.bind(this)} className="u-stack--md">
+        {this.state.on_enter_twitter_handles_step ? (
           <div>
+            <form onSubmit={this.AddFriendsByTwitterStepsManager.bind(this)} className="u-stack--md">
+              <div>
             ADD_FRIENDS_BY_TWITTER - NOT FINISHED YET
-            {/*<input type="text" name="email_address"
+                {/* <input type="text" name="email_address"
                    className="form-control"
                    onChange={this.cacheTwitterHandles.bind(this)}
                    placeholder="Enter twitter handles here, separated by commas" />
@@ -155,10 +157,10 @@ export default class AddFriendsByTwitter extends Component {
                        defaultValue="Please join me in preparing for the upcoming election." />
               </span> :
               null } */}
-          </div>
-          </form>
+              </div>
+            </form>
 
-          <div>
+            <div>
               <span style={floatRight}>
                 <Button
                   tabIndex="0"
@@ -176,15 +178,18 @@ export default class AddFriendsByTwitter extends Component {
               <p>
                 These friends will see what you support, oppose, and which opinions you listen to.
               </p>
+            </div>
           </div>
-        </div> :
-        null }
+        ) : null
+        }
 
-      {this.state.on_request_email_step ?
-        <div>
+        {this.state.on_request_email_step ? (
+          <div>
           ON REQUEST EMAIL STEP
-        </div> :
-        null }
-		</div>;
+          </div>
+        ) : null
+        }
+      </div>
+    );
   }
 }

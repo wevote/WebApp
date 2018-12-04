@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
+import BrowserPushMessage from "../Widgets/BrowserPushMessage";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
-import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
-import LoadingWheel from "../../components/LoadingWheel";
+import FacebookSignIn from "../Facebook/FacebookSignIn";
+import LoadingWheel from "../LoadingWheel";
 import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
-import FacebookFriendsDisplay from "../../components/Connect/FacebookFriendsDisplay";
+import FacebookFriendsDisplay from "./FacebookFriendsDisplay";
 
 export default class AddFacebookFriends extends Component {
 
@@ -55,7 +55,7 @@ export default class AddFacebookFriends extends Component {
 
   render () {
     renderLog(__filename);
-    if (this.state.voter === undefined){
+    if (this.state.voter === undefined) {
       // Show a loading wheel while this component's data is loading
       return LoadingWheel;
     }
@@ -67,31 +67,36 @@ export default class AddFacebookFriends extends Component {
       your_account_explanation = "We found some of your friends from Facebook. Choose the friends to invite to We Vote to see what they support.";
     }
 
-    return <div className="">
-      <BrowserPushMessage incomingProps={this.props} />
-      <div>
-        <span>{your_account_explanation}</span>
-        <br />
-        <br />
-          {!this.state.voter.signed_in_facebook ?
-          <div>
+    return (
+      <div className="">
+        <BrowserPushMessage incomingProps={this.props} />
+        <div>
+          <span>{your_account_explanation}</span>
+          <br />
+          <br />
+          {!this.state.voter.signed_in_facebook ? (
+            <div>
               <FacebookSignIn />
-          </div> :
-          null }
+            </div>
+          ) :
+            null }
 
-          {this.state.voter.signed_in_facebook ?
-          <div>
+          {this.state.voter.signed_in_facebook ? (
+            <div>
               <FacebookFriendsDisplay
-                  facebookInvitableFriendsList={this.state.facebook_invitable_friends_list}
-                  facebookInvitableFriendsImageWidth={this.state.facebook_invitable_friends_image_width}
-                  facebookInvitableFriendsImageHeight={this.state.facebook_invitable_friends_image_height}
-                  maximumFriendDisplay={this.state.maximum_friend_display} />
-          </div> :
-          null }
+                facebookInvitableFriendsList={this.state.facebook_invitable_friends_list}
+                facebookInvitableFriendsImageWidth={this.state.facebook_invitable_friends_image_width}
+                facebookInvitableFriendsImageHeight={this.state.facebook_invitable_friends_image_height}
+                maximumFriendDisplay={this.state.maximum_friend_display}
+              />
+            </div>
+          ) :
+            null }
+
+        </div>
+        {/* <Main /> */}
 
       </div>
-      {/* <Main /> */}
-
-    </div>;
+    );
   }
 }

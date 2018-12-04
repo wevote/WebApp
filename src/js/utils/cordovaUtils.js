@@ -23,38 +23,36 @@ export function historyPush (route) {
 
 export function cordovaDot (path) {
   if (isCordova()) {
-    return "." + path;
+    return `.${path}`;
   } else {
     return path;
   }
 }
 
 function cordovaOpenSafariViewSub (requestURL, onExit) {
-
   // console.log("cordovaOpenSafariView -1- requestURL: " + requestURL);
-  SafariViewController.isAvailable(function () {            // eslint-disable-line no-undef
-    oAuthLog("cordovaOpenSafariView requestURL: " + requestURL);
-    SafariViewController.show({                                       // eslint-disable-line no-undef
-        url: requestURL,
-      },
+  SafariViewController.isAvailable(() => { // eslint-disable-line no-undef
+    oAuthLog(`cordovaOpenSafariView requestURL: ${requestURL}`);
+    SafariViewController.show({ // eslint-disable-line no-undef
+      url: requestURL,
+    },
 
-      function (result) {
-        if (result.event === "opened") {
-          oAuthLog("cordovaOpenSafariView opened url: " + requestURL);
-        } else if (result.event === "loaded") {
-          oAuthLog("cordovaOpenSafariView loaded url: " + JSON.stringify(result));
-        } else if (result.event === "closed") {
-          oAuthLog("cordovaOpenSafariView closed: " + JSON.stringify(result));
-          if (onExit) {
-            onExit();
-          }
+    (result) => {
+      if (result.event === "opened") {
+        oAuthLog(`cordovaOpenSafariView opened url: ${requestURL}`);
+      } else if (result.event === "loaded") {
+        oAuthLog(`cordovaOpenSafariView loaded url: ${JSON.stringify(result)}`);
+      } else if (result.event === "closed") {
+        oAuthLog(`cordovaOpenSafariView closed: ${JSON.stringify(result)}`);
+        if (onExit) {
+          onExit();
         }
-      },
-
-      function (msg) {
-        oAuthLog("cordovaOpenSafariView KO: " + JSON.stringify(msg));
       }
-    );
+    },
+
+    (msg) => {
+      oAuthLog(`cordovaOpenSafariView KO: ${JSON.stringify(msg)}`);
+    });
   });
 }
 
@@ -87,27 +85,27 @@ export function cordovaOpenSafariView (requestURL, onExit, timeout) {
     }
 */
 export function enclosingRectangle (objectNameString, instance) {
-  let rect = instance.getBoundingClientRect();
+  const rect = instance.getBoundingClientRect();
 
   // Please don't remove this console.log line
-  console.log(objectNameString +
-    " BoundingClientRect: left " + rect.left +
-    ", top " + rect.top +
-    ", right " + rect.right +
-    ", bottom " + rect.bottom +
-    ", x " + rect.x +
-    ", y " + rect.y +
-    ", width " + rect.width +
-    ", height " + rect.height);
+  console.log(`${objectNameString
+  } BoundingClientRect: left ${rect.left
+  }, top ${rect.top
+  }, right ${rect.right
+  }, bottom ${rect.bottom
+  }, x ${rect.x
+  }, y ${rect.y
+  }, width ${rect.width
+  }, height ${rect.height}`);
 }
 
 // webapp, webapp:iOS, webapp:Android
 export function deviceTypeString () {
   let deviceString = isWebApp() ? "webapp" : "cordova";
   if (isCordova() && window.device) {
-    /*global device*/
-    /*eslint no-undef: ["error", { "typeof": true }] */
-    deviceString += ":" + device.platform;
+    /* global device */
+    /* eslint no-undef: ["error", { "typeof": true }] */
+    deviceString += `:${device.platform}`;
   }
 
   return deviceString;
@@ -119,10 +117,10 @@ export function isIOS () {
 
 export function isIPhoneXorXS () {
   // Get the device pixel ratio
-  let ratio = window.devicePixelRatio || 1;
+  const ratio = window.devicePixelRatio || 1;
 
   // Define the users device screen dimensions
-  let screen = {
+  const screen = {
     width: window.screen.width * ratio,
     height: window.screen.height * ratio,
   };
@@ -132,8 +130,8 @@ export function isIPhoneXorXS () {
 }
 
 export function isIPhone678Plus () {
-  let ratio = window.devicePixelRatio || 1;
-  let screen = {
+  const ratio = window.devicePixelRatio || 1;
+  const screen = {
     width: window.screen.width * ratio,
     height: window.screen.height * ratio,
   };
@@ -141,8 +139,8 @@ export function isIPhone678Plus () {
 }
 
 export function isIPhone678 () {
-  let ratio = window.devicePixelRatio || 1;
-  let screen = {
+  const ratio = window.devicePixelRatio || 1;
+  const screen = {
     width: window.screen.width * ratio,
     height: window.screen.height * ratio,
   };
@@ -150,8 +148,8 @@ export function isIPhone678 () {
 }
 
 export function isIPhoneXR () {
-  let ratio = window.devicePixelRatio || 1;
-  let screen = {
+  const ratio = window.devicePixelRatio || 1;
+  const screen = {
     width: window.screen.width * ratio,
     height: window.screen.height * ratio,
   };
@@ -159,8 +157,8 @@ export function isIPhoneXR () {
 }
 
 export function isIPhoneXSMax () {
-  let ratio = window.devicePixelRatio || 1;
-  let screen = {
+  const ratio = window.devicePixelRatio || 1;
+  const screen = {
     width: window.screen.width * ratio,
     height: window.screen.height * ratio,
   };
@@ -169,19 +167,19 @@ export function isIPhoneXSMax () {
 }
 
 export function isIPad () {
-  let ratio = window.devicePixelRatio || 1;
-  let screen = {
+  const ratio = window.devicePixelRatio || 1;
+  const screen = {
     width: window.screen.width * ratio,
     height: window.screen.height * ratio,
   };
 
   /* eslint-disable no-extra-parens */
   return isIOS() && (
-    (screen.width === 768 && screen.height === 1024) ||   // iPad, 9.7" 2010 and Gen 2, 2011 and Mini 2012
-    (screen.width === 1536 && screen.height === 2048) ||  // iPad, 9.7" Gen 3 2012, Gen 4 2013, 2018 iPad, iPad Pro 2016, iPad Air 2013, and Mini Retina 2013
-    (screen.width === 1668 && screen.height === 2224) ||  // iPad Pro 10.5" Gen 2  2017
-    (screen.width === 1668 && screen.height === 2388) ||  // iPad Pro 11", iPad Pro 12.9" October 2018
-    (screen.width === 2048 && screen.height === 2732)     // iPad Pro 12.9" Gen 2, 2018
+    (screen.width === 768 && screen.height === 1024) ||  // iPad, 9.7" 2010 and Gen 2, 2011 and Mini 2012
+    (screen.width === 1536 && screen.height === 2048) || // iPad, 9.7" Gen 3 2012, Gen 4 2013, 2018 iPad, iPad Pro 2016, iPad Air 2013, and Mini Retina 2013
+    (screen.width === 1668 && screen.height === 2224) || // iPad Pro 10.5" Gen 2  2017
+    (screen.width === 1668 && screen.height === 2388) || // iPad Pro 11", iPad Pro 12.9" October 2018
+    (screen.width === 2048 && screen.height === 2732)    // iPad Pro 12.9" Gen 2, 2018
   );
 }
 
@@ -194,13 +192,13 @@ export function isAndroid () {
 }
 
 export function getAndroidSize () {
-  let ratio = window.devicePixelRatio || 1;
-  let screen = {
+  const ratio = window.devicePixelRatio || 1;
+  const screen = {
     width: window.screen.width * ratio,
     height: window.screen.height * ratio,
   };
 
-  let size = screen.width * screen.height;
+  const size = screen.width * screen.height;
   let sizeString = "default";
 
   /* sm = 480*800 = 384,000      Nexus One
@@ -241,7 +239,7 @@ export function getAppBaseClass (pathname) {
         appBaseClass += "--678";
       } else if (isIPhone678Plus()) {
         appBaseClass += "--678plus";
-      } else {  // iPad
+      } else { // iPad
         appBaseClass += "--ipad";
       }
     } else {
@@ -264,11 +262,9 @@ export function getAppBaseClass (pathname) {
 }
 
 export function prepareForCordovaKeyboard (callerString) {
-  if (callerString) {
-    let fileName = callerString.substr(callerString.lastIndexOf("/") + 1);
-    console.log("prepareForCordovaKeyboard ^^^^^^^^^^ " + fileName);
-  }
-  if (isCordova()) {
+  if (callerString && isCordova()) {
+    const fileName = callerString.substr(callerString.lastIndexOf("/") + 1);
+    console.log(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
     $("#app").removeClass("app-wrapper").addClass("app-wrapper__cordova");
     $("body").css("height", "");
     $(".footroom-wrapper").css("display", "none");
@@ -276,14 +272,11 @@ export function prepareForCordovaKeyboard (callerString) {
 }
 
 export function restoreStylesAfterCordovaKeyboard (callerString) {
-  if (callerString) {
-    let fileName = callerString.substr(callerString.lastIndexOf("/") + 1);
-    console.log("restoreStylesAfterCordovaKeyboard vvvvvvvvvv " + fileName);
-  }
-  if (isCordova()) {
+  if (callerString && isCordova()) {
+    const fileName = callerString.substr(callerString.lastIndexOf("/") + 1);
+    console.log(`restoreStylesAfterCordovaKeyboard vvvvvvvvvv ${fileName}`);
     $("#app").removeClass("app-wrapper__cordova").addClass("app-wrapper");
     $("body").css("height", "100%");
     $(".footroom-wrapper").css("display", "");
   }
 }
-

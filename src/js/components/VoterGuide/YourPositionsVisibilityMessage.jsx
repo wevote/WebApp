@@ -21,7 +21,7 @@ export default class YourPositionsVisibilityMessage extends Component {
     let visibleToPublicCount = 0;
     let visibleToFriendsOnlyCount = 0;
     if (this.props.positionList) {
-      this.props.positionList.forEach( onePosition => {
+      this.props.positionList.forEach((onePosition) => {
         if (onePosition.is_public_position) {
           visibleToPublicCount += 1;
         } else {
@@ -30,16 +30,17 @@ export default class YourPositionsVisibilityMessage extends Component {
       });
     }
     this.setState({
-      visibleToFriendsOnlyCount: visibleToFriendsOnlyCount,
-      visibleToPublicCount: visibleToPublicCount,
+      visibleToFriendsOnlyCount,
+      visibleToPublicCount,
     });
   }
+
   componentWillReceiveProps (nextProps) {
     // console.log("BallotStatusMessage componentWillReceiveProps");
     let visibleToPublicCount = 0;
     let visibleToFriendsOnlyCount = 0;
     if (nextProps.positionList) {
-      nextProps.positionList.forEach( onePosition => {
+      nextProps.positionList.forEach((onePosition) => {
         if (onePosition.is_public_position) {
           visibleToPublicCount += 1;
         } else {
@@ -48,8 +49,8 @@ export default class YourPositionsVisibilityMessage extends Component {
       });
     }
     this.setState({
-      visibleToFriendsOnlyCount: visibleToFriendsOnlyCount,
-      visibleToPublicCount: visibleToPublicCount,
+      visibleToFriendsOnlyCount,
+      visibleToPublicCount,
     });
   }
 
@@ -60,27 +61,70 @@ export default class YourPositionsVisibilityMessage extends Component {
 
     if (this.state.visibleToPublicCount > 0 && this.state.visibleToFriendsOnlyCount > 0) {
       alertClass = "alert-danger";
-      return <div className="u-margin-left-right--md u-stack--xs d-print-none">
-        <div className={"alert " + alertClass}>
-          You have {this.state.visibleToFriendsOnlyCount} {this.state.visibleToFriendsOnlyCount === 1 ? "position" : "positions" } only visible to We Vote friends <FriendsOnlyIndicator isFriendsOnly />,
-          and {this.state.visibleToPublicCount} {this.state.visibleToPublicCount === 1 ? "position" : "positions" } visible to the public <FriendsOnlyIndicator isFriendsOnly={false} />.
+      return (
+        <div className="u-margin-left-right--md u-stack--xs d-print-none">
+          <div className={`alert ${alertClass}`}>
+          You have
+            {" "}
+            {this.state.visibleToFriendsOnlyCount}
+            {" "}
+            {this.state.visibleToFriendsOnlyCount === 1 ? "position" : "positions" }
+            {" "}
+            only visible to We Vote friends
+            {" "}
+            <FriendsOnlyIndicator isFriendsOnly />
+            , and
+            {" "}
+            {this.state.visibleToPublicCount}
+            {" "}
+            {this.state.visibleToPublicCount === 1 ? "position" : "positions" }
+            {" "}
+            visible to the public
+            {" "}
+            <FriendsOnlyIndicator isFriendsOnly={false} />
+            .
+          </div>
         </div>
-      </div>;
+      );
     } else if (this.state.visibleToFriendsOnlyCount > 0) {
       alertClass = "alert-danger";
-      return <div className="u-margin-left-right--md u-stack--xs d-print-none">
-        <div className={"alert " + alertClass}>
-          You have {this.state.visibleToFriendsOnlyCount} {this.state.visibleToFriendsOnlyCount === 1 ? "position" : "positions" } only visible to We Vote friends <FriendsOnlyIndicator isFriendsOnly />.
-          None of your positions are visible to the public <FriendsOnlyIndicator isFriendsOnly={false} />.
+      return (
+        <div className="u-margin-left-right--md u-stack--xs d-print-none">
+          <div className={`alert ${alertClass}`}>
+          You have
+            {" "}
+            {this.state.visibleToFriendsOnlyCount}
+            {" "}
+            {this.state.visibleToFriendsOnlyCount === 1 ? "position" : "positions" }
+            {" "}
+            only visible to We Vote friends
+            {" "}
+            <FriendsOnlyIndicator isFriendsOnly />
+            . None of your positions are visible to the public
+            {" "}
+            <FriendsOnlyIndicator isFriendsOnly={false} />
+            .
+          </div>
         </div>
-      </div>;
+      );
     } else if (this.state.visibleToPublicCount > 0) {
       alertClass = "alert-success";
-      return <div className="u-margin-left-right--md u-stack--xs d-print-none">
-        <div className={"alert " + alertClass}>
-          You have {this.state.visibleToPublicCount} {this.state.visibleToPublicCount === 1 ? "position" : "positions" } visible to the public <FriendsOnlyIndicator isFriendsOnly={false} />.
+      return (
+        <div className="u-margin-left-right--md u-stack--xs d-print-none">
+          <div className={`alert ${alertClass}`}>
+            You have
+            {" "}
+            {this.state.visibleToPublicCount}
+            {" "}
+            {this.state.visibleToPublicCount === 1 ? "position" : "positions" }
+            {" "}
+            visible to the public
+            {" "}
+            <FriendsOnlyIndicator isFriendsOnly={false} />
+            .
+          </div>
         </div>
-      </div>;
+      );
     } else {
       return null;
     }

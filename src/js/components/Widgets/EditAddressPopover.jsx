@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { OverlayTrigger, Popover } from "react-bootstrap";
 import { isCordova } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
-import { OverlayTrigger, Popover } from "react-bootstrap";
 import { shortenText } from "../../utils/textFormat";
 
 export default class EditAddressPopover extends Component {
@@ -78,7 +78,7 @@ export default class EditAddressPopover extends Component {
 
     // TODO STEVE March 2018:  As we use EditAddress today, the next 30 lines do nothing.  Same for their associated props here, and in EditAddress
     // let exclamation_circle_red = "#fc0d1b"; // I tried to replace literal string below with this variable. Didn't work.
-    let messageTitle = "This is our best guess";
+    const messageTitle = "This is our best guess";
     let messageString = "";
     let addressPopoverOn = true;
     let addressPopoverEnterAddressOn = true;
@@ -107,42 +107,51 @@ export default class EditAddressPopover extends Component {
       addressPopoverEnterAddressOn = false;
     }
 
-    const AddressPopover = <Popover id="popover-trigger-click-root-close" onClick={this.closePopover}>
-      <div style={{ textAlign: "center" }}>
-        <p>
-          <span style={{ color: "#ef1e26" }}>{messageTitle}</span>
-          {/* This is the "x" to close the popover */}
-          <i className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" />
-        </p>
-        <p>{messageString}</p>
-        { addressPopoverEnterAddressOn ?
-          <button className="btn btn-success" onClick={this.props.onEnterAddressClick}>Enter Address &gt;&gt;</button> :
-          null
-        }
-      </div>
-    </Popover>;
+    const AddressPopover = (
+      <Popover id="popover-trigger-click-root-close" onClick={this.closePopover}>
+        <div style={{ textAlign: "center" }}>
+          <p>
+            <span style={{ color: "#ef1e26" }}>{messageTitle}</span>
+            {/* This is the "x" to close the popover */}
+            <i className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" />
+          </p>
+          <p>{messageString}</p>
+          { addressPopoverEnterAddressOn ?
+            <button className="btn btn-success" onClick={this.props.onEnterAddressClick}>Enter Address &gt;&gt;</button> :
+            null
+          }
+        </div>
+      </Popover>
+    );
 
-    let noAddressMessage = "- no address entered -";
-    let maximumAddressDisplayLength = this.state.max_address_display_length !== 0 ? this.state.max_address_display_length : 30;
+    const noAddressMessage = "- no address entered -";
+    const maximumAddressDisplayLength = this.state.max_address_display_length !== 0 ? this.state.max_address_display_length : 30;
 
-    return <span>{ addressPopoverOn ?
-        <OverlayTrigger
-          trigger="click"
-          ref="overlay"
-          onExit={this.closePopover}
-          rootClose
-          placement={this.props.placement}
-          overlay={AddressPopover}>
+    return (
+      <span>
+        { addressPopoverOn ? (
+          <OverlayTrigger
+            trigger="click"
+            ref="overlay"
+            onExit={this.closePopover}
+            rootClose
+            placement={this.props.placement}
+            overlay={AddressPopover}
+          >
             <span className="u-cursor--pointer">
               { this.state.text_for_map_search.length ? shortenText(this.state.text_for_map_search, maximumAddressDisplayLength) : noAddressMessage }
               <span className="position-rating__source with-popover">&nbsp;&nbsp;
-              <i className="fa fa-exclamation-circle" aria-hidden="true" style={{ color: "#fc0d1b" }} />&nbsp;&nbsp;</span>
+                <i className="fa fa-exclamation-circle" aria-hidden="true" style={{ color: "#fc0d1b" }} />&nbsp;&nbsp;
+              </span>
             </span>
-        </OverlayTrigger> :
-        <span onClick={this.props.onEnterAddressClick} className="u-cursor--pointer">
-          { this.state.text_for_map_search.length ? shortenText(this.state.text_for_map_search, maximumAddressDisplayLength) : noAddressMessage }
-          <span className="position-rating__source with-popover">&nbsp;&nbsp;</span>
-        </span> }
-    </span>;
+          </OverlayTrigger>
+        ) : (
+          <span onClick={this.props.onEnterAddressClick} className="u-cursor--pointer">
+            { this.state.text_for_map_search.length ? shortenText(this.state.text_for_map_search, maximumAddressDisplayLength) : noAddressMessage }
+            <span className="position-rating__source with-popover">&nbsp;&nbsp;</span>
+          </span>
+        )}
+      </span>
+    );
   }
 }

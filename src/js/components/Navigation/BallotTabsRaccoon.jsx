@@ -12,7 +12,7 @@ export default class BallotTabsRaccoon extends Component {
     length_remaining: PropTypes.number,
   };
 
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate (nextProps) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (this.props.completionLevelFilterType !== nextProps.completionLevelFilterType) {
       // console.log("shouldComponentUpdate: this.props.completionLevelFilterType", this.props.completionLevelFilterType, ", nextProps.completionLevelFilterType", nextProps.completionLevelFilterType);
@@ -37,47 +37,79 @@ export default class BallotTabsRaccoon extends Component {
     // console.log("BallotTabsRaccoon render, this.props.completionLevelFilterType:", this.props.completionLevelFilterType);
     renderLog(__filename);
 
-    let remaining_decisions_count_different_than_all_items = this.props.length !== this.props.length_remaining;
-    let show_remaining_decisions = remaining_decisions_count_different_than_all_items && this.props.length_remaining || false;
-    let show_decisions_made = remaining_decisions_count_different_than_all_items && this.props.length_remaining || false;
-    let items_decided_count = this.props.length - this.props.length_remaining || 0;
+    const remaining_decisions_count_different_than_all_items = this.props.length !== this.props.length_remaining;
+    const show_remaining_decisions = (remaining_decisions_count_different_than_all_items && this.props.length_remaining) || false;
+    const show_decisions_made = (remaining_decisions_count_different_than_all_items && this.props.length_remaining) || false;
+    const items_decided_count = this.props.length - this.props.length_remaining || 0;
 
-    return <ul className="nav ballot__tabs">
-      <li className="tab__item">
-        <Link onClick={() => this.goToDifferentCompletionLevelTab("filterAllBallotItems")}
-              className={this.props.completionLevelFilterType === "filterAllBallotItems" ? "tab tab--active" : "tab tab--default"}>
-          {/* Desktop */}
-          <span className="d-none d-sm-block">All Items ({this.props.length})</span>
-          {/* Mobile */}
-          <span className="d-block d-sm-none">All ({this.props.length})</span>
-        </Link>
-      </li>
-
-      { show_remaining_decisions ?
+    return (
+      <ul className="nav ballot__tabs">
         <li className="tab__item">
-          <Link onClick={() => this.goToDifferentCompletionLevelTab("filterRemaining")}
-                className={this.props.completionLevelFilterType === "filterRemaining" ? "tab tab--active" : "tab tab--default"}>
+          <Link
+            onClick={() => this.goToDifferentCompletionLevelTab("filterAllBallotItems")}
+            className={this.props.completionLevelFilterType === "filterAllBallotItems" ? "tab tab--active" : "tab tab--default"}
+          >
             {/* Desktop */}
-            <span className="d-none d-sm-block">Remaining Choices ({this.props.length_remaining})</span>
+            <span className="d-none d-sm-block">
+              All Items (
+              {this.props.length}
+              )
+            </span>
             {/* Mobile */}
-            <span className="d-block d-sm-none">Choices ({this.props.length_remaining})</span>
+            <span className="d-block d-sm-none">
+              All (
+              {this.props.length}
+              )
+            </span>
           </Link>
-        </li> :
-        null
-      }
+        </li>
 
-      { show_decisions_made ?
-        <li className="tab__item">
-          <Link onClick={() => this.goToDifferentCompletionLevelTab("filterDecided")}
-                className={this.props.completionLevelFilterType === "filterDecided" ? "tab tab--active" : "tab tab--default"}>
-            {/* Desktop */}
-            <span className="d-none d-sm-block">Items Decided ({items_decided_count})</span>
-            {/* Mobile */}
-            <span className="d-block d-sm-none">Decided ({items_decided_count})</span>
-          </Link>
-        </li> :
-        null
-      }
-    </ul>;
+        { show_remaining_decisions ? (
+          <li className="tab__item">
+            <Link
+              onClick={() => this.goToDifferentCompletionLevelTab("filterRemaining")}
+              className={this.props.completionLevelFilterType === "filterRemaining" ? "tab tab--active" : "tab tab--default"}
+            >
+              {/* Desktop */}
+              <span className="d-none d-sm-block">
+                Remaining Choices (
+                {this.props.length_remaining}
+                )
+              </span>
+              {/* Mobile */}
+              <span className="d-block d-sm-none">
+                Choices (
+                {this.props.length_remaining}
+                )
+              </span>
+            </Link>
+          </li>
+        ) : null
+        }
+
+        { show_decisions_made ? (
+          <li className="tab__item">
+            <Link
+              onClick={() => this.goToDifferentCompletionLevelTab("filterDecided")}
+              className={this.props.completionLevelFilterType === "filterDecided" ? "tab tab--active" : "tab tab--default"}
+            >
+              {/* Desktop */}
+              <span className="d-none d-sm-block">
+                Items Decided (
+                {items_decided_count}
+                )
+              </span>
+              {/* Mobile */}
+              <span className="d-block d-sm-none">
+                Decided (
+                {items_decided_count}
+                )
+              </span>
+            </Link>
+          </li>
+        ) : null
+        }
+      </ul>
+    );
   }
 }

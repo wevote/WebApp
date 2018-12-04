@@ -27,7 +27,7 @@ export default class IssueFollowToggle extends Component {
       is_following = this.props.is_following;
     }
     this.state = {
-      is_following: is_following,
+      is_following,
     };
     this.onIssueFollow = this.onIssueFollow.bind(this);
     this.onIssueStopFollowing = this.onIssueStopFollowing.bind(this);
@@ -39,7 +39,7 @@ export default class IssueFollowToggle extends Component {
   onIssueFollow () {
     // This check is necessary as we enable follow when user clicks on Issue text
     if (!this.state.is_following) {
-      this.setState({is_following: true});
+      this.setState({ is_following: true });
       IssueActions.issueFollow(this.props.issue_we_vote_id);
       if (this.props.on_issue_follow) {
         this.props.on_issue_follow(this.props.issue_we_vote_id);
@@ -61,52 +61,59 @@ export default class IssueFollowToggle extends Component {
     renderLog(__filename);
     if (!this.state) { return <div />; }
 
-    return this.state.is_following ?
+    return this.state.is_following ? (
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
         <div className="intro-modal__hide-sm intro-modal__margin-right">
-          <ImageHandler className="intro-modal__hide-sm hidden-sm card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
-                        sizeClassName="icon-candidate-small u-push--sm "
-                        alt="issue-photo"
-                        kind_of_image="ISSUE"
-                        imageUrl={this.props.issue_image_url}
+          <ImageHandler
+            className="intro-modal__hide-sm hidden-sm card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
+            sizeClassName="icon-candidate-small u-push--sm "
+            alt="issue-photo"
+            kind_of_image="ISSUE"
+            imageUrl={this.props.issue_image_url}
           />
         </div>
         <span className="intro-modal__span intro-modal__margin-right">
           <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue_name}</h4>
           <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue_description}</p>
         </span>
-        { this.props.edit_mode ?
+        { this.props.edit_mode ? (
           <Button variant="warning" size="small" onClick={this.onIssueStopFollowing}>
             <span>Following</span>
-          </Button> :
-          null }
-      </div> :
+          </Button>
+        ) : null
+        }
+      </div>
+    ) : (
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
         <div className="intro-modal__hide-sm intro-modal__margin-right">
-          <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
-                        sizeClassName="icon-candidate-small u-push--sm "
-                        alt="issue-photo"
-                        kind_of_image="ISSUE"
-                        imageUrl={this.props.issue_image_url}
+          <ImageHandler
+            className="card-main__avatar-compressed o-media-object__anchor u-self-start u-push--sm"
+            sizeClassName="icon-candidate-small u-push--sm "
+            alt="issue-photo"
+            kind_of_image="ISSUE"
+            imageUrl={this.props.issue_image_url}
           />
         </div>
 
-        { this.props.edit_mode ?
+        { this.props.edit_mode ? (
           <span className="intro-modal__span intro-modal__margin-right" onClick={this.onIssueFollow}>
             <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue_name}</h4>
             <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue_description}</p>
-          </span> :
+          </span>
+        ) : (
           <span className="intro-modal__span intro-modal__margin-right">
             <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue_name}</h4>
             <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm">{this.props.issue_description}</p>
           </span>
-        }
+        )}
 
-        { this.props.edit_mode ?
+        { this.props.edit_mode ? (
           <Button variant="info" size="small" onClick={this.onIssueFollow}>
             <span>Follow</span>
-          </Button> :
-          null }
-      </div>;
+          </Button>
+        ) : null
+        }
+      </div>
+    );
   }
 }

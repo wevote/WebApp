@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
-import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
-import LoadingWheel from "../../components/LoadingWheel";
+import BrowserPushMessage from "../Widgets/BrowserPushMessage";
+import LoadingWheel from "../LoadingWheel";
 import { renderLog } from "../../utils/logging";
-import SettingsWidgetAccountType from "../../components/Settings/SettingsWidgetAccountType";
-import SettingsWidgetFirstLastName from "../../components/Settings/SettingsWidgetFirstLastName";
-import SettingsWidgetOrganizationDescription from "../../components/Settings/SettingsWidgetOrganizationDescription";
-import SettingsWidgetOrganizationWebsite from "../../components/Settings/SettingsWidgetOrganizationWebsite";
+import SettingsWidgetAccountType from "./SettingsWidgetAccountType";
+import SettingsWidgetFirstLastName from "./SettingsWidgetFirstLastName";
+import SettingsWidgetOrganizationDescription from "./SettingsWidgetOrganizationDescription";
+import SettingsWidgetOrganizationWebsite from "./SettingsWidgetOrganizationWebsite";
 import VoterStore from "../../stores/VoterStore";
 
 
@@ -39,22 +39,29 @@ export default class SettingsProfile extends Component {
       return LoadingWheel;
     }
 
-    return <div className="">
-      <Helmet title={"Your Profile - We Vote"} />
-      <BrowserPushMessage incomingProps={this.props} />
-      <div className="card u-padding-bottom--lg">
-        <div className="card-main">
-          <h1 className="h3">Your Profile</h1>
-          <div>
-            <SettingsWidgetFirstLastName />
-            <SettingsWidgetOrganizationWebsite />
-            <SettingsWidgetOrganizationDescription />
-            <SettingsWidgetAccountType closeEditFormOnChoice
-                                       showEditToggleOption />
-            <div className="card-child__fine_print">Your internal We Vote id: &nbsp; {VoterStore.getVoter().we_vote_id}</div>
+    return (
+      <div className="">
+        <Helmet title="Your Profile - We Vote" />
+        <BrowserPushMessage incomingProps={this.props} />
+        <div className="card u-padding-bottom--lg">
+          <div className="card-main">
+            <h1 className="h3">Your Profile</h1>
+            <div>
+              <SettingsWidgetFirstLastName />
+              <SettingsWidgetOrganizationWebsite />
+              <SettingsWidgetOrganizationDescription />
+              <SettingsWidgetAccountType
+                closeEditFormOnChoice
+                showEditToggleOption
+              />
+              <div className="card-child__fine_print">
+                Your internal We Vote id: &nbsp;
+                {VoterStore.getVoter().we_vote_id}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>;
+    );
   }
 }

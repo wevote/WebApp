@@ -42,7 +42,7 @@ export default class PledgeToVoteButton extends Component {
 
   onVoterGuideStoreChange () {
     this.setState({
-      voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id())
+      voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id()),
     });
   }
 
@@ -57,18 +57,21 @@ export default class PledgeToVoteButton extends Component {
       return null;
     }
 
-    let iStandWithText = "I Will Vote";
-    let iStandWithTextMobile = shortenText(iStandWithText, 32);
+    const iStandWithText = "I Will Vote";
+    const iStandWithTextMobile = shortenText(iStandWithText, 32);
 
-    return <div className="u-stack--sm">
-      <Button block
-              size={"large"}
-              variant={"danger"}
-              onClick={() => { this.props.pledgeToVoteAction(); }
-              }>
-        <span className="voter-guide__pledge-to-support__i-stand-with-button d-none d-sm-block">{iStandWithText}</span>
-        <span className="voter-guide__pledge-to-support__i-stand-with-button d-block d-sm-none">{iStandWithTextMobile}</span>
-      </Button>
-    </div>;
+    return (
+      <div className="u-stack--sm">
+        <Button
+          block
+          size="large"
+          variant="danger"
+          onClick={() => { this.props.pledgeToVoteAction(); }}
+        >
+          <span className="voter-guide__pledge-to-support__i-stand-with-button d-none d-sm-block">{iStandWithText}</span>
+          <span className="voter-guide__pledge-to-support__i-stand-with-button d-block d-sm-none">{iStandWithTextMobile}</span>
+        </Button>
+      </div>
+    );
   }
 }

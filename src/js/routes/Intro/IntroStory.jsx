@@ -33,7 +33,7 @@ export default class IntroStory extends Component {
   }
 
   goToBallotLink () {
-    let sampleBallotLink = "/intro/sample_ballot";
+    const sampleBallotLink = "/intro/sample_ballot";
     historyPush(sampleBallotLink);
   }
 
@@ -52,11 +52,11 @@ export default class IntroStory extends Component {
 
   render () {
     renderLog(__filename);
-    //These are GreenSock animation instances
-    let timeline = new TimelineLite();
+    // These are GreenSock animation instances
+    const timeline = new TimelineLite();
 
-    //These are settings for the react-slick slider
-    let settings = {
+    // These are settings for the react-slick slider
+    const settings = {
       dots: true,
       infinite: false,
       speed: 500,
@@ -64,27 +64,29 @@ export default class IntroStory extends Component {
       slidesToScroll: 1,
       swipe: true,
       accessibility: true,
-      //react-slick default left & right nav arrows
+      // react-slick default left & right nav arrows
       arrows: true,
-      beforeChange: function () {
+      beforeChange () {
         timeline.restart();
       },
     };
 
-    return <div>
-      <Helmet title="Welcome to We Vote" />
-      <div className="intro-story container-fluid well u-inset--md">
-        <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
-        <Slider ref={this.slider} {...settings}>
-          <div key={1}><AnimationStory1 next={this.next}/></div>
-          <div key={2}><AnimationStory2 next={this.next}/></div>
-          <div key={3}><AnimationStory3 next={this.next}/></div>
-          <div key={4}><AnimationStory4 next={this.next}/></div>
-          <div key={5}><AnimationStory5 next={this.next}/></div>
-          {/*<div key={6}><AnimationStory6 next={this.next}/></div>*/}
-          <div key={7}><AnimationStory7 next={this.next} timeline={timeline}/></div>
-       </Slider>
+    return (
+      <div>
+        <Helmet title="Welcome to We Vote" />
+        <div className="intro-story container-fluid well u-inset--md">
+          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt="close" />
+          <Slider ref={this.slider} {...settings}>
+            <div key={1}><AnimationStory1 next={this.next} /></div>
+            <div key={2}><AnimationStory2 next={this.next} /></div>
+            <div key={3}><AnimationStory3 next={this.next} /></div>
+            <div key={4}><AnimationStory4 next={this.next} /></div>
+            <div key={5}><AnimationStory5 next={this.next} /></div>
+            {/* <div key={6}><AnimationStory6 next={this.next}/></div> */}
+            <div key={7}><AnimationStory7 next={this.next} timeline={timeline} /></div>
+          </Slider>
+        </div>
       </div>
-    </div>;
+    );
   }
 }

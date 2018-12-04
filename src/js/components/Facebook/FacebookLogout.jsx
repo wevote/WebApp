@@ -3,9 +3,6 @@ import { renderLog } from "../../utils/logging";
 import FacebookActions from "../../actions/FacebookActions";
 
 class FacebookLogout extends React.Component {
-  constructor (props) {
-    super(props);
-  }
 
   render () {
     renderLog(__filename);

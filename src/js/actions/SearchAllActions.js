@@ -1,26 +1,26 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
 export default {
-  searchAll: function (text_from_search_field) {
+  searchAll (textFromSearchField) {
     Dispatcher.loadEndpoint("searchAll",
       {
-        text_from_search_field: text_from_search_field
+        textFromSearchField,
       });
   },
 
-  exitSearch: function () {
+  exitSearch () {
     // setTimeout, as some components attempt to close the search
     // while it is already being closed
     setTimeout(() => Dispatcher.dispatch("exitSearch"), 0);
   },
 
-  retrieveRecentSearches: function () {
+  retrieveRecentSearches () {
     // Dispatcher.loadEndpoint("retrieveRecentSearches",
     //   {
     //   });
   },
 
-  retrieveRelatedSearches: function () {
+  retrieveRelatedSearches () {
     // Dispatcher.loadEndpoint("retrieveRelatedSearches",
     //   {
     //   });

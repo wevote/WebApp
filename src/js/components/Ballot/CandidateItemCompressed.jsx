@@ -56,7 +56,7 @@ export default class CandidateItemCompressed extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps){
+  componentWillReceiveProps (nextProps) {
     // console.log("officeItem nextProps", nextProps);
     if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
       this.setState({
@@ -96,15 +96,15 @@ export default class CandidateItemCompressed extends Component {
   getCandidateLink (oneCandidateWeVoteId) {
     if (this.state.organization && this.state.organization.organization_we_vote_id) {
       // If there is an organization_we_vote_id, signal that we want to link back to voter_guide for that organization
-      return "/candidate/" + oneCandidateWeVoteId + "/btvg/" + this.state.organization.organization_we_vote_id;
+      return `/candidate/${oneCandidateWeVoteId}/btvg/${this.state.organization.organization_we_vote_id}`;
     } else {
       // If no organization_we_vote_id, signal that we want to link back to default ballot
-      return "/candidate/" + oneCandidateWeVoteId + "/b/btdb/";
+      return `/candidate/${oneCandidateWeVoteId}/b/btdb/`;
     }
   }
 
   goToCandidateLink (oneCandidateWeVoteId) {
-    let candidate_link = this.getCandidateLink(oneCandidateWeVoteId);
+    const candidate_link = this.getCandidateLink(oneCandidateWeVoteId);
     historyPush(candidate_link);
   }
 
@@ -126,74 +126,93 @@ export default class CandidateItemCompressed extends Component {
       return null;
     }
 
-    let oneCandidateWeVoteId = this.state.oneCandidate.we_vote_id;
-    let candidateSupportStore = SupportStore.get(oneCandidateWeVoteId);
-    let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(oneCandidateWeVoteId);
-    let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(oneCandidateWeVoteId);
+    const oneCandidateWeVoteId = this.state.oneCandidate.we_vote_id;
+    const candidateSupportStore = SupportStore.get(oneCandidateWeVoteId);
+    const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(oneCandidateWeVoteId);
+    const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(oneCandidateWeVoteId);
     // console.log("OfficeItemCompressedRaccoon, just retrieved getVoterGuidesToFollowForBallotItemIdSupports");
-    let candidate_party_text = this.state.oneCandidate.party && this.state.oneCandidate.party.length ? this.state.oneCandidate.party + ". " : "";
-    let candidate_description_text = this.state.oneCandidate.twitter_description && this.state.oneCandidate.twitter_description.length ? this.state.oneCandidate.twitter_description : "";
-    let candidate_text = candidate_party_text + candidate_description_text;
+    const candidate_party_text = this.state.oneCandidate.party && this.state.oneCandidate.party.length ? `${this.state.oneCandidate.party}. ` : "";
+    const candidate_description_text = this.state.oneCandidate.twitter_description && this.state.oneCandidate.twitter_description.length ? this.state.oneCandidate.twitter_description : "";
+    const candidate_text = candidate_party_text + candidate_description_text;
 
-    let candidate_photo_raccoon = <div onClick={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(this.state.oneCandidate.we_vote_id) : null}>
-        <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
-                      sizeClassName="icon-candidate-small u-push--sm "
-                      imageUrl={this.state.oneCandidate.candidate_photo_url_large}
-                      alt="candidate-photo"
-                      kind_of_ballot_item="CANDIDATE" />
-      </div>;
-
-    let candidate_name_raccoon = <h4 className="card-main__candidate-name u-f5">
-      {this.props.link_to_ballot_item_page ?
-        <a onClick={() => this.goToCandidateLink(this.state.oneCandidate.we_vote_id)}>
-          <TextTruncate line={1}
-                        truncateText="…"
-                        text={this.state.oneCandidate.ballot_item_display_name}
-                        textTruncateChild={null}/>
-        </a> :
-        <TextTruncate line={1}
-                      truncateText="…"
-                      text={this.state.oneCandidate.ballot_item_display_name}
-                      textTruncateChild={null}/>
-      }
-
-    </h4>;
-
-    let positions_display_raccoon = <div>
-      <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
-        {/* Positions in Your Network and Possible Voter Guides to Follow */}
-        <ItemSupportOpposeRaccoon ballotItemWeVoteId={oneCandidateWeVoteId}
-                                  ballot_item_display_name={this.state.oneCandidate.ballot_item_display_name}
-                                  display_raccoon_details_flag
-                                  goToCandidate={() => this.goToCandidateLink(this.state.oneCandidate.we_vote_id)}
-                                  maximumOrganizationDisplay={this.state.maximum_organization_display}
-                                  organizationsToFollowSupport={organizationsToFollowSupport}
-                                  organizationsToFollowOppose={organizationsToFollowOppose}
-                                  showPositionStatementActionBar={this.props.showPositionStatementActionBar}
-                                  supportProps={candidateSupportStore}
-                                  type="CANDIDATE"/>
+    const candidate_photo_raccoon = (
+      <div onClick={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(this.state.oneCandidate.we_vote_id) : null}>
+        <ImageHandler
+          className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
+          sizeClassName="icon-candidate-small u-push--sm "
+          imageUrl={this.state.oneCandidate.candidate_photo_url_large}
+          alt="candidate-photo"
+          kind_of_ballot_item="CANDIDATE"
+        />
       </div>
-    </div>;
+    );
 
-    return <div key={oneCandidateWeVoteId} className="u-stack--md">
-      <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-        {/* Candidate Photo, only shown in Desktop */}
-        {candidate_photo_raccoon}
-        <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-          {/* Candidate Name */}
-          {candidate_name_raccoon}
-          {/* Description under candidate name */}
-          <LearnMore text_to_display={candidate_text}
-                     on_click={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(this.state.oneCandidate.we_vote_id) : null}
-                     num_of_lines={3} />
-          {/* DESKTOP: If voter has taken position, offer the comment bar */}
-          {/* comment_display_raccoon_desktop */}
-          {/* Organization's Followed AND to Follow Items */}
-          {positions_display_raccoon}
+    const candidate_name_raccoon = (
+      <h4 className="card-main__candidate-name u-f5">
+        {this.props.link_to_ballot_item_page ? (
+          <a onClick={() => this.goToCandidateLink(this.state.oneCandidate.we_vote_id)}>
+            <TextTruncate
+              line={1}
+              truncateText="…"
+              text={this.state.oneCandidate.ballot_item_display_name}
+              textTruncateChild={null}
+            />
+          </a>
+        ) : (
+          <TextTruncate
+            line={1}
+            truncateText="…"
+            text={this.state.oneCandidate.ballot_item_display_name}
+            textTruncateChild={null}
+          />
+        )}
+
+      </h4>
+    );
+
+    const positions_display_raccoon = (
+      <div>
+        <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
+          {/* Positions in Your Network and Possible Voter Guides to Follow */}
+          <ItemSupportOpposeRaccoon
+            ballotItemWeVoteId={oneCandidateWeVoteId}
+            ballot_item_display_name={this.state.oneCandidate.ballot_item_display_name}
+            display_raccoon_details_flag
+            goToCandidate={() => this.goToCandidateLink(this.state.oneCandidate.we_vote_id)}
+            maximumOrganizationDisplay={this.state.maximum_organization_display}
+            organizationsToFollowSupport={organizationsToFollowSupport}
+            organizationsToFollowOppose={organizationsToFollowOppose}
+            showPositionStatementActionBar={this.props.showPositionStatementActionBar}
+            supportProps={candidateSupportStore}
+            type="CANDIDATE"
+          />
         </div>
-        {/* MOBILE: If voter has taken position, offer the comment bar */}
-        {/* comment_display_raccoon_mobile */}
       </div>
-    </div>;
+    );
+
+    return (
+      <div key={oneCandidateWeVoteId} className="u-stack--md">
+        <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+          {/* Candidate Photo, only shown in Desktop */}
+          {candidate_photo_raccoon}
+          <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+            {/* Candidate Name */}
+            {candidate_name_raccoon}
+            {/* Description under candidate name */}
+            <LearnMore
+              text_to_display={candidate_text}
+              on_click={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(this.state.oneCandidate.we_vote_id) : null}
+              num_of_lines={3}
+            />
+            {/* DESKTOP: If voter has taken position, offer the comment bar */}
+            {/* comment_display_raccoon_desktop */}
+            {/* Organization's Followed AND to Follow Items */}
+            {positions_display_raccoon}
+          </div>
+          {/* MOBILE: If voter has taken position, offer the comment bar */}
+          {/* comment_display_raccoon_mobile */}
+        </div>
+      </div>
+    );
   }
 }

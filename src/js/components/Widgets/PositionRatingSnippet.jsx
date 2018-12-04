@@ -37,17 +37,34 @@ export default class PositionRatingSnippet extends Component {
       alt = "Mixed Rating";
     }
 
-    return <div className="position-rating">
+    return (
+      <div className="position-rating">
         <img onClick={show_rating_description} src={src} width="20" height="20" className={className} alt={alt} />
         <div className="position-rating__text">
-          <span className="position-rating__name">Gave {display_name}</span>
+          <span className="position-rating__name">
+            Gave
+            {display_name}
+          </span>
           <br />
           <span className="position-rating__rating u-cursor--pointer" onClick={show_rating_description}>
-            <span className="position-rating__percentage" data-percentage={rating}>{rating}% </span> rating
-            { rating_time_span ? <span className="position-rating__timestamp"> in {rating_time_span}</span> :
-              null }
+            <span className="position-rating__percentage" data-percentage={rating}>
+              {rating}
+              %
+              {" "}
+            </span>
+            {" "}
+            rating
+            { rating_time_span ? (
+              <span className="position-rating__timestamp">
+                {" "}
+                in
+                {rating_time_span}
+              </span>
+            ) : null
+            }
           </span>
         </div>
-      </div>;
+      </div>
+    );
   }
 }

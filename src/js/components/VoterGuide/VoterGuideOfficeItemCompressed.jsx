@@ -2,17 +2,18 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { Modal } from "react-bootstrap";
-import { cordovaDot, historyPush, hasIPhoneNotch } from "../../utils/cordovaUtils";
 import TextTruncate from "react-text-truncate";
+import Icon from "react-svg-icons";
+import Slider from "react-slick";
+import { cordovaDot, historyPush, hasIPhoneNotch } from "../../utils/cordovaUtils";
 import { toTitleCase } from "../../utils/textFormat";
 import AnalyticsActions from "../../actions/AnalyticsActions";
-import BallotIntroFollowIssues from "../../components/Ballot/BallotIntroFollowIssues";
-import BallotIntroFollowAdvisers from "../../components/Ballot/BallotIntroFollowAdvisers";
-import BallotIntroVerifyAddress from "../../components/Ballot/BallotIntroVerifyAddress";
+import BallotIntroFollowIssues from "../Ballot/BallotIntroFollowIssues";
+import BallotIntroFollowAdvisers from "../Ballot/BallotIntroFollowAdvisers";
+import BallotIntroVerifyAddress from "../Ballot/BallotIntroVerifyAddress";
 import BallotStore from "../../stores/BallotStore";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateStore from "../../stores/CandidateStore";
-import Icon from "react-svg-icons";
 import ImageHandler from "../ImageHandler";
 import IssueStore from "../../stores/IssueStore";
 import ItemActionBar from "../Widgets/ItemActionBar";
@@ -22,11 +23,13 @@ import LearnMore from "../Widgets/LearnMore";
 import { renderLog } from "../../utils/logging";
 import OrganizationPositionItem from "./OrganizationPositionItem";
 import OrganizationStore from "../../stores/OrganizationStore";
-import Slider from "react-slick";
 import SupportStore from "../../stores/SupportStore";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
+
+// December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
+/* eslint no-param-reassign: 1 */
 
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 30; // On voter guide pages, we want to show all
 
@@ -96,7 +99,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
         display_office_unfurled: true,
       });
     } else {
-      //read from BallotStore
+      // read from BallotStore
       this.setState({
         display_office_unfurled: BallotStore.getBallotItemUnfurledStatus(this.props.we_vote_id),
       });
@@ -131,8 +134,8 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   onCandidateStoreChange () {
     if (this.props.candidate_list && this.props.candidate_list.length && this.props.we_vote_id) {
       // console.log("onCandidateStoreChange");
-      let newCandidateList = [];
-      this.props.candidate_list.forEach(candidate => {
+      const newCandidateList = [];
+      this.props.candidate_list.forEach((candidate) => {
         if (candidate && candidate.we_vote_id) {
           newCandidateList.push(CandidateStore.getCandidate(candidate.we_vote_id));
         }
@@ -191,10 +194,12 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   }
 
   toggleExpandDetails (displayOfficeUnfurled) {
-    const { we_vote_id: weVoteId, updateOfficeDisplayUnfurledTracker, urlWithoutHash, currentBallotIdInUrl } = this.props;
+    const {
+      we_vote_id: weVoteId, updateOfficeDisplayUnfurledTracker, urlWithoutHash, currentBallotIdInUrl,
+    } = this.props;
     // historyPush should be called only when current office Id (we_vote_id) is not currentBallotIdBeingShown in url.
     if (currentBallotIdInUrl !== weVoteId) {
-      historyPush(urlWithoutHash + "#" + weVoteId);
+      historyPush(`${urlWithoutHash}#${weVoteId}`);
     }
 
     if (typeof displayOfficeUnfurled === "boolean") {
@@ -203,7 +208,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
       this.setState({ display_office_unfurled: !this.state.display_office_unfurled });
     }
 
-    //only update tracker if there are more than 3 offices
+    // only update tracker if there are more than 3 offices
     if (this.props.allBallotItemsCount && this.props.allBallotItemsCount > 3) {
       updateOfficeDisplayUnfurledTracker(weVoteId, !this.state.display_office_unfurled);
     }
@@ -218,20 +223,20 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   }
 
   getCandidateLink (candidateWeVoteId) {
-    return "/candidate/" + candidateWeVoteId + "/btvg/" + this.state.organization.organization_we_vote_id;
+    return `/candidate/${candidateWeVoteId}/btvg/${this.state.organization.organization_we_vote_id}`;
   }
 
   getOfficeLink () {
-    return "/office/" + this.props.we_vote_id + "/btvg/" + this.state.organization.organization_we_vote_id;
+    return `/office/${this.props.we_vote_id}/btvg/${this.state.organization.organization_we_vote_id}`;
   }
 
   goToCandidateLink (candidateWeVoteId) {
-    let candidateLink = this.getCandidateLink(candidateWeVoteId);
+    const candidateLink = this.getCandidateLink(candidateWeVoteId);
     historyPush(candidateLink);
   }
 
   goToOfficeLink () {
-    let officeLink = this.getOfficeLink();
+    const officeLink = this.getOfficeLink();
     historyPush(officeLink);
   }
 
@@ -271,17 +276,18 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   render () {
     // console.log("VoterGuideOfficeItemCompressed render");
     renderLog(__filename);
-    let { ballot_item_display_name: ballotItemDisplayName, we_vote_id: weVoteId } = this.props;
+    let { ballot_item_display_name: ballotItemDisplayName } = this.props;
+    const { we_vote_id: weVoteId } = this.props;
 
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
-    let unsortedCandidateList = this.state.candidateList.slice(0);
-    let totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
+    const unsortedCandidateList = this.state.candidateList.slice(0);
+    const totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
     let remainingCandidatesToDisplayCount = 0;
     // let advisorsThatMakeVoterIssuesScoreDisplay;
     // let advisorsThatMakeVoterIssuesScoreCount = 0;
     // let advisorsThatMakeVoterNetworkScoreCount = 0;
     // let advisorsThatMakeVoterNetworkScoreDisplay = null;
-    let arrayOfCandidatesVoterSupports = [];
+    const arrayOfCandidatesVoterSupports = [];
     let atLeastOneCandidateChosenByNetwork = false;
     // let atLeastOneCandidateChosenByIssueScore = false;
     // let candidateWithMostSupportFromNetwork = null;
@@ -292,7 +298,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     let supportProps;
     let candidateHasVoterSupport;
     let voterIssuesScoreForCandidate;
-    let sortedCandidateList;
     let limitedCandidateList;
 
     // Prepare an array of candidate names that are supported by voter
@@ -311,11 +316,11 @@ export default class VoterGuideOfficeItemCompressed extends Component {
       }
     });
 
-    unsortedCandidateList.sort((optionA, optionB)=>optionB.voterNetworkScoreForCandidate - optionA.voterNetworkScoreForCandidate ||
-                                                   (optionA.is_support === optionB.is_support ? 0 : optionA.is_support ? -1 : 1) ||
+    unsortedCandidateList.sort((optionA, optionB) => optionB.voterNetworkScoreForCandidate - optionA.voterNetworkScoreForCandidate ||
+                                                   (optionA.is_support === optionB.is_support ? 0 : optionA.is_support ? -1 : 1) ||            // eslint-disable-line no-nested-ternary
                                                    optionB.voterIssuesScoreForCandidate - optionA.voterIssuesScoreForCandidate);
     limitedCandidateList = unsortedCandidateList;
-    sortedCandidateList = unsortedCandidateList;
+    const sortedCandidateList = unsortedCandidateList;
     if (!this.state.display_all_candidates_flag && this.state.candidateList.length > NUMBER_OF_CANDIDATES_TO_DISPLAY) {
       limitedCandidateList = sortedCandidateList.slice(0, NUMBER_OF_CANDIDATES_TO_DISPLAY);
       remainingCandidatesToDisplayCount = this.state.candidateList.length - NUMBER_OF_CANDIDATES_TO_DISPLAY;
@@ -356,7 +361,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     let candidateWeVoteId;
     let candidateSupportStore;
 
-    let sliderSettings = {
+    const sliderSettings = {
       dots: true,
       infinite: false,
       speed: 500,
@@ -369,12 +374,15 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     };
     // let candidatePreviewCount = 0;
     // let candidatePreviewLimit = 5;
-    let candidatePreviewList = [];
+    const candidatePreviewList = [];
     // let oneCandidateDisplay = <span />;
-    const BallotIntroFollowIssuesModal = <Modal bsPrefix="background-brand-blue modal"
-                                                id="ballotIntroFollowIssuesId"
-                                                show={this.state.showBallotIntroFollowIssues}
-                                                onHide={() => this._toggleBallotIntroFollowIssues(this)}>
+    const BallotIntroFollowIssuesModal = (
+      <Modal
+        bsPrefix="background-brand-blue modal"
+        id="ballotIntroFollowIssuesId"
+        show={this.state.showBallotIntroFollowIssues}
+        onHide={() => this._toggleBallotIntroFollowIssues(this)}
+      >
         <Modal.Body>
           <div className="intro-modal__close">
             <a onClick={this._toggleBallotIntroFollowIssues} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}>
@@ -382,123 +390,138 @@ export default class VoterGuideOfficeItemCompressed extends Component {
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height intro-modal__height-full" ref="slider" {...sliderSettings}>
-            <div className="intro-modal__height-full" key={1}><BallotIntroFollowIssues next={this._nextSliderPage}/></div>
-            <div className="intro-modal__height-full" key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage}/></div>
+            <div className="intro-modal__height-full" key={1}><BallotIntroFollowIssues next={this._nextSliderPage} /></div>
+            <div className="intro-modal__height-full" key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage} /></div>
             <div className="intro-modal__height-full" key={3}><BallotIntroVerifyAddress next={this._toggleBallotIntroFollowIssues} manualFocus={this.state.current_page_index === 2} /></div>
           </Slider>
         </Modal.Body>
-      </Modal>;
+      </Modal>
+    );
 
-    return <div className="card-main office-item">
-      { BallotIntroFollowIssuesModal }
-      <a className="anchor-under-header" name={weVoteId} />
-      <div className="card-main__content">
-        {/* Desktop */}
-        <span className="d-none d-sm-block">
-          <BookmarkToggle we_vote_id={weVoteId} type="OFFICE" />
-        </span>
-
-        {/* On the voter guide, we bring the size of the office name down so we can emphasize the candidate being supported */}
-        <h2 className="h4 u-f5 card-main__ballot-name u-gray-dark u-stack--sm">
-          <span className="u-cursor--pointer" onClick={this.toggleExpandDetails}>
-            { this.state.display_office_unfurled ?
-              <span className="d-print-none u-push--xs"><Icon name="glyphicons-pro-halflings/glyphicons-halflings-252-triangle-bottom" width={32} height={32} color="" /></span> :
-              null
-            }
-            {ballotItemDisplayName}
+    return (
+      <div className="card-main office-item">
+        { BallotIntroFollowIssuesModal }
+        <a className="anchor-under-header" name={weVoteId} />
+        <div className="card-main__content">
+          {/* Desktop */}
+          <span className="d-none d-sm-block">
+            <BookmarkToggle we_vote_id={weVoteId} type="OFFICE" />
           </span>
-        </h2>
 
-        {/* *************************
+          {/* On the voter guide, we bring the size of the office name down so we can emphasize the candidate being supported */}
+          <h2 className="h4 u-f5 card-main__ballot-name u-gray-dark u-stack--sm">
+            <span className="u-cursor--pointer" onClick={this.toggleExpandDetails}>
+              { this.state.display_office_unfurled ?
+                <span className="d-print-none u-push--xs"><Icon name="glyphicons-pro-halflings/glyphicons-halflings-252-triangle-bottom" width={32} height={32} color="" /></span> :
+                null
+            }
+              {ballotItemDisplayName}
+            </span>
+          </h2>
+
+          {/* *************************
         Only show the candidates if the Office is "unfurled"
         ************************* */}
-        { this.state.display_office_unfurled ?
-          <span>{limitedCandidateList.map((oneCandidate) => {
+          { this.state.display_office_unfurled ? (
+            <span>
+              {limitedCandidateList.map((oneCandidate) => {
 
-            if (!oneCandidate || !oneCandidate.we_vote_id) { return null; }
+                if (!oneCandidate || !oneCandidate.we_vote_id) { return null; }
 
-            candidateWeVoteId = oneCandidate.we_vote_id;
-            candidateSupportStore = SupportStore.get(candidateWeVoteId);
-            let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidateWeVoteId);
-            let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidateWeVoteId);
-            let candidatePartyText = oneCandidate.party && oneCandidate.party.length ? oneCandidate.party + ". " : "";
-            let candidate_description_text = oneCandidate.twitter_description && oneCandidate.twitter_description.length ? oneCandidate.twitter_description : "";
-            let candidate_text = candidatePartyText + candidate_description_text;
+                candidateWeVoteId = oneCandidate.we_vote_id;
+                candidateSupportStore = SupportStore.get(candidateWeVoteId);
+                const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidateWeVoteId);
+                const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidateWeVoteId);
+                const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}. ` : "";
+                const candidate_description_text = oneCandidate.twitter_description && oneCandidate.twitter_description.length ? oneCandidate.twitter_description : "";
+                const candidate_text = candidatePartyText + candidate_description_text;
 
-            organization_position_for_this_candidate = this.getOrganizationPositionForThisCandidate(candidateWeVoteId, this.state.organization.position_list_for_one_election);
+                organization_position_for_this_candidate = this.getOrganizationPositionForThisCandidate(candidateWeVoteId, this.state.organization.position_list_for_one_election);
 
-            return <div key={candidateWeVoteId} className="u-stack--md">
-              <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-                {/* Candidate Photo, only shown in Desktop */}
-                {this.state.display_office_unfurled ?
-                  <div className="d-none d-sm-block" onClick={this.props.link_to_ballot_item_page ? this.toggleExpandDetails : null}>
-                    <ImageHandler className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
-                                  sizeClassName="icon-candidate-small u-push--sm "
-                                  imageUrl={oneCandidate.candidate_photo_url_large}
-                                  alt="candidate-photo"
-                                  kind_of_ballot_item="CANDIDATE" />
-                  </div> :
-                  null
-                }
-                <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-                  {/* Candidate Name */}
-                  <h4 className={"card-main__candidate-name" + (this.doesOrganizationHavePositionOnCandidate(candidateWeVoteId) ? " u-f2" : " u-f6")}>
-                    <a onClick={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(oneCandidate.we_vote_id) : null}>
-                      <TextTruncate line={1}
-                                    truncateText="…"
-                                    text={oneCandidate.ballot_item_display_name}
-                                    textTruncateChild={null}/>
-                    </a>
-                  </h4>
-                  {/* Description under candidate name */}
-                  <LearnMore text_to_display={candidate_text}
-                             on_click={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(oneCandidate.we_vote_id) : null} />
-
-                  {/* Organization Endorsement */}
-                  { this.doesOrganizationHavePositionOnCandidate(candidateWeVoteId) && organization_position_for_this_candidate ?
-                    <OrganizationPositionItem key={organization_position_for_this_candidate.position_we_vote_id}
-                                              position={organization_position_for_this_candidate}
-                                              organization={this.state.organization}
-                                              editMode={this.state.editMode}
-                                              turnOffLogo
-                                              turnOffName
-                             /> :
-                    null }
-
-                  {/* Organization's Followed AND to Follow Items -- only show for promoted candidate(s) */}
-                  { this.doesOrganizationHavePositionOnCandidate(candidateWeVoteId) ?
-                    <div>
-                      <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
-                        {/* Positions in Your Network and Possible Voter Guides to Follow */}
-                        <ItemSupportOpposeRaccoon ballotItemWeVoteId={candidateWeVoteId}
-                                                  ballot_item_display_name={oneCandidate.ballot_item_display_name}
-                                                  currentBallotIdInUrl={this.props.location.hash.slice(1)}
-                                                  display_raccoon_details_flag={this.state.display_office_unfurled}
-                                                  goToCandidate={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
-                                                  maximumOrganizationDisplay={this.state.maximum_organization_display}
-                                                  organizationsToFollowSupport={organizationsToFollowSupport}
-                                                  organizationsToFollowOppose={organizationsToFollowOppose}
-                                                  popoverBottom
-                                                  supportProps={candidateSupportStore}
-                                                  type="CANDIDATE"
-                                                  urlWithoutHash={this.props.location.pathname + this.props.location.search}
-                                                  we_vote_id={this.props.we_vote_id} />
+                return (
+                  <div key={candidateWeVoteId} className="u-stack--md">
+                    <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+                      {/* Candidate Photo, only shown in Desktop */}
+                      {this.state.display_office_unfurled ? (
+                        <div className="d-none d-sm-block" onClick={this.props.link_to_ballot_item_page ? this.toggleExpandDetails : null}>
+                          <ImageHandler
+                            className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
+                            sizeClassName="icon-candidate-small u-push--sm "
+                            imageUrl={oneCandidate.candidate_photo_url_large}
+                            alt="candidate-photo"
+                            kind_of_ballot_item="CANDIDATE"
+                          />
+                        </div>
+                      ) : null
+                      }
+                      <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+                        {/* Candidate Name */}
+                        <h4 className={`card-main__candidate-name${this.doesOrganizationHavePositionOnCandidate(candidateWeVoteId) ? " u-f2" : " u-f6"}`}>
+                          <a onClick={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(oneCandidate.we_vote_id) : null}>
+                            <TextTruncate
+                              line={1}
+                              truncateText="…"
+                              text={oneCandidate.ballot_item_display_name}
+                              textTruncateChild={null}
+                            />
+                          </a>
+                        </h4>
+                        {/* Description under candidate name */}
+                        <LearnMore
+                              text_to_display={candidate_text}
+                              on_click={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(oneCandidate.we_vote_id) : null}
+                        />
+                        {/* Organization Endorsement */}
+                        { this.doesOrganizationHavePositionOnCandidate(candidateWeVoteId) && organization_position_for_this_candidate ? (
+                          <OrganizationPositionItem
+                            key={organization_position_for_this_candidate.position_we_vote_id}
+                            position={organization_position_for_this_candidate}
+                            organization={this.state.organization}
+                            editMode={this.state.editMode}
+                            turnOffLogo
+                            turnOffName
+                          />
+                        ) : null
+                        }
+                        {/* Organization's Followed AND to Follow Items -- only show for promoted candidate(s) */}
+                        { this.doesOrganizationHavePositionOnCandidate(candidateWeVoteId) ? (
+                          <div>
+                            <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
+                              {/* Positions in Your Network and Possible Voter Guides to Follow */}
+                              <ItemSupportOpposeRaccoon
+                                ballotItemWeVoteId={candidateWeVoteId}
+                                ballot_item_display_name={oneCandidate.ballot_item_display_name}
+                                currentBallotIdInUrl={this.props.location.hash.slice(1)}
+                                display_raccoon_details_flag={this.state.display_office_unfurled}
+                                goToCandidate={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
+                                maximumOrganizationDisplay={this.state.maximum_organization_display}
+                                organizationsToFollowSupport={organizationsToFollowSupport}
+                                organizationsToFollowOppose={organizationsToFollowOppose}
+                                popoverBottom
+                                supportProps={candidateSupportStore}
+                                type="CANDIDATE"
+                                urlWithoutHash={this.props.location.pathname + this.props.location.search}
+                                we_vote_id={this.props.we_vote_id}
+                              />
+                            </div>
+                          </div>
+                        ) : null
+                        }
                       </div>
-                    </div> :
-                    null}
-                </div>
-              </div>
-            </div>;
-          })}</span> :
-          null
-        }
+                    </div>
+                  </div>
+                );
+              })}
+            </span>
+          ) : null
+          }
 
-        {/* *************************
-        If the office is "rolled up", show some details for the organization's endorsement
-        ************************* */}
-        { !this.state.display_office_unfurled ?
-          <div>
-            { this.state.candidateList.map(oneCandidate => {
+          {/* *************************
+            If the office is "rolled up", show some details for the organization's endorsement
+            ************************* */}
+          { !this.state.display_office_unfurled ? (
+            <div>
+              { this.state.candidateList.map((oneCandidate) => {
                 if (!oneCandidate || !oneCandidate.we_vote_id) {
                   return null;
                 }
@@ -519,119 +542,146 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                       voter_statement_text = candidateSupportStore.voter_statement_text;
                     }
 
-                    return <div key={candidateWeVoteId}>
-                      {/* Organization Endorsement */}
-                      <OrganizationPositionItem ballotItemLink={this.getCandidateLink(candidateWeVoteId)}
-                                                key={organization_position_for_this_candidate.position_we_vote_id}
-                                                position={organization_position_for_this_candidate}
-                                                organization={this.state.organization}
-                                                editMode={this.state.editMode}
-                      />
-                      <div className="flex">
-                          <ItemActionBar ballot_item_display_name={oneCandidate.ballot_item_display_name}
-                                         ballot_item_we_vote_id={candidateWeVoteId}
-                                         commentButtonHide
-                                         currentBallotIdInUrl={this.props.location.hash.slice(1)}
-                                         shareButtonHide
-                                         supportProps={candidateSupportStore}
-                                         transitioning={this.state.transitioning}
-                                         type="CANDIDATE"
-                                         urlWithoutHash={this.props.location.pathname + this.props.location.search}
-                                         we_vote_id={this.props.we_vote_id}
-                                         />
+                    return (
+                      <div key={candidateWeVoteId}>
+                        {/* Organization Endorsement */}
+                        <OrganizationPositionItem
+                          ballotItemLink={this.getCandidateLink(candidateWeVoteId)}
+                          key={organization_position_for_this_candidate.position_we_vote_id}
+                          position={organization_position_for_this_candidate}
+                          organization={this.state.organization}
+                          editMode={this.state.editMode}
+                        />
+                        <div className="flex">
+                          <ItemActionBar
+                            ballot_item_display_name={oneCandidate.ballot_item_display_name}
+                            ballot_item_we_vote_id={candidateWeVoteId}
+                            commentButtonHide
+                            currentBallotIdInUrl={this.props.location.hash.slice(1)}
+                            shareButtonHide
+                            supportProps={candidateSupportStore}
+                            transitioning={this.state.transitioning}
+                            type="CANDIDATE"
+                            urlWithoutHash={this.props.location.pathname + this.props.location.search}
+                            we_vote_id={this.props.we_vote_id}
+                          />
+                        </div>
+                        {/* DESKTOP: If voter has taken position, offer the comment bar */}
+                        {is_support || is_oppose || voter_statement_text ? (
+                          <div className="d-none d-sm-block o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+                            <div className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">
+                              &nbsp;
+                            </div>
+                            <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+                              <ItemPositionStatementActionBar
+                                ballot_item_display_name={oneCandidate.ballot_item_display_name}
+                                ballot_item_we_vote_id={candidateWeVoteId}
+                                supportProps={candidateSupportStore}
+                                transitioning={this.state.transitioning}
+                                type="CANDIDATE"
+                                shown_in_list
+                              />
+                            </div>
+                          </div>
+                        ) : null
+                        }
+                        {/* MOBILE: If voter has taken position, offer the comment bar */}
+                        {is_support || is_oppose || voter_statement_text ? (
+                          <div className="d-block d-sm-none o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
+                            <div className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">
+                              &nbsp;
+                            </div>
+                            <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+                              <ItemPositionStatementActionBar
+                                ballot_item_display_name={oneCandidate.ballot_item_display_name}
+                                ballot_item_we_vote_id={candidateWeVoteId}
+                                supportProps={candidateSupportStore}
+                                transitioning={this.state.transitioning}
+                                type="CANDIDATE"
+                                shown_in_list
+                              />
+                            </div>
+                          </div>
+                        ) : null
+                        }
                       </div>
-                      {/* DESKTOP: If voter has taken position, offer the comment bar */}
-                      {is_support || is_oppose || voter_statement_text ?
-                        <div className="d-none d-sm-block o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-                          <div
-                            className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
-                          </div>
-                          <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-                            <ItemPositionStatementActionBar ballot_item_display_name={oneCandidate.ballot_item_display_name}
-                                                            ballot_item_we_vote_id={candidateWeVoteId}
-                                                            supportProps={candidateSupportStore}
-                                                            transitioning={this.state.transitioning}
-                                                            type="CANDIDATE"
-                                                            shown_in_list/>
-                          </div>
-                        </div> :
-                        null }
-                      {/* MOBILE: If voter has taken position, offer the comment bar */}
-                      {is_support || is_oppose || voter_statement_text ?
-                        <div className="d-block d-sm-none o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-                          <div
-                            className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm">&nbsp;
-                          </div>
-                          <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-                            <ItemPositionStatementActionBar ballot_item_display_name={oneCandidate.ballot_item_display_name}
-                                                            ballot_item_we_vote_id={candidateWeVoteId}
-                                                            supportProps={candidateSupportStore}
-                                                            transitioning={this.state.transitioning}
-                                                            type="CANDIDATE"
-                                                            shown_in_list/>
-                          </div>
-                        </div> :
-                        null }
-                    </div>;
+                    );
                   }
                 }
                 return null;
               })
             }
-            {/* Now that we are out of the candidate loop we want to add option if a candidate isn't suggested
+              {/* Now that we are out of the candidate loop we want to add option if a candidate isn't suggested
                 by network or issues. */}
-            { voterSupportsAtLeastOneCandidate ?
-              null :
-              <span>
-                { atLeastOneCandidateChosenByNetwork ?
-                  null :
-                  <div>
-                    <span onClick={this.toggleExpandDetails}>
-                      { candidatePreviewList }
-                    </span>
-                    <div className="u-tr d-print-none">
-                      <Link onClick={this._toggleBallotIntroFollowIssues}>
-                        <span className=" u-cursor--pointer">Follow issues or organizations for advice <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" /></span>
-                      </Link>
-                    </div>
-                  </div>
-                }
-              </span>
-            }
-          </div> :
-          null
-        } {/* End of "!this.state.display_office_unfurled ?", yes, a 200 line if clause */}
-
-        { !this.state.display_all_candidates_flag && this.state.display_office_unfurled && remainingCandidatesToDisplayCount ?
-          <Link onClick={this.toggleDisplayAllCandidates}>
-            <span className="u-items-center u-no-break d-print-none">
-              <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
-              <span> Show {remainingCandidatesToDisplayCount} more candidate{ remainingCandidatesToDisplayCount !== 1 ? "s" : null }</span>
-            </span>
-          </Link> : null
-        }
-        {/* this.state.display_all_candidates_flag && this.state.candidateList.length > NUMBER_OF_CANDIDATES_TO_DISPLAY ?
-          <BallotSideBarLink url={"#" + this.props.we_vote_id}
-                             label={"Click to show fewer candidates..."}
-                             displaySubtitles={false}
-                             onClick={this.toggleDisplayAllCandidates} /> : null
-        */}
-        { this.state.display_office_unfurled ?
-          <Link onClick={this.toggleExpandDetails}>
-            <span className="BallotItem__view-more u-items-center pull-right u-no-break d-print-none">
-              show fewer</span>
-          </Link> :
-          <Link onClick={this.toggleExpandDetails}>
-            <div className="BallotItem__view-more u-items-center u-no-break d-print-none">
-              <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
-              { totalNumberOfCandidatesToDisplay > 1 ?
-                <span> View all {totalNumberOfCandidatesToDisplay} candidates</span> :
-                <span> View candidate</span>
-              }
+              { voterSupportsAtLeastOneCandidate ?
+                null : (
+                  <span>
+                    { atLeastOneCandidateChosenByNetwork ?
+                      null : (
+                        <div>
+                          <span onClick={this.toggleExpandDetails}>
+                            { candidatePreviewList }
+                          </span>
+                          <div className="u-tr d-print-none">
+                            <Link onClick={this._toggleBallotIntroFollowIssues}>
+                              <span className=" u-cursor--pointer">
+                                Follow issues or organizations for advice
+                                <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" />
+                              </span>
+                            </Link>
+                          </div>
+                        </div>
+                      )}
+                  </span>
+                )}
             </div>
-          </Link>
-        }
+          ) : null
+          }
+          {" "}
+          {/* End of "!this.state.display_office_unfurled ?", yes, a 200 line if clause */}
+
+          { !this.state.display_all_candidates_flag && this.state.display_office_unfurled && remainingCandidatesToDisplayCount ? (
+            <Link onClick={this.toggleDisplayAllCandidates}>
+              <span className="u-items-center u-no-break d-print-none">
+                <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
+                <span>
+                  {" "}
+                  Show
+                  {remainingCandidatesToDisplayCount}
+                  {" "}
+                  more candidate
+                  { remainingCandidatesToDisplayCount !== 1 ? "s" : null }
+                </span>
+              </span>
+            </Link>
+          ) : null
+          }
+          { this.state.display_office_unfurled ? (
+            <Link onClick={this.toggleExpandDetails}>
+              <span className="BallotItem__view-more u-items-center pull-right u-no-break d-print-none">
+              show fewer
+              </span>
+            </Link>
+          ) : (
+            <Link onClick={this.toggleExpandDetails}>
+              <div className="BallotItem__view-more u-items-center u-no-break d-print-none">
+                <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
+                { totalNumberOfCandidatesToDisplay > 1 ? (
+                  <span>
+                    {" "}
+                    View all
+                    {totalNumberOfCandidatesToDisplay}
+                    {" "}
+                    candidates
+                  </span>
+                ) :
+                  <span> View candidate</span>
+                }
+              </div>
+            </Link>
+          )}
         </div>
-    </div>;
+      </div>
+    );
   }
 }

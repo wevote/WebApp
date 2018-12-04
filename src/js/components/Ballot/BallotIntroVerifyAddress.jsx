@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import AddressBox from "../../components/AddressBox";
+import AddressBox from "../AddressBox";
 import { isWebApp } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 
@@ -26,16 +26,18 @@ export default class BallotIntroVerifyAddress extends Component {
   render () {
     renderLog(__filename);
 
-    return <div className="intro-modal">
-      <div className="intro-modal__h1">Verify your Address</div>
-      <div className="intro-modal__top-description">Please enter your full address so we can look up your full ballot.</div>
-      <div className={ isWebApp() ? "intro-modal__address-box u-padding-bottom--md" : "SettingsCardBottomCordova" } >
-        <AddressBox {...this.props} saveUrl="/ballot" waitingMessage="Thank you! Click 'See Your Ballot' below." disableAutoFocus />
+    return (
+      <div className="intro-modal">
+        <div className="intro-modal__h1">Verify your Address</div>
+        <div className="intro-modal__top-description">Please enter your full address so we can look up your full ballot.</div>
+        <div className={isWebApp() ? "intro-modal__address-box u-padding-bottom--md" : "SettingsCardBottomCordova"}>
+          <AddressBox {...this.props} saveUrl="/ballot" waitingMessage="Thank you! Click 'See Your Ballot' below." disableAutoFocus />
+        </div>
+        <div className="u-flex-auto" />
+        <div className="intro-modal__button-wrap">
+          <button type="button" className="btn btn-success intro-modal__button" onClick={this.props.next}>See Your Ballot&nbsp;&gt;</button>
+        </div>
       </div>
-      <div className="u-flex-auto" />
-      <div className="intro-modal__button-wrap">
-        <button type="button" className="btn btn-success intro-modal__button" onClick={this.props.next}>See Your Ballot&nbsp;&gt;</button>
-      </div>
-    </div>;
+    );
   }
 }

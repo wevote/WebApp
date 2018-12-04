@@ -23,7 +23,7 @@ export default class SignInEmailProcess extends Component {
 
   componentDidMount () {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    let { email_secret_key } = this.props.params;
+    const { email_secret_key } = this.props.params;
     // console.log("SignInEmailProcess, componentDidMount, this.props.params.email_secret_key: ", email_secret_key);
     this.voterEmailAddressSignIn(email_secret_key);
   }
@@ -42,17 +42,17 @@ export default class SignInEmailProcess extends Component {
 
   voterMergeTwoAccountsByEmailKey (email_secret_key) {
     VoterActions.voterMergeTwoAccountsByEmailKey(email_secret_key);
-    this.setState({saving: true});
+    this.setState({ saving: true });
   }
 
   voterEmailAddressSignIn (email_secret_key) {
     VoterActions.voterEmailAddressSignIn(email_secret_key);
-    this.setState({saving: true});
+    this.setState({ saving: true });
   }
 
   render () {
     renderLog(__filename);
-    let { email_secret_key } = this.props.params;
+    const { email_secret_key } = this.props.params;
     // console.log("SignInEmailProcess, email_secret_key:", email_secret_key);
     if (!email_secret_key ||
       this.state.saving ||
@@ -105,11 +105,13 @@ export default class SignInEmailProcess extends Component {
         } else {
           // Display the question of whether to merge accounts or not
           // console.log("BEFORE WouldYouLikeToMergeAccountsOld, this.state.email_sign_in_status:", this.state.email_sign_in_status);
-          return <WouldYouLikeToMergeAccountsOld
-            currentVoterWeVoteId={this.state.voter.we_vote_id}
-            mergeIntoVoterWeVoteId={this.state.email_sign_in_status.voter_we_vote_id_from_secret_key}
-            emailSecretKey={email_secret_key}
-          />;
+          return (
+            <WouldYouLikeToMergeAccountsOld
+              currentVoterWeVoteId={this.state.voter.we_vote_id}
+              mergeIntoVoterWeVoteId={this.state.email_sign_in_status.voter_we_vote_id_from_secret_key}
+              emailSecretKey={email_secret_key}
+            />
+          );
         }
       } else {
         // Go ahead and merge the accounts, which means deleting the current voter id and switching to the email owner
@@ -118,7 +120,7 @@ export default class SignInEmailProcess extends Component {
       }
     } else {
       // console.log("Voter may not be verified yet, redirecting to verfiy page");
-      historyPush("/verify_email/" + email_secret_key);
+      historyPush(`/verify_email/${email_secret_key}`);
     }
 
     return LoadingWheel;

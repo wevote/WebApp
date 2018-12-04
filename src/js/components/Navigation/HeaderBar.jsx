@@ -42,11 +42,11 @@ export default class HeaderBar extends Component {
     // this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.bookmarkStoreListener = BookmarkStore.addListener(this.onBallotStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
-    //this.onBallotStoreChange();
+    // this.onBallotStoreChange();
 
     // this.props.location &&
-    let weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-    let weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
+    const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
+    const weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
     this.setState({
       componentDidMountFinished: true,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
@@ -73,10 +73,10 @@ export default class HeaderBar extends Component {
       // console.log("shouldComponentUpdate: this.state.aboutMenuOpen", this.state.aboutMenuOpen, ", nextState.aboutMenuOpen", nextState.aboutMenuOpen);
       return true;
     }
-    let currentPathnameExists = this.props.location && this.props.location.pathname;
-    let nextPathnameExists = nextProps.location && nextProps.location.pathname;
+    const currentPathnameExists = this.props.location && this.props.location.pathname;
+    const nextPathnameExists = nextProps.location && nextProps.location.pathname;
     // One exists, and the other doesn't
-    if (currentPathnameExists && !nextPathnameExists || !currentPathnameExists && nextPathnameExists) {
+    if ((currentPathnameExists && !nextPathnameExists) || (!currentPathnameExists && nextPathnameExists)) {
       // console.log("shouldComponentUpdate: PathnameExistsDifference");
       return true;
     }
@@ -98,37 +98,43 @@ export default class HeaderBar extends Component {
   }
 
   static ballot (active) {
-    return <Link to="/ballot" className={"header-nav__item" + (active ? " active-icon" : "")}>
-      <Icon name="nav/ballot-icon-24" color="#ffffff" className={"header-nav__icon--ballot"} />
-      <span className="header-nav__label">
+    return (
+      <Link to="/ballot" className={`header-nav__item${active ? " active-icon" : ""}`}>
+        <Icon name="nav/ballot-icon-24" color="#ffffff" className="header-nav__icon--ballot" />
+        <span className="header-nav__label">
         Ballot
-      </span>
-    </Link>;
+        </span>
+      </Link>
+    );
   }
 
   static network (active, numberOfIncomingFriendRequests) {
-    return <Link to="/more/network" className={ "header-nav__item" + (active ? " active-icon" : "")}>
-      <div title="Network">
-        <Icon name="nav/network-icon-24" color="#ffffff" className={"header-nav__icon"} />
-        {numberOfIncomingFriendRequests ?
-          numberOfIncomingFriendRequests < 9 ?
-            <span className="badge-total badge footerNav.badge-total">{numberOfIncomingFriendRequests}</span> :
-            <span className="badge-total badge-total--overLimit badge">9+</span> :
-          null }
-      </div>
-      <span className="header-nav__label">
-        Network
+    return (
+      <Link to="/more/network" className={`header-nav__item${ active ? " active-icon" : ""}`}>
+        <div title="Network">
+          <Icon name="nav/network-icon-24" color="#ffffff" className="header-nav__icon" />
+          {numberOfIncomingFriendRequests ?         // eslint-disable-line no-nested-ternary
+            numberOfIncomingFriendRequests < 9 ?
+              <span className="badge-total badge footerNav.badge-total">{numberOfIncomingFriendRequests}</span> :
+              <span className="badge-total badge-total--overLimit badge">9+</span> :
+            null }
+        </div>
+        <span className="header-nav__label">
+          Network
         </span>
-    </Link>;
+      </Link>
+    );
   }
 
   static donate (active) {
-    return <Link to="/more/donate" className={ "header-nav__item--donate header-nav__item d-none d-sm-block" + (active ? " active-icon" : "")}>
-      <Icon name="nav/donate-icon-24" color="#ffffff" className={"header-nav__icon"} />
-      <span className="header-nav__label">
+    return (
+      <Link to="/more/donate" className={`header-nav__item--donate header-nav__item d-none d-sm-block${active ? " active-icon" : ""}`}>
+        <Icon name="nav/donate-icon-24" color="#ffffff" className="header-nav__icon" />
+        <span className="header-nav__label">
         Donate
-      </span>
-    </Link>;
+        </span>
+      </Link>
+    );
   }
 
   toggleAboutMenu () {
@@ -163,33 +169,33 @@ export default class HeaderBar extends Component {
   imagePlaceholder (speakerType) {
     let imagePlaceholderString = "";
     if (isSpeakerTypeOrganization(speakerType)) {
-      imagePlaceholderString = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
+      imagePlaceholderString = <div id="anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
     } else {
-      imagePlaceholderString = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
+      imagePlaceholderString = <div id="anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
     }
 
     return imagePlaceholderString;
   }
 
   goToGetStarted () {
-    let getStartedNow = "/ballot";
+    const getStartedNow = "/ballot";
     historyPush(getStartedNow);
   }
 
   render () {
     renderLog(__filename);
-    let { pathname } = this.props;
-    let voter = this.props.voter;
-    let voterPhotoUrlMedium = voter.voter_photo_url_medium;
-    let speakerType = "V";  // TODO DALE make this dynamic
-    let numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length;
-    let voterIsSignedIn = this.props.voter && this.props.voter.is_signed_in;
-    let showFullNavigation = cookies.getItem("show_full_navigation") || voterIsSignedIn;
-    let weVoteBrandingOff = this.state.we_vote_branding_off;
-    let inNetworkSection = pathname === "/more/network" || pathname === "/more/network/organizations" || pathname === "/more/network/issues" || pathname === "/more/network/friends";
+    const { pathname } = this.props;
+    const voter = this.props.voter;
+    const voterPhotoUrlMedium = voter.voter_photo_url_medium;
+    const speakerType = "V"; // TODO DALE make this dynamic
+    const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length;
+    const voterIsSignedIn = this.props.voter && this.props.voter.is_signed_in;
+    const showFullNavigation = cookies.getItem("show_full_navigation") || voterIsSignedIn;
+    const weVoteBrandingOff = this.state.we_vote_branding_off;
+    const inNetworkSection = pathname === "/more/network" || pathname === "/more/network/organizations" || pathname === "/more/network/issues" || pathname === "/more/network/friends";
 
     return (
-      <header className={ isWebApp() ? "page-header" : "page-header page-header__cordova" }>
+      <header className={isWebApp() ? "page-header" : "page-header page-header__cordova"}>
         {!weVoteBrandingOff && isWebApp() && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />
         }
         <div className="header-nav">
@@ -197,64 +203,75 @@ export default class HeaderBar extends Component {
 
           { showFullNavigation && isWebApp() && HeaderBar.network(inNetworkSection, numberOfIncomingFriendRequests) }
 
-          { weVoteBrandingOff || isCordova() ? null :
+          { weVoteBrandingOff || isCordova() ? null : (
             <span>
-              { showFullNavigation ?
-                <span onClick={this.toggleAboutMenu} className={ "header-nav__item header-nav__item--about d-none d-sm-block" + (pathname === "/more/about" ? " active-icon" : "")}>
+              { showFullNavigation ? (
+                <span onClick={this.toggleAboutMenu} className={`header-nav__item header-nav__item--about d-none d-sm-block${pathname === "/more/about" ? " active-icon" : ""}`}>
                   <span className="header-nav__icon--about">About</span>
                   <span className="header-nav__label">We Vote</span>
                   <HeaderBarAboutMenu toggleAboutMenu={this.toggleAboutMenu} aboutMenuOpen={this.state.aboutMenuOpen} />
-                </span> :
+                </span>
+              ) : (
                 <div>
-                  <Link to="/more/about" className={ "header-nav__item header-nav__item--about" + (pathname === "/more/about" ? " active-icon" : "")}>
+                  <Link to="/more/about" className={`header-nav__item header-nav__item--about${pathname === "/more/about" ? " active-icon" : ""}`}>
                     <span className="header-nav__icon--about">About</span>
                     <span className="header-nav__label">We Vote</span>
                   </Link>
-                 </div>
-              }
+                </div>
+              )}
             </span>
-          }
+          )}
 
           { showFullNavigation && !weVoteBrandingOff && isWebApp() ? HeaderBar.donate(pathname === "/more/donate") : null }
 
-          { !showFullNavigation && isWebApp() &&
-            <button type="button" className="btn btn-sm btn-success"
-                onClick={this.goToGetStarted}>Sample Ballot</button> }
+          { !showFullNavigation && isWebApp() && (
+          <button
+            type="button"
+            className="btn btn-sm btn-success"
+            onClick={this.goToGetStarted}
+          >
+            Sample Ballot
+          </button>
+          )}
 
-          { !showFullNavigation && isWebApp() &&
-            <Link to="/settings/account" className="sign_in header-nav__item">
+          { !showFullNavigation && isWebApp() && (
+          <Link to="/settings/account" className="sign_in header-nav__item">
               Sign In
-            </Link>
-          }
+          </Link>
+          )}
         </div>
 
         {/* (showFullNavigation || isCordova()) && <SearchAllBox /> */}
 
-        { showFullNavigation && isWebApp() &&
-          <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleProfilePopUp}>
-          {voterPhotoUrlMedium ?
+        { showFullNavigation && isWebApp() && (
+        <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleProfilePopUp}>
+          {voterPhotoUrlMedium ? (
             <div id="js-header-avatar" className="header-nav__avatar-container">
-                <img className="header-nav__avatar"
-                      src={voterPhotoUrlMedium}
-                      height={34}
-                      width={34}
-                 />
-            </div> : this.imagePlaceholder(speakerType)
+              <img
+                className="header-nav__avatar"
+                src={voterPhotoUrlMedium}
+                height={34}
+                width={34}
+              />
+            </div>
+          ) : this.imagePlaceholder(speakerType)
           }
           {/* Was AccountMenu */}
-          {this.state.profilePopUpOpen &&
-            <HeaderBarProfilePopUp {...this.props}
-                                  onClick={this.toggleProfilePopUp}
-                                  profilePopUpOpen={this.state.profilePopUpOpen}
-                                  bookmarks={this.state.bookmarks}
-                                  weVoteBrandingOff={this.state.we_vote_branding_off}
-                                  toggleProfilePopUp={this.toggleProfilePopUp}
-                                  hideProfilePopUp={this.hideProfilePopUp}
-                                  transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
-                                  signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)} />
-          }
-         </div>
-        }
+          {this.state.profilePopUpOpen && (
+          <HeaderBarProfilePopUp
+            {...this.props}
+            onClick={this.toggleProfilePopUp}
+            profilePopUpOpen={this.state.profilePopUpOpen}
+            bookmarks={this.state.bookmarks}
+            weVoteBrandingOff={this.state.we_vote_branding_off}
+            toggleProfilePopUp={this.toggleProfilePopUp}
+            hideProfilePopUp={this.hideProfilePopUp}
+            transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
+            signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
+          />
+          )}
+        </div>
+        )}
       </header>
     );
   }

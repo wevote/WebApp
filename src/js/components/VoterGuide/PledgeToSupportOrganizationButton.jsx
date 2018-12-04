@@ -60,21 +60,25 @@ export default class PledgeToSupportOrganizationButton extends Component {
 
     // console.log("PledgeToSupportOrganizationButton, this.state.voter_guide: ", this.state.voter_guide);
 
-    let iStandWithText = "I Stand With " + this.props.organization.organization_name;
-    let iStandWithTextMobile = shortenText(iStandWithText, 32);
+    const iStandWithText = `I Stand With ${this.props.organization.organization_name}`;
+    const iStandWithTextMobile = shortenText(iStandWithText, 32);
 
-    return <span>
-      <Button block
-              size={"large"}
-              variant={"danger"}
-              onClick={() => { this.props.pledgeToVoteAction(); }
-              }>
-        <span className="voter-guide__pledge-to-support__i-stand-with-button d-none d-sm-block">{iStandWithText}</span>
-        <span className="voter-guide__pledge-to-support__i-stand-with-button d-block d-sm-none">{iStandWithTextMobile}</span>
-      </Button>
-      <div className="voter-guide__pledge-to-support__i-stand-with-button-description u-stack--md">
-        {"Click this button to match what " + this.props.organization.organization_name + " supports or opposes."}
+    return (
+      <span>
+        <Button
+          block
+          size="large"
+          variant="danger"
+          onClick={() => { this.props.pledgeToVoteAction(); }
+              }
+        >
+          <span className="voter-guide__pledge-to-support__i-stand-with-button d-none d-sm-block">{iStandWithText}</span>
+          <span className="voter-guide__pledge-to-support__i-stand-with-button d-block d-sm-none">{iStandWithTextMobile}</span>
+        </Button>
+        <div className="voter-guide__pledge-to-support__i-stand-with-button-description u-stack--md">
+          {`Click this button to match what ${this.props.organization.organization_name} supports or opposes.`}
         </div>
-    </span>;
+      </span>
+    );
   }
 }

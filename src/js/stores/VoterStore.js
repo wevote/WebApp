@@ -10,7 +10,6 @@ import VoterActions from "../actions/VoterActions";
 import VoterGuideActions from "../actions/VoterGuideActions";
 
 class VoterStore extends ReduceStore {
-
   getInitialState () {
     return {
       voter: {
@@ -158,7 +157,7 @@ class VoterStore extends ReduceStore {
       return [];
     }
 
-    let data_list = [];
+    const data_list = [];
     for (let i = 0, len = arr.length; i < len; i++) {
       data_list.push(arr[i]);
     }
@@ -166,6 +165,7 @@ class VoterStore extends ReduceStore {
     return data_list;
   }
 
+  // Airbnb doesnt like bitwise operators in JavaScript
   getInterfaceFlagState (flag) {
     // Look in js/Constants/VoterConstants.js for list of flag constant definitions
     // console.log("VoterStore getInterfaceFlagState flag: ", flag);
@@ -173,13 +173,13 @@ class VoterStore extends ReduceStore {
       return false;
     }
 
-    let interfaceStatusFlags = this.getState().voter.interface_status_flags || 0;
+    const interfaceStatusFlags = this.getState().voter.interface_status_flags || 0;
     // console.log("VoterStore getInterfaceFlagState interfaceStatusFlags: ", interfaceStatusFlags);
     // return True if bit specified by the flag is also set in interfaceStatusFlags (voter.interface_status_flags)
     // Eg: if interfaceStatusFlags = 5, then we can confirm that bits representing 1 and 4 are set (i.e., 0101)
     // so for value of flag = 1 and 4, we return a positive integer,
     // but, the bit representing 2 and 8 are not set, so for flag = 2 and 8, we return zero
-    let flagIsSet = interfaceStatusFlags & flag;
+    const flagIsSet = interfaceStatusFlags & flag;  // eslint-disable-line no-bitwise
     // console.log("VoterStore getInterfaceFlagState flagIsSet: ", flagIsSet);
     return flagIsSet;
   }
@@ -189,13 +189,13 @@ class VoterStore extends ReduceStore {
     if (!this.getState().voter) {
       return false;
     }
-    let notificationSettingsFlags = this.getState().voter.notification_settings_flags || 0;
+    const notificationSettingsFlags = this.getState().voter.notification_settings_flags || 0;
     // return True if bit specified by the flag is also set
     //  in notificationSettingsFlags (voter.notification_settings_flags)
     // Eg: if interfaceStatusFlags = 5, then we can confirm that bits representing 1 and 4 are set (i.e., 0101)
     // so for value of flag = 1 and 4, we return a positive integer,
     // but, the bit representing 2 and 8 are not set, so for flag = 2 and 8, we return zero
-    return notificationSettingsFlags & flag;
+    return notificationSettingsFlags & flag; // eslint-disable-line no-bitwise
   }
 
   isVoterFound () {
@@ -207,9 +207,17 @@ class VoterStore extends ReduceStore {
   // }
 
   reduce (state, action) {
+    // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
+    if (!action.res || !action.res.success) return state;
 
     let voter_device_id;
     let google_civic_election_id;
+    let address;
+    const facebook_photo_retrieve_loop_count = state.facebook_photo_retrieve_loop_count;
+    // Preserve address within voter
+    const incoming_voter = action.res;
+    const current_voter_device_id = cookies.getItem("voter_device_id");
+    const {first_name, last_name, email, interface_status_flags, notification_settings_flags, voter_donation_history_list} = action.res;
 
     switch (action.type) {
       case "organizationSave":
@@ -219,8 +227,8 @@ class VoterStore extends ReduceStore {
           if (action.res.facebook_id === state.voter.facebook_id) {
             VoterActions.voterRetrieve();
           } else {
-            let organization_twitter_handle = action.res.organization_twitter_handle !== undefined ? action.res.organization_twitter_handle : "";
-            let twitter_screen_name = state.voter.twitter_screen_name !== undefined ? state.voter.twitter_screen_name : "";
+            const organization_twitter_handle = action.res.organization_twitter_handle !== undefined ? action.res.organization_twitter_handle : "";
+            const twitter_screen_name = state.voter.twitter_screen_name !== undefined ? state.voter.twitter_screen_name : "";
             if (organization_twitter_handle && organization_twitter_handle.toLowerCase() === twitter_screen_name.toLowerCase()) {
               VoterActions.voterRetrieve();
             }
@@ -245,30 +253,30 @@ class VoterStore extends ReduceStore {
 
       case "positionListForVoter":
         if (action.res.show_only_this_election) {
-          let position_list_for_one_election = action.res.position_list;
+          const position_list_for_one_election = action.res.position_list;
           return {
             ...state,
             voter: {
               ...state.voter,
-              position_list_for_one_election: position_list_for_one_election
+              position_list_for_one_election,
             },
           };
         } else if (action.res.show_all_other_elections) {
-          let position_list_for_all_except_one_election = action.res.position_list;
+          const position_list_for_all_except_one_election = action.res.position_list;
           return {
             ...state,
             voter: {
               ...state.voter,
-              position_list_for_all_except_one_election: position_list_for_all_except_one_election
+              position_list_for_all_except_one_election,
             },
           };
         } else {
-          let position_list = action.res.position_list;
+          const position_list = action.res.position_list;
           return {
             ...state,
             voter: {
               ...state.voter,
-              position_list: position_list
+              position_list,
             },
           };
         }
@@ -277,7 +285,7 @@ class VoterStore extends ReduceStore {
         // console.log("twitterRetrieveIdsIFollow")
         if (action.res.success) {
           VoterActions.organizationSuggestionTasks("UPDATE_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW",
-          "FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
+            "FOLLOW_SUGGESTIONS_FROM_TWITTER_IDS_I_FOLLOW");
         }
 
         return state;
@@ -316,7 +324,6 @@ class VoterStore extends ReduceStore {
           SupportActions.positionsCountForAllBallotItems(action.res.google_civic_election_id);
         }
 
-        let address;
         if (action.res.address) {
           address = action.res.address;
         } else {
@@ -326,7 +333,7 @@ class VoterStore extends ReduceStore {
             ballot_returned_we_vote_id: "",
             ballot_location_display_name: "",
             voter_entered_address: "",
-            voter_specific_ballot_from_google_civic: null
+            voter_specific_ballot_from_google_civic: null,
           };
         }
 
@@ -338,8 +345,8 @@ class VoterStore extends ReduceStore {
             ballot_returned_we_vote_id: address.ballot_returned_we_vote_id,
             ballot_location_display_name: address.ballot_location_display_name,
             voter_entered_address: address.voter_entered_address,
-            voter_specific_ballot_from_google_civic: address.voter_specific_ballot_from_google_civic
-          }
+            voter_specific_ballot_from_google_civic: address.voter_specific_ballot_from_google_civic,
+          },
         };
 
       case "voterBallotItemsRetrieve":
@@ -442,31 +449,25 @@ class VoterStore extends ReduceStore {
             voter_merge_two_accounts_attempted: true,
           },
           facebook_sign_in_status: {
-            voter_merge_two_accounts_attempted: true,  // TODO DALE is this needed?
+            voter_merge_two_accounts_attempted: true, // TODO DALE is this needed?
           },
           twitter_sign_in_status: {
-            voter_merge_two_accounts_attempted: true,  // TODO DALE is this needed?
+            voter_merge_two_accounts_attempted: true, // TODO DALE is this needed?
           },
         };
 
       case "voterPhotoSave":
         return {
           ...state,
-          voter: { ...state.voter, facebook_profile_image_url_https: action.res.facebook_profile_image_url_https }
+          voter: { ...state.voter, facebook_profile_image_url_https: action.res.facebook_profile_image_url_https },
         };
 
       case "voterRetrieve":
         // console.log("VoterStore, voterRetrieve state on entry: ",  state);
         // console.log("VoterStore, voterRetrieve state on entry: ",  state.voter);
-        let facebook_photo_retrieve_loop_count = state.facebook_photo_retrieve_loop_count;
-
-        // Preserve address within voter
-        let incoming_voter = action.res;
-
-        let current_voter_device_id = cookies.getItem("voter_device_id");
         if (!action.res.voter_found) {
-          console.log("This voter_device_id is not in the db and is invalid, so delete it: " +
-                       cookies.getItem("voter_device_id"));
+          console.log(`This voter_device_id is not in the db and is invalid, so delete it: ${
+            cookies.getItem("voter_device_id")}`);
 
           cookies.removeItem("voter_device_id");
           cookies.removeItem("voter_device_id", "/");
@@ -493,7 +494,7 @@ class VoterStore extends ReduceStore {
             // resolves to FACEBOOK_RECEIVED_PICTURE which then attempts to save using voterFacebookSignInPhoto
             // which in turn resolves to voterFacebookSignInSave which finally attempts to call
             // voterRetrieve again
-            let url = action.res.facebook_profile_image_url_https;
+            const url = action.res.facebook_profile_image_url_https;
             // console.log("VoterStore, voterRetrieve, action.res: ", action.res);
 
             if (action.res.signed_in_facebook && (url === null || url === "") && facebook_photo_retrieve_loop_count < 10) {
@@ -527,17 +528,17 @@ class VoterStore extends ReduceStore {
         };
 
       case "voterUpdate":
-        const {first_name, last_name, email, interface_status_flags, notification_settings_flags, voter_donation_history_list} = action.res;
         return {
           ...state,
-          voter: {...state.voter,
+          voter: {
+            ...state.voter,
             // With this we are only updating the values we change with a voterUpdate call.
-            first_name: first_name ? first_name : state.voter.first_name,
-            last_name: last_name ? last_name : state.voter.last_name,
-            facebook_email: email ? email : state.voter.email,
-            interface_status_flags: interface_status_flags ? interface_status_flags : state.voter.interface_status_flags,
-            notification_settings_flags: notification_settings_flags ? notification_settings_flags : state.voter.notification_settings_flags,
-            voter_donation_history_list: voter_donation_history_list ? voter_donation_history_list : state.voter.voter_donation_history_list,
+            first_name: first_name || state.voter.first_name,
+            last_name: last_name || state.voter.last_name,
+            facebook_email: email || state.voter.email,
+            interface_status_flags: interface_status_flags || state.voter.interface_status_flags,
+            notification_settings_flags: notification_settings_flags || state.voter.notification_settings_flags,
+            voter_donation_history_list: voter_donation_history_list || state.voter.voter_donation_history_list,
           },
         };
 

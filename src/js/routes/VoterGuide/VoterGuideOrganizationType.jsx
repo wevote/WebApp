@@ -24,27 +24,27 @@ export default class VoterGuideOrganizationType extends Component {
   }
 
   componentDidMount () {
-    //AnalyticsActions.saveActionVoterGuideGetStarted(VoterStore.election_id());
+    // AnalyticsActions.saveActionVoterGuideGetStarted(VoterStore.election_id());
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.setState({
       autoFocus: true,
     });
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // Get Voter and Voter's Organization
-    let voter = VoterStore.getVoter();
+    const voter = VoterStore.getVoter();
     if (voter && voter.is_signed_in) {
       historyPush("/voterguidechooseelection");
     }
-    let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log("SettingsDashboard componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId) {
       this.setState({
-        linkedOrganizationWeVoteId: linkedOrganizationWeVoteId,
+        linkedOrganizationWeVoteId,
       });
-      let organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
+      const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
       if (organization && organization.organization_we_vote_id) {
         this.setState({
-          organization: organization,
+          organization,
         });
       } else {
         OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
@@ -67,15 +67,15 @@ export default class VoterGuideOrganizationType extends Component {
   }
 
   onVoterStoreChange () {
-    let voter = VoterStore.getVoter();
+    const voter = VoterStore.getVoter();
     if (voter && voter.is_signed_in) {
       historyPush("/voterguidechooseelection");
     }
-    let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log("SettingsDashboard onVoterStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
       OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
-      this.setState({ linkedOrganizationWeVoteId: linkedOrganizationWeVoteId });
+      this.setState({ linkedOrganizationWeVoteId });
     }
   }
 
@@ -90,7 +90,7 @@ export default class VoterGuideOrganizationType extends Component {
   }
 
   goToBallotLink () {
-    let sampleBallotLink = "/ballot";
+    const sampleBallotLink = "/ballot";
     historyPush(sampleBallotLink);
   }
 
@@ -100,14 +100,12 @@ export default class VoterGuideOrganizationType extends Component {
 
   render () {
     renderLog(__filename);
-    let actionButtonHtml;
-    actionButtonHtml = <button type="button" className="btn btn-lg btn-success"
-                    onClick={this.goToOrganizationInfo}>Next&nbsp;&nbsp;&gt;</button>;
 
-    return <div>
-      <Helmet title="Type of Profile - We Vote" />
+    return (
+      <div>
+        <Helmet title="Type of Profile - We Vote" />
         <div className="intro-story container well u-inset--md">
-          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
+          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt="close" />
           <div className="create-voter-guide__h1 xs-text-left">Create Your Voter Guide</div>
           <div className="create-voter-guide__steps xs-text-left">
             Step 2 of 5
@@ -121,9 +119,16 @@ export default class VoterGuideOrganizationType extends Component {
             <div className="col-sm-2 col-xs-1">&nbsp;</div>
           </div>
           <footer className="create-voter-guide__footer">
-            {actionButtonHtml}
+            <button
+              type="button"
+              className="btn btn-lg btn-success"
+              onClick={this.goToOrganizationInfo}
+            >
+              Next&nbsp;&nbsp;&gt;
+            </button>
           </footer>
         </div>
-      </div>;
+      </div>
+    );
   }
 }

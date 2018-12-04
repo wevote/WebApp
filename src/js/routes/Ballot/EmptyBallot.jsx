@@ -5,13 +5,10 @@ export default class EmptyBallot extends Component {
   static propTypes = {
   };
 
-  constructor (props) {
-    super(props);
-  }
-
   render () {
     renderLog(__filename);
-    return <div>
+    return (
+      <div>
         <div className="container-fluid well u-stack--md u-inset--md">
           <h3 className="text-center">
             We Cannot Find Your Ballot
@@ -22,12 +19,13 @@ export default class EmptyBallot extends Component {
           <br />
           <br />
           <div className="medium">
-            See We Vote in action! Copy this test address into "Your Address":
+            See We Vote in action! Copy this test address into &quot;Your Address&quot;:
           </div>
           <h4 className="h4">
             1717 Clemens Rd, Oakland CA 94602
           </h4>
         </div>
-      </div>;
+      </div>
+    );
   }
 }

@@ -49,22 +49,22 @@ export default class SettingsDashboard extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     // Get Voter and Voter's Organization
-    let voter = VoterStore.getVoter();
+    const voter = VoterStore.getVoter();
     this.setState({
-      voter: voter,
+      voter,
     });
-    let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
 
     // console.log("SettingsDashboard componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId) {
       VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
       this.setState({
-        linkedOrganizationWeVoteId: linkedOrganizationWeVoteId,
+        linkedOrganizationWeVoteId,
       });
-      let organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
+      const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
       if (organization && organization.organization_we_vote_id) {
         this.setState({
-          organization: organization,
+          organization,
         });
       } else {
         OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
@@ -73,22 +73,22 @@ export default class SettingsDashboard extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    let voter = VoterStore.getVoter();
+    const voter = VoterStore.getVoter();
     this.setState({
-      voter: voter,
+      voter,
     });
-    let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
 
     // console.log("SettingsDashboard componentWillReceiveProps linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
       VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
       this.setState({
-        linkedOrganizationWeVoteId: linkedOrganizationWeVoteId,
+        linkedOrganizationWeVoteId,
       });
-      let organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
+      const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
       if (organization && organization.organization_we_vote_id) {
         this.setState({
-          organization: organization,
+          organization,
         });
       } else {
         OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
@@ -108,7 +108,7 @@ export default class SettingsDashboard extends Component {
 
   onOrganizationStoreChange () {
     // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
-    let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
+    const organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
     if (organization && organization.organization_type) {
       this.setState({
         organization,
@@ -122,17 +122,17 @@ export default class SettingsDashboard extends Component {
   }
 
   onVoterStoreChange () {
-    let voter = VoterStore.getVoter();
+    const voter = VoterStore.getVoter();
     this.setState({
-      voter: voter,
+      voter,
     });
-    let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
 
     // console.log("SettingsDashboard onVoterStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
       OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
       VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
-      this.setState({ linkedOrganizationWeVoteId: linkedOrganizationWeVoteId });
+      this.setState({ linkedOrganizationWeVoteId });
     }
   }
 
@@ -151,10 +151,10 @@ export default class SettingsDashboard extends Component {
         break;
       case "issues_linked":
       case "issues_to_link":
-        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id={this.state.voter.we_vote_id} params={{active_tab: this.state.editMode}}/>;
+        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id={this.state.voter.we_vote_id} params={{ active_tab: this.state.editMode }} />;
         break;
       case "issues":
-        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id={this.state.voter.we_vote_id} params={{active_tab: ""}}/>;
+        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id={this.state.voter.we_vote_id} params={{ active_tab: "" }} />;
         break;
       case "notifications":
         settingsComponentToDisplay = <SettingsNotifications />;
@@ -166,34 +166,37 @@ export default class SettingsDashboard extends Component {
     }
 
     // console.log("this.state.organization.organization_banner_url:", this.state.organization.organization_banner_url);
-    return <div className={ isWebApp() ? "settings-dashboard" : "settings-dashboard SettingsCardBottomCordova" } >
-      {/* Header Spacing for Desktop */}
-      { isWebApp() &&
+    return (
+      <div className={isWebApp() ? "settings-dashboard" : "settings-dashboard SettingsCardBottomCordova"}>
+        {/* Header Spacing for Desktop */}
+        { isWebApp() && (
         <div className={isWebApp() ? "col-md-12 d-none d-sm-block d-print-none" : "col-md-12 d-print-none"}>
-          <SettingsBannerAndOrganizationCard organization={this.state.organization}/>
+          <SettingsBannerAndOrganizationCard organization={this.state.organization} />
         </div>
-      }
-      {/* Header Spacing for Mobile */}
-      <div className={ isWebApp() ? "d-block d-sm-none d-print-none" : "d-print-none" } >
-        <SettingsBannerAndOrganizationCard organization={this.state.organization} />
-      </div>
+        )}
+        {/* Header Spacing for Mobile */}
+        <div className={isWebApp() ? "d-block d-sm-none d-print-none" : "d-print-none"}>
+          <SettingsBannerAndOrganizationCard organization={this.state.organization} />
+        </div>
 
-      {/* Desktop left navigation + Settings content.
+        {/* Desktop left navigation + Settings content.
           WebApp only, since the dashboard doesn't go well with the HamburgerMenu on iPad */}
-      { isWebApp() &&
+        { isWebApp() && (
         <div className="d-none d-sm-block">
           <div className="container-fluid">
             <div className="row">
               {/* Desktop mode left navigation */}
               <div className="col-4 sidebar-menu">
-                <SettingsPersonalSideBar editMode={this.state.editMode} isSignedIn={this.state.voter.is_signed_in} organizationType={this.state.organizationType}/>
+                <SettingsPersonalSideBar editMode={this.state.editMode} isSignedIn={this.state.voter.is_signed_in} organizationType={this.state.organizationType} />
 
-                <SelectVoterGuidesSideBar/>
+                <SelectVoterGuidesSideBar />
 
-                <h4 className="text-left"/>
+                <h4 className="text-left" />
                 <div className="terms-and-privacy u-padding-top--md">
-                  <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;<Link to="/more/privacy">Privacy
-                  Policy</Link>
+                  <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;
+                  <Link to="/more/privacy">
+                    Privacy Policy
+                  </Link>
                 </div>
               </div>
               {/* Desktop mode content */}
@@ -203,20 +206,22 @@ export default class SettingsDashboard extends Component {
             </div>
           </div>
         </div>
-      }
+        )}
 
-      {/* Mobile Settings content */}
-      { isWebApp() ?
-        <div className="d-block d-sm-none">
-          {/* Mobile mode content */}
+        {/* Mobile Settings content */}
+        { isWebApp() ? (
+          <div className="d-block d-sm-none">
+            {/* Mobile mode content */}
+            <div className="col-12">
+              {settingsComponentToDisplay}
+            </div>
+          </div>
+        ) : (
           <div className="col-12">
             {settingsComponentToDisplay}
           </div>
-        </div> :
-        <div className="col-12">
-          {settingsComponentToDisplay}
-        </div>
-      }
-    </div>;
+        )}
+      </div>
+    );
   }
 }

@@ -24,28 +24,37 @@ export default class OfficeNameText extends Component {
   render () {
     renderLog(__filename);
     let nameText = "";
-    let { contest_office_name, political_party } = this.props;
+    const { contest_office_name, political_party } = this.props;
     if (political_party === undefined) {
-      nameText = <span className="no-political-party">
-        <span>Candidate for </span>
-        { this.props.office_link ?
-          <Link to={this.props.office_link}>
+      nameText = (
+        <span className="no-political-party">
+          <span>Candidate for </span>
+          { this.props.office_link ? (
+            <Link to={this.props.office_link}>
+              <span className="candidate-card-main__office">{ contest_office_name }</span>
+            </Link>
+          ) :
             <span className="candidate-card-main__office">{ contest_office_name }</span>
-          </Link> :
-          <span className="candidate-card-main__office">{ contest_office_name }</span>
         }
-      </span>;
+        </span>
+      );
     } else {
-      nameText = <span>
-        <span className="card-main__political-party u-bold u-gray-darker">{political_party} </span>
-        <span>candidate for </span>
-        { this.props.office_link ?
-          <Link to={this.props.office_link}>
+      nameText = (
+        <span>
+          <span className="card-main__political-party u-bold u-gray-darker">
+            {political_party}
+            {" "}
+          </span>
+          <span>candidate for </span>
+          { this.props.office_link ? (
+            <Link to={this.props.office_link}>
+              <span className="candidate-card-main__office u-bold u-gray-darker">{ contest_office_name }</span>
+            </Link>
+          ) :
             <span className="candidate-card-main__office u-bold u-gray-darker">{ contest_office_name }</span>
-          </Link> :
-          <span className="candidate-card-main__office u-bold u-gray-darker">{ contest_office_name }</span>
         }
-      </span>;
+        </span>
+      );
     }
 
     return nameText;

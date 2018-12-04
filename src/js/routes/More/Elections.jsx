@@ -12,7 +12,7 @@ export default class Elections extends Component {
     super(props);
     this.state = {
       electionsLocationsList: [],
-      voterBallotList: []
+      voterBallotList: [],
     };
   }
 
@@ -20,27 +20,27 @@ export default class Elections extends Component {
     return {};
   }
 
-  componentDidMount (){
+  componentDidMount () {
     this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
     ElectionActions.electionsRetrieve();
     AnalyticsActions.saveActionElections(VoterStore.election_id());
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.electionListListener.remove();
   }
 
-  onElectionStoreChange (){
-    let electionsList = ElectionStore.getElectionList();
-    let electionsLocationsList = [];
+  onElectionStoreChange () {
+    const electionsList = ElectionStore.getElectionList();
+    const electionsLocationsList = [];
     let voter_ballot; // A different format for much of the same data
-    let voterBallotList = [];
+    const voterBallotList = [];
     let one_ballot_location;
     let ballot_location_shortcut;
     let ballot_returned_we_vote_id;
 
-    for (var i = 0; i < electionsList.length; i++){
-      var election = electionsList[i];
+    for (let i = 0; i < electionsList.length; i++) {
+      const election = electionsList[i];
       electionsLocationsList.push(election);
       ballot_returned_we_vote_id = "";
       ballot_location_shortcut = "";
@@ -57,26 +57,28 @@ export default class Elections extends Component {
         election_description_text: election.election_name,
         election_day_text: election.election_day_text,
         original_text_for_map_search: "",
-        ballot_location_shortcut: ballot_location_shortcut,
-        ballot_returned_we_vote_id: ballot_returned_we_vote_id,
+        ballot_location_shortcut,
+        ballot_returned_we_vote_id,
       };
       voterBallotList.push(voter_ballot);
     }
 
     this.setState({
-      electionsLocationsList: electionsLocationsList,
-      voterBallotList: voterBallotList,
+      electionsLocationsList,
+      voterBallotList,
     });
   }
 
   render () {
     renderLog(__filename);
-    return <div>
+    return (
+      <div>
         <Helmet title="Elections - We Vote" />
-      <h1 className="h1">Supported Elections</h1>
+        <h1 className="h1">Supported Elections</h1>
         <div className="elections-list-container">
           <BallotElectionList ballotElectionList={this.state.voterBallotList} ballotBaseUrl="/ballot" />
         </div>
-      </div>;
+      </div>
+    );
   }
 }

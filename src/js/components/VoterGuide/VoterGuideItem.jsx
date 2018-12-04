@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
-import ImageHandler from "../../components/ImageHandler";
+import ImageHandler from "../ImageHandler";
 import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
 import { renderLog } from "../../utils/logging";
 
@@ -15,7 +15,7 @@ export default class VoterGuideItem extends Component {
     voter_guide_display_name: PropTypes.string,
     voter_guide_image_url_large: PropTypes.string,
     google_civic_election_id: PropTypes.number,
-    we_vote_id: PropTypes.string,               // voter_guide we_vote_id
+    we_vote_id: PropTypes.string, // voter_guide we_vote_id
     voter_guide_owner_type: PropTypes.string,
     organization_we_vote_id: PropTypes.string,
     public_figure_we_vote_id: PropTypes.string,
@@ -30,9 +30,9 @@ export default class VoterGuideItem extends Component {
   render () {
     renderLog(__filename);
     // If the displayName is in the twitterDescription, remove it from twitterDescription
-    let displayName = this.props.voter_guide_display_name ? this.props.voter_guide_display_name : "";
-    let twitterDescription = this.props.twitter_description ? this.props.twitter_description : "";
-    let twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
+    const displayName = this.props.voter_guide_display_name ? this.props.voter_guide_display_name : "";
+    const twitterDescription = this.props.twitter_description ? this.props.twitter_description : "";
+    const twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
 
     let twitterFollowers;
     const twitterFollowersCount = numberWithCommas(this.props.twitter_followers_count);
@@ -40,33 +40,35 @@ export default class VoterGuideItem extends Component {
       twitterFollowers = twitterFollowersCount;
     }
     // TwitterHandle-based link
-    var voterGuideLink = this.props.twitter_handle ? "/" + this.props.twitter_handle : "/voterguide/" + this.props.organization_we_vote_id;
+    const voterGuideLink = this.props.twitter_handle ? `/${this.props.twitter_handle}` : `/voterguide/${this.props.organization_we_vote_id}`;
 
-    return <div className="card-child">
-      <div className="card-child__media-object-avatar">
-        <Link to={voterGuideLink} className="u-no-underline">
-          <ImageHandler className="card-child__avatar" sizeClassName="icon-lg " imageUrl={this.props.voter_guide_image_url_large} />
-        </Link>
-      </div>
-      <div className="card-child__media-object-content">
-        <div className="card-child__content">
-          <Link to={voterGuideLink}>
-            <h4 className="card-child__display-name">{displayName}</h4>
+    return (
+      <div className="card-child">
+        <div className="card-child__media-object-avatar">
+          <Link to={voterGuideLink} className="u-no-underline">
+            <ImageHandler className="card-child__avatar" sizeClassName="icon-lg " imageUrl={this.props.voter_guide_image_url_large} />
           </Link>
-          <div className="card-child__short-bio">
-            { twitterDescriptionMinusName ? <span>{twitterDescriptionMinusName}</span> :
-                null }
+        </div>
+        <div className="card-child__media-object-content">
+          <div className="card-child__content">
+            <Link to={voterGuideLink}>
+              <h4 className="card-child__display-name">{displayName}</h4>
+            </Link>
+            <div className="card-child__short-bio">
+              { twitterDescriptionMinusName ? <span>{twitterDescriptionMinusName}</span> : null }
+            </div>
+          </div>
+          <div className="card-child__additional">
+            {twitterFollowers ? (
+              <span className="twitter-followers__badge">
+                <span className="fa fa-twitter twitter-followers__icon" />
+                {numberWithCommas(twitterFollowers)}
+              </span>
+            ) : null
+            }
           </div>
         </div>
-        <div className="card-child__additional">
-          {twitterFollowers ?
-            <span className="twitter-followers__badge">
-              <span className="fa fa-twitter twitter-followers__icon" />
-              {numberWithCommas(twitterFollowers)}
-            </span> :
-            null}
-        </div>
       </div>
-    </div>;
+    );
   }
 }

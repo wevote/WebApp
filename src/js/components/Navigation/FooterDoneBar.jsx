@@ -46,13 +46,20 @@ export default class FooterDoneBar extends Component {
 
   render () {
     renderLog(__filename);
-    return <div className= "" style={footStyle}>
-      <div className="" >
-        <div className="" style={footContainer} >
-          <button type="button" className="btn btn-sm btn-default"
-                  onClick={() => this.props.doneFunction()}>{this.props.doneButtonText}</button>
+    return (
+      <div className="" style={footStyle}>
+        <div className="">
+          <div className="" style={footContainer}>
+            <button
+              type="button"
+              className="btn btn-sm btn-default"
+              onClick={() => this.props.doneFunction()}
+            >
+              {this.props.doneButtonText}
+            </button>
+          </div>
         </div>
       </div>
-    </div>;
+    );
   }
 }

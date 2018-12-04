@@ -20,7 +20,7 @@ export default class TwitterSignInProcess extends Component {
       twitter_auth_response: {},
       saving: false,
       voter: {},
-      yes_please_merge_accounts: false
+      yes_please_merge_accounts: false,
     };
   }
 
@@ -91,16 +91,16 @@ export default class TwitterSignInProcess extends Component {
 
   twitterSignInRetrieve () {
     TwitterActions.twitterSignInRetrieve();
-    this.setState({saving: true});
+    this.setState({ saving: true });
   }
 
   yesPleaseMergeAccounts () {
-    this.setState({yes_please_merge_accounts: true});
+    this.setState({ yes_please_merge_accounts: true });
   }
 
   render () {
     renderLog(__filename);
-    let {twitter_auth_response, yes_please_merge_accounts} = this.state;
+    const { twitter_auth_response, yes_please_merge_accounts } = this.state;
 
     // console.log("TwitterSignInProcess render, this.state.saving:", this.state.saving);
     if (this.state.saving ||
@@ -111,7 +111,7 @@ export default class TwitterSignInProcess extends Component {
     }
     // console.log("=== Passed initial gate ===");
     // console.log("twitter_auth_response:", twitter_auth_response);
-    let { twitter_secret_key } = twitter_auth_response;
+    const { twitter_secret_key } = twitter_auth_response;
 
     if (twitter_auth_response.twitter_sign_in_failed) {
       // console.log("Twitter sign in failed - push to /settings/account");
@@ -154,8 +154,12 @@ export default class TwitterSignInProcess extends Component {
         const cancel_merge_function = this.cancelMergeFunction.bind(this);
         const please_merge_accounts_function = this.yesPleaseMergeAccounts.bind(this);
         // Display the question of whether to merge accounts or not
-        return <WouldYouLikeToMergeAccounts cancelMergeFunction={cancel_merge_function}
-                                            pleaseMergeAccountsFunction={please_merge_accounts_function} />;
+        return (
+          <WouldYouLikeToMergeAccounts
+            cancelMergeFunction={cancel_merge_function}
+            pleaseMergeAccountsFunction={please_merge_accounts_function}
+          />
+        );
         // return <span>WouldYouLikeToMergeAccounts</span>;
       } else {
         // Go ahead and merge the accounts, which means deleting the current voter and switching to the twitter-linked account
@@ -167,7 +171,7 @@ export default class TwitterSignInProcess extends Component {
     } else {
       console.log("Setting up new Twitter entry - voterTwitterSaveToCurrentAccount");
       this.voterTwitterSaveToCurrentAccount();
-      //return <span>Setting up new Twitter entry - voterTwitterSaveToCurrentAccount</span>;
+      // return <span>Setting up new Twitter entry - voterTwitterSaveToCurrentAccount</span>;
       return LoadingWheel;
     }
   }

@@ -19,13 +19,13 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     this.state = {
       saving: false,
       voter: VoterStore.getVoter(),
-      yes_please_merge_accounts: false
+      yes_please_merge_accounts: false,
     };
   }
 
   componentDidMount () {
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
-    let { invitation_secret_key } = this.props.params;
+    const { invitation_secret_key } = this.props.params;
     // console.log("FriendInvitationByEmailVerifyProcess, componentDidMount, this.props.params.invitation_secret_key: ", invitation_secret_key);
     this.friendInvitationByEmailVerify(invitation_secret_key);
   }
@@ -43,13 +43,14 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     // message: "You have chosen to NOT merge your two accounts.",
     // message_type: "success"
   }
+
   friendInvitationByEmailVerify (invitation_secret_key) {
     FriendActions.friendInvitationByEmailVerify(invitation_secret_key);
-    this.setState({saving: true});
+    this.setState({ saving: true });
   }
 
   yesPleaseMergeAccounts () {
-    this.setState({yes_please_merge_accounts: true});
+    this.setState({ yes_please_merge_accounts: true });
   }
 
   voterMergeTwoAccountsByInvitationKey (invitation_secret_key) {
@@ -74,7 +75,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
   render () {
     renderLog(__filename);
-    let { invitation_secret_key } = this.props.params;
+    const { invitation_secret_key } = this.props.params;
 
     if (this.state.yes_please_merge_accounts) {
       // If yes_please_merge_accounts is true, it doesn't matter what is happening with invitation_status
@@ -130,8 +131,12 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
       const cancel_merge_function = this.cancelMergeFunction.bind(this);
       const please_merge_accounts_function = this.yesPleaseMergeAccounts.bind(this);
       // Display the question of whether to merge accounts or not
-      return <WouldYouLikeToMergeAccounts cancelMergeFunction={cancel_merge_function}
-                                          pleaseMergeAccountsFunction={please_merge_accounts_function} />;
+      return (
+        <WouldYouLikeToMergeAccounts
+          cancelMergeFunction={cancel_merge_function}
+          pleaseMergeAccountsFunction={please_merge_accounts_function}
+        />
+      );
       // return <span>WouldYouLikeToMergeAccounts</span>;
     } else {
       // Go ahead and merge the accounts, which means deleting the current voter and switching to the invitation owner

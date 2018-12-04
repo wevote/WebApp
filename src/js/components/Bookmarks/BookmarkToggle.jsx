@@ -14,7 +14,7 @@ import VoterStore from "../../stores/VoterStore";
 export default class BookmarkToggle extends Component {
   static propTypes = {
     we_vote_id: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired
+    type: PropTypes.string.isRequired,
   };
 
   constructor (props) {
@@ -59,7 +59,7 @@ export default class BookmarkToggle extends Component {
   }
 
   _onChange () {
-    this.setState({ isBookmarked: BookmarkStore.get(this.props.we_vote_id) || false});
+    this.setState({ isBookmarked: BookmarkStore.get(this.props.we_vote_id) || false });
     // console.log(this.state);
   }
 
@@ -72,7 +72,7 @@ export default class BookmarkToggle extends Component {
       BookmarkActions.voterBookmarkOffSave(this.props.we_vote_id, this.props.type);
       showToastError("Bookmark removed!");
     } else {
-      let bookmark_action_modal_has_been_shown = VoterStore.getInterfaceFlagState(VoterConstants.BOOKMARK_ACTION_MODAL_SHOWN);
+      const bookmark_action_modal_has_been_shown = VoterStore.getInterfaceFlagState(VoterConstants.BOOKMARK_ACTION_MODAL_SHOWN);
 
       BookmarkActions.voterBookmarkOnSave(this.props.we_vote_id, this.props.type);
 
@@ -86,7 +86,7 @@ export default class BookmarkToggle extends Component {
   }
 
   BookmarkKeyDown (e) {
-    let enterAndSpaceKeyCodes = [13, 32];
+    const enterAndSpaceKeyCodes = [13, 32];
     if (enterAndSpaceKeyCodes.includes(e.keyCode)) {
       this.BookmarkClick().bind(this);
     }
@@ -101,44 +101,51 @@ export default class BookmarkToggle extends Component {
   render () {
     // console.log("BookmarkToggle render");
     renderLog(__filename);
-    if (this.state.isBookmarked === undefined){
+    if (this.state.isBookmarked === undefined) {
       return <span className="bookmark-action" />;
     }
 
     // This modal is shown when the user bookmarks a ballot item for the first time.
-    const BookmarkToggleHelpModal = <Modal show={this.state.showBookmarkToggleHelpModal} onHide={()=>{this.toggleBookmarkToggleHelpModal();}}>
-      <Modal.Header closeButton>
-        <Modal.Title>
-          <div className="text-center">Bookmark</div>
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <section className="card">
-          <div className="text-center">
-            You have just bookmarked this ballot item.<br />
-            <br />
-            Find 'Your Bookmarked Items' by clicking the profile photo or icon in the upper right corner of the top navigation.<br />
-            <br />
-          </div>
-        </section>
-      </Modal.Body>
-    </Modal>;
+    const BookmarkToggleHelpModal = (
+      <Modal show={this.state.showBookmarkToggleHelpModal} onHide={() => { this.toggleBookmarkToggleHelpModal(); }}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <div className="text-center">Bookmark</div>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <section className="card">
+            <div className="text-center">
+            You have just bookmarked this ballot item.
+              <br />
+              <br />
+              Find &apos;Your Bookmarked Items&apos; by clicking the profile photo or icon in the upper right corner of the top navigation.
+              <br />
+              <br />
+            </div>
+          </section>
+        </Modal.Body>
+      </Modal>
+    );
     const bookmarkPopoverText = "Bookmark for later";
     const bookmarkToolTip = <Tooltip id="bookmarkTooltip">{ bookmarkPopoverText }</Tooltip>;
-    return <div className="d-print-none">
-        <span tabIndex="0"
-              className="bookmark-action"
-              onClick={this.BookmarkClick.bind(this)}
-              onKeyDown={this.BookmarkKeyDown.bind(this)}
-              title="Bookmark for later">
-              {this.state.isBookmarked ?
-                <Icon alt="Is Bookmarked" name="bookmark-icon" width={24} height={24} fill="#999" stroke="none" color="#999" /> :
-                <OverlayTrigger placement="top" overlay={bookmarkToolTip}>
-                  <Icon alt="Bookmark for later" name="bookmark-icon" width={24} height={24} fill="none" stroke="#ccc" strokeWidth={2} color="#ccc" />
-                </OverlayTrigger>
-              }
-            </span>
-      { this.state.showBookmarkToggleHelpModal ? BookmarkToggleHelpModal : null }
-    </div>;
+    return (
+      <div className="d-print-none">
+        <span
+          className="bookmark-action"
+          onClick={this.BookmarkClick.bind(this)}
+          onKeyDown={this.BookmarkKeyDown.bind(this)}
+          title="Bookmark for later"
+        >
+          {this.state.isBookmarked ?
+            <Icon alt="Is Bookmarked" name="bookmark-icon" width={24} height={24} fill="#999" stroke="none" color="#999" /> : (
+              <OverlayTrigger placement="top" overlay={bookmarkToolTip}>
+                <Icon alt="Bookmark for later" name="bookmark-icon" width={24} height={24} fill="none" stroke="#ccc" strokeWidth={2} color="#ccc" />
+              </OverlayTrigger>
+            )}
+        </span>
+        { this.state.showBookmarkToggleHelpModal ? BookmarkToggleHelpModal : null }
+      </div>
+    );
   }
 }

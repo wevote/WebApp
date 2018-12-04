@@ -9,7 +9,7 @@ const MAX_LISTENERS = 300;
  * @param  {Object} spec object to mixin
  * @return {Store}  DataStore Object
  */
-export function createStore (mixin) {
+export default function createStore (mixin) {
   const store = assign({}, EventEmitter.prototype, {
     emitChange () {
       this.emit(CHANGE_EVENT);
@@ -21,7 +21,7 @@ export function createStore (mixin) {
 
     removeChangeListener (callback) {
       this.removeListener(CHANGE_EVENT, callback);
-    }
+    },
 
   }, mixin);
 

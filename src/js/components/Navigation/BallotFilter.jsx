@@ -21,34 +21,56 @@ export default class BallotFilter extends Component {
       pathname = this.props.pathname;
     }
 
-    let show_remaining_decisions = this.props.length_remaining || false;
+    const show_remaining_decisions = this.props.length_remaining || false;
 
-    return <ul className="nav ballot__tabs">
-      <li className="tab__item">
-        <Link to={pathname} className={this.props.ballot_type === "filterAllBallotItems" ? "tab tab--active" : "tab tab--default"}>
-          <span>All Items ({this.props.length})</span>
-        </Link>
-      </li>
-
-      { show_remaining_decisions ?
+    return (
+      <ul className="nav ballot__tabs">
         <li className="tab__item">
-          <Link to={{ pathname: pathname, query: { type: "filterRemaining" } }}
-                className={this.props.ballot_type === "filterRemaining" ? "tab tab--active" : "tab tab--default"}>
-            {/* Desktop */}
-            <span className="d-none d-sm-block">Remaining Choices ({this.props.length_remaining})</span>
-            {/* Mobile */}
-            <span className="d-block d-sm-none">Choices ({this.props.length_remaining})</span>
+          <Link to={pathname} className={this.props.ballot_type === "filterAllBallotItems" ? "tab tab--active" : "tab tab--default"}>
+            <span>
+              All Items (
+              {this.props.length}
+              )
+            </span>
           </Link>
-        </li> :
-        null
-      }
+        </li>
 
-      <li className="tab__item">
-        <Link to={{ pathname: pathname, query: { type: "filterReadyToVote" } }}
-              className={ this.props.ballot_type === "filterReadyToVote" ? "tab tab--active" : "tab tab--default"}>
-          <span>Vote{this.props.election_day_text ? " by " + moment(this.props.election_day_text).format("MMM Do, YYYY") : ""}!</span>
-        </Link>
-      </li>
-    </ul>;
+        { show_remaining_decisions ? (
+          <li className="tab__item">
+            <Link
+              to={{ pathname, query: { type: "filterRemaining" } }}
+              className={this.props.ballot_type === "filterRemaining" ? "tab tab--active" : "tab tab--default"}
+            >
+              {/* Desktop */}
+              <span className="d-none d-sm-block">
+                Remaining Choices (
+                {this.props.length_remaining}
+                )
+              </span>
+              {/* Mobile */}
+              <span className="d-block d-sm-none">
+                Choices (
+                {this.props.length_remaining}
+                )
+              </span>
+            </Link>
+          </li>
+        ) : null
+        }
+
+        <li className="tab__item">
+          <Link
+            to={{ pathname, query: { type: "filterReadyToVote" } }}
+            className={this.props.ballot_type === "filterReadyToVote" ? "tab tab--active" : "tab tab--default"}
+          >
+            <span>
+              Vote
+              {this.props.election_day_text ? ` by ${moment(this.props.election_day_text).format("MMM Do, YYYY")}` : ""}
+              !
+            </span>
+          </Link>
+        </li>
+      </ul>
+    );
   }
 }

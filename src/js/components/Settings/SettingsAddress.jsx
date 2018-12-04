@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
-import AddressBox from "../../components/AddressBox";
+import AddressBox from "../AddressBox";
 import AnalyticsActions from "../../actions/AnalyticsActions";
-import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
+import BrowserPushMessage from "../Widgets/BrowserPushMessage";
 import { isWebApp } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
@@ -31,7 +31,8 @@ export default class SettingsAddress extends Component {
 
   render () {
     renderLog(__filename);
-    return <div>
+    return (
+      <div>
         <div className="u-stack--md">
           <Helmet title="Enter Address - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
@@ -40,12 +41,13 @@ export default class SettingsAddress extends Component {
               <h3 className="h3">
                 Enter address where you are registered to vote
               </h3>
-              <div className={ isWebApp() ? "u-padding-bottom--md" : "SettingsCardBottomCordova" } >
+              <div className={isWebApp() ? "u-padding-bottom--md" : "SettingsCardBottomCordova"}>
                 <AddressBox {...this.props} saveUrl="/ballot" />
               </div>
             </div>
           </div>
         </div>
-      </div>;
+      </div>
+    );
   }
 }

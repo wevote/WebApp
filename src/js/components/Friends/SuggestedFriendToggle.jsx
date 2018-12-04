@@ -35,7 +35,7 @@ export default class SuggestedFriendToggle extends Component {
 
   _onFriendStoreChange () {
     this.setState({
-      is_friend: FriendStore.isFriend(this.props.other_voter_we_vote_id)
+      is_friend: FriendStore.isFriend(this.props.other_voter_we_vote_id),
     });
   }
 
@@ -48,10 +48,10 @@ export default class SuggestedFriendToggle extends Component {
   render () {
     renderLog(__filename);
     if (!this.state) { return <div />; }
-    let other_voter_we_vote_id = this.props.other_voter_we_vote_id;
-    let is_friend = this.state.is_friend;
+    const other_voter_we_vote_id = this.props.other_voter_we_vote_id;
+    const is_friend = this.state.is_friend;
     // console.log("SuggestedFriendToggle, other_voter_we_vote_id:", other_voter_we_vote_id, ", is_friend:", is_friend);
-    let is_looking_at_self = this.state.voter.we_vote_id === other_voter_we_vote_id;
+    const is_looking_at_self = this.state.voter.we_vote_id === other_voter_we_vote_id;
     // You should not be able to friend yourself
     if (is_looking_at_self) {
       // console.log("SuggestedFriendToggle, is_looking_at_self");
@@ -59,13 +59,15 @@ export default class SuggestedFriendToggle extends Component {
     }
 
     const sendFriendInvite = FriendActions.friendInvitationByWeVoteIdSend.bind(this, other_voter_we_vote_id);
-    const floatRight = { float: "right"};
+    const floatRight = { float: "right" };
 
-    return <span style={floatRight}>
-      {is_friend ?
-        <span>Already Friend!</span> :
-        <Button variant="info" size="small" onClick={sendFriendInvite}><span>Add Friend</span></Button>
-      }
-      </span>;
+    return (
+      <span style={floatRight}>
+        {is_friend ?
+          <span>Already Friend!</span> :
+          <Button variant="info" size="small" onClick={sendFriendInvite}><span>Add Friend</span></Button>
+        }
+      </span>
+    );
   }
 }

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import { isCordova } from "../../utils/cordovaUtils";
-import { makeSearchLink } from "../../utils/search-functions";
+import makeSearchLink from "../../utils/search-functions";
 import { renderLog } from "../../utils/logging";
 import SearchAllActions from "../../actions/SearchAllActions";
 import SearchAllStore from "../../stores/SearchAllStore";
@@ -17,14 +17,14 @@ export default class SearchPage extends Component {
     super(props);
     this.state = {
       searchString: "",
-      searchResults: []
+      searchResults: [],
     };
   }
 
   componentDidMount () {
     // When we first enter we want to retrieve values to have for a click in the search box
-    let textFromSearchField = this.props.params.encoded_search_string;
-    this.setState({ textFromSearchField: textFromSearchField });
+    const textFromSearchField = this.props.params.encoded_search_string;
+    this.setState({ textFromSearchField });
 
     // Search type one - Recent searches
     if (SearchAllStore.isRecentSearch()) {
@@ -52,18 +52,18 @@ export default class SearchPage extends Component {
   }
 
   _onSearchAllStoreChange () {
-    let newState = {};
+    const newState = {};
 
     if (SearchAllStore.getSearchResults()) {
       newState.searchResults = SearchAllStore.getSearchResults();
       if (isCordova()) {
-        if (window.screen.height < 500) {   // iPhone 4, show two results
+        if (window.screen.height < 500) { // iPhone 4, show two results
           newState.searchResults = newState.searchResults.slice(0, 2);
-        } else if (window.screen.height < 600) {   // iPhone 5, show four results
+        } else if (window.screen.height < 600) { // iPhone 5, show four results
           newState.searchResults = newState.searchResults.slice(0, 4);
-        } else if (window.screen.height < 700) {   // iPhone 8, show five results
+        } else if (window.screen.height < 700) { // iPhone 8, show five results
           newState.searchResults = newState.searchResults.slice(0, 5);
-        } else if (window.screen.height < 800) {   // iPhone 6p, 7p, 8p show six results
+        } else if (window.screen.height < 800) { // iPhone 6p, 7p, 8p show six results
           newState.searchResults = newState.searchResults.slice(0, 6);
         }
       }
@@ -84,11 +84,15 @@ export default class SearchPage extends Component {
 
   render () {
     renderLog(__filename);
-    return <span>
-      <Helmet title="Search Results - We Vote"/>
-      <SearchResultsDisplay links={this.links}
-                            searchResults={this.state.searchResults}
-                            textFromSearchField={this.state.searchString}/>
-        </span>;
+    return (
+      <span>
+        <Helmet title="Search Results - We Vote" />
+        <SearchResultsDisplay
+          links={this.links}
+          searchResults={this.state.searchResults}
+          textFromSearchField={this.state.searchString}
+        />
+      </span>
+    );
   }
 }

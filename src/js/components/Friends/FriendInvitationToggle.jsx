@@ -8,7 +8,7 @@ import { renderLog } from "../../utils/logging";
 
 export default class FriendInvitationToggle extends Component {
   static propTypes = {
-    other_voter_we_vote_id: PropTypes.string.isRequired
+    other_voter_we_vote_id: PropTypes.string.isRequired,
   };
 
   constructor (props) {
@@ -16,42 +16,42 @@ export default class FriendInvitationToggle extends Component {
     this.state = {
       other_voter_we_vote_id: "",
       voter: {
-        we_vote_id: ""
-      }
+        we_vote_id: "",
+      },
     };
   }
 
-  componentDidMount (){
+  componentDidMount () {
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     this._onFriendStoreChange();
     this._onVoterStoreChange();
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
-  _onFriendStoreChange (){
+  _onFriendStoreChange () {
     this.setState({
-      is_friend: FriendStore.isFriend(this.props.other_voter_we_vote_id)
+      is_friend: FriendStore.isFriend(this.props.other_voter_we_vote_id),
     });
   }
 
-  _onVoterStoreChange (){
+  _onVoterStoreChange () {
     this.setState({
-      voter: VoterStore.getVoter()
+      voter: VoterStore.getVoter(),
     });
   }
 
   render () {
     renderLog(__filename);
     if (!this.state) { return <div />; }
-    let other_voter_we_vote_id = this.props.other_voter_we_vote_id;
-    let is_friend = this.state.is_friend;
+    const other_voter_we_vote_id = this.props.other_voter_we_vote_id;
+    const is_friend = this.state.is_friend;
     // console.log("FriendInvitationToggle, my voter_we_vote_id:", this.state.voter.we_vote_id, ", other_voter_we_vote_id:", other_voter_we_vote_id, ", is_friend:", is_friend);
-    let is_looking_at_self = this.state.voter.we_vote_id === other_voter_we_vote_id;
+    const is_looking_at_self = this.state.voter.we_vote_id === other_voter_we_vote_id;
     // You should not be able to friend yourself
     if (is_looking_at_self) {
       // console.log("FriendInvitationToggle, is_looking_at_self");
@@ -60,17 +60,22 @@ export default class FriendInvitationToggle extends Component {
 
     const acceptFriendInvite = FriendActions.acceptFriendInvite.bind(this, other_voter_we_vote_id);
     const unFriend = FriendActions.unFriend.bind(this, other_voter_we_vote_id);
-    const floatRight = { float: "right"};
+    const floatRight = { float: "right" };
 
-    return <span className="u-margin-left-right--xs" style={floatRight}>
-      {is_friend ?
-        <Button variant="warning"
-                size="small"
-                onClick={unFriend}>
-                <span>Remove Friend</span>
-        </Button> :
-        <Button variant="info" size="small" onClick={acceptFriendInvite}><span>Add Friend</span></Button>
+    return (
+      <span className="u-margin-left-right--xs" style={floatRight}>
+        {is_friend ? (
+          <Button
+            variant="warning"
+            size="small"
+            onClick={unFriend}
+          >
+            <span>Remove Friend</span>
+          </Button>
+        ) :
+          <Button variant="info" size="small" onClick={acceptFriendInvite}><span>Add Friend</span></Button>
       }
-      </span>;
+      </span>
+    );
   }
 }

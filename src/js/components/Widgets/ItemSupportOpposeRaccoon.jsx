@@ -2,15 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import { findDOMNode } from "react-dom";
-import BallotStore from "../../stores/BallotStore";
 import $ from "jquery";
+import BallotStore from "../../stores/BallotStore";
 import CandidateActions from "../../actions/CandidateActions";
 import CandidateStore from "../../stores/CandidateStore";
-import {cordovaDot, isCordova} from "../../utils/cordovaUtils";
-import IssuesByBallotItemDisplayList from "../../components/Issues/IssuesByBallotItemDisplayList";
+import { cordovaDot, isCordova } from "../../utils/cordovaUtils";
+import IssuesByBallotItemDisplayList from "../Issues/IssuesByBallotItemDisplayList";
 import IssueStore from "../../stores/IssueStore";
-import ItemActionBar from "../Widgets/ItemActionBar";
-import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
+import ItemActionBar from "./ItemActionBar";
+import ItemPositionStatementActionBar from "./ItemPositionStatementActionBar";
 import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdownList";
 import { renderLog } from "../../utils/logging";
 import MeasureActions from "../../actions/MeasureActions";
@@ -21,6 +21,10 @@ import SupportStore from "../../stores/SupportStore";
 import { stringContains } from "../../utils/textFormat";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
+
+// December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
+/* eslint react/no-find-dom-node: 1 */
+/* eslint array-callback-return: 1 */
 
 export default class ItemSupportOpposeRaccoon extends Component {
   static propTypes = {
@@ -37,7 +41,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     showPositionStatementActionBar: PropTypes.bool,
     supportProps: PropTypes.object,
     urlWithoutHash: PropTypes.string,
-    we_vote_id: PropTypes.string
+    we_vote_id: PropTypes.string,
   };
 
   constructor (props) {
@@ -105,17 +109,17 @@ export default class ItemSupportOpposeRaccoon extends Component {
     }
     this.setScrollState();
     this.setState({
-      ballotItem: ballotItem,
+      ballotItem,
       ballot_item_display_name: this.props.ballot_item_display_name,
-      ballotItemType: ballotItemType,
+      ballotItemType,
       ballotItemWeVoteId: this.props.ballotItemWeVoteId,
       componentDidMountFinished: true,
-      is_candidate: is_candidate,
-      is_measure: is_measure,
+      is_candidate,
+      is_measure,
       maximum_organization_display: this.props.maximumOrganizationDisplay,
       organizations_to_follow_support: this.props.organizationsToFollowSupport,
       organizations_to_follow_oppose: this.props.organizationsToFollowOppose,
-      position_list_from_advisers_followed_by_voter: position_list_from_advisers_followed_by_voter,
+      position_list_from_advisers_followed_by_voter,
       supportProps: this.props.supportProps,
       voter: VoterStore.getVoter(), // We only set this once since the info we need isn't dynamic
     });
@@ -145,16 +149,16 @@ export default class ItemSupportOpposeRaccoon extends Component {
     }
     this.setScrollState();
     this.setState({
-      ballotItem: ballotItem,
+      ballotItem,
       ballot_item_display_name: nextProps.ballot_item_display_name,
-      ballotItemType: ballotItemType,
+      ballotItemType,
       ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
-      is_candidate: is_candidate,
-      is_measure: is_measure,
+      is_candidate,
+      is_measure,
       maximum_organization_display: nextProps.maximumOrganizationDisplay,
       organizations_to_follow_support: nextProps.organizationsToFollowSupport,
       organizations_to_follow_oppose: nextProps.organizationsToFollowOppose,
-      position_list_from_advisers_followed_by_voter: position_list_from_advisers_followed_by_voter,
+      position_list_from_advisers_followed_by_voter,
       supportProps: nextProps.supportProps,
     });
   }
@@ -188,10 +192,10 @@ export default class ItemSupportOpposeRaccoon extends Component {
       return true;
     }
     if (this.state.supportProps !== undefined && nextState.supportProps !== undefined) {
-      let currentNetworkSupportCount = parseInt(this.state.supportProps.support_count) || 0;
-      let nextNetworkSupportCount = parseInt(nextState.supportProps.support_count) || 0;
-      let currentNetworkOpposeCount = parseInt(this.state.supportProps.oppose_count) || 0;
-      let nextNetworkOpposeCount = parseInt(nextState.supportProps.oppose_count) || 0;
+      const currentNetworkSupportCount = parseInt(this.state.supportProps.support_count) || 0;
+      const nextNetworkSupportCount = parseInt(nextState.supportProps.support_count) || 0;
+      const currentNetworkOpposeCount = parseInt(this.state.supportProps.oppose_count) || 0;
+      const nextNetworkOpposeCount = parseInt(nextState.supportProps.oppose_count) || 0;
       if (currentNetworkSupportCount !== nextNetworkSupportCount || currentNetworkOpposeCount !== nextNetworkOpposeCount) {
         // console.log("shouldComponentUpdate: support or oppose count change");
         return true;
@@ -256,7 +260,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     }
     if (!this.popover_state[org_id]) {
       // If it wasn't created, create it now
-      this.popover_state[org_id] = {show: false, timer: null};
+      this.popover_state[org_id] = { show: false, timer: null };
     }
     clearTimeout(this.popover_state[org_id].timer);
     this.popover_state[org_id].show = true;
@@ -265,7 +269,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   onTriggerLeave (org_id, visible_tag) {
     if (!this.popover_state[org_id]) {
       // If it wasn't created, create it now
-      this.popover_state[org_id] = {show: false, timer: null};
+      this.popover_state[org_id] = { show: false, timer: null };
     }
     this.popover_state[org_id].show = false;
     clearTimeout(this.popover_state[org_id].timer);
@@ -279,7 +283,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   passDataBetweenItemActionToItemPosition () {
-    this.setState({ shouldFocusCommentArea: true});
+    this.setState({ shouldFocusCommentArea: true });
   }
 
   // This is used for organizations to Follow (not currently followed by the voter)
@@ -297,62 +301,76 @@ export default class ItemSupportOpposeRaccoon extends Component {
     //   orgs_not_shown_count = organizations_to_follow.length - maximum_organization_display;
     //   orgs_not_shown_list = organizations_to_follow.slice(maximum_organization_display);
     // }
-    return organizations_to_follow.map( one_organization => {
+    return organizations_to_follow.map( (one_organization) => {
       local_counter++;
-      let org_id = one_organization.organization_we_vote_id;
+      const org_id = one_organization.organization_we_vote_id;
 
       // Once we have more organizations than we want to show, put them into a drop-down
       if (local_counter <= maximum_organization_display) {
         one_organization_for_organization_card = {
-            organization_we_vote_id: one_organization.organization_we_vote_id,
-            organization_name: one_organization.voter_guide_display_name,
-            organization_photo_url_large: one_organization.voter_guide_image_url_large,
-            organization_photo_url_tiny: one_organization.voter_guide_image_url_tiny,
-            organization_twitter_handle: one_organization.twitter_handle,
-            // organization_website: one_organization.organization_website,
-            twitter_description: one_organization.twitter_description,
-            twitter_followers_count: one_organization.twitter_followers_count,
-          };
+          organization_we_vote_id: one_organization.organization_we_vote_id,
+          organization_name: one_organization.voter_guide_display_name,
+          organization_photo_url_large: one_organization.voter_guide_image_url_large,
+          organization_photo_url_tiny: one_organization.voter_guide_image_url_tiny,
+          organization_twitter_handle: one_organization.twitter_handle,
+          // organization_website: one_organization.organization_website,
+          twitter_description: one_organization.twitter_description,
+          twitter_followers_count: one_organization.twitter_followers_count,
+        };
 
-        this.popover_state[org_id] = {show: false, timer: null};
+        this.popover_state[org_id] = { show: false, timer: null };
 
         // Removed bsPrefix="card-popover"
         // onMouseOver={() => this.onTriggerEnter(org_id, visible_tag)}
         // onMouseOut={() => this.onTriggerLeave(org_id, visible_tag)}
-        let organizationPopover = <Popover id={`organization-popover-${org_id}-${visible_tag}`}
-                                           title={<span onClick={() => this.onTriggerLeave(org_id, visible_tag)}>&nbsp;
-                                             <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" /> </span>}
-                                           >
-            <OrganizationCard ballotItemWeVoteId={ballotItemWeVoteId}
-                              currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                              followToggleOn
-                              organization={one_organization_for_organization_card}
-                              urlWithoutHash={this.props.urlWithoutHash}
-                              we_vote_id={this.props.we_vote_id} />
-          </Popover>;
+        const organizationPopover = (
+          <Popover
+            id={`organization-popover-${org_id}-${visible_tag}`}
+            title={(
+              <span onClick={() => this.onTriggerLeave(org_id, visible_tag)}>&nbsp;
+                <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" />
+              </span>
+)}
+          >
+            <OrganizationCard
+              ballotItemWeVoteId={ballotItemWeVoteId}
+              currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+              followToggleOn
+              organization={one_organization_for_organization_card}
+              urlWithoutHash={this.props.urlWithoutHash}
+              we_vote_id={this.props.we_vote_id}
+            />
+          </Popover>
+        );
 
         // Removed from OverlayTrigger
         // onMouseOver={() => this.onTriggerEnter(org_id, visible_tag)}
         // onMouseOut={() => this.onTriggerLeave(org_id, visible_tag)}
         // onExiting={() => this.onTriggerLeave(org_id, visible_tag)}
         // trigger={ visible_tag === "mobile" ? "click" : ["focus", "hover", "click"] }
-        return <OverlayTrigger key={`trigger-${org_id}-${visible_tag}`}
-                               ref={`cheetah-overlay-${org_id}-${visible_tag}`}
-                               rootClose
-                               placement="bottom"
-                               trigger="click"
-                               overlay={organizationPopover}>
-          <span className="position-rating__source with-popover">
-            <OrganizationTinyDisplay {...one_organization}
-                                     currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                     showPlaceholderImage
-                                     showSupport={supports_this_ballot_item}
-                                     showOppose={opposes_this_ballot_item}
-                                     toFollow
-                                     urlWithoutHash={this.props.urlWithoutHash}
-                                     we_vote_id={this.props.we_vote_id} />
-          </span>
-        </OverlayTrigger>;
+        return (
+          <OverlayTrigger
+            key={`trigger-${org_id}-${visible_tag}`}
+            ref={`cheetah-overlay-${org_id}-${visible_tag}`}
+            rootClose
+            placement="bottom"
+            trigger="click"
+            overlay={organizationPopover}
+          >
+            <span className="position-rating__source with-popover">
+              <OrganizationTinyDisplay
+                {...one_organization}
+                currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                showPlaceholderImage
+                showSupport={supports_this_ballot_item}
+                showOppose={opposes_this_ballot_item}
+                toFollow
+                urlWithoutHash={this.props.urlWithoutHash}
+                we_vote_id={this.props.we_vote_id}
+              />
+            </span>
+          </OverlayTrigger>
+        );
       } else {
         return null;
       }
@@ -372,13 +390,14 @@ export default class ItemSupportOpposeRaccoon extends Component {
   }
 
   scrollLeft (visible_tag) {
+    // todo: design out findDOMNode see https://github.com/yannickcr/eslint-plugin-react/issues/678
     const element = findDOMNode(this.refs[`${this.state.ballotItemWeVoteId}-org-list-${visible_tag}`]);
-    let position = $(element).scrollLeft();
-    let width = Math.round($(element).width());
+    const position = $(element).scrollLeft();
+    const width = Math.round($(element).width());
     $(element).animate({
       scrollLeft: position - width,
     }, 350, () => {
-      let new_position = $(element).scrollLeft();
+      const new_position = $(element).scrollLeft();
       if (visible_tag === "desktop") {
         this.setState({
           can_scroll_left_desktop: new_position > 0,
@@ -395,12 +414,12 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
   scrollRight (visible_tag) {
     const element = findDOMNode(this.refs[`${this.state.ballotItemWeVoteId}-org-list-${visible_tag}`]);
-    let position = $(element).scrollLeft();
-    let width = Math.round($(element).width());
+    const position = $(element).scrollLeft();
+    const width = Math.round($(element).width());
     $(element).animate({
       scrollLeft: position + width,
     }, 350, () => {
-      let new_position = $(element).scrollLeft();
+      const new_position = $(element).scrollLeft();
       if (visible_tag === "desktop") {
         this.setState({
           can_scroll_left_desktop: new_position > 0,
@@ -418,10 +437,14 @@ export default class ItemSupportOpposeRaccoon extends Component {
   setScrollState () {
     const desktop_list = findDOMNode(this.refs[`${this.state.ballotItemWeVoteId}-org-list-desktop`]);
     const mobile_list = findDOMNode(this.refs[`${this.state.ballotItemWeVoteId}-org-list-mobile`]);
-    let desktop_list_visible_width = $(desktop_list).width();
-    let desktop_list_width = $(desktop_list).children().eq(0).children().eq(0).width();
-    let mobile_list_visible_width = $(mobile_list).width();
-    let mobile_list_width = $(mobile_list).children().eq(0).children().eq(0).width();
+    const desktop_list_visible_width = $(desktop_list).width();
+    const desktop_list_width = $(desktop_list).children().eq(0).children()
+      .eq(0)
+      .width();
+    const mobile_list_visible_width = $(mobile_list).width();
+    const mobile_list_width = $(mobile_list).children().eq(0).children()
+      .eq(0)
+      .width();
     this.setState({
       can_scroll_desktop: desktop_list_visible_width <= desktop_list_width,
       can_scroll_mobile: mobile_list_visible_width <= mobile_list_width,
@@ -438,20 +461,20 @@ export default class ItemSupportOpposeRaccoon extends Component {
   render () {
     // console.log("ItemSupportOpposeRaccoon render, we_vote_id:", this.props.we_vote_id);
     renderLog(__filename);
-    let ballotItemSupportStore = SupportStore.get(this.state.ballotItemWeVoteId);
+    const ballotItemSupportStore = SupportStore.get(this.state.ballotItemWeVoteId);
     // Issue Score
-    let voterIssuesScore = IssueStore.getIssuesScoreByBallotItemWeVoteId(this.state.ballotItemWeVoteId);
+    const voterIssuesScore = IssueStore.getIssuesScoreByBallotItemWeVoteId(this.state.ballotItemWeVoteId);
     let voterIssuesScoreWithSign;
     if (voterIssuesScore > 0) {
-      voterIssuesScoreWithSign = "+" + voterIssuesScore;
+      voterIssuesScoreWithSign = `+${voterIssuesScore}`;
     } else if (voterIssuesScore < 0) {
       voterIssuesScoreWithSign = voterIssuesScore;
     } else {
       voterIssuesScoreWithSign = voterIssuesScore;
     }
     // console.log("ItemSupportOpposeRaccoon, voterIssuesScore: ", voterIssuesScore, ", ballotItemWeVoteId: ", this.state.ballotItemWeVoteId);
-    let issueCountUnderThisBallotItem = IssueStore.getIssuesCountUnderThisBallotItem(this.state.ballotItemWeVoteId);
-    let issueCountUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesCountUnderThisBallotItemVoterIsFollowing(this.state.ballotItemWeVoteId);
+    const issueCountUnderThisBallotItem = IssueStore.getIssuesCountUnderThisBallotItem(this.state.ballotItemWeVoteId);
+    const issueCountUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesCountUnderThisBallotItemVoterIsFollowing(this.state.ballotItemWeVoteId);
 
     // Network Score
     let network_support_count = 0;
@@ -463,7 +486,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       network_oppose_count = parseInt(this.state.supportProps.oppose_count) || 0;
       total_network_score = parseInt(network_support_count - network_oppose_count);
       if (total_network_score > 0) {
-        total_network_score_with_sign = "+" + total_network_score;
+        total_network_score_with_sign = `+${total_network_score}`;
       } else if (total_network_score < 0) {
         total_network_score_with_sign = total_network_score;
       } else {
@@ -506,55 +529,64 @@ export default class ItemSupportOpposeRaccoon extends Component {
     if (this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text || this.state.showPositionStatement) {
       commentBoxIsVisible = true;
     }
-    let item_action_bar;
-    item_action_bar = <span>
-      <ItemActionBar ballot_item_display_name={this.state.ballot_item_display_name}
-                     ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
-                     commentButtonHide={commentBoxIsVisible}
-                     commentButtonHideInMobile
-                     currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                     shareButtonHide
-                     supportProps={ballotItemSupportStore}
-                     supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
-                     toggleFunction={this.togglePositionStatement.bind(this)}
-                     transitioning={this.state.transitioning}
-                     type={this.state.ballotItemType}
-                     urlWithoutHash={this.props.urlWithoutHash}
-                     we_vote_id={this.props.we_vote_id} />
-    </span>;
+    const item_action_bar = (
+      <span>
+        <ItemActionBar
+          ballot_item_display_name={this.state.ballot_item_display_name}
+          ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
+          commentButtonHide={commentBoxIsVisible}
+          commentButtonHideInMobile
+          currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+          shareButtonHide
+          supportProps={ballotItemSupportStore}
+          supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
+          toggleFunction={this.togglePositionStatement.bind(this)}
+          transitioning={this.state.transitioning}
+          type={this.state.ballotItemType}
+          urlWithoutHash={this.props.urlWithoutHash}
+          we_vote_id={this.props.we_vote_id}
+        />
+      </span>
+    );
 
-    let comment_display_raccoon_desktop = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text || this.state.showPositionStatement ?
+    const comment_display_raccoon_desktop = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text || this.state.showPositionStatement ? (
       <div className="d-none d-sm-block o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-          <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
-                                          ballot_item_display_name={this.state.ballot_item_display_name}
-                                          comment_edit_mode_on={this.state.showPositionStatement}
-                                          supportProps={ballotItemSupportStore}
-                                          shouldFocus={this.state.shouldFocusCommentArea}
-                                          transitioning={this.state.transitioning}
-                                          type={this.state.ballotItemType}
-                                          shown_in_list />
+          <ItemPositionStatementActionBar
+            ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
+            ballot_item_display_name={this.state.ballot_item_display_name}
+            comment_edit_mode_on={this.state.showPositionStatement}
+            supportProps={ballotItemSupportStore}
+            shouldFocus={this.state.shouldFocusCommentArea}
+            transitioning={this.state.transitioning}
+            type={this.state.ballotItemType}
+            shown_in_list
+          />
         </div>
-      </div> :
+      </div>
+    ) :
       null;
 
-    let comment_display_raccoon_mobile = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text ?
+    const comment_display_raccoon_mobile = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text ? (
       <div className="d-block d-sm-none o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-          <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
-                                          ballot_item_display_name={this.state.ballot_item_display_name}
-                                          supportProps={ballotItemSupportStore}
-                                          shouldFocus={this.state.shouldFocusCommentArea}
-                                          transitioning={this.state.transitioning}
-                                          type={this.state.ballotItemType}
-                                          shown_in_list />
+          <ItemPositionStatementActionBar
+            ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
+            ballot_item_display_name={this.state.ballot_item_display_name}
+            supportProps={ballotItemSupportStore}
+            shouldFocus={this.state.shouldFocusCommentArea}
+            transitioning={this.state.transitioning}
+            type={this.state.ballotItemType}
+            shown_in_list
+          />
         </div>
-      </div> :
+      </div>
+    ) :
       null;
 
-    let positions_count = network_support_count + network_oppose_count + this.state.organizations_to_follow_support.length + this.state.organizations_to_follow_oppose.length;
-    let maximum_organizations_to_show_desktop = 50;
-    let maximum_organizations_to_show_mobile = 50;
+    const positions_count = network_support_count + network_oppose_count + this.state.organizations_to_follow_support.length + this.state.organizations_to_follow_oppose.length;
+    const maximum_organizations_to_show_desktop = 50;
+    const maximum_organizations_to_show_mobile = 50;
 
     let organizations_to_follow_support_desktop = [];
     let organizations_to_follow_support_mobile = [];
@@ -566,7 +598,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       let support_positions_list_count = 0;
       let oppose_positions_list_count = 0;
       // let info_only_positions_list_count = 0;
-      this.state.position_list_from_advisers_followed_by_voter.map( one_position => {
+      this.state.position_list_from_advisers_followed_by_voter.map( (one_position) => {
         // console.log("one_position: ", one_position);
         // Filter out the positions that we don't want to display
         if (one_position.is_support_or_positive_rating) {
@@ -590,7 +622,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       let organizations_to_follow_oppose_mobile_to_show = maximum_organizations_to_show_mobile - oppose_positions_list_count - offset_for_more_text;
       organizations_to_follow_oppose_mobile_to_show = organizations_to_follow_oppose_mobile_to_show >= 0 ? organizations_to_follow_oppose_mobile_to_show : 0;
 
-      //console.log("organizations_to_follow_support_mobile_to_show:", organizations_to_follow_support_mobile_to_show);
+      // console.log("organizations_to_follow_support_mobile_to_show:", organizations_to_follow_support_mobile_to_show);
 
       organizations_to_follow_support_desktop = this.organizationsToDisplay(this.state.organizations_to_follow_support, organizations_to_follow_support_desktop_to_show, this.state.ballotItemWeVoteId, "desktop", true, false);
       organizations_to_follow_support_mobile = this.organizationsToDisplay(this.state.organizations_to_follow_support, organizations_to_follow_support_mobile_to_show, this.state.ballotItemWeVoteId, "mobile", true, false);
@@ -605,163 +637,374 @@ export default class ItemSupportOpposeRaccoon extends Component {
     let advisorsThatMakeVoterIssuesScoreCount = 0;
     if (issueCountUnderThisBallotItemVoterIsFollowing) {
       // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
-      let organizationNameIssueSupportList = IssueStore.getOrganizationNameSupportListUnderThisBallotItem(this.state.ballotItemWeVoteId);
-      let organizationNameIssueSupportListDisplay = organizationNameIssueSupportList.map( organization_name => {
-        return <span key={organization_name} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{organization_name} <strong>+1</strong></span></span>;
-      });
-      let organizationNameIssueOpposeList = IssueStore.getOrganizationNameOpposeListUnderThisBallotItem(this.state.ballotItemWeVoteId);
-      let organizationNameIssueOpposeListDisplay = organizationNameIssueOpposeList.map( organization_name => {
-        return <span key={organization_name} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{organization_name} <strong>-1</strong></span></span>;
-      });
-      advisorsThatMakeVoterIssuesScoreDisplay = <span>
-        { organizationNameIssueSupportList.length ? <span>{organizationNameIssueSupportListDisplay}</span> : null}
-        { organizationNameIssueOpposeList.length ? <span>{organizationNameIssueOpposeListDisplay}</span> : null}
-      </span>;
+      const organizationNameIssueSupportList = IssueStore.getOrganizationNameSupportListUnderThisBallotItem(this.state.ballotItemWeVoteId);
+      const organizationNameIssueSupportListDisplay = organizationNameIssueSupportList.map( organization_name => (
+        <span key={organization_name} className="u-flex u-flex-row u-justify-start u-items-start">
+          <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" />
+          <span>&nbsp;</span>
+          <span>
+            {organization_name}
+            {" "}
+            <strong>+1</strong>
+          </span>
+        </span>
+      ));
+      const organizationNameIssueOpposeList = IssueStore.getOrganizationNameOpposeListUnderThisBallotItem(this.state.ballotItemWeVoteId);
+      const organizationNameIssueOpposeListDisplay = organizationNameIssueOpposeList.map( organization_name => (
+        <span key={organization_name} className="u-flex u-flex-row u-justify-start u-items-start">
+          <img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" />
+          <span>&nbsp;</span>
+          <span>
+            {organization_name}
+            {" "}
+            <strong>-1</strong>
+          </span>
+        </span>
+      ));
+      advisorsThatMakeVoterIssuesScoreDisplay = (
+        <span>
+          { organizationNameIssueSupportList.length ? <span>{organizationNameIssueSupportListDisplay}</span> : null}
+          { organizationNameIssueOpposeList.length ? <span>{organizationNameIssueOpposeListDisplay}</span> : null}
+        </span>
+      );
       advisorsThatMakeVoterIssuesScoreCount = organizationNameIssueSupportList.length + organizationNameIssueOpposeList.length;
     }
+
     if (showIssueScore) {
       // If here, we know this Ballot item has at least one related issue
       if (advisorsThatMakeVoterIssuesScoreCount > 0) {
         // There is a voterIssuesScore, and we have some advisers to display
         // Removed bsPrefix="card-popover"
-        scoreFromYourIssuesPopover =
-          <Popover id="score-popover-trigger-click-root-close"
-                   title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-                   onClick={this.closeIssueScorePopover}>
-            We've added up the opinions about {this.state.ballot_item_display_name} from all the organizations tagged with your issues:
+        scoreFromYourIssuesPopover = (
+          <Popover
+            id="score-popover-trigger-click-root-close"
+            title={(
+              <span>
+              Issue Score
+                <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" />
+              </span>
+            )}
+            onClick={this.closeIssueScorePopover}
+          >
+            We&apos;ve added up the opinions about
+            {" "}
+            {this.state.ballot_item_display_name}
+            {" "}
+            from all the organizations tagged with your issues:
             {advisorsThatMakeVoterIssuesScoreDisplay}
-          </Popover>;
+          </Popover>
+        );
         issuesPopoverPlacement = "bottom";
       } else if (!issueCountUnderThisBallotItem ) {
         // At this point the Issue Score is showing, but the issues haven't loaded yet
         // Removed bsPrefix="card-popover"
-        scoreFromYourIssuesPopover =
-          <Popover id="score-popover-trigger-click-root-close"
-                   title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-                   onClick={this.closeIssueScorePopover}>
-            We've added up the opinions about {this.state.ballot_item_display_name} from all the organizations tagged with your issues. Loading issues now...
-          </Popover>;
+        scoreFromYourIssuesPopover = (
+          <Popover
+            id="score-popover-trigger-click-root-close"
+            title={(
+              <span>
+                Issue Score
+                <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" />
+              </span>
+            )}
+            onClick={this.closeIssueScorePopover}
+          >
+            We&apos;ve added up the opinions about
+            {" "}
+            {this.state.ballot_item_display_name}
+            {" "}
+            from all the organizations tagged with your issues. Loading issues now...
+          </Popover>
+        );
         issuesPopoverPlacement = "top";
       } else if (issueCountUnderThisBallotItemVoterIsFollowing === 0) {
         // Voter isn't following any Issues related to this ballot item, or none that contribute to the Issues score.
         // Encourage voter to follow Issues
         // Removed bsPrefix="card-popover"
-        scoreFromYourIssuesPopover =
-          <Popover id="score-popover-trigger-click-root-close"
-                   title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-                   onClick={this.closeIssueScorePopover}>
-            Follow <strong><img src={cordovaDot("/img/global/svg-icons/issues-v1-64x42.svg")}
-                                width="24px"/> Issues</strong> to get a personalized <strong>Score</strong> for {this.state.ballot_item_display_name}.
-            We add up the opinions from all organizations tagged with your issues. Whew, that's a mouthful!
-          </Popover>;
+        scoreFromYourIssuesPopover = (
+          <Popover
+            id="score-popover-trigger-click-root-close"
+            title={(
+              <span>
+                Issue Score
+                <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" />
+              </span>
+            )}
+            onClick={this.closeIssueScorePopover}
+          >
+            Follow
+            {" "}
+            <strong>
+              <img
+                src={cordovaDot("/img/global/svg-icons/issues-v1-64x42.svg")}
+                width="24px"
+              />
+              {" "}
+              Issues
+            </strong>
+            {" "}
+            to get a personalized
+            {" "}
+            <strong>Score</strong>
+            {" "}
+            for
+            {" "}
+            {this.state.ballot_item_display_name}
+            .
+            We add up the opinions from all organizations tagged with your issues. Whew, that&apos;s a mouthful!
+          </Popover>
+        );
         issuesPopoverPlacement = "top";
       } else {
         // There is a voterIssuesScore, and we have some advisers to display
         // Removed bsPrefix="card-popover"
-        scoreFromYourIssuesPopover =
-          <Popover id="score-popover-trigger-click-root-close"
-                   title={<span>Issue Score <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-                   onClick={this.closeIssueScorePopover}>
-            We've added up the opinions about {this.state.ballot_item_display_name} from all the organizations tagged with your issues:
+        scoreFromYourIssuesPopover = (
+          <Popover
+            id="score-popover-trigger-click-root-close"
+            title={(
+              <span>
+                Issue Score
+                <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" />
+              </span>
+            )}
+            onClick={this.closeIssueScorePopover}
+          >
+            We&apos;ve added up the opinions about
+            {" "}
+            {this.state.ballot_item_display_name}
+            {" "}
+            from all the organizations tagged with your issues:
             {advisorsThatMakeVoterIssuesScoreDisplay}
-          </Popover>;
+          </Popover>
+        );
         issuesPopoverPlacement = "bottom";
       }
     }
 
     // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
-    let nameNetworkSupportList = SupportStore.getNameSupportListUnderThisBallotItem(this.state.ballotItemWeVoteId);
-    let nameNetworkSupportListDisplay = nameNetworkSupportList.map( speaker_display_name => {
-      return <span key={speaker_display_name} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{speaker_display_name} <strong>+1</strong></span></span>;
-    });
-    let nameNetworkOpposeList = SupportStore.getNameOpposeListUnderThisBallotItem(this.state.ballotItemWeVoteId);
-    let nameNetworkOpposeListDisplay = nameNetworkOpposeList.map( speaker_display_name => {
-      return <span key={speaker_display_name} className="u-flex u-flex-row u-justify-start u-items-start"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" /><span>&nbsp;</span><span>{speaker_display_name} <strong>-1</strong></span></span>;
-    });
-    let advisorsThatMakeVoterNetworkScoreDisplay = <span>
-      { nameNetworkSupportList.length ? <span>{nameNetworkSupportListDisplay}</span> : null}
-      { nameNetworkOpposeList.length ? <span>{nameNetworkOpposeListDisplay}</span> : null}
-    </span>;
-    let advisorsThatMakeVoterNetworkScoreCount = nameNetworkSupportList.length + nameNetworkOpposeList.length;
+    const nameNetworkSupportList = SupportStore.getNameSupportListUnderThisBallotItem(this.state.ballotItemWeVoteId);
+    const nameNetworkSupportListDisplay = nameNetworkSupportList.map( speaker_display_name => (
+      <span key={speaker_display_name} className="u-flex u-flex-row u-justify-start u-items-start">
+        <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" />
+        <span>&nbsp;</span>
+        <span>
+          {speaker_display_name}
+          {" "}
+          <strong>+1</strong>
+        </span>
+      </span>
+    ));
+    const nameNetworkOpposeList = SupportStore.getNameOpposeListUnderThisBallotItem(this.state.ballotItemWeVoteId);
+    const nameNetworkOpposeListDisplay = nameNetworkOpposeList.map( speaker_display_name => (
+      <span key={speaker_display_name} className="u-flex u-flex-row u-justify-start u-items-start">
+        <img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" />
+        <span>&nbsp;</span>
+        <span>
+          {speaker_display_name}
+          {" "}
+          <strong>-1</strong>
+        </span>
+      </span>
+    ));
+    const advisorsThatMakeVoterNetworkScoreDisplay = (
+      <span>
+        { nameNetworkSupportList.length ? <span>{nameNetworkSupportListDisplay}</span> : null}
+        { nameNetworkOpposeList.length ? <span>{nameNetworkOpposeListDisplay}</span> : null}
+      </span>
+    );
+    const advisorsThatMakeVoterNetworkScoreCount = nameNetworkSupportList.length + nameNetworkOpposeList.length;
 
     if (advisorsThatMakeVoterNetworkScoreCount > 0) {
-      scoreInYourNetworkPopover =
-        <Popover id="score-popover-trigger-click-root-close"
-                 title={<span>Score in Your Network <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-                 onClick={this.closeNetworkScorePopover}>
-          These friends or organizations support or oppose <strong>{this.state.ballot_item_display_name}</strong>:<br />
+      scoreInYourNetworkPopover = (
+        <Popover
+          id="score-popover-trigger-click-root-close"
+          title={(
+            <span>
+              Score in Your Network
+              <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" />
+            </span>
+          )}
+          onClick={this.closeNetworkScorePopover}
+        >
+          These friends or organizations support or oppose
+          {" "}
+          <strong>{this.state.ballot_item_display_name}</strong>
+          :
+          <br />
           {advisorsThatMakeVoterNetworkScoreDisplay}
-        </Popover>;
-
+        </Popover>
+      );
     } else {
-      scoreInYourNetworkPopover =
-        <Popover id="score-popover-trigger-click-root-close"
-                 title={<span>Score in Your Network <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-                 onClick={this.closeNetworkScorePopover}>
-          Your friends, and the organizations you listen to, are <strong>Your Network</strong>.
+      scoreInYourNetworkPopover = (
+        <Popover
+          id="score-popover-trigger-click-root-close"
+          title={(
+            <span>
+              Score in Your Network
+              <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" />
+            </span>
+          )}
+          onClick={this.closeNetworkScorePopover}
+        >
+          Your friends, and the organizations you listen to, are
+          {" "}
+          <strong>Your Network</strong>
+          .
           Everyone in your network
-          that <span className="u-no-break"> <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")}
-                                                  width="20"
-                                                  height="20"/> supports</span> {this.state.ballot_item_display_name}
+          that
+          {" "}
+          <span className="u-no-break">
+            {" "}
+            <img
+              src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")}
+              width="20"
+              height="20"
+            />
+            {" "}
+            supports
+          </span>
+          {" "}
+          {this.state.ballot_item_display_name}
           adds
-          +1 to this <strong>Score</strong>.
-          Each one that <span className="u-no-break"><img
-          src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
-          width="20" height="20"/> opposes</span> subtracts
-          1 from this <strong>Score</strong>. <strong>Listen</strong> to an
-          organization to add their opinion to your personalized <strong>Score</strong>.
-        </Popover>;
+          +1 to this
+          {" "}
+          <strong>Score</strong>
+          .
+          Each one that
+          {" "}
+          <span className="u-no-break">
+            <img
+              src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
+              width="20"
+              height="20"
+            />
+            {" "}
+            opposes
+          </span>
+          {" "}
+          subtracts 1 from this
+          {" "}
+          <strong>Score</strong>
+          .
+          {" "}
+          <strong>Listen</strong>
+          {" "}
+          to an organization to add their opinion to your personalized
+          {" "}
+          <strong>Score</strong>
+          .
+        </Popover>
+      );
     }
 
-    let voter_decided_item = this.state.supportProps && this.state.voter &&
+    const voter_decided_item = this.state.supportProps && this.state.voter &&
     (this.state.supportProps.is_support || this.state.supportProps.is_oppose);
 
-    // Removed bsPrefix="card-popover"
-    const positionsPopover = positions_count > 1 || positions_count && !voter_decided_item ?
-      <Popover id="positions-popover-trigger-click-root-close"
-               title={<span className="u-f4 u-no-break">Opinions{this.state.ballot_item_display_name ? " about " + this.state.ballot_item_display_name : ""} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-               onClick={this.closePositionsPopover}
-               >
-        These organizations <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")}
-                                               width="20" height="20" /> support</span> or&nbsp;
-        <span className="u-no-break"><img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
-                                               width="20" height="20" /> oppose</span>{this.state.ballot_item_display_name ? " " + this.state.ballot_item_display_name : ""}.
+    const positionsPopover = positions_count > 1 || (positions_count && !voter_decided_item) ? (     // eslint-disable-line no-nested-ternary
+      <Popover
+        id="positions-popover-trigger-click-root-close"
+        title={(
+          <span className="u-f4 u-no-break">
+            Opinions
+            {this.state.ballot_item_display_name ? ` about ${this.state.ballot_item_display_name}` : ""}
+            {" "}
+            <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" />
+          </span>
+        )}
+        onClick={this.closePositionsPopover}
+      >
+        These organizations
+        {" "}
+        <span className="u-no-break">
+          <img
+            src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")}
+            width="20"
+            height="20"
+          />
+          {" "}
+          support
+        </span>
+        {" "}
+        or&nbsp;
+        <span className="u-no-break">
+          <img
+            src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")}
+            width="20"
+            height="20"
+          />
+          {" "}
+          oppose
+        </span>
+        {this.state.ballot_item_display_name ? ` ${this.state.ballot_item_display_name}` : ""}
+        .
         Click on the logo
-        and <strong>Listen</strong> to an organization to add their opinion to your personalized <strong>Score</strong>.
-      </Popover> :
-      positions_count && voter_decided_item ?
-      <Popover id="positions-popover-trigger-click-root-close"
-               title={<span className="u-f4 u-no-break">Opinions{this.state.ballot_item_display_name ? " about " + this.state.ballot_item_display_name : ""} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-               onClick={this.closePositionsPopover}
-               >
-        You have the only opinion{this.state.ballot_item_display_name ? " about " + this.state.ballot_item_display_name : ""} so far.
-      </Popover> :
-      <Popover id="positions-popover-trigger-click-root-close"
-               title={<span className="u-f4 u-no-break">Opinions{this.state.ballot_item_display_name ? " about " + this.state.ballot_item_display_name : ""} <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" /></span>}
-               onClick={this.closePositionsPopover}
-               >
-        There are no opinions{this.state.ballot_item_display_name ? " about " + this.state.ballot_item_display_name : ""} yet.
-      </Popover>;
+        and
+        {" "}
+        <strong>Listen</strong>
+        {" "}
+        to an organization to add their opinion to your personalized
+        {" "}
+        <strong>Score</strong>
+        .
+      </Popover>
+    ) :
+      positions_count && voter_decided_item ? (
+        <Popover
+          id="positions-popover-trigger-click-root-close"
+          title={(
+            <span className="u-f4 u-no-break">
+              Opinions
+              {this.state.ballot_item_display_name ? ` about ${this.state.ballot_item_display_name}` : ""}
+              {" "}
+              <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" />
+            </span>
+          )}
+          onClick={this.closePositionsPopover}
+        >
+          You have the only opinion
+          {this.state.ballot_item_display_name ? ` about ${this.state.ballot_item_display_name}` : ""}
+          {" "}
+          so far.
+        </Popover>
+      ) : (
+        <Popover
+          id="positions-popover-trigger-click-root-close"
+          title={(
+            <span className="u-f4 u-no-break">
+              Opinions
+              {this.state.ballot_item_display_name ? ` about ${this.state.ballot_item_display_name}` : ""}
+              {" "}
+              <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" />
+            </span>
+          )}
+          onClick={this.closePositionsPopover}
+        >
+          There are no opinions
+          {this.state.ballot_item_display_name ? ` about ${this.state.ballot_item_display_name}` : ""}
+          {" "}
+          yet.
+        </Popover>
+      );
 
-    let ballotItemSupportProps = SupportStore.get(this.state.ballotItemWeVoteId);
+    const ballotItemSupportProps = SupportStore.get(this.state.ballotItemWeVoteId);
     let networkSupportCount = 0;
     let networkOpposeCount = 0;
     if (ballotItemSupportProps !== undefined) {
       networkSupportCount = ballotItemSupportProps.support_count ? parseInt(ballotItemSupportProps.support_count || 0) : 0;
       networkOpposeCount = ballotItemSupportProps.oppose_count ? parseInt(ballotItemSupportProps.oppose_count || 0) : 0;
     }
-    let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(this.state.ballotItemWeVoteId);
-    let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(this.state.ballotItemWeVoteId);
-    let totalSupportCount = networkSupportCount + organizationsToFollowSupport.length;
-    let totalOpposeCount = networkOpposeCount + organizationsToFollowOppose.length;
+    const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(this.state.ballotItemWeVoteId);
+    const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(this.state.ballotItemWeVoteId);
+    const totalSupportCount = networkSupportCount + organizationsToFollowSupport.length;
+    const totalOpposeCount = networkOpposeCount + organizationsToFollowOppose.length;
 
     const endorsementsLabel = (
       <span className="issues-list-stacked__support-label u-cursor--pointer u-no-break">
-        {totalSupportCount ? (
+        {totalSupportCount ? (                                                               // eslint-disable-line no-nested-ternary
           <span className="u-no-break issue-icon-list__endorsements-label">
             <img
               src={cordovaDot(
-                "/img/global/svg-icons/issues/thumbs-up-icon.svg"
+                "/img/global/svg-icons/issues/thumbs-up-icon.svg",
               )}
               className="issue-icon-list__endorsement-icon"
               width="20"
@@ -771,22 +1014,25 @@ export default class ItemSupportOpposeRaccoon extends Component {
               {totalSupportCount}
             </span>
           </span>
-        ) : null}
+        ) : null
+        }
         {totalOpposeCount ? (
           <span className="u-no-break issue-icon-list__endorsements-label">
             <img
               src={cordovaDot(
-                "/img/global/svg-icons/issues/thumbs-down-icon.svg"
+                "/img/global/svg-icons/issues/thumbs-down-icon.svg",
               )}
               className="issue-icon-list__endorsement-icon"
               width="20"
               height="20"
             />
             <span className="issue-icon-list__endorsement-count">
-              -{totalOpposeCount}
-                  </span>
+              -
+              {totalOpposeCount}
+            </span>
           </span>
-        ) : null}
+        ) : null
+        }
         {totalSupportCount || totalOpposeCount ? (
           <span>Endorsements</span>
         ) : (
@@ -795,191 +1041,235 @@ export default class ItemSupportOpposeRaccoon extends Component {
       </span>
     );
 
-    const positionsLabel =
-      <OverlayTrigger trigger="click"
-                      rootClose
-                      placement={this.props.popoverBottom ? "bottom" : "top"}
-                      overlay={positionsPopover}
-                      >
+    const positionsLabel = (
+      <OverlayTrigger
+        trigger="click"
+        rootClose
+        placement={this.props.popoverBottom ? "bottom" : "top"}
+        overlay={positionsPopover}
+      >
         <span className="network-positions-stacked__support-label u-cursor--pointer u-no-break">
           <span>{endorsementsLabel}</span>
           <span className="u-push--xs"><i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" /></span>
         </span>
-      </OverlayTrigger>;
+      </OverlayTrigger>
+    );
 
-    return <div className="network-positions-stacked">
-      <div className="d-print-none network-positions-stacked__support-list u-flex u-justify-between u-items-center">
-        {/* Click to scroll left through list Desktop */}
-        { this.state.can_scroll_desktop && this.state.can_scroll_left_desktop ?
-          <i className="fa fa-1x fa-chevron-left network-positions-stacked__support-list__scroll-icon network-positions-stacked__support-list__scroll-icon--small u-cursor--pointer d-none d-sm-block d-print-none" aria-hidden="true" onClick={this.scrollLeft.bind(this, "desktop")} /> :
-          <i className="fa fa-1x fa-chevron-left network-positions-stacked__support-list__scroll-icon--disabled-small d-none d-sm-block d-print-none" aria-hidden="true" />
+    return (
+      <div className="network-positions-stacked">
+        <div className="d-print-none network-positions-stacked__support-list u-flex u-justify-between u-items-center">
+          {/* Click to scroll left through list Desktop */}
+          { this.state.can_scroll_desktop && this.state.can_scroll_left_desktop ?
+            <i className="fa fa-1x fa-chevron-left network-positions-stacked__support-list__scroll-icon network-positions-stacked__support-list__scroll-icon--small u-cursor--pointer d-none d-sm-block d-print-none" aria-hidden="true" onClick={this.scrollLeft.bind(this, "desktop")} /> :
+            <i className="fa fa-1x fa-chevron-left network-positions-stacked__support-list__scroll-icon--disabled-small d-none d-sm-block d-print-none" aria-hidden="true" />
+          }
+          {/* Click to scroll left through list Mobile */}
+          { this.state.can_scroll_mobile && this.state.can_scroll_left_mobile ?
+            <i className="fa fa-1x fa-chevron-left network-positions-stacked__support-list__scroll-icon network-positions-stacked__support-list__scroll-icon--small u-cursor--pointer d-block d-sm-none d-print-none" aria-hidden="true" onClick={this.scrollLeft.bind(this, "mobile")} /> :
+            <i className="fa fa-1x fa-chevron-left network-positions-stacked__support-list__scroll-icon--disabled-small d-block d-sm-none d-print-none" aria-hidden="true" />
+          }
+          <div className="network-positions-stacked__support-list__container-wrap">
+            {/* Network Positions - Desktop */}
+            <span
+              ref={`${this.state.ballotItemWeVoteId}-org-list-desktop`}
+              className="network-positions-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs d-none d-sm-block"
+            >
+              <ul className="network-positions-stacked__support-list__items">
+                <li className="network-positions-stacked__support-list__item">
+                  { positionsLabel }
+                  {/* Show a break-down of the current positions in your network - Desktop */}
+                  <ItemTinyPositionBreakdownList
+                    ballot_item_display_name={this.state.ballot_item_display_name}
+                    ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+                    currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                    position_list={this.state.position_list_from_advisers_followed_by_voter}
+                    showSupport
+                    supportProps={this.state.supportProps}
+                    visibility="desktop"
+                    urlWithoutHash={this.props.urlWithoutHash}
+                    we_vote_id={this.props.we_vote_id}
+                  />
+                  <ItemTinyPositionBreakdownList
+                    ballot_item_display_name={this.state.ballot_item_display_name}
+                    ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+                    currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                    position_list={this.state.position_list_from_advisers_followed_by_voter}
+                    showOppose
+                    supportProps={this.state.supportProps}
+                    visibility="desktop"
+                    urlWithoutHash={this.props.urlWithoutHash}
+                    we_vote_id={this.props.we_vote_id}
+                  />
+                  {/* Show support positions the voter can follow Desktop */}
+                  { organizations_to_follow_support_desktop.length ? organizations_to_follow_support_desktop : null }
+                  {/* Show oppose positions the voter can follow Desktop */}
+                  { organizations_to_follow_oppose_desktop.length ? organizations_to_follow_oppose_desktop : null }
+                </li>
+              </ul>
+            </span>
+            {/* Network Positions - Mobile */}
+            <span
+              ref={`${this.state.ballotItemWeVoteId}-org-list-mobile`}
+              className="network-positions-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs d-block d-sm-none"
+            >
+              <ul className="network-positions-stacked__support-list__items">
+                <li className="network-positions-stacked__support-list__item">
+                  { positionsLabel }
+                  {/* Show a break-down of the current positions in your network - Mobile */}
+                  <ItemTinyPositionBreakdownList
+                    ballot_item_display_name={this.state.ballot_item_display_name}
+                    ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+                    currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                    position_list={this.state.position_list_from_advisers_followed_by_voter}
+                    showSupport
+                    supportProps={this.state.supportProps}
+                    visibility="mobile"
+                    urlWithoutHash={this.props.urlWithoutHash}
+                    we_vote_id={this.props.we_vote_id}
+                  />
+                  <ItemTinyPositionBreakdownList
+                    ballot_item_display_name={this.state.ballot_item_display_name}
+                    ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+                    currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                    position_list={this.state.position_list_from_advisers_followed_by_voter}
+                    showOppose
+                    supportProps={this.state.supportProps}
+                    visibility="mobile"
+                    urlWithoutHash={this.props.urlWithoutHash}
+                    we_vote_id={this.props.we_vote_id}
+                  />
+                  {/* Show support positions the voter can follow Mobile */}
+                  { organizations_to_follow_support_mobile.length ? organizations_to_follow_support_mobile : null }
+                  {/* Show oppose positions the voter can follow Mobile */}
+                  { organizations_to_follow_oppose_mobile.length ? organizations_to_follow_oppose_mobile : null }
+                </li>
+              </ul>
+            </span>
+          </div>
+          {/* Click to scroll right through list Desktop */}
+          { this.state.can_scroll_desktop && this.state.can_scroll_right_desktop ?
+            <i className="fa fa-1x fa-chevron-right network-positions-stacked__support-list__scroll-icon network-positions-stacked__support-list__scroll-icon--small u-cursor--pointer d-none d-sm-block d-print-none" aria-hidden="true" onClick={this.scrollRight.bind(this, "desktop")} /> :
+            <i className="fa fa-1x fa-chevron-right network-positions-stacked__support-list__scroll-icon--disabled d-none d-sm-block d-print-none" aria-hidden="true" />
+          }
+          {/* Click to scroll right through list Mobile */}
+          { this.state.can_scroll_mobile && this.state.can_scroll_right_mobile ?
+            <i className="fa fa-1x fa-chevron-right network-positions-stacked__support-list__scroll-icon network-positions-stacked__support-list__scroll-icon--small u-cursor--pointer d-block d-sm-none d-print-none" aria-hidden="true" onClick={this.scrollRight.bind(this, "mobile")} /> :
+            <i className="fa fa-1x fa-chevron-right network-positions-stacked__support-list__scroll-icon--disabled d-block d-sm-none d-print-none" aria-hidden="true" />
+          }
+        </div>
+
+        {/* Issues that have a score related to this ballot item */}
+        {this.props.showIssueList ? (
+          <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between u-padding-bottom--sm">
+            <div>
+              {/* We use this component to show the label showing number of endorsements */}
+              <IssuesByBallotItemDisplayList
+                ballotItemDisplayName={this.state.ballot_item_display_name}
+                ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+                currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                endorsementsLabelHidden
+                overlayTriggerOnClickOnly
+                placement="bottom"
+                urlWithoutHash={this.props.urlWithoutHash}
+              />
+            </div>
+          </div>
+        ) : null
         }
-        {/* Click to scroll left through list Mobile */}
-        { this.state.can_scroll_mobile && this.state.can_scroll_left_mobile ?
-          <i className="fa fa-1x fa-chevron-left network-positions-stacked__support-list__scroll-icon network-positions-stacked__support-list__scroll-icon--small u-cursor--pointer d-block d-sm-none d-print-none" aria-hidden="true" onClick={this.scrollLeft.bind(this, "mobile")} /> :
-          <i className="fa fa-1x fa-chevron-left network-positions-stacked__support-list__scroll-icon--disabled-small d-block d-sm-none d-print-none" aria-hidden="true" />
-        }
-        <div className="network-positions-stacked__support-list__container-wrap">
-          {/* Network Positions - Desktop */}
-          <span ref={`${this.state.ballotItemWeVoteId}-org-list-desktop`}
-                className="network-positions-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs d-none d-sm-block">
-            <ul className="network-positions-stacked__support-list__items">
-              <li className="network-positions-stacked__support-list__item">
-                { positionsLabel }
-                {/* Show a break-down of the current positions in your network - Desktop */}
-                <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
-                                               ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-                                               currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                               position_list={this.state.position_list_from_advisers_followed_by_voter}
-                                               showSupport
-                                               supportProps={this.state.supportProps}
-                                               visibility="desktop"
-                                               urlWithoutHash={this.props.urlWithoutHash}
-                                               we_vote_id={this.props.we_vote_id}
-                                                />
-                <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
-                                               ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-                                               currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                               position_list={this.state.position_list_from_advisers_followed_by_voter}
-                                               showOppose
-                                               supportProps={this.state.supportProps}
-                                               visibility="desktop"
-                                               urlWithoutHash={this.props.urlWithoutHash}
-                                               we_vote_id={this.props.we_vote_id}
-                                                />
-                {/* Show support positions the voter can follow Desktop */}
-                { organizations_to_follow_support_desktop.length ? organizations_to_follow_support_desktop : null }
-                {/* Show oppose positions the voter can follow Desktop */}
-                { organizations_to_follow_oppose_desktop.length ? organizations_to_follow_oppose_desktop : null }
-              </li>
-            </ul>
-          </span>
-          {/* Network Positions - Mobile */}
-          <span ref={`${this.state.ballotItemWeVoteId}-org-list-mobile`}
-                className="network-positions-stacked__support-list__container u-flex u-justify-between u-items-center u-inset__v--xs d-block d-sm-none">
-            <ul className="network-positions-stacked__support-list__items">
-              <li className="network-positions-stacked__support-list__item">
-                { positionsLabel }
-                {/* Show a break-down of the current positions in your network - Mobile */}
-                <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
-                                               ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-                                               currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                               position_list={this.state.position_list_from_advisers_followed_by_voter}
-                                               showSupport
-                                               supportProps={this.state.supportProps}
-                                               visibility="mobile"
-                                               urlWithoutHash={this.props.urlWithoutHash}
-                                               we_vote_id={this.props.we_vote_id}
-                                                />
-                <ItemTinyPositionBreakdownList ballot_item_display_name={this.state.ballot_item_display_name}
-                                               ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-                                               currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                               position_list={this.state.position_list_from_advisers_followed_by_voter}
-                                               showOppose
-                                               supportProps={this.state.supportProps}
-                                               visibility="mobile"
-                                               urlWithoutHash={this.props.urlWithoutHash}
-                                               we_vote_id={this.props.we_vote_id}
-                                                />
-                {/* Show support positions the voter can follow Mobile */}
-                { organizations_to_follow_support_mobile.length ? organizations_to_follow_support_mobile : null }
-                {/* Show oppose positions the voter can follow Mobile */}
-                { organizations_to_follow_oppose_mobile.length ? organizations_to_follow_oppose_mobile : null }
-              </li>
-            </ul>
+
+        <div className="network-positions-stacked__support">
+          {/* Issue Score here */}
+          { showIssueScore ? (
+            <OverlayTrigger
+              trigger="click"
+              ref="issue-score-overlay"
+              onExit={this.closeIssueScorePopover}
+              rootClose
+              placement={issuesPopoverPlacement}
+              overlay={scoreFromYourIssuesPopover}
+            >
+              {/* If there is a Network Score, don't show Issue score in mobile */}
+              <span className={showNetworkScore ?
+                "network-positions-stacked__support-score u-cursor--pointer u-no-break d-none d-sm-block" :
+                "network-positions-stacked__support-score u-cursor--pointer u-no-break"}
+              >
+                { voterIssuesScore === 0 ? (
+                  <span className="u-margin-left--md">
+                    { voterIssuesScoreWithSign }
+                  </span>
+                ) : (
+                  <span className="u-margin-left--xs">
+                    { voterIssuesScoreWithSign }
+                  </span>
+                )}
+                <span className="network-positions-stacked__support-score-label">
+                  <span>
+                    Issue
+                    <br />
+                    Score
+                  </span>
+                  <span>&nbsp;
+                    <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" />
+                  </span>
+                </span>
+              </span>
+            </OverlayTrigger>
+          ) : null
+          }
+
+          {/* Network Score here */}
+          { showNetworkScore ? (
+            <OverlayTrigger
+              trigger="click"
+              ref="network-score-overlay"
+              onExit={this.closeNetworkScorePopover}
+              rootClose
+              placement={this.props.popoverBottom ? "bottom" : "top"}
+              overlay={scoreInYourNetworkPopover}
+            >
+              <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break">
+                { total_network_score === 0 ? (
+                  <span className="u-margin-left--md">
+                    { total_network_score_with_sign }
+                  </span>
+                ) : (
+                  <span className="u-margin-left--xs">
+                    { total_network_score_with_sign }
+                  </span>
+                )}
+                <span className="network-positions-stacked__support-score-label">
+                  <span className="d-block d-sm-none">
+                    Network
+                    <br />
+                    Score
+                    {" "}
+                    <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" />
+                  </span>
+                  <span className="d-none d-sm-block">
+                    Score in
+                    <br />
+                    Your Network
+                    {" "}
+                    <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" />
+                  </span>
+                </span>
+              </span>
+            </OverlayTrigger>
+          ) : null
+          }
+          <span className="sr-only">
+            {total_network_score > 0 ? `${total_network_score} Support` : null }
+            {total_network_score < 0 ? `${total_network_score} Oppose` : null }
           </span>
         </div>
-        {/* Click to scroll right through list Desktop */}
-        { this.state.can_scroll_desktop && this.state.can_scroll_right_desktop ?
-          <i className="fa fa-1x fa-chevron-right network-positions-stacked__support-list__scroll-icon network-positions-stacked__support-list__scroll-icon--small u-cursor--pointer d-none d-sm-block d-print-none" aria-hidden="true" onClick={this.scrollRight.bind(this, "desktop")} /> :
-          <i className="fa fa-1x fa-chevron-right network-positions-stacked__support-list__scroll-icon--disabled d-none d-sm-block d-print-none" aria-hidden="true" />
-        }
-        {/* Click to scroll right through list Mobile */}
-        { this.state.can_scroll_mobile && this.state.can_scroll_right_mobile ?
-          <i className="fa fa-1x fa-chevron-right network-positions-stacked__support-list__scroll-icon network-positions-stacked__support-list__scroll-icon--small u-cursor--pointer d-block d-sm-none d-print-none" aria-hidden="true" onClick={this.scrollRight.bind(this, "mobile")} /> :
-          <i className="fa fa-1x fa-chevron-right network-positions-stacked__support-list__scroll-icon--disabled d-block d-sm-none d-print-none" aria-hidden="true" />
-        }
+
+        <div className="network-positions-stacked__support">
+          {/* Support/Oppose/Comment toggle here */}
+          {item_action_bar}
+        </div>
+        { comment_display_raccoon_desktop }
+        { comment_display_raccoon_mobile }
       </div>
-
-      {/* Issues that have a score related to this ballot item */}
-      { this.props.showIssueList ?
-        <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between u-padding-bottom--sm">
-          <div>
-            {/* We use this component to show the label showing number of endorsements */}
-            <IssuesByBallotItemDisplayList ballotItemDisplayName={this.state.ballot_item_display_name}
-                                           ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-                                           currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                           endorsementsLabelHidden
-                                           overlayTriggerOnClickOnly
-                                           placement={"bottom"}
-                                           urlWithoutHash={this.props.urlWithoutHash}
-                                           />
-          </div>
-        </div> :
-        null
-      }
-
-      <div className="network-positions-stacked__support">
-        {/* Issue Score here */}
-        { showIssueScore ?
-          <OverlayTrigger trigger="click"
-                          ref="issue-score-overlay"
-                          onExit={this.closeIssueScorePopover}
-                          rootClose
-                          placement={issuesPopoverPlacement}
-                          overlay={scoreFromYourIssuesPopover}>
-            {/* If there is a Network Score, don't show Issue score in mobile */}
-            <span className={ showNetworkScore ?
-                              "network-positions-stacked__support-score u-cursor--pointer u-no-break d-none d-sm-block" :
-                              "network-positions-stacked__support-score u-cursor--pointer u-no-break" }>
-              { voterIssuesScore === 0 ?
-                <span className="u-margin-left--md">{ voterIssuesScoreWithSign }&nbsp;</span> :
-                <span className="u-margin-left--xs">{ voterIssuesScoreWithSign }&nbsp;</span>
-              }
-              <span className="network-positions-stacked__support-score-label">
-                <span>Issue<br />Score</span>
-                <span>&nbsp;<i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" />&nbsp;</span>
-              </span>
-            </span>
-          </OverlayTrigger> :
-          null
-        }
-
-        {/* Network Score here */}
-        { showNetworkScore ?
-          <OverlayTrigger trigger="click"
-                          ref="network-score-overlay"
-                          onExit={this.closeNetworkScorePopover}
-                          rootClose
-                          placement={this.props.popoverBottom ? "bottom" : "top"}
-                          overlay={scoreInYourNetworkPopover}>
-            <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break">
-              { total_network_score === 0 ?
-                <span className="u-margin-left--md">{ total_network_score_with_sign }&nbsp;</span> :
-                <span className="u-margin-left--xs">{ total_network_score_with_sign }&nbsp;</span>
-              }
-              <span className="network-positions-stacked__support-score-label">
-                <span className="d-block d-sm-none">Network<br />
-                  Score <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" /></span>
-                <span className="d-none d-sm-block">Score in<br />
-                  Your Network <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" /></span>
-              </span>
-            </span>
-          </OverlayTrigger> :
-          null
-        }
-        <span className="sr-only">
-          {total_network_score > 0 ? total_network_score + " Support" : null }
-          {total_network_score < 0 ? total_network_score + " Oppose" : null }
-        </span>
-      </div>
-
-      <div className="network-positions-stacked__support">
-        {/* Support/Oppose/Comment toggle here */}
-        {item_action_bar}
-      </div>
-      { comment_display_raccoon_desktop }
-      { comment_display_raccoon_mobile }
-    </div>;
+    );
   }
 }

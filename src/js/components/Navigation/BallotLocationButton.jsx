@@ -8,16 +8,12 @@ import { renderLog } from "../../utils/logging";
 export default class BallotLocationButton extends Component {
   static propTypes = {
     ballot_location: PropTypes.object,
-    goToDifferentBallot: PropTypes.func.isRequired
+    goToDifferentBallot: PropTypes.func.isRequired,
   };
-
-  constructor (props) {
-    super(props);
-  }
 
   render () {
     renderLog(__filename);
-    let ballot_location = this.props.ballot_location;
+    const ballot_location = this.props.ballot_location;
 
     if (ballot_location.ballot_item_display_name !== "" || ballot_location.text_for_map_search !== "") {
       let ballot_location_shortcut_of_retrieved_ballot = "";
@@ -55,12 +51,16 @@ export default class BallotLocationButton extends Component {
         ballot_location_display_name = "My Address";
       }
 
-      return <span className="u-push--md">
-        <Button variant={ballot_location_shortcut_matches || ballot_returned_we_vote_id_matches ? "info" : "default"}
-                onClick={() => { this.props.goToDifferentBallot(ballot_location.ballot_returned_we_vote_id, ballot_location.ballot_location_shortcut); }} >
-          <span>{ballot_location_display_name}</span>
-        </Button>
-      </span>;
+      return (
+        <span className="u-push--md">
+          <Button
+            variant={ballot_location_shortcut_matches || ballot_returned_we_vote_id_matches ? "info" : "default"}
+            onClick={() => { this.props.goToDifferentBallot(ballot_location.ballot_returned_we_vote_id, ballot_location.ballot_location_shortcut); }}
+          >
+            <span>{ballot_location_display_name}</span>
+          </Button>
+        </span>
+      );
     } else {
       return <span />;
     }

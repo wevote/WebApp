@@ -1,14 +1,11 @@
 import { ReduceStore } from "flux/utils";
-import BallotStore from "../stores/BallotStore";
+import BallotStore from "./BallotStore";
 import Dispatcher from "../dispatcher/Dispatcher";
 import OfficeActions from "../actions/OfficeActions";
-import OfficeStore from "../stores/OfficeStore";
+import OfficeStore from "./OfficeStore";
 import { stringContains } from "../utils/textFormat";
 
-/* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
-/* TODO: June 2018, there are just too many non-camelCase vars in this file, and they are in state which is passed as an object, suppressing so we can see other warnings */
 class CandidateStore extends ReduceStore {
-
   getInitialState () {
     return {
       all_cached_candidates: {}, // Dictionary with candidate_we_vote_id as key and the candidate as value
@@ -31,14 +28,14 @@ class CandidateStore extends ReduceStore {
   }
 
   getPositionAboutCandidateFromOrganization (candidate_we_vote_id, organization_we_vote_id) {
-    let positions_about_candidate = this.getState().all_cached_positions_about_candidates[candidate_we_vote_id] || [];
+    const positions_about_candidate = this.getState().all_cached_positions_about_candidates[candidate_we_vote_id] || [];
     // console.log("CandidateStore, candidate_we_vote_id: ", candidate_we_vote_id, "organization_we_vote_id: ", organization_we_vote_id);
     // console.log("CandidateStore, getPositionAboutCandidateFromOrganization: ", positions_about_candidate[organization_we_vote_id]);
     return positions_about_candidate[organization_we_vote_id] || [];
   }
 
   isCandidateInStore (candidate_we_vote_id) {
-    let candidate = this.getState().all_cached_candidates[candidate_we_vote_id] || {};
+    const candidate = this.getState().all_cached_candidates[candidate_we_vote_id] || {};
     if (candidate.we_vote_id) {
       return true;
     } else {
@@ -47,9 +44,9 @@ class CandidateStore extends ReduceStore {
   }
 
   createCandidatePosition (one_candidate_we_vote_id, one_voter_guide) {
-    let candidateObject = this.getCandidate(one_candidate_we_vote_id);
+    const candidateObject = this.getCandidate(one_candidate_we_vote_id);
     // console.log("candidateObject: ", candidateObject);
-    let onePosition = {
+    const onePosition = {
       position_we_vote_id: "", // Currently empty
       ballot_item_display_name: candidateObject.ballot_item_display_name,
       ballot_item_image_url_https_large: candidateObject.candidate_photo_url_large,
@@ -89,10 +86,8 @@ class CandidateStore extends ReduceStore {
   }
 
   reduce (state, action) {
-
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
-    if (!action.res || !action.res.success)
-      return state;
+    if (!action.res || !action.res.success) return state;
 
     let all_cached_candidates;
     let all_cached_positions_about_candidates;
@@ -107,14 +102,20 @@ class CandidateStore extends ReduceStore {
     let one_position;
     let position_list_from_advisers_followed_by_voter;
     let voter_guides;
+    let contest_office_we_vote_id = "";
+    const number_of_candidates_retrieved_by_office = state.number_of_candidates_retrieved_by_office;
+    const organization_we_vote_id = action.res.opinion_maker_we_vote_id;
+    const position_list = action.res.position_list;
+    const is_empty = voter_guides && voter_guides.length === 0;
+    const search_term_exists = action.res.search_string !== "";
+    const ballot_item_we_vote_id_exists = ballot_item_we_vote_id && ballot_item_we_vote_id.length !== 0;
 
     switch (action.type) {
-
       case "candidateRetrieve":
 
         // Make sure we have information for the office the candidate is running for
         if (action.res.contest_office_we_vote_id) {
-          let office = OfficeStore.getOffice(action.res.contest_office_we_vote_id);
+          const office = OfficeStore.getOffice(action.res.contest_office_we_vote_id);
           if (!office || !office.ballot_item_display_name) {
             OfficeActions.officeRetrieve(action.res.contest_office_we_vote_id);
           }
@@ -125,17 +126,15 @@ class CandidateStore extends ReduceStore {
         all_cached_candidates[candidate.we_vote_id] = candidate;
         return {
           ...state,
-          all_cached_candidates: all_cached_candidates,
+          all_cached_candidates,
         };
 
       case "candidatesRetrieve":
-        let contest_office_we_vote_id = "";
-        let number_of_candidates_retrieved_by_office = state.number_of_candidates_retrieved_by_office;
 
         // Make sure we have information for the office the candidate is running for
         if (action.res.contest_office_we_vote_id) {
           contest_office_we_vote_id = action.res.contest_office_we_vote_id;
-          let office = OfficeStore.getOffice(action.res.contest_office_we_vote_id);
+          const office = OfficeStore.getOffice(action.res.contest_office_we_vote_id);
           if (!office || !office.ballot_item_display_name) {
             OfficeActions.officeRetrieve(action.res.contest_office_we_vote_id);
           }
@@ -144,7 +143,7 @@ class CandidateStore extends ReduceStore {
         incoming_candidate_count = 0;
         candidate_list = action.res.candidate_list;
         all_cached_candidates = state.all_cached_candidates;
-        candidate_list.forEach(one_candidate => {
+        candidate_list.forEach((one_candidate) => {
           all_cached_candidates[one_candidate.we_vote_id] = one_candidate;
           incoming_candidate_count += 1;
         });
@@ -154,18 +153,18 @@ class CandidateStore extends ReduceStore {
 
         return {
           ...state,
-          all_cached_candidates: all_cached_candidates,
-          number_of_candidates_retrieved_by_office: number_of_candidates_retrieved_by_office,
+          all_cached_candidates,
+          number_of_candidates_retrieved_by_office,
         };
 
       case "voterBallotItemsRetrieve":
         google_civic_election_id = action.res.google_civic_election_id || 0;
         if (google_civic_election_id !== 0) {
           all_cached_candidates = state.all_cached_candidates;
-          action.res.ballot_item_list.forEach(one_ballot_item => {
+          action.res.ballot_item_list.forEach((one_ballot_item) => {
             if (one_ballot_item.kind_of_ballot_item === "OFFICE" && one_ballot_item.candidate_list) {
               candidate_list = one_ballot_item.candidate_list;
-              candidate_list.forEach(one_candidate => {
+              candidate_list.forEach((one_candidate) => {
                 all_cached_candidates[one_candidate.we_vote_id] = one_candidate;
               });
             }
@@ -173,7 +172,7 @@ class CandidateStore extends ReduceStore {
 
           return {
             ...state,
-            all_cached_candidates: all_cached_candidates,
+            all_cached_candidates,
           };
         }
         return state;
@@ -190,24 +189,24 @@ class CandidateStore extends ReduceStore {
           // console.log("positionListForBallotItem position_list_from_advisers_followed_by_voter[ballot_item_we_vote_id]:", position_list_from_advisers_followed_by_voter[candidate_we_vote_id]);
           return {
             ...state,
-            position_list_from_advisers_followed_by_voter: position_list_from_advisers_followed_by_voter,
+            position_list_from_advisers_followed_by_voter,
           };
         } else if (action.res.kind_of_ballot_item === "OFFICE") {
           office_position_list = action.res.position_list;
-          let office_we_vote_id = action.res.ballot_item_we_vote_id;
+          const office_we_vote_id = action.res.ballot_item_we_vote_id;
           position_list_from_advisers_followed_by_voter = state.position_list_from_advisers_followed_by_voter;
 
           // Now reset the lists for all candidates under this office
-          let candidate_we_vote_ids_under_this_office = BallotStore.getCandidateWeVoteIdsForOfficeWeVoteId(office_we_vote_id);
+          const candidate_we_vote_ids_under_this_office = BallotStore.getCandidateWeVoteIdsForOfficeWeVoteId(office_we_vote_id);
 
           // console.log("candidate_we_vote_ids_under_this_office: ", candidate_we_vote_ids_under_this_office);
           if (candidate_we_vote_ids_under_this_office) {
-            candidate_we_vote_ids_under_this_office.forEach(candidate_we_vote_id_temp => {
+            candidate_we_vote_ids_under_this_office.forEach((candidate_we_vote_id_temp) => {
               position_list_from_advisers_followed_by_voter[candidate_we_vote_id_temp] = []; // Reset list
             });
           }
 
-          office_position_list.forEach(one_position_temp => {
+          office_position_list.forEach((one_position_temp) => {
             candidate_we_vote_id = one_position_temp.ballot_item_we_vote_id;
             position_list_from_advisers_followed_by_voter[candidate_we_vote_id].push(one_position_temp);
           });
@@ -215,7 +214,7 @@ class CandidateStore extends ReduceStore {
           // console.log("positionListForBallotItem OFFICE position_list_from_advisers_followed_by_voter[ballot_item_we_vote_id]:", position_list_from_advisers_followed_by_voter[candidate_we_vote_id]);
           return {
             ...state,
-            position_list_from_advisers_followed_by_voter: position_list_from_advisers_followed_by_voter,
+            position_list_from_advisers_followed_by_voter,
           };
         } else {
           return state;
@@ -223,11 +222,9 @@ class CandidateStore extends ReduceStore {
 
       case "positionListForOpinionMaker":
         // console.log("CandidateStore, positionListForOpinionMaker response");
-        let organization_we_vote_id = action.res.opinion_maker_we_vote_id;
-        var position_list = action.res.position_list;
         all_cached_positions_about_candidates = state.all_cached_positions_about_candidates;
 
-        position_list.forEach(one_position_here => {
+        position_list.forEach((one_position_here) => {
           ballot_item_we_vote_id = one_position_here.ballot_item_we_vote_id;
 
           if (!all_cached_positions_about_candidates[ballot_item_we_vote_id]) {
@@ -243,7 +240,7 @@ class CandidateStore extends ReduceStore {
         });
         return {
           ...state,
-          all_cached_positions_about_candidates: all_cached_positions_about_candidates,
+          all_cached_positions_about_candidates,
         };
 
       case "voterGuidesToFollowRetrieve":
@@ -253,10 +250,7 @@ class CandidateStore extends ReduceStore {
 
         // console.log("CandidateStore voterGuidesToFollowRetrieve");
         voter_guides = action.res.voter_guides;
-        let is_empty = voter_guides.length === 0;
-        let search_term_exists = action.res.search_string !== "";
         ballot_item_we_vote_id = action.res.ballot_item_we_vote_id || "";
-        let ballot_item_we_vote_id_exists = ballot_item_we_vote_id.length !== 0;
 
         if (is_empty || search_term_exists) {
           // Exit this routine
@@ -268,7 +262,7 @@ class CandidateStore extends ReduceStore {
 
         if (ballot_item_we_vote_id_exists && stringContains("cand", ballot_item_we_vote_id)) {
           // Case 1: voterGuidesToFollowRetrieve focused on one ballot item
-          voter_guides.forEach(one_voter_guide => {
+          voter_guides.forEach((one_voter_guide) => {
             // Make sure we have a position in the voter guide
             if (one_voter_guide.is_support_or_positive_rating || one_voter_guide.is_oppose_or_negative_rating || one_voter_guide.is_information_only) {
               if (!all_cached_positions_about_candidates[ballot_item_we_vote_id]) {
@@ -290,7 +284,7 @@ class CandidateStore extends ReduceStore {
                 kind_of_ballot_item: "CANDIDATE",
 
                 // ballot_item_id: 0,
-                ballot_item_we_vote_id: ballot_item_we_vote_id,
+                ballot_item_we_vote_id,
 
                 // ballot_item_state_code: "",
                 // contest_office_id: 0,
@@ -322,17 +316,17 @@ class CandidateStore extends ReduceStore {
           });
         } else {
           // Case 2: voterGuidesToFollowRetrieve is general purpose
-          voter_guides.forEach(one_voter_guide => {
+          voter_guides.forEach((one_voter_guide) => {
             // Make sure we have a position in the voter guide
             if (!one_voter_guide.ballot_item_we_vote_ids_this_org_supports ||
                 !one_voter_guide.ballot_item_we_vote_ids_this_org_info_only ||
                 !one_voter_guide.ballot_item_we_vote_ids_this_org_opposes ||
-                !one_voter_guide.organization_we_vote_id ) {
+                !one_voter_guide.organization_we_vote_id) {
               // If any of these are undefined, ignore this voter_guide
               // console.log("Something wrong with voter guide.");
             } else {
               // Support
-              one_voter_guide.ballot_item_we_vote_ids_this_org_supports.forEach(one_candidate_we_vote_id => {
+              one_voter_guide.ballot_item_we_vote_ids_this_org_supports.forEach((one_candidate_we_vote_id) => {
                 if (!all_cached_positions_about_candidates[one_candidate_we_vote_id]) {
                   all_cached_positions_about_candidates[one_candidate_we_vote_id] = {};
                 }
@@ -343,7 +337,7 @@ class CandidateStore extends ReduceStore {
 
                 one_position = all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id];
                 // Only proceed if the position doesn't already exist
-                if (one_position.hasOwnProperty("ballot_item_we_vote_id")) {
+                if (Object.prototype.hasOwnProperty.call(one_position, "ballot_item_we_vote_id")) {
                   // Do not proceed
                   // console.log("position already exists");
                 } else {
@@ -358,7 +352,7 @@ class CandidateStore extends ReduceStore {
                 }
               });
               // Information Only
-              one_voter_guide.ballot_item_we_vote_ids_this_org_info_only.forEach(one_candidate_we_vote_id => {
+              one_voter_guide.ballot_item_we_vote_ids_this_org_info_only.forEach((one_candidate_we_vote_id) => {
                 if (!all_cached_positions_about_candidates[one_candidate_we_vote_id]) {
                   all_cached_positions_about_candidates[one_candidate_we_vote_id] = {};
                 }
@@ -369,7 +363,7 @@ class CandidateStore extends ReduceStore {
 
                 one_position = all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id];
                 // Only proceed if the position doesn't already exist
-                if (one_position.hasOwnProperty("ballot_item_we_vote_id")) {
+                if (Object.prototype.hasOwnProperty.call(one_position, "ballot_item_we_vote_id")) {
                   // Do not proceed
                   // console.log("position already exists");
                 } else {
@@ -382,7 +376,7 @@ class CandidateStore extends ReduceStore {
                 }
               });
               // Opposition
-              one_voter_guide.ballot_item_we_vote_ids_this_org_opposes.forEach(one_candidate_we_vote_id => {
+              one_voter_guide.ballot_item_we_vote_ids_this_org_opposes.forEach((one_candidate_we_vote_id) => {
                 if (!all_cached_positions_about_candidates[one_candidate_we_vote_id]) {
                   all_cached_positions_about_candidates[one_candidate_we_vote_id] = {};
                 }
@@ -393,7 +387,8 @@ class CandidateStore extends ReduceStore {
 
                 one_position = all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id];
                 // Only proceed if the position doesn't already exist
-                if (one_position.hasOwnProperty("ballot_item_we_vote_id")) {
+
+                if (Object.prototype.hasOwnProperty.call(one_position, "ballot_item_we_vote_id")) {
                   // Do not proceed
                   // console.log("position already exists");
                 } else {
@@ -414,7 +409,7 @@ class CandidateStore extends ReduceStore {
         // console.log("CandidateStore all_cached_positions_about_candidates:", all_cached_positions_about_candidates);
         return {
           ...state,
-          all_cached_positions_about_candidates: all_cached_positions_about_candidates,
+          all_cached_positions_about_candidates,
         };
 
       case "voterGuidesUpcomingRetrieve":
@@ -426,17 +421,17 @@ class CandidateStore extends ReduceStore {
 
         all_cached_positions_about_candidates = state.all_cached_positions_about_candidates;
 
-        voter_guides.forEach(one_voter_guide => {
+        voter_guides.forEach((one_voter_guide) => {
           // Make sure we have a position in the voter guide
           if (!one_voter_guide.ballot_item_we_vote_ids_this_org_supports ||
               !one_voter_guide.ballot_item_we_vote_ids_this_org_info_only ||
               !one_voter_guide.ballot_item_we_vote_ids_this_org_opposes ||
-              !one_voter_guide.organization_we_vote_id ) {
+              !one_voter_guide.organization_we_vote_id) {
             // If any of these are undefined, ignore this voter_guide
             // console.log("Something wrong with voter guide.");
           } else {
             // Support
-            one_voter_guide.ballot_item_we_vote_ids_this_org_supports.forEach(one_candidate_we_vote_id => {
+            one_voter_guide.ballot_item_we_vote_ids_this_org_supports.forEach((one_candidate_we_vote_id) => {
               if (!all_cached_positions_about_candidates[one_candidate_we_vote_id]) {
                 all_cached_positions_about_candidates[one_candidate_we_vote_id] = {};
               }
@@ -447,7 +442,7 @@ class CandidateStore extends ReduceStore {
 
               one_position = all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id];
               // Only proceed if the position doesn't already exist
-              if (one_position.hasOwnProperty("ballot_item_we_vote_id")) {
+              if (Object.prototype.hasOwnProperty.call(one_position, "ballot_item_we_vote_id")) {
                 // Do not proceed
                 // console.log("position already exists");
               } else {
@@ -462,7 +457,7 @@ class CandidateStore extends ReduceStore {
               }
             });
             // Information Only
-            one_voter_guide.ballot_item_we_vote_ids_this_org_info_only.forEach(one_candidate_we_vote_id => {
+            one_voter_guide.ballot_item_we_vote_ids_this_org_info_only.forEach((one_candidate_we_vote_id) => {
               if (!all_cached_positions_about_candidates[one_candidate_we_vote_id]) {
                 all_cached_positions_about_candidates[one_candidate_we_vote_id] = {};
               }
@@ -473,7 +468,7 @@ class CandidateStore extends ReduceStore {
 
               one_position = all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id];
               // Only proceed if the position doesn't already exist
-              if (one_position.hasOwnProperty("ballot_item_we_vote_id")) {
+              if (Object.prototype.hasOwnProperty.call(one_position, "ballot_item_we_vote_id")) {
                 // Do not proceed
                 // console.log("position already exists");
               } else {
@@ -486,7 +481,7 @@ class CandidateStore extends ReduceStore {
               }
             });
             // Opposition
-            one_voter_guide.ballot_item_we_vote_ids_this_org_opposes.forEach(one_candidate_we_vote_id => {
+            one_voter_guide.ballot_item_we_vote_ids_this_org_opposes.forEach((one_candidate_we_vote_id) => {
               if (!all_cached_positions_about_candidates[one_candidate_we_vote_id]) {
                 all_cached_positions_about_candidates[one_candidate_we_vote_id] = {};
               }
@@ -497,7 +492,7 @@ class CandidateStore extends ReduceStore {
 
               one_position = all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id];
               // Only proceed if the position doesn't already exist
-              if (one_position.hasOwnProperty("ballot_item_we_vote_id")) {
+              if (Object.prototype.hasOwnProperty.call(one_position, "ballot_item_we_vote_id")) {
                 // Do not proceed
                 // console.log("position already exists");
               } else {
@@ -517,7 +512,7 @@ class CandidateStore extends ReduceStore {
         // console.log("CandidateStore all_cached_positions_about_candidates:", all_cached_positions_about_candidates);
         return {
           ...state,
-          all_cached_positions_about_candidates: all_cached_positions_about_candidates,
+          all_cached_positions_about_candidates,
         };
 
       case "error-candidateRetrieve" || "error-positionListForBallotItem":

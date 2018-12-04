@@ -9,8 +9,10 @@ export default class BallotIndex extends Component {
 
   render () {
     renderLog(__filename);
-    return <div className="ballot">
-            { this.props.children }
-          </div>;
+    return (
+      <div className="ballot">
+        { this.props.children }
+      </div>
+    );
   }
 }

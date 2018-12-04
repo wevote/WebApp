@@ -8,45 +8,56 @@ export default class ToolBar extends Component {
     hideGitHub: PropTypes.bool,
   };
 
-  constructor (props) {
-    super(props);
-  }
-
   render () {
     renderLog(__filename);
-    let hideGitHub = this.props.hideGitHub ? this.props.hideGitHub : false;
+    const hideGitHub = this.props.hideGitHub ? this.props.hideGitHub : false;
 
     return (
       <div className="btn-toolbar">
-        <OpenExternalWebSite url="https://twitter.com/WeVote"
-                             target="_blank"
-                             className="btn btn-social-icon btn-twitter"
-                             body={<span className="fa fa-twitter" />} />
+        <OpenExternalWebSite
+          url="https://twitter.com/WeVote"
+          target="_blank"
+          className="btn btn-social-icon btn-twitter"
+          body={<span className="fa fa-twitter" />}
+        />
 
-        <OpenExternalWebSite url="https://www.facebook.com/WeVoteUSA"
-                             target="_blank"
-                             className="btn btn-social-icon btn-facebook"
-                             body={<span className="fa fa-facebook" />} />
+        <OpenExternalWebSite
+          url="https://www.facebook.com/WeVoteUSA"
+          target="_blank"
+          className="btn btn-social-icon btn-facebook"
+          body={<span className="fa fa-facebook" />}
+        />
 
-        <OpenExternalWebSite url="http://eepurl.com/cx_frP"
-                             target="_blank"
-                             className="btn btn--email"
-                             body={<span>
-                               {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
-                                    <span className="btn--email__icon glyphicon glyphicon-envelope" /> Join Newsletter</span>
-                             } />
+        <OpenExternalWebSite
+          url="http://eepurl.com/cx_frP"
+          target="_blank"
+          className="btn btn--email"
+          body={(
+            <span>
+              {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
+              <span className="btn--email__icon glyphicon glyphicon-envelope" />
+              {" "}
+              Join Newsletter
+            </span>
+          )}
+        />
 
-        {!hideGitHub ?
-          <OpenExternalWebSite url="https://github.com/WeVote"
-                               target="_blank"
-                               className="btn btn-social-icon btn-github"
-                               body={<span className="fa fa-github"/>}/> : null
+        {!hideGitHub ? (
+          <OpenExternalWebSite
+            url="https://github.com/WeVote"
+            target="_blank"
+            className="btn btn-social-icon btn-github"
+            body={<span className="fa fa-github" />}
+          />
+        ) : null
         }
 
-        <OpenExternalWebSite url="https://medium.com/@WeVote"
-                             target="_blank"
-                             className="btn btn-social-icon btn--medium"
-                             body={<span className="fa fa-medium" />} />
+        <OpenExternalWebSite
+          url="https://medium.com/@WeVote"
+          target="_blank"
+          className="btn btn-social-icon btn--medium"
+          body={<span className="fa fa-medium" />}
+        />
       </div>
     );
   }

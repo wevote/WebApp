@@ -6,7 +6,7 @@ import { _ } from "lodash";
 import IssueActions from "../../actions/IssueActions";
 import IssueFollowToggleSquare from "../Issues/IssueFollowToggleSquare";
 import IssueStore from "../../stores/IssueStore";
-import SearchBar from "../../components/Search/SearchBar";
+import SearchBar from "../Search/SearchBar";
 
 
 export default class NetworkIssuesToFollow extends Component {
@@ -50,7 +50,7 @@ export default class NetworkIssuesToFollow extends Component {
   }
 
   searchFunction (search_query) {
-    this.setState({ search_query: search_query });
+    this.setState({ search_query });
   }
 
   clearFunction () {
@@ -58,7 +58,7 @@ export default class NetworkIssuesToFollow extends Component {
   }
 
   render () {
-    var issue_list = [];
+    let issue_list = [];
     if (this.state.issues_to_follow) {
       issue_list = this.state.issues_to_follow;
     }
@@ -67,16 +67,14 @@ export default class NetworkIssuesToFollow extends Component {
       const search_query_lowercase = this.state.search_query.toLowerCase();
       issue_list = issue_list.concat(this.state.issues_followed);
       issue_list = _.filter(issue_list,
-      function (one_issue) {
-        return one_issue.issue_name.toLowerCase().includes(search_query_lowercase) ||
-          one_issue.issue_description.toLowerCase().includes(search_query_lowercase);
-      });
+        one_issue => one_issue.issue_name.toLowerCase().includes(search_query_lowercase) ||
+          one_issue.issue_description.toLowerCase().includes(search_query_lowercase));
     }
 
-    let edit_mode = true;
-    let is_following = false;
-    const issue_list_for_display = issue_list.map((issue) => {
-      return <IssueFollowToggleSquare
+    const edit_mode = true;
+    const is_following = false;
+    const issue_list_for_display = issue_list.map(issue => (
+      <IssueFollowToggleSquare
         key={issue.issue_we_vote_id}
         issue_we_vote_id={issue.issue_we_vote_id}
         issue_name={issue.issue_name}
@@ -85,42 +83,46 @@ export default class NetworkIssuesToFollow extends Component {
         edit_mode={edit_mode}
         is_following={this.state.issue_we_vote_ids_followed.includes(issue.issue_we_vote_id) || is_following}
         grid="col-4 col-sm-3"
-      />;
-    });
-    let floatRight = {
+      />
+    ));
+    const floatRight = {
       float: "right",
     };
 
-    return <div className="opinions-followed__container">
-      <Helmet title="Issues to Follow - We Vote" />
-      <section className="card">
-        <div className="card-main">
-          <p>
+    return (
+      <div className="opinions-followed__container">
+        <Helmet title="Issues to Follow - We Vote" />
+        <section className="card">
+          <div className="card-main">
+            <p>
             Follow the issues you care about, so we can highlight the organizations that care about the same issues you do.
-            <span style={floatRight}>
-              <Link to="/issues_followed" className="u-margin-left--md u-no-break">See issues you follow</Link>
-            </span>
-          </p>
-          <SearchBar clearButton
-                     searchButton
-                     placeholder="Search by Name or Description"
-                     searchFunction={this.searchFunction}
-                     clearFunction={this.clearFunction}
-                     searchUpdateDelayTime={0} />
-          <br />
-          <div className="network-issues-list voter-guide-list card">
-            <div className="card-child__list-group">
-              {
-                this.state.issues_to_follow && this.state.issues_to_follow.length ?
-                  issue_list_for_display :
-                  <h4 className="intro-modal__default-text">There are no more issues to follow!</h4>
-              }
+              <span style={floatRight}>
+                <Link to="/issues_followed" className="u-margin-left--md u-no-break">See issues you follow</Link>
+              </span>
+            </p>
+            <SearchBar
+              clearButton
+              searchButton
+              placeholder="Search by Name or Description"
+              searchFunction={this.searchFunction}
+              clearFunction={this.clearFunction}
+              searchUpdateDelayTime={0}
+            />
+            <br />
+            <div className="network-issues-list voter-guide-list card">
+              <div className="card-child__list-group">
+                {
+                  this.state.issues_to_follow && this.state.issues_to_follow.length ?
+                    issue_list_for_display :
+                    <h4 className="intro-modal__default-text">There are no more issues to follow!</h4>
+                }
+              </div>
             </div>
+            <Link className="pull-left" to="/issues_followed">Issues you are following</Link>
+            <br />
           </div>
-          <Link className="pull-left" to="/issues_followed">Issues you are following</Link>
-          <br />
-        </div>
-      </section>
-    </div>;
+        </section>
+      </div>
+    );
   }
 }

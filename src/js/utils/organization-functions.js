@@ -1,23 +1,23 @@
 // organization-functions
 
-export function isSpeakerTypeIndividual (speaker_type) {
-  var is_individual = false;
-  switch (speaker_type) {
+export function isSpeakerTypeIndividual (speakerType) {
+  let isIndividual = false;
+  switch (speakerType) {
     // These are defined in https://github.com/wevote/WeVoteServer/organization/models.py
     case "I": // INDIVIDUAL
     case "PF": // PUBLIC_FIGURE
     case "V": // VOTER
-      is_individual = true;
+      isIndividual = true;
       break;
     default:
       break;
   }
-  return is_individual;
+  return isIndividual;
 }
 
-export function isSpeakerTypeOrganization (speaker_type) {
-  var is_organization = false;
-  switch (speaker_type) {
+export function isSpeakerTypeOrganization (speakerType) {
+  let isOrganization = false;
+  switch (speakerType) {
     // These are defined in https://github.com/wevote/WeVoteServer/organization/models.py
     case "C": // CORPORATION
     case "G": // GROUP
@@ -27,23 +27,23 @@ export function isSpeakerTypeOrganization (speaker_type) {
     case "NW": // NEWS_ORGANIZATION
     case "O": // ORGANIZATION
     case "P": // POLITICAL_ACTION_COMMITTEE
-      is_organization = true;
+      isOrganization = true;
       break;
     default:
       break;
   }
-  return is_organization;
+  return isOrganization;
 }
 
-export function isSpeakerTypePublicFigure (speaker_type) {
-  var is_public_figure = false;
-  switch (speaker_type) {
+export function isSpeakerTypePublicFigure (speakerType) {
+  let isPublicFigure = false;
+  switch (speakerType) {
     // These are defined in https://github.com/wevote/WeVoteServer/organization/models.py
     case "PF": // PUBLIC_FIGURE
-      is_public_figure = true;
+      isPublicFigure = true;
       break;
     default:
       break;
   }
-  return is_public_figure;
+  return isPublicFigure;
 }

@@ -9,7 +9,6 @@ import TwitterSignIn from "../../components/Twitter/TwitterSignIn";
 import VoterStore from "../../stores/VoterStore";
 
 export default class SignIn extends Component {
-
   constructor (props) {
     super(props);
     this.state = {
@@ -18,7 +17,7 @@ export default class SignIn extends Component {
   }
 
   goToBallotLink () {
-    let sampleBallotLink = "/intro/sample_ballot";
+    const sampleBallotLink = "/intro/sample_ballot";
     historyPush(sampleBallotLink);
   }
 
@@ -70,39 +69,62 @@ export default class SignIn extends Component {
       return LoadingWheel;
     }
 
-    return <div>
-      <Helmet title="Welcome to We Vote" />
+    return (
+      <div>
+        <Helmet title="Welcome to We Vote" />
         <div className="intro-story container-fluid well u-inset--md">
-          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
+          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt="close" />
           <div className="intro-story__h1 xs-text-left">Sign In</div>
-          <div className="intro-story__padding--btm">It's not required but it helps<br />you get started faster.</div>
+          <div className="intro-story__padding--btm">
+            It&apos;s not required but it helps
+            <br />
+            you get started faster.
+          </div>
           {this.state.voter.signed_in_facebook ?
-            null :
-            <div className="row">
-              <div className="facebook-intro-connect col-md-4 col-md-offset-4 xs-block form-group">
-                <FacebookSignIn /><br />
-                Sign in with Facebook so you can<br />
-                ask your friends for voting advice.<br />
-                <br />
+            null : (
+              <div className="row">
+                <div className="facebook-intro-connect col-md-4 col-md-offset-4 xs-block form-group">
+                  <FacebookSignIn />
+                  <br />
+                  Sign in with Facebook so you can
+                  <br />
+                  ask your friends for voting advice.
+                  <br />
+                  <br />
+                </div>
               </div>
-            </div> }
+            )
+          }
           {this.state.voter.signed_in_twitter ?
-            null :
-            <div className="row">
-              <div className="twitter-intro-connect col-md-4 col-md-offset-4 xs-block form-group">
-                <TwitterSignIn /><br />
-                Sign in with Twitter to see<br />
-                the voter guides of everyone<br />
-                you follow on Twitter.<br />
-                <br />
+            null : (
+              <div className="row">
+                <div className="twitter-intro-connect col-md-4 col-md-offset-4 xs-block form-group">
+                  <TwitterSignIn />
+                  <br />
+                Sign in with Twitter to see
+                  <br />
+                the voter guides of everyone
+                  <br />
+                you follow on Twitter.
+                  <br />
+                  <br />
+                </div>
               </div>
-            </div> }
+            )
+          }
           <footer className="intro-story__footer">
-            <button type="button" className="btn btn-lg btn-success"
-                    onClick={this.goToBallotLink}>Skip Sign In&nbsp;&nbsp;&gt;</button><br />
+            <button
+              type="button"
+              className="btn btn-lg btn-success"
+              onClick={this.goToBallotLink}
+            >
+              Skip Sign In&nbsp;&nbsp;&gt;
+            </button>
+            <br />
             Check out We Vote first
           </footer>
         </div>
-      </div>;
+      </div>
+    );
   }
 }

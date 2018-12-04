@@ -34,23 +34,26 @@ class SearchAllStore extends ReduceStore {
   }
 
   reduce (state, action) {
+    // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
+    if (!action.res || !action.res.success) return state;
+
+    const searchResults = [];
+    const alreadyFoundTwitterHandles = [];
+    const alreadyFoundElectionId = [];
+    let twitter_handle;
+    let alreadyContains;
+    let google_civic_election_id;
+
     switch (action.type) {
       case "exitSearch":
-        return assign({}, state, {forceClosed: true});
+        return assign({}, state, { forceClosed: true });
       case "searchAll":
         // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
-        if (!action.res || !action.res.success)
-          return state;
+        if (!action.res || !action.res.success) return state;
 
-        let searchResults = [];
-        let alreadyFoundTwitterHandles = [];
-        let alreadyFoundElectionId = [];
-        let twitter_handle;
-        let alreadyContains;
-        let google_civic_election_id;
-        action.res.search_results.forEach(one_search_result =>{
+        action.res.search_results.forEach((one_search_result) => {
           alreadyContains = false;
-          if (one_search_result.kind_of_owner === "ELECTION"){
+          if (one_search_result.kind_of_owner === "ELECTION") {
             google_civic_election_id = one_search_result.google_civic_election_id || "";
             if (google_civic_election_id && google_civic_election_id !== "") {
               alreadyContains = alreadyFoundElectionId.indexOf(google_civic_election_id) > -1;
@@ -71,7 +74,7 @@ class SearchAllStore extends ReduceStore {
           }
         });
         return {
-          //text_from_search_field: action.res.text_from_search_field,
+          // text_from_search_field: action.res.text_from_search_field,
           search_results_new: searchResults,
         };
 
@@ -82,9 +85,7 @@ class SearchAllStore extends ReduceStore {
       default:
         return state;
     }
-
   }
-
 }
 
 export default new SearchAllStore(Dispatcher);

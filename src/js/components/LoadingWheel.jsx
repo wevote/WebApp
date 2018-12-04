@@ -1,8 +1,9 @@
 import React from "react";
 
-const LoadingWheel =
+const LoadingWheel = (
   <div className="u-loading-spinner__wrapper">
     <div className="u-loading-spinner">Loading...</div>
-  </div>;
+  </div>
+);
 
 export default LoadingWheel;

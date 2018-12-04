@@ -8,7 +8,7 @@ import { renderLog } from "../../utils/logging";
 export default class DonationCancelOrRefund extends Component {
   static propTypes = {
     item: PropTypes.object,
-    refundDonation: PropTypes.bool,   // true for refund donation, false for cancel subscription
+    refundDonation: PropTypes.bool, // true for refund donation, false for cancel subscription
   };
 
   constructor (props) {
@@ -27,7 +27,7 @@ export default class DonationCancelOrRefund extends Component {
   }
 
   cancel (item) {
-    console.log("cancel Subscription" + item);
+    console.log(`cancel Subscription${item}`);
     if (this.props.refundDonation) {
       DonateActions.donationRefund(item.charge_id);
     } else {
@@ -40,9 +40,10 @@ export default class DonationCancelOrRefund extends Component {
   render () {
     renderLog(__filename);
     const { item, refundDonation } = this.props;
-    let label = refundDonation ? "Refund Donation" : "Cancel Subscription";
-    return <div>
-        <Button size="small" onClick={this.open.bind(this)} >{label}</Button>
+    const label = refundDonation ? "Refund Donation" : "Cancel Subscription";
+    return (
+      <div>
+        <Button size="small" onClick={this.open.bind(this)}>{label}</Button>
 
         <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
           <Modal.Header closeButton>
@@ -53,36 +54,44 @@ export default class DonationCancelOrRefund extends Component {
               We Vote is a nonprofit and nonpartisan organization that relies the generous support from voters like you. Thank you!
             </p>
             <h1>&nbsp;</h1>
-            <Table striped condensed hover responsive>
-               <tbody>
-                  <tr>
-                    <td>Created:</td><td>{moment.utc(item.created).local().format("MMM D, YYYY,  h:mm a")}</td>
-                  </tr>
-                  <tr>
-                    <td>{refundDonation ? "Amount" : "Monthly payment"}</td><td>{item.amount}</td>
-                  </tr>
-                  <tr>
-                    <td>Funding:</td><td>{item.funding}</td>
-                  </tr>
-                  <tr>
-                    <td>Card brand:</td><td>{item.brand}</td>
-                  </tr>
-                  <tr>
-                    <td>&nbsp;&nbsp;Card ends with:</td><td>{item.last4}</td>
-                  </tr>
-                  <tr>
-                    <td>&nbsp;&nbsp;Card expires:</td><td>{item.exp_month + "/" + item.exp_year}</td>
-                  </tr>
-               </tbody>
+            <Table striped hover responsive>
+              <tbody>
+                <tr>
+                  <td>Created:</td>
+                  <td>{moment.utc(item.created).local().format("MMM D, YYYY,  h:mm a")}</td>
+                </tr>
+                <tr>
+                  <td>{refundDonation ? "Amount" : "Monthly payment"}</td>
+                  <td>{item.amount}</td>
+                </tr>
+                <tr>
+                  <td>Funding:</td>
+                  <td>{item.funding}</td>
+                </tr>
+                <tr>
+                  <td>Card brand:</td>
+                  <td>{item.brand}</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;&nbsp;Card ends with:</td>
+                  <td>{item.last4}</td>
+                </tr>
+                <tr>
+                  <td>&nbsp;&nbsp;Card expires:</td>
+                  <td>{`${item.exp_month}/${item.exp_year}`}</td>
+                </tr>
+              </tbody>
             </Table>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.close.bind(this)}>I changed my mind</Button>
             <Button onClick={this.cancel.bind(this, item)}>
-              {refundDonation ? "Refund this donation" : "Cancel this subscription"}</Button>
+              {refundDonation ? "Refund this donation" : "Cancel this subscription"}
+            </Button>
           </Modal.Footer>
         </Modal>
-      </div>;
+      </div>
+    );
   }
 }
 

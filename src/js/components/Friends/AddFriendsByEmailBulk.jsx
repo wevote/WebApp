@@ -19,7 +19,7 @@ export default class AddFriendsByEmail extends Component {
       email_addresses_error: false,
       sender_email_address: "",
       sender_email_address_error: false,
-      redirect_url_upon_save: "/friends/sign_in",  // TODO DALE Remove this?
+      redirect_url_upon_save: "/friends/sign_in", // TODO DALE Remove this?
       loading: false,
       on_enter_email_addresses_step: true,
       on_collect_email_step: false,
@@ -34,14 +34,14 @@ export default class AddFriendsByEmail extends Component {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
   _onFriendStoreChange () {
-    let add_friends_by_email_step = FriendStore.switchToAddFriendsByEmailStep();
-    let error_message_to_show_voter = FriendStore.getErrorMessageToShowVoter();
+    const add_friends_by_email_step = FriendStore.switchToAddFriendsByEmailStep();
+    const error_message_to_show_voter = FriendStore.getErrorMessageToShowVoter();
     console.log("AddFriendsByEmail, _onFriendStoreChange, add_friends_by_email_step:", add_friends_by_email_step);
     if (add_friends_by_email_step === "on_collect_email_step") {
       // Switch to "on_collect_email_step"
@@ -50,13 +50,13 @@ export default class AddFriendsByEmail extends Component {
         on_enter_email_addresses_step: false,
         on_collect_email_step: true,
         on_friend_invitations_sent_step: false,
-        error_message_to_show_voter: error_message_to_show_voter
+        error_message_to_show_voter,
       });
       // FriendStore.clearErrorMessageToShowVoter()
     } else {
       this.setState({
         loading: false,
-        error_message_to_show_voter: ""
+        error_message_to_show_voter: "",
       });
 
     }
@@ -66,7 +66,7 @@ export default class AddFriendsByEmail extends Component {
     this.setState({ voter: VoterStore.getVoter(), loading: false });
   }
 
-  _ballotLoaded (){
+  _ballotLoaded () {
     // TODO DALE Remove this?
     historyPush(this.state.redirect_url_upon_save);
   }
@@ -74,19 +74,19 @@ export default class AddFriendsByEmail extends Component {
   cacheEmailAddresses (e) {
     this.setState({
       email_addresses: e.target.value,
-      on_friend_invitations_sent_step: false
+      on_friend_invitations_sent_step: false,
     });
   }
 
   cacheSenderEmailAddress (e) {
     this.setState({
-      sender_email_address: e.target.value
+      sender_email_address: e.target.value,
     });
   }
 
   cacheAddFriendsByEmailMessage (e) {
     this.setState({
-      add_friends_message: e.target.value
+      add_friends_message: e.target.value,
     });
   }
 
@@ -105,7 +105,7 @@ export default class AddFriendsByEmail extends Component {
   }
 
   hasValidEmail () {
-    let { voter } = this.state;
+    const { voter } = this.state;
     return voter !== undefined ? voter.has_valid_email : false;
   }
 
@@ -114,8 +114,8 @@ export default class AddFriendsByEmail extends Component {
   }
 
   onKeyDown (event) {
-    let enterAndSpaceKeyCodes = [13, 32];
-    let scope = this;
+    const enterAndSpaceKeyCodes = [13, 32];
+    const scope = this;
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       scope.AddFriendsByEmailStepsManager(event).bind(scope);
     }
@@ -139,7 +139,7 @@ export default class AddFriendsByEmail extends Component {
         this.setState({
           loading: false,
           email_addresses_error: true,
-          error_message: error_message
+          error_message,
         });
       } else if (!this.hasValidEmail()) {
         console.log("AddFriendsByEmailStepsManager, NOT hasValidEmail");
@@ -167,7 +167,7 @@ export default class AddFriendsByEmail extends Component {
         this.setState({
           loading: false,
           sender_email_address_error: true,
-          error_message: error_message
+          error_message,
         });
       } else {
         console.log("AddFriendsByEmailStepsManager, calling friendInvitationByEmailSend");
@@ -176,89 +176,112 @@ export default class AddFriendsByEmail extends Component {
     }
   }
 
-	render () {
+  render () {
     renderLog(__filename);
-    var { loading } = this.state;
-    if (loading){
+    const { loading } = this.state;
+    if (loading) {
       return LoadingWheel;
     }
-    var floatRight = {
-        float: "right"
+    const floatRight = {
+      float: "right",
     };
 
-		return <div>
-      {this.state.on_friend_invitations_sent_step ?
-        <div className="alert alert-success">
-          Invitations sent. Is there anyone else you'd like to invite?
-        </div> :
-        null }
-      {this.state.email_addresses_error || this.state.sender_email_address_error ?
-        <div className="alert alert-danger">
-          {this.state.error_message}
-        </div> :
-        null }
-      {this.state.on_enter_email_addresses_step ?
-        <div>
-          <form onSubmit={this.AddFriendsByEmailStepsManager.bind(this)} className="u-stack--md">
-            <input type="text" name="email_address"
-                   className="form-control"
-                   onChange={this.cacheEmailAddresses.bind(this)}
-                   placeholder="Enter email addresses here, separated by commas" />
-            {this.state.email_addresses ?
-              <span>
-                <label htmlFor="last-name">Include a Message <span className="small">(Optional)</span></label><br />
-                <input type="text" name="add_friends_message"
-                       className="form-control"
-                       onChange={this.cacheAddFriendsByEmailMessage.bind(this)}
-                       placeholder="Please join me in preparing for the upcoming election." />
-              </span> :
-              null }
-          </form>
-          <div className="u-stack--md">
-            <span style={floatRight}>
-              <Button
-                tabIndex="0"
-                onKeyDown={this.onKeyDown.bind(this)}
-                onClick={this.AddFriendsByEmailStepsManager.bind(this)}
-                variant="primary"
-                disabled={!this.state.email_addresses}
-              >
-                { this.hasValidEmail() ?
-                  <span>Send</span> :
-                  <span>Next</span>
-                }
-              </Button>
-            </span>
-            <span>These friends will see what you support, oppose, and which opinions you listen to.
-              We will never sell your email.</span>
+    return (
+      <div>
+        {this.state.on_friend_invitations_sent_step ? (
+          <div className="alert alert-success">
+          Invitations sent. Is there anyone else you&apos;d like to invite?
           </div>
-        </div> :
-        null }
-
-      {this.state.on_collect_email_step ?
-        <div>
-          <form onSubmit={this.AddFriendsByEmailStepsManager.bind(this)} className="u-stack--md">
-            <input type="text" name="sender_email_address"
-                   className="form-control"
-                   onChange={this.cacheSenderEmailAddress.bind(this)}
-                   placeholder="Enter your email address" />
-          </form>
-
+        ) : null
+        }
+        {this.state.email_addresses_error || this.state.sender_email_address_error ? (
+          <div className="alert alert-danger">
+            {this.state.error_message}
+          </div>
+        ) : null
+        }
+        {this.state.on_enter_email_addresses_step ? (
           <div>
+            <form onSubmit={this.AddFriendsByEmailStepsManager.bind(this)} className="u-stack--md">
+              <input
+                type="text"
+                name="email_address"
+                className="form-control"
+                onChange={this.cacheEmailAddresses.bind(this)}
+                placeholder="Enter email addresses here, separated by commas"
+              />
+              {this.state.email_addresses ? (
+                <span>
+                  <label htmlFor="last-name">
+                    Include a Message
+                    <span className="small">(Optional)</span>
+                  </label>
+                  <br />
+                  <input
+                    type="text"
+                    name="add_friends_message"
+                    className="form-control"
+                    onChange={this.cacheAddFriendsByEmailMessage.bind(this)}
+                    placeholder="Please join me in preparing for the upcoming election."
+                  />
+                </span>
+              ) : null
+              }
+            </form>
+            <div className="u-stack--md">
               <span style={floatRight}>
                 <Button
                   tabIndex="0"
                   onKeyDown={this.onKeyDown.bind(this)}
                   onClick={this.AddFriendsByEmailStepsManager.bind(this)}
                   variant="primary"
-                  disabled={!this.state.sender_email_address} >
+                  disabled={!this.state.email_addresses}
+                >
+                  { this.hasValidEmail() ?
+                    <span>Send</span> :
+                    <span>Next</span>
+                }
+                </Button>
+              </span>
+              <span>
+                These friends will see what you support, oppose, and which opinions you listen to.
+                We will never sell your email.
+              </span>
+            </div>
+          </div>
+        ) : null
+        }
+
+        {this.state.on_collect_email_step ? (
+          <div>
+            <form onSubmit={this.AddFriendsByEmailStepsManager.bind(this)} className="u-stack--md">
+              <input
+                type="text"
+                name="sender_email_address"
+                className="form-control"
+                onChange={this.cacheSenderEmailAddress.bind(this)}
+                placeholder="Enter your email address"
+              />
+            </form>
+
+            <div>
+              <span style={floatRight}>
+                <Button
+                  tabIndex="0"
+                  onKeyDown={this.onKeyDown.bind(this)}
+                  onClick={this.AddFriendsByEmailStepsManager.bind(this)}
+                  variant="primary"
+                  disabled={!this.state.sender_email_address}
+                >
                   <span>Send</span>
                 </Button>
               </span>
               <p>In order to send your message, you will need to verify your email address. We will never sell your email.</p>
+            </div>
           </div>
-        </div> :
-        null }
-		</div>;
-	}
+        ) : null
+        }
+      </div>
+    );
+  }
 }

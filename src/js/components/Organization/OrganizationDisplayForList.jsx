@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
-import ImageHandler from "../../components/ImageHandler";
+import ImageHandler from "../ImageHandler";
 import { removeTwitterNameFromDescription } from "../../utils/textFormat";
-import PositionRatingSnippet from "../../components/Widgets/PositionRatingSnippet";
-import PositionInformationOnlySnippet from "../../components/Widgets/PositionInformationOnlySnippet";
-import PositionSupportOpposeSnippet from "../../components/Widgets/PositionSupportOpposeSnippet";
-import ReadMore from "../../components/Widgets/ReadMore";
+import PositionRatingSnippet from "../Widgets/PositionRatingSnippet";
+import PositionInformationOnlySnippet from "../Widgets/PositionInformationOnlySnippet";
+import PositionSupportOpposeSnippet from "../Widgets/PositionSupportOpposeSnippet";
+import ReadMore from "../Widgets/ReadMore";
 import { renderLog } from "../../utils/logging";
 
 // OrganizationDisplayForList is used to display Organizations (as opposed to Voter Guides)
@@ -15,7 +15,7 @@ export default class OrganizationDisplayForList extends Component {
     organization_we_vote_id: PropTypes.string,
     organization_photo_url_medium: PropTypes.string,
     organization_name: PropTypes.string,
-    children: PropTypes.array,  // A list of the tags in OrganizationDisplayForList when called (from GuideList for example)
+    children: PropTypes.array, // A list of the tags in OrganizationDisplayForList when called (from GuideList for example)
     twitter_description: PropTypes.string,
     organization_twitter_handle: PropTypes.string,
     // organization_we_vote_id: PropTypes.string,
@@ -44,62 +44,67 @@ export default class OrganizationDisplayForList extends Component {
       return null;
     }
     // We package up the above variables to mimic a position
-    var position = this.props;
+    const position = this.props;
 
     const {
       organization_we_vote_id,
       organization_photo_url_medium,
     } = this.props; // twitter_followers_count,
-    let num_of_lines = 2;
-    let organization_name = this.props.organization_name ? this.props.organization_name : "";
-    let twitterDescription = this.props.twitter_description ? this.props.twitter_description : "";
+    const num_of_lines = 2;
+    const organization_name = this.props.organization_name ? this.props.organization_name : "";
+    const twitterDescription = this.props.twitter_description ? this.props.twitter_description : "";
     // If the organization_name is in the twitter_description, remove it
-    let twitterDescriptionMinusName = removeTwitterNameFromDescription(organization_name, twitterDescription);
+    const twitterDescriptionMinusName = removeTwitterNameFromDescription(organization_name, twitterDescription);
 
     // TwitterHandle-based link
-    var voterGuideLink = this.props.organization_twitter_handle ? "/" + this.props.organization_twitter_handle : "/voterguide/" + organization_we_vote_id;
+    const voterGuideLink = this.props.organization_twitter_handle ? `/${this.props.organization_twitter_handle}` : `/voterguide/${organization_we_vote_id}`;
 
     let position_description = "";
     const is_on_ballot_item_page = true;
     if (position.vote_smart_rating) {
-        position_description =
-          <PositionRatingSnippet {...position} />;
+      position_description =
+        <PositionRatingSnippet {...position} />;
     } else if (position.is_support || position.is_oppose) {
       position_description = <PositionSupportOpposeSnippet {...position} is_on_ballot_item_page={is_on_ballot_item_page} />;
     } else if (position.is_information_only) {
       position_description = <PositionInformationOnlySnippet {...position} is_on_ballot_item_page={is_on_ballot_item_page} />;
     }
 
-    return <div className="card-child card-child--not-followed">
-      <div className="card-child__media-object-anchor">
-        <Link to={voterGuideLink} className="u-no-underline">
-          <ImageHandler className="card-child__avatar" sizeClassName="image-lg " imageUrl={organization_photo_url_medium} />
-        </Link>
-      </div>
-      <div className="card-child__media-object-content">
-        <div className="card-child__content">
-          <Link to={voterGuideLink}>
-            <h4 className="card-child__display-name">{organization_name}</h4>
+    return (
+      <div className="card-child card-child--not-followed">
+        <div className="card-child__media-object-anchor">
+          <Link to={voterGuideLink} className="u-no-underline">
+            <ImageHandler className="card-child__avatar" sizeClassName="image-lg " imageUrl={organization_photo_url_medium} />
           </Link>
-          { twitterDescriptionMinusName ?
-            <ReadMore className={"card-child__organization-description"}
-                      text_to_display={twitterDescriptionMinusName}
-                      num_of_lines={num_of_lines} /> :
-            null}
-          { position_description }
         </div>
-        <div className="card-child__additional">
-          <div className="card-child__follow-buttons">
-            {this.props.children}
-          {/* twitter_followers_count ?
-            <span className="twitter-followers__badge">
-              <span className="fa fa-twitter twitter-followers__icon" />
-              {numberWithCommas(twitter_followers_count)}
-            </span> :
-            null */}
+        <div className="card-child__media-object-content">
+          <div className="card-child__content">
+            <Link to={voterGuideLink}>
+              <h4 className="card-child__display-name">{organization_name}</h4>
+            </Link>
+            { twitterDescriptionMinusName ? (
+              <ReadMore
+                className="card-child__organization-description"
+                text_to_display={twitterDescriptionMinusName}
+                num_of_lines={num_of_lines}
+              />
+            ) : null
+            }
+            { position_description }
+          </div>
+          <div className="card-child__additional">
+            <div className="card-child__follow-buttons">
+              {this.props.children}
+              {/* twitter_followers_count ?
+                <span className="twitter-followers__badge">
+                  <span className="fa fa-twitter twitter-followers__icon" />
+                  {numberWithCommas(twitter_followers_count)}
+                </span> :
+                null */}
+            </div>
           </div>
         </div>
       </div>
-    </div>;
+    );
   }
 }

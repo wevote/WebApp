@@ -10,10 +10,6 @@ export default class FacebookPicture extends React.Component {
     facebookPictureUrl: PropTypes.string,
   };
 
-  constructor (props) {
-    super(props);
-  }
-
   get facebookStatus () {
     let msg;
 
@@ -38,9 +34,11 @@ export default class FacebookPicture extends React.Component {
 
   render () {
     renderLog(__filename);
-    return <div>
-              {this.facebookStatus}
-              {this.facebookPicture}
-            </div>;
+    return (
+      <div>
+        {this.facebookStatus}
+        {this.facebookPicture}
+      </div>
+    );
   }
 }
