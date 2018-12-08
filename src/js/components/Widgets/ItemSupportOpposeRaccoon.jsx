@@ -84,30 +84,30 @@ export default class ItemSupportOpposeRaccoon extends Component {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     let ballotItemType;
-    let is_candidate = false;
-    let is_measure = false;
+    let isCandidate = false;
+    let isMeasure = false;
     if (stringContains("cand", this.props.ballotItemWeVoteId)) {
       ballotItemType = "CANDIDATE";
-      is_candidate = true;
+      isCandidate = true;
     } else if (stringContains("meas", this.props.ballotItemWeVoteId)) {
       ballotItemType = "MEASURE";
-      is_measure = true;
+      isMeasure = true;
     }
 
     let ballotItem;
-    let position_list_from_advisers_followed_by_voter;
-    if (is_candidate) {
+    let positionListFromAdvisersFollowedByVoter;
+    if (isCandidate) {
       if (!BallotStore.positionListHasBeenRetrievedOnce(this.props.ballotItemWeVoteId)) {
         CandidateActions.positionListForBallotItem(this.props.ballotItemWeVoteId);
       }
       ballotItem = CandidateStore.getCandidate(this.props.ballotItemWeVoteId);
-      position_list_from_advisers_followed_by_voter = CandidateStore.getPositionList(this.props.ballotItemWeVoteId);
-    } else if (is_measure) {
+      positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(this.props.ballotItemWeVoteId);
+    } else if (isMeasure) {
       if (!BallotStore.positionListHasBeenRetrievedOnce(this.props.ballotItemWeVoteId)) {
         MeasureActions.positionListForBallotItem(this.props.ballotItemWeVoteId);
       }
       ballotItem = MeasureStore.getMeasure(this.props.ballotItemWeVoteId);
-      position_list_from_advisers_followed_by_voter = MeasureStore.getPositionList(this.props.ballotItemWeVoteId);
+      positionListFromAdvisersFollowedByVoter = MeasureStore.getPositionList(this.props.ballotItemWeVoteId);
     }
     this.setScrollState();
     this.setState(props => ({
@@ -116,12 +116,12 @@ export default class ItemSupportOpposeRaccoon extends Component {
       ballotItemType,
       ballotItemWeVoteId: props.ballotItemWeVoteId,
       componentDidMountFinished: true,
-      is_candidate,
-      is_measure,
+      is_candidate: isCandidate,
+      is_measure: isMeasure,
       // maximum_organization_display: this.props.maximumOrganizationDisplay,
       organizations_to_follow_support: props.organizationsToFollowSupport,
       organizations_to_follow_oppose: props.organizationsToFollowOppose,
-      position_list_from_advisers_followed_by_voter,
+      position_list_from_advisers_followed_by_voter: positionListFromAdvisersFollowedByVoter,
       supportProps: props.supportProps,
       voter: VoterStore.getVoter(), // We only set this once since the info we need isn't dynamic
     }));
@@ -129,25 +129,25 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
   componentWillReceiveProps (nextProps) {
     let ballotItemType;
-    let is_candidate = false;
-    let is_measure = false;
+    let isCandidate = false;
+    let isMeasure = false;
     if (stringContains("cand", nextProps.ballotItemWeVoteId)) {
       ballotItemType = "CANDIDATE";
-      is_candidate = true;
+      isCandidate = true;
     } else if (stringContains("meas", nextProps.ballotItemWeVoteId)) {
       ballotItemType = "MEASURE";
-      is_measure = true;
+      isMeasure = true;
     }
     let ballotItem;
-    let position_list_from_advisers_followed_by_voter;
-    if (is_candidate) {
+    let positionListFromAdvisersFollowedByVoter;
+    if (isCandidate) {
       // CandidateActions.positionListForBallotItem(nextProps.ballotItemWeVoteId);
       ballotItem = CandidateStore.getCandidate(nextProps.ballotItemWeVoteId);
-      position_list_from_advisers_followed_by_voter = CandidateStore.getPositionList(nextProps.ballotItemWeVoteId);
-    } else if (is_measure) {
+      positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(nextProps.ballotItemWeVoteId);
+    } else if (isMeasure) {
       // MeasureActions.positionListForBallotItem(nextProps.ballotItemWeVoteId);
       ballotItem = MeasureStore.getMeasure(nextProps.ballotItemWeVoteId);
-      position_list_from_advisers_followed_by_voter = MeasureStore.getPositionList(nextProps.ballotItemWeVoteId);
+      positionListFromAdvisersFollowedByVoter = MeasureStore.getPositionList(nextProps.ballotItemWeVoteId);
     }
     this.setScrollState();
     this.setState(() => ({
@@ -155,12 +155,12 @@ export default class ItemSupportOpposeRaccoon extends Component {
       ballot_item_display_name: nextProps.ballot_item_display_name,
       ballotItemType,
       ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
-      is_candidate,
-      is_measure,
+      is_candidate: isCandidate,
+      is_measure: isMeasure,
       // maximum_organization_display: nextProps.maximumOrganizationDisplay,
       organizations_to_follow_support: nextProps.organizationsToFollowSupport,
       organizations_to_follow_oppose: nextProps.organizationsToFollowOppose,
-      position_list_from_advisers_followed_by_voter,
+      position_list_from_advisers_followed_by_voter: positionListFromAdvisersFollowedByVoter,
       supportProps: nextProps.supportProps,
     }));
   }
@@ -222,12 +222,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
     return { hasError: true };
   }
 
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error("ItemSupportOpposeRaccoon caught error: ", `${error  } with info: `, info);
-  }
-
-
   onCandidateStoreChange () {
     this.setScrollState();
     if (this.state.is_candidate) {
@@ -256,74 +250,79 @@ export default class ItemSupportOpposeRaccoon extends Component {
     }));
   }
 
-  closeIssueScorePopover () {
-    this.refs["issue-score-overlay"].hide();
+  setScrollState () {
+    const desktopList = findDOMNode(this.refs[`${this.state.ballotItemWeVoteId}-org-list-desktop`]);
+    const mobileList = findDOMNode(this.refs[`${this.state.ballotItemWeVoteId}-org-list-mobile`]);
+    const desktopListVisibleWidth = $(desktopList).width();
+    const desktopListWidth = $(desktopList).children().eq(0).children()
+      .eq(0)
+      .width();
+    const mobileListVisibleWidth = $(mobileList).width();
+    const mobileListWidth = $(mobileList).children().eq(0).children()
+      .eq(0)
+      .width();
+    this.setState(() => ({
+      can_scroll_desktop: desktopListVisibleWidth <= desktopListWidth,
+      can_scroll_mobile: mobileListVisibleWidth <= mobileListWidth,
+    }));
   }
 
   closeNetworkScorePopover () {
     this.refs["network-score-overlay"].hide();
   }
 
-  scrollLeft (visible_tag) {
+  scrollLeft (visibleTag) {
     // todo: design out findDOMNode see https://github.com/yannickcr/eslint-plugin-react/issues/678
-    const element = findDOMNode(this.refs[`${this.state.ballotItemWeVoteId}-org-list-${visible_tag}`]);
+    const element = findDOMNode(this.refs[`${this.state.ballotItemWeVoteId}-org-list-${visibleTag}`]);
     const position = $(element).scrollLeft();
     const width = Math.round($(element).width());
     $(element).animate({
       scrollLeft: position - width,
     }, 350, () => {
-      const new_position = $(element).scrollLeft();
-      if (visible_tag === "desktop") {
+      const newPosition = $(element).scrollLeft();
+      if (visibleTag === "desktop") {
         this.setState(() => ({
-          can_scroll_left_desktop: new_position > 0,
+          can_scroll_left_desktop: newPosition > 0,
           can_scroll_right_desktop: true,
         }));
       } else {
         this.setState(() => ({
-          can_scroll_left_mobile: new_position > 0,
+          can_scroll_left_mobile: newPosition > 0,
           can_scroll_right_mobile: true,
         }));
       }
     });
   }
 
-  scrollRight (visible_tag) {
-    const element = findDOMNode(this.refs[`${this.state.ballotItemWeVoteId}-org-list-${visible_tag}`]);
+  scrollRight (visibleTag) {
+    const element = findDOMNode(this.refs[`${this.state.ballotItemWeVoteId}-org-list-${visibleTag}`]);
     const position = $(element).scrollLeft();
     const width = Math.round($(element).width());
     $(element).animate({
       scrollLeft: position + width,
     }, 350, () => {
-      const new_position = $(element).scrollLeft();
-      if (visible_tag === "desktop") {
+      const newPosition = $(element).scrollLeft();
+      if (visibleTag === "desktop") {
         this.setState(() => ({
-          can_scroll_left_desktop: new_position > 0,
-          can_scroll_right_desktop: position + width === new_position,
+          can_scroll_left_desktop: newPosition > 0,
+          can_scroll_right_desktop: position + width === newPosition,
         }));
       } else {
         this.setState(() => ({
-          can_scroll_left_mobile: new_position > 0,
-          can_scroll_right_mobile: position + width === new_position,
+          can_scroll_left_mobile: newPosition > 0,
+          can_scroll_right_mobile: position + width === newPosition,
         }));
       }
     });
   }
 
-  setScrollState () {
-    const desktop_list = findDOMNode(this.refs[`${this.state.ballotItemWeVoteId}-org-list-desktop`]);
-    const mobile_list = findDOMNode(this.refs[`${this.state.ballotItemWeVoteId}-org-list-mobile`]);
-    const desktop_list_visible_width = $(desktop_list).width();
-    const desktop_list_width = $(desktop_list).children().eq(0).children()
-      .eq(0)
-      .width();
-    const mobile_list_visible_width = $(mobile_list).width();
-    const mobile_list_width = $(mobile_list).children().eq(0).children()
-      .eq(0)
-      .width();
-    this.setState(() => ({
-      can_scroll_desktop: desktop_list_visible_width <= desktop_list_width,
-      can_scroll_mobile: mobile_list_visible_width <= mobile_list_width,
-    }));
+  closeIssueScorePopover () {
+    this.refs["issue-score-overlay"].hide();
+  }
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error("ItemSupportOpposeRaccoon caught error: ", `${error} with info: `, info);
   }
 
   passDataBetweenItemActionToItemPosition () {
@@ -363,20 +362,20 @@ export default class ItemSupportOpposeRaccoon extends Component {
     const issueCountUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesCountUnderThisBallotItemVoterIsFollowing(this.state.ballotItemWeVoteId);
 
     // Network Score
-    let network_support_count = 0;
-    let network_oppose_count = 0;
-    let total_network_score = 0;
-    let total_network_score_with_sign;
+    let networkSupportCount = 0;
+    let networkOpposeCount = 0;
+    let totalNetworkScore = 0;
+    let totalNetworkScoreWithSign;
     if (this.state.supportProps !== undefined) {
-      network_support_count = parseInt(this.state.supportProps.support_count) || 0;
-      network_oppose_count = parseInt(this.state.supportProps.oppose_count) || 0;
-      total_network_score = parseInt(network_support_count - network_oppose_count);
-      if (total_network_score > 0) {
-        total_network_score_with_sign = `+${total_network_score}`;
-      } else if (total_network_score < 0) {
-        total_network_score_with_sign = total_network_score;
+      networkSupportCount = parseInt(this.state.supportProps.support_count) || 0;
+      networkOpposeCount = parseInt(this.state.supportProps.oppose_count) || 0;
+      totalNetworkScore = parseInt(networkSupportCount - networkOpposeCount);
+      if (totalNetworkScore > 0) {
+        totalNetworkScoreWithSign = `+${totalNetworkScore}`;
+      } else if (totalNetworkScore < 0) {
+        totalNetworkScoreWithSign = totalNetworkScore;
       } else {
-        total_network_score_with_sign = total_network_score;
+        totalNetworkScoreWithSign = totalNetworkScore;
       }
     }
 
@@ -386,28 +385,28 @@ export default class ItemSupportOpposeRaccoon extends Component {
     } else if (issueCountUnderThisBallotItem === 0 && voterIssuesScore === 0) {
       // There can't be an issue score because there aren't any issues tagged to organizations with a position on this candidate
       showIssueScore = false;
-    } else if (total_network_score !== 0 && voterIssuesScore === 0) {
+    } else if (totalNetworkScore !== 0 && voterIssuesScore === 0) {
       // We show the network score when there isn't a network score and there is a voterIssuesScore
       showIssueScore = false;
     }
 
     let showNetworkScore = true;
-    if (voterIssuesScore !== 0 && total_network_score === 0) {
+    if (voterIssuesScore !== 0 && totalNetworkScore === 0) {
       // There is an issue score, and the total Network Score is 0, so don't show Network score
       showNetworkScore = false;
-    } else if (voterIssuesScore === 0 && network_support_count === 0 && network_oppose_count === 0) {
+    } else if (voterIssuesScore === 0 && networkSupportCount === 0 && networkOpposeCount === 0) {
       // There is NOT an issue score, and BOTH network_support and network_oppose must be zero to hide Network Score
       showNetworkScore = false;
     }
 
     // Voter Support or opposition
-    const { is_voter_support, is_voter_oppose, voter_statement_text } = ballotItemSupportStore || {};
+    const { is_voter_support: isVoterSupport, is_voter_oppose: isVoterOppose, voter_statement_text: voterStatementText } = ballotItemSupportStore || {};
 
     let commentBoxIsVisible = false;
-    if (this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text || this.state.showPositionStatement) {
+    if (this.props.showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText || this.state.showPositionStatement) {
       commentBoxIsVisible = true;
     }
-    const item_action_bar = (
+    const itemActionBar = (
       <span>
         <ItemActionBar
           ballot_item_display_name={this.state.ballot_item_display_name}
@@ -427,7 +426,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       </span>
     );
 
-    const comment_display_raccoon_desktop = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text || this.state.showPositionStatement ? (
+    const commentDisplayDesktop = this.props.showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText || this.state.showPositionStatement ? (
       <div className="d-none d-sm-block o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar
@@ -445,7 +444,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     ) :
       null;
 
-    const comment_display_raccoon_mobile = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text ? (
+    const commentDisplayMobile = this.props.showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText ? (
       <div className="d-block d-sm-none o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar
@@ -462,48 +461,48 @@ export default class ItemSupportOpposeRaccoon extends Component {
     ) :
       null;
 
-    const { organizations_to_follow_support: orgsToFollowSupport, organizations_to_follow_oppose: orgsToFollowOppose} = this.state;
+    const { organizations_to_follow_support: orgsToFollowSupport, organizations_to_follow_oppose: orgsToFollowOppose } = this.state;
 
     const orgsToFollowSupportCount =  orgsToFollowSupport ? orgsToFollowSupport.length :  0;
     const orgsToFollowOpposeCount =  orgsToFollowOppose ? orgsToFollowOppose.length :  0;
-    const positions_count = network_support_count + network_oppose_count + orgsToFollowSupportCount + orgsToFollowOpposeCount;
-    const maximum_organizations_to_show_desktop = 50;
-    const maximum_organizations_to_show_mobile = 50;
+    const positionsCount = networkSupportCount + networkOpposeCount + orgsToFollowSupportCount + orgsToFollowOpposeCount;
+    const maximumOrganizationsToShowDesktop = 50;
+    const maximumOrganizationsToShowMobile = 50;
 
-    let organizations_to_follow_support_desktop_to_show = 0;
-    let organizations_to_follow_oppose_desktop_to_show = 0;
-    let organizations_to_follow_oppose_mobile_to_show = 0;
-    let organizations_to_follow_support_mobile_to_show = 0;
+    let organizationsToFollowSupportDesktopToShow = 0;
+    let organizationsToFollowOpposeDesktopToShow = 0;
+    let organizationsToFollowOpposeMobileToShow = 0;
+    let organizationsToFollowSupportMobileToShow = 0;
 
     // console.log("this.state.position_list_from_advisers_followed_by_voter: ", this.state.position_list_from_advisers_followed_by_voter);
-    if (positions_count) {
-      let support_positions_list_count = 0;
-      let oppose_positions_list_count = 0;
+    if (positionsCount) {
+      let supportPositionsListCount = 0;
+      let opposePositionsListCount = 0;
       // let info_only_positions_list_count = 0;
-      this.state.position_list_from_advisers_followed_by_voter.map((one_position) => {
-        // console.log("one_position: ", one_position);
+      this.state.position_list_from_advisers_followed_by_voter.map((onePosition) => {
+        // console.log("onePosition: ", onePosition);
         // Filter out the positions that we don't want to display
-        if (one_position.is_support_or_positive_rating) {
-          support_positions_list_count++;
-        } else if (one_position.is_oppose_or_negative_rating) {
-          oppose_positions_list_count++;
-        } // else if (!one_position.is_support_or_positive_rating && !one_position.is_oppose_or_negative_rating) {
+        if (onePosition.is_support_or_positive_rating) {
+          supportPositionsListCount++;
+        } else if (onePosition.is_oppose_or_negative_rating) {
+          opposePositionsListCount++;
+        } // else if (!onePosition.is_support_or_positive_rating && !onePosition.is_oppose_or_negative_rating) {
         //   info_only_positions_list_count++;
         // }
         return null;
       });
-      // console.log("support_positions_list_count:", support_positions_list_count);
+      // console.log("supportPositionsListCount:", supportPositionsListCount);
 
       // We calculate how many organizations_to_follow based on the number of positions from advisers we follow
-      const offset_for_more_text = 3;
-      organizations_to_follow_support_desktop_to_show = maximum_organizations_to_show_desktop - support_positions_list_count - offset_for_more_text;
-      organizations_to_follow_support_desktop_to_show = organizations_to_follow_support_desktop_to_show >= 0 ? organizations_to_follow_support_desktop_to_show : 0;
-      organizations_to_follow_support_mobile_to_show = maximum_organizations_to_show_mobile - support_positions_list_count - offset_for_more_text;
-      organizations_to_follow_support_mobile_to_show = organizations_to_follow_support_mobile_to_show >= 0 ? organizations_to_follow_support_mobile_to_show : 0;
-      organizations_to_follow_oppose_desktop_to_show = maximum_organizations_to_show_desktop - oppose_positions_list_count - offset_for_more_text;
-      organizations_to_follow_oppose_desktop_to_show = organizations_to_follow_oppose_desktop_to_show >= 0 ? organizations_to_follow_oppose_desktop_to_show : 0;
-      organizations_to_follow_oppose_mobile_to_show = maximum_organizations_to_show_mobile - oppose_positions_list_count - offset_for_more_text;
-      organizations_to_follow_oppose_mobile_to_show = organizations_to_follow_oppose_mobile_to_show >= 0 ? organizations_to_follow_oppose_mobile_to_show : 0;
+      const offsetForMoreText = 3;
+      organizationsToFollowSupportDesktopToShow = maximumOrganizationsToShowDesktop - supportPositionsListCount - offsetForMoreText;
+      organizationsToFollowSupportDesktopToShow = organizationsToFollowSupportDesktopToShow >= 0 ? organizationsToFollowSupportDesktopToShow : 0;
+      organizationsToFollowSupportMobileToShow = maximumOrganizationsToShowMobile - supportPositionsListCount - offsetForMoreText;
+      organizationsToFollowSupportMobileToShow = organizationsToFollowSupportMobileToShow >= 0 ? organizationsToFollowSupportMobileToShow : 0;
+      organizationsToFollowOpposeDesktopToShow = maximumOrganizationsToShowDesktop - opposePositionsListCount - offsetForMoreText;
+      organizationsToFollowOpposeDesktopToShow = organizationsToFollowOpposeDesktopToShow >= 0 ? organizationsToFollowOpposeDesktopToShow : 0;
+      organizationsToFollowOpposeMobileToShow = maximumOrganizationsToShowMobile - opposePositionsListCount - offsetForMoreText;
+      organizationsToFollowOpposeMobileToShow = organizationsToFollowOpposeMobileToShow >= 0 ? organizationsToFollowOpposeMobileToShow : 0;
     }
 
     let scoreFromYourIssuesPopover;
@@ -514,24 +513,24 @@ export default class ItemSupportOpposeRaccoon extends Component {
     if (issueCountUnderThisBallotItemVoterIsFollowing) {
       // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
       const organizationNameIssueSupportList = IssueStore.getOrganizationNameSupportListUnderThisBallotItem(this.state.ballotItemWeVoteId);
-      const organizationNameIssueSupportListDisplay = organizationNameIssueSupportList.map(organization_name => (
-        <span key={organization_name} className="u-flex u-flex-row u-justify-start u-items-start">
+      const organizationNameIssueSupportListDisplay = organizationNameIssueSupportList.map(organizationName => (
+        <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start">
           <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} alt="Thumbs Up" width="20" height="20" />
           <span>&nbsp;</span>
           <span>
-            {organization_name}
+            {organizationName}
             {" "}
             <strong>+1</strong>
           </span>
         </span>
       ));
       const organizationNameIssueOpposeList = IssueStore.getOrganizationNameOpposeListUnderThisBallotItem(this.state.ballotItemWeVoteId);
-      const organizationNameIssueOpposeListDisplay = organizationNameIssueOpposeList.map(organization_name => (
-        <span key={organization_name} className="u-flex u-flex-row u-justify-start u-items-start">
+      const organizationNameIssueOpposeListDisplay = organizationNameIssueOpposeList.map(organizationName => (
+        <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start">
           <img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} alt="Thumbs Down" width="20" height="20" />
           <span>&nbsp;</span>
           <span>
-            {organization_name}
+            {organizationName}
             {" "}
             <strong>-1</strong>
           </span>
@@ -660,24 +659,24 @@ export default class ItemSupportOpposeRaccoon extends Component {
 
     // If there are issues the voter is following, we should attempt to to create a list of orgs that support or oppose this ballot item
     const nameNetworkSupportList = SupportStore.getNameSupportListUnderThisBallotItem(this.state.ballotItemWeVoteId);
-    const nameNetworkSupportListDisplay = nameNetworkSupportList.map(speaker_display_name => (
-      <span key={speaker_display_name} className="u-flex u-flex-row u-justify-start u-items-start">
+    const nameNetworkSupportListDisplay = nameNetworkSupportList.map(speakerDisplayName => (
+      <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start">
         <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} alt="Thumbs Up" width="20" height="20" />
         <span>&nbsp;</span>
         <span>
-          {speaker_display_name}
+          {speakerDisplayName}
           {" "}
           <strong>+1</strong>
         </span>
       </span>
     ));
     const nameNetworkOpposeList = SupportStore.getNameOpposeListUnderThisBallotItem(this.state.ballotItemWeVoteId);
-    const nameNetworkOpposeListDisplay = nameNetworkOpposeList.map(speaker_display_name => (
-      <span key={speaker_display_name} className="u-flex u-flex-row u-justify-start u-items-start">
+    const nameNetworkOpposeListDisplay = nameNetworkOpposeList.map(speakerDisplayName => (
+      <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start">
         <img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} alt="Thumbs Down" width="20" height="20" />
         <span>&nbsp;</span>
         <span>
-          {speaker_display_name}
+          {speakerDisplayName}
           {" "}
           <strong>-1</strong>
         </span>
@@ -776,10 +775,10 @@ export default class ItemSupportOpposeRaccoon extends Component {
       );
     }
 
-    const voter_decided_item = this.state.supportProps && this.state.voter &&
+    const voterDecidedItem = this.state.supportProps && this.state.voter &&
     (this.state.supportProps.is_support || this.state.supportProps.is_oppose);
 
-    const positionsPopover = positions_count > 1 || (positions_count && !voter_decided_item) ? (     // eslint-disable-line no-nested-ternary
+    const positionsPopover = positionsCount > 1 || (positionsCount && !voterDecidedItem) ? (     // eslint-disable-line no-nested-ternary
       <Popover
         id="positions-popover-trigger-click-root-close"
         title={(
@@ -829,7 +828,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         .
       </Popover>
     ) :
-      positions_count && voter_decided_item ? (
+      positionsCount && voterDecidedItem ? (
         <Popover
           id="positions-popover-trigger-click-root-close"
           title={(
@@ -868,8 +867,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
       );
 
     const ballotItemSupportProps = SupportStore.get(this.state.ballotItemWeVoteId);
-    let networkSupportCount = 0;
-    let networkOpposeCount = 0;
+    networkSupportCount = 0;
+    networkOpposeCount = 0;
     if (ballotItemSupportProps !== undefined) {
       networkSupportCount = ballotItemSupportProps.support_count ? parseInt(ballotItemSupportProps.support_count || "0") : 0;
       networkOpposeCount = ballotItemSupportProps.oppose_count ? parseInt(ballotItemSupportProps.oppose_count || "0") : 0;
@@ -986,7 +985,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                   {/* Show support positions the voter can follow Desktop, organizations_to_follow_support_desktop */}
                   <OrganizationsToDisplay
                     organizationsToFollow={this.state.organizations_to_follow_support}
-                    maximumOrganizationDisplay={organizations_to_follow_support_desktop_to_show}
+                    maximumOrganizationDisplay={organizationsToFollowSupportDesktopToShow}
                     ballotItemWeVoteId={this.state.ballotItemWeVoteId}
                     visibleTag="desktop"
                     supportsThisBallotItem
@@ -998,7 +997,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                   {/* Show oppose positions the voter can follow Desktop */}
                   <OrganizationsToDisplay
                     organizationsToFollow={this.state.organizations_to_follow_oppose}
-                    maximumOrganizationDisplay={organizations_to_follow_oppose_desktop_to_show}
+                    maximumOrganizationDisplay={organizationsToFollowOpposeDesktopToShow}
                     ballotItemWeVoteId={this.state.ballotItemWeVoteId}
                     visibleTag="desktop"
                     supportsThisBallotItem={false}
@@ -1044,7 +1043,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                   {/* Show support positions the voter can follow Mobile */}
                   <OrganizationsToDisplay
                     organizationsToFollow={this.state.organizations_to_follow_support}
-                    maximumOrganizationDisplay={organizations_to_follow_support_mobile_to_show}
+                    maximumOrganizationDisplay={organizationsToFollowSupportMobileToShow}
                     ballotItemWeVoteId={this.state.ballotItemWeVoteId}
                     visibleTag="mobile"
                     supportsThisBallotItem
@@ -1056,7 +1055,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
                   {/* Show oppose positions the voter can follow Mobile */}
                   <OrganizationsToDisplay
                     organizationsToFollow={this.state.organizations_to_follow_oppose}
-                    maximumOrganizationDisplay={organizations_to_follow_oppose_mobile_to_show}
+                    maximumOrganizationDisplay={organizationsToFollowOpposeMobileToShow}
                     ballotItemWeVoteId={this.state.ballotItemWeVoteId}
                     visibleTag="mobile"
                     supportsThisBallotItem={false}
@@ -1151,13 +1150,13 @@ export default class ItemSupportOpposeRaccoon extends Component {
               overlay={scoreInYourNetworkPopover}
             >
               <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break">
-                { total_network_score === 0 ? (
+                { totalNetworkScore === 0 ? (
                   <span className="u-margin-left--md">
-                    { total_network_score_with_sign }
+                    { totalNetworkScoreWithSign }
                   </span>
                 ) : (
                   <span className="u-margin-left--xs">
-                    { total_network_score_with_sign }
+                    { totalNetworkScoreWithSign }
                   </span>
                 )}
                 <span className="network-positions-stacked__support-score-label">
@@ -1181,17 +1180,17 @@ export default class ItemSupportOpposeRaccoon extends Component {
           ) : null
           }
           <span className="sr-only">
-            {total_network_score > 0 ? `${total_network_score} Support` : null }
-            {total_network_score < 0 ? `${total_network_score} Oppose` : null }
+            {totalNetworkScore > 0 ? `${totalNetworkScore} Support` : null }
+            {totalNetworkScore < 0 ? `${totalNetworkScore} Oppose` : null }
           </span>
         </div>
 
         <div className="network-positions-stacked__support">
           {/* Support/Oppose/Comment toggle here */}
-          {item_action_bar}
+          {itemActionBar}
         </div>
-        { comment_display_raccoon_desktop }
-        { comment_display_raccoon_mobile }
+        { commentDisplayDesktop }
+        { commentDisplayMobile }
       </div>
     );
   }
