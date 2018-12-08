@@ -133,10 +133,10 @@ export default class Candidate extends Component {
 
   onCandidateStoreChange () {
     // console.log("Candidate onCandidateStoreChange");
-    this.setState({
-      candidate: CandidateStore.getCandidate(this.state.candidate_we_vote_id),
-      position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(this.state.candidate_we_vote_id),
-    });
+    this.setState(state => ({
+      candidate: CandidateStore.getCandidate(state.candidate_we_vote_id),
+      position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(state.candidate_we_vote_id),
+    }));
   }
 
   onVoterGuideStoreChange () {
@@ -150,11 +150,10 @@ export default class Candidate extends Component {
 
     // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidate_we_vote_id, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-    this.setState({
+    this.setState(state => ({
       voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
-
-      voter_guides_to_follow_for_this_ballot_item: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.state.candidate_we_vote_id),
-    });
+      voter_guides_to_follow_for_this_ballot_item: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(state.candidate_we_vote_id),
+    }));
   }
 
   render () {
