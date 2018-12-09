@@ -12,13 +12,6 @@ import VoterSessionActions from "../../actions/VoterSessionActions";
 import { renderLog } from "../../utils/logging";
 
 export default class HamburgerMenu extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      bookmarks: [],
-    };
-  }
-
   componentDidMount () {
     // console.log("SignIn componentDidMount");
     this.onVoterStoreChange();
@@ -43,6 +36,7 @@ export default class HamburgerMenu extends Component {
         {voterPhotoUrlMedium ? (
           <div id="js-header-avatar" className={isWebApp() ? "header-nav__avatar" : "header-nav__avatar-cordova header-nav__cordova"}>
             <img
+              alt="Signed in voter"
               src={voterPhotoUrlMedium}
               height={34}
               width={34}
@@ -64,16 +58,16 @@ export default class HamburgerMenu extends Component {
     }
 
     const hasBookmarks = BallotStore.bookmarks && BallotStore.bookmarks.length;
-    let isSignedIn = this.state.voter && this.state.voter.is_signed_in;
+    let { is_signed_in: isSignedIn } = this.state.voter;
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
 
     return (
       <div>
         <Helmet title="Settings Menu" />
-        <Table hover responsive className="hamburger-menu__table">
+        <Table responsive className="hamburger-menu__table">
           <tbody>
             <tr className="hamburger-menu__tr">
-              <td colSpan={3} style={{ padding: 15, color: "DarkGrey" }}>
+              <td colSpan={3} style={{ padding: 15 }}>
                 <span className="we-vote-promise" style={{ fontSize: 15 }}>Our Promise: We&apos;ll never sell your email.</span>
               </td>
             </tr>
