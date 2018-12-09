@@ -4,11 +4,13 @@ import { stringContains } from "./textFormat";
 /* global $ */
 
 export function isWebApp () {
-  return window.cordova === undefined;
+  const { cordova } = window;
+  return cordova === undefined;
 }
 
 export function isCordova () {
-  return window.cordova !== undefined;
+  const { cordova } = window;
+  return cordova !== undefined;
 }
 
 // see https://github.com/ReactTraining/react-router/blob/v3/docs/guides/Histories.md
@@ -102,17 +104,17 @@ export function enclosingRectangle (objectNameString, instance) {
 // webapp, webapp:iOS, webapp:Android
 export function deviceTypeString () {
   let deviceString = isWebApp() ? "webapp" : "cordova";
-  if (isCordova() && window.device) {
-    /* global device */
-    /* eslint no-undef: ["error", { "typeof": true }] */
-    deviceString += `:${device.platform}`;
+  const { platform } = window.device || "";
+  if (isCordova() && platform) {
+    deviceString += `:${platform}`;
   }
 
   return deviceString;
 }
 
 export function isIOS () {
-  return isCordova() && window.device && device.platform === "iOS";
+  const { platform } = window.device || "";
+  return isCordova() && platform === "iOS";
 }
 
 export function isIPhoneXorXS () {
@@ -188,7 +190,8 @@ export function hasIPhoneNotch () {
 }
 
 export function isAndroid () {
-  return isCordova() && window.device && device.platform === "Android";
+  const { platform } = window.device || "";
+  return isCordova() && platform === "Android";
 }
 
 export function getAndroidSize () {
@@ -259,6 +262,19 @@ export function getAppBaseClass (pathname) {
 
   // console.log("Determine the headroom space classname:" + appBaseClass);
   return appBaseClass;
+}
+
+export function getToastClass () {
+  let toastClass = "";
+  if (hasIPhoneNotch()) {
+    toastClass = "app-toast-cordova__iphone-notch";
+  } else if (isIOS()) {
+    toastClass = "app-toast-cordova__iphone";
+  }
+
+  // No adjustment needed for Android, it doesn't consider the top hardware menu part of the application area
+  // console.log(`Determine the toast conditional space classname: ${  toastClass}`);
+  return toastClass;
 }
 
 export function prepareForCordovaKeyboard (callerString) {

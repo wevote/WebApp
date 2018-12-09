@@ -5,7 +5,6 @@
   and https://fkhadra.github.io/react-toastify/
 */
 import { toast } from "react-toastify";
-import { hasIPhoneNotch } from "./cordovaUtils";
 
 const DEFAULT_OPTIONS = {
   autoClose: 2000,
@@ -20,10 +19,6 @@ const DEFAULT_OPTIONS = {
 };
 
 export function showToastError (msg, options = {}) {
-  if (hasIPhoneNotch()) {
-    DEFAULT_OPTIONS.bodyClassName.marginTop = 30;
-  }
-
   toast.error(msg, {
     ...DEFAULT_OPTIONS,
     ...options,
@@ -31,10 +26,6 @@ export function showToastError (msg, options = {}) {
 }
 
 export function showToastSuccess (msg, options = {}) {
-  if (hasIPhoneNotch()) {
-    DEFAULT_OPTIONS.bodyClassName.marginTop = 30;
-  }
-
   toast.success(msg, {
     ...DEFAULT_OPTIONS,
     ...options,
