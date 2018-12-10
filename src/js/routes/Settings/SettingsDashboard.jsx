@@ -193,7 +193,8 @@ export default class SettingsDashboard extends Component {
 
                 <h4 className="text-left" />
                 <div className="terms-and-privacy u-padding-top--md">
-                  <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;
+                  <Link to="/more/terms">Terms of Service</Link>
+                  &nbsp;&nbsp;&nbsp;
                   <Link to="/more/privacy">
                     Privacy Policy
                   </Link>

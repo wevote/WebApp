@@ -136,7 +136,8 @@ export default class ChooseElectionForVoterGuide extends Component {
               {/* Mobile */}
               { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
                 <span className="d-block d-sm-none">
-                  {item.election_description_text}&nbsp;
+                  {item.election_description_text}
+                  &nbsp;
                   <img
                     src={cordovaDot("/img/global/icons/Circle-Arrow.png")}
                   />
@@ -152,7 +153,8 @@ export default class ChooseElectionForVoterGuide extends Component {
               )}
               {/* Desktop */}
               <span className="d-none d-sm-block">
-                {item.election_description_text}&nbsp;
+                {item.election_description_text}
+                &nbsp;
                 <img
                   src={cordovaDot("/img/global/icons/Circle-Arrow.png")}
                 />

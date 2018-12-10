@@ -235,7 +235,8 @@ export default class VoterEmailAddressEntry extends Component {
                     <span>
                       <a on_click={this.set_as_primary_email_address.bind(this, voterEmailAddressFromList.email_we_vote_id)}>
                       Make Primary
-                      </a>&nbsp;&nbsp;&nbsp;
+                      </a>
+                      &nbsp;&nbsp;&nbsp;
                     </span>
                   )}
                 <span>&nbsp;&nbsp;&nbsp;</span>

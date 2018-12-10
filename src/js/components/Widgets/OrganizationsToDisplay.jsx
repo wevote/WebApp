@@ -59,7 +59,8 @@ export default class OrganizationsToDisplay extends Component {
         <Popover
           id={`organization-popover-${orgWeVoteId}-${ballotItemWeVoteId}`}
           title={(
-            <span onClick={() => this.onTriggerLeave(orgWeVoteId, visibleTag)}>&nbsp;
+            <span onClick={() => this.onTriggerLeave(orgWeVoteId, visibleTag)}>
+              &nbsp;
               <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `}
                     aria-hidden="true"
               />

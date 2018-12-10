@@ -168,7 +168,8 @@ export default class BallotElectionList extends Component {
               {/* Mobile */}
               { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
                 <span className="d-block d-sm-none">
-                  {item.election_description_text}&nbsp;
+                  {item.election_description_text}
+                  &nbsp;
                   <img
                     src={cordovaDot("/img/global/icons/Circle-Arrow.png")}
                   />
@@ -188,7 +189,8 @@ export default class BallotElectionList extends Component {
                 {" "}
                 -
                 {" "}
-                {item.election_description_text}&nbsp;
+                {item.election_description_text}
+                &nbsp;
                 <img
                   src={cordovaDot("/img/global/icons/Circle-Arrow.png")}
                 />
@@ -220,7 +222,8 @@ export default class BallotElectionList extends Component {
                 {/* Mobile */}
                 { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
                   <span className="d-block d-sm-none">
-                    {item.election_description_text}&nbsp;
+                    {item.election_description_text}
+                    &nbsp;
                     <img
                       src={cordovaDot("/img/global/icons/Circle-Arrow.png")}
                     />
@@ -240,7 +243,8 @@ export default class BallotElectionList extends Component {
                   {" "}
                   -
                   {" "}
-                  {item.election_description_text}&nbsp;
+                  {item.election_description_text}
+                  &nbsp;
                   <img
                     src={cordovaDot("/img/global/icons/Circle-Arrow.png")}
                   />

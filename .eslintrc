@@ -69,7 +69,9 @@
     "react/sort-comp": 1,
     "space-before-function-paren": [1, {"anonymous": "always", "named": "always"}],
     "space-in-parens": [1],
-    "template-curly-spacing": ["warn", "never"]
+    "_comment": "remove after https://github.com/babel/babel-eslint/issues/530 fix",
+    "template-curly-spacing": "off",   // 12/10/18: was ["warn", "never"] -- sadly, we had to turn this off until issue 530 is fixed
+    "indent": "off"                    // 12/10/18: We had no config for this, but 530 forced us to turn it off
   },
     "plugins": [
         "react"

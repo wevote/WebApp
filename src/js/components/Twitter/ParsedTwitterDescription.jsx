@@ -54,7 +54,8 @@ const ParsedTwitterDescription = (props) => {
             <span
               key={i}
             >
-              {props.twitter_description.slice(snippet.location[0], snippet.location[1])}&nbsp;
+              {props.twitter_description.slice(snippet.location[0], snippet.location[1])}
+              &nbsp;
             </span>
           ) : (
             <span
@@ -65,7 +66,8 @@ const ParsedTwitterDescription = (props) => {
                 target={props.twitter_description.slice(snippet.location[0] + 8, snippet.location[1])}
               >
                 {props.twitter_description.slice(snippet.location[0], snippet.location[1])}
-              </a>&nbsp;
+              </a>
+              &nbsp;
             </span>
           )))
       }

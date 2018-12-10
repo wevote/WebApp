@@ -140,8 +140,10 @@ export default class EditAddressPopover extends Component {
           >
             <span className="u-cursor--pointer">
               { this.state.text_for_map_search.length ? shortenText(this.state.text_for_map_search, maximumAddressDisplayLength) : noAddressMessage }
-              <span className="position-rating__source with-popover">&nbsp;&nbsp;
-                <i className="fa fa-exclamation-circle" aria-hidden="true" style={{ color: "#fc0d1b" }} />&nbsp;&nbsp;
+              <span className="position-rating__source with-popover">
+                &nbsp;&nbsp;
+                <i className="fa fa-exclamation-circle" aria-hidden="true" style={{ color: "#fc0d1b" }} />
+                &nbsp;&nbsp;
               </span>
             </span>
           </OverlayTrigger>

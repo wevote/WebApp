@@ -128,7 +128,8 @@ export default class ReadMore extends Component {
       return (
         <span className={this.props.className}>
           {" "}
-          {expanded_text_to_display}&nbsp;&nbsp;
+          {expanded_text_to_display}
+          &nbsp;&nbsp;
           <a
             tabIndex="0"
             href="#"

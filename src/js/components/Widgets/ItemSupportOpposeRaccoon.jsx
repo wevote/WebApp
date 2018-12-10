@@ -1130,7 +1130,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
                     <br />
                     Score
                   </span>
-                  <span>&nbsp;
+                  <span>
+                    &nbsp;
                     <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" />
                   </span>
                 </span>
