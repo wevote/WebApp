@@ -12,6 +12,7 @@ $tab-height-visible: $tab-height - $scrollbar-height;
 $neg-space-sm: -$space-sm;
 $neg-space-lg: -$space-lg;
 $bottom-spacing-cordova: 50px;
+$cordova-shim: 10px;
 
 .ballot {
   // ===========================================
@@ -145,5 +146,9 @@ $bottom-spacing-cordova: 50px;
     margin-top: $space-md;
     margin-left: $neg-space-lg;
     margin-right: $neg-space-lg;
+  }
+
+  &__cordova-shim {
+    margin-top: $cordova-shim;
   }
 }

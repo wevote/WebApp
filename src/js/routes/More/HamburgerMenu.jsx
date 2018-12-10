@@ -3,15 +3,22 @@ import Helmet from "react-helmet";
 import { Link } from "react-router";
 import Icon from "react-svg-icons";
 import { Table } from "react-bootstrap";
-
 import { isWebApp } from "../../utils/cordovaUtils";
 import VoterStore from "../../stores/VoterStore";
 import BallotStore from "../../stores/BallotStore";
 import HamburgerMenuRow from "../../components/Navigation/HamburgerMenuRow";
+import LoadingWheel from "../../components/LoadingWheel";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import { renderLog } from "../../utils/logging";
 
 export default class HamburgerMenu extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      voter: undefined,
+    };
+  }
+
   componentDidMount () {
     // console.log("SignIn componentDidMount");
     this.onVoterStoreChange();
@@ -53,12 +60,14 @@ export default class HamburgerMenu extends Component {
 
   render () {
     renderLog(__filename);
-    if (!this.state.voter) {
-      return null;
+    const { voter } = this.state;
+    if (voter === undefined) {
+      return LoadingWheel;
     }
 
     const hasBookmarks = BallotStore.bookmarks && BallotStore.bookmarks.length;
-    let { is_signed_in: isSignedIn } = this.state.voter;
+    let { is_signed_in: isSignedIn } = voter;
+    const { voter_photo_url_medium: photoUrl } = voter;
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
 
     return (
@@ -76,7 +85,7 @@ export default class HamburgerMenu extends Component {
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/account"
-                fullIcon={this.yourAccountIcon(this.state.voter.voter_photo_url_medium)}
+                fullIcon={this.yourAccountIcon(photoUrl)}
                 linkText="Sign In"
               />
             )}
@@ -100,7 +109,7 @@ export default class HamburgerMenu extends Component {
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/account"
-                fullIcon={this.yourAccountIcon(this.state.voter.voter_photo_url_medium)}
+                fullIcon={this.yourAccountIcon(photoUrl)}
                 linkText="Account"
                 indented
               />
