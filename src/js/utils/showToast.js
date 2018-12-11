@@ -1,11 +1,10 @@
 /*
-  Displays given message in a toast/flash w select defaults
+  Displays given message in a toast/flash w select defaults.
   Default: display toast w/ blue bg at top of screen; auto-hides in 3sec
   https://github.com/fkhadra/react-toastify
   and https://fkhadra.github.io/react-toastify/
 */
 import { toast } from "react-toastify";
-import { hasIPhoneNotch } from "./cordovaUtils";
 
 const DEFAULT_OPTIONS = {
   autoClose: 2000,
@@ -20,10 +19,6 @@ const DEFAULT_OPTIONS = {
 };
 
 export function showToastError (msg, options = {}) {
-  if (hasIPhoneNotch()) {
-    DEFAULT_OPTIONS.bodyClassName.marginTop = 30;
-  }
-
   toast.error(msg, {
     ...DEFAULT_OPTIONS,
     ...options,
@@ -31,10 +26,6 @@ export function showToastError (msg, options = {}) {
 }
 
 export function showToastSuccess (msg, options = {}) {
-  if (hasIPhoneNotch()) {
-    DEFAULT_OPTIONS.bodyClassName.marginTop = 30;
-  }
-
   toast.success(msg, {
     ...DEFAULT_OPTIONS,
     ...options,

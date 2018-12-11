@@ -1,5 +1,6 @@
 // stylelint-disable selector-max-type
 
+
 html {
   box-sizing: border-box;
 }
@@ -19,6 +20,16 @@ body {
     position: relative;
     height: unset;
     min-height: unset;
+  }
+}
+
+.app-toast-cordova {
+  &__iphone {
+    margin-top: 24px !important;
+  }
+
+  &__iphone-notch {
+    margin-top: 40px !important;
   }
 }
 
