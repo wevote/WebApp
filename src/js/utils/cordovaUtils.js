@@ -1,7 +1,7 @@
 import { browserHistory, hashHistory } from "react-router";
 import { oAuthLog } from "./logging";
 import { stringContains } from "./textFormat";
-/* global $  */
+/* global $ */
 
 export function isWebApp () {
   const { cordova } = window;

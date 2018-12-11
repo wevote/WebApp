@@ -1,5 +1,5 @@
 /*
-  Displays given message in a toast/flash w select defaults.
+  Displays given message in a toast/flash w select defaults
   Default: display toast w/ blue bg at top of screen; auto-hides in 3sec
   https://github.com/fkhadra/react-toastify
   and https://fkhadra.github.io/react-toastify/
