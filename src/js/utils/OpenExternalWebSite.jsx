@@ -16,29 +16,30 @@ export default class OpenExternalWebSite extends Component {
     delay: PropTypes.number,
   };
 
-  constructor (props) {
-    super(props);
-  }
-
   render () {
     renderLog(__filename);
-    let integerDelay = this.props.delay && this.props.delay >= 0 ? this.props.delay : 50;
-    let classNameString = this.props.className ? this.props.className : "open-web-site";
+    const { delay, className } = this.props;
+    const integerDelay = delay && delay >= 0 ? delay : 50;
+    const classNameString = className !== undefined ? className : "open-web-site";
 
     if (isWebApp()) {
       return (
-        <a href={this.props.url}
-           className={classNameString}
-           target={this.props.target ? this.props.target : ""}
-           title={this.props.title ? this.props.title : ""} >
+        <a
+          href={this.props.url}
+          className={classNameString}
+          target={this.props.target ? this.props.target : ""}
+          title={this.props.title ? this.props.title : ""}
+        >
           {this.props.body ? this.props.body : ""}
         </a>
       );
     } else {
       return (
-        <span className={classNameString}
-              title={this.props.title ? this.props.title : ""}
-              onClick={() => cordovaOpenSafariView(this.props.url, null, integerDelay)} >
+        <span
+          className={classNameString}
+          title={this.props.title ? this.props.title : ""}
+          onClick={() => cordovaOpenSafariView(this.props.url, null, integerDelay)}
+        >
           {this.props.body ? this.props.body : ""}
         </span>
       );

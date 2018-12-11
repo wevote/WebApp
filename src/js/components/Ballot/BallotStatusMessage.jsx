@@ -33,7 +33,7 @@ export default class BallotStatusMessage extends Component {
 
   componentDidMount () {
     // console.log("In BallotStatusMessage componentDidMount");
-    let electionsWithBallotStatusMessageClosedValueFromCookie = cookies.getItem("elections_with_ballot_status_message_closed");
+    const electionsWithBallotStatusMessageClosedValueFromCookie = cookies.getItem("elections_with_ballot_status_message_closed");
     let electionsWithBallotStatusMessageClosed = [];
     if (electionsWithBallotStatusMessageClosedValueFromCookie) {
       electionsWithBallotStatusMessageClosed = JSON.parse(electionsWithBallotStatusMessageClosedValueFromCookie) || [];
@@ -107,11 +107,11 @@ export default class BallotStatusMessage extends Component {
 
   onBallotStoreChange () {
     let ballot_location_display_name = "";
-    let election_day_text = ElectionStore.getElectionDayText(this.state.google_civic_election_id);
-    let election_is_upcoming = ElectionStore.isElectionUpcoming(this.state.google_civic_election_id);
-    let google_civic_data_exists = ElectionStore.googleCivicDataExists(this.state.google_civic_election_id);
+    const election_day_text = ElectionStore.getElectionDayText(this.state.google_civic_election_id);
+    const election_is_upcoming = ElectionStore.isElectionUpcoming(this.state.google_civic_election_id);
+    const google_civic_data_exists = ElectionStore.googleCivicDataExists(this.state.google_civic_election_id);
     let substituted_address_nearby = "";
-    let voter_ballot_location = VoterStore.getBallotLocationForVoter();
+    const voter_ballot_location = VoterStore.getBallotLocationForVoter();
     let voter_entered_address = false;
     let voter_specific_ballot_from_google_civic = false;
 
@@ -134,8 +134,8 @@ export default class BallotStatusMessage extends Component {
 
     if (BallotStore.ballot_properties && BallotStore.ballot_properties.substituted_address_nearby) {
       if (BallotStore.ballot_properties.substituted_address_city && BallotStore.ballot_properties.substituted_address_state && BallotStore.ballot_properties.substituted_address_zip) {
-        substituted_address_nearby = BallotStore.ballot_properties.substituted_address_city + ", ";
-        substituted_address_nearby += BallotStore.ballot_properties.substituted_address_state + " ";
+        substituted_address_nearby = `${BallotStore.ballot_properties.substituted_address_city}, `;
+        substituted_address_nearby += `${BallotStore.ballot_properties.substituted_address_state} `;
         substituted_address_nearby += BallotStore.ballot_properties.substituted_address_zip;
       } else {
         substituted_address_nearby = BallotStore.ballot_properties.substituted_address_nearby;
@@ -146,21 +146,21 @@ export default class BallotStatusMessage extends Component {
     }
     // console.log("BallotStatusMessage, onBallotStoreChange, election_day_text: ", election_day_text, "election_is_upcoming: ", election_is_upcoming, "substituted_address_nearby: ", substituted_address_nearby);
     this.setState({
-      ballot_location_display_name: ballot_location_display_name,
-      election_day_text: election_day_text,
-      election_is_upcoming: election_is_upcoming,
-      google_civic_data_exists: google_civic_data_exists,
-      substituted_address_nearby: substituted_address_nearby,
-      voter_entered_address: voter_entered_address,
-      voter_specific_ballot_from_google_civic: voter_specific_ballot_from_google_civic,
+      ballot_location_display_name,
+      election_day_text,
+      election_is_upcoming,
+      google_civic_data_exists,
+      substituted_address_nearby,
+      voter_entered_address,
+      voter_specific_ballot_from_google_civic,
     });
   }
 
   handleMessageClose () {
-    //setting cookie to track the elections where user has closed the warning messages for them
+    // setting cookie to track the elections where user has closed the warning messages for them
     if (this.props.google_civic_election_id) {
-      let electionsWithBallotStatusMessageClosedUpdated = [...this.state.elections_with_ballot_status_message_closed, this.props.google_civic_election_id];
-      let electionsWithBallotStatusMessageClosedForCookie = JSON.stringify(electionsWithBallotStatusMessageClosedUpdated);
+      const electionsWithBallotStatusMessageClosedUpdated = [...this.state.elections_with_ballot_status_message_closed, this.props.google_civic_election_id];
+      const electionsWithBallotStatusMessageClosedForCookie = JSON.stringify(electionsWithBallotStatusMessageClosedUpdated);
       cookies.setItem("elections_with_ballot_status_message_closed", electionsWithBallotStatusMessageClosedForCookie, Infinity, "/");
       this.setState({
         elections_with_ballot_status_message_closed: electionsWithBallotStatusMessageClosedUpdated,
@@ -173,14 +173,14 @@ export default class BallotStatusMessage extends Component {
     renderLog(__filename);
     let ballotStatusStyle;
     let messageString = "";
-    let today = moment(new Date());
-    let isVotingDay = today.isSame(this.state.election_day_text, "day");
+    const today = moment(new Date());
+    const isVotingDay = today.isSame(this.state.election_day_text, "day");
 
     if (isVotingDay) {
       ballotStatusStyle = "alert-info";
-      messageString = "It is Voting Day,  " +
-        moment(this.state.election_day_text).format("MMM Do, YYYY") +
-        ".  If you haven't already voted, please go vote!";
+      messageString = `It is Voting Day,  ${
+        moment(this.state.election_day_text).format("MMM Do, YYYY")
+      }.  If you haven't already voted, please go vote!`;
       // I don't think this is necessary on election day.
       // messageString += !this.state.voter_specific_ballot_from_google_civic && this.state.ballot_location_chosen && this.state.ballot_location_display_name ?
       //   "  Some items shown below may not have been on your official ballot." : "  Some items below may not have been on your official ballot.";
@@ -190,13 +190,10 @@ export default class BallotStatusMessage extends Component {
         // We do not have an equivalent flag when we retrieve a ballot from Ballotpedia
         messageString += ""; // No additional text
       } else if (this.state.ballot_location_chosen && this.state.substituted_address_nearby) {
-        messageString += "This is a ballot for " + this.state.substituted_address_nearby + ".";
+        messageString += `This is a ballot for ${this.state.substituted_address_nearby}.`;
         // This does not make sense when using Ballotpedia, since we don't know if voter entered a full address:  Enter your full address to see your official ballot.
-      } else {
-        if (this.state.voter_entered_address) {
-          messageString += "This is our best guess for what's on your ballot.";
-        }
-
+      } else if (this.state.voter_entered_address) {
+        messageString += "This is our best guess for what's on your ballot.";
         // I'm not sure we need to introduce doubt, expecially since sometime this appears after someone enters their full address.
         // messageString += "Some items below may not be on your official ballot.";
       }
@@ -204,7 +201,7 @@ export default class BallotStatusMessage extends Component {
       ballotStatusStyle = "alert-info";
       let messageInPastString;
       if (this.state.election_day_text) {
-        messageInPastString = "This election was held on " + moment(this.state.election_day_text).format("MMM Do, YYYY") + ".";
+        messageInPastString = `This election was held on ${moment(this.state.election_day_text).format("MMM Do, YYYY")}.`;
       } else {
         messageInPastString = ""; // Was "This election has passed." but it showed up inaccurately.
       }
@@ -233,16 +230,18 @@ export default class BallotStatusMessage extends Component {
     if (electionBallotStatusMessageShouldBeClosed) {
       return null;
     } else if (this.state.show_ballot_status && messageStringLength > 0) {
-      return <div className="u-stack--sm d-print-none">
-        <div className={"alert " + ballotStatusStyle}>
-          <a href="#" className="close" data-dismiss="alert">
-            <div id="ballot-status-message-close-container" onClick={this.handleMessageClose.bind(this)}>
-              &times;
-            </div>
-          </a>
-          {messageString}
+      return (
+        <div className="u-stack--sm d-print-none">
+          <div className={`alert ${ballotStatusStyle}`}>
+            <a href="#" className="close" data-dismiss="alert">
+              <div id="ballot-status-message-close-container" onClick={this.handleMessageClose.bind(this)}>
+                &times;
+              </div>
+            </a>
+            {messageString}
+          </div>
         </div>
-      </div>;
+      );
     } else {
       return <div />;
     }

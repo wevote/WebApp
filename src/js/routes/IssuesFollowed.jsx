@@ -29,8 +29,8 @@ export default class IssuesFollowed extends Component {
   }
 
   componentDidMount () {
-    let currentElectionNotSpecified = IssueStore.getPreviousGoogleCivicElectionId() === 0 ? true : false;
-    let getIssuesVoterIsFollowingFound = IssueStore.getIssuesVoterIsFollowing().count === 0 ? false : true;
+    const currentElectionNotSpecified = IssueStore.getPreviousGoogleCivicElectionId() === 0;
+    const getIssuesVoterIsFollowingFound = IssueStore.getIssuesVoterIsFollowing().count !== 0;
     if (currentElectionNotSpecified || !getIssuesVoterIsFollowingFound) {
       IssueActions.issuesRetrieve();
     }
@@ -61,14 +61,14 @@ export default class IssuesFollowed extends Component {
   }
 
   onKeyDownEditMode (event) {
-    let enterAndSpaceKeyCodes = [13, 32];
+    const enterAndSpaceKeyCodes = [13, 32];
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       this.setState({ edit_mode: !this.state.edit_mode });
     }
   }
 
   searchFunction (searchQuery) {
-    this.setState({ searchQuery: searchQuery });
+    this.setState({ searchQuery });
   }
 
   clearFunction () {
@@ -85,14 +85,12 @@ export default class IssuesFollowed extends Component {
     if (this.state.searchQuery.length > 0) {
       const searchQueryLowercase = this.state.searchQuery.toLowerCase();
       issueList = _.filter(issueList,
-        function (oneIssue) {
-          return oneIssue.issue_name.toLowerCase().includes(searchQueryLowercase) ||
-            oneIssue.issue_description.toLowerCase().includes(searchQueryLowercase);
-        });
+        oneIssue => oneIssue.issue_name.toLowerCase().includes(searchQueryLowercase) ||
+            oneIssue.issue_description.toLowerCase().includes(searchQueryLowercase));
     }
 
-    let isFollowing = true;
-    const issueListForDisplay = issueList.map((issue) =>
+    const isFollowing = true;
+    const issueListForDisplay = issueList.map(issue => (
       <IssueFollowToggleSquare
         key={issue.issue_we_vote_id}
         issue_we_vote_id={issue.issue_we_vote_id}
@@ -104,38 +102,45 @@ export default class IssuesFollowed extends Component {
         grid="col-4 col-sm-2"
         read_only
       />
-    );
+    ));
 
-    return <div className={`opinions-followed__container ${isCordova() && "opinions-followed__container-cordova"}`}>
-      <Helmet title="Issues You Follow - We Vote" />
-      <section className="card">
-        <div className="card-main">
-          <h1 className="h1">Issues You Are Following</h1>
-          <a className="fa-pull-right"
-             tabIndex="0"
-             onKeyDown={this.onKeyDownEditMode.bind(this)}
-             onClick={this.toggleEditMode.bind(this)}>{this.state.edit_mode ? "Done Editing" : "Edit"}</a>
+    return (
+      <div className={`opinions-followed__container ${isCordova() && "opinions-followed__container-cordova"}`}>
+        <Helmet title="Issues You Follow - We Vote" />
+        <section className="card">
+          <div className="card-main">
+            <h1 className="h1">Issues You Are Following</h1>
+            <a
+              className="fa-pull-right"
+              onKeyDown={this.onKeyDownEditMode.bind(this)}
+              onClick={this.toggleEditMode.bind(this)}
+            >
+              {this.state.edit_mode ? "Done Editing" : "Edit"}
+            </a>
             <p>
               These are the issues you currently follow. We recommend organizations that you might want to learn from
               based on these issues.
             </p>
-          <SearchBar clearButton
-                     searchButton
-                     placeholder="Search by name or Description"
-                     searchFunction={this.searchFunction}
-                     clearFunction={this.clearFunction}
-                     searchUpdateDelayTime={0} />
-          <br />
-          <div className="network-issues-list voter-guide-list card">
-            { issueList.length ?
-              issueListForDisplay :
-              <h4 className="intro-modal__default-text">You are not following any issues yet.</h4>
-            }
+            <SearchBar
+              clearButton
+              searchButton
+              placeholder="Search by name or Description"
+              searchFunction={this.searchFunction}
+              clearFunction={this.clearFunction}
+              searchUpdateDelayTime={0}
+            />
+            <br />
+            <div className="network-issues-list voter-guide-list card">
+              { issueList.length ?
+                issueListForDisplay :
+                <h4 className="intro-modal__default-text">You are not following any issues yet.</h4>
+              }
+            </div>
+            <Link className="pull-left" to="/issues_to_follow">Find Issues to follow</Link>
+            <br />
           </div>
-          <Link className="pull-left" to="/issues_to_follow">Find Issues to follow</Link>
-          <br />
-        </div>
-      </section>
-    </div>;
+        </section>
+      </div>
+    );
   }
 }

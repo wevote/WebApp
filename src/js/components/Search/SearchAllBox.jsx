@@ -1,16 +1,17 @@
 /* global $ */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import BallotActions from "../../actions/BallotActions";
 import classNames from "classnames";
+import BallotActions from "../../actions/BallotActions";
 import { hasIPhoneNotch, historyPush, isCordova } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import SearchAllActions from "../../actions/SearchAllActions";
 import SearchAllStore from "../../stores/SearchAllStore";
-import { makeSearchLink } from "../../utils/search-functions";
+import makeSearchLink from "../../utils/search-functions";
 import SearchResultsDisplay from "./SearchResultsDisplay";
 
-export default class SearchAllBox extends Component {
+export default class
+SearchAllBox extends Component {
   static propTypes = {
     open: PropTypes.bool,
     selected_index: PropTypes.number,
@@ -42,18 +43,18 @@ export default class SearchAllBox extends Component {
     this.navigateToSelectedLink = this.navigateToSelectedLink.bind(this);
   }
 
-  componentDidMount () {                                // jscs:disable requireDollarBeforejQueryAssignment
-    this.siteLogoText = $(".page-logo:nth-child(1)");   // jscs:disable requireDollarBeforejQueryAssignment
-    this.ballot = $(".header-nav__item:nth-child(1)");  // jscs:disable requireDollarBeforejQueryAssignment
-    this.network = $(".header-nav__item:nth-child(2)"); // jscs:disable requireDollarBeforejQueryAssignment
-    this.avatar = $("#js-header-avatar");               // jscs:disable requireDollarBeforejQueryAssignment
+  componentDidMount () { // jscs:disable requireDollarBeforejQueryAssignment
+    this.siteLogoText = $(".page-logo:nth-child(1)"); // eslint-disable-line requireDollarBeforejQueryAssignment
+    this.ballot = $(".header-nav__item:nth-child(1)"); // eslint-disable-line requireDollarBeforejQueryAssignment
+    this.network = $(".header-nav__item:nth-child(2)"); // eslint-disable-line requireDollarBeforejQueryAssignment
+    this.avatar = $("#js-header-avatar"); // eslint-disable-line requireDollarBeforejQueryAssignment
     this.about = document.getElementsByClassName("header-nav__item--about")[0];
     this.donate = document.getElementsByClassName("header-nav__item--donate")[0];
 
     // When we first enter we want to retrieve values to have for a click in the search box
-    let textFromSearchField = this.props.text_from_search_field;
+    const textFromSearchField = this.props.text_from_search_field;
     if (this.props.text_from_search_field) {
-      this.setState({ textFromSearchField: textFromSearchField });
+      this.setState({ textFromSearchField });
     }
 
     // Search type one - Recent searches
@@ -77,18 +78,18 @@ export default class SearchAllBox extends Component {
   }
 
   _onSearchAllStoreChange () {
-    let newState = {};
+    const newState = {};
 
     if (SearchAllStore.getSearchResults()) {
       newState.searchResults = SearchAllStore.getSearchResults();
       if (isCordova()) {
-        if (window.screen.height < 500) {   // iPhone 4, show two results
+        if (window.screen.height < 500) { // iPhone 4, show two results
           newState.searchResults = newState.searchResults.slice(0, 2);
-        } else if (window.screen.height < 600) {   // iPhone 5, show four results
+        } else if (window.screen.height < 600) { // iPhone 5, show four results
           newState.searchResults = newState.searchResults.slice(0, 4);
-        } else if (window.screen.height < 700) {   // iPhone 8, show five results
+        } else if (window.screen.height < 700) { // iPhone 8, show five results
           newState.searchResults = newState.searchResults.slice(0, 5);
-        } else if (window.screen.height < 800) {   // iPhone 6p, 7p, 8p show six results
+        } else if (window.screen.height < 800) { // iPhone 6p, 7p, 8p show six results
           newState.searchResults = newState.searchResults.slice(0, 6);
         }
       }
@@ -108,7 +109,7 @@ export default class SearchAllBox extends Component {
   }
 
   onSearchFieldTextChange (event) {
-    let searchText = event.target.value;
+    const searchText = event.target.value;
     this.setState({
       textFromSearchField: searchText,
     });
@@ -123,7 +124,7 @@ export default class SearchAllBox extends Component {
   }
 
   onSearchFocus () {
-    let input = document.getElementById("SearchAllBox-input");
+    const input = document.getElementById("SearchAllBox-input");
     input.setSelectionRange(0, 999);
 
     // Hide the site name
@@ -131,7 +132,7 @@ export default class SearchAllBox extends Component {
     // for the global nav
 
     // TODO:  Do not Bury parent dependencies in components.  This caused an avoidable bug in production.  PLEASE don't copy this code
-    let allowParentObjectDirectAccess = true;
+    const allowParentObjectDirectAccess = true;
     if (allowParentObjectDirectAccess && !isCordova()) {
       if (this.siteLogoText) {
         this.siteLogoText.addClass("hidden");
@@ -237,7 +238,7 @@ export default class SearchAllBox extends Component {
   }
 
   onSearchResultMouseOver (e) {
-    let idx = parseInt(e.currentTarget.getAttribute("data-idx"), 10);
+    const idx = parseInt(e.currentTarget.getAttribute("data-idx"), 10);
     this.setState({
       selectedIndex: idx,
     });
@@ -248,12 +249,12 @@ export default class SearchAllBox extends Component {
   }
 
   onSearchElectionResultClick (googleCivicElectionId) {
-    let ballotBaseUrl = "/ballot";
+    const ballotBaseUrl = "/ballot";
     if (googleCivicElectionId && googleCivicElectionId !== 0) {
       BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, "", "");
 
       // console.log("onSearchElectionResultClick, googleCivicElectionId: ", googleCivicElectionId);
-      historyPush(ballotBaseUrl + "/election/" + googleCivicElectionId);
+      historyPush(`${ballotBaseUrl}/election/${googleCivicElectionId}`);
     }
 
     this.updateSearchText();
@@ -281,7 +282,7 @@ export default class SearchAllBox extends Component {
   }
 
   updateSearchText () {
-    let selectedResultElement = this.state.searchResults[this.state.selectedIndex];
+    const selectedResultElement = this.state.searchResults[this.state.selectedIndex];
     let selectedResultText = "";
 
     if (selectedResultElement) {
@@ -328,14 +329,14 @@ export default class SearchAllBox extends Component {
 
   render () {
     renderLog(__filename);
-    let searchContainerClasses = classNames({
+    const searchContainerClasses = classNames({
       "search-container__hidden": !this.state.open,
       "search-container": true,
       "search-container--cordova": isCordova(),
     });
-    let clearButtonClasses = classNames({
+    const clearButtonClasses = classNames({
       "site-search__clear": true,
-      "btn": true,                // jscs:ignore disallowQuotedKeysInObjects
+      "btn": true, // eslint-disable-line quote-props
       "btn-default": true,
       "site-search__clear__hidden": !this.state.textFromSearchField.length,
     });
@@ -347,42 +348,49 @@ export default class SearchAllBox extends Component {
       searchStyle += " search-cordova";
     }
 
-    return <div className={searchStyle}>
-      <form onSubmit={this.onSearchFormSubmit} role="search">
-        <div className="input-group site-search">
-          <input type="text"
-                 id="SearchAllBox-input"
-                 className="form-control site-search__input-field"
-                 placeholder="Search We Vote…"
-                 name="master_search_field"
-                 autoComplete="off"
-                 onFocus={this.onSearchFocus}
-                 onBlur={this.onSearchBlur}
-                 onChange={this.onSearchFieldTextChange}
-                 onKeyDown={this.onSearchKeyDown}
-                 value={this.state.textFromSearchField}
-                 ref="searchAllBox" />
-          <div className="input-group-btn"> {/* Oct 2018: input-group-btn defined in the old bootstrap.css */}
-            <button className={clearButtonClasses} onClick={this.onClearSearch}>
-              {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
-              <i className="glyphicon glyphicon-remove-circle u-gray-light" />
-            </button>
-            <button className="site-search__button btn btn-default" type="submit">
-              <i className="fa fa-search" />
-            </button>
+    return (
+      <div className={searchStyle}>
+        <form onSubmit={this.onSearchFormSubmit} role="search">
+          <div className="input-group site-search">
+            <input
+              type="text"
+              id="SearchAllBox-input"
+              className="form-control site-search__input-field"
+              placeholder="Search We Vote…"
+              name="master_search_field"
+              autoComplete="off"
+              onFocus={this.onSearchFocus}
+              onBlur={this.onSearchBlur}
+              onChange={this.onSearchFieldTextChange}
+              onKeyDown={this.onSearchKeyDown}
+              value={this.state.textFromSearchField}
+              ref="searchAllBox"
+            />
+            <div className="input-group-btn">
+              {" "}
+              {/* Oct 2018: input-group-btn defined in the old bootstrap.css */}
+              <button className={clearButtonClasses} onClick={this.onClearSearch}>
+                {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
+                <i className="glyphicon glyphicon-remove-circle u-gray-light" />
+              </button>
+              <button className="site-search__button btn btn-default" type="submit">
+                <i className="fa fa-search" />
+              </button>
+            </div>
           </div>
+        </form>
+        <div className={searchContainerClasses} ref="searchContainer">
+          <SearchResultsDisplay
+            searchResults={this.state.searchResults}
+            selectedIndex={this.state.selectedIndex}
+            textFromSearchField={this.state.textFromSearchField}
+            onSearchElectionResultClick={this.onSearchElectionResultClick}
+            onSearchResultMouseOver={this.onSearchResultMouseOver}
+            onSearchResultClick={this.onSearchResultClick}
+            links={this.links}
+          />
         </div>
-      </form>
-      <div className={searchContainerClasses} ref="searchContainer">
-        <SearchResultsDisplay
-          searchResults={this.state.searchResults}
-          selectedIndex={this.state.selectedIndex}
-          textFromSearchField={this.state.textFromSearchField}
-          onSearchElectionResultClick={this.onSearchElectionResultClick}
-          onSearchResultMouseOver={this.onSearchResultMouseOver}
-          onSearchResultClick={this.onSearchResultClick}
-          links={this.links} />
       </div>
-    </div>;
+    );
   }
 }

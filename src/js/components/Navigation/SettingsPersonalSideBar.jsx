@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { renderLog } from "../../utils/logging";
 
-//https://stackoverflow.com/questions/32647215/declaring-static-constants-in-es6-classes
+// https://stackoverflow.com/questions/32647215/declaring-static-constants-in-es6-classes
 const CORPORATION = "C";
 const GROUP = "G";
 const NONPROFIT = "NP";
@@ -17,19 +17,19 @@ export default class SettingsPersonalSideBar extends Component {
     editMode: PropTypes.string,
     isSignedIn: PropTypes.bool,
     onOwnPage: PropTypes.bool,
-    organizationType: PropTypes.string.isRequired
+    organizationType: PropTypes.string.isRequired,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      isOrganization: false
+      isOrganization: false,
     };
   }
 
   componentDidMount () {
     if (this.props.organizationType) {
-      let isOrganization = this.props.organizationType === NONPROFIT_501C3 || this.props.organizationType === NONPROFIT_501C4 ||
+      const isOrganization = this.props.organizationType === NONPROFIT_501C3 || this.props.organizationType === NONPROFIT_501C4 ||
                            this.props.organizationType === POLITICAL_ACTION_COMMITTEE || this.props.organizationType === NONPROFIT ||
                            this.props.organizationType === GROUP || this.props.organizationType === PUBLIC_FIGURE ||
                            this.props.organizationType === NEWS_ORGANIZATION || this.props.organizationType === CORPORATION;
@@ -40,7 +40,7 @@ export default class SettingsPersonalSideBar extends Component {
 
   componentDidUpdate (prevProps) {
     if (prevProps.organizationType !== this.props.organizationType) {
-      let isOrganization = this.props.organizationType === NONPROFIT_501C3 || this.props.organizationType === NONPROFIT_501C4 ||
+      const isOrganization = this.props.organizationType === NONPROFIT_501C3 || this.props.organizationType === NONPROFIT_501C4 ||
                            this.props.organizationType === POLITICAL_ACTION_COMMITTEE || this.props.organizationType === NONPROFIT ||
                            this.props.organizationType === GROUP || this.props.organizationType === PUBLIC_FIGURE ||
                            this.props.organizationType === NEWS_ORGANIZATION || this.props.organizationType === CORPORATION;
@@ -48,113 +48,137 @@ export default class SettingsPersonalSideBar extends Component {
       this.setState({ isOrganization });
     }
   }
+
   render () {
     renderLog(__filename);
 
-    return <div className="card">
-      <div className="card-main">
-        <div className="SettingsItem__summary__title" >Your Settings</div>
+    return (
+      <div className="card">
+        <div className="card-main">
+          <div className="SettingsItem__summary__title">Your Settings</div>
 
-        <div className={this.props.editMode === "profile" ?
-             "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
-             "SettingsItem__summary__item-container "} >
-          <div>
-            <Link to="/settings/profile" className="SettingsItem__summary__item" >
-              <span className={this.props.editMode === "profile" ?
-                    "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
-                    "SettingsItem__summary__item__display-name"}>
-                Your Profile</span>
-            </Link>
-          </div>
-        </div>
-
-        <div className={this.props.editMode === "account" ?
-             "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
-             "SettingsItem__summary__item-container"} >
-          <div>
-            <Link to="/settings/account" className="SettingsItem__summary__item" >
-              <span className={this.props.editMode === "account" ?
-                    "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
-                    "SettingsItem__summary__item__display-name"}>
-                {this.props.isSignedIn ?
-                  <span>Your Account</span> :
-                  <span>Sign In</span> }
+          <div className={this.props.editMode === "profile" ?
+            "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
+            "SettingsItem__summary__item-container "}
+          >
+            <div>
+              <Link to="/settings/profile" className="SettingsItem__summary__item">
+                <span className={this.props.editMode === "profile" ?
+                  "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
+                  "SettingsItem__summary__item__display-name"}
+                >
+                Your Profile
                 </span>
-            </Link>
+              </Link>
+            </div>
           </div>
-        </div>
 
-        <div className={this.props.editMode === "address" ?
-             "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
-             "SettingsItem__summary__item-container "} >
-          <div>
-            <Link to="/settings/address" className="SettingsItem__summary__item" >
-              <span className={this.props.editMode === "address" ?
-                    "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
-                    "SettingsItem__summary__item__display-name"}>
-                Your Address</span>
-            </Link>
+          <div className={this.props.editMode === "account" ?
+            "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
+            "SettingsItem__summary__item-container"}
+          >
+            <div>
+              <Link to="/settings/account" className="SettingsItem__summary__item">
+                <span className={this.props.editMode === "account" ?
+                  "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
+                  "SettingsItem__summary__item__display-name"}
+                >
+                  {this.props.isSignedIn ?
+                    <span>Your Account</span> :
+                    <span>Sign In</span> }
+                </span>
+              </Link>
+            </div>
           </div>
-        </div>
 
-        <div className={this.props.editMode === "election" ?
-             "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
-             "SettingsItem__summary__item-container "} >
-          <div>
-            <Link to="/settings/election" className="SettingsItem__summary__item" >
-              <span className={this.props.editMode === "election" ?
-                    "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
-                    "SettingsItem__summary__item__display-name"}>
-                Change Election</span>
-            </Link>
+          <div className={this.props.editMode === "address" ?
+            "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
+            "SettingsItem__summary__item-container "}
+          >
+            <div>
+              <Link to="/settings/address" className="SettingsItem__summary__item">
+                <span className={this.props.editMode === "address" ?
+                  "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
+                  "SettingsItem__summary__item__display-name"}
+                >
+                Your Address
+                </span>
+              </Link>
+            </div>
           </div>
-        </div>
 
-        {this.state.isOrganization &&
+          <div className={this.props.editMode === "election" ?
+            "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
+            "SettingsItem__summary__item-container "}
+          >
+            <div>
+              <Link to="/settings/election" className="SettingsItem__summary__item">
+                <span className={this.props.editMode === "election" ?
+                  "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
+                  "SettingsItem__summary__item__display-name"}
+                >
+                Change Election
+                </span>
+              </Link>
+            </div>
+          </div>
+
+          {this.state.isOrganization && (
           <div className={this.props.editMode === "issues" || this.props.editMode === "issues_to_link" || this.props.editMode === "issues_linked" ?
-              "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
-              "SettingsItem__summary__item-container "} >
+            "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
+            "SettingsItem__summary__item-container "}
+          >
             <div>
-              <Link to="/settings/issues" className="SettingsItem__summary__item" >
+              <Link to="/settings/issues" className="SettingsItem__summary__item">
                 <span className={this.props.editMode === "issues" || this.props.editMode === "issues_to_link" || this.props.editMode === "issues_linked" ?
-                      "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
-                      "SettingsItem__summary__item__display-name"}>
-                  Issues</span>
+                  "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
+                  "SettingsItem__summary__item__display-name"}
+                >
+                  Issues
+                </span>
               </Link>
             </div>
           </div>
-        }
+          )}
 
-        {this.props.onOwnPage ?
-          <div className={this.props.editMode === "voterguides" ?
-               "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
-               "SettingsItem__summary__item-container"} >
-            <div>
-              <Link to="/settings/voterguidesmenu" className="SettingsItem__summary__item" >
-                <span className={this.props.editMode === "voterguides" ?
-                      "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
-                      "SettingsItem__summary__item__display-name"}>
-                  Your Voter Guides</span>
-              </Link>
+          {this.props.onOwnPage ? (
+            <div className={this.props.editMode === "voterguides" ?
+              "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
+              "SettingsItem__summary__item-container"}
+            >
+              <div>
+                <Link to="/settings/voterguidesmenu" className="SettingsItem__summary__item">
+                  <span className={this.props.editMode === "voterguides" ?
+                    "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
+                    "SettingsItem__summary__item__display-name"}
+                  >
+                  Your Voter Guides
+                  </span>
+                </Link>
+              </div>
             </div>
-          </div> :
-          null }
-
-        {this.props.isSignedIn ?
-          <div className={this.props.editMode === "notifications" ?
-               "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
-               "SettingsItem__summary__item-container"} >
-            <div>
-              <Link to="/settings/notifications" className="SettingsItem__summary__item" >
-                <span className={this.props.editMode === "notifications" ?
-                      "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
-                      "SettingsItem__summary__item__display-name"}>
-                  Notification Settings</span>
-              </Link>
+          ) : null
+          }
+          {this.props.isSignedIn ? (
+            <div className={this.props.editMode === "notifications" ?
+              "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
+              "SettingsItem__summary__item-container"}
+            >
+              <div>
+                <Link to="/settings/notifications" className="SettingsItem__summary__item">
+                  <span className={this.props.editMode === "notifications" ?
+                    "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
+                    "SettingsItem__summary__item__display-name"}
+                  >
+                  Notification Settings
+                  </span>
+                </Link>
+              </div>
             </div>
-          </div> :
-          null }
+          ) : null
+          }
+        </div>
       </div>
-    </div>;
+    );
   }
 }

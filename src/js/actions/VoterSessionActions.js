@@ -2,7 +2,7 @@ import Dispatcher from "../dispatcher/Dispatcher";
 import cookies from "../utils/cookies";
 
 export default {
-  voterSignOut: function () {
+  voterSignOut () {
     Dispatcher.loadEndpoint("voterSignOut", { sign_out_all_devices: false });
     cookies.removeItem("voter_device_id");
     cookies.removeItem("voter_device_id", "/");
@@ -10,7 +10,7 @@ export default {
     cookies.removeItem("show_full_navigation", "/");
   },
 
-  setVoterDeviceIdCookie: function (id) {
+  setVoterDeviceIdCookie (id) {
     cookies.setItem("voter_device_id", id, Infinity, "/");
   },
 };

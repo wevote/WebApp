@@ -34,19 +34,19 @@ export default class PledgeToVoteStatusBar extends Component {
     });
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.voterGuideStoreListener.remove();
   }
 
-  onVoterGuideStoreChange (){
+  onVoterGuideStoreChange () {
     this.setState({
-      voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id())
+      voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id()),
     });
   }
 
   render () {
     renderLog(__filename);
-    let turned_off = true; // We don't want to use the status bar yet
+    const turned_off = true; // We don't want to use the status bar yet
     if (turned_off) {
       return null;
     }
@@ -65,8 +65,8 @@ export default class PledgeToVoteStatusBar extends Component {
       number_of_supporters_goal = 100;
 
       if (number_of_supporters_goal !== 0) {
-        let percent_complete_ratio = number_of_supporters / number_of_supporters_goal;
-        let percent_complete_raw = percent_complete_ratio * 100;
+        const percent_complete_ratio = number_of_supporters / number_of_supporters_goal;
+        const percent_complete_raw = percent_complete_ratio * 100;
         percent_complete = Math.round(percent_complete_raw);
         // console.log("percent_complete_raw: ", percent_complete_raw, "percent_complete: ", percent_complete);
         if (percent_complete < 30) {
@@ -75,34 +75,71 @@ export default class PledgeToVoteStatusBar extends Component {
         }
       }
       voter_has_pledged = this.state.voter_guide.voter_has_pledged;
-      //console.log("PledgeToSupportOrganizationStatusBar voter_has_pledged:", voter_has_pledged, ", voter_guide_we_vote_id: ", this.state.voter_guide.we_vote_id);
+      // console.log("PledgeToSupportOrganizationStatusBar voter_has_pledged:", voter_has_pledged, ", voter_guide_we_vote_id: ", this.state.voter_guide.we_vote_id);
     }
-    let show_progress_bar = number_of_supporters_goal > 1 && number_of_supporters > 1;
+    const show_progress_bar = number_of_supporters_goal > 1 && number_of_supporters > 1;
 
-    const progress_bar = <ProgressBar variant={"danger"}
-                                      bsPrefix="u-stack--xs"
-                                      striped
-                                      now={percent_complete}
-                                      label={`${number_of_supporters} will vote`} />;
+    const progress_bar = (
+      <ProgressBar
+        variant="danger"
+        bsPrefix="u-stack--xs"
+        striped
+        now={percent_complete}
+        label={`${number_of_supporters} will vote`}
+      />
+    );
 
-    return <span>
-      {show_progress_bar ? progress_bar : null}
-      {number_of_supporters > 1 ? <div className="voter-guide__pledge-to-support__current-supporters u-stack--md">
-          {number_of_supporters > 1 ? <span>{number_of_supporters} have pledged to vote. </span> : null }
-          { percent_complete < 100 ?
-            <span>{number_of_supporters > 1 && number_of_supporters_goal && !voter_has_pledged ? <span>Let's get to {number_of_supporters_goal}!</span> : null }
-            {number_of_supporters > 1 && number_of_supporters_goal && voter_has_pledged ? <span>Share with friends so we can get to {number_of_supporters_goal}!</span> : null }</span> :
-            null }
-        </div> :
-        null }
-      {voter_has_pledged ?
-        <div className="voter-guide__pledge-to-support__thank-you-for-supporting u-stack--md">
+    return (
+      <span>
+        {show_progress_bar ? progress_bar : null}
+        {number_of_supporters > 1 ? (
+          <div className="voter-guide__pledge-to-support__current-supporters u-stack--md">
+            {number_of_supporters > 1 ? (
+              <span>
+                {number_of_supporters}
+                {" "}
+                have pledged to vote.
+                {" "}
+              </span>
+            ) : null }
+            { percent_complete < 100 ? (
+              <span>
+                {number_of_supporters > 1 && number_of_supporters_goal && !voter_has_pledged ? (
+                  <span>
+                    Let&apos;s get to
+                    {number_of_supporters_goal}
+                    !
+                  </span>
+                ) : null }
+                {number_of_supporters > 1 && number_of_supporters_goal && voter_has_pledged ? (
+                  <span>
+                    Share with friends so we can get to
+                    {number_of_supporters_goal}
+                    !
+                  </span>
+                ) : null }
+              </span>
+            ) : null
+            }
+          </div>
+        ) :
+          null }
+        {voter_has_pledged ? (
+          <div className="voter-guide__pledge-to-support__thank-you-for-supporting u-stack--md">
           Thank you for pledging to vote!
-          {number_of_supporters === 1 && number_of_supporters_goal && voter_has_pledged && percent_complete < 100 ?
-            <span> Share with friends so we can get to {number_of_supporters_goal}.</span> :
-            null }
-        </div> :
-        null }
-    </span>;
+            {number_of_supporters === 1 && number_of_supporters_goal && voter_has_pledged && percent_complete < 100 ? (
+              <span>
+                {" "}
+                Share with friends so we can get to
+                {number_of_supporters_goal}
+                .
+              </span>
+            ) : null
+            }
+          </div>
+        ) : null
+        }
+      </span>
+    );
   }
 }

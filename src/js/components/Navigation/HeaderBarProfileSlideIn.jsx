@@ -40,117 +40,145 @@ export default class HeaderBarProfileSlideIn extends Component {
 
   yourAccountIcon (voterPhotoUrlMedium) {
     return (
-      <span className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none"
-            onClick={this.toggleProfilePopUp} >
-        {voterPhotoUrlMedium ?
+      <span
+        className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none"
+        onClick={this.toggleProfilePopUp}
+      >
+        {voterPhotoUrlMedium ? (
           <div id="js-header-avatar" className="header-nav__avatar-container">
-            <img className="header-nav__avatar"
-                 src={voterPhotoUrlMedium}
-                 height={34}
-                 width={34}
+            <img
+              className="header-nav__avatar"
+              src={voterPhotoUrlMedium}
+              height={34}
+              width={34}
             />
-          </div> :
-          <div id= "anonIcon" className="header-nav__avatar">
+          </div>
+        ) : (
+          <div id="anonIcon" className="header-nav__avatar">
             <Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" />
           </div>
-        }
+        )}
       </span>
     );
   }
 
   render () {
     renderLog(__filename);
-    let isSignedIn = this.props.voter.is_signed_in;
-    let voter = this.props.voter;
-    let voterPhotoUrlMedium = voter.voter_photo_url_medium;
+    const isSignedIn = this.props.voter.is_signed_in;
+    const voter = this.props.voter;
+    const voterPhotoUrlMedium = voter.voter_photo_url_medium;
 
-    let linkedOrganizationWeVoteId = this.props.voter.linked_organization_we_vote_id;
-    let signedInFacebook = this.props.voter.signed_in_facebook;
-    let signedInTwitter = this.props.voter.signed_in_twitter;
-    let twitterScreenName = this.props.voter.twitter_screen_name;
-    let showYourPageFromTwitter = signedInTwitter && twitterScreenName;
-    let showYourPageFromFacebook = signedInFacebook && linkedOrganizationWeVoteId && !showYourPageFromTwitter;
+    const linkedOrganizationWeVoteId = this.props.voter.linked_organization_we_vote_id;
+    const signedInFacebook = this.props.voter.signed_in_facebook;
+    const signedInTwitter = this.props.voter.signed_in_twitter;
+    const twitterScreenName = this.props.voter.twitter_screen_name;
+    const showYourPageFromTwitter = signedInTwitter && twitterScreenName;
+    const showYourPageFromFacebook = signedInFacebook && linkedOrganizationWeVoteId && !showYourPageFromTwitter;
     let yourVoterGuideTo = null;
     if (showYourPageFromTwitter) {
-      yourVoterGuideTo = "/" + twitterScreenName;
+      yourVoterGuideTo = `/${twitterScreenName}`;
     } else if (showYourPageFromTwitter) {
-      yourVoterGuideTo = "/voterguide/" + linkedOrganizationWeVoteId;
+      yourVoterGuideTo = `/voterguide/${linkedOrganizationWeVoteId}`;
     } else if (!showYourPageFromTwitter && !showYourPageFromFacebook && isSignedIn) {
       yourVoterGuideTo = "/yourpage";
     }
 
     /* eslint-disable no-extra-parens */
-    let profilePopUpOpen = this.props.profilePopUpOpen ? (isWebApp() ? "profile-menu--open" : "profile-foot-menu--open") : "";
-    let signInColor = isSignedIn ? { fontSize: 28, color: "red" } : { fontSize: 28, color: "green" };
+    const profilePopUpOpen = () => {
+      if (this.props.profilePopUpOpen) {
+        return (isWebApp() ? "profile-menu--open" : "profile-foot-menu--open");
+      }
+      return "";
+    };
+
+    const signInColor = isSignedIn ? { fontSize: 28, color: "red" } : { fontSize: 28, color: "green" };
 
     return (
       <div className={profilePopUpOpen}>
-        <div className={"profile-foot-menu"} ref={ (el) => (this.instance = el)} onClick={this.hideProfilePopUp}>
+        <div className="profile-foot-menu"
+             ref={el => (this.instance = el)}  // eslint-disable-line no-return-assign
+             onClick={this.hideProfilePopUp}
+        >
           <Table striped bordered condensed hover responsive style={{ borderTop: 40, borderTopColor: "white" }}>
-            <tr className={"hamburger-tr"}>
+            <tr className="hamburger-tr">
               <td colSpan={3} style={{ padding: 15, color: "DarkGrey" }}>
-                <span className="we-vote-promise" style={{ fontSize: 15 }}>Our Promise: We'll never sell your email.</span>
+                <span className="we-vote-promise" style={{ fontSize: 15 }}>Our Promise: We&apos;ll never sell your email.</span>
               </td>
             </tr>
 
-            {yourVoterGuideTo &&
-              <HamburgerMenuRow onClickAction={this.transitionToYourVoterGuide}
-                                          to={yourVoterGuideTo}
-                                          icon={"fa fa-list"}
-                                          iconStyle={{ fontSize: 20, color: "#1c2f4b" }}
-                                          linkText={"Your Voter Guide"} />
+            {yourVoterGuideTo && (
+              <HamburgerMenuRow
+                onClickAction={this.transitionToYourVoterGuide}
+                to={yourVoterGuideTo}
+                icon="fa fa-list"
+                iconStyle={{ fontSize: 20, color: "#1c2f4b" }}
+                linkText="Your Voter Guide"
+              />
+            )}
+
+            {this.props.voter && isSignedIn && (
+              <HamburgerMenuRow
+                onClickAction={this.hideProfilePopUp}
+                to="/settings/account"
+                fullIcon={this.yourAccountIcon(voterPhotoUrlMedium)}
+                linkText="Your Account"
+              />
+            )}
+
+            {this.props.voter && (
+              <HamburgerMenuRow
+                onClickAction={this.signOutAndHideProfilePopUp}
+                to="/settings/account"
+                icon={isSignedIn ? "fa fa-sign-out" : "fa fa-sign-in"}
+                iconStyle={signInColor}
+                linkText={isSignedIn ? "Sign Out" : "Sign In"}
+              />
+            )}
+
+            { this.props.bookmarks && this.props.bookmarks.length ? (
+              <HamburgerMenuRow
+                onClickAction={this.hideProfilePopUp}
+                to="/bookmarks"
+                icon="fa fa-arrow-circle-right"
+                iconStyle={{ fontSize: 28, color: "green" }}
+                linkText="Your Bookmarked Items"
+              />
+            ) : null
             }
 
-            {this.props.voter && isSignedIn &&
-              <HamburgerMenuRow onClickAction={this.hideProfilePopUp}
-                                          to={"/settings/account"}
-                                          fullIcon={this.yourAccountIcon(voterPhotoUrlMedium)}
-                                          linkText={"Your Account"} />
-            }
+            <HamburgerMenuRow
+              onClickAction={this.signOutAndHideProfilePopUp}
+              to="/more/howtouse"
+              icon="fa fa-arrow-circle-right"
+              iconStyle={{ fontSize: 28, color: "green" }}
+              linkText="Getting Started"
+            />
 
-            {this.props.voter &&
-              <HamburgerMenuRow onClickAction={this.signOutAndHideProfilePopUp}
-                                          to={"/settings/account"}
-                                          icon={isSignedIn ? "fa fa-sign-out" : "fa fa-sign-in"}
-                                          iconStyle={signInColor}
-                                          linkText={isSignedIn ? "Sign Out" : "Sign In"} />
-            }
+            <HamburgerMenuRow
+              onClickAction={this.hideProfilePopUp}
+              to="/more/about"
+              icon="fa fa-users"
+              iconStyle={{ fontSize: 20, color: "#1c2f4b" }}
+              linkText="About We Vote"
+            />
 
-            { this.props.bookmarks && this.props.bookmarks.length ?
-              <HamburgerMenuRow onClickAction={this.hideProfilePopUp}
-                                          to={"/bookmarks"}
-                                          icon={"fa fa-arrow-circle-right"}
-                                          iconStyle={{ fontSize: 28, color: "green" }}
-                                          linkText={"Your Bookmarked Items"} /> : null
-            }
-
-            <HamburgerMenuRow onClickAction={this.signOutAndHideProfilePopUp}
-                                        to={"/more/howtouse"}
-                                        icon={"fa fa-arrow-circle-right"}
-                                        iconStyle={{ fontSize: 28, color: "green" }}
-                                        linkText={"Getting Started"} />
-
-            <HamburgerMenuRow onClickAction={this.hideProfilePopUp}
-                                        to={"/more/about"}
-                                        icon={"fa fa-users"}
-                                        iconStyle={{ fontSize: 20, color: "#1c2f4b" }}
-                                        linkText={"About We Vote"} />
-
-            {this.props.weVoteBrandingOff || isCordova() ? null :
-              <HamburgerMenuRow onClickAction={this.hideProfilePopUp}
-                                          to={"/more/donate"}
-                                          icon={"fa fa-money"}
-                                          iconStyle={{ fontSize: 20, color: "green" }}
-                                          linkText={"Donate"} />
-            }
+            {this.props.weVoteBrandingOff || isCordova() ? null : (
+              <HamburgerMenuRow
+                onClickAction={this.hideProfilePopUp}
+                to="/more/donate"
+                icon="fa fa-money"
+                iconStyle={{ fontSize: 20, color: "green" }}
+                linkText="Donate"
+              />
+            )}
 
             <tr style={{ height: 50 }}>
               <td colSpan={3} style={{ padding: 15, paddingBottom: 7, paddingTop: 23 }}>
-              <span className="terms-and-privacy-slide" style={{ fontWeight: 400, fontSize: 14, color: "blue" }}>
-                <Link onClick={this.hideProfilePopUp} to="/more/terms">Terms of Service</Link>
-                <span style={{ paddingLeft: 20 }} />
-                <Link onClick={this.hideProfilePopUp} to="/more/privacy">Privacy Policy</Link>
-              </span>
+                <span className="terms-and-privacy-slide" style={{ fontWeight: 400, fontSize: 14, color: "blue" }}>
+                  <Link onClick={this.hideProfilePopUp} to="/more/terms">Terms of Service</Link>
+                  <span style={{ paddingLeft: 20 }} />
+                  <Link onClick={this.hideProfilePopUp} to="/more/privacy">Privacy Policy</Link>
+                </span>
               </td>
             </tr>
           </Table>

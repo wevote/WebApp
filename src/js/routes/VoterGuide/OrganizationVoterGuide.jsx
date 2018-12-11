@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import { Button } from "react-bootstrap";
 import BallotSideBar from "../../components/Navigation/BallotSideBar";
 import BallotStore from "../../stores/BallotStore";
-import { Button } from "react-bootstrap";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import { historyPush } from "../../utils/cordovaUtils";
 import FollowToggle from "../../components/Widgets/FollowToggle";
@@ -16,6 +16,7 @@ import OrganizationStore from "../../stores/OrganizationStore";
 import OrganizationVoterGuideCard from "../../components/VoterGuide/OrganizationVoterGuideCard";
 import OrganizationVoterGuideTabs from "../../components/VoterGuide/OrganizationVoterGuideTabs";
 import VoterStore from "../../stores/VoterStore";
+
 const AUTO_FOLLOW = "af";
 
 export default class OrganizationVoterGuide extends Component {
@@ -60,10 +61,10 @@ export default class OrganizationVoterGuide extends Component {
       OrganizationActions.organizationFollow(this.props.params.organization_we_vote_id);
 
       // Now redirect to the same page without the "/af" in the route
-      let currentPathName = this.props.location.pathname;
+      const currentPathName = this.props.location.pathname;
 
       // AUTO_FOLLOW is "af"
-      let currentPathNameWithoutAutoFollow = currentPathName.replace("/" + AUTO_FOLLOW, "");
+      const currentPathNameWithoutAutoFollow = currentPathName.replace(`/${AUTO_FOLLOW}`, "");
 
       // console.log("OrganizationVoterGuide, currentPathNameWithoutAutoFollow: ", currentPathNameWithoutAutoFollow);
       historyPush(currentPathNameWithoutAutoFollow);
@@ -84,7 +85,7 @@ export default class OrganizationVoterGuide extends Component {
       active_route: this.props.active_route,
     });
 
-    let ballotWithAllItemsByFilterType = BallotStore.getBallotByCompletionLevelFilterType();
+    const ballotWithAllItemsByFilterType = BallotStore.getBallotByCompletionLevelFilterType();
     if (ballotWithAllItemsByFilterType !== undefined) {
       this.setState({ ballotWithAllItemsByFilterType });
     }
@@ -130,7 +131,7 @@ export default class OrganizationVoterGuide extends Component {
   }
 
   onEdit () {
-    historyPush("/voterguideedit/" + this.state.organization_we_vote_id);
+    historyPush(`/voterguideedit/${this.state.organization_we_vote_id}`);
     return <div>{LoadingWheel}</div>;
   }
 
@@ -152,13 +153,13 @@ export default class OrganizationVoterGuide extends Component {
     });
   }
 
-  ballotItemLinkHasBeenClicked (selectedBallotItemId){
+  ballotItemLinkHasBeenClicked (selectedBallotItemId) {
     if (this.organizationVoterGuideTabsReference &&
         this.organizationVoterGuideTabsReference.voterGuideBallotReference &&
         this.organizationVoterGuideTabsReference.voterGuideBallotReference.ballotItemsCompressedReference &&
         this.organizationVoterGuideTabsReference.voterGuideBallotReference.ballotItemsCompressedReference[selectedBallotItemId] &&
-        this.organizationVoterGuideTabsReference.voterGuideBallotReference.ballotItemsCompressedReference[selectedBallotItemId].ballotItem){
-          this.organizationVoterGuideTabsReference.voterGuideBallotReference.ballotItemsCompressedReference[selectedBallotItemId].ballotItem.toggleExpandDetails(true);
+        this.organizationVoterGuideTabsReference.voterGuideBallotReference.ballotItemsCompressedReference[selectedBallotItemId].ballotItem) {
+      this.organizationVoterGuideTabsReference.voterGuideBallotReference.ballotItemsCompressedReference[selectedBallotItemId].ballotItem.toggleExpandDetails(true);
     }
   }
 
@@ -170,87 +171,102 @@ export default class OrganizationVoterGuide extends Component {
 
     // console.log("OrganizationVoterGuide render, this.state.active_route: ", this.state.active_route);
     const organizationId = this.state.organization.organization_id;
-    let isVoterOwner = this.state.organization.organization_we_vote_id !== undefined &&
+    const isVoterOwner = this.state.organization.organization_we_vote_id !== undefined &&
       this.state.organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;
 
     if (!organizationId) {
-      let floatRight = {
+      const floatRight = {
         float: "right",
       };
-      return <div className="card">
+      return (
+        <div className="card">
           <div style={{ margin: 10 }}>
             <span style={floatRight}>
               <Link to="/ballot"><Button variant="primary">Go to Ballot &#x21AC;</Button></Link>
             </span>
-            <p>Find voter guides you can follow.
-              These voter guides have been created by nonprofits, public figures, your friends, and more. (OrganizationVoterGuide)</p>
+            <p>
+              Find voter guides you can follow.
+              These voter guides have been created by nonprofits, public figures, your friends, and more. (OrganizationVoterGuide)
+            </p>
           </div>
-        </div>;
+        </div>
+      );
     }
 
-    return <div>
-      {/* Header Banner Spacing for Desktop */}
-      <div className="col-md-12 d-none d-sm-block d-print-none">
-        { this.state.organization.organization_banner_url !== "" ?
-          <div className="organization-banner-image-div d-print-none">
-            <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
-          </div> :
-          <div className="organization-banner-image-non-twitter-users" />
-        }
-      </div>
-      {/* Header Banner Spacing for Mobile */}
-      <div className="d-block d-sm-none d-print-none">
-        { this.state.organization.organization_banner_url !== "" ?
-          <div className="organization-banner-image-div d-print-none">
-            <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
-          </div> :
-          <div className="organization-banner-image-non-twitter-users" />
-        }
-      </div>
+    return (
+      <div>
+        {/* Header Banner Spacing for Desktop */}
+        <div className="col-md-12 d-none d-sm-block d-print-none">
+          { this.state.organization.organization_banner_url !== "" ? (
+            <div className="organization-banner-image-div d-print-none">
+              <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
+            </div>
+          ) :
+            <div className="organization-banner-image-non-twitter-users" />
+          }
+        </div>
+        {/* Header Banner Spacing for Mobile */}
+        <div className="d-block d-sm-none d-print-none">
+          { this.state.organization.organization_banner_url !== "" ? (
+            <div className="organization-banner-image-div d-print-none">
+              <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
+            </div>
+          ) :
+            <div className="organization-banner-image-non-twitter-users" />
+          }
+        </div>
 
-      <div className="d-block d-sm-none">
-        <div className="col-12">
-          <div className="card">
-            <div className="card-main">
-              { isVoterOwner ?
-                <Button variant="warning" size="small" bsPrefix="pull-right" onClick={this.onEdit}>
-                  <span>Edit</span>
-                </Button> :
-                <FollowToggle organizationWeVoteId={this.state.organization.organization_we_vote_id} />
-              }
-              <OrganizationCard organization={this.state.organization} />
+        <div className="d-block d-sm-none">
+          <div className="col-12">
+            <div className="card">
+              <div className="card-main">
+                { isVoterOwner ? (
+                  <Button variant="warning" size="small" bsPrefix="pull-right" onClick={this.onEdit}>
+                    <span>Edit</span>
+                  </Button>
+                ) :
+                  <FollowToggle organizationWeVoteId={this.state.organization.organization_we_vote_id} />
+                }
+                <OrganizationCard organization={this.state.organization} />
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
         <div className="container-fluid">
           <div className="row">
-            <div className="d-none d-sm-block col-md-4" >
+            <div className="d-none d-sm-block col-md-4">
               <div className="card">
                 <div className="card-main">
                   <OrganizationVoterGuideCard organization={this.state.organization} is_voter_owner={isVoterOwner} />
                 </div>
                 <br />
               </div>
-              {this.state.active_route === "ballot" || this.state.active_route === "" ?
-                <BallotSideBar displayTitle displaySubtitles
-                              rawUrlVariablesString={""}
-                              ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
-                              ballotWithAllItemsByFilterType={this.state.ballotWithAllItemsByFilterType}
-                              pathname={this.props.location.pathname}/> : null}
+              {this.state.active_route === "ballot" || this.state.active_route === "" ? (
+                <BallotSideBar
+                  displayTitle
+                  displaySubtitles
+                  rawUrlVariablesString=""
+                  ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
+                  ballotWithAllItemsByFilterType={this.state.ballotWithAllItemsByFilterType}
+                  pathname={this.props.location.pathname}
+                />
+              ) : null
+              }
             </div>
 
             <div className="col-12 col-md-8">
-              <OrganizationVoterGuideTabs organization={this.state.organization}
-                                          location={this.props.location}
-                                          params={this.props.params}
-                                          active_route={this.state.active_route}
-                                          ref={(ref) => { this.organizationVoterGuideTabsReference = ref; }}
-                                          />
+              <OrganizationVoterGuideTabs
+                organization={this.state.organization}
+                location={this.props.location}
+                params={this.props.params}
+                active_route={this.state.active_route}
+                ref={(ref) => { this.organizationVoterGuideTabsReference = ref; }}
+              />
             </div>
           </div>
         </div>
-    </div>;
+      </div>
+    );
   }
 }

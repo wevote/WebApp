@@ -40,8 +40,8 @@ export default class FooterBarCordova extends Component {
     this.onBallotStoreChange();
 
     // this.props.location &&
-    let weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-    let weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
+    const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
+    const weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
     this.setState({
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
@@ -95,60 +95,72 @@ export default class FooterBarCordova extends Component {
 
   render () {
     renderLog(__filename);
-    let { pathname } = this.props;
-    let numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length;
+    const { pathname } = this.props;
+    const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length;
     let voterIsSignedIn = this.props.voter && this.props.voter.is_signed_in;
     voterIsSignedIn = voterIsSignedIn === undefined ? false : voterIsSignedIn;
-    let showFullNavigation = cookies.getItem("show_full_navigation") || voterIsSignedIn;
-    let weVoteBrandingOff = this.state.we_vote_branding_off === null ? false : this.state.we_vote_branding_off;
-    let inNetworkSection = pathname === "/more/network" || pathname === "/more/network/organizations" || pathname === "/more/network/issues" || pathname === "/more/network/friends";
+    const showFullNavigation = cookies.getItem("show_full_navigation") || voterIsSignedIn;
+    const weVoteBrandingOff = this.state.we_vote_branding_off === null ? false : this.state.we_vote_branding_off;
+    const inNetworkSection = pathname === "/more/network" || pathname === "/more/network/organizations" || pathname === "/more/network/issues" || pathname === "/more/network/friends";
 
-    return <div className={`pageFooter ${hasIPhoneNotch() && "pageFooter__iosNotch"}`}>
-      <div className= "innerFooterContainer" >
-        <div className= "footerNav">
-          {(showFullNavigation || isCordova()) && <span>{HeaderBar.ballot(pathname === "/ballot")}</span>}
+    return (
+      <div className={`pageFooter ${hasIPhoneNotch() && "pageFooter__iosNotch"}`}>
+        <div className="innerFooterContainer">
+          <div className="footerNav">
+            {(showFullNavigation || isCordova()) && <span>{HeaderBar.ballot(pathname === "/ballot")}</span>}
 
-          {(showFullNavigation || isCordova()) && <span>{HeaderBar.network(inNetworkSection, numberOfIncomingFriendRequests)}</span>}
+            {(showFullNavigation || isCordova()) && <span>{HeaderBar.network(inNetworkSection, numberOfIncomingFriendRequests)}</span>}
 
-          {!weVoteBrandingOff && isWebApp() &&
+            {!weVoteBrandingOff && isWebApp() && (
             <span>
-              {showFullNavigation ?
-                <span onClick={this.toggleAboutMenu}
-                     className={"header-nav__item header-nav__item--about header-nav__item--has-icon d-none d-sm-block" + (pathname === "/more/about" ? " active-icon" : "")}>
-                 <span className="header-nav__icon--about">About</span>
-                 <span className="header-nav__label">We Vote</span>
-                 <HeaderBarAboutMenu toggleAboutMenu={this.toggleAboutMenu} aboutMenuOpen={this.state.aboutMenuOpen}/>
-                </span> :
+              {showFullNavigation ? (
+                <span
+                  onClick={this.toggleAboutMenu}
+                  className={`header-nav__item header-nav__item--about header-nav__item--has-icon d-none d-sm-block${pathname === "/more/about" ? " active-icon" : ""}`}
+                >
+                  <span className="header-nav__icon--about">About</span>
+                  <span className="header-nav__label">We Vote</span>
+                  <HeaderBarAboutMenu toggleAboutMenu={this.toggleAboutMenu} aboutMenuOpen={this.state.aboutMenuOpen} />
+                </span>
+              ) : (
                 <div>
-                 <Link to="/more/about"
-                       className={"header-nav__item header-nav__item--about" + (pathname === "/more/about" ? " active-icon" : "")}>
-                   <span className="header-nav__icon--about">About</span>
-                   <span className="header-nav__label">We Vote</span>
-                 </Link>
+                  <Link
+                    to="/more/about"
+                    className={`header-nav__item header-nav__item--about${pathname === "/more/about" ? " active-icon" : ""}`}
+                  >
+                    <span className="header-nav__icon--about">About</span>
+                    <span className="header-nav__label">We Vote</span>
+                  </Link>
                 </div>
-              }
+              )}
             </span>
-          }
+            )}
 
-          {!showFullNavigation && isWebApp() &&
-            <button type="button" className="btn btn-sm btn-success"
-                    onClick={this.goToGetStarted}>Sample Ballot</button>
-          }
+            {!showFullNavigation && isWebApp() && (
+            <button
+              type="button"
+              className="btn btn-sm btn-success"
+              onClick={this.goToGetStarted}
+            >
+              Sample Ballot
+            </button>
+            )}
 
-          {!showFullNavigation && isWebApp() &&
+            {!showFullNavigation && isWebApp() && (
             <Link to="/settings/account" className="sign_in header-nav__item">
               Sign In
             </Link>
-          }
+            )}
 
-          {isCordova() &&
-            <Link to="/more/hamburger" className={"hamburger" + (pathname === "/more/hamburger" ? " active-icon" : "")}>
-              <span className="fa fa-bars" />
-            </Link>
-          }
+            {isCordova() && (
+              <Link to="/more/hamburger" className={`hamburger${pathname === "/more/hamburger" ? " active-icon" : ""}`}>
+                <span className="fa fa-bars" />
+              </Link>
+            )}
 
+          </div>
         </div>
       </div>
-    </div>;
+    );
   }
 }

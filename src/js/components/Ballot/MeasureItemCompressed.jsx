@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import { historyPush } from "../../utils/cordovaUtils";
-import IssuesByBallotItemDisplayList from "../../components/Issues/IssuesByBallotItemDisplayList";
+import IssuesByBallotItemDisplayList from "../Issues/IssuesByBallotItemDisplayList";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
 import { renderLog } from "../../utils/logging";
@@ -35,9 +35,9 @@ export default class MeasureItemCompressed extends Component {
 
   constructor (props) {
     super(props);
-    let ballotItemType = "MEASURE";
+    const ballotItemType = "MEASURE";
     this.state = {
-      ballotItemType: ballotItemType,
+      ballotItemType,
       ballotItemWeVoteId: "",
       componentDidMountFinished: false,
       maximum_organization_display: 4,
@@ -57,15 +57,15 @@ export default class MeasureItemCompressed extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    let ballotItemType = "MEASURE";
-    let is_measure = true;
+    const ballotItemType = "MEASURE";
+    const is_measure = true;
     this.setState({
-      ballotItemType: ballotItemType,
+      ballotItemType,
       ballotItemWeVoteId: this.props.we_vote_id,
       componentDidMountFinished: true,
-      is_measure: is_measure,
+      is_measure,
       measure: MeasureStore.getMeasure(this.props.we_vote_id),
-      supportProps: SupportStore.get(this.props.we_vote_id)
+      supportProps: SupportStore.get(this.props.we_vote_id),
     });
     if (this.props.organization && this.props.organization.organization_we_vote_id) {
       this.setState({
@@ -74,7 +74,7 @@ export default class MeasureItemCompressed extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps){
+  componentWillReceiveProps (nextProps) {
     if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
       this.setState({
         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
@@ -108,10 +108,10 @@ export default class MeasureItemCompressed extends Component {
       return true;
     }
     if (this.state.supportProps !== undefined && nextState.supportProps !== undefined) {
-      let currentNetworkSupportCount = parseInt(this.state.supportProps.support_count) || 0;
-      let nextNetworkSupportCount = parseInt(nextState.supportProps.support_count) || 0;
-      let currentNetworkOpposeCount = parseInt(this.state.supportProps.oppose_count) || 0;
-      let nextNetworkOpposeCount = parseInt(nextState.supportProps.oppose_count) || 0;
+      const currentNetworkSupportCount = parseInt(this.state.supportProps.support_count) || 0;
+      const nextNetworkSupportCount = parseInt(nextState.supportProps.support_count) || 0;
+      const currentNetworkOpposeCount = parseInt(this.state.supportProps.oppose_count) || 0;
+      const nextNetworkOpposeCount = parseInt(nextState.supportProps.oppose_count) || 0;
       if (currentNetworkSupportCount !== nextNetworkSupportCount || currentNetworkOpposeCount !== nextNetworkOpposeCount) {
         // console.log("shouldComponentUpdate: support or oppose count change");
         return true;
@@ -150,20 +150,20 @@ export default class MeasureItemCompressed extends Component {
   getMeasureLink (oneMeasureWeVoteId) {
     if (this.state.organization && this.state.organization.organization_we_vote_id) {
       // If there is an organization_we_vote_id, signal that we want to link back to voter_guide for that organization
-      return "/measure/" + oneMeasureWeVoteId + "/btvg/" + this.state.organization.organization_we_vote_id;
+      return `/measure/${oneMeasureWeVoteId}/btvg/${this.state.organization.organization_we_vote_id}`;
     } else {
       // If no organization_we_vote_id, signal that we want to link back to default ballot
-      return "/measure/" + oneMeasureWeVoteId + "/b/btdb/";
+      return `/measure/${oneMeasureWeVoteId}/b/btdb/`;
     }
   }
 
   goToMeasureLink (oneMeasureWeVoteId) {
-    let measureLink = this.getMeasureLink(oneMeasureWeVoteId);
+    const measureLink = this.getMeasureLink(oneMeasureWeVoteId);
     historyPush(measureLink);
   }
 
   passDataBetweenItemActionToItemPosition () {
-    this.setState({ shouldFocusCommentArea: true});
+    this.setState({ shouldFocusCommentArea: true });
   }
 
   togglePositionStatement () {
@@ -176,12 +176,12 @@ export default class MeasureItemCompressed extends Component {
   render () {
     // console.log("MeasureItemCompressed render");
     renderLog(__filename);
-    let { ballot_item_display_name, measure_subtitle, we_vote_id } = this.props;
-    let measure_we_vote_id = we_vote_id;
+    let { ballot_item_display_name, measure_subtitle } = this.props;
+    const { we_vote_id: measureWeVoteId } = this.props;
     measure_subtitle = capitalizeString(measure_subtitle);
     ballot_item_display_name = capitalizeString(ballot_item_display_name);
 
-    // let measureGuidesList = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(measure_we_vote_id);
+    // let measureGuidesList = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(measureWeVoteId);
 
     // let measure_for_modal = {
     //   ballot_item_display_name: ballot_item_display_name,
@@ -191,19 +191,19 @@ export default class MeasureItemCompressed extends Component {
     //   measure_subtitle: measure_subtitle,
     //   measure_text: this.props.measure_text,
     //   measure_url: this.props.measure_url,
-    //   we_vote_id: measure_we_vote_id,
+    //   we_vote_id: measureWeVoteId,
     //   position_list: this.props.position_list,
     // };
 
-    // let measureSupportStore = SupportStore.get(measure_we_vote_id);
-    // let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(measure_we_vote_id);
-    // let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(measure_we_vote_id);
+    // let measureSupportStore = SupportStore.get(measureWeVoteId);
+    // let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(measureWeVoteId);
+    // let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(measureWeVoteId);
 
     // Voter Support or opposition
     let is_voter_support = false;
     let is_voter_oppose = false;
     let voter_statement_text = false;
-    let ballotItemSupportStore = SupportStore.get(this.state.ballotItemWeVoteId);
+    const ballotItemSupportStore = SupportStore.get(this.state.ballotItemWeVoteId);
     if (ballotItemSupportStore !== undefined) {
       // console.log("ballotItemSupportStore: ", ballotItemSupportStore);
       is_voter_support = ballotItemSupportStore.is_support;
@@ -215,101 +215,118 @@ export default class MeasureItemCompressed extends Component {
     if (this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text || this.state.showPositionStatement) {
       commentBoxIsVisible = true;
     }
-    let item_action_bar;
-    item_action_bar = <span>
-      <ItemActionBar ballot_item_display_name={this.state.ballot_item_display_name}
-                     ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
-                     commentButtonHide={commentBoxIsVisible}
-                     commentButtonHideInMobile
-                     currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                     shareButtonHide
-                     supportProps={ballotItemSupportStore}
-                     supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
-                     toggleFunction={this.togglePositionStatement.bind(this)}
-                     transitioning={this.state.transitioning}
-                     type={this.state.ballotItemType}
-                     urlWithoutHash={this.props.urlWithoutHash}
-                     we_vote_id={this.props.we_vote_id} />
-    </span>;
+    const item_action_bar = (
+      <span>
+        <ItemActionBar
+          ballot_item_display_name={this.state.ballot_item_display_name}
+          ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
+          commentButtonHide={commentBoxIsVisible}
+          commentButtonHideInMobile
+          currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+          shareButtonHide
+          supportProps={ballotItemSupportStore}
+          supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
+          toggleFunction={this.togglePositionStatement.bind(this)}
+          transitioning={this.state.transitioning}
+          type={this.state.ballotItemType}
+          urlWithoutHash={this.props.urlWithoutHash}
+          we_vote_id={this.props.we_vote_id}
+        />
+      </span>
+    );
 
-    let comment_display_raccoon_desktop = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text || this.state.showPositionStatement ?
+    const comment_display_raccoon_desktop = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text || this.state.showPositionStatement ? (
       <div className="d-none d-sm-block o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-          <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
-                                          ballot_item_display_name={this.state.ballot_item_display_name}
-                                          comment_edit_mode_on={this.state.showPositionStatement}
-                                          supportProps={ballotItemSupportStore}
-                                          shouldFocus={this.state.shouldFocusCommentArea}
-                                          transitioning={this.state.transitioning}
-                                          type={this.state.ballotItemType}
-                                          shown_in_list />
+          <ItemPositionStatementActionBar
+            ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
+            ballot_item_display_name={this.state.ballot_item_display_name}
+            comment_edit_mode_on={this.state.showPositionStatement}
+            supportProps={ballotItemSupportStore}
+            shouldFocus={this.state.shouldFocusCommentArea}
+            transitioning={this.state.transitioning}
+            type={this.state.ballotItemType}
+            shown_in_list
+          />
         </div>
-      </div> :
+      </div>
+    ) :
       null;
 
-    let comment_display_raccoon_mobile = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text ?
+    const comment_display_raccoon_mobile = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text ? (
       <div className="d-block d-sm-none o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-          <ItemPositionStatementActionBar ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
-                                          ballot_item_display_name={this.state.ballot_item_display_name}
-                                          supportProps={ballotItemSupportStore}
-                                          shouldFocus={this.state.shouldFocusCommentArea}
-                                          transitioning={this.state.transitioning}
-                                          type={this.state.ballotItemType}
-                                          shown_in_list />
+          <ItemPositionStatementActionBar
+            ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
+            ballot_item_display_name={this.state.ballot_item_display_name}
+            supportProps={ballotItemSupportStore}
+            shouldFocus={this.state.shouldFocusCommentArea}
+            transitioning={this.state.transitioning}
+            type={this.state.ballotItemType}
+            shown_in_list
+          />
         </div>
-      </div> :
+      </div>
+    ) :
       null;
 
-    return <div className="card-main measure-card">
-      <a className="anchor-under-header" name={measure_we_vote_id} />
-      <div className="card-main__content">
-        <h2 className="card-main__display-name">
-          { this.props.link_to_ballot_item_page ?
-            <div className="card-main__ballot-name-group">
-              <div className="card-main__ballot-name-item card-main__ballot-name card-main__ballot-name-link">
-                <a onClick={() => this.goToMeasureLink(measure_we_vote_id)}>
-                  {ballot_item_display_name}
-                </a>
+    return (
+      <div className="card-main measure-card">
+        <a className="anchor-under-header" name={measureWeVoteId} />
+        <div className="card-main__content">
+          <h2 className="card-main__display-name">
+            { this.props.link_to_ballot_item_page ? (
+              <div className="card-main__ballot-name-group">
+                <div className="card-main__ballot-name-item card-main__ballot-name card-main__ballot-name-link">
+                  <a onClick={() => this.goToMeasureLink(measureWeVoteId)}>
+                    {ballot_item_display_name}
+                  </a>
+                </div>
               </div>
-            </div> :
-            ballot_item_display_name
+            ) :
+              ballot_item_display_name
           }
-        </h2>
-        <BookmarkToggle we_vote_id={measure_we_vote_id} type="MEASURE" />
-        <div>
-        <div className="u-stack--md u-cursor--pointer" onClick={() => this.goToMeasureLink(measure_we_vote_id)}>
+          </h2>
+          <BookmarkToggle we_vote_id={measureWeVoteId} type="MEASURE" />
+          <div>
+            <div className="u-stack--md u-cursor--pointer" onClick={() => this.goToMeasureLink(measureWeVoteId)}>
           Click to see more details about this measure.
-        </div>
+            </div>
 
-        </div>
-        <div>
-          {/* Issues related to this Measure */}
-          <IssuesByBallotItemDisplayList ballotItemDisplayName={ballot_item_display_name}
-                                         ballotItemWeVoteId={measure_we_vote_id}
-                                         currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                         issuesListHidden
-                                         overlayTriggerOnClickOnly
-                                         placement={"bottom"}
-                                         urlWithoutHash={this.props.urlWithoutHash}
-                                         />
-        </div>
-        {/* Measure information */}
-        <div className={ this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null }
-             onClick={ this.props.link_to_ballot_item_page ? () => this.goToMeasureLink(measure_we_vote_id) : null }>
-          {measure_subtitle}
-        </div>
-        { this.state.measure_text ?
-          <div className="measure_text u-gray-mid">
-            <ReadMore num_of_lines={3}
-                      text_to_display={this.state.measure_text} />
-          </div> :
-          null
+          </div>
+          <div>
+            {/* Issues related to this Measure */}
+            <IssuesByBallotItemDisplayList
+              ballotItemDisplayName={ballot_item_display_name}
+              ballotItemWeVoteId={measureWeVoteId}
+              currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+              issuesListHidden
+              overlayTriggerOnClickOnly
+              placement="bottom"
+              urlWithoutHash={this.props.urlWithoutHash}
+            />
+          </div>
+          {/* Measure information */}
+          <div
+            className={this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null}
+            onClick={this.props.link_to_ballot_item_page ? () => this.goToMeasureLink(measureWeVoteId) : null}
+          >
+            {measure_subtitle}
+          </div>
+          { this.state.measure_text ? (
+            <div className="measure_text u-gray-mid">
+              <ReadMore
+                num_of_lines={3}
+                text_to_display={this.state.measure_text}
+              />
+            </div>
+          ) :
+            null
         }
 
-        {/* Positions in Your Network and Possible Voter Guides to Follow */}
-        <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
-          {/* <ItemSupportOpposeRaccoon ballotItemWeVoteId={measure_we_vote_id}
+          {/* Positions in Your Network and Possible Voter Guides to Follow */}
+          <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
+            {/* <ItemSupportOpposeRaccoon ballotItemWeVoteId={measureWeVoteId}
                                     ballot_item_display_name={ballot_item_display_name}
                                     currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                                     maximumOrganizationDisplay={this.state.maximum_organization_display}
@@ -320,16 +337,19 @@ export default class MeasureItemCompressed extends Component {
                                     urlWithoutHash={this.props.urlWithoutHash}
                                     we_vote_id={this.props.we_vote_id}/> */}
 
-          <div className="network-positions-stacked">
-            <div className="network-positions-stacked__support">
-            {/* Support toggle here */}
-            {item_action_bar}
+            <div className="network-positions-stacked">
+              <div className="network-positions-stacked__support">
+                {/* Support toggle here */}
+                {item_action_bar}
+              </div>
+              { comment_display_raccoon_desktop }
+              { comment_display_raccoon_mobile }
             </div>
-            { comment_display_raccoon_desktop }
-            { comment_display_raccoon_mobile }
           </div>
         </div>
-      </div> {/* END .card-main__content */}
-    </div>;
+        {" "}
+        {/* END .card-main__content */}
+      </div>
+    );
   }
 }

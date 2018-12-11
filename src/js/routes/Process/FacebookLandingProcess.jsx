@@ -63,12 +63,12 @@ export default class FacebookLandingProcess extends Component {
       return LoadingWheel;
     }
 
-    if (!this.state.voter || this.state.saving ){
+    if (!this.state.voter || this.state.saving) {
       return LoadingWheel;
     }
 
     console.log("Got voter", this.state.voter);
-    if (!this.state.voter.signed_in_facebook){
+    if (!this.state.voter.signed_in_facebook) {
       console.log("Voter is not logged in through facebook");
       FacebookActions.login();
       return LoadingWheel;
@@ -102,7 +102,7 @@ export default class FacebookLandingProcess extends Component {
         state: {
           message: "You are not allowed to approve your own invitation.",
           message_type: "danger",
-        }
+        },
       });
       return LoadingWheel;
     }
@@ -121,5 +121,4 @@ export default class FacebookLandingProcess extends Component {
 
     return LoadingWheel;
   }
-
 }

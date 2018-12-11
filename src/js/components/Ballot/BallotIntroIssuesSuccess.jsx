@@ -34,7 +34,7 @@ export default class BallotIntroIssuesSuccess extends Component {
   }
 
   followedIssuesCount () {
-    let followedIssuesCount = this.state.followedIssues.length;
+    const followedIssuesCount = this.state.followedIssues.length;
 
     return followedIssuesCount >= 0 ? followedIssuesCount : 0;
   }
@@ -42,23 +42,35 @@ export default class BallotIntroIssuesSuccess extends Component {
   render () {
     renderLog(__filename);
 
-    return <div className="intro-modal">
-      {this.followedIssuesCount() ?
-        <span>
-          <div className="intro-modal__h1">Nice job following issues!</div>
-          <div className="intro-modal__h2">Watch for your issues under each candidate or measure.</div>
-          <span className=""><IssuesFollowedDisplayList /></span>
-        </span> :
-        <div className="intro-modal__h1">You can follow issues on your ballot.</div>
+    return (
+      <div className="intro-modal">
+        {this.followedIssuesCount() ? (
+          <span>
+            <div className="intro-modal__h1">Nice job following issues!</div>
+            <div className="intro-modal__h2">Watch for your issues under each candidate or measure.</div>
+            <span className=""><IssuesFollowedDisplayList /></span>
+          </span>
+        ) :
+          <div className="intro-modal__h1">You can follow issues on your ballot.</div>
       }
-      <div className="intro-modal__h2">By clicking on an issue image,<br />
-        you will find advisers<br />
-        related to that issue<br />
-        that you can <strong>Listen</strong> to.</div>
-      <div className="intro-modal__h2"><br /></div>
-      <div className="intro-modal__button-wrap">
-        <button type="button" className="btn btn-success intro-modal__button" onClick={this.props.next}>See Your Ballot&nbsp;&gt;</button>
+        <div className="intro-modal__h2">
+          By clicking on an issue image,
+          <br />
+          you will find advisers
+          <br />
+          related to that issue
+          <br />
+          that you can
+          {" "}
+          <strong>Listen</strong>
+          {" "}
+          to.
+        </div>
+        <div className="intro-modal__h2"><br /></div>
+        <div className="intro-modal__button-wrap">
+          <button type="button" className="btn btn-success intro-modal__button" onClick={this.props.next}>See Your Ballot&nbsp;&gt;</button>
+        </div>
       </div>
-    </div>;
+    );
   }
 }

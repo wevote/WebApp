@@ -22,14 +22,14 @@ export default class DonationForm extends Component {
   }
 
   componentDidMount () {
-    let self = this;
+    const self = this;
     if (window.StripeCheckout !== undefined) {
       console.log("StripeCheckout is defined  ", window.StripeCheckout);
       this.stripeHandler = window.StripeCheckout.configure({
         key: webAppConfig.STRIPE_API_KEY,
         image: cordovaDot("https://stripe.com/img/documentation/checkout/marketplace.png"),
         locale: "auto",
-        token: function (token) {
+        token (token) {
           // console.log("token generated " + token.id + " token.email " + token.email);
           DonateActions.donationWithStripe(token.id, token.email, self.props.donationAmount, self.props.donateMonthly);
           historyPush("/more/processing_donation");
@@ -72,11 +72,16 @@ export default class DonationForm extends Component {
       donateButtonText = this.props.donateButtonText;
     }
 
-    return <span>
-      <Button bsPrefix={this.props.donateOther ? "" : "btn_donate btn btn-success"} variant="success"
-              onClick={this._openStripeModal}>
-        {donateButtonText}
-      </Button>
-  </span>;
+    return (
+      <span>
+        <Button
+          bsPrefix={this.props.donateOther ? "" : "btn_donate btn btn-success"}
+          variant="success"
+          onClick={this._openStripeModal}
+        >
+          {donateButtonText}
+        </Button>
+      </span>
+    );
   }
 }

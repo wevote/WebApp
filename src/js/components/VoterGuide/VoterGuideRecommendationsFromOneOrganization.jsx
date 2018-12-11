@@ -10,7 +10,7 @@ export default class VoterGuideRecommendationsFromOneOrganization extends Compon
     organization_we_vote_id: PropTypes.string.isRequired,
   };
 
-  constructor (props){
+  constructor (props) {
     super(props);
     this.state = {
       organization_we_vote_id: "",
@@ -44,28 +44,36 @@ export default class VoterGuideRecommendationsFromOneOrganization extends Compon
     });
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.voterGuideStoreListener.remove();
   }
 
   render () {
     renderLog(__filename);
     if (this.state.voter_guides_to_follow_organization_recommendation_this_election.length) {
-      return <div className="">
+      return (
+        <div className="">
         These are recommended voter guides to listen to from this election.
-        <GuideList organizationsToFollow={this.state.voter_guides_to_follow_organization_recommendation_this_election}
-                   hide_stop_following_button
-                   hide_ignore_button
-                   instantRefreshOn={false}/>
-      </div>;
+          <GuideList
+            organizationsToFollow={this.state.voter_guides_to_follow_organization_recommendation_this_election}
+            hide_stop_following_button
+            hide_ignore_button
+            instantRefreshOn={false}
+          />
+        </div>
+      );
     } else if (this.state.voter_guides_to_follow_organization_recommendation_all_elections.length) {
-      return <div className="">
+      return (
+        <div className="">
         These are recommended voter guides to listen to.
-        <GuideList organizationsToFollow={this.state.voter_guides_to_follow_organization_recommendation_all_elections}
-                   hide_stop_following_button
-                   hide_ignore_button
-                   instantRefreshOn={false}/>
-      </div>;
+          <GuideList
+            organizationsToFollow={this.state.voter_guides_to_follow_organization_recommendation_all_elections}
+            hide_stop_following_button
+            hide_ignore_button
+            instantRefreshOn={false}
+          />
+        </div>
+      );
     }
 
     return null;

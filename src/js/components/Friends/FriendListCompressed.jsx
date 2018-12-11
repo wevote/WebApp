@@ -4,28 +4,27 @@ import FriendDisplayForListCompressed from "./FriendDisplayForListCompressed";
 import { renderLog } from "../../utils/logging";
 
 export default class FriendListCompressed extends Component {
-
   static propTypes = {
     friendList: PropTypes.array,
-    editMode: PropTypes.bool
+    editMode: PropTypes.bool,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      friend_list: this.props.friendList
+      friend_list: this.props.friendList,
     };
   }
 
   componentDidMount () {
     this.setState({
-      friend_list: this.props.friendList
+      friend_list: this.props.friendList,
     });
   }
 
-  componentWillReceiveProps (nextProps){
+  componentWillReceiveProps (nextProps) {
     this.setState({
-      friend_list: nextProps.friendList
+      friend_list: nextProps.friendList,
     });
   }
 
@@ -35,14 +34,18 @@ export default class FriendListCompressed extends Component {
       return null;
     }
 
-    const friend_list_for_display = this.state.friend_list.map( (friend) => {
-      return <FriendDisplayForListCompressed editMode={this.props.editMode}
-                                             key={friend.voter_we_vote_id} {...friend} />;
-    });
+    const friend_list_for_display = this.state.friend_list.map( friend => (
+      <FriendDisplayForListCompressed
+        editMode={this.props.editMode}
+        key={friend.voter_we_vote_id}
+        {...friend}
+      />
+    ));
 
-    return <div className="guidelist card-child__list-group">
-      {friend_list_for_display}
-    </div>;
+    return (
+      <div className="guidelist card-child__list-group">
+        {friend_list_for_display}
+      </div>
+    );
   }
-
 }

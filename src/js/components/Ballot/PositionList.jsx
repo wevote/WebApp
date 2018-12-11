@@ -8,19 +8,19 @@ export default class PositionList extends Component {
     ballot_item_display_name: PropTypes.string.isRequired,
     position_list: PropTypes.array.isRequired,
     positionListExistsTitle: PropTypes.object,
-    hideSimpleSupportOrOppose: PropTypes.bool
+    hideSimpleSupportOrOppose: PropTypes.bool,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      position_list: this.props.position_list
+      position_list: this.props.position_list,
     };
   }
 
-  componentWillReceiveProps (nextProps){
+  componentWillReceiveProps (nextProps) {
     this.setState({
-      position_list: nextProps.position_list
+      position_list: nextProps.position_list,
     });
   }
 
@@ -38,39 +38,50 @@ export default class PositionList extends Component {
           showTitle = true;
         }
       }
-      return <div>
-        { showTitle ?
-          <span>{this.props.positionListExistsTitle}</span> :
-          null
+      return (
+        <div>
+          { showTitle ?
+            <span>{this.props.positionListExistsTitle}</span> :
+            null
         }
-        <ul className="card-child__list-group">
-          { this.state.position_list.map(one_position =>
-            <span key={one_position.position_we_vote_id} >
-            { one_position.statement_text || one_position.has_video ?
-              <PositionItem ballot_item_display_name={this.props.ballot_item_display_name}
-                            position={one_position} /> :
-              null }
-            </span>)
+          <ul className="card-child__list-group">
+            { this.state.position_list.map(onePosition => (
+              <span key={onePosition.position_we_vote_id}>
+                { onePosition.statement_text || onePosition.has_video ? (
+                  <PositionItem
+                    ballot_item_display_name={this.props.ballot_item_display_name}
+                    position={onePosition}
+                  />
+                ) :
+                  null }
+              </span>
+            ))
           }
-        </ul>
-      </div>;
+          </ul>
+        </div>
+      );
     } else {
       for (count = 0; count < this.state.position_list.length; count++) {
         showTitle = true;
       }
-      return <div>
-        { showTitle ?
-          <span>{this.props.positionListExistsTitle}</span> :
-          null
+      return (
+        <div>
+          { showTitle ?
+            <span>{this.props.positionListExistsTitle}</span> :
+            null
         }
-        <ul className="card-child__list-group">
-          { this.state.position_list.map(one_position =>
-            <PositionItem key={one_position.position_we_vote_id}
-                          ballot_item_display_name={this.props.ballot_item_display_name}
-                          position={one_position} />)
+          <ul className="card-child__list-group">
+            { this.state.position_list.map(onePosition => (
+              <PositionItem
+                key={onePosition.position_we_vote_id}
+                ballot_item_display_name={this.props.ballot_item_display_name}
+                position={onePosition}
+              />
+            ))
           }
-        </ul>
-      </div>;
+          </ul>
+        </div>
+      );
     }
   }
 }

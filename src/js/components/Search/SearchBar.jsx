@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { renderLog } from "../../utils/logging";
 import Icon from "react-svg-icons";
+import { renderLog } from "../../utils/logging";
 
 export default class SearchBar extends Component {
   static propTypes = {
@@ -59,9 +59,9 @@ export default class SearchBar extends Component {
   }
 
   updateResults (event) {
-    let searchString = event.target.value;
+    const searchString = event.target.value;
     this.setState({
-      searchString: searchString,
+      searchString,
     });
   }
 
@@ -69,21 +69,24 @@ export default class SearchBar extends Component {
     renderLog(__filename);
     return (
       <div className="search-bar clearfix">
-        <input ref="search_input"
-               type="text"
-               className="form-control"
-               placeholder={this.props.placeholder}
-               value={this.state.searchString}
-               onKeyDown={this.handleKeyPress}
-               onChange={this.updateResults} />
+        <input
+          ref="search_input"
+          type="text"
+          className="form-control"
+          placeholder={this.props.placeholder}
+          value={this.state.searchString}
+          onKeyDown={this.handleKeyPress}
+          onChange={this.updateResults}
+        />
         <div className="search-bar-options">
-          <button className={this.props.clearButton && this.state.searchString && this.state.searchString.length > 0 ? "search-options-btn" : "hidden"}
-                  onClick={this.clearQuery}>
-             <Icon name="glyphicons-pro-halflings/glyphicons-halflings-88-remove-circle" color="#ccc" width={28} height={28} />
-
+          <button
+            className={this.props.clearButton && this.state.searchString && this.state.searchString.length > 0 ? "search-options-btn" : "hidden"}
+            onClick={this.clearQuery}
+          >
+            <Icon name="glyphicons-pro-halflings/glyphicons-halflings-88-remove-circle" color="#ccc" width={28} height={28} />
           </button>
           <button className={this.props.searchButton ? "search-options-btn" : "hidden"}>
-            {/*<i className="glyphicon glyphicon-search" />*/}
+            {/* <i className="glyphicon glyphicon-search" /> */}
             <i className="fa fa-search" />
           </button>
         </div>

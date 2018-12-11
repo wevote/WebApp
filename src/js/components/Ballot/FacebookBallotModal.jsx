@@ -8,13 +8,13 @@ import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
 import { oAuthLog } from "../../utils/logging";
 import LoadingWheel from "../LoadingWheel";
-import { validateEmail } from "../../utils/email-functions";
+import validateEmail from "../../utils/email-functions";
 import VoterStore from "../../stores/VoterStore";
 import webAppConfig from "../../config";
 
 export default class FacebookBallotModal extends Component {
   static propTypes = {
-    next: PropTypes.func.isRequired,  //Used by react-slick
+    next: PropTypes.func.isRequired, // Used by react-slick
     history: PropTypes.object,
     ballot_link: PropTypes.string,
     ballotFacebookEmailWasSent: PropTypes.func,
@@ -26,7 +26,7 @@ export default class FacebookBallotModal extends Component {
     if (this.props.ballot_link) {
       ballotLink = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + this.props.ballot_link;
     } else {
-      ballotLink = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + "/ballot";
+      ballotLink = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/ballot`;
     }
 
     this.state = {
@@ -66,8 +66,8 @@ export default class FacebookBallotModal extends Component {
   }
 
   _onFacebookStoreChange () {
-    let facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
-    let emailData = FacebookStore.getFacebookData();
+    const facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
+    const emailData = FacebookStore.getFacebookData();
 
     // console.log("_onFacebookStoreChange", facebookAuthResponse, emailData);
     if (facebookAuthResponse.facebookIsLoggedIn && emailData.userId && !this.state.facebook_login_started) {
@@ -84,8 +84,8 @@ export default class FacebookBallotModal extends Component {
   }
 
   _onFriendStoreChange () {
-    let emailBallotDataStep = FriendStore.switchToEmailBallotDataStep();
-    let errorMessageToShowVoter = FriendStore.getErrorMessageToShowVoter();
+    const emailBallotDataStep = FriendStore.switchToEmailBallotDataStep();
+    const errorMessageToShowVoter = FriendStore.getErrorMessageToShowVoter();
 
     // console.log("EmailBallotModal, _onFriendStoreChange, email_ballot_data_step:", email_ballot_data_step);
     if (emailBallotDataStep === "on_collect_email_step") {
@@ -119,7 +119,7 @@ export default class FacebookBallotModal extends Component {
   }
 
   hasValidEmail () {
-    let { voter } = this.state;
+    const { voter } = this.state;
     return voter !== undefined ? voter.has_valid_email : false;
   }
 
@@ -131,9 +131,23 @@ export default class FacebookBallotModal extends Component {
     let successMessage = "";
     let verificationEmailSent = false;
     if (this.state.on_facebook_login_step) {
-      successMessage = <span>Success! This ballot has been sent to Facebook and the email address {this.state.sender_email_address} </span>;
+      successMessage = (
+        <span>
+          Success! This ballot has been sent to Facebook and the email address
+          {this.state.sender_email_address}
+          {" "}
+
+        </span>
+      );
     } else {
-      successMessage = <span>Success! This ballot has been sent to the email address {this.state.sender_email_address} </span>;
+      successMessage = (
+        <span>
+          Success! This ballot has been sent to the email address
+          {this.state.sender_email_address}
+          {" "}
+
+        </span>
+      );
     }
 
     FriendActions.emailBallotData("", "", "", this.state.sender_email_address, this.state.email_ballot_message,
@@ -141,7 +155,14 @@ export default class FacebookBallotModal extends Component {
 
     if (!this.hasValidEmail()) {
       verificationEmailSent = true;
-      successMessage = <span>Success! This ballot has been sent to the email address {this.state.sender_email_address}. Please check your email and verify your email address to send Ballot to your friends. </span>;
+      successMessage = (
+        <span>
+          Success! This ballot has been sent to the email address
+          {this.state.sender_email_address}
+          . Please check your email and verify your email address to send Ballot to your friends.
+          {" "}
+        </span>
+      );
     }
 
     this.props.ballotFacebookEmailWasSent(successMessage, this.state.sender_email_address, this.state.verification_email_sent);
@@ -198,20 +219,20 @@ export default class FacebookBallotModal extends Component {
   }
 
   sendDirectMessageToSelfFacebook () {
-    let emailData = FacebookStore.getFacebookData();
-    let facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
+    const emailData = FacebookStore.getFacebookData();
+    const facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
 
     oAuthLog("sendDirectMessageToSelfFacebook", emailData, facebookAuthResponse);
     if (facebookAuthResponse.facebookIsLoggedIn) {
       if (emailData.userId) {
-        let api = isWebApp() ? window.FB : window.facebookConnectPlugin;  // eslint-disable-line no-undef
+        const api = isWebApp() ? window.FB : window.facebookConnectPlugin; // eslint-disable-line no-undef
         api.ui({
           title: "We Vote USA",
           to: emailData.userId,
           method: "send",
           link: this.state.ballot_link,
-          redirect_uri: webAppConfig.WE_VOTE_HOSTNAME + "/ballot",
-        }, function (response) {
+          redirect_uri: `${webAppConfig.WE_VOTE_HOSTNAME}/ballot`,
+        }, (response) => {
           if (response) {
             if (response.success) {
               oAuthLog("Successfully send", response);
@@ -228,7 +249,7 @@ export default class FacebookBallotModal extends Component {
           }
 
           this.setState({ on_facebook_login_step: false });
-        }.bind(this));
+        });
       }
     } else {
       FacebookActions.login();
@@ -236,20 +257,20 @@ export default class FacebookBallotModal extends Component {
   }
 
   shareOnFacebook () {
-    let emailData = FacebookStore.getFacebookData();
-    let facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
+    const emailData = FacebookStore.getFacebookData();
+    const facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
 
     oAuthLog("shareOnFacebook FacebookBallotModal", emailData, facebookAuthResponse);
     if (facebookAuthResponse.facebookIsLoggedIn) {
       if (emailData.userId) {
-        let api = isWebApp() ? window.FB : window.facebookConnectPlugin;  // eslint-disable-line no-undef
+        const api = isWebApp() ? window.FB : window.facebookConnectPlugin; // eslint-disable-line no-undef
         api.ui({
           title: "We Vote USA",
           method: "share",
           href: this.state.ballot_link,
           mobile_iframe: true,
-          redirect_uri: webAppConfig.WE_VOTE_HOSTNAME + "/ballot",
-        }, function (response) {
+          redirect_uri: `${webAppConfig.WE_VOTE_HOSTNAME}/ballot`,
+        }, (response) => {
           if (response) {
             oAuthLog("Successfully send", response);
             if (emailData.email) {
@@ -264,7 +285,7 @@ export default class FacebookBallotModal extends Component {
           }
 
           this.setState({ on_facebook_login_step: false });
-        }.bind(this));
+        });
       }
     } else {
       FacebookActions.login();
@@ -273,67 +294,81 @@ export default class FacebookBallotModal extends Component {
   }
 
   onKeyDown (event) {
-    let enterAndSpaceKeyCodes = [13, 32];
+    const enterAndSpaceKeyCodes = [13, 32];
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       this.ballotEmailSendStepsManager().bind(this);
     }
   }
 
   render () {
-    let { loading } = this.state;
+    const { loading } = this.state;
     if (loading) {
       return LoadingWheel;
     }
 
-    let textGray = { color: "gray" };
+    const textGray = { color: "gray" };
 
     return (
-    <div className="share-modal">
-      <div className="intro-modal__h1">
+      <div className="share-modal">
+        <div className="intro-modal__h1">
         Send This Ballot to Yourself
-      </div>
+        </div>
 
-      <div>
-        {/* <div className="intro-modal-vertical-scroll-contain_without_slider"> */}
+        <div>
+          {/* <div className="intro-modal-vertical-scroll-contain_without_slider"> */}
           <div className="intro-modal-vertical-scroll card">
             <div className="share-modal__default-text">
               <div className="container-fluid u-inset--md text-left">
-                {this.state.sender_email_address_error ?
+                {this.state.sender_email_address_error ? (
                   <div className="alert alert-danger">
                     {this.state.error_message}
-                  </div> :
+                  </div>
+                ) :
                   null }
-                {this.state.on_enter_email_addresses_step ? <div className="row invite-inputs">
+                {this.state.on_enter_email_addresses_step ? (
+                  <div className="row invite-inputs">
                     <div className="text-center col-12">
                       <div className="d-none d-sm-block">
-                        <span >Send a link to this ballot to the email address you use for Facebook.</span>
-                        <div className="u-inset--xs"/>
-                        <Button bsPrefix="btn btn-social btn-facebook u-push--sm"
-                                variant="danger"
-                                type="submit"
-                                onClick={this.sendDirectMessageToSelfFacebook.bind(this)}>
-                          <span className="fa fa-facebook" />Send to Your Facebook Email &gt;
+                        <span>Send a link to this ballot to the email address you use for Facebook.</span>
+                        <div className="u-inset--xs" />
+                        <Button
+                          bsPrefix="btn btn-social btn-facebook u-push--sm"
+                          variant="danger"
+                          type="submit"
+                          onClick={this.sendDirectMessageToSelfFacebook.bind(this)}
+                        >
+                          <span className="fa fa-facebook" />
+                          Send to Your Facebook Email &gt;
                         </Button>
                       </div>
                       <div className="mobile-container">
                         <div>
                           <span>Send a link to this ballot to the email address you use for Facebook.</span>
-                          <div className="u-inset--xs"/>
-                          <Button bsPrefix="btn btn-social btn-facebook u-push--sm"
-                                  variant="danger"
-                                  type="submit"
-                                  onClick={this.shareOnFacebook.bind(this)}>
-                            <span className="fa fa-facebook"/>Send to Your Email &gt;
+                          <div className="u-inset--xs" />
+                          <Button
+                            bsPrefix="btn btn-social btn-facebook u-push--sm"
+                            variant="danger"
+                            type="submit"
+                            onClick={this.shareOnFacebook.bind(this)}
+                          >
+                            <span className="fa fa-facebook" />
+                            Send to Your Email &gt;
                           </Button>
                         </div>
                       </div>
                     </div>
-                  <div className="col-12 u-inset--md" />
-                </div> : null
+                    <div className="col-12 u-inset--md" />
+                  </div>
+                ) : null
                 }
                 <div className="text-center col-12 u-stack--md">
-                  <button type="button" className="btn btn-success"
-                          onClick={this.props.next}>Want to send to friends?&nbsp;&nbsp;&gt;</button>
+                  <button
+                    type="button"
+                    className="btn btn-success"
+                    onClick={this.props.next}
+                  >
+                    Want to send to friends?&nbsp;&nbsp;&gt;
+                  </button>
                 </div>
                 <div className="text-center col-12 u-stack--sm">
                   <span className="u-no-break" style={textGray}>We will never sell your email.</span>
@@ -341,9 +376,9 @@ export default class FacebookBallotModal extends Component {
               </div>
             </div>
           </div>
-        {/* </div> */}
+          {/* </div> */}
+        </div>
       </div>
-    </div>
     );
   }
 }

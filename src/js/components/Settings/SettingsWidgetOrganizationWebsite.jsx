@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../../utils/cordovaUtils";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
-import LoadingWheel from "../../components/LoadingWheel";
+import LoadingWheel from "../LoadingWheel";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -48,10 +48,10 @@ export default class SettingsWidgetOrganizationWebsite extends Component {
   }
 
   onOrganizationStoreChange () {
-    let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
+    const organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
     if (organization && organization.organization_we_vote_id) {
       this.setState({
-        organization: organization,
+        organization,
         organizationWebsite: organization.organization_website,
         isOrganization: isSpeakerTypeOrganization(organization.organization_type),
       });
@@ -60,19 +60,19 @@ export default class SettingsWidgetOrganizationWebsite extends Component {
 
   onVoterStoreChange () {
     if (VoterStore.isVoterFound()) {
-      let voter = VoterStore.getVoter();
+      const voter = VoterStore.getVoter();
       this.setState({
-        voter: voter,
+        voter,
       });
       if (voter && voter.linked_organization_we_vote_id) {
         this.setState({
           linkedOrganizationWeVoteId: voter.linked_organization_we_vote_id,
         });
         if (voter.linked_organization_we_vote_id !== this.state.linkedOrganizationWeVoteId) {
-          let organization = OrganizationStore.getOrganizationByWeVoteId(voter.linked_organization_we_vote_id);
+          const organization = OrganizationStore.getOrganizationByWeVoteId(voter.linked_organization_we_vote_id);
           if (organization && organization.organization_we_vote_id) {
             this.setState({
-              organization: organization,
+              organization,
               organizationWebsite: organization.organization_website,
               isOrganization: isSpeakerTypeOrganization(organization.organization_type),
             });
@@ -114,19 +114,22 @@ export default class SettingsWidgetOrganizationWebsite extends Component {
       return LoadingWheel;
     }
 
-    return <div className="">
-      <form onSubmit={(e) => {e.preventDefault();}}>
-        <span className="pull-right u-gray-mid">{this.state.organizationWebsiteSavedStatus}</span>
-        <label htmlFor="organizationWebsiteTextArea">{ this.state.isOrganization ? "Organization Website" : "Your Website"}</label>
-        <input id="organizationWebsiteTextArea"
-                  name="organizationWebsite"
-                  className="form-control"
-                  placeholder={ this.state.isOrganization ? "Organization Website" : "Your Website"}
-                  value={this.state.organizationWebsite}
-                  onKeyDown={this.handleKeyPress}
-                  onChange={this.updateOrganizationWebsite}
-        />
-      </form>
-    </div>;
+    return (
+      <div className="">
+        <form onSubmit={(e) => { e.preventDefault(); }}>
+          <span className="pull-right u-gray-mid">{this.state.organizationWebsiteSavedStatus}</span>
+          <label htmlFor="organizationWebsiteTextArea">{ this.state.isOrganization ? "Organization Website" : "Your Website"}</label>
+          <input
+            id="organizationWebsiteTextArea"
+            name="organizationWebsite"
+            className="form-control"
+            placeholder={this.state.isOrganization ? "Organization Website" : "Your Website"}
+            value={this.state.organizationWebsite}
+            onKeyDown={this.handleKeyPress}
+            onChange={this.updateOrganizationWebsite}
+          />
+        </form>
+      </div>
+    );
   }
 }

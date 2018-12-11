@@ -78,14 +78,14 @@ export default class SignIn extends Component {
   }
 
   facebookLogOutOnKeyDown (event) {
-    let enterAndSpaceKeyCodes = [13, 32];
+    const enterAndSpaceKeyCodes = [13, 32];
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       FacebookActions.appLogout();
     }
   }
 
   twitterLogOutOnKeyDown (event) {
-    let enterAndSpaceKeyCodes = [13, 32];
+    const enterAndSpaceKeyCodes = [13, 32];
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       TwitterActions.appLogout();
     }
@@ -169,163 +169,215 @@ export default class SignIn extends Component {
       }
     }
 
-    return <div className="">
-      <Helmet title={pageTitle} />
-      <BrowserPushMessage incomingProps={this.props} />
+    return (
       <div className="">
+        <Helmet title={pageTitle} />
+        <BrowserPushMessage incomingProps={this.props} />
         <div className="">
-          {this.state.voter.signed_in_twitter && this.state.voter.signed_in_facebook ?
-            null :
-            <h1 className="h3">{this.state.voter.is_signed_in ? <span>{yourAccountTitle}</span> : null}</h1>
+          <div className="">
+            {this.state.voter.signed_in_twitter && this.state.voter.signed_in_facebook ?
+              null :
+              <h1 className="h3">{this.state.voter.is_signed_in ? <span>{yourAccountTitle}</span> : null}</h1>
           }
-          {this.state.voter.is_signed_in ?
-            <span>{yourAccountExplanation}</span> :
-            <div>Please sign in so you can share. Don't worry, we won't post anything automatically.<br />
-            <br />
-            </div>
-          }
-          {!this.state.voter.signed_in_twitter || !this.state.voter.signed_in_facebook ?
-            <div>
-              { !this.state.voter.signed_in_twitter &&
+            {this.state.voter.is_signed_in ?
+              <span>{yourAccountExplanation}</span> : (
+                <div>
+                  Please sign in so you can share. Don&apos;t worry, we won&apos;t post anything automatically.
+                  <br />
+                  <br />
+                </div>
+              )
+            }
+            {!this.state.voter.signed_in_twitter || !this.state.voter.signed_in_facebook ? (
+              <div>
+                { !this.state.voter.signed_in_twitter &&
                 <TwitterSignIn className="btn btn-social btn-lg btn-twitter" />
               }
-              <span className="u-margin-left--sm"/>
-              { !this.state.voter.signed_in_facebook &&
+                <span className="u-margin-left--sm" />
+                { !this.state.voter.signed_in_facebook &&
                 <FacebookSignIn />
               }
-              <br />
-              <br />
-            </div> :
-            null
-          }
-          {this.state.voter.is_signed_in ?
-            <div>
-              <div className="card">
-                <span className="h3">Your Account</span>
                 <br />
-                <label htmlFor="last-name">First Name
-                <input type="text"
-                       className="form-control"
-                       name="first_name"
-                       placeholder="First Name"
-                       onKeyDown={this.handleKeyPress}
-                       onChange={this.updateVoterName}
-                       value={this.state.first_name}
-                /> </label>
                 <br />
-                <label htmlFor="last-name">Last Name
-                <input type="text"
-                       className="form-control"
-                       name="last_name"
-                       placeholder="Last Name"
-                       onKeyDown={this.handleKeyPress}
-                       onChange={this.updateVoterName}
-                       value={this.state.last_name}
-                /> </label>
-                <br />
-                <span className="pull-right u-gray-mid">{this.state.name_saved_status}</span>
               </div>
+            ) : null
+            }
+            {this.state.voter.is_signed_in ? (
+              <div>
+                <div className="card">
+                  <span className="h3">Your Account</span>
+                  <br />
+                  <label htmlFor="last-name">
+                    First Name
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="first_name"
+                      placeholder="First Name"
+                      onKeyDown={this.handleKeyPress}
+                      onChange={this.updateVoterName}
+                      value={this.state.first_name}
+                    />
+                  </label>
+                  <br />
+                  <label htmlFor="last-name">
+                    Last Name
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="last_name"
+                      placeholder="Last Name"
+                      onKeyDown={this.handleKeyPress}
+                      onChange={this.updateVoterName}
+                      value={this.state.last_name}
+                    />
+                  </label>
+                  <br />
+                  <span className="pull-right u-gray-mid">{this.state.name_saved_status}</span>
+                </div>
 
-              <div className="card">
-                <span className="h3">Notification Settings</span>
-                <br />
-                <input id="newsletter_opt_in"
-                       type="checkbox"
-                       name="newsletter_opt_in"
-                       onChange={this.updateNewsletterOptIn}
-                       checked={this.state.newsletter_opt_in}
-                />
-                { " " }
-                <label htmlFor="newsletter_opt_in">I would like to receive the We Vote newsletter</label>
-                <span className="pull-right u-gray-mid">{this.state.notifications_saved_status}</span>
+                <div className="card">
+                  <span className="h3">Notification Settings</span>
+                  <br />
+                  <input
+                    id="newsletter_opt_in"
+                    type="checkbox"
+                    name="newsletter_opt_in"
+                    onChange={this.updateNewsletterOptIn}
+                    checked={this.state.newsletter_opt_in}
+                  />
+                  { " " }
+                  <label htmlFor="newsletter_opt_in">I would like to receive the We Vote newsletter</label>
+                  <span className="pull-right u-gray-mid">{this.state.notifications_saved_status}</span>
+                </div>
               </div>
-            </div> :
-            null
-          }
-          {/*this.state.voter.signed_in_twitter && this.state.voter.signed_in_facebook ?
+            ) : null
+            }
+            {/* this.state.voter.signed_in_twitter && this.state.voter.signed_in_facebook ?
             null :
             <h1 className="h3">{this.state.voter.is_signed_in ? <span>{yourAccountTitle}</span> : <span>Your Account</span>}</h1>
-          */}
-          {/*this.state.voter.is_signed_in ?
+            */}
+            {/* this.state.voter.is_signed_in ?
             <span>{yourAccountExplanation}</span> :
             <div>Please sign in so you can share. Don't worry, we won't post anything automatically.<br />
             <br />
             </div>
-          */}
-          <div>
-            {this.state.voter.is_signed_in ?
-              <div>
-                <span className="h3">Currently Signed In</span>
-                <span className="u-margin-left--md"/>
-                <span className="account-edit-action" tabIndex="0" onKeyDown={this.twitterLogOutOnKeyDown.bind(this)}>
-                  <a className="pull-right" onClick={VoterSessionActions.voterSignOut}>Sign Out</a>
-                </span>
-
-                <br />
+            */}
+            <div>
+              {this.state.voter.is_signed_in ? (
                 <div>
-                  {this.state.voter.signed_in_twitter ?
-                    <span>
-                      <span className="btn btn-social btn-lg btn-twitter" href="#">
-                        <i className="fa fa-twitter"/>@{this.state.voter.twitter_screen_name}</span>
-                      <span className="u-margin-left--sm"/>
-                    </span> :
-                    null
-                  }
-                  {this.state.voter.signed_in_facebook &&
-                    <span>
-                      <span className="btn btn-social-icon btn-lg btn-facebook">
-                        <span className="fa fa-facebook" />
+                  <span className="h3">Currently Signed In</span>
+                  <span className="u-margin-left--md" />
+                  <span className="account-edit-action" onKeyDown={this.twitterLogOutOnKeyDown.bind(this)}>
+                    <a className="pull-right" onClick={VoterSessionActions.voterSignOut}>Sign Out</a>
+                  </span>
+
+                  <br />
+                  <div>
+                    {this.state.voter.signed_in_twitter ? (
+                      <span>
+                        <span className="btn btn-social btn-lg btn-twitter" href="#">
+                          <i className="fa fa-twitter" />
+                          @
+                          {this.state.voter.twitter_screen_name}
+                        </span>
+                        <span className="u-margin-left--sm" />
                       </span>
-                      <span className="u-margin-left--sm"/>
-                    </span>
-                  }
-                  {this.state.voter.signed_in_with_email &&
+                    ) : null
+                    }
+                    {this.state.voter.signed_in_facebook && (
+                      <span>
+                        <span className="btn btn-social-icon btn-lg btn-facebook">
+                          <span className="fa fa-facebook" />
+                        </span>
+                        <span className="u-margin-left--sm" />
+                      </span>
+                    )}
+                    {this.state.voter.signed_in_with_email && (
                     <span>
                       <span className="btn btn-warning btn-lg">
-                      {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
-                      <span className="glyphicon glyphicon-envelope" /></span>
+                        {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
+                        <span className="glyphicon glyphicon-envelope" />
+                      </span>
                     </span>
+                    )}
+                  </div>
+                  {this.state.voter.signed_in_twitter && (this.state.voter.signed_in_facebook || this.state.voter.signed_in_with_email) ? (
+                    <span>
+                      {this.state.show_twitter_disconnect ? (
+                        <div>
+                          <Button
+                            variant="danger"
+                            type="submit"
+                            onClick={this.voterSplitIntoTwoAccounts.bind(this)}
+                          >
+                            Disconnect @
+                            {this.state.voter.twitter_screen_name}
+                            {" "}
+                            from this account
+                          </Button>
+                        </div>
+                      ) : (
+                        <div>
+                          <span onClick={this.toggleTwitterDisconnectOpen.bind(this)}>un-link twitter</span>
+                        </div>
+                      )}
+                    </span>
+                  ) : null
                   }
                 </div>
-                {this.state.voter.signed_in_twitter && (this.state.voter.signed_in_facebook || this.state.voter.signed_in_with_email) ?
-                  <span>{this.state.show_twitter_disconnect ?
-                    <div>
-                      <Button variant="danger"
-                          type="submit"
-                          onClick={this.voterSplitIntoTwoAccounts.bind(this)}
-                          >Disconnect @{this.state.voter.twitter_screen_name} from this account</Button>
-                    </div> :
-                    <div>
-                      <span onClick={this.toggleTwitterDisconnectOpen.bind(this)}>un-link twitter</span>
-                    </div>
-                  }</span> :
-                  null
-                }
-              </div> :
-              null
-            }
-          </div>
+              ) : null
+              }
+            </div>
 
-          <VoterEmailAddressEntry />
+            <VoterEmailAddressEntry />
 
-          {debugMode &&
-          <div className="text-center">
-            is_signed_in: {this.state.voter.is_signed_in ? <span>True</span> : null}<br />
-            signed_in_facebook: {this.state.voter.signed_in_facebook ? <span>True</span> : null}<br />
-            signed_in_twitter: {this.state.voter.signed_in_twitter ? <span>True</span> : null}<br />
-            we_vote_id: {this.state.voter.we_vote_id ? <span>{this.state.voter.we_vote_id}</span> : null}<br />
-            email: {this.state.voter.email ? <span>{this.state.voter.email}</span> : null}<br />
-            facebook_email: {this.state.voter.facebook_email ? <span>{this.state.voter.facebook_email}</span> : null}<br />
-            facebook_profile_image_url_https: {this.state.voter.facebook_profile_image_url_https ? <span>{this.state.voter.facebook_profile_image_url_https}</span> : null}<br />
-            first_name: {this.state.voter.first_name ? <span>{this.state.voter.first_name}</span> : null}<br />
-            facebook_id: {this.state.voter.facebook_id ? <span>{this.state.voter.facebook_id}</span> : null}<br />
+            {debugMode && (
+            <div className="text-center">
+              is_signed_in:
+              {" "}
+              {this.state.voter.is_signed_in ? <span>True</span> : null}
+              <br />
+              signed_in_facebook:
+              {" "}
+              {this.state.voter.signed_in_facebook ? <span>True</span> : null}
+              <br />
+              signed_in_twitter:
+              {" "}
+              {this.state.voter.signed_in_twitter ? <span>True</span> : null}
+              <br />
+              we_vote_id:
+              {" "}
+              {this.state.voter.we_vote_id ? <span>{this.state.voter.we_vote_id}</span> : null}
+              <br />
+              email:
+              {" "}
+              {this.state.voter.email ? <span>{this.state.voter.email}</span> : null}
+              <br />
+              facebook_email:
+              {" "}
+              {this.state.voter.facebook_email ? <span>{this.state.voter.facebook_email}</span> : null}
+              <br />
+              facebook_profile_image_url_https:
+              {" "}
+              {this.state.voter.facebook_profile_image_url_https ? <span>{this.state.voter.facebook_profile_image_url_https}</span> : null}
+              <br />
+              first_name:
+              {" "}
+              {this.state.voter.first_name ? <span>{this.state.voter.first_name}</span> : null}
+              <br />
+              facebook_id:
+              {" "}
+              {this.state.voter.facebook_id ? <span>{this.state.voter.facebook_id}</span> : null}
+              <br />
+            </div>
+            )}
           </div>
-        }
         </div>
-      </div>
-      {/* FOR DEBUGGING */}
-      {/* <Main /> */}
+        {/* FOR DEBUGGING */}
+        {/* <Main /> */}
 
-    </div>;
+      </div>
+    );
   }
 }

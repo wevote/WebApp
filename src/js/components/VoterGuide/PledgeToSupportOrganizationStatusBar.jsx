@@ -39,7 +39,7 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
 
   onVoterGuideStoreChange () {
     this.setState({
-      voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id())
+      voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id()),
     });
   }
 
@@ -60,8 +60,8 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
       number_of_supporters_goal = 100;
 
       if (number_of_supporters_goal !== 0) {
-        let percent_complete_ratio = number_of_supporters / number_of_supporters_goal;
-        let percent_complete_raw = percent_complete_ratio * 100;
+        const percent_complete_ratio = number_of_supporters / number_of_supporters_goal;
+        const percent_complete_raw = percent_complete_ratio * 100;
         percent_complete = Math.round(percent_complete_raw);
         // console.log("percent_complete_raw: ", percent_complete_raw, "percent_complete: ", percent_complete);
         if (percent_complete < 30) {
@@ -82,26 +82,33 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
     //                                   now={percent_complete}
     //                                   label={`${number_of_supporters} supporters`} />;
 
-    return <span>
-      {/* 2018-5-31 turning off progress bar for now
-      {show_progress_bar ? progress_bar : null}
-      {number_of_supporters > 1 ? <div className="voter-guide__pledge-to-support__current-supporters u-stack--md">
-          {number_of_supporters > 1 ? <span>{number_of_supporters} have pledged to stand with {this.props.organization.organization_name}. </span> : null }
-          { percent_complete < 100 ?
-            <span>{number_of_supporters > 1 && number_of_supporters_goal && !voter_has_pledged ? <span>Let's get to {number_of_supporters_goal}!</span> : null }
-            {number_of_supporters > 1 && number_of_supporters_goal && voter_has_pledged ? <span>Share with friends so we can get to {number_of_supporters_goal}!</span> : null }</span> :
-            null }
-        </div> :
-        null }
-        */}
-      { voter_has_pledged ?
-        <div className="voter-guide__pledge-to-support__thank-you-for-supporting u-stack--md">
-          Thank you for standing with {this.props.organization.organization_name}!
-          {/* number_of_supporters === 1 && number_of_supporters_goal && voter_has_pledged && percent_complete < 100 ?
+    return (
+      <span>
+        {/* 2018-5-31 turning off progress bar for now
+        {show_progress_bar ? progress_bar : null}
+        {number_of_supporters > 1 ? <div className="voter-guide__pledge-to-support__current-supporters u-stack--md">
+            {number_of_supporters > 1 ? <span>{number_of_supporters} have pledged to stand with {this.props.organization.organization_name}. </span> : null }
+            { percent_complete < 100 ?
+              <span>{number_of_supporters > 1 && number_of_supporters_goal && !voter_has_pledged ? <span>Let's get to {number_of_supporters_goal}!</span> : null }
+              {number_of_supporters > 1 && number_of_supporters_goal && voter_has_pledged ? <span>Share with friends so we can get to {number_of_supporters_goal}!</span> : null }</span> :
+              null }
+          </div> :
+          null }
+          */
+        }
+        { voter_has_pledged ? (
+          <div className="voter-guide__pledge-to-support__thank-you-for-supporting u-stack--md">
+            Thank you for standing with
+            {" "}
+            {this.props.organization.organization_name}
+            !
+            {/* number_of_supporters === 1 && number_of_supporters_goal && voter_has_pledged && percent_complete < 100 ?
             <span> Share with friends so we can get to {number_of_supporters_goal}.</span> :
             null */}
-        </div> :
-        null }
-    </span>;
+          </div>
+        ) : null
+        }
+      </span>
+    );
   }
 }

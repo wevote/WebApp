@@ -57,10 +57,10 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    let supportProps = SupportStore.get(this.props.we_vote_id);
+    const supportProps = SupportStore.get(this.props.we_vote_id);
     if (supportProps !== undefined) {
       this.setState({
-        supportProps: supportProps,
+        supportProps,
         transitioning: false,
       });
     }
@@ -68,7 +68,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     // console.log("OrganizationVoterGuideCandidateItem, this.props:", this.props);
     if (this.props.we_vote_id) {
       // If here we want to get the candidate so we can get the officeWeVoteId
-      let candidate = CandidateStore.getCandidate(this.props.we_vote_id);
+      const candidate = CandidateStore.getCandidate(this.props.we_vote_id);
       this.setState({
         candidateWeVoteId: this.props.we_vote_id,
         officeWeVoteId: candidate.contest_office_we_vote_id,
@@ -87,15 +87,15 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     this.supportStoreListener.remove();
   }
 
-  onVoterGuideStoreChange (){
+  onVoterGuideStoreChange () {
     // We just want to trigger a re-render
     this.setState({ transitioning: false });
   }
 
   onSupportStoreChange () {
-    let supportProps = SupportStore.get(this.state.candidateWeVoteId);
+    const supportProps = SupportStore.get(this.state.candidateWeVoteId);
     if (supportProps !== undefined) {
-      this.setState({ supportProps: supportProps, transitioning: false });
+      this.setState({ supportProps, transitioning: false });
     }
   }
 
@@ -106,17 +106,17 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
   getCandidateLink () {
     // If here, we assume the voter is on the Office page
     if (this.state.organizationWeVoteId) {
-      return "/candidate/" + this.state.candidateWeVoteId + "/bto/" + this.state.organizationWeVoteId; // back-to-office
+      return `/candidate/${this.state.candidateWeVoteId}/bto/${this.state.organizationWeVoteId}`; // back-to-office
     } else {
-      return "/candidate/" + this.state.candidateWeVoteId + "/b/btdb/"; // back-to-default-ballot
+      return `/candidate/${this.state.candidateWeVoteId}/b/btdb/`; // back-to-default-ballot
     }
   }
 
   getOfficeLink () {
     if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
-      return "/office/" + this.state.officeWeVoteId + "/btvg/" + this.state.organizationWeVoteId; // back-to-voter-guide
+      return `/office/${this.state.officeWeVoteId}/btvg/${this.state.organizationWeVoteId}`; // back-to-voter-guide
     } else if (this.state.officeWeVoteId) {
-      return "/office/" + this.state.officeWeVoteId + "/b/btdb/"; // back-to-default-ballot
+      return `/office/${this.state.officeWeVoteId}/b/btdb/`; // back-to-default-ballot
     } else return "";
   }
 
@@ -131,7 +131,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
 
   render () {
     renderLog(__filename);
-    let {
+    const {
       ballot_item_display_name,
       party,
       we_vote_id,
@@ -141,7 +141,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
       // twitter_handle,
     } = this.props;
 
-    let candidateWeVoteId = this.props.we_vote_id;
+    const candidateWeVoteId = this.props.we_vote_id;
 
     let candidate_photo_url;
     if (this.props.showLargeImage) {
@@ -153,110 +153,127 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     }
     let candidate_photo_url_html;
     if (candidate_photo_url) {
-      candidate_photo_url_html = <ImageHandler className="card-main__avatar"
-                                          sizeClassName="icon-office-child "
-                                          imageUrl={candidate_photo_url}
-                                          alt="candidate-photo"
-                                          kind_of_ballot_item="CANDIDATE" />;
+      candidate_photo_url_html = (
+        <ImageHandler
+          className="card-main__avatar"
+          sizeClassName="icon-office-child "
+          imageUrl={candidate_photo_url}
+          alt="candidate-photo"
+          kind_of_ballot_item="CANDIDATE"
+        />
+      );
     } else {
       candidate_photo_url_html = <i className="card-main__avatar icon-office-child icon-main icon-icon-person-placeholder-6-1" />;
     }
     // let positions_in_your_network = SupportStore.get(we_vote_id) && ( SupportStore.get(we_vote_id).oppose_count || SupportStore.get(we_vote_id).support_count);
 
-    let one_candidate = CandidateStore.getCandidate(candidateWeVoteId);
-    let candidateSupportStore = SupportStore.get(candidateWeVoteId);
-    let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidateWeVoteId);
-    let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidateWeVoteId);
+    const one_candidate = CandidateStore.getCandidate(candidateWeVoteId);
+    const candidateSupportStore = SupportStore.get(candidateWeVoteId);
+    const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidateWeVoteId);
+    const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidateWeVoteId);
 
-    let positions_display_raccoon = <div>
-      <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
-        {/* Positions in Your Network and Possible Voter Guides to Follow */}
-        <ItemSupportOpposeRaccoon ballotItemWeVoteId={candidateWeVoteId}
-                                  ballot_item_display_name={one_candidate.ballot_item_display_name}
-                                  goToCandidate={this.goToCandidateLink}
-                                  maximumOrganizationDisplay={8}
-                                  organizationsToFollowSupport={organizationsToFollowSupport}
-                                  organizationsToFollowOppose={organizationsToFollowOppose}
-                                  popoverBottom
-                                  showPositionStatementActionBar={this.props.showPositionStatementActionBar}
-                                  supportProps={candidateSupportStore}
-                                  type="CANDIDATE"/>
-      </div>
-    </div>;
-
-    return <div className="card-main candidate-card">
-      <div className="card-main__media-object">
-        <div className="card-main__media-object-anchor">
-          {this.props.link_to_ballot_item_page ?
-            <Link to={this.getCandidateLink} className="u-no-underline">{candidate_photo_url_html}</Link> :
-            candidate_photo_url_html
-          }
-
-          {twitter_followers_count ?
-            <span className={this.props.link_to_ballot_item_page ?
-                    "twitter-followers__badge u-cursor--pointer" :
-                    "twitter-followers__badge" }
-                  onClick={ this.props.link_to_ballot_item_page ? this.goToCandidateLink : null }
-            >
-              <span className="fa fa-twitter twitter-followers__icon" />
-              <span title={numberWithCommas(twitter_followers_count)}>{abbreviateNumber(twitter_followers_count)}</span>
-            </span> :
-            null
-          }
+    const positions_display_raccoon = (
+      <div>
+        <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
+          {/* Positions in Your Network and Possible Voter Guides to Follow */}
+          <ItemSupportOpposeRaccoon
+            ballotItemWeVoteId={candidateWeVoteId}
+            ballot_item_display_name={one_candidate.ballot_item_display_name}
+            goToCandidate={this.goToCandidateLink}
+            maximumOrganizationDisplay={8}
+            organizationsToFollowSupport={organizationsToFollowSupport}
+            organizationsToFollowOppose={organizationsToFollowOppose}
+            popoverBottom
+            showPositionStatementActionBar={this.props.showPositionStatementActionBar}
+            supportProps={candidateSupportStore}
+            type="CANDIDATE"
+          />
         </div>
+      </div>
+    );
 
-        <div className="card-main__media-object-content">
-          <h2 className="card-main__display-name">
-            { this.props.link_to_ballot_item_page ?
-              <Link to={this.getCandidateLink}>{ballot_item_display_name}</Link> :
-              ballot_item_display_name
+    return (
+      <div className="card-main candidate-card">
+        <div className="card-main__media-object">
+          <div className="card-main__media-object-anchor">
+            {this.props.link_to_ballot_item_page ?
+              <Link to={this.getCandidateLink} className="u-no-underline">{candidate_photo_url_html}</Link> :
+              candidate_photo_url_html
             }
-          </h2>
-          <BookmarkToggle we_vote_id={we_vote_id} type="CANDIDATE"/>
-          <p className={this.props.link_to_ballot_item_page ?
-              "u-gray-darker u-cursor--pointer" :
-              "u-gray-darker"
-            } onClick={this.props.link_to_ballot_item_page ?
-              this.goToCandidateLink : null }
-          >
-          { contest_office_name ?
-            <OfficeNameText political_party={party}
-                            contest_office_name={contest_office_name}
-                            office_link={ this.props.linkToOfficePage ? this.getOfficeLink() : ""}
-            /> :
-            null
-          }
-          </p>
-          { twitter_description ?
-            <div className={ "u-stack--sm" + (this.props.link_to_ballot_item_page ? " card-main__description-container--truncated" : " card-main__description-container")}>
-              <div>
-                <ParsedTwitterDescription
-                  twitter_description={twitter_description}
-                />
-              </div>
-              <Link to={this.getCandidateLink}>
-                { this.props.link_to_ballot_item_page ? <span className="card-main__read-more-pseudo" /> : null }
-              </Link>
-              { this.props.link_to_ballot_item_page ?
-                <Link to={this.getCandidateLink} className="card-main__read-more-link">&nbsp;Read more</Link> :
-                null
-              }
-            </div> :
-            null
-          }
-        </div> {/* END .card-main__media-object-content */}
-      </div> {/* END .card-main__media-object */}
-      <div className="card-main__actions">
-        {positions_display_raccoon}
+            {twitter_followers_count ? (
+              <span
+                className={this.props.link_to_ballot_item_page ?
+                  "twitter-followers__badge u-cursor--pointer" :
+                  "twitter-followers__badge"}
+                onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}
+              >
+                <span className="fa fa-twitter twitter-followers__icon" />
+                <span title={numberWithCommas(twitter_followers_count)}>{abbreviateNumber(twitter_followers_count)}</span>
+              </span>
+            ) : null
+            }
+          </div>
 
-        {/* this.state.hide_position_statement ?
+          <div className="card-main__media-object-content">
+            <h2 className="card-main__display-name">
+              { this.props.link_to_ballot_item_page ?
+                <Link to={this.getCandidateLink}>{ballot_item_display_name}</Link> :
+                ballot_item_display_name
+            }
+            </h2>
+            <BookmarkToggle we_vote_id={we_vote_id} type="CANDIDATE" />
+            <p
+              className={this.props.link_to_ballot_item_page ?
+                "u-gray-darker u-cursor--pointer" :
+                "u-gray-darker"
+              }
+              onClick={this.props.link_to_ballot_item_page ?
+                this.goToCandidateLink : null}
+            >
+              { contest_office_name ? (
+                <OfficeNameText
+                  political_party={party}
+                  contest_office_name={contest_office_name}
+                  office_link={this.props.linkToOfficePage ? this.getOfficeLink() : ""}
+                />
+              ) : null
+              }
+            </p>
+            { twitter_description ? (
+              <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? " card-main__description-container--truncated" : " card-main__description-container"}`}>
+                <div>
+                  <ParsedTwitterDescription
+                    twitter_description={twitter_description}
+                  />
+                </div>
+                <Link to={this.getCandidateLink}>
+                  { this.props.link_to_ballot_item_page ? <span className="card-main__read-more-pseudo" /> : null }
+                </Link>
+                { this.props.link_to_ballot_item_page ?
+                  <Link to={this.getCandidateLink} className="card-main__read-more-link">&nbsp;Read more</Link> :
+                  null
+              }
+              </div>
+            ) : null
+            }
+          </div>
+          {" "}
+          {/* END .card-main__media-object-content */}
+        </div>
+        {" "}
+        {/* END .card-main__media-object */}
+        <div className="card-main__actions">
+          {positions_display_raccoon}
+
+          {/* this.state.hide_position_statement ?
           null :
           <ItemPositionStatementActionBar ballot_item_we_vote_id={we_vote_id}
                                         ballot_item_display_name={ballot_item_display_name}
                                         supportProps={supportProps}
                                         transitioning={transitioning}
                                         type="CANDIDATE" /> */}
+        </div>
       </div>
-    </div>;
+    );
   }
 }

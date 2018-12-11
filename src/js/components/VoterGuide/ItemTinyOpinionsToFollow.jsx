@@ -42,15 +42,15 @@ export default class ItemTinyOpinionsToFollow extends Component {
 
   componentWillReceiveProps (nextProps) {
     // console.log("ItemTinyOpinionsToFollow, componentWillReceiveProps, nextProps.organizationsToFollow:", nextProps.organizationsToFollow);
-    //if (nextProps.instantRefreshOn ) {
-      // NOTE: This is off because we don't want the organization to disappear from the "More opinions" list when clicked
-      this.setState({
-        organizations_to_follow: nextProps.organizationsToFollow,
-        ballot_item_we_vote_id: nextProps.ballotItemWeVoteId,
-        maximum_organization_display: nextProps.maximumOrganizationDisplay,
-        supportProps: nextProps.supportProps,
-      });
-    //}
+    // if (nextProps.instantRefreshOn ) {
+    // NOTE: This is off because we don't want the organization to disappear from the "More opinions" list when clicked
+    this.setState({
+      organizations_to_follow: nextProps.organizationsToFollow,
+      ballot_item_we_vote_id: nextProps.ballotItemWeVoteId,
+      maximum_organization_display: nextProps.maximumOrganizationDisplay,
+      supportProps: nextProps.supportProps,
+    });
+    // }
   }
 
   onTriggerEnter (org_id) {
@@ -59,13 +59,13 @@ export default class ItemTinyOpinionsToFollow extends Component {
     }
     if (!this.popover_state[org_id]) {
       // If it wasn't created, create it now
-      this.popover_state[org_id] = {show: false, timer: null};
+      this.popover_state[org_id] = { show: false, timer: null };
     }
 
     clearTimeout(this.popover_state[org_id].timer);
     if (!this.popover_state[org_id]) {
       // If it wasn't created, create it now
-      this.popover_state[org_id] = {show: false, timer: null};
+      this.popover_state[org_id] = { show: false, timer: null };
     }
     this.popover_state[org_id].show = true;
   }
@@ -73,7 +73,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
   onTriggerLeave (org_id) {
     if (!this.popover_state[org_id]) {
       // If it wasn't created, create it now
-      this.popover_state[org_id] = {show: false, timer: null};
+      this.popover_state[org_id] = { show: false, timer: null };
     }
     this.popover_state[org_id].show = false;
     clearTimeout(this.popover_state[org_id].timer);
@@ -93,7 +93,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
 
       if (!this.popover_state[org_id]) {
         // If it wasn't created, create it now
-        this.popover_state[org_id] = {show: false, timer: null};
+        this.popover_state[org_id] = { show: false, timer: null };
       }
 
       if (this.popover_state[org_id].show) {
@@ -113,7 +113,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
 
     let is_empty;
     if (this.state.supportProps !== undefined) {
-      let { support_count, oppose_count } = this.state.supportProps;
+      const { support_count, oppose_count } = this.state.supportProps;
       if (support_count !== undefined && oppose_count !== undefined) {
         is_empty = support_count === 0 && oppose_count === 0;
       }
@@ -130,97 +130,116 @@ export default class ItemTinyOpinionsToFollow extends Component {
     }
     const organizations_to_display = this.state.organizations_to_follow.map( (one_organization) => {
       local_counter++;
-      let org_id = one_organization.organization_we_vote_id;
+      const org_id = one_organization.organization_we_vote_id;
 
       // Once we have more organizations than we want to show, put them into a drop-down
       if (local_counter > this.state.maximum_organization_display) {
         if (local_counter === this.state.maximum_organization_display + 1) {
           // If here, we want to show how many organizations there are to follow
-          this.popover_state[orgs_not_shown_count] = {show: false, timer: null};
+          this.popover_state[orgs_not_shown_count] = { show: false, timer: null };
           // Removed bsPrefix="card-popover"
           // onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
           // onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
-          let organizationPopover = <Popover id={`organization-popover-${orgs_not_shown_count}`} >
+          const organizationPopover = (
+            <Popover id={`organization-popover-${orgs_not_shown_count}`}>
               <OrganizationsNotShownList orgs_not_shown_list={orgs_not_shown_list} />
-            </Popover>;
+            </Popover>
+          );
 
           // Removed from OverlayTrigger
           // onMouseOver={() => this.onTriggerEnter(orgs_not_shown_count)}
           // onMouseOut={() => this.onTriggerLeave(orgs_not_shown_count)}
           // onExiting={() => this.onTriggerLeave(orgs_not_shown_count)}
           // trigger={["focus", "hover"]}
-          return <OverlayTrigger key={`trigger-${orgs_not_shown_count}`}
-                                 ref={`to-follow-overlay-${orgs_not_shown_count}`}
-                                 overlay={organizationPopover}
-                                 placement="bottom"
-                                 rootClose
-                                 trigger="click">
-            <span className="position-rating__source with-popover">
-              <Link to="/opinions"> +{orgs_not_shown_count}</Link>
-            </span>
-          </OverlayTrigger>;
+          return (
+            <OverlayTrigger
+              key={`trigger-${orgs_not_shown_count}`}
+              ref={`to-follow-overlay-${orgs_not_shown_count}`}
+              overlay={organizationPopover}
+              placement="bottom"
+              rootClose
+              trigger="click"
+            >
+              <span className="position-rating__source with-popover">
+                <Link to="/opinions">
+                  {" "}
+                  +
+                  {orgs_not_shown_count}
+                </Link>
+              </span>
+            </OverlayTrigger>
+          );
         } else {
           return "";
         }
       } else {
         // console.log("One organization ItemTinyOpinionsToFollow");
         one_organization_for_organization_card = {
-            organization_we_vote_id: one_organization.organization_we_vote_id,
-            organization_name: one_organization.voter_guide_display_name,
-            organization_photo_url_large: one_organization.voter_guide_image_url_large,
-            organization_photo_url_tiny: one_organization.voter_guide_image_url_tiny,
-            organization_twitter_handle: one_organization.twitter_handle,
-            // organization_website: one_organization.organization_website,
-            twitter_description: one_organization.twitter_description,
-            twitter_followers_count: one_organization.twitter_followers_count,
-          };
+          organization_we_vote_id: one_organization.organization_we_vote_id,
+          organization_name: one_organization.voter_guide_display_name,
+          organization_photo_url_large: one_organization.voter_guide_image_url_large,
+          organization_photo_url_tiny: one_organization.voter_guide_image_url_tiny,
+          organization_twitter_handle: one_organization.twitter_handle,
+          // organization_website: one_organization.organization_website,
+          twitter_description: one_organization.twitter_description,
+          twitter_followers_count: one_organization.twitter_followers_count,
+        };
 
-        this.popover_state[org_id] = {show: false, timer: null};
+        this.popover_state[org_id] = { show: false, timer: null };
 
-        let voterGuideLink = one_organization.organization_twitter_handle ?
-                                  "/" + one_organization.organization_twitter_handle :
-                                  "/voterguide/" + one_organization.organization_we_vote_id;
+        const voterGuideLink = one_organization.organization_twitter_handle ?
+          `/${one_organization.organization_twitter_handle}` :
+          `/voterguide/${one_organization.organization_we_vote_id}`;
 
         // Removed bsPrefix="card-popover"
         // onMouseOver={() => this.onTriggerEnter(org_id)}
         // onMouseOut={() => this.onTriggerLeave(org_id)}
-        let organizationPopover = <Popover id={`organization-popover-${org_id}`}
-                                           outOfBoundaries={undefined}
-                                           >
-            <OrganizationCard organization={one_organization_for_organization_card}
-                              ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
-                              followToggleOn
-                              />
-          </Popover>;
+        const organizationPopover = (
+          <Popover
+            id={`organization-popover-${org_id}`}
+            outOfBoundaries={undefined}
+          >
+            <OrganizationCard
+              organization={one_organization_for_organization_card}
+              ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
+              followToggleOn
+            />
+          </Popover>
+        );
 
         // Removed from OverlayTrigger:
         // onMouseOver={() => this.onTriggerEnter(org_id)}
         // onMouseOut={() => this.onTriggerLeave(org_id)}
         // onExiting={() => this.onTriggerLeave(org_id)}
         // trigger={["focus", "hover"]}
-        return <OverlayTrigger
+        return (
+          <OverlayTrigger
             key={`trigger-${org_id}`}
             ref={`to-follow-overlay-${org_id}`}
             rootClose
             placement="bottom"
             trigger="click"
-            overlay={organizationPopover}>
-          <span className="position-rating__source with-popover">
-            <Link key={`tiny-link-${org_id}`}
-                  className="u-no-underline"
-                  onClick={(e) => this.onTriggerToggle(e, org_id)}
-                  to={voterGuideLink}
-                  >
-              <OrganizationTinyDisplay {...one_organization} showPlaceholderImage />
-            </Link>
-          </span>
-        </OverlayTrigger>;
+            overlay={organizationPopover}
+          >
+            <span className="position-rating__source with-popover">
+              <Link
+                key={`tiny-link-${org_id}`}
+                className="u-no-underline"
+                onClick={e => this.onTriggerToggle(e, org_id)}
+                to={voterGuideLink}
+              >
+                <OrganizationTinyDisplay {...one_organization} showPlaceholderImage />
+              </Link>
+            </span>
+          </OverlayTrigger>
+        );
       }
     });
 
-    return <span className={ is_empty ? "guidelist card-child__list-group" : "d-none d-sm-block d-print-none guidelist card-child__list-group" }>
-          {organizations_to_display}
-      </span>;
+    return (
+      <span className={is_empty ? "guidelist card-child__list-group" : "d-none d-sm-block d-print-none guidelist card-child__list-group"}>
+        {organizations_to_display}
+      </span>
+    );
   }
-
 }

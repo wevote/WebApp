@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { renderLog } from "../../utils/logging";
-import MeasureItemCompressed from "../../components/Ballot/MeasureItemCompressed";
-import CandidateItemCompressed from "../../components/Ballot/CandidateItemCompressed";
+import MeasureItemCompressed from "./MeasureItemCompressed";
+import CandidateItemCompressed from "./CandidateItemCompressed";
 
 const TYPES = require("keymirror")({
   OFFICE: null,
@@ -29,12 +29,17 @@ export default class BallotItemSearchResult extends Component {
 
   render () {
     renderLog(__filename);
-    return <div className="BallotItem card" id={this.props.we_vote_id}>
-        { this.isMeasure() ?
-          <MeasureItemCompressed {...this.props}
-                   link_to_ballot_item_page /> :
+    return (
+      <div className="BallotItem card" id={this.props.we_vote_id}>
+        { this.isMeasure() ? (
+          <MeasureItemCompressed
+            {...this.props}
+            link_to_ballot_item_page
+          />
+        ) :
           <CandidateItemCompressed oneCandidate={this.props} />
         }
-      </div>;
+      </div>
+    );
   }
 }

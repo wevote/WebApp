@@ -2,12 +2,22 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import BallotStore from "../stores/BallotStore";
-import {historyPush, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard} from "../utils/cordovaUtils";
-import { isCordova } from "../utils/cordovaUtils";
-import LoadingWheel from "../components/LoadingWheel";
+import { historyPush, isCordova, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../utils/cordovaUtils";
+import LoadingWheel from "./LoadingWheel";
 import { renderLog } from "../utils/logging";
 import VoterActions from "../actions/VoterActions";
 import VoterStore from "../stores/VoterStore";
+
+// December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
+/* eslint react/sort-comp: 0 */
+/* eslint class-methods-use-this: 0 */
+/* eslint react/jsx-indent-props: 0 */
+/* eslint jsx-a11y/no-static-element-interactions: 0 */
+/* eslint jsx-a11y/no-noninteractive-element-to-interactive-role: 0 */
+/* eslint jsx-a11y/click-events-have-key-events: 0 */
+/* eslint jsx-a11y/anchor-is-valid: 0 */
+/* eslint no-param-reassign: 0 */
+
 
 export default class AddressBox extends Component {
   static propTypes = {
@@ -45,7 +55,7 @@ export default class AddressBox extends Component {
     });
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
-    let addressAutocomplete = new google.maps.places.Autocomplete(this.refs.autocomplete);
+    const addressAutocomplete = new google.maps.places.Autocomplete(this.refs.autocomplete);
     addressAutocomplete.setComponentRestrictions({ country: "us" });
     this.googleAutocompleteListener = addressAutocomplete.addListener("place_changed", this._placeChanged.bind(this, addressAutocomplete));
   }
@@ -53,7 +63,7 @@ export default class AddressBox extends Component {
   componentWillUnmount () {
     this.voterStoreListener.remove();
     this.ballotStoreListener.remove();
-    if (this.googleAutocompleteListener !== undefined) {  // Temporary fix until google maps key is fixed.
+    if (this.googleAutocompleteListener !== undefined) { // Temporary fix until google maps key is fixed.
       this.googleAutocompleteListener.remove();
     } else {
       console.log("Google Maps Error: DeletedApiProjectMapError");
@@ -64,7 +74,7 @@ export default class AddressBox extends Component {
   componentDidUpdate () {
     // If we're in the slide with this component, autofocus the address box, otherwise defocus.
     if (this.props.manualFocus !== undefined) {
-      let addressBox = this.refs.autocomplete;
+      const addressBox = this.refs.autocomplete;
       if (addressBox) {
         if (this.props.manualFocus) {
           addressBox.focus();
@@ -76,14 +86,14 @@ export default class AddressBox extends Component {
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
-  static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars
+  static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
     // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
     return { hasError: true };
   }
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
-    console.error("AddressBox caught error: ", error + " with info: ", info);
+    console.error("AddressBox caught error: ", `${error} with info: `, info);
   }
 
   onVoterStoreChange () {
@@ -110,7 +120,7 @@ export default class AddressBox extends Component {
   }
 
   _placeChanged (addressAutocomplete) {
-    let place = addressAutocomplete.getPlace();
+    const place = addressAutocomplete.getPlace();
     if (place.formatted_address) {
       this.setState({
         text_for_map_search: place.formatted_address,
@@ -151,13 +161,16 @@ export default class AddressBox extends Component {
         waitingMessage = this.props.waitingMessage;
       }
 
-      return <div>
-            <h2>{waitingMessage}</h2>
-            {LoadingWheel}
-          </div>;
+      return (
+        <div>
+          <h2>{waitingMessage}</h2>
+          {LoadingWheel}
+        </div>
+      );
     }
 
-    return <div className="container">
+    return (
+      <div className="container">
         <form onSubmit={this.voterAddressSave} className="row">
           <input
             type="text"
@@ -173,19 +186,22 @@ export default class AddressBox extends Component {
           <div className="col-sm-3 text-right pr-0 mt-sm-0 mt-3">
             <button
               onClick={this.voterAddressSave}
-              className="btn btn-primary">
-              Save</button>
+              className="btn btn-primary"
+            >
+              Save
+            </button>
             <br />
-            { this.props.cancelEditAddress ?
+            { this.props.cancelEditAddress ? (
               <span className="u-f5">
                 <a href="#" onClick={this.props.cancelEditAddress}>cancel</a>
-              </span> :
-              null
+              </span>
+            ) : null
             }
           </div>
         </form>
         <p />
         <h4>{this.state.ballotCaveat}</h4>
-      </div>;
+      </div>
+    );
   }
 }

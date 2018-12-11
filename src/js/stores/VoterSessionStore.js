@@ -9,6 +9,9 @@ class VoterSessionStore extends ReduceStore {
   }
 
   reduce (state, action) {
+    // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
+    if (!action.res || !action.res.success) return state;
+
     switch (action.type) {
       // case "voterSignOut":
       //   console.log("VoterSessionStore, response from voterSignOut");  // TODO DALE Why isn't this firing? See "voterSignOut" in VoterStore instead

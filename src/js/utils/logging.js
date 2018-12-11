@@ -1,5 +1,5 @@
 const webAppConfig = require("../config");
-//import { default as webAppConfig } from '../config';
+// import { default as webAppConfig } from '../config';
 
 // react-native-router-flux state change logging
 export function routingLog (text) {
@@ -21,7 +21,7 @@ export function renderLog (filePath, suffix) {
     }
   }
 
-  let file = filePath.replace(/^.*[\\\/]/, "");
+  const file = filePath.replace(/^.*[\\\/]/, "");  // eslint-disable-line no-useless-escape
 
   if (webAppConfig.LOG_RENDER_EVENTS || webAppConfig.LOG_ONLY_FIRST_RENDER_EVENTS) {
     console.log("render ==== ", file, " ==== ", suffix || "");

@@ -54,24 +54,31 @@ export default class EditAddressInPlace extends Component {
 
   render () {
     renderLog(__filename);
-    let noAddressMessage = this.props.noAddressMessage ? this.props.noAddressMessage : "- no address entered -";
-    let maximumAddressDisplayLength = 60;
-    let ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
+    const noAddressMessage = this.props.noAddressMessage ? this.props.noAddressMessage : "- no address entered -";
+    const maximumAddressDisplayLength = 60;
+    const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
 
     // console.log("EditAddressInPlace render, ballotBaseUrl: ", ballotBaseUrl);
 
     if (this.state.editingAddress) {
-      return <span>
+      return (
+        <span>
           <h4 className="h4">Please Enter the Address Where You Are Registered to Vote</h4>
           <AddressBox cancelEditAddress={this.toggleEditingAddress} saveUrl={ballotBaseUrl} toggleSelectAddressModal={this.props.toggleFunction} />
-        </span>;
+        </span>
+      );
 
     } else {
-      return <span>
+      return (
+        <span>
           <h4 className="h4">Your Address</h4>
-          <span className="ballot__edit-address-preview">{ this.state.text_for_map_search.length ? shortenText(this.state.text_for_map_search, maximumAddressDisplayLength) : noAddressMessage }  </span>
+          <span className="ballot__edit-address-preview">
+            { this.state.text_for_map_search.length ? shortenText(this.state.text_for_map_search, maximumAddressDisplayLength) : noAddressMessage }
+            {" "}
+          </span>
           <span className="d-print-none ballot__edit-address-preview-link u-padding-left--sm"><button className="btn btn-primary" onClick={this.toggleEditingAddress}>Edit</button></span>
-        </span>;
+        </span>
+      );
     }
   }
 }

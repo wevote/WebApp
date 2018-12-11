@@ -6,7 +6,7 @@ import Icon from "react-svg-icons";
 import { renderLog } from "../../utils/logging";
 import { hasIPhoneNotch } from "../../utils/cordovaUtils";
 import { showToastSuccess } from "../../utils/showToast";
-import SettingsAccount from "../../components/Settings/SettingsAccount";
+import SettingsAccount from "../Settings/SettingsAccount";
 import SupportActions from "../../actions/SupportActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
@@ -38,7 +38,7 @@ export default class PositionPublicToggle extends Component {
   componentDidMount () {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    let isPublicOpinion = this.props.supportProps && this.props.supportProps.is_public_position;
+    const isPublicOpinion = this.props.supportProps && this.props.supportProps.is_public_position;
     this.setState({
       showToThePublicOn: isPublicOpinion || false,
     });
@@ -63,7 +63,7 @@ export default class PositionPublicToggle extends Component {
   }
 
   showItemToPublic () {
-    let voter = this.state.voter;
+    const voter = this.state.voter;
 
     // console.log("PositionPublicToggle-showItemToPublic, this.props.type:", this.props.type);
     if (voter && voter.is_signed_in) {
@@ -71,7 +71,7 @@ export default class PositionPublicToggle extends Component {
         showToThePublicOn: true,
       });
       SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, "SHOW_PUBLIC");
-      let positionPublicToggleModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
+      const positionPublicToggleModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
       if (!positionPublicToggleModalHasBeenShown) {
         this.togglePositionPublicHelpModal();
         VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
@@ -120,15 +120,15 @@ export default class PositionPublicToggle extends Component {
     }
 
     let { is_public_position: isPublicPosition } = this.props.supportProps;
-    let visibilityPublic = "Currently visible to public";
-    let visibilityFriendsOnly = "Currently only shared with We Vote friends";
+    const visibilityPublic = "Currently visible to public";
+    const visibilityFriendsOnly = "Currently only shared with We Vote friends";
     const publicIcon = <Icon alt="Visible to Public" name="public-icon" color="#000" width={18} height={18} />;
     const friendsIcon = <Icon alt="Visible to Friends Only" name="group-icon" color="#fff" width={18} height={18} />;
-    let tooltip = <Tooltip id="visibility-tooltip">{isPublicPosition ? visibilityPublic : visibilityFriendsOnly}</Tooltip>;
-    let noTooltip = <span />;
+    const tooltip = <Tooltip id="visibility-tooltip">{isPublicPosition ? visibilityPublic : visibilityFriendsOnly}</Tooltip>;
+    const noTooltip = <span />;
 
     let onChange;
-    let _this = this;
+    const _this = this;
     if (isPublicPosition) {
       onChange = function () {
         isPublicPosition = false;
@@ -152,8 +152,8 @@ export default class PositionPublicToggle extends Component {
     // this onKeyDown function is for accessibility: the parent div of the toggle
     // has a tab index so that users can use tab key to select the toggle, and then
     // press either space or enter (key codes 32 and 13, respectively) to toggle
-    let onKeyDown = function (e) {
-      let enterAndSpaceKeyCodes = [13, 32];
+    const onKeyDown = function (e) {
+      const enterAndSpaceKeyCodes = [13, 32];
       if (enterAndSpaceKeyCodes.includes(e.keyCode)) {
         onChange();
       }
@@ -161,15 +161,16 @@ export default class PositionPublicToggle extends Component {
 
     // This modal is shown when the user clicks on public position toggle either when not signed in
     // or for the first time after being signed in.
-    let voter = this.state.voter;
-    let localModalStyle = hasIPhoneNotch() ? { marginTop: 20 } : {};
-    let modalSupportProps = { isPublicPosition: false };
-    const PositionPublicToggleHelpModal =
-      <Modal show={this.state.showPositionPublicHelpModal}
-                                                 enforceFocus={false}
-                                                 onHide={()=> { this.togglePositionPublicHelpModal(); }}>
-
-        <Modal.Header closeButton style={ localModalStyle }>
+    const voter = this.state.voter;
+    const localModalStyle = hasIPhoneNotch() ? { marginTop: 20 } : {};
+    const modalSupportProps = { isPublicPosition: false };
+    const PositionPublicToggleHelpModal = (
+      <Modal
+        show={this.state.showPositionPublicHelpModal}
+        enforceFocus={false}
+        onHide={() => { this.togglePositionPublicHelpModal(); }}
+      >
+        <Modal.Header closeButton style={localModalStyle}>
           <Modal.Title>
             <div className="text-center">Make Your Positions Public</div>
           </Modal.Title>
@@ -177,58 +178,47 @@ export default class PositionPublicToggle extends Component {
         <Modal.Body>
           <section className="card">
             <div className="text-center">
-              {voter && voter.is_signed_in ?
+              {voter && voter.is_signed_in ? (
                 <div>
                   <div className="u-f2">You have just made your position visible to anyone on We Vote.</div>
                   <div className="u-f4">If you do NOT want to share your position publicly, click the toggle again to restrict visibility to We Vote friends only.</div>
-                </div> :
+                </div>
+              ) : (
                 <div>
                   { !this.state.voter.is_signed_in ?
                     <SettingsAccount /> :
                     null }
                 </div>
-              }
+              )}
               <br />
-              We Vote makes it easy to share your views either publicly, or privately with your We Vote friends.<br />
+              We Vote makes it easy to share your views either publicly, or privately with your We Vote friends.
               <br />
-              Test the privacy toggle here:<br />
               <br />
-              <PositionPublicToggle ballot_item_we_vote_id="null"
-                                    className="null"
-                                    type="MEASURE"
-                                    supportProps={modalSupportProps}
-                                    inTestMode
+              Test the privacy toggle here:
+              <br />
+              <br />
+              <PositionPublicToggle
+                ballot_item_we_vote_id="null"
+                className="null"
+                type="MEASURE"
+                supportProps={modalSupportProps}
+                inTestMode
               />
               {this.state.positionPublicToggleCurrentState}
               <br />
             </div>
           </section>
         </Modal.Body>
-      </Modal>;
+      </Modal>
+    );
 
-    return <div className={this.props.className}>
-      <div style={{ display: "inline-block" }}>
-        {/* Mobile Mode */}
-        <span className="d-block d-sm-none">
-          <div tabIndex="0" onKeyDown={onKeyDown}>{/* tabIndex and onKeyDown are for accessibility */}
-            <Toggle
-              defaultChecked={this.state.showToThePublicOn}
-              className="toggle-override"
-              icons={{
-                checked: publicIcon,
-                unchecked: friendsIcon,
-              }}
-              onChange={onChange} />
-          </div>
-        </span>
-
-        {/* Desktop Mode */}
-        <span className="d-none d-sm-block">
-          <OverlayTrigger className="trigger"
-                          enforceFocus={false}
-                          placement="top"
-                          overlay={inTestMode ? noTooltip : tooltip}>
-            <div tabIndex="0" onKeyDown={onKeyDown}>{/* tabIndex and onKeyDown are for accessibility */}
+    return (
+      <div className={this.props.className}>
+        <div style={{ display: "inline-block" }}>
+          {/* Mobile Mode */}
+          <span className="d-block d-sm-none">
+            <div onKeyDown={onKeyDown}>
+              {/* tabIndex and onKeyDown are for accessibility */}
               <Toggle
                 defaultChecked={this.state.showToThePublicOn}
                 className="toggle-override"
@@ -236,12 +226,36 @@ export default class PositionPublicToggle extends Component {
                   checked: publicIcon,
                   unchecked: friendsIcon,
                 }}
-                onChange={onChange} />
+                onChange={onChange}
+              />
+            </div>
+          </span>
+
+          {/* Desktop Mode */}
+          <span className="d-none d-sm-block">
+            <OverlayTrigger
+              className="trigger"
+              enforceFocus={false}
+              placement="top"
+              overlay={inTestMode ? noTooltip : tooltip}
+            >
+              <div onKeyDown={onKeyDown}>
+                {/* tabIndex and onKeyDown are for accessibility */}
+                <Toggle
+                  defaultChecked={this.state.showToThePublicOn}
+                  className="toggle-override"
+                  icons={{
+                    checked: publicIcon,
+                    unchecked: friendsIcon,
+                  }}
+                  onChange={onChange}
+                />
               </div>
-          </OverlayTrigger>
-        </span>
+            </OverlayTrigger>
+          </span>
+        </div>
+        { this.state.showPositionPublicHelpModal ? PositionPublicToggleHelpModal : null }
       </div>
-    { this.state.showPositionPublicHelpModal ? PositionPublicToggleHelpModal : null }
-    </div>;
+    );
   }
 }

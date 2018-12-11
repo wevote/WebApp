@@ -2,13 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import { oAuthLog, renderLog } from "../../utils/logging";
-import { $ajax } from "../../utils/service";
+import $ajax from "../../utils/service";
 import cookies from "../../utils/cookies";
-import { isWebApp, cordovaOpenSafariView, isIOS, isAndroid, historyPush } from "../../utils/cordovaUtils";
+import {
+  isWebApp, cordovaOpenSafariView, isIOS, isAndroid, historyPush,
+} from "../../utils/cordovaUtils";
 import webAppConfig from "../../config";
 import TwitterActions from "../../actions/TwitterActions";
 
-const returnURL = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + "/twitter_sign_in";
+const returnURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/twitter_sign_in`;
 
 class TwitterSignIn extends Component {
   constructor (props) {
@@ -18,12 +20,12 @@ class TwitterSignIn extends Component {
   }
 
   twitterSignInWebApp () {
-    let brandingOff = cookies.getItem("we_vote_branding_off") || 0;
-    console.log("twitterSignInWebApp isWebApp(): " + isWebApp());
+    const brandingOff = cookies.getItem("we_vote_branding_off") || 0;
+    console.log(`twitterSignInWebApp isWebApp(): ${isWebApp()}`);
     $ajax({
       endpoint: "twitterSignInStart",
       data: { return_url: returnURL },
-      success: res => {
+      success: (res) => {
         console.log("twitterSignInWebApp success, res:", res);
         if (res.twitter_redirect_url) {
           if (brandingOff) {
@@ -41,7 +43,7 @@ class TwitterSignIn extends Component {
         }
       },
 
-      error: res => {
+      error: (res) => {
         console.log("twitterSignInWebApp error: ", res);
 
         // Try reloading the page
@@ -51,54 +53,54 @@ class TwitterSignIn extends Component {
   }
 
   twitterSignInWebAppCordova () {
-    const requestURL = webAppConfig.WE_VOTE_SERVER_API_ROOT_URL + "twitterSignInStart" +
-      "?cordova=true&voter_device_id=" + cookies.getItem("voter_device_id") + "&return_url=http://nonsense.com";
-    oAuthLog("twitterSignInWebAppCordova requestURL: " + requestURL);
+    const requestURL = `${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}twitterSignInStart` +
+      `?cordova=true&voter_device_id=${cookies.getItem("voter_device_id")}&return_url=http://nonsense.com`;
+    oAuthLog(`twitterSignInWebAppCordova requestURL: ${requestURL}`);
     if (isIOS()) {
       cordovaOpenSafariView(requestURL, null, 50);
     } else if (isAndroid()) {
       // April 6, 2018: Needs Steve's PR to handle customscheme
       // https://github.com/apache/cordova-plugin-inappbrowser/pull/263
-      /*global cordova*/
-      /*eslint no-undef: ["error", { "typeof": true }] */
-      let inAppBrowserRef = cordova.InAppBrowser.open(requestURL, "_blank", "toolbar=no,location=yes,hardwareback=no");
-      inAppBrowserRef.addEventListener("exit", function () {
+      /* global cordova */
+      /* eslint no-undef: ["error", { "typeof": true }] */
+      const inAppBrowserRef = cordova.InAppBrowser.open(requestURL, "_blank", "toolbar=no,location=yes,hardwareback=no");
+      inAppBrowserRef.addEventListener("exit", () => {
         oAuthLog("inAppBrowserRef on exit: ", requestURL);
       });
 
-      inAppBrowserRef.addEventListener("customscheme", function (event) {
+      inAppBrowserRef.addEventListener("customscheme", (event) => {
         oAuthLog("customscheme: ", event.url);
         TwitterSignIn.handleTwitterOpenURL(event.url);
 
-        //inAppBrowserRef.close();
+        // inAppBrowserRef.close();
       });
     }
   }
 
   // TODO: April 17, 2018, this is used by Twitter and SignIn by Email, and should be refactored out of here.  It is really the handleOpenURL function.
   static handleTwitterOpenURL (url) {
-    oAuthLog("---------------xxxxxx-------- Application handleTwitterOpenUrl: " + url);
+    oAuthLog(`---------------xxxxxx-------- Application handleTwitterOpenUrl: ${url}`);
     if (url.startsWith("wevotetwitterscheme://")) {
-      oAuthLog("handleTwitterOpenURL received wevotetwitterscheme: " + url);
-      let search = url.replace(new RegExp("&amp;", "g"), "&");
-      let urlParams = new URLSearchParams(search);
+      oAuthLog(`handleTwitterOpenURL received wevotetwitterscheme: ${url}`);
+      const search = url.replace(new RegExp("&amp;", "g"), "&");
+      const urlParams = new URLSearchParams(search);
 
       if (urlParams.has("twitter_redirect_url")) {
-        let redirectURL = urlParams.get("twitter_redirect_url");
-        oAuthLog("twitterSignIn cordova, redirecting to: " + redirectURL);
+        const redirectURL = urlParams.get("twitter_redirect_url");
+        oAuthLog(`twitterSignIn cordova, redirecting to: ${redirectURL}`);
 
         if (isIOS()) {
           // eslint-disable-next-line no-undef
-          SafariViewController.hide();  // Hide the previous WKWebView
+          SafariViewController.hide(); // Hide the previous WKWebView
           cordovaOpenSafariView(redirectURL, null, 500);
         } else {
           oAuthLog("redirectURL: ", redirectURL);
-          let inAppBrowserRef = cordova.InAppBrowser.open(redirectURL, "_blank", "toolbar=no,location=yes,hardwareback=no");
-          inAppBrowserRef.addEventListener("exit", function () {
+          const inAppBrowserRef = cordova.InAppBrowser.open(redirectURL, "_blank", "toolbar=no,location=yes,hardwareback=no");
+          inAppBrowserRef.addEventListener("exit", () => {
             oAuthLog("inAppBrowserRef on exit: ", redirectURL);
           });
 
-          inAppBrowserRef.addEventListener("customscheme", function (event) {
+          inAppBrowserRef.addEventListener("customscheme", (event) => {
             oAuthLog("customscheme: ", event.url);
             TwitterSignIn.handleTwitterOpenURL(event.url);
             inAppBrowserRef.close();
@@ -114,35 +116,41 @@ class TwitterSignIn extends Component {
           historyPush("/twitter_sign_in");
         }
       } else if (urlParams.has("twitter_handle_found") && urlParams.get("twitter_handle_found") === "True") {
-        oAuthLog("twitterSignIn cordova, twitter_handle_found -- push /twitter_sign_in -- received handle = " + urlParams.get("twitter_handle"));
+        oAuthLog(`twitterSignIn cordova, twitter_handle_found -- push /twitter_sign_in -- received handle = ${urlParams.get("twitter_handle")}`);
 
         if (isIOS()) {
           // eslint-disable-next-line no-undef
-          SafariViewController.hide();  // Hide the previous WKWebView
+          SafariViewController.hide(); // Hide the previous WKWebView
         }
 
         historyPush("/twitter_sign_in");
       } else if (url.startsWith("wevotetwitterscheme://sign_in_email")) {
-        oAuthLog("twitterSignIn by email cordova, (not really twitter) -- received url = " + url);
+        oAuthLog(`twitterSignIn by email cordova, (not really twitter) -- received url = ${url}`);
 
         // Example url: wevotetwitterscheme://sign_in_email/1278821
-        let n = url.indexOf("/");
-        let payload = url.substring(n + 1);
-        historyPush(payload);               // Example payload: "/sign_in_email/1278821"
+        const n = url.indexOf("/");
+        const payload = url.substring(n + 1);
+        historyPush(payload); // Example payload: "/sign_in_email/1278821"
       } else {
         console.log("ERROR in window.handleOpenURL, NO MATCH");
       }
     } else {
-      console.log("ERROR: window.handleOpenURL received invalid url: " + url);
+      console.log(`ERROR: window.handleOpenURL received invalid url: ${url}`);
     }
   }
 
   render () {
     renderLog(__filename);
-    return <Button bsPrefix={this.props.className ? this.props.className : "btn btn-social btn-twitter"}
-            onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova }>
-      <span className="fa fa-twitter"/> {this.props.buttonText ? this.props.buttonText : "Sign In"}
-    </Button>;
+    return (
+      <Button
+        bsPrefix={this.props.className ? this.props.className : "btn btn-social btn-twitter"}
+        onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova}
+      >
+        <span className="fa fa-twitter" />
+        {" "}
+        {this.props.buttonText ? this.props.buttonText : "Sign In"}
+      </Button>
+    );
   }
 }
 

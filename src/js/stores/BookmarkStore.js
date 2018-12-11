@@ -4,7 +4,6 @@ import Dispatcher from "../dispatcher/Dispatcher";
 import BookmarkActions from "../actions/BookmarkActions";
 
 class BookmarkStore extends ReduceStore {
-
   getInitialState () {
     return Immutable.Map();
   }
@@ -18,18 +17,15 @@ class BookmarkStore extends ReduceStore {
   }
 
   reduce (state, action) {
-
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
-    if (!action.res || !action.res.success)
-      return state;
+    if (!action.res || !action.res.success) return state;
 
-    var key = action.res.ballot_item_we_vote_id;
+    const key = action.res.ballot_item_we_vote_id;
+    const newState = {};
 
     switch (action.type) {
-
       case "voterAllBookmarksStatusRetrieve":
-        let newState = {};
-        action.res.bookmark_list.forEach(el =>{
+        action.res.bookmark_list.forEach((el) => {
           newState[el.ballot_item_we_vote_id] = el.bookmark_on;
         });
         return state.merge(Immutable.Map(newState));
@@ -52,9 +48,7 @@ class BookmarkStore extends ReduceStore {
       default:
         return state;
     }
-
   }
-
 }
 
 export default new BookmarkStore(Dispatcher);

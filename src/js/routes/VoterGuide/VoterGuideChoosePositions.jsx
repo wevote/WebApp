@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
+import Icon from "react-svg-icons";
 import BallotSearchResults from "../../components/Ballot/BallotSearchResults";
 import BallotActions from "../../actions/BallotActions";
 import BallotStore from "../../stores/BallotStore";
 import FooterDoneBar from "../../components/Navigation/FooterDoneBar";
-import Icon from "react-svg-icons";
 import { renderLog } from "../../utils/logging";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import OrganizationActions from "../../actions/OrganizationActions";
@@ -58,7 +58,7 @@ export default class VoterGuideChoosePositions extends Component {
       voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.props.params.voter_guide_we_vote_id);
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
-          voterGuide: voterGuide,
+          voterGuide,
         });
         voterGuideFound = true;
         if (voterGuide.google_civic_election_id && voterGuide.google_civic_election_id !== BallotStore.currentBallotGoogleCivicElectionId) {
@@ -68,19 +68,19 @@ export default class VoterGuideChoosePositions extends Component {
       }
     }
     // Get Voter and Voter's Organization
-    let voter = VoterStore.getVoter();
+    const voter = VoterStore.getVoter();
     if (voter) {
-      this.setState({ voter: voter });
-      let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+      this.setState({ voter });
+      const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
       // console.log("voterGuideChoosePositions componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
       if (linkedOrganizationWeVoteId) {
         this.setState({
-          linkedOrganizationWeVoteId: linkedOrganizationWeVoteId,
+          linkedOrganizationWeVoteId,
         });
-        let organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
+        const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
         if (organization && organization.organization_we_vote_id) {
           this.setState({
-            organization: organization,
+            organization,
           });
           // Positions for this organization, for this election
           if (voterGuide && voterGuide.google_civic_election_id) {
@@ -111,9 +111,9 @@ export default class VoterGuideChoosePositions extends Component {
         voterGuideWeVoteId: nextProps.params.voter_guide_we_vote_id,
       });
     }
-    let voter = VoterStore.getVoter();
+    const voter = VoterStore.getVoter();
     if (voter && voter.we_vote_id) {
-      this.setState({voter: voter});
+      this.setState({ voter });
     }
   }
 
@@ -127,7 +127,7 @@ export default class VoterGuideChoosePositions extends Component {
   }
 
 
-  onOrganizationStoreChange (){
+  onOrganizationStoreChange () {
     // console.log("voterGuideChoosePositions onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId),
@@ -137,28 +137,28 @@ export default class VoterGuideChoosePositions extends Component {
   onVoterGuideStoreChange () {
     // console.log("voterGuideChoosePositions onVoterGuideStoreChange, this.state.voterGuideWeVoteId", this.state.voterGuideWeVoteId);
     if (this.state.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(this.state.voterGuideWeVoteId)) {
-      let voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.state.voterGuideWeVoteId);
+      const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.state.voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
         // console.log("voterGuideChoosePositions onVoterGuideStoreChange voterGuide FOUND");
         this.setState({
-          voterGuide: voterGuide,
-          voterGuideName: voterGuide.voter_guide_display_name
+          voterGuide,
+          voterGuideName: voterGuide.voter_guide_display_name,
         });
       }
     }
   }
 
   onVoterStoreChange () {
-    let voter = VoterStore.getVoter();
+    const voter = VoterStore.getVoter();
     if (voter && voter.we_vote_id) {
-      this.setState({voter: voter});
+      this.setState({ voter });
     }
-    let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log("voterGuideChoosePositions onVoterStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
       OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
       this.setState({
-        linkedOrganizationWeVoteId: linkedOrganizationWeVoteId,
+        linkedOrganizationWeVoteId,
       });
     }
     if (linkedOrganizationWeVoteId) {
@@ -178,7 +178,7 @@ export default class VoterGuideChoosePositions extends Component {
     // console.log("VoterGuideSettingsPositions, clearSearch");
     this.setState({
       clearSearchTextNow: true,
-      searchIsUnderway: false
+      searchIsUnderway: false,
     });
   }
 
@@ -187,12 +187,12 @@ export default class VoterGuideChoosePositions extends Component {
     // console.log("VoterGuideSettingsPositions, searchIsUnderway: ", searchIsUnderway);
     this.setState({
       clearSearchTextNow: false,
-      searchIsUnderway: searchIsUnderway
+      searchIsUnderway,
     });
   }
 
   goToVoterGuideDisplay () {
-    let voterGuideDisplay = "/voterguide/" + this.state.voterGuide.organization_we_vote_id + "/ballot/election/" + this.state.voterGuide.google_civic_election_id + "/ballot";
+    const voterGuideDisplay = `/voterguide/${this.state.voterGuide.organization_we_vote_id}/ballot/election/${this.state.voterGuide.google_civic_election_id}/ballot`;
 
     historyPush(voterGuideDisplay);
   }
@@ -212,23 +212,49 @@ export default class VoterGuideChoosePositions extends Component {
     const at_least_one_position_found_for_this_election = position_list_for_one_election && position_list_for_one_election.length !== 0;
 
     const icon_size = 18;
-    let icon_color = "#ccc"; // "#999";
+    const icon_color = "#ccc"; // "#999";
 
-    return <div>
-      <Helmet title="Choose Positions - We Vote" />
+    return (
+      <div>
+        <Helmet title="Choose Positions - We Vote" />
         <div className="create-voter-guide container well">
-          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToVoterGuideDisplay} className="x-close" alt={"close"}/>
+          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToVoterGuideDisplay} className="x-close" alt="close" />
           <div className="create-voter-guide__h1 xs-text-left">Enter Your Positions</div>
           <div className="create-voter-guide__steps xs-text-left">
             Step 5 of 5
           </div>
           <div className="create-voter-guide__description xs-text-left">
             Search for candidates or measures, and
-            click <span className="u-no-break"><span className="btn__icon"><Icon name="thumbs-up-icon"
-                                                                                 width={icon_size} height={icon_size} color={icon_color} /></span> Support</span> or&nbsp;
-            <span className="u-no-break"><span className="btn__icon"><Icon name="thumbs-down-icon"
-                                                                           width={icon_size} height={icon_size} color={icon_color} /></span> Oppose</span> to
-            add them to your ballot.
+            click
+            {" "}
+            <span className="u-no-break">
+              <span className="btn__icon">
+                <Icon
+                  name="thumbs-up-icon"
+                  width={icon_size}
+                  height={icon_size}
+                  color={icon_color}
+                />
+              </span>
+              {" "}
+              Support
+            </span>
+            {" "}
+            or&nbsp;
+            <span className="u-no-break">
+              <span className="btn__icon">
+                <Icon
+                  name="thumbs-down-icon"
+                  width={icon_size}
+                  height={icon_size}
+                  color={icon_color}
+                />
+              </span>
+              {" "}
+              Oppose
+            </span>
+            {" "}
+            to add them to your ballot.
           </div>
           <div className="row">
             <div className="col-1 col-md-2">&nbsp;</div>
@@ -236,35 +262,44 @@ export default class VoterGuideChoosePositions extends Component {
               <div className="card">
                 <div className="card-main">
                   <h4 className="h4 card__additional-heading">
-                     <span className="u-push--sm">{ election_name ? election_name : "This Election"}</span>
+                    <span className="u-push--sm">{ election_name || "This Election"}</span>
                   </h4>
-                  { looking_at_self ?
+                  { looking_at_self ? (
                     <div className="u-margin-left--md u-push--md">
-                      <BallotSearchResults clearSearchTextNow={this.state.clearSearchTextNow}
-                                           googleCivicElectionId={this.state.voterGuide.google_civic_election_id}
-                                           organizationWeVoteId={this.state.voter.linked_organization_we_vote_id}
-                                           searchUnderwayFunction={this.searchUnderway} />
-                    </div> :
-                    null }
+                      <BallotSearchResults
+                        clearSearchTextNow={this.state.clearSearchTextNow}
+                        googleCivicElectionId={this.state.voterGuide.google_civic_election_id}
+                        organizationWeVoteId={this.state.voter.linked_organization_we_vote_id}
+                        searchUnderwayFunction={this.searchUnderway}
+                      />
+                    </div>
+                  ) : null
+                  }
 
-                  { at_least_one_position_found_for_this_election && !this.state.searchIsUnderway ?
+                  { at_least_one_position_found_for_this_election && !this.state.searchIsUnderway ? (
                     <span>
-                      { position_list_for_one_election.map( item => {
-                        return <OrganizationPositionItem key={item.position_we_vote_id}
-                                                         position={item}
-                                                         organization={this.state.organization}
-                                                         editMode={this.state.editMode}
-                               />;
-                      }) }
-                    </span> :
-                    null
+                      { position_list_for_one_election.map( item => (
+                        <OrganizationPositionItem
+                          key={item.position_we_vote_id}
+                          position={item}
+                          organization={this.state.organization}
+                          editMode={this.state.editMode}
+                        />
+                      )) }
+                    </span>
+                  ) : null
                   }
                 </div>
               </div>
 
               <div className="fa-pull-right">
-                <button type="button" className="btn btn-lg btn-success"
-                        onClick={this.goToVoterGuideDisplay}>See Full Ballot&nbsp;&nbsp;&gt;</button>
+                <button
+                  type="button"
+                  className="btn btn-lg btn-success"
+                  onClick={this.goToVoterGuideDisplay}
+                >
+                  See Full Ballot&nbsp;&nbsp;&gt;
+                </button>
               </div>
 
               <div className="clearfix" />
@@ -273,16 +308,17 @@ export default class VoterGuideChoosePositions extends Component {
                 <div className="u-stack--xl" /> :
                 <div className="u-stack--md" /> }
 
-              {this.state.searchIsUnderway ?
+              {this.state.searchIsUnderway ? (
                 <span>
-                  <FooterDoneBar doneFunction={this.clearSearch} doneButtonText={"Clear Search"}/>
-                </span> :
-                null
+                  <FooterDoneBar doneFunction={this.clearSearch} doneButtonText="Clear Search" />
+                </span>
+              ) : null
               }
             </div>
             <div className="col-1 col-md-2">&nbsp;</div>
           </div>
         </div>
-      </div>;
+      </div>
+    );
   }
 }

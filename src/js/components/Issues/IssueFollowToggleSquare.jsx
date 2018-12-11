@@ -29,7 +29,7 @@ export default class IssueFollowToggleSquare extends Component {
       is_following = this.props.is_following;
     }
     this.state = {
-      is_following: is_following,
+      is_following,
     };
     this.onIssueFollow = this.onIssueFollow.bind(this);
     this.onIssueStopFollowing = this.onIssueStopFollowing.bind(this);
@@ -38,7 +38,7 @@ export default class IssueFollowToggleSquare extends Component {
   onIssueFollow () {
     // This check is necessary as we enable follow when user clicks on Issue text
     if (!this.state.is_following) {
-      this.setState({is_following: true});
+      this.setState({ is_following: true });
       IssueActions.issueFollow(this.props.issue_we_vote_id);
       if (this.props.on_issue_follow) {
         this.props.on_issue_follow(this.props.issue_we_vote_id);
@@ -71,53 +71,67 @@ export default class IssueFollowToggleSquare extends Component {
     }
 
     if (this.props.read_only === true && !this.props.edit_mode) {
-      return <div className={this.props.grid + " intro-modal__square"}>
-        <ImageHandler sizeClassName="intro-modal__square-image intro-modal__square-following"
-                      imageUrl={ issue_image_url }
-                      alt={this.props.issue_name}
-                      kind_of_image="ISSUE-PHOTO" />
-        <ImageHandler className="intro-modal__square-check-mark"
-                      imageUrl={cordovaDot("/img/global/svg-icons/check-mark-v2-40x43.svg")}
-                      alt="Following" />
-        <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.issue_name}</h4>
-        { this.props.issue_description && this.props.issue_description.length ?
-          <OverlayTrigger placement="top" overlay={<Tooltip id="organizationDescriptionTooltip">{this.props.issue_description}</Tooltip>}>
-            <i className="fa fa-info-circle fa-lg d-none d-sm-block intro-modal__square-details" aria-hidden="true" />
-          </OverlayTrigger> :
-          null
-        }
-      </div>;
+      return (
+        <div className={`${this.props.grid} intro-modal__square`}>
+          <ImageHandler
+            sizeClassName="intro-modal__square-image intro-modal__square-following"
+            imageUrl={issue_image_url}
+            alt={this.props.issue_name}
+            kind_of_image="ISSUE-PHOTO"
+          />
+          <ImageHandler
+            className="intro-modal__square-check-mark"
+            imageUrl={cordovaDot("/img/global/svg-icons/check-mark-v2-40x43.svg")}
+            alt="Following"
+          />
+          <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.issue_name}</h4>
+          { this.props.issue_description && this.props.issue_description.length ? (
+            <OverlayTrigger placement="top" overlay={<Tooltip id="organizationDescriptionTooltip">{this.props.issue_description}</Tooltip>}>
+              <i className="fa fa-info-circle fa-lg d-none d-sm-block intro-modal__square-details" aria-hidden="true" />
+            </OverlayTrigger>
+          ) : null
+          }
+        </div>
+      );
     } else {
-      return this.state.is_following ?
-        <div className={this.props.grid + " intro-modal__square u-cursor--pointer"} onClick={this.onIssueStopFollowing}>
-          <ImageHandler sizeClassName="intro-modal__square-image intro-modal__square-following image-issue-photo-placeholder"
-                        imageUrl={ issue_image_url }
-                        alt={this.props.issue_name}
-                        kind_of_image="ISSUE-PHOTO" />
-          <ImageHandler className="intro-modal__square-check-mark"
-                        imageUrl={cordovaDot("/img/global/svg-icons/check-mark-v2-40x43.svg")}
-                        alt="Following" />
+      return this.state.is_following ? (
+        <div className={`${this.props.grid} intro-modal__square u-cursor--pointer`} onClick={this.onIssueStopFollowing}>
+          <ImageHandler
+            sizeClassName="intro-modal__square-image intro-modal__square-following image-issue-photo-placeholder"
+            imageUrl={issue_image_url}
+            alt={this.props.issue_name}
+            kind_of_image="ISSUE-PHOTO"
+          />
+          <ImageHandler
+            className="intro-modal__square-check-mark"
+            imageUrl={cordovaDot("/img/global/svg-icons/check-mark-v2-40x43.svg")}
+            alt="Following"
+          />
           <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.issue_name}</h4>
-          { this.props.issue_description && this.props.issue_description.length ?
+          { this.props.issue_description && this.props.issue_description.length ? (
             <OverlayTrigger placement="top" overlay={<Tooltip id="organizationDescriptionTooltip">{this.props.issue_description}</Tooltip>}>
               <i className="fa fa-info-circle fa-lg d-none d-sm-block intro-modal__square-details" aria-hidden="true" />
-            </OverlayTrigger> :
-            null
+            </OverlayTrigger>
+          ) : null
           }
-        </div> :
-        <div className={this.props.grid + " intro-modal__square u-cursor--pointer"} onClick={this.onIssueFollow}>
-          <ImageHandler sizeClassName="intro-modal__square-image image-issue-photo-placeholder"
-                        imageUrl={ issue_image_url }
-                        alt={this.props.issue_name}
-                        kind_of_image="ISSUE-PHOTO" />
+        </div>
+      ) : (
+        <div className={`${this.props.grid} intro-modal__square u-cursor--pointer`} onClick={this.onIssueFollow}>
+          <ImageHandler
+            sizeClassName="intro-modal__square-image image-issue-photo-placeholder"
+            imageUrl={issue_image_url}
+            alt={this.props.issue_name}
+            kind_of_image="ISSUE-PHOTO"
+          />
           <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.issue_name}</h4>
-          { this.props.issue_description && this.props.issue_description.length ?
+          { this.props.issue_description && this.props.issue_description.length ? (
             <OverlayTrigger placement="top" overlay={<Tooltip id="organizationDescriptionTooltip">{this.props.issue_description}</Tooltip>}>
               <i className="fa fa-info-circle fa-lg d-none d-sm-block intro-modal__square-details" aria-hidden="true" />
-            </OverlayTrigger> :
-            null
+            </OverlayTrigger>
+          ) : null
           }
-        </div>;
+        </div>
+      );
     }
   }
 }

@@ -5,25 +5,24 @@ import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterStore from "../../stores/VoterStore";
 
 export default class SearchGuidesToFollowBox extends Component {
-
   constructor (props) {
     super(props);
 
     this.state = {
-      searchPending: null
+      searchPending: null,
     };
 
     this.searchFunction = this.searchFunction.bind(this);
     this.clearFunction = this.clearFunction.bind(this);
   }
 
-  searchFunction (search_query) {
+  searchFunction (searchQuery) {
     if (this.state.searchPending && this.state.searchPending.state() === "pending") {
       this.state.searchPending.abort();
     }
-    let election_id = search_query === "" ? VoterStore.election_id() : 0;
+    const electionId = searchQuery === "" ? VoterStore.election_id() : 0;
     this.setState({
-      searchPending: VoterGuideActions.voterGuidesToFollowRetrieve(election_id, search_query)
+      searchPending: VoterGuideActions.voterGuidesToFollowRetrieve(electionId, searchQuery),
     });
   }
 
@@ -33,11 +32,15 @@ export default class SearchGuidesToFollowBox extends Component {
 
   render () {
     renderLog(__filename);
-    return <SearchBar clearButton
-                       searchButton
-                       placeholder="Search by name or Twitter handle"
-                       searchFunction={this.searchFunction}
-                       clearFunction={this.clearFunction}
-                       searchUpdateDelayTime={100} />;
+    return (
+      <SearchBar
+        clearButton
+        searchButton
+        placeholder="Search by name or Twitter handle"
+        searchFunction={this.searchFunction}
+        clearFunction={this.clearFunction}
+        searchUpdateDelayTime={100}
+      />
+    );
   }
 }

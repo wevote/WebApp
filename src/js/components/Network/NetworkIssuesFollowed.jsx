@@ -48,7 +48,7 @@ export default class NetworkIssuesFollowed extends Component {
   }
 
   onKeyDownEditMode (event) {
-    let enterAndSpaceKeyCodes = [13, 32];
+    const enterAndSpaceKeyCodes = [13, 32];
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       this.setState({ edit_mode: !this.state.edit_mode });
     }
@@ -63,45 +63,50 @@ export default class NetworkIssuesFollowed extends Component {
 
     const ISSUES_TO_SHOW = 6;
 
-    let isFollowing = true;
+    const isFollowing = true;
     let issueCount = 0;
     const issueListForDisplay = issueList.map((issue) => {
       issueCount++;
       if (issueCount > ISSUES_TO_SHOW) {
         return null;
       } else {
-        return <IssueFollowToggleSquare
-          key={issue.issue_we_vote_id}
-          issue_we_vote_id={issue.issue_we_vote_id}
-          issue_name={issue.issue_name}
-          issue_description={issue.issue_description}
-          issue_image_url={issue.issue_image_url}
-          edit_mode={this.state.edit_mode}
-          is_following={isFollowing}
-          grid="col-sm-6"
-          read_only />;
+        return (
+          <IssueFollowToggleSquare
+            key={issue.issue_we_vote_id}
+            issue_we_vote_id={issue.issue_we_vote_id}
+            issue_name={issue.issue_name}
+            issue_description={issue.issue_description}
+            issue_image_url={issue.issue_image_url}
+            edit_mode={this.state.edit_mode}
+            is_following={isFollowing}
+            grid="col-sm-6"
+            read_only
+          />
+        );
       }
     });
 
-    return <div className="opinions-followed__container">
-      <section className="card">
-        <div className="card-main">
-          <h1 className="h4">Issues You Are Following</h1>
-          <div className="network-issues-list voter-guide-list card">
-            <div className="card-child__list-group clearfix">
-              { issueListForDisplay }
+    return (
+      <div className="opinions-followed__container">
+        <section className="card">
+          <div className="card-main">
+            <h1 className="h4">Issues You Are Following</h1>
+            <div className="network-issues-list voter-guide-list card">
+              <div className="card-child__list-group clearfix">
+                { issueListForDisplay }
+              </div>
+              <div>
+                {
+                  this.state.issues_followed.length > 0 ?
+                    <span><Link to="/issues_followed">See All</Link></span> :
+                    <span>You are not following any issues yet.</span>
+                }
+              </div>
             </div>
-            <div>
-            {
-              this.state.issues_followed.length > 0 ?
-              <span><Link to="/issues_followed">See All</Link></span> :
-              <span>You are not following any issues yet.</span>
-            }
-            </div>
+            <br />
           </div>
-          <br />
-        </div>
-      </section>
-    </div>;
+        </section>
+      </div>
+    );
   }
 }

@@ -16,14 +16,14 @@ export default class FriendsOnlyIndicator extends Component {
 
   render () {
     renderLog(__filename);
-    let is_friends_only = this.props.isFriendsOnly;
-    if (is_friends_only === undefined){
-      is_friends_only = true;
+    let isFriendsOnly = this.props.isFriendsOnly;
+    if (isFriendsOnly === undefined) {
+      isFriendsOnly = true;
     }
 
     let labelText = "";
     let visibilityIcon = "";
-    if (is_friends_only) {
+    if (isFriendsOnly) {
       labelText = "This position is only visible to We Vote friends.";
       visibilityIcon = <Icon name="group-icon" color="#999" width={18} height={18} />;
     } else {
@@ -33,9 +33,11 @@ export default class FriendsOnlyIndicator extends Component {
 
     const tooltip = <Tooltip id="tooltip">{labelText}</Tooltip>;
 
-    const visibilityIndicator = <OverlayTrigger placement="top" overlay={tooltip}>
+    const visibilityIndicator = (
+      <OverlayTrigger placement="top" overlay={tooltip}>
         <span className="public-friends-indicator">{visibilityIcon}</span>
-      </OverlayTrigger>;
+      </OverlayTrigger>
+    );
 
     return visibilityIndicator;
   }

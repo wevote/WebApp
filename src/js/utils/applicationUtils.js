@@ -102,14 +102,14 @@ export function getApplicationViewBooleans(pathname) {
   }
 
   return {
-    inTheaterMode: inTheaterMode,
-    contentFullWidthMode: contentFullWidthMode,
-    settingsMode: settingsMode,
-    voterGuideMode: voterGuideMode,
-    voterGuideShowGettingStartedNavigation: voterGuideShowGettingStartedNavigation,
-    showBackToHeader: showBackToHeader,
-    showBackToSettings: showBackToSettings,
-    showBackToVoterGuides: showBackToVoterGuides,
+    inTheaterMode,
+    contentFullWidthMode,
+    settingsMode,
+    voterGuideMode,
+    voterGuideShowGettingStartedNavigation,
+    showBackToHeader,
+    showBackToSettings,
+    showBackToVoterGuides,
   };
 }
 
@@ -118,13 +118,11 @@ export function getApplicationViewBooleans(pathname) {
 //   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries#Polyfill
 export function polyfillObjectEntries () {
   if (!Object.entries) {
-    Object.entries = function (obj) {
-      let localProps = Object.keys(obj);
+    Object.entries = function poly(obj) {
+      const localProps = Object.keys(obj);
       let i = localProps.length;
-      let resArray = new Array(i); // preallocate the Array
-      while (i--)
-        resArray[i] = [localProps[i], obj[localProps[i]]];
-
+      const resArray = new Array(i); // preallocate the Array
+      while (i--) resArray[i] = [localProps[i], obj[localProps[i]]];
       return resArray;
     };
   }
@@ -133,7 +131,7 @@ export function polyfillObjectEntries () {
 // Choose to show/hide zendesk help widget based on route
 export function setZenDeskHelpVisibility (pathname) {
   if (isWebApp()) {
-    if (["/ballot", "/more/network", "/settings"].some((match) => pathname.startsWith(match))) {
+    if (["/ballot", "/more/network", "/settings"].some(match => pathname.startsWith(match))) {
       global.zE("webWidget", "show");
     } else {
       global.zE("webWidget", "hide");

@@ -23,14 +23,14 @@ export default class YourPage extends Component {
   componentWillMount () {
     const { voter } = this.state;
 
-    let voter_has_twitter_handle = voter.twitter_screen_name ? true : false;
+    const voter_has_twitter_handle = !!voter.twitter_screen_name;
     if (voter_has_twitter_handle) {
-      historyPush("/" + voter.twitter_screen_name);
+      historyPush(`/${voter.twitter_screen_name}`);
     }
 
-    let voter_has_public_page = voter.linked_organization_we_vote_id ? true : false;
+    const voter_has_public_page = !!voter.linked_organization_we_vote_id;
     if (voter_has_public_page) {
-      historyPush("/voterguide/" + voter.linked_organization_we_vote_id);
+      historyPush(`/voterguide/${voter.linked_organization_we_vote_id}`);
     }
   }
 
@@ -48,18 +48,18 @@ export default class YourPage extends Component {
   componentWillUpdate () {
     const { voter } = this.state;
 
-    let voter_has_twitter_handle = voter.twitter_screen_name ? true : false;
+    const voter_has_twitter_handle = !!voter.twitter_screen_name;
     if (voter_has_twitter_handle) {
-      historyPush("/" + voter.twitter_screen_name);
+      historyPush(`/${voter.twitter_screen_name}`);
     }
 
-    let voter_has_public_page = voter.linked_organization_we_vote_id ? true : false;
+    const voter_has_public_page = !!voter.linked_organization_we_vote_id;
     if (voter_has_public_page) {
-      historyPush("/voterguide/" + voter.linked_organization_we_vote_id);
+      historyPush(`/voterguide/${voter.linked_organization_we_vote_id}`);
     }
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.voterStoreListener.remove();
   }
 
@@ -69,20 +69,20 @@ export default class YourPage extends Component {
 
   render () {
     renderLog(__filename);
-    if (this.state.voter === undefined){
+    if (this.state.voter === undefined) {
       // Show a loading wheel while this component's data is loading
       return LoadingWheel;
     }
 
     const { voter } = this.state;
 
-    let signed_in_facebook = voter === undefined ? false : voter.signed_in_facebook;
+    const signed_in_facebook = voter === undefined ? false : voter.signed_in_facebook;
     if (signed_in_facebook) {
-      let voter_not_linked_to_organization = !voter.linked_organization_we_vote_id;
+      const voter_not_linked_to_organization = !voter.linked_organization_we_vote_id;
       if (voter_not_linked_to_organization) {
         let organization_name = "";
-        let first_name_value_exists = voter.first_name && voter.first_name !== "null" && voter.first_name.length;
-        let last_name_value_exists = voter.last_name && voter.last_name !== "null" && voter.last_name.length;
+        const first_name_value_exists = voter.first_name && voter.first_name !== "null" && voter.first_name.length;
+        const last_name_value_exists = voter.last_name && voter.last_name !== "null" && voter.last_name.length;
         if (first_name_value_exists) {
           organization_name += voter.first_name;
         }
@@ -96,18 +96,20 @@ export default class YourPage extends Component {
       }
     }
 
-    return <div>
-      <div className="container-fluid well u-stack--md u-inset--md">
-        <h1 className="h4">
-          Enter your Twitter handle to create a public voter guide.
-        </h1>
-        <div>
-          <TwitterHandleBox {...this.props} />
+    return (
+      <div>
+        <div className="container-fluid well u-stack--md u-inset--md">
+          <h1 className="h4">
+            Enter your Twitter handle to create a public voter guide.
+          </h1>
+          <div>
+            <TwitterHandleBox {...this.props} />
+          </div>
         </div>
+        { this.state.voter ?
+          <GuidePositionListForVoter voter={this.state.voter} /> :
+          null }
       </div>
-      { this.state.voter ?
-        <GuidePositionListForVoter voter={this.state.voter} /> :
-        null }
-    </div>;
+    );
   }
 }

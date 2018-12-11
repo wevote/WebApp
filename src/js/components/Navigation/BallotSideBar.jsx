@@ -11,9 +11,12 @@ import BallotSideBarLink from "./BallotSideBarLink";
 import { renderLog } from "../../utils/logging";
 import { arrayContains } from "../../utils/textFormat";
 
+// December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
+/* eslint no-restricted-syntax: 1 */
+
 export default class BallotSideBar extends Component {
   static propTypes = {
-    ballot: PropTypes.array,  // Check to see if any calls to this component pass in "ballot"
+    ballot: PropTypes.array, // Check to see if any calls to this component pass in "ballot"
     ballotWithAllItemsByFilterType: PropTypes.array,
     ballotItemLinkHasBeenClicked: PropTypes.func,
     displayTitle: PropTypes.bool,
@@ -45,7 +48,7 @@ export default class BallotSideBar extends Component {
   }
 
   componentDidMount () {
-    let unsorted = BallotStore.ballot;
+    const unsorted = BallotStore.ballot;
     this.setState({
       ballot: this._sortBallots(unsorted),
       componentDidMountFinished: true,
@@ -87,7 +90,7 @@ export default class BallotSideBar extends Component {
   }
 
   onBallotStoreChange () {
-    let unsorted = BallotStore.ballot;
+    const unsorted = BallotStore.ballot;
     this.setState({
       ballot: this._sortBallots(unsorted),
     });
@@ -96,24 +99,20 @@ export default class BallotSideBar extends Component {
   _sortBallots (unsorted) {
     if (unsorted) {
       // temporary array holds objects with position and sort-value
-      let mapped = unsorted.map((item, i) => {
-        return { index: i, value: item };
-      });
+      const mapped = unsorted.map((item, i) => ({ index: i, value: item }));
 
       // sorting the mapped array based on local_ballot_order which came from the server
-      mapped.sort((a, b) =>
-          +(
-            parseInt(a.value.local_ballot_order, 10) >
+      mapped.sort((a, b) => +(
+        parseInt(a.value.local_ballot_order, 10) >
             parseInt(b.value.local_ballot_order, 10)
-          ) ||
+      ) ||
           +(
             parseInt(a.value.local_ballot_order, 10) ===
             parseInt(b.value.local_ballot_order, 10)
-          ) - 1
-        );
+          ) - 1);
 
-      let orderedArray = [];
-      for (let element of mapped) {
+      const orderedArray = [];
+      for (const element of mapped) {
         orderedArray.push(element.value);
       }
 
@@ -131,7 +130,7 @@ export default class BallotSideBar extends Component {
   }
 
   renderUrl (ballotItemWeVoteId, ballotWithAllItemIdsByFilterType) {
-    let { rawUrlVariablesString } = this.props;
+    const { rawUrlVariablesString } = this.props;
     if (rawUrlVariablesString && ballotWithAllItemIdsByFilterType && ballotWithAllItemIdsByFilterType.length > 0) {
       if (arrayContains(ballotItemWeVoteId, ballotWithAllItemIdsByFilterType)) {
         return `${this.props.pathname}${rawUrlVariablesString}#${ballotItemWeVoteId}`;
@@ -177,7 +176,7 @@ export default class BallotSideBar extends Component {
   }
 
   filteredBallotToRender (ballot, ballotWithAllItemIdsByFilterType, type, key) {
-    let filteredBallot = ballot.filter(item => {
+    const filteredBallot = ballot.filter((item) => {
       if (item.kind_of_ballot_item === "MEASURE") {
         return type === "Measure";
       } else {
@@ -189,19 +188,21 @@ export default class BallotSideBar extends Component {
       return null;
     }
 
-    let filteredBallotListItems = filteredBallot.map((item, itemKey) => {
+    const filteredBallotListItems = filteredBallot.map((item, itemKey) => {
       if (
         item.kind_of_ballot_item === "OFFICE" ||
         item.kind_of_ballot_item === "MEASURE"
       ) {
         return (
           <li className="BallotItem__summary__list-item" key={itemKey}>
-            <BallotSideBarLink url={this.renderUrl(item.we_vote_id, ballotWithAllItemIdsByFilterType)}
-                               ballotItemLinkHasBeenClicked={this.props.ballotItemLinkHasBeenClicked}
-                               label={item.ballot_item_display_name}
-                               subtitle={item.measure_subtitle}
-                               displaySubtitles={this.props.displaySubtitles}
-                               onClick={this.handleClick} />
+            <BallotSideBarLink
+              url={this.renderUrl(item.we_vote_id, ballotWithAllItemIdsByFilterType)}
+              ballotItemLinkHasBeenClicked={this.props.ballotItemLinkHasBeenClicked}
+              label={item.ballot_item_display_name}
+              subtitle={item.measure_subtitle}
+              displaySubtitles={this.props.displaySubtitles}
+              onClick={this.handleClick}
+            />
           </li>
         );
       } else {
@@ -209,14 +210,16 @@ export default class BallotSideBar extends Component {
       }
     });
 
-    return <div className="BallotItem__summary__group" key={key}>
-      <div className="BallotItem__summary__group-title">
-        {type === "Measure" ? "Ballot Measures" : type}
+    return (
+      <div className="BallotItem__summary__group" key={key}>
+        <div className="BallotItem__summary__group-title">
+          {type === "Measure" ? "Ballot Measures" : type}
+        </div>
+        <ul className="BallotItem__summary__list">
+          {filteredBallotListItems}
+        </ul>
       </div>
-      <ul className="BallotItem__summary__list">
-        {filteredBallotListItems}
-      </ul>
-    </div>;
+    );
   }
 
   render () {
@@ -226,25 +229,24 @@ export default class BallotSideBar extends Component {
     // let turnedOnNPSInput = false;
     const BALLOT_ITEM_FILTER_TYPES = ["Federal", "State", "Measure", "Local"];
 
-    let ballot = this.state.ballot;
-    let { ballotWithAllItemsByFilterType } = this.props;
+    const ballot = this.state.ballot;
+    const { ballotWithAllItemsByFilterType } = this.props;
     if (ballot && ballot.length) {
-      let ballotWithAllItemIdsByFilterType = [];
-      ballotWithAllItemsByFilterType.forEach(itemByFilterType => {
-          ballotWithAllItemIdsByFilterType.push(itemByFilterType.we_vote_id);
-        });
+      const ballotWithAllItemIdsByFilterType = [];
+      ballotWithAllItemsByFilterType.forEach((itemByFilterType) => {
+        ballotWithAllItemIdsByFilterType.push(itemByFilterType.we_vote_id);
+      });
 
       return (
         <div className="container-fluid card">
-          { this.props.displayTitle ?
+          { this.props.displayTitle ? (
             <div className="BallotItem__summary__title">
               Summary of Ballot Items
-            </div> :
+            </div>
+          ) :
             null
           }
-          { BALLOT_ITEM_FILTER_TYPES.map((type, key) =>
-            this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key)
-          )}
+          { BALLOT_ITEM_FILTER_TYPES.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key))}
           <h4 className="text-left" />
           <span className="terms-and-privacy">
             <br />
@@ -255,40 +257,40 @@ export default class BallotSideBar extends Component {
             <Link to="/more/privacy">
               Privacy Policy
             </Link>
-            {/*{ turnedOnNPSInput ?*/}
-              {/*<span>*/}
-                {/*&nbsp;&nbsp;&nbsp;*/}
-                {/*<a onClick={this.showNPSInput}>*/}
-                  {/*Send Feedback*/}
-                {/*</a>*/}
-              {/*</span> :*/}
-              {/*null*/}
-            {/*}*/}
+            {/* { turnedOnNPSInput ? */}
+            {/* <span> */}
+            {/* &nbsp;&nbsp;&nbsp; */}
+            {/* <a onClick={this.showNPSInput}> */}
+            {/* Send Feedback */}
+            {/* </a> */}
+            {/* </span> : */}
+            {/* null */}
+            {/* } */}
           </span>
-          {/*{ turnedOnNPSInput && this.state.showNPSInput ?*/}
-            {/*<NPSInput onSubmit={this.onNPSSubmit}*/}
-                      {/*onDismissed={this.onNPSDismissed}>*/}
-              {/*{({ score }) => {*/}
-                {/*if (this.state.formSubmitted) {*/}
-                  {/*return <p>Thank you! Your feedback has been submitted.</p>;*/}
-                {/*} else {*/}
-                  {/*return <form onSubmit={this.onFormSubmit.bind(this)}>*/}
-                    {/*<p>Thank you for your rating! You just gave us a{score === 8 ? "n" : null} {score}.</p>*/}
-                    {/*<p>Any additional comments you would like to provide? (optional)</p>*/}
-                    {/*<Textarea onChange={this.updateFeedbackText.bind(this)}*/}
-                      {/*name="feedback_text"*/}
-                      {/*className="u-stack--sm form-control"*/}
-                      {/*minRows={3}*/}
-                      {/*placeholder={"Enter your comments here."}*/}
-                      {/*defaultValue={""}*/}
-                      {/*inputRef={tag => {this.feedbackTextArea = tag;}} />*/}
-                    {/*<button className="position-statement__post-button btn btn-default btn-sm" type="submit">Submit</button>*/}
-                  {/*</form>;*/}
-                {/*}*/}
-              {/*}}*/}
-            {/*</NPSInput> :*/}
-            {/*null*/}
-          {/*}*/}
+          {/* { turnedOnNPSInput && this.state.showNPSInput ? */}
+          {/* <NPSInput onSubmit={this.onNPSSubmit} */}
+          {/* onDismissed={this.onNPSDismissed}> */}
+          {/* {({ score }) => { */}
+          {/* if (this.state.formSubmitted) { */}
+          {/* return <p>Thank you! Your feedback has been submitted.</p>; */}
+          {/* } else { */}
+          {/* return <form onSubmit={this.onFormSubmit.bind(this)}> */}
+          {/* <p>Thank you for your rating! You just gave us a{score === 8 ? "n" : null} {score}.</p> */}
+          {/* <p>Any additional comments you would like to provide? (optional)</p> */}
+          {/* <Textarea onChange={this.updateFeedbackText.bind(this)} */}
+          {/* name="feedback_text" */}
+          {/* className="u-stack--sm form-control" */}
+          {/* minRows={3} */}
+          {/* placeholder={"Enter your comments here."} */}
+          {/* defaultValue={""} */}
+          {/* inputRef={tag => {this.feedbackTextArea = tag;}} /> */}
+          {/* <button className="position-statement__post-button btn btn-default btn-sm" type="submit">Submit</button> */}
+          {/* </form>; */}
+          {/* } */}
+          {/* }} */}
+          {/* </NPSInput> : */}
+          {/* null */}
+          {/* } */}
         </div>
       );
     } else {

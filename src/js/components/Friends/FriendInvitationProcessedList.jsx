@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import FriendInvitationProcessedDisplayForList from "./FriendInvitationProcessedDisplayForList";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
+import FriendInvitationProcessedDisplayForList from "./FriendInvitationProcessedDisplayForList";
 import { renderLog } from "../../utils/logging";
 
 export default class FriendInvitationProcessedList extends Component {
@@ -37,22 +37,33 @@ export default class FriendInvitationProcessedList extends Component {
     }
 
     let counter = 0;
+    const enter = 2000;
+    const exit = 2000;
 
-    return <div className="guidelist card-child__list-group">
-        <TransitionGroup transitionName="org-ignore" transitionEnterTimeout={2000} transitionLeaveTimeout={2000}>
+    return (
+      <div className="guidelist card-child__list-group">
+        <TransitionGroup className="org-ignore" timeout={{ exit, enter }}>
           {this.state.friendInvitationsList.map((friend) => {
             if (this.props.invitationsSentByMe) {
-              return <CSSTransition key={++counter} timeout={500} classNames="fade">
-                  <FriendInvitationProcessedDisplayForList key={counter} {...friend}
-                                                           invitationsSentByMe={this.props.invitationsSentByMe} />
-              </CSSTransition>;
+              return (
+                <CSSTransition key={++counter} timeout={500} classNames="fade">
+                  <FriendInvitationProcessedDisplayForList
+                    key={counter}
+                    {...friend}
+                    invitationsSentByMe={this.props.invitationsSentByMe}
+                  />
+                </CSSTransition>
+              );
             } else {
-              return <CSSTransition key={++counter} timeout={500} classNames="fade">
+              return (
+                <CSSTransition key={++counter} timeout={500} classNames="fade">
                   <FriendInvitationProcessedDisplayForList key={++counter} {...friend} />
-              </CSSTransition>;
+                </CSSTransition>
+              );
             }
           })}
         </TransitionGroup>
-      </div>;
+      </div>
+    );
   }
 }

@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router";
+import Helmet from "react-helmet";
 import CandidateItem from "../../components/Ballot/CandidateItem";
 import CandidateStore from "../../stores/CandidateStore";
 import { historyPush } from "../../utils/cordovaUtils";
 import FollowToggle from "../../components/Widgets/FollowToggle";
-import Helmet from "react-helmet";
 import LoadingWheel from "../../components/LoadingWheel";
 import { renderLog } from "../../utils/logging";
 import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
@@ -45,7 +45,7 @@ export default class VerifyThisIsMe extends Component {
     console.log("VerifyThisIsMe, Entering componentDidMount");
 
     this._onVoterStoreChange();
-    console.log("VerifyThisIsMe, componentDidMount: " + this.props.params.twitter_handle);
+    console.log(`VerifyThisIsMe, componentDidMount: ${this.props.params.twitter_handle}`);
     TwitterActions.twitterIdentityRetrieve(this.props.params.twitter_handle);
 
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
@@ -69,15 +69,15 @@ export default class VerifyThisIsMe extends Component {
   }
 
   _onOrganizationStoreChange () {
-    let { owner_we_vote_id } = TwitterStore.get();
-    console.log("Entering _onOrganizationStoreChange, owner_we_vote_id: " + owner_we_vote_id);
+    const { owner_we_vote_id } = TwitterStore.get();
+    console.log(`Entering _onOrganizationStoreChange, owner_we_vote_id: ${owner_we_vote_id}`);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(owner_we_vote_id),
     });
   }
 
   _onCandidateStoreChange () {
-    let { owner_we_vote_id } = TwitterStore.get();
+    const { owner_we_vote_id } = TwitterStore.get();
     this.setState({
       candidate: CandidateStore.getCandidate(owner_we_vote_id),
       position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(owner_we_vote_id),
@@ -85,22 +85,24 @@ export default class VerifyThisIsMe extends Component {
   }
 
   _onTwitterStoreChange () {
-    let { kind_of_owner, owner_we_vote_id, twitter_handle, twitter_description, twitter_followers_count, twitter_name,
+    const {
+      kind_of_owner, owner_we_vote_id, twitter_handle, twitter_description, twitter_followers_count, twitter_name,
       twitter_photo_url, twitter_user_website,
-      status } = TwitterStore.get();
+      status,
+    } = TwitterStore.get();
 
-    console.log("Entering _onTwitterStoreChange, owner_we_vote_id: " + owner_we_vote_id);
+    console.log(`Entering _onTwitterStoreChange, owner_we_vote_id: ${owner_we_vote_id}`);
 
     this.setState({
-      kind_of_owner: kind_of_owner,
-      owner_we_vote_id: owner_we_vote_id,
-      twitter_handle: twitter_handle,
-      twitter_description: twitter_description,
-      twitter_followers_count: twitter_followers_count,
-      twitter_name: twitter_name,
-      twitter_photo_url: twitter_photo_url,
-      twitter_user_website: twitter_user_website,
-      status: status,
+      kind_of_owner,
+      owner_we_vote_id,
+      twitter_handle,
+      twitter_description,
+      twitter_followers_count,
+      twitter_name,
+      twitter_photo_url,
+      twitter_user_website,
+      status,
     });
   }
 
@@ -108,17 +110,17 @@ export default class VerifyThisIsMe extends Component {
     renderLog(__filename);
 
     // Manage the control over this organization voter guide
-    let { candidate, organization, voter } = this.state;
-    let signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;
+    const { candidate, organization, voter } = this.state;
+    const signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;
     let signed_in_with_this_twitter_account = false;
     if (signed_in_twitter) {
       console.log("VerifyThisIsMe render, signed_in_twitter: ", signed_in_twitter);
-      console.log("VerifyThisIsMe this.props.params.twitter_handle: " + this.props.params.twitter_handle);
+      console.log(`VerifyThisIsMe this.props.params.twitter_handle: ${this.props.params.twitter_handle}`);
       signed_in_with_this_twitter_account = voter.twitter_screen_name.toLowerCase() === this.props.params.twitter_handle.toLowerCase();
       if (signed_in_with_this_twitter_account) {
         // If we are being asked to verify the account we are already signed into, return to the TwitterHandle page
         console.log("VerifyThisIsMe signed_in_with_this_twitter_account is True");
-        historyPush("/" + voter.twitter_screen_name);
+        historyPush(`/${voter.twitter_screen_name}`);
         return LoadingWheel;
       }
     }
@@ -129,38 +131,58 @@ export default class VerifyThisIsMe extends Component {
     } else if (this.state.kind_of_owner === "CANDIDATE") {
       console.log("VerifyThisIsMe this.state.kind_of_owner === CANDIDATE");
       this.props.params.we_vote_id = this.state.owner_we_vote_id;
-      return <span>
-        <Helmet title="Claim This Page - We Vote" />
-        <section className="card">
-          <CandidateItem {...candidate}
-                         position_list={this.state.position_list_from_advisers_followed_by_voter}
-                         showLargeImage />
-        </section>
-        <div>
-          <br />
-          <h1 className="h1">Please verify that you have the right to manage statements by this politician
-            by signing into this Twitter account:</h1>
-          <h2 className="h2">@{this.props.params.twitter_handle}</h2>
-          <br />
-        </div>
-        { signed_in_twitter ?
-          <Link to="/twittersigninprocess/signinswitchstart"><Button variant="primary">Sign In
-            With @{this.props.params.twitter_handle} Account</Button></Link> :
-          <Link to="/twittersigninprocess/signinswitchstart"><Button variant="primary">Sign Into
-            Twitter</Button></Link>
-        }
-      </span>;
+      return (
+        <span>
+          <Helmet title="Claim This Page - We Vote" />
+          <section className="card">
+            <CandidateItem
+              {...candidate}
+              position_list={this.state.position_list_from_advisers_followed_by_voter}
+              showLargeImage
+            />
+          </section>
+          <div>
+            <br />
+            <h1 className="h1">
+              Please verify that you have the right to manage statements by this politician
+              by signing into this Twitter account:
+            </h1>
+            <h2 className="h2">
+              @
+              {this.props.params.twitter_handle}
+            </h2>
+            <br />
+          </div>
+          { signed_in_twitter ? (
+            <Link to="/twittersigninprocess/signinswitchstart">
+              <Button variant="primary">
+                Sign In With @
+                {this.props.params.twitter_handle}
+                {" "}
+                Account
+              </Button>
+            </Link>
+          ) : (
+            <Link to="/twittersigninprocess/signinswitchstart">
+              <Button variant="primary">
+                Sign Into Twitter
+              </Button>
+            </Link>
+          )}
+        </span>
+      );
     } else if (this.state.kind_of_owner === "ORGANIZATION") {
       console.log("VerifyThisIsMe this.state.kind_of_owner === ORGANIZATION");
-      console.log("VerifyThisIsMe this.state.owner_we_vote_id: " + this.state.owner_we_vote_id);
+      console.log(`VerifyThisIsMe this.state.owner_we_vote_id: ${this.state.owner_we_vote_id}`);
       this.props.params.we_vote_id = this.state.owner_we_vote_id;
 
       if (!organization) {
         return <div>{LoadingWheel}</div>;
       }
 
-      return <span>
-        <Helmet title="Claim This Page - We Vote" />
+      return (
+        <span>
+          <Helmet title="Claim This Page - We Vote" />
           <div className="card">
             <div className="card-main">
               <FollowToggle organizationWeVoteId={this.props.params.we_vote_id} />
@@ -168,45 +190,86 @@ export default class VerifyThisIsMe extends Component {
             </div>
           </div>
           <div>
-            <p className="h4">Verify that you represent @{this.props.params.twitter_handle} by signing into this Twitter account.</p>
+            <p className="h4">
+              Verify that you represent @
+              {this.props.params.twitter_handle}
+              {" "}
+              by signing into this Twitter account.
+            </p>
           </div>
-          { signed_in_twitter ?
-            <Link to="/twittersigninprocess/signinswitchstart"><Button variant="primary">Sign In
-              With @{this.props.params.twitter_handle} Account</Button></Link> :
-            <Link to="/twittersigninprocess/signinswitchstart"><Button variant="primary">Sign Into
-              Twitter</Button></Link>
-          }
-        </span>;
+          { signed_in_twitter ? (
+            <Link to="/twittersigninprocess/signinswitchstart">
+              <Button variant="primary">
+                Sign In With @
+                {this.props.params.twitter_handle}
+                {" "}
+                Account
+              </Button>
+            </Link>
+          ) : (
+            <Link to="/twittersigninprocess/signinswitchstart">
+              <Button variant="primary">
+                Sign Into Twitter
+              </Button>
+            </Link>
+          )}
+        </span>
+      );
     } else if (this.state.kind_of_owner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE") {
       console.log("VerifyThisIsMe this.state.kind_of_owner === TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE");
-      return <div>
-        <Helmet title="Claim This Page - We Vote" />
-        <TwitterAccountCard {...this.state}/>
+      return (
         <div>
-          <br />
-          <h1 className="h1">Please verify that this is you by signing into this Twitter account:</h1>
-          <h2 className="h2">@{this.props.params.twitter_handle}</h2>
+          <Helmet title="Claim This Page - We Vote" />
+          <TwitterAccountCard {...this.state} />
+          <div>
+            <br />
+            <h1 className="h1">Please verify that this is you by signing into this Twitter account:</h1>
+            <h2 className="h2">
+              @
+              {this.props.params.twitter_handle}
+            </h2>
+            <br />
+          </div>
+          { signed_in_twitter ? (
+            <Link to="/twittersigninprocess/signinswitchstart">
+              <Button variant="primary">
+                Sign In With @
+                {this.props.params.twitter_handle}
+                {" "}
+                Account
+              </Button>
+            </Link>
+          ) : (
+            <Link to="/twittersigninprocess/signinswitchstart">
+              <Button variant="primary">
+                Sign Into Twitter
+              </Button>
+            </Link>
+          )}
+        </div>
+      );
+    } else {
+      return (
+        <div className="container-fluid well u-stack--md u-inset--md">
+          <Helmet title="Could Not Confirm - We Vote" />
+          <h3 className="h3">Could Not Confirm</h3>
+          <div className="small">
+            We were not able to find an account for this Twitter Handle
+            { this.props.params.twitter_handle ? (
+              <span>
+                {" "}
+                &quot;
+                {this.props.params.twitter_handle}
+                &quot;
+              </span>
+            ) :
+              <span />
+            }
+            .
+          </div>
           <br />
         </div>
-        { signed_in_twitter ?
-          <Link to="/twittersigninprocess/signinswitchstart"><Button variant="primary">Sign In
-            With @{this.props.params.twitter_handle} Account</Button></Link> :
-          <Link to="/twittersigninprocess/signinswitchstart"><Button variant="primary">Sign Into
-            Twitter</Button></Link>
-        }
-      </div>;
-    } else {
-      return <div className="container-fluid well u-stack--md u-inset--md">
-        <Helmet title="Could Not Confirm - We Vote" />
-              <h3 className="h3">Could Not Confirm</h3>
-                <div className="small">We were not able to find an account for this
-                  Twitter Handle{ this.props.params.twitter_handle ?
-                  <span> "{this.props.params.twitter_handle}"</span> :
-                <span />}.
-                </div>
-                <br />
-            </div>;
+      );
     }
-
   }
 }

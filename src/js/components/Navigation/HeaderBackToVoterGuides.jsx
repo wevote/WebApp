@@ -13,10 +13,9 @@ import OrganizationStore from "../../stores/OrganizationStore";
 import isMobile from "../../utils/isMobile";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import { renderLog } from "../../utils/logging";
-import { stringContains } from "../../utils/textFormat";
+import { shortenText, stringContains } from "../../utils/textFormat";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
-import { shortenText } from "../../utils/textFormat";
 
 export default class HeaderBackToVoterGuides extends Component {
   static propTypes = {
@@ -58,7 +57,7 @@ export default class HeaderBackToVoterGuides extends Component {
     if (this.props.params) {
       candidateWeVoteId = this.props.params.candidate_we_vote_id || "";
       if (candidateWeVoteId && candidateWeVoteId !== "") {
-        let candidate = CandidateStore.getCandidate(candidateWeVoteId);
+        const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
         // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
         officeWeVoteId = candidate.contest_officeWeVoteId;
@@ -76,14 +75,14 @@ export default class HeaderBackToVoterGuides extends Component {
     // console.log("candidateWeVoteId: ", candidateWeVoteId);
     // console.log("organizationWeVoteId: ", organizationWeVoteId);
 
-    let weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-    let weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
+    const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
+    const weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
     this.setState({
-      candidateWeVoteId: candidateWeVoteId,
-      officeName: officeName,
-      officeWeVoteId: officeWeVoteId,
-      organization: organization,
-      organizationWeVoteId: organizationWeVoteId,
+      candidateWeVoteId,
+      officeName,
+      officeWeVoteId,
+      organization,
+      organizationWeVoteId,
       voter: this.props.voter,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
@@ -99,7 +98,7 @@ export default class HeaderBackToVoterGuides extends Component {
     if (nextProps.params) {
       candidateWeVoteId = nextProps.params.candidate_we_vote_id || "";
       if (candidateWeVoteId && candidateWeVoteId !== "") {
-        let candidate = CandidateStore.getCandidate(candidateWeVoteId);
+        const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
         // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
         officeWeVoteId = candidate.contest_office_we_vote_id;
@@ -117,14 +116,14 @@ export default class HeaderBackToVoterGuides extends Component {
     // console.log("candidateWeVoteId: ", candidateWeVoteId);
     // console.log("organizationWeVoteId: ", organizationWeVoteId);
 
-    let weVoteBrandingOffFromUrl = nextProps.location.query ? nextProps.location.query.we_vote_branding_off : 0;
-    let weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
+    const weVoteBrandingOffFromUrl = nextProps.location.query ? nextProps.location.query.we_vote_branding_off : 0;
+    const weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
     this.setState({
-      candidateWeVoteId: candidateWeVoteId,
-      officeName: officeName,
-      officeWeVoteId: officeWeVoteId,
-      organization: organization,
-      organizationWeVoteId: organizationWeVoteId,
+      candidateWeVoteId,
+      officeName,
+      officeWeVoteId,
+      organization,
+      organizationWeVoteId,
       voter: nextProps.voter,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
@@ -147,7 +146,7 @@ export default class HeaderBackToVoterGuides extends Component {
     let officeName;
     let officeWeVoteId;
     if (this.state.candidateWeVoteId && this.state.candidateWeVoteId !== "") {
-      let candidate = CandidateStore.getCandidate(this.state.candidateWeVoteId);
+      const candidate = CandidateStore.getCandidate(this.state.candidateWeVoteId);
 
       // console.log("HeaderBackToBar -- onCandidateStoreChange, candidateWeVoteId:", this.state.candidateWeVoteId, ", candidate:", candidate);
       officeName = candidate.contest_office_name;
@@ -156,8 +155,8 @@ export default class HeaderBackToVoterGuides extends Component {
 
     this.setState({
       candidate: CandidateStore.getCandidate(this.state.candidateWeVoteId),
-      officeName: officeName,
-      officeWeVoteId: officeWeVoteId,
+      officeName,
+      officeWeVoteId,
     });
   }
 
@@ -195,26 +194,23 @@ export default class HeaderBackToVoterGuides extends Component {
   imagePlaceholder (speakerType) {
     let imagePlaceholderString = "";
     if (isSpeakerTypeOrganization(speakerType)) {
-      imagePlaceholderString = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
+      imagePlaceholderString = <div id="anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
     } else {
-      imagePlaceholderString = <div id= "anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
+      imagePlaceholderString = <div id="anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
     }
 
     return imagePlaceholderString;
   }
 
   getVoterGuideLink () {
-    // Steve 2/16/18, the following messed up code -- replaced below
-    // let organization_twitter_handle;
-    // return organization_twitter_handle ? "/" + organization_twitter_handle : "/voterguide/" + this.state.organizationWeVoteId;
-    return "/voterguide/" + this.state.organizationWeVoteId;
+    return `/voterguide/${this.state.organizationWeVoteId}`;
   }
 
   getOfficeLink () {
     if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
-      return "/office/" + this.state.officeWeVoteId + "/btvg/" + this.state.organizationWeVoteId;
+      return `/office/${this.state.officeWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
     } else {
-      return "/office/" + this.state.officeWeVoteId + "/b/btdb/";
+      return `/office/${this.state.officeWeVoteId}/b/btdb/`;
     }
   }
 
@@ -233,10 +229,10 @@ export default class HeaderBackToVoterGuides extends Component {
 
   render () {
     renderLog(__filename);
-    let voterPhotoUrlMedium = this.state.voter.voter_photo_url_medium;
-    let speakerType = "V";  // TODO DALE make this dynamic
+    const voterPhotoUrlMedium = this.state.voter.voter_photo_url_medium;
+    const speakerType = "V"; // TODO DALE make this dynamic
 
-    let backToLink = "/settings/voterguidelist"; //default
+    let backToLink = "/settings/voterguidelist"; // default
     let backToOrganizationLinkText = "Back to Voter Guides";
 
     if (stringContains("/settings/menu", this.props.pathname)) {
@@ -247,13 +243,13 @@ export default class HeaderBackToVoterGuides extends Component {
         backToLink = "/settings/voterguidesmenu";
       }
     } else if (stringContains("/settings/general", this.props.pathname) || stringContains("/settings/positions", this.props.pathname)) {
-      let voterGuideWeVoteId = this.props.params.voter_guide_we_vote_id;
+      const voterGuideWeVoteId = this.props.params.voter_guide_we_vote_id;
       if (isMobile()) {
         backToOrganizationLinkText = "Voter Guide Options";
 
         backToLink = voterGuideWeVoteId && voterGuideWeVoteId !== "" ?
-                      "/vg/" + voterGuideWeVoteId + "/settings/menu" :
-                      "/settings/voterguidesmenu";
+          `/vg/${voterGuideWeVoteId}/settings/menu` :
+          "/settings/voterguidesmenu";
       } else {
         backToOrganizationLinkText = "Back to Your Voter Guides";
 
@@ -265,46 +261,56 @@ export default class HeaderBackToVoterGuides extends Component {
       backToLink = "/settings/voterguidelist";
     }
 
-    let backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 30);
+    const backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 30);
 
     return (
-      <header className={ isWebApp() ? "page-header" : "page-header page-header__cordova" }>
+      <header className={isWebApp() ? "page-header" : "page-header page-header__cordova"}>
 
-        <Button bsPrefix={`btn btn-sm btn-default page-header__backToButton d-none d-sm-block ${hasIPhoneNotch() ? "page-header__backToButtonIPhoneX" : ""}`}
-                onClick={ () => historyPush(backToLink) }>
-          <span className="fa fa-arrow-left"/> {backToOrganizationLinkText}
+        <Button
+          bsPrefix={`btn btn-sm btn-default page-header__backToButton d-none d-sm-block ${hasIPhoneNotch() ? "page-header__backToButtonIPhoneX" : ""}`}
+          onClick={() => historyPush(backToLink)}
+        >
+          <span className="fa fa-arrow-left" />
+          {" "}
+          {backToOrganizationLinkText}
         </Button>
-        <Button bsPrefix={`btn btn-sm btn-default page-header__backToButton d-block d-sm-none ${hasIPhoneNotch() ? "page-header__backToButtonIPhoneX" : ""}`}
-                onClick={ () => historyPush(backToLink) }>
-          <span className="fa fa-arrow-left"/> {backToOrganizationLinkTextMobile}
+        <Button
+          bsPrefix={`btn btn-sm btn-default page-header__backToButton d-block d-sm-none ${hasIPhoneNotch() ? "page-header__backToButtonIPhoneX" : ""}`}
+          onClick={() => historyPush(backToLink)}
+        >
+          <span className="fa fa-arrow-left" />
+          {" "}
+          {backToOrganizationLinkTextMobile}
         </Button>
 
-        {this.state.profilePopUpOpen &&
-          <HeaderBarProfilePopUp {...this.props}
-            onClick={this.toggleProfilePopUp}
-            profilePopUpOpen={this.state.profilePopUpOpen}
-            bookmarks={this.state.bookmarks}
-            weVoteBrandingOff={this.state.we_vote_branding_off}
-            toggleProfilePopUp={this.toggleProfilePopUp.bind(this)}
-            hideProfilePopUp={this.hideProfilePopUp.bind(this)}
-            transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
-            signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
-          />
-        }
+        {this.state.profilePopUpOpen && (
+        <HeaderBarProfilePopUp
+          {...this.props}
+          onClick={this.toggleProfilePopUp}
+          profilePopUpOpen={this.state.profilePopUpOpen}
+          bookmarks={this.state.bookmarks}
+          weVoteBrandingOff={this.state.we_vote_branding_off}
+          toggleProfilePopUp={this.toggleProfilePopUp.bind(this)}
+          hideProfilePopUp={this.hideProfilePopUp.bind(this)}
+          transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
+          signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
+        />
+        )}
 
-        {isWebApp() &&
-          <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
-            {voterPhotoUrlMedium ?
-              <div id="js-header-avatar" className="header-nav__avatar-container">
-                <img className="header-nav__avatar"
-                     src={voterPhotoUrlMedium}
-                     height={34}
-                     width={34}
-                />
-              </div> : this.imagePlaceholder(speakerType)}
-          </div>
-        }
-
+        {isWebApp() && (
+        <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
+          {voterPhotoUrlMedium ? (
+            <div id="js-header-avatar" className="header-nav__avatar-container">
+              <img
+                className="header-nav__avatar"
+                src={voterPhotoUrlMedium}
+                height={34}
+                width={34}
+              />
+            </div>
+          ) : this.imagePlaceholder(speakerType)}
+        </div>
+        )}
       </header>
     );
   }

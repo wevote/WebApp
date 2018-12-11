@@ -13,9 +13,7 @@ export default function connectToStores (stores, getState) {
       }
 
       componentWillMount () {
-        stores.forEach(store =>
-          store.addChangeListener(this.handleStoresChanged)
-        );
+        stores.forEach(store => store.addChangeListener(this.handleStoresChanged));
       }
 
       componentWillReceiveProps (nextProps) {
@@ -25,9 +23,7 @@ export default function connectToStores (stores, getState) {
       }
 
       componentWillUnmount () {
-        stores.forEach(store =>
-          store.removeChangeListener(this.handleStoresChanged)
-        );
+        stores.forEach(store => store.removeChangeListener(this.handleStoresChanged));
       }
 
       handleStoresChanged () {

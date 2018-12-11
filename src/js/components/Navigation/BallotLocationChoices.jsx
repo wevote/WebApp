@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import BallotActions from "../../actions/BallotActions";
-import BallotLocationButton from "./BallotLocationButton";
-import BallotStore from "../../stores/BallotStore";
-import { isCordova } from "../../utils/cordovaUtils";
-import ElectionStore from "../../stores/ElectionStore";
-import { historyPush } from "../../utils/cordovaUtils";
 import moment from "moment";
+import BallotActions from "../../actions/BallotActions";
+import BallotStore from "../../stores/BallotStore";
+import { historyPush, isCordova } from "../../utils/cordovaUtils";
+import ElectionStore from "../../stores/ElectionStore";
 import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 import { calculateBallotBaseUrl } from "../../utils/textFormat";
+
+// December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
+/* eslint no-restricted-syntax: 1 */
 
 export default class BallotLocationChoices extends Component {
   static propTypes = {
@@ -41,6 +42,7 @@ export default class BallotLocationChoices extends Component {
     });
     // console.log("In BallotLocationChoices componentDidMount, ballot_location_list_sorted: ", ballot_location_list_sorted);
   }
+
   componentWillReceiveProps (nextProps) {
     // console.log("BallotLocationChoices componentWillReceiveProps, nextProps.google_civic_election_id: ", nextProps.google_civic_election_id);
     this.setState({
@@ -67,16 +69,17 @@ export default class BallotLocationChoices extends Component {
     if (!google_civic_election_id || google_civic_election_id === 0) {
       return [];
     }
-    let ballot_location_list_unsorted = ElectionStore.getBallotLocationsForElection(google_civic_election_id);
-    let ballot_location_list_sorted = this.sortBallotLocations(ballot_location_list_unsorted);
-    let voter_ballot_location = VoterStore.getBallotLocationForVoter();
+    const ballot_location_list_unsorted = ElectionStore.getBallotLocationsForElection(google_civic_election_id);
+    const ballot_location_list_sorted = this.sortBallotLocations(ballot_location_list_unsorted);
+    const voter_ballot_location = VoterStore.getBallotLocationForVoter();
     if (voter_ballot_location && voter_ballot_location.ballot_returned_we_vote_id) {
       let voter_ballot_location_in_list = false;
       // If the election in the voter_ballot_location matches the election we are looking at,
       // include the voter's displayed address
       // console.log("retrieveBallotLocationList, google_civic_election_id: ", google_civic_election_id, ", voter_ballot_location: ", voter_ballot_location);
       if (voter_ballot_location.google_civic_election_id === google_civic_election_id) {
-        ballot_location_list_sorted.map((ballot_location) => {
+        // TODO: Steve remove the error suppression on the next line 12/1/18, a temporary hack
+        ballot_location_list_sorted.map((ballot_location) => { // eslint-disable-line array-callback-return
           if (ballot_location.ballot_returned_we_vote_id === voter_ballot_location.ballot_returned_we_vote_id) {
             voter_ballot_location_in_list = true;
           }
@@ -94,18 +97,14 @@ export default class BallotLocationChoices extends Component {
 
   sortBallotLocations (ballot_location_list_unsorted) {
     // temporary array holds objects with position and sort-value
-    let mapped = ballot_location_list_unsorted.map( (ballot_location, i) => {
-      return { index: i, value: ballot_location };
-    });
+    const mapped = ballot_location_list_unsorted.map((ballot_location, i) => ({ index: i, value: ballot_location }));
 
     // sorting the mapped array based on ballot_location_order which came from the server
-    mapped.sort( (a, b) => {
-      return +(parseInt(a.value.ballot_location_order, 10) > parseInt(b.value.ballot_location_order, 10)) ||
-        +(parseInt(a.value.ballot_location_order, 10) === parseInt(b.value.ballot_location_order, 10)) - 1;
-    });
+    mapped.sort( (a, b) => +(parseInt(a.value.ballot_location_order, 10) > parseInt(b.value.ballot_location_order, 10)) ||
+        +(parseInt(a.value.ballot_location_order, 10) === parseInt(b.value.ballot_location_order, 10)) - 1);
 
-    let orderedArray = [];
-    for (let element of mapped) {
+    const orderedArray = [];
+    for (const element of mapped) {
       orderedArray.push(element.value);
     }
 
@@ -113,18 +112,18 @@ export default class BallotLocationChoices extends Component {
   }
 
   goToDifferentBallot (ballot_returned_we_vote_id = "", ballot_location_shortcut = "") {
-    let ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
+    const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
 
     // console.log("BallotLocationChoices, goToDifferentBallot, ballot_returned_we_vote_id: ", ballot_returned_we_vote_id);
     // console.log("BallotLocationChoices, goToDifferentBallot, ballot_location_shortcut: ", ballot_location_shortcut);
     if (ballot_location_shortcut !== "" && ballot_location_shortcut !== undefined) {
       BallotActions.voterBallotItemsRetrieve(0, "", ballot_location_shortcut);
       // Change the URL to match
-      historyPush(ballotBaseUrl + "/" + ballot_location_shortcut);
+      historyPush(`${ballotBaseUrl}/${ballot_location_shortcut}`);
     } else if (ballot_returned_we_vote_id !== "" && ballot_returned_we_vote_id !== undefined) {
       BallotActions.voterBallotItemsRetrieve(0, ballot_returned_we_vote_id, "");
       // Change the URL to match
-      historyPush(ballotBaseUrl + "/id/" + ballot_returned_we_vote_id);
+      historyPush(`${ballotBaseUrl}/id/${ballot_returned_we_vote_id}`);
     }
     if (this.props.toggleFunction) {
       this.props.toggleFunction();
@@ -145,16 +144,20 @@ export default class BallotLocationChoices extends Component {
     const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format("MMM Do, YYYY")}</span> : <span />;
     // console.log("In BallotLocationChoices render, ballot_location_list: ", this.state.ballot_location_list);
     if (this.state.ballot_location_list && this.state.ballot_location_list.length) {
-      return <div className="u-stack--sm ballot-locations d-print-none">
-        { this.props.showElectionName ?
-          <h4 className={`ballot__header__title${isCordova() && "__cordova"}` + "h4"}>
-            <span className="u-push--sm">
-              {electionName} <span className="d-none d-sm-inline">&mdash; </span>
-              <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
-            </span>
-          </h4> :
-          null }
-        {/* Commented out for 2018 Election
+      return (
+        <div className="u-stack--sm ballot-locations d-print-none">
+          { this.props.showElectionName ? (
+            <h4 className={`ballot__header__title${isCordova() && "__cordova"} h4`}>
+              <span className="u-push--sm">
+                {electionName}
+                {" "}
+                <span className="d-none d-sm-inline">&mdash; </span>
+                <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
+              </span>
+            </h4>
+          ) :
+            null }
+          {/* Commented out for 2018 Election
         <div className="btn-group">
           Mobile display of buttons
           <div className="d-block d-sm-none">
@@ -194,7 +197,8 @@ export default class BallotLocationChoices extends Component {
               null }
           </div>
         </div>  */}
-      </div>;
+        </div>
+      );
     } else {
       return <div />;
     }

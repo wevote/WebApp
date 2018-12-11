@@ -1,3 +1,6 @@
+// December 2018:  This is aan opensource file that we reuse, so no lint corrections are appropriate
+/* eslint no-useless-escape: 0 */
+
 /*
   Utility function to detect if current device is mobile
   Returns Boolean true/false

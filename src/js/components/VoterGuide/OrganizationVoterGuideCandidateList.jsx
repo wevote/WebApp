@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { renderLog } from "../../utils/logging";
-import OrganizationVoterGuideCandidateItem from "../../components/VoterGuide/OrganizationVoterGuideCandidateItem";
+import OrganizationVoterGuideCandidateItem from "./OrganizationVoterGuideCandidateItem";
 
 // This is related to components/Ballot/CandidateList.jsx
 export default class OrganizationVoterGuideCandidateList extends Component {
@@ -13,19 +13,23 @@ export default class OrganizationVoterGuideCandidateList extends Component {
 
   render () {
     renderLog(__filename);
-    return <article className="card-main__list-group">
-        { this.props.children.map( (child) =>
+    return (
+      <article className="card-main__list-group">
+        { this.props.children.map( child => (
           <div key={child.we_vote_id} className="card">
-            <OrganizationVoterGuideCandidateItem key={child.we_vote_id}
-                           contest_office_name={this.props.contest_office_name}
-                           hidePositionStatement
-                           link_to_ballot_item_page
-                           organization_we_vote_id={this.props.organization_we_vote_id}
-                           position_list={child.position_list}
-                           {...child}
+            <OrganizationVoterGuideCandidateItem
+              key={child.we_vote_id}
+              contest_office_name={this.props.contest_office_name}
+              hidePositionStatement
+              link_to_ballot_item_page
+              organization_we_vote_id={this.props.organization_we_vote_id}
+              position_list={child.position_list}
+              {...child}
             />
-          </div>)
+          </div>
+        ))
         }
-      </article>;
+      </article>
+    );
   }
 }

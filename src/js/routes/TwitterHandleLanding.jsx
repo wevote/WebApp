@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router";
-import Candidate from "./Ballot/Candidate";
 import Helmet from "react-helmet";
+import Candidate from "./Ballot/Candidate";
 import LoadingWheel from "../components/LoadingWheel";
 import { renderLog } from "../utils/logging";
 import OrganizationVoterGuide from "./VoterGuide/OrganizationVoterGuide";
@@ -55,24 +55,26 @@ export default class TwitterHandleLanding extends Component {
 
   _onTwitterStoreChange () {
     // console.log("TwitterHandleLanding _onTwitterStoreChange");
-    let { kind_of_owner, owner_we_vote_id, twitter_handle, twitter_description, twitter_followers_count, twitter_name,
-      twitter_photo_url, twitter_user_website,
-      status } = TwitterStore.get();
+    let { twitter_followers_count } = TwitterStore.get();
+    const {
+      kind_of_owner, owner_we_vote_id, twitter_handle, twitter_description,  twitter_name,
+      twitter_photo_url, twitter_user_website, status,
+    } = TwitterStore.get();
 
     if (typeof twitter_followers_count !== "number") {
       twitter_followers_count = 0;
     }
 
     this.setState({
-      kind_of_owner: kind_of_owner,
-      owner_we_vote_id: owner_we_vote_id,
-      twitter_handle: twitter_handle,
-      twitter_description: twitter_description,
-      twitter_followers_count: twitter_followers_count,
-      twitter_name: twitter_name,
-      twitter_photo_url: twitter_photo_url,
-      twitter_user_website: twitter_user_website,
-      status: status,
+      kind_of_owner,
+      owner_we_vote_id,
+      twitter_handle,
+      twitter_description,
+      twitter_followers_count,
+      twitter_name,
+      twitter_photo_url,
+      twitter_user_website,
+      status,
     });
   }
 
@@ -87,7 +89,7 @@ export default class TwitterHandleLanding extends Component {
   }
 
   getIncomingActiveRoute () {
-    let incoming_active_route = this.props.active_route || "";
+    const incoming_active_route = this.props.active_route || "";
     // console.log("TwitterHandleLanding, getIncomingActiveRoute incoming_active_route: ", incoming_active_route);
     return incoming_active_route;
   }
@@ -100,12 +102,14 @@ export default class TwitterHandleLanding extends Component {
       return LoadingWheel;
     }
 
-    const { voter, kind_of_owner, owner_we_vote_id, twitter_handle } = this.state;
-    let signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;
+    const {
+      voter, kind_of_owner, owner_we_vote_id, twitter_handle,
+    } = this.state;
+    const signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;
     let signed_in_with_this_twitter_account = false;
     let looking_at_positions_for_friends_only = false;
     if (signed_in_twitter) {
-      let twitter_handle_being_viewed = twitter_handle;  // Variable copied for code clarity
+      const twitter_handle_being_viewed = twitter_handle; // Variable copied for code clarity
       // That is, you are looking at yourself
       signed_in_with_this_twitter_account = voter.twitter_screen_name === twitter_handle_being_viewed;
 
@@ -115,7 +119,7 @@ export default class TwitterHandleLanding extends Component {
 
     // If signed_in_with_this_twitter_account AND not an ORGANIZATION or POLITICIAN, then create ORGANIZATION
     // We *may* eventually have a "VOTER" type, but for now ORGANIZATION is all we need for both orgs and voters
-    let is_neither_organization_nor_politician = kind_of_owner !== "ORGANIZATION" && kind_of_owner !== "POLITICIAN";
+    const is_neither_organization_nor_politician = kind_of_owner !== "ORGANIZATION" && kind_of_owner !== "POLITICIAN";
     if (signed_in_with_this_twitter_account && is_neither_organization_nor_politician) {
       // We make the API call to create a new organization for this Twitter handle. This will create a cascade so that
       // js/routes/TwitterHandleLanding will switch the view to an Organization card / PositionList
@@ -133,38 +137,53 @@ export default class TwitterHandleLanding extends Component {
     if (this.state.kind_of_owner === "CANDIDATE") {
       this.props.params.candidate_we_vote_id = owner_we_vote_id;
       return <Candidate candidate_we_vote_id {...this.props} />;
-    } else if (this.state.kind_of_owner === "ORGANIZATION"){
+    } else if (this.state.kind_of_owner === "ORGANIZATION") {
       this.props.params.organization_we_vote_id = owner_we_vote_id;
       if (looking_at_positions_for_friends_only) {
         return <PositionListForFriends we_vote_id {...this.props} />;
       } else {
-        return <OrganizationVoterGuide {...this.props}
-                                       location={this.props.location}
-                                       params={this.props.params}
-                                       active_route={this.getIncomingActiveRoute()} />;
+        return (
+          <OrganizationVoterGuide
+            {...this.props}
+            location={this.props.location}
+            params={this.props.params}
+            active_route={this.getIncomingActiveRoute()}
+          />
+        );
       }
-    } else if (this.state.kind_of_owner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE"){
+    } else if (this.state.kind_of_owner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE") {
       // console.log("TwitterHandleLanding TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE calling UnknownTwitterAccount");
       return <UnknownTwitterAccount {...this.state} />;
     } else {
       // console.log("render in TwitterHandleLanding  else, this.state.kind_of_owner");
-      return <div className="container-fluid well u-stack--md u-inset--md">
+      return (
+        <div className="container-fluid well u-stack--md u-inset--md">
           <Helmet title="Not Found - We Vote" />
           <h3 className="h3">Claim Your Page</h3>
-            <div className="medium">
-              We were not able to find an account for this
-              Twitter Handle{ this.state.twitter_handle ?
-                <span> "{this.state.twitter_handle}"</span> :
-                <span />}.
-            </div>
-            <br />
-            <Link to="/twittersigninprocess/signinswitchstart">
-              <Button variant="primary">Sign Into Twitter to Create Voter Guide</Button>
-            </Link>
-            <br />
-            <br />
-            <br />
-        </div>;
+          <div className="medium">
+            We were not able to find an account for this
+            Twitter Handle
+            { this.state.twitter_handle ? (
+              <span>
+                {" "}
+                &quot;
+                {this.state.twitter_handle}
+                &quot;
+              </span>
+            ) :
+              <span />
+            }
+            .
+          </div>
+          <br />
+          <Link to="/twittersigninprocess/signinswitchstart">
+            <Button variant="primary">Sign Into Twitter to Create Voter Guide</Button>
+          </Link>
+          <br />
+          <br />
+          <br />
+        </div>
+      );
     }
   }
 }

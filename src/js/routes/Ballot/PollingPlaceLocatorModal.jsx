@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import { cordovaDot, cordovaOpenSafariView, hasIPhoneNotch, historyPush, isWebApp } from "../../utils/cordovaUtils";
 import { Modal } from "react-bootstrap";
+import PropTypes from "prop-types";
+import {
+  cordovaDot, cordovaOpenSafariView, hasIPhoneNotch, historyPush, isWebApp,
+} from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import PollingPlaceLocator from "../../components/Ballot/PollingPlaceLocator";
-import PropTypes from "prop-types";
 
 export default class PollingPlaceLocatorModal extends Component {
   static propTypes = {
@@ -28,17 +30,21 @@ export default class PollingPlaceLocatorModal extends Component {
 
     if (isWebApp()) {
       return (
-        <Modal bsPrefix="background-brand-blue modal"
-               show={this.state.showPollingLocatorModal}
-               onHide={() => this._openPollingLocatorModal(this)}>
+        <Modal
+          bsPrefix="background-brand-blue modal"
+          show={this.state.showPollingLocatorModal}
+          onHide={() => this._openPollingLocatorModal(this)}
+        >
           <Modal.Body>
             <div className="intro-modal__close">
-              <a onClick={this._openPollingLocatorModal}
-                 className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}>
-                <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close"/>
+              <a
+                onClick={this._openPollingLocatorModal}
+                className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}
+              >
+                <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
               </a>
             </div>
-            <div key={1}><PollingPlaceLocator/></div>
+            <div key={1}><PollingPlaceLocator /></div>
           </Modal.Body>
         </Modal>
       );

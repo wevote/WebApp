@@ -21,13 +21,13 @@ export default class SignInJumpProcess extends Component {
       jump_path: "",
       voter: {},
       yes_please_merge_accounts: false,
-      saving: true
+      saving: true,
     };
   }
 
   componentDidMount () {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    let incoming_voter_device_id = this.props.location.query.voter_device_id;
+    const incoming_voter_device_id = this.props.location.query.voter_device_id;
     console.log("SignInJumpProcess, componentDidMount, this.props.location.query.voter_device_id: ", incoming_voter_device_id);
     // this.voterAnalysisForJumpProcess(incoming_voter_device_id);
     this.setState({
@@ -55,7 +55,7 @@ export default class SignInJumpProcess extends Component {
       // incoming_voter_device_id_belongs_to_this_voter
       // voter_analysis_for_jump_process: VoterStore.getEmailAddressStatus(),
       // email_sign_in_status: VoterStore.getEmailSignInStatus(),
-      saving: false
+      saving: false,
     });
   }
 
@@ -73,16 +73,16 @@ export default class SignInJumpProcess extends Component {
 
   voterAnalysisForJumpProcess (incoming_voter_device_id) {
     VoterActions.voterAnalysisForJumpProcess(incoming_voter_device_id);
-    this.setState({saving: true});
+    this.setState({ saving: true });
   }
 
   yesPleaseMergeAccounts () {
-    this.setState({yes_please_merge_accounts: true});
+    this.setState({ yes_please_merge_accounts: true });
   }
 
   render () {
     renderLog(__filename);
-    let incoming_voter_device_id = this.props.location.query.voter_device_id;
+    const incoming_voter_device_id = this.props.location.query.voter_device_id;
     console.log("SignInJumpProcess, incoming_voter_device_id:", incoming_voter_device_id);
     if (!incoming_voter_device_id ||
       // this.state.saving ||

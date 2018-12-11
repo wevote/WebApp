@@ -44,7 +44,7 @@ export default class IntroNetwork extends Component {
   render () {
     renderLog(__filename);
 
-    //These are settings for the react-slick slider
+    // These are settings for the react-slick slider
     const settings = {
       dots: true,
       infinite: false,
@@ -56,19 +56,23 @@ export default class IntroNetwork extends Component {
       arrows: true,
     };
 
-    return <div>
-      <Helmet title="Welcome to We Vote" />
-      <div className="intro-story container-fluid well u-inset--md">
-        <img src={cordovaDot("/img/global/icons/x-close.png")}
-             onClick={IntroNetwork.goToBallotLink}
-             className={ isWebApp() ? "x-close" : "x-close x-close__cordova" }
-             alt={"close"} />
-        <Slider {...settings} dotsClass="slick-dots intro-modal__gray-dots" ref={this.slider} >
-          <div key={1}><IntroNetworkSafety next={this.next}/></div>
-          <div key={2}><IntroNetworkDefinition next={this.next}/></div>
-          <div key={3}><IntroNetworkBallotIsNext next={this.next}/></div>
-       </Slider>
+    return (
+      <div>
+        <Helmet title="Welcome to We Vote" />
+        <div className="intro-story container-fluid well u-inset--md">
+          <img
+            src={cordovaDot("/img/global/icons/x-close.png")}
+            onClick={IntroNetwork.goToBallotLink}
+            className={isWebApp() ? "x-close" : "x-close x-close__cordova"}
+            alt="close"
+          />
+          <Slider {...settings} dotsClass="slick-dots intro-modal__gray-dots" ref={this.slider}>
+            <div key={1}><IntroNetworkSafety next={this.next} /></div>
+            <div key={2}><IntroNetworkDefinition next={this.next} /></div>
+            <div key={3}><IntroNetworkBallotIsNext next={this.next} /></div>
+          </Slider>
+        </div>
       </div>
-    </div>;
+    );
   }
 }

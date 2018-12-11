@@ -30,31 +30,31 @@ export default class VoterGuideOrganizationInfo extends Component {
   }
 
   componentDidMount () {
-    //AnalyticsActions.saveActionVoterGuideGetStarted(VoterStore.election_id());
+    // AnalyticsActions.saveActionVoterGuideGetStarted(VoterStore.election_id());
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.setState({
       autoFocus: true,
     });
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // Get Voter and Voter's Organization
-    let voter = VoterStore.getVoter();
+    const voter = VoterStore.getVoter();
     this.setState({
-      voter: voter,
+      voter,
     });
     let validOrganizationDescriptionExists = false;
     let validOrganizationNameExists = false;
     let validVoterNameExists = false;
     let validWebsiteExists = false;
-    let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log("SettingsDashboard componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId) {
       this.setState({
-        linkedOrganizationWeVoteId: linkedOrganizationWeVoteId,
+        linkedOrganizationWeVoteId,
       });
-      let organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
+      const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
       if (organization && organization.organization_we_vote_id) {
         this.setState({
-          organization: organization,
+          organization,
         });
         if (!this.state.voterHasMadeChanges) {
           validOrganizationDescriptionExists = this.validOrganizationDescriptionExists(organization);
@@ -83,17 +83,17 @@ export default class VoterGuideOrganizationInfo extends Component {
   }
 
   onOrganizationStoreChange () {
-    let organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
+    const organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
     this.setState({
       isLoading: false,
-      organization: organization,
+      organization,
     });
     if (!this.state.voterHasMadeChanges) {
-      let voter = VoterStore.getVoter();
-      let validOrganizationDescriptionExists = this.validOrganizationDescriptionExists(organization);
-      let validOrganizationNameExists = this.validOrganizationNameExists(voter, organization);
-      let validVoterNameExists = this.validVoterNameExists(voter, organization);
-      let validWebsiteExists = this.validWebsiteExists(organization);
+      const voter = VoterStore.getVoter();
+      const validOrganizationDescriptionExists = this.validOrganizationDescriptionExists(organization);
+      const validOrganizationNameExists = this.validOrganizationNameExists(voter, organization);
+      const validVoterNameExists = this.validVoterNameExists(voter, organization);
+      const validWebsiteExists = this.validWebsiteExists(organization);
       // Redirect if we have everything we need AND the voter hasn't made changes yet on this page
       if (validVoterNameExists && validOrganizationDescriptionExists && validOrganizationNameExists && validWebsiteExists) {
         // console.log("VoterGuideOrganizationInfo onOrganizationStoreChange redirect to /voterguidechooseelection");
@@ -103,15 +103,15 @@ export default class VoterGuideOrganizationInfo extends Component {
   }
 
   onVoterStoreChange () {
-    let voter = VoterStore.getVoter();
+    const voter = VoterStore.getVoter();
     this.setState({
-      voter: voter,
+      voter,
     });
-    let linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
+    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log("SettingsDashboard onVoterStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
       OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
-      this.setState({ linkedOrganizationWeVoteId: linkedOrganizationWeVoteId });
+      this.setState({ linkedOrganizationWeVoteId });
     }
   }
 
@@ -125,7 +125,7 @@ export default class VoterGuideOrganizationInfo extends Component {
   }
 
   goToBallotLink () {
-    let sampleBallotLink = "/ballot";
+    const sampleBallotLink = "/ballot";
     historyPush(sampleBallotLink);
   }
 
@@ -205,14 +205,11 @@ export default class VoterGuideOrganizationInfo extends Component {
       return null;
     }
 
-    let actionButtonHtml;
-    actionButtonHtml = <button type="button" className="btn btn-lg btn-success"
-                    onClick={this.goToChooseElection}>Next&nbsp;&nbsp;&gt;</button>;
-
-    return <div>
-      <Helmet title="Create Profile - We Vote" />
+    return (
+      <div>
+        <Helmet title="Create Profile - We Vote" />
         <div className="intro-story container well u-inset--md">
-          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt={"close"}/>
+          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt="close" />
           <div className="create-voter-guide__h1 xs-text-left">Create Profile</div>
           <div className="create-voter-guide__steps xs-text-left">
             Step 3 of 5
@@ -228,9 +225,16 @@ export default class VoterGuideOrganizationInfo extends Component {
             <div className="col-1 col-md-2">&nbsp;</div>
           </div>
           <footer className="create-voter-guide__footer">
-            {actionButtonHtml}
+            <button
+              type="button"
+              className="btn btn-lg btn-success"
+              onClick={this.goToChooseElection}
+            >
+              Next&nbsp;&nbsp;&gt;
+            </button>
           </footer>
         </div>
-      </div>;
+      </div>
+    );
   }
 }

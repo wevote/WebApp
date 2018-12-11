@@ -25,23 +25,28 @@ export default class PositionDropdown extends Component {
 
   onButtonBlur () {
     // Delay closing the drop down so that onClick has time to work
-    let temp_this = this;
-    setTimeout(function () {
+    const temp_this = this;
+    setTimeout(() => {
       temp_this.closeDropdown();
-      }, 250);
+    }, 250);
   }
 
   render () {
     renderLog(__filename);
-    const {removePositionFunction, positionIcon, positionText} = this.props;
+    const { removePositionFunction, positionIcon, positionText } = this.props;
     const onClick = this.state.open ? this.closeDropdown.bind(this) : this.openDropdown.bind(this);
     const dropdownClass = this.state.open ? " open" : "";
 
-    return <div className={"btn-group" + dropdownClass}>
-      <button onBlur={this.onButtonBlur.bind(this)} onClick={onClick} className="dropdown-toggle item-actionbar__btn item-actionbar__btn--position-selected btn btn-default">
-        {positionIcon} {positionText} <span className="caret" />
-      </button>
-      {this.state.open &&
+    return (
+      <div className={`btn-group${dropdownClass}`}>
+        <button onBlur={this.onButtonBlur.bind(this)} onClick={onClick} className="dropdown-toggle item-actionbar__btn item-actionbar__btn--position-selected btn btn-default">
+          {positionIcon}
+          {" "}
+          {positionText}
+          {" "}
+          <span className="caret" />
+        </button>
+        {this.state.open && (
         <ul className="dropdown-menu" onClick={removePositionFunction}>
           <li>
             <a autoFocus>
@@ -49,7 +54,8 @@ export default class PositionDropdown extends Component {
             </a>
           </li>
         </ul>
-      }
-    </div>;
+        )}
+      </div>
+    );
   }
 }

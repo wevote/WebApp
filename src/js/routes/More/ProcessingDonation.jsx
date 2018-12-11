@@ -3,7 +3,7 @@ import { historyPush } from "../../utils/cordovaUtils";
 import DonateStore from "../../stores/DonateStore";
 import { renderLog } from "../../utils/logging";
 
-let loadingScreenStyles = {
+const loadingScreenStyles = {
   position: "fixed",
   height: "100vh",
   width: "100vw",
@@ -45,11 +45,13 @@ export default class ProcessingDonation extends Component {
 
   render () {
     renderLog(__filename);
-    return <div style={loadingScreenStyles}>
-      <div>
-        <h1 className="h1">Processing your Donation...</h1>
-        <div className="u-loading-spinner u-loading-spinner--light" />
+    return (
+      <div style={loadingScreenStyles}>
+        <div>
+          <h1 className="h1">Processing your Donation...</h1>
+          <div className="u-loading-spinner u-loading-spinner--light" />
+        </div>
       </div>
-    </div>;
+    );
   }
 }

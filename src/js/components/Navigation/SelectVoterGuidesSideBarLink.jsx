@@ -20,20 +20,30 @@ export default class SelectVoterGuidesSideBarLink extends Component {
 
   render () {
     renderLog(__filename);
-    let label_in_sentence_case = capitalizeString(this.props.label);
-    let subtitle_in_sentence_case = sentenceCaseString(this.props.subtitle);
+    const label_in_sentence_case = capitalizeString(this.props.label);
+    const subtitle_in_sentence_case = sentenceCaseString(this.props.subtitle);
 
-    return <span>{label_in_sentence_case && label_in_sentence_case !== "" ?
-      <div className="SettingsItem__summary__item-container">
-        <div>
-          <Link to={this.props.linkTo} className="BallotItem__summary__item">
-            <span className="SettingsItem__summary__item__display-name">{label_in_sentence_case}</span>
-            { this.props.displaySubtitles ?
-              <span className="SettingsItem__summary__item__subtitle"><br /> {subtitle_in_sentence_case}</span> : null }
-          </Link>
-        </div>
-      </div> :
-      null
-      }</span>;
+    return (
+      <span>
+        {label_in_sentence_case && label_in_sentence_case !== "" ? (
+          <div className="SettingsItem__summary__item-container">
+            <div>
+              <Link to={this.props.linkTo} className="BallotItem__summary__item">
+                <span className="SettingsItem__summary__item__display-name">{label_in_sentence_case}</span>
+                { this.props.displaySubtitles ? (
+                  <span className="SettingsItem__summary__item__subtitle">
+                    <br />
+                    {" "}
+                    {subtitle_in_sentence_case}
+                  </span>
+                ) : null }
+              </Link>
+            </div>
+          </div>
+        ) :
+          null
+      }
+      </span>
+    );
   }
 }

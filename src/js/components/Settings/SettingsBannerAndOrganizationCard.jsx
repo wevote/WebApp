@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { renderLog } from "../../utils/logging";
-import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
 import PropTypes from "prop-types";
+import { renderLog } from "../../utils/logging";
+import OrganizationCard from "../VoterGuide/OrganizationCard";
 
 export default class SettingsBannerAndOrganizationCard extends Component {
   static propTypes = {
@@ -35,27 +35,32 @@ export default class SettingsBannerAndOrganizationCard extends Component {
       return null;
     }
 
-    return <div>
-        { this.state.organization && this.state.organization.organization_banner_url && this.state.organization.organization_banner_url !== "" ?
+    return (
+      <div>
+        { this.state.organization && this.state.organization.organization_banner_url && this.state.organization.organization_banner_url !== "" ? (
           <div className="organization-banner-image-div">
             <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
-          </div> :
-          null
+          </div>
+        ) : null
         }
-        {this.state.organization.organization_name && !this.state.organization.organization_name.startsWith("Voter-") ?
+        {this.state.organization.organization_name && !this.state.organization.organization_name.startsWith("Voter-") ? (
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-12">
                 <div className="card">
                   <div className="card-main">
-                    <OrganizationCard organization={this.state.organization}
-                                      turnOffTwitterHandle />
+                    <OrganizationCard
+                      organization={this.state.organization}
+                      turnOffTwitterHandle
+                    />
                   </div>
                 </div>
               </div>
             </div>
-          </div> :
-          null }
-      </div>;
+          </div>
+        ) : null
+        }
+      </div>
+    );
   }
 }

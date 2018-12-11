@@ -19,7 +19,7 @@ export default class Location extends Component {
     super(props);
     this.state = {
       elections_locations_list: [],
-      voter_ballot_list: []
+      voter_ballot_list: [],
     };
   }
 
@@ -38,16 +38,16 @@ export default class Location extends Component {
   }
 
   onElectionStoreChange () {
-    let elections_list = ElectionStore.getElectionList();
-    let elections_locations_list = [];
+    const elections_list = ElectionStore.getElectionList();
+    const elections_locations_list = [];
     let voter_ballot; // A different format for much of the same data
-    let voter_ballot_list = [];
+    const voter_ballot_list = [];
     let one_ballot_location;
     let ballot_location_shortcut;
     let ballot_returned_we_vote_id;
 
-    for (var i = 0; i < elections_list.length; i++) {
-      var election = elections_list[i];
+    for (let i = 0; i < elections_list.length; i++) {
+      const election = elections_list[i];
       elections_locations_list.push(election);
       ballot_returned_we_vote_id = "";
       ballot_location_shortcut = "";
@@ -64,21 +64,22 @@ export default class Location extends Component {
         election_description_text: election.election_name,
         election_day_text: election.election_day_text,
         original_text_for_map_search: "",
-        ballot_location_shortcut: ballot_location_shortcut,
-        ballot_returned_we_vote_id: ballot_returned_we_vote_id,
+        ballot_location_shortcut,
+        ballot_returned_we_vote_id,
       };
       voter_ballot_list.push(voter_ballot);
     }
 
     this.setState({
-      elections_locations_list: elections_locations_list,
-      voter_ballot_list: voter_ballot_list,
+      elections_locations_list,
+      voter_ballot_list,
     });
   }
 
   render () {
     renderLog(__filename);
-    return <div>
+    return (
+      <div>
         <div className="container-fluid well u-stack--md u-inset--md">
           <Helmet title="Enter Your Address - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
@@ -92,6 +93,7 @@ export default class Location extends Component {
         <div className="elections-list-container container-fluid well u-stack--md u-inset--md">
           <BallotElectionList ballotElectionList={this.state.voter_ballot_list} ballotBaseUrl="/ballot" />
         </div>
-      </div>;
+      </div>
+    );
   }
 }

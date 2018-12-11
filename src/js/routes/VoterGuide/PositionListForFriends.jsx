@@ -20,10 +20,10 @@ export default class PositionListForFriends extends Component {
     this.state = { organization_we_vote_id: this.props.params.organization_we_vote_id };
   }
 
-  componentDidMount (){
+  componentDidMount () {
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
 
-    var { organization_we_vote_id } = this.state;
+    const { organization_we_vote_id } = this.state;
 
     OrganizationActions.organizationRetrieve(organization_we_vote_id);
     // Positions for this organization, for this voter / election
@@ -40,7 +40,7 @@ export default class PositionListForFriends extends Component {
 
   componentWillReceiveProps (nextProps) {
     // When a new candidate is passed in, update this component to show the new data
-    this.setState({organization_we_vote_id: nextProps.params.organization_we_vote_id});
+    this.setState({ organization_we_vote_id: nextProps.params.organization_we_vote_id });
 
     OrganizationActions.organizationRetrieve(nextProps.params.organization_we_vote_id);
     // Positions for this organization, for this voter / election
@@ -54,26 +54,26 @@ export default class PositionListForFriends extends Component {
     SearchAllActions.exitSearch();
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.organizationStoreListener.remove();
   }
 
-  _onOrganizationStoreChange (){
-    var { organization_we_vote_id } = this.state;
-    this.setState({ organization: OrganizationStore.getOrganizationByWeVoteId(organization_we_vote_id)});
+  _onOrganizationStoreChange () {
+    const { organization_we_vote_id } = this.state;
+    this.setState({ organization: OrganizationStore.getOrganizationByWeVoteId(organization_we_vote_id) });
   }
 
   render () {
     renderLog(__filename);
-    if (!this.state.organization){
+    if (!this.state.organization) {
       return <div>{LoadingWheel}</div>;
     }
 
     const { friends_position_list_for_one_election, friends_position_list_for_all_except_one_election } = this.state.organization;
-    var { organization_we_vote_id } = this.state;
+    const { organization_we_vote_id } = this.state;
 
-    return <span>
-
+    return (
+      <span>
         <div className="card">
           <div className="card-main">
             <FollowToggle organizationWeVoteId={organization_we_vote_id} />
@@ -81,37 +81,46 @@ export default class PositionListForFriends extends Component {
           </div>
           <ul className="list-group">
             { friends_position_list_for_one_election ?
-              friends_position_list_for_one_election.map( item => {
-                return <OrganizationPositionItem key={item.position_we_vote_id}
-                                                 position={item}
-                                                 organization={this.state.organization} />;
-              }) :
+              friends_position_list_for_one_election.map( item => (
+                <OrganizationPositionItem
+                  key={item.position_we_vote_id}
+                  position={item}
+                  organization={this.state.organization}
+                />
+              )) :
               <div>{LoadingWheel}</div>
             }
-            { friends_position_list_for_all_except_one_election ?
+            { friends_position_list_for_all_except_one_election ? (
               <span>
-                { friends_position_list_for_all_except_one_election.length ?
+                { friends_position_list_for_all_except_one_election.length ? (
                   <span>
                     <br />
                     <h4 className="card__additional-heading">Positions for Other Elections</h4>
-                  </span> :
+                  </span>
+                ) :
                   <span />
                 }
-                { friends_position_list_for_all_except_one_election.map( item => {
-                  return <OrganizationPositionItem key={item.position_we_vote_id}
-                                                   position={item}
-                                                   organization={this.state.organization} />;
-                }) }
-              </span> :
+                { friends_position_list_for_all_except_one_election.map( item => (
+                  <OrganizationPositionItem
+                    key={item.position_we_vote_id}
+                    position={item}
+                    organization={this.state.organization}
+                  />))
+                }
+              </span>
+            ) :
               <div>{LoadingWheel}</div>
             }
           </ul>
         </div>
         <br />
-        <ThisIsMeAction twitter_handle_being_viewed={this.state.organization.organization_twitter_handle}
-                        name_being_viewed={this.state.organization.organization_name}
-                        kind_of_owner="ORGANIZATION" />
+        <ThisIsMeAction
+          twitter_handle_being_viewed={this.state.organization.organization_twitter_handle}
+          name_being_viewed={this.state.organization.organization_name}
+          kind_of_owner="ORGANIZATION"
+        />
         <br />
-      </span>;
+      </span>
+    );
   }
 }

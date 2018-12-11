@@ -23,7 +23,7 @@ export default class ChooseElectionForVoterGuide extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      voterBallotList: []
+      voterBallotList: [],
     };
   }
 
@@ -34,7 +34,7 @@ export default class ChooseElectionForVoterGuide extends Component {
     ElectionActions.electionsRetrieve();
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.ballotStoreListener.remove();
     this.electionListListener.remove();
     this.voterGuideStoreListener.remove();
@@ -52,17 +52,17 @@ export default class ChooseElectionForVoterGuide extends Component {
     }
   }
 
-  onElectionStoreChange (){
-    let electionsList = ElectionStore.getElectionList();
-    let electionsLocationsList = [];
+  onElectionStoreChange () {
+    const electionsList = ElectionStore.getElectionList();
+    const electionsLocationsList = [];
     let voter_ballot; // A different format for much of the same data
-    let voterBallotList = [];
+    const voterBallotList = [];
     let one_ballot_location;
     let ballot_location_shortcut;
     let ballot_returned_we_vote_id;
 
-    for (var i = 0; i < electionsList.length; i++){
-      var election = electionsList[i];
+    for (let i = 0; i < electionsList.length; i++) {
+      const election = electionsList[i];
       electionsLocationsList.push(election);
       ballot_returned_we_vote_id = "";
       ballot_location_shortcut = "";
@@ -79,21 +79,21 @@ export default class ChooseElectionForVoterGuide extends Component {
         election_description_text: election.election_name,
         election_day_text: election.election_day_text,
         original_text_for_map_search: "",
-        ballot_location_shortcut: ballot_location_shortcut,
-        ballot_returned_we_vote_id: ballot_returned_we_vote_id,
+        ballot_location_shortcut,
+        ballot_returned_we_vote_id,
       };
       voterBallotList.push(voter_ballot);
     }
 
     this.setState({
-      electionsLocationsList: electionsLocationsList,
-      voterBallotList: voterBallotList,
+      electionsLocationsList,
+      voterBallotList,
     });
   }
 
-  onVoterGuideStoreChange (){
-    let voter = VoterStore.getVoter();
-    let voterGuideSaveResults = VoterGuideStore.getVoterGuideSaveResults();
+  onVoterGuideStoreChange () {
+    const voter = VoterStore.getVoter();
+    const voterGuideSaveResults = VoterGuideStore.getVoterGuideSaveResults();
     if (voterGuideSaveResults && voter && voterGuideSaveResults.organization_we_vote_id === voter.linked_organization_we_vote_id) {
       this.props.destinationFunction(voterGuideSaveResults.we_vote_id);
     }
@@ -106,64 +106,82 @@ export default class ChooseElectionForVoterGuide extends Component {
       return null;
     }
 
-    let currentDate = moment().format("YYYY-MM-DD");
-    //console.log("currentDate: ", currentDate);
+    const currentDate = moment().format("YYYY-MM-DD");
+    // console.log("currentDate: ", currentDate);
     let electionDateTomorrow;
     let electionDateTomorrowMoment;
-    let ballotElectionListUpcomingSorted = this.state.voterBallotList;
+    const ballotElectionListUpcomingSorted = this.state.voterBallotList;
     // We want to sort ascending so the next upcoming election is first
-    ballotElectionListUpcomingSorted.sort(function (a, b) {
-      let election_day_text_A = a.election_day_text.toLowerCase();
-      let election_day_text_B = b.election_day_text.toLowerCase();
-      if (election_day_text_A < election_day_text_B) //sort string ascending
+    ballotElectionListUpcomingSorted.sort((a, b) => {
+      const election_day_text_A = a.election_day_text.toLowerCase();
+      const election_day_text_B = b.election_day_text.toLowerCase();
+      if (election_day_text_A < election_day_text_B) { // sort string ascending
         return -1;
-      if (election_day_text_A > election_day_text_B)
-        return 1;
-      return 0; //default return value (no sorting)
+      }
+      if (election_day_text_A > election_day_text_B) return 1;
+      return 0; // default return value (no sorting)
     });
     let upcomingElectionList = ballotElectionListUpcomingSorted.map((item, index) => {
       electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
       electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
       // console.log("electionDateTomorrow: ", electionDateTomorrow);
-      return electionDateTomorrow > currentDate ?
+      return electionDateTomorrow > currentDate ? (
         <div key={index}>
           <dl className="list-unstyled text-center">
-            <button type="button" className="btn btn-success ballot-election-list__button"
-                    onClick={this.saveVoterGuideForElection.bind(this, item.google_civic_election_id)}>
+            <button
+              type="button"
+              className="btn btn-success ballot-election-list__button"
+              onClick={this.saveVoterGuideForElection.bind(this, item.google_civic_election_id)}
+            >
               {/* Mobile */}
-              { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ?
-                <span className="d-block d-sm-none">{item.election_description_text}&nbsp;<img
-                  src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span> :
+              { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
+                <span className="d-block d-sm-none">
+                  {item.election_description_text}&nbsp;
+                  <img
+                    src={cordovaDot("/img/global/icons/Circle-Arrow.png")}
+                  />
+                </span>
+              ) : (
                 <span
-                  className="d-block d-sm-none">{item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}...&nbsp;
-                  <img src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span>
-              }
+                  className="d-block d-sm-none"
+                >
+                  {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
+                  ...&nbsp;
+                  <img src={cordovaDot("/img/global/icons/Circle-Arrow.png")} />
+                </span>
+              )}
               {/* Desktop */}
-              <span className="d-none d-sm-block">{item.election_description_text}&nbsp;<img
-                src={cordovaDot("/img/global/icons/Circle-Arrow.png")}/></span>
-
+              <span className="d-none d-sm-block">
+                {item.election_description_text}&nbsp;
+                <img
+                  src={cordovaDot("/img/global/icons/Circle-Arrow.png")}
+                />
+              </span>
               <div className="ballot-election-list__h2">{moment(item.election_day_text).format("MMMM Do, YYYY")}</div>
             </button>
           </dl>
-        </div> :
+        </div>
+      ) :
         null;
     });
     upcomingElectionList = cleanArray(upcomingElectionList);
 
-    let ballotElectionListPastSorted = this.state.voterBallotList;
+    const ballotElectionListPastSorted = this.state.voterBallotList;
     // We want to sort descending so the most recent election is first
-    ballotElectionListPastSorted.sort(function (a, b) {
-      let election_day_text_A = a.election_day_text.toLowerCase();
-      let election_day_text_B = b.election_day_text.toLowerCase();
-      if (election_day_text_A < election_day_text_B) //sort string descending
+    ballotElectionListPastSorted.sort((a, b) => {
+      const election_day_text_A = a.election_day_text.toLowerCase();
+      const election_day_text_B = b.election_day_text.toLowerCase();
+      if (election_day_text_A < election_day_text_B) { // sort string descending
         return 1;
-      if (election_day_text_A > election_day_text_B)
-        return -1;
-      return 0; //default return value (no sorting)
+      }
+      if (election_day_text_A > election_day_text_B) return -1;
+      return 0; // default return value (no sorting)
     });
 
-    return <div>
-      {upcomingElectionList}
-    </div>;
+    return (
+      <div>
+        {upcomingElectionList}
+      </div>
+    );
   }
 }

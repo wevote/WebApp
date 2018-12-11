@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
-import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
+import BrowserPushMessage from "../Widgets/BrowserPushMessage";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
-import LoadingWheel from "../../components/LoadingWheel";
+import LoadingWheel from "../LoadingWheel";
 import { renderLog } from "../../utils/logging";
 import TwitterActions from "../../actions/TwitterActions";
 import VoterActions from "../../actions/VoterActions";
@@ -26,7 +26,7 @@ export default class SettingsNotifications extends Component {
       name_saved_status: "",
       show_twitter_disconnect: false,
       newsletter_opt_in: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
-      notifications_saved_status: ""
+      notifications_saved_status: "",
     };
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -58,10 +58,10 @@ export default class SettingsNotifications extends Component {
         last_name: VoterStore.getLastName(),
         initial_name_loaded: true,
         voter: VoterStore.getVoter(),
-        newsletter_opt_in: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN)
+        newsletter_opt_in: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
       });
     } else {
-      this.setState({voter: VoterStore.getVoter()});
+      this.setState({ voter: VoterStore.getVoter() });
     }
   }
 
@@ -72,37 +72,37 @@ export default class SettingsNotifications extends Component {
   }
 
   facebookLogOutOnKeyDown (event) {
-    let enterAndSpaceKeyCodes = [13, 32];
+    const enterAndSpaceKeyCodes = [13, 32];
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       FacebookActions.appLogout();
     }
   }
 
   twitterLogOutOnKeyDown (event) {
-    let enterAndSpaceKeyCodes = [13, 32];
+    const enterAndSpaceKeyCodes = [13, 32];
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       TwitterActions.appLogout();
     }
   }
 
   toggleTwitterDisconnectOpen () {
-    this.setState({show_twitter_disconnect: true});
+    this.setState({ show_twitter_disconnect: true });
   }
 
   toggleTwitterDisconnectClose () {
-    this.setState({show_twitter_disconnect: false});
+    this.setState({ show_twitter_disconnect: false });
   }
 
   voterSplitIntoTwoAccounts () {
     VoterActions.voterSplitIntoTwoAccounts();
-    this.setState({show_twitter_disconnect: false});
+    this.setState({ show_twitter_disconnect: false });
   }
 
   handleKeyPress () {
     clearTimeout(this.timer);
     this.timer = setTimeout(() => {
       VoterActions.voterNameSave(this.state.first_name, this.state.last_name);
-      this.setState({name_saved_status: "Saved"});
+      this.setState({ name_saved_status: "Saved" });
     }, delay_before_user_name_update_api_call);
   }
 
@@ -110,12 +110,12 @@ export default class SettingsNotifications extends Component {
     if (event.target.name === "first_name") {
       this.setState({
         first_name: event.target.value,
-        name_saved_status: "Saving First Name..."
+        name_saved_status: "Saving First Name...",
       });
     } else if (event.target.name === "last_name") {
       this.setState({
         last_name: event.target.value,
-        name_saved_status: "Saving Last Name..."
+        name_saved_status: "Saving Last Name...",
       });
     }
   }
@@ -140,29 +140,33 @@ export default class SettingsNotifications extends Component {
       return LoadingWheel;
     }
 
-    return <div className="">
-      <Helmet title={"Notifications - We Vote"} />
-      <BrowserPushMessage incomingProps={this.props} />
-      <div className="card">
-        <div className="card-main">
-          {this.state.voter.is_signed_in ?
-            <div>
-              <span className="h3">Notification Settings</span>
-              <br />
-              <input id="newsletter_opt_in"
-                     type="checkbox"
-                     name="newsletter_opt_in"
-                     onChange={this.updateNewsletterOptIn}
-                     checked={this.state.newsletter_opt_in}
-              />
-              { " " }
-              <label htmlFor="newsletter_opt_in">I would like to receive the We Vote newsletter</label>
-              <span className="pull-right u-gray-mid">{this.state.notifications_saved_status}</span>
-            </div> :
-            <div><Link to="/settings/account">Please Sign In</Link></div>
+    return (
+      <div className="">
+        <Helmet title="Notifications - We Vote" />
+        <BrowserPushMessage incomingProps={this.props} />
+        <div className="card">
+          <div className="card-main">
+            {this.state.voter.is_signed_in ? (
+              <div>
+                <span className="h3">Notification Settings</span>
+                <br />
+                <input
+                  id="newsletter_opt_in"
+                  type="checkbox"
+                  name="newsletter_opt_in"
+                  onChange={this.updateNewsletterOptIn}
+                  checked={this.state.newsletter_opt_in}
+                />
+                { " " }
+                <label htmlFor="newsletter_opt_in">I would like to receive the We Vote newsletter</label>
+                <span className="pull-right u-gray-mid">{this.state.notifications_saved_status}</span>
+              </div>
+            ) :
+              <div><Link to="/settings/account">Please Sign In</Link></div>
           }
+          </div>
         </div>
       </div>
-    </div>;
+    );
   }
 }

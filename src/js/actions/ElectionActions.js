@@ -2,7 +2,7 @@ import Dispatcher from "../dispatcher/Dispatcher";
 
 export default {
 
-  electionsRetrieve: function () {
+  electionsRetrieve () {
     Dispatcher.loadEndpoint("electionsRetrieve", {});
   },
 };

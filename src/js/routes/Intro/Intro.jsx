@@ -1,4 +1,3 @@
-"use strict";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
@@ -62,48 +61,57 @@ export default class Intro extends Component {
       voterCount,
     } = this.state;
 
-    return <div>
-      <Helmet title="Welcome to We Vote" />
-      { this.props.children ||
+    return (
+      <div>
+        <Helmet title="Welcome to We Vote" />
+        { this.props.children || (
         <div className="container-fluid well u-stack--md u-inset--md">
           <h2 className="text-center">We Vote</h2>
-            <label htmlFor="address">
+          <label htmlFor="address">
               Your Address.&nbsp;
-            </label>
-            <span className="medium">
+          </label>
+          <span className="medium">
               This is our best guess - feel free to change.
-            </span>
-            <AddressBox {...this.props} saveUrl="/ballot" />
-            <br/>
-            <ul className="list-group">
-              <li className="list-group-item">Research ballot items</li>
-              <li className="list-group-item">Learn from friends</li>
-              <li className="list-group-item">Take to the polls</li>
-            </ul>
+          </span>
+          <AddressBox {...this.props} saveUrl="/ballot" />
+          <br />
+          <ul className="list-group">
+            <li className="list-group-item">Research ballot items</li>
+            <li className="list-group-item">Learn from friends</li>
+            <li className="list-group-item">Take to the polls</li>
+          </ul>
 
-            <ul className="list-group">
-              <li className="list-group-item">
-                {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
-                <span className="glyphicon glyphicon-small glyphicon-ok-sign" /> &nbsp;Neutral and private
-              </li>
-              <li className="list-group-item">
-                {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
-                <span className="glyphicon glyphicon-small glyphicon-ok-sign" />
-                  &nbsp; {numberWithCommas(voterCount)} voters
-              </li>
-              <li className="list-group-item">
-                {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
-                <span className="glyphicon glyphicon-small glyphicon-ok-sign" />
-                  &nbsp; {numberWithCommas(orgCount)} not-for-profit organizations
-              </li>
-              <li className="list-group-item">
-                {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
-                <span className="glyphicon glyphicon-small glyphicon-ok-sign" />
+          <ul className="list-group">
+            <li className="list-group-item">
+              {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
+              <span className="glyphicon glyphicon-small glyphicon-ok-sign" />
+              {" "}
+              &nbsp;Neutral and private
+            </li>
+            <li className="list-group-item">
+              {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
+              <span className="glyphicon glyphicon-small glyphicon-ok-sign" />
+              {numberWithCommas(voterCount)}
+              {" "}
+              voters
+            </li>
+            <li className="list-group-item">
+              {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
+              <span className="glyphicon glyphicon-small glyphicon-ok-sign" />
+              {numberWithCommas(orgCount)}
+              {" "}
+              not-for-profit organizations
+            </li>
+            <li className="list-group-item">
+              {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
+              <span className="glyphicon glyphicon-small glyphicon-ok-sign" />
                   &nbsp; and you.
-              </li>
-            </ul>
-          </div>
+            </li>
+          </ul>
+        </div>
+        )
         }
-      </div>;
+      </div>
+    );
   }
 }

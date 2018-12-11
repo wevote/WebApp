@@ -10,7 +10,7 @@ import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAcc
 export default class VerifyEmailProcess extends Component {
   static propTypes = {
     params: PropTypes.object,
-    email_secret_key: PropTypes.string
+    email_secret_key: PropTypes.string,
   };
 
   constructor (props) {
@@ -24,7 +24,7 @@ export default class VerifyEmailProcess extends Component {
 
   componentDidMount () {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    let { email_secret_key } = this.props.params;
+    const { email_secret_key } = this.props.params;
     console.log("VerifyEmailProcess, componentDidMount, this.props.params.email_secret_key: ", email_secret_key);
     this.voterEmailAddressVerify(email_secret_key);
   }
@@ -76,16 +76,16 @@ export default class VerifyEmailProcess extends Component {
 
   voterEmailAddressVerify (email_secret_key) {
     VoterActions.voterEmailAddressVerify(email_secret_key);
-    this.setState({saving: true});
+    this.setState({ saving: true });
   }
 
   yesPleaseMergeAccounts () {
-    this.setState({yes_please_merge_accounts: true});
+    this.setState({ yes_please_merge_accounts: true });
   }
 
   render () {
     renderLog(__filename);
-    let { email_secret_key } = this.props.params;
+    const { email_secret_key } = this.props.params;
     console.log("VerifyEmailProcess, email_secret_key:", email_secret_key);
     if (!email_secret_key ||
       this.state.saving ||
@@ -142,9 +142,13 @@ export default class VerifyEmailProcess extends Component {
       const cancel_merge_function = this.cancelMergeFunction.bind(this);
       const please_merge_accounts_function = this.yesPleaseMergeAccounts.bind(this);
       // Display the question of whether to merge accounts or not
-      return <WouldYouLikeToMergeAccounts cancelMergeFunction={cancel_merge_function}
-                                          pleaseMergeAccountsFunction={please_merge_accounts_function} />;
-      //return <span>WouldYouLikeToMergeAccounts</span>;
+      return (
+        <WouldYouLikeToMergeAccounts
+          cancelMergeFunction={cancel_merge_function}
+          pleaseMergeAccountsFunction={please_merge_accounts_function}
+        />
+      );
+      // return <span>WouldYouLikeToMergeAccounts</span>;
     } else {
       // Go ahead and merge the accounts, which means deleting the current voter id and switching to the email owner
       console.log("this.voterMergeTwoAccountsByEmailKey - go ahead, email_secret_key:", email_secret_key);

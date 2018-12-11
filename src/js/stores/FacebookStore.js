@@ -103,7 +103,7 @@ class FacebookStore extends ReduceStore {
       return [];
     }
 
-    let dataList = [];
+    const dataList = [];
     for (let i = 0, len = arr.length; i < len; i++) {
       dataList.push(arr[i]);
     }
@@ -112,8 +112,17 @@ class FacebookStore extends ReduceStore {
   }
 
   reduce (state, action) {
-    switch (action.type) {
+    // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
+    if (!action.res || !action.res.success) return state;
 
+    let facebookFriendsNotExist = false;
+    const facebookInvitableFriendsRetrieved = true;
+    let facebookInvitableFriendsList = [];
+    let appRequestAlreadyProcessed = false;
+    const facebookUserId = this.userId;
+    let facebookProfileImageUrlHttps = "";
+
+    switch (action.type) {
       case FacebookConstants.FACEBOOK_LOGGED_IN:
 
         // console.log("FACEBOOK_LOGGED_IN action.data:", action.data);
@@ -140,9 +149,6 @@ class FacebookStore extends ReduceStore {
         // console.log("FacebookStore, FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS");
         // Cache the data in the API server
         // FacebookActions.getFacebookInvitableFriendsList(action.data.id);
-        let facebookFriendsNotExist = false;
-        let facebookInvitableFriendsRetrieved = true;
-        let facebookInvitableFriendsList = [];
         if (action.data.invitable_friends) {
           facebookInvitableFriendsList = action.data.invitable_friends.data;
         } else {
@@ -152,20 +158,19 @@ class FacebookStore extends ReduceStore {
         // console.log("FACEBOOK_RECEIVED_INVITABLE_FRIENDS: ", facebook_invitable_friends_list);
         return {
           ...state,
-          facebookInvitableFriendsList: facebookInvitableFriendsList,
-          facebookFriendsNotExist: facebookFriendsNotExist,
-          facebookInvitableFriendsRetrieved: facebookInvitableFriendsRetrieved,
+          facebookInvitableFriendsList,
+          facebookFriendsNotExist,
+          facebookInvitableFriendsRetrieved,
         };
 
       case FacebookConstants.FACEBOOK_READ_APP_REQUESTS:
 
         // console.log("FacebookStore appreqests:", action.data.apprequests);
-        let appRequestAlreadyProcessed = false;
         if (action.data.apprequests) {
-          let apprequestsData = action.data.apprequests.data[0];
-          let recipientFacebookUserId = apprequestsData.to.id;
-          let senderFacebookId = apprequestsData.from.id;
-          let facebookRequestId = apprequestsData.id;
+          const apprequestsData = action.data.apprequests.data[0];
+          const recipientFacebookUserId = apprequestsData.to.id;
+          const senderFacebookId = apprequestsData.from.id;
+          const facebookRequestId = apprequestsData.id;
           FriendActions.friendInvitationByFacebookVerify(facebookRequestId, recipientFacebookUserId, senderFacebookId);
         } else {
           appRequestAlreadyProcessed = true;
@@ -174,7 +179,7 @@ class FacebookStore extends ReduceStore {
         // console.log("app_request_already_processed", app_request_already_processed);
         return {
           ...state,
-          appRequestAlreadyProcessed: appRequestAlreadyProcessed,
+          appRequestAlreadyProcessed,
         };
 
       case FacebookConstants.FACEBOOK_DELETE_APP_REQUEST:
@@ -248,8 +253,6 @@ class FacebookStore extends ReduceStore {
         return state;
 
       case FacebookConstants.FACEBOOK_RECEIVED_PICTURE:
-        let facebookUserId = this.userId;
-        let facebookProfileImageUrlHttps = "";
         if (action.data && action.data.picture && action.data.picture.data && action.data.picture.data.url) {
           FacebookActions.voterFacebookSignInPhoto(facebookUserId, action.data.picture.data);
           facebookProfileImageUrlHttps = action.data.picture.data.url;

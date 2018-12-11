@@ -5,17 +5,17 @@ import { Button } from "react-bootstrap";
 import PropTypes from "prop-types";
 import ReactPlayer from "react-player";
 import Icon from "react-svg-icons";
-import { renderLog } from "../../utils/logging";
-import ReadMore from "../../components/Widgets/ReadMore";
 import Textarea from "react-textarea-autosize";
+import { renderLog } from "../../utils/logging";
+import ReadMore from "./ReadMore";
 import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
-import PositionPublicToggle from "../../components/Widgets/PositionPublicToggle";
+import PositionPublicToggle from "./PositionPublicToggle";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
-import { vimeo_reg, youtube_reg } from "../../utils/textFormat";
-import { stringContains } from "../../utils/textFormat";
+import { vimeo_reg, youtube_reg, stringContains } from "../../utils/textFormat";
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../../utils/cordovaUtils";
+
 
 
 export default class ItemPositionStatementActionBar extends Component {
@@ -26,7 +26,6 @@ export default class ItemPositionStatementActionBar extends Component {
     comment_edit_mode_on: PropTypes.bool,
     supportProps: PropTypes.object,
     shown_in_list: PropTypes.bool,
-    stance_display_off: PropTypes.bool,
     shouldFocus: PropTypes.bool,
   };
 
@@ -72,7 +71,7 @@ export default class ItemPositionStatementActionBar extends Component {
       });
     }
     if (this.state.showEditPositionStatementInput) {
-      //we don't want to do anything
+      // we don't want to do anything
     } else if (nextProps.supportProps && nextProps.supportProps.voter_statement_text) {
       this.setState({
         statement_text_to_be_saved: nextProps.supportProps.voter_statement_text,
@@ -80,7 +79,7 @@ export default class ItemPositionStatementActionBar extends Component {
         transitioning: false,
       });
     } else {
-      let voter_statement_text = nextProps.supportProps && nextProps.supportProps.voter_statement_text || "";
+      const voter_statement_text = (nextProps.supportProps && nextProps.supportProps.voter_statement_text) || "";
       this.setState({
         statement_text_to_be_saved: voter_statement_text,
         showEditPositionStatementInput: nextProps.comment_edit_mode_on,
@@ -91,13 +90,13 @@ export default class ItemPositionStatementActionBar extends Component {
 
   componentDidUpdate (prevProps) {
     if (this.textarea && prevProps.supportProps && this.state.supportProps) {
-      if (prevProps.supportProps.is_oppose === true && this.state.supportProps.is_support === true) {  //oppose to support
+      if (prevProps.supportProps.is_oppose === true && this.state.supportProps.is_support === true) { // oppose to support
         this.textarea.focus();
-      } else if (prevProps.supportProps.is_support === true && this.state.supportProps.is_oppose === true) { //support to oppose
+      } else if (prevProps.supportProps.is_support === true && this.state.supportProps.is_oppose === true) { // support to oppose
         this.textarea.focus();
-      } else if (prevProps.supportProps.is_oppose === false && prevProps.supportProps.is_support === false && this.state.supportProps.is_support === true) { //comment to support
+      } else if (prevProps.supportProps.is_oppose === false && prevProps.supportProps.is_support === false && this.state.supportProps.is_support === true) { // comment to support
         this.textarea.focus();
-      } else if (prevProps.supportProps.is_oppose === false && prevProps.supportProps.is_support === false && this.state.supportProps.is_oppose === true) { //comment to oppose
+      } else if (prevProps.supportProps.is_oppose === false && prevProps.supportProps.is_support === false && this.state.supportProps.is_oppose === true) { // comment to oppose
         this.textarea.focus();
       }
     }
@@ -109,18 +108,18 @@ export default class ItemPositionStatementActionBar extends Component {
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
-  static getDerivedStateFromError (error) {       // eslint-disable-line no-unused-vars
+  static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
     // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
     return { hasError: true };
   }
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
-    console.error("ItemPositionStatementActionBar caught error: ", error + " with info: ", info);
+    console.error("ItemPositionStatementActionBar caught error: ", `${error} with info: `, info);
   }
 
   onSupportStoreChange () {
-    let supportProps = SupportStore.get(this.props.ballot_item_we_vote_id);
+    const supportProps = SupportStore.get(this.props.ballot_item_we_vote_id);
     let statement_text_to_be_saved = "";
     let is_public_position = "";
 
@@ -129,8 +128,8 @@ export default class ItemPositionStatementActionBar extends Component {
         is_public_position = supportProps.is_public_position;
       }
       this.setState({
-        supportProps: supportProps,
-        is_public_position: is_public_position,
+        supportProps,
+        is_public_position,
         transitioning: false,
       });
     } else {
@@ -139,9 +138,9 @@ export default class ItemPositionStatementActionBar extends Component {
         is_public_position = supportProps.is_public_position;
       }
       this.setState({
-        statement_text_to_be_saved: statement_text_to_be_saved,
-        supportProps: supportProps,
-        is_public_position: is_public_position,
+        statement_text_to_be_saved,
+        supportProps,
+        is_public_position,
         transitioning: false,
       });
     }
@@ -185,26 +184,28 @@ export default class ItemPositionStatementActionBar extends Component {
       return <div />;
     }
 
-    let { statement_text_to_be_saved, voter_full_name, voter_photo_url_medium } = this.state;
+    let { statement_text_to_be_saved } = this.state;
+    const { voter_full_name, voter_photo_url_medium } = this.state;
     statement_text_to_be_saved = statement_text_to_be_saved.length === 0 ? null : statement_text_to_be_saved;
 
     let statementPlaceholderText;
+    const horizontalEllipsis = "\u2026";
     if (this.state.supportProps.is_support) {
       if (this.props.ballot_item_display_name) {
-        statementPlaceholderText = "Why you chose " + this.props.ballot_item_display_name + "\u2026";
+        statementPlaceholderText = `Why you chose ${this.props.ballot_item_display_name}${horizontalEllipsis}`;
       } else {
-        statementPlaceholderText = "Why you support\u2026";
+        statementPlaceholderText = `Why you support${horizontalEllipsis}`;
       }
     } else if (this.state.supportProps.is_oppose) {
       if (this.props.ballot_item_display_name) {
-        statementPlaceholderText = "Why you oppose " + this.props.ballot_item_display_name + "\u2026";
+        statementPlaceholderText = `Why you oppose ${this.props.ballot_item_display_name}${horizontalEllipsis}`;
       } else {
-        statementPlaceholderText = "Why you oppose\u2026";
+        statementPlaceholderText = `Why you oppose${horizontalEllipsis}`;
       }
     } else if (this.props.ballot_item_display_name) {
-      statementPlaceholderText = "Your thoughts about " + this.props.ballot_item_display_name + "\u2026";
+      statementPlaceholderText = `Your thoughts about ${this.props.ballot_item_display_name }${horizontalEllipsis}`;
     } else {
-      statementPlaceholderText = "Your thoughts\u2026";
+      statementPlaceholderText = `Your thoughts${horizontalEllipsis}`;
     }
 
     // Currently this "Post" text is the same given we display the visibility setting, but we may want to change this
@@ -218,26 +219,27 @@ export default class ItemPositionStatementActionBar extends Component {
     //   postButtonText = <span>Post</span>;
     // }
 
-    let speaker_image_url_https = voter_photo_url_medium;
-    let speaker_display_name = stringContains("Voter-", voter_full_name) ? "" : voter_full_name;
+    const speaker_image_url_https = voter_photo_url_medium;
+    const speaker_display_name = stringContains("Voter-", voter_full_name) ? "" : voter_full_name;
 
     let image_placeholder = "";
-    let speaker_type = "V";  // TODO DALE make this dynamic
+    // TODO: DALE make this dynamic
+    const speaker_type = "V";
     if (isSpeakerTypeOrganization(speaker_type)) {
       image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></span>;
     } else {
-      image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0"/></span>;
+      image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></span>;
     }
 
     // The short version can be used to cut-off an exceedingly long comment. This applies to entries by the viewer,
     //  for viewing by him or herself. Not used currently.
-    let short_version = false;
+    const short_version = false;
 
-    let no_statement_text = !(statement_text_to_be_saved !== null && statement_text_to_be_saved.length);
-    let edit_mode = this.state.showEditPositionStatementInput || no_statement_text;
+    const no_statement_text = !(statement_text_to_be_saved !== null && statement_text_to_be_saved.length);
+    const edit_mode = this.state.showEditPositionStatementInput || no_statement_text;
     const onSavePositionStatementClick = this.state.showEditPositionStatementInput ? this.closeEditPositionStatementInput.bind(this) : this.openEditPositionStatementInput.bind(this);
-    let onKeyDown = function (e) {
-      let enterAndSpaceKeyCodes = [13, 32];
+    const onKeyDown = function (e) {
+      const enterAndSpaceKeyCodes = [13, 32];
       if (enterAndSpaceKeyCodes.includes(e.keyCode)) {
         onSavePositionStatementClick();
       }
@@ -263,79 +265,97 @@ export default class ItemPositionStatementActionBar extends Component {
       statement_text_no_url = statement_text_to_be_saved.replace(video_url, "");
     }
 
-    return <div className={ this.props.shown_in_list ? "position-statement__container__in-list" : "position-statement__container"}>
-      { // Show the edit box (Viewing self)
-        edit_mode ?
-          <form onSubmit={this.savePositionStatement.bind(this)}>
-            <div className="position-statement d-print-block">
-              { speaker_image_url_https ?
-                <img className="position-statement__avatar"
-                     src={speaker_image_url_https}
-                     width="34px" /> :
-                image_placeholder
-              }
-              <span className="position-statement__input-group u-flex u-items-start">
-                <Textarea onChange={this.updateStatementTextToBeSaved.bind(this)}
-                  name="statement_text_to_be_saved"
-                  className="position-statement__input u-push--sm form-control"
-                  minRows={2}
-                  placeholder={statementPlaceholderText}
-                  defaultValue={statement_text_to_be_saved}
-                  onFocus={() => prepareForCordovaKeyboard(__filename)}
-                  onBlur={() => restoreStylesAfterCordovaKeyboard(__filename)}
-                  inputRef={tag => {this.textarea = tag;}} />
-                <div className="u-flex u-flex-column u-justify-between u-items-end">
-                  <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
-                                        type={this.props.type}
-                                        supportProps={this.props.supportProps}
-                                        className="u-flex-auto u-tr d-print-block" />
-                  <Button variant="outline-secondary" size="sm" type="submit">{postButtonText}</Button>
+    return (
+      <div className={this.props.shown_in_list ? "position-statement__container__in-list" : "position-statement__container"}>
+        { // Show the edit box (Viewing self)
+          edit_mode ? (
+            <form onSubmit={this.savePositionStatement.bind(this)}>
+              <div className="position-statement d-print-block">
+                { speaker_image_url_https ? (
+                  <img className="position-statement__avatar"
+                       src={speaker_image_url_https}
+                       width="34px"
+                  />
+                ) :
+                  image_placeholder
+                }
+                <span className="position-statement__input-group u-flex u-items-start">
+                  <Textarea onChange={this.updateStatementTextToBeSaved.bind(this)}
+                    name="statement_text_to_be_saved"
+                    className="position-statement__input u-push--sm form-control"
+                    minRows={2}
+                    placeholder={statementPlaceholderText}
+                    defaultValue={statement_text_to_be_saved}
+                    onFocus={() => prepareForCordovaKeyboard(__filename)}
+                    onBlur={() => restoreStylesAfterCordovaKeyboard(__filename)}
+                    inputRef={(tag) => { this.textarea = tag; }}
+                  />
+                  <div className="u-flex u-flex-column u-justify-between u-items-end">
+                    <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
+                                          type={this.props.type}
+                                          supportProps={this.props.supportProps}
+                                          className="u-flex-auto u-tr d-print-block"
+                    />
+                    <Button variant="outline-secondary" size="sm" type="submit">{postButtonText}</Button>
+                  </div>
+                </span>
+              </div>
+            </form> ) : (
+              // Show the comment, but in read-only mode
+              <div className={short_version ? "position-statement--truncated" : "position-statement"}>
+                { speaker_image_url_https ? (
+                  <img className="position-statement__avatar"
+                       src={speaker_image_url_https}
+                       width="34px"
+                  />
+                ) :
+                  image_placeholder
+                }
+                <div className="position-statement__description u-flex u-items-start">
+                  <div className="u-flex u-flex-column u-justify-between">
+                    { speaker_display_name ? (
+                      <span className="u-bold">
+                        {speaker_display_name}
+                        <br />
+                      </span>
+                    ) : null
+                    }
+                    { statement_text_no_url ?
+                      <ReadMore text_to_display={statement_text_no_url} /> :
+                      <ReadMore text_to_display={statement_text_to_be_saved} />
+                    }
+                    { video_url ?
+                      <ReactPlayer url={`${video_url}`} width="300px" height="231px" /> :
+                      null
+                    }
+                    { short_version ? (
+                      <span onKeyDown={onKeyDown}
+                            className="position-statement__edit-position-pseudo"
+                            onClick={onSavePositionStatementClick}
+                            title="Edit this position"
+                      />
+                    ) : null
+                    }
+                    <div onKeyDown={onKeyDown}
+                         className="position-statement__edit-position-link"
+                         onClick={onSavePositionStatementClick}
+                         title="Edit this position"
+                    >
+                      Edit
+                    </div>
+                  </div>
+                  <div className="u-flex u-flex-column u-justify-between u-items-end">
+                    <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
+                                          type={this.props.type}
+                                          supportProps={this.props.supportProps}
+                                          className="u-flex-auto u-tr d-print-block"
+                    />
+                  </div>
                 </div>
-              </span>
-            </div>
-          </form> :
-
-        // Show the comment, but in read-only mode
-        <div className={short_version ? "position-statement--truncated" : "position-statement"}>
-          { speaker_image_url_https ?
-            <img className="position-statement__avatar"
-                  src={speaker_image_url_https}
-                  width="34px"
-            /> :
-          image_placeholder }
-          <div className="position-statement__description u-flex u-items-start">
-            <div className="u-flex u-flex-column u-justify-between">
-            { speaker_display_name ?
-              <span className="u-bold">{speaker_display_name} <br /></span> :
-              null }
-              { statement_text_no_url ?
-                <ReadMore text_to_display={statement_text_no_url} /> :
-                <ReadMore text_to_display={statement_text_to_be_saved} />
-              }
-              { video_url ?
-                <ReactPlayer url={`${video_url}`} width="300px" height="231px"/> :
-                null }
-              { short_version ?
-                <span tabIndex="0" onKeyDown={onKeyDown}
-                      className="position-statement__edit-position-pseudo"
-                      onClick={onSavePositionStatementClick}
-                      title="Edit this position"/> :
-                null
-              }
-              <div tabIndex="0" onKeyDown={onKeyDown}
-                   className="position-statement__edit-position-link"
-                   onClick={onSavePositionStatementClick}
-                   title="Edit this position">Edit</div>
-            </div>
-            <div className="u-flex u-flex-column u-justify-between u-items-end">
-              <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
-                                    type={this.props.type}
-                                    supportProps={this.props.supportProps}
-                                    className="u-flex-auto u-tr d-print-block" />
-            </div>
-          </div>
-        </div>
-      }
-    </div>;
+              </div>
+          )
+       }
+      </div>
+    );
   }
 }

@@ -4,7 +4,7 @@ import ReactPlayer from "react-player";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import ReadMore from "../../components/Widgets/ReadMore";
+import ReadMore from "./ReadMore";
 import { vimeo_reg, youtube_reg } from "../../utils/textFormat";
 
 // import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
@@ -47,11 +47,15 @@ export default class PositionSupportOpposeSnippet extends Component {
     let alt;
     let actorSupportsBallotItemLabel;
     let ballotItemIsSupportedByActorLabel;
-    let { is_looking_at_self, more_info_url } = this.props;
+    const { is_looking_at_self, more_info_url } = this.props;
     let moreInfoUrl = more_info_url;
-    let statement_text = this.props.statement_text || "";
-    let statement_text_html = <ReadMore num_of_lines={5}
-                                        text_to_display={statement_text} />;
+    const statement_text = this.props.statement_text || "";
+    let statement_text_html = (
+      <ReadMore
+        num_of_lines={5}
+        text_to_display={statement_text}
+      />
+    );
     // onViewSourceClick is onClick function for view source modal in mobile browser
     // const onViewSourceClick = this.state.showViewSourceModal ? this.closeViewSourceModal.bind(this) : this.openViewSourceModal.bind(this);
 
@@ -96,67 +100,85 @@ export default class PositionSupportOpposeSnippet extends Component {
 
     let stance_display_off = false;
     if (this.props.stance_display_off !== undefined) {
-      stance_display_off = this.props.stance_display_off ? true : false;
+      stance_display_off = !!this.props.stance_display_off;
     }
 
     let comment_text_off = false;
     if (this.props.comment_text_off !== undefined) {
-      comment_text_off = this.props.comment_text_off ? true : false;
+      comment_text_off = !!this.props.comment_text_off;
     }
 
     if (moreInfoUrl) {
-      if (moreInfoUrl.toLowerCase().startsWith("http")) {
-        moreInfoUrl = moreInfoUrl;
-      } else {
-        moreInfoUrl = "http://" + moreInfoUrl;
+      if (!moreInfoUrl.toLowerCase().startsWith("http")) {
+        moreInfoUrl = `http://${moreInfoUrl}`;
       }
     }
 
-    return <div className="explicit-position">
-      { stance_display_off ?
-        null :
-        <div className="explicit-position__text">
-          <span className="explicit-position__voter-guide-increase">
-            <img src={stance_icon_src} width="24" height="24" className={className} alt={alt} />
-            {this.props.is_on_ballot_item_page ?
-              <span>
-                <span className="explicit-position__position-label">{actorSupportsBallotItemLabel}</span>
-                <span> {this.props.ballot_item_display_name} </span>
-              </span> :
-              <span>
-                <span className="explicit-position__position-label">{ballotItemIsSupportedByActorLabel}</span>
-                <span> {this.props.speaker_display_name} </span>
-              </span> }
-            <br />
-          </span>
-          { comment_text_off ? null :
-            <span>
-              <span className="u-wrap-links d-print-none">{statement_text_html}</span>
-              {/* if there's an external source for the explicit position/endorsement, show it */}
-              { video_url ?
-                <ReactPlayer className="explicit-position__media-player" url={`${video_url}`} width="100%" height="100%"/> :
-                null }
-              {moreInfoUrl ?
-                <div className="d-none d-sm-block">
-                  {/* default: open in new tab*/}
-                  <OpenExternalWebSite url={moreInfoUrl}
-                                       target="_blank"
-                                       className="u-gray-mid"
-                                       body={<span>view source <i className="fa fa-external-link" aria-hidden="true" /></span>} />
-                  {/* link for mobile browser: open in bootstrap modal */}
-                  {/*
+    return (
+      <div className="explicit-position">
+        { stance_display_off ?
+          null : (
+            <div className="explicit-position__text">
+              <span className="explicit-position__voter-guide-increase">
+                <img src={stance_icon_src} width="24" height="24" className={className} alt={alt} />
+                {this.props.is_on_ballot_item_page ? (
+                  <span>
+                    <span className="explicit-position__position-label">{actorSupportsBallotItemLabel}</span>
+                    <span>
+                      {" "}
+                      {this.props.ballot_item_display_name}
+                      {" "}
+                    </span>
+                  </span>
+                ) : (
+                  <span>
+                    <span className="explicit-position__position-label">{ballotItemIsSupportedByActorLabel}</span>
+                    <span>
+                      {" "}
+                      {this.props.speaker_display_name}
+                      {" "}
+                    </span>
+                  </span>
+                )}
+                <br />
+              </span>
+              { comment_text_off ? null : (
+                <span>
+                  <span className="u-wrap-links d-print-none">{statement_text_html}</span>
+                  {/* if there's an external source for the explicit position/endorsement, show it */}
+                  { video_url ?
+                    <ReactPlayer className="explicit-position__media-player" url={`${video_url}`} width="100%" height="100%" /> :
+                    null }
+                  {moreInfoUrl ? (
+                    <div className="d-none d-sm-block">
+                      {/* default: open in new tab */}
+                      <OpenExternalWebSite
+                        url={moreInfoUrl}
+                        target="_blank"
+                        className="u-gray-mid"
+                        body={(
+                          <span>
+                            view source
+                            <i className="fa fa-external-link" aria-hidden="true" />
+                          </span>
+                        )}
+                      />
+                      {/* link for mobile browser: open in bootstrap modal */}
+                      {/*
                   <a onClick={onViewSourceClick}>
                     (view source)
                   </a> */}
-                </div> :
-                null }
-            </span>
-          }
-        </div>
-      }
-      {/*<ViewSourceModal show={this.state.showViewSourceModal}
+                    </div>
+                  ) : null
+                  }
+                </span>
+              )}
+            </div>
+          )}
+        {/* <ViewSourceModal show={this.state.showViewSourceModal}
                      onHide={this.closeViewSourceModal.bind(this)}
                      url={this.props.moreInfoUrl} /> */}
-    </div>;
+      </div>
+    );
   }
 }

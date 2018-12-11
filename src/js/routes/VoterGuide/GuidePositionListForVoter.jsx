@@ -7,7 +7,7 @@ import VoterPositionItem from "../../components/VoterGuide/VoterPositionItem";
 
 export default class GuidePositionListForVoter extends Component {
   static propTypes = {
-    voter: PropTypes.object.isRequired
+    voter: PropTypes.object.isRequired,
   };
 
   constructor (props) {
@@ -17,7 +17,7 @@ export default class GuidePositionListForVoter extends Component {
 
   componentWillReceiveProps (nextProps) {
     // When a new candidate is passed in, update this component to show the new data
-    this.setState({voter: nextProps.voter});
+    this.setState({ voter: nextProps.voter });
   }
 
   render () {
@@ -27,40 +27,47 @@ export default class GuidePositionListForVoter extends Component {
     }
 
     const { position_list_for_one_election, position_list_for_all_except_one_election } = this.state.voter;
-    return <span>
-      <Helmet title="Your Voter Guide - We Vote" />
+    return (
+      <span>
+        <Helmet title="Your Voter Guide - We Vote" />
         <div className="card">
           <ul className="list-group">
             { position_list_for_one_election ?
-              position_list_for_one_election.map( item => {
-                return <VoterPositionItem key={item.position_we_vote_id}
-                                                 position={item}
-                                                 organization={this.state.organization}
-                                                 popover_off />;
-              }) :
+              position_list_for_one_election.map( item => (
+                <VoterPositionItem
+                  key={item.position_we_vote_id}
+                  position={item}
+                  organization={this.state.organization}
+                  popover_off
+                />
+              )) :
               <div>{LoadingWheel}</div>
             }
-            { position_list_for_all_except_one_election ?
+            { position_list_for_all_except_one_election ? (
               <span>
-                { position_list_for_all_except_one_election.length ?
+                { position_list_for_all_except_one_election.length ? (
                   <span>
                     <br />
                     <h4 className="h4">Positions for Other Elections</h4>
-                  </span> :
-                  null
+                  </span>
+                ) : null
                 }
-                { position_list_for_all_except_one_election.map( item => {
-                  return <VoterPositionItem key={item.position_we_vote_id}
-                                                   position={item}
-                                                   organization={this.state.organization}
-                                                   popover_off />;
-                }) }
-              </span> :
+                { position_list_for_all_except_one_election.map( item => (
+                  <VoterPositionItem
+                    key={item.position_we_vote_id}
+                    position={item}
+                    organization={this.state.organization}
+                    popover_off
+                  />
+                )) }
+              </span>
+            ) :
               <div>{LoadingWheel}</div>
             }
           </ul>
         </div>
         <br />
-      </span>;
+      </span>
+    );
   }
 }

@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
-import BrowserPushMessage from "../../components/Widgets/BrowserPushMessage";
-import BallotElectionList from "../../components/Ballot/BallotElectionList";
+import BrowserPushMessage from "../Widgets/BrowserPushMessage";
+import BallotElectionList from "../Ballot/BallotElectionList";
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
 import { renderLog } from "../../utils/logging";
@@ -11,7 +11,7 @@ import VoterStore from "../../stores/VoterStore";
 
 export default class SettingsElection extends Component {
   static propTypes = {
-      location: PropTypes.object,
+    location: PropTypes.object,
   };
 
   constructor (props) {
@@ -32,21 +32,21 @@ export default class SettingsElection extends Component {
     AnalyticsActions.saveActionElections(VoterStore.election_id());
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.electionListListener.remove();
   }
 
-  onElectionStoreChange (){
-    let elections_list = ElectionStore.getElectionList();
-    let elections_locations_list = [];
+  onElectionStoreChange () {
+    const elections_list = ElectionStore.getElectionList();
+    const elections_locations_list = [];
     let voter_ballot; // A different format for much of the same data
-    let voter_ballot_list = [];
+    const voter_ballot_list = [];
     let one_ballot_location;
     let ballot_location_shortcut;
     let ballot_returned_we_vote_id;
 
-    for (var i = 0; i < elections_list.length; i++){
-      var election = elections_list[i];
+    for (let i = 0; i < elections_list.length; i++) {
+      const election = elections_list[i];
       elections_locations_list.push(election);
       ballot_returned_we_vote_id = "";
       ballot_location_shortcut = "";
@@ -63,21 +63,22 @@ export default class SettingsElection extends Component {
         election_description_text: election.election_name,
         election_day_text: election.election_day_text,
         original_text_for_map_search: "",
-        ballot_location_shortcut: ballot_location_shortcut,
-        ballot_returned_we_vote_id: ballot_returned_we_vote_id,
+        ballot_location_shortcut,
+        ballot_returned_we_vote_id,
       };
       voter_ballot_list.push(voter_ballot);
     }
 
     this.setState({
-      elections_locations_list: elections_locations_list,
-      voter_ballot_list: voter_ballot_list,
+      elections_locations_list,
+      voter_ballot_list,
     });
   }
 
   render () {
     renderLog(__filename);
-    return <div>
+    return (
+      <div>
         <div className="elections-list-container">
           <Helmet title="Choose Election - We Vote" />
           <BrowserPushMessage incomingProps={this.props} />
@@ -87,6 +88,7 @@ export default class SettingsElection extends Component {
             </div>
           </div>
         </div>
-      </div>;
+      </div>
+    );
   }
 }

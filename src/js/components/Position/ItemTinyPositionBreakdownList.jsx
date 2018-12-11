@@ -84,10 +84,10 @@ export default class ItemTinyPositionBreakdownList extends Component {
     let localCounter = 0;
     let orgsNotShownCount = 0;
     let positionsNotShownList = [];
-    let supportPositionsList = [];
-    let opposePositionsList = [];
+    const supportPositionsList = [];
+    const opposePositionsList = [];
     let oneOrganization;
-    let organizationsToDisplay = [];
+    const organizationsToDisplay = [];
     let tempOrganizationsToDisplay = [];
     let voterImageUrlTiny = "";
     // Put the voter's icon first
@@ -120,17 +120,24 @@ export default class ItemTinyPositionBreakdownList extends Component {
         }
 
         if (voterImageUrlTiny && voterImageUrlTiny.length) {
-          voterOrganizationTinyDisplay = <OrganizationTinyDisplay key={oneOrganization.organization_we_vote_id}
-                                                                     showPlaceholderImage
-                                                                     voter_image_url_tiny={voterImageUrlTiny}
-                                                                     showSupport={showSupport}
-                                                                     showOppose={showOppose}
-                                                                     {...oneOrganization} />;
+          voterOrganizationTinyDisplay = (
+            <OrganizationTinyDisplay
+              key={oneOrganization.organization_we_vote_id}
+              showPlaceholderImage
+              voter_image_url_tiny={voterImageUrlTiny}
+              showSupport={showSupport}
+              showOppose={showOppose}
+              {...oneOrganization}
+            />
+          );
         } else {
-          voterOrganizationTinyDisplay = <span key="anonIconKey" className={supportOpposeClass + "position-rating__source with-popover"}>
-            <Icon name="avatar-generic" width={24} height={24} color="#c0c0c0" />You</span>;
+          voterOrganizationTinyDisplay = (
+            <span key="anonIconKey" className={`${supportOpposeClass}position-rating__source with-popover`}>
+              <Icon name="avatar-generic" width={24} height={24} color="#c0c0c0" />
+              You
+            </span>
+          );
         }
-
         organizationsToDisplay.push(voterOrganizationTinyDisplay);
       }
     }
@@ -138,7 +145,9 @@ export default class ItemTinyPositionBreakdownList extends Component {
     // console.log("this.state.position_list: ", this.state.position_list); // Switching elections bug -- first candidate missing?
     if (this.state.position_list) {
       // console.log("ItemTinyPositionBreakdownList position_list found");
-      this.state.position_list.map((onePosition) => {
+
+      // TODO: Steve remove the error suppression on the next line 12/1/18, a temporary hack
+      this.state.position_list.map((onePosition) => { // eslint-disable-line array-callback-return
         // console.log("onePosition: ", onePosition);
         // Filter out the positions that we don't want to display
         if (this.props.showSupport && onePosition.is_support_or_positive_rating) {
@@ -148,7 +157,6 @@ export default class ItemTinyPositionBreakdownList extends Component {
           // } else if (this.props.showInfoOnly && !onePosition.is_support_or_positive_rating && !onePosition.is_oppose_or_negative_rating) {
           //   // When in showInfoOnly mode, continue if it is NOT positive or negative
         }
-
       });
 
       if (supportPositionsList && supportPositionsList.length > MAXIMUM_ORGANIZATION_DISPLAY) {
@@ -184,28 +192,45 @@ export default class ItemTinyPositionBreakdownList extends Component {
             // onMouseOver={() => this.onTriggerEnter(orgsNotShownCount)}
             // onMouseOut={() => this.onTriggerLeave(orgsNotShownCount)}
             // outOfBoundaries={() => console.log("outOfBoundaries outOfBoundaries outOfBoundaries")}
-            let organizationPopover = <Popover id={`organization-popover-${orgsNotShownCount}`}
-                                               constraints={{ to: "scrollParent", pin: true }}
-                                               placement="auto"
-                                               title={<span onClick={() => this.onTriggerLeave(orgsNotShownCount)}>&nbsp;
-                                                 <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" /> </span>}
-                                               >
-                <PositionsNotShownList ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
-                                       positions_not_shown_list={positionsNotShownList} />
-              </Popover>;
+            const organizationPopover = (
+              <Popover
+                id={`organization-popover-${orgsNotShownCount}`}
+                constraints={{ to: "scrollParent", pin: true }}
+                placement="auto"
+                title={(
+                  <span onClick={() => this.onTriggerLeave(orgsNotShownCount)}>&nbsp;
+                    <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" />
+                  </span>
+                )}
+              >
+                <PositionsNotShownList
+                  ballotItemWeVoteId={this.state.ballot_item_we_vote_id}
+                  positions_not_shown_list={positionsNotShownList}
+                />
+              </Popover>
+            );
 
             // onMouseOver={() => this.onTriggerEnter(orgsNotShownCount)}
             // onMouseOut={() => this.onTriggerLeave(orgsNotShownCount)}
             // onExiting={() => this.onTriggerLeave(orgsNotShownCount)}
             // trigger={this.props.visibility === "mobile" ? "click" : ["focus", "hover", "click"]}
-            return <OverlayTrigger key={`trigger-${orgsNotShownCount}`}
-                                   ref={`position-overlay-${orgsNotShownCount}`}
-                                   overlay={organizationPopover}
-                                   placement="bottom"
-                                   rootClose
-                                   trigger="click">
-                <span className="position-rating__source with-popover"> +{orgsNotShownCount} </span>
-            </OverlayTrigger>;
+            return (
+              <OverlayTrigger
+                key={`trigger-${orgsNotShownCount}`}
+                ref={`position-overlay-${orgsNotShownCount}`}
+                overlay={organizationPopover}
+                placement="bottom"
+                rootClose
+                trigger="click"
+              >
+                <span className="position-rating__source with-popover">
+                  {" "}
+                  +
+                  {orgsNotShownCount}
+                  {" "}
+                </span>
+              </OverlayTrigger>
+            );
           } else {
             return null;
           }
@@ -222,42 +247,58 @@ export default class ItemTinyPositionBreakdownList extends Component {
             twitter_description: "",
             twitter_followers_count: 0,
           };
-          let organizationWeVoteId = oneOrganization.organization_we_vote_id;
+          const organizationWeVoteId = oneOrganization.organization_we_vote_id;
           // Removed bsPrefix="card-popover"
           // onMouseOver={() => this.onTriggerEnter(organizationWeVoteId)}
           // onMouseOut={() => this.onTriggerLeave(organizationWeVoteId)}
           // WAS placement="auto"
-          let organizationPopover = <Popover id={`organization-popover-${organizationWeVoteId}`}
-                                             placement="bottom"
-                                             title={<span onClick={() => this.onTriggerLeave(organizationWeVoteId)}>&nbsp; <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" /> </span>}
-                                             >
-               <OrganizationCard ballotItemWeVoteId={this.props.ballotItemWeVoteId}
-                                 currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                 followToggleOn
-                                 organization={oneOrganization}
-                                 urlWithoutHash={this.props.urlWithoutHash}
-                                 we_vote_id={this.props.we_vote_id} />
-             </Popover>;
+          const organizationPopover = (
+            <Popover
+              id={`organization-popover-${organizationWeVoteId}`}
+              placement="bottom"
+              title={(
+                <span onClick={() => this.onTriggerLeave(organizationWeVoteId)}>&nbsp;
+                  {" "}
+                  <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" />
+                  {" "}
+                </span>
+              )}
+            >
+              <OrganizationCard
+                ballotItemWeVoteId={this.props.ballotItemWeVoteId}
+                currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                followToggleOn
+                organization={oneOrganization}
+                urlWithoutHash={this.props.urlWithoutHash}
+                we_vote_id={this.props.we_vote_id}
+              />
+            </Popover>
+          );
 
           // Removed from OverlayTrigger
           // onMouseOver={() => this.onTriggerEnter(organizationWeVoteId)}
           // onMouseOut={() => this.onTriggerLeave(organizationWeVoteId)}
           // onExiting={() => this.onTriggerLeave(organizationWeVoteId)}
           // trigger={this.props.visibility === "mobile" ? "click" : ["focus", "hover", "click"]}
-          return <OverlayTrigger key={`trigger-${organizationWeVoteId}`}
-                                 ref={`position-overlay-${organizationWeVoteId}`}
-                                 overlay={organizationPopover}
-                                 placement="bottom"
-                                 rootClose
-                                 trigger="click" >
-            <span className="position-rating__source with-popover">
-              <OrganizationTinyDisplay {...oneOrganization}
-                                       showPlaceholderImage
-                                       showSupport={this.props.showSupport}
-                                       showOppose={this.props.showOppose}/>
-
-            </span>
-          </OverlayTrigger>;
+          return (
+            <OverlayTrigger
+              key={`trigger-${organizationWeVoteId}`}
+              ref={`position-overlay-${organizationWeVoteId}`}
+              overlay={organizationPopover}
+              placement="bottom"
+              rootClose
+              trigger="click"
+            >
+              <span className="position-rating__source with-popover">
+                <OrganizationTinyDisplay
+                  {...oneOrganization}
+                  showPlaceholderImage
+                  showSupport={this.props.showSupport}
+                  showOppose={this.props.showOppose}
+                />
+              </span>
+            </OverlayTrigger>
+          );
         }
       });
       organizationsToDisplay.push(tempOrganizationsToDisplay);
@@ -265,9 +306,10 @@ export default class ItemTinyPositionBreakdownList extends Component {
 
     // Since we often have two ItemTinyPositionBreakdownList components side-by-side, this needs to be a span so
     // the second ItemTinyPositionBreakdownList doesn't get pushed onto a new line.
-    return <span>
-          {organizationsToDisplay}
-      </span>;
+    return (
+      <span>
+        {organizationsToDisplay}
+      </span>
+    );
   }
-
 }

@@ -22,8 +22,7 @@ class AnalyticsStore extends ReduceStore {
     // const ACTION_FRIEND_ENTRY = 11;
 
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
-    if (!action.res || !action.res.success)
-      return state;
+    if (!action.res || !action.res.success) return state;
 
     switch (action.type) {
       case "saveAnalyticsAction":

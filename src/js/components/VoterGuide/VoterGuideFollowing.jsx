@@ -53,24 +53,23 @@ export default class VoterGuideFollowing extends Component {
     });
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
   _onVoterStoreChange () {
-    this.setState({
-      voter: VoterStore.getVoter()});
-   }
+    this.setState({ voter: VoterStore.getVoter() });
+  }
 
-  onVoterGuideStoreChange (){
+  onVoterGuideStoreChange () {
     this.setState({
-      voter_guide_followed_list: VoterGuideStore.getVoterGuidesFollowedByOrganization(this.state.organization.organization_we_vote_id)
+      voter_guide_followed_list: VoterGuideStore.getVoterGuidesFollowedByOrganization(this.state.organization.organization_we_vote_id),
     });
   }
 
   searchFollowingVoterGuides (event) {
-    let search_term = event.target.value;
+    const search_term = event.target.value;
     if (search_term.length === 0) {
       this.setState({
         search_filter: false,
@@ -78,15 +77,13 @@ export default class VoterGuideFollowing extends Component {
         voter_guide_followed_list_filtered_by_search: [],
       });
     } else {
-      let search_term_lowercase = search_term.toLowerCase();
-      var searched_followed_list = _.filter(this.state.voter_guide_followed_list,
-        function (user) {
-            return user.voter_guide_display_name.toLowerCase().includes(search_term_lowercase);
-          });
+      const search_term_lowercase = search_term.toLowerCase();
+      const searched_followed_list = _.filter(this.state.voter_guide_followed_list,
+        user => user.voter_guide_display_name.toLowerCase().includes(search_term_lowercase));
 
       this.setState({
         search_filter: true,
-        search_term: search_term,
+        search_term,
         voter_guide_followed_list_filtered_by_search: searched_followed_list,
       });
     }
@@ -97,14 +94,14 @@ export default class VoterGuideFollowing extends Component {
   }
 
   toggleEditMode () {
-    this.setState({editMode: !this.state.editMode});
+    this.setState({ editMode: !this.state.editMode });
   }
 
   onKeyDownEditMode (event) {
-    let enterAndSpaceKeyCodes = [13, 32];
-    let scope = this;
+    const enterAndSpaceKeyCodes = [13, 32];
+    const scope = this;
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      scope.setState({editMode: !this.state.editMode});
+      scope.setState({ editMode: !this.state.editMode });
     }
   }
 
@@ -119,71 +116,111 @@ export default class VoterGuideFollowing extends Component {
     }
     // console.log("VoterGuideFollowing, linked_organization_we_vote_id: ", this.state.voter.linked_organization_we_vote_id, "organization: ", this.state.organization.organization_we_vote_id);
 
-    var voter_guide_followed_list = [];
+    let voter_guide_followed_list = [];
     if (!this.state.search_filter) {
       voter_guide_followed_list = this.state.voter_guide_followed_list;
     } else {
       voter_guide_followed_list = this.state.voter_guide_followed_list_filtered_by_search;
     }
-    let hide_stop_following_button = !looking_at_self || !this.state.editMode;
-    let show_search_when_more_than_this_number = 3;
+    const hide_stop_following_button = !looking_at_self || !this.state.editMode;
+    const show_search_when_more_than_this_number = 3;
 
-    return <div className="opinions-followed__container">
-      {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
-      <Helmet title={this.state.organization.organization_name + " - We Vote"} />
-      <div className="card">
-        <ul className="card-child__list-group">
-          { this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length > 0 ?
-            <span>
-            { looking_at_self ?
-              <a className="fa-pull-right u-push--md"
-                 tabIndex="0"
-                 onKeyDown={this.onKeyDownEditMode.bind(this)}
-                 onClick={this.toggleEditMode.bind(this)}>{this.state.editMode ? "Done Editing" : "Edit"}</a> :
-              <Button variant="success" size="small" bsPrefix="fa-pull-right u-push--md"
-                  onClick={this.followAllOrganizations.bind(this)}><span>Listen to All</span></Button>
-              }
-              { !this.state.search_filter ?
-                <span>
-                  {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ?
-                    <h4 className="card__additional-heading">You Are Listening To<span className={"d-none d-sm-block"}> {this.state.voter_guide_followed_list.length} Organizations or People</span></h4> :
-                    <h4 className="card__additional-heading">{this.state.organization.organization_name} is Listening To</h4>
-                  }
-                </span> :
-                <h4 className="card__additional-heading">Search Results</h4>
-              }
-              { this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length > show_search_when_more_than_this_number ?
-                <input type="text"
-                       className="form-control"
-                       name="search_following_voter_guides_text"
-                       placeholder="Search these voter guides"
-                       onChange={this.searchFollowingVoterGuides.bind(this)} /> : null
-              }
-              { this.state.search_filter ?
-                <span>
-                  { voter_guide_followed_list.length === 0 ?
-                    <h4 className="card__additional-heading">"{this.state.search_term}" not found</h4> :
-                    null
-                  }
-                </span> :
-                null
-              }
+    return (
+      <div className="opinions-followed__container">
+        {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
+        <Helmet title={`${this.state.organization.organization_name} - We Vote`} />
+        <div className="card">
+          <ul className="card-child__list-group">
+            { this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length > 0 ? (
               <span>
-                  <GuideList organizationsToFollow={voter_guide_followed_list}
-                             hide_stop_following_button={hide_stop_following_button}
-                             hide_ignore_button
-                             instantRefreshOn />
-              </span>
-            </span> :
-            <span>
-              {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ?
-                <h4 className="card__additional-heading">You're not listening to anyone.</h4> :
-                <h4 className="card__additional-heading">{this.state.organization.organization_name} is not listening to anyone.</h4>
+                { looking_at_self ? (
+                  <a
+                    className="fa-pull-right u-push--md"
+                    onKeyDown={this.onKeyDownEditMode.bind(this)}
+                    onClick={this.toggleEditMode.bind(this)}
+                  >
+                    {this.state.editMode ? "Done Editing" : "Edit"}
+                  </a>
+                ) : (
+                  <Button
+                    variant="success"
+                    size="small"
+                    bsPrefix="fa-pull-right u-push--md"
+                    onClick={this.followAllOrganizations.bind(this)}
+                  >
+                    <span>Listen to All</span>
+                  </Button>
+                )}
+                { !this.state.search_filter ? (
+                  <span>
+                    {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ? (
+                      <h4 className="card__additional-heading">
+                        You Are Listening To
+                        <span className="d-none d-sm-block">
+                          {" "}
+                          {this.state.voter_guide_followed_list.length}
+                          {" "}
+                          Organizations or People
+                        </span>
+                      </h4>
+                    ) : (
+                      <h4 className="card__additional-heading">
+                        {this.state.organization.organization_name}
+                        {" "}
+                        is Listening To
+                      </h4>
+                    )}
+                  </span>
+                ) :
+                  <h4 className="card__additional-heading">Search Results</h4>
               }
-            </span>
-          }
-        </ul>
+                { this.state.voter_guide_followed_list && this.state.voter_guide_followed_list.length > show_search_when_more_than_this_number ? (
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="search_following_voter_guides_text"
+                    placeholder="Search these voter guides"
+                    onChange={this.searchFollowingVoterGuides.bind(this)}
+                  />
+                ) : null
+                }
+                { this.state.search_filter ? (
+                  <span>
+                    { voter_guide_followed_list.length === 0 ? (
+                      <h4 className="card__additional-heading">
+                        &quot;
+                        {this.state.search_term}
+                        &quot; not found
+                      </h4>
+                    ) : null
+                    }
+                  </span>
+                ) : null
+                }
+                <span>
+                  <GuideList
+                    organizationsToFollow={voter_guide_followed_list}
+                    hide_stop_following_button={hide_stop_following_button}
+                    hide_ignore_button
+                    instantRefreshOn
+                  />
+                </span>
+              </span>
+            ) : (
+              <span>
+                {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ?
+                  <h4 className="card__additional-heading">You&apos;re not listening to anyone.</h4> : (
+                    <h4 className="card__additional-heading">
+                      {this.state.organization.organization_name}
+                      {" "}
+                      is not listening to anyone.
+                    </h4>
+                  )}
+              </span>
+            )}
+          </ul>
+        </div>
       </div>
-    </div>;
+    );
   }
 }

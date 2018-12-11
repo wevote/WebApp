@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { renderLog } from "../../utils/logging";
-import MeasureItemReadyToVote from "../../components/Ballot/MeasureItemReadyToVote";
-import OfficeItemReadyToVote from "../../components/Ballot/OfficeItemReadyToVote";
+import MeasureItemReadyToVote from "./MeasureItemReadyToVote";
+import OfficeItemReadyToVote from "./OfficeItemReadyToVote";
 
 const TYPES = require("keymirror")({
   OFFICE: null,
@@ -23,13 +23,20 @@ export default class BallotItemReadyToVote extends Component {
 
   render () {
     renderLog(__filename);
-    return <div className="BallotItem card" id={this.props.we_vote_id}>
-        { this.isMeasure() ?
-          <MeasureItemReadyToVote {...this.props}
-                   link_to_ballot_item_page /> :
-          <OfficeItemReadyToVote {...this.props}
-                   link_to_ballot_item_page />
-        }
-      </div>;
+    return (
+      <div className="BallotItem card" id={this.props.we_vote_id}>
+        { this.isMeasure() ? (
+          <MeasureItemReadyToVote
+            {...this.props}
+            link_to_ballot_item_page
+          />
+        ) : (
+          <OfficeItemReadyToVote
+            {...this.props}
+            link_to_ballot_item_page
+          />
+        )}
+      </div>
+    );
   }
 }

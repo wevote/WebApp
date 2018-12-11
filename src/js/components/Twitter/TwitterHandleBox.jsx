@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Button, InputGroup } from "react-bootstrap";
 import { historyPush } from "../../utils/cordovaUtils";
-import LoadingWheel from "../../components/LoadingWheel";
+import LoadingWheel from "../LoadingWheel";
 import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 import { extractTwitterHandleFromTextString } from "../../utils/textFormat";
@@ -20,7 +20,7 @@ export default class TwitterHandleBox extends Component {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
   }
 
-  componentWillUnmount (){
+  componentWillUnmount () {
     this.voterStoreListener.remove();
   }
 
@@ -30,20 +30,20 @@ export default class TwitterHandleBox extends Component {
 
   updateTwitterHandle (e) {
     this.setState({
-      twitter_handle: e.target.value
+      twitter_handle: e.target.value,
     });
   }
 
   submitTwitterHandle (e) {
     e.preventDefault();
-    var { twitter_handle } = this.state;
-    this.setState({loading: true});
+    let { twitter_handle } = this.state;
+    this.setState({ loading: true });
     twitter_handle = extractTwitterHandleFromTextString(twitter_handle);
-    historyPush("/" + twitter_handle);
+    historyPush(`/${twitter_handle}`);
   }
 
   twitterHandleStripped () {
-    let { twitter_handle } = this.state;
+    const { twitter_handle } = this.state;
     if (twitter_handle === undefined) {
       return "";
     } else {
@@ -53,32 +53,36 @@ export default class TwitterHandleBox extends Component {
 
   render () {
     renderLog(__filename);
-    let { loading } = this.state;
+    const { loading } = this.state;
     if (loading) {
       return LoadingWheel;
     }
 
-    let twitter_handle_stripped = this.twitterHandleStripped();
-    let claim_your_page_button_text = twitter_handle_stripped.length === 0 ? "Claim Your Page" : "Claim @" + twitter_handle_stripped;
-    return <div>
-      <form onSubmit={this.submitTwitterHandle.bind(this)} className="u-stack--md">
-        <InputGroup>
-          <input
-            type="text"
-            onChange={this.updateTwitterHandle.bind(this)}
-            name="twitter_handle"
-            value={this.state.twitter_handle}
-            className="form-control"
-            placeholder="Enter your twitter handle"
-          />
-          <InputGroup.Button>
-            <Button
-              onClick={this.submitTwitterHandle.bind(this)}
-              variant="primary">
-              {claim_your_page_button_text}</Button>
-          </InputGroup.Button>
-        </InputGroup>
-      </form>
-    </div>;
+    const twitter_handle_stripped = this.twitterHandleStripped();
+    const claim_your_page_button_text = twitter_handle_stripped.length === 0 ? "Claim Your Page" : `Claim @${twitter_handle_stripped}`;
+    return (
+      <div>
+        <form onSubmit={this.submitTwitterHandle.bind(this)} className="u-stack--md">
+          <InputGroup>
+            <input
+              type="text"
+              onChange={this.updateTwitterHandle.bind(this)}
+              name="twitter_handle"
+              value={this.state.twitter_handle}
+              className="form-control"
+              placeholder="Enter your twitter handle"
+            />
+            <InputGroup.Button>
+              <Button
+                onClick={this.submitTwitterHandle.bind(this)}
+                variant="primary"
+              >
+                {claim_your_page_button_text}
+              </Button>
+            </InputGroup.Button>
+          </InputGroup>
+        </form>
+      </div>
+    );
   }
 }

@@ -86,14 +86,23 @@ import { isWebApp } from "./utils/cordovaUtils";
 // See /js/components/Navigation/HeaderBar.jsx for show_full_navigation cookie
 const firstVisit = !cookies.getItem("voter_device_id");
 
-const routes = () =>
+const routes = () => (
   <Route path="/" component={Application}>
     <Route component={Intro} />
-    { isWebApp() ? <IndexRedirect to="/ballot" /> : firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ballot" />}
+    {                       // 12/4/18: Not sure why we need the following diable
+      (function redir () {  // eslint-disable-line wrap-iife
+        if (isWebApp()) {
+          return <IndexRedirect to="/ballot" />;
+        } else {
+          return firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ballot" />;
+        }
+      }
+      )()
+    }
     <Route path="/welcome" component={Welcome} />
     <Route path="/activity" component={Activity} />
     <Route path="/ballot" component={BallotIndex}>
-      <IndexRoute component={Ballot}/>
+      <IndexRoute component={Ballot} />
       <Route path="/ballot?wait_until_voter_sign_in_completes=:wait_until_voter_sign_in_completes" component={Ballot} />
       <Route path="/office/:office_we_vote_id/b/:back_to_variable/" component={Office} />
       <Route path="/office/:office_we_vote_id/:back_to_variable/:organization_we_vote_id" component={OrganizationVoterGuideOffice} />
@@ -124,9 +133,10 @@ const routes = () =>
     <Route path="/intro/get_started" component={GetStarted} />
 
     {/* Your Settings go in this structure... */}
+    {/* Complete path on one line for searching */}
     <Route path="/settings" component={SettingsDashboard} />
     <Route path="/settings/claim" component={ClaimYourPage} />
-    <Route path="/settings/location" component={Location} />  /* Complete path on one line for searching */
+    <Route path="/settings/location" component={Location} />
     <Route path="/settings/menu" component={SettingsMenuMobile} />
     <Route path="/settings/voterguidelist" component={VoterGuideListDashboard} />
     <Route path="/settings/voterguidesmenu" component={VoterGuidesMenuMobile} />
@@ -141,7 +151,7 @@ const routes = () =>
     <Route path="/issues_followed" component={IssuesFollowed} />
 
     {/* Friend related Pages */}
-    <Route path="/friends" >
+    <Route path="/friends">
       <IndexRoute component={Friends} />
       <Route path="add" component={Connect} />
       <Route path="remove" />
@@ -184,7 +194,7 @@ const routes = () =>
     <Route path="/more/vision" component={Organization} />
 
     {/* Voter Guide Pages - By Organization */}
-    <Route path="/voterguide/:organization_we_vote_id" component={props => <OrganizationVoterGuide {...props} active_route="ballot" />}/>
+    <Route path="/voterguide/:organization_we_vote_id" component={props => <OrganizationVoterGuide {...props} active_route="ballot" />} />
     <Route path="/voterguide/:organization_we_vote_id/ballot" component={props => <OrganizationVoterGuide {...props} active_route="ballot" />} />
     <Route path="/voterguide/:organization_we_vote_id/ballot/empty" component={props => <OrganizationVoterGuide {...props} active_route="ballot" />} />
     <Route path="/voterguide/:organization_we_vote_id/ballot/:ballot_location_shortcut" component={props => <OrganizationVoterGuide {...props} active_route="ballot" />} />
@@ -230,7 +240,8 @@ const routes = () =>
     <Route path=":twitter_handle/ballot/:ballot_location_shortcut" component={TwitterHandleLanding} />
     <Route path=":twitter_handle/ballot/id/:ballot_returned_we_vote_id" component={TwitterHandleLanding} />
     <Route path=":twitter_handle/ballot/election/:google_civic_election_id" component={TwitterHandleLanding} />
-    <Route path=":twitter_handle/ballot/election/:google_civic_election_id/:view_mode" component={TwitterHandleLanding} />{/* view_mode not taken in yet */}
+    <Route path=":twitter_handle/ballot/election/:google_civic_election_id/:view_mode" component={TwitterHandleLanding} />
+    {/* view_mode not taken in yet */}
 
     {/* Any route that is not found -> @return TwitterHandleLanding component */}
     <Route path=":twitter_handle" component={TwitterHandleLanding} />
@@ -239,6 +250,7 @@ const routes = () =>
     <Route path=":twitter_handle/positions" component={props => <TwitterHandleLanding {...props} active_route="positions" />} />
     <Route path=":twitter_handle/:action_variable" component={TwitterHandleLanding} />
 
-  </Route>;
+  </Route>
+);
 
 export default routes;

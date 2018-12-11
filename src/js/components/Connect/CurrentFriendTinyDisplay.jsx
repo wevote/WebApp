@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import ImageHandler from "../../components/ImageHandler";
+import ImageHandler from "../ImageHandler";
 import { renderLog } from "../../utils/logging";
 
 // CurrentFriendTinyDisplay is used by ItemTinyOpinionsToFollow for viewing the logos/icons for voter guides
@@ -34,13 +34,17 @@ export default class CurrentFriendTinyDisplay extends Component {
     } else {
       image_url_tiny = "";
     }
-    let hide_placeholder = !this.props.showPlaceholderImage;
-    return <span>
-          <ImageHandler className=""
-                        sizeClassName="current-friend-image-tiny"
-                        hidePlaceholder={hide_placeholder}
-                        imageUrl={image_url_tiny}
-                        alt={display_name} />
-    </span>;
+    const hide_placeholder = !this.props.showPlaceholderImage;
+    return (
+      <span>
+        <ImageHandler
+          className=""
+          sizeClassName="current-friend-image-tiny"
+          hidePlaceholder={hide_placeholder}
+          imageUrl={image_url_tiny}
+          alt={display_name}
+        />
+      </span>
+    );
   }
 }

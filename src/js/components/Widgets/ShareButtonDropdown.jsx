@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import CopyLinkModal from "../../components/Widgets/CopyLinkModal";
+import CopyLinkModal from "./CopyLinkModal";
 import { renderLog } from "../../utils/logging";
 import { isWebApp } from "../../utils/cordovaUtils";
 
@@ -34,16 +34,15 @@ export default class ShareButtonDropdown extends Component {
 
   shareFacebookComment (event) {
     event.stopPropagation();
-    let api = isWebApp() ? window.FB : window.facebookConnectPlugin;  // eslint-disable-line no-undef
+    const api = isWebApp() ? window.FB : window.facebookConnectPlugin; // eslint-disable-line no-undef
     api.ui({
       display: "popup",
       method: "share",
 
       // Sharing this href link to facebook(href must be a valid url else facebook share popup will be having issues)
       href: this.props.urlBeingShared,
-      redirect_uri: this.props.urlBeingShared,   // redirecting to the same url after sharing on facebook
-    }, function () {}
-    );
+      redirect_uri: this.props.urlBeingShared, // redirecting to the same url after sharing on facebook
+    }, () => {});
     this.closeDropdown();
   }
 
@@ -73,30 +72,38 @@ export default class ShareButtonDropdown extends Component {
     // const onButtonBlur = ;
     const dropdownClass = this.state.open ? " open" : "";
 
-    return <div className="item-actionbar__btn-set">
-      <div className={"btn-group" + dropdownClass}>
-        <button onBlur={this.onButtonBlur.bind(this)} onClick={onClick} className="dropdown-toggle item-actionbar__btn btn btn-default">
-          {shareIcon} {shareText} <span className="caret" />
-        </button>
-        {this.state.open ?
-          <ul className="dropdown-menu d-block">
-            <li className="dropdown-item">
-              <a onClick={onCopyLinkClick}>
+    return (
+      <div className="item-actionbar__btn-set">
+        <div className={`btn-group${dropdownClass}`}>
+          <button onBlur={this.onButtonBlur.bind(this)} onClick={onClick} className="dropdown-toggle item-actionbar__btn btn btn-default">
+            {shareIcon}
+            {" "}
+            {shareText}
+            {" "}
+            <span className="caret" />
+          </button>
+          {this.state.open ? (
+            <ul className="dropdown-menu d-block">
+              <li className="dropdown-item">
+                <a onClick={onCopyLinkClick}>
                   Copy link
-              </a>
-            </li>
-            <li className="dropdown-item">
-              <a onClick={this.shareFacebookComment.bind(this)}>
+                </a>
+              </li>
+              <li className="dropdown-item">
+                <a onClick={this.shareFacebookComment.bind(this)}>
                   Share on Facebook
-              </a>
-            </li>
-          </ul> :
-          null
-        }
+                </a>
+              </li>
+            </ul>
+          ) : null
+          }
         </div>
-      <CopyLinkModal show={this.state.showCopyLinkModal}
-                     onHide={this.closeCopyLinkModal.bind(this)}
-                     urlBeingShared={urlBeingShared} />
-    </div>;
+        <CopyLinkModal
+          show={this.state.showCopyLinkModal}
+          onHide={this.closeCopyLinkModal.bind(this)}
+          urlBeingShared={urlBeingShared}
+        />
+      </div>
+    );
   }
 }

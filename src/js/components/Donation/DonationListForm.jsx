@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import DonationList from "./DonationList";
 import { Tabs, Tab } from "react-bootstrap";
+import DonationList from "./DonationList";
 import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 import VoterActions from "../../actions/VoterActions";
@@ -48,8 +48,8 @@ export default class DonationListForm extends Component {
         <div>
           <input type="hidden" value={this.state.activeKey} />
           <Tabs defaultActiveKey={1} activeKey={this.state.activeKey} onSelect={this.handleSelect.bind(this)} id="tabbed_donation_history">
-              <Tab eventKey={1} title="Donations"><DonationList displayDonations/></Tab>
-              <Tab eventKey={2} title="Subscriptions"><DonationList displayDonations={false}/></Tab>
+            <Tab eventKey={1} title="Donations"><DonationList displayDonations /></Tab>
+            <Tab eventKey={2} title="Subscriptions"><DonationList displayDonations={false} /></Tab>
           </Tabs>
         </div>
       );
