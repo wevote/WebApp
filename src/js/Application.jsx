@@ -6,7 +6,7 @@ import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibi
 import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
 import {
-  getAppBaseClass, historyPush, isCordova, isWebApp,
+  getAppBaseClass, getToastClass, historyPush, isCordova, isWebApp,
 } from "./utils/cordovaUtils";
 import ElectionActions from "./actions/ElectionActions";
 import FooterBarCordova from "./components/Navigation/FooterBarCordova";
@@ -56,7 +56,7 @@ export default class Application extends Component {
   initCordova () {
     if (isCordova()) {
       console.log(`Application initCordova ------------ ${__filename}`);
-      window.handleOpenURL = function (url) {
+      window.handleOpenURL = (url) => {
         TwitterSignIn.handleTwitterOpenURL(url);
       };
     }
@@ -110,7 +110,6 @@ export default class Application extends Component {
     // Preload Issue images. Note that for brand new browsers that don't have a voterDeviceId yet, we retrieve all issues
     IssueActions.retrieveIssuesToFollow();
     this.issueStoreListener = IssueStore.addListener(this.preloadIssueImages);
-
   }
 
   componentWillUnmount () {
@@ -216,7 +215,6 @@ export default class Application extends Component {
           atLeastOneQueryVariableFound = true;
           const voterAddress = this.props.location.query.voter_address;
           if (voterAddress && voterAddress !== "") {
-
             // Do not save a blank voterAddress -- we don't want to over-ride an existing address with a blank
             VoterActions.voterAddressSave(voterAddress);
           }
@@ -284,7 +282,7 @@ export default class Application extends Component {
       // console.log("voterGuideMode", voterGuideMode);
       return (
         <div className={getAppBaseClass(pathname)} id="app-base-id">
-          <ToastContainer closeButton={false} />
+          <ToastContainer closeButton={false} className={getToastClass()} />
           <Header params={this.props.params}
                   location={this.props.location}
                   pathname={pathname}
@@ -309,7 +307,7 @@ export default class Application extends Component {
 
       return (
         <div className={getAppBaseClass(pathname)} id="app-base-id">
-          <ToastContainer closeButton={false} />
+          <ToastContainer closeButton={false} className={getToastClass()} />
           <Header params={this.props.params}
                   location={this.props.location}
                   pathname={pathname}
@@ -332,7 +330,7 @@ export default class Application extends Component {
     // This handles other pages, like Welcome and the Ballot display
     return (
       <div className={getAppBaseClass(pathname)} id="app-base-id">
-        <ToastContainer closeButton={false} />
+        <ToastContainer closeButton={false} className={getToastClass()} />
         <Header params={this.props.params}
                 location={this.props.location}
                 pathname={pathname}
