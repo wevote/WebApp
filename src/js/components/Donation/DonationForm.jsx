@@ -23,9 +23,10 @@ export default class DonationForm extends Component {
 
   componentDidMount () {
     const self = this;
-    if (window.StripeCheckout !== undefined) {
-      console.log("StripeCheckout is defined  ", window.StripeCheckout);
-      this.stripeHandler = window.StripeCheckout.configure({
+    const { StripeCheckout } = window;
+    if (StripeCheckout !== undefined) {
+      console.log("StripeCheckout is defined  ", StripeCheckout);
+      this.stripeHandler = StripeCheckout.configure({
         key: webAppConfig.STRIPE_API_KEY,
         image: cordovaDot("https://stripe.com/img/documentation/checkout/marketplace.png"),
         locale: "auto",
@@ -36,7 +37,7 @@ export default class DonationForm extends Component {
         },
       });
     } else {
-      console.log("StripeCheckout is NOT defined ", window.StripeCheckout);
+      console.log("StripeCheckout is NOT defined: ", StripeCheckout);
     }
   }
 
@@ -67,9 +68,9 @@ export default class DonationForm extends Component {
 
   render () {
     renderLog(__filename);
-    let donateButtonText = "Donate Now";
-    if (this.props.donateButtonText) {
-      donateButtonText = this.props.donateButtonText;
+    let { donateButtonText } = this.props;
+    if (!donateButtonText) {
+      donateButtonText = "Donate Now";
     }
 
     return (

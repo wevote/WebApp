@@ -89,7 +89,7 @@ const firstVisit = !cookies.getItem("voter_device_id");
 const routes = () => (
   <Route path="/" component={Application}>
     <Route component={Intro} />
-    {                       // 12/4/18: Not sure why we need the following diable
+    {                       // 12/4/18: Not sure why we need the following disabled
       (function redir () {  // eslint-disable-line wrap-iife
         if (isWebApp()) {
           return <IndexRedirect to="/ballot" />;

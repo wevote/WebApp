@@ -10,7 +10,7 @@ import VoterActions from "../../actions/VoterActions";
 
 const styles = {
   table: {
-    // verticalAlign: "middle",
+    //  verticalAlign: "middle",
     // textAlign: "center",
   },
   td: {
@@ -113,8 +113,7 @@ export default class DonationList extends Component {
                           </td>
                           <td hidden={isNotMobile} />
                           <td>
-                            {active ?
-                              <DonationCancelOrRefund item={item} refundDonation={donations} /> : null }
+                            <DonationCancelOrRefund item={item} refundDonation={donations} active={active} cancelText="" />
                           </td>
                         </tr>
                       );
@@ -155,13 +154,6 @@ export default class DonationList extends Component {
                       const lastcharged = item.last_charged === "None" ? "" :
                         moment.utc(item.last_charged).format("MMM D, YYYY");
                       const waiting = item.amount === "0.00";
-                      const DonationCancel = () => {
-                        if (active) {
-                          return <DonationCancelOrRefund item={item} refundDonation={donations} />;
-                        } else {
-                          return cancel.length > 0 ? "canceled" : null;
-                        }
-                      };
 
                       return (
                         <tr key={key}>
@@ -176,7 +168,7 @@ export default class DonationList extends Component {
                           </td>
                           <td hidden={isNotMobile}>{cancel}</td>
                           <td>
-                            {DonationCancel}
+                            <DonationCancelOrRefund item={item} refundDonation={donations} active={active} cancelText={cancel} />
                           </td>
                         </tr>
                       );

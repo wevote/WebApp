@@ -8,7 +8,9 @@ import { renderLog } from "../../utils/logging";
 export default class DonationCancelOrRefund extends Component {
   static propTypes = {
     item: PropTypes.object,
-    refundDonation: PropTypes.bool, // true for refund donation, false for cancel subscription
+    refundDonation: PropTypes.bool, // true for donation refund, false for cancel subscription
+    active: PropTypes.bool,
+    cancelText: PropTypes.string,
   };
 
   constructor (props) {
@@ -39,8 +41,13 @@ export default class DonationCancelOrRefund extends Component {
 
   render () {
     renderLog(__filename);
-    const { item, refundDonation } = this.props;
+    const { item, refundDonation, active, cancelText } = this.props;
     const label = refundDonation ? "Refund Donation" : "Cancel Subscription";
+
+    if (!active) {
+      return cancelText.length > 0 ? "canceled" : null;
+    }
+
     return (
       <div>
         <Button size="small" onClick={this.open.bind(this)}>{label}</Button>

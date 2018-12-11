@@ -19,7 +19,7 @@
     "jsx-a11y/alt-text": 0,
     "jsx-a11y/anchor-has-content": 1,
     "jsx-a11y/anchor-is-valid": 1,
-    "jsx-a11y/click-events-have-key-events": 1,
+    "jsx-a11y/click-events-have-key-events": 0,
     "jsx-a11y/heading-has-content": 1,
     "jsx-a11y/iframe-has-title": 1,
     "jsx-a11y/label-has-associated-control": 1,
@@ -27,13 +27,13 @@
     "jsx-a11y/mouse-events-have-key-events": 1,
     "jsx-a11y/no-autofocus": 1,
     "jsx-a11y/no-noninteractive-element-interactions": 1,
-    "jsx-a11y/no-static-element-interactions": 1,
+    "jsx-a11y/no-static-element-interactions": 0,
     "jsx-quotes": 2,
     "max-len": [0, 80, 4],
     "no-console": [0],
     "no-else-return": [0],
     "no-multi-spaces": [0],
-    "no-multiple-empty-lines": [0],           // allow indented comments (like this one)
+    "no-multiple-empty-lines": [0],             // allow indented comments (like this one)
     "no-plusplus": [0],
     "no-underscore-dangle": [0],
     "object-curly-newline": 0,
@@ -50,7 +50,7 @@
     "radix": 0,                                   // Dec 2018: We always use base 10, so specifying it each time seems excessive
     "react/button-has-type": 1,
     "react/destructuring-assignment": 0,          // Dec 2018: We should do this!  But right now we have 3990 warnings/errors if enabled.
-    "react/forbid-prop-types": 1,
+    "react/forbid-prop-types": 0,                 // Dec 2018: Should consider someday
     "react/indent-prop": 0,
     "react/jsx-first-prop-new-line": 0,
     "react/jsx-indent-props": 0,
@@ -65,7 +65,7 @@
     "react/no-unused-state": 1,
     "react/prefer-stateless-function": 0,
     "react/prop-types": 1,
-    "react/require-default-props": 1,
+    "react/require-default-props": 0,              // Dec 2018: Might have value someday
     "react/sort-comp": 1,
     "space-before-function-paren": [1, {"anonymous": "always", "named": "always"}],
     "space-in-parens": [1],
