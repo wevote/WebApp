@@ -1,6 +1,6 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
-// Dec 2018: Keep this comment as a cheat-sheet for the enumerated values sent by the APi
+// Dec 2018: Keep this comment as a cheat-sheet for the enumerated values sent by the API
 // ACTION_VOTER_GUIDE_VISIT = 1;
 // ACTION_VOTER_GUIDE_ENTRY = 2;
 // ACTION_ORGANIZATION_FOLLOW = 3;

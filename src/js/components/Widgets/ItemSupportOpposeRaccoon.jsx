@@ -31,7 +31,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     ballotItemWeVoteId: PropTypes.string,
     currentBallotIdInUrl: PropTypes.string,
     goToCandidate: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
-    // maximumOrganizationDisplay: PropTypes.number,
+    //  maximumOrganizationDisplay: PropTypes.number,
     organizationsToFollowSupport: PropTypes.array,
     organizationsToFollowOppose: PropTypes.array,
     popoverBottom: PropTypes.bool,

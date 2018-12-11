@@ -33,7 +33,7 @@
     "no-console": [0],
     "no-else-return": [0],
     "no-multi-spaces": [0],
-    "no-multiple-empty-lines": [0],           // allow indented comments (like this one)
+    "no-multiple-empty-lines": [0],             // allow indented comments (like this one)
     "no-plusplus": [0],
     "no-underscore-dangle": [0],
     "object-curly-newline": 0,

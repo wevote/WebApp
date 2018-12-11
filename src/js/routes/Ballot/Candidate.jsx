@@ -142,7 +142,7 @@ export default class Candidate extends Component {
   onVoterGuideStoreChange () {
     // console.log("Candidate onVoterGuideStoreChange");
     // When the voter_guides_to_follow_for_latest_ballot_item changes, trigger an update of the candidate so we can get an updated position_list
-    // CandidateActions.candidateRetrieve(this.state.candidate_we_vote_id);
+    //  CandidateActions.candidateRetrieve(this.state.candidate_we_vote_id);
     CandidateActions.positionListForBallotItem(this.state.candidate_we_vote_id);
 
     // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems

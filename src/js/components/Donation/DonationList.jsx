@@ -10,7 +10,7 @@ import VoterActions from "../../actions/VoterActions";
 
 const styles = {
   table: {
-    // verticalAlign: "middle",
+    //  verticalAlign: "middle",
     // textAlign: "center",
   },
   td: {

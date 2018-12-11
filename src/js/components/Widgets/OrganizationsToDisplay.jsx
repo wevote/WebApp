@@ -1,4 +1,4 @@
-// This is used for organizations to Follow (not currently followed by the voter)
+// This is used for organizations to Follow  (not currently followed by the voter)
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { OverlayTrigger, Popover } from "react-bootstrap";

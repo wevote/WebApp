@@ -37,7 +37,7 @@ export default class DonationForm extends Component {
         },
       });
     } else {
-      console.log("StripeCheckout is NOT defined ", StripeCheckout);
+      console.log("StripeCheckout is NOT defined: ", StripeCheckout);
     }
   }
 
