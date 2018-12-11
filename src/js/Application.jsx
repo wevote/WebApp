@@ -47,7 +47,7 @@ export default class Application extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      // Do not define voter here. We rely on it being undefined..
+      // Do not define voter here. We rely on it being undefined.
       voter_initial_retrieve_needed: true,
     };
     this.loadedHeader = false;
