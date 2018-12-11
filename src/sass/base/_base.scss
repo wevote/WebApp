@@ -22,6 +22,15 @@ body {
   }
 }
 
+.app-toast-cordova {
+  &__iphone {
+    margin-top: 24px !important;
+  }
+  &__iphone-notch {
+    margin-top: 40px !important;
+  }
+}
+
 .page-content-container {
   margin: $space-none $space-auto;
   max-width: $max-page-container-width;
@@ -52,30 +61,30 @@ body {
 .headroom-webapp--secondary       { margin-top: 11vh; }
 .headroom-webapp--backto          { margin-top: -3vh; }
 .headroom-webapp--full            { margin-top: -1vh; }
-.headroom-ios--notch--secondary   { margin-top: -2vh; }
+.headroom-ios--notch--secondary   { margin-top: 11vh; }
 .headroom-ios--notch--backto      { margin-top: 8vh; }
-.headroom-ios--notch--full        { margin-top: -2vh; }
-.headroom-ios--678--secondary     { margin-top: -5vh; }
-.headroom-ios--678--backto        { margin-top: -1vh; }
-.headroom-ios--678--full          { margin-top: -5vh; }
-.headroom-ios--678plus--secondary { margin-top: -5vh; }
-.headroom-ios--678plus--backto    { margin-top: 0; }
-.headroom-ios--678plus--full      { margin-top: -4vh; }
-.headroom-ios--ipad--secondary    { margin-top: -3vh; }
-.headroom-ios--ipad--backto       { margin-top: 3vh; }
-.headroom-ios--ipad--full         { margin-top: -4vh; }
-.headroom-android--xl--secondary  { margin-top: -7vh; }
-.headroom-android--xl--backto     { margin-top: -3vh; }
-.headroom-android--xl--full       { margin-top: -8vh; }
-.headroom-android--lg--secondary  { margin-top: -8vh; }
-.headroom-android--lg--backto     { margin-top: -3vh; }
-.headroom-android--lg--full       { margin-top: -8vh; }
-.headroom-android--md--secondary  { margin-top: -8vh; }
-.headroom-android--md--backto     { margin-top: -3vh; }
-.headroom-android--md--full       { margin-top: -8vh; }
-.headroom-android--sm--secondary  { margin-top: -10vh; }
-.headroom-android--sm--backto     { margin-top: -5vh; }
-.headroom-android--sm--full       { margin-top: -10vh; }
+.headroom-ios--notch--full        { margin-top: 5vh; }
+.headroom-ios--678--secondary     { margin-top: 11vh; }
+.headroom-ios--678--backto        { margin-top: 7vh; }
+.headroom-ios--678--full          { margin-top: 3vh; }
+.headroom-ios--678plus--secondary { margin-top: 9vh; }
+.headroom-ios--678plus--backto    { margin-top: 7vh; }
+.headroom-ios--678plus--full      { margin-top: 3vh; }
+.headroom-ios--ipad--secondary    { margin-top: 6vh; }
+.headroom-ios--ipad--backto       { margin-top: 4vh; }
+.headroom-ios--ipad--full         { margin-top: 1vh; }
+.headroom-android--xl--secondary  { margin-top: 7vh; }
+.headroom-android--xl--backto     { margin-top: 5vh; }
+.headroom-android--xl--full       { margin-top: -1vh; }
+.headroom-android--lg--secondary  { margin-top: 7vh; }
+.headroom-android--lg--backto     { margin-top: 5vh; }
+.headroom-android--lg--full       { margin-top: 1vh; }
+.headroom-android--md--secondary  { margin-top: 7vh; }
+.headroom-android--md--backto     { margin-top: 4vh; }
+.headroom-android--md--full       { margin-top: 1vh; }
+.headroom-android--sm--secondary  { margin-top: 10vh; }
+.headroom-android--sm--backto     { margin-top: 6vh; }
+.headroom-android--sm--full       { margin-top: 1vh; }
 // stylelint-enable sh-waqar/declaration-use-variable
 
 *,
