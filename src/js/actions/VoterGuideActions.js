@@ -49,7 +49,7 @@ export default {
   voterGuidesFollowedRetrieve () {
     Dispatcher.loadEndpoint("voterGuidesFollowedRetrieve", {
       maximum_number_to_retrieve: 0,
-    } );
+    });
   },
 
   voterGuidesFollowedByOrganizationRetrieve (organization_we_vote_id) {

@@ -23,12 +23,13 @@
 \ */
 
 // December 2018:  This is an opensource file that we reuse, so keep code identical with no lint corrections
-/* eslint no-useless-escape: 0 */
 /* eslint comma-dangle: 0 */
+/* eslint func-names: 0 */
 /* eslint indent: 0 */
+/* eslint no-useless-escape: 0 */
+/* eslint no-var: 0 */
 /* eslint object-shorthand: 0 */
 /* eslint prefer-template: 0 */
-/* eslint no-var: 0 */
 
 
 export default {

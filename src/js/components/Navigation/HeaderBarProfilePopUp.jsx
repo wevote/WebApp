@@ -140,7 +140,8 @@ export default class HeaderBarProfilePopUp extends Component {
           </ul>
           <span className="terms-and-privacy">
             <br />
-            <Link onClick={this.hideProfilePopUp} to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;
+            <Link onClick={this.hideProfilePopUp} to="/more/terms">Terms of Service</Link>
+            &nbsp;&nbsp;&nbsp;
             <Link onClick={this.hideProfilePopUp} to="/more/privacy">Privacy Policy</Link>
           </span>
         </div>

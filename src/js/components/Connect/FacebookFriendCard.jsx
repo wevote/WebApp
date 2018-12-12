@@ -24,7 +24,8 @@ export default class FacebookFriendCard extends Component {
         <div className="card-child__media-object-content">
           <div className="card-child__content">
             { this.props.name ? (
-              <span>&nbsp;
+              <span>
+                &nbsp;
                 {this.props.name}
               </span>
             ) :

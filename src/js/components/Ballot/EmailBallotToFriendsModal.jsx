@@ -471,7 +471,7 @@ export default class EmailBallotToFriendsModal extends Component {
                       <span>
                         Email a link to this ballot to your friends to help them get prepared to vote.
                         These friends will see what you support or oppose.
-                        <br />&nbsp;
+                        <br />
                         <br />
                       </span>
                       <div className="row invite-inputs">

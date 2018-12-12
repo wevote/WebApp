@@ -73,7 +73,8 @@ export default class SuggestedFriendDisplayForList extends Component {
                 {voter_display_name_formatted}
               </Link>
             ) : (
-              <span>&nbsp;
+              <span>
+                &nbsp;
                 {voter_display_name_formatted}
               </span>
             )}

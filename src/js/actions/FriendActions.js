@@ -124,7 +124,7 @@ export default {
     Dispatcher.loadEndpoint("friendInviteResponse", {
       voter_we_vote_id: other_voter_we_vote_id,
       kind_of_invite_response: "IGNORE_INVITATION",
-    } );
+    });
   },
 
   // TODO DALE 2016-11-3 To be built
@@ -132,7 +132,7 @@ export default {
     Dispatcher.loadEndpoint("friendInviteResponse", {
       voter_we_vote_id: other_voter_we_vote_id,
       kind_of_invite_response: "IGNORE_SUGGESTION",
-    } );
+    });
   },
 
   suggestedFriendList () {
