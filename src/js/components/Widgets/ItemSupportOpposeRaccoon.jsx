@@ -31,7 +31,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     ballotItemWeVoteId: PropTypes.string,
     currentBallotIdInUrl: PropTypes.string,
     goToCandidate: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
-    //  maximumOrganizationDisplay: PropTypes.number,
+    // maximumOrganizationDisplay: PropTypes.number,
     organizationsToFollowSupport: PropTypes.array,
     organizationsToFollowOppose: PropTypes.array,
     popoverBottom: PropTypes.bool,
@@ -1130,7 +1130,8 @@ export default class ItemSupportOpposeRaccoon extends Component {
                     <br />
                     Score
                   </span>
-                  <span>&nbsp;
+                  <span>
+                    &nbsp;
                     <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" />
                   </span>
                 </span>

@@ -121,7 +121,8 @@ export default class LearnMore extends Component {
         target="_blank"
         body={(
           <span>
-            {learnMoreText}&nbsp;
+            {learnMoreText}
+            &nbsp;
             <i className="fa fa-external-link" />
           </span>
         )}
@@ -168,7 +169,8 @@ export default class LearnMore extends Component {
       return (
         <span>
           {" "}
-          {expandedTextToDisplay}&nbsp;&nbsp;
+          {expandedTextToDisplay}
+          &nbsp;&nbsp;
           {
           externalLink
         }

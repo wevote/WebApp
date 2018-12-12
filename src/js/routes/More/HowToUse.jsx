@@ -141,7 +141,8 @@ export default class HowToUse extends Component {
           </h3>
           <span className="terms-and-privacy">
             <br />
-            <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;
+            <Link to="/more/terms">Terms of Service</Link>
+            &nbsp;&nbsp;&nbsp;
             <Link to="/more/privacy">Privacy Policy</Link>
           </span>
           <br />

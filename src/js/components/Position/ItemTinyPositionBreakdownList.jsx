@@ -198,7 +198,8 @@ export default class ItemTinyPositionBreakdownList extends Component {
                 constraints={{ to: "scrollParent", pin: true }}
                 placement="auto"
                 title={(
-                  <span onClick={() => this.onTriggerLeave(orgsNotShownCount)}>&nbsp;
+                  <span onClick={() => this.onTriggerLeave(orgsNotShownCount)}>
+                    &nbsp;
                     <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" />
                   </span>
                 )}
@@ -257,7 +258,8 @@ export default class ItemTinyPositionBreakdownList extends Component {
               id={`organization-popover-${organizationWeVoteId}`}
               placement="bottom"
               title={(
-                <span onClick={() => this.onTriggerLeave(organizationWeVoteId)}>&nbsp;
+                <span onClick={() => this.onTriggerLeave(organizationWeVoteId)}>
+                  &nbsp;
                   {" "}
                   <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" />
                   {" "}

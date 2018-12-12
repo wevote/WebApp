@@ -154,7 +154,8 @@ export default class SettingsMenuMobile extends Component {
               <SettingsPersonalSideBar onOwnPage isSignedIn={this.state.voter.is_signed_in} organizationType={this.state.organizationType} />
               <h4 className="text-left" />
               <div className="terms-and-privacy u-padding-top--md">
-                <Link to="/more/terms">Terms of Service</Link>&nbsp;&nbsp;&nbsp;
+                <Link to="/more/terms">Terms of Service</Link>
+                &nbsp;&nbsp;&nbsp;
                 <Link to="/more/privacy">Privacy Policy</Link>
               </div>
             </div>

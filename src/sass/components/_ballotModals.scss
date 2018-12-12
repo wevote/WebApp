@@ -1,4 +1,5 @@
 $cordova-ballot-top-margin: 5vh;
+$ballot-upcoming: 50px;
 
 .ballot-election-list,
 .select-address {
@@ -64,6 +65,10 @@ $cordova-ballot-top-margin: 5vh;
     display: block;
     font-size: 14px;
     margin: $toggle-link-margin;
+  }
+
+  &__upcoming {
+    margin-top: $ballot-upcoming !important;
   }
 }
 

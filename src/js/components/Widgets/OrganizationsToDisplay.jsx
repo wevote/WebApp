@@ -1,4 +1,4 @@
-// This is used for organizations to Follow  (not currently followed by the voter)
+// This is used for organizations to Follow (not currently followed by the voter)
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { OverlayTrigger, Popover } from "react-bootstrap";
@@ -59,7 +59,8 @@ export default class OrganizationsToDisplay extends Component {
         <Popover
           id={`organization-popover-${orgWeVoteId}-${ballotItemWeVoteId}`}
           title={(
-            <span onClick={() => this.onTriggerLeave(orgWeVoteId, visibleTag)}>&nbsp;
+            <span onClick={() => this.onTriggerLeave(orgWeVoteId, visibleTag)}>
+              &nbsp;
               <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `}
                     aria-hidden="true"
               />

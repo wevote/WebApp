@@ -28,7 +28,7 @@ export default {
   },
 
   organizationsFollowedRetrieve (auto_followed_from_twitter_suggestion) {
-    Dispatcher.loadEndpoint("organizationsFollowedRetrieve", { auto_followed_from_twitter_suggestion } );
+    Dispatcher.loadEndpoint("organizationsFollowedRetrieve", { auto_followed_from_twitter_suggestion });
   },
 
   saveFromFacebook (facebook_id, facebook_email, facebook_profile_image_url_https, organization_name) {

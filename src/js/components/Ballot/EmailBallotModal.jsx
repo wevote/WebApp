@@ -223,7 +223,7 @@ export default class EmailBallotModal extends Component {
                   <div className="row invite-inputs">
                     <span className="col-12 text-left">
                       Email a link to this ballot to yourself so you can print it, or come back to it later.&nbsp;
-                      <br />&nbsp;
+                      <br />
                       <br />
                     </span>
                     <div className="col-12 text-left">
