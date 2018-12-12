@@ -254,7 +254,7 @@ export function getAppBaseClass (pathname) {
     appBaseClass += "--secondary";
   } else if (stringContains("/candidate/", pathname) ||
     (stringContains("/settings/", pathname) && isCordova()) ||
-    stringContains("/measure/", pathname)) {
+     stringContains("/measure/", pathname)) {
     appBaseClass += "--backto";
   } else {
     appBaseClass += "--full";
