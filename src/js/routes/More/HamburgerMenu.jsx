@@ -3,11 +3,11 @@ import Helmet from "react-helmet";
 import { Link } from "react-router";
 import Icon from "react-svg-icons";
 import { Table } from "react-bootstrap";
-
 import { isWebApp } from "../../utils/cordovaUtils";
 import VoterStore from "../../stores/VoterStore";
 import BallotStore from "../../stores/BallotStore";
 import HamburgerMenuRow from "../../components/Navigation/HamburgerMenuRow";
+import LoadingWheel from "../../components/LoadingWheel";
 import VoterSessionActions from "../../actions/VoterSessionActions";
 import { renderLog } from "../../utils/logging";
 
@@ -15,7 +15,7 @@ export default class HamburgerMenu extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      bookmarks: [],
+      voter: undefined,
     };
   }
 
@@ -43,6 +43,7 @@ export default class HamburgerMenu extends Component {
         {voterPhotoUrlMedium ? (
           <div id="js-header-avatar" className={isWebApp() ? "header-nav__avatar" : "header-nav__avatar-cordova header-nav__cordova"}>
             <img
+              alt="Signed in voter"
               src={voterPhotoUrlMedium}
               height={34}
               width={34}
@@ -59,21 +60,23 @@ export default class HamburgerMenu extends Component {
 
   render () {
     renderLog(__filename);
-    if (!this.state.voter) {
-      return null;
+    const { voter } = this.state;
+    if (voter === undefined) {
+      return LoadingWheel;
     }
 
     const hasBookmarks = BallotStore.bookmarks && BallotStore.bookmarks.length;
-    let isSignedIn = this.state.voter && this.state.voter.is_signed_in;
+    let { is_signed_in: isSignedIn } = voter;
+    const { voter_photo_url_medium: photoUrl } = voter;
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
 
     return (
       <div>
         <Helmet title="Settings Menu" />
-        <Table hover responsive className="hamburger-menu__table">
+        <Table responsive className="hamburger-menu__table">
           <tbody>
             <tr className="hamburger-menu__tr">
-              <td colSpan={3} style={{ padding: 15, color: "DarkGrey" }}>
+              <td colSpan={3} style={{ padding: 15 }}>
                 <span className="we-vote-promise" style={{ fontSize: 15 }}>Our Promise: We&apos;ll never sell your email.</span>
               </td>
             </tr>
@@ -82,7 +85,7 @@ export default class HamburgerMenu extends Component {
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/account"
-                fullIcon={this.yourAccountIcon(this.state.voter.voter_photo_url_medium)}
+                fullIcon={this.yourAccountIcon(photoUrl)}
                 linkText="Sign In"
               />
             )}
@@ -106,7 +109,7 @@ export default class HamburgerMenu extends Component {
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/account"
-                fullIcon={this.yourAccountIcon(this.state.voter.voter_photo_url_medium)}
+                fullIcon={this.yourAccountIcon(photoUrl)}
                 linkText="Account"
                 indented
               />
