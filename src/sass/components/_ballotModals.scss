@@ -65,6 +65,10 @@ $cordova-ballot-top-margin: 5vh;
     font-size: 14px;
     margin: $toggle-link-margin;
   }
+
+  &__upcoming {
+    margin-top: 50px !important;
+  }
 }
 
 .modal-backdrop {
