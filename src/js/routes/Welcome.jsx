@@ -448,7 +448,7 @@ export default class Intro extends Component {
                 </div>
               </div>
             </Row>
-            <Button variant="danger" size="large" bsPrefix="u-stack--md center-block" onClick={this.goToGetStarted}>Get Started</Button>
+            <Button className="quick-links__button quick-links__button--left" variant="danger" size="large" bsPrefix="u-stack--md center-block" onClick={this.goToGetStarted}>Get Started</Button>
           </div>
         </section>
 
