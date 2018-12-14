@@ -111,6 +111,7 @@ $opaque-grey: rgba($gray-dark, .5);
       width: 60%;
       border-radius: $space-md;
 
+
       @include breakpoints (max medium) {
         width: 80%;
         margin-bottom: $space-lg;

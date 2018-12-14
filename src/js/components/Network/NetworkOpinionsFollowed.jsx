@@ -100,7 +100,7 @@ export default class NetworkOpinionsFollowed extends Component {
               className="opinions-followed__missing-org-link"
               target="_blank"
               title="Suggest Organization"
-              body={<Button bsPrefix="u-stack--xs" variant="primary">Suggest Organization</Button>}
+              body={<Button className="btn btn-success btn-sm" bsPrefix="u-stack--xs" variant="primary">Suggest Organization</Button>}
             />
             <div className="opinions-followed__missing-org-text u-no-break">
               Don’t see your favorite organization?
