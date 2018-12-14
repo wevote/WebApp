@@ -14,11 +14,17 @@ Make sure you have created a place to put all of the code from Github:
 1. Create a fork of wevote/WebApp.git. You can do this from https://github.com/wevote/WebApp with the "Fork" button  
 (upper right of screen)
 
-1. Change into the `/Users/<YOUR NAME HERE>/MyProjects/` folder and clone your fork:  
-`git clone https://github.com/<YOUR USERNAME HERE>/WebApp.git`  
+1. Using your terminal program, change into the local folder on your computer where you want the WebApp code (replacing "<YOUR NAME HERE>" with your login name, and <YOUR GITHUB USERNAME HERE> with your github username) and clone your fork:  
+  
+     `cd /Users/<YOUR NAME HERE>/MyProjects/`
+     
+     `git clone https://github.com/<YOUR GITHUB USERNAME HERE>/WebApp.git`
 
-1. Change into your local WebApp repository folder, and set up a remote for upstream:  
-`$ git remote add upstream git@github.com:wevote/WebApp.git`  
+1. Change into your local WebApp repository folder, and set up a remote for upstream:
+
+     `cd /Users/<YOUR NAME HERE>/MyProjects/WebApp`
+
+     `$ git remote add upstream git@github.com:wevote/WebApp.git`  
 
 1. Create SSH keys 
 
