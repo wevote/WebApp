@@ -328,7 +328,15 @@ export default class BallotElectionList extends Component {
       const upcomingElectionListOutsideCount = upcomingElectionList.length - upcomingElectionListInState.length;
       const priorElectionListOutsideCount = priorElectionList.length - priorElectionListInState.length;
 
+      // If there are no upcoming state elections and no upcoming elections, return empty div
+      if (!upcomingElectionListInState.length && !upcomingElectionList.length) {
+        return (
+          <div />
+        );
+      }
+
       // December 2018, these nested ternary expression should get fixed at some point
+
       return (
         <div className="ballot-election-list__list">
           <div className="ballot-election-list__upcoming">
