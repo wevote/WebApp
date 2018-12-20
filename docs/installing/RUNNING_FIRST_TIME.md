@@ -7,11 +7,14 @@ Please make sure you have read:
 
 * [Bringing Code to Your Machine](CLONING_CODE.md)
 
+Note that for the following steps, you must have activated the `WebAppEnv` Node virtual environment that you set up when preparing your environment. As a reminder, to activate the environment, you can run:
+
+    $ cd /Users/<YOUR NAME HERE>/NodeEnvironments/WebAppEnv/
+    $ . bin/activate
+
 ## Local config.js file
 
-Every developer needs to maintain their own WebApp/src/js/config.js file, which can be copied from 
-WebApp/src/js/config-template.js. The default configuration, copied from config-template.js, 
-should work as-is for new developers.
+Every developer needs to maintain their own `WebApp/src/js/config.js` file, which can be copied from `WebApp/src/js/config-template.js`. The default configuration, copied from `config-template.js`, should work as-is for new developers.
 
 Copy `WebApp/src/js/config-template.js` into `WebApp/src/js/config.js`:
 
@@ -38,8 +41,8 @@ You should be able to visit WebApp here:
 
 The default configuration connections to our live API server at: https://api.wevoteusa.org, so this step is optional.
 
-IFF you would like to install the We Vote API server locally, start by reading the instructions 
-[install WeVoteServer](https://github.com/wevote/WeVoteServer/blob/master/README_API_INSTALL.md)
+If you would like to install the We Vote API server locally, start by reading the instructions to 
+[install WeVoteServer](https://github.com/wevote/WeVoteServer/blob/master/README_API_INSTALL.md).
 
 
 ---
