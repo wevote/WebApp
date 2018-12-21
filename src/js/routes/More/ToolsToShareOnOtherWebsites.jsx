@@ -13,7 +13,7 @@ export default function ToolsToShareOnOtherWebsites () {
 
         <p>
 WeVote.US wants to give you our technology to use, for
-          <strong>FREE</strong>
+          <strong> FREE</strong>
 , on your website.
         </p>
 
@@ -44,6 +44,7 @@ WeVote.US wants to give you our technology to use, for
             title="Interactive Ballot Tool"
             sourceUrl="https://wevote.us/ballot"
             imageUrl="/img/tools/We-Vote-Example-Ballot.png"
+            exampleUrl="https://wevote.us/more/myballot"
           />
           <CodeCopier
             title="Voter Guide Tool"
