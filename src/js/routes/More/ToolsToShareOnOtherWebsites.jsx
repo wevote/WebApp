@@ -13,7 +13,7 @@ export default function ToolsToShareOnOtherWebsites () {
 
         <p>
 WeVote.US wants to give you our technology to use, for
-          <strong>FREE</strong>
+          <strong> FREE</strong>
 , on your website.
         </p>
 
