@@ -119,7 +119,7 @@ export default class CodeCopier extends Component {
     }
 
     const source_code =
-      `<iframe src="${source_url}" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>\n<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.3/iframeResizer.min.js"></script>\n<script type="text/javascript">iFrameResize({ log:true, checkOrigin:false });</script>`;
+      `<iframe src="${source_url}" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>\n<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.3/iframeResizer.min.js"></script>\n<script type="text/javascript">iFrameResize({ checkOrigin:false });</script>`;
 
     switch (this.props.title) {
       case "Interactive Ballot Tool":
@@ -152,8 +152,8 @@ export default class CodeCopier extends Component {
                     />
                   </a>
                   <br />
-                  <a className="code-copier__link" href={this.props.imageUrl} target="_blank" rel="noopener noreferrer">
-                    Click to view full size
+                  <a className="code-copier__link" href={this.props.exampleUrl} target="_blank" rel="noopener noreferrer">
+                    Click to view example
                   </a>
                 </div>
               )}
