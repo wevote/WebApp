@@ -6,6 +6,7 @@ if (window.cordova) { // Static constants are initialized before the app starts
 }
 
 const photoPath = cordovaDot("/img/global/photos/");
+const logoPath = cordovaDot("/img/global/logos/");
 
 export const weVoteBoard = [{
   name: "Jenifer Fernandez Ancona",
@@ -166,66 +167,87 @@ export const weVoteStaff = [{
 export const organizationalDonors = [{
   name: "Amazon Web Services",
   title: "Servers",
+  logo: `${logoPath}aws-logo.png`,
 }, {
   name: "Ballotpedia",
   title: "Data",
+  logo: `${logoPath}ballotpedia-logo.png`,
 }, {
   name: "Center for Technology and Civic Life",
   title: "Data",
+  logo: `${logoPath}center-for-tech-and-civic-life-logo.png`,
 }, {
   name: "Change.org",
   title: "Data",
+  logo: `${logoPath}change-logo.png`,
 }, {
   name: "CivicMakers",
   title: "Event Collaborations",
+  logo: `${logoPath}civicmakers-logo.png`,
 }, {
   name: "Code for San Francisco & Code for America",
   title: "Our Home for Volunteer Work",
+  logo: `${logoPath}cfa-logo.png`,
 }, {
   name: "DLA Piper",
   title: "Legal",
+  logo: `${logoPath}dla-piper-logo.png`,
 }, {
   name: "Facebook",
   title: "Authentication & Data",
+  logo: `${logoPath}facebook-logo.png`,
 }, {
   name: "Fastly.com",
   title: "Scalable Content Delivery (CDN)",
+  logo: `${logoPath}fastly-logo.png`,
 }, {
   name: "Google Civic",
   title: "Data",
+  logo: `${logoPath}google-logo.png`,
 }, {
   name: "Greenberg Traurig, LLP",
   title: "Legal",
+  logo: `${logoPath}gt-logo.png`,
 }, {
   name: "League of Women Voters",
   title: "Data",
+  logo: `${logoPath}league-of-women-logo.png`,
 }, {
   name: "MapLight",
   title: "Data",
+  logo: `${logoPath}maplight-logo.png`,
 }, {
   name: "Microsoft",
   title: "For supporting Code for San Francisco",
+  logo: `${logoPath}microsoft-logo.png`,
 }, {
   name: "Sunlight Foundation",
   title: "Data",
+  logo: `${logoPath}sunlight-foundation-logo.png`,
 }, {
   name: "TurboVote, Democracy Works",
   title: "Data",
+  logo: `${logoPath}turbovote-logo.png`,
 }, {
   name: "Twitter",
   title: "Authentication & Data",
+  logo: `${logoPath}twitter-logo.png`,
 }, {
   name: "Vote Smart",
   title: "Data",
+  logo: `${logoPath}vote-smart-logo.jpeg`,
 }, {
   name: "Voting Information Project, Pew Charitable Trusts",
   title: "Data",
+  logo: `${logoPath}pew-logo.jpeg`,
 }, {
   name: "We Vote Education",
   title: "Data",
+  logo: "",
 }, {
   name: "Wikipedia",
   title: "Data",
+  logo: `${logoPath}wikipedia-logo.png`,
 },
 ];
 

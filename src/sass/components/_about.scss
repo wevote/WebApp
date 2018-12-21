@@ -1,3 +1,10 @@
+$company-margin: 1em 0 1em 0;
+$company-title-color: #555;
+$company-logo-margin-bottom: 10px;
+$logo-width: 300px;
+$logo-max-width: 100%;
+$logo-max-height: 120px;
+
 .team-member {
   margin-bottom: $space-md;
   &__photo {
@@ -35,5 +42,26 @@
   &__no-padding {
     padding-left: $space-none;
     padding-right: $space-none;
+  }
+}
+
+.company {
+  display: flex;
+  flex-flow: column;
+  margin: $company-margin;
+  &__info {
+    display: flex;
+    flex-flow: column;
+  }
+  &__title {
+    color: $company-title-color;
+  }
+  &__logo_container {
+    margin-bottom: $company-logo-margin-bottom;
+  }
+  &__logo {
+    width: $logo-width;
+    max-height: $logo-max-height;
+    max-width: $logo-max-width;
   }
 }
