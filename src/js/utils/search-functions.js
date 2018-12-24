@@ -1,26 +1,26 @@
-export default function makeSearchLink (twitter_handle, we_vote_id, kind_of_owner, link_internal, google_civic_election_id) {
-  let search_link = "";
-  switch (kind_of_owner) {
+export default function makeSearchLink (twitterHandle, weVoteId, kindOfOwner, linkInternal, googleCivicElectionId) {
+  let searchLink = "";
+  switch (kindOfOwner) {
     case "CANDIDATE":
-      search_link = twitter_handle ? `/${twitter_handle}` : `/candidate/${we_vote_id}`;
+      searchLink = twitterHandle ? `/${twitterHandle}` : `/candidate/${weVoteId}`;
       break;
     case "OFFICE":
-      search_link = `/office/${we_vote_id}`;
+      searchLink = `/office/${weVoteId}`;
       break;
     case "ORGANIZATION":
-      search_link = twitter_handle ? `/${twitter_handle}` : `/voterguide/${we_vote_id}`;
+      searchLink = twitterHandle ? `/${twitterHandle}` : `/voterguide/${weVoteId}`;
       break;
     case "MEASURE":
-      search_link = `/measure/${we_vote_id}`;
+      searchLink = `/measure/${weVoteId}`;
       break;
     case "POLITICIAN":
-      search_link = twitter_handle ? `/${twitter_handle}` : `/voterguide/${we_vote_id}`;
+      searchLink = twitterHandle ? `/${twitterHandle}` : `/voterguide/${weVoteId}`;
       break;
     case "ELECTION":
-      search_link = link_internal || `/ballot/election/${google_civic_election_id}`;
+      searchLink = linkInternal || `/ballot/election/${googleCivicElectionId}`;
       break;
     default:
       break;
   }
-  return search_link;
+  return searchLink;
 }

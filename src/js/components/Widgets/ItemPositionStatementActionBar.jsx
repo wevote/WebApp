@@ -13,7 +13,7 @@ import PositionPublicToggle from "./PositionPublicToggle";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
-import { vimeo_reg, youtube_reg, stringContains } from "../../utils/textFormat";
+import { vimeoRegX, youTubeRegX, stringContains } from "../../utils/textFormat";
 import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../../utils/cordovaUtils";
 
 
@@ -251,8 +251,8 @@ export default class ItemPositionStatementActionBar extends Component {
     let vimeo_url;
 
     if (statement_text_to_be_saved) {
-      youtube_url = statement_text_to_be_saved.match(youtube_reg);
-      vimeo_url = statement_text_to_be_saved.match(vimeo_reg);
+      youtube_url = statement_text_to_be_saved.match(youTubeRegX);
+      vimeo_url = statement_text_to_be_saved.match(vimeoRegX);
     }
 
     if (youtube_url) {

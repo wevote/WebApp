@@ -6,7 +6,7 @@ import { Tooltip, OverlayTrigger } from "react-bootstrap";
 import { renderLog } from "../../utils/logging";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import ReadMore from "./ReadMore";
-import { vimeo_reg, youtube_reg } from "../../utils/textFormat";
+import { vimeoRegX, youTubeRegX } from "../../utils/textFormat";
 
 
 // import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
@@ -56,13 +56,13 @@ export default class PositionInformationOnlySnippet extends Component {
     let statement_text_no_url;
 
     if (moreInfoUrl) {
-      youtube_url = moreInfoUrl.match(youtube_reg);
-      vimeo_url = moreInfoUrl.match(vimeo_reg);
+      youtube_url = moreInfoUrl.match(youTubeRegX);
+      vimeo_url = moreInfoUrl.match(vimeoRegX);
     }
 
     if (statement_text) {
-      youtube_url = statement_text.match(youtube_reg);
-      vimeo_url = statement_text.match(vimeo_reg);
+      youtube_url = statement_text.match(youTubeRegX);
+      vimeo_url = statement_text.match(vimeoRegX);
     }
 
     if (youtube_url) {
