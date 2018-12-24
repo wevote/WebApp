@@ -4,7 +4,7 @@ import { isCordova, isWebApp } from "./cordovaUtils";
 
 // We have to do all this, because we allow urls like https://wevote.us/aclu where "aclu" is a twitter account.
 // Based on the path, decide if we want theaterMode, contentFullWidthMode, or voterGuideMode
-export function getApplicationViewBooleans(pathname) {
+export function getApplicationViewBooleans (pathname) {
   let inTheaterMode = false;
   let contentFullWidthMode = false;
   let settingsMode = false;
@@ -118,7 +118,7 @@ export function getApplicationViewBooleans(pathname) {
 //   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries#Polyfill
 export function polyfillObjectEntries () {
   if (!Object.entries) {
-    Object.entries = function poly(obj) {
+    Object.entries = function poly (obj) {
       const localProps = Object.keys(obj);
       let i = localProps.length;
       const resArray = new Array(i); // preallocate the Array

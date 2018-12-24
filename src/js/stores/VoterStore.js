@@ -208,7 +208,10 @@ class VoterStore extends ReduceStore {
 
   reduce (state, action) {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
-    if (!action.res || !action.res.success) return state;
+    if (!action.res) {
+      console.log("VoterStore, no action.res received. Exiting.");
+      return state;
+    }
 
     let voter_device_id;
     let google_civic_election_id;

@@ -5,7 +5,7 @@ import { cordovaDot } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import ReadMore from "./ReadMore";
-import { vimeo_reg, youtube_reg } from "../../utils/textFormat";
+import { vimeoRegX, youTubeRegX } from "../../utils/textFormat";
 
 // import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
 
@@ -65,8 +65,8 @@ export default class PositionSupportOpposeSnippet extends Component {
     let statement_text_no_url;
 
     if (statement_text) {
-      youtube_url = statement_text.match(youtube_reg);
-      vimeo_url = statement_text.match(vimeo_reg);
+      youtube_url = statement_text.match(youTubeRegX);
+      vimeo_url = statement_text.match(vimeoRegX);
     }
 
     if (youtube_url) {
