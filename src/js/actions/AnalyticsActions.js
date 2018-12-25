@@ -44,150 +44,150 @@ import Dispatcher from "../dispatcher/Dispatcher";
 
 export default {
 
-  saveActionWrapper (action_constant, google_civic_election_id) {
+  saveActionWrapper (actionConstant, googleCivicElectionId) {
     Dispatcher.loadEndpoint("saveAnalyticsAction",
       {
-        action_constant,
-        google_civic_election_id,
+        action_constant: actionConstant,
+        google_civic_election_id: googleCivicElectionId,
       });
   },
 
-  saveActionWrapperWithOrganization (action_constant, google_civic_election_id, organization_we_vote_id) {
+  saveActionWrapperWithOrganization (actionConstant, googleCivicElectionId, organizationWeVoteId) {
     Dispatcher.loadEndpoint("saveAnalyticsAction",
       {
-        action_constant,
-        google_civic_election_id,
-        organization_we_vote_id,
+        action_constant: actionConstant,
+        google_civic_election_id: googleCivicElectionId,
+        organization_we_vote_id: organizationWeVoteId,
       });
   },
 
-  saveActionWrapperWithBallotItem (action_constant, google_civic_election_id, ballot_item_we_vote_id) {
+  saveActionWrapperWithBallotItem (actionConstant, googleCivicElectionId, ballotItemWeVoteId) {
     Dispatcher.loadEndpoint("saveAnalyticsAction",
       {
-        action_constant,
-        google_civic_election_id,
-        ballot_item_we_vote_id,
+        action_constant: actionConstant,
+        google_civic_election_id: googleCivicElectionId,
+        ballot_item_we_vote_id: ballotItemWeVoteId,
       });
   },
 
-  saveActionAboutGettingStarted (google_civic_election_id) {
-    const action_constant = 28; // ACTION_ABOUT_GETTING_STARTED
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionAboutGettingStarted (googleCivicElectionId) {
+    const actionConstant = 28; // ACTION_ABOUT_GETTING_STARTED
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
-  saveActionAboutVision (google_civic_election_id) {
-    const action_constant = 29; // ACTION_ABOUT_VISION
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionAboutVision (googleCivicElectionId) {
+    const actionConstant = 29; // ACTION_ABOUT_VISION
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
-  saveActionAboutOrganization (google_civic_election_id) {
-    const action_constant = 30; // ACTION_ABOUT_ORGANIZATION
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionAboutOrganization (googleCivicElectionId) {
+    const actionConstant = 30; // ACTION_ABOUT_ORGANIZATION
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
-  saveActionAboutTeam (google_civic_election_id) {
-    const action_constant = 31; // ACTION_ABOUT_TEAM
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionAboutTeam (googleCivicElectionId) {
+    const actionConstant = 31; // ACTION_ABOUT_TEAM
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
-  saveActionAboutMobile (google_civic_election_id) {
-    const action_constant = 32; // ACTION_ABOUT_MOBILE
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionAboutMobile (googleCivicElectionId) {
+    const actionConstant = 32; // ACTION_ABOUT_MOBILE
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
-  saveActionAccountPage (google_civic_election_id) {
-    const action_constant = 26; // ACTION_ACCOUNT_PAGE
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionAccountPage (googleCivicElectionId) {
+    const actionConstant = 26; // ACTION_ACCOUNT_PAGE
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
-  saveActionBallotVisit (google_civic_election_id) {
-    const action_constant = 6; // ACTION_BALLOT_VISIT
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionBallotVisit (googleCivicElectionId) {
+    const actionConstant = 6; // ACTION_BALLOT_VISIT
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
-  saveActionCandidate (google_civic_election_id, ballot_item_we_vote_id) {
-    const action_constant = 34; // ACTION_CANDIDATE
-    this.saveActionWrapperWithBallotItem(action_constant, google_civic_election_id, ballot_item_we_vote_id);
+  saveActionCandidate (googleCivicElectionId, ballotItemWeVoteId) {
+    const actionConstant = 34; // ACTION_CANDIDATE
+    this.saveActionWrapperWithBallotItem(actionConstant, googleCivicElectionId, ballotItemWeVoteId);
   },
 
-  saveActionDonateVisit (google_civic_election_id) {
-    const action_constant = 25; // ACTION_DONATE_VISIT
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionDonateVisit (googleCivicElectionId) {
+    const actionConstant = 25; // ACTION_DONATE_VISIT
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
-  saveActionElections (google_civic_election_id) {
-    const action_constant = 40; // ACTION_ELECTIONS
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionElections (googleCivicElectionId) {
+    const actionConstant = 40; // ACTION_ELECTIONS
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
-  saveActionFacebookInvitableFriends (google_civic_election_id) {
-    const action_constant = 24; // ACTION_FACEBOOK_INVITABLE_FRIENDS
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionFacebookInvitableFriends (googleCivicElectionId) {
+    const actionConstant = 24; // ACTION_FACEBOOK_INVITABLE_FRIENDS
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
-  saveActionInviteByEmail (google_civic_election_id) {
-    const action_constant = 27; // ACTION_INVITE_BY_EMAIL
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionInviteByEmail (googleCivicElectionId) {
+    const actionConstant = 27; // ACTION_INVITE_BY_EMAIL
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
-  saveActionModalIssues (google_civic_election_id) {
-    const action_constant = 17; // ACTION_MODAL_ISSUES
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionModalIssues (googleCivicElectionId) {
+    const actionConstant = 17; // ACTION_MODAL_ISSUES
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
-  saveActionModalOrganizations (google_civic_election_id) {
-    const action_constant = 18; // ACTION_MODAL_ORGANIZATIONS
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionModalOrganizations (googleCivicElectionId) {
+    const actionConstant = 18; // ACTION_MODAL_ORGANIZATIONS
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
-  saveActionModalPositions (google_civic_election_id) {
-    const action_constant = 19; // ACTION_MODAL_POSITIONS
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionModalPositions (googleCivicElectionId) {
+    const actionConstant = 19; // ACTION_MODAL_POSITIONS
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
-  saveActionModalFriends (google_civic_election_id) {
-    const action_constant = 20; // ACTION_MODAL_FRIENDS
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionModalFriends (googleCivicElectionId) {
+    const actionConstant = 20; // ACTION_MODAL_FRIENDS
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
-  saveActionModalShare (google_civic_election_id) {
-    const action_constant = 21; // ACTION_MODAL_SHARE
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionModalShare (googleCivicElectionId) {
+    const actionConstant = 21; // ACTION_MODAL_SHARE
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
-  saveActionModalVote (google_civic_election_id) {
-    const action_constant = 22; // ACTION_MODAL_VOTE
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionModalVote (googleCivicElectionId) {
+    const actionConstant = 22; // ACTION_MODAL_VOTE
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
-  saveActionNetwork (google_civic_election_id) {
-    const action_constant = 23; // ACTION_NETWORK
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionNetwork (googleCivicElectionId) {
+    const actionConstant = 23; // ACTION_NETWORK
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
-  saveActionOffice (google_civic_election_id, ballot_item_we_vote_id) {
-    const action_constant = 33; // ACTION_OFFICE
-    this.saveActionWrapperWithBallotItem(action_constant, google_civic_election_id, ballot_item_we_vote_id);
+  saveActionOffice (googleCivicElectionId, ballotItemWeVoteId) {
+    const actionConstant = 33; // ACTION_OFFICE
+    this.saveActionWrapperWithBallotItem(actionConstant, googleCivicElectionId, ballotItemWeVoteId);
   },
 
-  saveActionVoterGuideAutoFollow (organization_we_vote_id, google_civic_election_id) {
-    const action_constant = 4; // ACTION_ORGANIZATION_AUTO_FOLLOW
-    this.saveActionWrapperWithOrganization(action_constant, google_civic_election_id, organization_we_vote_id);
+  saveActionVoterGuideAutoFollow (organizationWeVoteId, googleCivicElectionId) {
+    const actionConstant = 4; // ACTION_ORGANIZATION_AUTO_FOLLOW
+    this.saveActionWrapperWithOrganization(actionConstant, googleCivicElectionId, organizationWeVoteId);
   },
 
-  saveActionVoterGuideGetStarted (organization_we_vote_id, google_civic_election_id) {
-    const action_constant = 35; // ACTION_VOTER_GUIDE_GET_STARTED
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionVoterGuideGetStarted (organizationWeVoteId, googleCivicElectionId) {
+    const actionConstant = 35; // ACTION_VOTER_GUIDE_GET_STARTED
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
-  saveActionVoterGuideVisit (organization_we_vote_id, google_civic_election_id) {
-    const action_constant = 1; // ACTION_VOTER_GUIDE_VISIT
-    this.saveActionWrapperWithOrganization(action_constant, google_civic_election_id, organization_we_vote_id);
+  saveActionVoterGuideVisit (organizationWeVoteId, googleCivicElectionId) {
+    const actionConstant = 1; // ACTION_VOTER_GUIDE_VISIT
+    this.saveActionWrapperWithOrganization(actionConstant, googleCivicElectionId, organizationWeVoteId);
   },
 
-  saveActionWelcomeVisit (google_civic_election_id) {
-    const action_constant = 12; // ACTION_WELCOME_VISIT
-    this.saveActionWrapper(action_constant, google_civic_election_id);
+  saveActionWelcomeVisit (googleCivicElectionId) {
+    const actionConstant = 12; // ACTION_WELCOME_VISIT
+    this.saveActionWrapper(actionConstant, googleCivicElectionId);
   },
 
 };

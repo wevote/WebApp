@@ -626,6 +626,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                             <Link onClick={this._toggleBallotIntroFollowIssues}>
                               <span className=" u-cursor--pointer">
                                 Follow issues or organizations for advice
+                                {" "}
                                 <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" />
                               </span>
                             </Link>
@@ -670,6 +671,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                   <span>
                     {" "}
                     View all
+                    {" "}
                     {totalNumberOfCandidatesToDisplay}
                     {" "}
                     candidates

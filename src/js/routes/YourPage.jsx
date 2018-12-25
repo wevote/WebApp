@@ -23,13 +23,13 @@ export default class YourPage extends Component {
   componentWillMount () {
     const { voter } = this.state;
 
-    const voter_has_twitter_handle = !!voter.twitter_screen_name;
-    if (voter_has_twitter_handle) {
+    const voterHasTwitterHandle = !!voter.twitter_screen_name;
+    if (voterHasTwitterHandle) {
       historyPush(`/${voter.twitter_screen_name}`);
     }
 
-    const voter_has_public_page = !!voter.linked_organization_we_vote_id;
-    if (voter_has_public_page) {
+    const voterHasPublicPage = !!voter.linked_organization_we_vote_id;
+    if (voterHasPublicPage) {
       historyPush(`/voterguide/${voter.linked_organization_we_vote_id}`);
     }
   }
@@ -37,24 +37,24 @@ export default class YourPage extends Component {
   componentDidMount () {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
 
-    let show_only_this_election = true;
-    let show_all_other_elections = false;
-    VoterActions.positionListForVoter(show_only_this_election, show_all_other_elections);
-    show_only_this_election = false;
-    show_all_other_elections = true;
-    VoterActions.positionListForVoter(show_only_this_election, show_all_other_elections);
+    let showOnlyThisElection = true;
+    let showAllOtherElections = false;
+    VoterActions.positionListForVoter(showOnlyThisElection, showAllOtherElections);
+    showOnlyThisElection = false;
+    showAllOtherElections = true;
+    VoterActions.positionListForVoter(showOnlyThisElection, showAllOtherElections);
   }
 
   componentWillUpdate () {
     const { voter } = this.state;
 
-    const voter_has_twitter_handle = !!voter.twitter_screen_name;
-    if (voter_has_twitter_handle) {
+    const voterHasTwitterHandle = !!voter.twitter_screen_name;
+    if (voterHasTwitterHandle) {
       historyPush(`/${voter.twitter_screen_name}`);
     }
 
-    const voter_has_public_page = !!voter.linked_organization_we_vote_id;
-    if (voter_has_public_page) {
+    const voterHasPublicPage = !!voter.linked_organization_we_vote_id;
+    if (voterHasPublicPage) {
       historyPush(`/voterguide/${voter.linked_organization_we_vote_id}`);
     }
   }
@@ -76,23 +76,23 @@ export default class YourPage extends Component {
 
     const { voter } = this.state;
 
-    const signed_in_facebook = voter === undefined ? false : voter.signed_in_facebook;
-    if (signed_in_facebook) {
-      const voter_not_linked_to_organization = !voter.linked_organization_we_vote_id;
-      if (voter_not_linked_to_organization) {
-        let organization_name = "";
-        const first_name_value_exists = voter.first_name && voter.first_name !== "null" && voter.first_name.length;
-        const last_name_value_exists = voter.last_name && voter.last_name !== "null" && voter.last_name.length;
-        if (first_name_value_exists) {
-          organization_name += voter.first_name;
+    const signedInFacebook = voter === undefined ? false : voter.signed_in_facebook;
+    if (signedInFacebook) {
+      const voterNotLinkedToOrganization = !voter.linked_organization_we_vote_id;
+      if (voterNotLinkedToOrganization) {
+        let organizationName = "";
+        const firstNameValueExists = voter.first_name && voter.first_name !== "null" && voter.first_name.length;
+        const lastNameValueExists = voter.last_name && voter.last_name !== "null" && voter.last_name.length;
+        if (firstNameValueExists) {
+          organizationName += voter.first_name;
         }
-        if (first_name_value_exists && last_name_value_exists) {
-          organization_name += " ";
+        if (firstNameValueExists && lastNameValueExists) {
+          organizationName += " ";
         }
-        if (last_name_value_exists) {
-          organization_name += voter.last_name;
+        if (lastNameValueExists) {
+          organizationName += voter.last_name;
         }
-        OrganizationActions.saveFromFacebook(voter.facebook_id, voter.facebook_email, voter.facebook_profile_image_url_https, organization_name);
+        OrganizationActions.saveFromFacebook(voter.facebook_id, voter.facebook_email, voter.facebook_profile_image_url_https, organizationName);
       }
     }
 

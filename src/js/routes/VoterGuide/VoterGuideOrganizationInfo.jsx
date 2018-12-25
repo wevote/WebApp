@@ -155,14 +155,14 @@ export default class VoterGuideOrganizationInfo extends Component {
   validOrganizationNameExists (voter, organization) {
     // We want to keep encouraging organizations to enter a Website
     if (voter && organization) {
-      let voter_and_organization_name_matches = false;
+      let voterAndOrganizationNameMatches = false;
       if (voter.first_name && organization.organization_name) {
         if (voter.first_name === organization.organization_name) {
-          voter_and_organization_name_matches = true;
+          voterAndOrganizationNameMatches = true;
         }
       }
       // Everyone requires a valid organization name
-      if (organization.organization_name && organization.organization_name.length > 3 && !organization.organization_name.startsWith("Voter-") && !voter_and_organization_name_matches) {
+      if (organization.organization_name && organization.organization_name.length > 3 && !organization.organization_name.startsWith("Voter-") && !voterAndOrganizationNameMatches) {
         return true;
       }
     }

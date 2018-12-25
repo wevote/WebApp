@@ -499,11 +499,14 @@ export default class OfficeItemCompressedRaccoon extends Component {
               {/* Desktop */}
               <span className="d-none d-sm-block">
                 Want to remember your choice? Click
+                {" "}
                 <strong>Choose</strong>
                 ,
+                {" "}
                 <strong>Oppose</strong>
                 {" "}
                 or
+                {" "}
                 <strong>Comment</strong>
                 {" "}
                 below.
@@ -511,9 +514,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
               {/* Mobile */}
               <span className="d-block d-sm-none">
                 Want to remember your choice? Click
+                {" "}
                 <strong>Choose</strong>
                 {" "}
                 or
+                {" "}
                 <strong>Oppose</strong>
                 {" "}
                 below.
@@ -900,6 +905,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                             <Link onClick={this._toggleBallotIntroFollowIssues}>
                               <span className=" u-cursor--pointer">
                                 Follow issues or organizations for advice
+                                {" "}
                                 <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" />
                               </span>
                             </Link>
