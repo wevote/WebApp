@@ -200,19 +200,19 @@ export default class VoterGuideChoosePositions extends Component {
   render () {
     renderLog(__filename);
 
-    const { position_list_for_one_election } = this.state.organization;
+    const { positionListForOneElection } = this.state.organization;
 
-    let looking_at_self = false;
+    let lookingAtSelf = false;
     if (this.state.voter) {
-      looking_at_self = this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id;
+      lookingAtSelf = this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id;
     }
 
-    // console.log("looking_at_self: ", looking_at_self);
-    const election_name = BallotStore.currentBallotElectionName;
-    const at_least_one_position_found_for_this_election = position_list_for_one_election && position_list_for_one_election.length !== 0;
+    // console.log("lookingAtSelf: ", lookingAtSelf);
+    const electionName = BallotStore.currentBallotElectionName;
+    const atLeastOnePositionFoundForThisElection = positionListForOneElection && positionListForOneElection.length !== 0;
 
-    const icon_size = 18;
-    const icon_color = "#ccc"; // "#999";
+    const iconSize = 18;
+    const iconColor = "#ccc"; // "#999";
 
     return (
       <div>
@@ -231,9 +231,9 @@ export default class VoterGuideChoosePositions extends Component {
               <span className="btn__icon">
                 <Icon
                   name="thumbs-up-icon"
-                  width={icon_size}
-                  height={icon_size}
-                  color={icon_color}
+                  width={iconSize}
+                  height={iconSize}
+                  color={iconColor}
                 />
               </span>
               {" "}
@@ -245,9 +245,9 @@ export default class VoterGuideChoosePositions extends Component {
               <span className="btn__icon">
                 <Icon
                   name="thumbs-down-icon"
-                  width={icon_size}
-                  height={icon_size}
-                  color={icon_color}
+                  width={iconSize}
+                  height={iconSize}
+                  color={iconColor}
                 />
               </span>
               {" "}
@@ -262,9 +262,9 @@ export default class VoterGuideChoosePositions extends Component {
               <div className="card">
                 <div className="card-main">
                   <h4 className="h4 card__additional-heading">
-                    <span className="u-push--sm">{ election_name || "This Election"}</span>
+                    <span className="u-push--sm">{ electionName || "This Election"}</span>
                   </h4>
-                  { looking_at_self ? (
+                  { lookingAtSelf ? (
                     <div className="u-margin-left--md u-push--md">
                       <BallotSearchResults
                         clearSearchTextNow={this.state.clearSearchTextNow}
@@ -276,9 +276,9 @@ export default class VoterGuideChoosePositions extends Component {
                   ) : null
                   }
 
-                  { at_least_one_position_found_for_this_election && !this.state.searchIsUnderway ? (
+                  { atLeastOnePositionFoundForThisElection && !this.state.searchIsUnderway ? (
                     <span>
-                      { position_list_for_one_election.map( item => (
+                      { positionListForOneElection.map(item => (
                         <OrganizationPositionItem
                           key={item.position_we_vote_id}
                           position={item}

@@ -29,14 +29,14 @@ export default class VerifyThisIsMe extends Component {
       organization: {},
       position_list_from_advisers_followed_by_voter: [],
       voter: {},
-      kind_of_owner: "",
-      owner_we_vote_id: "",
-      twitter_handle: "",
-      twitter_description: "",
-      twitter_followers_count: 0,
-      twitter_name: "",
-      twitter_photo_url: "",
-      twitter_user_website: "",
+      kindOfOwner: "",
+      ownerWeVoteId: "",
+      twitterHandle: "",
+      twitterDescription: "",
+      twitterFollowersCount: 0,
+      twitterName: "",
+      twitterPhotoUrl: "",
+      twitterUserWebsite: "",
       status: "",
     };
   }
@@ -69,18 +69,18 @@ export default class VerifyThisIsMe extends Component {
   }
 
   _onOrganizationStoreChange () {
-    const { owner_we_vote_id } = TwitterStore.get();
-    console.log(`Entering _onOrganizationStoreChange, owner_we_vote_id: ${owner_we_vote_id}`);
+    const { owner_we_vote_id: ownerWeVoteId } = TwitterStore.get();
+    console.log(`Entering _onOrganizationStoreChange, ownerWeVoteId: ${ownerWeVoteId}`);
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(owner_we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(ownerWeVoteId),
     });
   }
 
   _onCandidateStoreChange () {
-    const { owner_we_vote_id } = TwitterStore.get();
+    const { owner_we_vote_id: ownerWeVoteId } = TwitterStore.get();
     this.setState({
-      candidate: CandidateStore.getCandidate(owner_we_vote_id),
-      position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(owner_we_vote_id),
+      candidate: CandidateStore.getCandidate(ownerWeVoteId),
+      position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(ownerWeVoteId),
     });
   }
 
@@ -94,14 +94,14 @@ export default class VerifyThisIsMe extends Component {
     console.log(`Entering _onTwitterStoreChange, owner_we_vote_id: ${owner_we_vote_id}`);
 
     this.setState({
-      kind_of_owner,
-      owner_we_vote_id,
-      twitter_handle,
-      twitter_description,
-      twitter_followers_count,
-      twitter_name,
-      twitter_photo_url,
-      twitter_user_website,
+      kindOfOwner: kind_of_owner,
+      ownerWeVoteId: owner_we_vote_id,
+      twitterHandle: twitter_handle,
+      twitterDescription: twitter_description,
+      twitterFollowersCount: twitter_followers_count,
+      twitterName: twitter_name,
+      twitterPhotoUrl: twitter_photo_url,
+      twitterUserWebsite: twitter_user_website,
       status,
     });
   }
@@ -111,15 +111,15 @@ export default class VerifyThisIsMe extends Component {
 
     // Manage the control over this organization voter guide
     const { candidate, organization, voter } = this.state;
-    const signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;
-    let signed_in_with_this_twitter_account = false;
-    if (signed_in_twitter) {
-      console.log("VerifyThisIsMe render, signed_in_twitter: ", signed_in_twitter);
-      console.log(`VerifyThisIsMe this.props.params.twitter_handle: ${this.props.params.twitter_handle}`);
-      signed_in_with_this_twitter_account = voter.twitter_screen_name.toLowerCase() === this.props.params.twitter_handle.toLowerCase();
-      if (signed_in_with_this_twitter_account) {
+    const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
+    let signedInWithThisTwitterAccount = false;
+    if (signedInTwitter) {
+      console.log("VerifyThisIsMe render, signedInTwitter: ", signedInTwitter);
+      console.log(`VerifyThisIsMe this.state.twitterHandle: ${this.state.twitterHandle}`);
+      signedInWithThisTwitterAccount = voter.twitter_screen_name.toLowerCase() === this.state.twitterHandle.toLowerCase();
+      if (signedInWithThisTwitterAccount) {
         // If we are being asked to verify the account we are already signed into, return to the TwitterHandle page
-        console.log("VerifyThisIsMe signed_in_with_this_twitter_account is True");
+        console.log("VerifyThisIsMe signedInWithThisTwitterAccount is True");
         historyPush(`/${voter.twitter_screen_name}`);
         return LoadingWheel;
       }
@@ -128,9 +128,9 @@ export default class VerifyThisIsMe extends Component {
     if (this.state.status === undefined) {
       // Show a loading wheel while this component's data is loading
       return LoadingWheel;
-    } else if (this.state.kind_of_owner === "CANDIDATE") {
-      console.log("VerifyThisIsMe this.state.kind_of_owner === CANDIDATE");
-      this.props.params.we_vote_id = this.state.owner_we_vote_id;
+    } else if (this.state.kindOfOwner === "CANDIDATE") {
+      console.log("VerifyThisIsMe this.state.kindOfOwner === CANDIDATE");
+      this.props.params.we_vote_id = this.state.ownerWeVoteId;
       return (
         <span>
           <Helmet title="Claim This Page - We Vote" />
@@ -149,15 +149,15 @@ export default class VerifyThisIsMe extends Component {
             </h1>
             <h2 className="h2">
               @
-              {this.props.params.twitter_handle}
+              {this.state.twitterHandle}
             </h2>
             <br />
           </div>
-          { signed_in_twitter ? (
+          { signedInTwitter ? (
             <Link to="/twittersigninprocess/signinswitchstart">
               <Button variant="primary">
                 Sign In With @
-                {this.props.params.twitter_handle}
+                {this.state.twitterHandle}
                 {" "}
                 Account
               </Button>
@@ -171,10 +171,10 @@ export default class VerifyThisIsMe extends Component {
           )}
         </span>
       );
-    } else if (this.state.kind_of_owner === "ORGANIZATION") {
-      console.log("VerifyThisIsMe this.state.kind_of_owner === ORGANIZATION");
-      console.log(`VerifyThisIsMe this.state.owner_we_vote_id: ${this.state.owner_we_vote_id}`);
-      this.props.params.we_vote_id = this.state.owner_we_vote_id;
+    } else if (this.state.kindOfOwner === "ORGANIZATION") {
+      console.log("VerifyThisIsMe this.state.kindOfOwner === ORGANIZATION");
+      console.log(`VerifyThisIsMe this.state.ownerWeVoteId: ${this.state.ownerWeVoteId}`);
+      this.props.params.we_vote_id = this.state.ownerWeVoteId;
 
       if (!organization) {
         return <div>{LoadingWheel}</div>;
@@ -192,16 +192,16 @@ export default class VerifyThisIsMe extends Component {
           <div>
             <p className="h4">
               Verify that you represent @
-              {this.props.params.twitter_handle}
+              {this.state.twitterHandle}
               {" "}
               by signing into this Twitter account.
             </p>
           </div>
-          { signed_in_twitter ? (
+          { signedInTwitter ? (
             <Link to="/twittersigninprocess/signinswitchstart">
               <Button variant="primary">
                 Sign In With @
-                {this.props.params.twitter_handle}
+                {this.state.twitterHandle}
                 {" "}
                 Account
               </Button>
@@ -215,8 +215,8 @@ export default class VerifyThisIsMe extends Component {
           )}
         </span>
       );
-    } else if (this.state.kind_of_owner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE") {
-      console.log("VerifyThisIsMe this.state.kind_of_owner === TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE");
+    } else if (this.state.kindOfOwner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE") {
+      console.log("VerifyThisIsMe this.state.kindOfOwner === TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE");
       return (
         <div>
           <Helmet title="Claim This Page - We Vote" />
@@ -226,15 +226,15 @@ export default class VerifyThisIsMe extends Component {
             <h1 className="h1">Please verify that this is you by signing into this Twitter account:</h1>
             <h2 className="h2">
               @
-              {this.props.params.twitter_handle}
+              {this.state.twitterHandle}
             </h2>
             <br />
           </div>
-          { signed_in_twitter ? (
+          { signedInTwitter ? (
             <Link to="/twittersigninprocess/signinswitchstart">
               <Button variant="primary">
                 Sign In With @
-                {this.props.params.twitter_handle}
+                {this.state.twitterHandle}
                 {" "}
                 Account
               </Button>
@@ -255,11 +255,11 @@ export default class VerifyThisIsMe extends Component {
           <h3 className="h3">Could Not Confirm</h3>
           <div className="small">
             We were not able to find an account for this Twitter Handle
-            { this.props.params.twitter_handle ? (
+            { this.state.twitterHandle ? (
               <span>
                 {" "}
                 &quot;
-                {this.props.params.twitter_handle}
+                {this.state.twitterHandle}
                 &quot;
               </span>
             ) :

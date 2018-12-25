@@ -146,6 +146,7 @@ export default class PositionInformationOnlySnippet extends Component {
                     body={(
                       <span>
                         view source
+                        {" "}
                         <i className="fa fa-external-link" aria-hidden="true" />
                       </span>
                     )}

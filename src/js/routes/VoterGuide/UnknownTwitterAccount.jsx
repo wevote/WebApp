@@ -17,15 +17,17 @@ export default class UnknownTwitterAccount extends Component {
 
   render () {
     renderLog(__filename);
-    const { twitter_handle, twitter_name } = this.props;
+    const { twitter_handle: twitterHandle, twitter_name: twitterName } = this.props;
 
     return (
       <div>
-        <TwitterAccountCard {...this.props} />
+        <TwitterAccountCard twitterHandle={twitterHandle}
+                            twitterName={twitterName}
+        />
         <br />
         <ThisIsMeAction
-          twitter_handle_being_viewed={twitter_handle}
-          name_being_viewed={twitter_name}
+          twitter_handle_being_viewed={twitterHandle}
+          name_being_viewed={twitterName}
         />
         <br />
       </div>
