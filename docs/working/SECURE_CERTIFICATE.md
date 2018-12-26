@@ -11,6 +11,7 @@ certificate on your my Mac (it actually took me about 20 minutes). Notes:
 - When all done, I copied these two files into these locations:
 
 ```(WebAppEnv) $ cp /Users/<YOUR NAME HERE>/LocalSecureCertificates/server.crt /Users/<YOUR NAME HERE>/MyProjects/WebApp/src/cert```
+
 ```(WebAppEnv) $ cp /Users/<YOUR NAME HERE>/LocalSecureCertificates/server.key /Users/<YOUR NAME HERE>/MyProjects/WebApp/src/cert```
 
 - Set "SECURE_CERTIFICATE_INSTALLED" to true in `WebApp/src/js/config.js` and run `npm start` again.
