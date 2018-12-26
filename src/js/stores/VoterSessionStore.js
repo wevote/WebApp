@@ -10,7 +10,10 @@ class VoterSessionStore extends ReduceStore {
 
   reduce (state, action) {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
-    if (!action.res || !action.res.success) return state;
+    if (!action.res || !action.res.success) {
+      console.log("VoterSessionStore, problem with action.res or action.res.success. action: ", action);
+      return state;
+    }
 
     switch (action.type) {
       // case "voterSignOut":

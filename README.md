@@ -31,6 +31,8 @@ It may seem complicated, but it allows anyone to be in a position to make sugges
 
 4. [Styling Guidelines](docs/working/STYLING.md)
 
+5. [Want to sign in with Facebook or Twitter on localhost?](docs/working/SECURE_CERTIFICATE.md)
+
 Thanks to BrowserStack for helping us with automated testing!
 
 <a href="https://www.browserstack.com" target="_blank"><img src='src/img/global/logos/browserstack-logo-600x315.png' width='150' height='79'/></a>

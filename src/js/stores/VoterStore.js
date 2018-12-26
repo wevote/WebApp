@@ -207,9 +207,9 @@ class VoterStore extends ReduceStore {
   // }
 
   reduce (state, action) {
-    // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
+    // Exit if we don't have a response. "success" is not required though -- we should deal with error conditions below.
     if (!action.res) {
-      console.log("VoterStore, no action.res received. Exiting.");
+      console.log("VoterStore, no action.res received. action: ", action);
       return state;
     }
 
