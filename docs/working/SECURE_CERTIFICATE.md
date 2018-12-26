@@ -5,9 +5,11 @@ you must create and install a local secure certificate. We have configured Faceb
 configuring Twitter) to support sign in from `https://localhost:3000/`
 
 I used a FreeCodeCamp.org article (link below) that describes how to install a locally signed secure 
-certificate on your my Mac (it actually took me about 20 minutes). Notes:
+certificate on the Mac (it actually took me about 20 minutes). Notes:
 
-- I created a "LocalSecureCertificates" folder, and ran the instructions in that folder.
+- I created a "/Users/<YOUR NAME HERE>/LocalSecureCertificates" folder, and ran the instructions in that folder.
+- In "Step 2: Trust the root SSL certificate" of the article, when it says "Open Keychain Access on your Mac", you can find "Keychain Access" in your "Applications/Utilities" folder.
+- In "Step 2: Domain SSL certificate" of the article, you will need to create two files in your "LocalSecureCertificates" folder, called `server.csr.cnf` (file 1) and `v3.ext` (file 2). Place the contents described in the article for each file, into each file.
 - When all done, I copied these two files into these locations:
 
 ```(WebAppEnv) $ cp /Users/<YOUR NAME HERE>/LocalSecureCertificates/server.crt /Users/<YOUR NAME HERE>/MyProjects/WebApp/src/cert```
