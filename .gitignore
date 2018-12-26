@@ -161,3 +161,5 @@ src/js/config.js
 src/javascript/google-tag-manager.js
 src/javascript/google-analytics.js
 web_app/build/*
+*.crt
+*.key
