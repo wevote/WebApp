@@ -98,25 +98,26 @@ We value Software Craftsmanship for the We Vote project since it makes working o
 
 
 # Code Quality Guidelines:
-* Do no harm.  Stuff happens, but if you are not sure, ask before you commit.
-* Software craftsmen leave every file they touch in better shape than they found it. 
-* In React: commit files that (as much as possible) comply with the “airbnb” preset for jslint (with our few modifications). If you understand the warnings in the files you work on, make small changes to clear the warnings in the areas you are modifying.  SASS XXXXX naming conventions should be followed.
-In Python:  Clear all PEP8 warnings before committing.
+* Do no harm:  Stuff happens, but if you are not sure, ask before you commit.
+* Software Craftsmenship: Leave every file they touch in better shape than they found it. 
+* In React JSX files: commit files that (as much as possible) comply with the “airbnb” preset for jslint (with our few modifications). If you understand the warnings in the files you work on, make small changes to clear the warnings in the areas you are modifying.
+* In /WebApp/src/sass files: [BEM Naming Conventions](../../working/STYLING.md) should be followed -- BEM Naming makes it straightforward to organize where to group styles together in an object-oriented fashion. (Ex/ We can use a style named `ballot__header__title` and find where it is defined.)
+* In Python: Clear all PEP8 warnings before committing.
 * Do not copy classes and make small changes, instead examine existing classes and components to see how they modified for the new use case and then reused.  If you absolutely have to copy, be sure to remove, or temporarily comment out, code that is not immediately in use.  
-* Commented out code should be rare and should include the date of commenting.
+* Commented out code should be rare and should include the date of commenting, and why it remains in place.
 * After you have some experience, carefully perform incremental refactoring to break apart monolithic components into smaller reusable components.
 * After you have some experience, carefully perform incremental refactoring to rename classes, components and variables to match their current use.
 * Delete code that you made redundant.  Cautiously comment out, or delete code that has not been in use for months. If unsure, add a comment with a proposed deletion date, a few months in the future.
 * If while searching globally for a phrase, you find multiple matches, this might be a indication that a refactor is needed.
 * In code reviews:
-   * Do not allow new slightly duplicated code into our codebase.
+   * Do not allow new slightly duplicated code into our codebase (unless there is a good reason for it).
    * If variable or class names are will be meaningless to others, flag them.
    * Overly complex code should be commented or simplified.
    * Flag code style changes or variable conventions, that are unlike the rest of our code.
 * Be on the lookout for abandoned, or duplicative styles.  Clean them out when you find them.  Before creating new styles, first look for styles that make sense to reuse.
 * Simple is better than clever code, but if clever really helps, add a note to help out the next engineer to look at the code.
 * Most React classes should be less than 300 lines long, at 500 lines consider breaking the class up into sub-components.  If the the component’s render method contains multiple static blocks of React components and markup, consider moving them into a new React component.
-* Ask before including new open source NPM projects.  Our strong preference is to include projects that NPM rates as high in popularity, quality and maintenance.  Avoid projects that haven’t been updated in months or years.
+* Ask before including new open source NPM projects.  Our strong preference is to include projects that NPM rates as high in popularity, quality and maintenance. Avoid projects that haven’t been updated in months or years, as they can pose security risks.
 * If you need to fix the open source projects we rely on, please make a pull request against that project.
 
 
@@ -124,9 +125,7 @@ In Python:  Clear all PEP8 warnings before committing.
 
 ## Let us Know you're working on the issue
 
-If you're actively working on an issue, please comment in the issue thread stating that you're working on a fix, or (if you're an official contributor) assign it to yourself.
-
-This way, others will know they shouldn't try to work on a fix at the same time.
+If you're actively working on an issue, please comment in the issue thread stating that you're working on a fix, or (if you're an official contributor) assign it to yourself. You can also keep the team updated on the work you are doing by attending a team stand-up held on the Daily Hangouts, or post a note in the #agile-stand-up Slack channel. This way, others will know they shouldn't try to work on a fix at the same time.
 
 
 # Version numbering
