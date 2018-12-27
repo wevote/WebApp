@@ -24,11 +24,69 @@ export default class HeaderBar extends Component {
     pathname: PropTypes.string,
   };
 
+  static ballot (active) {
+    return (
+      <Link to="/ballot" className={`header-nav__item${active ? " active-icon" : ""}`}>
+        <Icon name="nav/ballot-icon-24" color="#ffffff" className="header-nav__icon--ballot" />
+        <span className="header-nav__label">
+        Ballot
+        </span>
+      </Link>
+    );
+  }
+
+  static network (active, numberOfIncomingFriendRequests) {
+    return (
+      <Link to="/more/network" className={`header-nav__item${active ? " active-icon" : ""}`}>
+        <div title="Network">
+          <Icon name="nav/network-icon-24" color="#ffffff" className="header-nav__icon" />
+          {numberOfIncomingFriendRequests ?         // eslint-disable-line no-nested-ternary
+            numberOfIncomingFriendRequests < 9 ?
+              <span className="badge-total badge footerNav.badge-total">{numberOfIncomingFriendRequests}</span> :
+              <span className="badge-total badge-total--overLimit badge">9+</span> :
+            null }
+        </div>
+        <span className="header-nav__label">
+          Network
+        </span>
+      </Link>
+    );
+  }
+
+  static donate (active) {
+    return (
+      <Link to="/more/donate" className={`header-nav__item--donate header-nav__item d-none d-sm-block${active ? " active-icon" : ""}`}>
+        <Icon name="nav/donate-icon-24" color="#ffffff" className="header-nav__icon" />
+        <span className="header-nav__label">
+        Donate
+        </span>
+      </Link>
+    );
+  }
+
+  static imagePlaceholder (speakerType) {
+    let imagePlaceholderString = "";
+    if (isSpeakerTypeOrganization(speakerType)) {
+      imagePlaceholderString = <div id="anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
+    } else {
+      imagePlaceholderString = <div id="anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
+    }
+
+    return imagePlaceholderString;
+  }
+
+  static goToGetStarted () {
+    const getStartedNow = "/ballot";
+    historyPush(getStartedNow);
+  }
+
   constructor (props) {
     super(props);
+    this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
+    this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
     this.toggleAboutMenu = this.toggleAboutMenu.bind(this);
     this.toggleProfilePopUp = this.toggleProfilePopUp.bind(this);
-    this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
+    this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
     this.state = {
       aboutMenuOpen: false,
       bookmarks: [],
@@ -51,12 +109,6 @@ export default class HeaderBar extends Component {
       componentDidMountFinished: true,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
-  }
-
-  componentWillUnmount () {
-    // this.ballotStoreListener.remove();
-    this.bookmarkStoreListener.remove();
-    this.friendStoreListener.remove();
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -84,7 +136,31 @@ export default class HeaderBar extends Component {
       // console.log("shouldComponentUpdate: this.props.location.pathname", this.props.location.pathname, ", nextProps.location.pathname", nextProps.location.pathname);
       return true;
     }
+    const thisVoterExists = this.props.voter !== undefined;
+    const nextVoterExists = nextProps.voter !== undefined;
+    if (nextVoterExists && !thisVoterExists) {
+      // console.log("shouldComponentUpdate: thisVoterExists", thisVoterExists, ", nextVoterExists", nextVoterExists);
+      return true;
+    }
+    if (thisVoterExists && nextVoterExists && this.props.voter.signed_in_twitter !== nextProps.voter.signed_in_twitter) {
+      // console.log("shouldComponentUpdate: this.props.voter.signed_in_twitter", this.props.voter.signed_in_twitter, ", nextProps.voter.signed_in_twitter", nextProps.voter.signed_in_twitter);
+      return true;
+    }
+    if (thisVoterExists && nextVoterExists && this.props.voter.signed_in_facebook !== nextProps.voter.signed_in_facebook) {
+      // console.log("shouldComponentUpdate: this.props.voter.signed_in_facebook", this.props.voter.signed_in_facebook, ", nextProps.voter.signed_in_facebook", nextProps.voter.signed_in_facebook);
+      return true;
+    }
+    if (thisVoterExists && nextVoterExists && this.props.voter.signed_in_with_email !== nextProps.voter.signed_in_with_email) {
+      // console.log("shouldComponentUpdate: this.props.voter.signed_in_with_email", this.props.voter.signed_in_with_email, ", nextProps.voter.signed_in_with_email", nextProps.voter.signed_in_with_email);
+      return true;
+    }
     return false;
+  }
+
+  componentWillUnmount () {
+    // this.ballotStoreListener.remove();
+    this.bookmarkStoreListener.remove();
+    this.friendStoreListener.remove();
   }
 
   onBallotStoreChange () {
@@ -97,52 +173,12 @@ export default class HeaderBar extends Component {
     });
   }
 
-  static ballot (active) {
-    return (
-      <Link to="/ballot" className={`header-nav__item${active ? " active-icon" : ""}`}>
-        <Icon name="nav/ballot-icon-24" color="#ffffff" className="header-nav__icon--ballot" />
-        <span className="header-nav__label">
-        Ballot
-        </span>
-      </Link>
-    );
-  }
-
-  static network (active, numberOfIncomingFriendRequests) {
-    return (
-      <Link to="/more/network" className={`header-nav__item${ active ? " active-icon" : ""}`}>
-        <div title="Network">
-          <Icon name="nav/network-icon-24" color="#ffffff" className="header-nav__icon" />
-          {numberOfIncomingFriendRequests ?         // eslint-disable-line no-nested-ternary
-            numberOfIncomingFriendRequests < 9 ?
-              <span className="badge-total badge footerNav.badge-total">{numberOfIncomingFriendRequests}</span> :
-              <span className="badge-total badge-total--overLimit badge">9+</span> :
-            null }
-        </div>
-        <span className="header-nav__label">
-          Network
-        </span>
-      </Link>
-    );
-  }
-
-  static donate (active) {
-    return (
-      <Link to="/more/donate" className={`header-nav__item--donate header-nav__item d-none d-sm-block${active ? " active-icon" : ""}`}>
-        <Icon name="nav/donate-icon-24" color="#ffffff" className="header-nav__icon" />
-        <span className="header-nav__label">
-        Donate
-        </span>
-      </Link>
-    );
-  }
-
   toggleAboutMenu () {
-    this.setState({ aboutMenuOpen: !this.state.aboutMenuOpen });
+    this.setState(prevState => ({ aboutMenuOpen: !prevState.aboutMenuOpen }));
   }
 
   toggleProfilePopUp () {
-    this.setState({ profilePopUpOpen: !this.state.profilePopUpOpen });
+    this.setState(prevState => ({ profilePopUpOpen: !prevState.profilePopUpOpen }));
   }
 
   hideProfilePopUp () {
@@ -166,26 +202,9 @@ export default class HeaderBar extends Component {
     this.setState({ profilePopUpOpen: false });
   }
 
-  imagePlaceholder (speakerType) {
-    let imagePlaceholderString = "";
-    if (isSpeakerTypeOrganization(speakerType)) {
-      imagePlaceholderString = <div id="anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
-    } else {
-      imagePlaceholderString = <div id="anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
-    }
-
-    return imagePlaceholderString;
-  }
-
-  goToGetStarted () {
-    const getStartedNow = "/ballot";
-    historyPush(getStartedNow);
-  }
-
   render () {
     renderLog(__filename);
-    const { pathname } = this.props;
-    const voter = this.props.voter;
+    const { pathname, voter } = this.props;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     const speakerType = "V"; // TODO DALE make this dynamic
     const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length;
@@ -266,8 +285,8 @@ export default class HeaderBar extends Component {
             weVoteBrandingOff={this.state.we_vote_branding_off}
             toggleProfilePopUp={this.toggleProfilePopUp}
             hideProfilePopUp={this.hideProfilePopUp}
-            transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
-            signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
+            transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+            signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
           />
           )}
         </div>
