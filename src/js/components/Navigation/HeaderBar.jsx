@@ -247,7 +247,7 @@ export default class HeaderBar extends Component {
           <button
             type="button"
             className="btn btn-sm btn-success"
-            onClick={this.goToGetStarted}
+            onClick={HeaderBar.goToGetStarted}
           >
             Sample Ballot
           </button>
@@ -273,7 +273,7 @@ export default class HeaderBar extends Component {
                 width={34}
               />
             </div>
-          ) : this.imagePlaceholder(speakerType)
+          ) : HeaderBar.imagePlaceholder(speakerType)
           }
           {/* Was AccountMenu */}
           {this.state.profilePopUpOpen && (
