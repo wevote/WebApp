@@ -25,21 +25,25 @@ Make sure you have created a place to put all of the code from Github, for examp
 
     `$ git remote add upstream git@github.com:wevote/WebApp.git`  
 
-1. Create and set up SSH keys. You can follow the steps below and find related documentation [here](). You can also refer to 
-[these instructions](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#platform-windows) for Windows.
+### Create and set up SSH keys. (For Windows machines, refer to [these instructions instead](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#platform-windows)).
 
-  1. If you do not already have an SSH key pair you would like to use, create SSH keys: 
-   `ssh-keygen -t rsa -C "youremail@somedomain.com"`. The Terminal will provide `/Users/<YOUR NAME>/.ssh/id_rsa` as a default filename, but you can choose another filename if you would like, such as `github_rsa`. If you already have a SSH key pair you would like to use, skip to the next step.
-
-  1. Run `ssh-add ~/.ssh/id_rsa` OR `ssh-add ~/.ssh/github_rsa` (or whatever file name you chose) to add SSH private keys into the SSH authentication agent.
-
-  1. Run `pbcopy < ~/.ssh/id_rsa.pub` (or whatever file name you chose) to copy the contents of the *public* key file so you can paste it in the next step. *Note* that you are copying the file ending in the extension `.pub`.
-
-  1. Go to your "Settings" page in GitHub (click on your avatar on the top right). In the left navigation, choose "SSH and GPG keys".
+  1. Create SSH key: 
   
-  1. Click the "New SSH key" button on the top right.
+     `ssh-keygen -t rsa -C "youremail@somedomain.com"`
+   
+  2. Add SSH private keys into the SSH authentication agent:
   
-  1. Paste the contents of the "~/.ssh/id_rsa.pub" key file (which you just copied three steps earlier) into the "Key" text area, and give it any Title you would like.
+     `ssh-add ~/.ssh/id_rsa`
+
+  3. Copy the contents of the *public* key file into your computer's clipboard:
+  
+     `pbcopy < ~/.ssh/id_rsa.pub`
+
+  4. Go to your "Settings" page in GitHub (click on your avatar on the top right). In the left navigation, choose "SSH and GPG keys".
+  
+  5. Click the "New SSH key" button on the top right.
+  
+  6. Paste the contents of the "~/.ssh/id_rsa.pub" key file (which you just copied in step 3) into the "Key" text area, and give it any Title you would like.
 
 ---
 
