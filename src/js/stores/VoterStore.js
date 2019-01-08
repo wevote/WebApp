@@ -216,11 +216,9 @@ class VoterStore extends ReduceStore {
     let voter_device_id;
     let google_civic_election_id;
     let address;
-    const { facebook_photo_retrieve_loop_count } = state;
-    // Preserve address within voter
-    const incoming_voter = action.res;
-    const current_voter_device_id = cookies.getItem("voter_device_id");
-    const {first_name, last_name, email, interface_status_flags, notification_settings_flags, voter_donation_history_list} = action.res;
+    let facebook_photo_retrieve_loop_count;
+    let incoming_voter;
+    let current_voter_device_id;
 
     switch (action.type) {
       case "organizationSave":
@@ -468,6 +466,12 @@ class VoterStore extends ReduceStore {
       case "voterRetrieve":
         // console.log("VoterStore, voterRetrieve state on entry: ",  state);
         // console.log("VoterStore, voterRetrieve state on entry: ",  state.voter);
+        facebook_photo_retrieve_loop_count = state.facebook_photo_retrieve_loop_count;
+
+        // Preserve address within voter
+        incoming_voter = action.res;
+
+        current_voter_device_id = cookies.getItem("voter_device_id");
         if (!action.res.voter_found) {
           console.log(`This voter_device_id is not in the db and is invalid, so delete it: ${
             cookies.getItem("voter_device_id")}`);
@@ -536,12 +540,12 @@ class VoterStore extends ReduceStore {
           voter: {
             ...state.voter,
             // With this we are only updating the values we change with a voterUpdate call.
-            first_name: first_name || state.voter.first_name,
-            last_name: last_name || state.voter.last_name,
-            facebook_email: email || state.voter.email,
-            interface_status_flags: interface_status_flags || state.voter.interface_status_flags,
-            notification_settings_flags: notification_settings_flags || state.voter.notification_settings_flags,
-            voter_donation_history_list: voter_donation_history_list || state.voter.voter_donation_history_list,
+            first_name: action.res.first_name || state.voter.first_name,
+            last_name: action.res.last_name || state.voter.last_name,
+            facebook_email: action.res.email || state.voter.email,
+            interface_status_flags: action.res.interface_status_flags || state.voter.interface_status_flags,
+            notification_settings_flags: action.res.notification_settings_flags || state.voter.notification_settings_flags,
+            voter_donation_history_list: action.res.voter_donation_history_list || state.voter.voter_donation_history_list,
           },
         };
 

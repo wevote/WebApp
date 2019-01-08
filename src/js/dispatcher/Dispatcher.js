@@ -17,7 +17,10 @@ Dispatcher.prototype.loadEndpoint = function (endpoint, data = {}) {
       this.dispatch({ type: endpoint, res });
     },
 
-    error: err => this.dispatch({ type: `error-${endpoint}`, err }),
+    error: (err) => {
+      httpLog(`AJAX ERROR Response to endpoint: ${endpoint}`);
+      this.dispatch({ type: `error-${endpoint}`, err });
+    },
   });
 };
 
