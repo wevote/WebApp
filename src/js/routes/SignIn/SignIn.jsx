@@ -40,6 +40,17 @@ export default class SignIn extends Component {
     this.updateVoterName = this.updateVoterName.bind(this);
   }
 
+  // See https://reactjs.org/docs/error-boundaries.html
+  static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
+    // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
+    return { hasError: true };
+  }
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error("SignIn caught error: ", `${error} with info: `, info);
+  }
+
   // Set up this component upon first entry
   // componentWillMount is used in WebApp
   componentDidMount () {

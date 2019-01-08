@@ -67,9 +67,10 @@ export default class Application extends Component {
       window.fbAsyncInit = function () {  // eslint-disable-line func-names
         window.FB.init({
           appId: webAppConfig.FACEBOOK_APP_ID,
+          autoLogAppEvents: true,
           xfbml: true,
-          version: "v2.8",
-          status: true, // set this status to true, this will fixed popup blocker issue
+          version: "v3.2",
+          status: true, // set this status to true, this will fix the popup blocker issue
         });
       };
 
