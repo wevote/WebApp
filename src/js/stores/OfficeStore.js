@@ -33,7 +33,7 @@ class OfficeStore extends ReduceStore {
 
     switch (action.type) {
       case "officeRetrieve":
-        newOffices[office.weVoteId] = office;
+        newOffices[office.we_vote_id] = office;
         return {
           ...state,
           offices: assign({}, state.offices, newOffices ),
