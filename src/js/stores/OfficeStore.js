@@ -11,11 +11,12 @@ class OfficeStore extends ReduceStore {
     };
   }
 
-  getOffice (office_we_vote_id) {
+  getOffice (officeWeVoteId) {
+    console.log("in getOffice----");
     // if (!this.isLoaded()){ return undefined; }
-    const office_list = this.getState().offices;
-    if (office_list) {
-      return office_list[office_we_vote_id];
+    const officeList = this.getState().offices;
+    if (officeList) {
+      return officeList[officeWeVoteId];
     } else {
       return undefined;
     }
@@ -25,17 +26,17 @@ class OfficeStore extends ReduceStore {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
 
-    let google_civic_election_id;
-    let office_we_vote_id;
+    let googleCivicElectionId;
+    let officeWeVoteId;
     const office = action.res;
-    const new_offices = {};
+    const newOffices = {};
 
     switch (action.type) {
       case "officeRetrieve":
-        new_offices[office.we_vote_id] = office;
+        newOffices[office.we_vote_id] = office;
         return {
           ...state,
-          offices: assign({}, state.offices, new_offices ),
+          offices: assign({}, state.offices, newOffices ),
         };
 
       case "organizationFollow":
@@ -43,7 +44,7 @@ class OfficeStore extends ReduceStore {
         if (state.offices && state.offices.length) {
           // console.log("OfficeStore organizationFollow, state.offices.length:", state.offices.length);
           for (let i = 0; i < state.offices.length; i++) {
-            OfficeActions.positionListForBallotItem(office_we_vote_id);
+            OfficeActions.positionListForBallotItem(officeWeVoteId);
           }
         }
         return state;
@@ -53,7 +54,7 @@ class OfficeStore extends ReduceStore {
         if (state.offices) {
           console.log("OfficeStore organizationStopFollowing, state.offices.length:", state.offices.length);
           for (let i = 0; i < state.offices.length; i++) {
-            OfficeActions.positionListForBallotItem(office_we_vote_id);
+            OfficeActions.positionListForBallotItem(officeWeVoteId);
           }
         }
         return state;
@@ -63,18 +64,18 @@ class OfficeStore extends ReduceStore {
         if (state.offices) {
           console.log("OfficeStore organizationFollowIgnore, state.offices.length:", state.offices.length);
           for (let i = 0; i < state.offices.length; i++) {
-            OfficeActions.positionListForBallotItem(office_we_vote_id);
+            OfficeActions.positionListForBallotItem(officeWeVoteId);
           }
         }
         return state;
 
       case "voterBallotItemsRetrieve":
-        google_civic_election_id = action.res.google_civic_election_id || 0;
-        if (google_civic_election_id !== 0) {
+        googleCivicElectionId = action.res.google_civic_election_id || 0;
+        if (googleCivicElectionId !== 0) {
           const offices = {};
-          action.res.ballot_item_list.forEach((one_ballot_item) => {
-            if (one_ballot_item.kind_of_ballot_item === "OFFICE") {
-              offices[one_ballot_item.we_vote_id] = one_ballot_item;
+          action.res.ballot_item_list.forEach((oneBallotItem) => {
+            if (oneBallotItem.kind_of_ballot_item === "OFFICE") {
+              offices[oneBallotItem.we_vote_id] = oneBallotItem;
             }
           });
 
