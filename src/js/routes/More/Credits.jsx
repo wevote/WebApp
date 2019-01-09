@@ -21,10 +21,14 @@ export default class Credits extends Component {
           { organizationalDonors.map(item => (
             <div className="company" key={item.name}>
               <div className="company__logo_container">
-                <img className="company__logo"
-                  src={item.logo}
-                  alt={`${item.name} logo`}
-                />
+                {
+                  item.logo && (
+                    <img className="company__logo"
+                      src={item.logo}
+                      alt={`${item.name} logo`}
+                    />
+                  )
+                }
               </div>
               <div className="company__info">
                 <strong>{item.name}</strong>
