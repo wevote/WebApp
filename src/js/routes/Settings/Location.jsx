@@ -51,12 +51,12 @@ export default class Location extends Component {
       electionLocationList.push(election);
       ballotReturnedWeVoteId = "";
      ballotLocationShortcut = "";
-      if (election.ballot_location_list && election.ballot_location_list.length) {
+      if (election.ballotLocationList && election.ballotLocationList.length) {
         // We want to add the shortcut and we_vote_id for the first ballot location option
-        oneBallotLocation = election.ballot_location_list[0];
-       ballotLocationShortcut = oneBallotLocation.ballot_location_shortcut || "";
+        oneBallotLocation = election.ballotLocationList[0];
+       ballotLocationShortcut = oneBallotLocation.ballotLocationShortcut || "";
        ballotLocationShortcut =ballotLocationShortcut.trim();
-        ballotReturnedWeVoteId = oneBallotLocation.ballot_returned_we_vote_id || "";
+        ballotReturnedWeVoteId = oneBallotLocation.ballotReturnedWeVoteId || "";
         ballotReturnedWeVoteId = ballotReturnedWeVoteId.trim();
       }
       voterBallot = {
