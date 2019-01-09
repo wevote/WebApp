@@ -3,9 +3,11 @@ import { render } from "react-dom";
 import {
   browserHistory, hashHistory, Router, applyRouterMiddleware,
 } from "react-router";
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import { useScroll } from "react-router-scroll";
 import { isCordova } from "./utils/cordovaUtils";
 import routes from "./Root";
+import theme from './mui-theme';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint global-require: 1 */
@@ -34,12 +36,14 @@ function startApp () {
   }
 
   render(
-    <Router
-      history={isCordova() ? hashHistory : browserHistory}
-      render={applyRouterMiddleware(useScroll(() => true))}
-    >
-      {routes()}
-    </Router>, document.getElementById("app"),
+    <MuiThemeProvider theme={theme}>
+      <Router
+        history={isCordova() ? hashHistory : browserHistory}
+        render={applyRouterMiddleware(useScroll(() => true))}
+      >
+        {routes()}
+      </Router>
+    </MuiThemeProvider>, document.getElementById("app"),
   );
 }
 

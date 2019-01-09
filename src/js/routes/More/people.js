@@ -243,7 +243,7 @@ export const organizationalDonors = [{
 }, {
   name: "We Vote Education",
   title: "Data",
-  logo: "",
+  logo: `${logoPath}we-vote-logo.png`,
 }, {
   name: "Wikipedia",
   title: "Data",

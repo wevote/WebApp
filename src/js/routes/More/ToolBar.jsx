@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import IconButton from "@material-ui/core/IconButton";
+import Tooltip from '@material-ui/core/Tooltip';
 import { renderLog } from "../../utils/logging";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 
@@ -17,46 +19,33 @@ export default class ToolBar extends Component {
         <OpenExternalWebSite
           url="https://twitter.com/WeVote"
           target="_blank"
-          className="btn btn-social-icon btn-twitter"
-          body={<span className="fa fa-twitter" />}
+          body={<Tooltip title="Twitter"><IconButton><ion-icon name="logo-twitter" /></IconButton></Tooltip>}
         />
 
         <OpenExternalWebSite
           url="https://www.facebook.com/WeVoteUSA"
           target="_blank"
-          className="btn btn-social-icon btn-facebook"
-          body={<span className="fa fa-facebook" />}
+          body={<Tooltip title="Facebook"><IconButton><ion-icon name="logo-facebook" /></IconButton></Tooltip>}
         />
 
         <OpenExternalWebSite
           url="http://eepurl.com/cx_frP"
           target="_blank"
-          className="btn btn--email"
-          body={(
-            <span>
-              {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
-              <span className="btn--email__icon glyphicon glyphicon-envelope" />
-              {" "}
-              Join Newsletter
-            </span>
-          )}
+          body={<Tooltip title="Newsletter"><IconButton><ion-icon name="mail" /></IconButton></Tooltip>}
         />
 
-        {!hideGitHub ? (
+        {!hideGitHub && (
           <OpenExternalWebSite
             url="https://github.com/WeVote"
             target="_blank"
-            className="btn btn-social-icon btn-github"
-            body={<span className="fa fa-github" />}
+            body={<Tooltip title="GitHub"><IconButton><ion-icon name="logo-github" /></IconButton></Tooltip>}
           />
-        ) : null
+        )
         }
-
         <OpenExternalWebSite
-          url="https://medium.com/@WeVote"
+          url="https://blog.wevote.us/"
           target="_blank"
-          className="btn btn-social-icon btn--medium"
-          body={<span className="fa fa-medium" />}
+          body={<Tooltip title="Blog"><IconButton><ion-icon name="logo-wordpress" /></IconButton></Tooltip>}
         />
       </div>
     );
