@@ -42,14 +42,11 @@ export default class ToolBar extends Component {
           />
         )
         }
-        {/* Removed this because I couldn't find a Medium ion icon.
-          <OpenExternalWebSite
-          url="https://medium.com/@WeVote"
+        <OpenExternalWebSite
+          url="https://blog.wevote.us/"
           target="_blank"
-          className="btn btn-social-icon btn--medium"
-          body={<span className="fa fa-medium" />}
+          body={<Tooltip title="Blog"><IconButton><ion-icon name="logo-wordpress" /></IconButton></Tooltip>}
         />
-        */}
       </div>
     );
   }
