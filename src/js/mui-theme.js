@@ -12,11 +12,6 @@ const overrides = {
       padding: '5px',
     },
   },
-  MuiTooltip: {
-    tooltip: {
-      top: '-1px',
-    },
-  },
 };
 
 const theme = createMuiTheme({
