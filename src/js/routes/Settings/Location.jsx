@@ -18,7 +18,6 @@ export default class Location extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      electionsLocationsList: [],
       voterBallotList: [],
     };
   }
@@ -39,7 +38,6 @@ export default class Location extends Component {
 
   onElectionStoreChange () {
     const electionsList = ElectionStore.getElectionList();
-    const electionsLocationsList = [];
     let voterBallot; // A different format for much of the same data
     const voterBallotList = [];
     let oneBallotLocation;
@@ -48,7 +46,6 @@ export default class Location extends Component {
 
     for (let i = 0; i < electionsList.length; i++) {
       const election = electionsList[i];
-      electionsLocationsList.push(election);
       ballotReturnedWeVoteId = "";
       ballotLocationShortcut = "";
       if (election.ballot_location_list && election.ballot_location_list.length) {
@@ -71,7 +68,6 @@ export default class Location extends Component {
     }
 
     this.setState({
-      electionsLocationsList,
       voterBallotList,
     });
   }

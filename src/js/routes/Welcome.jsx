@@ -28,7 +28,7 @@ export default class Intro extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      newsletter_opt_in_true: false ,
+      newsletter_opt_in_true: false,
       voter: {},
       is_verification_email_sent: false,
       show_features_ballot: false,
