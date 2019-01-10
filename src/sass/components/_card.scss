@@ -61,8 +61,8 @@ $candidate-font-size: .875rem;
       // additional styling set with 'media-object' mixin
       @include breakpoints (mid-small) {
         //more space and spacing for candidate bio
-        padding: 5px 30px;
-        margin-bottom: 30px;
+        padding: $space-xs $space-lg;
+        margin-bottom: $space-lg;
         font-size: 16px;
       }
     }
@@ -144,7 +144,7 @@ $candidate-font-size: .875rem;
         font-size: 18px;
       }
       @include print {
-        font-size: 18px;
+        font-size: 22px;
       }
     }
 
