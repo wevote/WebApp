@@ -51,9 +51,9 @@ export default class Location extends Component {
       if (election.ballot_location_list && election.ballot_location_list.length) {
         // We want to add the shortcut and we_vote_id for the first ballot location option
         [oneBallotLocation] = election.ballot_location_list;
-        ballotLocationShortcut = oneBallotLocation.ballotLocationShortcut || "";
+        ballotLocationShortcut = oneBallotLocation.ballot_location_shortcut || "";
         ballotLocationShortcut = ballotLocationShortcut.trim();
-        ballotReturnedWeVoteId = oneBallotLocation.ballotReturnedWeVoteId || "";
+        ballotReturnedWeVoteId = oneBallotLocation.ballot_returned_we_vote_id || "";
         ballotReturnedWeVoteId = ballotReturnedWeVoteId.trim();
       }
       voterBallot = {
@@ -61,8 +61,8 @@ export default class Location extends Component {
         election_description_text: election.election_name,
         election_day_text: election.election_day_text,
         original_text_for_map_search: "",
-        ballotLocationShortcut,
-        ballotReturnedWeVoteId,
+        ballot_location_shortcut: ballotLocationShortcut,
+        ballot_returned_we_vote_id: ballotReturnedWeVoteId,
       };
       voterBallotList.push(voterBallot);
     }
