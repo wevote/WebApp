@@ -116,6 +116,11 @@ Make sure you have Node and npm installed by running simple commands to see what
 
 Create a test file and run it. A simple way to test that Node.js works is to create a JavaScript file. For example, name a file `hello.js`, and just add the code `console.log('Node is installed!');`. To run the code simply open your command line program, navigate to the folder where you saved the file, and type `node hello.js`. This will start Node and run the code in the `hello.js` file. You should see the output `Node is installed!`.
 
+
+Make sure to run `npm install -g gulp-cli` 
+
+If you are still getting errors with gulp this is a [helpful link](https://stackoverflow.com/questions/24027551/gulp-command-not-found-error-after-installing-gulp)
+
 ## Set up your environment
 
 If you are running Windows, we recommend installing [Git Bash](https://git-scm.com/downloads).

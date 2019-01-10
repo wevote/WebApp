@@ -163,3 +163,4 @@ src/javascript/google-analytics.js
 web_app/build/*
 *.crt
 *.key
+.vscode
