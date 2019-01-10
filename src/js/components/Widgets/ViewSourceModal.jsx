@@ -5,6 +5,7 @@ import { Modal } from "react-bootstrap";
 import $ from "jquery";
 import { renderLog } from "../../utils/logging";
 
+// DALE 2019-01-09 Seems like good candidate to delete (parent files need commented-out-code to be removed first)
 export default class ViewSourceModal extends Component {
   static propTypes = {
     url: PropTypes.string,

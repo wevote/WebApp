@@ -17,7 +17,6 @@ import DonateThankYou from "./routes/More/DonateThankYou";
 import ElectionReminder from "./routes/More/ElectionReminder";
 import Elections from "./routes/More/Elections";
 import EmailBallot from "./routes/More/EmailBallot";
-import EmptyBallot from "./routes/Ballot/EmptyBallot";
 import FacebookSignInProcess from "./routes/Process/FacebookSignInProcess";
 import FAQ from "./routes/More/FAQ";
 import FacebookInvitableFriends from "./routes/FacebookInvitableFriends";
@@ -116,7 +115,6 @@ const routes = () => (
       <Route path="/measure/:measure_we_vote_id/:back_to_variable/:organization_we_vote_id" component={OrganizationVoterGuideMeasure} />
       <Route path="/measure/:measure_we_vote_id" component={Measure} />
     </Route>
-    <Route path="/ballot/empty" component={EmptyBallot} />
     <Route path="/ballot/:ballot_location_shortcut" component={Ballot} />
     <Route path="/ballot/id/:ballot_returned_we_vote_id" component={Ballot} />
     <Route path="/ballot/election/:google_civic_election_id" component={Ballot} />
