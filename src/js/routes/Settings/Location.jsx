@@ -18,7 +18,7 @@ export default class Location extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      electionLocationList: [],
+      electionsLocationsList: [],
       voterBallotList: [],
     };
   }
@@ -38,40 +38,40 @@ export default class Location extends Component {
   }
 
   onElectionStoreChange () {
-    const electionList = ElectionStore.getElectionList();
-    const electionLocationList = [];
+    const electionsList = ElectionStore.getElectionList();
+    const electionsLocationsList = [];
     let voterBallot; // A different format for much of the same data
     const voterBallotList = [];
     let oneBallotLocation;
-    letballotLocationShortcut;
+    let ballotLocationShortcut;
     let ballotReturnedWeVoteId;
 
-    for (let i = 0; i < electionList.length; i++) {
-      const election = electionList[i];
-      electionLocationList.push(election);
+    for (let i = 0; i < electionsList.length; i++) {
+      const election = electionsList[i];
+      electionsLocationsList.push(election);
       ballotReturnedWeVoteId = "";
-     ballotLocationShortcut = "";
-      if (election.ballotLocationList && election.ballotLocationList.length) {
+      ballotLocationShortcut = "";
+      if (election.ballot_location_list && election.ballot_location_list.length) {
         // We want to add the shortcut and we_vote_id for the first ballot location option
-        oneBallotLocation = election.ballotLocationList[0];
-       ballotLocationShortcut = oneBallotLocation.ballotLocationShortcut || "";
-       ballotLocationShortcut =ballotLocationShortcut.trim();
+        [oneBallotLocation] = election.ballot_location_list;
+        ballotLocationShortcut = oneBallotLocation.ballotLocationShortcut || "";
+        ballotLocationShortcut = ballotLocationShortcut.trim();
         ballotReturnedWeVoteId = oneBallotLocation.ballotReturnedWeVoteId || "";
         ballotReturnedWeVoteId = ballotReturnedWeVoteId.trim();
       }
       voterBallot = {
-        googleCivicElectionId: election.google_civic_election_id,
-        electionDescriptionText: election.election_name,
-        electionDayText: election.election_day_text,
-        originalTextForMapSearch: "",
-       ballotLocationShortcut,
+        google_civic_election_id: election.google_civic_election_id,
+        election_description_text: election.election_name,
+        election_day_text: election.election_day_text,
+        original_text_for_map_search: "",
+        ballotLocationShortcut,
         ballotReturnedWeVoteId,
       };
       voterBallotList.push(voterBallot);
     }
 
     this.setState({
-      electionLocationList,
+      electionsLocationsList,
       voterBallotList,
     });
   }
