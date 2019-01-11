@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
+import ReactSVG from "react-svg";
 import Toggle from "react-toggle";
-import Icon from "react-svg-icons";
 import { renderLog } from "../../utils/logging";
-import { hasIPhoneNotch } from "../../utils/cordovaUtils";
+import { cordovaDot, hasIPhoneNotch } from "../../utils/cordovaUtils";
 import { showToastSuccess } from "../../utils/showToast";
 import SettingsAccount from "../Settings/SettingsAccount";
 import SupportActions from "../../actions/SupportActions";
@@ -122,8 +122,8 @@ export default class PositionPublicToggle extends Component {
     let { is_public_position: isPublicPosition } = this.props.supportProps;
     const visibilityPublic = "Currently visible to public";
     const visibilityFriendsOnly = "Currently only shared with We Vote friends";
-    const publicIcon = <Icon alt="Visible to Public" name="public-icon" color="#000" width={18} height={18} />;
-    const friendsIcon = <Icon alt="Visible to Friends Only" name="group-icon" color="#fff" width={18} height={18} />;
+    const publicIcon = <ReactSVG src={cordovaDot("/img/global/svg-icons/public-icon.svg")} svgStyle={{ fill: "#000", width: 18, height: 18 }} alt="Visible to Public" />;
+    const friendsIcon = <ReactSVG src={cordovaDot("/img/global/svg-icons/group-icon.svg")} svgStyle={{ fill: "#fff", width: 18, height: 18 }} alt="Visible to Friends Only" />;
     const tooltip = <Tooltip id="visibility-tooltip">{isPublicPosition ? visibilityPublic : visibilityFriendsOnly}</Tooltip>;
     const noTooltip = <span />;
 

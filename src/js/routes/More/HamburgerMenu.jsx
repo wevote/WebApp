@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { Link } from "react-router";
-import Icon from "react-svg-icons";
 import { Table } from "react-bootstrap";
-import { isWebApp } from "../../utils/cordovaUtils";
+import { cordovaDot, isWebApp } from "../../utils/cordovaUtils";
 import VoterStore from "../../stores/VoterStore";
 import BallotStore from "../../stores/BallotStore";
 import HamburgerMenuRow from "../../components/Navigation/HamburgerMenuRow";
@@ -51,7 +50,7 @@ export default class HamburgerMenu extends Component {
           </div>
         ) : (
           <div id="anonIcon" className={isWebApp() ? "header-nav__avatar" : "header-nav__avatar-cordova header-nav__cordova"}>
-            <Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" />
+            <img src={cordovaDot("/img/global/svg-icons/avatar-generic.svg")} width="34" height="34" color="#c0c0c0" alt="generic voter" />
           </div>
         )}
       </span>

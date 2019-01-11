@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { findDOMNode } from "react-dom";
+import ReactSVG from "react-svg";
 import $ from "jquery";
-import Icon from "react-svg-icons";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import IssueStore from "../../stores/IssueStore";
 import { renderLog } from "../../utils/logging";
@@ -237,13 +237,11 @@ export default class IssuesByBallotItemDisplayList extends Component {
               key={`issue-icon-${oneIssue.issue_we_vote_id}`}
             >
               {oneIssue.issue_icon_local_path ? (
-                <Icon
-                  name={`issues/${oneIssue.issue_icon_local_path}`}
-                  width={24}
-                  height={24}
-                  className="issue-icon-list__issue-icon"
-                  color="#555"
-                />
+                <span className="issue-icon-list__issue-icon">
+                  <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
+                            svgStyle={{ fill: "#4B4B4B", padding: "1px" }}
+                  />
+                </span>
               ) : null
               }
               <div className="u-margin-left--xxs issue-icon-list__issue-label-name">
@@ -270,13 +268,11 @@ export default class IssuesByBallotItemDisplayList extends Component {
               key={`issue-icon-${oneIssue.issue_we_vote_id}`}
             >
               {oneIssue.issue_icon_local_path ? (
-                <Icon
-                  name={`issues/${oneIssue.issue_icon_local_path}`}
-                  width={24}
-                  height={24}
-                  className="issue-icon-list__issue-icon"
-                  color="#999"
-                />
+                <span className="issue-icon-list__issue-icon">
+                  <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
+                            svgStyle={{ fill: "#4B4B4B", padding: "1px" }}
+                  />
+                </span>
               ) : null
               }
               <div className="u-margin-left--xxs issue-icon-list__issue-label-name">

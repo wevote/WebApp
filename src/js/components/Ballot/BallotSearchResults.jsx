@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Icon from "react-svg-icons";
 import BallotActions from "../../actions/BallotActions";
 import BallotItemSearchResult from "./BallotItemSearchResult";
 import BallotStore from "../../stores/BallotStore";
+import { cordovaDot } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import SearchBar from "../Search/SearchBar";
@@ -96,8 +96,8 @@ export default class BallotSearchResults extends Component {
       return null;
     }
 
-    const icon_size = 18;
-    const icon_color = "#999";
+    const iconSize = 18;
+    const iconColor = "#999";
     const noSearchResultsPossibility = this.state.searchString && this.state.searchString !== "" ?
       <div>No search results found.</div> : null;
 
@@ -107,11 +107,11 @@ export default class BallotSearchResults extends Component {
         {" "}
         <span className="u-no-break">
           <span className="btn__icon">
-            <Icon
-              name="thumbs-up-icon"
-              width={icon_size}
-              height={icon_size}
-              color={icon_color}
+            <img src={cordovaDot("/img/global/icons/thumbs-up-icon.svg")}
+                 width={iconSize}
+                 height={iconSize}
+                 color={iconColor}
+                 alt="thumbs up"
             />
           </span>
           {" "}
@@ -121,11 +121,11 @@ export default class BallotSearchResults extends Component {
         or&nbsp;
         <span className="u-no-break">
           <span className="btn__icon">
-            <Icon
-              name="thumbs-down-icon"
-              width={icon_size}
-              height={icon_size}
-              color={icon_color}
+            <img src={cordovaDot("/img/global/icons/thumbs-down-icon.svg")}
+                 width={iconSize}
+                 height={iconSize}
+                 color={iconColor}
+                 alt="thumbs down"
             />
           </span>
           {" "}
@@ -136,6 +136,7 @@ export default class BallotSearchResults extends Component {
       </div>
     );
 
+    // Jan 2019, Steve:  What sets the state.ballotItemSearchResultsList? (I think nothing sets it)
     const searchResults = this.state.ballotItemSearchResultsList.map( ballotItem => (
       <BallotItemSearchResult
         key={ballotItem.we_vote_id}
@@ -166,7 +167,7 @@ export default class BallotSearchResults extends Component {
                 {searchResults}
               </div>
             ) :
-              {noSearchResultsPossibility}
+              { noSearchResultsPossibility }
             }
           </div>
         </div>

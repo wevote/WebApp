@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import {  Modal, OverlayTrigger, Popover } from "react-bootstrap";
 import { Link } from "react-router";
 import TextTruncate from "react-text-truncate";
-import Icon from "react-svg-icons";
 import Slider from "react-slick";
 import { cordovaDot, historyPush, hasIPhoneNotch } from "../../utils/cordovaUtils";
 import { toTitleCase } from "../../utils/textFormat";
@@ -403,7 +402,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
         const nameNetworkSupportListDisplay =
           nameNetworkSupportList.map(speakerDisplayName => (
             <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start">
-              <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" />
+              <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" alt="thumbs up" />
               <span>&nbsp;</span>
               <span>
                 {speakerDisplayName}
@@ -416,7 +415,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
         const nameNetworkOpposeListDisplay =
           nameNetworkOpposeList.map(speakerDisplayName => (
             <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start">
-              <img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" />
+              <img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" alt="thumbs down" />
               <span>&nbsp;</span>
               <span>
                 {speakerDisplayName}
@@ -487,10 +486,15 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
           <h2 className="u-f3 card-main__ballot-name u-gray-dark u-stack--sm">
             <span className="u-cursor--pointer" onClick={this.toggleExpandDetails}>
-              { this.state.display_office_unfurled ?
-                <span className="d-print-none u-push--xs"><Icon name="glyphicons-pro-halflings/glyphicons-halflings-252-triangle-bottom" width={32} height={32} color="" /></span> :
-                <span className="d-print-none u-push--xs"><Icon name="glyphicons-pro-halflings/glyphicons-halflings-250-triangle-right" width={32} height={32} color="" /></span>
-            }
+              { this.state.display_office_unfurled ? (
+                <span className="d-print-none u-push--xs">
+                  <img src={cordovaDot("/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-252-triangle-bottom.svg")} width="32" height="32" alt="furl" />
+                </span>
+              ) : (
+                <span className="d-print-none u-push--xs">
+                  <img src={cordovaDot("/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-250-triangle-right.svg")} width="32" height="32" alt="unfurl" />
+                </span>
+              )}
               <span className="card-main__ballot-name-link">{ballotItemDisplayName}</span>
             </span>
           </h2>

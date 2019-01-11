@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
-import Icon from "react-svg-icons";
 import { Table } from "react-bootstrap";
-import { isWebApp, enclosingRectangle, isCordova } from "../../utils/cordovaUtils";
+import { cordovaDot, isWebApp, enclosingRectangle, isCordova } from "../../utils/cordovaUtils";
 import HamburgerMenuRow from "./HamburgerMenuRow";
 import { renderLog } from "../../utils/logging";
 
@@ -55,7 +54,7 @@ export default class HeaderBarProfileSlideIn extends Component {
           </div>
         ) : (
           <div id="anonIcon" className="header-nav__avatar">
-            <Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" />
+            <img src={cordovaDot("/img/global/svg-icons/avatar-generic.svg")} width="34" height="34" color="#c0c0c0" alt="generic voter" />
           </div>
         )}
       </span>

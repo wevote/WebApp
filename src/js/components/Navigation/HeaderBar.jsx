@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
-import Icon from "react-svg-icons";
 import BallotStore from "../../stores/BallotStore";
 import BookmarkStore from "../../stores/BookmarkStore";
-import { historyPush, isCordova, isWebApp } from "../../utils/cordovaUtils";
+import { cordovaDot, historyPush, isCordova, isWebApp } from "../../utils/cordovaUtils";
 import cookies from "../../utils/cookies";
 import FriendStore from "../../stores/FriendStore";
 import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
@@ -12,10 +11,8 @@ import HeaderBarAboutMenu from "./HeaderBarAboutMenu";
 import HeaderBarLogo from "./HeaderBarLogo";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
-import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
-// import SearchAllBox from "../../components/Search/SearchAllBox";
 
 export default class HeaderBar extends Component {
   static propTypes = {
@@ -27,9 +24,13 @@ export default class HeaderBar extends Component {
   static ballot (active) {
     return (
       <Link to="/ballot" className={`header-nav__item${active ? " active-icon" : ""}`}>
-        <Icon name="nav/ballot-icon-24" color="#ffffff" className="header-nav__icon--ballot" />
+        <img className="header-nav__icon--ballot"
+             src={cordovaDot("/img/global/svg-icons/nav/ballot-icon-24.svg")}
+             color="#ffffff"
+             alt="Ballot"
+        />
         <span className="header-nav__label">
-        Ballot
+          Ballot
         </span>
       </Link>
     );
@@ -39,7 +40,11 @@ export default class HeaderBar extends Component {
     return (
       <Link to="/more/network" className={`header-nav__item${active ? " active-icon" : ""}`}>
         <div title="Network">
-          <Icon name="nav/network-icon-24" color="#ffffff" className="header-nav__icon" />
+          <img className="header-nav__icon"
+               src={cordovaDot("/img/global/svg-icons/nav/network-icon-24.svg")}
+               color="#ffffff"
+               alt="Network"
+          />
           {numberOfIncomingFriendRequests ?         // eslint-disable-line no-nested-ternary
             numberOfIncomingFriendRequests < 9 ?
               <span className="badge-total badge footerNav.badge-total">{numberOfIncomingFriendRequests}</span> :
@@ -56,23 +61,16 @@ export default class HeaderBar extends Component {
   static donate (active) {
     return (
       <Link to="/more/donate" className={`header-nav__item--donate header-nav__item d-none d-sm-block${active ? " active-icon" : ""}`}>
-        <Icon name="nav/donate-icon-24" color="#ffffff" className="header-nav__icon" />
+        <img className="header-nav__icon"
+             src={cordovaDot("/img/global/svg-icons/nav/donate-icon-24.svg")}
+             color="#ffffff"
+             alt="Donate"
+        />
         <span className="header-nav__label">
         Donate
         </span>
       </Link>
     );
-  }
-
-  static imagePlaceholder (speakerType) {
-    let imagePlaceholderString = "";
-    if (isSpeakerTypeOrganization(speakerType)) {
-      imagePlaceholderString = <div id="anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
-    } else {
-      imagePlaceholderString = <div id="anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
-    }
-
-    return imagePlaceholderString;
   }
 
   static goToGetStarted () {
@@ -206,7 +204,6 @@ export default class HeaderBar extends Component {
     renderLog(__filename);
     const { pathname, voter } = this.props;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
-    const speakerType = "V"; // TODO DALE make this dynamic
     const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length;
     const voterIsSignedIn = this.props.voter && this.props.voter.is_signed_in;
     const showFullNavigation = cookies.getItem("show_full_navigation") || voterIsSignedIn;
@@ -271,9 +268,14 @@ export default class HeaderBar extends Component {
                 src={voterPhotoUrlMedium}
                 height={34}
                 width={34}
+                alt="generic avatar"
               />
             </div>
-          ) : HeaderBar.imagePlaceholder(speakerType)
+          ) : (
+            <div id="anonIcon" className="header-nav__avatar">
+              <img src={cordovaDot("/img/global/svg-icons/avatar-generic.svg")} width="34" height="34" color="#c0c0c0" alt="generic voter" />
+            </div>
+          )
           }
           {/* Was AccountMenu */}
           {this.state.profilePopUpOpen && (
