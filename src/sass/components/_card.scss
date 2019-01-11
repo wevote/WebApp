@@ -57,6 +57,16 @@ $candidate-font-size: .875rem;
       flex-direction: column;
     }
 
+    &__media-object-content {
+      // additional styling set with 'media-object' mixin
+      @include breakpoints (mid-small) {
+        //more space and spacing for candidate bio
+        padding: $space-xs $space-lg;
+        margin-bottom: $space-lg;
+        font-size: 16px;
+      }
+    }
+
     &__avatar {
       max-width: 60px;
       border-radius: $radius-xs;
@@ -134,7 +144,7 @@ $candidate-font-size: .875rem;
         font-size: 18px;
       }
       @include print {
-        font-size: 18px;
+        font-size: 22px;
       }
     }
 
