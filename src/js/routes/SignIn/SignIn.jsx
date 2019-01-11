@@ -286,56 +286,57 @@ export default class SignIn extends Component {
                   <br />
                   <div>
                     {this.state.voter.signed_in_twitter ? (
-                      <span>
-                        <span className="btn btn-social btn-lg btn-twitter" href="#">
+                      <div>
+                        <span className="btn btn-social btn-md btn-twitter" href="#">
                           <i className="fa fa-twitter" />
                           @
                           {this.state.voter.twitter_screen_name}
                         </span>
                         <span className="u-margin-left--sm" />
+                      </div>
+                    ) : null
+                    }
+                    {this.state.voter.signed_in_twitter && (this.state.voter.signed_in_facebook || this.state.voter.signed_in_with_email) ? (
+                      <span>
+                        {this.state.show_twitter_disconnect ? (
+                          <div>
+                            <Button
+                              variant="danger"
+                              type="submit"
+                              onClick={this.voterSplitIntoTwoAccounts.bind(this)}
+                            >
+                              Disconnect @
+                              {this.state.voter.twitter_screen_name}
+                              {" "}
+                              from this account
+                            </Button>
+                          </div>
+                        ) : (
+                          <div>
+                            <span onClick={this.toggleTwitterDisconnectOpen.bind(this)}>un-link twitter</span>
+                          </div>
+                        )}
                       </span>
                     ) : null
                     }
-                    {this.state.voter.signed_in_facebook && (
+                    <div>
+                      {this.state.voter.signed_in_facebook && (
                       <span>
                         <span className="btn btn-social-icon btn-lg btn-facebook">
                           <span className="fa fa-facebook" />
                         </span>
                         <span className="u-margin-left--sm" />
                       </span>
-                    )}
-                    {this.state.voter.signed_in_with_email && (
-                    <span>
-                      <span className="btn btn-warning btn-lg">
-                        {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
-                        <span className="glyphicon glyphicon-envelope" />
-                      </span>
-                    </span>
-                    )}
-                  </div>
-                  {this.state.voter.signed_in_twitter && (this.state.voter.signed_in_facebook || this.state.voter.signed_in_with_email) ? (
-                    <span>
-                      {this.state.show_twitter_disconnect ? (
-                        <div>
-                          <Button
-                            variant="danger"
-                            type="submit"
-                            onClick={this.voterSplitIntoTwoAccounts.bind(this)}
-                          >
-                            Disconnect @
-                            {this.state.voter.twitter_screen_name}
-                            {" "}
-                            from this account
-                          </Button>
-                        </div>
-                      ) : (
-                        <div>
-                          <span onClick={this.toggleTwitterDisconnectOpen.bind(this)}>un-link twitter</span>
-                        </div>
                       )}
-                    </span>
-                  ) : null
-                  }
+                      {this.state.voter.signed_in_with_email && (
+                      <span>
+                        <span className="btn btn-social-icon btn-lg btn-openid">
+                          <span className="fa fa-envelope-o" />
+                        </span>
+                      </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
               ) : null
               }
