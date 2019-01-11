@@ -1,16 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
-import Icon from "react-svg-icons";
 import BallotStore from "../../stores/BallotStore";
 import BookmarkStore from "../../stores/BookmarkStore";
 import CandidateStore from "../../stores/CandidateStore";
 import cookies from "../../utils/cookies";
-import { hasIPhoneNotch, historyPush, isWebApp } from "../../utils/cordovaUtils";
+import { cordovaDot, hasIPhoneNotch, historyPush, isWebApp } from "../../utils/cordovaUtils";
 import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
-import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import { renderLog } from "../../utils/logging";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
@@ -190,21 +188,7 @@ export default class HeaderBackToBar extends Component {
     this.setState({ profilePopUpOpen: false });
   }
 
-  imagePlaceholder (speakerType) {
-    let imagePlaceholderString = "";
-    if (isSpeakerTypeOrganization(speakerType)) {
-      imagePlaceholderString = <div id="anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
-    } else {
-      imagePlaceholderString = <div id="anonIcon" className="header-nav__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></div>;
-    }
-
-    return imagePlaceholderString;
-  }
-
   getVoterGuideLink () {
-    // Steve 2/16/18, the following messed up code -- replaced below
-    // let organization_twitter_handle;
-    // return organization_twitter_handle ? "/" + organization_twitter_handle : "/voterguide/" + this.state.organizationWeVoteId;
     return `/voterguide/${this.state.organizationWeVoteId}`;
   }
 
@@ -232,7 +216,6 @@ export default class HeaderBackToBar extends Component {
   render () {
     renderLog(__filename);
     const voterPhotoUrlMedium = this.state.voter.voter_photo_url_medium;
-    const speakerType = "V"; // TODO DALE make this dynamic
 
     let backToLink;
     if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
@@ -319,7 +302,11 @@ export default class HeaderBackToBar extends Component {
                 width={34}
               />
             </div>
-          ) : this.imagePlaceholder(speakerType)}
+          ) : (
+            <div id="anonIcon" className="header-nav__avatar">
+              <img src={cordovaDot("/img/global/svg-icons/avatar-generic.svg")} width="34" height="34" color="#c0c0c0" alt="generic voter" />
+            </div>
+          )}
         </div>
         )}
 

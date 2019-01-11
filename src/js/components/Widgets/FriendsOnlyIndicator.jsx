@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Icon from "react-svg-icons";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import { cordovaDot } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 
 export default class FriendsOnlyIndicator extends Component {
@@ -16,7 +16,7 @@ export default class FriendsOnlyIndicator extends Component {
 
   render () {
     renderLog(__filename);
-    let isFriendsOnly = this.props.isFriendsOnly;
+    let { isFriendsOnly } = this.props.isFriendsOnly;
     if (isFriendsOnly === undefined) {
       isFriendsOnly = true;
     }
@@ -25,20 +25,18 @@ export default class FriendsOnlyIndicator extends Component {
     let visibilityIcon = "";
     if (isFriendsOnly) {
       labelText = "This position is only visible to We Vote friends.";
-      visibilityIcon = <Icon name="group-icon" color="#999" width={18} height={18} />;
+      visibilityIcon = <img src={cordovaDot("/img/global/svg-icons/group-icon.svg")} width="18" height="18" color="#999" alt="Visible to Friends Only" />;
     } else {
       labelText = "This position is visible to the public.";
-      visibilityIcon = <Icon name="public-icon" color="#999" width={18} height={18} />;
+      visibilityIcon = <img src={cordovaDot("/img/global/svg-icons/public-icon.svg")} width="18" height="18" color="#999" alt="Visible to Public" />;
     }
 
     const tooltip = <Tooltip id="tooltip">{labelText}</Tooltip>;
 
-    const visibilityIndicator = (
+    return (
       <OverlayTrigger placement="top" overlay={tooltip}>
         <span className="public-friends-indicator">{visibilityIcon}</span>
       </OverlayTrigger>
     );
-
-    return visibilityIndicator;
   }
 }

@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Icon from "react-svg-icons";
 import { OverlayTrigger, Popover } from "react-bootstrap";
-import { isCordova } from "../../utils/cordovaUtils";
+import { cordovaDot, isCordova } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import OrganizationCard from "../VoterGuide/OrganizationCard";
 import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
@@ -12,7 +11,6 @@ import VoterStore from "../../stores/VoterStore";
 // This component can be used to show either supporters, opposers, or groups with info only that the Voter
 // is already listening to
 export default class ItemTinyPositionBreakdownList extends Component {
-
   static propTypes = {
     // ballot_item_display_name: PropTypes.string.isRequired,  // We have removed this, so we can remove it from all places that call this component
     ballotItemWeVoteId: PropTypes.string.isRequired,
@@ -133,7 +131,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
         } else {
           voterOrganizationTinyDisplay = (
             <span key="anonIconKey" className={`${supportOpposeClass}position-rating__source with-popover`}>
-              <Icon name="avatar-generic" width={24} height={24} color="#c0c0c0" />
+              <img src={cordovaDot("/img/global/svg-icons/avatar-generic.svg")} width="24" height="24" color="#c0c0c0" alt="generic voter" />
               You
             </span>
           );

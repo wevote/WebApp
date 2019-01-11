@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Icon from "react-svg-icons";
 import { cordovaDot } from "../utils/cordovaUtils";
 import { renderLog } from "../utils/logging";
 
@@ -40,7 +39,7 @@ export default class ImageHandler extends Component {
     switch (kindOfImage) {
       case "CANDIDATE":
         replacementClass = "icon-main image-person-placeholder";
-        imagePlaceholderIcon = <Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" />;
+        imagePlaceholderIcon = <img src={cordovaDot("/img/global/svg-icons/avatar-generic.svg")} width="34" height="34" color="#c0c0c0" alt="generic voter" />;
         break;
       case "MEASURE" || "OFFICE":
         // TODO: Refactor to remove font icons

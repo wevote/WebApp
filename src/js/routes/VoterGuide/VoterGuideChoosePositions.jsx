@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
-import Icon from "react-svg-icons";
 import BallotSearchResults from "../../components/Ballot/BallotSearchResults";
 import BallotActions from "../../actions/BallotActions";
 import BallotStore from "../../stores/BallotStore";
@@ -229,11 +228,11 @@ export default class VoterGuideChoosePositions extends Component {
             {" "}
             <span className="u-no-break">
               <span className="btn__icon">
-                <Icon
-                  name="thumbs-up-icon"
-                  width={iconSize}
-                  height={iconSize}
-                  color={iconColor}
+                <img src={cordovaDot("/img/global/icons/thumbs-up-icon.svg")}
+                     width={iconSize}
+                     height={iconSize}
+                     color={iconColor}
+                     alt="thumbs up"
                 />
               </span>
               {" "}
@@ -243,11 +242,11 @@ export default class VoterGuideChoosePositions extends Component {
             or&nbsp;
             <span className="u-no-break">
               <span className="btn__icon">
-                <Icon
-                  name="thumbs-down-icon"
-                  width={iconSize}
-                  height={iconSize}
-                  color={iconColor}
+                <img src={cordovaDot("/img/global/icons/thumbs-down-icon.svg")}
+                     width={iconSize}
+                     height={iconSize}
+                     color={iconColor}
+                     alt="thumbs down"
                 />
               </span>
               {" "}

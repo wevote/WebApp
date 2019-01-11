@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Icon from "react-svg-icons";
 import ReactPlayer from "react-player";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import {cordovaDot} from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import ReadMore from "./ReadMore";
@@ -104,7 +104,15 @@ export default class PositionInformationOnlySnippet extends Component {
             null : (
               <span>
                 <OverlayTrigger placement="top" overlay={tooltip}>
-                  <div className="public-friends-indicator"><Icon name="no-position-icon" width={24} height={24} className={className} alt={alt} color="" /></div>
+                  <div className="public-friends-indicator">
+                    <img src={cordovaDot("/img/global/svg-icons/no-position-icon.svg")}
+                         className={className}
+                         width={24}
+                         height={24}
+                         color=""
+                         alt={alt}
+                    />
+                  </div>
                 </OverlayTrigger>
                 {this.props.is_on_ballot_item_page ? (
                   <span>

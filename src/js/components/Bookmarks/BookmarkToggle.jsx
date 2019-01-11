@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Icon from "react-svg-icons";
 import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
 import BookmarkStore from "../../stores/BookmarkStore";
 import BookmarkActions from "../../actions/BookmarkActions";
+import { cordovaDot } from "../../utils/cordovaUtils";
 import { showToastError, showToastSuccess } from "../../utils/showToast";
 import { renderLog } from "../../utils/logging";
 import VoterActions from "../../actions/VoterActions";
@@ -72,11 +72,11 @@ export default class BookmarkToggle extends Component {
       BookmarkActions.voterBookmarkOffSave(this.props.we_vote_id, this.props.type);
       showToastError("Bookmark removed!");
     } else {
-      const bookmark_action_modal_has_been_shown = VoterStore.getInterfaceFlagState(VoterConstants.BOOKMARK_ACTION_MODAL_SHOWN);
+      const bookmarkActionModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.BOOKMARK_ACTION_MODAL_SHOWN);
 
       BookmarkActions.voterBookmarkOnSave(this.props.we_vote_id, this.props.type);
 
-      if (!bookmark_action_modal_has_been_shown) {
+      if (!bookmarkActionModalHasBeenShown) {
         this.toggleBookmarkToggleHelpModal();
         VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.BOOKMARK_ACTION_MODAL_SHOWN);
       } else {
@@ -137,12 +137,13 @@ export default class BookmarkToggle extends Component {
           onKeyDown={this.BookmarkKeyDown.bind(this)}
           title="Bookmark for later"
         >
-          {this.state.isBookmarked ?
-            <Icon alt="Is Bookmarked" name="bookmark-icon" width={24} height={24} fill="#999" stroke="none" color="#999" /> : (
+          {this.state.isBookmarked ? <img src={cordovaDot("/img/global/svg-icons/bookmark-icon.svg")} width={24} height={24} color="#999" stroke="#999" fill="#999" alt="Is Bookmarked" /> :
+            (
               <OverlayTrigger placement="top" overlay={bookmarkToolTip}>
-                <Icon alt="Bookmark for later" name="bookmark-icon" width={24} height={24} fill="none" stroke="#ccc" strokeWidth={2} color="#ccc" />
+                <img src={cordovaDot("/img/global/svg-icons/bookmark-icon.svg")} width={24} height={24} color="#ccc" stroke="#ccc" fill="#ccc" alt="Bookmark for later" />
               </OverlayTrigger>
-            )}
+            )
+          }
         </span>
         { this.state.showBookmarkToggleHelpModal ? BookmarkToggleHelpModal : null }
       </div>

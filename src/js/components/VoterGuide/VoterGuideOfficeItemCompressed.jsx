@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { Modal } from "react-bootstrap";
 import TextTruncate from "react-text-truncate";
-import Icon from "react-svg-icons";
 import Slider from "react-slick";
 import { cordovaDot, historyPush, hasIPhoneNotch } from "../../utils/cordovaUtils";
 import { toTitleCase } from "../../utils/textFormat";
@@ -411,10 +410,18 @@ export default class VoterGuideOfficeItemCompressed extends Component {
           {/* On the voter guide, we bring the size of the office name down so we can emphasize the candidate being supported */}
           <h2 className="h4 u-f5 card-main__ballot-name u-gray-dark u-stack--sm">
             <span className="u-cursor--pointer" onClick={this.toggleExpandDetails}>
-              { this.state.display_office_unfurled ?
-                <span className="d-print-none u-push--xs"><Icon name="glyphicons-pro-halflings/glyphicons-halflings-252-triangle-bottom" width={32} height={32} color="" /></span> :
+              { this.state.display_office_unfurled ? (
+                <span className="d-print-none u-push--xs">
+                  <img src={cordovaDot("/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-252-triangle-bottom.svg")}
+                       width="32"
+                       height="32"
+                       color=""
+                       alt="furl"
+                  />
+                </span>
+              ) :
                 null
-            }
+              }
               {ballotItemDisplayName}
             </span>
           </h2>

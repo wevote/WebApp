@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Icon from "react-svg-icons";
 import BallotStore from "../../stores/BallotStore";
 import CandidateItemCompressed from "../Ballot/CandidateItemCompressed";
+import { cordovaDot } from "../../utils/cordovaUtils";
 import LoadingWheel from "../LoadingWheel";
 import { renderLog } from "../../utils/logging";
 
@@ -55,8 +55,8 @@ export default class VoterGuideSettingsSuggestedBallotItems extends Component {
       });
     }
 
-    const icon_size = 18;
-    const icon_color = "#999";
+    const iconSize = 18;
+    const iconColor = "#999";
 
     return (
       <span>
@@ -70,11 +70,11 @@ export default class VoterGuideSettingsSuggestedBallotItems extends Component {
                   {" "}
                   <span className="u-no-break">
                     <span className="btn__icon">
-                      <Icon
-                        name="thumbs-up-icon"
-                        width={icon_size}
-                        height={icon_size}
-                        color={icon_color}
+                      <img src={cordovaDot("/img/global/svg-icons/issues/thumbs-up-icon.svg")}
+                           width={iconSize}
+                           height={iconSize}
+                           color={iconColor}
+                           alt="Thumbs up"
                       />
                     </span>
                     {" "}
@@ -84,11 +84,11 @@ export default class VoterGuideSettingsSuggestedBallotItems extends Component {
                   or&nbsp;
                   <span className="u-no-break">
                     <span className="btn__icon">
-                      <Icon
-                        name="thumbs-down-icon"
-                        width={icon_size}
-                        height={icon_size}
-                        color={icon_color}
+                      <img src={cordovaDot("/img/global/svg-icons/issues/thumbs-down-icon.svg")}
+                           width={iconSize}
+                           height={iconSize}
+                           color={iconColor}
+                           alt="Thumbs down"
                       />
                     </span>
                     {" "}

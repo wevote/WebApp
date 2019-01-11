@@ -4,17 +4,15 @@ import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 import PropTypes from "prop-types";
 import ReactPlayer from "react-player";
-import Icon from "react-svg-icons";
 import Textarea from "react-textarea-autosize";
+import { cordovaDot, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import ReadMore from "./ReadMore";
-import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
 import PositionPublicToggle from "./PositionPublicToggle";
 import SupportActions from "../../actions/SupportActions";
 import SupportStore from "../../stores/SupportStore";
 import VoterStore from "../../stores/VoterStore";
 import { vimeoRegX, youTubeRegX, stringContains } from "../../utils/textFormat";
-import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../../utils/cordovaUtils";
 
 
 
@@ -221,15 +219,7 @@ export default class ItemPositionStatementActionBar extends Component {
 
     const speaker_image_url_https = voter_photo_url_medium;
     const speaker_display_name = stringContains("Voter-", voter_full_name) ? "" : voter_full_name;
-
-    let image_placeholder = "";
-    // TODO: DALE make this dynamic
-    const speaker_type = "V";
-    if (isSpeakerTypeOrganization(speaker_type)) {
-      image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></span>;
-    } else {
-      image_placeholder = <span className="position-statement__avatar"><Icon name="avatar-generic" width={34} height={34} color="#c0c0c0" /></span>;
-    }
+    const imagePlaceholder = <span className="position-statement__avatar"><img src={cordovaDot("/img/global/svg-icons/avatar-generic.svg")} width="34" height="34" color="#c0c0c0" alt="generic voter" /></span>;
 
     // The short version can be used to cut-off an exceedingly long comment. This applies to entries by the viewer,
     //  for viewing by him or herself. Not used currently.
@@ -277,7 +267,7 @@ export default class ItemPositionStatementActionBar extends Component {
                        width="34px"
                   />
                 ) :
-                  image_placeholder
+                  imagePlaceholder
                 }
                 <span className="position-statement__input-group u-flex u-items-start">
                   <Textarea onChange={this.updateStatementTextToBeSaved.bind(this)}
@@ -309,7 +299,7 @@ export default class ItemPositionStatementActionBar extends Component {
                        width="34px"
                   />
                 ) :
-                  image_placeholder
+                  imagePlaceholder
                 }
                 <div className="position-statement__description u-flex u-items-start">
                   <div className="u-flex u-flex-column u-justify-between">

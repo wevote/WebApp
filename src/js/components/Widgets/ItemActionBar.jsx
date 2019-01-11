@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Icon from "react-svg-icons";
 import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
+import ReactSVG from "react-svg";
+import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import { showToastError, showToastSuccess } from "../../utils/showToast";
 import { stringContains } from "../../utils/textFormat";
@@ -14,7 +15,6 @@ import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 import PositionPublicToggle from "./PositionPublicToggle";
 import webAppConfig from "../../config";
-import { historyPush } from "../../utils/cordovaUtils";
 
 export default class ItemActionBar extends Component {
   static propTypes = {
@@ -423,7 +423,16 @@ export default class ItemActionBar extends Component {
       urlBeingShared = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/measure/${this.state.ballotItemWeVoteId}`;
     }
 
-    const shareIcon = <span className="btn__icon"><Icon name="share-icon" width={iconSize} height={iconSize} color={iconColor} /></span>;
+    const shareIcon = (
+      <span className="btn__icon">
+        <img src={cordovaDot("/img/global/svg-icons/share-icon.svg")}
+             width={iconSize}
+             height={iconSize}
+             color={iconColor}
+             alt="share"
+        />
+      </span>
+    );
 
     // This modal is shown when user clicks on support or oppose button for the first time only.
     const modalSupportProps = { is_public_position: false };
@@ -514,21 +523,24 @@ export default class ItemActionBar extends Component {
     const supportButton = (
       <button className={`item-actionbar__btn item-actionbar__btn--support btn btn-outline-primary${this.isSupportCalculated() ? " support-at-state" : ""}`} onClick={() => this.supportItem()}>
         <span className="btn__icon">
-          <Icon name="glyphicons-pro-halflings/glyphicons-halflings-262-tick" width={chooseIconSize} height={chooseIconSize} color={chooseIconColor} />
+          <img src={cordovaDot("/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-262-tick.svg")}
+               width={chooseIconSize}
+               height={chooseIconSize}
+               color={chooseIconColor}
+               alt="choose"
+          />
         </span>
         { this.isSupportCalculated() ? (
           <span
             className={this.props.shareButtonHide ? "item-actionbar--inline__position-choose-btn-label--at-state" :
-              "item-actionbar__position-choose-btn-label--at-state"
-                    }
+              "item-actionbar__position-choose-btn-label--at-state"}
           >
             Chosen
           </span>
         ) : (
           <span
             className={this.props.shareButtonHide ? "item-actionbar--inline__position-choose-btn-label" :
-              "item-actionbar__position-choose-btn-label"
-                    }
+              "item-actionbar__position-choose-btn-label"}
           >
             Choose
           </span>
@@ -539,21 +551,24 @@ export default class ItemActionBar extends Component {
     const measureYesButton = (
       <button className={`item-actionbar__btn item-actionbar__btn--support btn btn-default${this.isSupportCalculated() ? " support-at-state" : ""}`} onClick={() => this.supportItem()}>
         <span className="btn__icon">
-          <Icon name="thumbs-up-icon" width={18} height={18} color={chooseIconColor} />
+          <img src={cordovaDot("/img/global/icons/thumbs-up-icon.svg")}
+               width={18}
+               height={18}
+               color={chooseIconColor}
+               alt="thumbs up"
+          />
         </span>
         { this.isSupportCalculated() ? (
           <span
             className={this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label--at-state" :
-              "item-actionbar__position-btn-label--at-state"
-                    }
+              "item-actionbar__position-btn-label--at-state"}
           >
             Voting Yes
           </span>
         ) : (
           <span
             className={this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" :
-              "item-actionbar__position-btn-label"
-                    }
+              "item-actionbar__position-btn-label"}
           >
             Vote Yes
           </span>
@@ -564,21 +579,21 @@ export default class ItemActionBar extends Component {
     const opposeButton = (
       <button className={`${this.props.opposeHideInMobile ? "d-none d-sm-block " : ""}item-actionbar__btn item-actionbar__btn--oppose btn btn-default${this.isOpposeCalculated() ? " oppose-at-state" : ""}`} onClick={() => this.opposeItem()}>
         <span className="btn__icon">
-          <Icon name="glyphicons-pro-halflings/glyphicons-halflings-90-ban-circle" width={opposeIconSize} height={opposeIconSize} color={opposeIconColor} />
+          <ReactSVG src={cordovaDot("/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-90-ban-circle.svg")}
+                    svgStyle={{ fill: opposeIconColor, height: opposeIconSize, width: opposeIconSize }}
+          />
         </span>
         { this.isOpposeCalculated() ? (
           <span
             className={this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label--at-state" :
-              "item-actionbar__position-btn-label--at-state"
-                    }
+              "item-actionbar__position-btn-label--at-state"}
           >
             Oppose
           </span>
         ) : (
           <span
             className={this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" :
-              "item-actionbar__position-btn-label"
-                    }
+              "item-actionbar__position-btn-label"}
           >
             Oppose
           </span>
@@ -589,21 +604,24 @@ export default class ItemActionBar extends Component {
     const measureNoButton = (
       <button className={`${this.props.opposeHideInMobile ? "d-none d-sm-block " : ""}item-actionbar__btn item-actionbar__btn--oppose btn btn-default${this.isOpposeCalculated() ? " oppose-at-state" : ""}`} onClick={() => this.opposeItem()}>
         <span className="btn__icon">
-          <Icon name="thumbs-down-icon" width={18} height={18} color={opposeIconColor} />
+          <img src={cordovaDot("/img/global/icons/thumbs-down-icon.svg")}
+               width={18}
+               height={18}
+               color={opposeIconColor}
+               alt="thumbs down"
+          />
         </span>
         { this.isOpposeCalculated() ? (
           <span
             className={this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label--at-state" :
-              "item-actionbar__position-btn-label--at-state"
-                    }
+              "item-actionbar__position-btn-label--at-state"}
           >
             Voting No
           </span>
         ) : (
           <span
             className={this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" :
-              "item-actionbar__position-btn-label"
-                    }
+              "item-actionbar__position-btn-label"}
           >
             Vote No
           </span>
@@ -617,11 +635,15 @@ export default class ItemActionBar extends Component {
         onClick={this.props.toggleFunction}
       >
         <span className="btn__icon">
-          <Icon name="comment-icon" width={18} height={18} color={iconColor} />
+          <img src={cordovaDot("/img/global/svg-icons/comment-icon.svg")}
+               width={18}
+               height={18}
+               color={iconColor}
+               alt="comment"
+          />
         </span>
         <span className={this.props.shareButtonHide ? "item-actionbar--inline__position-btn-label" :
-          "item-actionbar__position-btn-label"
-                    }
+          "item-actionbar__position-btn-label"}
         >
           Comment
         </span>
