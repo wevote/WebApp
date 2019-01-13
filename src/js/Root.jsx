@@ -54,7 +54,6 @@ import ScratchPad from "./routes/ScratchPad";
 import SearchPage from "./routes/More/SearchPage";
 import SettingsDashboard from "./routes/Settings/SettingsDashboard";
 import SettingsMenuMobile from "./routes/Settings/SettingsMenuMobile";
-import SignIn from "./routes/SignIn/SignIn";
 import SignInJumpProcess from "./routes/Process/SignInJumpProcess";
 import FacebookLandingProcess from "./routes/Process/FacebookLandingProcess";
 import FacebookRedirectToWeVote from "./routes/More/FacebookRedirectToWeVote";
@@ -138,6 +137,9 @@ const routes = () => (
     <Route path="/settings/menu" component={SettingsMenuMobile} />
     <Route path="/settings/voterguidelist" component={VoterGuideListDashboard} />
     <Route path="/settings/voterguidesmenu" component={VoterGuidesMenuMobile} />
+    {/* settings/:edit_mode includes "/settings/account", "/settings/address", "/settings/election",
+     "/settings/issues_linked", "/settings/issues_to_link", "/settings/issues", "/settings/notifications",
+     "/settings/profile" */}
     <Route path="/settings/:edit_mode" component={SettingsDashboard} />
     <Route path="/settings/issues/:edit_mode" component={SettingsDashboard} />
 
@@ -182,7 +184,6 @@ const routes = () => (
     <Route path="/more/privacy" component={Privacy} />
     <Route path="/more/processing_donation" component={ProcessingDonation} />
     <Route path="/more/register" component={RegisterToVote} />
-    <Route path="/more/sign_in" component={SignIn} />
     <Route path="/more/search_page" component={SearchPage} />
     <Route path="/more/search_page/:encoded_search_string" component={SearchPage} />
     <Route path="/more/team" component={Team} />

@@ -1,11 +1,16 @@
-import React from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Button } from "react-bootstrap";
 import { renderLog } from "../../utils/logging";
 import FacebookActions from "../../actions/FacebookActions";
 
-class FacebookSignIn extends React.Component {
+class FacebookSignIn extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+    };
 
-  didClickFacebookSignInButton () {
-    FacebookActions.login();
+    this.onKeyDown = this.onKeyDown.bind(this);
   }
 
   onKeyDown (event) {
@@ -15,19 +20,29 @@ class FacebookSignIn extends React.Component {
     }
   }
 
+  didClickFacebookSignInButton () {
+    FacebookActions.login();
+  }
+
   render () {
     renderLog(__filename);
     return (
-      <a
-        onKeyDown={this.onKeyDown.bind(this)}
-        className="btn btn-social btn-lg btn-facebook"
+      <Button
+        bsPrefix={this.props.className ? this.props.className : "btn btn-social btn-facebook"}
         onClick={this.didClickFacebookSignInButton}
+        onKeyDown={this.onKeyDown}
       >
-        <i className="fa fa-facebook" />
-        Sign In
-      </a>
+        <span className="fa fa-facebook" />
+        {" "}
+        {this.props.buttonText ? this.props.buttonText : "Sign In"}
+      </Button>
     );
   }
 }
+
+FacebookSignIn.propTypes = {
+  buttonText: PropTypes.string,
+  className: PropTypes.string,
+};
 
 export default FacebookSignIn;

@@ -21,10 +21,10 @@ export default class WouldYouLikeToMergeAccounts extends Component {
             The choices you&apos;ve made in this browser (when not signed in) can be merged with choices stored the previous time you signed in.
             <br />
             <br />
-            Press &quote;Cancel Sign In&quote; to stop signing in, and keep your recent changes.
+            Press &quot;Cancel Sign In&quot; to stop signing in, and keep your recent changes.
             <br />
             <br />
-            Press &quote;Sign In and Merge My Offline Changes&quote; to merge your recent choices with the choices that were saved when you previously signed in.
+            Press &quot;Sign In and Merge My Offline Changes&quot; to merge your recent choices with the choices that were saved when you previously signed in.
           </Alert>
         </span>
 
