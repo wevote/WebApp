@@ -14,15 +14,15 @@ export default class VoterEmailAddressEntry extends Component {
     super(props);
     this.state = {
       loading: true,
-      email_address_status: {
-        emailAddressAlreadyOwnedByOtherVoter: false,
-        emailAddressCreated: false,
-        emailAddressDeleted: false,
-        verificationEmailSent: false,
-        linkToSignInEmailSent: false,
-      },
-      editVerifiedEmailsOn: false,
       editEmailsToVerifyOn: false,
+      editVerifiedEmailsOn: false,
+      emailAddressStatus: {
+        email_address_already_owned_by_other_voter: false,
+        email_address_created: false,
+        email_address_deleted: false,
+        verification_email_sent: false,
+        link_to_sign_in_email_sent: false,
+      },
       voter: VoterStore.getVoter(),
       voterEmailAddress: "",
       voterEmailAddressList: [],
@@ -30,7 +30,7 @@ export default class VoterEmailAddressEntry extends Component {
   }
 
   componentDidMount () {
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     VoterActions.voterRetrieve();
     VoterActions.voterEmailAddressRetrieve();
   }
@@ -39,32 +39,28 @@ export default class VoterEmailAddressEntry extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter(),
       voterEmailAddressList: VoterStore.getEmailAddressList(),
-      email_address_status: VoterStore.getEmailAddressStatus(),
+      emailAddressStatus: VoterStore.getEmailAddressStatus(),
       loading: false,
     });
   }
 
-  // _ballotLoaded () {
-  //   //historyPush(this.props.saveUrl);
-  // }
-
-  editVerifiedEmailsOn () {
+  setEditVerifiedEmailsOn () {
     this.setState({ editVerifiedEmailsOn: true });
   }
 
-  editVerifiedEmailsOff () {
+  setEditVerifiedEmailsOff () {
     this.setState({ editVerifiedEmailsOn: false });
   }
 
-  editEmailsToVerifyOn () {
+  setEditEmailsToVerifyOn () {
     this.setState({ editEmailsToVerifyOn: true });
   }
 
-  editEmailsToVerifyOff () {
+  setEditEmailsToVerifyOff () {
     this.setState({ editEmailsToVerifyOn: false });
   }
 
@@ -74,12 +70,12 @@ export default class VoterEmailAddressEntry extends Component {
 
   resetEmailForm () {
     this.setState({
-      email_address_status: {
-        emailAddressAlreadyOwnedByOtherVoter: false,
-        emailAddressCreated: false,
-        emailAddressDeleted: false,
-        verificationEmailSent: false,
-        linkToSignInEmailSent: false,
+      emailAddressStatus: {
+        email_address_already_owned_by_other_voter: false,
+        email_address_created: false,
+        email_address_deleted: false,
+        verification_email_sent: false,
+        link_to_sign_in_email_sent: false,
       },
       loading: false,
     });
@@ -89,8 +85,8 @@ export default class VoterEmailAddressEntry extends Component {
     event.preventDefault();
     VoterActions.sendSignInLinkEmail(this.state.voterEmailAddress);
     this.setState({
-      email_address_status: {
-        emailAddressAlreadyOwnedByOtherVoter: false,
+      emailAddressStatus: {
+        email_address_already_owned_by_other_voter: false,
       },
       loading: true,
     });
@@ -126,8 +122,8 @@ export default class VoterEmailAddressEntry extends Component {
 
     const emailAddressStatusHtml = (
       <span>
-        { this.state.email_address_status.email_address_already_owned_by_other_voter &&
-          !this.state.email_address_status.link_to_sign_in_email_sent ? (
+        { this.state.emailAddressStatus.email_address_already_owned_by_other_voter &&
+          !this.state.emailAddressStatus.link_to_sign_in_email_sent ? (
             <Alert variant="warning">
             That email is already being used by another account.
               <br />
@@ -136,18 +132,18 @@ export default class VoterEmailAddressEntry extends Component {
             </Alert>
           ) : null
         }
-        { this.state.email_address_status.email_address_created ||
-        this.state.email_address_status.email_address_deleted ||
-        this.state.email_address_status.email_ownership_is_verified ||
-        this.state.email_address_status.verification_email_sent ||
-        this.state.email_address_status.link_to_sign_in_email_sent ? (
+        { this.state.emailAddressStatus.email_address_created ||
+        this.state.emailAddressStatus.email_address_deleted ||
+        this.state.emailAddressStatus.email_ownership_is_verified ||
+        this.state.emailAddressStatus.verification_email_sent ||
+        this.state.emailAddressStatus.link_to_sign_in_email_sent ? (
           <Alert variant="success">
-            { this.state.email_address_status.email_address_created &&
-            !this.state.email_address_status.verification_email_sent ? <span>Your email address was saved. </span> : null }
-            { this.state.email_address_status.email_address_deleted ? <span>Your email address was deleted. </span> : null }
-            { this.state.email_address_status.email_ownership_is_verified ? <span>Your email address was verified. </span> : null }
-            { this.state.email_address_status.verification_email_sent ? <span>Please check your email. A verification email was sent. </span> : null }
-            { this.state.email_address_status.link_to_sign_in_email_sent ? <span>Please check your email. A sign in link was sent. </span> : null }
+            { this.state.emailAddressStatus.email_address_created &&
+            !this.state.emailAddressStatus.verification_email_sent ? <span>Your email address was saved. </span> : null }
+            { this.state.emailAddressStatus.email_address_deleted ? <span>Your email address was deleted. </span> : null }
+            { this.state.emailAddressStatus.email_ownership_is_verified ? <span>Your email address was verified. </span> : null }
+            { this.state.emailAddressStatus.verification_email_sent ? <span>Please check your email. A verification email was sent. </span> : null }
+            { this.state.emailAddressStatus.link_to_sign_in_email_sent ? <span>Please check your email. A sign in link was sent. </span> : null }
           </Alert>
           ) : null
         }
@@ -165,7 +161,7 @@ export default class VoterEmailAddressEntry extends Component {
 
     const enterEmailHtml = (
       <div>
-        <div>
+        <div className="u-stack--sm">
           <strong>
             {enterEmailTitle}
             .
@@ -175,15 +171,16 @@ export default class VoterEmailAddressEntry extends Component {
         </div>
         <form className="form-inline" onSubmit={this.voterEmailAddressSave.bind(this)}>
           <input
-            className="form-control col-sm-8 mr-sm-3"
+            className="form-control col-sm-8 mr-sm-3 u-stack--xs"
             type="email"
             name="voter_email_address"
             id=""
-            value={this.state.voter_email_address}
+            value={this.state.voterEmailAddress}
             onChange={this.updateVoterEmailAddress.bind(this)}
             placeholder="Email Address"
           />
           <Button
+            className="u-stack--xs"
             variant="success"
             type="submit"
             onClick={this.voterEmailAddressSave.bind(this)}
@@ -191,7 +188,6 @@ export default class VoterEmailAddressEntry extends Component {
             Send Magic Link
           </Button>
         </form>
-
       </div>
     );
 
@@ -227,13 +223,13 @@ export default class VoterEmailAddressEntry extends Component {
               ) : null
               }
             </div>
-            {this.state.edit_verified_emails_on && !isPrimaryEmailAddress ? (
+            {this.state.editVerifiedEmailsOn && !isPrimaryEmailAddress ? (
               <div className="position-item card-child">
                 <span>&nbsp;&nbsp;&nbsp;</span>
                 {isPrimaryEmailAddress ?
                   null : (
                     <span>
-                      <a on_click={this.set_as_primary_email_address.bind(this, voterEmailAddressFromList.email_we_vote_id)}>
+                      <a onClick={this.setAsPrimaryEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}>
                       Make Primary
                       </a>
                       &nbsp;&nbsp;&nbsp;
@@ -241,7 +237,7 @@ export default class VoterEmailAddressEntry extends Component {
                   )}
                 <span>&nbsp;&nbsp;&nbsp;</span>
                 {allowRemoveEmail ? (
-                  <a onClick={this.remove_voter_email_address.bind(this, voterEmailAddressFromList.email_we_vote_id)}>
+                  <a onClick={this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}>
                   Remove Email
                   </a>
                 ) : null
@@ -272,7 +268,7 @@ export default class VoterEmailAddressEntry extends Component {
               <span>&nbsp;&nbsp;&nbsp;</span>
               <span>To Be Verified</span>
             </div>
-            {this.state.edit_emails_to_verify_on ? (
+            {this.state.editEmailsToVerifyOn ? (
               <div className="position-item card-child">
                 <span>&nbsp;&nbsp;&nbsp;</span>
                 {voterEmailAddressFromList.email_ownership_is_verified ?
@@ -305,10 +301,10 @@ export default class VoterEmailAddressEntry extends Component {
         {verifiedEmailsFound ? (
           <div>
             <span className="h3">Your Emails</span>
-            { this.state.edit_verified_emails_on ? (
+            { this.state.editVerifiedEmailsOn ? (
               <span>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <span className="pull-right" onClick={this.editVerifiedEmailsOff.bind(this)}>
+                <span className="pull-right" onClick={this.setEditVerifiedEmailsOff.bind(this)}>
                 stop editing
                 </span>
               </span>
@@ -317,7 +313,7 @@ export default class VoterEmailAddressEntry extends Component {
                 { verifiedEmailExistsThatIsNotPrimary ? (
                   <span>
                     <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    <span className="pull-right" onClick={this.editVerifiedEmailsOn.bind(this)}>
+                    <span className="pull-right" onClick={this.setEditVerifiedEmailsOn.bind(this)}>
                       edit
                     </span>
                   </span>
@@ -334,17 +330,17 @@ export default class VoterEmailAddressEntry extends Component {
         {unverifiedEmailsFound ? (
           <div>
             <span className="h3">Emails to Verify</span>
-            { this.state.edit_emails_to_verify_on ? (
+            { this.state.editEmailsToVerifyOn ? (
               <span>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <span className="pull-right" onClick={this.editEmailsToVerifyOff.bind(this)}>
+                <span className="pull-right" onClick={this.setEditEmailsToVerifyOff.bind(this)}>
                 stop editing
                 </span>
               </span>
             ) : (
               <span>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <span className="pull-right" onClick={this.editEmailsToVerifyOn.bind(this)}>
+                <span className="pull-right" onClick={this.setEditEmailsToVerifyOn.bind(this)}>
                 edit
                 </span>
               </span>
@@ -354,7 +350,7 @@ export default class VoterEmailAddressEntry extends Component {
           </div>
         ) :
           null }
-        <span>{ enterEmailHtml }</span>
+        <div className="u-stack--sm">{ enterEmailHtml }</div>
       </div>
     );
   }
