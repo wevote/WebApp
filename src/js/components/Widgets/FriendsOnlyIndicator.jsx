@@ -16,7 +16,7 @@ export default class FriendsOnlyIndicator extends Component {
 
   render () {
     renderLog(__filename);
-    let { isFriendsOnly } = this.props.isFriendsOnly;
+    let { isFriendsOnly } = this.props;
     if (isFriendsOnly === undefined) {
       isFriendsOnly = true;
     }
