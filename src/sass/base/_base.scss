@@ -62,6 +62,8 @@ $toast-cordova-iphone-notch: 40px;
 }
 
 // stylelint-disable sh-waqar/declaration-use-variable
+// We removed these headroom-webapp margin-top entries because they were causing problems in a frame. 
+// Once removed, we found no adverse behavior when site is not viewed in frame.
 .headroom-webapp--secondary       { /* margin-top: 11vh */ }
 .headroom-webapp--backto          { /* margin-top: -3vh; */ }
 .headroom-webapp--full            { /* margin-top: -1vh; */ }
