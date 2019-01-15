@@ -187,6 +187,8 @@ export default class HamburgerMenu extends Component {
                   <Link to="/more/terms">Terms of Service</Link>
                   <span style={{ paddingLeft: 20 }} />
                   <Link to="/more/privacy">Privacy Policy</Link>
+                  <span style={{ paddingLeft: 20 }} />
+                  <Link to="/more/attributions">Attributions</Link>
                 </span>
               </td>
             </tr>

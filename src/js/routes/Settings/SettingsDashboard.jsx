@@ -194,10 +194,15 @@ export default class SettingsDashboard extends Component {
                 <h4 className="text-left" />
                 <div className="terms-and-privacy u-padding-top--md">
                   <Link to="/more/terms">Terms of Service</Link>
-                  &nbsp;&nbsp;&nbsp;
+                  <span style={{ paddingLeft: 20 }} />
                   <Link to="/more/privacy">
                     Privacy Policy
                   </Link>
+                  <span style={{ paddingLeft: 20 }} />
+                  <Link to="/more/attributions">
+                    Attributions
+                  </Link>
+
                 </div>
               </div>
               {/* Desktop mode content */}

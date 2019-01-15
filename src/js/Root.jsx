@@ -5,6 +5,7 @@ import Application from "./Application";
 import About from "./routes/More/About";
 import AbsenteeBallot from "./routes/More/AbsenteeBallot";
 import Activity from "./routes/Activity";
+import Attributions from "./routes/More/Attributions";
 import Ballot from "./routes/Ballot/Ballot";
 import BallotIndex from "./routes/Ballot/BallotIndex";
 import Bookmarks from "./components/Bookmarks/Bookmarks";
@@ -163,7 +164,7 @@ const routes = () => (
     <Route path="/more/about" component={About} />
     <Route path="/more/absentee" component={AbsenteeBallot} />
     <Route path="/more/alerts" component={ElectionReminder} />
-    <Route path="/more/myballot" component={WeVoteBallotEmbed} />
+    <Route path="/more/attributions" component={Attributions} />
     <Route path="/more/connect" component={Connect} />
     <Route path="/more/credits" component={Credits} />
     <Route path="/more/donate" component={Donate} />
@@ -176,6 +177,7 @@ const routes = () => (
     <Route path="/more/howtouse" component={HowToUse} />
     <Route path="/more/hamburger" component={HamburgerMenu} />
     <Route path="/more/jump" component={SignInJumpProcess} />
+    <Route path="/more/myballot" component={WeVoteBallotEmbed} />
     <Route path="/more/network" component={Network} />
     <Route path="/more/network/key/:invitation_secret_key" component={FriendInvitationByEmailVerifyProcess} />
     <Route path="/more/network/key/:invitation_secret_key/ignore" component={FriendInvitationByEmailVerifyProcess} />
