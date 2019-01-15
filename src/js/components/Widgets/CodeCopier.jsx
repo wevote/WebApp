@@ -119,7 +119,7 @@ export default class CodeCopier extends Component {
     }
 
     const source_code =
-      `<iframe src="${source_url}" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>\n<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.3/iframeResizer.min.js"></script>\n<script type="text/javascript">iFrameResize({ checkOrigin:false });</script>`;
+      `<iframe src="${source_url}?we_vote_branding_off=1" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>\n<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.3/iframeResizer.min.js"></script>\n<script type="text/javascript">iFrameResize({ checkOrigin:false, heightCalculationMethod: 'max' });</script>`;
 
     switch (this.props.title) {
       case "Interactive Ballot Tool":

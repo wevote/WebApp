@@ -62,9 +62,9 @@ $toast-cordova-iphone-notch: 40px;
 }
 
 // stylelint-disable sh-waqar/declaration-use-variable
-.headroom-webapp--secondary       { margin-top: 11vh; }
-.headroom-webapp--backto          { margin-top: -3vh; }
-.headroom-webapp--full            { margin-top: -1vh; }
+.headroom-webapp--secondary       { /* margin-top: 11vh */ }
+.headroom-webapp--backto          { /* margin-top: -3vh; */ }
+.headroom-webapp--full            { /* margin-top: -1vh; */ }
 .headroom-ios--notch--secondary   { margin-top: 11vh; }
 .headroom-ios--notch--backto      { margin-top: 8vh; }
 .headroom-ios--notch--full        { margin-top: 5vh; }
