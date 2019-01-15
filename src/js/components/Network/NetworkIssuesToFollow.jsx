@@ -71,17 +71,17 @@ export default class NetworkIssuesToFollow extends Component {
           one_issue.issue_description.toLowerCase().includes(search_query_lowercase));
     }
 
-    const edit_mode = true;
-    const is_following = false;
-    const issue_list_for_display = issue_list.map(issue => (
+    const isFollowing = false;
+    const issueListForDisplay = issue_list.map(issue => (
       <IssueFollowToggleSquare
         key={issue.issue_we_vote_id}
-        issue_we_vote_id={issue.issue_we_vote_id}
-        issue_name={issue.issue_name}
-        issue_description={issue.issue_description}
-        issue_image_url={issue.issue_image_url}
-        edit_mode={edit_mode}
-        is_following={this.state.issue_we_vote_ids_followed.includes(issue.issue_we_vote_id) || is_following}
+        issueWeVoteId={issue.issue_we_vote_id}
+        issueName={issue.issue_name}
+        issueDescription={issue.issue_description}
+        issueImageUrl={issue.issue_image_url}
+        issueIconLocalPath={issue.issue_icon_local_path}
+        editMode
+        isFollowing={this.state.issue_we_vote_ids_followed.includes(issue.issue_we_vote_id) || isFollowing}
         grid="col-4 col-sm-3"
       />
     ));
@@ -113,7 +113,7 @@ export default class NetworkIssuesToFollow extends Component {
               <div className="card-child__list-group">
                 {
                   this.state.issues_to_follow && this.state.issues_to_follow.length ?
-                    issue_list_for_display :
+                    issueListForDisplay :
                     <h4 className="intro-modal__default-text">There are no more issues to follow!</h4>
                 }
               </div>

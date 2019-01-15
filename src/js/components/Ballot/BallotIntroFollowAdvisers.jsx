@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
+import Button from '@material-ui/core/Button';
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import { renderLog } from "../../utils/logging";
 import OrganizationFollowToggle from "./OrganizationFollowToggle";
 import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from "../../utils/organization-functions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 
-const NEXT_BUTTON_TEXT = "Next >";
-const SKIP_BUTTON_TEXT = "Skip >";
+const NEXT_BUTTON_TEXT = "Next";
+const SKIP_BUTTON_TEXT = "Skip";
 // const PREVIOUS_ADVISERS_PROMPT_TEXT = "Follow three or more advisers to get recommendations on your ballot.";
 
 
@@ -211,7 +211,11 @@ export default class BallotIntroFollowAdvisers extends Component {
         </div>
         <div className="u-flex-auto" />
         <div className="intro-modal__button-wrap">
-          <Button type="submit" bsPrefix="btn btn-success intro-modal__button" onClick={this.onNext}>
+          <Button
+          variant="contained"
+          color="secondary"
+          onClick={this.onNext}
+          >
             <span>{this.state.next_button_text}</span>
           </Button>
         </div>

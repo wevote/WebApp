@@ -63,17 +63,16 @@ export default class IssuesToFollow extends Component {
             one_issue.issue_description.toLowerCase().includes(search_query_lowercase));
     }
 
-    const edit_mode = true;
-    const is_following = false;
-    const issue_list_for_display = issue_list.map(issue => (
+    const issueListForDisplay = issue_list.map(issue => (
       <IssueFollowToggleSquare
         key={issue.issue_we_vote_id}
-        issue_we_vote_id={issue.issue_we_vote_id}
-        issue_name={issue.issue_name}
-        issue_description={issue.issue_description}
-        issue_image_url={issue.issue_image_url}
-        edit_mode={edit_mode}
-        is_following={is_following}
+        issueWeVoteId={issue.issue_we_vote_id}
+        issueName={issue.issue_name}
+        issueDescription={issue.issue_description}
+        issueImageUrl={issue.issue_image_url}
+        issueIconLocalPath={issue.issue_icon_local_path}
+        editMode
+        isFollowing={false}
         grid="col-4 col-sm-2"
       />
     ));
@@ -98,7 +97,7 @@ export default class IssuesToFollow extends Component {
             <br />
             <div className="network-issues-list voter-guide-list card">
               { this.state.issues_to_follow && this.state.issues_to_follow.length ?
-                issue_list_for_display :
+                issueListForDisplay :
                 null
               }
             </div>

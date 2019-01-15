@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Button from '@material-ui/core/Button';
 import AddressBox from "../AddressBox";
 import { isWebApp } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
@@ -35,7 +36,7 @@ export default class BallotIntroVerifyAddress extends Component {
         </div>
         <div className="u-flex-auto" />
         <div className="intro-modal__button-wrap">
-          <button type="button" className="btn btn-success intro-modal__button" onClick={this.props.next}>See Your Ballot&nbsp;&gt;</button>
+          <Button variant="contained" color="secondary" onClick={this.props.next}>See Your Ballot</Button>
         </div>
       </div>
     );
