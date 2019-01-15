@@ -124,6 +124,7 @@ $backdrop-border-radius: 0 0 8px 8px;
 
   &__button-wrap {
     width: 100%;
+    margin-bottom: 2em;
   }
 
   &__span {
@@ -316,6 +317,7 @@ $backdrop-border-radius: 0 0 8px 8px;
     position: absolute;
     top: 10px;
     right: 10px;
+    color: $gray-light;
   }
 
   &__square-following {

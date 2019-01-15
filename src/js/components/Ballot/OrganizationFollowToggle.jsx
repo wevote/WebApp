@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import Tooltip from "@material-ui/core/Tooltip";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import ImageHandler from "../ImageHandler";
 import OrganizationActions from "../../actions/OrganizationActions";
@@ -80,9 +80,9 @@ export default class OrganizationFollowToggle extends Component {
         ) }
         <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.organization_name}</h4>
         { this.props.organization_description && this.props.organization_description.length ? (
-          <OverlayTrigger placement="top" overlay={<Tooltip id="organizationDescriptionTooltip">{this.props.organization_description}</Tooltip>}>
+          <Tooltip id="organizationDescriptionTooltip" title={this.props.organization_description}>
             <i className="fa fa-info-circle fa-lg d-none d-sm-block intro-modal__square-details" aria-hidden="true" />
-          </OverlayTrigger>
+          </Tooltip>
         ) :
           null
         }

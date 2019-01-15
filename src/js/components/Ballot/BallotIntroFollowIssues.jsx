@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
+import Button from '@material-ui/core/Button';
 import IssueActions from "../../actions/IssueActions";
 import IssueFollowToggleSquare from "../Issues/IssueFollowToggleSquare";
 import IssueStore from "../../stores/IssueStore";
 import { renderLog } from "../../utils/logging";
 
-const NEXT_BUTTON_TEXT = "Next >";
-const SKIP_BUTTON_TEXT = "Skip >";
+const NEXT_BUTTON_TEXT = 'Next';
+const SKIP_BUTTON_TEXT = 'Skip';
 
 export default class BallotIntroFollowIssues extends Component {
   static propTypes = {
@@ -18,11 +18,11 @@ export default class BallotIntroFollowIssues extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      all_issues: [],
-      followed_issues: [],
-      issues_voter_can_follow: [],
-      next_button_text: NEXT_BUTTON_TEXT,
-      number_of_required_issues: 3,
+      allIssues: [],
+      followedIssues: [],
+      issuesVoterCanFollow: [],
+      nextButtonText: NEXT_BUTTON_TEXT,
+      numRequiredIssues: 3,
     };
     this.isVoterFollowingThisIssueLocal = this.isVoterFollowingThisIssueLocal.bind(this);
     this.onIssueFollow = this.onIssueFollow.bind(this);
@@ -39,9 +39,9 @@ export default class BallotIntroFollowIssues extends Component {
 
   componentDidMount () {
     this.setState({
-      all_issues: IssueStore.getAllIssues(),
-      issues_voter_can_follow: IssueStore.getIssuesVoterCanFollow(),
-      followed_issues: IssueStore.getIssuesVoterIsFollowing(),
+      allIssues: IssueStore.getAllIssues(),
+      issuesVoterCanFollow: IssueStore.getIssuesVoterCanFollow(),
+      followedIssues: IssueStore.getIssuesVoterIsFollowing(),
     });
     this.updateNextState();
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange);
@@ -52,120 +52,119 @@ export default class BallotIntroFollowIssues extends Component {
   }
 
   onIssueStoreChange () {
-    // update followed_issues only for first time, subsequent updates will be made locally
-    if (this.state.followed_issues.length) {
+    // update followedIssues only for first time, subsequent updates will be made locally
+    if (this.state.followedIssues.length) {
       this.setState({
-        issues_voter_can_follow: IssueStore.getIssuesVoterCanFollow(),
+        issuesVoterCanFollow: IssueStore.getIssuesVoterCanFollow(),
       },
       this.updateNextState);
     } else {
       this.setState({
-        all_issues: IssueStore.getAllIssues(),
-        issues_voter_can_follow: IssueStore.getIssuesVoterCanFollow(),
-        followed_issues: IssueStore.getIssuesVoterIsFollowing(),
+        allIssues: IssueStore.getAllIssues(),
+        issuesVoterCanFollow: IssueStore.getIssuesVoterCanFollow(),
+        followedIssues: IssueStore.getIssuesVoterIsFollowing(),
       },
       this.updateNextState);
     }
   }
 
-  remainingIssues () {
-    const actual = this.state.number_of_required_issues - this.state.followed_issues.length;
-
-    return actual >= 0 ? actual : 0;
-  }
-
-  updateNextState () {
-    if (this.remainingIssues()) {
-      this.setState({ next_button_text: `Pick ${this.remainingIssues()} more!` });
-    } else {
-      this.setState({ next_button_text: NEXT_BUTTON_TEXT });
-    }
-  }
-
-  onIssueFollow (issue_we_vote_id) {
-    const index = this.state.followed_issues.indexOf(issue_we_vote_id);
+  onIssueFollow (issueWeVoteId) {
+    const { followedIssues } = this.state;
+    const index = followedIssues.indexOf(issueWeVoteId);
     // let description_text;
     if (index === -1) {
-      const new_followed_issues = this.state.followed_issues;
-      new_followed_issues.push(issue_we_vote_id);
       this.setState({
         // description_text: description_text,
-        followed_issues: new_followed_issues,
-        next_button_text: NEXT_BUTTON_TEXT,
+        followedIssues: [...followedIssues, issueWeVoteId],
+        nextButtonText: NEXT_BUTTON_TEXT,
       });
 
       this.updateNextState();
     }
   }
 
-  onIssueStopFollowing (issue_we_vote_id) {
-    const index = this.state.followed_issues.indexOf(issue_we_vote_id);
+  onIssueStopFollowing (issueWeVoteId) {
+    const { followedIssues } = this.state;
+    const index = followedIssues.indexOf(issueWeVoteId);
     // let description_text;
     if (index > -1) {
-      const new_followed_issues = this.state.followed_issues;
-      new_followed_issues.splice(index, 1);
-      if (new_followed_issues.length) {
+      const newFollowedIssues = this.state.followedIssues;
+      newFollowedIssues.splice(index, 1);
+      if (newFollowedIssues.length) {
         this.setState({
-          followed_issues: new_followed_issues,
+          followedIssues: newFollowedIssues,
         });
       } else {
         this.setState({
           // description_text: description_text,
-          followed_issues: new_followed_issues,
-          next_button_text: NEXT_BUTTON_TEXT,
+          followedIssues: newFollowedIssues,
+          nextButtonText: NEXT_BUTTON_TEXT,
         });
       }
 
-      this.updateNextState(issue_we_vote_id);
+      this.updateNextState(issueWeVoteId);
     }
   }
 
-  isVoterFollowingThisIssueLocal (issue_we_vote_id) {
-    let voter_is_following = false;
-    if (this.state.followed_issues) {
-      this.state.followed_issues.map((followed_issue) => {
-        if (followed_issue.issue_we_vote_id === issue_we_vote_id) {
-          voter_is_following = true;
+  onNext () {
+    const issuesFollowedLength = this.state.followedIssues.length;
+    if (
+      this.remainingIssues() < 1 &&
+      (issuesFollowedLength > 0 || this.state.nextButtonText === SKIP_BUTTON_TEXT)) {
+      this.props.next();
+    }
+  }
+
+  isVoterFollowingThisIssueLocal (issueWeVoteId) {
+    let voterIsFollowing = false;
+    if (this.state.followedIssues) {
+      this.state.followedIssues.map((followedIssue) => {
+        if (followedIssue.issueWeVoteId === issueWeVoteId) {
+          voterIsFollowing = true;
         }
-        return voter_is_following;   // Added steve 11/1/18, looked like a bug
+        return voterIsFollowing;   // Added steve 11/1/18, looked like a bug
       });
-      return voter_is_following;
+      return voterIsFollowing;
     } else {
       return false;
     }
   }
 
-  onNext () {
-    const issues_followed_length = this.state.followed_issues.length;
-    if (
-      this.remainingIssues() < 1 &&
-      (issues_followed_length > 0 || this.state.next_button_text === SKIP_BUTTON_TEXT)) {
-      this.props.next();
+  updateNextState () {
+    if (this.remainingIssues()) {
+      this.setState({ nextButtonText: `Pick ${this.remainingIssues()} more!` });
+    } else {
+      this.setState({ nextButtonText: NEXT_BUTTON_TEXT });
     }
+  }
+
+  remainingIssues () {
+    const actual = this.state.numRequiredIssues - this.state.followedIssues.length;
+
+    return actual >= 0 ? actual : 0;
   }
 
   render () {
     renderLog(__filename);
-    const issue_list = this.state.all_issues;
-    const remaining_issues = this.remainingIssues();
-
-    const edit_mode = true;
-    let issues_shown_count = 0;
-    const maximum_number_of_issues_to_show = 36; // Only show the first 6 * 6 = 36 issues so as to not overwhelm voter
-    const issue_list_for_display = issue_list.map((issue) => {
-      if (issues_shown_count < maximum_number_of_issues_to_show) {
-        issues_shown_count++;
+    const issueList = this.state.allIssues;
+    const remaining = this.remainingIssues();
+    let issuesShownCount = 0;
+    const maxNumberOfIssuesToShow = 36; // Only show the first 6 * 6 = 36 issues so as to not overwhelm voter
+    const issueListForDisplay = issueList.map((issue) => {
+      if (issuesShownCount < maxNumberOfIssuesToShow) {
+        issuesShownCount++;
         return (
           <IssueFollowToggleSquare
             key={issue.issue_we_vote_id}
-            is_following={this.isVoterFollowingThisIssueLocal(issue.issue_we_vote_id)}
-            issue_we_vote_id={issue.issue_we_vote_id}
-            issue_name={issue.issue_name}
-            issue_description={issue.issue_description}
-            issue_image_url={issue.issue_image_url}
-            on_issue_follow={this.onIssueFollow}
-            on_issue_stop_following={this.onIssueStopFollowing}
-            edit_mode={edit_mode}
+            isFollowing={this.isVoterFollowingThisIssueLocal(issue.issue_we_vote_id)}
+            issueWeVoteId={issue.issue_we_vote_id}
+            issueName={issue.issue_name}
+            issueDescription={issue.issue_description}
+            issueImageUrl={issue.issue_image_url}
+            issueIconLocalPath={issue.issue_icon_local_path}
+            onIssueFollow={this.onIssueFollow}
+            onIssueStopFollowing={this.onIssueStopFollowing}
+            editMode
             grid="col-4 col-sm-3"
           />
         );
@@ -180,15 +179,15 @@ export default class BallotIntroFollowIssues extends Component {
         What do you care about?
         </div>
         <div className="intro-modal__top-description">
-          { remaining_issues ?
-            `Pick ${remaining_issues} or more issues!` :
+          { remaining ?
+            `Pick ${remaining} or more issues!` :
             "Feel free to pick as many issues as you would like."
         }
         </div>
         <div className="intro-modal-vertical-scroll-contain">
           <div className="intro-modal-vertical-scroll card">
             <div className="row intro-modal__grid">
-              { issue_list.length ? issue_list_for_display : <h4 className="intro-modal__default-text">Loading issues...</h4> }
+              { issueList.length ? issueListForDisplay : <h4 className="intro-modal__default-text">Loading issues...</h4> }
             </div>
           </div>
         </div>
@@ -198,11 +197,11 @@ export default class BallotIntroFollowIssues extends Component {
         <div className="u-flex-auto" />
         <div className="intro-modal__button-wrap">
           <Button
-            type="submit"
-            bsPrefix={this.remainingIssues() ? "btn intro-modal__button disabled btn-secondary" : "btn btn-success intro-modal__button"}
+            variant="contained"
+            color="secondary"
             onClick={this.onNext}
           >
-            <span>{this.state.next_button_text}</span>
+            <span>{this.state.nextButtonText}</span>
           </Button>
         </div>
       </div>

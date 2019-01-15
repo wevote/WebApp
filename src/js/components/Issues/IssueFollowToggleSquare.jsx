@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import Tooltip from "@material-ui/core/Tooltip";
+import ReactSVG from "react-svg";
 import { cordovaDot } from "../../utils/cordovaUtils";
 import ImageHandler from "../ImageHandler";
 import IssueActions from "../../actions/IssueActions";
@@ -9,27 +10,23 @@ import { renderLog } from "../../utils/logging";
 
 export default class IssueFollowToggleSquare extends Component {
   static propTypes = {
-    edit_mode: PropTypes.bool,
+    editMode: PropTypes.bool,
     grid: PropTypes.string,
-    is_following: PropTypes.bool,
-    issue_we_vote_id: PropTypes.string.isRequired,
-    issue_name: PropTypes.string.isRequired,
-    issue_description: PropTypes.string,
-    issue_image_url: PropTypes.string,
-    on_issue_follow: PropTypes.func,
-    on_issue_stop_following: PropTypes.func,
-    read_only: PropTypes.bool,
+    isFollowing: PropTypes.bool,
+    issueWeVoteId: PropTypes.string.isRequired,
+    issueName: PropTypes.string.isRequired,
+    issueDescription: PropTypes.string,
+    // issueImageUrl: PropTypes.string,
+    issueIconLocalPath: PropTypes.string,
+    onIssueFollow: PropTypes.func,
+    onIssueStopFollowing: PropTypes.func,
+    readOnly: PropTypes.bool,
   };
 
   constructor (props) {
     super(props);
-
-    let is_following = false;
-    if (this.props.is_following) {
-      is_following = this.props.is_following;
-    }
     this.state = {
-      is_following,
+      isFollowing: props.isFollowing,
     };
     this.onIssueFollow = this.onIssueFollow.bind(this);
     this.onIssueStopFollowing = this.onIssueStopFollowing.bind(this);
@@ -37,99 +34,83 @@ export default class IssueFollowToggleSquare extends Component {
 
   onIssueFollow () {
     // This check is necessary as we enable follow when user clicks on Issue text
-    if (!this.state.is_following) {
-      this.setState({ is_following: true });
-      IssueActions.issueFollow(this.props.issue_we_vote_id);
-      if (this.props.on_issue_follow) {
-        this.props.on_issue_follow(this.props.issue_we_vote_id);
+    const { issueWeVoteId, onIssueFollow, issueName } = this.props;
+    if (!this.state.isFollowing) {
+      this.setState({ isFollowing: true });
+      IssueActions.issueFollow(issueWeVoteId);
+      if (onIssueFollow) {
+        onIssueFollow(issueWeVoteId);
       }
-      showToastSuccess(`Now following ${this.props.issue_name}!`);
+      showToastSuccess(`Now following ${issueName}!`);
     }
   }
 
   onIssueStopFollowing () {
-    this.setState({ is_following: false });
-    IssueActions.issueStopFollowing(this.props.issue_we_vote_id);
-    if (this.props.on_issue_stop_following) {
-      this.props.on_issue_stop_following(this.props.issue_we_vote_id);
+    const { issueWeVoteId, issueName } = this.props;
+    this.setState({ isFollowing: false });
+    IssueActions.issueStopFollowing(issueWeVoteId);
+    if (this.props.onIssueStopFollowing) {
+      this.props.onIssueStopFollowing(issueWeVoteId);
     }
-    showToastError(`You've stopped following ${this.props.issue_name}.`);
+    showToastError(`You've stopped following ${issueName}.`);
   }
 
   render () {
+    const {
+      grid, issueIconLocalPath, issueDescription, readOnly, editMode, issueName,
+    } = this.props;
+    const svgStyle = { fill: "#4B4B4B", padding: "1px", width: "100%", height: "100%" };
     renderLog(__filename);
     if (!this.state) {
       return <div />;
     }
-    let issue_image_url;
-    if (this.props.issue_image_url) {
-      // This is where we can turn off issue images
-      issue_image_url = this.props.issue_image_url;
-    } else {
-      // let issue_name_base = this.props.issue_name.toLowerCase().replace(/[^a-z0-9_\']/g, "-").replace(/-+/g, "-");
-      // issue_image_url = "/img/global/issues/" + issue_name_base + "-110x110.jpg";
-    }
-
-    if (this.props.read_only === true && !this.props.edit_mode) {
+    if (readOnly === true && !editMode) {
       return (
-        <div className={`${this.props.grid} intro-modal__square`}>
-          <ImageHandler
-            sizeClassName="intro-modal__square-image intro-modal__square-following"
-            imageUrl={issue_image_url}
-            alt={this.props.issue_name}
-            kind_of_image="ISSUE-PHOTO"
-          />
+        <div className={`${grid} intro-modal__square`}>
+          <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${issueIconLocalPath}.svg`)} svgStyle={svgStyle} />
           <ImageHandler
             className="intro-modal__square-check-mark"
             imageUrl={cordovaDot("/img/global/svg-icons/check-mark-v2-40x43.svg")}
             alt="Following"
           />
-          <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.issue_name}</h4>
-          { this.props.issue_description && this.props.issue_description.length ? (
-            <OverlayTrigger placement="top" overlay={<Tooltip id="organizationDescriptionTooltip">{this.props.issue_description}</Tooltip>}>
+          <h4 className="intro-modal__white-space intro-modal__square-name">{issueName}</h4>
+          { issueDescription && issueDescription.length ? (
+            <Tooltip id="organizationDescriptionTooltip" title={issueDescription}>
               <i className="fa fa-info-circle fa-lg d-none d-sm-block intro-modal__square-details" aria-hidden="true" />
-            </OverlayTrigger>
+            </Tooltip>
           ) : null
           }
         </div>
       );
     } else {
-      return this.state.is_following ? (
-        <div className={`${this.props.grid} intro-modal__square u-cursor--pointer`} onClick={this.onIssueStopFollowing}>
-          <ImageHandler
-            sizeClassName="intro-modal__square-image intro-modal__square-following image-issue-photo-placeholder"
-            imageUrl={issue_image_url}
-            alt={this.props.issue_name}
-            kind_of_image="ISSUE-PHOTO"
-          />
+      return this.state.isFollowing ? (
+        <div className={`${grid} intro-modal__square u-cursor--pointer`} onClick={this.onIssueStopFollowing}>
+          <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${issueIconLocalPath}.svg`)} svgStyle={svgStyle} />
           <ImageHandler
             className="intro-modal__square-check-mark"
             imageUrl={cordovaDot("/img/global/svg-icons/check-mark-v2-40x43.svg")}
             alt="Following"
           />
-          <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.issue_name}</h4>
-          { this.props.issue_description && this.props.issue_description.length ? (
-            <OverlayTrigger placement="top" overlay={<Tooltip id="organizationDescriptionTooltip">{this.props.issue_description}</Tooltip>}>
+          <h4 className="intro-modal__white-space intro-modal__square-name">{issueName}</h4>
+          { issueDescription && issueDescription.length ? (
+            <Tooltip id="organizationDescriptionTooltip" title={issueDescription}>
               <i className="fa fa-info-circle fa-lg d-none d-sm-block intro-modal__square-details" aria-hidden="true" />
-            </OverlayTrigger>
+            </Tooltip>
           ) : null
           }
         </div>
       ) : (
-        <div className={`${this.props.grid} intro-modal__square u-cursor--pointer`} onClick={this.onIssueFollow}>
-          <ImageHandler
-            sizeClassName="intro-modal__square-image image-issue-photo-placeholder"
-            imageUrl={issue_image_url}
-            alt={this.props.issue_name}
-            kind_of_image="ISSUE-PHOTO"
-          />
-          <h4 className="intro-modal__white-space intro-modal__square-name">{this.props.issue_name}</h4>
-          { this.props.issue_description && this.props.issue_description.length ? (
-            <OverlayTrigger placement="top" overlay={<Tooltip id="organizationDescriptionTooltip">{this.props.issue_description}</Tooltip>}>
+        <div className={`${grid} intro-modal__square u-cursor--pointer`} onClick={this.onIssueFollow}>
+          <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${issueIconLocalPath}.svg`)} svgStyle={svgStyle} />
+
+          <h4 className="intro-modal__white-space intro-modal__square-name">{issueName}</h4>
+          { issueDescription && issueDescription.length ? (
+            <Tooltip id="organizationDescriptionTooltip" title={issueDescription}>
               <i className="fa fa-info-circle fa-lg d-none d-sm-block intro-modal__square-details" aria-hidden="true" />
-            </OverlayTrigger>
+            </Tooltip>
           ) : null
-          }
+            }
+
         </div>
       );
     }
