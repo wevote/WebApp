@@ -7,31 +7,33 @@ import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
 import VoterStore from "../../stores/VoterStore";
 
-export default class AddFriendsByEmail extends Component {
-  static propTypes = {
-  };
+// this is currently not called by the interface
+export default class AddFriendsByEmailBulk extends Component {
+  static senderEmailAddressVerified () {
+    return true;
+  }
 
   constructor (props) {
     super(props);
     this.state = {
-      add_friends_message: "Please join me in preparing for the upcoming election.",
-      email_addresses: "",
-      email_addresses_error: false,
-      sender_email_address: "",
-      sender_email_address_error: false,
-      redirect_url_upon_save: "/friends/sign_in", // TODO DALE Remove this?
+      addFriendsMessage: "Please join me in preparing for the upcoming election.",
+      emailAddresses: "",
+      emailAddressesError: false,
+      senderEmailAddress: "",
+      senderEmailAddressError: false,
+      redirectURLUponSave: "/friends/sign_in", // TODO DALE Remove this?
       loading: false,
-      on_enter_email_addresses_step: true,
-      on_collect_email_step: false,
-      on_friend_invitations_sent_step: false,
+      onEnterEmailAddressStep: true,
+      onCollectEmailStep: false,
+      onFriendInvitationSentStep: false,
       voter: {},
     };
   }
 
   componentDidMount () {
     this.setState({ voter: VoterStore.getVoter() });
-    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange);
+    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange);
   }
 
   componentWillUnmount () {
@@ -39,81 +41,7 @@ export default class AddFriendsByEmail extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onFriendStoreChange () {
-    const add_friends_by_email_step = FriendStore.switchToAddFriendsByEmailStep();
-    const error_message_to_show_voter = FriendStore.getErrorMessageToShowVoter();
-    console.log("AddFriendsByEmail, _onFriendStoreChange, add_friends_by_email_step:", add_friends_by_email_step);
-    if (add_friends_by_email_step === "on_collect_email_step") {
-      // Switch to "on_collect_email_step"
-      this.setState({
-        loading: false,
-        on_enter_email_addresses_step: false,
-        on_collect_email_step: true,
-        on_friend_invitations_sent_step: false,
-        error_message_to_show_voter,
-      });
-      // FriendStore.clearErrorMessageToShowVoter()
-    } else {
-      this.setState({
-        loading: false,
-        error_message_to_show_voter: "",
-      });
-
-    }
-  }
-
-  _onVoterStoreChange () {
-    this.setState({ voter: VoterStore.getVoter(), loading: false });
-  }
-
-  _ballotLoaded () {
-    // TODO DALE Remove this?
-    historyPush(this.state.redirect_url_upon_save);
-  }
-
-  cacheEmailAddresses (e) {
-    this.setState({
-      email_addresses: e.target.value,
-      on_friend_invitations_sent_step: false,
-    });
-  }
-
-  cacheSenderEmailAddress (e) {
-    this.setState({
-      sender_email_address: e.target.value,
-    });
-  }
-
-  cacheAddFriendsByEmailMessage (e) {
-    this.setState({
-      add_friends_message: e.target.value,
-    });
-  }
-
-  friendInvitationByEmailSend (e) {
-    e.preventDefault();
-    FriendActions.friendInvitationByEmailSend("", "", "", this.state.email_addresses, this.state.add_friends_message, this.state.sender_email_address);
-    this.setState({
-      loading: true,
-      email_addresses: "",
-      email_addresses_error: false,
-      sender_email_address: "",
-      on_enter_email_addresses_step: true,
-      on_collect_email_step: false,
-      on_friend_invitations_sent_step: true,
-    });
-  }
-
-  hasValidEmail () {
-    const { voter } = this.state;
-    return voter !== undefined ? voter.has_valid_email : false;
-  }
-
-  senderEmailAddressVerified () {
-    return true;
-  }
-
-  onKeyDown (event) {
+  onKeyDown = (event) => {
     const enterAndSpaceKeyCodes = [13, 32];
     const scope = this;
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
@@ -121,59 +49,125 @@ export default class AddFriendsByEmail extends Component {
     }
   }
 
-  AddFriendsByEmailStepsManager (event) {
+  _onFriendStoreChange = () => {
+    const addFriendsByEmailStep = FriendStore.switchToAddFriendsByEmailStep();
+    console.log("AddFriendsByEmail, _onFriendStoreChange, addFriendsByEmailStep:", addFriendsByEmailStep);
+    if (addFriendsByEmailStep === "on_collect_email_step") {
+      // Switch to "onCollectEmailStep"
+      this.setState({
+        loading: false,
+        onEnterEmailAddressStep: false,
+        onCollectEmailStep: true,
+        onFriendInvitationSentStep: false,
+      });
+      // FriendStore.clearErrorMessageToShowVoter()
+    } else {
+      this.setState({
+        loading: false,
+      });
+    }
+  }
+
+  _onVoterStoreChange = () => {
+    this.setState({ voter: VoterStore.getVoter(), loading: false });
+  }
+
+  AddFriendsByEmailStepsManager = (event) => {
     // This function is called when the form is submitted
     console.log("AddFriendsByEmailStepsManager");
-    let error_message = "";
+    let errorMessage = "";
 
-    if (this.state.on_enter_email_addresses_step) {
+    if (this.state.onEnterEmailAddressStep) {
       // Validate friends' email addresses
-      let email_addresses_error = false;
-      if (!this.state.email_addresses) {
-        email_addresses_error = true;
-        error_message += "Please enter at least one email address.";
+      let emailAddressesError = false;
+      if (!this.state.emailAddresses) {
+        emailAddressesError = true;
+        errorMessage += "Please enter at least one email address.";
       }
 
-      if (email_addresses_error) {
-        console.log("AddFriendsByEmailStepsManager, email_addresses_error");
+      if (emailAddressesError) {
+        console.log("AddFriendsByEmailStepsManager, emailAddressesError");
         this.setState({
           loading: false,
-          email_addresses_error: true,
-          error_message,
+          emailAddressesError: true,
+          errorMessage,
         });
       } else if (!this.hasValidEmail()) {
         console.log("AddFriendsByEmailStepsManager, NOT hasValidEmail");
         this.setState({
           loading: false,
-          on_enter_email_addresses_step: false,
-          on_collect_email_step: true,
+          onEnterEmailAddressStep: false,
+          onCollectEmailStep: true,
         });
       } else {
         console.log("AddFriendsByEmailStepsManager, calling friendInvitationByEmailSend");
         this.friendInvitationByEmailSend(event);
       }
-    } else if (this.state.on_collect_email_step) {
+    } else if (this.state.onCollectEmailStep) {
       // Validate sender's email addresses
-      let sender_email_address_error = false;
-      if (!this.state.email_addresses) {
-        sender_email_address_error = true;
-        error_message += "Please enter a valid email address for yourself. ";
+      let senderEmailAddressError = false;
+      if (!this.state.emailAddresses) {
+        senderEmailAddressError = true;
+        errorMessage += "Please enter a valid email address for yourself. ";
       } else if (!this.senderEmailAddressVerified()) {
-        sender_email_address_error = true;
-        error_message += "This is not a valid email address. ";
+        senderEmailAddressError = true;
+        errorMessage += "This is not a valid email address. ";
       }
 
-      if (sender_email_address_error) {
+      if (senderEmailAddressError) {
         this.setState({
           loading: false,
-          sender_email_address_error: true,
-          error_message,
+          senderEmailAddressError: true,
+          errorMessage,
         });
       } else {
         console.log("AddFriendsByEmailStepsManager, calling friendInvitationByEmailSend");
         this.friendInvitationByEmailSend(event);
       }
     }
+  }
+
+  cacheEmailAddresses = (e) => {
+    this.setState({
+      emailAddresses: e.target.value,
+      onFriendInvitationSentStep: false,
+    });
+  }
+
+  cacheSenderEmailAddress = (e) => {
+    this.setState({
+      senderEmailAddress: e.target.value,
+    });
+  }
+
+  cacheAddFriendsByEmailMessage = (e) => {
+    this.setState({
+      addFriendsMessage: e.target.value,
+    });
+  }
+
+  friendInvitationByEmailSend (e) {
+    e.preventDefault();
+    FriendActions.friendInvitationByEmailSend("", "", "", this.state.emailAddresses, this.state.addFriendsMessage, this.state.senderEmailAddress);
+    this.setState({
+      loading: true,
+      emailAddresses: "",
+      emailAddressesError: false,
+      senderEmailAddress: "",
+      onEnterEmailAddressStep: true,
+      onCollectEmailStep: false,
+      onFriendInvitationSentStep: true,
+    });
+  }
+
+  _ballotLoaded () {
+    // TODO DALE Remove this?
+    historyPush(this.state.redirectURLUponSave);
+  }
+
+  hasValidEmail () {
+    const { voter } = this.state;
+    return voter !== undefined ? voter.has_valid_email : false;
   }
 
   render () {
@@ -188,29 +182,29 @@ export default class AddFriendsByEmail extends Component {
 
     return (
       <div>
-        {this.state.on_friend_invitations_sent_step ? (
+        {this.state.onFriendInvitationSentStep ? (
           <div className="alert alert-success">
           Invitations sent. Is there anyone else you&apos;d like to invite?
           </div>
         ) : null
         }
-        {this.state.email_addresses_error || this.state.sender_email_address_error ? (
+        {this.state.emailAddressesError || this.state.senderEmailAddressError ? (
           <div className="alert alert-danger">
-            {this.state.error_message}
+            {this.state.errorMessage}
           </div>
         ) : null
         }
-        {this.state.on_enter_email_addresses_step ? (
+        {this.state.onEnterEmailAddressStep ? (
           <div>
-            <form onSubmit={this.AddFriendsByEmailStepsManager.bind(this)} className="u-stack--md">
+            <form onSubmit={this.AddFriendsByEmailStepsManager} className="u-stack--md">
               <input
                 type="text"
                 name="email_address"
                 className="form-control"
-                onChange={this.cacheEmailAddresses.bind(this)}
+                onChange={this.cacheEmailAddresses}
                 placeholder="Enter email addresses here, separated by commas"
               />
-              {this.state.email_addresses ? (
+              {this.state.emailAddresses ? (
                 <span>
                   <label htmlFor="last-name">
                     Include a Message
@@ -219,9 +213,9 @@ export default class AddFriendsByEmail extends Component {
                   <br />
                   <input
                     type="text"
-                    name="add_friends_message"
+                    name="addFriendsMessage"
                     className="form-control"
-                    onChange={this.cacheAddFriendsByEmailMessage.bind(this)}
+                    onChange={this.cacheAddFriendsByEmailMessage}
                     placeholder="Please join me in preparing for the upcoming election."
                   />
                 </span>
@@ -232,10 +226,10 @@ export default class AddFriendsByEmail extends Component {
               <span style={floatRight}>
                 <Button
                   tabIndex="0"
-                  onKeyDown={this.onKeyDown.bind(this)}
-                  onClick={this.AddFriendsByEmailStepsManager.bind(this)}
+                  onKeyDown={this.onKeyDown}
+                  onClick={this.AddFriendsByEmailStepsManager}
                   variant="primary"
-                  disabled={!this.state.email_addresses}
+                  disabled={!this.state.emailAddresses}
                 >
                   { this.hasValidEmail() ?
                     <span>Send</span> :
@@ -252,14 +246,14 @@ export default class AddFriendsByEmail extends Component {
         ) : null
         }
 
-        {this.state.on_collect_email_step ? (
+        {this.state.onCollectEmailStep ? (
           <div>
-            <form onSubmit={this.AddFriendsByEmailStepsManager.bind(this)} className="u-stack--md">
+            <form onSubmit={this.AddFriendsByEmailStepsManager} className="u-stack--md">
               <input
                 type="text"
-                name="sender_email_address"
+                name="senderEmailAddress"
                 className="form-control"
-                onChange={this.cacheSenderEmailAddress.bind(this)}
+                onChange={this.cacheSenderEmailAddress}
                 placeholder="Enter your email address"
               />
             </form>
@@ -268,10 +262,10 @@ export default class AddFriendsByEmail extends Component {
               <span style={floatRight}>
                 <Button
                   tabIndex="0"
-                  onKeyDown={this.onKeyDown.bind(this)}
-                  onClick={this.AddFriendsByEmailStepsManager.bind(this)}
+                  onKeyDown={this.onKeyDown}
+                  onClick={this.AddFriendsByEmailStepsManager}
                   variant="primary"
-                  disabled={!this.state.sender_email_address}
+                  disabled={!this.state.senderEmailAddress}
                 >
                   <span>Send</span>
                 </Button>
