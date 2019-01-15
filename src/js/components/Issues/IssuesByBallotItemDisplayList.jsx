@@ -239,7 +239,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
               {oneIssue.issue_icon_local_path ? (
                 <span className="issue-icon-list__issue-icon">
                   <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-                            svgStyle={{ fill: "#4B4B4B", padding: "1px" }}
+                            svgStyle={{ fill: "#4B4B4B", padding: "1px 1px 1px 0px" }}
                   />
                 </span>
               ) : null
@@ -270,7 +270,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
               {oneIssue.issue_icon_local_path ? (
                 <span className="issue-icon-list__issue-icon">
                   <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-                            svgStyle={{ fill: "#4B4B4B", padding: "1px" }}
+                            svgStyle={{ fill: "#4B4B4B", padding: "1px 1px 1px 0px" }}
                   />
                 </span>
               ) : null
