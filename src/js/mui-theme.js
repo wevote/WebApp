@@ -12,6 +12,11 @@ const overrides = {
       padding: '5px',
     },
   },
+  MuiTooltip: {
+    tooltip: {
+      fontSize: '14px',
+    },
+  },
 };
 
 const theme = createMuiTheme({

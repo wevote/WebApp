@@ -73,14 +73,15 @@ export default class NetworkIssuesFollowed extends Component {
         return (
           <IssueFollowToggleSquare
             key={issue.issue_we_vote_id}
-            issue_we_vote_id={issue.issue_we_vote_id}
-            issue_name={issue.issue_name}
-            issue_description={issue.issue_description}
-            issue_image_url={issue.issue_image_url}
-            edit_mode={this.state.edit_mode}
-            is_following={isFollowing}
+            issueWeVoteId={issue.issue_we_vote_id}
+            issueName={issue.issue_name}
+            issueDescription={issue.issue_description}
+            issueImageUrl={issue.issue_image_url}
+            issueIconLocalPath={issue.issue_icon_local_path}
+            editMode={this.state.edit_mode}
+            isFollowing={isFollowing}
             grid="col-sm-6"
-            read_only
+            readOnly
           />
         );
       }

@@ -1,6 +1,7 @@
 /* global google */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Button from '@material-ui/core/Button';
 import BallotStore from "../stores/BallotStore";
 import { historyPush, isCordova, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../utils/cordovaUtils";
 import LoadingWheel from "./LoadingWheel";
@@ -184,12 +185,13 @@ export default class AddressBox extends Component {
             autoFocus={!isCordova() && !this.props.disableAutoFocus}
           />
           <div className="col-sm-3 text-right pr-0 mt-sm-0 mt-3">
-            <button
+            <Button
               onClick={this.voterAddressSave}
-              className="btn btn-primary"
+              color="secondary"
+              variant="outlined"
             >
               Save
-            </button>
+            </Button>
             <br />
             { this.props.cancelEditAddress ? (
               <span className="u-f5">
