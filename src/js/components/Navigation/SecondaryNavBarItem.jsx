@@ -6,7 +6,6 @@ import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import { renderLog } from "../../utils/logging";
 
 export default class SecondaryNavBarItem extends Component {
-
   static propTypes = {
     show: PropTypes.func,
     completed: PropTypes.number,
@@ -29,11 +28,11 @@ export default class SecondaryNavBarItem extends Component {
 
     let icon;
     if (this.props.iconFacebook) {
-      icon = <i className="fa fa-facebook-square" />;
+      icon = <i className="fa fa-facebook-square" style={{ color: "#0d5470" }} />;
     } else if (this.props.iconTwitter) {
       icon = <i className="fa fa-twitter" />;
     } else {
-      icon = <img className={`nav-secondary-nav__image${this.props.completed ? "--fade" : ""}`} src={this.props.source} />;
+      icon = <img className={`nav-secondary-nav__image${this.props.completed ? "--fade" : ""}`} src={this.props.source} alt="twtter" />;
     }
 
     return this.props.isExternal ? (
@@ -71,6 +70,7 @@ export default class SecondaryNavBarItem extends Component {
             <img
               className="nav-secondary-nav__image--checked"
               src={cordovaDot("/img/global/svg-icons/check-mark-v2-21x21.svg")}
+              alt="check"
             />
           ) : null
           }
