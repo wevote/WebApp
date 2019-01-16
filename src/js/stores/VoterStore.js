@@ -1,6 +1,5 @@
 import { ReduceStore } from "flux/utils";
 import BallotActions from "../actions/BallotActions";
-import BookmarkActions from "../actions/BookmarkActions";
 import cookies from "../utils/cookies";
 import Dispatcher from "../dispatcher/Dispatcher";
 import FacebookActions from "../actions/FacebookActions";
@@ -431,7 +430,6 @@ class VoterStore extends ReduceStore {
         //  refresh a lot of data
         VoterActions.voterRetrieve();
         VoterActions.voterEmailAddressRetrieve();
-        BookmarkActions.voterAllBookmarksStatusRetrieve();
         FriendActions.currentFriends();
         FriendActions.friendInvitationsSentByMe();
         FriendActions.friendInvitationsSentToMe();

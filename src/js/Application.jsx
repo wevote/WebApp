@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { ToastContainer } from "react-toastify";
 import Headroom from "headroom.js";
 import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from "./utils/applicationUtils";
-import BookmarkActions from "./actions/BookmarkActions";
 import cookies from "./utils/cookies";
 import {
   getAppBaseClass, getToastClass, historyPush, isCordova, isWebApp,
@@ -146,7 +145,6 @@ export default class Application extends Component {
     if (voterDeviceId && voterDeviceId !== "") {
       if (this.state.voter_initial_retrieve_needed) {
         VoterActions.voterEmailAddressRetrieve();
-        BookmarkActions.voterAllBookmarksStatusRetrieve();
         FriendActions.friendInvitationsSentToMe();
         this.incomingVariableManagement();
         this.setState({

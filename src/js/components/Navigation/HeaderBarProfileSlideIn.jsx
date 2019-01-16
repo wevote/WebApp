@@ -14,7 +14,6 @@ import { renderLog } from "../../utils/logging";
 export default class HeaderBarProfileSlideIn extends Component {
   static propTypes = {
     profilePopUpOpen: PropTypes.bool,
-    bookmarks: PropTypes.array,
     weVoteBrandingOff: PropTypes.bool,
     location: PropTypes.object,
     voter: PropTypes.object,
@@ -62,9 +61,9 @@ export default class HeaderBarProfileSlideIn extends Component {
   }
 
   render () {
+    const { voter } = this.props;
     renderLog(__filename);
     const isSignedIn = this.props.voter.is_signed_in;
-    const voter = this.props.voter;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
 
     const linkedOrganizationWeVoteId = this.props.voter.linked_organization_we_vote_id;
@@ -133,17 +132,6 @@ export default class HeaderBarProfileSlideIn extends Component {
                 linkText={isSignedIn ? "Sign Out" : "Sign In"}
               />
             )}
-
-            { this.props.bookmarks && this.props.bookmarks.length ? (
-              <HamburgerMenuRow
-                onClickAction={this.hideProfilePopUp}
-                to="/bookmarks"
-                icon="fa fa-arrow-circle-right"
-                iconStyle={{ fontSize: 28, color: "green" }}
-                linkText="Your Bookmarked Items"
-              />
-            ) : null
-            }
 
             <HamburgerMenuRow
               onClickAction={this.signOutAndHideProfilePopUp}

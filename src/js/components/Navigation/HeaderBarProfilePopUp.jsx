@@ -7,7 +7,6 @@ import { renderLog } from "../../utils/logging";
 export default class HeaderBarProfilePopUp extends Component {
   static propTypes = {
     profilePopUpOpen: PropTypes.bool,
-    bookmarks: PropTypes.array,
     weVoteBrandingOff: PropTypes.bool,
     location: PropTypes.object,
     voter: PropTypes.object,
@@ -28,23 +27,22 @@ export default class HeaderBarProfilePopUp extends Component {
 
   render () {
     renderLog(__filename);
-    const props = this.props;
-    const isSignedIn = props.voter.is_signed_in;
+    const { voter, profilePopUpOpen, weVoteBrandingOff } = this.props;
+    const isSignedIn = voter.is_signed_in;
 
     /* eslint-disable no-extra-parens */
-    const profilePopUpOpen = (function opener () {
-      if (props.profilePopUpOpen) {
+    const popUpOpen = (function opener () {
+      if (profilePopUpOpen) {
         return (isWebApp() ? "profile-menu--open" : "profile-foot-menu--open");
       }
       return "";
     }());
 
     return (
-      <div className={profilePopUpOpen}>
+      <div className={popUpOpen}>
         <div className="page-overlay" onClick={this.hideProfilePopUp} />
         <div className={isWebApp() ? "profile-menu" : "profile-foot-menu"}>
           <span className="we-vote-promise">Our Promise: We&apos;ll never sell your email.</span>
-          <h4 className="text-left" />
           <ul className="nav flex-column">
             {/* Desktop only */}
             <li className="d-none d-sm-block">
@@ -79,7 +77,7 @@ export default class HeaderBarProfilePopUp extends Component {
               </Link>
             </li>
             {/* Desktop or Mobile */}
-            {this.props.voter && isSignedIn ?
+            {voter && isSignedIn ?
               null : (
                 <li>
                   <Link onClick={this.hideProfilePopUp} to="/settings/account">
@@ -89,17 +87,7 @@ export default class HeaderBarProfilePopUp extends Component {
                   </Link>
                 </li>
               )}
-            {this.props.bookmarks && this.props.bookmarks.length ? (
-              <li>
-                <Link onClick={this.hideProfilePopUp} to="/bookmarks">
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Your Bookmarked Items</span>
-                  </div>
-                </Link>
-              </li>
-            ) : null
-            }
-            {this.props.weVoteBrandingOff || (isWebApp() && (
+            {weVoteBrandingOff || (isWebApp() && (
             <li className="d-block d-sm-none">
               <Link onClick={this.hideProfilePopUp} to="/more/howtouse">
                 <div>
@@ -108,7 +96,7 @@ export default class HeaderBarProfilePopUp extends Component {
               </Link>
             </li>
             ))}
-            {this.props.weVoteBrandingOff || isCordova() ? null : (
+            {weVoteBrandingOff || isCordova() ? null : (
               <li className="d-block d-sm-none">
                 <Link onClick={this.hideProfilePopUp} to="/more/about">
                   <div>
@@ -117,7 +105,7 @@ export default class HeaderBarProfilePopUp extends Component {
                 </Link>
               </li>
             )}
-            {this.props.weVoteBrandingOff || isCordova() ? null : (
+            {weVoteBrandingOff || isCordova() ? null : (
               <li className="d-block d-sm-none">
                 <Link onClick={this.hideProfilePopUp} to="/more/donate">
                   <div>
@@ -127,7 +115,7 @@ export default class HeaderBarProfilePopUp extends Component {
               </li>
             )}
             {/* Desktop or Mobile */}
-            {this.props.voter && isSignedIn ? (
+            {voter && isSignedIn ? (
               <li>
                 <Link onClick={this.signOutAndHideProfilePopUp} to="/settings/account">
                   <div>

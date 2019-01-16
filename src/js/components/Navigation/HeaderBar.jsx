@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import BallotStore from "../../stores/BallotStore";
-import BookmarkStore from "../../stores/BookmarkStore";
 import { cordovaDot, historyPush, isCordova, isWebApp } from "../../utils/cordovaUtils";
 import cookies from "../../utils/cookies";
 import FriendStore from "../../stores/FriendStore";
@@ -87,7 +86,6 @@ export default class HeaderBar extends Component {
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
     this.state = {
       aboutMenuOpen: false,
-      bookmarks: [],
       componentDidMountFinished: false,
       profilePopUpOpen: false,
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
@@ -95,8 +93,7 @@ export default class HeaderBar extends Component {
   }
 
   componentDidMount () {
-    // this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
-    this.bookmarkStoreListener = BookmarkStore.addListener(this.onBallotStoreChange.bind(this));
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
     // this.onBallotStoreChange();
 
@@ -156,13 +153,12 @@ export default class HeaderBar extends Component {
   }
 
   componentWillUnmount () {
-    // this.ballotStoreListener.remove();
-    this.bookmarkStoreListener.remove();
+    this.ballotStoreListener.remove();
     this.friendStoreListener.remove();
   }
 
   onBallotStoreChange () {
-    this.setState({ bookmarks: BallotStore.bookmarks });
+    // this.setState({ bookmarks: BallotStore.bookmarks });
   }
 
   _onFriendStoreChange () {
@@ -283,7 +279,6 @@ export default class HeaderBar extends Component {
             {...this.props}
             onClick={this.toggleProfilePopUp}
             profilePopUpOpen={this.state.profilePopUpOpen}
-            bookmarks={this.state.bookmarks}
             weVoteBrandingOff={this.state.we_vote_branding_off}
             toggleProfilePopUp={this.toggleProfilePopUp}
             hideProfilePopUp={this.hideProfilePopUp}

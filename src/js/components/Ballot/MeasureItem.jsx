@@ -8,7 +8,6 @@ import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
 import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdownList";
 import { renderLog } from "../../utils/logging";
 import ReadMore from "../Widgets/ReadMore";
-import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import SupportStore from "../../stores/SupportStore";
 import { capitalizeString } from "../../utils/textFormat";
 
@@ -95,7 +94,6 @@ export default class MeasureItem extends Component {
               ballot_item_display_name
           }
           </h2>
-          <BookmarkToggle we_vote_id={we_vote_id} type="MEASURE" />
           <div className="card-main__measure-election u-bold u-gray-darker">
             <p>
               { election_display_name || "Appearing on the ballot in " }

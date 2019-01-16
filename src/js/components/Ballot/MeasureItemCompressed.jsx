@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import { historyPush } from "../../utils/cordovaUtils";
 import IssuesByBallotItemDisplayList from "../Issues/IssuesByBallotItemDisplayList";
 import ItemActionBar from "../Widgets/ItemActionBar";
@@ -287,7 +286,6 @@ export default class MeasureItemCompressed extends Component {
               ballot_item_display_name
           }
           </h2>
-          <BookmarkToggle we_vote_id={measureWeVoteId} type="MEASURE" />
           <div>
             <div className="u-stack--md u-cursor--pointer" onClick={() => this.goToMeasureLink(measureWeVoteId)}>
           Click to see more details about this measure.
