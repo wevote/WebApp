@@ -122,7 +122,7 @@ export default class Header extends Component {
                 <HeaderBackToBar location={location} params={params} pathname={pathname} voter={voter} /> :
                 <HeaderBar location={location} pathname={pathname} voter={voter} />
               }
-              { stringContains("/ballot", pathname) || pathname === "/bookmarks" ?
+              { stringContains("/ballot", pathname) ?
                 <HeaderSecondaryNavBar pathname={pathname} voter={voter} /> :
                 null }
             </div>

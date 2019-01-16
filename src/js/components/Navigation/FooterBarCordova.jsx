@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
 import BallotStore from "../../stores/BallotStore";
-import BookmarkStore from "../../stores/BookmarkStore";
 import { hasIPhoneNotch, isCordova, isWebApp } from "../../utils/cordovaUtils";
 import cookies from "../../utils/cookies";
 import FriendStore from "../../stores/FriendStore";
@@ -28,14 +27,12 @@ export default class FooterBarCordova extends Component {
     this.state = {
       aboutMenuOpen: false,
       profilePopUpOpen: false,
-      bookmarks: [],
       friendInvitationsSentToMe: [],
     };
   }
 
   componentDidMount () {
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
-    this.bookmarkStoreListener = BookmarkStore.addListener(this.onBallotStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
     this.onBallotStoreChange();
 
@@ -50,12 +47,11 @@ export default class FooterBarCordova extends Component {
 
   componentWillUnmount () {
     this.ballotStoreListener.remove();
-    this.bookmarkStoreListener.remove();
     this.friendStoreListener.remove();
   }
 
   onBallotStoreChange () {
-    this.setState({ bookmarks: BallotStore.bookmarks });
+    // this.setState({ bookmarks: BallotStore.bookmarks });
   }
 
   _onFriendStoreChange () {
@@ -65,11 +61,13 @@ export default class FooterBarCordova extends Component {
   }
 
   toggleAboutMenu () {
-    this.setState({ aboutMenuOpen: !this.state.aboutMenuOpen });
+    const { aboutMenuOpen } = this.state;
+    this.setState({ aboutMenuOpen: !aboutMenuOpen });
   }
 
   toggleProfilePopUp () {
-    this.setState({ profilePopUpOpen: !this.state.profilePopUpOpen });
+    const { profilePopUpOpen } = this.state;
+    this.setState({ profilePopUpOpen: !profilePopUpOpen });
   }
 
   hideProfilePopUp () {

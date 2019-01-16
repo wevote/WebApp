@@ -8,7 +8,6 @@ import Activity from "./routes/Activity";
 import Attributions from "./routes/More/Attributions";
 import Ballot from "./routes/Ballot/Ballot";
 import BallotIndex from "./routes/Ballot/BallotIndex";
-import Bookmarks from "./components/Bookmarks/Bookmarks";
 import Candidate from "./routes/Ballot/Candidate";
 import ClaimYourPage from "./routes/Settings/ClaimYourPage";
 import Connect from "./routes/Connect";
@@ -120,7 +119,6 @@ const routes = () => (
     <Route path="/ballot/election/:google_civic_election_id" component={Ballot} />
 
     <Route path="/polling-place-locator" component={PollingPlaceLocatorModal} />
-    <Route path="bookmarks" component={Bookmarks} />
 
     <Route path="/intro" component={Intro} />
     <Route path="/intro/contests" component={IntroContests} />

@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
-import BallotStore from "../../stores/BallotStore";
-import BookmarkStore from "../../stores/BookmarkStore";
 import CandidateStore from "../../stores/CandidateStore";
 import cookies from "../../utils/cookies";
 import { cordovaDot, hasIPhoneNotch, historyPush, isWebApp } from "../../utils/cordovaUtils";
@@ -26,9 +24,8 @@ export default class HeaderBackToBar extends Component {
     super(props);
     this.state = {
       profilePopUpOpen: false,
-      bookmarks: [],
       candidateWeVoteId: "",
-      office_we_vote_id: "",
+      // office_we_vote_id: "",
       organization: {},
       organizationWeVoteId: "",
       voter: {},
@@ -36,15 +33,18 @@ export default class HeaderBackToBar extends Component {
     this.toggleAccountMenu = this.toggleAccountMenu.bind(this);
     this.hideAccountMenu = this.hideAccountMenu.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
+    this.toggleProfilePopUp = this.toggleProfilePopUp.bind(this);
+    this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
+    this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
+    this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
   }
 
   componentDidMount () {
     // console.log("HeaderBackToBar componentDidMount, this.props: ", this.props);
-    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
-    this.bookmarkStoreListener = BookmarkStore.addListener(this.onBallotStoreChange.bind(this));
+    // this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    this.onBallotStoreChange();
+    // this.onBallotStoreChange();
 
     let candidateWeVoteId;
     let officeWeVoteId;
@@ -127,23 +127,25 @@ export default class HeaderBackToBar extends Component {
   }
 
   componentWillUnmount () {
-    this.ballotStoreListener.remove();
-    this.bookmarkStoreListener.remove();
+    // this.ballotStoreListener.remove();
     this.candidateStoreListener.remove();
     this.organizationStoreListener.remove();
   }
 
+  /*
   onBallotStoreChange () {
     this.setState({ bookmarks: BallotStore.bookmarks });
   }
+  */
 
   onCandidateStoreChange () {
+    const { candidateWeVoteId } = this.state;
     // console.log("Candidate onCandidateStoreChange");
 
     let officeName;
     let officeWeVoteId;
-    if (this.state.candidateWeVoteId && this.state.candidateWeVoteId !== "") {
-      const candidate = CandidateStore.getCandidate(this.state.candidateWeVoteId);
+    if (candidateWeVoteId && candidateWeVoteId !== "") {
+      const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
       // console.log("HeaderBackToBar -- onCandidateStoreChange, candidateWeVoteId:", this.state.candidateWeVoteId, ", candidate:", candidate);
       officeName = candidate.contest_office_name;
@@ -151,20 +153,34 @@ export default class HeaderBackToBar extends Component {
     }
 
     this.setState({
-      candidate: CandidateStore.getCandidate(this.state.candidateWeVoteId),
+      candidate: CandidateStore.getCandidate(candidateWeVoteId),
       officeName,
       officeWeVoteId,
     });
   }
 
   onOrganizationStoreChange () {
+    const { organizationWeVoteId } = this.state;
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organizationWeVoteId),
+      organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
     });
   }
 
+  getOfficeLink () {
+    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
+      return `/office/${this.state.officeWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
+    } else {
+      return `/office/${this.state.officeWeVoteId}/b/btdb/`;
+    }
+  }
+
+  getVoterGuideLink () {
+    return `/voterguide/${this.state.organizationWeVoteId}`;
+  }
+
   toggleAccountMenu () {
-    this.setState({ profilePopUpOpen: !this.state.profilePopUpOpen });
+    const { profilePopUpOpen } = this.state;
+    this.setState({ profilePopUpOpen: !profilePopUpOpen });
   }
 
   hideAccountMenu () {
@@ -188,20 +204,9 @@ export default class HeaderBackToBar extends Component {
     this.setState({ profilePopUpOpen: false });
   }
 
-  getVoterGuideLink () {
-    return `/voterguide/${this.state.organizationWeVoteId}`;
-  }
-
-  getOfficeLink () {
-    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
-      return `/office/${this.state.officeWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
-    } else {
-      return `/office/${this.state.officeWeVoteId}/b/btdb/`;
-    }
-  }
-
   toggleProfilePopUp () {
-    this.setState({ profilePopUpOpen: !this.state.profilePopUpOpen });
+    const { profilePopUpOpen } = this.state;
+    this.setState({ profilePopUpOpen: !profilePopUpOpen });
   }
 
   hideProfilePopUp () {
@@ -282,12 +287,11 @@ export default class HeaderBackToBar extends Component {
           {...this.props}
           onClick={this.toggleProfilePopUp}
           profilePopUpOpen={this.state.profilePopUpOpen}
-          bookmarks={this.state.bookmarks}
           weVoteBrandingOff={this.state.we_vote_branding_off}
-          toggleProfilePopUp={this.toggleProfilePopUp.bind(this)}
-          hideProfilePopUp={this.hideProfilePopUp.bind(this)}
-          transitionToYourVoterGuide={this.transitionToYourVoterGuide.bind(this)}
-          signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp.bind(this)}
+          toggleProfilePopUp={this.toggleProfilePopUp}
+          hideProfilePopUp={this.hideProfilePopUp}
+          transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+          signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
         />
         )}
 

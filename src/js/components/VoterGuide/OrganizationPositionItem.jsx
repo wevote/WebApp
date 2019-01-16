@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
-import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import ImageHandler from "../ImageHandler";
 import ItemActionBar from "../Widgets/ItemActionBar";
 import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
@@ -242,7 +241,6 @@ export default class OrganizationPositionItem extends Component {
                   <FriendsOnlyIndicator isFriendsOnly={!is_public_position} /> :
                   <FriendsOnlyIndicator isFriendsOnly={!is_public_position} />
               }
-                <BookmarkToggle we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
               </div>
             ) : null
             }
