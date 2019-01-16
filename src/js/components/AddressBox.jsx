@@ -179,6 +179,7 @@ export default class AddressBox extends Component {
             name="address"
             className="form-control col-sm-9"
             ref={(el) => { this.autoComplete = el; }}
+            aria-label="Address"
             placeholder="Enter address where you are registered to vote"
             autoFocus={!isCordova() && !this.props.disableAutoFocus}
           />
