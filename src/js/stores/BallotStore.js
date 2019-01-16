@@ -2,7 +2,6 @@ import { ReduceStore } from "flux/utils";
 import assign from "object-assign";
 import Dispatcher from "../dispatcher/Dispatcher";
 import BallotActions from "../actions/BallotActions";
-import BookmarkStore from "./BookmarkStore";
 import SupportStore from "./SupportStore";
 import VoterStore from "./VoterStore";
 
@@ -91,30 +90,6 @@ class BallotStore extends ReduceStore {
 
   getBallotCaveat () {
     return this.getState().ballotCaveat || "";
-  }
-
-  get bookmarks () {
-    const civicId = VoterStore.election_id();
-    if (!this.getState().ballots || !this.getState().ballots[civicId]) { return undefined; }
-    const ballot = this.getState().ballots[civicId].ballot_item_list;
-
-    const bookmarks = [];
-    ballot.forEach((ballot_item) => {
-      if (BookmarkStore.get(ballot_item.we_vote_id)) { // item is bookmarked
-        bookmarks.push(ballot_item);
-      }
-      if (ballot_item.candidate_list) {
-        ballot_item.candidate_list.forEach((candidate) => {
-          if (candidate) {
-            if (BookmarkStore.get(candidate.we_vote_id)) {
-              bookmarks.push(candidate);
-            }
-          }
-        });
-      }
-    });
-
-    return bookmarks;
   }
 
   get ballot_remaining_choices () {

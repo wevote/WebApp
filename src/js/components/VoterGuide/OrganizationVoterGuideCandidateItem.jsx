@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
-import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateStore from "../../stores/CandidateStore";
 import { historyPush } from "../../utils/cordovaUtils";
 import ImageHandler from "../ImageHandler";
@@ -141,7 +140,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
       // twitter_handle,
     } = this.props;
 
-    const candidateWeVoteId = this.props.we_vote_id;
+    const candidateWeVoteId = we_vote_id;
 
     let candidate_photo_url;
     if (this.props.showLargeImage) {
@@ -221,7 +220,6 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
                 ballot_item_display_name
             }
             </h2>
-            <BookmarkToggle we_vote_id={we_vote_id} type="CANDIDATE" />
             <p
               className={this.props.link_to_ballot_item_page ?
                 "u-gray-darker u-cursor--pointer" :

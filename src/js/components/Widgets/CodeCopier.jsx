@@ -39,6 +39,24 @@ export default class CodeCopier extends Component {
     this.timer = null;
   }
 
+  onOrganizationStoreChange () {
+    const result = OrganizationStore.getOrganizationSearchResultsTwitterHandle();
+
+    let status = "";
+    if (result.length) {
+      status += "Voter guide found!";
+    } else {
+      status += "Voter guide not found.";
+    }
+
+    this.setState({
+      is_loading: false,
+      is_twitter_handle_valid: result.length,
+      status,
+      twitter_handle: result,
+    });
+  }
+
   copyCode () {
     if (this.props.sourceUrl || (!this.props.sourceUrl && this.state.is_twitter_handle_valid)) {
       if (this.state.view_code) {
@@ -68,8 +86,9 @@ export default class CodeCopier extends Component {
   }
 
   toggleCode () {
+    const { view_code } = this.state;
     this.setState({
-      view_code: !this.state.view_code,
+      view_code: !view_code,
     });
   }
 
@@ -87,39 +106,17 @@ export default class CodeCopier extends Component {
     }
   }
 
-  validateTwitterHandleAction (twitter_handle) {
-    this.timer = setTimeout(() => OrganizationActions.organizationSearch("", twitter_handle, true), 1200);
-  }
-
-  onOrganizationStoreChange () {
-    const result = OrganizationStore.getOrganizationSearchResultsTwitterHandle();
-
-    let status = "";
-    if (result.length) {
-      status += "Voter guide found!";
-    } else {
-      status += "Voter guide not found.";
-    }
-
-    this.setState({
-      is_loading: false,
-      is_twitter_handle_valid: result.length,
-      status,
-      twitter_handle: result,
-    });
+  validateTwitterHandleAction (twitterHandle) {
+    this.timer = setTimeout(() => OrganizationActions.organizationSearch("", twitterHandle, true), 1200);
   }
 
   render () {
+    let { sourceUrl } = this.props;
     renderLog(__filename);
-    let source_url = "";
-    if (this.props.sourceUrl && this.props.sourceUrl.length) {
-      source_url = this.props.sourceUrl;
-    } else {
-      source_url = `https://wevote.us/${this.state.twitter_handle}`;
-    }
+    if (!sourceUrl) sourceUrl = `https://wevote.us/${this.state.twitter_handle}`;
 
-    const source_code =
-      `<iframe src="${source_url}?we_vote_branding_off=1" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>\n<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.3/iframeResizer.min.js"></script>\n<script type="text/javascript">iFrameResize({ checkOrigin:false, heightCalculationMethod: 'max' });</script>`;
+    const sourceCode =
+      `<iframe src="${sourceUrl}?we_vote_branding_off=1" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>\n<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.3/iframeResizer.min.js"></script>\n<script type="text/javascript">iFrameResize({ checkOrigin:false, heightCalculationMethod: 'max' });</script>`;
 
     switch (this.props.title) {
       case "Interactive Ballot Tool":
@@ -138,7 +135,7 @@ export default class CodeCopier extends Component {
                 <textarea
                   ref={(text) => { this.textareaCode = text; }}
                   className="clipboard textarea-clipboard u-stack--sm"
-                  value={source_code}
+                  value={sourceCode}
                   readOnly
                 />
               ) : (
@@ -210,7 +207,7 @@ export default class CodeCopier extends Component {
                 <textarea
                   ref={(text) => { this.textareaCode = text; }}
                   className="clipboard textarea-clipboard u-stack--sm"
-                  value={source_code}
+                  value={sourceCode}
                   readOnly
                 />
               ) : (
@@ -252,7 +249,7 @@ export default class CodeCopier extends Component {
                 <textarea
                   ref={(text) => { this.textareaCode = text; }}
                   className="clipboard textarea-clipboard u-stack--sm"
-                  value={source_code}
+                  value={sourceCode}
                   readOnly
                 />
               ) : (

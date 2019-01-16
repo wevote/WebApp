@@ -58,7 +58,7 @@ export function getApplicationViewBooleans (pathname) {
     pathname.startsWith("/verifythisisme/") ||
     pathname === "/welcome") {
     contentFullWidthMode = true;
-  } else if (pathname.startsWith("/ballot") || pathname === "/bookmarks") {
+  } else if (pathname.startsWith("/ballot")) {
     contentFullWidthMode = false;
   } else if (stringContains("/settings", pathname) ||
     pathname === "/more/hamburger") {

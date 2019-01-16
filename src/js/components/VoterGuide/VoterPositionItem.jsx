@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
-import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import ImageHandler from "../ImageHandler";
 import VoterStore from "../../stores/VoterStore";
 import { renderLog } from "../../utils/logging";
@@ -136,7 +135,6 @@ export default class VoterPositionItem extends Component {
     }
     return (
       <li className="position-item card-child">
-        <BookmarkToggle we_vote_id={position.ballot_item_we_vote_id} type={position.kind_of_ballot_item} />
         <div className="card-child__media-object-anchor">
           <Link
             to={ballotItemLink}

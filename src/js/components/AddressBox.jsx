@@ -56,7 +56,7 @@ export default class AddressBox extends Component {
     });
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
-    const addressAutocomplete = new google.maps.places.Autocomplete(this.refs.autocomplete);
+    const addressAutocomplete = new google.maps.places.Autocomplete(this.autoComplete);
     addressAutocomplete.setComponentRestrictions({ country: "us" });
     this.googleAutocompleteListener = addressAutocomplete.addListener("place_changed", this._placeChanged.bind(this, addressAutocomplete));
   }
@@ -75,7 +75,7 @@ export default class AddressBox extends Component {
   componentDidUpdate () {
     // If we're in the slide with this component, autofocus the address box, otherwise defocus.
     if (this.props.manualFocus !== undefined) {
-      const addressBox = this.refs.autocomplete;
+      const addressBox = this.autoComplete;
       if (addressBox) {
         if (this.props.manualFocus) {
           addressBox.focus();
@@ -155,12 +155,10 @@ export default class AddressBox extends Component {
   }
 
   render () {
+    let { waitingMessage } = this.props;
     renderLog(__filename);
     if (this.state.loading) {
-      let waitingMessage = "Please wait a moment while we find your ballot...";
-      if (this.props.waitingMessage) {
-        waitingMessage = this.props.waitingMessage;
-      }
+      if (!waitingMessage) waitingMessage = "Please wait a moment while we find your ballot...";
 
       return (
         <div>
@@ -180,7 +178,8 @@ export default class AddressBox extends Component {
             onChange={this.updateVoterAddress}
             name="address"
             className="form-control col-sm-9"
-            ref="autocomplete"
+            ref={(el) => { this.autoComplete = el; }}
+            aria-label="Address"
             placeholder="Enter address where you are registered to vote"
             autoFocus={!isCordova() && !this.props.disableAutoFocus}
           />

@@ -11,7 +11,6 @@ import BallotIntroFollowIssues from "./BallotIntroFollowIssues";
 import BallotIntroFollowAdvisers from "./BallotIntroFollowAdvisers";
 import BallotIntroVerifyAddress from "./BallotIntroVerifyAddress";
 import BallotStore from "../../stores/BallotStore";
-import BookmarkToggle from "../Bookmarks/BookmarkToggle";
 import CandidateStore from "../../stores/CandidateStore";
 import ImageHandler from "../ImageHandler";
 import IssuesByBallotItemDisplayList from "../Issues/IssuesByBallotItemDisplayList";
@@ -480,10 +479,6 @@ export default class OfficeItemCompressedRaccoon extends Component {
         <a className="anchor-under-header" name={weVoteId} />
         <div className="card-main__content">
           {/* Desktop */}
-          <span className="d-none d-sm-block">
-            <BookmarkToggle we_vote_id={weVoteId} type="OFFICE" />
-          </span>
-
           <h2 className="u-f3 card-main__ballot-name u-gray-dark u-stack--sm">
             <span className="u-cursor--pointer" onClick={this.toggleExpandDetails}>
               { this.state.display_office_unfurled ? (

@@ -4,7 +4,6 @@ import { Link } from "react-router";
 import { Table } from "react-bootstrap";
 import { cordovaDot, isWebApp } from "../../utils/cordovaUtils";
 import VoterStore from "../../stores/VoterStore";
-import BallotStore from "../../stores/BallotStore";
 import HamburgerMenuRow from "../../components/Navigation/HamburgerMenuRow";
 import LoadingWheel from "../../components/LoadingWheel";
 import VoterSessionActions from "../../actions/VoterSessionActions";
@@ -64,7 +63,6 @@ export default class HamburgerMenu extends Component {
       return LoadingWheel;
     }
 
-    const hasBookmarks = BallotStore.bookmarks && BallotStore.bookmarks.length;
     let { is_signed_in: isSignedIn } = voter;
     const { voter_photo_url_medium: photoUrl } = voter;
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
@@ -151,17 +149,6 @@ export default class HamburgerMenu extends Component {
               iconStyle={{ fontSize: 24, color: "#1c2f4b" }}
               linkText="Your Voter Guides"
             />
-
-            { hasBookmarks ? (
-              <HamburgerMenuRow
-                onClickAction={null}
-                to="/bookmarks"
-                icon="fa fa-bookmark"
-                iconStyle={{ fontSize: 28, color: "#1c2f4b" }}
-                linkText="Bookmarks"
-              />
-            ) : null
-          }
 
             <HamburgerMenuRow
               onClickAction={null}
