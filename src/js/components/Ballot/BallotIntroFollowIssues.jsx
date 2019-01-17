@@ -11,7 +11,7 @@ const SKIP_BUTTON_TEXT = 'Skip';
 
 export default class BallotIntroFollowIssues extends Component {
   static propTypes = {
-    history: PropTypes.object,
+    // history: PropTypes.object,
     next: PropTypes.func.isRequired,
   };
 

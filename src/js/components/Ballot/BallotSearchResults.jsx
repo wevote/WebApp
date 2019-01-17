@@ -59,7 +59,7 @@ export default class BallotSearchResults extends Component {
     });
   }
 
-  onVoterGuideStoreChange () {
+  onVoterGuideStoreChange () { // eslint-disable-line
     // console.log("BallotSearchResults onVoterGuideStoreChange");
   }
 
@@ -91,14 +91,15 @@ export default class BallotSearchResults extends Component {
   }
 
   render () {
+    const { ballotItemSearchResultsList, searchString, clearSearchTextNow } = this.state;
     renderLog(__filename);
-    if (!this.state.ballotItemSearchResultsList) {
+    if (!ballotItemSearchResultsList) {
       return null;
     }
 
     const iconSize = 18;
     const iconColor = "#999";
-    const noSearchResultsPossibility = this.state.searchString && this.state.searchString !== "" ?
+    const noSearchResultsPossibility = searchString && searchString !== "" ?
       <div>No search results found.</div> : null;
 
     const actionDescription = (
@@ -107,7 +108,7 @@ export default class BallotSearchResults extends Component {
         {" "}
         <span className="u-no-break">
           <span className="btn__icon">
-            <img src={cordovaDot("/img/global/icons/thumbs-up-icon.svg")}
+            <img src={cordovaDot("/img/global/svg-icons/thumbs-up-icon.svg")}
                  width={iconSize}
                  height={iconSize}
                  color={iconColor}
@@ -121,7 +122,7 @@ export default class BallotSearchResults extends Component {
         or&nbsp;
         <span className="u-no-break">
           <span className="btn__icon">
-            <img src={cordovaDot("/img/global/icons/thumbs-down-icon.svg")}
+            <img src={cordovaDot("/img/global/svg-icons/thumbs-down-icon.svg")}
                  width={iconSize}
                  height={iconSize}
                  color={iconColor}
@@ -137,10 +138,10 @@ export default class BallotSearchResults extends Component {
     );
 
     // Jan 2019, Steve:  What sets the state.ballotItemSearchResultsList? (I think nothing sets it)
-    const searchResults = this.state.ballotItemSearchResultsList.map( ballotItem => (
+    const searchResults = ballotItemSearchResultsList.map(ballotItem => (
       <BallotItemSearchResult
         key={ballotItem.we_vote_id}
-        allBallotItemsCount={this.state.ballotItemSearchResultsList.length}
+        allBallotItemsCount={ballotItemSearchResultsList.length}
         {...ballotItem}
       />
     ));
@@ -152,7 +153,7 @@ export default class BallotSearchResults extends Component {
             <SearchBar
               clearButton
               clearFunction={this.clearFunction}
-              clearSearchTextNow={this.state.clearSearchTextNow}
+              clearSearchTextNow={clearSearchTextNow}
               placeholder="Search to add Candidates or Measures"
               searchButton
               searchFunction={this.searchFunction}
@@ -161,7 +162,7 @@ export default class BallotSearchResults extends Component {
 
           </div>
           <div className="ballot_search__results_list">
-            {this.state.ballotItemSearchResultsList && this.state.ballotItemSearchResultsList.length ? (
+            {ballotItemSearchResultsList && ballotItemSearchResultsList.length ? (
               <div>
                 {actionDescription}
                 {searchResults}

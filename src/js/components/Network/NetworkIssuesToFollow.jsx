@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
 import { _ } from "lodash";
@@ -10,18 +9,13 @@ import SearchBar from "../Search/SearchBar";
 
 
 export default class NetworkIssuesToFollow extends Component {
-  static propTypes = {
-    children: PropTypes.object,
-    history: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
-      issues_to_follow: [],
-      issues_followed: [],
-      issue_we_vote_ids_followed: [],
-      search_query: "",
+      issuesToFollow: [],
+      issuesFollowed: [],
+      issueWeVoteIdsFollowed: [],
+      searchQuery: "",
     };
 
     this.searchFunction = this.searchFunction.bind(this);
@@ -43,14 +37,14 @@ export default class NetworkIssuesToFollow extends Component {
 
   _onIssueStoreChange () {
     this.setState({
-      issues_to_follow: IssueStore.getIssuesVoterCanFollow(),
-      issues_followed: IssueStore.getIssuesVoterIsFollowing(),
-      issue_we_vote_ids_followed: IssueStore.getIssueWeVoteIdsVoterIsFollowing(),
+      issuesToFollow: IssueStore.getIssuesVoterCanFollow(),
+      issuesFollowed: IssueStore.getIssuesVoterIsFollowing(),
+      issueWeVoteIdsFollowed: IssueStore.getIssueWeVoteIdsVoterIsFollowing(),
     });
   }
 
-  searchFunction (search_query) {
-    this.setState({ search_query });
+  searchFunction (searchQuery) {
+    this.setState({ searchQuery });
   }
 
   clearFunction () {
@@ -58,21 +52,18 @@ export default class NetworkIssuesToFollow extends Component {
   }
 
   render () {
-    let issue_list = [];
-    if (this.state.issues_to_follow) {
-      issue_list = this.state.issues_to_follow;
-    }
+    let { issuesToFollow } = this.state;
 
-    if (this.state.search_query.length > 0) {
-      const search_query_lowercase = this.state.search_query.toLowerCase();
-      issue_list = issue_list.concat(this.state.issues_followed);
-      issue_list = _.filter(issue_list,
-        one_issue => one_issue.issue_name.toLowerCase().includes(search_query_lowercase) ||
-          one_issue.issue_description.toLowerCase().includes(search_query_lowercase));
+    if (this.state.searchQuery.length > 0) {
+      const searchQueryLower = this.state.searchQuery.toLowerCase();
+      issuesToFollow = issuesToFollow.concat(this.state.issuesFollowed);
+      issuesToFollow = _.filter(issuesToFollow,
+        oneIssue => oneIssue.issue_name.toLowerCase().includes(searchQueryLower) ||
+          oneIssue.issue_description.toLowerCase().includes(searchQueryLower));
     }
 
     const isFollowing = false;
-    const issueListForDisplay = issue_list.map(issue => (
+    const issueListForDisplay = issuesToFollow.map(issue => (
       <IssueFollowToggleSquare
         key={issue.issue_we_vote_id}
         issueWeVoteId={issue.issue_we_vote_id}
@@ -81,7 +72,7 @@ export default class NetworkIssuesToFollow extends Component {
         issueImageUrl={issue.issue_image_url}
         issueIconLocalPath={issue.issue_icon_local_path}
         editMode
-        isFollowing={this.state.issue_we_vote_ids_followed.includes(issue.issue_we_vote_id) || isFollowing}
+        isFollowing={this.state.issueWeVoteIdsFollowed.includes(issue.issue_we_vote_id) || isFollowing}
         grid="col-4 col-sm-3"
       />
     ));
@@ -112,7 +103,7 @@ export default class NetworkIssuesToFollow extends Component {
             <div className="network-issues-list voter-guide-list card">
               <div className="card-child__list-group">
                 {
-                  this.state.issues_to_follow && this.state.issues_to_follow.length ?
+                  this.state.issuesToFollow && this.state.issuesToFollow.length ?
                     issueListForDisplay :
                     <h4 className="intro-modal__default-text">There are no more issues to follow!</h4>
                 }
