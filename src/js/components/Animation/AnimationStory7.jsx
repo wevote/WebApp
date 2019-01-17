@@ -7,7 +7,6 @@ import VoterStore from "../../stores/VoterStore";
 
 export default class AnimationStory7 extends Component {
   static propTypes = {
-    history: PropTypes.object,
     timeline: PropTypes.object,
   };
 

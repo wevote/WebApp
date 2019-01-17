@@ -233,8 +233,8 @@ export default class OrganizationCard extends Component {
           }
           { this.state.organization_position.vote_smart_rating ? (
             <RatingPopover
-              show_description={this.state.show_rating_description}
-              toggle_description={this.toggleRatingDescription}
+              showDescription={this.state.show_rating_description}
+              toggleDescription={this.toggleRatingDescription}
             />
           ) : null
           }
