@@ -9,7 +9,7 @@ import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 import validateEmail from "../../utils/email-functions";
 
-const web_app_config = require("../../config");
+const webAppConfig = require("../../config");
 
 export default class EmailBallotToFriendsModal extends Component {
   static propTypes = {
@@ -26,9 +26,9 @@ export default class EmailBallotToFriendsModal extends Component {
     let ballotLinkString = "";
     const { ballot_link: ballotLink, success_message: successMessage } = this.props;
     if (ballotLink) {
-      ballotLinkString = web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME + ballotLink;
+      ballotLinkString = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + ballotLink;
     } else {
-      ballotLinkString = `${web_app_config.WE_VOTE_URL_PROTOCOL + web_app_config.WE_VOTE_HOSTNAME}/ballot`;
+      ballotLinkString = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/ballot`;
     }
     this.state = {
       emailBallotMessage: "This is a ballot on We Vote for the upcoming election.",
@@ -59,8 +59,8 @@ export default class EmailBallotToFriendsModal extends Component {
       emailAddressesError: false,
       senderEmailAddress: VoterStore.getVoter().email,
       senderEmailAddress_error: false,
-      on_enter_email_addresses_step: true,
-      on_collect_email_step: false,
+      onEnterEmailAddressesStep: true,
+      onCollectEmailStep: false,
       successMessage,
       ballot_link: ballotLinkString,
     };
@@ -95,11 +95,11 @@ export default class EmailBallotToFriendsModal extends Component {
     const emailBallotDataStep = FriendStore.switchToEmailBallotDataStep();
     // console.log("EmailBallotToFriendsModal, _onFriendStoreChange, email_ballot_data_step:", email_ballot_data_step);
     if (emailBallotDataStep === "on_collect_email_step") {
-      // Switch to "on_collect_email_step"
+      // Switch to "onCollectEmailStep"
       this.setState({
         loading: false,
-        on_enter_email_addresses_step: false,
-        on_collect_email_step: true,
+        onEnterEmailAddressesStep: false,
+        onCollectEmailStep: true,
       });
     } else {
       this.setState({
@@ -176,8 +176,8 @@ export default class EmailBallotToFriendsModal extends Component {
       emailAddressesError: false,
       senderEmailAddress: "",
       senderEmailAddress_error: false,
-      on_enter_email_addresses_step: true,
-      on_collect_email_step: false,
+      onEnterEmailAddressesStep: true,
+      onCollectEmailStep: false,
       successMessage,
     });
     this.setEmailAddressArray([]);
@@ -207,7 +207,7 @@ export default class EmailBallotToFriendsModal extends Component {
     // console.log("Entering function ballotEmailSendStepsManager");
     let errorMessage = "";
 
-    if (this.state.on_enter_email_addresses_step) {
+    if (this.state.onEnterEmailAddressesStep) {
       // Validate friends' email addresses
       let emailAddressesError = false;
 
@@ -226,10 +226,10 @@ export default class EmailBallotToFriendsModal extends Component {
         errorMessage += "Please enter at least one valid email address.";
       } else {
         // TODO: Steve remove the error suppression on the next line 12/1/18, a temporary hack
-        this.email_address_array.map((email_address) => { // eslint-disable-line array-callback-return
-          if (!validateEmail(email_address)) {
+        this.email_address_array.map((emailAddress) => { // eslint-disable-line array-callback-return
+          if (!validateEmail(emailAddress)) {
             emailAddressesError = true;
-            errorMessage += `Please enter a valid email address for ${email_address}`;
+            errorMessage += `Please enter a valid email address for ${emailAddress}`;
           }
         });
       }
@@ -250,18 +250,18 @@ export default class EmailBallotToFriendsModal extends Component {
           // console.log("ballotEmailSendStepsManager, NOT hasValidEmail so redirect to verification ");
           this.setState({
             loading: false,
-            on_enter_email_addresses_step: false,
-            on_collect_email_step: true,
+            onEnterEmailAddressesStep: false,
+            onCollectEmailStep: true,
           });
         }
       } else {
         // console.log("ballotEmailSendStepsManager, calling emailBallotData");
         this.ballotEmailSend(event);
       }
-    } else if (this.state.on_collect_email_step) {
+    } else if (this.state.onCollectEmailStep) {
       // Validate sender's email addresses
       let senderEmailAddressError = false;
-      if ( !this.state.senderEmailAddress ) {
+      if (!this.state.senderEmailAddress) {
         senderEmailAddressError = true;
         errorMessage += "Please enter a valid email address for yourself. ";
       } else if (!this.senderEmailAddressVerified()) {
@@ -439,8 +439,8 @@ export default class EmailBallotToFriendsModal extends Component {
       friend3FirstName, friend3LastName, friend3EmailAddress,
       friend4FirstName, friend4LastName, friend4EmailAddress,
       friend5FirstName, friend5LastName, friend5EmailAddress,
-      emailAddressesError, senderEmailAddress, senderEmailAddress_error, error_message,
-      on_enter_email_addresses_step, on_collect_email_step, successMessage } = this.state;
+      emailAddressesError, senderEmailAddress, senderEmailAddress_error, errorMessage,
+      onEnterEmailAddressesStep, onCollectEmailStep, successMessage } = this.state;
 
     return (
       <div className="share-modal">
@@ -453,7 +453,7 @@ export default class EmailBallotToFriendsModal extends Component {
             {/* <div className="row intro-modal__grid intro-modal__default-text"> */}
             <div className="share-modal__default-text">
               <div className="container-fluid u-inset--md text-left">
-                {on_enter_email_addresses_step ? (
+                {onEnterEmailAddressesStep ? (
                   <div>
                     { successMessage ? (
                       <div className="alert alert-success">
@@ -463,7 +463,7 @@ export default class EmailBallotToFriendsModal extends Component {
                     }
                     {emailAddressesError ? (
                       <div className="alert alert-danger">
-                        {error_message}
+                        {errorMessage}
                       </div>
                     ) : null
                     }
@@ -726,7 +726,7 @@ export default class EmailBallotToFriendsModal extends Component {
                   </div>
                 ) : null
                 }
-                {on_collect_email_step ? (
+                {onCollectEmailStep ? (
                   <div>
                     {senderEmailAddress_error ? (
                       <div className="alert alert-danger">

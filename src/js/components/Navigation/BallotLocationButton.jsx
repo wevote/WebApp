@@ -21,16 +21,16 @@ export default class BallotLocationButton extends Component {
       let ballot_returned_we_vote_id_of_retrieved_ballot = "";
       let ballot_returned_we_vote_id_matches = false;
       let ballot_location_display_name = "";
-      if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_location_shortcut) {
-        ballot_location_shortcut_of_retrieved_ballot = BallotStore.ballot_properties.ballot_location_shortcut;
+      if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_location_shortcut) {
+        ballot_location_shortcut_of_retrieved_ballot = BallotStore.ballotProperties.ballot_location_shortcut;
         if (ballot_location.ballot_location_shortcut && ballot_location_shortcut_of_retrieved_ballot) {
           if (ballot_location.ballot_location_shortcut === ballot_location_shortcut_of_retrieved_ballot) {
             ballot_location_shortcut_matches = true;
           }
         }
       }
-      if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_returned_we_vote_id) {
-        ballot_returned_we_vote_id_of_retrieved_ballot = BallotStore.ballot_properties.ballot_returned_we_vote_id;
+      if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_returned_we_vote_id) {
+        ballot_returned_we_vote_id_of_retrieved_ballot = BallotStore.ballotProperties.ballot_returned_we_vote_id;
         if (ballot_location.ballot_returned_we_vote_id && ballot_returned_we_vote_id_of_retrieved_ballot) {
           if (ballot_location.ballot_returned_we_vote_id === ballot_returned_we_vote_id_of_retrieved_ballot) {
             ballot_returned_we_vote_id_matches = true;

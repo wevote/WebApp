@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router";
 import IssueActions from "../../actions/IssueActions";
 import IssueFollowToggleSquare from "../Issues/IssueFollowToggleSquare";
@@ -7,16 +6,11 @@ import IssueStore from "../../stores/IssueStore";
 import { renderLog } from "../../utils/logging";
 
 export default class NetworkIssuesFollowed extends Component {
-  static propTypes = {
-    children: PropTypes.object,
-    history: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
-      edit_mode: false,
-      issues_followed: [],
+      editMode: false,
+      issuesFollowed: [],
     };
   }
 
@@ -33,31 +27,33 @@ export default class NetworkIssuesFollowed extends Component {
     this.issueStoreListener.remove();
   }
 
-  _onIssueStoreChange () {
-    this.setState({
-      issues_followed: IssueStore.getIssuesVoterIsFollowing(),
-    });
+  onKeyDownEditMode (event) {
+    const { editMode } = this.state;
+    const enterAndSpaceKeyCodes = [13, 32];
+    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      this.setState({ editMode: !editMode });
+    }
   }
 
-  getCurrentRoute () {
+  getCurrentRoute () { // eslint-disable-line
     return "/issues_followed";
   }
 
-  toggleEditMode () {
-    this.setState({ edit_mode: !this.state.edit_mode });
+  _onIssueStoreChange () {
+    this.setState({
+      issuesFollowed: IssueStore.getIssuesVoterIsFollowing(),
+    });
   }
 
-  onKeyDownEditMode (event) {
-    const enterAndSpaceKeyCodes = [13, 32];
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      this.setState({ edit_mode: !this.state.edit_mode });
-    }
+  toggleEditMode () {
+    const { editMode } = this.state;
+    this.setState({ editMode: !editMode });
   }
 
   render () {
     renderLog(__filename);
     let issueList = [];
-    if (this.state.issues_followed) {
+    if (this.state.issuesFollowed) {
       issueList = this.state.issues_followed;
     }
 
@@ -78,7 +74,7 @@ export default class NetworkIssuesFollowed extends Component {
             issueDescription={issue.issue_description}
             issueImageUrl={issue.issue_image_url}
             issueIconLocalPath={issue.issue_icon_local_path}
-            editMode={this.state.edit_mode}
+            editMode={this.state.editMode}
             isFollowing={isFollowing}
             grid="col-sm-6"
             readOnly
@@ -98,7 +94,7 @@ export default class NetworkIssuesFollowed extends Component {
               </div>
               <div>
                 {
-                  this.state.issues_followed.length > 0 ?
+                  this.state.issuesFollowed.length > 0 ?
                     <span><Link to="/issues_followed">See All</Link></span> :
                     <span>You are not following any issues yet.</span>
                 }

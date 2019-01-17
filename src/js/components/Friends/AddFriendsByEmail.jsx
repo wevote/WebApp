@@ -66,24 +66,32 @@ export default class AddFriendsByEmail extends Component {
     this.voterStoreListener.remove();
   }
 
+  onKeyDown (event) {
+    const enterAndSpaceKeyCodes = [13, 32];
+    const scope = this;
+    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      scope.AddFriendsByEmailStepsManager(event).bind(scope);
+    }
+  }
+
   _onFriendStoreChange () {
-    const add_friends_by_email_step = FriendStore.switchToAddFriendsByEmailStep();
-    const error_message_to_show_voter = FriendStore.getErrorMessageToShowVoter();
-    // console.log("AddFriendsByEmail, _onFriendStoreChange, add_friends_by_email_step:", add_friends_by_email_step);
-    if (add_friends_by_email_step === "on_collect_email_step") {
+    const addFriendsByEmailStep = FriendStore.switchToAddFriendsByEmailStep();
+    const errorMessageToShowVoter = FriendStore.getErrorMessageToShowVoter();
+    // console.log("AddFriendsByEmail, _onFriendStoreChange, addFriendsByEmailStep:", addFriendsByEmailStep);
+    if (addFriendsByEmailStep === "on_collect_email_step") {
       // Switch to "on_collect_email_step"
       this.setState({
         loading: false,
         on_enter_email_addresses_step: false,
         on_collect_email_step: true,
         on_friend_invitations_sent_step: false,
-        error_message_to_show_voter,
+        errorMessageToShowVoter,
       });
       // FriendStore.clearErrorMessageToShowVoter()
     } else {
       this.setState({
         loading: false,
-        error_message_to_show_voter: "",
+        errorMessageToShowVoter: "",
       });
     }
   }
@@ -113,22 +121,22 @@ export default class AddFriendsByEmail extends Component {
     e.preventDefault();
     // console.log("friendInvitationByEmailSend);
     const _state = this.state;
-    const email_address_array = [];
-    const first_name_array = [];
-    const last_name_array = [];
+    const emailAddressArray = [];
+    const firstNameArray = [];
+    const lastNameArray = [];
     // create temporary arrays so friendInvitationByEmailSend can work
-    for (let friend_index = 1; friend_index <= this.state.friend_total; friend_index++) {
-      if (validateEmail(_state[`friend${friend_index}_email_address`])) {
-        email_address_array.push(_state[`friend${friend_index}_email_address`]);
-        first_name_array.push(_state[`friend${friend_index}_first_name`]);
-        last_name_array.push(_state[`friend${friend_index}_last_name`]);
+    for (let friendIdx = 1; friendIdx <= this.state.friend_total; friendIdx++) {
+      if (validateEmail(_state[`friend${friendIdx}_email_address`])) {
+        emailAddressArray.push(_state[`friend${friendIdx}_email_address`]);
+        firstNameArray.push(_state[`friend${friendIdx}_first_name`]);
+        lastNameArray.push(_state[`friend${friendIdx}_last_name`]);
       }
     }
-    // console.log("email_address_array: ", email_address_array);
-    // console.log("first_name_array: ", first_name_array);
-    // console.log("last_name_array: ", last_name_array);
-    FriendActions.friendInvitationByEmailSend(email_address_array, first_name_array,
-      last_name_array, "", this.state.add_friends_message,
+    // console.log("emailAddressArray: ", emailAddressArray);
+    // console.log("firstNameArray: ", firstNameArray);
+    // console.log("lastNameArray: ", lastNameArray);
+    FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray,
+      lastNameArray, "", this.state.add_friends_message,
       this.state.sender_email_address);
     // After calling the API, reset the form
     this.setState({
@@ -169,19 +177,11 @@ export default class AddFriendsByEmail extends Component {
     return validateEmail(this.state.sender_email_address);
   }
 
-  onKeyDown (event) {
-    const enterAndSpaceKeyCodes = [13, 32];
-    const scope = this;
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      scope.AddFriendsByEmailStepsManager(event).bind(scope);
-    }
-  }
-
   AddFriendsByEmailStepsManager (event) {
     // This function is called when the next button is  submitted;
     // this funtion is called twice per cycle
     // console.log("Entering function AddFriendsByEmailStepsManager");
-    const error_message = "";
+    const errorMessage = "";
 
     if (this.state.on_enter_email_addresses_step) {
       // Validate friends' email addresses
@@ -192,13 +192,13 @@ export default class AddFriendsByEmail extends Component {
       // if (!this.state.friend1_email_address ) {
       //   // console.log("AddFriendsByEmailStepsManager: this.state.email_add is ");
       //   email_addresses_error = true;
-      //   error_message += "Please enter at least one valid email address.";
+      //   errorMessage += "Please enter at least one valid email address.";
       // } else {
       //   //custom error message for each invalid email
-      //   for (let friend_index = 1; friend_index <= this.state.friend_total; friend_index++) {
-      //     if (this.state[`friend${friend_index}_email_address`] && !validateEmail(this.state[`friend${friend_index}_email_address`])) {
+      //   for (let friendIdx = 1; friendIdx <= this.state.friend_total; friendIdx++) {
+      //     if (this.state[`friend${friendIdx}_email_address`] && !validateEmail(this.state[`friend${friendIdx}_email_address`])) {
       //       email_addresses_error = true;
-      //       error_message += `Please enter a valid email address for ${this.state[`friend${friend_index}_email_address`]}`;
+      //       errorMessage += `Please enter a valid email address for ${this.state[`friend${friendIdx}_email_address`]}`;
       //     }
       //   }
       // }
@@ -208,7 +208,7 @@ export default class AddFriendsByEmail extends Component {
         this.setState({
           loading: false,
           email_addresses_error: true,
-          error_message,
+          errorMessage,
         });
       } else if (!this.hasValidEmail()) {
         // console.log("AddFriendsByEmailStepsManager, NOT hasValidEmail");
@@ -229,7 +229,7 @@ export default class AddFriendsByEmail extends Component {
         this.setState({
           loading: false,
           sender_email_address_error: true,
-          error_message,
+          errorMessage,
         });
       } else {
         // console.log("AddFriendsByEmailStepsManager, calling friendInvitationByEmailSend");
@@ -247,13 +247,13 @@ export default class AddFriendsByEmail extends Component {
     const _state = this.state;
     let result;
 
-    for (let friend_index = 1; friend_index <= this.state.friend_total; friend_index++) {
-      if (_state[`friend${friend_index}_email_address`]) {
-        result = validateEmail(_state[`friend${friend_index}_email_address`]);
+    for (let friendIdx = 1; friendIdx <= this.state.friend_total; friendIdx++) {
+      if (_state[`friend${friendIdx}_email_address`]) {
+        result = validateEmail(_state[`friend${friendIdx}_email_address`]);
         if (result) {
-          // console.log(`AllEnteredEmailsVerified: validated email for friend${friend_index}`, _state[`friend${friend_index}_email_address`]);
+          // console.log(`AllEnteredEmailsVerified: validated email for friend${friendIdx}`, _state[`friend${friendIdx}_email_address`]);
         } else {
-          // console.log(`AllEnteredEmailsVerified: invalid email address for friend${friend_index}`, _state[`friend${friend_index}_email_address`]);
+          // console.log(`AllEnteredEmailsVerified: invalid email address for friend${friendIdx}`, _state[`friend${friendIdx}_email_address`]);
           return false;
         }
       }
@@ -261,12 +261,12 @@ export default class AddFriendsByEmail extends Component {
     return true;
   }
 
-  closeRow (row_number) {
+  closeRow (rowNumber) {
     this.setState({
-      [`friend${row_number}_email_address`]: "",
-      [`friend${row_number}_first_name`]: "",
-      [`friend${row_number}_last_name`]: "",
-      [`row${row_number}_open`]: false,
+      [`friend${rowNumber}_email_address`]: "",
+      [`friend${rowNumber}_first_name`]: "",
+      [`friend${rowNumber}_last_name`]: "",
+      [`row${rowNumber}_open`]: false,
     });
   }
 
@@ -304,7 +304,7 @@ export default class AddFriendsByEmail extends Component {
         }
         {this.state.email_addresses_error || this.state.sender_email_address_error ? (
           <div className="alert alert-danger">
-            {this.state.error_message}
+            {this.state.errorMessage}
           </div>
         ) : null
         }

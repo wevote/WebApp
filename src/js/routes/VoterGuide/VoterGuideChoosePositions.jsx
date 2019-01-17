@@ -228,7 +228,7 @@ export default class VoterGuideChoosePositions extends Component {
             {" "}
             <span className="u-no-break">
               <span className="btn__icon">
-                <img src={cordovaDot("/img/global/icons/thumbs-up-icon.svg")}
+                <img src={cordovaDot("/img/global/svg-icons/thumbs-up-icon.svg")}
                      width={iconSize}
                      height={iconSize}
                      color={iconColor}
@@ -242,7 +242,7 @@ export default class VoterGuideChoosePositions extends Component {
             or&nbsp;
             <span className="u-no-break">
               <span className="btn__icon">
-                <img src={cordovaDot("/img/global/icons/thumbs-down-icon.svg")}
+                <img src={cordovaDot("/img/global/svg-icons/thumbs-down-icon.svg")}
                      width={iconSize}
                      height={iconSize}
                      color={iconColor}

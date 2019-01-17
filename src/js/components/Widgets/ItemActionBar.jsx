@@ -551,7 +551,7 @@ export default class ItemActionBar extends Component {
     const measureYesButton = (
       <button className={`item-actionbar__btn item-actionbar__btn--support btn btn-default${this.isSupportCalculated() ? " support-at-state" : ""}`} onClick={() => this.supportItem()}>
         <span className="btn__icon">
-          <img src={cordovaDot("/img/global/icons/thumbs-up-icon.svg")}
+          <img src={cordovaDot("/img/global/svg-icons/thumbs-up-icon.svg")}
                width={18}
                height={18}
                color={chooseIconColor}
@@ -604,7 +604,7 @@ export default class ItemActionBar extends Component {
     const measureNoButton = (
       <button className={`${this.props.opposeHideInMobile ? "d-none d-sm-block " : ""}item-actionbar__btn item-actionbar__btn--oppose btn btn-default${this.isOpposeCalculated() ? " oppose-at-state" : ""}`} onClick={() => this.opposeItem()}>
         <span className="btn__icon">
-          <img src={cordovaDot("/img/global/icons/thumbs-down-icon.svg")}
+          <img src={cordovaDot("/img/global/svg-icons/thumbs-down-icon.svg")}
                width={18}
                height={18}
                color={opposeIconColor}

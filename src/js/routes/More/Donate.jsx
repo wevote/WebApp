@@ -44,8 +44,8 @@ export default class Donate extends Component {
   }
 
   _donateStoreChange () {
-    if (!DonateStore.donation_success()) {
-      this.setState({ donationErrorMessage: DonateStore.donation_error() });
+    if (!DonateStore.donationSuccess()) {
+      this.setState({ donationErrorMessage: DonateStore.donationError() });
     }
   }
 
@@ -62,8 +62,9 @@ export default class Donate extends Component {
   }
 
   _toggleCustomAmount () {
+    const { showCustomInput } = this.state;
     this.setState({
-      showCustomInput: !this.state.showCustomInput,
+      showCustomInput: !showCustomInput,
     });
   }
 
@@ -76,7 +77,7 @@ export default class Donate extends Component {
   causes a page reload, and you lose context.  So swallow the 'Enter' keystroke event while in
   the InputGroup.
    */
-  _handleKeyPress (event) {
+  _handleKeyPress (event) { // eslint-disable-line
     if (event.key === "Enter") {
       event.preventDefault();
     }

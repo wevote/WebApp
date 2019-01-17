@@ -14,7 +14,7 @@ export default class EmailBallotModal extends Component {
   static propTypes = {
     next: PropTypes.func.isRequired, // Used by react-slick
     ballotEmailWasSent: PropTypes.func.isRequired, // Used to transition to EmailBallotToFriendsModal whan ballot was sent.
-    history: PropTypes.object,
+    // history: PropTypes.object,
     ballot_link: PropTypes.string,
   };
 
@@ -66,21 +66,21 @@ export default class EmailBallotModal extends Component {
   }
 
   _onFriendStoreChange () {
-    const email_ballot_data_step = FriendStore.switchToEmailBallotDataStep();
-    const error_message_to_show_voter = FriendStore.getErrorMessageToShowVoter();
+    const emailBallotDataStep = FriendStore.switchToEmailBallotDataStep();
+    const errorMessageToShowVoter = FriendStore.getErrorMessageToShowVoter();
     // console.log("EmailBallotModal, _onFriendStoreChange, email_ballot_data_step:", email_ballot_data_step);
-    if (email_ballot_data_step === "on_collect_email_step") {
+    if (emailBallotDataStep === "on_collect_email_step") {
       // Switch to "on_collect_email_step"
       this.setState({
         loading: false,
         on_enter_email_addresses_step: false,
         on_ballot_email_sent_step: false,
-        error_message_to_show_voter,
+        errorMessageToShowVoter,
       });
     } else {
       this.setState({
         loading: false,
-        error_message_to_show_voter: "",
+        errorMessageToShowVoter: '',
       });
     }
   }

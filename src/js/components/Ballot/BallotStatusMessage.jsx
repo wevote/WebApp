@@ -123,22 +123,22 @@ export default class BallotStatusMessage extends Component {
       voter_specific_ballot_from_google_civic = true;
     }
 
-    if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_location_display_name) {
-      // console.log("BallotStore.ballot_properties:", BallotStore.ballot_properties);
-      ballot_location_display_name = BallotStore.ballot_properties.ballot_location_display_name;
+    if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_location_display_name) {
+      // console.log("BallotStore.ballotProperties:", BallotStore.ballotProperties);
+      ballot_location_display_name = BallotStore.ballotProperties.ballot_location_display_name;
     } else if (voter_ballot_location && voter_ballot_location.ballot_location_display_name) {
       // Get the location name from the VoterStore address object
       // console.log("voter_ballot_location:", voter_ballot_location);
       ballot_location_display_name = voter_ballot_location.ballot_location_display_name;
     }
 
-    if (BallotStore.ballot_properties && BallotStore.ballot_properties.substituted_address_nearby) {
-      if (BallotStore.ballot_properties.substituted_address_city && BallotStore.ballot_properties.substituted_address_state && BallotStore.ballot_properties.substituted_address_zip) {
-        substituted_address_nearby = `${BallotStore.ballot_properties.substituted_address_city}, `;
-        substituted_address_nearby += `${BallotStore.ballot_properties.substituted_address_state} `;
-        substituted_address_nearby += BallotStore.ballot_properties.substituted_address_zip;
+    if (BallotStore.ballotProperties && BallotStore.ballotProperties.substituted_address_nearby) {
+      if (BallotStore.ballotProperties.substituted_address_city && BallotStore.ballotProperties.substituted_address_state && BallotStore.ballotProperties.substituted_address_zip) {
+        substituted_address_nearby = `${BallotStore.ballotProperties.substituted_address_city}, `;
+        substituted_address_nearby += `${BallotStore.ballotProperties.substituted_address_state} `;
+        substituted_address_nearby += BallotStore.ballotProperties.substituted_address_zip;
       } else {
-        substituted_address_nearby = BallotStore.ballot_properties.substituted_address_nearby;
+        substituted_address_nearby = BallotStore.ballotProperties.substituted_address_nearby;
       }
     } else if (voter_ballot_location && voter_ballot_location.text_for_map_search) {
       // Get the location from the VoterStore address object

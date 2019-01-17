@@ -5,40 +5,43 @@ import FriendActions from "../actions/FriendActions";
 import VoterActions from "../actions/VoterActions";
 
 class FriendStore extends ReduceStore {
-
   getInitialState () {
     return {
     };
   }
 
   resetState () {
-    return {};
+    return this.getInitialState();
   }
 
   currentFriends () {
-    return this.getDataFromArr(this.getState().current_friends) || {};
+    const { currentFriends } = this.getState();
+    return currentFriends || [];
   }
 
   currentFriendsIndexed () {
-    return this.getIndexFromArr(this.getState().current_friends) || {};
+    const { currentFriends } = this.getState();
+    return this.getIndexFromArr(currentFriends) || {};
   }
 
   friendInvitationsSentByMe () {
-    return this.getDataFromArr(this.getState().friend_invitations_sent_by_me) || {};
+    const { friendInvitationsSentByMe } = this.getState();
+    return friendInvitationsSentByMe || {};
   }
 
   friendInvitationsSentToMe () {
-    return this.getDataFromArr(this.getState().friend_invitations_sent_to_me) || {};
+    const { friendInvitationsSentToMe } = this.getState();
+    return friendInvitationsSentToMe || {};
   }
 
   friendInvitationsProcessed () {
-    return this.getDataFromArr(this.getState().friend_invitations_processed) || {};
+    const { friendInvitationsProcessed } = this.getState();
+    return friendInvitationsProcessed || {};
   }
 
   getErrorMessageToShowVoter () {
-    const error_message_to_show_voter = this.getState().error_message_to_show_voter;
-    // this.state.error_message_to_show_voter = "";  // TODO DALE This may not work
-    return error_message_to_show_voter;
+    const { errorMessageToShowVoter } = this.getState();
+    return errorMessageToShowVoter;
   }
 
   getInvitationStatus () {
@@ -49,45 +52,31 @@ class FriendStore extends ReduceStore {
     return this.getState().facebook_invitation_status;
   }
 
-  isFriend (voter_we_vote_id) {
-    const current_friends_index = this.currentFriendsIndexed(); // TODO DALE THIS NEEDS TO BE TESTED
-    return current_friends_index[voter_we_vote_id] !== undefined;
+  isFriend (voterId) {
+    const currentFriendsIndex = this.currentFriendsIndexed(); // TODO DALE THIS NEEDS TO BE TESTED
+    return currentFriendsIndex[voterId] !== undefined;
   }
 
   suggestedFriendList () {
-    return this.getDataFromArr(this.getState().suggested_friend_list) || {};
+    const { suggestedFriendList } = this.getState();
+    return suggestedFriendList || {};
   }
 
   switchToAddFriendsByEmailStep () {
-    return this.getState().add_friends_by_email_step;
+    return this.getState().addFriendsByEmailStep;
   }
 
   switchToEmailBallotDataStep () {
-    return this.getState().email_ballot_data_step;
+    return this.getState().emailBallotDataStep;
   }
 
-  getDataFromArr (arr) {
-    if (arr === undefined) {
-      return [];
-    }
-    const data_list = [];
-    for (let i = 0, len = arr.length; i < len; i++) {
-      data_list.push( arr[i] );
-    }
-    return data_list;
-  }
-
-  getIndexFromArr (arr) {
-    if (arr === undefined) {
-      return [];
-    }
-    const indexed_data_list = [];
-    let friend_voter_we_vote_id;
-    for (let i = 0, len = arr.length; i < len; i++) {
-      friend_voter_we_vote_id = arr[i].voter_we_vote_id;
-      indexed_data_list[friend_voter_we_vote_id] = arr[i];
-    }
-    return indexed_data_list;
+  getIndexFromArr (arr) { // eslint-disable-line
+    if (!arr) return {};
+    const indexed = {};
+    arr.forEach((friend) => {
+      indexed[friend.voter_we_vote_id] = friend.voter_we_vote_id;
+    });
+    return indexed;
   }
 
   reduce (state, action) {
@@ -106,10 +95,10 @@ class FriendStore extends ReduceStore {
         } else if (action.res.kind_of_invite_response === "ACCEPT_INVITATION") {
           // console.log("FriendStore friendInviteResponse incoming data ACCEPT_INVITATION, action.res:", action.res);
           FriendActions.friendInvitationsSentToMe();
-          // We update the current_friends locally because it could be a heavy API call we don't want to call too often
+          // We update the currentFriends locally because it could be a heavy API call we don't want to call too often
           return {
             ...state,
-            current_friends: assign({}, state.current_friends, { [action.res.voter_we_vote_id]: action.res.friend_voter }),
+            currentFriends: assign({}, state.currentFriends, { [action.res.voter_we_vote_id]: action.res.friend_voter }),
           };
         } else if (action.res.kind_of_invite_response === "IGNORE_INVITATION") {
           FriendActions.friendInvitationsSentToMe();
@@ -147,8 +136,8 @@ class FriendStore extends ReduceStore {
           // Return the person to the form where they can fill in their email address
           return {
             ...state,
-            add_friends_by_email_step: "on_collect_email_step",
-            error_message_to_show_voter: action.res.error_message_to_show_voter,
+            addFriendsByEmailStep: "on_collect_email_step",
+            errorMessageToShowVoter: action.res.error_message_to_show_voter,
           };
         } else {
           // Reset the invitation form
@@ -163,8 +152,8 @@ class FriendStore extends ReduceStore {
           // Return the person to the form where they can fill in their email address
           return {
             ...state,
-            email_ballot_data_step: "on_collect_email_step",
-            error_message_to_show_voter: action.res.error_message_to_show_voter,
+            emailBallotDataStep: "on_collect_email_step",
+            errorMessageToShowVoter: action.res.error_message_to_show_voter,
           };
         } else {
           // Reset the invitation form
@@ -192,17 +181,17 @@ class FriendStore extends ReduceStore {
           // console.log("FriendStore, friendInvitationByEmailVerify, voter_device_id missing, invitation_secret_key:", action.res.invitation_secret_key);
           FriendActions.friendInvitationByEmailVerify(action.res.invitation_secret_key);
         } else {
-          // console.log("FriendStore, voter_device_id present");
+          // console.log("FriendStore, voterDeviceId present");
           FriendActions.friendInvitationsSentToMe();
           VoterActions.voterRetrieve(); // We need to update the indicator that the person has a verified email
         }
         return {
           ...state,
           invitation_status: {
-            voter_device_id: action.res.voter_device_id,
-            voter_has_data_to_preserve: action.res.voter_has_data_to_preserve,
-            invitation_found: action.res.invitation_found,
-            attempted_to_approve_own_invitation: action.res.attempted_to_approve_own_invitation,
+            voterDeviceId: action.res.voter_device_id,
+            voterHasDataToPreserve: action.res.voter_has_data_to_preserve,
+            invitationFound: action.res.invitation_found,
+            attemptedToApproveOwnInvitation: action.res.attempted_to_approve_own_invitation,
             invitation_secret_key_belongs_to_this_voter: action.res.invitation_secret_key_belongs_to_this_voter,
           },
         };
@@ -211,11 +200,11 @@ class FriendStore extends ReduceStore {
         return {
           ...state,
           facebook_invitation_status: {
-            voter_device_id: action.res.voter_device_id,
-            voter_has_data_to_preserve: action.res.voter_has_data_to_preserve,
-            invitation_found: action.res.invitation_found,
-            attempted_to_approve_own_invitation: action.res.attempted_to_approve_own_invitation,
-            facebook_request_id: action.res.facebook_request_id,
+            voterDeviceId: action.res.voter_device_id,
+            voterHasDataToPreserve: action.res.voter_has_data_to_preserve,
+            invitationFound: action.res.invitation_found,
+            attemptedToApproveOwnInvitation: action.res.attempted_to_approve_own_invitation,
+            facebookRequestId: action.res.facebook_request_id,
           },
         };
 
@@ -224,31 +213,31 @@ class FriendStore extends ReduceStore {
           // console.log("FriendStore incoming data CURRENT_FRIENDS, action.res:", action.res);
           return {
             ...state,
-            current_friends: action.res.friend_list,
+            currentFriends: action.res.friend_list,
           };
         } else if (action.res.kind_of_list === "FRIEND_INVITATIONS_SENT_BY_ME") {
           // console.log("FriendStore incoming data FRIEND_INVITATIONS_SENT_BY_ME, action.res:", action.res);
           return {
             ...state,
-            friend_invitations_sent_by_me: action.res.friend_list,
+            friendInvitationsSentByMe: action.res.friend_list,
           };
         } else if (action.res.kind_of_list === "FRIEND_INVITATIONS_SENT_TO_ME") {
           // console.log("FriendStore incoming data FRIEND_INVITATIONS_SENT_TO_ME, action.res:", action.res);
           return {
             ...state,
-            friend_invitations_sent_to_me: action.res.friend_list,
+            friendInvitationsSentToMe: action.res.friend_list,
           };
         } else if (action.res.kind_of_list === "FRIEND_INVITATIONS_PROCESSED") {
           // console.log("FriendStore incoming data FRIEND_INVITATIONS_PROCESSED, action.res:", action.res);
           return {
             ...state,
-            friend_invitations_processed: action.res.friend_list,
+            friendInvitationsProcessed: action.res.friend_list,
           };
-        } else if (action.res.kind_of_list === "SUGGESTED_FRIEND_LIST") {
-          // console.log("FriendStore incoming data SUGGESTED_FRIEND_LIST, action.res:", action.res);
+        } else if (action.res.kind_of_list === "suggestedFriendList") {
+          // console.log("FriendStore incoming data suggestedFriendList, action.res:", action.res);
           return {
             ...state,
-            suggested_friend_list: action.res.friend_list,
+            suggestedFriendList: action.res.friend_list,
           };
         }
 

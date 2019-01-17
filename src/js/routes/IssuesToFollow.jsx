@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { _ } from "lodash";
 import Helmet from "react-helmet";
@@ -10,16 +9,11 @@ import { renderLog } from "../utils/logging";
 import SearchBar from "../components/Search/SearchBar";
 
 export default class IssuesToFollow extends Component {
-  static propTypes = {
-    children: PropTypes.object,
-    history: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
-      issues_to_follow: [],
-      search_query: "",
+      issuesToFollow: [],
+      searchQuery: "",
     };
 
     this.searchFunction = this.searchFunction.bind(this);
@@ -37,12 +31,12 @@ export default class IssuesToFollow extends Component {
 
   _onIssueStoreChange () {
     this.setState({
-      issues_to_follow: IssueStore.getIssuesVoterCanFollow(),
+      issuesToFollow: IssueStore.getIssuesVoterCanFollow(),
     });
   }
 
-  searchFunction (search_query) {
-    this.setState({ search_query });
+  searchFunction (searchQuery) {
+    this.setState({ searchQuery });
   }
 
   clearFunction () {
@@ -50,20 +44,21 @@ export default class IssuesToFollow extends Component {
   }
 
   render () {
+    const { issuesToFollow, searchQuery } = this.state;
     renderLog(__filename);
-    let issue_list = [];
-    if (this.state.issues_to_follow) {
-      issue_list = this.state.issues_to_follow;
+    let issueList = [];
+    if (issuesToFollow) {
+      issueList = issuesToFollow;
     }
 
-    if (this.state.search_query.length > 0) {
-      const search_query_lowercase = this.state.search_query.toLowerCase();
-      issue_list = _.filter(issue_list,
-        one_issue => one_issue.issue_name.toLowerCase().includes(search_query_lowercase) ||
-            one_issue.issue_description.toLowerCase().includes(search_query_lowercase));
+    if (searchQuery.length > 0) {
+      const searchQueryLowercase = searchQuery.toLowerCase();
+      issueList = _.filter(issueList,
+        oneIssue => oneIssue.issue_name.toLowerCase().includes(searchQueryLowercase) ||
+            oneIssue.issue_description.toLowerCase().includes(searchQueryLowercase));
     }
 
-    const issueListForDisplay = issue_list.map(issue => (
+    const issueListForDisplay = issueList.map(issue => (
       <IssueFollowToggleSquare
         key={issue.issue_we_vote_id}
         issueWeVoteId={issue.issue_we_vote_id}
@@ -96,7 +91,7 @@ export default class IssuesToFollow extends Component {
             />
             <br />
             <div className="network-issues-list voter-guide-list card">
-              { this.state.issues_to_follow && this.state.issues_to_follow.length ?
+              { this.state.issuesToFollow && this.state.issuesToFollow.length ?
                 issueListForDisplay :
                 null
               }
