@@ -28,7 +28,6 @@ class BallotStore extends ReduceStore {
   }
 
   get ballotProperties () {
-    console.log(this.ballot);
     if (!this.isLoaded()) { return undefined; }
     const civicId = VoterStore.election_id();
     const props = assign({}, this.getState().ballots[civicId]);

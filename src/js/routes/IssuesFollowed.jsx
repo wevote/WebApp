@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
 import { _ } from "lodash";
@@ -11,21 +10,18 @@ import { renderLog } from "../utils/logging";
 import SearchBar from "../components/Search/SearchBar";
 
 export default class IssuesFollowed extends Component {
-  static propTypes = {
-    children: PropTypes.object,
-    history: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
-      edit_mode: false,
-      issues_followed: [],
+      editMode: false,
+      issuesFollowed: [],
       searchQuery: "",
     };
 
     this.searchFunction = this.searchFunction.bind(this);
     this.clearFunction = this.clearFunction.bind(this);
+    this.onKeyDownEditMode = this.onKeyDownEditMode.bind(this);
+    this.toggleEditMode = this.toggleEditMode.bind(this);
   }
 
   componentDidMount () {
@@ -36,7 +32,7 @@ export default class IssuesFollowed extends Component {
     }
 
     this.setState({
-      issues_followed: IssueStore.getIssuesVoterIsFollowing(),
+      issuesFollowed: IssueStore.getIssuesVoterIsFollowing(),
     });
 
     this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange.bind(this));
@@ -46,25 +42,27 @@ export default class IssuesFollowed extends Component {
     this.issueStoreListener.remove();
   }
 
-  _onIssueStoreChange () {
-    this.setState({
-      issues_followed: IssueStore.getIssuesVoterIsFollowing(),
-    });
+  onKeyDownEditMode (event) {
+    const { editMode } = this.state;
+    const enterAndSpaceKeyCodes = [13, 32];
+    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      this.setState({ editMode: !editMode });
+    }
   }
 
-  getCurrentRoute () {
+  getCurrentRoute () { // eslint-disable-line
     return "/issues_followed";
   }
 
-  toggleEditMode () {
-    this.setState({ edit_mode: !this.state.edit_mode });
+  _onIssueStoreChange () {
+    this.setState({
+      issuesFollowed: IssueStore.getIssuesVoterIsFollowing(),
+    });
   }
 
-  onKeyDownEditMode (event) {
-    const enterAndSpaceKeyCodes = [13, 32];
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      this.setState({ edit_mode: !this.state.edit_mode });
-    }
+  toggleEditMode () {
+    const { editMode } = this.state;
+    this.setState({ editMode: !editMode });
   }
 
   searchFunction (searchQuery) {
@@ -76,10 +74,11 @@ export default class IssuesFollowed extends Component {
   }
 
   render () {
+    const { editMode } = this.state;
     renderLog(__filename);
     let issueList = [];
-    if (this.state.issues_followed) {
-      issueList = this.state.issues_followed;
+    if (this.state.issuesFollowed) {
+      issueList = this.state.issuesFollowed;
     }
 
     if (this.state.searchQuery.length > 0) {
@@ -97,7 +96,7 @@ export default class IssuesFollowed extends Component {
         issueDescription={issue.issue_description}
         issueImageUrl={issue.issue_image_url}
         issueIconLocalPath={issue.issue_icon_local_path}
-        editMode={this.state.edit_mode}
+        editMode={editMode}
         isFollowing
         grid="col-4 col-sm-2"
         readOnly
@@ -112,10 +111,10 @@ export default class IssuesFollowed extends Component {
             <h1 className="h1">Issues You Are Following</h1>
             <a
               className="fa-pull-right"
-              onKeyDown={this.onKeyDownEditMode.bind(this)}
-              onClick={this.toggleEditMode.bind(this)}
+              onKeyDown={this.onKeyDownEditMode}
+              onClick={this.toggleEditMode}
             >
-              {this.state.edit_mode ? "Done Editing" : "Edit"}
+              {editMode ? "Done Editing" : "Edit"}
             </a>
             <p>
               These are the issues you currently follow. We recommend organizations that you might want to learn from

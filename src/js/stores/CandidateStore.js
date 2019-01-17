@@ -8,34 +8,34 @@ import { stringContains } from "../utils/textFormat";
 class CandidateStore extends ReduceStore {
   getInitialState () {
     return {
-      all_cached_candidates: {}, // Dictionary with candidate_we_vote_id as key and the candidate as value
-      all_cached_positions_about_candidates: {}, // Dictionary with candidate_we_vote_id as one key, organization_we_vote_id as the second key, and the position as value
-      number_of_candidates_retrieved_by_office: {}, // Dictionary with office_we_vote_id as key and number of candidates as value
-      position_list_from_advisers_followed_by_voter: {}, // Dictionary with candidate_we_vote_id as key and list of positions as value
+      allCachedCandidates: {}, // Dictionary with candidate_we_vote_id as key and the candidate as value
+      allCachedPositionsAboutCandidates: {}, // Dictionary with candidate_we_vote_id as one key, organization_we_vote_id as the second key, and the position as value
+      numberOfCandidatesRetrievedByOffice: {}, // Dictionary with office_we_vote_id as key and number of candidates as value
+      positionListFromAdvisersFollowedByVoter: {}, // Dictionary with candidate_we_vote_id as key and list of positions as value
     };
   }
 
-  getCandidate (candidate_we_vote_id) {
-    return this.getState().all_cached_candidates[candidate_we_vote_id] || {};
+  getCandidate (candidateId) {
+    return this.getState().allCachedCandidates[candidateId] || {};
   }
 
   getNumberOfCandidatesRetrievedByOffice (officeWeVoteId) {
-    return this.getState().number_of_candidates_retrieved_by_office[officeWeVoteId] || 0;
+    return this.getState().numberOfCandidatesRetrievedByOffice[officeWeVoteId] || 0;
   }
 
-  getPositionList (candidate_we_vote_id) {
-    return this.getState().position_list_from_advisers_followed_by_voter[candidate_we_vote_id] || [];
+  getPositionList (candidateId) {
+    return this.getState().positionListFromAdvisersFollowedByVoter[candidateId] || [];
   }
 
-  getPositionAboutCandidateFromOrganization (candidate_we_vote_id, organization_we_vote_id) {
-    const positions_about_candidate = this.getState().all_cached_positions_about_candidates[candidate_we_vote_id] || [];
-    // console.log("CandidateStore, candidate_we_vote_id: ", candidate_we_vote_id, "organization_we_vote_id: ", organization_we_vote_id);
+  getPositionAboutCandidateFromOrganization (candidateId, orgWeVoteId) {
+    const positionsAboutCandidate = this.getState().allCachedPositionsAboutCandidates[candidateId] || [];
+    // console.log("CandidateStore, candidateId: ", candidateId, "organization_we_vote_id: ", organization_we_vote_id);
     // console.log("CandidateStore, getPositionAboutCandidateFromOrganization: ", positions_about_candidate[organization_we_vote_id]);
-    return positions_about_candidate[organization_we_vote_id] || [];
+    return positionsAboutCandidate[orgWeVoteId] || [];
   }
 
-  isCandidateInStore (candidate_we_vote_id) {
-    const candidate = this.getState().all_cached_candidates[candidate_we_vote_id] || {};
+  isCandidateInStore (candidateId) {
+    const candidate = this.getState().allCachedCandidates[candidateId] || {};
     if (candidate.we_vote_id) {
       return true;
     } else {
@@ -43,8 +43,8 @@ class CandidateStore extends ReduceStore {
     }
   }
 
-  createCandidatePosition (one_candidate_we_vote_id, one_voter_guide) {
-    const candidateObject = this.getCandidate(one_candidate_we_vote_id);
+  createCandidatePosition (oneCandidateWeVoteId, oneVoterGuide) {
+    const candidateObject = this.getCandidate(oneCandidateWeVoteId);
     // console.log("candidateObject: ", candidateObject);
     const onePosition = {
       position_we_vote_id: "", // Currently empty
@@ -57,11 +57,11 @@ class CandidateStore extends ReduceStore {
       kind_of_ballot_item: "CANDIDATE",
 
       // ballot_item_id: 0,
-      ballot_item_we_vote_id: one_candidate_we_vote_id,
+      ballot_item_we_vote_id: oneCandidateWeVoteId,
 
       ballot_item_state_code: candidateObject.state_code,
       contest_office_id: candidateObject.contest_office_id,
-      contest_office_we_vote_id: candidateObject.contest_office_we_vote_id,
+      contestOfficeWeVoteId: candidateObject.contest_office_we_vote_id,
       contest_office_name: candidateObject.contest_office_name,
       is_support: false,
       is_positive_rating: false,
@@ -71,44 +71,46 @@ class CandidateStore extends ReduceStore {
       is_oppose_or_negative_rating: false,
       is_information_only: false,
       is_public_position: true,
-      speaker_display_name: one_voter_guide.voter_guide_display_name,
+      speaker_display_name: oneVoterGuide.voter_guide_display_name,
       vote_smart_rating: "",
       vote_smart_time_span: "",
-      google_civic_election_id: one_voter_guide.google_civic_election_id,
+      google_civic_election_id: oneVoterGuide.google_civic_election_id,
 
       // state_code: "",
       more_info_url: "",
       statement_text: "",
       last_updated: "",
     };
-    // console.log("CandidateStore, voterGuidesToFollowRetrieve, one_position: ", one_position);
+    // console.log("CandidateStore, voterGuidesToFollowRetrieve, onePosition: ", onePosition);
     return onePosition;
   }
 
   reduce (state, action) {
+    const {
+      numberOfCandidatesRetrievedByOffice, allCachedCandidates, positionListFromAdvisersFollowedByVoter,
+      allCachedPositionsAboutCandidates,
+    } = state;
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
 
-    let all_cached_candidates;
-    let all_cached_positions_about_candidates;
-    let ballot_item_we_vote_id;
+    let ballotItemWeVoteId;
     let candidate;
-    let candidate_list;
-    let candidate_we_vote_id;
-    let google_civic_election_id;
-    let incoming_candidate_count = 0;
-    let new_position_list;
-    let office_position_list;
-    let one_position;
-    let position_list_from_advisers_followed_by_voter;
-    let voter_guides;
-    let contest_office_we_vote_id = "";
-    const number_of_candidates_retrieved_by_office = state.number_of_candidates_retrieved_by_office;
-    const organization_we_vote_id = action.res.opinion_maker_we_vote_id;
-    const position_list = action.res.position_list;
-    const is_empty = voter_guides && voter_guides.length === 0;
-    const search_term_exists = action.res.search_string !== "";
-    const ballot_item_we_vote_id_exists = ballot_item_we_vote_id && ballot_item_we_vote_id.length !== 0;
+    let candidateList;
+    let candidateId;
+    let googleCivicElectionId;
+    let incomingCandidateCount = 0;
+    let newPositionList;
+    let officePositionList;
+    let onePosition;
+    let voterGuides;
+    let contestOfficeWeVoteId = "";
+    const organizationWeVoteId = action.res.opinion_maker_we_vote_id;
+    const positionList = action.res.position_list;
+    const isEmpty = voterGuides && voterGuides.length === 0;
+    const searchTermExists = action.res.search_string !== "";
+    const ballotItemWeVoteIdExists = ballotItemWeVoteId && ballotItemWeVoteId.length !== 0;
+
+    // January 2019: Switch cases could be DRYer.
 
     switch (action.type) {
       case "candidateRetrieve":
@@ -122,57 +124,54 @@ class CandidateStore extends ReduceStore {
         }
 
         candidate = action.res;
-        all_cached_candidates = state.all_cached_candidates;
-        all_cached_candidates[candidate.we_vote_id] = candidate;
+        allCachedCandidates[candidate.we_vote_id] = candidate;
         return {
           ...state,
-          all_cached_candidates,
+          allCachedCandidates,
         };
 
       case "candidatesRetrieve":
 
         // Make sure we have information for the office the candidate is running for
         if (action.res.contest_office_we_vote_id) {
-          contest_office_we_vote_id = action.res.contest_office_we_vote_id;
+          contestOfficeWeVoteId = action.res.contest_office_we_vote_id;
           const office = OfficeStore.getOffice(action.res.contest_office_we_vote_id);
           if (!office || !office.ballot_item_display_name) {
             OfficeActions.officeRetrieve(action.res.contest_office_we_vote_id);
           }
         }
 
-        incoming_candidate_count = 0;
-        candidate_list = action.res.candidate_list;
-        all_cached_candidates = state.all_cached_candidates;
-        candidate_list.forEach((one_candidate) => {
-          all_cached_candidates[one_candidate.we_vote_id] = one_candidate;
-          incoming_candidate_count += 1;
+        incomingCandidateCount = 0;
+        candidateList = action.res.candidate_list;
+        candidateList.forEach((one) => {
+          allCachedCandidates[candidate.we_vote_id] = one;
+          incomingCandidateCount += 1;
         });
-        if (contest_office_we_vote_id.length) {
-          number_of_candidates_retrieved_by_office[contest_office_we_vote_id] = incoming_candidate_count;
+        if (contestOfficeWeVoteId.length) {
+          numberOfCandidatesRetrievedByOffice[contestOfficeWeVoteId] = incomingCandidateCount;
         }
 
         return {
           ...state,
-          all_cached_candidates,
-          number_of_candidates_retrieved_by_office,
+          allCachedCandidates,
+          numberOfCandidatesRetrievedByOffice,
         };
 
       case "voterBallotItemsRetrieve":
-        google_civic_election_id = action.res.google_civic_election_id || 0;
-        if (google_civic_election_id !== 0) {
-          all_cached_candidates = state.all_cached_candidates;
-          action.res.ballot_item_list.forEach((one_ballot_item) => {
-            if (one_ballot_item.kind_of_ballot_item === "OFFICE" && one_ballot_item.candidate_list) {
-              candidate_list = one_ballot_item.candidate_list;
-              candidate_list.forEach((one_candidate) => {
-                all_cached_candidates[one_candidate.we_vote_id] = one_candidate;
+        googleCivicElectionId = action.res.google_civic_election_id || 0;
+        if (googleCivicElectionId !== 0) {
+          action.res.ballot_item_list.forEach((ballotItem) => {
+            if (ballotItem.kind_of_ballot_item === "OFFICE" && ballotItem.candidate_list) {
+              candidateList = ballotItem.candidate_list;
+              candidateList.forEach((one) => {
+                allCachedCandidates[one.we_vote_id] = one;
               });
             }
           });
 
           return {
             ...state,
-            all_cached_candidates,
+            allCachedCandidates,
           };
         }
         return state;
@@ -181,40 +180,38 @@ class CandidateStore extends ReduceStore {
 
         // console.log("positionListForBallotItem action.res:", action.res);
         if (action.res.kind_of_ballot_item === "CANDIDATE") {
-          candidate_we_vote_id = action.res.ballot_item_we_vote_id;
-          new_position_list = action.res.position_list;
-          position_list_from_advisers_followed_by_voter = state.position_list_from_advisers_followed_by_voter;
-          position_list_from_advisers_followed_by_voter[candidate_we_vote_id] = new_position_list;
+          candidateId = action.res.ballot_item_we_vote_id;
+          newPositionList = action.res.position_list;
+          positionListFromAdvisersFollowedByVoter[candidateId] = newPositionList;
 
-          // console.log("positionListForBallotItem position_list_from_advisers_followed_by_voter[ballot_item_we_vote_id]:", position_list_from_advisers_followed_by_voter[candidate_we_vote_id]);
+          // console.log("positionListForBallotItem positionListFromAdvisersFollowedByVoter[ballotItemWeVoteId]:", positionListFromAdvisersFollowedByVoter[candidate_we_vote_id]);
           return {
             ...state,
-            position_list_from_advisers_followed_by_voter,
+            positionListFromAdvisersFollowedByVoter,
           };
         } else if (action.res.kind_of_ballot_item === "OFFICE") {
-          office_position_list = action.res.position_list;
-          const office_we_vote_id = action.res.ballot_item_we_vote_id;
-          position_list_from_advisers_followed_by_voter = state.position_list_from_advisers_followed_by_voter;
+          officePositionList = action.res.position_list;
+          const officeWeVoteId = action.res.ballot_item_we_vote_id;
 
           // Now reset the lists for all candidates under this office
-          const candidate_we_vote_ids_under_this_office = BallotStore.getCandidateWeVoteIdsForOfficeWeVoteId(office_we_vote_id);
+          const candidateWeVoteIdsUnderThisOffice = BallotStore.getCandidateWeVoteIdsForOfficeWeVoteId(officeWeVoteId);
 
-          // console.log("candidate_we_vote_ids_under_this_office: ", candidate_we_vote_ids_under_this_office);
-          if (candidate_we_vote_ids_under_this_office) {
-            candidate_we_vote_ids_under_this_office.forEach((candidate_we_vote_id_temp) => {
-              position_list_from_advisers_followed_by_voter[candidate_we_vote_id_temp] = []; // Reset list
+          // console.log("candidateWeVoteIdsUnderThisOffice: ", candidateWeVoteIdsUnderThisOffice);
+          if (candidateWeVoteIdsUnderThisOffice) {
+            candidateWeVoteIdsUnderThisOffice.forEach((id) => {
+              positionListFromAdvisersFollowedByVoter[id] = []; // Reset list
             });
           }
 
-          office_position_list.forEach((one_position_temp) => {
-            candidate_we_vote_id = one_position_temp.ballot_item_we_vote_id;
-            position_list_from_advisers_followed_by_voter[candidate_we_vote_id].push(one_position_temp);
+          officePositionList.forEach((one) => {
+            candidateId = one.ballot_item_we_vote_id;
+            positionListFromAdvisersFollowedByVoter[candidateId].push(one);
           });
 
-          // console.log("positionListForBallotItem OFFICE position_list_from_advisers_followed_by_voter[ballot_item_we_vote_id]:", position_list_from_advisers_followed_by_voter[candidate_we_vote_id]);
+          // console.log("positionListForBallotItem OFFICE positionListFromAdvisersFollowedByVoter[ballot_item_we_vote_id]:", positionListFromAdvisersFollowedByVoter[candidate_we_vote_id]);
           return {
             ...state,
-            position_list_from_advisers_followed_by_voter,
+            positionListFromAdvisersFollowedByVoter,
           };
         } else {
           return state;
@@ -222,25 +219,24 @@ class CandidateStore extends ReduceStore {
 
       case "positionListForOpinionMaker":
         // console.log("CandidateStore, positionListForOpinionMaker response");
-        all_cached_positions_about_candidates = state.all_cached_positions_about_candidates;
 
-        position_list.forEach((one_position_here) => {
-          ballot_item_we_vote_id = one_position_here.ballot_item_we_vote_id;
+        positionList.forEach((one) => {
+          ballotItemWeVoteId = one.ballot_item_we_vote_id;
 
-          if (!all_cached_positions_about_candidates[ballot_item_we_vote_id]) {
-            all_cached_positions_about_candidates[ballot_item_we_vote_id] = {};
+          if (!allCachedPositionsAboutCandidates[ballotItemWeVoteId]) {
+            allCachedPositionsAboutCandidates[ballotItemWeVoteId] = {};
           }
 
-          if (!all_cached_positions_about_candidates[ballot_item_we_vote_id][organization_we_vote_id]) {
-            all_cached_positions_about_candidates[ballot_item_we_vote_id][organization_we_vote_id] = {};
+          if (!allCachedPositionsAboutCandidates[ballotItemWeVoteId][organizationWeVoteId]) {
+            allCachedPositionsAboutCandidates[ballotItemWeVoteId][organizationWeVoteId] = {};
           }
 
           // console.log("CandidateStore one_position_here: ", one_position_here);
-          all_cached_positions_about_candidates[ballot_item_we_vote_id][organization_we_vote_id] = one_position_here;
+          allCachedPositionsAboutCandidates[ballotItemWeVoteId][organizationWeVoteId] = one;
         });
         return {
           ...state,
-          all_cached_positions_about_candidates,
+          allCachedPositionsAboutCandidates,
         };
 
       case "voterGuidesToFollowRetrieve":
@@ -249,270 +245,266 @@ class CandidateStore extends ReduceStore {
         //  voterGuidesToFollowRetrieve does not include the position data
 
         // console.log("CandidateStore voterGuidesToFollowRetrieve");
-        voter_guides = action.res.voter_guides;
-        ballot_item_we_vote_id = action.res.ballot_item_we_vote_id || "";
+        voterGuides = action.res.voter_guides;
+        ballotItemWeVoteId = action.res.ballot_item_we_vote_id || "";
 
-        if (is_empty || search_term_exists) {
+        if (isEmpty || searchTermExists) {
           // Exit this routine
           // console.log("exiting CandidateStore voterGuidesToFollowRetrieve - no voter guides or search results");
           return state;
         }
 
-        all_cached_positions_about_candidates = state.all_cached_positions_about_candidates;
-
-        if (ballot_item_we_vote_id_exists && stringContains("cand", ballot_item_we_vote_id)) {
+        if (ballotItemWeVoteIdExists && stringContains("cand", ballotItemWeVoteId)) {
           // Case 1: voterGuidesToFollowRetrieve focused on one ballot item
-          voter_guides.forEach((one_voter_guide) => {
+          voterGuides.forEach((oneVoterGuide) => {
             // Make sure we have a position in the voter guide
-            if (one_voter_guide.is_support_or_positive_rating || one_voter_guide.is_oppose_or_negative_rating || one_voter_guide.is_information_only) {
-              if (!all_cached_positions_about_candidates[ballot_item_we_vote_id]) {
-                all_cached_positions_about_candidates[ballot_item_we_vote_id] = {};
+            if (oneVoterGuide.is_support_or_positive_rating || oneVoterGuide.is_oppose_or_negative_rating || oneVoterGuide.is_information_only) {
+              if (!allCachedPositionsAboutCandidates[ballotItemWeVoteId]) {
+                allCachedPositionsAboutCandidates[ballotItemWeVoteId] = {};
               }
 
-              if (!all_cached_positions_about_candidates[ballot_item_we_vote_id][one_voter_guide.organization_we_vote_id]) {
-                all_cached_positions_about_candidates[ballot_item_we_vote_id][one_voter_guide.organization_we_vote_id] = {};
+              if (!allCachedPositionsAboutCandidates[ballotItemWeVoteId][oneVoterGuide.organization_we_vote_id]) {
+                allCachedPositionsAboutCandidates[ballotItemWeVoteId][oneVoterGuide.organization_we_vote_id] = {};
               }
 
-              one_position = {
-                position_we_vote_id: one_voter_guide.position_we_vote_id, // Currently empty
-                ballot_item_display_name: one_voter_guide.ballot_item_display_name,
-                ballot_item_image_url_https_large: one_voter_guide.ballot_item_image_url_https_large,
-                ballot_item_image_url_https_medium: one_voter_guide.ballot_item_image_url_https_medium,
-                ballot_item_image_url_https_tiny: one_voter_guide.ballot_item_image_url_https_tiny,
-                ballot_item_twitter_handle: one_voter_guide.ballot_item_twitter_handle,
-                ballot_item_political_party: one_voter_guide.ballot_item_political_party,
+              onePosition = {
+                position_we_vote_id: oneVoterGuide.position_we_vote_id, // Currently empty
+                ballot_item_display_name: oneVoterGuide.ballot_item_display_name,
+                ballot_item_image_url_https_large: oneVoterGuide.ballot_item_image_url_https_large,
+                ballot_item_image_url_https_medium: oneVoterGuide.ballot_item_image_url_https_medium,
+                ballot_item_image_url_https_tiny: oneVoterGuide.ballot_item_image_url_https_tiny,
+                ballot_item_twitter_handle: oneVoterGuide.ballot_item_twitter_handle,
+                ballot_item_political_party: oneVoterGuide.ballot_item_political_party,
                 kind_of_ballot_item: "CANDIDATE",
 
                 // ballot_item_id: 0,
-                ballot_item_we_vote_id,
+                ballotItemWeVoteId,
 
                 // ballot_item_state_code: "",
                 // contest_office_id: 0,
-                // contest_office_we_vote_id: "",
+                // contestOfficeWeVoteId: "",
                 // contest_office_name: "",
-                is_support: one_voter_guide.is_support,
-                is_positive_rating: one_voter_guide.is_positive_rating,
-                is_support_or_positive_rating: one_voter_guide.is_support_or_positive_rating,
-                is_oppose: one_voter_guide.is_oppose,
-                is_negative_rating: one_voter_guide.is_negative_rating,
-                is_oppose_or_negative_rating: one_voter_guide.is_oppose_or_negative_rating,
-                is_information_only: one_voter_guide.is_information_only,
-                is_public_position: one_voter_guide.is_public_position,
-                speaker_display_name: one_voter_guide.speaker_display_name,
-                vote_smart_rating: one_voter_guide.vote_smart_rating,
-                vote_smart_time_span: one_voter_guide.vote_smart_time_span,
-                google_civic_election_id: one_voter_guide.google_civic_election_id,
+                is_support: oneVoterGuide.is_support,
+                is_positive_rating: oneVoterGuide.is_positive_rating,
+                is_support_or_positive_rating: oneVoterGuide.is_support_or_positive_rating,
+                is_oppose: oneVoterGuide.is_oppose,
+                is_negative_rating: oneVoterGuide.is_negative_rating,
+                is_oppose_or_negative_rating: oneVoterGuide.is_oppose_or_negative_rating,
+                is_information_only: oneVoterGuide.is_information_only,
+                is_public_position: oneVoterGuide.is_public_position,
+                speaker_display_name: oneVoterGuide.speaker_display_name,
+                vote_smart_rating: oneVoterGuide.vote_smart_rating,
+                vote_smart_time_span: oneVoterGuide.vote_smart_time_span,
+                googleCivicElectionId: oneVoterGuide.google_civic_election_id,
 
                 // state_code: "",
-                more_info_url: one_voter_guide.more_info_url,
-                statement_text: one_voter_guide.statement_text,
-                last_updated: one_voter_guide.last_updated,
+                more_info_url: oneVoterGuide.more_info_url,
+                statement_text: oneVoterGuide.statement_text,
+                last_updated: oneVoterGuide.last_updated,
               };
-              // console.log("CandidateStore, voterGuidesToFollowRetrieve, one_position: ", one_position);
+              // console.log("CandidateStore, voterGuidesToFollowRetrieve, onePosition: ", onePosition);
 
-              // console.log("CandidateStore one_position: ", one_position);
-              all_cached_positions_about_candidates[ballot_item_we_vote_id][one_voter_guide.organization_we_vote_id] = one_position;
+              // console.log("CandidateStore onePosition: ", onePosition);
+              allCachedPositionsAboutCandidates[ballotItemWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
             }
           });
         } else {
           // Case 2: voterGuidesToFollowRetrieve is general purpose
-          voter_guides.forEach((one_voter_guide) => {
+          voterGuides.forEach((oneVoterGuide) => {
             // Make sure we have a position in the voter guide
-            if (!one_voter_guide.ballot_item_we_vote_ids_this_org_supports ||
-                !one_voter_guide.ballot_item_we_vote_ids_this_org_info_only ||
-                !one_voter_guide.ballot_item_we_vote_ids_this_org_opposes ||
-                !one_voter_guide.organization_we_vote_id) {
+            if (!oneVoterGuide.ballot_item_we_vote_ids_this_org_supports ||
+                !oneVoterGuide.ballot_item_we_vote_ids_this_org_info_only ||
+                !oneVoterGuide.ballot_item_we_vote_ids_this_org_opposes ||
+                !oneVoterGuide.organization_we_vote_id) {
               // If any of these are undefined, ignore this voter_guide
               // console.log("Something wrong with voter guide.");
             } else {
               // Support
-              one_voter_guide.ballot_item_we_vote_ids_this_org_supports.forEach((one_candidate_we_vote_id) => {
-                if (!all_cached_positions_about_candidates[one_candidate_we_vote_id]) {
-                  all_cached_positions_about_candidates[one_candidate_we_vote_id] = {};
+              oneVoterGuide.ballot_item_we_vote_ids_this_org_supports.forEach((oneCandidateWeVoteId) => {
+                if (!allCachedPositionsAboutCandidates[oneCandidateWeVoteId]) {
+                  allCachedPositionsAboutCandidates[oneCandidateWeVoteId] = {};
                 }
 
-                if (!all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id]) {
-                  all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id] = {};
+                if (!allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id]) {
+                  allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id] = {};
                 }
 
-                one_position = all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id];
+                onePosition = allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id];
                 // Only proceed if the position doesn't already exist
-                if (Object.prototype.hasOwnProperty.call(one_position, "ballot_item_we_vote_id")) {
+                if (Object.prototype.hasOwnProperty.call(onePosition, "ballot_item_we_vote_id")) {
                   // Do not proceed
                   // console.log("position already exists");
                 } else {
-                  one_position = this.createCandidatePosition(one_candidate_we_vote_id, one_voter_guide);
+                  onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                   // These are support positions
-                  one_position.is_support = true;
-                  one_position.is_positive_rating = false;
-                  one_position.is_support_or_positive_rating = true;
+                  onePosition.is_support = true;
+                  onePosition.is_positive_rating = false;
+                  onePosition.is_support_or_positive_rating = true;
 
-                  // console.log("CandidateStore support one_position: ", one_position);
-                  all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id] = one_position;
+                  // console.log("CandidateStore support onePosition: ", onePosition);
+                  allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
                 }
               });
               // Information Only
-              one_voter_guide.ballot_item_we_vote_ids_this_org_info_only.forEach((one_candidate_we_vote_id) => {
-                if (!all_cached_positions_about_candidates[one_candidate_we_vote_id]) {
-                  all_cached_positions_about_candidates[one_candidate_we_vote_id] = {};
+              oneVoterGuide.ballot_item_we_vote_ids_this_org_info_only.forEach((oneCandidateWeVoteId) => {
+                if (!allCachedPositionsAboutCandidates[oneCandidateWeVoteId]) {
+                  allCachedPositionsAboutCandidates[oneCandidateWeVoteId] = {};
                 }
 
-                if (!all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id]) {
-                  all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id] = {};
+                if (!allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id]) {
+                  allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id] = {};
                 }
 
-                one_position = all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id];
+                onePosition = allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id];
                 // Only proceed if the position doesn't already exist
-                if (Object.prototype.hasOwnProperty.call(one_position, "ballot_item_we_vote_id")) {
+                if (Object.prototype.hasOwnProperty.call(onePosition, "ballot_item_we_vote_id")) {
                   // Do not proceed
                   // console.log("position already exists");
                 } else {
-                  one_position = this.createCandidatePosition(one_candidate_we_vote_id, one_voter_guide);
+                  onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                   // These are information only positions
-                  one_position.is_information_only = true;
+                  onePosition.is_information_only = true;
 
-                  // console.log("CandidateStore info one_position: ", one_position);
-                  all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id] = one_position;
+                  // console.log("CandidateStore info onePosition: ", onePosition);
+                  allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
                 }
               });
               // Opposition
-              one_voter_guide.ballot_item_we_vote_ids_this_org_opposes.forEach((one_candidate_we_vote_id) => {
-                if (!all_cached_positions_about_candidates[one_candidate_we_vote_id]) {
-                  all_cached_positions_about_candidates[one_candidate_we_vote_id] = {};
+              oneVoterGuide.ballot_item_we_vote_ids_this_org_opposes.forEach((oneCandidateWeVoteId) => {
+                if (!allCachedPositionsAboutCandidates[oneCandidateWeVoteId]) {
+                  allCachedPositionsAboutCandidates[oneCandidateWeVoteId] = {};
                 }
 
-                if (!all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id]) {
-                  all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id] = {};
+                if (!allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id]) {
+                  allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id] = {};
                 }
 
-                one_position = all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id];
+                onePosition = allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id];
                 // Only proceed if the position doesn't already exist
 
-                if (Object.prototype.hasOwnProperty.call(one_position, "ballot_item_we_vote_id")) {
+                if (Object.prototype.hasOwnProperty.call(onePosition, "ballot_item_we_vote_id")) {
                   // Do not proceed
                   // console.log("position already exists");
                 } else {
-                  one_position = this.createCandidatePosition(one_candidate_we_vote_id, one_voter_guide);
+                  onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                   // These are oppose positions
-                  one_position.is_oppose = true;
-                  one_position.is_negative_rating = false;
-                  one_position.is_oppose_or_negative_rating = true;
+                  onePosition.is_oppose = true;
+                  onePosition.is_negative_rating = false;
+                  onePosition.is_oppose_or_negative_rating = true;
 
-                  // console.log("CandidateStore oppose one_position: ", one_position);
-                  all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id] = one_position;
+                  // console.log("CandidateStore oppose onePosition: ", onePosition);
+                  allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
                 }
               });
             }
           });
         }
 
-        // console.log("CandidateStore all_cached_positions_about_candidates:", all_cached_positions_about_candidates);
+        // console.log("CandidateStore allCachedPositionsAboutCandidates:", allCachedPositionsAboutCandidates);
         return {
           ...state,
-          all_cached_positions_about_candidates,
+          allCachedPositionsAboutCandidates,
         };
 
       case "voterGuidesUpcomingRetrieve":
         // This code harvests the support/oppose positions that are passed in along with voter guides
 
         // console.log("CandidateStore voterGuidesUpcomingRetrieve");
-        voter_guides = action.res.voter_guides;
-        ballot_item_we_vote_id = action.res.ballot_item_we_vote_id || "";
+        voterGuides = action.res.voter_guides;
+        ballotItemWeVoteId = action.res.ballot_item_we_vote_id || "";
 
-        all_cached_positions_about_candidates = state.all_cached_positions_about_candidates;
-
-        voter_guides.forEach((one_voter_guide) => {
+        voterGuides.forEach((oneVoterGuide) => {
           // Make sure we have a position in the voter guide
-          if (!one_voter_guide.ballot_item_we_vote_ids_this_org_supports ||
-              !one_voter_guide.ballot_item_we_vote_ids_this_org_info_only ||
-              !one_voter_guide.ballot_item_we_vote_ids_this_org_opposes ||
-              !one_voter_guide.organization_we_vote_id) {
+          if (!oneVoterGuide.ballot_item_we_vote_ids_this_org_supports ||
+              !oneVoterGuide.ballot_item_we_vote_ids_this_org_info_only ||
+              !oneVoterGuide.ballot_item_we_vote_ids_this_org_opposes ||
+              !oneVoterGuide.organization_we_vote_id) {
             // If any of these are undefined, ignore this voter_guide
             // console.log("Something wrong with voter guide.");
           } else {
             // Support
-            one_voter_guide.ballot_item_we_vote_ids_this_org_supports.forEach((one_candidate_we_vote_id) => {
-              if (!all_cached_positions_about_candidates[one_candidate_we_vote_id]) {
-                all_cached_positions_about_candidates[one_candidate_we_vote_id] = {};
+            oneVoterGuide.ballot_item_we_vote_ids_this_org_supports.forEach((oneCandidateWeVoteId) => {
+              if (!allCachedPositionsAboutCandidates[oneCandidateWeVoteId]) {
+                allCachedPositionsAboutCandidates[oneCandidateWeVoteId] = {};
               }
 
-              if (!all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id]) {
-                all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id] = {};
+              if (!allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id]) {
+                allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id] = {};
               }
 
-              one_position = all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id];
+              onePosition = allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id];
               // Only proceed if the position doesn't already exist
-              if (Object.prototype.hasOwnProperty.call(one_position, "ballot_item_we_vote_id")) {
+              if (Object.prototype.hasOwnProperty.call(onePosition, "ballot_item_we_vote_id")) {
                 // Do not proceed
                 // console.log("position already exists");
               } else {
-                one_position = this.createCandidatePosition(one_candidate_we_vote_id, one_voter_guide);
+                onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                 // These are support positions
-                one_position.is_support = true;
-                one_position.is_positive_rating = false;
-                one_position.is_support_or_positive_rating = true;
+                onePosition.is_support = true;
+                onePosition.is_positive_rating = false;
+                onePosition.is_support_or_positive_rating = true;
 
-                // console.log("CandidateStore support one_position: ", one_position);
-                all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id] = one_position;
+                // console.log("CandidateStore support onePosition: ", onePosition);
+                allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
               }
             });
             // Information Only
-            one_voter_guide.ballot_item_we_vote_ids_this_org_info_only.forEach((one_candidate_we_vote_id) => {
-              if (!all_cached_positions_about_candidates[one_candidate_we_vote_id]) {
-                all_cached_positions_about_candidates[one_candidate_we_vote_id] = {};
+            oneVoterGuide.ballot_item_we_vote_ids_this_org_info_only.forEach((oneCandidateWeVoteId) => {
+              if (!allCachedPositionsAboutCandidates[oneCandidateWeVoteId]) {
+                allCachedPositionsAboutCandidates[oneCandidateWeVoteId] = {};
               }
 
-              if (!all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id]) {
-                all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id] = {};
+              if (!allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id]) {
+                allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id] = {};
               }
 
-              one_position = all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id];
+              onePosition = allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id];
               // Only proceed if the position doesn't already exist
-              if (Object.prototype.hasOwnProperty.call(one_position, "ballot_item_we_vote_id")) {
+              if (Object.prototype.hasOwnProperty.call(onePosition, "ballot_item_we_vote_id")) {
                 // Do not proceed
                 // console.log("position already exists");
               } else {
-                one_position = this.createCandidatePosition(one_candidate_we_vote_id, one_voter_guide);
+                onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                 // These are information only positions
-                one_position.is_information_only = true;
+                onePosition.is_information_only = true;
 
-                // console.log("CandidateStore info one_position: ", one_position);
-                all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id] = one_position;
+                // console.log("CandidateStore info onePosition: ", onePosition);
+                allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
               }
             });
             // Opposition
-            one_voter_guide.ballot_item_we_vote_ids_this_org_opposes.forEach((one_candidate_we_vote_id) => {
-              if (!all_cached_positions_about_candidates[one_candidate_we_vote_id]) {
-                all_cached_positions_about_candidates[one_candidate_we_vote_id] = {};
+            oneVoterGuide.ballot_item_we_vote_ids_this_org_opposes.forEach((oneCandidateWeVoteId) => {
+              if (!allCachedPositionsAboutCandidates[oneCandidateWeVoteId]) {
+                allCachedPositionsAboutCandidates[oneCandidateWeVoteId] = {};
               }
 
-              if (!all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id]) {
-                all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id] = {};
+              if (!allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id]) {
+                allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id] = {};
               }
 
-              one_position = all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id];
+              onePosition = allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id];
               // Only proceed if the position doesn't already exist
-              if (Object.prototype.hasOwnProperty.call(one_position, "ballot_item_we_vote_id")) {
+              if (Object.prototype.hasOwnProperty.call(onePosition, "ballot_item_we_vote_id")) {
                 // Do not proceed
                 // console.log("position already exists");
               } else {
-                one_position = this.createCandidatePosition(one_candidate_we_vote_id, one_voter_guide);
+                onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                 // These are oppose positions
-                one_position.is_oppose = true;
-                one_position.is_negative_rating = false;
-                one_position.is_oppose_or_negative_rating = true;
+                onePosition.is_oppose = true;
+                onePosition.is_negative_rating = false;
+                onePosition.is_oppose_or_negative_rating = true;
 
-                // console.log("CandidateStore oppose one_position: ", one_position);
-                all_cached_positions_about_candidates[one_candidate_we_vote_id][one_voter_guide.organization_we_vote_id] = one_position;
+                // console.log("CandidateStore oppose onePosition: ", onePosition);
+                allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
               }
             });
           }
         });
 
-        // console.log("CandidateStore all_cached_positions_about_candidates:", all_cached_positions_about_candidates);
+        // console.log("CandidateStore allCachedPositionsAboutCandidates:", allCachedPositionsAboutCandidates);
         return {
           ...state,
-          all_cached_positions_about_candidates,
+          allCachedPositionsAboutCandidates,
         };
 
       case "error-candidateRetrieve" || "error-positionListForBallotItem":

@@ -16,7 +16,7 @@ class FriendStore extends ReduceStore {
 
   currentFriends () {
     const { currentFriends } = this.getState();
-    return currentFriends || {};
+    return currentFriends || [];
   }
 
   currentFriendsIndexed () {
@@ -41,7 +41,6 @@ class FriendStore extends ReduceStore {
 
   getErrorMessageToShowVoter () {
     const { errorMessageToShowVoter } = this.getState();
-    // this.state.errorMessageToShowVoter = "";  // TODO DALE This may not work
     return errorMessageToShowVoter;
   }
 
@@ -59,7 +58,8 @@ class FriendStore extends ReduceStore {
   }
 
   suggestedFriendList () {
-    return this.getDataFromArr(this.getState().suggestedFriendList) || {};
+    const { suggestedFriendList } = this.getState();
+    return suggestedFriendList || {};
   }
 
   switchToAddFriendsByEmailStep () {
