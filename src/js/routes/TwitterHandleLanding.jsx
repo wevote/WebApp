@@ -151,8 +151,8 @@ export default class TwitterHandleLanding extends Component {
           />
         );
       }
-    } else if (this.state.kindOfOwner === "twitterHandle_NOT_FOUND_IN_WE_VOTE") {
-      // console.log("TwitterHandleLanding twitterHandle_NOT_FOUND_IN_WE_VOTE calling UnknownTwitterAccount");
+    } else if (this.state.kindOfOwner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE") {
+      // console.log("TwitterHandleLanding TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE calling UnknownTwitterAccount");
       return <UnknownTwitterAccount {...this.state} />;
     } else {
       // console.log("render in TwitterHandleLanding  else, this.state.kindOfOwner");
