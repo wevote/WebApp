@@ -46,7 +46,7 @@ export default class ChooseElectionForVoterGuide extends Component {
 
   onBallotStoreChange () {
     console.log("ChooseElectionForVoterGuide onBallotStoreChange");
-    if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
+    if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
       // Ballot is found but ballot is empty. We want to stay put.
       console.log("onBallotStoreChange: ballot_with_all_items is empty");
     }

@@ -16,7 +16,7 @@ export default class FriendInvitationToggle extends Component {
     this.state = {
       other_voter_we_vote_id: "",
       voter: {
-        we_vote_id: "",
+        weVoteId: "",
       },
     };
   }
@@ -35,7 +35,7 @@ export default class FriendInvitationToggle extends Component {
 
   _onFriendStoreChange () {
     this.setState({
-      is_friend: FriendStore.isFriend(this.props.other_voter_we_vote_id),
+      isFriend: FriendStore.isFriend(this.props.other_voter_we_vote_id),
     });
   }
 
@@ -49,9 +49,9 @@ export default class FriendInvitationToggle extends Component {
     renderLog(__filename);
     if (!this.state) { return <div />; }
     const other_voter_we_vote_id = this.props.other_voter_we_vote_id;
-    const is_friend = this.state.is_friend;
-    // console.log("FriendInvitationToggle, my voter_we_vote_id:", this.state.voter.we_vote_id, ", other_voter_we_vote_id:", other_voter_we_vote_id, ", is_friend:", is_friend);
-    const is_looking_at_self = this.state.voter.we_vote_id === other_voter_we_vote_id;
+    const { isFriend } = this.state;
+    // console.log("FriendInvitationToggle, my voter_we_vote_id:", this.state.voter.we_vote_id, ", other_voter_we_vote_id:", other_voter_we_vote_id, ", isFriend:", isFriend);
+    const is_looking_at_self = this.state.voter.weVoteId === other_voter_we_vote_id;
     // You should not be able to friend yourself
     if (is_looking_at_self) {
       // console.log("FriendInvitationToggle, is_looking_at_self");
@@ -64,7 +64,7 @@ export default class FriendInvitationToggle extends Component {
 
     return (
       <span className="u-margin-left-right--xs" style={floatRight}>
-        {is_friend ? (
+        {isFriend ? (
           <Button
             variant="warning"
             size="small"

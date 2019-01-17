@@ -53,7 +53,7 @@ export default class BallotSearchResults extends Component {
   }
 
   onBallotStoreChange () {
-    // console.log("BallotSearchResults onBallotStoreChange, BallotStore.ballot_properties: ", BallotStore.ballot_properties);
+    // console.log("BallotSearchResults onBallotStoreChange, BallotStore.ballotProperties: ", BallotStore.ballotProperties);
     this.setState({
       ballotItemSearchResultsList: BallotStore.ballotItemSearchResultsList(),
     });

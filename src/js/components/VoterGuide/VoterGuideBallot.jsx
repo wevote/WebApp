@@ -158,13 +158,13 @@ export default class VoterGuideBallot extends Component {
     ballotLocationShortcut = ballotLocationShortcut === "none" ? "" : ballotLocationShortcut;
     let googleCivicElectionId = 0;
 
-    // console.log("componentDidMount, BallotStore.ballot_properties: ", BallotStore.ballot_properties);
+    // console.log("componentDidMount, BallotStore.ballotProperties: ", BallotStore.ballotProperties);
     if (googleCivicElectionIdFromUrl !== 0) {
       googleCivicElectionIdFromUrl = parseInt(googleCivicElectionIdFromUrl, 10);
 
       // googleCivicElectionId = googleCivicElectionIdFromUrl;
-    } else if (BallotStore.ballot_properties && BallotStore.ballot_properties.google_civic_election_id) {
-      googleCivicElectionId = BallotStore.ballot_properties.google_civic_election_id;
+    } else if (BallotStore.ballotProperties && BallotStore.ballotProperties.google_civic_election_id) {
+      googleCivicElectionId = BallotStore.ballotProperties.google_civic_election_id;
     }
 
     // console.log("ballotReturnedWeVoteId: ", ballotReturnedWeVoteId, ", ballotLocationShortcut:", ballotLocationShortcut, ", googleCivicElectionIdFromUrl: ", googleCivicElectionIdFromUrl);
@@ -207,8 +207,8 @@ export default class VoterGuideBallot extends Component {
         historyPush(ballotElectionUrl2);
       }
     // DALE NOTE 2018-1-18 Commented this out because it will take voter away from voter guide. Needs further testing.
-    // else if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false){ // No ballot found
-    //   // console.log("if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false");
+    // else if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false){ // No ballot found
+    //   // console.log("if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false");
     //   historyPush("/settings/location");
     } else if (ballotWithAllItemsByFilterType === undefined) {
       // console.log("WebApp doesn't know the election or have ballot data, so ask the API server to return best guess");
@@ -518,10 +518,10 @@ export default class VoterGuideBallot extends Component {
   }
 
   onBallotStoreChange () {
-    // console.log("VoterGuideBallot.jsx onBallotStoreChange, BallotStore.ballot_properties: ", BallotStore.ballot_properties);
+    // console.log("VoterGuideBallot.jsx onBallotStoreChange, BallotStore.ballotProperties: ", BallotStore.ballotProperties);
     const completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || "";
     if (this.state.mounted) {
-      if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
+      if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
         // Ballot is found but ballot is empty. We want to stay put.
         // console.log("onBallotStoreChange: ballotWithAllItemsByFilterType is empty");
       } else {
@@ -532,11 +532,11 @@ export default class VoterGuideBallot extends Component {
       }
     }
 
-    if (BallotStore.ballot_properties) {
+    if (BallotStore.ballotProperties) {
       this.setState({
-        ballotReturnedWeVoteId: BallotStore.ballot_properties.ballot_returned_we_vote_id || "",
-        ballotLocationShortcut: BallotStore.ballot_properties.ballot_location_shortcut || "",
-        googleCivicElectionId: parseInt(BallotStore.ballot_properties.google_civic_election_id, 10),
+        ballotReturnedWeVoteId: BallotStore.ballotProperties.ballot_returned_we_vote_id || "",
+        ballotLocationShortcut: BallotStore.ballotProperties.ballot_location_shortcut || "",
+        googleCivicElectionId: parseInt(BallotStore.ballotProperties.google_civic_election_id, 10),
       });
     }
     this.setState({
@@ -545,9 +545,9 @@ export default class VoterGuideBallot extends Component {
     });
 
     if (Object.keys(this.state.ballotItemUnfurledTracker).length === 0) {
-      // console.log("current tracker in Ballotstore", BallotStore.current_ballot_item_unfurled_tracker)
+      // console.log("current tracker in Ballotstore", BallotStore.currentBallotItemUnfurledTracker)
       this.setState({
-        ballotItemUnfurledTracker: BallotStore.current_ballot_item_unfurled_tracker,
+        ballotItemUnfurledTracker: BallotStore.currentBallotItemUnfurledTracker,
       });
     }
   }
@@ -747,7 +747,7 @@ export default class VoterGuideBallot extends Component {
 
     const voterAddressMissing = this.state.location === null;
 
-    // const ballot_caveat = BallotStore.ballot_properties.ballot_caveat; // ballot_properties might be undefined
+    // const ballot_caveat = BallotStore.ballotProperties.ballot_caveat; // ballotProperties might be undefined
     const electionName = BallotStore.currentBallotElectionName;
     const electionDayText = BallotStore.currentBallotElectionDate;
     const sourcePollingLocationWeVoteId = BallotStore.currentBallotPollingLocationSource;
@@ -805,17 +805,17 @@ export default class VoterGuideBallot extends Component {
       voterSpecificBallotFromGoogleCivic = true;
     }
 
-    if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_location_display_name) {
-      // console.log("BallotStore.ballot_properties:", BallotStore.ballot_properties);
-      ballotLocationDisplayName = BallotStore.ballot_properties.ballot_location_display_name;
+    if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_location_display_name) {
+      // console.log("BallotStore.ballotProperties:", BallotStore.ballotProperties);
+      ballotLocationDisplayName = BallotStore.ballotProperties.ballot_location_display_name;
     } else if (voterBallotLocation && voterBallotLocation.ballot_location_display_name) {
       // Get the location name from the VoterStore address object
       // console.log("voterBallotLocation:", voterBallotLocation);
       ballotLocationDisplayName = voterBallotLocation.ballot_location_display_name;
     }
 
-    if (BallotStore.ballot_properties && BallotStore.ballot_properties.substituted_address_nearby) {
-      substitutedAddressNearby = BallotStore.ballot_properties.substituted_address_nearby;
+    if (BallotStore.ballotProperties && BallotStore.ballotProperties.substituted_address_nearby) {
+      substitutedAddressNearby = BallotStore.ballotProperties.substituted_address_nearby;
     } else if (voterBallotLocation && voterBallotLocation.text_for_map_search) {
       // Get the location from the VoterStore address object
       substitutedAddressNearby = voterBallotLocation.text_for_map_search;

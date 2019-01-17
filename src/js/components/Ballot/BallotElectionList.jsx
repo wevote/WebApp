@@ -25,22 +25,22 @@ export default class BallotElectionList extends Component {
 
   constructor (props) {
     super(props);
-    let prior_election_id = "";
-    if (BallotStore.ballot_properties) {
-      prior_election_id = BallotStore.ballot_properties.google_civic_election_id;
+    let priorElectionId = "";
+    if (BallotStore.ballotProperties) {
+      priorElectionId = BallotStore.ballotProperties.google_civic_election_id;
     } else if (VoterStore.election_id()) {
-      prior_election_id = VoterStore.election_id();
+      priorElectionId = VoterStore.election_id();
     }
-    const state_code = VoterStore.getStateCodeFromIPAddress();
+    const stateCode = VoterStore.getStateCodeFromIPAddress();
 
     this.state = {
       loading_new_ballot_items: false,
-      prior_election_id,
+      priorElectionId,
       show_more_upcoming_elections: false,
       show_more_prior_elections: false,
       show_prior_elections_list: false,
-      state_code,
-      state_name: convertStateCodeToStateText(state_code),
+      stateCode,
+      state_name: convertStateCodeToStateText(stateCode),
       updated_election_id: "",
     };
 
@@ -79,11 +79,11 @@ export default class BallotElectionList extends Component {
 
     if (this.props.toggleFunction) {
       // console.log("goToDifferentElection, loading_new_ballot_items: ", this.state.loading_new_ballot_items);
-      // console.log("goToDifferentElection, prior_election_id: ", this.state.prior_election_id, ", updated_election_id: ", this.state.updated_election_id);
+      // console.log("goToDifferentElection, priorElectionId: ", this.state.priorElectionId, ", updated_election_id: ", this.state.updated_election_id);
       this.setState({
         destinationUrlForHistoryPush,
         loading_new_ballot_items: true,
-        prior_election_id: BallotStore.ballot_properties.google_civic_election_id || VoterStore.election_id() || 0,
+        priorElectionId: BallotStore.ballotProperties.google_civic_election_id || VoterStore.election_id() || 0,
         updated_election_id: 0,
       });
     } else {
@@ -97,17 +97,17 @@ export default class BallotElectionList extends Component {
   }
 
   onBallotStoreChange () {
-    // console.log("BallotElectionList.jsx onBallotStoreChange, prior_election_id: ", this.state.prior_election_id, ", updated_election_id: ", this.state.updated_election_id);
-    // console.log("BallotStore.ballot_properties: ", BallotStore.ballot_properties);
-    if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
+    // console.log("BallotElectionList.jsx onBallotStoreChange, priorElectionId: ", this.state.priorElectionId, ", updated_election_id: ", this.state.updated_election_id);
+    // console.log("BallotStore.ballotProperties: ", BallotStore.ballotProperties);
+    if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
       // Ballot is found but ballot is empty. We want to stay put.
       // console.log("onBallotStoreChange: ballot_with_all_items is empty");
     }
-    if (this.state.prior_election_id !== this.state.updated_election_id && this.state.loading_new_ballot_items && this.props.toggleFunction) {
+    if (this.state.priorElectionId !== this.state.updated_election_id && this.state.loading_new_ballot_items && this.props.toggleFunction) {
       // console.log("onBallotStoreChange--------- loading_new_ballot_items:", this.state.loading_new_ballot_items);
       this.setState({
         loading_new_ballot_items: false,
-        updated_election_id: BallotStore.ballot_properties.google_civic_election_id,
+        updated_election_id: BallotStore.ballotProperties.google_civic_election_id,
       });
       // console.log("onBallotStoreChange--------- this.props.toggleFunction()");
       this.props.toggleFunction(this.state.destinationUrlForHistoryPush);
@@ -115,16 +115,16 @@ export default class BallotElectionList extends Component {
   }
 
   onVoterStoreChange () {
-    // console.log("BallotElectionList.jsx onVoterStoreChange, VoterStore.election_id(): ", VoterStore.election_id(), ", prior_election_id: ", this.state.prior_election_id, ", updated_election_id: ", this.state.updated_election_id);
-    // if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found && BallotStore.ballot && BallotStore.ballot.length !== 0) {
-    if (VoterStore.election_id() && VoterStore.election_id() !== this.state.prior_election_id) {
+    // console.log("BallotElectionList.jsx onVoterStoreChange, VoterStore.election_id(): ", VoterStore.election_id(), ", priorElectionId: ", this.state.priorElectionId, ", updated_election_id: ", this.state.updated_election_id);
+    // if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found && BallotStore.ballot && BallotStore.ballot.length !== 0) {
+    if (VoterStore.election_id() && VoterStore.election_id() !== this.state.priorElectionId) {
       if (this.state.loading_new_ballot_items && this.props.toggleFunction) {
         // console.log("onVoterStoreChange--------- loading_new_ballot_items:", this.state.loading_new_ballot_items);
-        const state_code = VoterStore.getStateCodeFromIPAddress();
+        const stateCode = VoterStore.getStateCodeFromIPAddress();
         this.setState({
           loading_new_ballot_items: false,
-          state_code,
-          state_name: convertStateCodeToStateText(state_code),
+          stateCode,
+          state_name: convertStateCodeToStateText(stateCode),
           updated_election_id: VoterStore.election_id(),
         });
         // console.log("onVoterStoreChange--------- this.props.toggleFunction()");

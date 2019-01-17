@@ -59,12 +59,12 @@ export default class VoterGuidePositions extends Component {
     ballot_location_shortcut = ballot_location_shortcut.trim();
     ballot_location_shortcut = ballot_location_shortcut === "none" ? "" : ballot_location_shortcut;
     let google_civic_election_id = 0;
-    // console.log("componentDidMount, BallotStore.ballot_properties: ", BallotStore.ballot_properties);
+    // console.log("componentDidMount, BallotStore.ballotProperties: ", BallotStore.ballotProperties);
     if (google_civic_election_id_from_url !== 0) {
       google_civic_election_id_from_url = parseInt(google_civic_election_id_from_url, 10);
       // google_civic_election_id = google_civic_election_id_from_url;
-    } else if (BallotStore.ballot_properties && BallotStore.ballot_properties.google_civic_election_id) {
-      google_civic_election_id = BallotStore.ballot_properties.google_civic_election_id;
+    } else if (BallotStore.ballotProperties && BallotStore.ballotProperties.google_civic_election_id) {
+      google_civic_election_id = BallotStore.ballotProperties.google_civic_election_id;
     }
 
     // console.log("ballot_returned_we_vote_id: ", ballot_returned_we_vote_id, ", ballot_location_shortcut:", ballot_location_shortcut, ", google_civic_election_id_from_url: ", google_civic_election_id_from_url);
@@ -104,8 +104,8 @@ export default class VoterGuidePositions extends Component {
       }
     }
     // DALE NOTE 2018-1-18 Commented this out because it will take voter away from voter guide. Needs further testing.
-    // else if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false) { // No ballot found
-    //   // console.log("if (BallotStore.ballot_properties && BallotStore.ballot_properties.ballot_found === false");
+    // else if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false) { // No ballot found
+    //   // console.log("if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found === false");
     //   historyPush("/settings/location");
     // }
 
