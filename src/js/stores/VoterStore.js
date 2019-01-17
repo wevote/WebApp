@@ -523,6 +523,10 @@ class VoterStore extends ReduceStore {
         VoterActions.voterEmailAddressRetrieve();
         return this.resetState();
 
+      case "voterSplitIntoTwoAccounts":
+        VoterActions.voterRetrieve();
+        return state;
+
       case "voterTwitterSaveToCurrentAccount":
         VoterActions.voterRetrieve();
         return {

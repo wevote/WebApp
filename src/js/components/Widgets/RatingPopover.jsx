@@ -5,14 +5,14 @@ import { renderLog } from "../../utils/logging";
 
 export default class RatingPopover extends Component {
   static propTypes = {
-    show_description: PropTypes.bool,
-    toggle_description: PropTypes.func,
+    showDescription: PropTypes.bool,
+    toggleDescription: PropTypes.func,
   };
 
   render () {
     renderLog(__filename);
 
-    const { show_description, toggle_description } = this.props;
+    const { showDescription, toggleDescription } = this.props;
 
     const ratingDescription = (
       <div className="u-margin-top--xs">
@@ -44,12 +44,12 @@ export default class RatingPopover extends Component {
 
     return (
       <div className="card-main__description card-main__rating-description u-margin-top--xs">
-        <div onClick={toggle_description} className="card-main__rating-description__header u-cursor--pointer">
+        <div onClick={toggleDescription} className="card-main__rating-description__header u-cursor--pointer">
         (rating source: VoteSmart.org)
           {" "}
-          { show_description ? <span className="glyphicon glyphicon-triangle-bottom d-print-none" /> : null }
+          { showDescription ? <span className="glyphicon glyphicon-triangle-bottom d-print-none" /> : null }
         </div>
-        { show_description ? ratingDescription : null }
+        { showDescription ? ratingDescription : null }
       </div>
     );
   }

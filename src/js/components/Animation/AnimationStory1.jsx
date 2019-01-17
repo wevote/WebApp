@@ -5,8 +5,6 @@ import { renderLog } from "../../utils/logging";
 
 export default class AnimationStory1 extends Component {
   static propTypes = {
-    history: PropTypes.object,
-    timeline1: PropTypes.object,
     next: PropTypes.func,
   };
 

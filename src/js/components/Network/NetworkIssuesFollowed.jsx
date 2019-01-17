@@ -54,7 +54,7 @@ export default class NetworkIssuesFollowed extends Component {
     renderLog(__filename);
     let issueList = [];
     if (this.state.issuesFollowed) {
-      issueList = this.state.issues_followed;
+      issueList = this.state.issuesFollowed;
     }
 
     const ISSUES_TO_SHOW = 6;
