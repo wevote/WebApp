@@ -2,10 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ImageHandler from "../ImageHandler";
 import IssueFollowToggleButton from "./IssueFollowToggleButton";
-import IssueStore from "../../stores/IssueStore";
 import LoadingWheel from "../LoadingWheel";
 import { renderLog } from "../../utils/logging";
-import OrganizationStore from "../../stores/OrganizationStore";
 import ReadMore from "../Widgets/ReadMore";
 
 export default class IssueCard extends Component {
@@ -18,7 +16,7 @@ export default class IssueCard extends Component {
     turnOffDescription: PropTypes.bool,
     turnOffIssueImage: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
-    we_vote_id: PropTypes.string,
+    we_vote_id: PropTypes.string, // not being used within this component, check rest of codebase for how IssueCard is being called
   };
 
   constructor (props) {
@@ -26,8 +24,6 @@ export default class IssueCard extends Component {
     this.state = {
       ballotItemWeVoteId: "",
       followToggleOn: false,
-      organization_position: {},
-      organization_positions_requested: false,
       issueImageSize: "SMALL", // We support SMALL, MEDIUM, LARGE
       issue_we_vote_id: "",
     };
@@ -35,13 +31,11 @@ export default class IssueCard extends Component {
 
   componentDidMount () {
     // console.log("IssueCard, componentDidMount, this.props:", this.props);
-    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
-    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     if (this.props.issue && this.props.issue.issue_we_vote_id) {
       const imageSizes = new Set(["SMALL", "MEDIUM", "LARGE"]);
       let issueImageSize = "SMALL"; // Set the default
       if (imageSizes.has(this.props.issueImageSize)) {
-        issueImageSize = this.props.issueImageSize;
+        ({ issueImageSize } = this.props);
       }
       this.setState({
         ballotItemWeVoteId: this.props.ballotItemWeVoteId,
@@ -59,7 +53,7 @@ export default class IssueCard extends Component {
       const imageSizes = new Set(["SMALL", "MEDIUM", "LARGE"]);
       let issueImageSize = "SMALL"; // Set the default
       if (imageSizes.has(nextProps.issueImageSize)) {
-        issueImageSize = nextProps.issueImageSize;
+        ({ issueImageSize } = nextProps);
       }
       this.setState({
         ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
@@ -71,27 +65,16 @@ export default class IssueCard extends Component {
     }
   }
 
-  onIssueStoreChange () {
-  }
-
-  onOrganizationStoreChange () {
-  }
-
-  componentWillUnmount () {
-    this.issueStoreListener.remove();
-    this.organizationStoreListener.remove();
-  }
-
   render () {
     renderLog(__filename);
     if (!this.state.issue_we_vote_id.length) {
       return <div className="card-popover__width--minimum">{LoadingWheel}</div>;
     }
 
-    const { issue_description, issue_name } = this.state.issue;
+    let { issue_description: issueDescription, issue_name: issueDisplayName } = this.state.issue;
 
-    const issueDisplayName = issue_name || "";
-    const issueDescription = issue_description || "";
+    issueDisplayName = issueDisplayName || "";
+    issueDescription = issueDescription || "";
 
     let issueImage;
     let numberOfLines;
