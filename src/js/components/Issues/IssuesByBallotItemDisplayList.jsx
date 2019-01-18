@@ -17,31 +17,31 @@ export default class IssuesByBallotItemDisplayList extends Component {
   static propTypes = {
     ballotItemDisplayName: PropTypes.string,
     ballotItemWeVoteId: PropTypes.string.isRequired,
-    currentBallotIdInUrl: PropTypes.string,
+    currentBallotIdInUrl: PropTypes.string, // unused
     endorsementsLabelHidden: PropTypes.bool,
     issuesListHidden: PropTypes.bool,
-    overlayTriggerOnClickOnly: PropTypes.bool,
-    popoverBottom: PropTypes.bool,
-    urlWithoutHash: PropTypes.string,
+    overlayTriggerOnClickOnly: PropTypes.bool, // unused
+    popoverBottom: PropTypes.bool, // unused
+    urlWithoutHash: PropTypes.string, // unused
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      ballotItemDisplayName: false,
+      // ballotItemDisplayName: false,
       canScrollDesktop: false,
       canScrollMobile: false,
       canScrollLeftDesktop: false,
       canScrollLeftMobile: false,
-      canScrollRightDesktop: true,
-      canScrollRightMobile: true,
-      issuesUnderThisBallotItem: [],
+      // canScrollRightDesktop: true,
+      // canScrollRightMobile: true,
+      // issuesUnderThisBallotItem: [],
       issuesUnderThisBallotItemVoterIsFollowing: [],
       issuesUnderThisBallotItemVoterIsNotFollowing: [],
-      issuesVoterIsFollowing: [],
+      // issuesVoterIsFollowing: [],
       maximumNumberOfIssuesToDisplay: 26,
-      showModal: false,
-      transitioning: false,
+      // showModal: false,
+      // transitioning: false,
     };
     this.closeIssuesLabelPopover = this.closeIssuesLabelPopover.bind(this);
   }
@@ -57,17 +57,17 @@ export default class IssuesByBallotItemDisplayList extends Component {
     this.setScrollState();
     this.setState({
       ballotItemWeVoteId: this.props.ballotItemWeVoteId,
-      ballotItemDisplayName: this.props.ballotItemDisplayName ? this.props.ballotItemDisplayName : "this candidate",
-      issuesUnderThisBallotItem: IssueStore.getIssuesUnderThisBallotItem(
-        this.props.ballotItemWeVoteId,
-      ),
+      // ballotItemDisplayName: this.props.ballotItemDisplayName ? this.props.ballotItemDisplayName : "this candidate",
+      // issuesUnderThisBallotItem: IssueStore.getIssuesUnderThisBallotItem(
+      //   this.props.ballotItemWeVoteId,
+      // ),
       issuesUnderThisBallotItemVoterIsFollowing: IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(
         this.props.ballotItemWeVoteId,
       ),
       issuesUnderThisBallotItemVoterIsNotFollowing: IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(
         this.props.ballotItemWeVoteId,
       ),
-      issuesVoterIsFollowing: IssueStore.getIssuesVoterIsFollowing(),
+      // issuesVoterIsFollowing: IssueStore.getIssuesVoterIsFollowing(),
     });
   }
 
@@ -75,17 +75,17 @@ export default class IssuesByBallotItemDisplayList extends Component {
     this.setScrollState();
     this.setState({
       ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
-      ballotItemDisplayName: nextProps.ballotItemDisplayName ? nextProps.ballotItemDisplayName : "this candidate",
-      issuesUnderThisBallotItem: IssueStore.getIssuesUnderThisBallotItem(
-        nextProps.ballotItemWeVoteId,
-      ),
+      // ballotItemDisplayName: nextProps.ballotItemDisplayName ? nextProps.ballotItemDisplayName : "this candidate",
+      // issuesUnderThisBallotItem: IssueStore.getIssuesUnderThisBallotItem(
+      //   nextProps.ballotItemWeVoteId,
+      // ),
       issuesUnderThisBallotItemVoterIsFollowing: IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(
         nextProps.ballotItemWeVoteId,
       ),
       issuesUnderThisBallotItemVoterIsNotFollowing: IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(
         nextProps.ballotItemWeVoteId,
       ),
-      issuesVoterIsFollowing: IssueStore.getIssuesVoterIsFollowing(),
+      // issuesVoterIsFollowing: IssueStore.getIssuesVoterIsFollowing(),
     });
   }
 
@@ -100,23 +100,23 @@ export default class IssuesByBallotItemDisplayList extends Component {
 
   onIssueStoreChange () {
     this.setScrollState();
-    this.setState({
+    this.setState(prevState => ({
       issuesUnderThisBallotItem: IssueStore.getIssuesUnderThisBallotItem(
-        this.state.ballotItemWeVoteId,
+        prevState.ballotItemWeVoteId,
       ),
       issuesUnderThisBallotItemVoterIsFollowing: IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(
-        this.state.ballotItemWeVoteId,
+        prevState.ballotItemWeVoteId,
       ),
       issuesUnderThisBallotItemVoterIsNotFollowing: IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(
-        this.state.ballotItemWeVoteId,
+        prevState.ballotItemWeVoteId,
       ),
       issuesVoterIsFollowing: IssueStore.getIssuesVoterIsFollowing(),
-    });
+    }));
   }
 
   onVoterGuideStoreChange () {
     // We just want to trigger a re-render
-    this.setState({ transitioning: false });
+    // this.setState({ transitioning: false });
   }
 
   scrollLeft (visibleTag) {
@@ -136,12 +136,12 @@ export default class IssuesByBallotItemDisplayList extends Component {
         if (visibleTag === "desktop") {
           this.setState({
             canScrollLeftDesktop: newPosition > 0,
-            canScrollRightDesktop: true,
+            // canScrollRightDesktop: true,
           });
         } else {
           this.setState({
             canScrollLeftMobile: newPosition > 0,
-            canScrollRightMobile: true,
+            // canScrollRightMobile: true,
           });
         }
       },
@@ -164,12 +164,12 @@ export default class IssuesByBallotItemDisplayList extends Component {
         if (visibleTag === "desktop") {
           this.setState({
             canScrollLeftDesktop: newPosition > 0,
-            canScrollRightDesktop: position + width === newPosition,
+            // canScrollRightDesktop: position + width === newPosition,
           });
         } else {
           this.setState({
             canScrollLeftMobile: newPosition > 0,
-            canScrollRightMobile: position + width === newPosition,
+            // canScrollRightMobile: position + width === newPosition,
           });
         }
       },
