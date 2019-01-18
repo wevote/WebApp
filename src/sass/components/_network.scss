@@ -5,7 +5,7 @@ $social-left-padding-mobile: 40px;
 $social-right-padding-mobile: 9px;
 $network-card-margin-mobile: (-$space-md) (-$space-md) $space-none (-$space-md);
 $description-padding: 10px;
-$backdrop-border-radius: 0 0 8px 8px;
+$backdrop-border-radius: 8px;
 
 .buttons-container {
   display: flex;
@@ -52,11 +52,14 @@ $backdrop-border-radius: 0 0 8px 8px;
 // Network: list of issues to follow
 
 .network-issues-list {
-  padding: $space-none;
+  padding: $space-xs;
+  display: flex;
+  flex-flow: row wrap;
 
   .intro-modal__square {
     float: left;
     color: $white;
+    text-align: center;
   }
 
   .intro-modal__square-name {
@@ -65,22 +68,22 @@ $backdrop-border-radius: 0 0 8px 8px;
     word-wrap: break-word;
     color: $white;
     text-shadow: 1px 1px 2px rgba($black, .6);
-    background: rgba(0, 0, 0, .5);
+    background: rgba(0, 0, 0, .45);
     padding: $description-padding;
-    width: calc(100% - 4px);
+    width: 100%;
     border-radius: $backdrop-border-radius;
+    border: 2px solid $white;
+    transition: all .2s ease-in;
+    &:hover {
+      border: 2px solid $brand-blue;
+      background: rgba(0, 0, 0, .55);
+    }
 
     @include breakpoints (xsmall-bootstrap medium-bootstrap) {
-      right: 8px;
-      bottom: 8px;
-      left: 8px;
       font-size: .9rem;
     }
 
     @include breakpoints (iphone5 mid-small) {
-      right: 10px;
-      bottom: 10px;
-      left: 10px;
       font-size: .9rem;
       -webkit-hyphens: auto;
       -moz-hyphens: auto;
@@ -89,9 +92,6 @@ $backdrop-border-radius: 0 0 8px 8px;
     }
 
     @include breakpoints (max iphone5) {
-      right: 8px;
-      bottom: 8px;
-      left: 8px;
       font-size: .85rem;
       -webkit-hyphens: auto;
       -moz-hyphens: auto;

@@ -11,7 +11,6 @@ const SKIP_BUTTON_TEXT = 'Skip';
 
 export default class BallotIntroFollowIssues extends Component {
   static propTypes = {
-    // history: PropTypes.object,
     next: PropTypes.func.isRequired,
   };
 
@@ -20,7 +19,7 @@ export default class BallotIntroFollowIssues extends Component {
     this.state = {
       allIssues: [],
       followedIssues: [],
-      issuesVoterCanFollow: [],
+      // issuesVoterCanFollow: [],
       nextButtonText: NEXT_BUTTON_TEXT,
       numRequiredIssues: 3,
     };
@@ -40,7 +39,7 @@ export default class BallotIntroFollowIssues extends Component {
   componentDidMount () {
     this.setState({
       allIssues: IssueStore.getAllIssues(),
-      issuesVoterCanFollow: IssueStore.getIssuesVoterCanFollow(),
+      // issuesVoterCanFollow: IssueStore.getIssuesVoterCanFollow(),
       followedIssues: IssueStore.getIssuesVoterIsFollowing(),
     });
     this.updateNextState();
@@ -54,14 +53,16 @@ export default class BallotIntroFollowIssues extends Component {
   onIssueStoreChange () {
     // update followedIssues only for first time, subsequent updates will be made locally
     if (this.state.followedIssues.length) {
+      /*
       this.setState({
         issuesVoterCanFollow: IssueStore.getIssuesVoterCanFollow(),
       },
       this.updateNextState);
+      */
     } else {
       this.setState({
         allIssues: IssueStore.getAllIssues(),
-        issuesVoterCanFollow: IssueStore.getIssuesVoterCanFollow(),
+        // issuesVoterCanFollow: IssueStore.getIssuesVoterCanFollow(),
         followedIssues: IssueStore.getIssuesVoterIsFollowing(),
       },
       this.updateNextState);
