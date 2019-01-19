@@ -30,9 +30,9 @@ export default class TwitterHandleLanding extends Component {
   }
 
   componentDidMount () {
-    // console.log("TwitterHandleLanding componentDidMount, this.props.params.twitterHandle: " + this.props.params.twitterHandle);
-    this.setState({ twitterHandle: this.props.params.twitterHandle });
-    TwitterActions.twitterIdentityRetrieve(this.props.params.twitterHandle);
+    // console.log("TwitterHandleLanding componentDidMount, this.props.params.twitter_handle: " + this.props.params.twitter_handle);
+    this.setState({ twitterHandle: this.props.params.twitter_handle });
+    TwitterActions.twitterIdentityRetrieve(this.props.params.twitter_handle);
     this.twitterStoreListener = TwitterStore.addListener(this._onTwitterStoreChange.bind(this));
 
     this._onVoterStoreChange();
@@ -41,10 +41,10 @@ export default class TwitterHandleLanding extends Component {
 
   componentWillReceiveProps (nextProps) {
     // console.log("TwitterHandleLanding componentWillReceiveProps");
-    if (nextProps.params.twitterHandle && this.state.twitterHandle.toLowerCase() !== nextProps.params.twitterHandle.toLowerCase()) {
+    if (nextProps.params.twitter_handle && this.state.twitterHandle.toLowerCase() !== nextProps.params.twitter_handle.toLowerCase()) {
       // We need this test to prevent an infinite loop
-      // console.log("TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ", nextProps.params.twitterHandle);
-      TwitterActions.twitterIdentityRetrieve(nextProps.params.twitterHandle);
+      // console.log("TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ", nextProps.params.twitter_handle);
+      TwitterActions.twitterIdentityRetrieve(nextProps.params.twitter_handle);
     }
   }
 
@@ -57,8 +57,8 @@ export default class TwitterHandleLanding extends Component {
     // console.log("TwitterHandleLanding _onTwitterStoreChange");
     let { twitterFollowersCount } = TwitterStore.get();
     const {
-      kindOfOwner, ownerWeVoteId, twitterHandle, twitterDescription,  twitterName,
-      twitterPhotoUrl, twitterUserWebsite, status,
+      kind_of_owner: kindOfOwner, owner_we_vote_id: ownerWeVoteId, twitter_handle: twitterHandle, twitter_description: twitterDescription,  twitter_name: twitterName,
+      twitter_photo_url: twitterPhotoUrl, twitter_user_website: twitterUserWebsite, status,
     } = TwitterStore.get();
 
     if (typeof twitterFollowersCount !== "number") {
@@ -105,7 +105,7 @@ export default class TwitterHandleLanding extends Component {
     const {
       voter, kindOfOwner, ownerWeVoteId, twitterHandle,
     } = this.state;
-    const signedInTwitter = voter === undefined ? false : voter.signedInTwitter;
+    const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
     let signedInWithThisTwitterAccount = false;
     let lookingAtPositionsForFriendsOnly = false;
     if (signedInTwitter) {
