@@ -57,7 +57,7 @@ export default class TwitterHandleLanding extends Component {
     // console.log("TwitterHandleLanding _onTwitterStoreChange");
     let { twitter_followers_count: twitterFollowersCount } = TwitterStore.get();
     const {
-      kind_of_owner: kindOfOwner, owner_we_vote_id: ownerWeVoteId, twitter_handle: twitterHandle, 
+      kind_of_owner: kindOfOwner, owner_we_vote_id: ownerWeVoteId, twitter_handle: twitterHandle,
       twitter_description: twitterDescription,  twitter_name: twitterName,
       twitter_photo_url: twitterPhotoUrl, twitter_user_website: twitterUserWebsite, status,
     } = TwitterStore.get();
