@@ -6,13 +6,12 @@ import { renderLog } from "../../utils/logging";
 // We use this for IssuesFollowedDisplayList, to show a voter a horizontal list of all of their
 // issues, with a drop down under each one that has all of the organizations they can follow underneath.
 export default class IssuesDisplayListWithOrganizationPopovers extends Component {
-
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     currentBallotIdInUrl: PropTypes.string,
     issueImageSize: PropTypes.string,
     issueListToDisplay: PropTypes.array,
-    instantRefreshOn: PropTypes.bool,
+    instantRefreshOn: PropTypes.bool, // unused
     maximumIssuesToDisplay: PropTypes.number,
     popoverBottom: PropTypes.bool,
     toFollow: PropTypes.bool,
@@ -36,7 +35,7 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
     const imageSizes = new Set(["SMALL", "MEDIUM", "LARGE"]);
     let issueImageSize = "SMALL"; // Set the default
     if (imageSizes.has(this.props.issueImageSize)) {
-      issueImageSize = this.props.issueImageSize;
+      ({ issueImageSize } = this.props);
     }
 
     this.setState({
@@ -51,7 +50,7 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
     const imageSizes = new Set(["SMALL", "MEDIUM", "LARGE"]);
     let issueImageSize = "SMALL"; // Set the default
     if (imageSizes.has(nextProps.issueImageSize)) {
-      issueImageSize = nextProps.issueImageSize;
+      ({ issueImageSize } = nextProps);
     }
 
     this.setState({

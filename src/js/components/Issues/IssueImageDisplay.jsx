@@ -10,7 +10,7 @@ export default class IssueImageDisplay extends Component {
     issue: PropTypes.object.isRequired,
     issueImageSize: PropTypes.string,
     showPlaceholderImage: PropTypes.bool,
-    showInfoOnly: PropTypes.bool,
+    showInfoOnly: PropTypes.bool, // unused
     showOppose: PropTypes.bool,
     showSupport: PropTypes.bool,
     isVoterFollowingThisIssue: PropTypes.bool,
@@ -24,11 +24,11 @@ export default class IssueImageDisplay extends Component {
       return null;
     }
 
-    let issue_name;
+    let issueName;
     if (this.props.issue.issue_name) {
-      issue_name = this.props.issue.issue_name;
+      issueName = this.props.issue.issue_name;
     } else {
-      issue_name = "";
+      issueName = "";
     }
 
     let supportOrOpposeClass = "";
@@ -43,21 +43,21 @@ export default class IssueImageDisplay extends Component {
       voterIsNotFollowingThisIssueClass = "network-positions__to-follow-fade ";
     }
 
-    const hide_placeholder = !this.props.showPlaceholderImage;
+    const hidePlaceholder = !this.props.showPlaceholderImage;
 
     const imageSizes = new Set(["SMALL", "MEDIUM", "LARGE"]);
     let issueImageSize = "SMALL"; // Set the default
     if (imageSizes.has(this.props.issueImageSize)) {
-      issueImageSize = this.props.issueImageSize;
+      ({ issueImageSize } = this.props);
     }
 
     let issueImage;
     if (issueImageSize === "SMALL") {
       issueImage = (
         <ImageHandler
-          alt={issue_name}
+          alt={issueName}
           className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
-          hidePlaceholder={hide_placeholder}
+          hidePlaceholder={hidePlaceholder}
           imageUrl={this.props.issue.issue_photo_url_tiny}
           sizeClassName="issue__image--small "
         />
@@ -65,9 +65,9 @@ export default class IssueImageDisplay extends Component {
     } else if (issueImageSize === "MEDIUM") {
       issueImage = (
         <ImageHandler
-          alt={issue_name}
+          alt={issueName}
           className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
-          hidePlaceholder={hide_placeholder}
+          hidePlaceholder={hidePlaceholder}
           imageUrl={this.props.issue.issue_photo_url_medium}
           sizeClassName="issue__image--medium "
         />
@@ -75,9 +75,9 @@ export default class IssueImageDisplay extends Component {
     } else if (issueImageSize === "LARGE") {
       issueImage = (
         <ImageHandler
-          alt={issue_name}
+          alt={issueName}
           className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
-          hidePlaceholder={hide_placeholder}
+          hidePlaceholder={hidePlaceholder}
           imageUrl={this.props.issue.issue_photo_url_large}
           sizeClassName="issue__image--large "
         />
