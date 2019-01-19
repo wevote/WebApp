@@ -303,6 +303,10 @@ $scrollcard-padding: 2px 2px 0 0;
   &__square {
     position: relative;
     padding: $space-xxs;
+    &__sidebar {
+      padding: $space-none;
+      text-align: center;
+    }
   }
 
   &__square-image {

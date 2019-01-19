@@ -2,7 +2,6 @@ import { ReduceStore } from "flux/utils";
 import Dispatcher from "../dispatcher/Dispatcher";
 
 class AnalyticsStore extends ReduceStore {
-
   getInitialState () {
     return {
     };
