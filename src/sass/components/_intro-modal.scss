@@ -1,6 +1,7 @@
 // April 2018: Something in our sass processing chain is messing up the utf-8 char in slick-theme.css within Cordova, so force it here.
 $slick-dot-character: '\2022' !default;
-$backdrop-border-radius: 0 0 8px 8px;
+$backdrop-border-radius: 8px;
+$scrollcard-padding: 2px 2px 0 0;
 
 .intro-modal {
   padding: $space-none;
@@ -14,7 +15,7 @@ $backdrop-border-radius: 0 0 8px 8px;
   justify-content: flex-start;
 
   &__h1 {
-    font-weight: 700;
+    font-weight: 400;
     font-size: 30px;
     padding: $space-md $space-none $space-sm;
 
@@ -301,16 +302,13 @@ $backdrop-border-radius: 0 0 8px 8px;
 
   &__square {
     position: relative;
-    text-align: left;
     padding: $space-xxs;
   }
 
   &__square-image {
     height: 100%;
     width: 100%;
-    border: 1px solid $gray-border;
     border-radius: $space-sm;
-    filter: brightness(90%) contrast(90%);
   }
 
   &__square-details {
@@ -332,16 +330,28 @@ $backdrop-border-radius: 0 0 8px 8px;
   }
 
   &__square-name {
+    display: flex;
+    flex-flow: column;
+    text-align: center;
     position: absolute;
     left: 2px;
     bottom: -6px;
     font-size: .9rem;
+    font-weight: 400;
     word-wrap: break-word;
     text-shadow: 1px 1px 2px rgba($black, .6);
-    background: rgba(0, 0, 0, .5);
+    background: rgba(0, 0, 0, .45);
     padding: $space-xs;
-    width: calc(100% - 4px);
+    width: 100%;
+    height: 100%;
     border-radius: $backdrop-border-radius;
+    border: 2px solid white;
+    justify-content: flex-end;
+    transition: all .2s ease-in;
+    &:hover {
+      border: 2px solid $brand-blue;
+      background: rgba(0, 0, 0, .55);
+    }
 
     @include breakpoints (mid-small xsmall-bootstrap) {
       padding: $space-sm;
@@ -429,6 +439,7 @@ $backdrop-border-radius: 0 0 8px 8px;
 
 .intro-modal-vertical-scroll.card {
   margin-bottom: $space-none;
+  padding: $scrollcard-padding;
 }
 
 .child-height-full > :first-child {

@@ -8,6 +8,8 @@ import IssueActions from "../../actions/IssueActions";
 import { showToastError, showToastSuccess } from "../../utils/showToast";
 import { renderLog } from "../../utils/logging";
 
+const svgStyle = { fill: '#4B4B4B', padding: '1px', width: '67%', height: '100%', marginBottom: '33%' };
+
 export default class IssueFollowToggleSquare extends Component {
   static propTypes = {
     editMode: PropTypes.bool,
@@ -59,7 +61,6 @@ export default class IssueFollowToggleSquare extends Component {
     const {
       grid, issueIconLocalPath, issueDescription, readOnly, editMode, issueName,
     } = this.props;
-    const svgStyle = { fill: "#4B4B4B", padding: "1px", width: "100%", height: "100%" };
     renderLog(__filename);
     if (!this.state) {
       return <div />;
