@@ -17,8 +17,8 @@ export default class SettingsElection extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      elections_locations_list: [],
-      voter_ballot_list: [],
+      electionsLocationsList: [],
+      voterBallotList: [],
     };
   }
 
@@ -37,41 +37,41 @@ export default class SettingsElection extends Component {
   }
 
   onElectionStoreChange () {
-    const elections_list = ElectionStore.getElectionList();
-    const elections_locations_list = [];
-    let voter_ballot; // A different format for much of the same data
-    const voter_ballot_list = [];
-    let one_ballot_location;
-    let ballot_location_shortcut;
-    let ballot_returned_we_vote_id;
+    const electionsList = ElectionStore.getElectionList();
+    const electionsLocationsList = [];
+    let voterBallot; // A different format for much of the same data
+    const voterBallotList = [];
+    let oneBallotLocation;
+    let ballotLocationShortcut;
+    let ballotReturnedWeVoteId;
 
-    for (let i = 0; i < elections_list.length; i++) {
-      const election = elections_list[i];
-      elections_locations_list.push(election);
-      ballot_returned_we_vote_id = "";
-      ballot_location_shortcut = "";
+    for (let i = 0; i < electionsList.length; i++) {
+      const election = electionsList[i];
+      electionsLocationsList.push(election);
+      ballotReturnedWeVoteId = "";
+      ballotLocationShortcut = "";
       if (election.ballot_location_list && election.ballot_location_list.length) {
         // We want to add the shortcut and we_vote_id for the first ballot location option
-        one_ballot_location = election.ballot_location_list[0];
-        ballot_location_shortcut = one_ballot_location.ballot_location_shortcut || "";
-        ballot_location_shortcut = ballot_location_shortcut.trim();
-        ballot_returned_we_vote_id = one_ballot_location.ballot_returned_we_vote_id || "";
-        ballot_returned_we_vote_id = ballot_returned_we_vote_id.trim();
+        oneBallotLocation = election.ballot_location_list[0];
+        ballotLocationShortcut = oneBallotLocation.ballot_location_shortcut || "";
+        ballotLocationShortcut = ballotLocationShortcut.trim();
+        ballotReturnedWeVoteId = oneBallotLocation.ballot_returned_we_vote_id || "";
+        ballotReturnedWeVoteId = ballotReturnedWeVoteId.trim();
       }
-      voter_ballot = {
+      voterBallot = {
         google_civic_election_id: election.google_civic_election_id,
         election_description_text: election.election_name,
         election_day_text: election.election_day_text,
         original_text_for_map_search: "",
-        ballot_location_shortcut,
-        ballot_returned_we_vote_id,
+        ballot_location_shortcut: ballotLocationShortcut,
+        ballot_returned_we_vote_id: ballotReturnedWeVoteId,
       };
-      voter_ballot_list.push(voter_ballot);
+      voterBallotList.push(voterBallot);
     }
 
     this.setState({
-      elections_locations_list,
-      voter_ballot_list,
+      electionsLocationsList,
+      voterBallotList,
     });
   }
 
@@ -84,7 +84,7 @@ export default class SettingsElection extends Component {
           <BrowserPushMessage incomingProps={this.props} />
           <div className="card">
             <div className="card-main">
-              <BallotElectionList ballotElectionList={this.state.voter_ballot_list} ballotBaseUrl="/ballot" />
+              <BallotElectionList ballotElectionList={this.state.voterBallotList} ballotBaseUrl="/ballot" />
             </div>
           </div>
         </div>
