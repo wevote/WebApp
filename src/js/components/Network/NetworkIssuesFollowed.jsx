@@ -78,6 +78,7 @@ export default class NetworkIssuesFollowed extends Component {
             isFollowing={isFollowing}
             grid="col-sm-6"
             readOnly
+            sideBar
           />
         );
       }
@@ -89,9 +90,7 @@ export default class NetworkIssuesFollowed extends Component {
           <div className="card-main">
             <h1 className="h4">Issues You Are Following</h1>
             <div className="network-issues-list voter-guide-list card">
-              <div className="card-child__list-group clearfix">
-                { issueListForDisplay }
-              </div>
+              { issueListForDisplay }
               <div>
                 {
                   this.state.issuesFollowed.length > 0 ?

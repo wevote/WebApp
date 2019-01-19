@@ -23,6 +23,7 @@ export default class IssueFollowToggleSquare extends Component {
     onIssueFollow: PropTypes.func,
     onIssueStopFollowing: PropTypes.func,
     readOnly: PropTypes.bool,
+    sideBar: PropTypes.bool,
   };
 
   constructor (props) {
@@ -59,7 +60,7 @@ export default class IssueFollowToggleSquare extends Component {
 
   render () {
     const {
-      grid, issueIconLocalPath, issueDescription, readOnly, editMode, issueName,
+      grid, issueIconLocalPath, issueDescription, readOnly, editMode, issueName, sideBar,
     } = this.props;
     renderLog(__filename);
     if (!this.state) {
@@ -67,7 +68,7 @@ export default class IssueFollowToggleSquare extends Component {
     }
     if (readOnly === true && !editMode) {
       return (
-        <div className={`${grid} intro-modal__square`}>
+        <div className={`${grid} intro-modal__square${sideBar ? '__sidebar' : ''}`}>
           <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${issueIconLocalPath}.svg`)} svgStyle={svgStyle} />
           <ImageHandler
             className="intro-modal__square-check-mark"
