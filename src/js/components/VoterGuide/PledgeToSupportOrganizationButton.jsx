@@ -16,7 +16,7 @@ export default class PledgeToSupportOrganizationButton extends Component {
     super(props);
     this.state = {
       organization: {},
-      voter_guide: {},
+      voterGuide: {},
     };
   }
 
@@ -24,7 +24,7 @@ export default class PledgeToSupportOrganizationButton extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.setState({
       organization: this.props.organization,
-      voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.props.organization.organization_we_vote_id, VoterStore.election_id()),
+      voterGuide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.props.organization.organization_we_vote_id, VoterStore.election_id()),
     });
   }
 
@@ -32,7 +32,7 @@ export default class PledgeToSupportOrganizationButton extends Component {
     // When a new organization is passed in, update this component to show the new data
     this.setState({
       organization: nextProps.organization,
-      voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(nextProps.organization.organization_we_vote_id, VoterStore.election_id()),
+      voterGuide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(nextProps.organization.organization_we_vote_id, VoterStore.election_id()),
     });
   }
 
@@ -41,24 +41,24 @@ export default class PledgeToSupportOrganizationButton extends Component {
   }
 
   onVoterGuideStoreChange () {
-    this.setState({
-      voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id()),
-    });
-    // console.log("voter_guide object ", this.state.voter_guide.we_vote_id);
+    this.setState(prevState => ({
+      voterGuide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(prevState.organization.organization_we_vote_id, VoterStore.election_id()),
+    }));
+    // console.log("voterGuide object ", this.state.voterGuide.we_vote_id);
   }
 
   render () {
     renderLog(__filename);
-    if (!this.state.voter_guide || !this.state.voter_guide.we_vote_id) {
+    if (!this.state.voterGuide || !this.state.voterGuide.we_vote_id) {
       return null;
     }
 
     // Turn off the button if voter has already pledged
-    if (this.state.voter_guide.voter_has_pledged) {
+    if (this.state.voterGuide.voter_has_pledged) {
       return null;
     }
 
-    // console.log("PledgeToSupportOrganizationButton, this.state.voter_guide: ", this.state.voter_guide);
+    // console.log("PledgeToSupportOrganizationButton, this.state.voterGuide: ", this.state.voterGuide);
 
     const iStandWithText = `I Stand With ${this.props.organization.organization_name}`;
     const iStandWithTextMobile = shortenText(iStandWithText, 32);
