@@ -87,7 +87,7 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
             currentBallotIdInUrl={this.props.currentBallotIdInUrl}
             issue={oneIssue}
             issueImageSize={this.state.issueImageSize}
-            issue_we_vote_id={issueWeVoteId}
+            issueWeVoteId={issueWeVoteId}
             overlayTriggerOnClickOnly={this.props.overlayTriggerOnClickOnly}
             popoverBottom={this.props.popoverBottom}
             toFollow={this.props.toFollow}
