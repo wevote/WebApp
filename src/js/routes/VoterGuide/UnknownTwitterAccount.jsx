@@ -6,8 +6,8 @@ import TwitterAccountCard from "../../components/Twitter/TwitterAccountCard";
 
 export default class UnknownTwitterAccount extends Component {
   static propTypes = {
-    twitter_handle: PropTypes.string,
-    twitter_name: PropTypes.string,
+    twitterHandle: PropTypes.string,
+    twitterName: PropTypes.string,
   };
 
   constructor (props) {
@@ -17,7 +17,7 @@ export default class UnknownTwitterAccount extends Component {
 
   render () {
     renderLog(__filename);
-    const { twitter_handle: twitterHandle, twitter_name: twitterName } = this.props;
+    const { twitterHandle, twitterName } = this.props;
 
     return (
       <div>
