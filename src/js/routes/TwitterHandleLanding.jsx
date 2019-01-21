@@ -55,9 +55,10 @@ export default class TwitterHandleLanding extends Component {
 
   _onTwitterStoreChange () {
     // console.log("TwitterHandleLanding _onTwitterStoreChange");
-    let { twitterFollowersCount } = TwitterStore.get();
+    let { twitter_followers_count: twitterFollowersCount } = TwitterStore.get();
     const {
-      kind_of_owner: kindOfOwner, owner_we_vote_id: ownerWeVoteId, twitter_handle: twitterHandle, twitter_description: twitterDescription,  twitter_name: twitterName,
+      kind_of_owner: kindOfOwner, owner_we_vote_id: ownerWeVoteId, twitter_handle: twitterHandle,
+      twitter_description: twitterDescription,  twitter_name: twitterName,
       twitter_photo_url: twitterPhotoUrl, twitter_user_website: twitterUserWebsite, status,
     } = TwitterStore.get();
 
@@ -140,7 +141,7 @@ export default class TwitterHandleLanding extends Component {
     } else if (this.state.kindOfOwner === "ORGANIZATION") {
       this.props.params.organization_we_vote_id = ownerWeVoteId;
       if (lookingAtPositionsForFriendsOnly) {
-        return <PositionListForFriends we_vote_id {...this.props} />;
+        return <PositionListForFriends {...this.props} />;
       } else {
         return (
           <OrganizationVoterGuide
