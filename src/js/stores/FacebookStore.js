@@ -83,32 +83,22 @@ class FacebookStore extends ReduceStore {
   }
 
   facebookFriendsUsingWeVoteList () {
-    return this.getDataFromArr(this.getState().facebook_friends_using_we_vote_list) || {};
+    return this.getState().facebook_friends_using_we_vote_list || [];
   }
 
   facebookInvitableFriends () {
+    const {
+      facebookInvitableFriendsList, facebookInvitableFriendsRetrieved, facebookFriendsNotExist,
+    } = this.getState();
     return {
-      facebook_invitable_friends_list: this.getDataFromArr(this.getState().facebookInvitableFriendsList),
-      facebook_friends_not_exist: this.getState().facebookFriendsNotExist,
-      facebook_invitable_friends_retrieved: this.getState().facebookInvitableFriendsRetrieved,
+      facebook_invitable_friends_list: facebookInvitableFriendsList,
+      facebook_friends_not_exist: facebookFriendsNotExist,
+      facebook_invitable_friends_retrieved: facebookInvitableFriendsRetrieved,
     };
   }
 
   facebookAppRequestAlreadyProcessed () {
     return this.getState().appRequestAlreadyProcessed;
-  }
-
-  getDataFromArr (arr) {
-    if (arr === undefined) {
-      return [];
-    }
-
-    const dataList = [];
-    for (let i = 0, len = arr.length; i < len; i++) {
-      dataList.push(arr[i]);
-    }
-
-    return dataList;
   }
 
   reduce (state, action) {

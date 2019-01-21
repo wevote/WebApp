@@ -14,6 +14,7 @@ class ElectionStore extends ReduceStore {
   getElectionByGoogleCivicElectionId (id) {
     const { electionListByGoogleCivicElectionId } = this.getState();
     const idInt = parseInt(id, 10);
+    if (!electionListByGoogleCivicElectionId) return {};
     const election = electionListByGoogleCivicElectionId[idInt];
     if (election) return election;
     return {};
