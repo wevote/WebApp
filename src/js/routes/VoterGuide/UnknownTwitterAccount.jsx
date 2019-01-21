@@ -17,7 +17,7 @@ export default class UnknownTwitterAccount extends Component {
 
   render () {
     renderLog(__filename);
-    const { twitterHandle: twitterHandle, twitterName: twitterName } = this.props;
+    const { twitterHandle, twitterName } = this.props;
 
     return (
       <div>
