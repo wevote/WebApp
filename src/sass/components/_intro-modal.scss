@@ -377,6 +377,17 @@ $scrollcard-padding: 2px 2px 0 0;
     }
   }
 
+  &__following {
+    background: transparent;
+    font-weight: bold;
+    color: $gray-mid;
+    text-shadow: -1px 0 $white, 0 1px $white, 1px 0 $white, 0 -1px $white;
+    &:hover {
+      border: 2px solid transparent;
+      background: rgba(0, 0, 0, .1);
+    }
+  }
+
   &__details {
     position: absolute;
     top: 12px;
