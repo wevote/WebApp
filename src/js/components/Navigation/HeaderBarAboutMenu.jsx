@@ -16,26 +16,27 @@ export default class HeaderBarAboutMenu extends Component {
   }
 
   render () {
+    const { toggleAboutMenu } = this.props;
     renderLog(__filename);
     const aboutMenuOpen = this.props.aboutMenuOpen ? "about-menu--open" : "";
 
     return (
       <div className={aboutMenuOpen}>
-        <div className="page-overlay" onClick={this.toggleAboutMenu} />
+        <div className="page-overlay" onClick={toggleAboutMenu} />
         <div className="about-menu">
           <ul className="nav flex-column text-left">
             <li>
-              <Link onClick={this.toggleAboutMenu} to="/more/howtouse">
+              <Link onClick={toggleAboutMenu} to="/more/howtouse">
                 <span className="header-slide-out-menu-text-left">Getting&nbsp;Started</span>
               </Link>
             </li>
             <li>
-              <Link onClick={this.toggleAboutMenu} to="/more/organization">
+              <Link onClick={toggleAboutMenu} to="/more/organization">
                 <span className="header-slide-out-menu-text-left">Organization</span>
               </Link>
             </li>
             <li>
-              <Link onClick={this.toggleAboutMenu} to="/more/team">
+              <Link onClick={toggleAboutMenu} to="/more/team">
                 <span className="header-slide-out-menu-text-left">Our Team</span>
               </Link>
             </li>
