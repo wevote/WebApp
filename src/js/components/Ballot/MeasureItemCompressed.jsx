@@ -18,16 +18,16 @@ export default class MeasureItemCompressed extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string.isRequired,
     currentBallotIdInUrl: PropTypes.string,
-    kind_of_ballot_item: PropTypes.string.isRequired,
+    // kind_of_ballot_item: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
     measure: PropTypes.object,
     measure_subtitle: PropTypes.string,
-    measure_text: PropTypes.string,
-    measure_url: PropTypes.string,
+    // measure_text: PropTypes.string,
+    // measure_url: PropTypes.string,
     organization: PropTypes.object,
-    position_list: PropTypes.array,
+    // position_list: PropTypes.array,
     showPositionStatementActionBar: PropTypes.bool,
-    toggleMeasureModal: PropTypes.func,
+    // toggleMeasureModal: PropTypes.func,
     urlWithoutHash: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired,
   };
@@ -39,9 +39,9 @@ export default class MeasureItemCompressed extends Component {
       ballotItemType,
       ballotItemWeVoteId: "",
       componentDidMountFinished: false,
-      maximum_organization_display: 4,
+      // maximum_organization_display: 4,
       organization: {},
-      showModal: false,
+      // showModal: false,
       showPositionStatement: false,
       shouldFocusCommentArea: false,
       transitioning: false,
@@ -49,6 +49,7 @@ export default class MeasureItemCompressed extends Component {
     this.getMeasureLink = this.getMeasureLink.bind(this);
     this.goToMeasureLink = this.goToMeasureLink.bind(this);
     this.passDataBetweenItemActionToItemPosition = this.passDataBetweenItemActionToItemPosition.bind(this);
+    this.togglePositionStatement = this.togglePositionStatement.bind(this);
   }
 
   componentDidMount () {
@@ -57,12 +58,12 @@ export default class MeasureItemCompressed extends Component {
     this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     const ballotItemType = "MEASURE";
-    const is_measure = true;
+    // const isMeasure = true;
     this.setState({
       ballotItemType,
       ballotItemWeVoteId: this.props.we_vote_id,
       componentDidMountFinished: true,
-      is_measure,
+      // isMeasure,
       measure: MeasureStore.getMeasure(this.props.we_vote_id),
       supportProps: SupportStore.get(this.props.we_vote_id),
     });
@@ -90,8 +91,8 @@ export default class MeasureItemCompressed extends Component {
       // console.log("shouldComponentUpdate: componentDidMountFinished === false");
       return true;
     }
-    if (this.state.ballot_item_display_name !== nextState.ballot_item_display_name) {
-      // console.log("shouldComponentUpdate: this.state.ballot_item_display_name", this.state.ballot_item_display_name, ", nextState.ballot_item_display_name", nextState.ballot_item_display_name);
+    if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
+      // console.log("shouldComponentUpdate: this.state.ballotItemDisplayName", this.state.ballotItemDisplayName, ", nextState.ballotItemDisplayName", nextState.ballotItemDisplayName);
       return true;
     }
     if (this.state.measure !== nextState.measure) {
@@ -126,8 +127,9 @@ export default class MeasureItemCompressed extends Component {
   }
 
   onOrganizationStoreChange () {
+    const { organization } = this.state;
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(organization.organization_we_vote_id),
     });
   }
 
@@ -137,10 +139,11 @@ export default class MeasureItemCompressed extends Component {
   }
 
   onSupportStoreChange () {
+    const { organization } = this.state;
     // Whenever positions change, we want to make sure to get the latest organization, because it has
     //  position_list_for_one_election and position_list_for_all_except_one_election attached to it
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(organization.organization_we_vote_id),
       supportProps: SupportStore.get(this.props.we_vote_id),
       transitioning: false,
     });
@@ -166,8 +169,9 @@ export default class MeasureItemCompressed extends Component {
   }
 
   togglePositionStatement () {
+    const { showPositionStatement } = this.state;
     this.setState({
-      showPositionStatement: !this.state.showPositionStatement,
+      showPositionStatement: !showPositionStatement,
       shouldFocusCommentArea: true,
     });
   }
@@ -175,19 +179,19 @@ export default class MeasureItemCompressed extends Component {
   render () {
     // console.log("MeasureItemCompressed render");
     renderLog(__filename);
-    let { ballot_item_display_name, measure_subtitle } = this.props;
+    let { ballot_item_display_name: ballotItemDisplayName, measure_subtitle: measureSubtitle } = this.props;
     const { we_vote_id: measureWeVoteId } = this.props;
-    measure_subtitle = capitalizeString(measure_subtitle);
-    ballot_item_display_name = capitalizeString(ballot_item_display_name);
+    measureSubtitle = capitalizeString(measureSubtitle);
+    ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
 
     // let measureGuidesList = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(measureWeVoteId);
 
     // let measure_for_modal = {
-    //   ballot_item_display_name: ballot_item_display_name,
+    //   ballotItemDisplayName: ballotItemDisplayName,
     //   voter_guides_to_follow_for_ballot_item_id: measureGuidesList,
     //   kind_of_ballot_item: this.props.kind_of_ballot_item,
     //   link_to_ballot_item_page: this.props.link_to_ballot_item_page,
-    //   measure_subtitle: measure_subtitle,
+    //   measureSubtitle: measureSubtitle,
     //   measure_text: this.props.measure_text,
     //   measure_url: this.props.measure_url,
     //   we_vote_id: measureWeVoteId,
@@ -199,25 +203,25 @@ export default class MeasureItemCompressed extends Component {
     // let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(measureWeVoteId);
 
     // Voter Support or opposition
-    let is_voter_support = false;
-    let is_voter_oppose = false;
-    let voter_statement_text = false;
+    let isVoterSupport = false;
+    let isVoterOppose = false;
+    let voterStatementText = false;
     const ballotItemSupportStore = SupportStore.get(this.state.ballotItemWeVoteId);
     if (ballotItemSupportStore !== undefined) {
       // console.log("ballotItemSupportStore: ", ballotItemSupportStore);
-      is_voter_support = ballotItemSupportStore.is_support;
-      is_voter_oppose = ballotItemSupportStore.is_oppose;
-      voter_statement_text = ballotItemSupportStore.voter_statement_text;
+      isVoterSupport = ballotItemSupportStore.is_support;
+      isVoterOppose = ballotItemSupportStore.is_oppose;
+      voterStatementText = ballotItemSupportStore.voter_statement_text;
     }
 
     let commentBoxIsVisible = false;
-    if (this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text || this.state.showPositionStatement) {
+    if (this.props.showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText || this.state.showPositionStatement) {
       commentBoxIsVisible = true;
     }
-    const item_action_bar = (
+    const itemActionBar = (
       <span>
         <ItemActionBar
-          ballot_item_display_name={this.state.ballot_item_display_name}
+          ballotItemDisplayName={this.state.ballotItemDisplayName}
           ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
           commentButtonHide={commentBoxIsVisible}
           commentButtonHideInMobile
@@ -225,7 +229,7 @@ export default class MeasureItemCompressed extends Component {
           shareButtonHide
           supportProps={ballotItemSupportStore}
           supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
-          toggleFunction={this.togglePositionStatement.bind(this)}
+          toggleFunction={this.togglePositionStatement}
           transitioning={this.state.transitioning}
           type={this.state.ballotItemType}
           urlWithoutHash={this.props.urlWithoutHash}
@@ -234,12 +238,12 @@ export default class MeasureItemCompressed extends Component {
       </span>
     );
 
-    const comment_display_raccoon_desktop = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text || this.state.showPositionStatement ? (
+    const commentDisplayRaccoonDesktop = this.props.showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText || this.state.showPositionStatement ? (
       <div className="d-none d-sm-block o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar
             ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
-            ballot_item_display_name={this.state.ballot_item_display_name}
+            ballotItemDisplayName={this.state.ballotItemDisplayName}
             comment_edit_mode_on={this.state.showPositionStatement}
             supportProps={ballotItemSupportStore}
             shouldFocus={this.state.shouldFocusCommentArea}
@@ -252,12 +256,12 @@ export default class MeasureItemCompressed extends Component {
     ) :
       null;
 
-    const comment_display_raccoon_mobile = this.props.showPositionStatementActionBar || is_voter_support || is_voter_oppose || voter_statement_text ? (
+    const commentDisplayRaccoonMobile = this.props.showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText ? (
       <div className="d-block d-sm-none o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar
             ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
-            ballot_item_display_name={this.state.ballot_item_display_name}
+            ballotItemDisplayName={this.state.ballotItemDisplayName}
             supportProps={ballotItemSupportStore}
             shouldFocus={this.state.shouldFocusCommentArea}
             transitioning={this.state.transitioning}
@@ -271,19 +275,18 @@ export default class MeasureItemCompressed extends Component {
 
     return (
       <div className="card-main measure-card">
-        <a className="anchor-under-header" name={measureWeVoteId} />
         <div className="card-main__content">
           <h2 className="card-main__display-name">
             { this.props.link_to_ballot_item_page ? (
               <div className="card-main__ballot-name-group">
                 <div className="card-main__ballot-name-item card-main__ballot-name card-main__ballot-name-link">
                   <a onClick={() => this.goToMeasureLink(measureWeVoteId)}>
-                    {ballot_item_display_name}
+                    {ballotItemDisplayName}
                   </a>
                 </div>
               </div>
             ) :
-              ballot_item_display_name
+              ballotItemDisplayName
           }
           </h2>
           <div>
@@ -295,7 +298,7 @@ export default class MeasureItemCompressed extends Component {
           <div>
             {/* Issues related to this Measure */}
             <IssuesByBallotItemDisplayList
-              ballotItemDisplayName={ballot_item_display_name}
+              ballotItemDisplayName={ballotItemDisplayName}
               ballotItemWeVoteId={measureWeVoteId}
               currentBallotIdInUrl={this.props.currentBallotIdInUrl}
               issuesListHidden
@@ -309,7 +312,7 @@ export default class MeasureItemCompressed extends Component {
             className={this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null}
             onClick={this.props.link_to_ballot_item_page ? () => this.goToMeasureLink(measureWeVoteId) : null}
           >
-            {measure_subtitle}
+            {measureSubtitle}
           </div>
           { this.state.measure_text ? (
             <div className="measure_text u-gray-mid">
@@ -325,7 +328,7 @@ export default class MeasureItemCompressed extends Component {
           {/* Positions in Your Network and Possible Voter Guides to Follow */}
           <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
             {/* <ItemSupportOpposeRaccoon ballotItemWeVoteId={measureWeVoteId}
-                                    ballot_item_display_name={ballot_item_display_name}
+                                    ballotItemDisplayName={ballotItemDisplayName}
                                     currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                                     maximumOrganizationDisplay={this.state.maximum_organization_display}
                                     organizationsToFollowSupport={organizationsToFollowSupport}
@@ -338,10 +341,10 @@ export default class MeasureItemCompressed extends Component {
             <div className="network-positions-stacked">
               <div className="network-positions-stacked__support">
                 {/* Support toggle here */}
-                {item_action_bar}
+                {itemActionBar}
               </div>
-              { comment_display_raccoon_desktop }
-              { comment_display_raccoon_mobile }
+              { commentDisplayRaccoonDesktop }
+              { commentDisplayRaccoonMobile }
             </div>
           </div>
         </div>
