@@ -22,7 +22,7 @@ class OfficeStore extends ReduceStore {
     }
   }
 
-  reduce (state, action) {
+  reduce (state, action) { // eslint-disable-line
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
 
@@ -36,7 +36,7 @@ class OfficeStore extends ReduceStore {
         newOffices[office.we_vote_id] = office;
         return {
           ...state,
-          offices: assign({}, state.offices, newOffices ),
+          offices: assign({}, state.offices, newOffices),
         };
 
       case "organizationFollow":

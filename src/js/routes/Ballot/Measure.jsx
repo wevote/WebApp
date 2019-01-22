@@ -28,12 +28,12 @@ export default class Measure extends Component {
     super(props);
     this.state = {
       measure: {},
-      measure_we_vote_id: "",
-      position_list_from_advisers_followed_by_voter: [],
-      // Eventually we could use this getVoterGuidesToFollowForBallotItemId with measure_we_vote_id, but we can't now
+      measureWeVoteId: "",
+      positionListFromAdvisersFollowedByVoter: [],
+      // Eventually we could use this getVoterGuidesToFollowForBallotItemId with measureWeVoteId, but we can't now
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-      // guides_to_follow_list: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.measure_we_vote_id)
-      voter_guides_to_follow_for_latest_ballot_item: [],
+      // guides_to_follow_list: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.measureWeVoteId)
+      voterGuidesToFollowForLatestBallotItem: [],
     };
   }
 
@@ -54,22 +54,22 @@ export default class Measure extends Component {
     // TODO CREATE THIS
     // AnalyticsActions.saveActionMeasure(VoterStore.election_id(), this.props.params.measure_we_vote_id);
     this.setState({
-      measure_we_vote_id: this.props.params.measure_we_vote_id,
-      position_list_from_advisers_followed_by_voter: MeasureStore.getPositionList(this.props.params.measure_we_vote_id),
-      voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
+      measureWeVoteId: this.props.params.measure_we_vote_id,
+      positionListFromAdvisersFollowedByVoter: MeasureStore.getPositionList(this.props.params.measure_we_vote_id),
+      voterGuidesToFollowForLatestBallotItem: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
     });
   }
 
   componentWillReceiveProps (nextProps) {
     // When a new measure is passed in, update this component to show the new data
-    if (nextProps.params.measure_we_vote_id !== this.state.measure_we_vote_id) {
+    if (nextProps.params.measure_we_vote_id !== this.state.measureWeVoteId) {
       MeasureActions.measureRetrieve(nextProps.params.measure_we_vote_id);
       MeasureActions.positionListForBallotItem(nextProps.params.measure_we_vote_id);
       VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.measure_we_vote_id, "MEASURE");
       this.setState({
-        measure_we_vote_id: nextProps.params.measure_we_vote_id,
-        position_list_from_advisers_followed_by_voter: MeasureStore.getPositionList(nextProps.params.measure_we_vote_id),
-        voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
+        measureWeVoteId: nextProps.params.measure_we_vote_id,
+        positionListFromAdvisersFollowedByVoter: MeasureStore.getPositionList(nextProps.params.measure_we_vote_id),
+        voterGuidesToFollowForLatestBallotItem: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
       });
     }
     // Display the measure's name in the search box
@@ -84,36 +84,41 @@ export default class Measure extends Component {
   }
 
   onMeasureStoreChange () {
+    const { measureWeVoteId } = this.state;
     // console.log("Measure, onMeasureStoreChange");
     this.setState({
-      measure: MeasureStore.getMeasure(this.state.measure_we_vote_id),
-      position_list_from_advisers_followed_by_voter: MeasureStore.getPositionList(this.state.measure_we_vote_id),
+      measure: MeasureStore.getMeasure(measureWeVoteId),
+      positionListFromAdvisersFollowedByVoter: MeasureStore.getPositionList(measureWeVoteId),
     });
   }
 
   onVoterGuideStoreChange () {
-    // MeasureActions.measureRetrieve(this.state.measure_we_vote_id);
-    MeasureActions.positionListForBallotItem(this.state.measure_we_vote_id);
+    // MeasureActions.measureRetrieve(this.state.measureWeVoteId);
+    MeasureActions.positionListForBallotItem(this.state.measureWeVoteId);
     // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
 
-    SupportActions.retrievePositionsCountsForOneBallotItem(this.state.measure_we_vote_id);
+    SupportActions.retrievePositionsCountsForOneBallotItem(this.state.measureWeVoteId);
     // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidate_we_vote_id, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
     this.setState({
-      voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
+      voterGuidesToFollowForLatestBallotItem: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
 
       // voter_guides_to_follow_for_this_ballot_item: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.state.candidate_we_vote_id),
     });
   }
 
   render () {
+    const {
+      positionListFromAdvisersFollowedByVoter, voterGuidesToFollowForLatestBallotItem, measure,
+      measureWeVoteId,
+    } = this.state;
     renderLog(__filename);
 
     const electionId = VoterStore.election_id();
     const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to listen to related to this measure.";
 
-    if (!this.state.measure || !this.state.measure.ballot_item_display_name) {
-      // TODO DALE If the measure_we_vote_id is not valid, we need to update this with a notice
+    if (!measure || !measure.ballot_item_display_name) {
+      // TODO DALE If the measureWeVoteId is not valid, we need to update this with a notice
       return (
         <div className="container-fluid well u-stack--md u-inset--md">
           <div>{LoadingWheel}</div>
@@ -122,11 +127,11 @@ export default class Measure extends Component {
       );
     }
 
-    const measureName = capitalizeString(this.state.measure.ballot_item_display_name);
+    const measureName = capitalizeString(measure.ballot_item_display_name);
     const titleText = `${measureName} - We Vote`;
     const descriptionText = `Information about ${measureName}`;
     const voter = VoterStore.getVoter();
-    const measureAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}m/${this.state.measure.id}/edit/?google_civic_election_id=${VoterStore.election_id()}&state_code=`;
+    const measureAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}m/${measure.id}/edit/?google_civic_election_id=${VoterStore.election_id()}&state_code=`;
 
     return (
       <section className="card">
@@ -135,30 +140,30 @@ export default class Measure extends Component {
           meta={[{ name: "description", content: descriptionText }]}
         />
         <MeasureItem
-          {...this.state.measure}
-          position_list={this.state.position_list_from_advisers_followed_by_voter}
+          {...measure}
+          position_list={positionListFromAdvisersFollowedByVoter}
           commentButtonHide
           showPositionsInYourNetworkBreakdown
         />
         <div className="card__additional">
-          { this.state.position_list_from_advisers_followed_by_voter ? (
+          { positionListFromAdvisersFollowedByVoter ? (
             <div>
               <PositionList
-                position_list={this.state.position_list_from_advisers_followed_by_voter}
+                position_list={positionListFromAdvisersFollowedByVoter}
                 hideSimpleSupportOrOppose
-                ballot_item_display_name={this.state.measure.ballot_item_display_name}
+                ballot_item_display_name={measure.ballot_item_display_name}
               />
             </div>
           ) : null
           }
-          {this.state.voter_guides_to_follow_for_latest_ballot_item.length === 0 ?
+          {voterGuidesToFollowForLatestBallotItem.length === 0 ?
             <div className="card__additional-text">{NO_VOTER_GUIDES_TEXT}</div> : (
               <div>
-                <h3 className="card__additional-heading">{`More opinions about ${this.state.measure.ballot_item_display_name}`}</h3>
+                <h3 className="card__additional-heading">{`More opinions about ${measure.ballot_item_display_name}`}</h3>
                 <GuideList
                   id={electionId}
-                  ballotItemWeVoteId={this.state.measure_we_vote_id}
-                  organizationsToFollow={this.state.voter_guides_to_follow_for_latest_ballot_item}
+                  ballotItemWeVoteId={measureWeVoteId}
+                  organizationsToFollow={voterGuidesToFollowForLatestBallotItem}
                 />
               </div>
             )}
