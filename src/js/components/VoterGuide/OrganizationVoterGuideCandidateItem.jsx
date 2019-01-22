@@ -230,9 +230,9 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
             >
               { contest_office_name ? (
                 <OfficeNameText
-                  political_party={party}
-                  contest_office_name={contest_office_name}
-                  office_link={this.props.linkToOfficePage ? this.getOfficeLink() : ""}
+                  politicalParty={party}
+                  contestOfficeName={contest_office_name}
+                  officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ""}
                 />
               ) : null
               }

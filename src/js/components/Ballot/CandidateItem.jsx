@@ -245,9 +245,9 @@ export default class CandidateItem extends Component {
             >
               { contestOfficeName ? (
                 <OfficeNameText
-                  political_party={party}
-                  contest_office_name={contestOfficeName}
-                  office_link={this.props.linkToOfficePage ? this.getOfficeLink() : ""}
+                  politicalParty={party}
+                  contestOfficeName={contestOfficeName}
+                  officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ""}
                 />
               ) :
                 null

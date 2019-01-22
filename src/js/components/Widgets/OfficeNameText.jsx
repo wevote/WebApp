@@ -5,9 +5,9 @@ import { renderLog } from "../../utils/logging";
 
 export default class OfficeNameText extends Component {
   static propTypes = {
-    political_party: PropTypes.string,
-    contest_office_name: PropTypes.string,
-    office_link: PropTypes.string,
+    politicalParty: PropTypes.string,
+    contestOfficeName: PropTypes.string,
+    officeLink: PropTypes.string,
   };
 
   constructor (props) {
@@ -24,17 +24,17 @@ export default class OfficeNameText extends Component {
   render () {
     renderLog(__filename);
     let nameText = "";
-    const { contest_office_name, political_party } = this.props;
-    if (political_party === undefined) {
+    const { contestOfficeName, politicalParty } = this.props;
+    if (politicalParty === undefined) {
       nameText = (
         <span className="no-political-party">
           <span>Candidate for </span>
-          { this.props.office_link ? (
-            <Link to={this.props.office_link}>
-              <span className="candidate-card-main__office">{ contest_office_name }</span>
+          { this.props.officeLink ? (
+            <Link to={this.props.officeLink}>
+              <span className="candidate-card-main__office">{ contestOfficeName }</span>
             </Link>
           ) :
-            <span className="candidate-card-main__office">{ contest_office_name }</span>
+            <span className="candidate-card-main__office">{ contestOfficeName }</span>
         }
         </span>
       );
@@ -42,16 +42,16 @@ export default class OfficeNameText extends Component {
       nameText = (
         <span>
           <span className="card-main__political-party u-bold u-gray-darker">
-            {political_party}
+            {politicalParty}
             {" "}
           </span>
           <span>candidate for </span>
-          { this.props.office_link ? (
-            <Link to={this.props.office_link}>
-              <span className="candidate-card-main__office u-bold u-gray-darker">{ contest_office_name }</span>
+          { this.props.officeLink ? (
+            <Link to={this.props.officeLink}>
+              <span className="candidate-card-main__office u-bold u-gray-darker">{ contestOfficeName }</span>
             </Link>
           ) :
-            <span className="candidate-card-main__office u-bold u-gray-darker">{ contest_office_name }</span>
+            <span className="candidate-card-main__office u-bold u-gray-darker">{ contestOfficeName }</span>
         }
         </span>
       );
