@@ -24,13 +24,6 @@ export default class LearnMore extends Component {
     this.showMore = this.showMore.bind(this);
   }
 
-  showMore (event) {
-    event.preventDefault();
-    this.setState({
-      readMore: !this.state.readMore,
-    });
-  }
-
   // this onKeyDown function is for accessibility: both toggle links
   // have a tab index so that users can use tab key to select the link, and then
   // press either space or enter (key codes 32 and 13, respectively) to toggle
@@ -39,6 +32,14 @@ export default class LearnMore extends Component {
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       this.showMore(event);
     }
+  }
+
+  showMore (event) {
+    event.preventDefault();
+    const { readMore } = this.state;
+    this.setState({
+      readMore: !readMore,
+    });
   }
 
   render () {
@@ -92,22 +93,22 @@ export default class LearnMore extends Component {
     }
 
     // wrap text in array in separate spans with html line breaks
-    const expandedTextToDisplay = expandedTextArray.map((item, key) => {
-      if (key === 0) {
+    const expandedTextToDisplay = expandedTextArray.map((item, index) => {
+      if (index === 0) {
         return (
-          <span key={key}>
+          <span key={`key-${item}`}>
             {item}
           </span>
         );
-      } else if (key >= expandedTextArray.length - 2 && item === "") {
+      } else if (index >= expandedTextArray.length - 2 && item === "") {
         return (
-          <span key={key}>
+          <span key={`key-${item}`}>
             {item}
           </span>
         );
       } else {
         return (
-          <span key={key}>
+          <span key={`key-${item}`}>
             <br />
             {item}
           </span>
