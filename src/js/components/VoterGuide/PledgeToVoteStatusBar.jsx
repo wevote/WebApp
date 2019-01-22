@@ -14,7 +14,7 @@ export default class PledgeToVoteStatusBar extends Component {
     super(props);
     this.state = {
       organization: {},
-      voter_guide: {},
+      voterGuide: {},
     };
   }
 
@@ -22,7 +22,7 @@ export default class PledgeToVoteStatusBar extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.setState({
       organization: this.props.organization,
-      voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.props.organization.organization_we_vote_id, VoterStore.election_id()),
+      voterGuide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.props.organization.organization_we_vote_id, VoterStore.election_id()),
     });
   }
 
@@ -30,7 +30,7 @@ export default class PledgeToVoteStatusBar extends Component {
     // When a new organization is passed in, update this component to show the new data
     this.setState({
       organization: nextProps.organization,
-      voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(nextProps.organization.organization_we_vote_id, VoterStore.election_id()),
+      voterGuide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(nextProps.organization.organization_we_vote_id, VoterStore.election_id()),
     });
   }
 
@@ -39,82 +39,83 @@ export default class PledgeToVoteStatusBar extends Component {
   }
 
   onVoterGuideStoreChange () {
+    const { organization } = this.state;
     this.setState({
-      voter_guide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id()),
+      voterGuide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(organization.organization_we_vote_id, VoterStore.election_id()),
     });
   }
 
   render () {
     renderLog(__filename);
-    const turned_off = true; // We don't want to use the status bar yet
-    if (turned_off) {
+    const turnedOff = true; // We don't want to use the status bar yet
+    if (turnedOff) {
       return null;
     }
 
-    let number_of_supporters_goal = 0;
-    let number_of_supporters = 0;
-    let percent_complete = 0;
-    let voter_has_pledged = false;
-    if (this.state.voter_guide) {
-      // console.log("PledgeToSupportOrganizationStatusBar this.state.voter_guide: ", this.state.voter_guide);
-      number_of_supporters = this.state.voter_guide.pledge_count || 0;
-      number_of_supporters_goal = this.state.voter_guide.pledge_goal || 0;
+    let numberOfSupportersGoal = 0;
+    let numberOfSupporters = 0;
+    let percentComplete = 0;
+    let voterHasPledged = false;
+    if (this.state.voterGuide) {
+      // console.log("PledgeToSupportOrganizationStatusBar this.state.voterGuide: ", this.state.voterGuide);
+      numberOfSupporters = this.state.voterGuide.pledge_count || 0;
+      numberOfSupportersGoal = this.state.voterGuide.pledge_goal || 0;
 
       // So we can demo
-      number_of_supporters += 10;
-      number_of_supporters_goal = 100;
+      numberOfSupporters += 10;
+      numberOfSupportersGoal = 100;
 
-      if (number_of_supporters_goal !== 0) {
-        const percent_complete_ratio = number_of_supporters / number_of_supporters_goal;
-        const percent_complete_raw = percent_complete_ratio * 100;
-        percent_complete = Math.round(percent_complete_raw);
-        // console.log("percent_complete_raw: ", percent_complete_raw, "percent_complete: ", percent_complete);
-        if (percent_complete < 30) {
+      if (numberOfSupportersGoal !== 0) {
+        const percentCompleteRatio = numberOfSupporters / numberOfSupportersGoal;
+        const percentCompleteRaw = percentCompleteRatio * 100;
+        percentComplete = Math.round(percentCompleteRaw);
+        // console.log("percentCompleteRaw: ", percentCompleteRaw, "percentComplete: ", percentComplete);
+        if (percentComplete < 30) {
           // Increase it to the minimum width, so there is room for the label
-          percent_complete = 30;
+          percentComplete = 30;
         }
       }
-      voter_has_pledged = this.state.voter_guide.voter_has_pledged;
-      // console.log("PledgeToSupportOrganizationStatusBar voter_has_pledged:", voter_has_pledged, ", voter_guide_we_vote_id: ", this.state.voter_guide.we_vote_id);
+      ({ voter_has_pledged: voterHasPledged } = this.state.voterGuide.voter_has_pledged);
+      // console.log("PledgeToSupportOrganizationStatusBar voterHasPledged:", voterHasPledged, ", voter_guide_we_vote_id: ", this.state.voterGuide.we_vote_id);
     }
-    const show_progress_bar = number_of_supporters_goal > 1 && number_of_supporters > 1;
+    const showProgressBar = numberOfSupportersGoal > 1 && numberOfSupporters > 1;
 
-    const progress_bar = (
+    const progressBar = (
       <ProgressBar
         variant="danger"
         bsPrefix="u-stack--xs"
         striped
-        now={percent_complete}
-        label={`${number_of_supporters} will vote`}
+        now={percentComplete}
+        label={`${numberOfSupporters} will vote`}
       />
     );
 
     return (
       <span>
-        {show_progress_bar ? progress_bar : null}
-        {number_of_supporters > 1 ? (
+        {showProgressBar ? progressBar : null}
+        {numberOfSupporters > 1 ? (
           <div className="voter-guide__pledge-to-support__current-supporters u-stack--md">
-            {number_of_supporters > 1 ? (
+            {numberOfSupporters > 1 ? (
               <span>
-                {number_of_supporters}
+                {numberOfSupporters}
                 {" "}
                 have pledged to vote.
                 {" "}
               </span>
             ) : null }
-            { percent_complete < 100 ? (
+            { percentComplete < 100 ? (
               <span>
-                {number_of_supporters > 1 && number_of_supporters_goal && !voter_has_pledged ? (
+                {numberOfSupporters > 1 && numberOfSupportersGoal && !voterHasPledged ? (
                   <span>
                     Let&apos;s get to
-                    {number_of_supporters_goal}
+                    {numberOfSupportersGoal}
                     !
                   </span>
                 ) : null }
-                {number_of_supporters > 1 && number_of_supporters_goal && voter_has_pledged ? (
+                {numberOfSupporters > 1 && numberOfSupportersGoal && voterHasPledged ? (
                   <span>
                     Share with friends so we can get to
-                    {number_of_supporters_goal}
+                    {numberOfSupportersGoal}
                     !
                   </span>
                 ) : null }
@@ -124,14 +125,14 @@ export default class PledgeToVoteStatusBar extends Component {
           </div>
         ) :
           null }
-        {voter_has_pledged ? (
+        {voterHasPledged ? (
           <div className="voter-guide__pledge-to-support__thank-you-for-supporting u-stack--md">
           Thank you for pledging to vote!
-            {number_of_supporters === 1 && number_of_supporters_goal && voter_has_pledged && percent_complete < 100 ? (
+            {numberOfSupporters === 1 && numberOfSupportersGoal && voterHasPledged && percentComplete < 100 ? (
               <span>
                 {" "}
                 Share with friends so we can get to
-                {number_of_supporters_goal}
+                {numberOfSupportersGoal}
                 .
               </span>
             ) : null
