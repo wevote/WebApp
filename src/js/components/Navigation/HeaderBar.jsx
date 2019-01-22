@@ -168,11 +168,13 @@ export default class HeaderBar extends Component {
   }
 
   toggleAboutMenu () {
-    this.setState(prevState => ({ aboutMenuOpen: !prevState.aboutMenuOpen }));
+    const { aboutMenuOpen } = this.state;
+    this.setState({ aboutMenuOpen: !aboutMenuOpen });
   }
 
   toggleProfilePopUp () {
-    this.setState(prevState => ({ profilePopUpOpen: !prevState.profilePopUpOpen }));
+    const { profilePopUpOpen } = this.state;
+    this.setState({ profilePopUpOpen: !profilePopUpOpen });
   }
 
   hideProfilePopUp () {
