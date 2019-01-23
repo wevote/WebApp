@@ -24,13 +24,13 @@ export default class OfficeNameText extends Component {
   render () {
     renderLog(__filename);
     let nameText = "";
-    const { contestOfficeName, politicalParty } = this.props;
+    const { contestOfficeName, politicalParty, officeLink } = this.props;
     if (politicalParty === undefined) {
       nameText = (
         <span className="no-political-party">
           <span>Candidate for </span>
-          { this.props.officeLink ? (
-            <Link to={this.props.officeLink}>
+          { officeLink ? (
+            <Link to={officeLink}>
               <span className="candidate-card-main__office">{ contestOfficeName }</span>
             </Link>
           ) :
@@ -46,8 +46,8 @@ export default class OfficeNameText extends Component {
             {" "}
           </span>
           <span>candidate for </span>
-          { this.props.officeLink ? (
-            <Link to={this.props.officeLink}>
+          { officeLink ? (
+            <Link to={officeLink}>
               <span className="candidate-card-main__office u-bold u-gray-darker">{ contestOfficeName }</span>
             </Link>
           ) :
