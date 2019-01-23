@@ -25,12 +25,12 @@ export default class OrganizationVoterGuideTabs extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      active_route: "",
-      current_organization_we_vote_id: "",
+      activeRoute: "",
+      currentOrganizationWeVoteId: "",
       organization: {},
       voter: {},
-      voter_guide_followed_list: [],
-      voter_guide_followers_list: [],
+      voterGuideFollowedList: [],
+      voterGuideFollowersList: [],
     };
 
     this.voterGuideBallotReference = {};
@@ -52,8 +52,8 @@ export default class OrganizationVoterGuideTabs extends Component {
 
     // console.log("OrganizationVoterGuideTabs, componentDidMount, this.props.active_route: ", this.props.active_route);
     this.setState({
-      active_route: this.props.active_route || "ballot",
-      current_organization_we_vote_id: this.props.organization.organization_we_vote_id,
+      activeRoute: this.props.active_route || "ballot",
+      currentOrganizationWeVoteId: this.props.organization.organization_we_vote_id,
       organization: this.props.organization,
       pathname: this.props.location.pathname,
       voter: VoterStore.getVoter(),
@@ -64,8 +64,8 @@ export default class OrganizationVoterGuideTabs extends Component {
     // console.log("OrganizationVoterGuideTabs, componentWillReceiveProps, nextProps: ", nextProps);
     // When a new organization is passed in, update this component to show the new data
     // let different_election = this.state.current_google_civic_election_id !== VoterStore.election_id();
-    const different_organization = this.state.current_organization_we_vote_id !== nextProps.organization.organization_we_vote_id;
-    if (different_organization) {
+    const differentOrganization = this.state.currentOrganizationWeVoteId !== nextProps.organization.organization_we_vote_id;
+    if (differentOrganization) {
       OrganizationActions.organizationsFollowedRetrieve();
       VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id);
       VoterGuideActions.voterGuideFollowersRetrieve(nextProps.organization.organization_we_vote_id);
@@ -76,14 +76,15 @@ export default class OrganizationVoterGuideTabs extends Component {
       // Positions for this organization, NOT including for this voter / election
       OrganizationActions.positionListForOpinionMaker(nextProps.organization.organization_we_vote_id, false, true);
       this.setState({
-        current_organization_we_vote_id: nextProps.organization.organization_we_vote_id,
+        currentOrganizationWeVoteId: nextProps.organization.organization_we_vote_id,
         organization: nextProps.organization,
       });
     }
     // console.log("OrganizationVoterGuideTabs, componentWillReceiveProps, nextProps.active_route: ", nextProps.active_route);
     if (nextProps.active_route) {
+      const { activeRoute } = this.state;
       this.setState({
-        active_route: nextProps.active_route || this.state.active_route,
+        activeRoute: nextProps.active_route || activeRoute,
       });
     }
     this.setState({
@@ -97,18 +98,20 @@ export default class OrganizationVoterGuideTabs extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onOrganizationStoreChange () {
-    // console.log("VoterGuidePositions _onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
+  onVoterGuideStoreChange () {
+    // console.log("OrganizationVoterGuideTabs, onVoterGuideStoreChange, organization: ", this.state.organization);
+    const { organization_we_vote_id: organizationWeVoteId } = this.state.organization;
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
+      voterGuideFollowedList: VoterGuideStore.getVoterGuidesFollowedByOrganization(organizationWeVoteId),
+      voterGuideFollowersList: VoterGuideStore.getVoterGuidesFollowingOrganization(organizationWeVoteId),
     });
   }
 
-  onVoterGuideStoreChange () {
-    // console.log("OrganizationVoterGuideTabs, onVoterGuideStoreChange, organization: ", this.state.organization);
+  _onOrganizationStoreChange () {
+    // console.log("VoterGuidePositions _onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
+    const { organization_we_vote_id: organizationWeVoteId } = this.state.organization;
     this.setState({
-      voter_guide_followed_list: VoterGuideStore.getVoterGuidesFollowedByOrganization(this.state.organization.organization_we_vote_id),
-      voter_guide_followers_list: VoterGuideStore.getVoterGuidesFollowingOrganization(this.state.organization.organization_we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
     });
   }
 
@@ -120,9 +123,9 @@ export default class OrganizationVoterGuideTabs extends Component {
 
   switchTab (destinationTab) {
     const availableTabsArray = ["ballot", "following", "followers", "positions"];
-    if (arrayContains(destinationTab, availableTabsArray) ) {
+    if (arrayContains(destinationTab, availableTabsArray)) {
       this.setState({
-        active_route: destinationTab,
+        activeRoute: destinationTab,
       });
       // This is an expensive action as it reloads quite a bit of data from the API server
       const currentUrl = this.state.pathname;
@@ -145,47 +148,47 @@ export default class OrganizationVoterGuideTabs extends Component {
   }
 
   render () {
-    if (!this.state.pathname || !this.state.active_route || !this.state.organization || !this.state.voter) {
+    if (!this.state.pathname || !this.state.activeRoute || !this.state.organization || !this.state.voter) {
       return <div>{LoadingWheel}</div>;
     }
 
-    let looking_at_self = false;
+    let lookingAtSelf = false;
     if (this.state.voter) {
-      looking_at_self = this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id;
+      lookingAtSelf = this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id;
     }
-    let positions_title = "";
-    let following_title_long = "";
-    let following_title_short = "";
-    let followers_title = "";
-    let voter_guide_followers_list = this.state.voter_guide_followers_list || [];
+    let positionsTitle = "";
+    let followingTitleLong = "";
+    let followingTitleShort = "";
+    let followersTitle = "";
+    let voterGuideFollowersList = this.state.voterGuideFollowersList || [];
     if (this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id) {
       // If looking at your own voter guide, filter out your own entry as a follower
-      voter_guide_followers_list = voter_guide_followers_list.filter( one_voter_guide => (one_voter_guide.organization_we_vote_id !== this.state.voter.linked_organization_we_vote_id ? one_voter_guide : null));
+      voterGuideFollowersList = voterGuideFollowersList.filter(oneVoterGuide => (oneVoterGuide.organization_we_vote_id !== this.state.voter.linked_organization_we_vote_id ? oneVoterGuide : null));
     }
-    if (looking_at_self) {
-      positions_title = "Your Positions";
-      following_title_long = this.state.voter_guide_followed_list.length === 0 ?
-        "You Are Listening To" : `You Are Listening To ${this.state.voter_guide_followed_list.length}`;
-      following_title_short = "Listening To";
-      followers_title = voter_guide_followers_list.length === 0 ?
-        "Listeners" : `${voter_guide_followers_list.length} Listeners`;
+    if (lookingAtSelf) {
+      positionsTitle = "Your Positions";
+      followingTitleLong = this.state.voterGuideFollowedList.length === 0 ?
+        "You Are Listening To" : `You Are Listening To ${this.state.voterGuideFollowedList.length}`;
+      followingTitleShort = "Listening To";
+      followersTitle = voterGuideFollowersList.length === 0 ?
+        "Listeners" : `${voterGuideFollowersList.length} Listeners`;
     } else {
-      positions_title = "All Positions";
-      following_title_long = this.state.voter_guide_followed_list.length === 0 ?
-        "Listening To" : `Listening To ${this.state.voter_guide_followed_list.length}`;
-      following_title_short = "Listening To";
-      followers_title = voter_guide_followers_list.length === 0 ?
-        "Listeners" : `${voter_guide_followers_list.length} Listeners`;
+      positionsTitle = "All Positions";
+      followingTitleLong = this.state.voterGuideFollowedList.length === 0 ?
+        "Listening To" : `Listening To ${this.state.voterGuideFollowedList.length}`;
+      followingTitleShort = "Listening To";
+      followersTitle = voterGuideFollowersList.length === 0 ?
+        "Listeners" : `${voterGuideFollowersList.length} Listeners`;
     }
 
-    let voter_guide_component_to_display = null;
-    switch (this.state.active_route) {
+    let voterGuideComponentToDisplay = null;
+    switch (this.state.activeRoute) {
       default:
       case "ballot":
-        voter_guide_component_to_display = (
+        voterGuideComponentToDisplay = (
           <VoterGuideBallot
             organization={this.state.organization}
-            active_route={this.state.active_route}
+            active_route={this.state.activeRoute}
             location={this.props.location}
             params={this.props.params}
             ref={(ref) => { this.voterGuideBallotReference = ref; }}
@@ -193,14 +196,14 @@ export default class OrganizationVoterGuideTabs extends Component {
         );
         break;
       case "positions":
-        voter_guide_component_to_display = (
+        voterGuideComponentToDisplay = (
           <div>
-            { looking_at_self && !this.state.voter.is_signed_in ?
+            { lookingAtSelf && !this.state.voter.is_signed_in ?
               <SettingsAccount /> :
               null }
             <VoterGuidePositions
               organization={this.state.organization}
-              active_route={this.state.active_route}
+              active_route={this.state.activeRoute}
               location={this.props.location}
               params={this.props.params}
             />
@@ -208,10 +211,10 @@ export default class OrganizationVoterGuideTabs extends Component {
         );
         break;
       case "following":
-        voter_guide_component_to_display = <VoterGuideFollowing organization={this.state.organization} />;
+        voterGuideComponentToDisplay = <VoterGuideFollowing organization={this.state.organization} />;
         break;
       case "followers":
-        voter_guide_component_to_display = <VoterGuideFollowers organization={this.state.organization} />;
+        voterGuideComponentToDisplay = <VoterGuideFollowers organization={this.state.organization} />;
         break;
     }
 
@@ -221,35 +224,35 @@ export default class OrganizationVoterGuideTabs extends Component {
           <div className="tabs__tabs-container d-print-none">
             <ul className="nav tabs__tabs">
               <li className="tab-item">
-                <a onClick={() => this.switchTab("ballot")} className={this.state.active_route === "ballot" ? "tab tab-active" : "tab tab-default"}>
+                <a onClick={() => this.switchTab("ballot")} className={this.state.activeRoute === "ballot" ? "tab tab-active" : "tab tab-default"}>
                   <span>Your Ballot</span>
                 </a>
               </li>
 
               <li className="tab-item">
-                <a onClick={() => this.switchTab("positions")} className={this.state.active_route === "positions" ? "tab tab-active" : "tab tab-default"}>
-                  <span>{positions_title}</span>
+                <a onClick={() => this.switchTab("positions")} className={this.state.activeRoute === "positions" ? "tab tab-active" : "tab tab-default"}>
+                  <span>{positionsTitle}</span>
                 </a>
               </li>
 
               <li className="tab-item">
-                <a onClick={() => this.switchTab("following")} className={this.state.active_route === "following" ? "tab tab-active" : "tab tab-default"}>
+                <a onClick={() => this.switchTab("following")} className={this.state.activeRoute === "following" ? "tab tab-active" : "tab tab-default"}>
                   <span>
-                    <span className="d-none d-sm-block">{following_title_long}</span>
-                    <span className="d-block d-sm-none">{following_title_short}</span>
+                    <span className="d-none d-sm-block">{followingTitleLong}</span>
+                    <span className="d-block d-sm-none">{followingTitleShort}</span>
                   </span>
                 </a>
               </li>
 
               <li className="tab-item">
-                <a onClick={() => this.switchTab("followers")} className={this.state.active_route === "followers" ? "tab tab-active" : "tab tab-default"}>
-                  <span>{followers_title}</span>
+                <a onClick={() => this.switchTab("followers")} className={this.state.activeRoute === "followers" ? "tab tab-active" : "tab tab-default"}>
+                  <span>{followersTitle}</span>
                 </a>
               </li>
             </ul>
           </div>
         </div>
-        {voter_guide_component_to_display}
+        {voterGuideComponentToDisplay}
       </div>
     );
   }
