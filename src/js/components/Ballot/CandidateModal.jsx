@@ -162,7 +162,7 @@ export default class CandidateModal extends Component {
               <div className="card-main__actions">
                 <ItemActionBar
                   ballot_item_we_vote_id={this.props.candidate.we_vote_id}
-                  ballot_item_display_name={this.props.candidate.ballot_item_display_name}
+                  ballotItemDisplayName={this.props.candidate.ballot_item_display_name}
                   supportProps={this.state.candidateSupportProps}
                   type="CANDIDATE"
                   toggleFunction={this.togglePositionStatement.bind(this)}
@@ -170,7 +170,7 @@ export default class CandidateModal extends Component {
                 { is_support || is_oppose || voter_statement_text || !this.state.hide_position_statement ? (
                   <ItemPositionStatementActionBar
                     ballot_item_we_vote_id={this.props.candidate.we_vote_id}
-                    ballot_item_display_name={this.props.candidate.ballot_item_display_name}
+                    ballotItemDisplayName={this.props.candidate.ballot_item_display_name}
                     supportProps={this.state.candidateSupportProps}
                     type="CANDIDATE"
                   />

@@ -266,7 +266,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
           {/* this.state.hide_position_statement ?
           null :
           <ItemPositionStatementActionBar ballot_item_we_vote_id={we_vote_id}
-                                        ballot_item_display_name={ballot_item_display_name}
+                                        ballotItemDisplayName={ballot_item_display_name}
                                         supportProps={supportProps}
                                         transitioning={transitioning}
                                         type="CANDIDATE" /> */}

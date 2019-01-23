@@ -559,7 +559,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                         />
                         <div className="flex">
                           <ItemActionBar
-                            ballot_item_display_name={oneCandidate.ballot_item_display_name}
+                            ballotItemDisplayName={oneCandidate.ballot_item_display_name}
                             ballot_item_we_vote_id={candidateWeVoteId}
                             commentButtonHide
                             currentBallotIdInUrl={this.props.location.hash.slice(1)}
@@ -579,7 +579,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                             </div>
                             <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
                               <ItemPositionStatementActionBar
-                                ballot_item_display_name={oneCandidate.ballot_item_display_name}
+                                ballotItemDisplayName={oneCandidate.ballot_item_display_name}
                                 ballot_item_we_vote_id={candidateWeVoteId}
                                 supportProps={candidateSupportStore}
                                 transitioning={this.state.transitioning}

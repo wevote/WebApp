@@ -148,7 +148,7 @@ export default class EditPositionAboutCandidateModal extends Component {
               />
               <ItemPositionStatementActionBar
                 ballot_item_we_vote_id={ballot_item_we_vote_id}
-                ballot_item_display_name={ballot_item_display_name}
+                ballotItemDisplayName={ballot_item_display_name}
                 supportProps={supportProps}
                 type="CANDIDATE"
               />
