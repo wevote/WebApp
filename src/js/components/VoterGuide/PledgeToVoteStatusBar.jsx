@@ -75,7 +75,7 @@ export default class PledgeToVoteStatusBar extends Component {
           percentComplete = 30;
         }
       }
-      ({ voter_has_pledged: voterHasPledged } = this.state.voterGuide.voter_has_pledged);
+      voterHasPledged = this.state.voterGuide.voter_has_pledged;
       // console.log("PledgeToSupportOrganizationStatusBar voterHasPledged:", voterHasPledged, ", voter_guide_we_vote_id: ", this.state.voterGuide.we_vote_id);
     }
     const showProgressBar = numberOfSupportersGoal > 1 && numberOfSupporters > 1;
