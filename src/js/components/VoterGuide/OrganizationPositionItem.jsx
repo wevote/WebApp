@@ -257,7 +257,7 @@ export default class OrganizationPositionItem extends Component {
               <div>
                 <ItemActionBar
                   ballot_item_we_vote_id={position.ballot_item_we_vote_id}
-                  ballot_item_display_name={ballot_item_display_name}
+                  ballotItemDisplayName={ballot_item_display_name}
                   commentButtonHide
                   shareButtonHide
                   supportProps={supportProps}
@@ -269,7 +269,7 @@ export default class OrganizationPositionItem extends Component {
                   null : (
                     <ItemPositionStatementActionBar
                       ballot_item_we_vote_id={position.ballot_item_we_vote_id}
-                      ballot_item_display_name={position.ballot_item_display_name}
+                      ballotItemDisplayName={position.ballot_item_display_name}
                       comment_edit_mode_on
                       stance_display_off
                       supportProps={supportProps}

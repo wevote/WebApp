@@ -52,44 +52,8 @@ export default class Application extends Component {
     this.loadedHeader = false;
   }
 
-  initCordova () {
-    if (isCordova()) {
-      console.log(`Application initCordova ------------ ${__filename}`);
-      window.handleOpenURL = (url) => {
-        TwitterSignIn.handleTwitterOpenURL(url);
-      };
-    }
-  }
-
-  initFacebook () {
-    if (webAppConfig.ENABLE_FACEBOOK) {
-      window.fbAsyncInit = function () {  // eslint-disable-line func-names
-        window.FB.init({
-          appId: webAppConfig.FACEBOOK_APP_ID,
-          autoLogAppEvents: true,
-          xfbml: true,
-          version: "v3.2",
-          status: true, // set this status to true, this will fix the popup blocker issue
-        });
-      };
-
-      (function (d, s, id) {
-        let js;
-        const fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {
-          return;
-        }
-
-        js = d.createElement(s);    // eslint-disable-line prefer-const
-        js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, "script", "facebook-jssdk"));
-    }
-  }
-
   componentDidMount () {
-    console.log("React Application ---------------   componentDidMount ()");
+    // console.log("React Application ---------------   componentDidMount ()");
     polyfillObjectEntries();
     this.initFacebook();
     this.initCordova();
@@ -112,11 +76,6 @@ export default class Application extends Component {
     this.issueStoreListener = IssueStore.addListener(this.preloadIssueImages);
   }
 
-  componentWillUnmount () {
-    this.voterStoreListener.remove();
-    this.loadedHeader = false;
-  }
-
   componentDidUpdate () {
     // let voterDeviceId = VoterStore.voterDeviceId();
     // console.log("Application, componentDidUpdate, voterDeviceId:", voterDeviceId);
@@ -137,6 +96,47 @@ export default class Application extends Component {
     }
 
     this.loadedHeader = true;
+  }
+
+  componentWillUnmount () {
+    this.voterStoreListener.remove();
+    this.loadedHeader = false;
+  }
+
+  initCordova () { // eslint-disable-line
+    if (isCordova()) {
+      console.log(`Application initCordova ------------ ${__filename}`);
+      window.handleOpenURL = (url) => {
+        TwitterSignIn.handleTwitterOpenURL(url);
+      };
+    }
+  }
+
+  initFacebook () { // eslint-disable-line
+    if (webAppConfig.ENABLE_FACEBOOK) {
+      window.fbAsyncInit = function () {  // eslint-disable-line func-names
+        window.FB.init({
+          appId: webAppConfig.FACEBOOK_APP_ID,
+          autoLogAppEvents: true,
+          xfbml: true,
+          version: "v3.2",
+          status: true, // set this status to true, this will fix the popup blocker issue
+        });
+      };
+
+      (function (d, s, id) { // eslint-disable-line
+        let js;
+        const fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+          return;
+        }
+
+        js = d.createElement(s);    // eslint-disable-line prefer-const
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, "script", "facebook-jssdk"));
+    }
   }
 
   _onVoterStoreChange () {

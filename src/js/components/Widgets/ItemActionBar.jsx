@@ -27,7 +27,7 @@ export default class ItemActionBar extends Component {
     supportProps: PropTypes.object,
     toggleFunction: PropTypes.func,
     type: PropTypes.string.isRequired,
-    ballot_item_display_name: PropTypes.string,
+    ballotItemDisplayName: PropTypes.string,
     supportOrOpposeHasBeenClicked: PropTypes.func,
     urlWithoutHash: PropTypes.string,
     we_vote_id: PropTypes.string,
@@ -476,7 +476,7 @@ export default class ItemActionBar extends Component {
       </Modal>
     );
 
-    const ballotItemDisplayName = this.props.ballot_item_display_name || "";
+    const ballotItemDisplayName = this.props.ballotItemDisplayName || "";
     let supportButtonSelectedPopOverText = "Click to choose";
     if (ballotItemDisplayName.length > 0) {
       supportButtonSelectedPopOverText += ` ${ballotItemDisplayName}.`;

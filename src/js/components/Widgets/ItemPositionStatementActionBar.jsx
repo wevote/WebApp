@@ -19,7 +19,7 @@ import { vimeoRegX, youTubeRegX, stringContains } from "../../utils/textFormat";
 export default class ItemPositionStatementActionBar extends Component {
   static propTypes = {
     ballot_item_we_vote_id: PropTypes.string.isRequired,
-    ballot_item_display_name: PropTypes.string,
+    ballotItemDisplayName: PropTypes.string,
     type: PropTypes.string.isRequired,
     comment_edit_mode_on: PropTypes.bool,
     supportProps: PropTypes.object,
@@ -189,19 +189,19 @@ export default class ItemPositionStatementActionBar extends Component {
     let statementPlaceholderText;
     const horizontalEllipsis = "\u2026";
     if (this.state.supportProps.is_support) {
-      if (this.props.ballot_item_display_name) {
-        statementPlaceholderText = `Why you chose ${this.props.ballot_item_display_name}${horizontalEllipsis}`;
+      if (this.props.ballotItemDisplayName) {
+        statementPlaceholderText = `Why you chose ${this.props.ballotItemDisplayName}${horizontalEllipsis}`;
       } else {
         statementPlaceholderText = `Why you support${horizontalEllipsis}`;
       }
     } else if (this.state.supportProps.is_oppose) {
-      if (this.props.ballot_item_display_name) {
-        statementPlaceholderText = `Why you oppose ${this.props.ballot_item_display_name}${horizontalEllipsis}`;
+      if (this.props.ballotItemDisplayName) {
+        statementPlaceholderText = `Why you oppose ${this.props.ballotItemDisplayName}${horizontalEllipsis}`;
       } else {
         statementPlaceholderText = `Why you oppose${horizontalEllipsis}`;
       }
-    } else if (this.props.ballot_item_display_name) {
-      statementPlaceholderText = `Your thoughts about ${this.props.ballot_item_display_name }${horizontalEllipsis}`;
+    } else if (this.props.ballotItemDisplayName) {
+      statementPlaceholderText = `Your thoughts about ${this.props.ballotItemDisplayName }${horizontalEllipsis}`;
     } else {
       statementPlaceholderText = `Your thoughts${horizontalEllipsis}`;
     }

@@ -62,6 +62,7 @@ export default class IssueFollowToggleSquare extends Component {
     const {
       grid, issueIconLocalPath, issueDescription, readOnly, editMode, issueName, sideBar,
     } = this.props;
+    const { isFollowing } = this.state;
     renderLog(__filename);
     if (!this.state) {
       return <div />;
@@ -85,7 +86,7 @@ export default class IssueFollowToggleSquare extends Component {
         </div>
       );
     } else {
-      return this.state.isFollowing ? (
+      return isFollowing ? (
         <div className={`${grid} intro-modal__square u-cursor--pointer`} onClick={this.onIssueStopFollowing}>
           <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${issueIconLocalPath}.svg`)} svgStyle={svgStyle} />
           <ImageHandler
@@ -93,7 +94,7 @@ export default class IssueFollowToggleSquare extends Component {
             imageUrl={cordovaDot("/img/global/svg-icons/check-mark-v2-40x43.svg")}
             alt="Following"
           />
-          <h4 className="intro-modal__white-space intro-modal__square-name">{issueName}</h4>
+          <h4 className="intro-modal__white-space intro-modal__square-name intro-modal__following">{issueName}</h4>
           { issueDescription && issueDescription.length ? (
             <Tooltip id="organizationDescriptionTooltip" title={issueDescription}>
               <i className="fa fa-info-circle fa-lg d-none d-sm-block intro-modal__square-details" aria-hidden="true" />
