@@ -221,7 +221,7 @@ export default class MeasureItemCompressed extends Component {
     const itemActionBar = (
       <span>
         <ItemActionBar
-          ballotItemDisplayName={this.state.ballotItemDisplayName}
+          ballotItemDisplayName={ballotItemDisplayName}
           ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
           commentButtonHide={commentBoxIsVisible}
           commentButtonHideInMobile
@@ -243,7 +243,7 @@ export default class MeasureItemCompressed extends Component {
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar
             ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
-            ballotItemDisplayName={this.state.ballotItemDisplayName}
+            ballotItemDisplayName={ballotItemDisplayName}
             comment_edit_mode_on={this.state.showPositionStatement}
             supportProps={ballotItemSupportStore}
             shouldFocus={this.state.shouldFocusCommentArea}
@@ -261,7 +261,7 @@ export default class MeasureItemCompressed extends Component {
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar
             ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
-            ballotItemDisplayName={this.state.ballotItemDisplayName}
+            ballotItemDisplayName={ballotItemDisplayName}
             supportProps={ballotItemSupportStore}
             shouldFocus={this.state.shouldFocusCommentArea}
             transitioning={this.state.transitioning}
@@ -328,7 +328,7 @@ export default class MeasureItemCompressed extends Component {
           {/* Positions in Your Network and Possible Voter Guides to Follow */}
           <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
             {/* <ItemSupportOpposeRaccoon ballotItemWeVoteId={measureWeVoteId}
-                                    ballotItemDisplayName={ballotItemDisplayName}
+                                    ballot_item_display_name={ballotItemDisplayName}
                                     currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                                     maximumOrganizationDisplay={this.state.maximum_organization_display}
                                     organizationsToFollowSupport={organizationsToFollowSupport}

@@ -185,7 +185,7 @@ export default class MeasureItem extends Component {
         <div className="card-main__actions">
           <ItemActionBar
             ballot_item_we_vote_id={we_vote_id}
-            ballot_item_display_name={ballot_item_display_name}
+            ballotItemDisplayName={ballot_item_display_name}
             commentButtonHide={this.props.commentButtonHide}
             supportProps={supportProps}
             transitioning={transitioning}
@@ -193,7 +193,7 @@ export default class MeasureItem extends Component {
           />
           <ItemPositionStatementActionBar
             ballot_item_we_vote_id={we_vote_id}
-            ballot_item_display_name={ballot_item_display_name}
+            ballotItemDisplayName={ballot_item_display_name}
             supportProps={supportProps}
             transitioning={transitioning}
             type="MEASURE"

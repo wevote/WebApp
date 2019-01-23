@@ -431,7 +431,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar
             ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
-            ballot_item_display_name={this.state.ballot_item_display_name}
+            ballotItemDisplayName={this.state.ballot_item_display_name}
             comment_edit_mode_on={this.state.showPositionStatement}
             supportProps={ballotItemSupportStore}
             shouldFocus={this.state.shouldFocusCommentArea}
@@ -449,7 +449,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar
             ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
-            ballot_item_display_name={this.state.ballot_item_display_name}
+            ballotItemDisplayName={this.state.ballot_item_display_name}
             supportProps={ballotItemSupportStore}
             shouldFocus={this.state.shouldFocusCommentArea}
             transitioning={this.state.transitioning}
