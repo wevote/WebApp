@@ -163,11 +163,12 @@ export default class VoterPositionItem extends Component {
               <span className="position-rating__candidate-name">{ballot_item_display_name}</span>
             </Link>
             <br />
-            { position.kind_of_ballot_item === "CANDIDATE" && contest_office_name !== undefined ?
+            { position.kind_of_ballot_item === "CANDIDATE" && contest_office_name !== undefined ? (
               <OfficeNameText
                 politicalParty={political_party}
                 contestOfficeName={contest_office_name}
-              /> : null
+              />
+            ) : null
             }
             {/* show explicit position, if available, otherwise show rating */}
             {/* this.props.link_to_edit_modal_off ?
