@@ -72,17 +72,17 @@ export default class EditAddress extends Component {
       <span className="ballot__date_location">
         { editAddressPopoverOn ? (
           <EditAddressPopover
-            text_for_map_search={this.state.text_for_map_search}
+            textForMapSearch={this.state.text_for_map_search}
             placement="bottom"
             onEnterAddressClick={this.props.toggleSelectAddressModal}
-            ballot_location_chosen={this.state.ballot_location_chosen}
-            ballot_location_display_name={this.state.ballot_location_display_name}
-            election_day_text={this.state.election_day_text}
-            election_is_upcoming={this.state.election_is_upcoming}
+            ballotLocationChosen={this.state.ballot_location_chosen}
+            ballotLocationDisplayName={this.state.ballot_location_display_name}
+            electionDayText={this.state.election_day_text}
+            electionIsUpcoming={this.state.election_is_upcoming}
             maxAddressDisplayLength={maximumAddressDisplayLength}
-            voter_entered_address={this.state.voter_entered_address}
-            google_civic_data_exists={this.state.google_civic_data_exists}
-            voter_specific_ballot_from_google_civic={this.state.voter_specific_ballot_from_google_civic}
+            voterEnteredAddress={this.state.voter_entered_address}
+            googleCivicDataExists={this.state.google_civic_data_exists}
+            voterSpecificBallotFromGoogleCivic={this.state.voter_specific_ballot_from_google_civic}
           />
         ) :
           <span>{ this.state.text_for_map_search.length ? shortenText(this.state.text_for_map_search, maximumAddressDisplayLength) : noAddressMessage }</span>
