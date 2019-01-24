@@ -18,7 +18,7 @@ export default class EditAddressInPlace extends Component {
     super(props, context);
     this.state = {
       editingAddress: false,
-      text_for_map_search: "",
+      textForMapSearch: "",
     };
     this.toggleEditingAddress = this.toggleEditingAddress.bind(this);
   }
@@ -26,21 +26,22 @@ export default class EditAddressInPlace extends Component {
   componentDidMount () {
     // console.log("In EditAddressInPlace componentDidMount");
     this.setState({
-      text_for_map_search: this.props.address.text_for_map_search || "",
+      textForMapSearch: this.props.address.text_for_map_search || "",
     });
   }
 
   componentWillReceiveProps (nextProps) {
     // console.log("EditAddressInPlace componentWillReceiveProps");
     this.setState({
-      text_for_map_search: nextProps.address.text_for_map_search || "",
+      textForMapSearch: nextProps.address.text_for_map_search || "",
     });
   }
 
   toggleEditingAddress () {
+    const { editingAddress } = this.state;
     if (isWebApp()) {
       this.setState({
-        editingAddress: !this.state.editingAddress,
+        editingAddress: !editingAddress,
       });
     } else {
       // The scrolling pane within the Modal causes an "[LayoutConstraints] Unable to simultaneously satisfy constraints."
@@ -67,13 +68,12 @@ export default class EditAddressInPlace extends Component {
           <AddressBox cancelEditAddress={this.toggleEditingAddress} saveUrl={ballotBaseUrl} toggleSelectAddressModal={this.props.toggleFunction} />
         </span>
       );
-
     } else {
       return (
         <span>
           <h4 className="h4">Your Address</h4>
           <span className="ballot__edit-address-preview">
-            { this.state.text_for_map_search.length ? shortenText(this.state.text_for_map_search, maximumAddressDisplayLength) : noAddressMessage }
+            { this.state.textForMapSearch.length ? shortenText(this.state.textForMapSearch, maximumAddressDisplayLength) : noAddressMessage }
             {" "}
           </span>
           <span className="d-print-none ballot__edit-address-preview-link u-padding-left--sm"><button className="btn btn-primary" onClick={this.toggleEditingAddress}>Edit</button></span>
