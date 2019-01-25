@@ -23,7 +23,7 @@ Copy `WebApp/src/js/config-template.js` into `WebApp/src/js/config.js`:
 
 ## Mac users will need to install fsevents ("Native access to OS X FSEvents in Node.js"): 
 
-    (WebAppEnv) $ cd ~
+    (WebAppEnv) $ cd /Users/<YOUR NAME HERE>/MyProjects/WebApp
     (WebAppEnv) $ npm install fsevents
 
 ## Install and start web application
