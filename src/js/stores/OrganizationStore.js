@@ -128,7 +128,7 @@ class OrganizationStore extends ReduceStore {
   }
 
   isVoterFollowingThisOrganization (organizationWeVoteId) {
-    const organizationWeVoteIdsVoterIsFollowing = this.getState().organizationWeVoteIdsVoterIsFollowing || [];
+    const { organizationWeVoteIdsVoterIsFollowing } = this.getState();
     // console.log("OrganizationStore, isVoterFollowingThisOrganization, organizationWeVoteIdsVoterIsFollowing: ", organizationWeVoteIdsVoterIsFollowing);
     if (organizationWeVoteIdsVoterIsFollowing.length) {
       const isFollowing = arrayContains(organizationWeVoteId, organizationWeVoteIdsVoterIsFollowing);
@@ -142,9 +142,10 @@ class OrganizationStore extends ReduceStore {
 
   getOrganizationSearchResultsOrganization () {
     // if only one organization is found, return the organization_twitter_handle
-    const numberOfSearchResults = this.getState().organizationSearchResults.number_of_search_results || 0;
+    const { organizationSearchResults } = this.getState();
+    const numberOfSearchResults = organizationSearchResults.number_of_search_results || 0;
     if (numberOfSearchResults === 1) {
-      const organizationsList = this.getState().organizationSearchResults.organizations_list;
+      const organizationsList = organizationSearchResults.organizations_list;
       return organizationsList[0];
     }
     return {};
