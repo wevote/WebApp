@@ -40,9 +40,9 @@ export default class SettingsIssueLinks extends Component {
     super(props);
 
     this.state = {
-      active_tab: "",
-      issues_to_link_to: [],
-      issues_linked_to: [],
+      activeTab: "",
+      issuesToLinkTo: [],
+      issuesLinkedTo: [],
       organization_we_vote_id: "",
       currentIncompatibleIssues: {},
     };
@@ -63,9 +63,9 @@ export default class SettingsIssueLinks extends Component {
       newState.organization_we_vote_id = this.props.organization_we_vote_id;
     }
 
-    const default_active_tab = this.getDefaultActiveIssueTab();
-    const active_tab = this.props.params.active_tab || default_active_tab;
-    newState.active_tab = active_tab;
+    const defaultActiveTab = this.getDefaultActiveIssueTab();
+    const activeTab = this.props.params.active_tab || defaultActiveTab;
+    newState.activeTab = activeTab;
 
     this.setState(newState);
   }
@@ -81,11 +81,11 @@ export default class SettingsIssueLinks extends Component {
       );
       newState.organization_we_vote_id = this.props.organization_we_vote_id;
     }
-    const default_active_tab = this.getDefaultActiveIssueTab();
-    const active_tab = nextProps.params.active_tab || default_active_tab;
-    newState.active_tab = active_tab;
+    const defaultActiveTab = this.getDefaultActiveIssueTab();
+    const activeTab = nextProps.params.active_tab || defaultActiveTab;
+    newState.activeTab = activeTab;
     // console.log("SettingsIssueLinks, nextProps.organization_we_vote_id: ", nextProps.organization_we_vote_id);
-    // console.log("SettingsIssueLinks, active_tab: ", active_tab, "default_active_tab: ", default_active_tab);
+    // console.log("SettingsIssueLinks, activeTab: ", activeTab, "defaultActiveTab: ", defaultActiveTab);
     this.setState(newState);
   }
 
@@ -94,11 +94,11 @@ export default class SettingsIssueLinks extends Component {
   }
 
   onIssueStoreChange () {
-    const issues_linked_to = IssueStore.getIssuesLinkedToByOrganization(this.props.organization_we_vote_id);
+    const issuesLinkedTo = IssueStore.getIssuesLinkedToByOrganization(this.props.organization_we_vote_id);
     const currentIncompatibleIssues = {}; // issue -> issue that it is causing the incompatibility
 
     // TODO: Steve remove the error suppression on the next line 12/1/18, a temporary hack
-    issues_linked_to.map((linkedIssue) => { // eslint-disable-line array-callback-return
+    issuesLinkedTo.map((linkedIssue) => { // eslint-disable-line array-callback-return
       if (INCOMPATIBLE_ISSUES[linkedIssue.issue_we_vote_id]) { // We only want the issues that been linked.
         // Iterate over incompatible issues caused by the linkedIssue.
         INCOMPATIBLE_ISSUES[linkedIssue.issue_we_vote_id].map((incompatibleIssue) => { // eslint-disable-line array-callback-return
@@ -111,10 +111,10 @@ export default class SettingsIssueLinks extends Component {
     // console.log("getIssuesToLinkToByOrganization: ", IssueStore.getIssuesToLinkToByOrganization(this.props.organization_we_vote_id));
     // console.log("getIssuesLinkedToByOrganization: ", IssueStore.getIssuesLinkedToByOrganization(this.props.organization_we_vote_id));
     this.setState({
-      issues_to_link_to: IssueStore.getIssuesToLinkToByOrganization(
+      issuesToLinkTo: IssueStore.getIssuesToLinkToByOrganization(
         this.props.organization_we_vote_id,
       ),
-      issues_linked_to,
+      issuesLinkedTo,
       currentIncompatibleIssues,
     });
   }
@@ -122,52 +122,52 @@ export default class SettingsIssueLinks extends Component {
   getDefaultActiveIssueTab () {
     // If the organization is linked to fewer than 3 issues, default to the "Find Issues" tab
     // After that, default to the "Linked Issues" tab
-    const issues_linked_count = IssueStore.getIssuesLinkedToByOrganizationCount(
+    const issuesLinkedCount = IssueStore.getIssuesLinkedToByOrganizationCount(
       this.props.organization_we_vote_id,
     );
-    const show_find_issues_until_this_many_linked_to = 3;
-    let default_active_tab;
-    if (issues_linked_count < show_find_issues_until_this_many_linked_to) {
-      default_active_tab = "issues_to_link";
+    const showFindIssuesUntilThisManyLinkedTo = 3;
+    let defaultActiveTab;
+    if (issuesLinkedCount < showFindIssuesUntilThisManyLinkedTo) {
+      defaultActiveTab = "issues_to_link";
     } else {
-      default_active_tab = "issues_linked";
+      defaultActiveTab = "issues_linked";
     }
-    return default_active_tab;
+    return defaultActiveTab;
   }
 
   render () {
     renderLog(__filename);
-    let issues_to_display = [];
+    let issuesToDisplay = [];
 
-    const active_tab = this.props.params.active_tab || this.state.active_tab;
-    const issues_to_link_url = "/settings/issues/issues_to_link";
-    const issues_linked_url = "/settings/issues/issues_linked";
+    const activeTab = this.props.params.active_tab || this.state.activeTab;
+    const issuesToLinkUrl = "/settings/issues/issues_to_link";
+    const issuesLinkedUrl = "/settings/issues/issues_linked";
 
-    const is_linked_false = false;
-    const is_linked_true = true;
-    // console.log('this.state.active_tab ', this.state.active_tab);
+    const isLinkedFalse = false;
+    const isLinkedTrue = true;
+    // console.log('this.state.activeTab ', this.state.activeTab);
     // console.log('this.props.params.active_tab ', this.props.params.active_tab );
     // console.log('-----------------------------------------------------')
-    switch (active_tab) {
+    switch (activeTab) {
       case "issues_to_link":
-        issues_to_display = this.state.issues_to_link_to.map(issue => (
+        issuesToDisplay = this.state.issuesToLinkTo.map(issue => (
           <IssueLinkToggle
             key={issue.issue_we_vote_id}
             issue={issue}
             organization_we_vote_id={this.props.organization_we_vote_id}
-            is_linked={is_linked_false}
+            is_linked={isLinkedFalse}
             incompatibleIssues={this.state.currentIncompatibleIssues[issue.issue_we_vote_id]}
           />
         ));
         break;
       default:
       case "issues_linked":
-        issues_to_display = this.state.issues_linked_to.map(issue => (
+        issuesToDisplay = this.state.issuesLinkedTo.map(issue => (
           <IssueLinkToggle
             key={issue.issue_we_vote_id}
             issue={issue}
             organization_we_vote_id={this.props.organization_we_vote_id}
-            is_linked={is_linked_true}
+            is_linked={isLinkedTrue}
           />
         ));
         break;
@@ -187,12 +187,12 @@ export default class SettingsIssueLinks extends Component {
               <div className="tabs__tabs-container d-print-none">
                 <ul className="nav tabs__tabs">
                   <li className="tab-item">
-                    <Link to={issues_linked_url} className={active_tab === "issues_linked" ? "tab tab-active" : "tab tab-default"}>
+                    <Link to={issuesLinkedUrl} className={activeTab === "issues_linked" ? "tab tab-active" : "tab tab-default"}>
                       <span>Linked Issues</span>
                     </Link>
                   </li>
                   <li className="tab-item">
-                    <Link to={issues_to_link_url} className={active_tab === "issues_to_link" ? "tab tab-active" : "tab tab-default"}>
+                    <Link to={issuesToLinkUrl} className={activeTab === "issues_to_link" ? "tab tab-active" : "tab tab-default"}>
                       <span>Find Issues</span>
                     </Link>
                   </li>
@@ -200,7 +200,7 @@ export default class SettingsIssueLinks extends Component {
               </div>
             </div>
             <br />
-            {issues_to_display.length > 0 ? issues_to_display : null}
+            {issuesToDisplay.length > 0 ? issuesToDisplay : null}
           </div>
         </div>
       </div>
