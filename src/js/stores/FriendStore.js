@@ -45,11 +45,11 @@ class FriendStore extends ReduceStore {
   }
 
   getInvitationStatus () {
-    return this.getState().invitation_status;
+    return this.getState().invitationStatus;
   }
 
   getInvitationFromFacebookStatus () {
-    return this.getState().facebook_invitation_status;
+    return this.getState().facebookInvitationStatus;
   }
 
   isFriend (voterId) {
@@ -187,19 +187,19 @@ class FriendStore extends ReduceStore {
         }
         return {
           ...state,
-          invitation_status: {
+          invitationStatus: {
             voterDeviceId: action.res.voter_device_id,
             voterHasDataToPreserve: action.res.voter_has_data_to_preserve,
             invitationFound: action.res.invitation_found,
             attemptedToApproveOwnInvitation: action.res.attempted_to_approve_own_invitation,
-            invitation_secret_key_belongs_to_this_voter: action.res.invitation_secret_key_belongs_to_this_voter,
+            invitationSecretKeyBelongsToThisVoter: action.res.invitation_secret_key_belongs_to_this_voter,
           },
         };
 
       case "friendInvitationByFacebookVerify":
         return {
           ...state,
-          facebook_invitation_status: {
+          facebookInvitationStatus: {
             voterDeviceId: action.res.voter_device_id,
             voterHasDataToPreserve: action.res.voter_has_data_to_preserve,
             invitationFound: action.res.invitation_found,

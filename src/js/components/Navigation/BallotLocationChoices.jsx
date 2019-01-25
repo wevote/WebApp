@@ -25,7 +25,7 @@ export default class BallotLocationChoices extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      google_civic_election_id: 0,
+      googleCivicElectionId: 0,
       show_all_ballot_locations: false,
     };
 
@@ -38,7 +38,7 @@ export default class BallotLocationChoices extends Component {
     this.electionStoreListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
     this.setState({
       ballot_location_list: this.retrieveBallotLocationList(this.props.google_civic_election_id),
-      google_civic_election_id: this.props.google_civic_election_id,
+      googleCivicElectionId: this.props.google_civic_election_id,
     });
     // console.log("In BallotLocationChoices componentDidMount, ballot_location_list_sorted: ", ballot_location_list_sorted);
   }
@@ -47,7 +47,7 @@ export default class BallotLocationChoices extends Component {
     // console.log("BallotLocationChoices componentWillReceiveProps, nextProps.google_civic_election_id: ", nextProps.google_civic_election_id);
     this.setState({
       ballot_location_list: this.retrieveBallotLocationList(nextProps.google_civic_election_id),
-      google_civic_election_id: nextProps.google_civic_election_id,
+      googleCivicElectionId: nextProps.google_civic_election_id,
     });
   }
 
@@ -59,25 +59,25 @@ export default class BallotLocationChoices extends Component {
   onElectionStoreChange () {
     // console.log("BallotLocationChoices, onElectionStoreChange");
     this.setState({
-      ballot_location_list: this.retrieveBallotLocationList(this.state.google_civic_election_id),
+      ballot_location_list: this.retrieveBallotLocationList(this.state.googleCivicElectionId),
     });
     // console.log("In BallotLocationChoices onElectionStoreChange, ballot_location_list_unsorted: ", ballot_location_list_unsorted);
   }
 
-  retrieveBallotLocationList (google_civic_election_id) {
-    // console.log("retrieveBallotLocationList, google_civic_election_id: ", google_civic_election_id);
-    if (!google_civic_election_id || google_civic_election_id === 0) {
+  retrieveBallotLocationList (googleCivicElectionId) {
+    // console.log("retrieveBallotLocationList, googleCivicElectionId: ", googleCivicElectionId);
+    if (!googleCivicElectionId || googleCivicElectionId === 0) {
       return [];
     }
-    const ballot_location_list_unsorted = ElectionStore.getBallotLocationsForElection(google_civic_election_id);
-    const ballot_location_list_sorted = this.sortBallotLocations(ballot_location_list_unsorted);
+    const ballot_location_list_unsorted = ElectionStore.getBallotLocationsForElection(googleCivicElectionId) || [];
+    const ballot_location_list_sorted = this.sortBallotLocations(ballot_location_list_unsorted) || [];
     const voter_ballot_location = VoterStore.getBallotLocationForVoter();
     if (voter_ballot_location && voter_ballot_location.ballot_returned_we_vote_id) {
       let voter_ballot_location_in_list = false;
       // If the election in the voter_ballot_location matches the election we are looking at,
       // include the voter's displayed address
-      // console.log("retrieveBallotLocationList, google_civic_election_id: ", google_civic_election_id, ", voter_ballot_location: ", voter_ballot_location);
-      if (voter_ballot_location.google_civic_election_id === google_civic_election_id) {
+      // console.log("retrieveBallotLocationList, googleCivicElectionId: ", googleCivicElectionId, ", voter_ballot_location: ", voter_ballot_location);
+      if (voter_ballot_location.google_civic_election_id === googleCivicElectionId) {
         // TODO: Steve remove the error suppression on the next line 12/1/18, a temporary hack
         ballot_location_list_sorted.map((ballot_location) => { // eslint-disable-line array-callback-return
           if (ballot_location.ballot_returned_we_vote_id === voter_ballot_location.ballot_returned_we_vote_id) {
@@ -96,18 +96,19 @@ export default class BallotLocationChoices extends Component {
   }
 
   sortBallotLocations (ballot_location_list_unsorted) {
-    // temporary array holds objects with position and sort-value
-    const mapped = ballot_location_list_unsorted.map((ballot_location, i) => ({ index: i, value: ballot_location }));
-
-    // sorting the mapped array based on ballot_location_order which came from the server
-    mapped.sort( (a, b) => +(parseInt(a.value.ballot_location_order, 10) > parseInt(b.value.ballot_location_order, 10)) ||
-        +(parseInt(a.value.ballot_location_order, 10) === parseInt(b.value.ballot_location_order, 10)) - 1);
-
     const orderedArray = [];
-    for (const element of mapped) {
-      orderedArray.push(element.value);
-    }
+    if (ballot_location_list_unsorted) {
+      // temporary array holds objects with position and sort-value
+      const mapped = ballot_location_list_unsorted.map((ballot_location, i) => ({index: i, value: ballot_location}));
 
+      // sorting the mapped array based on ballot_location_order which came from the server
+      mapped.sort((a, b) => +(parseInt(a.value.ballot_location_order, 10) > parseInt(b.value.ballot_location_order, 10)) ||
+      +(parseInt(a.value.ballot_location_order, 10) === parseInt(b.value.ballot_location_order, 10)) - 1);
+
+      for (const element of mapped) {
+        orderedArray.push(element.value);
+      }
+    }
     return orderedArray;
   }
 
