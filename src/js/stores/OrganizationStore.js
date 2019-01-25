@@ -539,7 +539,7 @@ class OrganizationStore extends ReduceStore {
           // console.log("voterGuidesFollowedByOrganizationRetrieve NO election_id, organizationWeVoteIdForVoterGuideOwner: ", organizationWeVoteIdForVoterGuideOwner);
           organizationWeVoteIdsFollowedByOrganizationDict[organizationWeVoteIdForVoterGuideOwner] = [];
           voterGuides.forEach((oneVoterGuide) => {
-            organizationWeVoteIdsFollowedByOrganizationDict[organizationWeVoteIdForVoterGuideOwner].push(oneVoterGuide.organizationWeVoteId);
+            organizationWeVoteIdsFollowedByOrganizationDict[organizationWeVoteIdForVoterGuideOwner].push(oneVoterGuide.organization_we_vote_id);
           });
           return {
             ...state,
@@ -553,7 +553,7 @@ class OrganizationStore extends ReduceStore {
         // Reset the followers for this organization
         organizationWeVoteIdsFollowingByOrganizationDict[action.res.organization_we_vote_id] = [];
         voterGuides.forEach((oneVoterGuide) => {
-          organizationWeVoteIdsFollowingByOrganizationDict[action.res.organization_we_vote_id].push(oneVoterGuide.organizationWeVoteId);
+          organizationWeVoteIdsFollowingByOrganizationDict[action.res.organization_we_vote_id].push(oneVoterGuide.organization_we_vote_id);
         });
         return {
           ...state,
@@ -569,8 +569,8 @@ class OrganizationStore extends ReduceStore {
         voterGuides = action.res.voter_guides;
         organizationWeVoteIdsVoterIsIgnoring = [];
         voterGuides.forEach((oneVoterGuide) => {
-          if (!arrayContains(oneVoterGuide.organizationWeVoteId, organizationWeVoteIdsVoterIsIgnoring)) {
-            organizationWeVoteIdsVoterIsIgnoring.push(oneVoterGuide.organizationWeVoteId);
+          if (!arrayContains(oneVoterGuide.organization_we_vote_id, organizationWeVoteIdsVoterIsIgnoring)) {
+            organizationWeVoteIdsVoterIsIgnoring.push(oneVoterGuide.organization_we_vote_id);
           }
         });
         return {
