@@ -92,6 +92,8 @@ export default class Ballot extends Component {
       showSelectBallotModal: false,
       showBallotSummaryModal: false,
       voterBallotList: [],
+      foundFirstRaceLevel: false,
+      showFilterTabs: false,
     };
 
     this.ballotItems = {};
@@ -393,6 +395,9 @@ export default class Ballot extends Component {
       // console.log("shouldComponentUpdate: this.state.showSelectBallotModal", this.state.showSelectBallotModal, ", nextState.showSelectBallotModal", nextState.showSelectBallotModal);
       return true;
     }
+    if (this.state.showFilterTabs !== nextState.showFilterTabs) {
+      return true;
+    }
 
     return false;
   }
@@ -471,11 +476,18 @@ export default class Ballot extends Component {
     const {
       raceLevelFilterType, mounted, issuesRetrievedFromGoogleCivicElectionId,
       issuesRetrievedFromBallotReturnedWeVoteId, issuesRetrievedFromBallotLocationShortcut,
+      foundFirstRaceLevel,
     } = this.state;
-    if (ballot) {
-      const raceLevelFilterItems = ballot.filter(item => item.race_office_level === raceLevelFilterType);
+    if (ballot && ballot.length && !foundFirstRaceLevel) {
+      const raceLevelFilterItems = ballot.filter(item => item.race_office_level === raceLevelFilterType || item.kind_of_ballot_item === raceLevelFilterType.toUpperCase());
       // If there are no items mapped to the current race level filter, set the raceLevelFilterType
       // to the next item in BALLOT_ITEM_FILTER_TYPES
+      if (raceLevelFilterItems.length) {
+        this.setState({
+          foundFirstRaceLevel: true,
+          showFilterTabs: raceLevelFilterItems.length !== ballot.length,
+        });
+      }
       if (!raceLevelFilterItems.length) {
         const raceLevelIdx = BALLOT_ITEM_FILTER_TYPES.indexOf(raceLevelFilterType);
         this.setState({ raceLevelFilterType: BALLOT_ITEM_FILTER_TYPES[raceLevelIdx + 1] });
@@ -748,13 +760,13 @@ export default class Ballot extends Component {
   render () {
     renderLog(__filename);
     const ballotBaseUrl = "/ballot";
-
+    const { ballotWithAllItemsByFilterType, showFilterTabs } = this.state;
     const textForMapSearch = VoterStore.getTextForMapSearch();
     const issuesVoterCanFollow = IssueStore.getIssuesVoterCanFollow(); // Don't auto-open intro until Issues are loaded
     const issuesVoterCanFollowExist = issuesVoterCanFollow && issuesVoterCanFollow.length;
     // console.log("Ballot render issuesVoterCanFollowExist: ", issuesVoterCanFollowExist);
 
-    if (!this.state.ballotWithAllItemsByFilterType) {
+    if (!ballotWithAllItemsByFilterType) {
       return (
         <div className="ballot container-fluid well u-stack--md u-inset--md">
           { this.state.showBallotIntroModal && issuesVoterCanFollowExist ?
@@ -806,7 +818,7 @@ export default class Ballot extends Component {
     );
 
     // console.log("ballotWithAllItemsByFilterType: ", this.state.ballotWithAllItemsByFilterType);
-    const emptyBallot = this.state.ballotWithAllItemsByFilterType.length === 0 ? (
+    const emptyBallot = ballotWithAllItemsByFilterType.length === 0 ? (
       <div>
         <h3 className="text-center">{this.getEmptyMessageByFilterType(this.state.completionLevelFilterType)}</h3>
         {emptyBallotButton}
@@ -824,7 +836,7 @@ export default class Ballot extends Component {
     const inRemainingDecisionsMode = this.state.completionLevelFilterType === "filterRemaining";
     const inReadyToVoteMode = this.state.completionLevelFilterType === "filterReadyToVote";
 
-    if (this.state.ballotWithAllItemsByFilterType.length === 0 && inRemainingDecisionsMode) {
+    if (ballotWithAllItemsByFilterType.length === 0 && inRemainingDecisionsMode) {
       historyPush(this.state.pathname);
     }
 
@@ -892,7 +904,7 @@ export default class Ballot extends Component {
                     </h1>
                   </header>
 
-                  {this.state.ballotWithAllItemsByFilterType.length > 0 ? (
+                  {ballotWithAllItemsByFilterType.length > 0 ? (
                     <div>
                       <BallotStatusMessage
                         ballot_location_chosen
@@ -903,7 +915,7 @@ export default class Ballot extends Component {
                   ) : null
                   }
 
-                  { textForMapSearch || this.state.ballotWithAllItemsByFilterType.length > 1 ? (
+                  { textForMapSearch || ballotWithAllItemsByFilterType.length > 0 ? (
                     <div className="ballot__filter__container">
                       <div className="ballot__filter d-print-none">
                         <BallotTabsRaccoon
@@ -945,13 +957,13 @@ export default class Ballot extends Component {
                       />
                     </div>
                     <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
-                      {this.state.ballotWithAllItemsByFilterType.map(item => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
+                      {ballotWithAllItemsByFilterType.map(item => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
                     </div>
                   </div>
                 ) : (
                   <div>
                     {/* The rest of the ballot items */}
-                    { this.state.ballotWithAllItemsByFilterType && this.state.ballotWithAllItemsByFilterType.length ? (
+                    { ballotWithAllItemsByFilterType.length && showFilterTabs ? (
                       <div className="row ballot__item-filter-tabs">
                         { BALLOT_ITEM_FILTER_TYPES.map((oneTypeOfBallotItem) => {
                           const allBallotItemsByFilterType = this.state.ballotWithAllItems.filter((item) => {
@@ -962,7 +974,7 @@ export default class Ballot extends Component {
                             }
                           });
                           if (allBallotItemsByFilterType.length) {
-                            const ballotItemsByFilterType = this.state.ballotWithAllItemsByFilterType.filter((item) => {
+                            const ballotItemsByFilterType = ballotWithAllItemsByFilterType.filter((item) => {
                               if (oneTypeOfBallotItem === "Measure") {
                                 return item.kind_of_ballot_item === "MEASURE";
                               } else {
@@ -993,7 +1005,7 @@ export default class Ballot extends Component {
                     ) : null
                     }
                     <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
-                      { this.state.ballotWithAllItemsByFilterType.map((item) => {
+                      { ballotWithAllItemsByFilterType.map((item) => {
                       // ballot limited by items by filter type
                       // console.log(this.state.raceLevelFilterType);
                         if ((this.state.raceLevelFilterType === "All" ||
@@ -1006,7 +1018,7 @@ export default class Ballot extends Component {
                               toggleCandidateModal={this.toggleCandidateModal}
                               toggleMeasureModal={this.toggleMeasureModal}
                               updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
-                              allBallotItemsCount={this.state.ballotWithAllItemsByFilterType.length}
+                              allBallotItemsCount={ballotWithAllItemsByFilterType.length}
                               urlWithoutHash={this.props.location.pathname + this.props.location.search}
                               ref={(ref) => { this.ballotItems[item.we_vote_id] = ref; }}
                               {...item}
@@ -1040,7 +1052,7 @@ export default class Ballot extends Component {
                 }
               </div>
 
-              { this.state.ballotWithAllItemsByFilterType.length === 0 || isCordova() ?
+              { ballotWithAllItemsByFilterType.length === 0 || isCordova() ?
                 null : (
                   <div className="col-md-4 d-none d-sm-block sidebar-menu">
                     <BallotSideBar
