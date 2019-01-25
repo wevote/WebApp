@@ -8,7 +8,7 @@ class VoterSessionStore extends ReduceStore {
     };
   }
 
-  reduce (state, action) {
+  reduce (state, action) { // eslint-disable-line
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) {
       console.log("VoterSessionStore, problem with action.res or action.res.success. action: ", action);
