@@ -12,13 +12,13 @@ import { arrayContains } from "../utils/textFormat";
 class OrganizationStore extends ReduceStore {
   getInitialState () {
     return {
-      all_cached_organizations_dict: {}, // This is a dictionary with organization_we_vote_id as key and list of organizations
-      organization_we_vote_ids_followed_by_organization_dict: {}, // Dictionary with organization_we_vote_id as key and list of organization_we_vote_id's being followed as value
-      organization_we_vote_ids_following_by_organization_dict: {}, // Dictionary with organization_we_vote_id as key and list of organization_we_vote_id's following that org as value
-      organization_we_vote_ids_voter_is_following: [],
-      organization_we_vote_ids_voter_is_ignoring: [],
-      organization_we_vote_ids_voter_is_following_on_twitter: [],
-      organization_search_results: {
+      allCachedOrganizationsDict: {}, // This is a dictionary with organizationWeVoteId as key and list of organizations
+      organizationWeVoteIdsFollowedByOrganizationDict: {}, // Dictionary with organizationWeVoteId as key and list of organizationWeVoteId's being followed as value
+      organizationWeVoteIdsFollowingByOrganizationDict: {}, // Dictionary with organizationWeVoteId as key and list of organizationWeVoteId's following that org as value
+      organizationWeVoteIdsVoterIsFollowing: [],
+      organizationWeVoteIdsVoterIsIgnoring: [],
+      organizationWeVoteIdsVoterIsFollowingOnTwitter: [],
+      organizationSearchResults: {
         organization_search_term: "",
         organization_twitter_handle: "",
         number_of_search_results: 0,
@@ -28,87 +28,74 @@ class OrganizationStore extends ReduceStore {
   }
 
   resetState () {
-    return {
-      all_cached_organizations_dict: {}, // This is a dictionary with organization_we_vote_id as key and list of organizations
-      organization_we_vote_ids_followed_by_organization_dict: {}, // Dictionary with organization_we_vote_id as key and list of organization_we_vote_id's being followed as value
-      organization_we_vote_ids_following_by_organization_dict: {}, // Dictionary with organization_we_vote_id as key and list of organization_we_vote_id's following that org as value
-      organization_we_vote_ids_voter_is_following: [],
-      organization_we_vote_ids_voter_is_ignoring: [],
-      organization_we_vote_ids_voter_is_following_on_twitter: [],
-      organization_search_results: {
-        organization_search_term: "",
-        organization_twitter_handle: "",
-        number_of_search_results: 0,
-        search_results: [],
-      },
-    };
+    return this.getInitialState();
   }
 
-  // Given a list of ids, retrieve the complete all_cached_organizations_dict with all attributes and return as array
-  returnOrganizationsFromListOfIds (list_of_organization_we_vote_ids) {
+  // Given a list of ids, retrieve the complete allCachedOrganizationsDict with all attributes and return as array
+  returnOrganizationsFromListOfIds (listOfOrganizationWeVoteIds) {
     const state = this.getState();
-    const filtered_organizations = [];
-    if (list_of_organization_we_vote_ids) {
+    const filteredOrganizations = [];
+    if (listOfOrganizationWeVoteIds) {
       // organizationsFollowedRetrieve API returns more than one voter guide per organization some times.
-      const unique_organization_we_vote_id_array = list_of_organization_we_vote_ids.filter((value, index, self) => self.indexOf(value) === index);
-      unique_organization_we_vote_id_array.forEach((organization_we_vote_id) => {
-        if (state.all_cached_organizations_dict[organization_we_vote_id]) {
-          filtered_organizations.push(state.all_cached_organizations_dict[organization_we_vote_id]);
+      const uniqueOrganizationWeVoteIdArray = listOfOrganizationWeVoteIds.filter((value, index, self) => self.indexOf(value) === index);
+      uniqueOrganizationWeVoteIdArray.forEach((organizationWeVoteId) => {
+        if (state.allCachedOrganizationsDict[organizationWeVoteId]) {
+          filteredOrganizations.push(state.allCachedOrganizationsDict[organizationWeVoteId]);
         }
       });
     }
-    return filtered_organizations;
+    return filteredOrganizations;
   }
 
-  getOrganizationByWeVoteId (organization_we_vote_id) {
-    const all_cached_organizations_dict = this.getState().all_cached_organizations_dict;
-    return all_cached_organizations_dict[organization_we_vote_id] || {};
+  getOrganizationByWeVoteId (organizationWeVoteId) {
+    const { allCachedOrganizationsDict } = this.getState();
+    return allCachedOrganizationsDict[organizationWeVoteId] || {};
   }
 
-  getOrganizationPositionByWeVoteId (organization_we_vote_id, ballot_item_we_vote_id) {
-    let requested_position = {};
-    let result_found = false;
-    const all_cached_organizations_dict = this.getState().all_cached_organizations_dict;
-    // console.log("getOrganizationPositionByWeVoteId, organization_we_vote_id: ", organization_we_vote_id, ", ballot_item_we_vote_id: ", ballot_item_we_vote_id);
-    const organization = all_cached_organizations_dict[organization_we_vote_id] || {};
+  getOrganizationPositionByWeVoteId (organizationWeVoteId, ballotItemWeVoteId) {
+    const { allCachedOrganizationsDict } = this.getState();
+    let requestedPosition = {};
+    let resultFound = false;
+    // console.log("getOrganizationPositionByWeVoteId, organizationWeVoteId: ", organizationWeVoteId, ", ballotItemWeVoteId: ", ballotItemWeVoteId);
+    const organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
     if (organization.position_list_for_one_election) {
-      organization.position_list_for_one_election.forEach((one_position) => {
-        if (one_position.ballot_item_we_vote_id && one_position.ballot_item_we_vote_id === ballot_item_we_vote_id && !result_found) {
-          // console.log("OrganizationStore, getOrganizationPositionByWeVoteId, one_position: ", one_position);
-          requested_position = one_position;
-          result_found = true; // Once a result is found, ignore all other positions
+      organization.position_list_for_one_election.forEach((onePosition) => {
+        if (onePosition.ballot_item_we_vote_id && onePosition.ballot_item_we_vote_id === ballotItemWeVoteId && !resultFound) {
+          // console.log("OrganizationStore, getOrganizationPositionByWeVoteId, onePosition: ", onePosition);
+          requestedPosition = onePosition;
+          resultFound = true; // Once a result is found, ignore all other positions
         }
       });
     }
-    return requested_position;
+    return requestedPosition;
   }
 
   getOrganizationsVoterIsFollowing () {
-    // console.log("OrganizationStore.getOrganizationsVoterIsFollowing, organization_we_vote_ids_voter_is_following: ", this.getState().organization_we_vote_ids_voter_is_following);
-    return this.returnOrganizationsFromListOfIds(this.getState().organization_we_vote_ids_voter_is_following) || [];
+    // console.log("OrganizationStore.getOrganizationsVoterIsFollowing, organizationWeVoteIdsVoterIsFollowing: ", this.getState().organizationWeVoteIdsVoterIsFollowing);
+    return this.returnOrganizationsFromListOfIds(this.getState().organizationWeVoteIdsVoterIsFollowing) || [];
   }
 
   getOrganizationsFollowedByVoterOnTwitter () {
-    return this.returnOrganizationsFromListOfIds(this.getState().organization_we_vote_ids_voter_is_following_on_twitter) || [];
+    return this.returnOrganizationsFromListOfIds(this.getState().organizationWeVoteIdsVoterIsFollowingOnTwitter) || [];
   }
 
-  doesOrganizationHavePositionOnCandidate (organization_we_vote_id, candidate_we_vote_id) {
+  doesOrganizationHavePositionOnCandidate (organizationWeVoteId, candidateWeVoteId) {
     const state = this.getState();
-    const organization = state.all_cached_organizations_dict[organization_we_vote_id];
+    const organization = state.allCachedOrganizationsDict[organizationWeVoteId];
     if (organization) {
       // console.log("OrganizationStore, doesOrganizationHavePositionOnCandidate, organization found");
-      const position_list_for_one_election = organization.position_list_for_one_election || [];
-      // let position_list_for_all_except_one_election = organization.position_list_for_all_except_one_election || [];
-      let one_position = null;
-      if (position_list_for_one_election.length) {
-        const candidate_we_vote_ids_extracted = [];
-        for (let i = 0, len = position_list_for_one_election.length; i < len; i++) {
-          one_position = position_list_for_one_election[i];
-          candidate_we_vote_ids_extracted.push(one_position.ballot_item_we_vote_id);
+      const positionListForOneElection = organization.position_list_for_one_election || [];
+      // let positionListForAllExceptOneElection = organization.position_list_for_all_except_one_election || [];
+      let onePosition = null;
+      if (positionListForOneElection.length) {
+        const candidateWeVoteIdsExtracted = [];
+        for (let i = 0, len = positionListForOneElection.length; i < len; i++) {
+          onePosition = positionListForOneElection[i];
+          candidateWeVoteIdsExtracted.push(onePosition.ballot_item_we_vote_id);
         }
-        return arrayContains(candidate_we_vote_id, candidate_we_vote_ids_extracted);
+        return arrayContains(candidateWeVoteId, candidateWeVoteIdsExtracted);
       } else {
-        // console.log("OrganizationStore, isVoterFollowingThisOrganization: NO organization_we_vote_ids_voter_is_following, org_we_vote_id: ", organization_we_vote_id);
+        // console.log("OrganizationStore, isVoterFollowingThisOrganization: NO organizationWeVoteIdsVoterIsFollowing, org_we_vote_id: ", organizationWeVoteId);
         return false;
       }
     } else {
@@ -116,23 +103,23 @@ class OrganizationStore extends ReduceStore {
     }
   }
 
-  doesOrganizationHavePositionOnOffice (organization_we_vote_id, contest_office_we_vote_id) {
+  doesOrganizationHavePositionOnOffice (organizationWeVoteId, contestOfficeWeVoteId) {
     const state = this.getState();
-    const organization = state.all_cached_organizations_dict[organization_we_vote_id];
+    const organization = state.allCachedOrganizationsDict[organizationWeVoteId];
     if (organization) {
-      const position_list_for_one_election = organization.position_list_for_one_election || [];
-      // let position_list_for_all_except_one_election = organization.position_list_for_all_except_one_election || [];
+      const positionListForOneElection = organization.position_list_for_one_election || [];
+      // let positionListForAllExceptOneElection = organization.position_list_for_all_except_one_election || [];
       // console.log("OrganizationStore, doesOrganizationHavePositionOnOffice, organization found");
-      let one_position = null;
-      if (position_list_for_one_election.length) {
-        const contest_office_we_vote_ids_extracted = [];
-        for (let i = 0, len = position_list_for_one_election.length; i < len; i++) {
-          one_position = position_list_for_one_election[i];
-          contest_office_we_vote_ids_extracted.push(one_position.contest_office_we_vote_id);
+      let onePosition = null;
+      if (positionListForOneElection.length) {
+        const contestOfficeWeVoteIdsExtracted = [];
+        for (let i = 0, len = positionListForOneElection.length; i < len; i++) {
+          onePosition = positionListForOneElection[i];
+          contestOfficeWeVoteIdsExtracted.push(onePosition.contestOfficeWeVoteId);
         }
-        return arrayContains(contest_office_we_vote_id, contest_office_we_vote_ids_extracted);
+        return arrayContains(contestOfficeWeVoteId, contestOfficeWeVoteIdsExtracted);
       } else {
-        // console.log("OrganizationStore, isVoterFollowingThisOrganization: NO organization_we_vote_ids_voter_is_following, org_we_vote_id: ", organization_we_vote_id);
+        // console.log("OrganizationStore, isVoterFollowingThisOrganization: NO organizationWeVoteIdsVoterIsFollowing, org_we_vote_id: ", organizationWeVoteId);
         return false;
       }
     } else {
@@ -140,25 +127,25 @@ class OrganizationStore extends ReduceStore {
     }
   }
 
-  isVoterFollowingThisOrganization (organization_we_vote_id) {
-    const organization_we_vote_ids_voter_is_following = this.getState().organization_we_vote_ids_voter_is_following || [];
-    // console.log("OrganizationStore, isVoterFollowingThisOrganization, organization_we_vote_ids_voter_is_following: ", organization_we_vote_ids_voter_is_following);
-    if (organization_we_vote_ids_voter_is_following.length) {
-      const is_following = arrayContains(organization_we_vote_id, organization_we_vote_ids_voter_is_following);
-      // console.log("OrganizationStore, isVoterFollowingThisOrganization:", is_following, ", organization_we_vote_id:", organization_we_vote_id);
-      return is_following;
+  isVoterFollowingThisOrganization (organizationWeVoteId) {
+    const organizationWeVoteIdsVoterIsFollowing = this.getState().organizationWeVoteIdsVoterIsFollowing || [];
+    // console.log("OrganizationStore, isVoterFollowingThisOrganization, organizationWeVoteIdsVoterIsFollowing: ", organizationWeVoteIdsVoterIsFollowing);
+    if (organizationWeVoteIdsVoterIsFollowing.length) {
+      const isFollowing = arrayContains(organizationWeVoteId, organizationWeVoteIdsVoterIsFollowing);
+      // console.log("OrganizationStore, isVoterFollowingThisOrganization:", isFollowing, ", organizationWeVoteId:", organizationWeVoteId);
+      return isFollowing;
     } else {
-      // console.log("OrganizationStore, isVoterFollowingThisOrganization: NO organization_we_vote_ids_voter_is_following, org_we_vote_id: ", organization_we_vote_id);
+      // console.log("OrganizationStore, isVoterFollowingThisOrganization: NO organizationWeVoteIdsVoterIsFollowing, org_we_vote_id: ", organizationWeVoteId);
       return false;
     }
   }
 
   getOrganizationSearchResultsOrganization () {
     // if only one organization is found, return the organization_twitter_handle
-    const number_of_search_results = this.getState().organization_search_results.number_of_search_results || 0;
-    if (number_of_search_results === 1) {
-      const organizations_list = this.getState().organization_search_results.organizations_list;
-      return organizations_list[0];
+    const numberOfSearchResults = this.getState().organizationSearchResults.number_of_search_results || 0;
+    if (numberOfSearchResults === 1) {
+      const organizationsList = this.getState().organizationSearchResults.organizations_list;
+      return organizationsList[0];
     }
     return {};
   }
@@ -187,169 +174,168 @@ class OrganizationStore extends ReduceStore {
     return "";
   }
 
-  _copyListsToNewOrganization (new_organization, prior_copy_of_organization) {
-    // console.log("new_organization (_copyListsToNewOrganization): ", new_organization);
-    // console.log("prior_copy_of_organization (_copyListsToNewOrganization): ", prior_copy_of_organization);
-    new_organization.friends_position_list_for_one_election = prior_copy_of_organization.friends_position_list_for_one_election;
-    new_organization.friends_position_list_for_all_except_one_election = prior_copy_of_organization.friends_position_list_for_all_except_one_election;
-    new_organization.friends_position_list = prior_copy_of_organization.friends_position_list;
+  _copyListsToNewOrganization (newOrganization, priorCopyOfOrganization) { // eslint-disable-line
+    // console.log("newOrganization (_copyListsToNewOrganization): ", newOrganization);
+    // console.log("priorCopyOfOrganization (_copyListsToNewOrganization): ", priorCopyOfOrganization);
+    newOrganization.friends_position_list_for_one_election = priorCopyOfOrganization.friends_position_list_for_one_election;
+    newOrganization.friends_position_list_for_all_except_one_election = priorCopyOfOrganization.friends_position_list_for_all_except_one_election;
+    newOrganization.friends_position_list = priorCopyOfOrganization.friends_position_list;
     // The following line was removed because it prevented the rendering of an organization's banner. Issue #1582
-    // new_organization.organization_banner_url = prior_copy_of_organization.organization_banner_url;
-    new_organization.position_list_for_one_election = prior_copy_of_organization.position_list_for_one_election;
-    new_organization.position_list_for_all_except_one_election = prior_copy_of_organization.position_list_for_all_except_one_election;
-    new_organization.position_list = prior_copy_of_organization.position_list;
-    return new_organization;
+    // newOrganization.organization_banner_url = priorCopyOfOrganization.organization_banner_url;
+    newOrganization.position_list_for_one_election = priorCopyOfOrganization.position_list_for_one_election;
+    newOrganization.position_list_for_all_except_one_election = priorCopyOfOrganization.position_list_for_all_except_one_election;
+    newOrganization.position_list = priorCopyOfOrganization.position_list;
+    return newOrganization;
   }
 
   reduce (state, action) {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
-
-    // let add_voter_guides_not_from_election;
-    let all_cached_organizations_dict;
-    let organization_we_vote_id;
+    const {
+      organizationWeVoteIdsFollowedByOrganizationDict, organizationWeVoteIdsFollowingByOrganizationDict,
+      allCachedOrganizationsDict,
+    } = state;
+    let {
+      organizationWeVoteIdsVoterIsFollowing, organizationWeVoteIdsVoterIsIgnoring,
+    } = state;
+    // let add_voterGuides_not_from_election;
+    let organizationWeVoteId;
     let organization;
-    let prior_copy_of_organization;
-    let organizations_followed_on_twitter_list;
-    let organization_we_vote_ids_voter_is_following;
-    let organization_we_vote_ids_voter_is_ignoring;
+    let priorCopyOfOrganization;
+    let organizationsFollowedOnTwitterList;
     // let search_string;
-    let voter_linked_organization_we_vote_id;
-    let voter_guides;
-    const organizations_list = action.res.organizations_list || [];
-    const number_of_search_results = organizations_list.length;
-    const organization_we_vote_id_for_voter_guide_owner = action.res.organization_we_vote_id;
-    const organization_we_vote_ids_followed_by_organization_dict = state.organization_we_vote_ids_followed_by_organization_dict;
-    const organization_we_vote_ids_following_by_organization_dict = state.organization_we_vote_ids_following_by_organization_dict;
+    let voterLinkedOrganizationWeVoteId;
+    let voterGuides;
+    const organizationsList = action.res.organizations_list || [];
+    const numberOfSearchResults = organizationsList.length;
+    const organizationWeVoteIdForVoterGuideOwner = action.res.organization_we_vote_id;
 
     switch (action.type) {
       case "organizationFollow":
         // Following one org can change the support/oppose count for many ballot items for the voter
         SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
-        // We also listen to "organizationFollow" in VoterGuideStore so we can alter organization_we_vote_ids_to_follow_all and organization_we_vote_ids_to_follow_for_latest_ballot_item
-        // voter_linked_organization_we_vote_id is the voter who clicked the Follow button
-        voter_linked_organization_we_vote_id = action.res.voter_linked_organization_we_vote_id;
-        // organization_we_vote_id is the organization that was just followed
-        organization_we_vote_id = action.res.organization_we_vote_id;
+        // We also listen to "organizationFollow" in VoterGuideStore so we can alter organizationWeVoteIds_to_follow_all and organizationWeVoteIds_to_follow_for_latest_ballot_item
+        // voterLinkedOrganizationWeVoteId is the voter who clicked the Follow button
+        voterLinkedOrganizationWeVoteId = action.res.voter_linked_organization_we_vote_id;
+        // organizationWeVoteId is the organization that was just followed
+        organizationWeVoteId = action.res.organization_we_vote_id;
         if (action.res.organization_follow_based_on_issue) {
           VoterGuideActions.voterGuidesToFollowRetrieveByIssuesFollowed(); // Whenever a voter follows a new org, update list
         } else {
           // search_string = "";
-          // add_voter_guides_not_from_election = false;
+          // add_voterGuides_not_from_election = false;
           // Whenever a voter follows a new org, update list
-          // VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voter_guides_not_from_election);  // DEBUG=1
+          // VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voterGuides_not_from_election);  // DEBUG=1
         }
-        // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
-        VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
+        // Update "who I am following" for the voter: voterLinkedOrganizationWeVoteId
+        VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voterLinkedOrganizationWeVoteId);
         // Update who the organization is followed by
         // 2018-05-02 NOT calling this for optimization (not critical)
-        // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
+        // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organizationWeVoteId);
         // 2018-05-02 NOT calling this for optimization (not critical)
-        // VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
+        // VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organizationWeVoteId, VoterStore.election_id());
         // Update the guides the voter is following
         // 2018-05-02 NOT calling this for optimization (not critical)
         // VoterGuideActions.voterGuidesFollowedRetrieve();
-        // Update the followers of the organization that was just followed: organization_we_vote_id
+        // Update the followers of the organization that was just followed: organizationWeVoteId
         // 2018-05-02 NOT calling this for optimization (not critical)
-        // VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
+        // VoterGuideActions.voterGuideFollowersRetrieve(organizationWeVoteId);
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
-        organization_we_vote_ids_voter_is_following = state.organization_we_vote_ids_voter_is_following;
-        if (!arrayContains(organization_we_vote_id, organization_we_vote_ids_voter_is_following)) {
-          organization_we_vote_ids_voter_is_following = state.organization_we_vote_ids_voter_is_following.concat(organization_we_vote_id);
+        if (!arrayContains(organizationWeVoteId, organizationWeVoteIdsVoterIsFollowing)) {
+          organizationWeVoteIdsVoterIsFollowing = state.organizationWeVoteIdsVoterIsFollowing.concat(organizationWeVoteId);
         }
         return {
           ...state,
-          organization_we_vote_ids_voter_is_following,
-          organization_we_vote_ids_voter_is_ignoring: state.organization_we_vote_ids_voter_is_ignoring.filter(
-            existing_org_we_vote_id => existing_org_we_vote_id !== voter_linked_organization_we_vote_id,
+          organizationWeVoteIdsVoterIsFollowing,
+          organizationWeVoteIdsVoterIsIgnoring: state.organizationWeVoteIdsVoterIsIgnoring.filter(
+            existingOrgWeVoteId => existingOrgWeVoteId !== voterLinkedOrganizationWeVoteId,
           ),
         };
 
       case "organizationSearch":
         return {
           ...state,
-          organization_search_results: {
+          organizationSearchResults: {
             organization_search_term: action.res.organization_search_term,
             organization_twitter_handle: action.res.organization_twitter_handle,
-            number_of_search_results,
-            organizations_list,
+            number_of_search_results: numberOfSearchResults,
+            organizations_list: organizationsList,
           },
         };
 
       case "organizationStopFollowing":
-        // We also listen to "organizationStopFollowing" in VoterGuideStore so we can alter organization_we_vote_ids_to_follow_all
+        // We also listen to "organizationStopFollowing" in VoterGuideStore so we can alter organizationWeVoteIds_to_follow_all
 
         // Un-Following one org can change the support/oppose count for many ballot items for the voter
         SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
-        // voter_linked_organization_we_vote_id is the voter who clicked the Follow button
-        voter_linked_organization_we_vote_id = action.res.voter_linked_organization_we_vote_id;
-        // organization_we_vote_id is the organization that was just followed
-        organization_we_vote_id = action.res.organization_we_vote_id;
+        // voterLinkedOrganizationWeVoteId is the voter who clicked the Follow button
+        voterLinkedOrganizationWeVoteId = action.res.voter_linked_organization_we_vote_id;
+        // organizationWeVoteId is the organization that was just followed
+        organizationWeVoteId = action.res.organization_we_vote_id;
         // search_string = "";
-        // add_voter_guides_not_from_election = false;
+        // add_voterGuides_not_from_election = false;
         // Whenever a voter follows a new org, update list
         // 2018-05-02 NOT calling this for optimization (not critical)
-        // VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voter_guides_not_from_election);
-        // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
+        // VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voterGuides_not_from_election);
+        // Update "who I am following" for the voter: voterLinkedOrganizationWeVoteId
         // 2018-05-02 NOT calling this for optimization (not critical)
-        // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
+        // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voterLinkedOrganizationWeVoteId);
         // Update who the organization is followed by
         // 2018-05-02 NOT calling this for optimization (not critical)
-        // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
-        // VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
+        // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organizationWeVoteId);
+        // VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organizationWeVoteId, VoterStore.election_id());
         // Update the guides the voter is following
         VoterGuideActions.voterGuidesFollowedRetrieve();
-        // Update the followers of the organization that was just un-followed: organization_we_vote_id
+        // Update the followers of the organization that was just un-followed: organizationWeVoteId
         // 2018-05-02 NOT calling this for optimization (not critical)
-        // VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
+        // VoterGuideActions.voterGuideFollowersRetrieve(organizationWeVoteId);
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
         return {
           ...state,
-          organization_we_vote_ids_voter_is_following: state.organization_we_vote_ids_voter_is_following.filter( existing_org_we_vote_id => existing_org_we_vote_id !== organization_we_vote_id),
+          organizationWeVoteIdsVoterIsFollowing: state.organizationWeVoteIdsVoterIsFollowing.filter(existingOrgWeVoteId => existingOrgWeVoteId !== organizationWeVoteId),
         };
 
       case "organizationFollowIgnore":
-        // We also listen to "organizationFollowIgnore" in VoterGuideStore so we can alter organization_we_vote_ids_to_follow_all and organization_we_vote_ids_to_follow_for_latest_ballot_item
+        // We also listen to "organizationFollowIgnore" in VoterGuideStore so we can alter organizationWeVoteIds_to_follow_all and organizationWeVoteIds_to_follow_for_latest_ballot_item
 
         // Ignoring one org can change the support/oppose count for many ballot items for the voter
         SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
-        // voter_linked_organization_we_vote_id is the voter who clicked the Follow button
-        voter_linked_organization_we_vote_id = action.res.voter_linked_organization_we_vote_id;
-        // organization_we_vote_id is the organization that was just followed
-        organization_we_vote_id = action.res.organization_we_vote_id;
+        // voterLinkedOrganizationWeVoteId is the voter who clicked the Follow button
+        voterLinkedOrganizationWeVoteId = action.res.voter_linked_organization_we_vote_id;
+        // organizationWeVoteId is the organization that was just followed
+        organizationWeVoteId = action.res.organization_we_vote_id;
         // search_string = "";
-        // add_voter_guides_not_from_election = false;
+        // add_voterGuides_not_from_election = false;
         // Whenever a voter follows a new org, update list
-        // VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voter_guides_not_from_election); // DEBUG=1
-        // Update "who I am following" for the voter: voter_linked_organization_we_vote_id
+        // VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voterGuides_not_from_election); // DEBUG=1
+        // Update "who I am following" for the voter: voterLinkedOrganizationWeVoteId
         // 2018-05-02 NOT calling this for optimization (not critical)
-        // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voter_linked_organization_we_vote_id);
+        // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voterLinkedOrganizationWeVoteId);
         // Update who the organization is followed by
         // 2018-05-02 NOT calling this for optimization (not critical)
-        // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organization_we_vote_id);
-        // VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organization_we_vote_id, VoterStore.election_id());
+        // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organizationWeVoteId);
+        // VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organizationWeVoteId, VoterStore.election_id());
         // Update the guides the voter is following
         // 2018-05-02 NOT calling this for optimization (not critical)
         // VoterGuideActions.voterGuidesFollowedRetrieve();
-        // Update the followers of the organization that was just ignored: organization_we_vote_id
+        // Update the followers of the organization that was just ignored: organizationWeVoteId
         // 2018-05-02 NOT calling this for optimization (not critical)
-        // VoterGuideActions.voterGuideFollowersRetrieve(organization_we_vote_id);
+        // VoterGuideActions.voterGuideFollowersRetrieve(organizationWeVoteId);
         // Go through all of the candidates currently on the ballot and update their positions
-        // candidate_we_vote_id = "wv01cand5887"; // TODO TEMP
-        // CandidateActions.positionListForBallotItem(candidate_we_vote_id);
+        // candidateWeVoteId = "wv01cand5887"; // TODO TEMP
+        // CandidateActions.positionListForBallotItem(candidateWeVoteId);
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
-        organization_we_vote_ids_voter_is_ignoring = state.organization_we_vote_ids_voter_is_ignoring;
-        if (!arrayContains(organization_we_vote_id, organization_we_vote_ids_voter_is_ignoring)) {
-          organization_we_vote_ids_voter_is_ignoring = state.organization_we_vote_ids_voter_is_ignoring.concat(organization_we_vote_id);
+        if (!arrayContains(organizationWeVoteId, organizationWeVoteIdsVoterIsIgnoring)) {
+          organizationWeVoteIdsVoterIsIgnoring = state.organizationWeVoteIdsVoterIsIgnoring.concat(organizationWeVoteId);
         }
         return {
           ...state,
-          organization_we_vote_ids_voter_is_ignoring,
-          organization_we_vote_ids_voter_is_following: state.organization_we_vote_ids_voter_is_following.filter(
-            existing_org_we_vote_id => existing_org_we_vote_id !== organization_we_vote_id,
+          organizationWeVoteIdsVoterIsIgnoring,
+          organizationWeVoteIdsVoterIsFollowing: state.organizationWeVoteIdsVoterIsFollowing.filter(
+            existingOrgWeVoteId => existingOrgWeVoteId !== organizationWeVoteId,
           ),
         };
 
@@ -360,18 +346,17 @@ class OrganizationStore extends ReduceStore {
       // After an organization is created, return it
       case "organizationSave":
         if (action.res.success) {
-          organization_we_vote_id = action.res.organization_we_vote_id;
-          all_cached_organizations_dict = state.all_cached_organizations_dict;
+          organizationWeVoteId = action.res.organization_we_vote_id;
           organization = action.res;
           // Make sure to maintain the lists we attach to the organization from other API calls
-          if (all_cached_organizations_dict[organization_we_vote_id]) {
-            prior_copy_of_organization = all_cached_organizations_dict[organization_we_vote_id];
-            organization = this._copyListsToNewOrganization(organization, prior_copy_of_organization);
+          if (allCachedOrganizationsDict[organizationWeVoteId]) {
+            priorCopyOfOrganization = allCachedOrganizationsDict[organizationWeVoteId];
+            organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
           }
-          all_cached_organizations_dict[organization_we_vote_id] = organization;
+          allCachedOrganizationsDict[organizationWeVoteId] = organization;
           return {
             ...state,
-            all_cached_organizations_dict,
+            allCachedOrganizationsDict,
           };
         }
         return state;
@@ -379,180 +364,171 @@ class OrganizationStore extends ReduceStore {
       case "organizationsFollowedRetrieve":
         if (action.res.success) {
           if (action.res.auto_followed_from_twitter_suggestion) {
-            organizations_followed_on_twitter_list = action.res.organization_list;
-            all_cached_organizations_dict = state.all_cached_organizations_dict;
-            const organization_we_vote_ids_voter_is_following_on_twitter = [];
-            organizations_followed_on_twitter_list.forEach( (one_organization) => {
-              all_cached_organizations_dict[organization.organization_we_vote_id] = one_organization;
-              organization_we_vote_ids_voter_is_following_on_twitter.push(one_organization.organization_we_vote_id);
+            organizationsFollowedOnTwitterList = action.res.organization_list;
+            const organizationWeVoteIdsVoterIsFollowingOnTwitter = [];
+            organizationsFollowedOnTwitterList.forEach((oneOrganization) => {
+              allCachedOrganizationsDict[organization.organization_we_vote_id] = oneOrganization;
+              organizationWeVoteIdsVoterIsFollowingOnTwitter.push(oneOrganization.organization_we_vote_id);
             });
             return {
               ...state,
-              organization_we_vote_ids_voter_is_following_on_twitter,
-              all_cached_organizations_dict,
+              organizationWeVoteIdsVoterIsFollowingOnTwitter,
+              allCachedOrganizationsDict,
             };
           } else {
-            const organization_list = action.res.organization_list;
-            organization_we_vote_ids_voter_is_following = [];
-            let revised_organization;
-            all_cached_organizations_dict = state.all_cached_organizations_dict;
-            organization_list.forEach( (one_organization) => {
-              organization_we_vote_id = one_organization.organization_we_vote_id;
+            const organizationList = action.res.organization_list;
+            organizationWeVoteIdsVoterIsFollowing = [];
+            let revisedOrganization;
+            organizationList.forEach((oneOrganization) => {
+              organizationWeVoteId = oneOrganization.organization_we_vote_id;
               // Make sure to maintain the lists we attach to the organization from other API calls
-              if (all_cached_organizations_dict[organization_we_vote_id]) {
-                prior_copy_of_organization = all_cached_organizations_dict[organization_we_vote_id];
-                revised_organization = this._copyListsToNewOrganization(one_organization, prior_copy_of_organization);
-                all_cached_organizations_dict[organization_we_vote_id] = revised_organization;
+              if (allCachedOrganizationsDict[organizationWeVoteId]) {
+                priorCopyOfOrganization = allCachedOrganizationsDict[organizationWeVoteId];
+                revisedOrganization = this._copyListsToNewOrganization(oneOrganization, priorCopyOfOrganization);
+                allCachedOrganizationsDict[organizationWeVoteId] = revisedOrganization;
               } else {
-                all_cached_organizations_dict[organization_we_vote_id] = one_organization;
+                allCachedOrganizationsDict[organizationWeVoteId] = oneOrganization;
               }
-              if (!arrayContains(one_organization.organization_we_vote_id, organization_we_vote_ids_voter_is_following)) {
-                organization_we_vote_ids_voter_is_following.push(one_organization.organization_we_vote_id);
+              if (!arrayContains(oneOrganization.organization_we_vote_id, organizationWeVoteIdsVoterIsFollowing)) {
+                organizationWeVoteIdsVoterIsFollowing.push(oneOrganization.organization_we_vote_id);
               }
             });
             return {
               ...state,
-              organization_we_vote_ids_voter_is_following,
-              all_cached_organizations_dict,
+              organizationWeVoteIdsVoterIsFollowing,
+              allCachedOrganizationsDict,
             };
           }
         }
         return state;
 
       case "organizationRetrieve":
-        organization_we_vote_id = action.res.organization_we_vote_id;
-        all_cached_organizations_dict = state.all_cached_organizations_dict;
+        organizationWeVoteId = action.res.organization_we_vote_id;
         organization = action.res;
 
         // Make sure to maintain the lists we attach to the organization from other API calls
-        if (all_cached_organizations_dict[organization_we_vote_id]) {
-          prior_copy_of_organization = all_cached_organizations_dict[organization_we_vote_id];
-          organization = this._copyListsToNewOrganization(organization, prior_copy_of_organization);
+        if (allCachedOrganizationsDict[organizationWeVoteId]) {
+          priorCopyOfOrganization = allCachedOrganizationsDict[organizationWeVoteId];
+          organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
         }
-        all_cached_organizations_dict[organization_we_vote_id] = organization;
+        allCachedOrganizationsDict[organizationWeVoteId] = organization;
         return {
           ...state,
-          all_cached_organizations_dict,
+          allCachedOrganizationsDict,
         };
 
       case "positionListForOpinionMaker": // ...and positionListForOpinionMakerForFriends
         // console.log("OrganizationStore, positionListForOpinionMaker response");
         // TODO: position_list *might* include positions from multiple elections
-        organization_we_vote_id = action.res.opinion_maker_we_vote_id;
+        organizationWeVoteId = action.res.opinion_maker_we_vote_id;
         if (action.res.friends_vs_public === "FRIENDS_ONLY") { // positionListForOpinionMakerForFriends
           if (action.res.filter_for_voter) {
-            const friends_position_list_for_one_election = action.res.position_list;
-            all_cached_organizations_dict = state.all_cached_organizations_dict;
-            organization = all_cached_organizations_dict[organization_we_vote_id] || {};
+            const friendsPositionListForOneElection = action.res.position_list;
+            organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
 
             // Make sure to maintain the lists we attach to the organization from other API calls
-            if (all_cached_organizations_dict[organization_we_vote_id]) {
-              prior_copy_of_organization = all_cached_organizations_dict[organization_we_vote_id];
-              organization = this._copyListsToNewOrganization(organization, prior_copy_of_organization);
+            if (allCachedOrganizationsDict[organizationWeVoteId]) {
+              priorCopyOfOrganization = allCachedOrganizationsDict[organizationWeVoteId];
+              organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
             }
-            // And now update the friends_position_list_for_one_election
-            organization.friends_position_list_for_one_election = friends_position_list_for_one_election;
+            // And now update the friendsPositionListForOneElection
+            organization.friends_position_list_for_one_election = friendsPositionListForOneElection;
             // console.log("organization-FRIENDS_ONLY-filter_for_voter: ", organization);
-            all_cached_organizations_dict[organization_we_vote_id] = organization;
+            allCachedOrganizationsDict[organizationWeVoteId] = organization;
             return {
               ...state,
-              all_cached_organizations_dict,
+              allCachedOrganizationsDict,
             };
           } else if (action.res.filter_out_voter) {
-            const friends_position_list_for_all_except_one_election = action.res.position_list;
-            all_cached_organizations_dict = state.all_cached_organizations_dict;
-            organization = all_cached_organizations_dict[organization_we_vote_id] || {};
+            const friendsPositionListForAllExceptOneElection = action.res.position_list;
+            organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
 
             // Make sure to maintain the lists we attach to the organization from other API calls
-            if (all_cached_organizations_dict[organization_we_vote_id]) {
-              prior_copy_of_organization = all_cached_organizations_dict[organization_we_vote_id];
-              organization = this._copyListsToNewOrganization(organization, prior_copy_of_organization);
+            if (allCachedOrganizationsDict[organizationWeVoteId]) {
+              priorCopyOfOrganization = allCachedOrganizationsDict[organizationWeVoteId];
+              organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
             }
-            // And now update the friends_position_list_for_all_except_one_election
-            organization.friends_position_list_for_all_except_one_election = friends_position_list_for_all_except_one_election;
+            // And now update the friendsPositionListForAllExceptOneElection
+            organization.friends_position_list_for_all_except_one_election = friendsPositionListForAllExceptOneElection;
             // console.log("organization-FRIENDS_ONLY-filter_out_voter: ", organization);
-            all_cached_organizations_dict[organization_we_vote_id] = organization;
+            allCachedOrganizationsDict[organizationWeVoteId] = organization;
             return {
               ...state,
-              all_cached_organizations_dict,
+              allCachedOrganizationsDict,
             };
           } else {
-            const friends_position_list = action.res.position_list;
-            all_cached_organizations_dict = state.all_cached_organizations_dict;
-            organization = all_cached_organizations_dict[organization_we_vote_id] || {};
+            const friendsPositionList = action.res.position_list;
+            organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
 
             // Make sure to maintain the lists we attach to the organization from other API calls
-            if (all_cached_organizations_dict[organization_we_vote_id]) {
-              prior_copy_of_organization = all_cached_organizations_dict[organization_we_vote_id];
-              organization = this._copyListsToNewOrganization(organization, prior_copy_of_organization);
+            if (allCachedOrganizationsDict[organizationWeVoteId]) {
+              priorCopyOfOrganization = allCachedOrganizationsDict[organizationWeVoteId];
+              organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
             }
-            // And now update the friends_position_list
-            organization.friends_position_list = friends_position_list;
+            // And now update the friendsPositionList
+            organization.friends_position_list = friendsPositionList;
             // console.log("organization-FRIENDS_ONLY-first else: ", organization);
-            all_cached_organizations_dict[organization_we_vote_id] = organization;
+            allCachedOrganizationsDict[organizationWeVoteId] = organization;
             return {
               ...state,
-              all_cached_organizations_dict,
+              allCachedOrganizationsDict,
             };
           }
         } else // positionListForOpinionMaker, else for action.res.friends_vs_public === "FRIENDS_ONLY"
         if (action.res.filter_for_voter) {
-          const position_list_for_one_election = action.res.position_list;
-          all_cached_organizations_dict = state.all_cached_organizations_dict;
-          organization = all_cached_organizations_dict[organization_we_vote_id] || {};
+          const positionListForOneElection = action.res.position_list;
+          organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
 
           // Make sure to maintain the lists we attach to the organization from other API calls
-          if (all_cached_organizations_dict[organization_we_vote_id]) {
-            prior_copy_of_organization = all_cached_organizations_dict[organization_we_vote_id];
-            organization = this._copyListsToNewOrganization(organization, prior_copy_of_organization);
+          if (allCachedOrganizationsDict[organizationWeVoteId]) {
+            priorCopyOfOrganization = allCachedOrganizationsDict[organizationWeVoteId];
+            organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
           }
-          organization.position_list_for_one_election = position_list_for_one_election;
+          organization.position_list_for_one_election = positionListForOneElection;
           // console.log("organization-NOT FRIENDS_ONLY-filter_for_voter: ", organization);
-          all_cached_organizations_dict[organization_we_vote_id] = organization;
+          allCachedOrganizationsDict[organizationWeVoteId] = organization;
           return {
             ...state,
-            all_cached_organizations_dict,
+            allCachedOrganizationsDict,
           };
         } else if (action.res.filter_out_voter) {
-          const position_list_for_all_except_one_election = action.res.position_list;
-          all_cached_organizations_dict = state.all_cached_organizations_dict;
-          organization = all_cached_organizations_dict[organization_we_vote_id] || {};
+          const positionListForAllExceptOneElection = action.res.position_list;
+          organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
 
           // Make sure to maintain the lists we attach to the organization from other API calls
-          if (all_cached_organizations_dict[organization_we_vote_id]) {
-            prior_copy_of_organization = all_cached_organizations_dict[organization_we_vote_id];
-            organization = this._copyListsToNewOrganization(organization, prior_copy_of_organization);
+          if (allCachedOrganizationsDict[organizationWeVoteId]) {
+            priorCopyOfOrganization = allCachedOrganizationsDict[organizationWeVoteId];
+            organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
           }
-          organization.position_list_for_all_except_one_election = position_list_for_all_except_one_election;
+          organization.position_list_for_all_except_one_election = positionListForAllExceptOneElection;
           // console.log("organization-NOT FRIENDS_ONLY-filter_out_voter: ", organization);
-          all_cached_organizations_dict[organization_we_vote_id] = organization;
+          allCachedOrganizationsDict[organizationWeVoteId] = organization;
           return {
             ...state,
-            all_cached_organizations_dict,
+            allCachedOrganizationsDict,
           };
         } else {
-          const position_list = action.res.position_list;
-          all_cached_organizations_dict = state.all_cached_organizations_dict;
-          organization = all_cached_organizations_dict[organization_we_vote_id] || {};
+          const positionList = action.res.position_list;
+          organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
 
           // Make sure to maintain the lists we attach to the organization from other API calls
-          if (all_cached_organizations_dict[organization_we_vote_id]) {
-            prior_copy_of_organization = all_cached_organizations_dict[organization_we_vote_id];
-            organization = this._copyListsToNewOrganization(organization, prior_copy_of_organization);
+          if (allCachedOrganizationsDict[organizationWeVoteId]) {
+            priorCopyOfOrganization = allCachedOrganizationsDict[organizationWeVoteId];
+            organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
           }
-          organization.position_list = position_list;
+          organization.position_list = positionList;
           // console.log("organization-NOT FRIENDS_ONLY-no filter: ", organization);
-          all_cached_organizations_dict[organization_we_vote_id] = organization;
+          allCachedOrganizationsDict[organizationWeVoteId] = organization;
           return {
             ...state,
-            all_cached_organizations_dict,
+            allCachedOrganizationsDict,
           };
         }
 
       case "voterGuidesFollowedByOrganizationRetrieve":
         // In VoterGuideStore we listen for "voterGuidesFollowedByOrganizationRetrieve" so we can update
-        //  all_cached_voter_guides and organization_we_vote_ids_to_follow_organization_recommendation_dict
-        voter_guides = action.res.voter_guides;
+        //  all_cached_voterGuides and organizationWeVoteIds_to_follow_organization_recommendation_dict
+        voterGuides = action.res.voter_guides;
         // We want to show *all* organizations followed by the organization on the "Following" tab
         if (action.res.filter_by_this_google_civic_election_id && action.res.filter_by_this_google_civic_election_id !== "") {
           // Ignore the results if filtered by google_civic_election_id
@@ -560,46 +536,46 @@ class OrganizationStore extends ReduceStore {
             ...state,
           };
         } else {
-          // console.log("voterGuidesFollowedByOrganizationRetrieve NO election_id, organization_we_vote_id_for_voter_guide_owner: ", organization_we_vote_id_for_voter_guide_owner);
-          organization_we_vote_ids_followed_by_organization_dict[organization_we_vote_id_for_voter_guide_owner] = [];
-          voter_guides.forEach((one_voter_guide) => {
-            organization_we_vote_ids_followed_by_organization_dict[organization_we_vote_id_for_voter_guide_owner].push(one_voter_guide.organization_we_vote_id);
+          // console.log("voterGuidesFollowedByOrganizationRetrieve NO election_id, organizationWeVoteIdForVoterGuideOwner: ", organizationWeVoteIdForVoterGuideOwner);
+          organizationWeVoteIdsFollowedByOrganizationDict[organizationWeVoteIdForVoterGuideOwner] = [];
+          voterGuides.forEach((oneVoterGuide) => {
+            organizationWeVoteIdsFollowedByOrganizationDict[organizationWeVoteIdForVoterGuideOwner].push(oneVoterGuide.organizationWeVoteId);
           });
           return {
             ...state,
-            organization_we_vote_ids_followed_by_organization_dict,
+            organizationWeVoteIdsFollowedByOrganizationDict,
           };
         }
 
       case "voterGuideFollowersRetrieve":
-        // In VoterGuideStore, we also listen for a response to "voterGuideFollowersRetrieve" and update all_cached_voter_guides
-        voter_guides = action.res.voter_guides;
+        // In VoterGuideStore, we also listen for a response to "voterGuideFollowersRetrieve" and update all_cached_voterGuides
+        voterGuides = action.res.voter_guides;
         // Reset the followers for this organization
-        organization_we_vote_ids_following_by_organization_dict[action.res.organization_we_vote_id] = [];
-        voter_guides.forEach((one_voter_guide) => {
-          organization_we_vote_ids_following_by_organization_dict[action.res.organization_we_vote_id].push(one_voter_guide.organization_we_vote_id);
+        organizationWeVoteIdsFollowingByOrganizationDict[action.res.organization_we_vote_id] = [];
+        voterGuides.forEach((oneVoterGuide) => {
+          organizationWeVoteIdsFollowingByOrganizationDict[action.res.organization_we_vote_id].push(oneVoterGuide.organizationWeVoteId);
         });
         return {
           ...state,
-          organization_we_vote_ids_following_by_organization_dict,
+          organizationWeVoteIdsFollowingByOrganizationDict,
         };
 
         // case "voterGuidesFollowedRetrieve":
-        //   // In VoterGuideStore, we listen for a response to "voterGuidesFollowedRetrieve" and update all_cached_voter_guides
+        //   // In VoterGuideStore, we listen for a response to "voterGuidesFollowedRetrieve" and update all_cached_voterGuides
         //   // In OrganizationStore, we listen for a response to "organizationsFollowedRetrieve" instead of "voterGuidesFollowedRetrieve"
 
       case "voterGuidesIgnoredRetrieve":
-        // In OrganizationStore, we also listen for a response to "voterGuidesIgnoredRetrieve" and update organization_we_vote_ids_voter_is_ignoring
-        voter_guides = action.res.voter_guides;
-        organization_we_vote_ids_voter_is_ignoring = [];
-        voter_guides.forEach( (one_voter_guide) => {
-          if (!arrayContains(one_voter_guide.organization_we_vote_id, organization_we_vote_ids_voter_is_ignoring)) {
-            organization_we_vote_ids_voter_is_ignoring.push(one_voter_guide.organization_we_vote_id);
+        // In OrganizationStore, we also listen for a response to "voterGuidesIgnoredRetrieve" and update organizationWeVoteIdsVoterIsIgnoring
+        voterGuides = action.res.voter_guides;
+        organizationWeVoteIdsVoterIsIgnoring = [];
+        voterGuides.forEach((oneVoterGuide) => {
+          if (!arrayContains(oneVoterGuide.organizationWeVoteId, organizationWeVoteIdsVoterIsIgnoring)) {
+            organizationWeVoteIdsVoterIsIgnoring.push(oneVoterGuide.organizationWeVoteId);
           }
         });
         return {
           ...state,
-          organization_we_vote_ids_voter_is_ignoring,
+          organizationWeVoteIdsVoterIsIgnoring,
         };
 
       case "voterSignOut":

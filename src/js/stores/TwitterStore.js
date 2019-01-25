@@ -6,7 +6,6 @@ import TwitterActions from "../actions/TwitterActions";
 import VoterActions from "../actions/VoterActions";
 
 class TwitterStore extends ReduceStore {
-
   getInitialState () {
     return {
       success: true,
@@ -43,9 +42,7 @@ class TwitterStore extends ReduceStore {
   }
 
   resetState () {
-    return {
-      success: true,
-    };
+    return this.getInitialState();
   }
 
   get kindOfOwner () {
