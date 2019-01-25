@@ -53,6 +53,8 @@ import webAppConfig from "../../config";
 /* eslint no-param-reassign: 0 */
 
 // Related to WebApp/src/js/components/VoterGuide/VoterGuideBallot.jsx
+const BALLOT_ITEM_FILTER_TYPES = ["Federal", "State", "Measure", "Local"];
+
 export default class Ballot extends Component {
   static propTypes = {
     location: PropTypes.object,
@@ -465,8 +467,22 @@ export default class Ballot extends Component {
   onBallotStoreChange () {
     // console.log("Ballot.jsx onBallotStoreChange");
     const completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || "";
-    if (this.state.mounted) {
-      if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
+    const { ballot, ballotProperties } = BallotStore;
+    const {
+      raceLevelFilterType, mounted, issuesRetrievedFromGoogleCivicElectionId,
+      issuesRetrievedFromBallotReturnedWeVoteId, issuesRetrievedFromBallotLocationShortcut,
+    } = this.state;
+    if (ballot) {
+      const raceLevelFilterItems = ballot.filter(item => item.race_office_level === raceLevelFilterType);
+      // If there are no items mapped to the current race level filter, set the raceLevelFilterType
+      // to the next item in BALLOT_ITEM_FILTER_TYPES
+      if (!raceLevelFilterItems.length) {
+        const raceLevelIdx = BALLOT_ITEM_FILTER_TYPES.indexOf(raceLevelFilterType);
+        this.setState({ raceLevelFilterType: BALLOT_ITEM_FILTER_TYPES[raceLevelIdx + 1] });
+      }
+    }
+    if (mounted) {
+      if (ballotProperties && ballotProperties.ballot_found && ballot && ballot.length === 0) {
         // Ballot is found but ballot is empty. We want to stay put.
         // console.log("onBallotStoreChange: ballotWithAllItemsByFilterType is empty");
       } else {
@@ -477,15 +493,15 @@ export default class Ballot extends Component {
       }
     }
 
-    if (BallotStore.ballotProperties) {
+    if (ballotProperties) {
       // If the incoming googleCivicElectionId, ballotReturnedWeVoteId, or ballotLocationShortcut are different, call issuesRetrieveForElection
-      if (parseInt(BallotStore.ballotProperties.google_civic_election_id, 10) !== this.state.issuesRetrievedFromGoogleCivicElectionId ||
-          BallotStore.ballotProperties.ballot_returned_we_vote_id !== this.state.issuesRetrievedFromBallotReturnedWeVoteId ||
-          BallotStore.ballotProperties.ballot_location_shortcut !== this.state.issuesRetrievedFromBallotLocationShortcut) {
+      if (parseInt(ballotProperties.google_civic_election_id, 10) !== issuesRetrievedFromGoogleCivicElectionId ||
+          ballotProperties.ballot_returned_we_vote_id !== issuesRetrievedFromBallotReturnedWeVoteId ||
+          ballotProperties.ballot_location_shortcut !== issuesRetrievedFromBallotLocationShortcut) {
         // console.log("onBallotStoreChange, Calling issuesRetrieveForElection");
 
         if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
-          IssueActions.issuesRetrieveForElection(BallotStore.ballotProperties.google_civic_election_id, BallotStore.ballotProperties.ballot_location_shortcut, BallotStore.ballotProperties.ballot_returned_we_vote_id);
+          IssueActions.issuesRetrieveForElection(ballotProperties.google_civic_election_id, ballotProperties.ballot_location_shortcut, ballotProperties.ballot_returned_we_vote_id);
         }
 
         this.setState({
@@ -496,9 +512,9 @@ export default class Ballot extends Component {
       }
 
       this.setState({
-        ballotReturnedWeVoteId: BallotStore.ballotProperties.ballot_returned_we_vote_id || "",
-        ballotLocationShortcut: BallotStore.ballotProperties.ballot_location_shortcut || "",
-        googleCivicElectionId: parseInt(BallotStore.ballotProperties.google_civic_election_id, 10),
+        ballotReturnedWeVoteId: ballotProperties.ballot_returned_we_vote_id || "",
+        ballotLocationShortcut: ballotProperties.ballot_location_shortcut || "",
+        googleCivicElectionId: parseInt(ballotProperties.google_civic_election_id, 10),
       });
     }
     this.setState({
@@ -731,7 +747,6 @@ export default class Ballot extends Component {
 
   render () {
     renderLog(__filename);
-    const BALLOT_ITEM_FILTER_TYPES = ["Federal", "State", "Measure", "Local"];
     const ballotBaseUrl = "/ballot";
 
     const textForMapSearch = VoterStore.getTextForMapSearch();
@@ -888,7 +903,7 @@ export default class Ballot extends Component {
                   ) : null
                   }
 
-                  { textForMapSearch || this.state.ballotWithAllItemsByFilterType.length > 0 ? (
+                  { textForMapSearch || this.state.ballotWithAllItemsByFilterType.length > 1 ? (
                     <div className="ballot__filter__container">
                       <div className="ballot__filter d-print-none">
                         <BallotTabsRaccoon
