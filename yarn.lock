@@ -2167,7 +2167,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@^2.2.4, classnames@^2.2.5, classnames@^2.2.6:
+classnames@^2.2.5, classnames@^2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
 
@@ -7579,12 +7579,6 @@ react-iframe-resizer-super@^0.2.2:
   dependencies:
     babel-runtime "^6.5.0"
 
-react-input-autosize@^2.1.2:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/react-input-autosize/-/react-input-autosize-2.2.1.tgz#ec428fa15b1592994fb5f9aa15bb1eb6baf420f8"
-  dependencies:
-    prop-types "^15.5.8"
-
 react-intl@^2.7.2:
   version "2.7.2"
   resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-2.7.2.tgz#efe97e3fc0e99b4e88a6e6150854d3d1852a4381"
@@ -7613,12 +7607,6 @@ react-mixin@^3.1.1:
   dependencies:
     object-assign "^4.0.1"
     smart-mixin "^2.0.0"
-
-react-nps-input@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/react-nps-input/-/react-nps-input-0.3.0.tgz#50b6290d720ac5ea5f4dfec13ce01ae77ab83ce6"
-  dependencies:
-    classnames "^2.2.5"
 
 react-overlays@^1.0.0-beta.17:
   version "1.0.0"
@@ -7680,14 +7668,6 @@ react-router@^3.2.1:
     loose-envify "^1.2.0"
     prop-types "^15.5.6"
     warning "^3.0.0"
-
-react-select@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-1.3.0.tgz#1828ad5bf7f3e42a835c7e2d8cb13b5c20714876"
-  dependencies:
-    classnames "^2.2.4"
-    prop-types "^15.5.8"
-    react-input-autosize "^2.1.2"
 
 react-side-effect@^1.1.0:
   version "1.1.5"
