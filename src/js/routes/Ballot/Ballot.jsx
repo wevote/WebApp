@@ -920,9 +920,8 @@ export default class Ballot extends Component {
                       <div className="ballot__filter d-print-none">
                         <BallotTabsRaccoon
                           completionLevelFilterType={BallotStore.cleanCompletionLevelFilterType(this.state.completionLevelFilterType)}
-                          election_day_text={ElectionStore.getElectionDayText(this.state.googleCivicElectionId)}
-                          length={BallotStore.ballotLength}
-                          length_remaining={BallotStore.ballotRemainingChoicesLength}
+                          ballotLength={BallotStore.ballotLength}
+                          ballotLengthRemaining={BallotStore.ballotRemainingChoicesLength}
                         />
                       </div>
                     </div>

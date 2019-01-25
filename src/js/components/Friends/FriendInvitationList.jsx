@@ -14,29 +14,29 @@ export default class FriendInvitationList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      friend_invitations_list: this.props.friendList,
+      friendInvitationList: this.props.friendList || [],
     };
   }
 
   componentDidMount () {
     this.setState({
-      friend_invitations_list: this.props.friendList,
+      friendInvitationList: this.props.friendList || [],
     });
   }
 
   componentWillReceiveProps (nextProps) {
     this.setState({
-      friend_invitations_list: nextProps.friendList,
+      friendInvitationList: nextProps.friendList || [],
     });
   }
 
   render () {
     renderLog(__filename);
-    if (this.state.friend_invitations_list === undefined) {
+    if (this.state.friendInvitationList === undefined) {
       return null;
     }
 
-    const invitationsSentByMe = this.props.invitationsSentByMe;
+    const { invitationsSentByMe } = this.props;
     let simpleKeyCounter = 0;
     const enter = 2000;
     const exit = 2000;
@@ -44,7 +44,7 @@ export default class FriendInvitationList extends Component {
     return (
       <div className="guidelist card-child__list-group">
         <TransitionGroup className="org-ignore" timeout={{ exit, enter }}>
-          {this.state.friend_invitations_list.map((friend) => {
+          {this.state.friendInvitationList.map((friend) => {
             if (friend.voter_we_vote_id && friend.voter_we_vote_id !== "") {
               return (
                 <CSSTransition key={++simpleKeyCounter} timeout={500} classNames="fade">

@@ -28,16 +28,16 @@ export default class FacebookLandingProcess extends Component {
   }
 
   _onFacebookStoreChange () {
-    console.log("_onFacebookStoreChange app_request_already_processed", FacebookStore.facebookAppRequestAlreadyProcessed());
+    console.log("_onFacebookStoreChange appRequestAlreadyProcessed", FacebookStore.facebookAppRequestAlreadyProcessed());
     this.setState({
-      app_request_already_processed: FacebookStore.facebookAppRequestAlreadyProcessed(),
+      appRequestAlreadyProcessed: FacebookStore.facebookAppRequestAlreadyProcessed(),
     });
   }
 
   _onFriendStoreChange () {
-    console.log("_onFriendStoreChange invitation_status", FriendStore.getInvitationFromFacebookStatus());
+    console.log("_onFriendStoreChange facebookInvitationStatus", FriendStore.getInvitationFromFacebookStatus());
     this.setState({
-      invitation_status: FriendStore.getInvitationFromFacebookStatus(),
+      facebookInvitationStatus: FriendStore.getInvitationFromFacebookStatus(),
       saving: false,
     });
   }
@@ -56,7 +56,7 @@ export default class FacebookLandingProcess extends Component {
   render () {
     renderLog(__filename);
 
-    if (this.state.app_request_already_processed) {
+    if (this.state.appRequestAlreadyProcessed) {
       historyPush({
         pathname: "/ballot",
       });
@@ -73,9 +73,9 @@ export default class FacebookLandingProcess extends Component {
       FacebookActions.login();
       return LoadingWheel;
     } else {
-      console.log("Voter is signed in through facebook and app_already_processed:", this.state.app_request_already_processed);
-      if (!this.state.app_request_already_processed &&
-        (!this.state.invitation_status || !this.state.invitation_status.voter_device_id)) {
+      console.log("Voter is signed in through facebook and app_already_processed:", this.state.appRequestAlreadyProcessed);
+      if (!this.state.appRequestAlreadyProcessed &&
+        (!this.state.facebookInvitationStatus || !this.state.facebookInvitationStatus.voterDeviceId)) {
         // If facebook log in finished successfully then read all app requests
         console.log("Reading facebook app request and accepting the same");
         this.readFacebookAppRequests();
@@ -83,9 +83,9 @@ export default class FacebookLandingProcess extends Component {
       }
     }
 
-    console.log("Invitation status:", this.state.invitation_status);
+    console.log("Invitation status:", this.state.facebookInvitationStatus);
     // This process starts when we return from attempting friendInvitationByFacebookVerify
-    if (!this.state.invitation_status.invitation_found) {
+    if (!this.state.facebookInvitationStatus.invitationFound) {
       historyPush({
         pathname: "/more/network/friends",
         state: {
@@ -96,7 +96,7 @@ export default class FacebookLandingProcess extends Component {
       return LoadingWheel;
     }
 
-    if (this.state.invitation_status.attempted_to_approve_own_invitation) {
+    if (this.state.facebookInvitationStatus.attemptedToApproveOwnInvitation) {
       historyPush({
         pathname: "/more/network/friends",
         state: {
@@ -107,8 +107,8 @@ export default class FacebookLandingProcess extends Component {
       return LoadingWheel;
     }
 
-    if (this.state.invitation_status.invitation_found) {
-      FacebookActions.deleteFacebookAppRequest(this.state.invitation_status.facebook_request_id);
+    if (this.state.facebookInvitationStatus.invitationFound) {
+      FacebookActions.deleteFacebookAppRequest(this.state.facebookInvitationStatus.facebookRequestId);
       historyPush({
         pathname: "/more/network/friends",
         state: {
