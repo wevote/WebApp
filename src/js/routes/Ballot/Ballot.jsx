@@ -403,8 +403,27 @@ export default class Ballot extends Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
+    const { foundFirstRaceLevel, raceLevelFilterType, ballotWithAllItems } = this.state;
     if (this.state.lastHashUsedInLinkScroll && this.state.lastHashUsedInLinkScroll !== prevState.lastHashUsedInLinkScroll) {
       this.hashLinkScroll();
+    }
+    // If we haven't found our default race level, run this check
+    if (ballotWithAllItems && ballotWithAllItems.length && !foundFirstRaceLevel) {
+      const raceLevelFilterItems = ballotWithAllItems.filter(item => item.race_office_level === raceLevelFilterType || item.kind_of_ballot_item === raceLevelFilterType.toUpperCase());
+      // If there are items mapped to the current race level filter, set foundFirstRaceLevel to true
+      // so we don't have to re-run this check
+      if (raceLevelFilterItems.length) {
+        this.setState({
+          foundFirstRaceLevel: true,
+          showFilterTabs: raceLevelFilterItems.length !== ballotWithAllItems.length,
+        });
+      }
+      // If there are no items mapped to the current race level filter, set the raceLevelFilterType
+      // to the next item in BALLOT_ITEM_FILTER_TYPES
+      if (!raceLevelFilterItems.length) {
+        const raceLevelIdx = BALLOT_ITEM_FILTER_TYPES.indexOf(raceLevelFilterType);
+        this.setState({ raceLevelFilterType: BALLOT_ITEM_FILTER_TYPES[raceLevelIdx + 1] });
+      }
     }
   }
 
@@ -476,23 +495,7 @@ export default class Ballot extends Component {
     const {
       raceLevelFilterType, mounted, issuesRetrievedFromGoogleCivicElectionId,
       issuesRetrievedFromBallotReturnedWeVoteId, issuesRetrievedFromBallotLocationShortcut,
-      foundFirstRaceLevel,
     } = this.state;
-    if (ballot && ballot.length && !foundFirstRaceLevel) {
-      const raceLevelFilterItems = ballot.filter(item => item.race_office_level === raceLevelFilterType || item.kind_of_ballot_item === raceLevelFilterType.toUpperCase());
-      // If there are no items mapped to the current race level filter, set the raceLevelFilterType
-      // to the next item in BALLOT_ITEM_FILTER_TYPES
-      if (raceLevelFilterItems.length) {
-        this.setState({
-          foundFirstRaceLevel: true,
-          showFilterTabs: raceLevelFilterItems.length !== ballot.length,
-        });
-      }
-      if (!raceLevelFilterItems.length) {
-        const raceLevelIdx = BALLOT_ITEM_FILTER_TYPES.indexOf(raceLevelFilterType);
-        this.setState({ raceLevelFilterType: BALLOT_ITEM_FILTER_TYPES[raceLevelIdx + 1] });
-      }
-    }
     if (mounted) {
       if (ballotProperties && ballotProperties.ballot_found && ballot && ballot.length === 0) {
         // Ballot is found but ballot is empty. We want to stay put.
@@ -542,6 +545,9 @@ export default class Ballot extends Component {
     if (this.state.ballotLength !== BallotStore.ballotLength) {
       this.setState({
         ballotLength: BallotStore.ballotLength,
+        raceLevelFilterType: 'Federal',
+        showFilterTabs: false,
+        foundFirstRaceLevel: false,
       });
     }
     if (this.state.ballotRemainingChoicesLength !== BallotStore.ballotRemainingChoicesLength) {
@@ -567,7 +573,6 @@ export default class Ballot extends Component {
     let oneBallotLocation;
     let ballotLocationShortcut;
     let ballotReturnedWeVoteId;
-
     for (let i = 0; i < electionsList.length; i++) {
       const election = electionsList[i];
       electionsLocationsList.push(election);

@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Button from '@material-ui/core/Button';
 import BallotStore from "../stores/BallotStore";
+import BallotActions from '../actions/BallotActions';
 import { historyPush, isCordova, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../utils/cordovaUtils";
 import LoadingWheel from "./LoadingWheel";
 import { renderLog } from "../utils/logging";
@@ -151,6 +152,7 @@ export default class AddressBox extends Component {
   voterAddressSave (event) {
     event.preventDefault();
     VoterActions.voterAddressSave(this.state.text_for_map_search);
+    BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
     this.setState({ loading: true });
   }
 
