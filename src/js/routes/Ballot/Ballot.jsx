@@ -498,10 +498,15 @@ export default class Ballot extends Component {
         // Ballot is found but ballot is empty. We want to stay put.
         // console.log("onBallotStoreChange: ballotWithAllItemsByFilterType is empty");
       } else {
+        const ballotWithAllItemsByFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
         this.setState({
           ballotWithAllItems: BallotStore.getBallotByCompletionLevelFilterType("all"),
-          ballotWithAllItemsByFilterType: BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType),
+          ballotWithAllItemsByFilterType,
         });
+        if (ballotWithAllItemsByFilterType && ballotWithAllItemsByFilterType.length) {
+          const raceLevelFilterItems = ballotWithAllItemsByFilterType.filter(item => item.race_office_level === raceLevelFilterType || item.kind_of_ballot_item === raceLevelFilterType.toUpperCase());
+          this.setState({ doubleFilteredBallotItemsLength: raceLevelFilterItems.length });
+        }
       }
     }
 
@@ -614,9 +619,9 @@ export default class Ballot extends Component {
     }
   }
 
-  setBallotItemFilterType (raceLevelFilterType) {
+  setBallotItemFilterType (raceLevelFilterType, doubleFilteredBallotItemsLength) {
     BallotActions.raceLevelFilterTypeSave(raceLevelFilterType);
-    this.setState({ raceLevelFilterType });
+    this.setState({ raceLevelFilterType, doubleFilteredBallotItemsLength });
   }
 
   getEmptyMessageByFilterType (completionLevelFilterType) {
@@ -627,6 +632,45 @@ export default class Ballot extends Component {
         return "You haven't chosen any candidates or decided on any measures yet.";
       default:
         return "";
+    }
+  }
+
+  showUserEmptyOptions = () => {
+    const { completionLevelFilterType, raceLevelFilterType } = this.state;
+    const raceLevel = raceLevelFilterType.toLowerCase();
+    switch (completionLevelFilterType) {
+      case 'filterDecided':
+        return (
+          <div>
+            <h3>
+              You have not decided on any&nbsp;
+              {raceLevel}
+              &nbsp;ballot items yet.
+              <br />
+              <br />
+              Click on &quot;Remaining Choices&quot; to see the&nbsp;
+              {raceLevel}
+              &nbsp;ballot items you need to decide on.
+            </h3>
+          </div>
+        );
+      case 'filterRemaining':
+        return (
+          <div>
+            <h3>
+              You do not have any remaining&nbsp;
+              {raceLevelFilterType.toLowerCase()}
+              &nbsp;ballot items to decide on.
+              <br />
+              <br />
+              Click on &quot;Items Decided&quot; to see the&nbsp;
+              {raceLevel}
+              &nbsp;ballot items you&apos;ve decided on.
+            </h3>
+          </div>
+        );
+      default:
+        return null;
     }
   }
 
@@ -760,7 +804,9 @@ export default class Ballot extends Component {
   render () {
     renderLog(__filename);
     const ballotBaseUrl = "/ballot";
-    const { ballotWithAllItemsByFilterType, showFilterTabs } = this.state;
+    const {
+      ballotWithAllItemsByFilterType, showFilterTabs, doubleFilteredBallotItemsLength, completionLevelFilterType,
+    } = this.state;
     const textForMapSearch = VoterStore.getTextForMapSearch();
     const issuesVoterCanFollow = IssueStore.getIssuesVoterCanFollow(); // Don't auto-open intro until Issues are loaded
     const issuesVoterCanFollowExist = issuesVoterCanFollow && issuesVoterCanFollow.length;
@@ -919,7 +965,7 @@ export default class Ballot extends Component {
                     <div className="ballot__filter__container">
                       <div className="ballot__filter d-print-none">
                         <BallotTabsRaccoon
-                          completionLevelFilterType={BallotStore.cleanCompletionLevelFilterType(this.state.completionLevelFilterType)}
+                          completionLevelFilterType={BallotStore.cleanCompletionLevelFilterType(completionLevelFilterType)}
                           ballotLength={BallotStore.ballotLength}
                           ballotLengthRemaining={BallotStore.ballotRemainingChoicesLength}
                         />
@@ -985,7 +1031,7 @@ export default class Ballot extends Component {
                                 <Button variant="outline-secondary"
                                         block
                                         active={oneTypeOfBallotItem === this.state.raceLevelFilterType}
-                                        onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem)}
+                                        onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
                                         className="btn_ballot_filter"
                                 >
                                   {oneTypeOfBallotItem}
@@ -1008,7 +1054,7 @@ export default class Ballot extends Component {
                       // ballot limited by items by filter type
                       // console.log(this.state.raceLevelFilterType);
                         if ((this.state.raceLevelFilterType === "All" ||
-                          (item.kind_of_ballot_item === "MEASURE" && this.state.raceLevelFilterType === "Measure") ||
+                          (item.kind_of_ballot_item === this.state.raceLevelFilterType.toUpperCase()) ||
                             this.state.raceLevelFilterType === item.race_office_level)) {
                           return (
                             <BallotItemCompressed
@@ -1028,6 +1074,10 @@ export default class Ballot extends Component {
                         }
                       })
                     }
+                      {
+                        doubleFilteredBallotItemsLength === 0 &&
+                        this.showUserEmptyOptions()
+                      }
                     </div>
                   </div>
                 )}
