@@ -328,7 +328,7 @@ export default class BallotElectionList extends Component {
       const upcomingElectionListOutsideCount = upcomingElectionList.length - upcomingElectionListInState.length;
       const priorElectionListOutsideCount = priorElectionList.length - priorElectionListInState.length;
 
-      // If there are no upcoming state elections and no upcoming elections, return empty div
+      // If there are no upcoming elections and no prior elections (anywhere in the country), return empty div
       if (!upcomingElectionList.length && !priorElectionList.length) {
         return (
           <div />
