@@ -653,7 +653,9 @@ export default class Ballot extends Component {
               &nbsp;ballot items yet.
               <br />
               <br />
-              Click on &quot;Remaining Choices&quot; to see the&nbsp;
+              Click on &quot;
+              {window.innerWidth > 575 ? 'Remaining Choices' : 'Choices'}
+              &quot; to see the&nbsp;
               {raceLevel}
               &nbsp;ballot items you need to decide on.
             </h3>
@@ -668,7 +670,9 @@ export default class Ballot extends Component {
               &nbsp;ballot items to decide on.
               <br />
               <br />
-              Click on &quot;Items Decided&quot; to see the&nbsp;
+              Click on &quot;
+              {window.innerWidth > 575 ? 'Items Decided' : 'Decided'}
+              &quot; to see the&nbsp;
               {raceLevel}
               &nbsp;ballot items you&apos;ve decided on.
             </h3>
