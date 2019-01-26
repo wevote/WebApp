@@ -15,37 +15,37 @@ export default class FacebookLandingProcess extends Component {
   }
 
   componentDidMount () {
-    this._onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    this._onFacebookStoreChange();
-    this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
-    this._onFriendStoreChange();
-    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
-  }
-
-  _onVoterStoreChange () {
-    this.setState({ voter: VoterStore.getVoter() });
-  }
-
-  _onFacebookStoreChange () {
-    console.log("_onFacebookStoreChange appRequestAlreadyProcessed", FacebookStore.facebookAppRequestAlreadyProcessed());
-    this.setState({
-      appRequestAlreadyProcessed: FacebookStore.facebookAppRequestAlreadyProcessed(),
-    });
-  }
-
-  _onFriendStoreChange () {
-    console.log("_onFriendStoreChange facebookInvitationStatus", FriendStore.getInvitationFromFacebookStatus());
-    this.setState({
-      facebookInvitationStatus: FriendStore.getInvitationFromFacebookStatus(),
-      saving: false,
-    });
+    this.onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.onFacebookStoreChange();
+    this.facebookStoreListener = FacebookStore.addListener(this.onFacebookStoreChange.bind(this));
+    this.onFriendStoreChange();
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
     this.facebookStoreListener.remove();
     this.friendStoreListener.remove();
+  }
+
+  onVoterStoreChange () {
+    this.setState({ voter: VoterStore.getVoter() });
+  }
+
+  onFacebookStoreChange () {
+    console.log("onFacebookStoreChange appRequestAlreadyProcessed", FacebookStore.facebookAppRequestAlreadyProcessed());
+    this.setState({
+      appRequestAlreadyProcessed: FacebookStore.facebookAppRequestAlreadyProcessed(),
+    });
+  }
+
+  onFriendStoreChange () {
+    console.log("onFriendStoreChange facebookInvitationStatus", FriendStore.getInvitationFromFacebookStatus());
+    this.setState({
+      facebookInvitationStatus: FriendStore.getInvitationFromFacebookStatus(),
+      saving: false,
+    });
   }
 
   readFacebookAppRequests () {

@@ -862,7 +862,7 @@ export default class VoterGuideBallot extends Component {
             <Helmet title={`${this.state.organization.organization_name} - We Vote`} />
             <BrowserPushMessage incomingProps={this.props} />
             <header className="ballot__header__group">
-              <h1 className={`ballot__header__title${isCordova() && "__cordova"}`}>
+              <h1 className={isCordova() ? "ballot__header__title__cordova" : "ballot__header__title"}>
                 { electionName ? (
                   <span className="u-push--sm">
                     {electionName}
