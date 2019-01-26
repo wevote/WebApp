@@ -31,7 +31,6 @@ export default class SettingsMenuMobile extends Component {
   }
 
   componentDidMount () {
-    console.log("In settings menu mobile. Component did mount!!!");
     if (this.props.params.edit_mode) {
       this.setState({ editMode: this.props.params.edit_mode });
     } else {
