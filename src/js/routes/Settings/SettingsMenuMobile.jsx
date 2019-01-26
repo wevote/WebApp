@@ -20,7 +20,7 @@ export default class SettingsMenuMobile extends Component {
     super(props);
     this.state = {
       editMode: "",
-      linked_organization_we_vote_id: "",
+      linkedOrganizationWeVoteId: "",
       organization: {},
       sliderOpen: false,
       voter: {},
@@ -31,6 +31,7 @@ export default class SettingsMenuMobile extends Component {
   }
 
   componentDidMount () {
+    console.log("In settings menu mobile. Component did mount!!!");
     if (this.props.params.edit_mode) {
       this.setState({ editMode: this.props.params.edit_mode });
     } else {
@@ -45,21 +46,21 @@ export default class SettingsMenuMobile extends Component {
     this.setState({
       voter,
     });
-    const linked_organization_we_vote_id = voter.linked_organization_we_vote_id;
+    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log("SettingsDashboard componentDidMount linked_organization_we_vote_id: ", linked_organization_we_vote_id);
-    if (linked_organization_we_vote_id) {
-      VoterGuideActions.voterGuidesRetrieve(linked_organization_we_vote_id);
+    if (linkedOrganizationWeVoteId) {
+      VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
       this.setState({
-        linked_organization_we_vote_id,
+        linkedOrganizationWeVoteId,
       });
-      const organization = OrganizationStore.getOrganizationByWeVoteId(linked_organization_we_vote_id);
+      const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
       if (organization && organization.organization_we_vote_id) {
         this.setState({
           organization,
           organizationType: organization.organization_type,
         });
       } else {
-        OrganizationActions.organizationRetrieve(linked_organization_we_vote_id);
+        OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
       }
     }
   }
@@ -69,20 +70,20 @@ export default class SettingsMenuMobile extends Component {
     this.setState({
       voter,
     });
-    const linked_organization_we_vote_id = voter.linked_organization_we_vote_id;
+    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log("SettingsDashboard componentWillReceiveProps linked_organization_we_vote_id: ", linked_organization_we_vote_id);
-    if (linked_organization_we_vote_id && this.state.linked_organization_we_vote_id !== linked_organization_we_vote_id) {
-      VoterGuideActions.voterGuidesRetrieve(linked_organization_we_vote_id);
+    if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
+      VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
       this.setState({
-        linked_organization_we_vote_id,
+        linkedOrganizationWeVoteId,
       });
-      const organization = OrganizationStore.getOrganizationByWeVoteId(linked_organization_we_vote_id);
+      const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
       if (organization && organization.organization_we_vote_id) {
         this.setState({
           organization,
         });
       } else {
-        OrganizationActions.organizationRetrieve(linked_organization_we_vote_id);
+        OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
       }
     }
     if (nextProps.params.edit_mode) {
@@ -97,7 +98,7 @@ export default class SettingsMenuMobile extends Component {
   }
 
   onOrganizationStoreChange () {
-    const organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linked_organization_we_vote_id);// this.state.linkedOrganizationWeVoteId);
+    const organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);// this.state.linkedOrganizationWeVoteId);
     // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linked_organization_we_vote_id);
     if (organization && organization.organization_type) {
       this.setState({
@@ -116,12 +117,12 @@ export default class SettingsMenuMobile extends Component {
     this.setState({
       voter,
     });
-    const linked_organization_we_vote_id = voter.linked_organization_we_vote_id;
+    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
     // console.log("SettingsDashboard onVoterStoreChange linked_organization_we_vote_id: ", linked_organization_we_vote_id);
-    if (linked_organization_we_vote_id && this.state.linked_organization_we_vote_id !== linked_organization_we_vote_id) {
-      OrganizationActions.organizationRetrieve(linked_organization_we_vote_id);
-      VoterGuideActions.voterGuidesRetrieve(linked_organization_we_vote_id);
-      this.setState({ linked_organization_we_vote_id });
+    if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
+      OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
+      VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
+      this.setState({ linkedOrganizationWeVoteId });
     }
   }
 
