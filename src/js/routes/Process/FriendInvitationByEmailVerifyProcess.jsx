@@ -32,7 +32,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     this.friendStoreListener.remove();
   }
 
-  cancelMergeFunction () {
+  cancelMergeFunction = () => {
     historyPush({
       pathname: "/more/network",
       state: {
@@ -51,7 +51,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     this.setState({ yesPleaseMergeAccounts: true });
   }
 
-  voterMergeTwoAccountsByInvitationKey (invitationSecretKey) {
+  voterMergeTwoAccountsByInvitationKey = (invitationSecretKey) => {
     VoterActions.voterMergeTwoAccountsByInvitationKey(invitationSecretKey);
     historyPush({
       pathname: "/more/network",
@@ -126,8 +126,8 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     } else if (this.state.invitationStatus.voterHasDataToPreserve) {
       // If so, ask if they want to connect two accounts?
       console.log("FriendInvitationByEmailVerifyProcess yesPleaseMergeAccounts is FALSE");
-      const cancelMergeFunction = this.cancelMergeFunction.bind(this);
-      const pleaseMergeAccountsFunction = this.yesPleaseMergeAccounts.bind(this);
+      const cancelMergeFunction = this.cancelMergeFunction;
+      const pleaseMergeAccountsFunction = this.yesPleaseMergeAccounts;
       // Display the question of whether to merge accounts or not
       return (
         <WouldYouLikeToMergeAccounts

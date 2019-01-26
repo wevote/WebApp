@@ -1,4 +1,6 @@
 $cordova-ballot-top-margin: 5vh;
+$ballot-prior: 50px;
+$ballot-show-all: 20px;
 $ballot-upcoming: 50px;
 
 .ballot-election-list,
@@ -65,6 +67,14 @@ $ballot-upcoming: 50px;
     display: block;
     font-size: 14px;
     margin: $toggle-link-margin;
+  }
+
+  &__prior {
+    margin-top: $ballot-prior !important;
+  }
+
+  &__show-all {
+    margin-top: $ballot-show-all !important;
   }
 
   &__upcoming {

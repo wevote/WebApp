@@ -853,6 +853,7 @@ export default class Ballot extends Component {
     const electionDayText = BallotStore.currentBallotElectionDate;
     const sourcePollingLocationWeVoteId = BallotStore.currentBallotPollingLocationSource;
     const ballotReturnedAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}b/${sourcePollingLocationWeVoteId}/list_edit_by_polling_location/?google_civic_election_id=${VoterStore.election_id()}&state_code=`;
+    // console.log("electionName: ", electionName, ", electionDayTextFormatted: ", electionDayText);
 
     const emptyBallotButton = this.state.completionLevelFilterType !== "none" && !voterAddressMissing ? (
       <span>
@@ -896,7 +897,7 @@ export default class Ballot extends Component {
     }
 
     return (
-      <div className="ballot">
+      <div className="ballot_root">
         { this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
         { this.state.showMeasureModal ? <MeasureModal show={this.state.showMeasureModal} toggleFunction={this.toggleMeasureModal} measure={this.state.measureForModal} /> : null }
         { this.state.showCandidateModal ? <CandidateModal show={this.state.showCandidateModal} toggleFunction={this.toggleCandidateModal} candidate={this.state.candidateForModal} /> : null }
@@ -920,7 +921,7 @@ export default class Ballot extends Component {
                   <Helmet title="Ballot - We Vote" />
                   <BrowserPushMessage incomingProps={this.props} />
                   <header className="ballot__header__group">
-                    <h1 className={`ballot__header__title${isCordova() && "__cordova"}`}>
+                    <h1 className={isCordova() ? "ballot__header__title__cordova" : "ballot__header__title"}>
                       { electionName ? (
                         <span className="u-push--sm">
                           {electionName}
