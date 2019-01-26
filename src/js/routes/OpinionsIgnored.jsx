@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
 import { renderLog } from "../utils/logging";
@@ -9,11 +8,6 @@ import VoterGuideActions from "../actions/VoterGuideActions";
 
 // NOTE FROM DALE: This should be refactored to pull in Organizations instead of Voter Guides
 export default class OpinionsIgnored extends Component {
-  static propTypes = {
-    children: PropTypes.object,
-    history: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
@@ -41,16 +35,17 @@ export default class OpinionsIgnored extends Component {
     }
   }
 
-  toggleEditMode () {
-    this.setState({ editMode: !this.state.editMode });
-  }
-
   onKeyDownEditMode (event) {
     const enterAndSpaceKeyCodes = [13, 32];
     const scope = this;
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       scope.setState({ editMode: !this.state.editMode });
     }
+  }
+
+  toggleEditMode () {
+    const { editMode } = this.state;
+    this.setState({ editMode: !editMode });
   }
 
   render () {
