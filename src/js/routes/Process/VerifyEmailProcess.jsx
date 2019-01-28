@@ -1,11 +1,12 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import PropTypes from "prop-types";
 import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../../components/LoadingWheel";
 import { renderLog } from "../../utils/logging";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
-import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
+// This will be needed in the future
+// import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
 
 export default class VerifyEmailProcess extends Component {
   static propTypes = {
@@ -16,46 +17,45 @@ export default class VerifyEmailProcess extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      emailSignInStatus: {},
       voter: VoterStore.getVoter(),
-      yes_please_merge_accounts: false,
+      // yesPleaseMergeAccounts: false,
       saving: true,
     };
   }
 
   componentDidMount () {
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    const { email_secret_key } = this.props.params;
-    console.log("VerifyEmailProcess, componentDidMount, this.props.params.email_secret_key: ", email_secret_key);
-    this.voterEmailAddressVerify(email_secret_key);
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    const { email_secret_key: emailSecretKey } = this.props.params;
+    console.log("VerifyEmailProcess, componentDidMount, this.props.params.email_secret_key: ", emailSecretKey);
+    this.voterEmailAddressVerify(emailSecretKey);
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
   }
 
-  cancelMergeFunction () {
-    historyPush({
-      pathname: "/settings/account",
-      state: {
-      },
-    });
-    // message: "You have chosen to NOT merge your two accounts.",
-    // message_type: "success"
-  }
+  // cancelMergeFunction () {
+  //   historyPush({
+  //     pathname: "/settings/account",
+  //     state: {
+  //     },
+  //   });
+  //   // message: "You have chosen to NOT merge your two accounts.",
+  //   // message_type: "success"
+  // }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter(),
-      email_address_status: VoterStore.getEmailAddressStatus(),
-      email_sign_in_status: VoterStore.getEmailSignInStatus(),
+      emailSignInStatus: VoterStore.getEmailSignInStatus(),
       saving: false,
     });
   }
 
-  voterMergeTwoAccountsByEmailKey (email_secret_key, voter_has_data_to_preserve = true) {
-    VoterActions.voterMergeTwoAccountsByEmailKey(email_secret_key);
-    if (voter_has_data_to_preserve) {
-      console.log(voter_has_data_to_preserve);
+  voterMergeTwoAccountsByEmailKey (emailSecretKey, voterHasDataToPreserve = true) {
+    VoterActions.voterMergeTwoAccountsByEmailKey(emailSecretKey);
+    if (voterHasDataToPreserve) {
       historyPush({
         pathname: "/settings/account",
         state: {
@@ -74,29 +74,29 @@ export default class VerifyEmailProcess extends Component {
     }
   }
 
-  voterEmailAddressVerify (email_secret_key) {
-    VoterActions.voterEmailAddressVerify(email_secret_key);
+  voterEmailAddressVerify (emailSecretKey) {
+    VoterActions.voterEmailAddressVerify(emailSecretKey);
     this.setState({ saving: true });
   }
 
-  yesPleaseMergeAccounts () {
-    this.setState({ yes_please_merge_accounts: true });
-  }
+  // yesPleaseMergeAccounts () {
+  //   this.setState({ yesPleaseMergeAccounts: true });
+  // }
 
   render () {
     renderLog(__filename);
-    const { email_secret_key } = this.props.params;
-    console.log("VerifyEmailProcess, email_secret_key:", email_secret_key);
-    if (!email_secret_key ||
+    const { email_secret_key: emailSecretKey } = this.props.params;
+    console.log("VerifyEmailProcess, emailSecretKey:", emailSecretKey);
+    if (!emailSecretKey ||
       this.state.saving ||
-      !this.state.email_sign_in_status ||
-      !this.state.email_sign_in_status.email_sign_in_attempted ||
+      !this.state.emailSignInStatus ||
+      !this.state.emailSignInStatus.email_sign_in_attempted ||
       !this.state.voter) {
       return LoadingWheel;
     }
 
     // This process starts when we return from attempting voterEmailAddressVerify
-    if (!this.state.email_sign_in_status.email_address_found) {
+    if (!this.state.emailSignInStatus.email_address_found) {
       console.log("Could not find secret_key - push to /settings/account");
       historyPush({
         pathname: "/settings/account",
@@ -108,15 +108,15 @@ export default class VerifyEmailProcess extends Component {
       return LoadingWheel;
     }
 
-    if (this.state.yes_please_merge_accounts) {
-      // Go ahead and merge this voter record with the voter record that the email_secret_key belongs to
-      console.log("this.voterMergeTwoAccountsByEmailKey email_secret_key:", email_secret_key);
-      this.voterMergeTwoAccountsByEmailKey(email_secret_key, this.state.voter.has_data_to_preserve);
+    if (this.state.yesPleaseMergeAccounts) {
+      // Go ahead and merge this voter record with the voter record that the emailSecretKey belongs to
+      console.log("this.voterMergeTwoAccountsByEmailKey emailSecretKey:", emailSecretKey);
+      this.voterMergeTwoAccountsByEmailKey(emailSecretKey, this.state.voter.has_data_to_preserve);
       // return <span>this.voterMergeTwoAccountsByEmailKey</span>;
       return LoadingWheel;
     }
 
-    if (!this.state.email_sign_in_status.email_ownership_is_verified) {
+    if (!this.state.emailSignInStatus.email_ownership_is_verified) {
       console.log("email_ownership_is_verified not true - push to /settings/account");
       historyPush({
         pathname: "/settings/account",
@@ -124,7 +124,7 @@ export default class VerifyEmailProcess extends Component {
       return LoadingWheel;
     }
 
-    if (this.state.email_sign_in_status.email_secret_key_belongs_to_this_voter) {
+    if (this.state.emailSignInStatus.email_secret_key_belongs_to_this_voter) {
       // We don't need to do anything more except redirect
       console.log("secret key owned by this voter - push to /ballot");
       historyPush({
@@ -135,24 +135,24 @@ export default class VerifyEmailProcess extends Component {
         },
       });
       return LoadingWheel;
-    } else if (this.state.voter.has_data_to_preserve) {
-      // If so, ask if they want to connect two accounts?
-      console.log("VerifyEmailProcess this.state.voter.has_data_to_preserve:", this.state.voter.has_data_to_preserve);
-      // Display the question of whether to merge accounts or not
-      const cancel_merge_function = this.cancelMergeFunction.bind(this);
-      const please_merge_accounts_function = this.yesPleaseMergeAccounts.bind(this);
-      // Display the question of whether to merge accounts or not
-      return (
-        <WouldYouLikeToMergeAccounts
-          cancelMergeFunction={cancel_merge_function}
-          pleaseMergeAccountsFunction={please_merge_accounts_function}
-        />
-      );
-      // return <span>WouldYouLikeToMergeAccounts</span>;
+    // } else if (this.state.voter.has_data_to_preserve) {
+    //   // If so, ask if they want to connect two accounts?
+    //   console.log("VerifyEmailProcess this.state.voter.has_data_to_preserve:", this.state.voter.has_data_to_preserve);
+    //   // Display the question of whether to merge accounts or not
+    //   const cancelMergeFunction = this.cancelMergeFunction.bind(this);
+    //   const pleaseMergeAccountsFunction = this.yesPleaseMergeAccounts.bind(this);
+    //   // Display the question of whether to merge accounts or not
+    //   return (
+    //     <WouldYouLikeToMergeAccounts
+    //       cancelMergeFunction={cancelMergeFunction}
+    //       pleaseMergeAccountsFunction={pleaseMergeAccountsFunction}
+    //     />
+    //   );
+    //   // return <span>WouldYouLikeToMergeAccounts</span>;
     } else {
       // Go ahead and merge the accounts, which means deleting the current voter id and switching to the email owner
-      console.log("this.voterMergeTwoAccountsByEmailKey - go ahead, email_secret_key:", email_secret_key);
-      this.voterMergeTwoAccountsByEmailKey(email_secret_key, false);
+      console.log("this.voterMergeTwoAccountsByEmailKey - go ahead, emailSecretKey:", emailSecretKey);
+      this.voterMergeTwoAccountsByEmailKey(emailSecretKey, false);
       // return <span>this.voterMergeTwoAccountsByEmailKey - go ahead</span>;
       return LoadingWheel;
     }
