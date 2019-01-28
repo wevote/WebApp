@@ -39,56 +39,12 @@ export default class BallotElectionList extends Component {
       show_more_upcoming_elections: false,
       show_more_prior_elections: false,
       show_prior_elections_list: false,
-      stateCode,
       state_name: convertStateCodeToStateText(stateCode),
       updated_election_id: "",
     };
 
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-  }
-
-  goToDifferentElection (ballot_location_shortcut, ballot_returned_we_vote_id, googleCivicElectionId, originalTextForMapSearch = "") {
-    const ballot_base_url = this.props.ballotBaseUrl || "/ballot";
-    let destinationUrlForHistoryPush = "";
-    if (ballot_location_shortcut && ballot_location_shortcut !== "" && ballot_location_shortcut !== "none") {
-      // console.log("goToDifferentElection, ballot_location_shortcut: ", ballot_location_shortcut);
-      BallotActions.voterBallotItemsRetrieve(0, "", ballot_location_shortcut);
-      destinationUrlForHistoryPush = `${ballot_base_url}/${ballot_location_shortcut}`; // Used with historyPush once modal is closed
-    } else if (ballot_returned_we_vote_id && ballot_returned_we_vote_id !== "" && ballot_returned_we_vote_id !== "none") {
-      // console.log("goToDifferentElection, ballot_returned_we_vote_id: ", ballot_returned_we_vote_id);
-      BallotActions.voterBallotItemsRetrieve(0, ballot_returned_we_vote_id, "");
-      destinationUrlForHistoryPush = `${ballot_base_url}/id/${ballot_returned_we_vote_id}`; // Used with historyPush once modal is closed
-    } else if (originalTextForMapSearch && originalTextForMapSearch !== "") {
-      // Do we still want to be updating addresses? Maybe instead just update google_civic_election_id?
-      // console.log("goToDifferentElection, originalTextForMapSearch: ", originalTextForMapSearch);
-      const simple_save = false;
-      VoterActions.voterAddressSave(originalTextForMapSearch, simple_save, googleCivicElectionId);
-      destinationUrlForHistoryPush = ballot_base_url; // Used with historyPush once modal is closed
-    } else if (googleCivicElectionId && googleCivicElectionId !== 0) {
-      BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, "", "");
-      // console.log("goToDifferentElection, googleCivicElectionId: ", googleCivicElectionId);
-      destinationUrlForHistoryPush = `${ballot_base_url}/election/${googleCivicElectionId}`; // Used with historyPush once modal is closed
-    }
-
-    // Request positions for the different election
-    if (this.props.organization_we_vote_id && this.props.organization_we_vote_id !== "") {
-      // console.log("BallotElectionList calling positionListForOpinionMaker, this.props.organization_we_vote_id: ", this.props.organization_we_vote_id, ", googleCivicElectionId:", googleCivicElectionId);
-      OrganizationActions.positionListForOpinionMaker(this.props.organization_we_vote_id, true, false, googleCivicElectionId);
-    }
-
-    if (this.props.toggleFunction) {
-      // console.log("goToDifferentElection, loading_new_ballot_items: ", this.state.loading_new_ballot_items);
-      // console.log("goToDifferentElection, priorElectionId: ", this.state.priorElectionId, ", updated_election_id: ", this.state.updated_election_id);
-      this.setState({
-        destinationUrlForHistoryPush,
-        loading_new_ballot_items: true,
-        priorElectionId: BallotStore.ballotProperties.google_civic_election_id || VoterStore.election_id() || 0,
-        updated_election_id: 0,
-      });
-    } else {
-      historyPush(destinationUrlForHistoryPush);
-    }
   }
 
   componentWillUnmount () {
@@ -123,7 +79,6 @@ export default class BallotElectionList extends Component {
         const stateCode = VoterStore.getStateCodeFromIPAddress();
         this.setState({
           loading_new_ballot_items: false,
-          stateCode,
           state_name: convertStateCodeToStateText(stateCode),
           updated_election_id: VoterStore.election_id(),
         });
@@ -133,37 +88,94 @@ export default class BallotElectionList extends Component {
     }
   }
 
-  filterElectionsInState (election_list) {
-    return election_list.filter(election => this.isElectionInState(election));
+  goToDifferentElection (ballotLocationShortcut, ballotReturnedweVoteid, googleCivicElectionId, originalTextForMapSearch = "") {
+    const ballotBaseurl = this.props.ballotBaseUrl || "/ballot";
+    let destinationUrlForHistoryPush = "";
+    if (ballotLocationShortcut && ballotLocationShortcut !== "" && ballotLocationShortcut !== "none") {
+      // console.log("goToDifferentElection, ballotLocationShortcut: ", ballotLocationShortcut);
+      BallotActions.voterBallotItemsRetrieve(0, "", ballotLocationShortcut);
+      destinationUrlForHistoryPush = `${ballotBaseurl}/${ballotLocationShortcut}`; // Used with historyPush once modal is closed
+    } else if (ballotReturnedweVoteid && ballotReturnedweVoteid !== "" && ballotReturnedweVoteid !== "none") {
+      // console.log("goToDifferentElection, ballotReturnedweVoteid: ", ballotReturnedweVoteid);
+      BallotActions.voterBallotItemsRetrieve(0, ballotReturnedweVoteid, "");
+      destinationUrlForHistoryPush = `${ballotBaseurl}/id/${ballotReturnedweVoteid}`; // Used with historyPush once modal is closed
+    } else if (originalTextForMapSearch && originalTextForMapSearch !== "") {
+      // Do we still want to be updating addresses? Maybe instead just update google_civic_election_id?
+      // console.log("goToDifferentElection, originalTextForMapSearch: ", originalTextForMapSearch);
+      const simpleSave = false;
+      VoterActions.voterAddressSave(originalTextForMapSearch, simpleSave, googleCivicElectionId);
+      destinationUrlForHistoryPush = ballotBaseurl; // Used with historyPush once modal is closed
+    } else if (googleCivicElectionId && googleCivicElectionId !== 0) {
+      BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, "", "");
+      // console.log("goToDifferentElection, googleCivicElectionId: ", googleCivicElectionId);
+      destinationUrlForHistoryPush = `${ballotBaseurl}/election/${googleCivicElectionId}`; // Used with historyPush once modal is closed
+    }
+
+    // Request positions for the different election
+    if (this.props.organization_we_vote_id && this.props.organization_we_vote_id !== "") {
+      // console.log("BallotElectionList calling positionListForOpinionMaker, this.props.organization_we_vote_id: ", this.props.organization_we_vote_id, ", googleCivicElectionId:", googleCivicElectionId);
+      OrganizationActions.positionListForOpinionMaker(this.props.organization_we_vote_id, true, false, googleCivicElectionId);
+    }
+
+    if (this.props.toggleFunction) {
+      // console.log("goToDifferentElection, loading_new_ballot_items: ", this.state.loading_new_ballot_items);
+      // console.log("goToDifferentElection, priorElectionId: ", this.state.priorElectionId, ", updated_election_id: ", this.state.updated_election_id);
+      this.setState({
+        destinationUrlForHistoryPush,
+        loading_new_ballot_items: true,
+        priorElectionId: BallotStore.ballotProperties.google_civic_election_id || VoterStore.election_id() || 0,
+        updated_election_id: 0,
+      });
+    } else {
+      historyPush(destinationUrlForHistoryPush);
+    }
   }
 
-  // filterElectionsOutsideState (election_list) {
-  //   return election_list.filter(election => !this.isElectionInState(election));
+  filterElectionsInState (electionList) {
+    return electionList.filter(election => this.isElectionInState(election));
+  }
+
+  // filterElectionsOutsideState (electionList) {
+  //   return electionList.filter(election => !this.isElectionInState(election));
   // }
 
   isElectionInState (election) {
-    const election_name = election.election_description_text;
-    if (this.state.state_name.length && election_name.includes(this.state.state_name)) {
+    const electionName = election.election_description_text;
+    if (this.state.state_name.length && electionName.includes(this.state.state_name)) {
       return true;
     }
     // show all national elections regardless of state
     // return election.is_national;
-    return election_name.includes("U.S.") ||
-           election_name.includes("US") ||
-           election_name.includes("United States");
+    return electionName.includes("U.S.") ||
+           electionName.includes("US") ||
+           electionName.includes("United States");
   }
 
-  renderUpcomingElectionList (list, current_date) {
-    const rendered_list = list.map((item, index) => {
+
+  toggleShowMoreUpcomingElections () {
+    this.setState(prevState => ({ show_more_upcoming_elections: !prevState.show_more_upcoming_elections }));
+  }
+
+  toggleShowMorePriorElections () {
+    this.setState(prevState => ({ show_more_prior_elections: !prevState.show_more_prior_elections }));
+  }
+
+  toggleShowPriorElectionsList () {
+    this.setState(prevState => ({ show_prior_elections_list: !prevState.show_prior_elections_list }));
+  }
+
+  renderUpcomingElectionList (list, currentDate) {
+    // console.log('THELIST', list);
+    const renderedList = list.map((item, index) => {
       const electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
       const electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
-      return electionDateTomorrow > current_date ? (
+      return electionDateTomorrow > currentDate ? (
         <div key={index}>
           <dl className="list-unstyled text-center">
             <button
               type="button"
               className="btn btn-success ballot-election-list__button"
-              onClick={this.goToDifferentElection.bind(this, item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}
+              onClick={this.goToDifferentElection.bind(this, item.ballotLocationShortcut, item.ballotReturnedweVoteid, item.google_civic_election_id, item.original_text_for_map_search)}
             >
               {/* Mobile */}
               { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
@@ -203,21 +215,21 @@ export default class BallotElectionList extends Component {
       ) :
         null;
     });
-    return cleanArray(rendered_list);
+    return cleanArray(renderedList);
   }
 
-  renderPriorElectionList (list, current_date) {
-    const rendered_list = list.map((item, index) => {
+  renderPriorElectionList (list, currentDate) {
+    const renderedList = list.map((item, index) => {
       const electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
       const electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
-      return electionDateTomorrow > current_date ?
+      return electionDateTomorrow > currentDate ?
         null : (
           <div key={index}>
             <dl className="list-unstyled text-center">
               <button
                 type="button"
                 className="btn btn-success ballot-election-list__button"
-                onClick={this.goToDifferentElection.bind(this, item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}
+                onClick={this.goToDifferentElection.bind(this, item.ballotLocationShortcut, item.ballotReturnedweVoteid, item.google_civic_election_id, item.original_text_for_map_search)}
               >
                 {/* Mobile */}
                 { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
@@ -256,25 +268,7 @@ export default class BallotElectionList extends Component {
           </div>
         );
     });
-    return cleanArray(rendered_list);
-  }
-
-  toggleShowMoreUpcomingElections () {
-    this.setState({
-      show_more_upcoming_elections: !this.state.show_more_upcoming_elections,
-    });
-  }
-
-  toggleShowMorePriorElections () {
-    this.setState({
-      show_more_prior_elections: !this.state.show_more_prior_elections,
-    });
-  }
-
-  toggleShowPriorElectionsList () {
-    this.setState({
-      show_prior_elections_list: !this.state.show_prior_elections_list,
-    });
+    return cleanArray(renderedList);
   }
 
   render () {
@@ -294,24 +288,24 @@ export default class BallotElectionList extends Component {
     const ballotElectionListUpcomingSorted = this.props.ballotElectionList.concat();
     // We want to sort ascending so the next upcoming election is first
     ballotElectionListUpcomingSorted.sort((a, b) => {
-      const election_day_text_A = a.election_day_text.toLowerCase();
-      const election_day_text_B = b.election_day_text.toLowerCase();
-      if (election_day_text_A < election_day_text_B) { // sort string ascending
+      const electionDaytextA = a.election_day_text.toLowerCase();
+      const electionDaytextB = b.election_day_text.toLowerCase();
+      if (electionDaytextA < electionDaytextB) { // sort string ascending
         return -1;
       }
-      if (election_day_text_A > election_day_text_B) return 1;
+      if (electionDaytextA > electionDaytextB) return 1;
       return 0; // default return value (no sorting)
     });
 
     const ballotElectionListPastSorted = this.props.ballotElectionList.concat();
     // We want to sort descending so the most recent election is first
     ballotElectionListPastSorted.sort((a, b) => {
-      const election_day_text_A = a.election_day_text.toLowerCase();
-      const election_day_text_B = b.election_day_text.toLowerCase();
-      if (election_day_text_A < election_day_text_B) { // sort string descending
+      const electionDaytextA = a.election_day_text.toLowerCase();
+      const electionDaytextB = b.election_day_text.toLowerCase();
+      if (electionDaytextA < electionDaytextB) { // sort string descending
         return 1;
       }
-      if (election_day_text_A > election_day_text_B) return -1;
+      if (electionDaytextA > electionDaytextB) return -1;
       return 0; // default return value (no sorting)
     });
 

@@ -17,7 +17,6 @@ export default class SelectBallotModal extends Component {
     ballotBaseUrl: PropTypes.string,
     ballotElectionList: PropTypes.array,
     google_civic_election_id: PropTypes.number,
-    location: PropTypes.object,
     organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
     pathname: PropTypes.string,
     show: PropTypes.bool,
@@ -27,20 +26,17 @@ export default class SelectBallotModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      showSelectAddressModal: false,
     };
   }
 
   componentDidMount () {
     this.setState({
-      location: this.props.location,
       pathname: this.props.pathname,
     });
   }
 
   componentWillReceiveProps (nextProps) {
     this.setState({
-      location: nextProps.location,
       pathname: nextProps.pathname,
     });
   }
