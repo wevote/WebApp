@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
 import { _ } from "lodash";
@@ -10,19 +9,13 @@ import OpinionsFollowedList from "../components/Organization/OpinionsFollowedLis
 import SearchBar from "../components/Search/SearchBar";
 
 export default class OpinionsFollowed extends Component {
-  static propTypes = {
-    children: PropTypes.object,
-    history: PropTypes.object,
-  };
-
   constructor (props) {
     super(props);
     this.state = {
       organizations_followed_list: [],
       editMode: false,
-      search_query: "",
+      searchQuery: "",
     };
-
     this.searchFunction = this.searchFunction.bind(this);
     this.clearFunction = this.clearFunction.bind(this);
   }
@@ -39,27 +32,17 @@ export default class OpinionsFollowed extends Component {
     this.organizationStoreListener.remove();
   }
 
-  _onOrganizationStoreChange () {
-    this.setState({
-      organizations_followed_list: OrganizationStore.getOrganizationsVoterIsFollowing(),
-    });
-  }
-
-  getCurrentRoute () {
-    const current_route = "/opinions_followed";
-    return current_route;
-  }
-
-  toggleEditMode () {
-    this.setState({ editMode: !this.state.editMode });
-  }
-
   onKeyDownEditMode (event) {
     const enterAndSpaceKeyCodes = [13, 32];
     const scope = this;
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       scope.setState({ editMode: !this.state.editMode });
     }
+  }
+
+  getCurrentRoute () {
+    const currentRoute = "/opinions_followed";
+    return currentRoute;
   }
 
   getFollowingType () {
@@ -72,8 +55,18 @@ export default class OpinionsFollowed extends Component {
     }
   }
 
-  searchFunction (search_query) {
-    this.setState({ search_query });
+  toggleEditMode () {
+    this.setState(() => ({ editMode: !this.state.editMode }));
+  }
+
+  _onOrganizationStoreChange () {
+    this.setState({
+      organizations_followed_list: OrganizationStore.getOrganizationsVoterIsFollowing(),
+    });
+  }
+
+  searchFunction (searchQuery) {
+    this.setState({ searchQuery });
   }
 
   clearFunction () {
@@ -82,14 +75,14 @@ export default class OpinionsFollowed extends Component {
 
   render () {
     renderLog(__filename);
-    let organizations_followed_list_for_display = [];
-    if (this.state.search_query.length > 0) {
-      const search_query_lowercase = this.state.search_query.toLowerCase();
-      organizations_followed_list_for_display = _.filter(this.state.organizations_followed_list,
-        one_organization => one_organization.organization_name.toLowerCase().includes(search_query_lowercase) ||
-            one_organization.organization_twitter_handle.toLowerCase().includes(search_query_lowercase));
+    let organizationsFollowedListForDisplay = [];
+    if (this.state.searchQuery.length > 0) {
+      const searchQueryLowercase = this.state.searchQuery.toLowerCase();
+      organizationsFollowedListForDisplay = _.filter(this.state.organizations_followed_list,
+        oneOrganization => oneOrganization.organization_name.toLowerCase().includes(searchQueryLowercase) ||
+            oneOrganization.organization_twitter_handle.toLowerCase().includes(searchQueryLowercase));
     } else {
-      organizations_followed_list_for_display = this.state.organizations_followed_list;
+      organizationsFollowedListForDisplay = this.state.organizations_followed_list;
     }
 
     // console.log("OpinionsFollowed, this.state.organizations_followed_list: ", this.state.organizations_followed_list);
@@ -126,7 +119,7 @@ export default class OpinionsFollowed extends Component {
                 {
                 this.state.organizations_followed_list && this.state.organizations_followed_list.length ? (
                   <OpinionsFollowedList
-                    organizationsFollowed={organizations_followed_list_for_display}
+                    organizationsFollowed={organizationsFollowedListForDisplay}
                     editMode={this.state.editMode}
                     instantRefreshOn
                   />
