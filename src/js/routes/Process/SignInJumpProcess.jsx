@@ -5,10 +5,10 @@ import LoadingWheel from "../../components/LoadingWheel";
 import { renderLog } from "../../utils/logging";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
+// This will be needed in the future
 // import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
 
 // This component allows us to jump from the native apps to WebApp, and preserve the sign in state
-// TODO DALE: Is a work in progress
 export default class SignInJumpProcess extends Component {
   static propTypes = {
     location: PropTypes.object.isRequired,
@@ -17,21 +17,21 @@ export default class SignInJumpProcess extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      incoming_voter_device_id_belongs_to_this_voter: true, // This is temporary
+      incomingVoterDeviceIdBelongsToThisVoter: true, // This is temporary
       jump_path: "",
       voter: {},
-      yes_please_merge_accounts: false,
-      saving: true,
+      // yesPleaseMergeAccounts: false,
+      // saving: true,
     };
   }
 
   componentDidMount () {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    const incoming_voter_device_id = this.props.location.query.voter_device_id;
-    console.log("SignInJumpProcess, componentDidMount, this.props.location.query.voter_device_id: ", incoming_voter_device_id);
-    // this.voterAnalysisForJumpProcess(incoming_voter_device_id);
+    const incomingVoterDeviceId = this.props.location.query.voter_device_id;
+    console.log("SignInJumpProcess, componentDidMount, this.props.location.query.voter_device_id: ", incomingVoterDeviceId);
+    // this.voterAnalysisForJumpProcess(incomingVoterDeviceId);
     this.setState({
-      incoming_voter_device_id_belongs_to_this_voter: true, // We want to actually set this in response to voterAnalysisForJumpProcess
+      incomingVoterDeviceIdBelongsToThisVoter: true, // We want to actually set this in response to voterAnalysisForJumpProcess
       jump_path: this.props.location.query.jump_path,
       voter: VoterStore.getVoter(),
     });
@@ -52,16 +52,16 @@ export default class SignInJumpProcess extends Component {
   _onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter(),
-      // incoming_voter_device_id_belongs_to_this_voter
+      // incomingVoterDeviceIdBelongsToThisVoter
       // voter_analysis_for_jump_process: VoterStore.getEmailAddressStatus(),
       // email_sign_in_status: VoterStore.getEmailSignInStatus(),
-      saving: false,
+      // saving: false,
     });
   }
 
-  voterMergeTwoAccountsByJumpProcess (incoming_voter_device_id, voter_has_data_to_preserve = true) {
-    console.log("voterMergeTwoAccountsByJumpProcess, incoming_voter_device_id: ", incoming_voter_device_id, voter_has_data_to_preserve);
-    // VoterActions.voterMergeTwoAccountsByJumpProcess(incoming_voter_device_id);
+  voterMergeTwoAccountsByJumpProcess (incomingVoterDeviceId, voter_has_data_to_preserve = true) {
+    console.log("voterMergeTwoAccountsByJumpProcess, incomingVoterDeviceId: ", incomingVoterDeviceId, voter_has_data_to_preserve);
+    // VoterActions.voterMergeTwoAccountsByJumpProcess(incomingVoterDeviceId);
     historyPush({
       pathname: this.state.jump_path,
       state: {
@@ -71,20 +71,20 @@ export default class SignInJumpProcess extends Component {
     });
   }
 
-  voterAnalysisForJumpProcess (incoming_voter_device_id) {
-    VoterActions.voterAnalysisForJumpProcess(incoming_voter_device_id);
-    this.setState({ saving: true });
+  voterAnalysisForJumpProcess (incomingVoterDeviceId) {
+    VoterActions.voterAnalysisForJumpProcess(incomingVoterDeviceId);
+    // this.setState({ saving: true });
   }
 
-  yesPleaseMergeAccounts () {
-    this.setState({ yes_please_merge_accounts: true });
-  }
+  // yesPleaseMergeAccounts () {
+  //   this.setState({ yesPleaseMergeAccounts: true });
+  // }
 
   render () {
     renderLog(__filename);
-    const incoming_voter_device_id = this.props.location.query.voter_device_id;
-    console.log("SignInJumpProcess, incoming_voter_device_id:", incoming_voter_device_id);
-    if (!incoming_voter_device_id ||
+    const incomingVoterDeviceId = this.props.location.query.voter_device_id;
+    console.log("SignInJumpProcess, incomingVoterDeviceId:", incomingVoterDeviceId);
+    if (!incomingVoterDeviceId ||
       // this.state.saving ||
       !this.state.jump_path ||
       !this.state.voter) {
@@ -105,15 +105,15 @@ export default class SignInJumpProcess extends Component {
     //   return LoadingWheel;
     // }
 
-    // if (this.state.yes_please_merge_accounts) {
+    // if (this.state.yesPleaseMergeAccounts) {
     //   // Go ahead and merge this voter record with the voter record that the email_secret_key belongs to
-    //   console.log("this.voterMergeTwoAccountsByJumpProcess incoming_voter_device_id:", incoming_voter_device_id);
-    //   this.voterMergeTwoAccountsByJumpProcess(incoming_voter_device_id, this.state.voter.has_data_to_preserve);
+    //   console.log("this.voterMergeTwoAccountsByJumpProcess incomingVoterDeviceId:", incomingVoterDeviceId);
+    //   this.voterMergeTwoAccountsByJumpProcess(incomingVoterDeviceId, this.state.voter.has_data_to_preserve);
     //   // return <span>this.voterMergeTwoAccountsByJumpProcess</span>;
     //   return LoadingWheel;
     // }
 
-    if (this.state.incoming_voter_device_id_belongs_to_this_voter) {
+    if (this.state.incomingVoterDeviceIdBelongsToThisVoter) {
       // We don't need to do anything more except redirect
       console.log("incoming_voter_device_id owned by this voter - push to jump_to location: ", this.state.jump_path);
       historyPush({
@@ -136,8 +136,8 @@ export default class SignInJumpProcess extends Component {
     //   //return <span>WouldYouLikeToMergeAccounts</span>;
     } else {
       // Go ahead and merge the accounts, which means deleting the current voter id and switching to the email owner
-      console.log("this.voterMergeTwoAccountsByJumpProcess - go ahead, incoming_voter_device_id:", incoming_voter_device_id);
-      this.voterMergeTwoAccountsByJumpProcess(incoming_voter_device_id, false);
+      console.log("this.voterMergeTwoAccountsByJumpProcess - go ahead, incomingVoterDeviceId:", incomingVoterDeviceId);
+      this.voterMergeTwoAccountsByJumpProcess(incomingVoterDeviceId, false);
       // return <span>this.voterMergeTwoAccountsByJumpProcess - go ahead</span>;
       return LoadingWheel;
     }

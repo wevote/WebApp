@@ -1,31 +1,32 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { Component } from "react";
 import FacebookActions from "../../actions/FacebookActions";
 import FacebookStore from "../../stores/FacebookStore";
 import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../../components/LoadingWheel";
 import { renderLog } from "../../utils/logging";
 import VoterActions from "../../actions/VoterActions";
-import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
+// This will be needed in the future
+// import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
 
 export default class FacebookSignInProcess extends Component {
   static propTypes = {
-    params: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      facebook_auth_response: {},
+      facebookAuthResponse: {},
       saving: false,
-      voter: {},
-      yes_please_merge_accounts: false,
-      merging_two_accounts: false,
+      yesPleaseMergeAccounts: false,
+      mergingTwoAccounts: false,
     };
+    // These will be needed in the future
+    // this.cancelMergeFunction = this.cancelMergeFunction.bind(this);
+    // this.yesPleaseMergeAccounts = this.yesPleaseMergeAccounts.bind(this);
   }
 
   componentDidMount () {
-    this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
+    this.facebookStoreListener = FacebookStore.addListener(this.onFacebookStoreChange.bind(this));
     // console.log("FacebookSignInProcess, componentDidMount");
     this.voterFacebookSignInRetrieve();
   }
@@ -34,34 +35,35 @@ export default class FacebookSignInProcess extends Component {
     this.facebookStoreListener.remove();
   }
 
-  _onFacebookStoreChange () {
+  onFacebookStoreChange () {
     this.setState({
-      facebook_auth_response: FacebookStore.getFacebookAuthResponse(),
+      facebookAuthResponse: FacebookStore.getFacebookAuthResponse(),
       saving: false,
     });
   }
 
-  cancelMergeFunction () {
-    historyPush({
-      pathname: "/more/network",
-      state: {
-      },
-    });
-    // message: "You have chosen to NOT merge your two accounts.",
-    // message_type: "success"
-  }
+  // This will be needed in the future
+  // cancelMergeFunction () {
+  //   historyPush({
+  //     pathname: "/more/network",
+  //     state: {
+  //     },
+  //   });
+  //   // message: "You have chosen to NOT merge your two accounts.",
+  //   // message_type: "success"
+  // }
 
-  voterMergeTwoAccountsByFacebookKey (facebook_secret_key, voter_has_data_to_preserve = true) {
-    // console.log("In voterMergeTwoAccountsByFacebookKey, facebook_secret_key: ", facebook_secret_key, ", voter_has_data_to_preserve: ", voter_has_data_to_preserve);
-    if (this.state.merging_two_accounts) {
-      // console.log("In process of merging_two_accounts");
+  voterMergeTwoAccountsByFacebookKey (facebookSecretKey, voterHasDataToPreserve = true) {
+    // console.log("In voterMergeTwoAccountsByFacebookKey, facebookSecretKey: ", facebookSecretKey, ", voterHasDataToPreserve: ", voterHasDataToPreserve);
+    if (this.state.mergingTwoAccounts) {
+      // console.log("In process of mergingTwoAccounts");
     } else {
-      // console.log("About to make API call");
-      VoterActions.voterMergeTwoAccountsByFacebookKey(facebook_secret_key);
+      // console.log("About to make voterMergeTwoAccountsByFacebookKey API call");
+      VoterActions.voterMergeTwoAccountsByFacebookKey(facebookSecretKey);
       // Prevent voterMergeTwoAccountsByFacebookKey from being called multiple times
-      this.setState({ merging_two_accounts: true });
+      this.setState({ mergingTwoAccounts: true });
     }
-    if (voter_has_data_to_preserve) {
+    if (voterHasDataToPreserve) {
       historyPush({
         pathname: "/more/network",
         state: {
@@ -101,26 +103,27 @@ export default class FacebookSignInProcess extends Component {
     }
   }
 
-  yesPleaseMergeAccounts () {
-    this.setState({ yes_please_merge_accounts: true });
-  }
+  // This will be needed in the future
+  // yesPleaseMergeAccounts () {
+  //   this.setState({ yesPleaseMergeAccounts: true });
+  // }
 
   render () {
     renderLog(__filename);
-    const { facebook_auth_response, yes_please_merge_accounts } = this.state;
+    const { facebookAuthResponse, yesPleaseMergeAccounts } = this.state;
 
     // console.log("FacebookSignInProcess render, this.state.saving:", this.state.saving);
     if (this.state.saving ||
-      !facebook_auth_response ||
-      !facebook_auth_response.facebook_retrieve_attempted) {
-      // console.log("facebook_auth_response:", facebook_auth_response);
+      !facebookAuthResponse ||
+      !facebookAuthResponse.facebook_retrieve_attempted) {
+      // console.log("facebookAuthResponse:", facebookAuthResponse);
       return LoadingWheel;
     }
     // console.log("=== Passed initial gate ===");
-    // console.log("facebook_auth_response:", facebook_auth_response);
-    const { facebook_secret_key } = facebook_auth_response;
+    // console.log("facebookAuthResponse:", facebookAuthResponse);
+    const { facebook_secret_key: facebookSecretKey } = facebookAuthResponse;
 
-    if (facebook_auth_response.facebook_sign_in_failed) {
+    if (facebookAuthResponse.facebook_sign_in_failed) {
       // console.log("Facebook sign in failed - push to /settings/account");
       historyPush({
         pathname: "/settings/account",
@@ -132,18 +135,17 @@ export default class FacebookSignInProcess extends Component {
       return LoadingWheel;
     }
 
-    if (yes_please_merge_accounts) {
-      // Go ahead and merge this voter record with the voter record that the facebook_secret_key belongs to
-      // console.log("this.voterMergeTwoAccountsByFacebookKey -- yes please merge accounts");
-      this.voterMergeTwoAccountsByFacebookKey(facebook_secret_key);
+    if (yesPleaseMergeAccounts) {
+      // Go ahead and merge this voter record with the voter record that the facebookSecretKey belongs to
+      console.log("this.voterMergeTwoAccountsByFacebookKey -- yes please merge accounts");
+      this.voterMergeTwoAccountsByFacebookKey(facebookSecretKey);
       return LoadingWheel;
-      // return <span>this.voterMergeTwoAccountsByFacebookKey({facebook_secret_key})</span>;
     }
 
     // This process starts when we return from attempting voterFacebookSignInRetrieve
     // If facebook_sign_in_found NOT True, go back to the sign in page to try again
-    if (!facebook_auth_response.facebook_sign_in_found) {
-      // console.log("facebook_auth_response.facebook_sign_in_found", facebook_auth_response.facebook_sign_in_found);
+    if (!facebookAuthResponse.facebook_sign_in_found) {
+      // console.log("facebookAuthResponse.facebook_sign_in_found", facebookAuthResponse.facebook_sign_in_found);
       historyPush({
         pathname: "/settings/account",
         state: {
@@ -155,32 +157,37 @@ export default class FacebookSignInProcess extends Component {
     }
 
     // Is there a collision of two accounts?
-    if (facebook_auth_response.existing_facebook_account_found) {
-      // Is there anything to save from this voter account?
-      if (facebook_auth_response.voter_has_data_to_preserve) {
-        // console.log("FacebookSignInProcess voter_has_data_to_preserve is TRUE");
-        const cancel_merge_function = this.cancelMergeFunction.bind(this);
-        const please_merge_accounts_function = this.yesPleaseMergeAccounts.bind(this);
-        // Display the question of whether to merge accounts or not
-        return (
-          <WouldYouLikeToMergeAccounts
-            cancelMergeFunction={cancel_merge_function}
-            pleaseMergeAccountsFunction={please_merge_accounts_function}
-          />
-        );
-        // return <span>WouldYouLikeToMergeAccounts</span>;
-      } else {
-        // Go ahead and merge the accounts, which means deleting the current voter and switching to the facebook-linked account
-        // console.log("FacebookSignInProcess this.voterMergeTwoAccountsByFacebookKey - No data to merge");
-        this.voterMergeTwoAccountsByFacebookKey(facebook_secret_key, facebook_auth_response.voter_has_data_to_preserve);
-        return LoadingWheel;
-        // return <span>this.voterMergeTwoAccountsByFacebookKey({facebook_secret_key}); - No data to merge</span>;
-      }
+    if (facebookAuthResponse.existing_facebook_account_found) {
+      // For now are not asking to merge accounts
+      this.voterMergeTwoAccountsByFacebookKey(facebookSecretKey, facebookAuthResponse.voter_has_data_to_preserve);
+      return LoadingWheel;
+
+      // In the future we want to use the following code to ask people before we merge their current account into
+      //  their account that they previously signed into Facebook with
+
+      // // Is there anything to save from this voter account?
+      // if (facebookAuthResponse.voter_has_data_to_preserve) {
+      //   console.log("FacebookSignInProcess voterHasDataToPreserve is TRUE");
+      //   const cancelMergeFunction = this.cancelMergeFunction;
+      //   const pleaseMergeAccountsFunction = this.yesPleaseMergeAccounts;
+      //   // Display the question of whether to merge accounts or not
+      //   return (
+      //     <WouldYouLikeToMergeAccounts
+      //       cancelMergeFunction={cancelMergeFunction}
+      //       pleaseMergeAccountsFunction={pleaseMergeAccountsFunction}
+      //     />
+      //   );
+      //   // return <span>WouldYouLikeToMergeAccounts</span>;
+      // } else {
+      //   // Go ahead and merge the accounts, which means deleting the current voter and switching to the facebook-linked account
+      //   console.log("FacebookSignInProcess this.voterMergeTwoAccountsByFacebookKey - No data to merge");
+      //   this.voterMergeTwoAccountsByFacebookKey(facebookSecretKey, facebookAuthResponse.voter_has_data_to_preserve);
+      //   return LoadingWheel;
+      // }
     } else {
       // console.log("Setting up new Facebook entry - voterFacebookSaveToCurrentAccount");
       this.voterFacebookSaveToCurrentAccount();
       return LoadingWheel;
-      // return <span>Setting up new Facebook entry - voterFacebookSaveToCurrentAccount</span>;
     }
   }
 }
