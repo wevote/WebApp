@@ -2,48 +2,48 @@ import Dispatcher from "../dispatcher/Dispatcher";
 import { isCordova } from "../utils/cordovaUtils";
 
 export default {
-  organizationSuggestionTasks (kind_of_suggestion_task, kind_of_follow_task) {
+  organizationSuggestionTasks (kindOfSuggestionTask, kindOfFollowTask) {
     Dispatcher.loadEndpoint("organizationSuggestionTasks",
       {
-        kind_of_suggestion_task,
-        kind_of_follow_task,
+        kind_of_suggestion_task: kindOfSuggestionTask,
+        kind_of_follow_task: kindOfFollowTask,
       });
   },
 
-  positionListForVoter (show_only_this_election, show_all_other_elections) {
+  positionListForVoter (showOnlyThisElection, showAllOtherElections) {
     Dispatcher.loadEndpoint("positionListForVoter",
       {
-        show_only_this_election,
-        show_all_other_elections,
+        show_only_this_election: showOnlyThisElection,
+        show_all_other_elections: showAllOtherElections,
       });
   },
 
-  removeVoterEmailAddress (email_we_vote_id) {
+  removeVoterEmailAddress (emailWeVoteId) {
     Dispatcher.loadEndpoint("voterEmailAddressSave", {
-      email_we_vote_id,
+      email_we_vote_id: emailWeVoteId,
       delete_email: true,
     });
   },
 
   // Send the sign in link to their email address
-  sendSignInLinkEmail (voter_email_address) {
+  sendSignInLinkEmail (voterEmailAddress) {
     Dispatcher.loadEndpoint("voterEmailAddressSave", {
-      text_for_email_address: voter_email_address,
+      text_for_email_address: voterEmailAddress,
       send_link_to_sign_in: true,
       make_primary_email: true,
     });
   },
 
-  sendVerificationEmail (voter_email_we_vote_id) {
+  sendVerificationEmail (voterEmailWeVoteId) {
     Dispatcher.loadEndpoint("voterEmailAddressSave", {
-      email_we_vote_id: voter_email_we_vote_id,
+      email_we_vote_id: voterEmailWeVoteId,
       resend_verification_email: true,
     });
   },
 
-  setAsPrimaryEmailAddress (email_we_vote_id) {
+  setAsPrimaryEmailAddress (emailWeVoteId) {
     Dispatcher.loadEndpoint("voterEmailAddressSave", {
-      email_we_vote_id,
+      email_we_vote_id: emailWeVoteId,
       make_primary_email: true,
     });
   },
@@ -65,37 +65,37 @@ export default {
     Dispatcher.loadEndpoint("voterAddressSave", { text_for_map_search: text, simple_save, google_civic_election_id });
   },
 
-  voterAnalysisForJumpProcess (incoming_voter_device_id) {
+  voterAnalysisForJumpProcess (incomingVoterDeviceId) {
     Dispatcher.loadEndpoint("voterAnalysisForJumpProcess", {
-      incoming_voter_device_id,
+      incoming_voter_device_id: incomingVoterDeviceId,
     });
   },
 
-  voterEmailAddressSave (voter_email_address, send_link_to_sign_in = false) {
+  voterEmailAddressSave (voterEmailAddress, send_link_to_sign_in = false) {
     Dispatcher.loadEndpoint("voterEmailAddressSave", {
-      text_for_email_address: voter_email_address,
+      text_for_email_address: voterEmailAddress,
       send_link_to_sign_in,
       make_primary_email: true,
       is_cordova: isCordova(),
     });
   },
 
-  voterEmailAddressSignIn (email_secret_key) {
+  voterEmailAddressSignIn (emailSecretKey) {
     Dispatcher.loadEndpoint("voterEmailAddressSignIn", {
-      email_secret_key,
+      email_secret_key: emailSecretKey,
     });
   },
 
-  voterEmailAddressSignInConfirm (email_secret_key) {
+  voterEmailAddressSignInConfirm (emailSecretKey) {
     Dispatcher.loadEndpoint("voterEmailAddressSignIn", {
-      email_secret_key,
+      email_secret_key: emailSecretKey,
       yes_please_merge_accounts: true,
     });
   },
 
-  voterEmailAddressVerify (email_secret_key) {
+  voterEmailAddressVerify (emailSecretKey) {
     Dispatcher.loadEndpoint("voterEmailAddressVerify", {
-      email_secret_key,
+      email_secret_key: emailSecretKey,
     });
   },
 
@@ -109,10 +109,10 @@ export default {
     });
   },
 
-  voterMergeTwoAccountsByEmailKey (email_secret_key) {
+  voterMergeTwoAccountsByEmailKey (emailSecretKey) {
     Dispatcher.loadEndpoint("voterMergeTwoAccounts",
       {
-        email_secret_key,
+        email_secret_key: emailSecretKey,
         facebook_secret_key: "",
         incoming_voter_device_id: "",
         invitation_secret_key: "",
@@ -120,49 +120,49 @@ export default {
       });
   },
 
-  voterMergeTwoAccountsByFacebookKey (facebook_secret_key) {
+  voterMergeTwoAccountsByFacebookKey (facebookSecretKey) {
     // console.log("VoterActions, voterMergeTwoAccountsByFacebookKey");
     Dispatcher.loadEndpoint("voterMergeTwoAccounts",
       {
         email_secret_key: "",
-        facebook_secret_key,
+        facebook_secret_key: facebookSecretKey,
         incoming_voter_device_id: "",
         invitation_secret_key: "",
         twitter_secret_key: "",
       });
   },
 
-  voterMergeTwoAccountsByInvitationKey (invitation_secret_key) {
+  voterMergeTwoAccountsByInvitationKey (invitationSecretKey) {
     Dispatcher.loadEndpoint("voterMergeTwoAccounts",
       {
         email_secret_key: "",
         facebook_secret_key: "",
         incoming_voter_device_id: "",
-        invitation_secret_key,
+        invitation_secret_key: invitationSecretKey,
         twitter_secret_key: "",
       });
   },
 
-  voterMergeTwoAccountsByJumpProcess (incoming_voter_device_id) {
-    // TODO DALE 2018-01-10 voterMergeTwoAccounts doesn't support incoming_voter_device_id yet
+  voterMergeTwoAccountsByJumpProcess (incomingVoterDeviceId) {
+    // TODO DALE 2018-01-10 voterMergeTwoAccounts doesn't support incomingVoterDeviceId yet
     Dispatcher.loadEndpoint("voterMergeTwoAccounts",
       {
         email_secret_key: "",
         facebook_secret_key: "",
-        incoming_voter_device_id,
+        incoming_voter_device_id: incomingVoterDeviceId,
         invitation_secret_key: "",
         twitter_secret_key: "",
       });
   },
 
-  voterMergeTwoAccountsByTwitterKey (twitter_secret_key) {
+  voterMergeTwoAccountsByTwitterKey (twitterSecretKey) {
     Dispatcher.loadEndpoint("voterMergeTwoAccounts",
       {
         email_secret_key: "",
         facebook_secret_key: "",
         incoming_voter_device_id: "",
         invitation_secret_key: "",
-        twitter_secret_key,
+        twitter_secret_key: twitterSecretKey,
       });
   },
 
@@ -170,36 +170,36 @@ export default {
     Dispatcher.loadEndpoint("voterRetrieve");
   },
 
-  voterNameSave (first_name, last_name) {
+  voterNameSave (firstName, lastName) {
     Dispatcher.loadEndpoint("voterUpdate",
       {
-        first_name,
-        last_name,
+        first_name: firstName,
+        last_name: lastName,
       });
   },
 
   // Tell the server to only save this name if a name does not currently exist
-  voterFullNameSoftSave (first_name, last_name, full_name = "") {
+  voterFullNameSoftSave (firstName, lastName, full_name = "") {
     Dispatcher.loadEndpoint("voterUpdate",
       {
-        first_name,
-        last_name,
+        first_name: firstName,
+        last_name: lastName,
         full_name,
         name_save_only_if_no_existing_names: true,
       });
   },
 
-  voterUpdateInterfaceStatusFlags (flag_integer_to_set) {
+  voterUpdateInterfaceStatusFlags (flagIntegerToSet) {
     Dispatcher.loadEndpoint("voterUpdate",
       {
-        flag_integer_to_set,
+        flag_integer_to_set: flagIntegerToSet,
       });
   },
 
-  voterUpdateNotificationSettingsFlags (flag_integer_to_set, flag_integer_to_unset = "") {
+  voterUpdateNotificationSettingsFlags (flagIntegerToSet, flag_integer_to_unset = "") {
     Dispatcher.loadEndpoint("voterUpdate",
       {
-        notification_flag_integer_to_set: flag_integer_to_set,
+        notification_flag_integer_to_set: flagIntegerToSet,
         notification_flag_integer_to_unset: flag_integer_to_unset,
       });
   },
