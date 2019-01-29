@@ -354,13 +354,13 @@ export default class BallotElectionList extends Component {
             { upcomingElectionListOutsideCount ?          // eslint-disable-line no-nested-ternary
               this.state.showMoreUpcomingElections ? (
                 <div className="ballot-election-list__show-all">
-                <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
+                  <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
                   { this.state.stateName && this.state.stateName.length ?
                     `Only show elections in ${this.state.stateName}` :
                     "Hide state elections"
                   }
-                </a>
-              </div>
+                  </a>
+                </div>
               ) : (
                 <div className="ballot-election-list__show-all">
                   <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
