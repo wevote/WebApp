@@ -12,7 +12,7 @@ export default class OpinionsFollowed extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      organizations_followed_list: [],
+      organizationsFollowedList: [],
       editMode: false,
       searchQuery: "",
     };
@@ -24,7 +24,7 @@ export default class OpinionsFollowed extends Component {
     this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
     OrganizationActions.organizationsFollowedRetrieve();
     this.setState({
-      organizations_followed_list: OrganizationStore.getOrganizationsVoterIsFollowing(),
+      organizationsFollowedList: OrganizationStore.getOrganizationsVoterIsFollowing(),
     });
   }
 
@@ -61,7 +61,7 @@ export default class OpinionsFollowed extends Component {
 
   _onOrganizationStoreChange () {
     this.setState({
-      organizations_followed_list: OrganizationStore.getOrganizationsVoterIsFollowing(),
+      organizationsFollowedList: OrganizationStore.getOrganizationsVoterIsFollowing(),
     });
   }
 
@@ -78,14 +78,14 @@ export default class OpinionsFollowed extends Component {
     let organizationsFollowedListForDisplay = [];
     if (this.state.searchQuery.length > 0) {
       const searchQueryLowercase = this.state.searchQuery.toLowerCase();
-      organizationsFollowedListForDisplay = _.filter(this.state.organizations_followed_list,
+      organizationsFollowedListForDisplay = _.filter(this.state.organizationsFollowedList,
         oneOrganization => oneOrganization.organization_name.toLowerCase().includes(searchQueryLowercase) ||
             oneOrganization.organization_twitter_handle.toLowerCase().includes(searchQueryLowercase));
     } else {
-      organizationsFollowedListForDisplay = this.state.organizations_followed_list;
+      organizationsFollowedListForDisplay = this.state.organizationsFollowedList;
     }
 
-    // console.log("OpinionsFollowed, this.state.organizations_followed_list: ", this.state.organizations_followed_list);
+    // console.log("OpinionsFollowed, this.state.organizationsFollowedList: ", this.state.organizationsFollowedList);
     return (
       <div className="opinions-followed__container">
         <Helmet title="Organizations You Listen To - We Vote" />
@@ -117,7 +117,7 @@ export default class OpinionsFollowed extends Component {
             <div className="voter-guide-list card">
               <div className="card-child__list-group">
                 {
-                this.state.organizations_followed_list && this.state.organizations_followed_list.length ? (
+                this.state.organizationsFollowedList && this.state.organizationsFollowedList.length ? (
                   <OpinionsFollowedList
                     organizationsFollowed={organizationsFollowedListForDisplay}
                     editMode={this.state.editMode}
