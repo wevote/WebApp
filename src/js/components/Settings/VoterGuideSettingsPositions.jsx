@@ -37,6 +37,7 @@ export default class VoterGuideSettingsPositions extends Component {
       organization: {},
       searchIsUnderway: false,
       voter: {},
+      voterGuide: {},
       // voterGuideName: "",
       voterGuideWeVoteId: "",
     };
