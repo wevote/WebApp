@@ -26,6 +26,7 @@ export default class SelectBallotModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      pathname: undefined,
     };
   }
 

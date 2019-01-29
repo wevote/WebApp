@@ -34,30 +34,30 @@ export default class Elections extends Component {
     const electionsLocationsList = [];
     let voterBallot; // A different format for much of the same data
     const voterBallotList = [];
-    let oneBallotlocation;
-    let ballotLocationshortcut;
-    let ballotReturnedweVoteid;
+    let oneBallotLocation;
+    let ballotLocationShortcut;
+    let ballotReturnedWeVoteId;
 
     for (let i = 0; i < electionsList.length; i++) {
       const election = electionsList[i];
       electionsLocationsList.push(election);
-      ballotReturnedweVoteid = "";
-      ballotLocationshortcut = "";
+      ballotReturnedWeVoteId = "";
+      ballotLocationShortcut = "";
       if (election.ballot_location_list && election.ballot_location_list.length) {
         // We want to add the shortcut and we_vote_id for the first ballot location option
-        [oneBallotlocation] = election.ballot_location_list;
-        ballotLocationshortcut = oneBallotlocation.ballotLocationshortcut || "";
-        ballotLocationshortcut = ballotLocationshortcut.trim();
-        ballotReturnedweVoteid = oneBallotlocation.ballotReturnedweVoteid || "";
-        ballotReturnedweVoteid = ballotReturnedweVoteid.trim();
+        [oneBallotLocation] = election.ballot_location_list;
+        ballotLocationShortcut = oneBallotLocation.ballot_location_shortcut || "";
+        ballotLocationShortcut = ballotLocationShortcut.trim();
+        ballotReturnedWeVoteId = oneBallotLocation.ballot_returned_we_vote_id || "";
+        ballotReturnedWeVoteId = ballotReturnedWeVoteId.trim();
       }
       voterBallot = {
         google_civic_election_id: election.google_civic_election_id,
         election_description_text: election.election_name,
         election_day_text: election.election_day_text,
         original_text_for_map_search: "",
-        ballotLocationshortcut,
-        ballotReturnedweVoteid,
+        ballot_location_shortcut: ballotLocationShortcut,
+        ballot_returned_we_vote_id: ballotReturnedWeVoteId,
       };
       voterBallotList.push(voterBallot);
     }
