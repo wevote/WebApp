@@ -15,8 +15,7 @@ import { calculateBallotBaseUrl } from "../../utils/textFormat";
 export default class BallotLocationChoices extends Component {
   static propTypes = {
     ballotBaseUrl: PropTypes.string,
-    current_voter_address: PropTypes.string,
-    google_civic_election_id: PropTypes.number.isRequired,
+    googleCivicElectionId: PropTypes.number.isRequired,
     pathname: PropTypes.string,
     showElectionName: PropTypes.bool,
     toggleFunction: PropTypes.func,
@@ -25,8 +24,8 @@ export default class BallotLocationChoices extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      google_civic_election_id: 0,
-      show_all_ballot_locations: false,
+      googleCivicElectionId: 0,
+      showAllBallotLocations: false,
     };
 
     this.goToDifferentBallot = this.goToDifferentBallot.bind(this);
@@ -34,20 +33,19 @@ export default class BallotLocationChoices extends Component {
   }
 
   componentDidMount () {
-    // console.log("In BallotLocationChoices componentDidMount,  this.props.google_civic_election_id: ", this.props.google_civic_election_id);
+    // console.log("In BallotLocationChoices componentDidMount,  this.props.googleCivicElectionId: ", this.props.googleCivicElectionId);
     this.electionStoreListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
     this.setState({
-      ballot_location_list: this.retrieveBallotLocationList(this.props.google_civic_election_id),
-      google_civic_election_id: this.props.google_civic_election_id,
+      ballotLocationList: this.retrieveBallotLocationList(this.props.googleCivicElectionId),
+      googleCivicElectionId: this.props.googleCivicElectionId,
     });
-    // console.log("In BallotLocationChoices componentDidMount, ballot_location_list_sorted: ", ballot_location_list_sorted);
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("BallotLocationChoices componentWillReceiveProps, nextProps.google_civic_election_id: ", nextProps.google_civic_election_id);
+    // console.log("BallotLocationChoices componentWillReceiveProps, nextProps.googleCivicElectionId: ", nextProps.googleCivicElectionId);
     this.setState({
-      ballot_location_list: this.retrieveBallotLocationList(nextProps.google_civic_election_id),
-      google_civic_election_id: nextProps.google_civic_election_id,
+      ballotLocationList: this.retrieveBallotLocationList(nextProps.googleCivicElectionId),
+      googleCivicElectionId: nextProps.googleCivicElectionId,
     });
   }
 
@@ -58,72 +56,73 @@ export default class BallotLocationChoices extends Component {
 
   onElectionStoreChange () {
     // console.log("BallotLocationChoices, onElectionStoreChange");
+    const { googleCivicElectionId } = this.state;
     this.setState({
-      ballot_location_list: this.retrieveBallotLocationList(this.state.google_civic_election_id),
+      ballotLocationList: this.retrieveBallotLocationList(googleCivicElectionId),
     });
-    // console.log("In BallotLocationChoices onElectionStoreChange, ballot_location_list_unsorted: ", ballot_location_list_unsorted);
   }
 
-  retrieveBallotLocationList (google_civic_election_id) {
-    // console.log("retrieveBallotLocationList, google_civic_election_id: ", google_civic_election_id);
-    if (!google_civic_election_id || google_civic_election_id === 0) {
+  retrieveBallotLocationList (googleCivicElectionId) {
+    // console.log("retrieveBallotLocationList, googleCivicElectionId: ", googleCivicElectionId);
+    if (!googleCivicElectionId || googleCivicElectionId === 0) {
       return [];
     }
-    const ballot_location_list_unsorted = ElectionStore.getBallotLocationsForElection(google_civic_election_id);
-    const ballot_location_list_sorted = this.sortBallotLocations(ballot_location_list_unsorted);
-    const voter_ballot_location = VoterStore.getBallotLocationForVoter();
-    if (voter_ballot_location && voter_ballot_location.ballot_returned_we_vote_id) {
-      let voter_ballot_location_in_list = false;
-      // If the election in the voter_ballot_location matches the election we are looking at,
+    const ballotLocationsForElectionUnsorted = ElectionStore.getBallotLocationsForElection(googleCivicElectionId) || [];
+    const ballotLocationsForElectionSorted = this.sortBallotLocations(ballotLocationsForElectionUnsorted) || [];
+    const ballotLocationForVoter = VoterStore.getBallotLocationForVoter();
+    if (ballotLocationForVoter && ballotLocationForVoter.ballot_returned_we_vote_id) {
+      let ballotLocationForVoterInList = false;
+      // If the election in the ballotLocationForVoter matches the election we are looking at,
       // include the voter's displayed address
-      // console.log("retrieveBallotLocationList, google_civic_election_id: ", google_civic_election_id, ", voter_ballot_location: ", voter_ballot_location);
-      if (voter_ballot_location.google_civic_election_id === google_civic_election_id) {
+      // console.log("retrieveBallotLocationList, googleCivicElectionId: ", googleCivicElectionId, ", ballotLocationForVoter: ", ballotLocationForVoter);
+      if (ballotLocationForVoter.google_civic_election_id === googleCivicElectionId) {
         // TODO: Steve remove the error suppression on the next line 12/1/18, a temporary hack
-        ballot_location_list_sorted.map((ballot_location) => { // eslint-disable-line array-callback-return
-          if (ballot_location.ballot_returned_we_vote_id === voter_ballot_location.ballot_returned_we_vote_id) {
-            voter_ballot_location_in_list = true;
+        ballotLocationsForElectionSorted.map((ballotLocation) => { // eslint-disable-line array-callback-return
+          if (ballotLocation.ballot_returned_we_vote_id === ballotLocationForVoter.ballot_returned_we_vote_id) {
+            ballotLocationForVoterInList = true;
           }
         });
 
-        if (!voter_ballot_location_in_list) {
+        if (!ballotLocationForVoterInList) {
           // The this ballot isn't already in the list, add it to the start
-          ballot_location_list_sorted.unshift(voter_ballot_location); // Add to the start of the array
-          // console.log("Added to start of ballot_location_list_sorted: ", voter_ballot_location);
+          ballotLocationsForElectionSorted.unshift(ballotLocationForVoter); // Add to the start of the array
+          // console.log("Added to start of ballotLocationsForElectionSorted: ", ballotLocationForVoter);
         }
       }
     }
-    return ballot_location_list_sorted;
+    return ballotLocationsForElectionSorted;
   }
 
-  sortBallotLocations (ballot_location_list_unsorted) {
-    // temporary array holds objects with position and sort-value
-    const mapped = ballot_location_list_unsorted.map((ballot_location, i) => ({ index: i, value: ballot_location }));
-
-    // sorting the mapped array based on ballot_location_order which came from the server
-    mapped.sort( (a, b) => +(parseInt(a.value.ballot_location_order, 10) > parseInt(b.value.ballot_location_order, 10)) ||
-        +(parseInt(a.value.ballot_location_order, 10) === parseInt(b.value.ballot_location_order, 10)) - 1);
-
+  sortBallotLocations (ballotLocationsForElectionUnsorted) {
     const orderedArray = [];
-    for (const element of mapped) {
-      orderedArray.push(element.value);
-    }
+    if (ballotLocationsForElectionUnsorted) {
+      // temporary array holds objects with position and sort-value
+      const mapped = ballotLocationsForElectionUnsorted.map((ballotLocation, i) => ({ index: i, value: ballotLocation }));
 
+      // sorting the mapped array based on ballot_location_order which came from the server
+      mapped.sort((a, b) => +(parseInt(a.value.ballot_location_order, 10) > parseInt(b.value.ballot_location_order, 10)) ||
+      +(parseInt(a.value.ballot_location_order, 10) === parseInt(b.value.ballot_location_order, 10)) - 1);
+
+      for (const element of mapped) {
+        orderedArray.push(element.value);
+      }
+    }
     return orderedArray;
   }
 
-  goToDifferentBallot (ballot_returned_we_vote_id = "", ballot_location_shortcut = "") {
+  goToDifferentBallot (ballotReturnedWeVoteId = "", ballotLocationShortcut = "") {
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
 
-    // console.log("BallotLocationChoices, goToDifferentBallot, ballot_returned_we_vote_id: ", ballot_returned_we_vote_id);
-    // console.log("BallotLocationChoices, goToDifferentBallot, ballot_location_shortcut: ", ballot_location_shortcut);
-    if (ballot_location_shortcut !== "" && ballot_location_shortcut !== undefined) {
-      BallotActions.voterBallotItemsRetrieve(0, "", ballot_location_shortcut);
+    // console.log("BallotLocationChoices, goToDifferentBallot, ballotReturnedWeVoteId: ", ballotReturnedWeVoteId);
+    // console.log("BallotLocationChoices, goToDifferentBallot, ballotLocationShortcut: ", ballotLocationShortcut);
+    if (ballotLocationShortcut !== "" && ballotLocationShortcut !== undefined) {
+      BallotActions.voterBallotItemsRetrieve(0, "", ballotLocationShortcut);
       // Change the URL to match
-      historyPush(`${ballotBaseUrl}/${ballot_location_shortcut}`);
-    } else if (ballot_returned_we_vote_id !== "" && ballot_returned_we_vote_id !== undefined) {
-      BallotActions.voterBallotItemsRetrieve(0, ballot_returned_we_vote_id, "");
+      historyPush(`${ballotBaseUrl}/${ballotLocationShortcut}`);
+    } else if (ballotReturnedWeVoteId !== "" && ballotReturnedWeVoteId !== undefined) {
+      BallotActions.voterBallotItemsRetrieve(0, ballotReturnedWeVoteId, "");
       // Change the URL to match
-      historyPush(`${ballotBaseUrl}/id/${ballot_returned_we_vote_id}`);
+      historyPush(`${ballotBaseUrl}/id/${ballotReturnedWeVoteId}`);
     }
     if (this.props.toggleFunction) {
       this.props.toggleFunction();
@@ -131,7 +130,8 @@ export default class BallotLocationChoices extends Component {
   }
 
   showAllBallotLocationsToggle () {
-    this.setState({ show_all_ballot_locations: !this.state.show_all_ballot_locations });
+    const { showAllBallotLocations } = this.state;
+    this.setState({ showAllBallotLocations: !showAllBallotLocations });
   }
 
   render () {
@@ -142,12 +142,12 @@ export default class BallotLocationChoices extends Component {
     const electionName = BallotStore.currentBallotElectionName;
     const electionDayText = BallotStore.currentBallotElectionDate;
     const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format("MMM Do, YYYY")}</span> : <span />;
-    // console.log("In BallotLocationChoices render, ballot_location_list: ", this.state.ballot_location_list);
-    if (this.state.ballot_location_list && this.state.ballot_location_list.length) {
+    // console.log("In BallotLocationChoices render, ballotLocationList: ", this.state.ballotLocationList);
+    if (this.state.ballotLocationList && this.state.ballotLocationList.length) {
       return (
         <div className="u-stack--sm ballot-locations d-print-none">
           { this.props.showElectionName ? (
-            <h4 className={`ballot__header__title${isCordova() && "__cordova"} h4`}>
+            <h4 className={isCordova() ? "ballot__header__title__cordova h4" : "ballot__header__title h4"}>
               <span className="u-push--sm">
                 {electionName}
                 {" "}
@@ -161,18 +161,18 @@ export default class BallotLocationChoices extends Component {
         <div className="btn-group">
           Mobile display of buttons
           <div className="d-block d-sm-none">
-            {this.state.ballot_location_list.slice(0, default_number_of_ballot_locations_mobile).map((ballot_location, key) => {
+            {this.state.ballotLocationList.slice(0, default_number_of_ballot_locations_mobile).map((ballot_location, key) => {
               return <BallotLocationButton key={key} ballot_location={ballot_location} goToDifferentBallot={this.goToDifferentBallot} />;
             })}
-            <span className={this.state.show_all_ballot_locations ? "" : "u-hidden"}>
-              {this.state.ballot_location_list.slice(default_number_of_ballot_locations_mobile).map((ballot_location, key) => {
+            <span className={this.state.showAllBallotLocations ? "" : "u-hidden"}>
+              {this.state.ballotLocationList.slice(default_number_of_ballot_locations_mobile).map((ballot_location, key) => {
                 return <BallotLocationButton key={key} ballot_location={ballot_location} goToDifferentBallot={this.goToDifferentBallot} />;
               })}
             </span>
-            { this.state.ballot_location_list.length > default_number_of_ballot_locations_mobile ?
+            { this.state.ballotLocationList.length > default_number_of_ballot_locations_mobile ?
               <span>
                 <a onClick={this.showAllBallotLocationsToggle} className="u-no-break">
-                  {this.state.show_all_ballot_locations ? "Hide" : "Show more" }
+                  {this.state.showAllBallotLocations ? "Hide" : "Show more" }
                 </a>
               </span> :
               null }
@@ -180,18 +180,18 @@ export default class BallotLocationChoices extends Component {
 
           Desktop display of buttons
           <div className="d-none d-sm-block">
-            {this.state.ballot_location_list.slice(0, default_number_of_ballot_locations_desktop).map((ballot_location, key) => {
+            {this.state.ballotLocationList.slice(0, default_number_of_ballot_locations_desktop).map((ballot_location, key) => {
               return <BallotLocationButton key={key} ballot_location={ballot_location} goToDifferentBallot={this.goToDifferentBallot} />;
             })}
-            <span className={this.state.show_all_ballot_locations ? "" : "u-hidden"}>
-              {this.state.ballot_location_list.slice(default_number_of_ballot_locations_desktop).map((ballot_location, key) => {
+            <span className={this.state.showAllBallotLocations ? "" : "u-hidden"}>
+              {this.state.ballotLocationList.slice(default_number_of_ballot_locations_desktop).map((ballot_location, key) => {
                 return <BallotLocationButton key={key} ballot_location={ballot_location} goToDifferentBallot={this.goToDifferentBallot} />;
               })}
             </span>
-            { this.state.ballot_location_list.length > default_number_of_ballot_locations_desktop ?
+            { this.state.ballotLocationList.length > default_number_of_ballot_locations_desktop ?
               <span>
                 <a onClick={this.showAllBallotLocationsToggle} className="u-no-break">
-                  {this.state.show_all_ballot_locations ? "Hide" : "Show " + Math.max(0, this.state.ballot_location_list.length - default_number_of_ballot_locations_desktop) + " more" }
+                  {this.state.showAllBallotLocations ? "Hide" : "Show " + Math.max(0, this.state.ballotLocationList.length - default_number_of_ballot_locations_desktop) + " more" }
                 </a>
               </span> :
               null }

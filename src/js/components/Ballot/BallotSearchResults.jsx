@@ -168,7 +168,7 @@ export default class BallotSearchResults extends Component {
                 {searchResults}
               </div>
             ) :
-              { noSearchResultsPossibility }
+              <span>{ noSearchResultsPossibility }</span>
             }
           </div>
         </div>

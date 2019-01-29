@@ -369,7 +369,7 @@ class IssueStore extends ReduceStore {
         revisedState = state;
         googleCivicElectionId = action.res.google_civic_election_id === false ? state.googleCivicElectionId : action.res.google_civic_election_id;
 
-        if (action.res.issueScoreList) {
+        if (action.res.issue_score_list) {
           issueScoreList = action.res.issue_score_list;
           if (issueScoreList.length) {
             issueScoreList.forEach((issueScoreBlock) => {
@@ -397,7 +397,7 @@ class IssueStore extends ReduceStore {
           issuesUnderBallotItemsList = action.res.issues_under_ballot_items_list;
           if (issuesUnderBallotItemsList.length) {
             issuesUnderBallotItemsList.forEach((issueBlock) => {
-              issueWeVoteIdsUnderEachBallotItem[issueBlock.ballotItemWeVoteId] = issueBlock.issueWeVoteId_list;
+              issueWeVoteIdsUnderEachBallotItem[issueBlock.ballotItemWeVoteId] = issueBlock.issue_we_vote_id_list;
             });
             // Now loop through the offices to populate them with issues assembled from the issues for every candidate under the office
             const topLevelBallotItems = BallotStore.getTopLevelBallotItemWeVoteIds();

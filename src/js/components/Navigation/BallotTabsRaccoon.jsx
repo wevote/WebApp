@@ -7,23 +7,23 @@ import { renderLog } from "../../utils/logging";
 export default class BallotTabsRaccoon extends Component {
   static propTypes = {
     completionLevelFilterType: PropTypes.string,
-    election_day_text: PropTypes.string,
-    length: PropTypes.number,
-    length_remaining: PropTypes.number,
+    ballotLength: PropTypes.number,
+    ballotLengthRemaining: PropTypes.number,
   };
 
   shouldComponentUpdate (nextProps) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    // console.log("BallotTabsRaccoon shouldComponentUpdate");
     if (this.props.completionLevelFilterType !== nextProps.completionLevelFilterType) {
       // console.log("shouldComponentUpdate: this.props.completionLevelFilterType", this.props.completionLevelFilterType, ", nextProps.completionLevelFilterType", nextProps.completionLevelFilterType);
       return true;
     }
-    if (this.props.length !== nextProps.length) {
-      // console.log("shouldComponentUpdate: this.props.length", this.props.length, ", nextProps.length", nextProps.length);
+    if (this.props.ballotLength !== nextProps.ballotLength) {
+      // console.log("shouldComponentUpdate: this.props.ballotLength", this.props.ballotLength, ", nextProps.ballotLength", nextProps.ballotLength);
       return true;
     }
-    if (this.props.length_remaining !== nextProps.length_remaining) {
-      // console.log("shouldComponentUpdate: this.props.length_remaining", this.props.length_remaining, ", nextProps.length_remaining", nextProps.length_remaining);
+    if (this.props.ballotLengthRemaining !== nextProps.ballotLengthRemaining) {
+      // console.log("shouldComponentUpdate: this.props.ballotLengthRemaining", this.props.ballotLengthRemaining, ", nextProps.ballotLengthRemaining", nextProps.ballotLengthRemaining);
       return true;
     }
     return false;
@@ -37,10 +37,10 @@ export default class BallotTabsRaccoon extends Component {
     // console.log("BallotTabsRaccoon render, this.props.completionLevelFilterType:", this.props.completionLevelFilterType);
     renderLog(__filename);
 
-    const remaining_decisions_count_different_than_all_items = this.props.length !== this.props.length_remaining;
-    const show_remaining_decisions = (remaining_decisions_count_different_than_all_items && this.props.length_remaining) || false;
-    const show_decisions_made = (remaining_decisions_count_different_than_all_items && this.props.length_remaining) || false;
-    const items_decided_count = this.props.length - this.props.length_remaining || 0;
+    const remainingDecisionsCountIsDifferentThanAllItems = this.props.ballotLength !== this.props.ballotLengthRemaining;
+    const showRemainingDecisions = (remainingDecisionsCountIsDifferentThanAllItems && this.props.ballotLengthRemaining) || false;
+    const showDecisionsMade = (remainingDecisionsCountIsDifferentThanAllItems && this.props.ballotLengthRemaining) || false;
+    const itemsDecidedCount = this.props.ballotLength - this.props.ballotLengthRemaining || 0;
 
     return (
       <ul className="nav ballot__tabs">
@@ -52,19 +52,19 @@ export default class BallotTabsRaccoon extends Component {
             {/* Desktop */}
             <span className="d-none d-sm-block">
               All Items (
-              {this.props.length}
+              {this.props.ballotLength}
               )
             </span>
             {/* Mobile */}
             <span className="d-block d-sm-none">
               All (
-              {this.props.length}
+              {this.props.ballotLength}
               )
             </span>
           </Link>
         </li>
 
-        { show_remaining_decisions ? (
+        { showRemainingDecisions ? (
           <li className="tab__item">
             <Link
               onClick={() => this.goToDifferentCompletionLevelTab("filterRemaining")}
@@ -73,13 +73,13 @@ export default class BallotTabsRaccoon extends Component {
               {/* Desktop */}
               <span className="d-none d-sm-block">
                 Remaining Choices (
-                {this.props.length_remaining}
+                {this.props.ballotLengthRemaining}
                 )
               </span>
               {/* Mobile */}
               <span className="d-block d-sm-none">
                 Choices (
-                {this.props.length_remaining}
+                {this.props.ballotLengthRemaining}
                 )
               </span>
             </Link>
@@ -87,7 +87,7 @@ export default class BallotTabsRaccoon extends Component {
         ) : null
         }
 
-        { show_decisions_made ? (
+        { showDecisionsMade ? (
           <li className="tab__item">
             <Link
               onClick={() => this.goToDifferentCompletionLevelTab("filterDecided")}
@@ -96,13 +96,13 @@ export default class BallotTabsRaccoon extends Component {
               {/* Desktop */}
               <span className="d-none d-sm-block">
                 Items Decided (
-                {items_decided_count}
+                {itemsDecidedCount}
                 )
               </span>
               {/* Mobile */}
               <span className="d-block d-sm-none">
                 Decided (
-                {items_decided_count}
+                {itemsDecidedCount}
                 )
               </span>
             </Link>

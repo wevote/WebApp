@@ -16,54 +16,55 @@ export default class SignInEmailProcess extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      voter: VoterStore.getVoter(),
+      emailSignInStatus: {},
       saving: false,
+      voter: VoterStore.getVoter(),
     };
   }
 
   componentDidMount () {
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    const { email_secret_key } = this.props.params;
-    // console.log("SignInEmailProcess, componentDidMount, this.props.params.email_secret_key: ", email_secret_key);
-    this.voterEmailAddressSignIn(email_secret_key);
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    const { email_secret_key: emailSecretKey } = this.props.params;
+    // console.log("SignInEmailProcess, componentDidMount, this.props.params.emailSecretKey: ", emailSecretKey);
+    this.voterEmailAddressSignIn(emailSecretKey);
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter(),
-      email_sign_in_status: VoterStore.getEmailSignInStatus(),
+      emailSignInStatus: VoterStore.getEmailSignInStatus(),
       saving: false,
     });
   }
 
-  voterMergeTwoAccountsByEmailKey (email_secret_key) {
-    VoterActions.voterMergeTwoAccountsByEmailKey(email_secret_key);
+  voterMergeTwoAccountsByEmailKey (emailSecretKey) {
+    VoterActions.voterMergeTwoAccountsByEmailKey(emailSecretKey);
     this.setState({ saving: true });
   }
 
-  voterEmailAddressSignIn (email_secret_key) {
-    VoterActions.voterEmailAddressSignIn(email_secret_key);
+  voterEmailAddressSignIn (emailSecretKey) {
+    VoterActions.voterEmailAddressSignIn(emailSecretKey);
     this.setState({ saving: true });
   }
 
   render () {
     renderLog(__filename);
-    const { email_secret_key } = this.props.params;
-    // console.log("SignInEmailProcess, email_secret_key:", email_secret_key);
-    if (!email_secret_key ||
+    const { email_secret_key: emailSecretKey } = this.props.params;
+    // console.log("SignInEmailProcess, emailSecretKey:", emailSecretKey);
+    if (!emailSecretKey ||
       this.state.saving ||
-      !this.state.email_sign_in_status ||
-      !this.state.email_sign_in_status.email_sign_in_attempted) {
-      // console.log("this.state.email_sign_in_status:", this.state.email_sign_in_status)
+      !this.state.emailSignInStatus ||
+      !this.state.emailSignInStatus.email_sign_in_attempted) {
+      // console.log("this.state.emailSignInStatus:", this.state.emailSignInStatus)
       return LoadingWheel;
     }
 
     // We redirect after voterMergeTwoAccountsByEmailKey comes back
-    if (this.state.email_sign_in_status.voter_merge_two_accounts_attempted) {
+    if (this.state.emailSignInStatus.voter_merge_two_accounts_attempted) {
       // console.log("voterMergeTwoAccountsByEmailKey attempted - push to /settings/account");
       historyPush({
         pathname: "/ballot",
@@ -76,15 +77,15 @@ export default class SignInEmailProcess extends Component {
     }
 
     // This process starts when we return from attempting voterEmailAddressSignIn
-    if (!this.state.email_sign_in_status.email_address_found) {
+    if (!this.state.emailSignInStatus.email_address_found) {
       // console.log("Could not find secret_key in database - push to /settings/account");
       historyPush("/settings/account");
       return LoadingWheel;
     }
 
-    if (this.state.email_sign_in_status.email_ownership_is_verified) {
+    if (this.state.emailSignInStatus.email_ownership_is_verified) {
       // If here we know that the secret key was valid
-      if (this.state.email_sign_in_status.email_secret_key_belongs_to_this_voter) {
+      if (this.state.emailSignInStatus.email_secret_key_belongs_to_this_voter) {
         // We don't need to do anything more except redirect to the email management page
         // console.log("secret key owned by this voter - push to /settings/account");
         historyPush({
@@ -98,29 +99,29 @@ export default class SignInEmailProcess extends Component {
       } else if (this.state.voter.has_data_to_preserve) {
         // console.log("this.state.voter.has_data_to_preserve");
         // If so, ask if they want to connect two accounts?
-        if (this.state.email_sign_in_status.yes_please_merge_accounts) {
-          // Go ahead and merge this voter record with the voter record that the email_secret_key belongs to
+        if (this.state.emailSignInStatus.yes_please_merge_accounts) {
+          // Go ahead and merge this voter record with the voter record that the emailSecretKey belongs to
           // console.log("this.voterMergeTwoAccountsByEmailKey -- yes please merge accounts");
-          this.voterMergeTwoAccountsByEmailKey(email_secret_key);
+          this.voterMergeTwoAccountsByEmailKey(emailSecretKey);
         } else {
           // Display the question of whether to merge accounts or not
-          // console.log("BEFORE WouldYouLikeToMergeAccountsOld, this.state.email_sign_in_status:", this.state.email_sign_in_status);
+          // console.log("BEFORE WouldYouLikeToMergeAccountsOld, this.state.emailSignInStatus:", this.state.emailSignInStatus);
           return (
             <WouldYouLikeToMergeAccountsOld
               currentVoterWeVoteId={this.state.voter.we_vote_id}
-              mergeIntoVoterWeVoteId={this.state.email_sign_in_status.voter_we_vote_id_from_secret_key}
-              emailSecretKey={email_secret_key}
+              mergeIntoVoterWeVoteId={this.state.emailSignInStatus.voter_we_vote_id_from_secret_key}
+              emailSecretKey={emailSecretKey}
             />
           );
         }
       } else {
         // Go ahead and merge the accounts, which means deleting the current voter id and switching to the email owner
         // console.log("this.voterMergeTwoAccountsByEmailKey - go ahead");
-        this.voterMergeTwoAccountsByEmailKey(email_secret_key);
+        this.voterMergeTwoAccountsByEmailKey(emailSecretKey);
       }
     } else {
       // console.log("Voter may not be verified yet, redirecting to verfiy page");
-      historyPush(`/verify_email/${email_secret_key}`);
+      historyPush(`/verify_email/${emailSecretKey}`);
     }
 
     return LoadingWheel;

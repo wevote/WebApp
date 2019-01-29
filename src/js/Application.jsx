@@ -337,7 +337,12 @@ export default class Application extends Component {
                 weVoteBrandingOff={this.state.weVoteBrandingOff}
         />
         { pathname === "/welcome" || !contentFullWidthMode ?
-          <div className="welcome-or-not-full-width">{ this.props.children }</div> : (
+          (
+            <div className="welcome-or-not-full-width">
+              { this.props.children }
+            </div>
+          ) :
+          (
             <div className="page-content-container">
               <div className="container-fluid">
                 <div className="container-main">

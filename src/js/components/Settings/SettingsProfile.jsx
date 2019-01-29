@@ -12,7 +12,6 @@ import VoterStore from "../../stores/VoterStore";
 
 
 export default class SettingsProfile extends Component {
-
   constructor (props) {
     super(props);
     this.state = {

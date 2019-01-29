@@ -2,35 +2,35 @@ import Dispatcher from "../dispatcher/Dispatcher";
 
 export default {
 
-  pledgeToVoteWithVoterGuide (voter_guide_we_vote_id, delete_pledge = false) {
+  pledgeToVoteWithVoterGuide (voterGuideWeVoteId, delete_pledge = false) {
     Dispatcher.loadEndpoint("pledgeToVoteWithVoterGuide", {
-      voter_guide_we_vote_id,
+      voter_guide_we_vote_id: voterGuideWeVoteId,
       delete_pledge,
     });
   },
 
-  voterGuidesRetrieve (organization_we_vote_id) {
+  voterGuidesRetrieve (organizationWeVoteId) {
     Dispatcher.loadEndpoint("voterGuidesRetrieve", {
-      organization_we_vote_id,
+      organization_we_vote_id: organizationWeVoteId,
     });
   },
 
-  voterGuidesToFollowRetrieve (election_id, search_string, add_voter_guides_not_from_election, start_retrieve_at_this_number = 0) {
+  voterGuidesToFollowRetrieve (electionId, searchString, addVoterGuidesNotFromElection, startRetrieveAtThisNumber = 0) {
     // We have migrated to a newer API call that we cache by CDN: voterGuidesUpcomingRetrieve
-    const maximum_number_to_retrieve = 50;
+    const maximumNumberToRetrieve = 50;
     return Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", {
-      google_civic_election_id: election_id,
-      start_retrieve_at_this_number,
-      maximum_number_to_retrieve,
-      search_string: search_string || "",
-      add_voter_guides_not_from_election: add_voter_guides_not_from_election || false,
+      google_civic_election_id: electionId,
+      start_retrieve_at_this_number: startRetrieveAtThisNumber,
+      maximum_number_to_retrieve: maximumNumberToRetrieve,
+      search_string: searchString || "",
+      add_voter_guides_not_from_election: addVoterGuidesNotFromElection || false,
     });
   },
 
-  voterGuidesToFollowRetrieveByBallotItem (ballot_item_we_vote_id, kind_of_ballot_item) {
+  voterGuidesToFollowRetrieveByBallotItem (ballotItemWeVoteId, kindOfBallotItem) {
     Dispatcher.loadEndpoint("voterGuidesToFollowRetrieve", {
-      ballot_item_we_vote_id,
-      kind_of_ballot_item,
+      ballot_item_we_vote_id: ballotItemWeVoteId,
+      kind_of_ballot_item: kindOfBallotItem,
     });
   },
 
@@ -40,9 +40,9 @@ export default {
     });
   },
 
-  voterFollowAllOrganizationsFollowedByOrganization (organization_we_vote_id) {
+  voterFollowAllOrganizationsFollowedByOrganization (organizationWeVoteId) {
     Dispatcher.loadEndpoint("voterFollowAllOrganizationsFollowedByOrganization", {
-      organization_we_vote_id,
+      organization_we_vote_id: organizationWeVoteId,
     });
   },
 
@@ -52,45 +52,45 @@ export default {
     });
   },
 
-  voterGuidesFollowedByOrganizationRetrieve (organization_we_vote_id) {
+  voterGuidesFollowedByOrganizationRetrieve (organizationWeVoteId) {
     Dispatcher.loadEndpoint("voterGuidesFollowedByOrganizationRetrieve", {
-      organization_we_vote_id,
+      organization_we_vote_id: organizationWeVoteId,
     });
   },
 
-  voterGuidesRecommendedByOrganizationRetrieve (organization_we_vote_id, google_civic_election_id) {
+  voterGuidesRecommendedByOrganizationRetrieve (organizationWeVoteId, googleCivicElectionId) {
     Dispatcher.loadEndpoint("voterGuidesFollowedByOrganizationRetrieve", {
-      organization_we_vote_id,
-      filter_by_this_google_civic_election_id: google_civic_election_id,
+      organization_we_vote_id: organizationWeVoteId,
+      filter_by_this_google_civic_election_id: googleCivicElectionId,
     });
   },
 
-  voterGuideFollowersRetrieve (organization_we_vote_id) {
+  voterGuideFollowersRetrieve (organizationWeVoteId) {
     Dispatcher.loadEndpoint("voterGuideFollowersRetrieve", {
-      organization_we_vote_id,
+      organization_we_vote_id: organizationWeVoteId,
       maximum_number_to_retrieve: 200,
     });
   },
 
   voterGuidesIgnoredRetrieve () {
-    // We do not currently limit the maximum_number_to_retrieve
+    // We do not currently limit the maximumNumberToRetrieve
     Dispatcher.loadEndpoint("voterGuidesIgnoredRetrieve");
   },
 
-  voterGuideSave (google_civic_election_id, voter_guide_we_vote_id) {
+  voterGuideSave (googleCivicElectionId, voterGuideWeVoteId) {
     Dispatcher.loadEndpoint("voterGuideSave", {
-      google_civic_election_id,
-      voter_guide_we_vote_id,
+      google_civic_election_id: googleCivicElectionId,
+      voter_guide_we_vote_id: voterGuideWeVoteId,
     });
   },
 
-  voterGuidesUpcomingRetrieve (google_civic_election_id = 0) {
-    // let maximum_number_to_retrieve = 500;
-    // For now, just pass one google_civic_election_id into list. If we want multiple, we will need to dispatch
+  voterGuidesUpcomingRetrieve (googleCivicElectionId = 0) {
+    // let maximumNumberToRetrieve = 500;
+    // For now, just pass one googleCivicElectionId into list. If we want multiple, we will need to dispatch
     // with multiple "google_civic_election_id_list" entries (or comma separate)?
     Dispatcher.loadEndpoint("voterGuidesUpcomingRetrieve", {
-      google_civic_election_id_list: google_civic_election_id,
-      // maximum_number_to_retrieve: maximum_number_to_retrieve,
+      google_civic_election_id_list: googleCivicElectionId,
+      // maximum_number_to_retrieve: maximumNumberToRetrieve,
     });
   },
 };

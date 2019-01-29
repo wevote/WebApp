@@ -8,23 +8,15 @@ import VoterStore from "./VoterStore";
 class SupportStore extends ReduceStore {
   getInitialState () {
     return {
-      we_vote_id_support_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
-      we_vote_id_oppose_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
-      name_support_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
-      name_oppose_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
+      weVoteIdSupportListForEachBallotItem: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
+      weVoteIdOpposeListForEachBallotItem: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
+      nameSupportListForEachBallotItem: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
+      nameOpposeListForEachBallotItem: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
     };
   }
 
   resetState () {
-    // Reset this
-    const state = this.getState();
-    return {
-      ...state,
-      we_vote_id_support_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
-      we_vote_id_oppose_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
-      name_support_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
-      name_oppose_list_for_each_ballot_item: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
-    };
+    return this.getInitialState();
   }
 
   get (ballotItemWeVoteId) {
@@ -70,46 +62,46 @@ class SupportStore extends ReduceStore {
     return this.getState().support_counts && Object.keys(this.getState().support_counts).length > 0;
   }
 
-  listWithChangedCount (list, ballot_item_we_vote_id, amount) {
-    return assign({}, list, { [ballot_item_we_vote_id]: list[ballot_item_we_vote_id] + amount });
+  listWithChangedCount (list, ballotItemWeVoteId, amount) { // eslint-disable-line
+    return assign({}, list, { [ballotItemWeVoteId]: list[ballotItemWeVoteId] + amount });
   }
 
-  statementListWithChanges (statement_list, ballot_item_we_vote_id, new_voter_statement_text) {
-    return assign({}, statement_list, { [ballot_item_we_vote_id]: new_voter_statement_text });
+  statementListWithChanges (statement_list, ballotItemWeVoteId, new_voter_statement_text) { // eslint-disable-line
+    return assign({}, statement_list, { [ballotItemWeVoteId]: new_voter_statement_text });
   }
 
-  isForPublicListWithChanges (is_public_position_list, ballot_item_we_vote_id, is_public_position) {
-    return assign({}, is_public_position_list, { [ballot_item_we_vote_id]: is_public_position });
+  isForPublicListWithChanges (is_public_position_list, ballotItemWeVoteId, is_public_position) { // eslint-disable-line
+    return assign({}, is_public_position_list, { [ballotItemWeVoteId]: is_public_position });
   }
 
-  getWeVoteIdSupportListUnderThisBallotItem (ballot_item_we_vote_id) {
+  getWeVoteIdSupportListUnderThisBallotItem (ballotItemWeVoteId) {
     // What are the issues that have positions for this election under this ballot item?
-    // console.log("getIssuesUnderThisBallotItem, ballot_item_we_vote_id:", ballot_item_we_vote_id);
-    if (ballot_item_we_vote_id && this.getState().we_vote_id_support_list_for_each_ballot_item) {
-      return this.getState().we_vote_id_support_list_for_each_ballot_item[ballot_item_we_vote_id] || [];
+    // console.log("getIssuesUnderThisBallotItem, ballotItemWeVoteId:", ballotItemWeVoteId);
+    if (ballotItemWeVoteId && this.getState().weVoteIdSupportListForEachBallotItem) {
+      return this.getState().weVoteIdSupportListForEachBallotItem[ballotItemWeVoteId] || [];
     } else {
       return [];
     }
   }
 
-  getNameSupportListUnderThisBallotItem (ballot_item_we_vote_id) {
-    if (ballot_item_we_vote_id && this.getState().name_support_list_for_each_ballot_item) {
-      return this.getState().name_support_list_for_each_ballot_item[ballot_item_we_vote_id] || [];
+  getNameSupportListUnderThisBallotItem (ballotItemWeVoteId) {
+    if (ballotItemWeVoteId && this.getState().nameSupportListForEachBallotItem) {
+      return this.getState().nameSupportListForEachBallotItem[ballotItemWeVoteId] || [];
     } else {
       return [];
     }
   }
 
-  getNameOpposeListUnderThisBallotItem (ballot_item_we_vote_id) {
-    if (ballot_item_we_vote_id && this.getState().name_oppose_list_for_each_ballot_item) {
-      return this.getState().name_oppose_list_for_each_ballot_item[ballot_item_we_vote_id] || [];
+  getNameOpposeListUnderThisBallotItem (ballotItemWeVoteId) {
+    if (ballotItemWeVoteId && this.getState().nameOpposeListForEachBallotItem) {
+      return this.getState().nameOpposeListForEachBallotItem[ballotItemWeVoteId] || [];
     } else {
       return [];
     }
   }
 
   // Turn action into a dictionary/object format with we_vote_id as key for fast lookup
-  parseListToHash (property, list) {
+  parseListToHash (property, list) { // eslint-disable-line
     const hashMap = {};
     if (list !== undefined) {
       list.forEach((el) => {
@@ -122,25 +114,25 @@ class SupportStore extends ReduceStore {
   reduce (state, action) {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
+    const {
+      weVoteIdSupportListForEachBallotItem, weVoteIdOpposeListForEachBallotItem, nameSupportListForEachBallotItem,
+      nameOpposeListForEachBallotItem,
+    } = state;
 
-    let ballot_item_we_vote_id = "";
+    let ballotItemWeVoteId = "";
     if (action.res.ballot_item_we_vote_id) {
-      ballot_item_we_vote_id = action.res.ballot_item_we_vote_id;
+      ballotItemWeVoteId = action.res.ballot_item_we_vote_id;
     }
 
-    let we_vote_id_support_list_for_each_ballot_item;
-    let we_vote_id_oppose_list_for_each_ballot_item;
-    let name_support_list_for_each_ballot_item;
-    let name_oppose_list_for_each_ballot_item;
-    let position_counts_list;
-    const new_oppose_counts = this.parseListToHash("oppose_count", action.res.position_counts_list);
-    const new_support_counts = this.parseListToHash("support_count", action.res.position_counts_list);
-    const existing_oppose_counts = state.oppose_counts !== undefined ? state.oppose_counts : [];
-    const existing_support_counts = state.support_counts !== undefined ? state.support_counts : [];
-    const new_one_oppose_count = this.parseListToHash("oppose_count", action.res.position_counts_list);
-    const new_one_support_count = this.parseListToHash("support_count", action.res.position_counts_list);
-    const existing_oppose_counts2 = state.oppose_counts !== undefined ? state.oppose_counts : [];
-    const existing_support_counts2 = state.support_counts !== undefined ? state.support_counts : [];
+    let positionCountsList;
+    const newOpposeCounts = this.parseListToHash("oppose_count", action.res.position_counts_list);
+    const newSupportCounts = this.parseListToHash("support_count", action.res.position_counts_list);
+    const existingOpposeCounts = state.oppose_counts !== undefined ? state.oppose_counts : [];
+    const existingSupportCounts = state.support_counts !== undefined ? state.support_counts : [];
+    const newOneOpposeCount = this.parseListToHash("oppose_count", action.res.position_counts_list);
+    const newOneSupportCount = this.parseListToHash("support_count", action.res.position_counts_list);
+    const existingOpposeCounts2 = state.oppose_counts !== undefined ? state.oppose_counts : [];
+    const existingSupportCounts2 = state.support_counts !== undefined ? state.support_counts : [];
 
     switch (action.type) {
       case "voterAddressRetrieve":
@@ -160,20 +152,14 @@ class SupportStore extends ReduceStore {
         };
 
       case "positionsCountForAllBallotItems":
-
-        we_vote_id_support_list_for_each_ballot_item = state.we_vote_id_support_list_for_each_ballot_item;
-        we_vote_id_oppose_list_for_each_ballot_item = state.we_vote_id_oppose_list_for_each_ballot_item;
-        name_support_list_for_each_ballot_item = state.name_support_list_for_each_ballot_item;
-        name_oppose_list_for_each_ballot_item = state.name_oppose_list_for_each_ballot_item;
-
         if (action.res.position_counts_list) {
-          position_counts_list = action.res.position_counts_list;
-          if (position_counts_list.length) {
-            position_counts_list.forEach((positions_count_block) => {
-              we_vote_id_support_list_for_each_ballot_item[positions_count_block.ballot_item_we_vote_id] = positions_count_block.support_we_vote_id_list;
-              we_vote_id_oppose_list_for_each_ballot_item[positions_count_block.ballot_item_we_vote_id] = positions_count_block.oppose_we_vote_id_list;
-              name_support_list_for_each_ballot_item[positions_count_block.ballot_item_we_vote_id] = positions_count_block.support_name_list;
-              name_oppose_list_for_each_ballot_item[positions_count_block.ballot_item_we_vote_id] = positions_count_block.oppose_name_list;
+          positionCountsList = action.res.position_counts_list;
+          if (positionCountsList.length) {
+            positionCountsList.forEach((positionsCountBlock) => {
+              weVoteIdSupportListForEachBallotItem[positionsCountBlock.ballot_item_we_vote_id] = positionsCountBlock.support_we_vote_id_list;
+              weVoteIdOpposeListForEachBallotItem[positionsCountBlock.ballot_item_we_vote_id] = positionsCountBlock.oppose_we_vote_id_list;
+              nameSupportListForEachBallotItem[positionsCountBlock.ballot_item_we_vote_id] = positionsCountBlock.support_name_list;
+              nameOpposeListForEachBallotItem[positionsCountBlock.ballot_item_we_vote_id] = positionsCountBlock.oppose_name_list;
             });
           }
         }
@@ -181,12 +167,12 @@ class SupportStore extends ReduceStore {
         // Duplicate values in the second array will overwrite those in the first
         return {
           ...state,
-          oppose_counts: mergeTwoObjectLists(existing_oppose_counts, new_oppose_counts),
-          support_counts: mergeTwoObjectLists(existing_support_counts, new_support_counts),
-          we_vote_id_support_list_for_each_ballot_item,
-          we_vote_id_oppose_list_for_each_ballot_item,
-          name_support_list_for_each_ballot_item,
-          name_oppose_list_for_each_ballot_item,
+          oppose_counts: mergeTwoObjectLists(existingOpposeCounts, newOpposeCounts),
+          support_counts: mergeTwoObjectLists(existingSupportCounts, newSupportCounts),
+          weVoteIdSupportListForEachBallotItem,
+          weVoteIdOpposeListForEachBallotItem,
+          nameSupportListForEachBallotItem,
+          nameOpposeListForEachBallotItem,
         };
 
       case "positionsCountForOneBallotItem":
@@ -194,39 +180,39 @@ class SupportStore extends ReduceStore {
         // Duplicate values in the second array will overwrite those in the first
         return {
           ...state,
-          oppose_counts: mergeTwoObjectLists(existing_oppose_counts2, new_one_oppose_count),
-          support_counts: mergeTwoObjectLists(existing_support_counts2, new_one_support_count),
+          oppose_counts: mergeTwoObjectLists(existingOpposeCounts2, newOneOpposeCount),
+          support_counts: mergeTwoObjectLists(existingSupportCounts2, newOneSupportCount),
         };
 
       case "voterOpposingSave":
         SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         return {
           ...state,
-          voter_supports: assign({}, state.voter_supports, { [ballot_item_we_vote_id]: false }),
-          voter_opposes: assign({}, state.voter_opposes, { [ballot_item_we_vote_id]: true }),
-          support_counts: state.voter_supports[ballot_item_we_vote_id] ?
-            this.listWithChangedCount(state.support_counts, ballot_item_we_vote_id, -1) :
+          voter_supports: assign({}, state.voter_supports, { [ballotItemWeVoteId]: false }),
+          voter_opposes: assign({}, state.voter_opposes, { [ballotItemWeVoteId]: true }),
+          support_counts: state.voter_supports[ballotItemWeVoteId] ?
+            this.listWithChangedCount(state.support_counts, ballotItemWeVoteId, -1) :
             state.support_counts,
-          oppose_counts: this.listWithChangedCount(state.oppose_counts, ballot_item_we_vote_id, 1),
+          oppose_counts: this.listWithChangedCount(state.oppose_counts, ballotItemWeVoteId, 1),
         };
 
       case "voterStopOpposingSave":
         SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         return {
           ...state,
-          voter_opposes: assign({}, state.voter_opposes, { [ballot_item_we_vote_id]: false }),
-          oppose_counts: this.listWithChangedCount(state.oppose_counts, ballot_item_we_vote_id, -1),
+          voter_opposes: assign({}, state.voter_opposes, { [ballotItemWeVoteId]: false }),
+          oppose_counts: this.listWithChangedCount(state.oppose_counts, ballotItemWeVoteId, -1),
         };
 
       case "voterSupportingSave":
         SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         return {
           ...state,
-          voter_supports: assign({}, state.voter_supports, { [ballot_item_we_vote_id]: true }),
-          voter_opposes: assign({}, state.voter_opposes, { [ballot_item_we_vote_id]: false }),
-          support_counts: this.listWithChangedCount(state.support_counts, ballot_item_we_vote_id, 1),
-          oppose_counts: state.voter_opposes[ballot_item_we_vote_id] ?
-            this.listWithChangedCount(state.oppose_counts, ballot_item_we_vote_id, -1) :
+          voter_supports: assign({}, state.voter_supports, { [ballotItemWeVoteId]: true }),
+          voter_opposes: assign({}, state.voter_opposes, { [ballotItemWeVoteId]: false }),
+          support_counts: this.listWithChangedCount(state.support_counts, ballotItemWeVoteId, 1),
+          oppose_counts: state.voter_opposes[ballotItemWeVoteId] ?
+            this.listWithChangedCount(state.oppose_counts, ballotItemWeVoteId, -1) :
             state.oppose_counts,
         };
 
@@ -234,8 +220,8 @@ class SupportStore extends ReduceStore {
         SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
         return {
           ...state,
-          voter_supports: assign({}, state.voter_supports, { [ballot_item_we_vote_id]: false }),
-          support_counts: this.listWithChangedCount(state.support_counts, ballot_item_we_vote_id, -1),
+          voter_supports: assign({}, state.voter_supports, { [ballotItemWeVoteId]: false }),
+          support_counts: this.listWithChangedCount(state.support_counts, ballotItemWeVoteId, -1),
         };
 
       case "voterPositionCommentSave":
@@ -243,7 +229,7 @@ class SupportStore extends ReduceStore {
         // Add the comment to the list in memory
         return {
           ...state,
-          voter_statement_text: this.statementListWithChanges(state.voter_statement_text, ballot_item_we_vote_id, action.res.statement_text),
+          voter_statement_text: this.statementListWithChanges(state.voter_statement_text, ballotItemWeVoteId, action.res.statement_text),
         };
 
       case "voterPositionVisibilitySave":
@@ -251,7 +237,7 @@ class SupportStore extends ReduceStore {
         // Add the visibility to the list in memory
         return {
           ...state,
-          is_public_position: this.isForPublicListWithChanges(state.is_public_position, ballot_item_we_vote_id, action.res.is_public_position),
+          is_public_position: this.isForPublicListWithChanges(state.is_public_position, ballotItemWeVoteId, action.res.is_public_position),
         };
 
       case "voterSignOut":

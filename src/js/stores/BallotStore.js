@@ -61,7 +61,7 @@ class BallotStore extends ReduceStore {
   }
 
   get currentBallotElectionName () {
-    if (!this.isLoaded()) { return undefined; }
+    if (!this.isLoaded()) { return "Election"; }
     const civicId = VoterStore.election_id();
     return this.getState().ballots[civicId].election_name;
   }
@@ -92,7 +92,7 @@ class BallotStore extends ReduceStore {
     if (!this.isLoaded()) { return undefined; }
     return this.ballot.filter((item) => {
       const { kind_of_ballot_item: kindOfBallot, we_vote_id: weVoteId, candidate_list: candidateList } = item;
-      // console.log("BallotStore ballot_remaining_choices, kind_of_ballot_item: ", kind_of_ballot_item);
+      // console.log("BallotStore ballotRemainingChoices, kindOfBallot: ", kindOfBallot);
       if (kindOfBallot === "OFFICE") { // OFFICE - you are undecided if you haven't supported anyone
         return candidateList.filter(candidate => SupportStore.supportList[candidate.we_vote_id]).length === 0;
       } else { // MEASURES - you haven't decided if you neither support nor oppose
@@ -102,14 +102,14 @@ class BallotStore extends ReduceStore {
   }
 
   get ballotRemainingChoicesLength () {
-    const ballotRemainingChoices = this.ballot_remaining_choices || [];
+    const ballotRemainingChoices = this.ballotRemainingChoices || [];
     return ballotRemainingChoices.length || 0;
   }
 
   get ballotDecided () {
     if (!this.isLoaded()) { return undefined; }
 
-    return this.ballot_filtered_unsupported_candidates().filter((item) => {
+    return this.ballotFilteredUnsupportedCandidates().filter((item) => {
       if (item.kind_of_ballot_item === "OFFICE") { // Offices
         return item.candidate_list.length > 0;
       } else { // MEASURES
@@ -157,9 +157,9 @@ class BallotStore extends ReduceStore {
   getBallotByCompletionLevelFilterType (completionLevelFilterType) {
     switch (completionLevelFilterType) {
       case "filterRemaining":
-        return this.ballot_remaining_choices;
+        return this.ballotRemainingChoices;
       case "filterDecided":
-        return this.ballot_decided;
+        return this.ballotDecided;
       case "filterReadyToVote":
         return this.ballot;
       default:
@@ -216,10 +216,9 @@ class BallotStore extends ReduceStore {
     let googleCivicElectionId;
     let newBallots = {};
     let revisedState;
-    const tempBallotItemList = action.res.ballot_item_list;
-    const { ballotItemListCandidatesDict, ballotItemUnfurledTracker } = state;
-    const newBallotItemUnfurledTracker = ballotItemUnfurledTracker;
-    const ballotElectionList = action.res.voter_ballot_list;
+    let tempBallotItemList = [];
+    let voterBallotList = [];
+    const { ballotItemListCandidatesDict, ballotItemUnfurledTracker: newBallotItemUnfurledTracker } = state;
 
     switch (action.type) {
       case "ballotItemOptionsClear":
@@ -266,6 +265,7 @@ class BallotStore extends ReduceStore {
 
       case "voterBallotItemsRetrieve":
         // console.log("BallotStore, voterBallotItemsRetrieve response received.");
+        tempBallotItemList = action.res.ballot_item_list;
         // console.log("BallotStore, voterBallotItemsRetrieve, action.res.ballot_item_list: ", action.res.ballot_item_list);
         newBallots = {};
         if (state.ballots) {
@@ -340,10 +340,11 @@ class BallotStore extends ReduceStore {
         return revisedState;
 
       case "voterBallotListRetrieve":
-        // console.log("BallotStore, voterBallotListRetrieve response received.");
+        voterBallotList = action.res.voter_ballot_list;
+        // console.log("BallotStore, voterBallotListRetrieve response received, voterBallotList: ", voterBallotList);
         return {
           ...state,
-          ballotElectionList,
+          ballotElectionList: voterBallotList,
         };
 
       case "voterAddressSave":

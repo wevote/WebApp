@@ -72,7 +72,7 @@ export default class SelectBallotModal extends Component {
 
           <BallotLocationChoices
             ballotBaseUrl={ballotBaseUrl}
-            google_civic_election_id={this.props.google_civic_election_id}
+            googleCivicElectionId={this.props.google_civic_election_id}
             showElectionName
             toggleFunction={this.props.toggleFunction}
           />

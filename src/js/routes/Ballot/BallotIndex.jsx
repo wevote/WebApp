@@ -10,7 +10,7 @@ export default class BallotIndex extends Component {
   render () {
     renderLog(__filename);
     return (
-      <div className="ballot">
+      <div className="ballot_index">
         { this.props.children }
       </div>
     );
