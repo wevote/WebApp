@@ -355,10 +355,10 @@ export default class BallotElectionList extends Component {
               this.state.showMoreUpcomingElections ? (
                 <div className="ballot-election-list__show-all">
                   <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
-                  { this.state.stateName && this.state.stateName.length ?
-                    `Only show elections in ${this.state.stateName}` :
-                    "Hide state elections"
-                  }
+                    { this.state.stateName && this.state.stateName.length ?
+                      `Only show elections in ${this.state.stateName}` :
+                      "Hide state elections"
+                    }
                   </a>
                 </div>
               ) : (
