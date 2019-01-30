@@ -30,13 +30,13 @@ export default class Intro extends Component {
     this.state = {
       newsletter_opt_in_true: false,
       voter: {},
-      is_verification_email_sent: false,
-      show_features_ballot: false,
-      show_features_organizations: false,
-      show_features_positions: false,
-      show_features_network: false,
-      show_features_vision: false,
-      show_features_vote: false,
+      // is_verification_email_sent: false, // Commented out below
+      showFeaturesBallot: false,
+      showFeaturesOrganizations: false,
+      showFeaturesPositions: false,
+      showFeaturesNetwork: false,
+      showFeaturesVision: false,
+      showFeaturesVote: false,
       facebook_friends_image_width: 60,
       facebook_friends_image_height: 60,
       maximum_friends_display: 5,
@@ -78,27 +78,33 @@ export default class Intro extends Component {
   }
 
   _toggleBallotFeature () {
-    this.setState({ show_features_ballot: !this.state.show_features_ballot });
+    const { showFeaturesBallot } = this.state;
+    this.setState({ showFeaturesBallot: !showFeaturesBallot });
   }
 
   _toggleOrganizationsFeature () {
-    this.setState({ show_features_organizations: !this.state.show_features_organizations });
+    const { showFeaturesOrganizations } = this.state;
+    this.setState({ showFeaturesOrganizations: !showFeaturesOrganizations });
   }
 
   _togglePositionsFeature () {
-    this.setState({ show_features_positions: !this.state.show_features_positions });
+    const { showFeaturesPositions } = this.state;
+    this.setState({ showFeaturesPositions: !showFeaturesPositions });
   }
 
   _toggleNetworkFeature () {
-    this.setState({ show_features_network: !this.state.show_features_network });
+    const { showFeaturesNetwork } = this.state;
+    this.setState({ showFeaturesNetwork: !showFeaturesNetwork });
   }
 
   _toggleVisionFeature () {
-    this.setState({ show_features_vision: !this.state.show_features_vision });
+    const { showFeaturesVision } = this.state;
+    this.setState({ showFeaturesVision: !showFeaturesVision });
   }
 
   _toggleVoteFeature () {
-    this.setState({ show_features_vote: !this.state.show_features_vote });
+    const { showFeaturesVote } = this.state;
+    this.setState({ showFeaturesVote: !showFeaturesVote });
   }
 
   _onVoterStoreChange () {
@@ -142,7 +148,7 @@ export default class Intro extends Component {
     });
   }
 
-  voterEmailAddressSignUpSave (event) {
+  voterEmailAddressSignUpSave = (event) => {
     // Only proceed after we have a valid email address, which will enable the submit
     if (this.state.submit_enabled) {
       event.preventDefault();
@@ -150,7 +156,6 @@ export default class Intro extends Component {
       VoterActions.voterEmailAddressSave(this.state.voter_email_address, sendLinkToSignIn);
       VoterActions.voterFullNameSoftSave("", "", this.state.voter_full_name);
       VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
-      this.setState({ loading: true });
     }
   }
 
@@ -320,7 +325,7 @@ export default class Intro extends Component {
                             <div className="form__container">
                               <h2 className="form__header">Sign up to get updates about We Vote.</h2>
 
-                              <form className="row form-inline" onSubmit={this.voterEmailAddressSignUpSave.bind(this)}>
+                              <form className="row form-inline" onSubmit={this.voterEmailAddressSignUpSave}>
                                 <FormGroup bsPrefix="col-md-4">
                                   <label className="sr-only" htmlFor="name">Name</label>
                                   <input
@@ -351,7 +356,7 @@ export default class Intro extends Component {
                                       bsPrefix="form-control"
                                       variant="success"
                                       type="submit"
-                                      onClick={this.voterEmailAddressSignUpSave.bind(this)}
+                                      onClick={this.voterEmailAddressSignUpSave}
                                     >
                                       Sign Up
                                     </Button>
@@ -361,7 +366,7 @@ export default class Intro extends Component {
                                       variant="success"
                                       type="submit"
                                       disabled
-                                      onClick={this.voterEmailAddressSignUpSave.bind(this)}
+                                      onClick={this.voterEmailAddressSignUpSave}
                                     >
                                       Enter Your Email to Sign Up
                                     </Button>
@@ -396,54 +401,54 @@ export default class Intro extends Component {
               <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
                 <div className="features__block features__block__row1" onClick={this._toggleBallotFeature}>
                   <Link to="/wevoteintro/network">
-                    <img className={this.state.show_features_ballot ? "d-none d-sm-block features__image" : "features__image"} src={cordovaDot("/img/welcome/benefits/view-your-ballot.svg")} width="55%" />
+                    <img className={this.state.showFeaturesBallot ? "d-none d-sm-block features__image" : "features__image"} src={cordovaDot("/img/welcome/benefits/view-your-ballot.svg")} width="55%" />
                     <h3 className="features__h3">View Your Ballot</h3>
-                    <p className={this.state.show_features_ballot ? "features__p" : "features__p d-none d-sm-block"}>See your actual ballot, including candidates and measures.</p>
+                    <p className={this.state.showFeaturesBallot ? "features__p" : "features__p d-none d-sm-block"}>See your actual ballot, including candidates and measures.</p>
                   </Link>
                 </div>
               </div>
               <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
                 <div className="features__block features__block__row1" onClick={this._toggleOrganizationsFeature}>
                   <Link to="/more/network/issues">
-                    <img className={this.state.show_features_organizations ? "d-none d-sm-block features__image" : "features__image"} src={cordovaDot("/img/welcome/benefits/learn-issues-orgs.svg")} width="60%" />
+                    <img className={this.state.showFeaturesOrganizations ? "d-none d-sm-block features__image" : "features__image"} src={cordovaDot("/img/welcome/benefits/learn-issues-orgs.svg")} width="60%" />
                     <h3 className="features__h3">Learn From Issues and Organizations</h3>
-                    <p className={this.state.show_features_organizations ? "features__p" : "features__p d-none d-sm-block"}>Follow the issues and Listen to the voter guides of groups you trust. See what they support or oppose.</p>
+                    <p className={this.state.showFeaturesOrganizations ? "features__p" : "features__p d-none d-sm-block"}>Follow the issues and Listen to the voter guides of groups you trust. See what they support or oppose.</p>
                   </Link>
                 </div>
               </div>
               <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
                 <div className="features__block features__block__row2" onClick={this._togglePositionsFeature}>
                   <Link to="/ballot">
-                    <img className={this.state.show_features_positions ? "d-none d-sm-block features__image" : "features__image"} src={cordovaDot("/img/welcome/benefits/network-position.svg")} />
+                    <img className={this.state.showFeaturesPositions ? "d-none d-sm-block features__image" : "features__image"} src={cordovaDot("/img/welcome/benefits/network-position.svg")} />
                     <h3 className="features__h3">See Your Network&apos;s Positions</h3>
-                    <p className={this.state.show_features_positions ? "features__p" : "features__p d-none d-sm-block"}>See how many in your network support or oppose each candidate or measure.</p>
+                    <p className={this.state.showFeaturesPositions ? "features__p" : "features__p d-none d-sm-block"}>See how many in your network support or oppose each candidate or measure.</p>
                   </Link>
                 </div>
               </div>
               <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
                 <div className="features__block features__block__row2" onClick={this._toggleNetworkFeature}>
                   <Link to="/more/network/friends">
-                    <img className={this.state.show_features_network ? "d-none d-sm-block features__image" : "features__image"} src={cordovaDot("/img/welcome/benefits/choose-friends.svg")} width="60%" />
+                    <img className={this.state.showFeaturesNetwork ? "d-none d-sm-block features__image" : "features__image"} src={cordovaDot("/img/welcome/benefits/choose-friends.svg")} width="60%" />
                     <h3 className="features__h3">Invite Friends to Your We Vote Network</h3>
-                    <p className={this.state.show_features_network ? "features__p" : "features__p d-none d-sm-block"}>Talk politics with friends who share your values. Avoid flame wars!</p>
+                    <p className={this.state.showFeaturesNetwork ? "features__p" : "features__p d-none d-sm-block"}>Talk politics with friends who share your values. Avoid flame wars!</p>
                   </Link>
                 </div>
               </div>
               <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
                 <div className="features__block features__block__row3" onClick={this._toggleVisionFeature}>
                   <Link to="/voterguidegetstarted">
-                    <img className={this.state.show_features_vision ? "d-none d-sm-block features__image" : "features__image"} src={cordovaDot("/img/welcome/benefits/share-vision.svg")} width="55%" />
+                    <img className={this.state.showFeaturesVision ? "d-none d-sm-block features__image" : "features__image"} src={cordovaDot("/img/welcome/benefits/share-vision.svg")} width="55%" />
                     <h3 className="features__h3">Share Your Vision</h3>
-                    <p className={this.state.show_features_vision ? "features__p" : "features__p d-none d-sm-block"}>Empower other voters with what you&apos;ve learned. Help your friends.</p>
+                    <p className={this.state.showFeaturesVision ? "features__p" : "features__p d-none d-sm-block"}>Empower other voters with what you&apos;ve learned. Help your friends.</p>
                   </Link>
                 </div>
               </div>
               <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
                 <div className="features__block features__block__row3" onClick={this._toggleVoteFeature}>
                   <Link to="/wevoteintro/network">
-                    <img className={this.state.show_features_vote ? "d-none d-sm-block features__image" : "features__image"} src={cordovaDot("/img/welcome/benefits/decide.svg")} width="60%" />
+                    <img className={this.state.showFeaturesVote ? "d-none d-sm-block features__image" : "features__image"} src={cordovaDot("/img/welcome/benefits/decide.svg")} width="60%" />
                     <h3 className="features__h3">Decide & Vote</h3>
-                    <p className={this.state.show_features_vote ? "features__p" : "features__p d-none d-sm-block"}>Cast your vote with confidence after using We Vote.</p>
+                    <p className={this.state.showFeaturesVote ? "features__p" : "features__p d-none d-sm-block"}>Cast your vote with confidence after using We Vote.</p>
                   </Link>
                 </div>
               </div>
