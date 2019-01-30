@@ -7,42 +7,36 @@ import { renderLog } from "../../utils/logging";
 
 export default class OfficeItem extends Component {
   static propTypes = {
-    we_vote_id: PropTypes.string.isRequired,
-    kind_of_ballot_item: PropTypes.string.isRequired,
-    ballot_item_display_name: PropTypes.string.isRequired,
-    link_to_ballot_item_page: PropTypes.bool,
+    weVoteId: PropTypes.string.isRequired,
+    ballotItemDisplayName: PropTypes.string.isRequired,
+    linkToBallotItemPage: PropTypes.bool,
   };
-
-  constructor (props) {
-    super(props);
-    this.state = { transitioning: false };
-  }
 
   render () {
     renderLog(__filename);
-    let { ballot_item_display_name } = this.props;
-    const { we_vote_id: weVoteId } = this.props;
+    let { ballotItemDisplayName } = this.props;
+    const { weVoteId } = this.props;
     const officeLink = `/office/${weVoteId}`;
     const goToOfficeLink = function () { historyPush(officeLink); };
 
-    ballot_item_display_name = capitalizeString(ballot_item_display_name);
-    const candidates_html = <span />; // For a preview of the candidates
+    ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
+    const candidatesHtml = <span />; // For a preview of the candidates
 
     return (
       <div className="card-main office-item">
         <div className="card-main__content">
           <h2 className="card-main__display-name">
-            { this.props.link_to_ballot_item_page ?
-              <Link to={officeLink}>{ballot_item_display_name}</Link> :
-              ballot_item_display_name
+            { this.props.linkToBallotItemPage ?
+              <Link to={officeLink}>{ballotItemDisplayName}</Link> :
+              ballotItemDisplayName
           }
           </h2>
 
           <div
-            className={this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null}
-            onClick={this.props.link_to_ballot_item_page ? goToOfficeLink : null}
+            className={this.props.linkToBallotItemPage ? "u-cursor--pointer" : null}
+            onClick={this.props.linkToBallotItemPage ? goToOfficeLink : null}
           >
-            {candidates_html}
+            {candidatesHtml}
           </div>
         </div>
       </div>

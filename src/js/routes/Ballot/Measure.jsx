@@ -141,7 +141,7 @@ export default class Measure extends Component {
         />
         <MeasureItem
           {...measure}
-          position_list={positionListFromAdvisersFollowedByVoter}
+          positionList={positionListFromAdvisersFollowedByVoter}
           commentButtonHide
           showPositionsInYourNetworkBreakdown
         />

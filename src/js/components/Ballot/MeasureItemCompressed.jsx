@@ -27,7 +27,6 @@ export default class MeasureItemCompressed extends Component {
     organization: PropTypes.object,
     // position_list: PropTypes.array,
     showPositionStatementActionBar: PropTypes.bool,
-    // toggleMeasureModal: PropTypes.func,
     urlWithoutHash: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired,
   };

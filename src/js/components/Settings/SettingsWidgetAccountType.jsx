@@ -86,6 +86,8 @@ export default class SettingsWidgetAccountType extends Component {
               organization,
               organizationType: organization.organization_type,
             });
+          } else {
+            OrganizationActions.organizationRetrieve(voter.linked_organization_we_vote_id);
           }
         }
       }

@@ -137,7 +137,6 @@ export default class VerifyThisIsMe extends Component {
           <section className="card">
             <CandidateItem
               {...candidate}
-              position_list={this.state.position_list_from_advisers_followed_by_voter}
               showLargeImage
             />
           </section>

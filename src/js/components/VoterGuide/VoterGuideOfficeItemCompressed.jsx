@@ -44,7 +44,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     location: PropTypes.object,
     organization: PropTypes.object.isRequired,
     organization_we_vote_id: PropTypes.string.isRequired,
-    toggleCandidateModal: PropTypes.func,
     updateOfficeDisplayUnfurledTracker: PropTypes.func,
     urlWithoutHash: PropTypes.string,
   };
@@ -70,7 +69,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     this.getOfficeLink = this.getOfficeLink.bind(this);
     this.goToCandidateLink = this.goToCandidateLink.bind(this);
     this.goToOfficeLink = this.goToOfficeLink.bind(this);
-    this.openCandidateModal = this.openCandidateModal.bind(this);
     this._nextSliderPage = this._nextSliderPage.bind(this);
     this._toggleBallotIntroFollowIssues = this._toggleBallotIntroFollowIssues.bind(this);
     this.toggleDisplayAllCandidates = this.toggleDisplayAllCandidates.bind(this);
@@ -240,13 +238,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
       updateOfficeDisplayUnfurledTracker(weVoteId, !this.state.displayOfficeUnfurled);
     }
     // console.log('toggling raccoon Details!');
-  }
-
-  openCandidateModal (candidate) {
-    // console.log("this.state.candidate: ", this.state.candidate);
-    if (candidate && candidate.we_vote_id) {
-      this.props.toggleCandidateModal(candidate);
-    }
   }
 
   goToCandidateLink (candidateWeVoteId) {
