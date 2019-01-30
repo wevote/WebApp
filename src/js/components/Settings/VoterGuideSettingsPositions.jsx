@@ -21,9 +21,6 @@ import { isProperlyFormattedVoterGuideWeVoteId } from "../../utils/textFormat";
 
 export default class VoterGuideSettingsPositions extends Component {
   static propTypes = {
-    ballotBaseUrl: PropTypes.string,
-    organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
-    voterGuideName: PropTypes.string,
     voterGuideWeVoteId: PropTypes.string.isRequired,
   };
 
@@ -32,13 +29,11 @@ export default class VoterGuideSettingsPositions extends Component {
     this.state = {
       clearSearchTextNow: false,
       currentGoogleCivicElectionId: 0,
-      // currentOrganizationWeVoteId: "",
       editMode: true,
       organization: {},
       searchIsUnderway: false,
       voter: {},
       voterGuide: {},
-      // voterGuideName: "",
       voterGuideWeVoteId: "",
     };
     this.clearSearch = this.clearSearch.bind(this);
@@ -57,12 +52,11 @@ export default class VoterGuideSettingsPositions extends Component {
     });
     let voterGuide;
     let voterGuideFound = false;
-    if (this.props.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(this.state.voterGuideWeVoteId)) {
+    if (this.props.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(this.props.voterGuideWeVoteId)) {
       voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.props.voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
           voterGuide,
-          // voterGuideName: voterGuide.voter_guide_display_name,
         });
         voterGuideFound = true;
       }
@@ -113,12 +107,11 @@ export default class VoterGuideSettingsPositions extends Component {
     });
     let voterGuide;
     let voterGuideFound = false;
-    if (nextProps.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(this.state.voterGuideWeVoteId)) {
+    if (nextProps.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(nextProps.voterGuideWeVoteId)) {
       voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(nextProps.voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
           voterGuide,
-          // voterGuideName: voterGuide.voter_guide_display_name,
         });
         voterGuideFound = true;
       }
@@ -213,9 +206,20 @@ export default class VoterGuideSettingsPositions extends Component {
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
           voterGuide,
-          // voterGuideName: voterGuide.voter_guide_display_name,
         });
       }
+    }
+  }
+
+  onKeyDownEditMode (event) {
+    const enterAndSpaceKeyCodes = [13, 32];
+    const scope = this;
+    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      if (this.state.editMode) {
+        // If going from editMode == True to editMode == False, we want to refresh the positions
+        OrganizationActions.positionListForOpinionMaker(this.state.organization.organization_we_vote_id, true, false, this.state.currentGoogleCivicElectionId);
+      }
+      scope.setState({ editMode: !this.state.editMode });
     }
   }
 
@@ -254,18 +258,6 @@ export default class VoterGuideSettingsPositions extends Component {
     this.setState({ editMode: !editMode });
   }
 
-  onKeyDownEditMode (event) {
-    const enterAndSpaceKeyCodes = [13, 32];
-    const scope = this;
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      if (this.state.editMode) {
-        // If going from editMode == True to editMode == False, we want to refresh the positions
-        OrganizationActions.positionListForOpinionMaker(this.state.organization.organization_we_vote_id, true, false, this.state.currentGoogleCivicElectionId);
-      }
-      scope.setState({ editMode: !this.state.editMode });
-    }
-  }
-
   render () {
     renderLog(__filename);
     if (!this.state.voter || !this.state.voterGuide || !this.state.organization) {
@@ -273,6 +265,7 @@ export default class VoterGuideSettingsPositions extends Component {
     }
 
     const positionListForOneElection = this.state.organization.position_list_for_one_election;
+    // console.log("VoterGuideSettingsPositions, positionListForOneElection:", positionListForOneElection);
 
     let lookingAtSelf = false;
     if (this.state.voter) {

@@ -15,9 +15,7 @@ const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 32;
 
 export default class ChooseElectionForVoterGuide extends Component {
   static propTypes = {
-    ballotBaseUrl: PropTypes.string,
     destinationFunction: PropTypes.func.isRequired,
-    organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
   };
 
   constructor (props) {
@@ -40,10 +38,6 @@ export default class ChooseElectionForVoterGuide extends Component {
     this.voterGuideStoreListener.remove();
   }
 
-  saveVoterGuideForElection (google_civic_election_id) {
-    VoterGuideActions.voterGuideSave(google_civic_election_id, "");
-  }
-
   onBallotStoreChange () {
     console.log("ChooseElectionForVoterGuide onBallotStoreChange");
     if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
@@ -54,39 +48,36 @@ export default class ChooseElectionForVoterGuide extends Component {
 
   onElectionStoreChange () {
     const electionsList = ElectionStore.getElectionList();
-    const electionsLocationsList = [];
-    let voter_ballot; // A different format for much of the same data
+    let voterBallot; // A different format for much of the same data
     const voterBallotList = [];
-    let one_ballot_location;
-    let ballot_location_shortcut;
-    let ballot_returned_we_vote_id;
+    let oneBallotLocation;
+    let ballotLocationShortcut;
+    let ballotReturnedWeVoteId;
 
     for (let i = 0; i < electionsList.length; i++) {
       const election = electionsList[i];
-      electionsLocationsList.push(election);
-      ballot_returned_we_vote_id = "";
-      ballot_location_shortcut = "";
+      ballotReturnedWeVoteId = "";
+      ballotLocationShortcut = "";
       if (election.ballot_location_list && election.ballot_location_list.length) {
         // We want to add the shortcut and we_vote_id for the first ballot location option
-        one_ballot_location = election.ballot_location_list[0];
-        ballot_location_shortcut = one_ballot_location.ballot_location_shortcut || "";
-        ballot_location_shortcut = ballot_location_shortcut.trim();
-        ballot_returned_we_vote_id = one_ballot_location.ballot_returned_we_vote_id || "";
-        ballot_returned_we_vote_id = ballot_returned_we_vote_id.trim();
+        [oneBallotLocation] = election.ballot_location_list;
+        ballotLocationShortcut = oneBallotLocation.ballot_location_shortcut || "";
+        ballotLocationShortcut = ballotLocationShortcut.trim();
+        ballotReturnedWeVoteId = oneBallotLocation.ballot_returned_we_vote_id || "";
+        ballotReturnedWeVoteId = ballotReturnedWeVoteId.trim();
       }
-      voter_ballot = {
+      voterBallot = {
         google_civic_election_id: election.google_civic_election_id,
         election_description_text: election.election_name,
         election_day_text: election.election_day_text,
         original_text_for_map_search: "",
-        ballot_location_shortcut,
-        ballot_returned_we_vote_id,
+        ballot_location_shortcut: ballotLocationShortcut,
+        ballot_returned_we_vote_id: ballotReturnedWeVoteId,
       };
-      voterBallotList.push(voter_ballot);
+      voterBallotList.push(voterBallot);
     }
 
     this.setState({
-      electionsLocationsList,
       voterBallotList,
     });
   }
@@ -97,6 +88,10 @@ export default class ChooseElectionForVoterGuide extends Component {
     if (voterGuideSaveResults && voter && voterGuideSaveResults.organization_we_vote_id === voter.linked_organization_we_vote_id) {
       this.props.destinationFunction(voterGuideSaveResults.we_vote_id);
     }
+  }
+
+  saveVoterGuideForElection (googleCivicElectionId) {
+    VoterGuideActions.voterGuideSave(googleCivicElectionId, "");
   }
 
   render () {
@@ -113,20 +108,20 @@ export default class ChooseElectionForVoterGuide extends Component {
     const ballotElectionListUpcomingSorted = this.state.voterBallotList;
     // We want to sort ascending so the next upcoming election is first
     ballotElectionListUpcomingSorted.sort((a, b) => {
-      const election_day_text_A = a.election_day_text.toLowerCase();
-      const election_day_text_B = b.election_day_text.toLowerCase();
-      if (election_day_text_A < election_day_text_B) { // sort string ascending
+      const electionDayTextA = a.election_day_text.toLowerCase();
+      const electionDayTextB = b.election_day_text.toLowerCase();
+      if (electionDayTextA < electionDayTextB) { // sort string ascending
         return -1;
       }
-      if (election_day_text_A > election_day_text_B) return 1;
+      if (electionDayTextA > electionDayTextB) return 1;
       return 0; // default return value (no sorting)
     });
-    let upcomingElectionList = ballotElectionListUpcomingSorted.map((item, index) => {
+    let upcomingElectionList = ballotElectionListUpcomingSorted.map((item) => {
       electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
       electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
       // console.log("electionDateTomorrow: ", electionDateTomorrow);
       return electionDateTomorrow > currentDate ? (
-        <div key={index}>
+        <div key={`choose-election-${item.google_civic_election_id}`}>
           <dl className="list-unstyled text-center">
             <button
               type="button"
@@ -171,12 +166,12 @@ export default class ChooseElectionForVoterGuide extends Component {
     const ballotElectionListPastSorted = this.state.voterBallotList;
     // We want to sort descending so the most recent election is first
     ballotElectionListPastSorted.sort((a, b) => {
-      const election_day_text_A = a.election_day_text.toLowerCase();
-      const election_day_text_B = b.election_day_text.toLowerCase();
-      if (election_day_text_A < election_day_text_B) { // sort string descending
+      const electionDayTextA = a.election_day_text.toLowerCase();
+      const electionDayTextB = b.election_day_text.toLowerCase();
+      if (electionDayTextA < electionDayTextB) { // sort string descending
         return 1;
       }
-      if (election_day_text_A > election_day_text_B) return -1;
+      if (electionDayTextA > electionDayTextB) return -1;
       return 0; // default return value (no sorting)
     });
 

@@ -9,25 +9,24 @@ import VoterStore from "../../stores/VoterStore";
 
 export default class BallotStatusMessage extends Component {
   static propTypes = {
-    ballot_location_chosen: PropTypes.bool.isRequired,
-    toggleSelectBallotModal: PropTypes.func,
-    google_civic_election_id: PropTypes.number,
+    ballotLocationChosen: PropTypes.bool.isRequired,
+    googleCivicElectionId: PropTypes.number,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      ballot_location_chosen: false,
-      ballot_location_display_name: "",
+      ballotLocationChosen: false,
+      ballotLocationDisplayName: "",
       componentDidMountFinished: false,
-      election_day_text: "",
-      election_is_upcoming: false,
-      elections_with_ballot_status_message_closed: [],
-      google_civic_data_exists: false,
-      show_ballot_status: true,
-      substituted_address_nearby: "",
-      voter_entered_address: false,
-      voter_specific_ballot_from_google_civic: false,
+      electionDayText: "",
+      electionIsUpcoming: false,
+      electionsWithBallotStatusMessageClosed: [],
+      googleCivicElectionId: 0,
+      showBallotStatus: true,
+      substitutedAddressNearby: "",
+      voterEnteredAddress: false,
+      voterSpecificBallotFromGoogleCivic: false,
     };
   }
 
@@ -44,10 +43,10 @@ export default class BallotStatusMessage extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onBallotStoreChange.bind(this));
 
     this.setState({
-      ballot_location_chosen: this.props.ballot_location_chosen,
+      ballotLocationChosen: this.props.ballotLocationChosen,
       componentDidMountFinished: true,
-      google_civic_election_id: this.props.google_civic_election_id,
-      show_ballot_status: true,
+      googleCivicElectionId: this.props.googleCivicElectionId,
+      showBallotStatus: true,
       electionsWithBallotStatusMessageClosed,
     });
   }
@@ -55,10 +54,47 @@ export default class BallotStatusMessage extends Component {
   componentWillReceiveProps (nextProps) {
     // console.log("BallotStatusMessage componentWillReceiveProps");
     this.setState({
-      ballot_location_chosen: nextProps.ballot_location_chosen,
-      google_civic_election_id: this.props.google_civic_election_id,
-      show_ballot_status: true,
+      ballotLocationChosen: nextProps.ballotLocationChosen,
+      googleCivicElectionId: this.props.googleCivicElectionId,
+      showBallotStatus: true,
     });
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    if (this.state.componentDidMountFinished === false) {
+      // console.log("shouldComponentUpdate: componentDidMountFinished === false");
+      return true;
+    }
+    if (this.state.ballotLocationChosen !== nextState.ballotLocationChosen) {
+      // console.log("shouldComponentUpdate: changed, this.state.ballotLocationChosen: ", this.state.ballotLocationChosen, ", nextState.ballotLocationChosen", nextState.ballotLocationChosen);
+      return true;
+    }
+    if (this.state.ballotLocationDisplayName !== nextState.ballotLocationDisplayName) {
+      // console.log("shouldComponentUpdate: changed, this.state.ballotLocationDisplayName: ", this.state.ballotLocationDisplayName, ", nextState.ballotLocationDisplayName", nextState.ballotLocationDisplayName);
+      return true;
+    }
+    if (this.state.electionDayText !== nextState.electionDayText) {
+      // console.log("shouldComponentUpdate: changed, this.state.electionDayText: ", this.state.electionDayText, ", nextState.electionDayText", nextState.electionDayText);
+      return true;
+    }
+    if (this.state.electionIsUpcoming !== nextState.electionIsUpcoming) {
+      // console.log("shouldComponentUpdate: changed, this.state.electionIsUpcoming: ", this.state.electionIsUpcoming, ", nextState.electionIsUpcoming", nextState.electionIsUpcoming);
+      return true;
+    }
+    if (this.state.substitutedAddressNearby !== nextState.substitutedAddressNearby) {
+      // console.log("shouldComponentUpdate: changed, this.state.substitutedAddressNearby: ", this.state.substitutedAddressNearby, ", nextState.substitutedAddressNearby", nextState.substitutedAddressNearby);
+      return true;
+    }
+    if (this.state.voterEnteredAddress !== nextState.voterEnteredAddress) {
+      // console.log("shouldComponentUpdate: changed, this.state.voterEnteredAddress: ", this.state.voterEnteredAddress, ", nextState.voterEnteredAddress", nextState.voterEnteredAddress);
+      return true;
+    }
+    if (this.state.voterSpecificBallotFromGoogleCivic !== nextState.voterSpecificBallotFromGoogleCivic) {
+      // console.log("shouldComponentUpdate: changed, this.state.voterSpecificBallotFromGoogleCivic: ", this.state.voterSpecificBallotFromGoogleCivic, ", nextState.voterSpecificBallotFromGoogleCivic", nextState.voterSpecificBallotFromGoogleCivic);
+      return true;
+    }
+    return false;
   }
 
   componentWillUnmount () {
@@ -68,102 +104,65 @@ export default class BallotStatusMessage extends Component {
     this.voterStoreListener.remove();
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    if (this.state.componentDidMountFinished === false) {
-      // console.log("shouldComponentUpdate: componentDidMountFinished === false");
-      return true;
-    }
-    if (this.state.ballot_location_chosen !== nextState.ballot_location_chosen) {
-      // console.log("shouldComponentUpdate: changed, this.state.ballot_location_chosen: ", this.state.ballot_location_chosen, ", nextState.ballot_location_chosen", nextState.ballot_location_chosen);
-      return true;
-    }
-    if (this.state.ballot_location_display_name !== nextState.ballot_location_display_name) {
-      // console.log("shouldComponentUpdate: changed, this.state.ballot_location_display_name: ", this.state.ballot_location_display_name, ", nextState.ballot_location_display_name", nextState.ballot_location_display_name);
-      return true;
-    }
-    if (this.state.election_day_text !== nextState.election_day_text) {
-      // console.log("shouldComponentUpdate: changed, this.state.election_day_text: ", this.state.election_day_text, ", nextState.election_day_text", nextState.election_day_text);
-      return true;
-    }
-    if (this.state.election_is_upcoming !== nextState.election_is_upcoming) {
-      // console.log("shouldComponentUpdate: changed, this.state.election_is_upcoming: ", this.state.election_is_upcoming, ", nextState.election_is_upcoming", nextState.election_is_upcoming);
-      return true;
-    }
-    if (this.state.substituted_address_nearby !== nextState.substituted_address_nearby) {
-      // console.log("shouldComponentUpdate: changed, this.state.substituted_address_nearby: ", this.state.substituted_address_nearby, ", nextState.substituted_address_nearby", nextState.substituted_address_nearby);
-      return true;
-    }
-    if (this.state.voter_entered_address !== nextState.voter_entered_address) {
-      // console.log("shouldComponentUpdate: changed, this.state.voter_entered_address: ", this.state.voter_entered_address, ", nextState.voter_entered_address", nextState.voter_entered_address);
-      return true;
-    }
-    if (this.state.voter_specific_ballot_from_google_civic !== nextState.voter_specific_ballot_from_google_civic) {
-      // console.log("shouldComponentUpdate: changed, this.state.voter_specific_ballot_from_google_civic: ", this.state.voter_specific_ballot_from_google_civic, ", nextState.voter_specific_ballot_from_google_civic", nextState.voter_specific_ballot_from_google_civic);
-      return true;
-    }
-    return false;
-  }
-
   onBallotStoreChange () {
-    let ballot_location_display_name = "";
-    const election_day_text = ElectionStore.getElectionDayText(this.state.google_civic_election_id);
-    const election_is_upcoming = ElectionStore.isElectionUpcoming(this.state.google_civic_election_id);
-    const google_civic_data_exists = ElectionStore.googleCivicDataExists(this.state.google_civic_election_id);
-    let substituted_address_nearby = "";
-    const voter_ballot_location = VoterStore.getBallotLocationForVoter();
-    let voter_entered_address = false;
-    let voter_specific_ballot_from_google_civic = false;
+    let ballotLocationDisplayName = "";
+    const { googleCivicElectionId } = this.state;
+    const electionDayText = ElectionStore.getElectionDayText(googleCivicElectionId);
+    const electionIsUpcoming = ElectionStore.isElectionUpcoming(googleCivicElectionId);
+    let substitutedAddressNearby = "";
+    const voterBallotLocation = VoterStore.getBallotLocationForVoter();
+    let voterEnteredAddress = false;
+    let voterSpecificBallotFromGoogleCivic = false;
 
-    if (voter_ballot_location && voter_ballot_location.voter_entered_address) {
-      voter_entered_address = true;
+    if (voterBallotLocation && voterBallotLocation.voter_entered_address) {
+      voterEnteredAddress = true;
     }
 
-    if (voter_ballot_location && voter_ballot_location.voter_specific_ballot_from_google_civic) {
-      voter_specific_ballot_from_google_civic = true;
+    if (voterBallotLocation && voterBallotLocation.voter_specific_ballot_from_google_civic) {
+      voterSpecificBallotFromGoogleCivic = true;
     }
 
     if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_location_display_name) {
       // console.log("BallotStore.ballotProperties:", BallotStore.ballotProperties);
-      ballot_location_display_name = BallotStore.ballotProperties.ballot_location_display_name;
-    } else if (voter_ballot_location && voter_ballot_location.ballot_location_display_name) {
+      ballotLocationDisplayName = BallotStore.ballotProperties.ballot_location_display_name;
+    } else if (voterBallotLocation && voterBallotLocation.ballot_location_display_name) {
       // Get the location name from the VoterStore address object
-      // console.log("voter_ballot_location:", voter_ballot_location);
-      ballot_location_display_name = voter_ballot_location.ballot_location_display_name;
+      // console.log("voterBallotLocation:", voterBallotLocation);
+      ballotLocationDisplayName = voterBallotLocation.ballot_location_display_name;
     }
 
     if (BallotStore.ballotProperties && BallotStore.ballotProperties.substituted_address_nearby) {
       if (BallotStore.ballotProperties.substituted_address_city && BallotStore.ballotProperties.substituted_address_state && BallotStore.ballotProperties.substituted_address_zip) {
-        substituted_address_nearby = `${BallotStore.ballotProperties.substituted_address_city}, `;
-        substituted_address_nearby += `${BallotStore.ballotProperties.substituted_address_state} `;
-        substituted_address_nearby += BallotStore.ballotProperties.substituted_address_zip;
+        substitutedAddressNearby = `${BallotStore.ballotProperties.substituted_address_city}, `;
+        substitutedAddressNearby += `${BallotStore.ballotProperties.substituted_address_state} `;
+        substitutedAddressNearby += BallotStore.ballotProperties.substituted_address_zip;
       } else {
-        substituted_address_nearby = BallotStore.ballotProperties.substituted_address_nearby;
+        substitutedAddressNearby = BallotStore.ballotProperties.substituted_address_nearby;
       }
-    } else if (voter_ballot_location && voter_ballot_location.text_for_map_search) {
+    } else if (voterBallotLocation && voterBallotLocation.text_for_map_search) {
       // Get the location from the VoterStore address object
-      substituted_address_nearby = voter_ballot_location.text_for_map_search;
+      substitutedAddressNearby = voterBallotLocation.text_for_map_search;
     }
-    // console.log("BallotStatusMessage, onBallotStoreChange, election_day_text: ", election_day_text, "election_is_upcoming: ", election_is_upcoming, "substituted_address_nearby: ", substituted_address_nearby);
+    // console.log("BallotStatusMessage, onBallotStoreChange, electionDayText: ", electionDayText, "electionIsUpcoming: ", electionIsUpcoming, "substitutedAddressNearby: ", substitutedAddressNearby);
     this.setState({
-      ballot_location_display_name,
-      election_day_text,
-      election_is_upcoming,
-      google_civic_data_exists,
-      substituted_address_nearby,
-      voter_entered_address,
-      voter_specific_ballot_from_google_civic,
+      ballotLocationDisplayName,
+      electionDayText,
+      electionIsUpcoming,
+      substitutedAddressNearby,
+      voterEnteredAddress,
+      voterSpecificBallotFromGoogleCivic,
     });
   }
 
   handleMessageClose () {
     // setting cookie to track the elections where user has closed the warning messages for them
-    if (this.props.google_civic_election_id) {
-      const electionsWithBallotStatusMessageClosedUpdated = [...this.state.elections_with_ballot_status_message_closed, this.props.google_civic_election_id];
+    if (this.props.googleCivicElectionId) {
+      const { electionsWithBallotStatusMessageClosed } = this.state;
+      const electionsWithBallotStatusMessageClosedUpdated = [...electionsWithBallotStatusMessageClosed, this.props.googleCivicElectionId];
       const electionsWithBallotStatusMessageClosedForCookie = JSON.stringify(electionsWithBallotStatusMessageClosedUpdated);
       cookies.setItem("elections_with_ballot_status_message_closed", electionsWithBallotStatusMessageClosedForCookie, Infinity, "/");
       this.setState({
-        elections_with_ballot_status_message_closed: electionsWithBallotStatusMessageClosedUpdated,
+        electionsWithBallotStatusMessageClosed: electionsWithBallotStatusMessageClosedUpdated,
       });
     }
   }
@@ -174,25 +173,25 @@ export default class BallotStatusMessage extends Component {
     let ballotStatusStyle;
     let messageString = "";
     const today = moment(new Date());
-    const isVotingDay = today.isSame(this.state.election_day_text, "day");
+    const isVotingDay = today.isSame(this.state.electionDayText, "day");
 
     if (isVotingDay) {
       ballotStatusStyle = "alert-info";
       messageString = `It is Voting Day,  ${
-        moment(this.state.election_day_text).format("MMM Do, YYYY")
+        moment(this.state.electionDayText).format("MMM Do, YYYY")
       }.  If you haven't already voted, please go vote!`;
       // I don't think this is necessary on election day.
-      // messageString += !this.state.voter_specific_ballot_from_google_civic && this.state.ballot_location_chosen && this.state.ballot_location_display_name ?
+      // messageString += !this.state.voterSpecificBallotFromGoogleCivic && this.state.ballotLocationChosen && this.state.ballotLocationDisplayName ?
       //   "  Some items shown below may not have been on your official ballot." : "  Some items below may not have been on your official ballot.";
-    } else if (this.state.election_is_upcoming) {
+    } else if (this.state.electionIsUpcoming) {
       ballotStatusStyle = "alert-info";
-      if (this.state.voter_specific_ballot_from_google_civic) {
+      if (this.state.voterSpecificBallotFromGoogleCivic) {
         // We do not have an equivalent flag when we retrieve a ballot from Ballotpedia
         messageString += ""; // No additional text
-      } else if (this.state.ballot_location_chosen && this.state.substituted_address_nearby) {
-        messageString += `This is a ballot for ${this.state.substituted_address_nearby}.`;
+      } else if (this.state.ballotLocationChosen && this.state.substitutedAddressNearby) {
+        messageString += `This is a ballot for ${this.state.substitutedAddressNearby}.`;
         // This does not make sense when using Ballotpedia, since we don't know if voter entered a full address:  Enter your full address to see your official ballot.
-      } else if (this.state.voter_entered_address) {
+      } else if (this.state.voterEnteredAddress) {
         messageString += "This is our best guess for what's on your ballot.";
         // I'm not sure we need to introduce doubt, expecially since sometime this appears after someone enters their full address.
         // messageString += "Some items below may not be on your official ballot.";
@@ -200,15 +199,15 @@ export default class BallotStatusMessage extends Component {
     } else {
       ballotStatusStyle = "alert-info";
       let messageInPastString;
-      if (this.state.election_day_text) {
-        messageInPastString = `This election was held on ${moment(this.state.election_day_text).format("MMM Do, YYYY")}.`;
+      if (this.state.electionDayText) {
+        messageInPastString = `This election was held on ${moment(this.state.electionDayText).format("MMM Do, YYYY")}.`;
       } else {
         messageInPastString = ""; // Was "This election has passed." but it showed up inaccurately.
       }
 
-      if (this.state.voter_specific_ballot_from_google_civic) {
+      if (this.state.voterSpecificBallotFromGoogleCivic) {
         messageString += messageInPastString; // No additional text
-      } else if (this.state.ballot_location_chosen && this.state.ballot_location_display_name) {
+      } else if (this.state.ballotLocationChosen && this.state.ballotLocationDisplayName) {
         messageString += messageInPastString;
         // Not sure the benefit of adding this doubt. messageString += " Some items shown below may not have been on your official ballot.";
       } else {
@@ -223,13 +222,13 @@ export default class BallotStatusMessage extends Component {
     }
 
     let electionBallotStatusMessageShouldBeClosed = false;
-    if (this.props.google_civic_election_id) {
-      electionBallotStatusMessageShouldBeClosed = this.state.elections_with_ballot_status_message_closed.includes(this.props.google_civic_election_id);
+    if (this.props.googleCivicElectionId) {
+      electionBallotStatusMessageShouldBeClosed = this.state.electionsWithBallotStatusMessageClosed.includes(this.props.googleCivicElectionId);
     }
 
     if (electionBallotStatusMessageShouldBeClosed) {
       return null;
-    } else if (this.state.show_ballot_status && messageStringLength > 0) {
+    } else if (this.state.showBallotStatus && messageStringLength > 0) {
       return (
         <div className="u-stack--sm d-print-none">
           <div className={`alert ${ballotStatusStyle}`}>
