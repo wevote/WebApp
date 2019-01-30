@@ -16,8 +16,8 @@ class VoterStore extends ReduceStore {
         state_code_from_ip_address: "",
       },
       address: {},
-      email_address_status: {},
-      email_sign_in_status: {},
+      emailAddressStatus: {},
+      emailSignInStatus: {},
       facebook_sign_in_status: {},
       facebook_photo_retrieve_loop_count: 0,
       voter_found: false,
@@ -27,20 +27,7 @@ class VoterStore extends ReduceStore {
   }
 
   resetState () {
-    return {
-      voter: {
-        interface_status_flags: 0,
-        state_code_from_ip_address: "",
-      },
-      address: {},
-      email_address_status: {},
-      email_sign_in_status: {},
-      facebook_sign_in_status: {},
-      facebook_photo_retrieve_loop_count: 0,
-      voter_found: false,
-      voter_donation_history_list: {},
-      latest_google_civic_election_id: 0,
-    };
+    return this.getInitialState();
   }
 
   getVoter () {
@@ -82,11 +69,11 @@ class VoterStore extends ReduceStore {
   }
 
   getEmailAddressStatus () {
-    return this.getState().email_address_status;
+    return this.getState().emailAddressStatus;
   }
 
   getEmailSignInStatus () {
-    return this.getState().email_sign_in_status;
+    return this.getState().emailSignInStatus;
   }
 
   getFacebookPhoto () {
@@ -202,7 +189,7 @@ class VoterStore extends ReduceStore {
   }
 
   // isVerificationEmailSent () {
-  //   return this.getState().email_address_status.verification_email_sent;
+  //   return this.getState().emailAddressStatus.verification_email_sent;
   // }
 
   reduce (state, action) {
@@ -294,13 +281,13 @@ class VoterStore extends ReduceStore {
         VoterActions.voterRetrieve();
         return {
           ...state,
-          email_address_status: {
+          emailAddressStatus: {
             email_ownership_is_verified: action.res.email_ownership_is_verified,
             email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
             email_verify_attempted: action.res.email_verify_attempted,
             email_address_found: action.res.email_address_found,
           },
-          email_sign_in_status: {
+          emailSignInStatus: {
             email_ownership_is_verified: action.res.email_ownership_is_verified,
             email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
             email_sign_in_attempted: action.res.email_verify_attempted,
@@ -373,7 +360,7 @@ class VoterStore extends ReduceStore {
         return {
           ...state,
           email_address_list: action.res.email_address_list,
-          email_address_status: {
+          emailAddressStatus: {
             email_verify_attempted: action.res.email_verify_attempted,
             email_address_already_owned_by_other_voter: action.res.email_address_already_owned_by_other_voter,
             email_address_created: action.res.email_address_created,
@@ -387,7 +374,7 @@ class VoterStore extends ReduceStore {
         VoterActions.voterRetrieve();
         return {
           ...state,
-          email_sign_in_status: {
+          emailSignInStatus: {
             email_sign_in_attempted: action.res.email_sign_in_attempted,
             email_ownership_is_verified: action.res.email_ownership_is_verified,
             email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
@@ -402,13 +389,13 @@ class VoterStore extends ReduceStore {
         VoterActions.voterRetrieve();
         return {
           ...state,
-          email_address_status: {
+          emailAddressStatus: {
             email_ownership_is_verified: action.res.email_ownership_is_verified,
             email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
             email_verify_attempted: action.res.email_verify_attempted,
             email_address_found: action.res.email_address_found,
           },
-          email_sign_in_status: {
+          emailSignInStatus: {
             email_ownership_is_verified: action.res.email_ownership_is_verified,
             email_secret_key_belongs_to_this_voter: action.res.email_secret_key_belongs_to_this_voter,
             email_sign_in_attempted: action.res.email_verify_attempted,
@@ -438,7 +425,7 @@ class VoterStore extends ReduceStore {
         SupportActions.positionsCountForAllBallotItems();
         return {
           ...state,
-          email_sign_in_status: {
+          emailSignInStatus: {
             email_ownership_is_verified: true,
             email_secret_key_belongs_to_this_voter: true,
             email_sign_in_attempted: true,
