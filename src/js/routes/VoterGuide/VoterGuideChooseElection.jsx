@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
@@ -12,23 +11,15 @@ import VoterStore from "../../stores/VoterStore";
 
 export default class VoterGuideChooseElection extends Component {
   static propTypes = {
-    closeEditFormOnChoice: PropTypes.bool, // When a voter makes a choice, close the edit form
-    editFormOpen: PropTypes.bool, // Normally we load this component with the edit options closed
-    showEditToggleOption: PropTypes.bool, // Should the voter be able to hide/show the form fields
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      autoFocus: true,
       linkedOrganizationWeVoteId: "",
       searchResultsOrganizationName: "",
-      twitterHandleEntered: "",
-      twitterSearchStatus: "",
-      electionsLocationsList: [],
     };
     this.onOrganizationStoreChange = this.onOrganizationStoreChange.bind(this);
-    this.resetState = this.resetState.bind(this);
     this.saveAndGoToOrganizationInfo = this.saveAndGoToOrganizationInfo.bind(this);
   }
 
@@ -41,9 +32,6 @@ export default class VoterGuideChooseElection extends Component {
     AnalyticsActions.saveActionElections(VoterStore.election_id());
     AnalyticsActions.saveActionVoterGuideGetStarted(VoterStore.election_id());
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    this.setState({
-      autoFocus: true,
-    });
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // Get Voter and Voter's Organization
     const voter = VoterStore.getVoter();
@@ -54,11 +42,7 @@ export default class VoterGuideChooseElection extends Component {
         linkedOrganizationWeVoteId,
       });
       const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
-      if (organization && organization.organization_we_vote_id) {
-        this.setState({
-          organization,
-        });
-      } else {
+      if (organization === undefined || organization.organization_we_vote_id === undefined) {
         OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
       }
     }
@@ -72,26 +56,9 @@ export default class VoterGuideChooseElection extends Component {
   }
 
   onOrganizationStoreChange () {
-    const twitterHandleFound = OrganizationStore.getOrganizationSearchResultsTwitterHandle();
-
-    let twitterSearchStatus = "";
-    if (this.state.twitterHandleEntered.length) {
-      if (twitterHandleFound.length) {
-        twitterSearchStatus += "Voter guide found!";
-      } else {
-        twitterSearchStatus += "Voter guide not found.";
-      }
-    }
-
     this.setState({
-      isLoading: false,
-      isTwitterHandleValid: twitterHandleFound.length,
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId),
       searchResultsOrganizationName: OrganizationStore.getOrganizationSearchResultsOrganizationName(),
-      searchResultsTwitterHandle: OrganizationStore.getOrganizationSearchResultsTwitterHandle(),
       searchResultsWebsite: OrganizationStore.getOrganizationSearchResultsWebsite(),
-      twitterSearchStatus,
-      twitterHandle: twitterHandleFound,
     });
   }
 
@@ -105,24 +72,14 @@ export default class VoterGuideChooseElection extends Component {
     }
   }
 
-  resetState () {
-    this.setState({
-      autoFocus: true,
-      isLoading: false,
-      isTwitterHandleValid: false,
-      twitterSearchStatus: "",
-      twitterHandle: "",
-    });
+  goToVoterGuideChoosePositions = (voterGuideWeVoteId) => {
+    const voterGuideBallotItems = `/voterguidepositions/${voterGuideWeVoteId}`;
+    historyPush(voterGuideBallotItems);
   }
 
   goToBallotLink () {
     const sampleBallotLink = "/ballot";
     historyPush(sampleBallotLink);
-  }
-
-  goToVoterGuideChoosePositions (voterGuideWeVoteId) {
-    const voterGuideBallotItems = `/voterguidepositions/${voterGuideWeVoteId}`;
-    historyPush(voterGuideBallotItems);
   }
 
   saveAndGoToOrganizationInfo () {
@@ -148,7 +105,7 @@ export default class VoterGuideChooseElection extends Component {
           <div className="row">
             <div className="col-1 col-md-2">&nbsp;</div>
             <div className="col-10 col-md-8">
-              <ChooseElectionForVoterGuide destinationFunction={this.goToVoterGuideChoosePositions.bind(this)} />
+              <ChooseElectionForVoterGuide destinationFunction={this.goToVoterGuideChoosePositions} />
             </div>
             <div className="col-1 col-md-2">&nbsp;</div>
           </div>

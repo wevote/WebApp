@@ -76,14 +76,6 @@ function checkShouldUpdate (state, nextState) {
     // console.log("shouldComponentUpdate: state.showBallotSummaryModal", state.showBallotSummaryModal, ", nextState.showBallotSummaryModal", nextState.showBallotSummaryModal);
     return true;
   }
-  if (state.showCandidateModal !== nextState.showCandidateModal) {
-    // console.log("shouldComponentUpdate: state.showCandidateModal", state.showCandidateModal, ", nextState.showCandidateModal", nextState.showCandidateModal);
-    return true;
-  }
-  if (state.showMeasureModal !== nextState.showMeasureModal) {
-    // console.log("shouldComponentUpdate: state.showMeasureModal", state.showMeasureModal, ", nextState.showMeasureModal", nextState.showMeasureModal);
-    return true;
-  }
   if (state.showSelectBallotModal !== nextState.showSelectBallotModal) {
     // console.log("shouldComponentUpdate: state.showSelectBallotModal", state.showSelectBallotModal, ", nextState.showSelectBallotModal", nextState.showSelectBallotModal);
     return true;

@@ -14,8 +14,6 @@ import BallotStatusMessage from "../Ballot/BallotStatusMessage";
 import BallotStore from "../../stores/BallotStore";
 import BallotSummaryModal from "../Ballot/BallotSummaryModal";
 import BrowserPushMessage from "../Widgets/BrowserPushMessage";
-import CandidateActions from "../../actions/CandidateActions";
-import CandidateModal from "../Ballot/CandidateModal";
 import cookies from "../../utils/cookies";
 import {
   cordovaDot, historyPush, isCordova, isWebApp,
@@ -24,8 +22,6 @@ import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
 import isMobile from "../../utils/isMobile";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import MeasureActions from "../../actions/MeasureActions";
-import MeasureModal from "../Ballot/MeasureModal";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import PledgeToSupportOrganizationButton from "./PledgeToSupportOrganizationButton";
@@ -81,8 +77,6 @@ export default class VoterGuideBallot extends Component {
       mounted: false,
       organization: {},
       showBallotIntroModal: false,
-      showCandidateModal: false,
-      showMeasureModal: false,
       showSelectBallotModal: false,
       showBallotSummaryModal: false,
       voterBallotList: [],
@@ -95,8 +89,6 @@ export default class VoterGuideBallot extends Component {
     this.ballotItemsCompressedReference = {};
     this.nullFunction = this.nullFunction.bind(this);
     this.pledgeToVoteWithVoterGuide = this.pledgeToVoteWithVoterGuide.bind(this);
-    this.toggleCandidateModal = this.toggleCandidateModal.bind(this);
-    this.toggleMeasureModal = this.toggleMeasureModal.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.toggleBallotSummaryModal = this.toggleBallotSummaryModal.bind(this);
     this.updateOfficeDisplayUnfurledTracker = this.updateOfficeDisplayUnfurledTracker.bind(this);
@@ -396,14 +388,6 @@ export default class VoterGuideBallot extends Component {
       // console.log("shouldComponentUpdate: this.state.showBallotSummaryModal", this.state.showBallotSummaryModal, ", nextState.showBallotSummaryModal", nextState.showBallotSummaryModal);
       return true;
     }
-    if (this.state.showCandidateModal !== nextState.showCandidateModal) {
-      // console.log("shouldComponentUpdate: this.state.showCandidateModal", this.state.showCandidateModal, ", nextState.showCandidateModal", nextState.showCandidateModal);
-      return true;
-    }
-    if (this.state.showMeasureModal !== nextState.showMeasureModal) {
-      // console.log("shouldComponentUpdate: this.state.showMeasureModal", this.state.showMeasureModal, ", nextState.showMeasureModal", nextState.showMeasureModal);
-      return true;
-    }
     if (this.state.showSelectBallotModal !== nextState.showSelectBallotModal) {
       // console.log("shouldComponentUpdate: this.state.showSelectBallotModal", this.state.showSelectBallotModal, ", nextState.showSelectBallotModal", nextState.showSelectBallotModal);
       return true;
@@ -426,20 +410,6 @@ export default class VoterGuideBallot extends Component {
     console.error("VoterGuideBallot caught error: ", `${error} with info: `, info);
   }
 
-  toggleCandidateModal (candidateForModal) {
-    if (candidateForModal) {
-      // Slows down the browser too much when run for all candidates
-      // VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(candidateForModal.we_vote_id, "CANDIDATE");
-      candidateForModal.voter_guides_to_follow_for_latest_ballot_item = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(candidateForModal.we_vote_id);
-      CandidateActions.positionListForBallotItem(candidateForModal.we_vote_id);
-    }
-
-    this.setState({
-      candidateForModal,
-      showCandidateModal: !this.state.showCandidateModal,
-    });
-  }
-
   toggleBallotIntroModal () {
     if (this.state.location.hash.includes("#")) {
       // Clear out any # from anchors in the URL
@@ -447,20 +417,6 @@ export default class VoterGuideBallot extends Component {
     }
 
     this.setState({ showBallotIntroModal: !this.state.showBallotIntroModal });
-  }
-
-  toggleMeasureModal (measureForModal) {
-    // console.log("toggleMeasureModal, measureForModal: ", measureForModal);
-    if (measureForModal) {
-      VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(measureForModal.we_vote_id, "MEASURE");
-      measureForModal.voter_guides_to_follow_for_latest_ballot_item = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(measureForModal.we_vote_id);
-      MeasureActions.positionListForBallotItem(measureForModal.we_vote_id);
-    }
-
-    this.setState({
-      measureForModal,
-      showMeasureModal: !this.state.showMeasureModal,
-    });
   }
 
   toggleSelectBallotModal () {
@@ -813,8 +769,6 @@ export default class VoterGuideBallot extends Component {
     return (
       <div className="ballot">
         { this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
-        { this.state.showMeasureModal ? <MeasureModal show={this.state.showMeasureModal} toggleFunction={this.toggleMeasureModal} measure={this.state.measureForModal} /> : null }
-        { this.state.showCandidateModal ? <CandidateModal show={this.state.showCandidateModal} toggleFunction={this.toggleCandidateModal} candidate={this.state.candidateForModal} /> : null }
         { this.state.showSelectBallotModal ? (
           <SelectBallotModal
             ballotElectionList={this.state.ballotElectionList}
@@ -913,8 +867,6 @@ export default class VoterGuideBallot extends Component {
                   <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
                     {ballotWithOrganizationEndorsements.map(item => (
                       <VoterGuideBallotItemCompressed
-                        toggleCandidateModal={this.toggleCandidateModal}
-                        toggleMeasureModal={this.toggleMeasureModal}
                         key={item.we_vote_id}
                         organization={this.props.organization}
                         organization_we_vote_id={this.props.organization.organization_we_vote_id}
@@ -989,8 +941,6 @@ export default class VoterGuideBallot extends Component {
                             key={item.we_vote_id}
                             organization={this.props.organization}
                             organization_we_vote_id={this.props.organization.organization_we_vote_id}
-                            toggleCandidateModal={this.toggleCandidateModal}
-                            toggleMeasureModal={this.toggleMeasureModal}
                             updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
                             urlWithoutHash={this.props.location.pathname + this.props.location.search}
                             ref={(ref) => { this.ballotItemsCompressedReference[item.we_vote_id] = ref; }}

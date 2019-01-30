@@ -22,19 +22,15 @@ export default class CandidateItem extends Component {
     candidate_photo_url_medium: PropTypes.string,
     contest_office_name: PropTypes.string,
     showLargeImage: PropTypes.bool,
-    commentButtonHide: PropTypes.bool,
-    hideOpinionsToFollow: PropTypes.bool,
     hidePositionStatement: PropTypes.bool,
     link_to_ballot_item_page: PropTypes.bool,
     linkToOfficePage: PropTypes.bool,
     organizationWeVoteId: PropTypes.string,
     party: PropTypes.string,
-    position_list: PropTypes.array,
-    showPositionsInYourNetworkBreakdown: PropTypes.bool,
     showPositionStatementActionBar: PropTypes.bool,
     twitter_description: PropTypes.string,
     twitter_followers_count: PropTypes.number,
-    twitter_handle: PropTypes.string,
+    // twitter_handle: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired, // This is the candidate_we_vote_id
   };
 
@@ -42,8 +38,7 @@ export default class CandidateItem extends Component {
     super(props);
     this.state = {
       candidateWeVoteId: "",
-      hide_position_statement: this.props.hidePositionStatement,
-      maximum_organization_display: 5,
+      hidePositionStatement: this.props.hidePositionStatement,
       officeWeVoteId: "",
       transitioning: false,
     };
@@ -57,11 +52,10 @@ export default class CandidateItem extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    const supportProps = SupportStore.get(this.props.we_vote_id);
-    if (supportProps !== undefined) {
+    const candidateSupportProps = SupportStore.get(this.props.we_vote_id);
+    if (candidateSupportProps !== undefined) {
       this.setState({
-        supportProps,
-        transitioning: false,
+        candidateSupportProps,
       });
     }
 
@@ -95,14 +89,10 @@ export default class CandidateItem extends Component {
   }
 
   onSupportStoreChange () {
-    const supportProps = SupportStore.get(this.state.candidateWeVoteId);
-    if (supportProps !== undefined) {
-      this.setState({ supportProps, transitioning: false });
+    const candidateSupportProps = SupportStore.get(this.state.candidateWeVoteId);
+    if (candidateSupportProps !== undefined) {
+      this.setState({ candidateSupportProps });
     }
-  }
-
-  togglePositionStatement () {
-    this.setState({ hide_position_statement: !this.state.hide_position_statement });
   }
 
   getCandidateLink () {
@@ -122,6 +112,11 @@ export default class CandidateItem extends Component {
     } else return "";
   }
 
+  togglePositionStatement () {
+    const { hidePositionStatement } = this.state;
+    this.setState({ hidePositionStatement: !hidePositionStatement });
+  }
+
   goToCandidateLink () {
     // If here, we assume the voter is on the Office page
     historyPush(this.getCandidateLink());
@@ -138,13 +133,11 @@ export default class CandidateItem extends Component {
       ballotpedia_candidate_summary: ballotpediaCandidateSummary,
       ballotpedia_candidate_url: ballotpediaCandidateUrl,
       party,
-      we_vote_id: weVoteId,
+      we_vote_id: candidateWeVoteId,
       twitter_description: twitterDescription,
       twitter_followers_count: twitterFollowersCount,
       contest_office_name: contestOfficeName,
     } = this.props;
-
-    const candidateWeVoteId = weVoteId;
 
     let candidatePhotoUrl;
     if (this.props.showLargeImage) {
@@ -177,33 +170,9 @@ export default class CandidateItem extends Component {
     ballotpediaCandidateSummaryText = ballotpediaCandidateSummaryText.split(/<[^<>]*>/).join("");
     const candidateText = twitterDescriptionText + ballotpediaCandidateSummaryText;
 
-    // let positions_in_your_network = SupportStore.get(twitterDescription) && ( SupportStore.get(weVoteId).oppose_count || SupportStore.get(weVoteId).support_count);
-
     const oneCandidate = CandidateStore.getCandidate(candidateWeVoteId);
-    const candidateSupportStore = SupportStore.get(candidateWeVoteId);
     const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidateWeVoteId);
     const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidateWeVoteId);
-
-    const positionsDisplayRaccoon = (
-      <div>
-        <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
-          {/* Positions in Your Network and Possible Voter Guides to Follow */}
-          <ItemSupportOpposeRaccoon
-            ballotItemWeVoteId={candidateWeVoteId}
-            ballot_item_display_name={oneCandidate.ballot_item_display_name}
-            goToCandidate={this.goToCandidateLink}
-            maximumOrganizationDisplay={8}
-            organizationsToFollowSupport={organizationsToFollowSupport}
-            organizationsToFollowOppose={organizationsToFollowOppose}
-            popoverBottom
-            showIssueList
-            showPositionStatementActionBar={this.props.showPositionStatementActionBar}
-            supportProps={candidateSupportStore}
-            type="CANDIDATE"
-          />
-        </div>
-      </div>
-    );
 
     return (
       <div className="card-main candidate-card">
@@ -281,7 +250,24 @@ export default class CandidateItem extends Component {
         {" "}
         {/* END .card-main__media-object */}
         <div className="card-main__actions">
-          {positionsDisplayRaccoon}
+          <div>
+            <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
+              {/* Positions in Your Network and Possible Voter Guides to Follow */}
+              <ItemSupportOpposeRaccoon
+                ballotItemWeVoteId={candidateWeVoteId}
+                ballot_item_display_name={oneCandidate.ballot_item_display_name}
+                goToCandidate={this.goToCandidateLink}
+                maximumOrganizationDisplay={8}
+                organizationsToFollowSupport={organizationsToFollowSupport}
+                organizationsToFollowOppose={organizationsToFollowOppose}
+                popoverBottom
+                showIssueList
+                showPositionStatementActionBar={this.props.showPositionStatementActionBar}
+                supportProps={this.state.candidateSupportProps}
+                type="CANDIDATE"
+              />
+            </div>
+          </div>
         </div>
       </div>
     );

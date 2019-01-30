@@ -2,20 +2,13 @@ import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
 import SettingsWidgetAccountType from "../../components/Settings/SettingsWidgetAccountType";
-import VoterStore from "../../stores/VoterStore";
 
 export default class VoterGuideOrganizationType extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      autoFocus: true,
-      searchResultsOrganizationName: "",
-      twitterSearchStatus: "",
     };
-    this.resetState = this.resetState.bind(this);
   }
 
   componentWillMount () {
@@ -25,78 +18,23 @@ export default class VoterGuideOrganizationType extends Component {
 
   componentDidMount () {
     // AnalyticsActions.saveActionVoterGuideGetStarted(VoterStore.election_id());
-    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    this.setState({
-      autoFocus: true,
-    });
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    // Get Voter and Voter's Organization
-    const voter = VoterStore.getVoter();
-    if (voter && voter.is_signed_in) {
-      historyPush("/voterguidechooseelection");
-    }
-    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
-    // console.log("SettingsDashboard componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
-    if (linkedOrganizationWeVoteId) {
-      this.setState({
-        linkedOrganizationWeVoteId,
-      });
-      const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
-      if (organization && organization.organization_we_vote_id) {
-        this.setState({
-          organization,
-        });
-      } else {
-        OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
-      }
-    }
   }
 
   componentWillUnmount () {
     document.body.style.backgroundColor = null;
     document.body.className = "";
-    this.organizationStoreListener.remove();
     this.timer = null;
   }
 
-  onOrganizationStoreChange () {
-    this.setState({
-      isLoading: false,
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId),
-    });
-  }
-
-  onVoterStoreChange () {
-    const voter = VoterStore.getVoter();
-    if (voter && voter.is_signed_in) {
-      historyPush("/voterguidechooseelection");
-    }
-    const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
-    // console.log("SettingsDashboard onVoterStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
-    if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
-      OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
-      this.setState({ linkedOrganizationWeVoteId });
-    }
-  }
-
-  resetState () {
-    this.setState({
-      autoFocus: true,
-      isLoading: false,
-      isTwitterHandleValid: false,
-      twitterSearchStatus: "",
-      twitterHandle: "",
-    });
-  }
-
-  goToBallotLink () {
+  goToBallotLink = () => {
     const sampleBallotLink = "/ballot";
     historyPush(sampleBallotLink);
   }
 
-  goToOrganizationInfo () {
+  goToOrganizationInfo = () => {
     historyPush("/voterguideorginfo");
   }
+
 
   render () {
     renderLog(__filename);

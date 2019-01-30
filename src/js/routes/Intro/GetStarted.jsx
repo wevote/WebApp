@@ -8,7 +8,7 @@ import { renderLog } from "../../utils/logging";
 import TwitterSignIn from "../../components/Twitter/TwitterSignIn";
 import VoterStore from "../../stores/VoterStore";
 
-export default class SignIn extends Component {
+export default class GetStarted extends Component {
   constructor (props) {
     super(props);
     this.state = {

@@ -18,19 +18,16 @@ import { isProperlyFormattedVoterGuideWeVoteId } from "../../utils/textFormat";
 
 export default class VoterGuideChoosePositions extends Component {
   static propTypes = {
-    location: PropTypes.object,
     params: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      autoFocus: true,
       clearSearchTextNow: false,
       searchIsUnderway: false,
       linkedOrganizationWeVoteId: "",
       organization: {},
-      organizationName: "",
       voter: {},
       voterGuide: {},
       voterGuideWeVoteId: "",
@@ -127,9 +124,10 @@ export default class VoterGuideChoosePositions extends Component {
 
 
   onOrganizationStoreChange () {
+    const { linkedOrganizationWeVoteId } = this.state;
     // console.log("voterGuideChoosePositions onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId),
+      organization: OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId),
     });
   }
 
@@ -141,7 +139,6 @@ export default class VoterGuideChoosePositions extends Component {
         // console.log("voterGuideChoosePositions onVoterGuideStoreChange voterGuide FOUND");
         this.setState({
           voterGuide,
-          voterGuideName: voterGuide.voter_guide_display_name,
         });
       }
     }

@@ -79,7 +79,8 @@ export default class VoterGuideGetStarted extends Component {
       }
     }
     const voter = VoterStore.getVoter();
-    const organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
+    const { linkedOrganizationWeVoteId } = this.state;
+    const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
     this.leaveThisComponentIfProfileComplete(voter, organization);
     this.setState({
       isLoadingTwitterData: false,
@@ -89,7 +90,6 @@ export default class VoterGuideGetStarted extends Component {
       searchResultsTwitterHandle: OrganizationStore.getOrganizationSearchResultsTwitterHandle(),
       searchResultsWebsite: OrganizationStore.getOrganizationSearchResultsWebsite(),
       twitterSearchStatus,
-      twitterHandle: twitterHandleFound,
     });
 
     if (twitterHandleFound.length && this.state.didUserPressEnter) {
@@ -111,23 +111,30 @@ export default class VoterGuideGetStarted extends Component {
     }
   }
 
-  resetState () {
-    this.setState({
-      didUserPressEnter: false,
-      isLoadingTwitterData: false,
-      isTwitterHandleValid: false,
-      twitterSearchStatus: "",
-      twitterHandle: "",
-    });
-  }
-
-  goToBallotLink () {
+  goToBallotLink = () => {
     const sampleBallotLink = "/ballot";
     historyPush(sampleBallotLink);
   }
 
-  goToOrganizationType () {
+  goToOrganizationType = () => {
     historyPush("/voterguideorgtype");
+  }
+
+  validOrganizationNameExists = (voter, organization) => {
+    // We want to keep encouraging organizations to enter a Website
+    if (voter && organization) {
+      let voterAndOrganizationNameMatches = false;
+      if (voter.first_name && organization.organization_name) {
+        if (voter.first_name === organization.organization_name) {
+          voterAndOrganizationNameMatches = true;
+        }
+      }
+      // Everyone requires a valid organization name
+      if (organization.organization_name && organization.organization_name.length > 3 && !organization.organization_name.startsWith("Voter-") && !voterAndOrganizationNameMatches) {
+        return true;
+      }
+    }
+    return false;
   }
 
   formSubmitHandler (e) {
@@ -152,35 +159,17 @@ export default class VoterGuideGetStarted extends Component {
 
   leaveThisComponentIfProfileComplete (voter, organization) {
     if (voter && organization) {
-      const validOrganizationNameExists = this.validOrganizationNameExists(voter, organization);
       if (voter && voter.is_signed_in) {
         // If voter is signed in, skip "/voterguideorgtype"
         historyPush("/voterguideorginfo");
       } else if (voter && voter.organization_type && voter.organization_type !== "I") {
         // If voter is NOT an INDIVIDUAL, skip "/voterguideorgtype"
         historyPush("/voterguideorginfo");
-      } else if (validOrganizationNameExists) {
+      } else if (this.validOrganizationNameExists(voter, organization)) {
         // If they have already chosen a valid name, then don't ask for Twitter handle
         historyPush("/voterguideorginfo");
       }
     }
-  }
-
-  validOrganizationNameExists (voter, organization) {
-    // We want to keep encouraging organizations to enter a Website
-    if (voter && organization) {
-      let voter_and_organization_name_matches = false;
-      if (voter.first_name && organization.organization_name) {
-        if (voter.first_name === organization.organization_name) {
-          voter_and_organization_name_matches = true;
-        }
-      }
-      // Everyone requires a valid organization name
-      if (organization.organization_name && organization.organization_name.length > 3 && !organization.organization_name.startsWith("Voter-") && !voter_and_organization_name_matches) {
-        return true;
-      }
-    }
-    return false;
   }
 
   validateTwitterHandle (event) {
@@ -202,6 +191,15 @@ export default class VoterGuideGetStarted extends Component {
     this.timer = setTimeout(() => {
       OrganizationActions.organizationSearch("", twitterHandle, true);
     }, delayBeforeApiSearchCall);
+  }
+
+  resetState () {
+    this.setState({
+      didUserPressEnter: false,
+      isLoadingTwitterData: false,
+      isTwitterHandleValid: false,
+      twitterSearchStatus: "",
+    });
   }
 
   render () {

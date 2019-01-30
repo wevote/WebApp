@@ -17,13 +17,13 @@ export default class MeasureItem extends Component {
     commentButtonHide: PropTypes.bool,
     currentBallotIdInUrl: PropTypes.string,
     election_display_name: PropTypes.string,
-    kind_of_ballot_item: PropTypes.string.isRequired,
+    // kind_of_ballot_item: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
     measure_subtitle: PropTypes.string,
     measure_text: PropTypes.string,
-    measure_url: PropTypes.string,
+    // measure_url: PropTypes.string,
     state_code: PropTypes.string,
-    position_list: PropTypes.array,
+    positionList: PropTypes.array,
     regional_display_name: PropTypes.string,
     state_display_name: PropTypes.string,
     showPositionsInYourNetworkBreakdown: PropTypes.bool,
@@ -70,51 +70,53 @@ export default class MeasureItem extends Component {
     renderLog(__filename);
     const { supportProps, transitioning } = this.state;
     let {
-      ballot_item_display_name, measure_subtitle, state_display_name,
+      ballot_item_display_name: ballotItemDisplayName, measure_subtitle: measureSubtitle,
+      state_display_name: stateDisplayName,
     } = this.props;
     const {
-      measure_text, we_vote_id, election_display_name, regional_display_name,
+      measure_text: measureText, we_vote_id: measureWeVoteId, election_display_name: electionDisplayName,
+      regional_display_name: regionalDisplayName, state_code: stateCode,
     } = this.props;
-    if (state_display_name === undefined && this.props.state_code) {
-      state_display_name = this.props.state_code.toUpperCase();
+    if (stateDisplayName === undefined && stateCode) {
+      stateDisplayName = stateCode.toUpperCase();
     }
 
-    const num_of_lines = 2;
-    measure_subtitle = capitalizeString(measure_subtitle);
-    ballot_item_display_name = capitalizeString(ballot_item_display_name);
+    const numberOfLines = 2;
+    measureSubtitle = capitalizeString(measureSubtitle);
+    ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
 
-    const positions_in_your_network = SupportStore.get(we_vote_id) && ( SupportStore.get(we_vote_id).oppose_count || SupportStore.get(we_vote_id).support_count);
+    const positionsInYourNetwork = SupportStore.get(measureWeVoteId) && (SupportStore.get(measureWeVoteId).oppose_count || SupportStore.get(measureWeVoteId).support_count);
 
     return (
       <div className="card-main">
         <div className="card-main__content">
           <h2 className="card-main__display-name">
             { this.props.link_to_ballot_item_page ?
-              <a onClick={() => this.goToMeasureLink(this.props.we_vote_id)}>{ballot_item_display_name}</a> :
-              ballot_item_display_name
+              <a onClick={() => this.goToMeasureLink(measureWeVoteId)}>{ballotItemDisplayName}</a> :
+              ballotItemDisplayName
           }
           </h2>
           <div className="card-main__measure-election u-bold u-gray-darker">
             <p>
-              { election_display_name || "Appearing on the ballot in " }
-              { election_display_name ? <span> &middot; </span> : null }
-              { regional_display_name || null }
-              { regional_display_name && state_display_name ? ", " : null }
-              { state_display_name }
+              { electionDisplayName || "Appearing on the ballot in " }
+              { electionDisplayName ? <span> &middot; </span> : null }
+              { regionalDisplayName || null }
+              { regionalDisplayName && stateDisplayName ? ", " : null }
+              { stateDisplayName }
             </p>
           </div>
           <div
             className={this.props.link_to_ballot_item_page ?
               "u-cursor--pointer" : null}
-            onClick={this.props.link_to_ballot_item_page ? () => this.goToMeasureLink(this.props.we_vote_id) : null}
+            onClick={this.props.link_to_ballot_item_page ? () => this.goToMeasureLink(measureWeVoteId) : null}
           >
-            {measure_subtitle}
+            {measureSubtitle}
           </div>
-          { this.props.measure_text ? (
+          { measureText ? (
             <div className="measure_text u-gray-mid">
               <ReadMore
-                num_of_lines={num_of_lines}
-                text_to_display={measure_text}
+                num_of_lines={numberOfLines}
+                text_to_display={measureText}
               />
             </div>
           ) :
@@ -128,8 +130,8 @@ export default class MeasureItem extends Component {
           <div>
             {/* Issues related to this Measure */}
             <IssuesByBallotItemDisplayList
-              ballotItemDisplayName={ballot_item_display_name}
-              ballotItemWeVoteId={we_vote_id}
+              ballotItemDisplayName={ballotItemDisplayName}
+              ballotItemWeVoteId={measureWeVoteId}
               currentBallotIdInUrl={this.props.currentBallotIdInUrl}
               issuesListHidden
               overlayTriggerOnClickOnly
@@ -142,11 +144,11 @@ export default class MeasureItem extends Component {
             className={this.props.link_to_ballot_item_page ?
               "u-cursor--pointer" :
               null}
-            onClick={this.props.link_to_ballot_item_page ? () => this.goToMeasureLink(this.props.we_vote_id) : null}
+            onClick={this.props.link_to_ballot_item_page ? () => this.goToMeasureLink(measureWeVoteId) : null}
           >
             <div className="u-stack--md">
               <ItemSupportOpposeCounts
-                we_vote_id={we_vote_id}
+                we_vote_id={measureWeVoteId}
                 supportProps={supportProps}
                 transitioning={transitioning}
                 type="MEASURE"
@@ -154,14 +156,14 @@ export default class MeasureItem extends Component {
               />
             </div>
             {/* Show a break-down of the positions in your network */}
-            { positions_in_your_network && this.props.showPositionsInYourNetworkBreakdown ? (
+            { positionsInYourNetwork && this.props.showPositionsInYourNetworkBreakdown ? (
               <div className="u-flex u-justify-between u-inset__v--xs">
                 {/* In desktop mode, align left with position bar */}
                 {/* In mobile mode, turn on green up-arrow before icons */}
                 <ItemTinyPositionBreakdownList
-                  ballot_item_display_name={ballot_item_display_name}
-                  ballotItemWeVoteId={we_vote_id}
-                  position_list={this.props.position_list}
+                  ballot_item_display_name={ballotItemDisplayName}
+                  ballotItemWeVoteId={measureWeVoteId}
+                  position_list={this.props.positionList}
                   showSupport
                   supportProps={this.state.supportProps}
                 />
@@ -169,9 +171,9 @@ export default class MeasureItem extends Component {
                 {/* In desktop mode, align right with position bar */}
                 {/* In mobile mode, turn on red down-arrow before icons (make sure there is line break after support positions) */}
                 <ItemTinyPositionBreakdownList
-                  ballot_item_display_name={ballot_item_display_name}
-                  ballotItemWeVoteId={we_vote_id}
-                  position_list={this.props.position_list}
+                  ballot_item_display_name={ballotItemDisplayName}
+                  ballotItemWeVoteId={measureWeVoteId}
+                  position_list={this.props.positionList}
                   showOppose
                   supportProps={this.state.supportProps}
                 />
@@ -184,16 +186,16 @@ export default class MeasureItem extends Component {
         {/* END .card-main__content */}
         <div className="card-main__actions">
           <ItemActionBar
-            ballot_item_we_vote_id={we_vote_id}
-            ballotItemDisplayName={ballot_item_display_name}
+            ballot_item_we_vote_id={measureWeVoteId}
+            ballotItemDisplayName={ballotItemDisplayName}
             commentButtonHide={this.props.commentButtonHide}
             supportProps={supportProps}
             transitioning={transitioning}
             type="MEASURE"
           />
           <ItemPositionStatementActionBar
-            ballot_item_we_vote_id={we_vote_id}
-            ballotItemDisplayName={ballot_item_display_name}
+            ballot_item_we_vote_id={measureWeVoteId}
+            ballotItemDisplayName={ballotItemDisplayName}
             supportProps={supportProps}
             transitioning={transitioning}
             type="MEASURE"

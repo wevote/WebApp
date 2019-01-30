@@ -136,7 +136,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
         />
         <MeasureItem
           {...this.state.measure}
-          position_list={this.state.position_list_from_advisers_followed_by_voter}
+          positionList={this.state.position_list_from_advisers_followed_by_voter}
           commentButtonHide
           showPositionsInYourNetworkBreakdown
         />

@@ -101,9 +101,8 @@ export default class Office extends Component {
           meta={[{ name: "description", content: descriptionText }]}
         />
         <OfficeItem
-          we_vote_id={office.we_vote_id}
-          kind_of_ballot_item="OFFICE"
-          ballot_item_display_name={office.ballot_item_display_name}
+          weVoteId={office.we_vote_id}
+          ballotItemDisplayName={office.ballot_item_display_name}
         />
         { office.candidate_list ? (
           <div>

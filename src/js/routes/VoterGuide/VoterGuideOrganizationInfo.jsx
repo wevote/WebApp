@@ -14,14 +14,11 @@ export default class VoterGuideOrganizationInfo extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      autoFocus: true,
       linkedOrganizationWeVoteId: "",
       organization: {},
-      searchResultsOrganizationName: "",
       voter: {},
       voterHasMadeChanges: false,
     };
-    this.resetState = this.resetState.bind(this);
   }
 
   componentWillMount () {
@@ -32,9 +29,6 @@ export default class VoterGuideOrganizationInfo extends Component {
   componentDidMount () {
     // AnalyticsActions.saveActionVoterGuideGetStarted(VoterStore.election_id());
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    this.setState({
-      autoFocus: true,
-    });
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // Get Voter and Voter's Organization
     const voter = VoterStore.getVoter();
@@ -83,9 +77,9 @@ export default class VoterGuideOrganizationInfo extends Component {
   }
 
   onOrganizationStoreChange () {
-    const organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
+    const { linkedOrganizationWeVoteId } = this.state;
+    const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
     this.setState({
-      isLoading: false,
       organization,
     });
     if (!this.state.voterHasMadeChanges) {
@@ -115,25 +109,7 @@ export default class VoterGuideOrganizationInfo extends Component {
     }
   }
 
-  resetState () {
-    this.setState({
-      autoFocus: true,
-      isLoading: false,
-      isTwitterHandleValid: false,
-      twitterHandle: "",
-    });
-  }
-
-  goToBallotLink () {
-    const sampleBallotLink = "/ballot";
-    historyPush(sampleBallotLink);
-  }
-
-  goToChooseElection () {
-    historyPush("/voterguidechooseelection");
-  }
-
-  voterHasMadeChangesSet () {
+  voterHasMadeChangesSet = () => {
     // console.log("voterHasMadeChangesSet, this.state.voterHasMadeChanges:", this.state.voterHasMadeChanges);
     if (!this.state.voterHasMadeChanges) {
       this.setState({
@@ -142,7 +118,7 @@ export default class VoterGuideOrganizationInfo extends Component {
     }
   }
 
-  validOrganizationDescriptionExists (organization) {
+  validOrganizationDescriptionExists = (organization) => {
     if (organization) {
       if (organization.organization_description && organization.organization_description.length > 3) {
         // We want to keep encouraging organizations to enter a Website
@@ -152,7 +128,7 @@ export default class VoterGuideOrganizationInfo extends Component {
     return false;
   }
 
-  validOrganizationNameExists (voter, organization) {
+  validOrganizationNameExists = (voter, organization) => {
     // We want to keep encouraging organizations to enter a Website
     if (voter && organization) {
       let voterAndOrganizationNameMatches = false;
@@ -169,7 +145,7 @@ export default class VoterGuideOrganizationInfo extends Component {
     return false;
   }
 
-  validVoterNameExists (voter, organization) {
+  validVoterNameExists = (voter, organization) => {
     if (voter && organization) {
       if (organization.organization_type && organization.organization_type === "I") {
         if (voter.first_name && !voter.first_name.startsWith("Voter-")) {
@@ -183,7 +159,7 @@ export default class VoterGuideOrganizationInfo extends Component {
     return false;
   }
 
-  validWebsiteExists (organization) {
+  validWebsiteExists = (organization) => {
     if (organization) {
       if (organization.organization_type && organization.organization_type === "I") {
         return true;
@@ -198,6 +174,16 @@ export default class VoterGuideOrganizationInfo extends Component {
     }
     return false;
   }
+
+  goToBallotLink = () => {
+    const sampleBallotLink = "/ballot";
+    historyPush(sampleBallotLink);
+  }
+
+  goToChooseElection = () => {
+    historyPush("/voterguidechooseelection");
+  }
+
 
   render () {
     renderLog(__filename);
@@ -218,9 +204,9 @@ export default class VoterGuideOrganizationInfo extends Component {
             <div className="col-1 col-md-2">&nbsp;</div>
             <div className="col-10 col-md-8">
               <p className="u-stack--md" />
-              <SettingsWidgetFirstLastName voterHasMadeChangesFunction={this.voterHasMadeChangesSet.bind(this)} />
-              <SettingsWidgetOrganizationWebsite voterHasMadeChangesFunction={this.voterHasMadeChangesSet.bind(this)} />
-              <SettingsWidgetOrganizationDescription voterHasMadeChangesFunction={this.voterHasMadeChangesSet.bind(this)} />
+              <SettingsWidgetFirstLastName voterHasMadeChangesFunction={this.voterHasMadeChangesSet} />
+              <SettingsWidgetOrganizationWebsite voterHasMadeChangesFunction={this.voterHasMadeChangesSet} />
+              <SettingsWidgetOrganizationDescription voterHasMadeChangesFunction={this.voterHasMadeChangesSet} />
             </div>
             <div className="col-1 col-md-2">&nbsp;</div>
           </div>

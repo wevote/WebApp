@@ -188,14 +188,10 @@ export default class Candidate extends Component {
         <section className="card">
           <CandidateItem
             {...this.state.candidate}
-            commentButtonHide
             contest_office_name={this.state.candidate.contest_office_name}
             organizationWeVoteId={this.state.organizationWeVoteId}
-            hideOpinionsToFollow
             linkToOfficePage
-            position_list={this.state.position_list_from_advisers_followed_by_voter}
             showLargeImage
-            showPositionsInYourNetworkBreakdown
             showPositionStatementActionBar
           />
           <div className="card__additional">
