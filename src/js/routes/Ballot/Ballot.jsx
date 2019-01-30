@@ -42,6 +42,7 @@ import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import webAppConfig from "../../config";
+import { formatVoterBallotList, checkShouldUpdate } from './utils';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint class-methods-use-this: 0 */
@@ -327,88 +328,17 @@ export default class Ballot extends Component {
 
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    if (this.state.componentDidMountFinished === false) {
-      // console.log("shouldComponentUpdate: componentDidMountFinished === false");
-      return true;
-    }
-    if (this.state.raceLevelFilterType !== nextState.raceLevelFilterType) {
-      // console.log("shouldComponentUpdate: this.state.raceLevelFilterType", this.state.raceLevelFilterType, ", nextState.raceLevelFilterType", nextState.raceLevelFilterType);
-      return true;
-    }
-    if (this.state.ballotItemUnfurledTracker !== nextState.ballotItemUnfurledTracker) {
-      // console.log("shouldComponentUpdate: this.state.ballotItemUnfurledTracker", this.state.ballotItemUnfurledTracker, ", nextState.ballotItemUnfurledTracker", nextState.ballotItemUnfurledTracker);
-      return true;
-    }
-    if (this.state.ballotLength !== nextState.ballotLength) {
-      // console.log("shouldComponentUpdate: this.state.ballotLength", this.state.ballotLength, ", nextState.ballotLength", nextState.ballotLength);
-      return true;
-    }
-    if (this.state.ballotRemainingChoicesLength !== nextState.ballotRemainingChoicesLength) {
-      // console.log("shouldComponentUpdate: this.state.ballotRemainingChoicesLength", this.state.ballotRemainingChoicesLength, ", nextState.ballotRemainingChoicesLength", nextState.ballotRemainingChoicesLength);
-      return true;
-    }
-    if (this.state.ballotLocationShortcut !== nextState.ballotLocationShortcut) {
-      // console.log("shouldComponentUpdate: this.state.ballotLocationShortcut", this.state.ballotLocationShortcut, ", nextState.ballotLocationShortcut", nextState.ballotLocationShortcut);
-      return true;
-    }
-    if (this.state.ballotReturnedWeVoteId !== nextState.ballotReturnedWeVoteId) {
-      // console.log("shouldComponentUpdate: this.state.ballotReturnedWeVoteId", this.state.ballotReturnedWeVoteId, ", nextState.ballotReturnedWeVoteId", nextState.ballotReturnedWeVoteId);
-      return true;
-    }
-    if (this.state.completionLevelFilterType !== nextState.completionLevelFilterType) {
-      // console.log("shouldComponentUpdate: this.state.completionLevelFilterType", this.state.completionLevelFilterType, ", nextState.completionLevelFilterType", nextState.completionLevelFilterType);
-      return true;
-    }
-    if (this.state.googleCivicElectionId !== nextState.googleCivicElectionId) {
-      // console.log("shouldComponentUpdate: this.state.googleCivicElectionId", this.state.googleCivicElectionId, ", nextState.googleCivicElectionId", nextState.googleCivicElectionId);
-      return true;
-    }
-    if (this.state.lastHashUsedInLinkScroll !== nextState.lastHashUsedInLinkScroll) {
-      // console.log("shouldComponentUpdate: this.state.lastHashUsedInLinkScroll", this.state.lastHashUsedInLinkScroll, ", nextState.lastHashUsedInLinkScroll", nextState.lastHashUsedInLinkScroll);
-      return true;
-    }
-    if (this.state.location !== nextState.location) {
-      // console.log("shouldComponentUpdate: this.state.location", this.state.location, ", nextState.location", nextState.location);
-      return true;
-    }
-    if (this.state.pathname !== nextState.pathname) {
-      // console.log("shouldComponentUpdate: this.state.pathname", this.state.pathname, ", nextState.pathname", nextState.pathname);
-      return true;
-    }
-    if (this.state.showBallotIntroModal !== nextState.showBallotIntroModal) {
-      // console.log("shouldComponentUpdate: this.state.showBallotIntroModal", this.state.showBallotIntroModal, ", nextState.showBallotIntroModal", nextState.showBallotIntroModal);
-      return true;
-    }
-    if (this.state.showBallotSummaryModal !== nextState.showBallotSummaryModal) {
-      // console.log("shouldComponentUpdate: this.state.showBallotSummaryModal", this.state.showBallotSummaryModal, ", nextState.showBallotSummaryModal", nextState.showBallotSummaryModal);
-      return true;
-    }
-    if (this.state.showCandidateModal !== nextState.showCandidateModal) {
-      // console.log("shouldComponentUpdate: this.state.showCandidateModal", this.state.showCandidateModal, ", nextState.showCandidateModal", nextState.showCandidateModal);
-      return true;
-    }
-    if (this.state.showMeasureModal !== nextState.showMeasureModal) {
-      // console.log("shouldComponentUpdate: this.state.showMeasureModal", this.state.showMeasureModal, ", nextState.showMeasureModal", nextState.showMeasureModal);
-      return true;
-    }
-    if (this.state.showSelectBallotModal !== nextState.showSelectBallotModal) {
-      // console.log("shouldComponentUpdate: this.state.showSelectBallotModal", this.state.showSelectBallotModal, ", nextState.showSelectBallotModal", nextState.showSelectBallotModal);
-      return true;
-    }
-    if (this.state.showFilterTabs !== nextState.showFilterTabs) {
-      return true;
-    }
-
-    return false;
+    return checkShouldUpdate(this.state, nextState);
   }
 
   componentDidUpdate (prevProps, prevState) {
-    const { foundFirstRaceLevel, raceLevelFilterType, ballotWithAllItems } = this.state;
+    const { foundFirstRaceLevel, raceLevelFilterType } = this.state;
     if (this.state.lastHashUsedInLinkScroll && this.state.lastHashUsedInLinkScroll !== prevState.lastHashUsedInLinkScroll) {
       this.hashLinkScroll();
     }
     // If we haven't found our default race level, run this check
-    if (ballotWithAllItems && ballotWithAllItems.length && !foundFirstRaceLevel) {
+    if (this.state.ballotWithAllItems && this.state.ballotWithAllItems.length && !foundFirstRaceLevel) {
+      const { ballotWithAllItems } = this.state;
       const raceLevelFilterItems = ballotWithAllItems.filter(item => item.race_office_level === raceLevelFilterType || item.kind_of_ballot_item === raceLevelFilterType.toUpperCase());
       // If there are items mapped to the current race level filter, set foundFirstRaceLevel to true
       // so we don't have to re-run this check
@@ -417,10 +347,9 @@ export default class Ballot extends Component {
           foundFirstRaceLevel: true,
           showFilterTabs: raceLevelFilterItems.length !== ballotWithAllItems.length,
         });
-      }
-      // If there are no items mapped to the current race level filter, set the raceLevelFilterType
-      // to the next item in BALLOT_ITEM_FILTER_TYPES
-      if (!raceLevelFilterItems.length) {
+      } else {
+        // If there are no items mapped to the current race level filter, set the raceLevelFilterType
+        // to the next item in BALLOT_ITEM_FILTER_TYPES
         const raceLevelIdx = BALLOT_ITEM_FILTER_TYPES.indexOf(raceLevelFilterType);
         this.setState({ raceLevelFilterType: BALLOT_ITEM_FILTER_TYPES[raceLevelIdx + 1] });
       }
@@ -566,40 +495,8 @@ export default class Ballot extends Component {
 
   onElectionStoreChange () {
     // console.log("Elections, onElectionStoreChange");
-    const electionsList = ElectionStore.getElectionList();
-    const electionsLocationsList = [];
-    let voterBallot; // A different format for much of the same data
-    const voterBallotList = [];
-    let oneBallotLocation;
-    let ballotLocationShortcut;
-    let ballotReturnedWeVoteId;
-    for (let i = 0; i < electionsList.length; i++) {
-      const election = electionsList[i];
-      electionsLocationsList.push(election);
-      ballotReturnedWeVoteId = "";
-      ballotLocationShortcut = "";
-      if (election.ballot_location_list && election.ballot_location_list.length) {
-        // We want to add the shortcut and we_vote_id for the first ballot location option
-        oneBallotLocation = election.ballot_location_list[0];
-        ballotLocationShortcut = oneBallotLocation.ballot_location_shortcut || "";
-        ballotLocationShortcut = ballotLocationShortcut.trim();
-        ballotReturnedWeVoteId = oneBallotLocation.ballot_returned_we_vote_id || "";
-        ballotReturnedWeVoteId = ballotReturnedWeVoteId.trim();
-      }
-
-      voterBallot = {
-        google_civic_election_id: election.google_civic_election_id,
-        election_description_text: election.election_name,
-        election_day_text: election.election_day_text,
-        original_text_for_map_search: "",
-        ballot_location_shortcut: ballotLocationShortcut,
-        ballot_returned_we_vote_id: ballotReturnedWeVoteId,
-      };
-      voterBallotList.push(voterBallot);
-    }
-
     this.setState({
-      voterBallotList,
+      voterBallotList: formatVoterBallotList(ElectionStore.getElectionList()),
     });
   }
 
