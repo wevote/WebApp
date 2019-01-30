@@ -175,7 +175,8 @@ export default class HeaderBackToBar extends Component {
   }
 
   getVoterGuideLink () {
-    return `/voterguide/${this.state.organizationWeVoteId}`;
+    const { organizationWeVoteId, candidate } = this.state;
+    return `/voterguide/${organizationWeVoteId}/ballot/election/${candidate.google_civic_election_id}`;
   }
 
   toggleAccountMenu () {
@@ -219,14 +220,15 @@ export default class HeaderBackToBar extends Component {
   }
 
   render () {
+    const { organizationWeVoteId, candidate, voter } = this.state;
     renderLog(__filename);
-    const voterPhotoUrlMedium = this.state.voter.voter_photo_url_medium;
+    const voterPhotoUrlMedium = voter.voter_photo_url_medium;
 
     let backToLink;
-    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
+    if (organizationWeVoteId && candidate && candidate.google_civic_election_id) {
       backToLink = this.getVoterGuideLink(); // Default to this when there is an organizationWeVoteId
-    } else if (this.state.officeWeVoteId) {
-      backToLink = `/ballot#${this.state.officeWeVoteId}`;
+    } else if (candidate && candidate.google_civic_election_id) {
+      backToLink = `/ballot/election/${candidate.google_civic_election_id}`;
     } else if (this.props.params.measure_we_vote_id) {
       backToLink = `/ballot#${this.props.params.measure_we_vote_id}`;
     } else {
@@ -238,7 +240,7 @@ export default class HeaderBackToBar extends Component {
     }
 
     let backToOrganizationLinkText;
-    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
+    if (organizationWeVoteId) {
       backToOrganizationLinkText = "Back to Voter Guide";
     } else {
       backToOrganizationLinkText = "Back to Ballot";
