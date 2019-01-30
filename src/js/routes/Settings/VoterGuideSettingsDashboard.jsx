@@ -16,7 +16,6 @@ import { isProperlyFormattedVoterGuideWeVoteId } from "../../utils/textFormat";
 
 export default class VoterGuideSettingsDashboard extends Component {
   static propTypes = {
-    location: PropTypes.object,
     params: PropTypes.object,
   };
 
@@ -26,15 +25,12 @@ export default class VoterGuideSettingsDashboard extends Component {
       editMode: "",
       linkedOrganizationWeVoteId: "",
       organization: {},
-      organizationName: "",
-      voter: {},
       voterGuide: {},
       voterGuideWeVoteId: "",
     };
   }
 
   componentDidMount () {
-    this.setState({ pathname: this.props.location.pathname });
     if (this.props.params.edit_mode) {
       this.setState({ editMode: this.props.params.edit_mode });
     } else {
@@ -61,7 +57,6 @@ export default class VoterGuideSettingsDashboard extends Component {
     // Get Voter and Voter's Organization
     const voter = VoterStore.getVoter();
     if (voter) {
-      this.setState({ voter });
       const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
       // console.log("VoterGuideSettingsDashboard componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
       if (linkedOrganizationWeVoteId) {
@@ -107,8 +102,9 @@ export default class VoterGuideSettingsDashboard extends Component {
 
   onOrganizationStoreChange () {
     // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
+    const { linkedOrganizationWeVoteId } = this.state;
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId),
+      organization: OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId),
     });
   }
 

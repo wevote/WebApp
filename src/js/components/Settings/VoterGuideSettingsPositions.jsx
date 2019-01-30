@@ -21,9 +21,6 @@ import { isProperlyFormattedVoterGuideWeVoteId } from "../../utils/textFormat";
 
 export default class VoterGuideSettingsPositions extends Component {
   static propTypes = {
-    ballotBaseUrl: PropTypes.string,
-    organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
-    voterGuideName: PropTypes.string,
     voterGuideWeVoteId: PropTypes.string.isRequired,
   };
 
@@ -31,13 +28,12 @@ export default class VoterGuideSettingsPositions extends Component {
     super(props);
     this.state = {
       clearSearchTextNow: false,
-      current_google_civic_election_id: 0,
-      current_organization_we_vote_id: "",
+      currentGoogleCivicElectionId: 0,
       editMode: true,
       organization: {},
       searchIsUnderway: false,
       voter: {},
-      voterGuideName: "",
+      voterGuide: {},
       voterGuideWeVoteId: "",
     };
     this.clearSearch = this.clearSearch.bind(this);
@@ -56,12 +52,11 @@ export default class VoterGuideSettingsPositions extends Component {
     });
     let voterGuide;
     let voterGuideFound = false;
-    if (this.props.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(this.state.voterGuideWeVoteId)) {
+    if (this.props.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(this.props.voterGuideWeVoteId)) {
       voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.props.voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
           voterGuide,
-          voterGuideName: voterGuide.voter_guide_display_name,
         });
         voterGuideFound = true;
       }
@@ -112,12 +107,11 @@ export default class VoterGuideSettingsPositions extends Component {
     });
     let voterGuide;
     let voterGuideFound = false;
-    if (nextProps.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(this.state.voterGuideWeVoteId)) {
+    if (nextProps.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(nextProps.voterGuideWeVoteId)) {
       voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(nextProps.voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
           voterGuide,
-          voterGuideName: voterGuide.voter_guide_display_name,
         });
         voterGuideFound = true;
       }
@@ -162,7 +156,8 @@ export default class VoterGuideSettingsPositions extends Component {
 
   onOrganizationStoreChange () {
     // console.log("VoterGuideSettingsPositions onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
-    const organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
+    const { linkedOrganizationWeVoteId } = this.state;
+    const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
     this.setState({
       organization,
     });
@@ -211,9 +206,20 @@ export default class VoterGuideSettingsPositions extends Component {
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
           voterGuide,
-          voterGuideName: voterGuide.voter_guide_display_name,
         });
       }
+    }
+  }
+
+  onKeyDownEditMode (event) {
+    const enterAndSpaceKeyCodes = [13, 32];
+    const scope = this;
+    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      if (this.state.editMode) {
+        // If going from editMode == True to editMode == False, we want to refresh the positions
+        OrganizationActions.positionListForOpinionMaker(this.state.organization.organization_we_vote_id, true, false, this.state.currentGoogleCivicElectionId);
+      }
+      scope.setState({ editMode: !this.state.editMode });
     }
   }
 
@@ -246,21 +252,10 @@ export default class VoterGuideSettingsPositions extends Component {
   toggleEditMode () {
     if (this.state.editMode) {
       // If going from editMode == True to editMode == False, we want to refresh the positions
-      OrganizationActions.positionListForOpinionMaker(this.state.organization.organization_we_vote_id, true, false, this.state.current_google_civic_election_id);
+      OrganizationActions.positionListForOpinionMaker(this.state.organization.organization_we_vote_id, true, false, this.state.currentGoogleCivicElectionId);
     }
-    this.setState({ editMode: !this.state.editMode });
-  }
-
-  onKeyDownEditMode (event) {
-    const enterAndSpaceKeyCodes = [13, 32];
-    const scope = this;
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      if (this.state.editMode) {
-        // If going from editMode == True to editMode == False, we want to refresh the positions
-        OrganizationActions.positionListForOpinionMaker(this.state.organization.organization_we_vote_id, true, false, this.state.current_google_civic_election_id);
-      }
-      scope.setState({ editMode: !this.state.editMode });
-    }
+    const { editMode } = this.state;
+    this.setState({ editMode: !editMode });
   }
 
   render () {
@@ -269,16 +264,17 @@ export default class VoterGuideSettingsPositions extends Component {
       return LoadingWheel;
     }
 
-    const { position_list_for_one_election } = this.state.organization;
+    const positionListForOneElection = this.state.organization.position_list_for_one_election;
+    // console.log("VoterGuideSettingsPositions, positionListForOneElection:", positionListForOneElection);
 
-    let looking_at_self = false;
+    let lookingAtSelf = false;
     if (this.state.voter) {
-      looking_at_self = this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id;
+      lookingAtSelf = this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id;
     }
 
-    // console.log("looking_at_self: ", looking_at_self);
-    const election_name = BallotStore.currentBallotElectionName;
-    const at_least_one_position_found_for_this_election = position_list_for_one_election && position_list_for_one_election.length !== 0;
+    // console.log("lookingAtSelf: ", lookingAtSelf);
+    const electionName = BallotStore.currentBallotElectionName;
+    const atLeastOnePositionFoundForThisElection = positionListForOneElection && positionListForOneElection.length !== 0;
 
     return (
       <div className="">
@@ -291,7 +287,7 @@ export default class VoterGuideSettingsPositions extends Component {
         <div className="card">
           <div className="card-main">
             <h3 className="h3">Your Positions</h3>
-            { looking_at_self && at_least_one_position_found_for_this_election && !this.state.searchIsUnderway ? (
+            { lookingAtSelf && atLeastOnePositionFoundForThisElection && !this.state.searchIsUnderway ? (
               <a
                 className="fa-pull-right u-push--md"
                 onKeyDown={this.onKeyDownEditMode.bind(this)}
@@ -302,9 +298,9 @@ export default class VoterGuideSettingsPositions extends Component {
             ) : null
             }
             <h4 className="h4 card__additional-heading">
-              <span className="u-push--sm">{ election_name || "This Election"}</span>
+              <span className="u-push--sm">{ electionName || "This Election"}</span>
             </h4>
-            { looking_at_self ? (
+            { lookingAtSelf ? (
               <div className="u-margin-left--md u-push--md">
               Search for candidates or measures to add to your voter guide.
                 <BallotSearchResults
@@ -316,12 +312,12 @@ export default class VoterGuideSettingsPositions extends Component {
               </div>
             ) : null
             }
-            { at_least_one_position_found_for_this_election && !this.state.searchIsUnderway ? (
+            { atLeastOnePositionFoundForThisElection && !this.state.searchIsUnderway ? (
               <span>
-                { looking_at_self ?
-                  <YourPositionsVisibilityMessage positionList={position_list_for_one_election} /> :
+                { lookingAtSelf ?
+                  <YourPositionsVisibilityMessage positionList={positionListForOneElection} /> :
                   null }
-                { position_list_for_one_election.map( item => (
+                { positionListForOneElection.map(item => (
                   <OrganizationPositionItem
                     key={item.position_we_vote_id}
                     position={item}

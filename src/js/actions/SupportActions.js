@@ -5,44 +5,44 @@ export default {
     Dispatcher.loadEndpoint("voterAllPositionsRetrieve");
   },
 
-  positionsCountForAllBallotItems (election_id) {
-    // console.log("SupportActions, positionsCountForAllBallotItems, election_id: ", election_id);
-    Dispatcher.loadEndpoint("positionsCountForAllBallotItems", { google_civic_election_id: election_id });
+  positionsCountForAllBallotItems (electionId) {
+    // console.log("SupportActions, positionsCountForAllBallotItems, electionId: ", electionId);
+    Dispatcher.loadEndpoint("positionsCountForAllBallotItems", { google_civic_election_id: electionId });
   },
 
-  retrievePositionsCountsForOneBallotItem (ballot_item_we_vote_id) {
-    Dispatcher.loadEndpoint("positionsCountForOneBallotItem", { ballot_item_we_vote_id });
+  retrievePositionsCountsForOneBallotItem (ballotItemWeVoteId) {
+    Dispatcher.loadEndpoint("positionsCountForOneBallotItem", { ballot_item_we_vote_id: ballotItemWeVoteId });
   },
 
-  voterOpposingSave (we_vote_id, type) {
-    Dispatcher.loadEndpoint("voterOpposingSave", { ballot_item_we_vote_id: we_vote_id, kind_of_ballot_item: type });
+  voterOpposingSave (weVoteId, type) {
+    Dispatcher.loadEndpoint("voterOpposingSave", { ballot_item_we_vote_id: weVoteId, kind_of_ballot_item: type });
   },
 
-  voterStopOpposingSave (we_vote_id, type) {
-    Dispatcher.loadEndpoint("voterStopOpposingSave", { ballot_item_we_vote_id: we_vote_id, kind_of_ballot_item: type });
+  voterStopOpposingSave (weVoteId, type) {
+    Dispatcher.loadEndpoint("voterStopOpposingSave", { ballot_item_we_vote_id: weVoteId, kind_of_ballot_item: type });
   },
 
-  voterSupportingSave (we_vote_id, type) {
-    Dispatcher.loadEndpoint("voterSupportingSave", { ballot_item_we_vote_id: we_vote_id, kind_of_ballot_item: type });
+  voterSupportingSave (weVoteId, type) {
+    Dispatcher.loadEndpoint("voterSupportingSave", { ballot_item_we_vote_id: weVoteId, kind_of_ballot_item: type });
   },
 
-  voterStopSupportingSave (we_vote_id, type) {
-    Dispatcher.loadEndpoint("voterStopSupportingSave", { ballot_item_we_vote_id: we_vote_id, kind_of_ballot_item: type });
+  voterStopSupportingSave (weVoteId, type) {
+    Dispatcher.loadEndpoint("voterStopSupportingSave", { ballot_item_we_vote_id: weVoteId, kind_of_ballot_item: type });
   },
 
-  voterPositionCommentSave (we_vote_id, type, statement_text) {
+  voterPositionCommentSave (weVoteId, type, statementText) {
     Dispatcher.loadEndpoint("voterPositionCommentSave", {
-      ballot_item_we_vote_id: we_vote_id,
+      ballot_item_we_vote_id: weVoteId,
       kind_of_ballot_item: type,
-      statement_text,
+      statement_text: statementText,
     });
   },
 
-  voterPositionVisibilitySave (we_vote_id, type, visibility_setting) {
+  voterPositionVisibilitySave (weVoteId, type, visibilitySetting) {
     Dispatcher.loadEndpoint("voterPositionVisibilitySave", {
-      ballot_item_we_vote_id: we_vote_id,
+      ballot_item_we_vote_id: weVoteId,
       kind_of_ballot_item: type,
-      visibility_setting,
+      visibility_setting: visibilitySetting,
     });
   },
 };

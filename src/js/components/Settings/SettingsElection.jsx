@@ -11,13 +11,13 @@ import VoterStore from "../../stores/VoterStore";
 
 export default class SettingsElection extends Component {
   static propTypes = {
-    location: PropTypes.object,
+    location: PropTypes.object, // unused propType
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      electionsLocationsList: [],
+      // electionsLocationsList: [],
       voterBallotList: [],
     };
   }
@@ -52,7 +52,7 @@ export default class SettingsElection extends Component {
       ballotLocationShortcut = "";
       if (election.ballot_location_list && election.ballot_location_list.length) {
         // We want to add the shortcut and we_vote_id for the first ballot location option
-        oneBallotLocation = election.ballot_location_list[0];
+        [oneBallotLocation] = election.ballot_location_list;
         ballotLocationShortcut = oneBallotLocation.ballot_location_shortcut || "";
         ballotLocationShortcut = ballotLocationShortcut.trim();
         ballotReturnedWeVoteId = oneBallotLocation.ballot_returned_we_vote_id || "";
@@ -70,7 +70,7 @@ export default class SettingsElection extends Component {
     }
 
     this.setState({
-      electionsLocationsList,
+      // electionsLocationsList,
       voterBallotList,
     });
   }

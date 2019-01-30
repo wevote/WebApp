@@ -27,17 +27,17 @@ const ParsedTwitterDescription = (props) => {
     // use these locations of twitter links to make an array marking all areas of text versus links
     let gapPointer = 0;
     if (!locations.length) {
-      parsedLocations.push({ type: "text", location: [0, text.length] });
+      parsedLocations.push({ type: "text", location: [0, text.length]});
     } else {
       locations.forEach((location) => {
         if (location[0] !== gapPointer) {
-          parsedLocations.push({ type: "text", location: [gapPointer, location[0] - 1] });
+          parsedLocations.push({ type: "text", location: [gapPointer, location[0] - 1]});
         }
-        parsedLocations.push({ type: "link", location: [location[0], location[1]] });
+        parsedLocations.push({ type: "link", location: [location[0], location[1]]});
         gapPointer = location[1] + 1;
       });
       if (locations[locations.length - 1][1] < text.length - 1) {
-        parsedLocations.push({ type: "text", location: [locations[locations.length - 1][1] + 1, text.length] });
+        parsedLocations.push({ type: "text", location: [locations[locations.length - 1][1] + 1, text.length]});
       }
     }
     return parsedLocations;
@@ -49,17 +49,17 @@ const ParsedTwitterDescription = (props) => {
     <span className="card-main__description">
       {
         // eslint-disable-next-line no-extra-parens
-        parsedTwitterDescription.map((snippet, i) => (
+        parsedTwitterDescription.map((snippet, index) => (
           snippet.type === "text" ? (
             <span
-              key={i}
+              key={`snippet-text-${index}`}
             >
               {props.twitter_description.slice(snippet.location[0], snippet.location[1])}
               &nbsp;
             </span>
           ) : (
             <span
-              key={i}
+              key={`snippet-${index}`}
             >
               <a
                 href={props.twitter_description.slice(snippet.location[0], snippet.location[1])}
