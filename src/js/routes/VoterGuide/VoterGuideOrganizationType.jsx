@@ -17,7 +17,7 @@ export default class VoterGuideOrganizationType extends Component {
   }
 
   componentDidMount () {
-    // AnalyticsActions.saveActionVoterGuideGetStarted(VoterStore.election_id());
+    // AnalyticsActions.saveActionVoterGuideGetStarted(VoterStore.electionId());
   }
 
   componentWillUnmount () {

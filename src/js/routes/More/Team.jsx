@@ -14,7 +14,7 @@ export default class Team extends Component {
   }
 
   componentDidMount () {
-    AnalyticsActions.saveActionAboutTeam(VoterStore.election_id());
+    AnalyticsActions.saveActionAboutTeam(VoterStore.electionId());
   }
 
   render () {

@@ -64,7 +64,7 @@ export default class Candidate extends Component {
     }
 
     if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
-      IssueActions.issuesRetrieveForElection(VoterStore.election_id());
+      IssueActions.issuesRetrieveForElection(VoterStore.electionId());
     }
 
     // Get the latest guides to follow for this candidate
@@ -94,7 +94,7 @@ export default class Candidate extends Component {
     // Display the candidate's name in the search box
     const searchBoxText = this.state.candidate.ballot_item_display_name || ""; // TODO DALE Not working right now
     SearchAllActions.exitSearch(searchBoxText); // TODO: still not used :)
-    AnalyticsActions.saveActionCandidate(VoterStore.election_id(), this.props.params.candidate_we_vote_id);
+    AnalyticsActions.saveActionCandidate(VoterStore.electionId(), this.props.params.candidate_we_vote_id);
     this.setState({
       candidate_we_vote_id: this.props.params.candidate_we_vote_id,
       organizationWeVoteId,
@@ -158,7 +158,7 @@ export default class Candidate extends Component {
 
   render () {
     renderLog(__filename);
-    const electionId = VoterStore.election_id();
+    const electionId = VoterStore.electionId();
     const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to listen to related to this candidate.";
 
     // console.log("Candidate render, this.state.position_list_from_advisers_followed_by_voter: ", this.state.position_list_from_advisers_followed_by_voter);
@@ -177,7 +177,7 @@ export default class Candidate extends Component {
     const titleText = `${candidateName} - We Vote`;
     const descriptionText = `Information about ${candidateName}, candidate for ${this.state.candidate.contest_office_name}`;
     const voter = VoterStore.getVoter();
-    const candidateAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}c/${this.state.candidate.id}/edit/?google_civic_election_id=${VoterStore.election_id()}&state_code=`;
+    const candidateAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}c/${this.state.candidate.id}/edit/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
 
     return (
       <span>

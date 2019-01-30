@@ -134,7 +134,7 @@ export default class HeaderSecondaryNavBar extends Component {
   _toggleBallotIntroFollowIssues () {
     VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
     if (!this.state.showBallotIntroFollowIssues) {
-      AnalyticsActions.saveActionModalIssues(VoterStore.election_id());
+      AnalyticsActions.saveActionModalIssues(VoterStore.electionId());
     }
 
     this.setState({ showBallotIntroFollowIssues: !this.state.showBallotIntroFollowIssues });
@@ -144,7 +144,7 @@ export default class HeaderSecondaryNavBar extends Component {
     VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
     if (!this.state.showBallotIntroOrganizations) {
       // Save action when going from off to on
-      AnalyticsActions.saveActionModalOrganizations(VoterStore.election_id());
+      AnalyticsActions.saveActionModalOrganizations(VoterStore.electionId());
     }
 
     this.setState({ showBallotIntroOrganizations: !this.state.showBallotIntroOrganizations });

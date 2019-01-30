@@ -51,7 +51,7 @@ export default class Network extends Component {
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.setState({ pathname: this.props.location.pathname });
-    AnalyticsActions.saveActionNetwork(VoterStore.election_id());
+    AnalyticsActions.saveActionNetwork(VoterStore.electionId());
   }
 
   componentWillReceiveProps (nextProps) {

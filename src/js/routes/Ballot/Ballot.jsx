@@ -209,7 +209,7 @@ export default class Ballot extends Component {
     }
 
     // console.log("Ballot, googleCivicElectionId: ", googleCivicElectionId, ", ballotLocationShortcut: ", ballotLocationShortcut, "ballotReturnedWeVoteId: ", ballotReturnedWeVoteId);
-    // console.log("VoterStore.election_id: ", VoterStore.election_id());
+    // console.log("VoterStore.election_id: ", VoterStore.electionId());
     if (googleCivicElectionId || ballotLocationShortcut || ballotReturnedWeVoteId) {
       // console.log("CALLING IssueActions.issuesRetrieveForElection");
 
@@ -251,7 +251,7 @@ export default class Ballot extends Component {
     if (googleCivicElectionId && googleCivicElectionId !== 0) {
       AnalyticsActions.saveActionBallotVisit(googleCivicElectionId);
     } else {
-      AnalyticsActions.saveActionBallotVisit(VoterStore.election_id());
+      AnalyticsActions.saveActionBallotVisit(VoterStore.electionId());
     }
 
     const { location } = this.props;
@@ -307,7 +307,7 @@ export default class Ballot extends Component {
       if (googleCivicElectionId && googleCivicElectionId !== 0) {
         AnalyticsActions.saveActionBallotVisit(googleCivicElectionId);
       } else {
-        AnalyticsActions.saveActionBallotVisit(VoterStore.election_id());
+        AnalyticsActions.saveActionBallotVisit(VoterStore.electionId());
       }
     }
 
@@ -397,12 +397,12 @@ export default class Ballot extends Component {
         this.setState({
           voter: VoterStore.getVoter(),
           showBallotIntroModal: false,
-          googleCivicElectionId: parseInt(VoterStore.election_id(), 10),
+          googleCivicElectionId: parseInt(VoterStore.electionId(), 10),
         });
       } else {
         this.setState({
           voter: VoterStore.getVoter(),
-          googleCivicElectionId: parseInt(VoterStore.election_id(), 10),
+          googleCivicElectionId: parseInt(VoterStore.electionId(), 10),
         });
       }
     }
@@ -710,7 +710,7 @@ export default class Ballot extends Component {
     const electionName = BallotStore.currentBallotElectionName;
     const electionDayText = BallotStore.currentBallotElectionDate;
     const sourcePollingLocationWeVoteId = BallotStore.currentBallotPollingLocationSource;
-    const ballotReturnedAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}b/${sourcePollingLocationWeVoteId}/list_edit_by_polling_location/?google_civic_election_id=${VoterStore.election_id()}&state_code=`;
+    const ballotReturnedAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}b/${sourcePollingLocationWeVoteId}/list_edit_by_polling_location/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
     // console.log("electionName: ", electionName, ", electionDayTextFormatted: ", electionDayText);
 
     const emptyBallotButton = this.state.completionLevelFilterType !== "none" && !voterAddressMissing ? (

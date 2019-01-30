@@ -28,8 +28,8 @@ export default class BallotElectionList extends Component {
     let priorElectionId = "";
     if (BallotStore.ballotProperties) {
       priorElectionId = BallotStore.ballotProperties.google_civic_election_id;
-    } else if (VoterStore.election_id()) {
-      priorElectionId = VoterStore.election_id();
+    } else if (VoterStore.electionId()) {
+      priorElectionId = VoterStore.electionId();
     }
     const stateCode = VoterStore.getStateCodeFromIPAddress();
 
@@ -71,16 +71,16 @@ export default class BallotElectionList extends Component {
   }
 
   onVoterStoreChange () {
-    // console.log("BallotElectionList.jsx onVoterStoreChange, VoterStore.election_id(): ", VoterStore.election_id(), ", priorElectionId: ", this.state.priorElectionId, ", updatedElectionId: ", this.state.updatedElectionId);
+    // console.log("BallotElectionList.jsx onVoterStoreChange, VoterStore.electionId(): ", VoterStore.electionId(), ", priorElectionId: ", this.state.priorElectionId, ", updatedElectionId: ", this.state.updatedElectionId);
     // if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found && BallotStore.ballot && BallotStore.ballot.length !== 0) {
-    if (VoterStore.election_id() && VoterStore.election_id() !== this.state.priorElectionId) {
+    if (VoterStore.electionId() && VoterStore.electionId() !== this.state.priorElectionId) {
       if (this.state.loadingNewBallotItems && this.props.toggleFunction) {
         // console.log("onVoterStoreChange--------- loadingNewBallotItems:", this.state.loadingNewBallotItems);
         const stateCode = VoterStore.getStateCodeFromIPAddress();
         this.setState({
           loadingNewBallotItems: false,
           stateName: convertStateCodeToStateText(stateCode),
-          updatedElectionId: VoterStore.election_id(),
+          updatedElectionId: VoterStore.electionId(),
         });
         // console.log("onVoterStoreChange--------- this.props.toggleFunction()");
         this.props.toggleFunction(this.state.destinationUrlForHistoryPush);
@@ -123,7 +123,7 @@ export default class BallotElectionList extends Component {
       this.setState({
         destinationUrlForHistoryPush,
         loadingNewBallotItems: true,
-        priorElectionId: BallotStore.ballotProperties.google_civic_election_id || VoterStore.election_id() || 0,
+        priorElectionId: BallotStore.ballotProperties.google_civic_election_id || VoterStore.electionId() || 0,
         updatedElectionId: 0,
       });
     } else {

@@ -42,8 +42,8 @@ export default class SettingsWidgetAccountType extends Component {
     this.onVoterStoreChange();
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    if (VoterStore.election_id()) {
-      AnalyticsActions.saveActionAccountPage(VoterStore.election_id());
+    if (VoterStore.electionId()) {
+      AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
     }
     this.setState({
       closeEditFormOnChoice: this.props.closeEditFormOnChoice,
@@ -137,8 +137,8 @@ export default class SettingsWidgetAccountType extends Component {
       if (this.state.closeEditFormOnChoice) {
         this.toggleEditForm();
       }
-      if (VoterStore.election_id()) {
-        AnalyticsActions.saveActionAccountPage(VoterStore.election_id());
+      if (VoterStore.electionId()) {
+        AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
       }
       // After some time, clear saved message
       clearTimeout(this.clearTimer);

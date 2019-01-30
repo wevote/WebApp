@@ -49,7 +49,7 @@ export default class Organization extends Component {
   }
 
   componentDidMount () {
-    AnalyticsActions.saveActionAboutOrganization(VoterStore.election_id());
+    AnalyticsActions.saveActionAboutOrganization(VoterStore.electionId());
   }
 
   render () {

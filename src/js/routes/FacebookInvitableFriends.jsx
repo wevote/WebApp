@@ -69,7 +69,7 @@ export default class FacebookInvitableFriends extends Component {
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
     this._onFacebookStoreChange();
     this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
-    AnalyticsActions.saveActionFacebookInvitableFriends(VoterStore.election_id());
+    AnalyticsActions.saveActionFacebookInvitableFriends(VoterStore.electionId());
   }
 
   componentWillMount () {

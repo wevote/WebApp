@@ -13,7 +13,7 @@ export default class Vision extends Component {
   }
 
   componentDidMount () {
-    AnalyticsActions.saveActionAboutVision(VoterStore.election_id());
+    AnalyticsActions.saveActionAboutVision(VoterStore.electionId());
   }
 
   render () {

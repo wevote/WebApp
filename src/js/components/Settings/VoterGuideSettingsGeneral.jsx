@@ -34,7 +34,7 @@ export default class VoterGuideSettingsGeneral extends Component {
 
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    // AnalyticsActions.saveActionAccountPage(VoterStore.election_id());
+    // AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
   }
 
   componentWillReceiveProps () {

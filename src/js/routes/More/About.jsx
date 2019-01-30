@@ -16,7 +16,7 @@ export default class About extends Component {
   }
 
   componentDidMount () {
-    AnalyticsActions.saveActionAboutMobile(VoterStore.election_id());
+    AnalyticsActions.saveActionAboutMobile(VoterStore.electionId());
   }
 
   render () {

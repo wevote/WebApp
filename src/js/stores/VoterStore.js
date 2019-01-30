@@ -18,11 +18,11 @@ class VoterStore extends ReduceStore {
       address: {},
       emailAddressStatus: {},
       emailSignInStatus: {},
-      facebook_sign_in_status: {},
-      facebook_photo_retrieve_loop_count: 0,
-      voter_found: false,
-      voter_donation_history_list: {},
-      latest_google_civic_election_id: 0,
+      emailAddressList: [],
+      facebookSignInStatus: {},
+      facebookPhotoRetrieveLoopCount: 0,
+      voterFound: false,
+      latestGoogleCivicElectionId: 0,
     };
   }
 
@@ -34,8 +34,8 @@ class VoterStore extends ReduceStore {
     return this.getState().voter;
   }
 
-  election_id () {
-    return this.getState().latest_google_civic_election_id;
+  electionId () {
+    return this.getState().latestGoogleCivicElectionId;
   }
 
   getTextForMapSearch () {
@@ -65,7 +65,8 @@ class VoterStore extends ReduceStore {
   }
 
   getEmailAddressList () {
-    return this.getDataFromArr(this.getState().email_address_list) || {};
+    const { emailAddressList } = this.getState();
+    return emailAddressList;
   }
 
   getEmailAddressStatus () {
@@ -81,7 +82,7 @@ class VoterStore extends ReduceStore {
   }
 
   getFacebookSignInStatus () {
-    return this.getState().facebook_sign_in_status;
+    return this.getState().facebookSignInStatus;
   }
 
   getFirstName () {
@@ -132,23 +133,10 @@ class VoterStore extends ReduceStore {
     return this.getState().voter.voter_device_id || cookies.getItem("voter_device_id");
   }
 
-  setVoterDeviceIdCookie (id) {
+  setVoterDeviceIdCookie (id) { // eslint-disable-line
     cookies.removeItem("voter_device_id");
     cookies.removeItem("voter_device_id", "/");
     cookies.setItem("voter_device_id", id, Infinity, "/");
-  }
-
-  getDataFromArr (arr) {
-    if (arr === undefined) {
-      return [];
-    }
-
-    const data_list = [];
-    for (let i = 0, len = arr.length; i < len; i++) {
-      data_list.push(arr[i]);
-    }
-
-    return data_list;
   }
 
   // Airbnb doesnt like bitwise operators in JavaScript
@@ -185,7 +173,7 @@ class VoterStore extends ReduceStore {
   }
 
   isVoterFound () {
-    return this.getState().voter_found;
+    return this.getState().voterFound;
   }
 
   // isVerificationEmailSent () {
@@ -199,12 +187,13 @@ class VoterStore extends ReduceStore {
       return state;
     }
 
-    let voter_device_id;
-    let google_civic_election_id;
-    let address;
-    let facebook_photo_retrieve_loop_count;
-    let incoming_voter;
-    let current_voter_device_id;
+    const { facebookPhotoRetrieveLoopCount } = state;
+    let { address } = action.res;
+
+    let voterDeviceId;
+    let googleCivicElectionId;
+    let incomingVoter;
+    let currentVoterDeviceId;
 
     switch (action.type) {
       case "organizationSave":
@@ -214,9 +203,9 @@ class VoterStore extends ReduceStore {
           if (action.res.facebook_id === state.voter.facebook_id) {
             VoterActions.voterRetrieve();
           } else {
-            const organization_twitter_handle = action.res.organization_twitter_handle !== undefined ? action.res.organization_twitter_handle : "";
-            const twitter_screen_name = state.voter.twitter_screen_name !== undefined ? state.voter.twitter_screen_name : "";
-            if (organization_twitter_handle && organization_twitter_handle.toLowerCase() === twitter_screen_name.toLowerCase()) {
+            const organizationTwitterHandle = action.res.organization_twitter_handle || "";
+            const twitterScreenName = state.voter.twitter_screen_name !== undefined ? state.voter.twitter_screen_name : "";
+            if (organizationTwitterHandle && organizationTwitterHandle.toLowerCase() === twitterScreenName.toLowerCase()) {
               VoterActions.voterRetrieve();
             }
           }
@@ -240,30 +229,30 @@ class VoterStore extends ReduceStore {
 
       case "positionListForVoter":
         if (action.res.show_only_this_election) {
-          const position_list_for_one_election = action.res.position_list;
+          const positionListForOneElection = action.res.position_list;
           return {
             ...state,
             voter: {
               ...state.voter,
-              position_list_for_one_election,
+              positionListForOneElection,
             },
           };
         } else if (action.res.show_all_other_elections) {
-          const position_list_for_all_except_one_election = action.res.position_list;
+          const positionListForAllExceptOneElection = action.res.position_list;
           return {
             ...state,
             voter: {
               ...state.voter,
-              position_list_for_all_except_one_election,
+              positionListForAllExceptOneElection,
             },
           };
         } else {
-          const position_list = action.res.position_list;
+          const positionList = action.res.position_list;
           return {
             ...state,
             voter: {
               ...state.voter,
-              position_list,
+              positionList,
             },
           };
         }
@@ -311,9 +300,7 @@ class VoterStore extends ReduceStore {
           SupportActions.positionsCountForAllBallotItems(action.res.google_civic_election_id);
         }
 
-        if (action.res.address) {
-          address = action.res.address;
-        } else {
+        if (!address) {
           address = {
             text_for_map_search: "",
             google_civic_election_id: 0,
@@ -337,12 +324,12 @@ class VoterStore extends ReduceStore {
         };
 
       case "voterBallotItemsRetrieve":
-        // console.log("VoterStore voterBallotItemsRetrieve latest_google_civic_election_id: ", action.res.google_civic_election_id);
-        google_civic_election_id = action.res.google_civic_election_id || 0;
-        if (google_civic_election_id !== 0) {
+        // console.log("VoterStore voterBallotItemsRetrieve latestGoogleCivicElectionId: ", action.res.google_civic_election_id);
+        googleCivicElectionId = action.res.google_civic_election_id || 0;
+        if (googleCivicElectionId !== 0) {
           return {
             ...state,
-            latest_google_civic_election_id: google_civic_election_id,
+            latestGoogleCivicElectionId: googleCivicElectionId,
           };
         }
 
@@ -352,14 +339,14 @@ class VoterStore extends ReduceStore {
         // console.log("VoterStore  voterEmailAddressRetrieve: ", action.res.email_address_list);
         return {
           ...state,
-          email_address_list: action.res.email_address_list,
+          emailAddressList: action.res.email_address_list,
         };
 
       case "voterEmailAddressSave":
         VoterActions.voterRetrieve();
         return {
           ...state,
-          email_address_list: action.res.email_address_list,
+          emailAddressList: action.res.email_address_list,
           emailAddressStatus: {
             email_verify_attempted: action.res.email_verify_attempted,
             email_address_already_owned_by_other_voter: action.res.email_address_already_owned_by_other_voter,
@@ -407,13 +394,13 @@ class VoterStore extends ReduceStore {
         VoterActions.voterRetrieve();
         return {
           ...state,
-          facebook_sign_in_status: {
+          facebookSignInStatus: {
             facebook_account_created: action.res.facebook_account_created,
           },
         };
 
       case "voterMergeTwoAccounts":
-        // On the server we just switched linked this voter_device_id to a new voter record, so we want to
+        // On the server we just switched linked this voterDeviceId to a new voter record, so we want to
         //  refresh a lot of data
         VoterActions.voterRetrieve();
         VoterActions.voterEmailAddressRetrieve();
@@ -434,7 +421,7 @@ class VoterStore extends ReduceStore {
             voter_we_vote_id_from_secret_key: "",
             voter_merge_two_accounts_attempted: true,
           },
-          facebook_sign_in_status: {
+          facebookSignInStatus: {
             voter_merge_two_accounts_attempted: true, // TODO DALE is this needed?
           },
           twitter_sign_in_status: {
@@ -451,12 +438,11 @@ class VoterStore extends ReduceStore {
       case "voterRetrieve":
         // console.log("VoterStore, voterRetrieve state on entry: ",  state);
         // console.log("VoterStore, voterRetrieve state on entry: ",  state.voter);
-        facebook_photo_retrieve_loop_count = state.facebook_photo_retrieve_loop_count;
 
         // Preserve address within voter
-        incoming_voter = action.res;
+        incomingVoter = action.res;
 
-        current_voter_device_id = cookies.getItem("voter_device_id");
+        currentVoterDeviceId = cookies.getItem("voter_device_id");
         if (!action.res.voter_found) {
           console.log(`This voter_device_id is not in the db and is invalid, so delete it: ${
             cookies.getItem("voter_device_id")}`);
@@ -472,14 +458,14 @@ class VoterStore extends ReduceStore {
             // console.log("voter_device_id still exists -- did not call voterRetrieve");
           }
         } else {
-          voter_device_id = action.res.voter_device_id;
-          if (voter_device_id) {
-            if (current_voter_device_id !== voter_device_id) {
+          voterDeviceId = action.res.voter_device_id;
+          if (voterDeviceId) {
+            if (currentVoterDeviceId !== voterDeviceId) {
               // console.log("Setting new voter_device_id");
-              this.setVoterDeviceIdCookie(voter_device_id);
+              this.setVoterDeviceIdCookie(voterDeviceId);
             }
 
-            VoterActions.voterAddressRetrieve(voter_device_id);
+            VoterActions.voterAddressRetrieve(voterDeviceId);
 
             // FriendsInvitationList.jsx is choking on this because calling this
             // results in an infinite loop cycling between voterRetrieve and getFaceProfilePicture which
@@ -489,7 +475,7 @@ class VoterStore extends ReduceStore {
             const url = action.res.facebook_profile_image_url_https;
             // console.log("VoterStore, voterRetrieve, action.res: ", action.res);
 
-            if (action.res.signed_in_facebook && (url === null || url === "") && facebook_photo_retrieve_loop_count < 10) {
+            if (action.res.signed_in_facebook && (url === null || url === "") && facebookPhotoRetrieveLoopCount < 10) {
               FacebookActions.getFacebookProfilePicture();
             }
           } else {
@@ -499,9 +485,9 @@ class VoterStore extends ReduceStore {
 
         return {
           ...state,
-          facebook_photo_retrieve_loop_count: facebook_photo_retrieve_loop_count + 1,
-          voter: incoming_voter,
-          voter_found: action.res.voter_found,
+          facebookPhotoRetrieveLoopCount: facebookPhotoRetrieveLoopCount + 1,
+          voter: incomingVoter,
+          voterFound: action.res.voter_found,
         };
 
       case "voterSignOut":

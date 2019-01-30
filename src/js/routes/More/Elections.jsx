@@ -22,7 +22,7 @@ export default class Elections extends Component {
   componentDidMount () {
     this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
     ElectionActions.electionsRetrieve();
-    AnalyticsActions.saveActionElections(VoterStore.election_id());
+    AnalyticsActions.saveActionElections(VoterStore.electionId());
   }
 
   componentWillUnmount () {

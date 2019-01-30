@@ -235,7 +235,7 @@ export default class VoterGuideBallot extends Component {
     if (googleCivicElectionId && googleCivicElectionId !== 0) {
       AnalyticsActions.saveActionBallotVisit(googleCivicElectionId);
     } else {
-      AnalyticsActions.saveActionBallotVisit(VoterStore.election_id());
+      AnalyticsActions.saveActionBallotVisit(VoterStore.electionId());
     }
 
     const { location } = this.props;
@@ -252,7 +252,7 @@ export default class VoterGuideBallot extends Component {
       organization: this.props.organization,
       pathname,
       raceLevelFilterType: BallotStore.getRaceLevelFilterTypeSaved() || "Federal",
-      voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.props.organization.organization_we_vote_id, VoterStore.election_id()),
+      voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.props.organization.organization_we_vote_id, VoterStore.electionId()),
       waitUntilVoterSignInCompletes,
     });
 
@@ -289,18 +289,18 @@ export default class VoterGuideBallot extends Component {
         location: nextProps.location,
         organization: nextProps.organization,
         pathname: nextProps.location.pathname,
-        voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(nextProps.organization.organization_we_vote_id, VoterStore.election_id()),
+        voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(nextProps.organization.organization_we_vote_id, VoterStore.electionId()),
       });
 
       // if (googleCivicElectionId && googleCivicElectionId !== 0) {
       //   AnalyticsActions.saveActionBallotVisit(googleCivicElectionId);
       // } else {
-      //   AnalyticsActions.saveActionBallotVisit(VoterStore.election_id());
+      //   AnalyticsActions.saveActionBallotVisit(VoterStore.electionId());
       // }
     } else {
       this.setState({
         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
-        voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(nextProps.organization.organization_we_vote_id, VoterStore.election_id()),
+        voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(nextProps.organization.organization_we_vote_id, VoterStore.electionId()),
       });
     }
 
@@ -462,12 +462,12 @@ export default class VoterGuideBallot extends Component {
         this.setState({
           voter: VoterStore.getVoter(),
           showBallotIntroModal: false,
-          googleCivicElectionId: parseInt(VoterStore.election_id(), 10),
+          googleCivicElectionId: parseInt(VoterStore.electionId(), 10),
         });
       } else {
         this.setState({
           voter: VoterStore.getVoter(),
-          googleCivicElectionId: parseInt(VoterStore.election_id(), 10),
+          googleCivicElectionId: parseInt(VoterStore.electionId(), 10),
         });
       }
     }
@@ -573,7 +573,7 @@ export default class VoterGuideBallot extends Component {
           ...this.state.candidateForModal,
           voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
         },
-        voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id()),
+        voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.electionId()),
       });
     } else if (this.state.measureForModal) {
       this.setState({
@@ -581,7 +581,7 @@ export default class VoterGuideBallot extends Component {
           ...this.state.measureForModal,
           voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
         },
-        voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.election_id()),
+        voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.electionId()),
       });
     }
   }
@@ -707,8 +707,8 @@ export default class VoterGuideBallot extends Component {
     const electionName = BallotStore.currentBallotElectionName;
     const electionDayText = BallotStore.currentBallotElectionDate;
     const sourcePollingLocationWeVoteId = BallotStore.currentBallotPollingLocationSource;
-    const organizationAdminUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}org/${this.state.organization.organization_we_vote_id}/pos/?google_civic_election_id=${VoterStore.election_id()}&state_code=`;
-    const ballotReturnedAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}pl/${sourcePollingLocationWeVoteId}/summary/?google_civic_election_id=${VoterStore.election_id()}&state_code=`;
+    const organizationAdminUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}org/${this.state.organization.organization_we_vote_id}/pos/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
+    const ballotReturnedAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}pl/${sourcePollingLocationWeVoteId}/summary/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
 
     const emptyBallotButton = this.state.completionLevelFilterType !== "none" && !voterAddressMissing ? (
       <span>

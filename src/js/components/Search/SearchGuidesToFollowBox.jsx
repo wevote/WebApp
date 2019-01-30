@@ -20,7 +20,7 @@ export default class SearchGuidesToFollowBox extends Component {
     if (this.state.searchPending && this.state.searchPending.state() === "pending") {
       this.state.searchPending.abort();
     }
-    const electionId = searchQuery === "" ? VoterStore.election_id() : 0;
+    const electionId = searchQuery === "" ? VoterStore.electionId() : 0;
     this.setState({
       searchPending: VoterGuideActions.voterGuidesToFollowRetrieve(electionId, searchQuery),
     });

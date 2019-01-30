@@ -44,7 +44,7 @@ export default class OrganizationVoterGuideTabs extends Component {
     OrganizationActions.organizationsFollowedRetrieve();
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.organization.organization_we_vote_id);
     VoterGuideActions.voterGuideFollowersRetrieve(this.props.organization.organization_we_vote_id);
-    VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
+    VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.electionId());
     // Positions for this organization, for this voter / election
     OrganizationActions.positionListForOpinionMaker(this.props.organization.organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
@@ -63,13 +63,13 @@ export default class OrganizationVoterGuideTabs extends Component {
   componentWillReceiveProps (nextProps) {
     // console.log("OrganizationVoterGuideTabs, componentWillReceiveProps, nextProps: ", nextProps);
     // When a new organization is passed in, update this component to show the new data
-    // let different_election = this.state.current_google_civic_election_id !== VoterStore.election_id();
+    // let different_election = this.state.current_google_civic_election_id !== VoterStore.electionId();
     const differentOrganization = this.state.currentOrganizationWeVoteId !== nextProps.organization.organization_we_vote_id;
     if (differentOrganization) {
       OrganizationActions.organizationsFollowedRetrieve();
       VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id);
       VoterGuideActions.voterGuideFollowersRetrieve(nextProps.organization.organization_we_vote_id);
-      VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id, VoterStore.election_id());
+      VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id, VoterStore.electionId());
       // DALE 2017-12-24 Causes too much churn when here
       // Positions for this organization, for this voter / election
       OrganizationActions.positionListForOpinionMaker(nextProps.organization.organization_we_vote_id, true);

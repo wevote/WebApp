@@ -30,7 +30,7 @@ export default class Office extends Component {
 
   componentDidMount () {
     if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
-      IssueActions.issuesRetrieveForElection(VoterStore.election_id());
+      IssueActions.issuesRetrieveForElection(VoterStore.electionId());
     }
 
     this.officeStoreListener = OfficeStore.addListener(this._onOfficeStoreChange.bind(this));
@@ -46,7 +46,7 @@ export default class Office extends Component {
       office_we_vote_id: this.props.params.office_we_vote_id,
     });
 
-    AnalyticsActions.saveActionOffice(VoterStore.election_id(), this.props.params.office_we_vote_id);
+    AnalyticsActions.saveActionOffice(VoterStore.electionId(), this.props.params.office_we_vote_id);
     SearchAllActions.exitSearch();
   }
 

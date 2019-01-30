@@ -23,13 +23,13 @@ class BallotStore extends ReduceStore {
   }
 
   isLoaded () {
-    const civicId = VoterStore.election_id();
+    const civicId = VoterStore.electionId();
     return !!(this.getState().ballots && this.getState().ballots[civicId] && SupportStore.supportList);
   }
 
   get ballotProperties () {
     if (!this.isLoaded()) { return undefined; }
-    const civicId = VoterStore.election_id();
+    const civicId = VoterStore.electionId();
     const props = assign({}, this.getState().ballots[civicId]);
     props.ballot_item_list = null;
     return props;
@@ -37,13 +37,13 @@ class BallotStore extends ReduceStore {
 
   get ballotFound () {
     if (!this.isLoaded()) { return undefined; }
-    const civicId = VoterStore.election_id();
+    const civicId = VoterStore.electionId();
     return this.getState().ballots[civicId].ballot_found;
   }
 
   get ballot () {
     if (!this.isLoaded()) { return undefined; }
-    const civicId = VoterStore.election_id();
+    const civicId = VoterStore.electionId();
     return this.getState().ballots[civicId].ballot_item_list;
   }
 
@@ -62,25 +62,25 @@ class BallotStore extends ReduceStore {
 
   get currentBallotElectionName () {
     if (!this.isLoaded()) { return "Election"; }
-    const civicId = VoterStore.election_id();
+    const civicId = VoterStore.electionId();
     return this.getState().ballots[civicId].election_name;
   }
 
   get currentBallotElectionDate () {
     if (!this.isLoaded()) { return undefined; }
-    const civicId = VoterStore.election_id();
+    const civicId = VoterStore.electionId();
     return this.getState().ballots[civicId].election_day_text;
   }
 
   get currentBallotGoogleCivicElectionId () {
     if (!this.isLoaded()) { return undefined; }
-    const civicId = VoterStore.election_id();
+    const civicId = VoterStore.electionId();
     return this.getState().ballots[civicId].google_civic_election_id;
   }
 
   get currentBallotPollingLocationSource () {
     if (!this.isLoaded()) { return undefined; }
-    const civicId = VoterStore.election_id();
+    const civicId = VoterStore.electionId();
     return this.getState().ballots[civicId].polling_location_we_vote_id_source;
   }
 

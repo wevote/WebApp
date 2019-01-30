@@ -214,7 +214,7 @@ class OrganizationStore extends ReduceStore {
     switch (action.type) {
       case "organizationFollow":
         // Following one org can change the support/oppose count for many ballot items for the voter
-        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
+        SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         // We also listen to "organizationFollow" in VoterGuideStore so we can alter organizationWeVoteIds_to_follow_all and organizationWeVoteIds_to_follow_for_latest_ballot_item
         // voterLinkedOrganizationWeVoteId is the voter who clicked the Follow button
         voterLinkedOrganizationWeVoteId = action.res.voter_linked_organization_we_vote_id;
@@ -226,7 +226,7 @@ class OrganizationStore extends ReduceStore {
           // search_string = "";
           // add_voterGuides_not_from_election = false;
           // Whenever a voter follows a new org, update list
-          // VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voterGuides_not_from_election);  // DEBUG=1
+          // VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.electionId(), search_string, add_voterGuides_not_from_election);  // DEBUG=1
         }
         // Update "who I am following" for the voter: voterLinkedOrganizationWeVoteId
         VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voterLinkedOrganizationWeVoteId);
@@ -234,7 +234,7 @@ class OrganizationStore extends ReduceStore {
         // 2018-05-02 NOT calling this for optimization (not critical)
         // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organizationWeVoteId);
         // 2018-05-02 NOT calling this for optimization (not critical)
-        // VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organizationWeVoteId, VoterStore.election_id());
+        // VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organizationWeVoteId, VoterStore.electionId());
         // Update the guides the voter is following
         // 2018-05-02 NOT calling this for optimization (not critical)
         // VoterGuideActions.voterGuidesFollowedRetrieve();
@@ -269,7 +269,7 @@ class OrganizationStore extends ReduceStore {
         // We also listen to "organizationStopFollowing" in VoterGuideStore so we can alter organizationWeVoteIds_to_follow_all
 
         // Un-Following one org can change the support/oppose count for many ballot items for the voter
-        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
+        SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         // voterLinkedOrganizationWeVoteId is the voter who clicked the Follow button
         voterLinkedOrganizationWeVoteId = action.res.voter_linked_organization_we_vote_id;
         // organizationWeVoteId is the organization that was just followed
@@ -278,14 +278,14 @@ class OrganizationStore extends ReduceStore {
         // add_voterGuides_not_from_election = false;
         // Whenever a voter follows a new org, update list
         // 2018-05-02 NOT calling this for optimization (not critical)
-        // VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voterGuides_not_from_election);
+        // VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.electionId(), search_string, add_voterGuides_not_from_election);
         // Update "who I am following" for the voter: voterLinkedOrganizationWeVoteId
         // 2018-05-02 NOT calling this for optimization (not critical)
         // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voterLinkedOrganizationWeVoteId);
         // Update who the organization is followed by
         // 2018-05-02 NOT calling this for optimization (not critical)
         // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organizationWeVoteId);
-        // VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organizationWeVoteId, VoterStore.election_id());
+        // VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organizationWeVoteId, VoterStore.electionId());
         // Update the guides the voter is following
         VoterGuideActions.voterGuidesFollowedRetrieve();
         // Update the followers of the organization that was just un-followed: organizationWeVoteId
@@ -302,7 +302,7 @@ class OrganizationStore extends ReduceStore {
         // We also listen to "organizationFollowIgnore" in VoterGuideStore so we can alter organizationWeVoteIds_to_follow_all and organizationWeVoteIds_to_follow_for_latest_ballot_item
 
         // Ignoring one org can change the support/oppose count for many ballot items for the voter
-        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
+        SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         // voterLinkedOrganizationWeVoteId is the voter who clicked the Follow button
         voterLinkedOrganizationWeVoteId = action.res.voter_linked_organization_we_vote_id;
         // organizationWeVoteId is the organization that was just followed
@@ -310,14 +310,14 @@ class OrganizationStore extends ReduceStore {
         // search_string = "";
         // add_voterGuides_not_from_election = false;
         // Whenever a voter follows a new org, update list
-        // VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.election_id(), search_string, add_voterGuides_not_from_election); // DEBUG=1
+        // VoterGuideActions.voterGuidesToFollowRetrieve(VoterStore.electionId(), search_string, add_voterGuides_not_from_election); // DEBUG=1
         // Update "who I am following" for the voter: voterLinkedOrganizationWeVoteId
         // 2018-05-02 NOT calling this for optimization (not critical)
         // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(voterLinkedOrganizationWeVoteId);
         // Update who the organization is followed by
         // 2018-05-02 NOT calling this for optimization (not critical)
         // VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(organizationWeVoteId);
-        // VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organizationWeVoteId, VoterStore.election_id());
+        // VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(organizationWeVoteId, VoterStore.electionId());
         // Update the guides the voter is following
         // 2018-05-02 NOT calling this for optimization (not critical)
         // VoterGuideActions.voterGuidesFollowedRetrieve();
