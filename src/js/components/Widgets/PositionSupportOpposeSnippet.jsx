@@ -7,7 +7,6 @@ import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import ReadMore from "./ReadMore";
 import { vimeoRegX, youTubeRegX } from "../../utils/textFormat";
 
-// import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
 
 export default class PositionSupportOpposeSnippet extends Component {
   static propTypes = {
@@ -23,89 +22,70 @@ export default class PositionSupportOpposeSnippet extends Component {
     comment_text_off: PropTypes.bool,
   };
 
-  componentWillMount () {
-    this.setState({
-      showViewSourceModal: false,
-      transitioning: false,
-    });
-  }
-
-  closeViewSourceModal () {
-    this.setState({ showViewSourceModal: false });
-  }
-
-  openViewSourceModal (event) {
-    console.log(event);
-    event.stopPropagation();
-    this.setState({ showViewSourceModal: true });
-  }
-
   render () {
     renderLog(__filename);
-    let stance_icon_src;
+    let stanceIconSrc;
     let className;
     let alt;
     let actorSupportsBallotItemLabel;
     let ballotItemIsSupportedByActorLabel;
-    const { is_looking_at_self, more_info_url } = this.props;
-    let moreInfoUrl = more_info_url;
-    const statement_text = this.props.statement_text || "";
-    let statement_text_html = (
+    const { is_looking_at_self: isLookingAtSelf } = this.props;
+    let { more_info_url: moreInfoUrl } = this.props;
+    const statementText = this.props.statement_text || "";
+    let statementTextHtml = (
       <ReadMore
         num_of_lines={5}
-        text_to_display={statement_text}
+        text_to_display={statementText}
       />
     );
-    // onViewSourceClick is onClick function for view source modal in mobile browser
-    // const onViewSourceClick = this.state.showViewSourceModal ? this.closeViewSourceModal.bind(this) : this.openViewSourceModal.bind(this);
 
-    let video_url = "";
-    let youtube_url;
-    let vimeo_url;
-    let statement_text_no_url;
+    let videoUrl = "";
+    let youTubeUrl;
+    let vimeoUrl;
+    let statementTextNoUrl;
 
-    if (statement_text) {
-      youtube_url = statement_text.match(youTubeRegX);
-      vimeo_url = statement_text.match(vimeoRegX);
+    if (statementText) {
+      youTubeUrl = statementText.match(youTubeRegX);
+      vimeoUrl = statementText.match(vimeoRegX);
     }
 
-    if (youtube_url) {
-      video_url = youtube_url[0];
-      statement_text_no_url = statement_text.replace(video_url, "");
-      statement_text_html = <ReadMore text_to_display={statement_text_no_url} />;
+    if (youTubeUrl) {
+      [videoUrl] = youTubeUrl;
+      statementTextNoUrl = statementText.replace(videoUrl, "");
+      statementTextHtml = <ReadMore text_to_display={statementTextNoUrl} />;
     }
 
-    if (vimeo_url) {
-      video_url = vimeo_url[0];
-      statement_text_no_url = statement_text.replace(video_url, "");
-      statement_text_html = <ReadMore text_to_display={statement_text_no_url} />;
+    if (vimeoUrl) {
+      [videoUrl] = vimeoUrl;
+      statementTextNoUrl = statementText.replace(videoUrl, "");
+      statementTextHtml = <ReadMore text_to_display={statementTextNoUrl} />;
     }
 
     if (this.props.is_support) {
-      stance_icon_src = cordovaDot("/img/global/svg-icons/thumbs-up-color-icon.svg");
+      stanceIconSrc = cordovaDot("/img/global/svg-icons/thumbs-up-color-icon.svg");
       className = "explicit-position__icon";
       alt = "Supports";
-      actorSupportsBallotItemLabel = is_looking_at_self ? "You Support" : "Supports"; // Actor supports Ballot item (Active voice)
-      ballotItemIsSupportedByActorLabel = is_looking_at_self ? "is Supported by You" : "is Supported by"; // Ballot item is supported by Actor (Passive voice)
+      actorSupportsBallotItemLabel = isLookingAtSelf ? "You Support" : "Supports"; // Actor supports Ballot item (Active voice)
+      ballotItemIsSupportedByActorLabel = isLookingAtSelf ? "is Supported by You" : "is Supported by"; // Ballot item is supported by Actor (Passive voice)
     } else if (this.props.is_oppose) {
-      stance_icon_src = cordovaDot("/img/global/svg-icons/thumbs-down-color-icon.svg");
+      stanceIconSrc = cordovaDot("/img/global/svg-icons/thumbs-down-color-icon.svg");
       className = "explicit-position__icon";
       alt = "Opposes";
-      actorSupportsBallotItemLabel = is_looking_at_self ? "You Oppose" : "Opposes";
-      ballotItemIsSupportedByActorLabel = is_looking_at_self ? "is Opposed by You" : "is Opposed by";
+      actorSupportsBallotItemLabel = isLookingAtSelf ? "You Oppose" : "Opposes";
+      ballotItemIsSupportedByActorLabel = isLookingAtSelf ? "is Opposed by You" : "is Opposed by";
     } else {
       // We shouldn't be here. Do not display position information. See instead PositionInformationOnlySnippet.jsx
       return <span />;
     }
 
-    let stance_display_off = false;
+    let stanceDisplayOff = false;
     if (this.props.stance_display_off !== undefined) {
-      stance_display_off = !!this.props.stance_display_off;
+      stanceDisplayOff = !!this.props.stance_display_off;
     }
 
-    let comment_text_off = false;
+    let commentTextOff = false;
     if (this.props.comment_text_off !== undefined) {
-      comment_text_off = !!this.props.comment_text_off;
+      commentTextOff = !!this.props.comment_text_off;
     }
 
     if (moreInfoUrl) {
@@ -116,11 +96,11 @@ export default class PositionSupportOpposeSnippet extends Component {
 
     return (
       <div className="explicit-position">
-        { stance_display_off ?
+        { stanceDisplayOff ?
           null : (
             <div className="explicit-position__text">
               <span className="explicit-position__voter-guide-increase">
-                <img src={stance_icon_src} width="24" height="24" className={className} alt={alt} />
+                <img src={stanceIconSrc} width="24" height="24" className={className} alt={alt} />
                 {this.props.is_on_ballot_item_page ? (
                   <span>
                     <span className="explicit-position__position-label">{actorSupportsBallotItemLabel}</span>
@@ -142,12 +122,12 @@ export default class PositionSupportOpposeSnippet extends Component {
                 )}
                 <br />
               </span>
-              { comment_text_off ? null : (
+              { commentTextOff ? null : (
                 <span>
-                  <span className="u-wrap-links d-print-none">{statement_text_html}</span>
+                  <span className="u-wrap-links d-print-none">{statementTextHtml}</span>
                   {/* if there's an external source for the explicit position/endorsement, show it */}
-                  { video_url ?
-                    <ReactPlayer className="explicit-position__media-player" url={`${video_url}`} width="100%" height="100%" /> :
+                  { videoUrl ?
+                    <ReactPlayer className="explicit-position__media-player" url={`${videoUrl}`} width="100%" height="100%" /> :
                     null }
                   {moreInfoUrl ? (
                     <div className="d-none d-sm-block">
@@ -164,11 +144,6 @@ export default class PositionSupportOpposeSnippet extends Component {
                           </span>
                         )}
                       />
-                      {/* link for mobile browser: open in bootstrap modal */}
-                      {/*
-                  <a onClick={onViewSourceClick}>
-                    (view source)
-                  </a> */}
                     </div>
                   ) : null
                   }
@@ -176,9 +151,6 @@ export default class PositionSupportOpposeSnippet extends Component {
               )}
             </div>
           )}
-        {/* <ViewSourceModal show={this.state.showViewSourceModal}
-                     onHide={this.closeViewSourceModal.bind(this)}
-                     url={this.props.moreInfoUrl} /> */}
       </div>
     );
   }

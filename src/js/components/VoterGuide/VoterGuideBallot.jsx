@@ -792,35 +792,6 @@ export default class VoterGuideBallot extends Component {
 
     const inRemainingDecisionsMode = this.state.completionLevelFilterType === "filterRemaining";
 
-    const voterBallotLocation = VoterStore.getBallotLocationForVoter();
-    let voterEnteredAddress = false;
-    let voterSpecificBallotFromGoogleCivic = false;
-    let ballotLocationDisplayName = "";
-    let substitutedAddressNearby = "";
-    if (voterBallotLocation && voterBallotLocation.voter_entered_address) {
-      voterEnteredAddress = true;
-    }
-
-    if (voterBallotLocation && voterBallotLocation.voter_specific_ballot_from_google_civic) {
-      voterSpecificBallotFromGoogleCivic = true;
-    }
-
-    if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_location_display_name) {
-      // console.log("BallotStore.ballotProperties:", BallotStore.ballotProperties);
-      ballotLocationDisplayName = BallotStore.ballotProperties.ballot_location_display_name;
-    } else if (voterBallotLocation && voterBallotLocation.ballot_location_display_name) {
-      // Get the location name from the VoterStore address object
-      // console.log("voterBallotLocation:", voterBallotLocation);
-      ballotLocationDisplayName = voterBallotLocation.ballot_location_display_name;
-    }
-
-    if (BallotStore.ballotProperties && BallotStore.ballotProperties.substituted_address_nearby) {
-      substitutedAddressNearby = BallotStore.ballotProperties.substituted_address_nearby;
-    } else if (voterBallotLocation && voterBallotLocation.text_for_map_search) {
-      // Get the location from the VoterStore address object
-      substitutedAddressNearby = voterBallotLocation.text_for_map_search;
-    }
-
     if (this.state.ballotWithAllItemsByFilterType.length === 0 && inRemainingDecisionsMode) {
       historyPush(this.state.pathname);
     }
@@ -907,7 +878,6 @@ export default class VoterGuideBallot extends Component {
                 <PledgeToSupportOrganizationStatusBar organization={this.state.organization} /> :
                 null
               }
-              {/* Turned off for now: <PledgeToVoteStatusBar organization={this.state.organization} /> */}
             </div>
 
             <div className="d-print-none">
@@ -918,24 +888,13 @@ export default class VoterGuideBallot extends Component {
                 />
               ) : null
               }
-              {/* Turned off for now:  This button is almost exactly like the PledgeToSupportOrganizationButton and should be merged together
-                 <PledgeToVoteButton organization={this.state.organization}
-                                     pledgeToVoteAction={this.pledgeToVoteWithVoterGuide} /> */}
             </div>
 
             {this.state.ballotWithAllItemsByFilterType.length > 0 ? (
               <div>
                 <BallotStatusMessage
-                  ballot_location_chosen
-                  ballot_location_display_name={ballotLocationDisplayName}
-                  election_day_text={ElectionStore.getElectionDayText(this.state.googleCivicElectionId)}
-                  election_is_upcoming={ElectionStore.isElectionUpcoming(this.state.googleCivicElectionId)}
-                  voter_entered_address={voterEnteredAddress}
-                  google_civic_data_exists={ElectionStore.googleCivicDataExists(this.state.googleCivicElectionId)}
-                  voter_specific_ballot_from_google_civic={voterSpecificBallotFromGoogleCivic}
-                  text_for_map_search={substitutedAddressNearby}
-                  toggleSelectBallotModal={this.toggleSelectBallotModal}
-                  google_civic_election_id={this.state.googleCivicElectionId}
+                  ballotLocationChosen
+                  googleCivicElectionId={this.state.googleCivicElectionId}
                 />
               </div>
             ) : null

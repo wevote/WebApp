@@ -11,43 +11,43 @@ export default class TwitterHandleBox extends Component {
     super(props);
     this.state = {
       loading: false,
-      twitter_handle: "",
+      twitterHandle: "",
     };
   }
 
   componentDidMount () {
-    this.setState({ twitter_handle: VoterStore.getTwitterHandle() });
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.setState({ twitterHandle: VoterStore.getTwitterHandle() });
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
   }
 
-  _onVoterStoreChange () {
-    this.setState({ twitter_handle: VoterStore.getTwitterHandle(), loading: false });
+  submitTwitterHandle = (e) => {
+    e.preventDefault();
+    let { twitterHandle } = this.state;
+    this.setState({ loading: true });
+    twitterHandle = extractTwitterHandleFromTextString(twitterHandle);
+    historyPush(`/${twitterHandle}`);
+  }
+
+  onVoterStoreChange () {
+    this.setState({ twitterHandle: VoterStore.getTwitterHandle(), loading: false });
   }
 
   updateTwitterHandle (e) {
     this.setState({
-      twitter_handle: e.target.value,
+      twitterHandle: e.target.value,
     });
   }
 
-  submitTwitterHandle (e) {
-    e.preventDefault();
-    let { twitter_handle } = this.state;
-    this.setState({ loading: true });
-    twitter_handle = extractTwitterHandleFromTextString(twitter_handle);
-    historyPush(`/${twitter_handle}`);
-  }
-
   twitterHandleStripped () {
-    const { twitter_handle } = this.state;
-    if (twitter_handle === undefined) {
+    const { twitterHandle } = this.state;
+    if (twitterHandle === undefined) {
       return "";
     } else {
-      return extractTwitterHandleFromTextString(twitter_handle);
+      return extractTwitterHandleFromTextString(twitterHandle);
     }
   }
 
@@ -58,8 +58,8 @@ export default class TwitterHandleBox extends Component {
       return LoadingWheel;
     }
 
-    const twitter_handle_stripped = this.twitterHandleStripped();
-    const claim_your_page_button_text = twitter_handle_stripped.length === 0 ? "Claim Your Page" : `Claim @${twitter_handle_stripped}`;
+    const twitterHandleStripped = this.twitterHandleStripped();
+    const claimYourPageButtonText = twitterHandleStripped.length === 0 ? "Claim Your Page" : `Claim @${twitterHandleStripped}`;
     return (
       <div>
         <form onSubmit={this.submitTwitterHandle.bind(this)} className="u-stack--md">
@@ -67,17 +67,17 @@ export default class TwitterHandleBox extends Component {
             <input
               type="text"
               onChange={this.updateTwitterHandle.bind(this)}
-              name="twitter_handle"
-              value={this.state.twitter_handle}
+              name="twitterHandle"
+              value={this.state.twitterHandle}
               className="form-control"
               placeholder="Enter your twitter handle"
             />
             <InputGroup.Button>
               <Button
-                onClick={this.submitTwitterHandle.bind(this)}
+                onClick={this.submitTwitterHandle}
                 variant="primary"
               >
-                {claim_your_page_button_text}
+                {claimYourPageButtonText}
               </Button>
             </InputGroup.Button>
           </InputGroup>

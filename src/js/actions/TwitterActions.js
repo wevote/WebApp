@@ -9,18 +9,18 @@ export default {
     VoterActions.voterRetrieve();
   },
 
-  twitterIdentityRetrieve (new_twitter_handle) {
+  twitterIdentityRetrieve (newTwitterHandle) {
     Dispatcher.loadEndpoint("twitterIdentityRetrieve",
       {
-        twitter_handle: new_twitter_handle,
+        twitter_handle: newTwitterHandle,
       });
   },
 
-  twitterNativeSignInSave (twitter_access_token, twitter_access_token_secret) {
+  twitterNativeSignInSave (twitterAccessToken, twitterAccessTokenSecret) {
     Dispatcher.loadEndpoint("twitterNativeSignInSave",
       {
-        twitter_access_token,
-        twitter_access_token_secret,
+        twitter_access_token: twitterAccessToken,
+        twitter_access_token_secret: twitterAccessTokenSecret,
       });
   },
 
@@ -28,13 +28,4 @@ export default {
     Dispatcher.loadEndpoint("twitterSignInRetrieve", {
     });
   },
-
-  //
-  // twitterSignInStart: function (return_url) {
-  //   Dispatcher.loadEndpoint("twitterSignInStart",
-  //     {
-  //       return_url: return_url
-  //     });
-  // },
-
 };

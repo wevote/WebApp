@@ -2,20 +2,17 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ReactPlayer from "react-player";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
-import {cordovaDot} from "../../utils/cordovaUtils";
+import { cordovaDot } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import ReadMore from "./ReadMore";
 import { vimeoRegX, youTubeRegX } from "../../utils/textFormat";
 
 
-// import ViewSourceModal from "../../components/Widgets/ViewSourceModal";
-
 export default class PositionInformationOnlySnippet extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string,
     is_on_ballot_item_page: PropTypes.bool,
-    is_on_edit_position_modal: PropTypes.bool,
     is_looking_at_self: PropTypes.bool,
     more_info_url: PropTypes.string,
     speaker_display_name: PropTypes.string,
@@ -24,70 +21,51 @@ export default class PositionInformationOnlySnippet extends Component {
     comment_text_off: PropTypes.bool,
   };
 
-  componentWillMount () {
-    this.setState({
-      showViewSourceModal: false,
-      transitioning: false,
-    });
-  }
-
-  closeViewSourceModal () {
-    this.setState({ showViewSourceModal: false });
-  }
-
-  openViewSourceModal (event) {
-    console.log(event);
-    event.stopPropagation();
-    this.setState({ showViewSourceModal: true });
-  }
-
   render () {
     renderLog(__filename);
-    const { is_looking_at_self, more_info_url } = this.props;
-    let moreInfoUrl = more_info_url;
-    const statement_text = this.props.statement_text || "";
-    let statement_text_html = <ReadMore text_to_display={statement_text} />;
-    // onViewSourceClick is onClick function for view source modal in mobile browser
-    // const onViewSourceClick = this.state.showViewSourceModal ? this.closeViewSourceModal.bind(this) : this.openViewSourceModal.bind(this);
+    const { is_looking_at_self: isLookingAtSelf } = this.props;
+    let { more_info_url: moreInfoUrl } = this.props;
+    const statementText = this.props.statement_text || "";
+    let statementTextHtml = <ReadMore text_to_display={statementText} />;
 
-    let video_url = "";
-    let youtube_url;
-    let vimeo_url;
-    let statement_text_no_url;
+    let videoUrl = "";
+    let youTubeUrl;
+    let vimeoUrl;
+    let statementTextNoUrl;
 
     if (moreInfoUrl) {
-      youtube_url = moreInfoUrl.match(youTubeRegX);
-      vimeo_url = moreInfoUrl.match(vimeoRegX);
+      youTubeUrl = moreInfoUrl.match(youTubeRegX);
+      vimeoUrl = moreInfoUrl.match(vimeoRegX);
     }
 
-    if (statement_text) {
-      youtube_url = statement_text.match(youTubeRegX);
-      vimeo_url = statement_text.match(vimeoRegX);
+    if (statementText) {
+      youTubeUrl = statementText.match(youTubeRegX);
+      vimeoUrl = statementText.match(vimeoRegX);
     }
 
-    if (youtube_url) {
-      video_url = youtube_url;
-      statement_text_no_url = statement_text.replace(video_url[0], "");
-      statement_text_html = <ReadMore text_to_display={statement_text_no_url} />;
+    if (youTubeUrl) {
+      [videoUrl] = youTubeUrl;
+      statementTextNoUrl = statementText.replace(videoUrl[0], "");
+      statementTextHtml = <ReadMore text_to_display={statementTextNoUrl} />;
     }
 
-    if (vimeo_url) {
-      video_url = vimeo_url[0];
-      statement_text_no_url = statement_text.replace(video_url, "");
-      statement_text_html = <ReadMore text_to_display={statement_text_no_url} />;
+    if (vimeoUrl) {
+      [videoUrl] = vimeoUrl;
+      statementTextNoUrl = statementText.replace(videoUrl, "");
+      statementTextHtml = <ReadMore text_to_display={statementTextNoUrl} />;
     }
 
     const className = "position-rating__icon position-rating__icon--no-position";
     const alt = "Neutral Rating";
     const positionLabel = "About";
-    const hasThisToSay = is_looking_at_self ? "Your comment:" : null;
-    let stance_display_off = false;
+    const hasThisToSay = isLookingAtSelf ? "Your comment:" : null;
+    let stanceDisplayOff = false;
     if (this.props.stance_display_off !== undefined) {
-      stance_display_off = !!this.props.stance_display_off;
+      stanceDisplayOff = !!this.props.stance_display_off;
     }
-    let comment_text_off = false;
+    let commentTextOff = false;
     if (this.props.comment_text_off !== undefined) {
-      comment_text_off = !!this.props.comment_text_off;
+      commentTextOff = !!this.props.comment_text_off;
     }
     if (moreInfoUrl) {
       if (!moreInfoUrl.toLowerCase().startsWith("http")) {
@@ -100,7 +78,7 @@ export default class PositionInformationOnlySnippet extends Component {
     return (
       <div className="explicit-position">
         <div className="explicit-position__text">
-          { stance_display_off ?
+          { stanceDisplayOff ?
             null : (
               <span>
                 <OverlayTrigger placement="top" overlay={tooltip}>
@@ -137,12 +115,12 @@ export default class PositionInformationOnlySnippet extends Component {
               </span>
             )
           }
-          { comment_text_off ? null : (
+          { commentTextOff ? null : (
             <span>
-              <span>{statement_text_html}</span>
+              <span>{statementTextHtml}</span>
               {/* if there's an external source for the explicit position/endorsement, show it */}
-              { video_url ?
-                <ReactPlayer className="explicit-position__media-player" url={`${video_url}`} width="100%" height="100%" /> :
+              { videoUrl ?
+                <ReactPlayer className="explicit-position__media-player" url={`${videoUrl}`} width="100%" height="100%" /> :
                 null }
               {moreInfoUrl ? (
                 <div className="d-none d-sm-block">
@@ -159,19 +137,12 @@ export default class PositionInformationOnlySnippet extends Component {
                       </span>
                     )}
                   />
-                  {/* link for mobile browser: open in bootstrap modal */}
-                  {/* <a onClick={onViewSourceClick}>
-                  (view source)
-                </a> */}
                 </div>
               ) : null
               }
             </span>
           )}
         </div>
-        {/* <ViewSourceModal show={this.state.showViewSourceModal}
-                     onHide={this.closeViewSourceModal.bind(this)}
-                     url={this.props.moreInfoUrl} /> */}
       </div>
     );
   }

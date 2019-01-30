@@ -159,15 +159,15 @@ class VoterGuideStore extends ReduceStore {
   }
 
   getVoterGuidesFollowedByOrganization (organization_we_vote_id) {
-    return this.returnVoterGuidesFromListOfIds(OrganizationStore.getState().organization_we_vote_ids_followed_by_organization_dict[organization_we_vote_id]) || [];
+    return this.returnVoterGuidesFromListOfIds(OrganizationStore.getState().organizationWeVoteIdsFollowedByOrganizationDict[organization_we_vote_id]) || [];
   }
 
   getVoterGuidesFollowingOrganization (organization_we_vote_id) {
-    return this.returnVoterGuidesFromListOfIds(OrganizationStore.getState().organization_we_vote_ids_following_by_organization_dict[organization_we_vote_id]) || [];
+    return this.returnVoterGuidesFromListOfIds(OrganizationStore.getState().organizationWeVoteIdsFollowingByOrganizationDict[organization_we_vote_id]) || [];
   }
 
   getVoterGuidesVoterIsIgnoring () {
-    return this.returnVoterGuidesFromListOfIds(OrganizationStore.getState().organization_we_vote_ids_voter_is_ignoring) || [];
+    return this.returnVoterGuidesFromListOfIds(OrganizationStore.getState().organizationWeVoteIdsVoterIsIgnoring) || [];
   }
 
   getVoterGuideSaveResults () {
@@ -574,7 +574,7 @@ class VoterGuideStore extends ReduceStore {
         };
 
       case "voterGuideFollowersRetrieve":
-        // In OrganizationStore, we also listen for a response to "voterGuideFollowersRetrieve" and update organization_we_vote_ids_following_by_organization_dict
+        // In OrganizationStore, we also listen for a response to "voterGuideFollowersRetrieve" and update organizationWeVoteIdsFollowingByOrganizationDict
         voter_guides = action.res.voter_guides;
         all_cached_voter_guides = state.all_cached_voter_guides;
         all_cached_voter_guides_by_election = state.all_cached_voter_guides_by_election || [];
@@ -593,7 +593,7 @@ class VoterGuideStore extends ReduceStore {
         };
 
       case "voterGuidesIgnoredRetrieve":
-        // In OrganizationStore, we also listen for a response to "voterGuidesIgnoredRetrieve" and update organization_we_vote_ids_voter_is_ignoring
+        // In OrganizationStore, we also listen for a response to "voterGuidesIgnoredRetrieve" and update organizationWeVoteIdsVoterIsIgnoring
         voter_guides = action.res.voter_guides;
         all_cached_voter_guides = state.all_cached_voter_guides;
         all_cached_voter_guides_by_election = state.all_cached_voter_guides_by_election || [];
@@ -611,7 +611,7 @@ class VoterGuideStore extends ReduceStore {
         };
 
       case "voterGuidesFollowedByOrganizationRetrieve":
-        // In OrganizationStore we listen for "voterGuidesFollowedByOrganizationRetrieve" so we can update OrganizationStore.getState().organization_we_vote_ids_followed_by_organization_dict
+        // In OrganizationStore we listen for "voterGuidesFollowedByOrganizationRetrieve" so we can update OrganizationStore.getState().organizationWeVoteIdsFollowedByOrganizationDict
         voter_guides = action.res.voter_guides;
         // Clear prior recommendations
         organization_we_vote_ids_to_follow_organization_recommendation_dict[organization_we_vote_id_for_voter_guide_owner] = [];

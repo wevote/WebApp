@@ -15,7 +15,6 @@ import VoterStore from "../../stores/VoterStore";
 import { vimeoRegX, youTubeRegX, stringContains } from "../../utils/textFormat";
 
 
-
 export default class ItemPositionStatementActionBar extends Component {
   static propTypes = {
     ballot_item_we_vote_id: PropTypes.string.isRequired,
@@ -30,21 +29,20 @@ export default class ItemPositionStatementActionBar extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      is_public_position: undefined,
-      loading: false,
+      isPublicPosition: undefined,
       showEditPositionStatementInput: undefined,
       supportProps: undefined,
-      statement_text_to_be_saved: undefined,
-      transitioning: false,
-      voter_photo_url_medium: "",
+      statementTextToBeSaved: undefined,
+      voterPhotoUrlMedium: "",
     };
+    this.updateStatementTextToBeSaved = this.updateStatementTextToBeSaved.bind(this);
   }
 
   componentDidMount () {
     if (this.props.supportProps) {
       this.setState({
-        is_public_position: this.props.supportProps.is_public_position,
-        statement_text_to_be_saved: this.props.supportProps.voter_statement_text,
+        isPublicPosition: this.props.supportProps.is_public_position,
+        statementTextToBeSaved: this.props.supportProps.voter_statement_text,
         supportProps: this.props.supportProps,
       });
     }
@@ -54,34 +52,32 @@ export default class ItemPositionStatementActionBar extends Component {
 
     this.setState({
       showEditPositionStatementInput: this.props.comment_edit_mode_on,
-      voter_full_name: VoterStore.getFullName(),
+      voterFullName: VoterStore.getFullName(),
       voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
-      voter_photo_url_medium: VoterStore.getVoterPhotoUrlMedium(),
+      voterPhotoUrlMedium: VoterStore.getVoterPhotoUrlMedium(),
     });
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.supportProps !== undefined) {
       this.setState({
-        is_public_position: nextProps.supportProps.is_public_position,
+        isPublicPosition: nextProps.supportProps.is_public_position,
       });
     }
     if (this.state.showEditPositionStatementInput) {
       // we don't want to do anything
     } else if (nextProps.supportProps && nextProps.supportProps.voter_statement_text) {
       this.setState({
-        statement_text_to_be_saved: nextProps.supportProps.voter_statement_text,
+        statementTextToBeSaved: nextProps.supportProps.voter_statement_text,
         showEditPositionStatementInput: false,
-        transitioning: false,
       });
     } else {
-      const voter_statement_text = (nextProps.supportProps && nextProps.supportProps.voter_statement_text) || "";
+      const voterStatementText = (nextProps.supportProps && nextProps.supportProps.voter_statement_text) || "";
       this.setState({
-        statement_text_to_be_saved: voter_statement_text,
+        statementTextToBeSaved: voterStatementText,
         showEditPositionStatementInput: nextProps.comment_edit_mode_on,
-        transitioning: false,
       });
     }
   }
@@ -111,59 +107,56 @@ export default class ItemPositionStatementActionBar extends Component {
     return { hasError: true };
   }
 
+  onSupportStoreChange () {
+    const supportProps = SupportStore.get(this.props.ballot_item_we_vote_id);
+    let statementTextToBeSaved = "";
+    let isPublicPosition = "";
+
+    if (this.state.showEditPositionStatementInput) {
+      if (supportProps) {
+        isPublicPosition = supportProps.is_public_position;
+      }
+      this.setState({
+        supportProps,
+        isPublicPosition,
+      });
+    } else {
+      if (supportProps) {
+        statementTextToBeSaved = supportProps.voter_statement_text;
+        isPublicPosition = supportProps.is_public_position;
+      }
+      this.setState({
+        statementTextToBeSaved,
+        supportProps,
+        isPublicPosition,
+      });
+    }
+  }
+
+  onVoterStoreChange () {
+    this.setState({
+      voterFullName: VoterStore.getFullName(),
+      voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
+      voterPhotoUrlMedium: VoterStore.getVoterPhotoUrlMedium(),
+    });
+  }
+
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
     console.error("ItemPositionStatementActionBar caught error: ", `${error} with info: `, info);
   }
 
-  onSupportStoreChange () {
-    const supportProps = SupportStore.get(this.props.ballot_item_we_vote_id);
-    let statement_text_to_be_saved = "";
-    let is_public_position = "";
-
-    if (this.state.showEditPositionStatementInput) {
-      if (supportProps) {
-        is_public_position = supportProps.is_public_position;
-      }
-      this.setState({
-        supportProps,
-        is_public_position,
-        transitioning: false,
-      });
-    } else {
-      if (supportProps) {
-        statement_text_to_be_saved = supportProps.voter_statement_text;
-        is_public_position = supportProps.is_public_position;
-      }
-      this.setState({
-        statement_text_to_be_saved,
-        supportProps,
-        is_public_position,
-        transitioning: false,
-      });
-    }
-  }
-
-  _onVoterStoreChange () {
-    this.setState({
-      voter_full_name: VoterStore.getFullName(),
-      voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
-      voter_photo_url_medium: VoterStore.getVoterPhotoUrlMedium(),
-    });
-  }
-
   updateStatementTextToBeSaved (e) {
     this.setState({
-      statement_text_to_be_saved: e.target.value,
+      statementTextToBeSaved: e.target.value,
       showEditPositionStatementInput: true,
     });
   }
 
   savePositionStatement (e) {
     e.preventDefault();
-    SupportActions.voterPositionCommentSave(this.props.ballot_item_we_vote_id, this.props.type, this.state.statement_text_to_be_saved);
-    this.setState({ loading: true });
-    if (this.state.statement_text_to_be_saved.length) {
+    SupportActions.voterPositionCommentSave(this.props.ballot_item_we_vote_id, this.props.type, this.state.statementTextToBeSaved);
+    if (this.state.statementTextToBeSaved.length) {
       this.closeEditPositionStatementInput();
     }
   }
@@ -182,9 +175,9 @@ export default class ItemPositionStatementActionBar extends Component {
       return <div />;
     }
 
-    let { statement_text_to_be_saved } = this.state;
-    const { voter_full_name, voter_photo_url_medium } = this.state;
-    statement_text_to_be_saved = statement_text_to_be_saved.length === 0 ? null : statement_text_to_be_saved;
+    let { statementTextToBeSaved } = this.state;
+    const { voterFullName, voterPhotoUrlMedium } = this.state;
+    statementTextToBeSaved = statementTextToBeSaved.length === 0 ? null : statementTextToBeSaved;
 
     let statementPlaceholderText;
     const horizontalEllipsis = "\u2026";
@@ -201,7 +194,7 @@ export default class ItemPositionStatementActionBar extends Component {
         statementPlaceholderText = `Why you oppose${horizontalEllipsis}`;
       }
     } else if (this.props.ballotItemDisplayName) {
-      statementPlaceholderText = `Your thoughts about ${this.props.ballotItemDisplayName }${horizontalEllipsis}`;
+      statementPlaceholderText = `Your thoughts about ${this.props.ballotItemDisplayName}${horizontalEllipsis}`;
     } else {
       statementPlaceholderText = `Your thoughts${horizontalEllipsis}`;
     }
@@ -210,23 +203,21 @@ export default class ItemPositionStatementActionBar extends Component {
     //  here if the near by visibility setting text changes
     let postButtonText = "Save";
     if (this.state.voterIsSignedIn) {
-      postButtonText = "Post";
+      if (this.state.isPublicPosition) {
+        postButtonText = "Post";
+      }
     }
 
-    // if (is_public_position) {
-    //   postButtonText = <span>Post</span>;
-    // }
-
-    const speaker_image_url_https = voter_photo_url_medium;
-    const speaker_display_name = stringContains("Voter-", voter_full_name) ? "" : voter_full_name;
+    const speakerImageUrlHttps = voterPhotoUrlMedium;
+    const speakerDisplayName = stringContains("Voter-", voterFullName) ? "" : voterFullName;
     const imagePlaceholder = <span className="position-statement__avatar"><img src={cordovaDot("/img/global/svg-icons/avatar-generic.svg")} width="34" height="34" color="#c0c0c0" alt="generic voter" /></span>;
 
     // The short version can be used to cut-off an exceedingly long comment. This applies to entries by the viewer,
     //  for viewing by him or herself. Not used currently.
-    const short_version = false;
+    const shortVersion = false;
 
-    const no_statement_text = !(statement_text_to_be_saved !== null && statement_text_to_be_saved.length);
-    const edit_mode = this.state.showEditPositionStatementInput || no_statement_text;
+    const noStatementText = !(statementTextToBeSaved !== null && statementTextToBeSaved.length);
+    const editMode = this.state.showEditPositionStatementInput || noStatementText;
     const onSavePositionStatementClick = this.state.showEditPositionStatementInput ? this.closeEditPositionStatementInput.bind(this) : this.openEditPositionStatementInput.bind(this);
     const onKeyDown = function (e) {
       const enterAndSpaceKeyCodes = [13, 32];
@@ -235,47 +226,47 @@ export default class ItemPositionStatementActionBar extends Component {
       }
     };
 
-    let video_url = "";
-    let statement_text_no_url = null;
-    let youtube_url;
-    let vimeo_url;
+    let videoUrl = "";
+    let statementTextNoUrl = null;
+    let youTubeUrl;
+    let vimeoUrl;
 
-    if (statement_text_to_be_saved) {
-      youtube_url = statement_text_to_be_saved.match(youTubeRegX);
-      vimeo_url = statement_text_to_be_saved.match(vimeoRegX);
+    if (statementTextToBeSaved) {
+      youTubeUrl = statementTextToBeSaved.match(youTubeRegX);
+      vimeoUrl = statementTextToBeSaved.match(vimeoRegX);
     }
 
-    if (youtube_url) {
-      video_url = youtube_url[0];
-      statement_text_no_url = statement_text_to_be_saved.replace(video_url, "");
+    if (youTubeUrl) {
+      [videoUrl] = youTubeUrl;
+      statementTextNoUrl = statementTextToBeSaved.replace(videoUrl, "");
     }
 
-    if (vimeo_url) {
-      video_url = vimeo_url[0];
-      statement_text_no_url = statement_text_to_be_saved.replace(video_url, "");
+    if (vimeoUrl) {
+      [videoUrl] = vimeoUrl;
+      statementTextNoUrl = statementTextToBeSaved.replace(videoUrl, "");
     }
 
     return (
       <div className={this.props.shown_in_list ? "position-statement__container__in-list" : "position-statement__container"}>
         { // Show the edit box (Viewing self)
-          edit_mode ? (
+          editMode ? (
             <form onSubmit={this.savePositionStatement.bind(this)}>
               <div className="position-statement d-print-block">
-                { speaker_image_url_https ? (
+                { speakerImageUrlHttps ? (
                   <img className="position-statement__avatar"
-                       src={speaker_image_url_https}
+                       src={speakerImageUrlHttps}
                        width="34px"
                   />
                 ) :
                   imagePlaceholder
                 }
                 <span className="position-statement__input-group u-flex u-items-start">
-                  <Textarea onChange={this.updateStatementTextToBeSaved.bind(this)}
-                    name="statement_text_to_be_saved"
+                  <Textarea onChange={this.updateStatementTextToBeSaved}
+                    name="statementTextToBeSaved"
                     className="position-statement__input u-push--sm form-control"
                     minRows={2}
                     placeholder={statementPlaceholderText}
-                    defaultValue={statement_text_to_be_saved}
+                    defaultValue={statementTextToBeSaved}
                     onFocus={() => prepareForCordovaKeyboard(__filename)}
                     onBlur={() => restoreStylesAfterCordovaKeyboard(__filename)}
                     inputRef={(tag) => { this.textarea = tag; }}
@@ -290,12 +281,12 @@ export default class ItemPositionStatementActionBar extends Component {
                   </div>
                 </span>
               </div>
-            </form> ) : (
+            </form>) : (
               // Show the comment, but in read-only mode
-              <div className={short_version ? "position-statement--truncated" : "position-statement"}>
-                { speaker_image_url_https ? (
+              <div className={shortVersion ? "position-statement--truncated" : "position-statement"}>
+                { speakerImageUrlHttps ? (
                   <img className="position-statement__avatar"
-                       src={speaker_image_url_https}
+                       src={speakerImageUrlHttps}
                        width="34px"
                   />
                 ) :
@@ -303,22 +294,22 @@ export default class ItemPositionStatementActionBar extends Component {
                 }
                 <div className="position-statement__description u-flex u-items-start">
                   <div className="u-flex u-flex-column u-justify-between">
-                    { speaker_display_name ? (
+                    { speakerDisplayName ? (
                       <span className="u-bold">
-                        {speaker_display_name}
+                        {speakerDisplayName}
                         <br />
                       </span>
                     ) : null
                     }
-                    { statement_text_no_url ?
-                      <ReadMore text_to_display={statement_text_no_url} /> :
-                      <ReadMore text_to_display={statement_text_to_be_saved} />
+                    { statementTextNoUrl ?
+                      <ReadMore text_to_display={statementTextNoUrl} /> :
+                      <ReadMore text_to_display={statementTextToBeSaved} />
                     }
-                    { video_url ?
-                      <ReactPlayer url={`${video_url}`} width="300px" height="231px" /> :
+                    { videoUrl ?
+                      <ReactPlayer url={`${videoUrl}`} width="300px" height="231px" /> :
                       null
                     }
-                    { short_version ? (
+                    { shortVersion ? (
                       <span onKeyDown={onKeyDown}
                             className="position-statement__edit-position-pseudo"
                             onClick={onSavePositionStatementClick}

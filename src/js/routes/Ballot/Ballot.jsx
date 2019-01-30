@@ -963,9 +963,8 @@ export default class Ballot extends Component {
                   {ballotWithAllItemsByFilterType.length > 0 ? (
                     <div>
                       <BallotStatusMessage
-                        ballot_location_chosen
-                        toggleSelectBallotModal={this.toggleSelectBallotModal}
-                        google_civic_election_id={this.state.googleCivicElectionId}
+                        ballotLocationChosen
+                        googleCivicElectionId={this.state.googleCivicElectionId}
                       />
                     </div>
                   ) : null
