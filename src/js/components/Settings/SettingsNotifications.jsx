@@ -41,7 +41,7 @@ export default class SettingsNotifications extends Component {
     this._onVoterStoreChange();
     this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    AnalyticsActions.saveActionAccountPage(VoterStore.election_id());
+    AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
   }
 
   componentWillUnmount () {

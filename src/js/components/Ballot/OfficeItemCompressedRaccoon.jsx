@@ -204,7 +204,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
     VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
     const { showBallotIntroFollowIssues } = this.state;
     if (!showBallotIntroFollowIssues) {
-      AnalyticsActions.saveActionModalIssues(VoterStore.election_id());
+      AnalyticsActions.saveActionModalIssues(VoterStore.electionId());
     }
 
     this.setState({ showBallotIntroFollowIssues: !showBallotIntroFollowIssues });

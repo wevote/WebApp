@@ -39,7 +39,7 @@ export default class IssueFollowToggleButton extends Component {
     // This check is necessary as we enable follow when user clicks on Issue text
     if (!this.state.is_following) {
       this.setState({ is_following: true });
-      IssueActions.issueFollow(this.props.issue_we_vote_id, VoterStore.election_id());
+      IssueActions.issueFollow(this.props.issue_we_vote_id, VoterStore.electionId());
       if (this.props.on_issue_follow) {
         this.props.on_issue_follow(this.props.issue_we_vote_id);
       }
@@ -55,7 +55,7 @@ export default class IssueFollowToggleButton extends Component {
 
   onIssueStopFollowing () {
     this.setState({ is_following: false });
-    IssueActions.issueStopFollowing(this.props.issue_we_vote_id, VoterStore.election_id());
+    IssueActions.issueStopFollowing(this.props.issue_we_vote_id, VoterStore.electionId());
     // console.log("IssueFollowToggleButton, this.props.ballotItemWeVoteId:", this.props.ballotItemWeVoteId);
     if (this.props.ballotItemWeVoteId) {
       IssueActions.removeBallotItemIssueScoreFromCache(this.props.ballotItemWeVoteId);

@@ -57,7 +57,7 @@ export default class OrganizationVoterGuideEdit extends Component {
       }
 
       if (!googleCivicElectionId) {
-        googleCivicElectionId = VoterStore.election_id();
+        googleCivicElectionId = VoterStore.electionId();
       }
 
       // Now that we have gathered the org id or election id from local stores, try getting the Voter Guide again

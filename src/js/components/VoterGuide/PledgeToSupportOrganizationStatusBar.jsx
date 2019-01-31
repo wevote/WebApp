@@ -21,7 +21,7 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.setState({
       organization: this.props.organization,
-      voterGuide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.props.organization.organization_we_vote_id, VoterStore.election_id()),
+      voterGuide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.props.organization.organization_we_vote_id, VoterStore.electionId()),
     });
   }
 
@@ -29,7 +29,7 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
     // When a new organization is passed in, update this component to show the new data
     this.setState({
       organization: nextProps.organization,
-      voterGuide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(nextProps.organization.organization_we_vote_id, VoterStore.election_id()),
+      voterGuide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(nextProps.organization.organization_we_vote_id, VoterStore.electionId()),
     });
   }
 
@@ -39,7 +39,7 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
 
   onVoterGuideStoreChange () {
     this.setState(prevState => (
-      { voterGuide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(prevState.organization.organization_we_vote_id, VoterStore.election_id()) }
+      { voterGuide: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(prevState.organization.organization_we_vote_id, VoterStore.electionId()) }
     ));
   }
 

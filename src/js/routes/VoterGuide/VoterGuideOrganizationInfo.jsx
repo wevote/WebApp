@@ -27,7 +27,7 @@ export default class VoterGuideOrganizationInfo extends Component {
   }
 
   componentDidMount () {
-    // AnalyticsActions.saveActionVoterGuideGetStarted(VoterStore.election_id());
+    // AnalyticsActions.saveActionVoterGuideGetStarted(VoterStore.electionId());
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // Get Voter and Voter's Organization

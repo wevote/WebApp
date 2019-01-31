@@ -14,7 +14,7 @@ export default class HowToUse extends Component {
   }
 
   componentDidMount () {
-    AnalyticsActions.saveActionAboutGettingStarted(VoterStore.election_id());
+    AnalyticsActions.saveActionAboutGettingStarted(VoterStore.electionId());
   }
 
   render () {

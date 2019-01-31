@@ -36,7 +36,7 @@ export default class InviteByEmail extends Component {
       FriendActions.currentFriends();
     }
     this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
-    AnalyticsActions.saveActionInviteByEmail(VoterStore.election_id());
+    AnalyticsActions.saveActionInviteByEmail(VoterStore.electionId());
   }
 
   componentWillUnmount () {

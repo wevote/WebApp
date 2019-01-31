@@ -26,7 +26,7 @@ export default class SettingsAddress extends Component {
   }
 
   componentDidMount () {
-    AnalyticsActions.saveActionElections(VoterStore.election_id());
+    AnalyticsActions.saveActionElections(VoterStore.electionId());
   }
 
   render () {

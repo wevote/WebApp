@@ -97,7 +97,7 @@ export default class VoterGuideSettingsPositions extends Component {
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    // AnalyticsActions.saveActionAccountPage(VoterStore.election_id());
+    // AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
   }
 
   componentWillReceiveProps (nextProps) {

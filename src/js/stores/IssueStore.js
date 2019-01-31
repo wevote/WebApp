@@ -348,7 +348,7 @@ class IssueStore extends ReduceStore {
         if (action.res.google_civic_election_id && action.res.google_civic_election_id > 0) {
           IssueActions.issuesRetrieveForElection(action.res.google_civic_election_id);
         } else {
-          voterElectionId = VoterStore.election_id();
+          voterElectionId = VoterStore.electionId();
           if (voterElectionId && voterElectionId > 0) {
             IssueActions.issuesRetrieveForElection(voterElectionId);
           } else {

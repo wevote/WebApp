@@ -36,7 +36,7 @@ export default class Donate extends Component {
   componentDidMount () {
     this._donateStoreChange();
     this.donateStoreListener = DonateStore.addListener(this._donateStoreChange);
-    AnalyticsActions.saveActionDonateVisit(VoterStore.election_id());
+    AnalyticsActions.saveActionDonateVisit(VoterStore.electionId());
   }
 
   componentWillUnmount () {

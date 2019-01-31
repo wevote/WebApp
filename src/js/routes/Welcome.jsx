@@ -61,7 +61,7 @@ export default class Intro extends Component {
   componentDidMount () {
     this._onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    AnalyticsActions.saveActionWelcomeVisit(VoterStore.election_id());
+    AnalyticsActions.saveActionWelcomeVisit(VoterStore.electionId());
     FacebookActions.facebookFriendsAction();
     this._onFacebookStoreChange();
     this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));

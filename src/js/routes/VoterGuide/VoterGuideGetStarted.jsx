@@ -35,7 +35,7 @@ export default class VoterGuideGetStarted extends Component {
   }
 
   componentDidMount () {
-    AnalyticsActions.saveActionVoterGuideGetStarted(VoterStore.election_id());
+    AnalyticsActions.saveActionVoterGuideGetStarted(VoterStore.electionId());
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // Get Voter and Voter's Organization
@@ -65,6 +65,7 @@ export default class VoterGuideGetStarted extends Component {
     document.body.style.backgroundColor = null;
     document.body.className = "";
     this.organizationStoreListener.remove();
+    this.voterStoreListener.remove();
     this.timer = null;
   }
 

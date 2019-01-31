@@ -57,7 +57,7 @@ export default class OrganizationVoterGuide extends Component {
     if (this.props.params.action_variable === AUTO_FOLLOW && this.props.params.organization_we_vote_id) {
       // If we are here,
       // console.log("Auto following");
-      AnalyticsActions.saveActionVoterGuideAutoFollow(this.props.params.organization_we_vote_id, VoterStore.election_id());
+      AnalyticsActions.saveActionVoterGuideAutoFollow(this.props.params.organization_we_vote_id, VoterStore.electionId());
       OrganizationActions.organizationFollow(this.props.params.organization_we_vote_id);
 
       // Now redirect to the same page without the "/af" in the route
@@ -73,7 +73,7 @@ export default class OrganizationVoterGuide extends Component {
       });
     } else {
       // console.log("VoterStore.getAddressObject(): ", VoterStore.getAddressObject());
-      AnalyticsActions.saveActionVoterGuideVisit(this.props.params.organization_we_vote_id, VoterStore.election_id());
+      AnalyticsActions.saveActionVoterGuideVisit(this.props.params.organization_we_vote_id, VoterStore.electionId());
       this.setState({
         organization_we_vote_id: this.props.params.organization_we_vote_id,
         voter: VoterStore.getVoter(),
@@ -112,7 +112,7 @@ export default class OrganizationVoterGuide extends Component {
       OrganizationActions.organizationRetrieve(nextProps.params.organization_we_vote_id);
 
       // console.log("VoterStore.getAddressObject(): ", VoterStore.getAddressObject());
-      AnalyticsActions.saveActionVoterGuideVisit(nextProps.params.organization_we_vote_id, VoterStore.election_id());
+      AnalyticsActions.saveActionVoterGuideVisit(nextProps.params.organization_we_vote_id, VoterStore.electionId());
 
       // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
     }

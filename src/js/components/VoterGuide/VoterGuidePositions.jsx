@@ -117,14 +117,14 @@ export default class VoterGuidePositions extends Component {
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.election_id());
+    VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(this.props.organization.organization_we_vote_id, VoterStore.electionId());
     // TODO: COMMENT OUT because they were added to OrganizationVoterGuideTabs?
     // Positions for this organization, for this voter / election
     OrganizationActions.positionListForOpinionMaker(this.props.organization.organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
     OrganizationActions.positionListForOpinionMaker(this.props.organization.organization_we_vote_id, false, true);
     this.setState({
-      current_google_civic_election_id: VoterStore.election_id(),
+      current_google_civic_election_id: VoterStore.electionId(),
       current_organization_we_vote_id: this.props.organization.organization_we_vote_id,
       organization: this.props.organization,
       voter: VoterStore.getVoter(),
@@ -134,18 +134,18 @@ export default class VoterGuidePositions extends Component {
   componentWillReceiveProps (nextProps) {
     // console.log("VoterGuidePositions componentWillReceiveProps");
     // When a new organization is passed in, update this component to show the new data
-    const different_election = this.state.current_google_civic_election_id !== VoterStore.election_id();
+    const different_election = this.state.current_google_civic_election_id !== VoterStore.electionId();
     const different_organization = this.state.current_organization_we_vote_id !== nextProps.organization.organization_we_vote_id;
     // console.log("VoterGuidePositions componentWillReceiveProps-different_election: ", different_election, " different_organization: ", different_organization);
     if (different_election || different_organization) {
       // console.log("VoterGuidePositions, componentWillReceiveProps, nextProps.organization: ", nextProps.organization);
-      VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id, VoterStore.election_id());
+      VoterGuideActions.voterGuidesRecommendedByOrganizationRetrieve(nextProps.organization.organization_we_vote_id, VoterStore.electionId());
       // // Positions for this organization, for this voter / election
       // OrganizationActions.positionListForOpinionMaker(nextProps.organization.organization_we_vote_id, true);
       // // Positions for this organization, NOT including for this voter / election
       // OrganizationActions.positionListForOpinionMaker(nextProps.organization.organization_we_vote_id, false, true);
       this.setState({
-        current_google_civic_election_id: VoterStore.election_id(),
+        current_google_civic_election_id: VoterStore.electionId(),
         current_organization_we_vote_id: nextProps.organization.organization_we_vote_id,
         organization: nextProps.organization,
       });

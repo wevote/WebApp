@@ -52,7 +52,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
     SearchAllActions.exitSearch();
 
     // TODO CREATE THIS
-    // AnalyticsActions.saveActionMeasure(VoterStore.election_id(), this.props.params.measure_we_vote_id);
+    // AnalyticsActions.saveActionMeasure(VoterStore.electionId(), this.props.params.measure_we_vote_id);
     this.setState({
       measure_we_vote_id: this.props.params.measure_we_vote_id,
       position_list_from_advisers_followed_by_voter: MeasureStore.getPositionList(this.props.params.measure_we_vote_id),
@@ -109,7 +109,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
   render () {
     renderLog(__filename);
 
-    const electionId = VoterStore.election_id();
+    const electionId = VoterStore.electionId();
     const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to listen to related to this measure.";
 
     if (!this.state.measure || !this.state.measure.ballot_item_display_name) {
@@ -126,7 +126,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
     const titleText = `${measureName} - We Vote`;
     const descriptionText = `Information about ${measureName}`;
     const voter = VoterStore.getVoter();
-    const measureAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}m/${this.state.measure.id}/edit/?google_civic_election_id=${VoterStore.election_id()}&state_code=`;
+    const measureAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}m/${this.state.measure.id}/edit/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
 
     return (
       <section className="card">

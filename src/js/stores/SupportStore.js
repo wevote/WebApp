@@ -137,7 +137,7 @@ class SupportStore extends ReduceStore {
     switch (action.type) {
       case "voterAddressRetrieve":
         SupportActions.voterAllPositionsRetrieve();
-        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
+        SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         return state;
 
       case "voterAllPositionsRetrieve":
@@ -185,7 +185,7 @@ class SupportStore extends ReduceStore {
         };
 
       case "voterOpposingSave":
-        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
+        SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         return {
           ...state,
           voter_supports: assign({}, state.voter_supports, { [ballotItemWeVoteId]: false }),
@@ -197,7 +197,7 @@ class SupportStore extends ReduceStore {
         };
 
       case "voterStopOpposingSave":
-        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
+        SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         return {
           ...state,
           voter_opposes: assign({}, state.voter_opposes, { [ballotItemWeVoteId]: false }),
@@ -205,7 +205,7 @@ class SupportStore extends ReduceStore {
         };
 
       case "voterSupportingSave":
-        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
+        SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         return {
           ...state,
           voter_supports: assign({}, state.voter_supports, { [ballotItemWeVoteId]: true }),
@@ -217,7 +217,7 @@ class SupportStore extends ReduceStore {
         };
 
       case "voterStopSupportingSave":
-        SupportActions.positionsCountForAllBallotItems(VoterStore.election_id());
+        SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         return {
           ...state,
           voter_supports: assign({}, state.voter_supports, { [ballotItemWeVoteId]: false }),
