@@ -15,7 +15,7 @@
   "rules": {
     "array-bracket-spacing": [1, "never"],
     "camelcase": [1],
-    "class-methods-use-this": 1,
+    "class-methods-use-this": 0,  // We want to allow helper functions that don't use 'this' in classes
     "jsx-a11y/alt-text": 0,
     "jsx-a11y/anchor-has-content": 1,
     "jsx-a11y/anchor-is-valid": 1,

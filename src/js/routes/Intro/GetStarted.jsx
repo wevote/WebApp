@@ -16,39 +16,39 @@ export default class GetStarted extends Component {
     };
   }
 
-  goToBallotLink () {
-    const sampleBallotLink = "/intro/sample_ballot";
-    historyPush(sampleBallotLink);
-  }
-
   componentWillMount () {
     document.body.style.backgroundColor = "#A3A3A3";
     document.body.className = "story-view";
   }
 
   componentDidMount () {
-    this._onVoterStoreChange();
-    this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.onVoterStoreChange();
+    this.facebookStoreListener = FacebookStore.addListener(this.onFacebookStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     document.body.style.backgroundColor = null;
     document.body.className = "";
-    this.facebookListener.remove();
+    this.facebookStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter(),
     });
   }
 
-  _onFacebookChange () {
+  onFacebookStoreChange () {
     this.setState({
       facebook_auth_response: FacebookStore.getFacebookAuthResponse(),
     });
+  }
+
+  goToBallotLink () {
+    const sampleBallotLink = "/intro/sample_ballot";
+    historyPush(sampleBallotLink);
   }
 
   render () {

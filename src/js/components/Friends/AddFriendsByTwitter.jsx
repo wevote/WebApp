@@ -28,8 +28,8 @@ export default class AddFriendsByTwitter extends Component {
 
   componentDidMount () {
     this.setState({ voter: VoterStore.getVoter() });
-    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
@@ -37,11 +37,11 @@ export default class AddFriendsByTwitter extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onFriendStoreChange () {
+  onFriendStoreChange () {
     this.setState({ loading: false });
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({ voter: VoterStore.getVoter(), loading: false });
   }
 

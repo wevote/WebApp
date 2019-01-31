@@ -68,16 +68,16 @@ SearchAllBox extends Component {
       SearchAllActions.searchAll(textFromSearchField);
     }
 
-    this._onSearchAllStoreChange();
+    this.onSearchAllStoreChange();
 
-    this.searchAllStoreListener = SearchAllStore.addListener(this._onSearchAllStoreChange.bind(this));
+    this.searchAllStoreListener = SearchAllStore.addListener(this.onSearchAllStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.searchAllStoreListener.remove();
   }
 
-  _onSearchAllStoreChange () {
+  onSearchAllStoreChange () {
     const newState = {};
 
     if (SearchAllStore.getSearchResults()) {

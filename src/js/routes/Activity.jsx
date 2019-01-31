@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import { renderLog } from "../utils/logging";
 
 export default class Activity extends Component {
   static propTypes = {
-    children: PropTypes.object,
   };
 
   static getProps () {

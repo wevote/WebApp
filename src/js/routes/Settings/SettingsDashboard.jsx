@@ -20,7 +20,6 @@ import VoterStore from "../../stores/VoterStore";
 
 export default class SettingsDashboard extends Component {
   static propTypes = {
-    location: PropTypes.object,
     params: PropTypes.object,
   };
 
@@ -30,7 +29,6 @@ export default class SettingsDashboard extends Component {
       editMode: "",
       linkedOrganizationWeVoteId: "",
       organization: {},
-      sliderOpen: false,
       voter: {},
       organizationType: "",
     };
@@ -43,7 +41,6 @@ export default class SettingsDashboard extends Component {
       this.setState({ editMode: "address" });
     }
 
-    this.setState({ pathname: this.props.location.pathname });
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -191,7 +188,7 @@ export default class SettingsDashboard extends Component {
 
                 <SelectVoterGuidesSideBar />
 
-                <h4 className="text-left" />
+                <div className="h4 text-left" />
                 <div className="terms-and-privacy u-padding-top--md">
                   <Link to="/more/terms">Terms of Service</Link>
                   <span style={{ paddingLeft: 20 }} />

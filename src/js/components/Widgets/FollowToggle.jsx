@@ -43,12 +43,12 @@ export default class FollowToggle extends Component {
       is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.organizationWeVoteId),
       organization: OrganizationStore.getOrganizationByWeVoteId(this.props.organizationWeVoteId),
     });
-    this._onVoterStoreChange();
+    this.onVoterStoreChange();
 
     // We need the voterGuideStoreListener until we take the follow functions out of OrganizationActions and VoterGuideStore
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
@@ -80,15 +80,15 @@ export default class FollowToggle extends Component {
     });
   }
 
-  _onOrganizationStoreChange () {
-    // console.log("FollowToggle, _onOrganizationStoreChange, organization_we_vote_id: ", this.props.organizationWeVoteId);
+  onOrganizationStoreChange () {
+    // console.log("FollowToggle, onOrganizationStoreChange, organization_we_vote_id: ", this.props.organizationWeVoteId);
     this.setState({
       is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.organizationWeVoteId),
       organization: OrganizationStore.getOrganizationByWeVoteId(this.props.organizationWeVoteId),
     });
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({ voter: VoterStore.getVoter() });
   }
 

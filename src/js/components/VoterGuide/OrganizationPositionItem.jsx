@@ -40,10 +40,10 @@ export default class OrganizationPositionItem extends Component {
   }
 
   componentDidMount () {
-    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    this._onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.props.organization.organization_we_vote_id),
     });
@@ -62,8 +62,8 @@ export default class OrganizationPositionItem extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onOrganizationStoreChange () {
-    // console.log("OrganizationPositionItem _onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
+  onOrganizationStoreChange () {
+    // console.log("OrganizationPositionItem onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
     });
@@ -77,7 +77,7 @@ export default class OrganizationPositionItem extends Component {
     });
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({ voter: VoterStore.getVoter() });
   }
 

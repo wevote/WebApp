@@ -64,12 +64,12 @@ export default class Application extends Component {
 
     // console.log("Application, componentDidMount, voterDeviceId:", voterDeviceId);
     if (voterDeviceId) {
-      this._onVoterStoreChange();
+      this.onVoterStoreChange();
     }
 
     ElectionActions.electionsRetrieve();
 
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     // Preload Issue images. Note that for brand new browsers that don't have a voterDeviceId yet, we retrieve all issues
     IssueActions.retrieveIssuesToFollow();
@@ -139,8 +139,8 @@ export default class Application extends Component {
     }
   }
 
-  _onVoterStoreChange () {
-    // console.log("Application, _onVoterStoreChange");
+  onVoterStoreChange () {
+    // console.log("Application, onVoterStoreChange");
     const voterDeviceId = VoterStore.voterDeviceId();
     if (voterDeviceId && voterDeviceId !== "") {
       if (this.state.voter_initial_retrieve_needed) {
@@ -158,8 +158,8 @@ export default class Application extends Component {
       }
     }
 
-    // console.log("Application _onVoterStoreChange voter: ", VoterStore.getVoter());
-    // console.log("SignedIn Voter in Application _onVoterStoreChange voter: ", VoterStore.getVoter().full_name);
+    // console.log("Application onVoterStoreChange voter: ", VoterStore.getVoter());
+    // console.log("SignedIn Voter in Application onVoterStoreChange voter: ", VoterStore.getVoter().full_name);
   }
 
   incomingVariableManagement () {

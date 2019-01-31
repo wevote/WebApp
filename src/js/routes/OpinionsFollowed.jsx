@@ -21,7 +21,7 @@ export default class OpinionsFollowed extends Component {
   }
 
   componentDidMount () {
-    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     OrganizationActions.organizationsFollowedRetrieve();
     this.setState({
       organizationsFollowedList: OrganizationStore.getOrganizationsVoterIsFollowing(),
@@ -30,6 +30,12 @@ export default class OpinionsFollowed extends Component {
 
   componentWillUnmount () {
     this.organizationStoreListener.remove();
+  }
+
+  onOrganizationStoreChange () {
+    this.setState({
+      organizationsFollowedList: OrganizationStore.getOrganizationsVoterIsFollowing(),
+    });
   }
 
   onKeyDownEditMode (event) {
@@ -56,13 +62,8 @@ export default class OpinionsFollowed extends Component {
   }
 
   toggleEditMode () {
-    this.setState(() => ({ editMode: !this.state.editMode }));
-  }
-
-  _onOrganizationStoreChange () {
-    this.setState({
-      organizationsFollowedList: OrganizationStore.getOrganizationsVoterIsFollowing(),
-    });
+    const { editMode } = this.state;
+    this.setState(() => ({ editMode: !editMode }));
   }
 
   searchFunction (searchQuery) {

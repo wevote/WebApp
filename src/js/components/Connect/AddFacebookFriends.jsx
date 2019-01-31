@@ -28,10 +28,10 @@ export default class AddFacebookFriends extends Component {
   }
 
   componentDidMount () {
-    this._onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
-    this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
+    this.facebookStoreListener = FacebookStore.addListener(this.onFacebookStoreChange.bind(this));
     if (this.state.facebook_invitable_friends_list) {
       FacebookActions.getFacebookInvitableFriendsList(this.state.facebook_invitable_friends_image_width,
         this.state.facebook_invitable_friends_image_height);
@@ -43,11 +43,11 @@ export default class AddFacebookFriends extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  _onFacebookStoreChange () {
+  onFacebookStoreChange () {
     this.setState({
       facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
     });

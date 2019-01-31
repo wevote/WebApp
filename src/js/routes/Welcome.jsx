@@ -59,12 +59,12 @@ export default class Intro extends Component {
   }
 
   componentDidMount () {
-    this._onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionWelcomeVisit(VoterStore.electionId());
     FacebookActions.facebookFriendsAction();
-    this._onFacebookStoreChange();
-    this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
+    this.onFacebookStoreChange();
+    this.facebookStoreListener = FacebookStore.addListener(this.onFacebookStoreChange.bind(this));
     const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
     this.setState({
@@ -107,7 +107,7 @@ export default class Intro extends Component {
     this.setState({ showFeaturesVote: !showFeaturesVote });
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     // console.log("is_verification_email_sent:  " + VoterStore.isVerificationEmailSent());
     this.setState({
       newsletter_opt_in_true: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
@@ -117,7 +117,7 @@ export default class Intro extends Component {
     });
   }
 
-  _onFacebookStoreChange () {
+  onFacebookStoreChange () {
     this.setState({
       facebook_friends_using_we_vote_list: FacebookStore.facebookFriendsUsingWeVoteList(),
     });

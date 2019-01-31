@@ -33,10 +33,10 @@ export default class TwitterHandleLanding extends Component {
     // console.log("TwitterHandleLanding componentDidMount, this.props.params.twitter_handle: " + this.props.params.twitter_handle);
     this.setState({ twitterHandle: this.props.params.twitter_handle });
     TwitterActions.twitterIdentityRetrieve(this.props.params.twitter_handle);
-    this.twitterStoreListener = TwitterStore.addListener(this._onTwitterStoreChange.bind(this));
+    this.twitterStoreListener = TwitterStore.addListener(this.onTwitterStoreChange.bind(this));
 
-    this._onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
   componentWillReceiveProps (nextProps) {
@@ -53,8 +53,8 @@ export default class TwitterHandleLanding extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onTwitterStoreChange () {
-    // console.log("TwitterHandleLanding _onTwitterStoreChange");
+  onTwitterStoreChange () {
+    // console.log("TwitterHandleLanding onTwitterStoreChange");
     let { twitter_followers_count: twitterFollowersCount } = TwitterStore.get();
     const {
       kind_of_owner: kindOfOwner, owner_we_vote_id: ownerWeVoteId, twitter_handle: twitterHandle,
@@ -79,20 +79,20 @@ export default class TwitterHandleLanding extends Component {
     });
   }
 
-  _onVoterStoreChange () {
-    // console.log("TwitterHandleLanding _onTwitterStoreChange");
+  onVoterStoreChange () {
+    // console.log("TwitterHandleLanding onTwitterStoreChange");
     this.setState({ voter: VoterStore.getVoter() });
-  }
-
-  organizationCreateFromTwitter (newTwitterHandle) {
-    // console.log("TwitterHandleLanding organizationCreateFromTwitter");
-    OrganizationActions.saveFromTwitter(newTwitterHandle);
   }
 
   getIncomingActiveRoute () {
     const incomingActiveRoute = this.props.active_route || "";
     // console.log("TwitterHandleLanding, getIncomingActiveRoute incomingActiveRoute: ", incomingActiveRoute);
     return incomingActiveRoute;
+  }
+
+  organizationCreateFromTwitter (newTwitterHandle) {
+    // console.log("TwitterHandleLanding organizationCreateFromTwitter");
+    OrganizationActions.saveFromTwitter(newTwitterHandle);
   }
 
   render () {

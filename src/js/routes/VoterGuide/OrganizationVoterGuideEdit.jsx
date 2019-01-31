@@ -14,13 +14,12 @@ import { isProperlyFormattedVoterGuideWeVoteId } from "../../utils/textFormat";
 export default class OrganizationVoterGuideEdit extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      organization_we_vote_id: "",
+      organizationWeVoteId: "",
       organization: {},
       voter: {},
     };
@@ -73,9 +72,7 @@ export default class OrganizationVoterGuideEdit extends Component {
       }
     }
 
-    // Cache what we have for when we get a response from VoterGuide store
     this.setState({
-      googleCivicElectionId,
       organizationWeVoteId,
     });
 
@@ -98,9 +95,6 @@ export default class OrganizationVoterGuideEdit extends Component {
 
   onVoterGuideStoreChange () {
     const voterGuide = VoterGuideStore.getVoterGuideSaveResults();
-    this.setState({
-      voterGuide,
-    });
     // console.log("onVoterGuideStoreChange voterGuide:", voterGuide);
     if (voterGuide && voterGuide.we_vote_id && isProperlyFormattedVoterGuideWeVoteId(voterGuide.we_vote_id)) {
       historyPush(`/vg/${voterGuide.we_vote_id}/settings/positions`);
@@ -114,21 +108,22 @@ export default class OrganizationVoterGuideEdit extends Component {
   }
 
   onOrganizationStoreChange () {
+    const { organizationWeVoteId } = this.state;
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization_we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
     });
   }
 
   render () {
     renderLog(__filename);
-    if (!this.state.organization || !this.state.organization.organization_we_vote_id || !this.state.voter) {
+    if (!this.state.organization || !this.state.organizationWeVoteId || !this.state.voter) {
       return <div>{LoadingWheel}</div>;
     }
 
-    const is_voter_owner = this.state.organization.organization_we_vote_id !== undefined &&
-      this.state.organization.organization_we_vote_id === this.state.voter.linked_organization_we_vote_id;
+    const isVoterOwner = this.state.organizationWeVoteId !== undefined &&
+      this.state.organizationWeVoteId === this.state.voter.linked_organization_we_vote_id;
 
-    if (!is_voter_owner) {
+    if (!isVoterOwner) {
       return <div>{LoadingWheel}</div>;
     }
 

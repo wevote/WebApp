@@ -72,8 +72,8 @@ export default class EmailBallotToFriendsModal extends Component {
   }
 
   componentDidMount () {
-    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
@@ -83,7 +83,7 @@ export default class EmailBallotToFriendsModal extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter(),
       loading: false,
@@ -91,9 +91,9 @@ export default class EmailBallotToFriendsModal extends Component {
     });
   }
 
-  _onFriendStoreChange () {
+  onFriendStoreChange () {
     const emailBallotDataStep = FriendStore.switchToEmailBallotDataStep();
-    // console.log("EmailBallotToFriendsModal, _onFriendStoreChange, email_ballot_data_step:", email_ballot_data_step);
+    // console.log("EmailBallotToFriendsModal, onFriendStoreChange, email_ballot_data_step:", email_ballot_data_step);
     if (emailBallotDataStep === "on_collect_email_step") {
       // Switch to "onCollectEmailStep"
       this.setState({
