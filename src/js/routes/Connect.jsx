@@ -44,10 +44,10 @@ export default class Connect extends Component {
     if (this.state.current_friends_list) {
       FriendActions.currentFriends();
     }
-    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
 
-    this._onFacebookStoreChange.bind(this);
-    this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
+    this.onFacebookStoreChange.bind(this);
+    this.facebookStoreListener = FacebookStore.addListener(this.onFacebookStoreChange.bind(this));
     if (this.state.facebook_invitable_friends_list) {
       FacebookActions.getFacebookInvitableFriendsList(this.state.facebook_invitable_friends_image_width,
         this.state.facebook_invitable_friends_image_height);
@@ -65,7 +65,7 @@ export default class Connect extends Component {
     }
   }
 
-  _onFacebookStoreChange () {
+  onFacebookStoreChange () {
     this.setState({
       facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
     });
@@ -110,7 +110,7 @@ export default class Connect extends Component {
     }
   }
 
-  _onFriendStoreChange () {
+  onFriendStoreChange () {
     this.setState({
       current_friends_list: FriendStore.currentFriends(),
     });

@@ -46,9 +46,9 @@ export default class FacebookBallotModal extends Component {
   }
 
   componentDidMount () {
-    this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
-    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.facebookStoreListener = FacebookStore.addListener(this.onFacebookStoreChange.bind(this));
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
@@ -57,7 +57,7 @@ export default class FacebookBallotModal extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter(),
       loading: false,
@@ -65,11 +65,11 @@ export default class FacebookBallotModal extends Component {
     });
   }
 
-  _onFacebookStoreChange () {
+  onFacebookStoreChange () {
     const facebookAuthResponse = FacebookStore.getFacebookAuthResponse();
     const emailData = FacebookStore.getFacebookData();
 
-    // console.log("_onFacebookStoreChange", facebookAuthResponse, emailData);
+    // console.log("onFacebookStoreChange", facebookAuthResponse, emailData);
     if (facebookAuthResponse.facebookIsLoggedIn && emailData.userId && !this.state.facebook_login_started) {
       this.setState({
         facebook_login_started: true,
@@ -83,11 +83,11 @@ export default class FacebookBallotModal extends Component {
     }
   }
 
-  _onFriendStoreChange () {
+  onFriendStoreChange () {
     const emailBallotDataStep = FriendStore.switchToEmailBallotDataStep();
     const errorMessageToShowVoter = FriendStore.getErrorMessageToShowVoter();
 
-    // console.log("EmailBallotModal, _onFriendStoreChange, email_ballot_data_step:", email_ballot_data_step);
+    // console.log("EmailBallotModal, onFriendStoreChange, email_ballot_data_step:", email_ballot_data_step);
     if (emailBallotDataStep === "on_collect_email_step") {
       // Switch to "on_collect_email_step"
       this.setState({

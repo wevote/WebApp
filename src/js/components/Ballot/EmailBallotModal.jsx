@@ -43,8 +43,8 @@ export default class EmailBallotModal extends Component {
   }
 
   componentDidMount () {
-    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
   componentWillMount () {
@@ -57,7 +57,7 @@ export default class EmailBallotModal extends Component {
     restoreStylesAfterCordovaKeyboard(__filename);
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter(),
       loading: false,
@@ -65,10 +65,10 @@ export default class EmailBallotModal extends Component {
     });
   }
 
-  _onFriendStoreChange () {
+  onFriendStoreChange () {
     const emailBallotDataStep = FriendStore.switchToEmailBallotDataStep();
     const errorMessageToShowVoter = FriendStore.getErrorMessageToShowVoter();
-    // console.log("EmailBallotModal, _onFriendStoreChange, email_ballot_data_step:", email_ballot_data_step);
+    // console.log("EmailBallotModal, onFriendStoreChange, email_ballot_data_step:", email_ballot_data_step);
     if (emailBallotDataStep === "on_collect_email_step") {
       // Switch to "on_collect_email_step"
       this.setState({

@@ -6,7 +6,6 @@ import VoterStore from "../../stores/VoterStore";
 
 export default class ThisIsMeAction extends Component {
   static propTypes = {
-    params: PropTypes.object,
     name_being_viewed: PropTypes.string,
     twitter_handle_being_viewed: PropTypes.string,
     kind_of_owner: PropTypes.string,
@@ -19,58 +18,57 @@ export default class ThisIsMeAction extends Component {
   }
 
   componentDidMount () {
-    this._onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
   render () {
     renderLog(__filename);
-    const twitter_handle_being_viewed = this.props.twitter_handle_being_viewed;
-    if (!twitter_handle_being_viewed) {
+    const { twitter_handle_being_viewed: twitterHandleBeingViewed } = this.props;
+    if (!twitterHandleBeingViewed) {
       // We do not want to show the "This is me" link if there isn't a twitter_handle associated with this organization
       return <span />;
     }
-    const kind_of_owner = this.props.kind_of_owner;
-    const name_being_viewed = this.props.name_being_viewed || "";
+    const { kind_of_owner: kindOfOwner, name_being_viewed: nameBeingViewed } = this.props;
     // Manage the control over this organization voter guide
     const { voter } = this.state;
-    const signed_in_twitter = voter === undefined ? false : voter.signed_in_twitter;
-    let signed_in_with_this_twitter_account = false;
-    if (signed_in_twitter && voter.twitter_screen_name && twitter_handle_being_viewed) {
-      signed_in_with_this_twitter_account = voter.twitter_screen_name.toLowerCase() === twitter_handle_being_viewed.toLowerCase();
+    const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
+    let signedInWithThisTwitterAccount = false;
+    if (signedInTwitter && voter.twitter_screen_name && twitterHandleBeingViewed) {
+      signedInWithThisTwitterAccount = voter.twitter_screen_name.toLowerCase() === twitterHandleBeingViewed.toLowerCase();
     }
-    let this_is_me_action_text;
-    if (kind_of_owner === "ORGANIZATION") {
-      if (name_being_viewed) {
-        this_is_me_action_text = `I represent ${name_being_viewed}`;
+    let thisIsMeActionText;
+    if (kindOfOwner === "ORGANIZATION") {
+      if (nameBeingViewed) {
+        thisIsMeActionText = `I represent ${nameBeingViewed}`;
       } else {
-        this_is_me_action_text = "I represent this organization";
+        thisIsMeActionText = "I represent this organization";
       }
-    } else if (kind_of_owner === "POLITICIAN") {
-      if (name_being_viewed) {
-        this_is_me_action_text = `I represent ${name_being_viewed}`;
+    } else if (kindOfOwner === "POLITICIAN") {
+      if (nameBeingViewed) {
+        thisIsMeActionText = `I represent ${nameBeingViewed}`;
       } else {
-        this_is_me_action_text = "I represent this politician";
+        thisIsMeActionText = "I represent this politician";
       }
     } else {
-      this_is_me_action_text = "This is me";
+      thisIsMeActionText = "This is me";
     }
 
     return (
       <span>
-        {signed_in_with_this_twitter_account ?
+        {signedInWithThisTwitterAccount ?
           <span /> : (
-            <Link to={`/verifythisisme/${twitter_handle_being_viewed}`}>
+            <Link to={`/verifythisisme/${twitterHandleBeingViewed}`}>
               <span className="u-wrap-links">
-                {this_is_me_action_text}
+                {thisIsMeActionText}
               </span>
             </Link>
           )}

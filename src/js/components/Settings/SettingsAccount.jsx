@@ -41,14 +41,14 @@ export default class SettingsAccount extends Component {
   componentDidMount () {
     // console.log("SignIn componentDidMount");
     this.onVoterStoreChange();
-    this.facebookListener = FacebookStore.addListener(this.onFacebookChange.bind(this));
+    this.facebookStoreListener = FacebookStore.addListener(this.onFacebookChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
   }
 
   componentWillUnmount () {
     // console.log("SignIn ---- UN mount");
-    this.facebookListener.remove();
+    this.facebookStoreListener.remove();
     this.voterStoreListener.remove();
     this.timer = null;
   }

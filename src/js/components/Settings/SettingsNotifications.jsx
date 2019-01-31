@@ -38,20 +38,20 @@ export default class SettingsNotifications extends Component {
   // componentWillMount is used in WebApp
   componentDidMount () {
     // console.log("SignIn componentDidMount");
-    this._onVoterStoreChange();
-    this.facebookListener = FacebookStore.addListener(this._onFacebookChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.onVoterStoreChange();
+    this.facebookStoreListener = FacebookStore.addListener(this.onFacebookStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
   }
 
   componentWillUnmount () {
     console.log("SignIn ---- UN mount");
-    this.facebookListener.remove();
+    this.facebookStoreListener.remove();
     this.voterStoreListener.remove();
     this.timer = null;
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     if (VoterStore.isVoterFound() && !this.state.initial_name_loaded) {
       this.setState({
         first_name: VoterStore.getFirstName(),
@@ -65,7 +65,7 @@ export default class SettingsNotifications extends Component {
     }
   }
 
-  _onFacebookChange () {
+  onFacebookStoreChange () {
     this.setState({
       facebook_auth_response: FacebookStore.getFacebookAuthResponse(),
     });

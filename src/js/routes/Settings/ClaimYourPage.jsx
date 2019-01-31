@@ -17,7 +17,7 @@ export default class ClaimYourPage extends Component {
             Enter your Twitter handle to create a public voter guide.
           </h1>
           <div>
-            <TwitterHandleBox {...this.props} />
+            <TwitterHandleBox />
           </div>
         </div>
       </div>

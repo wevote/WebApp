@@ -18,7 +18,7 @@ export default class SignInJumpProcess extends Component {
     super(props);
     this.state = {
       incomingVoterDeviceIdBelongsToThisVoter: true, // This is temporary
-      jump_path: "",
+      jumpPath: "",
       voter: {},
       // yesPleaseMergeAccounts: false,
       // saving: true,
@@ -26,13 +26,13 @@ export default class SignInJumpProcess extends Component {
   }
 
   componentDidMount () {
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const incomingVoterDeviceId = this.props.location.query.voter_device_id;
     console.log("SignInJumpProcess, componentDidMount, this.props.location.query.voter_device_id: ", incomingVoterDeviceId);
     // this.voterAnalysisForJumpProcess(incomingVoterDeviceId);
     this.setState({
       incomingVoterDeviceIdBelongsToThisVoter: true, // We want to actually set this in response to voterAnalysisForJumpProcess
-      jump_path: this.props.location.query.jump_path,
+      jumpPath: this.props.location.query.jump_path,
       voter: VoterStore.getVoter(),
     });
   }
@@ -41,15 +41,7 @@ export default class SignInJumpProcess extends Component {
     this.voterStoreListener.remove();
   }
 
-  cancelMergeFunction () {
-    historyPush({
-      pathname: this.state.jump_path,
-      state: {
-      },
-    });
-  }
-
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter(),
       // incomingVoterDeviceIdBelongsToThisVoter
@@ -59,11 +51,19 @@ export default class SignInJumpProcess extends Component {
     });
   }
 
+  cancelMergeFunction () {
+    historyPush({
+      pathname: this.state.jumpPath,
+      state: {
+      },
+    });
+  }
+
   voterMergeTwoAccountsByJumpProcess (incomingVoterDeviceId, voter_has_data_to_preserve = true) {
     console.log("voterMergeTwoAccountsByJumpProcess, incomingVoterDeviceId: ", incomingVoterDeviceId, voter_has_data_to_preserve);
     // VoterActions.voterMergeTwoAccountsByJumpProcess(incomingVoterDeviceId);
     historyPush({
-      pathname: this.state.jump_path,
+      pathname: this.state.jumpPath,
       state: {
         // message: "You have successfully verified and signed in with your email.",
         // message_type: "success"
@@ -86,7 +86,7 @@ export default class SignInJumpProcess extends Component {
     console.log("SignInJumpProcess, incomingVoterDeviceId:", incomingVoterDeviceId);
     if (!incomingVoterDeviceId ||
       // this.state.saving ||
-      !this.state.jump_path ||
+      !this.state.jumpPath ||
       !this.state.voter) {
       console.log("SignInJumpProcess, render stopped");
       return LoadingWheel;
@@ -115,9 +115,9 @@ export default class SignInJumpProcess extends Component {
 
     if (this.state.incomingVoterDeviceIdBelongsToThisVoter) {
       // We don't need to do anything more except redirect
-      console.log("incoming_voter_device_id owned by this voter - push to jump_to location: ", this.state.jump_path);
+      console.log("incoming_voter_device_id owned by this voter - push to jump_to location: ", this.state.jumpPath);
       historyPush({
-        pathname: this.state.jump_path,
+        pathname: this.state.jumpPath,
         state: {
           // message: "You have successfully verified your email.",
           // message_type: "success"

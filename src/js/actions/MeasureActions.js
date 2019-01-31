@@ -1,12 +1,18 @@
 import Dispatcher from "../dispatcher/Dispatcher";
 
 export default {
-  measureRetrieve (weVoteId) {
-    Dispatcher.loadEndpoint("measureRetrieve", { measure_we_vote_id: weVoteId });
+  measureRetrieve (measureWeVoteId) {
+    Dispatcher.loadEndpoint("measureRetrieve",
+      {
+        measure_we_vote_id: measureWeVoteId,
+      });
   },
 
-  positionListForBallotItem (weVoteId) {
+  positionListForBallotItem (ballotItemWeVoteId) {
     Dispatcher.loadEndpoint("positionListForBallotItem",
-      { ballot_item_we_vote_id: weVoteId, kind_of_ballot_item: "MEASURE" });
+      {
+        ballot_item_we_vote_id: ballotItemWeVoteId,
+        kind_of_ballot_item: "MEASURE",
+      });
   },
 };

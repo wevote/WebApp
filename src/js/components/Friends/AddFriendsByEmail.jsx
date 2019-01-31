@@ -57,8 +57,8 @@ export default class AddFriendsByEmail extends Component {
 
   componentDidMount () {
     this.setState({ voter: VoterStore.getVoter() });
-    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
@@ -74,10 +74,10 @@ export default class AddFriendsByEmail extends Component {
     }
   }
 
-  _onFriendStoreChange () {
+  onFriendStoreChange () {
     const addFriendsByEmailStep = FriendStore.switchToAddFriendsByEmailStep();
     const errorMessageToShowVoter = FriendStore.getErrorMessageToShowVoter();
-    // console.log("AddFriendsByEmail, _onFriendStoreChange, addFriendsByEmailStep:", addFriendsByEmailStep);
+    // console.log("AddFriendsByEmail, onFriendStoreChange, addFriendsByEmailStep:", addFriendsByEmailStep);
     if (addFriendsByEmailStep === "on_collect_email_step") {
       // Switch to "on_collect_email_step"
       this.setState({
@@ -96,7 +96,7 @@ export default class AddFriendsByEmail extends Component {
     }
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({ voter: VoterStore.getVoter(), loading: false });
   }
 

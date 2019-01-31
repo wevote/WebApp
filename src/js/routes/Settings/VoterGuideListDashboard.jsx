@@ -12,7 +12,6 @@ import VoterStore from "../../stores/VoterStore";
 
 export default class VoterGuideListDashboard extends Component {
   static propTypes = {
-    location: PropTypes.object,
     params: PropTypes.object,
   };
 
@@ -22,10 +21,7 @@ export default class VoterGuideListDashboard extends Component {
       editMode: "",
       linkedOrganizationWeVoteId: "",
       organization: {},
-      organizationName: "",
       voter: {},
-      voterGuide: {},
-      voterGuideWeVoteId: "",
     };
   }
 
@@ -35,7 +31,6 @@ export default class VoterGuideListDashboard extends Component {
     } else {
       this.setState({ editMode: "address" });
     }
-    this.setState({ pathname: this.props.location.pathname });
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -95,9 +90,10 @@ export default class VoterGuideListDashboard extends Component {
   }
 
   onOrganizationStoreChange () {
+    const { linkedOrganizationWeVoteId } = this.state;
     // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId),
+      organization: OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId),
     });
   }
 

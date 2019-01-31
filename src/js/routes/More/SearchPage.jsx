@@ -16,7 +16,7 @@ export default class SearchPage extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      searchString: "",
+      textFromSearchField: "",
       searchResults: [],
     };
   }
@@ -37,13 +37,13 @@ export default class SearchPage extends Component {
       SearchAllActions.searchAll(textFromSearchField);
     }
 
-    this.searchAllStoreListener = SearchAllStore.addListener(this._onSearchAllStoreChange.bind(this));
+    this.searchAllStoreListener = SearchAllStore.addListener(this.onSearchAllStoreChange.bind(this));
   }
 
   componentWillReceiveProps (nextProps) {
-    this._onSearchAllStoreChange();
+    this.onSearchAllStoreChange();
     if (nextProps.params.encoded_search_string) {
-      this.setState({ searchString: nextProps.params.encoded_search_string });
+      this.setState({ textFromSearchField: nextProps.params.encoded_search_string });
     }
   }
 
@@ -51,7 +51,7 @@ export default class SearchPage extends Component {
     this.searchAllStoreListener.remove();
   }
 
-  _onSearchAllStoreChange () {
+  onSearchAllStoreChange () {
     const newState = {};
 
     if (SearchAllStore.getSearchResults()) {
@@ -90,7 +90,7 @@ export default class SearchPage extends Component {
         <SearchResultsDisplay
           links={this.links}
           searchResults={this.state.searchResults}
-          textFromSearchField={this.state.searchString}
+          textFromSearchField={this.state.textFromSearchField}
         />
       </span>
     );

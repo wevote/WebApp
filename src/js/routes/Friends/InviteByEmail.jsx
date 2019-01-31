@@ -35,7 +35,7 @@ export default class InviteByEmail extends Component {
     if (this.state.current_friends_list) {
       FriendActions.currentFriends();
     }
-    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     AnalyticsActions.saveActionInviteByEmail(VoterStore.electionId());
   }
 
@@ -52,7 +52,7 @@ export default class InviteByEmail extends Component {
     return "/more/connect";
   }
 
-  _onFriendStoreChange () {
+  onFriendStoreChange () {
     this.setState({
       current_friends_list: FriendStore.currentFriends(),
     });

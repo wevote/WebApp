@@ -29,10 +29,10 @@ export default class Friends extends Component {
       FriendActions.currentFriends();
     }
 
-    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
   }
 
-  _onFriendStoreChange () {
+  onFriendStoreChange () {
     this.setState({
       current_friend_list: FriendStore.currentFriends(),
     });

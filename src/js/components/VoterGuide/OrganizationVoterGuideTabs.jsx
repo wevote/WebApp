@@ -38,9 +38,9 @@ export default class OrganizationVoterGuideTabs extends Component {
 
   componentDidMount () {
     // console.log("OrganizationVoterGuideTabs, componentDidMount, organization: ", this.props.organization);
-    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     OrganizationActions.organizationsFollowedRetrieve();
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.organization.organization_we_vote_id);
     VoterGuideActions.voterGuideFollowersRetrieve(this.props.organization.organization_we_vote_id);
@@ -107,15 +107,15 @@ export default class OrganizationVoterGuideTabs extends Component {
     });
   }
 
-  _onOrganizationStoreChange () {
-    // console.log("VoterGuidePositions _onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
+  onOrganizationStoreChange () {
+    // console.log("VoterGuidePositions onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
     const { organization_we_vote_id: organizationWeVoteId } = this.state.organization;
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
     });
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter(),
     });

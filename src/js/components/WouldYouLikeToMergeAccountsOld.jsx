@@ -38,8 +38,8 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
   }
 
   componentDidMount () {
-    this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.facebookStoreListener = FacebookStore.addListener(this.onFacebookStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     if (this.props.emailSecretKey && this.props.emailSecretKey !== "") {
       VoterActions.voterEmailAddressRetrieve();
     } else if (this.props.facebookSecretKey && this.props.facebookSecretKey !== "") {
@@ -52,14 +52,14 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onFacebookStoreChange () {
+  onFacebookStoreChange () {
     this.setState({
       facebook_sign_in_status: FacebookStore.getFacebookAuthResponse(),
       saving: false,
     });
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({
       email_sign_in_status: VoterStore.getEmailSignInStatus(),
       saving: false,

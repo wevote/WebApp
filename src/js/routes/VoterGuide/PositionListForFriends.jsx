@@ -17,30 +17,26 @@ export default class PositionListForFriends extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { organization_we_vote_id: this.props.params.organization_we_vote_id };
+    this.state = { organizationWeVoteId: this.props.params.organization_we_vote_id };
   }
 
   componentDidMount () {
-    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
 
-    const { organization_we_vote_id } = this.state;
+    const { organizationWeVoteId } = this.state;
 
-    OrganizationActions.organizationRetrieve(organization_we_vote_id);
+    OrganizationActions.organizationRetrieve(organizationWeVoteId);
     // Positions for this organization, for this voter / election
-    OrganizationActions.positionListForOpinionMakerForFriends(organization_we_vote_id, true);
+    OrganizationActions.positionListForOpinionMakerForFriends(organizationWeVoteId, true);
     // Positions for this organization, NOT including for this voter / election
-    OrganizationActions.positionListForOpinionMakerForFriends(organization_we_vote_id, false, true);
+    OrganizationActions.positionListForOpinionMakerForFriends(organizationWeVoteId, false, true);
 
-    // Display the organization's name in the search box
-    // var { organization } = this.state;
-    // var searchBoxText = organization.organization_name || "";  // TODO DALE Not working right now
-    // exitSearch(searchBoxText);
     SearchAllActions.exitSearch();
   }
 
   componentWillReceiveProps (nextProps) {
     // When a new candidate is passed in, update this component to show the new data
-    this.setState({ organization_we_vote_id: nextProps.params.organization_we_vote_id });
+    this.setState({ organizationWeVoteId: nextProps.params.organization_we_vote_id });
 
     OrganizationActions.organizationRetrieve(nextProps.params.organization_we_vote_id);
     // Positions for this organization, for this voter / election
@@ -48,9 +44,6 @@ export default class PositionListForFriends extends Component {
     // Positions for this organization, NOT including for this voter / election
     OrganizationActions.positionListForOpinionMakerForFriends(nextProps.params.organization_we_vote_id, false, true);
 
-    // Display the candidate's name in the search box
-    // var { candidate } = this.state;
-    // var searchBoxText = candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
     SearchAllActions.exitSearch();
   }
 
@@ -58,9 +51,9 @@ export default class PositionListForFriends extends Component {
     this.organizationStoreListener.remove();
   }
 
-  _onOrganizationStoreChange () {
-    const { organization_we_vote_id } = this.state;
-    this.setState({ organization: OrganizationStore.getOrganizationByWeVoteId(organization_we_vote_id) });
+  onOrganizationStoreChange () {
+    const { organizationWeVoteId } = this.state;
+    this.setState({ organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId) });
   }
 
   render () {
@@ -69,19 +62,20 @@ export default class PositionListForFriends extends Component {
       return <div>{LoadingWheel}</div>;
     }
 
-    const { friends_position_list_for_one_election, friends_position_list_for_all_except_one_election } = this.state.organization;
-    const { organization_we_vote_id } = this.state;
+    const { friends_position_list_for_one_election: friendsPositionListForOneElection,
+      friends_position_list_for_all_except_one_election: friendsPositionListForAllExceptOneElection } = this.state.organization;
+    const { organizationWeVoteId } = this.state;
 
     return (
       <span>
         <div className="card">
           <div className="card-main">
-            <FollowToggle organizationWeVoteId={organization_we_vote_id} />
+            <FollowToggle organizationWeVoteId={organizationWeVoteId} />
             <OrganizationCard organization={this.state.organization} />
           </div>
           <ul className="list-group">
-            { friends_position_list_for_one_election ?
-              friends_position_list_for_one_election.map( item => (
+            { friendsPositionListForOneElection ?
+              friendsPositionListForOneElection.map(item => (
                 <OrganizationPositionItem
                   key={item.position_we_vote_id}
                   position={item}
@@ -90,9 +84,9 @@ export default class PositionListForFriends extends Component {
               )) :
               <div>{LoadingWheel}</div>
             }
-            { friends_position_list_for_all_except_one_election ? (
+            { friendsPositionListForAllExceptOneElection ? (
               <span>
-                { friends_position_list_for_all_except_one_election.length ? (
+                { friendsPositionListForAllExceptOneElection.length ? (
                   <span>
                     <br />
                     <h4 className="card__additional-heading">Positions for Other Elections</h4>
@@ -100,7 +94,7 @@ export default class PositionListForFriends extends Component {
                 ) :
                   <span />
                 }
-                { friends_position_list_for_all_except_one_election.map( item => (
+                { friendsPositionListForAllExceptOneElection.map(item => (
                   <OrganizationPositionItem
                     key={item.position_we_vote_id}
                     position={item}

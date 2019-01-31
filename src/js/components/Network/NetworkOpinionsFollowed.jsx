@@ -23,8 +23,8 @@ export default class NetworkOpinionsFollowed extends Component {
   }
 
   componentDidMount () {
-    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
-    this._onOrganizationStoreChange();
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.onOrganizationStoreChange();
     OrganizationActions.organizationsFollowedRetrieve();
   }
 
@@ -32,7 +32,7 @@ export default class NetworkOpinionsFollowed extends Component {
     this.organizationStoreListener.remove();
   }
 
-  _onOrganizationStoreChange () {
+  onOrganizationStoreChange () {
     const organizations_followed_list = OrganizationStore.getOrganizationsVoterIsFollowing();
     if (organizations_followed_list && organizations_followed_list.length) {
       const OPINIONS_TO_SHOW = 3;
