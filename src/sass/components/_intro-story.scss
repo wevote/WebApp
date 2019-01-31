@@ -73,13 +73,6 @@
     }
   }
 
-  &__img-width {
-    width: 250px;
-    @include breakpoints (max mid-small) {
-      width: 200px;
-    }
-  }
-
   &__background {
     @include breakpoints (small) {
       height: 100vh;
@@ -125,17 +118,6 @@
 }
 
 
-.background--image1 {
-  @include breakpoints (small) {
-    background-image: url('/img/global/intro-story/slide1-flagpole-mountains-698x600.jpg');
-  }
-  @include breakpoints (large) {
-    //Image for desktop has to be a very specific size otherwise it will tile or wrap
-    // onto the next slide (due to div width of react-slick carousel) - approx 1000 width works fine
-    background-image: url('/img/global/intro-story/slide1-flagpole-mountains-1000x600.jpg');
-  }
-}
-
 .background--image2 {
   @include breakpoints (small) {
     background-image: url('/img/global/intro-story/slide2-lady-liberty-698x600.jpg');
@@ -172,20 +154,5 @@
   }
 }
 
-.background--image6 {
-  @include breakpoints (small) {
-    background-image: url('/img/global/intro-story/slide6-flag-building-698x600.jpg');
-  }
-  @include breakpoints (large) {
-    background-image: url('/img/global/intro-story/slide6-flag-building-1000x600.jpg');
-  }
-}
 
-.background--image7 {
-  @include breakpoints (small) {
-    background-image: url('/img/global/intro-story/slide7-american-bicycle-698x600.jpg');
-  }
-  @include breakpoints (large) {
-    background-image: url('/img/global/intro-story/slide7-american-bicycle-1000x600.jpg');
-  }
-}
+

@@ -26,7 +26,6 @@ import HamburgerMenu from "./routes/More/HamburgerMenu";
 import HowToUse from "./routes/More/HowToUse";
 import Intro from "./routes/Intro/Intro";
 import IntroNetwork from "./routes/Intro/IntroNetwork";
-import IntroStory from "./routes/Intro/IntroStory";
 import IssuesToFollow from "./routes/IssuesToFollow";
 import IssuesFollowed from "./routes/IssuesFollowed";
 import InviteByEmail from "./routes/Friends/InviteByEmail";
@@ -120,7 +119,6 @@ const routes = () => (
 
     <Route path="/intro" component={Intro} />
     <Route path="/wevoteintro/network" component={IntroNetwork} />
-    <Route path="/intro/story" component={IntroStory} />
     <Route path="/intro/sample_ballot" component={SampleBallot} />
     <Route path="/intro/get_started" component={GetStarted} />
 
