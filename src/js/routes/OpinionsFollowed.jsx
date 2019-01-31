@@ -56,7 +56,7 @@ export default class OpinionsFollowed extends Component {
   }
 
   toggleEditMode () {
-    this.setState(() => ({ editMode: !this.state.editMode }));
+    this.setState(previousState => ({ editMode: !previousState.editMode }));
   }
 
   _onOrganizationStoreChange () {
