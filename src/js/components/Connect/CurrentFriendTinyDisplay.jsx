@@ -17,32 +17,32 @@ export default class CurrentFriendTinyDisplay extends Component {
   render () {
     renderLog(__filename);
     // TODO DALE NOTE: We need to generate a popover here
-    let display_name;
+    let displayName;
     if (this.props.voter_display_name) {
-      display_name = this.props.voter_display_name;
+      displayName = this.props.voter_display_name;
     } else if (this.props.facebook_user_name) {
-      display_name = this.props.facebook_user_name;
+      displayName = this.props.facebook_user_name;
     } else {
-      display_name = "";
+      displayName = "";
     }
 
-    let image_url_tiny;
+    let imageUrlTiny;
     if (this.props.voter_photo_url_tiny) {
-      image_url_tiny = this.props.voter_photo_url_tiny;
+      imageUrlTiny = this.props.voter_photo_url_tiny;
     } else if (this.props.facebook_user_profile_url_https) {
-      image_url_tiny = this.props.facebook_user_profile_url_https;
+      imageUrlTiny = this.props.facebook_user_profile_url_https;
     } else {
-      image_url_tiny = "";
+      imageUrlTiny = "";
     }
-    const hide_placeholder = !this.props.showPlaceholderImage;
+    const hidePlaceholder = !this.props.showPlaceholderImage;
     return (
       <span>
         <ImageHandler
           className=""
           sizeClassName="current-friend-image-tiny"
-          hidePlaceholder={hide_placeholder}
-          imageUrl={image_url_tiny}
-          alt={display_name}
+          hidePlaceholder={hidePlaceholder}
+          imageUrl={imageUrlTiny}
+          alt={displayName}
         />
       </span>
     );

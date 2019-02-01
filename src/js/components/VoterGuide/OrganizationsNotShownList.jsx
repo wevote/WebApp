@@ -21,21 +21,23 @@ export default class OrganizationsNotShownList extends Component {
       return <div>{LoadingWheel}</div>;
     }
 
-    const organizations_not_shown_display = this.props.orgs_not_shown_list.map( (one_organization) => {
-      const organization_we_vote_id = one_organization.organization_we_vote_id;
-      const organization_name = one_organization.voter_guide_display_name;
-      const organization_photo_url_tiny = one_organization.voter_guide_image_url_tiny;
-      const organization_twitter_handle = one_organization.twitter_handle;
+    const organizationsNotShownDisplay = this.props.orgs_not_shown_list.map((oneOrganization) => {
+      const { organization_we_vote_id: organizationWeVoteId, voter_guide_display_name: organizationName,
+        voter_guide_image_url_tiny: organizationPhotoUrlTiny, twitter_handle: organizationTwitterHandle } = oneOrganization;
+      // const organizationWeVoteId = oneOrganization.organization_we_vote_id;
+      // const organizationName = oneOrganization.voter_guide_display_name;
+      // const organizationPhotoUrlTiny = oneOrganization.voter_guide_image_url_tiny;
+      // const organizationTwitterHandle = oneOrganization.twitter_handle;
 
       // If the displayName is in the twitterDescription, remove it from twitterDescription
-      const displayName = organization_name || "";
-      const voterGuideLink = organization_twitter_handle ? `/${organization_twitter_handle}` : `/voterguide/${organization_we_vote_id}`;
+      const displayName = organizationName || "";
+      const voterGuideLink = organizationTwitterHandle ? `/${organizationTwitterHandle}` : `/voterguide/${organizationWeVoteId}`;
       return (
-        <div key={organization_we_vote_id} className="card-main__media-object">
+        <div key={organizationWeVoteId} className="card-main__media-object">
           <div className="card-main__media-object-anchor">
             <Link to={voterGuideLink} className="u-no-underline">
               <ImageHandler
-                imageUrl={organization_photo_url_tiny}
+                imageUrl={organizationPhotoUrlTiny}
                 className=""
                 sizeClassName="organization__image--tiny"
               />
@@ -54,7 +56,7 @@ export default class OrganizationsNotShownList extends Component {
 
     return (
       <span className="guidelist card-child__list-group">
-        {organizations_not_shown_display}
+        {organizationsNotShownDisplay}
       </span>
     );
   }

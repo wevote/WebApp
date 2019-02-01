@@ -33,10 +33,11 @@ export default class OrganizationPositionItem extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      hide_position_statement: false,
+      hidePositionStatement: false,
       supportProps: SupportStore.get(this.props.position.ballot_item_we_vote_id),
       transitioning: false,
     };
+    this.togglePositionStatement = this.togglePositionStatement.bind(this);
   }
 
   componentDidMount () {
@@ -63,15 +64,17 @@ export default class OrganizationPositionItem extends Component {
   }
 
   onOrganizationStoreChange () {
-    // console.log("OrganizationPositionItem onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
+    const { organization } = this.state;
+    // console.log("OrganizationPositionItem onOrganizationStoreChange, organization.organization_we_vote_id: ", organization.organization_we_vote_id);
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(organization.organization_we_vote_id),
     });
   }
 
   onSupportStoreChange () {
+    const { organization } = this.state;
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(organization.organization_we_vote_id),
       supportProps: SupportStore.get(this.props.position.ballot_item_we_vote_id),
       transitioning: false,
     });
@@ -82,13 +85,14 @@ export default class OrganizationPositionItem extends Component {
   }
 
   togglePositionStatement () {
-    this.setState({ hide_position_statement: !this.state.hide_position_statement });
+    const { hidePositionStatement } = this.state;
+    this.setState({ hidePositionStatement: !hidePositionStatement });
   }
 
   render () {
     renderLog(__filename);
-    const position = this.props.position;
-    const organization = this.state.organization;
+    const { position } = this.props;
+    const { organization } = this.state;
 
     if (!position.ballot_item_we_vote_id) {
       // console.log("OrganizationPositionItem cannot render yet -- missing position and organization");
@@ -96,51 +100,51 @@ export default class OrganizationPositionItem extends Component {
     }
 
     const {
-      stance_display_off, comment_text_off, popover_off, placement,
+      stance_display_off: stanceDisplayOff, comment_text_off: commentTextOff,
     } = this.props;
     const { supportProps } = this.state;
 
     // Manage the control over this organization voter guide
-    let organization_twitter_handle_being_viewed = "";
-    let organization_facebook_id_being_viewed = 0;
-    let organization_we_vote_id = "";
-    let signed_in_with_this_organization = false;
+    let organizationTwitterHandleBeingViewed = "";
+    let organizationFacebookIdBeingViewed = 0;
+    let organizationWeVoteId = "";
+    let signedInWithThisOrganization = false;
     if (organization !== undefined) {
-      organization_twitter_handle_being_viewed = organization.organization_twitter_handle !== undefined ? organization.organization_twitter_handle : "";
-      organization_facebook_id_being_viewed = organization.facebook_id !== undefined ? organization.facebook_id : 0;
-      organization_we_vote_id = organization.organization_we_vote_id;
-      signed_in_with_this_organization = this.state.voter && this.state.voter.linked_organization_we_vote_id === organization_we_vote_id;
+      organizationTwitterHandleBeingViewed = organization.organization_twitter_handle !== undefined ? organization.organization_twitter_handle : "";
+      organizationFacebookIdBeingViewed = organization.facebook_id !== undefined ? organization.facebook_id : 0;
+      organizationWeVoteId = organization.organization_we_vote_id;
+      signedInWithThisOrganization = this.state.voter && this.state.voter.linked_organization_we_vote_id === organizationWeVoteId;
     }
-    // console.log("signed_in_with_this_organization: ", signed_in_with_this_organization);
-    const signed_in_twitter = this.state.voter === undefined ? false : this.state.voter.signed_in_twitter;
-    let signed_in_with_this_twitter_account = false;
-    if (signed_in_twitter && this.state.voter.twitter_screen_name !== null) {
-      signed_in_with_this_twitter_account = this.state.voter.twitter_screen_name.toLowerCase() === organization_twitter_handle_being_viewed.toLowerCase();
+    // console.log("signedInWithThisOrganization: ", signedInWithThisOrganization);
+    const signedInTwitter = this.state.voter === undefined ? false : this.state.voter.signed_in_twitter;
+    let signedInWithThisTwitterAccount = false;
+    if (signedInTwitter && this.state.voter.twitter_screen_name !== null) {
+      signedInWithThisTwitterAccount = this.state.voter.twitter_screen_name.toLowerCase() === organizationTwitterHandleBeingViewed.toLowerCase();
     }
-    const signed_in_facebook = this.state.voter === undefined ? false : this.state.voter.signed_in_facebook;
-    let signed_in_with_this_facebook_account = false;
-    if (signed_in_facebook) {
-      signed_in_with_this_facebook_account = this.state.voter.facebook_id === organization_facebook_id_being_viewed;
+    const signedInFacebook = this.state.voter === undefined ? false : this.state.voter.signed_in_facebook;
+    let signedInWithThisFacebookAccount = false;
+    if (signedInFacebook) {
+      signedInWithThisFacebookAccount = this.state.voter.facebook_id === organizationFacebookIdBeingViewed;
     }
 
-    let statement_text;
-    let is_public_position;
-    let is_support;
-    let is_oppose;
+    let statementText;
+    let isPublicPosition;
+    let isSupport;
+    let isOppose;
     // If looking at your own page, update when supportProps change
-    if (signed_in_with_this_twitter_account || signed_in_with_this_organization) {
-      // console.log("OrganizationPositionItem signed_in_with_this_twitter_account");
+    if (signedInWithThisTwitterAccount || signedInWithThisOrganization) {
+      // console.log("OrganizationPositionItem signedInWithThisTwitterAccount");
       // When component first loads, use the value in the incoming position. If there are any supportProps updates, use those.
-      statement_text = supportProps && supportProps.voter_statement_text ? supportProps.voter_statement_text : position.statement_text;
-      is_public_position = supportProps && supportProps.is_public_position ? supportProps.is_public_position : position.is_public_position;
-      is_support = supportProps && supportProps.is_support !== undefined ? supportProps.is_support : position.is_support;
-      is_oppose = supportProps && supportProps.is_oppose !== undefined ? supportProps.is_oppose : position.is_oppose;
+      isOppose = supportProps && supportProps.is_oppose !== undefined ? supportProps.is_oppose : position.is_oppose;
+      isPublicPosition = supportProps && supportProps.is_public_position ? supportProps.is_public_position : position.is_public_position;
+      isSupport = supportProps && supportProps.is_support !== undefined ? supportProps.is_support : position.is_support;
+      statementText = supportProps && supportProps.voter_statement_text ? supportProps.voter_statement_text : position.statement_text;
     } else {
-      // console.log("OrganizationPositionItem NOT signed_in_with_this_twitter_account");
-      statement_text = position.statement_text;
-      is_public_position = position.is_public_position;
-      is_support = position.is_support;
-      is_oppose = position.is_oppose;
+      // console.log("OrganizationPositionItem NOT signedInWithThisTwitterAccount");
+      isOppose = position.is_oppose;
+      isPublicPosition = position.is_public_position;
+      isSupport = position.is_support;
+      statementText = position.statement_text;
     }
 
     let ballotItemLink;
@@ -148,64 +152,62 @@ export default class OrganizationPositionItem extends Component {
       ballotItemLink = this.props.ballotItemLink;
     } else {
       // TwitterHandle-based link
-      const ballot_item_url = position.kind_of_ballot_item === "MEASURE" ? "/measure/" : "/candidate/";
+      const ballotItemUrl = position.kind_of_ballot_item === "MEASURE" ? "/measure/" : "/candidate/";
       // We are turning off links to twitter pages until we get politician pages working
-      // let ballotItemLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : ballot_item_url + position.ballot_item_we_vote_id;
-      ballotItemLink = ballot_item_url + position.ballot_item_we_vote_id;
+      // let ballotItemLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : ballotItemUrl + position.ballot_item_we_vote_id;
+      ballotItemLink = ballotItemUrl + position.ballot_item_we_vote_id;
     }
-    let position_description = "";
-    const is_candidate = position.kind_of_ballot_item === "CANDIDATE";
-    let ballot_item_display_name = "";
+    let positionDescription = "";
+    const isCandidate = position.kind_of_ballot_item === "CANDIDATE";
+    let ballotItemDisplayName = "";
     if (position.ballot_item_display_name) {
-      ballot_item_display_name = capitalizeString(position.ballot_item_display_name);
+      ballotItemDisplayName = capitalizeString(position.ballot_item_display_name);
     }
 
-    const is_on_ballot_item_page = false;
+    const isOnBallotItemPage = false;
     if (position.vote_smart_rating) {
       // console.log("PositionRatingSnippet");
-      position_description = (
+      positionDescription = (
         <PositionRatingSnippet
           {...position}
-          popover_off={popover_off}
-          placement={placement}
         />
       );
-    } else if (is_support || is_oppose) {
+    } else if (isSupport || isOppose) {
       // console.log("PositionSupportOpposeSnippet");
-      // We overwrite the "statement_text" passed in with position
-      position_description = (
+      // We overwrite the "statementText" passed in with position
+      positionDescription = (
         <PositionSupportOpposeSnippet
           {...position}
-          statement_text={statement_text}
-          is_support={is_support}
-          is_oppose={is_oppose}
-          is_on_ballot_item_page={is_on_ballot_item_page}
-          stance_display_off={stance_display_off}
-          comment_text_off={comment_text_off}
+          statement_text={statementText}
+          is_support={isSupport}
+          is_oppose={isOppose}
+          is_on_ballot_item_page={isOnBallotItemPage}
+          stance_display_off={stanceDisplayOff}
+          comment_text_off={commentTextOff}
         />
       );
     } else {
       // console.log("PositionInformationOnlySnippet");
-      position_description = (
+      positionDescription = (
         <PositionInformationOnlySnippet
           {...position}
-          is_on_ballot_item_page={is_on_ballot_item_page}
-          stance_display_off={stance_display_off}
-          comment_text_off={comment_text_off}
+          is_on_ballot_item_page={isOnBallotItemPage}
+          stance_display_off={stanceDisplayOff}
+          comment_text_off={commentTextOff}
         />
       );
     }
 
     // const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
-    let contest_office_name;
-    let political_party;
+    let contestOfficeName;
+    let politicalParty;
     if (position.kind_of_ballot_item === "CANDIDATE") {
-      contest_office_name = position.contest_office_name;
-      political_party = position.ballot_item_political_party;
+      contestOfficeName = position.contest_office_name;
+      politicalParty = position.ballot_item_political_party;
     }
     return (
       <li className="position-item card-child">
-        { is_candidate && !this.props.turnOffLogo ? (
+        { isCandidate && !this.props.turnOffLogo ? (
           <div className="card-child__media-object-anchor">
             <Link
               to={ballotItemLink}
@@ -232,46 +234,46 @@ export default class OrganizationPositionItem extends Component {
                   onlyActiveOnIndex={false}
                   className="position-rating__candidate-name u-flex-auto"
                 >
-                  {ballot_item_display_name}
+                  {ballotItemDisplayName}
                 </Link>
-                { (signed_in_with_this_twitter_account ||
-                signed_in_with_this_organization ||
-                signed_in_with_this_facebook_account) &&
+                { (signedInWithThisTwitterAccount ||
+                signedInWithThisOrganization ||
+                signedInWithThisFacebookAccount) &&
                 this.props.editMode ?
-                  <FriendsOnlyIndicator isFriendsOnly={!is_public_position} /> :
-                  <FriendsOnlyIndicator isFriendsOnly={!is_public_position} />
+                  <FriendsOnlyIndicator isFriendsOnly={!isPublicPosition} /> :
+                  <FriendsOnlyIndicator isFriendsOnly={!isPublicPosition} />
               }
               </div>
             ) : null
             }
-            { position.kind_of_ballot_item === "CANDIDATE" && contest_office_name !== undefined ? (
+            { position.kind_of_ballot_item === "CANDIDATE" && contestOfficeName !== undefined ? (
               <OfficeNameText
-                politicalParty={political_party}
-                contestOfficeName={contest_office_name}
+                politicalParty={politicalParty}
+                contestOfficeName={contestOfficeName}
               />
             ) : null
             }
             {/* show explicit position, if available, otherwise show rating */}
-            { position_description }
+            { positionDescription }
             { this.props.editMode ? (
               <div>
                 <ItemActionBar
                   ballot_item_we_vote_id={position.ballot_item_we_vote_id}
-                  ballotItemDisplayName={ballot_item_display_name}
+                  ballotItemDisplayName={ballotItemDisplayName}
                   commentButtonHide
                   shareButtonHide
                   supportProps={supportProps}
                   transitioning={this.state.transitioning}
                   type={position.kind_of_ballot_item}
-                  toggleFunction={this.togglePositionStatement.bind(this)}
+                  toggleFunction={this.togglePositionStatement}
                 />
-                { this.state.hide_position_statement ?
+                { this.state.hidePositionStatement ?
                   null : (
                     <ItemPositionStatementActionBar
                       ballot_item_we_vote_id={position.ballot_item_we_vote_id}
                       ballotItemDisplayName={position.ballot_item_display_name}
                       comment_edit_mode_on
-                      stance_display_off
+                      stance_display_off={stanceDisplayOff}
                       supportProps={supportProps}
                       transitioning={this.state.transitioning}
                       type={position.kind_of_ballot_item}
