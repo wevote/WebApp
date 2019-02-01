@@ -17,11 +17,12 @@ export default class PollingPlaceLocatorModal extends Component {
     this.state = {
       showPollingLocatorModal: true,
     };
-    this._openPollingLocatorModal = this._openPollingLocatorModal.bind(this);
+    this.openPollingLocationModal = this.openPollingLocationModal.bind(this);
   }
 
-  _openPollingLocatorModal () {
-    this.setState({ showPollingLocatorModal: !this.state.showPollingLocatorModal });
+  openPollingLocationModal () {
+    const { showPollingLocatorModal } = this.state;
+    this.setState({ showPollingLocatorModal: !showPollingLocatorModal });
     historyPush("/ballot");
   }
 
@@ -33,12 +34,12 @@ export default class PollingPlaceLocatorModal extends Component {
         <Modal
           bsPrefix="background-brand-blue modal"
           show={this.state.showPollingLocatorModal}
-          onHide={() => this._openPollingLocatorModal(this)}
+          onHide={() => this.openPollingLocationModal(this)}
         >
           <Modal.Body>
             <div className="intro-modal__close">
               <a
-                onClick={this._openPollingLocatorModal}
+                onClick={this.openPollingLocationModal}
                 className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}
               >
                 <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />

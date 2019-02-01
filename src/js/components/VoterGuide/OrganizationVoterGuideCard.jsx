@@ -38,23 +38,23 @@ export default class OrganizationVoterGuideCard extends Component {
     }
 
     const {
-      organization_twitter_handle, twitter_description,
-      organization_photo_url_large, organization_website,
-      organization_name, organization_we_vote_id,
+      organization_twitter_handle: organizationTwitterHandle, twitter_description: twitterDescriptionRaw,
+      organization_photo_url_large: organizationPhotoUrlLarge, organization_website: organizationWebsiteRaw,
+      organization_name: organizationName, organization_we_vote_id: organizationWeVoteId,
     } = this.props.organization; // , twitter_followers_count
-    const organizationWebsite = organization_website && organization_website.slice(0, 4) !== "http" ? `http://${organization_website}` : organization_website;
+    const organizationWebsite = organizationWebsiteRaw && organizationWebsiteRaw.slice(0, 4) !== "http" ? `http://${organizationWebsiteRaw}` : organizationWebsiteRaw;
 
     // If the displayName is in the twitterDescription, remove it from twitterDescription
-    const displayName = organization_name || "";
-    const twitterDescription = twitter_description || "";
+    const displayName = organizationName || "";
+    const twitterDescription = twitterDescriptionRaw || "";
     const twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
-    const voterGuideLink = organization_twitter_handle ? `/${organization_twitter_handle}` : `/voterguide/${organization_we_vote_id}`;
+    const voterGuideLink = organizationTwitterHandle ? `/${organizationTwitterHandle}` : `/voterguide/${organizationWeVoteId}`;
 
     return (
       <div className="card-main">
-        { organization_photo_url_large ? (
+        { organizationPhotoUrlLarge ? (
           <Link to={voterGuideLink} className="u-no-underline">
-            <img src={organization_photo_url_large} height="180" />
+            <img src={organizationPhotoUrlLarge} height="180" />
           </Link>
         ) : null
         }
@@ -62,10 +62,10 @@ export default class OrganizationVoterGuideCard extends Component {
         <Link to={voterGuideLink}>
           <h3 className="card-main__display-name">{displayName}</h3>
         </Link>
-        { organization_twitter_handle ? (
+        { organizationTwitterHandle ? (
           <span>
             @
-            {organization_twitter_handle}
+            {organizationTwitterHandle}
             &nbsp;&nbsp;
           </span>
         ) :
@@ -77,7 +77,7 @@ export default class OrganizationVoterGuideCard extends Component {
             <span>Edit Your Voter Guide</span>
           </Button>
         ) :
-          <FollowToggle organizationWeVoteId={organization_we_vote_id} />
+          <FollowToggle organizationWeVoteId={organizationWeVoteId} />
         }
         { twitterDescriptionMinusName && !this.props.turnOffDescription ? (
           <ParsedTwitterDescription

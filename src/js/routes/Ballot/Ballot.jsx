@@ -492,9 +492,9 @@ export default class Ballot extends Component {
   }
 
   onVoterGuideStoreChange () {
-    const { candidateForModal, measureForModal } = this.state;
     // console.log("Ballot onVoterGuideStoreChange");
     // Update the data for the modal to include the position of the organization related to this ballot item
+    const { candidateForModal, measureForModal } = this.state;
     if (candidateForModal) {
       this.setState({
         candidateForModal: {
@@ -713,7 +713,7 @@ export default class Ballot extends Component {
     const ballotReturnedAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}b/${sourcePollingLocationWeVoteId}/list_edit_by_polling_location/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
     // console.log("electionName: ", electionName, ", electionDayTextFormatted: ", electionDayText);
 
-    const emptyBallotButton = this.state.completionLevelFilterType !== "none" && !voterAddressMissing ? (
+    const emptyBallotButton = completionLevelFilterType !== "none" && !voterAddressMissing ? (
       <span>
         {/* <Link to={ballotBaseUrl}>
               <Button variant="primary">View Full Ballot</Button>
@@ -734,7 +734,7 @@ export default class Ballot extends Component {
     // console.log("ballotWithAllItemsByFilterType: ", this.state.ballotWithAllItemsByFilterType);
     const emptyBallot = ballotWithAllItemsByFilterType.length === 0 ? (
       <div>
-        <h3 className="text-center">{this.getEmptyMessageByFilterType(this.state.completionLevelFilterType)}</h3>
+        <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3>
         {emptyBallotButton}
         <div className="container-fluid well u-stack--md u-inset--md">
           <BallotElectionList
@@ -747,7 +747,7 @@ export default class Ballot extends Component {
 
     const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format("MMM Do, YYYY")}</span> : <span />;
 
-    const inRemainingDecisionsMode = this.state.completionLevelFilterType === "filterRemaining";
+    const inRemainingDecisionsMode = completionLevelFilterType === "filterRemaining";
     const inReadyToVoteMode = this.state.completionLevelFilterType === "filterReadyToVote";
 
     if (ballotWithAllItemsByFilterType.length === 0 && inRemainingDecisionsMode) {
@@ -915,7 +915,7 @@ export default class Ballot extends Component {
                     ) : null
                     }
                     <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
-                      { ballotWithAllItemsByFilterType.map((item) => {
+                      {ballotWithAllItemsByFilterType.map((item) => {
                       // ballot limited by items by filter type
                       // console.log(this.state.raceLevelFilterType);
                         if ((this.state.raceLevelFilterType === "All" ||

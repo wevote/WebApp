@@ -10,7 +10,6 @@ import VoterStore from "../../stores/VoterStore";
 import FacebookFriendsDisplay from "./FacebookFriendsDisplay";
 
 export default class AddFacebookFriends extends Component {
-
   static propTypes = {
     maximumFriendDisplay: PropTypes.number,
     facebookInvitableFriendsImageWidth: PropTypes.number,
@@ -20,10 +19,10 @@ export default class AddFacebookFriends extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
-      maximum_friend_display: this.props.maximumFriendDisplay,
-      facebook_invitable_friends_image_width: this.props.facebookInvitableFriendsImageWidth,
-      facebook_invitable_friends_image_height: this.props.facebookInvitableFriendsImageHeight,
+      facebookInvitableFriendsList: FacebookStore.facebookInvitableFriends(),
+      maximumFriendDisplay: this.props.maximumFriendDisplay,
+      facebookInvitableFriendsImageWidth: this.props.facebookInvitableFriendsImageWidth,
+      facebookInvitableFriendsImageHeight: this.props.facebookInvitableFriendsImageHeight,
     };
   }
 
@@ -32,9 +31,9 @@ export default class AddFacebookFriends extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     this.facebookStoreListener = FacebookStore.addListener(this.onFacebookStoreChange.bind(this));
-    if (this.state.facebook_invitable_friends_list) {
-      FacebookActions.getFacebookInvitableFriendsList(this.state.facebook_invitable_friends_image_width,
-        this.state.facebook_invitable_friends_image_height);
+    if (this.state.facebookInvitableFriendsList) {
+      FacebookActions.getFacebookInvitableFriendsList(this.state.facebookInvitableFriendsImageWidth,
+        this.state.facebookInvitableFriendsImageHeight);
     }
   }
 
@@ -49,7 +48,7 @@ export default class AddFacebookFriends extends Component {
 
   onFacebookStoreChange () {
     this.setState({
-      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
+      facebookInvitableFriendsList: FacebookStore.facebookInvitableFriends(),
     });
   }
 
@@ -60,18 +59,18 @@ export default class AddFacebookFriends extends Component {
       return LoadingWheel;
     }
 
-    let your_account_explanation = "";
+    let yourAccountExplanation = "";
     if (!this.state.voter.signed_in_facebook) {
-      your_account_explanation = "Sign in so that you can easily invite specific friends from Facebook. You choose who you want to invite.";
+      yourAccountExplanation = "Sign in so that you can easily invite specific friends from Facebook. You choose who you want to invite.";
     } else {
-      your_account_explanation = "We found some of your friends from Facebook. Choose the friends to invite to We Vote to see what they support.";
+      yourAccountExplanation = "We found some of your friends from Facebook. Choose the friends to invite to We Vote to see what they support.";
     }
 
     return (
       <div className="">
         <BrowserPushMessage incomingProps={this.props} />
         <div>
-          <span>{your_account_explanation}</span>
+          <span>{yourAccountExplanation}</span>
           <br />
           <br />
           {!this.state.voter.signed_in_facebook ? (
@@ -84,10 +83,10 @@ export default class AddFacebookFriends extends Component {
           {this.state.voter.signed_in_facebook ? (
             <div>
               <FacebookFriendsDisplay
-                facebookInvitableFriendsList={this.state.facebook_invitable_friends_list}
-                facebookInvitableFriendsImageWidth={this.state.facebook_invitable_friends_image_width}
-                facebookInvitableFriendsImageHeight={this.state.facebook_invitable_friends_image_height}
-                maximumFriendDisplay={this.state.maximum_friend_display}
+                facebookInvitableFriendsList={this.state.facebookInvitableFriendsList}
+                facebookInvitableFriendsImageWidth={this.state.facebookInvitableFriendsImageWidth}
+                facebookInvitableFriendsImageHeight={this.state.facebookInvitableFriendsImageHeight}
+                maximumFriendDisplay={this.state.maximumFriendDisplay}
               />
             </div>
           ) :

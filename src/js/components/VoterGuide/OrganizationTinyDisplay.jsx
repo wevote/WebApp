@@ -8,7 +8,6 @@ import { renderLog } from "../../utils/logging";
 export default class OrganizationTinyDisplay extends Component {
   static propTypes = {
     showPlaceholderImage: PropTypes.bool,
-    showInfoOnly: PropTypes.bool,
     showOppose: PropTypes.bool,
     showSupport: PropTypes.bool,
     toFollow: PropTypes.bool,
@@ -22,24 +21,24 @@ export default class OrganizationTinyDisplay extends Component {
   render () {
     // console.log("OrganizationTinyDisplay render");
     renderLog(__filename);
-    let display_name;
+    let displayName;
     if (this.props.voter_guide_display_name) {
-      display_name = this.props.voter_guide_display_name;
+      displayName = this.props.voter_guide_display_name;
     } else if (this.props.organization_name) {
-      display_name = this.props.organization_name;
+      displayName = this.props.organization_name;
     } else {
-      display_name = "";
+      displayName = "";
     }
 
-    let image_url_tiny;
+    let imageUrlTiny;
     if (this.props.voter_guide_image_url_tiny) {
-      image_url_tiny = this.props.voter_guide_image_url_tiny;
+      imageUrlTiny = this.props.voter_guide_image_url_tiny;
     } else if (this.props.organization_photo_url_tiny) {
-      image_url_tiny = this.props.organization_photo_url_tiny;
+      imageUrlTiny = this.props.organization_photo_url_tiny;
     } else if (this.props.voter_image_url_tiny) {
-      image_url_tiny = this.props.voter_image_url_tiny;
+      imageUrlTiny = this.props.voter_image_url_tiny;
     } else {
-      image_url_tiny = "";
+      imageUrlTiny = "";
     }
 
     let supportOrOpposeClass = "";
@@ -54,14 +53,14 @@ export default class OrganizationTinyDisplay extends Component {
       toFollowClass = "network-positions__to-follow-fade ";
     }
 
-    const hide_placeholder = !this.props.showPlaceholderImage;
+    const hidePlaceholder = !this.props.showPlaceholderImage;
     return (
       <ImageHandler
         className={supportOrOpposeClass + toFollowClass}
         sizeClassName="organization__image--tiny"
-        hidePlaceholder={hide_placeholder}
-        imageUrl={image_url_tiny}
-        alt={display_name}
+        hidePlaceholder={hidePlaceholder}
+        imageUrl={imageUrlTiny}
+        alt={displayName}
       />
     );
   }

@@ -104,7 +104,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
   }
 
   render () {
-    console.log("ItemTinyOpinionsToFollow render");
+    // console.log("ItemTinyOpinionsToFollow render");
     renderLog(__filename);
     if (this.state.organizationsToFollow === undefined) {
       return null;

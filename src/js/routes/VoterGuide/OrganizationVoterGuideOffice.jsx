@@ -28,7 +28,7 @@ export default class OrganizationVoterGuideOffice extends Component {
   }
 
   componentDidMount () {
-    this.officeStoreListener = OfficeStore.addListener(this._onOfficeStoreChange.bind(this));
+    this.officeStoreListener = OfficeStore.addListener(this.onOfficeStoreChange.bind(this));
     const office = OfficeStore.getOffice(this.props.params.office_we_vote_id);
     if (!office || !office.ballot_item_display_name) {
       OfficeActions.officeRetrieve(this.props.params.office_we_vote_id);
@@ -65,7 +65,7 @@ export default class OrganizationVoterGuideOffice extends Component {
     this.officeStoreListener.remove();
   }
 
-  _onOfficeStoreChange () {
+  onOfficeStoreChange () {
     const { office_we_vote_id: officeWeVoteId } = this.state;
     const office = OfficeStore.getOffice(officeWeVoteId);
     this.setState({ office });

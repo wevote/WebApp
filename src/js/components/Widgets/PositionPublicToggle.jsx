@@ -29,7 +29,6 @@ export default class PositionPublicToggle extends Component {
       showPositionPublicHelpModal: false,
       positionPublicToggleCurrentState: "",
       showToThePublicOn: false,
-      transitioning: false,
     };
 
     this.onToggleChangeFunction = this.onToggleChangeFunction.bind(this);
@@ -52,6 +51,20 @@ export default class PositionPublicToggle extends Component {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
+  onToggleChangeFunction (state) {
+    // This was written for react-bootstrap-toggle version 2.3.1, but we are having some troubles upgrading
+    console.log("PositionPublicToggle onToggleChangeFunction, state:", state);
+    if (state === "SHOW_PUBLIC") {
+      this.setState({
+        positionPublicToggleCurrentState: "Show publicly",
+      });
+    } else {
+      this.setState({
+        positionPublicToggleCurrentState: "Show to friends only",
+      });
+    }
+  }
+
   showItemToFriendsOnly () {
     this.setState({
       showToThePublicOn: false,
@@ -63,7 +76,7 @@ export default class PositionPublicToggle extends Component {
   }
 
   showItemToPublic () {
-    const voter = this.state.voter;
+    const { voter } = this.state;
 
     // console.log("PositionPublicToggle-showItemToPublic, this.props.type:", this.props.type);
     if (voter && voter.is_signed_in) {
@@ -78,30 +91,16 @@ export default class PositionPublicToggle extends Component {
       } else {
         showToastSuccess("This position now visible to anyone on We Vote!");
       }
-
     } else {
       this.togglePositionPublicHelpModal();
     }
   }
 
   togglePositionPublicHelpModal () {
+    const { showPositionPublicHelpModal } = this.state;
     this.setState({
-      showPositionPublicHelpModal: !this.state.showPositionPublicHelpModal,
+      showPositionPublicHelpModal: !showPositionPublicHelpModal,
     });
-  }
-
-  onToggleChangeFunction (state) {
-    // This was written for react-bootstrap-toggle version 2.3.1, but we are having some troubles upgrading
-    console.log("PositionPublicToggle onToggleChangeFunction, state:", state);
-    if (state === "SHOW_PUBLIC") {
-      this.setState({
-        positionPublicToggleCurrentState: "Show publicly",
-      });
-    } else {
-      this.setState({
-        positionPublicToggleCurrentState: "Show to friends only",
-      });
-    }
   }
 
   render () {
@@ -161,7 +160,7 @@ export default class PositionPublicToggle extends Component {
 
     // This modal is shown when the user clicks on public position toggle either when not signed in
     // or for the first time after being signed in.
-    const voter = this.state.voter;
+    const { voter } = this.state;
     const localModalStyle = hasIPhoneNotch() ? { marginTop: 20 } : {};
     const modalSupportProps = { isPublicPosition: false };
     const PositionPublicToggleHelpModal = (

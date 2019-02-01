@@ -24,7 +24,7 @@ export default class Office extends Component {
     super(props);
     this.state = {
       office: {},
-      office_we_vote_id: "",
+      officeWeVoteId: "",
     };
   }
 
@@ -33,7 +33,7 @@ export default class Office extends Component {
       IssueActions.issuesRetrieveForElection(VoterStore.electionId());
     }
 
-    this.officeStoreListener = OfficeStore.addListener(this._onOfficeStoreChange.bind(this));
+    this.officeStoreListener = OfficeStore.addListener(this.onOfficeStoreChange.bind(this));
     const office = OfficeStore.getOffice(this.props.params.office_we_vote_id);
 
     if (!office || !office.ballot_item_display_name) {
@@ -43,7 +43,7 @@ export default class Office extends Component {
     }
 
     this.setState({
-      office_we_vote_id: this.props.params.office_we_vote_id,
+      officeWeVoteId: this.props.params.office_we_vote_id,
     });
 
     AnalyticsActions.saveActionOffice(VoterStore.electionId(), this.props.params.office_we_vote_id);
@@ -55,10 +55,10 @@ export default class Office extends Component {
     const office = OfficeStore.getOffice(nextProps.params.office_we_vote_id);
 
     if (!office || !office.ballot_item_display_name) {
-      this.setState({ office_we_vote_id: nextProps.params.office_we_vote_id });
+      this.setState({ officeWeVoteId: nextProps.params.office_we_vote_id });
       OfficeActions.officeRetrieve(nextProps.params.office_we_vote_id);
     } else {
-      this.setState({ office, office_we_vote_id: nextProps.params.office_we_vote_id });
+      this.setState({ office, officeWeVoteId: nextProps.params.office_we_vote_id });
     }
 
     // Display the office name in the search box
@@ -71,8 +71,9 @@ export default class Office extends Component {
     this.officeStoreListener.remove();
   }
 
-  _onOfficeStoreChange () {
-    const office = OfficeStore.getOffice(this.state.office_we_vote_id);
+  onOfficeStoreChange () {
+    const { officeWeVoteId } = this.state;
+    const office = OfficeStore.getOffice(officeWeVoteId);
     this.setState({ office });
   }
 
@@ -81,7 +82,7 @@ export default class Office extends Component {
     const { office } = this.state;
 
     if (!office || !office.ballot_item_display_name) {
-      // TODO DALE If the office_we_vote_id is not valid, we need to update this with a notice
+      // TODO DALE If the officeWeVoteId is not valid, we need to update this with a notice
       return (
         <div className="container-fluid well u-stack--md u-inset--md">
           <div>{LoadingWheel}</div>
@@ -107,9 +108,10 @@ export default class Office extends Component {
         { office.candidate_list ? (
           <div>
             <CandidateList
-              children={office.candidate_list}
               contest_office_name={office.ballot_item_display_name}
-            />
+            >
+              {office.candidate_list}
+            </CandidateList>
           </div>
         ) :
           <span>No candidates found.</span>

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import { Button } from "react-bootstrap";
 import { _ } from "lodash";
@@ -41,27 +40,28 @@ import WouldYouLikeToMergeAccounts from "../components/WouldYouLikeToMergeAccoun
 
 export default class FacebookInvitableFriends extends Component {
   static propTypes = {
-    history: PropTypes.object,
-    children: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      isChecked: false,
       facebook_logged_in: false,
       facebook_auth_response: {},
-      facebook_invitable_friends: FacebookStore.facebookInvitableFriends(),
-      facebook_invitable_friends_image_width: 148,
-      facebook_invitable_friends_image_height: 148,
+      facebookInvitableFriends: FacebookStore.facebookInvitableFriends(),
+      facebookInvitableFriendsImageWidth: 148,
+      facebookInvitableFriendsImageHeight: 148,
       add_friends_message: "Please join me in preparing for the upcoming election.",
       saving: false,
       search_filter: false,
       search_term: "",
-      facebook_invitable_friends_filtered_by_search: [],
+      facebookInvitableFriendsFilteredBySearch: [],
       yes_please_merge_accounts: false,
       merging_two_accounts: false,
     };
+  }
+
+  componentWillMount () {
+    this.selectedCheckBoxes = [];
   }
 
   componentDidMount () {
@@ -70,10 +70,6 @@ export default class FacebookInvitableFriends extends Component {
     this.onFacebookStoreChange();
     this.facebookStoreListener = FacebookStore.addListener(this.onFacebookStoreChange.bind(this));
     AnalyticsActions.saveActionFacebookInvitableFriends(VoterStore.electionId());
-  }
-
-  componentWillMount () {
-    this.selectedCheckBoxes = [];
   }
 
   componentWillUnmount () {
@@ -85,37 +81,18 @@ export default class FacebookInvitableFriends extends Component {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  onFacebookStoreChange () {
-    this.setState({
-      facebook_logged_in: FacebookStore.loggedIn,
-      facebook_auth_response: FacebookStore.getFacebookAuthResponse(),
-      facebook_invitable_friends: FacebookStore.facebookInvitableFriends(),
-      saving: false,
-    });
-  }
-
-  cancelMergeFunction () {
+  cancelMergeFunction = () => {
     historyPush({
       pathname: "/more/network",
       state: {},
     });
   }
 
-  voterMergeTwoAccountsByFacebookKey (facebookSecretKey, voterHasDataToPreserve = false) {
-    if (!this.state.merging_two_accounts) {
-      VoterActions.voterMergeTwoAccountsByFacebookKey(facebookSecretKey);
-
-      // Prevent voterMergeTwoAccountsByFacebookKey from being called multiple times
-      console.log("voter_has_data_to_preserve: ", voterHasDataToPreserve);
-      this.setState({ merging_two_accounts: true });
-    }
-  }
-
   voterFacebookSaveToCurrentAccount () {
     VoterActions.voterFacebookSaveToCurrentAccount();
   }
 
-  yesPleaseMergeAccounts () {
+  yesPleaseMergeAccounts = () => {
     this.setState({ yes_please_merge_accounts: true });
   }
 
@@ -123,17 +100,26 @@ export default class FacebookInvitableFriends extends Component {
     FacebookActions.login();
   }
 
+  onFacebookStoreChange () {
+    this.setState({
+      facebook_logged_in: FacebookStore.loggedIn,
+      facebook_auth_response: FacebookStore.getFacebookAuthResponse(),
+      facebookInvitableFriends: FacebookStore.facebookInvitableFriends(),
+      saving: false,
+    });
+  }
+
   getFacebookInvitableFriends () {
     // If you are not receiving a list of friends in your local environment, see the not at the top of this file.
-    FacebookActions.getFacebookInvitableFriendsList(this.state.facebook_invitable_friends_image_width,
-      this.state.facebook_invitable_friends_image_height);
+    FacebookActions.getFacebookInvitableFriendsList(this.state.facebookInvitableFriendsImageWidth,
+      this.state.facebookInvitableFriendsImageHeight);
 
     // May 20, 2018: The following line "this.setState" has no effect if called from render, and throws an error:
     // [Error] Warning: setState(...): Cannot update during an existing state transition (such as within `render` or another component's constructor). Render methods should be a pure function of props and state; constructor side-effects are an anti-pattern, but can be moved to `componentWillMount`.
     // this.setState({ saving: true });
   }
 
-  toggleCheckBox (facebookInvitableFriendId, facebookInvitableFriendName) {
+  toggleCheckBox = (facebookInvitableFriendId, facebookInvitableFriendName) => {
     const friendSelectedCheckbox = { id: facebookInvitableFriendId, name: facebookInvitableFriendName };
     if (this.selectedCheckBoxes.length === 0) {
       this.selectedCheckBoxes.push(friendSelectedCheckbox);
@@ -153,8 +139,6 @@ export default class FacebookInvitableFriends extends Component {
         this.selectedCheckBoxes.push(friendSelectedCheckbox);
       }
     }
-
-    // console.log("Selected Check Boxes: ", this.selectedCheckBoxes);
   }
 
   sendInviteRequestToFacebookFriends = (formSubmitEvent) => {
@@ -168,6 +152,16 @@ export default class FacebookInvitableFriends extends Component {
 
     this.sendFacebookAppRequest(selectedFacebookFriendsIds, selectedFacebookFriendsNames);
   };
+
+  voterMergeTwoAccountsByFacebookKey (facebookSecretKey, voterHasDataToPreserve = false) {
+    if (!this.state.merging_two_accounts) {
+      VoterActions.voterMergeTwoAccountsByFacebookKey(facebookSecretKey);
+
+      // Prevent voterMergeTwoAccountsByFacebookKey from being called multiple times
+      console.log("voter_has_data_to_preserve: ", voterHasDataToPreserve);
+      this.setState({ merging_two_accounts: true });
+    }
+  }
 
   cacheAddFriendsByFacebookMessage (e) {
     this.setState({
@@ -211,17 +205,18 @@ export default class FacebookInvitableFriends extends Component {
       this.setState({
         search_filter: false,
         search_term: "",
-        facebook_invitable_friends_filtered_by_search: [],
+        facebookInvitableFriendsFilteredBySearch: [],
       });
     } else {
       const searchTermLowercase = searchTerm.toLowerCase();
-      const searchedFriendsList = _.filter(this.state.facebook_invitable_friends.facebook_invitable_friends_list,
+      const { facebookInvitableFriends } = this.state;
+      const searchedFriendsList = _.filter(facebookInvitableFriends.facebook_invitable_friends_list,
         user => user.name.toLowerCase().includes(searchTermLowercase));
 
       this.setState({
         search_filter: true,
         search_term: searchTerm,
-        facebook_invitable_friends_filtered_by_search: searchedFriendsList,
+        facebookInvitableFriendsFilteredBySearch: searchedFriendsList,
       });
     }
   }
@@ -269,14 +264,11 @@ export default class FacebookInvitableFriends extends Component {
         // Is there anything to save from this voter account?
         if (this.state.facebook_auth_response.voter_has_data_to_preserve) {
           // console.log("FacebookSignInProcess voter_has_data_to_preserve is TRUE");
-          const cancelMergeFunction = this.cancelMergeFunction.bind(this);
-          const pleaseMergeAccountsFunction = this.yesPleaseMergeAccounts.bind(this);
-
           // Display the question of whether to merge accounts or not
           return (
             <WouldYouLikeToMergeAccounts
-              cancelMergeFunction={cancelMergeFunction}
-              pleaseMergeAccountsFunction={pleaseMergeAccountsFunction}
+              cancelMergeFunction={this.cancelMergeFunction}
+              pleaseMergeAccountsFunction={this.yesPleaseMergeAccounts}
             />
           );
         } else {
@@ -292,17 +284,17 @@ export default class FacebookInvitableFriends extends Component {
       }
     }
 
-    // console.log("Voter is signed in through facebook facebook_invitable_friends: ", this.state.facebook_invitable_friends);
-    if (!this.state.facebook_invitable_friends.facebook_invitable_friends_retrieved) {
+    // console.log("Voter is signed in through facebook facebookInvitableFriends: ", this.state.facebookInvitableFriends);
+    if (!this.state.facebookInvitableFriends.facebook_invitable_friends_retrieved) {
       // If facebook log in finished successfully then get facebook invitable friends
       // console.log("Get facebook invitable friends");
       this.getFacebookInvitableFriends();
       return LoadingWheel;
     }
 
-    // console.log("Facebook friends list", this.state.facebook_invitable_friends.facebook_invitable_friends_list);
-    // console.log("facebook friends not exist:", this.state.facebook_invitable_friends.facebook_friends_not_exist);
-    if (this.state.facebook_invitable_friends.facebook_friends_not_exist) {
+    // console.log("Facebook friends list", this.state.facebookInvitableFriends.facebook_invitable_friends_list);
+    // console.log("facebook friends not exist:", this.state.facebookInvitableFriends.facebook_friends_not_exist);
+    if (this.state.facebookInvitableFriends.facebook_friends_not_exist) {
       historyPush({
         pathname: "/more/network/friends",
         state: {
@@ -315,9 +307,9 @@ export default class FacebookInvitableFriends extends Component {
 
     let facebookInvitableFriendsList = [];
     if (!this.state.search_filter) {
-      facebookInvitableFriendsList = this.state.facebook_invitable_friends.facebook_invitable_friends_list;
+      facebookInvitableFriendsList = this.state.facebookInvitableFriends.facebook_invitable_friends_list;
     } else {
-      facebookInvitableFriendsList = this.state.facebook_invitable_friends_filtered_by_search;
+      facebookInvitableFriendsList = this.state.facebookInvitableFriendsFilteredBySearch;
     }
 
     const facebookFriendListForDisplay = facebookInvitableFriendsList.map(friend => (
@@ -327,7 +319,7 @@ export default class FacebookInvitableFriends extends Component {
         friendName={friend.name}
         friendImage={friend.picture.data.url}
         grid="col-4 col-sm-2"
-        handleCheckboxChange={this.toggleCheckBox.bind(this)}
+        handleCheckboxChange={this.toggleCheckBox}
       />
     ));
 
