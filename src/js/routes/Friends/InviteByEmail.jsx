@@ -6,10 +6,7 @@ import AnalyticsActions from "../../actions/AnalyticsActions";
 import CurrentFriends from "../../components/Connect/CurrentFriends";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
-import FacebookStore from "../../stores/FacebookStore";
 import { renderLog } from "../../utils/logging";
-import OrganizationStore from "../../stores/OrganizationStore";
-import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 
 export default class InviteByEmail extends Component {
@@ -19,20 +16,13 @@ export default class InviteByEmail extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      add_friends_type: "ADD_FRIENDS_BY_EMAIL",
-      current_friends_list: FriendStore.currentFriends(),
-      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
-      voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
-      organizations_followed_on_twitter_list: OrganizationStore.getOrganizationsFollowedByVoterOnTwitter(),
-      maximum_organization_display: 25,
-      maximum_friend_display: 25,
-      facebook_invitable_friends_image_width: 24,
-      facebook_invitable_friends_image_height: 24,
+      currentFriendsList: FriendStore.currentFriends(),
+      maximumFriendDisplay: 25,
     };
   }
 
   componentDidMount () {
-    if (this.state.current_friends_list) {
+    if (this.state.currentFriendsList) {
       FriendActions.currentFriends();
     }
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
@@ -43,18 +33,9 @@ export default class InviteByEmail extends Component {
     this.friendStoreListener.remove();
   }
 
-  static getProps () {
-    return {};
-  }
-
-
-  getCurrentRoute () {
-    return "/more/connect";
-  }
-
   onFriendStoreChange () {
     this.setState({
-      current_friends_list: FriendStore.currentFriends(),
+      currentFriendsList: FriendStore.currentFriends(),
     });
   }
 
@@ -69,7 +50,7 @@ export default class InviteByEmail extends Component {
           <AddFriendsByEmail />
         </div>
 
-        { this.state.current_friends_list && this.state.current_friends_list.length ? (
+        { this.state.currentFriendsList && this.state.currentFriendsList.length ? (
           <div className="container-fluid well u-stack--md u-inset--md">
             <Link className="u-cursor--pointer u-no-underline" to="/friends">
               <h4 className="text-left">Your Current Friends</h4>
@@ -77,8 +58,8 @@ export default class InviteByEmail extends Component {
             <div className="card-child__list-group">
               {
                 <CurrentFriends
-                  currentFriendsList={this.state.current_friends_list}
-                  maximumFriendDisplay={this.state.maximum_friend_display}
+                  currentFriendsList={this.state.currentFriendsList}
+                  maximumFriendDisplay={this.state.maximumFriendDisplay}
                 />
               }
               <Link className="pull-right" to="/friends">See Full Friend List</Link>

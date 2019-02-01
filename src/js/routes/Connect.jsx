@@ -23,11 +23,10 @@ export default class Connect extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      add_friends_type: "ADD_FRIENDS_BY_EMAIL",
       current_friends_list: FriendStore.currentFriends(),
       facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
-      voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
-      organizations_followed_on_twitter_list: OrganizationStore.getOrganizationsFollowedByVoterOnTwitter(),
+      voterGuidesToFollowAll: VoterGuideStore.getVoterGuidesToFollowAll(),
+      organizationsFollowedOnTwitterList: OrganizationStore.getOrganizationsFollowedByVoterOnTwitter(),
       maximum_organization_display: 25,
       maximum_friend_display: 25,
       facebook_invitable_friends_image_width: 24,
@@ -36,7 +35,7 @@ export default class Connect extends Component {
   }
 
   componentDidMount () {
-    if (this.state.organizations_followed_on_twitter_list) {
+    if (this.state.organizationsFollowedOnTwitterList) {
       OrganizationActions.organizationsFollowedRetrieve();
     }
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
@@ -54,17 +53,6 @@ export default class Connect extends Component {
     }
   }
 
-  onVoterGuideStoreChange () {
-    const organizations_followed_on_twitter_list = OrganizationStore.getOrganizationsFollowedByVoterOnTwitter();
-    const voter_guides_to_follow_all = VoterGuideStore.getVoterGuidesToFollowAll();
-    if (organizations_followed_on_twitter_list !== undefined && organizations_followed_on_twitter_list.length > 0) {
-      this.setState({ organizations_followed_on_twitter_list });
-    }
-    if (voter_guides_to_follow_all !== undefined && voter_guides_to_follow_all.length > 0) {
-      this.setState({ voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll() });
-    }
-  }
-
   onFacebookStoreChange () {
     this.setState({
       facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
@@ -77,17 +65,24 @@ export default class Connect extends Component {
     this.facebookStoreListener.remove();
   }
 
+  onVoterGuideStoreChange () {
+    const organizationsFollowedOnTwitterList = OrganizationStore.getOrganizationsFollowedByVoterOnTwitter();
+    const voterGuidesToFollowAll = VoterGuideStore.getVoterGuidesToFollowAll();
+    if (organizationsFollowedOnTwitterList !== undefined && organizationsFollowedOnTwitterList.length > 0) {
+      this.setState({ organizationsFollowedOnTwitterList });
+    }
+    if (voterGuidesToFollowAll !== undefined && voterGuidesToFollowAll.length > 0) {
+      this.setState({ voterGuidesToFollowAll: VoterGuideStore.getVoterGuidesToFollowAll() });
+    }
+  }
+
   static getProps () {
     return {};
   }
 
-  changeAddFriendsType (event) {
-    this.setState({ add_friends_type: event.target.id });
-  }
-
   getCurrentRoute () {
-    const current_route = "/more/connect";
-    return current_route;
+    const currentRoute = "/more/connect";
+    return currentRoute;
   }
 
   toggleEditMode () {
@@ -98,7 +93,8 @@ export default class Connect extends Component {
     const enterAndSpaceKeyCodes = [13, 32];
     const scope = this;
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      scope.setState({ editMode: !this.state.editMode });
+      const { editMode } = this.state;
+      scope.setState({ editMode: !editMode });
     }
   }
 
@@ -123,7 +119,7 @@ export default class Connect extends Component {
         <Helmet title="Build Your We Vote Network" />
         <h1 className="h1">Build Your We Vote Network</h1>
 
-        { this.state.voter_guides_to_follow_all && this.state.voter_guides_to_follow_all.length ? (
+        { this.state.voterGuidesToFollowAll && this.state.voterGuidesToFollowAll.length ? (
           <div className="container-fluid well u-stack--md u-inset--md">
             <Link className="u-cursor--pointer u-no-underline" to="/opinions">
               <h4 className="text-left">Organizations to Listen To</h4>
@@ -131,7 +127,7 @@ export default class Connect extends Component {
             </Link>
             <div className="card-child__list-group">
               <ItemTinyOpinionsToFollow
-                organizationsToFollow={this.state.voter_guides_to_follow_all}
+                organizationsToFollow={this.state.voterGuidesToFollowAll}
                 maximumOrganizationDisplay={this.state.maximum_organization_display}
               />
               <Link className="pull-right" to="/opinions">See all</Link>
@@ -152,12 +148,12 @@ export default class Connect extends Component {
           </div>
         </div>
 
-        { this.state.organizations_followed_on_twitter_list && this.state.organizations_followed_on_twitter_list.length ? (
+        { this.state.organizationsFollowedOnTwitterList && this.state.organizationsFollowedOnTwitterList.length ? (
           <div className="container-fluid well u-stack--md u-inset--md">
             <h4 className="text-left">Organizations you follow on Twitter</h4>
             <div className="card-child__list-group">
               <OrganizationsFollowedOnTwitter
-                organizationsFollowedOnTwitter={this.state.organizations_followed_on_twitter_list}
+                organizationsFollowedOnTwitter={this.state.organizationsFollowedOnTwitterList}
                 maximumOrganizationDisplay={this.state.maximum_organization_display}
               />
               <Link className="pull-right" to="/opinions_followed">See all organizations you listen to </Link>

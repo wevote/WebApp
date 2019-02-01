@@ -243,13 +243,15 @@ export default class ItemActionBar extends Component {
 
   onMeasureStoreChange () {
     if (this.isMeasure()) {
+      const { ballotItemWeVoteId } = this.state;
       this.setState({
-        yesVoteDescription: MeasureStore.getYesVoteDescription(this.state.ballotItemWeVoteId),
-        noVoteDescription: MeasureStore.getNoVoteDescription(this.state.ballotItemWeVoteId),
+        yesVoteDescription: MeasureStore.getYesVoteDescription(ballotItemWeVoteId),
+        noVoteDescription: MeasureStore.getNoVoteDescription(ballotItemWeVoteId),
       }, () => {
+        const { noVoteDescription, yesVoteDescription } = this.state;
         this.setState({
-          yesVoteDescriptionExists: this.state.yesVoteDescription && this.state.yesVoteDescription.length,
-          noVoteDescriptionExists: this.state.noVoteDescription && this.state.noVoteDescription.length,
+          yesVoteDescriptionExists: yesVoteDescription && yesVoteDescription.length,
+          noVoteDescriptionExists: noVoteDescription && noVoteDescription.length,
         });
       });
     }
@@ -367,8 +369,9 @@ export default class ItemActionBar extends Component {
   }
 
   toggleSupportOrOpposeHelpModal () {
+    const { showSupportOrOpposeHelpModal } = this.state;
     this.setState({
-      showSupportOrOpposeHelpModal: !this.state.showSupportOrOpposeHelpModal,
+      showSupportOrOpposeHelpModal: !showSupportOrOpposeHelpModal,
     });
   }
 
@@ -521,7 +524,11 @@ export default class ItemActionBar extends Component {
     const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip">{this.isOpposeCalculated() ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
 
     const supportButton = (
-      <button className={`item-actionbar__btn item-actionbar__btn--support btn btn-outline-primary${this.isSupportCalculated() ? " support-at-state" : ""}`} onClick={() => this.supportItem()}>
+      <button
+        className={`item-actionbar__btn item-actionbar__btn--support btn btn-outline-primary${this.isSupportCalculated() ? " support-at-state" : ""}`}
+        onClick={() => this.supportItem()}
+        type="button"
+      >
         <span className="btn__icon">
           <img src={cordovaDot("/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-262-tick.svg")}
                width={chooseIconSize}
@@ -549,7 +556,11 @@ export default class ItemActionBar extends Component {
     );
 
     const measureYesButton = (
-      <button className={`item-actionbar__btn item-actionbar__btn--support btn btn-default${this.isSupportCalculated() ? " support-at-state" : ""}`} onClick={() => this.supportItem()}>
+      <button
+        className={`item-actionbar__btn item-actionbar__btn--support btn btn-default${this.isSupportCalculated() ? " support-at-state" : ""}`}
+        onClick={() => this.supportItem()}
+        type="button"
+      >
         <span className="btn__icon">
           <img src={cordovaDot("/img/global/svg-icons/thumbs-up-icon.svg")}
                width={18}
@@ -577,7 +588,11 @@ export default class ItemActionBar extends Component {
     );
 
     const opposeButton = (
-      <button className={`${this.props.opposeHideInMobile ? "d-none d-sm-block " : ""}item-actionbar__btn item-actionbar__btn--oppose btn btn-default${this.isOpposeCalculated() ? " oppose-at-state" : ""}`} onClick={() => this.opposeItem()}>
+      <button
+        className={`${this.props.opposeHideInMobile ? "d-none d-sm-block " : ""}item-actionbar__btn item-actionbar__btn--oppose btn btn-default${this.isOpposeCalculated() ? " oppose-at-state" : ""}`}
+        onClick={() => this.opposeItem()}
+        type="button"
+      >
         <span className="btn__icon">
           <ReactSVG src={cordovaDot("/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-90-ban-circle.svg")}
                     svgStyle={{ fill: opposeIconColor, height: opposeIconSize, width: opposeIconSize }}
@@ -602,7 +617,11 @@ export default class ItemActionBar extends Component {
     );
 
     const measureNoButton = (
-      <button className={`${this.props.opposeHideInMobile ? "d-none d-sm-block " : ""}item-actionbar__btn item-actionbar__btn--oppose btn btn-default${this.isOpposeCalculated() ? " oppose-at-state" : ""}`} onClick={() => this.opposeItem()}>
+      <button
+        className={`${this.props.opposeHideInMobile ? "d-none d-sm-block " : ""}item-actionbar__btn item-actionbar__btn--oppose btn btn-default${this.isOpposeCalculated() ? " oppose-at-state" : ""}`}
+        onClick={() => this.opposeItem()}
+        type="button"
+      >
         <span className="btn__icon">
           <img src={cordovaDot("/img/global/svg-icons/thumbs-down-icon.svg")}
                width={18}
@@ -633,6 +652,7 @@ export default class ItemActionBar extends Component {
       <button
         className={`${this.props.commentButtonHideInMobile ? "d-none d-sm-block " : null}item-actionbar__btn item-actionbar__btn--comment btn btn-default`}
         onClick={this.props.toggleFunction}
+        type="button"
       >
         <span className="btn__icon">
           <img src={cordovaDot("/img/global/svg-icons/comment-icon.svg")}

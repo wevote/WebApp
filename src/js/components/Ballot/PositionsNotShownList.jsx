@@ -14,18 +14,18 @@ export default class PositionsNotShownList extends Component {
     positions_not_shown_list: PropTypes.array.isRequired,
   };
 
-  onTriggerEnter (organization_we_vote_id) {
-    this.refs[`not-shown-overlay-${organization_we_vote_id}`].show();
+  onTriggerEnter (organizationWeVoteId) {
+    this.refs[`not-shown-overlay-${organizationWeVoteId}`].show();
     this.show_popover = true;
     clearTimeout(this.hide_popover_timer);
   }
 
-  onTriggerLeave (organization_we_vote_id) {
+  onTriggerLeave (organizationWeVoteId) {
     this.show_popover = false;
     clearTimeout(this.hide_popover_timer);
     this.hide_popover_timer = setTimeout(() => {
-      if (!this.show_popover && this.refs[`not-shown-overlay-${organization_we_vote_id}`]) {
-        this.refs[`not-shown-overlay-${organization_we_vote_id}`].hide();
+      if (!this.show_popover && this.refs[`not-shown-overlay-${organizationWeVoteId}`]) {
+        this.refs[`not-shown-overlay-${organizationWeVoteId}`].hide();
       }
     }, 100);
   }
@@ -36,41 +36,43 @@ export default class PositionsNotShownList extends Component {
       return <div>{LoadingWheel}</div>;
     }
 
-    const show_position = true;
-    const nothing_to_display = null;
+    const showPosition = true;
+    const nothingToDisplay = null;
 
-    const positions_not_shown_display = this.props.positions_not_shown_list.map( (one_position) => {
-      // console.log("PositionsNotShownList, one_position: ", one_position);
-      const speaker_we_vote_id = one_position.speaker_we_vote_id;
-      const speaker_display_name = one_position.speaker_display_name;
-      const speaker_image_url_https_tiny = one_position.speaker_image_url_https_tiny;
-      const speaker_twitter_handle = one_position.speaker_twitter_handle;
+    const positionsNotShownDisplay = this.props.positions_not_shown_list.map((onePosition) => {
+      // console.log("PositionsNotShownList, onePosition: ", onePosition);
+      const { speaker_we_vote_id: speakerWeVoteId, speaker_display_name: speakerDisplayName,
+        speaker_image_url_https_tiny: speakerImageUrlHttpsTiny, speaker_twitter_handle: speakerTwitterHandle } = onePosition;
+      // const speaker_we_vote_id = onePosition.speaker_we_vote_id;
+      // const speaker_display_name = onePosition.speaker_display_name;
+      // const speaker_image_url_https_tiny = onePosition.speaker_image_url_https_tiny;
+      // const speaker_twitter_handle = onePosition.speaker_twitter_handle;
 
       // TwitterHandle-based link
-      const speakerLink = speaker_twitter_handle ? `/${speaker_twitter_handle}` : `/voterguide/${speaker_we_vote_id}`;
-      const one_organization = {
-        organization_we_vote_id: one_position.speaker_we_vote_id,
-        organization_name: one_position.speaker_display_name,
-        organization_photo_url_large: one_position.speaker_image_url_https_large,
-        organization_photo_url_tiny: one_position.speaker_image_url_https_tiny,
-        organization_twitter_handle: one_position.speaker_twitter_handle,
-        // organization_website: one_position.more_info_url,
+      const speakerLink = speakerTwitterHandle ? `/${speakerTwitterHandle}` : `/voterguide/${speakerWeVoteId}`;
+      const oneOrganization = {
+        organization_we_vote_id: speakerWeVoteId,
+        organization_name: speakerDisplayName,
+        organization_photo_url_large: onePosition.speaker_image_url_https_large,
+        organization_photo_url_tiny: speakerImageUrlHttpsTiny,
+        organization_twitter_handle: speakerTwitterHandle,
+        // organization_website: onePosition.more_info_url,
         twitter_description: "",
         twitter_followers_count: 0,
       };
-      const organization_we_vote_id = one_organization.organization_we_vote_id;
+      const organizationWeVoteId = oneOrganization.organization_we_vote_id;
       const organizationPopover = (
         <Popover
-          id={`organization-popover-${organization_we_vote_id}`}
-          onMouseOver={() => this.onTriggerEnter(organization_we_vote_id)}
-          onMouseOut={() => this.onTriggerLeave(organization_we_vote_id)}
+          id={`organization-popover-${organizationWeVoteId}`}
+          onMouseOver={() => this.onTriggerEnter(organizationWeVoteId)}
+          onMouseOut={() => this.onTriggerLeave(organizationWeVoteId)}
         >
           <section className="card">
             <div className="card__additional">
               <div>
                 <ul className="card-child__list-group">
                   <OrganizationCard
-                    organization={one_organization}
+                    organization={oneOrganization}
                     ballotItemWeVoteId={this.props.ballotItemWeVoteId}
                     followToggleOn
                   />
@@ -84,22 +86,22 @@ export default class PositionsNotShownList extends Component {
       // Display the organization in a brief list
       return (
         <OverlayTrigger
-          key={`trigger-${organization_we_vote_id}`}
-          ref={`not-shown-overlay-${organization_we_vote_id}`}
-          onMouseOver={() => this.onTriggerEnter(organization_we_vote_id)}
-          onMouseOut={() => this.onTriggerLeave(organization_we_vote_id)}
+          key={`trigger-${organizationWeVoteId}`}
+          ref={`not-shown-overlay-${organizationWeVoteId}`}
+          onMouseOver={() => this.onTriggerEnter(organizationWeVoteId)}
+          onMouseOut={() => this.onTriggerLeave(organizationWeVoteId)}
           rootClose
           placement="bottom"
           overlay={organizationPopover}
         >
-          <div key={speaker_we_vote_id} className="card-main__media-object">
+          <div key={speakerWeVoteId} className="card-main__media-object">
             {/* One Position on this Candidate */}
             <div className="card-child__media-object-anchor">
               <Link to={speakerLink} className="u-no-underline">
                 <ImageHandler
                   className=""
                   sizeClassName="organization__image--tiny"
-                  imageUrl={speaker_image_url_https_tiny}
+                  imageUrl={speakerImageUrlHttpsTiny}
                 />
               </Link>
               <br />
@@ -108,23 +110,23 @@ export default class PositionsNotShownList extends Component {
             &nbsp;&nbsp;
             <div className="card-child__media-object-content">
               <Link to={speakerLink}>
-                <h3 className="card-child__display-name">{speaker_display_name}</h3>
+                <h3 className="card-child__display-name">{speakerDisplayName}</h3>
               </Link>
             </div>
           </div>
         </OverlayTrigger>
       );
     });
-    if (show_position) {
+    if (showPosition) {
       return (
         <span className="guidelist card-child__list-group">
-          {positions_not_shown_display}
+          {positionsNotShownDisplay}
         </span>
       );
     } else {
       return (
         <span className="guidelist card-child__list-group">
-          {nothing_to_display}
+          {nothingToDisplay}
         </span>
       );
     }

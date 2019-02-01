@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import { _ } from "lodash";
 import FriendList from "../components/Friends/FriendList";
@@ -9,67 +8,40 @@ import { renderLog } from "../utils/logging";
 
 export default class Friends extends Component {
   static propTypes = {
-    history: PropTypes.object,
-    children: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      current_friend_list: FriendStore.currentFriends(),
-      search_filter: false,
-      search_term: "",
-      current_friend_list_filtered_by_search: [],
+      currentFriendList: [],
+      currentFriendListFilteredBySearch: [],
       editMode: false,
+      searchFilterOn: false,
+      searchTerm: "",
     };
   }
 
   componentDidMount () {
-    if (this.state.current_friend_list) {
+    if (this.state.currentFriendList) {
       FriendActions.currentFriends();
     }
 
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
   }
 
-  onFriendStoreChange () {
-    this.setState({
-      current_friend_list: FriendStore.currentFriends(),
-    });
-  }
-
   componentWillUnmount () {
     this.friendStoreListener.remove();
   }
 
-  searchFriends (event) {
-    const searchTerm = event.target.value;
-    if (searchTerm.length === 0) {
-      this.setState({
-        search_filter: false,
-        search_term: "",
-        current_friend_list_filtered_by_search: [],
-      });
-    } else {
-      const searchTermLowercase = searchTerm.toLowerCase();
-      const searchedFriendList = _.filter(this.state.current_friend_list,
-        user => user.voter_display_name.toLowerCase().includes(searchTermLowercase));
-
-      this.setState({
-        search_filter: true,
-        search_term: searchTerm,
-        current_friend_list_filtered_by_search: searchedFriendList,
-      });
-    }
+  onFriendStoreChange () {
+    this.setState({
+      currentFriendList: FriendStore.currentFriends(),
+    });
   }
 
   getCurrentRoute () {
     const currentRoute = "/friends";
     return currentRoute;
-  }
-
-  toggleEditMode () {
-    this.setState({ editMode: !this.state.editMode });
   }
 
   getFollowingType () {
@@ -80,13 +52,40 @@ export default class Friends extends Component {
     }
   }
 
+  toggleEditMode () {
+    const { editMode } = this.state;
+    this.setState({ editMode: !editMode });
+  }
+
+  searchFriends (event) {
+    const searchTerm = event.target.value;
+    if (searchTerm.length === 0) {
+      this.setState({
+        searchFilterOn: false,
+        searchTerm: "",
+        currentFriendListFilteredBySearch: [],
+      });
+    } else {
+      const searchTermLowercase = searchTerm.toLowerCase();
+      const { currentFriendList } = this.state;
+      const searchedFriendList = _.filter(currentFriendList,
+        user => user.voter_display_name.toLowerCase().includes(searchTermLowercase));
+
+      this.setState({
+        currentFriendListFilteredBySearch: searchedFriendList,
+        searchFilterOn: true,
+        searchTerm,
+      });
+    }
+  }
+
   render () {
     renderLog(__filename);
     let currentFriendList;
-    if (!this.state.search_filter) {
-      currentFriendList = this.state.current_friend_list;
+    if (!this.state.searchFilterOn) {
+      currentFriendList  = this.state.currentFriendList;
     } else {
-      currentFriendList = this.state.current_friend_list_filtered_by_search;
+      currentFriendList = this.state.currentFriendListFilteredBySearch;
     }
 
     return (
@@ -96,7 +95,7 @@ export default class Friends extends Component {
           <div className="card-main">
             <h1 className="h1">Your Friends</h1>
             <div>
-              { this.state.current_friend_list && this.state.current_friend_list.length > 0 ? (
+              { currentFriendList && currentFriendList.length > 0 ? (
                 <span>
                   <a
                     className="fa-pull-right"
@@ -115,10 +114,10 @@ export default class Friends extends Component {
                     onChange={this.searchFriends.bind(this)}
                   />
                   <br />
-                  { this.state.search_filter && currentFriendList.length === 0 ? (
+                  { this.state.searchFilterOn && currentFriendList.length === 0 ? (
                     <p>
                       &quot;
-                      {this.state.search_term}
+                      {this.state.searchTerm}
                       &quot; not found
                     </p>
                   ) : null

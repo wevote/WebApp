@@ -405,36 +405,6 @@ export default class VoterGuideBallot extends Component {
     return { hasError: true };
   }
 
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error("VoterGuideBallot caught error: ", `${error} with info: `, info);
-  }
-
-  toggleBallotIntroModal () {
-    if (this.state.location.hash.includes("#")) {
-      // Clear out any # from anchors in the URL
-      historyPush(this.state.pathname);
-    }
-
-    this.setState({ showBallotIntroModal: !this.state.showBallotIntroModal });
-  }
-
-  toggleSelectBallotModal () {
-    if (!this.state.showSelectBallotModal) {
-      BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
-    }
-
-    this.setState({
-      showSelectBallotModal: !this.state.showSelectBallotModal,
-    });
-  }
-
-  toggleBallotSummaryModal () {
-    this.setState({
-      showBallotSummaryModal: !this.state.showBallotSummaryModal,
-    });
-  }
-
   onVoterStoreChange () {
     // console.log("VoterGuideBallot.jsx onVoterStoreChange");
     if (this.state.mounted) {
@@ -476,23 +446,32 @@ export default class VoterGuideBallot extends Component {
   onBallotStoreChange () {
     // console.log("VoterGuideBallot.jsx onBallotStoreChange, BallotStore.ballotProperties: ", BallotStore.ballotProperties);
     const completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || "";
-    if (this.state.mounted) {
-      if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
+    const { ballot, ballotProperties } = BallotStore;
+    const {
+      raceLevelFilterType, mounted,
+    } = this.state;
+    if (mounted) {
+      if (ballotProperties && ballotProperties.ballot_found && ballot && ballot.length === 0) {
         // Ballot is found but ballot is empty. We want to stay put.
         // console.log("onBallotStoreChange: ballotWithAllItemsByFilterType is empty");
       } else {
+        const ballotWithAllItemsByFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
         this.setState({
           ballotWithAllItems: BallotStore.getBallotByCompletionLevelFilterType("all"),
-          ballotWithAllItemsByFilterType: BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType),
+          ballotWithAllItemsByFilterType,
         });
+        if (ballotWithAllItemsByFilterType && ballotWithAllItemsByFilterType.length) {
+          const raceLevelFilterItems = ballotWithAllItemsByFilterType.filter(item => item.race_office_level === raceLevelFilterType || item.kind_of_ballot_item === raceLevelFilterType.toUpperCase());
+          this.setState({ doubleFilteredBallotItemsLength: raceLevelFilterItems.length });
+        }
       }
     }
 
-    if (BallotStore.ballotProperties) {
+    if (ballotProperties) {
       this.setState({
-        ballotReturnedWeVoteId: BallotStore.ballotProperties.ballot_returned_we_vote_id || "",
-        ballotLocationShortcut: BallotStore.ballotProperties.ballot_location_shortcut || "",
-        googleCivicElectionId: parseInt(BallotStore.ballotProperties.google_civic_election_id, 10),
+        ballotReturnedWeVoteId: ballotProperties.ballot_returned_we_vote_id || "",
+        ballotLocationShortcut: ballotProperties.ballot_location_shortcut || "",
+        googleCivicElectionId: parseInt(ballotProperties.google_civic_election_id, 10),
       });
     }
     this.setState({
@@ -550,40 +529,134 @@ export default class VoterGuideBallot extends Component {
   }
 
   onOrganizationStoreChange () {
-    // console.log("VoterGuideBallot onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
+    const { organization } = this.state;
+    // console.log("VoterGuideBallot onOrganizationStoreChange, organization_we_vote_id: ", organization.organization_we_vote_id);
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(organization.organization_we_vote_id),
     });
   }
 
   onSupportStoreChange () {
     // Whenever positions change, we want to make sure to get the latest organization, because it has
     //  position_list_for_one_election and position_list_for_all_except_one_election attached to it
+    const { organization } = this.state;
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization.organization_we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(organization.organization_we_vote_id),
     });
   }
 
   onVoterGuideStoreChange () {
     // console.log("VoterGuideBallot onVoterGuideStoreChange");
     // Update the data for the modal to include the position of the organization related to this ballot item
-    if (this.state.candidateForModal) {
+    const { candidateForModal, measureForModal, organization } = this.state;
+    if (candidateForModal) {
       this.setState({
         candidateForModal: {
-          ...this.state.candidateForModal,
+          ...candidateForModal,
           voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
         },
-        voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.electionId()),
+        voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(organization.organization_we_vote_id, VoterStore.electionId()),
       });
-    } else if (this.state.measureForModal) {
+    } else if (measureForModal) {
       this.setState({
         measureForModal: {
-          ...this.state.measureForModal,
+          ...measureForModal,
           voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
         },
         voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.state.organization.organization_we_vote_id, VoterStore.electionId()),
       });
     }
+  }
+
+  setBallotItemFilterType (raceLevelFilterType, doubleFilteredBallotItemsLength) {
+    BallotActions.raceLevelFilterTypeSave(raceLevelFilterType);
+    this.setState({ raceLevelFilterType, doubleFilteredBallotItemsLength });
+  }
+
+  getEmptyMessageByFilterType (completionLevelFilterType) {
+    switch (completionLevelFilterType) {
+      case "filterRemaining":
+        return "You have chosen a candidate for every office and decided on all measures.";
+      case "filterDecided":
+        return "You haven't chosen any candidates or decided on any measures yet.";
+      default:
+        return "";
+    }
+  }
+
+  showUserEmptyOptions = () => {
+    const { completionLevelFilterType, raceLevelFilterType } = this.state;
+    const raceLevel = raceLevelFilterType.toLowerCase();
+    switch (completionLevelFilterType) {
+      case 'filterDecided':
+        return (
+          <div>
+            <h3>
+              You have not decided on any&nbsp;
+              {raceLevel}
+              &nbsp;ballot items yet.
+              <br />
+              <br />
+              Click on &quot;
+              {window.innerWidth > 575 ? 'Remaining Choices' : 'Choices'}
+              &quot; to see the&nbsp;
+              {raceLevel}
+              &nbsp;ballot items you need to decide on.
+            </h3>
+          </div>
+        );
+      case 'filterRemaining':
+        return (
+          <div>
+            <h3>
+              You do not have any remaining&nbsp;
+              {raceLevelFilterType.toLowerCase()}
+              &nbsp;ballot items to decide on.
+              <br />
+              <br />
+              Click on &quot;
+              {window.innerWidth > 575 ? 'Items Decided' : 'Decided'}
+              &quot; to see the&nbsp;
+              {raceLevel}
+              &nbsp;ballot items you&apos;ve decided on.
+            </h3>
+          </div>
+        );
+      default:
+        return null;
+    }
+  }
+
+  toggleBallotIntroModal () {
+    const { showBallotIntroModal, location, pathname } = this.state;
+    if (location.hash.includes("#")) {
+      // Clear out any # from anchors in the URL
+      historyPush(pathname);
+    }
+
+    this.setState({ showBallotIntroModal: !showBallotIntroModal });
+  }
+
+  toggleSelectBallotModal (destinationUrlForHistoryPush = "") {
+    const { showSelectBallotModal } = this.state;
+    if (showSelectBallotModal) {
+      if (destinationUrlForHistoryPush && destinationUrlForHistoryPush !== "") {
+        historyPush(destinationUrlForHistoryPush);
+      }
+    } else {
+      BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
+    }
+
+    this.setState({
+      showSelectBallotModal: !showSelectBallotModal,
+    });
+  }
+
+  toggleBallotSummaryModal () {
+    const { showBallotSummaryModal } = this.state;
+    this.setState({
+      showBallotSummaryModal: !showBallotSummaryModal,
+    });
   }
 
   // Needed to scroll to anchor tags based on hash in url (as done for bookmarks)
@@ -634,15 +707,9 @@ export default class VoterGuideBallot extends Component {
     }
   }
 
-  getEmptyMessageByFilterType (completionLevelFilterType) {
-    switch (completionLevelFilterType) {
-      case "filterRemaining":
-        return "You have chosen a candidate for every office and decided on all measures.";
-      case "filterDecided":
-        return "You haven't chosen any candidates or decided on any measures yet.";
-      default:
-        return "";
-    }
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error("VoterGuideBallot caught error: ", `${error} with info: `, info);
   }
 
   doesOrganizationHavePositionOnOffice (contestOfficeWeVoteId) {
@@ -657,25 +724,24 @@ export default class VoterGuideBallot extends Component {
   }
 
   updateOfficeDisplayUnfurledTracker (weVoteId, status) {
-    const newBallotItemUnfurledTracker = { ...this.state.ballotItemUnfurledTracker, [weVoteId]: status };
+    const { ballotItemUnfurledTracker } = this.state;
+    const newBallotItemUnfurledTracker = { ...ballotItemUnfurledTracker, [weVoteId]: status };
     BallotActions.voterBallotItemOpenOrClosedSave(newBallotItemUnfurledTracker);
     this.setState({
       ballotItemUnfurledTracker: newBallotItemUnfurledTracker,
     });
   }
 
-  setBallotItemFilterType (raceLevelFilterType) {
-    BallotActions.raceLevelFilterTypeSave(raceLevelFilterType);
-    this.setState({ raceLevelFilterType });
-  }
-
   render () {
     renderLog(__filename);
     const BALLOT_ITEM_FILTER_TYPES = ["Federal", "State", "Measure", "Local"];
     const ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
+    const {
+      ballotWithAllItemsByFilterType, showFilterTabs, doubleFilteredBallotItemsLength, completionLevelFilterType,
+    } = this.state;
     // console.log("VoterGuideBallot render, ballotBaseUrl: ", ballotBaseUrl);
 
-    if (!this.state.ballotWithAllItemsByFilterType) {
+    if (!ballotWithAllItemsByFilterType) {
       return (
         <div className="ballot container-fluid well u-stack--md u-inset--md">
           { this.state.showBallotIntroModal ?
@@ -710,7 +776,7 @@ export default class VoterGuideBallot extends Component {
     const organizationAdminUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}org/${this.state.organization.organization_we_vote_id}/pos/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
     const ballotReturnedAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}pl/${sourcePollingLocationWeVoteId}/summary/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
 
-    const emptyBallotButton = this.state.completionLevelFilterType !== "none" && !voterAddressMissing ? (
+    const emptyBallotButton = completionLevelFilterType !== "none" && !voterAddressMissing ? (
       <span>
         {/* <Link to={ballotBaseUrl}>
               <Button variant="primary">View Full Ballot</Button>
@@ -720,7 +786,7 @@ export default class VoterGuideBallot extends Component {
       <div className="container-fluid well u-stack--md u-inset--md">
         <Helmet title="Enter Your Address - We Vote" />
         <h3 className="h3">
-            Enter address where you are registered to vote
+          Enter address where you are registered to vote
         </h3>
         <div>
           <AddressBox {...this.props} saveUrl={ballotBaseUrl} />
@@ -729,9 +795,9 @@ export default class VoterGuideBallot extends Component {
     );
 
     // console.log("ballotWithAllItemsByFilterType: ", this.state.ballotWithAllItemsByFilterType);
-    const emptyBallot = this.state.ballotWithAllItemsByFilterType.length === 0 ? (
+    const emptyBallot = ballotWithAllItemsByFilterType.length === 0 ? (
       <div>
-        <h3 className="text-center">{this.getEmptyMessageByFilterType(this.state.completionLevelFilterType)}</h3>
+        <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3>
         {emptyBallotButton}
         <div className="container-fluid well u-stack--md u-inset--md">
           <BallotElectionList
@@ -741,14 +807,13 @@ export default class VoterGuideBallot extends Component {
           />
         </div>
       </div>
-    ) :
-      null;
+    ) : null;
 
     const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format("MMM Do, YYYY")}</span> : <span />;
 
-    const inRemainingDecisionsMode = this.state.completionLevelFilterType === "filterRemaining";
+    const inRemainingDecisionsMode = completionLevelFilterType === "filterRemaining";
 
-    if (this.state.ballotWithAllItemsByFilterType.length === 0 && inRemainingDecisionsMode) {
+    if (ballotWithAllItemsByFilterType.length === 0 && inRemainingDecisionsMode) {
       historyPush(this.state.pathname);
     }
 
@@ -885,7 +950,7 @@ export default class VoterGuideBallot extends Component {
                 }
                 <div>
                   {/* The rest of the ballot items */}
-                  { this.state.ballotWithAllItemsByFilterType && this.state.ballotWithAllItemsByFilterType.length ? (
+                  { ballotWithAllItemsByFilterType && ballotWithAllItemsByFilterType.length && showFilterTabs ? (
                     <div className="row ballot__item-filter-tabs">
                       { BALLOT_ITEM_FILTER_TYPES.map((oneTypeOfBallotItem) => {
                         const allBallotItemsByFilterType = this.state.ballotWithAllItems.filter((item) => {
@@ -896,7 +961,7 @@ export default class VoterGuideBallot extends Component {
                           }
                         });
                         if (allBallotItemsByFilterType.length) {
-                          const ballotItemsByFilterType = this.state.ballotWithAllItemsByFilterType.filter((item) => {
+                          const ballotItemsByFilterType = ballotWithAllItemsByFilterType.filter((item) => {
                             if (oneTypeOfBallotItem === "Measure") {
                               return item.kind_of_ballot_item === "MEASURE";
                             } else {
@@ -952,6 +1017,10 @@ export default class VoterGuideBallot extends Component {
                       }
                     })
                     }
+                      {
+                        doubleFilteredBallotItemsLength === 0 &&
+                        this.showUserEmptyOptions()
+                      }
                   </div>
                   )}
                 </div>

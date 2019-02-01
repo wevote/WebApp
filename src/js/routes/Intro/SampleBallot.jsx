@@ -5,15 +5,9 @@ import { historyPush } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 
 export default class SampleBallot extends Component {
-
   constructor (props) {
     super(props);
     this.state = {};
-  }
-
-  goToBallotLink () {
-    const goToBallot = "/ballot";
-    historyPush(goToBallot);
   }
 
   componentWillMount () {
@@ -25,6 +19,11 @@ export default class SampleBallot extends Component {
   componentWillUnmount () {
     document.body.style.backgroundColor = null;
     document.body.className = "";
+  }
+
+  goToBallotLink () {
+    const goToBallot = "/ballot";
+    historyPush(goToBallot);
   }
 
   render () {

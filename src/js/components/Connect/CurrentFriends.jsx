@@ -7,7 +7,6 @@ import FriendDisplayForList from "../Friends/FriendDisplayForList";
 import { renderLog } from "../../utils/logging";
 
 export default class CurrentFriends extends Component {
-
   static propTypes = {
     currentFriendsList: PropTypes.array,
     maximumFriendDisplay: PropTypes.number,
@@ -19,15 +18,15 @@ export default class CurrentFriends extends Component {
     this.show_popover = false;
 
     this.state = {
-      current_friends_list: this.props.currentFriendsList,
-      maximum_friend_display: this.props.maximumFriendDisplay,
+      currentFriendsList: this.props.currentFriendsList,
+      maximumFriendDisplay: this.props.maximumFriendDisplay,
     };
   }
 
   componentDidMount () {
     this.setState({
-      current_friends_list: this.props.currentFriendsList,
-      maximum_friend_display: this.props.maximumFriendDisplay,
+      currentFriendsList: this.props.currentFriendsList,
+      maximumFriendDisplay: this.props.maximumFriendDisplay,
     });
   }
 
@@ -36,56 +35,57 @@ export default class CurrentFriends extends Component {
     // if (nextProps.instantRefreshOn ) {
     // NOTE: This is off because we don't want the organization to disappear from the "More opinions" list when clicked
     this.setState({
-      current_friends_list: nextProps.currentFriendsList,
-      maximum_friend_display: nextProps.maximumFriendDisplay,
+      currentFriendsList: nextProps.currentFriendsList,
+      maximumFriendDisplay: nextProps.maximumFriendDisplay,
     });
     // }
   }
 
-  onTriggerEnter (friend_id) {
-    this.refs[`overlay-${friend_id}`].show();
+  onTriggerEnter (friendWeVoteId) {
+    this.refs[`overlay-${friendWeVoteId}`].show();
     this.show_popover = true;
     clearTimeout(this.hide_popover_timer);
   }
 
-  onTriggerLeave (friend_id) {
+  onTriggerLeave (friendWeVoteId) {
     this.show_popover = false;
     clearTimeout(this.hide_popover_timer);
     this.hide_popover_timer = setTimeout(() => {
       if (!this.show_popover) {
-        this.refs[`overlay-${friend_id}`].hide();
+        this.refs[`overlay-${friendWeVoteId}`].hide();
       }
     }, 100);
   }
 
   toggleEditMode () {
-    this.setState({ editMode: !this.state.editMode });
+    const { editMode } = this.state;
+    this.setState({ editMode: !editMode });
   }
 
   render () {
     renderLog(__filename);
-    if (this.state.current_friends_list === undefined) {
+    if (this.state.currentFriendsList === undefined) {
       return null;
     }
 
-    let local_counter = 0;
-    let friends_not_shown_count = 0;
-    if (this.state.current_friends_list &&
-      this.state.current_friends_list.length > this.state.maximum_friend_display) {
-      friends_not_shown_count = this.state.current_friends_list.length - this.state.maximum_friend_display;
+    let localCounter = 0;
+    let friendsNotShownCount = 0;
+    if (this.state.currentFriendsList &&
+      this.state.currentFriendsList.length > this.state.maximumFriendDisplay) {
+      friendsNotShownCount = this.state.currentFriendsList.length - this.state.maximumFriendDisplay;
     }
-    const friend_list_to_display = this.state.current_friends_list.map( (one_friend) => {
-      local_counter++;
-      const friend_id = one_friend.voter_we_vote_id;
-      if (local_counter > this.state.maximum_friend_display) {
-        if (local_counter === this.state.maximum_friend_display + 1) {
+    const friendsListToDisplay = this.state.currentFriendsList.map((oneFriend) => {
+      localCounter++;
+      const friendWeVoteId = oneFriend.voter_we_vote_id;
+      if (localCounter > this.state.maximumFriendDisplay) {
+        if (localCounter === this.state.maximumFriendDisplay + 1) {
           // If here we want to show how many organizations there are to follow
           return (
-            <span key={one_friend.voter_we_vote_id}>
+            <span key={oneFriend.voter_we_vote_id}>
               <Link to="/friends">
                 {" "}
-+
-                {friends_not_shown_count}
+                +
+                {friendsNotShownCount}
               </Link>
             </span>
           );
@@ -96,14 +96,14 @@ export default class CurrentFriends extends Component {
         // Removed bsPrefix="card-popover"
         const friendPopover = (
           <Popover
-            id={`friend-popover-${friend_id}`}
-            onMouseOver={() => this.onTriggerEnter(friend_id)}
-            onMouseOut={() => this.onTriggerLeave(friend_id)}
+            id={`friend-popover-${friendWeVoteId}`}
+            onMouseOver={() => this.onTriggerEnter(friendWeVoteId)}
+            onMouseOut={() => this.onTriggerLeave(friendWeVoteId)}
           >
             <div className="card">
               <div className="card-main">
                 <FriendDisplayForList
-                  {...one_friend}
+                  {...oneFriend}
                 />
               </div>
             </div>
@@ -113,10 +113,10 @@ export default class CurrentFriends extends Component {
         const placement = "bottom";
         return (
           <OverlayTrigger
-            key={`trigger-${friend_id}`}
-            ref={`overlay-${friend_id}`}
-            onMouseOver={() => this.onTriggerEnter(friend_id)}
-            onMouseOut={() => this.onTriggerLeave(friend_id)}
+            key={`trigger-${friendWeVoteId}`}
+            ref={`overlay-${friendWeVoteId}`}
+            onMouseOver={() => this.onTriggerEnter(friendWeVoteId)}
+            onMouseOut={() => this.onTriggerLeave(friendWeVoteId)}
             rootClose
             placement={placement}
             overlay={friendPopover}
@@ -124,7 +124,7 @@ export default class CurrentFriends extends Component {
             <span className="position-rating__source with-popover">
               <Link to="/friends">
                 <CurrentFriendTinyDisplay
-                  {...one_friend}
+                  {...oneFriend}
                   showPlaceholderImage
                 />
               </Link>
@@ -136,7 +136,7 @@ export default class CurrentFriends extends Component {
 
     return (
       <span className="guidelist card-child__list-group">
-        {friend_list_to_display}
+        {friendsListToDisplay}
       </span>
     );
   }

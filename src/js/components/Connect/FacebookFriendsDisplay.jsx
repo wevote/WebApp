@@ -23,18 +23,18 @@ export default class FacebookFriendsDisplay extends Component {
     this.show_popover = false;
 
     this.state = {
-      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
-      facebook_invitable_friends_image_width: this.props.facebookInvitableFriendsImageWidth,
-      facebook_invitable_friends_image_height: this.props.facebookInvitableFriendsImageHeight,
-      maximum_friend_display: this.props.maximumFriendDisplay,
+      facebookInvitableFriendsList: FacebookStore.facebookInvitableFriends(),
+      facebookInvitableFriendsImageWidth: this.props.facebookInvitableFriendsImageWidth,
+      facebookInvitableFriendsImageHeight: this.props.facebookInvitableFriendsImageHeight,
+      maximumFriendDisplay: this.props.maximumFriendDisplay,
     };
   }
 
   componentDidMount () {
     this.facebookStoreListener = FacebookStore.addListener(this.onFacebookStoreChange.bind(this));
-    if (this.state.facebook_invitable_friends_list) {
-      FacebookActions.getFacebookInvitableFriendsList(this.state.facebook_invitable_friends_image_width,
-        this.state.facebook_invitable_friends_image_height);
+    if (this.state.facebookInvitableFriendsList) {
+      FacebookActions.getFacebookInvitableFriendsList(this.state.facebookInvitableFriendsImageWidth,
+        this.state.facebookInvitableFriendsImageHeight);
     }
   }
 
@@ -44,14 +44,14 @@ export default class FacebookFriendsDisplay extends Component {
 
   componentWillReceiveProps (nextProps) {
     this.setState({
-      facebook_invitable_friends_list: nextProps.facebookInvitableFriendsList,
-      maximum_friend_display: nextProps.maximumFriendDisplay,
+      facebookInvitableFriendsList: nextProps.facebookInvitableFriendsList,
+      maximumFriendDisplay: nextProps.maximumFriendDisplay,
     });
   }
 
   onFacebookStoreChange () {
     this.setState({
-      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
+      facebookInvitableFriendsList: FacebookStore.facebookInvitableFriends(),
     });
   }
 
@@ -77,21 +77,21 @@ export default class FacebookFriendsDisplay extends Component {
 
   render () {
     renderLog(__filename);
-    if (this.state.facebook_invitable_friends_list === undefined) {
+    if (this.state.facebookInvitableFriendsList === undefined) {
       return null;
     }
 
     let local_counter = 0;
     let friends_not_shown_count = 0;
-    if (this.state.facebook_invitable_friends_list &&
-        this.state.facebook_invitable_friends_list.length > this.state.maximum_friend_display) {
-      friends_not_shown_count = this.state.facebook_invitable_friends_list.length - this.state.maximum_friend_display;
+    if (this.state.facebookInvitableFriendsList &&
+        this.state.facebookInvitableFriendsList.length > this.state.maximumFriendDisplay) {
+      friends_not_shown_count = this.state.facebookInvitableFriendsList.length - this.state.maximumFriendDisplay;
     }
-    const friend_list_to_display = this.state.facebook_invitable_friends_list.map( (one_friend) => {
+    const friend_list_to_display = this.state.facebookInvitableFriendsList.map((one_friend) => {
       local_counter++;
       const friend_id = one_friend.id;
-      if (local_counter > this.state.maximum_friend_display) {
-        if (local_counter === this.state.maximum_friend_display + 1) {
+      if (local_counter > this.state.maximumFriendDisplay) {
+        if (local_counter === this.state.maximumFriendDisplay + 1) {
           // If here we want to show how many friends there are to follow
           return (
             <span key={one_friend.id}>
