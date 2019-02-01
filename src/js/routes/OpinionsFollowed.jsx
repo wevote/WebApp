@@ -62,8 +62,13 @@ export default class OpinionsFollowed extends Component {
   }
 
   toggleEditMode () {
-    const { editMode } = this.state;
-    this.setState(() => ({ editMode: !editMode }));
+    this.setState(() => ({ editMode: !this.state.editMode }));
+  }
+
+  _onOrganizationStoreChange () {
+    this.setState({
+      organizationsFollowedList: OrganizationStore.getOrganizationsVoterIsFollowing(),
+    });
   }
 
   searchFunction (searchQuery) {
