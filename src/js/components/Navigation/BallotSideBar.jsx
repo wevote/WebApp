@@ -30,11 +30,6 @@ export default class BallotSideBar extends Component {
     super(props);
     this.state = {
       componentDidMountFinished: false,
-      feedbackScore: undefined,
-      feedbackText: "",
-      formSubmitted: false,
-
-      // showNPSInput: false,
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -46,10 +41,6 @@ export default class BallotSideBar extends Component {
       componentDidMountFinished: true,
     });
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
-  }
-
-  componentWillUnmount () {
-    this.ballotStoreListener.remove();
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -79,6 +70,11 @@ export default class BallotSideBar extends Component {
       return true;
     }
     return false;
+  }
+
+
+  componentWillUnmount () {
+    this.ballotStoreListener.remove();
   }
 
   onBallotStoreChange () {
@@ -121,31 +117,6 @@ export default class BallotSideBar extends Component {
     }
   }
 
-  renderUrl (ballotItemWeVoteId, ballotWithAllItemIdsByFilterType) {
-    const { rawUrlVariablesString } = this.props;
-    if (rawUrlVariablesString && ballotWithAllItemIdsByFilterType && ballotWithAllItemIdsByFilterType.length > 0) {
-      if (arrayContains(ballotItemWeVoteId, ballotWithAllItemIdsByFilterType)) {
-        return `${this.props.pathname}${rawUrlVariablesString}#${ballotItemWeVoteId}`;
-      }
-    }
-
-    return `${this.props.pathname}#${ballotItemWeVoteId}`;
-  }
-
-  updateFeedbackText (e) {
-    this.setState({
-      feedbackText: e.target.value,
-    });
-  }
-
-  onFormSubmit () {
-    // TODO send feedback entered to database
-    this.setState({
-      formSubmitted: true,
-    });
-    this.formCloseTimer = setTimeout(this.onNPSDismissed, 3000);
-  }
-
   filteredBallotToRender (ballot, ballotWithAllItemIdsByFilterType, type, key) {
     const filteredBallot = ballot.filter((item) => {
       if (item.kind_of_ballot_item === "MEASURE") {
@@ -159,13 +130,13 @@ export default class BallotSideBar extends Component {
       return null;
     }
 
-    const filteredBallotListItems = filteredBallot.map((item, itemKey) => {
+    const filteredBallotListItems = filteredBallot.map((item) => {
       if (
         item.kind_of_ballot_item === "OFFICE" ||
         item.kind_of_ballot_item === "MEASURE"
       ) {
         return (
-          <li className="BallotItem__summary__list-item" key={itemKey}>
+          <li className="BallotItem__summary__list-item" key={`ballot-side-bar-${item.we_vote_id}`}>
             <BallotSideBarLink
               url={this.renderUrl(item.we_vote_id, ballotWithAllItemIdsByFilterType)}
               ballotItemLinkHasBeenClicked={this.props.ballotItemLinkHasBeenClicked}
@@ -193,6 +164,17 @@ export default class BallotSideBar extends Component {
     );
   }
 
+  renderUrl (ballotItemWeVoteId, ballotWithAllItemIdsByFilterType) {
+    const { rawUrlVariablesString } = this.props;
+    if (rawUrlVariablesString && ballotWithAllItemIdsByFilterType && ballotWithAllItemIdsByFilterType.length > 0) {
+      if (arrayContains(ballotItemWeVoteId, ballotWithAllItemIdsByFilterType)) {
+        return `${this.props.pathname}${rawUrlVariablesString}#${ballotItemWeVoteId}`;
+      }
+    }
+
+    return `${this.props.pathname}#${ballotItemWeVoteId}`;
+  }
+
   render () {
     // console.log("BallotSideBar render");
     renderLog(__filename);
@@ -200,7 +182,7 @@ export default class BallotSideBar extends Component {
     // let turnedOnNPSInput = false;
     const BALLOT_ITEM_FILTER_TYPES = ["Federal", "State", "Measure", "Local"];
 
-    const ballot = this.state.ballot;
+    const { ballot } = this.state;
     const { ballotWithAllItemsByFilterType } = this.props;
     if (ballot && ballot.length) {
       const ballotWithAllItemIdsByFilterType = [];
@@ -218,7 +200,7 @@ export default class BallotSideBar extends Component {
             null
           }
           { BALLOT_ITEM_FILTER_TYPES.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key))}
-          <h4 className="text-left" />
+          <div className="h4 text-left" />
           <span className="terms-and-privacy">
             <br />
             <Link to="/more/terms">
