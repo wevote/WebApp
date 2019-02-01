@@ -27,7 +27,7 @@ export default class VerifyThisIsMe extends Component {
     this.state = {
       candidate: {},
       organization: {},
-      position_list_from_advisers_followed_by_voter: [],
+      positionListFromAdvisersFollowedByVoter: [],
       voter: {},
       kindOfOwner: "",
       ownerWeVoteId: "",
@@ -44,16 +44,16 @@ export default class VerifyThisIsMe extends Component {
   componentDidMount () {
     console.log("VerifyThisIsMe, Entering componentDidMount");
 
-    this._onVoterStoreChange();
+    this.onVoterStoreChange();
     console.log(`VerifyThisIsMe, componentDidMount: ${this.props.params.twitter_handle}`);
     TwitterActions.twitterIdentityRetrieve(this.props.params.twitter_handle);
 
-    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
-    this.candidateStoreListener = CandidateStore.addListener(this._onCandidateStoreChange.bind(this));
+    this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
 
-    this.twitterStoreListener = TwitterStore.addListener(this._onTwitterStoreChange.bind(this));
+    this.twitterStoreListener = TwitterStore.addListener(this.onTwitterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
@@ -63,45 +63,46 @@ export default class VerifyThisIsMe extends Component {
     this.twitterStoreListener.remove();
   }
 
-  _onVoterStoreChange () {
-    console.log("Entering _onVoterStoreChange");
+  onVoterStoreChange () {
+    console.log("Entering onVoterStoreChange");
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  _onOrganizationStoreChange () {
+  onOrganizationStoreChange () {
     const { owner_we_vote_id: ownerWeVoteId } = TwitterStore.get();
-    console.log(`Entering _onOrganizationStoreChange, ownerWeVoteId: ${ownerWeVoteId}`);
+    console.log(`Entering onOrganizationStoreChange, ownerWeVoteId: ${ownerWeVoteId}`);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(ownerWeVoteId),
     });
   }
 
-  _onCandidateStoreChange () {
+  onCandidateStoreChange () {
     const { owner_we_vote_id: ownerWeVoteId } = TwitterStore.get();
     this.setState({
       candidate: CandidateStore.getCandidate(ownerWeVoteId),
-      position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(ownerWeVoteId),
+      positionListFromAdvisersFollowedByVoter: CandidateStore.getPositionList(ownerWeVoteId),
     });
   }
 
-  _onTwitterStoreChange () {
+  onTwitterStoreChange () {
     const {
-      kind_of_owner, owner_we_vote_id, twitter_handle, twitter_description, twitter_followers_count, twitter_name,
-      twitter_photo_url, twitter_user_website,
+      kind_of_owner: kindOfOwner, owner_we_vote_id: ownerWeVoteId, twitter_handle: twitterHandle,
+      twitter_description: twitterDescription, twitter_followers_count: twitterFollowersCount,
+      twitter_name: twitterName, twitter_photo_url: twitterPhotoUrl, twitter_user_website: twitterUserWebsite,
       status,
     } = TwitterStore.get();
 
-    console.log(`Entering _onTwitterStoreChange, owner_we_vote_id: ${owner_we_vote_id}`);
+    console.log(`Entering onTwitterStoreChange, owner_we_vote_id: ${ownerWeVoteId}`);
 
     this.setState({
-      kindOfOwner: kind_of_owner,
-      ownerWeVoteId: owner_we_vote_id,
-      twitterHandle: twitter_handle,
-      twitterDescription: twitter_description,
-      twitterFollowersCount: twitter_followers_count,
-      twitterName: twitter_name,
-      twitterPhotoUrl: twitter_photo_url,
-      twitterUserWebsite: twitter_user_website,
+      kindOfOwner,
+      ownerWeVoteId,
+      twitterHandle,
+      twitterDescription,
+      twitterFollowersCount,
+      twitterName,
+      twitterPhotoUrl,
+      twitterUserWebsite,
       status,
     });
   }

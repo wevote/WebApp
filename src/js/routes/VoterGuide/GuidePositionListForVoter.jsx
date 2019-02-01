@@ -26,14 +26,15 @@ export default class GuidePositionListForVoter extends Component {
       return <div>{LoadingWheel}</div>;
     }
 
-    const { position_list_for_one_election, position_list_for_all_except_one_election } = this.state.voter;
+    const { position_list_for_one_election: positionListForOneElection,
+      position_list_for_all_except_one_election: positionListForAllExceptOneElection } = this.state.voter;
     return (
       <span>
         <Helmet title="Your Voter Guide - We Vote" />
         <div className="card">
           <ul className="list-group">
-            { position_list_for_one_election ?
-              position_list_for_one_election.map( item => (
+            { positionListForOneElection ?
+              positionListForOneElection.map(item => (
                 <VoterPositionItem
                   key={item.position_we_vote_id}
                   position={item}
@@ -43,16 +44,16 @@ export default class GuidePositionListForVoter extends Component {
               )) :
               <div>{LoadingWheel}</div>
             }
-            { position_list_for_all_except_one_election ? (
+            { positionListForAllExceptOneElection ? (
               <span>
-                { position_list_for_all_except_one_election.length ? (
+                { positionListForAllExceptOneElection.length ? (
                   <span>
                     <br />
                     <h4 className="h4">Positions for Other Elections</h4>
                   </span>
                 ) : null
                 }
-                { position_list_for_all_except_one_election.map( item => (
+                { positionListForAllExceptOneElection.map(item => (
                   <VoterPositionItem
                     key={item.position_we_vote_id}
                     position={item}

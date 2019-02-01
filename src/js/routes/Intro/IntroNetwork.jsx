@@ -8,7 +8,6 @@ import IntroNetworkBallotIsNext from "../../components/Intro/IntroNetworkBallotI
 import { renderLog } from "../../utils/logging";
 
 export default class IntroNetwork extends Component {
-
   constructor (props) {
     super(props);
     this.state = {};
@@ -16,19 +15,6 @@ export default class IntroNetwork extends Component {
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
     this.slider = React.createRef();
-  }
-
-  next () {
-    this.slider.current.slickNext();
-  }
-
-  previous () {
-    this.slider.current.slickPrev();
-  }
-
-  static goToBallotLink () {
-    const ballotLink = "/ballot";
-    historyPush(ballotLink);
   }
 
   componentWillMount () {
@@ -39,6 +25,19 @@ export default class IntroNetwork extends Component {
   componentWillUnmount () {
     document.body.style.backgroundColor = null;
     document.body.className = "";
+  }
+
+  next () {
+    this.slider.current.slickNext();
+  }
+
+  previous () {
+    this.slider.current.slickPrev();
+  }
+
+  goToBallotLink () {
+    const ballotLink = "/ballot";
+    historyPush(ballotLink);
   }
 
   render () {

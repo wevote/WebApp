@@ -71,10 +71,16 @@ export default {
   },
 
   retrieveIssuesToLinkForOrganization (organizationWeVoteId) {
-    Dispatcher.loadEndpoint("issuesToLinkToForOrganization", { organization_we_vote_id: organizationWeVoteId });
+    Dispatcher.loadEndpoint("issuesToLinkToForOrganization",
+      {
+        organization_we_vote_id: organizationWeVoteId,
+      });
   },
 
   retrieveIssuesLinkedForOrganization (organizationWeVoteId) {
-    Dispatcher.loadEndpoint("issuesLinkedToOrganization", { organization_we_vote_id: organizationWeVoteId });
+    Dispatcher.loadEndpoint("issuesLinkedToOrganization",
+      {
+        organization_we_vote_id: organizationWeVoteId,
+      });
   },
 };

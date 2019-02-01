@@ -66,7 +66,8 @@ export default class OrganizationVoterGuideOffice extends Component {
   }
 
   _onOfficeStoreChange () {
-    const office = OfficeStore.getOffice(this.state.office_we_vote_id);
+    const { office_we_vote_id: officeWeVoteId } = this.state;
+    const office = OfficeStore.getOffice(officeWeVoteId);
     this.setState({ office });
   }
 
@@ -83,15 +84,15 @@ export default class OrganizationVoterGuideOffice extends Component {
         </div>
       );
     }
-    const office_name = capitalizeString(office.ballot_item_display_name);
-    const title_text = `${office_name} - We Vote`;
-    const description_text = `Choose who you support for ${office_name}in the November Election`;
+    const officeName = capitalizeString(office.ballot_item_display_name);
+    const titleText = `${officeName} - We Vote`;
+    const descriptionText = `Choose who you support for ${officeName}in the November Election`;
 
     return (
       <div>
         <Helmet
-          title={title_text}
-          meta={[{ name: "description", content: description_text }]}
+          title={titleText}
+          meta={[{ name: "description", content: descriptionText }]}
         />
         <OfficeItem
           weVoteId={office.we_vote_id}
@@ -100,10 +101,11 @@ export default class OrganizationVoterGuideOffice extends Component {
         { office.candidate_list ? (
           <div>
             <OrganizationVoterGuideCandidateList
-              children={office.candidate_list}
               contest_office_name={office.ballot_item_display_name}
               organization_we_vote_id={this.state.organization_we_vote_id}
-            />
+            >
+              {office.candidate_list}
+            </OrganizationVoterGuideCandidateList>
           </div>
         ) :
           <span>No candidates found.</span>

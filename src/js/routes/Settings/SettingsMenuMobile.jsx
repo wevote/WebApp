@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
@@ -12,31 +11,19 @@ import VoterStore from "../../stores/VoterStore";
 
 export default class SettingsMenuMobile extends Component {
   static propTypes = {
-    location: PropTypes.object,
-    params: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      editMode: "",
       linkedOrganizationWeVoteId: "",
       organization: {},
-      sliderOpen: false,
       voter: {},
       organizationType: "",
     };
-    this.closeSlider = this.closeSlider.bind(this);
-    this.openSlider = this.openSlider.bind(this);
   }
 
   componentDidMount () {
-    if (this.props.params.edit_mode) {
-      this.setState({ editMode: this.props.params.edit_mode });
-    } else {
-      this.setState({ editMode: "address" });
-    }
-    this.setState({ pathname: this.props.location.pathname });
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -64,7 +51,7 @@ export default class SettingsMenuMobile extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps () {
     const voter = VoterStore.getVoter();
     this.setState({
       voter,
@@ -84,9 +71,6 @@ export default class SettingsMenuMobile extends Component {
       } else {
         OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
       }
-    }
-    if (nextProps.params.edit_mode) {
-      this.setState({ editMode: nextProps.params.edit_mode });
     }
   }
 
@@ -125,18 +109,6 @@ export default class SettingsMenuMobile extends Component {
     }
   }
 
-  openSlider () {
-    this.setState({
-      sliderOpen: true,
-    });
-  }
-
-  closeSlider () {
-    this.setState({
-      sliderOpen: false,
-    });
-  }
-
   render () {
     renderLog(__filename);
     if (!this.state.voter) {
@@ -152,7 +124,7 @@ export default class SettingsMenuMobile extends Component {
           <div className="row">
             <div className="col-12">
               <SettingsPersonalSideBar onOwnPage isSignedIn={this.state.voter.is_signed_in} organizationType={this.state.organizationType} />
-              <h4 className="text-left" />
+              <div className="h4 text-left" />
               <div className="terms-and-privacy u-padding-top--md">
                 <Link to="/more/terms">Terms of Service</Link>
                 &nbsp;&nbsp;&nbsp;

@@ -27,10 +27,10 @@ export default class NetworkFriendRequests extends Component {
     // FriendActions.friendInvitationsSentToMe();
     // FriendActions.friendInvitationsProcessed();
     // FriendActions.suggestedFriendList();
-    this._onFriendStoreChange();
-    this._onVoterStoreChange();
-    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.onFriendStoreChange();
+    this.onVoterStoreChange();
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
@@ -38,7 +38,7 @@ export default class NetworkFriendRequests extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onFriendStoreChange () {
+  onFriendStoreChange () {
     this.setState({
       current_friend_list: FriendStore.currentFriends(),
       friend_invitations_sent_by_me: FriendStore.friendInvitationsSentByMe(),
@@ -48,7 +48,7 @@ export default class NetworkFriendRequests extends Component {
     });
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({ voter: VoterStore.getVoter() });
   }
 

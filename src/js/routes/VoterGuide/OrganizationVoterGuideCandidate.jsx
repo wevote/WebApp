@@ -29,13 +29,13 @@ export default class OrganizationVoterGuideCandidate extends Component {
     super(props);
     this.state = {
       candidate: {},
-      candidate_we_vote_id: "",
-      position_list_from_advisers_followed_by_voter: [],
-      // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidate_we_vote_id, but we can't now
+      candidateWeVoteId: "",
+      positionListFromAdvisersFollowedByVoter: [],
+      // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidateWeVoteId, but we can't now
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
       // guidesToFollowList: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.candidate_we_vote_id)
-      voter_guides_to_follow_for_latest_ballot_item: [],
-      organization_we_vote_id: "",
+      voterGuidesToFollowForLatestBallotItem: [],
+      organizationWeVoteId: "",
     };
   }
 
@@ -58,10 +58,10 @@ export default class OrganizationVoterGuideCandidate extends Component {
     SearchAllActions.exitSearch(searchBoxText); // TODO: still not used :)
     AnalyticsActions.saveActionCandidate(VoterStore.electionId(), this.props.params.candidate_we_vote_id);
     this.setState({
-      candidate_we_vote_id: this.props.params.candidate_we_vote_id,
-      organization_we_vote_id: this.props.params.organization_we_vote_id,
-      position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(this.props.params.candidate_we_vote_id),
-      voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
+      candidateWeVoteId: this.props.params.candidate_we_vote_id,
+      organizationWeVoteId: this.props.params.organization_we_vote_id,
+      positionListFromAdvisersFollowedByVoter: CandidateStore.getPositionList(this.props.params.candidate_we_vote_id),
+      voterGuidesToFollowForLatestBallotItem: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
     });
     // console.log("OrganizationVoterGuideCandidate, organization_we_vote_id: ", this.props.params.organization_we_vote_id);
   }
@@ -69,14 +69,14 @@ export default class OrganizationVoterGuideCandidate extends Component {
   componentWillReceiveProps (nextProps) {
     // console.log("Candidate componentWillReceiveProps");
     // When a new candidate is passed in, update this component to show the new data
-    if (nextProps.params.candidate_we_vote_id !== this.state.candidate_we_vote_id) {
+    if (nextProps.params.candidate_we_vote_id !== this.state.candidateWeVoteId) {
       CandidateActions.candidateRetrieve(nextProps.params.candidate_we_vote_id);
       CandidateActions.positionListForBallotItem(nextProps.params.candidate_we_vote_id);
       VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.candidate_we_vote_id, "CANDIDATE");
       this.setState({
-        candidate_we_vote_id: nextProps.params.candidate_we_vote_id,
-        position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(nextProps.params.candidate_we_vote_id),
-        voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
+        candidateWeVoteId: nextProps.params.candidate_we_vote_id,
+        positionListFromAdvisersFollowedByVoter: CandidateStore.getPositionList(nextProps.params.candidate_we_vote_id),
+        voterGuidesToFollowForLatestBallotItem: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
       });
     }
 
@@ -93,32 +93,33 @@ export default class OrganizationVoterGuideCandidate extends Component {
   }
 
   onCandidateStoreChange () {
+    const { candidateWeVoteId } = this.state;
     // console.log("Candidate onCandidateStoreChange");
     this.setState({
-      candidate: CandidateStore.getCandidate(this.state.candidate_we_vote_id),
-      position_list_from_advisers_followed_by_voter: CandidateStore.getPositionList(this.state.candidate_we_vote_id),
+      candidate: CandidateStore.getCandidate(candidateWeVoteId),
+      positionListFromAdvisersFollowedByVoter: CandidateStore.getPositionList(candidateWeVoteId),
     });
   }
 
   onVoterGuideStoreChange () {
     // console.log("Candidate onVoterGuideStoreChange");
-    // When the voter_guides_to_follow_for_latest_ballot_item changes, trigger an update of the candidate so we can get an updated position_list
-    // CandidateActions.candidateRetrieve(this.state.candidate_we_vote_id);
-    CandidateActions.positionListForBallotItem(this.state.candidate_we_vote_id);
+    // When the voterGuidesToFollowForLatestBallotItem changes, trigger an update of the candidate so we can get an updated position_list
+    // CandidateActions.candidateRetrieve(this.state.candidateWeVoteId);
+    CandidateActions.positionListForBallotItem(this.state.candidateWeVoteId);
     // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
-    SupportActions.retrievePositionsCountsForOneBallotItem(this.state.candidate_we_vote_id);
-    // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidate_we_vote_id, but we can't now
+    SupportActions.retrievePositionsCountsForOneBallotItem(this.state.candidateWeVoteId);
+    // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidateWeVoteId, but we can't now
     //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
     this.setState({
-      voter_guides_to_follow_for_latest_ballot_item: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
-      // voter_guides_to_follow_for_this_ballot_item: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.state.candidate_we_vote_id),
+      voterGuidesToFollowForLatestBallotItem: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
+      // voter_guides_to_follow_for_this_ballot_item: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.state.candidateWeVoteId),
     });
   }
 
   render () {
     const electionId = VoterStore.electionId();
     const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to listen to related to this candidate.";
-    // console.log("Candidate render, this.state.position_list_from_advisers_followed_by_voter: ", this.state.position_list_from_advisers_followed_by_voter);
+    // console.log("Candidate render, this.state.positionListFromAdvisersFollowedByVoter: ", this.state.positionListFromAdvisersFollowedByVoter);
 
     if (!this.state.candidate || !this.state.candidate.ballot_item_display_name) {
       // TODO DALE If the candidate we_vote_id is not valid, we need to update this with a notice
@@ -131,16 +132,16 @@ export default class OrganizationVoterGuideCandidate extends Component {
     }
 
     const candidateName = capitalizeString(this.state.candidate.ballot_item_display_name);
-    const title_text = `${candidateName} - We Vote`;
-    const description_text = `Information about ${candidateName}, candidate for ${this.state.candidate.contest_office_name}`;
+    const titleText = `${candidateName} - We Vote`;
+    const descriptionText = `Information about ${candidateName}, candidate for ${this.state.candidate.contest_office_name}`;
     const voter = VoterStore.getVoter();
     const candidateAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}c/${this.state.candidate.id}/edit/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
 
     return (
       <span>
         <Helmet
-          title={title_text}
-          meta={[{ name: "description", content: description_text }]}
+          title={titleText}
+          meta={[{ name: "description", content: descriptionText }]}
         />
         <section className="card">
           <OrganizationVoterGuideCandidateItem
@@ -149,31 +150,31 @@ export default class OrganizationVoterGuideCandidate extends Component {
             contest_office_name={this.state.candidate.contest_office_name}
             hideOpinionsToFollow
             linkToOfficePage
-            organization_we_vote_id={this.state.organization_we_vote_id}
-            position_list={this.state.position_list_from_advisers_followed_by_voter}
+            organization_we_vote_id={this.state.organizationWeVoteId}
+            position_list={this.state.positionListFromAdvisersFollowedByVoter}
             showLargeImage
             showPositionsInYourNetworkBreakdown
             showPositionStatementActionBar
           />
           <div className="card__additional">
-            { this.state.position_list_from_advisers_followed_by_voter ? (
+            { this.state.positionListFromAdvisersFollowedByVoter ? (
               <div>
                 <PositionList
-                  position_list={this.state.position_list_from_advisers_followed_by_voter}
+                  position_list={this.state.positionListFromAdvisersFollowedByVoter}
                   hideSimpleSupportOrOppose
                   ballot_item_display_name={this.state.candidate.ballot_item_display_name}
                 />
               </div>
             ) : null
             }
-            {this.state.voter_guides_to_follow_for_latest_ballot_item.length === 0 ?
+            {this.state.voterGuidesToFollowForLatestBallotItem.length === 0 ?
               <div className="card__additional-text">{NO_VOTER_GUIDES_TEXT}</div> : (
                 <div>
                   <h3 className="card__additional-heading">{`More opinions about ${this.state.candidate.ballot_item_display_name}`}</h3>
                   <GuideList
                     id={electionId}
-                    ballotItemWeVoteId={this.state.candidate_we_vote_id}
-                    organizationsToFollow={this.state.voter_guides_to_follow_for_latest_ballot_item}
+                    ballotItemWeVoteId={this.state.candidateWeVoteId}
+                    organizationsToFollow={this.state.voterGuidesToFollowForLatestBallotItem}
                   />
                 </div>
               )

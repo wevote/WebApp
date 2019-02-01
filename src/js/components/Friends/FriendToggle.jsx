@@ -22,10 +22,10 @@ export default class FriendToggle extends Component {
   }
 
   componentDidMount () {
-    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
-    this._onFriendStoreChange();
-    this._onVoterStoreChange();
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.onFriendStoreChange();
+    this.onVoterStoreChange();
   }
 
   componentWillUnmount () {
@@ -33,13 +33,13 @@ export default class FriendToggle extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onFriendStoreChange () {
+  onFriendStoreChange () {
     this.setState({
       isFriend: FriendStore.isFriend(this.props.other_voter_we_vote_id),
     });
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter(),
     });

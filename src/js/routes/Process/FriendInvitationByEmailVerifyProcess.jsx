@@ -22,7 +22,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   }
 
   componentDidMount () {
-    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     const { invitation_secret_key: invitationSecretKey } = this.props.params;
     // console.log("FriendInvitationByEmailVerifyProcess, componentDidMount, this.props.params.invitation_secret_key: ", invitationSecretKey);
     this.friendInvitationByEmailVerify(invitationSecretKey);
@@ -30,6 +30,15 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
   componentWillUnmount () {
     this.friendStoreListener.remove();
+  }
+
+  onFriendStoreChange () {
+    // let voter_device_id_echo= FriendStore.getVoterDeviceIdEcho();
+    // voter_device_id =
+    this.setState({
+      invitationStatus: FriendStore.getInvitationStatus(),
+      saving: false,
+    });
   }
 
   cancelMergeFunction = () => {
@@ -42,12 +51,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     // message_type: "success"
   }
 
-  friendInvitationByEmailVerify (invitationSecretKey) {
-    FriendActions.friendInvitationByEmailVerify(invitationSecretKey);
-    this.setState({ saving: true });
-  }
-
-  yesPleaseMergeAccounts () {
+  setYesPleaseMergeAccounts = () => {
     this.setState({ yesPleaseMergeAccounts: true });
   }
 
@@ -62,13 +66,9 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     });
   }
 
-  _onFriendStoreChange () {
-    // let voter_device_id_echo= FriendStore.getVoterDeviceIdEcho();
-    // voter_device_id =
-    this.setState({
-      invitationStatus: FriendStore.getInvitationStatus(),
-      saving: false,
-    });
+  friendInvitationByEmailVerify (invitationSecretKey) {
+    FriendActions.friendInvitationByEmailVerify(invitationSecretKey);
+    this.setState({ saving: true });
   }
 
   render () {
@@ -126,13 +126,11 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     } else if (this.state.invitationStatus.voterHasDataToPreserve) {
       // If so, ask if they want to connect two accounts?
       console.log("FriendInvitationByEmailVerifyProcess yesPleaseMergeAccounts is FALSE");
-      const cancelMergeFunction = this.cancelMergeFunction;
-      const pleaseMergeAccountsFunction = this.yesPleaseMergeAccounts;
       // Display the question of whether to merge accounts or not
       return (
         <WouldYouLikeToMergeAccounts
-          cancelMergeFunction={cancelMergeFunction}
-          pleaseMergeAccountsFunction={pleaseMergeAccountsFunction}
+          cancelMergeFunction={this.cancelMergeFunction}
+          pleaseMergeAccountsFunction={this.setYesPleaseMergeAccounts}
         />
       );
       // return <span>WouldYouLikeToMergeAccounts</span>;

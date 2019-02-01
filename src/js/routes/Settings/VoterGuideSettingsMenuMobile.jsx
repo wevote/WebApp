@@ -11,7 +11,6 @@ import VoterStore from "../../stores/VoterStore";
 
 export default class VoterGuideSettingsMenuMobile extends Component {
   static propTypes = {
-    location: PropTypes.object,
     params: PropTypes.object,
   };
 
@@ -21,15 +20,12 @@ export default class VoterGuideSettingsMenuMobile extends Component {
       editMode: "",
       linkedOrganizationWeVoteId: "",
       organization: {},
-      organizationName: "",
-      voter: {},
       voterGuide: {},
       voterGuideWeVoteId: "",
     };
   }
 
   componentDidMount () {
-    this.setState({ pathname: this.props.location.pathname });
     if (this.props.params.edit_mode) {
       this.setState({ editMode: this.props.params.edit_mode });
     } else {
@@ -52,7 +48,6 @@ export default class VoterGuideSettingsMenuMobile extends Component {
     // Get Voter and Voter's Organization
     const voter = VoterStore.getVoter();
     if (voter) {
-      this.setState({ voter });
       const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
       // console.log("VoterGuideSettingsDashboard componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
       if (linkedOrganizationWeVoteId) {
@@ -97,16 +92,18 @@ export default class VoterGuideSettingsMenuMobile extends Component {
   }
 
   onOrganizationStoreChange () {
-    // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
+    const { linkedOrganizationWeVoteId } = this.state;
+    // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId),
+      organization: OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId),
     });
   }
 
   onVoterGuideStoreChange () {
-    // console.log("VoterGuideSettingsDashboard onVoterGuideStoreChange, this.state.voterGuideWeVoteId", this.state.voterGuideWeVoteId);
-    if (this.state.voterGuideWeVoteId) {
-      const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.state.voterGuideWeVoteId);
+    const { voterGuideWeVoteId } = this.state;
+    // console.log("VoterGuideSettingsDashboard onVoterGuideStoreChange, voterGuideWeVoteId", voterGuideWeVoteId);
+    if (voterGuideWeVoteId) {
+      const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
         // console.log("VoterGuideSettingsDashboard onVoterGuideStoreChange voterGuide FOUND");
         this.setState({

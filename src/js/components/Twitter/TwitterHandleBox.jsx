@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { Button, InputGroup } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../LoadingWheel";
 import { renderLog } from "../../utils/logging";
 import VoterStore from "../../stores/VoterStore";
 import { extractTwitterHandleFromTextString } from "../../utils/textFormat";
+
 
 export default class TwitterHandleBox extends Component {
   constructor (props) {
@@ -63,24 +64,20 @@ export default class TwitterHandleBox extends Component {
     return (
       <div>
         <form onSubmit={this.submitTwitterHandle.bind(this)} className="u-stack--md">
-          <InputGroup>
-            <input
-              type="text"
-              onChange={this.updateTwitterHandle.bind(this)}
-              name="twitterHandle"
-              value={this.state.twitterHandle}
-              className="form-control"
-              placeholder="Enter your twitter handle"
-            />
-            <InputGroup.Button>
-              <Button
-                onClick={this.submitTwitterHandle}
-                variant="primary"
-              >
-                {claimYourPageButtonText}
-              </Button>
-            </InputGroup.Button>
-          </InputGroup>
+          <input
+            type="text"
+            onChange={this.updateTwitterHandle.bind(this)}
+            name="twitterHandle"
+            value={this.state.twitterHandle}
+            className="form-control"
+            placeholder="Enter your twitter handle"
+          />
+          <Button
+            onClick={this.submitTwitterHandle}
+            variant="primary"
+          >
+            {claimYourPageButtonText}
+          </Button>
         </form>
       </div>
     );

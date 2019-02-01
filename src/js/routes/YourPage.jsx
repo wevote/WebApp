@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import GuidePositionListForVoter from "./VoterGuide/GuidePositionListForVoter";
 import { historyPush } from "../utils/cordovaUtils";
 import LoadingWheel from "../components/LoadingWheel";
@@ -12,7 +11,6 @@ import VoterStore from "../stores/VoterStore";
 // This file is only for use with people who aren't signed in
 export default class YourPage extends Component {
   static propTypes = {
-    params: PropTypes.object,
   };
 
   constructor (props) {
@@ -35,7 +33,7 @@ export default class YourPage extends Component {
   }
 
   componentDidMount () {
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     let showOnlyThisElection = true;
     let showAllOtherElections = false;
@@ -63,7 +61,7 @@ export default class YourPage extends Component {
     this.voterStoreListener.remove();
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
@@ -103,7 +101,7 @@ export default class YourPage extends Component {
             Enter your Twitter handle to create a public voter guide.
           </h1>
           <div>
-            <TwitterHandleBox {...this.props} />
+            <TwitterHandleBox />
           </div>
         </div>
         { this.state.voter ?

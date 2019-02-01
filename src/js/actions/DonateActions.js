@@ -3,7 +3,10 @@ import Dispatcher from "../dispatcher/Dispatcher";
 
 export default {
   donationCancelSubscriptionAction (subscriptionId) {
-    Dispatcher.loadEndpoint("donationCancelSubscription", { subscriptionId });
+    Dispatcher.loadEndpoint("donationCancelSubscription",
+      {
+        subscription_id: subscriptionId,
+      });
   },
 
   donationRefund (charge) {

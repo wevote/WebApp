@@ -33,7 +33,7 @@ export default class FooterBarCordova extends Component {
 
   componentDidMount () {
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
-    this.friendStoreListener = FriendStore.addListener(this._onFriendStoreChange.bind(this));
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.onBallotStoreChange();
 
     // this.props.location &&
@@ -54,7 +54,7 @@ export default class FooterBarCordova extends Component {
     // this.setState({ bookmarks: BallotStore.bookmarks });
   }
 
-  _onFriendStoreChange () {
+  onFriendStoreChange () {
     this.setState({
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
     });

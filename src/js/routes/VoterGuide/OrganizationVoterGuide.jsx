@@ -31,11 +31,10 @@ export default class OrganizationVoterGuide extends Component {
     this.state = {
       active_route: "",
       ballotWithAllItemsByFilterType: [],
-      organization_we_vote_id: "",
+      organizationWeVoteId: "",
       organization: {},
       voter: {},
-      voterGuideWeVoteId: "",
-      auto_follow_redirect_happening: false,
+      autoFollowRedirectHappening: false,
     };
     this.organizationVoterGuideTabsReference = {};
     this.onEdit = this.onEdit.bind(this);
@@ -43,7 +42,7 @@ export default class OrganizationVoterGuide extends Component {
   }
 
   componentDidMount () {
-    // We can enter OrganizationVoterGuide with either organization_we_vote_id or voter_guide_we_vote_id
+    // We can enter OrganizationVoterGuide with either organizationWeVoteId or voter_guide_we_vote_id
     // console.log("OrganizationVoterGuide, componentDidMount, this.props.params.organization_we_vote_id: ", this.props.params.organization_we_vote_id);
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -69,13 +68,13 @@ export default class OrganizationVoterGuide extends Component {
       // console.log("OrganizationVoterGuide, currentPathNameWithoutAutoFollow: ", currentPathNameWithoutAutoFollow);
       historyPush(currentPathNameWithoutAutoFollow);
       this.setState({
-        auto_follow_redirect_happening: true,
+        autoFollowRedirectHappening: true,
       });
     } else {
       // console.log("VoterStore.getAddressObject(): ", VoterStore.getAddressObject());
       AnalyticsActions.saveActionVoterGuideVisit(this.props.params.organization_we_vote_id, VoterStore.electionId());
       this.setState({
-        organization_we_vote_id: this.props.params.organization_we_vote_id,
+        organizationWeVoteId: this.props.params.organization_we_vote_id,
         voter: VoterStore.getVoter(),
       });
     }
@@ -99,13 +98,12 @@ export default class OrganizationVoterGuide extends Component {
     // console.log("OrganizationVoterGuide, componentWillReceiveProps - waiting");
     // } else
 
-    if (nextProps.params.organization_we_vote_id && this.state.organization_we_vote_id !== nextProps.params.organization_we_vote_id) {
-
+    if (nextProps.params.organization_we_vote_id && this.state.organizationWeVoteId !== nextProps.params.organization_we_vote_id) {
       // Only refresh data if we are working with a new organization
       // console.log("OrganizationVoterGuide, componentWillReceiveProps, nextProps.params: ", nextProps.params);
       this.setState({
-        organization_we_vote_id: nextProps.params.organization_we_vote_id,
-        auto_follow_redirect_happening: false,
+        organizationWeVoteId: nextProps.params.organization_we_vote_id,
+        autoFollowRedirectHappening: false,
       });
 
       // We refresh the data for all three tabs here on the top level
@@ -131,19 +129,21 @@ export default class OrganizationVoterGuide extends Component {
   }
 
   onEdit () {
-    historyPush(`/voterguideedit/${this.state.organization_we_vote_id}`);
+    historyPush(`/voterguideedit/${this.state.organizationWeVoteId}`);
     return <div>{LoadingWheel}</div>;
   }
 
   onVoterGuideStoreChange () {
+    const { organizationWeVoteId } = this.state;
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization_we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
     });
   }
 
   onOrganizationStoreChange () {
+    const { organizationWeVoteId } = this.state;
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(this.state.organization_we_vote_id),
+      organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
     });
   }
 
@@ -165,7 +165,7 @@ export default class OrganizationVoterGuide extends Component {
 
   render () {
     renderLog(__filename);
-    if (!this.state.organization || !this.state.voter || this.state.auto_follow_redirect_happening) {
+    if (!this.state.organization || !this.state.voter || this.state.autoFollowRedirectHappening) {
       return <div>{LoadingWheel}</div>;
     }
 

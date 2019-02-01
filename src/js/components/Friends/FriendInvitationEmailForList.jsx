@@ -28,15 +28,15 @@ export default class FriendInvitationEmailForList extends Component {
   }
 
   componentDidMount () {
-    this._onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({ voter: VoterStore.getVoter() });
   }
 

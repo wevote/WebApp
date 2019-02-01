@@ -31,7 +31,7 @@ export default class FacebookFriendsDisplay extends Component {
   }
 
   componentDidMount () {
-    this.facebookStoreListener = FacebookStore.addListener(this._onFacebookStoreChange.bind(this));
+    this.facebookStoreListener = FacebookStore.addListener(this.onFacebookStoreChange.bind(this));
     if (this.state.facebook_invitable_friends_list) {
       FacebookActions.getFacebookInvitableFriendsList(this.state.facebook_invitable_friends_image_width,
         this.state.facebook_invitable_friends_image_height);
@@ -49,7 +49,7 @@ export default class FacebookFriendsDisplay extends Component {
     });
   }
 
-  _onFacebookStoreChange () {
+  onFacebookStoreChange () {
     this.setState({
       facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
     });

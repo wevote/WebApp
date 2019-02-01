@@ -4,7 +4,7 @@ export default {
   searchAll (textFromSearchField) {
     Dispatcher.loadEndpoint("searchAll",
       {
-        textFromSearchField,
+        text_from_search_field: textFromSearchField,
       });
   },
 

@@ -28,12 +28,12 @@ export default class EditPositionAboutCandidateModal extends Component {
 
   componentDidMount () {
     console.log("OrganizationsFollowedOnTwitter componentDidMount");
-    this._onVoterStoreChange();
+    this.onVoterStoreChange();
 
-    this.organizationStoreListener = OrganizationStore.addListener(this._onOrganizationStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this._onVoterStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
-    this.candidateStoreListener = CandidateStore.addListener(this._onCandidateStoreChange.bind(this));
+    this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
 
     // let { ballot_item_we_vote_id } = this.props.position;
@@ -43,7 +43,7 @@ export default class EditPositionAboutCandidateModal extends Component {
     //   CandidateActions.candidateRetrieve(ballot_item_we_vote_id);
     //   CandidateActions.positionListForBallotItem(ballot_item_we_vote_id);
     // } else {
-    //   this._onCandidateStoreChange()
+    //   this.onCandidateStoreChange()
     // }
 
     // this.props.position.ballot_item_we_vote_id is the candidate
@@ -67,22 +67,22 @@ export default class EditPositionAboutCandidateModal extends Component {
     this.supportStoreListener.remove();
   }
 
-  _onVoterStoreChange () {
+  onVoterStoreChange () {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  _onOrganizationStoreChange () {
+  onOrganizationStoreChange () {
     // let {owner_we_vote_id} = this.props.position;
-    // console.log("Entering _onOrganizationStoreChange, owner_we_vote_id: " + owner_we_vote_id);
+    // console.log("Entering onOrganizationStoreChange, owner_we_vote_id: " + owner_we_vote_id);
     // this.setState({
     //   organization: OrganizationStore.get(owner_we_vote_id),
     // });
   }
 
-  _onCandidateStoreChange () {
+  onCandidateStoreChange () {
     // let { ballot_item_we_vote_id } = this.props.position;
     // var candidate = CandidateStore.getCandidate(ballot_item_we_vote_id) || {};
-    // console.log("_onCandidateStoreChange, ballot_item_we_vote_id: ", ballot_item_we_vote_id, ", candidate: ", candidate);
+    // console.log("onCandidateStoreChange, ballot_item_we_vote_id: ", ballot_item_we_vote_id, ", candidate: ", candidate);
     // this.setState({
     //   candidate: candidate,
     // });
