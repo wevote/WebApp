@@ -638,16 +638,22 @@ export default class Ballot extends Component {
   }
 
   ballotItemLinkHasBeenClicked (selectedBallotItemId) {
-    const ballotItem = this.state.ballotWithAllItemsByFilterType.find(item => item.we_vote_id === selectedBallotItemId);
+    const { ballotWithAllItemsByFilterType, ballotWithAllItems, raceLevelFilterType } = this.state;
+    const ballotItem = ballotWithAllItemsByFilterType.find(item => item.we_vote_id === selectedBallotItemId);
     if (ballotItem && ballotItem.kind_of_ballot_item === "MEASURE") {
       this.setState({
         raceLevelFilterType: "Measure",
       }, () => this.toggleExpandBallotItemDetails(selectedBallotItemId));
     } else {
-      let raceOfficeLevel = "Federal";
+      let raceOfficeLevel = raceLevelFilterType;
       if (ballotItem) {
         raceOfficeLevel = ballotItem.race_office_level;
+      } else {
+        const ballotItemFromAll = ballotWithAllItems.find(item => item.we_vote_id === selectedBallotItemId);
+        raceOfficeLevel = ballotItemFromAll.kind_of_ballot_item;
       }
+      BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
+      BallotActions.raceLevelFilterTypeSave(raceOfficeLevel);
       this.setState({
         raceLevelFilterType: raceOfficeLevel,
       }, () => this.toggleExpandBallotItemDetails(selectedBallotItemId));
