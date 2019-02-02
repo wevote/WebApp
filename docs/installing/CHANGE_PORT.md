@@ -8,3 +8,9 @@ module.exports = {
   SECURE_CERTIFICATE_INSTALLED: false,
 ```
 
+In server.js, change ```port```. For example,
+```
+module.exports = function (PROD) {
+  const port = 8080;
+  const opts = { redirect: true };
+```
