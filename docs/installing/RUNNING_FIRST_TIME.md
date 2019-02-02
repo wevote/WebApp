@@ -37,7 +37,7 @@ You should be able to visit WebApp here:
     http://localhost:3000
     
 
-(If you would like to run the WebApp on a different port follow these instructions)
+(If you would like to run the WebApp on a different port follow [these instructions](CHANGE_PORT.md))
 
 
 ## Using We Vote API server Locally: OPTIONAL
