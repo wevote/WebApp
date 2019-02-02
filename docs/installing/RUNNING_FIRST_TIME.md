@@ -35,6 +35,9 @@ Copy `WebApp/src/js/config-template.js` into `WebApp/src/js/config.js`:
 You should be able to visit WebApp here:
 
     http://localhost:3000
+    
+
+(If you would like to run the WebApp on a different port follow these instructions)
 
 
 ## Using We Vote API server Locally: OPTIONAL
