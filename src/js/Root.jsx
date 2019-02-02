@@ -25,7 +25,6 @@ import GetStarted from "./routes/Intro/GetStarted";
 import HamburgerMenu from "./routes/More/HamburgerMenu";
 import HowToUse from "./routes/More/HowToUse";
 import Intro from "./routes/Intro/Intro";
-import IntroContests from "./routes/Intro/IntroContests";
 import IntroNetwork from "./routes/Intro/IntroNetwork";
 import IssuesToFollow from "./routes/IssuesToFollow";
 import IssuesFollowed from "./routes/IssuesFollowed";
@@ -119,7 +118,6 @@ const routes = () => (
     <Route path="/polling-place-locator" component={PollingPlaceLocatorModal} />
 
     <Route path="/intro" component={Intro} />
-    <Route path="/intro/contests" component={IntroContests} />
     <Route path="/wevoteintro/network" component={IntroNetwork} />
     <Route path="/intro/sample_ballot" component={SampleBallot} />
     <Route path="/intro/get_started" component={GetStarted} />
