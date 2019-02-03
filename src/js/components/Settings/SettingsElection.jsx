@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import BrowserPushMessage from "../Widgets/BrowserPushMessage";
@@ -11,7 +10,6 @@ import VoterStore from "../../stores/VoterStore";
 
 export default class SettingsElection extends Component {
   static propTypes = {
-    location: PropTypes.object, // unused propType
   };
 
   constructor (props) {

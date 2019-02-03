@@ -8,9 +8,7 @@ export default class HeaderBarProfilePopUp extends Component {
   static propTypes = {
     profilePopUpOpen: PropTypes.bool,
     weVoteBrandingOff: PropTypes.bool,
-    location: PropTypes.object,
     voter: PropTypes.object,
-    pathname: PropTypes.string,
     toggleProfilePopUp: PropTypes.func.isRequired,
     hideProfilePopUp: PropTypes.func.isRequired,
     transitionToYourVoterGuide: PropTypes.func.isRequired,

@@ -10,7 +10,6 @@ export default class IssueImageDisplay extends Component {
     issue: PropTypes.object.isRequired,
     issueImageSize: PropTypes.string,
     showPlaceholderImage: PropTypes.bool,
-    showInfoOnly: PropTypes.bool, // unused
     showOppose: PropTypes.bool,
     showSupport: PropTypes.bool,
     isVoterFollowingThisIssue: PropTypes.bool,

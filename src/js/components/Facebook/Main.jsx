@@ -11,16 +11,6 @@ class Main extends React.Component {
     this.state = this.getFacebookState();
   }
 
-  getFacebookState () {
-    return {
-      accessToken: FacebookStore.accessToken,
-      loggedIn: FacebookStore.loggedIn,
-      userId: FacebookStore.userId,
-      facebookPictureStatus: FacebookStore.facebookPictureStatus,
-      facebookPictureUrl: VoterStore.getFacebookPhoto(),
-    };
-  }
-
   componentDidMount () {
     this.facebookStoreListener = FacebookStore.addListener(this._onChange.bind(this));
     this.voterListener = VoterStore.addListener(this._onChange.bind(this));
@@ -29,6 +19,16 @@ class Main extends React.Component {
   componentWillUnmount () {
     this.facebookStoreListener.remove();
     this.voterListener.remove();
+  }
+
+  getFacebookState () {
+    return {
+      accessToken: FacebookStore.accessToken,
+      loggedIn: FacebookStore.loggedIn,
+      userId: FacebookStore.userId,
+      facebookPictureStatus: FacebookStore.facebookPictureStatus,
+      facebookPictureUrl: VoterStore.getFacebookPhoto(),
+    };
   }
 
   _onChange () {

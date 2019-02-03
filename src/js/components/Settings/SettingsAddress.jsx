@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import AddressBox from "../AddressBox";
 import AnalyticsActions from "../../actions/AnalyticsActions";
@@ -10,14 +9,11 @@ import VoterStore from "../../stores/VoterStore";
 
 export default class SettingsAddress extends Component {
   static propTypes = {
-    location: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      electionsLocationsList: [],
-      voterBallotList: [],
     };
   }
 

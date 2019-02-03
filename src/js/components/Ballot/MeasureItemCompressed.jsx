@@ -297,13 +297,9 @@ export default class MeasureItemCompressed extends Component {
           <div>
             {/* Issues related to this Measure */}
             <IssuesByBallotItemDisplayList
-              ballotItemDisplayName={ballotItemDisplayName}
               ballotItemWeVoteId={measureWeVoteId}
-              currentBallotIdInUrl={this.props.currentBallotIdInUrl}
               issuesListHidden
-              overlayTriggerOnClickOnly
               placement="bottom"
-              urlWithoutHash={this.props.urlWithoutHash}
             />
           </div>
           {/* Measure information */}

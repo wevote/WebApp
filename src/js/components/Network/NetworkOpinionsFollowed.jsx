@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 import { renderLog } from "../../utils/logging";
@@ -10,14 +9,12 @@ import OpinionsFollowedListCompressed from "../Organization/OpinionsFollowedList
 
 export default class NetworkOpinionsFollowed extends Component {
   static propTypes = {
-    children: PropTypes.object,
-    history: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      organizations_followed_list: [],
+      organizationsFollowedList: [],
       editMode: false,
     };
   }
@@ -33,31 +30,28 @@ export default class NetworkOpinionsFollowed extends Component {
   }
 
   onOrganizationStoreChange () {
-    const organizations_followed_list = OrganizationStore.getOrganizationsVoterIsFollowing();
-    if (organizations_followed_list && organizations_followed_list.length) {
+    const organizationsFollowedList = OrganizationStore.getOrganizationsVoterIsFollowing();
+    if (organizationsFollowedList && organizationsFollowedList.length) {
       const OPINIONS_TO_SHOW = 3;
-      const organizations_followed_list_limited = organizations_followed_list.slice(0, OPINIONS_TO_SHOW);
+      const organizationsFollowedListLimited = organizationsFollowedList.slice(0, OPINIONS_TO_SHOW);
       this.setState({
-        organizations_followed_list: organizations_followed_list_limited,
+        organizationsFollowedList: organizationsFollowedListLimited,
       });
     }
-  }
-
-  getCurrentRoute () {
-    const current_route = "/opinions_followed";
-    return current_route;
-  }
-
-  toggleEditMode () {
-    this.setState({ editMode: !this.state.editMode });
   }
 
   onKeyDownEditMode (event) {
     const enterAndSpaceKeyCodes = [13, 32];
     const scope = this;
+    const { editMode } = this.state;
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      scope.setState({ editMode: !this.state.editMode });
+      scope.setState({ editMode: !editMode });
     }
+  }
+
+  getCurrentRoute () {
+    const currentRoute = "/opinions_followed";
+    return currentRoute;
   }
 
   getFollowingType () {
@@ -70,9 +64,14 @@ export default class NetworkOpinionsFollowed extends Component {
     }
   }
 
+  toggleEditMode () {
+    const { editMode } = this.state;
+    this.setState({ editMode: !editMode });
+  }
+
   render () {
     renderLog(__filename);
-    // console.log("NetworkOpinionsFollowed, this.state.organizations_followed_list: ", this.state.organizations_followed_list);
+    // console.log("NetworkOpinionsFollowed, this.state.organizationsFollowedList: ", this.state.organizationsFollowedList);
     return (
       <div className="opinions-followed__container">
         <section className="card">
@@ -81,10 +80,10 @@ export default class NetworkOpinionsFollowed extends Component {
             <div className="voter-guide-list card">
               <div className="card-child__list-group">
                 {
-                this.state.organizations_followed_list && this.state.organizations_followed_list.length ? (
+                this.state.organizationsFollowedList && this.state.organizationsFollowedList.length ? (
                   <span>
                     <OpinionsFollowedListCompressed
-                      organizationsFollowed={this.state.organizations_followed_list}
+                      organizationsFollowed={this.state.organizationsFollowedList}
                       editMode={this.state.editMode}
                       instantRefreshOn
                     />

@@ -51,7 +51,6 @@ export default class SettingsWidgetOrganizationWebsite extends Component {
     const organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
     if (organization && organization.organization_we_vote_id) {
       this.setState({
-        organization,
         organizationWebsite: organization.organization_website,
         isOrganization: isSpeakerTypeOrganization(organization.organization_type),
       });
@@ -72,7 +71,6 @@ export default class SettingsWidgetOrganizationWebsite extends Component {
           const organization = OrganizationStore.getOrganizationByWeVoteId(voter.linked_organization_we_vote_id);
           if (organization && organization.organization_we_vote_id) {
             this.setState({
-              organization,
               organizationWebsite: organization.organization_website,
               isOrganization: isSpeakerTypeOrganization(organization.organization_type),
             });

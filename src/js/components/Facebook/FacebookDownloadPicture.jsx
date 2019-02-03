@@ -20,18 +20,18 @@ class FacebookDownloadPicture extends React.Component {
     console.error("FacebookDownloadPicture caught error: ", `${error} with info: `, info);
   }
 
+  didClickDownloadPicture () {
+    FacebookActions.getFacebookProfilePicture();
+  }
+
   render () {
     renderLog(__filename);
     return (
       <div>
         <h5 className="h5">Download Picture:</h5>
-        <button ref="downloadPictureButton" onClick={() => this.didClickDownloadPicture()}>Download FB Picture</button>
+        <button ref="downloadPictureButton" onClick={() => this.didClickDownloadPicture()} type="button">Download FB Picture</button>
       </div>
     );
-  }
-
-  didClickDownloadPicture () {
-    FacebookActions.getFacebookProfilePicture();
   }
 }
 

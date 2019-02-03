@@ -12,31 +12,30 @@ export default class FriendListCompressed extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      friend_list: this.props.friendList,
+      friendList: this.props.friendList,
     };
   }
 
   componentDidMount () {
     this.setState({
-      friend_list: this.props.friendList,
+      friendList: this.props.friendList,
     });
   }
 
   componentWillReceiveProps (nextProps) {
     this.setState({
-      friend_list: nextProps.friendList,
+      friendList: nextProps.friendList,
     });
   }
 
   render () {
     renderLog(__filename);
-    if (this.state.friend_list === undefined) {
+    if (this.state.friendList === undefined) {
       return null;
     }
 
-    const friend_list_for_display = this.state.friend_list.map( friend => (
+    const friendListForDisplay = this.state.friendList.map(friend => (
       <FriendDisplayForListCompressed
-        editMode={this.props.editMode}
         key={friend.voter_we_vote_id}
         {...friend}
       />
@@ -44,7 +43,7 @@ export default class FriendListCompressed extends Component {
 
     return (
       <div className="guidelist card-child__list-group">
-        {friend_list_for_display}
+        {friendListForDisplay}
       </div>
     );
   }

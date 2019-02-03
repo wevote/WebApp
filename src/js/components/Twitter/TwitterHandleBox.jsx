@@ -25,16 +25,16 @@ export default class TwitterHandleBox extends Component {
     this.voterStoreListener.remove();
   }
 
+  onVoterStoreChange () {
+    this.setState({ twitterHandle: VoterStore.getTwitterHandle(), loading: false });
+  }
+
   submitTwitterHandle = (e) => {
     e.preventDefault();
     let { twitterHandle } = this.state;
     this.setState({ loading: true });
     twitterHandle = extractTwitterHandleFromTextString(twitterHandle);
     historyPush(`/${twitterHandle}`);
-  }
-
-  onVoterStoreChange () {
-    this.setState({ twitterHandle: VoterStore.getTwitterHandle(), loading: false });
   }
 
   updateTwitterHandle (e) {

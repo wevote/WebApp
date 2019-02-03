@@ -14,7 +14,6 @@ const delayBeforeRemovingSavedStatus = 4000;
 
 export default class SettingsWidgetOrganizationDescription extends Component {
   static propTypes = {
-    displayOnly: PropTypes.bool,
     voterHasMadeChangesFunction: PropTypes.func,
   };
 
@@ -53,7 +52,6 @@ export default class SettingsWidgetOrganizationDescription extends Component {
     const organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
     if (organization && organization.organization_we_vote_id) {
       this.setState({
-        organization,
         organizationDescription: organization.organization_description,
         isOrganization: isSpeakerTypeOrganization(organization.organization_type),
       });
@@ -74,7 +72,6 @@ export default class SettingsWidgetOrganizationDescription extends Component {
           const organization = OrganizationStore.getOrganizationByWeVoteId(voter.linked_organization_we_vote_id);
           if (organization && organization.organization_we_vote_id) {
             this.setState({
-              organization,
               organizationDescription: organization.organization_description,
               isOrganization: isSpeakerTypeOrganization(organization.organization_type),
             });

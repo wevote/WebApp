@@ -26,7 +26,6 @@ export default class HeaderBackToSettings extends Component {
     this.state = {
       profilePopUpOpen: false,
       candidateWeVoteId: "",
-      // office_we_vote_id: "",
       organization: {},
       organizationWeVoteId: "",
       voter: {},
@@ -151,7 +150,6 @@ export default class HeaderBackToSettings extends Component {
     }
 
     this.setState({
-      candidate: CandidateStore.getCandidate(candidateWeVoteId),
       officeName,
       officeWeVoteId,
     });

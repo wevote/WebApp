@@ -225,6 +225,7 @@ const routes = () => (
 
     {/* Confirming that person owns twitter handle */}
     <Route path="/verifythisisme/:twitter_handle" component={VerifyThisIsMe} />
+    <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />
 
     {/* Temporary scratchpad for component testing */}
     <Route path="/testing/scratchpad" component={ScratchPad} />
@@ -232,6 +233,7 @@ const routes = () => (
     <Route path=":twitter_handle/ballot/empty" component={TwitterHandleLanding} />
     <Route path=":twitter_handle/ballot/:ballot_location_shortcut" component={TwitterHandleLanding} />
     <Route path=":twitter_handle/ballot/id/:ballot_returned_we_vote_id" component={TwitterHandleLanding} />
+    <Route path=":twitter_handle/ballot/id/:ballot_returned_we_vote_id/:view_mode" component={TwitterHandleLanding} />
     <Route path=":twitter_handle/ballot/election/:google_civic_election_id" component={TwitterHandleLanding} />
     <Route path=":twitter_handle/ballot/election/:google_civic_election_id/:view_mode" component={TwitterHandleLanding} />
     {/* view_mode not taken in yet */}

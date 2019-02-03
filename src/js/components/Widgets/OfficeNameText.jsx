@@ -13,12 +13,11 @@ export default class OfficeNameText extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      transitioning: false,
     };
   }
 
   componentWillReceiveProps () {
-    this.setState({ transitioning: false });
+    this.setState();
   }
 
   render () {

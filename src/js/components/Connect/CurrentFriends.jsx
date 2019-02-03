@@ -98,7 +98,9 @@ export default class CurrentFriends extends Component {
           <Popover
             id={`friend-popover-${friendWeVoteId}`}
             onMouseOver={() => this.onTriggerEnter(friendWeVoteId)}
+            onFocus={() => this.onTriggerEnter(friendWeVoteId)}
             onMouseOut={() => this.onTriggerLeave(friendWeVoteId)}
+            onBlur={() => this.onTriggerLeave(friendWeVoteId)}
           >
             <div className="card">
               <div className="card-main">
@@ -116,7 +118,9 @@ export default class CurrentFriends extends Component {
             key={`trigger-${friendWeVoteId}`}
             ref={`overlay-${friendWeVoteId}`}
             onMouseOver={() => this.onTriggerEnter(friendWeVoteId)}
+            onFocus={() => this.onTriggerEnter(friendWeVoteId)}
             onMouseOut={() => this.onTriggerLeave(friendWeVoteId)}
+            onBlur={() => this.onTriggerLeave(friendWeVoteId)}
             rootClose
             placement={placement}
             overlay={friendPopover}

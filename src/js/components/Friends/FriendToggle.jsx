@@ -8,17 +8,19 @@ import { renderLog } from "../../utils/logging";
 
 export default class FriendToggle extends Component {
   static propTypes = {
-    other_voter_we_vote_id: PropTypes.string.isRequired,
+    otherVoterWeVoteId: PropTypes.string.isRequired,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      other_voter_we_vote_id: "",
       voter: {
         we_vote_id: "",
       },
     };
+    const { otherVoterWeVoteId } = this.props;
+    this.acceptFriendInvite = FriendActions.acceptFriendInvite.bind(this, otherVoterWeVoteId);
+    this.unFriend = FriendActions.unFriend.bind(this, otherVoterWeVoteId);
   }
 
   componentDidMount () {
@@ -35,7 +37,7 @@ export default class FriendToggle extends Component {
 
   onFriendStoreChange () {
     this.setState({
-      isFriend: FriendStore.isFriend(this.props.other_voter_we_vote_id),
+      isFriend: FriendStore.isFriend(this.props.otherVoterWeVoteId),
     });
   }
 
@@ -49,13 +51,11 @@ export default class FriendToggle extends Component {
     const { isFriend } = this.state;
     renderLog(__filename);
     if (!this.state) { return <div />; }
-    const other_voter_we_vote_id = this.props.other_voter_we_vote_id;
-    const is_looking_at_self = this.state.voter.we_vote_id === other_voter_we_vote_id;
+    const { otherVoterWeVoteId } = this.props;
+    const isLookingAtSelf = this.state.voter.we_vote_id === otherVoterWeVoteId;
     // You should not be able to friend yourself
-    if (is_looking_at_self) { return <div />; }
+    if (isLookingAtSelf) { return <div />; }
 
-    const acceptFriendInvite = FriendActions.acceptFriendInvite.bind(this, other_voter_we_vote_id);
-    const unFriend = FriendActions.unFriend.bind(this, other_voter_we_vote_id);
     const floatRight = { float: "right" };
 
     return (
@@ -64,12 +64,12 @@ export default class FriendToggle extends Component {
           <Button
             variant="warning"
             size="small"
-            onClick={unFriend}
+            onClick={this.unFriend}
           >
             <span>Remove Friend</span>
           </Button>
         ) :
-          <Button variant="info" size="small" onClick={acceptFriendInvite}><span>Add Friend</span></Button>
+          <Button variant="info" size="small" onClick={this.acceptFriendInvite}><span>Add Friend</span></Button>
         }
       </span>
     );

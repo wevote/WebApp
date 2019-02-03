@@ -40,7 +40,6 @@ export default class CandidateItem extends Component {
       candidateWeVoteId: "",
       hidePositionStatement: this.props.hidePositionStatement,
       officeWeVoteId: "",
-      transitioning: false,
     };
     this.getCandidateLink = this.getCandidateLink.bind(this);
     this.getOfficeLink = this.getOfficeLink.bind(this);
@@ -85,7 +84,7 @@ export default class CandidateItem extends Component {
 
   onVoterGuideStoreChange () {
     // We just want to trigger a re-render
-    this.setState({ transitioning: false });
+    this.setState();
   }
 
   onSupportStoreChange () {

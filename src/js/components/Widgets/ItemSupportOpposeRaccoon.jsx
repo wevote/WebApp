@@ -1086,13 +1086,9 @@ export default class ItemSupportOpposeRaccoon extends Component {
             <div>
               {/* We use this component to show the label showing number of endorsements */}
               <IssuesByBallotItemDisplayList
-                ballotItemDisplayName={this.state.ballot_item_display_name}
                 ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-                currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                 endorsementsLabelHidden
-                overlayTriggerOnClickOnly
                 placement="bottom"
-                urlWithoutHash={this.props.urlWithoutHash}
               />
             </div>
           </div>

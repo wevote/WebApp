@@ -43,7 +43,7 @@ export default class DonationList extends Component {
   componentDidMount () {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    this.donateStoreListener = DonateStore.addListener(this._onDonateStoreChange.bind(this));
+    this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange.bind(this));
   }
 
   componentWillUnmount () {
@@ -51,12 +51,12 @@ export default class DonationList extends Component {
     this.donateStoreListener.remove();
   }
 
-  _onDonateStoreChange () {
-    VoterActions.voterRefreshDonations();
-  }
-
   onVoterStoreChange () {
     this.setState({ journal: VoterStore.getVoterDonationHistory() });
+  }
+
+  onDonateStoreChange () {
+    VoterActions.voterRefreshDonations();
   }
 
   // October 2018: This is a workaround, since the current react-bootstrap does not handle the "d-none d-sm-block" correctly in th and td styles

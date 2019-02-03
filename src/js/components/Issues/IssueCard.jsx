@@ -16,7 +16,6 @@ export default class IssueCard extends Component {
     turnOffDescription: PropTypes.bool,
     turnOffIssueImage: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
-    we_vote_id: PropTypes.string, // not being used within this component, check rest of codebase for how IssueCard is being called
   };
 
   constructor (props) {
@@ -25,7 +24,7 @@ export default class IssueCard extends Component {
       ballotItemWeVoteId: "",
       followToggleOn: false,
       issueImageSize: "SMALL", // We support SMALL, MEDIUM, LARGE
-      issue_we_vote_id: "",
+      issueWeVoteId: "",
     };
   }
 
@@ -42,7 +41,7 @@ export default class IssueCard extends Component {
         followToggleOn: this.props.followToggleOn,
         issue: this.props.issue,
         issueImageSize,
-        issue_we_vote_id: this.props.issue.issue_we_vote_id,
+        issueWeVoteId: this.props.issue.issue_we_vote_id,
       });
     }
   }
@@ -60,14 +59,14 @@ export default class IssueCard extends Component {
         followToggleOn: nextProps.followToggleOn,
         issue: nextProps.issue,
         issueImageSize,
-        issue_we_vote_id: nextProps.issue.issue_we_vote_id,
+        issueWeVoteId: nextProps.issue.issue_we_vote_id,
       });
     }
   }
 
   render () {
     renderLog(__filename);
-    if (!this.state.issue_we_vote_id.length) {
+    if (!this.state.issueWeVoteId.length) {
       return <div className="card-popover__width--minimum">{LoadingWheel}</div>;
     }
 
@@ -130,14 +129,14 @@ export default class IssueCard extends Component {
             null :
             issueImage
           }
-          {this.props.followToggleOn && this.state.issue_we_vote_id ? (
+          {this.props.followToggleOn && this.state.issueWeVoteId ? (
             <div className="">
               <IssueFollowToggleButton
                 ballotItemWeVoteId={this.state.ballotItemWeVoteId}
                 classNameOverride="pull-left"
                 currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                issue_name={this.state.issue.issue_name}
-                issue_we_vote_id={this.state.issue_we_vote_id}
+                issueName={this.state.issue.issue_name}
+                issueWeVoteId={this.state.issueWeVoteId}
                 urlWithoutHash={this.props.urlWithoutHash}
               />
             </div>

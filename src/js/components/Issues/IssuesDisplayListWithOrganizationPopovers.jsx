@@ -11,7 +11,6 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
     currentBallotIdInUrl: PropTypes.string,
     issueImageSize: PropTypes.string,
     issueListToDisplay: PropTypes.array,
-    instantRefreshOn: PropTypes.bool, // unused
     maximumIssuesToDisplay: PropTypes.number,
     popoverBottom: PropTypes.bool,
     toFollow: PropTypes.bool,
@@ -80,6 +79,8 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
 
       // Once we have more organizations than we want to show, put them into a drop-down
       if (localCounter <= this.state.maximum_issues_display) {
+        // May need this:
+        // overlayTriggerOnClickOnly={this.props.overlayTriggerOnClickOnly}
         return (
           <IssueTinyDisplay
             key={`trigger-${issueWeVoteId}`}
@@ -88,7 +89,6 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
             issue={oneIssue}
             issueImageSize={this.state.issueImageSize}
             issueWeVoteId={issueWeVoteId}
-            overlayTriggerOnClickOnly={this.props.overlayTriggerOnClickOnly}
             popoverBottom={this.props.popoverBottom}
             toFollow={this.props.toFollow}
             urlWithoutHash={this.props.urlWithoutHash}

@@ -23,7 +23,6 @@ export default class CandidateItemCompressed extends Component {
     this.state = {
       maximumNumberOfOrganizationsToDisplay: 4,
       organization: {},
-      transitioning: false,
     };
 
     this.closeYourNetworkIsUndecidedPopover = this.closeYourNetworkIsUndecidedPopover.bind(this);
@@ -68,9 +67,7 @@ export default class CandidateItemCompressed extends Component {
   }
 
   onVoterGuideStoreChange () {
-    this.setState({
-      transitioning: false,
-    });
+    this.setState();
   }
 
   onOrganizationStoreChange () {

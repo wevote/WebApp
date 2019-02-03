@@ -154,7 +154,7 @@ export default class VoterGuideSettingsDashboard extends Component {
     switch (this.state.editMode) {
       default:
       case "general":
-        settingsComponentToDisplay = <VoterGuideSettingsGeneral voterGuideWeVoteId={this.state.voterGuideWeVoteId} />;
+        settingsComponentToDisplay = <VoterGuideSettingsGeneral />;
         break;
       case "positions":
         settingsComponentToDisplay = <VoterGuideSettingsPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />;
@@ -180,7 +180,6 @@ export default class VoterGuideSettingsDashboard extends Component {
               <div className="col-4 sidebar-menu">
                 <VoterGuideSettingsSideBar
                   editMode={this.state.editMode}
-                  organization={this.state.organization}
                   voterGuide={this.state.voterGuide}
                 />
               </div>

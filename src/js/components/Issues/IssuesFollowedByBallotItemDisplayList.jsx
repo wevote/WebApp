@@ -34,12 +34,10 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
       canScrollLeftMobile: false,
       canScrollRightDesktop: true,
       canScrollRightMobile: true,
-      issuesUnderThisBallotItem: [],
+      // issuesUnderThisBallotItem: [],
       issuesUnderThisBallotItemVoterIsFollowing: [],
       issuesUnderThisBallotItemVoterIsNotFollowing: [],
-      issuesVoterIsFollowing: [],
-      showModal: false,
-      transitioning: false,
+      // issuesVoterIsFollowing: [],
     };
     this.closeIssuesLabelPopover = this.closeIssuesLabelPopover.bind(this);
   }
@@ -56,16 +54,16 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
     this.setState({
       ballotItemWeVoteId: this.props.ballotItemWeVoteId,
       ballotItemDisplayName: this.props.ballotItemDisplayName ? this.props.ballotItemDisplayName : "this candidate",
-      issuesUnderThisBallotItem: IssueStore.getIssuesUnderThisBallotItem(
-        this.props.ballotItemWeVoteId,
-      ),
+      // issuesUnderThisBallotItem: IssueStore.getIssuesUnderThisBallotItem(
+      //   this.props.ballotItemWeVoteId,
+      // ),
       issuesUnderThisBallotItemVoterIsFollowing: IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(
         this.props.ballotItemWeVoteId,
       ),
       issuesUnderThisBallotItemVoterIsNotFollowing: IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(
         this.props.ballotItemWeVoteId,
       ),
-      issuesVoterIsFollowing: IssueStore.getIssuesVoterIsFollowing(),
+      // issuesVoterIsFollowing: IssueStore.getIssuesVoterIsFollowing(),
     });
   }
 
@@ -74,16 +72,16 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
     this.setState({
       ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
       ballotItemDisplayName: nextProps.ballotItemDisplayName ? nextProps.ballotItemDisplayName : "this candidate",
-      issuesUnderThisBallotItem: IssueStore.getIssuesUnderThisBallotItem(
-        nextProps.ballotItemWeVoteId,
-      ),
+      // issuesUnderThisBallotItem: IssueStore.getIssuesUnderThisBallotItem(
+      //   nextProps.ballotItemWeVoteId,
+      // ),
       issuesUnderThisBallotItemVoterIsFollowing: IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(
         nextProps.ballotItemWeVoteId,
       ),
       issuesUnderThisBallotItemVoterIsNotFollowing: IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(
         nextProps.ballotItemWeVoteId,
       ),
-      issuesVoterIsFollowing: IssueStore.getIssuesVoterIsFollowing(),
+      // issuesVoterIsFollowing: IssueStore.getIssuesVoterIsFollowing(),
     });
   }
 
@@ -98,25 +96,24 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
 
   onIssueStoreChange () {
     this.setScrollState();
+    const { ballotItemWeVoteId } = this.state;
     this.setState({
-      issuesUnderThisBallotItem: IssueStore.getIssuesUnderThisBallotItem(
-        this.state.ballotItemWeVoteId,
-      ),
+      // issuesUnderThisBallotItem: IssueStore.getIssuesUnderThisBallotItem(
+      //   ballotItemWeVoteId,
+      // ),
       issuesUnderThisBallotItemVoterIsFollowing: IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(
-        this.state.ballotItemWeVoteId,
+        ballotItemWeVoteId,
       ),
       issuesUnderThisBallotItemVoterIsNotFollowing: IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(
-        this.state.ballotItemWeVoteId,
+        ballotItemWeVoteId,
       ),
-      issuesVoterIsFollowing: IssueStore.getIssuesVoterIsFollowing(),
+      // issuesVoterIsFollowing: IssueStore.getIssuesVoterIsFollowing(),
     });
   }
 
   onVoterGuideStoreChange () {
     // We just want to trigger a re-render
-    this.setState({ transitioning: false });
-
-    // console.log("onVoterGuideStoreChange");
+    this.setState();
   }
 
   scrollLeft (visibleTag) {

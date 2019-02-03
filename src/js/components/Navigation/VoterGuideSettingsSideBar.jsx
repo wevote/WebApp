@@ -8,7 +8,6 @@ import { renderLog } from "../../utils/logging";
 export default class VoterGuideSettingsSideBar extends Component {
   static propTypes = {
     editMode: PropTypes.string,
-    organization: PropTypes.object,
     voterGuide: PropTypes.object,
   };
 
@@ -46,10 +45,6 @@ export default class VoterGuideSettingsSideBar extends Component {
     if (!this.state.voterGuide) {
       return null;
     }
-    // let organizationName = "";
-    // if (this.props.organization && this.props.organization.organization_name) {
-    //   organizationName = this.props.organization.organization_name;
-    // }
     let electionName;
     let electionDayText;
     // console.log("***VoterGuideSettingsSideBar this.state.voterGuide:", this.state.voterGuide);
@@ -57,7 +52,6 @@ export default class VoterGuideSettingsSideBar extends Component {
       electionName = ElectionStore.getElectionName(this.state.voterGuide.google_civic_election_id);
       electionDayText = ElectionStore.getElectionDayText(this.state.voterGuide.google_civic_election_id);
     }
-    // <div className="SettingsItem__summary__organization-title" >{organizationName}</div>
     return (
       <div className="container-fluid card">
         <div className="SettingsItem__summary__election-title">{electionName}</div>

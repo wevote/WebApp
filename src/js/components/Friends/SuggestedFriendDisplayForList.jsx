@@ -9,7 +9,6 @@ import { renderLog } from "../../utils/logging";
 
 export default class SuggestedFriendDisplayForList extends Component {
   static propTypes = {
-    children: PropTypes.array, // A list of the tags in FriendDisplayForList when called (e.g. from FriendInvitationList)
     voter_we_vote_id: PropTypes.string,
     voter_photo_url_medium: PropTypes.string,
     voter_display_name: PropTypes.string,
@@ -19,63 +18,60 @@ export default class SuggestedFriendDisplayForList extends Component {
     voter_email_address: PropTypes.string,
   };
 
-  deleteFriendInviteEmail (voter_email_address) {
+  deleteFriendInviteEmail (voterEmailAddress) {
     // TODO DALE We have a problem with how we are deleting friend invitations.
     // It has to do with retrieve_friend_invitations_sent_by_me on the API server
     // console.log("deleteFriendInviteEmail");
-    FriendActions.deleteFriendInviteEmail(voter_email_address);
+    FriendActions.deleteFriendInviteEmail(voterEmailAddress);
   }
 
-  deleteFriendInviteVoter (other_voter_we_vote_id) {
+  deleteFriendInviteVoter (otherVoterWeVoteId) {
     // console.log("deleteFriendInviteVoter");
-    FriendActions.deleteFriendInviteVoter(other_voter_we_vote_id);
+    FriendActions.deleteFriendInviteVoter(otherVoterWeVoteId);
   }
 
-  ignoreSuggestedFriend (voter_we_vote_id) {
-    FriendActions.ignoreSuggestedFriend(voter_we_vote_id);
-    this.setState({
-      friend_invitations_list: this.state.friend_invitations_list.filter( friend => friend.voter_we_vote_id !== voter_we_vote_id),
-    });
+  ignoreSuggestedFriend (voterWeVoteId) {
+    FriendActions.ignoreSuggestedFriend(voterWeVoteId);
   }
 
   render () {
     renderLog(__filename);
     const {
-      voter_twitter_followers_count,
-      voter_we_vote_id,
-      voter_photo_url_medium,
+      voter_twitter_followers_count: voterTwitterFollowersCount,
+      voter_we_vote_id: voterWeVoteId,
+      voter_photo_url_medium: voterPhotoUrlMedium,
     } = this.props;
 
-    const voter_display_name = this.props.voter_display_name ? this.props.voter_display_name : this.props.voter_email_address;
+    const voterDisplayName = this.props.voter_display_name ? this.props.voter_display_name : this.props.voter_email_address;
     const twitterDescription = this.props.voter_twitter_description ? this.props.voter_twitter_description : "";
-    // If the voter_display_name is in the voter_twitter_description, remove it
-    const twitterDescriptionMinusName = removeTwitterNameFromDescription(voter_display_name, twitterDescription);
+    // If the voterDisplayName is in the voter_twitter_description, remove it
+    const twitterDescriptionMinusName = removeTwitterNameFromDescription(voterDisplayName, twitterDescription);
 
     // TwitterHandle-based link
     const voterGuideLink = this.props.voter_twitter_handle ? `/${this.props.voter_twitter_handle}` : null;
-    const voter_image = <ImageHandler sizeClassName="icon-lg " imageUrl={voter_photo_url_medium} kind_of_ballot_item="CANDIDATE" />;
-    const voter_display_name_formatted = <span className="card-child__display-name">{voter_display_name}</span>;
+    const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlMedium} kind_of_ballot_item="CANDIDATE" />;
+    const voterDisplayNameFormatted = <span className="card-child__display-name">{voterDisplayName}</span>;
 
     return (
       <div className="position-item card-child card-child--not-followed">
         <div className="card-child__avatar">
           { voterGuideLink ? (
             <Link to={voterGuideLink} className="u-no-underline">
-              {voter_image}
+              {voterImage}
             </Link>
           ) :
-            <span>{voter_image}</span> }
+            <span>{voterImage}</span> }
         </div>
         <div className="card-child__media-object-content">
           <div className="card-child__content">
             { voterGuideLink ? (
               <Link to={voterGuideLink} className="u-no-underline">
-                {voter_display_name_formatted}
+                {voterDisplayNameFormatted}
               </Link>
             ) : (
               <span>
                 &nbsp;
-                {voter_display_name_formatted}
+                {voterDisplayNameFormatted}
               </span>
             )}
             { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> : null }
@@ -84,13 +80,13 @@ export default class SuggestedFriendDisplayForList extends Component {
             <div className="card-child__follow-buttons">
               <span>
               &nbsp;
-                <SuggestedFriendToggle other_voter_we_vote_id={voter_we_vote_id} />
+                <SuggestedFriendToggle otherVoterWeVoteId={voterWeVoteId} />
               </span>
             </div>
-            {voter_twitter_followers_count ? (
+            {voterTwitterFollowersCount ? (
               <span className="twitter-followers__badge">
                 <span className="fa fa-twitter twitter-followers__icon" />
-                {numberWithCommas(voter_twitter_followers_count)}
+                {numberWithCommas(voterTwitterFollowersCount)}
               </span>
             ) : null
             }

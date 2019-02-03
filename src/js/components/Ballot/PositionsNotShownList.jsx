@@ -65,7 +65,9 @@ export default class PositionsNotShownList extends Component {
         <Popover
           id={`organization-popover-${organizationWeVoteId}`}
           onMouseOver={() => this.onTriggerEnter(organizationWeVoteId)}
+          onFocus={() => this.onTriggerEnter(organizationWeVoteId)}
           onMouseOut={() => this.onTriggerLeave(organizationWeVoteId)}
+          onBlur={() => this.onTriggerLeave(organizationWeVoteId)}
         >
           <section className="card">
             <div className="card__additional">
@@ -88,7 +90,9 @@ export default class PositionsNotShownList extends Component {
         <OverlayTrigger
           key={`trigger-${organizationWeVoteId}`}
           ref={`not-shown-overlay-${organizationWeVoteId}`}
+          onFocus={() => this.onTriggerEnter(organizationWeVoteId)}
           onMouseOver={() => this.onTriggerEnter(organizationWeVoteId)}
+          onBlur={() => this.onTriggerLeave(organizationWeVoteId)}
           onMouseOut={() => this.onTriggerLeave(organizationWeVoteId)}
           rootClose
           placement="bottom"

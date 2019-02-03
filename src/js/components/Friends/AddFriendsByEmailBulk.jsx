@@ -206,18 +206,19 @@ export default class AddFriendsByEmailBulk extends Component {
               />
               {this.state.emailAddresses ? (
                 <span>
-                  <label htmlFor="last-name">
+                  <label htmlFor="addFriendsMessage">
                     Include a Message
+                    {" "}
                     <span className="small">(Optional)</span>
+                    <input
+                      type="text"
+                      id="addFriendsMessage"
+                      name="addFriendsMessage"
+                      className="form-control"
+                      onChange={this.cacheAddFriendsByEmailMessage}
+                      placeholder="Please join me in preparing for the upcoming election."
+                    />
                   </label>
-                  <br />
-                  <input
-                    type="text"
-                    name="addFriendsMessage"
-                    className="form-control"
-                    onChange={this.cacheAddFriendsByEmailMessage}
-                    placeholder="Please join me in preparing for the upcoming election."
-                  />
                 </span>
               ) : null
               }
