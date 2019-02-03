@@ -8,7 +8,7 @@ import { showToastError, showToastSuccess } from "../../utils/showToast";
 import { stringContains } from "../../utils/textFormat";
 import MeasureStore from "../../stores/MeasureStore";
 import ReadMore from "./ReadMore";
-import ShareButtonDropDown from "./ShareButtonDropDown";
+import ShareButtonDropDown from "./ShareButtonDropdown";
 import SupportActions from "../../actions/SupportActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
