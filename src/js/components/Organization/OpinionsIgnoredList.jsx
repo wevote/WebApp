@@ -7,10 +7,8 @@ import { renderLog } from "../../utils/logging";
 
 // NOTE FROM DALE: When OpinionsIgnoredList is refactored, this should be refactored to display Organizations instead of Voter Guides
 export default class OpinionsIgnoredList extends Component {
-
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
-    // children: PropTypes.array,
     organizationsIgnored: PropTypes.array,
     instantRefreshOn: PropTypes.bool,
     editMode: PropTypes.bool,
@@ -19,15 +17,13 @@ export default class OpinionsIgnoredList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      organizations_ignored: this.props.organizationsIgnored,
-      ballot_item_we_vote_id: "",
+      organizationsIgnored: this.props.organizationsIgnored,
     };
   }
 
   componentDidMount () {
     this.setState({
-      organizations_ignored: this.props.organizationsIgnored,
-      ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
+      organizationsIgnored: this.props.organizationsIgnored,
     });
   }
 
@@ -35,30 +31,27 @@ export default class OpinionsIgnoredList extends Component {
     // if (nextProps.instantRefreshOn ) {
     // NOTE: This is off because we don't want the organization to disappear from the "More opinions" list when clicked
     this.setState({
-      organizations_ignored: nextProps.organizationsIgnored,
-      ballot_item_we_vote_id: nextProps.ballotItemWeVoteId,
+      organizationsIgnored: nextProps.organizationsIgnored,
     });
   }
 
   render () {
     renderLog(__filename);
-    if (this.state.organizations_ignored === undefined) {
+    if (this.state.organizationsIgnored === undefined) {
       return null;
     }
 
     let counter = 0;
-    // let children = [];
 
     // zachmonteith: extra span tags inside of VoterGuideDisplayForList are to ensure that {org} gets passed in
     // as an array rather than an object, so that our propTypes validations in VoterGuideDisplayForList work.
-    // there is probably a more elegant way to do this, but left it this way for now as it works.
     return (
       <div className="guidelist card-child__list-group">
         <TransitionGroup className="org-ignore">
-          {this.state.organizations_ignored.map(org => (
+          {this.state.organizationsIgnored.map(oneOrganization => (
             <CSSTransition key={counter++} timeout={500} classNames="fade">
-              <VoterGuideDisplayForList key={org.organization_we_vote_id} {...org}>
-                { this.props.editMode ? <FollowToggle organizationWeVoteId={org.organization_we_vote_id} /> : (
+              <VoterGuideDisplayForList key={oneOrganization.organization_we_vote_id} {...oneOrganization}>
+                { this.props.editMode ? <FollowToggle organizationWeVoteId={oneOrganization.organization_we_vote_id} /> : (
                   <span>
                     <span />
                     <span />

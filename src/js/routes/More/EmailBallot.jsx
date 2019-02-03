@@ -21,14 +21,17 @@ export default class EmailBallot extends Component {
         <div className="container-fluid well">
           <h2 className="text-center">Print, Save or Email Ballot</h2>
           <div>
-            <label htmlFor="last-name">Email your ballot to yourself so you can print or save</label>
-            <br />
-            <input
-              type="text"
-              name="email_address"
-              className="form-control"
-              placeholder="Enter your email address"
-            />
+            <label htmlFor="email-address">
+              Email your ballot to yourself so you can print or save
+              <br />
+              <input
+                id="email-address"
+                name="email_address"
+                className="form-control"
+                placeholder="Enter your email address"
+                type="text"
+              />
+            </label>
             Email your ballot to yourself so you can print it, or come back
             to it later. We will never sell your email address.
             See

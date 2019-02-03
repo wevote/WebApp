@@ -4,9 +4,8 @@ import CopyLinkModal from "./CopyLinkModal";
 import { renderLog } from "../../utils/logging";
 import { isWebApp } from "../../utils/cordovaUtils";
 
-export default class ShareButtonDropdown extends Component {
+export default class ShareButtonDropDown extends Component {
   static propTypes = {
-    params: PropTypes.object,
     shareIcon: PropTypes.object,
     shareText: PropTypes.string,
     urlBeingShared: PropTypes.string,
@@ -15,21 +14,13 @@ export default class ShareButtonDropdown extends Component {
   constructor (props) {
     super(props);
     this.state = { open: false };
+    this.closeCopyLinkModal = this.closeCopyLinkModal.bind(this);
   }
 
   componentWillMount () {
     this.setState({
       showCopyLinkModal: false,
-      transitioning: false,
     });
-  }
-
-  closeDropdown () {
-    this.setState({ open: false });
-  }
-
-  openDropdown () {
-    this.setState({ open: true });
   }
 
   shareFacebookComment (event) {
@@ -43,7 +34,7 @@ export default class ShareButtonDropdown extends Component {
       href: this.props.urlBeingShared,
       redirect_uri: this.props.urlBeingShared, // redirecting to the same url after sharing on facebook
     }, () => {});
-    this.closeDropdown();
+    this.closeDropDown();
   }
 
   closeCopyLinkModal () {
@@ -53,20 +44,28 @@ export default class ShareButtonDropdown extends Component {
   openCopyLinkModal (event) {
     event.stopPropagation();
     this.setState({ showCopyLinkModal: true });
-    this.closeDropdown();
+    this.closeDropDown();
   }
 
   onButtonBlur () {
     // Delay closing the drop down so that onClick has time to work
     setTimeout(() => {
-      this.closeDropdown();
+      this.closeDropDown();
     }, 250);
+  }
+
+  closeDropDown () {
+    this.setState({ open: false });
+  }
+
+  openDropDown () {
+    this.setState({ open: true });
   }
 
   render () {
     renderLog(__filename);
     const { shareIcon, shareText, urlBeingShared } = this.props;
-    const onClick = this.state.open ? this.closeDropdown.bind(this) : this.openDropdown.bind(this);
+    const onClick = this.state.open ? this.closeDropDown.bind(this) : this.openDropDown.bind(this);
     const onCopyLinkClick = this.state.showCopyLinkModal ? this.closeCopyLinkModal.bind(this) : this.openCopyLinkModal.bind(this);
 
     // const onButtonBlur = ;
@@ -75,7 +74,12 @@ export default class ShareButtonDropdown extends Component {
     return (
       <div className="item-actionbar__btn-set">
         <div className={`btn-group${dropdownClass}`}>
-          <button onBlur={this.onButtonBlur.bind(this)} onClick={onClick} className="dropdown-toggle item-actionbar__btn btn btn-default">
+          <button
+            className="dropdown-toggle item-actionbar__btn btn btn-default"
+            onBlur={this.onButtonBlur.bind(this)}
+            onClick={onClick}
+            type="button"
+          >
             {shareIcon}
             {" "}
             {shareText}
@@ -100,7 +104,7 @@ export default class ShareButtonDropdown extends Component {
         </div>
         <CopyLinkModal
           show={this.state.showCopyLinkModal}
-          onHide={this.closeCopyLinkModal.bind(this)}
+          onHide={this.closeCopyLinkModal}
           urlBeingShared={urlBeingShared}
         />
       </div>

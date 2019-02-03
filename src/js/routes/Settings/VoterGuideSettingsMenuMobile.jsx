@@ -153,7 +153,6 @@ export default class VoterGuideSettingsMenuMobile extends Component {
           <div className="row">
             <VoterGuideSettingsSideBar
               editMode={this.state.editMode}
-              organization={this.state.organization}
               voterGuide={this.state.voterGuide}
             />
           </div>

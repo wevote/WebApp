@@ -32,8 +32,7 @@ const INCOMPATIBLE_ISSUES = {
 export default class SettingsIssueLinks extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired,
-    organization_we_vote_id: PropTypes.string,
-    organization_we_vote_id_support_list_for_each_ballot_item: PropTypes.object,
+    organizationWeVoteId: PropTypes.string,
   };
 
   constructor (props) {
@@ -43,7 +42,7 @@ export default class SettingsIssueLinks extends Component {
       activeTab: "",
       issuesToLinkTo: [],
       issuesLinkedTo: [],
-      organization_we_vote_id: "",
+      organizationWeVoteId: "",
       currentIncompatibleIssues: {},
     };
   }
@@ -53,14 +52,14 @@ export default class SettingsIssueLinks extends Component {
     this.issueStoreListener = IssueStore.addListener(
       this.onIssueStoreChange.bind(this),
     );
-    if (this.props.organization_we_vote_id) {
+    if (this.props.organizationWeVoteId) {
       IssueActions.retrieveIssuesToLinkForOrganization(
-        this.props.organization_we_vote_id,
+        this.props.organizationWeVoteId,
       );
       IssueActions.retrieveIssuesLinkedForOrganization(
-        this.props.organization_we_vote_id,
+        this.props.organizationWeVoteId,
       );
-      newState.organization_we_vote_id = this.props.organization_we_vote_id;
+      newState.organizationWeVoteId = this.props.organizationWeVoteId;
     }
 
     const defaultActiveTab = this.getDefaultActiveIssueTab();
@@ -72,19 +71,19 @@ export default class SettingsIssueLinks extends Component {
 
   componentWillReceiveProps (nextProps) {
     const newState = {};
-    if (nextProps.organization_we_vote_id !== this.state.organization_we_vote_id) {
+    if (nextProps.organizationWeVoteId !== this.state.organizationWeVoteId) {
       IssueActions.retrieveIssuesToLinkForOrganization(
-        nextProps.organization_we_vote_id,
+        nextProps.organizationWeVoteId,
       );
       IssueActions.retrieveIssuesLinkedForOrganization(
-        nextProps.organization_we_vote_id,
+        nextProps.organizationWeVoteId,
       );
-      newState.organization_we_vote_id = this.props.organization_we_vote_id;
+      newState.organizationWeVoteId = this.props.organizationWeVoteId;
     }
     const defaultActiveTab = this.getDefaultActiveIssueTab();
     const activeTab = nextProps.params.active_tab || defaultActiveTab;
     newState.activeTab = activeTab;
-    // console.log("SettingsIssueLinks, nextProps.organization_we_vote_id: ", nextProps.organization_we_vote_id);
+    // console.log("SettingsIssueLinks, nextProps.organizationWeVoteId: ", nextProps.organizationWeVoteId);
     // console.log("SettingsIssueLinks, activeTab: ", activeTab, "defaultActiveTab: ", defaultActiveTab);
     this.setState(newState);
   }
@@ -94,7 +93,7 @@ export default class SettingsIssueLinks extends Component {
   }
 
   onIssueStoreChange () {
-    const issuesLinkedTo = IssueStore.getIssuesLinkedToByOrganization(this.props.organization_we_vote_id);
+    const issuesLinkedTo = IssueStore.getIssuesLinkedToByOrganization(this.props.organizationWeVoteId);
     const currentIncompatibleIssues = {}; // issue -> issue that it is causing the incompatibility
 
     // TODO: Steve remove the error suppression on the next line 12/1/18, a temporary hack
@@ -107,12 +106,12 @@ export default class SettingsIssueLinks extends Component {
       }
     });
 
-    // console.log("onIssueStoreChange, this.props.organization_we_vote_id: ", this.props.organization_we_vote_id);
-    // console.log("getIssuesToLinkToByOrganization: ", IssueStore.getIssuesToLinkToByOrganization(this.props.organization_we_vote_id));
-    // console.log("getIssuesLinkedToByOrganization: ", IssueStore.getIssuesLinkedToByOrganization(this.props.organization_we_vote_id));
+    // console.log("onIssueStoreChange, this.props.organizationWeVoteId: ", this.props.organizationWeVoteId);
+    // console.log("getIssuesToLinkToByOrganization: ", IssueStore.getIssuesToLinkToByOrganization(this.props.organizationWeVoteId));
+    // console.log("getIssuesLinkedToByOrganization: ", IssueStore.getIssuesLinkedToByOrganization(this.props.organizationWeVoteId));
     this.setState({
       issuesToLinkTo: IssueStore.getIssuesToLinkToByOrganization(
-        this.props.organization_we_vote_id,
+        this.props.organizationWeVoteId,
       ),
       issuesLinkedTo,
       currentIncompatibleIssues,
@@ -123,7 +122,7 @@ export default class SettingsIssueLinks extends Component {
     // If the organization is linked to fewer than 3 issues, default to the "Find Issues" tab
     // After that, default to the "Linked Issues" tab
     const issuesLinkedCount = IssueStore.getIssuesLinkedToByOrganizationCount(
-      this.props.organization_we_vote_id,
+      this.props.organizationWeVoteId,
     );
     const showFindIssuesUntilThisManyLinkedTo = 3;
     let defaultActiveTab;
@@ -154,8 +153,8 @@ export default class SettingsIssueLinks extends Component {
           <IssueLinkToggle
             key={issue.issue_we_vote_id}
             issue={issue}
-            organization_we_vote_id={this.props.organization_we_vote_id}
-            is_linked={isLinkedFalse}
+            organizationWeVoteId={this.props.organizationWeVoteId}
+            isLinked={isLinkedFalse}
             incompatibleIssues={this.state.currentIncompatibleIssues[issue.issue_we_vote_id]}
           />
         ));
@@ -166,8 +165,8 @@ export default class SettingsIssueLinks extends Component {
           <IssueLinkToggle
             key={issue.issue_we_vote_id}
             issue={issue}
-            organization_we_vote_id={this.props.organization_we_vote_id}
-            is_linked={isLinkedTrue}
+            organizationWeVoteId={this.props.organizationWeVoteId}
+            isLinked={isLinkedTrue}
           />
         ));
         break;

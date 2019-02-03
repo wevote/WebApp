@@ -15,12 +15,10 @@ import FacebookBallotToFriendsModal from "../Ballot/FacebookBallotToFriendsModal
 import PollingPlaceLocatorModal from "../../routes/Ballot/PollingPlaceLocatorModal";
 import { renderLog } from "../../utils/logging";
 import VoterActions from "../../actions/VoterActions";
-import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 import webAppConfig from "../../config";
 
 export default class HeaderSecondaryNavBar extends Component {
-
   static propTypes = {
     hideGettingStartedIssuesButton: PropTypes.bool,
     hideGettingStartedOrganizationsButton: PropTypes.bool,
@@ -30,8 +28,15 @@ export default class HeaderSecondaryNavBar extends Component {
 
   constructor (props) {
     super(props);
+    this.state = {
+      currentPageIndex: 0,
+      showBallotIntroFollowIssues: false,
+      showEmailModal: false,
+      showFacebookModal: false,
+      showPollingLocatorModal: false,
+      successMessage: undefined, // Used by EmailBallotModal and EmailBallotToFriendsModal
+    };
     this._toggleBallotIntroFollowIssues = this._toggleBallotIntroFollowIssues.bind(this);
-    this._toggleBallotIntroOrganizations = this._toggleBallotIntroOrganizations.bind(this);
     this._toggleEmailModal = this._toggleEmailModal.bind(this);
     this._toggleFacebookModal = this._toggleFacebookModal.bind(this);
     this._togglePollingLocatorModal = this._togglePollingLocatorModal.bind(this);
@@ -39,33 +44,11 @@ export default class HeaderSecondaryNavBar extends Component {
     this.afterChangeHandler = this.afterChangeHandler.bind(this);
     this.ballotEmailWasSent = this.ballotEmailWasSent.bind(this);
     this.ballotFacebookEmailWasSent = this.ballotFacebookEmailWasSent.bind(this);
-    this.state = {
-      ballot_intro_issues_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ISSUES_COMPLETED),
-      ballot_intro_organizations_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ORGANIZATIONS_COMPLETED),
-      ballot_intro_positions_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_POSITIONS_COMPLETED),
-      ballot_intro_friends_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_FRIENDS_COMPLETED),
-      ballot_intro_share_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_SHARE_COMPLETED),
-      ballot_intro_vote_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_VOTE_COMPLETED),
-      current_page_index: 0,
-      showBallotIntroFollowIssues: false,
-      showBallotIntroOrganizations: false,
-      showEmailModal: false,
-      showFacebookModal: false,
-      showPollingLocatorModal: false,
-      successMessage: undefined, // Used by EmailBallotModal and EmailBallotToFriendsModal
-      sender_email_address: "", // Used by EmailBallotModal and EmailBallotToFriendsModal
-      verification_email_sent: false, // Used by EmailBallotModal and EmailBallotToFriendsModal
-      sender_email_address_from_email_ballot_modal: "", // Used by FacebookBallotModal and FacebookBallotToFriendsModal
-    };
   }
 
   componentDidMount () {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-  }
-
-  componentWillUnmount () {
-    this.voterStoreListener.remove();
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -77,11 +60,6 @@ export default class HeaderSecondaryNavBar extends Component {
 
     if (this.state.showBallotIntroFollowIssues === true || nextState.showBallotIntroFollowIssues === true) {
       // console.log("shouldComponentUpdate: this.state.showBallotIntroFollowIssues", this.state.showBallotIntroFollowIssues, ", nextState.showBallotIntroFollowIssues", nextState.showBallotIntroFollowIssues);
-      return true;
-    }
-
-    if (this.state.showBallotIntroOrganizations === true || nextState.showBallotIntroOrganizations === true) {
-      // console.log("shouldComponentUpdate: this.state.showBallotIntroOrganizations", this.state.showBallotIntroOrganizations, ", nextState.showBallotIntroOrganizations", nextState.showBallotIntroOrganizations);
       return true;
     }
 
@@ -103,16 +81,12 @@ export default class HeaderSecondaryNavBar extends Component {
     return false;
   }
 
+  componentWillUnmount () {
+    this.voterStoreListener.remove();
+  }
+
   onVoterStoreChange () {
-    this.setState({
-      voter: VoterStore.getVoter(),
-      ballot_intro_issues_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ISSUES_COMPLETED),
-      ballot_intro_organizations_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_ORGANIZATIONS_COMPLETED),
-      ballot_intro_positions_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_POSITIONS_COMPLETED),
-      ballot_intro_friends_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_FRIENDS_COMPLETED),
-      ballot_intro_share_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_SHARE_COMPLETED),
-      ballot_intro_vote_completed: VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_VOTE_COMPLETED),
-    });
+    this.setState();
   }
 
   _openPrintModal () {
@@ -120,34 +94,28 @@ export default class HeaderSecondaryNavBar extends Component {
   }
 
   _toggleEmailModal () {
-    this.setState({ showEmailModal: !this.state.showEmailModal });
+    const { showEmailModal } = this.state;
+    this.setState({ showEmailModal: !showEmailModal });
   }
 
   _toggleFacebookModal () {
-    this.setState({ showFacebookModal: !this.state.showFacebookModal });
+    const { showFacebookModal } = this.state;
+    this.setState({ showFacebookModal: !showFacebookModal });
   }
 
   _togglePollingLocatorModal () {
-    this.setState({ showPollingLocatorModal: !this.state.showPollingLocatorModal });
+    const { showPollingLocatorModal } = this.state;
+    this.setState({ showPollingLocatorModal: !showPollingLocatorModal });
   }
 
   _toggleBallotIntroFollowIssues () {
+    const { showBallotIntroFollowIssues } = this.state;
     VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
-    if (!this.state.showBallotIntroFollowIssues) {
+    if (!showBallotIntroFollowIssues) {
       AnalyticsActions.saveActionModalIssues(VoterStore.electionId());
     }
 
-    this.setState({ showBallotIntroFollowIssues: !this.state.showBallotIntroFollowIssues });
-  }
-
-  _toggleBallotIntroOrganizations () {
-    VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
-    if (!this.state.showBallotIntroOrganizations) {
-      // Save action when going from off to on
-      AnalyticsActions.saveActionModalOrganizations(VoterStore.electionId());
-    }
-
-    this.setState({ showBallotIntroOrganizations: !this.state.showBallotIntroOrganizations });
+    this.setState({ showBallotIntroFollowIssues: !showBallotIntroFollowIssues });
   }
 
   _nextSliderPage () {
@@ -157,7 +125,7 @@ export default class HeaderSecondaryNavBar extends Component {
 
   afterChangeHandler (index) {
     this.setState({
-      current_page_index: index,
+      currentPageIndex: index,
     });
   }
 
@@ -221,7 +189,7 @@ export default class HeaderSecondaryNavBar extends Component {
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height intro-modal__height-full" ref="slider" {...sliderSettings}>
             <div className="intro-modal__height-full" key={1}><BallotIntroFollowIssues next={this._nextSliderPage} /></div>
             <div className="intro-modal__height-full" key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage} /></div>
-            <div className="intro-modal__height-full" key={3}><BallotIntroVerifyAddress next={this._toggleBallotIntroFollowIssues} manualFocus={this.state.current_page_index === 2} /></div>
+            <div className="intro-modal__height-full" key={3}><BallotIntroVerifyAddress next={this._toggleBallotIntroFollowIssues} manualFocus={this.state.currentPageIndex === 2} /></div>
           </Slider>
         </Modal.Body>
       </Modal>
@@ -254,7 +222,7 @@ export default class HeaderSecondaryNavBar extends Component {
               <EmailBallotToFriendsModal
                 ballot_link={this.props.pathname}
                 ballotEmailWasSent={this.ballotEmailWasSent}
-                sender_email_address_from_email_ballot_modal={this.state.senderEmailAddress}
+                senderEmailAddressFromEmailBallotModal={this.state.senderEmailAddress}
                 success_message={this.state.successMessage}
                 verification_email_sent={this.state.verificationEmailSent}
               />
@@ -282,7 +250,7 @@ export default class HeaderSecondaryNavBar extends Component {
           <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettingsWithSwipe}>
             <div key={1} className="share-modal__calc-height">
               <FacebookBallotModal
-                ballot_link={this.props.pathname}
+                ballotLink={this.props.pathname}
                 next={this._nextSliderPage}
                 ballotFacebookEmailWasSent={this.ballotFacebookEmailWasSent}
               />

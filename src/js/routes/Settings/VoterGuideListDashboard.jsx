@@ -98,7 +98,7 @@ export default class VoterGuideListDashboard extends Component {
   }
 
   onVoterGuideStoreChange () {
-    this.setState({ transitioning: false });
+    this.setState();
   }
 
   onVoterStoreChange () {

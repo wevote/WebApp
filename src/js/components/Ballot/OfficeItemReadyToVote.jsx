@@ -11,7 +11,6 @@ import { capitalizeString } from "../../utils/textFormat";
 export default class OfficeItemReadyToVote extends Component {
   static propTypes = {
     we_vote_id: PropTypes.string.isRequired,
-    kind_of_ballot_item: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
     candidate_list: PropTypes.array,
@@ -20,7 +19,6 @@ export default class OfficeItemReadyToVote extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      transitioning: false,
     };
   }
 
@@ -38,62 +36,60 @@ export default class OfficeItemReadyToVote extends Component {
 
   onVoterGuideStoreChange () {
     // We just want to trigger a re-render
-    this.setState({ transitioning: false });
-    // console.log("onVoterGuideStoreChange");
+    this.setState();
   }
 
   onSupportStoreChange () {
     // We just want to trigger a re-render
-    this.setState({ transitioning: false });
-    // console.log("onSupportStoreChange");
+    this.setState();
   }
 
   render () {
     renderLog(__filename);
-    let { ballot_item_display_name } = this.props;
+    let { ballot_item_display_name: ballotItemDisplayName } = this.props;
     const { we_vote_id: weVoteId } = this.props;
     const officeLink = `/office/${weVoteId}`;
     const goToOfficeLink = function () { historyPush(officeLink); };
-    const is_support_array = [];
-    let candidate_with_most_support = null;
-    let voter_supports_at_least_one_candidate = false;
+    const isSupportArray = [];
+    let candidateWithMostSupport = null;
+    let voterSupportsAtLeastOneCandidate = false;
     let supportProps;
-    let is_support;
+    let isSupport;
 
-    ballot_item_display_name = capitalizeString(ballot_item_display_name);
+    ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
 
     this.props.candidate_list.forEach((candidate) => {
       supportProps = SupportStore.get(candidate.we_vote_id);
       if (supportProps) {
-        is_support = supportProps.is_support;
+        isSupport = supportProps.is_support;
 
-        if (is_support) {
-          is_support_array.push(candidate.ballot_item_display_name);
-          voter_supports_at_least_one_candidate = true;
+        if (isSupport) {
+          isSupportArray.push(candidate.ballot_item_display_name);
+          voterSupportsAtLeastOneCandidate = true;
         }
       }
     });
 
     /* This function finds the highest support count for each office but does not handle ties. If two candidates have the
     same network support count, only the first candidate will be displayed. */
-    let largest_support_count = 0;
-    let at_least_one_candidate_chosen = false;
+    let largestSupportCount = 0;
+    let atLeastOneCandidateChosen = false;
 
-    if (is_support_array.length === 0) {
-      let network_support_count;
-      let network_oppose_count;
+    if (isSupportArray.length === 0) {
+      let networkSupportCount;
+      let networkOpposeCount;
 
       this.props.candidate_list.forEach((candidate) => {
         supportProps = SupportStore.get(candidate.we_vote_id);
         if (supportProps) {
-          network_support_count = supportProps.support_count;
-          network_oppose_count = supportProps.oppose_count;
+          networkSupportCount = supportProps.support_count;
+          networkOpposeCount = supportProps.oppose_count;
 
-          if (network_support_count > network_oppose_count) {
-            if (network_support_count > largest_support_count) {
-              largest_support_count = network_support_count;
-              candidate_with_most_support = candidate.ballot_item_display_name;
-              at_least_one_candidate_chosen = true;
+          if (networkSupportCount > networkOpposeCount) {
+            if (networkSupportCount > largestSupportCount) {
+              largestSupportCount = networkSupportCount;
+              candidateWithMostSupport = candidate.ballot_item_display_name;
+              atLeastOneCandidateChosen = true;
             }
           }
         }
@@ -105,16 +101,16 @@ export default class OfficeItemReadyToVote extends Component {
         <div className="card-main__content">
           <h2 className="card-main__display-name">
             { this.props.link_to_ballot_item_page ?
-              <Link to={officeLink}>{ballot_item_display_name}</Link> :
-              ballot_item_display_name
+              <Link to={officeLink}>{ballotItemDisplayName}</Link> :
+              ballotItemDisplayName
             }
           </h2>
 
           <div className={this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null}>
-            { this.props.candidate_list.map( one_candidate => (
-              <div key={one_candidate.we_vote_id}>
+            { this.props.candidate_list.map(oneCandidate => (
+              <div key={oneCandidate.we_vote_id}>
                 {/* *** Candidate name *** */}
-                { SupportStore.get(one_candidate.we_vote_id) && SupportStore.get(one_candidate.we_vote_id).is_support ? (  // eslint-disable-line no-nested-ternary
+                { SupportStore.get(oneCandidate.we_vote_id) && SupportStore.get(oneCandidate.we_vote_id).is_support ? (  // eslint-disable-line no-nested-ternary
                   <div className="u-flex u-items-center">
                     <div
                       className="u-flex-auto u-cursor--pointer"
@@ -122,7 +118,7 @@ export default class OfficeItemReadyToVote extends Component {
                         goToOfficeLink : null}
                     >
                       <h2 className="h5">
-                        {one_candidate.ballot_item_display_name}
+                        {oneCandidate.ballot_item_display_name}
                       </h2>
                     </div>
 
@@ -132,14 +128,14 @@ export default class OfficeItemReadyToVote extends Component {
                     </div>
                   </div>
                 ) :
-                  candidate_with_most_support === one_candidate.ballot_item_display_name ? (        // eslint-disable-line no-nested-ternary
+                  candidateWithMostSupport === oneCandidate.ballot_item_display_name ? (        // eslint-disable-line no-nested-ternary
                     <div className="u-flex u-items-center">
                       <div className="u-flex-auto u-cursor--pointer"
                            onClick={this.props.link_to_ballot_item_page ?
                              goToOfficeLink : null}
                       >
                         <h2 className="h5">
-                          {one_candidate.ballot_item_display_name}
+                          {oneCandidate.ballot_item_display_name}
                         </h2>
                       </div>
                       <div className="u-flex-none u-justify-end">
@@ -148,7 +144,7 @@ export default class OfficeItemReadyToVote extends Component {
                       </div>
                     </div>
                   ) :
-                    is_support_array === 0 && candidate_with_most_support !== one_candidate.ballot_item_display_name && !voter_supports_at_least_one_candidate ?
+                    isSupportArray === 0 && candidateWithMostSupport !== oneCandidate.ballot_item_display_name && !voterSupportsAtLeastOneCandidate ?
                       <div className="u-flex-none u-justify-end">Your network is undecided</div> :
                       null
                 }
@@ -157,12 +153,12 @@ export default class OfficeItemReadyToVote extends Component {
             ))
           }
             { () => {
-              if (voter_supports_at_least_one_candidate) {
+              if (voterSupportsAtLeastOneCandidate) {
                 return null;
               } else {
                 return (
                   <span>
-                    {at_least_one_candidate_chosen ? null : <div className="u-tr">Your network is undecided</div>}
+                    {atLeastOneCandidateChosen ? null : <div className="u-tr">Your network is undecided</div>}
                   </span>
                 );
               }

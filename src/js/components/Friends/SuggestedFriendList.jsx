@@ -5,7 +5,6 @@ import SuggestedFriendDisplayForList from "./SuggestedFriendDisplayForList";
 import { renderLog } from "../../utils/logging";
 
 export default class SuggestedFriendList extends Component {
-
   static propTypes = {
     friendList: PropTypes.array,
   };
@@ -13,32 +12,32 @@ export default class SuggestedFriendList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      suggested_friend_list: this.props.friendList,
+      suggestedFriendList: this.props.friendList,
     };
   }
 
   componentDidMount () {
     this.setState({
-      suggested_friend_list: this.props.friendList,
+      suggestedFriendList: this.props.friendList,
     });
   }
 
   componentWillReceiveProps (nextProps) {
     this.setState({
-      suggested_friend_list: nextProps.friendList,
+      suggestedFriendList: nextProps.friendList,
     });
   }
 
   render () {
     renderLog(__filename);
-    if (this.state.suggested_friend_list === undefined) {
+    if (this.state.suggestedFriendList === undefined) {
       return null;
     }
 
     return (
       <div className="guidelist card-child__list-group">
         <TransitionGroup className="org-ignore">
-          {this.state.suggested_friend_list.map(friend => (
+          {this.state.suggestedFriendList.map(friend => (
             <CSSTransition key={friend.voter_we_vote_id} timeout={500} classNames="fade">
               <SuggestedFriendDisplayForList key={friend.voter_we_vote_id} {...friend} />
             </CSSTransition>

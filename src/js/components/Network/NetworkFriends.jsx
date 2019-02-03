@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router";
 import { _ } from "lodash";
 import FriendListCompressed from "../Friends/FriendListCompressed";
@@ -9,68 +8,40 @@ import { renderLog } from "../../utils/logging";
 
 export default class NetworkFriends extends Component {
   static propTypes = {
-    history: PropTypes.object,
-    children: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      current_friend_list: [],
-      search_filter: false,
-      search_term: "",
-      current_friend_list_filtered_by_search: [],
+      currentFriendList: [],
+      searchFilter: false,
+      currentFriendListFilteredBySearch: [],
     };
   }
 
   componentDidMount () {
-    if (!this.state.current_friend_list) {
+    if (!this.state.currentFriendList) {
       FriendActions.currentFriends();
     }
     this.setState({
-      current_friend_list: FriendStore.currentFriends(),
+      currentFriendList: FriendStore.currentFriends(),
     });
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
-  }
-
-  onFriendStoreChange () {
-    this.setState({
-      current_friend_list: FriendStore.currentFriends(),
-    });
   }
 
   componentWillUnmount () {
     this.friendStoreListener.remove();
   }
 
-  searchFriends (event) {
-    const search_term = event.target.value;
-    if (search_term.length === 0) {
-      this.setState({
-        search_filter: false,
-        search_term: "",
-        current_friend_list_filtered_by_search: [],
-      });
-    } else {
-      const search_term_lowercase = search_term.toLowerCase();
-      const searched_friend_list = _.filter(this.state.current_friend_list,
-        user => user.voter_display_name.toLowerCase().includes(search_term_lowercase));
-
-      this.setState({
-        search_filter: true,
-        search_term,
-        current_friend_list_filtered_by_search: searched_friend_list,
-      });
-    }
+  onFriendStoreChange () {
+    this.setState({
+      currentFriendList: FriendStore.currentFriends(),
+    });
   }
 
   getCurrentRoute () {
-    const current_route = "/friends";
-    return current_route;
-  }
-
-  toggleEditMode () {
-    this.setState({ editMode: !this.state.editMode });
+    const currentRoute = "/friends";
+    return currentRoute;
   }
 
   getFollowingType () {
@@ -81,15 +52,40 @@ export default class NetworkFriends extends Component {
     }
   }
 
+  searchFriends (event) {
+    const searchTerm = event.target.value;
+    if (searchTerm.length === 0) {
+      this.setState({
+        searchFilter: false,
+        currentFriendListFilteredBySearch: [],
+      });
+    } else {
+      const { currentFriendList } = this.state;
+      const searchTermLowerCase = searchTerm.toLowerCase();
+      const searchedFriendList = _.filter(currentFriendList,
+        user => user.voter_display_name.toLowerCase().includes(searchTermLowerCase));
+
+      this.setState({
+        searchFilter: true,
+        currentFriendListFilteredBySearch: searchedFriendList,
+      });
+    }
+  }
+
+  toggleEditMode () {
+    const { editMode } = this.state;
+    this.setState({ editMode: !editMode });
+  }
+
   render () {
     renderLog(__filename);
-    let current_friend_list = [];
-    if (!this.state.search_filter) {
-      const current_friend_list_complete = this.state.current_friend_list;
+    let currentFriendList = [];
+    if (!this.state.searchFilter) {
+      const currentFriendListComplete = this.state.currentFriendList;
       const FRIENDS_TO_SHOW = 3;
-      current_friend_list = current_friend_list_complete.slice(0, FRIENDS_TO_SHOW);
+      currentFriendList = currentFriendListComplete.slice(0, FRIENDS_TO_SHOW);
     } else {
-      current_friend_list = this.state.current_friend_list_filtered_by_search;
+      currentFriendList = this.state.currentFriendListFilteredBySearch;
     }
 
     return (
@@ -98,11 +94,11 @@ export default class NetworkFriends extends Component {
           <div className="card-main">
             <h1 className="h4">Your Friends</h1>
             <div>
-              { this.state.current_friend_list && this.state.current_friend_list.length > 0 ? (
+              { this.state.currentFriendList && this.state.currentFriendList.length > 0 ? (
                 <span>
                   <div className="card">
                     <FriendListCompressed
-                      friendList={current_friend_list}
+                      friendList={currentFriendList}
                       editMode={this.state.editMode}
                     />
                   </div>

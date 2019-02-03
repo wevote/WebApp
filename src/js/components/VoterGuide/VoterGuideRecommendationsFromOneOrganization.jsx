@@ -13,34 +13,27 @@ export default class VoterGuideRecommendationsFromOneOrganization extends Compon
   constructor (props) {
     super(props);
     this.state = {
-      organization_we_vote_id: "",
-      voter_guides_to_follow_organization_recommendation_all_elections: [],
-      voter_guides_to_follow_organization_recommendation_this_election: [],
+      organizationWeVoteId: "",
+      voterGuidesToFollowOrganizationRecommendationAllElections: [],
+      voterGuidesToFollowOrganizationRecommendationThisElection: [],
     };
   }
 
   componentDidMount () {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.setState({
-      organization_we_vote_id: this.props.organization_we_vote_id,
-      voter_guides_to_follow_organization_recommendation_all_elections: VoterGuideStore.getVoterGuidesFollowedByOrganization(this.props.organization_we_vote_id),
-      voter_guides_to_follow_organization_recommendation_this_election: VoterGuideStore.getVoterGuidesToFollowByOrganizationRecommendation(this.props.organization_we_vote_id),
+      organizationWeVoteId: this.props.organization_we_vote_id,
+      voterGuidesToFollowOrganizationRecommendationAllElections: VoterGuideStore.getVoterGuidesFollowedByOrganization(this.props.organization_we_vote_id),
+      voterGuidesToFollowOrganizationRecommendationThisElection: VoterGuideStore.getVoterGuidesToFollowByOrganizationRecommendation(this.props.organization_we_vote_id),
     });
   }
 
   componentWillReceiveProps (nextProps) {
     // When a new organization_we_vote_id is passed in, update this component to show the new data
     this.setState({
-      organization_we_vote_id: nextProps.organization_we_vote_id,
-      voter_guides_to_follow_organization_recommendation_all_elections: VoterGuideStore.getVoterGuidesFollowedByOrganization(nextProps.organization_we_vote_id),
-      voter_guides_to_follow_organization_recommendation_this_election: VoterGuideStore.getVoterGuidesToFollowByOrganizationRecommendation(nextProps.organization_we_vote_id),
-    });
-  }
-
-  onVoterGuideStoreChange () {
-    this.setState({
-      voter_guides_to_follow_organization_recommendation_all_elections: VoterGuideStore.getVoterGuidesFollowedByOrganization(this.state.organization_we_vote_id),
-      voter_guides_to_follow_organization_recommendation_this_election: VoterGuideStore.getVoterGuidesToFollowByOrganizationRecommendation(this.state.organization_we_vote_id),
+      organizationWeVoteId: nextProps.organization_we_vote_id,
+      voterGuidesToFollowOrganizationRecommendationAllElections: VoterGuideStore.getVoterGuidesFollowedByOrganization(nextProps.organization_we_vote_id),
+      voterGuidesToFollowOrganizationRecommendationThisElection: VoterGuideStore.getVoterGuidesToFollowByOrganizationRecommendation(nextProps.organization_we_vote_id),
     });
   }
 
@@ -48,26 +41,34 @@ export default class VoterGuideRecommendationsFromOneOrganization extends Compon
     this.voterGuideStoreListener.remove();
   }
 
+  onVoterGuideStoreChange () {
+    const { organizationWeVoteId } = this.state;
+    this.setState({
+      voterGuidesToFollowOrganizationRecommendationAllElections: VoterGuideStore.getVoterGuidesFollowedByOrganization(organizationWeVoteId),
+      voterGuidesToFollowOrganizationRecommendationThisElection: VoterGuideStore.getVoterGuidesToFollowByOrganizationRecommendation(organizationWeVoteId),
+    });
+  }
+
   render () {
     renderLog(__filename);
-    if (this.state.voter_guides_to_follow_organization_recommendation_this_election.length) {
+    if (this.state.voterGuidesToFollowOrganizationRecommendationThisElection.length) {
       return (
         <div className="">
         These are recommended voter guides to listen to from this election.
           <GuideList
-            organizationsToFollow={this.state.voter_guides_to_follow_organization_recommendation_this_election}
+            organizationsToFollow={this.state.voterGuidesToFollowOrganizationRecommendationThisElection}
             hide_stop_following_button
             hide_ignore_button
             instantRefreshOn={false}
           />
         </div>
       );
-    } else if (this.state.voter_guides_to_follow_organization_recommendation_all_elections.length) {
+    } else if (this.state.voterGuidesToFollowOrganizationRecommendationAllElections.length) {
       return (
         <div className="">
         These are recommended voter guides to listen to.
           <GuideList
-            organizationsToFollow={this.state.voter_guides_to_follow_organization_recommendation_all_elections}
+            organizationsToFollow={this.state.voterGuidesToFollowOrganizationRecommendationAllElections}
             hide_stop_following_button
             hide_ignore_button
             instantRefreshOn={false}

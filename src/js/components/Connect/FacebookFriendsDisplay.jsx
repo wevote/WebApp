@@ -9,7 +9,6 @@ import FacebookActions from "../../actions/FacebookActions";
 import { renderLog } from "../../utils/logging";
 
 export default class FacebookFriendsDisplay extends Component {
-
   static propTypes = {
     maximumFriendDisplay: PropTypes.number,
     facebookInvitableFriendsList: PropTypes.array,
@@ -38,15 +37,15 @@ export default class FacebookFriendsDisplay extends Component {
     }
   }
 
-  componentWillUnmount () {
-    this.facebookStoreListener.remove();
-  }
-
   componentWillReceiveProps (nextProps) {
     this.setState({
       facebookInvitableFriendsList: nextProps.facebookInvitableFriendsList,
       maximumFriendDisplay: nextProps.maximumFriendDisplay,
     });
+  }
+
+  componentWillUnmount () {
+    this.facebookStoreListener.remove();
   }
 
   onFacebookStoreChange () {
@@ -55,24 +54,25 @@ export default class FacebookFriendsDisplay extends Component {
     });
   }
 
-  onTriggerEnter (friend_id) {
-    this.refs[`overlay-${friend_id}`].show();
+  onTriggerEnter (friendWeVoteId) {
+    this.refs[`overlay-${friendWeVoteId}`].show();
     this.show_popover = true;
     clearTimeout(this.hide_popover_timer);
   }
 
-  onTriggerLeave (friend_id) {
+  onTriggerLeave (friendWeVoteId) {
     this.show_popover = false;
     clearTimeout(this.hide_popover_timer);
     this.hide_popover_timer = setTimeout(() => {
       if (!this.show_popover) {
-        this.refs[`overlay-${friend_id}`].hide();
+        this.refs[`overlay-${friendWeVoteId}`].hide();
       }
     }, 100);
   }
 
   toggleEditMode () {
-    this.setState({ editMode: !this.state.editMode });
+    const { editMode } = this.state;
+    this.setState({ editMode: !editMode });
   }
 
   render () {
@@ -81,24 +81,24 @@ export default class FacebookFriendsDisplay extends Component {
       return null;
     }
 
-    let local_counter = 0;
-    let friends_not_shown_count = 0;
+    let localCounter = 0;
+    let friendsNotShownCount = 0;
     if (this.state.facebookInvitableFriendsList &&
         this.state.facebookInvitableFriendsList.length > this.state.maximumFriendDisplay) {
-      friends_not_shown_count = this.state.facebookInvitableFriendsList.length - this.state.maximumFriendDisplay;
+      friendsNotShownCount = this.state.facebookInvitableFriendsList.length - this.state.maximumFriendDisplay;
     }
-    const friend_list_to_display = this.state.facebookInvitableFriendsList.map((one_friend) => {
-      local_counter++;
-      const friend_id = one_friend.id;
-      if (local_counter > this.state.maximumFriendDisplay) {
-        if (local_counter === this.state.maximumFriendDisplay + 1) {
+    const friendListToDisplay = this.state.facebookInvitableFriendsList.map((oneFriend) => {
+      localCounter++;
+      const friendId = oneFriend.id;
+      if (localCounter > this.state.maximumFriendDisplay) {
+        if (localCounter === this.state.maximumFriendDisplay + 1) {
           // If here we want to show how many friends there are to follow
           return (
-            <span key={one_friend.id}>
+            <span key={oneFriend.id}>
               <Link to="/facebook_invitable_friends">
                 {" "}
                 +
-                {friends_not_shown_count}
+                {friendsNotShownCount}
               </Link>
             </span>
           );
@@ -109,13 +109,15 @@ export default class FacebookFriendsDisplay extends Component {
         // Removed bsPrefix="card-popover"
         const friendPopover = (
           <Popover
-            id={`friend-popover-${friend_id}`}
-            onMouseOver={() => this.onTriggerEnter(friend_id)}
-            onMouseOut={() => this.onTriggerLeave(friend_id)}
+            id={`friend-popover-${friendId}`}
+            onMouseOver={() => this.onTriggerEnter(friendId)}
+            onFocus={() => this.onTriggerEnter(friendId)}
+            onMouseOut={() => this.onTriggerLeave(friendId)}
+            onBlur={() => this.onTriggerLeave(friendId)}
           >
             <div className="card">
               <div className="card-main">
-                <FacebookFriendCard {...one_friend} />
+                <FacebookFriendCard {...oneFriend} />
               </div>
             </div>
           </Popover>
@@ -124,17 +126,19 @@ export default class FacebookFriendsDisplay extends Component {
         const placement = "bottom";
         return (
           <OverlayTrigger
-            key={`trigger-${friend_id}`}
-            ref={`overlay-${friend_id}`}
-            onMouseOver={() => this.onTriggerEnter(friend_id)}
-            onMouseOut={() => this.onTriggerLeave(friend_id)}
+            key={`trigger-${friendId}`}
+            ref={`overlay-${friendId}`}
+            onMouseOver={() => this.onTriggerEnter(friendId)}
+            onFocus={() => this.onTriggerEnter(friendId)}
+            onMouseOut={() => this.onTriggerLeave(friendId)}
+            onBlur={() => this.onTriggerLeave(friendId)}
             rootClose
             placement={placement}
             overlay={friendPopover}
           >
             <span className="position-rating__source with-popover">
               <Link to="/facebook_invitable_friends">
-                <FacebookFriendTinyDisplay {...one_friend} />
+                <FacebookFriendTinyDisplay {...oneFriend} />
               </Link>
             </span>
           </OverlayTrigger>
@@ -144,9 +148,8 @@ export default class FacebookFriendsDisplay extends Component {
 
     return (
       <span className="guidelist card-child__list-group">
-        {friend_list_to_display}
+        {friendListToDisplay}
       </span>
     );
   }
-
 }

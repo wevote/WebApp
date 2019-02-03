@@ -11,29 +11,13 @@ import VoterStore from "../stores/VoterStore";
 
 export default class WouldYouLikeToMergeAccountsOld extends Component {
   static propTypes = {
-    currentVoterWeVoteId: PropTypes.string.isRequired,
     emailSecretKey: PropTypes.string,
     facebookSecretKey: PropTypes.string,
-    mergeIntoVoterWeVoteId: PropTypes.string.isRequired,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      loading: true,
-      email_address_status: {
-        email_address_already_owned_by_other_voter: false,
-        email_address_created: false,
-        email_address_deleted: false,
-        verification_email_sent: false,
-      },
-      facebook_sign_in_status: {
-        email_address_created: false,
-        email_address_deleted: false,
-        verification_email_sent: false,
-      },
-      voter_email_address: "",
-      voter_email_address_list: [],
     };
   }
 
@@ -66,21 +50,21 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
     });
   }
 
-  cancelMerge () {
+  cancelMerge = () => {
     historyPush("/settings/account");
   }
 
-  voterEmailAddressSignInConfirm (email_secret_key) {
-    // console.log("voterEmailAddressSignInConfirm, email_secret_key:", email_secret_key);
-    VoterActions.voterEmailAddressSignInConfirm(email_secret_key);
+  voterFacebookSignInConfirm = () => {
+    FacebookActions.voterFacebookSignInConfirm();
+    this.setState({ saving: true });
+  }
+
+  voterEmailAddressSignInConfirm = (emailSecretKey) => {
+    // console.log("voterEmailAddressSignInConfirm, emailSecretKey:", emailSecretKey);
+    VoterActions.voterEmailAddressSignInConfirm(emailSecretKey);
     this.setState({
       saving: true,
     });
-  }
-
-  voterFacebookSignInConfirm () {
-    FacebookActions.voterFacebookSignInConfirm();
-    this.setState({ saving: true });
   }
 
   render () {
@@ -90,7 +74,7 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
       return LoadingWheel;
     }
 
-    const merge_status_html = (
+    const mergeStatusHtml = (
       <span>
         { !this.state.email_sign_in_status.yes_please_merge_accounts ? (
           <Alert variant="danger">
@@ -113,20 +97,20 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
       </span>
     );
 
-    let merge_action_button;
+    let mergeActionButton;
     if (this.props.emailSecretKey && this.props.emailSecretKey !== "") {
-      merge_action_button = (
+      mergeActionButton = (
         <Button
-          onClick={this.voterEmailAddressSignInConfirm.bind(this, this.props.emailSecretKey)}
+          onClick={this.voterEmailAddressSignInConfirm(this.props.emailSecretKey)}
           variant="primary"
         >
           Sign In and Merge My Offline Changes
         </Button>
       );
     } else {
-      merge_action_button = (
+      mergeActionButton = (
         <Button
-          onClick={this.voterFacebookSignInConfirm.bind(this)}
+          onClick={this.voterFacebookSignInConfirm}
           variant="primary"
         >
           Sign In and Merge My Offline Changes
@@ -136,17 +120,17 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
 
     return (
       <div className="guidelist card-child__list-group">
-        {merge_status_html}
+        {mergeStatusHtml}
 
         <div className="u-stack--md">
           <Button
-            onClick={this.cancelMerge.bind(this)}
+            onClick={this.cancelMerge}
             variant="default"
             size="small"
           >
             Cancel Sign In
           </Button>
-          {merge_action_button}
+          {mergeActionButton}
         </div>
       </div>
     );

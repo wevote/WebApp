@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
 import VoterGuideStore from "../../stores/VoterGuideStore";
@@ -10,15 +9,13 @@ import { renderLog } from "../../utils/logging";
 
 export default class NetworkOpinions extends Component {
   static propTypes = {
-    history: PropTypes.object,
-    children: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      ballot_has_guides: VoterGuideStore.ballotHasGuides(),
-      voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
+      ballotHasGuides: VoterGuideStore.ballotHasGuides(),
+      voterGuidesToFollowAll: VoterGuideStore.getVoterGuidesToFollowAll(),
     };
   }
 
@@ -26,20 +23,20 @@ export default class NetworkOpinions extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
   }
 
-  onVoterGuideStoreChange () {
-    this.setState({
-      ballot_has_guides: VoterGuideStore.ballotHasGuides(),
-      voter_guides_to_follow_all: VoterGuideStore.getVoterGuidesToFollowAll(),
-    });
-  }
-
   componentWillUnmount () {
     this.voterGuideStoreListener.remove();
   }
 
+  onVoterGuideStoreChange () {
+    this.setState({
+      ballotHasGuides: VoterGuideStore.ballotHasGuides(),
+      voterGuidesToFollowAll: VoterGuideStore.getVoterGuidesToFollowAll(),
+    });
+  }
+
   getCurrentRoute () {
-    const current_route = "/opinions";
-    return current_route;
+    const currentRoute = "/opinions";
+    return currentRoute;
   }
 
   getFollowingType () {
@@ -54,7 +51,7 @@ export default class NetworkOpinions extends Component {
 
   render () {
     renderLog(__filename);
-    const { ballot_has_guides, voter_guides_to_follow_all } = this.state;
+    const { ballotHasGuides, voterGuidesToFollowAll } = this.state;
     const floatRight = {
       float: "right",
     };
@@ -75,12 +72,12 @@ export default class NetworkOpinions extends Component {
             <div className="d-print-none">
               <SearchGuidesToFollowBox />
             </div>
-            { ballot_has_guides ?
+            { ballotHasGuides ?
               <p /> :
               <p>There are no organizations with opinions on your ballot. Here are some popular organizations</p>
             }
             <div className="card">
-              <GuideList organizationsToFollow={voter_guides_to_follow_all} instantRefreshOn />
+              <GuideList organizationsToFollow={voterGuidesToFollowAll} instantRefreshOn />
             </div>
             <Link className="pull-right d-print-none" to="/opinions_ignored">Organizations you are ignoring</Link>
             <br />

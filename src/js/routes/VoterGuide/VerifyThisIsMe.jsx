@@ -42,10 +42,10 @@ export default class VerifyThisIsMe extends Component {
   }
 
   componentDidMount () {
-    console.log("VerifyThisIsMe, Entering componentDidMount");
+    // console.log("VerifyThisIsMe, Entering componentDidMount");
 
     this.onVoterStoreChange();
-    console.log(`VerifyThisIsMe, componentDidMount: ${this.props.params.twitter_handle}`);
+    // console.log(`VerifyThisIsMe, componentDidMount: ${this.props.params.twitter_handle}`);
     TwitterActions.twitterIdentityRetrieve(this.props.params.twitter_handle);
 
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -64,13 +64,13 @@ export default class VerifyThisIsMe extends Component {
   }
 
   onVoterStoreChange () {
-    console.log("Entering onVoterStoreChange");
+    // console.log("Entering onVoterStoreChange");
     this.setState({ voter: VoterStore.getVoter() });
   }
 
   onOrganizationStoreChange () {
     const { owner_we_vote_id: ownerWeVoteId } = TwitterStore.get();
-    console.log(`Entering onOrganizationStoreChange, ownerWeVoteId: ${ownerWeVoteId}`);
+    // console.log(`Entering onOrganizationStoreChange, ownerWeVoteId: ${ownerWeVoteId}`);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(ownerWeVoteId),
     });
@@ -92,7 +92,7 @@ export default class VerifyThisIsMe extends Component {
       status,
     } = TwitterStore.get();
 
-    console.log(`Entering onTwitterStoreChange, owner_we_vote_id: ${ownerWeVoteId}`);
+    // console.log(`Entering onTwitterStoreChange, owner_we_vote_id: ${ownerWeVoteId}`);
 
     this.setState({
       kindOfOwner,
@@ -115,12 +115,12 @@ export default class VerifyThisIsMe extends Component {
     const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
     let signedInWithThisTwitterAccount = false;
     if (signedInTwitter) {
-      console.log("VerifyThisIsMe render, signedInTwitter: ", signedInTwitter);
-      console.log(`VerifyThisIsMe this.state.twitterHandle: ${this.state.twitterHandle}`);
+      // console.log("VerifyThisIsMe render, signedInTwitter: ", signedInTwitter);
+      // console.log(`VerifyThisIsMe this.state.twitterHandle: ${this.state.twitterHandle}`);
       signedInWithThisTwitterAccount = voter.twitter_screen_name.toLowerCase() === this.state.twitterHandle.toLowerCase();
       if (signedInWithThisTwitterAccount) {
         // If we are being asked to verify the account we are already signed into, return to the TwitterHandle page
-        console.log("VerifyThisIsMe signedInWithThisTwitterAccount is True");
+        // console.log("VerifyThisIsMe signedInWithThisTwitterAccount is True");
         historyPush(`/${voter.twitter_screen_name}`);
         return LoadingWheel;
       }
@@ -130,7 +130,7 @@ export default class VerifyThisIsMe extends Component {
       // Show a loading wheel while this component's data is loading
       return LoadingWheel;
     } else if (this.state.kindOfOwner === "CANDIDATE") {
-      console.log("VerifyThisIsMe this.state.kindOfOwner === CANDIDATE");
+      // console.log("VerifyThisIsMe this.state.kindOfOwner === CANDIDATE");
       this.props.params.we_vote_id = this.state.ownerWeVoteId;
       return (
         <span>
@@ -172,8 +172,8 @@ export default class VerifyThisIsMe extends Component {
         </span>
       );
     } else if (this.state.kindOfOwner === "ORGANIZATION") {
-      console.log("VerifyThisIsMe this.state.kindOfOwner === ORGANIZATION");
-      console.log(`VerifyThisIsMe this.state.ownerWeVoteId: ${this.state.ownerWeVoteId}`);
+      // console.log("VerifyThisIsMe this.state.kindOfOwner === ORGANIZATION");
+      // console.log(`VerifyThisIsMe this.state.ownerWeVoteId: ${this.state.ownerWeVoteId}`);
       this.props.params.we_vote_id = this.state.ownerWeVoteId;
 
       if (!organization) {
@@ -216,7 +216,7 @@ export default class VerifyThisIsMe extends Component {
         </span>
       );
     } else if (this.state.kindOfOwner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE") {
-      console.log("VerifyThisIsMe this.state.kindOfOwner === TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE");
+      // console.log("VerifyThisIsMe this.state.kindOfOwner === TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE");
       return (
         <div>
           <Helmet title="Claim This Page - We Vote" />

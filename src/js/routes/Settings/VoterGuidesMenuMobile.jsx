@@ -79,7 +79,7 @@ export default class VoterGuidesMenuMobile extends Component {
   }
 
   onVoterGuideStoreChange () {
-    this.setState({ transitioning: false });
+    this.setState();
   }
 
   onVoterStoreChange () {

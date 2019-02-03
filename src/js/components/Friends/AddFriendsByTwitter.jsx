@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
-import { historyPush } from "../../utils/cordovaUtils";
 import LoadingWheel from "../LoadingWheel";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
@@ -15,13 +14,11 @@ export default class AddFriendsByTwitter extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      add_friends_message: "Please join me in preparing for the upcoming election.",
-      twitter_handles: "",
-      redirect_url_upon_save: "/friends/sign_in", // TODO DALE Remove this?
+      addFriendsMessage: "Please join me in preparing for the upcoming election.",
+      twitterHandles: "",
       loading: false,
-      on_enter_twitter_handles_step: true,
-      on_request_email_step: false,
-      on_friend_invitations_sent_step: false,
+      onEnterTwitterHandlesStep: true,
+      onFriendInvitationsSentStep: false,
       voter: {},
     };
   }
@@ -45,42 +42,20 @@ export default class AddFriendsByTwitter extends Component {
     this.setState({ voter: VoterStore.getVoter(), loading: false });
   }
 
-  _ballotLoaded () {
-    // TODO DALE Remove this?
-    historyPush(this.state.redirect_url_upon_save);
-  }
+  // cacheTwitterHandles (e) {
+  //   this.setState({
+  //     twitterHandles: e.target.value,
+  //     onFriendInvitationsSentStep: false,
+  //   });
+  // }
 
-  cacheTwitterHandles (e) {
-    this.setState({
-      twitter_handles: e.target.value,
-      on_friend_invitations_sent_step: false,
-    });
-  }
+  // cacheAddFriendsByTwitterMessage (e) {
+  //   this.setState({
+  //     addFriendsMessage: e.target.value,
+  //   });
+  // }
 
-  cacheAddFriendsByTwitterMessage (e) {
-    this.setState({
-      add_friends_message: e.target.value,
-    });
-  }
-
-  friendInvitationByTwitterHandleSend (e) {
-    e.preventDefault();
-    FriendActions.friendInvitationByTwitterHandleSend(this.state.twitter_handles, this.state.add_friends_message);
-    this.setState({
-      loading: true,
-      twitter_handles: "",
-      on_enter_twitter_handles_step: true,
-      on_request_email_step: false,
-      on_friend_invitations_sent_step: true,
-    });
-  }
-
-  hasValidEmail () {
-    const { voter } = this.state;
-    return voter !== undefined ? voter.has_valid_email : false;
-  }
-
-  onKeyDown (event) {
+  onKeyDown = (event) => {
     const enterAndSpaceKeyCodes = [13, 32];
     const scope = this;
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
@@ -88,35 +63,48 @@ export default class AddFriendsByTwitter extends Component {
     }
   }
 
-  AddFriendsByTwitterStepsManager (event) {
+  AddFriendsByTwitterStepsManager = (event) => {
     // This function is called when the form is submitted
     console.log("AddFriendsByTwitterStepsManager");
 
-    // Validate twitter_handles
-    let twitter_handles_error = false;
-    let error_message = "";
-    if (!this.state.twitter_handles) {
-      twitter_handles_error = true;
-      error_message += "Please enter email address or Twitter handle. ";
+    // Validate twitterHandles
+    let twitterHandlesError = false;
+    if (!this.state.twitterHandles) {
+      twitterHandlesError = true;
     }
 
-    if (twitter_handles_error) {
-      console.log("AddFriendsByTwitterStepsManager, twitter_handles_error");
+    if (twitterHandlesError) {
+      console.log("AddFriendsByTwitterStepsManager, twitterHandlesError");
       this.setState({
         loading: false,
-        twitter_handles_error: true,
-        error_message,
       });
     } else if (!this.hasValidEmail()) {
       console.log("AddFriendsByTwitterStepsManager, NOT hasValidEmail");
       this.setState({
         loading: false,
-        on_request_email_step: true,
+        onRequestEmailStep: true,
       });
     } else {
       console.log("AddFriendsByTwitterStepsManager, calling friendInvitationByTwitterHandleSend");
       this.friendInvitationByTwitterHandleSend(event);
     }
+  }
+
+  friendInvitationByTwitterHandleSend (e) {
+    e.preventDefault();
+    FriendActions.friendInvitationByTwitterHandleSend(this.state.twitterHandles, this.state.addFriendsMessage);
+    this.setState({
+      loading: true,
+      twitterHandles: "",
+      onEnterTwitterHandlesStep: true,
+      onRequestEmailStep: false,
+      onFriendInvitationsSentStep: true,
+    });
+  }
+
+  hasValidEmail () {
+    const { voter } = this.state;
+    return voter !== undefined ? voter.has_valid_email : false;
   }
 
   render () {
@@ -132,16 +120,16 @@ export default class AddFriendsByTwitter extends Component {
 
     return (
       <div>
-        {this.state.on_friend_invitations_sent_step ? (
+        {this.state.onFriendInvitationsSentStep ? (
           <div className="alert alert-success">
           Invitations sent. Is there anyone else you&apos;d like to invite?
           </div>
         ) : null
         }
 
-        {this.state.on_enter_twitter_handles_step ? (
+        {this.state.onEnterTwitterHandlesStep ? (
           <div>
-            <form onSubmit={this.AddFriendsByTwitterStepsManager.bind(this)} className="u-stack--md">
+            <form onSubmit={this.AddFriendsByTwitterStepsManager} className="u-stack--md">
               <div>
             ADD_FRIENDS_BY_TWITTER - NOT FINISHED YET
                 {/* <input type="text" name="email_address"
@@ -151,7 +139,7 @@ export default class AddFriendsByTwitter extends Component {
             {this.state.twitter_handles ?
               <span>
                 <label htmlFor="last-name">Include a Message <span className="small">(Optional)</span></label><br />
-                <input type="text" name="add_friends_message"
+                <input type="text" name="addFriendsMessage"
                        className="form-control"
                        onChange={this.cacheAddFriendsByTwitterMessage.bind(this)}
                        defaultValue="Please join me in preparing for the upcoming election." />
@@ -164,8 +152,8 @@ export default class AddFriendsByTwitter extends Component {
               <span style={floatRight}>
                 <Button
                   tabIndex="0"
-                  onKeyDown={this.onKeyDown.bind(this)}
-                  onClick={this.AddFriendsByTwitterStepsManager.bind(this)}
+                  onKeyDown={this.onKeyDown}
+                  onClick={this.AddFriendsByTwitterStepsManager}
                   variant="primary"
                   disabled={!this.state.twitter_handles}
                 >
@@ -183,7 +171,7 @@ export default class AddFriendsByTwitter extends Component {
         ) : null
         }
 
-        {this.state.on_request_email_step ? (
+        {this.state.onRequestEmailStep ? (
           <div>
           ON REQUEST EMAIL STEP
           </div>

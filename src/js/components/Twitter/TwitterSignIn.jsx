@@ -13,6 +13,68 @@ import TwitterActions from "../../actions/TwitterActions";
 const returnURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/twitter_sign_in`;
 
 class TwitterSignIn extends Component {
+  // TODO: April 17, 2018, this is used by Twitter and SignIn by Email, and should be refactored out of here.  It is really the handleOpenURL function.
+  static handleTwitterOpenURL (url) {
+    oAuthLog(`---------------xxxxxx-------- Application handleTwitterOpenUrl: ${url}`);
+    if (url.startsWith("wevotetwitterscheme://")) {
+      oAuthLog(`handleTwitterOpenURL received wevotetwitterscheme: ${url}`);
+      const search = url.replace(new RegExp("&amp;", "g"), "&");
+      const urlParams = new URLSearchParams(search);
+
+      if (urlParams.has("twitter_redirect_url")) {
+        const redirectURL = urlParams.get("twitter_redirect_url");
+        oAuthLog(`twitterSignIn cordova, redirecting to: ${redirectURL}`);
+
+        if (isIOS()) {
+          // eslint-disable-next-line no-undef
+          SafariViewController.hide(); // Hide the previous WKWebView
+          cordovaOpenSafariView(redirectURL, null, 500);
+        } else {
+          oAuthLog("redirectURL: ", redirectURL);
+          const inAppBrowserRef = cordova.InAppBrowser.open(redirectURL, "_blank", "toolbar=no,location=yes,hardwareback=no");
+          inAppBrowserRef.addEventListener("exit", () => {
+            oAuthLog("inAppBrowserRef on exit: ", redirectURL);
+          });
+
+          inAppBrowserRef.addEventListener("customscheme", (event) => {
+            oAuthLog("customscheme: ", event.url);
+            TwitterSignIn.handleTwitterOpenURL(event.url);
+            inAppBrowserRef.close();
+          });
+        }
+      } else if (urlParams.has("access_token_and_secret_returned")) {
+        if (urlParams.get("success") === "True") {
+          oAuthLog("twitterSignIn cordova, received secret -- push /ballot");
+          TwitterActions.twitterSignInRetrieve();
+          historyPush("/ballot");
+        } else {
+          oAuthLog("twitterSignIn cordova, FAILED to receive secret -- push /twitter_sign_in");
+          historyPush("/twitter_sign_in");
+        }
+      } else if (urlParams.has("twitter_handle_found") && urlParams.get("twitter_handle_found") === "True") {
+        oAuthLog(`twitterSignIn cordova, twitter_handle_found -- push /twitter_sign_in -- received handle = ${urlParams.get("twitter_handle")}`);
+
+        if (isIOS()) {
+          // eslint-disable-next-line no-undef
+          SafariViewController.hide(); // Hide the previous WKWebView
+        }
+
+        historyPush("/twitter_sign_in");
+      } else if (url.startsWith("wevotetwitterscheme://sign_in_email")) {
+        oAuthLog(`twitterSignIn by email cordova, (not really twitter) -- received url = ${url}`);
+
+        // Example url: wevotetwitterscheme://sign_in_email/1278821
+        const n = url.indexOf("/");
+        const payload = url.substring(n + 1);
+        historyPush(payload); // Example payload: "/sign_in_email/1278821"
+      } else {
+        console.log("ERROR in window.handleOpenURL, NO MATCH");
+      }
+    } else {
+      console.log(`ERROR: window.handleOpenURL received invalid url: ${url}`);
+    }
+  }
+
   constructor (props) {
     super(props);
     this.state = {
@@ -74,68 +136,6 @@ class TwitterSignIn extends Component {
 
         // inAppBrowserRef.close();
       });
-    }
-  }
-
-  // TODO: April 17, 2018, this is used by Twitter and SignIn by Email, and should be refactored out of here.  It is really the handleOpenURL function.
-  static handleTwitterOpenURL (url) {
-    oAuthLog(`---------------xxxxxx-------- Application handleTwitterOpenUrl: ${url}`);
-    if (url.startsWith("wevotetwitterscheme://")) {
-      oAuthLog(`handleTwitterOpenURL received wevotetwitterscheme: ${url}`);
-      const search = url.replace(new RegExp("&amp;", "g"), "&");
-      const urlParams = new URLSearchParams(search);
-
-      if (urlParams.has("twitter_redirect_url")) {
-        const redirectURL = urlParams.get("twitter_redirect_url");
-        oAuthLog(`twitterSignIn cordova, redirecting to: ${redirectURL}`);
-
-        if (isIOS()) {
-          // eslint-disable-next-line no-undef
-          SafariViewController.hide(); // Hide the previous WKWebView
-          cordovaOpenSafariView(redirectURL, null, 500);
-        } else {
-          oAuthLog("redirectURL: ", redirectURL);
-          const inAppBrowserRef = cordova.InAppBrowser.open(redirectURL, "_blank", "toolbar=no,location=yes,hardwareback=no");
-          inAppBrowserRef.addEventListener("exit", () => {
-            oAuthLog("inAppBrowserRef on exit: ", redirectURL);
-          });
-
-          inAppBrowserRef.addEventListener("customscheme", (event) => {
-            oAuthLog("customscheme: ", event.url);
-            TwitterSignIn.handleTwitterOpenURL(event.url);
-            inAppBrowserRef.close();
-          });
-        }
-      } else if (urlParams.has("access_token_and_secret_returned")) {
-        if (urlParams.get("success") === "True") {
-          oAuthLog("twitterSignIn cordova, received secret -- push /ballot");
-          TwitterActions.twitterSignInRetrieve();
-          historyPush("/ballot");
-        } else {
-          oAuthLog("twitterSignIn cordova, FAILED to receive secret -- push /twitter_sign_in");
-          historyPush("/twitter_sign_in");
-        }
-      } else if (urlParams.has("twitter_handle_found") && urlParams.get("twitter_handle_found") === "True") {
-        oAuthLog(`twitterSignIn cordova, twitter_handle_found -- push /twitter_sign_in -- received handle = ${urlParams.get("twitter_handle")}`);
-
-        if (isIOS()) {
-          // eslint-disable-next-line no-undef
-          SafariViewController.hide(); // Hide the previous WKWebView
-        }
-
-        historyPush("/twitter_sign_in");
-      } else if (url.startsWith("wevotetwitterscheme://sign_in_email")) {
-        oAuthLog(`twitterSignIn by email cordova, (not really twitter) -- received url = ${url}`);
-
-        // Example url: wevotetwitterscheme://sign_in_email/1278821
-        const n = url.indexOf("/");
-        const payload = url.substring(n + 1);
-        historyPush(payload); // Example payload: "/sign_in_email/1278821"
-      } else {
-        console.log("ERROR in window.handleOpenURL, NO MATCH");
-      }
-    } else {
-      console.log(`ERROR: window.handleOpenURL received invalid url: ${url}`);
     }
   }
 

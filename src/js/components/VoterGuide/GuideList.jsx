@@ -12,7 +12,6 @@ import { showToastSuccess } from "../../utils/showToast";
 import { renderLog } from "../../utils/logging";
 
 export default class GuideList extends Component {
-
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     organizationsToFollow: PropTypes.array,
@@ -24,7 +23,6 @@ export default class GuideList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      organizationsReordered: false,
       organizationsToFollow: [],
       ballotItemWeVoteId: "",
     };
@@ -32,7 +30,8 @@ export default class GuideList extends Component {
 
   componentDidMount () {
     // console.log("GuideList componentDidMount");
-    const organizationsToFollow = this.sortOrganizations(this.props.organizationsToFollow, this.state.ballotItemWeVoteId);
+    const { ballotItemWeVoteId } = this.state;
+    const organizationsToFollow = this.sortOrganizations(this.props.organizationsToFollow, ballotItemWeVoteId);
     this.setState({
       organizationsToFollow,
       ballotItemWeVoteId: this.props.ballotItemWeVoteId,
@@ -42,7 +41,8 @@ export default class GuideList extends Component {
   componentWillReceiveProps (nextProps) {
     // console.log("GuideList componentWillReceiveProps");
     // Do not update the state if the organizationsToFollow list looks the same, and the ballotItemWeVoteId hasn't changed
-    const organizationsToFollow = this.sortOrganizations(nextProps.organizationsToFollow, this.state.ballotItemWeVoteId);
+    const { ballotItemWeVoteId } = this.state;
+    const organizationsToFollow = this.sortOrganizations(nextProps.organizationsToFollow, ballotItemWeVoteId);
     this.setState({
       organizationsToFollow,
       ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
@@ -51,8 +51,9 @@ export default class GuideList extends Component {
 
   handleIgnore (id) {
     OrganizationActions.organizationFollowIgnore(id);
+    const { organizationsToFollow } = this.state;
     this.setState({
-      organizationsToFollow: this.state.organizationsToFollow.filter(
+      organizationsToFollow: organizationsToFollow.filter(
         org => org.organization_we_vote_id !== id,
       ),
     });
@@ -67,7 +68,6 @@ export default class GuideList extends Component {
       let organization;
       let organizationPositionForThisBallotItem;
       const sortedOrganizations = [];
-      let atLeastOneOrganizationReordered = false;
       for (let i = 0; i < arrayLength; i++) {
         organization = organizationsList[i];
         organizationPositionForThisBallotItem = null;
@@ -81,16 +81,10 @@ export default class GuideList extends Component {
         if (organizationPositionForThisBallotItem && organizationPositionForThisBallotItem.statement_text) {
           // console.log("sortOrganizations unshift");
           sortedOrganizations.unshift(organization);
-          atLeastOneOrganizationReordered = true;
         } else {
           // console.log("sortOrganizations push");
           sortedOrganizations.push(organization);
         }
-      }
-      if (atLeastOneOrganizationReordered) {
-        this.setState({
-          organizationsReordered: true,
-        });
       }
       return sortedOrganizations;
     }
@@ -162,6 +156,7 @@ export default class GuideList extends Component {
                   <button
                     className="btn btn-default btn-sm"
                     onClick={this.handleIgnore.bind(this, organization.organization_we_vote_id)}
+                    type="button"
                   >
                     Ignore
                   </button>

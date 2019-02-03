@@ -17,11 +17,11 @@ export default class CodeCopier extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      is_loading: false,
-      is_twitter_handle_valid: false,
+      isLoading: false,
+      isTwitterHandleValid: false,
       status: "",
-      twitter_handle: "",
-      view_code: false,
+      twitterHandle: "",
+      viewCode: false,
     };
 
     this.copyCode = this.copyCode.bind(this);
@@ -50,16 +50,16 @@ export default class CodeCopier extends Component {
     }
 
     this.setState({
-      is_loading: false,
-      is_twitter_handle_valid: result.length,
+      isLoading: false,
+      isTwitterHandleValid: result.length,
       status,
-      twitter_handle: result,
+      twitterHandle: result,
     });
   }
 
   copyCode () {
-    if (this.props.sourceUrl || (!this.props.sourceUrl && this.state.is_twitter_handle_valid)) {
-      if (this.state.view_code) {
+    if (this.props.sourceUrl || (!this.props.sourceUrl && this.state.isTwitterHandleValid)) {
+      if (this.state.viewCode) {
         this.textareaCode.select();
         //  const successful = document.execCommand("copy");
         document.execCommand("copy");
@@ -69,7 +69,7 @@ export default class CodeCopier extends Component {
         // perhaps a tooltip that fades out after a moment should be created
       } else {
         this.setState({
-          view_code: true,
+          viewCode: true,
         }, () => this.copyCode());
       }
     }
@@ -77,18 +77,18 @@ export default class CodeCopier extends Component {
 
   resetState () {
     this.setState({
-      is_loading: false,
-      is_twitter_handle_valid: false,
+      isLoading: false,
+      isTwitterHandleValid: false,
       status: "",
-      twitter_handle: "",
-      view_code: false,
+      twitterHandle: "",
+      viewCode: false,
     });
   }
 
   toggleCode () {
-    const { view_code } = this.state;
+    const { viewCode } = this.state;
     this.setState({
-      view_code: !view_code,
+      viewCode: !viewCode,
     });
   }
 
@@ -97,9 +97,9 @@ export default class CodeCopier extends Component {
     if (event.target.value.length) {
       this.validateTwitterHandleAction(event.target.value);
       this.setState({
-        is_loading: true,
+        isLoading: true,
         status: "Searching...",
-        view_code: false,
+        viewCode: false,
       });
     } else {
       this.resetState();
@@ -113,7 +113,7 @@ export default class CodeCopier extends Component {
   render () {
     let { sourceUrl } = this.props;
     renderLog(__filename);
-    if (!sourceUrl) sourceUrl = `https://wevote.us/${this.state.twitter_handle}`;
+    if (!sourceUrl) sourceUrl = `https://wevote.us/${this.state.twitterHandle}`;
 
     const sourceCode =
       `<iframe src="${sourceUrl}?we_vote_branding_off=1" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>\n<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.3/iframeResizer.min.js"></script>\n<script type="text/javascript">iFrameResize({ checkOrigin:false, heightCalculationMethod: 'max' });</script>`;
@@ -124,14 +124,14 @@ export default class CodeCopier extends Component {
           <div className="col-xs-12 col-sm-6 col-md-4">
             <div className="code-copier">
               <h3 className="h3">{this.props.title}</h3>
-              <button className="btn btn-success u-stack--sm" onClick={this.copyCode}>Click to copy code</button>
+              <button className="btn btn-success u-stack--sm" onClick={this.copyCode} type="button">Click to copy code</button>
               <br />
               <div className="u-stack--sm">
                 <a className="code-copier__link" onClick={this.toggleCode}>
-                  { this.state.view_code ? "Hide Code" : "Show Code" }
+                  { this.state.viewCode ? "Hide Code" : "Show Code" }
                 </a>
               </div>
-              { this.state.view_code ? (
+              { this.state.viewCode ? (
                 <textarea
                   ref={(text) => { this.textareaCode = text; }}
                   className="clipboard textarea-clipboard u-stack--sm"
@@ -168,15 +168,15 @@ export default class CodeCopier extends Component {
                 className={this.state.status.length ?
                   "form-control" :
                   "form-control u-stack--sm"}
-                name="twitter_handle"
+                name="twitterHandle"
                 placeholder="Enter Twitter Handle"
                 onKeyDown={this.resetState}
                 onChange={this.validateTwitterHandle}
                 autoComplete
               />
               { this.state.status.length ? (
-                <p className={!this.state.is_loading ?      // eslint-disable-line no-nested-ternary
-                  this.state.is_twitter_handle_valid ?
+                <p className={!this.state.isLoading ?      // eslint-disable-line no-nested-ternary
+                  this.state.isTwitterHandleValid ?
                     "code-copier__status-success" :
                     "code-copier__status-error" :
                   null}
@@ -187,23 +187,24 @@ export default class CodeCopier extends Component {
               }
               <button
                 onClick={this.copyCode}
-                disabled={!this.state.is_twitter_handle_valid}
-                className={this.state.is_twitter_handle_valid ?
+                disabled={!this.state.isTwitterHandleValid}
+                className={this.state.isTwitterHandleValid ?
                   "btn btn-success u-stack--sm" :
                   "btn u-stack--sm"}
+                type="button"
               >
                 Click to copy code
               </button>
               <br />
-              { !this.state.is_loading && this.state.is_twitter_handle_valid ? (
+              { !this.state.isLoading && this.state.isTwitterHandleValid ? (
                 <div className="u-stack--sm">
                   <a className="code-copier__link" onClick={this.toggleCode}>
-                    { this.state.view_code ? "Hide Code" : "Show Code" }
+                    { this.state.viewCode ? "Hide Code" : "Show Code" }
                   </a>
                 </div>
               ) : null
               }
-              { !this.state.is_loading && this.state.is_twitter_handle_valid && this.state.view_code ? (
+              { !this.state.isLoading && this.state.isTwitterHandleValid && this.state.viewCode ? (
                 <textarea
                   ref={(text) => { this.textareaCode = text; }}
                   className="clipboard textarea-clipboard u-stack--sm"
@@ -238,14 +239,14 @@ export default class CodeCopier extends Component {
           <div className="col-xs-12 col-sm-6 col-md-4">
             <div className="code-copier">
               <h3 className="h3">{this.props.title}</h3>
-              <button className="btn btn-success u-stack--sm" onClick={this.copyCode}>Click to copy code</button>
+              <button className="btn btn-success u-stack--sm" onClick={this.copyCode} type="button">Click to copy code</button>
               <br />
               <div className="u-stack--sm">
                 <a className="code-copier__link" onClick={this.toggleCode}>
-                  { this.state.view_code ? "Hide Code" : "Show Code" }
+                  { this.state.viewCode ? "Hide Code" : "Show Code" }
                 </a>
               </div>
-              { this.state.view_code ? (
+              { this.state.viewCode ? (
                 <textarea
                   ref={(text) => { this.textareaCode = text; }}
                   className="clipboard textarea-clipboard u-stack--sm"

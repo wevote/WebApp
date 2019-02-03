@@ -122,8 +122,9 @@ export default class SettingsWidgetAccountType extends Component {
   }
 
   toggleEditForm () {
+    const { editFormOpen } = this.state;
     this.setState({
-      editFormOpen: !this.state.editFormOpen,
+      editFormOpen: !editFormOpen,
     });
   }
 

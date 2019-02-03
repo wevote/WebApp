@@ -5,14 +5,14 @@ import { historyPush, isCordova } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 
 export default class IntroNetworkBallotIsNext extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {};
-  }
-
   static goToBallotLink () {
     const goToBallot = "/ballot";
     historyPush(goToBallot);
+  }
+
+  constructor (props) {
+    super(props);
+    this.state = {};
   }
 
   componentWillMount () {
@@ -35,13 +35,13 @@ export default class IntroNetworkBallotIsNext extends Component {
       >
         <Helmet title="See Your Ballot - We Vote" />
         <div className="intro-story__h1--alt">We Vote</div>
-        <div ref="header2" className="intro-story__h2 intro-story__padding-top">
+        <div id="header2" className="intro-story__h2 intro-story__padding-top">
           Ready to
           {" "}
           <strong>vote your values</strong>
           ?
         </div>
-        <div ref="header2" className="intro-story__h2">
+        <div id="header2" className="intro-story__h2">
           On the next screen, you&apos;ll see
           <br />
           the next election

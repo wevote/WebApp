@@ -92,7 +92,7 @@ export default class SettingsMenuMobile extends Component {
   }
 
   onVoterGuideStoreChange () {
-    this.setState({ transitioning: false });
+    this.setState();
   }
 
   onVoterStoreChange () {

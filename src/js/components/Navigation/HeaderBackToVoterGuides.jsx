@@ -27,8 +27,6 @@ export default class HeaderBackToVoterGuides extends Component {
     this.state = {
       profilePopUpOpen: false,
       candidateWeVoteId: "",
-      // office_we_vote_id: "",
-      // organization: {},
       organizationWeVoteId: "",
       voter: {},
     };
@@ -78,9 +76,7 @@ export default class HeaderBackToVoterGuides extends Component {
     const weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
     this.setState({
       candidateWeVoteId,
-      // officeName,
       officeWeVoteId,
-      // organization,
       organizationWeVoteId,
       voter: this.props.voter,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
@@ -119,9 +115,7 @@ export default class HeaderBackToVoterGuides extends Component {
     const weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
     this.setState({
       candidateWeVoteId,
-      // officeName,
       officeWeVoteId,
-      // organization,
       organizationWeVoteId,
       voter: nextProps.voter,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
@@ -153,17 +147,12 @@ export default class HeaderBackToVoterGuides extends Component {
     }
 
     this.setState({
-      candidate: CandidateStore.getCandidate(candidateWeVoteId),
-      // officeName,
       officeWeVoteId,
     });
   }
 
   onOrganizationStoreChange () {
-    const { organizationWeVoteId } = this.state;
-    this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
-    });
+    this.setState();
   }
 
   getOfficeLink () {

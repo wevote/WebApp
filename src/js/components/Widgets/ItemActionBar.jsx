@@ -8,7 +8,7 @@ import { showToastError, showToastSuccess } from "../../utils/showToast";
 import { stringContains } from "../../utils/textFormat";
 import MeasureStore from "../../stores/MeasureStore";
 import ReadMore from "./ReadMore";
-import ShareButtonDropdown from "./ShareButtonDropdown";
+import ShareButtonDropDown from "./ShareButtonDropDown";
 import SupportActions from "../../actions/SupportActions";
 import VoterActions from "../../actions/VoterActions";
 import VoterConstants from "../../constants/VoterConstants";
@@ -744,7 +744,7 @@ export default class ItemActionBar extends Component {
 
           { this.props.shareButtonHide ?
             null :
-            <ShareButtonDropdown urlBeingShared={urlBeingShared} shareIcon={shareIcon} shareText="Share" /> }
+            <ShareButtonDropDown urlBeingShared={urlBeingShared} shareIcon={shareIcon} shareText="Share" /> }
           { this.state.showSupportOrOpposeHelpModal ? SupportOrOpposeHelpModal : null}
         </div>
       </div>

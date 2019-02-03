@@ -8,16 +8,15 @@ import { renderLog } from "../../utils/logging";
 export default class IssueLinkToggle extends Component {
   static propTypes = {
     issue: PropTypes.object.isRequired,
-    organization_we_vote_id: PropTypes.string.isRequired,
-    is_linked: PropTypes.bool.isRequired,
-    edit_mode: PropTypes.bool,
+    organizationWeVoteId: PropTypes.string.isRequired,
+    isLinked: PropTypes.bool.isRequired,
     incompatibleIssues: PropTypes.array,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      is_linked: false,
+      isLinked: false,
     };
 
     this.onIssueLink = this.onIssueLink.bind(this);
@@ -25,21 +24,18 @@ export default class IssueLinkToggle extends Component {
   }
 
   componentDidMount () {
-    let is_linked = false;
-    if (this.props.is_linked) {
-      is_linked = this.props.is_linked;
-    }
+    const { isLinked } = this.props;
     this.setState({
-      is_linked,
+      isLinked,
     });
   }
 
   onIssueLink () {
-    IssueActions.issueLinkForOrganization(this.props.organization_we_vote_id, this.props.issue.issue_we_vote_id);
+    IssueActions.issueLinkForOrganization(this.props.organizationWeVoteId, this.props.issue.issue_we_vote_id);
   }
 
   onIssueUnlink () {
-    IssueActions.issueUnLinkForOrganization(this.props.organization_we_vote_id, this.props.issue.issue_we_vote_id);
+    IssueActions.issueUnLinkForOrganization(this.props.organizationWeVoteId, this.props.issue.issue_we_vote_id);
   }
 
   render () {
@@ -58,7 +54,7 @@ export default class IssueLinkToggle extends Component {
       );
     }
 
-    return this.state.is_linked ? (
+    return this.state.isLinked ? (
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
         <div className="col-3 col-sm-2 settingsIssues__image">
           <IssueImageDisplay

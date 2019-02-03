@@ -33,7 +33,7 @@ export default class SampleBallot extends Component {
       <div className="intro-story intro-story__background background--image3">
         <Helmet title="See Your Ballot - We Vote" />
         <div className="intro-story__h1--alt">See Your Ballot</div>
-        <div ref="header2" className="intro-story__h2">
+        <div id="header2" className="intro-story__h2">
           On the next screen, you&apos;ll see
           <br />
           your ballot from the 2016
@@ -41,7 +41,7 @@ export default class SampleBallot extends Component {
           <br />
           General Election.
         </div>
-        <div ref="header2" className="intro-story__h2 intro-story__padding-top">
+        <div id="header2" className="intro-story__h2 intro-story__padding-top">
           Get ready for the next election
           <br />
           now by following voter guides

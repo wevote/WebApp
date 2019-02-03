@@ -27,7 +27,7 @@ export default class SettingsWidgetFirstLastName extends Component {
       firstName: "",
       displayOnly: false,
       isOrganization: false,
-      initial_name_loaded: false,
+      initialNameLoaded: false,
       lastName: "",
       linkedOrganizationWeVoteId: "",
       organizationName: "",
@@ -41,6 +41,10 @@ export default class SettingsWidgetFirstLastName extends Component {
     this.updateVoterName = this.updateVoterName.bind(this);
   }
 
+  componentWillMount () {
+    prepareForCordovaKeyboard(__filename);
+  }
+
   componentDidMount () {
     this.onVoterStoreChange();
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -48,10 +52,6 @@ export default class SettingsWidgetFirstLastName extends Component {
     this.setState({
       displayOnly: this.props.displayOnly,
     });
-  }
-
-  componentWillMount () {
-    prepareForCordovaKeyboard(__filename);
   }
 
   componentWillUnmount () {
@@ -67,7 +67,6 @@ export default class SettingsWidgetFirstLastName extends Component {
     if (organization && organization.organization_type) {
       this.setState({
         isOrganization: isSpeakerTypeOrganization(organization.organization_type),
-        organization,
         organizationName: organization.organization_name,
       });
     }
@@ -79,11 +78,11 @@ export default class SettingsWidgetFirstLastName extends Component {
       this.setState({
         voter,
       });
-      if (!this.state.initial_name_loaded) {
+      if (!this.state.initialNameLoaded) {
         this.setState({
           firstName: VoterStore.getFirstName(),
           lastName: VoterStore.getLastName(),
-          initial_name_loaded: true,
+          initialNameLoaded: true,
         });
       }
       if (voter && voter.linked_organization_we_vote_id) {
@@ -95,7 +94,6 @@ export default class SettingsWidgetFirstLastName extends Component {
           if (organization && organization.organization_type) {
             this.setState({
               isOrganization: isSpeakerTypeOrganization(organization.organization_type),
-              organization,
               organizationName: organization.organization_name,
             });
           }
@@ -179,18 +177,20 @@ export default class SettingsWidgetFirstLastName extends Component {
                 ) : (
                   <form onSubmit={(e) => { e.preventDefault(); }}>
                     <span className="pull-right u-gray-mid">{this.state.organizationNameSavedStatus}</span>
-                    <label htmlFor="organization-name">Organization Name as Shown on Your Voter Guides</label>
-                    <input
-                      type="text"
-                      autoComplete="organization"
-                      className="form-control"
-                      id="organization-name"
-                      name="organizationName"
-                      placeholder="How would you like your organization name displayed publicly?"
-                      onKeyDown={this.handleKeyPressOrganizationName}
-                      onChange={this.updateOrganizationName}
-                      value={this.state.organizationName}
-                    />
+                    <label htmlFor="organization-name">
+                      Organization Name as Shown on Your Voter Guides
+                      <input
+                        type="text"
+                        autoComplete="organization"
+                        className="form-control"
+                        id="organization-name"
+                        name="organizationName"
+                        placeholder="How would you like your organization name displayed publicly?"
+                        onKeyDown={this.handleKeyPressOrganizationName}
+                        onChange={this.updateOrganizationName}
+                        value={this.state.organizationName}
+                      />
+                    </label>
                   </form>
                 )}
               </span>
@@ -210,46 +210,52 @@ export default class SettingsWidgetFirstLastName extends Component {
                     <span className="pull-right u-gray-mid">{this.state.voterNameSavedStatus}</span>
                     {!this.props.hideFirstLastName ? (
                       <span>
-                        <label htmlFor="first-name">First Name</label>
-                        <input
-                          type="text"
-                          autoComplete="given-name"
-                          className="form-control"
-                          id="first-name"
-                          name="firstName"
-                          placeholder="First Name"
-                          onKeyDown={this.handleKeyPressVoterName}
-                          onChange={this.updateVoterName}
-                          value={this.state.firstName}
-                        />
-                        <label htmlFor="last-name">Last Name</label>
-                        <input
-                          type="text"
-                          autoComplete="family-name"
-                          className="form-control"
-                          id="last-name"
-                          name="lastName"
-                          placeholder="Last Name"
-                          onKeyDown={this.handleKeyPressVoterName}
-                          onChange={this.updateVoterName}
-                          value={this.state.lastName}
-                        />
+                        <label htmlFor="first-name">
+                          First Name
+                          <input
+                            type="text"
+                            autoComplete="given-name"
+                            className="form-control"
+                            id="first-name"
+                            name="firstName"
+                            placeholder="First Name"
+                            onKeyDown={this.handleKeyPressVoterName}
+                            onChange={this.updateVoterName}
+                            value={this.state.firstName}
+                          />
+                        </label>
+                        <label htmlFor="last-name">
+                          Last Name
+                          <input
+                            type="text"
+                            autoComplete="family-name"
+                            className="form-control"
+                            id="last-name"
+                            name="lastName"
+                            placeholder="Last Name"
+                            onKeyDown={this.handleKeyPressVoterName}
+                            onChange={this.updateVoterName}
+                            value={this.state.lastName}
+                          />
+                        </label>
                       </span>
                     ) : null
                     }
                     <span className="pull-right u-gray-mid">{this.state.organizationNameSavedStatus}</span>
-                    <label htmlFor="organization-name">Name Shown on Your Voter Guides</label>
-                    <input
-                      type="text"
-                      autoComplete="organization"
-                      className="form-control"
-                      id="organization-name"
-                      name="organizationName"
-                      placeholder="How would you like your name displayed publicly?"
-                      onKeyDown={this.handleKeyPressOrganizationName}
-                      onChange={this.updateOrganizationName}
-                      value={this.state.organizationName}
-                    />
+                    <label htmlFor="organization-name">
+                      Name Shown on Your Voter Guides
+                      <input
+                        type="text"
+                        autoComplete="organization"
+                        className="form-control"
+                        id="organization-name"
+                        name="organizationName"
+                        placeholder="How would you like your name displayed publicly?"
+                        onKeyDown={this.handleKeyPressOrganizationName}
+                        onChange={this.updateOrganizationName}
+                        value={this.state.organizationName}
+                      />
+                    </label>
                   </form>
                 )}
               </span>

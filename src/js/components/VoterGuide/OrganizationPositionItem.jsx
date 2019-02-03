@@ -147,10 +147,8 @@ export default class OrganizationPositionItem extends Component {
       statementText = position.statement_text;
     }
 
-    let ballotItemLink;
-    if (this.props.ballotItemLink) {
-      ballotItemLink = this.props.ballotItemLink;
-    } else {
+    let { ballotItemLink } = this.props;
+    if (!ballotItemLink) {
       // TwitterHandle-based link
       const ballotItemUrl = position.kind_of_ballot_item === "MEASURE" ? "/measure/" : "/candidate/";
       // We are turning off links to twitter pages until we get politician pages working

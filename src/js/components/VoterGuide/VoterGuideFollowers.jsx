@@ -16,11 +16,11 @@ export default class VoterGuideFollowers extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      voter_guide_followers_list: [],
+      voterGuideFollowersList: [],
       organization: {},
-      search_filter: false,
-      search_term: "",
-      voter_guide_followers_list_filtered_by_search: [],
+      searchFilter: false,
+      searchTerm: "",
+      voterGuideFollowersListFilteredBySearch: [],
     };
   }
 
@@ -31,7 +31,7 @@ export default class VoterGuideFollowers extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.setState({
       organization: this.props.organization,
-      voter_guide_followers_list: VoterGuideStore.getVoterGuidesFollowingOrganization(this.props.organization.organization_we_vote_id),
+      voterGuideFollowersList: VoterGuideStore.getVoterGuidesFollowingOrganization(this.props.organization.organization_we_vote_id),
     });
   }
 
@@ -39,7 +39,7 @@ export default class VoterGuideFollowers extends Component {
     // When a new organization is passed in, update this component to show the new data
     this.setState({
       organization: nextProps.organization,
-      voter_guide_followers_list: VoterGuideStore.getVoterGuidesFollowingOrganization(nextProps.organization.organization_we_vote_id),
+      voterGuideFollowersList: VoterGuideStore.getVoterGuidesFollowingOrganization(nextProps.organization.organization_we_vote_id),
     });
   }
 
@@ -53,28 +53,30 @@ export default class VoterGuideFollowers extends Component {
   }
 
   onVoterGuideStoreChange () {
+    const { organization } = this.state;
     this.setState({
-      voter_guide_followers_list: VoterGuideStore.getVoterGuidesFollowingOrganization(this.state.organization.organization_we_vote_id),
+      voterGuideFollowersList: VoterGuideStore.getVoterGuidesFollowingOrganization(organization.organization_we_vote_id),
     });
   }
 
   searchFollowers (event) {
-    const search_term = event.target.value;
-    if (search_term.length === 0) {
+    const searchTerm = event.target.value;
+    if (searchTerm.length === 0) {
       this.setState({
-        search_filter: false,
-        search_term: "",
-        voter_guide_followers_list_filtered_by_search: [],
+        searchFilter: false,
+        searchTerm: "",
+        voterGuideFollowersListFilteredBySearch: [],
       });
     } else {
-      const search_term_lowercase = search_term.toLowerCase();
-      const searched_followers_list = _.filter(this.state.voter_guide_followers_list,
-        user => user.voter_guide_display_name.toLowerCase().includes(search_term_lowercase));
+      const searchTermLowerCase = searchTerm.toLowerCase();
+      const { voterGuideFollowersList } = this.state;
+      const searchedFollowersList = _.filter(voterGuideFollowersList,
+        oneVoterGuide => oneVoterGuide.voter_guide_display_name.toLowerCase().includes(searchTermLowerCase));
 
       this.setState({
-        search_filter: true,
-        search_term,
-        voter_guide_followers_list_filtered_by_search: searched_followers_list,
+        searchFilter: true,
+        searchTerm,
+        voterGuideFollowersListFilteredBySearch: searchedFollowersList,
       });
     }
   }
@@ -85,24 +87,24 @@ export default class VoterGuideFollowers extends Component {
       return <div>{LoadingWheel}</div>;
     }
 
-    let voter_guide_followers_list = [];
-    if (!this.state.search_filter) {
-      voter_guide_followers_list = this.state.voter_guide_followers_list;
-      // console.log("VoterGuideFollowers, voter_guide_followers_list: ", voter_guide_followers_list);
+    let voterGuideFollowersList = [];
+    if (!this.state.searchFilter) {
+      voterGuideFollowersList = this.state.voterGuideFollowersList;
+      // console.log("VoterGuideFollowers, voterGuideFollowersList: ", voterGuideFollowersList);
       if (this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id) {
         // If looking at your own voter guide, filter out your own entry as a follower
-        voter_guide_followers_list = voter_guide_followers_list.filter((one_voter_guide) => {
-          if (one_voter_guide.organization_we_vote_id !== this.state.voter.linked_organization_we_vote_id) {
-            return one_voter_guide;
+        voterGuideFollowersList = voterGuideFollowersList.filter((oneVoterGuide) => {
+          if (oneVoterGuide.organization_we_vote_id !== this.state.voter.linked_organization_we_vote_id) {
+            return oneVoterGuide;
           } else {
             return null;
           }
         });
       }
     } else {
-      voter_guide_followers_list = this.state.voter_guide_followers_list_filtered_by_search;
+      voterGuideFollowersList = this.state.voterGuideFollowersListFilteredBySearch;
     }
-    const show_search_when_more_than_this_number = 3;
+    const showSearchWhenMoreThanThisNumber = 3;
 
     return (
       <div className="opinions-followed__container">
@@ -110,9 +112,9 @@ export default class VoterGuideFollowers extends Component {
         <Helmet title={`${this.state.organization.organization_name} - We Vote`} />
         <div className="card">
           <ul className="card-child__list-group">
-            { voter_guide_followers_list && voter_guide_followers_list.length > 0 ? (
+            { voterGuideFollowersList && voterGuideFollowersList.length > 0 ? (
               <span>
-                { !this.state.search_filter ? (
+                { !this.state.searchFilter ? (
                   <span>
                     {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ?
                       <h4 className="card__additional-heading">Your Listeners</h4> : (
@@ -124,17 +126,17 @@ export default class VoterGuideFollowers extends Component {
                   </span>
                 ) : (
                   <span>
-                    { voter_guide_followers_list.length === 0 ? (
+                    { voterGuideFollowersList.length === 0 ? (
                       <h4 className="card__additional-heading">
                         &quot;
-                        {this.state.search_term}
+                        {this.state.searchTerm}
                         &quot; not found
                       </h4>
                     ) : null
                     }
                   </span>
                 )}
-                { voter_guide_followers_list && voter_guide_followers_list.length > show_search_when_more_than_this_number ? (
+                { voterGuideFollowersList && voterGuideFollowersList.length > showSearchWhenMoreThanThisNumber ? (
                   <input
                     type="text"
                     className="form-control"
@@ -146,7 +148,7 @@ export default class VoterGuideFollowers extends Component {
                 }
                 <span>
                   <GuideList
-                    organizationsToFollow={voter_guide_followers_list}
+                    organizationsToFollow={voterGuideFollowersList}
                     hide_ignore_button
                     instantRefreshOn
                   />

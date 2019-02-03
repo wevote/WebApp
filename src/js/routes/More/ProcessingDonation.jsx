@@ -22,18 +22,18 @@ export default class ProcessingDonation extends Component {
   constructor (props) {
     super(props);
     this.state = {};
-    this._onDonateStoreChange = this._onDonateStoreChange.bind(this);
+    this.onDonateStoreChange = this.onDonateStoreChange.bind(this);
   }
 
   componentDidMount () {
-    this.donateStoreListener = DonateStore.addListener(this._onDonateStoreChange);
+    this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange);
   }
 
   componentWillUnmount () {
     this.donateStoreListener.remove();
   }
 
-  _onDonateStoreChange () { // eslint-disable-line
+  onDonateStoreChange () { // eslint-disable-line
     if (DonateStore.donationResponseReceived()) {
       if (DonateStore.donationSuccess()) {
         historyPush("/more/donate_thank_you");

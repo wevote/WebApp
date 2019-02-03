@@ -56,6 +56,7 @@ export default class SearchResultsDisplay extends Component {
             <Link
               key={oneResult.local_id}
               data-idx={idx}
+              onFocus={onSearchResultMouseOver}
               onMouseOver={onSearchResultMouseOver}
               className="search-container__links"
               onClick={() => onSearchElectionResultClick(oneResult.google_civic_election_id)}
@@ -80,6 +81,7 @@ export default class SearchResultsDisplay extends Component {
               key={oneResult.we_vote_id}
               data-idx={idx}
               to={links[idx]}
+              onFocus={onSearchResultMouseOver}
               onMouseOver={onSearchResultMouseOver}
               className="search-container__links"
               onClick={onSearchResultClick}
