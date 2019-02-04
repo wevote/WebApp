@@ -140,13 +140,14 @@ export default class AddressBox extends Component {
   }
 
   handleKeyPress (event) {
+    // Wait for 1/2 of a second after the last keypress to make a call to the voterAddressSave API
     const ENTER_KEY_CODE = 13;
     if (event.keyCode === ENTER_KEY_CODE) {
       event.preventDefault();
       setTimeout(() => {
         VoterActions.voterAddressSave(this.state.textForMapSearch);
         this.setState({ loading: true });
-      }, 250);
+      }, 500);
     }
   }
 
