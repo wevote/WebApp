@@ -1,9 +1,9 @@
 /* global google */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Button from "@material-ui/core/Button";
+import Button from '@material-ui/core/Button';
 import BallotStore from "../stores/BallotStore";
-import BallotActions from "../actions/BallotActions";
+import BallotActions from '../actions/BallotActions';
 import { historyPush, isCordova, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../utils/cordovaUtils";
 import LoadingWheel from "./LoadingWheel";
 import { renderLog } from "../utils/logging";
@@ -35,8 +35,9 @@ export default class AddressBox extends Component {
     super(props);
     this.state = {
       loading: false,
-      text_for_map_search: "",
+      textForMapSearch: "",
       ballotCaveat: "",
+      voterSavedAddress: false,
     };
 
     // this.autocomplete = React.createRef();
@@ -52,7 +53,7 @@ export default class AddressBox extends Component {
 
   componentDidMount () {
     this.setState({
-      text_for_map_search: VoterStore.getTextForMapSearch(),
+      textForMapSearch: VoterStore.getTextForMapSearch(),
       ballotCaveat: BallotStore.getBallotCaveat(),
     });
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -104,10 +105,14 @@ export default class AddressBox extends Component {
       this.props.toggleSelectAddressModal();
     }
 
-    this.setState({
-      text_for_map_search: VoterStore.getTextForMapSearch(),
-      loading: false,
-    });
+    if (this.state.textForMapSearch && this.state.voterSavedAddress) {
+      historyPush(this.props.saveUrl);
+    } else {
+      this.setState({
+        textForMapSearch: VoterStore.getTextForMapSearch(),
+        loading: false,
+      });
+    }
   }
 
   onBallotStoreChange () {
@@ -121,17 +126,17 @@ export default class AddressBox extends Component {
     const place = addressAutocomplete.getPlace();
     if (place.formatted_address) {
       this.setState({
-        text_for_map_search: place.formatted_address,
+        textForMapSearch: place.formatted_address,
       });
     } else {
       this.setState({
-        text_for_map_search: place.name,
+        textForMapSearch: place.name,
       });
     }
   }
 
   updateVoterAddress (event) {
-    this.setState({ text_for_map_search: event.target.value });
+    this.setState({ textForMapSearch: event.target.value });
   }
 
   handleKeyPress (event) {
@@ -139,7 +144,7 @@ export default class AddressBox extends Component {
     if (event.keyCode === ENTER_KEY_CODE) {
       event.preventDefault();
       setTimeout(() => {
-        VoterActions.voterAddressSave(this.state.text_for_map_search);
+        VoterActions.voterAddressSave(this.state.textForMapSearch);
         this.setState({ loading: true });
       }, 250);
     }
@@ -147,13 +152,9 @@ export default class AddressBox extends Component {
 
   voterAddressSave (event) {
     event.preventDefault();
-    VoterActions.voterAddressSave(this.state.text_for_map_search);
-    BallotActions.completionLevelFilterTypeSave("filterAllBallotItems");
-    this.setState({ loading: true }, () => {
-      if (this.state.text_for_map_search) {
-        historyPush(this.props.saveUrl);
-      }
-    });
+    VoterActions.voterAddressSave(this.state.textForMapSearch);
+    BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
+    this.setState({ loading: true, voterSavedAddress: true });
   }
 
   render () {
@@ -175,7 +176,7 @@ export default class AddressBox extends Component {
         <form onSubmit={this.voterAddressSave} className="row">
           <input
             type="text"
-            value={this.state.text_for_map_search}
+            value={this.state.textForMapSearch}
             onKeyDown={this.handleKeyPress}
             onChange={this.updateVoterAddress}
             name="address"
