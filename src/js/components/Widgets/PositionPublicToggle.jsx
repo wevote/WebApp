@@ -129,7 +129,7 @@ export default class PositionPublicToggle extends Component {
     let onChange;
     const _this = this;
     if (isPublicPosition) {
-      onChange = function () {
+      onChange = () => {
         isPublicPosition = false;
 
         // TODO Somehow cause the tooltip to update if inTestMode
@@ -138,7 +138,7 @@ export default class PositionPublicToggle extends Component {
         }
       };
     } else {
-      onChange = function () {
+      onChange = () => {
         isPublicPosition = true;
 
         // TODO Somehow cause the tooltip to update if inTestMode
@@ -151,7 +151,7 @@ export default class PositionPublicToggle extends Component {
     // this onKeyDown function is for accessibility: the parent div of the toggle
     // has a tab index so that users can use tab key to select the toggle, and then
     // press either space or enter (key codes 32 and 13, respectively) to toggle
-    const onKeyDown = function (e) {
+    const onKeyDown = (e) => {
       const enterAndSpaceKeyCodes = [13, 32];
       if (enterAndSpaceKeyCodes.includes(e.keyCode)) {
         onChange();

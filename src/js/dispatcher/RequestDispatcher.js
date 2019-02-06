@@ -3,7 +3,7 @@ import assign from "object-assign";
 
 const _callbacks = [];
 
-const Dispatcher = function () {};
+const Dispatcher = () => {};
 Dispatcher.prototype = assign({}, Dispatcher.prototype, {
 
   /**

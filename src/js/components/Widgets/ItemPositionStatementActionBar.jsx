@@ -219,7 +219,7 @@ export default class ItemPositionStatementActionBar extends Component {
     const noStatementText = !(statementTextToBeSaved !== null && statementTextToBeSaved.length);
     const editMode = this.state.showEditPositionStatementInput || noStatementText;
     const onSavePositionStatementClick = this.state.showEditPositionStatementInput ? this.closeEditPositionStatementInput.bind(this) : this.openEditPositionStatementInput.bind(this);
-    const onKeyDown = function (e) {
+    const onKeyDown = (e) => {
       const enterAndSpaceKeyCodes = [13, 32];
       if (enterAndSpaceKeyCodes.includes(e.keyCode)) {
         onSavePositionStatementClick();
