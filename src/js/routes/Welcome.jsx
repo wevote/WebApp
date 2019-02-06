@@ -389,15 +389,17 @@ export default class Intro extends Component {
         {/* Description of benefits of We Vote */}
         <section className="features__section">
           <div className="container">
-            <div className="features-your-mission__block">
-              <div className="features__title">
-                Your Mission:
-                <br />
-                <span className="d-none d-sm-block h2">Vote your values to make the world a better place.</span>
-                <span className="d-block d-sm-none h4">Make the world a better place.</span>
+            <Row>
+              <div className="col-sm-12 col-md-12 col-lg-12 u-flex u-justify-center features__block__container">
+                <div className="features-your-mission__block">
+                  <div className="features__title">
+                    Your Mission:
+                    <br />
+                    <span className="d-none d-sm-block h2">Vote your values to make the world a better place.</span>
+                    <span className="d-block d-sm-none h4">Make the world a better place.</span>
+                  </div>
+                </div>
               </div>
-            </div>
-            <Row bsPrefix="u-stack--lg">
               <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
                 <div className="features__block features__block__row1" onClick={this._toggleBallotFeature}>
                   <Link to="/wevoteintro/network">
@@ -408,7 +410,7 @@ export default class Intro extends Component {
                 </div>
               </div>
               <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
-                <div className="features__block features__block__row1" onClick={this._toggleOrganizationsFeature}>
+                <div className="features__block features__block__row1a" onClick={this._toggleOrganizationsFeature}>
                   <Link to="/more/network/issues">
                     <img className={this.state.showFeaturesOrganizations ? "d-none d-sm-block features__image" : "features__image"} src={cordovaDot("/img/welcome/benefits/learn-issues-orgs.svg")} width="60%" />
                     <h3 className="features__h3">Learn From Issues and Organizations</h3>
@@ -426,7 +428,7 @@ export default class Intro extends Component {
                 </div>
               </div>
               <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
-                <div className="features__block features__block__row2" onClick={this._toggleNetworkFeature}>
+                <div className="features__block features__block__row2a" onClick={this._toggleNetworkFeature}>
                   <Link to="/more/network/friends">
                     <img className={this.state.showFeaturesNetwork ? "d-none d-sm-block features__image" : "features__image"} src={cordovaDot("/img/welcome/benefits/choose-friends.svg")} width="60%" />
                     <h3 className="features__h3">Invite Friends to Your We Vote Network</h3>
@@ -444,7 +446,7 @@ export default class Intro extends Component {
                 </div>
               </div>
               <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
-                <div className="features__block features__block__row3" onClick={this._toggleVoteFeature}>
+                <div className="features__block features__block__row3a" onClick={this._toggleVoteFeature}>
                   <Link to="/wevoteintro/network">
                     <img className={this.state.showFeaturesVote ? "d-none d-sm-block features__image" : "features__image"} src={cordovaDot("/img/welcome/benefits/decide.svg")} width="60%" />
                     <h3 className="features__h3">Decide & Vote</h3>
@@ -509,14 +511,14 @@ export default class Intro extends Component {
                     target="_blank"
                     title="Submit this to Email"
                     body={(
-                      <button className="btn btn-social btn--email u-push--sm">
+                      <button className="btn btn-social btn--email u-push--sm" type="button">
                         <span className="fa fa-envelope" />
                         Email
                       </button>
                     )}
                   />
                   <Link to="/more/donate">
-                    <button className="btn btn-social btn-danger u-push--sm">
+                    <button className="btn btn-social btn-danger u-push--sm" type="button">
                       <span className="fa fa-heart" />
                       {" "}
                       Donate
