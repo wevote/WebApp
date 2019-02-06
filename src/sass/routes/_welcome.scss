@@ -193,15 +193,33 @@ $opaque-grey: rgba($gray-dark, .5);
         }
       }
 
+      &__row1a {
+        @include breakpoints (max medium) {
+          height: 194px;
+        }
+      }
+
       &__row2 {
         @include breakpoints (max medium) {
-          height: 176px;
+          height: 144px;
+        }
+      }
+
+      &__row2a {
+        @include breakpoints (max medium) {
+          height: 144px;
         }
       }
 
       &__row3 {
         @include breakpoints (max medium) {
-          height: 144px;
+          height: 186px;
+        }
+      }
+
+      &__row3a {
+        @include breakpoints (max medium) {
+          height: 236px;
         }
       }
     }
