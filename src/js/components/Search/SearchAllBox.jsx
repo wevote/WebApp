@@ -44,8 +44,8 @@ export default class SearchAllBox extends Component {
     this.ballot = $(".header-nav__item:nth-child(1)"); // eslint-disable-line requireDollarBeforejQueryAssignment
     this.network = $(".header-nav__item:nth-child(2)"); // eslint-disable-line requireDollarBeforejQueryAssignment
     this.avatar = $("#js-header-avatar"); // eslint-disable-line requireDollarBeforejQueryAssignment
-    this.about = document.getElementsByClassName("header-nav__item--about")[0];
-    this.donate = document.getElementsByClassName("header-nav__item--donate")[0];
+    this.about = document.getElementsByClassName("header-nav__item--about")[0]; // eslint-disable-line prefer-destructuring
+    this.donate = document.getElementsByClassName("header-nav__item--donate")[0]; // eslint-disable-line prefer-destructuring
 
     // When we first enter we want to retrieve values to have for a click in the search box
     const { textFromSearchField } = this.props;

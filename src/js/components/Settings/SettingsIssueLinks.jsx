@@ -179,20 +179,20 @@ export default class SettingsIssueLinks extends Component {
 
         <div className="card">
           <div className="card-main">
-            <h1 className="h2 d-none d-sm-block">Issues Related to Your Voter Guide</h1>
-            <h1 className="h4 hidden-sm hidden-md hidden-lg">Issues Related to Your Voter Guide</h1>
-            <p>Help voters find your voter guide. Specify the issues on which you take positions.</p>
+            <h1 className="h2 d-none d-sm-block">Organizational Values</h1>
+            <h1 className="h4 d-block d-sm-none">Organizational Values</h1>
+            <p>Help voters find your voter guide. Specify the values and issues on which you take positions.</p>
             <div className="tabs__tabs-container-wrap">
               <div className="tabs__tabs-container d-print-none">
                 <ul className="nav tabs__tabs">
                   <li className="tab-item">
                     <Link to={issuesLinkedUrl} className={activeTab === "issues_linked" ? "tab tab-active" : "tab tab-default"}>
-                      <span>Linked Issues</span>
+                      <span>Linked Values/Issues</span>
                     </Link>
                   </li>
                   <li className="tab-item">
                     <Link to={issuesToLinkUrl} className={activeTab === "issues_to_link" ? "tab tab-active" : "tab tab-default"}>
-                      <span>Find Issues</span>
+                      <span>Find More</span>
                     </Link>
                   </li>
                 </ul>

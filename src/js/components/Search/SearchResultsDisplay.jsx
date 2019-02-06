@@ -7,7 +7,6 @@ import ImageHandler from "../ImageHandler";
 
 export default class SearchResultsDisplay extends Component {
   static propTypes = {
-    fullPageDisplay: PropTypes.bool,
     searchResults: PropTypes.array.isRequired,
     selectedIndex: PropTypes.number,
     textFromSearchField: PropTypes.string.isRequired,

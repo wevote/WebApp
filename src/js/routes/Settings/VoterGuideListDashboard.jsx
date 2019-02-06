@@ -91,7 +91,7 @@ export default class VoterGuideListDashboard extends Component {
 
   onOrganizationStoreChange () {
     const { linkedOrganizationWeVoteId } = this.state;
-    // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
+    // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, linkedOrganizationWeVoteId: ", this.state.linkedOrganizationWeVoteId);
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId),
     });

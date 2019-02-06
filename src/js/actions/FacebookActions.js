@@ -56,15 +56,19 @@ export default {
       return;
     }
 
-    this.facebookApi().api(
-      "/me?fields=id,email,first_name,middle_name,last_name,cover", (response) => {
-        oAuthLog("getFacebookData response", response);
-        Dispatcher.dispatch({
-          type: FacebookConstants.FACEBOOK_RECEIVED_DATA,
-          data: response,
-        });
-      },
-    );
+    if (this.facebookApi()) {
+      this.facebookApi().api(
+        "/me?fields=id,email,first_name,middle_name,last_name,cover", (response) => {
+          oAuthLog("getFacebookData response", response);
+          Dispatcher.dispatch({
+            type: FacebookConstants.FACEBOOK_RECEIVED_DATA,
+            data: response,
+          });
+        },
+      );
+    } else {
+      console.log("FacebookActions.getFacebookProfilePicture was not invoked, this.facebookApi() undefined");
+    }
   },
 
   // Save incoming data from Facebook
@@ -119,6 +123,8 @@ export default {
           });
         },
       );
+    } else {
+      console.log("FacebookActions.getFacebookProfilePicture was not invoked, this.facebookApi() undefined");
     }
   },
 
@@ -128,17 +134,21 @@ export default {
       return;
     }
 
-    const fbApiForInvitableFriends = `/me?fields=invitable_friends.limit(1000){name,id,picture.width(${pictureWidth}).height(${pictureHeight})}`;
-    this.facebookApi().api(
-      fbApiForInvitableFriends,
-      (response) => {
-        oAuthLog("getFacebookInvitableFriendsList", response);
-        Dispatcher.dispatch({
-          type: FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS,
-          data: response,
-        });
-      },
-    );
+    if (this.facebookApi()) {
+      const fbApiForInvitableFriends = `/me?fields=invitable_friends.limit(1000){name,id,picture.width(${pictureWidth}).height(${pictureHeight})}`;
+      this.facebookApi().api(
+        fbApiForInvitableFriends,
+        (response) => {
+          oAuthLog("getFacebookInvitableFriendsList", response);
+          Dispatcher.dispatch({
+            type: FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS,
+            data: response,
+          });
+        },
+      );
+    } else {
+      console.log("FacebookActions.getFacebookInvitableFriendsList was not invoked, this.facebookApi() undefined");
+    }
   },
 
   readFacebookAppRequests () {
@@ -147,17 +157,21 @@ export default {
       return;
     }
 
-    const fbApiForReadingAppRequests = "me?fields=apprequests.limit(10){from,to,created_time,id}";
-    this.facebookApi().api(
-      fbApiForReadingAppRequests,
-      (response) => {
-        oAuthLog("readFacebookAppRequests", response);
-        Dispatcher.dispatch({
-          type: FacebookConstants.FACEBOOK_READ_APP_REQUESTS,
-          data: response,
-        });
-      },
-    );
+    if (this.facebookApi()) {
+      const fbApiForReadingAppRequests = "me?fields=apprequests.limit(10){from,to,created_time,id}";
+      this.facebookApi().api(
+        fbApiForReadingAppRequests,
+        (response) => {
+          oAuthLog("readFacebookAppRequests", response);
+          Dispatcher.dispatch({
+            type: FacebookConstants.FACEBOOK_READ_APP_REQUESTS,
+            data: response,
+          });
+        },
+      );
+    } else {
+      console.log("FacebookActions.readFacebookAppRequests was not invoked, this.facebookApi() undefined");
+    }
   },
 
   deleteFacebookAppRequest (requestId) {
@@ -166,18 +180,22 @@ export default {
       return;
     }
 
-    console.log("deleteFacebookAppRequest requestId: ", requestId);
-    this.facebookApi().api(
-      requestId,
-      "delete",
-      (response) => {
-        oAuthLog("deleteFacebookAppRequest response", response);
-        Dispatcher.dispatch({
-          type: FacebookConstants.FACEBOOK_DELETE_APP_REQUEST,
-          data: response,
-        });
-      },
-    );
+    if (this.facebookApi()) {
+      console.log("deleteFacebookAppRequest requestId: ", requestId);
+      this.facebookApi().api(
+        requestId,
+        "delete",
+        (response) => {
+          oAuthLog("deleteFacebookAppRequest response", response);
+          Dispatcher.dispatch({
+            type: FacebookConstants.FACEBOOK_DELETE_APP_REQUEST,
+            data: response,
+          });
+        },
+      );
+    } else {
+      console.log("FacebookActions.deleteFacebookAppRequest was not invoked, this.facebookApi() undefined");
+    }
   },
 
   logout () {
@@ -186,15 +204,19 @@ export default {
       return;
     }
 
-    this.facebookApi().logout(
-      (response) => {
-        oAuthLog("FacebookActions logout response: ", response);
-        Dispatcher.dispatch({
-          type: FacebookConstants.FACEBOOK_LOGGED_OUT,
-          data: response,
-        });
-      },
-    );
+    if (this.facebookApi()) {
+      this.facebookApi().logout(
+        (response) => {
+          oAuthLog("FacebookActions logout response: ", response);
+          Dispatcher.dispatch({
+            type: FacebookConstants.FACEBOOK_LOGGED_OUT,
+            data: response,
+          });
+        },
+      );
+    } else {
+      console.log("FacebookActions.logout was not invoked, this.facebookApi() undefined");
+    }
   },
 
   loginSuccess (successResponse) {
@@ -260,6 +282,8 @@ export default {
           }
         },
       );
+    } else {
+      console.log("FacebookActions.login was not invoked, this.facebookApi() undefined");
     }
   },
 

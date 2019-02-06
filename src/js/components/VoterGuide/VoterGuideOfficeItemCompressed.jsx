@@ -214,7 +214,8 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   }
 
   toggleDisplayAllCandidates () {
-    this.setState({ displayAllCandidatesFlag: !this.state.displayAllCandidatesFlag });
+    const { displayAllCandidatesFlag } = this.state;
+    this.setState({ displayAllCandidatesFlag: !displayAllCandidatesFlag });
   }
 
   toggleExpandDetails (display) {

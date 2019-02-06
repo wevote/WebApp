@@ -90,10 +90,6 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
     this.voterGuideStoreListener.remove();
   }
 
-  closeIssuesLabelPopover () {
-    document.body.click();
-  }
-
   onIssueStoreChange () {
     this.setScrollState();
     const { ballotItemWeVoteId } = this.state;
@@ -114,6 +110,37 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
   onVoterGuideStoreChange () {
     // We just want to trigger a re-render
     this.setState();
+  }
+
+  setScrollState () {
+    const desktopList = findDOMNode(
+      this.refs[`${this.props.ballotItemWeVoteId}-issue-list-desktop`],
+    );
+    const mobileList = findDOMNode(
+      this.refs[`${this.props.ballotItemWeVoteId}-issue-list-mobile`],
+    );
+    const desktopListVisibleWidth = $(desktopList).width();
+    const desktopListWidth = $(desktopList)
+      .children()
+      .eq(0)
+      .children()
+      .eq(0)
+      .width();
+    const mobileListVisibleWidth = $(mobileList).width();
+    const mobileListWidth = $(mobileList)
+      .children()
+      .eq(0)
+      .children()
+      .eq(0)
+      .width();
+    this.setState({
+      canScrollDesktop: desktopListVisibleWidth <= desktopListWidth,
+      canScrollMobile: mobileListVisibleWidth <= mobileListWidth,
+    });
+  }
+
+  closeIssuesLabelPopover () {
+    document.body.click();
   }
 
   scrollLeft (visibleTag) {
@@ -171,33 +198,6 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
         }
       },
     );
-  }
-
-  setScrollState () {
-    const desktopList = findDOMNode(
-      this.refs[`${this.props.ballotItemWeVoteId}-issue-list-desktop`],
-    );
-    const mobileList = findDOMNode(
-      this.refs[`${this.props.ballotItemWeVoteId}-issue-list-mobile`],
-    );
-    const desktopListVisibleWidth = $(desktopList).width();
-    const desktopListWidth = $(desktopList)
-      .children()
-      .eq(0)
-      .children()
-      .eq(0)
-      .width();
-    const mobileListVisibleWidth = $(mobileList).width();
-    const mobileListWidth = $(mobileList)
-      .children()
-      .eq(0)
-      .children()
-      .eq(0)
-      .width();
-    this.setState({
-      canScrollDesktop: desktopListVisibleWidth <= desktopListWidth,
-      canScrollMobile: mobileListVisibleWidth <= mobileListWidth,
-    });
   }
 
   render () {

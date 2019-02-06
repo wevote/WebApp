@@ -112,10 +112,12 @@ export default class EmailBallotToFriendsModal extends Component {
     this.emailAddressArray = value;
   }
 
-  cacheSenderEmailAddress = (e) => {
-    this.setState({
-      senderEmailAddress: e.target.value,
-    });
+  setFirstNameArray (value) {
+    this.firstNameArray = value;
+  }
+
+  setLastNameArray (value) {
+    this.lastNameArray = value;
   }
 
   addAnotherInvitation = () => {
@@ -124,6 +126,12 @@ export default class EmailBallotToFriendsModal extends Component {
     else if (!_state.row3Open) this.setState({ row3Open: true });
     else if (!_state.row4Open) this.setState({ row4Open: true });
     else if (!_state.row5Open) this.setState({ row5Open: true });
+  }
+
+  cacheSenderEmailAddress = (e) => {
+    this.setState({
+      senderEmailAddress: e.target.value,
+    });
   }
 
   ballotEmailSendStepsManager = (event) => {
@@ -294,14 +302,6 @@ export default class EmailBallotToFriendsModal extends Component {
 
   addElementToArray (array, value) {
     array.push(value);
-  }
-
-  setFirstNameArray (value) {
-    this.firstNameArray = value;
-  }
-
-  setLastNameArray (value) {
-    this.lastNameArray = value;
   }
 
   prepareApiArraysFromForm () {
