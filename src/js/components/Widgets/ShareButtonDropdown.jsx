@@ -23,6 +23,13 @@ export default class ShareButtonDropDown extends Component {
     });
   }
 
+  onButtonBlur () {
+    // Delay closing the drop down so that onClick has time to work
+    setTimeout(() => {
+      this.closeDropDown();
+    }, 250);
+  }
+
   shareFacebookComment (event) {
     event.stopPropagation();
     const api = isWebApp() ? window.FB : window.facebookConnectPlugin; // eslint-disable-line no-undef
@@ -45,13 +52,6 @@ export default class ShareButtonDropDown extends Component {
     event.stopPropagation();
     this.setState({ showCopyLinkModal: true });
     this.closeDropDown();
-  }
-
-  onButtonBlur () {
-    // Delay closing the drop down so that onClick has time to work
-    setTimeout(() => {
-      this.closeDropDown();
-    }, 250);
   }
 
   closeDropDown () {

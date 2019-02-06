@@ -55,7 +55,7 @@ export default class VoterPositionItem extends Component {
   }
 
   onVoterStoreChange () {
-    this.setState({ voter: VoterStore.getVoter() });
+    this.setState();
   }
 
   render () {

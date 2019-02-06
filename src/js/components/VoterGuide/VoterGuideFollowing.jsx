@@ -120,10 +120,8 @@ export default class VoterGuideFollowing extends Component {
     }
     // console.log("VoterGuideFollowing, linked_organization_we_vote_id: ", this.state.voter.linked_organization_we_vote_id, "organization: ", this.state.organization.organization_we_vote_id);
 
-    let voterGuideFollowedList = [];
-    if (!this.state.searchFilter) {
-      voterGuideFollowedList = this.state.voterGuideFollowedList;
-    } else {
+    let { voterGuideFollowedList } = this.state;
+    if (this.state.searchFilter) {
       voterGuideFollowedList = this.state.voterGuideFollowedListFilteredBySearch;
     }
     const hideStopFollowingButton = !lookingAtSelf || !this.state.editMode;

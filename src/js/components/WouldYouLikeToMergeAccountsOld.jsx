@@ -38,7 +38,6 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
 
   onFacebookStoreChange () {
     this.setState({
-      facebook_sign_in_status: FacebookStore.getFacebookAuthResponse(),
       saving: false,
     });
   }

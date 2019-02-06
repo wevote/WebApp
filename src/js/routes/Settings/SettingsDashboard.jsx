@@ -62,6 +62,7 @@ export default class SettingsDashboard extends Component {
       if (organization && organization.organization_we_vote_id) {
         this.setState({
           organization,
+          organizationType: organization.organization_type,
         });
       } else {
         OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
@@ -86,6 +87,7 @@ export default class SettingsDashboard extends Component {
       if (organization && organization.organization_we_vote_id) {
         this.setState({
           organization,
+          organizationType: organization.organization_type,
         });
       } else {
         OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);

@@ -70,9 +70,11 @@ export default class VoterGuideOrganizationInfo extends Component {
   }
 
   componentWillUnmount () {
+    this.organizationStoreListener.remove();
+    this.voterStoreListener.remove();
+
     document.body.style.backgroundColor = null;
     document.body.className = "";
-    this.organizationStoreListener.remove();
     this.timer = null;
   }
 

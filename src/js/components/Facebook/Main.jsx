@@ -35,12 +35,13 @@ class Main extends React.Component {
     this.setState(this.getFacebookState());
   }
 
+  //  userId={this.state.userId} not used in FacebookDownloadPicture component
   render () {
     renderLog(__filename);
     return (
       <div>
         {this.state.userId ?
-          <FacebookDownloadPicture userId={this.state.userId} /> :
+          <FacebookDownloadPicture /> :
           <div />
         }
         <FacebookPicture

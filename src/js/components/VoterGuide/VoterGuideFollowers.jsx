@@ -16,10 +16,10 @@ export default class VoterGuideFollowers extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      voterGuideFollowersList: [],
       organization: {},
       searchFilter: false,
       searchTerm: "",
+      voterGuideFollowersList: [],
       voterGuideFollowersListFilteredBySearch: [],
     };
   }
@@ -87,22 +87,18 @@ export default class VoterGuideFollowers extends Component {
       return <div>{LoadingWheel}</div>;
     }
 
-    let voterGuideFollowersList = [];
-    if (!this.state.searchFilter) {
-      voterGuideFollowersList = this.state.voterGuideFollowersList;
-      // console.log("VoterGuideFollowers, voterGuideFollowersList: ", voterGuideFollowersList);
-      if (this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id) {
-        // If looking at your own voter guide, filter out your own entry as a follower
-        voterGuideFollowersList = voterGuideFollowersList.filter((oneVoterGuide) => {
-          if (oneVoterGuide.organization_we_vote_id !== this.state.voter.linked_organization_we_vote_id) {
-            return oneVoterGuide;
-          } else {
-            return null;
-          }
-        });
-      }
-    } else {
+    let { voterGuideFollowersList } = this.state;
+    if (this.state.searchFilter) {
       voterGuideFollowersList = this.state.voterGuideFollowersListFilteredBySearch;
+    } else if (this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id) {
+      // If looking at your own voter guide, filter out your own entry as a follower
+      voterGuideFollowersList = voterGuideFollowersList.filter((oneVoterGuide) => {
+        if (oneVoterGuide.organization_we_vote_id !== this.state.voter.linked_organization_we_vote_id) {
+          return oneVoterGuide;
+        } else {
+          return null;
+        }
+      });
     }
     const showSearchWhenMoreThanThisNumber = 3;
 
