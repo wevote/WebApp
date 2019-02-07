@@ -5,7 +5,6 @@ import FriendInvitationProcessedDisplayForList from "./FriendInvitationProcessed
 import { renderLog } from "../../utils/logging";
 
 export default class FriendInvitationProcessedList extends Component {
-
   static propTypes = {
     friendList: PropTypes.array,
     invitationsSentByMe: PropTypes.bool,
@@ -50,7 +49,6 @@ export default class FriendInvitationProcessedList extends Component {
                   <FriendInvitationProcessedDisplayForList
                     key={counter}
                     {...friend}
-                    invitationsSentByMe={this.props.invitationsSentByMe}
                   />
                 </CSSTransition>
               );

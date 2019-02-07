@@ -28,12 +28,14 @@ export default class BallotItemReadyToVote extends Component {
         { this.isMeasure() ? (
           <MeasureItemReadyToVote
             {...this.props}
-            link_to_ballot_item_page
+            linkToBallotItemPage
+            measureWeVoteId={this.props.we_vote_id}
           />
         ) : (
           <OfficeItemReadyToVote
             {...this.props}
-            link_to_ballot_item_page
+            linkToBallotItemPage
+            measureWeVoteId={this.props.we_vote_id}
           />
         )}
       </div>

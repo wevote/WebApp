@@ -23,14 +23,14 @@ export default class Connect extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      current_friends_list: FriendStore.currentFriends(),
-      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
+      currentFriendsList: FriendStore.currentFriends(),
+      facebookInvitableFriendsList: FacebookStore.facebookInvitableFriends(),
       voterGuidesToFollowAll: VoterGuideStore.getVoterGuidesToFollowAll(),
       organizationsFollowedOnTwitterList: OrganizationStore.getOrganizationsFollowedByVoterOnTwitter(),
-      maximum_organization_display: 25,
-      maximum_friend_display: 25,
-      facebook_invitable_friends_image_width: 24,
-      facebook_invitable_friends_image_height: 24,
+      maximumNumberOfOrganizationsToDisplay: 25,
+      maximumNumberOfFriendsToDisplay: 25,
+      facebookInvitableFriendsImageWidth: 24,
+      facebookInvitableFriendsImageHeight: 24,
     };
   }
 
@@ -40,29 +40,35 @@ export default class Connect extends Component {
     }
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
 
-    if (this.state.current_friends_list) {
+    if (this.state.currentFriendsList) {
       FriendActions.currentFriends();
     }
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
 
     this.onFacebookStoreChange.bind(this);
     this.facebookStoreListener = FacebookStore.addListener(this.onFacebookStoreChange.bind(this));
-    if (this.state.facebook_invitable_friends_list) {
-      FacebookActions.getFacebookInvitableFriendsList(this.state.facebook_invitable_friends_image_width,
-        this.state.facebook_invitable_friends_image_height);
+    if (this.state.facebookInvitableFriendsList) {
+      FacebookActions.getFacebookInvitableFriendsList(this.state.facebookInvitableFriendsImageWidth,
+        this.state.facebookInvitableFriendsImageHeight);
     }
-  }
-
-  onFacebookStoreChange () {
-    this.setState({
-      facebook_invitable_friends_list: FacebookStore.facebookInvitableFriends(),
-    });
   }
 
   componentWillUnmount () {
     this.friendStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.facebookStoreListener.remove();
+  }
+
+  onFacebookStoreChange () {
+    this.setState({
+      facebookInvitableFriendsList: FacebookStore.facebookInvitableFriends(),
+    });
+  }
+
+  onFriendStoreChange () {
+    this.setState({
+      currentFriendsList: FriendStore.currentFriends(),
+    });
   }
 
   onVoterGuideStoreChange () {
@@ -80,15 +86,6 @@ export default class Connect extends Component {
     return {};
   }
 
-  getCurrentRoute () {
-    const currentRoute = "/more/connect";
-    return currentRoute;
-  }
-
-  toggleEditMode () {
-    this.setState({ editMode: !this.state.editMode });
-  }
-
   onKeyDownEditMode (event) {
     const enterAndSpaceKeyCodes = [13, 32];
     const scope = this;
@@ -96,6 +93,11 @@ export default class Connect extends Component {
       const { editMode } = this.state;
       scope.setState({ editMode: !editMode });
     }
+  }
+
+  getCurrentRoute () {
+    const currentRoute = "/more/connect";
+    return currentRoute;
   }
 
   getFollowingType () {
@@ -106,10 +108,9 @@ export default class Connect extends Component {
     }
   }
 
-  onFriendStoreChange () {
-    this.setState({
-      current_friends_list: FriendStore.currentFriends(),
-    });
+  toggleEditMode () {
+    const { editMode } = this.state;
+    this.setState({ editMode: !editMode });
   }
 
   render () {
@@ -128,7 +129,7 @@ export default class Connect extends Component {
             <div className="card-child__list-group">
               <ItemTinyOpinionsToFollow
                 organizationsToFollow={this.state.voterGuidesToFollowAll}
-                maximumOrganizationDisplay={this.state.maximum_organization_display}
+                maximumOrganizationDisplay={this.state.maximumNumberOfOrganizationsToDisplay}
               />
               <Link className="pull-right" to="/opinions">See all</Link>
             </div>
@@ -139,10 +140,10 @@ export default class Connect extends Component {
           <h4 className="text-left">Add Friends from Facebook</h4>
           <div className="card-child__list-group">
             <AddFacebookFriends
-              facebookInvitableFriendsList={this.state.facebook_invitable_friends_list}
-              facebookInvitableFriendsImageWidth={this.state.facebook_invitable_friends_image_width}
-              facebookInvitableFriendsImageHeight={this.state.facebook_invitable_friends_image_height}
-              maximumFriendDisplay={this.state.maximum_friend_display}
+              facebookInvitableFriendsList={this.state.facebookInvitableFriendsList}
+              facebookInvitableFriendsImageWidth={this.state.facebookInvitableFriendsImageWidth}
+              facebookInvitableFriendsImageHeight={this.state.facebookInvitableFriendsImageHeight}
+              maximumFriendDisplay={this.state.maximumNumberOfFriendsToDisplay}
             />
             <Link className="pull-right" to="/facebook_invitable_friends">See all</Link>
           </div>
@@ -154,7 +155,7 @@ export default class Connect extends Component {
             <div className="card-child__list-group">
               <OrganizationsFollowedOnTwitter
                 organizationsFollowedOnTwitter={this.state.organizationsFollowedOnTwitterList}
-                maximumOrganizationDisplay={this.state.maximum_organization_display}
+                maximumOrganizationDisplay={this.state.maximumNumberOfOrganizationsToDisplay}
               />
               <Link className="pull-right" to="/opinions_followed">See all organizations you listen to </Link>
             </div>
@@ -166,15 +167,15 @@ export default class Connect extends Component {
           <AddFriendsByEmail />
         </div>
 
-        { this.state.current_friends_list && this.state.current_friends_list.length ? (
+        { this.state.currentFriendsList && this.state.currentFriendsList.length ? (
           <div className="container-fluid well u-stack--md u-inset--md">
             <Link className="u-cursor--pointer u-no-underline" to="/friends">
               <h4 className="text-left">Your Current Friends</h4>
             </Link>
             <div className="card-child__list-group">
               <CurrentFriends
-                currentFriendsList={this.state.current_friends_list}
-                maximumFriendDisplay={this.state.maximum_friend_display}
+                currentFriendsList={this.state.currentFriendsList}
+                maximumFriendDisplay={this.state.maximumNumberOfFriendsToDisplay}
               />
               <Link className="pull-right" to="/friends">See Full Friend List</Link>
             </div>

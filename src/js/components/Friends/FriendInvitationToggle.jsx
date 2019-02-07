@@ -8,17 +8,18 @@ import { renderLog } from "../../utils/logging";
 
 export default class FriendInvitationToggle extends Component {
   static propTypes = {
-    other_voter_we_vote_id: PropTypes.string.isRequired,
+    otherVoterWeVoteId: PropTypes.string.isRequired,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      other_voter_we_vote_id: "",
       voter: {
-        weVoteId: "",
+        we_vote_id: "",
       },
     };
+    this.acceptFriendInvite = FriendActions.acceptFriendInvite.bind(this, this.props.otherVoterWeVoteId);
+    this.unFriend = FriendActions.unFriend.bind(this, this.props.otherVoterWeVoteId);
   }
 
   componentDidMount () {
@@ -35,7 +36,7 @@ export default class FriendInvitationToggle extends Component {
 
   onFriendStoreChange () {
     this.setState({
-      isFriend: FriendStore.isFriend(this.props.other_voter_we_vote_id),
+      isFriend: FriendStore.isFriend(this.props.otherVoterWeVoteId),
     });
   }
 
@@ -48,18 +49,16 @@ export default class FriendInvitationToggle extends Component {
   render () {
     renderLog(__filename);
     if (!this.state) { return <div />; }
-    const other_voter_we_vote_id = this.props.other_voter_we_vote_id;
+    const { otherVoterWeVoteId } = this.props;
     const { isFriend } = this.state;
-    // console.log("FriendInvitationToggle, my voter_we_vote_id:", this.state.voter.we_vote_id, ", other_voter_we_vote_id:", other_voter_we_vote_id, ", isFriend:", isFriend);
-    const is_looking_at_self = this.state.voter.weVoteId === other_voter_we_vote_id;
+    // console.log("FriendInvitationToggle, my voter_we_vote_id:", this.state.voter.we_vote_id, ", otherVoterWeVoteId:", otherVoterWeVoteId, ", isFriend:", isFriend);
+    const isLookingAtSelf = this.state.voter.we_vote_id === otherVoterWeVoteId;
     // You should not be able to friend yourself
-    if (is_looking_at_self) {
-      // console.log("FriendInvitationToggle, is_looking_at_self");
+    if (isLookingAtSelf) {
+      // console.log("FriendInvitationToggle, isLookingAtSelf");
       return <div />;
     }
 
-    const acceptFriendInvite = FriendActions.acceptFriendInvite.bind(this, other_voter_we_vote_id);
-    const unFriend = FriendActions.unFriend.bind(this, other_voter_we_vote_id);
     const floatRight = { float: "right" };
 
     return (
@@ -68,12 +67,12 @@ export default class FriendInvitationToggle extends Component {
           <Button
             variant="warning"
             size="small"
-            onClick={unFriend}
+            onClick={this.unFriend}
           >
             <span>Remove Friend</span>
           </Button>
         ) :
-          <Button variant="info" size="small" onClick={acceptFriendInvite}><span>Add Friend</span></Button>
+          <Button variant="info" size="small" onClick={this.acceptFriendInvite}><span>Add Friend</span></Button>
       }
       </span>
     );

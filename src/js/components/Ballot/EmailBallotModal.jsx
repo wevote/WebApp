@@ -14,7 +14,6 @@ export default class EmailBallotModal extends Component {
   static propTypes = {
     next: PropTypes.func.isRequired, // Used by react-slick
     ballotEmailWasSent: PropTypes.func.isRequired, // Used to transition to EmailBallotToFriendsModal whan ballot was sent.
-    // history: PropTypes.object,
     ballot_link: PropTypes.string,
   };
 
@@ -28,27 +27,25 @@ export default class EmailBallotModal extends Component {
     }
 
     this.state = {
-      email_ballot_message: "This is WeVote Ballot data for the upcoming election.",
+      emailBallotMessage: "This is We Vote Ballot data for the upcoming election.",
       voter: VoterStore.getVoter(),
       loading: false,
-      sender_email_address: VoterStore.getVoter().email,
-      sender_email_address_error: false,
-      on_enter_email_addresses_step: true,
-      on_ballot_email_sent_step: false,
-      verification_email_sent: false,
-      on_mobile: false,
+      senderEmailAddress: VoterStore.getVoter().email,
+      senderEmailAddressError: false,
+      onEnterEmailAddressesStep: true,
+      verificationEmailSent: false,
       ballot_link: ballotLink,
     };
     this.ballotEmailSend = this.ballotEmailSend.bind(this);
   }
 
+  componentWillMount () {
+    prepareForCordovaKeyboard(__filename);
+  }
+
   componentDidMount () {
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-  }
-
-  componentWillMount () {
-    prepareForCordovaKeyboard(__filename);
   }
 
   componentWillUnmount () {
@@ -61,40 +58,77 @@ export default class EmailBallotModal extends Component {
     this.setState({
       voter: VoterStore.getVoter(),
       loading: false,
-      sender_email_address: VoterStore.getVoter().email,
+      senderEmailAddress: VoterStore.getVoter().email,
     });
   }
 
   onFriendStoreChange () {
     const emailBallotDataStep = FriendStore.switchToEmailBallotDataStep();
-    const errorMessageToShowVoter = FriendStore.getErrorMessageToShowVoter();
     // console.log("EmailBallotModal, onFriendStoreChange, email_ballot_data_step:", email_ballot_data_step);
     if (emailBallotDataStep === "on_collect_email_step") {
       // Switch to "on_collect_email_step"
       this.setState({
         loading: false,
-        on_enter_email_addresses_step: false,
-        on_ballot_email_sent_step: false,
-        errorMessageToShowVoter,
+        onEnterEmailAddressesStep: false,
       });
     } else {
       this.setState({
         loading: false,
-        errorMessageToShowVoter: '',
       });
     }
   }
 
-  cacheSenderEmailAddress (e) {
+  onKeyDown = (event) => {
+    const enterAndSpaceKeyCodes = [13, 32];
+    const scope = this;
+    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      scope.ballotEmailSendStepsManager().bind(scope);
+    }
+  }
+
+  cacheSenderEmailAddress = (e) => {
     this.setState({
-      sender_email_address: e.target.value,
-      on_ballot_email_sent_step: false,
+      senderEmailAddress: e.target.value,
     });
+  }
+
+  ballotEmailSendStepsManager = () => {
+    // This function is called when the form is submitted
+    console.log("ballotEmailSendStepsManager");
+    let errorMessage = "";
+
+    if (this.state.onEnterEmailAddressesStep) {
+      // Validate friends' email addresses
+      let senderEmailAddressError = false;
+      if (!this.state.senderEmailAddress || !validateEmail(this.state.senderEmailAddress)) {
+        senderEmailAddressError = true;
+        errorMessage += "Please enter a valid email address for yourself.";
+      }
+
+      if (senderEmailAddressError) {
+        // console.log("ballotEmailSendStepsManager, senderEmailAddressError");
+        this.setState({
+          loading: false,
+          senderEmailAddressError: true,
+          errorMessage,
+        });
+      } else if (!this.hasValidEmail()) {
+        // console.log("ballotEmailSendStepsManager, NOT hasValidEmail");
+        this.setState({
+          loading: false,
+          onEnterEmailAddressesStep: false,
+        });
+        this.ballotEmailSend();
+      } else {
+        // console.log("ballotEmailSendStepsManager, calling emailBallotData");
+        this.ballotEmailSend();
+      }
+    }
   }
 
   cacheEmailMessage (e) {
     this.setState({
-      email_ballot_message: e.target.value,
+      emailBallotMessage: e.target.value,
     });
   }
 
@@ -108,89 +142,46 @@ export default class EmailBallotModal extends Component {
   }
 
   ballotEmailSend () {
-    let successMessage = "";
     let verificationEmailSent = false;
-    successMessage = (
+    let successMessage = (
       <span>
         Success! This ballot has been sent to the email address
-        {this.state.sender_email_address}
+        {this.state.senderEmailAddress}
         {" "}
       </span>
     );
 
-    FriendActions.emailBallotData("", "", "", this.state.sender_email_address, this.state.email_ballot_message,
-      this.state.ballot_link, this.state.sender_email_address, this.state.verification_email_sent, deviceTypeString());
+    FriendActions.emailBallotData("", "", "", this.state.senderEmailAddress, this.state.emailBallotMessage,
+      this.state.ballot_link, this.state.senderEmailAddress, this.state.verificationEmailSent, deviceTypeString());
 
     if (!this.hasValidEmail()) {
       verificationEmailSent = true;
       successMessage = (
         <span>
           Success! This ballot has been sent to the email address
-          {this.state.sender_email_address}
+          {" "}
+          {this.state.senderEmailAddress}
           . Please check your email and verify your email address to send Ballot to your friends.
           {" "}
         </span>
       );
     }
 
-    this.props.ballotEmailWasSent(successMessage, this.state.sender_email_address, this.state.verification_email_sent);
+    this.props.ballotEmailWasSent(successMessage, this.state.senderEmailAddress, this.state.verificationEmailSent);
     // After calling the API, reset the form
     this.setState({
       loading: true,
-      sender_email_address_error: false,
-      on_enter_email_addresses_step: true,
-      on_ballot_email_sent_step: true,
+      senderEmailAddressError: false,
+      onEnterEmailAddressesStep: true,
       showEmailToFriendsModal: false,
-      verification_email_sent: verificationEmailSent,
-      success_message: successMessage,
+      verificationEmailSent,
     });
   }
 
   _openEmailToFriendsModal () {
     this.componentWillUnmount();
-    this.setState({ showEmailToFriendsModal: !this.state.showEmailToFriendsModal });
-  }
-
-  ballotEmailSendStepsManager () {
-    // This function is called when the form is submitted
-    console.log("ballotEmailSendStepsManager");
-    let error_message = "";
-
-    if (this.state.on_enter_email_addresses_step) {
-      // Validate friends' email addresses
-      let sender_email_address_error = false;
-      if (!this.state.sender_email_address || !validateEmail(this.state.sender_email_address)) {
-        sender_email_address_error = true;
-        error_message += "Please enter a valid email address for yourself.";
-      }
-
-      if (sender_email_address_error) {
-        // console.log("ballotEmailSendStepsManager, sender_email_address_error");
-        this.setState({
-          loading: false,
-          sender_email_address_error: true,
-          error_message,
-        });
-      } else if (!this.hasValidEmail()) {
-        // console.log("ballotEmailSendStepsManager, NOT hasValidEmail");
-        this.setState({
-          loading: false,
-          on_enter_email_addresses_step: false,
-        });
-        this.ballotEmailSend();
-      } else {
-        // console.log("ballotEmailSendStepsManager, calling emailBallotData");
-        this.ballotEmailSend();
-      }
-    }
-  }
-
-  onKeyDown (event) {
-    const enterAndSpaceKeyCodes = [13, 32];
-    const scope = this;
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      scope.ballotEmailSendStepsManager().bind(scope);
-    }
+    const { showEmailToFriendsModal } = this.state;
+    this.setState({ showEmailToFriendsModal: !showEmailToFriendsModal });
   }
 
   render () {
@@ -213,13 +204,13 @@ export default class EmailBallotModal extends Component {
           <div className="intro-modal-vertical-scroll card">
             <div className="share-modal__default-text">
               <div className="container-fluid u-inset--md text-left">
-                {this.state.sender_email_address_error ? (
+                {this.state.senderEmailAddressError ? (
                   <div className="alert alert-danger">
-                    {this.state.error_message}
+                    {this.state.errorMessage}
                   </div>
                 ) :
                   null }
-                {this.state.on_enter_email_addresses_step ? (
+                {this.state.onEnterEmailAddressesStep ? (
                   <div className="row invite-inputs">
                     <span className="col-12 text-left">
                       Email a link to this ballot to yourself so you can print it, or come back to it later.&nbsp;
@@ -227,23 +218,23 @@ export default class EmailBallotModal extends Component {
                       <br />
                     </span>
                     <div className="col-12 text-left">
-                      { this.hasValidEmail() ? <label>Your Email Address</label> : <label>What is your email address?</label> }
+                      { this.hasValidEmail() ? <span>Your Email Address</span> : <span>What is your email address?</span> }
                     </div>
                     <div className="form-group share-modal__container text-left">
                       <div className="share-modal__input">
                         <input
-                          type="text"
-                          name="self_email_address"
                           className="form-control"
-                          value={this.state.sender_email_address || ""}
-                          onChange={this.cacheSenderEmailAddress.bind(this)}
+                          name="self_email_address"
+                          onChange={this.cacheSenderEmailAddress}
                           placeholder="For example: name@domain.com"
+                          type="text"
+                          value={this.state.senderEmailAddress || ""}
                         />
                       </div>
                       {/* <form onSubmit={this.ballotEmailSendStepsManager.bind(this)} className="u-stack--md"> */}
                       {/* <span> */}
                       {/* <label htmlFor="last-name">Include a Message <span className="small">(Optional)</span></label><br /> */}
-                      {/* <textarea className="form-control" name="email_ballot_message" rows="5" */}
+                      {/* <textarea className="form-control" name="emailBallotMessage" rows="5" */}
                       {/* onChange={this.cacheEmailMessage.bind(this)} */}
                       {/* placeholder="This is WeVote Ballot data for the upcoming election."/> */}
                       {/* </span> */}
@@ -252,8 +243,8 @@ export default class EmailBallotModal extends Component {
                         <span style={floatRight}>
                           <Button
                             tabIndex="0"
-                            onKeyDown={this.onKeyDown.bind(this)}
-                            onClick={this.ballotEmailSendStepsManager.bind(this)}
+                            onKeyDown={this.onKeyDown}
+                            onClick={this.ballotEmailSendStepsManager}
                             variant="primary"
                           >
                             <span>Send This Ballot &gt;</span>
@@ -264,8 +255,8 @@ export default class EmailBallotModal extends Component {
                         <span style={floatRight}>
                           <Button
                             tabIndex="0"
-                            onKeyDown={this.onKeyDown.bind(this)}
-                            onClick={this.ballotEmailSendStepsManager.bind(this)}
+                            onKeyDown={this.onKeyDown}
+                            onClick={this.ballotEmailSendStepsManager}
                             variant="primary"
                           >
                             <span>Send</span>

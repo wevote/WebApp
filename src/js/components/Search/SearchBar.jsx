@@ -70,7 +70,7 @@ export default class SearchBar extends Component {
     return (
       <div className="search-bar clearfix">
         <input
-          ref="search_input"
+          id="search_input"
           type="text"
           className="form-control"
           placeholder={this.props.placeholder}
@@ -82,10 +82,14 @@ export default class SearchBar extends Component {
           <button
             className={this.props.clearButton && this.state.searchString && this.state.searchString.length > 0 ? "search-options-btn" : "hidden"}
             onClick={this.clearQuery}
+            type="button"
           >
             <img src={cordovaDot("/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-88-remove-circle.svg")} width="28" height="28" color="#ccc" alt="clear query" />
           </button>
-          <button className={this.props.searchButton ? "search-options-btn" : "hidden"}>
+          <button
+            className={this.props.searchButton ? "search-options-btn" : "hidden"}
+            type="button"
+          >
             {/* <i className="glyphicon glyphicon-search" /> */}
             <i className="fa fa-search" />
           </button>

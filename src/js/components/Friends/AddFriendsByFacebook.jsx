@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Button } from "react-bootstrap";
-import { historyPush } from "../../utils/cordovaUtils";
 import FriendActions from "../../actions/FriendActions";
 import FriendStore from "../../stores/FriendStore";
 import LoadingWheel from "../LoadingWheel";
@@ -17,11 +16,8 @@ export default class AddFriendsByFacebook extends Component {
     this.state = {
       add_friends_message: "Please join me in preparing for the upcoming election.",
       email_addresses: "",
-      redirect_url_upon_save: "/friends/sign_in", // TODO DALE Remove this?
       loading: false,
-      on_enter_email_addresses_step: true,
-      on_request_email_step: false,
-      on_friend_invitations_sent_step: false,
+      onEnterEmailAddressesStep: true,
       voter: {},
     };
   }
@@ -45,16 +41,39 @@ export default class AddFriendsByFacebook extends Component {
     this.setState({ voter: VoterStore.getVoter(), loading: false });
   }
 
-  _ballotLoaded () {
-    // TODO DALE Remove this?
-    historyPush(this.state.redirect_url_upon_save);
+  onKeyDown = (event) => {
+    const enterAndSpaceKeyCodes = [13, 32];
+    const scope = this;
+    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
+      scope.addFriendsByFacebookStepsManager(event).bind(scope);
+    }
   }
 
-  cacheEmailAddresses (e) {
-    this.setState({
-      email_addresses: e.target.value,
-      on_friend_invitations_sent_step: false,
-    });
+  addFriendsByFacebookStepsManager = (event) => {
+    // This function is called when the form is submitted
+    console.log("addFriendsByFacebookStepsManager");
+
+    // Validate email_addresses
+    let emailAddressesError = false;
+    if (!this.state.email_addresses) {
+      emailAddressesError = true;
+    }
+
+    if (emailAddressesError) {
+      console.log("addFriendsByFacebookStepsManager, emailAddressesError");
+      this.setState({
+        loading: false,
+      });
+    } else if (!this.hasValidEmail()) {
+      console.log("addFriendsByFacebookStepsManager, NOT hasValidEmail");
+      this.setState({
+        loading: false,
+        onRequestEmailStep: true,
+      });
+    } else {
+      console.log("addFriendsByFacebookStepsManager, calling friendInvitationByEmailSend");
+      this.friendInvitationByEmailSend(event);
+    }
   }
 
   cacheAddFriendsByFacebookMessage (e) {
@@ -69,54 +88,15 @@ export default class AddFriendsByFacebook extends Component {
     this.setState({
       loading: true,
       email_addresses: "",
-      on_enter_email_addresses_step: true,
-      on_request_email_step: false,
-      on_friend_invitations_sent_step: true,
+      onEnterEmailAddressesStep: true,
+      onRequestEmailStep: false,
+      onFriendInvitationsSentStep: true,
     });
   }
 
   hasValidEmail () {
     const { voter } = this.state;
     return voter !== undefined ? voter.has_valid_email : false;
-  }
-
-  onKeyDown (event) {
-    const enterAndSpaceKeyCodes = [13, 32];
-    const scope = this;
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      scope.AddFriendsByFacebookStepsManager(event).bind(scope);
-    }
-  }
-
-  AddFriendsByFacebookStepsManager (event) {
-    // This function is called when the form is submitted
-    console.log("AddFriendsByFacebookStepsManager");
-
-    // Validate email_addresses
-    let email_addresses_error = false;
-    let error_message = "";
-    if (!this.state.email_addresses) {
-      email_addresses_error = true;
-      error_message += "Please enter email address or Twitter handle. ";
-    }
-
-    if (email_addresses_error) {
-      console.log("AddFriendsByFacebookStepsManager, email_addresses_error");
-      this.setState({
-        loading: false,
-        email_addresses_error: true,
-        error_message,
-      });
-    } else if (!this.hasValidEmail()) {
-      console.log("AddFriendsByFacebookStepsManager, NOT hasValidEmail");
-      this.setState({
-        loading: false,
-        on_request_email_step: true,
-      });
-    } else {
-      console.log("AddFriendsByFacebookStepsManager, calling friendInvitationByEmailSend");
-      this.friendInvitationByEmailSend(event);
-    }
   }
 
   render () {
@@ -131,16 +111,16 @@ export default class AddFriendsByFacebook extends Component {
 
     return (
       <div>
-        {this.state.on_friend_invitations_sent_step ? (
+        {this.state.onFriendInvitationsSentStep ? (
           <div className="alert alert-success">
           Invitations sent. Is there anyone else you&apos;d like to invite?
           </div>
         ) : null
         }
 
-        {this.state.on_enter_email_addresses_step ? (
+        {this.state.onEnterEmailAddressesStep ? (
           <div>
-            <form onSubmit={this.AddFriendsByFacebookStepsManager.bind(this)} className="u-stack--md">
+            <form onSubmit={this.addFriendsByFacebookStepsManager.bind(this)} className="u-stack--md">
               <div>
             ADD_FRIENDS_BY_FACEBOOK - NOT FINISHED YET
               </div>
@@ -150,8 +130,8 @@ export default class AddFriendsByFacebook extends Component {
               <span style={floatRight}>
                 <Button
                   tabIndex="0"
-                  onKeyDown={this.onKeyDown.bind(this)}
-                  onClick={this.AddFriendsByFacebookStepsManager.bind(this)}
+                  onKeyDown={this.onKeyDown}
+                  onClick={this.addFriendsByFacebookStepsManager}
                   variant="primary"
                   disabled={!this.state.email_addresses}
                 >
@@ -167,7 +147,7 @@ export default class AddFriendsByFacebook extends Component {
         ) : null
         }
 
-        {this.state.on_request_email_step ? (
+        {this.state.onRequestEmailStep ? (
           <div>
           ON REQUEST EMAIL STEP
           </div>

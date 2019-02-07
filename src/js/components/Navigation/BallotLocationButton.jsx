@@ -5,6 +5,8 @@ import BallotStore from "../../stores/BallotStore";
 import { shortenText } from "../../utils/textFormat";
 import { renderLog } from "../../utils/logging";
 
+
+// Note from Dale: We may need to use this in the future
 export default class BallotLocationButton extends Component {
   static propTypes = {
     ballot_location: PropTypes.object,
@@ -13,51 +15,51 @@ export default class BallotLocationButton extends Component {
 
   render () {
     renderLog(__filename);
-    const ballot_location = this.props.ballot_location;
+    const { ballot_location: ballotLocation } = this.props;
 
-    if (ballot_location.ballot_item_display_name !== "" || ballot_location.text_for_map_search !== "") {
-      let ballot_location_shortcut_of_retrieved_ballot = "";
-      let ballot_location_shortcut_matches = false;
-      let ballot_returned_we_vote_id_of_retrieved_ballot = "";
-      let ballot_returned_we_vote_id_matches = false;
-      let ballot_location_display_name = "";
+    if (ballotLocation.ballot_item_display_name !== "" || ballotLocation.text_for_map_search !== "") {
+      let ballotLocationShortcutOfRetrievedBallot = "";
+      let ballotLocationShortcutMatches = false;
+      let ballotReturnedWeVoteIdOfRetrievedBallot = "";
+      let ballotReturnedWeVoteIdMatches = false;
+      let ballotLocationDisplayName = "";
       if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_location_shortcut) {
-        ballot_location_shortcut_of_retrieved_ballot = BallotStore.ballotProperties.ballot_location_shortcut;
-        if (ballot_location.ballot_location_shortcut && ballot_location_shortcut_of_retrieved_ballot) {
-          if (ballot_location.ballot_location_shortcut === ballot_location_shortcut_of_retrieved_ballot) {
-            ballot_location_shortcut_matches = true;
+        ballotLocationShortcutOfRetrievedBallot = BallotStore.ballotProperties.ballot_location_shortcut;
+        if (ballotLocation.ballot_location_shortcut && ballotLocationShortcutOfRetrievedBallot) {
+          if (ballotLocation.ballot_location_shortcut === ballotLocationShortcutOfRetrievedBallot) {
+            ballotLocationShortcutMatches = true;
           }
         }
       }
       if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_returned_we_vote_id) {
-        ballot_returned_we_vote_id_of_retrieved_ballot = BallotStore.ballotProperties.ballot_returned_we_vote_id;
-        if (ballot_location.ballot_returned_we_vote_id && ballot_returned_we_vote_id_of_retrieved_ballot) {
-          if (ballot_location.ballot_returned_we_vote_id === ballot_returned_we_vote_id_of_retrieved_ballot) {
-            ballot_returned_we_vote_id_matches = true;
+        ballotReturnedWeVoteIdOfRetrievedBallot = BallotStore.ballotProperties.ballot_returned_we_vote_id;
+        if (ballotLocation.ballot_returned_we_vote_id && ballotReturnedWeVoteIdOfRetrievedBallot) {
+          if (ballotLocation.ballot_returned_we_vote_id === ballotReturnedWeVoteIdOfRetrievedBallot) {
+            ballotReturnedWeVoteIdMatches = true;
           }
         }
       }
-      // console.log("ballot_location");
-      // DALE 2018-07-31 The ballot_location_display_name isn't very clear. Ideally we would
+      // console.log("ballotLocation");
+      // DALE 2018-07-31 The ballotLocationDisplayName isn't very clear. Ideally we would
       //   show only the city, state zip (instead of the full text_for_map_search), but this will require more
       //   work on the API server side to make this data available.
-      // if (ballot_location.ballot_location_display_name && ballot_location.ballot_location_display_name !== "") {
-      //   ballot_location_display_name = ballot_location.ballot_location_display_name;
+      // if (ballotLocation.ballot_location_display_name && ballotLocation.ballot_location_display_name !== "") {
+      //   ballotLocationDisplayName = ballotLocation.ballot_location_display_name;
       // } else
-      if (ballot_location.text_for_map_search !== "") {
-        const maximum_address_display_length = 25;
-        ballot_location_display_name = shortenText(ballot_location.text_for_map_search, maximum_address_display_length);
+      if (ballotLocation.text_for_map_search !== "") {
+        const maximumAddressDisplayLength = 25;
+        ballotLocationDisplayName = shortenText(ballotLocation.text_for_map_search, maximumAddressDisplayLength);
       } else {
-        ballot_location_display_name = "My Address";
+        ballotLocationDisplayName = "My Address";
       }
 
       return (
         <span className="u-push--md">
           <Button
-            variant={ballot_location_shortcut_matches || ballot_returned_we_vote_id_matches ? "info" : "default"}
-            onClick={() => { this.props.goToDifferentBallot(ballot_location.ballot_returned_we_vote_id, ballot_location.ballot_location_shortcut); }}
+            variant={ballotLocationShortcutMatches || ballotReturnedWeVoteIdMatches ? "info" : "default"}
+            onClick={() => { this.props.goToDifferentBallot(ballotLocation.ballot_returned_we_vote_id, ballotLocation.ballot_location_shortcut); }}
           >
-            <span>{ballot_location_display_name}</span>
+            <span>{ballotLocationDisplayName}</span>
           </Button>
         </span>
       );

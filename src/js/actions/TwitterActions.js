@@ -28,4 +28,12 @@ export default {
     Dispatcher.loadEndpoint("twitterSignInRetrieve", {
     });
   },
+
+  twitterSignInStart (returnUrl) {
+    Dispatcher.loadEndpoint("twitterSignInStart",
+      {
+        return_url: returnUrl,
+      });
+  },
+
 };

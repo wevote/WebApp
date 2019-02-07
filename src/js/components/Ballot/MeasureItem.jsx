@@ -15,19 +15,15 @@ export default class MeasureItem extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string.isRequired,
     commentButtonHide: PropTypes.bool,
-    currentBallotIdInUrl: PropTypes.string,
     election_display_name: PropTypes.string,
-    // kind_of_ballot_item: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
     measure_subtitle: PropTypes.string,
     measure_text: PropTypes.string,
-    // measure_url: PropTypes.string,
     state_code: PropTypes.string,
     positionList: PropTypes.array,
     regional_display_name: PropTypes.string,
     state_display_name: PropTypes.string,
     showPositionsInYourNetworkBreakdown: PropTypes.bool,
-    urlWithoutHash: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired,
   };
 
@@ -130,13 +126,9 @@ export default class MeasureItem extends Component {
           <div>
             {/* Issues related to this Measure */}
             <IssuesByBallotItemDisplayList
-              ballotItemDisplayName={ballotItemDisplayName}
               ballotItemWeVoteId={measureWeVoteId}
-              currentBallotIdInUrl={this.props.currentBallotIdInUrl}
               issuesListHidden
-              overlayTriggerOnClickOnly
               placement="bottom"
-              urlWithoutHash={this.props.urlWithoutHash}
             />
           </div>
 

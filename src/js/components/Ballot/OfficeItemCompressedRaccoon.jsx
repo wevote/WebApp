@@ -54,7 +54,6 @@ export default class OfficeItemCompressedRaccoon extends Component {
       maximumNumberOrganizationsToDisplay: 4,
       organization: {},
       showBallotIntroFollowIssues: false,
-      transitioning: false,
     };
 
     this.closeYourNetworkIsUndecidedPopover = this.closeYourNetworkIsUndecidedPopover.bind(this);
@@ -147,15 +146,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
   }
 
   onIssueStoreChange () {
-    this.setState({
-      transitioning: false,
-    });
+    this.setState();
   }
 
   onVoterGuideStoreChange () {
-    this.setState({
-      transitioning: false,
-    });
+    this.setState();
   }
 
   onOrganizationStoreChange () {
@@ -824,12 +819,8 @@ export default class OfficeItemCompressedRaccoon extends Component {
                             <div>
                               {/* Issues related to this Candidate */}
                               <IssuesByBallotItemDisplayList
-                                ballotItemDisplayName={oneCandidate.ballot_item_display_name}
                                 ballotItemWeVoteId={oneCandidate.we_vote_id}
-                                currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                overlayTriggerOnClickOnly
                                 placement="bottom"
-                                urlWithoutHash={this.props.urlWithoutHash}
                               />
                             </div>
                           </div>

@@ -7,9 +7,6 @@ import { renderLog } from "../../utils/logging";
 
 export default class FriendInvitationProcessedDisplayForList extends Component {
   static propTypes = {
-    children: PropTypes.array, // A list of the tags in FriendDisplayForList when called (e.g. from FriendInvitationList)
-    invitationsSentByMe: PropTypes.bool,
-    voter_we_vote_id: PropTypes.string,
     voter_photo_url_medium: PropTypes.string,
     voter_display_name: PropTypes.string,
     voter_twitter_handle: PropTypes.string,
@@ -22,52 +19,52 @@ export default class FriendInvitationProcessedDisplayForList extends Component {
   render () {
     renderLog(__filename);
     const {
-      voter_twitter_followers_count,
-      voter_photo_url_medium,
+      voter_twitter_followers_count: voterTwitterFollowersCount,
+      voter_photo_url_medium: voterPhotoUrlMedium,
     } = this.props;
 
-    const voter_display_name = this.props.voter_display_name ? this.props.voter_display_name : this.props.voter_email_address;
-    const invitation_sent_to = this.props.invitation_sent_to ? this.props.invitation_sent_to : null;
-    let invitation_sent_to_html;
-    if (invitation_sent_to) {
-      invitation_sent_to_html = (
+    const voterDisplayName = this.props.voter_display_name ? this.props.voter_display_name : this.props.voter_email_address;
+    const { invitation_sent_to: invitationSentTo } = this.props;
+    let invitationSentToHtml;
+    if (invitationSentTo) {
+      invitationSentToHtml = (
         <span>
           Sent to:
-          {invitation_sent_to}
+          {invitationSentTo}
         </span>
       );
     }
     const twitterDescription = this.props.voter_twitter_description ? this.props.voter_twitter_description : "";
-    // If the voter_display_name is in the voter_twitter_description, remove it
-    const twitterDescriptionMinusName = removeTwitterNameFromDescription(voter_display_name, twitterDescription);
+    // If the voterDisplayName is in the voter_twitter_description, remove it
+    const twitterDescriptionMinusName = removeTwitterNameFromDescription(voterDisplayName, twitterDescription);
 
     // TwitterHandle-based link
     const voterGuideLink = this.props.voter_twitter_handle ? `/${this.props.voter_twitter_handle}` : null;
-    const voter_image = <ImageHandler sizeClassName="icon-lg " imageUrl={voter_photo_url_medium} kind_of_ballot_item="CANDIDATE" />;
-    const voter_display_name_formatted = <h4 className="card-child__display-name">{voter_display_name}</h4>;
+    const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlMedium} kind_of_ballot_item="CANDIDATE" />;
+    const voterDisplayNameFormatted = <h4 className="card-child__display-name">{voterDisplayName}</h4>;
 
     return (
       <div className="position-item card-child card-child--not-followed">
         <div className="card-child__avatar">
           { voterGuideLink ? (
             <Link to={voterGuideLink} className="u-no-underline">
-              {voter_image}
+              {voterImage}
             </Link>
           ) :
-            <span>{voter_image}</span> }
+            <span>{voterImage}</span> }
         </div>
         <div className="card-child__media-object-content">
           <div className="card-child__content">
             { voterGuideLink ? (
               <Link to={voterGuideLink} className="u-no-underline">
-                {voter_display_name_formatted}
+                {voterDisplayNameFormatted}
               </Link>
             ) :
-              <span>{voter_display_name_formatted}</span> }
-            {invitation_sent_to_html ? (
+              <span>{voterDisplayNameFormatted}</span> }
+            {invitationSentToHtml ? (
               <span>
                 <br />
-                {invitation_sent_to_html}
+                {invitationSentToHtml}
               </span>
             ) : null
             }
@@ -75,10 +72,10 @@ export default class FriendInvitationProcessedDisplayForList extends Component {
           </div>
           <div className="card-child__additional">
             <div className="card-child__follow-buttons" />
-            {voter_twitter_followers_count ? (
+            {voterTwitterFollowersCount ? (
               <span className="twitter-followers__badge">
                 <span className="fa fa-twitter twitter-followers__icon" />
-                {numberWithCommas(voter_twitter_followers_count)}
+                {numberWithCommas(voterTwitterFollowersCount)}
               </span>
             ) : null
             }

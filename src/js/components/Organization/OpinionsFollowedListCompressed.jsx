@@ -16,15 +16,13 @@ export default class OpinionsFollowedListCompressed extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      organizations_followed: [],
-      ballot_item_we_vote_id: "",
+      organizationsFollowed: [],
     };
   }
 
   componentDidMount () {
     this.setState({
-      organizations_followed: this.props.organizationsFollowed,
-      ballot_item_we_vote_id: this.props.ballotItemWeVoteId,
+      organizationsFollowed: this.props.organizationsFollowed,
     });
   }
 
@@ -32,38 +30,37 @@ export default class OpinionsFollowedListCompressed extends Component {
     // if (nextProps.instantRefreshOn ) {
     // NOTE: This is off because we don't want the organization to disappear from the "More opinions" list when clicked
     this.setState({
-      organizations_followed: nextProps.organizationsFollowed,
-      ballot_item_we_vote_id: nextProps.ballotItemWeVoteId,
+      organizationsFollowed: nextProps.organizationsFollowed,
     });
     // }
   }
 
-  handleIgnore (id) {
-    OrganizationActions.organizationFollowIgnore(id);
+  handleIgnore (organizationWeVoteId) {
+    OrganizationActions.organizationFollowIgnore(organizationWeVoteId);
+    const { organizationsFollowed } = this.state;
     this.setState({
-      organizations_followed: this.state.organizations_followed.filter(org => org.organization_we_vote_id !== id),
+      organizationsFollowed: organizationsFollowed.filter(oneOrganization => oneOrganization.organization_we_vote_id !== organizationWeVoteId),
     });
   }
 
   render () {
     renderLog(__filename);
-    if (this.state.organizations_followed === undefined) {
+    if (this.state.organizationsFollowed === undefined) {
       return null;
     }
-    // zachmonteith: extra span tags inside of OrganizationDisplayForList are to ensure that {org} gets passed in
-    // as an array rather than an object, so that our propTypes validations in OrganizationDisplayForList work.
-    // there is probably a more elegant way to do this, but left it this way for now as it works.
-    const orgs = this.state.organizations_followed.map((org) => {
+    // zachmonteith: extra span tags inside of OrganizationDisplayForList are to ensure that {organizationsList} gets passed in
+    // as an array rather than an object, so that our propTypes validations in OrganizationDisplayForListCompressed work.
+    const organizationsList = this.state.organizationsFollowed.map((oneOrganization) => {
       if (this.props.editMode) {
         return (
-          <OrganizationDisplayForListCompressed key={org.organization_we_vote_id} {...org}>
-            <FollowToggle organizationWeVoteId={org.organization_we_vote_id} />
+          <OrganizationDisplayForListCompressed key={oneOrganization.organization_we_vote_id} {...oneOrganization}>
+            <FollowToggle organizationWeVoteId={oneOrganization.organization_we_vote_id} />
             <span />
           </OrganizationDisplayForListCompressed>
         );
       } else {
         return (
-          <OrganizationDisplayForListCompressed key={org.organization_we_vote_id} {...org}>
+          <OrganizationDisplayForListCompressed key={oneOrganization.organization_we_vote_id} {...oneOrganization}>
             <span />
             <span />
           </OrganizationDisplayForListCompressed>
@@ -73,7 +70,7 @@ export default class OpinionsFollowedListCompressed extends Component {
 
     return (
       <div className="guidelist card-child__list-group">
-        {orgs}
+        {organizationsList}
       </div>
     );
   }

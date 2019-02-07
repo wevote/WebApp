@@ -64,6 +64,17 @@ export default class VoterEmailAddressEntry extends Component {
     this.setState({ editEmailsToVerifyOn: false });
   }
 
+  setAsPrimaryEmailAddress (emailWeVoteId) {
+    VoterActions.setAsPrimaryEmailAddress(emailWeVoteId);
+  }
+
+  voterEmailAddressSave = (event) => {
+    event.preventDefault();
+    const sendLinkToSignIn = true;
+    VoterActions.voterEmailAddressSave(this.state.voterEmailAddress, sendLinkToSignIn);
+    this.setState({ loading: true });
+  }
+
   removeVoterEmailAddress (emailWeVoteId) {
     VoterActions.removeVoterEmailAddress(emailWeVoteId);
   }
@@ -97,21 +108,10 @@ export default class VoterEmailAddressEntry extends Component {
     this.setState({ loading: true });
   }
 
-  setAsPrimaryEmailAddress (emailWeVoteId) {
-    VoterActions.setAsPrimaryEmailAddress(emailWeVoteId);
-  }
-
   updateVoterEmailAddress (e) {
     this.setState({
       voterEmailAddress: e.target.value,
     });
-  }
-
-  voterEmailAddressSave (event) {
-    event.preventDefault();
-    const sendLinkToSignIn = true;
-    VoterActions.voterEmailAddressSave(this.state.voterEmailAddress, sendLinkToSignIn);
-    this.setState({ loading: true });
   }
 
   render () {
@@ -183,7 +183,7 @@ export default class VoterEmailAddressEntry extends Component {
             className="u-stack--xs"
             variant="success"
             type="submit"
-            onClick={this.voterEmailAddressSave.bind(this)}
+            onClick={this.voterEmailAddressSave}
           >
             Send Magic Link
           </Button>

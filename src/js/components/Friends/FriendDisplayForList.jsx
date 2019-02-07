@@ -8,7 +8,6 @@ import { renderLog } from "../../utils/logging";
 
 export default class FriendDisplayForList extends Component {
   static propTypes = {
-    children: PropTypes.array, // A list of the tags in FriendDisplayForList when called (e.g. from FriendInvitationList)
     voter_we_vote_id: PropTypes.string,
     voter_photo_url_medium: PropTypes.string,
     voter_email_address: PropTypes.string,
@@ -23,45 +22,45 @@ export default class FriendDisplayForList extends Component {
   render () {
     renderLog(__filename);
     const {
-      voter_twitter_followers_count,
-      voter_we_vote_id,
-      voter_photo_url_medium,
+      voter_twitter_followers_count: voterTwitterFollowersCount,
+      voter_we_vote_id: voterWeVoteId,
+      voter_photo_url_medium: voterPhotoUrlMedium,
     } = this.props;
 
-    const alternate_voter_display_name = this.props.voter_email_address ? this.props.voter_email_address : this.props.voter_twitter_handle;
-    const voter_display_name = this.props.voter_display_name ? this.props.voter_display_name : alternate_voter_display_name;
+    const alternateVoterDisplayName = this.props.voter_email_address ? this.props.voter_email_address : this.props.voter_twitter_handle;
+    const voterDisplayName = this.props.voter_display_name ? this.props.voter_display_name : alternateVoterDisplayName;
     const twitterDescription = this.props.voter_twitter_description ? this.props.voter_twitter_description : "";
-    // If the voter_display_name is in the voter_twitter_description, remove it
-    const twitterDescriptionMinusName = removeTwitterNameFromDescription(voter_display_name, twitterDescription);
+    // If the voterDisplayName is in the voter_twitter_description, remove it
+    const twitterDescriptionMinusName = removeTwitterNameFromDescription(voterDisplayName, twitterDescription);
 
     // Link to their voter guide
-    const twitter_voter_guide_link = this.props.voter_twitter_handle ? `/${this.props.voter_twitter_handle}` : null;
-    const we_vote_id_voter_guide_link = this.props.linked_organization_we_vote_id ? `/voterguide/${this.props.linked_organization_we_vote_id}` : null;
-    const voterGuideLink = twitter_voter_guide_link || we_vote_id_voter_guide_link;
-    const voter_image = <ImageHandler sizeClassName="icon-lg " imageUrl={voter_photo_url_medium} kind_of_ballot_item="CANDIDATE" />;
-    const voter_display_name_formatted = <span className="card-child__display-name">{voter_display_name}</span>;
+    const twitterVoterGuideLink = this.props.voter_twitter_handle ? `/${this.props.voter_twitter_handle}` : null;
+    const weVoteIdVoterGuideLink = this.props.linked_organization_we_vote_id ? `/voterguide/${this.props.linked_organization_we_vote_id}` : null;
+    const voterGuideLink = twitterVoterGuideLink || weVoteIdVoterGuideLink;
+    const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlMedium} kind_of_ballot_item="CANDIDATE" />;
+    const voterDisplayNameFormatted = <span className="card-child__display-name">{voterDisplayName}</span>;
 
     return (
       <div className="position-item card-child card-child--not-followed">
         <div className="card-child__avatar">
           { voterGuideLink ? (
             <Link to={voterGuideLink} className="u-no-underline">
-              {voter_image}
+              {voterImage}
             </Link>
           ) :
-            <span>{voter_image}</span> }
+            <span>{voterImage}</span> }
         </div>
         <div className="card-child__media-object-content">
           <div className="card-child__content">
             { voterGuideLink ? (
               <Link to={voterGuideLink} className="u-no-underline">
-                {voter_display_name_formatted}
+                {voterDisplayNameFormatted}
               </Link>
             ) : (
               <span>
                 &nbsp;
                 {" "}
-                {voter_display_name_formatted}
+                {voterDisplayNameFormatted}
               </span>
             )}
             {" "}
@@ -78,12 +77,12 @@ export default class FriendDisplayForList extends Component {
           </div>
           <div className="card-child__additional">
             <div className="card-child__follow-buttons">
-              { this.props.editMode ? <FriendToggle other_voter_we_vote_id={voter_we_vote_id} /> : null }
+              { this.props.editMode ? <FriendToggle otherVoterWeVoteId={voterWeVoteId} /> : null }
             </div>
-            {voter_twitter_followers_count ? (
+            {voterTwitterFollowersCount ? (
               <span className="twitter-followers__badge">
                 <span className="fa fa-twitter twitter-followers__icon" />
-                {numberWithCommas(voter_twitter_followers_count)}
+                {numberWithCommas(voterTwitterFollowersCount)}
               </span>
             ) : null
             }

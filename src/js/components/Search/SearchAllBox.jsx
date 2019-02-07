@@ -10,13 +10,9 @@ import SearchAllStore from "../../stores/SearchAllStore";
 import makeSearchLink from "../../utils/search-functions";
 import SearchResultsDisplay from "./SearchResultsDisplay";
 
-export default class
-SearchAllBox extends Component {
+export default class SearchAllBox extends Component {
   static propTypes = {
-    open: PropTypes.bool,
-    selected_index: PropTypes.number,
-    text_from_search_field: PropTypes.string,
-    voter: PropTypes.object,
+    textFromSearchField: PropTypes.string,
   };
 
   constructor (props) {
@@ -48,12 +44,12 @@ SearchAllBox extends Component {
     this.ballot = $(".header-nav__item:nth-child(1)"); // eslint-disable-line requireDollarBeforejQueryAssignment
     this.network = $(".header-nav__item:nth-child(2)"); // eslint-disable-line requireDollarBeforejQueryAssignment
     this.avatar = $("#js-header-avatar"); // eslint-disable-line requireDollarBeforejQueryAssignment
-    this.about = document.getElementsByClassName("header-nav__item--about")[0];
-    this.donate = document.getElementsByClassName("header-nav__item--donate")[0];
+    this.about = document.getElementsByClassName("header-nav__item--about")[0]; // eslint-disable-line prefer-destructuring
+    this.donate = document.getElementsByClassName("header-nav__item--donate")[0]; // eslint-disable-line prefer-destructuring
 
     // When we first enter we want to retrieve values to have for a click in the search box
-    const textFromSearchField = this.props.text_from_search_field;
-    if (this.props.text_from_search_field) {
+    const { textFromSearchField } = this.props;
+    if (textFromSearchField) {
       this.setState({ textFromSearchField });
     }
 
@@ -219,22 +215,18 @@ SearchAllBox extends Component {
 
     e.preventDefault();
 
+    const { searchResults, selectedIndex } = this.state;
     if (keyArrowUp) {
       this.setState({
-        selectedIndex: Math.max(0, this.state.selectedIndex - 1),
+        selectedIndex: Math.max(0, selectedIndex - 1),
       });
     } else if (keyArrowDown) {
       this.setState({
-        selectedIndex: Math.min(this.state.selectedIndex + 1, this.state.searchResults.length - 1),
+        selectedIndex: Math.min(selectedIndex + 1, searchResults.length - 1),
       });
     } else if (keyEscape) {
       this.clearSearch();
     }
-  }
-
-  navigateToSelectedLink () {
-    historyPush(this.links[this.state.selectedIndex]);
-    this.hideResults();
   }
 
   onSearchResultMouseOver (e) {
@@ -279,6 +271,11 @@ SearchAllBox extends Component {
     // setTimeout(() => {
     //   this.refs.searchAllBox.focus();
     // }, 0);
+  }
+
+  navigateToSelectedLink () {
+    historyPush(this.links[this.state.selectedIndex]);
+    this.hideResults();
   }
 
   updateSearchText () {
@@ -369,7 +366,7 @@ SearchAllBox extends Component {
             <div className="input-group-btn">
               {" "}
               {/* Oct 2018: input-group-btn defined in the old bootstrap.css */}
-              <button className={clearButtonClasses} onClick={this.onClearSearch}>
+              <button className={clearButtonClasses} onClick={this.onClearSearch} type="button">
                 {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
                 <i className="glyphicon glyphicon-remove-circle u-gray-light" />
               </button>

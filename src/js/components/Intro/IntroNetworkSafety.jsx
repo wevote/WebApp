@@ -14,7 +14,6 @@ then you can't use relative paths."
 
 export default class IntroNetworkSafety extends Component {
   static propTypes = {
-    history: PropTypes.object,
     next: PropTypes.func,
   };
 

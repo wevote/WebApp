@@ -9,7 +9,6 @@ import { renderLog } from "../../utils/logging";
 
 export default class OrganizationFollowToggle extends Component {
   static propTypes = {
-    is_following: PropTypes.bool,
     organization_we_vote_id: PropTypes.string.isRequired,
     organization_name: PropTypes.string.isRequired,
     organization_description: PropTypes.string,
@@ -22,12 +21,8 @@ export default class OrganizationFollowToggle extends Component {
   constructor (props) {
     super(props);
 
-    let is_following = false;
-    if (this.props.is_following) {
-      is_following = this.props.is_following;
-    }
     this.state = {
-      is_following,
+      isFollowing: false,
     };
     this.onOrganizationFollow = this.onOrganizationFollow.bind(this);
     this.onOrganizationStopFollowing = this.onOrganizationStopFollowing.bind(this);
@@ -38,10 +33,10 @@ export default class OrganizationFollowToggle extends Component {
 
   onOrganizationFollow () {
     // This check is necessary as we enable follow when user clicks on Issue text
-    if (!this.state.is_following) {
-      this.setState({ is_following: true });
-      const organization_follow_based_on_issue = true;
-      OrganizationActions.organizationFollow(this.props.organization_we_vote_id, organization_follow_based_on_issue);
+    if (!this.state.isFollowing) {
+      this.setState({ isFollowing: true });
+      const organizationFollowBasedOnIssue = true;
+      OrganizationActions.organizationFollow(this.props.organization_we_vote_id, organizationFollowBasedOnIssue);
       if (this.props.on_organization_follow) {
         this.props.on_organization_follow(this.props.organization_we_vote_id);
       }
@@ -50,7 +45,7 @@ export default class OrganizationFollowToggle extends Component {
   }
 
   onOrganizationStopFollowing () {
-    this.setState({ is_following: false });
+    this.setState({ isFollowing: false });
     OrganizationActions.organizationStopFollowing(this.props.organization_we_vote_id);
     if (this.props.on_organization_stop_following) {
       this.props.on_organization_stop_following(this.props.organization_we_vote_id);
@@ -61,17 +56,17 @@ export default class OrganizationFollowToggle extends Component {
   render () {
     renderLog(__filename);
     if (!this.state) { return <div />; }
-    const { is_following } = this.state;
+    const { isFollowing } = this.state;
 
     return (
-      <div className={`${this.props.grid} intro-modal__square u-cursor--pointer`} onClick={is_following ? this.onOrganizationStopFollowing : this.onOrganizationFollow}>
+      <div className={`${this.props.grid} intro-modal__square u-cursor--pointer`} onClick={isFollowing ? this.onOrganizationStopFollowing : this.onOrganizationFollow}>
         <ImageHandler
-          sizeClassName={is_following ? "intro-modal__square-image intro-modal__square-following" : "intro-modal__square-image"}
+          sizeClassName={isFollowing ? "intro-modal__square-image intro-modal__square-following" : "intro-modal__square-image"}
           imageUrl={this.props.organization_image_url}
           kind_of_image="ORGANIZATION"
           alt="organization-photo"
         />
-        { is_following && (
+        { isFollowing && (
         <ImageHandler
           className="intro-modal__square-check-mark"
           imageUrl={cordovaDot("/img/global/svg-icons/check-mark-v2-40x43.svg")}

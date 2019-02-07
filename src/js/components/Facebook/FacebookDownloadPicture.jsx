@@ -1,12 +1,10 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 import FacebookActions from "../../actions/FacebookActions";
 import { renderLog } from "../../utils/logging";
 
 class FacebookDownloadPicture extends React.Component {
   static propTypes = {
-    userId: PropTypes.string,
   };
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -20,18 +18,18 @@ class FacebookDownloadPicture extends React.Component {
     console.error("FacebookDownloadPicture caught error: ", `${error} with info: `, info);
   }
 
+  didClickDownloadPicture () {
+    FacebookActions.getFacebookProfilePicture();
+  }
+
   render () {
     renderLog(__filename);
     return (
       <div>
         <h5 className="h5">Download Picture:</h5>
-        <button ref="downloadPictureButton" onClick={() => this.didClickDownloadPicture()}>Download FB Picture</button>
+        <button id="downloadPictureButton" onClick={() => this.didClickDownloadPicture()} type="button">Download FB Picture</button>
       </div>
     );
-  }
-
-  didClickDownloadPicture () {
-    FacebookActions.getFacebookProfilePicture();
   }
 }
 

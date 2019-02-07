@@ -45,15 +45,15 @@ export default class FacebookInvitableFriends extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      facebook_logged_in: false,
-      facebook_auth_response: {},
+      facebookLoggedIn: false,
+      facebookAuthResponse: {},
       facebookInvitableFriends: FacebookStore.facebookInvitableFriends(),
       facebookInvitableFriendsImageWidth: 148,
       facebookInvitableFriendsImageHeight: 148,
       add_friends_message: "Please join me in preparing for the upcoming election.",
       saving: false,
-      search_filter: false,
-      search_term: "",
+      searchFilter: false,
+      searchTerm: "",
       facebookInvitableFriendsFilteredBySearch: [],
       yes_please_merge_accounts: false,
       merging_two_accounts: false,
@@ -81,29 +81,14 @@ export default class FacebookInvitableFriends extends Component {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  cancelMergeFunction = () => {
-    historyPush({
-      pathname: "/more/network",
-      state: {},
-    });
-  }
-
-  voterFacebookSaveToCurrentAccount () {
-    VoterActions.voterFacebookSaveToCurrentAccount();
-  }
-
-  yesPleaseMergeAccounts = () => {
-    this.setState({ yes_please_merge_accounts: true });
-  }
-
   facebookLogin () {
     FacebookActions.login();
   }
 
   onFacebookStoreChange () {
     this.setState({
-      facebook_logged_in: FacebookStore.loggedIn,
-      facebook_auth_response: FacebookStore.getFacebookAuthResponse(),
+      facebookLoggedIn: FacebookStore.loggedIn,
+      facebookAuthResponse: FacebookStore.getFacebookAuthResponse(),
       facebookInvitableFriends: FacebookStore.facebookInvitableFriends(),
       saving: false,
     });
@@ -117,6 +102,13 @@ export default class FacebookInvitableFriends extends Component {
     // May 20, 2018: The following line "this.setState" has no effect if called from render, and throws an error:
     // [Error] Warning: setState(...): Cannot update during an existing state transition (such as within `render` or another component's constructor). Render methods should be a pure function of props and state; constructor side-effects are an anti-pattern, but can be moved to `componentWillMount`.
     // this.setState({ saving: true });
+  }
+
+  cancelMergeFunction = () => {
+    historyPush({
+      pathname: "/more/network",
+      state: {},
+    });
   }
 
   toggleCheckBox = (facebookInvitableFriendId, facebookInvitableFriendName) => {
@@ -152,6 +144,10 @@ export default class FacebookInvitableFriends extends Component {
 
     this.sendFacebookAppRequest(selectedFacebookFriendsIds, selectedFacebookFriendsNames);
   };
+
+  voterFacebookSaveToCurrentAccount () {
+    VoterActions.voterFacebookSaveToCurrentAccount();
+  }
 
   voterMergeTwoAccountsByFacebookKey (facebookSecretKey, voterHasDataToPreserve = false) {
     if (!this.state.merging_two_accounts) {
@@ -203,8 +199,8 @@ export default class FacebookInvitableFriends extends Component {
     const searchTerm = event.target.value;
     if (searchTerm.length === 0) {
       this.setState({
-        search_filter: false,
-        search_term: "",
+        searchFilter: false,
+        searchTerm: "",
         facebookInvitableFriendsFilteredBySearch: [],
       });
     } else {
@@ -214,11 +210,15 @@ export default class FacebookInvitableFriends extends Component {
         user => user.name.toLowerCase().includes(searchTermLowercase));
 
       this.setState({
-        search_filter: true,
-        search_term: searchTerm,
+        searchFilter: true,
+        searchTerm,
         facebookInvitableFriendsFilteredBySearch: searchedFriendsList,
       });
     }
+  }
+
+  yesPleaseMergeAccounts = () => {
+    this.setState({ yes_please_merge_accounts: true });
   }
 
   render () {
@@ -230,14 +230,14 @@ export default class FacebookInvitableFriends extends Component {
       return LoadingWheel;
     }
 
-    // console.log("facebook logged in: ", this.state.facebook_logged_in);
-    if (!this.state.facebook_logged_in) {
+    // console.log("facebook logged in: ", this.state.facebookLoggedIn);
+    if (!this.state.facebookLoggedIn) {
       // console.log("Voter is not logged in through facebook");
       this.facebookLogin();
       return LoadingWheel;
     }
 
-    if (this.state.facebook_auth_response.facebook_sign_in_failed) {
+    if (this.state.facebookAuthResponse.facebook_sign_in_failed) {
       // console.log("Facebook sign in failed - push to /more/sign_in");
       historyPush({
         pathname: "/more/network",
@@ -249,9 +249,9 @@ export default class FacebookInvitableFriends extends Component {
       return LoadingWheel;
     }
 
-    // console.log("SignIn.jsx this.state.facebook_auth_response:", this.state.facebook_auth_response);
-    if (!this.state.voter.signed_in_facebook && this.state.facebook_auth_response && this.state.facebook_auth_response.facebook_retrieve_attempted) {
-      const { facebook_secret_key: facebookSecretKey } = this.state.facebook_auth_response;
+    // console.log("SignIn.jsx this.state.facebookAuthResponse:", this.state.facebookAuthResponse);
+    if (!this.state.voter.signed_in_facebook && this.state.facebookAuthResponse && this.state.facebookAuthResponse.facebook_retrieve_attempted) {
+      const { facebook_secret_key: facebookSecretKey } = this.state.facebookAuthResponse;
 
       if (this.state.yes_please_merge_accounts) {
         // Go ahead and merge this voter record with the voter record that the facebookSecretKey belongs to
@@ -260,9 +260,9 @@ export default class FacebookInvitableFriends extends Component {
       }
 
       // Is there a collision of two accounts?
-      if (this.state.facebook_auth_response.existing_facebook_account_found) {
+      if (this.state.facebookAuthResponse.existing_facebook_account_found) {
         // Is there anything to save from this voter account?
-        if (this.state.facebook_auth_response.voter_has_data_to_preserve) {
+        if (this.state.facebookAuthResponse.voter_has_data_to_preserve) {
           // console.log("FacebookSignInProcess voter_has_data_to_preserve is TRUE");
           // Display the question of whether to merge accounts or not
           return (
@@ -274,7 +274,7 @@ export default class FacebookInvitableFriends extends Component {
         } else {
           // Go ahead and merge the accounts, which means deleting the current voter and switching to the facebook-linked account
           // console.log("FacebookSignInProcess this.voterMergeTwoAccountsByFacebookKey - No data to merge");
-          this.voterMergeTwoAccountsByFacebookKey(facebookSecretKey, this.state.facebook_auth_response.voter_has_data_to_preserve);
+          this.voterMergeTwoAccountsByFacebookKey(facebookSecretKey, this.state.facebookAuthResponse.voter_has_data_to_preserve);
           return LoadingWheel;
         }
       } else {
@@ -306,7 +306,7 @@ export default class FacebookInvitableFriends extends Component {
     }
 
     let facebookInvitableFriendsList = [];
-    if (!this.state.search_filter) {
+    if (!this.state.searchFilter) {
       facebookInvitableFriendsList = this.state.facebookInvitableFriends.facebook_invitable_friends_list;
     } else {
       facebookInvitableFriendsList = this.state.facebookInvitableFriendsFilteredBySearch;
@@ -349,7 +349,7 @@ export default class FacebookInvitableFriends extends Component {
                         facebookFriendListForDisplay : (
                           <h4 className="friends-list__default-text">
                             No friends found with the search string &apos;
-                            {this.state.search_term}
+                            {this.state.searchTerm}
                             &apos;.
                           </h4>
                         )}
@@ -358,15 +358,18 @@ export default class FacebookInvitableFriends extends Component {
                 </div>
                 <br />
                 <span>
-                  <label htmlFor="message">Message </label>
-                  <br />
-                  <input
-                    type="text"
-                    name="add_friends_message"
-                    className="form-control"
-                    onChange={this.cacheAddFriendsByFacebookMessage.bind(this)}
-                    defaultValue="Please join me on We Vote."
-                  />
+                  <label htmlFor="facebook-friends">
+                    Message
+                    <br />
+                    <input
+                      className="form-control"
+                      defaultValue="Please join me on We Vote."
+                      id="facebook-friends"
+                      name="add_friends_message"
+                      onChange={this.cacheAddFriendsByFacebookMessage.bind(this)}
+                      type="text"
+                    />
+                  </label>
                 </span>
                 <br />
                 <Button variant="primary" type="submit">Send</Button>

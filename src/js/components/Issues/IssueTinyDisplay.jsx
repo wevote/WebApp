@@ -19,7 +19,7 @@ export default class IssueTinyDisplay extends Component {
     issue: PropTypes.object,
     issueImageSize: PropTypes.string,
     issueWeVoteId: PropTypes.string.isRequired,
-    overlayTriggerOnClickOnly: PropTypes.bool, // unused
+    // overlayTriggerOnClickOnly: PropTypes.bool, // unused
     popoverBottom: PropTypes.bool,
     toFollow: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
@@ -170,7 +170,9 @@ export default class IssueTinyDisplay extends Component {
     const issuePopover = (
       <Popover
         id={`issue-popover-${this.props.issueWeVoteId}`}
+        onFocus={() => this.onTriggerEnter(this.props.issueWeVoteId)}
         onMouseOver={() => this.onTriggerEnter(this.props.issueWeVoteId)}
+        onBlur={() => this.onTriggerLeave(this.props.issueWeVoteId)}
         onMouseOut={() => this.onTriggerLeave(this.props.issueWeVoteId)}
         title={(
           <span onClick={() => this.onTriggerLeave(this.props.issueWeVoteId)}>

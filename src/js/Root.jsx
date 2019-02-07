@@ -25,10 +25,7 @@ import GetStarted from "./routes/Intro/GetStarted";
 import HamburgerMenu from "./routes/More/HamburgerMenu";
 import HowToUse from "./routes/More/HowToUse";
 import Intro from "./routes/Intro/Intro";
-import IntroContests from "./routes/Intro/IntroContests";
 import IntroNetwork from "./routes/Intro/IntroNetwork";
-import IntroOpinions from "./routes/Intro/IntroOpinions";
-import IntroStory from "./routes/Intro/IntroStory";
 import IssuesToFollow from "./routes/IssuesToFollow";
 import IssuesFollowed from "./routes/IssuesFollowed";
 import InviteByEmail from "./routes/Friends/InviteByEmail";
@@ -121,10 +118,7 @@ const routes = () => (
     <Route path="/polling-place-locator" component={PollingPlaceLocatorModal} />
 
     <Route path="/intro" component={Intro} />
-    <Route path="/intro/contests" component={IntroContests} />
     <Route path="/wevoteintro/network" component={IntroNetwork} />
-    <Route path="/intro/opinions" component={IntroOpinions} />
-    <Route path="/intro/story" component={IntroStory} />
     <Route path="/intro/sample_ballot" component={SampleBallot} />
     <Route path="/intro/get_started" component={GetStarted} />
 
@@ -231,6 +225,7 @@ const routes = () => (
 
     {/* Confirming that person owns twitter handle */}
     <Route path="/verifythisisme/:twitter_handle" component={VerifyThisIsMe} />
+    <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />
 
     {/* Temporary scratchpad for component testing */}
     <Route path="/testing/scratchpad" component={ScratchPad} />
@@ -238,6 +233,7 @@ const routes = () => (
     <Route path=":twitter_handle/ballot/empty" component={TwitterHandleLanding} />
     <Route path=":twitter_handle/ballot/:ballot_location_shortcut" component={TwitterHandleLanding} />
     <Route path=":twitter_handle/ballot/id/:ballot_returned_we_vote_id" component={TwitterHandleLanding} />
+    <Route path=":twitter_handle/ballot/id/:ballot_returned_we_vote_id/:view_mode" component={TwitterHandleLanding} />
     <Route path=":twitter_handle/ballot/election/:google_civic_election_id" component={TwitterHandleLanding} />
     <Route path=":twitter_handle/ballot/election/:google_civic_election_id/:view_mode" component={TwitterHandleLanding} />
     {/* view_mode not taken in yet */}

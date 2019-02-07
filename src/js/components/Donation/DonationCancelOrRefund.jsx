@@ -20,15 +20,15 @@ export default class DonationCancelOrRefund extends Component {
     };
   }
 
-  close () {
+  closeModal = () => {
     this.setState({ showModal: false });
   }
 
-  open () {
+  openModal = () => {
     this.setState({ showModal: true });
   }
 
-  cancel (item) {
+  cancelSubscription = (item) => {
     console.log(`cancel Subscription${item}`);
     if (this.props.refundDonation) {
       DonateActions.donationRefund(item.charge_id);
@@ -50,10 +50,10 @@ export default class DonationCancelOrRefund extends Component {
 
     return (
       <div>
-        <Button size="small" onClick={this.open.bind(this)}>{label}</Button>
+        <Button size="small" onClick={this.openModal}>{label}</Button>
 
-        <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
-          <Modal.Header closeButton>
+        <Modal show={this.state.showModal} onHide={this.closeModal}>
+          <Modal.Header closeModalButton>
             <Modal.Title>{label}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -91,8 +91,8 @@ export default class DonationCancelOrRefund extends Component {
             </Table>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.close.bind(this)}>I changed my mind</Button>
-            <Button onClick={this.cancel.bind(this, item)}>
+            <Button onClick={this.closeModal}>I changed my mind</Button>
+            <Button onClick={this.cancelSubscription(item)}>
               {refundDonation ? "Refund this donation" : "Cancel this subscription"}
             </Button>
           </Modal.Footer>

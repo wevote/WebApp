@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import BrowserPushMessage from "../Widgets/BrowserPushMessage";
 import LoadingWheel from "../LoadingWheel";
@@ -13,7 +12,6 @@ import VoterStore from "../../stores/VoterStore";
 
 export default class VoterGuideSettingsGeneral extends Component {
   static propTypes = {
-    voterGuideWeVoteId: PropTypes.string.isRequired,
   };
 
   constructor (props) {
@@ -25,7 +23,7 @@ export default class VoterGuideSettingsGeneral extends Component {
   // Set up this component upon first entry
   // componentWillMount is used in WebApp
   componentDidMount () {
-    // console.log("VoterGuideSettingsGeneral componentDidMount this.props.voterGuideWeVoteId:", this.props.voterGuideWeVoteId);
+    // console.log("VoterGuideSettingsGeneral componentDidMount");
     // Get Voter
     const voter = VoterStore.getVoter();
     if (voter && voter.we_vote_id) {
@@ -38,7 +36,7 @@ export default class VoterGuideSettingsGeneral extends Component {
   }
 
   componentWillReceiveProps () {
-    // console.log("VoterGuideSettingsGeneral componentWillReceiveProps nextProps.voterGuideWeVoteId:", nextProps.voterGuideWeVoteId);
+    // console.log("VoterGuideSettingsGeneral componentWillReceiveProps");
     // Get Voter
     const voter = VoterStore.getVoter();
     if (voter && voter.we_vote_id) {

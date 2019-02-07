@@ -27,6 +27,8 @@ export default class FollowToggle extends Component {
     super(props);
     this.state = {
       componentDidMountFinished: false,
+      isFollowing: false,
+      organization: {},
       voter: {
         we_vote_id: "",
       },
@@ -40,7 +42,7 @@ export default class FollowToggle extends Component {
     // console.log("componentDidMount, this.props: ", this.props);
     this.setState({
       componentDidMountFinished: true,
-      is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.organizationWeVoteId),
+      isFollowing: OrganizationStore.isVoterFollowingThisOrganization(this.props.organizationWeVoteId),
       organization: OrganizationStore.getOrganizationByWeVoteId(this.props.organizationWeVoteId),
     });
     this.onVoterStoreChange();
@@ -51,13 +53,6 @@ export default class FollowToggle extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
-  componentWillUnmount () {
-    // console.log("componentWillUnmount, this.props.organizationWeVoteId: ", this.props.organizationWeVoteId);
-    this.voterGuideStoreListener.remove();
-    this.organizationStoreListener.remove();
-    this.voterStoreListener.remove();
-  }
-
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (this.state.componentDidMountFinished === false) {
@@ -65,17 +60,24 @@ export default class FollowToggle extends Component {
       return true;
     }
 
-    if (this.state.is_following !== nextState.is_following) {
+    if (this.state.isFollowing !== nextState.isFollowing) {
       // console.log("shouldComponentUpdate: this.state.showBallotIntroFollowIssues", this.state.showBallotIntroFollowIssues, ", nextState.showBallotIntroFollowIssues", nextState.showBallotIntroFollowIssues);
       return true;
     }
     return false;
   }
 
+  componentWillUnmount () {
+    // console.log("componentWillUnmount, this.props.organizationWeVoteId: ", this.props.organizationWeVoteId);
+    this.voterGuideStoreListener.remove();
+    this.organizationStoreListener.remove();
+    this.voterStoreListener.remove();
+  }
+
   onVoterGuideStoreChange () {
     // console.log("FollowToggle, onVoterGuideStoreChange, organization_we_vote_id: ", this.props.organizationWeVoteId);
     this.setState({
-      is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.organizationWeVoteId),
+      isFollowing: OrganizationStore.isVoterFollowingThisOrganization(this.props.organizationWeVoteId),
       organization: OrganizationStore.getOrganizationByWeVoteId(this.props.organizationWeVoteId),
     });
   }
@@ -83,7 +85,7 @@ export default class FollowToggle extends Component {
   onOrganizationStoreChange () {
     // console.log("FollowToggle, onOrganizationStoreChange, organization_we_vote_id: ", this.props.organizationWeVoteId);
     this.setState({
-      is_following: OrganizationStore.isVoterFollowingThisOrganization(this.props.organizationWeVoteId),
+      isFollowing: OrganizationStore.isVoterFollowingThisOrganization(this.props.organizationWeVoteId),
       organization: OrganizationStore.getOrganizationByWeVoteId(this.props.organizationWeVoteId),
     });
   }
@@ -93,11 +95,11 @@ export default class FollowToggle extends Component {
   }
 
   startFollowingLocalState () {
-    this.setState({ is_following: true });
+    this.setState({ isFollowing: true });
   }
 
   stopFollowingLocalState () {
-    this.setState({ is_following: false });
+    this.setState({ isFollowing: false });
   }
 
   stopFollowingInstantly (stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId) {
@@ -146,7 +148,6 @@ export default class FollowToggle extends Component {
     if (!this.state) { return <div />; }
 
     const { organizationWeVoteId: weVoteId, organization_for_display: organizationForDisplay } = this.props;
-    // let classNameOverride = this.props.classNameOverride || "";
     const isLookingAtSelf = this.state.voter.linked_organization_we_vote_id === weVoteId;
 
     // You should not be able to follow yourself
@@ -171,7 +172,7 @@ export default class FollowToggle extends Component {
       );
     }
 
-    return this.state.is_following ? (
+    return this.state.isFollowing ? (
       <span className="d-print-none">
         { this.props.hide_stop_following_button ?
           null : (

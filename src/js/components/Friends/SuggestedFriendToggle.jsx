@@ -8,17 +8,17 @@ import { renderLog } from "../../utils/logging";
 
 export default class SuggestedFriendToggle extends Component {
   static propTypes = {
-    other_voter_we_vote_id: PropTypes.string.isRequired,
+    otherVoterWeVoteId: PropTypes.string.isRequired,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      other_voter_we_vote_id: "",
       voter: {
         we_vote_id: "",
       },
     };
+    this.sendFriendInvite = FriendActions.friendInvitationByWeVoteIdSend.bind(this, this.props.otherVoterWeVoteId);
   }
 
   componentDidMount () {
@@ -35,7 +35,7 @@ export default class SuggestedFriendToggle extends Component {
 
   onFriendStoreChange () {
     this.setState({
-      isFriend: FriendStore.isFriend(this.props.other_voter_we_vote_id),
+      isFriend: FriendStore.isFriend(this.props.otherVoterWeVoteId),
     });
   }
 
@@ -48,24 +48,23 @@ export default class SuggestedFriendToggle extends Component {
   render () {
     renderLog(__filename);
     if (!this.state) { return <div />; }
-    const other_voter_we_vote_id = this.props.other_voter_we_vote_id;
+    const { otherVoterWeVoteId } = this.props;
     const { isFriend } = this.state;
-    // console.log("SuggestedFriendToggle, other_voter_we_vote_id:", other_voter_we_vote_id, ", isFriend:", isFriend);
-    const is_looking_at_self = this.state.voter.we_vote_id === other_voter_we_vote_id;
+    // console.log("SuggestedFriendToggle, otherVoterWeVoteId:", otherVoterWeVoteId, ", isFriend:", isFriend);
+    const isLookingAtSelf = this.state.voter.we_vote_id === otherVoterWeVoteId;
     // You should not be able to friend yourself
-    if (is_looking_at_self) {
-      // console.log("SuggestedFriendToggle, is_looking_at_self");
+    if (isLookingAtSelf) {
+      // console.log("SuggestedFriendToggle, isLookingAtSelf");
       return <div />;
     }
 
-    const sendFriendInvite = FriendActions.friendInvitationByWeVoteIdSend.bind(this, other_voter_we_vote_id);
     const floatRight = { float: "right" };
 
     return (
       <span style={floatRight}>
         {isFriend ?
           <span>Already Friend!</span> :
-          <Button variant="info" size="small" onClick={sendFriendInvite}><span>Add Friend</span></Button>
+          <Button variant="info" size="small" onClick={this.sendFriendInvite}><span>Add Friend</span></Button>
         }
       </span>
     );

@@ -9,26 +9,21 @@ import { capitalizeString } from "../../utils/textFormat";
 
 export default class MeasureItemReadyToVote extends Component {
   static propTypes = {
-    we_vote_id: PropTypes.string.isRequired,
-    measure_subtitle: PropTypes.string,
-    measure_text: PropTypes.string,
-    kind_of_ballot_item: PropTypes.string.isRequired,
+    measureWeVoteId: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,
-    link_to_ballot_item_page: PropTypes.bool,
-    measure_url: PropTypes.string,
-    _togglePopup: PropTypes.func,
+    linkToBallotItemPage: PropTypes.bool,
   };
 
   constructor (props) {
     super(props);
-    this.state = { transitioning: false, showModal: false };
+    this.state = {};
   }
 
   componentDidMount () {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
+    this.setState({ supportProps: SupportStore.get(this.props.measureWeVoteId) });
   }
 
   componentWillUnmount () {
@@ -38,23 +33,22 @@ export default class MeasureItemReadyToVote extends Component {
 
   onVoterGuideStoreChange () {
     // We just want to trigger a re-render
-    this.setState({ transitioning: false });
-    // console.log("onVoterGuideStoreChange");
+    this.setState();
   }
 
   onSupportStoreChange () {
-    this.setState({ supportProps: SupportStore.get(this.props.we_vote_id), transitioning: false });
+    this.setState({ supportProps: SupportStore.get(this.props.measureWeVoteId) });
   }
 
   render () {
     renderLog(__filename);
     const { supportProps } = this.state;
 
-    let { ballot_item_display_name } = this.props;
-    const { we_vote_id: weVoteId }  = this.props;
-    const measureLink = `/measure/${weVoteId}`;
+    let { ballot_item_display_name: ballotItemDisplayName } = this.props;
+    const { measureWeVoteId }  = this.props;
+    const measureLink = `/measure/${measureWeVoteId}`;
 
-    ballot_item_display_name = capitalizeString(ballot_item_display_name);
+    ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
 
     return (
       <div className="card-main measure-card">
@@ -64,9 +58,9 @@ export default class MeasureItemReadyToVote extends Component {
 
             <div className="u-flex-auto u-cursor--pointer">
               <h2 className="card-main__display-name">
-                { this.props.link_to_ballot_item_page ?
-                  <a onClick={measureLink}>{ballot_item_display_name}</a> :
-                  ballot_item_display_name
+                { this.props.linkToBallotItemPage ?
+                  <a onClick={measureLink}>{ballotItemDisplayName}</a> :
+                  ballotItemDisplayName
                 }
               </h2>
             </div>

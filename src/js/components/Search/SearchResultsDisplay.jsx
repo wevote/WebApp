@@ -7,7 +7,6 @@ import ImageHandler from "../ImageHandler";
 
 export default class SearchResultsDisplay extends Component {
   static propTypes = {
-    fullPageDisplay: PropTypes.bool,
     searchResults: PropTypes.array.isRequired,
     selectedIndex: PropTypes.number,
     textFromSearchField: PropTypes.string.isRequired,
@@ -56,6 +55,7 @@ export default class SearchResultsDisplay extends Component {
             <Link
               key={oneResult.local_id}
               data-idx={idx}
+              onFocus={onSearchResultMouseOver}
               onMouseOver={onSearchResultMouseOver}
               className="search-container__links"
               onClick={() => onSearchElectionResultClick(oneResult.google_civic_election_id)}
@@ -80,6 +80,7 @@ export default class SearchResultsDisplay extends Component {
               key={oneResult.we_vote_id}
               data-idx={idx}
               to={links[idx]}
+              onFocus={onSearchResultMouseOver}
               onMouseOver={onSearchResultMouseOver}
               className="search-container__links"
               onClick={onSearchResultClick}

@@ -87,7 +87,7 @@ export function getApplicationViewBooleans (pathname) {
   } else if (pathname === "/settings/account" ||
     pathname === "/settings/address" ||
     pathname === "/settings/election" ||
-    pathname === "/settings/issues" ||
+    stringContains("/settings/issues", pathname) ||
     pathname === "/settings/notifications" ||
     pathname === "/settings/profile" ||
     pathname === "/settings/voterguidesmenu" ||

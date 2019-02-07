@@ -51,6 +51,7 @@ export default class SettingsPersonalSideBar extends Component {
 
   render () {
     renderLog(__filename);
+    // console.log("SettingsPersonalSideBar, isOrganization: ", this.state.isOrganization);
 
     return (
       <div className="card">
@@ -134,7 +135,7 @@ export default class SettingsPersonalSideBar extends Component {
                   "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
                   "SettingsItem__summary__item__display-name"}
                 >
-                  Issues
+                  Organizational Values
                 </span>
               </Link>
             </div>

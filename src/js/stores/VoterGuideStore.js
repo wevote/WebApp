@@ -58,12 +58,13 @@ class VoterGuideStore extends ReduceStore {
         +(a.value.election_day_text === b.value.election_day_text) - 1);
 
     const orderedArray = [];
-    Object.entries(mapped).map(element => orderedArray.push(element.value));
+    mapped.forEach(element => orderedArray.push(element.value));
     // The prior line replaces the following lines for eslint 12/1/18
     // for (const element of mapped) {
     //   orderedArray.push(element.value);
     // }
 
+    // console.log("VoterGuideStore, sortVoterGuidesByDate, orderedArray: ", orderedArray);
     return orderedArray;
   }
 
@@ -71,7 +72,7 @@ class VoterGuideStore extends ReduceStore {
     const allCachedVoterGuidesByOrganization = this.getState().allCachedVoterGuidesByOrganization || {};
     const voter = VoterStore.getVoter();
     const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
-    // console.log("VoterGuideStore getAllVoterGuidesOwnedByVoter, linked_organization_we_vote_id: ", linked_organization_we_vote_id);
+    // console.log("VoterGuideStore getAllVoterGuidesOwnedByVoter, linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId, ", allCachedVoterGuidesByOrganization: ", allCachedVoterGuidesByOrganization);
     const unsortedVoterGuides = allCachedVoterGuidesByOrganization[linkedOrganizationWeVoteId] || [];
     return this.sortVoterGuidesByDate(unsortedVoterGuides);
   }

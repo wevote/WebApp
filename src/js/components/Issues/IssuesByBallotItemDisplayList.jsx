@@ -15,20 +15,14 @@ import VoterGuideStore from "../../stores/VoterGuideStore";
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
 export default class IssuesByBallotItemDisplayList extends Component {
   static propTypes = {
-    ballotItemDisplayName: PropTypes.string,
     ballotItemWeVoteId: PropTypes.string.isRequired,
-    currentBallotIdInUrl: PropTypes.string, // unused
     endorsementsLabelHidden: PropTypes.bool,
     issuesListHidden: PropTypes.bool,
-    overlayTriggerOnClickOnly: PropTypes.bool, // unused
-    popoverBottom: PropTypes.bool, // unused
-    urlWithoutHash: PropTypes.string, // unused
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      // ballotItemDisplayName: false,
       canScrollDesktop: false,
       canScrollMobile: false,
       canScrollLeftDesktop: false,
@@ -38,10 +32,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
       // issuesUnderThisBallotItem: [],
       issuesUnderThisBallotItemVoterIsFollowing: [],
       issuesUnderThisBallotItemVoterIsNotFollowing: [],
-      // issuesVoterIsFollowing: [],
       maximumNumberOfIssuesToDisplay: 26,
-      // showModal: false,
-      // transitioning: false,
     };
     this.closeIssuesLabelPopover = this.closeIssuesLabelPopover.bind(this);
   }
@@ -94,10 +85,6 @@ export default class IssuesByBallotItemDisplayList extends Component {
     this.voterGuideStoreListener.remove();
   }
 
-  closeIssuesLabelPopover () {
-    document.body.click();
-  }
-
   onIssueStoreChange () {
     this.setScrollState();
     this.setState(prevState => ({
@@ -116,7 +103,34 @@ export default class IssuesByBallotItemDisplayList extends Component {
 
   onVoterGuideStoreChange () {
     // We just want to trigger a re-render
-    // this.setState({ transitioning: false });
+    this.setState();
+  }
+
+  setScrollState () {
+    const desktopList = findDOMNode(
+      this.refs[`${this.state.ballotItemWeVoteId}-issue-list-desktop`],
+    );
+    const mobileList = findDOMNode(
+      this.refs[`${this.state.ballotItemWeVoteId}-issue-list-mobile`],
+    );
+    const desktopListVisibleWidth = $(desktopList).width();
+    const desktopListWidth = $(desktopList)
+      .children()
+      .eq(0)
+      .children()
+      .eq(0)
+      .width();
+    const mobileListVisibleWidth = $(mobileList).width();
+    const mobileListWidth = $(mobileList)
+      .children()
+      .eq(0)
+      .children()
+      .eq(0)
+      .width();
+    this.setState({
+      canScrollDesktop: desktopListVisibleWidth <= desktopListWidth,
+      canScrollMobile: mobileListVisibleWidth <= mobileListWidth,
+    });
   }
 
   scrollLeft (visibleTag) {
@@ -176,31 +190,8 @@ export default class IssuesByBallotItemDisplayList extends Component {
     );
   }
 
-  setScrollState () {
-    const desktopList = findDOMNode(
-      this.refs[`${this.state.ballotItemWeVoteId}-issue-list-desktop`],
-    );
-    const mobileList = findDOMNode(
-      this.refs[`${this.state.ballotItemWeVoteId}-issue-list-mobile`],
-    );
-    const desktopListVisibleWidth = $(desktopList).width();
-    const desktopListWidth = $(desktopList)
-      .children()
-      .eq(0)
-      .children()
-      .eq(0)
-      .width();
-    const mobileListVisibleWidth = $(mobileList).width();
-    const mobileListWidth = $(mobileList)
-      .children()
-      .eq(0)
-      .children()
-      .eq(0)
-      .width();
-    this.setState({
-      canScrollDesktop: desktopListVisibleWidth <= desktopListWidth,
-      canScrollMobile: mobileListVisibleWidth <= mobileListWidth,
-    });
+  closeIssuesLabelPopover () {
+    document.body.click();
   }
 
   render () {

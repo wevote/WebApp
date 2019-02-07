@@ -11,16 +11,6 @@ class Main extends React.Component {
     this.state = this.getFacebookState();
   }
 
-  getFacebookState () {
-    return {
-      accessToken: FacebookStore.accessToken,
-      loggedIn: FacebookStore.loggedIn,
-      userId: FacebookStore.userId,
-      facebookPictureStatus: FacebookStore.facebookPictureStatus,
-      facebookPictureUrl: VoterStore.getFacebookPhoto(),
-    };
-  }
-
   componentDidMount () {
     this.facebookStoreListener = FacebookStore.addListener(this._onChange.bind(this));
     this.voterListener = VoterStore.addListener(this._onChange.bind(this));
@@ -31,16 +21,27 @@ class Main extends React.Component {
     this.voterListener.remove();
   }
 
+  getFacebookState () {
+    return {
+      accessToken: FacebookStore.accessToken,
+      loggedIn: FacebookStore.loggedIn,
+      userId: FacebookStore.userId,
+      facebookPictureStatus: FacebookStore.facebookPictureStatus,
+      facebookPictureUrl: VoterStore.getFacebookPhoto(),
+    };
+  }
+
   _onChange () {
     this.setState(this.getFacebookState());
   }
 
+  //  userId={this.state.userId} not used in FacebookDownloadPicture component
   render () {
     renderLog(__filename);
     return (
       <div>
         {this.state.userId ?
-          <FacebookDownloadPicture userId={this.state.userId} /> :
+          <FacebookDownloadPicture /> :
           <div />
         }
         <FacebookPicture

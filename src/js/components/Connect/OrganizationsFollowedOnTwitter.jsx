@@ -8,7 +8,6 @@ import OrganizationCard from "../VoterGuide/OrganizationCard";
 import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
 
 export default class OrganizationsFollowedOnTwitter extends Component {
-
   static propTypes = {
     organizationsFollowedOnTwitter: PropTypes.array,
     maximumOrganizationDisplay: PropTypes.number,
@@ -20,16 +19,16 @@ export default class OrganizationsFollowedOnTwitter extends Component {
     this.show_popover = false;
 
     this.state = {
-      organizations_followed_on_twitter: this.props.organizationsFollowedOnTwitter,
-      maximum_organization_display: this.props.maximumOrganizationDisplay,
+      organizationsFollowedOnTwitter: this.props.organizationsFollowedOnTwitter,
+      maximumOrganizationDisplay: this.props.maximumOrganizationDisplay,
     };
   }
 
   componentDidMount () {
     console.log("OrganizationsFollowedOnTwitter componentDidMount");
     this.setState({
-      organizations_followed_on_twitter: this.props.organizationsFollowedOnTwitter,
-      maximum_organization_display: this.props.maximumOrganizationDisplay,
+      organizationsFollowedOnTwitter: this.props.organizationsFollowedOnTwitter,
+      maximumOrganizationDisplay: this.props.maximumOrganizationDisplay,
     });
   }
 
@@ -38,24 +37,24 @@ export default class OrganizationsFollowedOnTwitter extends Component {
     // if (nextProps.instantRefreshOn ) {
     // NOTE: This is off because we don't want the organization to disappear from the "More opinions" list when clicked
     this.setState({
-      organizations_followed_on_twitter: nextProps.organizationsFollowedOnTwitter,
-      maximum_organization_display: nextProps.maximumOrganizationDisplay,
+      organizationsFollowedOnTwitter: nextProps.organizationsFollowedOnTwitter,
+      maximumOrganizationDisplay: nextProps.maximumOrganizationDisplay,
     });
     // }
   }
 
-  onTriggerEnter (org_id) {
-    this.refs[`overlay-${org_id}`].show();
+  onTriggerEnter (organizationWeVoteId) {
+    this.refs[`overlay-${organizationWeVoteId}`].show();
     this.show_popover = true;
     clearTimeout(this.hide_popover_timer);
   }
 
-  onTriggerLeave (org_id) {
+  onTriggerLeave (organizationWeVoteId) {
     this.show_popover = false;
     clearTimeout(this.hide_popover_timer);
     this.hide_popover_timer = setTimeout(() => {
       if (!this.show_popover) {
-        this.refs[`overlay-${org_id}`].hide();
+        this.refs[`overlay-${organizationWeVoteId}`].hide();
       }
     }, 100);
   }
@@ -63,29 +62,29 @@ export default class OrganizationsFollowedOnTwitter extends Component {
   render () {
     // console.log("OrganizationsFollowedOnTwitter render")
     renderLog(__filename);
-    if (this.state.organizations_followed_on_twitter === undefined) {
+    if (this.state.organizationsFollowedOnTwitter === undefined) {
       return null;
     }
 
-    let local_counter = 0;
-    let orgs_not_shown_count = 0;
-    let one_organization_for_organization_card;
-    if (this.state.organizations_followed_on_twitter &&
-      this.state.organizations_followed_on_twitter.length > this.state.maximum_organization_display) {
-      orgs_not_shown_count = this.state.organizations_followed_on_twitter.length - this.state.maximum_organization_display;
+    let localCounter = 0;
+    let organizationsNotShownCount = 0;
+    let oneOrganizationForOrganizationCard;
+    if (this.state.organizationsFollowedOnTwitter &&
+      this.state.organizationsFollowedOnTwitter.length > this.state.maximumOrganizationDisplay) {
+      organizationsNotShownCount = this.state.organizationsFollowedOnTwitter.length - this.state.maximumOrganizationDisplay;
     }
-    const organizations_to_display = this.state.organizations_followed_on_twitter.map( (one_organization) => {
-      local_counter++;
-      const org_id = one_organization.organization_we_vote_id;
-      if (local_counter > this.state.maximum_organization_display) {
-        if (local_counter === this.state.maximum_organization_display + 1) {
+    const organizationsToDisplay = this.state.organizationsFollowedOnTwitter.map((oneOrganization) => {
+      localCounter++;
+      const organizationWeVoteId = oneOrganization.organization_we_vote_id;
+      if (localCounter > this.state.maximumOrganizationDisplay) {
+        if (localCounter === this.state.maximumOrganizationDisplay + 1) {
           // If here we want to show how many organizations there are to follow
           return (
-            <span key={one_organization.organization_we_vote_id}>
+            <span key={oneOrganization.organization_we_vote_id}>
               <Link to="/opinions_followed">
                 {" "}
                 +
-                {orgs_not_shown_count}
+                {organizationsNotShownCount}
               </Link>
             </span>
           );
@@ -93,39 +92,39 @@ export default class OrganizationsFollowedOnTwitter extends Component {
           return "";
         }
       } else {
-        one_organization_for_organization_card = {
-          organization_name: one_organization.organization_name,
-          organization_photo_url_large: one_organization.organization_photo_url_large,
-          organization_photo_url_tiny: one_organization.organization_photo_url_tiny,
-          organization_twitter_handle: one_organization.organization_twitter_handle,
-          organization_website: one_organization.organization_website,
-          twitter_description: one_organization.twitter_description,
-          twitter_followers_count: one_organization.twitter_followers_count,
+        oneOrganizationForOrganizationCard = {
+          organization_name: oneOrganization.organization_name,
+          organization_photo_url_large: oneOrganization.organization_photo_url_large,
+          organization_photo_url_tiny: oneOrganization.organization_photo_url_tiny,
+          organization_twitter_handle: oneOrganization.organization_twitter_handle,
+          organization_website: oneOrganization.organization_website,
+          twitter_description: oneOrganization.twitter_description,
+          twitter_followers_count: oneOrganization.twitter_followers_count,
         };
 
         // Removed bsPrefix="card-popover"
-        // onMouseOver={() => this.onTriggerEnter(org_id)}
-        // onMouseOut={() => this.onTriggerLeave(org_id)}
+        // onMouseOver={() => this.onTriggerEnter(organizationWeVoteId)}
+        // onMouseOut={() => this.onTriggerLeave(organizationWeVoteId)}
         const organizationPopover = (
-          <Popover id={`organization-popover-${org_id}`}>
+          <Popover id={`organization-popover-${organizationWeVoteId}`}>
             <div className="card">
               <div className="card-main">
-                <FollowToggle organizationWeVoteId={one_organization.organization_we_vote_id} />
-                <OrganizationCard organization={one_organization_for_organization_card} />
+                <FollowToggle organizationWeVoteId={oneOrganization.organization_we_vote_id} />
+                <OrganizationCard organization={oneOrganizationForOrganizationCard} />
               </div>
             </div>
           </Popover>
         );
-        const voterGuideLink = one_organization.organization_twitter_handle ?
-          `/${one_organization.organization_twitter_handle}` :
-          `/voterguide/${one_organization.organization_we_vote_id}`;
+        const voterGuideLink = oneOrganization.organization_twitter_handle ?
+          `/${oneOrganization.organization_twitter_handle}` :
+          `/voterguide/${oneOrganization.organization_we_vote_id}`;
         const placement = "bottom";
-        // onMouseOver={() => this.onTriggerEnter(org_id)}
-        // onMouseOut={() => this.onTriggerLeave(org_id)}
+        // onMouseOver={() => this.onTriggerEnter(organizationWeVoteId)}
+        // onMouseOut={() => this.onTriggerLeave(organizationWeVoteId)}
         return (
           <OverlayTrigger
-            key={`trigger-${org_id}`}
-            ref={`overlay-${org_id}`}
+            key={`trigger-${organizationWeVoteId}`}
+            ref={`overlay-${organizationWeVoteId}`}
             rootClose
             placement={placement}
             overlay={organizationPopover}
@@ -133,7 +132,7 @@ export default class OrganizationsFollowedOnTwitter extends Component {
             <span className="position-rating__source with-popover">
               <Link to={voterGuideLink}>
                 <OrganizationTinyDisplay
-                  {...one_organization}
+                  {...oneOrganization}
                   showPlaceholderImage
                 />
               </Link>
@@ -145,7 +144,7 @@ export default class OrganizationsFollowedOnTwitter extends Component {
 
     return (
       <span className="guidelist card-child__list-group">
-        {organizations_to_display}
+        {organizationsToDisplay}
       </span>
     );
   }

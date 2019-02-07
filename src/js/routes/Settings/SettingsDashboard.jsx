@@ -62,6 +62,7 @@ export default class SettingsDashboard extends Component {
       if (organization && organization.organization_we_vote_id) {
         this.setState({
           organization,
+          organizationType: organization.organization_type,
         });
       } else {
         OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
@@ -86,6 +87,7 @@ export default class SettingsDashboard extends Component {
       if (organization && organization.organization_we_vote_id) {
         this.setState({
           organization,
+          organizationType: organization.organization_type,
         });
       } else {
         OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
@@ -115,7 +117,7 @@ export default class SettingsDashboard extends Component {
   }
 
   onVoterGuideStoreChange () {
-    this.setState({ transitioning: false });
+    this.setState();
   }
 
   onVoterStoreChange () {
@@ -148,10 +150,10 @@ export default class SettingsDashboard extends Component {
         break;
       case "issues_linked":
       case "issues_to_link":
-        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id={this.state.voter.we_vote_id} params={{ active_tab: this.state.editMode }} />;
+        settingsComponentToDisplay = <SettingsIssueLinks organizationWeVoteId={this.state.voter.we_vote_id} params={{ active_tab: this.state.editMode }} />;
         break;
       case "issues":
-        settingsComponentToDisplay = <SettingsIssueLinks organization_we_vote_id={this.state.voter.we_vote_id} params={{ active_tab: "" }} />;
+        settingsComponentToDisplay = <SettingsIssueLinks organizationWeVoteId={this.state.voter.we_vote_id} params={{ active_tab: "" }} />;
         break;
       case "notifications":
         settingsComponentToDisplay = <SettingsNotifications />;

@@ -106,9 +106,6 @@ export default class BallotIntroFollowAdvisers extends Component {
   render () {
     const { voterGuidesToFollowByIssuesFollowed, voterGuidesToFollowAll } = this.state;
     renderLog(__filename);
-    // BallotIntroOrganizations is very similar. Check to see if we want to keep that file and this one in sync.
-    // These are the organizations that a voter might want to follow based on the issues the voter is following.
-
     // We want to keep track of organizations we have already offered to the voter, so we don't show one twice
     const organizationWeVoteIdsDisplayed = voterGuidesToFollowByIssuesFollowed.map(org => org.organization_we_vote_id);
 

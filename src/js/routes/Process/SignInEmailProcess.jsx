@@ -108,8 +108,6 @@ export default class SignInEmailProcess extends Component {
           // console.log("BEFORE WouldYouLikeToMergeAccountsOld, this.state.emailSignInStatus:", this.state.emailSignInStatus);
           return (
             <WouldYouLikeToMergeAccountsOld
-              currentVoterWeVoteId={this.state.voter.we_vote_id}
-              mergeIntoVoterWeVoteId={this.state.emailSignInStatus.voter_we_vote_id_from_secret_key}
               emailSecretKey={emailSecretKey}
             />
           );

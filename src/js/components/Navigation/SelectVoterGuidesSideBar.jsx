@@ -9,14 +9,13 @@ import VoterStore from "../../stores/VoterStore";
 
 export default class SelectVoterGuidesSideBar extends Component {
   static propTypes = {
-    editMode: PropTypes.string,
     onOwnPage: PropTypes.bool,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      linked_organization_we_vote_id: "",
+      linkedOrganizationWeVoteId: "",
     };
   }
 
@@ -30,10 +29,10 @@ export default class SelectVoterGuidesSideBar extends Component {
 
   onVoterGuideStoreChange () {
     const voter = VoterStore.getVoter();
-    const linked_organization_we_vote_id = voter.linked_organization_we_vote_id;
-    // console.log("SelectVoterGuidesSideBar onVoterGuideStoreChange linked_organization_we_vote_id: ", linked_organization_we_vote_id);
-    if (linked_organization_we_vote_id && this.state.linked_organization_we_vote_id !== linked_organization_we_vote_id) {
-      this.setState({ linked_organization_we_vote_id });
+    const { linked_organization_we_vote_id: linkedOrganizationWeVoteId } = voter;
+    // console.log("SelectVoterGuidesSideBar onVoterGuideStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
+    if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
+      this.setState({ linkedOrganizationWeVoteId });
     }
   }
 
@@ -42,15 +41,15 @@ export default class SelectVoterGuidesSideBar extends Component {
     const voterGuidesOwnedByVoter = VoterGuideStore.getAllVoterGuidesOwnedByVoter();
     let voterGuideLinksHtml = <span />;
     if (voterGuidesOwnedByVoter) {
-      voterGuideLinksHtml = voterGuidesOwnedByVoter.map((voter_guide, key) => {
+      voterGuideLinksHtml = voterGuidesOwnedByVoter.map((voterGuide) => {
         const displaySubtitles = true;
-        if (voter_guide && voter_guide.we_vote_id) {
+        if (voterGuide && voterGuide.we_vote_id) {
           return (
-            <div key={key}>
+            <div key={`voter-guides-${voterGuide.we_vote_id}`}>
               <SelectVoterGuidesSideBarLink
-                linkTo={this.props.onOwnPage ? `/vg/${voter_guide.we_vote_id}/settings/menu` : `/vg/${voter_guide.we_vote_id}/settings`}
-                label={ElectionStore.getElectionName(voter_guide.google_civic_election_id)}
-                subtitle={ElectionStore.getElectionDayText(voter_guide.google_civic_election_id)}
+                linkTo={this.props.onOwnPage ? `/vg/${voterGuide.we_vote_id}/settings/menu` : `/vg/${voterGuide.we_vote_id}/settings`}
+                label={ElectionStore.getElectionName(voterGuide.google_civic_election_id)}
+                subtitle={ElectionStore.getElectionDayText(voterGuide.google_civic_election_id)}
                 displaySubtitles={displaySubtitles}
               />
             </div>
