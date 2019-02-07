@@ -17,6 +17,11 @@ const overrides = {
       fontSize: '14px',
     },
   },
+  MuiFormControlLabel: {
+    root: {
+      marginBottom: '-.5rem',
+    },
+  },
 };
 
 const theme = createMuiTheme({
