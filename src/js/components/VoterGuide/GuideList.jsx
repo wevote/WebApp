@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 import CandidateStore from "../../stores/CandidateStore";
 import FollowToggle from "../Widgets/FollowToggle";
+// import FilterBase from "../Filter/FilterBase";
+// import VoterGuideOrganizationFilter from "../Filter/VoterGuideOrganizationFilter";
 import MeasureStore from "../../stores/MeasureStore";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import OrganizationActions from "../../actions/OrganizationActions";
@@ -11,6 +13,30 @@ import VoterGuideDisplayForList from "./VoterGuideDisplayForList";
 import { showToastSuccess } from "../../utils/showToast";
 import { renderLog } from "../../utils/logging";
 
+/*
+const groupedFilters = [
+  {
+    filterName: "support",
+    iconName: "thumbs-up",
+  },
+  {
+    filterName: "oppose",
+    iconName: "thumbs-down",
+  },
+  {
+    filterName: "information",
+    iconName: "information-circle",
+  },
+];
+
+const islandFilters = [
+  {
+    filterName: "comment",
+    iconName: "paper",
+    filterDisplayName: "Has Comment",
+  },
+];
+*/
 export default class GuideList extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
@@ -25,6 +51,7 @@ export default class GuideList extends Component {
     this.state = {
       organizationsToFollow: [],
       ballotItemWeVoteId: "",
+      organizationsWithPositions: [],
     };
   }
 
@@ -35,6 +62,13 @@ export default class GuideList extends Component {
     this.setState({
       organizationsToFollow,
       ballotItemWeVoteId: this.props.ballotItemWeVoteId,
+    }, () => {
+      const orgsWithPositions = this.getOrganizationsWithPositions();
+      this.setState({
+        organizationsWithPositions: orgsWithPositions,
+        filteredOrganizationsWithPositions: orgsWithPositions,
+      });
+      console.log(orgsWithPositions);
     });
   }
 
@@ -46,19 +80,29 @@ export default class GuideList extends Component {
     this.setState({
       organizationsToFollow,
       ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
+    }, () => {
+      const orgsWithPositions = this.getOrganizationsWithPositions();
+      this.setState({
+        organizationsWithPositions: orgsWithPositions,
+      });
+      if (!this.state.filteredOrganizationsWithPositions.length) {
+        this.setState({ filteredOrganizationsWithPositions: orgsWithPositions });
+      }
     });
   }
 
-  handleIgnore (id) {
-    OrganizationActions.organizationFollowIgnore(id);
-    const { organizationsToFollow } = this.state;
-    this.setState({
-      organizationsToFollow: organizationsToFollow.filter(
-        org => org.organization_we_vote_id !== id,
-      ),
-    });
-    showToastSuccess("Added to ignore list.");
-  }
+  handleFilteredOrgsChange = filteredOrgs => this.setState({ filteredOrganizationsWithPositions: filteredOrgs });
+
+  getOrganizationsWithPositions = () => this.state.organizationsToFollow.map((organization) => {
+    let organizationPositionForThisBallotItem;
+    if (stringContains("cand", this.state.ballotItemWeVoteId)) {
+      organizationPositionForThisBallotItem = CandidateStore.getPositionAboutCandidateFromOrganization(this.state.ballotItemWeVoteId, organization.organization_we_vote_id);
+      // console.log({ ...organizationPositionForThisBallotItem, ...organization });
+    } else if (stringContains("meas", this.state.ballotItemWeVoteId)) {
+      organizationPositionForThisBallotItem = MeasureStore.getPositionAboutMeasureFromOrganization(this.state.ballotItemWeVoteId, organization.organization_we_vote_id);
+    }
+    return { ...organizationPositionForThisBallotItem, ...organization };
+  });
 
   sortOrganizations (organizationsList, ballotItemWeVoteId) {
     // console.log("sortOrganizations: ", organizationsList, "ballotItemWeVoteId: ", ballotItemWeVoteId);
@@ -91,18 +135,28 @@ export default class GuideList extends Component {
     return organizationsList;
   }
 
+  handleIgnore (id) {
+    const { organizationsToFollow } = this.state;
+    OrganizationActions.organizationFollowIgnore(id);
+    this.setState({
+      organizationsToFollow: organizationsToFollow.filter(
+        org => org.organization_we_vote_id !== id,
+      ),
+    });
+    showToastSuccess("Added to ignore list.");
+  }
+
   render () {
     // console.log("GuideList render");
     renderLog(__filename);
-    if (this.state.organizationsToFollow === undefined) {
+    if (this.state.filteredOrganizationsWithPositions === undefined) {
       // console.log("GuideList this.state.organizations_to_follow === undefined");
       return null;
     }
 
     // console.log("GuideList organizationsToFollow: ", this.state.organizationsToFollow);
-    let organizationPositionForThisBallotItem = {};
 
-    if (this.state.organizationsToFollow === undefined) {
+    if (!this.state.filteredOrganizationsWithPositions) {
       return (
         <div className="guidelist card-child__list-group">
           <div className="u-flex u-flex-column u-items-center">
@@ -129,42 +183,40 @@ export default class GuideList extends Component {
     //           </Button>
     return (
       <div className="guidelist card-child__list-group">
-        {this.state.organizationsToFollow.map((organization) => {
-          organizationPositionForThisBallotItem = {};
-          if (!organization.is_support_or_positive_rating && !organization.is_oppose_or_negative_rating && !organization.is_information_only && this.state.ballotItemWeVoteId && organization.organization_we_vote_id) {
-            if (stringContains("cand", this.state.ballotItemWeVoteId)) {
-              organizationPositionForThisBallotItem = CandidateStore.getPositionAboutCandidateFromOrganization(this.state.ballotItemWeVoteId, organization.organization_we_vote_id);
-              // Didn't work
-              // organizationPositionForThisBallotItem = OrganizationStore.getOrganizationPositionByWeVoteId(organization.organization_we_vote_id, this.state.ballotItemWeVoteId);
-            } else if (stringContains("meas", this.state.ballotItemWeVoteId)) {
-              organizationPositionForThisBallotItem = MeasureStore.getPositionAboutMeasureFromOrganization(this.state.ballotItemWeVoteId, organization.organization_we_vote_id);
-            }
-          }
-
-          return (
-            <VoterGuideDisplayForList
+        {
+          /*
+          <FilterBase
+            groupedFilters={groupedFilters}
+            islandFilters={islandFilters}
+            allItems={this.state.organizationsWithPositions}
+            onFilteredItemsChange={this.handleFilteredOrgsChange}
+          >
+            <VoterGuideOrganizationFilter />
+          </FilterBase>
+          */
+        }
+        {this.state.filteredOrganizationsWithPositions.map(organization => (
+          <VoterGuideDisplayForList
               key={organization.organization_we_vote_id}
               {...organization}
-              {...organizationPositionForThisBallotItem}
-            >
-              <FollowToggle
+          >
+            <FollowToggle
                 organizationWeVoteId={organization.organization_we_vote_id}
                 hide_stop_following_button={this.props.hide_stop_following_button}
-              />
-              { this.props.hide_ignore_button ?
-                null : (
-                  <button
+            />
+            { this.props.hide_ignore_button ?
+              null : (
+                <button
                     className="btn btn-default btn-sm"
                     onClick={this.handleIgnore.bind(this, organization.organization_we_vote_id)}
                     type="button"
-                  >
+                >
                     Ignore
-                  </button>
-                )
+                </button>
+              )
               }
-            </VoterGuideDisplayForList>
-          );
-        })
+          </VoterGuideDisplayForList>
+        ))
         }
       </div>
     );
