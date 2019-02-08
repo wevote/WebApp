@@ -17,7 +17,7 @@ export default class OfficeItem extends Component {
     let { ballotItemDisplayName } = this.props;
     const { weVoteId } = this.props;
     const officeLink = `/office/${weVoteId}`;
-    const goToOfficeLink = function () { historyPush(officeLink); };
+    const goToOfficeLink = () => { historyPush(officeLink); };
 
     ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
     const candidatesHtml = <span />; // For a preview of the candidates
