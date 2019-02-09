@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { renderLog } from "../utils/logging";
 import SearchBar from "../components/Search/SearchBar";
 
-const updateInputValue = function (event) {
+const updateInputValue = (event) => {
   this.setState({ query: event.target.value });
 };
 

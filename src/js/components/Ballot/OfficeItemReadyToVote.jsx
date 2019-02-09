@@ -49,7 +49,7 @@ export default class OfficeItemReadyToVote extends Component {
     let { ballot_item_display_name: ballotItemDisplayName } = this.props;
     const { we_vote_id: weVoteId } = this.props;
     const officeLink = `/office/${weVoteId}`;
-    const goToOfficeLink = function () { historyPush(officeLink); };
+    const goToOfficeLink = () => { historyPush(officeLink); };
     const isSupportArray = [];
     let candidateWithMostSupport = null;
     let voterSupportsAtLeastOneCandidate = false;

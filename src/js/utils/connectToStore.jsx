@@ -3,8 +3,8 @@ import shallowEqual from "react-pure-render/shallowEqual";
 import { renderLog } from "./logging";
 
 export default function connectToStores (stores, getState) {
-  return function (DecoractedComponent) {
-    return class StoreConnector extends Component {
+  return (DecoractedComponent) => {
+    class StoreConnector extends Component {
       constructor (props) {
         super(props);
         this.handleStoresChanged = this.handleStoresChanged.bind(this);
@@ -34,6 +34,7 @@ export default function connectToStores (stores, getState) {
         renderLog(__filename);
         return <DecoractedComponent {...this.props} {...this.state} />;
       }
-    };
+    }
+    return StoreConnector;
   };
 }
