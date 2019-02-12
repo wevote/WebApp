@@ -569,7 +569,7 @@ class IssueStore extends ReduceStore {
         issueList = action.res.issue_list;
         issueWeVoteIdsVoterCanFollow = [];
         issueList.forEach((issue) => {
-          allCachedIssues[issue.issue_we_vote_id] = issue;
+          // allCachedIssues[issue.issue_we_vote_id] = issue;
           issueWeVoteIdsVoterCanFollow.push(issue.issue_we_vote_id);
         });
 
