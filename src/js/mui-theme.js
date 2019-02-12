@@ -7,11 +7,6 @@ const overrides = {
       // Button global overrides here
     },
   },
-  MuiPaper: {
-    root: {
-      padding: '5px',
-    },
-  },
   MuiTooltip: {
     tooltip: {
       fontSize: '14px',
@@ -22,12 +17,34 @@ const overrides = {
       marginBottom: '-.5rem',
     },
   },
+  MuiAppBar: {
+    colorDefault: {
+      backgroundColor: '#fff',
+      color: '#333',
+    },
+  },
+  MuiToolbar: {
+    regular: {
+      minHeight: '48px !important',
+    },
+  },
+  MuiTab: {
+    root: {
+      outline: 'none !important',
+    },
+  },
+  MuiBottomNavigationAction: {
+    root: {
+      minWidth: '60px',
+    },
+  },
 };
 
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#25536D",
+      // main: "#25536D",
+      main: '#2E3C5D',
     },
     secondary: amber, // Feel free to change this
   },

@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
 import moment from "moment";
+import Badge from "@material-ui/core/Badge";
+import Chip from '@material-ui/core/Chip';
 import AddressBox from "../../components/AddressBox";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import BallotActions from "../../actions/BallotActions";
@@ -24,7 +25,7 @@ import {
 import ElectionActions from "../../actions/ElectionActions";
 import ElectionStore from "../../stores/ElectionStore";
 import isMobile from "../../utils/isMobile";
-import mapCategoryFilterType from '../../utils/map-category-filter-type';
+import mapCategoryFilterType from "../../utils/map-category-filter-type";
 import IssueActions from "../../actions/IssueActions";
 import IssueStore from "../../stores/IssueStore";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
@@ -38,7 +39,7 @@ import VoterConstants from "../../constants/VoterConstants";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import webAppConfig from "../../config";
-import { formatVoterBallotList, checkShouldUpdate } from './utils';
+import { formatVoterBallotList, checkShouldUpdate } from "./utils";
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint class-methods-use-this: 0 */
@@ -466,7 +467,7 @@ export default class Ballot extends Component {
     if (this.state.ballotLength !== BallotStore.ballotLength) {
       this.setState({
         ballotLength: BallotStore.ballotLength,
-        raceLevelFilterType: 'Federal',
+        raceLevelFilterType: "Federal",
         showFilterTabs: false,
         foundFirstRaceLevel: false,
       });
@@ -533,7 +534,7 @@ export default class Ballot extends Component {
     const { completionLevelFilterType, raceLevelFilterType } = this.state;
     const raceLevel = raceLevelFilterType.toLowerCase();
     switch (completionLevelFilterType) {
-      case 'filterDecided':
+      case "filterDecided":
         return (
           <div>
             <h3>
@@ -543,14 +544,14 @@ export default class Ballot extends Component {
               <br />
               <br />
               Click on &quot;
-              {window.innerWidth > 575 ? 'Remaining Choices' : 'Choices'}
+              {window.innerWidth > 575 ? "Remaining Choices" : "Choices"}
               &quot; to see the&nbsp;
               {raceLevel}
               &nbsp;ballot items you need to decide on.
             </h3>
           </div>
         );
-      case 'filterRemaining':
+      case "filterRemaining":
         return (
           <div>
             <h3>
@@ -560,7 +561,7 @@ export default class Ballot extends Component {
               <br />
               <br />
               Click on &quot;
-              {window.innerWidth > 575 ? 'Items Decided' : 'Decided'}
+              {window.innerWidth > 575 ? "Items Decided" : "Decided"}
               &quot; to see the&nbsp;
               {raceLevel}
               &nbsp;ballot items you&apos;ve decided on.
@@ -651,7 +652,7 @@ export default class Ballot extends Component {
       // The ballot item was not found in the array of ballot items filtered by completion filter type
       const ballotItemFromAll = ballotWithAllItems.find(item => item.we_vote_id === selectedBallotItemId);
       const raceCategoryDisplayText = mapCategoryFilterType(ballotItemFromAll.race_office_level || ballotItemFromAll.kind_of_ballot_item);
-      BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
+      BallotActions.completionLevelFilterTypeSave("filterAllBallotItems");
       BallotActions.raceLevelFilterTypeSave(raceCategoryDisplayText);
       this.setState({
         raceLevelFilterType: raceCategoryDisplayText,
@@ -795,29 +796,6 @@ export default class Ballot extends Component {
                          Loading Election...
                         </span>
                       )}
-                      {/* We always show the change election option */}
-                      <div className="u-no-break d-print-none u-cursor--pointer"
-                           onClick={this.toggleSelectBallotModal}
-                      >
-                        <span className="u-no-break u-f8 d-none d-sm-inline">
-                          <img
-                            src={cordovaDot("/img/global/icons/gear-icon.png")}
-                            role="button"
-                            alt="change address or election"
-                          />
-                          {" "}
-                          change address or election
-                        </span>
-                        <span className="u-no-break u-f6 d-inline d-sm-none">
-                          <img
-                            src={cordovaDot("/img/global/icons/gear-icon.png")}
-                            role="button"
-                            alt="change address or election"
-                          />
-                          {" "}
-                          change address or election
-                        </span>
-                      </div>
                     </h1>
                   </header>
 
@@ -830,7 +808,6 @@ export default class Ballot extends Component {
                     </div>
                   ) : null
                   }
-
                   { textForMapSearch || ballotWithItemsFromCompletionFilterType.length > 0 ? (
                     <div className="ballot__filter__container">
                       <div className="ballot__filter d-print-none">
@@ -897,18 +874,19 @@ export default class Ballot extends Component {
                               }
                             });
                             return (
-                              <div className="col-6 col-sm-3 u-stack--md u-inset__h--sm" key={oneTypeOfBallotItem}>
-                                <Button variant="outline-secondary"
-                                        block
-                                        active={oneTypeOfBallotItem === this.state.raceLevelFilterType}
+                              <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
+                                <Badge
+                                  color={oneTypeOfBallotItem === this.state.raceLevelFilterType ? 'secondary' : 'primary'}
+                                  badgeContent={ballotItemsByFilterType.length}
+                                  invisible={ballotItemsByFilterType.length === 0}
+                                >
+                                  <Chip variant="outlined"
+                                        color={oneTypeOfBallotItem === this.state.raceLevelFilterType ? 'primary' : 'default'}
                                         onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
                                         className="btn_ballot_filter"
-                                >
-                                  {oneTypeOfBallotItem}
-                                  &nbsp;(
-                                  {ballotItemsByFilterType.length}
-                                  )
-                                </Button>
+                                        label={oneTypeOfBallotItem}
+                                  />
+                                </Badge>
                               </div>
                             );
                           } else {
@@ -919,6 +897,29 @@ export default class Ballot extends Component {
                       </div>
                     ) : null
                     }
+                    {/* We always show the change election option */}
+                    <div className="u-no-break d-print-none u-cursor--pointer ballot__change-address"
+                         onClick={this.toggleSelectBallotModal}
+                    >
+                      <span className="u-no-break u-f8 d-none d-sm-inline">
+                        <img
+                          src={cordovaDot("/img/global/icons/gear-icon.png")}
+                          role="button"
+                          alt="change address or election"
+                        />
+                        {" "}
+                        Not your ballot?
+                      </span>
+                      <span className="u-no-break u-f6 d-inline d-sm-none">
+                        <img
+                          src={cordovaDot("/img/global/icons/gear-icon.png")}
+                          role="button"
+                          alt="change address or election"
+                        />
+                        {" "}
+                        Not your ballot?
+                      </span>
+                    </div>
                     <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
                       {ballotWithItemsFromCompletionFilterType.map((item) => {
                       // ballot limited by items by filter type

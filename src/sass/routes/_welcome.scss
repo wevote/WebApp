@@ -7,6 +7,8 @@ $hero-section-background-color: rgba(255, 255, 255, .75);
 $opaque-grey: rgba($gray-dark, .5);
 
 .welcome-page {
+  $welcome-top-margin: -10px;
+  margin-top: $welcome-top-margin;
   .hero__section {
     position: relative;
     background-image: url('/img/welcome/header-image-desktop.png');

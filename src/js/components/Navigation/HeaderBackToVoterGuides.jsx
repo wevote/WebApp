@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Button from '@material-ui/core/Button';
 import BallotStore from "../../stores/BallotStore";
 import CandidateStore from "../../stores/CandidateStore";
 import cookies from "../../utils/cookies";
-import { cordovaDot, hasIPhoneNotch, historyPush, isWebApp } from "../../utils/cordovaUtils";
+import { hasIPhoneNotch, historyPush, isWebApp } from "../../utils/cordovaUtils";
 import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
@@ -209,7 +211,8 @@ export default class HeaderBackToVoterGuides extends Component {
 
   render () {
     renderLog(__filename);
-    const voterPhotoUrlMedium = this.state.voter.voter_photo_url_medium;
+    const { voter } = this.state;
+    const voterPhotoUrlMedium = voter.voter_photo_url_medium;
 
     let backToLink = "/settings/voterguidelist"; // default
     let backToOrganizationLinkText = "Back to Voter Guides";
@@ -240,30 +243,24 @@ export default class HeaderBackToVoterGuides extends Component {
       backToLink = "/settings/voterguidelist";
     }
 
-    const backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 30);
+    const backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 20);
 
     return (
-      <header className={isWebApp() ? "page-header" : "page-header page-header__cordova"}>
-
-        <Button
-          bsPrefix={`btn btn-sm btn-default page-header__backToButton d-none d-sm-block ${hasIPhoneNotch() ? "page-header__backToButtonIPhoneX" : ""}`}
+      <AppBar className={isWebApp() ? "page-header" : "page-header page-header__cordova"} color="default">
+        <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
+          <Button
+          variant="contained"
+          color="primary"
+          className={`page-header__backToButton ${hasIPhoneNotch() ? "page-header__backToButtonIPhoneX" : ""}`}
           onClick={() => historyPush(backToLink)}
-        >
-          <span className="fa fa-arrow-left" />
-          {" "}
-          {backToOrganizationLinkText}
-        </Button>
-        <Button
-          bsPrefix={`btn btn-sm btn-default page-header__backToButton d-block d-sm-none ${hasIPhoneNotch() ? "page-header__backToButtonIPhoneX" : ""}`}
-          onClick={() => historyPush(backToLink)}
-        >
-          <span className="fa fa-arrow-left" />
-          {" "}
-          {backToOrganizationLinkTextMobile}
-        </Button>
+          >
+            <ion-icon name="arrow-back" />
+            &nbsp;
+            {backToOrganizationLinkTextMobile}
+          </Button>
 
-        {this.state.profilePopUpOpen && (
-        <HeaderBarProfilePopUp
+          {this.state.profilePopUpOpen && voter.is_signed_in && (
+          <HeaderBarProfilePopUp
           {...this.props}
           onClick={this.toggleProfilePopUp}
           profilePopUpOpen={this.state.profilePopUpOpen}
@@ -272,28 +269,34 @@ export default class HeaderBackToVoterGuides extends Component {
           hideProfilePopUp={this.hideProfilePopUp}
           transitionToYourVoterGuide={this.transitionToYourVoterGuide}
           signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
-        />
-        )}
+          />
+          )}
 
-        {isWebApp() && (
-        <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
-          {voterPhotoUrlMedium ? (
-            <div id="js-header-avatar" className="header-nav__avatar-container">
-              <img
+          {isWebApp() && (
+          <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
+            {voterPhotoUrlMedium ? (
+              <div id="js-header-avatar" className="header-nav__avatar-container">
+                <img
                 className="header-nav__avatar"
                 src={voterPhotoUrlMedium}
                 height={34}
                 width={34}
-              />
-            </div>
-          ) : (
-            <div id="anonIcon" className="header-nav__avatar">
-              <img src={cordovaDot("/img/global/svg-icons/avatar-generic.svg")} width="34" height="34" color="#c0c0c0" alt="generic voter" />
-            </div>
+                />
+              </div>
+            ) : (
+              <Button
+              className="header-sign-in"
+              variant="text"
+              color="primary"
+              href="/settings/account"
+              >
+              Sign In
+              </Button>
+            )}
+          </div>
           )}
-        </div>
-        )}
-      </header>
+        </Toolbar>
+      </AppBar>
     );
   }
 }

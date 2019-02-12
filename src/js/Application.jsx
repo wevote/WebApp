@@ -8,7 +8,8 @@ import {
   getAppBaseClass, getToastClass, historyPush, isCordova, isWebApp,
 } from "./utils/cordovaUtils";
 import ElectionActions from "./actions/ElectionActions";
-import FooterBarCordova from "./components/Navigation/FooterBarCordova";
+// import FooterBarCordova from "./components/Navigation/FooterBarCordova";
+import FooterBar from './components/Navigation/FooterBar';
 import FriendActions from "./actions/FriendActions";
 import Header from "./components/Navigation/Header";
 import IssueActions from "./actions/IssueActions";
@@ -293,9 +294,9 @@ export default class Application extends Component {
               { this.props.children }
             </div>
           </div>
-          { isCordova() && (
+          {(
             <div className="footroom-wrapper">
-              <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter} />
+              <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
             </div>
           )
           }
@@ -318,9 +319,9 @@ export default class Application extends Component {
               { this.props.children }
             </div>
           </div>
-          { isCordova() && (
+          {(
             <div className="footroom-wrapper">
-              <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter} />
+              <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
             </div>
           )}
         </div>
@@ -351,9 +352,9 @@ export default class Application extends Component {
               </div>
             </div>
           )}
-        { isCordova() && (
+        { pathname !== "/welcome" && (
           <div className="footroom-wrapper">
-            <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter} />
+            <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
           </div>
         )}
       </div>

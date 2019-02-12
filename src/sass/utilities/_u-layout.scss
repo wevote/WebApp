@@ -3,6 +3,22 @@
 // ===============================================
 
 // -------------------------------------------
+// Responsive classes
+// -------------------------------------------
+
+.u-show-mobile {
+  @include breakpoints(xsmall-bootstrap) {
+    display: none !important;
+  }
+}
+
+.u-show-desktop {
+  @include breakpoints(small xsmall-bootstrap) {
+    display: none !important;
+  }
+}
+
+// -------------------------------------------
 // Spacing
 // -------------------------------------------
 
