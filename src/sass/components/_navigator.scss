@@ -3,9 +3,9 @@ $icon-color-active: $link-color;
 $icon-color-hover: $gray-dark;
 $glyph-icon-color: $brand-blue;
 $header-height: 54px;
-$headroom-wrapper-webapp-ballot: 104px;
+$headroom-wrapper-webapp-ballot: 48px;
 $headroom-wrapper-webapp-default: 54px;
-$headroom-wrapper-webapp-voter-guide: 104px;
+$headroom-wrapper-webapp-voter-guide: 48px;
 $headroom-webapp: 104px;
 $header-height-cordova-ballot-ios: -1vh;
 
@@ -168,7 +168,11 @@ $container-margin: -15px;
   $nav-item-hover-color: darken($page-header-color, 5%);
   $nav-item-active-color: darken($page-header-color, 10%);
   display: flex;
-  align-items: center;
+  width: 920px;
+  justify-content: center;
+  @include breakpoints(small xsmall-bootstrap) {
+    justify-content: flex-end;
+  }
 
   &__label {
     display: block;

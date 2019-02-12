@@ -6,7 +6,6 @@ import HeaderBackToBar from "./HeaderBackToBar";
 import HeaderBackToVoterGuides from "./HeaderBackToVoterGuides";
 import HeaderBar from "./HeaderBar";
 import { stringContains } from "../../utils/textFormat";
-import HeaderSecondaryNavBar from "./HeaderSecondaryNavBar";
 import { renderLog } from "../../utils/logging";
 import HeaderBackToSettings from "./HeaderBackToSettings";
 
@@ -33,9 +32,9 @@ export default class Header extends Component {
     renderLog(__filename);
 
     const { params, location, pathname, voter, weVoteBrandingOff } = this.props;
-    const { settingsMode, voterGuideMode, voterGuideShowGettingStartedNavigation,
+    const { settingsMode, voterGuideMode,
       showBackToHeader, showBackToSettings, showBackToVoterGuides } = getApplicationViewBooleans(pathname);
-    const hideGettingStartedButtons = voterGuideShowGettingStartedNavigation;
+    // const hideGettingStartedButtons = voterGuideShowGettingStartedNavigation;
 
     let iPhoneSpacer = "";
     if (isCordova() && isIOS() && hasIPhoneNotch()) {
@@ -66,15 +65,6 @@ export default class Header extends Component {
                     }
                   </span>
                 )
-              }
-              {voterGuideShowGettingStartedNavigation || stringContains("/ballot", pathname) ? (
-                <HeaderSecondaryNavBar hideGettingStartedOrganizationsButton={hideGettingStartedButtons}
-                                       hideGettingStartedIssuesButton={hideGettingStartedButtons}
-                                       pathname={pathname}
-                                       voter={voter}
-                                       id="secondary-nav-bar"
-                />
-              ) : null
               }
             </div>
           </div>
@@ -122,9 +112,6 @@ export default class Header extends Component {
                 <HeaderBackToBar location={location} params={params} pathname={pathname} voter={voter} /> :
                 <HeaderBar location={location} pathname={pathname} voter={voter} />
               }
-              { stringContains("/ballot", pathname) ?
-                <HeaderSecondaryNavBar pathname={pathname} voter={voter} /> :
-                null }
             </div>
           </div>
         </div>

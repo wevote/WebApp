@@ -21,6 +21,7 @@ const BodySection = styled.div`
   line-height: 2;
   margin: 0 2em 1.5em 2em;
   font-size: 16.7px;
+  padding-bottom: 1em;
 `;
 
 const H1 = styled.h1`

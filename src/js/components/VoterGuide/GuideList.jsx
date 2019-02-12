@@ -68,7 +68,7 @@ export default class GuideList extends Component {
         organizationsWithPositions: orgsWithPositions,
         filteredOrganizationsWithPositions: orgsWithPositions,
       });
-      console.log(orgsWithPositions);
+      // console.log(orgsWithPositions);
     });
   }
 

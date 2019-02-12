@@ -1,6 +1,16 @@
 $space-footer-bottom: 12px;
 $space-footer-top: 10px;
 
+.footer-container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  border-top: 1px solid #eee;
+}
+
+.footer-icon {
+  font-size: 24px;
+}
 
 .pageFooter {
   background-color: $brand-blue;

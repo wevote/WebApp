@@ -13,6 +13,10 @@ $neg-space-sm: -$space-sm;
 $neg-space-lg: -$space-lg;
 $bottom-spacing-cordova: 50px;
 $cordova-shim: 10px;
+$mobile-body-padding-top: 150px;
+$body-padding-top: 150px;
+$tabs-height: 30px;
+$neg-padding: -30px;
 
 .ballot {
   // ===========================================
@@ -36,6 +40,9 @@ $cordova-shim: 10px;
     background-color: $white;
     border-bottom: 1px solid #aaa;
     overflow: hidden;
+    position: fixed;
+    z-index: 1;
+    padding-top: $cordova-shim;
   }
 
   &__heading-webapp {
@@ -46,6 +53,9 @@ $cordova-shim: 10px;
   &__header {
     &__title {
       display: inline-block;
+      @include breakpoints(xsmall-bootstrap) {
+        font-size: $scrollbar-height;
+      }
       &__cordova {
         font-size: 1.5rem;
         margin-top: $space-md;
@@ -124,11 +134,18 @@ $cordova-shim: 10px;
 
   &__body {
     margin-top: $space-md;
+    padding-top: $body-padding-top;
+    @include breakpoints(small xsmall-bootstrap) {
+      padding-top: $mobile-body-padding-top;
+    }
   }
 
   &__item-filter-tabs {
     margin-left: $neg-space-sm;
     margin-right: $neg-space-sm;
+    justify-content: center;
+    height: $tabs-height;
+    margin-top: $neg-padding;
   }
 
   &__edit-address-preview {
@@ -151,4 +168,17 @@ $cordova-shim: 10px;
   &__cordova-shim {
     margin-top: $cordova-shim;
   }
+
+  &__change-address {
+    margin-bottom: $space-sm;
+    margin-top: $space-md;
+  }
+
+  &__no-race-cats {
+    margin-top: $neg-padding;
+  }
+}
+
+.ballot_filter_btns {
+  margin-right: $space-md;
 }
