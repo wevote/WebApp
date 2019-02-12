@@ -898,7 +898,7 @@ export default class Ballot extends Component {
                     ) : null
                     }
                     {/* We always show the change election option */}
-                    <div className="u-no-break d-print-none u-cursor--pointer ballot__change-address"
+                    <div className={`u-no-break d-print-none u-cursor--pointer ballot__change-address ${ballotWithItemsFromCompletionFilterType && showFilterTabs ? '' : 'ballot__no-race-cats'}`}
                          onClick={this.toggleSelectBallotModal}
                     >
                       <span className="u-no-break u-f8 d-none d-sm-inline">
