@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ImageHandler from "../ImageHandler";
 import { renderLog } from "../../utils/logging";
+import { cordovaDot } from "../../utils/cordovaUtils";
+import IssueStore from "../../stores/IssueStore";
+
 
 // IssueImageDisplay is used by IssuesDisplayListWithOrganizationPopovers for viewing the icons for issues
 //  you can follow on the Ballot page
 export default class IssueImageDisplay extends Component {
   static propTypes = {
-    issue: PropTypes.object.isRequired,
+    issueWeVoteId: PropTypes.string.isRequired,
     issueImageSize: PropTypes.string,
     showPlaceholderImage: PropTypes.bool,
     showOppose: PropTypes.bool,
@@ -18,17 +21,26 @@ export default class IssueImageDisplay extends Component {
 
   render () {
     renderLog(__filename);
-    if (!this.props.issue) {
+
+    if (!this.props.issueWeVoteId) {
       console.log("IssueImageDisplay no props.image");
       return null;
     }
 
+    const oneIssue = IssueStore.getIssueByWeVoteId(this.props.issueWeVoteId);
     let issueName;
-    if (this.props.issue.issue_name) {
-      issueName = this.props.issue.issue_name;
+    if (oneIssue.issue_name) {
+      issueName = oneIssue.issue_name;
     } else {
       issueName = "";
     }
+
+    let issueIconLocalPath = "";
+    if (oneIssue.issue_icon_local_path) {
+      issueIconLocalPath = oneIssue.issue_icon_local_path;
+    }
+
+    const issueIconImageUrl = cordovaDot(`/img/global/svg-icons/issues/${issueIconLocalPath}.svg`);
 
     let supportOrOpposeClass = "";
     if (this.props.showSupport) {
@@ -54,31 +66,31 @@ export default class IssueImageDisplay extends Component {
     if (issueImageSize === "SMALL") {
       issueImage = (
         <ImageHandler
-          alt={issueName}
-          className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
-          hidePlaceholder={hidePlaceholder}
-          imageUrl={this.props.issue.issue_photo_url_tiny}
-          sizeClassName="issue__image--small "
+        alt={issueName}
+        className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
+        hidePlaceholder={hidePlaceholder}
+        imageUrl={issueIconImageUrl}
+        sizeClassName="issue__image--small "
         />
       );
     } else if (issueImageSize === "MEDIUM") {
       issueImage = (
         <ImageHandler
-          alt={issueName}
-          className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
-          hidePlaceholder={hidePlaceholder}
-          imageUrl={this.props.issue.issue_photo_url_medium}
-          sizeClassName="issue__image--medium "
+        alt={issueName}
+        className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
+        hidePlaceholder={hidePlaceholder}
+        imageUrl={issueIconImageUrl}
+        sizeClassName="issue__image--medium "
         />
       );
     } else if (issueImageSize === "LARGE") {
       issueImage = (
         <ImageHandler
-          alt={issueName}
-          className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
-          hidePlaceholder={hidePlaceholder}
-          imageUrl={this.props.issue.issue_photo_url_large}
-          sizeClassName="issue__image--large "
+        alt={issueName}
+        className={`card-main__org-avatar ${supportOrOpposeClass}${voterIsNotFollowingThisIssueClass}`}
+        hidePlaceholder={hidePlaceholder}
+        imageUrl={issueIconImageUrl}
+        sizeClassName="issue__image--large "
         />
       );
     }
