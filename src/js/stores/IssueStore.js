@@ -161,6 +161,14 @@ class IssueStore extends ReduceStore {
     return issueScore;
   }
 
+  getIssueByWeVoteId (issueWeVoteId) {
+    const issue = this.getState().allCachedIssues[issueWeVoteId];
+    if (issue === undefined) {
+      return {};
+    }
+    return issue;
+  }
+
   getOrganizationsForOneIssue (issueWeVoteId) {
     // We want a list of all organizations tagged with this issue, so we can offer organizations to listen to
     // These are issues that an organization has linked itself to, to help Voters find the organization
@@ -460,7 +468,7 @@ class IssueStore extends ReduceStore {
         issueList = action.res.issue_list;
         // We accumulate all issue objects in the allCachedIssues variable
         issueList.forEach((issue) => {
-          allCachedIssues[issue.issue_we_vote_id] = issue;
+          // allCachedIssues[issue.issue_we_vote_id] = issue;
           toLinkToIssueListForOneOrganization.push(issue.issue_we_vote_id);
         });
         // Add the "issues to link to" to the master dict, with the organizationWeVoteId as the key
@@ -468,7 +476,7 @@ class IssueStore extends ReduceStore {
 
         return {
           ...state,
-          allCachedIssues,
+          // allCachedIssues,
           issueWeVoteIdsToLinkToByOrganizationDict,
         };
 
@@ -479,7 +487,7 @@ class IssueStore extends ReduceStore {
         // console.log("IssueStore, issuesLinkedToOrganization: ", issueList);
         // We accumulate all issue objects in the allCachedIssues variable
         issueList.forEach((issue) => {
-          allCachedIssues[issue.issue_we_vote_id] = issue;
+          // allCachedIssues[issue.issue_we_vote_id] = issue;
           linkedIssueListForOneOrganization.push(issue.issue_we_vote_id);
         });
         // Add the "issues linked to orgs" to the master dict, with the organizationWeVoteId as the key
@@ -487,7 +495,7 @@ class IssueStore extends ReduceStore {
 
         return {
           ...state,
-          allCachedIssues,
+          // allCachedIssues,
           issueWeVoteIdsLinkedToByOrganizationDict,
         };
 
@@ -561,13 +569,13 @@ class IssueStore extends ReduceStore {
         issueList = action.res.issue_list;
         issueWeVoteIdsVoterCanFollow = [];
         issueList.forEach((issue) => {
-          allCachedIssues[issue.issue_we_vote_id] = issue;
+          // allCachedIssues[issue.issue_we_vote_id] = issue;
           issueWeVoteIdsVoterCanFollow.push(issue.issue_we_vote_id);
         });
 
         return {
           ...state,
-          allCachedIssues,
+          // allCachedIssues,
           issueWeVoteIdsVoterCanFollow,
         };
 

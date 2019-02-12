@@ -211,7 +211,7 @@ export default class IssueTinyDisplay extends Component {
       >
         <span className="">
           <IssueImageDisplay
-            issue={this.props.issue}
+            issueWeVoteId={this.props.issueWeVoteId}
             issueImageSize={this.props.issueImageSize}
             showPlaceholderImage
             isVoterFollowingThisIssue={IssueStore.isVoterFollowingThisIssue(this.props.issueWeVoteId)}
