@@ -282,6 +282,7 @@ export default class HeaderBackToSettings extends Component {
               <div id="js-header-avatar" className="header-nav__avatar-container">
                 <img
                 className="header-nav__avatar"
+                alt="profile avatar"
                 src={voterPhotoUrlMedium}
                 height={34}
                 width={34}
