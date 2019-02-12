@@ -13,8 +13,10 @@ $neg-space-sm: -$space-sm;
 $neg-space-lg: -$space-lg;
 $bottom-spacing-cordova: 50px;
 $cordova-shim: 10px;
-$mobile-body-padding-top: 120px;
-$body-padding-top: 120px;
+$mobile-body-padding-top: 150px;
+$body-padding-top: 150px;
+$tabs-height: 30px;
+$neg-padding: -30px;
 
 .ballot {
   // ===========================================
@@ -142,6 +144,8 @@ $body-padding-top: 120px;
     margin-left: $neg-space-sm;
     margin-right: $neg-space-sm;
     justify-content: center;
+    height: $tabs-height;
+    margin-top: $neg-padding;
   }
 
   &__edit-address-preview {
@@ -166,7 +170,12 @@ $body-padding-top: 120px;
   }
 
   &__change-address {
-    margin-bottom: $space-md;
+    margin-bottom: $space-sm;
+    margin-top: $space-md;
+  }
+
+  &__no-race-cats {
+    margin-top: $neg-padding;
   }
 }
 

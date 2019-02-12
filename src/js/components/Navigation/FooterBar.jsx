@@ -27,18 +27,10 @@ class FooterBar extends React.Component {
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    if (pathname === "/ballot") {
-      return 0;
-    }
-    if (pathname === "/more/network/issues" || pathname === "/more/network" || pathname === "/more/network/organizations") {
-      return 1;
-    }
-    if (pathname === "/more/network/friends") {
-      return 2;
-    }
-    if (stringContains("/settings/", pathname)) {
-      return 3;
-    }
+    if (stringContains('/ballot', pathname)) return 0;
+    if (stringContains('/more/network/friends', pathname)) return 2;
+    if (stringContains('/more/network', pathname)) return 1;
+    if (stringContains("/settings/", pathname)) return 3;
     return -1;
   }
 

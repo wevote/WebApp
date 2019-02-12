@@ -18,6 +18,7 @@ import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterSessionActions from "../../actions/VoterSessionActions";
+import { stringContains } from "../../utils/textFormat";
 
 const styles = theme => ({
   headerBadge: {
@@ -148,11 +149,9 @@ class HeaderBar extends Component {
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    if (pathname === '/ballot') return 0;
-    if (pathname === "/more/network/issues" || pathname === "/more/network" || pathname === "/more/network/organizations") {
-      return 1;
-    }
-    if (pathname === '/more/network/friends') return 2;
+    if (stringContains('/ballot', pathname)) return 0;
+    if (stringContains('/more/network/friends', pathname)) return 2;
+    if (stringContains('/more/network', pathname)) return 1;
     return false;
   }
 

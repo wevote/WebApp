@@ -1,9 +1,12 @@
 /* global google */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import InputBase from "@material-ui/core/InputBase";
 import BallotStore from "../stores/BallotStore";
-import BallotActions from '../actions/BallotActions';
+import BallotActions from "../actions/BallotActions";
 import { historyPush, isCordova, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../utils/cordovaUtils";
 import LoadingWheel from "./LoadingWheel";
 import { renderLog } from "../utils/logging";
@@ -20,8 +23,27 @@ import VoterStore from "../stores/VoterStore";
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 /* eslint no-param-reassign: 0 */
 
+const styles = {
+  root: {
+    padding: "2px .7rem",
+    display: "flex",
+    alignItems: "center",
+    width: 400,
+    marginBottom: "1rem",
+    marginRight: "1rem",
+  },
+  saveButton: {
+    marginRight: ".3rem",
+    height: "fit-content",
+  },
+  input: {
+    marginLeft: 8,
+    flex: 1,
+  },
+};
 
-export default class AddressBox extends Component {
+
+class AddressBox extends Component {
   static propTypes = {
     cancelEditAddress: PropTypes.func,
     disableAutoFocus: PropTypes.bool,
@@ -29,6 +51,7 @@ export default class AddressBox extends Component {
     toggleSelectAddressModal: PropTypes.func,
     saveUrl: PropTypes.string.isRequired,
     waitingMessage: PropTypes.string,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -136,10 +159,12 @@ export default class AddressBox extends Component {
   }
 
   updateVoterAddress (event) {
+    console.log("update voter address", event);
     this.setState({ textForMapSearch: event.target.value });
   }
 
   handleKeyPress (event) {
+    console.log("event", event);
     // Wait for 1/2 of a second after the last keypress to make a call to the voterAddressSave API
     const ENTER_KEY_CODE = 13;
     if (event.keyCode === ENTER_KEY_CODE) {
@@ -154,12 +179,13 @@ export default class AddressBox extends Component {
   voterAddressSave (event) {
     event.preventDefault();
     VoterActions.voterAddressSave(this.state.textForMapSearch);
-    BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
+    BallotActions.completionLevelFilterTypeSave("filterAllBallotItems");
     this.setState({ loading: true, voterSavedAddress: true });
   }
 
   render () {
     let { waitingMessage } = this.props;
+    const { classes } = this.props;
     renderLog(__filename);
     if (this.state.loading) {
       if (!waitingMessage) waitingMessage = "Please wait a moment while we find your ballot...";
@@ -175,34 +201,37 @@ export default class AddressBox extends Component {
     return (
       <div className="container">
         <form onSubmit={this.voterAddressSave} className="row">
-          <input
-            type="text"
-            value={this.state.textForMapSearch}
-            onKeyDown={this.handleKeyPress}
-            onChange={this.updateVoterAddress}
-            name="address"
-            className="form-control col-sm-9"
-            ref={(el) => { this.autoComplete = el; }}
-            aria-label="Address"
-            placeholder="Enter address where you are registered to vote"
-            autoFocus={!isCordova() && !this.props.disableAutoFocus}
-          />
-          <div className="col-sm-3 text-right pr-0 mt-sm-0 mt-3">
-            <Button
+          <Paper className={classes.root} elevation={2}>
+            <ion-icon class="ion-input-icon" name="search" />
+            <InputBase
+              className={classes.input}
+              name="address"
+              aria-label="Address"
+              placeholder="Enter address where you are registered to vote"
+              value={this.state.textForMapSearch}
+              inputRef={(autocomplete) => { this.autoComplete = autocomplete; }}
+              inputProps={{ onChange: this.updateVoterAddress, onKeyDown: this.handleKeyPress, autoFocus: (!isCordova() && !this.props.disableAutoFocus) }}
+            />
+          </Paper>
+          <Button
+              className={classes.saveButton}
               onClick={this.voterAddressSave}
-              color="secondary"
-              variant="outlined"
-            >
+              color="primary"
+              variant="contained"
+          >
               Save
+          </Button>
+          <br />
+          { this.props.cancelEditAddress ? (
+            <Button
+              className={classes.cancelButton}
+              onClick={this.props.cancelEditAddress}
+              color="primary"
+            >
+                Cancel
             </Button>
-            <br />
-            { this.props.cancelEditAddress ? (
-              <span className="u-f5">
-                <a href="#" onClick={this.props.cancelEditAddress}>cancel</a>
-              </span>
-            ) : null
+          ) : null
             }
-          </div>
         </form>
         <p />
         <h4>{this.state.ballotCaveat}</h4>
@@ -210,3 +239,5 @@ export default class AddressBox extends Component {
     );
   }
 }
+
+export default withStyles(styles)(AddressBox);
