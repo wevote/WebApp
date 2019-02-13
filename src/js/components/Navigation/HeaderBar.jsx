@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import styled from "styled-components";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Tabs from "@material-ui/core/Tabs";
@@ -9,7 +10,7 @@ import Button from "@material-ui/core/Button";
 import Badge from "@material-ui/core/Badge";
 import { withStyles } from "@material-ui/core/styles";
 import BallotStore from "../../stores/BallotStore";
-import { cordovaDot, historyPush, isWebApp } from "../../utils/cordovaUtils";
+import { cordovaDot, historyPush, isWebApp, hasIPhoneNotch } from "../../utils/cordovaUtils";
 import cookies from "../../utils/cookies";
 import FriendStore from "../../stores/FriendStore";
 import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
@@ -29,6 +30,10 @@ const styles = theme => ({
     padding: `0 ${theme.spacing.unit * 2}px`,
   },
 });
+
+const Wrapper = styled.div`
+  margin-top: ${({ hasNotch }) => (hasNotch ? "1.5rem" : "0")};
+`;
 
 class HeaderBar extends Component {
   static propTypes = {
@@ -149,9 +154,9 @@ class HeaderBar extends Component {
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    if (stringContains('/ballot', pathname)) return 0;
-    if (stringContains('/more/network/friends', pathname)) return 2;
-    if (stringContains('/more/network', pathname)) return 1;
+    if (stringContains("/ballot", pathname)) return 0;
+    if (stringContains("/more/network/friends", pathname)) return 2;
+    if (stringContains("/more/network", pathname)) return 1;
     return false;
   }
 
@@ -190,21 +195,22 @@ class HeaderBar extends Component {
     const showFullNavigation = cookies.getItem("show_full_navigation") || voterIsSignedIn;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
     return (
-      <AppBar position="relative" color="default" className={isWebApp() ? "page-header" : "page-header page-header__cordova"}>
-        <Toolbar className="header-toolbar" disableGutters>
-          {!weVoteBrandingOff && isWebApp() && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />}
-          <div className="header-nav">
-            <Tabs
+      <Wrapper hasNotch={hasIPhoneNotch()}>
+        <AppBar position="relative" color="default" className={isWebApp() ? "page-header" : "page-header page-header__cordova"}>
+          <Toolbar className="header-toolbar" disableGutters>
+            {!weVoteBrandingOff && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />}
+            <div className="header-nav">
+              <Tabs
               value={this.getSelectedTab()}
               indicatorColor="primary"
-            >
-              {showFullNavigation && isWebApp() && <Link to="/ballot" className="header-link u-show-desktop"><Tab label="Ballot" /></Link>}
-              {showFullNavigation && isWebApp() && <Link to="/more/network/issues" className="header-link u-show-desktop"><Tab label="My Values" /></Link>}
-              {showFullNavigation && isWebApp() && <Link to="/more/network/friends" className="header-link u-show-desktop"><Tab label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} invisible={!numberOfIncomingFriendRequests}>My Friends</Badge>} /></Link>}
-              {/* showFullNavigation && isWebApp() && <Tab className="u-show-desktop" label="Vote" /> */}
-            </Tabs>
+              >
+                {showFullNavigation && <Link to="/ballot" className="header-link u-show-desktop"><Tab label="Ballot" /></Link>}
+                {showFullNavigation && <Link to="/more/network/issues" className="header-link u-show-desktop"><Tab label="My Values" /></Link>}
+                {showFullNavigation && <Link to="/more/network/friends" className="header-link u-show-desktop"><Tab label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} invisible={!numberOfIncomingFriendRequests}>My Friends</Badge>} /></Link>}
+                {/* showFullNavigation && isWebApp() && <Tab className="u-show-desktop" label="Vote" /> */}
+              </Tabs>
 
-            { !showFullNavigation && isWebApp() && (
+              { !showFullNavigation && (
               <Button
                 className="header-sign-in"
                 variant="text"
@@ -213,13 +219,13 @@ class HeaderBar extends Component {
               >
                 Sign In
               </Button>
-            )}
-          </div>
+              )}
+            </div>
 
-          {/* (showFullNavigation || isCordova()) && <SearchAllBox /> */}
+            {/* (showFullNavigation || isCordova()) && <SearchAllBox /> */}
 
-          {
-            showFullNavigation && isWebApp() && (
+            {
+            showFullNavigation && (
             <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleProfilePopUp}>
               {voterPhotoUrlMedium ? (
                 <div id="js-header-avatar" className="header-nav__avatar-container">
@@ -257,8 +263,10 @@ class HeaderBar extends Component {
               )}
             </div>
             )}
-        </Toolbar>
-      </AppBar>
+          </Toolbar>
+        </AppBar>
+
+      </Wrapper>
     );
   }
 }

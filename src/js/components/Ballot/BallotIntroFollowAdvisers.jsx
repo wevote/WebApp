@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
 import VoterGuideActions from "../../actions/VoterGuideActions";
 import { renderLog } from "../../utils/logging";
 import OrganizationFollowToggle from "./OrganizationFollowToggle";

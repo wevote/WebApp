@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
 import IssueActions from "../../actions/IssueActions";
 import IssueFollowToggleSquare from "../Issues/IssueFollowToggleSquare";
 import IssueStore from "../../stores/IssueStore";
 import { renderLog } from "../../utils/logging";
 
-const NEXT_BUTTON_TEXT = 'Next';
-const SKIP_BUTTON_TEXT = 'Skip';
+const NEXT_BUTTON_TEXT = "Next";
+const SKIP_BUTTON_TEXT = "Skip";
 
 export default class BallotIntroFollowIssues extends Component {
   static propTypes = {

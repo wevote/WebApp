@@ -9,7 +9,7 @@ import {
 } from "./utils/cordovaUtils";
 import ElectionActions from "./actions/ElectionActions";
 // import FooterBarCordova from "./components/Navigation/FooterBarCordova";
-import FooterBar from './components/Navigation/FooterBar';
+import FooterBar from "./components/Navigation/FooterBar";
 import FriendActions from "./actions/FriendActions";
 import Header from "./components/Navigation/Header";
 import IssueActions from "./actions/IssueActions";

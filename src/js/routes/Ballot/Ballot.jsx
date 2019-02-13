@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import { Link } from "react-router";
 import Helmet from "react-helmet";
 import moment from "moment";
+import styled from "styled-components";
 import Badge from "@material-ui/core/Badge";
-import Chip from '@material-ui/core/Chip';
+import Chip from "@material-ui/core/Chip";
 import AddressBox from "../../components/AddressBox";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import BallotActions from "../../actions/BallotActions";
@@ -52,6 +53,10 @@ import { formatVoterBallotList, checkShouldUpdate } from "./utils";
 
 // Related to WebApp/src/js/components/VoterGuide/VoterGuideBallot.jsx
 const BALLOT_ITEM_FILTER_TYPES = ["Federal", "State", "Measure", "Local"];
+
+const Wrapper = styled.div`
+  padding-top: ${({ cordova }) => (cordova ? "100px" : 0)};
+`;
 
 export default class Ballot extends Component {
   static propTypes = {
@@ -829,106 +834,107 @@ export default class Ballot extends Component {
         <div className="page-content-container">
           <div className="container-fluid">
             {emptyBallot}
-            <div className="row ballot__body">
-              <div className="col-xs-12 col-md-8">
-                { inReadyToVoteMode ? (
-                  <div>
-                    <div className="alert alert-success d-print-none">
-                      <a href="#" className="close" data-dismiss="alert">&times;</a>
+            <Wrapper cordova={isCordova()}>
+              <div className="row ballot__body">
+                <div className="col-xs-12 col-md-8">
+                  { inReadyToVoteMode ? (
+                    <div>
+                      <div className="alert alert-success d-print-none">
+                        <a href="#" className="close" data-dismiss="alert">&times;</a>
                       We Vote helps you get ready to vote,
-                      {" "}
-                      <strong>but you cannot use We Vote to cast your vote</strong>
+                        {" "}
+                        <strong>but you cannot use We Vote to cast your vote</strong>
                       .
                       Make sure to return your official ballot to your polling
                       place!
-                      <br />
-                      <OpenExternalWebSite
+                        <br />
+                        <OpenExternalWebSite
                         url="https://help.wevote.us/hc/en-us/articles/115002401353-Can-I-cast-my-vote-with-We-Vote-"
                         target="_blank"
                         body="See more information about casting your official vote."
-                      />
+                        />
+                      </div>
+                      <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
+                        {ballotWithItemsFromCompletionFilterType.map(item => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
+                      </div>
                     </div>
-                    <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
-                      {ballotWithItemsFromCompletionFilterType.map(item => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    {/* The rest of the ballot items */}
-                    { ballotWithItemsFromCompletionFilterType.length && showFilterTabs ? (
-                      <div className="row ballot__item-filter-tabs">
-                        { BALLOT_ITEM_FILTER_TYPES.map((oneTypeOfBallotItem) => {
-                          const allBallotItemsByFilterType = this.state.ballotWithAllItems.filter((item) => {
-                            if (oneTypeOfBallotItem === "Measure") {
-                              return item.kind_of_ballot_item === "MEASURE";
-                            } else {
-                              return oneTypeOfBallotItem === item.race_office_level;
-                            }
-                          });
-                          if (allBallotItemsByFilterType.length) {
-                            const ballotItemsByFilterType = ballotWithItemsFromCompletionFilterType.filter((item) => {
+                  ) : (
+                    <div>
+                      {/* The rest of the ballot items */}
+                      { ballotWithItemsFromCompletionFilterType.length && showFilterTabs ? (
+                        <div className="row ballot__item-filter-tabs">
+                          { BALLOT_ITEM_FILTER_TYPES.map((oneTypeOfBallotItem) => {
+                            const allBallotItemsByFilterType = this.state.ballotWithAllItems.filter((item) => {
                               if (oneTypeOfBallotItem === "Measure") {
                                 return item.kind_of_ballot_item === "MEASURE";
                               } else {
                                 return oneTypeOfBallotItem === item.race_office_level;
                               }
                             });
-                            return (
-                              <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
-                                <Badge
-                                  color={oneTypeOfBallotItem === this.state.raceLevelFilterType ? 'secondary' : 'primary'}
+                            if (allBallotItemsByFilterType.length) {
+                              const ballotItemsByFilterType = ballotWithItemsFromCompletionFilterType.filter((item) => {
+                                if (oneTypeOfBallotItem === "Measure") {
+                                  return item.kind_of_ballot_item === "MEASURE";
+                                } else {
+                                  return oneTypeOfBallotItem === item.race_office_level;
+                                }
+                              });
+                              return (
+                                <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
+                                  <Badge
+                                  color={oneTypeOfBallotItem === this.state.raceLevelFilterType ? "secondary" : "primary"}
                                   badgeContent={ballotItemsByFilterType.length}
                                   invisible={ballotItemsByFilterType.length === 0}
-                                >
-                                  <Chip variant="outlined"
-                                        color={oneTypeOfBallotItem === this.state.raceLevelFilterType ? 'primary' : 'default'}
+                                  >
+                                    <Chip variant="outlined"
+                                        color={oneTypeOfBallotItem === this.state.raceLevelFilterType ? "primary" : "default"}
                                         onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
                                         className="btn_ballot_filter"
                                         label={oneTypeOfBallotItem}
-                                  />
-                                </Badge>
-                              </div>
-                            );
-                          } else {
-                            return null;
-                          }
-                        })
+                                    />
+                                  </Badge>
+                                </div>
+                              );
+                            } else {
+                              return null;
+                            }
+                          })
                       }
-                      </div>
-                    ) : null
+                        </div>
+                      ) : null
                     }
-                    {/* We always show the change election option */}
-                    <div className={`u-no-break d-print-none u-cursor--pointer ballot__change-address ${ballotWithItemsFromCompletionFilterType && showFilterTabs ? '' : 'ballot__no-race-cats'}`}
+                      {/* We always show the change election option */}
+                      <div className={`u-no-break d-print-none u-cursor--pointer ballot__change-address ${ballotWithItemsFromCompletionFilterType && showFilterTabs ? "" : "ballot__no-race-cats"}`}
                          onClick={this.toggleSelectBallotModal}
-                    >
-                      <span className="u-no-break u-f8 d-none d-sm-inline">
-                        <img
+                      >
+                        <span className="u-no-break u-f8 d-none d-sm-inline">
+                          <img
                           src={cordovaDot("/img/global/icons/gear-icon.png")}
                           role="button"
                           alt="change address or election"
-                        />
-                        {" "}
+                          />
+                          {" "}
                         Not your ballot?
-                      </span>
-                      <span className="u-no-break u-f6 d-inline d-sm-none">
-                        <img
+                        </span>
+                        <span className="u-no-break u-f6 d-inline d-sm-none">
+                          <img
                           src={cordovaDot("/img/global/icons/gear-icon.png")}
                           role="button"
                           alt="change address or election"
-                        />
-                        {" "}
+                          />
+                          {" "}
                         Not your ballot?
-                      </span>
-                    </div>
-                    <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
-                      {ballotWithItemsFromCompletionFilterType.map((item) => {
-                      // ballot limited by items by filter type
-                      // console.log(this.state.raceLevelFilterType);
-                        if ((this.state.raceLevelFilterType === "All" ||
+                        </span>
+                      </div>
+                      <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
+                        {ballotWithItemsFromCompletionFilterType.map((item) => {
+                          // ballot limited by items by filter type
+                          // console.log(this.state.raceLevelFilterType);
+                          if ((this.state.raceLevelFilterType === "All" ||
                           (item.kind_of_ballot_item === this.state.raceLevelFilterType.toUpperCase()) ||
                             this.state.raceLevelFilterType === item.race_office_level)) {
-                          return (
-                            <BallotItemCompressed
+                            return (
+                              <BallotItemCompressed
                               currentBallotIdInUrl={this.props.location.hash.slice(1)}
                               key={item.we_vote_id}
                               updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
@@ -936,25 +942,25 @@ export default class Ballot extends Component {
                               urlWithoutHash={this.props.location.pathname + this.props.location.search}
                               ref={(ref) => { this.ballotItems[item.we_vote_id] = ref; }}
                               {...item}
-                            />
-                          );
-                        } else {
-                          return null;
-                        }
-                      })
+                              />
+                            );
+                          } else {
+                            return null;
+                          }
+                        })
                     }
-                      {
+                        {
                         doubleFilteredBallotItemsLength === 0 &&
                         this.showUserEmptyOptions()
                       }
+                      </div>
                     </div>
-                  </div>
-                )}
-                {/* Show links to this candidate in the admin tools */}
-                { (this.state.voter && sourcePollingLocationWeVoteId) && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ? (
-                  <span className="u-wrap-links d-print-none">
-                    <span>Admin:</span>
-                    <OpenExternalWebSite
+                  )}
+                  {/* Show links to this candidate in the admin tools */}
+                  { (this.state.voter && sourcePollingLocationWeVoteId) && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ? (
+                    <span className="u-wrap-links d-print-none">
+                      <span>Admin:</span>
+                      <OpenExternalWebSite
                       url={ballotReturnedAdminEditUrl}
                       target="_blank"
                       body={(
@@ -964,25 +970,26 @@ export default class Ballot extends Component {
                           &quot;
                         </span>
                       )}
-                    />
-                  </span>
-                ) : null
+                      />
+                    </span>
+                  ) : null
                 }
-              </div>
+                </div>
 
-              { ballotWithItemsFromCompletionFilterType.length === 0 || isCordova() ?
-                null : (
-                  <div className="col-md-4 d-none d-sm-block sidebar-menu">
-                    <BallotSideBar
+                { ballotWithItemsFromCompletionFilterType.length === 0 || isCordova() ?
+                  null : (
+                    <div className="col-md-4 d-none d-sm-block sidebar-menu">
+                      <BallotSideBar
                       displayTitle
                       displaySubtitles
                       rawUrlVariablesString={this.props.location.search}
                       ballotWithAllItemsByFilterType={this.state.ballotWithItemsFromCompletionFilterType}
                       ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
-                    />
-                  </div>
-                )}
-            </div>
+                      />
+                    </div>
+                  )}
+              </div>
+            </Wrapper>
           </div>
         </div>
       </div>

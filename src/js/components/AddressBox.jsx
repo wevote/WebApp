@@ -159,12 +159,10 @@ class AddressBox extends Component {
   }
 
   updateVoterAddress (event) {
-    console.log("update voter address", event);
     this.setState({ textForMapSearch: event.target.value });
   }
 
   handleKeyPress (event) {
-    console.log("event", event);
     // Wait for 1/2 of a second after the last keypress to make a call to the voterAddressSave API
     const ENTER_KEY_CODE = 13;
     if (event.keyCode === ENTER_KEY_CODE) {

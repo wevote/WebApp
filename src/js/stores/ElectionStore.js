@@ -29,13 +29,13 @@ class ElectionStore extends ReduceStore {
   getElectionName (googleCivicElectionId) {
     const election = this.getElectionByGoogleCivicElectionId(googleCivicElectionId);
     if (election) return election.election_name;
-    return '';
+    return "";
   }
 
   getElectionDayText (googleCivicElectionId) {
     const election = this.getElectionByGoogleCivicElectionId(googleCivicElectionId);
     if (election) return election.election_day_text;
-    return '';
+    return "";
   }
 
   googleCivicDataExists (googleCivicElectionId) {

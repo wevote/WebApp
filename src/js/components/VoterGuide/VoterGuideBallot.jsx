@@ -81,13 +81,13 @@ export default class VoterGuideBallot extends Component {
       showBallotSummaryModal: false,
       voterBallotList: [],
       voterGuideOnStage: undefined,
+      showFilterTabs: true,
     };
 
     this.ballotItems = {};
     this.ballotItemLinkHasBeenClicked = this.ballotItemLinkHasBeenClicked.bind(this);
     this.toggleBallotIntroModal = this.toggleBallotIntroModal.bind(this);
     this.ballotItemsCompressedReference = {};
-    this.nullFunction = this.nullFunction.bind(this);
     this.pledgeToVoteWithVoterGuide = this.pledgeToVoteWithVoterGuide.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.toggleBallotSummaryModal = this.toggleBallotSummaryModal.bind(this);
@@ -310,26 +310,6 @@ export default class VoterGuideBallot extends Component {
     }
   }
 
-  componentDidUpdate (prevProps, prevState) {
-    if (this.state.lastHashUsedInLinkScroll && this.state.lastHashUsedInLinkScroll !== prevState.lastHashUsedInLinkScroll) {
-      this.hashLinkScroll();
-    }
-  }
-
-  componentWillUnmount () {
-    // console.log("VoterGuideBallot componentWillUnmount");
-    this.setState({
-      mounted: false,
-    });
-
-    this.ballotStoreListener.remove();
-    this.electionListListener.remove();
-    this.organizationStoreListener.remove();
-    this.supportStoreListener.remove();
-    this.voterGuideStoreListener.remove();
-    this.voterStoreListener.remove();
-  }
-
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (this.state.componentDidMountFinished === false) {
@@ -396,7 +376,24 @@ export default class VoterGuideBallot extends Component {
     return false;
   }
 
-  nullFunction () {
+  componentDidUpdate (prevProps, prevState) {
+    if (this.state.lastHashUsedInLinkScroll && this.state.lastHashUsedInLinkScroll !== prevState.lastHashUsedInLinkScroll) {
+      this.hashLinkScroll();
+    }
+  }
+
+  componentWillUnmount () {
+    // console.log("VoterGuideBallot componentWillUnmount");
+    this.setState({
+      mounted: false,
+    });
+
+    this.ballotStoreListener.remove();
+    this.electionListListener.remove();
+    this.organizationStoreListener.remove();
+    this.supportStoreListener.remove();
+    this.voterGuideStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -588,7 +585,7 @@ export default class VoterGuideBallot extends Component {
     const { completionLevelFilterType, raceLevelFilterType } = this.state;
     const raceLevel = raceLevelFilterType.toLowerCase();
     switch (completionLevelFilterType) {
-      case 'filterDecided':
+      case "filterDecided":
         return (
           <div>
             <h3>
@@ -598,14 +595,14 @@ export default class VoterGuideBallot extends Component {
               <br />
               <br />
               Click on &quot;
-              {window.innerWidth > 575 ? 'Remaining Choices' : 'Choices'}
+              {window.innerWidth > 575 ? "Remaining Choices" : "Choices"}
               &quot; to see the&nbsp;
               {raceLevel}
               &nbsp;ballot items you need to decide on.
             </h3>
           </div>
         );
-      case 'filterRemaining':
+      case "filterRemaining":
         return (
           <div>
             <h3>
@@ -615,7 +612,7 @@ export default class VoterGuideBallot extends Component {
               <br />
               <br />
               Click on &quot;
-              {window.innerWidth > 575 ? 'Items Decided' : 'Decided'}
+              {window.innerWidth > 575 ? "Items Decided" : "Decided"}
               &quot; to see the&nbsp;
               {raceLevel}
               &nbsp;ballot items you&apos;ve decided on.
