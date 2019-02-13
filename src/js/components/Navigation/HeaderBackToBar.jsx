@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import AppBar from "@material-ui/core/AppBar";
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import Toolbar from "@material-ui/core/Toolbar";
 import CandidateStore from "../../stores/CandidateStore";
 import cookies from "../../utils/cookies";
@@ -276,8 +277,7 @@ export default class HeaderBackToBar extends Component {
           className={`page-header__backToButton ${hasIPhoneNotch() ? "page-header__backToButtonIPhoneX" : ""}`}
           onClick={() => historyPush(backToLink)}
           >
-            <ion-icon name="arrow-back" />
-            &nbsp;
+            <KeyboardBackspaceIcon className="button-icon" />
             {backToOrganizationLinkTextMobile}
           </Button>
 

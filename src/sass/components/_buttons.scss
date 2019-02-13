@@ -95,3 +95,8 @@
 .no-outline {
   outline: none !important;
 }
+
+.button-icon {
+  $btn-icon-margin: .5rem;
+  margin-right: $btn-icon-margin;
+}
