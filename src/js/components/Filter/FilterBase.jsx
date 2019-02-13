@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import Badge from '@material-ui/core/Badge';
-import { withStyles } from '@material-ui/core/styles';
+import Badge from "@material-ui/core/Badge";
+import { withStyles } from "@material-ui/core/styles";
 import getGroupedFilterSecondClass from "./utils/grouped-filter-second-class";
 
 const styles = theme => ({

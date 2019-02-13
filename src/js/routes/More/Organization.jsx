@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Helmet from "react-helmet";
 import ReactPlayer from "react-player";
 import styled from "styled-components";
-import Paper from '@material-ui/core/Paper';
+import Paper from "@material-ui/core/Paper";
 import AnalyticsActions from "../../actions/AnalyticsActions";
 import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
 import { renderLog } from "../../utils/logging";

@@ -27,16 +27,16 @@ class FooterBar extends React.Component {
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    if (stringContains('/ballot', pathname)) return 0;
-    if (stringContains('/more/network/friends', pathname)) return 2;
-    if (stringContains('/more/network', pathname)) return 1;
+    if (stringContains("/ballot", pathname)) return 0;
+    if (stringContains("/more/network/friends", pathname)) return 2;
+    if (stringContains("/more/network", pathname)) return 1;
     if (stringContains("/settings/", pathname)) return 3;
     return -1;
   }
 
   render () {
     return (
-      <div className="footer-container u-show-mobile">
+      <div className="footer-container u-show-mobile-tablet">
         <BottomNavigation
           value={this.getSelectedTab()}
           onChange={this.handleChange}

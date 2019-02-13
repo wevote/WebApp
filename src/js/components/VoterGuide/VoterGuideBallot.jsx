@@ -585,7 +585,7 @@ export default class VoterGuideBallot extends Component {
     const { completionLevelFilterType, raceLevelFilterType } = this.state;
     const raceLevel = raceLevelFilterType.toLowerCase();
     switch (completionLevelFilterType) {
-      case 'filterDecided':
+      case "filterDecided":
         return (
           <div>
             <h3>
@@ -595,14 +595,14 @@ export default class VoterGuideBallot extends Component {
               <br />
               <br />
               Click on &quot;
-              {window.innerWidth > 575 ? 'Remaining Choices' : 'Choices'}
+              {window.innerWidth > 575 ? "Remaining Choices" : "Choices"}
               &quot; to see the&nbsp;
               {raceLevel}
               &nbsp;ballot items you need to decide on.
             </h3>
           </div>
         );
-      case 'filterRemaining':
+      case "filterRemaining":
         return (
           <div>
             <h3>
@@ -612,7 +612,7 @@ export default class VoterGuideBallot extends Component {
               <br />
               <br />
               Click on &quot;
-              {window.innerWidth > 575 ? 'Items Decided' : 'Decided'}
+              {window.innerWidth > 575 ? "Items Decided" : "Decided"}
               &quot; to see the&nbsp;
               {raceLevel}
               &nbsp;ballot items you&apos;ve decided on.

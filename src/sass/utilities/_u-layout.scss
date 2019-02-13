@@ -12,8 +12,20 @@
   }
 }
 
-.u-show-desktop {
+.u-show-desktop-tablet {
   @include breakpoints(small xsmall-bootstrap) {
+    display: none !important;
+  }
+}
+
+.u-show-mobile-tablet {
+  @include breakpoints(medium) {
+    display: none !important;
+  }
+}
+
+.u-show-desktop {
+  @include breakpoints(small medium) {
     display: none !important;
   }
 }

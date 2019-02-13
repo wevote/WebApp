@@ -8,7 +8,7 @@ import IssueActions from "../../actions/IssueActions";
 import { showToastError, showToastSuccess } from "../../utils/showToast";
 import { renderLog } from "../../utils/logging";
 
-const svgStyle = { fill: '#4B4B4B', padding: '1px', width: '67%', height: '100%', marginBottom: '33%' };
+const svgStyle = { fill: "#4B4B4B", padding: "1px", width: "67%", height: "100%", marginBottom: "33%" };
 
 export default class IssueFollowToggleSquare extends Component {
   static propTypes = {
@@ -69,7 +69,7 @@ export default class IssueFollowToggleSquare extends Component {
     }
     if (readOnly === true && !editMode) {
       return (
-        <div className={`${grid} intro-modal__square${sideBar ? '__sidebar' : ''}`}>
+        <div className={`${grid} intro-modal__square${sideBar ? "__sidebar" : ""}`}>
           <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${issueIconLocalPath}.svg`)} svgStyle={svgStyle} />
           <ImageHandler
             className="intro-modal__square-check-mark"
