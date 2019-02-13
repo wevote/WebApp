@@ -90,11 +90,12 @@ export function getApplicationViewBooleans (pathname) {
     stringContains("/settings/issues", pathname) ||
     pathname === "/settings/notifications" ||
     pathname === "/settings/profile" ||
+    stringContains("/settings/voter_guide", pathname) ||
     pathname === "/settings/voterguidesmenu" ||
     pathname === "/settings/voterguidelist") {
     showBackToSettings = true;
   } else if (stringContains("/vg/", pathname)) {
-    showBackToVoterGuides = true;
+    showBackToVoterGuides = true; // DALE 2019-02-19 Soon we should be able to delete the interim voter guides page
   }
 
   if (pathname.startsWith("/measure") && isCordova()) {

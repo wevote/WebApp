@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
+import SelectVoterGuidesSideBar from "../../components/Navigation/SelectVoterGuidesSideBar";
 import SettingsBannerAndOrganizationCard from "../../components/Settings/SettingsBannerAndOrganizationCard";
 import SettingsPersonalSideBar from "../../components/Navigation/SettingsPersonalSideBar";
 import VoterGuideActions from "../../actions/VoterGuideActions";
@@ -123,12 +124,25 @@ export default class SettingsMenuMobile extends Component {
         <div className="container-fluid">
           <div className="row">
             <div className="col-12">
-              <SettingsPersonalSideBar onOwnPage isSignedIn={this.state.voter.is_signed_in} organizationType={this.state.organizationType} />
+              <SettingsPersonalSideBar
+                onOwnPage
+                isSignedIn={this.state.voter.is_signed_in}
+                organizationType={this.state.organizationType}
+              />
+
+              <SelectVoterGuidesSideBar />
+
               <div className="h4 text-left" />
               <div className="terms-and-privacy u-padding-top--md">
-                <Link to="/more/terms">Terms of Service</Link>
-                &nbsp;&nbsp;&nbsp;
-                <Link to="/more/privacy">Privacy Policy</Link>
+                <Link to="/more/terms">
+                  <span className="u-no-break">Terms of Service</span>
+                </Link>
+                <span style={{ paddingLeft: 20 }} />
+                <Link to="/more/privacy">
+                  <span className="u-no-break">Privacy Policy</span>
+                </Link>
+                <span style={{ paddingLeft: 20 }} />
+                <Link to="/more/attributions">Attributions</Link>
               </div>
             </div>
           </div>

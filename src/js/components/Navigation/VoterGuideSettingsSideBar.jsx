@@ -5,6 +5,7 @@ import ElectionStore from "../../stores/ElectionStore";
 import { renderLog } from "../../utils/logging";
 
 
+// DALE 2019-02-12 I would like to get rid of this page. (We can add the list of voter guide settings to the "Settings" page.)
 export default class VoterGuideSettingsSideBar extends Component {
   static propTypes = {
     editMode: PropTypes.string,

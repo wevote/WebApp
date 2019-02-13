@@ -36,6 +36,7 @@ export default class Privacy extends React.Component {
               We use this information to operate this Site, to sends you news and information about We Vote, to measure the effectiveness of our
               programs, and to send you timely election reminders.
               You may opt-out of receiving messages from We Vote by sending any email to
+              {" "}
               <a href="mailto:info@WeVote.US" target="_blank" rel="noopener noreferrer">info@WeVote.US</a>
               {" "}
               and asking that you not receive future email messages.
@@ -112,6 +113,7 @@ export default class Privacy extends React.Component {
           <p>
             <span>
               If you have any questions about this Privacy Policy, you may contact us by sending an e-mail to
+              {" "}
               <a href="mailto:info@WeVote.US" target="_blank" rel="noopener noreferrer">info@WeVote.US</a>
               {" "}
             </span>

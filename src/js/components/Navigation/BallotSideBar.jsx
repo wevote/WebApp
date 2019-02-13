@@ -204,12 +204,14 @@ export default class BallotSideBar extends Component {
           <span className="terms-and-privacy">
             <br />
             <Link to="/more/terms">
-              Terms of Service
+              <span className="u-no-break">Terms of Service</span>
             </Link>
-            &nbsp;&nbsp;&nbsp;
+            <span style={{ paddingLeft: 20 }} />
             <Link to="/more/privacy">
-              Privacy Policy
+              <span className="u-no-break">Privacy Policy</span>
             </Link>
+            <span style={{ paddingLeft: 20 }} />
+            <Link to="/more/attributions">Attributions</Link>
           </span>
         </div>
       );

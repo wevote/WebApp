@@ -58,22 +58,6 @@ export default class HeaderBarProfilePopUp extends Component {
                 </div>
               </Link>
             </li>
-            {/* Desktop only */}
-            <li className="navli d-none d-sm-block">
-              <Link onClick={this.hideProfilePopUp} to="/settings/voterguidelist">
-                <div>
-                  <span className="header-slide-out-menu-text-left">Your Voter Guides</span>
-                </div>
-              </Link>
-            </li>
-            {/* Mobile only */}
-            <li className="navli d-block d-sm-none">
-              <Link onClick={this.hideProfilePopUp} to="/settings/voterguidesmenu">
-                <div>
-                  <span className="header-slide-out-menu-text-left">Your Voter Guides</span>
-                </div>
-              </Link>
-            </li>
             {/* Desktop or Mobile */}
             {voter && isSignedIn ?
               null : (
@@ -126,9 +110,13 @@ export default class HeaderBarProfilePopUp extends Component {
           </ul>
           <span className="terms-and-privacy">
             <br />
-            <Link onClick={this.hideProfilePopUp} to="/more/terms">Terms of Service</Link>
+            <Link onClick={this.hideProfilePopUp} to="/more/terms">
+              <span className="u-no-break">Terms of Service</span>
+            </Link>
             <span style={{ paddingLeft: 20 }} />
-            <Link onClick={this.hideProfilePopUp} to="/more/privacy">Privacy Policy</Link>
+            <Link onClick={this.hideProfilePopUp} to="/more/privacy">
+              <span className="u-no-break">Privacy Policy</span>
+            </Link>
             <span style={{ paddingLeft: 20 }} />
             <Link onClick={this.hideProfilePopUp} to="/more/attributions">Attributions</Link>
           </span>
