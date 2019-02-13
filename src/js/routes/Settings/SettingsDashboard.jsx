@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router";
+import { isProperlyFormattedVoterGuideWeVoteId } from "../../utils/textFormat";
 import { isWebApp } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
+import BallotActions from "../../actions/BallotActions";
+import BallotStore from "../../stores/BallotStore";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import SelectVoterGuidesSideBar from "../../components/Navigation/SelectVoterGuidesSideBar";
@@ -10,11 +13,12 @@ import SettingsAccount from "../../components/Settings/SettingsAccount";
 import SettingsAddress from "../../components/Settings/SettingsAddress";
 import SettingsBannerAndOrganizationCard from "../../components/Settings/SettingsBannerAndOrganizationCard";
 import SettingsElection from "../../components/Settings/SettingsElection";
+import SettingsIssueLinks from "../../components/Settings/SettingsIssueLinks";
 import SettingsNotifications from "../../components/Settings/SettingsNotifications";
 import SettingsProfile from "../../components/Settings/SettingsProfile";
 import SettingsPersonalSideBar from "../../components/Navigation/SettingsPersonalSideBar";
 import VoterGuideActions from "../../actions/VoterGuideActions";
-import SettingsIssueLinks from "../../components/Settings/SettingsIssueLinks";
+import VoterGuideSettingsPositions from "../../components/Settings/VoterGuideSettingsPositions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 
@@ -31,6 +35,7 @@ export default class SettingsDashboard extends Component {
       organization: {},
       voter: {},
       organizationType: "",
+      voterGuideWeVoteId: "",
     };
   }
 
@@ -68,6 +73,20 @@ export default class SettingsDashboard extends Component {
         OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
       }
     }
+    // Get Voter Guide information
+    // let voterGuideFound = false;
+    if (this.props.params.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(this.props.params.voter_guide_we_vote_id)) {
+      this.setState({
+        voterGuideWeVoteId: this.props.params.voter_guide_we_vote_id,
+      });
+      const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.props.params.voter_guide_we_vote_id);
+      if (voterGuide && voterGuide.we_vote_id) {
+        if (voterGuide.google_civic_election_id && voterGuide.google_civic_election_id !== BallotStore.currentBallotGoogleCivicElectionId) {
+          // console.log("VoterGuideSettingsDashboard componentDidMount retrieving ballot for: ", voterGuide.google_civic_election_id);
+          BallotActions.voterBallotItemsRetrieve(voterGuide.google_civic_election_id, "", "");
+        }
+      }
+    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -96,6 +115,22 @@ export default class SettingsDashboard extends Component {
 
     if (nextProps.params.edit_mode) {
       this.setState({ editMode: nextProps.params.edit_mode });
+    }
+    if (nextProps.params.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(nextProps.params.voter_guide_we_vote_id)) {
+      this.setState({
+        voterGuideWeVoteId: nextProps.params.voter_guide_we_vote_id,
+      });
+      const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(nextProps.params.voter_guide_we_vote_id);
+      if (voterGuide && voterGuide.we_vote_id) {
+        if (voterGuide.google_civic_election_id && voterGuide.google_civic_election_id !== BallotStore.currentBallotGoogleCivicElectionId) {
+          // console.log("VoterGuideSettingsDashboard componentDidMount retrieving ballot for: ", voterGuide.google_civic_election_id);
+          BallotActions.voterBallotItemsRetrieve(voterGuide.google_civic_election_id, "", "");
+        }
+      }
+    } else {
+      this.setState({
+        voterGuideWeVoteId: "",
+      });
     }
   }
 
@@ -162,11 +197,14 @@ export default class SettingsDashboard extends Component {
       case "profile":
         settingsComponentToDisplay = <SettingsProfile />;
         break;
+      case "voter_guide":
+        settingsComponentToDisplay = <VoterGuideSettingsPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />;
+        break;
     }
 
     // console.log("this.state.organization.organization_banner_url:", this.state.organization.organization_banner_url);
     return (
-      <div className={isWebApp() ? "settings-dashboard" : "settings-dashboard SettingsCardBottomCordova"}>
+      <div className={isWebApp() ? "settings-dashboard u-stack--xl" : "settings-dashboard SettingsCardBottomCordova"}>
         {/* Header Spacing for Desktop */}
         { isWebApp() && (
         <div className={isWebApp() ? "col-md-12 d-none d-sm-block d-print-none" : "col-md-12 d-print-none"}>
@@ -186,16 +224,24 @@ export default class SettingsDashboard extends Component {
             <div className="row">
               {/* Desktop mode left navigation */}
               <div className="col-4 sidebar-menu">
-                <SettingsPersonalSideBar editMode={this.state.editMode} isSignedIn={this.state.voter.is_signed_in} organizationType={this.state.organizationType} />
+                <SettingsPersonalSideBar
+                  editMode={this.state.editMode}
+                  isSignedIn={this.state.voter.is_signed_in}
+                  organizationType={this.state.organizationType}
+                />
 
-                <SelectVoterGuidesSideBar />
+                <SelectVoterGuidesSideBar
+                  voterGuideWeVoteIdSelected={this.state.voterGuideWeVoteId}
+                />
 
                 <div className="h4 text-left" />
                 <div className="terms-and-privacy u-padding-top--md">
-                  <Link to="/more/terms">Terms of Service</Link>
+                  <Link to="/more/terms">
+                    <span className="u-no-break">Terms of Service</span>
+                  </Link>
                   <span style={{ paddingLeft: 20 }} />
                   <Link to="/more/privacy">
-                    Privacy Policy
+                    <span className="u-no-break">Privacy Policy</span>
                   </Link>
                   <span style={{ paddingLeft: 20 }} />
                   <Link to="/more/attributions">

@@ -74,7 +74,9 @@ export default class VoterGuideSettingsPositions extends Component {
         const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
         if (organization && organization.organization_we_vote_id) {
           this.setState({
+            currentGoogleCivicElectionId: BallotStore.currentBallotGoogleCivicElectionId,
             organization,
+            positionListForOneElection: organization.position_list_for_one_election,
           });
           // Positions for this organization, for this election
           if (voterGuide && voterGuide.google_civic_election_id) {
@@ -130,7 +132,14 @@ export default class VoterGuideSettingsPositions extends Component {
         if (organization && organization.organization_we_vote_id) {
           this.setState({
             organization,
+            positionListForOneElection: organization.position_list_for_one_election,
           });
+          // Positions for this organization, for this election
+          if (voterGuide && voterGuide.google_civic_election_id && voterGuide.google_civic_election_id !== this.state.currentGoogleCivicElectionId) {
+            this.setState({currentGoogleCivicElectionId: voterGuide.google_civic_election_id});
+            OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, false, true, voterGuide.google_civic_election_id);
+            OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, true, false, voterGuide.google_civic_election_id);
+          }
           // Positions for this organization, for this election
           // Might cause a loop
           // OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, false, true, voterGuide.google_civic_election_id);
@@ -160,6 +169,7 @@ export default class VoterGuideSettingsPositions extends Component {
     const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
     this.setState({
       organization,
+      positionListForOneElection: organization.position_list_for_one_election,
     });
     // Positions for this organization, for this voter / election
     // OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, true);
@@ -264,7 +274,7 @@ export default class VoterGuideSettingsPositions extends Component {
       return LoadingWheel;
     }
 
-    const positionListForOneElection = this.state.organization.position_list_for_one_election;
+    const { positionListForOneElection } = this.state;
     // console.log("VoterGuideSettingsPositions, positionListForOneElection:", positionListForOneElection);
 
     let lookingAtSelf = false;

@@ -86,6 +86,7 @@ export default class TermsOfService extends React.Component {
           <p>
             <span>
               If you have any questions about the Terms of Service, you may contact us by sending an e-mail to
+              {" "}
               <a href="mailto:info@WeVote.US" target="_blank" rel="noopener noreferrer">info@WeVote.US</a>
               {" "}
 

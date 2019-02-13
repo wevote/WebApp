@@ -55,6 +55,15 @@ $bottomPaddingCordova: 150px;
           margin-left: $space-md - $selected-border-left-space;
         }
       }
+
+      &__subtitle {
+        color: $gray-mid;
+        font-family: $heading-font-stack;
+        font-size: .8rem;
+        &--selected {
+          margin-left: $space-md - $selected-border-left-space;
+        }
+      }
     }
 
     &__item-container {
