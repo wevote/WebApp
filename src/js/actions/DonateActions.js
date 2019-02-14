@@ -1,20 +1,20 @@
-import Dispatcher from "../dispatcher/Dispatcher";
+import Dispatcher from '../dispatcher/Dispatcher';
 
 
 export default {
   donationCancelSubscriptionAction (subscriptionId) {
-    Dispatcher.loadEndpoint("donationCancelSubscription",
+    Dispatcher.loadEndpoint('donationCancelSubscription',
       {
         subscription_id: subscriptionId,
       });
   },
 
   donationRefund (charge) {
-    Dispatcher.loadEndpoint("donationRefund", { charge });
+    Dispatcher.loadEndpoint('donationRefund', { charge });
   },
 
   donationWithStripe (token, email, donationAmount, monthlyDonation) {
-    Dispatcher.loadEndpoint("donationWithStripe", {
+    Dispatcher.loadEndpoint('donationWithStripe', {
       token,
       email,
       donation_amount: donationAmount,

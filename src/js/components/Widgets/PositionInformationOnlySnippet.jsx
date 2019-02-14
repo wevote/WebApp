@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import ReactPlayer from "react-player";
-import { Tooltip, OverlayTrigger } from "react-bootstrap";
-import { cordovaDot } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import ReadMore from "./ReadMore";
-import { vimeoRegX, youTubeRegX } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ReactPlayer from 'react-player';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import ReadMore from './ReadMore';
+import { vimeoRegX, youTubeRegX } from '../../utils/textFormat';
 
 
 export default class PositionInformationOnlySnippet extends Component {
@@ -25,10 +25,10 @@ export default class PositionInformationOnlySnippet extends Component {
     renderLog(__filename);
     const { is_looking_at_self: isLookingAtSelf } = this.props;
     let { more_info_url: moreInfoUrl } = this.props;
-    const statementText = this.props.statement_text || "";
+    const statementText = this.props.statement_text || '';
     let statementTextHtml = <ReadMore text_to_display={statementText} />;
 
-    let videoUrl = "";
+    let videoUrl = '';
     let youTubeUrl;
     let vimeoUrl;
     let statementTextNoUrl;
@@ -45,20 +45,20 @@ export default class PositionInformationOnlySnippet extends Component {
 
     if (youTubeUrl) {
       [videoUrl] = youTubeUrl;
-      statementTextNoUrl = statementText.replace(videoUrl[0], "");
+      statementTextNoUrl = statementText.replace(videoUrl[0], '');
       statementTextHtml = <ReadMore text_to_display={statementTextNoUrl} />;
     }
 
     if (vimeoUrl) {
       [videoUrl] = vimeoUrl;
-      statementTextNoUrl = statementText.replace(videoUrl, "");
+      statementTextNoUrl = statementText.replace(videoUrl, '');
       statementTextHtml = <ReadMore text_to_display={statementTextNoUrl} />;
     }
 
-    const className = "position-rating__icon position-rating__icon--no-position";
-    const alt = "Neutral Rating";
-    const positionLabel = "About";
-    const hasThisToSay = isLookingAtSelf ? "Your comment:" : null;
+    const className = 'position-rating__icon position-rating__icon--no-position';
+    const alt = 'Neutral Rating';
+    const positionLabel = 'About';
+    const hasThisToSay = isLookingAtSelf ? 'Your comment:' : null;
     let stanceDisplayOff = false;
     if (this.props.stance_display_off !== undefined) {
       stanceDisplayOff = !!this.props.stance_display_off;
@@ -68,12 +68,12 @@ export default class PositionInformationOnlySnippet extends Component {
       commentTextOff = !!this.props.comment_text_off;
     }
     if (moreInfoUrl) {
-      if (!moreInfoUrl.toLowerCase().startsWith("http")) {
+      if (!moreInfoUrl.toLowerCase().startsWith('http')) {
         moreInfoUrl = `http://${moreInfoUrl}`;
       }
     }
 
-    const labelText = "This position is information-only, as opposed to “support” or “oppose”";
+    const labelText = 'This position is information-only, as opposed to “support” or “oppose”';
     const tooltip = <Tooltip id="tooltip">{labelText}</Tooltip>;
     return (
       <div className="explicit-position">
@@ -83,7 +83,7 @@ export default class PositionInformationOnlySnippet extends Component {
               <span>
                 <OverlayTrigger placement="top" overlay={tooltip}>
                   <div className="public-friends-indicator">
-                    <img src={cordovaDot("/img/global/svg-icons/no-position-icon.svg")}
+                    <img src={cordovaDot('/img/global/svg-icons/no-position-icon.svg')}
                          className={className}
                          width={24}
                          height={24}
@@ -96,17 +96,17 @@ export default class PositionInformationOnlySnippet extends Component {
                   <span>
                     <span className="explicit-position__position-label">{positionLabel}</span>
                     <span>
-                      {" "}
+                      {' '}
                       {this.props.ballot_item_display_name}
-                      {" "}
+                      {' '}
                     </span>
                   </span>
                 ) : (
                   <span>
                     <span>
-                      {" "}
+                      {' '}
                       {this.props.speaker_display_name}
-                      {" "}
+                      {' '}
                     </span>
                     <span className="explicit-position__position-label">{hasThisToSay}</span>
                   </span>
@@ -132,7 +132,7 @@ export default class PositionInformationOnlySnippet extends Component {
                     body={(
                       <span>
                         view source
-                        {" "}
+                        {' '}
                         <i className="fa fa-external-link" aria-hidden="true" />
                       </span>
                     )}

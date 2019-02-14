@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
-import IssueActions from "../../actions/IssueActions";
-import IssueStore from "../../stores/IssueStore";
-import { renderLog } from "../../utils/logging";
-import VoterStore from "../../stores/VoterStore";
-import { showToastError, showToastSuccess } from "../../utils/showToast";
-import { historyPush } from "../../utils/cordovaUtils";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
+import IssueActions from '../../actions/IssueActions';
+import IssueStore from '../../stores/IssueStore';
+import { renderLog } from '../../utils/logging';
+import VoterStore from '../../stores/VoterStore';
+import { showToastError, showToastSuccess } from '../../utils/showToast';
+import { historyPush } from '../../utils/cordovaUtils';
 
 export default class IssueFollowToggleButton extends Component {
   static propTypes = {

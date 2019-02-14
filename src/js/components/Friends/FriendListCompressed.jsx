@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import FriendDisplayForListCompressed from "./FriendDisplayForListCompressed";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import FriendDisplayForListCompressed from './FriendDisplayForListCompressed';
+import { renderLog } from '../../utils/logging';
 
 export default class FriendListCompressed extends Component {
   static propTypes = {

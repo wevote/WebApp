@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import ParsedTwitterDescription from "./ParsedTwitterDescription";
-import ImageHandler from "../ImageHandler";
-import { renderLog } from "../../utils/logging";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import { abbreviateNumber, numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ParsedTwitterDescription from './ParsedTwitterDescription';
+import ImageHandler from '../ImageHandler';
+import { renderLog } from '../../utils/logging';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import { abbreviateNumber, numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
 
 export default class TwitterAccountCard extends Component {
   static propTypes = {
@@ -25,8 +25,8 @@ export default class TwitterAccountCard extends Component {
     } = this.props;
 
     // If the nameDisplay is in the twitterDescription, remove it from twitterDescription
-    const nameDisplay = twitterName || "";
-    const twitterDescriptionDisplay = twitterDescription || "";
+    const nameDisplay = twitterName || '';
+    const twitterDescriptionDisplay = twitterDescription || '';
     const twitterDescriptionMinusName = removeTwitterNameFromDescription(nameDisplay, twitterDescriptionDisplay);
 
     return (

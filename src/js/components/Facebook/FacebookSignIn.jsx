@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
-import { renderLog } from "../../utils/logging";
-import FacebookActions from "../../actions/FacebookActions";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
+import { renderLog } from '../../utils/logging';
+import FacebookActions from '../../actions/FacebookActions';
 
 class FacebookSignIn extends Component {
   constructor (props) {
@@ -28,13 +28,13 @@ class FacebookSignIn extends Component {
     renderLog(__filename);
     return (
       <Button
-        bsPrefix={this.props.className ? this.props.className : "btn btn-social btn-facebook"}
+        bsPrefix={this.props.className ? this.props.className : 'btn btn-social btn-facebook'}
         onClick={this.didClickFacebookSignInButton}
         onKeyDown={this.onKeyDown}
       >
         <span className="fa fa-facebook" />
-        {" "}
-        {this.props.buttonText ? this.props.buttonText : "Sign In"}
+        {' '}
+        {this.props.buttonText ? this.props.buttonText : 'Sign In'}
       </Button>
     );
   }

@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { renderLog } from "../../utils/logging";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import GuideList from "./GuideList";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { renderLog } from '../../utils/logging';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import GuideList from './GuideList';
 
 
 export default class VoterGuideRecommendationsFromOneOrganization extends Component {
@@ -13,7 +13,7 @@ export default class VoterGuideRecommendationsFromOneOrganization extends Compon
   constructor (props) {
     super(props);
     this.state = {
-      organizationWeVoteId: "",
+      organizationWeVoteId: '',
       voterGuidesToFollowOrganizationRecommendationAllElections: [],
       voterGuidesToFollowOrganizationRecommendationThisElection: [],
     };

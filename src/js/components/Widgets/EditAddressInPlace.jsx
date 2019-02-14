@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import AddressBox from "../AddressBox";
-import { historyPush, isWebApp } from "../../utils/cordovaUtils";
-import { calculateBallotBaseUrl, shortenText } from "../../utils/textFormat";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import AddressBox from '../AddressBox';
+import { historyPush, isWebApp } from '../../utils/cordovaUtils';
+import { calculateBallotBaseUrl, shortenText } from '../../utils/textFormat';
+import { renderLog } from '../../utils/logging';
 
 export default class EditAddressInPlace extends Component {
   static propTypes = {
@@ -18,7 +18,7 @@ export default class EditAddressInPlace extends Component {
     super(props, context);
     this.state = {
       editingAddress: false,
-      textForMapSearch: "",
+      textForMapSearch: '',
     };
     this.toggleEditingAddress = this.toggleEditingAddress.bind(this);
   }
@@ -26,14 +26,14 @@ export default class EditAddressInPlace extends Component {
   componentDidMount () {
     // console.log("In EditAddressInPlace componentDidMount");
     this.setState({
-      textForMapSearch: this.props.address.text_for_map_search || "",
+      textForMapSearch: this.props.address.text_for_map_search || '',
     });
   }
 
   componentWillReceiveProps (nextProps) {
     // console.log("EditAddressInPlace componentWillReceiveProps");
     this.setState({
-      textForMapSearch: nextProps.address.text_for_map_search || "",
+      textForMapSearch: nextProps.address.text_for_map_search || '',
     });
   }
 
@@ -49,13 +49,13 @@ export default class EditAddressInPlace extends Component {
       // the display as in https://github.com/wevote/WeVoteCordova/issues/52  So instead use the non modal version in
       // the settings/location route.
       this.props.toggleFunction();
-      historyPush("/settings/address");
+      historyPush('/settings/address');
     }
   }
 
   render () {
     renderLog(__filename);
-    const noAddressMessage = this.props.noAddressMessage ? this.props.noAddressMessage : "- no address entered -";
+    const noAddressMessage = this.props.noAddressMessage ? this.props.noAddressMessage : '- no address entered -';
     const maximumAddressDisplayLength = 60;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
 
@@ -74,7 +74,7 @@ export default class EditAddressInPlace extends Component {
           <h4 className="h4">Your Address</h4>
           <span className="ballot__edit-address-preview">
             { this.state.textForMapSearch.length ? shortenText(this.state.textForMapSearch, maximumAddressDisplayLength) : noAddressMessage }
-            {" "}
+            {' '}
           </span>
           <span className="d-print-none ballot__edit-address-preview-link u-padding-left--sm">
             <button

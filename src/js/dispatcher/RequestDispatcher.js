@@ -1,5 +1,5 @@
-import Promise from "es6-promise";
-import assign from "object-assign";
+import Promise from 'es6-promise';
+import assign from 'object-assign';
 
 const _callbacks = [];
 
@@ -31,7 +31,7 @@ Dispatcher.prototype = assign({}, Dispatcher.prototype, {
       Promise.resolve(callback(payload)).then(() => {
         resolves[i](payload);
       }, () => {
-        rejects[i](new Error("Dispatcher callback unsuccessful"));
+        rejects[i](new Error('Dispatcher callback unsuccessful'));
       });
     });
   },

@@ -1,22 +1,22 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Helmet from "react-helmet";
-import { capitalizeString } from "../../utils/textFormat";
-import GuideList from "../../components/VoterGuide/GuideList";
-import LoadingWheel from "../../components/LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import MeasureItem from "../../components/Ballot/MeasureItem";
-import MeasureActions from "../../actions/MeasureActions";
-import MeasureStore from "../../stores/MeasureStore";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import OrganizationActions from "../../actions/OrganizationActions";
-import PositionList from "../../components/Ballot/PositionList";
-import SupportActions from "../../actions/SupportActions";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import VoterStore from "../../stores/VoterStore";
-import SearchAllActions from "../../actions/SearchAllActions";
-import webAppConfig from "../../config";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
+import { capitalizeString } from '../../utils/textFormat';
+import GuideList from '../../components/VoterGuide/GuideList';
+import LoadingWheel from '../../components/LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import MeasureItem from '../../components/Ballot/MeasureItem';
+import MeasureActions from '../../actions/MeasureActions';
+import MeasureStore from '../../stores/MeasureStore';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OrganizationActions from '../../actions/OrganizationActions';
+import PositionList from '../../components/Ballot/PositionList';
+import SupportActions from '../../actions/SupportActions';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
+import SearchAllActions from '../../actions/SearchAllActions';
+import webAppConfig from '../../config';
 
 // The component /routes/VoterGuide/OrganizationVoterGuideMeasure is based on this component
 export default class Measure extends Component {
@@ -28,7 +28,7 @@ export default class Measure extends Component {
     super(props);
     this.state = {
       measure: {},
-      measureWeVoteId: "",
+      measureWeVoteId: '',
       positionListFromAdvisersFollowedByVoter: [],
       // Eventually we could use this getVoterGuidesToFollowForBallotItemId with measureWeVoteId, but we can't now
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
@@ -43,7 +43,7 @@ export default class Measure extends Component {
     MeasureActions.positionListForBallotItem(this.props.params.measure_we_vote_id);
 
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(this.props.params.measure_we_vote_id, "MEASURE");
+    VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(this.props.params.measure_we_vote_id, 'MEASURE');
 
     // Make sure supportProps exist for this Measure when browser comes straight to measure page
     SupportActions.retrievePositionsCountsForOneBallotItem(this.props.params.measure_we_vote_id);
@@ -65,7 +65,7 @@ export default class Measure extends Component {
     if (nextProps.params.measure_we_vote_id !== this.state.measureWeVoteId) {
       MeasureActions.measureRetrieve(nextProps.params.measure_we_vote_id);
       MeasureActions.positionListForBallotItem(nextProps.params.measure_we_vote_id);
-      VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.measure_we_vote_id, "MEASURE");
+      VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.measure_we_vote_id, 'MEASURE');
       this.setState({
         measureWeVoteId: nextProps.params.measure_we_vote_id,
         positionListFromAdvisersFollowedByVoter: MeasureStore.getPositionList(nextProps.params.measure_we_vote_id),
@@ -115,7 +115,7 @@ export default class Measure extends Component {
     renderLog(__filename);
 
     const electionId = VoterStore.electionId();
-    const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to listen to related to this measure.";
+    const NO_VOTER_GUIDES_TEXT = 'We could not find any more voter guides to listen to related to this measure.';
 
     if (!measure || !measure.ballot_item_display_name) {
       // TODO DALE If the measureWeVoteId is not valid, we need to update this with a notice
@@ -137,7 +137,7 @@ export default class Measure extends Component {
       <section className="card">
         <Helmet
           title={titleText}
-          meta={[{ name: "description", content: descriptionText }]}
+          meta={[{ name: 'description', content: descriptionText }]}
         />
         <MeasureItem
           {...measure}

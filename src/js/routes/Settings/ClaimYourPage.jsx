@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import TwitterHandleBox from "../../components/Twitter/TwitterHandleBox";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import TwitterHandleBox from '../../components/Twitter/TwitterHandleBox';
+import { renderLog } from '../../utils/logging';
 
 export default class ClaimYourPage extends Component {
   render () {

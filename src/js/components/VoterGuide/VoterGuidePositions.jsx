@@ -1,24 +1,24 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
-import Helmet from "react-helmet";
-import { calculateBallotBaseUrl, capitalizeString } from "../../utils/textFormat";
-import BallotActions from "../../actions/BallotActions";
-import BallotSearchResults from "../Ballot/BallotSearchResults";
-import BallotStore from "../../stores/BallotStore";
-import FooterDoneBar from "../Navigation/FooterDoneBar";
-import { historyPush } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import OrganizationPositionItem from "./OrganizationPositionItem";
-import SupportActions from "../../actions/SupportActions";
-import SupportStore from "../../stores/SupportStore";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideRecommendationsFromOneOrganization from "./VoterGuideRecommendationsFromOneOrganization";
-import VoterStore from "../../stores/VoterStore";
-import YourPositionsVisibilityMessage from "./YourPositionsVisibilityMessage";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
+import Helmet from 'react-helmet';
+import { calculateBallotBaseUrl, capitalizeString } from '../../utils/textFormat';
+import BallotActions from '../../actions/BallotActions';
+import BallotSearchResults from '../Ballot/BallotSearchResults';
+import BallotStore from '../../stores/BallotStore';
+import FooterDoneBar from '../Navigation/FooterDoneBar';
+import { historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import OrganizationPositionItem from './OrganizationPositionItem';
+import SupportActions from '../../actions/SupportActions';
+import SupportStore from '../../stores/SupportStore';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterGuideRecommendationsFromOneOrganization from './VoterGuideRecommendationsFromOneOrganization';
+import VoterStore from '../../stores/VoterStore';
+import YourPositionsVisibilityMessage from './YourPositionsVisibilityMessage';
 
 export default class VoterGuidePositions extends Component {
   static propTypes = {
@@ -33,7 +33,7 @@ export default class VoterGuidePositions extends Component {
     this.state = {
       clearSearchTextNow: false,
       currentGoogleCivicElectionId: 0,
-      currentOrganizationWeVoteId: "",
+      currentOrganizationWeVoteId: '',
       editMode: false,
       organization: {},
       searchIsUnderway: false,
@@ -48,12 +48,12 @@ export default class VoterGuidePositions extends Component {
 
     let googleCivicElectionIdFromUrl = this.props.params.google_civic_election_id || 0;
     // console.log("googleCivicElectionIdFromUrl: ", googleCivicElectionIdFromUrl);
-    let ballotReturnedWeVoteId = this.props.params.ballot_returned_we_vote_id || "";
-    ballotReturnedWeVoteId = ballotReturnedWeVoteId === "none" ? "" : ballotReturnedWeVoteId;
+    let ballotReturnedWeVoteId = this.props.params.ballot_returned_we_vote_id || '';
+    ballotReturnedWeVoteId = ballotReturnedWeVoteId === 'none' ? '' : ballotReturnedWeVoteId;
     // console.log("this.props.params.ballot_returned_we_vote_id: ", this.props.params.ballot_returned_we_vote_id);
-    let ballotLocationShortcut = this.props.params.ballot_location_shortcut || "";
+    let ballotLocationShortcut = this.props.params.ballot_location_shortcut || '';
     ballotLocationShortcut = ballotLocationShortcut.trim();
-    ballotLocationShortcut = ballotLocationShortcut === "none" ? "" : ballotLocationShortcut;
+    ballotLocationShortcut = ballotLocationShortcut === 'none' ? '' : ballotLocationShortcut;
     let googleCivicElectionId = 0;
     // console.log("componentDidMount, BallotStore.ballotProperties: ", BallotStore.ballotProperties);
     if (googleCivicElectionIdFromUrl !== 0) {
@@ -65,23 +65,23 @@ export default class VoterGuidePositions extends Component {
 
     // console.log("ballotReturnedWeVoteId: ", ballotReturnedWeVoteId, ", ballotLocationShortcut:", ballotLocationShortcut, ", googleCivicElectionIdFromUrl: ", googleCivicElectionIdFromUrl);
     if (ballotReturnedWeVoteId || ballotLocationShortcut || googleCivicElectionIdFromUrl) {
-      if (ballotLocationShortcut !== "") {
+      if (ballotLocationShortcut !== '') {
         // Change the ballot on load to make sure we are getting what we expect from the url
-        BallotActions.voterBallotItemsRetrieve(0, "", ballotLocationShortcut);
+        BallotActions.voterBallotItemsRetrieve(0, '', ballotLocationShortcut);
         // Change the URL to match
         historyPush(`${ballotBaseUrl}/${ballotLocationShortcut}`);
-      } else if (ballotReturnedWeVoteId !== "") {
+      } else if (ballotReturnedWeVoteId !== '') {
         // Change the ballot on load to make sure we are getting what we expect from the url
-        BallotActions.voterBallotItemsRetrieve(0, ballotReturnedWeVoteId, "");
+        BallotActions.voterBallotItemsRetrieve(0, ballotReturnedWeVoteId, '');
         // Change the URL to match
         historyPush(`${ballotBaseUrl}/id/${ballotReturnedWeVoteId}`);
       } else if (googleCivicElectionIdFromUrl !== 0) {
         // Change the ballot on load to make sure we are getting what we expect from the url
         if (googleCivicElectionId !== googleCivicElectionIdFromUrl) {
-          BallotActions.voterBallotItemsRetrieve(googleCivicElectionIdFromUrl, "", "");
+          BallotActions.voterBallotItemsRetrieve(googleCivicElectionIdFromUrl, '', '');
           // Change the URL to match
           let ballotElectionUrl = `${ballotBaseUrl}/election/${googleCivicElectionIdFromUrl}`;
-          if (this.props.active_route && this.props.active_route !== "") {
+          if (this.props.active_route && this.props.active_route !== '') {
             ballotElectionUrl += `/${this.props.active_route}`;
           }
           historyPush(ballotElectionUrl);
@@ -93,7 +93,7 @@ export default class VoterGuidePositions extends Component {
         // No need to retrieve data again
         // Change the URL to match the current googleCivicElectionId
         let ballotElectionUrl2 = `${ballotBaseUrl}/election/${googleCivicElectionId}`;
-        if (this.props.active_route && this.props.active_route !== "") {
+        if (this.props.active_route && this.props.active_route !== '') {
           ballotElectionUrl2 += `/${this.props.active_route}`;
         }
         historyPush(ballotElectionUrl2);
@@ -256,7 +256,7 @@ export default class VoterGuidePositions extends Component {
         {/* Since VoterGuidePositions, VoterGuideFollowing, and VoterGuideFollowers are in tabs the title seems to use the Helmet values from the last tab */}
         <Helmet
           title={titleText}
-          meta={[{ name: "description", content: descriptionText }]}
+          meta={[{ name: 'description', content: descriptionText }]}
         />
         <div className="card">
           <ul className="card-child__list-group">
@@ -265,12 +265,12 @@ export default class VoterGuidePositions extends Component {
                 onKeyDown={this.onKeyDownEditMode.bind(this)}
                 onClick={this.toggleEditMode.bind(this)}
               >
-                {this.state.editMode ? "Done Editing" : "Edit Positions"}
+                {this.state.editMode ? 'Done Editing' : 'Edit Positions'}
               </a>
             ) : null
             }
             <h4 className="h4 card__additional-heading">
-              <span className="u-push--sm">{ electionName || "This Election"}</span>
+              <span className="u-push--sm">{ electionName || 'This Election'}</span>
               {/* {this.state.ballot_election_list.length > 1 ? <img src={cordovaDot("/img/global/icons/gear-icon.png")} className="d-print-none" role="button" onClick={this.toggleSelectBallotModal}
               alt='view your ballots' /> : null} */}
             </h4>
@@ -333,7 +333,7 @@ export default class VoterGuidePositions extends Component {
                       onKeyDown={this.onKeyDownEditMode.bind(this)}
                       onClick={this.toggleEditMode.bind(this)}
                     >
-                      {this.state.editMode ? "Done Editing" : "Edit Positions"}
+                      {this.state.editMode ? 'Done Editing' : 'Edit Positions'}
                     </a>
                   ) :
                     null }
@@ -368,9 +368,9 @@ export default class VoterGuidePositions extends Component {
         />
         <div className="opinions-followed__missing-org-text u-stack--lg">
         Are there endorsements from
-          {" "}
+          {' '}
           {organizationName}
-          {" "}
+          {' '}
           that you expected to see?
         </div>
       </div>

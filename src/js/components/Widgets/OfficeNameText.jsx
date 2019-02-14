@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { renderLog } from '../../utils/logging';
 
 export default class OfficeNameText extends Component {
   static propTypes = {
@@ -22,7 +22,7 @@ export default class OfficeNameText extends Component {
 
   render () {
     renderLog(__filename);
-    let nameText = "";
+    let nameText = '';
     const { contestOfficeName, politicalParty, officeLink } = this.props;
     if (politicalParty === undefined) {
       nameText = (
@@ -42,7 +42,7 @@ export default class OfficeNameText extends Component {
         <span>
           <span className="card-main__political-party u-bold u-gray-darker">
             {politicalParty}
-            {" "}
+            {' '}
           </span>
           <span>candidate for </span>
           { officeLink ? (

@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { Link } from "react-router";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import SelectVoterGuidesSideBar from "../../components/Navigation/SelectVoterGuidesSideBar";
-import SettingsBannerAndOrganizationCard from "../../components/Settings/SettingsBannerAndOrganizationCard";
-import SettingsPersonalSideBar from "../../components/Navigation/SettingsPersonalSideBar";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import SelectVoterGuidesSideBar from '../../components/Navigation/SelectVoterGuidesSideBar';
+import SettingsBannerAndOrganizationCard from '../../components/Settings/SettingsBannerAndOrganizationCard';
+import SettingsPersonalSideBar from '../../components/Navigation/SettingsPersonalSideBar';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
 
 export default class SettingsMenuMobile extends Component {
   static propTypes = {
@@ -17,10 +17,10 @@ export default class SettingsMenuMobile extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      linkedOrganizationWeVoteId: "",
+      linkedOrganizationWeVoteId: '',
       organization: {},
       voter: {},
-      organizationType: "",
+      organizationType: '',
     };
   }
 

@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import ImageHandler from "../ImageHandler";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ImageHandler from '../ImageHandler';
+import { renderLog } from '../../utils/logging';
 
 // OrganizationTinyDisplay is used by ItemTinyOpinionsToFollow for viewing the logos/icons for voter guides
 //  you can follow on the Ballot page
@@ -27,7 +27,7 @@ export default class OrganizationTinyDisplay extends Component {
     } else if (this.props.organization_name) {
       displayName = this.props.organization_name;
     } else {
-      displayName = "";
+      displayName = '';
     }
 
     let imageUrlTiny;
@@ -38,19 +38,19 @@ export default class OrganizationTinyDisplay extends Component {
     } else if (this.props.voter_image_url_tiny) {
       imageUrlTiny = this.props.voter_image_url_tiny;
     } else {
-      imageUrlTiny = "";
+      imageUrlTiny = '';
     }
 
-    let supportOrOpposeClass = "";
+    let supportOrOpposeClass = '';
     if (this.props.showSupport) {
-      supportOrOpposeClass = "network-positions__show-support-underline ";
+      supportOrOpposeClass = 'network-positions__show-support-underline ';
     } else if (this.props.showOppose) {
-      supportOrOpposeClass = "network-positions__show-oppose-underline ";
+      supportOrOpposeClass = 'network-positions__show-oppose-underline ';
     }
 
-    let toFollowClass = "";
+    let toFollowClass = '';
     if (this.props.toFollow) {
-      toFollowClass = "network-positions__to-follow-fade ";
+      toFollowClass = 'network-positions__to-follow-fade ';
     }
 
     const hidePlaceholder = !this.props.showPlaceholderImage;

@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
-import { Link } from "react-router";
-import FriendActions from "../../actions/FriendActions";
-import ImageHandler from "../ImageHandler";
-import VoterStore from "../../stores/VoterStore";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router';
+import FriendActions from '../../actions/FriendActions';
+import ImageHandler from '../ImageHandler';
+import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
 
 export default class FriendInvitationEmailForList extends Component {
   static propTypes = {
@@ -53,10 +53,10 @@ export default class FriendInvitationEmailForList extends Component {
 
     const { voter } = this.state;
     let invitationStateText;
-    if (invitationState === "PENDING_EMAIL_VERIFICATION") {
-      invitationStateText = "Your invitation will be sent when you verify your email address.";
-    } else if (invitationState === "NO_RESPONSE") {
-      invitationStateText = "";
+    if (invitationState === 'PENDING_EMAIL_VERIFICATION') {
+      invitationStateText = 'Your invitation will be sent when you verify your email address.';
+    } else if (invitationState === 'NO_RESPONSE') {
+      invitationStateText = '';
     }
 
     const voterGuideLink = this.props.voter_twitter_handle ? `/${this.props.voter_twitter_handle}` : null;
@@ -90,7 +90,7 @@ export default class FriendInvitationEmailForList extends Component {
           </div>
           <div className="card-child__additional">
             <div className="card-child__follow-buttons">
-              {invitationState === "PENDING_EMAIL_VERIFICATION" && !voter.signed_in_with_email ? (
+              {invitationState === 'PENDING_EMAIL_VERIFICATION' && !voter.signed_in_with_email ? (
                 <Link to="/settings/account">
                   <Button size="small" variant="warning">
                   Verify Your Email

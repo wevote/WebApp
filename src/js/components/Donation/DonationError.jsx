@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Badge } from "react-bootstrap";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Badge } from 'react-bootstrap';
+import { renderLog } from '../../utils/logging';
 
 export default class DonationError extends Component {
   static propTypes = {

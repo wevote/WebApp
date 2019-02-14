@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import { _ } from "lodash";
-import FriendList from "../components/Friends/FriendList";
-import FriendActions from "../actions/FriendActions";
-import FriendStore from "../stores/FriendStore";
-import { renderLog } from "../utils/logging";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import { _ } from 'lodash';
+import FriendList from '../components/Friends/FriendList';
+import FriendActions from '../actions/FriendActions';
+import FriendStore from '../stores/FriendStore';
+import { renderLog } from '../utils/logging';
 
 export default class Friends extends Component {
   static propTypes = {
@@ -17,7 +17,7 @@ export default class Friends extends Component {
       currentFriendListFilteredBySearch: [],
       editMode: false,
       searchFilterOn: false,
-      searchTerm: "",
+      searchTerm: '',
     };
   }
 
@@ -40,15 +40,15 @@ export default class Friends extends Component {
   }
 
   getCurrentRoute () {
-    const currentRoute = "/friends";
+    const currentRoute = '/friends';
     return currentRoute;
   }
 
   getFollowingType () {
     switch (this.getCurrentRoute()) {
-      case "/friends":
+      case '/friends':
       default:
-        return "YOUR_FRIENDS";
+        return 'YOUR_FRIENDS';
     }
   }
 
@@ -62,7 +62,7 @@ export default class Friends extends Component {
     if (searchTerm.length === 0) {
       this.setState({
         searchFilterOn: false,
-        searchTerm: "",
+        searchTerm: '',
         currentFriendListFilteredBySearch: [],
       });
     } else {
@@ -101,7 +101,7 @@ export default class Friends extends Component {
                     className="fa-pull-right"
                     onClick={this.toggleEditMode.bind(this)}
                   >
-                    {this.state.editMode ? "Done Editing" : "Edit"}
+                    {this.state.editMode ? 'Done Editing' : 'Edit'}
                   </a>
                   <p>
                     Your friends see what you support, oppose, and which opinions you listen to.

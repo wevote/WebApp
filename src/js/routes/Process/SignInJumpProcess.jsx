@@ -1,10 +1,10 @@
-import { Component } from "react";
-import PropTypes from "prop-types";
-import { historyPush } from "../../utils/cordovaUtils";
-import LoadingWheel from "../../components/LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import VoterActions from "../../actions/VoterActions";
-import VoterStore from "../../stores/VoterStore";
+import { Component } from 'react';
+import PropTypes from 'prop-types';
+import { historyPush } from '../../utils/cordovaUtils';
+import LoadingWheel from '../../components/LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import VoterActions from '../../actions/VoterActions';
+import VoterStore from '../../stores/VoterStore';
 // This will be needed in the future
 // import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
 
@@ -18,7 +18,7 @@ export default class SignInJumpProcess extends Component {
     super(props);
     this.state = {
       incomingVoterDeviceIdBelongsToThisVoter: true, // This is temporary
-      jumpPath: "",
+      jumpPath: '',
       voter: {},
       // yesPleaseMergeAccounts: false,
       // saving: true,
@@ -28,7 +28,7 @@ export default class SignInJumpProcess extends Component {
   componentDidMount () {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const incomingVoterDeviceId = this.props.location.query.voter_device_id;
-    console.log("SignInJumpProcess, componentDidMount, this.props.location.query.voter_device_id: ", incomingVoterDeviceId);
+    console.log('SignInJumpProcess, componentDidMount, this.props.location.query.voter_device_id: ', incomingVoterDeviceId);
     // this.voterAnalysisForJumpProcess(incomingVoterDeviceId);
     this.setState({
       incomingVoterDeviceIdBelongsToThisVoter: true, // We want to actually set this in response to voterAnalysisForJumpProcess
@@ -60,7 +60,7 @@ export default class SignInJumpProcess extends Component {
   }
 
   voterMergeTwoAccountsByJumpProcess (incomingVoterDeviceId, voter_has_data_to_preserve = true) {
-    console.log("voterMergeTwoAccountsByJumpProcess, incomingVoterDeviceId: ", incomingVoterDeviceId, voter_has_data_to_preserve);
+    console.log('voterMergeTwoAccountsByJumpProcess, incomingVoterDeviceId: ', incomingVoterDeviceId, voter_has_data_to_preserve);
     // VoterActions.voterMergeTwoAccountsByJumpProcess(incomingVoterDeviceId);
     historyPush({
       pathname: this.state.jumpPath,
@@ -83,12 +83,12 @@ export default class SignInJumpProcess extends Component {
   render () {
     renderLog(__filename);
     const incomingVoterDeviceId = this.props.location.query.voter_device_id;
-    console.log("SignInJumpProcess, incomingVoterDeviceId:", incomingVoterDeviceId);
+    console.log('SignInJumpProcess, incomingVoterDeviceId:', incomingVoterDeviceId);
     if (!incomingVoterDeviceId ||
       // this.state.saving ||
       !this.state.jumpPath ||
       !this.state.voter) {
-      console.log("SignInJumpProcess, render stopped");
+      console.log('SignInJumpProcess, render stopped');
       return LoadingWheel;
     }
 
@@ -115,7 +115,7 @@ export default class SignInJumpProcess extends Component {
 
     if (this.state.incomingVoterDeviceIdBelongsToThisVoter) {
       // We don't need to do anything more except redirect
-      console.log("incoming_voter_device_id owned by this voter - push to jump_to location: ", this.state.jumpPath);
+      console.log('incoming_voter_device_id owned by this voter - push to jump_to location: ', this.state.jumpPath);
       historyPush({
         pathname: this.state.jumpPath,
         state: {
@@ -136,7 +136,7 @@ export default class SignInJumpProcess extends Component {
     //   //return <span>WouldYouLikeToMergeAccounts</span>;
     } else {
       // Go ahead and merge the accounts, which means deleting the current voter id and switching to the email owner
-      console.log("this.voterMergeTwoAccountsByJumpProcess - go ahead, incomingVoterDeviceId:", incomingVoterDeviceId);
+      console.log('this.voterMergeTwoAccountsByJumpProcess - go ahead, incomingVoterDeviceId:', incomingVoterDeviceId);
       this.voterMergeTwoAccountsByJumpProcess(incomingVoterDeviceId, false);
       // return <span>this.voterMergeTwoAccountsByJumpProcess - go ahead</span>;
       return LoadingWheel;

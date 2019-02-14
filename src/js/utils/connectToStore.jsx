@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import shallowEqual from "react-pure-render/shallowEqual";
-import { renderLog } from "./logging";
+import React, { Component } from 'react';
+import shallowEqual from 'react-pure-render/shallowEqual';
+import { renderLog } from './logging';
 
 export default function connectToStores (stores, getState) {
   return (DecoractedComponent) => {

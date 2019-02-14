@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import ImageHandler from "../ImageHandler";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import { showToastSuccess } from "../../utils/showToast";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ImageHandler from '../ImageHandler';
+import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import { showToastSuccess } from '../../utils/showToast';
 
 export default class CodeCopier extends Component {
   static propTypes = {
@@ -19,8 +19,8 @@ export default class CodeCopier extends Component {
     this.state = {
       isLoading: false,
       isTwitterHandleValid: false,
-      status: "",
-      twitterHandle: "",
+      status: '',
+      twitterHandle: '',
       viewCode: false,
     };
 
@@ -42,11 +42,11 @@ export default class CodeCopier extends Component {
   onOrganizationStoreChange () {
     const result = OrganizationStore.getOrganizationSearchResultsTwitterHandle();
 
-    let status = "";
+    let status = '';
     if (result.length) {
-      status += "Voter guide found!";
+      status += 'Voter guide found!';
     } else {
-      status += "Voter guide not found.";
+      status += 'Voter guide not found.';
     }
 
     this.setState({
@@ -62,9 +62,9 @@ export default class CodeCopier extends Component {
       if (this.state.viewCode) {
         this.textareaCode.select();
         //  const successful = document.execCommand("copy");
-        document.execCommand("copy");
+        document.execCommand('copy');
 
-        showToastSuccess("Code copied to clipboard!");
+        showToastSuccess('Code copied to clipboard!');
         // console.log('copy_status', successful);
         // perhaps a tooltip that fades out after a moment should be created
       } else {
@@ -79,8 +79,8 @@ export default class CodeCopier extends Component {
     this.setState({
       isLoading: false,
       isTwitterHandleValid: false,
-      status: "",
-      twitterHandle: "",
+      status: '',
+      twitterHandle: '',
       viewCode: false,
     });
   }
@@ -98,7 +98,7 @@ export default class CodeCopier extends Component {
       this.validateTwitterHandleAction(event.target.value);
       this.setState({
         isLoading: true,
-        status: "Searching...",
+        status: 'Searching...',
         viewCode: false,
       });
     } else {
@@ -107,7 +107,7 @@ export default class CodeCopier extends Component {
   }
 
   validateTwitterHandleAction (twitterHandle) {
-    this.timer = setTimeout(() => OrganizationActions.organizationSearch("", twitterHandle, true), 1200);
+    this.timer = setTimeout(() => OrganizationActions.organizationSearch('', twitterHandle, true), 1200);
   }
 
   render () {
@@ -119,7 +119,7 @@ export default class CodeCopier extends Component {
       `<iframe src="${sourceUrl}?we_vote_branding_off=1" width="100%" marginheight="0" frameborder="0" id="frame1" scrollable ="no"></iframe>\n<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.3/iframeResizer.min.js"></script>\n<script type="text/javascript">iFrameResize({ checkOrigin:false, heightCalculationMethod: 'max' });</script>`;
 
     switch (this.props.title) {
-      case "Interactive Ballot Tool":
+      case 'Interactive Ballot Tool':
         return (
           <div className="col-xs-12 col-sm-6 col-md-4">
             <div className="code-copier">
@@ -128,7 +128,7 @@ export default class CodeCopier extends Component {
               <br />
               <div className="u-stack--sm">
                 <a className="code-copier__link" onClick={this.toggleCode}>
-                  { this.state.viewCode ? "Hide Code" : "Show Code" }
+                  { this.state.viewCode ? 'Hide Code' : 'Show Code' }
                 </a>
               </div>
               { this.state.viewCode ? (
@@ -158,7 +158,7 @@ export default class CodeCopier extends Component {
           </div>
         );
 
-      case "Voter Guide Tool":
+      case 'Voter Guide Tool':
         return (
           <div className="col-xs-12 col-sm-6 col-md-4">
             <div className="code-copier">
@@ -166,8 +166,8 @@ export default class CodeCopier extends Component {
               <input
                 type="text"
                 className={this.state.status.length ?
-                  "form-control" :
-                  "form-control u-stack--sm"}
+                  'form-control' :
+                  'form-control u-stack--sm'}
                 name="twitterHandle"
                 placeholder="Enter Twitter Handle"
                 onKeyDown={this.resetState}
@@ -177,8 +177,8 @@ export default class CodeCopier extends Component {
               { this.state.status.length ? (
                 <p className={!this.state.isLoading ?      // eslint-disable-line no-nested-ternary
                   this.state.isTwitterHandleValid ?
-                    "code-copier__status-success" :
-                    "code-copier__status-error" :
+                    'code-copier__status-success' :
+                    'code-copier__status-error' :
                   null}
                 >
                   {this.state.status}
@@ -189,8 +189,8 @@ export default class CodeCopier extends Component {
                 onClick={this.copyCode}
                 disabled={!this.state.isTwitterHandleValid}
                 className={this.state.isTwitterHandleValid ?
-                  "btn btn-success u-stack--sm" :
-                  "btn u-stack--sm"}
+                  'btn btn-success u-stack--sm' :
+                  'btn u-stack--sm'}
                 type="button"
               >
                 Click to copy code
@@ -199,7 +199,7 @@ export default class CodeCopier extends Component {
               { !this.state.isLoading && this.state.isTwitterHandleValid ? (
                 <div className="u-stack--sm">
                   <a className="code-copier__link" onClick={this.toggleCode}>
-                    { this.state.viewCode ? "Hide Code" : "Show Code" }
+                    { this.state.viewCode ? 'Hide Code' : 'Show Code' }
                   </a>
                 </div>
               ) : null
@@ -243,7 +243,7 @@ export default class CodeCopier extends Component {
               <br />
               <div className="u-stack--sm">
                 <a className="code-copier__link" onClick={this.toggleCode}>
-                  { this.state.viewCode ? "Hide Code" : "Show Code" }
+                  { this.state.viewCode ? 'Hide Code' : 'Show Code' }
                 </a>
               </div>
               { this.state.viewCode ? (

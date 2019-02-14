@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { renderLog } from "../../utils/logging";
-import { cordovaDot } from "../../utils/cordovaUtils";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { renderLog } from '../../utils/logging';
+import { cordovaDot } from '../../utils/cordovaUtils';
 
 export default class PositionRatingSnippet extends Component {
   static propTypes = {
@@ -22,17 +22,17 @@ export default class PositionRatingSnippet extends Component {
     let alt;
 
     if (rating >= 65) {
-      src = cordovaDot("/img/global/icons/up-arrow-color-icon.svg");
-      className = "position-rating__icon position-rating__icon--positive u-cursor--pointer";
-      alt = "Positive Rating";
+      src = cordovaDot('/img/global/icons/up-arrow-color-icon.svg');
+      className = 'position-rating__icon position-rating__icon--positive u-cursor--pointer';
+      alt = 'Positive Rating';
     } else if (rating < 35) {
-      src = cordovaDot("/img/global/icons/down-arrow-color-icon.svg");
-      className = "position-rating__icon position-rating__icon--negative u-cursor--pointer";
-      alt = "Negative Rating";
+      src = cordovaDot('/img/global/icons/down-arrow-color-icon.svg');
+      className = 'position-rating__icon position-rating__icon--negative u-cursor--pointer';
+      alt = 'Negative Rating';
     } else {
-      src = cordovaDot("/img/global/icons/mixed-rating-icon.svg");
-      className = "position-rating__icon position-rating__icon--mixed u-cursor--pointer";
-      alt = "Mixed Rating";
+      src = cordovaDot('/img/global/icons/mixed-rating-icon.svg');
+      className = 'position-rating__icon position-rating__icon--mixed u-cursor--pointer';
+      alt = 'Mixed Rating';
     }
 
     return (
@@ -48,13 +48,13 @@ export default class PositionRatingSnippet extends Component {
             <span className="position-rating__percentage" data-percentage={rating}>
               {rating}
               %
-              {" "}
+              {' '}
             </span>
-            {" "}
+            {' '}
             rating
             { ratingTimeSpan ? (
               <span className="position-rating__timestamp">
-                {" "}
+                {' '}
                 in
                 {ratingTimeSpan}
               </span>

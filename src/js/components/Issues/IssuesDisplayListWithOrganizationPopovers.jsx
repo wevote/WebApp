@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import IssueTinyDisplay from "./IssueTinyDisplay";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import IssueTinyDisplay from './IssueTinyDisplay';
+import { renderLog } from '../../utils/logging';
 
 // We use this for IssuesFollowedDisplayList, to show a voter a horizontal list of all of their
 // issues, with a drop down under each one that has all of the organizations they can follow underneath.
@@ -21,18 +21,18 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
   constructor (props) {
     super(props);
 
-    this.mobile = "ontouchstart" in document.documentElement;
+    this.mobile = 'ontouchstart' in document.documentElement;
 
     this.state = {
-      issueImageSize: "SMALL", // We support SMALL, MEDIUM, LARGE
+      issueImageSize: 'SMALL', // We support SMALL, MEDIUM, LARGE
       issues_to_display: [],
       maximum_issues_display: 0,
     };
   }
 
   componentDidMount () {
-    const imageSizes = new Set(["SMALL", "MEDIUM", "LARGE"]);
-    let issueImageSize = "SMALL"; // Set the default
+    const imageSizes = new Set(['SMALL', 'MEDIUM', 'LARGE']);
+    let issueImageSize = 'SMALL'; // Set the default
     if (imageSizes.has(this.props.issueImageSize)) {
       ({ issueImageSize } = this.props);
     }
@@ -46,8 +46,8 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
   }
 
   componentWillReceiveProps (nextProps) {
-    const imageSizes = new Set(["SMALL", "MEDIUM", "LARGE"]);
-    let issueImageSize = "SMALL"; // Set the default
+    const imageSizes = new Set(['SMALL', 'MEDIUM', 'LARGE']);
+    let issueImageSize = 'SMALL'; // Set the default
     if (imageSizes.has(nextProps.issueImageSize)) {
       ({ issueImageSize } = nextProps);
     }

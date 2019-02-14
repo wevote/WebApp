@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Tooltip, OverlayTrigger } from "react-bootstrap";
-import { cordovaDot } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 
 export default class ItemSupportOpposeCounts extends Component {
   static propTypes = {
@@ -52,8 +52,8 @@ export default class ItemSupportOpposeCounts extends Component {
     };
 
     const emptyBarStyle = {
-      borderWidth: "0",
-      width: "100%",
+      borderWidth: '0',
+      width: '100%',
     };
 
     const isEmpty = supportCount === 0 && opposeCount === 0;
@@ -63,30 +63,30 @@ export default class ItemSupportOpposeCounts extends Component {
     let backgroundBarClassName;
     if (isSupportAndOppose && isMajoritySupport) {
       // If there are both support and oppose positions, change the color of the bar background to the minority position
-      backgroundBarClassName = "network-positions__bar-well red-bar";
+      backgroundBarClassName = 'network-positions__bar-well red-bar';
     } else if (isSupportAndOppose && !isMajoritySupport) {
       // If there are both support and oppose positions, change the color of the bar background to the minority position
-      backgroundBarClassName = "network-positions__bar-well green-bar";
+      backgroundBarClassName = 'network-positions__bar-well green-bar';
     } else {
-      backgroundBarClassName = "network-positions__bar-well";
+      backgroundBarClassName = 'network-positions__bar-well';
     }
 
-    let supportOpposePopoverText = "This is a summary of the “support” and “oppose” positions from your network.";
+    let supportOpposePopoverText = 'This is a summary of the “support” and “oppose” positions from your network.';
     if (!this.props.positionBarIsClickable) {
-      supportOpposePopoverText += " Click to see more detail.";
+      supportOpposePopoverText += ' Click to see more detail.';
     }
 
     const supportOpposePopoverTooltip = <Tooltip id="supportOpposeTooltip">{supportOpposePopoverText}</Tooltip>;
 
-    let nonSupportOpposePopoverText = "This will show a summary of the “support” and “oppose” positions from your network.";
+    let nonSupportOpposePopoverText = 'This will show a summary of the “support” and “oppose” positions from your network.';
     if (!this.props.positionBarIsClickable) {
-      nonSupportOpposePopoverText += " Click to see voter guides you can listen to.";
+      nonSupportOpposePopoverText += ' Click to see voter guides you can listen to.';
     }
 
     const nonSupportOpposePopoverTooltip = <Tooltip id="nonSupportOpposeTooltip">{nonSupportOpposePopoverText}</Tooltip>;
 
     return (
-      <div className={this.state.guideProps && this.state.guideProps.length && isEmpty ? "d-none d-sm-block d-print-none network-positions" : "network-positions"}>
+      <div className={this.state.guideProps && this.state.guideProps.length && isEmpty ? 'd-none d-sm-block d-print-none network-positions' : 'network-positions'}>
         {/* <div className="network-positions__bar-label">
          { !isEmpty ?
          "Positions in your network" :
@@ -95,7 +95,7 @@ export default class ItemSupportOpposeCounts extends Component {
           </div> */}
         <div className="network-positions__support">
           <img
-            src={!isEmpty && isMajoritySupport ? cordovaDot("/img/global/icons/up-arrow-color-icon.svg") : cordovaDot("/img/global/icons/up-arrow-gray-icon.svg")}
+            src={!isEmpty && isMajoritySupport ? cordovaDot('/img/global/icons/up-arrow-color-icon.svg') : cordovaDot('/img/global/icons/up-arrow-gray-icon.svg')}
             className="network-positions__support-icon u-push--xs"
             width="20"
             height="20"
@@ -118,8 +118,8 @@ export default class ItemSupportOpposeCounts extends Component {
             <OverlayTrigger container={this} placement="top" overlay={supportOpposePopoverTooltip}>
               <div
                 className={isMajoritySupport ?
-                  "network-positions__bar network-positions__bar--majority network-positions__bar--support" :
-                  "network-positions__bar network-positions__bar--majority network-positions__bar--oppose"}
+                  'network-positions__bar network-positions__bar--majority network-positions__bar--support' :
+                  'network-positions__bar network-positions__bar--majority network-positions__bar--oppose'}
                 style={!isEmpty ? barStyle : emptyBarStyle}
               >
                 <span className="sr-only">
@@ -137,7 +137,7 @@ export default class ItemSupportOpposeCounts extends Component {
             <span className="sr-only"> Oppose</span>
           </div>
           <img
-            src={!isEmpty && !isMajoritySupport ? cordovaDot("/img/global/icons/down-arrow-color-icon.svg") : cordovaDot("/img/global/icons/down-arrow-gray-icon.svg")}
+            src={!isEmpty && !isMajoritySupport ? cordovaDot('/img/global/icons/down-arrow-color-icon.svg') : cordovaDot('/img/global/icons/down-arrow-gray-icon.svg')}
             className="network-positions__oppose-icon"
             width="20"
             height="20"

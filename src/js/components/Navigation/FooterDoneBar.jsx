@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { renderLog } from '../../utils/logging';
 
 const footStyle = {
-  backgroundColor: "#1c2f4b",
-  borderTop: "1px solid #E7E7E7",
-  color: "#fff",
-  position: "fixed",
+  backgroundColor: '#1c2f4b',
+  borderTop: '1px solid #E7E7E7',
+  color: '#fff',
+  position: 'fixed',
   left: 0,
   bottom: 0,
   height: 54,
-  width: "100%",
+  width: '100%',
 };
 
 const footContainer = {
@@ -18,11 +18,11 @@ const footContainer = {
   paddingRight: 20,
   paddingBottom: 12,
   paddingTop: 10,
-  alignItems: "center",
-  display: "flex",
-  position: "relative",
-  flexDirection: "row",
-  justifyContent: "center",
+  alignItems: 'center',
+  display: 'flex',
+  position: 'relative',
+  flexDirection: 'row',
+  justifyContent: 'center',
 };
 
 export default class FooterDoneBar extends Component {

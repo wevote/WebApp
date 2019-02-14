@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import { Link } from "react-router";
-import { _ } from "lodash";
-import Helmet from "react-helmet";
-import IssueActions from "../actions/IssueActions";
-import IssueFollowToggleSquare from "../components/Issues/IssueFollowToggleSquare";
-import IssueStore from "../stores/IssueStore";
-import { renderLog } from "../utils/logging";
-import SearchBar from "../components/Search/SearchBar";
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import { _ } from 'lodash';
+import Helmet from 'react-helmet';
+import IssueActions from '../actions/IssueActions';
+import IssueFollowToggleSquare from '../components/Issues/IssueFollowToggleSquare';
+import IssueStore from '../stores/IssueStore';
+import { renderLog } from '../utils/logging';
+import SearchBar from '../components/Search/SearchBar';
 
 export default class IssuesToFollow extends Component {
   constructor (props) {
     super(props);
     this.state = {
       issuesToFollow: [],
-      searchQuery: "",
+      searchQuery: '',
     };
 
     this.searchFunction = this.searchFunction.bind(this);
@@ -40,7 +40,7 @@ export default class IssuesToFollow extends Component {
   }
 
   clearFunction () {
-    this.searchFunction("");
+    this.searchFunction('');
   }
 
   render () {

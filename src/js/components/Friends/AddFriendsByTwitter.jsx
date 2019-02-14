@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { Button } from "react-bootstrap";
-import LoadingWheel from "../LoadingWheel";
-import FriendActions from "../../actions/FriendActions";
-import FriendStore from "../../stores/FriendStore";
-import { renderLog } from "../../utils/logging";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
+import LoadingWheel from '../LoadingWheel';
+import FriendActions from '../../actions/FriendActions';
+import FriendStore from '../../stores/FriendStore';
+import { renderLog } from '../../utils/logging';
+import VoterStore from '../../stores/VoterStore';
 
 /* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/89479679 */
 export default class AddFriendsByTwitter extends Component {
@@ -14,8 +14,8 @@ export default class AddFriendsByTwitter extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      addFriendsMessage: "Please join me in preparing for the upcoming election.",
-      twitterHandles: "",
+      addFriendsMessage: 'Please join me in preparing for the upcoming election.',
+      twitterHandles: '',
       loading: false,
       onEnterTwitterHandlesStep: true,
       onFriendInvitationsSentStep: false,
@@ -65,7 +65,7 @@ export default class AddFriendsByTwitter extends Component {
 
   AddFriendsByTwitterStepsManager = (event) => {
     // This function is called when the form is submitted
-    console.log("AddFriendsByTwitterStepsManager");
+    console.log('AddFriendsByTwitterStepsManager');
 
     // Validate twitterHandles
     let twitterHandlesError = false;
@@ -74,18 +74,18 @@ export default class AddFriendsByTwitter extends Component {
     }
 
     if (twitterHandlesError) {
-      console.log("AddFriendsByTwitterStepsManager, twitterHandlesError");
+      console.log('AddFriendsByTwitterStepsManager, twitterHandlesError');
       this.setState({
         loading: false,
       });
     } else if (!this.hasValidEmail()) {
-      console.log("AddFriendsByTwitterStepsManager, NOT hasValidEmail");
+      console.log('AddFriendsByTwitterStepsManager, NOT hasValidEmail');
       this.setState({
         loading: false,
         onRequestEmailStep: true,
       });
     } else {
-      console.log("AddFriendsByTwitterStepsManager, calling friendInvitationByTwitterHandleSend");
+      console.log('AddFriendsByTwitterStepsManager, calling friendInvitationByTwitterHandleSend');
       this.friendInvitationByTwitterHandleSend(event);
     }
   }
@@ -95,7 +95,7 @@ export default class AddFriendsByTwitter extends Component {
     FriendActions.friendInvitationByTwitterHandleSend(this.state.twitterHandles, this.state.addFriendsMessage);
     this.setState({
       loading: true,
-      twitterHandles: "",
+      twitterHandles: '',
       onEnterTwitterHandlesStep: true,
       onRequestEmailStep: false,
       onFriendInvitationsSentStep: true,
@@ -115,7 +115,7 @@ export default class AddFriendsByTwitter extends Component {
     }
 
     const floatRight = {
-      float: "right",
+      float: 'right',
     };
 
     return (

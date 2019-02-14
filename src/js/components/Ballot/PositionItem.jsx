@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import moment from "moment";
-import ImageHandler from "../ImageHandler";
-import FriendsOnlyIndicator from "../Widgets/FriendsOnlyIndicator";
-import { renderLog } from "../../utils/logging";
-import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from "../../utils/organization-functions";
-import PositionRatingSnippet from "../Widgets/PositionRatingSnippet";
-import PositionInformationOnlySnippet from "../Widgets/PositionInformationOnlySnippet";
-import PositionSupportOpposeSnippet from "../Widgets/PositionSupportOpposeSnippet";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import moment from 'moment';
+import ImageHandler from '../ImageHandler';
+import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
+import { renderLog } from '../../utils/logging';
+import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
+import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
+import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
+import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
 
 
 export default class PositionItem extends Component {
@@ -22,18 +22,18 @@ export default class PositionItem extends Component {
     renderLog(__filename);
     const { position } = this.props;
     const dateStr = position.last_updated;
-    const dateText = moment(dateStr).startOf("day").fromNow();
+    const dateText = moment(dateStr).startOf('day').fromNow();
     // TwitterHandle-based link
     const speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : `/voterguide/${position.speaker_we_vote_id}`;
 
-    let imagePlaceholder = "";
+    let imagePlaceholder = '';
     if (isSpeakerTypeOrganization(position.speaker_type)) {
       imagePlaceholder = <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color" />;
     } else if (isSpeakerTypeIndividual(position.speaker_type)) {
       imagePlaceholder = <i className="icon-org-lg icon-icon-person-placeholder-6-1 icon-org-resting-color" />;
     }
 
-    let positionDescription = "";
+    let positionDescription = '';
     const isOnBallotItemPage = true;
     if (position.vote_smart_rating) {
       positionDescription =
@@ -47,7 +47,7 @@ export default class PositionItem extends Component {
         <p className="">
           <span>{this.props.ballot_item_display_name}</span>
           <span className="small">
-            {" "}
+            {' '}
             { dateText }
           </span>
         </p>

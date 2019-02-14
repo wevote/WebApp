@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import { historyPush } from "../../utils/cordovaUtils";
-import DonateStore from "../../stores/DonateStore";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import { historyPush } from '../../utils/cordovaUtils';
+import DonateStore from '../../stores/DonateStore';
+import { renderLog } from '../../utils/logging';
 
 const loadingScreenStyles = {
-  position: "fixed",
-  height: "100vh",
-  width: "100vw",
-  display: "flex",
+  position: 'fixed',
+  height: '100vh',
+  width: '100vw',
+  display: 'flex',
   top: 0,
   left: 0,
-  backgroundColor: "#4f5f6f",
-  justifyContent: "center",
-  alignItems: "center",
-  fontSize: "30px",
-  color: "#fff",
-  flexDirection: "column",
+  backgroundColor: '#4f5f6f',
+  justifyContent: 'center',
+  alignItems: 'center',
+  fontSize: '30px',
+  color: '#fff',
+  flexDirection: 'column',
 };
 
 export default class ProcessingDonation extends Component {
@@ -36,9 +36,9 @@ export default class ProcessingDonation extends Component {
   onDonateStoreChange () { // eslint-disable-line
     if (DonateStore.donationResponseReceived()) {
       if (DonateStore.donationSuccess()) {
-        historyPush("/more/donate_thank_you");
+        historyPush('/more/donate_thank_you');
       } else {
-        historyPush("/more/donate");
+        historyPush('/more/donate');
       }
     }
   }

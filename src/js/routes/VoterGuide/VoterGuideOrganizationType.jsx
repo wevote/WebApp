@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
-import SettingsWidgetAccountType from "../../components/Settings/SettingsWidgetAccountType";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import SettingsWidgetAccountType from '../../components/Settings/SettingsWidgetAccountType';
 
 export default class VoterGuideOrganizationType extends Component {
   constructor (props) {
@@ -12,8 +12,8 @@ export default class VoterGuideOrganizationType extends Component {
   }
 
   componentWillMount () {
-    document.body.style.backgroundColor = "#A3A3A3";
-    document.body.className = "story-view";
+    document.body.style.backgroundColor = '#A3A3A3';
+    document.body.className = 'story-view';
   }
 
   componentDidMount () {
@@ -22,17 +22,17 @@ export default class VoterGuideOrganizationType extends Component {
 
   componentWillUnmount () {
     document.body.style.backgroundColor = null;
-    document.body.className = "";
+    document.body.className = '';
     this.timer = null;
   }
 
   goToBallotLink = () => {
-    const sampleBallotLink = "/ballot";
+    const sampleBallotLink = '/ballot';
     historyPush(sampleBallotLink);
   }
 
   goToOrganizationInfo = () => {
-    historyPush("/voterguideorginfo");
+    historyPush('/voterguideorginfo');
   }
 
 
@@ -43,7 +43,7 @@ export default class VoterGuideOrganizationType extends Component {
       <div>
         <Helmet title="Type of Profile - We Vote" />
         <div className="intro-story container well u-inset--md">
-          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt="close" />
+          <img src={cordovaDot('/img/global/icons/x-close.png')} onClick={this.goToBallotLink} className="x-close" alt="close" />
           <div className="create-voter-guide__h1 xs-text-left">Create Your Voter Guide</div>
           <div className="create-voter-guide__steps xs-text-left">
             Step 2 of 5

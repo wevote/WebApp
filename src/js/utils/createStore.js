@@ -1,7 +1,7 @@
-import EventEmitter from "events";
-import assign from "object-assign";
+import EventEmitter from 'events';
+import assign from 'object-assign';
 
-const CHANGE_EVENT = "change";
+const CHANGE_EVENT = 'change';
 const MAX_LISTENERS = 300;
 
 /**

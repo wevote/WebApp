@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import BallotStore from "../../stores/BallotStore";
-import { hasIPhoneNotch, isCordova, isWebApp } from "../../utils/cordovaUtils";
-import cookies from "../../utils/cookies";
-import FriendStore from "../../stores/FriendStore";
-import HeaderBar from "./HeaderBar";
-import HeaderBarAboutMenu from "./HeaderBarAboutMenu";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterSessionActions from "../../actions/VoterSessionActions";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import BallotStore from '../../stores/BallotStore';
+import { hasIPhoneNotch, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import cookies from '../../utils/cookies';
+import FriendStore from '../../stores/FriendStore';
+import HeaderBar from './HeaderBar';
+import HeaderBarAboutMenu from './HeaderBarAboutMenu';
+import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterSessionActions from '../../actions/VoterSessionActions';
 
 export default class FooterBarCordova extends Component {
   static propTypes = {
@@ -38,11 +38,11 @@ export default class FooterBarCordova extends Component {
 
     // this.props.location &&
     const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-    const weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
+    const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     this.setState({
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
-    console.log("FooterBarCordova:  end of componentDidMount");
+    console.log('FooterBarCordova:  end of componentDidMount');
   }
 
   componentWillUnmount () {
@@ -97,15 +97,15 @@ export default class FooterBarCordova extends Component {
     const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length;
     let voterIsSignedIn = this.props.voter && this.props.voter.is_signed_in;
     voterIsSignedIn = voterIsSignedIn === undefined ? false : voterIsSignedIn;
-    const showFullNavigation = cookies.getItem("show_full_navigation") || voterIsSignedIn;
+    const showFullNavigation = cookies.getItem('show_full_navigation') || voterIsSignedIn;
     const weVoteBrandingOff = this.state.we_vote_branding_off === null ? false : this.state.we_vote_branding_off;
-    const inNetworkSection = pathname === "/more/network" || pathname === "/more/network/organizations" || pathname === "/more/network/issues" || pathname === "/more/network/friends";
+    const inNetworkSection = pathname === '/more/network' || pathname === '/more/network/organizations' || pathname === '/more/network/issues' || pathname === '/more/network/friends';
 
     return (
-      <div className={`pageFooter ${hasIPhoneNotch() && "pageFooter__iosNotch"}`}>
+      <div className={`pageFooter ${hasIPhoneNotch() && 'pageFooter__iosNotch'}`}>
         <div className="innerFooterContainer">
           <div className="footerNav">
-            {(showFullNavigation || isCordova()) && <span>{HeaderBar.ballot(pathname === "/ballot")}</span>}
+            {(showFullNavigation || isCordova()) && <span>{HeaderBar.ballot(pathname === '/ballot')}</span>}
 
             {(showFullNavigation || isCordova()) && <span>{HeaderBar.network(inNetworkSection, numberOfIncomingFriendRequests)}</span>}
 
@@ -114,7 +114,7 @@ export default class FooterBarCordova extends Component {
               {showFullNavigation ? (
                 <span
                   onClick={this.toggleAboutMenu}
-                  className={`header-nav__item header-nav__item--about header-nav__item--has-icon d-none d-sm-block${pathname === "/more/about" ? " active-icon" : ""}`}
+                  className={`header-nav__item header-nav__item--about header-nav__item--has-icon d-none d-sm-block${pathname === '/more/about' ? ' active-icon' : ''}`}
                 >
                   <span className="header-nav__icon--about">About</span>
                   <span className="header-nav__label">We Vote</span>
@@ -124,7 +124,7 @@ export default class FooterBarCordova extends Component {
                 <div>
                   <Link
                     to="/more/about"
-                    className={`header-nav__item header-nav__item--about${pathname === "/more/about" ? " active-icon" : ""}`}
+                    className={`header-nav__item header-nav__item--about${pathname === '/more/about' ? ' active-icon' : ''}`}
                   >
                     <span className="header-nav__icon--about">About</span>
                     <span className="header-nav__label">We Vote</span>
@@ -151,7 +151,7 @@ export default class FooterBarCordova extends Component {
             )}
 
             {isCordova() && (
-              <Link to="/more/hamburger" className={`hamburger${pathname === "/more/hamburger" ? " active-icon" : ""}`}>
+              <Link to="/more/hamburger" className={`hamburger${pathname === '/more/hamburger' ? ' active-icon' : ''}`}>
                 <span className="fa fa-bars" />
               </Link>
             )}

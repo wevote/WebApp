@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { cordovaDot, isCordova } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 
 /*
 The problem with urls in css for Apache Cordova
@@ -27,16 +27,16 @@ export default class IntroNetworkSafety extends Component {
     return (
       <div
         className="intro-story__background background--image2"
-        style={isCordova() ? { backgroundImage: "url(./img/global/intro-story/slide2-lady-liberty-698x600.jpg)" } : null}
+        style={isCordova() ? { backgroundImage: 'url(./img/global/intro-story/slide2-lady-liberty-698x600.jpg)' } : null}
       >
         <div className="intro-story__h1">We Vote in Safety</div>
         <div className="intro-story__h2">
           You control who is in
           <br />
           your
-          {" "}
+          {' '}
           <strong>We Vote</strong>
-          {" "}
+          {' '}
           network.
           <br />
           No fist fights required.
@@ -45,7 +45,7 @@ export default class IntroNetworkSafety extends Component {
         <div>
           <img
             className="center-block intro-story__img-height"
-            src={cordovaDot("/img/global/intro-story/no-fighting-256x256.png")}
+            src={cordovaDot('/img/global/intro-story/no-fighting-256x256.png')}
           />
         </div>
         <div className="intro-story__padding-btn">

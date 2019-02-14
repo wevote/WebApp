@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { Button } from "react-bootstrap";
-import { historyPush } from "../../utils/cordovaUtils";
-import LoadingWheel from "../LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import VoterStore from "../../stores/VoterStore";
-import { extractTwitterHandleFromTextString } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
+import { historyPush } from '../../utils/cordovaUtils';
+import LoadingWheel from '../LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import VoterStore from '../../stores/VoterStore';
+import { extractTwitterHandleFromTextString } from '../../utils/textFormat';
 
 
 export default class TwitterHandleBox extends Component {
@@ -12,7 +12,7 @@ export default class TwitterHandleBox extends Component {
     super(props);
     this.state = {
       loading: false,
-      twitterHandle: "",
+      twitterHandle: '',
     };
   }
 
@@ -46,7 +46,7 @@ export default class TwitterHandleBox extends Component {
   twitterHandleStripped () {
     const { twitterHandle } = this.state;
     if (twitterHandle === undefined) {
-      return "";
+      return '';
     } else {
       return extractTwitterHandleFromTextString(twitterHandle);
     }
@@ -60,7 +60,7 @@ export default class TwitterHandleBox extends Component {
     }
 
     const twitterHandleStripped = this.twitterHandleStripped();
-    const claimYourPageButtonText = twitterHandleStripped.length === 0 ? "Claim Your Page" : `Claim @${twitterHandleStripped}`;
+    const claimYourPageButtonText = twitterHandleStripped.length === 0 ? 'Claim Your Page' : `Claim @${twitterHandleStripped}`;
     return (
       <div>
         <form onSubmit={this.submitTwitterHandle.bind(this)} className="u-stack--md">

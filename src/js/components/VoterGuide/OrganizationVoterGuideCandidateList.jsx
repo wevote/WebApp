@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { renderLog } from "../../utils/logging";
-import OrganizationVoterGuideCandidateItem from "./OrganizationVoterGuideCandidateItem";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { renderLog } from '../../utils/logging';
+import OrganizationVoterGuideCandidateItem from './OrganizationVoterGuideCandidateItem';
 
 // This is related to components/Ballot/CandidateList.jsx
 export default class OrganizationVoterGuideCandidateList extends Component {

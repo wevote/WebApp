@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import BallotActions from "../../actions/BallotActions";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import BallotActions from '../../actions/BallotActions';
+import { renderLog } from '../../utils/logging';
 
 export default class BallotTabsRaccoon extends Component {
   static propTypes = {
@@ -29,7 +29,7 @@ export default class BallotTabsRaccoon extends Component {
     return false;
   }
 
-  goToDifferentCompletionLevelTab (completionLevelFilterType = "") {
+  goToDifferentCompletionLevelTab (completionLevelFilterType = '') {
     BallotActions.completionLevelFilterTypeSave(completionLevelFilterType);
   }
 
@@ -46,8 +46,8 @@ export default class BallotTabsRaccoon extends Component {
       <ul className="nav ballot__tabs">
         <li className="tab__item">
           <Link
-            onClick={() => this.goToDifferentCompletionLevelTab("filterAllBallotItems")}
-            className={this.props.completionLevelFilterType === "filterAllBallotItems" ? "tab tab--active" : "tab tab--default"}
+            onClick={() => this.goToDifferentCompletionLevelTab('filterAllBallotItems')}
+            className={this.props.completionLevelFilterType === 'filterAllBallotItems' ? 'tab tab--active' : 'tab tab--default'}
           >
             {/* Desktop */}
             <span className="d-none d-sm-block">
@@ -67,8 +67,8 @@ export default class BallotTabsRaccoon extends Component {
         { showRemainingDecisions ? (
           <li className="tab__item">
             <Link
-              onClick={() => this.goToDifferentCompletionLevelTab("filterRemaining")}
-              className={this.props.completionLevelFilterType === "filterRemaining" ? "tab tab--active" : "tab tab--default"}
+              onClick={() => this.goToDifferentCompletionLevelTab('filterRemaining')}
+              className={this.props.completionLevelFilterType === 'filterRemaining' ? 'tab tab--active' : 'tab tab--default'}
             >
               {/* Desktop */}
               <span className="d-none d-sm-block">
@@ -90,8 +90,8 @@ export default class BallotTabsRaccoon extends Component {
         { showDecisionsMade ? (
           <li className="tab__item">
             <Link
-              onClick={() => this.goToDifferentCompletionLevelTab("filterDecided")}
-              className={this.props.completionLevelFilterType === "filterDecided" ? "tab tab--active" : "tab tab--default"}
+              onClick={() => this.goToDifferentCompletionLevelTab('filterDecided')}
+              className={this.props.completionLevelFilterType === 'filterDecided' ? 'tab tab--active' : 'tab tab--default'}
             >
               {/* Desktop */}
               <span className="d-none d-sm-block">

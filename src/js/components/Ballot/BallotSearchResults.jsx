@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import BallotActions from "../../actions/BallotActions";
-import BallotItemSearchResult from "./BallotItemSearchResult";
-import BallotStore from "../../stores/BallotStore";
-import { cordovaDot } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import SearchBar from "../Search/SearchBar";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import BallotActions from '../../actions/BallotActions';
+import BallotItemSearchResult from './BallotItemSearchResult';
+import BallotStore from '../../stores/BallotStore';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
+import SearchBar from '../Search/SearchBar';
 
 
 export default class BallotSearchResults extends Component {
@@ -22,7 +22,7 @@ export default class BallotSearchResults extends Component {
     this.state = {
       ballotItemSearchResultsList: [],
       clearSearchTextNow: false,
-      searchString: "",
+      searchString: '',
     };
     this.searchFunction = this.searchFunction.bind(this);
     this.clearFunction = this.clearFunction.bind(this);
@@ -64,7 +64,7 @@ export default class BallotSearchResults extends Component {
   }
 
   searchFunction (searchString) {
-    if (searchString && searchString !== "") {
+    if (searchString && searchString !== '') {
       BallotActions.ballotItemOptionsRetrieve(this.props.googleCivicElectionId, searchString);
       if (this.props.searchUnderwayFunction) {
         this.props.searchUnderwayFunction(true);
@@ -86,7 +86,7 @@ export default class BallotSearchResults extends Component {
     }
     this.setState({
       clearSearchTextNow: false,
-      searchString: "",
+      searchString: '',
     });
   }
 
@@ -98,41 +98,41 @@ export default class BallotSearchResults extends Component {
     }
 
     const iconSize = 18;
-    const iconColor = "#999";
-    const noSearchResultsPossibility = searchString && searchString !== "" ?
+    const iconColor = '#999';
+    const noSearchResultsPossibility = searchString && searchString !== '' ?
       <div>No search results found.</div> : null;
 
     const actionDescription = (
       <div className="u-stack--md">
         Click
-        {" "}
+        {' '}
         <span className="u-no-break">
           <span className="btn__icon">
-            <img src={cordovaDot("/img/global/svg-icons/thumbs-up-icon.svg")}
+            <img src={cordovaDot('/img/global/svg-icons/thumbs-up-icon.svg')}
                  width={iconSize}
                  height={iconSize}
                  color={iconColor}
                  alt="thumbs up"
             />
           </span>
-          {" "}
+          {' '}
           Support
         </span>
-        {" "}
+        {' '}
         or&nbsp;
         <span className="u-no-break">
           <span className="btn__icon">
-            <img src={cordovaDot("/img/global/svg-icons/thumbs-down-icon.svg")}
+            <img src={cordovaDot('/img/global/svg-icons/thumbs-down-icon.svg')}
                  width={iconSize}
                  height={iconSize}
                  color={iconColor}
                  alt="thumbs down"
             />
           </span>
-          {" "}
+          {' '}
           Oppose
         </span>
-        {" "}
+        {' '}
         to add an item to your ballot.
       </div>
     );

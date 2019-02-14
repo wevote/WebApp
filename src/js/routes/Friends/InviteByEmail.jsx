@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import { Link } from "react-router";
-import AddFriendsByEmail from "../../components/Friends/AddFriendsByEmail";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import CurrentFriends from "../../components/Connect/CurrentFriends";
-import FriendActions from "../../actions/FriendActions";
-import FriendStore from "../../stores/FriendStore";
-import { renderLog } from "../../utils/logging";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import { Link } from 'react-router';
+import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import CurrentFriends from '../../components/Connect/CurrentFriends';
+import FriendActions from '../../actions/FriendActions';
+import FriendStore from '../../stores/FriendStore';
+import { renderLog } from '../../utils/logging';
+import VoterStore from '../../stores/VoterStore';
 
 export default class InviteByEmail extends Component {
   static propTypes = {

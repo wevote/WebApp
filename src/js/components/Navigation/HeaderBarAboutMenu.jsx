@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { renderLog } from '../../utils/logging';
 
 
 export default class HeaderBarAboutMenu extends Component {
@@ -18,7 +18,7 @@ export default class HeaderBarAboutMenu extends Component {
   render () {
     const { toggleAboutMenu } = this.props;
     renderLog(__filename);
-    const aboutMenuOpen = this.props.aboutMenuOpen ? "about-menu--open" : "";
+    const aboutMenuOpen = this.props.aboutMenuOpen ? 'about-menu--open' : '';
 
     return (
       <div className={aboutMenuOpen}>

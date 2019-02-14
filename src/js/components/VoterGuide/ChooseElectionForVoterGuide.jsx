@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import moment from "moment";
-import BallotStore from "../../stores/BallotStore";
-import { cordovaDot } from "../../utils/cordovaUtils";
-import ElectionActions from "../../actions/ElectionActions";
-import ElectionStore from "../../stores/ElectionStore";
-import { renderLog } from "../../utils/logging";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import VoterStore from "../../stores/VoterStore";
-import { cleanArray } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
+import BallotStore from '../../stores/BallotStore';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import ElectionActions from '../../actions/ElectionActions';
+import ElectionStore from '../../stores/ElectionStore';
+import { renderLog } from '../../utils/logging';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
+import { cleanArray } from '../../utils/textFormat';
 
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 32;
 
@@ -39,10 +39,10 @@ export default class ChooseElectionForVoterGuide extends Component {
   }
 
   onBallotStoreChange () {
-    console.log("ChooseElectionForVoterGuide onBallotStoreChange");
+    console.log('ChooseElectionForVoterGuide onBallotStoreChange');
     if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
       // Ballot is found but ballot is empty. We want to stay put.
-      console.log("onBallotStoreChange: ballot_with_all_items is empty");
+      console.log('onBallotStoreChange: ballot_with_all_items is empty');
     }
   }
 
@@ -56,21 +56,21 @@ export default class ChooseElectionForVoterGuide extends Component {
 
     for (let i = 0; i < electionsList.length; i++) {
       const election = electionsList[i];
-      ballotReturnedWeVoteId = "";
-      ballotLocationShortcut = "";
+      ballotReturnedWeVoteId = '';
+      ballotLocationShortcut = '';
       if (election.ballot_location_list && election.ballot_location_list.length) {
         // We want to add the shortcut and we_vote_id for the first ballot location option
         [oneBallotLocation] = election.ballot_location_list;
-        ballotLocationShortcut = oneBallotLocation.ballot_location_shortcut || "";
+        ballotLocationShortcut = oneBallotLocation.ballot_location_shortcut || '';
         ballotLocationShortcut = ballotLocationShortcut.trim();
-        ballotReturnedWeVoteId = oneBallotLocation.ballot_returned_we_vote_id || "";
+        ballotReturnedWeVoteId = oneBallotLocation.ballot_returned_we_vote_id || '';
         ballotReturnedWeVoteId = ballotReturnedWeVoteId.trim();
       }
       voterBallot = {
         google_civic_election_id: election.google_civic_election_id,
         election_description_text: election.election_name,
         election_day_text: election.election_day_text,
-        original_text_for_map_search: "",
+        original_text_for_map_search: '',
         ballot_location_shortcut: ballotLocationShortcut,
         ballot_returned_we_vote_id: ballotReturnedWeVoteId,
       };
@@ -91,17 +91,17 @@ export default class ChooseElectionForVoterGuide extends Component {
   }
 
   saveVoterGuideForElection (googleCivicElectionId) {
-    VoterGuideActions.voterGuideSave(googleCivicElectionId, "");
+    VoterGuideActions.voterGuideSave(googleCivicElectionId, '');
   }
 
   render () {
     renderLog(__filename);
     if (!this.state.voterBallotList) {
-      console.log("Elections list missing");
+      console.log('Elections list missing');
       return null;
     }
 
-    const currentDate = moment().format("YYYY-MM-DD");
+    const currentDate = moment().format('YYYY-MM-DD');
     // console.log("currentDate: ", currentDate);
     let electionDateTomorrow;
     let electionDateTomorrowMoment;
@@ -117,8 +117,8 @@ export default class ChooseElectionForVoterGuide extends Component {
       return 0; // default return value (no sorting)
     });
     let upcomingElectionList = ballotElectionListUpcomingSorted.map((item) => {
-      electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
-      electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
+      electionDateTomorrowMoment = moment(item.election_day_text, 'YYYY-MM-DD').add(1, 'days');
+      electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
       // console.log("electionDateTomorrow: ", electionDateTomorrow);
       return electionDateTomorrow > currentDate ? (
         <div key={`choose-election-${item.google_civic_election_id}`}>
@@ -134,7 +134,7 @@ export default class ChooseElectionForVoterGuide extends Component {
                   {item.election_description_text}
                   &nbsp;
                   <img
-                    src={cordovaDot("/img/global/icons/Circle-Arrow.png")}
+                    src={cordovaDot('/img/global/icons/Circle-Arrow.png')}
                   />
                 </span>
               ) : (
@@ -143,7 +143,7 @@ export default class ChooseElectionForVoterGuide extends Component {
                 >
                   {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
                   ...&nbsp;
-                  <img src={cordovaDot("/img/global/icons/Circle-Arrow.png")} />
+                  <img src={cordovaDot('/img/global/icons/Circle-Arrow.png')} />
                 </span>
               )}
               {/* Desktop */}
@@ -151,10 +151,10 @@ export default class ChooseElectionForVoterGuide extends Component {
                 {item.election_description_text}
                 &nbsp;
                 <img
-                  src={cordovaDot("/img/global/icons/Circle-Arrow.png")}
+                  src={cordovaDot('/img/global/icons/Circle-Arrow.png')}
                 />
               </span>
-              <div className="ballot-election-list__h2">{moment(item.election_day_text).format("MMMM Do, YYYY")}</div>
+              <div className="ballot-election-list__h2">{moment(item.election_day_text).format('MMMM Do, YYYY')}</div>
             </button>
           </dl>
         </div>

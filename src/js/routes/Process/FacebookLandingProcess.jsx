@@ -1,11 +1,11 @@
-import { Component } from "react";
-import { historyPush } from "../../utils/cordovaUtils";
-import FacebookActions from "../../actions/FacebookActions";
-import FacebookStore from "../../stores/FacebookStore";
-import FriendStore from "../../stores/FriendStore";
-import LoadingWheel from "../../components/LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import VoterStore from "../../stores/VoterStore";
+import { Component } from 'react';
+import { historyPush } from '../../utils/cordovaUtils';
+import FacebookActions from '../../actions/FacebookActions';
+import FacebookStore from '../../stores/FacebookStore';
+import FriendStore from '../../stores/FriendStore';
+import LoadingWheel from '../../components/LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import VoterStore from '../../stores/VoterStore';
 
 
 export default class FacebookLandingProcess extends Component {
@@ -34,14 +34,14 @@ export default class FacebookLandingProcess extends Component {
   }
 
   onFacebookStoreChange () {
-    console.log("onFacebookStoreChange appRequestAlreadyProcessed", FacebookStore.facebookAppRequestAlreadyProcessed());
+    console.log('onFacebookStoreChange appRequestAlreadyProcessed', FacebookStore.facebookAppRequestAlreadyProcessed());
     this.setState({
       appRequestAlreadyProcessed: FacebookStore.facebookAppRequestAlreadyProcessed(),
     });
   }
 
   onFriendStoreChange () {
-    console.log("onFriendStoreChange facebookInvitationStatus", FriendStore.getInvitationFromFacebookStatus());
+    console.log('onFriendStoreChange facebookInvitationStatus', FriendStore.getInvitationFromFacebookStatus());
     this.setState({
       facebookInvitationStatus: FriendStore.getInvitationFromFacebookStatus(),
       saving: false,
@@ -58,7 +58,7 @@ export default class FacebookLandingProcess extends Component {
 
     if (this.state.appRequestAlreadyProcessed) {
       historyPush({
-        pathname: "/ballot",
+        pathname: '/ballot',
       });
       return LoadingWheel;
     }
@@ -67,30 +67,30 @@ export default class FacebookLandingProcess extends Component {
       return LoadingWheel;
     }
 
-    console.log("Got voter", this.state.voter);
+    console.log('Got voter', this.state.voter);
     if (!this.state.voter.signed_in_facebook) {
-      console.log("Voter is not logged in through facebook");
+      console.log('Voter is not logged in through facebook');
       FacebookActions.login();
       return LoadingWheel;
     } else {
-      console.log("Voter is signed in through facebook and app_already_processed:", this.state.appRequestAlreadyProcessed);
+      console.log('Voter is signed in through facebook and app_already_processed:', this.state.appRequestAlreadyProcessed);
       if (!this.state.appRequestAlreadyProcessed &&
         (!this.state.facebookInvitationStatus || !this.state.facebookInvitationStatus.voterDeviceId)) {
         // If facebook log in finished successfully then read all app requests
-        console.log("Reading facebook app request and accepting the same");
+        console.log('Reading facebook app request and accepting the same');
         this.readFacebookAppRequests();
         return LoadingWheel;
       }
     }
 
-    console.log("Invitation status:", this.state.facebookInvitationStatus);
+    console.log('Invitation status:', this.state.facebookInvitationStatus);
     // This process starts when we return from attempting friendInvitationByFacebookVerify
     if (!this.state.facebookInvitationStatus.invitationFound) {
       historyPush({
-        pathname: "/more/network/friends",
+        pathname: '/more/network/friends',
         state: {
-          message: "Invitation not found. You may have already accepted this invitation. Invitation links may only be used once.",
-          message_type: "warning",
+          message: 'Invitation not found. You may have already accepted this invitation. Invitation links may only be used once.',
+          message_type: 'warning',
         },
       });
       return LoadingWheel;
@@ -98,10 +98,10 @@ export default class FacebookLandingProcess extends Component {
 
     if (this.state.facebookInvitationStatus.attemptedToApproveOwnInvitation) {
       historyPush({
-        pathname: "/more/network/friends",
+        pathname: '/more/network/friends',
         state: {
-          message: "You are not allowed to approve your own invitation.",
-          message_type: "danger",
+          message: 'You are not allowed to approve your own invitation.',
+          message_type: 'danger',
         },
       });
       return LoadingWheel;
@@ -110,10 +110,10 @@ export default class FacebookLandingProcess extends Component {
     if (this.state.facebookInvitationStatus.invitationFound) {
       FacebookActions.deleteFacebookAppRequest(this.state.facebookInvitationStatus.facebookRequestId);
       historyPush({
-        pathname: "/more/network/friends",
+        pathname: '/more/network/friends',
         state: {
           message: "You have accepted your friend's invitation. Visit your ballot to see what your friends are supporting or opposing.",
-          message_type: "success",
+          message_type: 'success',
         },
       });
       return LoadingWheel;

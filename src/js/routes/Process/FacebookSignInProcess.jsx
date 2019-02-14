@@ -1,10 +1,10 @@
-import { Component } from "react";
-import FacebookActions from "../../actions/FacebookActions";
-import FacebookStore from "../../stores/FacebookStore";
-import { historyPush } from "../../utils/cordovaUtils";
-import LoadingWheel from "../../components/LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import VoterActions from "../../actions/VoterActions";
+import { Component } from 'react';
+import FacebookActions from '../../actions/FacebookActions';
+import FacebookStore from '../../stores/FacebookStore';
+import { historyPush } from '../../utils/cordovaUtils';
+import LoadingWheel from '../../components/LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import VoterActions from '../../actions/VoterActions';
 // This will be needed in the future
 // import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
 
@@ -65,19 +65,19 @@ export default class FacebookSignInProcess extends Component {
     }
     if (voterHasDataToPreserve) {
       historyPush({
-        pathname: "/more/network",
+        pathname: '/more/network',
         state: {
-          message: "Your accounts have been merged.",
-          message_type: "success",
+          message: 'Your accounts have been merged.',
+          message_type: 'success',
         },
       });
     } else {
       historyPush({
-        pathname: "/ballot",
+        pathname: '/ballot',
         query: { wait_until_voter_sign_in_completes: 1 },
         state: {
-          message: "You have successfully signed in with Facebook.",
-          message_type: "success",
+          message: 'You have successfully signed in with Facebook.',
+          message_type: 'success',
         },
       });
     }
@@ -87,10 +87,10 @@ export default class FacebookSignInProcess extends Component {
     // console.log("In voterFacebookSaveToCurrentAccount");
     VoterActions.voterFacebookSaveToCurrentAccount();
     historyPush({
-      pathname: "/more/network/friends",
+      pathname: '/more/network/friends',
       state: {
-        message: "You have successfully signed in with Facebook.",
-        message_type: "success",
+        message: 'You have successfully signed in with Facebook.',
+        message_type: 'success',
       },
     });
   }
@@ -126,10 +126,10 @@ export default class FacebookSignInProcess extends Component {
     if (facebookAuthResponse.facebook_sign_in_failed) {
       // console.log("Facebook sign in failed - push to /settings/account");
       historyPush({
-        pathname: "/settings/account",
+        pathname: '/settings/account',
         state: {
-          message: "Facebook sign in failed. Please try again.",
-          message_type: "success",
+          message: 'Facebook sign in failed. Please try again.',
+          message_type: 'success',
         },
       });
       return LoadingWheel;
@@ -137,7 +137,7 @@ export default class FacebookSignInProcess extends Component {
 
     if (yesPleaseMergeAccounts) {
       // Go ahead and merge this voter record with the voter record that the facebookSecretKey belongs to
-      console.log("this.voterMergeTwoAccountsByFacebookKey -- yes please merge accounts");
+      console.log('this.voterMergeTwoAccountsByFacebookKey -- yes please merge accounts');
       this.voterMergeTwoAccountsByFacebookKey(facebookSecretKey);
       return LoadingWheel;
     }
@@ -147,10 +147,10 @@ export default class FacebookSignInProcess extends Component {
     if (!facebookAuthResponse.facebook_sign_in_found) {
       // console.log("facebookAuthResponse.facebook_sign_in_found", facebookAuthResponse.facebook_sign_in_found);
       historyPush({
-        pathname: "/settings/account",
+        pathname: '/settings/account',
         state: {
-          message: "Facebook authentication not found. Please try again.",
-          message_type: "warning",
+          message: 'Facebook authentication not found. Please try again.',
+          message_type: 'warning',
         },
       });
       return LoadingWheel;

@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
-import { Link } from "react-router";
-import Helmet from "react-helmet";
-import CandidateItem from "../../components/Ballot/CandidateItem";
-import CandidateStore from "../../stores/CandidateStore";
-import { historyPush } from "../../utils/cordovaUtils";
-import FollowToggle from "../../components/Widgets/FollowToggle";
-import LoadingWheel from "../../components/LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
-import OrganizationStore from "../../stores/OrganizationStore";
-import TwitterAccountCard from "../../components/Twitter/TwitterAccountCard";
-import TwitterActions from "../../actions/TwitterActions";
-import TwitterStore from "../../stores/TwitterStore";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router';
+import Helmet from 'react-helmet';
+import CandidateItem from '../../components/Ballot/CandidateItem';
+import CandidateStore from '../../stores/CandidateStore';
+import { historyPush } from '../../utils/cordovaUtils';
+import FollowToggle from '../../components/Widgets/FollowToggle';
+import LoadingWheel from '../../components/LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
+import OrganizationStore from '../../stores/OrganizationStore';
+import TwitterAccountCard from '../../components/Twitter/TwitterAccountCard';
+import TwitterActions from '../../actions/TwitterActions';
+import TwitterStore from '../../stores/TwitterStore';
+import VoterStore from '../../stores/VoterStore';
 
 export default class VerifyThisIsMe extends Component {
   static propTypes = {
@@ -29,15 +29,15 @@ export default class VerifyThisIsMe extends Component {
       organization: {},
       positionListFromAdvisersFollowedByVoter: [],
       voter: {},
-      kindOfOwner: "",
-      ownerWeVoteId: "",
-      twitterHandle: "",
-      twitterDescription: "",
+      kindOfOwner: '',
+      ownerWeVoteId: '',
+      twitterHandle: '',
+      twitterDescription: '',
       twitterFollowersCount: 0,
-      twitterName: "",
-      twitterPhotoUrl: "",
-      twitterUserWebsite: "",
-      status: "",
+      twitterName: '',
+      twitterPhotoUrl: '',
+      twitterUserWebsite: '',
+      status: '',
     };
   }
 
@@ -129,7 +129,7 @@ export default class VerifyThisIsMe extends Component {
     if (this.state.status === undefined) {
       // Show a loading wheel while this component's data is loading
       return LoadingWheel;
-    } else if (this.state.kindOfOwner === "CANDIDATE") {
+    } else if (this.state.kindOfOwner === 'CANDIDATE') {
       // console.log("VerifyThisIsMe this.state.kindOfOwner === CANDIDATE");
       this.props.params.we_vote_id = this.state.ownerWeVoteId;
       return (
@@ -158,7 +158,7 @@ export default class VerifyThisIsMe extends Component {
               <Button variant="primary">
                 Sign In With @
                 {this.state.twitterHandle}
-                {" "}
+                {' '}
                 Account
               </Button>
             </Link>
@@ -171,7 +171,7 @@ export default class VerifyThisIsMe extends Component {
           )}
         </span>
       );
-    } else if (this.state.kindOfOwner === "ORGANIZATION") {
+    } else if (this.state.kindOfOwner === 'ORGANIZATION') {
       // console.log("VerifyThisIsMe this.state.kindOfOwner === ORGANIZATION");
       // console.log(`VerifyThisIsMe this.state.ownerWeVoteId: ${this.state.ownerWeVoteId}`);
       this.props.params.we_vote_id = this.state.ownerWeVoteId;
@@ -193,7 +193,7 @@ export default class VerifyThisIsMe extends Component {
             <p className="h4">
               Verify that you represent @
               {this.state.twitterHandle}
-              {" "}
+              {' '}
               by signing into this Twitter account.
             </p>
           </div>
@@ -202,7 +202,7 @@ export default class VerifyThisIsMe extends Component {
               <Button variant="primary">
                 Sign In With @
                 {this.state.twitterHandle}
-                {" "}
+                {' '}
                 Account
               </Button>
             </Link>
@@ -215,7 +215,7 @@ export default class VerifyThisIsMe extends Component {
           )}
         </span>
       );
-    } else if (this.state.kindOfOwner === "TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE") {
+    } else if (this.state.kindOfOwner === 'TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE') {
       // console.log("VerifyThisIsMe this.state.kindOfOwner === TWITTER_HANDLE_NOT_FOUND_IN_WE_VOTE");
       return (
         <div>
@@ -235,7 +235,7 @@ export default class VerifyThisIsMe extends Component {
               <Button variant="primary">
                 Sign In With @
                 {this.state.twitterHandle}
-                {" "}
+                {' '}
                 Account
               </Button>
             </Link>
@@ -257,7 +257,7 @@ export default class VerifyThisIsMe extends Component {
             We were not able to find an account for this Twitter Handle
             { this.state.twitterHandle ? (
               <span>
-                {" "}
+                {' '}
                 &quot;
                 {this.state.twitterHandle}
                 &quot;

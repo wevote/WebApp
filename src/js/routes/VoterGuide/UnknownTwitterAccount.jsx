@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { renderLog } from "../../utils/logging";
-import ThisIsMeAction from "../../components/Widgets/ThisIsMeAction";
-import TwitterAccountCard from "../../components/Twitter/TwitterAccountCard";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { renderLog } from '../../utils/logging';
+import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
+import TwitterAccountCard from '../../components/Twitter/TwitterAccountCard';
 
 export default class UnknownTwitterAccount extends Component {
   static propTypes = {

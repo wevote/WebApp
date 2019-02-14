@@ -1,14 +1,14 @@
 /* global $ */
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
-import BallotActions from "../../actions/BallotActions";
-import { hasIPhoneNotch, historyPush, isCordova } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
-import SearchAllActions from "../../actions/SearchAllActions";
-import SearchAllStore from "../../stores/SearchAllStore";
-import makeSearchLink from "../../utils/search-functions";
-import SearchResultsDisplay from "./SearchResultsDisplay";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import BallotActions from '../../actions/BallotActions';
+import { hasIPhoneNotch, historyPush, isCordova } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import SearchAllActions from '../../actions/SearchAllActions';
+import SearchAllStore from '../../stores/SearchAllStore';
+import makeSearchLink from '../../utils/search-functions';
+import SearchResultsDisplay from './SearchResultsDisplay';
 
 export default class SearchAllBox extends Component {
   static propTypes = {
@@ -21,7 +21,7 @@ export default class SearchAllBox extends Component {
       open: false,
       searchResults: [],
       selectedIndex: 0,
-      textFromSearchField: "",
+      textFromSearchField: '',
     };
 
     this.links = [];
@@ -40,12 +40,12 @@ export default class SearchAllBox extends Component {
   }
 
   componentDidMount () { // jscs:disable requireDollarBeforejQueryAssignment
-    this.siteLogoText = $(".page-logo:nth-child(1)"); // eslint-disable-line requireDollarBeforejQueryAssignment
-    this.ballot = $(".header-nav__item:nth-child(1)"); // eslint-disable-line requireDollarBeforejQueryAssignment
-    this.network = $(".header-nav__item:nth-child(2)"); // eslint-disable-line requireDollarBeforejQueryAssignment
-    this.avatar = $("#js-header-avatar"); // eslint-disable-line requireDollarBeforejQueryAssignment
-    this.about = document.getElementsByClassName("header-nav__item--about")[0]; // eslint-disable-line prefer-destructuring
-    this.donate = document.getElementsByClassName("header-nav__item--donate")[0]; // eslint-disable-line prefer-destructuring
+    this.siteLogoText = $('.page-logo:nth-child(1)'); // eslint-disable-line requireDollarBeforejQueryAssignment
+    this.ballot = $('.header-nav__item:nth-child(1)'); // eslint-disable-line requireDollarBeforejQueryAssignment
+    this.network = $('.header-nav__item:nth-child(2)'); // eslint-disable-line requireDollarBeforejQueryAssignment
+    this.avatar = $('#js-header-avatar'); // eslint-disable-line requireDollarBeforejQueryAssignment
+    this.about = document.getElementsByClassName('header-nav__item--about')[0]; // eslint-disable-line prefer-destructuring
+    this.donate = document.getElementsByClassName('header-nav__item--donate')[0]; // eslint-disable-line prefer-destructuring
 
     // When we first enter we want to retrieve values to have for a click in the search box
     const { textFromSearchField } = this.props;
@@ -111,7 +111,7 @@ export default class SearchAllBox extends Component {
     });
 
     // If text field is empty, hide the results. If not, perform search
-    if (searchText === "") {
+    if (searchText === '') {
       this.clearSearch();
     } else {
       SearchAllActions.searchAll(searchText);
@@ -120,7 +120,7 @@ export default class SearchAllBox extends Component {
   }
 
   onSearchFocus () {
-    const input = document.getElementById("SearchAllBox-input");
+    const input = document.getElementById('SearchAllBox-input');
     input.setSelectionRange(0, 999);
 
     // Hide the site name
@@ -131,24 +131,24 @@ export default class SearchAllBox extends Component {
     const allowParentObjectDirectAccess = true;
     if (allowParentObjectDirectAccess && !isCordova()) {
       if (this.siteLogoText) {
-        this.siteLogoText.addClass("hidden");
+        this.siteLogoText.addClass('hidden');
       }
 
       if (this.ballot) {
-        this.ballot.addClass("d-none d-sm-block");
+        this.ballot.addClass('d-none d-sm-block');
       }
 
       if (this.network) {
-        this.network.addClass("d-none d-sm-block");
+        this.network.addClass('d-none d-sm-block');
       }
 
       // The SearchAllBox is used on the candidate page, that doesn't have about or donate
       if (this.about) {
-        this.about.className += " hidden";
+        this.about.className += ' hidden';
       }
 
       if (this.donate) {
-        this.donate.className += " hidden";
+        this.donate.className += ' hidden';
       }
 
       this.displayResults();
@@ -164,23 +164,23 @@ export default class SearchAllBox extends Component {
     // Delay closing the drop down so that a click on the Link can have time to work
     setTimeout(() => {
       if (this.siteLogoText) {
-        $(".page-logo-full-size").removeClass("hidden");
+        $('.page-logo-full-size').removeClass('hidden');
       }
 
       if (this.ballot) {
-        $(".header-nav__item--ballot").removeClass("d-none d-sm-block");
+        $('.header-nav__item--ballot').removeClass('d-none d-sm-block');
       }
 
       if (this.network) {
-        $(".header-nav__item--network").removeClass("d-none d-sm-block");
+        $('.header-nav__item--network').removeClass('d-none d-sm-block');
       }
 
       if (this.about) {
-        $(".header-nav__item--about").removeClass("hidden");
+        $('.header-nav__item--about').removeClass('hidden');
       }
 
       if (this.donate) {
-        $(".header-nav__item--donate").removeClass("hidden");
+        $('.header-nav__item--donate').removeClass('hidden');
       }
 
       this.hideResults();
@@ -194,10 +194,10 @@ export default class SearchAllBox extends Component {
       this.navigateToSelectedLink();
 
       // Remove focus from search bar to close it
-      document.getElementById("SearchAllBox-input").blur();
+      document.getElementById('SearchAllBox-input').blur();
     } else if (!this.state.open) {
       // Add focus from search bar, so a search logo tap opens/closes
-      document.getElementById("SearchAllBox-input").focus();
+      document.getElementById('SearchAllBox-input').focus();
     }
 
     return false;
@@ -230,7 +230,7 @@ export default class SearchAllBox extends Component {
   }
 
   onSearchResultMouseOver (e) {
-    const idx = parseInt(e.currentTarget.getAttribute("data-idx"), 10);
+    const idx = parseInt(e.currentTarget.getAttribute('data-idx'), 10);
     this.setState({
       selectedIndex: idx,
     });
@@ -241,9 +241,9 @@ export default class SearchAllBox extends Component {
   }
 
   onSearchElectionResultClick (googleCivicElectionId) {
-    const ballotBaseUrl = "/ballot";
+    const ballotBaseUrl = '/ballot';
     if (googleCivicElectionId && googleCivicElectionId !== 0) {
-      BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, "", "");
+      BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, '', '');
 
       // console.log("onSearchElectionResultClick, googleCivicElectionId: ", googleCivicElectionId);
       historyPush(`${ballotBaseUrl}/election/${googleCivicElectionId}`);
@@ -262,7 +262,7 @@ export default class SearchAllBox extends Component {
     e.stopPropagation();
 
     this.setState({
-      textFromSearchField: "",
+      textFromSearchField: '',
       open: true,
       selectedIndex: 0,
       searchResults: [],
@@ -280,7 +280,7 @@ export default class SearchAllBox extends Component {
 
   updateSearchText () {
     const selectedResultElement = this.state.searchResults[this.state.selectedIndex];
-    let selectedResultText = "";
+    let selectedResultText = '';
 
     if (selectedResultElement) {
       selectedResultText = selectedResultElement.result_title;
@@ -305,7 +305,7 @@ export default class SearchAllBox extends Component {
     setTimeout(() => {
       this.setState({
         open: false,
-        textFromSearchField: "",
+        textFromSearchField: '',
         selectedIndex: 0,
         searchResults: [],
       });
@@ -327,22 +327,22 @@ export default class SearchAllBox extends Component {
   render () {
     renderLog(__filename);
     const searchContainerClasses = classNames({
-      "search-container__hidden": !this.state.open,
-      "search-container": true,
-      "search-container--cordova": isCordova(),
+      'search-container__hidden': !this.state.open,
+      'search-container': true,
+      'search-container--cordova': isCordova(),
     });
     const clearButtonClasses = classNames({
-      "site-search__clear": true,
-      "btn": true, // eslint-disable-line quote-props
-      "btn-default": true,
-      "site-search__clear__hidden": !this.state.textFromSearchField.length,
+      'site-search__clear': true,
+      'btn': true, // eslint-disable-line quote-props
+      'btn-default': true,
+      'site-search__clear__hidden': !this.state.textFromSearchField.length,
     });
 
-    let searchStyle = "page-header__search";
+    let searchStyle = 'page-header__search';
     if (hasIPhoneNotch()) {
-      searchStyle += " search-cordova-iphonex";
+      searchStyle += ' search-cordova-iphonex';
     } else if (isCordova()) {
-      searchStyle += " search-cordova";
+      searchStyle += ' search-cordova';
     }
 
     return (
@@ -364,7 +364,7 @@ export default class SearchAllBox extends Component {
               ref="searchAllBox"
             />
             <div className="input-group-btn">
-              {" "}
+              {' '}
               {/* Oct 2018: input-group-btn defined in the old bootstrap.css */}
               <button className={clearButtonClasses} onClick={this.onClearSearch} type="button">
                 {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}

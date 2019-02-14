@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Modal } from "react-bootstrap";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import { Modal } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 import {
   cordovaDot, cordovaOpenSafariView, hasIPhoneNotch, historyPush, isWebApp,
-} from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
-import PollingPlaceLocator from "../../components/Ballot/PollingPlaceLocator";
+} from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import PollingPlaceLocator from '../../components/Ballot/PollingPlaceLocator';
 
 export default class PollingPlaceLocatorModal extends Component {
   static propTypes = {
@@ -23,7 +23,7 @@ export default class PollingPlaceLocatorModal extends Component {
   openPollingLocationModal () {
     const { showPollingLocatorModal } = this.state;
     this.setState({ showPollingLocatorModal: !showPollingLocatorModal });
-    historyPush("/ballot");
+    historyPush('/ballot');
   }
 
   render () {
@@ -40,9 +40,9 @@ export default class PollingPlaceLocatorModal extends Component {
             <div className="intro-modal__close">
               <a
                 onClick={this.openPollingLocationModal}
-                className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}
+                className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}
               >
-                <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
+                <img src={cordovaDot('/img/global/icons/x-close.png')} alt="close" />
               </a>
             </div>
             <div key={1}><PollingPlaceLocator /></div>
@@ -52,7 +52,7 @@ export default class PollingPlaceLocatorModal extends Component {
     } else {
       return (
         <div>
-          { cordovaOpenSafariView("https://wevote.us/vip.html", this.props.onExit, 50) }
+          { cordovaOpenSafariView('https://wevote.us/vip.html', this.props.onExit, 50) }
         </div>
       );
     }

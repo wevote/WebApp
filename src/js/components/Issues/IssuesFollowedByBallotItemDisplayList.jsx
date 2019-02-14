@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { OverlayTrigger, Popover } from "react-bootstrap";
-import { findDOMNode } from "react-dom";
-import $ from "jquery";
-import { isCordova } from "../../utils/cordovaUtils";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import IssuesDisplayListWithOrganizationPopovers from "./IssuesDisplayListWithOrganizationPopovers";
-import IssueStore from "../../stores/IssueStore";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { findDOMNode } from 'react-dom';
+import $ from 'jquery';
+import { isCordova } from '../../utils/cordovaUtils';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import IssuesDisplayListWithOrganizationPopovers from './IssuesDisplayListWithOrganizationPopovers';
+import IssueStore from '../../stores/IssueStore';
+import { renderLog } from '../../utils/logging';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint react/no-find-dom-node: 1 */
@@ -53,7 +53,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
     this.setScrollState();
     this.setState({
       ballotItemWeVoteId: this.props.ballotItemWeVoteId,
-      ballotItemDisplayName: this.props.ballotItemDisplayName ? this.props.ballotItemDisplayName : "this candidate",
+      ballotItemDisplayName: this.props.ballotItemDisplayName ? this.props.ballotItemDisplayName : 'this candidate',
       // issuesUnderThisBallotItem: IssueStore.getIssuesUnderThisBallotItem(
       //   this.props.ballotItemWeVoteId,
       // ),
@@ -71,7 +71,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
     this.setScrollState();
     this.setState({
       ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
-      ballotItemDisplayName: nextProps.ballotItemDisplayName ? nextProps.ballotItemDisplayName : "this candidate",
+      ballotItemDisplayName: nextProps.ballotItemDisplayName ? nextProps.ballotItemDisplayName : 'this candidate',
       // issuesUnderThisBallotItem: IssueStore.getIssuesUnderThisBallotItem(
       //   nextProps.ballotItemWeVoteId,
       // ),
@@ -157,7 +157,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
       350,
       () => {
         const newPosition = $(element).scrollLeft();
-        if (visibleTag === "desktop") {
+        if (visibleTag === 'desktop') {
           this.setState({
             canScrollLeftDesktop: newPosition > 0,
             canScrollRightDesktop: true,
@@ -185,7 +185,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
       350,
       () => {
         const newPosition = $(element).scrollLeft();
-        if (visibleTag === "desktop") {
+        if (visibleTag === 'desktop') {
           this.setState({
             canScrollLeftDesktop: newPosition > 0,
             canScrollRightDesktop: position + width === newPosition,
@@ -227,11 +227,11 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
         title={(
           <span>
             Issues related to
-            {" "}
+            {' '}
             {this.state.ballotItemDisplayName}
             <span
               className={`fa fa-times pull-right u-cursor--pointer ${isCordova() &&
-                "u-mobile-x"} `}
+                'u-mobile-x'} `}
               aria-hidden="true"
             />
           </span>
@@ -239,7 +239,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
         onClick={this.closeIssuesLabelPopover}
       >
         See opinions about
-        {" "}
+        {' '}
         {this.state.ballotItemDisplayName}
         , organized by issues you care about.
       </Popover>
@@ -249,7 +249,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
       <OverlayTrigger
         trigger="click"
         rootClose
-        placement={this.props.popoverBottom ? "bottom" : "top"}
+        placement={this.props.popoverBottom ? 'bottom' : 'top'}
         overlay={issuesLabelPopover}
       >
         <span className="issues-list-stacked__support-label u-cursor--pointer u-no-break">
@@ -277,7 +277,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
           <i
             className="fa fa-2x fa-chevron-left issues-list-stacked__support-list__scroll-icon u-cursor--pointer d-none d-sm-block d-print-none"
             aria-hidden="true"
-            onClick={this.scrollLeft.bind(this, "desktop")}
+            onClick={this.scrollLeft.bind(this, 'desktop')}
           />
         ) : (
           <i
@@ -290,7 +290,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
           <i
             className="fa fa-2x fa-chevron-left issues-list-stacked__support-list__scroll-icon u-cursor--pointer d-block d-sm-none d-print-none"
             aria-hidden="true"
-            onClick={this.scrollLeft.bind(this, "mobile")}
+            onClick={this.scrollLeft.bind(this, 'mobile')}
           />
         ) : (
           <i
@@ -384,7 +384,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
           <i
             className="fa fa-2x fa-chevron-right issues-list-stacked__support-list__scroll-icon u-cursor--pointer d-none d-sm-block d-print-none"
             aria-hidden="true"
-            onClick={this.scrollRight.bind(this, "desktop")}
+            onClick={this.scrollRight.bind(this, 'desktop')}
           />
         ) : (
           <i
@@ -397,7 +397,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
           <i
             className="fa fa-2x fa-chevron-right issues-list-stacked__support-list__scroll-icon u-cursor--pointer d-block d-sm-none d-print-none"
             aria-hidden="true"
-            onClick={this.scrollRight.bind(this, "mobile")}
+            onClick={this.scrollRight.bind(this, 'mobile')}
           />
         ) : (
           <i

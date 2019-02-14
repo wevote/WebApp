@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import ImageHandler from "../ImageHandler";
-import ItemActionBar from "../Widgets/ItemActionBar";
-import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
-import FriendsOnlyIndicator from "../Widgets/FriendsOnlyIndicator";
-import { renderLog } from "../../utils/logging";
-import OfficeNameText from "../Widgets/OfficeNameText";
-import OrganizationStore from "../../stores/OrganizationStore";
-import PositionInformationOnlySnippet from "../Widgets/PositionInformationOnlySnippet";
-import PositionRatingSnippet from "../Widgets/PositionRatingSnippet";
-import PositionSupportOpposeSnippet from "../Widgets/PositionSupportOpposeSnippet";
-import { capitalizeString } from "../../utils/textFormat";
-import SupportStore from "../../stores/SupportStore";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import ImageHandler from '../ImageHandler';
+import ItemActionBar from '../Widgets/ItemActionBar';
+import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
+import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
+import { renderLog } from '../../utils/logging';
+import OfficeNameText from '../Widgets/OfficeNameText';
+import OrganizationStore from '../../stores/OrganizationStore';
+import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
+import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
+import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
+import { capitalizeString } from '../../utils/textFormat';
+import SupportStore from '../../stores/SupportStore';
+import VoterStore from '../../stores/VoterStore';
 
 export default class OrganizationPositionItem extends Component {
   static propTypes = {
@@ -105,12 +105,12 @@ export default class OrganizationPositionItem extends Component {
     const { supportProps } = this.state;
 
     // Manage the control over this organization voter guide
-    let organizationTwitterHandleBeingViewed = "";
+    let organizationTwitterHandleBeingViewed = '';
     let organizationFacebookIdBeingViewed = 0;
-    let organizationWeVoteId = "";
+    let organizationWeVoteId = '';
     let signedInWithThisOrganization = false;
     if (organization !== undefined) {
-      organizationTwitterHandleBeingViewed = organization.organization_twitter_handle !== undefined ? organization.organization_twitter_handle : "";
+      organizationTwitterHandleBeingViewed = organization.organization_twitter_handle !== undefined ? organization.organization_twitter_handle : '';
       organizationFacebookIdBeingViewed = organization.facebook_id !== undefined ? organization.facebook_id : 0;
       organizationWeVoteId = organization.organization_we_vote_id;
       signedInWithThisOrganization = this.state.voter && this.state.voter.linked_organization_we_vote_id === organizationWeVoteId;
@@ -150,14 +150,14 @@ export default class OrganizationPositionItem extends Component {
     let { ballotItemLink } = this.props;
     if (!ballotItemLink) {
       // TwitterHandle-based link
-      const ballotItemUrl = position.kind_of_ballot_item === "MEASURE" ? "/measure/" : "/candidate/";
+      const ballotItemUrl = position.kind_of_ballot_item === 'MEASURE' ? '/measure/' : '/candidate/';
       // We are turning off links to twitter pages until we get politician pages working
       // let ballotItemLink = position.ballot_item_twitter_handle ? "/" + position.ballot_item_twitter_handle : ballotItemUrl + position.ballot_item_we_vote_id;
       ballotItemLink = ballotItemUrl + position.ballot_item_we_vote_id;
     }
-    let positionDescription = "";
-    const isCandidate = position.kind_of_ballot_item === "CANDIDATE";
-    let ballotItemDisplayName = "";
+    let positionDescription = '';
+    const isCandidate = position.kind_of_ballot_item === 'CANDIDATE';
+    let ballotItemDisplayName = '';
     if (position.ballot_item_display_name) {
       ballotItemDisplayName = capitalizeString(position.ballot_item_display_name);
     }
@@ -199,7 +199,7 @@ export default class OrganizationPositionItem extends Component {
     // const onEditPositionClick = this.state.showEditPositionModal ? this.closeEditPositionModal.bind(this) : this.openEditPositionModal.bind(this);
     let contestOfficeName;
     let politicalParty;
-    if (position.kind_of_ballot_item === "CANDIDATE") {
+    if (position.kind_of_ballot_item === 'CANDIDATE') {
       contestOfficeName = position.contest_office_name;
       politicalParty = position.ballot_item_political_party;
     }
@@ -244,7 +244,7 @@ export default class OrganizationPositionItem extends Component {
               </div>
             ) : null
             }
-            { position.kind_of_ballot_item === "CANDIDATE" && contestOfficeName !== undefined ? (
+            { position.kind_of_ballot_item === 'CANDIDATE' && contestOfficeName !== undefined ? (
               <OfficeNameText
                 politicalParty={politicalParty}
                 contestOfficeName={contestOfficeName}

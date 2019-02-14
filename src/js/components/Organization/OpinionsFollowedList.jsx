@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import FollowToggle from "../Widgets/FollowToggle";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationDisplayForList from "./OrganizationDisplayForList";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import FollowToggle from '../Widgets/FollowToggle';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationDisplayForList from './OrganizationDisplayForList';
+import { renderLog } from '../../utils/logging';
 
 export default class OpinionsFollowedList extends Component {
   static propTypes = {

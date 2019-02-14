@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { Link } from "react-router";
-import Helmet from "react-helmet";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import SearchGuidesToFollowBox from "../Search/SearchGuidesToFollowBox";
-import GuideList from "../VoterGuide/GuideList";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import Helmet from 'react-helmet';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import SearchGuidesToFollowBox from '../Search/SearchGuidesToFollowBox';
+import GuideList from '../VoterGuide/GuideList';
+import { renderLog } from '../../utils/logging';
 
 
 export default class NetworkOpinions extends Component {
@@ -35,17 +35,17 @@ export default class NetworkOpinions extends Component {
   }
 
   getCurrentRoute () {
-    const currentRoute = "/opinions";
+    const currentRoute = '/opinions';
     return currentRoute;
   }
 
   getFollowingType () {
     switch (this.getCurrentRoute()) {
-      case "/opinions":
-        return "WHO_YOU_CAN_FOLLOW";
-      case "/opinions_followed":
+      case '/opinions':
+        return 'WHO_YOU_CAN_FOLLOW';
+      case '/opinions_followed':
       default:
-        return "WHO_YOU_FOLLOW";
+        return 'WHO_YOU_FOLLOW';
     }
   }
 
@@ -53,7 +53,7 @@ export default class NetworkOpinions extends Component {
     renderLog(__filename);
     const { ballotHasGuides, voterGuidesToFollowAll } = this.state;
     const floatRight = {
-      float: "right",
+      float: 'right',
     };
 
     return (

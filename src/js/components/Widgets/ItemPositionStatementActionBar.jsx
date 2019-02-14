@@ -1,18 +1,18 @@
 // This file is flooded with non-camel case, so don't flag for now, in order to find more important issues
 // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
-import React, { Component } from "react";
-import { Button } from "react-bootstrap";
-import PropTypes from "prop-types";
-import ReactPlayer from "react-player";
-import Textarea from "react-textarea-autosize";
-import { cordovaDot, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
-import ReadMore from "./ReadMore";
-import PositionPublicToggle from "./PositionPublicToggle";
-import SupportActions from "../../actions/SupportActions";
-import SupportStore from "../../stores/SupportStore";
-import VoterStore from "../../stores/VoterStore";
-import { vimeoRegX, youTubeRegX, stringContains } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import ReactPlayer from 'react-player';
+import Textarea from 'react-textarea-autosize';
+import { cordovaDot, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import ReadMore from './ReadMore';
+import PositionPublicToggle from './PositionPublicToggle';
+import SupportActions from '../../actions/SupportActions';
+import SupportStore from '../../stores/SupportStore';
+import VoterStore from '../../stores/VoterStore';
+import { vimeoRegX, youTubeRegX, stringContains } from '../../utils/textFormat';
 
 
 export default class ItemPositionStatementActionBar extends Component {
@@ -33,7 +33,7 @@ export default class ItemPositionStatementActionBar extends Component {
       showEditPositionStatementInput: undefined,
       supportProps: undefined,
       statementTextToBeSaved: undefined,
-      voterPhotoUrlMedium: "",
+      voterPhotoUrlMedium: '',
     };
     this.updateStatementTextToBeSaved = this.updateStatementTextToBeSaved.bind(this);
   }
@@ -74,7 +74,7 @@ export default class ItemPositionStatementActionBar extends Component {
         showEditPositionStatementInput: false,
       });
     } else {
-      const voterStatementText = (nextProps.supportProps && nextProps.supportProps.voter_statement_text) || "";
+      const voterStatementText = (nextProps.supportProps && nextProps.supportProps.voter_statement_text) || '';
       this.setState({
         statementTextToBeSaved: voterStatementText,
         showEditPositionStatementInput: nextProps.comment_edit_mode_on,
@@ -109,8 +109,8 @@ export default class ItemPositionStatementActionBar extends Component {
 
   onSupportStoreChange () {
     const supportProps = SupportStore.get(this.props.ballot_item_we_vote_id);
-    let statementTextToBeSaved = "";
-    let isPublicPosition = "";
+    let statementTextToBeSaved = '';
+    let isPublicPosition = '';
 
     if (this.state.showEditPositionStatementInput) {
       if (supportProps) {
@@ -143,7 +143,7 @@ export default class ItemPositionStatementActionBar extends Component {
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
-    console.error("ItemPositionStatementActionBar caught error: ", `${error} with info: `, info);
+    console.error('ItemPositionStatementActionBar caught error: ', `${error} with info: `, info);
   }
 
   updateStatementTextToBeSaved (e) {
@@ -180,7 +180,7 @@ export default class ItemPositionStatementActionBar extends Component {
     statementTextToBeSaved = statementTextToBeSaved.length === 0 ? null : statementTextToBeSaved;
 
     let statementPlaceholderText;
-    const horizontalEllipsis = "\u2026";
+    const horizontalEllipsis = '\u2026';
     if (this.state.supportProps.is_support) {
       if (this.props.ballotItemDisplayName) {
         statementPlaceholderText = `Why you chose ${this.props.ballotItemDisplayName}${horizontalEllipsis}`;
@@ -201,16 +201,16 @@ export default class ItemPositionStatementActionBar extends Component {
 
     // Currently this "Post" text is the same given we display the visibility setting, but we may want to change this
     //  here if the near by visibility setting text changes
-    let postButtonText = "Save";
+    let postButtonText = 'Save';
     if (this.state.voterIsSignedIn) {
       if (this.state.isPublicPosition) {
-        postButtonText = "Post";
+        postButtonText = 'Post';
       }
     }
 
     const speakerImageUrlHttps = voterPhotoUrlMedium;
-    const speakerDisplayName = stringContains("Voter-", voterFullName) ? "" : voterFullName;
-    const imagePlaceholder = <span className="position-statement__avatar"><img src={cordovaDot("/img/global/svg-icons/avatar-generic.svg")} width="34" height="34" color="#c0c0c0" alt="generic voter" /></span>;
+    const speakerDisplayName = stringContains('Voter-', voterFullName) ? '' : voterFullName;
+    const imagePlaceholder = <span className="position-statement__avatar"><img src={cordovaDot('/img/global/svg-icons/avatar-generic.svg')} width="34" height="34" color="#c0c0c0" alt="generic voter" /></span>;
 
     // The short version can be used to cut-off an exceedingly long comment. This applies to entries by the viewer,
     //  for viewing by him or herself. Not used currently.
@@ -226,7 +226,7 @@ export default class ItemPositionStatementActionBar extends Component {
       }
     };
 
-    let videoUrl = "";
+    let videoUrl = '';
     let statementTextNoUrl = null;
     let youTubeUrl;
     let vimeoUrl;
@@ -238,16 +238,16 @@ export default class ItemPositionStatementActionBar extends Component {
 
     if (youTubeUrl) {
       [videoUrl] = youTubeUrl;
-      statementTextNoUrl = statementTextToBeSaved.replace(videoUrl, "");
+      statementTextNoUrl = statementTextToBeSaved.replace(videoUrl, '');
     }
 
     if (vimeoUrl) {
       [videoUrl] = vimeoUrl;
-      statementTextNoUrl = statementTextToBeSaved.replace(videoUrl, "");
+      statementTextNoUrl = statementTextToBeSaved.replace(videoUrl, '');
     }
 
     return (
-      <div className={this.props.shown_in_list ? "position-statement__container__in-list" : "position-statement__container"}>
+      <div className={this.props.shown_in_list ? 'position-statement__container__in-list' : 'position-statement__container'}>
         { // Show the edit box (Viewing self)
           editMode ? (
             <form onSubmit={this.savePositionStatement.bind(this)}>
@@ -283,7 +283,7 @@ export default class ItemPositionStatementActionBar extends Component {
               </div>
             </form>) : (
               // Show the comment, but in read-only mode
-              <div className={shortVersion ? "position-statement--truncated" : "position-statement"}>
+              <div className={shortVersion ? 'position-statement--truncated' : 'position-statement'}>
                 { speakerImageUrlHttps ? (
                   <img className="position-statement__avatar"
                        src={speakerImageUrlHttps}

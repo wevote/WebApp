@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
-import { historyPush } from "../../utils/cordovaUtils";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
-import { showToastError, showToastSuccess } from "../../utils/showToast";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
+import { historyPush } from '../../utils/cordovaUtils';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import OrganizationTinyDisplay from '../VoterGuide/OrganizationTinyDisplay';
+import { showToastError, showToastSuccess } from '../../utils/showToast';
+import VoterStore from '../../stores/VoterStore';
 
 export default class FollowToggle extends Component {
   static propTypes = {
@@ -30,7 +30,7 @@ export default class FollowToggle extends Component {
       isFollowing: false,
       organization: {},
       voter: {
-        we_vote_id: "",
+        we_vote_id: '',
       },
     };
 

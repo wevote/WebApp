@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import CandidateStore from "../../stores/CandidateStore";
-import { historyPush } from "../../utils/cordovaUtils";
-import ImageHandler from "../ImageHandler";
-import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
-import LearnMore from "../Widgets/LearnMore";
-import { renderLog } from "../../utils/logging";
-import OfficeNameText from "../Widgets/OfficeNameText";
-import SupportStore from "../../stores/SupportStore";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import { abbreviateNumber, numberWithCommas } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import CandidateStore from '../../stores/CandidateStore';
+import { historyPush } from '../../utils/cordovaUtils';
+import ImageHandler from '../ImageHandler';
+import ItemSupportOpposeRaccoon from '../Widgets/ItemSupportOpposeRaccoon';
+import LearnMore from '../Widgets/LearnMore';
+import { renderLog } from '../../utils/logging';
+import OfficeNameText from '../Widgets/OfficeNameText';
+import SupportStore from '../../stores/SupportStore';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
 
 // This is related to /js/components/VoterGuide/OrganizationVoterGuideCandidateItem.jsx
 export default class CandidateItem extends Component {
@@ -37,9 +37,9 @@ export default class CandidateItem extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      candidateWeVoteId: "",
+      candidateWeVoteId: '',
       hidePositionStatement: this.props.hidePositionStatement,
-      officeWeVoteId: "",
+      officeWeVoteId: '',
     };
     this.getCandidateLink = this.getCandidateLink.bind(this);
     this.getOfficeLink = this.getOfficeLink.bind(this);
@@ -104,11 +104,11 @@ export default class CandidateItem extends Component {
   }
 
   getOfficeLink () {
-    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
+    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== '') {
       return `/office/${this.state.officeWeVoteId}/btvg/${this.state.organizationWeVoteId}`; // back-to-voter-guide
     } else if (this.state.officeWeVoteId) {
       return `/office/${this.state.officeWeVoteId}/b/btdb/`; // back-to-default-ballot
-    } else return "";
+    } else return '';
   }
 
   togglePositionStatement () {
@@ -162,11 +162,11 @@ export default class CandidateItem extends Component {
       candidatePhotoUrlHtml = <i className="card-main__avatar icon-office-child icon-main icon-icon-person-placeholder-6-1" />;
     }
 
-    const twitterDescriptionText = twitterDescription && twitterDescription.length ? `${twitterDescription} ` : "";
-    let ballotpediaCandidateSummaryText = ballotpediaCandidateSummary && ballotpediaCandidateSummary.length ? ballotpediaCandidateSummary : "";
+    const twitterDescriptionText = twitterDescription && twitterDescription.length ? `${twitterDescription} ` : '';
+    let ballotpediaCandidateSummaryText = ballotpediaCandidateSummary && ballotpediaCandidateSummary.length ? ballotpediaCandidateSummary : '';
 
     // Strip away any HTML tags
-    ballotpediaCandidateSummaryText = ballotpediaCandidateSummaryText.split(/<[^<>]*>/).join("");
+    ballotpediaCandidateSummaryText = ballotpediaCandidateSummaryText.split(/<[^<>]*>/).join('');
     const candidateText = twitterDescriptionText + ballotpediaCandidateSummaryText;
 
     const oneCandidate = CandidateStore.getCandidate(candidateWeVoteId);
@@ -185,8 +185,8 @@ export default class CandidateItem extends Component {
             {twitterFollowersCount ? (
               <span
                 className={this.props.link_to_ballot_item_page ?
-                  "twitter-followers__badge u-cursor--pointer" :
-                  "twitter-followers__badge"}
+                  'twitter-followers__badge u-cursor--pointer' :
+                  'twitter-followers__badge'}
                 onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}
               >
                 <span className="fa fa-twitter twitter-followers__icon" />
@@ -205,8 +205,8 @@ export default class CandidateItem extends Component {
             }
             </h2>
             <p className={this.props.link_to_ballot_item_page ?
-              "u-gray-darker u-cursor--pointer" :
-              "u-gray-darker"
+              'u-gray-darker u-cursor--pointer' :
+              'u-gray-darker'
               }
               onClick={this.props.link_to_ballot_item_page ?
                 this.goToCandidateLink : null}
@@ -215,14 +215,14 @@ export default class CandidateItem extends Component {
                 <OfficeNameText
                   politicalParty={party}
                   contestOfficeName={contestOfficeName}
-                  officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ""}
+                  officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
                 />
               ) :
                 null
           }
             </p>
             { candidateText.length ? (
-              <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? " card-main__description-container--truncated" : " card-main__description-container"}`}>
+              <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
                 <div className="card-main__description">
                   <LearnMore
                     learn_more_text="Read more on Ballotpedia"
@@ -243,10 +243,10 @@ export default class CandidateItem extends Component {
               null
           }
           </div>
-          {" "}
+          {' '}
           {/* END .card-main__media-object-content */}
         </div>
-        {" "}
+        {' '}
         {/* END .card-main__media-object */}
         <div className="card-main__actions">
           <div>

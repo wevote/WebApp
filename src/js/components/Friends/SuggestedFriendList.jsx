@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
-import SuggestedFriendDisplayForList from "./SuggestedFriendDisplayForList";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import SuggestedFriendDisplayForList from './SuggestedFriendDisplayForList';
+import { renderLog } from '../../utils/logging';
 
 export default class SuggestedFriendList extends Component {
   static propTypes = {

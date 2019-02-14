@@ -1,12 +1,12 @@
-import { ReduceStore } from "flux/utils";
-import Dispatcher from "../dispatcher/Dispatcher";
-import BallotStore from "./BallotStore";
-import IssueActions from "../actions/IssueActions";
-import OrganizationStore from "./OrganizationStore";
-import VoterStore from "./VoterStore";
-import VoterGuideStore from "./VoterGuideStore";
-import VoterGuideActions from "../actions/VoterGuideActions";
-import { arrayContains, removeValueFromArray } from "../utils/textFormat";
+import { ReduceStore } from 'flux/utils';
+import Dispatcher from '../dispatcher/Dispatcher';
+import BallotStore from './BallotStore';
+import IssueActions from '../actions/IssueActions';
+import OrganizationStore from './OrganizationStore';
+import VoterStore from './VoterStore';
+import VoterGuideStore from './VoterGuideStore';
+import VoterGuideActions from '../actions/VoterGuideActions';
+import { arrayContains, removeValueFromArray } from '../utils/textFormat';
 
 class IssueStore extends ReduceStore {
   getInitialState () {
@@ -350,7 +350,7 @@ class IssueStore extends ReduceStore {
     const toLinkToIssueListForOneOrganization = [];
 
     switch (action.type) {
-      case "issueFollow":
+      case 'issueFollow':
         // When a voter follows or unfollows an issue on the ballot intro modal screen, update the voter guide list
         VoterGuideActions.voterGuidesToFollowRetrieveByIssuesFollowed();
         if (action.res.google_civic_election_id && action.res.google_civic_election_id > 0) {
@@ -372,7 +372,7 @@ class IssueStore extends ReduceStore {
           issueWeVoteIdsVoterCanFollow,
         };
 
-      case "issuesRetrieve":
+      case 'issuesRetrieve':
         issueList = action.res.issue_list;
         revisedState = state;
         googleCivicElectionId = action.res.google_civic_election_id === false ? state.googleCivicElectionId : action.res.google_civic_election_id;
@@ -400,7 +400,7 @@ class IssueStore extends ReduceStore {
             issueScoreForEachBallotItem = {};
           }
         }
-        if (action.res.issues_under_ballot_items_list && action.res.voter_issues_only !== true && action.res.voter_issues_only !== "true") {
+        if (action.res.issues_under_ballot_items_list && action.res.voter_issues_only !== true && action.res.voter_issues_only !== 'true') {
           // console.log("IssueStore, issuesRetrieve, issueScoreList found");
           issuesUnderBallotItemsList = action.res.issues_under_ballot_items_list;
           if (issuesUnderBallotItemsList.length) {
@@ -442,7 +442,7 @@ class IssueStore extends ReduceStore {
         });
 
         // console.log("action.res.voter_issues_only:", action.res.voter_issues_only);
-        if (action.res.voter_issues_only === true || action.res.voter_issues_only === "true") {
+        if (action.res.voter_issues_only === true || action.res.voter_issues_only === 'true') {
           issueList.forEach((issue) => {
             allCachedIssues[issue.issue_we_vote_id] = issue;
             issueWeVoteIdsVoterIsFollowing.push(issue.issue_we_vote_id);
@@ -462,7 +462,7 @@ class IssueStore extends ReduceStore {
         // console.log("IssueStore issuesRetrieve, issueWeVoteIdsVoterIsFollowing: ", issueWeVoteIdsVoterIsFollowing);
         return revisedState;
 
-      case "issuesToLinkToForOrganization":
+      case 'issuesToLinkToForOrganization':
         // console.log("IssueStore issuesToLinkToForOrganization");
         organizationWeVoteId = action.res.organization_we_vote_id;
         issueList = action.res.issue_list;
@@ -480,7 +480,7 @@ class IssueStore extends ReduceStore {
           issueWeVoteIdsToLinkToByOrganizationDict,
         };
 
-      case "issuesLinkedToOrganization":
+      case 'issuesLinkedToOrganization':
         // console.log("IssueStore issuesLinkedToOrganization");
         organizationWeVoteId = action.res.organization_we_vote_id;
         issueList = action.res.issue_list;
@@ -499,14 +499,14 @@ class IssueStore extends ReduceStore {
           issueWeVoteIdsLinkedToByOrganizationDict,
         };
 
-      case "organizationLinkToIssue":
+      case 'organizationLinkToIssue':
         // When an organization is linked/unlinked to an issue, we need to refresh the linked and to_link issue lists
         organizationWeVoteId = action.res.organization_we_vote_id;
         IssueActions.retrieveIssuesToLinkForOrganization(organizationWeVoteId);
         IssueActions.retrieveIssuesLinkedForOrganization(organizationWeVoteId);
         return state;
 
-      case "positionListForBallotItem":
+      case 'positionListForBallotItem':
         // We want to create an entry in this.state.issueWeVoteIdsUnderEachBallotItem for this ballotItemWeVoteId
         // with a list of the issues connected to this position
         // issueWeVoteIdsUnderEachBallotItem[ballotItemWeVoteId] = list of issues that have positions under this ballot item
@@ -557,7 +557,7 @@ class IssueStore extends ReduceStore {
           return state;
         }
 
-      case "removeBallotItemIssueScoreFromCache":
+      case 'removeBallotItemIssueScoreFromCache':
         ballotItemWeVoteId = action.res.ballot_item_we_vote_id;
         issueScoreForEachBallotItem[ballotItemWeVoteId] = 0;
         return {
@@ -565,7 +565,7 @@ class IssueStore extends ReduceStore {
           issueScoreForEachBallotItem,
         };
 
-      case "retrieveIssuesToFollow":
+      case 'retrieveIssuesToFollow':
         issueList = action.res.issue_list;
         issueWeVoteIdsVoterCanFollow = [];
         issueList.forEach((issue) => {
@@ -579,7 +579,7 @@ class IssueStore extends ReduceStore {
           issueWeVoteIdsVoterCanFollow,
         };
 
-      case "voterGuidesToFollowRetrieve":
+      case 'voterGuidesToFollowRetrieve':
         // Collect all of the issues an organization is tagged with
         // console.log("IssueStore, case voterGuidesToFollowRetrieve");
         voterGuides = action.res.voter_guides;
@@ -700,7 +700,7 @@ class IssueStore extends ReduceStore {
           organizationWeVoteIdsLinkedToIssueDict,
         };
 
-      case "voterGuidesUpcomingRetrieve":
+      case 'voterGuidesUpcomingRetrieve':
         // Collect all of the issues an organization is tagged with
         // console.log("IssueStore, case voterGuidesToFollowRetrieve");
         voterGuides = action.res.voter_guides;
@@ -792,7 +792,7 @@ class IssueStore extends ReduceStore {
           organizationWeVoteIdsLinkedToIssueDict,
         };
 
-      case "voterSignOut":
+      case 'voterSignOut':
         // console.log("resetting IssueStore");
         return this.resetState();
 

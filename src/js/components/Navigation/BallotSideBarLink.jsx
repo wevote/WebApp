@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import { capitalizeString, sentenceCaseString } from "../../utils/textFormat";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { capitalizeString, sentenceCaseString } from '../../utils/textFormat';
+import { renderLog } from '../../utils/logging';
 
 export default class BallotSideBarLink extends Component {
   static propTypes = {
@@ -30,7 +30,7 @@ export default class BallotSideBarLink extends Component {
         onClick={() => {
           this.props.onClick.bind(this);
           if (this.props.ballotItemLinkHasBeenClicked && this.props.url) {
-            const selectedBallotItemId = this.props.url.split("#")[1];
+            const selectedBallotItemId = this.props.url.split('#')[1];
             if (selectedBallotItemId) {
               this.props.ballotItemLinkHasBeenClicked(selectedBallotItemId);
             }
@@ -42,7 +42,7 @@ export default class BallotSideBarLink extends Component {
             <span className="BallotItem__summary__display-name">{labelInSentenceCase}</span>
             { this.props.displaySubtitles ? (
               <span className="BallotItem__summary__item__subtitle">
-                {" "}
+                {' '}
                 {subtitleInSentenceCase}
               </span>
             ) : null }

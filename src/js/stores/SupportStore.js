@@ -1,9 +1,9 @@
-import { ReduceStore } from "flux/utils";
-import assign from "object-assign";
-import Dispatcher from "../dispatcher/Dispatcher";
-import { mergeTwoObjectLists } from "../utils/textFormat";
-import SupportActions from "../actions/SupportActions";
-import VoterStore from "./VoterStore";
+import { ReduceStore } from 'flux/utils';
+import assign from 'object-assign';
+import Dispatcher from '../dispatcher/Dispatcher';
+import { mergeTwoObjectLists } from '../utils/textFormat';
+import SupportActions from '../actions/SupportActions';
+import VoterStore from './VoterStore';
 
 class SupportStore extends ReduceStore {
   getInitialState () {
@@ -28,7 +28,7 @@ class SupportStore extends ReduceStore {
       is_support: this.supportList[ballotItemWeVoteId] || false,
       is_oppose: this.opposeList[ballotItemWeVoteId] || false,
       is_public_position: this.isForPublicList[ballotItemWeVoteId] || false, // Default to friends only
-      voter_statement_text: this.statementList[ballotItemWeVoteId] || "",
+      voter_statement_text: this.statementList[ballotItemWeVoteId] || '',
       support_count: this.supportCounts[ballotItemWeVoteId] || 0,
       oppose_count: this.opposeCounts[ballotItemWeVoteId] || 0,
     };
@@ -119,39 +119,39 @@ class SupportStore extends ReduceStore {
       nameOpposeListForEachBallotItem,
     } = state;
 
-    let ballotItemWeVoteId = "";
+    let ballotItemWeVoteId = '';
     if (action.res.ballot_item_we_vote_id) {
       ballotItemWeVoteId = action.res.ballot_item_we_vote_id;
     }
 
     let positionCountsList;
-    const newOpposeCounts = this.parseListToHash("oppose_count", action.res.position_counts_list);
-    const newSupportCounts = this.parseListToHash("support_count", action.res.position_counts_list);
+    const newOpposeCounts = this.parseListToHash('oppose_count', action.res.position_counts_list);
+    const newSupportCounts = this.parseListToHash('support_count', action.res.position_counts_list);
     const existingOpposeCounts = state.oppose_counts !== undefined ? state.oppose_counts : [];
     const existingSupportCounts = state.support_counts !== undefined ? state.support_counts : [];
-    const newOneOpposeCount = this.parseListToHash("oppose_count", action.res.position_counts_list);
-    const newOneSupportCount = this.parseListToHash("support_count", action.res.position_counts_list);
+    const newOneOpposeCount = this.parseListToHash('oppose_count', action.res.position_counts_list);
+    const newOneSupportCount = this.parseListToHash('support_count', action.res.position_counts_list);
     const existingOpposeCounts2 = state.oppose_counts !== undefined ? state.oppose_counts : [];
     const existingSupportCounts2 = state.support_counts !== undefined ? state.support_counts : [];
 
     switch (action.type) {
-      case "voterAddressRetrieve":
+      case 'voterAddressRetrieve':
         SupportActions.voterAllPositionsRetrieve();
         SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         return state;
 
-      case "voterAllPositionsRetrieve":
+      case 'voterAllPositionsRetrieve':
         // is_support is a property coming from 'position_list' in the incoming response
         // this.state.voter_supports is an updated hash with the contents of position list['is_support']
         return {
           ...state,
-          voter_supports: this.parseListToHash("is_support", action.res.position_list),
-          voter_opposes: this.parseListToHash("is_oppose", action.res.position_list),
-          voter_statement_text: this.parseListToHash("statement_text", action.res.position_list),
-          is_public_position: this.parseListToHash("is_public_position", action.res.position_list),
+          voter_supports: this.parseListToHash('is_support', action.res.position_list),
+          voter_opposes: this.parseListToHash('is_oppose', action.res.position_list),
+          voter_statement_text: this.parseListToHash('statement_text', action.res.position_list),
+          is_public_position: this.parseListToHash('is_public_position', action.res.position_list),
         };
 
-      case "positionsCountForAllBallotItems":
+      case 'positionsCountForAllBallotItems':
         if (action.res.position_counts_list) {
           positionCountsList = action.res.position_counts_list;
           if (positionCountsList.length) {
@@ -175,7 +175,7 @@ class SupportStore extends ReduceStore {
           nameOpposeListForEachBallotItem,
         };
 
-      case "positionsCountForOneBallotItem":
+      case 'positionsCountForOneBallotItem':
 
         // Duplicate values in the second array will overwrite those in the first
         return {
@@ -184,7 +184,7 @@ class SupportStore extends ReduceStore {
           support_counts: mergeTwoObjectLists(existingSupportCounts2, newOneSupportCount),
         };
 
-      case "voterOpposingSave":
+      case 'voterOpposingSave':
         SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         return {
           ...state,
@@ -196,7 +196,7 @@ class SupportStore extends ReduceStore {
           oppose_counts: this.listWithChangedCount(state.oppose_counts, ballotItemWeVoteId, 1),
         };
 
-      case "voterStopOpposingSave":
+      case 'voterStopOpposingSave':
         SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         return {
           ...state,
@@ -204,7 +204,7 @@ class SupportStore extends ReduceStore {
           oppose_counts: this.listWithChangedCount(state.oppose_counts, ballotItemWeVoteId, -1),
         };
 
-      case "voterSupportingSave":
+      case 'voterSupportingSave':
         SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         return {
           ...state,
@@ -216,7 +216,7 @@ class SupportStore extends ReduceStore {
             state.oppose_counts,
         };
 
-      case "voterStopSupportingSave":
+      case 'voterStopSupportingSave':
         SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         return {
           ...state,
@@ -224,7 +224,7 @@ class SupportStore extends ReduceStore {
           support_counts: this.listWithChangedCount(state.support_counts, ballotItemWeVoteId, -1),
         };
 
-      case "voterPositionCommentSave":
+      case 'voterPositionCommentSave':
 
         // Add the comment to the list in memory
         return {
@@ -232,7 +232,7 @@ class SupportStore extends ReduceStore {
           voter_statement_text: this.statementListWithChanges(state.voter_statement_text, ballotItemWeVoteId, action.res.statement_text),
         };
 
-      case "voterPositionVisibilitySave":
+      case 'voterPositionVisibilitySave':
 
         // Add the visibility to the list in memory
         return {
@@ -240,7 +240,7 @@ class SupportStore extends ReduceStore {
           is_public_position: this.isForPublicListWithChanges(state.is_public_position, ballotItemWeVoteId, action.res.is_public_position),
         };
 
-      case "voterSignOut":
+      case 'voterSignOut':
 
         // console.log("resetting SupportStore");
         return this.resetState();

@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
-import FriendInvitationDisplayForList from "./FriendInvitationDisplayForList";
-import FriendInvitationEmailForList from "./FriendInvitationEmailForList";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import FriendInvitationDisplayForList from './FriendInvitationDisplayForList';
+import FriendInvitationEmailForList from './FriendInvitationEmailForList';
+import { renderLog } from '../../utils/logging';
 
 export default class FriendInvitationList extends Component {
   static propTypes = {
@@ -45,7 +45,7 @@ export default class FriendInvitationList extends Component {
       <div className="guidelist card-child__list-group">
         <TransitionGroup className="org-ignore" timeout={{ exit, enter }}>
           {this.state.friendInvitationList.map((friend) => {
-            if (friend.voter_we_vote_id && friend.voter_we_vote_id !== "") {
+            if (friend.voter_we_vote_id && friend.voter_we_vote_id !== '') {
               return (
                 <CSSTransition key={++simpleKeyCounter} timeout={500} classNames="fade">
                   <FriendInvitationDisplayForList key={friend.voter_we_vote_id}

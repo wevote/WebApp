@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import { isWebApp, isCordova } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { isWebApp, isCordova } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 
 export default class HeaderBarProfilePopUp extends Component {
   static propTypes = {
@@ -31,15 +31,15 @@ export default class HeaderBarProfilePopUp extends Component {
     /* eslint-disable no-extra-parens */
     const popUpOpen = (function opener () {
       if (profilePopUpOpen) {
-        return (isWebApp() ? "profile-menu--open" : "profile-foot-menu--open");
+        return (isWebApp() ? 'profile-menu--open' : 'profile-foot-menu--open');
       }
-      return "";
+      return '';
     }());
 
     return (
       <div className={popUpOpen}>
         <div className="page-overlay" onClick={this.hideProfilePopUp} />
-        <div className={isWebApp() ? "profile-menu" : "profile-foot-menu"}>
+        <div className={isWebApp() ? 'profile-menu' : 'profile-foot-menu'}>
           <span className="we-vote-promise">Our Promise: We&apos;ll never sell your email.</span>
           <ul className="nav flex-column">
             {/* Desktop only */}

@@ -1,25 +1,25 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   Button, Form, InputGroup, FormControl,
-} from "react-bootstrap";
-import Helmet from "react-helmet";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import DonationForm from "../../components/Donation/DonationForm";
-import DonationError from "../../components/Donation/DonationError";
-import DonateStore from "../../stores/DonateStore";
-import DonationListForm from "../../components/Donation/DonationListForm";
-import { renderLog } from "../../utils/logging";
-import VoterStore from "../../stores/VoterStore";
+} from 'react-bootstrap';
+import Helmet from 'react-helmet';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import DonationForm from '../../components/Donation/DonationForm';
+import DonationError from '../../components/Donation/DonationError';
+import DonateStore from '../../stores/DonateStore';
+import DonationListForm from '../../components/Donation/DonationListForm';
+import { renderLog } from '../../utils/logging';
+import VoterStore from '../../stores/VoterStore';
 
 export default class Donate extends Component {
   constructor (props) {
     super(props);
     this.state = {
       showCustomInput: false,
-      custom_amount: "",
+      custom_amount: '',
       donateMonthly: true,
-      donationErrorMessage: "",
-      radioSelected: "monthly",
+      donationErrorMessage: '',
+      radioSelected: 'monthly',
     };
 
     this._toggleCustomAmount = this._toggleCustomAmount.bind(this);
@@ -50,13 +50,13 @@ export default class Donate extends Component {
   }
 
   _toggleDonateMonthly (event) {
-    if (event.target.value === "once") {
+    if (event.target.value === 'once') {
       this.setState({
-        donateMonthly: false, radioSelected: "once",
+        donateMonthly: false, radioSelected: 'once',
       });
     } else {
       this.setState({
-        donateMonthly: true, radioSelected: "monthly",
+        donateMonthly: true, radioSelected: 'monthly',
       });
     }
   }
@@ -78,7 +78,7 @@ export default class Donate extends Component {
   the InputGroup.
    */
   _handleKeyPress (event) { // eslint-disable-line
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       event.preventDefault();
     }
   }
@@ -109,9 +109,9 @@ export default class Donate extends Component {
                 value="monthly"
                 style={{ margin: 24 }}
                 onChange={this._toggleDonateMonthly}
-                checked={this.state.radioSelected === "monthly"}
+                checked={this.state.radioSelected === 'monthly'}
               />
-              {" "}
+              {' '}
               <Form.Check
                 type="radio"
                 label="One-Time"
@@ -120,9 +120,9 @@ export default class Donate extends Component {
                 value="once"
                 style={{ margin: 24 }}
                 onChange={this._toggleDonateMonthly}
-                checked={this.state.radioSelected === "once"}
+                checked={this.state.radioSelected === 'once'}
               />
-              {" "}
+              {' '}
             </Form>
             Select an Amount:
             <br />
@@ -158,7 +158,7 @@ export default class Donate extends Component {
 
             {this.state.showCustomInput ? (
               <span>
-                <InputGroup className="mb-3" style={{ width: "50%" }}>
+                <InputGroup className="mb-3" style={{ width: '50%' }}>
                   <InputGroup.Prepend>
                     <InputGroup.Text>$</InputGroup.Text>
                   </InputGroup.Prepend>
@@ -173,7 +173,7 @@ export default class Donate extends Component {
 
                   <InputGroup.Append>
                     <DonationForm
-                      donationAmount={parseInt(parseFloat(this.state.custom_amount.replace(/[^0-9.]+/g, "")) * 100, 10)}
+                      donationAmount={parseInt(parseFloat(this.state.custom_amount.replace(/[^0-9.]+/g, '')) * 100, 10)}
                       donateMonthly={this.state.donateMonthly}
                       donateButtonText="Go"
                       donateOther
@@ -184,7 +184,7 @@ export default class Donate extends Component {
             ) : null
             }
 
-            {Number.isNaN(this.state.custom_amount) || this.state.custom_amount === "0" ? (
+            {Number.isNaN(this.state.custom_amount) || this.state.custom_amount === '0' ? (
               <span>
                 <p>Please enter a valid number</p>
               </span>
@@ -194,7 +194,7 @@ export default class Donate extends Component {
             <br />
             These contributions or gifts are not tax deductible. These donations are for We Vote&apos;s 501(c)(4) nonprofit.
             We Vote&apos;s 501(c)(3) nonprofit also
-            {" "}
+            {' '}
             {/* This is a mailto! */}
             <a href={donateMailtoUrl} title="Donate to We Vote's 501(c)(3)">accepts tax deductible donations.</a>
             <br />

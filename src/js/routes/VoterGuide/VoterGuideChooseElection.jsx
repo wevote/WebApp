@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
-import ChooseElectionForVoterGuide from "../../components/VoterGuide/ChooseElectionForVoterGuide";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import ChooseElectionForVoterGuide from '../../components/VoterGuide/ChooseElectionForVoterGuide';
+import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import VoterStore from '../../stores/VoterStore';
 
 
 export default class VoterGuideChooseElection extends Component {
@@ -16,16 +16,16 @@ export default class VoterGuideChooseElection extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      linkedOrganizationWeVoteId: "",
-      searchResultsOrganizationName: "",
+      linkedOrganizationWeVoteId: '',
+      searchResultsOrganizationName: '',
     };
     this.onOrganizationStoreChange = this.onOrganizationStoreChange.bind(this);
     this.saveAndGoToOrganizationInfo = this.saveAndGoToOrganizationInfo.bind(this);
   }
 
   componentWillMount () {
-    document.body.style.backgroundColor = "#A3A3A3";
-    document.body.className = "story-view";
+    document.body.style.backgroundColor = '#A3A3A3';
+    document.body.className = 'story-view';
   }
 
   componentDidMount () {
@@ -50,7 +50,7 @@ export default class VoterGuideChooseElection extends Component {
 
   componentWillUnmount () {
     document.body.style.backgroundColor = null;
-    document.body.className = "";
+    document.body.className = '';
     this.organizationStoreListener.remove();
     this.timer = null;
   }
@@ -78,7 +78,7 @@ export default class VoterGuideChooseElection extends Component {
   }
 
   goToBallotLink () {
-    const sampleBallotLink = "/ballot";
+    const sampleBallotLink = '/ballot';
     historyPush(sampleBallotLink);
   }
 
@@ -86,7 +86,7 @@ export default class VoterGuideChooseElection extends Component {
     if (this.state.linkedOrganizationWeVoteId) {
       OrganizationActions.organizationGetStartedSave(this.state.linkedOrganizationWeVoteId, this.state.searchResultsOrganizationName, this.state.searchResultsWebsite);
     }
-    historyPush("/voterguideorgtype");
+    historyPush('/voterguideorgtype');
   }
 
   render () {
@@ -96,7 +96,7 @@ export default class VoterGuideChooseElection extends Component {
       <div>
         <Helmet title="Choose Election - We Vote" />
         <div className="create-voter-guide container well">
-          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt="close" />
+          <img src={cordovaDot('/img/global/icons/x-close.png')} onClick={this.goToBallotLink} className="x-close" alt="close" />
           <div className="create-voter-guide__h1 xs-text-left">Choose Election</div>
           <div className="create-voter-guide__steps xs-text-left">
             Step 4 of 5

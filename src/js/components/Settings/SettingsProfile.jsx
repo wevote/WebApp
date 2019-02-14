@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import BrowserPushMessage from "../Widgets/BrowserPushMessage";
-import LoadingWheel from "../LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import SettingsWidgetAccountType from "./SettingsWidgetAccountType";
-import SettingsWidgetFirstLastName from "./SettingsWidgetFirstLastName";
-import SettingsWidgetOrganizationDescription from "./SettingsWidgetOrganizationDescription";
-import SettingsWidgetOrganizationWebsite from "./SettingsWidgetOrganizationWebsite";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import BrowserPushMessage from '../Widgets/BrowserPushMessage';
+import LoadingWheel from '../LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import SettingsWidgetAccountType from './SettingsWidgetAccountType';
+import SettingsWidgetFirstLastName from './SettingsWidgetFirstLastName';
+import SettingsWidgetOrganizationDescription from './SettingsWidgetOrganizationDescription';
+import SettingsWidgetOrganizationWebsite from './SettingsWidgetOrganizationWebsite';
+import VoterStore from '../../stores/VoterStore';
 
 
 export default class SettingsProfile extends Component {

@@ -1,40 +1,40 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { ToastContainer } from "react-toastify";
-import Headroom from "headroom.js";
-import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from "./utils/applicationUtils";
-import cookies from "./utils/cookies";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { ToastContainer } from 'react-toastify';
+import Headroom from 'headroom.js';
+import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from './utils/applicationUtils';
+import cookies from './utils/cookies';
 import {
   getAppBaseClass, getToastClass, historyPush, isCordova, isWebApp,
-} from "./utils/cordovaUtils";
-import ElectionActions from "./actions/ElectionActions";
+} from './utils/cordovaUtils';
+import ElectionActions from './actions/ElectionActions';
 // import FooterBarCordova from "./components/Navigation/FooterBarCordova";
-import FooterBar from "./components/Navigation/FooterBar";
-import FriendActions from "./actions/FriendActions";
-import Header from "./components/Navigation/Header";
-import IssueActions from "./actions/IssueActions";
-import IssueStore from "./stores/IssueStore";
-import { renderLog, routingLog } from "./utils/logging";
-import OrganizationActions from "./actions/OrganizationActions";
-import TwitterSignIn from "./components/Twitter/TwitterSignIn";
-import VoterActions from "./actions/VoterActions";
-import VoterStore from "./stores/VoterStore";
-import webAppConfig from "./config";
+import FooterBar from './components/Navigation/FooterBar';
+import FriendActions from './actions/FriendActions';
+import Header from './components/Navigation/Header';
+import IssueActions from './actions/IssueActions';
+import IssueStore from './stores/IssueStore';
+import { renderLog, routingLog } from './utils/logging';
+import OrganizationActions from './actions/OrganizationActions';
+import TwitterSignIn from './components/Twitter/TwitterSignIn';
+import VoterActions from './actions/VoterActions';
+import VoterStore from './stores/VoterStore';
+import webAppConfig from './config';
 
 
 const loadingScreenStyles = {
-  position: "fixed",
-  height: "100vh",
-  width: "100vw",
-  display: "flex",
+  position: 'fixed',
+  height: '100vh',
+  width: '100vw',
+  display: 'flex',
   top: 0,
   left: 0,
-  backgroundColor: "#25536D",
-  justifyContent: "center",
-  alignItems: "center",
-  fontSize: "30px",
-  color: "#fff",
-  flexDirection: "column",
+  backgroundColor: '#25536D',
+  justifyContent: 'center',
+  alignItems: 'center',
+  fontSize: '30px',
+  color: '#fff',
+  flexDirection: 'column',
 };
 
 export default class Application extends Component {
@@ -89,9 +89,9 @@ export default class Application extends Component {
         offset: 20,
         tolerance: 1,
         classes: {
-          initial: "headroom--animated",
-          pinned: "headroom--slide-down",
-          unpinned: "headroom--slide-up",
+          initial: 'headroom--animated',
+          pinned: 'headroom--slide-down',
+          unpinned: 'headroom--slide-up',
         },
       }).init();
     }
@@ -120,7 +120,7 @@ export default class Application extends Component {
           appId: webAppConfig.FACEBOOK_APP_ID,
           autoLogAppEvents: true,
           xfbml: true,
-          version: "v3.2",
+          version: 'v3.2',
           status: true, // set this status to true, this will fix the popup blocker issue
         });
       };
@@ -134,16 +134,16 @@ export default class Application extends Component {
 
         js = d.createElement(s);    // eslint-disable-line prefer-const
         js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        js.src = 'https://connect.facebook.net/en_US/sdk.js';
         fjs.parentNode.insertBefore(js, fjs);
-      }(document, "script", "facebook-jssdk"));
+      }(document, 'script', 'facebook-jssdk'));
     }
   }
 
   onVoterStoreChange () {
     // console.log("Application, onVoterStoreChange");
     const voterDeviceId = VoterStore.voterDeviceId();
-    if (voterDeviceId && voterDeviceId !== "") {
+    if (voterDeviceId && voterDeviceId !== '') {
       if (this.state.voter_initial_retrieve_needed) {
         VoterActions.voterEmailAddressRetrieve();
         FriendActions.friendInvitationsSentToMe();
@@ -170,31 +170,31 @@ export default class Application extends Component {
       let atLeastOneQueryVariableFound = false;
       const oneDayExpires = 86400;
       const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-      const weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off") || 0;
+      const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off') || 0;
       if (weVoteBrandingOffFromUrl && !weVoteBrandingOffFromCookie) {
-        cookies.setItem("we_vote_branding_off", weVoteBrandingOffFromUrl, oneDayExpires, "/");
+        cookies.setItem('we_vote_branding_off', weVoteBrandingOffFromUrl, oneDayExpires, '/');
       }
 
       if (weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie) {
-        cookies.setItem("show_full_navigation", "1", Infinity, "/");
+        cookies.setItem('show_full_navigation', '1', Infinity, '/');
       }
 
       this.setState({ we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie });
 
       const hideIntroModalFromUrl = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
-      const hideIntroModalFromUrlTrue = hideIntroModalFromUrl === 1 || hideIntroModalFromUrl === "1" || hideIntroModalFromUrl === "true";
+      const hideIntroModalFromUrlTrue = hideIntroModalFromUrl === 1 || hideIntroModalFromUrl === '1' || hideIntroModalFromUrl === 'true';
       if (hideIntroModalFromUrl) {
         // console.log("hideIntroModalFromUrl: ", hideIntroModalFromUrl);
         atLeastOneQueryVariableFound = true;
       }
 
-      const hideIntroModalFromCookie = cookies.getItem("hide_intro_modal");
-      const hideIntroModalFromCookieTrue = hideIntroModalFromCookie === 1 || hideIntroModalFromCookie === "1" || hideIntroModalFromCookie === "true";
+      const hideIntroModalFromCookie = cookies.getItem('hide_intro_modal');
+      const hideIntroModalFromCookieTrue = hideIntroModalFromCookie === 1 || hideIntroModalFromCookie === '1' || hideIntroModalFromCookie === 'true';
       if (hideIntroModalFromUrlTrue && !hideIntroModalFromCookieTrue) {
-        cookies.setItem("hide_intro_modal", hideIntroModalFromUrl, oneDayExpires, "/");
+        cookies.setItem('hide_intro_modal', hideIntroModalFromUrl, oneDayExpires, '/');
       }
 
-      let autoFollowListFromUrl = "";
+      let autoFollowListFromUrl = '';
       if (this.props.location.query) {
         // console.log("this.props.location.query: ", this.props.location.query);
         if (this.props.location.query.af) {
@@ -205,16 +205,16 @@ export default class Application extends Component {
           autoFollowListFromUrl = this.props.location.query.auto_follow;
         }
 
-        const autoFollowList = autoFollowListFromUrl ? autoFollowListFromUrl.split(",") : [];
+        const autoFollowList = autoFollowListFromUrl ? autoFollowListFromUrl.split(',') : [];
         autoFollowList.forEach((organizationTwitterHandle) => {
-          OrganizationActions.organizationFollow("", organizationTwitterHandle);
+          OrganizationActions.organizationFollow('', organizationTwitterHandle);
         });
 
         if (this.props.location.query.voter_address) {
           // console.log("this.props.location.query.voter_address: ", this.props.location.query.voter_address);
           atLeastOneQueryVariableFound = true;
           const voterAddress = this.props.location.query.voter_address;
-          if (voterAddress && voterAddress !== "") {
+          if (voterAddress && voterAddress !== '') {
             // Do not save a blank voterAddress -- we don't want to over-ride an existing address with a blank
             VoterActions.voterAddressSave(voterAddress);
           }
@@ -232,7 +232,7 @@ export default class Application extends Component {
   preloadIssueImages () {
     // console.log("preloadIssueImages func")
     IssueStore.getIssuesVoterCanFollow().forEach((issue) => {
-      document.createElement("img").src = issue.issue_image_url;
+      document.createElement('img').src = issue.issue_image_url;
     });
 
     // only need to preload once
@@ -337,7 +337,7 @@ export default class Application extends Component {
                 voter={this.state.voter}
                 weVoteBrandingOff={this.state.weVoteBrandingOff}
         />
-        { pathname === "/welcome" || !contentFullWidthMode ?
+        { pathname === '/welcome' || !contentFullWidthMode ?
           (
             <div className="welcome-or-not-full-width">
               { this.props.children }
@@ -352,7 +352,7 @@ export default class Application extends Component {
               </div>
             </div>
           )}
-        { pathname !== "/welcome" && (
+        { pathname !== '/welcome' && (
           <div className="footroom-wrapper">
             <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
           </div>

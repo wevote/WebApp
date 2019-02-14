@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { cordovaDot } from "../../utils/cordovaUtils";
-import ImageHandler from "../ImageHandler";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import ImageHandler from '../ImageHandler';
+import { renderLog } from '../../utils/logging';
 
 export default class CheckBox extends Component {
   static propTypes = {
@@ -36,14 +36,14 @@ export default class CheckBox extends Component {
     return (
       <div className={`${this.props.grid} friends-list__square u-cursor--pointer`} onClick={this.toggleCheckboxChange}>
         <ImageHandler
-          sizeClassName={isChecked ? "friends-list__square-image friends-list__square-following" : "friends-list__square-image"}
+          sizeClassName={isChecked ? 'friends-list__square-image friends-list__square-following' : 'friends-list__square-image'}
           imageUrl={this.props.friendImage}
           alt={this.props.friendName}
         />
         { isChecked && (
         <ImageHandler
           className="friends-list__square-check-mark"
-          imageUrl={cordovaDot("/img/global/svg-icons/check-mark-v2-40x43.svg")}
+          imageUrl={cordovaDot('/img/global/svg-icons/check-mark-v2-40x43.svg')}
           alt="Inviting"
         />
         ) }

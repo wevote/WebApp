@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Button } from "react-bootstrap";
-import { Link } from "react-router";
-import { renderLog } from "../../utils/logging";
-import OrganizationStore from "../../stores/OrganizationStore";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import OpinionsFollowedListCompressed from "../Organization/OpinionsFollowedListCompressed";
+import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router';
+import { renderLog } from '../../utils/logging';
+import OrganizationStore from '../../stores/OrganizationStore';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OpinionsFollowedListCompressed from '../Organization/OpinionsFollowedListCompressed';
 
 export default class NetworkOpinionsFollowed extends Component {
   static propTypes = {
@@ -50,17 +50,17 @@ export default class NetworkOpinionsFollowed extends Component {
   }
 
   getCurrentRoute () {
-    const currentRoute = "/opinions_followed";
+    const currentRoute = '/opinions_followed';
     return currentRoute;
   }
 
   getFollowingType () {
     switch (this.getCurrentRoute()) {
-      case "/opinions":
-        return "WHO_YOU_CAN_FOLLOW";
-      case "/opinions_followed":
+      case '/opinions':
+        return 'WHO_YOU_CAN_FOLLOW';
+      case '/opinions_followed':
       default:
-        return "WHO_YOU_FOLLOW";
+        return 'WHO_YOU_FOLLOW';
     }
   }
 

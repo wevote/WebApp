@@ -2,20 +2,20 @@
 export function abbreviateNumber (num) {
   // =< 1,000,000 - round to hundred-thousand (1.4M)
   if (num >= 1000000) {
-    return `${(num / 1000000).toFixed(1).replace(/\.0$/, "")}M`;
+    return `${(num / 1000000).toFixed(1).replace(/\.0$/, '')}M`;
   }
   // 100,000 – 999,999 - round to nearest thousand (847K)
   if (num >= 100000) {
-    return `${(num / 1000).toFixed(0).replace(/\.0$/, "")}K`;
+    return `${(num / 1000).toFixed(0).replace(/\.0$/, '')}K`;
   }
   // 10,000 – 99,999 - round to single decimal (45.8K)
   if (num >= 10000) {
-    return `${(num / 1000).toFixed(1).replace(/\.0$/, "")}K`;
+    return `${(num / 1000).toFixed(1).replace(/\.0$/, '')}K`;
   }
   // < 10,000 - add comma for thousands (3,857)
   if (num < 10000) {
     const stringNum = num.toString();
-    return stringNum.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return stringNum.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
   return num;
 }
@@ -41,27 +41,27 @@ export function arrayUnique (array) {
 }
 
 export function calculateBallotBaseUrl (incomingBallotBaseUrl, incomingPathname) {
-  const incomingPathnameExists = incomingPathname && incomingPathname !== "";
-  const ballotBaseUrlEmpty = !incomingBallotBaseUrl || incomingBallotBaseUrl === "";
-  let ballotBaseUrl = "";
+  const incomingPathnameExists = incomingPathname && incomingPathname !== '';
+  const ballotBaseUrlEmpty = !incomingBallotBaseUrl || incomingBallotBaseUrl === '';
+  let ballotBaseUrl = '';
   if (incomingPathnameExists && ballotBaseUrlEmpty) {
     // console.log("incomingPathname:", incomingPathname);
     // Strip off everything after these path strings "/ballot" "/positions" "/followers" "/followed"
-    const temp1 = incomingPathname.split("/ballot")[0];
-    const temp2 = temp1.split("/positions")[0];
-    const temp3 = temp2.split("/followers")[0];
-    const temp4 = temp3.split("/followed")[0];
+    const temp1 = incomingPathname.split('/ballot')[0];
+    const temp2 = temp1.split('/positions')[0];
+    const temp3 = temp2.split('/followers')[0];
+    const temp4 = temp3.split('/followed')[0];
     ballotBaseUrl = `${temp4}/ballot`;
     // console.log("ballotBaseUrl:", ballotBaseUrl);
   } else {
-    ballotBaseUrl = incomingBallotBaseUrl || "/ballot";
+    ballotBaseUrl = incomingBallotBaseUrl || '/ballot';
   }
   return ballotBaseUrl;
 }
 
 export function toTitleCase (incomingString) {
   if (!incomingString) {
-    return "";
+    return '';
   }
   let count;
   let arrayLength;
@@ -70,28 +70,28 @@ export function toTitleCase (incomingString) {
 
   // Certain minor words should be left lowercase unless
   // they are the first or last words in the string
-  const lowers = ["A", "An", "The", "And", "But", "Or", "For", "Nor", "As", "At",
-    "By", "For", "From", "In", "Into", "Near", "Of", "On", "Onto", "To", "With"];
+  const lowers = ['A', 'An', 'The', 'And', 'But', 'Or', 'For', 'Nor', 'As', 'At',
+    'By', 'For', 'From', 'In', 'Into', 'Near', 'Of', 'On', 'Onto', 'To', 'With'];
   for (count = 0, arrayLength = lowers.length; count < arrayLength; count++) {
-    str = str.replace(new RegExp(`\\s${lowers[count]}\\s`, "g"),
+    str = str.replace(new RegExp(`\\s${lowers[count]}\\s`, 'g'),
       txt => txt.toLowerCase());
   }
 
   // Leave state codes and measure names upper case
-  const uppers = ["Us", "Ak", "Al", "Ar", "Az", "Ca", "Co", "Ct", "Dc", "De", "Fl", "Ga", "Gu", "Hi", "Ia", "Id",
-    "Il", "In", "Ks", "La", "Ma", "Md", "Me", "Mi", "Mn", "Mo", "Mp", "Ms", "Mt", "Na", "Nc", "Nd", "Ne",
-    "Nh", "Nj", "Nm", "Nv", "Ny", "Oh", "Ok", "Pa", "Pr", "Ri", "Sc", "Sd", "Tn", "Tx", "Ut", "Va", "Vi",
-    "Vt", "Wa", "Wi", "Wv", "Wy",
-    "Aa", "Bb", "Cc", "Dd", "Ee", "Ff", "Gg", "Hh", "Ii", "Jj", "Kk", "Ll", "Mm", "Nn", "Oo", "Pp",
-    "Qq", "Rr", "Ss", "Tt", "Uu", "Vv", "Ww", "Xx", "Yy", "Zz"];
+  const uppers = ['Us', 'Ak', 'Al', 'Ar', 'Az', 'Ca', 'Co', 'Ct', 'Dc', 'De', 'Fl', 'Ga', 'Gu', 'Hi', 'Ia', 'Id',
+    'Il', 'In', 'Ks', 'La', 'Ma', 'Md', 'Me', 'Mi', 'Mn', 'Mo', 'Mp', 'Ms', 'Mt', 'Na', 'Nc', 'Nd', 'Ne',
+    'Nh', 'Nj', 'Nm', 'Nv', 'Ny', 'Oh', 'Ok', 'Pa', 'Pr', 'Ri', 'Sc', 'Sd', 'Tn', 'Tx', 'Ut', 'Va', 'Vi',
+    'Vt', 'Wa', 'Wi', 'Wv', 'Wy',
+    'Aa', 'Bb', 'Cc', 'Dd', 'Ee', 'Ff', 'Gg', 'Hh', 'Ii', 'Jj', 'Kk', 'Ll', 'Mm', 'Nn', 'Oo', 'Pp',
+    'Qq', 'Rr', 'Ss', 'Tt', 'Uu', 'Vv', 'Ww', 'Xx', 'Yy', 'Zz'];
   for (count = 0, arrayLength = uppers.length; count < arrayLength; count++) {
-    str = str.replace(new RegExp(`\\b${uppers[count]}\\b`, "g"),
+    str = str.replace(new RegExp(`\\b${uppers[count]}\\b`, 'g'),
       uppers[count].toUpperCase());
   }
 
   // Finally, search and replace for pesky abbreviations
-  str = str.replace("U.s.", "U.S.");
-  str = str.replace("u.s.", "U.S.");
+  str = str.replace('U.s.', 'U.S.');
+  str = str.replace('u.s.', 'U.S.');
 
   return str;
 }
@@ -132,17 +132,17 @@ export function elipses (name, mobile) {
 
 export function extractTwitterHandleFromTextString (rawString) {
   if (rawString === undefined) {
-    return "";
+    return '';
   }
   let lowerCaseString = rawString.toLowerCase();
-  lowerCaseString = lowerCaseString.replace("http://twitter.com", "");
-  lowerCaseString = lowerCaseString.replace("http://www.twitter.com", "");
-  lowerCaseString = lowerCaseString.replace("https://twitter.com", "");
-  lowerCaseString = lowerCaseString.replace("https://www.twitter.com", "");
-  lowerCaseString = lowerCaseString.replace("www.twitter.com", "");
-  lowerCaseString = lowerCaseString.replace("twitter.com", "");
-  lowerCaseString = lowerCaseString.replace("@", "");
-  lowerCaseString = lowerCaseString.replace("/", "");
+  lowerCaseString = lowerCaseString.replace('http://twitter.com', '');
+  lowerCaseString = lowerCaseString.replace('http://www.twitter.com', '');
+  lowerCaseString = lowerCaseString.replace('https://twitter.com', '');
+  lowerCaseString = lowerCaseString.replace('https://www.twitter.com', '');
+  lowerCaseString = lowerCaseString.replace('www.twitter.com', '');
+  lowerCaseString = lowerCaseString.replace('twitter.com', '');
+  lowerCaseString = lowerCaseString.replace('@', '');
+  lowerCaseString = lowerCaseString.replace('/', '');
   return lowerCaseString;
 }
 
@@ -178,18 +178,18 @@ export function mergeTwoObjectLists (obj1, obj2) {
 
 export function numberWithCommas (rawNumber) {
   if (rawNumber) {
-    const parts = rawNumber.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return parts.join(".");
+    const parts = rawNumber.toString().split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return parts.join('.');
   } else {
-    return "";
+    return '';
   }
 }
 
 // If Display name is repeated in beginning of the description, remove the name from the description (along with trailing 'is') and capitalize next word to begin description.
 export function removeTwitterNameFromDescription (displayName, twitterDescription) {
-  const displayNameNotNull = displayName || "";
-  const twitterDescriptionNotNull = twitterDescription || "";
+  const displayNameNotNull = displayName || '';
+  const twitterDescriptionNotNull = twitterDescription || '';
   let twitterDescriptionMinusName;
 
   if (twitterDescriptionNotNull.startsWith(displayNameNotNull)) {
@@ -199,12 +199,12 @@ export function removeTwitterNameFromDescription (displayName, twitterDescriptio
   } else if (twitterDescriptionNotNull.length) {
     twitterDescriptionMinusName = twitterDescriptionNotNull;
   } else {
-    twitterDescriptionMinusName = "";
+    twitterDescriptionMinusName = '';
   }
-  if (twitterDescriptionMinusName.startsWith(", ")) {
+  if (twitterDescriptionMinusName.startsWith(', ')) {
     twitterDescriptionMinusName = twitterDescriptionMinusName.substr(2);
   }
-  if (twitterDescriptionMinusName.startsWith(": ")) {
+  if (twitterDescriptionMinusName.startsWith(': ')) {
     twitterDescriptionMinusName = twitterDescriptionMinusName.substr(2);
   }
   return twitterDescriptionMinusName;
@@ -221,10 +221,10 @@ export function removeValueFromArray (listArray, valueToRemove) {
 }
 
 export function returnFirstXWords (originalString, numberOfWordsToReturn) {
-  if (!originalString) return "";
+  if (!originalString) return '';
 
-  const wordsArray = originalString.split(" ");
-  let xWords = "";
+  const wordsArray = originalString.split(' ');
+  let xWords = '';
   for (let i = 0; i < wordsArray.length; i++) {
     if (i >= numberOfWordsToReturn) {
       break;
@@ -239,17 +239,17 @@ export function returnFirstXWords (originalString, numberOfWordsToReturn) {
 
 export function sentenceCaseString (rawStringIncoming) {
   if (rawStringIncoming === undefined) {
-    return "";
+    return '';
   }
   const rawString = rawStringIncoming.toLowerCase();
-  const stringArray = rawString.split(".");
-  let finalString = "";
+  const stringArray = rawString.split('.');
+  let finalString = '';
   let count;
   let count2;
   for (count = 0; count < stringArray.length; count++) {
-    let spaceput = "";
-    const spaceCount = stringArray[count].replace(/^(\s*).*$/, "$1").length;
-    stringArray[count] = stringArray[count].replace(/^\s+/, "");
+    let spaceput = '';
+    const spaceCount = stringArray[count].replace(/^(\s*).*$/, '$1').length;
+    stringArray[count] = stringArray[count].replace(/^\s+/, '');
     const newString = stringArray[count].charAt(stringArray[count]).toUpperCase() + stringArray[count].slice(1);
     for (count2 = 0; count2 < spaceCount; count2++) {
       spaceput = `${spaceput} `;
@@ -283,5 +283,5 @@ export const vimeoRegX = /http(s)?:\/\/(www\.)?vimeo.com\/(\d+)(\/)?(#.*)?/;
 
 // This must be placed after declaration of stringContains
 export function isProperlyFormattedVoterGuideWeVoteId (voterGuideWeVoteId) {
-  return voterGuideWeVoteId && stringContains("wv", voterGuideWeVoteId) && stringContains("vg", voterGuideWeVoteId);
+  return voterGuideWeVoteId && stringContains('wv', voterGuideWeVoteId) && stringContains('vg', voterGuideWeVoteId);
 }

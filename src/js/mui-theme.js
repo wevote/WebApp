@@ -1,5 +1,5 @@
-import amber from "@material-ui/core/colors/amber";
-import { createMuiTheme } from "@material-ui/core/styles";
+import amber from '@material-ui/core/colors/amber';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 const overrides = {
   MuiButton: {
@@ -9,33 +9,33 @@ const overrides = {
   },
   MuiTooltip: {
     tooltip: {
-      fontSize: "14px",
+      fontSize: '14px',
     },
   },
   MuiFormControlLabel: {
     root: {
-      marginBottom: "-.5rem",
+      marginBottom: '-.5rem',
     },
   },
   MuiAppBar: {
     colorDefault: {
-      backgroundColor: "#fff",
-      color: "#333",
+      backgroundColor: '#fff',
+      color: '#333',
     },
   },
   MuiToolbar: {
     regular: {
-      minHeight: "48px !important",
+      minHeight: '48px !important',
     },
   },
   MuiTab: {
     root: {
-      outline: "none !important",
+      outline: 'none !important',
     },
   },
   MuiBottomNavigationAction: {
     root: {
-      minWidth: "60px",
+      minWidth: '60px',
     },
   },
 };
@@ -44,7 +44,7 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       // main: "#25536D",
-      main: "#2E3C5D",
+      main: '#2E3C5D',
     },
     secondary: amber, // Feel free to change this
   },

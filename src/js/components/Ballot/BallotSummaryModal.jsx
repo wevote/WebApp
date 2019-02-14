@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Modal } from "react-bootstrap";
-import BallotSideBar from "../Navigation/BallotSideBar";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Modal } from 'react-bootstrap';
+import BallotSideBar from '../Navigation/BallotSideBar';
+import { renderLog } from '../../utils/logging';
 
 
 export default class BallotSummaryModal extends Component {

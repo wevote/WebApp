@@ -1,22 +1,22 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Modal } from "react-bootstrap";
-import Slider from "react-slick";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import BallotIntroFollowIssues from "../Ballot/BallotIntroFollowIssues";
-import BallotIntroFollowAdvisers from "../Ballot/BallotIntroFollowAdvisers";
-import BallotIntroVerifyAddress from "../Ballot/BallotIntroVerifyAddress";
-import { cordovaDot, hasIPhoneNotch, isWebApp } from "../../utils/cordovaUtils";
-import SecondaryNavBarItem from "./SecondaryNavBarItem";
-import EmailBallotModal from "../Ballot/EmailBallotModal";
-import EmailBallotToFriendsModal from "../Ballot/EmailBallotToFriendsModal";
-import FacebookBallotModal from "../Ballot/FacebookBallotModal";
-import FacebookBallotToFriendsModal from "../Ballot/FacebookBallotToFriendsModal";
-import PollingPlaceLocatorModal from "../../routes/Ballot/PollingPlaceLocatorModal";
-import { renderLog } from "../../utils/logging";
-import VoterActions from "../../actions/VoterActions";
-import VoterStore from "../../stores/VoterStore";
-import webAppConfig from "../../config";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Modal } from 'react-bootstrap';
+import Slider from 'react-slick';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import BallotIntroFollowIssues from '../Ballot/BallotIntroFollowIssues';
+import BallotIntroFollowAdvisers from '../Ballot/BallotIntroFollowAdvisers';
+import BallotIntroVerifyAddress from '../Ballot/BallotIntroVerifyAddress';
+import { cordovaDot, hasIPhoneNotch, isWebApp } from '../../utils/cordovaUtils';
+import SecondaryNavBarItem from './SecondaryNavBarItem';
+import EmailBallotModal from '../Ballot/EmailBallotModal';
+import EmailBallotToFriendsModal from '../Ballot/EmailBallotToFriendsModal';
+import FacebookBallotModal from '../Ballot/FacebookBallotModal';
+import FacebookBallotToFriendsModal from '../Ballot/FacebookBallotToFriendsModal';
+import PollingPlaceLocatorModal from '../../routes/Ballot/PollingPlaceLocatorModal';
+import { renderLog } from '../../utils/logging';
+import VoterActions from '../../actions/VoterActions';
+import VoterStore from '../../stores/VoterStore';
+import webAppConfig from '../../config';
 
 export default class HeaderSecondaryNavBar extends Component {
   static propTypes = {
@@ -182,8 +182,8 @@ export default class HeaderSecondaryNavBar extends Component {
       >
         <Modal.Body>
           <div className="intro-modal__close">
-            <a onClick={this._toggleBallotIntroFollowIssues} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}>
-              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
+            <a onClick={this._toggleBallotIntroFollowIssues} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}>
+              <img src={cordovaDot('/img/global/icons/x-close.png')} alt="close" />
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height intro-modal__height-full" ref="slider" {...sliderSettings}>
@@ -205,9 +205,9 @@ export default class HeaderSecondaryNavBar extends Component {
           <div className="intro-modal__close">
             <a
               onClick={this._toggleEmailModal}
-              className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}
+              className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}
             >
-              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
+              <img src={cordovaDot('/img/global/icons/x-close.png')} alt="close" />
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettingsWithSwipe}>
@@ -242,9 +242,9 @@ export default class HeaderSecondaryNavBar extends Component {
           <div className="intro-modal__close">
             <a
               onClick={this._toggleFacebookModal}
-              className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}
+              className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}
             >
-              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
+              <img src={cordovaDot('/img/global/icons/x-close.png')} alt="close" />
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettingsWithSwipe}>
@@ -278,39 +278,39 @@ export default class HeaderSecondaryNavBar extends Component {
       />
     );
 
-    const currentPathname = this.props.pathname ? this.props.pathname : "/ballot";
-    const ballotBaseUrl = webAppConfig.WE_VOTE_URL_PROTOCOL + (isWebApp() ? webAppConfig.WE_VOTE_HOSTNAME : "WeVote.US") + currentPathname;
+    const currentPathname = this.props.pathname ? this.props.pathname : '/ballot';
+    const ballotBaseUrl = webAppConfig.WE_VOTE_URL_PROTOCOL + (isWebApp() ? webAppConfig.WE_VOTE_HOSTNAME : 'WeVote.US') + currentPathname;
 
     // We want to add a tracking code here so we can count shares. Vote.org does it this way: https://www.vote.org/#.WpiRvFhU3V4.twitter
-    const encodedMessage = encodeURIComponent("I am getting ready to vote @WeVote. Join me!");
+    const encodedMessage = encodeURIComponent('I am getting ready to vote @WeVote. Join me!');
     const twitterIntent = `https://twitter.com/intent/tweet?url=${encodeURIComponent(ballotBaseUrl)}&text=${encodedMessage}&hashtags=Vote,Voting,WeVote`;
-    const searchStyle = isWebApp() ? "page-secondary-nav-header" : "page-secondary-nav-header page-header-cordova-secondary-nav";
+    const searchStyle = isWebApp() ? 'page-secondary-nav-header' : 'page-secondary-nav-header page-header-cordova-secondary-nav';
 
     return (
       <div className="page-secondary-nav-header-background">
         { voterThoroughOrientationComplete ?
           null : (
             <header className={searchStyle}>
-              <div className={`header-secondary-nav ${hasIPhoneNotch() ? "header-secondary-nav__iphone-x-vertical-spacing" : ""}`}>
+              <div className={`header-secondary-nav ${hasIPhoneNotch() ? 'header-secondary-nav__iphone-x-vertical-spacing' : ''}`}>
                 {/* Issues Icon & Modal */}
                 {/* {!this.props.hideGettingStartedIssuesButton ? null : null } No longer hiding Issue Button */}
                 {/* completed={this.state.ballot_intro_issues_completed} No longer using completed state */}
                 <SecondaryNavBarItem
                   show={this._toggleBallotIntroFollowIssues}
-                  source={cordovaDot("/img/global/svg-icons/nav/issues-16.svg")}
+                  source={cordovaDot('/img/global/svg-icons/nav/issues-16.svg')}
                   title="Issues"
                 />
 
                 <SecondaryNavBarItem
                   show={this._openPrintModal}
-                  source={cordovaDot("/img/global/svg-icons/nav/print-16.svg")}
+                  source={cordovaDot('/img/global/svg-icons/nav/print-16.svg')}
                   title="Print"
                   iconPrint
                 />
 
                 <SecondaryNavBarItem
                   show={this._toggleEmailModal}
-                  source={cordovaDot("/img/global/svg-icons/nav/email-16.svg")}
+                  source={cordovaDot('/img/global/svg-icons/nav/email-16.svg')}
                   title="Email Ballot"
                 />
 
@@ -342,7 +342,7 @@ export default class HeaderSecondaryNavBar extends Component {
                 <div>
                   <SecondaryNavBarItem
                     show={this._togglePollingLocatorModal}
-                    source={cordovaDot("/img/global/svg-icons/nav/location-16.svg")}
+                    source={cordovaDot('/img/global/svg-icons/nav/location-16.svg')}
                     titleDesktop="Polling Location"
                     titleMobile="Vote"
                   />

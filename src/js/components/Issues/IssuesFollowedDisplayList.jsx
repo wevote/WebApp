@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import IssuesDisplayListWithOrganizationPopovers from "./IssuesDisplayListWithOrganizationPopovers";
-import IssueStore from "../../stores/IssueStore";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import IssuesDisplayListWithOrganizationPopovers from './IssuesDisplayListWithOrganizationPopovers';
+import IssueStore from '../../stores/IssueStore';
+import { renderLog } from '../../utils/logging';
 
 
 // Show a voter a horizontal list of all of their issues,

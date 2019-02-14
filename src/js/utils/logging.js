@@ -1,10 +1,10 @@
-const webAppConfig = require("../config");
+const webAppConfig = require('../config');
 // import { default as webAppConfig } from '../config';
 
 // react-native-router-flux state change logging
 export function routingLog (text) {
   if (webAppConfig.LOG_ROUTING) {
-    console.log("Application pathname on entry = ", text);
+    console.log('Application pathname on entry = ', text);
   }
 }
 
@@ -21,10 +21,10 @@ export function renderLog (filePath, suffix) {
     }
   }
 
-  const file = filePath.replace(/^.*[\\\/]/, "");  // eslint-disable-line no-useless-escape
+  const file = filePath.replace(/^.*[\\\/]/, '');  // eslint-disable-line no-useless-escape
 
   if (webAppConfig.LOG_RENDER_EVENTS || webAppConfig.LOG_ONLY_FIRST_RENDER_EVENTS) {
-    console.log("render ==== ", file, " ==== ", suffix || "");
+    console.log('render ==== ', file, ' ==== ', suffix || '');
   }
 }
 
@@ -43,9 +43,9 @@ export function httpLog (text, res) {
 export function oAuthLog (text, res) {
   if (webAppConfig.LOG_SIGNIN_STEPS) {
     if (res) {
-      console.log(">> oAuth >> ", text, res);
+      console.log('>> oAuth >> ', text, res);
     } else {
-      console.log(">> oAuth >> ", text);
+      console.log('>> oAuth >> ', text);
     }
   }
 }

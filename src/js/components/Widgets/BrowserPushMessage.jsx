@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Alert } from "react-bootstrap";
-import { isCordova } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Alert } from 'react-bootstrap';
+import { isCordova } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 
 export default class BrowserPushMessage extends Component {
   static propTypes = {
@@ -30,19 +30,19 @@ export default class BrowserPushMessage extends Component {
     let { message, type } = this.state;
     const { name } = this.state;
 
-    if (name === "test") {
-      type = "danger";
-      message = "Test message";
+    if (name === 'test') {
+      type = 'danger';
+      message = 'Test message';
     }
 
     if (!type) {
-      type = "info";
+      type = 'info';
     }
 
     return (
       <span>
         {message ? (
-          <div className={isCordova() ? "ballot__cordova-shim" : ""}>
+          <div className={isCordova() ? 'ballot__cordova-shim' : ''}>
             <Alert variant={type}>
               {message}
             </Alert>

@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import cookies from "../../utils/cookies";
-import { historyPush } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import cookies from '../../utils/cookies';
+import { historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 
 export default class SampleBallot extends Component {
   constructor (props) {
@@ -11,18 +11,18 @@ export default class SampleBallot extends Component {
   }
 
   componentWillMount () {
-    document.body.style.backgroundColor = "#A3A3A3";
-    document.body.className = "story-view";
-    cookies.setItem("show_full_navigation", "1", Infinity, "/");
+    document.body.style.backgroundColor = '#A3A3A3';
+    document.body.className = 'story-view';
+    cookies.setItem('show_full_navigation', '1', Infinity, '/');
   }
 
   componentWillUnmount () {
     document.body.style.backgroundColor = null;
-    document.body.className = "";
+    document.body.className = '';
   }
 
   goToBallotLink () {
-    const goToBallot = "/ballot";
+    const goToBallot = '/ballot';
     historyPush(goToBallot);
   }
 
@@ -37,7 +37,7 @@ export default class SampleBallot extends Component {
           On the next screen, you&apos;ll see
           <br />
           your ballot from the 2016
-          {" "}
+          {' '}
           <br />
           General Election.
         </div>

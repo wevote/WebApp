@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
-import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
-import DonateActions from "../../actions/DonateActions";
-import { renderLog } from "../../utils/logging";
-import webAppConfig from "../../config";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
+import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import DonateActions from '../../actions/DonateActions';
+import { renderLog } from '../../utils/logging';
+import webAppConfig from '../../config';
 
 export default class DonationForm extends Component {
   static propTypes = {
@@ -25,19 +25,19 @@ export default class DonationForm extends Component {
     const self = this;
     const { StripeCheckout } = window;
     if (StripeCheckout !== undefined) {
-      console.log("StripeCheckout is defined  ", StripeCheckout);
+      console.log('StripeCheckout is defined  ', StripeCheckout);
       this.stripeHandler = StripeCheckout.configure({
         key: webAppConfig.STRIPE_API_KEY,
-        image: cordovaDot("https://stripe.com/img/documentation/checkout/marketplace.png"),
-        locale: "auto",
+        image: cordovaDot('https://stripe.com/img/documentation/checkout/marketplace.png'),
+        locale: 'auto',
         token (token) {
           // console.log("token generated " + token.id + " token.email " + token.email);
           DonateActions.donationWithStripe(token.id, token.email, self.props.donationAmount, self.props.donateMonthly);
-          historyPush("/more/processing_donation");
+          historyPush('/more/processing_donation');
         },
       });
     } else {
-      console.log("StripeCheckout is NOT defined: ", StripeCheckout);
+      console.log('StripeCheckout is NOT defined: ', StripeCheckout);
     }
   }
 
@@ -49,20 +49,20 @@ export default class DonationForm extends Component {
 
   _donationDescription () {
     if (this.props.donateMonthly) {
-      return "Donate Monthly";
+      return 'Donate Monthly';
     } else {
-      return "Donation";
+      return 'Donation';
     }
   }
 
   _openStripeModal (event) {
     event.preventDefault();
     this.stripeHandler.open({
-      name: "We Vote",
+      name: 'We Vote',
       description: this._donationDescription(),
       zipCode: true,
       amount: this.props.donationAmount,
-      panelLabel: "Donate ",
+      panelLabel: 'Donate ',
     });
   }
 
@@ -70,13 +70,13 @@ export default class DonationForm extends Component {
     renderLog(__filename);
     let { donateButtonText } = this.props;
     if (!donateButtonText) {
-      donateButtonText = "Donate Now";
+      donateButtonText = 'Donate Now';
     }
 
     return (
       <span>
         <Button
-          bsPrefix={this.props.donateOther ? "" : "btn_donate btn btn-success"}
+          bsPrefix={this.props.donateOther ? '' : 'btn_donate btn btn-success'}
           variant="success"
           onClick={this._openStripeModal}
         >

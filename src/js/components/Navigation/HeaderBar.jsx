@@ -1,30 +1,30 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import styled from "styled-components";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Button from "@material-ui/core/Button";
-import Badge from "@material-ui/core/Badge";
-import { withStyles } from "@material-ui/core/styles";
-import BallotStore from "../../stores/BallotStore";
-import { cordovaDot, historyPush, isWebApp, hasIPhoneNotch } from "../../utils/cordovaUtils";
-import cookies from "../../utils/cookies";
-import FriendStore from "../../stores/FriendStore";
-import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
-import HeaderBarLogo from "./HeaderBarLogo";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterSessionActions from "../../actions/VoterSessionActions";
-import { stringContains } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import styled from 'styled-components';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Button from '@material-ui/core/Button';
+import Badge from '@material-ui/core/Badge';
+import { withStyles } from '@material-ui/core/styles';
+import BallotStore from '../../stores/BallotStore';
+import { cordovaDot, historyPush, isWebApp, hasIPhoneNotch } from '../../utils/cordovaUtils';
+import cookies from '../../utils/cookies';
+import FriendStore from '../../stores/FriendStore';
+import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
+import HeaderBarLogo from './HeaderBarLogo';
+import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterSessionActions from '../../actions/VoterSessionActions';
+import { stringContains } from '../../utils/textFormat';
 
 const styles = theme => ({
   headerBadge: {
-    right: "-25px",
-    top: "-2px",
+    right: '-25px',
+    top: '-2px',
   },
   padding: {
     padding: `0 ${theme.spacing.unit * 2}px`,
@@ -32,7 +32,7 @@ const styles = theme => ({
 });
 
 const Wrapper = styled.div`
-  margin-top: ${({ hasNotch }) => (hasNotch ? "1.5rem" : "0")};
+  margin-top: ${({ hasNotch }) => (hasNotch ? '1.5rem' : '0')};
 `;
 
 class HeaderBar extends Component {
@@ -45,9 +45,9 @@ class HeaderBar extends Component {
 
   static ballot (active) {
     return (
-      <Link to="/ballot" className={`header-nav__item${active ? " active-icon" : ""}`}>
+      <Link to="/ballot" className={`header-nav__item${active ? ' active-icon' : ''}`}>
         <img className="header-nav__icon--ballot"
-             src={cordovaDot("/img/global/svg-icons/nav/ballot-icon-24.svg")}
+             src={cordovaDot('/img/global/svg-icons/nav/ballot-icon-24.svg')}
              color="#ffffff"
              alt="Ballot"
         />
@@ -59,7 +59,7 @@ class HeaderBar extends Component {
   }
 
   static goToGetStarted () {
-    const getStartedNow = "/ballot";
+    const getStartedNow = '/ballot';
     historyPush(getStartedNow);
   }
 
@@ -84,7 +84,7 @@ class HeaderBar extends Component {
 
     // this.props.location &&
     const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-    const weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
+    const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     this.setState({
       componentDidMountFinished: true,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
@@ -154,9 +154,9 @@ class HeaderBar extends Component {
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    if (stringContains("/ballot", pathname)) return 0;
-    if (stringContains("/more/network/friends", pathname)) return 2;
-    if (stringContains("/more/network", pathname)) return 1;
+    if (stringContains('/ballot', pathname)) return 0;
+    if (stringContains('/more/network/friends', pathname)) return 2;
+    if (stringContains('/more/network', pathname)) return 1;
     return false;
   }
 
@@ -192,11 +192,11 @@ class HeaderBar extends Component {
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0;
     const voterIsSignedIn = this.props.voter && this.props.voter.is_signed_in;
-    const showFullNavigation = cookies.getItem("show_full_navigation") || voterIsSignedIn;
+    const showFullNavigation = cookies.getItem('show_full_navigation') || voterIsSignedIn;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
     return (
       <Wrapper hasNotch={hasIPhoneNotch()}>
-        <AppBar position="relative" color="default" className={isWebApp() ? "page-header" : "page-header page-header__cordova"}>
+        <AppBar position="relative" color="default" className={isWebApp() ? 'page-header' : 'page-header page-header__cordova'}>
           <Toolbar className="header-toolbar" disableGutters>
             {!weVoteBrandingOff && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />}
             <div className="header-nav">

@@ -1,17 +1,17 @@
 /* global google */
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Button from "@material-ui/core/Button";
-import { withStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import InputBase from "@material-ui/core/InputBase";
-import BallotStore from "../stores/BallotStore";
-import BallotActions from "../actions/BallotActions";
-import { historyPush, isCordova, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../utils/cordovaUtils";
-import LoadingWheel from "./LoadingWheel";
-import { renderLog } from "../utils/logging";
-import VoterActions from "../actions/VoterActions";
-import VoterStore from "../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import InputBase from '@material-ui/core/InputBase';
+import BallotStore from '../stores/BallotStore';
+import BallotActions from '../actions/BallotActions';
+import { historyPush, isCordova, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../utils/cordovaUtils';
+import LoadingWheel from './LoadingWheel';
+import { renderLog } from '../utils/logging';
+import VoterActions from '../actions/VoterActions';
+import VoterStore from '../stores/VoterStore';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint react/sort-comp: 0 */
@@ -25,16 +25,16 @@ import VoterStore from "../stores/VoterStore";
 
 const styles = {
   root: {
-    padding: "2px .7rem",
-    display: "flex",
-    alignItems: "center",
+    padding: '2px .7rem',
+    display: 'flex',
+    alignItems: 'center',
     width: 400,
-    marginBottom: "1rem",
-    marginRight: "1rem",
+    marginBottom: '1rem',
+    marginRight: '1rem',
   },
   saveButton: {
-    marginRight: ".3rem",
-    height: "fit-content",
+    marginRight: '.3rem',
+    height: 'fit-content',
   },
   input: {
     marginLeft: 8,
@@ -58,8 +58,8 @@ class AddressBox extends Component {
     super(props);
     this.state = {
       loading: false,
-      textForMapSearch: "",
-      ballotCaveat: "",
+      textForMapSearch: '',
+      ballotCaveat: '',
       voterSavedAddress: false,
     };
 
@@ -82,8 +82,8 @@ class AddressBox extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     const addressAutocomplete = new google.maps.places.Autocomplete(this.autoComplete);
-    addressAutocomplete.setComponentRestrictions({ country: "us" });
-    this.googleAutocompleteListener = addressAutocomplete.addListener("place_changed", this._placeChanged.bind(this, addressAutocomplete));
+    addressAutocomplete.setComponentRestrictions({ country: 'us' });
+    this.googleAutocompleteListener = addressAutocomplete.addListener('place_changed', this._placeChanged.bind(this, addressAutocomplete));
   }
 
   componentWillUnmount () {
@@ -92,7 +92,7 @@ class AddressBox extends Component {
     if (this.googleAutocompleteListener !== undefined) { // Temporary fix until google maps key is fixed.
       this.googleAutocompleteListener.remove();
     } else {
-      console.log("Google Maps Error: DeletedApiProjectMapError");
+      console.log('Google Maps Error: DeletedApiProjectMapError');
     }
     restoreStylesAfterCordovaKeyboard(__filename);
   }
@@ -119,7 +119,7 @@ class AddressBox extends Component {
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
-    console.error("AddressBox caught error: ", `${error} with info: `, info);
+    console.error('AddressBox caught error: ', `${error} with info: `, info);
   }
 
   onVoterStoreChange () {
@@ -177,7 +177,7 @@ class AddressBox extends Component {
   voterAddressSave (event) {
     event.preventDefault();
     VoterActions.voterAddressSave(this.state.textForMapSearch);
-    BallotActions.completionLevelFilterTypeSave("filterAllBallotItems");
+    BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
     this.setState({ loading: true, voterSavedAddress: true });
   }
 
@@ -186,7 +186,7 @@ class AddressBox extends Component {
     const { classes } = this.props;
     renderLog(__filename);
     if (this.state.loading) {
-      if (!waitingMessage) waitingMessage = "Please wait a moment while we find your ballot...";
+      if (!waitingMessage) waitingMessage = 'Please wait a moment while we find your ballot...';
 
       return (
         <div>

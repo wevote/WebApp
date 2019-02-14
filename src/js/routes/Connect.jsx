@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import { Link } from "react-router";
-import Helmet from "react-helmet";
-import AddFriendsByEmail from "../components/Friends/AddFriendsByEmail";
-import CurrentFriends from "../components/Connect/CurrentFriends";
-import VoterGuideStore from "../stores/VoterGuideStore";
-import FriendActions from "../actions/FriendActions";
-import FriendStore from "../stores/FriendStore";
-import FacebookActions from "../actions/FacebookActions";
-import FacebookStore from "../stores/FacebookStore";
-import { renderLog } from "../utils/logging";
-import OrganizationActions from "../actions/OrganizationActions";
-import OrganizationsFollowedOnTwitter from "../components/Connect/OrganizationsFollowedOnTwitter";
-import OrganizationStore from "../stores/OrganizationStore";
-import AddFacebookFriends from "../components/Connect/AddFacebookFriends";
-import ItemTinyOpinionsToFollow from "../components/VoterGuide/ItemTinyOpinionsToFollow";
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import Helmet from 'react-helmet';
+import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
+import CurrentFriends from '../components/Connect/CurrentFriends';
+import VoterGuideStore from '../stores/VoterGuideStore';
+import FriendActions from '../actions/FriendActions';
+import FriendStore from '../stores/FriendStore';
+import FacebookActions from '../actions/FacebookActions';
+import FacebookStore from '../stores/FacebookStore';
+import { renderLog } from '../utils/logging';
+import OrganizationActions from '../actions/OrganizationActions';
+import OrganizationsFollowedOnTwitter from '../components/Connect/OrganizationsFollowedOnTwitter';
+import OrganizationStore from '../stores/OrganizationStore';
+import AddFacebookFriends from '../components/Connect/AddFacebookFriends';
+import ItemTinyOpinionsToFollow from '../components/VoterGuide/ItemTinyOpinionsToFollow';
 
 export default class Connect extends Component {
   static propTypes = {
@@ -96,15 +96,15 @@ export default class Connect extends Component {
   }
 
   getCurrentRoute () {
-    const currentRoute = "/more/connect";
+    const currentRoute = '/more/connect';
     return currentRoute;
   }
 
   getFollowingType () {
     switch (this.getCurrentRoute()) {
-      case "/more/connect":
+      case '/more/connect':
       default:
-        return "YOUR_FRIENDS";
+        return 'YOUR_FRIENDS';
     }
   }
 

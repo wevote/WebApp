@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import ImageHandler from "../ImageHandler";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ImageHandler from '../ImageHandler';
+import { renderLog } from '../../utils/logging';
 
 export default class FacebookFriendTinyDisplay extends Component {
   static propTypes = {
@@ -11,8 +11,8 @@ export default class FacebookFriendTinyDisplay extends Component {
 
   render () {
     renderLog(__filename);
-    let displayName = "";
-    let facebookProfileImage = "";
+    let displayName = '';
+    let facebookProfileImage = '';
     if (this.props.name) {
       displayName = this.props.name;
     }

@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { renderLog } from "../../utils/logging";
-import MeasureItemCompressed from "./MeasureItemCompressed";
-import CandidateItemCompressed from "./CandidateItemCompressed";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { renderLog } from '../../utils/logging';
+import MeasureItemCompressed from './MeasureItemCompressed';
+import CandidateItemCompressed from './CandidateItemCompressed';
 
-const TYPES = require("keymirror")({
+const TYPES = require('keymirror')({
   OFFICE: null,
   MEASURE: null,
 });

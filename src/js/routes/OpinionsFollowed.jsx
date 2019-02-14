@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { Link } from "react-router";
-import Helmet from "react-helmet";
-import { _ } from "lodash";
-import { renderLog } from "../utils/logging";
-import OrganizationActions from "../actions/OrganizationActions";
-import OrganizationStore from "../stores/OrganizationStore";
-import OpinionsFollowedList from "../components/Organization/OpinionsFollowedList";
-import SearchBar from "../components/Search/SearchBar";
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import Helmet from 'react-helmet';
+import { _ } from 'lodash';
+import { renderLog } from '../utils/logging';
+import OrganizationActions from '../actions/OrganizationActions';
+import OrganizationStore from '../stores/OrganizationStore';
+import OpinionsFollowedList from '../components/Organization/OpinionsFollowedList';
+import SearchBar from '../components/Search/SearchBar';
 
 export default class OpinionsFollowed extends Component {
   constructor (props) {
@@ -14,7 +14,7 @@ export default class OpinionsFollowed extends Component {
     this.state = {
       organizationsFollowedList: [],
       editMode: false,
-      searchQuery: "",
+      searchQuery: '',
     };
     this.searchFunction = this.searchFunction.bind(this);
     this.clearFunction = this.clearFunction.bind(this);
@@ -47,17 +47,17 @@ export default class OpinionsFollowed extends Component {
   }
 
   getCurrentRoute () {
-    const currentRoute = "/opinions_followed";
+    const currentRoute = '/opinions_followed';
     return currentRoute;
   }
 
   getFollowingType () {
     switch (this.getCurrentRoute()) {
-      case "/opinions":
-        return "WHO_YOU_CAN_FOLLOW";
-      case "/opinions_followed":
+      case '/opinions':
+        return 'WHO_YOU_CAN_FOLLOW';
+      case '/opinions_followed':
       default:
-        return "WHO_YOU_FOLLOW";
+        return 'WHO_YOU_FOLLOW';
     }
   }
 
@@ -71,7 +71,7 @@ export default class OpinionsFollowed extends Component {
   }
 
   clearFunction () {
-    this.searchFunction("");
+    this.searchFunction('');
   }
 
   render () {
@@ -98,11 +98,11 @@ export default class OpinionsFollowed extends Component {
               onKeyDown={this.onKeyDownEditMode.bind(this)}
               onClick={this.toggleEditMode.bind(this)}
             >
-              {this.state.editMode ? "Done Editing" : "Edit"}
+              {this.state.editMode ? 'Done Editing' : 'Edit'}
             </a>
             <p>
               Organizations, public figures and other voters you currently listen to.
-              {" "}
+              {' '}
               <em>We will never sell your email</em>
               .
             </p>

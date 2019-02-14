@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Button from "@material-ui/core/Button";
-import BallotStore from "../../stores/BallotStore";
-import CandidateStore from "../../stores/CandidateStore";
-import cookies from "../../utils/cookies";
-import { hasIPhoneNotch, historyPush, isWebApp } from "../../utils/cordovaUtils";
-import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import isMobile from "../../utils/isMobile";
-import { renderLog } from "../../utils/logging";
-import { shortenText, stringContains } from "../../utils/textFormat";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterSessionActions from "../../actions/VoterSessionActions";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
+import BallotStore from '../../stores/BallotStore';
+import CandidateStore from '../../stores/CandidateStore';
+import cookies from '../../utils/cookies';
+import { hasIPhoneNotch, historyPush, isWebApp } from '../../utils/cordovaUtils';
+import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import isMobile from '../../utils/isMobile';
+import { renderLog } from '../../utils/logging';
+import { shortenText, stringContains } from '../../utils/textFormat';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterSessionActions from '../../actions/VoterSessionActions';
 
 export default class HeaderBackToVoterGuides extends Component {
   static propTypes = {
@@ -28,8 +28,8 @@ export default class HeaderBackToVoterGuides extends Component {
     super(props);
     this.state = {
       profilePopUpOpen: false,
-      candidateWeVoteId: "",
-      organizationWeVoteId: "",
+      candidateWeVoteId: '',
+      organizationWeVoteId: '',
       voter: {},
     };
     this.toggleAccountMenu = this.toggleAccountMenu.bind(this);
@@ -54,8 +54,8 @@ export default class HeaderBackToVoterGuides extends Component {
     let organization = {};
     let organizationWeVoteId;
     if (this.props.params) {
-      candidateWeVoteId = this.props.params.candidate_we_vote_id || "";
-      if (candidateWeVoteId && candidateWeVoteId !== "") {
+      candidateWeVoteId = this.props.params.candidate_we_vote_id || '';
+      if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
         // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
@@ -63,9 +63,9 @@ export default class HeaderBackToVoterGuides extends Component {
         // officeName = candidate.contest_office_name;
       }
 
-      organizationWeVoteId = this.props.params.organization_we_vote_id || "";
+      organizationWeVoteId = this.props.params.organization_we_vote_id || '';
       organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-      if (organizationWeVoteId && organizationWeVoteId !== "" && !organization.organization_we_vote_id) {
+      if (organizationWeVoteId && organizationWeVoteId !== '' && !organization.organization_we_vote_id) {
         // Retrieve the organization object
         OrganizationActions.organizationRetrieve(organizationWeVoteId);
       }
@@ -75,7 +75,7 @@ export default class HeaderBackToVoterGuides extends Component {
     // console.log("organizationWeVoteId: ", organizationWeVoteId);
 
     const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-    const weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
+    const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     this.setState({
       candidateWeVoteId,
       officeWeVoteId,
@@ -93,8 +93,8 @@ export default class HeaderBackToVoterGuides extends Component {
     let organization = {};
     let organizationWeVoteId;
     if (nextProps.params) {
-      candidateWeVoteId = nextProps.params.candidate_we_vote_id || "";
-      if (candidateWeVoteId && candidateWeVoteId !== "") {
+      candidateWeVoteId = nextProps.params.candidate_we_vote_id || '';
+      if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
         // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
@@ -102,9 +102,9 @@ export default class HeaderBackToVoterGuides extends Component {
         // officeName = candidate.contest_office_name;
       }
 
-      organizationWeVoteId = nextProps.params.organization_we_vote_id || "";
+      organizationWeVoteId = nextProps.params.organization_we_vote_id || '';
       organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-      if (organizationWeVoteId && organizationWeVoteId !== "" && !organization.organization_we_vote_id) {
+      if (organizationWeVoteId && organizationWeVoteId !== '' && !organization.organization_we_vote_id) {
         // Retrieve the organization object
         OrganizationActions.organizationRetrieve(organizationWeVoteId);
       }
@@ -114,7 +114,7 @@ export default class HeaderBackToVoterGuides extends Component {
     // console.log("organizationWeVoteId: ", organizationWeVoteId);
 
     const weVoteBrandingOffFromUrl = nextProps.location.query ? nextProps.location.query.we_vote_branding_off : 0;
-    const weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
+    const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     this.setState({
       candidateWeVoteId,
       officeWeVoteId,
@@ -140,7 +140,7 @@ export default class HeaderBackToVoterGuides extends Component {
 
     // let officeName;
     let officeWeVoteId;
-    if (candidateWeVoteId && candidateWeVoteId !== "") {
+    if (candidateWeVoteId && candidateWeVoteId !== '') {
       const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
       // console.log("HeaderBackToBar -- onCandidateStoreChange, candidateWeVoteId:", this.state.candidateWeVoteId, ", candidate:", candidate);
@@ -158,7 +158,7 @@ export default class HeaderBackToVoterGuides extends Component {
   }
 
   getOfficeLink () {
-    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
+    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== '') {
       return `/office/${this.state.officeWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
     } else {
       return `/office/${this.state.officeWeVoteId}/b/btdb/`;
@@ -214,44 +214,44 @@ export default class HeaderBackToVoterGuides extends Component {
     const { voter } = this.state;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
 
-    let backToLink = "/settings/voterguidelist"; // default
-    let backToOrganizationLinkText = "Back to Voter Guides";
+    let backToLink = '/settings/voterguidelist'; // default
+    let backToOrganizationLinkText = 'Back to Voter Guides';
 
-    if (stringContains("/settings/menu", this.props.pathname)) {
-      backToOrganizationLinkText = "Back to Your Voter Guides";
+    if (stringContains('/settings/menu', this.props.pathname)) {
+      backToOrganizationLinkText = 'Back to Your Voter Guides';
       if (isWebApp()) {
-        backToLink = isMobile() ? "/settings/voterguidesmenu" : "/settings/voterguidelist";
+        backToLink = isMobile() ? '/settings/voterguidesmenu' : '/settings/voterguidelist';
       } else {
-        backToLink = "/settings/voterguidesmenu";
+        backToLink = '/settings/voterguidesmenu';
       }
-    } else if (stringContains("/settings/general", this.props.pathname) || stringContains("/settings/positions", this.props.pathname)) {
+    } else if (stringContains('/settings/general', this.props.pathname) || stringContains('/settings/positions', this.props.pathname)) {
       const voterGuideWeVoteId = this.props.params.voter_guide_we_vote_id;
       if (isMobile()) {
-        backToOrganizationLinkText = "Voter Guide Options";
+        backToOrganizationLinkText = 'Voter Guide Options';
 
-        backToLink = voterGuideWeVoteId && voterGuideWeVoteId !== "" ?
+        backToLink = voterGuideWeVoteId && voterGuideWeVoteId !== '' ?
           `/vg/${voterGuideWeVoteId}/settings/menu` :
-          "/settings/voterguidesmenu";
+          '/settings/voterguidesmenu';
       } else {
-        backToOrganizationLinkText = "Back to Your Voter Guides";
+        backToOrganizationLinkText = 'Back to Your Voter Guides';
 
-        backToLink = "/settings/voterguidelist";
+        backToLink = '/settings/voterguidelist';
       }
-    } else if (stringContains("/vg/", this.props.pathname) && stringContains("/settings", this.props.pathname)) {
-      backToOrganizationLinkText = "Back to Your Voter Guides";
+    } else if (stringContains('/vg/', this.props.pathname) && stringContains('/settings', this.props.pathname)) {
+      backToOrganizationLinkText = 'Back to Your Voter Guides';
 
-      backToLink = "/settings/voterguidelist";
+      backToLink = '/settings/voterguidelist';
     }
 
     const backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 20);
 
     return (
-      <AppBar className={isWebApp() ? "page-header" : "page-header page-header__cordova"} color="default">
+      <AppBar className={isWebApp() ? 'page-header' : 'page-header page-header__cordova'} color="default">
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
           <Button
           variant="contained"
           color="primary"
-          className={`page-header__backToButton ${hasIPhoneNotch() ? "page-header__backToButtonIPhoneX" : ""}`}
+          className={`page-header__backToButton ${hasIPhoneNotch() ? 'page-header__backToButtonIPhoneX' : ''}`}
           onClick={() => historyPush(backToLink)}
           >
             <ion-icon name="arrow-back" />

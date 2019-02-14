@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import BrowserPushMessage from "../Widgets/BrowserPushMessage";
-import FacebookActions from "../../actions/FacebookActions";
-import FacebookStore from "../../stores/FacebookStore";
-import FacebookSignIn from "../Facebook/FacebookSignIn";
-import LoadingWheel from "../LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import VoterStore from "../../stores/VoterStore";
-import FacebookFriendsDisplay from "./FacebookFriendsDisplay";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import BrowserPushMessage from '../Widgets/BrowserPushMessage';
+import FacebookActions from '../../actions/FacebookActions';
+import FacebookStore from '../../stores/FacebookStore';
+import FacebookSignIn from '../Facebook/FacebookSignIn';
+import LoadingWheel from '../LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import VoterStore from '../../stores/VoterStore';
+import FacebookFriendsDisplay from './FacebookFriendsDisplay';
 
 export default class AddFacebookFriends extends Component {
   static propTypes = {
@@ -59,11 +59,11 @@ export default class AddFacebookFriends extends Component {
       return LoadingWheel;
     }
 
-    let yourAccountExplanation = "";
+    let yourAccountExplanation = '';
     if (!this.state.voter.signed_in_facebook) {
-      yourAccountExplanation = "Sign in so that you can easily invite specific friends from Facebook. You choose who you want to invite.";
+      yourAccountExplanation = 'Sign in so that you can easily invite specific friends from Facebook. You choose who you want to invite.';
     } else {
-      yourAccountExplanation = "We found some of your friends from Facebook. Choose the friends to invite to We Vote to see what they support.";
+      yourAccountExplanation = 'We found some of your friends from Facebook. Choose the friends to invite to We Vote to see what they support.';
     }
 
     return (

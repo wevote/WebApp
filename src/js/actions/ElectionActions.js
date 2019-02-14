@@ -1,8 +1,8 @@
-import Dispatcher from "../dispatcher/Dispatcher";
+import Dispatcher from '../dispatcher/Dispatcher';
 
 export default {
 
   electionsRetrieve () {
-    Dispatcher.loadEndpoint("electionsRetrieve", {});
+    Dispatcher.loadEndpoint('electionsRetrieve', {});
   },
 };
