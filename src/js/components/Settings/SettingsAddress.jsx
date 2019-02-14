@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import AddressBox from "../AddressBox";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import BrowserPushMessage from "../Widgets/BrowserPushMessage";
-import { isWebApp } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import AddressBox from '../AddressBox';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import BrowserPushMessage from '../Widgets/BrowserPushMessage';
+import { isWebApp } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import VoterStore from '../../stores/VoterStore';
 
 export default class SettingsAddress extends Component {
   static propTypes = {
@@ -37,7 +37,7 @@ export default class SettingsAddress extends Component {
               <h3 className="h3">
                 Enter address where you are registered to vote
               </h3>
-              <div className={isWebApp() ? "u-padding-bottom--md" : "SettingsCardBottomCordova"}>
+              <div className={isWebApp() ? 'u-padding-bottom--md' : 'SettingsCardBottomCordova'}>
                 <AddressBox {...this.props} saveUrl="/ballot" />
               </div>
             </div>

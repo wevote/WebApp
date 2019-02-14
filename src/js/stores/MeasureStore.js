@@ -1,6 +1,6 @@
-import { ReduceStore } from "flux/utils";
-import Dispatcher from "../dispatcher/Dispatcher";
-import { stringContains } from "../utils/textFormat";
+import { ReduceStore } from 'flux/utils';
+import Dispatcher from '../dispatcher/Dispatcher';
+import { stringContains } from '../utils/textFormat';
 
 class MeasureStore extends ReduceStore {
   getInitialState () {
@@ -22,7 +22,7 @@ class MeasureStore extends ReduceStore {
         return measure.yes_vote_description;
       }
     }
-    return "";
+    return '';
   }
 
   getNoVoteDescription (measureWeVoteId) {
@@ -32,7 +32,7 @@ class MeasureStore extends ReduceStore {
         return measure.no_vote_description;
       }
     }
-    return "";
+    return '';
   }
 
   getPositionList (measureWeVoteId) {
@@ -57,12 +57,12 @@ class MeasureStore extends ReduceStore {
     let positionListForMeasure;
     let voterGuides;
     const isEmpty = voterGuides && voterGuides.length === 0;
-    const searchTermExists = action.res.search_string !== "";
+    const searchTermExists = action.res.search_string !== '';
     const ballotItemWeVoteIdExists = ballotItemWeVoteId && ballotItemWeVoteId.length !== 0;
     const tempBallotItemList = action.res.ballot_item_list;
 
     switch (action.type) {
-      case "measureRetrieve":
+      case 'measureRetrieve':
         measure = action.res;
         allCachedMeasures[measure.we_vote_id] = measure;
         return {
@@ -70,8 +70,8 @@ class MeasureStore extends ReduceStore {
           allCachedMeasures,
         };
 
-      case "positionListForBallotItem":
-        positionListForMeasure = action.res.kind_of_ballot_item === "MEASURE";
+      case 'positionListForBallotItem':
+        positionListForMeasure = action.res.kind_of_ballot_item === 'MEASURE';
         if (positionListForMeasure) {
           measureWeVoteId = action.res.ballot_item_we_vote_id;
           newPositionList = action.res.position_list;
@@ -84,10 +84,10 @@ class MeasureStore extends ReduceStore {
           return state;
         }
 
-      case "voterBallotItemsRetrieve":
+      case 'voterBallotItemsRetrieve':
         if (tempBallotItemList) {
           tempBallotItemList.forEach((oneBallotItem) => {
-            if (oneBallotItem.kind_of_ballot_item === "MEASURE" && oneBallotItem.we_vote_id) {
+            if (oneBallotItem.kind_of_ballot_item === 'MEASURE' && oneBallotItem.we_vote_id) {
               allCachedMeasures[oneBallotItem.we_vote_id] = oneBallotItem;
             }
           });
@@ -97,16 +97,16 @@ class MeasureStore extends ReduceStore {
           allCachedMeasures,
         };
 
-      case "voterGuidesToFollowRetrieve":
+      case 'voterGuidesToFollowRetrieve':
         // This code harvests the positions that are passed in along with voter guides,
         //  and stores them so we can request them in cases where the response package for
         //  voterGuidesToFollowRetrieve does not include the position data
 
         // console.log("MeasureStore voterGuidesToFollowRetrieve");
         voterGuides = action.res.voter_guides;
-        ballotItemWeVoteId = action.res.ballot_item_we_vote_id || "";
+        ballotItemWeVoteId = action.res.ballot_item_we_vote_id || '';
 
-        if (!ballotItemWeVoteIdExists || !stringContains("meas", ballotItemWeVoteId) || isEmpty || searchTermExists) {
+        if (!ballotItemWeVoteIdExists || !stringContains('meas', ballotItemWeVoteId) || isEmpty || searchTermExists) {
           // Exit this routine
           // console.log("exiting MeasureStore voterGuidesToFollowRetrieve");
           return state;
@@ -130,7 +130,7 @@ class MeasureStore extends ReduceStore {
               ballot_item_image_url_https_tiny: oneVoterGuide.ballot_item_image_url_https_tiny,
               ballot_item_twitter_handle: oneVoterGuide.ballot_item_twitter_handle,
               ballot_item_political_party: oneVoterGuide.ballot_item_political_party,
-              kind_of_ballot_item: "MEASURE",
+              kind_of_ballot_item: 'MEASURE',
               // ballot_item_id: 0,
               ballot_item_we_vote_id: ballotItemWeVoteId,
               // ballot_item_state_code: "",
@@ -168,7 +168,7 @@ class MeasureStore extends ReduceStore {
         //   // This code harvests the positions that are passed in along with voter guides
         // DALE 2018-10-16 We could add code here to populate this store - the pattern for voterGuidesToFollowRetrieve isn't right for voterGuidesUpcomingRetrieve though
 
-      case "error-measureRetrieve" || "error-positionListForBallotItem":
+      case 'error-measureRetrieve' || 'error-positionListForBallotItem':
         console.log(action);
         return state;
 

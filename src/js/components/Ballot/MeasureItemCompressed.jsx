@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { historyPush } from "../../utils/cordovaUtils";
-import IssuesByBallotItemDisplayList from "../Issues/IssuesByBallotItemDisplayList";
-import ItemActionBar from "../Widgets/ItemActionBar";
-import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
-import { renderLog } from "../../utils/logging";
-import MeasureStore from "../../stores/MeasureStore";
-import OrganizationStore from "../../stores/OrganizationStore";
-import ReadMore from "../Widgets/ReadMore";
-import SupportStore from "../../stores/SupportStore";
-import { capitalizeString } from "../../utils/textFormat";
-import VoterGuideStore from "../../stores/VoterGuideStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { historyPush } from '../../utils/cordovaUtils';
+import IssuesByBallotItemDisplayList from '../Issues/IssuesByBallotItemDisplayList';
+import ItemActionBar from '../Widgets/ItemActionBar';
+import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
+import { renderLog } from '../../utils/logging';
+import MeasureStore from '../../stores/MeasureStore';
+import OrganizationStore from '../../stores/OrganizationStore';
+import ReadMore from '../Widgets/ReadMore';
+import SupportStore from '../../stores/SupportStore';
+import { capitalizeString } from '../../utils/textFormat';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 // import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
 
 
@@ -33,10 +33,10 @@ export default class MeasureItemCompressed extends Component {
 
   constructor (props) {
     super(props);
-    const ballotItemType = "MEASURE";
+    const ballotItemType = 'MEASURE';
     this.state = {
       ballotItemType,
-      ballotItemWeVoteId: "",
+      ballotItemWeVoteId: '',
       componentDidMountFinished: false,
       // maximum_organization_display: 4,
       organization: {},
@@ -56,7 +56,7 @@ export default class MeasureItemCompressed extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    const ballotItemType = "MEASURE";
+    const ballotItemType = 'MEASURE';
     // const isMeasure = true;
     this.setState({
       ballotItemType,
@@ -304,7 +304,7 @@ export default class MeasureItemCompressed extends Component {
           </div>
           {/* Measure information */}
           <div
-            className={this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null}
+            className={this.props.link_to_ballot_item_page ? 'u-cursor--pointer' : null}
             onClick={this.props.link_to_ballot_item_page ? () => this.goToMeasureLink(measureWeVoteId) : null}
           >
             {measureSubtitle}
@@ -343,7 +343,7 @@ export default class MeasureItemCompressed extends Component {
             </div>
           </div>
         </div>
-        {" "}
+        {' '}
         {/* END .card-main__content */}
       </div>
     );

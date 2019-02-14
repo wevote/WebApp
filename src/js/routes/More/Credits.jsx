@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import { renderLog } from "../../utils/logging";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import { organizationalDonors, teamOfVolunteers } from "./people";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import { renderLog } from '../../utils/logging';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import { organizationalDonors, teamOfVolunteers } from './people';
 
 export default class Credits extends Component {
   static getProps () {
@@ -50,9 +50,9 @@ export default class Credits extends Component {
               <div key={item.name}>
                 <li>
                   <strong>{item.name}</strong>
-                  {" "}
+                  {' '}
                   -
-                  {" "}
+                  {' '}
                   {item.title}
                 </li>
               </div>

@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import moment from "moment";
-import BallotActions from "../../actions/BallotActions";
-import BallotStore from "../../stores/BallotStore";
-import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
-import LoadingWheel from "../LoadingWheel";
-import OrganizationActions from "../../actions/OrganizationActions";
-import VoterActions from "../../actions/VoterActions";
-import VoterStore from "../../stores/VoterStore";
-import { cleanArray } from "../../utils/textFormat";
-import convertStateCodeToStateText from "../../utils/address-functions";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
+import BallotActions from '../../actions/BallotActions';
+import BallotStore from '../../stores/BallotStore';
+import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import LoadingWheel from '../LoadingWheel';
+import OrganizationActions from '../../actions/OrganizationActions';
+import VoterActions from '../../actions/VoterActions';
+import VoterStore from '../../stores/VoterStore';
+import { cleanArray } from '../../utils/textFormat';
+import convertStateCodeToStateText from '../../utils/address-functions';
 
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 36;
 
@@ -25,7 +25,7 @@ export default class BallotElectionList extends Component {
 
   constructor (props) {
     super(props);
-    let priorElectionId = "";
+    let priorElectionId = '';
     if (BallotStore.ballotProperties) {
       priorElectionId = BallotStore.ballotProperties.google_civic_election_id;
     } else if (VoterStore.electionId()) {
@@ -40,7 +40,7 @@ export default class BallotElectionList extends Component {
       showMorePriorElections: false,
       showPriorElectionsList: false,
       stateName: convertStateCodeToStateText(stateCode),
-      updatedElectionId: "",
+      updatedElectionId: '',
     };
 
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
@@ -88,31 +88,31 @@ export default class BallotElectionList extends Component {
     }
   }
 
-  goToDifferentElection (ballotLocationShortcut, ballotReturnedWeVoteId, googleCivicElectionId, originalTextForMapSearch = "") {
-    const ballotBaseurl = this.props.ballotBaseUrl || "/ballot";
-    let destinationUrlForHistoryPush = "";
-    if (ballotLocationShortcut && ballotLocationShortcut !== "" && ballotLocationShortcut !== "none") {
+  goToDifferentElection (ballotLocationShortcut, ballotReturnedWeVoteId, googleCivicElectionId, originalTextForMapSearch = '') {
+    const ballotBaseurl = this.props.ballotBaseUrl || '/ballot';
+    let destinationUrlForHistoryPush = '';
+    if (ballotLocationShortcut && ballotLocationShortcut !== '' && ballotLocationShortcut !== 'none') {
       // console.log("goToDifferentElection, ballotLocationShortcut: ", ballotLocationShortcut);
-      BallotActions.voterBallotItemsRetrieve(0, "", ballotLocationShortcut);
+      BallotActions.voterBallotItemsRetrieve(0, '', ballotLocationShortcut);
       destinationUrlForHistoryPush = `${ballotBaseurl}/${ballotLocationShortcut}`; // Used with historyPush once modal is closed
-    } else if (ballotReturnedWeVoteId && ballotReturnedWeVoteId !== "" && ballotReturnedWeVoteId !== "none") {
+    } else if (ballotReturnedWeVoteId && ballotReturnedWeVoteId !== '' && ballotReturnedWeVoteId !== 'none') {
       // console.log("goToDifferentElection, ballotReturnedWeVoteId: ", ballotReturnedWeVoteId);
-      BallotActions.voterBallotItemsRetrieve(0, ballotReturnedWeVoteId, "");
+      BallotActions.voterBallotItemsRetrieve(0, ballotReturnedWeVoteId, '');
       destinationUrlForHistoryPush = `${ballotBaseurl}/id/${ballotReturnedWeVoteId}`; // Used with historyPush once modal is closed
-    } else if (originalTextForMapSearch && originalTextForMapSearch !== "") {
+    } else if (originalTextForMapSearch && originalTextForMapSearch !== '') {
       // Do we still want to be updating addresses? Maybe instead just update google_civic_election_id?
       // console.log("goToDifferentElection, originalTextForMapSearch: ", originalTextForMapSearch);
       const simpleSave = false;
       VoterActions.voterAddressSave(originalTextForMapSearch, simpleSave, googleCivicElectionId);
       destinationUrlForHistoryPush = ballotBaseurl; // Used with historyPush once modal is closed
     } else if (googleCivicElectionId && googleCivicElectionId !== 0) {
-      BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, "", "");
+      BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, '', '');
       // console.log("goToDifferentElection, googleCivicElectionId: ", googleCivicElectionId);
       destinationUrlForHistoryPush = `${ballotBaseurl}/election/${googleCivicElectionId}`; // Used with historyPush once modal is closed
     }
 
     // Request positions for the different election
-    if (this.props.organization_we_vote_id && this.props.organization_we_vote_id !== "") {
+    if (this.props.organization_we_vote_id && this.props.organization_we_vote_id !== '') {
       // console.log("BallotElectionList calling positionListForOpinionMaker, this.props.organization_we_vote_id: ", this.props.organization_we_vote_id, ", googleCivicElectionId:", googleCivicElectionId);
       OrganizationActions.positionListForOpinionMaker(this.props.organization_we_vote_id, true, false, googleCivicElectionId);
     }
@@ -146,9 +146,9 @@ export default class BallotElectionList extends Component {
     }
     // show all national elections regardless of state
     // return election.is_national;
-    return electionName.includes("U.S.") ||
-           electionName.includes("US") ||
-           electionName.includes("United States");
+    return electionName.includes('U.S.') ||
+           electionName.includes('US') ||
+           electionName.includes('United States');
   }
 
 
@@ -166,8 +166,8 @@ export default class BallotElectionList extends Component {
 
   renderUpcomingElectionList (list, currentDate) {
     const renderedList = list.map((item) => {
-      const electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
-      const electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
+      const electionDateTomorrowMoment = moment(item.election_day_text, 'YYYY-MM-DD').add(1, 'days');
+      const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
       return electionDateTomorrow > currentDate ? (
         <div key={`upcoming-election-${item.google_civic_election_id}`}>
           <dl className="list-unstyled text-center">
@@ -182,7 +182,7 @@ export default class BallotElectionList extends Component {
                   {item.election_description_text}
                   &nbsp;
                   <img
-                    src={cordovaDot("/img/global/icons/Circle-Arrow.png")}
+                    src={cordovaDot('/img/global/icons/Circle-Arrow.png')}
                   />
                 </span>
               ) : (
@@ -191,23 +191,23 @@ export default class BallotElectionList extends Component {
                 >
                   {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
                   ...&nbsp;
-                  <img src={cordovaDot("/img/global/icons/Circle-Arrow.png")} />
+                  <img src={cordovaDot('/img/global/icons/Circle-Arrow.png')} />
                 </span>
               )}
               {/* Desktop */}
               <span className="d-none d-sm-block">
-                {moment(item.election_day_text).format("MMMM Do, YYYY")}
-                {" "}
+                {moment(item.election_day_text).format('MMMM Do, YYYY')}
+                {' '}
                 -
-                {" "}
+                {' '}
                 {item.election_description_text}
                 &nbsp;
                 <img
-                  src={cordovaDot("/img/global/icons/Circle-Arrow.png")}
+                  src={cordovaDot('/img/global/icons/Circle-Arrow.png')}
                 />
               </span>
 
-              <div className="d-block d-sm-none ballot-election-list__h2">{moment(item.election_day_text).format("MMMM Do, YYYY")}</div>
+              <div className="d-block d-sm-none ballot-election-list__h2">{moment(item.election_day_text).format('MMMM Do, YYYY')}</div>
             </button>
           </dl>
         </div>
@@ -219,8 +219,8 @@ export default class BallotElectionList extends Component {
 
   renderPriorElectionList (list, currentDate) {
     const renderedList = list.map((item) => {
-      const electionDateTomorrowMoment = moment(item.election_day_text, "YYYY-MM-DD").add(1, "days");
-      const electionDateTomorrow = electionDateTomorrowMoment.format("YYYY-MM-DD");
+      const electionDateTomorrowMoment = moment(item.election_day_text, 'YYYY-MM-DD').add(1, 'days');
+      const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
       return electionDateTomorrow > currentDate ?
         null : (
           <div key={`prior-election-${item.google_civic_election_id}`}>
@@ -236,7 +236,7 @@ export default class BallotElectionList extends Component {
                     {item.election_description_text}
                     &nbsp;
                     <img
-                      src={cordovaDot("/img/global/icons/Circle-Arrow.png")}
+                      src={cordovaDot('/img/global/icons/Circle-Arrow.png')}
                     />
                   </span>
                 ) : (
@@ -245,23 +245,23 @@ export default class BallotElectionList extends Component {
                   >
                     {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
                     ...&nbsp;
-                    <img src={cordovaDot("/img/global/icons/Circle-Arrow.png")} />
+                    <img src={cordovaDot('/img/global/icons/Circle-Arrow.png')} />
                   </span>
                 )}
                 {/* Desktop */}
                 <span className="d-none d-sm-block">
-                  {moment(item.election_day_text).format("MMMM Do, YYYY")}
-                  {" "}
+                  {moment(item.election_day_text).format('MMMM Do, YYYY')}
+                  {' '}
                   -
-                  {" "}
+                  {' '}
                   {item.election_description_text}
                   &nbsp;
                   <img
-                    src={cordovaDot("/img/global/icons/Circle-Arrow.png")}
+                    src={cordovaDot('/img/global/icons/Circle-Arrow.png')}
                   />
                 </span>
 
-                <div className="d-block d-sm-none ballot-election-list__h2">{moment(item.election_day_text).format("MMMM Do, YYYY")}</div>
+                <div className="d-block d-sm-none ballot-election-list__h2">{moment(item.election_day_text).format('MMMM Do, YYYY')}</div>
               </button>
             </dl>
           </div>
@@ -282,7 +282,7 @@ export default class BallotElectionList extends Component {
       );
     }
 
-    const currentDate = moment().format("YYYY-MM-DD");
+    const currentDate = moment().format('YYYY-MM-DD');
 
     const ballotElectionListUpcomingSorted = this.props.ballotElectionList.concat();
     // We want to sort ascending so the next upcoming election is first
@@ -336,7 +336,7 @@ export default class BallotElectionList extends Component {
             <h4 className="h4">
             Upcoming Election
               { (upcomingElectionListInState && upcomingElectionListInState.length !== 1 && !this.state.showMoreUpcomingElections) ||
-                (upcomingElectionList && upcomingElectionList.length !== 1 && this.state.showMoreUpcomingElections) ? "s" : null
+                (upcomingElectionList && upcomingElectionList.length !== 1 && this.state.showMoreUpcomingElections) ? 's' : null
               }
               { this.state.stateName && this.state.stateName.length && !this.state.showMoreUpcomingElections ?
                 ` in ${this.state.stateName}` :
@@ -346,10 +346,10 @@ export default class BallotElectionList extends Component {
             { this.state.showMoreUpcomingElections ?    // eslint-disable-line no-nested-ternary
               upcomingElectionList && upcomingElectionList.length ?
                 upcomingElectionList :
-                "There are no upcoming elections at this time." :
+                'There are no upcoming elections at this time.' :
               upcomingElectionListInState && upcomingElectionListInState.length ?
                 upcomingElectionListInState :
-                "There are no upcoming elections in the state you are in at this time."
+                'There are no upcoming elections in the state you are in at this time.'
             }
             { upcomingElectionListOutsideCount ?          // eslint-disable-line no-nested-ternary
               this.state.showMoreUpcomingElections ? (
@@ -357,7 +357,7 @@ export default class BallotElectionList extends Component {
                   <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
                     { this.state.stateName && this.state.stateName.length ?
                       `Only show elections in ${this.state.stateName}` :
-                      "Hide state elections"
+                      'Hide state elections'
                     }
                   </a>
                 </div>
@@ -365,11 +365,11 @@ export default class BallotElectionList extends Component {
                 <div className="ballot-election-list__show-all">
                   <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
                     Show all states -
-                    {" "}
+                    {' '}
                     { upcomingElectionListOutsideCount }
-                    {" "}
+                    {' '}
                     more election
-                    { upcomingElectionListOutsideCount !== 1 ? "s" : null }
+                    { upcomingElectionListOutsideCount !== 1 ? 's' : null }
                   </a>
                 </div>
               ) :
@@ -384,7 +384,7 @@ export default class BallotElectionList extends Component {
                 Prior Election
                   { (priorElectionListInState.length > 1 ||
                     (priorElectionList && priorElectionList.length > 1)) ?
-                    "s" :
+                    's' :
                     null
                   }
                   { this.state.stateName && this.state.stateName.length && !this.state.showMorePriorElections ?
@@ -407,17 +407,17 @@ export default class BallotElectionList extends Component {
                   <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMorePriorElections.bind(this)}>
                     { this.state.stateName && this.state.stateName.length ?
                       `Only show elections in ${this.state.stateName}` :
-                      "Hide state elections"
+                      'Hide state elections'
                     }
                   </a>
                 ) : (
                   <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMorePriorElections.bind(this)}>
                     Show all states -
-                    {" "}
+                    {' '}
                     { priorElectionListOutsideCount }
-                    {" "}
+                    {' '}
                     more election
-                    { priorElectionListOutsideCount !== 1 ? "s" : null }
+                    { priorElectionListOutsideCount !== 1 ? 's' : null }
                   </a>
                 ) : null
               }
@@ -438,7 +438,7 @@ export default class BallotElectionList extends Component {
             { upcomingElectionList && upcomingElectionList.length ? (
               <h4 className="h4">
                 Upcoming Election
-                { upcomingElectionList.length > 1 ? "s" : null }
+                { upcomingElectionList.length > 1 ? 's' : null }
               </h4>
             ) :
               null
@@ -450,7 +450,7 @@ export default class BallotElectionList extends Component {
             { priorElectionList && priorElectionList.length ? (
               <h4 className="h4">
                 Prior Election
-                { priorElectionList.length > 1 ? "s" : null }
+                { priorElectionList.length > 1 ? 's' : null }
               </h4>
             ) :
               null

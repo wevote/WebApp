@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import { OverlayTrigger, Popover } from "react-bootstrap";
-import FollowToggle from "../Widgets/FollowToggle";
-import { renderLog } from "../../utils/logging";
-import OrganizationCard from "../VoterGuide/OrganizationCard";
-import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
+import FollowToggle from '../Widgets/FollowToggle';
+import { renderLog } from '../../utils/logging';
+import OrganizationCard from '../VoterGuide/OrganizationCard';
+import OrganizationTinyDisplay from '../VoterGuide/OrganizationTinyDisplay';
 
 export default class OrganizationsFollowedOnTwitter extends Component {
   static propTypes = {
@@ -25,7 +25,7 @@ export default class OrganizationsFollowedOnTwitter extends Component {
   }
 
   componentDidMount () {
-    console.log("OrganizationsFollowedOnTwitter componentDidMount");
+    console.log('OrganizationsFollowedOnTwitter componentDidMount');
     this.setState({
       organizationsFollowedOnTwitter: this.props.organizationsFollowedOnTwitter,
       maximumOrganizationDisplay: this.props.maximumOrganizationDisplay,
@@ -82,14 +82,14 @@ export default class OrganizationsFollowedOnTwitter extends Component {
           return (
             <span key={oneOrganization.organization_we_vote_id}>
               <Link to="/opinions_followed">
-                {" "}
+                {' '}
                 +
                 {organizationsNotShownCount}
               </Link>
             </span>
           );
         } else {
-          return "";
+          return '';
         }
       } else {
         oneOrganizationForOrganizationCard = {
@@ -118,7 +118,7 @@ export default class OrganizationsFollowedOnTwitter extends Component {
         const voterGuideLink = oneOrganization.organization_twitter_handle ?
           `/${oneOrganization.organization_twitter_handle}` :
           `/voterguide/${oneOrganization.organization_we_vote_id}`;
-        const placement = "bottom";
+        const placement = 'bottom';
         // onMouseOver={() => this.onTriggerEnter(organizationWeVoteId)}
         // onMouseOut={() => this.onTriggerLeave(organizationWeVoteId)}
         return (

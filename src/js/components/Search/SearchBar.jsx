@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { cordovaDot } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 
 export default class SearchBar extends Component {
   static propTypes = {
@@ -18,7 +18,7 @@ export default class SearchBar extends Component {
     super(props);
 
     this.state = {
-      searchString: "",
+      searchString: '',
     };
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -31,7 +31,7 @@ export default class SearchBar extends Component {
     if (this.props.clearSearchTextNow) {
       this.props.clearFunction();
       this.setState({
-        searchString: "",
+        searchString: '',
       });
     }
   }
@@ -41,14 +41,14 @@ export default class SearchBar extends Component {
     if (nextProps.clearSearchTextNow) {
       this.props.clearFunction();
       this.setState({
-        searchString: "",
+        searchString: '',
       });
     }
   }
 
   clearQuery () {
     this.props.clearFunction();
-    this.setState({ searchString: "" });
+    this.setState({ searchString: '' });
   }
 
   handleKeyPress () {
@@ -80,14 +80,14 @@ export default class SearchBar extends Component {
         />
         <div className="search-bar-options">
           <button
-            className={this.props.clearButton && this.state.searchString && this.state.searchString.length > 0 ? "search-options-btn" : "hidden"}
+            className={this.props.clearButton && this.state.searchString && this.state.searchString.length > 0 ? 'search-options-btn' : 'hidden'}
             onClick={this.clearQuery}
             type="button"
           >
-            <img src={cordovaDot("/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-88-remove-circle.svg")} width="28" height="28" color="#ccc" alt="clear query" />
+            <img src={cordovaDot('/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-88-remove-circle.svg')} width="28" height="28" color="#ccc" alt="clear query" />
           </button>
           <button
-            className={this.props.searchButton ? "search-options-btn" : "hidden"}
+            className={this.props.searchButton ? 'search-options-btn' : 'hidden'}
             type="button"
           >
             {/* <i className="glyphicon glyphicon-search" /> */}

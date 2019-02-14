@@ -1,26 +1,26 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import { isProperlyFormattedVoterGuideWeVoteId } from "../../utils/textFormat";
-import { isWebApp } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
-import BallotActions from "../../actions/BallotActions";
-import BallotStore from "../../stores/BallotStore";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import SelectVoterGuidesSideBar from "../../components/Navigation/SelectVoterGuidesSideBar";
-import SettingsAccount from "../../components/Settings/SettingsAccount";
-import SettingsAddress from "../../components/Settings/SettingsAddress";
-import SettingsBannerAndOrganizationCard from "../../components/Settings/SettingsBannerAndOrganizationCard";
-import SettingsElection from "../../components/Settings/SettingsElection";
-import SettingsIssueLinks from "../../components/Settings/SettingsIssueLinks";
-import SettingsNotifications from "../../components/Settings/SettingsNotifications";
-import SettingsProfile from "../../components/Settings/SettingsProfile";
-import SettingsPersonalSideBar from "../../components/Navigation/SettingsPersonalSideBar";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideSettingsPositions from "../../components/Settings/VoterGuideSettingsPositions";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
+import { isWebApp } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import BallotActions from '../../actions/BallotActions';
+import BallotStore from '../../stores/BallotStore';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import SelectVoterGuidesSideBar from '../../components/Navigation/SelectVoterGuidesSideBar';
+import SettingsAccount from '../../components/Settings/SettingsAccount';
+import SettingsAddress from '../../components/Settings/SettingsAddress';
+import SettingsBannerAndOrganizationCard from '../../components/Settings/SettingsBannerAndOrganizationCard';
+import SettingsElection from '../../components/Settings/SettingsElection';
+import SettingsIssueLinks from '../../components/Settings/SettingsIssueLinks';
+import SettingsNotifications from '../../components/Settings/SettingsNotifications';
+import SettingsProfile from '../../components/Settings/SettingsProfile';
+import SettingsPersonalSideBar from '../../components/Navigation/SettingsPersonalSideBar';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterGuideSettingsPositions from '../../components/Settings/VoterGuideSettingsPositions';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
 
 export default class SettingsDashboard extends Component {
   static propTypes = {
@@ -30,12 +30,12 @@ export default class SettingsDashboard extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      editMode: "",
-      linkedOrganizationWeVoteId: "",
+      editMode: '',
+      linkedOrganizationWeVoteId: '',
       organization: {},
       voter: {},
-      organizationType: "",
-      voterGuideWeVoteId: "",
+      organizationType: '',
+      voterGuideWeVoteId: '',
     };
   }
 
@@ -43,7 +43,7 @@ export default class SettingsDashboard extends Component {
     if (this.props.params.edit_mode) {
       this.setState({ editMode: this.props.params.edit_mode });
     } else {
-      this.setState({ editMode: "address" });
+      this.setState({ editMode: 'address' });
     }
 
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -83,7 +83,7 @@ export default class SettingsDashboard extends Component {
       if (voterGuide && voterGuide.we_vote_id) {
         if (voterGuide.google_civic_election_id && voterGuide.google_civic_election_id !== BallotStore.currentBallotGoogleCivicElectionId) {
           // console.log("VoterGuideSettingsDashboard componentDidMount retrieving ballot for: ", voterGuide.google_civic_election_id);
-          BallotActions.voterBallotItemsRetrieve(voterGuide.google_civic_election_id, "", "");
+          BallotActions.voterBallotItemsRetrieve(voterGuide.google_civic_election_id, '', '');
         }
       }
     }
@@ -124,12 +124,12 @@ export default class SettingsDashboard extends Component {
       if (voterGuide && voterGuide.we_vote_id) {
         if (voterGuide.google_civic_election_id && voterGuide.google_civic_election_id !== BallotStore.currentBallotGoogleCivicElectionId) {
           // console.log("VoterGuideSettingsDashboard componentDidMount retrieving ballot for: ", voterGuide.google_civic_election_id);
-          BallotActions.voterBallotItemsRetrieve(voterGuide.google_civic_election_id, "", "");
+          BallotActions.voterBallotItemsRetrieve(voterGuide.google_civic_election_id, '', '');
         }
       }
     } else {
       this.setState({
-        voterGuideWeVoteId: "",
+        voterGuideWeVoteId: '',
       });
     }
   }
@@ -174,45 +174,45 @@ export default class SettingsDashboard extends Component {
     renderLog(__filename);
     let settingsComponentToDisplay = null;
     switch (this.state.editMode) {
-      case "account":
+      case 'account':
         settingsComponentToDisplay = <SettingsAccount />;
         break;
-      case "address":
+      case 'address':
         settingsComponentToDisplay = <SettingsAddress />;
         break;
-      case "election":
+      case 'election':
         settingsComponentToDisplay = <SettingsElection />;
         break;
-      case "issues_linked":
-      case "issues_to_link":
+      case 'issues_linked':
+      case 'issues_to_link':
         settingsComponentToDisplay = <SettingsIssueLinks organizationWeVoteId={this.state.voter.we_vote_id} params={{ active_tab: this.state.editMode }} />;
         break;
-      case "issues":
-        settingsComponentToDisplay = <SettingsIssueLinks organizationWeVoteId={this.state.voter.we_vote_id} params={{ active_tab: "" }} />;
+      case 'issues':
+        settingsComponentToDisplay = <SettingsIssueLinks organizationWeVoteId={this.state.voter.we_vote_id} params={{ active_tab: '' }} />;
         break;
-      case "notifications":
+      case 'notifications':
         settingsComponentToDisplay = <SettingsNotifications />;
         break;
       default:
-      case "profile":
+      case 'profile':
         settingsComponentToDisplay = <SettingsProfile />;
         break;
-      case "voter_guide":
+      case 'voter_guide':
         settingsComponentToDisplay = <VoterGuideSettingsPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />;
         break;
     }
 
     // console.log("this.state.organization.organization_banner_url:", this.state.organization.organization_banner_url);
     return (
-      <div className={isWebApp() ? "settings-dashboard u-stack--xl" : "settings-dashboard SettingsCardBottomCordova"}>
+      <div className={isWebApp() ? 'settings-dashboard u-stack--xl' : 'settings-dashboard SettingsCardBottomCordova'}>
         {/* Header Spacing for Desktop */}
         { isWebApp() && (
-        <div className={isWebApp() ? "col-md-12 d-none d-sm-block d-print-none" : "col-md-12 d-print-none"}>
+        <div className={isWebApp() ? 'col-md-12 d-none d-sm-block d-print-none' : 'col-md-12 d-print-none'}>
           <SettingsBannerAndOrganizationCard organization={this.state.organization} />
         </div>
         )}
         {/* Header Spacing for Mobile */}
-        <div className={isWebApp() ? "d-block d-sm-none d-print-none" : "d-print-none"}>
+        <div className={isWebApp() ? 'd-block d-sm-none d-print-none' : 'd-print-none'}>
           <SettingsBannerAndOrganizationCard organization={this.state.organization} />
         </div>
 

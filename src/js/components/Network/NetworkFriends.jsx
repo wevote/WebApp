@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { Link } from "react-router";
-import { _ } from "lodash";
-import FriendListCompressed from "../Friends/FriendListCompressed";
-import FriendActions from "../../actions/FriendActions";
-import FriendStore from "../../stores/FriendStore";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import { _ } from 'lodash';
+import FriendListCompressed from '../Friends/FriendListCompressed';
+import FriendActions from '../../actions/FriendActions';
+import FriendStore from '../../stores/FriendStore';
+import { renderLog } from '../../utils/logging';
 
 export default class NetworkFriends extends Component {
   static propTypes = {
@@ -40,15 +40,15 @@ export default class NetworkFriends extends Component {
   }
 
   getCurrentRoute () {
-    const currentRoute = "/friends";
+    const currentRoute = '/friends';
     return currentRoute;
   }
 
   getFollowingType () {
     switch (this.getCurrentRoute()) {
-      case "/friends":
+      case '/friends':
       default:
-        return "YOUR_FRIENDS";
+        return 'YOUR_FRIENDS';
     }
   }
 

@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import ImageHandler from "../ImageHandler";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ImageHandler from '../ImageHandler';
+import { renderLog } from '../../utils/logging';
 
 // CurrentFriendTinyDisplay is used by ItemTinyOpinionsToFollow for viewing the logos/icons for voter guides
 //  you can follow on the Ballot page
@@ -23,7 +23,7 @@ export default class CurrentFriendTinyDisplay extends Component {
     } else if (this.props.facebook_user_name) {
       displayName = this.props.facebook_user_name;
     } else {
-      displayName = "";
+      displayName = '';
     }
 
     let imageUrlTiny;
@@ -32,7 +32,7 @@ export default class CurrentFriendTinyDisplay extends Component {
     } else if (this.props.facebook_user_profile_url_https) {
       imageUrlTiny = this.props.facebook_user_profile_url_https;
     } else {
-      imageUrlTiny = "";
+      imageUrlTiny = '';
     }
     const hidePlaceholder = !this.props.showPlaceholderImage;
     return (

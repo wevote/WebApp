@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button, OverlayTrigger, Popover } from "react-bootstrap";
-import IssueActions from "../../actions/IssueActions";
-import IssueImageDisplay from "./IssueImageDisplay";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
+import IssueActions from '../../actions/IssueActions';
+import IssueImageDisplay from './IssueImageDisplay';
+import { renderLog } from '../../utils/logging';
 
 export default class IssueLinkToggle extends Component {
   static propTypes = {
@@ -43,7 +43,7 @@ export default class IssueLinkToggle extends Component {
     let supportButtonPopoverTooltip;
     if (this.props.incompatibleIssues !== undefined) {
       // Removed bsPrefix="card-popover"
-      const incompatibleIssues = <span>{`You cannot link because the issue is incompatible with the following issues: ${this.props.incompatibleIssues.map(issue => issue.issue_name).join(", ")}`}</span>;
+      const incompatibleIssues = <span>{`You cannot link because the issue is incompatible with the following issues: ${this.props.incompatibleIssues.map(issue => issue.issue_name).join(', ')}`}</span>;
       supportButtonPopoverTooltip = (
         <Popover
           title="Incompatible Issues"
@@ -113,7 +113,7 @@ export default class IssueLinkToggle extends Component {
               overlay={supportButtonPopoverTooltip}
             >
               {/* trigger={["focus", "hover", "click"]} */}
-              <div style={{ display: "inline-block" }}>
+              <div style={{ display: 'inline-block' }}>
                 <Button
                   bsPrefix="card-main__button-linked"
                   variant="info"

@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import SelectVoterGuidesSideBar from "../../components/Navigation/SelectVoterGuidesSideBar";
-import SettingsAccount from "../../components/Settings/SettingsAccount";
-import SettingsBannerAndOrganizationCard from "../../components/Settings/SettingsBannerAndOrganizationCard";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import SelectVoterGuidesSideBar from '../../components/Navigation/SelectVoterGuidesSideBar';
+import SettingsAccount from '../../components/Settings/SettingsAccount';
+import SettingsBannerAndOrganizationCard from '../../components/Settings/SettingsBannerAndOrganizationCard';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
 
 export default class VoterGuideListDashboard extends Component {
   static propTypes = {
@@ -18,8 +18,8 @@ export default class VoterGuideListDashboard extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      editMode: "",
-      linkedOrganizationWeVoteId: "",
+      editMode: '',
+      linkedOrganizationWeVoteId: '',
       organization: {},
       voter: {},
     };
@@ -29,7 +29,7 @@ export default class VoterGuideListDashboard extends Component {
     if (this.props.params.edit_mode) {
       this.setState({ editMode: this.props.params.edit_mode });
     } else {
-      this.setState({ editMode: "address" });
+      this.setState({ editMode: 'address' });
     }
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
@@ -121,7 +121,7 @@ export default class VoterGuideListDashboard extends Component {
     let settingsComponentToDisplay = null;
     switch (this.state.editMode) {
       default:
-      case "intro":
+      case 'intro':
         settingsComponentToDisplay = <div>Create your own voter guide by clicking &quot;Create New Voter Guide&quot;.</div>;
         break;
     }

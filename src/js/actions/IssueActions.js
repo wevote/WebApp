@@ -1,12 +1,12 @@
-import Dispatcher from "../dispatcher/Dispatcher";
+import Dispatcher from '../dispatcher/Dispatcher';
 
 export default {
   retrieveIssuesToFollow () {
-    Dispatcher.loadEndpoint("retrieveIssuesToFollow");
+    Dispatcher.loadEndpoint('retrieveIssuesToFollow');
   },
 
   issuesRetrieve () {
-    Dispatcher.loadEndpoint("issuesRetrieve", {
+    Dispatcher.loadEndpoint('issuesRetrieve', {
       include_voter_follow_status: true,
       voter_issues_only: false,
     });
@@ -14,8 +14,8 @@ export default {
 
   // June 15, 2018:  There is no functional difference in the JSON retured with this API, than with issuesRetrieve, and before today's change, we called the two API's 11 times
   // in 3 seconds when navigating between Ballot and Candidate (and each time receiving the exact same return)
-  issuesRetrieveForElection (googleCivicElectionId, ballot_location_shortcut = "", ballot_returned_we_vote_id = "") {
-    Dispatcher.loadEndpoint("issuesRetrieve", {
+  issuesRetrieveForElection (googleCivicElectionId, ballot_location_shortcut = '', ballot_returned_we_vote_id = '') {
+    Dispatcher.loadEndpoint('issuesRetrieve', {
       ballot_location_shortcut,
       ballot_returned_we_vote_id,
       google_civic_election_id: googleCivicElectionId,
@@ -25,7 +25,7 @@ export default {
   },
 
   issueFollow (issueWeVoteId, googleCivicElectionId = 0) {
-    Dispatcher.loadEndpoint("issueFollow", {
+    Dispatcher.loadEndpoint('issueFollow', {
       issue_we_vote_id: issueWeVoteId,
       google_civic_election_id: googleCivicElectionId,
       follow: true,
@@ -34,7 +34,7 @@ export default {
   },
 
   issueStopFollowing (issueWeVoteId, googleCivicElectionId = 0) {
-    Dispatcher.loadEndpoint("issueFollow", {
+    Dispatcher.loadEndpoint('issueFollow', {
       issue_we_vote_id: issueWeVoteId,
       google_civic_election_id: googleCivicElectionId,
       follow: false,
@@ -43,7 +43,7 @@ export default {
   },
 
   issueLinkForOrganization (organizationWeVoteId, issueWeVoteId) {
-    Dispatcher.loadEndpoint("organizationLinkToIssue",
+    Dispatcher.loadEndpoint('organizationLinkToIssue',
       {
         organization_we_vote_id: organizationWeVoteId,
         issue_we_vote_id: issueWeVoteId,
@@ -52,7 +52,7 @@ export default {
   },
 
   issueUnLinkForOrganization (organizationWeVoteId, issueWeVoteId) {
-    Dispatcher.loadEndpoint("organizationLinkToIssue",
+    Dispatcher.loadEndpoint('organizationLinkToIssue',
       {
         organization_we_vote_id: organizationWeVoteId,
         issue_we_vote_id: issueWeVoteId,
@@ -62,7 +62,7 @@ export default {
 
   removeBallotItemIssueScoreFromCache: (ballotItemWeVoteId) => {
     Dispatcher.dispatch({
-      type: "removeBallotItemIssueScoreFromCache",
+      type: 'removeBallotItemIssueScoreFromCache',
       res: {
         ballot_item_we_vote_id: ballotItemWeVoteId,
         success: true,
@@ -71,14 +71,14 @@ export default {
   },
 
   retrieveIssuesToLinkForOrganization (organizationWeVoteId) {
-    Dispatcher.loadEndpoint("issuesToLinkToForOrganization",
+    Dispatcher.loadEndpoint('issuesToLinkToForOrganization',
       {
         organization_we_vote_id: organizationWeVoteId,
       });
   },
 
   retrieveIssuesLinkedForOrganization (organizationWeVoteId) {
-    Dispatcher.loadEndpoint("issuesLinkedToOrganization",
+    Dispatcher.loadEndpoint('issuesLinkedToOrganization',
       {
         organization_we_vote_id: organizationWeVoteId,
       });

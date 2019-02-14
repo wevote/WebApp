@@ -1,5 +1,5 @@
-import { ReduceStore } from "flux/utils";
-import Dispatcher from "../dispatcher/Dispatcher";
+import { ReduceStore } from 'flux/utils';
+import Dispatcher from '../dispatcher/Dispatcher';
 // import VoterActions from "../actions/VoterActions";
 
 class VoterSessionStore extends ReduceStore {
@@ -11,7 +11,7 @@ class VoterSessionStore extends ReduceStore {
   reduce (state, action) { // eslint-disable-line
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) {
-      console.log("VoterSessionStore, problem with action.res or action.res.success. action: ", action);
+      console.log('VoterSessionStore, problem with action.res or action.res.success. action: ', action);
       return state;
     }
 

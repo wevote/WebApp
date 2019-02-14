@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { renderLog } from "../../utils/logging";
-import PositionItem from "./PositionItem";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { renderLog } from '../../utils/logging';
+import PositionItem from './PositionItem';
 
 export default class PositionList extends Component {
   static propTypes = {

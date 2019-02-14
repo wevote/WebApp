@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import ImageHandler from "../ImageHandler";
-import LoadingWheel from "../LoadingWheel";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import ImageHandler from '../ImageHandler';
+import LoadingWheel from '../LoadingWheel';
+import { renderLog } from '../../utils/logging';
 
 export default class OrganizationsNotShownList extends Component {
   static propTypes = {
@@ -30,7 +30,7 @@ export default class OrganizationsNotShownList extends Component {
       // const organizationTwitterHandle = oneOrganization.twitter_handle;
 
       // If the displayName is in the twitterDescription, remove it from twitterDescription
-      const displayName = organizationName || "";
+      const displayName = organizationName || '';
       const voterGuideLink = organizationTwitterHandle ? `/${organizationTwitterHandle}` : `/voterguide/${organizationWeVoteId}`;
       return (
         <div key={organizationWeVoteId} className="card-main__media-object">

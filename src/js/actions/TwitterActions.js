@@ -1,6 +1,6 @@
-import Dispatcher from "../dispatcher/Dispatcher";
-import VoterActions from "./VoterActions";
-import VoterSessionActions from "./VoterSessionActions";
+import Dispatcher from '../dispatcher/Dispatcher';
+import VoterActions from './VoterActions';
+import VoterSessionActions from './VoterSessionActions';
 
 export default {
   // TODO Convert this to sign out of just Twitter
@@ -10,14 +10,14 @@ export default {
   },
 
   twitterIdentityRetrieve (newTwitterHandle) {
-    Dispatcher.loadEndpoint("twitterIdentityRetrieve",
+    Dispatcher.loadEndpoint('twitterIdentityRetrieve',
       {
         twitter_handle: newTwitterHandle,
       });
   },
 
   twitterNativeSignInSave (twitterAccessToken, twitterAccessTokenSecret) {
-    Dispatcher.loadEndpoint("twitterNativeSignInSave",
+    Dispatcher.loadEndpoint('twitterNativeSignInSave',
       {
         twitter_access_token: twitterAccessToken,
         twitter_access_token_secret: twitterAccessTokenSecret,
@@ -25,12 +25,12 @@ export default {
   },
 
   twitterSignInRetrieve () {
-    Dispatcher.loadEndpoint("twitterSignInRetrieve", {
+    Dispatcher.loadEndpoint('twitterSignInRetrieve', {
     });
   },
 
   twitterSignInStart (returnUrl) {
-    Dispatcher.loadEndpoint("twitterSignInStart",
+    Dispatcher.loadEndpoint('twitterSignInStart',
       {
         return_url: returnUrl,
       });

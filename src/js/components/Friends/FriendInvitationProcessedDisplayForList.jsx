@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import ImageHandler from "../ImageHandler";
-import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import ImageHandler from '../ImageHandler';
+import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
+import { renderLog } from '../../utils/logging';
 
 export default class FriendInvitationProcessedDisplayForList extends Component {
   static propTypes = {
@@ -34,7 +34,7 @@ export default class FriendInvitationProcessedDisplayForList extends Component {
         </span>
       );
     }
-    const twitterDescription = this.props.voter_twitter_description ? this.props.voter_twitter_description : "";
+    const twitterDescription = this.props.voter_twitter_description ? this.props.voter_twitter_description : '';
     // If the voterDisplayName is in the voter_twitter_description, remove it
     const twitterDescriptionMinusName = removeTwitterNameFromDescription(voterDisplayName, twitterDescription);
 

@@ -4,14 +4,14 @@
   https://github.com/fkhadra/react-toastify
   and https://fkhadra.github.io/react-toastify/
 */
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
 
 const DEFAULT_OPTIONS = {
   autoClose: 2000,
   bodyClassName: {
     fontFamily: "'Source Sans Pro', sans-serif",
-    fontSize: "1.2rem",
-    textAlign: "center",
+    fontSize: '1.2rem',
+    textAlign: 'center',
     marginTop: null,
   },
   hideProgressBar: true,

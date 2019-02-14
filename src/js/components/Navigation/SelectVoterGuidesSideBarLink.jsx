@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import { capitalizeString, sentenceCaseString } from "../../utils/textFormat";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { capitalizeString, sentenceCaseString } from '../../utils/textFormat';
+import { renderLog } from '../../utils/logging';
 
 
 export default class SelectVoterGuidesSideBarLink extends Component {
@@ -18,8 +18,8 @@ export default class SelectVoterGuidesSideBarLink extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      voterGuideWeVoteId: "",
-      voterGuideWeVoteIdSelected: "",
+      voterGuideWeVoteId: '',
+      voterGuideWeVoteIdSelected: '',
     };
   }
 
@@ -46,26 +46,26 @@ export default class SelectVoterGuidesSideBarLink extends Component {
 
     return (
       <span>
-        {labelInSentenceCase && labelInSentenceCase !== "" ? (
+        {labelInSentenceCase && labelInSentenceCase !== '' ? (
           <div className={atStateIsOnThisVoterGuide ?
-            "SettingsItem__summary__item-container SettingsItem__summary__item-container--selected" :
-            "SettingsItem__summary__item-container "}
+            'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
+            'SettingsItem__summary__item-container '}
           >
             <div>
               <Link to={this.props.linkTo} className="BallotItem__summary__item">
                 <span className={atStateIsOnThisVoterGuide ?
-                  "SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected" :
-                  "SettingsItem__summary__item__display-name"}
+                  'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
+                  'SettingsItem__summary__item__display-name'}
                 >
                   {labelInSentenceCase}
                 </span>
                 { this.props.displaySubtitles ? (
                   <span className={atStateIsOnThisVoterGuide ?
-                    "SettingsItem__summary__item__subtitle SettingsItem__summary__item__subtitle--selected" :
-                    "SettingsItem__summary__item__subtitle"}
+                    'SettingsItem__summary__item__subtitle SettingsItem__summary__item__subtitle--selected' :
+                    'SettingsItem__summary__item__subtitle'}
                   >
                     <br />
-                    {" "}
+                    {' '}
                     {subtitleInSentenceCase}
                   </span>
                 ) : null }

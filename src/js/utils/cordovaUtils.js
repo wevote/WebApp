@@ -1,6 +1,6 @@
-import { browserHistory, hashHistory } from "react-router";
-import { oAuthLog } from "./logging";
-import { stringContains } from "./textFormat";
+import { browserHistory, hashHistory } from 'react-router';
+import { oAuthLog } from './logging';
+import { stringContains } from './textFormat';
 /* global $  */
 
 export function isWebApp () {
@@ -40,11 +40,11 @@ function cordovaOpenSafariViewSub (requestURL, onExit) {
     },
 
     (result) => {
-      if (result.event === "opened") {
+      if (result.event === 'opened') {
         oAuthLog(`cordovaOpenSafariView opened url: ${requestURL}`);
-      } else if (result.event === "loaded") {
+      } else if (result.event === 'loaded') {
         oAuthLog(`cordovaOpenSafariView loaded url: ${JSON.stringify(result)}`);
-      } else if (result.event === "closed") {
+      } else if (result.event === 'closed') {
         oAuthLog(`cordovaOpenSafariView closed: ${JSON.stringify(result)}`);
         if (onExit) {
           onExit();
@@ -103,8 +103,8 @@ export function enclosingRectangle (objectNameString, instance) {
 
 // webapp, webapp:iOS, webapp:Android
 export function deviceTypeString () {
-  let deviceString = isWebApp() ? "webapp" : "cordova";
-  const { platform } = window.device || "";
+  let deviceString = isWebApp() ? 'webapp' : 'cordova';
+  const { platform } = window.device || '';
   if (isCordova() && platform) {
     deviceString += `:${platform}`;
   }
@@ -113,8 +113,8 @@ export function deviceTypeString () {
 }
 
 export function isIOS () {
-  const { platform } = window.device || "";
-  return isCordova() && platform === "iOS";
+  const { platform } = window.device || '';
+  return isCordova() && platform === 'iOS';
 }
 
 export function isIPhoneXorXS () {
@@ -190,8 +190,8 @@ export function hasIPhoneNotch () {
 }
 
 export function isAndroid () {
-  const { platform } = window.device || "";
-  return isCordova() && platform === "Android";
+  const { platform } = window.device || '';
+  return isCordova() && platform === 'Android';
 }
 
 export function getAndroidSize () {
@@ -202,7 +202,7 @@ export function getAndroidSize () {
   };
 
   const size = screen.width * screen.height;
-  let sizeString = "default";
+  let sizeString = 'default';
 
   /* sm = 480*800 = 384,000      Nexus One
      md = 1080*1920 = 2,073,600  PixelXL, Nexus5X, Moto G5
@@ -210,13 +210,13 @@ export function getAndroidSize () {
      xl = 2560*1600 = 4,096,000  Nexus10 Tablet   */
 
   if (size > 3.7E6) {
-    sizeString = "--xl";
+    sizeString = '--xl';
   } else if (size > 3E6) {
-    sizeString = "--lg";
+    sizeString = '--lg';
   } else if (size > 1E6) {
-    sizeString = "--md";
+    sizeString = '--md';
   } else {
-    sizeString = "--sm";
+    sizeString = '--sm';
   }
   return sizeString;
 }
@@ -229,35 +229,35 @@ export function getAndroidSize () {
  */
 export function getAppBaseClass (pathname) {
   // console.log("Determine the headroom space pathname:" + pathname);
-  let appBaseClass = "app-base";
+  let appBaseClass = 'app-base';
   if (isWebApp()) {
-    appBaseClass += " headroom-webapp";
+    appBaseClass += ' headroom-webapp';
   } else {
-    appBaseClass += " cordova-base";
+    appBaseClass += ' cordova-base';
     if (isIOS()) {
-      appBaseClass += " headroom-ios";
+      appBaseClass += ' headroom-ios';
       if (hasIPhoneNotch()) {
-        appBaseClass += "--notch";
+        appBaseClass += '--notch';
       } else if (isIPhone678()) {
-        appBaseClass += "--678";
+        appBaseClass += '--678';
       } else if (isIPhone678Plus()) {
-        appBaseClass += "--678plus";
+        appBaseClass += '--678plus';
       } else { // iPad
-        appBaseClass += "--ipad";
+        appBaseClass += '--ipad';
       }
     } else {
-      appBaseClass += " headroom-android";
+      appBaseClass += ' headroom-android';
       appBaseClass += getAndroidSize();
     }
   }
-  if (stringContains("/ballot", pathname)) {
-    appBaseClass += "--secondary";
-  } else if (stringContains("/candidate/", pathname) ||
-    (stringContains("/settings/", pathname) && isCordova()) ||
-     stringContains("/measure/", pathname)) {
-    appBaseClass += "--backto";
+  if (stringContains('/ballot', pathname)) {
+    appBaseClass += '--secondary';
+  } else if (stringContains('/candidate/', pathname) ||
+    (stringContains('/settings/', pathname) && isCordova()) ||
+     stringContains('/measure/', pathname)) {
+    appBaseClass += '--backto';
   } else {
-    appBaseClass += "--full";
+    appBaseClass += '--full';
   }
 
   // console.log("Determine the headroom space classname:" + appBaseClass);
@@ -265,11 +265,11 @@ export function getAppBaseClass (pathname) {
 }
 
 export function getToastClass () {
-  let toastClass = "";
+  let toastClass = '';
   if (hasIPhoneNotch()) {
-    toastClass = "app-toast-cordova__iphone-notch";
+    toastClass = 'app-toast-cordova__iphone-notch';
   } else if (isIOS()) {
-    toastClass = "app-toast-cordova__iphone";
+    toastClass = 'app-toast-cordova__iphone';
   }
 
   // No adjustment needed for Android, it doesn't consider the top hardware menu part of the application area
@@ -279,20 +279,20 @@ export function getToastClass () {
 
 export function prepareForCordovaKeyboard (callerString) {
   if (callerString && isCordova()) {
-    const fileName = callerString.substr(callerString.lastIndexOf("/") + 1);
+    const fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
     console.log(`prepareForCordovaKeyboard ^^^^^^^^^^ ${fileName}`);
-    $("#app").removeClass("app-wrapper").addClass("app-wrapper__cordova");
-    $("body").css("height", "");
-    $(".footroom-wrapper").css("display", "none");
+    $('#app').removeClass('app-wrapper').addClass('app-wrapper__cordova');
+    $('body').css('height', '');
+    $('.footroom-wrapper').css('display', 'none');
   }
 }
 
 export function restoreStylesAfterCordovaKeyboard (callerString) {
   if (callerString && isCordova()) {
-    const fileName = callerString.substr(callerString.lastIndexOf("/") + 1);
+    const fileName = callerString.substr(callerString.lastIndexOf('/') + 1);
     console.log(`restoreStylesAfterCordovaKeyboard vvvvvvvvvv ${fileName}`);
-    $("#app").removeClass("app-wrapper__cordova").addClass("app-wrapper");
-    $("body").css("height", "100%");
-    $(".footroom-wrapper").css("display", "");
+    $('#app').removeClass('app-wrapper__cordova').addClass('app-wrapper');
+    $('body').css('height', '100%');
+    $('.footroom-wrapper').css('display', '');
   }
 }

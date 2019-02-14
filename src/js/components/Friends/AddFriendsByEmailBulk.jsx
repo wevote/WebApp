@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Button } from "react-bootstrap";
-import { historyPush } from "../../utils/cordovaUtils";
-import LoadingWheel from "../LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import FriendActions from "../../actions/FriendActions";
-import FriendStore from "../../stores/FriendStore";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
+import { historyPush } from '../../utils/cordovaUtils';
+import LoadingWheel from '../LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import FriendActions from '../../actions/FriendActions';
+import FriendStore from '../../stores/FriendStore';
+import VoterStore from '../../stores/VoterStore';
 
 // this is currently not called by the interface
 export default class AddFriendsByEmailBulk extends Component {
@@ -16,12 +16,12 @@ export default class AddFriendsByEmailBulk extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      addFriendsMessage: "Please join me in preparing for the upcoming election.",
-      emailAddresses: "",
+      addFriendsMessage: 'Please join me in preparing for the upcoming election.',
+      emailAddresses: '',
       emailAddressesError: false,
-      senderEmailAddress: "",
+      senderEmailAddress: '',
       senderEmailAddressError: false,
-      redirectURLUponSave: "/friends/sign_in", // TODO DALE Remove this?
+      redirectURLUponSave: '/friends/sign_in', // TODO DALE Remove this?
       loading: false,
       onEnterEmailAddressStep: true,
       onCollectEmailStep: false,
@@ -51,8 +51,8 @@ export default class AddFriendsByEmailBulk extends Component {
 
   onFriendStoreChange = () => {
     const addFriendsByEmailStep = FriendStore.switchToAddFriendsByEmailStep();
-    console.log("AddFriendsByEmail, onFriendStoreChange, addFriendsByEmailStep:", addFriendsByEmailStep);
-    if (addFriendsByEmailStep === "on_collect_email_step") {
+    console.log('AddFriendsByEmail, onFriendStoreChange, addFriendsByEmailStep:', addFriendsByEmailStep);
+    if (addFriendsByEmailStep === 'on_collect_email_step') {
       // Switch to "onCollectEmailStep"
       this.setState({
         loading: false,
@@ -74,33 +74,33 @@ export default class AddFriendsByEmailBulk extends Component {
 
   AddFriendsByEmailStepsManager = (event) => {
     // This function is called when the form is submitted
-    console.log("AddFriendsByEmailStepsManager");
-    let errorMessage = "";
+    console.log('AddFriendsByEmailStepsManager');
+    let errorMessage = '';
 
     if (this.state.onEnterEmailAddressStep) {
       // Validate friends' email addresses
       let emailAddressesError = false;
       if (!this.state.emailAddresses) {
         emailAddressesError = true;
-        errorMessage += "Please enter at least one email address.";
+        errorMessage += 'Please enter at least one email address.';
       }
 
       if (emailAddressesError) {
-        console.log("AddFriendsByEmailStepsManager, emailAddressesError");
+        console.log('AddFriendsByEmailStepsManager, emailAddressesError');
         this.setState({
           loading: false,
           emailAddressesError: true,
           errorMessage,
         });
       } else if (!this.hasValidEmail()) {
-        console.log("AddFriendsByEmailStepsManager, NOT hasValidEmail");
+        console.log('AddFriendsByEmailStepsManager, NOT hasValidEmail');
         this.setState({
           loading: false,
           onEnterEmailAddressStep: false,
           onCollectEmailStep: true,
         });
       } else {
-        console.log("AddFriendsByEmailStepsManager, calling friendInvitationByEmailSend");
+        console.log('AddFriendsByEmailStepsManager, calling friendInvitationByEmailSend');
         this.friendInvitationByEmailSend(event);
       }
     } else if (this.state.onCollectEmailStep) {
@@ -108,10 +108,10 @@ export default class AddFriendsByEmailBulk extends Component {
       let senderEmailAddressError = false;
       if (!this.state.emailAddresses) {
         senderEmailAddressError = true;
-        errorMessage += "Please enter a valid email address for yourself. ";
+        errorMessage += 'Please enter a valid email address for yourself. ';
       } else if (!this.senderEmailAddressVerified()) {
         senderEmailAddressError = true;
-        errorMessage += "This is not a valid email address. ";
+        errorMessage += 'This is not a valid email address. ';
       }
 
       if (senderEmailAddressError) {
@@ -121,7 +121,7 @@ export default class AddFriendsByEmailBulk extends Component {
           errorMessage,
         });
       } else {
-        console.log("AddFriendsByEmailStepsManager, calling friendInvitationByEmailSend");
+        console.log('AddFriendsByEmailStepsManager, calling friendInvitationByEmailSend');
         this.friendInvitationByEmailSend(event);
       }
     }
@@ -148,12 +148,12 @@ export default class AddFriendsByEmailBulk extends Component {
 
   friendInvitationByEmailSend (e) {
     e.preventDefault();
-    FriendActions.friendInvitationByEmailSend("", "", "", this.state.emailAddresses, this.state.addFriendsMessage, this.state.senderEmailAddress);
+    FriendActions.friendInvitationByEmailSend('', '', '', this.state.emailAddresses, this.state.addFriendsMessage, this.state.senderEmailAddress);
     this.setState({
       loading: true,
-      emailAddresses: "",
+      emailAddresses: '',
       emailAddressesError: false,
-      senderEmailAddress: "",
+      senderEmailAddress: '',
       onEnterEmailAddressStep: true,
       onCollectEmailStep: false,
       onFriendInvitationSentStep: true,
@@ -177,7 +177,7 @@ export default class AddFriendsByEmailBulk extends Component {
       return LoadingWheel;
     }
     const floatRight = {
-      float: "right",
+      float: 'right',
     };
 
     return (
@@ -208,7 +208,7 @@ export default class AddFriendsByEmailBulk extends Component {
                 <span>
                   <label htmlFor="addFriendsMessage">
                     Include a Message
-                    {" "}
+                    {' '}
                     <span className="small">(Optional)</span>
                     <input
                       type="text"

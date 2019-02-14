@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Helmet from "react-helmet";
-import { isCordova } from "../../utils/cordovaUtils";
-import makeSearchLink from "../../utils/search-functions";
-import { renderLog } from "../../utils/logging";
-import SearchAllActions from "../../actions/SearchAllActions";
-import SearchAllStore from "../../stores/SearchAllStore";
-import SearchResultsDisplay from "../../components/Search/SearchResultsDisplay";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
+import { isCordova } from '../../utils/cordovaUtils';
+import makeSearchLink from '../../utils/search-functions';
+import { renderLog } from '../../utils/logging';
+import SearchAllActions from '../../actions/SearchAllActions';
+import SearchAllStore from '../../stores/SearchAllStore';
+import SearchResultsDisplay from '../../components/Search/SearchResultsDisplay';
 
 export default class SearchPage extends Component {
   static propTypes = {
@@ -16,7 +16,7 @@ export default class SearchPage extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      textFromSearchField: "",
+      textFromSearchField: '',
       searchResults: [],
     };
   }

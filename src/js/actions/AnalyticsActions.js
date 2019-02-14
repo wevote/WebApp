@@ -1,4 +1,4 @@
-import Dispatcher from "../dispatcher/Dispatcher";
+import Dispatcher from '../dispatcher/Dispatcher';
 
 // Dec 2018: Keep this comment as a cheat-sheet for the enumerated values sent by the API
 // ACTION_VOTER_GUIDE_VISIT = 1;
@@ -45,7 +45,7 @@ import Dispatcher from "../dispatcher/Dispatcher";
 export default {
 
   saveActionWrapper (actionConstant, googleCivicElectionId) {
-    Dispatcher.loadEndpoint("saveAnalyticsAction",
+    Dispatcher.loadEndpoint('saveAnalyticsAction',
       {
         action_constant: actionConstant,
         google_civic_election_id: googleCivicElectionId,
@@ -53,7 +53,7 @@ export default {
   },
 
   saveActionWrapperWithOrganization (actionConstant, googleCivicElectionId, organizationWeVoteId) {
-    Dispatcher.loadEndpoint("saveAnalyticsAction",
+    Dispatcher.loadEndpoint('saveAnalyticsAction',
       {
         action_constant: actionConstant,
         google_civic_election_id: googleCivicElectionId,
@@ -62,7 +62,7 @@ export default {
   },
 
   saveActionWrapperWithBallotItem (actionConstant, googleCivicElectionId, ballotItemWeVoteId) {
-    Dispatcher.loadEndpoint("saveAnalyticsAction",
+    Dispatcher.loadEndpoint('saveAnalyticsAction',
       {
         action_constant: actionConstant,
         google_civic_election_id: googleCivicElectionId,

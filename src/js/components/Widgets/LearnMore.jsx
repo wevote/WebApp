@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import TextTruncate from "react-text-truncate";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import TextTruncate from 'react-text-truncate';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import { renderLog } from '../../utils/logging';
 
 export default class LearnMore extends Component {
   static propTypes = {
@@ -57,18 +57,18 @@ export default class LearnMore extends Component {
     }
 
     if (showMoreText === undefined) {
-      showMoreText = "more";
+      showMoreText = 'more';
     }
 
     if (learnMoreText === undefined) {
-      learnMoreText = "learn more";
+      learnMoreText = 'learn more';
     }
 
     // remove extra ascii carriage returns or other control text
-    textToDisplay = textToDisplay.replace(/[\x0D-\x1F]/g, "");  // eslint-disable-line no-control-regex
+    textToDisplay = textToDisplay.replace(/[\x0D-\x1F]/g, '');  // eslint-disable-line no-control-regex
 
     // convert text into array, splitting on line breaks
-    const expandedTextArray = textToDisplay.replace(/(?:\r\n|\r|\n){2,}/g, "\r\n\r\n").split(/(?:\r\n|\r|\n)/g);
+    const expandedTextArray = textToDisplay.replace(/(?:\r\n|\r|\n){2,}/g, '\r\n\r\n').split(/(?:\r\n|\r|\n)/g);
 
     // There are cases where we would like to show line breaks when there is a little bit of text
     let notEnoughTextToTruncate = false;
@@ -100,7 +100,7 @@ export default class LearnMore extends Component {
             {item}
           </span>
         );
-      } else if (index >= expandedTextArray.length - 2 && item === "") {
+      } else if (index >= expandedTextArray.length - 2 && item === '') {
         return (
           <span key={`key-${item}`}>
             {item}
@@ -169,7 +169,7 @@ export default class LearnMore extends Component {
     } else {
       return (
         <span>
-          {" "}
+          {' '}
           {expandedTextToDisplay}
           &nbsp;&nbsp;
           {

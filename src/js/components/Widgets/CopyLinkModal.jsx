@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Modal } from "react-bootstrap";
-import CopyToClipboard from "react-copy-to-clipboard";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Modal } from 'react-bootstrap';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import { renderLog } from '../../utils/logging';
 
 export default class CopyLinkModal extends Component {
   static propTypes = {
@@ -40,9 +40,9 @@ export default class CopyLinkModal extends Component {
     const browserSupportsCopyToClipboard = false; // latest iOS update supports CopyToClipboard, check for users version and let them copy if latest, perhaps with npm pckg "mobile-detect"
     let copyBtnClassName;
     if (browserSupportsCopyToClipboard) {
-      copyBtnClassName = "copy-btn"; // display copy button at all times
+      copyBtnClassName = 'copy-btn'; // display copy button at all times
     } else {
-      copyBtnClassName = "copy-btn d-none d-sm-block"; // display: none; in mobile view
+      copyBtnClassName = 'copy-btn d-none d-sm-block'; // display: none; in mobile view
     }
 
     return (
@@ -64,7 +64,7 @@ export default class CopyLinkModal extends Component {
             </span>
           </div>
           {this.state.wasCopied ? (
-            <span style={{ color: "red" }}>
+            <span style={{ color: 'red' }}>
               Link copied to your clipboard! You can now paste into an email or social media.
             </span>
           ) : null

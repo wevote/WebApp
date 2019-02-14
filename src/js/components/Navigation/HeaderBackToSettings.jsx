@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Button from "@material-ui/core/Button";
-import BallotStore from "../../stores/BallotStore";
-import CandidateStore from "../../stores/CandidateStore";
-import cookies from "../../utils/cookies";
-import { hasIPhoneNotch, historyPush, isWebApp } from "../../utils/cordovaUtils";
-import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import { renderLog } from "../../utils/logging";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterSessionActions from "../../actions/VoterSessionActions";
-import { shortenText } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
+import BallotStore from '../../stores/BallotStore';
+import CandidateStore from '../../stores/CandidateStore';
+import cookies from '../../utils/cookies';
+import { hasIPhoneNotch, historyPush, isWebApp } from '../../utils/cordovaUtils';
+import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import { renderLog } from '../../utils/logging';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterSessionActions from '../../actions/VoterSessionActions';
+import { shortenText } from '../../utils/textFormat';
 
 export default class HeaderBackToSettings extends Component {
   static propTypes = {
@@ -27,9 +27,9 @@ export default class HeaderBackToSettings extends Component {
     super(props);
     this.state = {
       profilePopUpOpen: false,
-      candidateWeVoteId: "",
+      candidateWeVoteId: '',
       organization: {},
-      organizationWeVoteId: "",
+      organizationWeVoteId: '',
       voter: {},
     };
     this.toggleAccountMenu = this.toggleAccountMenu.bind(this);
@@ -54,8 +54,8 @@ export default class HeaderBackToSettings extends Component {
     let organization = {};
     let organizationWeVoteId;
     if (this.props.params) {
-      candidateWeVoteId = this.props.params.candidate_we_vote_id || "";
-      if (candidateWeVoteId && candidateWeVoteId !== "") {
+      candidateWeVoteId = this.props.params.candidate_we_vote_id || '';
+      if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
         // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
@@ -63,9 +63,9 @@ export default class HeaderBackToSettings extends Component {
         officeName = candidate.contest_office_name;
       }
 
-      organizationWeVoteId = this.props.params.organization_we_vote_id || "";
+      organizationWeVoteId = this.props.params.organization_we_vote_id || '';
       organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-      if (organizationWeVoteId && organizationWeVoteId !== "" && !organization.organization_we_vote_id) {
+      if (organizationWeVoteId && organizationWeVoteId !== '' && !organization.organization_we_vote_id) {
         // Retrieve the organization object
         OrganizationActions.organizationRetrieve(organizationWeVoteId);
       }
@@ -75,7 +75,7 @@ export default class HeaderBackToSettings extends Component {
     // console.log("organizationWeVoteId: ", organizationWeVoteId);
 
     const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-    const weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
+    const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     this.setState({
       candidateWeVoteId,
       officeName,
@@ -95,8 +95,8 @@ export default class HeaderBackToSettings extends Component {
     let organization = {};
     let organizationWeVoteId;
     if (nextProps.params) {
-      candidateWeVoteId = nextProps.params.candidate_we_vote_id || "";
-      if (candidateWeVoteId && candidateWeVoteId !== "") {
+      candidateWeVoteId = nextProps.params.candidate_we_vote_id || '';
+      if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
         // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
@@ -104,9 +104,9 @@ export default class HeaderBackToSettings extends Component {
         officeName = candidate.contest_office_name;
       }
 
-      organizationWeVoteId = nextProps.params.organization_we_vote_id || "";
+      organizationWeVoteId = nextProps.params.organization_we_vote_id || '';
       organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-      if (organizationWeVoteId && organizationWeVoteId !== "" && !organization.organization_we_vote_id) {
+      if (organizationWeVoteId && organizationWeVoteId !== '' && !organization.organization_we_vote_id) {
         // Retrieve the organization object
         OrganizationActions.organizationRetrieve(organizationWeVoteId);
       }
@@ -116,7 +116,7 @@ export default class HeaderBackToSettings extends Component {
     // console.log("organizationWeVoteId: ", organizationWeVoteId);
 
     const weVoteBrandingOffFromUrl = nextProps.location.query ? nextProps.location.query.we_vote_branding_off : 0;
-    const weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
+    const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     this.setState({
       candidateWeVoteId,
       officeName,
@@ -143,7 +143,7 @@ export default class HeaderBackToSettings extends Component {
     const { candidateWeVoteId } = this.state;
     let officeName;
     let officeWeVoteId;
-    if (candidateWeVoteId && candidateWeVoteId !== "") {
+    if (candidateWeVoteId && candidateWeVoteId !== '') {
       const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
       // console.log("HeaderBackToBar -- onCandidateStoreChange, candidateWeVoteId:", this.state.candidateWeVoteId, ", candidate:", candidate);
@@ -165,7 +165,7 @@ export default class HeaderBackToSettings extends Component {
   }
 
   getOfficeLink () {
-    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
+    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== '') {
       return `/office/${this.state.officeWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
     } else {
       return `/office/${this.state.officeWeVoteId}/b/btdb/`;
@@ -220,20 +220,20 @@ export default class HeaderBackToSettings extends Component {
     renderLog(__filename);
     const { voter } = this.state;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
-    const backToLink = isWebApp() ? "/settings/menu" : "/more/hamburger";
+    const backToLink = isWebApp() ? '/settings/menu' : '/more/hamburger';
 
     let backToOrganizationLinkText;
-    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
-      backToOrganizationLinkText = "Back to Voter Guide22";
+    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== '') {
+      backToOrganizationLinkText = 'Back to Voter Guide22';
     } else {
-      backToOrganizationLinkText = "Back to Settings";
+      backToOrganizationLinkText = 'Back to Settings';
     }
 
-    if (this.props.params.back_to_variable === "bto" || this.props.params.back_to_variable === "btdo") {
+    if (this.props.params.back_to_variable === 'bto' || this.props.params.back_to_variable === 'btdo') {
       if (this.state.officeName) {
         backToOrganizationLinkText = `Back to ${this.state.officeName}`;
       } else {
-        backToOrganizationLinkText = "Back";
+        backToOrganizationLinkText = 'Back';
       }
     } else if (this.state.organization && this.state.organization.organization_name) {
       backToOrganizationLinkText = `Back to ${this.state.organization.organization_name}`;
@@ -242,9 +242,9 @@ export default class HeaderBackToSettings extends Component {
     const backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 20);
     const headerClassName = (function header () {
       if (isWebApp()) {
-        return "page-header";
+        return 'page-header';
       } else {
-        return hasIPhoneNotch() ? "page-header page-header__cordova-iphonex" : "page-header page-header__cordova";
+        return hasIPhoneNotch() ? 'page-header page-header__cordova-iphonex' : 'page-header page-header__cordova';
       }
     }());
 
@@ -255,7 +255,7 @@ export default class HeaderBackToSettings extends Component {
           <Button
           variant="contained"
           color="primary"
-          className={`page-header__backToButton ${hasIPhoneNotch() ? "page-header__backToButtonIPhoneX" : ""}`}
+          className={`page-header__backToButton ${hasIPhoneNotch() ? 'page-header__backToButtonIPhoneX' : ''}`}
           onClick={() => historyPush(backToLink)}
           >
             <ion-icon name="arrow-back" />

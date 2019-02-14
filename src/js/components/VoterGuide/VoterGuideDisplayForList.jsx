@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import ImageHandler from "../ImageHandler";
-import { removeTwitterNameFromDescription } from "../../utils/textFormat";
-import { renderLog } from "../../utils/logging";
-import PositionRatingSnippet from "../Widgets/PositionRatingSnippet";
-import PositionInformationOnlySnippet from "../Widgets/PositionInformationOnlySnippet";
-import PositionSupportOpposeSnippet from "../Widgets/PositionSupportOpposeSnippet";
-import ReadMore from "../Widgets/ReadMore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import ImageHandler from '../ImageHandler';
+import { removeTwitterNameFromDescription } from '../../utils/textFormat';
+import { renderLog } from '../../utils/logging';
+import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
+import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
+import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
+import ReadMore from '../Widgets/ReadMore';
 
 // VoterGuideDisplayForList is used by GuideList for viewing voter guides you can follow on the Candidate
 // and Opinions (you can follow) Components
@@ -48,8 +48,8 @@ export default class VoterGuideDisplayForList extends Component {
       voter_guide_image_url_large: voterGuideImageUrlLarge,
     } = this.props; // twitter_followers_count,
     const numOfLines = 2;
-    const voterGuideDisplayName = this.props.voter_guide_display_name ? this.props.voter_guide_display_name : "";
-    const twitterDescription = this.props.twitter_description ? this.props.twitter_description : "";
+    const voterGuideDisplayName = this.props.voter_guide_display_name ? this.props.voter_guide_display_name : '';
+    const twitterDescription = this.props.twitter_description ? this.props.twitter_description : '';
     // console.log("VoterGuideDisplayForList twitterDescription: ", twitterDescription);
 
     // If the voter_guide_display_name is in the twitter_description, remove it
@@ -58,7 +58,7 @@ export default class VoterGuideDisplayForList extends Component {
     // TwitterHandle-based link
     const voterGuideLink = this.props.twitter_handle ? `/${this.props.twitter_handle}` : `/voterguide/${organizationWeVoteId}`;
 
-    let positionDescription = "";
+    let positionDescription = '';
     const isOnBallotItemPage = true; // From "actor's" perspective: actorSupportsBallotItemLabel
     if (position.vote_smart_rating) {
       positionDescription = <PositionRatingSnippet {...position} />;

@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import { renderLog } from '../../utils/logging';
 
 const iframeStyle = {
-  border: "none",
-  height: "500px",
-  width: "100%",
+  border: 'none',
+  height: '500px',
+  width: '100%',
 };
 
 export default class PollingPlaceLocator extends Component {

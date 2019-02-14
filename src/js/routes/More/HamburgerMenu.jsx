@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import { Link } from "react-router";
-import { Table } from "react-bootstrap";
-import { cordovaDot, isWebApp } from "../../utils/cordovaUtils";
-import VoterStore from "../../stores/VoterStore";
-import HamburgerMenuRow from "../../components/Navigation/HamburgerMenuRow";
-import LoadingWheel from "../../components/LoadingWheel";
-import VoterSessionActions from "../../actions/VoterSessionActions";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import { Link } from 'react-router';
+import { Table } from 'react-bootstrap';
+import { cordovaDot, isWebApp } from '../../utils/cordovaUtils';
+import VoterStore from '../../stores/VoterStore';
+import HamburgerMenuRow from '../../components/Navigation/HamburgerMenuRow';
+import LoadingWheel from '../../components/LoadingWheel';
+import VoterSessionActions from '../../actions/VoterSessionActions';
+import { renderLog } from '../../utils/logging';
 
 export default class HamburgerMenu extends Component {
   constructor (props) {
@@ -39,7 +39,7 @@ export default class HamburgerMenu extends Component {
         onClick={this.toggleProfilePopUp}
       >
         {voterPhotoUrlMedium ? (
-          <div id="js-header-avatar" className={isWebApp() ? "header-nav__avatar" : "header-nav__avatar-cordova header-nav__cordova"}>
+          <div id="js-header-avatar" className={isWebApp() ? 'header-nav__avatar' : 'header-nav__avatar-cordova header-nav__cordova'}>
             <img
               alt="Signed in voter"
               src={voterPhotoUrlMedium}
@@ -48,8 +48,8 @@ export default class HamburgerMenu extends Component {
             />
           </div>
         ) : (
-          <div id="anonIcon" className={isWebApp() ? "header-nav__avatar" : "header-nav__avatar-cordova header-nav__cordova"}>
-            <img src={cordovaDot("/img/global/svg-icons/avatar-generic.svg")} width="34" height="34" color="#c0c0c0" alt="generic voter" />
+          <div id="anonIcon" className={isWebApp() ? 'header-nav__avatar' : 'header-nav__avatar-cordova header-nav__cordova'}>
+            <img src={cordovaDot('/img/global/svg-icons/avatar-generic.svg')} width="34" height="34" color="#c0c0c0" alt="generic voter" />
           </div>
         )}
       </span>
@@ -89,7 +89,7 @@ export default class HamburgerMenu extends Component {
 
             <tr className="hamburger-menu__tr">
               <td colSpan={3} style={{ padding: 15 }}>
-                <span className="we-vote-promise" style={{ fontSize: 18, color: "black", opacity: 0.7 }}>Settings:</span>
+                <span className="we-vote-promise" style={{ fontSize: 18, color: 'black', opacity: 0.7 }}>Settings:</span>
               </td>
             </tr>
 
@@ -97,7 +97,7 @@ export default class HamburgerMenu extends Component {
               onClickAction={null}
               to="/settings/profile"
               icon="fa fa-address-card"
-              iconStyle={{ fontSize: 28, color: "#1c2f4b" }}
+              iconStyle={{ fontSize: 28, color: '#1c2f4b' }}
               linkText="Profile"
               indented
             />
@@ -116,7 +116,7 @@ export default class HamburgerMenu extends Component {
               onClickAction={null}
               to="/settings/address"
               icon="fa fa-home"
-              iconStyle={{ fontSize: 30, color: "#1c2f4b" }}
+              iconStyle={{ fontSize: 30, color: '#1c2f4b' }}
               linkText="Address"
               indented
             />
@@ -125,7 +125,7 @@ export default class HamburgerMenu extends Component {
               onClickAction={null}
               to="/settings/election"
               icon="fa fa-cog"
-              iconStyle={{ fontSize: 28, color: "#1c2f4b" }}
+              iconStyle={{ fontSize: 28, color: '#1c2f4b' }}
               linkText="Election Choice"
               indented
             />
@@ -136,7 +136,7 @@ export default class HamburgerMenu extends Component {
                 onClickAction={null}
                 to="/settings/notifications"
                 icon="fa fa-bell"
-                iconStyle={{ fontSize: 26, color: "#1c2f4b" }}
+                iconStyle={{ fontSize: 26, color: '#1c2f4b' }}
                 linkText="Notifications"
                 indented
               />
@@ -146,7 +146,7 @@ export default class HamburgerMenu extends Component {
               onClickAction={null}
               to="/settings/voterguidesmenu"
               icon="fa fa-list"
-              iconStyle={{ fontSize: 24, color: "#1c2f4b" }}
+              iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
               linkText="Your Voter Guides"
             />
 
@@ -154,7 +154,7 @@ export default class HamburgerMenu extends Component {
               onClickAction={null}
               to="/more/about"
               icon="fa fa-users"
-              iconStyle={{ fontSize: 22, color: "#1c2f4b" }}
+              iconStyle={{ fontSize: 22, color: '#1c2f4b' }}
               linkText="About We Vote"
             />
 
@@ -162,8 +162,8 @@ export default class HamburgerMenu extends Component {
             <HamburgerMenuRow
               onClickAction={() => VoterSessionActions.voterSignOut()}
               to="/settings/account"
-              icon={isSignedIn ? "fa fa-sign-out" : "fa fa-sign-in"}
-              iconStyle={{ fontSize: 28, color: "#1c2f4b" }}
+              icon={isSignedIn ? 'fa fa-sign-out' : 'fa fa-sign-in'}
+              iconStyle={{ fontSize: 28, color: '#1c2f4b' }}
               linkText="Sign Out"
             />
             )}

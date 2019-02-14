@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import moment from "moment";
-import BallotActions from "../../actions/BallotActions";
-import BallotStore from "../../stores/BallotStore";
-import { historyPush, isCordova } from "../../utils/cordovaUtils";
-import ElectionStore from "../../stores/ElectionStore";
-import { renderLog } from "../../utils/logging";
-import VoterStore from "../../stores/VoterStore";
-import { calculateBallotBaseUrl } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
+import BallotActions from '../../actions/BallotActions';
+import BallotStore from '../../stores/BallotStore';
+import { historyPush, isCordova } from '../../utils/cordovaUtils';
+import ElectionStore from '../../stores/ElectionStore';
+import { renderLog } from '../../utils/logging';
+import VoterStore from '../../stores/VoterStore';
+import { calculateBallotBaseUrl } from '../../utils/textFormat';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-restricted-syntax: 1 */
@@ -110,17 +110,17 @@ export default class BallotLocationChoices extends Component {
     return orderedArray;
   }
 
-  goToDifferentBallot (ballotReturnedWeVoteId = "", ballotLocationShortcut = "") {
+  goToDifferentBallot (ballotReturnedWeVoteId = '', ballotLocationShortcut = '') {
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
 
     // console.log("BallotLocationChoices, goToDifferentBallot, ballotReturnedWeVoteId: ", ballotReturnedWeVoteId);
     // console.log("BallotLocationChoices, goToDifferentBallot, ballotLocationShortcut: ", ballotLocationShortcut);
-    if (ballotLocationShortcut !== "" && ballotLocationShortcut !== undefined) {
-      BallotActions.voterBallotItemsRetrieve(0, "", ballotLocationShortcut);
+    if (ballotLocationShortcut !== '' && ballotLocationShortcut !== undefined) {
+      BallotActions.voterBallotItemsRetrieve(0, '', ballotLocationShortcut);
       // Change the URL to match
       historyPush(`${ballotBaseUrl}/${ballotLocationShortcut}`);
-    } else if (ballotReturnedWeVoteId !== "" && ballotReturnedWeVoteId !== undefined) {
-      BallotActions.voterBallotItemsRetrieve(0, ballotReturnedWeVoteId, "");
+    } else if (ballotReturnedWeVoteId !== '' && ballotReturnedWeVoteId !== undefined) {
+      BallotActions.voterBallotItemsRetrieve(0, ballotReturnedWeVoteId, '');
       // Change the URL to match
       historyPush(`${ballotBaseUrl}/id/${ballotReturnedWeVoteId}`);
     }
@@ -141,16 +141,16 @@ export default class BallotLocationChoices extends Component {
     // const default_number_of_ballot_locations_desktop = 5;
     const electionName = BallotStore.currentBallotElectionName;
     const electionDayText = BallotStore.currentBallotElectionDate;
-    const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format("MMM Do, YYYY")}</span> : <span />;
+    const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format('MMM Do, YYYY')}</span> : <span />;
     // console.log("In BallotLocationChoices render, ballotLocationList: ", this.state.ballotLocationList);
     if (this.state.ballotLocationList && this.state.ballotLocationList.length) {
       return (
         <div className="u-stack--sm ballot-locations d-print-none">
           { this.props.showElectionName ? (
-            <h4 className={isCordova() ? "ballot__header__title__cordova h4" : "ballot__header__title h4"}>
+            <h4 className={isCordova() ? 'ballot__header__title__cordova h4' : 'ballot__header__title h4'}>
               <span className="u-push--sm">
                 {electionName}
-                {" "}
+                {' '}
                 <span className="d-none d-sm-inline">&mdash; </span>
                 <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
               </span>

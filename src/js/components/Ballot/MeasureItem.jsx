@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { historyPush } from "../../utils/cordovaUtils";
-import IssuesByBallotItemDisplayList from "../Issues/IssuesByBallotItemDisplayList";
-import ItemActionBar from "../Widgets/ItemActionBar";
-import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
-import ItemSupportOpposeCounts from "../Widgets/ItemSupportOpposeCounts";
-import ItemTinyPositionBreakdownList from "../Position/ItemTinyPositionBreakdownList";
-import { renderLog } from "../../utils/logging";
-import ReadMore from "../Widgets/ReadMore";
-import SupportStore from "../../stores/SupportStore";
-import { capitalizeString } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { historyPush } from '../../utils/cordovaUtils';
+import IssuesByBallotItemDisplayList from '../Issues/IssuesByBallotItemDisplayList';
+import ItemActionBar from '../Widgets/ItemActionBar';
+import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
+import ItemSupportOpposeCounts from '../Widgets/ItemSupportOpposeCounts';
+import ItemTinyPositionBreakdownList from '../Position/ItemTinyPositionBreakdownList';
+import { renderLog } from '../../utils/logging';
+import ReadMore from '../Widgets/ReadMore';
+import SupportStore from '../../stores/SupportStore';
+import { capitalizeString } from '../../utils/textFormat';
 
 export default class MeasureItem extends Component {
   static propTypes = {
@@ -94,16 +94,16 @@ export default class MeasureItem extends Component {
           </h2>
           <div className="card-main__measure-election u-bold u-gray-darker">
             <p>
-              { electionDisplayName || "Appearing on the ballot in " }
+              { electionDisplayName || 'Appearing on the ballot in ' }
               { electionDisplayName ? <span> &middot; </span> : null }
               { regionalDisplayName || null }
-              { regionalDisplayName && stateDisplayName ? ", " : null }
+              { regionalDisplayName && stateDisplayName ? ', ' : null }
               { stateDisplayName }
             </p>
           </div>
           <div
             className={this.props.link_to_ballot_item_page ?
-              "u-cursor--pointer" : null}
+              'u-cursor--pointer' : null}
             onClick={this.props.link_to_ballot_item_page ? () => this.goToMeasureLink(measureWeVoteId) : null}
           >
             {measureSubtitle}
@@ -119,7 +119,7 @@ export default class MeasureItem extends Component {
             null
           }
 
-          <div className="row" style={{ paddingBottom: "0.5rem" }}>
+          <div className="row" style={{ paddingBottom: '0.5rem' }}>
             <div className="col-12" />
           </div>
 
@@ -134,7 +134,7 @@ export default class MeasureItem extends Component {
 
           <div
             className={this.props.link_to_ballot_item_page ?
-              "u-cursor--pointer" :
+              'u-cursor--pointer' :
               null}
             onClick={this.props.link_to_ballot_item_page ? () => this.goToMeasureLink(measureWeVoteId) : null}
           >
@@ -174,7 +174,7 @@ export default class MeasureItem extends Component {
             }
           </div>
         </div>
-        {" "}
+        {' '}
         {/* END .card-main__content */}
         <div className="card-main__actions">
           <ItemActionBar

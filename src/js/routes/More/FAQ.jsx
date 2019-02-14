@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import { Link } from "react-router";
-import { renderLog } from "../../utils/logging";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import ToolBar from "./ToolBar";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import { Link } from 'react-router';
+import { renderLog } from '../../utils/logging';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import ToolBar from './ToolBar';
 
 export default class About extends Component {
   static getProps () {
@@ -109,9 +109,9 @@ export default class About extends Component {
           <strong>What does We Vote cost?</strong>
           <br />
             It’s free! If you like We Vote,
-          {" "}
+          {' '}
           <Link to="/more/donate">please donate</Link>
-          {" "}
+          {' '}
           so we can do more to help voters.
           <br />
           <br />

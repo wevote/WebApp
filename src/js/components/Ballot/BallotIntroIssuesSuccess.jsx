@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import IssuesFollowedDisplayList from "../Issues/IssuesFollowedDisplayList";
-import IssueStore from "../../stores/IssueStore";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import IssuesFollowedDisplayList from '../Issues/IssuesFollowedDisplayList';
+import IssueStore from '../../stores/IssueStore';
+import { renderLog } from '../../utils/logging';
 
 export default class BallotIntroIssuesSuccess extends Component {
   static propTypes = {
@@ -61,9 +61,9 @@ export default class BallotIntroIssuesSuccess extends Component {
           related to that issue
           <br />
           that you can
-          {" "}
+          {' '}
           <strong>Listen</strong>
-          {" "}
+          {' '}
           to.
         </div>
         <div className="intro-modal__h2"><br /></div>

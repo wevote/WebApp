@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import TextTruncate from "react-text-truncate";
-import { historyPush } from "../../utils/cordovaUtils";
-import ImageHandler from "../ImageHandler";
-import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
-import LearnMore from "../Widgets/LearnMore";
-import { renderLog } from "../../utils/logging";
-import OrganizationStore from "../../stores/OrganizationStore";
-import SupportStore from "../../stores/SupportStore";
-import VoterGuideStore from "../../stores/VoterGuideStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import TextTruncate from 'react-text-truncate';
+import { historyPush } from '../../utils/cordovaUtils';
+import ImageHandler from '../ImageHandler';
+import ItemSupportOpposeRaccoon from '../Widgets/ItemSupportOpposeRaccoon';
+import LearnMore from '../Widgets/LearnMore';
+import { renderLog } from '../../utils/logging';
+import OrganizationStore from '../../stores/OrganizationStore';
+import SupportStore from '../../stores/SupportStore';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 
 export default class CandidateItemCompressed extends Component {
   static propTypes = {
@@ -103,15 +103,15 @@ export default class CandidateItemCompressed extends Component {
   }
 
   closeYourNetworkSupportsPopover () {
-    this.refs["supports-overlay"].hide();
+    this.refs['supports-overlay'].hide();
   }
 
   closeHighestIssueScorePopover () {
-    this.refs["highest-issue-score-overlay"].hide();
+    this.refs['highest-issue-score-overlay'].hide();
   }
 
   closeYourNetworkIsUndecidedPopover () {
-    this.refs["undecided-overlay"].hide();
+    this.refs['undecided-overlay'].hide();
   }
 
   render () {
@@ -125,8 +125,8 @@ export default class CandidateItemCompressed extends Component {
     const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(oneCandidateWeVoteId);
     const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(oneCandidateWeVoteId);
     // console.log("OfficeItemCompressedRaccoon, just retrieved getVoterGuidesToFollowForBallotItemIdSupports");
-    const candidatePartyText = this.state.oneCandidate.party && this.state.oneCandidate.party.length ? `${this.state.oneCandidate.party}. ` : "";
-    const candidateDescriptionText = this.state.oneCandidate.twitter_description && this.state.oneCandidate.twitter_description.length ? this.state.oneCandidate.twitter_description : "";
+    const candidatePartyText = this.state.oneCandidate.party && this.state.oneCandidate.party.length ? `${this.state.oneCandidate.party}. ` : '';
+    const candidateDescriptionText = this.state.oneCandidate.twitter_description && this.state.oneCandidate.twitter_description.length ? this.state.oneCandidate.twitter_description : '';
     const candidateText = candidatePartyText + candidateDescriptionText;
 
     return (

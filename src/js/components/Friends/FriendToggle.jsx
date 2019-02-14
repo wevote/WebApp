@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
-import FriendActions from "../../actions/FriendActions";
-import FriendStore from "../../stores/FriendStore";
-import VoterStore from "../../stores/VoterStore";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
+import FriendActions from '../../actions/FriendActions';
+import FriendStore from '../../stores/FriendStore';
+import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
 
 export default class FriendToggle extends Component {
   static propTypes = {
@@ -15,7 +15,7 @@ export default class FriendToggle extends Component {
     super(props);
     this.state = {
       voter: {
-        we_vote_id: "",
+        we_vote_id: '',
       },
     };
     const { otherVoterWeVoteId } = this.props;
@@ -56,7 +56,7 @@ export default class FriendToggle extends Component {
     // You should not be able to friend yourself
     if (isLookingAtSelf) { return <div />; }
 
-    const floatRight = { float: "right" };
+    const floatRight = { float: 'right' };
 
     return (
       <span style={floatRight}>

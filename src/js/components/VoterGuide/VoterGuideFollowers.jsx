@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { _ } from "lodash";
-import Helmet from "react-helmet";
-import { renderLog } from "../../utils/logging";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import GuideList from "./GuideList";
-import LoadingWheel from "../LoadingWheel";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { _ } from 'lodash';
+import Helmet from 'react-helmet';
+import { renderLog } from '../../utils/logging';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import GuideList from './GuideList';
+import LoadingWheel from '../LoadingWheel';
+import VoterStore from '../../stores/VoterStore';
 
 export default class VoterGuideFollowers extends Component {
   static propTypes = {
@@ -18,7 +18,7 @@ export default class VoterGuideFollowers extends Component {
     this.state = {
       organization: {},
       searchFilter: false,
-      searchTerm: "",
+      searchTerm: '',
       voterGuideFollowersList: [],
       voterGuideFollowersListFilteredBySearch: [],
     };
@@ -64,7 +64,7 @@ export default class VoterGuideFollowers extends Component {
     if (searchTerm.length === 0) {
       this.setState({
         searchFilter: false,
-        searchTerm: "",
+        searchTerm: '',
         voterGuideFollowersListFilteredBySearch: [],
       });
     } else {

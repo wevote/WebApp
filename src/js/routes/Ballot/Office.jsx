@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Helmet from "react-helmet";
-import CandidateList from "../../components/Ballot/CandidateList";
-import { capitalizeString } from "../../utils/textFormat";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import IssueActions from "../../actions/IssueActions";
-import IssueStore from "../../stores/IssueStore";
-import LoadingWheel from "../../components/LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import OfficeActions from "../../actions/OfficeActions";
-import OfficeItem from "../../components/Ballot/OfficeItem";
-import OfficeStore from "../../stores/OfficeStore";
-import SearchAllActions from "../../actions/SearchAllActions";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
+import CandidateList from '../../components/Ballot/CandidateList';
+import { capitalizeString } from '../../utils/textFormat';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import IssueActions from '../../actions/IssueActions';
+import IssueStore from '../../stores/IssueStore';
+import LoadingWheel from '../../components/LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import OfficeActions from '../../actions/OfficeActions';
+import OfficeItem from '../../components/Ballot/OfficeItem';
+import OfficeStore from '../../stores/OfficeStore';
+import SearchAllActions from '../../actions/SearchAllActions';
+import VoterStore from '../../stores/VoterStore';
 
 // This is related to routes/VoterGuide/OrganizationVoterGuideOffice
 export default class Office extends Component {
@@ -24,7 +24,7 @@ export default class Office extends Component {
     super(props);
     this.state = {
       office: {},
-      officeWeVoteId: "",
+      officeWeVoteId: '',
     };
   }
 
@@ -99,7 +99,7 @@ export default class Office extends Component {
       <div>
         <Helmet
           title={titleText}
-          meta={[{ name: "description", content: descriptionText }]}
+          meta={[{ name: 'description', content: descriptionText }]}
         />
         <OfficeItem
           weVoteId={office.we_vote_id}

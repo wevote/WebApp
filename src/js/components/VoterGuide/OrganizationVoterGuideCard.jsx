@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
-import { Link } from "react-router";
-import { historyPush } from "../../utils/cordovaUtils";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
-import LoadingWheel from "../LoadingWheel";
-import { renderLog } from "../../utils/logging"; // numberWithCommas,
-import FollowToggle from "../Widgets/FollowToggle";
-import { removeTwitterNameFromDescription } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router';
+import { historyPush } from '../../utils/cordovaUtils';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
+import LoadingWheel from '../LoadingWheel';
+import { renderLog } from '../../utils/logging'; // numberWithCommas,
+import FollowToggle from '../Widgets/FollowToggle';
+import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 
 // This Component is used to display the Organization by TwitterHandle
 // Please see VoterGuide/Organization for the Component used by GuideList for Candidate and Opinions (you can follow)
@@ -42,11 +42,11 @@ export default class OrganizationVoterGuideCard extends Component {
       organization_photo_url_large: organizationPhotoUrlLarge, organization_website: organizationWebsiteRaw,
       organization_name: organizationName, organization_we_vote_id: organizationWeVoteId,
     } = this.props.organization; // , twitter_followers_count
-    const organizationWebsite = organizationWebsiteRaw && organizationWebsiteRaw.slice(0, 4) !== "http" ? `http://${organizationWebsiteRaw}` : organizationWebsiteRaw;
+    const organizationWebsite = organizationWebsiteRaw && organizationWebsiteRaw.slice(0, 4) !== 'http' ? `http://${organizationWebsiteRaw}` : organizationWebsiteRaw;
 
     // If the displayName is in the twitterDescription, remove it from twitterDescription
-    const displayName = organizationName || "";
-    const twitterDescription = twitterDescriptionRaw || "";
+    const displayName = organizationName || '';
+    const twitterDescription = twitterDescriptionRaw || '';
     const twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
     const voterGuideLink = organizationTwitterHandle ? `/${organizationTwitterHandle}` : `/voterguide/${organizationWeVoteId}`;
 
@@ -95,7 +95,7 @@ export default class OrganizationVoterGuideCard extends Component {
               body={(
                 <span>
                   {organizationWebsite}
-                  {" "}
+                  {' '}
                   <i className="fa fa-external-link" />
                 </span>
               )}

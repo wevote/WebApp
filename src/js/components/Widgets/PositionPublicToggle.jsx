@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Modal, Tooltip, OverlayTrigger } from "react-bootstrap";
-import ReactSVG from "react-svg";
-import Toggle from "react-toggle";
-import { renderLog } from "../../utils/logging";
-import { cordovaDot, hasIPhoneNotch } from "../../utils/cordovaUtils";
-import { showToastSuccess } from "../../utils/showToast";
-import SettingsAccount from "../Settings/SettingsAccount";
-import SupportActions from "../../actions/SupportActions";
-import VoterActions from "../../actions/VoterActions";
-import VoterConstants from "../../constants/VoterConstants";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Modal, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import ReactSVG from 'react-svg';
+import Toggle from 'react-toggle';
+import { renderLog } from '../../utils/logging';
+import { cordovaDot, hasIPhoneNotch } from '../../utils/cordovaUtils';
+import { showToastSuccess } from '../../utils/showToast';
+import SettingsAccount from '../Settings/SettingsAccount';
+import SupportActions from '../../actions/SupportActions';
+import VoterActions from '../../actions/VoterActions';
+import VoterConstants from '../../constants/VoterConstants';
+import VoterStore from '../../stores/VoterStore';
 
 export default class PositionPublicToggle extends Component {
   static propTypes = {
@@ -27,7 +27,7 @@ export default class PositionPublicToggle extends Component {
     super(props);
     this.state = {
       showPositionPublicHelpModal: false,
-      positionPublicToggleCurrentState: "",
+      positionPublicToggleCurrentState: '',
       showToThePublicOn: false,
     };
 
@@ -53,14 +53,14 @@ export default class PositionPublicToggle extends Component {
 
   onToggleChangeFunction (state) {
     // This was written for react-bootstrap-toggle version 2.3.1, but we are having some troubles upgrading
-    console.log("PositionPublicToggle onToggleChangeFunction, state:", state);
-    if (state === "SHOW_PUBLIC") {
+    console.log('PositionPublicToggle onToggleChangeFunction, state:', state);
+    if (state === 'SHOW_PUBLIC') {
       this.setState({
-        positionPublicToggleCurrentState: "Show publicly",
+        positionPublicToggleCurrentState: 'Show publicly',
       });
     } else {
       this.setState({
-        positionPublicToggleCurrentState: "Show to friends only",
+        positionPublicToggleCurrentState: 'Show to friends only',
       });
     }
   }
@@ -71,8 +71,8 @@ export default class PositionPublicToggle extends Component {
     });
 
     // console.log("PositionPublicToggle-showItemToFriendsOnly, this.props.type:", this.props.type);
-    SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, "FRIENDS_ONLY");
-    showToastSuccess("Position now visible to friends only!");
+    SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, 'FRIENDS_ONLY');
+    showToastSuccess('Position now visible to friends only!');
   }
 
   showItemToPublic () {
@@ -83,13 +83,13 @@ export default class PositionPublicToggle extends Component {
       this.setState({
         showToThePublicOn: true,
       });
-      SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, "SHOW_PUBLIC");
+      SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, 'SHOW_PUBLIC');
       const positionPublicToggleModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
       if (!positionPublicToggleModalHasBeenShown) {
         this.togglePositionPublicHelpModal();
         VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
       } else {
-        showToastSuccess("This position now visible to anyone on We Vote!");
+        showToastSuccess('This position now visible to anyone on We Vote!');
       }
     } else {
       this.togglePositionPublicHelpModal();
@@ -119,10 +119,10 @@ export default class PositionPublicToggle extends Component {
     }
 
     let { is_public_position: isPublicPosition } = this.props.supportProps;
-    const visibilityPublic = "Currently visible to public";
-    const visibilityFriendsOnly = "Currently only shared with We Vote friends";
-    const publicIcon = <ReactSVG src={cordovaDot("/img/global/svg-icons/public-icon.svg")} svgStyle={{ fill: "#000", width: 18, height: 18 }} alt="Visible to Public" />;
-    const friendsIcon = <ReactSVG src={cordovaDot("/img/global/svg-icons/group-icon.svg")} svgStyle={{ fill: "#fff", width: 18, height: 18 }} alt="Visible to Friends Only" />;
+    const visibilityPublic = 'Currently visible to public';
+    const visibilityFriendsOnly = 'Currently only shared with We Vote friends';
+    const publicIcon = <ReactSVG src={cordovaDot('/img/global/svg-icons/public-icon.svg')} svgStyle={{ fill: '#000', width: 18, height: 18 }} alt="Visible to Public" />;
+    const friendsIcon = <ReactSVG src={cordovaDot('/img/global/svg-icons/group-icon.svg')} svgStyle={{ fill: '#fff', width: 18, height: 18 }} alt="Visible to Friends Only" />;
     const tooltip = <Tooltip id="visibility-tooltip">{isPublicPosition ? visibilityPublic : visibilityFriendsOnly}</Tooltip>;
     const noTooltip = <span />;
 
@@ -213,7 +213,7 @@ export default class PositionPublicToggle extends Component {
 
     return (
       <div className={this.props.className}>
-        <div style={{ display: "inline-block" }}>
+        <div style={{ display: 'inline-block' }}>
           {/* Mobile Mode */}
           <span className="d-block d-sm-none">
             <div onKeyDown={onKeyDown}>

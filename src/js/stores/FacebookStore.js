@@ -1,9 +1,9 @@
-import { ReduceStore } from "flux/utils";
-import Dispatcher from "../dispatcher/Dispatcher";
-import FacebookActions from "../actions/FacebookActions";
-import FacebookConstants from "../constants/FacebookConstants";
-import FriendActions from "../actions/FriendActions";
-import VoterActions from "../actions/VoterActions";
+import { ReduceStore } from 'flux/utils';
+import Dispatcher from '../dispatcher/Dispatcher';
+import FacebookActions from '../actions/FacebookActions';
+import FacebookConstants from '../constants/FacebookConstants';
+import FriendActions from '../actions/FriendActions';
+import VoterActions from '../actions/VoterActions';
 
 class FacebookStore extends ReduceStore {
   getInitialState () {
@@ -63,7 +63,7 @@ class FacebookStore extends ReduceStore {
       return undefined;
     }
 
-    return this.facebookAuthData.status === "connected";
+    return this.facebookAuthData.status === 'connected';
   }
 
   get userId () {
@@ -107,7 +107,7 @@ class FacebookStore extends ReduceStore {
     let facebookInvitableFriendsList = [];
     let appRequestAlreadyProcessed = false;
     const facebookUserId = this.userId;
-    let facebookProfileImageUrlHttps = "";
+    let facebookProfileImageUrlHttps = '';
 
     switch (action.type) {
       case FacebookConstants.FACEBOOK_LOGGED_IN:
@@ -174,7 +174,7 @@ class FacebookStore extends ReduceStore {
           ...state,
         };
 
-      case "voterFacebookSignInRetrieve":
+      case 'voterFacebookSignInRetrieve':
 
         // console.log("FacebookStore voterFacebookSignInRetrieve, facebook_sign_in_verified: ", action.res.facebook_sign_in_verified);
         if (action.res.facebook_sign_in_verified) {
@@ -207,7 +207,7 @@ class FacebookStore extends ReduceStore {
           facebook_friends_list: action.res.facebook_friends_list,
         };
 
-      case "voterFacebookSignInSave":
+      case 'voterFacebookSignInSave':
 
         // console.log("FacebookStore voterFacebookSignInSave, minimum_data_saved: ", action.res.minimum_data_saved);
         if (action.res.minimum_data_saved) {
@@ -219,7 +219,7 @@ class FacebookStore extends ReduceStore {
 
         return state;
 
-      case "voterSignOut":
+      case 'voterSignOut':
 
         // console.log("resetting FacebookStore");
         return {
@@ -229,7 +229,7 @@ class FacebookStore extends ReduceStore {
         };
 
       /* Sept 6, 2017, has been replaced by facebook Game API friends list */
-      case "facebookFriendsAction":
+      case 'facebookFriendsAction':
         return {
           ...state,
           facebook_friends_using_we_vote_list: action.res.facebook_friends_using_we_vote_list,

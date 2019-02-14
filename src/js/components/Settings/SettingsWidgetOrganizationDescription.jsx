@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Textarea from "react-textarea-autosize";
-import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../../utils/cordovaUtils";
-import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
-import LoadingWheel from "../LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Textarea from 'react-textarea-autosize';
+import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
+import LoadingWheel from '../LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import VoterStore from '../../stores/VoterStore';
 
 const delayBeforeApiUpdateCall = 1200;
 const delayBeforeRemovingSavedStatus = 4000;
@@ -21,9 +21,9 @@ export default class SettingsWidgetOrganizationDescription extends Component {
     super(props);
     this.state = {
       isOrganization: false,
-      linkedOrganizationWeVoteId: "",
-      organizationDescriptionSavedStatus: "",
-      organizationDescription: "",
+      linkedOrganizationWeVoteId: '',
+      organizationDescriptionSavedStatus: '',
+      organizationDescription: '',
     };
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -88,21 +88,21 @@ export default class SettingsWidgetOrganizationDescription extends Component {
     }
     this.timer = setTimeout(() => {
       OrganizationActions.organizationDescriptionSave(this.state.linkedOrganizationWeVoteId, this.state.organizationDescription);
-      this.setState({ organizationDescriptionSavedStatus: "Saved" });
+      this.setState({ organizationDescriptionSavedStatus: 'Saved' });
     }, delayBeforeApiUpdateCall);
   }
 
   updateOrganizationDescription (event) {
-    if (event.target.name === "organizationDescription") {
+    if (event.target.name === 'organizationDescription') {
       this.setState({
         organizationDescription: event.target.value,
-        organizationDescriptionSavedStatus: "Saving description...",
+        organizationDescriptionSavedStatus: 'Saving description...',
       });
     }
     // After some time, clear saved message
     clearTimeout(this.clearStatusTimer);
     this.clearStatusTimer = setTimeout(() => {
-      this.setState({ organizationDescriptionSavedStatus: "" });
+      this.setState({ organizationDescriptionSavedStatus: '' });
     }, delayBeforeRemovingSavedStatus);
   }
 
@@ -116,13 +116,13 @@ export default class SettingsWidgetOrganizationDescription extends Component {
       <div className="">
         <form onSubmit={(e) => { e.preventDefault(); }}>
           <span className="pull-right u-gray-mid">{this.state.organizationDescriptionSavedStatus}</span>
-          <label htmlFor="organizationDescriptionTextArea">{ this.state.isOrganization ? "Description Shown on Your Voter Guides" : "Description Shown on Your Voter Guides"}</label>
+          <label htmlFor="organizationDescriptionTextArea">{ this.state.isOrganization ? 'Description Shown on Your Voter Guides' : 'Description Shown on Your Voter Guides'}</label>
           <Textarea
             id="organizationDescriptionTextArea"
             name="organizationDescription"
             className="form-control"
             minRows={2}
-            placeholder={this.state.isOrganization ? "Organization Description" : "Description of You"}
+            placeholder={this.state.isOrganization ? 'Organization Description' : 'Description of You'}
             value={this.state.organizationDescription}
             onKeyDown={this.handleKeyPress}
             onChange={this.updateOrganizationDescription}

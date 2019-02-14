@@ -1,8 +1,8 @@
-import React from "react";
-import Helmet from "react-helmet";
-import CodeCopier from "../../components/Widgets/CodeCopier";
-import ImageHandler from "../../components/ImageHandler";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
+import React from 'react';
+import Helmet from 'react-helmet';
+import CodeCopier from '../../components/Widgets/CodeCopier';
+import ImageHandler from '../../components/ImageHandler';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 
 export default function ToolsToShareOnOtherWebsites () {
   return (

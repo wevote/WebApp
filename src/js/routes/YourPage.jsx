@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import GuidePositionListForVoter from "./VoterGuide/GuidePositionListForVoter";
-import { historyPush } from "../utils/cordovaUtils";
-import LoadingWheel from "../components/LoadingWheel";
-import { renderLog } from "../utils/logging";
-import OrganizationActions from "../actions/OrganizationActions";
-import TwitterHandleBox from "../components/Twitter/TwitterHandleBox";
-import VoterActions from "../actions/VoterActions";
-import VoterStore from "../stores/VoterStore";
+import React, { Component } from 'react';
+import GuidePositionListForVoter from './VoterGuide/GuidePositionListForVoter';
+import { historyPush } from '../utils/cordovaUtils';
+import LoadingWheel from '../components/LoadingWheel';
+import { renderLog } from '../utils/logging';
+import OrganizationActions from '../actions/OrganizationActions';
+import TwitterHandleBox from '../components/Twitter/TwitterHandleBox';
+import VoterActions from '../actions/VoterActions';
+import VoterStore from '../stores/VoterStore';
 
 // This file is only for use with people who aren't signed in
 export default class YourPage extends Component {
@@ -78,14 +78,14 @@ export default class YourPage extends Component {
     if (signedInFacebook) {
       const voterNotLinkedToOrganization = !voter.linked_organization_we_vote_id;
       if (voterNotLinkedToOrganization) {
-        let organizationName = "";
-        const firstNameValueExists = voter.first_name && voter.first_name !== "null" && voter.first_name.length;
-        const lastNameValueExists = voter.last_name && voter.last_name !== "null" && voter.last_name.length;
+        let organizationName = '';
+        const firstNameValueExists = voter.first_name && voter.first_name !== 'null' && voter.first_name.length;
+        const lastNameValueExists = voter.last_name && voter.last_name !== 'null' && voter.last_name.length;
         if (firstNameValueExists) {
           organizationName += voter.first_name;
         }
         if (firstNameValueExists && lastNameValueExists) {
-          organizationName += " ";
+          organizationName += ' ';
         }
         if (lastNameValueExists) {
           organizationName += voter.last_name;

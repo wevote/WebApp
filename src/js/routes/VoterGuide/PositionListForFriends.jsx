@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import FollowToggle from "../../components/Widgets/FollowToggle";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
-import OrganizationStore from "../../stores/OrganizationStore";
-import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
-import LoadingWheel from "../../components/LoadingWheel";
-import ThisIsMeAction from "../../components/Widgets/ThisIsMeAction";
-import SearchAllActions from "../../actions/SearchAllActions";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import FollowToggle from '../../components/Widgets/FollowToggle';
+import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
+import OrganizationStore from '../../stores/OrganizationStore';
+import OrganizationPositionItem from '../../components/VoterGuide/OrganizationPositionItem';
+import LoadingWheel from '../../components/LoadingWheel';
+import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
+import SearchAllActions from '../../actions/SearchAllActions';
 
 export default class PositionListForFriends extends Component {
   static propTypes = {

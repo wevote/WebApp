@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import VoterStore from "../../stores/VoterStore";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
 
 export default class PledgeToSupportOrganizationStatusBar extends Component {
   static propTypes = {
@@ -99,7 +99,7 @@ export default class PledgeToSupportOrganizationStatusBar extends Component {
         { voterHasPledged ? (
           <div className="voter-guide__pledge-to-support__thank-you-for-supporting u-stack--md">
             Thank you for standing with
-            {" "}
+            {' '}
             {this.props.organization.organization_name}
             !
             {/* numberOfSupporters === 1 && numberOfSupportersGoal && voterHasPledged && percentComplete < 100 ?

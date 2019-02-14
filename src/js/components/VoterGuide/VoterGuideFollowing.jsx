@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Helmet from "react-helmet";
-import { Button } from "react-bootstrap";
-import { _ } from "lodash";
-import GuideList from "./GuideList";
-import LoadingWheel from "../LoadingWheel";
-import OrganizationActions from "../../actions/OrganizationActions";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import VoterStore from "../../stores/VoterStore";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
+import { Button } from 'react-bootstrap';
+import { _ } from 'lodash';
+import GuideList from './GuideList';
+import LoadingWheel from '../LoadingWheel';
+import OrganizationActions from '../../actions/OrganizationActions';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
 
 export default class VoterGuideFollowing extends Component {
   static propTypes = {
@@ -22,7 +22,7 @@ export default class VoterGuideFollowing extends Component {
       editMode: false,
       organization: {},
       searchFilter: false,
-      searchTerm: "",
+      searchTerm: '',
       voter: {},
       voterGuideFollowedList: [],
       voterGuideFollowedListFilteredBySearch: [],
@@ -87,7 +87,7 @@ export default class VoterGuideFollowing extends Component {
     if (searchTerm.length === 0) {
       this.setState({
         searchFilter: false,
-        searchTerm: "",
+        searchTerm: '',
         voterGuideFollowedListFilteredBySearch: [],
       });
     } else {
@@ -141,7 +141,7 @@ export default class VoterGuideFollowing extends Component {
                     onKeyDown={this.onKeyDownEditMode.bind(this)}
                     onClick={this.toggleEditMode.bind(this)}
                   >
-                    {this.state.editMode ? "Done Editing" : "Edit"}
+                    {this.state.editMode ? 'Done Editing' : 'Edit'}
                   </a>
                 ) : (
                   <Button
@@ -159,16 +159,16 @@ export default class VoterGuideFollowing extends Component {
                       <h4 className="card__additional-heading">
                         You Are Listening To
                         <span className="d-none d-sm-block">
-                          {" "}
+                          {' '}
                           {this.state.voterGuideFollowedList.length}
-                          {" "}
+                          {' '}
                           Organizations or People
                         </span>
                       </h4>
                     ) : (
                       <h4 className="card__additional-heading">
                         {this.state.organization.organization_name}
-                        {" "}
+                        {' '}
                         is Listening To
                       </h4>
                     )}
@@ -214,7 +214,7 @@ export default class VoterGuideFollowing extends Component {
                   <h4 className="card__additional-heading">You&apos;re not listening to anyone.</h4> : (
                     <h4 className="card__additional-heading">
                       {this.state.organization.organization_name}
-                      {" "}
+                      {' '}
                       is not listening to anyone.
                     </h4>
                   )}

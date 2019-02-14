@@ -1,9 +1,9 @@
-import { ReduceStore } from "flux/utils";
-import BallotStore from "./BallotStore";
-import Dispatcher from "../dispatcher/Dispatcher";
-import OfficeActions from "../actions/OfficeActions";
-import OfficeStore from "./OfficeStore";
-import { stringContains } from "../utils/textFormat";
+import { ReduceStore } from 'flux/utils';
+import BallotStore from './BallotStore';
+import Dispatcher from '../dispatcher/Dispatcher';
+import OfficeActions from '../actions/OfficeActions';
+import OfficeStore from './OfficeStore';
+import { stringContains } from '../utils/textFormat';
 
 class CandidateStore extends ReduceStore {
   getInitialState () {
@@ -47,14 +47,14 @@ class CandidateStore extends ReduceStore {
     const candidateObject = this.getCandidate(oneCandidateWeVoteId);
     // console.log("candidateObject: ", candidateObject);
     const onePosition = {
-      position_we_vote_id: "", // Currently empty
+      position_we_vote_id: '', // Currently empty
       ballot_item_display_name: candidateObject.ballot_item_display_name,
       ballot_item_image_url_https_large: candidateObject.candidate_photo_url_large,
       ballot_item_image_url_https_medium: candidateObject.candidate_photo_url_medium,
       ballot_item_image_url_https_tiny: candidateObject.candidate_photo_url_tiny,
       ballot_item_twitter_handle: candidateObject.twitter_handle,
       ballot_item_political_party: candidateObject.party,
-      kind_of_ballot_item: "CANDIDATE",
+      kind_of_ballot_item: 'CANDIDATE',
 
       // ballot_item_id: 0,
       ballot_item_we_vote_id: oneCandidateWeVoteId,
@@ -72,14 +72,14 @@ class CandidateStore extends ReduceStore {
       is_information_only: false,
       is_public_position: true,
       speaker_display_name: oneVoterGuide.voter_guide_display_name,
-      vote_smart_rating: "",
-      vote_smart_time_span: "",
+      vote_smart_rating: '',
+      vote_smart_time_span: '',
       google_civic_election_id: oneVoterGuide.google_civic_election_id,
 
       // state_code: "",
-      more_info_url: "",
-      statement_text: "",
-      last_updated: "",
+      more_info_url: '',
+      statement_text: '',
+      last_updated: '',
     };
     // console.log("CandidateStore, voterGuidesToFollowRetrieve, onePosition: ", onePosition);
     return onePosition;
@@ -103,17 +103,17 @@ class CandidateStore extends ReduceStore {
     let officePositionList;
     let onePosition;
     let voterGuides;
-    let contestOfficeWeVoteId = "";
+    let contestOfficeWeVoteId = '';
     const organizationWeVoteId = action.res.opinion_maker_we_vote_id;
     const positionList = action.res.position_list;
     const isEmpty = voterGuides && voterGuides.length === 0;
-    const searchTermExists = action.res.search_string !== "";
+    const searchTermExists = action.res.search_string !== '';
     const ballotItemWeVoteIdExists = ballotItemWeVoteId && ballotItemWeVoteId.length !== 0;
 
     // January 2019: Switch cases could be DRYer.
 
     switch (action.type) {
-      case "candidateRetrieve":
+      case 'candidateRetrieve':
 
         // Make sure we have information for the office the candidate is running for
         if (action.res.contest_office_we_vote_id) {
@@ -130,7 +130,7 @@ class CandidateStore extends ReduceStore {
           allCachedCandidates,
         };
 
-      case "candidatesRetrieve":
+      case 'candidatesRetrieve':
 
         // Make sure we have information for the office the candidate is running for
         if (action.res.contest_office_we_vote_id) {
@@ -157,11 +157,11 @@ class CandidateStore extends ReduceStore {
           numberOfCandidatesRetrievedByOffice,
         };
 
-      case "voterBallotItemsRetrieve":
+      case 'voterBallotItemsRetrieve':
         googleCivicElectionId = action.res.google_civic_election_id || 0;
         if (googleCivicElectionId !== 0) {
           action.res.ballot_item_list.forEach((ballotItem) => {
-            if (ballotItem.kind_of_ballot_item === "OFFICE" && ballotItem.candidate_list) {
+            if (ballotItem.kind_of_ballot_item === 'OFFICE' && ballotItem.candidate_list) {
               candidateList = ballotItem.candidate_list;
               candidateList.forEach((one) => {
                 allCachedCandidates[one.we_vote_id] = one;
@@ -176,10 +176,10 @@ class CandidateStore extends ReduceStore {
         }
         return state;
 
-      case "positionListForBallotItem":
+      case 'positionListForBallotItem':
 
         // console.log("positionListForBallotItem action.res:", action.res);
-        if (action.res.kind_of_ballot_item === "CANDIDATE") {
+        if (action.res.kind_of_ballot_item === 'CANDIDATE') {
           candidateId = action.res.ballot_item_we_vote_id;
           newPositionList = action.res.position_list;
           positionListFromAdvisersFollowedByVoter[candidateId] = newPositionList;
@@ -189,7 +189,7 @@ class CandidateStore extends ReduceStore {
             ...state,
             positionListFromAdvisersFollowedByVoter,
           };
-        } else if (action.res.kind_of_ballot_item === "OFFICE") {
+        } else if (action.res.kind_of_ballot_item === 'OFFICE') {
           officePositionList = action.res.position_list;
           const officeWeVoteId = action.res.ballot_item_we_vote_id;
 
@@ -217,7 +217,7 @@ class CandidateStore extends ReduceStore {
           return state;
         }
 
-      case "positionListForOpinionMaker":
+      case 'positionListForOpinionMaker':
         // console.log("CandidateStore, positionListForOpinionMaker response");
 
         positionList.forEach((one) => {
@@ -239,14 +239,14 @@ class CandidateStore extends ReduceStore {
           allCachedPositionsAboutCandidates,
         };
 
-      case "voterGuidesToFollowRetrieve":
+      case 'voterGuidesToFollowRetrieve':
         // This code harvests the support/oppose positions that are passed in along with voter guides,
         //  and stores them so we can request them in cases where the response package for
         //  voterGuidesToFollowRetrieve does not include the position data
 
         // console.log("CandidateStore voterGuidesToFollowRetrieve");
         voterGuides = action.res.voter_guides;
-        ballotItemWeVoteId = action.res.ballot_item_we_vote_id || "";
+        ballotItemWeVoteId = action.res.ballot_item_we_vote_id || '';
 
         if (isEmpty || searchTermExists) {
           // Exit this routine
@@ -254,7 +254,7 @@ class CandidateStore extends ReduceStore {
           return state;
         }
 
-        if (ballotItemWeVoteIdExists && stringContains("cand", ballotItemWeVoteId)) {
+        if (ballotItemWeVoteIdExists && stringContains('cand', ballotItemWeVoteId)) {
           // Case 1: voterGuidesToFollowRetrieve focused on one ballot item
           voterGuides.forEach((oneVoterGuide) => {
             // Make sure we have a position in the voter guide
@@ -275,7 +275,7 @@ class CandidateStore extends ReduceStore {
                 ballot_item_image_url_https_tiny: oneVoterGuide.ballot_item_image_url_https_tiny,
                 ballot_item_twitter_handle: oneVoterGuide.ballot_item_twitter_handle,
                 ballot_item_political_party: oneVoterGuide.ballot_item_political_party,
-                kind_of_ballot_item: "CANDIDATE",
+                kind_of_ballot_item: 'CANDIDATE',
 
                 // ballot_item_id: 0,
                 ballotItemWeVoteId,
@@ -331,7 +331,7 @@ class CandidateStore extends ReduceStore {
 
                 onePosition = allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id];
                 // Only proceed if the position doesn't already exist
-                if (Object.prototype.hasOwnProperty.call(onePosition, "ballot_item_we_vote_id")) {
+                if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                   // Do not proceed
                   // console.log("position already exists");
                 } else {
@@ -357,7 +357,7 @@ class CandidateStore extends ReduceStore {
 
                 onePosition = allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id];
                 // Only proceed if the position doesn't already exist
-                if (Object.prototype.hasOwnProperty.call(onePosition, "ballot_item_we_vote_id")) {
+                if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                   // Do not proceed
                   // console.log("position already exists");
                 } else {
@@ -382,7 +382,7 @@ class CandidateStore extends ReduceStore {
                 onePosition = allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id];
                 // Only proceed if the position doesn't already exist
 
-                if (Object.prototype.hasOwnProperty.call(onePosition, "ballot_item_we_vote_id")) {
+                if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                   // Do not proceed
                   // console.log("position already exists");
                 } else {
@@ -406,12 +406,12 @@ class CandidateStore extends ReduceStore {
           allCachedPositionsAboutCandidates,
         };
 
-      case "voterGuidesUpcomingRetrieve":
+      case 'voterGuidesUpcomingRetrieve':
         // This code harvests the support/oppose positions that are passed in along with voter guides
 
         // console.log("CandidateStore voterGuidesUpcomingRetrieve");
         voterGuides = action.res.voter_guides;
-        ballotItemWeVoteId = action.res.ballot_item_we_vote_id || "";
+        ballotItemWeVoteId = action.res.ballot_item_we_vote_id || '';
 
         voterGuides.forEach((oneVoterGuide) => {
           // Make sure we have a position in the voter guide
@@ -434,7 +434,7 @@ class CandidateStore extends ReduceStore {
 
               onePosition = allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id];
               // Only proceed if the position doesn't already exist
-              if (Object.prototype.hasOwnProperty.call(onePosition, "ballot_item_we_vote_id")) {
+              if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                 // Do not proceed
                 // console.log("position already exists");
               } else {
@@ -460,7 +460,7 @@ class CandidateStore extends ReduceStore {
 
               onePosition = allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id];
               // Only proceed if the position doesn't already exist
-              if (Object.prototype.hasOwnProperty.call(onePosition, "ballot_item_we_vote_id")) {
+              if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                 // Do not proceed
                 // console.log("position already exists");
               } else {
@@ -484,7 +484,7 @@ class CandidateStore extends ReduceStore {
 
               onePosition = allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id];
               // Only proceed if the position doesn't already exist
-              if (Object.prototype.hasOwnProperty.call(onePosition, "ballot_item_we_vote_id")) {
+              if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                 // Do not proceed
                 // console.log("position already exists");
               } else {
@@ -507,7 +507,7 @@ class CandidateStore extends ReduceStore {
           allCachedPositionsAboutCandidates,
         };
 
-      case "error-candidateRetrieve" || "error-positionListForBallotItem":
+      case 'error-candidateRetrieve' || 'error-positionListForBallotItem':
         console.log(action);
         return state;
 

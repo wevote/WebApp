@@ -1,11 +1,11 @@
-import { isWebApp } from "../utils/cordovaUtils";
-import Dispatcher from "../dispatcher/Dispatcher";
-import FacebookConstants from "../constants/FacebookConstants";
-import FriendActions from "./FriendActions";
-import { oAuthLog } from "../utils/logging";
-import VoterActions from "./VoterActions";
-import VoterSessionActions from "./VoterSessionActions";
-import webAppConfig from "../config";
+import { isWebApp } from '../utils/cordovaUtils';
+import Dispatcher from '../dispatcher/Dispatcher';
+import FacebookConstants from '../constants/FacebookConstants';
+import FriendActions from './FriendActions';
+import { oAuthLog } from '../utils/logging';
+import VoterActions from './VoterActions';
+import VoterSessionActions from './VoterSessionActions';
+import webAppConfig from '../config';
 
 // Including FacebookStore causes problems in the WebApp, and again in the Native App
 
@@ -39,27 +39,27 @@ export default {
   },
 
   facebookDisconnect () {
-    Dispatcher.loadEndpoint("facebookDisconnect");
+    Dispatcher.loadEndpoint('facebookDisconnect');
   },
 
   // Sept 2017, We now use the Facebook "games" api "invitable_friends" data on the fly from the webapp for the "Choose Friends" feature.
   // We use the more limited "friends" api call from the server to find Facebook profiles of friends already using We Vote.
   facebookFriendsAction () {
-    Dispatcher.loadEndpoint("facebookFriendsAction", {});
+    Dispatcher.loadEndpoint('facebookFriendsAction', {});
     FriendActions.suggestedFriendList();
   },
 
   // https://developers.facebook.com/docs/graph-api/reference/v2.6/user
   getFacebookData () {
     if (!webAppConfig.ENABLE_FACEBOOK) {
-      console.log("FacebookActions.getFacebookData was not invoked, see ENABLE_FACEBOOK in config.js");
+      console.log('FacebookActions.getFacebookData was not invoked, see ENABLE_FACEBOOK in config.js');
       return;
     }
 
     if (this.facebookApi()) {
       this.facebookApi().api(
-        "/me?fields=id,email,first_name,middle_name,last_name,cover", (response) => {
-          oAuthLog("getFacebookData response", response);
+        '/me?fields=id,email,first_name,middle_name,last_name,cover', (response) => {
+          oAuthLog('getFacebookData response', response);
           Dispatcher.dispatch({
             type: FacebookConstants.FACEBOOK_RECEIVED_DATA,
             data: response,
@@ -67,7 +67,7 @@ export default {
         },
       );
     } else {
-      console.log("FacebookActions.getFacebookProfilePicture was not invoked, this.facebookApi() undefined");
+      console.log('FacebookActions.getFacebookProfilePicture was not invoked, this.facebookApi() undefined');
     }
   },
 
@@ -91,7 +91,7 @@ export default {
       offsetY = data.cover.offset_y;  // zero is a valid value so can't use the short-circuit operation " || false"
     }
 
-    Dispatcher.loadEndpoint("voterFacebookSignInSave", {
+    Dispatcher.loadEndpoint('voterFacebookSignInSave', {
       facebook_user_id: data.id || false,
       facebook_email: data.email || false,
       facebook_first_name: data.first_name || false,
@@ -108,15 +108,15 @@ export default {
 
   getFacebookProfilePicture () {
     if (!webAppConfig.ENABLE_FACEBOOK) {
-      console.log("FacebookActions.getFacebookProfilePicture was not invoked, see ENABLE_FACEBOOK in config.js");
+      console.log('FacebookActions.getFacebookProfilePicture was not invoked, see ENABLE_FACEBOOK in config.js');
       return;
     }
 
     if (this.facebookApi()) {
       this.facebookApi().api(
-        "/me?fields=picture.type(large)", ["public_profile", "email"],
+        '/me?fields=picture.type(large)', ['public_profile', 'email'],
         (response) => {
-          oAuthLog("getFacebookProfilePicture response", response);
+          oAuthLog('getFacebookProfilePicture response', response);
           Dispatcher.dispatch({
             type: FacebookConstants.FACEBOOK_RECEIVED_PICTURE,
             data: response,
@@ -124,13 +124,13 @@ export default {
         },
       );
     } else {
-      console.log("FacebookActions.getFacebookProfilePicture was not invoked, this.facebookApi() undefined");
+      console.log('FacebookActions.getFacebookProfilePicture was not invoked, this.facebookApi() undefined');
     }
   },
 
   getFacebookInvitableFriendsList (pictureWidth, pictureHeight) {
     if (!webAppConfig.ENABLE_FACEBOOK) {
-      console.log("FacebookActions.getFacebookInvitableFriendsList was not invoked, see ENABLE_FACEBOOK in config.js");
+      console.log('FacebookActions.getFacebookInvitableFriendsList was not invoked, see ENABLE_FACEBOOK in config.js');
       return;
     }
 
@@ -139,7 +139,7 @@ export default {
       this.facebookApi().api(
         fbApiForInvitableFriends,
         (response) => {
-          oAuthLog("getFacebookInvitableFriendsList", response);
+          oAuthLog('getFacebookInvitableFriendsList', response);
           Dispatcher.dispatch({
             type: FacebookConstants.FACEBOOK_RECEIVED_INVITABLE_FRIENDS,
             data: response,
@@ -147,22 +147,22 @@ export default {
         },
       );
     } else {
-      console.log("FacebookActions.getFacebookInvitableFriendsList was not invoked, this.facebookApi() undefined");
+      console.log('FacebookActions.getFacebookInvitableFriendsList was not invoked, this.facebookApi() undefined');
     }
   },
 
   readFacebookAppRequests () {
     if (!webAppConfig.ENABLE_FACEBOOK) {
-      console.log("FacebookActions.readFacebookAppRequests was not invoked, see ENABLE_FACEBOOK in config.js");
+      console.log('FacebookActions.readFacebookAppRequests was not invoked, see ENABLE_FACEBOOK in config.js');
       return;
     }
 
     if (this.facebookApi()) {
-      const fbApiForReadingAppRequests = "me?fields=apprequests.limit(10){from,to,created_time,id}";
+      const fbApiForReadingAppRequests = 'me?fields=apprequests.limit(10){from,to,created_time,id}';
       this.facebookApi().api(
         fbApiForReadingAppRequests,
         (response) => {
-          oAuthLog("readFacebookAppRequests", response);
+          oAuthLog('readFacebookAppRequests', response);
           Dispatcher.dispatch({
             type: FacebookConstants.FACEBOOK_READ_APP_REQUESTS,
             data: response,
@@ -170,23 +170,23 @@ export default {
         },
       );
     } else {
-      console.log("FacebookActions.readFacebookAppRequests was not invoked, this.facebookApi() undefined");
+      console.log('FacebookActions.readFacebookAppRequests was not invoked, this.facebookApi() undefined');
     }
   },
 
   deleteFacebookAppRequest (requestId) {
     if (!webAppConfig.ENABLE_FACEBOOK) {
-      console.log("FacebookActions.deleteFacebookAppRequest was not invoked, see ENABLE_FACEBOOK in config.js");
+      console.log('FacebookActions.deleteFacebookAppRequest was not invoked, see ENABLE_FACEBOOK in config.js');
       return;
     }
 
     if (this.facebookApi()) {
-      console.log("deleteFacebookAppRequest requestId: ", requestId);
+      console.log('deleteFacebookAppRequest requestId: ', requestId);
       this.facebookApi().api(
         requestId,
-        "delete",
+        'delete',
         (response) => {
-          oAuthLog("deleteFacebookAppRequest response", response);
+          oAuthLog('deleteFacebookAppRequest response', response);
           Dispatcher.dispatch({
             type: FacebookConstants.FACEBOOK_DELETE_APP_REQUEST,
             data: response,
@@ -194,20 +194,20 @@ export default {
         },
       );
     } else {
-      console.log("FacebookActions.deleteFacebookAppRequest was not invoked, this.facebookApi() undefined");
+      console.log('FacebookActions.deleteFacebookAppRequest was not invoked, this.facebookApi() undefined');
     }
   },
 
   logout () {
     if (!webAppConfig.ENABLE_FACEBOOK) {
-      console.log("FacebookActions.logout was not invoked, see ENABLE_FACEBOOK in config.js");
+      console.log('FacebookActions.logout was not invoked, see ENABLE_FACEBOOK in config.js');
       return;
     }
 
     if (this.facebookApi()) {
       this.facebookApi().logout(
         (response) => {
-          oAuthLog("FacebookActions logout response: ", response);
+          oAuthLog('FacebookActions logout response: ', response);
           Dispatcher.dispatch({
             type: FacebookConstants.FACEBOOK_LOGGED_OUT,
             data: response,
@@ -215,34 +215,34 @@ export default {
         },
       );
     } else {
-      console.log("FacebookActions.logout was not invoked, this.facebookApi() undefined");
+      console.log('FacebookActions.logout was not invoked, this.facebookApi() undefined');
     }
   },
 
   loginSuccess (successResponse) {
     if (successResponse.authResponse) {
-      oAuthLog("FacebookActions loginSuccess userData: ", successResponse);
+      oAuthLog('FacebookActions loginSuccess userData: ', successResponse);
       Dispatcher.dispatch({
         type: FacebookConstants.FACEBOOK_LOGGED_IN,
         data: successResponse,
       });
     } else {
       // Check if successResponse.authResponse is null indicating cancelled login attempt
-      oAuthLog("FacebookActions null authResponse indicating cancelled login attempt: ", successResponse);
+      oAuthLog('FacebookActions null authResponse indicating cancelled login attempt: ', successResponse);
     }
   },
 
   loginFailure (errorResponse) {
-    oAuthLog("FacebookActions loginFailure error response: ", errorResponse);
+    oAuthLog('FacebookActions loginFailure error response: ', errorResponse);
   },
 
   getPermissions () {
     if (isWebApp()) {
       return {
-        scope: "public_profile, email, user_friends",
+        scope: 'public_profile, email, user_friends',
       };
     } else {
-      return ["public_profile", "email", "user_friends"];
+      return ['public_profile', 'email', 'user_friends'];
     }
   },
 
@@ -251,11 +251,11 @@ export default {
 
   login () {
     if (!webAppConfig.FACEBOOK_APP_ID) {
-      console.log("ERROR: Missing FACEBOOK_APP_ID from src/js/config.js"); // DO NOT REMOVE THIS!
+      console.log('ERROR: Missing FACEBOOK_APP_ID from src/js/config.js'); // DO NOT REMOVE THIS!
     }
 
     if (!webAppConfig.ENABLE_FACEBOOK) {
-      console.log("FacebookActions.login was not invoked, see ENABLE_FACEBOOK in config.js"); // DO NOT REMOVE THIS!
+      console.log('FacebookActions.login was not invoked, see ENABLE_FACEBOOK in config.js'); // DO NOT REMOVE THIS!
       return;
     }
 
@@ -268,7 +268,7 @@ export default {
       const innerThis = this;
       this.facebookApi().getLoginStatus(
         (response) => {
-          if (response.status === "connected") {
+          if (response.status === 'connected') {
             Dispatcher.dispatch({
               type: FacebookConstants.FACEBOOK_LOGGED_IN,
               data: response,
@@ -283,19 +283,19 @@ export default {
         },
       );
     } else {
-      console.log("FacebookActions.login was not invoked, this.facebookApi() undefined");
+      console.log('FacebookActions.login was not invoked, this.facebookApi() undefined');
     }
   },
 
   // July 2017: Not called from anywhere
   savePhoto (url) {
-    Dispatcher.loadEndpoint("voterPhotoSave", { facebook_profile_image_url_https: url });
+    Dispatcher.loadEndpoint('voterPhotoSave', { facebook_profile_image_url_https: url });
   },
 
   // Save incoming auth data from Facebook
   voterFacebookSignInAuth (data) {
     // console.log("FacebookActions voterFacebookSignInAuth");
-    Dispatcher.loadEndpoint("voterFacebookSignInSave", {
+    Dispatcher.loadEndpoint('voterFacebookSignInSave', {
       facebook_access_token: data.accessToken || false,
       facebook_user_id: data.userID || false,
       facebook_expires_in: data.expiresIn || false,
@@ -308,7 +308,7 @@ export default {
   voterFacebookSignInPhoto (facebookUserId, data) {
     // console.log("FacebookActions voterFacebookSignInPhoto, data:", data);
     if (data) {
-      Dispatcher.loadEndpoint("voterFacebookSignInSave", {
+      Dispatcher.loadEndpoint('voterFacebookSignInSave', {
         facebook_user_id: facebookUserId || false,
         facebook_profile_image_url_https: data.url || false,
         save_photo_data: true,
@@ -317,12 +317,12 @@ export default {
   },
 
   voterFacebookSignInRetrieve () {
-    Dispatcher.loadEndpoint("voterFacebookSignInRetrieve", {
+    Dispatcher.loadEndpoint('voterFacebookSignInRetrieve', {
     });
   },
 
   voterFacebookSignInConfirm () {
-    Dispatcher.loadEndpoint("voterFacebookSignInRetrieve", {
+    Dispatcher.loadEndpoint('voterFacebookSignInRetrieve', {
     });
   },
 };

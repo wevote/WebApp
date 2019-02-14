@@ -46,7 +46,7 @@
     "lint": "eslint --format stylish --ext .jsx --ext .js src/js",
     "lint-css": "gulp lint-css",
     "test": "npm run lint && npm run lint-css",
-    "start": "NODE_ENV=development gulp",
+    "start": "gulp",
     "prod": "NODE_ENV=production gulp build",
     "build-dev": "NODE_ENV=production gulp build",
     "deps": "npm run deps:missing && npm run deps:extra",

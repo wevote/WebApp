@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import DonationListForm from "../../components/Donation/DonationListForm";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import DonationListForm from '../../components/Donation/DonationListForm';
+import { renderLog } from '../../utils/logging';
 
 export default class DonateThankYou extends Component {
   render () {

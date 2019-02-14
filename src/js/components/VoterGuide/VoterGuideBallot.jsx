@@ -1,43 +1,43 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
-import { Link } from "react-router";
-import Helmet from "react-helmet";
-import moment from "moment";
-import AddressBox from "../AddressBox";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import BallotActions from "../../actions/BallotActions";
-import BallotElectionList from "../Ballot/BallotElectionList";
-import BallotItemCompressed from "../Ballot/BallotItemCompressed";
-import BallotIntroModal from "../Ballot/BallotIntroModal";
-import BallotStatusMessage from "../Ballot/BallotStatusMessage";
-import BallotStore from "../../stores/BallotStore";
-import BallotSummaryModal from "../Ballot/BallotSummaryModal";
-import BrowserPushMessage from "../Widgets/BrowserPushMessage";
-import cookies from "../../utils/cookies";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router';
+import Helmet from 'react-helmet';
+import moment from 'moment';
+import AddressBox from '../AddressBox';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import BallotActions from '../../actions/BallotActions';
+import BallotElectionList from '../Ballot/BallotElectionList';
+import BallotItemCompressed from '../Ballot/BallotItemCompressed';
+import BallotIntroModal from '../Ballot/BallotIntroModal';
+import BallotStatusMessage from '../Ballot/BallotStatusMessage';
+import BallotStore from '../../stores/BallotStore';
+import BallotSummaryModal from '../Ballot/BallotSummaryModal';
+import BrowserPushMessage from '../Widgets/BrowserPushMessage';
+import cookies from '../../utils/cookies';
 import {
   cordovaDot, historyPush, isCordova, isWebApp,
-} from "../../utils/cordovaUtils";
-import ElectionActions from "../../actions/ElectionActions";
-import ElectionStore from "../../stores/ElectionStore";
-import isMobile from "../../utils/isMobile";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import PledgeToSupportOrganizationButton from "./PledgeToSupportOrganizationButton";
-import PledgeToSupportOrganizationStatusBar from "./PledgeToSupportOrganizationStatusBar";
-import { renderLog } from "../../utils/logging";
-import SelectBallotModal from "../Ballot/SelectBallotModal";
-import SupportActions from "../../actions/SupportActions";
-import SupportStore from "../../stores/SupportStore";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideBallotItemCompressed from "./VoterGuideBallotItemCompressed";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import VoterStore from "../../stores/VoterStore";
-import { calculateBallotBaseUrl } from "../../utils/textFormat";
-import { showToastSuccess } from "../../utils/showToast";
+} from '../../utils/cordovaUtils';
+import ElectionActions from '../../actions/ElectionActions';
+import ElectionStore from '../../stores/ElectionStore';
+import isMobile from '../../utils/isMobile';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import PledgeToSupportOrganizationButton from './PledgeToSupportOrganizationButton';
+import PledgeToSupportOrganizationStatusBar from './PledgeToSupportOrganizationStatusBar';
+import { renderLog } from '../../utils/logging';
+import SelectBallotModal from '../Ballot/SelectBallotModal';
+import SupportActions from '../../actions/SupportActions';
+import SupportStore from '../../stores/SupportStore';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterGuideBallotItemCompressed from './VoterGuideBallotItemCompressed';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
+import { calculateBallotBaseUrl } from '../../utils/textFormat';
+import { showToastSuccess } from '../../utils/showToast';
 
-import webAppConfig from "../../config";
+import webAppConfig from '../../config';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 1 */
@@ -59,9 +59,9 @@ export default class VoterGuideBallot extends Component {
       ballotItemUnfurledTracker: {},
       ballotWithAllItems: [],
       ballotWithAllItemsByFilterType: [],
-      raceLevelFilterType: "",
-      ballotReturnedWeVoteId: "",
-      ballotLocationShortcut: "",
+      raceLevelFilterType: '',
+      ballotReturnedWeVoteId: '',
+      ballotLocationShortcut: '',
       candidateForModal: {
         voter_guides_to_follow_for_latest_ballot_item: [],
         position_list: [],
@@ -69,7 +69,7 @@ export default class VoterGuideBallot extends Component {
       componentDidMountFinished: false,
       hideIntroModalFromUrl: 0,
       hideIntroModalFromCookie: 0,
-      lastHashUsedInLinkScroll: "",
+      lastHashUsedInLinkScroll: '',
       measureForModal: {
         voter_guides_to_follow_for_latest_ballot_item: [],
         position_list: [],
@@ -99,7 +99,7 @@ export default class VoterGuideBallot extends Component {
     // console.log("VoterGuideBallot componentDidMount, ballotBaseUrl", ballotBaseUrl);
 
     const hideIntroModalFromUrl = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
-    const hideIntroModalFromCookie = cookies.getItem("hide_intro_modal") || 0;
+    const hideIntroModalFromCookie = cookies.getItem('hide_intro_modal') || 0;
     const waitUntilVoterSignInCompletes = this.props.location.query ? this.props.location.query.wait_until_voter_sign_in_completes : 0;
 
     if (waitUntilVoterSignInCompletes !== undefined ||
@@ -120,17 +120,17 @@ export default class VoterGuideBallot extends Component {
       });
     }
 
-    const completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || "all";
+    const completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || 'all';
     const ballotWithAllItemsByFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
     if (ballotWithAllItemsByFilterType !== undefined) {
       // console.log("ballotWithAllItemsByFilterType !== undefined");
-      if (completionLevelFilterType === "all") {
+      if (completionLevelFilterType === 'all') {
         this.setState({
           ballotWithAllItems: ballotWithAllItemsByFilterType,
           ballotWithAllItemsByFilterType,
         });
       } else {
-        const ballotWithAllItems = BallotStore.getBallotByCompletionLevelFilterType("all");
+        const ballotWithAllItems = BallotStore.getBallotByCompletionLevelFilterType('all');
         this.setState({
           ballotWithAllItems,
           ballotWithAllItemsByFilterType,
@@ -141,13 +141,13 @@ export default class VoterGuideBallot extends Component {
     let googleCivicElectionIdFromUrl = this.props.params.google_civic_election_id || 0;
 
     // console.log("googleCivicElectionIdFromUrl: ", googleCivicElectionIdFromUrl);
-    let ballotReturnedWeVoteId = this.props.params.ballot_returned_we_vote_id || "";
-    ballotReturnedWeVoteId = ballotReturnedWeVoteId === "none" ? "" : ballotReturnedWeVoteId;
+    let ballotReturnedWeVoteId = this.props.params.ballot_returned_we_vote_id || '';
+    ballotReturnedWeVoteId = ballotReturnedWeVoteId === 'none' ? '' : ballotReturnedWeVoteId;
 
     // console.log("this.props.params.ballot_returned_we_vote_id: ", this.props.params.ballot_returned_we_vote_id);
-    let ballotLocationShortcut = this.props.params.ballot_location_shortcut || "";
+    let ballotLocationShortcut = this.props.params.ballot_location_shortcut || '';
     ballotLocationShortcut = ballotLocationShortcut.trim();
-    ballotLocationShortcut = ballotLocationShortcut === "none" ? "" : ballotLocationShortcut;
+    ballotLocationShortcut = ballotLocationShortcut === 'none' ? '' : ballotLocationShortcut;
     let googleCivicElectionId = 0;
 
     // console.log("componentDidMount, BallotStore.ballotProperties: ", BallotStore.ballotProperties);
@@ -161,26 +161,26 @@ export default class VoterGuideBallot extends Component {
 
     // console.log("ballotReturnedWeVoteId: ", ballotReturnedWeVoteId, ", ballotLocationShortcut:", ballotLocationShortcut, ", googleCivicElectionIdFromUrl: ", googleCivicElectionIdFromUrl);
     if (ballotReturnedWeVoteId || ballotLocationShortcut || googleCivicElectionIdFromUrl) {
-      if (ballotLocationShortcut !== "") {
+      if (ballotLocationShortcut !== '') {
         // Change the ballot on load to make sure we are getting what we expect from the url
-        BallotActions.voterBallotItemsRetrieve(0, "", ballotLocationShortcut);
+        BallotActions.voterBallotItemsRetrieve(0, '', ballotLocationShortcut);
 
         // Change the URL to match
         historyPush(`${ballotBaseUrl}/${ballotLocationShortcut}`);
-      } else if (ballotReturnedWeVoteId !== "") {
+      } else if (ballotReturnedWeVoteId !== '') {
         // Change the ballot on load to make sure we are getting what we expect from the url
-        BallotActions.voterBallotItemsRetrieve(0, ballotReturnedWeVoteId, "");
+        BallotActions.voterBallotItemsRetrieve(0, ballotReturnedWeVoteId, '');
 
         // Change the URL to match
         historyPush(`${ballotBaseUrl}/id/${ballotReturnedWeVoteId}`);
       } else if (googleCivicElectionIdFromUrl !== 0) {
         // Change the ballot on load to make sure we are getting what we expect from the url
         if (googleCivicElectionId !== googleCivicElectionIdFromUrl) {
-          BallotActions.voterBallotItemsRetrieve(googleCivicElectionIdFromUrl, "", "");
+          BallotActions.voterBallotItemsRetrieve(googleCivicElectionIdFromUrl, '', '');
 
           // Change the URL to match
           let ballotElectionUrl = `${ballotBaseUrl}/election/${googleCivicElectionIdFromUrl}`;
-          if (this.props.active_route && this.props.active_route !== "") {
+          if (this.props.active_route && this.props.active_route !== '') {
             ballotElectionUrl += `/${this.props.active_route}`;
           }
           historyPush(ballotElectionUrl);
@@ -193,7 +193,7 @@ export default class VoterGuideBallot extends Component {
         // No need to retrieve data again
         // Change the URL to match the current googleCivicElectionId
         let ballotElectionUrl2 = `${ballotBaseUrl}/election/${googleCivicElectionId}`;
-        if (this.props.active_route && this.props.active_route !== "") {
+        if (this.props.active_route && this.props.active_route !== '') {
           ballotElectionUrl2 += `/${this.props.active_route}`;
         }
         historyPush(ballotElectionUrl2);
@@ -204,7 +204,7 @@ export default class VoterGuideBallot extends Component {
     //   historyPush("/settings/location");
     } else if (ballotWithAllItemsByFilterType === undefined) {
       // console.log("WebApp doesn't know the election or have ballot data, so ask the API server to return best guess");
-      BallotActions.voterBallotItemsRetrieve(0, "", "");
+      BallotActions.voterBallotItemsRetrieve(0, '', '');
     }
 
     // We need a ballotStoreListener here because we want the ballot to display before positions are received
@@ -226,7 +226,7 @@ export default class VoterGuideBallot extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     // Once a voter hits the ballot, they have gone through orientation
-    cookies.setItem("show_full_navigation", "1", Infinity, "/");
+    cookies.setItem('show_full_navigation', '1', Infinity, '/');
 
     this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
     ElectionActions.electionsRetrieve();
@@ -251,7 +251,7 @@ export default class VoterGuideBallot extends Component {
       location,
       organization: this.props.organization,
       pathname,
-      raceLevelFilterType: BallotStore.getRaceLevelFilterTypeSaved() || "Federal",
+      raceLevelFilterType: BallotStore.getRaceLevelFilterTypeSaved() || 'Federal',
       voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.props.organization.organization_we_vote_id, VoterStore.electionId()),
       waitUntilVoterSignInCompletes,
     });
@@ -268,11 +268,11 @@ export default class VoterGuideBallot extends Component {
 
     // We don't want to let the googleCivicElectionId disappear
     const googleCivicElectionId = nextProps.params.google_civic_election_id || this.state.googleCivicElectionId;
-    let ballotReturnedWeVoteId = nextProps.params.ballot_returned_we_vote_id || "";
+    let ballotReturnedWeVoteId = nextProps.params.ballot_returned_we_vote_id || '';
     ballotReturnedWeVoteId = ballotReturnedWeVoteId.trim();
-    let ballotLocationShortcut = nextProps.params.ballot_location_shortcut || "";
+    let ballotLocationShortcut = nextProps.params.ballot_location_shortcut || '';
     ballotLocationShortcut = ballotLocationShortcut.trim();
-    const completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || "all";
+    const completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || 'all';
 
     // Were there any actual changes?
     if (ballotReturnedWeVoteId !== this.state.ballotReturnedWeVoteId ||
@@ -280,7 +280,7 @@ export default class VoterGuideBallot extends Component {
         googleCivicElectionId !== this.state.googleCivicElectionId ||
         completionLevelFilterType !== this.state.completionLevelFilterType) {
       this.setState({
-        ballotWithAllItems: BallotStore.getBallotByCompletionLevelFilterType("all"),
+        ballotWithAllItems: BallotStore.getBallotByCompletionLevelFilterType('all'),
         ballotWithAllItemsByFilterType: BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType),
         ballotReturnedWeVoteId,
         ballotLocationShortcut,
@@ -442,7 +442,7 @@ export default class VoterGuideBallot extends Component {
 
   onBallotStoreChange () {
     // console.log("VoterGuideBallot.jsx onBallotStoreChange, BallotStore.ballotProperties: ", BallotStore.ballotProperties);
-    const completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || "";
+    const completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || '';
     const { ballot, ballotProperties } = BallotStore;
     const {
       raceLevelFilterType, mounted,
@@ -454,7 +454,7 @@ export default class VoterGuideBallot extends Component {
       } else {
         const ballotWithAllItemsByFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
         this.setState({
-          ballotWithAllItems: BallotStore.getBallotByCompletionLevelFilterType("all"),
+          ballotWithAllItems: BallotStore.getBallotByCompletionLevelFilterType('all'),
           ballotWithAllItemsByFilterType,
         });
         if (ballotWithAllItemsByFilterType && ballotWithAllItemsByFilterType.length) {
@@ -466,8 +466,8 @@ export default class VoterGuideBallot extends Component {
 
     if (ballotProperties) {
       this.setState({
-        ballotReturnedWeVoteId: ballotProperties.ballot_returned_we_vote_id || "",
-        ballotLocationShortcut: ballotProperties.ballot_location_shortcut || "",
+        ballotReturnedWeVoteId: ballotProperties.ballot_returned_we_vote_id || '',
+        ballotLocationShortcut: ballotProperties.ballot_location_shortcut || '',
         googleCivicElectionId: parseInt(ballotProperties.google_civic_election_id, 10),
       });
     }
@@ -497,14 +497,14 @@ export default class VoterGuideBallot extends Component {
     for (let i = 0; i < electionsList.length; i++) {
       const election = electionsList[i];
       electionsLocationsList.push(election);
-      ballotReturnedWeVoteId = "";
-      ballotLocationShortcut = "";
+      ballotReturnedWeVoteId = '';
+      ballotLocationShortcut = '';
       if (election.ballot_location_list && election.ballot_location_list.length) {
         // We want to add the shortcut and we_vote_id for the first ballot location option
         oneBallotLocation = election.ballot_location_list[0];
-        ballotLocationShortcut = oneBallotLocation.ballot_location_shortcut || "";
+        ballotLocationShortcut = oneBallotLocation.ballot_location_shortcut || '';
         ballotLocationShortcut = ballotLocationShortcut.trim();
-        ballotReturnedWeVoteId = oneBallotLocation.ballot_returned_we_vote_id || "";
+        ballotReturnedWeVoteId = oneBallotLocation.ballot_returned_we_vote_id || '';
         ballotReturnedWeVoteId = ballotReturnedWeVoteId.trim();
       }
 
@@ -512,7 +512,7 @@ export default class VoterGuideBallot extends Component {
         google_civic_election_id: election.google_civic_election_id,
         election_description_text: election.election_name,
         election_day_text: election.election_day_text,
-        original_text_for_map_search: "",
+        original_text_for_map_search: '',
         ballot_location_shortcut: ballotLocationShortcut,
         ballot_returned_we_vote_id: ballotReturnedWeVoteId,
       };
@@ -572,12 +572,12 @@ export default class VoterGuideBallot extends Component {
 
   getEmptyMessageByFilterType (completionLevelFilterType) {
     switch (completionLevelFilterType) {
-      case "filterRemaining":
-        return "You have chosen a candidate for every office and decided on all measures.";
-      case "filterDecided":
+      case 'filterRemaining':
+        return 'You have chosen a candidate for every office and decided on all measures.';
+      case 'filterDecided':
         return "You haven't chosen any candidates or decided on any measures yet.";
       default:
-        return "";
+        return '';
     }
   }
 
@@ -585,7 +585,7 @@ export default class VoterGuideBallot extends Component {
     const { completionLevelFilterType, raceLevelFilterType } = this.state;
     const raceLevel = raceLevelFilterType.toLowerCase();
     switch (completionLevelFilterType) {
-      case "filterDecided":
+      case 'filterDecided':
         return (
           <div>
             <h3>
@@ -595,14 +595,14 @@ export default class VoterGuideBallot extends Component {
               <br />
               <br />
               Click on &quot;
-              {window.innerWidth > 575 ? "Remaining Choices" : "Choices"}
+              {window.innerWidth > 575 ? 'Remaining Choices' : 'Choices'}
               &quot; to see the&nbsp;
               {raceLevel}
               &nbsp;ballot items you need to decide on.
             </h3>
           </div>
         );
-      case "filterRemaining":
+      case 'filterRemaining':
         return (
           <div>
             <h3>
@@ -612,7 +612,7 @@ export default class VoterGuideBallot extends Component {
               <br />
               <br />
               Click on &quot;
-              {window.innerWidth > 575 ? "Items Decided" : "Decided"}
+              {window.innerWidth > 575 ? 'Items Decided' : 'Decided'}
               &quot; to see the&nbsp;
               {raceLevel}
               &nbsp;ballot items you&apos;ve decided on.
@@ -626,7 +626,7 @@ export default class VoterGuideBallot extends Component {
 
   toggleBallotIntroModal () {
     const { showBallotIntroModal, location, pathname } = this.state;
-    if (location.hash.includes("#")) {
+    if (location.hash.includes('#')) {
       // Clear out any # from anchors in the URL
       historyPush(pathname);
     }
@@ -634,10 +634,10 @@ export default class VoterGuideBallot extends Component {
     this.setState({ showBallotIntroModal: !showBallotIntroModal });
   }
 
-  toggleSelectBallotModal (destinationUrlForHistoryPush = "") {
+  toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
     const { showSelectBallotModal } = this.state;
     if (showSelectBallotModal) {
-      if (destinationUrlForHistoryPush && destinationUrlForHistoryPush !== "") {
+      if (destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
         historyPush(destinationUrlForHistoryPush);
       }
     } else {
@@ -659,12 +659,12 @@ export default class VoterGuideBallot extends Component {
   // Needed to scroll to anchor tags based on hash in url (as done for bookmarks)
   hashLinkScroll () {
     const { hash } = window.location;
-    if (hash !== "") {
+    if (hash !== '') {
       // Push onto callback queue so it runs after the DOM is updated,
       // this is required when navigating from a different page so that
       // the element is rendered on the page before trying to getElementById.
       setTimeout(() => {
-        const id = hash.replace("#", "");
+        const id = hash.replace('#', '');
         const element = document.getElementById(id);
 
         if (element) {
@@ -689,12 +689,12 @@ export default class VoterGuideBallot extends Component {
 
   ballotItemLinkHasBeenClicked (selectedBallotItemId) {
     const ballotItem = this.state.ballotWithAllItemsByFilterType.find(item => item.we_vote_id === selectedBallotItemId);
-    if (ballotItem && ballotItem.kind_of_ballot_item === "MEASURE") {
+    if (ballotItem && ballotItem.kind_of_ballot_item === 'MEASURE') {
       this.setState({
-        raceLevelFilterType: "Measure",
+        raceLevelFilterType: 'Measure',
       }, () => this.toggleExpandBallotItemDetails(selectedBallotItemId));
     } else {
-      let raceOfficeLevel = "Federal";
+      let raceOfficeLevel = 'Federal';
       if (ballotItem) {
         raceOfficeLevel = ballotItem.race_office_level;
       }
@@ -706,7 +706,7 @@ export default class VoterGuideBallot extends Component {
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
-    console.error("VoterGuideBallot caught error: ", `${error} with info: `, info);
+    console.error('VoterGuideBallot caught error: ', `${error} with info: `, info);
   }
 
   doesOrganizationHavePositionOnOffice (contestOfficeWeVoteId) {
@@ -714,7 +714,7 @@ export default class VoterGuideBallot extends Component {
   }
 
   pledgeToVoteWithVoterGuide () {
-    console.log("VoterGuideBallot pledgeToVoteWithVoterGuide, this.state.voterGuideOnStage:", this.state.voterGuideOnStage);
+    console.log('VoterGuideBallot pledgeToVoteWithVoterGuide, this.state.voterGuideOnStage:', this.state.voterGuideOnStage);
     const toastMessage = `Now you match what ${this.state.organization.organization_name} supports or opposes`;
     VoterGuideActions.pledgeToVoteWithVoterGuide(this.state.voterGuideOnStage.we_vote_id);
     showToastSuccess(toastMessage);
@@ -731,7 +731,7 @@ export default class VoterGuideBallot extends Component {
 
   render () {
     renderLog(__filename);
-    const BALLOT_ITEM_FILTER_TYPES = ["Federal", "State", "Measure", "Local"];
+    const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];
     const ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
     const {
       ballotWithAllItemsByFilterType, showFilterTabs, doubleFilteredBallotItemsLength, completionLevelFilterType,
@@ -745,11 +745,11 @@ export default class VoterGuideBallot extends Component {
             <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> :
             null
           }
-          <div className={isWebApp() ? "ballot__header" : "ballot__header ballot__header__top-cordova"}>
+          <div className={isWebApp() ? 'ballot__header' : 'ballot__header ballot__header__top-cordova'}>
             <BrowserPushMessage incomingProps={this.props} />
             <p className="ballot__date_location">
               If your ballot does not appear momentarily, please
-              {" "}
+              {' '}
               <Link to="/settings/location">change your address</Link>
               .
             </p>
@@ -773,7 +773,7 @@ export default class VoterGuideBallot extends Component {
     const organizationAdminUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}org/${this.state.organization.organization_we_vote_id}/pos/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
     const ballotReturnedAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}pl/${sourcePollingLocationWeVoteId}/summary/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
 
-    const emptyBallotButton = completionLevelFilterType !== "none" && !voterAddressMissing ? (
+    const emptyBallotButton = completionLevelFilterType !== 'none' && !voterAddressMissing ? (
       <span>
         {/* <Link to={ballotBaseUrl}>
               <Button variant="primary">View Full Ballot</Button>
@@ -806,9 +806,9 @@ export default class VoterGuideBallot extends Component {
       </div>
     ) : null;
 
-    const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format("MMM Do, YYYY")}</span> : <span />;
+    const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format('MMM Do, YYYY')}</span> : <span />;
 
-    const inRemainingDecisionsMode = completionLevelFilterType === "filterRemaining";
+    const inRemainingDecisionsMode = completionLevelFilterType === 'filterRemaining';
 
     if (ballotWithAllItemsByFilterType.length === 0 && inRemainingDecisionsMode) {
       historyPush(this.state.pathname);
@@ -849,11 +849,11 @@ export default class VoterGuideBallot extends Component {
             <Helmet title={`${this.state.organization.organization_name} - We Vote`} />
             <BrowserPushMessage incomingProps={this.props} />
             <header className="ballot__header__group">
-              <h1 className={isCordova() ? "ballot__header__title__cordova" : "ballot__header__title"}>
+              <h1 className={isCordova() ? 'ballot__header__title__cordova' : 'ballot__header__title'}>
                 { electionName ? (
                   <span className="u-push--sm">
                     {electionName}
-                    {" "}
+                    {' '}
                     <span className="d-none d-sm-inline">&mdash; </span>
                     <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
                   </span>
@@ -869,20 +869,20 @@ export default class VoterGuideBallot extends Component {
                 >
                   <span className="u-no-break u-f8 d-none d-sm-inline">
                     <img
-                      src={cordovaDot("/img/global/icons/gear-icon.png")}
+                      src={cordovaDot('/img/global/icons/gear-icon.png')}
                       role="button"
                       alt="change address or election"
                     />
-                    {" "}
+                    {' '}
                     change address or election
                   </span>
                   <span className="u-no-break u-f6 d-inline d-sm-none">
                     <img
-                      src={cordovaDot("/img/global/icons/gear-icon.png")}
+                      src={cordovaDot('/img/global/icons/gear-icon.png')}
                       role="button"
                       alt="change address or election"
                     />
-                    {" "}
+                    {' '}
                     change address or election
                   </span>
                 </div>
@@ -926,7 +926,7 @@ export default class VoterGuideBallot extends Component {
                 {/* The ballot items the organization wants to promote */}
                 <div>
                   {ballotWithOrganizationEndorsements.length > 0 && (
-                  <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
+                  <div className={isWebApp() ? 'BallotList' : 'BallotList__cordova'}>
                     {ballotWithOrganizationEndorsements.map(item => (
                       <VoterGuideBallotItemCompressed
                         key={item.we_vote_id}
@@ -951,16 +951,16 @@ export default class VoterGuideBallot extends Component {
                     <div className="row ballot__item-filter-tabs">
                       { BALLOT_ITEM_FILTER_TYPES.map((oneTypeOfBallotItem) => {
                         const allBallotItemsByFilterType = this.state.ballotWithAllItems.filter((item) => {
-                          if (oneTypeOfBallotItem === "Measure") {
-                            return item.kind_of_ballot_item === "MEASURE";
+                          if (oneTypeOfBallotItem === 'Measure') {
+                            return item.kind_of_ballot_item === 'MEASURE';
                           } else {
                             return oneTypeOfBallotItem === item.race_office_level;
                           }
                         });
                         if (allBallotItemsByFilterType.length) {
                           const ballotItemsByFilterType = ballotWithAllItemsByFilterType.filter((item) => {
-                            if (oneTypeOfBallotItem === "Measure") {
-                              return item.kind_of_ballot_item === "MEASURE";
+                            if (oneTypeOfBallotItem === 'Measure') {
+                              return item.kind_of_ballot_item === 'MEASURE';
                             } else {
                               return oneTypeOfBallotItem === item.race_office_level;
                             }
@@ -990,12 +990,12 @@ export default class VoterGuideBallot extends Component {
                   ) : null
                   }
                   {ballotWithRemainingItems.length > 0 && (
-                  <div className={isWebApp() ? "BallotList" : "BallotList__cordova"}>
+                  <div className={isWebApp() ? 'BallotList' : 'BallotList__cordova'}>
                     {ballotWithRemainingItems.map((item) => {
                     // ballot limited by items by filter type
                     // console.log(this.state.raceLevelFilterType);
-                      if (this.state.raceLevelFilterType === "All" ||
-                        (item.kind_of_ballot_item === "MEASURE" && this.state.raceLevelFilterType === "Measure") ||
+                      if (this.state.raceLevelFilterType === 'All' ||
+                        (item.kind_of_ballot_item === 'MEASURE' && this.state.raceLevelFilterType === 'Measure') ||
                         this.state.raceLevelFilterType === item.race_office_level) {
                         return (
                           <BallotItemCompressed

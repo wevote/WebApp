@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import FollowToggle from "../Widgets/FollowToggle";
-import ImageHandler from "../ImageHandler";
-import LoadingWheel from "../LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
-import PositionRatingSnippet from "../Widgets/PositionRatingSnippet";
-import PositionInformationOnlySnippet from "../Widgets/PositionInformationOnlySnippet";
-import PositionSupportOpposeSnippet from "../Widgets/PositionSupportOpposeSnippet";
-import RatingPopover from "../Widgets/RatingPopover";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import { removeTwitterNameFromDescription } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import FollowToggle from '../Widgets/FollowToggle';
+import ImageHandler from '../ImageHandler';
+import LoadingWheel from '../LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
+import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
+import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
+import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
+import RatingPopover from '../Widgets/RatingPopover';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import { removeTwitterNameFromDescription } from '../../utils/textFormat';
 
 // This Component is used to display the Organization by TwitterHandle
 // Please see VoterGuide/Organization for the Component used by GuideList for Candidate and Opinions (you can follow)
@@ -33,10 +33,10 @@ export default class OrganizationCard extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      ballotItemWeVoteId: "",
+      ballotItemWeVoteId: '',
       organizationPosition: {},
       organizationPositionsRequested: false,
-      organizationWeVoteId: "",
+      organizationWeVoteId: '',
       showRatingDescription: false,
     };
 
@@ -126,15 +126,15 @@ export default class OrganizationCard extends Component {
       organization_photo_url_large: organizationPhotoUrlLarge, organization_website: organizationWebsiteRaw,
       organization_name: organizationName,
     } = this.props.organization; // twitter_followers_count
-    const organizationWebsite = organizationWebsiteRaw && organizationWebsiteRaw.slice(0, 4) !== "http" ? `http://${organizationWebsiteRaw}` : organizationWebsiteRaw;
+    const organizationWebsite = organizationWebsiteRaw && organizationWebsiteRaw.slice(0, 4) !== 'http' ? `http://${organizationWebsiteRaw}` : organizationWebsiteRaw;
 
     // If the displayName is in the twitterDescription, remove it from twitterDescription
-    const displayName = organizationName || "";
-    const twitterDescription = twitterDescriptionRaw || "";
+    const displayName = organizationName || '';
+    const twitterDescription = twitterDescriptionRaw || '';
     const twitterDescriptionMinusName = removeTwitterNameFromDescription(displayName, twitterDescription);
     const voterGuideLink = organizationTwitterHandle ? `/${organizationTwitterHandle}` : `/voterguide/${this.state.organizationWeVoteId}`;
 
-    let positionDescription = "";
+    let positionDescription = '';
     if (this.state.organizationPosition) {
       const isOnBallotItemPage = true; // From "actor's" perspective: actorSupportsBallotItemLabel
       // console.log("this.state.organizationPosition: ", this.state.organizationPosition);

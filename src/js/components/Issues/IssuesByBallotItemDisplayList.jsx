@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { findDOMNode } from "react-dom";
-import ReactSVG from "react-svg";
-import $ from "jquery";
-import { cordovaDot } from "../../utils/cordovaUtils";
-import IssueStore from "../../stores/IssueStore";
-import { renderLog } from "../../utils/logging";
-import SupportStore from "../../stores/SupportStore";
-import VoterGuideStore from "../../stores/VoterGuideStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { findDOMNode } from 'react-dom';
+import ReactSVG from 'react-svg';
+import $ from 'jquery';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import IssueStore from '../../stores/IssueStore';
+import { renderLog } from '../../utils/logging';
+import SupportStore from '../../stores/SupportStore';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint react/no-find-dom-node: 1 */
@@ -147,7 +147,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
       350,
       () => {
         const newPosition = $(element).scrollLeft();
-        if (visibleTag === "desktop") {
+        if (visibleTag === 'desktop') {
           this.setState({
             canScrollLeftDesktop: newPosition > 0,
             // canScrollRightDesktop: true,
@@ -175,7 +175,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
       350,
       () => {
         const newPosition = $(element).scrollLeft();
-        if (visibleTag === "desktop") {
+        if (visibleTag === 'desktop') {
           this.setState({
             canScrollLeftDesktop: newPosition > 0,
             // canScrollRightDesktop: position + width === newPosition,
@@ -230,7 +230,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
               {oneIssue.issue_icon_local_path ? (
                 <span className="issue-icon-list__issue-icon">
                   <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-                            svgStyle={{ fill: "#4B4B4B", padding: "1px 1px 1px 0px" }}
+                            svgStyle={{ fill: '#4B4B4B', padding: '1px 1px 1px 0px' }}
                   />
                 </span>
               ) : null
@@ -261,7 +261,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
               {oneIssue.issue_icon_local_path ? (
                 <span className="issue-icon-list__issue-icon">
                   <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-                            svgStyle={{ fill: "#4B4B4B", padding: "1px 1px 1px 0px" }}
+                            svgStyle={{ fill: '#4B4B4B', padding: '1px 1px 1px 0px' }}
                   />
                 </span>
               ) : null
@@ -304,7 +304,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
           <span className="u-no-break issue-icon-list__endorsements-label">
             <img
               src={cordovaDot(
-                "/img/global/svg-icons/issues/thumbs-up-icon.svg",
+                '/img/global/svg-icons/issues/thumbs-up-icon.svg',
               )}
               className="issue-icon-list__endorsement-icon"
               width="20"
@@ -317,7 +317,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
           <span className="u-no-break issue-icon-list__endorsements-label">
             <img
               src={cordovaDot(
-                "/img/global/svg-icons/issues/thumbs-down-icon.svg",
+                '/img/global/svg-icons/issues/thumbs-down-icon.svg',
               )}
               className="issue-icon-list__endorsement-icon"
               width="20"
@@ -332,7 +332,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
         {totalSupportCount || totalOpposeCount ? (
           <span>
             Endorsement
-            {totalEndorsementCount > 1 ? "s" : ""}
+            {totalEndorsementCount > 1 ? 's' : ''}
           </span>
         ) : null
         }
@@ -348,7 +348,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
           <i
             className="fa fa-2x fa-chevron-left issues-list-stacked__support-list__scroll-icon u-cursor--pointer d-none d-sm-block d-print-none"
             aria-hidden="true"
-            onClick={this.scrollLeft.bind(this, "desktop")}
+            onClick={this.scrollLeft.bind(this, 'desktop')}
           />
         ) : (
           <i
@@ -363,7 +363,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
           <i
             className="fa fa-2x fa-chevron-left issues-list-stacked__support-list__scroll-icon u-cursor--pointer d-block d-sm-none d-print-none"
             aria-hidden="true"
-            onClick={this.scrollLeft.bind(this, "mobile")}
+            onClick={this.scrollLeft.bind(this, 'mobile')}
           />
         ) : (
           <i

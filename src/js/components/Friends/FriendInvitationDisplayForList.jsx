@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import FriendInvitationToggle from "./FriendInvitationToggle";
-import ImageHandler from "../ImageHandler";
-import FriendActions from "../../actions/FriendActions";
-import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import FriendInvitationToggle from './FriendInvitationToggle';
+import ImageHandler from '../ImageHandler';
+import FriendActions from '../../actions/FriendActions';
+import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
+import { renderLog } from '../../utils/logging';
 
 export default class FriendInvitationDisplayForList extends Component {
   static propTypes = {
@@ -52,7 +52,7 @@ export default class FriendInvitationDisplayForList extends Component {
     } = this.props;
 
     const voterDisplayName = this.props.voter_display_name ? this.props.voter_display_name : this.props.voter_email_address;
-    const twitterDescription = this.props.voter_twitter_description ? this.props.voter_twitter_description : "";
+    const twitterDescription = this.props.voter_twitter_description ? this.props.voter_twitter_description : '';
     // If the voterDisplayName is in the voter_twitter_description, remove it
     const twitterDescriptionMinusName = removeTwitterNameFromDescription(voterDisplayName, twitterDescription);
 
@@ -62,7 +62,7 @@ export default class FriendInvitationDisplayForList extends Component {
     const voterDisplayNameFormatted = <span className="card-child__display-name">{voterDisplayName}</span>;
     // console.log("FriendInvitationDisplayForList, voterWeVoteId:", voterWeVoteId);
 
-    const deleteInvitationHtml = "";
+    const deleteInvitationHtml = '';
 
     return (
       <div className="position-item card-child card-child--not-followed">

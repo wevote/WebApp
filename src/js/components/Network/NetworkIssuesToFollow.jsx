@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Link } from "react-router";
-import Helmet from "react-helmet";
-import { _ } from "lodash";
-import IssueActions from "../../actions/IssueActions";
-import IssueFollowToggleSquare from "../Issues/IssueFollowToggleSquare";
-import IssueStore from "../../stores/IssueStore";
-import SearchBar from "../Search/SearchBar";
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import Helmet from 'react-helmet';
+import { _ } from 'lodash';
+import IssueActions from '../../actions/IssueActions';
+import IssueFollowToggleSquare from '../Issues/IssueFollowToggleSquare';
+import IssueStore from '../../stores/IssueStore';
+import SearchBar from '../Search/SearchBar';
 
 
 export default class NetworkIssuesToFollow extends Component {
@@ -15,7 +15,7 @@ export default class NetworkIssuesToFollow extends Component {
       issuesToFollow: [],
       issuesFollowed: [],
       issueWeVoteIdsFollowed: [],
-      searchQuery: "",
+      searchQuery: '',
     };
 
     this.searchFunction = this.searchFunction.bind(this);
@@ -48,7 +48,7 @@ export default class NetworkIssuesToFollow extends Component {
   }
 
   clearFunction () {
-    this.searchFunction("");
+    this.searchFunction('');
   }
 
   render () {
@@ -77,7 +77,7 @@ export default class NetworkIssuesToFollow extends Component {
       />
     ));
     const floatRight = {
-      float: "right",
+      float: 'right',
     };
 
     return (

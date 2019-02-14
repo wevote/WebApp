@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Tooltip, OverlayTrigger } from "react-bootstrap";
-import { cordovaDot } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 
 export default class FriendsOnlyIndicator extends Component {
   static propTypes = {
@@ -21,14 +21,14 @@ export default class FriendsOnlyIndicator extends Component {
       isFriendsOnly = true;
     }
 
-    let labelText = "";
-    let visibilityIcon = "";
+    let labelText = '';
+    let visibilityIcon = '';
     if (isFriendsOnly) {
-      labelText = "This position is only visible to We Vote friends.";
-      visibilityIcon = <img src={cordovaDot("/img/global/svg-icons/group-icon.svg")} width="18" height="18" color="#999" alt="Visible to Friends Only" />;
+      labelText = 'This position is only visible to We Vote friends.';
+      visibilityIcon = <img src={cordovaDot('/img/global/svg-icons/group-icon.svg')} width="18" height="18" color="#999" alt="Visible to Friends Only" />;
     } else {
-      labelText = "This position is visible to the public.";
-      visibilityIcon = <img src={cordovaDot("/img/global/svg-icons/public-icon.svg")} width="18" height="18" color="#999" alt="Visible to Public" />;
+      labelText = 'This position is visible to the public.';
+      visibilityIcon = <img src={cordovaDot('/img/global/svg-icons/public-icon.svg')} width="18" height="18" color="#999" alt="Visible to Public" />;
     }
 
     const tooltip = <Tooltip id="tooltip">{labelText}</Tooltip>;

@@ -1,28 +1,28 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import {  Modal, OverlayTrigger, Popover } from "react-bootstrap";
-import { Link } from "react-router";
-import TextTruncate from "react-text-truncate";
-import Slider from "react-slick";
-import { cordovaDot, historyPush, hasIPhoneNotch } from "../../utils/cordovaUtils";
-import { toTitleCase } from "../../utils/textFormat";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import BallotIntroFollowIssues from "./BallotIntroFollowIssues";
-import BallotIntroFollowAdvisers from "./BallotIntroFollowAdvisers";
-import BallotIntroVerifyAddress from "./BallotIntroVerifyAddress";
-import BallotStore from "../../stores/BallotStore";
-import CandidateStore from "../../stores/CandidateStore";
-import ImageHandler from "../ImageHandler";
-import IssuesByBallotItemDisplayList from "../Issues/IssuesByBallotItemDisplayList";
-import IssueStore from "../../stores/IssueStore";
-import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
-import LearnMore from "../Widgets/LearnMore";
-import { renderLog } from "../../utils/logging";
-import OrganizationStore from "../../stores/OrganizationStore";
-import SupportStore from "../../stores/SupportStore";
-import VoterActions from "../../actions/VoterActions";
-import VoterStore from "../../stores/VoterStore";
-import VoterGuideStore from "../../stores/VoterGuideStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import {  Modal, OverlayTrigger, Popover } from 'react-bootstrap';
+import { Link } from 'react-router';
+import TextTruncate from 'react-text-truncate';
+import Slider from 'react-slick';
+import { cordovaDot, historyPush, hasIPhoneNotch } from '../../utils/cordovaUtils';
+import { toTitleCase } from '../../utils/textFormat';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import BallotIntroFollowIssues from './BallotIntroFollowIssues';
+import BallotIntroFollowAdvisers from './BallotIntroFollowAdvisers';
+import BallotIntroVerifyAddress from './BallotIntroVerifyAddress';
+import BallotStore from '../../stores/BallotStore';
+import CandidateStore from '../../stores/CandidateStore';
+import ImageHandler from '../ImageHandler';
+import IssuesByBallotItemDisplayList from '../Issues/IssuesByBallotItemDisplayList';
+import IssueStore from '../../stores/IssueStore';
+import ItemSupportOpposeRaccoon from '../Widgets/ItemSupportOpposeRaccoon';
+import LearnMore from '../Widgets/LearnMore';
+import { renderLog } from '../../utils/logging';
+import OrganizationStore from '../../stores/OrganizationStore';
+import SupportStore from '../../stores/SupportStore';
+import VoterActions from '../../actions/VoterActions';
+import VoterStore from '../../stores/VoterStore';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */
@@ -192,7 +192,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
-    console.error("OfficeItemCompressedRaccoon caught error: ", `${error} with info: `, info);
+    console.error('OfficeItemCompressedRaccoon caught error: ', `${error} with info: `, info);
   }
 
   _toggleBallotIntroFollowIssues () {
@@ -224,7 +224,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
       historyPush(`${urlWithoutHash}#${weVoteId}`);
     }
 
-    if (typeof displayOfficeUnfurled === "boolean") {
+    if (typeof displayOfficeUnfurled === 'boolean') {
       this.setState({ displayOfficeUnfurled });
     } else {
       const { currentDisplayOfficeUnfurled } = this.state;
@@ -249,15 +249,15 @@ export default class OfficeItemCompressedRaccoon extends Component {
   }
 
   closeYourNetworkSupportsPopover () {
-    this.refs["supports-overlay"].hide();
+    this.refs['supports-overlay'].hide();
   }
 
   closeHighestIssueScorePopover () {
-    this.refs["highest-issue-score-overlay"].hide();
+    this.refs['highest-issue-score-overlay'].hide();
   }
 
   closeYourNetworkIsUndecidedPopover () {
-    this.refs["undecided-overlay"].hide();
+    this.refs['undecided-overlay'].hide();
   }
 
   render () {
@@ -352,11 +352,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
         const organizationNameIssueSupportListDisplay =
           organizationNameIssueSupportList.map(organizationName => (
             <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start">
-              <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" />
+              <img src={cordovaDot('/img/global/icons/thumbs-up-color-icon.svg')} width="20" height="20" />
               <span>&nbsp;</span>
               <span>
                 {organizationName}
-                {" "}
+                {' '}
                 <strong>+1</strong>
               </span>
             </span>
@@ -365,7 +365,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
         const organizationNameIssueOpposeListDisplay =
           organizationNameIssueOpposeList.map(organizationName => (
             <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start">
-              <img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" />
+              <img src={cordovaDot('/img/global/icons/thumbs-down-color-icon.svg')} width="20" height="20" />
               <span>&nbsp;</span>
               <span>
                 {organizationName}
@@ -388,11 +388,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
         const nameNetworkSupportListDisplay =
           nameNetworkSupportList.map(speakerDisplayName => (
             <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start">
-              <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" alt="thumbs up" />
+              <img src={cordovaDot('/img/global/icons/thumbs-up-color-icon.svg')} width="20" height="20" alt="thumbs up" />
               <span>&nbsp;</span>
               <span>
                 {speakerDisplayName}
-                {" "}
+                {' '}
                 <strong>+1</strong>
               </span>
             </span>
@@ -401,11 +401,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
         const nameNetworkOpposeListDisplay =
           nameNetworkOpposeList.map(speakerDisplayName => (
             <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start">
-              <img src={cordovaDot("/img/global/icons/thumbs-down-color-icon.svg")} width="20" height="20" alt="thumbs down" />
+              <img src={cordovaDot('/img/global/icons/thumbs-down-color-icon.svg')} width="20" height="20" alt="thumbs down" />
               <span>&nbsp;</span>
               <span>
                 {speakerDisplayName}
-                {" "}
+                {' '}
                 <strong>-1</strong>
               </span>
             </span>
@@ -447,8 +447,8 @@ export default class OfficeItemCompressedRaccoon extends Component {
       >
         <Modal.Body>
           <div className="intro-modal__close">
-            <a onClick={this._toggleBallotIntroFollowIssues} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}>
-              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
+            <a onClick={this._toggleBallotIntroFollowIssues} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}>
+              <img src={cordovaDot('/img/global/icons/x-close.png')} alt="close" />
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height intro-modal__height-full" ref="slider" {...sliderSettings}>
@@ -470,11 +470,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
             <span className="u-cursor--pointer" onClick={this.toggleExpandDetails}>
               { this.state.displayOfficeUnfurled ? (
                 <span className="d-print-none u-push--xs">
-                  <img src={cordovaDot("/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-252-triangle-bottom.svg")} width="32" height="32" alt="furl" />
+                  <img src={cordovaDot('/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-252-triangle-bottom.svg')} width="32" height="32" alt="furl" />
                 </span>
               ) : (
                 <span className="d-print-none u-push--xs">
-                  <img src={cordovaDot("/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-250-triangle-right.svg")} width="32" height="32" alt="unfurl" />
+                  <img src={cordovaDot('/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-250-triangle-right.svg')} width="32" height="32" alt="unfurl" />
                 </span>
               )}
               <span className="card-main__ballot-name-link">{ballotItemDisplayName}</span>
@@ -485,28 +485,28 @@ export default class OfficeItemCompressedRaccoon extends Component {
               {/* Desktop */}
               <span className="d-none d-sm-block">
                 Want to remember your choice? Click
-                {" "}
+                {' '}
                 <strong>Choose</strong>
                 ,
-                {" "}
+                {' '}
                 <strong>Oppose</strong>
-                {" "}
+                {' '}
                 or
-                {" "}
+                {' '}
                 <strong>Comment</strong>
-                {" "}
+                {' '}
                 below.
               </span>
               {/* Mobile */}
               <span className="d-block d-sm-none">
                 Want to remember your choice? Click
-                {" "}
+                {' '}
                 <strong>Choose</strong>
-                {" "}
+                {' '}
                 or
-                {" "}
+                {' '}
                 <strong>Oppose</strong>
-                {" "}
+                {' '}
                 below.
               </span>
             </div>
@@ -525,7 +525,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                 candidateSupportStore = SupportStore.get(candidateWeVoteId);
                 const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidateWeVoteId);
                 const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidateWeVoteId);
-                const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}. ` : "";
+                const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}. ` : '';
 
                 return (
                   <div key={candidateWeVoteId} className="u-stack--md u-gray-border-bottom">
@@ -605,7 +605,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                 }
 
                 const voterSupportsThisCandidate = SupportStore.get(oneCandidate.we_vote_id) && SupportStore.get(oneCandidate.we_vote_id).is_support;
-                const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}. ` : "";
+                const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}. ` : '';
 
                 let networkOrIssueScoreSupport;
                 if (atLeastOneCandidateChosenByNetwork) {
@@ -624,7 +624,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                         onClick={this.closeYourNetworkSupportsPopover}
                       >
                         <strong>{oneCandidate.ballot_item_display_name}</strong>
-                        {" "}
+                        {' '}
                         has the highest
                         <strong>Score in Your Network</strong>
                         , based on these friends and organizations:
@@ -646,30 +646,30 @@ export default class OfficeItemCompressedRaccoon extends Component {
                         onClick={this.closeYourNetworkSupportsPopover}
                       >
                         Your friends, and the organizations you listen to, are
-                        {" "}
+                        {' '}
                         <strong>Your Network</strong>
                         . Everyone in your network that
-                        {" "}
+                        {' '}
                         <span className="u-no-break">
-                          {" "}
-                          <img src={cordovaDot("/img/global/icons/thumbs-up-color-icon.svg")} width="20" height="20" />
-                          {" "}
+                          {' '}
+                          <img src={cordovaDot('/img/global/icons/thumbs-up-color-icon.svg')} width="20" height="20" />
+                          {' '}
                           supports
                         </span>
-                        {" "}
+                        {' '}
                         {oneCandidate.ballot_item_display_name}
-                        {" "}
+                        {' '}
                         adds
                         +1 to
-                        {" "}
+                        {' '}
                         {oneCandidate.ballot_item_display_name}
                         &apos;s
-                        {" "}
+                        {' '}
                         <strong>Score in Your Network</strong>
                         .
-                        {" "}
+                        {' '}
                         <strong>{oneCandidate.ballot_item_display_name}</strong>
-                        {" "}
+                        {' '}
                         has the highest score in your network.
                       </Popover>
                     );
@@ -711,7 +711,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                         >
                           <div>
                             <span className="u-push--xs u-cursor--pointer">Your network supports</span>
-                            <img src={cordovaDot("/img/global/icons/up-arrow-color-icon.svg")} className="network-positions__support-icon" width="20" height="20" />
+                            <img src={cordovaDot('/img/global/icons/up-arrow-color-icon.svg')} className="network-positions__support-icon" width="20" height="20" />
                           </div>
                         </OverlayTrigger>
                       </div>
@@ -733,9 +733,9 @@ export default class OfficeItemCompressedRaccoon extends Component {
                       >
                         We took the issues you are following, and added up the opinions of all of the organizations
                         under those issues.
-                        {" "}
+                        {' '}
                         <strong>{oneCandidate.ballot_item_display_name}</strong>
-                        {" "}
+                        {' '}
                         has the most support from these organizations.
                         <br />
                         {advisorsThatMakeVoterIssuesScoreDisplay}
@@ -779,7 +779,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                                     <strong>Issue Score</strong>
                                   </span>
                                   <img
-                                    src={cordovaDot("/img/global/icons/up-arrow-color-icon.svg")}
+                                    src={cordovaDot('/img/global/icons/up-arrow-color-icon.svg')}
                                     className="network-positions__support-icon"
                                     width="20"
                                     height="20"
@@ -857,7 +857,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                         </div>
                         <div className="u-flex-none u-justify-end">
                           <span className="u-push--xs">Chosen by you</span>
-                          <img src={cordovaDot("/img/global/svg-icons/thumbs-up-color-icon.svg")}
+                          <img src={cordovaDot('/img/global/svg-icons/thumbs-up-color-icon.svg')}
                             width="24"
                             height="24"
                           />
@@ -885,7 +885,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                             <Link onClick={this._toggleBallotIntroFollowIssues}>
                               <span className=" u-cursor--pointer">
                                 Follow issues or organizations for advice
-                                {" "}
+                                {' '}
                                 <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" />
                               </span>
                             </Link>
@@ -899,7 +899,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
           ) :
             null
           }
-          {" "}
+          {' '}
           {/* End of "!this.state.displayOfficeUnfurled ?", yes, a 200 line if clause */}
 
           { !this.state.displayAllCandidatesFlag && this.state.displayOfficeUnfurled && remainingCandidatesToDisplayCount ? (
@@ -907,12 +907,12 @@ export default class OfficeItemCompressedRaccoon extends Component {
               <span className="u-items-center u-no-break d-print-none">
                 <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
                 <span>
-                  {" "}
+                  {' '}
                   Show
                   {remainingCandidatesToDisplayCount}
-                  {" "}
+                  {' '}
                   more candidate
-                  { remainingCandidatesToDisplayCount !== 1 ? "s" : null }
+                  { remainingCandidatesToDisplayCount !== 1 ? 's' : null }
                 </span>
               </span>
             </Link>
@@ -930,10 +930,10 @@ export default class OfficeItemCompressedRaccoon extends Component {
                 <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
                 { totalNumberOfCandidatesToDisplay > NUMBER_OF_CANDIDATES_TO_DISPLAY ? (
                   <span>
-                    {" "}
+                    {' '}
                     View all
                     {totalNumberOfCandidatesToDisplay}
-                    {" "}
+                    {' '}
                     candidates
                   </span>
                 ) :

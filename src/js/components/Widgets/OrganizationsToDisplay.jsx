@@ -1,10 +1,10 @@
 // This is used for organizations to Follow (not currently followed by the voter)
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { OverlayTrigger, Popover } from "react-bootstrap";
-import { isCordova } from "../../utils/cordovaUtils";
-import OrganizationCard from "../VoterGuide/OrganizationCard";
-import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { isCordova } from '../../utils/cordovaUtils';
+import OrganizationCard from '../VoterGuide/OrganizationCard';
+import OrganizationTinyDisplay from '../VoterGuide/OrganizationTinyDisplay';
 
 export default class OrganizationsToDisplay extends Component {
   static propTypes = {
@@ -61,7 +61,7 @@ export default class OrganizationsToDisplay extends Component {
           title={(
             <span onClick={() => this.onTriggerLeave(orgWeVoteId, visibleTag)}>
               &nbsp;
-              <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `}
+              <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && 'u-mobile-x'} `}
                     aria-hidden="true"
               />
             </span>

@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { renderLog } from "../../utils/logging";
-import SearchBar from "./SearchBar";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import { renderLog } from '../../utils/logging';
+import SearchBar from './SearchBar';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterStore from '../../stores/VoterStore';
 
 export default class SearchGuidesToFollowBox extends Component {
   constructor (props) {
@@ -17,17 +17,17 @@ export default class SearchGuidesToFollowBox extends Component {
   }
 
   searchFunction (searchQuery) {
-    if (this.state.searchPending && this.state.searchPending.state() === "pending") {
+    if (this.state.searchPending && this.state.searchPending.state() === 'pending') {
       this.state.searchPending.abort();
     }
-    const electionId = searchQuery === "" ? VoterStore.electionId() : 0;
+    const electionId = searchQuery === '' ? VoterStore.electionId() : 0;
     this.setState({
       searchPending: VoterGuideActions.voterGuidesToFollowRetrieve(electionId, searchQuery),
     });
   }
 
   clearFunction () {
-    this.searchFunction("");
+    this.searchFunction('');
   }
 
   render () {

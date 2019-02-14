@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import BallotElectionList from "../../components/Ballot/BallotElectionList";
-import ElectionActions from "../../actions/ElectionActions";
-import ElectionStore from "../../stores/ElectionStore";
-import { renderLog } from "../../utils/logging";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import BallotElectionList from '../../components/Ballot/BallotElectionList';
+import ElectionActions from '../../actions/ElectionActions';
+import ElectionStore from '../../stores/ElectionStore';
+import { renderLog } from '../../utils/logging';
+import VoterStore from '../../stores/VoterStore';
 
 export default class Elections extends Component {
   constructor (props) {
@@ -41,21 +41,21 @@ export default class Elections extends Component {
     for (let i = 0; i < electionsList.length; i++) {
       const election = electionsList[i];
       electionsLocationsList.push(election);
-      ballotReturnedWeVoteId = "";
-      ballotLocationShortcut = "";
+      ballotReturnedWeVoteId = '';
+      ballotLocationShortcut = '';
       if (election.ballot_location_list && election.ballot_location_list.length) {
         // We want to add the shortcut and we_vote_id for the first ballot location option
         [oneBallotLocation] = election.ballot_location_list;
-        ballotLocationShortcut = oneBallotLocation.ballot_location_shortcut || "";
+        ballotLocationShortcut = oneBallotLocation.ballot_location_shortcut || '';
         ballotLocationShortcut = ballotLocationShortcut.trim();
-        ballotReturnedWeVoteId = oneBallotLocation.ballot_returned_we_vote_id || "";
+        ballotReturnedWeVoteId = oneBallotLocation.ballot_returned_we_vote_id || '';
         ballotReturnedWeVoteId = ballotReturnedWeVoteId.trim();
       }
       voterBallot = {
         google_civic_election_id: election.google_civic_election_id,
         election_description_text: election.election_name,
         election_day_text: election.election_day_text,
-        original_text_for_map_search: "",
+        original_text_for_map_search: '',
         ballot_location_shortcut: ballotLocationShortcut,
         ballot_returned_we_vote_id: ballotReturnedWeVoteId,
       };

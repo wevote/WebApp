@@ -1,22 +1,22 @@
 export default function makeSearchLink (twitterHandle, weVoteId, kindOfOwner, linkInternal, googleCivicElectionId) {
-  let searchLink = "";
+  let searchLink = '';
   switch (kindOfOwner) {
-    case "CANDIDATE":
+    case 'CANDIDATE':
       searchLink = twitterHandle ? `/${twitterHandle}` : `/candidate/${weVoteId}`;
       break;
-    case "OFFICE":
+    case 'OFFICE':
       searchLink = `/office/${weVoteId}`;
       break;
-    case "ORGANIZATION":
+    case 'ORGANIZATION':
       searchLink = twitterHandle ? `/${twitterHandle}` : `/voterguide/${weVoteId}`;
       break;
-    case "MEASURE":
+    case 'MEASURE':
       searchLink = `/measure/${weVoteId}`;
       break;
-    case "POLITICIAN":
+    case 'POLITICIAN':
       searchLink = twitterHandle ? `/${twitterHandle}` : `/voterguide/${weVoteId}`;
       break;
-    case "ELECTION":
+    case 'ELECTION':
       searchLink = linkInternal || `/ballot/election/${googleCivicElectionId}`;
       break;
     default:

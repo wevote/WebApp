@@ -1,18 +1,18 @@
 function formatVoterBallotList (electionsList) {
   return electionsList.map((election) => {
-    let ballotReturnedWeVoteId = "";
-    let ballotLocationShortcut = "";
+    let ballotReturnedWeVoteId = '';
+    let ballotLocationShortcut = '';
     if (election.ballot_location_list && election.ballot_location_list.length) {
       // We want to add the shortcut and we_vote_id for the first ballot location option
       const oneBallotLocation = election.ballot_location_list[0];
-      ballotLocationShortcut = (oneBallotLocation.ballot_location_shortcut || "").trim();
-      ballotReturnedWeVoteId = (oneBallotLocation.ballot_returned_we_vote_id || "").trim();
+      ballotLocationShortcut = (oneBallotLocation.ballot_location_shortcut || '').trim();
+      ballotReturnedWeVoteId = (oneBallotLocation.ballot_returned_we_vote_id || '').trim();
     }
     return {
       google_civic_election_id: election.google_civic_election_id,
       election_description_text: election.election_name,
       election_day_text: election.election_day_text,
-      original_text_for_map_search: "",
+      original_text_for_map_search: '',
       ballot_location_shortcut: ballotLocationShortcut,
       ballot_returned_we_vote_id: ballotReturnedWeVoteId,
     };

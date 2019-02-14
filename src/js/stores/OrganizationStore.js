@@ -1,10 +1,10 @@
-import { ReduceStore } from "flux/utils";
-import Dispatcher from "../dispatcher/Dispatcher";
-import OrganizationActions from "../actions/OrganizationActions";
-import SupportActions from "../actions/SupportActions";
-import VoterGuideActions from "../actions/VoterGuideActions";
-import VoterStore from "./VoterStore";
-import { arrayContains } from "../utils/textFormat";
+import { ReduceStore } from 'flux/utils';
+import Dispatcher from '../dispatcher/Dispatcher';
+import OrganizationActions from '../actions/OrganizationActions';
+import SupportActions from '../actions/SupportActions';
+import VoterGuideActions from '../actions/VoterGuideActions';
+import VoterStore from './VoterStore';
+import { arrayContains } from '../utils/textFormat';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */
@@ -19,8 +19,8 @@ class OrganizationStore extends ReduceStore {
       organizationWeVoteIdsVoterIsIgnoring: [],
       organizationWeVoteIdsVoterIsFollowingOnTwitter: [],
       organizationSearchResults: {
-        organization_search_term: "",
-        organization_twitter_handle: "",
+        organization_search_term: '',
+        organization_twitter_handle: '',
         number_of_search_results: 0,
         search_results: [],
       },
@@ -156,7 +156,7 @@ class OrganizationStore extends ReduceStore {
     if (organization && organization.organization_name) {
       return organization.organization_name;
     }
-    return "";
+    return '';
   }
 
   getOrganizationSearchResultsTwitterHandle () {
@@ -164,7 +164,7 @@ class OrganizationStore extends ReduceStore {
     if (organization && organization.organization_twitter_handle) {
       return organization.organization_twitter_handle;
     }
-    return "";
+    return '';
   }
 
   getOrganizationSearchResultsWebsite () {
@@ -172,7 +172,7 @@ class OrganizationStore extends ReduceStore {
     if (organization && organization.organization_website) {
       return organization.organization_website;
     }
-    return "";
+    return '';
   }
 
   _copyListsToNewOrganization (newOrganization, priorCopyOfOrganization) { // eslint-disable-line
@@ -212,7 +212,7 @@ class OrganizationStore extends ReduceStore {
     const organizationWeVoteIdForVoterGuideOwner = action.res.organization_we_vote_id;
 
     switch (action.type) {
-      case "organizationFollow":
+      case 'organizationFollow':
         // Following one org can change the support/oppose count for many ballot items for the voter
         SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         // We also listen to "organizationFollow" in VoterGuideStore so we can alter organizationWeVoteIds_to_follow_all and organizationWeVoteIds_to_follow_for_latest_ballot_item
@@ -254,7 +254,7 @@ class OrganizationStore extends ReduceStore {
           ),
         };
 
-      case "organizationSearch":
+      case 'organizationSearch':
         return {
           ...state,
           organizationSearchResults: {
@@ -265,7 +265,7 @@ class OrganizationStore extends ReduceStore {
           },
         };
 
-      case "organizationStopFollowing":
+      case 'organizationStopFollowing':
         // We also listen to "organizationStopFollowing" in VoterGuideStore so we can alter organizationWeVoteIds_to_follow_all
 
         // Un-Following one org can change the support/oppose count for many ballot items for the voter
@@ -298,7 +298,7 @@ class OrganizationStore extends ReduceStore {
           organizationWeVoteIdsVoterIsFollowing: state.organizationWeVoteIdsVoterIsFollowing.filter(existingOrgWeVoteId => existingOrgWeVoteId !== organizationWeVoteId),
         };
 
-      case "organizationFollowIgnore":
+      case 'organizationFollowIgnore':
         // We also listen to "organizationFollowIgnore" in VoterGuideStore so we can alter organizationWeVoteIds_to_follow_all and organizationWeVoteIds_to_follow_for_latest_ballot_item
 
         // Ignoring one org can change the support/oppose count for many ballot items for the voter
@@ -340,12 +340,12 @@ class OrganizationStore extends ReduceStore {
           ),
         };
 
-      case "error-organizationFollowIgnore" || "error-organizationFollow":
-        console.log("error: ", action);
+      case 'error-organizationFollowIgnore' || 'error-organizationFollow':
+        console.log('error: ', action);
         return state;
 
       // After an organization is created, return it
-      case "organizationSave":
+      case 'organizationSave':
         if (action.res.success) {
           organizationWeVoteId = action.res.organization_we_vote_id;
           organization = action.res;
@@ -362,7 +362,7 @@ class OrganizationStore extends ReduceStore {
         }
         return state;
 
-      case "organizationsFollowedRetrieve":
+      case 'organizationsFollowedRetrieve':
         if (action.res.success) {
           if (action.res.auto_followed_from_twitter_suggestion) {
             organizationsFollowedOnTwitterList = action.res.organization_list;
@@ -403,7 +403,7 @@ class OrganizationStore extends ReduceStore {
         }
         return state;
 
-      case "organizationRetrieve":
+      case 'organizationRetrieve':
         organizationWeVoteId = action.res.organization_we_vote_id;
         organization = action.res;
 
@@ -418,11 +418,11 @@ class OrganizationStore extends ReduceStore {
           allCachedOrganizationsDict,
         };
 
-      case "positionListForOpinionMaker": // ...and positionListForOpinionMakerForFriends
+      case 'positionListForOpinionMaker': // ...and positionListForOpinionMakerForFriends
         // console.log("OrganizationStore, positionListForOpinionMaker response");
         // TODO: position_list *might* include positions from multiple elections
         organizationWeVoteId = action.res.opinion_maker_we_vote_id;
-        if (action.res.friends_vs_public === "FRIENDS_ONLY") { // positionListForOpinionMakerForFriends
+        if (action.res.friends_vs_public === 'FRIENDS_ONLY') { // positionListForOpinionMakerForFriends
           if (action.res.filter_for_voter) {
             const friendsPositionListForOneElection = action.res.position_list;
             organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
@@ -526,12 +526,12 @@ class OrganizationStore extends ReduceStore {
           };
         }
 
-      case "voterGuidesFollowedByOrganizationRetrieve":
+      case 'voterGuidesFollowedByOrganizationRetrieve':
         // In VoterGuideStore we listen for "voterGuidesFollowedByOrganizationRetrieve" so we can update
         //  all_cached_voterGuides and organizationWeVoteIds_to_follow_organization_recommendation_dict
         voterGuides = action.res.voter_guides;
         // We want to show *all* organizations followed by the organization on the "Following" tab
-        if (action.res.filter_by_this_google_civic_election_id && action.res.filter_by_this_google_civic_election_id !== "") {
+        if (action.res.filter_by_this_google_civic_election_id && action.res.filter_by_this_google_civic_election_id !== '') {
           // Ignore the results if filtered by google_civic_election_id
           return {
             ...state,
@@ -548,7 +548,7 @@ class OrganizationStore extends ReduceStore {
           };
         }
 
-      case "voterGuideFollowersRetrieve":
+      case 'voterGuideFollowersRetrieve':
         // In VoterGuideStore, we also listen for a response to "voterGuideFollowersRetrieve" and update all_cached_voterGuides
         voterGuides = action.res.voter_guides;
         // Reset the followers for this organization
@@ -565,7 +565,7 @@ class OrganizationStore extends ReduceStore {
         //   // In VoterGuideStore, we listen for a response to "voterGuidesFollowedRetrieve" and update all_cached_voterGuides
         //   // In OrganizationStore, we listen for a response to "organizationsFollowedRetrieve" instead of "voterGuidesFollowedRetrieve"
 
-      case "voterGuidesIgnoredRetrieve":
+      case 'voterGuidesIgnoredRetrieve':
         // In OrganizationStore, we also listen for a response to "voterGuidesIgnoredRetrieve" and update organizationWeVoteIdsVoterIsIgnoring
         voterGuides = action.res.voter_guides;
         organizationWeVoteIdsVoterIsIgnoring = [];
@@ -579,7 +579,7 @@ class OrganizationStore extends ReduceStore {
           organizationWeVoteIdsVoterIsIgnoring,
         };
 
-      case "voterSignOut":
+      case 'voterSignOut':
         // console.log("resetting OrganicationStore");
         return this.resetState();
 

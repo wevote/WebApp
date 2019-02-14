@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { OverlayTrigger, Popover } from "react-bootstrap";
-import { Link } from "react-router";
-import ImageHandler from "../ImageHandler";
-import LoadingWheel from "../LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import OrganizationCard from "../VoterGuide/OrganizationCard";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { Link } from 'react-router';
+import ImageHandler from '../ImageHandler';
+import LoadingWheel from '../LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import OrganizationCard from '../VoterGuide/OrganizationCard';
 
 // This component is used to display the "+X" list in the ItemTinyPositionBreakdownList
 export default class PositionsNotShownList extends Component {
@@ -57,7 +57,7 @@ export default class PositionsNotShownList extends Component {
         organization_photo_url_tiny: speakerImageUrlHttpsTiny,
         organization_twitter_handle: speakerTwitterHandle,
         // organization_website: onePosition.more_info_url,
-        twitter_description: "",
+        twitter_description: '',
         twitter_followers_count: 0,
       };
       const organizationWeVoteId = oneOrganization.organization_we_vote_id;

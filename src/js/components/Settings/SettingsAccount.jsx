@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-import { Button } from "react-bootstrap";
-import Helmet from "react-helmet";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import BrowserPushMessage from "../Widgets/BrowserPushMessage";
-import FacebookActions from "../../actions/FacebookActions";
-import FacebookStore from "../../stores/FacebookStore";
-import { historyPush } from "../../utils/cordovaUtils";
-import FacebookSignIn from "../Facebook/FacebookSignIn";
-import LoadingWheel from "../LoadingWheel";
-import { oAuthLog, renderLog } from "../../utils/logging";
-import TwitterActions from "../../actions/TwitterActions";
-import TwitterSignIn from "../Twitter/TwitterSignIn";
-import VoterActions from "../../actions/VoterActions";
-import VoterEmailAddressEntry from "../VoterEmailAddressEntry";
-import VoterSessionActions from "../../actions/VoterSessionActions";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
+import Helmet from 'react-helmet';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import BrowserPushMessage from '../Widgets/BrowserPushMessage';
+import FacebookActions from '../../actions/FacebookActions';
+import FacebookStore from '../../stores/FacebookStore';
+import { historyPush } from '../../utils/cordovaUtils';
+import FacebookSignIn from '../Facebook/FacebookSignIn';
+import LoadingWheel from '../LoadingWheel';
+import { oAuthLog, renderLog } from '../../utils/logging';
+import TwitterActions from '../../actions/TwitterActions';
+import TwitterSignIn from '../Twitter/TwitterSignIn';
+import VoterActions from '../../actions/VoterActions';
+import VoterEmailAddressEntry from '../VoterEmailAddressEntry';
+import VoterSessionActions from '../../actions/VoterSessionActions';
+import VoterStore from '../../stores/VoterStore';
 
 const debugMode = false;
 
@@ -65,7 +65,7 @@ export default class SettingsAccount extends Component {
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
-    console.error("SignIn caught error: ", `${error} with info: `, info);
+    console.error('SignIn caught error: ', `${error} with info: `, info);
   }
 
   facebookLogOutOnKeyDown (event) {
@@ -103,24 +103,24 @@ export default class SettingsAccount extends Component {
 
     // console.log("SignIn.jsx this.state.facebookAuthResponse:", this.state.facebookAuthResponse);
     if (!this.state.voter.signed_in_facebook && this.state.facebookAuthResponse && this.state.facebookAuthResponse.facebook_retrieve_attempted) {
-      oAuthLog("SignIn.jsx facebook_retrieve_attempted");
-      historyPush("/facebook_sign_in");
+      oAuthLog('SignIn.jsx facebook_retrieve_attempted');
+      historyPush('/facebook_sign_in');
 
       // return <span>SignIn.jsx facebook_retrieve_attempted</span>;
       return LoadingWheel;
     }
 
-    let pageTitle = "Sign In - We Vote";
-    let yourAccountTitle = "Your Account";
-    let yourAccountExplanation = "";
+    let pageTitle = 'Sign In - We Vote';
+    let yourAccountTitle = 'Your Account';
+    let yourAccountExplanation = '';
     if (this.state.voter.is_signed_in) {
-      pageTitle = "Your Account - We Vote";
+      pageTitle = 'Your Account - We Vote';
       if (this.state.voter.signed_in_facebook && !this.state.voter.signed_in_twitter) {
-        yourAccountTitle = "Have Twitter Too?";
-        yourAccountExplanation = "By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.";
+        yourAccountTitle = 'Have Twitter Too?';
+        yourAccountExplanation = 'By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.';
       } else if (this.state.voter.signed_in_twitter && !this.state.voter.signed_in_facebook) {
-        yourAccountTitle = "Have Facebook Too?";
-        yourAccountExplanation = "By adding Facebook to your We Vote profile, it is easier to invite friends.";
+        yourAccountTitle = 'Have Facebook Too?';
+        yourAccountExplanation = 'By adding Facebook to your We Vote profile, it is easier to invite friends.';
       }
     }
 
@@ -205,7 +205,7 @@ export default class SettingsAccount extends Component {
                           <span onClick={this.toggleTwitterDisconnectOpen}>
                             un-link @
                             {this.state.voter.twitter_screen_name}
-                            {" "}
+                            {' '}
                             twitter account
                           </span>
                         </div>
@@ -240,39 +240,39 @@ export default class SettingsAccount extends Component {
             {debugMode && (
             <div className="text-center">
               is_signed_in:
-              {" "}
+              {' '}
               {this.state.voter.is_signed_in ? <span>True</span> : null}
               <br />
               signed_in_facebook:
-              {" "}
+              {' '}
               {this.state.voter.signed_in_facebook ? <span>True</span> : null}
               <br />
               signed_in_twitter:
-              {" "}
+              {' '}
               {this.state.voter.signed_in_twitter ? <span>True</span> : null}
               <br />
               we_vote_id:
-              {" "}
+              {' '}
               {this.state.voter.we_vote_id ? <span>{this.state.voter.we_vote_id}</span> : null}
               <br />
               email:
-              {" "}
+              {' '}
               {this.state.voter.email ? <span>{this.state.voter.email}</span> : null}
               <br />
               facebook_email:
-              {" "}
+              {' '}
               {this.state.voter.facebook_email ? <span>{this.state.voter.facebook_email}</span> : null}
               <br />
               facebook_profile_image_url_https:
-              {" "}
+              {' '}
               {this.state.voter.facebook_profile_image_url_https ? <span>{this.state.voter.facebook_profile_image_url_https}</span> : null}
               <br />
               first_name:
-              {" "}
+              {' '}
               {this.state.voter.first_name ? <span>{this.state.voter.first_name}</span> : null}
               <br />
               facebook_id:
-              {" "}
+              {' '}
               {this.state.voter.facebook_id ? <span>{this.state.voter.facebook_id}</span> : null}
               <br />
             </div>

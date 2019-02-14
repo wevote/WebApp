@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 
-import BallotStore from "../../stores/BallotStore";
-import BallotSideBarLink from "./BallotSideBarLink";
-import { renderLog } from "../../utils/logging";
-import { arrayContains } from "../../utils/textFormat";
+import BallotStore from '../../stores/BallotStore';
+import BallotSideBarLink from './BallotSideBarLink';
+import { renderLog } from '../../utils/logging';
+import { arrayContains } from '../../utils/textFormat';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-restricted-syntax: 1 */
@@ -23,7 +23,7 @@ export default class BallotSideBar extends Component {
   };
 
   static defaultProps = {
-    pathname: "/ballot",
+    pathname: '/ballot',
   };
 
   constructor (props) {
@@ -119,8 +119,8 @@ export default class BallotSideBar extends Component {
 
   filteredBallotToRender (ballot, ballotWithAllItemIdsByFilterType, type, key) {
     const filteredBallot = ballot.filter((item) => {
-      if (item.kind_of_ballot_item === "MEASURE") {
-        return type === "Measure";
+      if (item.kind_of_ballot_item === 'MEASURE') {
+        return type === 'Measure';
       } else {
         return type === item.race_office_level;
       }
@@ -132,8 +132,8 @@ export default class BallotSideBar extends Component {
 
     const filteredBallotListItems = filteredBallot.map((item) => {
       if (
-        item.kind_of_ballot_item === "OFFICE" ||
-        item.kind_of_ballot_item === "MEASURE"
+        item.kind_of_ballot_item === 'OFFICE' ||
+        item.kind_of_ballot_item === 'MEASURE'
       ) {
         return (
           <li className="BallotItem__summary__list-item" key={`ballot-side-bar-${item.we_vote_id}`}>
@@ -155,7 +155,7 @@ export default class BallotSideBar extends Component {
     return (
       <div className="BallotItem__summary__group" key={key}>
         <div className="BallotItem__summary__group-title">
-          {type === "Measure" ? "Ballot Measures" : type}
+          {type === 'Measure' ? 'Ballot Measures' : type}
         </div>
         <ul className="BallotItem__summary__list">
           {filteredBallotListItems}
@@ -180,7 +180,7 @@ export default class BallotSideBar extends Component {
     renderLog(__filename);
 
     // let turnedOnNPSInput = false;
-    const BALLOT_ITEM_FILTER_TYPES = ["Federal", "State", "Measure", "Local"];
+    const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];
 
     const { ballot } = this.state;
     const { ballotWithAllItemsByFilterType } = this.props;

@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import ImageHandler from "../ImageHandler";
-import { renderLog } from "../../utils/logging";
-import { cordovaDot } from "../../utils/cordovaUtils";
-import IssueStore from "../../stores/IssueStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ImageHandler from '../ImageHandler';
+import { renderLog } from '../../utils/logging';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import IssueStore from '../../stores/IssueStore';
 
 
 // IssueImageDisplay is used by IssuesDisplayListWithOrganizationPopovers for viewing the icons for issues
@@ -23,7 +23,7 @@ export default class IssueImageDisplay extends Component {
     renderLog(__filename);
 
     if (!this.props.issueWeVoteId) {
-      console.log("IssueImageDisplay no props.image");
+      console.log('IssueImageDisplay no props.image');
       return null;
     }
 
@@ -32,38 +32,38 @@ export default class IssueImageDisplay extends Component {
     if (oneIssue.issue_name) {
       issueName = oneIssue.issue_name;
     } else {
-      issueName = "";
+      issueName = '';
     }
 
-    let issueIconLocalPath = "";
+    let issueIconLocalPath = '';
     if (oneIssue.issue_icon_local_path) {
       issueIconLocalPath = oneIssue.issue_icon_local_path;
     }
 
     const issueIconImageUrl = cordovaDot(`/img/global/svg-icons/issues/${issueIconLocalPath}.svg`);
 
-    let supportOrOpposeClass = "";
+    let supportOrOpposeClass = '';
     if (this.props.showSupport) {
-      supportOrOpposeClass = "network-positions__show-support-underline ";
+      supportOrOpposeClass = 'network-positions__show-support-underline ';
     } else if (this.props.showOppose) {
-      supportOrOpposeClass = "network-positions__show-oppose-underline ";
+      supportOrOpposeClass = 'network-positions__show-oppose-underline ';
     }
 
-    let voterIsNotFollowingThisIssueClass = "";
+    let voterIsNotFollowingThisIssueClass = '';
     if (!this.props.isVoterFollowingThisIssue && !this.props.turnOffIssueFade) {
-      voterIsNotFollowingThisIssueClass = "network-positions__to-follow-fade ";
+      voterIsNotFollowingThisIssueClass = 'network-positions__to-follow-fade ';
     }
 
     const hidePlaceholder = !this.props.showPlaceholderImage;
 
-    const imageSizes = new Set(["SMALL", "MEDIUM", "LARGE"]);
-    let issueImageSize = "SMALL"; // Set the default
+    const imageSizes = new Set(['SMALL', 'MEDIUM', 'LARGE']);
+    let issueImageSize = 'SMALL'; // Set the default
     if (imageSizes.has(this.props.issueImageSize)) {
       ({ issueImageSize } = this.props);
     }
 
     let issueImage;
-    if (issueImageSize === "SMALL") {
+    if (issueImageSize === 'SMALL') {
       issueImage = (
         <ImageHandler
         alt={issueName}
@@ -73,7 +73,7 @@ export default class IssueImageDisplay extends Component {
         sizeClassName="issue__image--small "
         />
       );
-    } else if (issueImageSize === "MEDIUM") {
+    } else if (issueImageSize === 'MEDIUM') {
       issueImage = (
         <ImageHandler
         alt={issueName}
@@ -83,7 +83,7 @@ export default class IssueImageDisplay extends Component {
         sizeClassName="issue__image--medium "
         />
       );
-    } else if (issueImageSize === "LARGE") {
+    } else if (issueImageSize === 'LARGE') {
       issueImage = (
         <ImageHandler
         alt={issueName}

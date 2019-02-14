@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import ReactPlayer from "react-player";
-import { cordovaDot } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import ReadMore from "./ReadMore";
-import { vimeoRegX, youTubeRegX } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ReactPlayer from 'react-player';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import ReadMore from './ReadMore';
+import { vimeoRegX, youTubeRegX } from '../../utils/textFormat';
 
 
 export default class PositionSupportOpposeSnippet extends Component {
@@ -31,7 +31,7 @@ export default class PositionSupportOpposeSnippet extends Component {
     let ballotItemIsSupportedByActorLabel;
     const { is_looking_at_self: isLookingAtSelf } = this.props;
     let { more_info_url: moreInfoUrl } = this.props;
-    const statementText = this.props.statement_text || "";
+    const statementText = this.props.statement_text || '';
     let statementTextHtml = (
       <ReadMore
         num_of_lines={5}
@@ -39,7 +39,7 @@ export default class PositionSupportOpposeSnippet extends Component {
       />
     );
 
-    let videoUrl = "";
+    let videoUrl = '';
     let youTubeUrl;
     let vimeoUrl;
     let statementTextNoUrl;
@@ -51,28 +51,28 @@ export default class PositionSupportOpposeSnippet extends Component {
 
     if (youTubeUrl) {
       [videoUrl] = youTubeUrl;
-      statementTextNoUrl = statementText.replace(videoUrl, "");
+      statementTextNoUrl = statementText.replace(videoUrl, '');
       statementTextHtml = <ReadMore text_to_display={statementTextNoUrl} />;
     }
 
     if (vimeoUrl) {
       [videoUrl] = vimeoUrl;
-      statementTextNoUrl = statementText.replace(videoUrl, "");
+      statementTextNoUrl = statementText.replace(videoUrl, '');
       statementTextHtml = <ReadMore text_to_display={statementTextNoUrl} />;
     }
 
     if (this.props.is_support) {
-      stanceIconSrc = cordovaDot("/img/global/svg-icons/thumbs-up-color-icon.svg");
-      className = "explicit-position__icon";
-      alt = "Supports";
-      actorSupportsBallotItemLabel = isLookingAtSelf ? "You Support" : "Supports"; // Actor supports Ballot item (Active voice)
-      ballotItemIsSupportedByActorLabel = isLookingAtSelf ? "is Supported by You" : "is Supported by"; // Ballot item is supported by Actor (Passive voice)
+      stanceIconSrc = cordovaDot('/img/global/svg-icons/thumbs-up-color-icon.svg');
+      className = 'explicit-position__icon';
+      alt = 'Supports';
+      actorSupportsBallotItemLabel = isLookingAtSelf ? 'You Support' : 'Supports'; // Actor supports Ballot item (Active voice)
+      ballotItemIsSupportedByActorLabel = isLookingAtSelf ? 'is Supported by You' : 'is Supported by'; // Ballot item is supported by Actor (Passive voice)
     } else if (this.props.is_oppose) {
-      stanceIconSrc = cordovaDot("/img/global/svg-icons/thumbs-down-color-icon.svg");
-      className = "explicit-position__icon";
-      alt = "Opposes";
-      actorSupportsBallotItemLabel = isLookingAtSelf ? "You Oppose" : "Opposes";
-      ballotItemIsSupportedByActorLabel = isLookingAtSelf ? "is Opposed by You" : "is Opposed by";
+      stanceIconSrc = cordovaDot('/img/global/svg-icons/thumbs-down-color-icon.svg');
+      className = 'explicit-position__icon';
+      alt = 'Opposes';
+      actorSupportsBallotItemLabel = isLookingAtSelf ? 'You Oppose' : 'Opposes';
+      ballotItemIsSupportedByActorLabel = isLookingAtSelf ? 'is Opposed by You' : 'is Opposed by';
     } else {
       // We shouldn't be here. Do not display position information. See instead PositionInformationOnlySnippet.jsx
       return <span />;
@@ -89,7 +89,7 @@ export default class PositionSupportOpposeSnippet extends Component {
     }
 
     if (moreInfoUrl) {
-      if (!moreInfoUrl.toLowerCase().startsWith("http")) {
+      if (!moreInfoUrl.toLowerCase().startsWith('http')) {
         moreInfoUrl = `http://${moreInfoUrl}`;
       }
     }
@@ -105,18 +105,18 @@ export default class PositionSupportOpposeSnippet extends Component {
                   <span>
                     <span className="explicit-position__position-label">{actorSupportsBallotItemLabel}</span>
                     <span>
-                      {" "}
+                      {' '}
                       {this.props.ballot_item_display_name}
-                      {" "}
+                      {' '}
                     </span>
                   </span>
                 ) : (
                   <span>
                     <span className="explicit-position__position-label">{ballotItemIsSupportedByActorLabel}</span>
                     <span>
-                      {" "}
+                      {' '}
                       {this.props.speaker_display_name}
-                      {" "}
+                      {' '}
                     </span>
                   </span>
                 )}
@@ -139,7 +139,7 @@ export default class PositionSupportOpposeSnippet extends Component {
                         body={(
                           <span>
                             view source
-                            {" "}
+                            {' '}
                             <i className="fa fa-external-link" aria-hidden="true" />
                           </span>
                         )}

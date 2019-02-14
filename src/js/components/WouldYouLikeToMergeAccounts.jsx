@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Alert, Button } from "react-bootstrap";
-import { renderLog } from "../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Alert, Button } from 'react-bootstrap';
+import { renderLog } from '../utils/logging';
 
 export default class WouldYouLikeToMergeAccounts extends Component {
   static propTypes = {

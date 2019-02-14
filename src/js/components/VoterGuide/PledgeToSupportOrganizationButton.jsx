@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
-import { shortenText } from "../../utils/textFormat";
-import { renderLog } from "../../utils/logging";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
+import { shortenText } from '../../utils/textFormat';
+import { renderLog } from '../../utils/logging';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
 
 export default class PledgeToSupportOrganizationButton extends Component {
   static propTypes = {

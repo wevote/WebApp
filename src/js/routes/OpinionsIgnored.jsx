@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { Link } from "react-router";
-import Helmet from "react-helmet";
-import { renderLog } from "../utils/logging";
-import OpinionsIgnoredList from "../components/Organization/OpinionsIgnoredList";
-import VoterGuideStore from "../stores/VoterGuideStore";
-import VoterGuideActions from "../actions/VoterGuideActions";
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import Helmet from 'react-helmet';
+import { renderLog } from '../utils/logging';
+import OpinionsIgnoredList from '../components/Organization/OpinionsIgnoredList';
+import VoterGuideStore from '../stores/VoterGuideStore';
+import VoterGuideActions from '../actions/VoterGuideActions';
 
 // NOTE FROM DALE: This should be refactored to pull in Organizations instead of Voter Guides
 export default class OpinionsIgnored extends Component {
@@ -61,7 +61,7 @@ export default class OpinionsIgnored extends Component {
               onKeyDown={this.onKeyDownEditMode.bind(this)}
               onClick={this.toggleEditMode.bind(this)}
             >
-              {this.state.editMode ? "Done Editing" : "Edit"}
+              {this.state.editMode ? 'Done Editing' : 'Edit'}
             </a>
             <p>
               Organizations, public figures and other voters you&apos;re ignoring.

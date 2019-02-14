@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import { renderLog } from "../../utils/logging";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import { renderLog } from '../../utils/logging';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 
 export default class ToolBar extends Component {
   static propTypes = {

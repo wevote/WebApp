@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
-import FacebookActions from "../../actions/FacebookActions";
-import { renderLog } from "../../utils/logging";
+import FacebookActions from '../../actions/FacebookActions';
+import { renderLog } from '../../utils/logging';
 
 class FacebookDownloadPicture extends React.Component {
   static propTypes = {
@@ -15,7 +15,7 @@ class FacebookDownloadPicture extends React.Component {
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
-    console.error("FacebookDownloadPicture caught error: ", `${error} with info: `, info);
+    console.error('FacebookDownloadPicture caught error: ', `${error} with info: `, info);
   }
 
   didClickDownloadPicture () {

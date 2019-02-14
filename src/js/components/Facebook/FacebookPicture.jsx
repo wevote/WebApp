@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import FacebookConstants from "../../constants/FacebookConstants";
-import { renderLog } from "../../utils/logging";
+import FacebookConstants from '../../constants/FacebookConstants';
+import { renderLog } from '../../utils/logging';
 
 export default class FacebookPicture extends React.Component {
   static propTypes = {
@@ -14,11 +14,11 @@ export default class FacebookPicture extends React.Component {
     let msg;
 
     if (this.props.facebookPictureStatus === FacebookConstants.FACEBOOK_GETTING_PICTURE) {
-      msg = "Downloading picture...";
+      msg = 'Downloading picture...';
     }
 
     if (this.props.facebookPictureStatus === FacebookConstants.FACEBOOK_RECEIVED_PICTURE) {
-      msg = "Received picture!";
+      msg = 'Received picture!';
     }
 
     return <h3 className="h3">{msg}</h3>;

@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import SupportStore from "../../stores/SupportStore";
-import { capitalizeString } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import SupportStore from '../../stores/SupportStore';
+import { capitalizeString } from '../../utils/textFormat';
 
 
 export default class OfficeItemReadyToVote extends Component {
@@ -106,7 +106,7 @@ export default class OfficeItemReadyToVote extends Component {
             }
           </h2>
 
-          <div className={this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null}>
+          <div className={this.props.link_to_ballot_item_page ? 'u-cursor--pointer' : null}>
             { this.props.candidate_list.map(oneCandidate => (
               <div key={oneCandidate.we_vote_id}>
                 {/* *** Candidate name *** */}
@@ -124,7 +124,7 @@ export default class OfficeItemReadyToVote extends Component {
 
                     <div className="u-flex-none u-justify-end">
                       <span className="u-push--xs">Chosen by you</span>
-                      <img src={cordovaDot("/img/global/svg-icons/thumbs-up-color-icon.svg")} width="24" height="24" />
+                      <img src={cordovaDot('/img/global/svg-icons/thumbs-up-color-icon.svg')} width="24" height="24" />
                     </div>
                   </div>
                 ) :
@@ -140,7 +140,7 @@ export default class OfficeItemReadyToVote extends Component {
                       </div>
                       <div className="u-flex-none u-justify-end">
                         <span className="u-push--xs">Your network supports</span>
-                        <img src={cordovaDot("/img/global/icons/up-arrow-color-icon.svg")} className="network-positions__support-icon" width="20" height="20" />
+                        <img src={cordovaDot('/img/global/icons/up-arrow-color-icon.svg')} className="network-positions__support-icon" width="20" height="20" />
                       </div>
                     </div>
                   ) :

@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import { OverlayTrigger, Popover } from "react-bootstrap";
-import { renderLog } from "../../utils/logging";
-import OrganizationCard from "./OrganizationCard";
-import OrganizationsNotShownList from "./OrganizationsNotShownList";
-import OrganizationTinyDisplay from "./OrganizationTinyDisplay";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { renderLog } from '../../utils/logging';
+import OrganizationCard from './OrganizationCard';
+import OrganizationsNotShownList from './OrganizationsNotShownList';
+import OrganizationTinyDisplay from './OrganizationTinyDisplay';
 
 export default class ItemTinyOpinionsToFollow extends Component {
   static propTypes = {
@@ -20,11 +20,11 @@ export default class ItemTinyOpinionsToFollow extends Component {
     super(props);
 
     this.popover_state = {};
-    this.mobile = "ontouchstart" in document.documentElement;
+    this.mobile = 'ontouchstart' in document.documentElement;
 
     this.state = {
       organizationsToFollow: this.props.organizationsToFollow,
-      ballotItemWeVoteId: "",
+      ballotItemWeVoteId: '',
       maximumOrganizationDisplay: this.props.maximumOrganizationDisplay,
       supportProps: this.props.supportProps,
     };
@@ -161,7 +161,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
             >
               <span className="position-rating__source with-popover">
                 <Link to="/opinions">
-                  {" "}
+                  {' '}
                   +
                   {orgsNotShownCount}
                 </Link>
@@ -169,7 +169,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
             </OverlayTrigger>
           );
         } else {
-          return "";
+          return '';
         }
       } else {
         // console.log("One organization ItemTinyOpinionsToFollow");
@@ -236,7 +236,7 @@ export default class ItemTinyOpinionsToFollow extends Component {
     });
 
     return (
-      <span className={noSupportOrOpposeCount ? "guidelist card-child__list-group" : "d-none d-sm-block d-print-none guidelist card-child__list-group"}>
+      <span className={noSupportOrOpposeCount ? 'guidelist card-child__list-group' : 'd-none d-sm-block d-print-none guidelist card-child__list-group'}>
         {organizationsToDisplay}
       </span>
     );

@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import FriendsOnlyIndicator from "../Widgets/FriendsOnlyIndicator";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
+import { renderLog } from '../../utils/logging';
 
 export default class YourPositionsVisibilityMessage extends Component {
   static propTypes = {
@@ -57,69 +57,69 @@ export default class YourPositionsVisibilityMessage extends Component {
   render () {
     renderLog(__filename);
 
-    let alertClass = "";
+    let alertClass = '';
 
     if (this.state.visibleToPublicCount > 0 && this.state.visibleToFriendsOnlyCount > 0) {
-      alertClass = "alert-danger";
+      alertClass = 'alert-danger';
       return (
         <div className="u-margin-left-right--md u-stack--xs d-print-none">
           <div className={`alert ${alertClass}`}>
           You have
-            {" "}
+            {' '}
             {this.state.visibleToFriendsOnlyCount}
-            {" "}
-            {this.state.visibleToFriendsOnlyCount === 1 ? "position" : "positions" }
-            {" "}
+            {' '}
+            {this.state.visibleToFriendsOnlyCount === 1 ? 'position' : 'positions' }
+            {' '}
             only visible to We Vote friends
-            {" "}
+            {' '}
             <FriendsOnlyIndicator isFriendsOnly />
             , and
-            {" "}
+            {' '}
             {this.state.visibleToPublicCount}
-            {" "}
-            {this.state.visibleToPublicCount === 1 ? "position" : "positions" }
-            {" "}
+            {' '}
+            {this.state.visibleToPublicCount === 1 ? 'position' : 'positions' }
+            {' '}
             visible to the public
-            {" "}
+            {' '}
             <FriendsOnlyIndicator isFriendsOnly={false} />
             .
           </div>
         </div>
       );
     } else if (this.state.visibleToFriendsOnlyCount > 0) {
-      alertClass = "alert-danger";
+      alertClass = 'alert-danger';
       return (
         <div className="u-margin-left-right--md u-stack--xs d-print-none">
           <div className={`alert ${alertClass}`}>
           You have
-            {" "}
+            {' '}
             {this.state.visibleToFriendsOnlyCount}
-            {" "}
-            {this.state.visibleToFriendsOnlyCount === 1 ? "position" : "positions" }
-            {" "}
+            {' '}
+            {this.state.visibleToFriendsOnlyCount === 1 ? 'position' : 'positions' }
+            {' '}
             only visible to We Vote friends
-            {" "}
+            {' '}
             <FriendsOnlyIndicator isFriendsOnly />
             . None of your positions are visible to the public
-            {" "}
+            {' '}
             <FriendsOnlyIndicator isFriendsOnly={false} />
             .
           </div>
         </div>
       );
     } else if (this.state.visibleToPublicCount > 0) {
-      alertClass = "alert-success";
+      alertClass = 'alert-success';
       return (
         <div className="u-margin-left-right--md u-stack--xs d-print-none">
           <div className={`alert ${alertClass}`}>
             You have
-            {" "}
+            {' '}
             {this.state.visibleToPublicCount}
-            {" "}
-            {this.state.visibleToPublicCount === 1 ? "position" : "positions" }
-            {" "}
+            {' '}
+            {this.state.visibleToPublicCount === 1 ? 'position' : 'positions' }
+            {' '}
             visible to the public
-            {" "}
+            {' '}
             <FriendsOnlyIndicator isFriendsOnly={false} />
             .
           </div>
