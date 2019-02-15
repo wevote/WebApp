@@ -1,11 +1,14 @@
 $space-footer-bottom: 12px;
 $space-footer-top: 10px;
+$iphone-x-padding-bottom: env(safe-area-inset-bottom);
 
 .footer-container {
   position: fixed;
   bottom: 0;
   width: 100%;
   border-top: 1px solid #eee;
+  background: $white;
+  padding-bottom: $iphone-x-padding-bottom;
 }
 
 .footer-icon {
