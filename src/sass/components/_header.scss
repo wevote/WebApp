@@ -1,9 +1,11 @@
 @import '../base/variables';
 
-$space-header-height:  30px;
+$space-header-height:  35px;
 $space-header-x-height: 40px;
 $space-search-right:   10%;
-$back-button-font-size: .7rem;
+$back-button-font-size: .8rem;
+$iphone-x-padding-left: env(safe-area-inset-left);
+$iphone-x-padding-right: env(safe-area-inset-right);
 
 .page-header {
   // required overrides for Bootstrap :(
@@ -57,6 +59,8 @@ $back-button-font-size: .7rem;
   &__cordova {
     margin: $space-none;
     padding-bottom: $space-xs;
+    padding-left: $iphone-x-padding-left;
+    padding-right: $iphone-x-padding-right;
   }
 
   &__cordova-iphonex {

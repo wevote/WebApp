@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+import DescriptionIcon from '@material-ui/icons/Description';
+import SettingsIcon from '@material-ui/icons/Settings';
+import PeopleIcon from '@material-ui/icons/People';
 import { historyPush } from '../../utils/cordovaUtils';
 import { stringContains } from '../../utils/textFormat';
 
@@ -42,11 +46,11 @@ class FooterBar extends React.Component {
           onChange={this.handleChange}
           showLabels
         >
-          <BottomNavigationAction className="no-outline" label="Ballot" showLabel icon={<ion-icon class="footer-icon" name="paper" />} />
-          <BottomNavigationAction className="no-outline" label="Values" showLabel icon={<ion-icon class="footer-icon" name="chatbubbles" />} />
-          <BottomNavigationAction className="no-outline" label="Friends" showLabel icon={<ion-icon class="footer-icon" name="people" />} />
+          <BottomNavigationAction className="no-outline" label="Ballot" showLabel icon={<DescriptionIcon />} />
+          <BottomNavigationAction className="no-outline" label="Values" showLabel icon={<QuestionAnswerIcon />} />
+          <BottomNavigationAction className="no-outline" label="Friends" showLabel icon={<PeopleIcon />} />
           {/* <BottomNavigationAction className="no-outline" label="Vote" showLabel icon={<ion-icon class="footer-icon" name="clipboard" />} /> */}
-          <BottomNavigationAction className="no-outline" label="Settings" showLabel icon={<ion-icon class="footer-icon" name="settings" />} />
+          <BottomNavigationAction className="no-outline" label="Settings" showLabel icon={<SettingsIcon />} />
         </BottomNavigation>
       </div>
     );

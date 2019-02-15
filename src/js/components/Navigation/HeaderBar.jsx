@@ -211,14 +211,15 @@ class HeaderBar extends Component {
               </Tabs>
 
               { !showFullNavigation && (
-              <Button
-                className="header-sign-in"
-                variant="text"
-                color="primary"
-                href="/settings/account"
-              >
-                Sign In
-              </Button>
+                <Link to="/settings/account" className="header-link">
+                  <Button
+                    className="header-sign-in"
+                    variant="text"
+                    color="primary"
+                  >
+                    Sign In
+                  </Button>
+                </Link>
               )}
             </div>
 
@@ -238,14 +239,15 @@ class HeaderBar extends Component {
                   />
                 </div>
               ) : (
-                <Button
-                  className="header-sign-in"
-                  variant="text"
-                  color="primary"
-                  href="/settings/account"
-                >
-                  Sign In
-                </Button>
+                <Link to="/settings/account" className="header-link">
+                  <Button
+                    className="header-sign-in"
+                    variant="text"
+                    color="primary"
+                  >
+                    Sign In
+                  </Button>
+                </Link>
               )
           }
               {/* Was AccountMenu */}
