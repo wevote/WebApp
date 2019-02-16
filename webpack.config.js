@@ -10,6 +10,11 @@ module.exports = {
     filename: 'bundle.[hash].js',
     path: path.resolve(__dirname, 'build')
   }, 
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html'
+    }),
+  ],
   module: {
     rules: [
       {
@@ -21,5 +26,11 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx']
+  },
+  devServer: {
+    host: 'localhost',
+    port: port,
+    historyApiFallback: true,
+    open: true
   }
 };
