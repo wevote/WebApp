@@ -108,18 +108,22 @@ export default class HeaderBarProfilePopUp extends Component {
             ) : null
             }
           </ul>
-          <span className="terms-and-privacy">
-            <br />
-            <Link onClick={this.hideProfilePopUp} to="/more/terms">
-              <span className="u-no-break">Terms of Service</span>
-            </Link>
-            <span style={{ paddingLeft: 20 }} />
-            <Link onClick={this.hideProfilePopUp} to="/more/privacy">
-              <span className="u-no-break">Privacy Policy</span>
-            </Link>
-            <span style={{ paddingLeft: 20 }} />
-            <Link onClick={this.hideProfilePopUp} to="/more/attributions">Attributions</Link>
-          </span>
+          <div>
+            <span className="terms-and-privacy">
+              <Link onClick={this.hideProfilePopUp} to="/more/terms">
+                <span className="u-no-break">Terms of Service</span>
+              </Link>
+              <span style={{ paddingLeft: 20 }} />
+              <Link onClick={this.hideProfilePopUp} to="/more/privacy">
+                <span className="u-no-break">Privacy Policy</span>
+              </Link>
+            </span>
+          </div>
+          <div>
+            <span className="terms-and-privacy">
+              <Link onClick={this.hideProfilePopUp} to="/more/attributions">Attributions</Link>
+            </span>
+          </div>
         </div>
       </div>
     );

@@ -170,17 +170,22 @@ export default class HamburgerMenu extends Component {
 
             <tr className="hamburger-terms__tr">
               <td className="hamburger-terms__td" colSpan={3}>
-                <span className="hamburger-terms__text">
-                  <Link to="/more/terms">
-                    <span className="u-no-break">Terms of Service</span>
-                  </Link>
-                  <span style={{ paddingLeft: 20 }} />
-                  <Link to="/more/privacy">
-                    <span className="u-no-break">Privacy Policy</span>
-                  </Link>
-                  <span style={{ paddingLeft: 20 }} />
-                  <Link to="/more/attributions">Attributions</Link>
-                </span>
+                <div>
+                  <span className="hamburger-terms__text">
+                    <Link to="/more/terms">
+                      <span className="u-no-break">Terms of Service</span>
+                    </Link>
+                    <span style={{ paddingLeft: 20 }} />
+                    <Link to="/more/privacy">
+                      <span className="u-no-break">Privacy Policy</span>
+                    </Link>
+                  </span>
+                </div>
+                <div>
+                  <span className="hamburger-terms__text">
+                    <Link onClick={this.hideProfilePopUp} to="/more/attributions">Attributions</Link>
+                  </span>
+                </div>
               </td>
             </tr>
           </tbody>
