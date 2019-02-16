@@ -1,14 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import { withStyles } from '@material-ui/core/styles';
 import BallotActions from '../../actions/BallotActions';
 import { renderLog } from '../../utils/logging';
 
-export default class BallotTabsRaccoon extends Component {
+const styles = theme => ({
+  tabLabelContainer: {
+    padding: '6px 6px',
+  },
+  root: {
+    color: theme.palette.primary,
+  },
+});
+
+class BallotTabsRaccoon extends Component {
   static propTypes = {
     completionLevelFilterType: PropTypes.string,
     ballotLength: PropTypes.number,
     ballotLengthRemaining: PropTypes.number,
+    classes: PropTypes.object,
   };
 
   shouldComponentUpdate (nextProps) {
@@ -29,6 +41,20 @@ export default class BallotTabsRaccoon extends Component {
     return false;
   }
 
+  getSelectedTab = () => {
+    const { completionLevelFilterType } = this.props;
+    switch (completionLevelFilterType) {
+      case 'filterAllBallotItems':
+        return 0;
+      case 'filterRemaining':
+        return 1;
+      case 'filterDecided':
+        return 2;
+      default:
+        return false;
+    }
+  }
+
   goToDifferentCompletionLevelTab (completionLevelFilterType = '') {
     BallotActions.completionLevelFilterTypeSave(completionLevelFilterType);
   }
@@ -36,80 +62,41 @@ export default class BallotTabsRaccoon extends Component {
   render () {
     // console.log("BallotTabsRaccoon render, this.props.completionLevelFilterType:", this.props.completionLevelFilterType);
     renderLog(__filename);
-
+    const { classes } = this.props;
     const remainingDecisionsCountIsDifferentThanAllItems = this.props.ballotLength !== this.props.ballotLengthRemaining;
     const showRemainingDecisions = (remainingDecisionsCountIsDifferentThanAllItems && this.props.ballotLengthRemaining) || false;
     const showDecisionsMade = (remainingDecisionsCountIsDifferentThanAllItems && this.props.ballotLengthRemaining) || false;
     const itemsDecidedCount = this.props.ballotLength - this.props.ballotLengthRemaining || 0;
 
     return (
-      <ul className="nav ballot__tabs">
-        <li className="tab__item">
-          <Link
-            onClick={() => this.goToDifferentCompletionLevelTab('filterAllBallotItems')}
-            className={this.props.completionLevelFilterType === 'filterAllBallotItems' ? 'tab tab--active' : 'tab tab--default'}
-          >
-            {/* Desktop */}
-            <span className="d-none d-sm-block">
-              All Items (
-              {this.props.ballotLength}
-              )
-            </span>
-            {/* Mobile */}
-            <span className="d-block d-sm-none">
-              All (
-              {this.props.ballotLength}
-              )
-            </span>
-          </Link>
-        </li>
+      <Tabs value={this.getSelectedTab()} indicatorColor="primary">
+        <Tab
+          classes={{ labelContainer: classes.tabLabelContainer }}
+          onClick={() => this.goToDifferentCompletionLevelTab('filterAllBallotItems')}
+          label={`All (${this.props.ballotLength})`}
+        />
 
         { showRemainingDecisions ? (
-          <li className="tab__item">
-            <Link
-              onClick={() => this.goToDifferentCompletionLevelTab('filterRemaining')}
-              className={this.props.completionLevelFilterType === 'filterRemaining' ? 'tab tab--active' : 'tab tab--default'}
-            >
-              {/* Desktop */}
-              <span className="d-none d-sm-block">
-                Remaining Choices (
-                {this.props.ballotLengthRemaining}
-                )
-              </span>
-              {/* Mobile */}
-              <span className="d-block d-sm-none">
-                Choices (
-                {this.props.ballotLengthRemaining}
-                )
-              </span>
-            </Link>
-          </li>
+          <Tab
+            classes={{ labelContainer: classes.tabLabelContainer }}
+            onClick={() => this.goToDifferentCompletionLevelTab('filterRemaining')}
+            label={`Choices (${this.props.ballotLengthRemaining})`}
+          />
         ) : null
         }
 
         { showDecisionsMade ? (
-          <li className="tab__item">
-            <Link
-              onClick={() => this.goToDifferentCompletionLevelTab('filterDecided')}
-              className={this.props.completionLevelFilterType === 'filterDecided' ? 'tab tab--active' : 'tab tab--default'}
-            >
-              {/* Desktop */}
-              <span className="d-none d-sm-block">
-                Items Decided (
-                {itemsDecidedCount}
-                )
-              </span>
-              {/* Mobile */}
-              <span className="d-block d-sm-none">
-                Decided (
-                {itemsDecidedCount}
-                )
-              </span>
-            </Link>
-          </li>
+          <Tab
+            classes={{ labelContainer: classes.tabLabelContainer }}
+            onClick={() => this.goToDifferentCompletionLevelTab('filterDecided')}
+            label={`Decided (${itemsDecidedCount})`}
+          />
         ) : null
         }
-      </ul>
+      </Tabs>
     );
   }
 }
+
+export default withStyles(styles)(BallotTabsRaccoon);
+

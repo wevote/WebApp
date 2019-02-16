@@ -6,6 +6,9 @@ import moment from 'moment';
 import styled from 'styled-components';
 import Badge from '@material-ui/core/Badge';
 import Chip from '@material-ui/core/Chip';
+import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
+import { withStyles } from '@material-ui/core/styles';
 import AddressBox from '../../components/AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotActions from '../../actions/BallotActions';
@@ -38,6 +41,7 @@ import SupportStore from '../../stores/SupportStore';
 import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import AppStore from '../../stores/AppStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 import { formatVoterBallotList, checkShouldUpdate } from './utils';
@@ -58,10 +62,25 @@ const Wrapper = styled.div`
   padding-top: ${({ cordova }) => (cordova ? '100px' : 0)};
 `;
 
-export default class Ballot extends Component {
+const styles = theme => ({
+  badge: {
+    top: '4.4px',
+    right: '6px',
+  },
+  iconRoot: {
+    position: 'absolute',
+    left: '3px',
+    top: '3.4px',
+    color: theme.palette.primary.main,
+    cursor: 'pointer',
+  },
+});
+
+class Ballot extends Component {
   static propTypes = {
     location: PropTypes.object,
     params: PropTypes.object,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -95,6 +114,7 @@ export default class Ballot extends Component {
       voterBallotList: [],
       foundFirstRaceLevel: false,
       showFilterTabs: false,
+      ballotHeaderUnpinned: false,
     };
 
     this.ballotItems = {};
@@ -115,6 +135,7 @@ export default class Ballot extends Component {
     const issuesVoterCanFollow = IssueStore.getIssuesVoterCanFollow(); // Check to see if the issues have been retrieved yet
     const issuesVoterCanFollowExist = issuesVoterCanFollow && issuesVoterCanFollow.length;
     // console.log("Ballot componentDidMount issuesVoterCanFollowExist: ", issuesVoterCanFollowExist);
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
 
     if (waitUntilVoterSignInCompletes !== undefined ||
         hideIntroModalFromCookie ||
@@ -371,6 +392,10 @@ export default class Ballot extends Component {
   static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
     // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
     return { hasError: true };
+  }
+
+  onAppStoreChange () {
+    this.setState({ ballotHeaderUnpinned: AppStore.headroomIsUnpinned() });
   }
 
   onVoterStoreChange () {
@@ -682,8 +707,10 @@ export default class Ballot extends Component {
   render () {
     renderLog(__filename);
     const ballotBaseUrl = '/ballot';
+    const { classes } = this.props;
     const {
       ballotWithItemsFromCompletionFilterType, showFilterTabs, doubleFilteredBallotItemsLength, completionLevelFilterType,
+      ballotHeaderUnpinned,
     } = this.state;
     const textForMapSearch = VoterStore.getTextForMapSearch();
     const issuesVoterCanFollow = IssueStore.getIssuesVoterCanFollow(); // Don't auto-open intro until Issues are loaded
@@ -697,7 +724,7 @@ export default class Ballot extends Component {
             <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> :
             null
           }
-          <div className={isWebApp() ? 'ballot__header' : 'ballot__header ballot__header__top-cordova'}>
+          <div className={`ballot__header ${isWebApp() ? 'ballot__header__top-cordova' : ''}`}>
             <BrowserPushMessage incomingProps={this.props} />
             <p className="ballot__date_location">
               If your ballot does not appear momentarily, please
@@ -780,7 +807,7 @@ export default class Ballot extends Component {
           />
         ) : null }
         { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this.toggleBallotSummaryModal} /> : null }
-        <div className="ballot__heading">
+        <div className={`ballot__heading ${ballotHeaderUnpinned ? 'ballot__heading__unpinned' : ''}`}>
           <div className="page-content-container">
             <div className="container-fluid">
               <div className="row">
@@ -822,6 +849,52 @@ export default class Ballot extends Component {
                           ballotLengthRemaining={BallotStore.ballotRemainingChoicesLength}
                         />
                       </div>
+                      <hr className="ballot-header-divider" />
+                      { ballotWithItemsFromCompletionFilterType.length && showFilterTabs ? (
+                        <div className="ballot__item-filter-tabs">
+                          { BALLOT_ITEM_FILTER_TYPES.map((oneTypeOfBallotItem) => {
+                            const allBallotItemsByFilterType = this.state.ballotWithAllItems.filter((item) => {
+                              if (oneTypeOfBallotItem === 'Measure') {
+                                return item.kind_of_ballot_item === 'MEASURE';
+                              } else {
+                                return oneTypeOfBallotItem === item.race_office_level;
+                              }
+                            });
+                            if (allBallotItemsByFilterType.length) {
+                              const ballotItemsByFilterType = ballotWithItemsFromCompletionFilterType.filter((item) => {
+                                if (oneTypeOfBallotItem === 'Measure') {
+                                  return item.kind_of_ballot_item === 'MEASURE';
+                                } else {
+                                  return oneTypeOfBallotItem === item.race_office_level;
+                                }
+                              });
+                              return (
+                                <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
+                                  <Badge
+                                  classes={{ badge: classes.badge }}
+                                  color="primary"
+                                  badgeContent={ballotItemsByFilterType.length}
+                                  invisible={ballotItemsByFilterType.length === 0}
+                                  >
+                                    {oneTypeOfBallotItem === this.state.raceLevelFilterType ?
+                                      <RadioButtonCheckedIcon classes={{ root: classes.iconRoot }} onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)} /> : <RadioButtonUncheckedIcon classes={{ root: classes.iconRoot }} onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)} />}
+                                    <Chip variant="outlined"
+                                        color={oneTypeOfBallotItem === this.state.raceLevelFilterType ? 'primary' : 'default'}
+                                        onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
+                                        className="btn_ballot_filter"
+                                        label={oneTypeOfBallotItem}
+                                    />
+                                  </Badge>
+                                </div>
+                              );
+                            } else {
+                              return null;
+                            }
+                          })
+                      }
+                        </div>
+                      ) : null
+                    }
                     </div>
                   ) : null
                   }
@@ -861,48 +934,6 @@ export default class Ballot extends Component {
                   ) : (
                     <div>
                       {/* The rest of the ballot items */}
-                      { ballotWithItemsFromCompletionFilterType.length && showFilterTabs ? (
-                        <div className="row ballot__item-filter-tabs">
-                          { BALLOT_ITEM_FILTER_TYPES.map((oneTypeOfBallotItem) => {
-                            const allBallotItemsByFilterType = this.state.ballotWithAllItems.filter((item) => {
-                              if (oneTypeOfBallotItem === 'Measure') {
-                                return item.kind_of_ballot_item === 'MEASURE';
-                              } else {
-                                return oneTypeOfBallotItem === item.race_office_level;
-                              }
-                            });
-                            if (allBallotItemsByFilterType.length) {
-                              const ballotItemsByFilterType = ballotWithItemsFromCompletionFilterType.filter((item) => {
-                                if (oneTypeOfBallotItem === 'Measure') {
-                                  return item.kind_of_ballot_item === 'MEASURE';
-                                } else {
-                                  return oneTypeOfBallotItem === item.race_office_level;
-                                }
-                              });
-                              return (
-                                <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
-                                  <Badge
-                                  color={oneTypeOfBallotItem === this.state.raceLevelFilterType ? 'secondary' : 'primary'}
-                                  badgeContent={ballotItemsByFilterType.length}
-                                  invisible={ballotItemsByFilterType.length === 0}
-                                  >
-                                    <Chip variant="outlined"
-                                        color={oneTypeOfBallotItem === this.state.raceLevelFilterType ? 'primary' : 'default'}
-                                        onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
-                                        className="btn_ballot_filter"
-                                        label={oneTypeOfBallotItem}
-                                    />
-                                  </Badge>
-                                </div>
-                              );
-                            } else {
-                              return null;
-                            }
-                          })
-                      }
-                        </div>
-                      ) : null
-                    }
                       {/* We always show the change election option */}
                       <div className={`u-no-break d-print-none u-cursor--pointer ballot__change-address ${ballotWithItemsFromCompletionFilterType && showFilterTabs ? '' : 'ballot__no-race-cats'}`}
                          onClick={this.toggleSelectBallotModal}
@@ -996,3 +1027,5 @@ export default class Ballot extends Component {
     );
   }
 }
+
+export default withStyles(styles)(Ballot);

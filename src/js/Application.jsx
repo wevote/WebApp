@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ToastContainer } from 'react-toastify';
 import Headroom from 'headroom.js';
+import styled from 'styled-components';
 import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from './utils/applicationUtils';
 import cookies from './utils/cookies';
 import {
@@ -21,6 +22,9 @@ import VoterActions from './actions/VoterActions';
 import VoterStore from './stores/VoterStore';
 import webAppConfig from './config';
 
+const Wrapper = styled.div`
+  padding-top: ${({ padTop }) => padTop};
+`;
 
 const loadingScreenStyles = {
   position: 'fixed',
@@ -267,15 +271,17 @@ export default class Application extends Component {
       // console.log("inTheaterMode", inTheaterMode);
       return (
         <div className="app-base" id="app-base-id">
-          <div className="page-content-container">
-            <div className="container-fluid">
-              <div className="row">
-                <div className="col-12 container-main">
-                  { this.props.children }
+          <Wrapper padTop={isCordova() ? '85px' : '0'}>
+            <div className="page-content-container">
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-12 container-main">
+                    { this.props.children }
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </Wrapper>
         </div>
       );
     } else if (voterGuideMode) {
@@ -289,11 +295,13 @@ export default class Application extends Component {
                   voter={this.state.voter}
                   weVoteBrandingOff={this.state.weVoteBrandingOff}
           />
-          <div className="page-content-container">
-            <div className="container-voter-guide">
-              { this.props.children }
+          <Wrapper padTop={isCordova() ? '55px' : '0'}>
+            <div className="page-content-container">
+              <div className="container-voter-guide">
+                { this.props.children }
+              </div>
             </div>
-          </div>
+          </Wrapper>
           {(
             <div className="footroom-wrapper">
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
@@ -314,11 +322,13 @@ export default class Application extends Component {
                   voter={this.state.voter}
                   weVoteBrandingOff={this.state.weVoteBrandingOff}
           />
-          <div className="page-content-container">
-            <div className="container-settings">
-              { this.props.children }
+          <Wrapper padTop={isCordova() ? '60px' : '0'}>
+            <div className="page-content-container">
+              <div className="container-settings">
+                { this.props.children }
+              </div>
             </div>
-          </div>
+          </Wrapper>
           {(
             <div className="footroom-wrapper">
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
@@ -344,13 +354,15 @@ export default class Application extends Component {
             </div>
           ) :
           (
-            <div className="page-content-container">
-              <div className="container-fluid">
-                <div className="container-main">
-                  { this.props.children }
+            <Wrapper padTop={isCordova() ? '85px' : '0'}>
+              <div className="page-content-container">
+                <div className="container-fluid">
+                  <div className="container-main">
+                    { this.props.children }
+                  </div>
                 </div>
               </div>
-            </div>
+            </Wrapper>
           )}
         { pathname !== '/welcome' && (
           <div className="footroom-wrapper">
