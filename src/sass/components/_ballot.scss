@@ -44,6 +44,7 @@ $neg-padding: -10px;
     padding-top: $cordova-shim;
     transform: $pinned-transform;
     transition: all .2s ease-in-out 0s;
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, .2), 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12);
     &__unpinned {
       $unpinned-transform: translate3d(0, -58px, 0);
       position: fixed;
@@ -53,7 +54,6 @@ $neg-padding: -10px;
       z-index: 1;
       transform: $unpinned-transform;
       transition: all .2s ease-in-out 0s;
-      box-shadow: 0 2px 4px -1px rgba(0, 0, 0, .2), 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12);
     }
   }
 
@@ -66,7 +66,8 @@ $neg-padding: -10px;
     &__title {
       display: inline-block;
       margin-bottom: $space-none;
-      @include breakpoints(xsmall-bootstrap) {
+      font-size: 14px;
+      @include breakpoints(medium) {
         font-size: $scrollbar-height;
       }
       &__cordova {
@@ -156,6 +157,7 @@ $neg-padding: -10px;
   &__item-filter-tabs {
     display: flex;
     overflow-x: scroll;
+    overflow-y: hidden;
     justify-content: flex-start;
     margin-top: $race-filter-margin;
   }
@@ -192,7 +194,10 @@ $neg-padding: -10px;
 }
 
 .ballot_filter_btns {
-  margin-right: $space-md;
+  margin-right: $space-xs;
+  @include breakpoints(medium) {
+    margin-right: $space-md;
+  }
 }
 
 .ballot-header-divider {

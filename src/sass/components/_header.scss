@@ -18,6 +18,11 @@ $iphone-x-padding-right: env(safe-area-inset-right);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  &__ballot {
+    @include breakpoints(small medium) {
+      box-shadow: none !important;
+    }
+  }
 
   &__container {
     background-color: $page-header-color;
