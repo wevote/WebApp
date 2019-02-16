@@ -40,6 +40,17 @@ const overrides = {
   },
 };
 
+const breakpoints = {
+  keys: ['xs', 'sm', 'md', 'lg', 'xl'],
+  values: {
+    xs: 320,
+    sm: 576,
+    md: 768,
+    lg: 960,
+    xl: 1280,
+  },
+};
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -49,6 +60,7 @@ const theme = createMuiTheme({
     secondary: amber, // Feel free to change this
   },
   overrides,
+  breakpoints,
   typography: {
     useNextVariants: true,
   },

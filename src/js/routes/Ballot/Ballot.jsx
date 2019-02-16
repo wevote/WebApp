@@ -24,7 +24,7 @@ import BallotSummaryModal from '../../components/Ballot/BallotSummaryModal';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import cookies from '../../utils/cookies';
 import {
-  cordovaDot, historyPush, isCordova, isWebApp,
+  historyPush, isCordova, isWebApp,
 } from '../../utils/cordovaUtils';
 import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
@@ -35,7 +35,7 @@ import IssueStore from '../../stores/IssueStore';
 import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
-import SelectBallotModal from '../../components/Ballot/SelectBallotModal';
+// import SelectBallotModal from '../../components/Ballot/SelectBallotModal';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterActions from '../../actions/VoterActions';
@@ -64,15 +64,36 @@ const Wrapper = styled.div`
 
 const styles = theme => ({
   badge: {
-    top: '4.4px',
-    right: '6px',
+    top: 4.4,
+    right: 4.5,
+    background: 'rgba(46, 60, 93, 0.08)',
+    color: '#333',
+    [theme.breakpoints.down('md')]: {
+      fontSize: 9,
+      width: 16,
+      height: 16,
+      top: 3,
+    },
+  },
+  badgeColorPrimary: {
+    background: theme.palette.primary.main,
+    color: 'white',
+  },
+  chipRoot: {
+    [theme.breakpoints.down('md')]: {
+      height: 22.5,
+    },
   },
   iconRoot: {
     position: 'absolute',
-    left: '3px',
-    top: '3.4px',
+    left: 3,
+    top: 3.4,
     color: theme.palette.primary.main,
     cursor: 'pointer',
+    [theme.breakpoints.down('md')]: {
+      fontSize: 16,
+      top: 3,
+    },
   },
 });
 
@@ -120,7 +141,7 @@ class Ballot extends Component {
     this.ballotItems = {};
     this.ballotItemLinkHasBeenClicked = this.ballotItemLinkHasBeenClicked.bind(this);
     this.toggleBallotIntroModal = this.toggleBallotIntroModal.bind(this);
-    this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
+    // this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.toggleBallotSummaryModal = this.toggleBallotSummaryModal.bind(this);
     this.updateOfficeDisplayUnfurledTracker = this.updateOfficeDisplayUnfurledTracker.bind(this);
   }
@@ -386,6 +407,7 @@ class Ballot extends Component {
     this.supportStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
+    this.appStoreListener.remove();
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -615,7 +637,7 @@ class Ballot extends Component {
 
     this.setState({ showBallotIntroModal: !showBallotIntroModal });
   }
-
+  /*
   toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
     const { showSelectBallotModal } = this.state;
     if (showSelectBallotModal) {
@@ -630,6 +652,7 @@ class Ballot extends Component {
       showSelectBallotModal: !showSelectBallotModal,
     });
   }
+  */
 
   toggleBallotSummaryModal () {
     const { showBallotSummaryModal } = this.state;
@@ -795,7 +818,9 @@ class Ballot extends Component {
     return (
       <div className="ballot_root">
         { this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
-        { this.state.showSelectBallotModal ? (
+        {
+          /*
+          this.state.showSelectBallotModal ? (
           <SelectBallotModal
             ballotElectionList={this.state.ballotElectionList}
             ballotBaseUrl={ballotBaseUrl}
@@ -805,7 +830,9 @@ class Ballot extends Component {
             show={this.state.showSelectBallotModal}
             toggleFunction={this.toggleSelectBallotModal}
           />
-        ) : null }
+        ) : null
+        */
+        }
         { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this.toggleBallotSummaryModal} /> : null }
         <div className={`ballot__heading ${ballotHeaderUnpinned ? 'ballot__heading__unpinned' : ''}`}>
           <div className="page-content-container">
@@ -871,8 +898,8 @@ class Ballot extends Component {
                               return (
                                 <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
                                   <Badge
-                                  classes={{ badge: classes.badge }}
-                                  color="primary"
+                                  classes={{ badge: classes.badge, colorPrimary: classes.badgeColorPrimary }}
+                                  color={oneTypeOfBallotItem === this.state.raceLevelFilterType ? 'primary' : 'default'}
                                   badgeContent={ballotItemsByFilterType.length}
                                   invisible={ballotItemsByFilterType.length === 0}
                                   >
@@ -882,6 +909,7 @@ class Ballot extends Component {
                                         color={oneTypeOfBallotItem === this.state.raceLevelFilterType ? 'primary' : 'default'}
                                         onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
                                         className="btn_ballot_filter"
+                                        classes={{ root: classes.chipRoot }}
                                         label={oneTypeOfBallotItem}
                                     />
                                   </Badge>
@@ -934,29 +962,6 @@ class Ballot extends Component {
                   ) : (
                     <div>
                       {/* The rest of the ballot items */}
-                      {/* We always show the change election option */}
-                      <div className={`u-no-break d-print-none u-cursor--pointer ballot__change-address ${ballotWithItemsFromCompletionFilterType && showFilterTabs ? '' : 'ballot__no-race-cats'}`}
-                         onClick={this.toggleSelectBallotModal}
-                      >
-                        <span className="u-no-break u-f8 d-none d-sm-inline">
-                          <img
-                          src={cordovaDot('/img/global/icons/gear-icon.png')}
-                          role="button"
-                          alt="change address or election"
-                          />
-                          {' '}
-                        Not your ballot?
-                        </span>
-                        <span className="u-no-break u-f6 d-inline d-sm-none">
-                          <img
-                          src={cordovaDot('/img/global/icons/gear-icon.png')}
-                          role="button"
-                          alt="change address or election"
-                          />
-                          {' '}
-                        Not your ballot?
-                        </span>
-                      </div>
                       <div className={isWebApp() ? 'BallotList' : 'BallotList__cordova'}>
                         {ballotWithItemsFromCompletionFilterType.map((item) => {
                           // ballot limited by items by filter type
