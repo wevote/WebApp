@@ -201,18 +201,22 @@ export default class BallotSideBar extends Component {
           }
           { BALLOT_ITEM_FILTER_TYPES.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key))}
           <div className="h4 text-left" />
-          <span className="terms-and-privacy">
-            <br />
-            <Link to="/more/terms">
-              <span className="u-no-break">Terms of Service</span>
-            </Link>
-            <span style={{ paddingLeft: 20 }} />
-            <Link to="/more/privacy">
-              <span className="u-no-break">Privacy Policy</span>
-            </Link>
-            <span style={{ paddingLeft: 20 }} />
-            <Link to="/more/attributions">Attributions</Link>
-          </span>
+          <div>
+            <span className="terms-and-privacy">
+              <Link to="/more/terms">
+                <span className="u-no-break">Terms of Service</span>
+              </Link>
+              <span style={{ paddingLeft: 20 }} />
+              <Link to="/more/privacy">
+                <span className="u-no-break">Privacy Policy</span>
+              </Link>
+            </span>
+          </div>
+          <div>
+            <span className="terms-and-privacy">
+              <Link to="/more/attributions">Attributions</Link>
+            </span>
+          </div>
         </div>
       );
     } else {
