@@ -2,16 +2,43 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Badge from '@material-ui/core/Badge';
 import { withStyles } from '@material-ui/core/styles';
 import BallotActions from '../../actions/BallotActions';
 import { renderLog } from '../../utils/logging';
 
 const styles = theme => ({
+  badge: {
+    top: 0,
+    right: -26,
+    width: 20,
+    height: 19.5,
+    [theme.breakpoints.down('md')]: {
+      fontSize: 9,
+      right: -20,
+      width: 16,
+      height: 16,
+      top: 3,
+    },
+  },
   tabLabelContainer: {
     padding: '6px 6px',
+    [theme.breakpoints.down('md')]: {
+      padding: '6px 20px',
+    },
   },
-  root: {
-    color: theme.palette.primary,
+  tabsRoot: {
+    minHeight: 38,
+    height: 38,
+    [theme.breakpoints.down('md')]: {
+      fontSize: 12,
+    },
+  },
+  tabsFlexContainer: {
+    height: 38,
+  },
+  scroller: {
+    overflowY: 'hidden',
   },
 });
 
@@ -62,25 +89,47 @@ class BallotTabsRaccoon extends Component {
   render () {
     // console.log("BallotTabsRaccoon render, this.props.completionLevelFilterType:", this.props.completionLevelFilterType);
     renderLog(__filename);
-    const { classes } = this.props;
+    const { classes, ballotLength, ballotLengthRemaining } = this.props;
     const remainingDecisionsCountIsDifferentThanAllItems = this.props.ballotLength !== this.props.ballotLengthRemaining;
     const showRemainingDecisions = (remainingDecisionsCountIsDifferentThanAllItems && this.props.ballotLengthRemaining) || false;
     const showDecisionsMade = (remainingDecisionsCountIsDifferentThanAllItems && this.props.ballotLengthRemaining) || false;
     const itemsDecidedCount = this.props.ballotLength - this.props.ballotLengthRemaining || 0;
 
     return (
-      <Tabs value={this.getSelectedTab()} indicatorColor="primary">
+      <Tabs
+        value={this.getSelectedTab()}
+        indicatorColor="primary"
+        classes={{ root: classes.tabsRoot, flexContainer: classes.tabsFlexContainer, scroller: classes.scroller }}
+      >
         <Tab
           classes={{ labelContainer: classes.tabLabelContainer }}
           onClick={() => this.goToDifferentCompletionLevelTab('filterAllBallotItems')}
-          label={`All (${this.props.ballotLength})`}
+          label={(
+            <Badge
+              classes={{ badge: classes.badge }}
+              color="primary"
+              badgeContent={ballotLength}
+              invisible={ballotLength === 0}
+            >
+              All
+            </Badge>
+          )}
         />
 
         { showRemainingDecisions ? (
           <Tab
             classes={{ labelContainer: classes.tabLabelContainer }}
             onClick={() => this.goToDifferentCompletionLevelTab('filterRemaining')}
-            label={`Choices (${this.props.ballotLengthRemaining})`}
+            label={(
+              <Badge
+                classes={{ badge: classes.badge }}
+                color="primary"
+                badgeContent={ballotLengthRemaining}
+                invisible={ballotLengthRemaining === 0}
+              >
+                Choices
+              </Badge>
+            )}
           />
         ) : null
         }
@@ -89,7 +138,16 @@ class BallotTabsRaccoon extends Component {
           <Tab
             classes={{ labelContainer: classes.tabLabelContainer }}
             onClick={() => this.goToDifferentCompletionLevelTab('filterDecided')}
-            label={`Decided (${itemsDecidedCount})`}
+            label={(
+              <Badge
+                classes={{ badge: classes.badge }}
+                color="primary"
+                badgeContent={itemsDecidedCount}
+                invisible={itemsDecidedCount === 0}
+              >
+                Decided
+              </Badge>
+            )}
           />
         ) : null
         }
