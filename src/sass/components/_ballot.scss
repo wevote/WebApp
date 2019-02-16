@@ -1,3 +1,5 @@
+@import '../base/variables';
+
 $address-spacing-desktop: 26px 26px $space-none $space-none;
 $address-spacing-mobile: -$space-xs $space-none $space-sm $space-none;
 $tab-spacing-desktop: 24px;
@@ -7,16 +9,14 @@ $header-correction-webapp: -15vh;
 $header-extension-top-voter-guide: 2%;
 $header-correction-voter-guide: -1%;
 $scrollbar-height: 20px;
-$tab-height: 47px;
-$tab-height-visible: $tab-height - $scrollbar-height;
 $neg-space-sm: -$space-sm;
 $neg-space-lg: -$space-lg;
 $bottom-spacing-cordova: 50px;
-$cordova-shim: 10px;
+$cordova-shim: 58px;
 $mobile-body-padding-top: 150px;
 $body-padding-top: 150px;
-$tabs-height: 30px;
-$neg-padding: -30px;
+$race-filter-margin: 8px;
+$neg-padding: -10px;
 
 .ballot {
   // ===========================================
@@ -27,15 +27,14 @@ $neg-padding: -30px;
     white-space: nowrap;
     overflow-x: scroll;
     overflow-y: hidden;
-    height: $tab-height;
 
     &__container {
       overflow: hidden;
-      height: $tab-height-visible;
     }
   }
 
   &__heading {
+    $pinned-transform: translate3d(0, -53px, 0);
     width: 100%;
     background-color: $white;
     border-bottom: 1px solid #aaa;
@@ -43,6 +42,19 @@ $neg-padding: -30px;
     position: fixed;
     z-index: 1;
     padding-top: $cordova-shim;
+    transform: $pinned-transform;
+    transition: all .2s ease-in-out 0s;
+    &__unpinned {
+      $unpinned-transform: translate3d(0, -58px, 0);
+      position: fixed;
+      top: $space-none;
+      left: $space-none;
+      right: $space-none;
+      z-index: 1;
+      transform: $unpinned-transform;
+      transition: all .2s ease-in-out 0s;
+      box-shadow: 0 2px 4px -1px rgba(0, 0, 0, .2), 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12);
+    }
   }
 
   &__heading-webapp {
@@ -53,6 +65,7 @@ $neg-padding: -30px;
   &__header {
     &__title {
       display: inline-block;
+      margin-bottom: $space-none;
       @include breakpoints(xsmall-bootstrap) {
         font-size: $scrollbar-height;
       }
@@ -141,11 +154,10 @@ $neg-padding: -30px;
   }
 
   &__item-filter-tabs {
-    margin-left: $neg-space-sm;
-    margin-right: $neg-space-sm;
-    justify-content: center;
-    height: $tabs-height;
-    margin-top: $neg-padding;
+    display: flex;
+    overflow-x: scroll;
+    justify-content: flex-start;
+    margin-top: $race-filter-margin;
   }
 
   &__edit-address-preview {
@@ -181,4 +193,11 @@ $neg-padding: -30px;
 
 .ballot_filter_btns {
   margin-right: $space-md;
+}
+
+.ballot-header-divider {
+  margin: $space-none;
+  width: 200%;
+  left: -300px;
+  position: absolute;
 }

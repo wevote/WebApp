@@ -8,6 +8,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
+import Headroom from 'react-headroom';
 import { withStyles } from '@material-ui/core/styles';
 import BallotStore from '../../stores/BallotStore';
 import { cordovaDot, historyPush, isWebApp, hasIPhoneNotch } from '../../utils/cordovaUtils';
@@ -19,6 +20,7 @@ import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
+import AppActions from '../../actions/AppActions';
 import { stringContains } from '../../utils/textFormat';
 
 const styles = theme => ({
@@ -34,6 +36,10 @@ const styles = theme => ({
 const Wrapper = styled.div`
   margin-top: ${({ hasNotch }) => (hasNotch ? '1.5rem' : '0')};
 `;
+
+const headroomWrapperStyle = {
+  maxHeight: 0,
+};
 
 class HeaderBar extends Component {
   static propTypes = {
@@ -69,6 +75,7 @@ class HeaderBar extends Component {
     this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
     this.toggleProfilePopUp = this.toggleProfilePopUp.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
+    this.onHeadroomUnpin = this.onHeadroomUnpin.bind(this);
     this.state = {
       aboutMenuOpen: false,
       componentDidMountFinished: false,
@@ -152,6 +159,10 @@ class HeaderBar extends Component {
     });
   }
 
+  onHeadroomUnpin (unpinned) {
+    AppActions.setHeadroomUnpinned(unpinned);
+  }
+
   getSelectedTab = () => {
     const { pathname } = this.props;
     if (stringContains('/ballot', pathname)) return 0;
@@ -188,29 +199,35 @@ class HeaderBar extends Component {
 
   render () {
     renderLog(__filename);
-    const { voter, classes } = this.props;
+    const { voter, classes, pathname } = this.props;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0;
     const voterIsSignedIn = this.props.voter && this.props.voter.is_signed_in;
     const showFullNavigation = cookies.getItem('show_full_navigation') || voterIsSignedIn;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
     return (
-      <Wrapper hasNotch={hasIPhoneNotch()}>
-        <AppBar position="relative" color="default" className={isWebApp() ? 'page-header' : 'page-header page-header__cordova'}>
-          <Toolbar className="header-toolbar" disableGutters>
-            {!weVoteBrandingOff && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />}
-            <div className="header-nav">
-              <Tabs
+      <Headroom
+        onUnpin={() => this.onHeadroomUnpin(true)}
+        onPin={() => this.onHeadroomUnpin(false)}
+        wrapperStyle={headroomWrapperStyle}
+        disable={!stringContains('/ballot', pathname)}
+      >
+        <Wrapper hasNotch={hasIPhoneNotch()}>
+          <AppBar position="relative" color="default" className={isWebApp() ? 'page-header' : 'page-header page-header__cordova'}>
+            <Toolbar className="header-toolbar" disableGutters>
+              {!weVoteBrandingOff && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />}
+              <div className="header-nav">
+                <Tabs
               value={this.getSelectedTab()}
               indicatorColor="primary"
-              >
-                {showFullNavigation && <Link to="/ballot" className="header-link u-show-desktop"><Tab label="Ballot" /></Link>}
-                {showFullNavigation && <Link to="/more/network/issues" className="header-link u-show-desktop"><Tab label="My Values" /></Link>}
-                {showFullNavigation && <Link to="/more/network/friends" className="header-link u-show-desktop"><Tab label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} invisible={!numberOfIncomingFriendRequests}>My Friends</Badge>} /></Link>}
-                {/* showFullNavigation && isWebApp() && <Tab className="u-show-desktop" label="Vote" /> */}
-              </Tabs>
+                >
+                  {showFullNavigation && <Link to="/ballot" className="header-link u-show-desktop"><Tab label="Ballot" /></Link>}
+                  {showFullNavigation && <Link to="/more/network/issues" className="header-link u-show-desktop"><Tab label="My Values" /></Link>}
+                  {showFullNavigation && <Link to="/more/network/friends" className="header-link u-show-desktop"><Tab label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} invisible={!numberOfIncomingFriendRequests}>My Friends</Badge>} /></Link>}
+                  {/* showFullNavigation && isWebApp() && <Tab className="u-show-desktop" label="Vote" /> */}
+                </Tabs>
 
-              { !showFullNavigation && (
+                { !showFullNavigation && (
                 <Link to="/settings/account" className="header-link">
                   <Button
                     className="header-sign-in"
@@ -220,12 +237,12 @@ class HeaderBar extends Component {
                     Sign In
                   </Button>
                 </Link>
-              )}
-            </div>
+                )}
+              </div>
 
-            {/* (showFullNavigation || isCordova()) && <SearchAllBox /> */}
+              {/* (showFullNavigation || isCordova()) && <SearchAllBox /> */}
 
-            {
+              {
             showFullNavigation && (
             <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleProfilePopUp}>
               {voterPhotoUrlMedium ? (
@@ -265,10 +282,10 @@ class HeaderBar extends Component {
               )}
             </div>
             )}
-          </Toolbar>
-        </AppBar>
-
-      </Wrapper>
+            </Toolbar>
+          </AppBar>
+        </Wrapper>
+      </Headroom>
     );
   }
 }
