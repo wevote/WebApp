@@ -150,14 +150,14 @@ export default class VoterGuideFollowing extends Component {
                     bsPrefix="fa-pull-right u-push--md"
                     onClick={this.followAllOrganizations}
                   >
-                    <span>Listen to All</span>
+                    <span>Follow All</span>
                   </Button>
                 )}
                 { !this.state.searchFilter ? (
                   <span>
                     {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ? (
                       <h4 className="card__additional-heading">
-                        You Are Listening To
+                        You Are Following
                         <span className="d-none d-sm-block">
                           {' '}
                           {this.state.voterGuideFollowedList.length}
@@ -169,7 +169,7 @@ export default class VoterGuideFollowing extends Component {
                       <h4 className="card__additional-heading">
                         {this.state.organization.organization_name}
                         {' '}
-                        is Listening To
+                        is Following
                       </h4>
                     )}
                   </span>
@@ -211,11 +211,11 @@ export default class VoterGuideFollowing extends Component {
             ) : (
               <span>
                 {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ?
-                  <h4 className="card__additional-heading">You&apos;re not listening to anyone.</h4> : (
+                  <h4 className="card__additional-heading">You&apos;re not following anyone.</h4> : (
                     <h4 className="card__additional-heading">
                       {this.state.organization.organization_name}
                       {' '}
-                      is not listening to anyone.
+                      is not following anyone.
                     </h4>
                   )}
               </span>

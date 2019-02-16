@@ -154,7 +154,7 @@ export default class Candidate extends Component {
   render () {
     renderLog(__filename);
     const electionId = VoterStore.electionId();
-    const NO_VOTER_GUIDES_TEXT = 'We could not find any more voter guides to listen to related to this candidate.';
+    const NO_VOTER_GUIDES_TEXT = 'We could not find any more voter guides to follow related to this candidate.';
 
     // console.log("Candidate render, this.state.positionListFromAdvisersFollowedByVoter: ", this.state.positionListFromAdvisersFollowedByVoter);
 

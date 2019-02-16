@@ -58,15 +58,16 @@ export default class NetworkOpinions extends Component {
 
     return (
       <div className="opinions-followed__container">
-        <Helmet title="Listen to Organizations - We Vote" />
+        <Helmet title="Follow Opinions - We Vote" />
         <section className="card">
           <div className="card-main">
             <p className="d-print-none">
+              {/* Follow Organization */}
               Find opinions about your ballot (ordered by Twitter followers).
-              Listen to those you trust. Stop Listening at any time.
-              Listening won&apos;t add you to mailing lists.
+              Follow those you trust. Stop Following at any time.
+              Following won&apos;t add you to mailing lists.
               <span style={floatRight} className="d-print-none">
-                <Link to="/opinions_followed" className="u-margin-left--md u-no-break">See organizations you listen to</Link>
+                <Link to="/opinions_followed" className="u-margin-left--md u-no-break">See organizations you follow</Link>
               </span>
             </p>
             <div className="d-print-none">
@@ -74,7 +75,7 @@ export default class NetworkOpinions extends Component {
             </div>
             { ballotHasGuides ?
               <p /> :
-              <p>There are no organizations with opinions on your ballot. Here are some popular organizations</p>
+              <p>There are no organizations with opinions on your ballot. Here are some popular organizations:</p>
             }
             <div className="card">
               <GuideList organizationsToFollow={voterGuidesToFollowAll} instantRefreshOn />

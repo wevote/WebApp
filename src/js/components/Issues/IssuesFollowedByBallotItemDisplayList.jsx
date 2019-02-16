@@ -241,7 +241,7 @@ export default class IssuesFollowedByBallotItemDisplayList extends Component {
         See opinions about
         {' '}
         {this.state.ballotItemDisplayName}
-        , organized by issues you care about.
+        , organized by your values and issues you care about.
       </Popover>
     );
 

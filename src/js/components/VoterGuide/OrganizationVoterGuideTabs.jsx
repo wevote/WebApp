@@ -168,17 +168,17 @@ export default class OrganizationVoterGuideTabs extends Component {
     if (lookingAtSelf) {
       positionsTitle = 'Your Positions';
       followingTitleLong = this.state.voterGuideFollowedList.length === 0 ?
-        'You Are Listening To' : `You Are Listening To ${this.state.voterGuideFollowedList.length}`;
-      followingTitleShort = 'Listening To';
+        'You Are Following' : `You Are Following ${this.state.voterGuideFollowedList.length}`;
+      followingTitleShort = 'Following';
       followersTitle = voterGuideFollowersList.length === 0 ?
-        'Listeners' : `${voterGuideFollowersList.length} Listeners`;
+        'Followers' : `${voterGuideFollowersList.length} Followers`;
     } else {
       positionsTitle = 'All Positions';
       followingTitleLong = this.state.voterGuideFollowedList.length === 0 ?
-        'Listening To' : `Listening To ${this.state.voterGuideFollowedList.length}`;
-      followingTitleShort = 'Listening To';
+        'Following' : `Following ${this.state.voterGuideFollowedList.length}`;
+      followingTitleShort = 'Following';
       followersTitle = voterGuideFollowersList.length === 0 ?
-        'Listeners' : `${voterGuideFollowersList.length} Listeners`;
+        'Followers' : `${voterGuideFollowersList.length} Followers`;
     }
 
     let voterGuideComponentToDisplay = null;

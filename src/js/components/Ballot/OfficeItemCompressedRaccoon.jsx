@@ -645,7 +645,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
                         )}
                         onClick={this.closeYourNetworkSupportsPopover}
                       >
-                        Your friends, and the organizations you listen to, are
+                        Your friends, and the organizations you follow, are
                         {' '}
                         <strong>Your Network</strong>
                         . Everyone in your network that

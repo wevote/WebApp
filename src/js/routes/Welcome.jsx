@@ -414,7 +414,7 @@ export default class Intro extends Component {
                   <Link to="/more/network/issues">
                     <img className={this.state.showFeaturesOrganizations ? 'd-none d-sm-block features__image' : 'features__image'} src={cordovaDot('/img/welcome/benefits/learn-issues-orgs.svg')} width="60%" />
                     <h3 className="features__h3">Learn From Issues and Organizations</h3>
-                    <p className={this.state.showFeaturesOrganizations ? 'features__p' : 'features__p d-none d-sm-block'}>Follow the issues and Listen to the voter guides of groups you trust. See what they support or oppose.</p>
+                    <p className={this.state.showFeaturesOrganizations ? 'features__p' : 'features__p d-none d-sm-block'}>Follow the issues and voter guides of groups you trust. See what they support or oppose.</p>
                   </Link>
                 </div>
               </div>

@@ -78,7 +78,7 @@ export default class OpinionsIgnored extends Component {
                 }
               </div>
             </div>
-            <Link className="pull-right" to="/opinions_followed">See organizations you listen to</Link>
+            <Link className="pull-right" to="/opinions_followed">See organizations you follow</Link>
             <br />
           </div>
         </section>

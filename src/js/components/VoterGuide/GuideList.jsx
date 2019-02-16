@@ -171,7 +171,7 @@ export default class GuideList extends Component {
               body={<Button className="u-stack--xs">Organization Missing?</Button>}
             />
             <div className="opinions-followed__missing-org-text u-stack--sm u-no-break">
-              Don’t see an organization you want to Listen to?
+              Don’t see an organization you want to Follow?
             </div>
           </div>
         </div>

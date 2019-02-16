@@ -62,7 +62,7 @@ export default class BallotIntroIssuesSuccess extends Component {
           <br />
           that you can
           {' '}
-          <strong>Listen</strong>
+          <strong>Follow</strong>
           {' '}
           to.
         </div>
