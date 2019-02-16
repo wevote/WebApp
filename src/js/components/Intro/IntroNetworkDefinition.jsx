@@ -26,7 +26,7 @@ export default class IntroNetworkDefinition extends Component {
           <br />
           organizations you
           {' '}
-          <strong>Listen</strong>
+          <strong>Follow</strong>
           {' '}
           to,
           {' '}

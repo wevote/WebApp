@@ -170,7 +170,7 @@ class IssueStore extends ReduceStore {
   }
 
   getOrganizationsForOneIssue (issueWeVoteId) {
-    // We want a list of all organizations tagged with this issue, so we can offer organizations to listen to
+    // We want a list of all organizations tagged with this issue, so we can offer organizations to follow
     // These are issues that an organization has linked itself to, to help Voters find the organization
     const organizationWeVoteIdsLinkedToIssue = this.getState().organizationWeVoteIdsLinkedToIssueDict[issueWeVoteId];
     // console.log("getOrganizationsForOneIssue: ", organizationWeVoteIdsLinkedToIssue);
@@ -182,7 +182,7 @@ class IssueStore extends ReduceStore {
   }
 
   getVoterGuidesForOneIssue (issueWeVoteId) {
-    // We want a list of all organizations tagged with this issue, so we can offer organizations to listen to
+    // We want a list of all organizations tagged with this issue, so we can offer organizations to follow
     // These are issues that an organization has linked itself to, to help Voters find the organization
     // console.log("IssueStore, getVoterGuidesForOneIssue, this.getState().organizationWeVoteIdsLinkedToIssueDict: ", this.getState().organizationWeVoteIdsLinkedToIssueDict);
     const organizationWeVoteIdsLinkedToIssue = this.getState().organizationWeVoteIdsLinkedToIssueDict[issueWeVoteId];

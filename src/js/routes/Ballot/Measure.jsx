@@ -115,7 +115,7 @@ export default class Measure extends Component {
     renderLog(__filename);
 
     const electionId = VoterStore.electionId();
-    const NO_VOTER_GUIDES_TEXT = 'We could not find any more voter guides to listen to related to this measure.';
+    const NO_VOTER_GUIDES_TEXT = 'We could not find any more voter guides to follow related to this measure.';
 
     if (!measure || !measure.ballot_item_display_name) {
       // TODO DALE If the measureWeVoteId is not valid, we need to update this with a notice

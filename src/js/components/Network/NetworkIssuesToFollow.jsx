@@ -86,7 +86,7 @@ export default class NetworkIssuesToFollow extends Component {
         <section className="card">
           <div className="card-main">
             <p>
-            Follow the issues you care about, so we can highlight the organizations that care about the same issues you do.
+            Follow the values and issues you care about, so we can highlight the organizations that care about the same issues you do.
               <span style={floatRight}>
                 <Link to="/issues_followed" className="u-margin-left--md u-no-break">See issues you follow</Link>
               </span>

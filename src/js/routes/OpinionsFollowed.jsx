@@ -89,10 +89,10 @@ export default class OpinionsFollowed extends Component {
     // console.log("OpinionsFollowed, this.state.organizationsFollowedList: ", this.state.organizationsFollowedList);
     return (
       <div className="opinions-followed__container">
-        <Helmet title="Organizations You Listen To - We Vote" />
+        <Helmet title="Who You're Following - We Vote" />
         <section className="card">
           <div className="card-main">
-            <h1 className="h1">Who You&apos;re Listening To</h1>
+            <h1 className="h1">Who You&apos;re Following</h1>
             <a
               className="fa-pull-right"
               onKeyDown={this.onKeyDownEditMode.bind(this)}
@@ -101,7 +101,7 @@ export default class OpinionsFollowed extends Component {
               {this.state.editMode ? 'Done Editing' : 'Edit'}
             </a>
             <p>
-              Organizations, public figures and other voters you currently listen to.
+              Organizations, public figures and other voters you currently follow.
               {' '}
               <em>We will never sell your email</em>
               .
@@ -128,7 +128,7 @@ export default class OpinionsFollowed extends Component {
                 }
               </div>
             </div>
-            <Link className="pull-left" to="/opinions">Find organizations to listen to</Link>
+            <Link className="pull-left" to="/opinions">Find organizations to follow</Link>
             <Link className="pull-right" to="/opinions_ignored">Organizations you are ignoring</Link>
             <br />
             <br />

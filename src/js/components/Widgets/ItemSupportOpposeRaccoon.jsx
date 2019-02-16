@@ -709,12 +709,11 @@ export default class ItemSupportOpposeRaccoon extends Component {
           )}
           onClick={this.closeNetworkScorePopover}
         >
-          Your friends, and the organizations you listen to, are
+          Your friends, and the organizations you follow, are
           {' '}
           <strong>Your Network</strong>
           .
-          Everyone in your network
-          that
+          Everyone in your network that
           {' '}
           <span className="u-no-break">
             {' '}

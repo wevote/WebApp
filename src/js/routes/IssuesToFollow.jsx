@@ -79,7 +79,7 @@ export default class IssuesToFollow extends Component {
           <div className="card-main">
             <h1 className="h1">Issues You Can Follow</h1>
             <p>
-              Follow the issues you care about, so we can highlight the organizations that care about the same issues you do.
+              Follow the values and issues you care about, so we can highlight the organizations that care about the same issues you do.
             </p>
             <SearchBar
               clearButton

@@ -123,8 +123,8 @@ export default class Connect extends Component {
         { this.state.voterGuidesToFollowAll && this.state.voterGuidesToFollowAll.length ? (
           <div className="container-fluid well u-stack--md u-inset--md">
             <Link className="u-cursor--pointer u-no-underline" to="/opinions">
-              <h4 className="text-left">Organizations to Listen To</h4>
-              <p>Listen to organizations to see what they recommend</p>
+              <h4 className="text-left">Organizations to Follow</h4>
+              <p>Follow organizations to see what they recommend</p>
             </Link>
             <div className="card-child__list-group">
               <ItemTinyOpinionsToFollow
@@ -157,7 +157,7 @@ export default class Connect extends Component {
                 organizationsFollowedOnTwitter={this.state.organizationsFollowedOnTwitterList}
                 maximumOrganizationDisplay={this.state.maximumNumberOfOrganizationsToDisplay}
               />
-              <Link className="pull-right" to="/opinions_followed">See all organizations you listen to </Link>
+              <Link className="pull-right" to="/opinions_followed">See all organizations you follow </Link>
             </div>
           </div>
         ) : null
