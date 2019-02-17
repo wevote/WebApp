@@ -86,6 +86,9 @@ function checkShouldUpdate (state, nextState) {
   if (state.ballotHeaderUnpinned !== nextState.ballotHeaderUnpinned) {
     return true;
   }
+  if (state.showSelectBallotModal !== nextState.showSelectBallotModal) {
+    return true;
+  }
 
   return false;
 }

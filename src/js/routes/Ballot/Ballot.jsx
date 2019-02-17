@@ -35,7 +35,6 @@ import IssueStore from '../../stores/IssueStore';
 import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
-// import SelectBallotModal from '../../components/Ballot/SelectBallotModal';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterActions from '../../actions/VoterActions';
@@ -45,6 +44,7 @@ import AppStore from '../../stores/AppStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 import { formatVoterBallotList, checkShouldUpdate } from './utils';
+import SelectBallotModal from '../../components/Ballot/SelectBallotModal';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint class-methods-use-this: 0 */
@@ -64,8 +64,8 @@ const Wrapper = styled.div`
 
 const styles = theme => ({
   badge: {
-    top: 4.4,
-    right: 4.5,
+    top: 1.5,
+    right: 4,
     background: 'rgba(46, 60, 93, 0.08)',
     color: '#333',
     [theme.breakpoints.down('md')]: {
@@ -80,6 +80,7 @@ const styles = theme => ({
     color: 'white',
   },
   chipRoot: {
+    height: 26,
     [theme.breakpoints.down('md')]: {
       height: 22.5,
     },
@@ -87,7 +88,7 @@ const styles = theme => ({
   iconRoot: {
     position: 'absolute',
     left: 3,
-    top: 3.4,
+    top: 1,
     color: theme.palette.primary.main,
     cursor: 'pointer',
     [theme.breakpoints.down('md')]: {
@@ -141,9 +142,9 @@ class Ballot extends Component {
     this.ballotItems = {};
     this.ballotItemLinkHasBeenClicked = this.ballotItemLinkHasBeenClicked.bind(this);
     this.toggleBallotIntroModal = this.toggleBallotIntroModal.bind(this);
-    // this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.toggleBallotSummaryModal = this.toggleBallotSummaryModal.bind(this);
     this.updateOfficeDisplayUnfurledTracker = this.updateOfficeDisplayUnfurledTracker.bind(this);
+    this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
   }
 
   componentDidMount () {
@@ -417,7 +418,10 @@ class Ballot extends Component {
   }
 
   onAppStoreChange () {
-    this.setState({ ballotHeaderUnpinned: AppStore.headroomIsUnpinned() });
+    this.setState({
+      ballotHeaderUnpinned: AppStore.headroomIsUnpinned(),
+      showSelectBallotModal: AppStore.showSelectBallotModal(),
+    });
   }
 
   onVoterStoreChange () {
@@ -637,7 +641,14 @@ class Ballot extends Component {
 
     this.setState({ showBallotIntroModal: !showBallotIntroModal });
   }
-  /*
+
+  toggleBallotSummaryModal () {
+    const { showBallotSummaryModal } = this.state;
+    this.setState({
+      showBallotSummaryModal: !showBallotSummaryModal,
+    });
+  }
+
   toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
     const { showSelectBallotModal } = this.state;
     if (showSelectBallotModal) {
@@ -650,14 +661,6 @@ class Ballot extends Component {
 
     this.setState({
       showSelectBallotModal: !showSelectBallotModal,
-    });
-  }
-  */
-
-  toggleBallotSummaryModal () {
-    const { showBallotSummaryModal } = this.state;
-    this.setState({
-      showBallotSummaryModal: !showBallotSummaryModal,
     });
   }
 
@@ -990,6 +993,19 @@ class Ballot extends Component {
                         this.showUserEmptyOptions()
                       }
                       </div>
+                      {
+                        this.state.showSelectBallotModal ? (
+                          <SelectBallotModal
+                            ballotElectionList={this.state.ballotElectionList}
+                            ballotBaseUrl={ballotBaseUrl}
+                            google_civic_election_id={this.state.googleCivicElectionId}
+                            location={this.props.location}
+                            pathname={this.props.pathname}
+                            show={this.state.showSelectBallotModal}
+                            toggleFunction={this.toggleSelectBallotModal}
+                          />
+                        ) : null
+                      }
                     </div>
                   )}
                   {/* Show links to this candidate in the admin tools */}
