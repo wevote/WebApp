@@ -76,7 +76,7 @@ export default class NetworkOpinionsFollowed extends Component {
       <div className="opinions-followed__container">
         <section className="card">
           <div className="card-main">
-            <h1 className="h4">Who You Are Listening To</h1>
+            <h1 className="h4">Who You Are Following</h1>
             <div className="voter-guide-list card">
               <div className="card-child__list-group">
                 {
@@ -90,7 +90,7 @@ export default class NetworkOpinionsFollowed extends Component {
                     <Link to="/opinions_followed">See All</Link>
                   </span>
                 ) :
-                  <span>You are not listening to any organizations yet.</span>
+                  <span>You are not following any organizations yet.</span>
                 }
               </div>
             </div>

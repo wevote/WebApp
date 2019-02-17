@@ -104,7 +104,7 @@ export default class Friends extends Component {
                     {this.state.editMode ? 'Done Editing' : 'Edit'}
                   </a>
                   <p>
-                    Your friends see what you support, oppose, and which opinions you listen to.
+                    Your friends see what you support, oppose, and which opinions you follow.
                   </p>
                   <input
                     type="text"

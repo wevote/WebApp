@@ -22,9 +22,9 @@ export default class IntroNetworkScore extends Component {
       >
         <div className="intro-story__h1">We Keep Score</div>
         <div className="intro-story__h2">
-          <strong>Listen</strong>
+          <strong>Follow</strong>
           {' '}
-          to an organization
+          an organization
           <br />
           to add their opinions
           <br />
@@ -41,7 +41,7 @@ export default class IntroNetworkScore extends Component {
           <br />
           shows support from friends and
           <br />
-          the organizations you listen to.
+          the organizations you follow.
         </div>
         <div className="intro-story__padding-btn">
           <button type="button" className="btn btn-success btn-lg" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
