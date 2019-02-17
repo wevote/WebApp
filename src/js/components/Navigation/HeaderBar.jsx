@@ -13,7 +13,7 @@ import EditLocationIcon from '@material-ui/icons/EditLocation';
 import Headroom from 'react-headroom';
 import { withStyles } from '@material-ui/core/styles';
 import BallotStore from '../../stores/BallotStore';
-import { cordovaDot, historyPush, isWebApp, hasIPhoneNotch } from '../../utils/cordovaUtils';
+import { historyPush, isWebApp, hasIPhoneNotch } from '../../utils/cordovaUtils';
 import cookies from '../../utils/cookies';
 import FriendStore from '../../stores/FriendStore';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
@@ -59,21 +59,6 @@ class HeaderBar extends Component {
     pathname: PropTypes.string,
     classes: PropTypes.object,
   };
-
-  static ballot (active) {
-    return (
-      <Link to="/ballot" className={`header-nav__item${active ? ' active-icon' : ''}`}>
-        <img className="header-nav__icon--ballot"
-             src={cordovaDot('/img/global/svg-icons/nav/ballot-icon-24.svg')}
-             color="#ffffff"
-             alt="Ballot"
-        />
-        <span className="header-nav__label">
-          Ballot
-        </span>
-      </Link>
-    );
-  }
 
   static goToGetStarted () {
     const getStartedNow = '/ballot';
@@ -187,6 +172,10 @@ class HeaderBar extends Component {
     this.setState({ profilePopUpOpen: !profilePopUpOpen });
   }
 
+  toggleSelectBallotModal () {
+    AppActions.setShowSelectBallotModal(true);
+  }
+
   hideProfilePopUp () {
     this.setState({ profilePopUpOpen: false });
   }
@@ -211,12 +200,13 @@ class HeaderBar extends Component {
   render () {
     renderLog(__filename);
     const { voter, classes, pathname } = this.props;
+    const ballotBaseUrl = '/ballot';
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0;
     const voterIsSignedIn = this.props.voter && this.props.voter.is_signed_in;
     const showFullNavigation = cookies.getItem('show_full_navigation') || voterIsSignedIn;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
-    const showingBallot = stringContains('/ballot', pathname);
+    const showingBallot = stringContains(ballotBaseUrl, pathname);
 
     return (
       <Headroom
@@ -243,15 +233,14 @@ class HeaderBar extends Component {
                 { !showFullNavigation && (
                   <div>
                     <Tooltip title="Change my location" aria-label="Change Address">
-                      <Link to="/settings/address" className="header-link">
-                        <Button
-                          variant="outlined"
-                          color="primary"
-                          classes={{ root: classes.headerButtonRoot, outlinedPrimary: classes.outlinedPrimary }}
-                        >
-                          <EditLocationIcon />
-                        </Button>
-                      </Link>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        classes={{ root: classes.headerButtonRoot, outlinedPrimary: classes.outlinedPrimary }}
+                        onClick={this.toggleSelectBallotModal}
+                      >
+                        <EditLocationIcon />
+                      </Button>
                     </Tooltip>
                     <Link to="/settings/account" className="header-link">
                       <Button
@@ -284,19 +273,19 @@ class HeaderBar extends Component {
               ) : (
                 <div>
                   <Tooltip title="Change my location" aria-label="Change Address">
-                    <Link to="/settings/address" className="header-link">
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        classes={{ root: classes.headerButtonRoot, outlinedPrimary: classes.outlinedPrimary }}
-                      >
-                        <EditLocationIcon />
-                      </Button>
-                    </Link>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      classes={{ root: classes.headerButtonRoot, outlinedPrimary: classes.outlinedPrimary }}
+                      onClick={this.toggleSelectBallotModal}
+                    >
+                      <EditLocationIcon />
+                    </Button>
                   </Tooltip>
                   <Link to="/settings/account" className="header-link">
                     <Button
                         color="primary"
+                        variant="outlined"
                         classes={{ root: classes.headerButtonRoot }}
                     >
                         Sign In

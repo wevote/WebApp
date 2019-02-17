@@ -66,6 +66,7 @@ $neg-padding: -10px;
     &__title {
       display: inline-block;
       margin-bottom: $space-none;
+      margin-top: $space-sm;
       font-size: 14px;
       @include breakpoints(medium) {
         font-size: $scrollbar-height;
