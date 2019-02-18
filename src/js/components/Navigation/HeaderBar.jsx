@@ -9,7 +9,7 @@ import Tab from '@material-ui/core/Tab';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import Badge from '@material-ui/core/Badge';
-import EditLocationIcon from '@material-ui/icons/EditLocation';
+import PlaceIcon from '@material-ui/icons/Place';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Headroom from 'react-headroom';
 import { withStyles } from '@material-ui/core/styles';
@@ -40,8 +40,10 @@ const styles = theme => ({
   },
   outlinedPrimary: {
     minWidth: 36,
-    padding: 2,
     marginRight: '.5rem',
+    [theme.breakpoints.down('md')]: {
+      padding: 2,
+    },
   },
 });
 
@@ -245,7 +247,8 @@ class HeaderBar extends Component {
                         classes={{ root: classes.headerButtonRoot, outlinedPrimary: classes.outlinedPrimary }}
                         onClick={this.toggleSelectBallotModal}
                       >
-                        <EditLocationIcon />
+                        <PlaceIcon />
+                        <span className="u-show-desktop">Address & Elections</span>
                       </Button>
                     </Tooltip>
                     )
@@ -286,7 +289,8 @@ class HeaderBar extends Component {
                         classes={{ root: classes.headerButtonRoot, outlinedPrimary: classes.outlinedPrimary }}
                         onClick={this.toggleSelectBallotModal}
                       >
-                        <EditLocationIcon />
+                        <PlaceIcon />
+                        <span className="u-show-desktop">Address & Elections</span>
                       </Button>
                     </Tooltip>
                     )

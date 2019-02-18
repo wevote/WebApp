@@ -25,7 +25,7 @@
 }
 
 .u-show-desktop {
-  @include breakpoints(small medium) {
+  @include breakpoints(small large) {
     display: none !important;
   }
 }
