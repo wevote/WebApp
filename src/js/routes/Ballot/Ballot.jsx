@@ -45,6 +45,7 @@ import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 import { formatVoterBallotList, checkShouldUpdate } from './utils';
 import SelectBallotModal from '../../components/Ballot/SelectBallotModal';
+import AppActions from '../../actions/AppActions';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint class-methods-use-this: 0 */
@@ -659,9 +660,7 @@ class Ballot extends Component {
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
 
-    this.setState({
-      showSelectBallotModal: !showSelectBallotModal,
-    });
+    AppActions.setShowSelectBallotModal(!showSelectBallotModal);
   }
 
   // Needed to scroll to anchor tags based on hash in url (as done for bookmarks)
@@ -751,7 +750,6 @@ class Ballot extends Component {
             null
           }
           <div className={`ballot__header ${isWebApp() ? 'ballot__header__top-cordova' : ''}`}>
-            <BrowserPushMessage incomingProps={this.props} />
             <p className="ballot__date_location">
               If your ballot does not appear momentarily, please
               {' '}
@@ -843,7 +841,6 @@ class Ballot extends Component {
               <div className="row">
                 <div className="col-md-12">
                   <Helmet title="Ballot - We Vote" />
-                  <BrowserPushMessage incomingProps={this.props} />
                   <header className="ballot__header__group">
                     <h1 className={isCordova() ? 'ballot__header__title__cordova' : 'ballot__header__title'}>
                       { electionName ? (
@@ -861,15 +858,6 @@ class Ballot extends Component {
                     </h1>
                   </header>
 
-                  {ballotWithItemsFromCompletionFilterType.length > 0 ? (
-                    <div>
-                      <BallotStatusMessage
-                        ballotLocationChosen
-                        googleCivicElectionId={this.state.googleCivicElectionId}
-                      />
-                    </div>
-                  ) : null
-                  }
                   { textForMapSearch || ballotWithItemsFromCompletionFilterType.length > 0 ? (
                     <div className="ballot__filter__container">
                       <div className="ballot__filter d-print-none">
@@ -940,6 +928,14 @@ class Ballot extends Component {
             {emptyBallot}
             <Wrapper cordova={isCordova()}>
               <div className="row ballot__body">
+                <BrowserPushMessage incomingProps={this.props} />
+                {ballotWithItemsFromCompletionFilterType.length > 0 ? (
+                  <BallotStatusMessage
+                    ballotLocationChosen
+                    googleCivicElectionId={this.state.googleCivicElectionId}
+                  />
+                ) : null
+                  }
                 <div className="col-xs-12 col-md-8">
                   { inReadyToVoteMode ? (
                     <div>

@@ -89,12 +89,13 @@ $iphone-x-padding-right: env(safe-area-inset-right);
 }
 
 .header-logo-img {
-  width: 800px;
+  width: 150px;
   @include breakpoints(mid-small small-bootstrap) {
-    width: 250px;
+    min-width: 120px;
   }
-  @include breakpoints(small-bootstrap) {
-    width: 150px;
+
+  @include breakpoints(small mid-small) {
+    min-width: 110px;
   }
 }
 

@@ -59,8 +59,8 @@ const theme = createMuiTheme({
     },
     secondary: amber, // Feel free to change this
   },
-  overrides,
   breakpoints,
+  overrides,
   typography: {
     useNextVariants: true,
   },
