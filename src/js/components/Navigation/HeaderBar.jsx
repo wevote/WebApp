@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import Badge from '@material-ui/core/Badge';
 import EditLocationIcon from '@material-ui/icons/EditLocation';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Headroom from 'react-headroom';
 import { withStyles } from '@material-ui/core/styles';
 import BallotStore from '../../stores/BallotStore';
@@ -229,10 +230,13 @@ class HeaderBar extends Component {
                   {showFullNavigation && <Link to="/more/network/friends" className="header-link u-show-desktop"><Tab label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} invisible={!numberOfIncomingFriendRequests}>My Friends</Badge>} /></Link>}
                   {/* showFullNavigation && isWebApp() && <Tab className="u-show-desktop" label="Vote" /> */}
                 </Tabs>
+              </div>
 
-                { !showFullNavigation && (
-                  <div>
-                    {
+              {/* (showFullNavigation || isCordova()) && <SearchAllBox /> */}
+
+              { (!showFullNavigation || !voterIsSignedIn) && (
+              <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
+                {
                     stringContains(ballotBaseUrl, pathname) && (
                     <Tooltip title="Change my location" aria-label="Change Address">
                       <Button
@@ -246,26 +250,23 @@ class HeaderBar extends Component {
                     </Tooltip>
                     )
                     }
-                    <Link to="/settings/account" className="header-link">
-                      <Button
+                <Link to="/settings/account" className="header-link">
+                  <Button
                         color="primary"
                         variant="outlined"
                         classes={{ root: classes.headerButtonRoot }}
-                      >
+                  >
                         Sign In
-                      </Button>
-                    </Link>
-                  </div>
-                )}
+                  </Button>
+                </Link>
               </div>
-
-              {/* (showFullNavigation || isCordova()) && <SearchAllBox /> */}
+              )}
 
               {
-            showFullNavigation && (
-            <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleProfilePopUp}>
+            (showFullNavigation && voterIsSignedIn) && (
+            <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
               {voterPhotoUrlMedium ? (
-                <div id="js-header-avatar" className="header-nav__avatar-container">
+                <div id="js-header-avatar" className="header-nav__avatar-container" onClick={this.toggleProfilePopUp}>
                   <img
                 className="header-nav__avatar"
                 src={voterPhotoUrlMedium}
@@ -290,15 +291,14 @@ class HeaderBar extends Component {
                     </Tooltip>
                     )
                   }
-                  <Link to="/settings/account" className="header-link">
-                    <Button
-                        color="primary"
-                        variant="outlined"
-                        classes={{ root: classes.headerButtonRoot }}
-                    >
-                        Sign In
-                    </Button>
-                  </Link>
+                  <Button
+                      onClick={this.toggleProfilePopUp}
+                      color="primary"
+                      variant="outlined"
+                      classes={{ root: classes.headerButtonRoot, outlinedPrimary: classes.outlinedPrimary }}
+                  >
+                    <AccountCircleIcon />
+                  </Button>
                 </div>
               )
           }
