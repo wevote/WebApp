@@ -19,7 +19,7 @@
 }
 
 .u-show-mobile-tablet {
-  @include breakpoints(medium) {
+  @include breakpoints(large) {
     display: none !important;
   }
 }
