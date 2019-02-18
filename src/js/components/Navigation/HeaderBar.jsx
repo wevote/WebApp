@@ -232,6 +232,8 @@ class HeaderBar extends Component {
 
                 { !showFullNavigation && (
                   <div>
+                    {
+                    stringContains(ballotBaseUrl, pathname) && (
                     <Tooltip title="Change my location" aria-label="Change Address">
                       <Button
                         variant="outlined"
@@ -242,6 +244,8 @@ class HeaderBar extends Component {
                         <EditLocationIcon />
                       </Button>
                     </Tooltip>
+                    )
+                    }
                     <Link to="/settings/account" className="header-link">
                       <Button
                         color="primary"
@@ -272,16 +276,20 @@ class HeaderBar extends Component {
                 </div>
               ) : (
                 <div>
-                  <Tooltip title="Change my location" aria-label="Change Address">
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      classes={{ root: classes.headerButtonRoot, outlinedPrimary: classes.outlinedPrimary }}
-                      onClick={this.toggleSelectBallotModal}
-                    >
-                      <EditLocationIcon />
-                    </Button>
-                  </Tooltip>
+                  {
+                    stringContains(ballotBaseUrl, pathname) && (
+                    <Tooltip title="Change my location" aria-label="Change Address">
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        classes={{ root: classes.headerButtonRoot, outlinedPrimary: classes.outlinedPrimary }}
+                        onClick={this.toggleSelectBallotModal}
+                      >
+                        <EditLocationIcon />
+                      </Button>
+                    </Tooltip>
+                    )
+                  }
                   <Link to="/settings/account" className="header-link">
                     <Button
                         color="primary"
