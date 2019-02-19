@@ -19,13 +19,13 @@
 }
 
 .u-show-mobile-tablet {
-  @include breakpoints(medium) {
+  @include breakpoints(large) {
     display: none !important;
   }
 }
 
 .u-show-desktop {
-  @include breakpoints(small medium) {
+  @include breakpoints(small large) {
     display: none !important;
   }
 }

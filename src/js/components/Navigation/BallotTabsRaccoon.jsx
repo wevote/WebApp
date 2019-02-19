@@ -14,7 +14,7 @@ const styles = theme => ({
     width: 20,
     height: 19.5,
     [theme.breakpoints.down('md')]: {
-      fontSize: 9,
+      fontSize: 8,
       right: -20,
       width: 16,
       height: 16,

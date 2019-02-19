@@ -19,9 +19,7 @@ $iphone-x-padding-right: env(safe-area-inset-right);
   justify-content: space-between;
   align-items: center;
   &__ballot {
-    @include breakpoints(small medium) {
-      box-shadow: none !important;
-    }
+    box-shadow: none !important;
   }
 
   &__container {
@@ -89,12 +87,13 @@ $iphone-x-padding-right: env(safe-area-inset-right);
 }
 
 .header-logo-img {
-  width: 800px;
+  width: 200px;
   @include breakpoints(mid-small small-bootstrap) {
-    width: 250px;
+    min-width: 120px;
   }
-  @include breakpoints(small-bootstrap) {
-    width: 150px;
+
+  @include breakpoints(small mid-small) {
+    min-width: 110px;
   }
 }
 
@@ -313,9 +312,6 @@ $iphone-x-padding-right: env(safe-area-inset-right);
   z-index: 2;
   transform: translateY(0);
   transition: all .2s ease-in-out;
-  &--pinned {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
-  }
   &--slide-up {
     transform: translateY(-100%);
   }
