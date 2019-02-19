@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import Toolbar from '@material-ui/core/Toolbar';
+import { withStyles } from '@material-ui/core/styles';
 import CandidateStore from '../../stores/CandidateStore';
 import cookies from '../../utils/cookies';
 import { hasIPhoneNotch, historyPush, isWebApp } from '../../utils/cordovaUtils';
@@ -15,12 +16,28 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import { shortenText } from '../../utils/textFormat';
 
-export default class HeaderBackToBar extends Component {
+const styles = theme => ({
+  headerButtonRoot: {
+    paddingTop: 2,
+    paddingBottom: 2,
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    color: 'rgb(6, 95, 212)',
+    marginLeft: '1rem',
+    outline: 'none !important',
+    [theme.breakpoints.down('md')]: {
+      marginLeft: '.1rem',
+    },
+  },
+});
+class HeaderBackToBar extends Component {
   static propTypes = {
     location: PropTypes.object,
     params: PropTypes.object.isRequired,
     pathname: PropTypes.string,
     voter: PropTypes.object,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -224,6 +241,7 @@ export default class HeaderBackToBar extends Component {
 
   render () {
     const { organizationWeVoteId, candidate, voter } = this.state;
+    const { classes } = this.props;
     renderLog(__filename);
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
 
@@ -309,6 +327,7 @@ export default class HeaderBackToBar extends Component {
             ) : (
               <Button
               className="header-sign-in"
+              classes={{ root: classes.headerButtonRoot }}
               variant="text"
               color="primary"
               href="/settings/account"
@@ -323,3 +342,5 @@ export default class HeaderBackToBar extends Component {
     );
   }
 }
+
+export default withStyles(styles)(HeaderBackToBar);
