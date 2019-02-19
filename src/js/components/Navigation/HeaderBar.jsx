@@ -7,9 +7,11 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Badge from '@material-ui/core/Badge';
 import PlaceIcon from '@material-ui/icons/Place';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Headroom from 'react-headroom';
 import { withStyles } from '@material-ui/core/styles';
@@ -28,8 +30,8 @@ import { stringContains } from '../../utils/textFormat';
 
 const styles = theme => ({
   headerBadge: {
-    right: '-25px',
-    top: '-2px',
+    right: -15,
+    top: 9,
   },
   padding: {
     padding: `0 ${theme.spacing.unit * 2}px`,
@@ -37,6 +39,28 @@ const styles = theme => ({
   headerButtonRoot: {
     paddingTop: 2,
     paddingBottom: 2,
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    color: 'rgb(6, 95, 212)',
+    marginLeft: '1rem',
+    outline: 'none !important',
+    [theme.breakpoints.down('md')]: {
+      marginLeft: '.1rem',
+    },
+  },
+  iconButtonRoot: {
+    color: 'rgba(17, 17, 17, .4)',
+    outline: 'none !important',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    [theme.breakpoints.down('md')]: {
+      padding: 4,
+    },
+  },
+  tooltipPlacementBottom: {
+    marginTop: 0,
   },
   outlinedPrimary: {
     minWidth: 36,
@@ -164,7 +188,7 @@ class HeaderBar extends Component {
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    if (stringContains('/ballot', pathname)) return 0;
+    if (stringContains('/ballot', pathname.slice(0, 7))) return 0;
     if (stringContains('/more/network/friends', pathname)) return 2;
     if (stringContains('/more/network', pathname)) return 1;
     return false;
@@ -209,7 +233,7 @@ class HeaderBar extends Component {
     const voterIsSignedIn = this.props.voter && this.props.voter.is_signed_in;
     const showFullNavigation = cookies.getItem('show_full_navigation') || voterIsSignedIn;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
-    const showingBallot = stringContains(ballotBaseUrl, pathname);
+    const showingBallot = stringContains(ballotBaseUrl, pathname.slice(0, 7));
 
     return (
       <Headroom
@@ -224,12 +248,27 @@ class HeaderBar extends Component {
               {!weVoteBrandingOff && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />}
               <div className="header-nav">
                 <Tabs
-              value={this.getSelectedTab()}
-              indicatorColor="primary"
+                  value={this.getSelectedTab()}
+                  indicatorColor="primary"
                 >
-                  {showFullNavigation && <Link to="/ballot" className="header-link u-show-desktop"><Tab label="Ballot" /></Link>}
-                  {showFullNavigation && <Link to="/more/network/issues" className="header-link u-show-desktop"><Tab label="My Values" /></Link>}
-                  {showFullNavigation && <Link to="/more/network/friends" className="header-link u-show-desktop"><Tab label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} invisible={!numberOfIncomingFriendRequests}>My Friends</Badge>} /></Link>}
+                  {showFullNavigation && (
+                    <Link to="/ballot" className="header-link u-show-desktop">
+                      <Tab label="Ballot" />
+                    </Link>
+                  )
+                  }
+                  {showFullNavigation && (
+                    <Link to="/more/network/issues" className="header-link u-show-desktop">
+                      <Tab label="My Values" />
+                    </Link>
+                  )
+                  }
+                  {showFullNavigation && (
+                    <Link to="/more/network/friends" className="header-link u-show-desktop">
+                      <Tab label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9}>My Friends</Badge>} />
+                    </Link>
+                  )
+                  }
                   {/* showFullNavigation && isWebApp() && <Tab className="u-show-desktop" label="Vote" /> */}
                 </Tabs>
               </div>
@@ -240,23 +279,28 @@ class HeaderBar extends Component {
               <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
                 {
                     stringContains(ballotBaseUrl, pathname) && (
-                    <Tooltip title="Change my location" aria-label="Change Address">
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        classes={{ root: classes.headerButtonRoot, outlinedPrimary: classes.outlinedPrimary }}
+                    <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot }}
                         onClick={this.toggleSelectBallotModal}
                       >
                         <PlaceIcon />
-                        <span className="u-show-desktop">Address & Elections</span>
-                      </Button>
+                      </IconButton>
                     </Tooltip>
                     )
-                    }
+                }
+                <Link to="/settings/menu" className="header-link">
+                  <Tooltip title="Settings" aria-label="settings" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                    <IconButton
+                      classes={{ root: classes.iconButtonRoot }}
+                    >
+                      <MoreVertIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Link>
                 <Link to="/settings/account" className="header-link">
                   <Button
                         color="primary"
-                        variant="outlined"
                         classes={{ root: classes.headerButtonRoot }}
                   >
                         Sign In
@@ -282,23 +326,19 @@ class HeaderBar extends Component {
                 <div>
                   {
                     stringContains(ballotBaseUrl, pathname) && (
-                    <Tooltip title="Change my location" aria-label="Change Address">
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        classes={{ root: classes.headerButtonRoot, outlinedPrimary: classes.outlinedPrimary }}
+                    <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot, outlinedPrimary: classes.outlinedPrimary }}
                         onClick={this.toggleSelectBallotModal}
                       >
                         <PlaceIcon />
-                        <span className="u-show-desktop">Address & Elections</span>
-                      </Button>
+                      </IconButton>
                     </Tooltip>
                     )
                   }
                   <Button
                       onClick={this.toggleProfilePopUp}
                       color="primary"
-                      variant="outlined"
                       classes={{ root: classes.headerButtonRoot, outlinedPrimary: classes.outlinedPrimary }}
                   >
                     <AccountCircleIcon />

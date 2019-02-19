@@ -25,7 +25,7 @@ $neg-padding: -10px;
 
   &__filter {
     white-space: nowrap;
-    overflow-x: scroll;
+    overflow-x: hidden;
     overflow-y: hidden;
 
     &__container {

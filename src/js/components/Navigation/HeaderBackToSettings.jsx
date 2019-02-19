@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import cookies from '../../utils/cookies';
@@ -15,12 +16,29 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import { shortenText } from '../../utils/textFormat';
 
-export default class HeaderBackToSettings extends Component {
+const styles = theme => ({
+  headerButtonRoot: {
+    paddingTop: 2,
+    paddingBottom: 2,
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    color: 'rgb(6, 95, 212)',
+    marginLeft: '1rem',
+    outline: 'none !important',
+    [theme.breakpoints.down('md')]: {
+      marginLeft: '.1rem',
+    },
+  },
+});
+
+class HeaderBackToSettings extends Component {
   static propTypes = {
     location: PropTypes.object,
     params: PropTypes.object.isRequired,
     pathname: PropTypes.string,
     voter: PropTypes.object,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -219,6 +237,7 @@ export default class HeaderBackToSettings extends Component {
   render () {
     renderLog(__filename);
     const { voter } = this.state;
+    const { classes } = this.props;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     const backToLink = isWebApp() ? '/settings/menu' : '/more/hamburger';
 
@@ -291,6 +310,7 @@ export default class HeaderBackToSettings extends Component {
             ) : (
               <Button
               className="header-sign-in"
+              classes={{ root: classes.headerButtonRoot }}
               variant="text"
               color="primary"
               href="/settings/account"
@@ -305,3 +325,6 @@ export default class HeaderBackToSettings extends Component {
     );
   }
 }
+
+export default withStyles(styles)(HeaderBackToSettings);
+

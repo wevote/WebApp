@@ -65,15 +65,18 @@ const Wrapper = styled.div`
 
 const styles = theme => ({
   badge: {
-    top: 1.5,
-    right: 4,
+    top: 13,
+    minWidth: 16,
+    width: 20,
+    right: 14,
     background: 'rgba(46, 60, 93, 0.08)',
     color: '#333',
     [theme.breakpoints.down('md')]: {
       fontSize: 9,
       width: 16,
       height: 16,
-      top: 3,
+      top: 11,
+      right: 11,
     },
   },
   badgeColorPrimary: {

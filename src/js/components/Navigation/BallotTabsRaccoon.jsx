@@ -9,16 +9,17 @@ import { renderLog } from '../../utils/logging';
 
 const styles = theme => ({
   badge: {
-    top: 0,
-    right: -26,
+    top: 9,
+    right: -14,
+    minWidth: 16,
     width: 20,
     height: 19.5,
     [theme.breakpoints.down('md')]: {
       fontSize: 8,
-      right: -20,
+      right: -11,
       width: 16,
       height: 16,
-      top: 3,
+      top: 11,
     },
   },
   tabLabelContainer: {
