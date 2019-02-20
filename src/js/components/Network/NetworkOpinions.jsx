@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, lazy, Suspense } from 'react';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import SearchGuidesToFollowBox from '../Search/SearchGuidesToFollowBox';
-import GuideList from '../VoterGuide/GuideList';
 import { renderLog } from '../../utils/logging';
+// import GuideList from '../VoterGuide/GuideList';
+
+const GuideList = lazy(() => import('../VoterGuide/GuideList'));
 
 
 export default class NetworkOpinions extends Component {
@@ -44,6 +46,7 @@ export default class NetworkOpinions extends Component {
       case '/opinions':
         return 'WHO_YOU_CAN_FOLLOW';
       case '/opinions_followed':
+        return 'WHO_YOU_FOLLOW';
       default:
         return 'WHO_YOU_FOLLOW';
     }
@@ -78,7 +81,9 @@ export default class NetworkOpinions extends Component {
               <p>There are no organizations with opinions on your ballot. Here are some popular organizations:</p>
             }
             <div className="card">
-              <GuideList organizationsToFollow={voterGuidesToFollowAll} instantRefreshOn />
+              <Suspense fallback={<span>Loading...</span>}>
+                <GuideList organizationsToFollow={voterGuidesToFollowAll} instantRefreshOn />
+              </Suspense>
             </div>
             <Link className="pull-right d-print-none" to="/opinions_ignored">Organizations you are ignoring</Link>
             <br />

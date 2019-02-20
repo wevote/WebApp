@@ -1,18 +1,21 @@
 /* eslint-disable */
 // dependencies
 const gulp = require("gulp");
+const fs = require("fs-extra");
 const sass = require("gulp-sass");
 const autoprefixer = require("gulp-autoprefixer");
 const uglify = require("gulp-uglify");
 const sourcemaps = require("gulp-sourcemaps");
+const watchify = require("watchify");
 const browserSync = require("browser-sync").create();
 const browserify = require("browserify");
 const babelify = require("babelify");
 const source = require("vinyl-source-stream");
 const buffer = require("vinyl-buffer");
+const notifier = require('node-notifier');
+const cssmin = require("gulp-cssnano");
 const del = require("del");
 const server = require("./server");
-const cssmin = require("gulp-cssnano");
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 
@@ -20,6 +23,8 @@ gulp.task("browserify", function () {
   const ops = {
     debug: !PRODUCTION,
     entries: "js/index.js",
+    cache: {},
+    packageCache: {},
     extensions: [".js", ".jsx"],
     basedir: "./src",
     transform: [babelify],
@@ -30,9 +35,40 @@ gulp.task("browserify", function () {
   // var browserifyWithWatchify = watchify(browserify(opsWatchify));
 
   function err (e) {
-    console.error(e.toString());
-    this.emit("end");
+    console.error(e.stack);
+    notifier.notify({ title: "Compile Error", message: e.stack });
+    // this.emit("end");
   }
+
+  const bundler = browserify(ops);
+
+  const bundle = function () {
+    return PRODUCTION ?
+
+    // production build with minification
+    bundler
+      .transform('uglifyify', { global: true })
+      .bundle()
+      .on("error", err)
+      .pipe(source("bundle.js"))
+      .pipe(buffer())
+      .pipe(uglify({ preserveComments: false, mangle: false }))
+      .pipe(gulp.dest("./build/js")) :
+
+    bundler
+      .plugin('watchify', {
+        verbose: true,
+      })
+      .bundle()
+      .on("error", err)
+      .on("update", bundle)
+      .pipe(source("bundle.js"))
+      .pipe(gulp.dest("./build/js"))
+      .pipe(browserSync.stream());
+
+      
+  }
+  return bundle();
 
   return PRODUCTION ?
 
@@ -48,7 +84,7 @@ gulp.task("browserify", function () {
 
     // development build... no minification
     // browserifyWithWatchify
-    browserify(ops)
+    watchify(browserify(ops))
       .bundle()
       .on("error", err)
       .pipe(source("bundle.js"))

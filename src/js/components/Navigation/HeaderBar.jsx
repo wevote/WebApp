@@ -206,11 +206,14 @@ class HeaderBar extends Component {
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    if (stringContains('/ballot', pathname.slice(0, 7))) return 0;
+    // if (stringContains('/ballot', pathname.slice(0, 7))) return 0;
+    if (pathname.indexOf('/ballot') === 0) return 0;
     if (stringContains('/more/network/friends', pathname)) return 2;
     if (stringContains('/more/network', pathname)) return 1;
     return false;
   }
+
+  handleNavigation = to => historyPush(to);
 
   toggleProfilePopUp () {
     const { profilePopUpOpen } = this.state;
@@ -272,21 +275,15 @@ class HeaderBar extends Component {
                   classes={{ indicator: classes.indicator }}
                 >
                   {showFullNavigation && (
-                    <Link to="/ballot" className="header-link u-show-desktop">
-                      <Tab classes={{ root: classes.tabRoot }} label="Ballot" />
-                    </Link>
+                    <Tab classes={{ root: classes.tabRoot }} label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
                   )
                   }
                   {showFullNavigation && (
-                    <Link to="/more/network/issues" className="header-link u-show-desktop">
-                      <Tab classes={{ root: classes.tabRoot }} label="My Values" />
-                    </Link>
+                    <Tab classes={{ root: classes.tabRoot }} label="My Values" onClick={() => this.handleNavigation('/more/network/issues')} />
                   )
                   }
                   {showFullNavigation && (
-                    <Link to="/more/network/friends" className="header-link u-show-desktop">
-                      <Tab classes={{ root: classes.tabRoot }} label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9}>My Friends</Badge>} />
-                    </Link>
+                    <Tab classes={{ root: classes.tabRoot }} label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} onClick={() => this.handleNavigation('/more/network/friends')}>My Friends</Badge>} />
                   )
                   }
                   {/* showFullNavigation && isWebApp() && <Tab className="u-show-desktop" label="Vote" /> */}

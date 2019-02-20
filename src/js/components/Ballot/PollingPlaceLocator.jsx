@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { renderLog } from '../../utils/logging';
 
+/*
 const iframeStyle = {
   border: 'none',
   height: '500px',
   width: '100%',
 };
+*/
 
 export default class PollingPlaceLocator extends Component {
   static propTypes = {};
@@ -23,7 +25,7 @@ export default class PollingPlaceLocator extends Component {
             <div className="row intro-modal__grid intro-modal__default-text u_margin-center">
               <div className="container-fluid u-inset--md">
                 <div>
-                  <iframe title="voter-information-project" style={iframeStyle} src="https://tool.votinginfoproject.org/iframe-embed.html" />
+                  {/* <iframe title="voter-information-project" style={iframeStyle} src="https://tool.votinginfoproject.org/iframe-embed.html" /> */}
                 </div>
               </div>
             </div>

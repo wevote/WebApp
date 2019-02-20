@@ -12,9 +12,7 @@ import ElectionActions from './actions/ElectionActions';
 import FooterBar from './components/Navigation/FooterBar';
 import FriendActions from './actions/FriendActions';
 import Header from './components/Navigation/Header';
-import IssueActions from './actions/IssueActions';
 import AppActions from './actions/AppActions';
-import IssueStore from './stores/IssueStore';
 import AppStore from './stores/AppStore';
 import { renderLog, routingLog } from './utils/logging';
 import OrganizationActions from './actions/OrganizationActions';
@@ -28,20 +26,20 @@ const Wrapper = styled.div`
   padding-top: ${({ padTop }) => padTop};
 `;
 
-const loadingScreenStyles = {
+const LoadingScreen = styled.div`
   position: 'fixed',
   height: '100vh',
   width: '100vw',
   display: 'flex',
   top: 0,
   left: 0,
-  backgroundColor: '#25536D',
-  justifyContent: 'center',
-  alignItems: 'center',
-  fontSize: '30px',
+  background-color: '#25536D',
+  justify-content: 'center',
+  align-items: 'center',
+  font-size: '30px',
   color: '#fff',
-  flexDirection: 'column',
-};
+  flex-direction: 'column',
+`;
 
 export default class Application extends Component {
   static propTypes = {
@@ -64,7 +62,6 @@ export default class Application extends Component {
     polyfillObjectEntries();
     this.initFacebook();
     this.initCordova();
-    this.preloadIssueImages = this.preloadIssueImages.bind(this);
 
     const voterDeviceId = VoterStore.voterDeviceId();
     VoterActions.voterRetrieve();
@@ -77,10 +74,6 @@ export default class Application extends Component {
     ElectionActions.electionsRetrieve();
 
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-
-    // Preload Issue images. Note that for brand new browsers that don't have a voterDeviceId yet, we retrieve all issues
-    IssueActions.retrieveIssuesToFollow();
-    this.issueStoreListener = IssueStore.addListener(this.preloadIssueImages);
   }
 
   componentDidUpdate () {
@@ -226,15 +219,6 @@ export default class Application extends Component {
     }
   }
 
-  preloadIssueImages () {
-    // console.log("preloadIssueImages func")
-    IssueStore.getIssuesVoterCanFollow().forEach((issue) => {
-      document.createElement('img').src = issue.issue_image_url;
-    });
-
-    // only need to preload once
-    this.issueStoreListener.remove();
-  }
 
   render () {
     renderLog(__filename);
@@ -242,7 +226,7 @@ export default class Application extends Component {
 
     if (this.state.voter === undefined || this.props.location === undefined) {
       return (
-        <div style={loadingScreenStyles}>
+        <LoadingScreen>
           <div style={{ padding: 30 }}>
             <h1 className="h1">Loading We Vote...</h1>
             { isCordova() &&
@@ -250,7 +234,7 @@ export default class Application extends Component {
             }
             <div className="u-loading-spinner u-loading-spinner--light" />
           </div>
-        </div>
+        </LoadingScreen>
       );
     }
 
