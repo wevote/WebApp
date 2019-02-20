@@ -79,7 +79,7 @@ $candidate-font-size: .875rem;
     }
 
     &__avatar-compressed {
-      background-image: url('../../img/global/svg-icons/avatar-generic.svg');
+      background-image: url('../img/global/svg-icons/avatar-generic.svg');
       width: 40px;
       border-radius: $radius-xs;
       .card-main & {
