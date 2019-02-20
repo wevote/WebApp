@@ -812,6 +812,7 @@ export default class EmailBallotToFriendsModal extends Component {
             </div>
           </div>
         </div>
-      </div>);
+      </div>
+    );
   }
 }
