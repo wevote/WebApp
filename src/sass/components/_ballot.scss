@@ -155,12 +155,19 @@ $neg-padding: -10px;
     }
   }
 
+  &__body-vg {
+    padding-top: $space-none;
+  }
+
   &__item-filter-tabs {
     display: flex;
-    overflow-x: scroll;
     overflow-y: hidden;
+    overflow-x: scroll;
     justify-content: flex-start;
     margin-top: $race-filter-margin;
+    @include breakpoints(medium) {
+      overflow-x: hidden;
+    }
   }
 
   &__edit-address-preview {

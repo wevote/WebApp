@@ -973,13 +973,13 @@ class Ballot extends Component {
                             this.state.raceLevelFilterType === item.race_office_level)) {
                             return (
                               <BallotItemCompressed
-                              currentBallotIdInUrl={this.props.location.hash.slice(1)}
-                              key={item.we_vote_id}
-                              updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
-                              allBallotItemsCount={ballotWithItemsFromCompletionFilterType.length}
-                              urlWithoutHash={this.props.location.pathname + this.props.location.search}
-                              ref={(ref) => { this.ballotItems[item.we_vote_id] = ref; }}
-                              {...item}
+                                currentBallotIdInUrl={this.props.location.hash.slice(1)}
+                                key={item.we_vote_id}
+                                updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
+                                allBallotItemsCount={ballotWithItemsFromCompletionFilterType.length}
+                                urlWithoutHash={this.props.location.pathname + this.props.location.search}
+                                ref={(ref) => { this.ballotItems[item.we_vote_id] = ref; }}
+                                {...item}
                               />
                             );
                           } else {

@@ -663,6 +663,7 @@ export default class FacebookBallotToFriendsModal extends Component {
           </div>
           {/* </div> */}
         </div>
-      </div>);
+      </div>
+    );
   }
 }

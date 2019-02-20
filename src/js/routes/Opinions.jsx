@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense, lazy } from 'react';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import { renderLog } from '../utils/logging';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import SearchGuidesToFollowBox from '../components/Search/SearchGuidesToFollowBox';
-import GuideList from '../components/VoterGuide/GuideList';
+// import GuideList from '../VoterGuide/GuideList';
 
+const GuideList = lazy(() => import('../components/VoterGuide/GuideList'));
 
 export default class Opinions extends Component {
   static propTypes = {
@@ -75,7 +76,9 @@ export default class Opinions extends Component {
             <p>There are no organizations with opinions on your ballot. Here are some popular organizations:</p>
           }
           <div className="card">
-            <GuideList organizationsToFollow={voterGuidesToFollowAll} instantRefreshOn />
+            <Suspense fallback={<span>Loading...</span>}>
+              <GuideList organizationsToFollow={voterGuidesToFollowAll} instantRefreshOn />
+            </Suspense>
           </div>
         </div>
         <Link className="pull-right" to="/opinions_ignored">Organizations you are ignoring</Link>
