@@ -289,6 +289,7 @@ export default class ItemPositionStatementActionBar extends Component {
                 <img className="position-statement__avatar"
                        src={speakerImageUrlHttps}
                        width="34px"
+                       alt="avatar"
                 />
               ) :
                 imagePlaceholder
