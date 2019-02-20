@@ -1,3 +1,5 @@
+@import '../base/variables';
+
 $icon-color-base: $gray-mid;
 $icon-color-active: $link-color;
 $icon-color-hover: $gray-dark;
@@ -169,7 +171,7 @@ $container-margin: -15px;
   $nav-item-active-color: darken($page-header-color, 10%);
   display: flex;
   width: 920px;
-  justify-content: center;
+  margin-left: $space-lg;
   @include breakpoints(small xsmall-bootstrap) {
     justify-content: flex-end;
   }

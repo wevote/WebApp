@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
+import EditLocationIcon from '@material-ui/icons/EditLocation';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
@@ -200,7 +201,7 @@ class AddressBox extends Component {
       <div className="container">
         <form onSubmit={this.voterAddressSave} className="row">
           <Paper className={classes.root} elevation={2}>
-            <ion-icon class="ion-input-icon" name="search" />
+            <EditLocationIcon className="ion-input-icon" />
             <InputBase
               className={classes.input}
               name="address"

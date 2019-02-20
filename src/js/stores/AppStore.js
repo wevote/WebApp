@@ -6,6 +6,7 @@ class AppStore extends ReduceStore {
     return {
       headroomUnpinned: false,
       showSelectBallotModal: false,
+      showEditAddressButton: false,
     };
   }
 
@@ -17,12 +18,18 @@ class AppStore extends ReduceStore {
     return this.getState().showSelectBallotModal;
   }
 
+  showEditAddressButton () {
+    return this.getState().showEditAddressButton;
+  }
+
   reduce (state, action) {
     switch (action.type) {
       case 'headroomUnpinned':
         return { ...state, headroomUnpinned: action.payload };
       case 'showSelectBallotModal':
         return { ...state, showSelectBallotModal: action.payload };
+      case 'showEditAddressButton':
+        return { ...state, showEditAddressButton: action.payload };
       default:
         return state;
     }

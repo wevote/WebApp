@@ -8,4 +8,8 @@ export default {
   setShowSelectBallotModal (show) {
     Dispatcher.dispatch({ type: 'showSelectBallotModal', payload: show });
   },
+
+  setShowEditAddressButton (show) {
+    Dispatcher.dispatch({ type: 'showEditAddressButton', payload: show });
+  },
 };

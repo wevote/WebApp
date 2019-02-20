@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ToastContainer } from 'react-toastify';
-import Headroom from 'headroom.js';
 import styled from 'styled-components';
 import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from './utils/applicationUtils';
 import cookies from './utils/cookies';
 import {
-  getAppBaseClass, getToastClass, historyPush, isCordova, isWebApp,
+  getAppBaseClass, getToastClass, historyPush, isCordova,
 } from './utils/cordovaUtils';
 import ElectionActions from './actions/ElectionActions';
 // import FooterBarCordova from "./components/Navigation/FooterBarCordova";
@@ -14,13 +13,16 @@ import FooterBar from './components/Navigation/FooterBar';
 import FriendActions from './actions/FriendActions';
 import Header from './components/Navigation/Header';
 import IssueActions from './actions/IssueActions';
+import AppActions from './actions/AppActions';
 import IssueStore from './stores/IssueStore';
+import AppStore from './stores/AppStore';
 import { renderLog, routingLog } from './utils/logging';
 import OrganizationActions from './actions/OrganizationActions';
 import TwitterSignIn from './components/Twitter/TwitterSignIn';
 import VoterActions from './actions/VoterActions';
 import VoterStore from './stores/VoterStore';
 import webAppConfig from './config';
+import { stringContains } from './utils/textFormat';
 
 const Wrapper = styled.div`
   padding-top: ${({ padTop }) => padTop};
@@ -82,25 +84,16 @@ export default class Application extends Component {
   }
 
   componentDidUpdate () {
-    // let voterDeviceId = VoterStore.voterDeviceId();
-    // console.log("Application, componentDidUpdate, voterDeviceId:", voterDeviceId);
-    if (this.loadedHeader) return;
-    if (!this.refs.pageHeader) return;
+    const { location: { pathname } } = this.props;
+    const { voterGuideMode } = getApplicationViewBooleans(pathname);
 
-    if (isWebApp()) {
-      // Initialize headroom element
-      new Headroom(this.refs.pageHeader, {
-        offset: 20,
-        tolerance: 1,
-        classes: {
-          initial: 'headroom--animated',
-          pinned: 'headroom--slide-down',
-          unpinned: 'headroom--slide-up',
-        },
-      }).init();
+    if (!voterGuideMode && AppStore.showEditAddressButton()) {
+      AppActions.setShowEditAddressButton(false);
     }
 
-    this.loadedHeader = true;
+    if ((voterGuideMode && !AppStore.showEditAddressButton()) || stringContains('/ballot', pathname.slice(0, 7))) {
+      AppActions.setShowEditAddressButton(true);
+    }
   }
 
   componentWillUnmount () {
@@ -265,7 +258,6 @@ export default class Application extends Component {
     setZenDeskHelpVisibility(pathname);
 
     const { inTheaterMode, contentFullWidthMode, settingsMode, voterGuideMode } = getApplicationViewBooleans(pathname);
-
 
     if (inTheaterMode) {
       // console.log("inTheaterMode", inTheaterMode);
