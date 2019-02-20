@@ -1,7 +1,6 @@
 /* eslint-disable */
 // dependencies
 const gulp = require("gulp");
-const fs = require("fs-extra");
 const sass = require("gulp-sass");
 const autoprefixer = require("gulp-autoprefixer");
 const uglify = require("gulp-uglify");
@@ -69,28 +68,6 @@ gulp.task("browserify", function () {
       
   }
   return bundle();
-
-  return PRODUCTION ?
-
-    // production build with minification
-    browserify(ops)
-      .transform('uglifyify', { global: true })
-      .bundle()
-      .on("error", err)
-      .pipe(source("bundle.js"))
-      .pipe(buffer())
-      .pipe(uglify({ preserveComments: false, mangle: false }))
-      .pipe(gulp.dest("./build/js")) :
-
-    // development build... no minification
-    // browserifyWithWatchify
-    watchify(browserify(ops))
-      .bundle()
-      .on("error", err)
-      .pipe(source("bundle.js"))
-      .pipe(gulp.dest("./build/js"))
-      .pipe(browserSync.stream());
-
 });
 
 // Run server
