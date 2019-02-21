@@ -270,6 +270,7 @@ class HeaderBar extends Component {
               {!weVoteBrandingOff && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />}
               <div className="header-nav">
                 <Tabs
+                  className="u-show-desktop"
                   value={this.getSelectedTab()}
                   indicatorColor="primary"
                   classes={{ indicator: classes.indicator }}
