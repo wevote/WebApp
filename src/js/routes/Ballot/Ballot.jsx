@@ -828,7 +828,6 @@ class Ballot extends Component {
           <SelectBallotModal
             ballotElectionList={this.state.ballotElectionList}
             ballotBaseUrl={ballotBaseUrl}
-            google_civic_election_id={this.state.googleCivicElectionId}
             location={this.state.location}
             pathname={this.state.pathname}
             show={this.state.showSelectBallotModal}
@@ -997,7 +996,6 @@ class Ballot extends Component {
                           <SelectBallotModal
                             ballotElectionList={this.state.ballotElectionList}
                             ballotBaseUrl={ballotBaseUrl}
-                            google_civic_election_id={this.state.googleCivicElectionId}
                             location={this.props.location}
                             pathname={this.props.pathname}
                             show={this.state.showSelectBallotModal}
