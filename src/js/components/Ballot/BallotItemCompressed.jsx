@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { renderLog } from '../../utils/logging';
 import MeasureItemCompressed from './MeasureItemCompressed';
-import OfficeItemCompressedRaccoon from './OfficeItemCompressedRaccoon';
+import OfficeItemCompressed from './OfficeItemCompressed';
 
 const TYPES = require('keymirror')({
   OFFICE: null,
@@ -36,9 +36,8 @@ export default class BallotItemCompressed extends Component {
             link_to_ballot_item_page
           />
         ) : (
-          <OfficeItemCompressedRaccoon
+          <OfficeItemCompressed
             {...this.props}
-            link_to_ballot_item_page
             ref={(ref) => { this.ballotItem = ref; }}
           />
         )}

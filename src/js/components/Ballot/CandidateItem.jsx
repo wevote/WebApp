@@ -99,7 +99,7 @@ export default class CandidateItem extends Component {
     if (this.state.organizationWeVoteId) {
       return `/candidate/${this.state.candidateWeVoteId}/bto/${this.state.organizationWeVoteId}`; // back-to-office
     } else {
-      return `/candidate/${this.state.candidateWeVoteId}/b/btdb/`; // back-to-default-ballot
+      return `/candidate/${this.state.candidateWeVoteId}/b/btdo/`; // back-to-default-office
     }
   }
 

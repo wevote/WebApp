@@ -186,7 +186,7 @@ class HeaderBackToSettings extends Component {
     if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== '') {
       return `/office/${this.state.officeWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
     } else {
-      return `/office/${this.state.officeWeVoteId}/b/btdb/`;
+      return `/office/${this.state.officeWeVoteId}/b/btdb/`; // back-to-default-ballot
     }
   }
 
@@ -248,7 +248,7 @@ class HeaderBackToSettings extends Component {
       backToOrganizationLinkText = 'Back to Settings';
     }
 
-    if (this.props.params.back_to_variable === 'bto' || this.props.params.back_to_variable === 'btdo') {
+    if (this.props.params.back_to_variable === 'bto' || this.props.params.back_to_variable === 'btdo') { // back-to-default-office
       if (this.state.officeName) {
         backToOrganizationLinkText = `Back to ${this.state.officeName}`;
       } else {
