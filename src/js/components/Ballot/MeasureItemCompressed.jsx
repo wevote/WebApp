@@ -154,7 +154,7 @@ export default class MeasureItemCompressed extends Component {
       return `/measure/${oneMeasureWeVoteId}/btvg/${this.state.organization.organization_we_vote_id}`;
     } else {
       // If no organization_we_vote_id, signal that we want to link back to default ballot
-      return `/measure/${oneMeasureWeVoteId}/b/btdb/`;
+      return `/measure/${oneMeasureWeVoteId}/b/btdb/`; // back-to-default-ballot
     }
   }
 

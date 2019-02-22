@@ -161,7 +161,7 @@ export default class HeaderBackToVoterGuides extends Component {
     if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== '') {
       return `/office/${this.state.officeWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
     } else {
-      return `/office/${this.state.officeWeVoteId}/b/btdb/`;
+      return `/office/${this.state.officeWeVoteId}/b/btdb/`; // back-to-default-ballot
     }
   }
 

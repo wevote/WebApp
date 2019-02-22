@@ -72,15 +72,15 @@ export function getApplicationViewBooleans (pathname) {
   let showBackToHeader = false;
   let showBackToSettings = false;
   let showBackToVoterGuides = false;
-  if (stringContains('/btdb/', pathname) ||
-    stringContains('/btdo/', pathname) ||
+  if (stringContains('/btdb/', pathname) || // back-to-default-ballot
+    stringContains('/btdo/', pathname) || // back-to-default-office
     stringContains('/bto/', pathname) ||
     stringContains('/btvg/', pathname) ||
     stringContains('/more/myballot', pathname)
   ) {
     // If here, we want the top header to be "Back To..."
-    // "/btdb/" stands for "Back To Default Ballot Page"
-    // "/btdo/" stands for "Back To Default Office Page"
+    // "/btdb/" stands for "Back To Default Ballot Page" back-to-default-ballot
+    // "/btdo/" stands for "Back To Default Office Page" back-to-default-office
     // "/btvg/" stands for "Back To Voter Guide Page"
     // "/bto/" stands for "Back To Voter Guide Office Page"
     showBackToHeader = true;
