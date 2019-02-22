@@ -12,6 +12,7 @@ export default class EditAddressInPlace extends Component {
     noAddressMessage: PropTypes.string,
     pathname: PropTypes.string,
     toggleFunction: PropTypes.func.isRequired,
+    defaultIsEditingAddress: PropTypes.bool,
   };
 
   constructor (props, context) {
@@ -26,6 +27,7 @@ export default class EditAddressInPlace extends Component {
   componentDidMount () {
     // console.log("In EditAddressInPlace componentDidMount");
     this.setState({
+      editingAddress: this.props.defaultIsEditingAddress,
       textForMapSearch: this.props.address.text_for_map_search || '',
     });
   }
@@ -64,8 +66,12 @@ export default class EditAddressInPlace extends Component {
     if (this.state.editingAddress) {
       return (
         <span>
-          <h4 className="h4">Please Enter the Address Where You Are Registered to Vote</h4>
-          <AddressBox cancelEditAddress={this.toggleEditingAddress} saveUrl={ballotBaseUrl} toggleSelectAddressModal={this.props.toggleFunction} />
+          <h4 className="h4">Address</h4>
+          <AddressBox
+            cancelEditAddress={this.toggleEditingAddress}
+            saveUrl={ballotBaseUrl}
+            toggleSelectAddressModal={this.props.toggleFunction}
+          />
         </span>
       );
     } else {

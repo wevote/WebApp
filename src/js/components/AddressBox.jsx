@@ -206,31 +206,31 @@ class AddressBox extends Component {
               className={classes.input}
               name="address"
               aria-label="Address"
-              placeholder="Enter address where you are registered to vote"
+              placeholder="Enter registered address..."
               value={this.state.textForMapSearch}
               inputRef={(autocomplete) => { this.autoComplete = autocomplete; }}
               inputProps={{ onChange: this.updateVoterAddress, onKeyDown: this.handleKeyPress, autoFocus: (!isCordova() && !this.props.disableAutoFocus) }}
             />
           </Paper>
-          <Button
-              className={classes.saveButton}
-              onClick={this.voterAddressSave}
-              color="primary"
-              variant="contained"
-          >
-              Save
-          </Button>
-          <br />
           { this.props.cancelEditAddress ? (
             <Button
               className={classes.cancelButton}
               onClick={this.props.cancelEditAddress}
               color="primary"
             >
-                Cancel
+              Cancel
             </Button>
           ) : null
-            }
+          }
+          <br />
+          <Button
+            className={classes.saveButton}
+            onClick={this.voterAddressSave}
+            color="primary"
+            variant="contained"
+          >
+            Save
+          </Button>
         </form>
         <p />
         <h4>{this.state.ballotCaveat}</h4>

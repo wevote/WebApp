@@ -12,7 +12,8 @@ $ballot-upcoming: 50px;
   }
 
   .modal-header {
-    border-bottom: 0;
+    border-bottom: 1px;
+    padding-bottom: 0;
   }
 
   &__modal {
@@ -41,7 +42,7 @@ $ballot-upcoming: 50px;
       font-size: 22px;
     }
     @include breakpoints (small mid-small) {
-      font-size: 16px;
+      font-size: 20px;
     }
   }
 

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'react-bootstrap';
-import BallotElectionList from './BallotElectionList';
-import BallotLocationChoices from '../Navigation/BallotLocationChoices';
+import BallotElectionListWithFilters from './BallotElectionListWithFilters';
 import { isCordova } from '../../utils/cordovaUtils';
 import EditAddressInPlace from '../Widgets/EditAddressInPlace';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
@@ -16,7 +15,6 @@ export default class SelectBallotModal extends Component {
   static propTypes = {
     ballotBaseUrl: PropTypes.string,
     ballotElectionList: PropTypes.array,
-    google_civic_election_id: PropTypes.number,
     organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
     pathname: PropTypes.string,
     show: PropTypes.bool,
@@ -59,26 +57,16 @@ export default class SelectBallotModal extends Component {
         show={this.props.show}
       >
         <Modal.Header closeButton onHide={() => this.props.toggleFunction(this.state.pathname)}>
-          <Modal.Title bsPrefix="ballot-election-list__h1">Change Address or Election</Modal.Title>
+          <Modal.Title bsPrefix="ballot-election-list__h1">Address & Elections</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <EditAddressInPlace
             address={voterAddressObject}
+            defaultIsEditingAddress
             pathname={this.state.pathname}
             toggleFunction={this.props.toggleFunction}
           />
-          <br />
-          <br />
-
-          <BallotLocationChoices
-            ballotBaseUrl={ballotBaseUrl}
-            googleCivicElectionId={this.props.google_civic_election_id}
-            showElectionName
-            toggleFunction={this.props.toggleFunction}
-          />
-          <br />
-          <br />
-          <BallotElectionList
+          <BallotElectionListWithFilters
             ballotBaseUrl={ballotBaseUrl}
             ballotElectionList={ballotElectionList}
             organization_we_vote_id={this.props.organization_we_vote_id}

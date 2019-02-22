@@ -908,7 +908,6 @@ class VoterGuideBallot extends Component {
           <SelectBallotModal
             ballotElectionList={this.state.ballotElectionList}
             ballotBaseUrl={ballotBaseUrl}
-            google_civic_election_id={this.state.googleCivicElectionId}
             location={this.state.location}
             organization_we_vote_id={this.state.organization.organization_we_vote_id}
             pathname={this.state.pathname}
@@ -1118,7 +1117,6 @@ class VoterGuideBallot extends Component {
                     <SelectBallotModal
                       ballotElectionList={this.state.ballotElectionList}
                       ballotBaseUrl={ballotBaseUrl}
-                      google_civic_election_id={this.state.googleCivicElectionId}
                       location={this.props.location}
                       pathname={this.props.pathname}
                       show={this.state.showSelectBallotModal}
