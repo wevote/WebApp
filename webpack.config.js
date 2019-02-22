@@ -29,10 +29,15 @@ module.exports = {
           "css-loader", //translates CSS into CommonJS
           "sass-loader" // compiles Sass to CSS, using Node Sass by default
         ]
-      }
+      },
+      {
+        test: /\.(svg|eot|woff|ttf)$/,
+        use: ['file-loader'],
+      },
     ]
   },
   resolve: {
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
     extensions: ['.js', '.jsx']
   },
   devServer: {
