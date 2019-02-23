@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
@@ -10,14 +9,6 @@ import { capitalizeString } from '../../utils/textFormat';
 
 export default class MeasureItem extends Component {
   static propTypes = {
-    // ballot_item_display_name: PropTypes.string.isRequired,
-    // election_display_name: PropTypes.string,
-    // measure_subtitle: PropTypes.string,
-    // measure_text: PropTypes.string,
-    // state_code: PropTypes.string,
-    // regional_display_name: PropTypes.string,
-    // state_display_name: PropTypes.string,
-    // we_vote_id: PropTypes.string.isRequired,
     measureWeVoteId: PropTypes.string.isRequired,
   };
 
@@ -87,14 +78,6 @@ export default class MeasureItem extends Component {
   render () {
     renderLog(__filename);
     // const { supportProps, transitioning } = this.state;
-    // let {
-    //   ballot_item_display_name: ballotItemDisplayName, measure_subtitle: measureSubtitle,
-    //   state_display_name: stateDisplayName,
-    // } = this.props;
-    // const {
-    //   measure_text: measureText, we_vote_id: measureWeVoteId, election_display_name: electionDisplayName,
-    //   regional_display_name: regionalDisplayName, state_code: stateCode,
-    // } = this.props;
     let {
       ballotItemDisplayName, measureSubtitle, stateDisplayName,
     } = this.state;
@@ -115,9 +98,7 @@ export default class MeasureItem extends Component {
       <div className="card-main">
         <div className="card-main__content">
           <h2 className="card-main__display-name">
-            <Link to={this.getMeasureLink(measureWeVoteId)}>
-              {ballotItemDisplayName}
-            </Link>
+            {ballotItemDisplayName}
           </h2>
           { electionDisplayName || regionalDisplayName || stateDisplayName ?
             (
