@@ -134,12 +134,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
         />
-        <MeasureItem
-          {...this.state.measure}
-          positionList={this.state.positionListFromAdvisersFollowedByVoter}
-          commentButtonHide
-          showPositionsInYourNetworkBreakdown
-        />
+        <MeasureItem measureWeVoteId={this.state.measure.we_vote_id} />
         <div className="card__additional">
           { this.state.positionListFromAdvisersFollowedByVoter ? (
             <div>

@@ -31,7 +31,6 @@ export default class VoterGuideBallotItemCompressed extends Component {
         { this.isMeasure() ? (
           <MeasureItemCompressed
             {...this.props}
-            link_to_ballot_item_page
           />
         ) : (
           <VoterGuideOfficeItemCompressed

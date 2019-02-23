@@ -51,7 +51,7 @@ export default class GuideList extends Component {
     this.state = {
       organizationsToFollow: [],
       ballotItemWeVoteId: '',
-      organizationsWithPositions: [],
+      // organizationsWithPositions: [],
     };
   }
 
@@ -65,7 +65,7 @@ export default class GuideList extends Component {
     }, () => {
       const orgsWithPositions = this.getOrganizationsWithPositions();
       this.setState({
-        organizationsWithPositions: orgsWithPositions,
+        // organizationsWithPositions: orgsWithPositions,
         filteredOrganizationsWithPositions: orgsWithPositions,
       });
       // console.log(orgsWithPositions);
@@ -82,9 +82,9 @@ export default class GuideList extends Component {
       ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
     }, () => {
       const orgsWithPositions = this.getOrganizationsWithPositions();
-      this.setState({
-        organizationsWithPositions: orgsWithPositions,
-      });
+      // this.setState({
+      //   organizationsWithPositions: orgsWithPositions,
+      // });
       if (!this.state.filteredOrganizationsWithPositions.length) {
         this.setState({ filteredOrganizationsWithPositions: orgsWithPositions });
       }

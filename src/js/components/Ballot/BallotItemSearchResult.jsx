@@ -32,7 +32,6 @@ export default class BallotItemSearchResult extends Component {
         { this.isMeasure() ? (
           <MeasureItemCompressed
             {...this.props}
-            link_to_ballot_item_page
           />
         ) :
           <CandidateItemCompressed oneCandidate={this.props} />
