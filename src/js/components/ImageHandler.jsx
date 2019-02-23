@@ -25,7 +25,8 @@ export default class ImageHandler extends Component {
 
   render () {
     renderLog(__filename);
-    const thisClass = this.props.className || '';
+    // debugger;
+    const incomingClassName = this.props.className || '';
     const alt = this.props.alt || 'icon';
     let replacementClass = '';
     const sizeClassName = this.props.sizeClassName || '';
@@ -33,19 +34,19 @@ export default class ImageHandler extends Component {
     let placeHolderImageUrl = '';
     const { kind_of_ballot_item: kindOfBallotItem } = this.props;
     const kindOfImage = this.props.kind_of_image ? this.props.kind_of_image : kindOfBallotItem;
-    let imagePlaceholderIcon = null;
+    const imagePlaceholderIcon = null;
 
     // handles setting the placeholder image by "kind_of_image" or "ballot item" type.
     switch (kindOfImage) {
       case 'CANDIDATE':
-        replacementClass = 'icon-main image-person-placeholder';
-        imagePlaceholderIcon = <img src={cordovaDot('/img/global/svg-icons/avatar-generic.svg')} width="34" height="34" color="#c0c0c0" alt="generic voter" />;
+        replacementClass = 'icon-main image-person-placeholder card-main__avatar-compressed__avatar-border';
+        placeHolderImageUrl = cordovaDot('/img/global/svg-icons/avatar-generic.svg');
         break;
       case 'MEASURE' || 'OFFICE':
         // TODO: Refactor to remove font icons
         return <i className="search-image__filler" />;
       case 'ISSUE':
-        replacementClass = 'icon-main image-person-placeholder';
+        replacementClass = 'icon-main image-issue-placeholder';
         placeHolderImageUrl = cordovaDot('/img/global/svg-icons/issue-generic.svg');
         break;
       case 'ISSUE-PHOTO':
@@ -61,14 +62,14 @@ export default class ImageHandler extends Component {
     if (showPlaceholderIfImageMissing) {
       // This branch is for situations where we want to show a placeholder image in case the image is broken or missing
       return this.state.error || !this.props.imageUrl || this.props.imageUrl === '' ?
-        imagePlaceholderIcon || <img className={`${sizeClassName} ${thisClass} ${replacementClass}`} src={placeHolderImageUrl} /> :
-        <img className={`${sizeClassName} ${thisClass}`} src={this.props.imageUrl} alt={alt} onError={this.brokenLink.bind(this)} />;
+        imagePlaceholderIcon || <img className={`${sizeClassName} ${incomingClassName} ${replacementClass}`} src={placeHolderImageUrl} /> :
+        <img className={`${sizeClassName} ${incomingClassName}`} src={this.props.imageUrl} alt={alt} onError={this.brokenLink.bind(this)} />;
     } else {
       // Only show an image if one exists
       return this.state.error || this.props.imageUrl === '' ?
         null : (
           <img
-            className={`${sizeClassName} ${thisClass}`}
+            className={`${sizeClassName} ${incomingClassName}`}
             src={this.props.imageUrl}
             alt={alt}
             onError={this.brokenLink.bind(this)}
