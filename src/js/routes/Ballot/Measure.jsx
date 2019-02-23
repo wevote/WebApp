@@ -139,12 +139,7 @@ export default class Measure extends Component {
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
         />
-        <MeasureItem
-          {...measure}
-          positionList={positionListFromAdvisersFollowedByVoter}
-          commentButtonHide
-          showPositionsInYourNetworkBreakdown
-        />
+        <MeasureItem measureWeVoteId={measure.we_vote_id} />
         <div className="card__additional">
           { positionListFromAdvisersFollowedByVoter ? (
             <div>

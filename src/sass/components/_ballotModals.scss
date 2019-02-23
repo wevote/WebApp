@@ -13,7 +13,7 @@ $ballot-upcoming: 50px;
 
   .modal-header {
     border-bottom: 1px;
-    padding-bottom: 0;
+    padding-bottom: $space-none;
   }
 
   &__modal {

@@ -81,10 +81,6 @@ export default class FacebookInvitableFriends extends Component {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  facebookLogin () {
-    FacebookActions.login();
-  }
-
   onFacebookStoreChange () {
     this.setState({
       facebookLoggedIn: FacebookStore.loggedIn,
@@ -145,24 +141,36 @@ export default class FacebookInvitableFriends extends Component {
     this.sendFacebookAppRequest(selectedFacebookFriendsIds, selectedFacebookFriendsNames);
   };
 
-  voterFacebookSaveToCurrentAccount () {
-    VoterActions.voterFacebookSaveToCurrentAccount();
-  }
-
-  voterMergeTwoAccountsByFacebookKey (facebookSecretKey, voterHasDataToPreserve = false) {
-    if (!this.state.merging_two_accounts) {
-      VoterActions.voterMergeTwoAccountsByFacebookKey(facebookSecretKey);
-
-      // Prevent voterMergeTwoAccountsByFacebookKey from being called multiple times
-      console.log('voter_has_data_to_preserve: ', voterHasDataToPreserve);
-      this.setState({ merging_two_accounts: true });
-    }
+  yesPleaseMergeAccounts = () => {
+    this.setState({ yes_please_merge_accounts: true });
   }
 
   cacheAddFriendsByFacebookMessage (e) {
     this.setState({
       add_friends_message: e.target.value,
     });
+  }
+
+  searchFacebookFriends (event) {
+    const searchTerm = event.target.value;
+    if (searchTerm.length === 0) {
+      this.setState({
+        searchFilter: false,
+        searchTerm: '',
+        facebookInvitableFriendsFilteredBySearch: [],
+      });
+    } else {
+      const searchTermLowercase = searchTerm.toLowerCase();
+      const { facebookInvitableFriends } = this.state;
+      const searchedFriendsList = _.filter(facebookInvitableFriends.facebook_invitable_friends_list,
+        user => user.name.toLowerCase().includes(searchTermLowercase));
+
+      this.setState({
+        searchFilter: true,
+        searchTerm,
+        facebookInvitableFriendsFilteredBySearch: searchedFriendsList,
+      });
+    }
   }
 
   sendFacebookAppRequest (selectedFacebookFriendsIds, selectedFacebookFriendsNames) {
@@ -195,30 +203,22 @@ export default class FacebookInvitableFriends extends Component {
     });
   }
 
-  searchFacebookFriends (event) {
-    const searchTerm = event.target.value;
-    if (searchTerm.length === 0) {
-      this.setState({
-        searchFilter: false,
-        searchTerm: '',
-        facebookInvitableFriendsFilteredBySearch: [],
-      });
-    } else {
-      const searchTermLowercase = searchTerm.toLowerCase();
-      const { facebookInvitableFriends } = this.state;
-      const searchedFriendsList = _.filter(facebookInvitableFriends.facebook_invitable_friends_list,
-        user => user.name.toLowerCase().includes(searchTermLowercase));
+  voterMergeTwoAccountsByFacebookKey (facebookSecretKey, voterHasDataToPreserve = false) {
+    if (!this.state.merging_two_accounts) {
+      VoterActions.voterMergeTwoAccountsByFacebookKey(facebookSecretKey);
 
-      this.setState({
-        searchFilter: true,
-        searchTerm,
-        facebookInvitableFriendsFilteredBySearch: searchedFriendsList,
-      });
+      // Prevent voterMergeTwoAccountsByFacebookKey from being called multiple times
+      console.log('voter_has_data_to_preserve: ', voterHasDataToPreserve);
+      this.setState({ merging_two_accounts: true });
     }
   }
 
-  yesPleaseMergeAccounts = () => {
-    this.setState({ yes_please_merge_accounts: true });
+  facebookLogin () {
+    FacebookActions.login();
+  }
+
+  voterFacebookSaveToCurrentAccount () {
+    VoterActions.voterFacebookSaveToCurrentAccount();
   }
 
   render () {
