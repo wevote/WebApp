@@ -91,6 +91,11 @@ $candidate-font-size: .875rem;
       @include print {
         width: 40px;
       }
+      &__avatar-border {
+        border-style: solid;
+        border-width: 1px;
+        border-color: $gray-pale;
+      }
     }
 
     &__org-avatar {
