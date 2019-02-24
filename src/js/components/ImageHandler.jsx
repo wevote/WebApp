@@ -39,7 +39,7 @@ export default class ImageHandler extends Component {
     // handles setting the placeholder image by "kind_of_image" or "ballot item" type.
     switch (kindOfImage) {
       case 'CANDIDATE':
-        replacementClass = 'icon-main image-person-placeholder card-main__avatar-compressed__avatar-border';
+        replacementClass = 'icon-main image-person-placeholder card-main__avatar-border';
         placeHolderImageUrl = cordovaDot('/img/global/svg-icons/avatar-generic.svg');
         break;
       case 'MEASURE' || 'OFFICE':
@@ -62,16 +62,28 @@ export default class ImageHandler extends Component {
     if (showPlaceholderIfImageMissing) {
       // This branch is for situations where we want to show a placeholder image in case the image is broken or missing
       return this.state.error || !this.props.imageUrl || this.props.imageUrl === '' ?
-        imagePlaceholderIcon || <img className={`${sizeClassName} ${incomingClassName} ${replacementClass}`} src={placeHolderImageUrl} /> :
-        <img className={`${sizeClassName} ${incomingClassName}`} src={this.props.imageUrl} alt={alt} onError={this.brokenLink.bind(this)} />;
-    } else {
-      // Only show an image if one exists
-      return this.state.error || this.props.imageUrl === '' ?
-        null : (
+        imagePlaceholderIcon || (
           <img
+            alt={alt}
+            className={`${sizeClassName} ${incomingClassName} ${replacementClass}`}
+            src={placeHolderImageUrl}
+          />
+        ) : (
+          <img
+            alt={alt}
             className={`${sizeClassName} ${incomingClassName}`}
             src={this.props.imageUrl}
+            onError={this.brokenLink.bind(this)}
+          />
+        );
+    } else {
+      // Only show an image if one exists
+      return this.state.error || !this.props.imageUrl || this.props.imageUrl === '' ?
+        null : (
+          <img
             alt={alt}
+            className={`${sizeClassName} ${incomingClassName}`}
+            src={this.props.imageUrl}
             onError={this.brokenLink.bind(this)}
           />
         );

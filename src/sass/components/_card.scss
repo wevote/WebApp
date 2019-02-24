@@ -68,20 +68,31 @@ $candidate-font-size: .875rem;
     }
 
     &__avatar {
-      max-width: 60px;
+      // max-width: 60px;
       border-radius: $radius-xs;
+      width: 48px;
       .card-main & {
         @include breakpoints(mid-small) {
-          max-width: 60px;
+          // max-width: 60px;
+          width: 48px;
         }
         border-radius: $radius-rounded;
       }
+      @include print {
+        width: 48px;
+      }
+    }
+
+    &__avatar-border {
+      border-style: solid;
+      border-width: 1px;
+      border-color: $gray-border;
     }
 
     &__avatar-compressed {
       background-image: url('../../img/global/svg-icons/avatar-generic.svg');
-      width: 40px;
       border-radius: $radius-xs;
+      width: 40px;
       .card-main & {
         @include breakpoints(mid-small) {
           width: 40px;
@@ -90,11 +101,6 @@ $candidate-font-size: .875rem;
       }
       @include print {
         width: 40px;
-      }
-      &__avatar-border {
-        border-style: solid;
-        border-width: 1px;
-        border-color: $gray-pale;
       }
     }
 
