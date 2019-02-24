@@ -147,20 +147,15 @@ export default class CandidateItem extends Component {
       candidatePhotoUrl = this.props.candidate_photo_url_medium;
     }
 
-    let candidatePhotoUrlHtml;
-    if (candidatePhotoUrl) {
-      candidatePhotoUrlHtml = (
-        <ImageHandler
-          className="card-main__avatar"
-          sizeClassName="icon-office-child "
-          imageUrl={candidatePhotoUrl}
-          alt="candidate-photo"
-          kind_of_ballot_item="CANDIDATE"
-        />
-      );
-    } else {
-      candidatePhotoUrlHtml = <i className="card-main__avatar icon-office-child icon-main icon-icon-person-placeholder-6-1" />;
-    }
+    const candidatePhotoUrlHtml = (
+      <ImageHandler
+        className="card-main__avatar"
+        sizeClassName="icon-office-child "
+        imageUrl={candidatePhotoUrl}
+        alt="candidate-photo"
+        kind_of_ballot_item="CANDIDATE"
+      />
+    );
 
     const twitterDescriptionText = twitterDescription && twitterDescription.length ? `${twitterDescription} ` : '';
     let ballotpediaCandidateSummaryText = ballotpediaCandidateSummary && ballotpediaCandidateSummary.length ? ballotpediaCandidateSummary : '';
