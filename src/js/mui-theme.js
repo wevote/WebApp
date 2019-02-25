@@ -4,7 +4,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 const overrides = {
   MuiButton: {
     root: {
-      // Button global overrides here
+      userSelect: 'none',
     },
   },
   MuiTooltip: {

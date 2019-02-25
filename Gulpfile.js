@@ -36,7 +36,7 @@ gulp.task("browserify", function () {
   function err (e) {
     console.error(e.stack);
     notifier.notify({ title: "Compile Error", message: e.stack });
-    // this.emit("end");
+    this.emit("end");
   }
 
   const bundler = browserify(ops);

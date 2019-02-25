@@ -89,6 +89,12 @@ function checkShouldUpdate (state, nextState) {
   if (state.showSelectBallotModal !== nextState.showSelectBallotModal) {
     return true;
   }
+  if (state.isSearching !== nextState.isSearching) {
+    return true;
+  }
+  if (state.ballotSearchResults !== nextState.ballotSearchResults) {
+    return true;
+  }
 
   return false;
 }
