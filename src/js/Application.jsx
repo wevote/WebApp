@@ -33,7 +33,7 @@ const LoadingScreen = styled.div`
   display: 'flex',
   top: 0,
   left: 0,
-  background-color: '#25536D',
+  background-color: '#2E3C5D',
   justify-content: 'center',
   align-items: 'center',
   font-size: '30px',

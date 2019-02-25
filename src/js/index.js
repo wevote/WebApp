@@ -8,6 +8,7 @@ import { useScroll } from 'react-router-scroll';
 import { isCordova } from './utils/cordovaUtils';
 import routes from './Root';
 import theme from './mui-theme';
+import stringOccurs from './utils/stringOccurs';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint global-require: 1 */
@@ -18,6 +19,10 @@ import theme from './mui-theme';
 if (!Object.assign) {
   Object.assign = React.__spread;
 }
+
+// Adding functions to the String prototype will make stuff like `for (char in str)` break, because it will loop over the substringOccurences property.
+// As long as we use `forEach()` or `for (char of str)` then that side effect will be mitigated.
+String.prototype.substringOccurrences = stringOccurs; // eslint-disable-line
 
 function startApp () {
   // http://harrymoreno.com/2015/07/14/Deploying-a-React-App-to-Cordova.html
