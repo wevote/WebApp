@@ -19,7 +19,7 @@ export default class CandidateList extends Component {
             <CandidateItem
               key={child.we_vote_id}
               contest_office_name={this.props.contest_office_name}
-              hidePositionStatement
+              hideBallotItemSupportOpposeComment
               link_to_ballot_item_page
               {...child}
             />

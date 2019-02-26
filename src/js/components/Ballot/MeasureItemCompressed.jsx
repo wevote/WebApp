@@ -13,16 +13,12 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 export default class MeasureItemCompressed extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string.isRequired,
-    currentBallotIdInUrl: PropTypes.string,
-    // kind_of_ballot_item: PropTypes.string.isRequired,
+    // currentBallotIdInUrl: PropTypes.string,
     measure: PropTypes.object,
     measure_subtitle: PropTypes.string,
-    // measure_text: PropTypes.string,
-    // measure_url: PropTypes.string,
     organization: PropTypes.object,
-    // position_list: PropTypes.array,
     showPositionStatementActionBar: PropTypes.bool,
-    urlWithoutHash: PropTypes.string,
+    // urlWithoutHash: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired,
   };
 

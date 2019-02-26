@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import TextTruncate from 'react-text-truncate';
+import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { historyPush } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import LearnMore from '../Widgets/LearnMore';
@@ -113,6 +114,9 @@ export default class CandidateItemCompressed extends Component {
 
     return (
       <div key={oneCandidateWeVoteId} className="u-stack--md">
+        <div className="u-float-right">
+          <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidateWeVoteId} />
+        </div>
         <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
           {/* Candidate Photo, only shown in Desktop */}
           <Link to={this.getCandidateLink(this.state.oneCandidate.we_vote_id)}>

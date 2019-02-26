@@ -125,7 +125,6 @@ export default class SettingsMenuMobile extends Component {
           <div className="row">
             <div className="col-12">
               <SettingsPersonalSideBar
-                onOwnPage
                 isSignedIn={this.state.voter.is_signed_in}
                 organizationType={this.state.organizationType}
               />
