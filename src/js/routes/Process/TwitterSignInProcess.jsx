@@ -17,7 +17,6 @@ export default class TwitterSignInProcess extends Component {
     super(props);
     this.state = {
       twitterAuthResponse: {},
-      saving: false,
       yesPleaseMergeAccounts: false,
       mergingTwoAccounts: false,
     };
@@ -38,7 +37,6 @@ export default class TwitterSignInProcess extends Component {
   onTwitterStoreChange () {
     this.setState({
       twitterAuthResponse: TwitterStore.getTwitterAuthResponse(),
-      saving: false,
     });
   }
 
@@ -100,10 +98,7 @@ export default class TwitterSignInProcess extends Component {
   }
 
   twitterSignInRetrieve () {
-    if (!this.state.saving) {
-      TwitterActions.twitterSignInRetrieve();
-      this.setState({ saving: true });
-    }
+    TwitterActions.twitterSignInRetrieve();
   }
 
   // This will be needed in the future
@@ -115,25 +110,18 @@ export default class TwitterSignInProcess extends Component {
     renderLog(__filename);
     const { twitterAuthResponse, yesPleaseMergeAccounts } = this.state;
 
-    console.log('TwitterSignInProcess render, this.state.saving:', this.state.saving);
-    if (!this.state.saving) {
-      console.log('Initial landing on TwitterSignInProcess - twitterSignInStart');
-      // TODO DALE - this needs to be built out
-      // Look at TwitterSignIn.twitterSignInWebApp for the current process that needs to be migrated
-      this.twitterSignInStart();
-      return LoadingWheel;
-    } else if (this.state.saving ||
-      !twitterAuthResponse ||
+    // console.log('TwitterSignInProcess render');
+    if (!twitterAuthResponse ||
       !twitterAuthResponse.twitter_retrieve_attempted) {
-      // console.log("twitterAuthResponse:", twitterAuthResponse);
+      // console.log('STOPPED, missing twitter_retrieve_attempted: twitterAuthResponse:', twitterAuthResponse);
       return LoadingWheel;
     }
-    console.log('=== Passed initial gate ===');
-    console.log('twitterAuthResponse:', twitterAuthResponse);
+    // console.log('=== Passed initial gate ===');
+    // console.log('twitterAuthResponse:', twitterAuthResponse);
     const { twitter_secret_key: twitterSecretKey } = twitterAuthResponse;
 
     if (twitterAuthResponse.twitter_sign_in_failed) {
-      console.log('Twitter sign in failed - push to /settings/account');
+      // console.log('Twitter sign in failed - push to /settings/account');
       historyPush({
         pathname: '/settings/account',
         state: {
@@ -194,7 +182,7 @@ export default class TwitterSignInProcess extends Component {
       //   return LoadingWheel;
       // }
     } else {
-      console.log('Setting up new Twitter entry - voterTwitterSaveToCurrentAccount');
+      // console.log('Setting up new Twitter entry - voterTwitterSaveToCurrentAccount');
       this.voterTwitterSaveToCurrentAccount();
       return LoadingWheel;
     }

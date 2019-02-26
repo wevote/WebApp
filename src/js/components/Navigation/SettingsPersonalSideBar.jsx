@@ -16,7 +16,6 @@ export default class SettingsPersonalSideBar extends Component {
   static propTypes = {
     editMode: PropTypes.string,
     isSignedIn: PropTypes.bool,
-    onOwnPage: PropTypes.bool,
     organizationType: PropTypes.string.isRequired,
   };
 

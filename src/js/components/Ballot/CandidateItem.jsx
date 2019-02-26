@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
+import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import CandidateStore from '../../stores/CandidateStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
-import ItemSupportOpposeRaccoon from '../Widgets/ItemSupportOpposeRaccoon';
+// import ItemSupportOpposeRaccoon from '../Widgets/ItemSupportOpposeRaccoon';
 import LearnMore from '../Widgets/LearnMore';
 import { renderLog } from '../../utils/logging';
 import OfficeNameText from '../Widgets/OfficeNameText';
@@ -22,7 +24,7 @@ export default class CandidateItem extends Component {
     candidate_photo_url_medium: PropTypes.string,
     contest_office_name: PropTypes.string,
     showLargeImage: PropTypes.bool,
-    hidePositionStatement: PropTypes.bool,
+    hideBallotItemSupportOpposeComment: PropTypes.bool,
     link_to_ballot_item_page: PropTypes.bool,
     linkToOfficePage: PropTypes.bool,
     organizationWeVoteId: PropTypes.string,
@@ -38,7 +40,8 @@ export default class CandidateItem extends Component {
     super(props);
     this.state = {
       candidateWeVoteId: '',
-      hidePositionStatement: this.props.hidePositionStatement,
+      hideBallotItemSupportOpposeComment: this.props.hideBallotItemSupportOpposeComment,
+      showPositionStatementActionBar: this.props.showPositionStatementActionBar,
       officeWeVoteId: '',
     };
     this.getCandidateLink = this.getCandidateLink.bind(this);
@@ -51,13 +54,6 @@ export default class CandidateItem extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    const candidateSupportProps = SupportStore.get(this.props.we_vote_id);
-    if (candidateSupportProps !== undefined) {
-      this.setState({
-        candidateSupportProps,
-      });
-    }
-
     // console.log("CandidateItem, this.props:", this.props);
     if (this.props.we_vote_id) {
       // If here we want to get the candidate so we can get the officeWeVoteId
@@ -88,10 +84,8 @@ export default class CandidateItem extends Component {
   }
 
   onSupportStoreChange () {
-    const candidateSupportProps = SupportStore.get(this.state.candidateWeVoteId);
-    if (candidateSupportProps !== undefined) {
-      this.setState({ candidateSupportProps });
-    }
+    // DALE 2019-02-26 Is this needed?
+    this.setState();
   }
 
   getCandidateLink () {
@@ -112,8 +106,8 @@ export default class CandidateItem extends Component {
   }
 
   togglePositionStatement () {
-    const { hidePositionStatement } = this.state;
-    this.setState({ hidePositionStatement: !hidePositionStatement });
+    const { showPositionStatementActionBar } = this.state;
+    this.setState({ showPositionStatementActionBar: !showPositionStatementActionBar });
   }
 
   goToCandidateLink () {
@@ -163,10 +157,6 @@ export default class CandidateItem extends Component {
     // Strip away any HTML tags
     ballotpediaCandidateSummaryText = ballotpediaCandidateSummaryText.split(/<[^<>]*>/).join('');
     const candidateText = twitterDescriptionText + ballotpediaCandidateSummaryText;
-
-    const oneCandidate = CandidateStore.getCandidate(candidateWeVoteId);
-    const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidateWeVoteId);
-    const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidateWeVoteId);
 
     return (
       <div className="card-main candidate-card">
@@ -245,22 +235,16 @@ export default class CandidateItem extends Component {
         {/* END .card-main__media-object */}
         <div className="card-main__actions">
           <div>
-            <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
-              {/* Positions in Your Network and Possible Voter Guides to Follow */}
-              <ItemSupportOpposeRaccoon
-                ballotItemWeVoteId={candidateWeVoteId}
-                ballot_item_display_name={oneCandidate.ballot_item_display_name}
-                goToCandidate={this.goToCandidateLink}
-                maximumOrganizationDisplay={8}
-                organizationsToFollowSupport={organizationsToFollowSupport}
-                organizationsToFollowOppose={organizationsToFollowOppose}
-                popoverBottom
-                showIssueList
-                showPositionStatementActionBar={this.props.showPositionStatementActionBar}
-                supportProps={this.state.candidateSupportProps}
-                type="CANDIDATE"
-              />
-            </div>
+            <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={candidateWeVoteId} />
+            {/* Positions in Your Network and Possible Voter Guides to Follow */}
+            {this.state.hideBallotItemSupportOpposeComment ?
+              null : (
+                <BallotItemSupportOpposeComment
+                  ballotItemWeVoteId={candidateWeVoteId}
+                  showPositionStatementActionBar={this.state.showPositionStatementActionBar}
+                />
+              )
+            }
           </div>
         </div>
       </div>

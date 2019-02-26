@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import ReactSVG from 'react-svg';
-import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import { cordovaDot } from '../../utils/cordovaUtils'; // historyPush
 import { renderLog } from '../../utils/logging';
 import { showToastError, showToastSuccess } from '../../utils/showToast';
 import { stringContains } from '../../utils/textFormat';
@@ -263,10 +263,11 @@ export default class ItemActionBar extends Component {
 
   supportItem () {
     // Button to support this item was clicked
-    const { currentBallotIdInUrl, urlWithoutHash, we_vote_id: weVoteId } = this.props;
-    if (currentBallotIdInUrl !== weVoteId) {
-      historyPush(`${urlWithoutHash}#${this.props.we_vote_id}`);
-    }
+    // const { currentBallotIdInUrl, urlWithoutHash, we_vote_id: weVoteId } = this.props;
+    // DALE 2019-02-26 Verify we still need this
+    // if (currentBallotIdInUrl !== weVoteId) {
+    //   historyPush(`${urlWithoutHash}#${this.props.we_vote_id}`);
+    // }
 
     if (this.props.supportOrOpposeHasBeenClicked) {
       this.props.supportOrOpposeHasBeenClicked();
@@ -316,10 +317,11 @@ export default class ItemActionBar extends Component {
   }
 
   opposeItem () {
-    const { currentBallotIdInUrl, urlWithoutHash, we_vote_id: weVoteId } = this.props;
-    if (currentBallotIdInUrl !== weVoteId) {
-      historyPush(`${urlWithoutHash}#${this.props.we_vote_id}`);
-    }
+    // const { currentBallotIdInUrl, urlWithoutHash, we_vote_id: weVoteId } = this.props;
+    // DALE 2019-02-26 Verify we still need this
+    // if (currentBallotIdInUrl !== weVoteId) {
+    //   historyPush(`${urlWithoutHash}#${this.props.we_vote_id}`);
+    // }
     if (this.props.supportOrOpposeHasBeenClicked) {
       this.props.supportOrOpposeHasBeenClicked();
     }

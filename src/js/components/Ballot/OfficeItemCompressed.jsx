@@ -4,6 +4,7 @@ import {  Modal } from 'react-bootstrap'; // , OverlayTrigger, Popover
 import { Link } from 'react-router';
 // import TextTruncate from 'react-text-truncate';
 import Slider from 'react-slick';
+import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { cordovaDot, historyPush, hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { toTitleCase } from '../../utils/textFormat';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -409,6 +410,9 @@ export default class OfficeItemCompressed extends Component {
               if (candidatePreviewCount <= candidatePreviewLimit) {
                 oneCandidateDisplay = (
                   <div key={`candidate_preview-${oneCandidate.we_vote_id}`} className="u-stack--md u-gray-border-bottom">
+                    <div className="u-float-right">
+                      <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
+                    </div>
                     <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm u-cursor--pointer">
                       {/* Candidate Image */}
                       <Link to={this.getCandidateLink(oneCandidate.we_vote_id)}>
