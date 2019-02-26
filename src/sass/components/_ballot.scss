@@ -170,7 +170,7 @@ $neg-padding: -10px;
     overflow-x: scroll;
     justify-content: flex-start;
     margin-top: $race-filter-margin;
-    @include breakpoints(medium) {
+    @include breakpoints(large) {
       overflow-x: hidden;
     }
   }

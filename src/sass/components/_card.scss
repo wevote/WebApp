@@ -6,10 +6,11 @@ $candidate-font-size: .875rem;
 .card {
   $item-padding: $space-md;
   background-color: $white;
-  border-radius: $radius-xs;
+  border-radius: $radius-sm;
   box-shadow: $default-box-shadow;
   margin-bottom: $space-md;
   overflow: hidden;
+  border: none;
   @include clearfix;
   @include breakpoints(max mid-small) {
     margin-bottom: $space-sm;

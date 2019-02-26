@@ -23,27 +23,6 @@ import VoterStore from '../stores/VoterStore';
 /* eslint jsx-a11y/click-events-have-key-events: 0 */
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 /* eslint no-param-reassign: 0 */
-
-const styles = {
-  root: {
-    padding: '2px .7rem',
-    display: 'flex',
-    alignItems: 'center',
-    width: 400,
-    marginBottom: '1rem',
-    marginRight: '1rem',
-  },
-  saveButton: {
-    marginRight: '.3rem',
-    height: 'fit-content',
-  },
-  input: {
-    marginLeft: 8,
-    flex: 1,
-  },
-};
-
-
 class AddressBox extends Component {
   static propTypes = {
     cancelEditAddress: PropTypes.func,
@@ -238,5 +217,27 @@ class AddressBox extends Component {
     );
   }
 }
+
+const styles = {
+  root: {
+    padding: '2px .7rem',
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: '1rem',
+    marginRight: '1rem',
+  },
+  saveButton: {
+    marginRight: '.3rem',
+    height: 'fit-content',
+  },
+  cancelButton: {
+    marginRight: '.3rem',
+  },
+  input: {
+    marginLeft: 8,
+    flex: 1,
+  },
+};
 
 export default withStyles(styles)(AddressBox);
