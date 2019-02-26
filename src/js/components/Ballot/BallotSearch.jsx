@@ -32,19 +32,19 @@ const styles = theme => ({
     width: 21,
     height: 21,
     marginTop: -5,
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('lg')]: {
       marginTop: -1,
     },
   },
   input: {
     padding: '0 3px',
     width: 150,
-    transition: 'all ease-in 200ms',
+    transition: 'all ease-in 150ms',
   },
   inputHidden: {
     padding: 0,
     width: 0,
-    transition: 'all ease-in 200ms',
+    transition: 'all ease-in 150ms',
   },
 });
 
@@ -92,7 +92,11 @@ class BallotSearch extends Component {
 
   toggleSearch = () => {
     const { isSearching } = this.props;
-    if (!isSearching) this.searchInput.select();
+    if (!isSearching) {
+      this.searchInput.select();
+    } else {
+      this.setState({ searchValue: '' });
+    }
     this.props.onToggleSearch(!isSearching);
   }
 
@@ -100,7 +104,7 @@ class BallotSearch extends Component {
     const { items } = this.props;
     const { value } = evt.target;
     this.setState({ searchValue: value });
-    const sortedFiltered = _.sortBy(this.filterItems(value), ['priority']).reverse();
+    const sortedFiltered = _.sortBy(this.filterItems(value), ['priority']).reverse().filter(item => item.priority > 0);
     if (!value.length) return this.props.onBallotSearch(items);
     if (value.length < 3) return null;
     return this.props.onBallotSearch(sortedFiltered.length ? sortedFiltered : items);

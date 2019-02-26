@@ -490,6 +490,7 @@ class Ballot extends Component {
         const ballotWithItemsFromCompletionFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
         this.setState({
           ballotWithAllItems: BallotStore.getBallotByCompletionLevelFilterType('all'),
+          ballotSearchResults: BallotStore.getBallotByCompletionLevelFilterType('all'),
           ballotWithItemsFromCompletionFilterType,
         });
         if (ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length) {
@@ -648,7 +649,7 @@ class Ballot extends Component {
   handleToggleSearchBallot = () => {
     const { isSearching } = this.state;
     if (isSearching === false) {
-      setTimeout(() => {  this.chipContainer.scrollLeft += 1000; }, 300);
+      setTimeout(() => {  this.chipContainer.scrollLeft += 1000; }, 350);
     }
     this.setState({ isSearching: !isSearching });
   }

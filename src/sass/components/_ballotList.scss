@@ -53,10 +53,11 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
   &__summary {
     &__title {
       font-family: $heading-font-stack;
-      font-size: 18px;
+      font-size: 20px;
       color: $gray-dark;
-      padding-bottom: $space-md;
-      padding-top: $space-sm;
+      padding: $space-md $space-none;
+      text-align: center;
+      box-shadow: $default-box-shadow;
     }
 
     &__group {
@@ -65,13 +66,16 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
 
     &__group-title {
       font-family: $heading-font-stack;
-      font-size: 16px;
-      color: $gray-dark;
-      padding-bottom: $space-sm;
+      font-size: 18px;
+      color: $gray-mid;
+      padding-bottom: $space-md;
+      padding-top: $space-md;
+      margin-left: $space-md;
+      font-weight: bold;
     }
 
     &__list {
-      padding-inline-start: $space-md;
+      padding: 0;
     }
 
     &__item {
