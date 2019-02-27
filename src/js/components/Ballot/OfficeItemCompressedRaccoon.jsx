@@ -23,6 +23,8 @@ import SupportStore from "../../stores/SupportStore";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
+import rightTriangle from "../../../img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-250-triangle-right.svg";
+import bottomTriangle from "../../../img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-252-triangle-bottom.svg";
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */
@@ -470,11 +472,11 @@ export default class OfficeItemCompressedRaccoon extends Component {
             <span className="u-cursor--pointer" onClick={this.toggleExpandDetails}>
               { this.state.displayOfficeUnfurled ? (
                 <span className="d-print-none u-push--xs">
-                  <img src={cordovaDot("/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-252-triangle-bottom.svg")} width="32" height="32" alt="furl" />
+                  <img src={cordovaDot(bottomTriangle)} width="32" height="32" alt="furl" />
                 </span>
               ) : (
                 <span className="d-print-none u-push--xs">
-                  <img src={cordovaDot("/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-250-triangle-right.svg")} width="32" height="32" alt="unfurl" />
+                  <img src={cordovaDot(rightTriangle)} width="32" height="32" alt="unfurl" />
                 </span>
               )}
               <span className="card-main__ballot-name-link">{ballotItemDisplayName}</span>
