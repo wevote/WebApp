@@ -509,15 +509,6 @@ export default class BallotItemSupportOpposeCountDisplay extends Component {
         </span>
         {this.state.ballotItemDisplayName ? ` ${this.state.ballotItemDisplayName}` : ''}
         .
-        Click on the logo
-        and
-        {' '}
-        <strong>Listen</strong>
-        {' '}
-        to an organization to add their opinion to your personalized
-        {' '}
-        <strong>Score</strong>
-        .
       </Popover>
     ) :
       positionsCount && voterDecidedItem ? (
@@ -570,113 +561,99 @@ export default class BallotItemSupportOpposeCountDisplay extends Component {
     const totalInfoOnlyCount = 0;
 
     return (
-      <div>
-        <OverlayTrigger
-          trigger="click"
-          rootClose
-          placement={this.props.popoverBottom ? 'bottom' : 'top'}
-          overlay={positionsPopover}
-        >
-          <span className="u-cursor--pointer">
-            <span>Endorsements</span>
-            <br />
-            <span className="network-positions-stacked__support-label">
-              <span className="issues-list-stacked__support-label u-no-break">
-                <span className="u-no-break issue-icon-list__endorsements-label">
-                  <img
-                    src={cordovaDot(
-                      '/img/global/svg-icons/issues/thumbs-up-icon.svg',
-                    )}
-                    className="issue-icon-list__endorsement-icon"
-                    alt="Thumbs Up"
-                    width="20"
-                    height="20"
-                  />
-                  <span className="issue-icon-list__endorsement-count">
-                    {totalSupportCount}
-                  </span>
-                </span>
-                <span className="issue-icon-list__endorsements-label u-no-break">
-                  <img
-                    src={cordovaDot(
-                      '/img/global/svg-icons/issues/thumbs-down-icon.svg',
-                    )}
-                    className="issue-icon-list__endorsement-icon"
-                    alt="Thumbs Down"
-                    width="20"
-                    height="20"
-                  />
-                  <span className="issue-icon-list__endorsement-count">
-                    {totalOpposeCount}
-                  </span>
-                </span>
-                <span className="issue-icon-list__endorsements-label u-no-break">
-                  <img
-                    src={cordovaDot(
-                      '/img/global/svg-icons/comment-icon.svg',
-                    )}
-                    className="issue-icon-list__endorsement-icon"
-                    alt="Comment"
-                    width="20"
-                    height="20"
-                  />
-                  <span className="issue-icon-list__endorsement-count">
-                    {totalInfoOnlyCount}
-                  </span>
-                </span>
-              </span>
-            </span>
-          </span>
-        </OverlayTrigger>
-
-        <div className="network-positions-stacked__support">
-
-          {/* Network Score here */}
-          { showNetworkScore ? (
+      <span>
+        {/* Total counts of all support, opposition and info only comments for this ballot item */}
+        { showNetworkScore ?
+          null : (
             <OverlayTrigger
               trigger="click"
-              ref="network-score-overlay"
-              onExit={this.closeNetworkScorePopover}
               rootClose
               placement={this.props.popoverBottom ? 'bottom' : 'top'}
-              overlay={scoreInYourNetworkPopover}
+              overlay={positionsPopover}
             >
-              <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break">
-                { totalNetworkScore === 0 ? (
-                  <span className="u-margin-left--md">
-                    { totalNetworkScoreWithSign }
-                  </span>
-                ) : (
-                  <span className="u-margin-left--xs">
-                    { totalNetworkScoreWithSign }
-                  </span>
-                )}
-                <span className="network-positions-stacked__support-score-label">
-                  <span className="d-block d-sm-none">
-                    Network
-                    <br />
-                    Score
-                    {' '}
-                    <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" />
-                  </span>
-                  <span className="d-none d-sm-block">
-                    Score in
-                    <br />
-                    Your Network
-                    {' '}
-                    <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" />
+              <span className="u-cursor--pointer">
+                <span>Endorsements</span>
+                <br />
+                <span className="network-positions-stacked__support-label">
+                  <span className="issues-list-stacked__support-label u-no-break">
+                    <span className="u-no-break issue-icon-list__endorsements-label">
+                      <img
+                        src={cordovaDot(
+                          '/img/global/svg-icons/issues/thumbs-up-icon.svg',
+                        )}
+                        className="issue-icon-list__endorsement-icon"
+                        alt="Thumbs Up"
+                        width="20"
+                        height="20"
+                      />
+                      <span className="issue-icon-list__endorsement-count">
+                        {totalSupportCount}
+                      </span>
+                    </span>
+                    <span className="issue-icon-list__endorsements-label u-no-break">
+                      <img
+                        src={cordovaDot(
+                          '/img/global/svg-icons/issues/thumbs-down-icon.svg',
+                        )}
+                        className="issue-icon-list__endorsement-icon"
+                        alt="Thumbs Down"
+                        width="20"
+                        height="20"
+                      />
+                      <span className="issue-icon-list__endorsement-count">
+                        {totalOpposeCount}
+                      </span>
+                    </span>
+                    <span className="issue-icon-list__endorsements-label u-no-break">
+                      <img
+                        src={cordovaDot(
+                          '/img/global/svg-icons/comment-icon.svg',
+                        )}
+                        className="issue-icon-list__endorsement-icon"
+                        alt="Comment"
+                        width="20"
+                        height="20"
+                      />
+                      <span className="issue-icon-list__endorsement-count">
+                        {totalInfoOnlyCount}
+                      </span>
+                    </span>
                   </span>
                 </span>
               </span>
             </OverlayTrigger>
-          ) : null
-          }
-          <span className="sr-only">
-            {totalNetworkScore > 0 ? `${totalNetworkScore} Support` : null }
-            {totalNetworkScore < 0 ? `${totalNetworkScore} Oppose` : null }
-          </span>
-        </div>
-      </div>
+          )
+        }
+
+        {/* Network Score for this ballot item here */}
+        { showNetworkScore ? (
+          <OverlayTrigger
+            trigger="click"
+            ref="network-score-overlay"
+            onExit={this.closeNetworkScorePopover}
+            rootClose
+            placement={this.props.popoverBottom ? 'bottom' : 'top'}
+            overlay={scoreInYourNetworkPopover}
+          >
+            <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break">
+              { totalNetworkScore === 0 ? (
+                <span className="u-margin-left--md">
+                  { totalNetworkScoreWithSign }
+                </span>
+              ) : (
+                <span className="u-margin-left--xs">
+                  { totalNetworkScoreWithSign }
+                </span>
+              )}
+            </span>
+          </OverlayTrigger>
+        ) : null
+        }
+        <span className="sr-only">
+          {totalNetworkScore > 0 ? `${totalNetworkScore} Support` : null }
+          {totalNetworkScore < 0 ? `${totalNetworkScore} Oppose` : null }
+        </span>
+      </span>
     );
   }
 }

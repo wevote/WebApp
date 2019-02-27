@@ -552,7 +552,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                         <div className="flex">
                           <ItemActionBar
                             ballotItemDisplayName={oneCandidate.ballot_item_display_name}
-                            ballot_item_we_vote_id={candidateWeVoteId}
+                            ballotItemWeVoteId={candidateWeVoteId}
                             commentButtonHide
                             currentBallotIdInUrl={this.props.location.hash.slice(1)}
                             shareButtonHide
@@ -560,7 +560,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                             transitioning={this.state.transitioning}
                             type="CANDIDATE"
                             urlWithoutHash={this.props.location.pathname + this.props.location.search}
-                            we_vote_id={this.props.we_vote_id}
                           />
                         </div>
                         {/* DESKTOP: If voter has taken position, offer the comment bar */}

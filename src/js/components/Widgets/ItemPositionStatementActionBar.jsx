@@ -272,10 +272,11 @@ export default class ItemPositionStatementActionBar extends Component {
                     inputRef={(tag) => { this.textarea = tag; }}
                   />
                   <div className="u-flex u-flex-column u-justify-between u-items-end">
-                    <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
-                                          type={this.props.type}
-                                          supportProps={this.props.supportProps}
-                                          className="u-flex-auto u-tr d-print-block"
+                    <PositionPublicToggle
+                      ballotItemWeVoteId={this.props.ballot_item_we_vote_id}
+                      type={this.props.type}
+                      supportProps={this.props.supportProps}
+                      className="u-flex-auto u-tr d-print-block"
                     />
                     <Button variant="outline-secondary" size="sm" type="submit">{postButtonText}</Button>
                   </div>
@@ -328,10 +329,11 @@ export default class ItemPositionStatementActionBar extends Component {
                   </div>
                 </div>
                 <div className="u-flex u-flex-column u-justify-between u-items-end">
-                  <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
-                                          type={this.props.type}
-                                          supportProps={this.props.supportProps}
-                                          className="u-flex-auto u-tr d-print-block"
+                  <PositionPublicToggle
+                    ballotItemWeVoteId={this.props.ballot_item_we_vote_id}
+                    type={this.props.type}
+                    supportProps={this.props.supportProps}
+                    className="u-flex-auto u-tr d-print-block"
                   />
                 </div>
               </div>

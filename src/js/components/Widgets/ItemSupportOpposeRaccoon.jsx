@@ -397,7 +397,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       <span>
         <ItemActionBar
           ballot_item_display_name={this.state.ballotItemDisplayName}
-          ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
+          ballotItemWeVoteId={this.state.ballotItemWeVoteId}
           commentButtonHide={commentBoxIsVisible}
           commentButtonHideInMobile
           currentBallotIdInUrl={this.props.currentBallotIdInUrl}
@@ -408,7 +408,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
           transitioning={this.state.transitioning}
           type={this.state.ballotItemType}
           urlWithoutHash={this.props.urlWithoutHash}
-          we_vote_id={this.props.we_vote_id}
         />
       </span>
     );

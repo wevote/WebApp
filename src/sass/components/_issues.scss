@@ -124,7 +124,7 @@
     $list-height-visible: $list-height - $scrollbar-height;
     $scroll-icon-margin: $space-none $space-sm;
     $scroll-icon-margin-small: $space-none 13px;
-    $support-list-margin-left: -36px;
+    $support-list-margin-left: $space-none;
     $support-list-margin-right: -16px;
     margin-left: $support-list-margin-left;
     margin-right: $support-list-margin-right;

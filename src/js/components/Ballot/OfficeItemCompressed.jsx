@@ -410,9 +410,6 @@ export default class OfficeItemCompressed extends Component {
               if (candidatePreviewCount <= candidatePreviewLimit) {
                 oneCandidateDisplay = (
                   <div key={`candidate_preview-${oneCandidate.we_vote_id}`} className="u-stack--md u-gray-border-bottom">
-                    <div className="u-float-right">
-                      <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
-                    </div>
                     <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm u-cursor--pointer">
                       {/* Candidate Image */}
                       <Link to={this.getCandidateLink(oneCandidate.we_vote_id)}>
@@ -432,14 +429,19 @@ export default class OfficeItemCompressed extends Component {
                             <span className="u-margin-left--sm card-main__candidate-party-description">{candidatePartyText}</span>
                           </h4>
                         </Link>
-                        <div>
-                          {/* Issues related to this Candidate */}
-                          <IssuesByBallotItemDisplayList
-                            ballotItemWeVoteId={oneCandidate.we_vote_id}
-                            placement="bottom"
-                          />
-                        </div>
                       </div>
+                      {/* Endorsement count or Network score */}
+                      <span className="u-float-right">
+                        <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
+                      </span>
+                    </div>
+                    <div>
+                      {/* If there is a quote about the candidate, show that TBD. If not, show issues related to candidate */}
+                      {/* Issues related to this Candidate */}
+                      <IssuesByBallotItemDisplayList
+                        ballotItemWeVoteId={oneCandidate.we_vote_id}
+                        placement="bottom"
+                      />
                     </div>
                   </div>
                 );
