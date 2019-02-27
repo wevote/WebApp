@@ -53,7 +53,7 @@ export default class HowToUse extends Component {
           by default. Use the privacy button (sample below) to switch your views to public, or back to only being
           visible to your We Vote friends.
           <PositionPublicToggle
-            ballot_item_we_vote_id="null"
+            ballotItemWeVoteId="null"
             className="null"
             type="MEASURE"
             supportProps={supportProps}
