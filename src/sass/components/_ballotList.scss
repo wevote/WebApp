@@ -75,7 +75,7 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
     }
 
     &__list {
-      padding: 0;
+      padding: $space-none;
     }
 
     &__item {
