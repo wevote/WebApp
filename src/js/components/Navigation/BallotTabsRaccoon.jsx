@@ -7,42 +7,6 @@ import { withStyles } from '@material-ui/core/styles';
 import BallotActions from '../../actions/BallotActions';
 import { renderLog } from '../../utils/logging';
 
-const styles = theme => ({
-  badge: {
-    top: 9,
-    right: -14,
-    minWidth: 16,
-    width: 20,
-    height: 19.5,
-    [theme.breakpoints.down('md')]: {
-      fontSize: 8,
-      right: -11,
-      width: 16,
-      height: 16,
-      top: 11,
-    },
-  },
-  tabLabelContainer: {
-    padding: '6px 6px',
-    [theme.breakpoints.down('md')]: {
-      padding: '6px 20px',
-    },
-  },
-  tabsRoot: {
-    minHeight: 38,
-    height: 38,
-    [theme.breakpoints.down('md')]: {
-      fontSize: 12,
-    },
-  },
-  tabsFlexContainer: {
-    height: 38,
-  },
-  scroller: {
-    overflowY: 'hidden',
-  },
-});
-
 class BallotTabsRaccoon extends Component {
   static propTypes = {
     completionLevelFilterType: PropTypes.string,
@@ -107,7 +71,7 @@ class BallotTabsRaccoon extends Component {
           onClick={() => this.goToDifferentCompletionLevelTab('filterAllBallotItems')}
           label={(
             <Badge
-              classes={{ badge: classes.badge }}
+              classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 0 ? null : classes.badgeColorPrimary }}
               color="primary"
               badgeContent={ballotLength}
               invisible={ballotLength === 0}
@@ -123,7 +87,7 @@ class BallotTabsRaccoon extends Component {
             onClick={() => this.goToDifferentCompletionLevelTab('filterRemaining')}
             label={(
               <Badge
-                classes={{ badge: classes.badge }}
+                classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 1 ? null : classes.badgeColorPrimary }}
                 color="primary"
                 badgeContent={ballotLengthRemaining}
                 invisible={ballotLengthRemaining === 0}
@@ -141,7 +105,7 @@ class BallotTabsRaccoon extends Component {
             onClick={() => this.goToDifferentCompletionLevelTab('filterDecided')}
             label={(
               <Badge
-                classes={{ badge: classes.badge }}
+                classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 2 ? null : classes.badgeColorPrimary }}
                 color="primary"
                 badgeContent={itemsDecidedCount}
                 invisible={itemsDecidedCount === 0}
@@ -156,6 +120,46 @@ class BallotTabsRaccoon extends Component {
     );
   }
 }
+
+const styles = theme => ({
+  badge: {
+    top: 9,
+    right: -14,
+    minWidth: 16,
+    width: 20,
+    height: 19.5,
+    [theme.breakpoints.down('md')]: {
+      fontSize: 8,
+      right: -11,
+      width: 16,
+      height: 16,
+      top: 11,
+    },
+  },
+  badgeColorPrimary: {
+    background: 'rgba(0, 0, 0, .15)',
+    color: '#333',
+  },
+  tabLabelContainer: {
+    padding: '6px 6px',
+    [theme.breakpoints.down('md')]: {
+      padding: '6px 20px',
+    },
+  },
+  tabsRoot: {
+    minHeight: 38,
+    height: 38,
+    [theme.breakpoints.down('md')]: {
+      fontSize: 12,
+    },
+  },
+  tabsFlexContainer: {
+    height: 38,
+  },
+  scroller: {
+    overflowY: 'hidden',
+  },
+});
 
 export default withStyles(styles)(BallotTabsRaccoon);
 

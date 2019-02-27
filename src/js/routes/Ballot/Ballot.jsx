@@ -6,8 +6,6 @@ import moment from 'moment';
 import styled from 'styled-components';
 import Badge from '@material-ui/core/Badge';
 import Chip from '@material-ui/core/Chip';
-import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import { withStyles } from '@material-ui/core/styles';
 import AddressBox from '../../components/AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -604,9 +602,6 @@ class Ballot extends Component {
 
   handleToggleSearchBallot = () => {
     const { isSearching } = this.state;
-    if (isSearching === false) {
-      setTimeout(() => {  this.chipContainer.scrollLeft += 1000; }, 350);
-    }
     this.setState({ isSearching: !isSearching });
   }
 
@@ -851,6 +846,12 @@ class Ballot extends Component {
                         <div className="ballot__item-filter-tabs" ref={(chips) => { this.chipContainer = chips; }}>
                           { ballotWithItemsFromCompletionFilterType.length && showFilterTabs ? (
                             <React.Fragment>
+                              <BallotSearch
+                              isSearching={isSearching}
+                              onToggleSearch={this.handleToggleSearchBallot}
+                              items={ballotWithAllItems}
+                              onBallotSearch={this.handleSearch}
+                              />
                               {BALLOT_ITEM_FILTER_TYPES.map((oneTypeOfBallotItem) => {
                                 const allBallotItemsByFilterType = this.state.ballotWithAllItems.filter((item) => {
                                   if (oneTypeOfBallotItem === 'Measure') {
@@ -870,18 +871,16 @@ class Ballot extends Component {
                                   return (
                                     <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
                                       <Badge
-                                    classes={{ badge: classes.badge, colorPrimary: classes.badgeColorPrimary }}
-                                    color={(oneTypeOfBallotItem === this.state.raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
-                                    badgeContent={ballotItemsByFilterType.length}
-                                    invisible={ballotItemsByFilterType.length === 0}
+                                        classes={{ badge: classes.badge, colorPrimary: classes.badgeColorPrimary }}
+                                        color={(oneTypeOfBallotItem === this.state.raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
+                                        badgeContent={ballotItemsByFilterType.length}
+                                        invisible={ballotItemsByFilterType.length === 0}
                                       >
-                                        {(oneTypeOfBallotItem === this.state.raceLevelFilterType && !isSearching) ?
-                                          <RadioButtonCheckedIcon classes={{ root: classes.iconRoot }} onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)} /> : <RadioButtonUncheckedIcon classes={{ root: classes.iconRoot }} onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)} />}
                                         <Chip variant="outlined"
                                           color={(oneTypeOfBallotItem === this.state.raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
                                           onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
                                           className="btn_ballot_filter"
-                                          classes={{ root: classes.chipRoot }}
+                                          classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === this.state.raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
                                           label={oneTypeOfBallotItem}
                                         />
                                       </Badge>
@@ -892,12 +891,6 @@ class Ballot extends Component {
                                 }
                               })
                           }
-                              <BallotSearch
-                              isSearching={isSearching}
-                              onToggleSearch={this.handleToggleSearchBallot}
-                              items={ballotWithAllItems}
-                              onBallotSearch={this.handleSearch}
-                              />
                             </React.Fragment>
                           ) : null
                       }
@@ -1054,14 +1047,34 @@ const styles = theme => ({
     },
   },
   badgeColorPrimary: {
-    background: theme.palette.primary.main,
-    color: 'white',
+    background: 'white',
+    color: theme.palette.primary.main,
+  },
+  unselectedBadgeColorPrimary: {
+    background: 'rgba(0, 0, 0, .2)',
+    color: '#333',
   },
   chipRoot: {
     height: 26,
     [theme.breakpoints.down('md')]: {
       height: 22.5,
     },
+  },
+  chipOutlined: {
+    background: theme.palette.primary.main,
+    color: 'white',
+    '&:hover': {
+      background: `${theme.palette.primary.light} !important`,
+    },
+    '&:active': {
+      background: theme.palette.primary.main,
+    },
+    '&:focus': {
+      background: `${theme.palette.primary.main} !important`,
+    },
+  },
+  chipLabel: {
+    paddingLeft: 0,
   },
   iconRoot: {
     position: 'absolute',
