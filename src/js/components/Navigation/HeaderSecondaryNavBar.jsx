@@ -17,6 +17,10 @@ import { renderLog } from "../../utils/logging";
 import VoterActions from "../../actions/VoterActions";
 import VoterStore from "../../stores/VoterStore";
 import webAppConfig from "../../config";
+import issuesIcon from "../../../img/global/svg-icons/nav/issues-16.svg";
+import printIcon from "../../../img/global/svg-icons/nav/print-16.svg";
+import emailIcon from "../../../img/global/svg-icons/nav/email-16.svg";
+import pollingIcon from "../../../img/global/svg-icons/nav/location-16.svg"
 
 export default class HeaderSecondaryNavBar extends Component {
   static propTypes = {
@@ -297,20 +301,20 @@ export default class HeaderSecondaryNavBar extends Component {
                 {/* completed={this.state.ballot_intro_issues_completed} No longer using completed state */}
                 <SecondaryNavBarItem
                   show={this._toggleBallotIntroFollowIssues}
-                  source={cordovaDot("/img/global/svg-icons/nav/issues-16.svg")}
+                  source={cordovaDot(issuesIcon)}
                   title="Issues"
                 />
 
                 <SecondaryNavBarItem
                   show={this._openPrintModal}
-                  source={cordovaDot("/img/global/svg-icons/nav/print-16.svg")}
+                  source={cordovaDot(printIcon)}
                   title="Print"
                   iconPrint
                 />
 
                 <SecondaryNavBarItem
                   show={this._toggleEmailModal}
-                  source={cordovaDot("/img/global/svg-icons/nav/email-16.svg")}
+                  source={cordovaDot(emailIcon)}
                   title="Email Ballot"
                 />
 
@@ -342,7 +346,7 @@ export default class HeaderSecondaryNavBar extends Component {
                 <div>
                   <SecondaryNavBarItem
                     show={this._togglePollingLocatorModal}
-                    source={cordovaDot("/img/global/svg-icons/nav/location-16.svg")}
+                    source={cordovaDot(pollingIcon)}
                     titleDesktop="Polling Location"
                     titleMobile="Vote"
                   />
