@@ -26,10 +26,13 @@ String.prototype.substringOccurrences = stringOccurs; // eslint-disable-line
 
 function startApp () {
   // http://harrymoreno.com/2015/07/14/Deploying-a-React-App-to-Cordova.html
+  // eslint-disable-next-line no-undef
   if (window.device && device.platform === 'iOS') {
+    // eslint-disable-next-line no-undef
     console.log(`cordova startup device: ${device}`);
     console.log('cordova startup window.screen: ', window.screen);
 
+    // eslint-disable-next-line global-require
     window.$ = require('jquery');
 
     // prevent keyboard scrolling our view, https://www.npmjs.com/package/cordova-plugin-keyboard
@@ -41,6 +44,7 @@ function startApp () {
   }
 
   render(
+    // eslint-disable-next-line react/jsx-filename-extension
     <MuiThemeProvider theme={theme}>
       <Router
         history={isCordova() ? hashHistory : browserHistory}

@@ -14,14 +14,12 @@ import { renderLog } from '../../utils/logging';
 /* eslint no-restricted-syntax: 1 */
 class BallotSideBar extends Component {
   static propTypes = {
-    ballot: PropTypes.array, // Check to see if any calls to this component pass in "ballot"
     ballotWithAllItemsByFilterType: PropTypes.array,
     ballotItemLinkHasBeenClicked: PropTypes.func,
     displayTitle: PropTypes.bool,
     displaySubtitles: PropTypes.bool,
     onClick: PropTypes.func,
     pathname: PropTypes.string,
-    rawUrlVariablesString: PropTypes.string,
     classes: PropTypes.object,
   };
 

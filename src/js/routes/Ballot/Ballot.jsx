@@ -60,49 +60,6 @@ import AppActions from '../../actions/AppActions';
 // Related to WebApp/src/js/components/VoterGuide/VoterGuideBallot.jsx
 const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];
 
-const Wrapper = styled.div`
-  padding-top: ${({ cordova }) => (cordova ? '100px' : 0)};
-`;
-
-const styles = theme => ({
-  badge: {
-    top: 13,
-    minWidth: 16,
-    width: 20,
-    right: 14,
-    background: 'rgba(46, 60, 93, 0.08)',
-    color: '#333',
-    [theme.breakpoints.down('md')]: {
-      fontSize: 9,
-      width: 16,
-      height: 16,
-      top: 11,
-      right: 11,
-    },
-  },
-  badgeColorPrimary: {
-    background: theme.palette.primary.main,
-    color: 'white',
-  },
-  chipRoot: {
-    height: 26,
-    [theme.breakpoints.down('md')]: {
-      height: 22.5,
-    },
-  },
-  iconRoot: {
-    position: 'absolute',
-    left: 3,
-    top: 1,
-    color: theme.palette.primary.main,
-    cursor: 'pointer',
-    [theme.breakpoints.down('md')]: {
-      fontSize: 16,
-      top: 3,
-    },
-  },
-});
-
 class Ballot extends Component {
   static propTypes = {
     location: PropTypes.object,
@@ -482,6 +439,7 @@ class Ballot extends Component {
       raceLevelFilterType, mounted, issuesRetrievedFromGoogleCivicElectionId,
       issuesRetrievedFromBallotReturnedWeVoteId, issuesRetrievedFromBallotLocationShortcut,
     } = this.state;
+
     if (mounted) {
       if (ballotProperties && ballotProperties.ballot_found && ballot && ballot.length === 0) {
         // Ballot is found but ballot is empty. We want to stay put.
@@ -490,7 +448,6 @@ class Ballot extends Component {
         const ballotWithItemsFromCompletionFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
         this.setState({
           ballotWithAllItems: BallotStore.getBallotByCompletionLevelFilterType('all'),
-          ballotSearchResults: BallotStore.getBallotByCompletionLevelFilterType('all'),
           ballotWithItemsFromCompletionFilterType,
         });
         if (ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length) {
@@ -499,7 +456,6 @@ class Ballot extends Component {
         }
       }
     }
-
     if (ballotProperties) {
       // If the incoming googleCivicElectionId, ballotReturnedWeVoteId, or ballotLocationShortcut are different, call issuesRetrieveForElection
       if (parseInt(ballotProperties.google_civic_election_id, 10) !== issuesRetrievedFromGoogleCivicElectionId ||
@@ -532,7 +488,7 @@ class Ballot extends Component {
     if (this.state.ballotLength !== BallotStore.ballotLength) {
       this.setState({
         ballotLength: BallotStore.ballotLength,
-        raceLevelFilterType: 'Federal',
+        // raceLevelFilterType: 'Federal',
         showFilterTabs: false,
         foundFirstRaceLevel: false,
       });
@@ -995,10 +951,10 @@ class Ballot extends Component {
                     <div>
                       {/* The rest of the ballot items */}
                       <div className={isWebApp() ? 'BallotList' : 'BallotList__cordova'}>
-                        {(isSearching ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => {
-                          // ballot limited by items by filter type
+                        {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => {
+                          // ballot limited by items by filter typeß
                           // console.log(this.state.raceLevelFilterType);
-                          if ((this.state.raceLevelFilterType === 'All' || this.state.isSearching ||
+                          if ((this.state.raceLevelFilterType === 'All' || (isSearching && ballotSearchResults.length) ||
                           (item.kind_of_ballot_item === this.state.raceLevelFilterType.toUpperCase()) ||
                             this.state.raceLevelFilterType === item.race_office_level)) {
                             return (
@@ -1076,5 +1032,48 @@ class Ballot extends Component {
     );
   }
 }
+
+const Wrapper = styled.div`
+  padding-top: ${({ cordova }) => (cordova ? '100px' : 0)};
+`;
+
+const styles = theme => ({
+  badge: {
+    top: 13,
+    minWidth: 16,
+    width: 20,
+    right: 14,
+    background: 'rgba(46, 60, 93, 0.08)',
+    color: '#333',
+    [theme.breakpoints.down('md')]: {
+      fontSize: 9,
+      width: 16,
+      height: 16,
+      top: 11,
+      right: 11,
+    },
+  },
+  badgeColorPrimary: {
+    background: theme.palette.primary.main,
+    color: 'white',
+  },
+  chipRoot: {
+    height: 26,
+    [theme.breakpoints.down('md')]: {
+      height: 22.5,
+    },
+  },
+  iconRoot: {
+    position: 'absolute',
+    left: 3,
+    top: 1,
+    color: theme.palette.primary.main,
+    cursor: 'pointer',
+    [theme.breakpoints.down('md')]: {
+      fontSize: 16,
+      top: 3,
+    },
+  },
+});
 
 export default withStyles(styles)(Ballot);
