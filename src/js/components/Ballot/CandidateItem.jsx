@@ -6,7 +6,7 @@ import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpp
 import CandidateStore from '../../stores/CandidateStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
-// import ItemSupportOpposeRaccoon from '../Widgets/ItemSupportOpposeRaccoon';
+import IssuesByBallotItemDisplayList from '../Issues/IssuesByBallotItemDisplayList';
 import LearnMore from '../Widgets/LearnMore';
 import { renderLog } from '../../utils/logging';
 import OfficeNameText from '../Widgets/OfficeNameText';
@@ -165,7 +165,7 @@ export default class CandidateItem extends Component {
             {this.props.link_to_ballot_item_page ?
               <Link to={this.getCandidateLink} className="u-no-underline">{candidatePhotoUrlHtml}</Link> :
               candidatePhotoUrlHtml
-          }
+            }
 
             {twitterFollowersCount ? (
               <span
@@ -187,14 +187,12 @@ export default class CandidateItem extends Component {
               { this.props.link_to_ballot_item_page ?
                 <Link to={this.getCandidateLink}>{ballotItemDisplayName}</Link> :
                 ballotItemDisplayName
-            }
+              }
             </h2>
             <p className={this.props.link_to_ballot_item_page ?
               'u-gray-darker u-cursor--pointer' :
               'u-gray-darker'
               }
-              onClick={this.props.link_to_ballot_item_page ?
-                this.goToCandidateLink : null}
             >
               { contestOfficeName ? (
                 <OfficeNameText
@@ -204,7 +202,7 @@ export default class CandidateItem extends Component {
                 />
               ) :
                 null
-          }
+              }
             </p>
             { candidateText.length ? (
               <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
@@ -229,14 +227,23 @@ export default class CandidateItem extends Component {
           }
           </div>
           {' '}
+          {/* Endorsement count or Network score */}
+          <span>
+            <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={candidateWeVoteId} />
+          </span>
           {/* END .card-main__media-object-content */}
         </div>
         {' '}
         {/* END .card-main__media-object */}
         <div className="card-main__actions">
           <div>
-            <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={candidateWeVoteId} />
-            {/* Positions in Your Network and Possible Voter Guides to Follow */}
+            {/* Issues related to this Candidate */}
+            <IssuesByBallotItemDisplayList
+              ballotItemWeVoteId={candidateWeVoteId}
+              placement="bottom"
+            />
+          </div>
+          <div>
             {this.state.hideBallotItemSupportOpposeComment ?
               null : (
                 <BallotItemSupportOpposeComment

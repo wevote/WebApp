@@ -93,7 +93,7 @@ export default class Office extends Component {
 
     const officeName = capitalizeString(office.ballot_item_display_name);
     const titleText = `${officeName} - We Vote`;
-    const descriptionText = `Choose who you support for ${officeName}in the November Election`;
+    const descriptionText = `Choose who you support for ${officeName} in this election`;
 
     return (
       <div>

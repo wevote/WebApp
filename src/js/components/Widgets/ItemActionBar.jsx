@@ -18,10 +18,10 @@ import webAppConfig from '../../config';
 
 export default class ItemActionBar extends Component {
   static propTypes = {
-    ballot_item_we_vote_id: PropTypes.string.isRequired,
+    ballotItemWeVoteId: PropTypes.string.isRequired,
     commentButtonHide: PropTypes.bool,
     commentButtonHideInMobile: PropTypes.bool,
-    currentBallotIdInUrl: PropTypes.string,
+    // currentBallotIdInUrl: PropTypes.string,
     opposeHideInMobile: PropTypes.bool,
     shareButtonHide: PropTypes.bool,
     supportProps: PropTypes.object,
@@ -29,8 +29,7 @@ export default class ItemActionBar extends Component {
     type: PropTypes.string.isRequired,
     ballotItemDisplayName: PropTypes.string,
     supportOrOpposeHasBeenClicked: PropTypes.func,
-    urlWithoutHash: PropTypes.string,
-    we_vote_id: PropTypes.string,
+    // urlWithoutHash: PropTypes.string,
   };
 
   constructor (props) {
@@ -77,7 +76,7 @@ export default class ItemActionBar extends Component {
     }
 
     this.setState({
-      ballotItemWeVoteId: this.props.ballot_item_we_vote_id,
+      ballotItemWeVoteId: this.props.ballotItemWeVoteId,
       componentDidMountFinished: true,
       isOpposeAPIState,
       isPublicPosition,
@@ -89,10 +88,10 @@ export default class ItemActionBar extends Component {
 
   componentWillReceiveProps (nextProps) {
     // console.log("itemActionBar, RELOAD componentWillReceiveProps");
-    if (nextProps.ballot_item_we_vote_id !== undefined && nextProps.ballot_item_we_vote_id && nextProps.ballot_item_we_vote_id !== this.state.ballotItemWeVoteId) {
+    if (nextProps.ballotItemWeVoteId !== undefined && nextProps.ballotItemWeVoteId && nextProps.ballotItemWeVoteId !== this.state.ballotItemWeVoteId) {
       // console.log("itemActionBar, ballotItemWeVoteId setState");
       this.setState({
-        ballotItemWeVoteId: nextProps.ballot_item_we_vote_id,
+        ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
       }, this.onMeasureStoreChange);
     }
     // Only proceed if we have valid supportProps
@@ -174,7 +173,7 @@ export default class ItemActionBar extends Component {
       return true;
     }
 
-    if (nextProps.ballot_item_we_vote_id !== undefined && nextProps.ballot_item_we_vote_id && nextProps.ballot_item_we_vote_id !== this.state.ballotItemWeVoteId) {
+    if (nextProps.ballotItemWeVoteId !== undefined && nextProps.ballotItemWeVoteId && nextProps.ballotItemWeVoteId !== this.state.ballotItemWeVoteId) {
       // console.log("shouldComponentUpdate: itemActionBar, ballotItemWeVoteId");
       return true;
     }
@@ -460,7 +459,7 @@ export default class ItemActionBar extends Component {
               </div>
               <br />
               <PositionPublicToggle
-                ballot_item_we_vote_id="null"
+                ballotItemWeVoteId="null"
                 className="null"
                 type="MEASURE"
                 supportProps={modalSupportProps}

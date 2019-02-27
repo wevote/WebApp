@@ -14,10 +14,9 @@ import VoterStore from '../../stores/VoterStore';
 
 export default class PositionPublicToggle extends Component {
   static propTypes = {
-    ballot_item_we_vote_id: PropTypes.string.isRequired,
+    ballotItemWeVoteId: PropTypes.string.isRequired,
     className: PropTypes.string.isRequired,
     inTestMode: PropTypes.bool,
-
     // onToggleChangeFunction: PropTypes.func, // This was written for react-bootstrap-toggle version 2.3.1, but we are having some troubles upgrading
     supportProps: PropTypes.object,
     type: PropTypes.string.isRequired,
@@ -71,7 +70,7 @@ export default class PositionPublicToggle extends Component {
     });
 
     // console.log("PositionPublicToggle-showItemToFriendsOnly, this.props.type:", this.props.type);
-    SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, 'FRIENDS_ONLY');
+    SupportActions.voterPositionVisibilitySave(this.props.ballotItemWeVoteId, this.props.type, 'FRIENDS_ONLY');
     showToastSuccess('Position now visible to friends only!');
   }
 
@@ -83,7 +82,7 @@ export default class PositionPublicToggle extends Component {
       this.setState({
         showToThePublicOn: true,
       });
-      SupportActions.voterPositionVisibilitySave(this.props.ballot_item_we_vote_id, this.props.type, 'SHOW_PUBLIC');
+      SupportActions.voterPositionVisibilitySave(this.props.ballotItemWeVoteId, this.props.type, 'SHOW_PUBLIC');
       const positionPublicToggleModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
       if (!positionPublicToggleModalHasBeenShown) {
         this.togglePositionPublicHelpModal();
@@ -197,7 +196,7 @@ export default class PositionPublicToggle extends Component {
               <br />
               <br />
               <PositionPublicToggle
-                ballot_item_we_vote_id="null"
+                ballotItemWeVoteId="null"
                 className="null"
                 type="MEASURE"
                 supportProps={modalSupportProps}
