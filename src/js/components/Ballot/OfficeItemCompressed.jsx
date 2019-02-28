@@ -4,6 +4,7 @@ import {  Modal } from 'react-bootstrap'; // , OverlayTrigger, Popover
 import { Link } from 'react-router';
 // import TextTruncate from 'react-text-truncate';
 import Slider from 'react-slick';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { cordovaDot, historyPush, hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { toTitleCase } from '../../utils/textFormat';
@@ -506,14 +507,21 @@ export default class OfficeItemCompressed extends Component {
               { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ? (
                 <span>
                   {' '}
-                  view all
+                  show all
                   {' '}
                   {totalNumberOfCandidatesToDisplay}
                   {' '}
                   candidates
+                  {' '}
+                  <ArrowForwardIcon className="material-icons arrow-forward" />
                 </span>
-              ) :
-                <span>show more</span>
+              ) : (
+                <span>
+                  show more
+                  {' '}
+                  <ArrowForwardIcon className="material-icons arrow-forward" />
+                </span>
+              )
             }
             </div>
           </Link>
