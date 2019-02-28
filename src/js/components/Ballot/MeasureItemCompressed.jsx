@@ -1,25 +1,33 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import Card from '@material-ui/core/Card';
+import Divider from '@material-ui/core/Divider';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import CommentIcon from '@material-ui/icons/Comment';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import extractNumber from '../../utils/extractNumber';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
-import ReadMore from '../Widgets/ReadMore';
 import SupportStore from '../../stores/SupportStore';
-import { capitalizeString } from '../../utils/textFormat';
+import { capitalizeString, shortenText } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 
 
-export default class MeasureItemCompressed extends Component {
+class MeasureItemCompressed extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string.isRequired,
     // currentBallotIdInUrl: PropTypes.string,
-    measure: PropTypes.object,
-    measure_subtitle: PropTypes.string,
     organization: PropTypes.object,
     showPositionStatementActionBar: PropTypes.bool,
     // urlWithoutHash: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired,
+    classes: PropTypes.object,
+    theme: PropTypes.object,
   };
 
   constructor (props) {
@@ -152,9 +160,13 @@ export default class MeasureItemCompressed extends Component {
   render () {
     // console.log("MeasureItemCompressed render");
     renderLog(__filename);
-    let { ballot_item_display_name: ballotItemDisplayName, measure_subtitle: measureSubtitle } = this.props;
+    console.log(this.state.measure);
+    const { measure } = this.state;
+    const { classes, theme } = this.props;
+    let { ballot_item_display_name: ballotItemDisplayName } = this.props;
+    const ballotDisplay = ballotItemDisplayName.split(':');
+    const ballotItemDescription = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam enim quam, placerat eu tincidunt eget, blandit et ipsum. Aenean tristique sapien ipsum. Ut placerat pellentesque arcu sagittis condimentum. Vivamus nec erat imperdiet mauris feugiat dignissim. Nam iaculis ullamcorper placerat. Suspendisse iaculis sapien facilisis mi efficitur ultricies. Duis sit amet odio eu nisi bibendum varius. Cras commodo fringilla magna, id gravida orci convallis quis. Nunc ultricies non sapien id pellentesque. Sed tristique sollicitudin ex, in commodo enim aliquam non. Donec consectetur purus ac sagittis tempor.';
     const { we_vote_id: measureWeVoteId } = this.props;
-    measureSubtitle = capitalizeString(measureSubtitle);
     ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
 
     // let measureGuidesList = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(measureWeVoteId);
@@ -187,36 +199,180 @@ export default class MeasureItemCompressed extends Component {
     // }
 
     return (
-      <div className="card-main measure-card">
-        <div className="card-main__content">
-          <h2 className="card-main__display-name">
-            <div className="card-main__ballot-name-group">
-              <div className="card-main__ballot-name-item card-main__ballot-name card-main__ballot-name-link">
-                <a onClick={() => this.goToMeasureLink(measureWeVoteId)}>
-                  {ballotItemDisplayName}
-                </a>
-              </div>
-            </div>
-          </h2>
-          {/* Measure information */}
-          <div
-            className="u-cursor--pointer"
-            onClick={() => this.goToMeasureLink(measureWeVoteId)}
-          >
-            {measureSubtitle}
-          </div>
-          { this.state.measure_text ? (
-            <div className="measure_text u-gray-mid">
-              <ReadMore
-                num_of_lines={3}
-                text_to_display={this.state.measure_text}
-              />
-            </div>
-          ) :
-            null
+      <Card classes={{ root: classes.cardRoot }}>
+        <InfoRow>
+          <MeasureInfoWrapper onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
+            <Title>{ballotDisplay[0]}</Title>
+            <SubTitle>{ballotDisplay[1]}</SubTitle>
+            <Info>{shortenText(ballotItemDescription, 200)}</Info>
+          </MeasureInfoWrapper>
+          <EndorsementWrapper>
+            <B>Endorsements</B>
+            <EndorsementRow>
+              <Endorsement>
+                <ThumbUpIcon classes={{ root: classes.endorsementIconRoot }} />
+                100
+              </Endorsement>
+              <Endorsement>
+                <ThumbDownIcon classes={{ root: classes.endorsementIconRoot }} />
+                99
+              </Endorsement>
+              <Endorsement>
+                <CommentIcon classes={{ root: classes.endorsementIconRoot }} />
+                999
+              </Endorsement>
+            </EndorsementRow>
+          </EndorsementWrapper>
+        </InfoRow>
+        {
+          measure && (
+            <ChoicesRow>
+              <Choice>
+                <ChoiceTitle brandBlue={theme.palette.primary.main}>{`Yes On ${extractNumber(ballotItemDisplayName)}`}</ChoiceTitle>
+                <ChoiceInfo>{shortenText(measure.yes_vote_description, 200)}</ChoiceInfo>
+              </Choice>
+              <Choice>
+                <ChoiceTitle brandBlue={theme.palette.primary.main}>{`No On ${extractNumber(ballotItemDisplayName)}`}</ChoiceTitle>
+                <ChoiceInfo>{shortenText(measure.no_vote_description, 200)}</ChoiceInfo>
+              </Choice>
+            </ChoicesRow>
+          )
         }
-        </div>
-      </div>
+        <Divider />
+        <CardFooter onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
+          Show More
+          <ArrowForwardIcon classes={{ root: classes.cardFooterIconRoot }} />
+        </CardFooter>
+      </Card>
     );
   }
 }
+
+const styles = theme => ({
+  cardRoot: {
+    padding: '8px 16px',
+    [theme.breakpoints.down('lg')]: {
+      padding: '2px 16px',
+    },
+  },
+  endorsementIconRoot: {
+    fontSize: 14,
+    margin: '.3rem .3rem 0 .5rem',
+  },
+  cardFooterIconRoot: {
+    fontSize: 14,
+    margin: '0 0 .1rem .4rem',
+  },
+});
+
+const InfoRow = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+`;
+
+const ChoicesRow = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+`;
+
+const Choice = styled.div`
+  display: flex;
+  flex-flow: column;
+  padding-right: 8px;
+`;
+
+const ChoiceTitle = styled.h1`
+  font-weight: bold;
+  color: ${({ brandBlue }) => brandBlue};
+`;
+
+const ChoiceInfo = styled.p`
+  font-size: 12px;
+  color: #777;
+  @media (max-width: 768px) {
+    max-width: 140%;
+  }
+`;
+
+const MeasureInfoWrapper = styled.div`
+  display: flex;
+  flex-flow: column;
+  max-width: 75%;
+  cursor: pointer;
+  user-select: none;
+  padding-right: 8px;
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
+`;
+
+const EndorsementWrapper = styled.div`
+  max-width: 25%;
+  color: #888;
+  padding-top: .67rem;
+  text-align: right;
+  user-select: none;
+  @media (max-width: 768px) {
+    max-width: 100%;
+    width: 100%;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    flex-flow: row;
+    padding-bottom: 8px;
+    justify-content: space-between;
+  }
+`;
+
+const Endorsement = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+`;
+
+const EndorsementRow = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+`;
+
+const B = styled.div`
+  font-weight: bold;
+  font-size: 14px;
+`;
+
+const Title = styled.h1`
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: .1rem;
+  @media (max-width: 960px) {
+    font-size: 16px;
+  }
+`;
+
+const SubTitle = styled.h3`
+  font-size: 16px;
+  font-weight: 300;
+  color: #555;
+  @media (max-width: 960px) {
+    font-size: 13px;
+  }
+`;
+
+const Info = styled.p`
+  font-size: 13px;
+  font-weight: 300;
+  color: #777;
+`;
+
+const CardFooter = styled.div`
+  font-size: 12px;
+  padding-top: 8px;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  @media (max-width: 960px) {
+    padding-bottom: 8px;
+  }
+`;
+
+export default withTheme()(withStyles(styles)(MeasureItemCompressed));
