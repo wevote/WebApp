@@ -39,6 +39,20 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
   &__view-more {
     font-size: .9rem;
     font-weight: 200;
+    color: $black;
+    text-align: center;
+    border-top: 1px solid;
+    border-color: $gray-light;
+    .material-icons.ios-arrow {
+      font-size: .9rem;
+      padding-top: $race-filter-margin;
+      position: relative;
+      bottom: -2.5px;
+    }
+  }
+
+  &__view-more:hover {
+    color: $link-color;
   }
 
   &__view-more-plus {

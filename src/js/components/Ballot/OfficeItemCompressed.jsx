@@ -506,14 +506,19 @@ export default class OfficeItemCompressed extends Component {
               { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ? (
                 <span>
                   {' '}
-                  view all
+                  show all
                   {' '}
                   {totalNumberOfCandidatesToDisplay}
                   {' '}
                   candidates
+                  <i className="material-icons ios-arrow">arrow_forward_ios</i>
                 </span>
-              ) :
-                <span>show more</span>
+              ) : (
+                <span>
+                  show more
+                  <i className="material-icons ios-arrow">arrow_forward_ios</i>
+                </span>
+              )
             }
             </div>
           </Link>
