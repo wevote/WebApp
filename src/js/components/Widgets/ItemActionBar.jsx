@@ -15,6 +15,12 @@ import VoterConstants from "../../constants/VoterConstants";
 import VoterStore from "../../stores/VoterStore";
 import PositionPublicToggle from "./PositionPublicToggle";
 import webAppConfig from "../../config";
+import shareIconSvg from "../../../img/global/svg-icons/share-icon.svg";
+import checkMarkIcon from "../../../img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-262-tick.svg";
+import thumbsUpIcon from "../../../img/global/svg-icons/thumbs-up-icon.svg";
+import banCircleIcon from "../../../img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-90-ban-circle.svg";
+import thumbsDownIcon from "../../../img/global/svg-icons/thumbs-down-icon.svg";
+import commentIcon from "../../../img/global/svg-icons/comment-icon.svg";
 
 export default class ItemActionBar extends Component {
   static propTypes = {
@@ -428,7 +434,7 @@ export default class ItemActionBar extends Component {
 
     const shareIcon = (
       <span className="btn__icon">
-        <img src={cordovaDot("/img/global/svg-icons/share-icon.svg")}
+        <img src={cordovaDot(shareIconSvg)}
              width={iconSize}
              height={iconSize}
              color={iconColor}
@@ -530,7 +536,7 @@ export default class ItemActionBar extends Component {
         type="button"
       >
         <span className="btn__icon">
-          <img src={cordovaDot("/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-262-tick.svg")}
+          <img src={cordovaDot(checkMarkIcon)}
                width={chooseIconSize}
                height={chooseIconSize}
                color={chooseIconColor}
@@ -562,7 +568,7 @@ export default class ItemActionBar extends Component {
         type="button"
       >
         <span className="btn__icon">
-          <img src={cordovaDot("/img/global/svg-icons/thumbs-up-icon.svg")}
+          <img src={cordovaDot(thumbsUpIcon)}
                width={18}
                height={18}
                color={chooseIconColor}
@@ -594,7 +600,7 @@ export default class ItemActionBar extends Component {
         type="button"
       >
         <span className="btn__icon">
-          <ReactSVG src={cordovaDot("/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-90-ban-circle.svg")}
+          <ReactSVG src={cordovaDot(banCircleIcon)}
                     svgStyle={{ fill: opposeIconColor, height: opposeIconSize, width: opposeIconSize }}
           />
         </span>
@@ -623,7 +629,7 @@ export default class ItemActionBar extends Component {
         type="button"
       >
         <span className="btn__icon">
-          <img src={cordovaDot("/img/global/svg-icons/thumbs-down-icon.svg")}
+          <img src={cordovaDot(thumbsDownIcon)}
                width={18}
                height={18}
                color={opposeIconColor}
@@ -655,7 +661,7 @@ export default class ItemActionBar extends Component {
         type="button"
       >
         <span className="btn__icon">
-          <img src={cordovaDot("/img/global/svg-icons/comment-icon.svg")}
+          <img src={cordovaDot(commentIcon)}
                width={18}
                height={18}
                color={iconColor}
