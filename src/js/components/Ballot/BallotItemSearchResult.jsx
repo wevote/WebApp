@@ -11,14 +11,11 @@ const TYPES = require('keymirror')({
 
 export default class BallotItemSearchResult extends Component {
   static propTypes = {
-    allBallotItemsCount: PropTypes.number,
-    ballot_item_display_name: PropTypes.string.isRequired,
-    candidate_list: PropTypes.array,
+    // allBallotItemsCount: PropTypes.number,
     kind_of_ballot_item: PropTypes.string.isRequired,
     organization: PropTypes.object,
-    organization_we_vote_id: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired,
-    updateOfficeDisplayUnfurledTracker: PropTypes.func,
+    // updateOfficeDisplayUnfurledTracker: PropTypes.func,
   };
 
   isMeasure () {
@@ -31,10 +28,15 @@ export default class BallotItemSearchResult extends Component {
       <div className="BallotItem card" id={this.props.we_vote_id}>
         { this.isMeasure() ? (
           <MeasureItemCompressed
-            {...this.props}
+            measureWeVoteId={this.props.we_vote_id}
+            organization={this.props.organization}
           />
-        ) :
-          <CandidateItemCompressed oneCandidate={this.props} />
+        ) : (
+          <CandidateItemCompressed
+            candidateWeVoteId={this.props.we_vote_id}
+            organization={this.props.organization}
+          />
+        )
         }
       </div>
     );

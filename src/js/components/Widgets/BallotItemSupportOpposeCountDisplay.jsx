@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { withStyles, withTheme } from '@material-ui/core/styles';
+import CommentIcon from '@material-ui/icons/Comment';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import BallotStore from '../../stores/BallotStore';
 import CandidateActions from '../../actions/CandidateActions';
 import CandidateStore from '../../stores/CandidateStore';
@@ -19,11 +24,12 @@ import VoterStore from '../../stores/VoterStore';
 /* eslint react/no-find-dom-node: 1 */
 /* eslint array-callback-return: 1 */
 
-export default class BallotItemSupportOpposeCountDisplay extends Component {
+class BallotItemSupportOpposeCountDisplay extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     goToCandidate: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
     popoverBottom: PropTypes.bool,
+    classes: PropTypes.object,
   };
 
   static closePositionsPopover () {
@@ -255,6 +261,7 @@ export default class BallotItemSupportOpposeCountDisplay extends Component {
     // // console.log("BallotItemSupportOpposeCountDisplay, voterIssuesScore: ", voterIssuesScore, ", ballotItemWeVoteId: ", this.state.ballotItemWeVoteId);
     // const issueCountUnderThisBallotItem = IssueStore.getIssuesCountUnderThisBallotItem(this.state.ballotItemWeVoteId);
     // const issueCountUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesCountUnderThisBallotItemVoterIsFollowing(this.state.ballotItemWeVoteId);
+    const { classes } = this.props;
 
     // Network Score
     let networkSupportCount = 0;
@@ -572,54 +579,31 @@ export default class BallotItemSupportOpposeCountDisplay extends Component {
               overlay={positionsPopover}
             >
               <span className="u-cursor--pointer">
-                <span>Endorsements</span>
-                <br />
-                <span className="network-positions-stacked__support-label">
-                  <span className="issues-list-stacked__support-label u-no-break">
-                    <span className="u-no-break issue-icon-list__endorsements-label">
-                      <img
-                        src={cordovaDot(
-                          '/img/global/svg-icons/issues/thumbs-up-icon.svg',
-                        )}
-                        className="issue-icon-list__endorsement-icon"
-                        alt="Thumbs Up"
-                        width="20"
-                        height="20"
-                      />
-                      <span className="issue-icon-list__endorsement-count">
+                <EndorsementsTitle>
+                  Endorsements
+                </EndorsementsTitle>
+                <EndorsementWrapper>
+                  <EndorsementRow>
+                    <Endorsement>
+                      <ThumbUpIcon classes={{ root: classes.endorsementIconRoot }} />
+                      <EndorsementCount>
                         {totalSupportCount}
-                      </span>
-                    </span>
-                    <span className="issue-icon-list__endorsements-label u-no-break">
-                      <img
-                        src={cordovaDot(
-                          '/img/global/svg-icons/issues/thumbs-down-icon.svg',
-                        )}
-                        className="issue-icon-list__endorsement-icon"
-                        alt="Thumbs Down"
-                        width="20"
-                        height="20"
-                      />
-                      <span className="issue-icon-list__endorsement-count">
+                      </EndorsementCount>
+                    </Endorsement>
+                    <Endorsement>
+                      <ThumbDownIcon classes={{ root: classes.endorsementIconRoot }} />
+                      <EndorsementCount>
                         {totalOpposeCount}
-                      </span>
-                    </span>
-                    <span className="issue-icon-list__endorsements-label u-no-break">
-                      <img
-                        src={cordovaDot(
-                          '/img/global/svg-icons/comment-icon.svg',
-                        )}
-                        className="issue-icon-list__endorsement-icon"
-                        alt="Comment"
-                        width="20"
-                        height="20"
-                      />
-                      <span className="issue-icon-list__endorsement-count">
+                      </EndorsementCount>
+                    </Endorsement>
+                    <Endorsement>
+                      <CommentIcon classes={{ root: classes.endorsementIconRoot }} />
+                      <EndorsementCount>
                         {totalInfoOnlyCount}
-                      </span>
-                    </span>
-                  </span>
-                </span>
+                      </EndorsementCount>
+                    </Endorsement>
+                  </EndorsementRow>
+                </EndorsementWrapper>
               </span>
             </OverlayTrigger>
           )
@@ -657,3 +641,58 @@ export default class BallotItemSupportOpposeCountDisplay extends Component {
     );
   }
 }
+
+const styles = theme => ({
+  cardRoot: {
+    padding: '8px 16px',
+    [theme.breakpoints.down('lg')]: {
+      padding: '2px 16px',
+    },
+  },
+  endorsementIconRoot: {
+    fontSize: 14,
+    margin: '.3rem .3rem 0 .5rem',
+  },
+  cardFooterIconRoot: {
+    fontSize: 14,
+    margin: '0 0 .1rem .4rem',
+  },
+});
+
+const EndorsementsTitle = styled.div`
+  color: #888;
+  font-weight: 600;
+  font-size: 12px;
+  text-align: right;
+`;
+
+const EndorsementWrapper = styled.div`
+  max-width: 25%;
+  color: #888;
+  text-align: right;
+  user-select: none;
+  max-width: 100%;
+  width: 100%;
+  display: flex;
+  flex-flow: row;
+  padding-bottom: 8px;
+  justify-content: space-between;
+`;
+
+const Endorsement = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  font-size: 12px;
+`;
+
+const EndorsementRow = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+`;
+
+const EndorsementCount = styled.div`
+  padding-top: 4px;
+`;
+
+export default withTheme()(withStyles(styles)(BallotItemSupportOpposeCountDisplay));

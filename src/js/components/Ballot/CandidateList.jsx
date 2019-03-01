@@ -21,6 +21,7 @@ export default class CandidateList extends Component {
               contest_office_name={this.props.contest_office_name}
               hideBallotItemSupportOpposeComment
               link_to_ballot_item_page
+              showTopCommentByBallotItem
               {...child}
             />
           </div>

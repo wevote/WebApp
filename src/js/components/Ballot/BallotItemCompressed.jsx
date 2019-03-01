@@ -32,7 +32,8 @@ export default class BallotItemCompressed extends Component {
       <div className="BallotItem card" id={this.props.we_vote_id}>
         { this.isMeasure() ? (
           <MeasureItemCompressed
-            {...this.props}
+            measureWeVoteId={this.props.we_vote_id}
+            organization={this.props.organization}
           />
         ) : (
           <OfficeItemCompressed
