@@ -41,7 +41,7 @@ export default class VoterGuideSettingsSuggestedBallotItems extends Component {
                 return null;
               } else {
                 suggestedItemsCount += 1;
-                return <CandidateItemCompressed oneCandidate={oneCandidate} />;
+                return <CandidateItemCompressed candidateWeVoteId={oneCandidate.we_vote_id} />;
               }
             });
           } else {

@@ -4,10 +4,8 @@ import styled from 'styled-components';
 import Card from '@material-ui/core/Card';
 import Divider from '@material-ui/core/Divider';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import ThumbDownIcon from '@material-ui/icons/ThumbDown';
-import CommentIcon from '@material-ui/icons/Comment';
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import extractNumber from '../../utils/extractNumber';
@@ -20,12 +18,11 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 
 class MeasureItemCompressed extends Component {
   static propTypes = {
-    ballot_item_display_name: PropTypes.string.isRequired,
     // currentBallotIdInUrl: PropTypes.string,
     organization: PropTypes.object,
     showPositionStatementActionBar: PropTypes.bool,
     // urlWithoutHash: PropTypes.string,
-    we_vote_id: PropTypes.string.isRequired,
+    measureWeVoteId: PropTypes.string.isRequired,
     classes: PropTypes.object,
     theme: PropTypes.object,
   };
@@ -35,8 +32,12 @@ class MeasureItemCompressed extends Component {
     this.state = {
       // ballotItemWeVoteId: '',
       componentDidMountFinished: false,
+      measureText: '',
+      measureWeVoteId: '',
+      noVoteDescription: '',
       organization: {},
       showPositionStatement: false,
+      yesVoteDescription: '',
     };
     this.getMeasureLink = this.getMeasureLink.bind(this);
     this.goToMeasureLink = this.goToMeasureLink.bind(this);
@@ -48,11 +49,17 @@ class MeasureItemCompressed extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
+    const measure = MeasureStore.getMeasure(this.props.measureWeVoteId);
     this.setState({
-      // ballotItemWeVoteId: this.props.we_vote_id,
+      ballotItemDisplayName: measure.ballot_item_display_name,
       componentDidMountFinished: true,
-      measure: MeasureStore.getMeasure(this.props.we_vote_id),
-      supportProps: SupportStore.get(this.props.we_vote_id),
+      measure,
+      measureSubtitle: measure.measure_subtitle,
+      measureSupportProps: SupportStore.get(this.props.measureWeVoteId),
+      measureText: measure.measure_text,
+      measureWeVoteId: this.props.measureWeVoteId,
+      noVoteDescription: measure.no_vote_description,
+      yesVoteDescription: measure.yes_vote_description,
     });
     if (this.props.organization && this.props.organization.organization_we_vote_id) {
       this.setState({
@@ -67,8 +74,16 @@ class MeasureItemCompressed extends Component {
         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
       });
     }
+    const measure = MeasureStore.getMeasure(nextProps.measureWeVoteId);
     this.setState({
-      measure: MeasureStore.getMeasure(this.props.we_vote_id),
+      ballotItemDisplayName: measure.ballot_item_display_name,
+      measure,
+      measureSubtitle: measure.measure_subtitle,
+      measureSupportProps: SupportStore.get(nextProps.measureWeVoteId),
+      measureText: measure.measure_text,
+      measureWeVoteId: nextProps.measureWeVoteId,
+      noVoteDescription: measure.no_vote_description,
+      yesVoteDescription: measure.yes_vote_description,
     });
   }
 
@@ -94,11 +109,11 @@ class MeasureItemCompressed extends Component {
       // console.log("shouldComponentUpdate: this.state.showPositionStatement change");
       return true;
     }
-    if (this.state.supportProps !== undefined && nextState.supportProps !== undefined) {
-      const currentNetworkSupportCount = parseInt(this.state.supportProps.support_count) || 0;
-      const nextNetworkSupportCount = parseInt(nextState.supportProps.support_count) || 0;
-      const currentNetworkOpposeCount = parseInt(this.state.supportProps.oppose_count) || 0;
-      const nextNetworkOpposeCount = parseInt(nextState.supportProps.oppose_count) || 0;
+    if (this.state.measureSupportProps !== undefined && nextState.measureSupportProps !== undefined) {
+      const currentNetworkSupportCount = parseInt(this.state.measureSupportProps.support_count) || 0;
+      const nextNetworkSupportCount = parseInt(nextState.measureSupportProps.support_count) || 0;
+      const currentNetworkOpposeCount = parseInt(this.state.measureSupportProps.oppose_count) || 0;
+      const nextNetworkOpposeCount = parseInt(nextState.measureSupportProps.oppose_count) || 0;
       if (currentNetworkSupportCount !== nextNetworkSupportCount || currentNetworkOpposeCount !== nextNetworkOpposeCount) {
         // console.log("shouldComponentUpdate: support or oppose count change");
         return true;
@@ -126,12 +141,12 @@ class MeasureItemCompressed extends Component {
   }
 
   onSupportStoreChange () {
-    const { organization } = this.state;
+    const { measureWeVoteId, organization } = this.state;
     // Whenever positions change, we want to make sure to get the latest organization, because it has
     //  position_list_for_one_election and position_list_for_all_except_one_election attached to it
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(organization.organization_we_vote_id),
-      supportProps: SupportStore.get(this.props.we_vote_id),
+      measureSupportProps: SupportStore.get(measureWeVoteId),
     });
   }
 
@@ -160,13 +175,15 @@ class MeasureItemCompressed extends Component {
   render () {
     // console.log("MeasureItemCompressed render");
     renderLog(__filename);
-    console.log(this.state.measure);
-    const { measure } = this.state;
+    const { noVoteDescription, yesVoteDescription } = this.state;
+    let { ballotItemDisplayName } = this.state;
+    const { measureText, measureWeVoteId } = this.state;
     const { classes, theme } = this.props;
-    let { ballot_item_display_name: ballotItemDisplayName } = this.props;
-    const ballotDisplay = ballotItemDisplayName.split(':');
-    const ballotItemDescription = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam enim quam, placerat eu tincidunt eget, blandit et ipsum. Aenean tristique sapien ipsum. Ut placerat pellentesque arcu sagittis condimentum. Vivamus nec erat imperdiet mauris feugiat dignissim. Nam iaculis ullamcorper placerat. Suspendisse iaculis sapien facilisis mi efficitur ultricies. Duis sit amet odio eu nisi bibendum varius. Cras commodo fringilla magna, id gravida orci convallis quis. Nunc ultricies non sapien id pellentesque. Sed tristique sollicitudin ex, in commodo enim aliquam non. Donec consectetur purus ac sagittis tempor.';
-    const { we_vote_id: measureWeVoteId } = this.props;
+    let ballotDisplay = [];
+    if (ballotItemDisplayName) {
+      ballotDisplay = ballotItemDisplayName.split(':');
+    }
+    // measureSubtitle = capitalizeString(measureSubtitle);
     ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
 
     // let measureGuidesList = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(measureWeVoteId);
@@ -178,7 +195,7 @@ class MeasureItemCompressed extends Component {
     //   measureSubtitle: measureSubtitle,
     //   measure_text: this.props.measure_text,
     //   measure_url: this.props.measure_url,
-    //   we_vote_id: measureWeVoteId,
+    //   measureWeVoteId,
     //   position_list: this.props.position_list,
     // };
 
@@ -204,40 +221,22 @@ class MeasureItemCompressed extends Component {
           <MeasureInfoWrapper onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
             <Title>{ballotDisplay[0]}</Title>
             <SubTitle>{ballotDisplay[1]}</SubTitle>
-            <Info>{shortenText(ballotItemDescription, 200)}</Info>
+            <Info>{shortenText(measureText, 200)}</Info>
           </MeasureInfoWrapper>
-          <EndorsementWrapper>
-            <B>Endorsements</B>
-            <EndorsementRow>
-              <Endorsement>
-                <ThumbUpIcon classes={{ root: classes.endorsementIconRoot }} />
-                100
-              </Endorsement>
-              <Endorsement>
-                <ThumbDownIcon classes={{ root: classes.endorsementIconRoot }} />
-                99
-              </Endorsement>
-              <Endorsement>
-                <CommentIcon classes={{ root: classes.endorsementIconRoot }} />
-                999
-              </Endorsement>
-            </EndorsementRow>
-          </EndorsementWrapper>
+          <div className="u-float-right">
+            <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
+          </div>
         </InfoRow>
-        {
-          measure && (
-            <ChoicesRow>
-              <Choice>
-                <ChoiceTitle brandBlue={theme.palette.primary.main}>{`Yes On ${extractNumber(ballotItemDisplayName)}`}</ChoiceTitle>
-                <ChoiceInfo>{shortenText(measure.yes_vote_description, 200)}</ChoiceInfo>
-              </Choice>
-              <Choice>
-                <ChoiceTitle brandBlue={theme.palette.primary.main}>{`No On ${extractNumber(ballotItemDisplayName)}`}</ChoiceTitle>
-                <ChoiceInfo>{shortenText(measure.no_vote_description, 200)}</ChoiceInfo>
-              </Choice>
-            </ChoicesRow>
-          )
-        }
+        <ChoicesRow>
+          <Choice>
+            <ChoiceTitle brandBlue={theme.palette.primary.main}>{`Yes On ${extractNumber(ballotItemDisplayName)}`}</ChoiceTitle>
+            <ChoiceInfo>{shortenText(yesVoteDescription, 200)}</ChoiceInfo>
+          </Choice>
+          <Choice>
+            <ChoiceTitle brandBlue={theme.palette.primary.main}>{`No On ${extractNumber(ballotItemDisplayName)}`}</ChoiceTitle>
+            <ChoiceInfo>{shortenText(noVoteDescription, 200)}</ChoiceInfo>
+          </Choice>
+        </ChoicesRow>
         <Divider />
         <CardFooter onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
           Show More
@@ -304,40 +303,6 @@ const MeasureInfoWrapper = styled.div`
   @media (max-width: 768px) {
     max-width: 100%;
   }
-`;
-
-const EndorsementWrapper = styled.div`
-  max-width: 25%;
-  color: #888;
-  padding-top: .67rem;
-  text-align: right;
-  user-select: none;
-  @media (max-width: 768px) {
-    max-width: 100%;
-    width: 100%;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    flex-flow: row;
-    padding-bottom: 8px;
-    justify-content: space-between;
-  }
-`;
-
-const Endorsement = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-`;
-
-const EndorsementRow = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-end;
-`;
-
-const B = styled.div`
-  font-weight: bold;
-  font-size: 14px;
 `;
 
 const Title = styled.h1`

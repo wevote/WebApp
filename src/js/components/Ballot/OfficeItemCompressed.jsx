@@ -19,6 +19,7 @@ import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
+import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -403,7 +404,7 @@ export default class OfficeItemCompressed extends Component {
               }
 
               const voterSupportsThisCandidate = SupportStore.get(oneCandidate.we_vote_id) && SupportStore.get(oneCandidate.we_vote_id).is_support;
-              const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}. ` : '';
+              const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
 
               // If at the end the candidates, none were chosen by voter, we use this preview list.
               candidatePreviewCount += 1;
@@ -426,7 +427,8 @@ export default class OfficeItemCompressed extends Component {
                         <Link to={this.getCandidateLink(oneCandidate.we_vote_id)}>
                           <h4 className="card-main__candidate-name card-main__candidate-name-link u-f5">
                             {oneCandidate.ballot_item_display_name}
-                            <span className="u-margin-left--sm card-main__candidate-party-description">{candidatePartyText}</span>
+                            <br />
+                            <span className="card-main__candidate-party-description">{candidatePartyText}</span>
                           </h4>
                         </Link>
                       </div>
@@ -435,13 +437,17 @@ export default class OfficeItemCompressed extends Component {
                         <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
                       </span>
                     </div>
-                    <div>
-                      {/* If there is a quote about the candidate, show that TBD. If not, show issues related to candidate */}
-                      {/* Issues related to this Candidate */}
-                      <IssuesByBallotItemDisplayList
+                    <div className="u-stack--md">
+                      {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
+                      <TopCommentByBallotItem
                         ballotItemWeVoteId={oneCandidate.we_vote_id}
-                        placement="bottom"
-                      />
+                        learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
+                      >
+                        <IssuesByBallotItemDisplayList
+                          ballotItemWeVoteId={oneCandidate.we_vote_id}
+                          placement="bottom"
+                        />
+                      </TopCommentByBallotItem>
                     </div>
                   </div>
                 );

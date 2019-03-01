@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import TextTruncate from 'react-text-truncate';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
+import CandidateStore from '../../stores/CandidateStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import LearnMore from '../Widgets/LearnMore';
@@ -13,13 +14,14 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 
 export default class CandidateItemCompressed extends Component {
   static propTypes = {
+    candidateWeVoteId: PropTypes.string.isRequired,
     organization: PropTypes.object,
-    oneCandidate: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
+      oneCandidate: {},
       organization: {},
     };
 
@@ -31,12 +33,11 @@ export default class CandidateItemCompressed extends Component {
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    this.onVoterGuideStoreChange();
 
-    // console.log("this.props.candidate_list: ", this.props.candidate_list);
-    if (this.props.oneCandidate && this.props.oneCandidate.we_vote_id) {
+    if (this.props.candidateWeVoteId) {
+      const candidate = CandidateStore.getCandidate(this.props.candidateWeVoteId);
       this.setState({
-        oneCandidate: this.props.oneCandidate,
+        oneCandidate: candidate,
       });
     }
     if (this.props.organization && this.props.organization.organization_we_vote_id) {
@@ -48,6 +49,12 @@ export default class CandidateItemCompressed extends Component {
 
   componentWillReceiveProps (nextProps) {
     // console.log("officeItem nextProps", nextProps);
+    if (nextProps.candidateWeVoteId) {
+      const candidate = CandidateStore.getCandidate(nextProps.candidateWeVoteId);
+      this.setState({
+        oneCandidate: candidate,
+      });
+    }
     if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
       this.setState({
         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
