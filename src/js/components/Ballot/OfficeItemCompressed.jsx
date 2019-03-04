@@ -4,6 +4,7 @@ import {  Modal } from 'react-bootstrap'; // , OverlayTrigger, Popover
 import { Link } from 'react-router';
 // import TextTruncate from 'react-text-truncate';
 import Slider from 'react-slick';
+import styled from 'styled-components';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { cordovaDot, historyPush, hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { toTitleCase } from '../../utils/textFormat';
@@ -30,7 +31,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 const NUMBER_OF_CANDIDATES_TO_DISPLAY = 4;
 
 // This is related to components/VoterGuide/VoterGuideOfficeItemCompressed
-export default class OfficeItemCompressed extends Component {
+class OfficeItemCompressed extends Component {
   static propTypes = {
     allBallotItemsCount: PropTypes.number,
     we_vote_id: PropTypes.string.isRequired,
@@ -411,32 +412,32 @@ export default class OfficeItemCompressed extends Component {
               if (candidatePreviewCount <= candidatePreviewLimit) {
                 oneCandidateDisplay = (
                   <div key={`candidate_preview-${oneCandidate.we_vote_id}`} className="u-stack--md u-gray-border-bottom">
-                    <div className="o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm u-cursor--pointer">
+                    <CandidateInfo>
                       {/* Candidate Image */}
-                      <Link to={this.getCandidateLink(oneCandidate.we_vote_id)}>
-                        <ImageHandler
-                          className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
-                          sizeClassName="icon-candidate-small u-push--sm "
-                          imageUrl={oneCandidate.candidate_photo_url_large}
-                          alt="candidate-photo"
-                          kind_of_ballot_item="CANDIDATE"
-                        />
-                      </Link>
-                      {/* Candidate Name */}
-                      <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
+                      <Candidate>
                         <Link to={this.getCandidateLink(oneCandidate.we_vote_id)}>
-                          <h4 className="card-main__candidate-name card-main__candidate-name-link u-f5">
-                            {oneCandidate.ballot_item_display_name}
-                            <br />
-                            <span className="card-main__candidate-party-description">{candidatePartyText}</span>
-                          </h4>
+                          <ImageHandler
+                            className="card-main__avatar-compressed"
+                            sizeClassName="icon-candidate-small u-push--sm "
+                            imageUrl={oneCandidate.candidate_photo_url_large}
+                            alt="candidate-photo"
+                            kind_of_ballot_item="CANDIDATE"
+                          />
                         </Link>
-                      </div>
+                        {/* Candidate Name */}
+                        <div>
+                          <Link to={this.getCandidateLink(oneCandidate.we_vote_id)}>
+                            <h4 className="card-main__candidate-name card-main__candidate-name-link u-f5">
+                              {oneCandidate.ballot_item_display_name}
+                              <br />
+                              <span className="card-main__candidate-party-description">{candidatePartyText}</span>
+                            </h4>
+                          </Link>
+                        </div>
+                      </Candidate>
                       {/* Endorsement count or Network score */}
-                      <span className="u-float-right">
-                        <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
-                      </span>
-                    </div>
+                      <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
+                    </CandidateInfo>
                     <div className="u-stack--md">
                       {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
                       <TopCommentByBallotItem
@@ -528,3 +529,17 @@ export default class OfficeItemCompressed extends Component {
     );
   }
 }
+
+const CandidateInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+  @media (max-width: 768px) {
+    flex-flow: column;
+  }
+`;
+
+const Candidate = styled.div`
+  display: flex;
+`;
+
+export default OfficeItemCompressed;
