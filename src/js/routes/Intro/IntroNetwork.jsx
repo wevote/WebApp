@@ -35,7 +35,7 @@ export default class IntroNetwork extends Component {
     this.slider.current.slickPrev();
   }
 
-  goToBallotLink () {
+  static goToBallotLink () {
     const ballotLink = '/ballot';
     historyPush(ballotLink);
   }

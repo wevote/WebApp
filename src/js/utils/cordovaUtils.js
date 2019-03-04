@@ -43,7 +43,7 @@ function cordovaOpenSafariViewSub (requestURL, onExit) {
       if (result.event === 'opened') {
         oAuthLog(`cordovaOpenSafariView opened url: ${requestURL}`);
       } else if (result.event === 'loaded') {
-        oAuthLog(`cordovaOpenSafariView loaded url: ${JSON.stringify(result)}`);
+        oAuthLog(`cordovaOpenSafariView URL result from loading: ${JSON.stringify(result)}`);
       } else if (result.event === 'closed') {
         oAuthLog(`cordovaOpenSafariView closed: ${JSON.stringify(result)}`);
         if (onExit) {
