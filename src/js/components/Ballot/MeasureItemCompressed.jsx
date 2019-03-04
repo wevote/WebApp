@@ -223,9 +223,7 @@ class MeasureItemCompressed extends Component {
             <SubTitle>{ballotDisplay[1]}</SubTitle>
             <Info>{shortenText(measureText, 200)}</Info>
           </MeasureInfoWrapper>
-          <div className="u-float-right">
-            <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
-          </div>
+          <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
         </InfoRow>
         <ChoicesRow>
           <Choice>
@@ -267,6 +265,7 @@ const styles = theme => ({
 const InfoRow = styled.div`
   display: flex;
   flex-flow: row wrap;
+  justify-content: space-between;
 `;
 
 const ChoicesRow = styled.div`
@@ -278,6 +277,9 @@ const Choice = styled.div`
   display: flex;
   flex-flow: column;
   padding-right: 8px;
+  @media (min-width: 768px) {
+    max-width: 50%;
+  }
 `;
 
 const ChoiceTitle = styled.h1`
