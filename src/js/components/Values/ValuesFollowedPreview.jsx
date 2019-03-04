@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import IssueActions from '../../actions/IssueActions';
-import IssueFollowToggleSquare from '../Values/IssueFollowToggleSquare';
+import IssueFollowToggleSquare from './IssueFollowToggleSquare';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 
-export default class NetworkIssuesFollowed extends Component {
+export default class ValuesFollowedPreview extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -88,7 +88,11 @@ export default class NetworkIssuesFollowed extends Component {
       <div className="opinions-followed__container">
         <section className="card">
           <div className="card-main">
-            <h1 className="h4">Issues You Are Following</h1>
+            <h1 className="h4">
+              Values You
+              {"'"}
+              re Following
+            </h1>
             <div className="network-issues-list voter-guide-list card">
               { issueListForDisplay }
               <div>

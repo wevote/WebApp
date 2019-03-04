@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import IssuesFollowedDisplayList from '../Issues/IssuesFollowedDisplayList';
+import IssuesFollowedDisplayList from '../Values/IssuesFollowedDisplayList';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 

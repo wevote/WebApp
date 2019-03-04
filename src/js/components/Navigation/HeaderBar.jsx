@@ -208,8 +208,8 @@ class HeaderBar extends Component {
     const { pathname } = this.props;
     // if (stringContains('/ballot', pathname.slice(0, 7))) return 0;
     if (pathname.indexOf('/ballot') === 0) return 0;
-    if (stringContains('/more/network/friends', pathname)) return 2;
-    if (stringContains('/more/network', pathname)) return 1;
+    if (stringContains('/friends', pathname)) return 2;
+    if (stringContains('/values', pathname)) return 1;
     return false;
   }
 
@@ -280,7 +280,7 @@ class HeaderBar extends Component {
                   )
                   }
                   {showFullNavigation && (
-                    <Tab classes={{ root: classes.tabRoot }} label="My Values" onClick={() => this.handleNavigation('/more/network/issues')} />
+                    <Tab classes={{ root: classes.tabRoot }} label="My Values" onClick={() => this.handleNavigation('/values')} />
                   )
                   }
                   {showFullNavigation && (

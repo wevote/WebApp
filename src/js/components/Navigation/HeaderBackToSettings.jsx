@@ -55,12 +55,11 @@ class HeaderBackToSettings extends Component {
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
     this.toggleProfilePopUp = this.toggleProfilePopUp.bind(this);
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
-    this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
     this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
   }
 
   componentDidMount () {
-    // console.log("HeaderBackToBar componentDidMount, this.props: ", this.props);
+    // console.log("HeaderBackToSettings componentDidMount, this.props: ", this.props);
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -76,7 +75,7 @@ class HeaderBackToSettings extends Component {
       if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
-        // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
+        // console.log("HeaderBackToSettings, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
         officeWeVoteId = candidate.contest_officeWeVoteId;
         officeName = candidate.contest_office_name;
       }
@@ -106,7 +105,7 @@ class HeaderBackToSettings extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("HeaderBackToBar componentWillReceiveProps, nextProps: ", nextProps);
+    // console.log("HeaderBackToSettings componentWillReceiveProps, nextProps: ", nextProps);
     let candidateWeVoteId;
     let officeWeVoteId;
     let officeName;
@@ -117,7 +116,7 @@ class HeaderBackToSettings extends Component {
       if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
-        // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
+        // console.log("HeaderBackToSettings, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
         officeWeVoteId = candidate.contest_office_we_vote_id;
         officeName = candidate.contest_office_name;
       }
@@ -164,7 +163,7 @@ class HeaderBackToSettings extends Component {
     if (candidateWeVoteId && candidateWeVoteId !== '') {
       const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
-      // console.log("HeaderBackToBar -- onCandidateStoreChange, candidateWeVoteId:", this.state.candidateWeVoteId, ", candidate:", candidate);
+      // console.log("HeaderBackToSettings -- onCandidateStoreChange, candidateWeVoteId:", this.state.candidateWeVoteId, ", candidate:", candidate);
       officeName = candidate.contest_office_name;
       officeWeVoteId = candidate.contest_office_we_vote_id;
     }

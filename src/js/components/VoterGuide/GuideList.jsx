@@ -85,7 +85,7 @@ export default class GuideList extends Component {
       // this.setState({
       //   organizationsWithPositions: orgsWithPositions,
       // });
-      if (!this.state.filteredOrganizationsWithPositions.length) {
+      if (!this.state.filteredOrganizationsWithPositions || !this.state.filteredOrganizationsWithPositions.length) {
         this.setState({ filteredOrganizationsWithPositions: orgsWithPositions });
       }
     });

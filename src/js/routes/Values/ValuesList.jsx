@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { _ } from 'lodash';
 import Helmet from 'react-helmet';
-import IssueActions from '../actions/IssueActions';
-import IssueFollowToggleSquare from '../components/Values/IssueFollowToggleSquare';
-import IssueStore from '../stores/IssueStore';
-import { renderLog } from '../utils/logging';
-import SearchBar from '../components/Search/SearchBar';
+import IssueActions from '../../actions/IssueActions';
+import IssueFollowToggleSquare from '../../components/Values/IssueFollowToggleSquare';
+import IssueStore from '../../stores/IssueStore';
+import { renderLog } from '../../utils/logging';
+import SearchBar from '../../components/Search/SearchBar';
 
-export default class IssuesToFollow extends Component {
+export default class ValuesList extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -74,10 +74,10 @@ export default class IssuesToFollow extends Component {
 
     return (
       <div className="opinions-followed__container">
-        <Helmet title="Issues You Follow - We Vote" />
+        <Helmet title="Values - We Vote" />
         <section className="card">
           <div className="card-main">
-            <h1 className="h1">Issues You Can Follow</h1>
+            <h1 className="h1">Values</h1>
             <p>
               Follow the values and issues you care about, so we can highlight the organizations that care about the same issues you do.
             </p>

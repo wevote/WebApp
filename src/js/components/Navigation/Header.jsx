@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 import { hasIPhoneNotch, isAndroid, isCordova, isIOS, isWebApp } from '../../utils/cordovaUtils';
-import HeaderBackToBar from './HeaderBackToBar';
+import HeaderBackToBallot from './HeaderBackToBallot';
+import HeaderBackToValues from './HeaderBackToValues';
 import HeaderBackToVoterGuides from './HeaderBackToVoterGuides';
 import HeaderBar from './HeaderBar';
 import { stringContains } from '../../utils/textFormat';
@@ -32,8 +33,8 @@ export default class Header extends Component {
     renderLog(__filename);
 
     const { params, location, pathname, voter, weVoteBrandingOff } = this.props;
-    const { settingsMode, voterGuideMode,
-      showBackToHeader, showBackToSettings, showBackToVoterGuides } = getApplicationViewBooleans(pathname);
+    const { settingsMode, valuesMode, voterGuideMode,
+      showBackToBallotHeader, showBackToSettings, showBackToValues, showBackToVoterGuides } = getApplicationViewBooleans(pathname);
     // const hideGettingStartedButtons = voterGuideShowGettingStartedNavigation;
 
     let iPhoneSpacer = '';
@@ -56,8 +57,8 @@ export default class Header extends Component {
           {iPhoneSpacer}
           <div className={isWebApp ? 'headroom-wrapper-webapp__voter-guide' : ''}>
             <div ref="pageHeader" className={pageHeaderStyle} id="header-container">
-              {showBackToHeader ?
-                <HeaderBackToBar location={location} params={params} pathname={pathname} voter={voter} /> : (
+              {showBackToBallotHeader ?
+                <HeaderBackToBallot location={location} params={params} pathname={pathname} voter={voter} /> : (
                   <span>
                     {showBackToVoterGuides ?
                       <HeaderBackToVoterGuides location={location} params={params} pathname={pathname} voter={voter} /> :
@@ -98,6 +99,20 @@ export default class Header extends Component {
           </div>
         </div>
       );
+    } else if (valuesMode) {
+      return (
+        <div id="app-header">
+          { iPhoneSpacer }
+          <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
+            <div ref="pageHeader" className={pageHeaderStyle} id="header-container">
+              { showBackToValues ?
+                <HeaderBackToValues location={location} params={params} pathname={pathname} voter={voter} /> :
+                <HeaderBar location={location} pathname={pathname} voter={voter} />
+              }
+            </div>
+          </div>
+        </div>
+      );
     } else {
       // This handles other pages, like Welcome and the Ballot display
       return (
@@ -108,8 +123,8 @@ export default class Header extends Component {
             id="headroom-wrapper"
           >
             <div ref="pageHeader" className={pageHeaderStyle} id="header-container">
-              { showBackToHeader ?
-                <HeaderBackToBar location={location} params={params} pathname={pathname} voter={voter} /> :
+              { showBackToBallotHeader ?
+                <HeaderBackToBallot location={location} params={params} pathname={pathname} voter={voter} /> :
                 <HeaderBar location={location} pathname={pathname} voter={voter} />
               }
             </div>

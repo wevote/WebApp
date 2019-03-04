@@ -54,7 +54,7 @@ class MeasureItemCompressed extends Component {
       ballotItemDisplayName: measure.ballot_item_display_name,
       componentDidMountFinished: true,
       measure,
-      measureSubtitle: measure.measure_subtitle,
+      // measureSubtitle: measure.measure_subtitle,
       measureSupportProps: SupportStore.get(this.props.measureWeVoteId),
       measureText: measure.measure_text,
       measureWeVoteId: this.props.measureWeVoteId,
@@ -78,7 +78,7 @@ class MeasureItemCompressed extends Component {
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
       measure,
-      measureSubtitle: measure.measure_subtitle,
+      // measureSubtitle: measure.measure_subtitle,
       measureSupportProps: SupportStore.get(nextProps.measureWeVoteId),
       measureText: measure.measure_text,
       measureWeVoteId: nextProps.measureWeVoteId,

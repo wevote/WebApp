@@ -60,6 +60,8 @@ import TermsOfService from './routes/More/TermsOfService';
 import ToolsToShareOnOtherWebsites from './routes/More/ToolsToShareOnOtherWebsites';
 import TwitterHandleLanding from './routes/TwitterHandleLanding';
 import TwitterSignInProcess from './routes/Process/TwitterSignInProcess';
+import Values from './routes/Values';
+import ValuesList from './routes/Values/ValuesList';
 import VerifyEmailProcess from './routes/Process/VerifyEmailProcess';
 import FriendInvitationByEmailVerifyProcess from './routes/Process/FriendInvitationByEmailVerifyProcess';
 import VoterGuideChooseElection from './routes/VoterGuide/VoterGuideChooseElection';
@@ -186,6 +188,8 @@ const routes = () => (
     <Route path="/more/terms" component={TermsOfService} />
     <Route path="/more/verify" component={VerifyRegistration} />
     <Route path="/more/vision" component={Organization} />
+    <Route path="/values" component={Values} />
+    <Route path="/values/list" component={ValuesList} />
 
     {/* Voter Guide Pages - By Organization */}
     <Route path="/voterguide/:organization_we_vote_id" component={props => <OrganizationVoterGuide {...props} active_route="ballot" />} />

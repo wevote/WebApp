@@ -8,6 +8,7 @@ export function getApplicationViewBooleans (pathname) {
   let inTheaterMode = false;
   let contentFullWidthMode = false;
   let settingsMode = false;
+  let valuesMode = false;
   let voterGuideMode = false;
   let voterGuideShowGettingStartedNavigation = false;
   if (pathname === '/intro/story' ||
@@ -52,9 +53,6 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/more/tools' ||
     pathname === '/more/verify' ||
     pathname === '/more/vision' ||
-    pathname === '/opinions' ||
-    pathname === '/opinions_followed' ||
-    pathname === '/opinions_ignored' ||
     pathname.startsWith('/verifythisisme/') ||
     pathname === '/welcome') {
     contentFullWidthMode = true;
@@ -64,13 +62,20 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/more/hamburger') {
     contentFullWidthMode = true;
     settingsMode = true;
+  } else if (pathname.startsWith('/values') ||
+    pathname === '/opinions' ||
+    pathname === '/opinions_followed' ||
+    pathname === '/opinions_ignored') {
+    contentFullWidthMode = true;
+    valuesMode = true;
   } else {
     voterGuideMode = true;
     voterGuideShowGettingStartedNavigation = true;
   }
 
-  let showBackToHeader = false;
+  let showBackToBallotHeader = false;
   let showBackToSettings = false;
+  let showBackToValues = false;
   let showBackToVoterGuides = false;
   if (stringContains('/btdb/', pathname) || // back-to-default-ballot
     stringContains('/btdo/', pathname) || // back-to-default-office
@@ -83,7 +88,7 @@ export function getApplicationViewBooleans (pathname) {
     // "/btdo/" stands for "Back To Default Office Page" back-to-default-office
     // "/btvg/" stands for "Back To Voter Guide Page"
     // "/bto/" stands for "Back To Voter Guide Office Page"
-    showBackToHeader = true;
+    showBackToBallotHeader = true;
   } else if (pathname === '/settings/account' ||
     pathname === '/settings/address' ||
     pathname === '/settings/election' ||
@@ -94,22 +99,29 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/settings/voterguidesmenu' ||
     pathname === '/settings/voterguidelist') {
     showBackToSettings = true;
+  } else if (pathname === '/opinions' ||
+    pathname === '/opinions_followed' ||
+    pathname === '/opinions_ignored' ||
+    pathname === '/values/list') {
+    showBackToValues = true;
   } else if (stringContains('/vg/', pathname)) {
     showBackToVoterGuides = true; // DALE 2019-02-19 Soon we should be able to delete the interim voter guides page
   }
 
   if (pathname.startsWith('/measure') && isCordova()) {
-    showBackToHeader = true;
+    showBackToBallotHeader = true;
   }
 
   return {
     inTheaterMode,
     contentFullWidthMode,
     settingsMode,
+    valuesMode,
     voterGuideMode,
     voterGuideShowGettingStartedNavigation,
-    showBackToHeader,
+    showBackToBallotHeader,
     showBackToSettings,
+    showBackToValues,
     showBackToVoterGuides,
   };
 }
@@ -132,7 +144,7 @@ export function polyfillObjectEntries () {
 // Choose to show/hide zendesk help widget based on route
 export function setZenDeskHelpVisibility (pathname) {
   if (isWebApp()) {
-    if (['/ballot', '/more/network', '/settings'].some(match => pathname.startsWith(match))) {
+    if (['/ballot', '/friends', '/more/network', '/opinions', '/settings', '/values'].some(match => pathname.startsWith(match))) {
       global.zE('webWidget', 'show');
     } else {
       global.zE('webWidget', 'hide');

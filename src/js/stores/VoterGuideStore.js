@@ -77,14 +77,44 @@ class VoterGuideStore extends ReduceStore {
     return this.sortVoterGuidesByDate(unsortedVoterGuides);
   }
 
-  getVoterGuidesToFollowAll (limit = 100) {
+  getVoterGuidesToFollowAll (limit = 100, limitToPublicFigures = false, limitToOrganizations = false) {
     // Start with the full list of we_vote_ids that can be followed
     let organizationWeVoteIdsToFollow = this.getState().organizationWeVoteIdsToFollowAll || [];
     // Take the list that we are already following
     const organizationWeVoteIdsFollowed = this.getState().organizationWeVoteIdsVoterIsFollowing || [];
     // Remove organizationWeVoteIdsVoterIsFollowing
     organizationWeVoteIdsToFollow = organizationWeVoteIdsToFollow.filter(el => !organizationWeVoteIdsFollowed.includes(el));
-    const organizationWeVoteIdsToFollowWithLimit = organizationWeVoteIdsToFollow.slice(0, limit);
+    let organizationWeVoteIdsToFollowWithLimit = [];
+    if (limitToPublicFigures) {
+      const listToFilter1 = this.returnVoterGuidesFromListOfIds(organizationWeVoteIdsToFollow) || [];
+      let voterGuidesFound = 0;
+      let step;
+      for (step = 0; step < listToFilter1.length; step++) {
+        // console.log('listToFilter1[step].voter_guide_owner_type:', listToFilter1[step].voter_guide_owner_type);
+        if (listToFilter1[step].voter_guide_owner_type === 'PF') {
+          organizationWeVoteIdsToFollowWithLimit.push(listToFilter1[step].organization_we_vote_id);
+          voterGuidesFound++;
+          if (voterGuidesFound >= limit) {
+            break;
+          }
+        }
+      }
+    } else if (limitToOrganizations) {
+      const listToFilter2 = this.returnVoterGuidesFromListOfIds(organizationWeVoteIdsToFollow) || [];
+      let voterGuidesFound = 0;
+      let step;
+      for (step = 0; step < listToFilter2.length; step++) {
+        if (listToFilter2[step].voter_guide_owner_type !== 'PF') {
+          organizationWeVoteIdsToFollowWithLimit.push(listToFilter2[step].organization_we_vote_id);
+          voterGuidesFound++;
+          if (voterGuidesFound >= limit) {
+            break;
+          }
+        }
+      }
+    } else {
+      organizationWeVoteIdsToFollowWithLimit = organizationWeVoteIdsToFollow.slice(0, limit);
+    }
     return this.returnVoterGuidesFromListOfIds(organizationWeVoteIdsToFollowWithLimit) || [];
   }
 
