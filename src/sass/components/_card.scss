@@ -90,7 +90,7 @@
     }
 
     &__avatar-compressed {
-      background-image: url('../../img/global/svg-icons/avatar-generic.svg');
+      background-image: url('../../img/global/svg-icons/avatar-generic.svg');   // March 2019, The paths are different in Cordova (where this fails).
       border-radius: $radius-xs;
       width: 40px;
       .card-main & {
