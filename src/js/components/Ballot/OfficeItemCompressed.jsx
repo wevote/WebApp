@@ -13,7 +13,7 @@ import BallotIntroFollowAdvisers from './BallotIntroFollowAdvisers';
 import BallotIntroVerifyAddress from './BallotIntroVerifyAddress';
 import CandidateStore from '../../stores/CandidateStore';
 import ImageHandler from '../ImageHandler';
-import IssuesByBallotItemDisplayList from '../Issues/IssuesByBallotItemDisplayList';
+import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
 import IssueStore from '../../stores/IssueStore';
 // import LearnMore from '../Widgets/LearnMore';
 import { renderLog } from '../../utils/logging';

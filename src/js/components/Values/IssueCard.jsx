@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ImageHandler from '../ImageHandler';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
+import IssueImageDisplay from './IssueImageDisplay';
 import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import ReadMore from '../Widgets/ReadMore';
@@ -79,11 +79,11 @@ export default class IssueCard extends Component {
     let numberOfLines;
     if (this.state.issueImageSize === 'SMALL') {
       issueImage = (
-        <ImageHandler
-          imageUrl={this.state.issue.issue_photo_url_tiny}
-          className="card-main__org-avatar"
-          kind_of_image="ISSUE"
-          sizeClassName="icon-small "
+        <IssueImageDisplay
+          issueWeVoteId={this.state.issue.issue_we_vote_id}
+          issueImageSize="SMALL"
+          showPlaceholderImage
+          turnOffIssueFade
         />
       );
       if (this.state.followToggleOn) {
@@ -93,11 +93,11 @@ export default class IssueCard extends Component {
       }
     } else if (this.state.issueImageSize === 'MEDIUM') {
       issueImage = (
-        <ImageHandler
-          imageUrl={this.state.issue.issue_photo_url_medium}
-          className="card-main__org-avatar"
-          kind_of_image="ISSUE"
-          sizeClassName="icon-medium "
+        <IssueImageDisplay
+          issueWeVoteId={this.state.issue.issue_we_vote_id}
+          issueImageSize="MEDIUM"
+          showPlaceholderImage
+          turnOffIssueFade
         />
       );
       if (this.state.followToggleOn) {
@@ -107,11 +107,11 @@ export default class IssueCard extends Component {
       }
     } else if (this.state.issueImageSize === 'LARGE') {
       issueImage = (
-        <ImageHandler
-          imageUrl={this.state.issue.issue_photo_url_large}
-          className="card-main__org-avatar"
-          kind_of_image="ISSUE"
-          sizeClassName="icon-lg "
+        <IssueImageDisplay
+          issueWeVoteId={this.state.issue.issue_we_vote_id}
+          issueImageSize="LARGE"
+          showPlaceholderImage
+          turnOffIssueFade
         />
       );
       if (this.state.followToggleOn) {
@@ -123,7 +123,10 @@ export default class IssueCard extends Component {
 
 
     return (
-      <div className="card-main__media-object u-stack--md">
+      <div
+        className="card-main__media-object u-stack--md"
+        key={`issue-card-${this.state.issueWeVoteId}`}
+      >
         <div className="card-main__media-object-anchor">
           {this.props.turnOffIssueImage ?
             null :

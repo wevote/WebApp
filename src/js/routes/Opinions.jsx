@@ -1,12 +1,11 @@
-import React, { Component, Suspense, lazy } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import { renderLog } from '../utils/logging';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import SearchGuidesToFollowBox from '../components/Search/SearchGuidesToFollowBox';
-// import GuideList from '../VoterGuide/GuideList';
+import GuideList from '../components/VoterGuide/GuideList';
 
-const GuideList = lazy(() => import('../components/VoterGuide/GuideList'));
 
 export default class Opinions extends Component {
   static propTypes = {

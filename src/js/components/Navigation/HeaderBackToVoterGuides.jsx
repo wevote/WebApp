@@ -42,7 +42,7 @@ export default class HeaderBackToVoterGuides extends Component {
   }
 
   componentDidMount () {
-    // console.log("HeaderBackToBar componentDidMount, this.props: ", this.props);
+    // console.log("HeaderBackToVoterGuides componentDidMount, this.props: ", this.props);
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -58,7 +58,7 @@ export default class HeaderBackToVoterGuides extends Component {
       if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
-        // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
+        // console.log("HeaderBackToVoterGuides, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
         officeWeVoteId = candidate.contest_officeWeVoteId;
         // officeName = candidate.contest_office_name;
       }
@@ -86,7 +86,7 @@ export default class HeaderBackToVoterGuides extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("HeaderBackToBar componentWillReceiveProps, nextProps: ", nextProps);
+    // console.log("HeaderBackToVoterGuides componentWillReceiveProps, nextProps: ", nextProps);
     let candidateWeVoteId;
     let officeWeVoteId;
     // let officeName;
@@ -97,7 +97,7 @@ export default class HeaderBackToVoterGuides extends Component {
       if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
-        // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
+        // console.log("HeaderBackToVoterGuides, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
         officeWeVoteId = candidate.contest_office_we_vote_id;
         // officeName = candidate.contest_office_name;
       }
@@ -143,7 +143,7 @@ export default class HeaderBackToVoterGuides extends Component {
     if (candidateWeVoteId && candidateWeVoteId !== '') {
       const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
-      // console.log("HeaderBackToBar -- onCandidateStoreChange, candidateWeVoteId:", this.state.candidateWeVoteId, ", candidate:", candidate);
+      // console.log("HeaderBackToVoterGuides -- onCandidateStoreChange, candidateWeVoteId:", this.state.candidateWeVoteId, ", candidate:", candidate);
       // officeName = candidate.contest_office_name;
       officeWeVoteId = candidate.contest_office_we_vote_id;
     }
@@ -249,10 +249,10 @@ export default class HeaderBackToVoterGuides extends Component {
       <AppBar className={isWebApp() ? 'page-header' : 'page-header page-header__cordova'} color="default">
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
           <Button
-          variant="contained"
-          color="primary"
-          className={`page-header__backToButton ${hasIPhoneNotch() ? 'page-header__backToButtonIPhoneX' : ''}`}
-          onClick={() => historyPush(backToLink)}
+            variant="contained"
+            color="primary"
+            className={`page-header__backToButton ${hasIPhoneNotch() ? 'page-header__backToButtonIPhoneX' : ''}`}
+            onClick={() => historyPush(backToLink)}
           >
             <ion-icon name="arrow-back" />
             &nbsp;
@@ -261,14 +261,14 @@ export default class HeaderBackToVoterGuides extends Component {
 
           {this.state.profilePopUpOpen && voter.is_signed_in && (
           <HeaderBarProfilePopUp
-          {...this.props}
-          onClick={this.toggleProfilePopUp}
-          profilePopUpOpen={this.state.profilePopUpOpen}
-          weVoteBrandingOff={this.state.we_vote_branding_off}
-          toggleProfilePopUp={this.toggleProfilePopUp}
-          hideProfilePopUp={this.hideProfilePopUp}
-          transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-          signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+            {...this.props}
+            onClick={this.toggleProfilePopUp}
+            profilePopUpOpen={this.state.profilePopUpOpen}
+            weVoteBrandingOff={this.state.we_vote_branding_off}
+            toggleProfilePopUp={this.toggleProfilePopUp}
+            hideProfilePopUp={this.hideProfilePopUp}
+            transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+            signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
           />
           )}
 
@@ -277,19 +277,19 @@ export default class HeaderBackToVoterGuides extends Component {
             {voterPhotoUrlMedium ? (
               <div id="js-header-avatar" className="header-nav__avatar-container">
                 <img
-                className="header-nav__avatar"
-                alt="profile avatar"
-                src={voterPhotoUrlMedium}
-                height={34}
-                width={34}
+                  className="header-nav__avatar"
+                  alt="profile avatar"
+                  src={voterPhotoUrlMedium}
+                  height={34}
+                  width={34}
                 />
               </div>
             ) : (
               <Button
-              className="header-sign-in"
-              variant="text"
-              color="primary"
-              href="/settings/account"
+                className="header-sign-in"
+                variant="text"
+                color="primary"
+                href="/settings/account"
               >
               Sign In
               </Button>

@@ -6,7 +6,7 @@ import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpp
 import CandidateStore from '../../stores/CandidateStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
-import IssuesByBallotItemDisplayList from '../Issues/IssuesByBallotItemDisplayList';
+import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
 import LearnMore from '../Widgets/LearnMore';
 import { renderLog } from '../../utils/logging';
 import OfficeNameText from '../Widgets/OfficeNameText';

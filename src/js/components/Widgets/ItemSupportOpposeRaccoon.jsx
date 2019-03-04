@@ -7,7 +7,7 @@ import BallotStore from '../../stores/BallotStore';
 import CandidateActions from '../../actions/CandidateActions';
 import CandidateStore from '../../stores/CandidateStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import IssuesByBallotItemDisplayList from '../Issues/IssuesByBallotItemDisplayList';
+import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
 import IssueStore from '../../stores/IssueStore';
 import ItemActionBar from './ItemActionBar';
 import ItemPositionStatementActionBar from './ItemPositionStatementActionBar';
