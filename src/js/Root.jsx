@@ -21,6 +21,7 @@ import FacebookSignInProcess from './routes/Process/FacebookSignInProcess';
 import FAQ from './routes/More/FAQ';
 import FacebookInvitableFriends from './routes/FacebookInvitableFriends';
 import Friends from './routes/Friends';
+import FriendsCurrent from './routes/Friends/FriendsCurrent';
 import GetStarted from './routes/Intro/GetStarted';
 import HamburgerMenu from './routes/More/HamburgerMenu';
 import HowToUse from './routes/More/HowToUse';
@@ -147,11 +148,12 @@ const routes = () => (
     <Route path="/issues_followed" component={IssuesFollowed} />
 
     {/* Friend related Pages */}
-    <Route path="/friends">
-      <IndexRoute component={Friends} />
-      <Route path="add" component={Connect} />
-      <Route path="remove" />
-    </Route>
+    <Route path="/friends" component={Friends} />
+    <Route path="/friends/add" component={Connect} />
+    <Route path="/friends/current" component={FriendsCurrent} />
+    <Route path="/friends/requests" component={Friends} />
+    <Route path="/friends/invitationsbyme" component={Friends} />
+    <Route path="/friends/suggested" component={Friends} />
     <Route path="/friends/invitebyemail" component={InviteByEmail} />
     <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
 
