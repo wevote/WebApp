@@ -144,7 +144,8 @@ export function polyfillObjectEntries () {
 // Choose to show/hide zendesk help widget based on route
 export function setZenDeskHelpVisibility (pathname) {
   if (isWebApp()) {
-    if (['/ballot', '/friends', '/more/network', '/opinions', '/settings', '/values'].some(match => pathname.startsWith(match))) {
+    if (['/ballot', '/candidate', '/friends', '/measure', '/more/network', '/office', '/opinions', '/settings',
+      '/values'].some(match => pathname.startsWith(match))) {
       global.zE('webWidget', 'show');
     } else {
       global.zE('webWidget', 'hide');
