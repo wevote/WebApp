@@ -39,6 +39,7 @@ import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import webAppConfig from "../../config";
 import { formatVoterBallotList, checkShouldUpdate } from './utils';
+import gearIcon from "../../../img/global/icons/gear-icon.png";
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint class-methods-use-this: 0 */
@@ -801,7 +802,7 @@ export default class Ballot extends Component {
                       >
                         <span className="u-no-break u-f8 d-none d-sm-inline">
                           <img
-                            src={cordovaDot("/img/global/icons/gear-icon.png")}
+                            src={cordovaDot(gearIcon)}
                             role="button"
                             alt="change address or election"
                           />
@@ -810,7 +811,7 @@ export default class Ballot extends Component {
                         </span>
                         <span className="u-no-break u-f6 d-inline d-sm-none">
                           <img
-                            src={cordovaDot("/img/global/icons/gear-icon.png")}
+                            src={cordovaDot(gearIcon)}
                             role="button"
                             alt="change address or election"
                           />
