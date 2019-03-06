@@ -111,7 +111,7 @@ class HeaderBar extends Component {
       aboutMenuOpen: false,
       componentDidMountFinished: false,
       profilePopUpOpen: false,
-      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      friendInvitationsSentToMe: 0,
       showEditAddressButton: AppStore.showEditAddressButton(),
     };
   }
@@ -127,6 +127,7 @@ class HeaderBar extends Component {
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     this.setState({
       componentDidMountFinished: true,
+      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
@@ -143,6 +144,10 @@ class HeaderBar extends Component {
     }
     if (this.state.aboutMenuOpen === true || nextState.aboutMenuOpen === true) {
       // console.log("shouldComponentUpdate: this.state.aboutMenuOpen", this.state.aboutMenuOpen, ", nextState.aboutMenuOpen", nextState.aboutMenuOpen);
+      return true;
+    }
+    if (this.state.friendInvitationsSentToMe !== nextState.friendInvitationsSentToMe) {
+      // console.log("shouldComponentUpdate: this.state.friendInvitationsSentToMe", this.state.friendInvitationsSentToMe, ", nextState.friendInvitationsSentToMe", nextState.friendInvitationsSentToMe);
       return true;
     }
     if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {

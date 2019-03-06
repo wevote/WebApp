@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import SuggestedFriendDisplayForList from './SuggestedFriendDisplayForList';
 import { renderLog } from '../../utils/logging';
 
 export default class SuggestedFriendList extends Component {
   static propTypes = {
     friendList: PropTypes.array,
+    previewMode: PropTypes.bool,
   };
 
   constructor (props) {
@@ -36,14 +36,14 @@ export default class SuggestedFriendList extends Component {
 
     return (
       <div className="guidelist card-child__list-group">
-        <TransitionGroup className="org-ignore">
-          {this.state.suggestedFriendList.map(friend => (
-            <CSSTransition key={friend.voter_we_vote_id} timeout={500} classNames="fade">
-              <SuggestedFriendDisplayForList key={friend.voter_we_vote_id} {...friend} />
-            </CSSTransition>
-          ))
-          }
-        </TransitionGroup>
+        {this.state.suggestedFriendList.map(friend => (
+          <SuggestedFriendDisplayForList
+            key={friend.voter_we_vote_id}
+            {...friend}
+            previewMode={this.props.previewMode}
+          />
+        ))
+        }
       </div>
     );
   }

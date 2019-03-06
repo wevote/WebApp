@@ -22,6 +22,9 @@ import FAQ from './routes/More/FAQ';
 import FacebookInvitableFriends from './routes/FacebookInvitableFriends';
 import Friends from './routes/Friends';
 import FriendsCurrent from './routes/Friends/FriendsCurrent';
+import FriendInvitationsSentByMe from './routes/Friends/FriendInvitationsSentByMe';
+import FriendInvitationsSentToMe from './routes/Friends/FriendInvitationsSentToMe';
+import SuggestedFriends from './routes/Friends/SuggestedFriends';
 import GetStarted from './routes/Intro/GetStarted';
 import HamburgerMenu from './routes/More/HamburgerMenu';
 import HowToUse from './routes/More/HowToUse';
@@ -151,9 +154,9 @@ const routes = () => (
     <Route path="/friends" component={Friends} />
     <Route path="/friends/add" component={Connect} />
     <Route path="/friends/current" component={FriendsCurrent} />
-    <Route path="/friends/requests" component={Friends} />
-    <Route path="/friends/invitationsbyme" component={Friends} />
-    <Route path="/friends/suggested" component={Friends} />
+    <Route path="/friends/requests" component={FriendInvitationsSentToMe} />
+    <Route path="/friends/invitationsbyme" component={FriendInvitationsSentByMe} />
+    <Route path="/friends/suggested" component={SuggestedFriends} />
     <Route path="/friends/invitebyemail" component={InviteByEmail} />
     <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
 

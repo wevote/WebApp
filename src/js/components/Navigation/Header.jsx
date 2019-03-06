@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 import { hasIPhoneNotch, isAndroid, isCordova, isIOS, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBackToBallot from './HeaderBackToBallot';
+import HeaderBackToFriends from './HeaderBackToFriends';
 import HeaderBackToValues from './HeaderBackToValues';
 import HeaderBackToVoterGuides from './HeaderBackToVoterGuides';
 import HeaderBar from './HeaderBar';
@@ -33,8 +34,8 @@ export default class Header extends Component {
     renderLog(__filename);
 
     const { params, location, pathname, voter, weVoteBrandingOff } = this.props;
-    const { settingsMode, valuesMode, voterGuideMode,
-      showBackToBallotHeader, showBackToSettings, showBackToValues, showBackToVoterGuides } = getApplicationViewBooleans(pathname);
+    const { friendsMode, settingsMode, valuesMode, voterGuideMode,
+      showBackToFriends, showBackToBallotHeader, showBackToSettings, showBackToValues, showBackToVoterGuides } = getApplicationViewBooleans(pathname);
     // const hideGettingStartedButtons = voterGuideShowGettingStartedNavigation;
 
     let iPhoneSpacer = '';
@@ -107,6 +108,20 @@ export default class Header extends Component {
             <div ref="pageHeader" className={pageHeaderStyle} id="header-container">
               { showBackToValues ?
                 <HeaderBackToValues location={location} params={params} pathname={pathname} voter={voter} /> :
+                <HeaderBar location={location} pathname={pathname} voter={voter} />
+              }
+            </div>
+          </div>
+        </div>
+      );
+    } else if (friendsMode) {
+      return (
+        <div id="app-header">
+          { iPhoneSpacer }
+          <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
+            <div ref="pageHeader" className={pageHeaderStyle} id="header-container">
+              { showBackToFriends ?
+                <HeaderBackToFriends location={location} params={params} pathname={pathname} voter={voter} /> :
                 <HeaderBar location={location} pathname={pathname} voter={voter} />
               }
             </div>

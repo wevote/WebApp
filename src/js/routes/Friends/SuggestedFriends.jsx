@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { _ } from 'lodash';
-import FriendList from '../../components/Friends/FriendList';
+import SuggestedFriendList from '../../components/Friends/SuggestedFriendList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
 import SearchBar from '../../components/Search/SearchBar';
 
-export default class FriendsCurrent extends Component {
+export default class SuggestedFriends extends Component {
   static propTypes = {
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      currentFriendList: [],
-      currentFriendListFilteredBySearch: [],
+      suggestedFriendList: [],
+      suggestedFriendListFilteredBySearch: [],
       searchFilterOn: false,
       searchTerm: '',
     };
@@ -24,9 +24,9 @@ export default class FriendsCurrent extends Component {
   }
 
   componentDidMount () {
-    FriendActions.currentFriends();
+    FriendActions.suggestedFriendList();
     this.setState({
-      currentFriendList: FriendStore.currentFriends(),
+      suggestedFriendList: FriendStore.suggestedFriendList(),
     });
 
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
@@ -38,25 +38,25 @@ export default class FriendsCurrent extends Component {
 
   onFriendStoreChange () {
     this.setState({
-      currentFriendList: FriendStore.currentFriends(),
+      suggestedFriendList: FriendStore.suggestedFriendList(),
     });
   }
 
   searchFriends (searchTerm) {
     if (searchTerm.length === 0) {
       this.setState({
-        currentFriendListFilteredBySearch: [],
+        suggestedFriendListFilteredBySearch: [],
         searchFilterOn: false,
         searchTerm: '',
       });
     } else {
       const searchTermLowercase = searchTerm.toLowerCase();
-      const { currentFriendList } = this.state;
-      const searchedFriendList = _.filter(currentFriendList,
+      const { suggestedFriendList } = this.state;
+      const searchedFriendList = _.filter(suggestedFriendList,
         voter => voter.voter_display_name.toLowerCase().includes(searchTermLowercase));
 
       this.setState({
-        currentFriendListFilteredBySearch: searchedFriendList,
+        suggestedFriendListFilteredBySearch: searchedFriendList,
         searchFilterOn: true,
         searchTerm,
       });
@@ -67,23 +67,23 @@ export default class FriendsCurrent extends Component {
     this.setState({
       searchFilterOn: false,
       searchTerm: '',
-      currentFriendListFilteredBySearch: [],
+      suggestedFriendListFilteredBySearch: [],
     });
   }
 
   render () {
     renderLog(__filename);
-    let { currentFriendList } = this.state;
+    let { suggestedFriendList } = this.state;
     if (this.state.searchFilterOn) {
-      currentFriendList = this.state.currentFriendListFilteredBySearch;
+      suggestedFriendList = this.state.suggestedFriendListFilteredBySearch;
     }
 
     return (
       <div className="opinion-view">
         <Helmet title="Your Friends - We Vote" />
-        <h1 className="h1">Your Friends</h1>
+        <h1 className="h1">Suggested Friends</h1>
         <div>
-          { currentFriendList && currentFriendList.length > 0 ? (
+          { suggestedFriendList && suggestedFriendList.length > 0 ? (
             <span>
               <SearchBar
                 clearButton
@@ -94,7 +94,7 @@ export default class FriendsCurrent extends Component {
                 searchUpdateDelayTime={0}
               />
               <br />
-              { this.state.searchFilterOn && currentFriendList.length === 0 ? (
+              { this.state.searchFilterOn && suggestedFriendList.length === 0 ? (
                 <p>
                   &quot;
                   {this.state.searchTerm}
@@ -102,8 +102,8 @@ export default class FriendsCurrent extends Component {
                 </p>
               ) : null
               }
-              <FriendList
-                friendList={currentFriendList}
+              <SuggestedFriendList
+                friendList={suggestedFriendList}
                 editMode
               />
             </span>

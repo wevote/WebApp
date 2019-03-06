@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { _ } from 'lodash';
-import FriendList from '../../components/Friends/FriendList';
+import FriendInvitationList from '../../components/Friends/FriendInvitationList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
 import SearchBar from '../../components/Search/SearchBar';
 
-export default class FriendsCurrent extends Component {
+export default class FriendInvitationsSentToMe extends Component {
   static propTypes = {
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      currentFriendList: [],
-      currentFriendListFilteredBySearch: [],
+      friendInvitationsSentToMe: [],
+      friendInvitationsSentToMeFilteredBySearch: [],
       searchFilterOn: false,
       searchTerm: '',
     };
@@ -24,9 +24,9 @@ export default class FriendsCurrent extends Component {
   }
 
   componentDidMount () {
-    FriendActions.currentFriends();
+    FriendActions.friendInvitationsSentToMe();
     this.setState({
-      currentFriendList: FriendStore.currentFriends(),
+      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
     });
 
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
@@ -38,25 +38,25 @@ export default class FriendsCurrent extends Component {
 
   onFriendStoreChange () {
     this.setState({
-      currentFriendList: FriendStore.currentFriends(),
+      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
     });
   }
 
   searchFriends (searchTerm) {
     if (searchTerm.length === 0) {
       this.setState({
-        currentFriendListFilteredBySearch: [],
+        friendInvitationsSentToMeFilteredBySearch: [],
         searchFilterOn: false,
         searchTerm: '',
       });
     } else {
       const searchTermLowercase = searchTerm.toLowerCase();
-      const { currentFriendList } = this.state;
-      const searchedFriendList = _.filter(currentFriendList,
+      const { friendInvitationsSentToMe } = this.state;
+      const searchedFriendList = _.filter(friendInvitationsSentToMe,
         voter => voter.voter_display_name.toLowerCase().includes(searchTermLowercase));
 
       this.setState({
-        currentFriendListFilteredBySearch: searchedFriendList,
+        friendInvitationsSentToMeFilteredBySearch: searchedFriendList,
         searchFilterOn: true,
         searchTerm,
       });
@@ -67,23 +67,23 @@ export default class FriendsCurrent extends Component {
     this.setState({
       searchFilterOn: false,
       searchTerm: '',
-      currentFriendListFilteredBySearch: [],
+      friendInvitationsSentToMeFilteredBySearch: [],
     });
   }
 
   render () {
     renderLog(__filename);
-    let { currentFriendList } = this.state;
+    let { friendInvitationsSentToMe } = this.state;
     if (this.state.searchFilterOn) {
-      currentFriendList = this.state.currentFriendListFilteredBySearch;
+      friendInvitationsSentToMe = this.state.friendInvitationsSentToMeFilteredBySearch;
     }
 
     return (
       <div className="opinion-view">
         <Helmet title="Your Friends - We Vote" />
-        <h1 className="h1">Your Friends</h1>
+        <h1 className="h1">Friend Requests</h1>
         <div>
-          { currentFriendList && currentFriendList.length > 0 ? (
+          { friendInvitationsSentToMe && friendInvitationsSentToMe.length > 0 ? (
             <span>
               <SearchBar
                 clearButton
@@ -94,7 +94,7 @@ export default class FriendsCurrent extends Component {
                 searchUpdateDelayTime={0}
               />
               <br />
-              { this.state.searchFilterOn && currentFriendList.length === 0 ? (
+              { this.state.searchFilterOn && friendInvitationsSentToMe.length === 0 ? (
                 <p>
                   &quot;
                   {this.state.searchTerm}
@@ -102,13 +102,13 @@ export default class FriendsCurrent extends Component {
                 </p>
               ) : null
               }
-              <FriendList
-                friendList={currentFriendList}
+              <FriendInvitationList
                 editMode
+                friendList={friendInvitationsSentToMe}
               />
             </span>
           ) :
-            <p>Your friends will be shown here.</p>
+            <p>You currently have no invitations.</p>
           }
         </div>
       </div>

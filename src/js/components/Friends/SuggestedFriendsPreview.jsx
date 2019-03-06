@@ -5,7 +5,7 @@ import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
 
-export default class FriendsSuggestedPreview extends Component {
+export default class SuggestedFriendsPreview extends Component {
   static propTypes = {
   };
 
@@ -52,6 +52,7 @@ export default class FriendsSuggestedPreview extends Component {
             <div>
               <SuggestedFriendList
                 friendList={suggestedFriendListLimited}
+                previewMode
               />
               <Link to="/friends/suggested">See All</Link>
             </div>

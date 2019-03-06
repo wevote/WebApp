@@ -18,6 +18,7 @@ export default class FriendInvitationEmailForList extends Component {
     // voter_twitter_followers_count: PropTypes.number, // Comes friend data object from API server
     voter_twitter_handle: PropTypes.string, // Comes friend data object from API server
     // voter_we_vote_id: PropTypes.string, // Comes friend data object from API server
+    previewMode: PropTypes.bool,
   };
 
   constructor (props) {
@@ -63,7 +64,7 @@ export default class FriendInvitationEmailForList extends Component {
     const voterImage = <ImageHandler sizeClassName="image-lg " imageUrl="" kind_of_ballot_item="CANDIDATE" />;
     const voterDisplayNameFormatted = <h4 className="card-child__display-name">{voterEmailAddress}</h4>;
 
-    return (
+    const friendInvitationHtml = (
       <div className="position-item card-child card-child--not-followed">
         <div className="card-child__avatar">
           { voterGuideLink ? (
@@ -103,5 +104,17 @@ export default class FriendInvitationEmailForList extends Component {
         </div>
       </div>
     );
+
+    if (this.props.previewMode) {
+      return <span>{friendInvitationHtml}</span>;
+    } else {
+      return (
+        <section className="card">
+          <div className="card-main">
+            {friendInvitationHtml}
+          </div>
+        </section>
+      );
+    }
   }
 }
