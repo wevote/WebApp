@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import FriendListCompressed from './FriendListCompressed';
+import FriendList from './FriendList';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';
@@ -50,8 +50,10 @@ export default class FriendsCurrentPreview extends Component {
           <div className="card-main">
             <h1 className="h4">Your Friends</h1>
             <div>
-              <FriendListCompressed
+              <FriendList
+                editMode
                 friendList={currentFriendListLimited}
+                previewMode
               />
               <Link to="/friends/current">See All</Link>
             </div>

@@ -579,7 +579,7 @@ class IssueStore extends ReduceStore {
         };
 
       case 'retrieveIssuesToFollow':
-        allCachedIssues = state.allCachedIssues;
+        allCachedIssues = state.allCachedIssues; // eslint-disable-line prefer-destructuring
         issueList = action.res.issue_list;
         issueWeVoteIdsVoterCanFollow = [];
         issueList.forEach((issue) => {

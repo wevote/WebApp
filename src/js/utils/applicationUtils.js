@@ -7,6 +7,7 @@ import { isCordova, isWebApp } from './cordovaUtils';
 export function getApplicationViewBooleans (pathname) {
   let inTheaterMode = false;
   let contentFullWidthMode = false;
+  let friendsMode = false;
   let settingsMode = false;
   let valuesMode = false;
   let voterGuideMode = false;
@@ -22,9 +23,6 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/wevoteintro/network') {
     inTheaterMode = true;
   } else if (pathname.startsWith('/candidate/') ||
-    pathname === '/facebook_invitable_friends' ||
-    pathname === '/friends' ||
-    pathname === '/friends/invitebyemail' ||
     pathname === '/intro' ||
     pathname === '/issues_followed' ||
     pathname === '/issues_to_follow' ||
@@ -68,11 +66,16 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/opinions_ignored') {
     contentFullWidthMode = true;
     valuesMode = true;
+  } else if (pathname.startsWith('/friends') ||
+    pathname === '/facebook_invitable_friends') {
+    contentFullWidthMode = true;
+    friendsMode = true;
   } else {
     voterGuideMode = true;
     voterGuideShowGettingStartedNavigation = true;
   }
 
+  let showBackToFriends = false;
   let showBackToBallotHeader = false;
   let showBackToSettings = false;
   let showBackToValues = false;
@@ -104,6 +107,14 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/opinions_ignored' ||
     pathname === '/values/list') {
     showBackToValues = true;
+  } else if (pathname === '/friends/add' ||
+    pathname === '/friends/current' ||
+    pathname === '/friends/requests' ||
+    pathname === '/friends/invitationsbyme' ||
+    pathname === '/friends/suggested' ||
+    pathname === '/friends/invitebyemail' ||
+    pathname === '/facebook_invitable_friends') {
+    showBackToFriends = true;
   } else if (stringContains('/vg/', pathname)) {
     showBackToVoterGuides = true; // DALE 2019-02-19 Soon we should be able to delete the interim voter guides page
   }
@@ -115,10 +126,12 @@ export function getApplicationViewBooleans (pathname) {
   return {
     inTheaterMode,
     contentFullWidthMode,
+    friendsMode,
     settingsMode,
     valuesMode,
     voterGuideMode,
     voterGuideShowGettingStartedNavigation,
+    showBackToFriends,
     showBackToBallotHeader,
     showBackToSettings,
     showBackToValues,

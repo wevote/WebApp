@@ -135,7 +135,7 @@ export default class TwitterSignInProcess extends Component {
 
     if (yesPleaseMergeAccounts) {
       // Go ahead and merge this voter record with the voter record that the twitterSecretKey belongs to
-      oAuthLog("this.voterMergeTwoAccountsByTwitterKey -- yes please merge accounts");
+      oAuthLog('this.voterMergeTwoAccountsByTwitterKey -- yes please merge accounts');
       this.voterMergeTwoAccountsByTwitterKey(twitterSecretKey);
       return LoadingWheel;
     }

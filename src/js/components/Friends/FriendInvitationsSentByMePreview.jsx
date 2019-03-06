@@ -52,6 +52,8 @@ export default class FriendInvitationsSentByMePreview extends Component {
             <div>
               <FriendInvitationList
                 friendList={friendInvitationsSentByMeLimited}
+                invitationsSentByMe
+                previewMode
               />
               <Link to="/friends/invitationsbyme">See All</Link>
             </div>

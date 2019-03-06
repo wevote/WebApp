@@ -8,7 +8,7 @@ import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
 import FriendsCurrentPreview from '../components/Friends/FriendsCurrentPreview';
 import FriendInvitationsSentByMePreview from '../components/Friends/FriendInvitationsSentByMePreview';
 import FriendInvitationsSentToMePreview from '../components/Friends/FriendInvitationsSentToMePreview';
-import FriendsSuggestedPreview from '../components/Friends/FriendsSuggestedPreview';
+import SuggestedFriendsPreview from '../components/Friends/SuggestedFriendsPreview';
 import TwitterSignIn from '../components/Twitter/TwitterSignIn';
 import VoterStore from '../stores/VoterStore';
 
@@ -53,7 +53,7 @@ export default class Friends extends Component {
         <div className="row">
           <div className="col-sm-12 col-md-8">
             <FriendInvitationsSentToMePreview />
-            <FriendsSuggestedPreview />
+            <SuggestedFriendsPreview />
             <section className="card">
               <div className="card-main">
                 <h1 className="h4">
