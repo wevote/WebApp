@@ -17,6 +17,7 @@ import BallotIntroModal from '../Ballot/BallotIntroModal';
 import BallotStatusMessage from '../Ballot/BallotStatusMessage';
 import BallotStore from '../../stores/BallotStore';
 import BallotSummaryModal from '../Ballot/BallotSummaryModal';
+import BallotSearch from '../Ballot/BallotSearch';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import cookies from '../../utils/cookies';
 import {
@@ -130,6 +131,8 @@ class VoterGuideBallot extends Component {
       voterBallotList: [],
       voterGuideOnStage: undefined,
       showFilterTabs: true,
+      isSearching: false,
+      ballotSearchResults: [],
     };
 
     this.ballotItems = {};
@@ -419,6 +422,12 @@ class VoterGuideBallot extends Component {
     }
     if (this.state.showSelectBallotModal !== nextState.showSelectBallotModal) {
       // console.log("shouldComponentUpdate: this.state.showSelectBallotModal", this.state.showSelectBallotModal, ", nextState.showSelectBallotModal", nextState.showSelectBallotModal);
+      return true;
+    }
+    if (this.state.isSearching !== nextState.isSearching) {
+      return true;
+    }
+    if (this.state.ballotSearchResults !== nextState.ballotSearchResults) {
       return true;
     }
 
@@ -802,12 +811,22 @@ class VoterGuideBallot extends Component {
     });
   }
 
+  handleSearch = (filteredItems) => {
+    this.setState({ ballotSearchResults: filteredItems });
+  }
+
+  handleToggleSearchBallot = () => {
+    const { isSearching } = this.state;
+    this.setState({ isSearching: !isSearching });
+  }
+
   render () {
     renderLog(__filename);
     const ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
     const { classes } = this.props;
     const {
       ballotWithItemsFromCompletionFilterType, showFilterTabs, doubleFilteredBallotItemsLength, completionLevelFilterType,
+      isSearching, ballotWithAllItems, ballotSearchResults,
     } = this.state;
     // console.log("VoterGuideBallot render, ballotBaseUrl: ", ballotBaseUrl);
 
@@ -937,6 +956,12 @@ class VoterGuideBallot extends Component {
               </h1>
               { ballotWithItemsFromCompletionFilterType.length && showFilterTabs ? (
                 <div className="ballot__item-filter-tabs">
+                  <BallotSearch
+                    isSearching={isSearching}
+                    onToggleSearch={this.handleToggleSearchBallot}
+                    items={ballotWithAllItems}
+                    onBallotSearch={this.handleSearch}
+                  />
                   { BALLOT_ITEM_FILTER_TYPES.map((oneTypeOfBallotItem) => {
                     const allBallotItemsByFilterType = this.state.ballotWithAllItems.filter((item) => {
                       if (oneTypeOfBallotItem === 'Measure') {
@@ -1043,10 +1068,10 @@ class VoterGuideBallot extends Component {
                   {/* The rest of the ballot items */}
                   {ballotWithRemainingItems.length > 0 && (
                   <div className={isWebApp() ? 'BallotList' : 'BallotList__cordova'}>
-                    {ballotWithRemainingItems.map((item) => {
+                    {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => {
                     // ballot limited by items by filter type
                     // console.log(this.state.raceLevelFilterType);
-                      if (this.state.raceLevelFilterType === 'All' ||
+                      if (this.state.raceLevelFilterType === 'All' ||  (isSearching && ballotSearchResults.length) ||
                         (item.kind_of_ballot_item === 'MEASURE' && this.state.raceLevelFilterType === 'Measure') ||
                         this.state.raceLevelFilterType === item.race_office_level) {
                         return (

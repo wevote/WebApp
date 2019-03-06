@@ -219,7 +219,10 @@ class MeasureItemCompressed extends Component {
       <Card classes={{ root: classes.cardRoot }}>
         <InfoRow>
           <MeasureInfoWrapper onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
-            <Title>{ballotDisplay[0]}</Title>
+            <Title>
+              {ballotDisplay[0]}
+              <ArrowForwardIcon classes={{ root: classes.cardHeaderIconRoot }} />
+            </Title>
             <SubTitle>{ballotDisplay[1]}</SubTitle>
             <Info>{shortenText(measureText, 200)}</Info>
           </MeasureInfoWrapper>
@@ -227,11 +230,21 @@ class MeasureItemCompressed extends Component {
         </InfoRow>
         <ChoicesRow>
           <Choice>
-            <ChoiceTitle brandBlue={theme.palette.primary.main}>{`Yes On ${extractNumber(ballotItemDisplayName)}`}</ChoiceTitle>
+            <ChoiceTitle
+              onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
+              brandBlue={theme.palette.primary.main}
+            >
+              {`Yes On ${extractNumber(ballotItemDisplayName)}`}
+            </ChoiceTitle>
             <ChoiceInfo>{shortenText(yesVoteDescription, 200)}</ChoiceInfo>
           </Choice>
           <Choice>
-            <ChoiceTitle brandBlue={theme.palette.primary.main}>{`No On ${extractNumber(ballotItemDisplayName)}`}</ChoiceTitle>
+            <ChoiceTitle
+              onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
+              brandBlue={theme.palette.primary.main}
+            >
+              {`No On ${extractNumber(ballotItemDisplayName)}`}
+            </ChoiceTitle>
             <ChoiceInfo>{shortenText(noVoteDescription, 200)}</ChoiceInfo>
           </Choice>
         </ChoicesRow>
@@ -256,6 +269,10 @@ const styles = theme => ({
     fontSize: 14,
     margin: '.3rem .3rem 0 .5rem',
   },
+  cardHeaderIconRoot: {
+    marginTop: '-.3rem',
+    fontSize: 20,
+  },
   cardFooterIconRoot: {
     fontSize: 14,
     margin: '0 0 .1rem .4rem',
@@ -278,13 +295,20 @@ const Choice = styled.div`
   flex-flow: column;
   padding-right: 8px;
   @media (min-width: 768px) {
-    max-width: 50%;
+    max-width: 47%;
+    border: none;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding-left: 8px;
+    margin-right: 10px;
+    margin-bottom: 16px;
   }
 `;
 
 const ChoiceTitle = styled.h1`
   font-weight: bold;
-  color: ${({ brandBlue }) => brandBlue};
+  color: #4371cc;
+  cursor: pointer;
 `;
 
 const ChoiceInfo = styled.p`
