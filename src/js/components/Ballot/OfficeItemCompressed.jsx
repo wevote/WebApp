@@ -391,6 +391,8 @@ export default class OfficeItemCompressed extends Component {
             <span className="card-main__ballot-name-link u-cursor--pointer">
               <Link to={this.getOfficeLink()}>
                 {ballotItemDisplayName}
+                {' '}
+                <ArrowForwardIcon className="material-icons arrow-forward" />
               </Link>
             </span>
           </h2>

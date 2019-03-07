@@ -255,15 +255,15 @@ export default class CandidateItem extends Component {
             }
           </div>
         </div>
-          <Link to={this.getCandidateLink}>
-            <div className="BallotItem__view-more u-items-center u-no-break d-print-none">
-              <span>
-                show more
-                {' '}
-                <ArrowForwardIcon className="material-icons arrow-forward"/>
-              </span>
-            </div>
-          </Link>
+        <Link to={this.getCandidateLink}>
+          <div className="BallotItem__view-more u-items-center u-no-break d-print-none">
+            <span>
+              show more
+              {' '}
+              <ArrowForwardIcon className="material-icons arrow-forward" />
+            </span>
+          </div>
+        </Link>
       </div>
     );
   }
