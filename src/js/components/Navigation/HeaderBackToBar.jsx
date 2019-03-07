@@ -15,6 +15,7 @@ import { renderLog } from '../../utils/logging';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import { shortenText } from '../../utils/textFormat';
+import OfficeStore from '../../stores/OfficeStore';
 
 const styles = theme => ({
   headerButtonRoot: {
@@ -45,7 +46,7 @@ class HeaderBackToBar extends Component {
     this.state = {
       profilePopUpOpen: false,
       candidateWeVoteId: '',
-      // office_we_vote_id: "",
+      officeWeVoteId: '',
       organization: {},
       organizationWeVoteId: '',
       voter: {},
@@ -64,6 +65,7 @@ class HeaderBackToBar extends Component {
     // this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.officeStoreListener = OfficeStore.addListener(this.onOfficeStoreChange.bind(this));
     // this.onBallotStoreChange();
 
     let candidateWeVoteId;
@@ -79,6 +81,11 @@ class HeaderBackToBar extends Component {
         // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
         officeWeVoteId = candidate.contest_officeWeVoteId;
         officeName = candidate.contest_office_name;
+      } else {
+        officeWeVoteId = this.props.params.office_we_vote_id || '';
+        if (officeWeVoteId && officeWeVoteId !== '') {
+          officeName = OfficeStore.getOffice(officeWeVoteId).ballot_item_display_name;
+        }
       }
 
       organizationWeVoteId = this.props.params.organization_we_vote_id || '';
@@ -120,6 +127,11 @@ class HeaderBackToBar extends Component {
         // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
         officeWeVoteId = candidate.contest_office_we_vote_id;
         officeName = candidate.contest_office_name;
+      } else {
+        officeWeVoteId = this.props.params.office_we_vote_id || '';
+        if (officeWeVoteId && officeWeVoteId !== '') {
+          officeName = OfficeStore.getOffice(officeWeVoteId).ballot_item_display_name;
+        }
       }
 
       organizationWeVoteId = nextProps.params.organization_we_vote_id || '';
@@ -150,6 +162,7 @@ class HeaderBackToBar extends Component {
     // this.ballotStoreListener.remove();
     this.candidateStoreListener.remove();
     this.organizationStoreListener.remove();
+    this.officeStoreListener.remove();
   }
 
   /*
@@ -161,7 +174,6 @@ class HeaderBackToBar extends Component {
   onCandidateStoreChange () {
     const { candidateWeVoteId } = this.state;
     // console.log("Candidate onCandidateStoreChange");
-
     let officeName;
     let officeWeVoteId;
     if (candidateWeVoteId && candidateWeVoteId !== '') {
@@ -170,6 +182,11 @@ class HeaderBackToBar extends Component {
       // console.log("HeaderBackToBar -- onCandidateStoreChange, candidateWeVoteId:", this.state.candidateWeVoteId, ", candidate:", candidate);
       officeName = candidate.contest_office_name;
       officeWeVoteId = candidate.contest_office_we_vote_id;
+    } else {
+      officeWeVoteId = this.props.params.office_we_vote_id || '';
+      if (officeWeVoteId && officeWeVoteId !== '') {
+        officeName = OfficeStore.getOffice(officeWeVoteId).ballot_item_display_name;
+      }
     }
 
     this.setState({
@@ -183,6 +200,18 @@ class HeaderBackToBar extends Component {
     const { organizationWeVoteId } = this.state;
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
+    });
+  }
+
+  onOfficeStoreChange () {
+    const { officeWeVoteId } = this.state;
+    let officeName;
+    if (officeWeVoteId && officeWeVoteId !== '') {
+      officeName = OfficeStore.getOffice(officeWeVoteId).ballot_item_display_name;
+    }
+
+    this.setState({
+      officeName,
     });
   }
 
@@ -240,7 +269,7 @@ class HeaderBackToBar extends Component {
   }
 
   render () {
-    const { organizationWeVoteId, candidate, voter } = this.state;
+    const { organizationWeVoteId, candidate, voter, officeName, candidateWeVoteId } = this.state;
     const { classes } = this.props;
     renderLog(__filename);
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
@@ -338,6 +367,11 @@ class HeaderBackToBar extends Component {
           </div>
           )}
         </Toolbar>
+        {!candidateWeVoteId && (
+          <div>
+            {officeName}
+          </div>)
+        }
       </AppBar>
     );
   }
