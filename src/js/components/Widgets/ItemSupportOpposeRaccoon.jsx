@@ -19,6 +19,7 @@ import OrganizationsToDisplay from "./OrganizationsToDisplay";
 import SupportStore from "../../stores/SupportStore";
 import { stringContains } from "../../utils/textFormat";
 import VoterStore from "../../stores/VoterStore";
+import thumbsUpIcon from "../../../img/global/svg-icons/issues/thumbs-up-icon.svg";
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize complex changes
 /* eslint react/no-find-dom-node: 1 */
@@ -871,9 +872,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         {totalSupportCount ? (                                                               // eslint-disable-line no-nested-ternary
           <span className="u-no-break issue-icon-list__endorsements-label">
             <img
-              src={cordovaDot(
-                "/img/global/svg-icons/issues/thumbs-up-icon.svg",
-              )}
+              src={cordovaDot(thumbsUpIcon)}
               className="issue-icon-list__endorsement-icon"
               alt="Thumbs Up"
               width="20"
