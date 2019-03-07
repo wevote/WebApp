@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import CandidateStore from '../../stores/CandidateStore';
@@ -254,6 +255,15 @@ export default class CandidateItem extends Component {
             }
           </div>
         </div>
+          <Link to={this.getCandidateLink}>
+            <div className="BallotItem__view-more u-items-center u-no-break d-print-none">
+              <span>
+                show more
+                {' '}
+                <ArrowForwardIcon className="material-icons arrow-forward"/>
+              </span>
+            </div>
+          </Link>
       </div>
     );
   }
