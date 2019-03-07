@@ -461,10 +461,29 @@ class OfficeItemCompressed extends Component {
             })}
           </Container>
           {' '}
-          <CardFooter onClick={this.gotoOfficeLink}>
-            Show More
-            <ArrowForwardIcon classes={{ root: classes.cardFooterIconRoot }} />
-          </CardFooter>
+          <Link to={this.getOfficeLink()}>
+            <div className="BallotItem__view-more u-items-center u-no-break d-print-none">
+              { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ? (
+                <span>
+                  {' '}
+                  show all
+                  {' '}
+                  {totalNumberOfCandidatesToDisplay}
+                  {' '}
+                  candidates
+                  {' '}
+                  <ArrowForwardIcon className="material-icons arrow-forward" />
+                </span>
+              ) : (
+                <span>
+                  show more
+                  {' '}
+                  <ArrowForwardIcon className="material-icons arrow-forward" />
+                </span>
+              )
+            }
+            </div>
+          </Link>
         </div>
       </div>
     );
