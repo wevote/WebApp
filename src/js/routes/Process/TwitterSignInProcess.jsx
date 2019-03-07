@@ -1,11 +1,12 @@
 import { Component } from 'react';
 import { historyPush } from '../../utils/cordovaUtils';
 import LoadingWheel from '../../components/LoadingWheel';
-import { renderLog } from '../../utils/logging';
+import { oAuthLog, renderLog } from '../../utils/logging';
 import TwitterActions from '../../actions/TwitterActions';
 import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
 import VoterActions from '../../actions/VoterActions';
+
 // This will be needed in the future
 // import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
 
@@ -110,18 +111,18 @@ export default class TwitterSignInProcess extends Component {
     renderLog(__filename);
     const { twitterAuthResponse, yesPleaseMergeAccounts } = this.state;
 
-    // console.log('TwitterSignInProcess render');
+    oAuthLog('TwitterSignInProcess render');
     if (!twitterAuthResponse ||
       !twitterAuthResponse.twitter_retrieve_attempted) {
       // console.log('STOPPED, missing twitter_retrieve_attempted: twitterAuthResponse:', twitterAuthResponse);
       return LoadingWheel;
     }
-    // console.log('=== Passed initial gate ===');
-    // console.log('twitterAuthResponse:', twitterAuthResponse);
+    oAuthLog('=== Passed initial gate ===');
+    oAuthLog('twitterAuthResponse:', twitterAuthResponse);
     const { twitter_secret_key: twitterSecretKey } = twitterAuthResponse;
 
     if (twitterAuthResponse.twitter_sign_in_failed) {
-      // console.log('Twitter sign in failed - push to /settings/account');
+      oAuthLog('Twitter sign in failed - push to /settings/account');
       historyPush({
         pathname: '/settings/account',
         state: {
@@ -134,7 +135,7 @@ export default class TwitterSignInProcess extends Component {
 
     if (yesPleaseMergeAccounts) {
       // Go ahead and merge this voter record with the voter record that the twitterSecretKey belongs to
-      // console.log("this.voterMergeTwoAccountsByTwitterKey -- yes please merge accounts");
+      oAuthLog('this.voterMergeTwoAccountsByTwitterKey -- yes please merge accounts');
       this.voterMergeTwoAccountsByTwitterKey(twitterSecretKey);
       return LoadingWheel;
     }
@@ -142,7 +143,7 @@ export default class TwitterSignInProcess extends Component {
     // This process starts when we return from attempting voterTwitterSignInRetrieve
     // If twitter_sign_in_found NOT True, go back to the sign in page to try again
     if (!twitterAuthResponse.twitter_sign_in_found) {
-      console.log('twitterAuthResponse.twitter_sign_in_found', twitterAuthResponse.twitter_sign_in_found);
+      oAuthLog('twitterAuthResponse.twitter_sign_in_found', twitterAuthResponse.twitter_sign_in_found);
       historyPush({
         pathname: '/settings/account',
         state: {
@@ -182,7 +183,7 @@ export default class TwitterSignInProcess extends Component {
       //   return LoadingWheel;
       // }
     } else {
-      // console.log('Setting up new Twitter entry - voterTwitterSaveToCurrentAccount');
+      oAuthLog('Setting up new Twitter entry - voterTwitterSaveToCurrentAccount');
       this.voterTwitterSaveToCurrentAccount();
       return LoadingWheel;
     }

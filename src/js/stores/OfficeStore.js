@@ -12,7 +12,7 @@ class OfficeStore extends ReduceStore {
   }
 
   getOffice (officeWeVoteId) {
-    console.log('in getOffice----');
+    // console.log('in getOffice----');
     // if (!this.isLoaded()){ return undefined; }
     const officeList = this.getState().offices;
     if (officeList) {

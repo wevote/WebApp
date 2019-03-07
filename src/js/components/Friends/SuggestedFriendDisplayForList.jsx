@@ -16,6 +16,7 @@ export default class SuggestedFriendDisplayForList extends Component {
     voter_twitter_description: PropTypes.string,
     voter_twitter_followers_count: PropTypes.number,
     voter_email_address: PropTypes.string,
+    previewMode: PropTypes.bool,
   };
 
   deleteFriendInviteEmail (voterEmailAddress) {
@@ -52,7 +53,7 @@ export default class SuggestedFriendDisplayForList extends Component {
     const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlMedium} kind_of_ballot_item="CANDIDATE" />;
     const voterDisplayNameFormatted = <span className="card-child__display-name">{voterDisplayName}</span>;
 
-    return (
+    const suggestedFriendHtml = (
       <div className="position-item card-child card-child--not-followed">
         <div className="card-child__avatar">
           { voterGuideLink ? (
@@ -94,5 +95,17 @@ export default class SuggestedFriendDisplayForList extends Component {
         </div>
       </div>
     );
+
+    if (this.props.previewMode) {
+      return <span>{suggestedFriendHtml}</span>;
+    } else {
+      return (
+        <section className="card">
+          <div className="card-main">
+            {suggestedFriendHtml}
+          </div>
+        </section>
+      );
+    }
   }
 }

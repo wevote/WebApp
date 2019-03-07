@@ -17,6 +17,7 @@ export default class FriendDisplayForList extends Component {
     voter_twitter_followers_count: PropTypes.number,
     linked_organization_we_vote_id: PropTypes.string,
     editMode: PropTypes.bool,
+    previewMode: PropTypes.bool,
   };
 
   render () {
@@ -40,8 +41,8 @@ export default class FriendDisplayForList extends Component {
     const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlMedium} kind_of_ballot_item="CANDIDATE" />;
     const voterDisplayNameFormatted = <span className="card-child__display-name">{voterDisplayName}</span>;
 
-    return (
-      <div className="position-item card-child card-child--not-followed">
+    const friendDisplayHtml = (
+      <div>
         <div className="card-child__avatar">
           { voterGuideLink ? (
             <Link to={voterGuideLink} className="u-no-underline">
@@ -90,5 +91,17 @@ export default class FriendDisplayForList extends Component {
         </div>
       </div>
     );
+
+    if (this.props.previewMode) {
+      return <span>{friendDisplayHtml}</span>;
+    } else {
+      return (
+        <section className="card">
+          <div className="card-main">
+            {friendDisplayHtml}
+          </div>
+        </section>
+      );
+    }
   }
 }

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg';
+import styled from 'styled-components';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
-export default class IssuesByBallotItemDisplayList extends Component {
+class IssuesByBallotItemDisplayList extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
   };
@@ -96,7 +97,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
               {oneIssue.issue_icon_local_path ? (
                 <span className="issue-icon-list__issue-icon">
                   <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-                            svgStyle={{ fill: '#4B4B4B', padding: '1px 1px 1px 0px' }}
+                            svgStyle={{ fill: '#999', padding: '1px 1px 1px 0px' }}
                   />
                 </span>
               ) : null
@@ -144,7 +145,7 @@ export default class IssuesByBallotItemDisplayList extends Component {
     );
 
     return (
-      <div className="issues-list-stacked__support-list u-flex u-justify-between u-items-center">
+      <Wrapper>
         <div className="issues-list-stacked__support-list__container-wrap">
           {/* Show a break-down of the current positions in your network */}
           <div className="issues-list-stacked__support-list__container u-flex u-items-start u-inset__v--xs">
@@ -156,7 +157,13 @@ export default class IssuesByBallotItemDisplayList extends Component {
             </ul>
           </div>
         </div>
-      </div>
+      </Wrapper>
     );
   }
 }
+
+const Wrapper = styled.div`
+  overflow-x: scroll;
+`;
+
+export default IssuesByBallotItemDisplayList;

@@ -164,7 +164,7 @@ export default class BallotItemSupportOpposeComment extends Component {
   }
 
   render () {
-    console.log('BallotItemSupportOpposeComment render, ballotItemWeVoteId:', this.state.ballotItemWeVoteId);
+    // console.log('BallotItemSupportOpposeComment render, ballotItemWeVoteId:', this.state.ballotItemWeVoteId);
     renderLog(__filename);
 
     // Voter Support or opposition

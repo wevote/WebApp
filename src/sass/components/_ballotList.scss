@@ -81,7 +81,7 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
       font-family: $heading-font-stack;
       font-size: 18px;
       color: $gray-mid;
-      padding-bottom: $space-md;
+      padding-bottom: $space-sm;
       padding-top: $space-md;
       margin-left: $space-md;
       font-weight: bold;
@@ -114,6 +114,18 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
       position: relative;
       margin-top: $space-none;
       margin-bottom: $space-xs;
+    }
+  }
+
+  &__top-comment {
+    color: $gray-dark;
+    font-family: $heading-font-stack;
+    font-size: 12px;
+    font-weight: 600;
+
+    &__endorser-name {
+      color: $gray-mid;
+      font-weight: 900;
     }
   }
 }

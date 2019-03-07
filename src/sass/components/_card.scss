@@ -1,6 +1,5 @@
 // 'Card' styling for Candidates, Organizations, etc.
 
-$candidate-font-size: .875rem;
 @include media-object('.card-main__media-object', '.card-main__media-object-anchor', '.card-main__media-object-content');
 
 .card {
@@ -91,9 +90,10 @@ $candidate-font-size: .875rem;
     }
 
     &__avatar-compressed {
-      background-image: url('../../img/global/svg-icons/avatar-generic.svg');
+      background-image: url('../../img/global/svg-icons/avatar-generic.svg');   // March 2019, The paths are different in Cordova (where this fails).
       border-radius: $radius-xs;
       width: 40px;
+      height: 40px;
       .card-main & {
         @include breakpoints(mid-small) {
           width: 40px;
@@ -134,12 +134,12 @@ $candidate-font-size: .875rem;
     }
 
     &__candidate-party-description {
-      font-size: $candidate-font-size;
+      font-size: .7rem;
       color: $gray-dark;
     }
 
     &__candidate-description {
-      font-size: $candidate-font-size;
+      font-size: .875rem;
       color: $gray-mid;
     }
 

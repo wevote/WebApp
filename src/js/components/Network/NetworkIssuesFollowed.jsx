@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import IssueActions from '../../actions/IssueActions';
-import IssueFollowToggleSquare from '../Issues/IssueFollowToggleSquare';
+import IssueFollowToggleSquare from '../Values/IssueFollowToggleSquare';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 

@@ -7,11 +7,12 @@ import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpp
 import CandidateStore from '../../stores/CandidateStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
-import IssuesByBallotItemDisplayList from '../Issues/IssuesByBallotItemDisplayList';
+import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
 import LearnMore from '../Widgets/LearnMore';
 import { renderLog } from '../../utils/logging';
 import OfficeNameText from '../Widgets/OfficeNameText';
 import SupportStore from '../../stores/SupportStore';
+import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
 
@@ -31,6 +32,7 @@ export default class CandidateItem extends Component {
     organizationWeVoteId: PropTypes.string,
     party: PropTypes.string,
     showPositionStatementActionBar: PropTypes.bool,
+    showTopCommentByBallotItem: PropTypes.bool,
     twitter_description: PropTypes.string,
     twitter_followers_count: PropTypes.number,
     // twitter_handle: PropTypes.string,
@@ -243,6 +245,14 @@ export default class CandidateItem extends Component {
               ballotItemWeVoteId={candidateWeVoteId}
               placement="bottom"
             />
+            {/* If there is a quote about the candidate, show that too. */}
+            { this.props.showTopCommentByBallotItem && (
+              <TopCommentByBallotItem
+                ballotItemWeVoteId={candidateWeVoteId}
+                learnMoreUrl={this.getCandidateLink()}
+              />
+            )
+            }
           </div>
           <div>
             {this.state.hideBallotItemSupportOpposeComment ?

@@ -4,7 +4,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import IssueActions from '../../actions/IssueActions';
-import IssueLinkToggle from '../Issues/IssueLinkToggle';
+import IssueLinkToggle from '../Values/IssueLinkToggle';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 
