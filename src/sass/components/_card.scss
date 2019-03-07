@@ -93,6 +93,7 @@
       background-image: url('../../img/global/svg-icons/avatar-generic.svg');   // March 2019, The paths are different in Cordova (where this fails).
       border-radius: $radius-xs;
       width: 40px;
+      height: 40px;
       .card-main & {
         @include breakpoints(mid-small) {
           width: 40px;

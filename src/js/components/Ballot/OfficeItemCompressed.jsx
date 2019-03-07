@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {  Modal } from 'react-bootstrap'; // , OverlayTrigger, Popover
-import { Link } from 'react-router';
 // import TextTruncate from 'react-text-truncate';
 import Slider from 'react-slick';
 import styled from 'styled-components';
+import { withTheme, withStyles } from '@material-ui/core/styles';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { cordovaDot, historyPush, hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { toTitleCase } from '../../utils/textFormat';
@@ -44,6 +45,8 @@ class OfficeItemCompressed extends Component {
     organization_we_vote_id: PropTypes.string,
     updateOfficeDisplayUnfurledTracker: PropTypes.func,
     urlWithoutHash: PropTypes.string,
+    theme: PropTypes.object,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -206,11 +209,11 @@ class OfficeItemCompressed extends Component {
     // console.log("OfficeItemCompressed render");
     renderLog(__filename);
     let { ballot_item_display_name: ballotItemDisplayName } = this.props;
-    const { we_vote_id: weVoteId } = this.props;
+    const { we_vote_id: weVoteId, theme, classes } = this.props;
 
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
     const unsortedCandidateList = this.state.candidateList ? this.state.candidateList.slice(0) : {};
-    const totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
+    // const totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
     const arrayOfCandidatesVoterSupports = [];
     // let advisersThatMakeVoterIssuesScoreDisplay;
     // let advisersThatMakeVoterNetworkScoreCount = 0;
@@ -218,7 +221,7 @@ class OfficeItemCompressed extends Component {
     // let atLeastOneCandidateChosenByIssueScore = false;
     // let candidateWeVoteWithMostSupportFromNetwork = null;
     // let candidateWeVoteIdWithHighestIssueScore = null;
-    let voterSupportsAtLeastOneCandidate = false;
+    // let voterSupportsAtLeastOneCandidate = false;
     let supportProps;
     let candidateHasVoterSupport;
     let voterIssuesScoreForCandidate;
@@ -234,7 +237,7 @@ class OfficeItemCompressed extends Component {
         candidate.is_support = supportProps.is_support;
         if (candidateHasVoterSupport) {
           arrayOfCandidatesVoterSupports.push(candidate.ballot_item_display_name);
-          voterSupportsAtLeastOneCandidate = true;
+          // voterSupportsAtLeastOneCandidate = true;
         }
       }
     });
@@ -358,7 +361,7 @@ class OfficeItemCompressed extends Component {
     };
     let candidatePreviewCount = 0;
     const candidatePreviewLimit = this.state.maximumNumberOrganizationsToDisplay;
-    const candidatePreviewList = [];
+    // const candidatePreviewList = [];
     let oneCandidateDisplay = <span />;
     const BallotIntroFollowIssuesModal = (
       <Modal
@@ -388,56 +391,56 @@ class OfficeItemCompressed extends Component {
         <a className="anchor-under-header" name={weVoteId} />
         <div className="card-main__content">
           {/* Desktop */}
-          <h2 className="u-f3 card-main__ballot-name u-gray-dark u-stack--sm">
-            <span className="card-main__ballot-name-link u-cursor--pointer">
-              <Link to={this.getOfficeLink()}>
-                {ballotItemDisplayName}
-              </Link>
-            </span>
-          </h2>
+          <Title onClick={this.gotoOfficeLink}>
+            {ballotItemDisplayName}
+            <ArrowForwardIcon
+              className="u-show-desktop"
+              classes={{ root: classes.cardHeaderIconRoot }}
+            />
+          </Title>
           {/* *************************
             Display either a) the candidates the voter supports, or b) the first several candidates running for this office
             ************************* */}
-          <div>
+          <Container>
             { this.state.candidateList.map((oneCandidate) => {
               if (!oneCandidate || !oneCandidate.we_vote_id) {
                 return null;
               }
 
-              const voterSupportsThisCandidate = SupportStore.get(oneCandidate.we_vote_id) && SupportStore.get(oneCandidate.we_vote_id).is_support;
+              // const voterSupportsThisCandidate = SupportStore.get(oneCandidate.we_vote_id) && SupportStore.get(oneCandidate.we_vote_id).is_support;
               const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
 
               // If at the end the candidates, none were chosen by voter, we use this preview list.
               candidatePreviewCount += 1;
               if (candidatePreviewCount <= candidatePreviewLimit) {
                 oneCandidateDisplay = (
-                  <div key={`candidate_preview-${oneCandidate.we_vote_id}`} className="u-stack--md u-gray-border-bottom">
-                    <CandidateInfo>
+                  <CandidateInfo
+                    key={`candidate_preview-${oneCandidate.we_vote_id}`}
+                    brandBlue={theme.palette.primary.main}
+                    onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
+                  >
+                    <CandidateTopRow>
                       {/* Candidate Image */}
                       <Candidate>
-                        <Link to={this.getCandidateLink(oneCandidate.we_vote_id)}>
-                          <ImageHandler
-                            className="card-main__avatar-compressed"
-                            sizeClassName="icon-candidate-small u-push--sm "
-                            imageUrl={oneCandidate.candidate_photo_url_large}
-                            alt="candidate-photo"
-                            kind_of_ballot_item="CANDIDATE"
-                          />
-                        </Link>
+                        <ImageHandler
+                          className="card-main__avatar-compressed"
+                          sizeClassName="icon-candidate-small u-push--sm "
+                          imageUrl={oneCandidate.candidate_photo_url_large}
+                          alt="candidate-photo"
+                          kind_of_ballot_item="CANDIDATE"
+                        />
                         {/* Candidate Name */}
                         <div>
-                          <Link to={this.getCandidateLink(oneCandidate.we_vote_id)}>
-                            <h4 className="card-main__candidate-name card-main__candidate-name-link u-f5">
-                              {oneCandidate.ballot_item_display_name}
-                              <br />
-                              <span className="card-main__candidate-party-description">{candidatePartyText}</span>
-                            </h4>
-                          </Link>
+                          <h4 className="card-main__candidate-name card-main__candidate-name-link u-f5">
+                            {oneCandidate.ballot_item_display_name}
+                            <br />
+                            <span className="card-main__candidate-party-description">{candidatePartyText}</span>
+                          </h4>
                         </div>
                       </Candidate>
                       {/* Endorsement count or Network score */}
                       <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
-                    </CandidateInfo>
+                    </CandidateTopRow>
                     <div className="u-stack--md">
                       {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
                       <TopCommentByBallotItem
@@ -450,96 +453,97 @@ class OfficeItemCompressed extends Component {
                         />
                       </TopCommentByBallotItem>
                     </div>
-                  </div>
+                  </CandidateInfo>
                 );
-                candidatePreviewList.push(oneCandidateDisplay);
+                return oneCandidateDisplay;
               }
-
-              // If (and only if) the voter supports this candidate, display it now
-              if (voterSupportsThisCandidate) {
-                return (
-                  <span key={`voter_supports_${oneCandidate.we_vote_id}`}>
-                    <div className="u-flex u-items-center">
-                      <div className="o-media-object u-flex-auto u-cursor--pointer u-stack--sm">
-                        {/* Candidate Image */}
-                        <Link to={this.getCandidateLink(oneCandidate.we_vote_id)}>
-                          <ImageHandler
-                            className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
-                            sizeClassName="icon-candidate-small u-push--sm "
-                            imageUrl={oneCandidate.candidate_photo_url_large}
-                            alt="candidate-photo"
-                            kind_of_ballot_item="CANDIDATE"
-                          />
-                        </Link>
-                        {/* Candidate Name */}
-                        <div className="u-flex-auto u-justify-between">
-                          <Link to={this.getCandidateLink(oneCandidate.we_vote_id)}>
-                            <h2 className="h5 candidate-h2">
-                              {oneCandidate.ballot_item_display_name}
-                            </h2>
-                          </Link>
-                        </div>
-                      </div>
-                      <div className="u-flex-none u-justify-end">
-                        <Link to={this.getCandidateLink(oneCandidate.we_vote_id)}>
-                          <span className="u-push--xs">Chosen by you</span>
-                          <img src={cordovaDot('/img/global/svg-icons/thumbs-up-color-icon.svg')}
-                               alt="Thumbs up"
-                               width="24"
-                               height="24"
-                          />
-                        </Link>
-                      </div>
-                    </div>
-                  </span>
-                );
-              } else {
-                return null;
-              }
+              return null;
             })}
-            {/* If voter hasn't chosen candidate, show options. */}
-            { !voterSupportsAtLeastOneCandidate ?
-              (
-                <div>
-                  { candidatePreviewList }
-                </div>
-              ) :
-              null
-            }
-          </div>
+          </Container>
           {' '}
-          <Link to={this.getOfficeLink()}>
-            <div className="BallotItem__view-more u-items-center u-no-break d-print-none">
-              { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ? (
-                <span>
-                  {' '}
-                  view all
-                  {' '}
-                  {totalNumberOfCandidatesToDisplay}
-                  {' '}
-                  candidates
-                </span>
-              ) :
-                <span>show more</span>
-            }
-            </div>
-          </Link>
+          <CardFooter onClick={this.gotoOfficeLink}>
+            Show More
+            <ArrowForwardIcon classes={{ root: classes.cardFooterIconRoot }} />
+          </CardFooter>
         </div>
       </div>
     );
   }
 }
 
+const styles = theme => ({
+  cardHeaderIconRoot: {
+    marginTop: '-.3rem',
+    fontSize: 20,
+    marginLeft: '.3rem',
+  },
+  cardFooterIconRoot: {
+    fontSize: 14,
+    margin: '0 0 .1rem .3rem',
+    [theme.breakpoints.down('lg')]: {
+      marginBottom: '.2rem',
+    },
+  },
+});
+
+const Container = styled.div`
+  display: flex;
+  flex-flow: column;
+`;
+
+const Title = styled.h1`
+  font-size: 18px;
+  font-weight: bold;
+  margin: .1rem 0;
+  cursor: pointer;
+  padding-bottom: 16px;
+  @media (max-width: 960px) {
+    font-size: 16px;
+    padding-bottom: 0;
+  }
+`;
+
 const CandidateInfo = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-flow: column;
+  padding: 16px 16px 0 16px;
+  margin-bottom: 8px;
+  overflow-x: hidden;
+  cursor: pointer;
+  transition: all 200ms ease-in;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  &:hover {
+    border: 1px solid ${({ brandBlue }) => brandBlue};
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+  }
   @media (max-width: 768px) {
     flex-flow: column;
+    border: none;
+    border-bottom: 1px solid #eee;
+    padding: 16px 0 0 0;
+    margin-bottom: 8px;
   }
+`;
+
+const CandidateTopRow = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
 `;
 
 const Candidate = styled.div`
   display: flex;
 `;
 
-export default OfficeItemCompressed;
+const CardFooter = styled.div`
+  font-size: 12px;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  @media (max-width: 960px) {
+    padding: 0;
+  }
+`;
+
+export default withTheme()(withStyles(styles)(OfficeItemCompressed));
