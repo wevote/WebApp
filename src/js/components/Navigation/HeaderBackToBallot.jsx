@@ -111,7 +111,7 @@ class HeaderBackToBallot extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("HeaderBackToBallot componentWillReceiveProps, nextProps: ", nextProps);
+    console.log("HeaderBackToBallot componentWillReceiveProps, nextProps: ", nextProps);
     let candidateWeVoteId;
     let officeWeVoteId;
     let officeName;
@@ -119,17 +119,15 @@ class HeaderBackToBallot extends Component {
     let organizationWeVoteId;
     if (nextProps.params) {
       candidateWeVoteId = nextProps.params.candidate_we_vote_id || '';
+      officeWeVoteId = nextProps.params.office_we_vote_id || '';
       if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
-
         // console.log("HeaderBackToBallot, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
         officeWeVoteId = candidate.contest_office_we_vote_id;
         officeName = candidate.contest_office_name;
-      } else {
-        officeWeVoteId = this.props.params.office_we_vote_id || '';
-        if (officeWeVoteId && officeWeVoteId !== '') {
-          officeName = OfficeStore.getOffice(officeWeVoteId).ballot_item_display_name;
-        }
+      } else if (officeWeVoteId && officeWeVoteId !== '') {
+        candidateWeVoteId = '';
+        officeName = OfficeStore.getOffice(officeWeVoteId).ballot_item_display_name;
       }
 
       organizationWeVoteId = nextProps.params.organization_we_vote_id || '';
