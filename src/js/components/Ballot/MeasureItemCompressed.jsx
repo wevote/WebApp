@@ -54,7 +54,7 @@ class MeasureItemCompressed extends Component {
       ballotItemDisplayName: measure.ballot_item_display_name,
       componentDidMountFinished: true,
       measure,
-      measureSubtitle: measure.measure_subtitle,
+      // measureSubtitle: measure.measure_subtitle,
       measureSupportProps: SupportStore.get(this.props.measureWeVoteId),
       measureText: measure.measure_text,
       measureWeVoteId: this.props.measureWeVoteId,
@@ -78,7 +78,7 @@ class MeasureItemCompressed extends Component {
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
       measure,
-      measureSubtitle: measure.measure_subtitle,
+      // measureSubtitle: measure.measure_subtitle,
       measureSupportProps: SupportStore.get(nextProps.measureWeVoteId),
       measureText: measure.measure_text,
       measureWeVoteId: nextProps.measureWeVoteId,
@@ -219,21 +219,35 @@ class MeasureItemCompressed extends Component {
       <Card classes={{ root: classes.cardRoot }}>
         <InfoRow>
           <MeasureInfoWrapper onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
-            <Title>{ballotDisplay[0]}</Title>
+            <Title>
+              {ballotDisplay[0]}
+              <ArrowForwardIcon
+                className="u-show-desktop"
+                classes={{ root: classes.cardHeaderIconRoot }}
+              />
+            </Title>
             <SubTitle>{ballotDisplay[1]}</SubTitle>
             <Info>{shortenText(measureText, 200)}</Info>
           </MeasureInfoWrapper>
-          <div className="u-float-right">
-            <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
-          </div>
+          <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
         </InfoRow>
         <ChoicesRow>
-          <Choice>
-            <ChoiceTitle brandBlue={theme.palette.primary.main}>{`Yes On ${extractNumber(ballotItemDisplayName)}`}</ChoiceTitle>
+          <Choice
+            brandBlue={theme.palette.primary.main}
+            onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
+          >
+            <ChoiceTitle brandBlue={theme.palette.primary.main}>
+              {`Yes On ${extractNumber(ballotItemDisplayName)}`}
+            </ChoiceTitle>
             <ChoiceInfo>{shortenText(yesVoteDescription, 200)}</ChoiceInfo>
           </Choice>
-          <Choice>
-            <ChoiceTitle brandBlue={theme.palette.primary.main}>{`No On ${extractNumber(ballotItemDisplayName)}`}</ChoiceTitle>
+          <Choice
+            brandBlue={theme.palette.primary.main}
+            onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
+          >
+            <ChoiceTitle brandBlue={theme.palette.primary.main}>
+              {`No On ${extractNumber(ballotItemDisplayName)}`}
+            </ChoiceTitle>
             <ChoiceInfo>{shortenText(noVoteDescription, 200)}</ChoiceInfo>
           </Choice>
         </ChoicesRow>
@@ -249,14 +263,18 @@ class MeasureItemCompressed extends Component {
 
 const styles = theme => ({
   cardRoot: {
-    padding: '8px 16px',
+    padding: '16px 16px 8px 16px',
     [theme.breakpoints.down('lg')]: {
-      padding: '2px 16px',
+      padding: '16px 16px 0 16px',
     },
   },
   endorsementIconRoot: {
     fontSize: 14,
     margin: '.3rem .3rem 0 .5rem',
+  },
+  cardHeaderIconRoot: {
+    marginTop: '-.3rem',
+    fontSize: 20,
   },
   cardFooterIconRoot: {
     fontSize: 14,
@@ -267,6 +285,7 @@ const styles = theme => ({
 const InfoRow = styled.div`
   display: flex;
   flex-flow: row wrap;
+  justify-content: space-between;
 `;
 
 const ChoicesRow = styled.div`
@@ -278,11 +297,26 @@ const Choice = styled.div`
   display: flex;
   flex-flow: column;
   padding-right: 8px;
+  cursor: pointer;
+  transition: all 200ms ease-in;
+  @media (min-width: 768px) {
+    max-width: 47%;
+    border: none;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 0 16px;
+    margin-right: 10px;
+    margin-bottom: 16px;
+    &:hover {
+      border: 1px solid ${({ brandBlue }) => brandBlue};
+      box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+    }
+  }
 `;
 
 const ChoiceTitle = styled.h1`
   font-weight: bold;
-  color: ${({ brandBlue }) => brandBlue};
+  color: #4371cc;
 `;
 
 const ChoiceInfo = styled.p`
@@ -308,7 +342,7 @@ const MeasureInfoWrapper = styled.div`
 const Title = styled.h1`
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: .1rem;
+  margin: .1rem 0;
   @media (max-width: 960px) {
     font-size: 16px;
   }

@@ -14,7 +14,7 @@ export default class IssuesDisplayListWithOrganizationPopovers extends Component
     maximumIssuesToDisplay: PropTypes.number,
     popoverBottom: PropTypes.bool,
     toFollow: PropTypes.bool,
-    overlayTriggerOnClickOnly: PropTypes.bool,
+    // overlayTriggerOnClickOnly: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
   };
 

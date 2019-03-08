@@ -233,7 +233,7 @@ class FriendStore extends ReduceStore {
             ...state,
             friendInvitationsProcessed: action.res.friend_list,
           };
-        } else if (action.res.kind_of_list === 'suggestedFriendList') {
+        } else if (action.res.kind_of_list === 'SUGGESTED_FRIEND_LIST') {
           // console.log("FriendStore incoming data suggestedFriendList, action.res:", action.res);
           return {
             ...state,

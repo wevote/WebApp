@@ -21,6 +21,10 @@ import FacebookSignInProcess from './routes/Process/FacebookSignInProcess';
 import FAQ from './routes/More/FAQ';
 import FacebookInvitableFriends from './routes/FacebookInvitableFriends';
 import Friends from './routes/Friends';
+import FriendsCurrent from './routes/Friends/FriendsCurrent';
+import FriendInvitationsSentByMe from './routes/Friends/FriendInvitationsSentByMe';
+import FriendInvitationsSentToMe from './routes/Friends/FriendInvitationsSentToMe';
+import SuggestedFriends from './routes/Friends/SuggestedFriends';
 import GetStarted from './routes/Intro/GetStarted';
 import HamburgerMenu from './routes/More/HamburgerMenu';
 import HowToUse from './routes/More/HowToUse';
@@ -60,6 +64,8 @@ import TermsOfService from './routes/More/TermsOfService';
 import ToolsToShareOnOtherWebsites from './routes/More/ToolsToShareOnOtherWebsites';
 import TwitterHandleLanding from './routes/TwitterHandleLanding';
 import TwitterSignInProcess from './routes/Process/TwitterSignInProcess';
+import Values from './routes/Values';
+import ValuesList from './routes/Values/ValuesList';
 import VerifyEmailProcess from './routes/Process/VerifyEmailProcess';
 import FriendInvitationByEmailVerifyProcess from './routes/Process/FriendInvitationByEmailVerifyProcess';
 import VoterGuideChooseElection from './routes/VoterGuide/VoterGuideChooseElection';
@@ -145,11 +151,12 @@ const routes = () => (
     <Route path="/issues_followed" component={IssuesFollowed} />
 
     {/* Friend related Pages */}
-    <Route path="/friends">
-      <IndexRoute component={Friends} />
-      <Route path="add" component={Connect} />
-      <Route path="remove" />
-    </Route>
+    <Route path="/friends" component={Friends} />
+    <Route path="/friends/add" component={Connect} />
+    <Route path="/friends/current" component={FriendsCurrent} />
+    <Route path="/friends/requests" component={FriendInvitationsSentToMe} />
+    <Route path="/friends/invitationsbyme" component={FriendInvitationsSentByMe} />
+    <Route path="/friends/suggested" component={SuggestedFriends} />
     <Route path="/friends/invitebyemail" component={InviteByEmail} />
     <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
 
@@ -186,6 +193,8 @@ const routes = () => (
     <Route path="/more/terms" component={TermsOfService} />
     <Route path="/more/verify" component={VerifyRegistration} />
     <Route path="/more/vision" component={Organization} />
+    <Route path="/values" component={Values} />
+    <Route path="/values/list" component={ValuesList} />
 
     {/* Voter Guide Pages - By Organization */}
     <Route path="/voterguide/:organization_we_vote_id" component={props => <OrganizationVoterGuide {...props} active_route="ballot" />} />

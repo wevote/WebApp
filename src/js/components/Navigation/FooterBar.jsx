@@ -19,9 +19,9 @@ class FooterBar extends React.Component {
       case 0:
         return historyPush('/ballot');
       case 1:
-        return historyPush('/more/network/issues');
+        return historyPush('/values');
       case 2:
-        return historyPush('/more/network/friends');
+        return historyPush('/friends');
       case 3:
         return historyPush('/settings/menu');
       default:
@@ -32,8 +32,8 @@ class FooterBar extends React.Component {
   getSelectedTab = () => {
     const { pathname } = this.props;
     if (stringContains('/ballot', pathname)) return 0;
-    if (stringContains('/more/network/friends', pathname)) return 2;
-    if (stringContains('/more/network', pathname)) return 1;
+    if (stringContains('/friends', pathname)) return 2;
+    if (stringContains('/values', pathname)) return 1;
     if (stringContains('/settings/', pathname)) return 3;
     return -1;
   }

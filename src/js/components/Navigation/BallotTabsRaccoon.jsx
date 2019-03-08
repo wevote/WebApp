@@ -67,7 +67,7 @@ class BallotTabsRaccoon extends Component {
         classes={{ root: classes.tabsRoot, flexContainer: classes.tabsFlexContainer, scroller: classes.scroller }}
       >
         <Tab
-          classes={{ labelContainer: classes.tabLabelContainer }}
+          classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot, indicator: classes.indicator }}
           onClick={() => this.goToDifferentCompletionLevelTab('filterAllBallotItems')}
           label={(
             <Badge
@@ -88,7 +88,7 @@ class BallotTabsRaccoon extends Component {
 
         { showRemainingDecisions ? (
           <Tab
-            classes={{ labelContainer: classes.tabLabelContainer }}
+            classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot, indicator: classes.indicator }}
             onClick={() => this.goToDifferentCompletionLevelTab('filterRemaining')}
             label={(
               <Badge
@@ -111,7 +111,7 @@ class BallotTabsRaccoon extends Component {
 
         { showDecisionsMade ? (
           <Tab
-            classes={{ labelContainer: classes.tabLabelContainer }}
+            classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot, indicator: classes.indicator }}
             onClick={() => this.goToDifferentCompletionLevelTab('filterDecided')}
             label={(
               <Badge
@@ -170,6 +170,16 @@ const styles = theme => ({
   },
   tabsFlexContainer: {
     height: 38,
+  },
+  tabRoot: {
+    [theme.breakpoints.up('md')]: {
+      minWidth: 200,
+    },
+  },
+  indicator: {
+    [theme.breakpoints.up('md')]: {
+      minWidth: 200,
+    },
   },
   scroller: {
     overflowY: 'hidden',

@@ -111,7 +111,7 @@ class HeaderBar extends Component {
       aboutMenuOpen: false,
       componentDidMountFinished: false,
       profilePopUpOpen: false,
-      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      friendInvitationsSentToMe: 0,
       showEditAddressButton: AppStore.showEditAddressButton(),
     };
   }
@@ -127,6 +127,7 @@ class HeaderBar extends Component {
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     this.setState({
       componentDidMountFinished: true,
+      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
@@ -143,6 +144,10 @@ class HeaderBar extends Component {
     }
     if (this.state.aboutMenuOpen === true || nextState.aboutMenuOpen === true) {
       // console.log("shouldComponentUpdate: this.state.aboutMenuOpen", this.state.aboutMenuOpen, ", nextState.aboutMenuOpen", nextState.aboutMenuOpen);
+      return true;
+    }
+    if (this.state.friendInvitationsSentToMe !== nextState.friendInvitationsSentToMe) {
+      // console.log("shouldComponentUpdate: this.state.friendInvitationsSentToMe", this.state.friendInvitationsSentToMe, ", nextState.friendInvitationsSentToMe", nextState.friendInvitationsSentToMe);
       return true;
     }
     if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
@@ -208,8 +213,8 @@ class HeaderBar extends Component {
     const { pathname } = this.props;
     // if (stringContains('/ballot', pathname.slice(0, 7))) return 0;
     if (pathname.indexOf('/ballot') === 0) return 0;
-    if (stringContains('/more/network/friends', pathname)) return 2;
-    if (stringContains('/more/network', pathname)) return 1;
+    if (stringContains('/friends', pathname)) return 2;
+    if (stringContains('/values', pathname)) return 1;
     return false;
   }
 
@@ -280,11 +285,11 @@ class HeaderBar extends Component {
                   )
                   }
                   {showFullNavigation && (
-                    <Tab classes={{ root: classes.tabRoot }} label="My Values" onClick={() => this.handleNavigation('/more/network/issues')} />
+                    <Tab classes={{ root: classes.tabRoot }} label="My Values" onClick={() => this.handleNavigation('/values')} />
                   )
                   }
                   {showFullNavigation && (
-                    <Tab classes={{ root: classes.tabRoot }} label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} onClick={() => this.handleNavigation('/more/network/friends')}>My Friends</Badge>} />
+                    <Tab classes={{ root: classes.tabRoot }} label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} onClick={() => this.handleNavigation('/friends')}>My Friends</Badge>} />
                   )
                   }
                   {/* showFullNavigation && isWebApp() && <Tab className="u-show-desktop" label="Vote" /> */}

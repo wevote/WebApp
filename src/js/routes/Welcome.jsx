@@ -429,7 +429,7 @@ export default class Intro extends Component {
               </div>
               <div className="col-sm-12 col-md-4 u-flex u-justify-center features__block__container">
                 <div className="features__block features__block__row2a" onClick={this._toggleNetworkFeature}>
-                  <Link to="/more/network/friends">
+                  <Link to="/friends">
                     <img className={this.state.showFeaturesNetwork ? 'd-none d-sm-block features__image' : 'features__image'} src={cordovaDot('/img/welcome/benefits/choose-friends.svg')} width="60%" />
                     <h3 className="features__h3">Invite Friends to Your We Vote Network</h3>
                     <p className={this.state.showFeaturesNetwork ? 'features__p' : 'features__p d-none d-sm-block'}>Talk politics with friends who share your values. Avoid flame wars!</p>

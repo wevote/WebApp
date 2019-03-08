@@ -331,7 +331,8 @@ class IssueStore extends ReduceStore {
       organizationNameSupportListForEachBallotItem, organizationNameOpposeListForEachBallotItem,
       issueScoreForEachBallotItem, issueWeVoteIdsVoterCanFollow, issueWeVoteIdsLinkedToByOrganizationDict,
     } = state;
-    const { allCachedIssues, issueWeVoteIdsVoterIsFollowing, issueWeVoteIdsToLinkToByOrganizationDict } = state;
+    const { issueWeVoteIdsVoterIsFollowing, issueWeVoteIdsToLinkToByOrganizationDict } = state;
+    let { allCachedIssues } = state;
     let ballotItemWeVoteId;
     let electionsIdsForWhichIssuesHaveBeenRetrievedOnce;
     let issueList;
@@ -578,16 +579,20 @@ class IssueStore extends ReduceStore {
         };
 
       case 'retrieveIssuesToFollow':
+        allCachedIssues = state.allCachedIssues; // eslint-disable-line prefer-destructuring
         issueList = action.res.issue_list;
         issueWeVoteIdsVoterCanFollow = [];
         issueList.forEach((issue) => {
-          // allCachedIssues[issue.issue_we_vote_id] = issue;
+          if (!(issue.issue_we_vote_id in allCachedIssues)) {
+            // Only add issue if it isn't in allCachedIssues already
+            allCachedIssues[issue.issue_we_vote_id] = issue;
+          }
           issueWeVoteIdsVoterCanFollow.push(issue.issue_we_vote_id);
         });
 
         return {
           ...state,
-          // allCachedIssues,
+          allCachedIssues,
           issueWeVoteIdsVoterCanFollow,
         };
 

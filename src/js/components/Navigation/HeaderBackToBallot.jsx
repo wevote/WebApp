@@ -32,7 +32,7 @@ const styles = theme => ({
     },
   },
 });
-class HeaderBackToBar extends Component {
+class HeaderBackToBallot extends Component {
   static propTypes = {
     location: PropTypes.object,
     params: PropTypes.object.isRequired,
@@ -61,7 +61,7 @@ class HeaderBackToBar extends Component {
   }
 
   componentDidMount () {
-    // console.log("HeaderBackToBar componentDidMount, this.props: ", this.props);
+    // console.log("HeaderBackToBallot componentDidMount, this.props: ", this.props);
     // this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -78,7 +78,8 @@ class HeaderBackToBar extends Component {
       officeWeVoteId = this.props.params.office_we_vote_id || '';
       if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
-        // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
+
+        // console.log("HeaderBackToBallot, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
         officeWeVoteId = candidate.contest_officeWeVoteId;
         officeName = candidate.contest_office_name;
       } else if (officeWeVoteId && officeWeVoteId !== '') {
@@ -110,7 +111,7 @@ class HeaderBackToBar extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("HeaderBackToBar componentWillReceiveProps, nextProps: ", nextProps);
+    // console.log("HeaderBackToBallot componentWillReceiveProps, nextProps: ", nextProps);
     let candidateWeVoteId;
     let officeWeVoteId;
     let officeName;
@@ -121,7 +122,7 @@ class HeaderBackToBar extends Component {
       if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
-        // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
+        // console.log("HeaderBackToBallot, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
         officeWeVoteId = candidate.contest_office_we_vote_id;
         officeName = candidate.contest_office_name;
       } else {
@@ -176,7 +177,7 @@ class HeaderBackToBar extends Component {
     if (candidateWeVoteId && candidateWeVoteId !== '') {
       const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
-      // console.log("HeaderBackToBar -- onCandidateStoreChange, candidateWeVoteId:", this.state.candidateWeVoteId, ", candidate:", candidate);
+      // console.log("HeaderBackToBallot -- onCandidateStoreChange, candidateWeVoteId:", this.state.candidateWeVoteId, ", candidate:", candidate);
       officeName = candidate.contest_office_name;
       officeWeVoteId = candidate.contest_office_we_vote_id;
     } else {
@@ -316,10 +317,10 @@ class HeaderBackToBar extends Component {
       <AppBar className={headerClassName} color="default">
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
           <Button
-          variant="contained"
-          color="primary"
-          className={`page-header__backToButton ${hasIPhoneNotch() ? 'page-header__backToButtonIPhoneX' : ''}`}
-          onClick={() => historyPush(backToLink)}
+            variant="contained"
+            color="primary"
+            className={`page-header__backToButton ${hasIPhoneNotch() ? 'page-header__backToButtonIPhoneX' : ''}`}
+            onClick={() => historyPush(backToLink)}
           >
             <KeyboardBackspaceIcon className="button-icon" />
             {backToOrganizationLinkTextMobile}
@@ -327,14 +328,14 @@ class HeaderBackToBar extends Component {
 
           {this.state.profilePopUpOpen && voter.is_signed_in && (
           <HeaderBarProfilePopUp
-          {...this.props}
-          onClick={this.toggleProfilePopUp}
-          profilePopUpOpen={this.state.profilePopUpOpen}
-          weVoteBrandingOff={this.state.we_vote_branding_off}
-          toggleProfilePopUp={this.toggleProfilePopUp}
-          hideProfilePopUp={this.hideProfilePopUp}
-          transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-          signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+            {...this.props}
+            onClick={this.toggleProfilePopUp}
+            profilePopUpOpen={this.state.profilePopUpOpen}
+            weVoteBrandingOff={this.state.we_vote_branding_off}
+            toggleProfilePopUp={this.toggleProfilePopUp}
+            hideProfilePopUp={this.hideProfilePopUp}
+            transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+            signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
           />
           )}
 
@@ -343,20 +344,20 @@ class HeaderBackToBar extends Component {
             {voterPhotoUrlMedium ? (
               <div id="js-header-avatar" className="header-nav__avatar-container">
                 <img
-                className="header-nav__avatar"
-                alt="profile avatar"
-                src={voterPhotoUrlMedium}
-                height={34}
-                width={34}
+                  className="header-nav__avatar"
+                  alt="profile avatar"
+                  src={voterPhotoUrlMedium}
+                  height={34}
+                  width={34}
                 />
               </div>
             ) : (
               <Button
-              className="header-sign-in"
-              classes={{ root: classes.headerButtonRoot }}
-              variant="text"
-              color="primary"
-              href="/settings/account"
+                className="header-sign-in"
+                classes={{ root: classes.headerButtonRoot }}
+                variant="text"
+                color="primary"
+                href="/settings/account"
               >
               Sign In
               </Button>
@@ -374,4 +375,4 @@ class HeaderBackToBar extends Component {
   }
 }
 
-export default withStyles(styles)(HeaderBackToBar);
+export default withStyles(styles)(HeaderBackToBallot);

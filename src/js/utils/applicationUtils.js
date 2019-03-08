@@ -7,7 +7,9 @@ import { isCordova, isWebApp } from './cordovaUtils';
 export function getApplicationViewBooleans (pathname) {
   let inTheaterMode = false;
   let contentFullWidthMode = false;
+  let friendsMode = false;
   let settingsMode = false;
+  let valuesMode = false;
   let voterGuideMode = false;
   let voterGuideShowGettingStartedNavigation = false;
   if (pathname === '/intro/story' ||
@@ -21,9 +23,6 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/wevoteintro/network') {
     inTheaterMode = true;
   } else if (pathname.startsWith('/candidate/') ||
-    pathname === '/facebook_invitable_friends' ||
-    pathname === '/friends' ||
-    pathname === '/friends/invitebyemail' ||
     pathname === '/intro' ||
     pathname === '/issues_followed' ||
     pathname === '/issues_to_follow' ||
@@ -52,9 +51,6 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/more/tools' ||
     pathname === '/more/verify' ||
     pathname === '/more/vision' ||
-    pathname === '/opinions' ||
-    pathname === '/opinions_followed' ||
-    pathname === '/opinions_ignored' ||
     pathname.startsWith('/verifythisisme/') ||
     pathname === '/welcome') {
     contentFullWidthMode = true;
@@ -64,13 +60,25 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/more/hamburger') {
     contentFullWidthMode = true;
     settingsMode = true;
+  } else if (pathname.startsWith('/values') ||
+    pathname === '/opinions' ||
+    pathname === '/opinions_followed' ||
+    pathname === '/opinions_ignored') {
+    contentFullWidthMode = true;
+    valuesMode = true;
+  } else if (pathname.startsWith('/friends') ||
+    pathname === '/facebook_invitable_friends') {
+    contentFullWidthMode = true;
+    friendsMode = true;
   } else {
     voterGuideMode = true;
     voterGuideShowGettingStartedNavigation = true;
   }
 
-  let showBackToHeader = false;
+  let showBackToFriends = false;
+  let showBackToBallotHeader = false;
   let showBackToSettings = false;
+  let showBackToValues = false;
   let showBackToVoterGuides = false;
   if (stringContains('/btdb/', pathname) || // back-to-default-ballot
     stringContains('/btdo/', pathname) || // back-to-default-office
@@ -83,7 +91,7 @@ export function getApplicationViewBooleans (pathname) {
     // "/btdo/" stands for "Back To Default Office Page" back-to-default-office
     // "/btvg/" stands for "Back To Voter Guide Page"
     // "/bto/" stands for "Back To Voter Guide Office Page"
-    showBackToHeader = true;
+    showBackToBallotHeader = true;
   } else if (pathname === '/settings/account' ||
     pathname === '/settings/address' ||
     pathname === '/settings/election' ||
@@ -94,22 +102,39 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/settings/voterguidesmenu' ||
     pathname === '/settings/voterguidelist') {
     showBackToSettings = true;
+  } else if (pathname === '/opinions' ||
+    pathname === '/opinions_followed' ||
+    pathname === '/opinions_ignored' ||
+    pathname === '/values/list') {
+    showBackToValues = true;
+  } else if (pathname === '/friends/add' ||
+    pathname === '/friends/current' ||
+    pathname === '/friends/requests' ||
+    pathname === '/friends/invitationsbyme' ||
+    pathname === '/friends/suggested' ||
+    pathname === '/friends/invitebyemail' ||
+    pathname === '/facebook_invitable_friends') {
+    showBackToFriends = true;
   } else if (stringContains('/vg/', pathname)) {
     showBackToVoterGuides = true; // DALE 2019-02-19 Soon we should be able to delete the interim voter guides page
   }
 
   if (pathname.startsWith('/measure') && isCordova()) {
-    showBackToHeader = true;
+    showBackToBallotHeader = true;
   }
 
   return {
     inTheaterMode,
     contentFullWidthMode,
+    friendsMode,
     settingsMode,
+    valuesMode,
     voterGuideMode,
     voterGuideShowGettingStartedNavigation,
-    showBackToHeader,
+    showBackToFriends,
+    showBackToBallotHeader,
     showBackToSettings,
+    showBackToValues,
     showBackToVoterGuides,
   };
 }
@@ -132,7 +157,8 @@ export function polyfillObjectEntries () {
 // Choose to show/hide zendesk help widget based on route
 export function setZenDeskHelpVisibility (pathname) {
   if (isWebApp()) {
-    if (['/ballot', '/more/network', '/settings'].some(match => pathname.startsWith(match))) {
+    if (['/ballot', '/candidate', '/friends', '/measure', '/more/network', '/office', '/opinions', '/settings',
+      '/values'].some(match => pathname.startsWith(match))) {
       global.zE('webWidget', 'show');
     } else {
       global.zE('webWidget', 'hide');

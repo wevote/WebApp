@@ -712,6 +712,7 @@ class Ballot extends Component {
       ballotWithItemsFromCompletionFilterType, showFilterTabs, doubleFilteredBallotItemsLength, completionLevelFilterType,
       ballotHeaderUnpinned, isSearching, ballotWithAllItems, ballotSearchResults,
     } = this.state;
+    console.log(ballotWithAllItems);
     const textForMapSearch = VoterStore.getTextForMapSearch();
     const issuesVoterCanFollow = IssueStore.getIssuesVoterCanFollow(); // Don't auto-open intro until Issues are loaded
     const issuesVoterCanFollowExist = issuesVoterCanFollow && issuesVoterCanFollow.length;

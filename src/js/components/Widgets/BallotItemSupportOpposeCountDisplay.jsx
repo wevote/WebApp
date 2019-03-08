@@ -568,7 +568,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     const totalInfoOnlyCount = 0;
 
     return (
-      <span>
+      <Wrapper>
         {/* Total counts of all support, opposition and info only comments for this ballot item */}
         { showNetworkScore ?
           null : (
@@ -578,7 +578,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               placement={this.props.popoverBottom ? 'bottom' : 'top'}
               overlay={positionsPopover}
             >
-              <span className="u-cursor--pointer">
+              <EndorsementsContainer>
                 <EndorsementsTitle>
                   Endorsements
                 </EndorsementsTitle>
@@ -604,7 +604,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                     </Endorsement>
                   </EndorsementRow>
                 </EndorsementWrapper>
-              </span>
+              </EndorsementsContainer>
             </OverlayTrigger>
           )
         }
@@ -619,7 +619,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             placement={this.props.popoverBottom ? 'bottom' : 'top'}
             overlay={scoreInYourNetworkPopover}
           >
-            <span className="network-positions-stacked__support-score u-cursor--pointer u-no-break">
+            <NetworkScore>
               { totalNetworkScore === 0 ? (
                 <span className="u-margin-left--md">
                   { totalNetworkScoreWithSign }
@@ -629,7 +629,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                   { totalNetworkScoreWithSign }
                 </span>
               )}
-            </span>
+              <NetworkScoreLabel className="u-show-mobile-tablet">Network Score</NetworkScoreLabel>
+            </NetworkScore>
           </OverlayTrigger>
         ) : null
         }
@@ -637,7 +638,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           {totalNetworkScore > 0 ? `${totalNetworkScore} Support` : null }
           {totalNetworkScore < 0 ? `${totalNetworkScore} Oppose` : null }
         </span>
-      </span>
+      </Wrapper>
     );
   }
 }
@@ -659,6 +660,27 @@ const styles = theme => ({
   },
 });
 
+const Wrapper = styled.div`
+  margin-top: .1rem;
+  @media (max-width: 768px) {
+    margin-top: 0;
+    width: 100%;
+    max-width: 100%;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    padding-top: 8px;
+  }
+`;
+
+const EndorsementsContainer = styled.div`
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  @media (max-width: 768px) {
+    flex-flow: row;
+  }
+`;
+
 const EndorsementsTitle = styled.div`
   color: #888;
   font-weight: 600;
@@ -672,10 +694,10 @@ const EndorsementWrapper = styled.div`
   text-align: right;
   user-select: none;
   max-width: 100%;
-  width: 100%;
   display: flex;
   flex-flow: row;
   padding-bottom: 8px;
+  margin-top: -4px;
   justify-content: space-between;
 `;
 
@@ -693,6 +715,33 @@ const EndorsementRow = styled.div`
 
 const EndorsementCount = styled.div`
   padding-top: 4px;
+`;
+
+const NetworkScore = styled.div`
+  font-size: 18px;
+  background: rgb(31, 192, 111);
+  color: white;
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+  @media (max-width: 768px) {
+    color: #777;
+    padding: 0 0 8px 0;
+    font-size: 14px;
+    text-align: right;
+    justify-content: flex-end;
+    background: transparent;
+    box-shadow: none;
+  }
+`;
+
+const NetworkScoreLabel = styled.h1`
+  color: #888;
+  font-weight: 600;
+  font-size: 12px;
+  margin: 0 0 0 .3rem;
+  text-align: right;
+  display: inline-block;
 `;
 
 export default withTheme()(withStyles(styles)(BallotItemSupportOpposeCountDisplay));

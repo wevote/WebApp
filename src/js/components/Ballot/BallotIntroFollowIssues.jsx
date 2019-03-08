@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import IssueActions from '../../actions/IssueActions';
-import IssueFollowToggleSquare from '../Issues/IssueFollowToggleSquare';
+import IssueFollowToggleSquare from '../Values/IssueFollowToggleSquare';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 

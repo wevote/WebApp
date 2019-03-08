@@ -96,7 +96,7 @@ export default class TopCommentByBallotItem extends Component {
   //   }
   // }
 
-  handleFilteredOrgsChange = filteredOrgs => this.setState({ filteredOrganizationsWithPositions: filteredOrgs });
+  // handleFilteredOrgsChange = filteredOrgs => this.setState({ filteredOrganizationsWithPositions: filteredOrgs });
 
   getOrganizationsWithPositions = () => this.state.organizationsToFollow.map((organization) => {
     let organizationPositionForThisBallotItem;
@@ -152,7 +152,7 @@ export default class TopCommentByBallotItem extends Component {
 
     const croppedEndorsementTextDesktop = shortenText(endorsementText, 200);
     const croppedEndorsementTextMobile = shortenText(endorsementText, 100);
-    const learnMoreText = this.props.learnMoreText ? this.props.learnMoreText : "more";
+    const learnMoreText = this.props.learnMoreText ? this.props.learnMoreText : 'more';
 
     // console.log("GuideList organizationsToFollow: ", this.state.organizationsToFollow);
     //       on_click={this.goToCandidateLink(this.state.oneCandidate.we_vote_id)}

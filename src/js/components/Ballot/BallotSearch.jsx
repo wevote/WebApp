@@ -101,12 +101,8 @@ const styles = theme => ({
     height: 20,
   },
   closeIconRoot: {
-    width: 21,
-    height: 21,
-    marginTop: -5,
-    [theme.breakpoints.up('lg')]: {
-      marginTop: -1,
-    },
+    width: 20,
+    height: 20,
   },
   input: {
     padding: '0 3px',
@@ -125,7 +121,7 @@ const Closer = styled.div`
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-left: 1px solid ${({ brandBlue }) => (brandBlue)};
-  display: ${({ searching }) => (searching ? 'block' : 'none')};
+  display: ${({ searching }) => (searching ? 'inherit' : 'none')};
 `;
 
 const SearchWrapper = styled.div`

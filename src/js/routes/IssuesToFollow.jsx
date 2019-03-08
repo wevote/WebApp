@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { _ } from 'lodash';
 import Helmet from 'react-helmet';
 import IssueActions from '../actions/IssueActions';
-import IssueFollowToggleSquare from '../components/Issues/IssueFollowToggleSquare';
+import IssueFollowToggleSquare from '../components/Values/IssueFollowToggleSquare';
 import IssueStore from '../stores/IssueStore';
 import { renderLog } from '../utils/logging';
 import SearchBar from '../components/Search/SearchBar';
