@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {  Modal } from 'react-bootstrap'; // , OverlayTrigger, Popover
-// import TextTruncate from 'react-text-truncate';
 import Slider from 'react-slick';
+import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
@@ -17,7 +17,6 @@ import CandidateStore from '../../stores/CandidateStore';
 import ImageHandler from '../ImageHandler';
 import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
 import IssueStore from '../../stores/IssueStore';
-// import LearnMore from '../Widgets/LearnMore';
 import { renderLog } from '../../utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
@@ -213,7 +212,7 @@ class OfficeItemCompressed extends Component {
 
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
     const unsortedCandidateList = this.state.candidateList ? this.state.candidateList.slice(0) : {};
-    // const totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
+    const totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
     const arrayOfCandidatesVoterSupports = [];
     // let advisersThatMakeVoterIssuesScoreDisplay;
     // let advisersThatMakeVoterNetworkScoreCount = 0;
@@ -555,14 +554,14 @@ const Candidate = styled.div`
   display: flex;
 `;
 
-const CardFooter = styled.div`
-  font-size: 12px;
-  text-align: center;
-  user-select: none;
-  cursor: pointer;
-  @media (max-width: 960px) {
-    padding: 0;
-  }
-`;
+// const CardFooter = styled.div`
+//   font-size: 12px;
+//   text-align: center;
+//   user-select: none;
+//   cursor: pointer;
+//   @media (max-width: 960px) {
+//     padding: 0;
+//   }
+// `;
 
 export default withTheme()(withStyles(styles)(OfficeItemCompressed));
