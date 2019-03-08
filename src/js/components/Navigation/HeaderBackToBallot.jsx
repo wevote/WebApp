@@ -16,6 +16,7 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import { shortenText } from '../../utils/textFormat';
 import OfficeStore from '../../stores/OfficeStore';
+import OfficeItem from '../Ballot/OfficeItem';
 
 const styles = theme => ({
   headerButtonRoot: {
@@ -265,7 +266,7 @@ class HeaderBackToBallot extends Component {
   }
 
   render () {
-    const { organizationWeVoteId, candidate, voter, officeName, candidateWeVoteId } = this.state;
+    const { organizationWeVoteId, candidate, voter, officeName, officeWeVoteId, candidateWeVoteId } = this.state;
     const { classes } = this.props;
     renderLog(__filename);
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
@@ -364,9 +365,10 @@ class HeaderBackToBallot extends Component {
           )}
         </Toolbar>
         {!candidateWeVoteId && (
-          <div>
-            {officeName}
-          </div>)
+          <OfficeItem
+          weVoteId={officeWeVoteId}
+          ballotItemDisplayName={officeName}
+          />)
         }
       </AppBar>
     );
