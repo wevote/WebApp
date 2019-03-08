@@ -307,9 +307,9 @@ class HeaderBackToBallot extends Component {
     const backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 20);
     const headerClassName = (function header () {
       if (isWebApp()) {
-        return 'page-header';
+        return 'page-header page-header__back-to-ballot';
       } else {
-        return hasIPhoneNotch() ? 'page-header page-header__cordova-iphonex' : 'page-header page-header__cordova';
+        return hasIPhoneNotch() ? 'page-header page-header__back-to-ballot page-header__cordova-iphonex' : 'page-header page-header__back-to-ballot page-header__cordova';
       }
     }());
 

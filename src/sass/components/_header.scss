@@ -7,6 +7,7 @@ $back-button-font-size: .8rem;
 $iphone-x-padding-left: env(safe-area-inset-left);
 $iphone-x-padding-right: env(safe-area-inset-right);
 $header-height: 48px;
+$header-height-back-to-ballot: 96px;
 
 .page-header {
   // required overrides for Bootstrap :(
@@ -56,6 +57,10 @@ $header-height: 48px;
       background-color: $page-header-color !important;
       color: $white;
     }
+  }
+
+  &__back-to-ballot {
+    height: $header-height-back-to-ballot;
   }
 
   &__backToButtonIPhoneX {
