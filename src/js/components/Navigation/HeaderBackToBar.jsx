@@ -75,17 +75,14 @@ class HeaderBackToBar extends Component {
     let organizationWeVoteId;
     if (this.props.params) {
       candidateWeVoteId = this.props.params.candidate_we_vote_id || '';
+      officeWeVoteId = this.props.params.office_we_vote_id || '';
       if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
-
         // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
         officeWeVoteId = candidate.contest_officeWeVoteId;
         officeName = candidate.contest_office_name;
-      } else {
-        officeWeVoteId = this.props.params.office_we_vote_id || '';
-        if (officeWeVoteId && officeWeVoteId !== '') {
-          officeName = OfficeStore.getOffice(officeWeVoteId).ballot_item_display_name;
-        }
+      } else if (officeWeVoteId && officeWeVoteId !== '') {
+        officeName = OfficeStore.getOffice(officeWeVoteId).ballot_item_display_name;
       }
 
       organizationWeVoteId = this.props.params.organization_we_vote_id || '';
