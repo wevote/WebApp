@@ -27,6 +27,7 @@ export default class CandidateItem extends Component {
     contest_office_name: PropTypes.string,
     showLargeImage: PropTypes.bool,
     hideBallotItemSupportOpposeComment: PropTypes.bool,
+    hideShowMoreFooter: PropTypes.bool,
     link_to_ballot_item_page: PropTypes.bool,
     linkToOfficePage: PropTypes.bool,
     organizationWeVoteId: PropTypes.string,
@@ -43,7 +44,6 @@ export default class CandidateItem extends Component {
     super(props);
     this.state = {
       candidateWeVoteId: '',
-      hideBallotItemSupportOpposeComment: this.props.hideBallotItemSupportOpposeComment,
       showPositionStatementActionBar: this.props.showPositionStatementActionBar,
       officeWeVoteId: '',
     };
@@ -255,7 +255,7 @@ export default class CandidateItem extends Component {
             }
           </div>
           <div>
-            {this.state.hideBallotItemSupportOpposeComment ?
+            {this.props.hideBallotItemSupportOpposeComment ?
               null : (
                 <BallotItemSupportOpposeComment
                   ballotItemWeVoteId={candidateWeVoteId}
@@ -265,7 +265,10 @@ export default class CandidateItem extends Component {
             }
           </div>
         </div>
-        <ShowMoreFooter showMoreLink={this.goToCandidateLink} />
+        {this.props.hideShowMoreFooter ?
+          null :
+          <ShowMoreFooter showMoreLink={this.goToCandidateLink} />
+        }
       </div>
     );
   }
