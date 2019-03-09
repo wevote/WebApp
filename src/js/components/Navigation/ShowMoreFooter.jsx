@@ -3,16 +3,17 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import {renderLog} from "../../utils/logging";
+import { renderLog } from '../../utils/logging';
 
 
 class ShowMoreFooter extends React.Component {
   static propTypes = {
+    classes: PropTypes.object,
     showMoreLink: PropTypes.func.isRequired,
     showMoreText: PropTypes.string,
   };
 
-  render() {
+  render () {
     renderLog(__filename);
     const { showMoreLink, classes } = this.props;
     let { showMoreText } = this.props;

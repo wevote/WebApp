@@ -283,6 +283,10 @@ class BallotStore extends ReduceStore {
           newBallots[googleCivicElectionId].ballot_item_list.forEach((ballotItem) => {
             if (!weVoteIdAlreadySeen.includes(ballotItem.we_vote_id)) {
               weVoteIdAlreadySeen.push(ballotItem.we_vote_id);
+              // If office data is received without a race_office_level, default to 'Federal'
+              if (ballotItem.kind_of_ballot_item === 'OFFICE' && !ballotItem.race_office_level) {
+                ballotItem.race_office_level = 'Federal';
+              }
               filteredBallotItems.push(ballotItem);
             }
             if (ballotItem.kind_of_ballot_item === 'OFFICE') {

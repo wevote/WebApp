@@ -48,19 +48,14 @@ const ParsedTwitterDescription = (props) => {
   return (
     <span className="card-main__description">
       {
-        // eslint-disable-next-line no-extra-parens
-        parsedTwitterDescription.map((snippet, index) => (
+        parsedTwitterDescription.map(snippet => (
           snippet.type === 'text' ? (
-            <span
-              key={`snippet-text-${index}`}
-            >
+            <span key={snippet.toString()}>
               {props.twitter_description.slice(snippet.location[0], snippet.location[1])}
               &nbsp;
             </span>
           ) : (
-            <span
-              key={`snippet-${index}`}
-            >
+            <span key={snippet.toString()}>
               <a
                 href={props.twitter_description.slice(snippet.location[0], snippet.location[1])}
                 target={props.twitter_description.slice(snippet.location[0] + 8, snippet.location[1])}
