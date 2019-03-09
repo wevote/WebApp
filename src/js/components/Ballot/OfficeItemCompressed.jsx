@@ -212,7 +212,7 @@ class OfficeItemCompressed extends Component {
 
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
     const unsortedCandidateList = this.state.candidateList ? this.state.candidateList.slice(0) : {};
-    // const totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
+    const totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
     const arrayOfCandidatesVoterSupports = [];
     // let advisersThatMakeVoterIssuesScoreDisplay;
     // let advisersThatMakeVoterNetworkScoreCount = 0;
@@ -460,7 +460,10 @@ class OfficeItemCompressed extends Component {
             })}
           </Container>
           {' '}
-          <ShowMoreFooter showMoreLink={this.goToOfficeLink} />
+          { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ?
+            <ShowMoreFooter showMoreLink={this.goToOfficeLink} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay}	candidates`} /> :
+            <ShowMoreFooter showMoreLink={this.goToOfficeLink} /> 
+          }
         </div>
       </div>
     );
