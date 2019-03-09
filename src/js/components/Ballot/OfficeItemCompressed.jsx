@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {  Modal } from 'react-bootstrap'; // , OverlayTrigger, Popover
 import Slider from 'react-slick';
-import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
@@ -19,6 +18,7 @@ import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayLi
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
+import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
 import VoterActions from '../../actions/VoterActions';
@@ -460,29 +460,10 @@ class OfficeItemCompressed extends Component {
             })}
           </Container>
           {' '}
-          <Link to={this.getOfficeLink()}>
-            <div className="BallotItem__view-more u-items-center u-no-break d-print-none">
-              { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ? (
-                <span>
-                  {' '}
-                  show all
-                  {' '}
-                  {totalNumberOfCandidatesToDisplay}
-                  {' '}
-                  candidates
-                  {' '}
-                  <ArrowForwardIcon className="material-icons arrow-forward" />
-                </span>
-              ) : (
-                <span>
-                  show more
-                  {' '}
-                  <ArrowForwardIcon className="material-icons arrow-forward" />
-                </span>
-              )
-            }
-            </div>
-          </Link>
+          { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ?
+            <ShowMoreFooter showMoreLink={this.goToOfficeLink} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay} candidates`} /> :
+            <ShowMoreFooter showMoreLink={this.goToOfficeLink} />
+          }
         </div>
       </div>
     );
