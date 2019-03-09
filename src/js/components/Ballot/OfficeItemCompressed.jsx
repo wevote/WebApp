@@ -461,8 +461,8 @@ class OfficeItemCompressed extends Component {
           </Container>
           {' '}
           { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ?
-            <ShowMoreFooter showMoreLink={this.goToOfficeLink} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay}	candidates`} /> :
-            <ShowMoreFooter showMoreLink={this.goToOfficeLink} /> 
+            <ShowMoreFooter showMoreLink={this.goToOfficeLink} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay} candidates`} /> :
+            <ShowMoreFooter showMoreLink={this.goToOfficeLink} />
           }
         </div>
       </div>
