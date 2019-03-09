@@ -21,6 +21,7 @@ import issuesIcon from "../../../img/global/svg-icons/nav/issues-16.svg";
 import printIcon from "../../../img/global/svg-icons/nav/print-16.svg";
 import emailIcon from "../../../img/global/svg-icons/nav/email-16.svg";
 import pollingIcon from "../../../img/global/svg-icons/nav/location-16.svg"
+import closeIcon from "../../../img/global/icons/x-close.png";
 
 export default class HeaderSecondaryNavBar extends Component {
   static propTypes = {
@@ -187,7 +188,7 @@ export default class HeaderSecondaryNavBar extends Component {
         <Modal.Body>
           <div className="intro-modal__close">
             <a onClick={this._toggleBallotIntroFollowIssues} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}>
-              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
+              <img src={cordovaDot(closeIcon)} alt="close" />
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height intro-modal__height-full" ref="slider" {...sliderSettings}>
