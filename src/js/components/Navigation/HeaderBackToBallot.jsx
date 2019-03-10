@@ -266,7 +266,7 @@ class HeaderBackToBallot extends Component {
   }
 
   render () {
-    const { organizationWeVoteId, candidate, voter, officeName, officeWeVoteId, candidateWeVoteId } = this.state;
+    const { organizationWeVoteId, candidate, voter, officeName, officeWeVoteId } = this.state;
     const { classes, pathname } = this.props;
     renderLog(__filename);
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
@@ -366,7 +366,7 @@ class HeaderBackToBallot extends Component {
           </div>
           )}
         </Toolbar>
-        {!candidateWeVoteId && (
+        {stringContains('/office', pathname)  && officeName && (
           <OfficeItem
           weVoteId={officeWeVoteId}
           ballotItemDisplayName={officeName}
