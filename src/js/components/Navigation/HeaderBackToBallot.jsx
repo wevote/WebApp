@@ -370,8 +370,8 @@ class HeaderBackToBallot extends Component {
           <OfficeItem
           weVoteId={officeWeVoteId}
           ballotItemDisplayName={officeName}
-          />)
-        }
+          />
+        )}
       </AppBar>
     );
   }
