@@ -279,6 +279,11 @@
     &__button-linked {
       pointer-events: none !important;
     }
+
+    &__office-item {
+      max-width: 960px;
+      width: 100%;
+    }
   } // end .card-main
 
   // ----------------------------------------

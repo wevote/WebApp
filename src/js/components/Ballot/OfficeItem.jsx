@@ -23,7 +23,7 @@ export default class OfficeItem extends Component {
     const candidatesHtml = <span />; // For a preview of the candidates
 
     return (
-      <div className="card-main office-item">
+      <div className="card-main__office-item">
         <div className="card-main__content">
           <h2 className="card-main__display-name">
             { this.props.linkToBallotItemPage ?
