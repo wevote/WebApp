@@ -305,10 +305,12 @@ class HeaderBackToBallot extends Component {
 
     const backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 20);
     const headerClassName = (function header () {
+      const prefix = stringContains('/office', pathname) ? 'page-header page-header__back-to-ballot' : 'page-header';
       if (isWebApp()) {
-        return stringContains('/office', pathname) ? 'page-header page-header__back-to-ballot' : 'page-header';
+        return prefix;
       } else {
-        return hasIPhoneNotch() ? 'page-header page-header__back-to-ballot page-header__cordova-iphonex' : 'page-header page-header__back-to-ballot page-header__cordova';
+        const suffix = hasIPhoneNotch() ? ' page-header__cordova-iphonex' : ' page-header__cordova';
+        return prefix + suffix;
       }
     }());
 
