@@ -112,7 +112,7 @@ class HeaderBackToBallot extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log("HeaderBackToBallot componentWillReceiveProps, nextProps: ", nextProps);
+    // console.log("HeaderBackToBallot componentWillReceiveProps, nextProps: ", nextProps);
     let candidateWeVoteId;
     let officeWeVoteId;
     let officeName;
