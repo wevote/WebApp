@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import CandidateStore from '../../stores/CandidateStore';
@@ -11,6 +10,7 @@ import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayLi
 import LearnMore from '../Widgets/LearnMore';
 import { renderLog } from '../../utils/logging';
 import OfficeNameText from '../Widgets/OfficeNameText';
+import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -27,6 +27,7 @@ export default class CandidateItem extends Component {
     contest_office_name: PropTypes.string,
     showLargeImage: PropTypes.bool,
     hideBallotItemSupportOpposeComment: PropTypes.bool,
+    hideShowMoreFooter: PropTypes.bool,
     link_to_ballot_item_page: PropTypes.bool,
     linkToOfficePage: PropTypes.bool,
     organizationWeVoteId: PropTypes.string,
@@ -43,7 +44,6 @@ export default class CandidateItem extends Component {
     super(props);
     this.state = {
       candidateWeVoteId: '',
-      hideBallotItemSupportOpposeComment: this.props.hideBallotItemSupportOpposeComment,
       showPositionStatementActionBar: this.props.showPositionStatementActionBar,
       officeWeVoteId: '',
     };
@@ -255,7 +255,7 @@ export default class CandidateItem extends Component {
             }
           </div>
           <div>
-            {this.state.hideBallotItemSupportOpposeComment ?
+            {this.props.hideBallotItemSupportOpposeComment ?
               null : (
                 <BallotItemSupportOpposeComment
                   ballotItemWeVoteId={candidateWeVoteId}
@@ -265,15 +265,10 @@ export default class CandidateItem extends Component {
             }
           </div>
         </div>
-        <Link to={this.getCandidateLink}>
-          <div className="BallotItem__view-more u-items-center u-no-break d-print-none">
-            <span>
-              show more
-              {' '}
-              <ArrowForwardIcon className="material-icons arrow-forward" />
-            </span>
-          </div>
-        </Link>
+        {this.props.hideShowMoreFooter ?
+          null :
+          <ShowMoreFooter showMoreLink={this.goToCandidateLink} />
+        }
       </div>
     );
   }

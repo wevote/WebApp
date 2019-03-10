@@ -184,6 +184,7 @@ export default class Candidate extends Component {
           <CandidateItem
             {...this.state.candidate}
             contest_office_name={this.state.candidate.contest_office_name}
+            hideShowMoreFooter
             organizationWeVoteId={this.state.organizationWeVoteId}
             linkToOfficePage
             showLargeImage

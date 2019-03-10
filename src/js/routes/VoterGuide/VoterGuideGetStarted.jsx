@@ -277,7 +277,6 @@ export default class VoterGuideGetStarted extends Component {
                     name="twitterHandle"
                     placeholder="Enter Twitter Handle"
                     onChange={this.validateTwitterHandle}
-                    autoFocus
                   />
                 </div>
               </form>
