@@ -9,7 +9,6 @@ import IssueStore from '../../stores/IssueStore';
 import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import OfficeActions from '../../actions/OfficeActions';
-import OfficeItem from '../../components/Ballot/OfficeItem';
 import OfficeStore from '../../stores/OfficeStore';
 import SearchAllActions from '../../actions/SearchAllActions';
 import VoterStore from '../../stores/VoterStore';
@@ -100,10 +99,6 @@ export default class Office extends Component {
         <Helmet
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
-        />
-        <OfficeItem
-          weVoteId={office.we_vote_id}
-          ballotItemDisplayName={office.ballot_item_display_name}
         />
         { office.candidate_list ? (
           <div>

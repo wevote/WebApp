@@ -14,7 +14,9 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import { shortenText } from '../../utils/textFormat';
+import { shortenText, stringContains } from '../../utils/textFormat';
+import OfficeStore from '../../stores/OfficeStore';
+import OfficeItem from '../Ballot/OfficeItem';
 
 const styles = theme => ({
   headerButtonRoot: {
@@ -45,7 +47,7 @@ class HeaderBackToBallot extends Component {
     this.state = {
       profilePopUpOpen: false,
       candidateWeVoteId: '',
-      // office_we_vote_id: "",
+      officeWeVoteId: '',
       organization: {},
       organizationWeVoteId: '',
       voter: {},
@@ -64,6 +66,7 @@ class HeaderBackToBallot extends Component {
     // this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.officeStoreListener = OfficeStore.addListener(this.onOfficeStoreChange.bind(this));
     // this.onBallotStoreChange();
 
     let candidateWeVoteId;
@@ -73,12 +76,15 @@ class HeaderBackToBallot extends Component {
     let organizationWeVoteId;
     if (this.props.params) {
       candidateWeVoteId = this.props.params.candidate_we_vote_id || '';
+      officeWeVoteId = this.props.params.office_we_vote_id || '';
       if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
         // console.log("HeaderBackToBallot, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
         officeWeVoteId = candidate.contest_officeWeVoteId;
         officeName = candidate.contest_office_name;
+      } else if (officeWeVoteId && officeWeVoteId !== '') {
+        officeName = OfficeStore.getOffice(officeWeVoteId).ballot_item_display_name;
       }
 
       organizationWeVoteId = this.props.params.organization_we_vote_id || '';
@@ -114,12 +120,15 @@ class HeaderBackToBallot extends Component {
     let organizationWeVoteId;
     if (nextProps.params) {
       candidateWeVoteId = nextProps.params.candidate_we_vote_id || '';
+      officeWeVoteId = nextProps.params.office_we_vote_id || '';
       if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
-
         // console.log("HeaderBackToBallot, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
         officeWeVoteId = candidate.contest_office_we_vote_id;
         officeName = candidate.contest_office_name;
+      } else if (officeWeVoteId && officeWeVoteId !== '') {
+        candidateWeVoteId = '';
+        officeName = OfficeStore.getOffice(officeWeVoteId).ballot_item_display_name;
       }
 
       organizationWeVoteId = nextProps.params.organization_we_vote_id || '';
@@ -150,6 +159,7 @@ class HeaderBackToBallot extends Component {
     // this.ballotStoreListener.remove();
     this.candidateStoreListener.remove();
     this.organizationStoreListener.remove();
+    this.officeStoreListener.remove();
   }
 
   /*
@@ -161,7 +171,6 @@ class HeaderBackToBallot extends Component {
   onCandidateStoreChange () {
     const { candidateWeVoteId } = this.state;
     // console.log("Candidate onCandidateStoreChange");
-
     let officeName;
     let officeWeVoteId;
     if (candidateWeVoteId && candidateWeVoteId !== '') {
@@ -170,6 +179,11 @@ class HeaderBackToBallot extends Component {
       // console.log("HeaderBackToBallot -- onCandidateStoreChange, candidateWeVoteId:", this.state.candidateWeVoteId, ", candidate:", candidate);
       officeName = candidate.contest_office_name;
       officeWeVoteId = candidate.contest_office_we_vote_id;
+    } else {
+      officeWeVoteId = this.props.params.office_we_vote_id || '';
+      if (officeWeVoteId && officeWeVoteId !== '') {
+        officeName = OfficeStore.getOffice(officeWeVoteId).ballot_item_display_name;
+      }
     }
 
     this.setState({
@@ -183,6 +197,18 @@ class HeaderBackToBallot extends Component {
     const { organizationWeVoteId } = this.state;
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
+    });
+  }
+
+  onOfficeStoreChange () {
+    const { officeWeVoteId } = this.state;
+    let officeName;
+    if (officeWeVoteId && officeWeVoteId !== '') {
+      officeName = OfficeStore.getOffice(officeWeVoteId).ballot_item_display_name;
+    }
+
+    this.setState({
+      officeName,
     });
   }
 
@@ -240,8 +266,8 @@ class HeaderBackToBallot extends Component {
   }
 
   render () {
-    const { organizationWeVoteId, candidate, voter } = this.state;
-    const { classes } = this.props;
+    const { organizationWeVoteId, candidate, voter, officeName, officeWeVoteId, candidateWeVoteId } = this.state;
+    const { classes, pathname } = this.props;
     renderLog(__filename);
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
 
@@ -279,10 +305,12 @@ class HeaderBackToBallot extends Component {
 
     const backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 20);
     const headerClassName = (function header () {
+      const prefix = stringContains('/office', pathname) ? 'page-header page-header__back-to-ballot' : 'page-header';
       if (isWebApp()) {
-        return 'page-header';
+        return prefix;
       } else {
-        return hasIPhoneNotch() ? 'page-header page-header__cordova-iphonex' : 'page-header page-header__cordova';
+        const suffix = hasIPhoneNotch() ? ' page-header__cordova-iphonex' : ' page-header__cordova';
+        return prefix + suffix;
       }
     }());
 
@@ -338,6 +366,12 @@ class HeaderBackToBallot extends Component {
           </div>
           )}
         </Toolbar>
+        {!candidateWeVoteId && (
+          <OfficeItem
+          weVoteId={officeWeVoteId}
+          ballotItemDisplayName={officeName}
+          />
+        )}
       </AppBar>
     );
   }

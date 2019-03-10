@@ -134,7 +134,8 @@ export default class Header extends Component {
         <div id="app-header">
           { iPhoneSpacer }
           <div className={isWebApp() ?    // eslint-disable-line no-nested-ternary
-            stringContains('/ballot', pathname) ? 'headroom-wrapper-webapp__ballot' : 'headroom-wrapper-webapp__default' : ''}
+            stringContains('/ballot', pathname) ? 'headroom-wrapper-webapp__ballot' : // eslint-disable-line no-nested-ternary
+              stringContains('/office', pathname) ? 'headroom-wrapper-webapp__office' : 'headroom-wrapper-webapp__default' : ''}
             id="headroom-wrapper"
           >
             <div ref="pageHeader" className={pageHeaderStyle} id="header-container">
