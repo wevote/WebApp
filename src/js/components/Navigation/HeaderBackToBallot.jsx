@@ -14,7 +14,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import { shortenText } from '../../utils/textFormat';
+import { shortenText, stringContains } from '../../utils/textFormat';
 import OfficeStore from '../../stores/OfficeStore';
 import OfficeItem from '../Ballot/OfficeItem';
 
@@ -267,7 +267,7 @@ class HeaderBackToBallot extends Component {
 
   render () {
     const { organizationWeVoteId, candidate, voter, officeName, officeWeVoteId, candidateWeVoteId } = this.state;
-    const { classes } = this.props;
+    const { classes, pathname } = this.props;
     renderLog(__filename);
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
 
@@ -306,7 +306,7 @@ class HeaderBackToBallot extends Component {
     const backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 20);
     const headerClassName = (function header () {
       if (isWebApp()) {
-        return 'page-header page-header__back-to-ballot';
+        return stringContains('/office', pathname) ? 'page-header page-header__back-to-ballot' : 'page-header';
       } else {
         return hasIPhoneNotch() ? 'page-header page-header__back-to-ballot page-header__cordova-iphonex' : 'page-header page-header__back-to-ballot page-header__cordova';
       }
