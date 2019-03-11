@@ -84,7 +84,8 @@ class HeaderBackToBallot extends Component {
         officeWeVoteId = candidate.contest_officeWeVoteId;
         officeName = candidate.contest_office_name;
       } else if (officeWeVoteId && officeWeVoteId !== '') {
-        officeName = OfficeStore.getOffice(officeWeVoteId).ballot_item_display_name;
+        const office = OfficeStore.getOffice(officeWeVoteId);
+        officeName = office ? office.ballot_item_display_name : '';
       }
 
       organizationWeVoteId = this.props.params.organization_we_vote_id || '';
@@ -128,7 +129,8 @@ class HeaderBackToBallot extends Component {
         officeName = candidate.contest_office_name;
       } else if (officeWeVoteId && officeWeVoteId !== '') {
         candidateWeVoteId = '';
-        officeName = OfficeStore.getOffice(officeWeVoteId).ballot_item_display_name;
+        const office = OfficeStore.getOffice(officeWeVoteId);
+        officeName = office ? office.ballot_item_display_name : '';
       }
 
       organizationWeVoteId = nextProps.params.organization_we_vote_id || '';
@@ -182,7 +184,8 @@ class HeaderBackToBallot extends Component {
     } else {
       officeWeVoteId = this.props.params.office_we_vote_id || '';
       if (officeWeVoteId && officeWeVoteId !== '') {
-        officeName = OfficeStore.getOffice(officeWeVoteId).ballot_item_display_name;
+        const office = OfficeStore.getOffice(officeWeVoteId);
+        officeName = office ? office.ballot_item_display_name : '';
       }
     }
 
@@ -204,7 +207,8 @@ class HeaderBackToBallot extends Component {
     const { officeWeVoteId } = this.state;
     let officeName;
     if (officeWeVoteId && officeWeVoteId !== '') {
-      officeName = OfficeStore.getOffice(officeWeVoteId).ballot_item_display_name;
+      const office = OfficeStore.getOffice(officeWeVoteId);
+      officeName = office ? office.ballot_item_display_name : '';
     }
 
     this.setState({
@@ -266,7 +270,7 @@ class HeaderBackToBallot extends Component {
   }
 
   render () {
-    const { organizationWeVoteId, candidate, voter, officeName, officeWeVoteId, candidateWeVoteId } = this.state;
+    const { organizationWeVoteId, candidate, voter, officeName, officeWeVoteId } = this.state;
     const { classes, pathname } = this.props;
     renderLog(__filename);
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
@@ -366,7 +370,7 @@ class HeaderBackToBallot extends Component {
           </div>
           )}
         </Toolbar>
-        {!candidateWeVoteId && (
+        {stringContains('/office', pathname)  && officeName && (
           <OfficeItem
           weVoteId={officeWeVoteId}
           ballotItemDisplayName={officeName}
