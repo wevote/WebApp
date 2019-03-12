@@ -212,7 +212,7 @@ export default class HeaderSecondaryNavBar extends Component {
               onClick={this._toggleEmailModal}
               className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}
             >
-              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
+              <img src={cordovaDot(closeIcon)} alt="close" />
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettingsWithSwipe}>
@@ -249,7 +249,7 @@ export default class HeaderSecondaryNavBar extends Component {
               onClick={this._toggleFacebookModal}
               className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}
             >
-              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
+              <img src={cordovaDot(closeIcon)} alt="close" />
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettingsWithSwipe}>

@@ -14,7 +14,7 @@ import VoterGuideActions from "../../actions/VoterGuideActions";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import VoterStore from "../../stores/VoterStore";
 import { isProperlyFormattedVoterGuideWeVoteId } from "../../utils/textFormat";
-
+import closeIcon from "../../../img/global/icons/x-close.png";
 
 export default class VoterGuideChoosePositions extends Component {
   static propTypes = {
@@ -214,7 +214,7 @@ export default class VoterGuideChoosePositions extends Component {
       <div>
         <Helmet title="Choose Positions - We Vote" />
         <div className="create-voter-guide container well">
-          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToVoterGuideDisplay} className="x-close" alt="close" />
+          <img src={cordovaDot(closeIcon)} onClick={this.goToVoterGuideDisplay} className="x-close" alt="close" />
           <div className="create-voter-guide__h1 xs-text-left">Enter Your Positions</div>
           <div className="create-voter-guide__steps xs-text-left">
             Step 5 of 5

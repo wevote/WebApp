@@ -6,6 +6,7 @@ import { renderLog } from "../../utils/logging";
 import OrganizationActions from "../../actions/OrganizationActions";
 import OrganizationStore from "../../stores/OrganizationStore";
 import VoterStore from "../../stores/VoterStore";
+import closeIcon from "../../../img/global/icons/x-close.png";
 
 const delayBeforeApiSearchCall = 500;
 
@@ -246,7 +247,7 @@ export default class VoterGuideGetStarted extends Component {
       <div>
         <Helmet title="Create Your Voter Guide - We Vote" />
         <div className="intro-story container well u-inset--md">
-          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt="close" />
+          <img src={cordovaDot(closeIcon)} onClick={this.goToBallotLink} className="x-close" alt="close" />
           <div className="create-voter-guide__h1 xs-text-left">Create Your Voter Guide</div>
           <div className="create-voter-guide__steps xs-text-left">
             Step 1 of 5

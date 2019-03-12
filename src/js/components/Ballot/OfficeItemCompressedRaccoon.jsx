@@ -25,6 +25,7 @@ import VoterStore from "../../stores/VoterStore";
 import VoterGuideStore from "../../stores/VoterGuideStore";
 import rightTriangle from "../../../img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-250-triangle-right.svg";
 import bottomTriangle from "../../../img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-252-triangle-bottom.svg";
+import closeIcon from "../../../img/global/icons/x-close.png";
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */
@@ -450,7 +451,7 @@ export default class OfficeItemCompressedRaccoon extends Component {
         <Modal.Body>
           <div className="intro-modal__close">
             <a onClick={this._toggleBallotIntroFollowIssues} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}>
-              <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
+              <img src={cordovaDot(closeIcon)} alt="close" />
             </a>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height intro-modal__height-full" ref="slider" {...sliderSettings}>

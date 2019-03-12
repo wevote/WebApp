@@ -6,6 +6,7 @@ import IntroNetworkSafety from "../../components/Intro/IntroNetworkSafety";
 import IntroNetworkDefinition from "../../components/Intro/IntroNetworkDefinition";
 import IntroNetworkBallotIsNext from "../../components/Intro/IntroNetworkBallotIsNext";
 import { renderLog } from "../../utils/logging";
+import closeIcon from "../../../img/global/icons/x-close.png";
 
 export default class IntroNetwork extends Component {
   constructor (props) {
@@ -60,7 +61,7 @@ export default class IntroNetwork extends Component {
         <Helmet title="Welcome to We Vote" />
         <div className="intro-story container-fluid well u-inset--md">
           <img
-            src={cordovaDot("/img/global/icons/x-close.png")}
+            src={cordovaDot(closeIcon)}
             onClick={IntroNetwork.goToBallotLink}
             className={isWebApp() ? "x-close" : "x-close x-close__cordova"}
             alt="close"

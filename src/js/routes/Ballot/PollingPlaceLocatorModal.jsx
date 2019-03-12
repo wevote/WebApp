@@ -6,6 +6,7 @@ import {
 } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import PollingPlaceLocator from "../../components/Ballot/PollingPlaceLocator";
+import closeIcon from "../../../img/global/icons/x-close.png";
 
 export default class PollingPlaceLocatorModal extends Component {
   static propTypes = {
@@ -42,7 +43,7 @@ export default class PollingPlaceLocatorModal extends Component {
                 onClick={this.openPollingLocationModal}
                 className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}
               >
-                <img src={cordovaDot("/img/global/icons/x-close.png")} alt="close" />
+                <img src={cordovaDot(closeIcon)} alt="close" />
               </a>
             </div>
             <div key={1}><PollingPlaceLocator /></div>

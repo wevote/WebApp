@@ -3,6 +3,7 @@ import Helmet from "react-helmet";
 import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
 import { renderLog } from "../../utils/logging";
 import SettingsWidgetAccountType from "../../components/Settings/SettingsWidgetAccountType";
+import closeIcon from "../../../img/global/icons/x-close.png";
 
 export default class VoterGuideOrganizationType extends Component {
   constructor (props) {
@@ -43,7 +44,7 @@ export default class VoterGuideOrganizationType extends Component {
       <div>
         <Helmet title="Type of Profile - We Vote" />
         <div className="intro-story container well u-inset--md">
-          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt="close" />
+          <img src={cordovaDot(closeIcon)} onClick={this.goToBallotLink} className="x-close" alt="close" />
           <div className="create-voter-guide__h1 xs-text-left">Create Your Voter Guide</div>
           <div className="create-voter-guide__steps xs-text-left">
             Step 2 of 5

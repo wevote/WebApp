@@ -9,6 +9,7 @@ import SettingsWidgetFirstLastName from "../../components/Settings/SettingsWidge
 import SettingsWidgetOrganizationDescription from "../../components/Settings/SettingsWidgetOrganizationDescription";
 import SettingsWidgetOrganizationWebsite from "../../components/Settings/SettingsWidgetOrganizationWebsite";
 import VoterStore from "../../stores/VoterStore";
+import closeIcon from "../../../img/global/icons/x-close.png";
 
 export default class VoterGuideOrganizationInfo extends Component {
   constructor (props) {
@@ -197,7 +198,7 @@ export default class VoterGuideOrganizationInfo extends Component {
       <div>
         <Helmet title="Create Profile - We Vote" />
         <div className="intro-story container well u-inset--md">
-          <img src={cordovaDot("/img/global/icons/x-close.png")} onClick={this.goToBallotLink} className="x-close" alt="close" />
+          <img src={cordovaDot(closeIcon)} onClick={this.goToBallotLink} className="x-close" alt="close" />
           <div className="create-voter-guide__h1 xs-text-left">Create Profile</div>
           <div className="create-voter-guide__steps xs-text-left">
             Step 3 of 5
