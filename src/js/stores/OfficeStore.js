@@ -26,13 +26,14 @@ class OfficeStore extends ReduceStore {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
 
+    let arrayOfOfficeWeVoteIds;
     let googleCivicElectionId;
-    let officeWeVoteId;
-    const office = action.res;
+    let office;
     const newOffices = {};
 
     switch (action.type) {
       case 'officeRetrieve':
+        office = action.res;
         newOffices[office.we_vote_id] = office;
         return {
           ...state,
@@ -43,8 +44,9 @@ class OfficeStore extends ReduceStore {
         // Go through all of the offices currently on this voter's ballot and update their positions
         if (state.offices && state.offices.length) {
           // console.log("OfficeStore organizationFollow, state.offices.length:", state.offices.length);
-          for (let i = 0; i < state.offices.length; i++) {
-            OfficeActions.positionListForBallotItem(officeWeVoteId);
+          arrayOfOfficeWeVoteIds = Object.keys(state.offices);
+          for (let i = 0; i < arrayOfOfficeWeVoteIds.length; i++) {
+            OfficeActions.positionListForBallotItem(arrayOfOfficeWeVoteIds[i]);
           }
         }
         return state;
@@ -52,9 +54,10 @@ class OfficeStore extends ReduceStore {
       case 'organizationStopFollowing':
         // Go through all of the offices currently on this voter's ballot and update their positions
         if (state.offices) {
-          console.log('OfficeStore organizationStopFollowing, state.offices.length:', state.offices.length);
-          for (let i = 0; i < state.offices.length; i++) {
-            OfficeActions.positionListForBallotItem(officeWeVoteId);
+          // console.log('OfficeStore organizationStopFollowing, state.offices.length:', state.offices.length);
+          arrayOfOfficeWeVoteIds = Object.keys(state.offices);
+          for (let i = 0; i < arrayOfOfficeWeVoteIds.length; i++) {
+            OfficeActions.positionListForBallotItem(arrayOfOfficeWeVoteIds[i]);
           }
         }
         return state;
@@ -62,9 +65,10 @@ class OfficeStore extends ReduceStore {
       case 'organizationFollowIgnore':
         // Go through all of the offices currently on this voter's ballot and update their positions
         if (state.offices) {
-          console.log('OfficeStore organizationFollowIgnore, state.offices.length:', state.offices.length);
-          for (let i = 0; i < state.offices.length; i++) {
-            OfficeActions.positionListForBallotItem(officeWeVoteId);
+          // console.log('OfficeStore organizationFollowIgnore, state.offices.length:', state.offices.length);
+          arrayOfOfficeWeVoteIds = Object.keys(state.offices);
+          for (let i = 0; i < arrayOfOfficeWeVoteIds.length; i++) {
+            OfficeActions.positionListForBallotItem(arrayOfOfficeWeVoteIds[i]);
           }
         }
         return state;
@@ -73,9 +77,17 @@ class OfficeStore extends ReduceStore {
         googleCivicElectionId = action.res.google_civic_election_id || 0;
         if (googleCivicElectionId !== 0) {
           const offices = {};
+          let modifiedBallotItem;
           action.res.ballot_item_list.forEach((oneBallotItem) => {
             if (oneBallotItem.kind_of_ballot_item === 'OFFICE') {
-              offices[oneBallotItem.we_vote_id] = oneBallotItem;
+              // If office data is received without a race_office_level, default to 'Federal'
+              if (!oneBallotItem.race_office_level) {
+                modifiedBallotItem = oneBallotItem;
+                modifiedBallotItem.race_office_level = 'Federal';
+                offices[oneBallotItem.we_vote_id] = modifiedBallotItem;
+              } else {
+                offices[oneBallotItem.we_vote_id] = oneBallotItem;
+              }
             }
           });
 

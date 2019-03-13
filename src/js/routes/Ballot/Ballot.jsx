@@ -75,6 +75,7 @@ class Ballot extends Component {
       ballotRemainingChoicesLength: 0,
       ballotWithAllItems: [],
       ballotWithItemsFromCompletionFilterType: [],
+      foundFirstRaceLevel: false,
       raceLevelFilterType: '',
       ballotReturnedWeVoteId: '',
       ballotLocationShortcut: '',
@@ -95,7 +96,6 @@ class Ballot extends Component {
       showSelectBallotModal: false,
       showBallotSummaryModal: false,
       voterBallotList: [],
-      foundFirstRaceLevel: false,
       showFilterTabs: false,
       ballotHeaderUnpinned: false,
       isSearching: false,
@@ -106,8 +106,8 @@ class Ballot extends Component {
     this.ballotItemLinkHasBeenClicked = this.ballotItemLinkHasBeenClicked.bind(this);
     this.toggleBallotIntroModal = this.toggleBallotIntroModal.bind(this);
     this.toggleBallotSummaryModal = this.toggleBallotSummaryModal.bind(this);
-    this.updateOfficeDisplayUnfurledTracker = this.updateOfficeDisplayUnfurledTracker.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
+    this.updateOfficeDisplayUnfurledTracker = this.updateOfficeDisplayUnfurledTracker.bind(this);
   }
 
   componentDidMount () {
@@ -336,14 +336,19 @@ class Ballot extends Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    const { foundFirstRaceLevel, raceLevelFilterType } = this.state;
+    const { foundFirstRaceLevel } = this.state;
+    let { raceLevelFilterType } = this.state;
+    if (!raceLevelFilterType) {
+      raceLevelFilterType = ''; // Make sure this is a string
+    }
     if (this.state.lastHashUsedInLinkScroll && this.state.lastHashUsedInLinkScroll !== prevState.lastHashUsedInLinkScroll) {
       this.hashLinkScroll();
     }
     // If we haven't found our default race level, run this check
     if (this.state.ballotWithAllItems && this.state.ballotWithAllItems.length && !foundFirstRaceLevel) {
       const { ballotWithAllItems } = this.state;
-      const raceLevelFilterItems = ballotWithAllItems.filter(item => item.race_office_level === raceLevelFilterType || item.kind_of_ballot_item === raceLevelFilterType.toUpperCase());
+      const raceLevelFilterItems = ballotWithAllItems.filter(item => item.race_office_level === raceLevelFilterType ||
+        item.kind_of_ballot_item === raceLevelFilterType.toUpperCase());
       // If there are items mapped to the current race level filter, set foundFirstRaceLevel to true
       // so we don't have to re-run this check
       if (raceLevelFilterItems.length) {
@@ -355,7 +360,16 @@ class Ballot extends Component {
         // If there are no items mapped to the current race level filter, set the raceLevelFilterType
         // to the next item in BALLOT_ITEM_FILTER_TYPES
         const raceLevelIdx = BALLOT_ITEM_FILTER_TYPES.indexOf(raceLevelFilterType);
-        this.setState({ raceLevelFilterType: BALLOT_ITEM_FILTER_TYPES[raceLevelIdx + 1] });
+        // console.log('componentDidUpdate raceLevelFilterType:', raceLevelFilterType, ', raceLevelIdx: ', raceLevelIdx);
+        if (raceLevelIdx >= 0) {
+          this.setState({ raceLevelFilterType: BALLOT_ITEM_FILTER_TYPES[raceLevelIdx + 1] });
+        } else {
+          // If the raceLevelFilterType is not a valid type, turn off the tabs and set foundFirstRaceLevel to stop cycling through
+          this.setState({
+            foundFirstRaceLevel: true,
+            showFilterTabs: false,
+          });
+        }
       }
     }
   }
@@ -434,9 +448,13 @@ class Ballot extends Component {
     const completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || '';
     const { ballot, ballotProperties } = BallotStore;
     const {
-      raceLevelFilterType, mounted, issuesRetrievedFromGoogleCivicElectionId,
+      mounted, issuesRetrievedFromGoogleCivicElectionId,
       issuesRetrievedFromBallotReturnedWeVoteId, issuesRetrievedFromBallotLocationShortcut,
     } = this.state;
+    let { raceLevelFilterType } = this.state;
+    if (!raceLevelFilterType) {
+      raceLevelFilterType = ''; // Make sure this is a string
+    }
 
     if (mounted) {
       if (ballotProperties && ballotProperties.ballot_found && ballot && ballot.length === 0) {
@@ -449,7 +467,8 @@ class Ballot extends Component {
           ballotWithItemsFromCompletionFilterType,
         });
         if (ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length) {
-          const raceLevelFilterItems = ballotWithItemsFromCompletionFilterType.filter(item => item.race_office_level === raceLevelFilterType || item.kind_of_ballot_item === raceLevelFilterType.toUpperCase());
+          const raceLevelFilterItems = ballotWithItemsFromCompletionFilterType.filter(item => item.race_office_level === raceLevelFilterType ||
+            item.kind_of_ballot_item === raceLevelFilterType.toUpperCase());
           this.setState({ doubleFilteredBallotItemsLength: raceLevelFilterItems.length });
         }
       }
@@ -554,7 +573,11 @@ class Ballot extends Component {
   }
 
   showUserEmptyOptions = () => {
-    const { completionLevelFilterType, raceLevelFilterType } = this.state;
+    const { completionLevelFilterType } = this.state;
+    let { raceLevelFilterType } = this.state;
+    if (!raceLevelFilterType) {
+      raceLevelFilterType = ''; // Make sure this is a string
+    }
     const raceLevel = raceLevelFilterType.toLowerCase();
     switch (completionLevelFilterType) {
       case 'filterDecided':
@@ -712,6 +735,10 @@ class Ballot extends Component {
       ballotWithItemsFromCompletionFilterType, showFilterTabs, doubleFilteredBallotItemsLength, completionLevelFilterType,
       ballotHeaderUnpinned, isSearching, ballotWithAllItems, ballotSearchResults,
     } = this.state;
+    let { raceLevelFilterType } = this.state;
+    if (!raceLevelFilterType) {
+      raceLevelFilterType = ''; // Make sure this is a string
+    }
     // console.log(ballotWithAllItems);
     const textForMapSearch = VoterStore.getTextForMapSearch();
     const issuesVoterCanFollow = IssueStore.getIssuesVoterCanFollow(); // Don't auto-open intro until Issues are loaded
@@ -744,7 +771,7 @@ class Ballot extends Component {
 
     const voterAddressMissing = this.state.location === null;
 
-    // const ballot_caveat = BallotStore.ballotProperties.ballot_caveat; // ballot_properties might be undefined
+    // const ballot_caveat = BallotStore.ballotProperties.ballot_caveat; // ballotProperties might be undefined
     const electionName = BallotStore.currentBallotElectionName;
     const electionDayText = BallotStore.currentBallotElectionDate;
     const sourcePollingLocationWeVoteId = BallotStore.currentBallotPollingLocationSource;
@@ -795,8 +822,7 @@ class Ballot extends Component {
     return (
       <div className="ballot_root">
         { this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
-        {
-          /*
+        {/*
           this.state.showSelectBallotModal ? (
           <SelectBallotModal
             ballotElectionList={this.state.ballotElectionList}
@@ -807,8 +833,7 @@ class Ballot extends Component {
             toggleFunction={this.toggleSelectBallotModal}
           />
         ) : null
-        */
-        }
+        */}
         { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this.toggleBallotSummaryModal} /> : null }
         <div className={`ballot__heading ${ballotHeaderUnpinned ? 'ballot__heading__unpinned' : ''}`}>
           <div className="page-content-container">
@@ -873,15 +898,15 @@ class Ballot extends Component {
                                     <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
                                       <Badge
                                         classes={{ badge: classes.badge, colorPrimary: classes.badgeColorPrimary }}
-                                        color={(oneTypeOfBallotItem === this.state.raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
+                                        color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
                                         badgeContent={ballotItemsByFilterType.length}
                                         invisible={ballotItemsByFilterType.length === 0}
                                       >
                                         <Chip variant="outlined"
-                                          color={(oneTypeOfBallotItem === this.state.raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
+                                          color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
                                           onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
                                           className="btn_ballot_filter"
-                                          classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === this.state.raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
+                                          classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
                                           label={oneTypeOfBallotItem}
                                         />
                                       </Badge>
@@ -947,10 +972,9 @@ class Ballot extends Component {
                       <div className={isWebApp() ? 'BallotList' : 'BallotList__cordova'}>
                         {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => {
                           // ballot limited by items by filter typeß
-                          // console.log(this.state.raceLevelFilterType);
-                          if ((this.state.raceLevelFilterType === 'All' || (isSearching && ballotSearchResults.length) ||
-                          (item.kind_of_ballot_item === this.state.raceLevelFilterType.toUpperCase()) ||
-                            this.state.raceLevelFilterType === item.race_office_level)) {
+                          if ((raceLevelFilterType === 'All' || (isSearching && ballotSearchResults.length) ||
+                          (item.kind_of_ballot_item === raceLevelFilterType.toUpperCase()) ||
+                            raceLevelFilterType === item.race_office_level)) {
                             return (
                               <BallotItemCompressed
                                 currentBallotIdInUrl={this.props.location.hash.slice(1)}

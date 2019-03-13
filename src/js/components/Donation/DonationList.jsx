@@ -90,14 +90,14 @@ export default class DonationList extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.journal.map((item, key) => {
+                  {this.state.journal.map((item) => {
                     if (item.record_enum === 'PAYMENT_FROM_UI' || item.record_enum === 'PAYMENT_AUTO_SUBSCRIPTION') {
                       const refundDays = parseInt(item.refund_days_limit, 10);
                       const active =
                     moment.utc(item.created).local().isAfter(moment(new Date()).subtract(refundDays, 'days')) &&
                     !item.stripe_status.includes('refund');
                       return (
-                        <tr key={key}>
+                        <tr key={`${item.charge_id}-${item.subscription_id}-donations`}>
                           <td>{moment.utc(item.created).local().format('MMM D, YYYY')}</td>
                           <td>{item.amount}</td>
                           <td hidden={isNotMobile}>
@@ -146,7 +146,7 @@ export default class DonationList extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.journal.map((item, key) => {
+                  {this.state.journal.map((item) => {
                     if (item.record_enum === 'SUBSCRIPTION_SETUP_AND_INITIAL') {
                       const active = item.subscription_canceled_at === 'None' && item.subscription_ended_at === 'None';
                       const cancel = item.subscription_canceled_at !== 'None' ?
@@ -156,7 +156,7 @@ export default class DonationList extends Component {
                       const waiting = item.amount === '0.00';
 
                       return (
-                        <tr key={key}>
+                        <tr key={`${item.charge_id}-${item.subscription_id}-journal`}>
                           <td hidden={isNotMobile}>{active ? 'Active' : '----'}</td>
                           <td>{moment.utc(item.created).format('MMM D, YYYY')}</td>
                           <td>{!waiting ? item.amount : 'waiting'}</td>
