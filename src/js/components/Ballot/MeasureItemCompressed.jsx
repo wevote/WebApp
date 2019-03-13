@@ -14,6 +14,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
 import { capitalizeString, shortenText } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import ShowMoreFooter from "../Navigation/ShowMoreFooter";
 
 
 class MeasureItemCompressed extends Component {
@@ -252,10 +253,7 @@ class MeasureItemCompressed extends Component {
           </Choice>
         </ChoicesRow>
         <Divider />
-        <CardFooter onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
-          Show More
-          <ArrowForwardIcon classes={{ root: classes.cardFooterIconRoot }} />
-        </CardFooter>
+        <ShowMoreFooter showMoreLink={this.goToMeasureLink} measureWeVoteId={measureWeVoteId}/>
       </Card>
     );
   }
