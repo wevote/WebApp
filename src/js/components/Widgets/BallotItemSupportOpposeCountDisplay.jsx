@@ -629,7 +629,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                   { totalNetworkScoreWithSign }
                 </span>
               )}
-              <NetworkScoreLabel className="u-show-mobile">Network Score</NetworkScoreLabel>
             </NetworkScore>
           </OverlayTrigger>
         ) : null
@@ -733,15 +732,6 @@ const NetworkScore = styled.div`
     background: transparent;
     box-shadow: none;
   }
-`;
-
-const NetworkScoreLabel = styled.h1`
-  color: #888;
-  font-weight: 600;
-  font-size: 12px;
-  margin: 0 0 0 .3rem;
-  text-align: right;
-  display: inline-block;
 `;
 
 export default withTheme()(withStyles(styles)(BallotItemSupportOpposeCountDisplay));

@@ -392,7 +392,7 @@ class OfficeItemCompressed extends Component {
         <div className="card-main__content">
           {/* Desktop */}
           <Link to={this.getOfficeLink()}>
-            <Title onClick={this.gotoOfficeLink}>
+            <Title>
               {ballotItemDisplayName}
               <ArrowForwardIcon
                 className="u-show-desktop"
