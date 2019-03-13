@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import ItemActionBar from './ItemActionBar';
 import ItemPositionStatementActionBar from './ItemPositionStatementActionBar';
@@ -13,7 +14,7 @@ import VoterStore from '../../stores/VoterStore';
 /* eslint react/no-find-dom-node: 1 */
 /* eslint array-callback-return: 1 */
 
-export default class BallotItemSupportOpposeComment extends Component {
+class BallotItemSupportOpposeComment extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     currentBallotIdInUrl: PropTypes.string,
@@ -229,14 +230,27 @@ export default class BallotItemSupportOpposeComment extends Component {
       null;
 
     return (
-      <div className="network-positions-stacked">
+      <Wrapper>
         <div className="network-positions-stacked__support">
           {/* Support/Oppose/Comment toggle here */}
           {itemActionBar}
         </div>
         { commentDisplayDesktop }
         { commentDisplayMobile }
-      </div>
+      </Wrapper>
     );
   }
 }
+
+const Wrapper = styled.div`
+  width: 100%;
+  background-color: #F5F5F5;
+  padding: 16px;
+  border-radius: 4px;
+  @media (max-width: 768px) {
+    background-color: white;
+    padding: 0;
+  }
+`;
+
+export default BallotItemSupportOpposeComment;
