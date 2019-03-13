@@ -390,13 +390,15 @@ class OfficeItemCompressed extends Component {
         <a className="anchor-under-header" name={weVoteId} />
         <div className="card-main__content">
           {/* Desktop */}
-          <Title onClick={this.gotoOfficeLink}>
-            {ballotItemDisplayName}
-            <ArrowForwardIcon
-              className="u-show-desktop"
-              classes={{ root: classes.cardHeaderIconRoot }}
-            />
-          </Title>
+          <Link to={this.getOfficeLink()}>
+            <Title onClick={this.gotoOfficeLink}>
+              {ballotItemDisplayName}
+              <ArrowForwardIcon
+                className="u-show-desktop"
+                classes={{ root: classes.cardHeaderIconRoot }}
+              />
+            </Title>
+          </Link>
           {/* *************************
             Display either a) the candidates the voter supports, or b) the first several candidates running for this office
             ************************* */}
@@ -414,9 +416,9 @@ class OfficeItemCompressed extends Component {
               if (candidatePreviewCount <= candidatePreviewLimit) {
                 oneCandidateDisplay = (
                   <CandidateInfo
+                    onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
                     key={`candidate_preview-${oneCandidate.we_vote_id}`}
                     brandBlue={theme.palette.primary.main}
-                    onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
                   >
                     <CandidateTopRow>
                       {/* Candidate Image */}
@@ -506,7 +508,11 @@ const styles = theme => ({
 
 const Container = styled.div`
   display: flex;
-  flex-flow: column;
+  flex-flow: row;
+  justify-content: center;
+  @media (max-width: 768px) {
+    flex-flow: row wrap;
+  }
 `;
 
 const Title = styled.h1`
@@ -527,10 +533,12 @@ const CandidateInfo = styled.div`
   padding: 16px 16px 0 16px;
   margin-bottom: 8px;
   overflow-x: hidden;
-  cursor: pointer;
   transition: all 200ms ease-in;
   border: 1px solid #eee;
+  max-width: 48%;
+  margin-right: 8px;
   border-radius: 4px;
+  cursor: pointer;
   &:hover {
     border: 1px solid ${({ brandBlue }) => brandBlue};
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
@@ -541,6 +549,7 @@ const CandidateInfo = styled.div`
     border-bottom: 1px solid #eee;
     padding: 16px 0 0 0;
     margin-bottom: 8px;
+    max-width: 100%;
   }
 `;
 
@@ -552,6 +561,7 @@ const CandidateTopRow = styled.div`
 
 const Candidate = styled.div`
   display: flex;
+  cursor: pointer;
 `;
 
 // const CardFooter = styled.div`

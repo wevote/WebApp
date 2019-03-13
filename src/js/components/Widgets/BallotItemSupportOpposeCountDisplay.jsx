@@ -629,7 +629,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                   { totalNetworkScoreWithSign }
                 </span>
               )}
-              <NetworkScoreLabel className="u-show-mobile-tablet">Network Score</NetworkScoreLabel>
+              <NetworkScoreLabel className="u-show-mobile">Network Score</NetworkScoreLabel>
             </NetworkScore>
           </OverlayTrigger>
         ) : null
