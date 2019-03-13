@@ -14,7 +14,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
 import { capitalizeString, shortenText } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import ShowMoreFooter from "../Navigation/ShowMoreFooter";
+import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 
 
 class MeasureItemCompressed extends Component {
@@ -253,7 +253,7 @@ class MeasureItemCompressed extends Component {
           </Choice>
         </ChoicesRow>
         <Divider />
-        <ShowMoreFooter showMoreLink={this.goToMeasureLink} measureWeVoteId={measureWeVoteId}/>
+        <ShowMoreFooter showMoreLink={this.goToMeasureLink} measureWeVoteId={measureWeVoteId} />
       </Card>
     );
   }
@@ -361,15 +361,15 @@ const Info = styled.p`
   color: #777;
 `;
 
-const CardFooter = styled.div`
-  font-size: 12px;
-  padding-top: 8px;
-  text-align: center;
-  user-select: none;
-  cursor: pointer;
-  @media (max-width: 960px) {
-    padding-bottom: 8px;
-  }
-`;
+// const CardFooter = styled.div`
+//   font-size: 12px;
+//   padding-top: 8px;
+//   text-align: center;
+//   user-select: none;
+//   cursor: pointer;
+//   @media (max-width: 960px) {
+//     padding-bottom: 8px;
+//   }
+// `;
 
 export default withTheme()(withStyles(styles)(MeasureItemCompressed));
