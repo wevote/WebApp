@@ -210,7 +210,8 @@ class OfficeItemCompressed extends Component {
     renderLog(__filename);
     let { ballot_item_display_name: ballotItemDisplayName } = this.props;
     const { we_vote_id: weVoteId, theme, classes } = this.props;
-
+    const { candidateList } = this.state;
+    console.log(ballotItemDisplayName, candidateList.length);
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
     const unsortedCandidateList = this.state.candidateList ? this.state.candidateList.slice(0) : {};
     const totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
@@ -403,8 +404,8 @@ class OfficeItemCompressed extends Component {
           {/* *************************
             Display either a) the candidates the voter supports, or b) the first several candidates running for this office
             ************************* */}
-          <Container>
-            { this.state.candidateList.map((oneCandidate) => {
+          <Container candLength={candidateList.length}>
+            { candidateList.map((oneCandidate) => {
               if (!oneCandidate || !oneCandidate.we_vote_id) {
                 return null;
               }
@@ -420,6 +421,7 @@ class OfficeItemCompressed extends Component {
                     onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
                     key={`candidate_preview-${oneCandidate.we_vote_id}`}
                     brandBlue={theme.palette.primary.main}
+                    candLength={candidateList.length}
                   >
                     <CandidateTopRow>
                       {/* Candidate Image */}
@@ -490,7 +492,7 @@ const styles = theme => ({
 
 const Container = styled.div`
   display: flex;
-  flex-flow: row;
+  flex-flow: ${({ candLength }) => (candLength > 2 ? 'row wrap' : 'row')};
   justify-content: center;
   @media (max-width: 768px) {
     flex-flow: row wrap;
@@ -517,7 +519,7 @@ const CandidateInfo = styled.div`
   overflow-x: hidden;
   transition: all 200ms ease-in;
   border: 1px solid #eee;
-  max-width: 48%;
+  width: ${({ candLength }) => (candLength > 1 ? '48%' : '100%')};
   margin-right: 8px;
   border-radius: 4px;
   cursor: pointer;

@@ -111,7 +111,7 @@ class BallotTabsRaccoon extends Component {
 
         { showDecisionsMade ? (
           <Tab
-            classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot, indicator: classes.indicator }}
+            classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot }}
             onClick={() => this.goToDifferentCompletionLevelTab('filterDecided')}
             label={(
               <Badge
