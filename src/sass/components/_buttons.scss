@@ -34,9 +34,19 @@
 }
 
 .btn_ballot_filter {
-  background-color: $white;
-  border-color: $gray-border;
-  color: $black;
+  $mobile-btn-ballot-filter-width: fit-content;
+  $btn-ballot-filter-width: 120px;
+  $mobile-btn-ballot-filter-padding: 0 12px;
+  $mobile-btn-ballot-filter-line-height: 1.2rem;
+  width: $btn-ballot-filter-width;
+  margin-bottom: $space-sm !important;
+  outline: none !important;
+  @include breakpoints (small xsmall-bootstrap) {
+    font-size: 10px !important;
+    padding: $mobile-btn-ballot-filter-padding !important;
+    width: $mobile-btn-ballot-filter-width !important;
+    line-height: $mobile-btn-ballot-filter-line-height;
+  }
 }
 
 // Needed for the Oppose button
@@ -84,4 +94,13 @@
     background-color: $btn-primary-bg-at;
     color: $btn-primary-color-at;
   }
+}
+
+.no-outline {
+  outline: none !important;
+}
+
+.button-icon {
+  $btn-icon-margin: .5rem;
+  margin-right: $btn-icon-margin;
 }

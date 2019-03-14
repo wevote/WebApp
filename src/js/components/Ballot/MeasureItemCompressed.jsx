@@ -1,53 +1,46 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { historyPush } from "../../utils/cordovaUtils";
-import IssuesByBallotItemDisplayList from "../Issues/IssuesByBallotItemDisplayList";
-import ItemActionBar from "../Widgets/ItemActionBar";
-import ItemPositionStatementActionBar from "../Widgets/ItemPositionStatementActionBar";
-import { renderLog } from "../../utils/logging";
-import MeasureStore from "../../stores/MeasureStore";
-import OrganizationStore from "../../stores/OrganizationStore";
-import ReadMore from "../Widgets/ReadMore";
-import SupportStore from "../../stores/SupportStore";
-import { capitalizeString } from "../../utils/textFormat";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-// import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import Card from '@material-ui/core/Card';
+import Divider from '@material-ui/core/Divider';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import { withStyles, withTheme } from '@material-ui/core/styles';
+import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
+import { historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import extractNumber from '../../utils/extractNumber';
+import MeasureStore from '../../stores/MeasureStore';
+import OrganizationStore from '../../stores/OrganizationStore';
+import SupportStore from '../../stores/SupportStore';
+import { capitalizeString, shortenText } from '../../utils/textFormat';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 
 
-export default class MeasureItemCompressed extends Component {
+class MeasureItemCompressed extends Component {
   static propTypes = {
-    ballot_item_display_name: PropTypes.string.isRequired,
-    currentBallotIdInUrl: PropTypes.string,
-    // kind_of_ballot_item: PropTypes.string.isRequired,
-    link_to_ballot_item_page: PropTypes.bool,
-    measure: PropTypes.object,
-    measure_subtitle: PropTypes.string,
-    // measure_text: PropTypes.string,
-    // measure_url: PropTypes.string,
+    // currentBallotIdInUrl: PropTypes.string,
     organization: PropTypes.object,
-    // position_list: PropTypes.array,
     showPositionStatementActionBar: PropTypes.bool,
-    urlWithoutHash: PropTypes.string,
-    we_vote_id: PropTypes.string.isRequired,
+    // urlWithoutHash: PropTypes.string,
+    measureWeVoteId: PropTypes.string.isRequired,
+    classes: PropTypes.object,
+    theme: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
-    const ballotItemType = "MEASURE";
     this.state = {
-      ballotItemType,
-      ballotItemWeVoteId: "",
+      // ballotItemWeVoteId: '',
       componentDidMountFinished: false,
-      // maximum_organization_display: 4,
+      measureText: '',
+      measureWeVoteId: '',
+      noVoteDescription: '',
       organization: {},
-      // showModal: false,
       showPositionStatement: false,
-      shouldFocusCommentArea: false,
-      transitioning: false,
+      yesVoteDescription: '',
     };
     this.getMeasureLink = this.getMeasureLink.bind(this);
     this.goToMeasureLink = this.goToMeasureLink.bind(this);
-    this.passDataBetweenItemActionToItemPosition = this.passDataBetweenItemActionToItemPosition.bind(this);
     this.togglePositionStatement = this.togglePositionStatement.bind(this);
   }
 
@@ -56,15 +49,17 @@ export default class MeasureItemCompressed extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    const ballotItemType = "MEASURE";
-    // const isMeasure = true;
+    const measure = MeasureStore.getMeasure(this.props.measureWeVoteId);
     this.setState({
-      ballotItemType,
-      ballotItemWeVoteId: this.props.we_vote_id,
+      ballotItemDisplayName: measure.ballot_item_display_name,
       componentDidMountFinished: true,
-      // isMeasure,
-      measure: MeasureStore.getMeasure(this.props.we_vote_id),
-      supportProps: SupportStore.get(this.props.we_vote_id),
+      measure,
+      // measureSubtitle: measure.measure_subtitle,
+      measureSupportProps: SupportStore.get(this.props.measureWeVoteId),
+      measureText: measure.measure_text,
+      measureWeVoteId: this.props.measureWeVoteId,
+      noVoteDescription: measure.no_vote_description,
+      yesVoteDescription: measure.yes_vote_description,
     });
     if (this.props.organization && this.props.organization.organization_we_vote_id) {
       this.setState({
@@ -79,8 +74,16 @@ export default class MeasureItemCompressed extends Component {
         organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
       });
     }
+    const measure = MeasureStore.getMeasure(nextProps.measureWeVoteId);
     this.setState({
-      measure: MeasureStore.getMeasure(this.props.we_vote_id),
+      ballotItemDisplayName: measure.ballot_item_display_name,
+      measure,
+      // measureSubtitle: measure.measure_subtitle,
+      measureSupportProps: SupportStore.get(nextProps.measureWeVoteId),
+      measureText: measure.measure_text,
+      measureWeVoteId: nextProps.measureWeVoteId,
+      noVoteDescription: measure.no_vote_description,
+      yesVoteDescription: measure.yes_vote_description,
     });
   }
 
@@ -106,11 +109,11 @@ export default class MeasureItemCompressed extends Component {
       // console.log("shouldComponentUpdate: this.state.showPositionStatement change");
       return true;
     }
-    if (this.state.supportProps !== undefined && nextState.supportProps !== undefined) {
-      const currentNetworkSupportCount = parseInt(this.state.supportProps.support_count) || 0;
-      const nextNetworkSupportCount = parseInt(nextState.supportProps.support_count) || 0;
-      const currentNetworkOpposeCount = parseInt(this.state.supportProps.oppose_count) || 0;
-      const nextNetworkOpposeCount = parseInt(nextState.supportProps.oppose_count) || 0;
+    if (this.state.measureSupportProps !== undefined && nextState.measureSupportProps !== undefined) {
+      const currentNetworkSupportCount = parseInt(this.state.measureSupportProps.support_count) || 0;
+      const nextNetworkSupportCount = parseInt(nextState.measureSupportProps.support_count) || 0;
+      const currentNetworkOpposeCount = parseInt(this.state.measureSupportProps.oppose_count) || 0;
+      const nextNetworkOpposeCount = parseInt(nextState.measureSupportProps.oppose_count) || 0;
       if (currentNetworkSupportCount !== nextNetworkSupportCount || currentNetworkOpposeCount !== nextNetworkOpposeCount) {
         // console.log("shouldComponentUpdate: support or oppose count change");
         return true;
@@ -134,17 +137,16 @@ export default class MeasureItemCompressed extends Component {
 
   onVoterGuideStoreChange () {
     // We just want to trigger a re-render
-    this.setState({ transitioning: false });
+    this.setState();
   }
 
   onSupportStoreChange () {
-    const { organization } = this.state;
+    const { measureWeVoteId, organization } = this.state;
     // Whenever positions change, we want to make sure to get the latest organization, because it has
     //  position_list_for_one_election and position_list_for_all_except_one_election attached to it
     this.setState({
       organization: OrganizationStore.getOrganizationByWeVoteId(organization.organization_we_vote_id),
-      supportProps: SupportStore.get(this.props.we_vote_id),
-      transitioning: false,
+      measureSupportProps: SupportStore.get(measureWeVoteId),
     });
   }
 
@@ -154,7 +156,7 @@ export default class MeasureItemCompressed extends Component {
       return `/measure/${oneMeasureWeVoteId}/btvg/${this.state.organization.organization_we_vote_id}`;
     } else {
       // If no organization_we_vote_id, signal that we want to link back to default ballot
-      return `/measure/${oneMeasureWeVoteId}/b/btdb/`;
+      return `/measure/${oneMeasureWeVoteId}/b/btdb/`; // back-to-default-ballot
     }
   }
 
@@ -163,24 +165,25 @@ export default class MeasureItemCompressed extends Component {
     historyPush(measureLink);
   }
 
-  passDataBetweenItemActionToItemPosition () {
-    this.setState({ shouldFocusCommentArea: true });
-  }
-
   togglePositionStatement () {
     const { showPositionStatement } = this.state;
     this.setState({
       showPositionStatement: !showPositionStatement,
-      shouldFocusCommentArea: true,
     });
   }
 
   render () {
     // console.log("MeasureItemCompressed render");
     renderLog(__filename);
-    let { ballot_item_display_name: ballotItemDisplayName, measure_subtitle: measureSubtitle } = this.props;
-    const { we_vote_id: measureWeVoteId } = this.props;
-    measureSubtitle = capitalizeString(measureSubtitle);
+    const { noVoteDescription, yesVoteDescription } = this.state;
+    let { ballotItemDisplayName } = this.state;
+    const { measureText, measureWeVoteId } = this.state;
+    const { classes, theme } = this.props;
+    let ballotDisplay = [];
+    if (ballotItemDisplayName) {
+      ballotDisplay = ballotItemDisplayName.split(':');
+    }
+    // measureSubtitle = capitalizeString(measureSubtitle);
     ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
 
     // let measureGuidesList = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(measureWeVoteId);
@@ -189,11 +192,10 @@ export default class MeasureItemCompressed extends Component {
     //   ballotItemDisplayName: ballotItemDisplayName,
     //   voter_guides_to_follow_for_ballot_item_id: measureGuidesList,
     //   kind_of_ballot_item: this.props.kind_of_ballot_item,
-    //   link_to_ballot_item_page: this.props.link_to_ballot_item_page,
     //   measureSubtitle: measureSubtitle,
     //   measure_text: this.props.measure_text,
     //   measure_url: this.props.measure_url,
-    //   we_vote_id: measureWeVoteId,
+    //   measureWeVoteId,
     //   position_list: this.props.position_list,
     // };
 
@@ -201,151 +203,175 @@ export default class MeasureItemCompressed extends Component {
     // let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(measureWeVoteId);
     // let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(measureWeVoteId);
 
-    // Voter Support or opposition
-    let isVoterSupport = false;
-    let isVoterOppose = false;
-    let voterStatementText = false;
-    const ballotItemSupportStore = SupportStore.get(this.state.ballotItemWeVoteId);
-    if (ballotItemSupportStore !== undefined) {
-      // console.log("ballotItemSupportStore: ", ballotItemSupportStore);
-      isVoterSupport = ballotItemSupportStore.is_support;
-      isVoterOppose = ballotItemSupportStore.is_oppose;
-      voterStatementText = ballotItemSupportStore.voter_statement_text;
-    }
-
-    let commentBoxIsVisible = false;
-    if (this.props.showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText || this.state.showPositionStatement) {
-      commentBoxIsVisible = true;
-    }
-    const itemActionBar = (
-      <span>
-        <ItemActionBar
-          ballotItemDisplayName={ballotItemDisplayName}
-          ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
-          commentButtonHide={commentBoxIsVisible}
-          commentButtonHideInMobile
-          currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-          shareButtonHide
-          supportProps={ballotItemSupportStore}
-          supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
-          toggleFunction={this.togglePositionStatement}
-          transitioning={this.state.transitioning}
-          type={this.state.ballotItemType}
-          urlWithoutHash={this.props.urlWithoutHash}
-          we_vote_id={this.props.we_vote_id}
-        />
-      </span>
-    );
-
-    const commentDisplayRaccoonDesktop = this.props.showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText || this.state.showPositionStatement ? (
-      <div className="d-none d-sm-block o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-        <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-          <ItemPositionStatementActionBar
-            ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
-            ballotItemDisplayName={ballotItemDisplayName}
-            comment_edit_mode_on={this.state.showPositionStatement}
-            supportProps={ballotItemSupportStore}
-            shouldFocus={this.state.shouldFocusCommentArea}
-            transitioning={this.state.transitioning}
-            type={this.state.ballotItemType}
-            shown_in_list
-          />
-        </div>
-      </div>
-    ) :
-      null;
-
-    const commentDisplayRaccoonMobile = this.props.showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText ? (
-      <div className="d-block d-sm-none o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-        <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-          <ItemPositionStatementActionBar
-            ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
-            ballotItemDisplayName={ballotItemDisplayName}
-            supportProps={ballotItemSupportStore}
-            shouldFocus={this.state.shouldFocusCommentArea}
-            transitioning={this.state.transitioning}
-            type={this.state.ballotItemType}
-            shown_in_list
-          />
-        </div>
-      </div>
-    ) :
-      null;
+    // // Voter Support or opposition
+    // let isVoterSupport = false;
+    // let isVoterOppose = false;
+    // let voterStatementText = false;
+    // const ballotItemSupportStore = SupportStore.get(this.state.ballotItemWeVoteId);
+    // if (ballotItemSupportStore !== undefined) {
+    //   // console.log("ballotItemSupportStore: ", ballotItemSupportStore);
+    //   isVoterSupport = ballotItemSupportStore.is_support;
+    //   isVoterOppose = ballotItemSupportStore.is_oppose;
+    //   voterStatementText = ballotItemSupportStore.voter_statement_text;
+    // }
 
     return (
-      <div className="card-main measure-card">
-        <div className="card-main__content">
-          <h2 className="card-main__display-name">
-            { this.props.link_to_ballot_item_page ? (
-              <div className="card-main__ballot-name-group">
-                <div className="card-main__ballot-name-item card-main__ballot-name card-main__ballot-name-link">
-                  <a onClick={() => this.goToMeasureLink(measureWeVoteId)}>
-                    {ballotItemDisplayName}
-                  </a>
-                </div>
-              </div>
-            ) :
-              ballotItemDisplayName
-          }
-          </h2>
-          <div>
-            <div className="u-stack--md u-cursor--pointer" onClick={() => this.goToMeasureLink(measureWeVoteId)}>
-          Click to see more details about this measure.
-            </div>
-
-          </div>
-          <div>
-            {/* Issues related to this Measure */}
-            <IssuesByBallotItemDisplayList
-              ballotItemWeVoteId={measureWeVoteId}
-              issuesListHidden
-              placement="bottom"
-            />
-          </div>
-          {/* Measure information */}
-          <div
-            className={this.props.link_to_ballot_item_page ? "u-cursor--pointer" : null}
-            onClick={this.props.link_to_ballot_item_page ? () => this.goToMeasureLink(measureWeVoteId) : null}
-          >
-            {measureSubtitle}
-          </div>
-          { this.state.measure_text ? (
-            <div className="measure_text u-gray-mid">
-              <ReadMore
-                num_of_lines={3}
-                text_to_display={this.state.measure_text}
+      <Card classes={{ root: classes.cardRoot }}>
+        <InfoRow>
+          <MeasureInfoWrapper onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
+            <Title>
+              {ballotDisplay[0]}
+              <ArrowForwardIcon
+                className="u-show-desktop"
+                classes={{ root: classes.cardHeaderIconRoot }}
               />
-            </div>
-          ) :
-            null
-        }
-
-          {/* Positions in Your Network and Possible Voter Guides to Follow */}
-          <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
-            {/* <ItemSupportOpposeRaccoon ballotItemWeVoteId={measureWeVoteId}
-                                    ballot_item_display_name={ballotItemDisplayName}
-                                    currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                                    maximumOrganizationDisplay={this.state.maximum_organization_display}
-                                    organizationsToFollowSupport={organizationsToFollowSupport}
-                                    organizationsToFollowOppose={organizationsToFollowOppose}
-                                    showPositionStatementActionBar={this.props.showPositionStatementActionBar}
-                                    supportProps={measureSupportStore}
-                                    urlWithoutHash={this.props.urlWithoutHash}
-                                    we_vote_id={this.props.we_vote_id}/> */}
-
-            <div className="network-positions-stacked">
-              <div className="network-positions-stacked__support">
-                {/* Support toggle here */}
-                {itemActionBar}
-              </div>
-              { commentDisplayRaccoonDesktop }
-              { commentDisplayRaccoonMobile }
-            </div>
-          </div>
-        </div>
-        {" "}
-        {/* END .card-main__content */}
-      </div>
+            </Title>
+            <SubTitle>{ballotDisplay[1]}</SubTitle>
+            <Info>{shortenText(measureText, 200)}</Info>
+          </MeasureInfoWrapper>
+          <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
+        </InfoRow>
+        <ChoicesRow>
+          <Choice
+            brandBlue={theme.palette.primary.main}
+            onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
+          >
+            <ChoiceTitle brandBlue={theme.palette.primary.main}>
+              {`Yes On ${extractNumber(ballotItemDisplayName)}`}
+            </ChoiceTitle>
+            <ChoiceInfo>{shortenText(yesVoteDescription, 200)}</ChoiceInfo>
+          </Choice>
+          <Choice
+            brandBlue={theme.palette.primary.main}
+            onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
+          >
+            <ChoiceTitle brandBlue={theme.palette.primary.main}>
+              {`No On ${extractNumber(ballotItemDisplayName)}`}
+            </ChoiceTitle>
+            <ChoiceInfo>{shortenText(noVoteDescription, 200)}</ChoiceInfo>
+          </Choice>
+        </ChoicesRow>
+        <Divider />
+        <CardFooter onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
+          Show More
+          <ArrowForwardIcon classes={{ root: classes.cardFooterIconRoot }} />
+        </CardFooter>
+      </Card>
     );
   }
 }
+
+const styles = theme => ({
+  cardRoot: {
+    padding: '16px 16px 8px 16px',
+    [theme.breakpoints.down('lg')]: {
+      padding: '16px 16px 0 16px',
+    },
+  },
+  endorsementIconRoot: {
+    fontSize: 14,
+    margin: '.3rem .3rem 0 .5rem',
+  },
+  cardHeaderIconRoot: {
+    marginTop: '-.3rem',
+    fontSize: 20,
+  },
+  cardFooterIconRoot: {
+    fontSize: 14,
+    margin: '0 0 .1rem .4rem',
+  },
+});
+
+const InfoRow = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+`;
+
+const ChoicesRow = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+`;
+
+const Choice = styled.div`
+  display: flex;
+  flex-flow: column;
+  padding-right: 8px;
+  cursor: pointer;
+  transition: all 200ms ease-in;
+  @media (min-width: 768px) {
+    max-width: 47%;
+    border: none;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 0 16px;
+    margin-right: 10px;
+    margin-bottom: 16px;
+    &:hover {
+      border: 1px solid ${({ brandBlue }) => brandBlue};
+      box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+    }
+  }
+`;
+
+const ChoiceTitle = styled.h1`
+  font-weight: bold;
+  color: #4371cc;
+`;
+
+const ChoiceInfo = styled.p`
+  font-size: 12px;
+  color: #777;
+  @media (max-width: 768px) {
+    max-width: 140%;
+  }
+`;
+
+const MeasureInfoWrapper = styled.div`
+  display: flex;
+  flex-flow: column;
+  max-width: 75%;
+  cursor: pointer;
+  user-select: none;
+  padding-right: 8px;
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
+`;
+
+const Title = styled.h1`
+  font-size: 18px;
+  font-weight: bold;
+  margin: .1rem 0;
+  @media (max-width: 960px) {
+    font-size: 16px;
+  }
+`;
+
+const SubTitle = styled.h3`
+  font-size: 16px;
+  font-weight: 300;
+  color: #555;
+  @media (max-width: 960px) {
+    font-size: 13px;
+  }
+`;
+
+const Info = styled.p`
+  font-size: 13px;
+  font-weight: 300;
+  color: #777;
+`;
+
+const CardFooter = styled.div`
+  font-size: 12px;
+  padding-top: 8px;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  @media (max-width: 960px) {
+    padding-bottom: 8px;
+  }
+`;
+
+export default withTheme()(withStyles(styles)(MeasureItemCompressed));

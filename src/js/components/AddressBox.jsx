@@ -1,14 +1,18 @@
 /* global google */
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import BallotStore from "../stores/BallotStore";
+import EditLocationIcon from '@material-ui/icons/EditLocation';
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import InputBase from '@material-ui/core/InputBase';
+import BallotStore from '../stores/BallotStore';
 import BallotActions from '../actions/BallotActions';
-import { historyPush, isCordova, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../utils/cordovaUtils";
-import LoadingWheel from "./LoadingWheel";
-import { renderLog } from "../utils/logging";
-import VoterActions from "../actions/VoterActions";
-import VoterStore from "../stores/VoterStore";
+import { historyPush, isCordova, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../utils/cordovaUtils';
+import LoadingWheel from './LoadingWheel';
+import { renderLog } from '../utils/logging';
+import VoterActions from '../actions/VoterActions';
+import VoterStore from '../stores/VoterStore';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint react/sort-comp: 0 */
@@ -19,9 +23,7 @@ import VoterStore from "../stores/VoterStore";
 /* eslint jsx-a11y/click-events-have-key-events: 0 */
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 /* eslint no-param-reassign: 0 */
-
-
-export default class AddressBox extends Component {
+class AddressBox extends Component {
   static propTypes = {
     cancelEditAddress: PropTypes.func,
     disableAutoFocus: PropTypes.bool,
@@ -29,14 +31,15 @@ export default class AddressBox extends Component {
     toggleSelectAddressModal: PropTypes.func,
     saveUrl: PropTypes.string.isRequired,
     waitingMessage: PropTypes.string,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
       loading: false,
-      textForMapSearch: "",
-      ballotCaveat: "",
+      textForMapSearch: '',
+      ballotCaveat: '',
       voterSavedAddress: false,
     };
 
@@ -59,8 +62,8 @@ export default class AddressBox extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     const addressAutocomplete = new google.maps.places.Autocomplete(this.autoComplete);
-    addressAutocomplete.setComponentRestrictions({ country: "us" });
-    this.googleAutocompleteListener = addressAutocomplete.addListener("place_changed", this._placeChanged.bind(this, addressAutocomplete));
+    addressAutocomplete.setComponentRestrictions({ country: 'us' });
+    this.googleAutocompleteListener = addressAutocomplete.addListener('place_changed', this._placeChanged.bind(this, addressAutocomplete));
   }
 
   componentWillUnmount () {
@@ -69,7 +72,7 @@ export default class AddressBox extends Component {
     if (this.googleAutocompleteListener !== undefined) { // Temporary fix until google maps key is fixed.
       this.googleAutocompleteListener.remove();
     } else {
-      console.log("Google Maps Error: DeletedApiProjectMapError");
+      console.log('Google Maps Error: DeletedApiProjectMapError');
     }
     restoreStylesAfterCordovaKeyboard(__filename);
   }
@@ -96,7 +99,7 @@ export default class AddressBox extends Component {
 
   componentDidCatch (error, info) {
     // We should get this information to Splunk!
-    console.error("AddressBox caught error: ", `${error} with info: `, info);
+    console.error('AddressBox caught error: ', `${error} with info: `, info);
   }
 
   onVoterStoreChange () {
@@ -160,9 +163,10 @@ export default class AddressBox extends Component {
 
   render () {
     let { waitingMessage } = this.props;
+    const { classes } = this.props;
     renderLog(__filename);
     if (this.state.loading) {
-      if (!waitingMessage) waitingMessage = "Please wait a moment while we find your ballot...";
+      if (!waitingMessage) waitingMessage = 'Please wait a moment while we find your ballot...';
 
       return (
         <div>
@@ -175,34 +179,37 @@ export default class AddressBox extends Component {
     return (
       <div className="container">
         <form onSubmit={this.voterAddressSave} className="row">
-          <input
-            type="text"
-            value={this.state.textForMapSearch}
-            onKeyDown={this.handleKeyPress}
-            onChange={this.updateVoterAddress}
-            name="address"
-            className="form-control col-sm-9"
-            ref={(el) => { this.autoComplete = el; }}
-            aria-label="Address"
-            placeholder="Enter address where you are registered to vote"
-            autoFocus={!isCordova() && !this.props.disableAutoFocus}
-          />
-          <div className="col-sm-3 text-right pr-0 mt-sm-0 mt-3">
+          <Paper className={classes.root} elevation={2}>
+            <EditLocationIcon className="ion-input-icon" />
+            <InputBase
+              className={classes.input}
+              name="address"
+              aria-label="Address"
+              placeholder="Enter registered address..."
+              value={this.state.textForMapSearch}
+              inputRef={(autocomplete) => { this.autoComplete = autocomplete; }}
+              inputProps={{ onChange: this.updateVoterAddress, onKeyDown: this.handleKeyPress, autoFocus: (!isCordova() && !this.props.disableAutoFocus) }}
+            />
+          </Paper>
+          { this.props.cancelEditAddress ? (
             <Button
-              onClick={this.voterAddressSave}
-              color="secondary"
-              variant="outlined"
+              className={classes.cancelButton}
+              onClick={this.props.cancelEditAddress}
+              color="primary"
             >
-              Save
+              Cancel
             </Button>
-            <br />
-            { this.props.cancelEditAddress ? (
-              <span className="u-f5">
-                <a href="#" onClick={this.props.cancelEditAddress}>cancel</a>
-              </span>
-            ) : null
-            }
-          </div>
+          ) : null
+          }
+          <br />
+          <Button
+            className={classes.saveButton}
+            onClick={this.voterAddressSave}
+            color="primary"
+            variant="contained"
+          >
+            Save
+          </Button>
         </form>
         <p />
         <h4>{this.state.ballotCaveat}</h4>
@@ -210,3 +217,27 @@ export default class AddressBox extends Component {
     );
   }
 }
+
+const styles = {
+  root: {
+    padding: '2px .7rem',
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: '1rem',
+    marginRight: '1rem',
+  },
+  saveButton: {
+    marginRight: '.3rem',
+    height: 'fit-content',
+  },
+  cancelButton: {
+    marginRight: '.3rem',
+  },
+  input: {
+    marginLeft: 8,
+    flex: 1,
+  },
+};
+
+export default withStyles(styles)(AddressBox);

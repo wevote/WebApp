@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { historyPush } from "../../utils/cordovaUtils";
-import LoadingWheel from "../../components/LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import VoterActions from "../../actions/VoterActions";
-import VoterStore from "../../stores/VoterStore";
-import WouldYouLikeToMergeAccountsOld from "../../components/WouldYouLikeToMergeAccountsOld";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { historyPush } from '../../utils/cordovaUtils';
+import LoadingWheel from '../../components/LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import VoterActions from '../../actions/VoterActions';
+import VoterStore from '../../stores/VoterStore';
+import WouldYouLikeToMergeAccountsOld from '../../components/WouldYouLikeToMergeAccountsOld';
 
 export default class SignInEmailProcess extends Component {
   static propTypes = {
@@ -67,10 +67,10 @@ export default class SignInEmailProcess extends Component {
     if (this.state.emailSignInStatus.voter_merge_two_accounts_attempted) {
       // console.log("voterMergeTwoAccountsByEmailKey attempted - push to /settings/account");
       historyPush({
-        pathname: "/ballot",
+        pathname: '/ballot',
         state: {
-          message: "You have successfully signed in.",
-          message_type: "success",
+          message: 'You have successfully signed in.',
+          message_type: 'success',
         },
       });
       return LoadingWheel;
@@ -79,7 +79,7 @@ export default class SignInEmailProcess extends Component {
     // This process starts when we return from attempting voterEmailAddressSignIn
     if (!this.state.emailSignInStatus.email_address_found) {
       // console.log("Could not find secret_key in database - push to /settings/account");
-      historyPush("/settings/account");
+      historyPush('/settings/account');
       return LoadingWheel;
     }
 
@@ -89,10 +89,10 @@ export default class SignInEmailProcess extends Component {
         // We don't need to do anything more except redirect to the email management page
         // console.log("secret key owned by this voter - push to /settings/account");
         historyPush({
-          pathname: "/ballot",
+          pathname: '/ballot',
           state: {
-            message: "You have successfully signed in.",
-            message_type: "success",
+            message: 'You have successfully signed in.',
+            message_type: 'success',
           },
         });
         return LoadingWheel;

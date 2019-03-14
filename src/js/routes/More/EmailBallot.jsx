@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { Button } from "react-bootstrap";
-import { Link } from "react-router";
-import Helmet from "react-helmet";
-import { renderLog } from "../../utils/logging";
-import Main from "../../components/Facebook/Main";
+import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router';
+import Helmet from 'react-helmet';
+import { renderLog } from '../../utils/logging';
+import Main from '../../components/Facebook/Main';
 
 /* VISUAL DESIGN HERE: https://projects.invisionapp.com/share/2R41VR3XW#/screens/89479656 */
 
@@ -35,7 +35,7 @@ export default class EmailBallot extends Component {
             Email your ballot to yourself so you can print it, or come back
             to it later. We will never sell your email address.
             See
-            {" "}
+            {' '}
             <Link to="privacy">privacy policy</Link>
             .
             <br />

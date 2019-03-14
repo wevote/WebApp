@@ -1,23 +1,23 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Helmet from "react-helmet";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import CandidateActions from "../../actions/CandidateActions";
-import OrganizationVoterGuideCandidateItem from "../../components/VoterGuide/OrganizationVoterGuideCandidateItem";
-import CandidateStore from "../../stores/CandidateStore";
-import { capitalizeString } from "../../utils/textFormat";
-import GuideList from "../../components/VoterGuide/GuideList";
-import LoadingWheel from "../../components/LoadingWheel";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import OrganizationActions from "../../actions/OrganizationActions";
-import PositionList from "../../components/Ballot/PositionList";
-import SupportActions from "../../actions/SupportActions";
-import ThisIsMeAction from "../../components/Widgets/ThisIsMeAction";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import VoterStore from "../../stores/VoterStore";
-import SearchAllActions from "../../actions/SearchAllActions";
-import webAppConfig from "../../config";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import CandidateActions from '../../actions/CandidateActions';
+import OrganizationVoterGuideCandidateItem from '../../components/VoterGuide/OrganizationVoterGuideCandidateItem';
+import CandidateStore from '../../stores/CandidateStore';
+import { capitalizeString } from '../../utils/textFormat';
+import GuideList from '../../components/VoterGuide/GuideList';
+import LoadingWheel from '../../components/LoadingWheel';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OrganizationActions from '../../actions/OrganizationActions';
+import PositionList from '../../components/Ballot/PositionList';
+import SupportActions from '../../actions/SupportActions';
+import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
+import SearchAllActions from '../../actions/SearchAllActions';
+import webAppConfig from '../../config';
 
 // This is based on routes/Ballot/Candidate
 export default class OrganizationVoterGuideCandidate extends Component {
@@ -29,13 +29,13 @@ export default class OrganizationVoterGuideCandidate extends Component {
     super(props);
     this.state = {
       candidate: {},
-      candidateWeVoteId: "",
+      candidateWeVoteId: '',
       positionListFromAdvisersFollowedByVoter: [],
       // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidateWeVoteId, but we can't now
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
       // guidesToFollowList: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.candidate_we_vote_id)
       voterGuidesToFollowForLatestBallotItem: [],
-      organizationWeVoteId: "",
+      organizationWeVoteId: '',
     };
   }
 
@@ -47,14 +47,14 @@ export default class OrganizationVoterGuideCandidate extends Component {
 
     // Get the latest guides to follow for this candidate
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(this.props.params.candidate_we_vote_id, "CANDIDATE");
+    VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(this.props.params.candidate_we_vote_id, 'CANDIDATE');
 
     // Make sure supportProps exist for this Candidate when browser comes straight to candidate page
     SupportActions.retrievePositionsCountsForOneBallotItem(this.props.params.candidate_we_vote_id);
     OrganizationActions.organizationsFollowedRetrieve();
 
     // Display the candidate's name in the search box
-    const searchBoxText = this.state.candidate.ballot_item_display_name || ""; // TODO DALE Not working right now
+    const searchBoxText = this.state.candidate.ballot_item_display_name || ''; // TODO DALE Not working right now
     SearchAllActions.exitSearch(searchBoxText); // TODO: still not used :)
     AnalyticsActions.saveActionCandidate(VoterStore.electionId(), this.props.params.candidate_we_vote_id);
     this.setState({
@@ -72,7 +72,7 @@ export default class OrganizationVoterGuideCandidate extends Component {
     if (nextProps.params.candidate_we_vote_id !== this.state.candidateWeVoteId) {
       CandidateActions.candidateRetrieve(nextProps.params.candidate_we_vote_id);
       CandidateActions.positionListForBallotItem(nextProps.params.candidate_we_vote_id);
-      VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.candidate_we_vote_id, "CANDIDATE");
+      VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.candidate_we_vote_id, 'CANDIDATE');
       this.setState({
         candidateWeVoteId: nextProps.params.candidate_we_vote_id,
         positionListFromAdvisersFollowedByVoter: CandidateStore.getPositionList(nextProps.params.candidate_we_vote_id),
@@ -83,7 +83,7 @@ export default class OrganizationVoterGuideCandidate extends Component {
     // Display the candidate's name in the search box
     // var { candidate } = this.state;
     // var searchBoxText = candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
-    SearchAllActions.exitSearch("");
+    SearchAllActions.exitSearch('');
   }
 
   componentWillUnmount () {
@@ -118,7 +118,7 @@ export default class OrganizationVoterGuideCandidate extends Component {
 
   render () {
     const electionId = VoterStore.electionId();
-    const NO_VOTER_GUIDES_TEXT = "We could not find any more voter guides to listen to related to this candidate.";
+    const NO_VOTER_GUIDES_TEXT = 'We could not find any more voter guides to follow related to this candidate.';
     // console.log("Candidate render, this.state.positionListFromAdvisersFollowedByVoter: ", this.state.positionListFromAdvisersFollowedByVoter);
 
     if (!this.state.candidate || !this.state.candidate.ballot_item_display_name) {
@@ -141,7 +141,7 @@ export default class OrganizationVoterGuideCandidate extends Component {
       <span>
         <Helmet
           title={titleText}
-          meta={[{ name: "description", content: descriptionText }]}
+          meta={[{ name: 'description', content: descriptionText }]}
         />
         <section className="card">
           <OrganizationVoterGuideCandidateItem

@@ -46,7 +46,7 @@
     "operator-linebreak": [1, "after"],
     "padded-blocks": [1],
     "prefer-destructuring": 1,
-    "quotes": [1, "double", "avoid-escape"],
+    "quotes": [1, "single", "avoid-escape"],
     "radix": 0,                                   // Dec 2018: We always use base 10, so specifying it each time seems excessive
     "react/button-has-type": 1,
     "react/destructuring-assignment": 0,          // Dec 2018: We should do this!  But right now we have 3990 warnings/errors if enabled.

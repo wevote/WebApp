@@ -1,23 +1,23 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import { Button } from "react-bootstrap";
-import BallotSideBar from "../../components/Navigation/BallotSideBar";
-import BallotStore from "../../stores/BallotStore";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import { historyPush } from "../../utils/cordovaUtils";
-import FollowToggle from "../../components/Widgets/FollowToggle";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import LoadingWheel from "../../components/LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationCard from "../../components/VoterGuide/OrganizationCard";
-import OrganizationStore from "../../stores/OrganizationStore";
-import OrganizationVoterGuideCard from "../../components/VoterGuide/OrganizationVoterGuideCard";
-import OrganizationVoterGuideTabs from "../../components/VoterGuide/OrganizationVoterGuideTabs";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { Button } from 'react-bootstrap';
+import BallotSideBar from '../../components/Navigation/BallotSideBar';
+import BallotStore from '../../stores/BallotStore';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import { historyPush } from '../../utils/cordovaUtils';
+import FollowToggle from '../../components/Widgets/FollowToggle';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import LoadingWheel from '../../components/LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
+import OrganizationStore from '../../stores/OrganizationStore';
+import OrganizationVoterGuideCard from '../../components/VoterGuide/OrganizationVoterGuideCard';
+import OrganizationVoterGuideTabs from '../../components/VoterGuide/OrganizationVoterGuideTabs';
+import VoterStore from '../../stores/VoterStore';
 
-const AUTO_FOLLOW = "af";
+const AUTO_FOLLOW = 'af';
 
 export default class OrganizationVoterGuide extends Component {
   static propTypes = {
@@ -29,9 +29,9 @@ export default class OrganizationVoterGuide extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      active_route: "",
+      active_route: '',
       ballotWithAllItemsByFilterType: [],
-      organizationWeVoteId: "",
+      organizationWeVoteId: '',
       organization: {},
       voter: {},
       autoFollowRedirectHappening: false,
@@ -63,7 +63,7 @@ export default class OrganizationVoterGuide extends Component {
       const currentPathName = this.props.location.pathname;
 
       // AUTO_FOLLOW is "af"
-      const currentPathNameWithoutAutoFollow = currentPathName.replace(`/${AUTO_FOLLOW}`, "");
+      const currentPathNameWithoutAutoFollow = currentPathName.replace(`/${AUTO_FOLLOW}`, '');
 
       // console.log("OrganizationVoterGuide, currentPathNameWithoutAutoFollow: ", currentPathNameWithoutAutoFollow);
       historyPush(currentPathNameWithoutAutoFollow);
@@ -115,7 +115,7 @@ export default class OrganizationVoterGuide extends Component {
       // positionListForOpinionMaker is called in js/components/VoterGuide/VoterGuidePositions
     }
     // console.log("OrganizationVoterGuide, componentWillReceiveProps, nextProps.active_route: ", nextProps.active_route);
-    if (nextProps.active_route && nextProps.active_route !== "") {
+    if (nextProps.active_route && nextProps.active_route !== '') {
       this.setState({
         active_route: nextProps.active_route,
       });
@@ -176,7 +176,7 @@ export default class OrganizationVoterGuide extends Component {
 
     if (!organizationId) {
       const floatRight = {
-        float: "right",
+        float: 'right',
       };
       return (
         <div className="card">
@@ -197,7 +197,7 @@ export default class OrganizationVoterGuide extends Component {
       <div>
         {/* Header Banner Spacing for Desktop */}
         <div className="col-md-12 d-none d-sm-block d-print-none">
-          { this.state.organization.organization_banner_url !== "" ? (
+          { this.state.organization.organization_banner_url !== '' ? (
             <div className="organization-banner-image-div d-print-none">
               <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
             </div>
@@ -207,7 +207,7 @@ export default class OrganizationVoterGuide extends Component {
         </div>
         {/* Header Banner Spacing for Mobile */}
         <div className="d-block d-sm-none d-print-none">
-          { this.state.organization.organization_banner_url !== "" ? (
+          { this.state.organization.organization_banner_url !== '' ? (
             <div className="organization-banner-image-div d-print-none">
               <img className="organization-banner-image-img" src={this.state.organization.organization_banner_url} />
             </div>
@@ -242,7 +242,7 @@ export default class OrganizationVoterGuide extends Component {
                 </div>
                 <br />
               </div>
-              {this.state.active_route === "ballot" || this.state.active_route === "" ? (
+              {this.state.active_route === 'ballot' || this.state.active_route === '' ? (
                 <BallotSideBar
                   displayTitle
                   displaySubtitles

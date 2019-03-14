@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Helmet from "react-helmet";
-import request from "superagent";
-import webAppConfig from "../../config";
-import { renderLog } from "../../utils/logging";
-import AddressBox from "../../components/AddressBox";
-import { numberWithCommas } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
+import request from 'superagent';
+import webAppConfig from '../../config';
+import { renderLog } from '../../utils/logging';
+import AddressBox from '../../components/AddressBox';
+import { numberWithCommas } from '../../utils/textFormat';
 
 export default class Intro extends Component {
   static propTypes = {
@@ -85,21 +85,21 @@ export default class Intro extends Component {
             <li className="list-group-item">
               {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
               <span className="glyphicon glyphicon-small glyphicon-ok-sign" />
-              {" "}
+              {' '}
               &nbsp;Neutral and private
             </li>
             <li className="list-group-item">
               {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
               <span className="glyphicon glyphicon-small glyphicon-ok-sign" />
               {numberWithCommas(voterCount)}
-              {" "}
+              {' '}
               voters
             </li>
             <li className="list-group-item">
               {/* October 2018:  The bootstrap glyphicon has been eliminated in bootstrap 4, this line won't work */}
               <span className="glyphicon glyphicon-small glyphicon-ok-sign" />
               {numberWithCommas(orgCount)}
-              {" "}
+              {' '}
               not-for-profit organizations
             </li>
             <li className="list-group-item">

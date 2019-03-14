@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import { Link } from "react-router";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import ImageHandler from "../../components/ImageHandler";
-import { renderLog } from "../../utils/logging";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import VoterStore from "../../stores/VoterStore";
-import { weVoteBoard, weVoteStaff } from "./people";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import { Link } from 'react-router';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import ImageHandler from '../../components/ImageHandler';
+import { renderLog } from '../../utils/logging';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import VoterStore from '../../stores/VoterStore';
+import { weVoteBoard, weVoteStaff } from './people';
 
 export default class Team extends Component {
   static getProps () {
@@ -74,7 +74,7 @@ export default class Team extends Component {
             <Link to="/more/credits">
               We are thankful for our volunteers, our board of directors, and the organizations
             </Link>
-            {" "}
+            {' '}
             that are critical to our work.
             <br />
             <br />

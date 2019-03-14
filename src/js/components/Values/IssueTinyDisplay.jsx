@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { OverlayTrigger, Popover } from "react-bootstrap";
-import { isCordova } from "../../utils/cordovaUtils";
-import FollowToggle from "../Widgets/FollowToggle";
-import ImageHandler from "../ImageHandler";
-import IssueCard from "./IssueCard";
-import IssueImageDisplay from "./IssueImageDisplay";
-import IssueStore from "../../stores/IssueStore";
-import ReadMore from "../Widgets/ReadMore";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import { removeTwitterNameFromDescription } from "../../utils/textFormat";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { isCordova } from '../../utils/cordovaUtils';
+import FollowToggle from '../Widgets/FollowToggle';
+import ImageHandler from '../ImageHandler';
+import IssueCard from './IssueCard';
+import IssueImageDisplay from './IssueImageDisplay';
+import IssueStore from '../../stores/IssueStore';
+import ReadMore from '../Widgets/ReadMore';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import { removeTwitterNameFromDescription } from '../../utils/textFormat';
+import { renderLog } from '../../utils/logging';
 
 export default class IssueTinyDisplay extends Component {
   static propTypes = {
@@ -29,7 +29,7 @@ export default class IssueTinyDisplay extends Component {
     super(props);
     this.popover_state = {};
     this.state = {
-      issueWeVoteId: "",
+      issueWeVoteId: '',
     };
   }
 
@@ -129,12 +129,12 @@ export default class IssueTinyDisplay extends Component {
       const organizationPhotoURLTiny = oneVoterGuide.voter_guide_image_url_tiny;
 
       const numOfLines = 2;
-      const twitterDescription = oneVoterGuide.twitter_description ? oneVoterGuide.twitter_description : "";
+      const twitterDescription = oneVoterGuide.twitter_description ? oneVoterGuide.twitter_description : '';
       // If the organizationName is in the twitter_description, remove it
       const twitterDescriptionMinusName = removeTwitterNameFromDescription(organizationName, twitterDescription);
 
       // If the displayName is in the twitterDescription, remove it from twitterDescription
-      const organizationDisplayName = organizationName || "";
+      const organizationDisplayName = organizationName || '';
       return (
         <div key={organizationWeVoteId} className="card-main__media-object u-stack--md">
           <div className="card-main__media-object-anchor">
@@ -177,7 +177,7 @@ export default class IssueTinyDisplay extends Component {
         title={(
           <span onClick={() => this.onTriggerLeave(this.props.issueWeVoteId)}>
             &nbsp;
-            <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" />
+            <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && 'u-mobile-x'} `} aria-hidden="true" />
           </span>
         )}
       >
@@ -205,13 +205,13 @@ export default class IssueTinyDisplay extends Component {
       <OverlayTrigger
         ref={`issue-overlay-${this.props.issueWeVoteId}`}
         rootClose
-        placement={this.props.popoverBottom ? "bottom" : "top"}
+        placement={this.props.popoverBottom ? 'bottom' : 'top'}
         trigger="click"
         overlay={issuePopover}
       >
         <span className="">
           <IssueImageDisplay
-            issue={this.props.issue}
+            issueWeVoteId={this.props.issueWeVoteId}
             issueImageSize={this.props.issueImageSize}
             showPlaceholderImage
             isVoterFollowingThisIssue={IssueStore.isVoterFollowingThisIssue(this.props.issueWeVoteId)}

@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import IssueActions from "../../actions/IssueActions";
-import IssueFollowToggleSquare from "../Issues/IssueFollowToggleSquare";
-import IssueStore from "../../stores/IssueStore";
-import { renderLog } from "../../utils/logging";
+import IssueActions from '../../actions/IssueActions';
+import IssueFollowToggleSquare from '../Values/IssueFollowToggleSquare';
+import IssueStore from '../../stores/IssueStore';
+import { renderLog } from '../../utils/logging';
 
 const NEXT_BUTTON_TEXT = 'Next';
 const SKIP_BUTTON_TEXT = 'Skip';
@@ -182,7 +182,7 @@ export default class BallotIntroFollowIssues extends Component {
         <div className="intro-modal__top-description">
           { remaining ?
             `Pick ${remaining} or more issues!` :
-            "Feel free to pick as many issues as you would like."
+            'Feel free to pick as many issues as you would like.'
         }
         </div>
         <div className="intro-modal-vertical-scroll-contain">

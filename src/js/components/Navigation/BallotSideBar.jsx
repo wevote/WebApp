@@ -1,29 +1,30 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-
-import BallotStore from "../../stores/BallotStore";
-import BallotSideBarLink from "./BallotSideBarLink";
-import { renderLog } from "../../utils/logging";
-import { arrayContains } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import List from '@material-ui/core/List';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import styled from 'styled-components';
+import BallotStore from '../../stores/BallotStore';
+import BallotSideBarLink from './BallotSideBarLink';
+import { renderLog } from '../../utils/logging';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-restricted-syntax: 1 */
-
-export default class BallotSideBar extends Component {
+class BallotSideBar extends Component {
   static propTypes = {
-    ballot: PropTypes.array, // Check to see if any calls to this component pass in "ballot"
     ballotWithAllItemsByFilterType: PropTypes.array,
     ballotItemLinkHasBeenClicked: PropTypes.func,
     displayTitle: PropTypes.bool,
     displaySubtitles: PropTypes.bool,
     onClick: PropTypes.func,
     pathname: PropTypes.string,
-    rawUrlVariablesString: PropTypes.string,
+    classes: PropTypes.object,
   };
 
   static defaultProps = {
-    pathname: "/ballot",
+    pathname: '/ballot',
   };
 
   constructor (props) {
@@ -119,8 +120,8 @@ export default class BallotSideBar extends Component {
 
   filteredBallotToRender (ballot, ballotWithAllItemIdsByFilterType, type, key) {
     const filteredBallot = ballot.filter((item) => {
-      if (item.kind_of_ballot_item === "MEASURE") {
-        return type === "Measure";
+      if (item.kind_of_ballot_item === 'MEASURE') {
+        return type === 'Measure';
       } else {
         return type === item.race_office_level;
       }
@@ -132,20 +133,19 @@ export default class BallotSideBar extends Component {
 
     const filteredBallotListItems = filteredBallot.map((item) => {
       if (
-        item.kind_of_ballot_item === "OFFICE" ||
-        item.kind_of_ballot_item === "MEASURE"
+        item.kind_of_ballot_item === 'OFFICE' ||
+        item.kind_of_ballot_item === 'MEASURE'
       ) {
         return (
-          <li className="BallotItem__summary__list-item" key={`ballot-side-bar-${item.we_vote_id}`}>
-            <BallotSideBarLink
-              url={this.renderUrl(item.we_vote_id, ballotWithAllItemIdsByFilterType)}
-              ballotItemLinkHasBeenClicked={this.props.ballotItemLinkHasBeenClicked}
-              label={item.ballot_item_display_name}
-              subtitle={item.measure_subtitle}
-              displaySubtitles={this.props.displaySubtitles}
-              onClick={this.handleClick}
-            />
-          </li>
+          <BallotSideBarLink
+            url={this.renderUrl(item.we_vote_id, ballotWithAllItemIdsByFilterType)}
+            ballotItemLinkHasBeenClicked={this.props.ballotItemLinkHasBeenClicked}
+            label={item.ballot_item_display_name}
+            subtitle={item.measure_subtitle}
+            key={`ballot-side-bar-${item.we_vote_id}`}
+            displaySubtitles={this.props.displaySubtitles}
+            onClick={this.handleClick}
+          />
         );
       } else {
         return <span />;
@@ -155,7 +155,7 @@ export default class BallotSideBar extends Component {
     return (
       <div className="BallotItem__summary__group" key={key}>
         <div className="BallotItem__summary__group-title">
-          {type === "Measure" ? "Ballot Measures" : type}
+          {type === 'Measure' ? 'Ballot Measures' : type}
         </div>
         <ul className="BallotItem__summary__list">
           {filteredBallotListItems}
@@ -164,15 +164,9 @@ export default class BallotSideBar extends Component {
     );
   }
 
-  renderUrl (ballotItemWeVoteId, ballotWithAllItemIdsByFilterType) {
-    const { rawUrlVariablesString } = this.props;
-    if (rawUrlVariablesString && ballotWithAllItemIdsByFilterType && ballotWithAllItemIdsByFilterType.length > 0) {
-      if (arrayContains(ballotItemWeVoteId, ballotWithAllItemIdsByFilterType)) {
-        return `${this.props.pathname}${rawUrlVariablesString}#${ballotItemWeVoteId}`;
-      }
-    }
-
-    return `${this.props.pathname}#${ballotItemWeVoteId}`;
+  renderUrl (ballotItemWeVoteId) {
+    if (ballotItemWeVoteId.indexOf('meas') > -1) return `/measure/${ballotItemWeVoteId}/b/btdb/`;
+    return `/office/${ballotItemWeVoteId}/b/btdb/`;
   }
 
   render () {
@@ -180,10 +174,10 @@ export default class BallotSideBar extends Component {
     renderLog(__filename);
 
     // let turnedOnNPSInput = false;
-    const BALLOT_ITEM_FILTER_TYPES = ["Federal", "State", "Measure", "Local"];
+    const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];
 
     const { ballot } = this.state;
-    const { ballotWithAllItemsByFilterType } = this.props;
+    const { classes, ballotWithAllItemsByFilterType } = this.props;
     if (ballot && ballot.length) {
       const ballotWithAllItemIdsByFilterType = [];
       ballotWithAllItemsByFilterType.forEach((itemByFilterType) => {
@@ -191,26 +185,34 @@ export default class BallotSideBar extends Component {
       });
 
       return (
-        <div className="container-fluid card">
+        <div className="card">
           { this.props.displayTitle ? (
-            <div className="BallotItem__summary__title">
-              Summary of Ballot Items
-            </div>
+            <Paper>
+              <Typography variant="h4" classes={{ root: classes.typography }}>Summary of Ballot Items</Typography>
+            </Paper>
           ) :
             null
           }
-          { BALLOT_ITEM_FILTER_TYPES.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key))}
+          <List>
+            { BALLOT_ITEM_FILTER_TYPES.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key))}
+          </List>
           <div className="h4 text-left" />
-          <span className="terms-and-privacy">
-            <br />
-            <Link to="/more/terms">
-              Terms of Service
-            </Link>
-            &nbsp;&nbsp;&nbsp;
-            <Link to="/more/privacy">
-              Privacy Policy
-            </Link>
-          </span>
+          <SidebarFooter>
+            <span className="terms-and-privacy">
+              <Link to="/more/terms">
+                <span className="u-no-break">Terms of Service</span>
+              </Link>
+              <span style={{ paddingLeft: 20 }} />
+              <Link to="/more/privacy">
+                <span className="u-no-break">Privacy Policy</span>
+              </Link>
+            </span>
+          </SidebarFooter>
+          <SidebarFooter>
+            <span className="terms-and-privacy">
+              <Link to="/more/attributions">Attributions</Link>
+            </span>
+          </SidebarFooter>
         </div>
       );
     } else {
@@ -218,3 +220,22 @@ export default class BallotSideBar extends Component {
     }
   }
 }
+
+const styles = theme => ({
+  typography: {
+    padding: '16px 0',
+    textAlign: 'center',
+    color: '#555',
+    fontSize: 18,
+    [theme.breakpoints.down('lg')]: {
+      fontSize: 16,
+      padding: '12px 0',
+    },
+  },
+});
+
+const SidebarFooter = styled.div`
+  margin-left: 8px;
+`;
+
+export default withStyles(styles)(BallotSideBar);

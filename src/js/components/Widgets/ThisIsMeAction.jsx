@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import { renderLog } from "../../utils/logging";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { renderLog } from '../../utils/logging';
+import VoterStore from '../../stores/VoterStore';
 
 export default class ThisIsMeAction extends Component {
   static propTypes = {
@@ -46,20 +46,20 @@ export default class ThisIsMeAction extends Component {
       signedInWithThisTwitterAccount = voter.twitter_screen_name.toLowerCase() === twitterHandleBeingViewed.toLowerCase();
     }
     let thisIsMeActionText;
-    if (kindOfOwner === "ORGANIZATION") {
+    if (kindOfOwner === 'ORGANIZATION') {
       if (nameBeingViewed) {
         thisIsMeActionText = `I represent ${nameBeingViewed}`;
       } else {
-        thisIsMeActionText = "I represent this organization";
+        thisIsMeActionText = 'I represent this organization';
       }
-    } else if (kindOfOwner === "POLITICIAN") {
+    } else if (kindOfOwner === 'POLITICIAN') {
       if (nameBeingViewed) {
         thisIsMeActionText = `I represent ${nameBeingViewed}`;
       } else {
-        thisIsMeActionText = "I represent this politician";
+        thisIsMeActionText = 'I represent this politician';
       }
     } else {
-      thisIsMeActionText = "This is me";
+      thisIsMeActionText = 'This is me';
     }
 
     return (

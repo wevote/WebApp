@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
-import { deviceTypeString } from "../../utils/cordovaUtils";
-import FriendActions from "../../actions/FriendActions";
-import FriendStore from "../../stores/FriendStore";
-import LoadingWheel from "../LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import VoterStore from "../../stores/VoterStore";
-import validateEmail from "../../utils/email-functions";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
+import { deviceTypeString } from '../../utils/cordovaUtils';
+import FriendActions from '../../actions/FriendActions';
+import FriendStore from '../../stores/FriendStore';
+import LoadingWheel from '../LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import VoterStore from '../../stores/VoterStore';
+import validateEmail from '../../utils/email-functions';
 
-const webAppConfig = require("../../config");
+const webAppConfig = require('../../config');
 
 export default class EmailBallotToFriendsModal extends Component {
   static propTypes = {
@@ -22,7 +22,7 @@ export default class EmailBallotToFriendsModal extends Component {
 
   constructor (props) {
     super(props);
-    let ballotLinkString = "";
+    let ballotLinkString = '';
     const { ballot_link: ballotLink, success_message: successMessage } = this.props;
     if (ballotLink) {
       ballotLinkString = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + ballotLink;
@@ -30,28 +30,28 @@ export default class EmailBallotToFriendsModal extends Component {
       ballotLinkString = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/ballot`;
     }
     this.state = {
-      emailBallotMessage: "This is a ballot on We Vote for the upcoming election.",
+      emailBallotMessage: 'This is a ballot on We Vote for the upcoming election.',
       voter: VoterStore.getVoter(),
       loading: false,
       row2Open: false,
       row3Open: false,
       row4Open: false,
       row5Open: false,
-      friend1FirstName: "",
-      friend1LastName: "",
-      friend1EmailAddress: "",
-      friend2FirstName: "",
-      friend2LastName: "",
-      friend2EmailAddress: "",
-      friend3FirstName: "",
-      friend3LastName: "",
-      friend3EmailAddress: "",
-      friend4FirstName: "",
-      friend4LastName: "",
-      friend4EmailAddress: "",
-      friend5FirstName: "",
-      friend5LastName: "",
-      friend5EmailAddress: "",
+      friend1FirstName: '',
+      friend1LastName: '',
+      friend1EmailAddress: '',
+      friend2FirstName: '',
+      friend2LastName: '',
+      friend2EmailAddress: '',
+      friend3FirstName: '',
+      friend3LastName: '',
+      friend3EmailAddress: '',
+      friend4FirstName: '',
+      friend4LastName: '',
+      friend4EmailAddress: '',
+      friend5FirstName: '',
+      friend5LastName: '',
+      friend5EmailAddress: '',
       emailAddressArray: [],
       firstNameArray: [],
       lastNameArray: [],
@@ -77,7 +77,7 @@ export default class EmailBallotToFriendsModal extends Component {
 
   componentWillUnmount () {
     const { ballotEmailWasSent } = this.props;
-    ballotEmailWasSent(undefined, "", false, false);
+    ballotEmailWasSent(undefined, '', false, false);
     this.friendStoreListener.remove();
     this.voterStoreListener.remove();
   }
@@ -93,7 +93,7 @@ export default class EmailBallotToFriendsModal extends Component {
   onFriendStoreChange () {
     const emailBallotDataStep = FriendStore.switchToEmailBallotDataStep();
     // console.log("EmailBallotToFriendsModal, onFriendStoreChange, email_ballot_data_step:", email_ballot_data_step);
-    if (emailBallotDataStep === "on_collect_email_step") {
+    if (emailBallotDataStep === 'on_collect_email_step') {
       // Switch to "onCollectEmailStep"
       this.setState({
         loading: false,
@@ -137,7 +137,7 @@ export default class EmailBallotToFriendsModal extends Component {
   ballotEmailSendStepsManager = (event) => {
     // This function is called when the form is submitted
     // console.log("Entering function ballotEmailSendStepsManager");
-    let errorMessage = "";
+    let errorMessage = '';
     const { onEnterEmailAddressesStep } = this.state;
     if (onEnterEmailAddressesStep) {
       // Validate friends' email addresses
@@ -155,7 +155,7 @@ export default class EmailBallotToFriendsModal extends Component {
       if (this.emailAddressArray.length === 0) {
         // console.log("ballotEmailSendStepsManager: this.state.email_add is ", this.state.emailAddressArray);
         emailAddressesError = true;
-        errorMessage += "Please enter at least one valid email address.";
+        errorMessage += 'Please enter at least one valid email address.';
       } else {
         // TODO: Steve remove the error suppression on the next line 12/1/18, a temporary hack
         this.emailAddressArray.map((emailAddress) => { // eslint-disable-line array-callback-return
@@ -195,10 +195,10 @@ export default class EmailBallotToFriendsModal extends Component {
       let senderEmailAddressError = false;
       if (!this.state.senderEmailAddress) {
         senderEmailAddressError = true;
-        errorMessage += "Please enter a valid email address for yourself. ";
+        errorMessage += 'Please enter a valid email address for yourself. ';
       } else if (!this.senderEmailAddressVerified()) {
         senderEmailAddressError = true;
-        errorMessage += "This is not a valid email address. ";
+        errorMessage += 'This is not a valid email address. ';
       }
 
       if (senderEmailAddressError) {
@@ -235,7 +235,7 @@ export default class EmailBallotToFriendsModal extends Component {
   ballotEmailSend (e) {
     e.preventDefault();
     let { senderEmailAddress } = this.state;
-    let successMessage = "";
+    let successMessage = '';
     if (this.props.senderEmailAddressFromEmailBallotModal &&
         this.props.senderEmailAddressFromEmailBallotModal !== senderEmailAddress) {
       senderEmailAddress = this.props.senderEmailAddressFromEmailBallotModal;
@@ -244,14 +244,14 @@ export default class EmailBallotToFriendsModal extends Component {
     if (!this.hasValidEmail() || this.props.verification_email_sent) {
       successMessage = `Success! Verification email has been sent to ${senderEmailAddress
       }. Once you verify your email, this ballot will be automatically sent to your friend's email address(es) ${
-        this.sentEmailAddressArray.join(", ")}.`;
+        this.sentEmailAddressArray.join(', ')}.`;
     } else {
-      successMessage = `Success! This ballot has been sent to the email address(es) ${this.sentEmailAddressArray.join(", ")
+      successMessage = `Success! This ballot has been sent to the email address(es) ${this.sentEmailAddressArray.join(', ')
       }. Would you like to send this ballot to anyone else?`;
     }
 
     FriendActions.emailBallotData(this.emailAddressArray, this.firstNameArray,
-      this.lastNameArray, "", this.state.emailBallotMessage, this.state.ballot_link,
+      this.lastNameArray, '', this.state.emailBallotMessage, this.state.ballot_link,
       senderEmailAddress, this.props.verification_email_sent, deviceTypeString());
 
     // After calling the API, reset the form
@@ -261,26 +261,26 @@ export default class EmailBallotToFriendsModal extends Component {
       row3Open: false,
       row4Open: false,
       row5Open: false,
-      friend1FirstName: "",
-      friend1LastName: "",
-      friend1EmailAddress: "",
-      friend2FirstName: "",
-      friend2LastName: "",
-      friend2EmailAddress: "",
-      friend3FirstName: "",
-      friend3LastName: "",
-      friend3EmailAddress: "",
-      friend4FirstName: "",
-      friend4LastName: "",
-      friend4EmailAddress: "",
-      friend5FirstName: "",
-      friend5LastName: "",
-      friend5EmailAddress: "",
+      friend1FirstName: '',
+      friend1LastName: '',
+      friend1EmailAddress: '',
+      friend2FirstName: '',
+      friend2LastName: '',
+      friend2EmailAddress: '',
+      friend3FirstName: '',
+      friend3LastName: '',
+      friend3EmailAddress: '',
+      friend4FirstName: '',
+      friend4LastName: '',
+      friend4EmailAddress: '',
+      friend5FirstName: '',
+      friend5LastName: '',
+      friend5EmailAddress: '',
       emailAddressArray: [],
       firstNameArray: [],
       lastNameArray: [],
       emailAddressesError: false,
-      senderEmailAddress: "",
+      senderEmailAddress: '',
       senderEmailAddressError: false,
       onEnterEmailAddressesStep: true,
       onCollectEmailStep: false,
@@ -388,30 +388,30 @@ export default class EmailBallotToFriendsModal extends Component {
   }
 
   closeRow2 () {
-    this.setState({ friend2EmailAddress: "" });
-    this.setState({ friend2FirstName: "" });
-    this.setState({ friend2LastName: "" });
+    this.setState({ friend2EmailAddress: '' });
+    this.setState({ friend2FirstName: '' });
+    this.setState({ friend2LastName: '' });
     this.setState({ row2Open: false });
   }
 
   closeRow3 () {
-    this.setState({ friend3EmailAddress: "" });
-    this.setState({ friend3FirstName: "" });
-    this.setState({ friend3LastName: "" });
+    this.setState({ friend3EmailAddress: '' });
+    this.setState({ friend3FirstName: '' });
+    this.setState({ friend3LastName: '' });
     this.setState({ row3Open: false });
   }
 
   closeRow4 () {
-    this.setState({ friend4EmailAddress: "" });
-    this.setState({ friend4FirstName: "" });
-    this.setState({ friend4LastName: "" });
+    this.setState({ friend4EmailAddress: '' });
+    this.setState({ friend4FirstName: '' });
+    this.setState({ friend4LastName: '' });
     this.setState({ row4Open: false });
   }
 
   closeRow5 () {
-    this.setState({ friend5EmailAddress: "" });
-    this.setState({ friend5FirstName: "" });
-    this.setState({ friend5LastName: "" });
+    this.setState({ friend5EmailAddress: '' });
+    this.setState({ friend5FirstName: '' });
+    this.setState({ friend5LastName: '' });
     this.setState({ row5Open: false });
   }
 
@@ -427,8 +427,8 @@ export default class EmailBallotToFriendsModal extends Component {
       return LoadingWheel;
     }
 
-    const floatRight = { float: "right" };
-    const textGray = { color: "gray" };
+    const floatRight = { float: 'right' };
+    const textGray = { color: 'gray' };
     const {
       row2Open, row3Open, row4Open, row5Open,
       friend1FirstName, friend1LastName, friend1EmailAddress,
@@ -812,6 +812,7 @@ export default class EmailBallotToFriendsModal extends Component {
             </div>
           </div>
         </div>
-      </div>);
+      </div>
+    );
   }
 }

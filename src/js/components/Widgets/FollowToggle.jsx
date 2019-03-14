@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
-import { historyPush } from "../../utils/cordovaUtils";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
-import { showToastError, showToastSuccess } from "../../utils/showToast";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
+import { historyPush } from '../../utils/cordovaUtils';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import OrganizationTinyDisplay from '../VoterGuide/OrganizationTinyDisplay';
+import { showToastError, showToastSuccess } from '../../utils/showToast';
+import VoterStore from '../../stores/VoterStore';
 
 export default class FollowToggle extends Component {
   static propTypes = {
@@ -30,7 +30,7 @@ export default class FollowToggle extends Component {
       isFollowing: false,
       organization: {},
       voter: {
-        we_vote_id: "",
+        we_vote_id: '',
       },
     };
 
@@ -109,12 +109,12 @@ export default class FollowToggle extends Component {
       }
     }
 
-    let toastMessage = "You've stopped listening to this organization's opinions.";
+    let toastMessage = "You've stopped following this organization's opinions.";
 
     // We use this.state.organization instead of this.props.organization_for_display on purpose - there is some weird behavior to be debugged
     if (this.state.organization && this.state.organization.organization_name) {
       const organizationName = this.state.organization.organization_name;
-      toastMessage = `You've stopped listening to ${organizationName}'s opinions!`;
+      toastMessage = `You've stopped following ${organizationName}'s opinions!`;
     }
 
     stopFollowingFunc();
@@ -129,12 +129,12 @@ export default class FollowToggle extends Component {
       }
     }
 
-    let toastMessage = "Now listening to this organization's opinions!";
+    let toastMessage = "Now following this organization's opinions!";
 
     // We use this.state.organization instead of this.props.organization_for_display on purpose - there is some weird behavior to be debugged
     if (this.state.organization && this.state.organization.organization_name) {
       const organizationName = this.state.organization.organization_name;
-      toastMessage = `Now listening to ${organizationName}'s opinions!`;
+      toastMessage = `Now following ${organizationName}'s opinions!`;
     }
 
     followFunc();
@@ -181,7 +181,7 @@ export default class FollowToggle extends Component {
               size="sm"
               onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
             >
-              Listening
+              Following
             </Button>
           )}
       </span>
@@ -192,7 +192,7 @@ export default class FollowToggle extends Component {
           size="sm"
           onClick={() => this.followInstantly(followFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
         >
-          Listen
+          Follow
         </Button>
       </span>
     );

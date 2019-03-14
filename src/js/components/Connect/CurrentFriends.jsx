@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import { OverlayTrigger, Popover } from "react-bootstrap";
-import CurrentFriendTinyDisplay from "./CurrentFriendTinyDisplay";
-import FriendDisplayForList from "../Friends/FriendDisplayForList";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
+import CurrentFriendTinyDisplay from './CurrentFriendTinyDisplay';
+import FriendDisplayForList from '../Friends/FriendDisplayForList';
+import { renderLog } from '../../utils/logging';
 
 export default class CurrentFriends extends Component {
   static propTypes = {
@@ -83,14 +83,14 @@ export default class CurrentFriends extends Component {
           return (
             <span key={oneFriend.voter_we_vote_id}>
               <Link to="/friends">
-                {" "}
+                {' '}
                 +
                 {friendsNotShownCount}
               </Link>
             </span>
           );
         } else {
-          return "";
+          return '';
         }
       } else {
         // Removed bsPrefix="card-popover"
@@ -112,7 +112,7 @@ export default class CurrentFriends extends Component {
           </Popover>
         );
 
-        const placement = "bottom";
+        const placement = 'bottom';
         return (
           <OverlayTrigger
             key={`trigger-${friendWeVoteId}`}

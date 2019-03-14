@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import { Link } from "react-router";
-import Helmet from "react-helmet";
-import AddFriendsByEmail from "../components/Friends/AddFriendsByEmail";
-import CurrentFriends from "../components/Connect/CurrentFriends";
-import VoterGuideStore from "../stores/VoterGuideStore";
-import FriendActions from "../actions/FriendActions";
-import FriendStore from "../stores/FriendStore";
-import FacebookActions from "../actions/FacebookActions";
-import FacebookStore from "../stores/FacebookStore";
-import { renderLog } from "../utils/logging";
-import OrganizationActions from "../actions/OrganizationActions";
-import OrganizationsFollowedOnTwitter from "../components/Connect/OrganizationsFollowedOnTwitter";
-import OrganizationStore from "../stores/OrganizationStore";
-import AddFacebookFriends from "../components/Connect/AddFacebookFriends";
-import ItemTinyOpinionsToFollow from "../components/VoterGuide/ItemTinyOpinionsToFollow";
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import Helmet from 'react-helmet';
+import AddFriendsByEmail from '../components/Friends/AddFriendsByEmail';
+import CurrentFriends from '../components/Connect/CurrentFriends';
+import VoterGuideStore from '../stores/VoterGuideStore';
+import FriendActions from '../actions/FriendActions';
+import FriendStore from '../stores/FriendStore';
+import FacebookActions from '../actions/FacebookActions';
+import FacebookStore from '../stores/FacebookStore';
+import { renderLog } from '../utils/logging';
+import OrganizationActions from '../actions/OrganizationActions';
+import OrganizationsFollowedOnTwitter from '../components/Connect/OrganizationsFollowedOnTwitter';
+import OrganizationStore from '../stores/OrganizationStore';
+import AddFacebookFriends from '../components/Connect/AddFacebookFriends';
+import ItemTinyOpinionsToFollow from '../components/VoterGuide/ItemTinyOpinionsToFollow';
 
 export default class Connect extends Component {
   static propTypes = {
@@ -96,15 +96,15 @@ export default class Connect extends Component {
   }
 
   getCurrentRoute () {
-    const currentRoute = "/more/connect";
+    const currentRoute = '/more/connect';
     return currentRoute;
   }
 
   getFollowingType () {
     switch (this.getCurrentRoute()) {
-      case "/more/connect":
+      case '/more/connect':
       default:
-        return "YOUR_FRIENDS";
+        return 'YOUR_FRIENDS';
     }
   }
 
@@ -123,8 +123,8 @@ export default class Connect extends Component {
         { this.state.voterGuidesToFollowAll && this.state.voterGuidesToFollowAll.length ? (
           <div className="container-fluid well u-stack--md u-inset--md">
             <Link className="u-cursor--pointer u-no-underline" to="/opinions">
-              <h4 className="text-left">Organizations to Listen To</h4>
-              <p>Listen to organizations to see what they recommend</p>
+              <h4 className="text-left">Organizations to Follow</h4>
+              <p>Follow organizations to see what they recommend</p>
             </Link>
             <div className="card-child__list-group">
               <ItemTinyOpinionsToFollow
@@ -157,7 +157,7 @@ export default class Connect extends Component {
                 organizationsFollowedOnTwitter={this.state.organizationsFollowedOnTwitterList}
                 maximumOrganizationDisplay={this.state.maximumNumberOfOrganizationsToDisplay}
               />
-              <Link className="pull-right" to="/opinions_followed">See all organizations you listen to </Link>
+              <Link className="pull-right" to="/opinions_followed">See all organizations you follow </Link>
             </div>
           </div>
         ) : null

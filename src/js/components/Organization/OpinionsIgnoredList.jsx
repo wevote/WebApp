@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
-import FollowToggle from "../Widgets/FollowToggle";
-import VoterGuideDisplayForList from "../VoterGuide/VoterGuideDisplayForList";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import FollowToggle from '../Widgets/FollowToggle';
+import VoterGuideDisplayForList from '../VoterGuide/VoterGuideDisplayForList';
+import { renderLog } from '../../utils/logging';
 
 // NOTE FROM DALE: When OpinionsIgnoredList is refactored, this should be refactored to display Organizations instead of Voter Guides
 export default class OpinionsIgnoredList extends Component {

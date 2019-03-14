@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import ImageHandler from "../ImageHandler";
-import { removeTwitterNameFromDescription } from "../../utils/textFormat";
-import PositionRatingSnippet from "../Widgets/PositionRatingSnippet";
-import PositionInformationOnlySnippet from "../Widgets/PositionInformationOnlySnippet";
-import PositionSupportOpposeSnippet from "../Widgets/PositionSupportOpposeSnippet";
-import ReadMore from "../Widgets/ReadMore";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import ImageHandler from '../ImageHandler';
+import { removeTwitterNameFromDescription } from '../../utils/textFormat';
+import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
+import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
+import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
+import ReadMore from '../Widgets/ReadMore';
+import { renderLog } from '../../utils/logging';
 
 // OrganizationDisplayForList is used to display Organizations (as opposed to Voter Guides)
 export default class OrganizationDisplayForList extends Component {
@@ -51,15 +51,15 @@ export default class OrganizationDisplayForList extends Component {
       return null;
     }
     const numberOfLines = 2;
-    const organizationName = this.props.organization_name ? this.props.organization_name : "";
-    const twitterDescription = this.props.twitter_description ? this.props.twitter_description : "";
+    const organizationName = this.props.organization_name ? this.props.organization_name : '';
+    const twitterDescription = this.props.twitter_description ? this.props.twitter_description : '';
     // If the organizationName is in the twitter_description, remove it
     const twitterDescriptionMinusName = removeTwitterNameFromDescription(organizationName, twitterDescription);
 
     // TwitterHandle-based link
     const voterGuideLink = organizationTwitterHandle ? `/${organizationTwitterHandle}` : `/voterguide/${organizationWeVoteId}`;
 
-    let positionDescription = "";
+    let positionDescription = '';
     const isOnBallotItemPage = true;
     if (position.vote_smart_rating) {
       positionDescription =

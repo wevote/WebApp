@@ -1,5 +1,5 @@
-import { ReduceStore } from "flux/utils";
-import Dispatcher from "../dispatcher/Dispatcher";
+import { ReduceStore } from 'flux/utils';
+import Dispatcher from '../dispatcher/Dispatcher';
 
 class AnalyticsStore extends ReduceStore {
   getInitialState () {
@@ -24,7 +24,7 @@ class AnalyticsStore extends ReduceStore {
     if (!action.res || !action.res.success) return state;
 
     switch (action.type) {
-      case "saveAnalyticsAction":
+      case 'saveAnalyticsAction':
         // if (action.res.action_constant === ACTION_VOTER_GUIDE_VISIT) {
         // }
 

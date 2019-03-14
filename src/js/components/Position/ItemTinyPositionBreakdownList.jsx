@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { OverlayTrigger, Popover } from "react-bootstrap";
-import { cordovaDot, isCordova } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
-import OrganizationCard from "../VoterGuide/OrganizationCard";
-import OrganizationTinyDisplay from "../VoterGuide/OrganizationTinyDisplay";
-import PositionsNotShownList from "../Ballot/PositionsNotShownList";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import OrganizationCard from '../VoterGuide/OrganizationCard';
+import OrganizationTinyDisplay from '../VoterGuide/OrganizationTinyDisplay';
+import PositionsNotShownList from '../Ballot/PositionsNotShownList';
+import VoterStore from '../../stores/VoterStore';
 
 // This component can be used to show either supporters, opposers, or groups with info only that the Voter
-// is already listening to
+// is already following
 export default class ItemTinyPositionBreakdownList extends Component {
   static propTypes = {
     // ballot_item_display_name: PropTypes.string.isRequired,  // We have removed this, so we can remove it from all places that call this component
@@ -29,7 +29,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
     super(props);
     this.state = {
       position_list: this.props.position_list,
-      ballot_item_we_vote_id: "",
+      ballot_item_we_vote_id: '',
     };
     this.show_popover = false;
   }
@@ -87,7 +87,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
     let oneOrganization;
     const organizationsToDisplay = [];
     let tempOrganizationsToDisplay = [];
-    let voterImageUrlTiny = "";
+    let voterImageUrlTiny = '';
     // Put the voter's icon first
     if (this.state.voter_support_oppose_properties && this.state.voter) {
       let showVoterPosition = false;
@@ -104,17 +104,17 @@ export default class ItemTinyPositionBreakdownList extends Component {
           voter_guide_display_name: this.state.voter.full_name,
         };
         let voterOrganizationTinyDisplay;
-        voterImageUrlTiny = this.state.voter.voter_photo_url_tiny ? this.state.voter.voter_photo_url_tiny : "";
+        voterImageUrlTiny = this.state.voter.voter_photo_url_tiny ? this.state.voter.voter_photo_url_tiny : '';
 
         let showSupport = false;
         let showOppose = false;
-        let supportOpposeClass = "";
+        let supportOpposeClass = '';
         if (this.state.voter_support_oppose_properties.is_support) {
           showSupport = true;
-          supportOpposeClass = "network-positions__show-support-underline ";
+          supportOpposeClass = 'network-positions__show-support-underline ';
         } else if (this.state.voter_support_oppose_properties.is_oppose) {
           showOppose = true;
-          supportOpposeClass = "network-positions__show-oppose-underline ";
+          supportOpposeClass = 'network-positions__show-oppose-underline ';
         }
 
         if (voterImageUrlTiny && voterImageUrlTiny.length) {
@@ -131,7 +131,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
         } else {
           voterOrganizationTinyDisplay = (
             <span key="anonIconKey" className={`${supportOpposeClass}position-rating__source with-popover`}>
-              <img src={cordovaDot("/img/global/svg-icons/avatar-generic.svg")} width="24" height="24" color="#c0c0c0" alt="generic voter" />
+              <img src={cordovaDot('/img/global/svg-icons/avatar-generic.svg')} width="24" height="24" color="#c0c0c0" alt="generic voter" />
               You
             </span>
           );
@@ -193,12 +193,12 @@ export default class ItemTinyPositionBreakdownList extends Component {
             const organizationPopover = (
               <Popover
                 id={`organization-popover-${orgsNotShownCount}`}
-                constraints={{ to: "scrollParent", pin: true }}
+                constraints={{ to: 'scrollParent', pin: true }}
                 placement="auto"
                 title={(
                   <span onClick={() => this.onTriggerLeave(orgsNotShownCount)}>
                     &nbsp;
-                    <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" />
+                    <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && 'u-mobile-x'} `} aria-hidden="true" />
                   </span>
                 )}
               >
@@ -223,10 +223,10 @@ export default class ItemTinyPositionBreakdownList extends Component {
                 trigger="click"
               >
                 <span className="position-rating__source with-popover">
-                  {" "}
+                  {' '}
                   +
                   {orgsNotShownCount}
-                  {" "}
+                  {' '}
                 </span>
               </OverlayTrigger>
             );
@@ -234,7 +234,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
             return null;
           }
         } else {
-          // If we made it to here, then we want to display the organizations that the voter is listening to in a popover
+          // If we made it to here, then we want to display the organizations that the voter is following in a popover
           // console.log("ItemTinyPositionBreakdownList, onePosition:", onePosition);
           oneOrganization = {
             organization_we_vote_id: onePosition.speaker_we_vote_id,
@@ -243,7 +243,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
             organization_photo_url_tiny: onePosition.speaker_image_url_https_tiny,
             organization_twitter_handle: onePosition.speaker_twitter_handle,
             // organization_website: onePosition.more_info_url,
-            twitter_description: "",
+            twitter_description: '',
             twitter_followers_count: 0,
           };
           const organizationWeVoteId = oneOrganization.organization_we_vote_id;
@@ -258,9 +258,9 @@ export default class ItemTinyPositionBreakdownList extends Component {
               title={(
                 <span onClick={() => this.onTriggerLeave(organizationWeVoteId)}>
                   &nbsp;
-                  {" "}
-                  <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && "u-mobile-x"} `} aria-hidden="true" />
-                  {" "}
+                  {' '}
+                  <span className={`fa fa-times pull-right u-cursor--pointer ${isCordova() && 'u-mobile-x'} `} aria-hidden="true" />
+                  {' '}
                 </span>
               )}
             >

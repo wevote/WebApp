@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
-import SettingsWidgetAccountType from "../../components/Settings/SettingsWidgetAccountType";
-import closeIcon from "../../../img/global/icons/x-close.png";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import SettingsWidgetAccountType from '../../components/Settings/SettingsWidgetAccountType';
+import closeIcon from '../../../img/global/icons/x-close.png';
 
 export default class VoterGuideOrganizationType extends Component {
   constructor (props) {
@@ -13,8 +13,8 @@ export default class VoterGuideOrganizationType extends Component {
   }
 
   componentWillMount () {
-    document.body.style.backgroundColor = "#A3A3A3";
-    document.body.className = "story-view";
+    document.body.style.backgroundColor = '#A3A3A3';
+    document.body.className = 'story-view';
   }
 
   componentDidMount () {
@@ -23,17 +23,17 @@ export default class VoterGuideOrganizationType extends Component {
 
   componentWillUnmount () {
     document.body.style.backgroundColor = null;
-    document.body.className = "";
+    document.body.className = '';
     this.timer = null;
   }
 
   goToBallotLink = () => {
-    const sampleBallotLink = "/ballot";
+    const sampleBallotLink = '/ballot';
     historyPush(sampleBallotLink);
   }
 
   goToOrganizationInfo = () => {
-    historyPush("/voterguideorginfo");
+    historyPush('/voterguideorginfo');
   }
 
 

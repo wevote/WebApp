@@ -1,17 +1,31 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Alert } from "react-bootstrap";
-import { isCordova } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import { withStyles } from '@material-ui/core/styles';
+import CloseIcon from '@material-ui/icons/Close';
+import { renderLog } from '../../utils/logging';
 
-export default class BrowserPushMessage extends Component {
+const styles = theme => ({
+  anchorOriginBottomCenter: {
+    bottom: 54,
+    [theme.breakpoints.up('md')]: {
+      bottom: 20,
+    },
+  },
+});
+
+class BrowserPushMessage extends Component {
   static propTypes = {
     incomingProps: PropTypes.object, // needs more specificity
+    classes: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+      open: true,
+    };
   }
 
   componentWillReceiveProps (nextProps) {
@@ -25,31 +39,50 @@ export default class BrowserPushMessage extends Component {
     }
   }
 
+  handleClose = () => this.setState({ open: false });
+
   render () {
     renderLog(__filename);
+    const { classes } = this.props;
     let { message, type } = this.state;
     const { name } = this.state;
 
-    if (name === "test") {
-      type = "danger";
-      message = "Test message";
+    if (name === 'test') {
+      type = 'danger';
+      message = 'Test message';
     }
 
     if (!type) {
-      type = "info";
+      type = 'info';
     }
 
     return (
-      <span>
-        {message ? (
-          <div className={isCordova() ? "ballot__cordova-shim" : ""}>
-            <Alert variant={type}>
-              {message}
-            </Alert>
-          </div>
-        ) :
-          null }
-      </span>
+      <Snackbar
+        classes={{ anchorOriginBottomCenter: classes.anchorOriginBottomCenter }}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={this.state.open && message}
+        autoHideDuration={5000}
+        onClose={this.handleClose}
+        ContentProps={{
+          'aria-describedby': 'message-id',
+        }}
+        message={<span id="message-id">{message}</span>}
+        action={[
+          <IconButton
+            key="close"
+            aria-label="Close"
+            color="inherit"
+            onClick={this.handleClose}
+          >
+            <CloseIcon />
+          </IconButton>,
+        ]}
+      />
     );
   }
 }
+
+export default withStyles(styles)(BrowserPushMessage);

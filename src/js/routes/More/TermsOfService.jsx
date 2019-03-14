@@ -1,7 +1,7 @@
-import React from "react";
-import Helmet from "react-helmet";
-import { Link } from "react-router";
-import { renderLog } from "../../utils/logging";
+import React from 'react';
+import Helmet from 'react-helmet';
+import { Link } from 'react-router';
+import { renderLog } from '../../utils/logging';
 
 export default class TermsOfService extends React.Component {
   static getProps () {
@@ -86,8 +86,9 @@ export default class TermsOfService extends React.Component {
           <p>
             <span>
               If you have any questions about the Terms of Service, you may contact us by sending an e-mail to
+              {' '}
               <a href="mailto:info@WeVote.US" target="_blank" rel="noopener noreferrer">info@WeVote.US</a>
-              {" "}
+              {' '}
 
             </span>
             <br />
@@ -96,13 +97,13 @@ export default class TermsOfService extends React.Component {
           <p>
             We Vote USA
             <br />
-            {" "}
+            {' '}
             1717 Clemens Rd
             <br />
-            {" "}
+            {' '}
             Oakland, CA 94602
             <br />
-            {" "}
+            {' '}
             Attn: Terms of Service
           </p>
           <p>&nbsp;</p>

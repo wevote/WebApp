@@ -1,4 +1,4 @@
-import keyMirror from "keymirror";
+import keyMirror from 'keymirror';
 
 const FacebookConstants = {
   FACEBOOK_LOGIN_CHANGE: null,

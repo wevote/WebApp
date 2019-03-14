@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Button } from "react-bootstrap";
-import { Link } from "react-router";
-import { renderLog } from "../../utils/logging";
-import OrganizationStore from "../../stores/OrganizationStore";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import OpinionsFollowedListCompressed from "../Organization/OpinionsFollowedListCompressed";
+import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router';
+import { renderLog } from '../../utils/logging';
+import OrganizationStore from '../../stores/OrganizationStore';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OpinionsFollowedListCompressed from '../Organization/OpinionsFollowedListCompressed';
 
 export default class NetworkOpinionsFollowed extends Component {
   static propTypes = {
@@ -50,17 +50,17 @@ export default class NetworkOpinionsFollowed extends Component {
   }
 
   getCurrentRoute () {
-    const currentRoute = "/opinions_followed";
+    const currentRoute = '/opinions_followed';
     return currentRoute;
   }
 
   getFollowingType () {
     switch (this.getCurrentRoute()) {
-      case "/opinions":
-        return "WHO_YOU_CAN_FOLLOW";
-      case "/opinions_followed":
+      case '/opinions':
+        return 'WHO_YOU_CAN_FOLLOW';
+      case '/opinions_followed':
       default:
-        return "WHO_YOU_FOLLOW";
+        return 'WHO_YOU_FOLLOW';
     }
   }
 
@@ -76,7 +76,7 @@ export default class NetworkOpinionsFollowed extends Component {
       <div className="opinions-followed__container">
         <section className="card">
           <div className="card-main">
-            <h1 className="h4">Who You Are Listening To</h1>
+            <h1 className="h4">Who You Are Following</h1>
             <div className="voter-guide-list card">
               <div className="card-child__list-group">
                 {
@@ -90,7 +90,7 @@ export default class NetworkOpinionsFollowed extends Component {
                     <Link to="/opinions_followed">See All</Link>
                   </span>
                 ) :
-                  <span>You are not listening to any organizations yet.</span>
+                  <span>You are not following any organizations yet.</span>
                 }
               </div>
             </div>

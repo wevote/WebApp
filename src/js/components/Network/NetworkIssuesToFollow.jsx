@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Link } from "react-router";
-import Helmet from "react-helmet";
-import { _ } from "lodash";
-import IssueActions from "../../actions/IssueActions";
-import IssueFollowToggleSquare from "../Issues/IssueFollowToggleSquare";
-import IssueStore from "../../stores/IssueStore";
-import SearchBar from "../Search/SearchBar";
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import Helmet from 'react-helmet';
+import { _ } from 'lodash';
+import IssueActions from '../../actions/IssueActions';
+import IssueFollowToggleSquare from '../Values/IssueFollowToggleSquare';
+import IssueStore from '../../stores/IssueStore';
+import SearchBar from '../Search/SearchBar';
 
 
 export default class NetworkIssuesToFollow extends Component {
@@ -15,7 +15,7 @@ export default class NetworkIssuesToFollow extends Component {
       issuesToFollow: [],
       issuesFollowed: [],
       issueWeVoteIdsFollowed: [],
-      searchQuery: "",
+      searchQuery: '',
     };
 
     this.searchFunction = this.searchFunction.bind(this);
@@ -48,7 +48,7 @@ export default class NetworkIssuesToFollow extends Component {
   }
 
   clearFunction () {
-    this.searchFunction("");
+    this.searchFunction('');
   }
 
   render () {
@@ -77,7 +77,7 @@ export default class NetworkIssuesToFollow extends Component {
       />
     ));
     const floatRight = {
-      float: "right",
+      float: 'right',
     };
 
     return (
@@ -86,7 +86,7 @@ export default class NetworkIssuesToFollow extends Component {
         <section className="card">
           <div className="card-main">
             <p>
-            Follow the issues you care about, so we can highlight the organizations that care about the same issues you do.
+            Follow the values and issues you care about, so we can highlight the organizations that care about the same issues you do.
               <span style={floatRight}>
                 <Link to="/issues_followed" className="u-margin-left--md u-no-break">See issues you follow</Link>
               </span>

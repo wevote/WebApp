@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import Badge from '@material-ui/core/Badge';
 import { withStyles } from '@material-ui/core/styles';
-import getGroupedFilterSecondClass from "./utils/grouped-filter-second-class";
+import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 
 const styles = theme => ({
   badge: {
@@ -65,7 +65,7 @@ class FilterBase extends React.Component {
   generateGroupedFilters = () => this.props.groupedFilters.map((item, itemIndex) => (
     <div
         key={item.filterName}
-        className={`groupedFilter ${getGroupedFilterSecondClass(itemIndex, this.props.groupedFilters.length)} ${this.state.selectedFilters.indexOf(item.filterName) > -1 ? "listFilterSelected" : ""}`}
+        className={`groupedFilter ${getGroupedFilterSecondClass(itemIndex, this.props.groupedFilters.length)} ${this.state.selectedFilters.indexOf(item.filterName) > -1 ? 'listFilterSelected' : ''}`}
         onClick={() => this.toggleFilter(item.filterName)}
     >
       {
@@ -89,7 +89,7 @@ class FilterBase extends React.Component {
   generateIslandFilters = () => this.props.islandFilters.map(item => (
     <div
       key={item.filterName}
-      className={`listFilter ${this.state.selectedFilters.indexOf(item.filterName) > -1 ? "listFilterSelected" : ""}`}
+      className={`listFilter ${this.state.selectedFilters.indexOf(item.filterName) > -1 ? 'listFilterSelected' : ''}`}
       onClick={() => this.toggleFilter(item.filterName)}
     >
       {
@@ -123,7 +123,7 @@ class FilterBase extends React.Component {
             color="primary"
           >
             <div
-              className={`listFilter ${showAllFilters ? "listFilterSelected" : ""}`}
+              className={`listFilter ${showAllFilters ? 'listFilterSelected' : ''}`}
               onClick={this.toggleShowAllFilters}
             >
               <ion-icon className="ion" name="options" />

@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import { renderLog } from "../../utils/logging";
-import OrganizationFollowToggle from "./OrganizationFollowToggle";
-import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from "../../utils/organization-functions";
-import VoterGuideStore from "../../stores/VoterGuideStore";
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import { renderLog } from '../../utils/logging';
+import OrganizationFollowToggle from './OrganizationFollowToggle';
+import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../../utils/organization-functions';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 
-const NEXT_BUTTON_TEXT = "Next";
-const SKIP_BUTTON_TEXT = "Skip";
+const NEXT_BUTTON_TEXT = 'Next';
+const SKIP_BUTTON_TEXT = 'Skip';
 // const PREVIOUS_ADVISERS_PROMPT_TEXT = "Follow three or more advisers to get recommendations on your ballot.";
 
 
@@ -21,7 +21,7 @@ export default class BallotIntroFollowAdvisers extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      descriptionText: "",
+      descriptionText: '',
       followedOrganizations: [],
       voterGuidesToFollowByIssuesFollowed: [],
       voterGuidesToFollowAll: [],
@@ -62,7 +62,7 @@ export default class BallotIntroFollowAdvisers extends Component {
     const index = followedOrganizations.indexOf(organizationWeVoteId);
     if (index === -1) {
       this.setState({
-        descriptionText: "",
+        descriptionText: '',
         followedOrganizations: { ...followedOrganizations, organizationWeVoteId },
         nextButtonText: NEXT_BUTTON_TEXT,
       });
@@ -76,7 +76,7 @@ export default class BallotIntroFollowAdvisers extends Component {
       followedOrganizations.splice(index, 1);
       if (followedOrganizations.length === 0) {
         this.setState({
-          descriptionText: "",
+          descriptionText: '',
           followedOrganizations,
           nextButtonText: NEXT_BUTTON_TEXT,
         });
@@ -94,8 +94,9 @@ export default class BallotIntroFollowAdvisers extends Component {
     if (followedLength > 0 || this.state.nextButtonText === SKIP_BUTTON_TEXT) {
       this.props.next();
     } else if (followedLength === 0) {
-      const SELECT_ORGANIZATION_PROMPT = "Are you sure you don't want to listen to at least one organization that " +
-        "shares your values? Listening will show you recommendations on your ballot.";
+      // Follow Organization
+      const SELECT_ORGANIZATION_PROMPT = "Are you sure you don't want to follow to at least one organization that " +
+        'shares your values? Following will show you recommendations on your ballot.';
       this.setState({
         descriptionText: SELECT_ORGANIZATION_PROMPT,
         nextButtonText: SKIP_BUTTON_TEXT,
@@ -188,7 +189,7 @@ export default class BallotIntroFollowAdvisers extends Component {
               { voterGuidesToFollowAllForDisplay.length ? voterGuidesToFollowAllForDisplay : null }
               { voterGuidesToFollowByIssuesForDisplay.length || voterGuidesToFollowAllForDisplay.length ?
                 null :
-                <h4 className="intro-modal__default-text">There are no more organizations to listen to!</h4>
+                <h4 className="intro-modal__default-text">There are no more organizations to follow!</h4>
             }
             </div>
           </div>

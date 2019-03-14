@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import SettingsBannerAndOrganizationCard from "../../components/Settings/SettingsBannerAndOrganizationCard";
-import SelectVoterGuidesSideBar from "../../components/Navigation/SelectVoterGuidesSideBar";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import SettingsBannerAndOrganizationCard from '../../components/Settings/SettingsBannerAndOrganizationCard';
+import SelectVoterGuidesSideBar from '../../components/Navigation/SelectVoterGuidesSideBar';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
 
 export default class VoterGuidesMenuMobile extends Component {
   static propTypes = {
@@ -15,7 +15,7 @@ export default class VoterGuidesMenuMobile extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      linkedOrganizationWeVoteId: "",
+      linkedOrganizationWeVoteId: '',
       organization: {},
     };
   }

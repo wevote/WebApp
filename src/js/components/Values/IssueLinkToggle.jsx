@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button, OverlayTrigger, Popover } from "react-bootstrap";
-import IssueActions from "../../actions/IssueActions";
-import IssueImageDisplay from "./IssueImageDisplay";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
+import IssueActions from '../../actions/IssueActions';
+import IssueImageDisplay from './IssueImageDisplay';
+import { renderLog } from '../../utils/logging';
 
 export default class IssueLinkToggle extends Component {
   static propTypes = {
@@ -43,7 +43,7 @@ export default class IssueLinkToggle extends Component {
     let supportButtonPopoverTooltip;
     if (this.props.incompatibleIssues !== undefined) {
       // Removed bsPrefix="card-popover"
-      const incompatibleIssues = <span>{`You cannot link because the issue is incompatible with the following issues: ${this.props.incompatibleIssues.map(issue => issue.issue_name).join(", ")}`}</span>;
+      const incompatibleIssues = <span>{`You cannot link because the issue is incompatible with the following issues: ${this.props.incompatibleIssues.map(issue => issue.issue_name).join(', ')}`}</span>;
       supportButtonPopoverTooltip = (
         <Popover
           title="Incompatible Issues"
@@ -58,18 +58,26 @@ export default class IssueLinkToggle extends Component {
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
         <div className="col-3 col-sm-2 settingsIssues__image">
           <IssueImageDisplay
-            issue={this.props.issue}
+            issueWeVoteId={this.props.issue.issue_we_vote_id}
             issueImageSize="LARGE"
             showPlaceholderImage
             turnOffIssueFade
           />
         </div>
         <span className="col-6 col-sm-8 intro-modal__span">
-          <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue.issue_name}</h4>
-          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm settingsIssues__description">{this.props.issue.issue_description}</p>
+          <h4 className="card-main__candidate-name intro-modal__white-space">
+            {this.props.issue.issue_name}
+          </h4>
+          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm settingsIssues__description">
+            {this.props.issue.issue_description}
+          </p>
         </span>
         <div className="col-3 col-sm-2">
-          <Button variant="warning" size="small" onClick={this.onIssueUnlink}>
+          <Button
+            variant="warning"
+            size="small"
+            onClick={this.onIssueUnlink}
+          >
             <span>Unlink</span>
           </Button>
         </div>
@@ -78,15 +86,19 @@ export default class IssueLinkToggle extends Component {
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
         <div className="col-3 col-sm-2 settingsIssues__image">
           <IssueImageDisplay
-            issue={this.props.issue}
+            issueWeVoteId={this.props.issue.issue_we_vote_id}
             issueImageSize="LARGE"
             showPlaceholderImage
             turnOffIssueFade
           />
         </div>
         <span className="col-6 col-sm-8 intro-modal__span">
-          <h4 className="card-main__candidate-name intro-modal__white-space">{this.props.issue.issue_name}</h4>
-          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm settingsIssues__description">{this.props.issue.issue_description}</p>
+          <h4 className="card-main__candidate-name intro-modal__white-space">
+            {this.props.issue.issue_name}
+          </h4>
+          <p className="intro-modal__small intro-modal__ellipsis intro-modal__hide-sm settingsIssues__description">
+            {this.props.issue.issue_description}
+          </p>
         </span>
         <div className="col-3 col-sm-2">
           {this.props.incompatibleIssues === undefined ? (
@@ -101,8 +113,14 @@ export default class IssueLinkToggle extends Component {
               overlay={supportButtonPopoverTooltip}
             >
               {/* trigger={["focus", "hover", "click"]} */}
-              <div style={{ display: "inline-block" }}>
-                <Button bsPrefix="card-main__button-linked" variant="info" size="small" onClick={this.onIssueLink} disabled>
+              <div style={{ display: 'inline-block' }}>
+                <Button
+                  bsPrefix="card-main__button-linked"
+                  variant="info"
+                  size="small"
+                  onClick={this.onIssueLink}
+                  disabled
+                >
                   <span className="d-none d-sm-block">Incompatible</span>
                   <span className="d-block d-sm-none">Link</span>
                 </Button>

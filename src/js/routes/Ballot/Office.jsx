@@ -1,18 +1,17 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Helmet from "react-helmet";
-import CandidateList from "../../components/Ballot/CandidateList";
-import { capitalizeString } from "../../utils/textFormat";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import IssueActions from "../../actions/IssueActions";
-import IssueStore from "../../stores/IssueStore";
-import LoadingWheel from "../../components/LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import OfficeActions from "../../actions/OfficeActions";
-import OfficeItem from "../../components/Ballot/OfficeItem";
-import OfficeStore from "../../stores/OfficeStore";
-import SearchAllActions from "../../actions/SearchAllActions";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
+import CandidateList from '../../components/Ballot/CandidateList';
+import { capitalizeString } from '../../utils/textFormat';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import IssueActions from '../../actions/IssueActions';
+import IssueStore from '../../stores/IssueStore';
+import LoadingWheel from '../../components/LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import OfficeActions from '../../actions/OfficeActions';
+import OfficeStore from '../../stores/OfficeStore';
+import SearchAllActions from '../../actions/SearchAllActions';
+import VoterStore from '../../stores/VoterStore';
 
 // This is related to routes/VoterGuide/OrganizationVoterGuideOffice
 export default class Office extends Component {
@@ -24,7 +23,7 @@ export default class Office extends Component {
     super(props);
     this.state = {
       office: {},
-      officeWeVoteId: "",
+      officeWeVoteId: '',
     };
   }
 
@@ -93,17 +92,13 @@ export default class Office extends Component {
 
     const officeName = capitalizeString(office.ballot_item_display_name);
     const titleText = `${officeName} - We Vote`;
-    const descriptionText = `Choose who you support for ${officeName}in the November Election`;
+    const descriptionText = `Choose who you support for ${officeName} in this election`;
 
     return (
       <div>
         <Helmet
           title={titleText}
-          meta={[{ name: "description", content: descriptionText }]}
-        />
-        <OfficeItem
-          weVoteId={office.we_vote_id}
-          ballotItemDisplayName={office.ballot_item_display_name}
+          meta={[{ name: 'description', content: descriptionText }]}
         />
         { office.candidate_list ? (
           <div>

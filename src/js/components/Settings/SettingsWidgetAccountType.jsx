@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../../utils/cordovaUtils";
-import LoadingWheel from "../LoadingWheel";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import VoterStore from "../../stores/VoterStore";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import LoadingWheel from '../LoadingWheel';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
 
 const delayBeforeRemovingSavedStatus = 2000;
 
@@ -24,9 +24,9 @@ export default class SettingsWidgetAccountType extends Component {
     this.state = {
       closeEditFormOnChoice: false,
       editFormOpen: false,
-      linkedOrganizationWeVoteId: "",
-      organizationType: "",
-      organizationTypeSavedStatus: "",
+      linkedOrganizationWeVoteId: '',
+      organizationType: '',
+      organizationTypeSavedStatus: '',
     };
 
     this.renderOrganizationType = this.renderOrganizationType.bind(this);
@@ -96,28 +96,28 @@ export default class SettingsWidgetAccountType extends Component {
 
   displayOrganizationType (organizationType) {
     switch (organizationType) {
-      case "I":
-        return "Individual";
-      case "C3":
-        return "Nonprofit 501(c)(3)";
-      case "C4":
-        return "Nonprofit 501(c)(4)";
-      case "P":
-        return "Political Action Committee";
-      case "NP":
-        return "Nonprofit (Type Not Specified)";
-      case "G":
-        return "Group or Club (10+ people)";
-      case "PF":
-        return "Politician";
-      case "NW":
-        return "News Organization";
-      case "C":
-        return "Company";
-      case "U":
-        return "Not specified (Individual vs. Organization)";
+      case 'I':
+        return 'Individual';
+      case 'C3':
+        return 'Nonprofit 501(c)(3)';
+      case 'C4':
+        return 'Nonprofit 501(c)(4)';
+      case 'P':
+        return 'Political Action Committee';
+      case 'NP':
+        return 'Nonprofit (Type Not Specified)';
+      case 'G':
+        return 'Group or Club (10+ people)';
+      case 'PF':
+        return 'Politician';
+      case 'NW':
+        return 'News Organization';
+      case 'C':
+        return 'Company';
+      case 'U':
+        return 'Not specified (Individual vs. Organization)';
       default:
-        return "";
+        return '';
     }
   }
 
@@ -129,11 +129,11 @@ export default class SettingsWidgetAccountType extends Component {
   }
 
   updateOrganizationType (event) {
-    if (event.target.name === "organizationType") {
+    if (event.target.name === 'organizationType') {
       OrganizationActions.organizationTypeSave(this.state.linkedOrganizationWeVoteId, event.target.value);
       this.setState({
         organizationType: event.target.value,
-        organizationTypeSavedStatus: "Saved",
+        organizationTypeSavedStatus: 'Saved',
       });
       if (this.state.closeEditFormOnChoice) {
         this.toggleEditForm();
@@ -144,14 +144,14 @@ export default class SettingsWidgetAccountType extends Component {
       // After some time, clear saved message
       clearTimeout(this.clearTimer);
       this.clearTimer = setTimeout(() => {
-        this.setState({ organizationTypeSavedStatus: "" });
+        this.setState({ organizationTypeSavedStatus: '' });
       }, delayBeforeRemovingSavedStatus);
     }
   }
 
   renderOrganizationType (organizationType, organizationTypeCurrentState, organizationTypeLabel, organizationTypeId) {
-    const organizationTypeTrimmed = organizationType ? organizationType.trim() : "";
-    const organizationTypeCurrentStateTrimmed = organizationTypeCurrentState ? organizationTypeCurrentState.trim() : "";
+    const organizationTypeTrimmed = organizationType ? organizationType.trim() : '';
+    const organizationTypeCurrentStateTrimmed = organizationTypeCurrentState ? organizationTypeCurrentState.trim() : '';
     const organizationTypeChecked = organizationTypeCurrentStateTrimmed === organizationTypeTrimmed;
     return (
       <div className="form-check create-voter-guide__radio">
@@ -195,16 +195,16 @@ export default class SettingsWidgetAccountType extends Component {
                     </span>
                   ) : null}
                 </div>
-                {this.renderOrganizationType("I", this.state.organizationType, "Individual", "organizationTypeIdIndividual")}
-                {this.renderOrganizationType("C3", this.state.organizationType, "Nonprofit 501(c)(3)", "organizationTypeIdC3")}
-                {this.renderOrganizationType("C4", this.state.organizationType, "Nonprofit 501(c)(4)", "organizationTypeIdC4")}
-                {this.renderOrganizationType("P", this.state.organizationType, "Political Action Committee", "organizationTypeIdPAC")}
-                {this.renderOrganizationType("NP", this.state.organizationType, "Other Nonprofit", "organizationTypeIdNonprofit")}
-                {this.renderOrganizationType("G", this.state.organizationType, "Other Group or Club (10+ people)", "organizationTypeIdGroup")}
-                {this.renderOrganizationType("PF", this.state.organizationType, "Politician", "organizationTypeIdPolitician")}
-                {this.renderOrganizationType("NW", this.state.organizationType, "News Organization", "organizationTypeIdNews")}
-                {this.renderOrganizationType("C", this.state.organizationType, "Company", "organizationTypeIdCompany")}
-                {this.renderOrganizationType("U", this.state.organizationType, "Other", "organizationTypeIdUnknown")}
+                {this.renderOrganizationType('I', this.state.organizationType, 'Individual', 'organizationTypeIdIndividual')}
+                {this.renderOrganizationType('C3', this.state.organizationType, 'Nonprofit 501(c)(3)', 'organizationTypeIdC3')}
+                {this.renderOrganizationType('C4', this.state.organizationType, 'Nonprofit 501(c)(4)', 'organizationTypeIdC4')}
+                {this.renderOrganizationType('P', this.state.organizationType, 'Political Action Committee', 'organizationTypeIdPAC')}
+                {this.renderOrganizationType('NP', this.state.organizationType, 'Other Nonprofit', 'organizationTypeIdNonprofit')}
+                {this.renderOrganizationType('G', this.state.organizationType, 'Other Group or Club (10+ people)', 'organizationTypeIdGroup')}
+                {this.renderOrganizationType('PF', this.state.organizationType, 'Politician', 'organizationTypeIdPolitician')}
+                {this.renderOrganizationType('NW', this.state.organizationType, 'News Organization', 'organizationTypeIdNews')}
+                {this.renderOrganizationType('C', this.state.organizationType, 'Company', 'organizationTypeIdCompany')}
+                {this.renderOrganizationType('U', this.state.organizationType, 'Other', 'organizationTypeIdUnknown')}
               </div>
             </span>
           ) : (
@@ -213,7 +213,7 @@ export default class SettingsWidgetAccountType extends Component {
               <span className="u-f4 u-bold">{this.displayOrganizationType(this.state.organizationType)}</span>
               {this.state.showEditToggleOption ? (
                 <span className="">
-                  {" "}
+                  {' '}
 (
                   <a className="" onClick={() => this.toggleEditForm()}>edit</a>
 )

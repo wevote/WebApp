@@ -1,8 +1,8 @@
-import Dispatcher from "../dispatcher/Dispatcher";
+import Dispatcher from '../dispatcher/Dispatcher';
 
 export default {
   searchAll (textFromSearchField) {
-    Dispatcher.loadEndpoint("searchAll",
+    Dispatcher.loadEndpoint('searchAll',
       {
         text_from_search_field: textFromSearchField,
       });
@@ -11,7 +11,7 @@ export default {
   exitSearch () {
     // setTimeout, as some components attempt to close the search
     // while it is already being closed
-    setTimeout(() => Dispatcher.dispatch("exitSearch"), 0);
+    setTimeout(() => Dispatcher.dispatch('exitSearch'), 0);
   },
 
   retrieveRecentSearches () {

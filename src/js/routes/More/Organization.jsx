@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import ReactPlayer from "react-player";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import ReactPlayer from 'react-player';
+import styled from 'styled-components';
 import Paper from '@material-ui/core/Paper';
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import { renderLog } from "../../utils/logging";
-import ToolBar from "./ToolBar";
-import VoterStore from "../../stores/VoterStore";
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import { renderLog } from '../../utils/logging';
+import ToolBar from './ToolBar';
+import VoterStore from '../../stores/VoterStore';
 
 const TopSection = styled.div`
   display: flex;
@@ -21,6 +21,7 @@ const BodySection = styled.div`
   line-height: 2;
   margin: 0 2em 1.5em 2em;
   font-size: 16.7px;
+  padding-bottom: 1em;
 `;
 
 const H1 = styled.h1`

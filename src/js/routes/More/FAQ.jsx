@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import { Link } from "react-router";
-import { renderLog } from "../../utils/logging";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import ToolBar from "./ToolBar";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import { Link } from 'react-router';
+import { renderLog } from '../../utils/logging';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import ToolBar from './ToolBar';
 
 export default class About extends Component {
   static getProps () {
@@ -60,7 +60,7 @@ export default class About extends Component {
 
           <strong>How does We Vote work?</strong>
           <br />
-          Listen to people and groups you trust to get info on candidates and ballot measures. Ask your friends
+          Follow people and groups you trust to get info on candidates and ballot measures. Ask your friends
           what they think. Then take We Vote with you to
           the polls for an easy-to-use cheat sheet.
           <br />
@@ -109,9 +109,9 @@ export default class About extends Component {
           <strong>What does We Vote cost?</strong>
           <br />
             It’s free! If you like We Vote,
-          {" "}
+          {' '}
           <Link to="/more/donate">please donate</Link>
-          {" "}
+          {' '}
           so we can do more to help voters.
           <br />
           <br />
@@ -135,7 +135,7 @@ export default class About extends Component {
           <strong>How will you handle trolls?</strong>
           <br />
           Unless your name is J.R.R. Tolkien, we know how much you hate trolls. That’s why on We Vote you only hear from
-          people and organizations that you Friend or Listen to. We Vote eliminates noise from people with radically
+          people and organizations that you Friend or Follow. We Vote eliminates noise from people with radically
           different values.
           <br />
           <br />

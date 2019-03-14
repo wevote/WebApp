@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { Link } from "react-router";
-import Helmet from "react-helmet";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import BrowserPushMessage from "../Widgets/BrowserPushMessage";
-import LoadingWheel from "../LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import VoterActions from "../../actions/VoterActions";
-import VoterConstants from "../../constants/VoterConstants";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import Helmet from 'react-helmet';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import BrowserPushMessage from '../Widgets/BrowserPushMessage';
+import LoadingWheel from '../LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import VoterActions from '../../actions/VoterActions';
+import VoterConstants from '../../constants/VoterConstants';
+import VoterStore from '../../stores/VoterStore';
 
 
 export default class SettingsNotifications extends Component {
@@ -15,7 +15,7 @@ export default class SettingsNotifications extends Component {
     super(props);
     this.state = {
       newsletterOptIn: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
-      notificationsSavedStatus: "",
+      notificationsSavedStatus: '',
     };
 
     this.updateNewsletterOptIn = this.updateNewsletterOptIn.bind(this);
@@ -47,7 +47,7 @@ export default class SettingsNotifications extends Component {
   }
 
   updateNewsletterOptIn (event) {
-    if (event.target.name === "newsletterOptIn") {
+    if (event.target.name === 'newsletterOptIn') {
       if (event.target.checked) {
         VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
         this.setState({ newsletterOptIn: true });
@@ -56,7 +56,7 @@ export default class SettingsNotifications extends Component {
         this.setState({ newsletterOptIn: false });
       }
 
-      this.setState({ notificationsSavedStatus: "Saved" });
+      this.setState({ notificationsSavedStatus: 'Saved' });
     }
   }
 
@@ -84,7 +84,7 @@ export default class SettingsNotifications extends Component {
                     onChange={this.updateNewsletterOptIn}
                     checked={this.state.newsletterOptIn}
                   />
-                  { " " }
+                  { ' ' }
                   I would like to receive the We Vote newsletter
                 </label>
                 <span className="pull-right u-gray-mid">{this.state.notificationsSavedStatus}</span>

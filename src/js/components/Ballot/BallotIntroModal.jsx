@@ -1,14 +1,15 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Modal } from "react-bootstrap";
-import Slider from "react-slick";
-import BallotIntroFollowAdvisers from "./BallotIntroFollowAdvisers";
-import BallotIntroFollowIssues from "./BallotIntroFollowIssues";
-import BallotIntroVerifyAddress from "./BallotIntroVerifyAddress";
-import { cordovaDot, hasIPhoneNotch } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
-import VoterActions from "../../actions/VoterActions";
-import closeIcon from "../../../img/global/icons/x-close.png";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Modal } from 'react-bootstrap';
+import Slider from 'react-slick';
+import BallotIntroFollowAdvisers from './BallotIntroFollowAdvisers';
+import BallotIntroFollowIssues from './BallotIntroFollowIssues';
+import BallotIntroVerifyAddress from './BallotIntroVerifyAddress';
+import { cordovaDot, hasIPhoneNotch } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import VoterActions from '../../actions/VoterActions';
+import closeIcon from '../../../img/global/icons/x-close.png';
+
 export default class BallotIntroModal extends Component {
   // This Modal is shown to the user, when user visits the ballot page for first time only
 
@@ -64,7 +65,7 @@ export default class BallotIntroModal extends Component {
       >
         <Modal.Body>
           <div className="intro-modal__close">
-            <a onClick={this.props.toggleFunction} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}>
+            <a onClick={this.props.toggleFunction} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}>
               <img src={cordovaDot(closeIcon)} alt="close" />
             </a>
           </div>

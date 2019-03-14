@@ -1,15 +1,15 @@
 // 'Card' styling for Candidates, Organizations, etc.
 
-$candidate-font-size: .875rem;
 @include media-object('.card-main__media-object', '.card-main__media-object-anchor', '.card-main__media-object-content');
 
 .card {
   $item-padding: $space-md;
   background-color: $white;
-  border-radius: $radius-xs;
+  border-radius: $radius-sm;
   box-shadow: $default-box-shadow;
   margin-bottom: $space-md;
   overflow: hidden;
+  border: none;
   @include clearfix;
   @include breakpoints(max mid-small) {
     margin-bottom: $space-sm;
@@ -68,20 +68,35 @@ $candidate-font-size: .875rem;
     }
 
     &__avatar {
-      max-width: 60px;
+      // max-width: 60px;
       border-radius: $radius-xs;
+      width: 48px;
       .card-main & {
         @include breakpoints(mid-small) {
-          max-width: 60px;
+          // max-width: 60px;
+          width: 48px;
         }
         border-radius: $radius-rounded;
       }
+      @include print {
+        width: 48px;
+      }
+    }
+
+    &__avatar-border {
+      border-style: solid;
+      border-width: 1px;
+      border-color: $gray-border;
     }
 
     &__avatar-compressed {
+      // March 2019, The paths are different in Cordova (where this fails).
+      // Revert back to original path to allow webpack resolve correctly
+      // TODO: Need to find a solution to make both Cordova and Webpack happy
       background-image: url('../img/global/svg-icons/avatar-generic.svg');
-      width: 40px;
       border-radius: $radius-xs;
+      width: 40px;
+      height: 40px;
       .card-main & {
         @include breakpoints(mid-small) {
           width: 40px;
@@ -122,12 +137,12 @@ $candidate-font-size: .875rem;
     }
 
     &__candidate-party-description {
-      font-size: $candidate-font-size;
+      font-size: .7rem;
       color: $gray-dark;
     }
 
     &__candidate-description {
-      font-size: $candidate-font-size;
+      font-size: .875rem;
       color: $gray-mid;
     }
 
@@ -266,6 +281,11 @@ $candidate-font-size: .875rem;
 
     &__button-linked {
       pointer-events: none !important;
+    }
+
+    &__office-item {
+      max-width: 960px;
+      width: 100%;
     }
   } // end .card-main
 

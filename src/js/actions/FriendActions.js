@@ -1,37 +1,37 @@
-import Dispatcher from "../dispatcher/Dispatcher";
+import Dispatcher from '../dispatcher/Dispatcher';
 
 export default {
   acceptFriendInvite (otherVoterWeVoteId) {
-    Dispatcher.loadEndpoint("friendInviteResponse", {
+    Dispatcher.loadEndpoint('friendInviteResponse', {
       voter_we_vote_id: otherVoterWeVoteId,
-      kind_of_invite_response: "ACCEPT_INVITATION",
+      kind_of_invite_response: 'ACCEPT_INVITATION',
     });
   },
 
   currentFriends () {
-    Dispatcher.loadEndpoint("friendList",
+    Dispatcher.loadEndpoint('friendList',
       {
-        kind_of_list: "CURRENT_FRIENDS",
+        kind_of_list: 'CURRENT_FRIENDS',
       });
   },
 
   deleteFriendInviteVoter (otherVoterWeVoteId) {
-    Dispatcher.loadEndpoint("friendInviteResponse", {
+    Dispatcher.loadEndpoint('friendInviteResponse', {
       voter_we_vote_id: otherVoterWeVoteId,
-      kind_of_invite_response: "DELETE_INVITATION_VOTER_SENT_BY_ME",
+      kind_of_invite_response: 'DELETE_INVITATION_VOTER_SENT_BY_ME',
     });
   },
 
   deleteFriendInviteEmail (otherVoterEmailAddress) {
-    Dispatcher.loadEndpoint("friendInviteResponse", {
+    Dispatcher.loadEndpoint('friendInviteResponse', {
       recipient_voter_email: otherVoterEmailAddress,
-      kind_of_invite_response: "DELETE_INVITATION_EMAIL_SENT_BY_ME",
+      kind_of_invite_response: 'DELETE_INVITATION_EMAIL_SENT_BY_ME',
     });
   },
 
   emailBallotData (emailAddressArray, firstNameArray, lastNameArray, emailAddresses,
     invitationMessage, ballotLink, senderEmailAddress, verificationEmailSent, deviceType) {
-    Dispatcher.loadEndpoint("emailBallotData",
+    Dispatcher.loadEndpoint('emailBallotData',
       {
         email_address_array: emailAddressArray,
         first_name_array: firstNameArray,
@@ -47,7 +47,7 @@ export default {
 
   friendInvitationByEmailSend (emailAddressArray, firstNameArray, lastNameArray, emailAddresses,
     invitationMessage, senderEmailAddress) {
-    Dispatcher.loadEndpoint("friendInvitationByEmailSend",
+    Dispatcher.loadEndpoint('friendInvitationByEmailSend',
       {
         email_address_array: emailAddressArray,
         first_name_array: firstNameArray,
@@ -59,8 +59,8 @@ export default {
   },
 
   friendInvitationByFacebookSend (data) {
-    console.log("FacebookActions friendInvitationByFacebookSend", data);
-    Dispatcher.loadEndpoint("friendInvitationByFacebookSend", {
+    console.log('FacebookActions friendInvitationByFacebookSend', data);
+    Dispatcher.loadEndpoint('friendInvitationByFacebookSend', {
       facebook_request_id: data.request_id || false,
       recipients_facebook_id_array: data.recipients_facebook_id_array || false,
       recipients_facebook_name_array: data.recipients_facebook_name_array || false,
@@ -68,7 +68,7 @@ export default {
   },
 
   friendInvitationByWeVoteIdSend (otherVoterWeVoteId) {
-    Dispatcher.loadEndpoint("friendInvitationByWeVoteIdSend",
+    Dispatcher.loadEndpoint('friendInvitationByWeVoteIdSend',
       {
         other_voter_we_vote_id: otherVoterWeVoteId,
       });
@@ -76,7 +76,7 @@ export default {
 
   // TODO DALE To be built on API server
   friendInvitationByTwitterHandleSend (twitterHandles, invitationMessage) {
-    Dispatcher.loadEndpoint("friendInvitationByTwitterHandleSend",
+    Dispatcher.loadEndpoint('friendInvitationByTwitterHandleSend',
       {
         twitter_handles_raw: twitterHandles,
         invitation_message: invitationMessage,
@@ -84,35 +84,35 @@ export default {
   },
 
   friendInvitationsProcessed () {
-    Dispatcher.loadEndpoint("friendList",
+    Dispatcher.loadEndpoint('friendList',
       {
-        kind_of_list: "FRIEND_INVITATIONS_PROCESSED",
+        kind_of_list: 'FRIEND_INVITATIONS_PROCESSED',
       });
   },
 
   friendInvitationsSentByMe () {
-    Dispatcher.loadEndpoint("friendList",
+    Dispatcher.loadEndpoint('friendList',
       {
-        kind_of_list: "FRIEND_INVITATIONS_SENT_BY_ME",
+        kind_of_list: 'FRIEND_INVITATIONS_SENT_BY_ME',
       });
   },
 
   friendInvitationsSentToMe () {
-    Dispatcher.loadEndpoint("friendList",
+    Dispatcher.loadEndpoint('friendList',
       {
-        kind_of_list: "FRIEND_INVITATIONS_SENT_TO_ME",
+        kind_of_list: 'FRIEND_INVITATIONS_SENT_TO_ME',
       });
   },
 
   friendInvitationByEmailVerify (invitationSecretKey) {
-    Dispatcher.loadEndpoint("friendInvitationByEmailVerify", {
+    Dispatcher.loadEndpoint('friendInvitationByEmailVerify', {
       invitation_secret_key: invitationSecretKey,
     });
   },
 
   friendInvitationByFacebookVerify (facebookRequestId, recipientFacebookId, senderFacebookId) {
-    console.log("friendInvitationByFacebookVerify", facebookRequestId);
-    Dispatcher.loadEndpoint("friendInvitationByFacebookVerify", {
+    console.log('friendInvitationByFacebookVerify', facebookRequestId);
+    Dispatcher.loadEndpoint('friendInvitationByFacebookVerify', {
       facebook_request_id: facebookRequestId,
       recipient_facebook_id: recipientFacebookId,
       sender_facebook_id: senderFacebookId,
@@ -121,31 +121,31 @@ export default {
 
   // TODO DALE 2016-9-20 To be built
   ignoreFriendInvite (otherVoterWeVoteId) {
-    Dispatcher.loadEndpoint("friendInviteResponse", {
+    Dispatcher.loadEndpoint('friendInviteResponse', {
       voter_we_vote_id: otherVoterWeVoteId,
-      kind_of_invite_response: "IGNORE_INVITATION",
+      kind_of_invite_response: 'IGNORE_INVITATION',
     });
   },
 
   // TODO DALE 2016-11-3 To be built
   ignoreSuggestedFriend (otherVoterWeVoteId) {
-    Dispatcher.loadEndpoint("friendInviteResponse", {
+    Dispatcher.loadEndpoint('friendInviteResponse', {
       voter_we_vote_id: otherVoterWeVoteId,
-      kind_of_invite_response: "IGNORE_SUGGESTION",
+      kind_of_invite_response: 'IGNORE_SUGGESTION',
     });
   },
 
   suggestedFriendList () {
-    Dispatcher.loadEndpoint("friendList",
+    Dispatcher.loadEndpoint('friendList',
       {
-        kind_of_list: "SUGGESTED_FRIEND_LIST",
+        kind_of_list: 'SUGGESTED_FRIEND_LIST',
       });
   },
 
   unFriend (otherVoterWeVoteId) {
-    Dispatcher.loadEndpoint("friendInviteResponse", {
+    Dispatcher.loadEndpoint('friendInviteResponse', {
       voter_we_vote_id: otherVoterWeVoteId,
-      kind_of_invite_response: "UNFRIEND_CURRENT_FRIEND",
+      kind_of_invite_response: 'UNFRIEND_CURRENT_FRIEND',
     });
   },
 };

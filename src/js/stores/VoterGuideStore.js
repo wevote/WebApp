@@ -1,11 +1,11 @@
-import { ReduceStore } from "flux/utils";
-import Dispatcher from "../dispatcher/Dispatcher";
-import OrganizationActions from "../actions/OrganizationActions";
-import OrganizationStore from "./OrganizationStore";
-import SupportActions from "../actions/SupportActions";
-import VoterGuideActions from "../actions/VoterGuideActions";
-import VoterStore from "./VoterStore";
-import { arrayContains } from "../utils/textFormat";
+import { ReduceStore } from 'flux/utils';
+import Dispatcher from '../dispatcher/Dispatcher';
+import OrganizationActions from '../actions/OrganizationActions';
+import OrganizationStore from './OrganizationStore';
+import SupportActions from '../actions/SupportActions';
+import VoterGuideActions from '../actions/VoterGuideActions';
+import VoterStore from './VoterStore';
+import { arrayContains } from '../utils/textFormat';
 
 class VoterGuideStore extends ReduceStore {
   // The store keeps nested attributes of voter guides in allCachedVoterGuides, whereas the followed, ignoring, to_follow are just lists of ids.
@@ -77,14 +77,44 @@ class VoterGuideStore extends ReduceStore {
     return this.sortVoterGuidesByDate(unsortedVoterGuides);
   }
 
-  getVoterGuidesToFollowAll (limit = 100) {
+  getVoterGuidesToFollowAll (limit = 100, limitToPublicFigures = false, limitToOrganizations = false) {
     // Start with the full list of we_vote_ids that can be followed
     let organizationWeVoteIdsToFollow = this.getState().organizationWeVoteIdsToFollowAll || [];
     // Take the list that we are already following
     const organizationWeVoteIdsFollowed = this.getState().organizationWeVoteIdsVoterIsFollowing || [];
     // Remove organizationWeVoteIdsVoterIsFollowing
     organizationWeVoteIdsToFollow = organizationWeVoteIdsToFollow.filter(el => !organizationWeVoteIdsFollowed.includes(el));
-    const organizationWeVoteIdsToFollowWithLimit = organizationWeVoteIdsToFollow.slice(0, limit);
+    let organizationWeVoteIdsToFollowWithLimit = [];
+    if (limitToPublicFigures) {
+      const listToFilter1 = this.returnVoterGuidesFromListOfIds(organizationWeVoteIdsToFollow) || [];
+      let voterGuidesFound = 0;
+      let step;
+      for (step = 0; step < listToFilter1.length; step++) {
+        // console.log('listToFilter1[step].voter_guide_owner_type:', listToFilter1[step].voter_guide_owner_type);
+        if (listToFilter1[step].voter_guide_owner_type === 'PF') {
+          organizationWeVoteIdsToFollowWithLimit.push(listToFilter1[step].organization_we_vote_id);
+          voterGuidesFound++;
+          if (voterGuidesFound >= limit) {
+            break;
+          }
+        }
+      }
+    } else if (limitToOrganizations) {
+      const listToFilter2 = this.returnVoterGuidesFromListOfIds(organizationWeVoteIdsToFollow) || [];
+      let voterGuidesFound = 0;
+      let step;
+      for (step = 0; step < listToFilter2.length; step++) {
+        if (listToFilter2[step].voter_guide_owner_type !== 'PF') {
+          organizationWeVoteIdsToFollowWithLimit.push(listToFilter2[step].organization_we_vote_id);
+          voterGuidesFound++;
+          if (voterGuidesFound >= limit) {
+            break;
+          }
+        }
+      }
+    } else {
+      organizationWeVoteIdsToFollowWithLimit = organizationWeVoteIdsToFollow.slice(0, limit);
+    }
     return this.returnVoterGuidesFromListOfIds(organizationWeVoteIdsToFollowWithLimit) || [];
   }
 
@@ -209,9 +239,9 @@ class VoterGuideStore extends ReduceStore {
     let voterGuideWithPledgeInfo;
     let voterGuides;
     let voterLinkedOrganizationWeVoteId;
-    const searchTermExists = action.res.search_string !== "";
+    const searchTermExists = action.res.search_string !== '';
     const electionIdExists = action.res.google_civic_election_id !== 0;
-    const ballotItemWeVoteIdExists = action.res.ballot_item_we_vote_id !== "";
+    const ballotItemWeVoteIdExists = action.res.ballot_item_we_vote_id !== '';
     const filterVoterGuidesByIssue = action.res.filter_voter_guides_by_issue;
     const ballotHasGuides = voterGuides && voterGuides.length !== 0;
     let ballotItemsWeAreTracking  = organizationWeVoteIdsToFollowBallotItemsDict ? Object.keys(organizationWeVoteIdsToFollowBallotItemsDict) : [];
@@ -226,7 +256,7 @@ class VoterGuideStore extends ReduceStore {
     const voterGuideSaveResults = action.res;
 
     switch (action.type) {
-      case "pledgeToVoteWithVoterGuide":
+      case 'pledgeToVoteWithVoterGuide':
         if (action.res.pledge_statistics_found) {
           // console.log("VoterGuideStore pledgeToVoteWithVoterGuide, action.res: ", action.res);
           SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
@@ -258,8 +288,8 @@ class VoterGuideStore extends ReduceStore {
           return state;
         }
 
-      case "voterAddressSave":
-        if (action.res.status === "SIMPLE_ADDRESS_SAVE") {
+      case 'voterAddressSave':
+        if (action.res.status === 'SIMPLE_ADDRESS_SAVE') {
           return state;
         } else {
           revisedState = state;
@@ -273,7 +303,7 @@ class VoterGuideStore extends ReduceStore {
           return revisedState;
         }
 
-      case "voterAddressRetrieve": // refresh guides when you change address
+      case 'voterAddressRetrieve': // refresh guides when you change address
         googleCivicElectionId = action.res.google_civic_election_id;
         revisedState = state;
         // This is to prevent the same call from going out multiple times
@@ -287,7 +317,7 @@ class VoterGuideStore extends ReduceStore {
         }
         return revisedState;
 
-      case "voterBallotItemsRetrieve":
+      case 'voterBallotItemsRetrieve':
         // console.log("VoterGuideStore, voterBallotItemsRetrieve response received.");
         googleCivicElectionId = action.res.google_civic_election_id || 0;
         googleCivicElectionId = parseInt(googleCivicElectionId, 10);
@@ -305,7 +335,7 @@ class VoterGuideStore extends ReduceStore {
 
         return revisedState;
 
-      case "voterFollowAllOrganizationsFollowedByOrganization":
+      case 'voterFollowAllOrganizationsFollowedByOrganization':
         // Following one org can change the support/oppose count for many ballot items for the voter
         SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
         voterLinkedOrganizationWeVoteId = VoterStore.getVoter().linked_organization_we_vote_id;
@@ -325,7 +355,7 @@ class VoterGuideStore extends ReduceStore {
         OrganizationActions.organizationsFollowedRetrieve();
         return state;
 
-      case "voterGuidesToFollowRetrieve":
+      case 'voterGuidesToFollowRetrieve':
         voterGuides = action.res.voter_guides;
         // is_empty = voter_guides.length === 0;
         // If no voter guides found , and it's not a search query, retrieve results for all elections
@@ -468,7 +498,7 @@ class VoterGuideStore extends ReduceStore {
           }
         }
 
-      case "voterGuidesUpcomingRetrieve": // New, static list of all public voter guides
+      case 'voterGuidesUpcomingRetrieve': // New, static list of all public voter guides
         voterGuides = action.res.voter_guides;
         // is_empty = voter_guides.length === 0;
         organizationWeVoteIdListFromVoterGuidesReturned = [];
@@ -542,7 +572,7 @@ class VoterGuideStore extends ReduceStore {
           // voterGuidesUpcomingRetrieveStopped: false, // We only ever want to retrieve voterGuidesUpcoming once
         };
 
-      case "voterGuidesFollowedRetrieve":
+      case 'voterGuidesFollowedRetrieve':
         // In OrganizationStore, we listen for a response to "organizationsFollowedRetrieve" instead of "voterGuidesFollowedRetrieve"
         // and update organizationWeVoteIdsVoterIsFollowing
         voterGuides = action.res.voter_guides;
@@ -563,7 +593,7 @@ class VoterGuideStore extends ReduceStore {
           voterGuidesFollowedRetrieveStopped: false,
         };
 
-      case "voterGuideFollowersRetrieve":
+      case 'voterGuideFollowersRetrieve':
         // In OrganizationStore, we also listen for a response to "voterGuideFollowersRetrieve" and update organizationWeVoteIdsFollowingByOrganizationDict
         voterGuides = action.res.voter_guides;
         voterGuides.forEach((oneVoterGuide) => {
@@ -580,7 +610,7 @@ class VoterGuideStore extends ReduceStore {
           allCachedVoterGuidesByElection,
         };
 
-      case "voterGuidesIgnoredRetrieve":
+      case 'voterGuidesIgnoredRetrieve':
         // In OrganizationStore, we also listen for a response to "voterGuidesIgnoredRetrieve" and update organizationWeVoteIdsVoterIsIgnoring
         voterGuides = action.res.voter_guides;
         voterGuides.forEach((oneVoterGuide) => {
@@ -596,12 +626,12 @@ class VoterGuideStore extends ReduceStore {
           allCachedVoterGuidesByElection,
         };
 
-      case "voterGuidesFollowedByOrganizationRetrieve":
+      case 'voterGuidesFollowedByOrganizationRetrieve':
         // In OrganizationStore we listen for "voterGuidesFollowedByOrganizationRetrieve" so we can update OrganizationStore.getState().organizationWeVoteIdsFollowedByOrganizationDict
         voterGuides = action.res.voter_guides;
         // Clear prior recommendations
         organizationWeVoteIdsToFollowOrganizationRecommendationDict[organizationWeVoteIdForVoterGuideOwner] = [];
-        if (action.res.filter_by_this_google_civic_election_id && action.res.filter_by_this_google_civic_election_id !== "") {
+        if (action.res.filter_by_this_google_civic_election_id && action.res.filter_by_this_google_civic_election_id !== '') {
           // console.log("voterGuidesFollowedByOrganizationRetrieve filter_by_this_google_civic_election_id, organizationWeVoteIdForVoterGuideOwner: ", organizationWeVoteIdForVoterGuideOwner);
           voterGuides.forEach((oneVoterGuide) => {
             organizationWeVoteIdsToFollowOrganizationRecommendationDict[organizationWeVoteIdForVoterGuideOwner].push(oneVoterGuide.organization_we_vote_id);
@@ -629,7 +659,7 @@ class VoterGuideStore extends ReduceStore {
           };
         }
 
-      case "voterGuidesRetrieve":
+      case 'voterGuidesRetrieve':
         voterGuides = action.res.voter_guides;
         allCachedVoterGuidesByOrganization = state.allCachedVoterGuidesByOrganization || {};
         allCachedVoterGuidesByVoterGuide = state.allCachedVoterGuidesByVoterGuide || {};
@@ -660,7 +690,7 @@ class VoterGuideStore extends ReduceStore {
           allCachedVoterGuidesByVoterGuide,
         };
 
-      case "voterGuideSave":
+      case 'voterGuideSave':
         allCachedVoterGuidesByOrganization = state.allCachedVoterGuidesByOrganization || {};
         allCachedVoterGuidesByVoterGuide = state.allCachedVoterGuidesByVoterGuide || {};
 
@@ -691,7 +721,7 @@ class VoterGuideStore extends ReduceStore {
           voterGuideSaveResults,
         };
 
-      case "organizationFollow":
+      case 'organizationFollow':
         // The heavy lift of the reaction to "organizationFollow" is in OrganizationStore
 
         // voterLinkedOrganizationWeVoteId is the voter who clicked the Follow button
@@ -704,7 +734,7 @@ class VoterGuideStore extends ReduceStore {
           organizationWeVoteIdsToFollowForLatestBallotItem: state.organizationWeVoteIdsToFollowForLatestBallotItem.filter(existingOrgWeVoteId => existingOrgWeVoteId !== organizationWeVoteId),
         };
 
-      case "organizationStopFollowing":
+      case 'organizationStopFollowing':
         // The heavy lift of the reaction to "organizationStopFollowing" is in OrganizationStore
 
         // voterLinkedOrganizationWeVoteId is the voter who clicked the Follow button
@@ -716,7 +746,7 @@ class VoterGuideStore extends ReduceStore {
           organizationWeVoteIdsToFollowAll: state.organizationWeVoteIdsToFollowAll.concat(organizationWeVoteId),
         };
 
-      case "organizationFollowIgnore":
+      case 'organizationFollowIgnore':
         // The heavy lift of the reaction to "organizationFollowIgnore" is in OrganizationStore
 
         // voterLinkedOrganizationWeVoteId is the voter who clicked the Follow button

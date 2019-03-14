@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Helmet from "react-helmet";
-import { Link } from "react-router";
-import BrowserPushMessage from "../Widgets/BrowserPushMessage";
-import IssueActions from "../../actions/IssueActions";
-import IssueLinkToggle from "../Issues/IssueLinkToggle";
-import IssueStore from "../../stores/IssueStore";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
+import { Link } from 'react-router';
+import BrowserPushMessage from '../Widgets/BrowserPushMessage';
+import IssueActions from '../../actions/IssueActions';
+import IssueLinkToggle from '../Values/IssueLinkToggle';
+import IssueStore from '../../stores/IssueStore';
+import { renderLog } from '../../utils/logging';
 
-const PROCHOICE = "wv02issue63";
-const PROLIFE = "wv02issue64";
-const DEMOCRATIC_CLUBS = "wv02issue25";
-const REPUBLIC_CLUBS = "wv02issue68";
-const GREEN_CLUBS = "wv02issue35";
-const LIBERTARIAN_CLUBS = "wv02issue53";
-const SECOND_AMENDMENT = "wv02issue36";
-const COMMON_SENSE_GUN_REFORM = "wv02issue37";
+const PROCHOICE = 'wv02issue63';
+const PROLIFE = 'wv02issue64';
+const DEMOCRATIC_CLUBS = 'wv02issue25';
+const REPUBLIC_CLUBS = 'wv02issue68';
+const GREEN_CLUBS = 'wv02issue35';
+const LIBERTARIAN_CLUBS = 'wv02issue53';
+const SECOND_AMENDMENT = 'wv02issue36';
+const COMMON_SENSE_GUN_REFORM = 'wv02issue37';
 
 const INCOMPATIBLE_ISSUES = {
   [PROCHOICE]: [PROLIFE],
@@ -39,10 +39,10 @@ export default class SettingsIssueLinks extends Component {
     super(props);
 
     this.state = {
-      activeTab: "",
+      activeTab: '',
       issuesToLinkTo: [],
       issuesLinkedTo: [],
-      organizationWeVoteId: "",
+      organizationWeVoteId: '',
       currentIncompatibleIssues: {},
     };
   }
@@ -127,9 +127,9 @@ export default class SettingsIssueLinks extends Component {
     const showFindIssuesUntilThisManyLinkedTo = 3;
     let defaultActiveTab;
     if (issuesLinkedCount < showFindIssuesUntilThisManyLinkedTo) {
-      defaultActiveTab = "issues_to_link";
+      defaultActiveTab = 'issues_to_link';
     } else {
-      defaultActiveTab = "issues_linked";
+      defaultActiveTab = 'issues_linked';
     }
     return defaultActiveTab;
   }
@@ -139,8 +139,8 @@ export default class SettingsIssueLinks extends Component {
     let issuesToDisplay = [];
 
     const activeTab = this.props.params.active_tab || this.state.activeTab;
-    const issuesToLinkUrl = "/settings/issues/issues_to_link";
-    const issuesLinkedUrl = "/settings/issues/issues_linked";
+    const issuesToLinkUrl = '/settings/issues/issues_to_link';
+    const issuesLinkedUrl = '/settings/issues/issues_linked';
 
     const isLinkedFalse = false;
     const isLinkedTrue = true;
@@ -148,7 +148,7 @@ export default class SettingsIssueLinks extends Component {
     // console.log('this.props.params.active_tab ', this.props.params.active_tab );
     // console.log('-----------------------------------------------------')
     switch (activeTab) {
-      case "issues_to_link":
+      case 'issues_to_link':
         issuesToDisplay = this.state.issuesToLinkTo.map(issue => (
           <IssueLinkToggle
             key={issue.issue_we_vote_id}
@@ -160,7 +160,7 @@ export default class SettingsIssueLinks extends Component {
         ));
         break;
       default:
-      case "issues_linked":
+      case 'issues_linked':
         issuesToDisplay = this.state.issuesLinkedTo.map(issue => (
           <IssueLinkToggle
             key={issue.issue_we_vote_id}
@@ -186,12 +186,12 @@ export default class SettingsIssueLinks extends Component {
               <div className="tabs__tabs-container d-print-none">
                 <ul className="nav tabs__tabs">
                   <li className="tab-item">
-                    <Link to={issuesLinkedUrl} className={activeTab === "issues_linked" ? "tab tab-active" : "tab tab-default"}>
+                    <Link to={issuesLinkedUrl} className={activeTab === 'issues_linked' ? 'tab tab-active' : 'tab tab-default'}>
                       <span>Linked Values/Issues</span>
                     </Link>
                   </li>
                   <li className="tab-item">
-                    <Link to={issuesToLinkUrl} className={activeTab === "issues_to_link" ? "tab tab-active" : "tab tab-default"}>
+                    <Link to={issuesToLinkUrl} className={activeTab === 'issues_to_link' ? 'tab tab-active' : 'tab tab-default'}>
                       <span>Find More</span>
                     </Link>
                   </li>

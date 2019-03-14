@@ -5,14 +5,16 @@ const sass = require("gulp-sass");
 const autoprefixer = require("gulp-autoprefixer");
 const uglify = require("gulp-uglify");
 const sourcemaps = require("gulp-sourcemaps");
+const watchify = require("watchify");
 const browserSync = require("browser-sync").create();
 const browserify = require("browserify");
 const babelify = require("babelify");
 const source = require("vinyl-source-stream");
 const buffer = require("vinyl-buffer");
+const notifier = require('node-notifier');
+const cssmin = require("gulp-cssnano");
 const del = require("del");
 const server = require("./server");
-const cssmin = require("gulp-cssnano");
 
 const PRODUCTION = process.env.NODE_ENV === "production";
 
@@ -20,6 +22,8 @@ gulp.task("browserify", function () {
   const ops = {
     debug: !PRODUCTION,
     entries: "js/index.js",
+    cache: {},
+    packageCache: {},
     extensions: [".js", ".jsx"],
     basedir: "./src",
     transform: [babelify],
@@ -30,14 +34,18 @@ gulp.task("browserify", function () {
   // var browserifyWithWatchify = watchify(browserify(opsWatchify));
 
   function err (e) {
-    console.error(e.toString());
+    console.error(e.stack);
+    notifier.notify({ title: "Compile Error", message: e.stack });
     this.emit("end");
   }
 
-  return PRODUCTION ?
+  const bundler = browserify(ops);
+
+  const bundle = function () {
+    return PRODUCTION ?
 
     // production build with minification
-    browserify(ops)
+    bundler
       .transform('uglifyify', { global: true })
       .bundle()
       .on("error", err)
@@ -46,15 +54,20 @@ gulp.task("browserify", function () {
       .pipe(uglify({ preserveComments: false, mangle: false }))
       .pipe(gulp.dest("./build/js")) :
 
-    // development build... no minification
-    // browserifyWithWatchify
-    browserify(ops)
+    bundler
+      .plugin('watchify', {
+        verbose: true,
+      })
       .bundle()
       .on("error", err)
+      .on("update", bundle)
       .pipe(source("bundle.js"))
       .pipe(gulp.dest("./build/js"))
       .pipe(browserSync.stream());
 
+      
+  }
+  return bundle();
 });
 
 // Run server

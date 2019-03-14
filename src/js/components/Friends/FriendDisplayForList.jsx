@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import FriendToggle from "./FriendToggle";
-import ImageHandler from "../ImageHandler";
-import { numberWithCommas, removeTwitterNameFromDescription } from "../../utils/textFormat";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import FriendToggle from './FriendToggle';
+import ImageHandler from '../ImageHandler';
+import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
+import { renderLog } from '../../utils/logging';
 
 export default class FriendDisplayForList extends Component {
   static propTypes = {
@@ -17,6 +17,7 @@ export default class FriendDisplayForList extends Component {
     voter_twitter_followers_count: PropTypes.number,
     linked_organization_we_vote_id: PropTypes.string,
     editMode: PropTypes.bool,
+    previewMode: PropTypes.bool,
   };
 
   render () {
@@ -29,7 +30,7 @@ export default class FriendDisplayForList extends Component {
 
     const alternateVoterDisplayName = this.props.voter_email_address ? this.props.voter_email_address : this.props.voter_twitter_handle;
     const voterDisplayName = this.props.voter_display_name ? this.props.voter_display_name : alternateVoterDisplayName;
-    const twitterDescription = this.props.voter_twitter_description ? this.props.voter_twitter_description : "";
+    const twitterDescription = this.props.voter_twitter_description ? this.props.voter_twitter_description : '';
     // If the voterDisplayName is in the voter_twitter_description, remove it
     const twitterDescriptionMinusName = removeTwitterNameFromDescription(voterDisplayName, twitterDescription);
 
@@ -40,8 +41,8 @@ export default class FriendDisplayForList extends Component {
     const voterImage = <ImageHandler sizeClassName="icon-lg " imageUrl={voterPhotoUrlMedium} kind_of_ballot_item="CANDIDATE" />;
     const voterDisplayNameFormatted = <span className="card-child__display-name">{voterDisplayName}</span>;
 
-    return (
-      <div className="position-item card-child card-child--not-followed">
+    const friendDisplayHtml = (
+      <div>
         <div className="card-child__avatar">
           { voterGuideLink ? (
             <Link to={voterGuideLink} className="u-no-underline">
@@ -59,11 +60,11 @@ export default class FriendDisplayForList extends Component {
             ) : (
               <span>
                 &nbsp;
-                {" "}
+                {' '}
                 {voterDisplayNameFormatted}
               </span>
             )}
-            {" "}
+            {' '}
             is your Friend
             { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> :
               null}
@@ -90,5 +91,17 @@ export default class FriendDisplayForList extends Component {
         </div>
       </div>
     );
+
+    if (this.props.previewMode) {
+      return <span>{friendDisplayHtml}</span>;
+    } else {
+      return (
+        <section className="card">
+          <div className="card-main">
+            {friendDisplayHtml}
+          </div>
+        </section>
+      );
+    }
   }
 }

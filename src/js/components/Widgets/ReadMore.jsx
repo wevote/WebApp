@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import TextTruncate from "react-text-truncate";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import TextTruncate from 'react-text-truncate';
+import { renderLog } from '../../utils/logging';
 
 export default class ReadMore extends Component {
   static propTypes = {
@@ -49,16 +49,16 @@ export default class ReadMore extends Component {
       numOfLines = 3;
     }
     if (linkText === undefined) {
-      linkText = "More";
+      linkText = 'More';
     }
     if (collapseText === undefined) {
-      collapseText = "Show Less  ";
+      collapseText = 'Show Less  ';
     }
 
     // remove extra ascii carriage returns or other control text
-    textToDisplay = textToDisplay.replace(/[\x0D-\x1F]/g, ""); // eslint-disable-line no-control-regex
+    textToDisplay = textToDisplay.replace(/[\x0D-\x1F]/g, ''); // eslint-disable-line no-control-regex
     // convert text into array, splitting on line breaks
-    const expandedTextArray = textToDisplay.replace(/(?:\r\n|\r|\n){2,}/g, "\r\n\r\n").split(/(?:\r\n|\r|\n)/g);
+    const expandedTextArray = textToDisplay.replace(/(?:\r\n|\r|\n){2,}/g, '\r\n\r\n').split(/(?:\r\n|\r|\n)/g);
 
     // There are cases where we would like to show line breaks when there is a little bit of text
     let notEnoughTextToTruncate = false;
@@ -85,7 +85,7 @@ export default class ReadMore extends Component {
             {item}
           </span>
         );
-      } else if (index >= expandedTextArray.length - 2 && item === "") {
+      } else if (index >= expandedTextArray.length - 2 && item === '') {
         return (
           <span key={`key-${item}`}>
             {item}
@@ -128,7 +128,7 @@ export default class ReadMore extends Component {
     } else {
       return (
         <span className={this.props.className}>
-          {" "}
+          {' '}
           {expandedTextToDisplay}
           &nbsp;&nbsp;
           <a

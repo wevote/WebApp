@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import { isWebApp, isCordova } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { isWebApp, isCordova } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 
 export default class HeaderBarProfilePopUp extends Component {
   static propTypes = {
@@ -31,15 +31,15 @@ export default class HeaderBarProfilePopUp extends Component {
     /* eslint-disable no-extra-parens */
     const popUpOpen = (function opener () {
       if (profilePopUpOpen) {
-        return (isWebApp() ? "profile-menu--open" : "profile-foot-menu--open");
+        return (isWebApp() ? 'profile-menu--open' : 'profile-foot-menu--open');
       }
-      return "";
+      return '';
     }());
 
     return (
       <div className={popUpOpen}>
         <div className="page-overlay" onClick={this.hideProfilePopUp} />
-        <div className={isWebApp() ? "profile-menu" : "profile-foot-menu"}>
+        <div className={isWebApp() ? 'profile-menu' : 'profile-foot-menu'}>
           <span className="we-vote-promise">Our Promise: We&apos;ll never sell your email.</span>
           <ul className="nav flex-column">
             {/* Desktop only */}
@@ -55,22 +55,6 @@ export default class HeaderBarProfilePopUp extends Component {
               <Link onClick={this.hideProfilePopUp} to="/settings/menu">
                 <div>
                   <span className="header-slide-out-menu-text-left">Your Settings</span>
-                </div>
-              </Link>
-            </li>
-            {/* Desktop only */}
-            <li className="navli d-none d-sm-block">
-              <Link onClick={this.hideProfilePopUp} to="/settings/voterguidelist">
-                <div>
-                  <span className="header-slide-out-menu-text-left">Your Voter Guides</span>
-                </div>
-              </Link>
-            </li>
-            {/* Mobile only */}
-            <li className="navli d-block d-sm-none">
-              <Link onClick={this.hideProfilePopUp} to="/settings/voterguidesmenu">
-                <div>
-                  <span className="header-slide-out-menu-text-left">Your Voter Guides</span>
                 </div>
               </Link>
             </li>
@@ -124,14 +108,22 @@ export default class HeaderBarProfilePopUp extends Component {
             ) : null
             }
           </ul>
-          <span className="terms-and-privacy">
-            <br />
-            <Link onClick={this.hideProfilePopUp} to="/more/terms">Terms of Service</Link>
-            <span style={{ paddingLeft: 20 }} />
-            <Link onClick={this.hideProfilePopUp} to="/more/privacy">Privacy Policy</Link>
-            <span style={{ paddingLeft: 20 }} />
-            <Link onClick={this.hideProfilePopUp} to="/more/attributions">Attributions</Link>
-          </span>
+          <div>
+            <span className="terms-and-privacy">
+              <Link onClick={this.hideProfilePopUp} to="/more/terms">
+                <span className="u-no-break">Terms of Service</span>
+              </Link>
+              <span style={{ paddingLeft: 20 }} />
+              <Link onClick={this.hideProfilePopUp} to="/more/privacy">
+                <span className="u-no-break">Privacy Policy</span>
+              </Link>
+            </span>
+          </div>
+          <div>
+            <span className="terms-and-privacy">
+              <Link onClick={this.hideProfilePopUp} to="/more/attributions">Attributions</Link>
+            </span>
+          </div>
         </div>
       </div>
     );

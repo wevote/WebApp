@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Modal } from "react-bootstrap";
-import AddressBox from "../AddressBox";
-import { calculateBallotBaseUrl } from "../../utils/textFormat";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Modal } from 'react-bootstrap';
+import AddressBox from '../AddressBox';
+import { calculateBallotBaseUrl } from '../../utils/textFormat';
+import { renderLog } from '../../utils/logging';
 
 export default class SelectAddressModal extends Component {
   // This modal will allow users to change their addresses

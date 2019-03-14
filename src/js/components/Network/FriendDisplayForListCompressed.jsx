@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import ImageHandler from "../ImageHandler";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import ImageHandler from '../ImageHandler';
+import { renderLog } from '../../utils/logging';
 
 export default class FriendDisplayForListCompressed extends Component {
   static propTypes = {
@@ -47,7 +47,7 @@ export default class FriendDisplayForListCompressed extends Component {
               </Link>
             ) :
               <span>{voterDisplayNameFormatted}</span> }
-            {" "}
+            {' '}
             is your Friend
           </div>
         </div>

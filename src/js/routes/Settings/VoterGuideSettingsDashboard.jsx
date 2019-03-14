@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { renderLog } from "../../utils/logging";
-import BallotActions from "../../actions/BallotActions";
-import BallotStore from "../../stores/BallotStore";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import SettingsBannerAndOrganizationCard from "../../components/Settings/SettingsBannerAndOrganizationCard";
-import VoterGuideSettingsGeneral from "../../components/Settings/VoterGuideSettingsGeneral";
-import VoterGuideSettingsPositions from "../../components/Settings/VoterGuideSettingsPositions";
-import VoterGuideSettingsSideBar from "../../components/Navigation/VoterGuideSettingsSideBar";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import VoterStore from "../../stores/VoterStore";
-import { isProperlyFormattedVoterGuideWeVoteId } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { renderLog } from '../../utils/logging';
+import BallotActions from '../../actions/BallotActions';
+import BallotStore from '../../stores/BallotStore';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import SettingsBannerAndOrganizationCard from '../../components/Settings/SettingsBannerAndOrganizationCard';
+import VoterGuideSettingsGeneral from '../../components/Settings/VoterGuideSettingsGeneral';
+import VoterGuideSettingsPositions from '../../components/Settings/VoterGuideSettingsPositions';
+import VoterGuideSettingsSideBar from '../../components/Navigation/VoterGuideSettingsSideBar';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
+import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
 
 export default class VoterGuideSettingsDashboard extends Component {
   static propTypes = {
@@ -22,11 +22,11 @@ export default class VoterGuideSettingsDashboard extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      editMode: "",
-      linkedOrganizationWeVoteId: "",
+      editMode: '',
+      linkedOrganizationWeVoteId: '',
       organization: {},
       voterGuide: {},
-      voterGuideWeVoteId: "",
+      voterGuideWeVoteId: '',
     };
   }
 
@@ -34,7 +34,7 @@ export default class VoterGuideSettingsDashboard extends Component {
     if (this.props.params.edit_mode) {
       this.setState({ editMode: this.props.params.edit_mode });
     } else {
-      this.setState({ editMode: "general" });
+      this.setState({ editMode: 'general' });
     }
     // Get Voter Guide information
     let voterGuideFound = false;
@@ -50,7 +50,7 @@ export default class VoterGuideSettingsDashboard extends Component {
         voterGuideFound = true;
         if (voterGuide.google_civic_election_id && voterGuide.google_civic_election_id !== BallotStore.currentBallotGoogleCivicElectionId) {
           // console.log("VoterGuideSettingsDashboard componentDidMount retrieving ballot for: ", voterGuide.google_civic_election_id);
-          BallotActions.voterBallotItemsRetrieve(voterGuide.google_civic_election_id, "", "");
+          BallotActions.voterBallotItemsRetrieve(voterGuide.google_civic_election_id, '', '');
         }
       }
     }
@@ -153,10 +153,10 @@ export default class VoterGuideSettingsDashboard extends Component {
     let settingsComponentToDisplay = null;
     switch (this.state.editMode) {
       default:
-      case "general":
+      case 'general':
         settingsComponentToDisplay = <VoterGuideSettingsGeneral />;
         break;
-      case "positions":
+      case 'positions':
         settingsComponentToDisplay = <VoterGuideSettingsPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />;
         break;
     }

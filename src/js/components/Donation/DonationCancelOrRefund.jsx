@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Table, Modal, Button } from "react-bootstrap";
-import moment from "moment";
-import DonateActions from "../../actions/DonateActions";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Table, Modal, Button } from 'react-bootstrap';
+import moment from 'moment';
+import DonateActions from '../../actions/DonateActions';
+import { renderLog } from '../../utils/logging';
 
 export default class DonationCancelOrRefund extends Component {
   static propTypes = {
@@ -42,10 +42,10 @@ export default class DonationCancelOrRefund extends Component {
   render () {
     renderLog(__filename);
     const { item, refundDonation, active, cancelText } = this.props;
-    const label = refundDonation ? "Refund Donation" : "Cancel Subscription";
+    const label = refundDonation ? 'Refund Donation' : 'Cancel Subscription';
 
     if (!active) {
-      return cancelText.length > 0 ? "canceled" : null;
+      return cancelText.length > 0 ? 'canceled' : null;
     }
 
     return (
@@ -65,10 +65,10 @@ export default class DonationCancelOrRefund extends Component {
               <tbody>
                 <tr>
                   <td>Created:</td>
-                  <td>{moment.utc(item.created).local().format("MMM D, YYYY,  h:mm a")}</td>
+                  <td>{moment.utc(item.created).local().format('MMM D, YYYY,  h:mm a')}</td>
                 </tr>
                 <tr>
-                  <td>{refundDonation ? "Amount" : "Monthly payment"}</td>
+                  <td>{refundDonation ? 'Amount' : 'Monthly payment'}</td>
                   <td>{item.amount}</td>
                 </tr>
                 <tr>
@@ -93,7 +93,7 @@ export default class DonationCancelOrRefund extends Component {
           <Modal.Footer>
             <Button onClick={this.closeModal}>I changed my mind</Button>
             <Button onClick={this.cancelSubscription(item)}>
-              {refundDonation ? "Refund this donation" : "Cancel this subscription"}
+              {refundDonation ? 'Refund this donation' : 'Cancel this subscription'}
             </Button>
           </Modal.Footer>
         </Modal>

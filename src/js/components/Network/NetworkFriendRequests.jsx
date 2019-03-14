@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { Link } from "react-router";
-import Helmet from "react-helmet";
-import FriendInvitationList from "../Friends/FriendInvitationList";
-import FriendStore from "../../stores/FriendStore";
-import LoadingWheel from "../LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import SuggestedFriendList from "../Friends/SuggestedFriendList";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import Helmet from 'react-helmet';
+import FriendInvitationList from '../Friends/FriendInvitationList';
+import FriendStore from '../../stores/FriendStore';
+import LoadingWheel from '../LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import SuggestedFriendList from '../Friends/SuggestedFriendList';
+import VoterStore from '../../stores/VoterStore';
 
 export default class NetworkFriendRequests extends Component {
   constructor (props) {
@@ -57,7 +57,7 @@ export default class NetworkFriendRequests extends Component {
     }
 
     const floatRight = {
-      float: "right",
+      float: 'right',
     };
 
     return (

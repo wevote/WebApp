@@ -1,7 +1,7 @@
-import React from "react";
-import Helmet from "react-helmet";
-import { renderLog } from "../../utils/logging";
-import attributions from "../../attributions";
+import React from 'react';
+import Helmet from 'react-helmet';
+import { renderLog } from '../../utils/logging';
+import attributions from '../../attributions';
 
 export default class Attributions extends React.Component {
   static getProps () {
@@ -10,7 +10,7 @@ export default class Attributions extends React.Component {
 
   static parseLicense (oneLicense) {
     const result = [];
-    const lines = oneLicense.split("\n");
+    const lines = oneLicense.split('\n');
     for (let index = 0; index < lines.length; index++) {
       if (index === 0) {
         result.push(

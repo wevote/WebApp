@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { historyPush } from "../../utils/cordovaUtils";
-import LoadingWheel from "../../components/LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import OrganizationStore from "../../stores/OrganizationStore";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import VoterStore from "../../stores/VoterStore";
-import { isProperlyFormattedVoterGuideWeVoteId } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { historyPush } from '../../utils/cordovaUtils';
+import LoadingWheel from '../../components/LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import OrganizationStore from '../../stores/OrganizationStore';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
+import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
 
 // Take in this.props.params.organization_we_vote_id and this.props.params.google_civic_election_id and
 // redirect to the correct voter guide edit page
@@ -19,7 +19,7 @@ export default class OrganizationVoterGuideEdit extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      organizationWeVoteId: "",
+      organizationWeVoteId: '',
       organization: {},
       voter: {},
     };

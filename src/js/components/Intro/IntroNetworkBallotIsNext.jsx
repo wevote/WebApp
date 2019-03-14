@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import cookies from "../../utils/cookies";
-import { historyPush, isCordova } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import cookies from '../../utils/cookies';
+import { historyPush, isCordova } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 
 export default class IntroNetworkBallotIsNext extends Component {
   static goToBallotLink () {
-    const goToBallot = "/ballot";
+    const goToBallot = '/ballot';
     historyPush(goToBallot);
   }
 
@@ -16,14 +16,14 @@ export default class IntroNetworkBallotIsNext extends Component {
   }
 
   componentWillMount () {
-    document.body.style.backgroundColor = "#A3A3A3";
-    document.body.className = "story-view";
-    cookies.setItem("show_full_navigation", "1", Infinity, "/");
+    document.body.style.backgroundColor = '#A3A3A3';
+    document.body.className = 'story-view';
+    cookies.setItem('show_full_navigation', '1', Infinity, '/');
   }
 
   componentWillUnmount () {
     document.body.style.backgroundColor = null;
-    document.body.className = "";
+    document.body.className = '';
   }
 
   render () {
@@ -31,13 +31,13 @@ export default class IntroNetworkBallotIsNext extends Component {
     return (
       <div
         className="intro-story intro-story__background background--image5"
-        style={isCordova() ? { backgroundImage: "url(./img/global/intro-story/slide5-flagpole-698x600.jpg)" } : null}
+        style={isCordova() ? { backgroundImage: 'url(./img/global/intro-story/slide5-flagpole-698x600.jpg)' } : null}
       >
         <Helmet title="See Your Ballot - We Vote" />
         <div className="intro-story__h1--alt">We Vote</div>
         <div id="header2" className="intro-story__h2 intro-story__padding-top">
           Ready to
-          {" "}
+          {' '}
           <strong>vote your values</strong>
           ?
         </div>

@@ -1,6 +1,6 @@
-import { ReduceStore } from "flux/utils";
-import assign from "object-assign";
-import Dispatcher from "../dispatcher/Dispatcher";
+import { ReduceStore } from 'flux/utils';
+import assign from 'object-assign';
+import Dispatcher from '../dispatcher/Dispatcher';
 
 class SearchAllStore extends ReduceStore {
   getInitialState () {
@@ -13,7 +13,7 @@ class SearchAllStore extends ReduceStore {
   }
 
   getTextFromSearchField () {
-    return this.getState().textFromSearchField || "";
+    return this.getState().textFromSearchField || '';
   }
 
   getForceClosed () {
@@ -21,11 +21,11 @@ class SearchAllStore extends ReduceStore {
   }
 
   isRecentSearch () {
-    return this.getState().searchType === "RECENT_SEARCH";
+    return this.getState().searchType === 'RECENT_SEARCH';
   }
 
   isRelatedSearch () {
-    return this.getState().searchType === "RELATED_SEARCH";
+    return this.getState().searchType === 'RELATED_SEARCH';
   }
 
   isSearchInProgress () { // eslint-disable-line
@@ -45,17 +45,17 @@ class SearchAllStore extends ReduceStore {
     let googleCivicElectionId;
 
     switch (action.type) {
-      case "exitSearch":
+      case 'exitSearch':
         return assign({}, state, { forceClosed: true });
-      case "searchAll":
+      case 'searchAll':
         // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
         if (!action.res || !action.res.success) return state;
 
         action.res.search_results.forEach((oneSearchResult) => {
           alreadyContains = false;
-          if (oneSearchResult.kind_of_owner === "ELECTION") {
-            googleCivicElectionId = oneSearchResult.google_civic_election_id || "";
-            if (googleCivicElectionId && googleCivicElectionId !== "") {
+          if (oneSearchResult.kind_of_owner === 'ELECTION') {
+            googleCivicElectionId = oneSearchResult.google_civic_election_id || '';
+            if (googleCivicElectionId && googleCivicElectionId !== '') {
               alreadyContains = alreadyFoundElectionId.indexOf(googleCivicElectionId) > -1;
             }
             if (!alreadyContains) {
@@ -63,8 +63,8 @@ class SearchAllStore extends ReduceStore {
               alreadyFoundElectionId.push(googleCivicElectionId);
             }
           } else {
-            twitterHandle = oneSearchResult.twitter_handle || "";
-            if (twitterHandle && twitterHandle !== "") {
+            twitterHandle = oneSearchResult.twitter_handle || '';
+            if (twitterHandle && twitterHandle !== '') {
               alreadyContains = alreadyFoundTwitterHandles.indexOf(twitterHandle.toLowerCase()) > -1;
             }
             if (!alreadyContains) {
@@ -78,7 +78,7 @@ class SearchAllStore extends ReduceStore {
           searchResultsNew: searchResults,
         };
 
-      case "error-searchAll":
+      case 'error-searchAll':
         console.log(action);
         return state;
 

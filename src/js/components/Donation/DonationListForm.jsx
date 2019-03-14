@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { Tabs, Tab } from "react-bootstrap";
-import DonationList from "./DonationList";
-import { renderLog } from "../../utils/logging";
-import VoterStore from "../../stores/VoterStore";
-import VoterActions from "../../actions/VoterActions";
+import React, { Component } from 'react';
+import { Tabs, Tab } from 'react-bootstrap';
+import DonationList from './DonationList';
+import { renderLog } from '../../utils/logging';
+import VoterStore from '../../stores/VoterStore';
+import VoterActions from '../../actions/VoterActions';
 
 
 export default class DonationListForm extends Component {

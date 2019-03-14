@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { Link } from "react-router";
-import Helmet from "react-helmet";
-import { _ } from "lodash";
-import { isCordova } from "../utils/cordovaUtils";
-import IssueActions from "../actions/IssueActions";
-import IssueFollowToggleSquare from "../components/Issues/IssueFollowToggleSquare";
-import IssueStore from "../stores/IssueStore";
-import { renderLog } from "../utils/logging";
-import SearchBar from "../components/Search/SearchBar";
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import Helmet from 'react-helmet';
+import { _ } from 'lodash';
+import { isCordova } from '../utils/cordovaUtils';
+import IssueActions from '../actions/IssueActions';
+import IssueFollowToggleSquare from '../components/Values/IssueFollowToggleSquare';
+import IssueStore from '../stores/IssueStore';
+import { renderLog } from '../utils/logging';
+import SearchBar from '../components/Search/SearchBar';
 
 export default class IssuesFollowed extends Component {
   constructor (props) {
@@ -15,7 +15,7 @@ export default class IssuesFollowed extends Component {
     this.state = {
       editMode: false,
       issuesFollowed: [],
-      searchQuery: "",
+      searchQuery: '',
     };
 
     this.searchFunction = this.searchFunction.bind(this);
@@ -51,7 +51,7 @@ export default class IssuesFollowed extends Component {
   }
 
   getCurrentRoute () { // eslint-disable-line
-    return "/issues_followed";
+    return '/issues_followed';
   }
 
   _onIssueStoreChange () {
@@ -70,7 +70,7 @@ export default class IssuesFollowed extends Component {
   }
 
   clearFunction () {
-    this.searchFunction("");
+    this.searchFunction('');
   }
 
   render () {
@@ -104,7 +104,7 @@ export default class IssuesFollowed extends Component {
     ));
 
     return (
-      <div className={`opinions-followed__container ${isCordova() && "opinions-followed__container-cordova"}`}>
+      <div className={`opinions-followed__container ${isCordova() && 'opinions-followed__container-cordova'}`}>
         <Helmet title="Issues You Follow - We Vote" />
         <section className="card">
           <div className="card-main">
@@ -114,7 +114,7 @@ export default class IssuesFollowed extends Component {
               onKeyDown={this.onKeyDownEditMode}
               onClick={this.toggleEditMode}
             >
-              {editMode ? "Done Editing" : "Edit"}
+              {editMode ? 'Done Editing' : 'Edit'}
             </a>
             <p>
               These are the issues you currently follow. We recommend organizations that you might want to learn from

@@ -37,8 +37,23 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
   }
 
   &__view-more {
+    $view-more-padding-top: 5px;
+    $view-more-arrow-margin-bottom: 1.5px;
     font-size: .9rem;
     font-weight: 200;
+    color: $black;
+    text-align: center;
+    border-top: 1px solid;
+    border-color: $gray-light;
+    padding-top: $view-more-padding-top;
+    .material-icons.arrow-forward {
+      font-size: .9rem;
+      margin-bottom: $view-more-arrow-margin-bottom;
+    }
+  }
+
+  &__view-more:hover {
+    color: $link-color;
   }
 
   &__view-more-plus {
@@ -53,10 +68,11 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
   &__summary {
     &__title {
       font-family: $heading-font-stack;
-      font-size: 18px;
+      font-size: 20px;
       color: $gray-dark;
-      padding-bottom: $space-md;
-      padding-top: $space-sm;
+      padding: $space-md $space-none;
+      text-align: center;
+      box-shadow: $default-box-shadow;
     }
 
     &__group {
@@ -65,13 +81,16 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
 
     &__group-title {
       font-family: $heading-font-stack;
-      font-size: 16px;
-      color: $gray-dark;
+      font-size: 18px;
+      color: $gray-mid;
       padding-bottom: $space-sm;
+      padding-top: $space-md;
+      margin-left: $space-md;
+      font-weight: bold;
     }
 
     &__list {
-      padding-inline-start: $space-md;
+      padding: $space-none;
     }
 
     &__item {
@@ -97,6 +116,18 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
       position: relative;
       margin-top: $space-none;
       margin-bottom: $space-xs;
+    }
+  }
+
+  &__top-comment {
+    color: $gray-dark;
+    font-family: $heading-font-stack;
+    font-size: 12px;
+    font-weight: 600;
+
+    &__endorser-name {
+      color: $gray-mid;
+      font-weight: 900;
     }
   }
 }

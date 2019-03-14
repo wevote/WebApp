@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../../utils/cordovaUtils";
-import { isSpeakerTypeOrganization } from "../../utils/organization-functions";
-import LoadingWheel from "../LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { isSpeakerTypeOrganization } from '../../utils/organization-functions';
+import LoadingWheel from '../LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import VoterStore from '../../stores/VoterStore';
 
 const delayBeforeApiUpdateCall = 1200;
 const delayBeforeRemovingSavedStatus = 4000;
@@ -20,9 +20,9 @@ export default class SettingsWidgetOrganizationWebsite extends Component {
     super(props);
     this.state = {
       isOrganization: false,
-      linkedOrganizationWeVoteId: "",
-      organizationWebsiteSavedStatus: "",
-      organizationWebsite: "",
+      linkedOrganizationWeVoteId: '',
+      organizationWebsiteSavedStatus: '',
+      organizationWebsite: '',
     };
 
     this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -87,22 +87,22 @@ export default class SettingsWidgetOrganizationWebsite extends Component {
     }
     this.timer = setTimeout(() => {
       OrganizationActions.organizationWebsiteSave(this.state.linkedOrganizationWeVoteId, this.state.organizationWebsite);
-      this.setState({ organizationWebsiteSavedStatus: "Saved" });
+      this.setState({ organizationWebsiteSavedStatus: 'Saved' });
     }, delayBeforeApiUpdateCall);
   }
 
   updateOrganizationWebsite (event) {
-    if (event.target.name === "organizationWebsite") {
+    if (event.target.name === 'organizationWebsite') {
       this.setState({
         organizationWebsite: event.target.value,
-        organizationWebsiteSavedStatus: "Saving website...",
+        organizationWebsiteSavedStatus: 'Saving website...',
       });
     }
 
     // After some time, clear saved message
     clearTimeout(this.clearStatusTimer);
     this.clearStatusTimer = setTimeout(() => {
-      this.setState({ organizationWebsiteSavedStatus: "" });
+      this.setState({ organizationWebsiteSavedStatus: '' });
     }, delayBeforeRemovingSavedStatus);
   }
 
@@ -116,12 +116,12 @@ export default class SettingsWidgetOrganizationWebsite extends Component {
       <div className="">
         <form onSubmit={(e) => { e.preventDefault(); }}>
           <span className="pull-right u-gray-mid">{this.state.organizationWebsiteSavedStatus}</span>
-          <label htmlFor="organizationWebsiteTextArea">{ this.state.isOrganization ? "Organization Website" : "Your Website"}</label>
+          <label htmlFor="organizationWebsiteTextArea">{ this.state.isOrganization ? 'Organization Website' : 'Your Website'}</label>
           <input
             id="organizationWebsiteTextArea"
             name="organizationWebsite"
             className="form-control"
-            placeholder={this.state.isOrganization ? "Organization Website" : "Your Website"}
+            placeholder={this.state.isOrganization ? 'Organization Website' : 'Your Website'}
             value={this.state.organizationWebsite}
             onKeyDown={this.handleKeyPress}
             onChange={this.updateOrganizationWebsite}

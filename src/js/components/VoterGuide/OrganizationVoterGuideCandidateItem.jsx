@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import CandidateStore from "../../stores/CandidateStore";
-import { historyPush } from "../../utils/cordovaUtils";
-import ImageHandler from "../ImageHandler";
-import ItemSupportOpposeRaccoon from "../Widgets/ItemSupportOpposeRaccoon";
-import { renderLog } from "../../utils/logging";
-import OfficeNameText from "../Widgets/OfficeNameText";
-import ParsedTwitterDescription from "../Twitter/ParsedTwitterDescription";
-import SupportStore from "../../stores/SupportStore";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import { abbreviateNumber, numberWithCommas } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import CandidateStore from '../../stores/CandidateStore';
+import { historyPush } from '../../utils/cordovaUtils';
+import ImageHandler from '../ImageHandler';
+import ItemSupportOpposeRaccoon from '../Widgets/ItemSupportOpposeRaccoon';
+import { renderLog } from '../../utils/logging';
+import OfficeNameText from '../Widgets/OfficeNameText';
+import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
+import SupportStore from '../../stores/SupportStore';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
 
 // This is related to /js/components/Ballot/CandidateItem.jsx
 export default class OrganizationVoterGuideCandidateItem extends Component {
@@ -34,9 +34,9 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     super(props);
     this.state = {
       candidateSupportStore: {},
-      candidateWeVoteId: "",
-      officeWeVoteId: "",
-      organizationWeVoteId: "",
+      candidateWeVoteId: '',
+      officeWeVoteId: '',
+      organizationWeVoteId: '',
     };
     this.getCandidateLink = this.getCandidateLink.bind(this);
     this.getOfficeLink = this.getOfficeLink.bind(this);
@@ -99,11 +99,11 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
   }
 
   getOfficeLink () {
-    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== "") {
+    if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== '') {
       return `/office/${this.state.officeWeVoteId}/btvg/${this.state.organizationWeVoteId}`; // back-to-voter-guide
     } else if (this.state.officeWeVoteId) {
       return `/office/${this.state.officeWeVoteId}/b/btdb/`; // back-to-default-ballot
-    } else return "";
+    } else return '';
   }
 
   goToCandidateLink () {
@@ -166,8 +166,8 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
             {twitterFollowersCount ? (
               <span
                 className={this.props.link_to_ballot_item_page ?
-                  "twitter-followers__badge u-cursor--pointer" :
-                  "twitter-followers__badge"}
+                  'twitter-followers__badge u-cursor--pointer' :
+                  'twitter-followers__badge'}
                 onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}
               >
                 <span className="fa fa-twitter twitter-followers__icon" />
@@ -186,8 +186,8 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
             </h2>
             <p
               className={this.props.link_to_ballot_item_page ?
-                "u-gray-darker u-cursor--pointer" :
-                "u-gray-darker"
+                'u-gray-darker u-cursor--pointer' :
+                'u-gray-darker'
               }
               onClick={this.props.link_to_ballot_item_page ?
                 this.goToCandidateLink : null}
@@ -196,13 +196,13 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
                 <OfficeNameText
                   politicalParty={party}
                   contestOfficeName={contestOfficeName}
-                  officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ""}
+                  officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
                 />
               ) : null
               }
             </p>
             { twitterDescription ? (
-              <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? " card-main__description-container--truncated" : " card-main__description-container"}`}>
+              <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
                 <div>
                   <ParsedTwitterDescription
                     twitter_description={twitterDescription}
@@ -219,10 +219,10 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
             ) : null
             }
           </div>
-          {" "}
+          {' '}
           {/* END .card-main__media-object-content */}
         </div>
-        {" "}
+        {' '}
         {/* END .card-main__media-object */}
         <div className="card-main__actions">
           <div>

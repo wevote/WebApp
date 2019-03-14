@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
-import { isValidUrl } from "../../utils/textFormat";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import SettingsWidgetFirstLastName from "../../components/Settings/SettingsWidgetFirstLastName";
-import SettingsWidgetOrganizationDescription from "../../components/Settings/SettingsWidgetOrganizationDescription";
-import SettingsWidgetOrganizationWebsite from "../../components/Settings/SettingsWidgetOrganizationWebsite";
-import VoterStore from "../../stores/VoterStore";
-import closeIcon from "../../../img/global/icons/x-close.png";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import { isValidUrl } from '../../utils/textFormat';
+import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import SettingsWidgetFirstLastName from '../../components/Settings/SettingsWidgetFirstLastName';
+import SettingsWidgetOrganizationDescription from '../../components/Settings/SettingsWidgetOrganizationDescription';
+import SettingsWidgetOrganizationWebsite from '../../components/Settings/SettingsWidgetOrganizationWebsite';
+import VoterStore from '../../stores/VoterStore';
+import closeIcon from '../../../img/global/icons/x-close.png';
 
 export default class VoterGuideOrganizationInfo extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      linkedOrganizationWeVoteId: "",
+      linkedOrganizationWeVoteId: '',
       organization: {},
       voter: {},
       voterHasMadeChanges: false,
@@ -23,8 +23,8 @@ export default class VoterGuideOrganizationInfo extends Component {
   }
 
   componentWillMount () {
-    document.body.style.backgroundColor = "#A3A3A3";
-    document.body.className = "story-view";
+    document.body.style.backgroundColor = '#A3A3A3';
+    document.body.className = 'story-view';
   }
 
   componentDidMount () {
@@ -65,7 +65,7 @@ export default class VoterGuideOrganizationInfo extends Component {
     if (!this.state.voterHasMadeChanges) {
       if (validVoterNameExists && validOrganizationDescriptionExists && validOrganizationNameExists && validWebsiteExists) {
         // console.log("VoterGuideOrganizationInfo componentDidMount redirect to /voterguidechooseelection");
-        historyPush("/voterguidechooseelection");
+        historyPush('/voterguidechooseelection');
       }
     }
   }
@@ -75,7 +75,7 @@ export default class VoterGuideOrganizationInfo extends Component {
     this.voterStoreListener.remove();
 
     document.body.style.backgroundColor = null;
-    document.body.className = "";
+    document.body.className = '';
     this.timer = null;
   }
 
@@ -94,7 +94,7 @@ export default class VoterGuideOrganizationInfo extends Component {
       // Redirect if we have everything we need AND the voter hasn't made changes yet on this page
       if (validVoterNameExists && validOrganizationDescriptionExists && validOrganizationNameExists && validWebsiteExists) {
         // console.log("VoterGuideOrganizationInfo onOrganizationStoreChange redirect to /voterguidechooseelection");
-        historyPush("/voterguidechooseelection");
+        historyPush('/voterguidechooseelection');
       }
     }
   }
@@ -141,7 +141,7 @@ export default class VoterGuideOrganizationInfo extends Component {
         }
       }
       // Everyone requires a valid organization name
-      if (organization.organization_name && organization.organization_name.length > 3 && !organization.organization_name.startsWith("Voter-") && !voterAndOrganizationNameMatches) {
+      if (organization.organization_name && organization.organization_name.length > 3 && !organization.organization_name.startsWith('Voter-') && !voterAndOrganizationNameMatches) {
         return true;
       }
     }
@@ -150,8 +150,8 @@ export default class VoterGuideOrganizationInfo extends Component {
 
   validVoterNameExists = (voter, organization) => {
     if (voter && organization) {
-      if (organization.organization_type && organization.organization_type === "I") {
-        if (voter.first_name && !voter.first_name.startsWith("Voter-")) {
+      if (organization.organization_type && organization.organization_type === 'I') {
+        if (voter.first_name && !voter.first_name.startsWith('Voter-')) {
           return true;
         }
       } else {
@@ -164,10 +164,10 @@ export default class VoterGuideOrganizationInfo extends Component {
 
   validWebsiteExists = (organization) => {
     if (organization) {
-      if (organization.organization_type && organization.organization_type === "I") {
+      if (organization.organization_type && organization.organization_type === 'I') {
         return true;
       }
-      if (organization.organization_type && organization.organization_type !== "I") {
+      if (organization.organization_type && organization.organization_type !== 'I') {
         // We don't require voter name for organizations
         if (organization.organization_website && isValidUrl(organization.organization_website)) {
           // We want to keep encouraging organizations to enter a Website
@@ -179,12 +179,12 @@ export default class VoterGuideOrganizationInfo extends Component {
   }
 
   goToBallotLink = () => {
-    const sampleBallotLink = "/ballot";
+    const sampleBallotLink = '/ballot';
     historyPush(sampleBallotLink);
   }
 
   goToChooseElection = () => {
-    historyPush("/voterguidechooseelection");
+    historyPush('/voterguidechooseelection');
   }
 
 

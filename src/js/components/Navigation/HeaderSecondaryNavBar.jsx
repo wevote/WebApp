@@ -1,27 +1,27 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Modal } from "react-bootstrap";
-import Slider from "react-slick";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import BallotIntroFollowIssues from "../Ballot/BallotIntroFollowIssues";
-import BallotIntroFollowAdvisers from "../Ballot/BallotIntroFollowAdvisers";
-import BallotIntroVerifyAddress from "../Ballot/BallotIntroVerifyAddress";
-import { cordovaDot, hasIPhoneNotch, isWebApp } from "../../utils/cordovaUtils";
-import SecondaryNavBarItem from "./SecondaryNavBarItem";
-import EmailBallotModal from "../Ballot/EmailBallotModal";
-import EmailBallotToFriendsModal from "../Ballot/EmailBallotToFriendsModal";
-import FacebookBallotModal from "../Ballot/FacebookBallotModal";
-import FacebookBallotToFriendsModal from "../Ballot/FacebookBallotToFriendsModal";
-import PollingPlaceLocatorModal from "../../routes/Ballot/PollingPlaceLocatorModal";
-import { renderLog } from "../../utils/logging";
-import VoterActions from "../../actions/VoterActions";
-import VoterStore from "../../stores/VoterStore";
-import webAppConfig from "../../config";
-import issuesIcon from "../../../img/global/svg-icons/nav/issues-16.svg";
-import printIcon from "../../../img/global/svg-icons/nav/print-16.svg";
-import emailIcon from "../../../img/global/svg-icons/nav/email-16.svg";
-import pollingIcon from "../../../img/global/svg-icons/nav/location-16.svg"
-import closeIcon from "../../../img/global/icons/x-close.png";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Modal } from 'react-bootstrap';
+import Slider from 'react-slick';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import BallotIntroFollowIssues from '../Ballot/BallotIntroFollowIssues';
+import BallotIntroFollowAdvisers from '../Ballot/BallotIntroFollowAdvisers';
+import BallotIntroVerifyAddress from '../Ballot/BallotIntroVerifyAddress';
+import { cordovaDot, hasIPhoneNotch, isWebApp } from '../../utils/cordovaUtils';
+import SecondaryNavBarItem from './SecondaryNavBarItem';
+import EmailBallotModal from '../Ballot/EmailBallotModal';
+import EmailBallotToFriendsModal from '../Ballot/EmailBallotToFriendsModal';
+import FacebookBallotModal from '../Ballot/FacebookBallotModal';
+import FacebookBallotToFriendsModal from '../Ballot/FacebookBallotToFriendsModal';
+import PollingPlaceLocatorModal from '../../routes/Ballot/PollingPlaceLocatorModal';
+import { renderLog } from '../../utils/logging';
+import VoterActions from '../../actions/VoterActions';
+import VoterStore from '../../stores/VoterStore';
+import webAppConfig from '../../config';
+import issuesIcon from '../../../img/global/svg-icons/nav/issues-16.svg';
+import printIcon from '../../../img/global/svg-icons/nav/print-16.svg';
+import emailIcon from '../../../img/global/svg-icons/nav/email-16.svg';
+import pollingIcon from '../../../img/global/svg-icons/nav/location-16.svg';
+import closeIcon from '../../../img/global/icons/x-close.png';
 
 export default class HeaderSecondaryNavBar extends Component {
   static propTypes = {
@@ -187,7 +187,7 @@ export default class HeaderSecondaryNavBar extends Component {
       >
         <Modal.Body>
           <div className="intro-modal__close">
-            <a onClick={this._toggleBallotIntroFollowIssues} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}>
+            <a onClick={this._toggleBallotIntroFollowIssues} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}>
               <img src={cordovaDot(closeIcon)} alt="close" />
             </a>
           </div>
@@ -210,7 +210,7 @@ export default class HeaderSecondaryNavBar extends Component {
           <div className="intro-modal__close">
             <a
               onClick={this._toggleEmailModal}
-              className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}
+              className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}
             >
               <img src={cordovaDot(closeIcon)} alt="close" />
             </a>
@@ -247,7 +247,7 @@ export default class HeaderSecondaryNavBar extends Component {
           <div className="intro-modal__close">
             <a
               onClick={this._toggleFacebookModal}
-              className={`intro-modal__close-anchor ${hasIPhoneNotch() ? "intro-modal__close-anchor-iphonex" : ""}`}
+              className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}
             >
               <img src={cordovaDot(closeIcon)} alt="close" />
             </a>
@@ -283,20 +283,20 @@ export default class HeaderSecondaryNavBar extends Component {
       />
     );
 
-    const currentPathname = this.props.pathname ? this.props.pathname : "/ballot";
-    const ballotBaseUrl = webAppConfig.WE_VOTE_URL_PROTOCOL + (isWebApp() ? webAppConfig.WE_VOTE_HOSTNAME : "WeVote.US") + currentPathname;
+    const currentPathname = this.props.pathname ? this.props.pathname : '/ballot';
+    const ballotBaseUrl = webAppConfig.WE_VOTE_URL_PROTOCOL + (isWebApp() ? webAppConfig.WE_VOTE_HOSTNAME : 'WeVote.US') + currentPathname;
 
     // We want to add a tracking code here so we can count shares. Vote.org does it this way: https://www.vote.org/#.WpiRvFhU3V4.twitter
-    const encodedMessage = encodeURIComponent("I am getting ready to vote @WeVote. Join me!");
+    const encodedMessage = encodeURIComponent('I am getting ready to vote @WeVote. Join me!');
     const twitterIntent = `https://twitter.com/intent/tweet?url=${encodeURIComponent(ballotBaseUrl)}&text=${encodedMessage}&hashtags=Vote,Voting,WeVote`;
-    const searchStyle = isWebApp() ? "page-secondary-nav-header" : "page-secondary-nav-header page-header-cordova-secondary-nav";
+    const searchStyle = isWebApp() ? 'page-secondary-nav-header' : 'page-secondary-nav-header page-header-cordova-secondary-nav';
 
     return (
       <div className="page-secondary-nav-header-background">
         { voterThoroughOrientationComplete ?
           null : (
             <header className={searchStyle}>
-              <div className={`header-secondary-nav ${hasIPhoneNotch() ? "header-secondary-nav__iphone-x-vertical-spacing" : ""}`}>
+              <div className={`header-secondary-nav ${hasIPhoneNotch() ? 'header-secondary-nav__iphone-x-vertical-spacing' : ''}`}>
                 {/* Issues Icon & Modal */}
                 {/* {!this.props.hideGettingStartedIssuesButton ? null : null } No longer hiding Issue Button */}
                 {/* completed={this.state.ballot_intro_issues_completed} No longer using completed state */}

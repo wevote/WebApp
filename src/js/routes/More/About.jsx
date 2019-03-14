@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import { Link } from "react-router";
-import ReactPlayer from "react-player";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import ImageHandler from "../../components/ImageHandler";
-import { renderLog } from "../../utils/logging";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import ToolBar from "./ToolBar";
-import VoterStore from "../../stores/VoterStore";
-import { weVoteBoard, weVoteStaff } from "./people";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import { Link } from 'react-router';
+import ReactPlayer from 'react-player';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import ImageHandler from '../../components/ImageHandler';
+import { renderLog } from '../../utils/logging';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import ToolBar from './ToolBar';
+import VoterStore from '../../stores/VoterStore';
+import { weVoteBoard, weVoteStaff } from './people';
 
 export default class About extends Component {
   static getProps () {
@@ -124,7 +124,7 @@ export default class About extends Component {
               <h3 className="h3">Credits &amp; Gratitude</h3>
               <p>
                 <Link to="/more/credits">We are thankful for our volunteers, our board of directors, and the organizations</Link>
-                {" "}
+                {' '}
                 that are critical to our work.
               </p>
               <h3 className="h3">

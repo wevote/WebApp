@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import FriendActions from "../../actions/FriendActions";
-import FriendStore from "../../stores/FriendStore";
-import { historyPush } from "../../utils/cordovaUtils";
-import LoadingWheel from "../../components/LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import VoterActions from "../../actions/VoterActions";
-import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import FriendActions from '../../actions/FriendActions';
+import FriendStore from '../../stores/FriendStore';
+import { historyPush } from '../../utils/cordovaUtils';
+import LoadingWheel from '../../components/LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import VoterActions from '../../actions/VoterActions';
+import WouldYouLikeToMergeAccounts from '../../components/WouldYouLikeToMergeAccounts';
 
 export default class FriendInvitationByEmailVerifyProcess extends Component {
   static propTypes = {
@@ -43,7 +43,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
   cancelMergeFunction = () => {
     historyPush({
-      pathname: "/more/network",
+      pathname: '/more/network',
       state: {
       },
     });
@@ -58,10 +58,10 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
   voterMergeTwoAccountsByInvitationKey = (invitationSecretKey) => {
     VoterActions.voterMergeTwoAccountsByInvitationKey(invitationSecretKey);
     historyPush({
-      pathname: "/more/network",
+      pathname: '/more/network',
       state: {
-        message: "You have successfully signed in.",
-        message_type: "success",
+        message: 'You have successfully signed in.',
+        message_type: 'success',
       },
     });
   }
@@ -93,10 +93,10 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     // This process starts when we return from attempting friendInvitationByEmailVerify
     if (!this.state.invitationStatus.invitationFound) {
       historyPush({
-        pathname: "/more/network/friends",
+        pathname: '/friends',
         state: {
-          message: "Invitation not found. You may have already accepted this invitation. Invitation links may only be used once.",
-          message_type: "warning",
+          message: 'Invitation not found. You may have already accepted this invitation. Invitation links may only be used once.',
+          message_type: 'warning',
         },
       });
       return LoadingWheel;
@@ -104,10 +104,10 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
     if (this.state.invitationStatus.attemptedToApproveOwnInvitation) {
       historyPush({
-        pathname: "/more/network/friends",
+        pathname: '/friends',
         state: {
-          message: "You are not allowed to approve your own invitation.",
-          message_type: "danger",
+          message: 'You are not allowed to approve your own invitation.',
+          message_type: 'danger',
         },
       });
       return LoadingWheel;
@@ -116,16 +116,16 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     if (this.state.invitationStatus.invitationSecretKeyBelongsToThisVoter) {
       // We don't need to do anything more except redirect to the email management page
       historyPush({
-        pathname: "/more/network/friends",
+        pathname: '/friends',
         state: {
           message: "You have accepted your friend's invitation. Visit your ballot to see what your friends are supporting or opposing.",
-          message_type: "success",
+          message_type: 'success',
         },
       });
       return LoadingWheel;
     } else if (this.state.invitationStatus.voterHasDataToPreserve) {
       // If so, ask if they want to connect two accounts?
-      console.log("FriendInvitationByEmailVerifyProcess yesPleaseMergeAccounts is FALSE");
+      console.log('FriendInvitationByEmailVerifyProcess yesPleaseMergeAccounts is FALSE');
       // Display the question of whether to merge accounts or not
       return (
         <WouldYouLikeToMergeAccounts
@@ -136,7 +136,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
       // return <span>WouldYouLikeToMergeAccounts</span>;
     } else {
       // Go ahead and merge the accounts, which means deleting the current voter and switching to the invitation owner
-      console.log("FriendInvitationByEmailVerifyProcess - voterHasDataToPreserve is FALSE");
+      console.log('FriendInvitationByEmailVerifyProcess - voterHasDataToPreserve is FALSE');
       this.voterMergeTwoAccountsByInvitationKey(invitationSecretKey);
       // return <span>this.voterMergeTwoAccountsByInvitationKey - go ahead</span>;
       return LoadingWheel;

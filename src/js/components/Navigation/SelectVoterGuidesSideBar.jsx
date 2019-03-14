@@ -1,26 +1,33 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import ElectionStore from "../../stores/ElectionStore";
-import { renderLog } from "../../utils/logging";
-import SelectVoterGuidesSideBarLink from "./SelectVoterGuidesSideBarLink";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ElectionStore from '../../stores/ElectionStore';
+import { renderLog } from '../../utils/logging';
+import SelectVoterGuidesSideBarLink from './SelectVoterGuidesSideBarLink';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
 
 
 export default class SelectVoterGuidesSideBar extends Component {
   static propTypes = {
     onOwnPage: PropTypes.bool,
+    voterGuideWeVoteIdSelected: PropTypes.string,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      linkedOrganizationWeVoteId: "",
+      linkedOrganizationWeVoteId: '',
+      voterGuideWeVoteIdSelected: '',
     };
   }
 
   componentDidMount () {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    this.setState({ voterGuideWeVoteIdSelected: this.props.voterGuideWeVoteIdSelected });
+  }
+
+  componentWillReceiveProps (nextProps) {
+    this.setState({ voterGuideWeVoteIdSelected: nextProps.voterGuideWeVoteIdSelected });
   }
 
   componentWillUnmount () {
@@ -44,13 +51,16 @@ export default class SelectVoterGuidesSideBar extends Component {
       voterGuideLinksHtml = voterGuidesOwnedByVoter.map((voterGuide) => {
         const displaySubtitles = true;
         if (voterGuide && voterGuide.we_vote_id) {
+          // linkTo={this.props.onOwnPage ? `/vg/${voterGuide.we_vote_id}/settings/menu` : `/vg/${voterGuide.we_vote_id}/settings`}
           return (
             <div key={`voter-guides-${voterGuide.we_vote_id}`}>
               <SelectVoterGuidesSideBarLink
-                linkTo={this.props.onOwnPage ? `/vg/${voterGuide.we_vote_id}/settings/menu` : `/vg/${voterGuide.we_vote_id}/settings`}
+                linkTo={this.props.onOwnPage ? `/settings/voter_guide/${voterGuide.we_vote_id}` : `/settings/voter_guide/${voterGuide.we_vote_id}`}
                 label={ElectionStore.getElectionName(voterGuide.google_civic_election_id)}
                 subtitle={ElectionStore.getElectionDayText(voterGuide.google_civic_election_id)}
                 displaySubtitles={displaySubtitles}
+                voterGuideWeVoteId={voterGuide.we_vote_id}
+                voterGuideWeVoteIdSelected={this.state.voterGuideWeVoteIdSelected}
               />
             </div>
           );

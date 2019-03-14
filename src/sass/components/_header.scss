@@ -1,8 +1,13 @@
 @import '../base/variables';
 
-$space-header-height:  20px;
+$space-header-height:  35px;
 $space-header-x-height: 40px;
 $space-search-right:   10%;
+$back-button-font-size: .8rem;
+$iphone-x-padding-left: env(safe-area-inset-left);
+$iphone-x-padding-right: env(safe-area-inset-right);
+$header-height: 48px;
+$header-height-back-to-ballot: 96px;
 
 .page-header {
   // required overrides for Bootstrap :(
@@ -11,11 +16,15 @@ $space-search-right:   10%;
   padding-bottom: $space-none; // override to avoid Bootstrap collision
   padding-left: $half-gutter-width; // $grid-gutter-width/2
   margin: $space-none auto;
-  max-width: $max-page-container-width;
   position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: $header-height;
+  &__ballot {
+    box-shadow: none !important;
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+  }
 
   &__container {
     background-color: $page-header-color;
@@ -36,6 +45,9 @@ $space-search-right:   10%;
     background-color: $page-header-color;
     color: $white;
     margin: $space-xs;
+    @include breakpoints(small xsmall-bootstrap) {
+      font-size: $back-button-font-size !important;
+    }
 
     &:focus {
       background-color: $page-header-color !important;
@@ -47,6 +59,10 @@ $space-search-right:   10%;
     }
   }
 
+  &__back-to-ballot {
+    height: $header-height-back-to-ballot;
+  }
+
   &__backToButtonIPhoneX {
     margin-top: $space-xs;
   }
@@ -54,12 +70,55 @@ $space-search-right:   10%;
   &__cordova {
     margin: $space-none;
     padding-bottom: $space-xs;
+    padding-left: $iphone-x-padding-left;
+    padding-right: $iphone-x-padding-right;
   }
 
   &__cordova-iphonex {
     margin: $space-none;
     padding-bottom: $space-xs;
     padding-top: $space-md;
+  }
+}
+
+.header-toolbar {
+  $header-padding: 10px;
+  width: 100%;
+  max-width: 960px;
+  @include breakpoints(xsmall-bootstrap) {
+    padding-right: $header-padding;
+  }
+}
+
+.header-backto-toolbar {
+  justify-content: space-between;
+}
+
+.header-logo-img {
+  width: 200px;
+  @include breakpoints(mid-small small-bootstrap) {
+    min-width: 120px;
+  }
+
+  @include breakpoints(small mid-small) {
+    min-width: 110px;
+  }
+}
+
+.header-link {
+  $inherit: inherit;
+  color: $inherit;
+  text-decoration: none;
+  &:hover {
+    color: $inherit;
+    text-decoration: none;
+  }
+}
+
+.header-sign-in {
+  color: $brand-blue;
+  @include breakpoints(small xsmall-bootstrap) {
+    font-size: $back-button-font-size !important;
   }
 }
 
@@ -133,7 +192,7 @@ $space-search-right:   10%;
 .page-logo > .beta-marker > .beta-marker-inner {
   position: absolute;
   font-size: 10px;
-  color: $white;
+  color: $brand-blue;
   text-transform: capitalize;
 }
 
@@ -258,12 +317,9 @@ $space-search-right:   10%;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1;
+  z-index: 2;
   transform: translateY(0);
   transition: all .2s ease-in-out;
-  &--pinned {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
-  }
   &--slide-up {
     transform: translateY(-100%);
   }
@@ -272,3 +328,6 @@ $space-search-right:   10%;
   }
 }
 
+.headroom--unpinned {
+  transform: translateY(-120%) !important;
+}

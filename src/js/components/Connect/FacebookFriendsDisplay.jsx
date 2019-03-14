@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import { OverlayTrigger, Popover } from "react-bootstrap";
-import FacebookFriendTinyDisplay from "./FacebookFriendTinyDisplay";
-import FacebookFriendCard from "./FacebookFriendCard";
-import FacebookStore from "../../stores/FacebookStore";
-import FacebookActions from "../../actions/FacebookActions";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
+import FacebookFriendTinyDisplay from './FacebookFriendTinyDisplay';
+import FacebookFriendCard from './FacebookFriendCard';
+import FacebookStore from '../../stores/FacebookStore';
+import FacebookActions from '../../actions/FacebookActions';
+import { renderLog } from '../../utils/logging';
 
 export default class FacebookFriendsDisplay extends Component {
   static propTypes = {
@@ -96,14 +96,14 @@ export default class FacebookFriendsDisplay extends Component {
           return (
             <span key={oneFriend.id}>
               <Link to="/facebook_invitable_friends">
-                {" "}
+                {' '}
                 +
                 {friendsNotShownCount}
               </Link>
             </span>
           );
         } else {
-          return "";
+          return '';
         }
       } else {
         // Removed bsPrefix="card-popover"
@@ -123,7 +123,7 @@ export default class FacebookFriendsDisplay extends Component {
           </Popover>
         );
 
-        const placement = "bottom";
+        const placement = 'bottom';
         return (
           <OverlayTrigger
             key={`trigger-${friendId}`}

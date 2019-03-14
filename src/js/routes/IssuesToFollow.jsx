@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import { Link } from "react-router";
-import { _ } from "lodash";
-import Helmet from "react-helmet";
-import IssueActions from "../actions/IssueActions";
-import IssueFollowToggleSquare from "../components/Issues/IssueFollowToggleSquare";
-import IssueStore from "../stores/IssueStore";
-import { renderLog } from "../utils/logging";
-import SearchBar from "../components/Search/SearchBar";
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import { _ } from 'lodash';
+import Helmet from 'react-helmet';
+import IssueActions from '../actions/IssueActions';
+import IssueFollowToggleSquare from '../components/Values/IssueFollowToggleSquare';
+import IssueStore from '../stores/IssueStore';
+import { renderLog } from '../utils/logging';
+import SearchBar from '../components/Search/SearchBar';
 
 export default class IssuesToFollow extends Component {
   constructor (props) {
     super(props);
     this.state = {
       issuesToFollow: [],
-      searchQuery: "",
+      searchQuery: '',
     };
 
     this.searchFunction = this.searchFunction.bind(this);
@@ -40,7 +40,7 @@ export default class IssuesToFollow extends Component {
   }
 
   clearFunction () {
-    this.searchFunction("");
+    this.searchFunction('');
   }
 
   render () {
@@ -79,7 +79,7 @@ export default class IssuesToFollow extends Component {
           <div className="card-main">
             <h1 className="h1">Issues You Can Follow</h1>
             <p>
-              Follow the issues you care about, so we can highlight the organizations that care about the same issues you do.
+              Follow the values and issues you care about, so we can highlight the organizations that care about the same issues you do.
             </p>
             <SearchBar
               clearButton

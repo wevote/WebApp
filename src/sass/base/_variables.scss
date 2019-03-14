@@ -114,14 +114,15 @@ $support-green: $green;
 $oppose-red: $red;
 
 // $brand-blue: #1c2f4b;
-$brand-blue: #0d5470;
+// $brand-blue: #0d5470;
+$brand-blue: #2e3c5d;
 $page-header-color: $brand-blue;
 $brand-white: #fff;
 $page-header-secondary-nav-background-color: $brand-white;
 
 /// Link color
 /// @type Color
-$link-color: #00749e !default; // mirrors Bootstrap variable - TODO: set single value globally
+$link-color: #4371cc !default; // mirrors Bootstrap variable - TODO: set single value globally
 $link-color-light: #969dff !default;
 
 $app-background-color: #ebecee;
@@ -190,4 +191,4 @@ $base-url: '/assets/' !default;
 
 $modal-backdrop-opacity: .5;
 
-$default-box-shadow: 0 1px 2px rgba(#000, .2);
+$default-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 2px 1px -1px rgba(0, 0, 0, .12);

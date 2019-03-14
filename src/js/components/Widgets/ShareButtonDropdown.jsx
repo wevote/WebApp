@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import CopyLinkModal from "./CopyLinkModal";
-import { renderLog } from "../../utils/logging";
-import { isWebApp } from "../../utils/cordovaUtils";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import CopyLinkModal from './CopyLinkModal';
+import { renderLog } from '../../utils/logging';
+import { isWebApp } from '../../utils/cordovaUtils';
 
 export default class ShareButtonDropDown extends Component {
   static propTypes = {
@@ -34,8 +34,8 @@ export default class ShareButtonDropDown extends Component {
     event.stopPropagation();
     const api = isWebApp() ? window.FB : window.facebookConnectPlugin; // eslint-disable-line no-undef
     api.ui({
-      display: "popup",
-      method: "share",
+      display: 'popup',
+      method: 'share',
 
       // Sharing this href link to facebook(href must be a valid url else facebook share popup will be having issues)
       href: this.props.urlBeingShared,
@@ -69,7 +69,7 @@ export default class ShareButtonDropDown extends Component {
     const onCopyLinkClick = this.state.showCopyLinkModal ? this.closeCopyLinkModal.bind(this) : this.openCopyLinkModal.bind(this);
 
     // const onButtonBlur = ;
-    const dropdownClass = this.state.open ? " open" : "";
+    const dropdownClass = this.state.open ? ' open' : '';
 
     return (
       <div className="item-actionbar__btn-set">
@@ -81,9 +81,9 @@ export default class ShareButtonDropDown extends Component {
             type="button"
           >
             {shareIcon}
-            {" "}
+            {' '}
             {shareText}
-            {" "}
+            {' '}
             <span className="caret" />
           </button>
           {this.state.open ? (

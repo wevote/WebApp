@@ -1,18 +1,18 @@
-import Dispatcher from "../dispatcher/Dispatcher";
+import Dispatcher from '../dispatcher/Dispatcher';
 
 export default {
-  organizationSearch (organizationSearchTerm, organization_twitter_handle = "", exact_match = false) {
+  organizationSearch (organizationSearchTerm, organization_twitter_handle = '', exact_match = false) {
     // console.log("OrganizationActions.organizationSearch, organizationSearchTerm: ", organizationSearchTerm);
-    Dispatcher.loadEndpoint("organizationSearch", {
+    Dispatcher.loadEndpoint('organizationSearch', {
       exact_match,
       organization_search_term: organizationSearchTerm,
       organization_twitter_handle,
     });
   },
 
-  organizationFollow (organizationWeVoteId, organization_twitter_handle = "", organization_follow_based_on_issue = false) {
+  organizationFollow (organizationWeVoteId, organization_twitter_handle = '', organization_follow_based_on_issue = false) {
     // console.log("OrganizationActions.organizationFollow, organization_twitter_handle: ", organization_twitter_handle);
-    Dispatcher.loadEndpoint("organizationFollow", {
+    Dispatcher.loadEndpoint('organizationFollow', {
       organization_we_vote_id: organizationWeVoteId,
       organization_twitter_handle,
       organization_follow_based_on_issue,
@@ -20,19 +20,19 @@ export default {
   },
 
   organizationFollowIgnore (organizationWeVoteId) {
-    Dispatcher.loadEndpoint("organizationFollowIgnore", { organization_we_vote_id: organizationWeVoteId });
+    Dispatcher.loadEndpoint('organizationFollowIgnore', { organization_we_vote_id: organizationWeVoteId });
   },
 
   organizationStopFollowing (organizationWeVoteId) {
-    Dispatcher.loadEndpoint("organizationStopFollowing", { organization_we_vote_id: organizationWeVoteId });
+    Dispatcher.loadEndpoint('organizationStopFollowing', { organization_we_vote_id: organizationWeVoteId });
   },
 
   organizationsFollowedRetrieve (autoFollowedFromTwitterSuggestion) {
-    Dispatcher.loadEndpoint("organizationsFollowedRetrieve", { auto_followed_from_twitter_suggestion: autoFollowedFromTwitterSuggestion });
+    Dispatcher.loadEndpoint('organizationsFollowedRetrieve', { auto_followed_from_twitter_suggestion: autoFollowedFromTwitterSuggestion });
   },
 
   saveFromFacebook (facebookId, facebookEmail, facebookProfileImageUrlHttps, organizationName) {
-    Dispatcher.loadEndpoint("organizationSave",
+    Dispatcher.loadEndpoint('organizationSave',
       {
         facebook_id: facebookId,
         facebook_email: facebookEmail,
@@ -42,7 +42,7 @@ export default {
   },
 
   saveFromTwitter (twitterHandle) {
-    Dispatcher.loadEndpoint("organizationSave",
+    Dispatcher.loadEndpoint('organizationSave',
       {
         organization_twitter_handle: twitterHandle,
         refresh_from_twitter: 1,
@@ -50,14 +50,14 @@ export default {
   },
 
   organizationRetrieve (weVoteId) {
-    Dispatcher.loadEndpoint("organizationRetrieve",
+    Dispatcher.loadEndpoint('organizationRetrieve',
       {
         organization_we_vote_id: weVoteId,
       });
   },
 
   organizationDescriptionSave (organizationWeVoteId, organizationDescription) {
-    Dispatcher.loadEndpoint("organizationSave",
+    Dispatcher.loadEndpoint('organizationSave',
       {
         organization_description: organizationDescription,
         organization_we_vote_id: organizationWeVoteId,
@@ -65,7 +65,7 @@ export default {
   },
 
   organizationGetStartedSave (organizationWeVoteId, organizationName, organizationWebsite) {
-    Dispatcher.loadEndpoint("organizationSave",
+    Dispatcher.loadEndpoint('organizationSave',
       {
         organization_name: organizationName,
         organization_we_vote_id: organizationWeVoteId,
@@ -74,7 +74,7 @@ export default {
   },
 
   organizationNameSave (organizationWeVoteId, organizationName) {
-    Dispatcher.loadEndpoint("organizationSave",
+    Dispatcher.loadEndpoint('organizationSave',
       {
         organization_name: organizationName,
         organization_we_vote_id: organizationWeVoteId,
@@ -82,7 +82,7 @@ export default {
   },
 
   organizationTypeSave (organizationWeVoteId, organizationType) {
-    Dispatcher.loadEndpoint("organizationSave",
+    Dispatcher.loadEndpoint('organizationSave',
       {
         organization_type: organizationType,
         organization_we_vote_id: organizationWeVoteId,
@@ -90,7 +90,7 @@ export default {
   },
 
   organizationWebsiteSave (organizationWeVoteId, organizationWebsite) {
-    Dispatcher.loadEndpoint("organizationSave",
+    Dispatcher.loadEndpoint('organizationSave',
       {
         organization_we_vote_id: organizationWeVoteId,
         organization_website: organizationWebsite,
@@ -98,24 +98,24 @@ export default {
   },
 
   positionListForOpinionMaker (organizationWeVoteId, filterForVoter, filterOutVoter, google_civic_election_id = 0) { // Calls positionListForOpinionMaker endpoint
-    Dispatcher.loadEndpoint("positionListForOpinionMaker",
+    Dispatcher.loadEndpoint('positionListForOpinionMaker',
       {
         opinion_maker_we_vote_id: organizationWeVoteId,
         filter_for_voter: filterForVoter,
         filter_out_voter: filterOutVoter,
         google_civic_election_id,
-        kind_of_opinion_maker: "ORGANIZATION",
+        kind_of_opinion_maker: 'ORGANIZATION',
       });
   },
 
   positionListForOpinionMakerForFriends (weVoteId, filterForVoter, filterOutVoter) { // Calls positionListForOpinionMaker endpoint
-    Dispatcher.loadEndpoint("positionListForOpinionMaker",
+    Dispatcher.loadEndpoint('positionListForOpinionMaker',
       {
         opinion_maker_we_vote_id: weVoteId,
         filter_for_voter: filterForVoter,
         filter_out_voter: filterOutVoter,
-        friends_vs_public: "FRIENDS_ONLY",
-        kind_of_opinion_maker: "ORGANIZATION",
+        friends_vs_public: 'FRIENDS_ONLY',
+        kind_of_opinion_maker: 'ORGANIZATION',
       });
   },
 };

@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import SettingsBannerAndOrganizationCard from "../../components/Settings/SettingsBannerAndOrganizationCard";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideSettingsSideBar from "../../components/Navigation/VoterGuideSettingsSideBar";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import SettingsBannerAndOrganizationCard from '../../components/Settings/SettingsBannerAndOrganizationCard';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterGuideSettingsSideBar from '../../components/Navigation/VoterGuideSettingsSideBar';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
 
 export default class VoterGuideSettingsMenuMobile extends Component {
   static propTypes = {
@@ -17,11 +17,11 @@ export default class VoterGuideSettingsMenuMobile extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      editMode: "",
-      linkedOrganizationWeVoteId: "",
+      editMode: '',
+      linkedOrganizationWeVoteId: '',
       organization: {},
       voterGuide: {},
-      voterGuideWeVoteId: "",
+      voterGuideWeVoteId: '',
     };
   }
 
@@ -29,7 +29,7 @@ export default class VoterGuideSettingsMenuMobile extends Component {
     if (this.props.params.edit_mode) {
       this.setState({ editMode: this.props.params.edit_mode });
     } else {
-      this.setState({ editMode: "" });
+      this.setState({ editMode: '' });
     }
     // Get Voter Guide information
     let voterGuideFound = false;

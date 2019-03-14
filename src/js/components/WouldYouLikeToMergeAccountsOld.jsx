@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Alert, Button } from "react-bootstrap";
-import FacebookActions from "../actions/FacebookActions";
-import FacebookStore from "../stores/FacebookStore";
-import { historyPush } from "../utils/cordovaUtils";
-import LoadingWheel from "./LoadingWheel";
-import { renderLog } from "../utils/logging";
-import VoterActions from "../actions/VoterActions";
-import VoterStore from "../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Alert, Button } from 'react-bootstrap';
+import FacebookActions from '../actions/FacebookActions';
+import FacebookStore from '../stores/FacebookStore';
+import { historyPush } from '../utils/cordovaUtils';
+import LoadingWheel from './LoadingWheel';
+import { renderLog } from '../utils/logging';
+import VoterActions from '../actions/VoterActions';
+import VoterStore from '../stores/VoterStore';
 
 export default class WouldYouLikeToMergeAccountsOld extends Component {
   static propTypes = {
@@ -24,9 +24,9 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
   componentDidMount () {
     this.facebookStoreListener = FacebookStore.addListener(this.onFacebookStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    if (this.props.emailSecretKey && this.props.emailSecretKey !== "") {
+    if (this.props.emailSecretKey && this.props.emailSecretKey !== '') {
       VoterActions.voterEmailAddressRetrieve();
-    } else if (this.props.facebookSecretKey && this.props.facebookSecretKey !== "") {
+    } else if (this.props.facebookSecretKey && this.props.facebookSecretKey !== '') {
       FacebookActions.voterFacebookSignInRetrieve();
     }
   }
@@ -50,7 +50,7 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
   }
 
   cancelMerge = () => {
-    historyPush("/settings/account");
+    historyPush('/settings/account');
   }
 
   voterFacebookSignInConfirm = () => {
@@ -97,7 +97,7 @@ export default class WouldYouLikeToMergeAccountsOld extends Component {
     );
 
     let mergeActionButton;
-    if (this.props.emailSecretKey && this.props.emailSecretKey !== "") {
+    if (this.props.emailSecretKey && this.props.emailSecretKey !== '') {
       mergeActionButton = (
         <Button
           onClick={this.voterEmailAddressSignInConfirm(this.props.emailSecretKey)}

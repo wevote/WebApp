@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Helmet from "react-helmet";
-import BallotSearchResults from "../../components/Ballot/BallotSearchResults";
-import BallotActions from "../../actions/BallotActions";
-import BallotStore from "../../stores/BallotStore";
-import FooterDoneBar from "../../components/Navigation/FooterDoneBar";
-import { renderLog } from "../../utils/logging";
-import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationPositionItem from "../../components/VoterGuide/OrganizationPositionItem";
-import OrganizationStore from "../../stores/OrganizationStore";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import VoterStore from "../../stores/VoterStore";
-import { isProperlyFormattedVoterGuideWeVoteId } from "../../utils/textFormat";
-import closeIcon from "../../../img/global/icons/x-close.png";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
+import BallotSearchResults from '../../components/Ballot/BallotSearchResults';
+import BallotActions from '../../actions/BallotActions';
+import BallotStore from '../../stores/BallotStore';
+import FooterDoneBar from '../../components/Navigation/FooterDoneBar';
+import { renderLog } from '../../utils/logging';
+import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationPositionItem from '../../components/VoterGuide/OrganizationPositionItem';
+import OrganizationStore from '../../stores/OrganizationStore';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
+import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
+import closeIcon from '../../../img/global/icons/x-close.png';
 
 export default class VoterGuideChoosePositions extends Component {
   static propTypes = {
@@ -26,11 +26,11 @@ export default class VoterGuideChoosePositions extends Component {
     this.state = {
       clearSearchTextNow: false,
       searchIsUnderway: false,
-      linkedOrganizationWeVoteId: "",
+      linkedOrganizationWeVoteId: '',
       organization: {},
       voter: {},
       voterGuide: {},
-      voterGuideWeVoteId: "",
+      voterGuideWeVoteId: '',
     };
     this.clearSearch = this.clearSearch.bind(this);
     this.searchUnderway = this.searchUnderway.bind(this);
@@ -39,8 +39,8 @@ export default class VoterGuideChoosePositions extends Component {
   }
 
   componentWillMount () {
-    document.body.style.backgroundColor = "#A3A3A3";
-    document.body.className = "story-view";
+    document.body.style.backgroundColor = '#A3A3A3';
+    document.body.className = 'story-view';
   }
 
   componentDidMount () {
@@ -59,7 +59,7 @@ export default class VoterGuideChoosePositions extends Component {
         voterGuideFound = true;
         if (voterGuide.google_civic_election_id && voterGuide.google_civic_election_id !== BallotStore.currentBallotGoogleCivicElectionId) {
           // console.log("VoterGuideSettingsDashboard componentDidMount retrieving ballot for: ", voterGuide.google_civic_election_id);
-          BallotActions.voterBallotItemsRetrieve(voterGuide.google_civic_election_id, "", "");
+          BallotActions.voterBallotItemsRetrieve(voterGuide.google_civic_election_id, '', '');
         }
       }
     }
@@ -115,7 +115,7 @@ export default class VoterGuideChoosePositions extends Component {
 
   componentWillUnmount () {
     document.body.style.backgroundColor = null;
-    document.body.className = "";
+    document.body.className = '';
     this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
@@ -208,7 +208,7 @@ export default class VoterGuideChoosePositions extends Component {
     const atLeastOnePositionFoundForThisElection = positionListForOneElection && positionListForOneElection.length !== 0;
 
     const iconSize = 18;
-    const iconColor = "#ccc"; // "#999";
+    const iconColor = '#ccc'; // "#999";
 
     return (
       <div>
@@ -222,34 +222,34 @@ export default class VoterGuideChoosePositions extends Component {
           <div className="create-voter-guide__description xs-text-left">
             Search for candidates or measures, and
             click
-            {" "}
+            {' '}
             <span className="u-no-break">
               <span className="btn__icon">
-                <img src={cordovaDot("/img/global/svg-icons/thumbs-up-icon.svg")}
+                <img src={cordovaDot('/img/global/svg-icons/thumbs-up-icon.svg')}
                      width={iconSize}
                      height={iconSize}
                      color={iconColor}
                      alt="thumbs up"
                 />
               </span>
-              {" "}
+              {' '}
               Support
             </span>
-            {" "}
+            {' '}
             or&nbsp;
             <span className="u-no-break">
               <span className="btn__icon">
-                <img src={cordovaDot("/img/global/svg-icons/thumbs-down-icon.svg")}
+                <img src={cordovaDot('/img/global/svg-icons/thumbs-down-icon.svg')}
                      width={iconSize}
                      height={iconSize}
                      color={iconColor}
                      alt="thumbs down"
                 />
               </span>
-              {" "}
+              {' '}
               Oppose
             </span>
-            {" "}
+            {' '}
             to add them to your ballot.
           </div>
           <div className="row">
@@ -258,7 +258,7 @@ export default class VoterGuideChoosePositions extends Component {
               <div className="card">
                 <div className="card-main">
                   <h4 className="h4 card__additional-heading">
-                    <span className="u-push--sm">{ electionName || "This Election"}</span>
+                    <span className="u-push--sm">{ electionName || 'This Election'}</span>
                   </h4>
                   { lookingAtSelf ? (
                     <div className="u-margin-left--md u-push--md">

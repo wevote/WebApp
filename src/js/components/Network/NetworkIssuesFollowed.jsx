@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { Link } from "react-router";
-import IssueActions from "../../actions/IssueActions";
-import IssueFollowToggleSquare from "../Issues/IssueFollowToggleSquare";
-import IssueStore from "../../stores/IssueStore";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import IssueActions from '../../actions/IssueActions';
+import IssueFollowToggleSquare from '../Values/IssueFollowToggleSquare';
+import IssueStore from '../../stores/IssueStore';
+import { renderLog } from '../../utils/logging';
 
 export default class NetworkIssuesFollowed extends Component {
   constructor (props) {
@@ -36,7 +36,7 @@ export default class NetworkIssuesFollowed extends Component {
   }
 
   getCurrentRoute () { // eslint-disable-line
-    return "/issues_followed";
+    return '/issues_followed';
   }
 
   _onIssueStoreChange () {

@@ -1,22 +1,22 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Helmet from "react-helmet";
-import BallotSearchResults from "../Ballot/BallotSearchResults";
-import BallotStore from "../../stores/BallotStore";
-import BrowserPushMessage from "../Widgets/BrowserPushMessage";
-import { historyPush } from "../../utils/cordovaUtils";
-import FooterDoneBar from "../Navigation/FooterDoneBar";
-import LoadingWheel from "../LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationPositionItem from "../VoterGuide/OrganizationPositionItem";
-import OrganizationStore from "../../stores/OrganizationStore";
-import SettingsAccount from "./SettingsAccount";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import VoterStore from "../../stores/VoterStore";
-import YourPositionsVisibilityMessage from "../VoterGuide/YourPositionsVisibilityMessage";
-import { isProperlyFormattedVoterGuideWeVoteId } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
+import BallotSearchResults from '../Ballot/BallotSearchResults';
+import BallotStore from '../../stores/BallotStore';
+import BrowserPushMessage from '../Widgets/BrowserPushMessage';
+import { historyPush } from '../../utils/cordovaUtils';
+import FooterDoneBar from '../Navigation/FooterDoneBar';
+import LoadingWheel from '../LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationPositionItem from '../VoterGuide/OrganizationPositionItem';
+import OrganizationStore from '../../stores/OrganizationStore';
+import SettingsAccount from './SettingsAccount';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterStore from '../../stores/VoterStore';
+import YourPositionsVisibilityMessage from '../VoterGuide/YourPositionsVisibilityMessage';
+import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
 
 
 export default class VoterGuideSettingsPositions extends Component {
@@ -34,7 +34,7 @@ export default class VoterGuideSettingsPositions extends Component {
       searchIsUnderway: false,
       voter: {},
       voterGuide: {},
-      voterGuideWeVoteId: "",
+      voterGuideWeVoteId: '',
     };
     this.clearSearch = this.clearSearch.bind(this);
     this.searchUnderway = this.searchUnderway.bind(this);
@@ -74,7 +74,9 @@ export default class VoterGuideSettingsPositions extends Component {
         const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
         if (organization && organization.organization_we_vote_id) {
           this.setState({
+            currentGoogleCivicElectionId: BallotStore.currentBallotGoogleCivicElectionId,
             organization,
+            positionListForOneElection: organization.position_list_for_one_election,
           });
           // Positions for this organization, for this election
           if (voterGuide && voterGuide.google_civic_election_id) {
@@ -130,7 +132,14 @@ export default class VoterGuideSettingsPositions extends Component {
         if (organization && organization.organization_we_vote_id) {
           this.setState({
             organization,
+            positionListForOneElection: organization.position_list_for_one_election,
           });
+          // Positions for this organization, for this election
+          if (voterGuide && voterGuide.google_civic_election_id && voterGuide.google_civic_election_id !== this.state.currentGoogleCivicElectionId) {
+            this.setState({ currentGoogleCivicElectionId: voterGuide.google_civic_election_id });
+            OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, false, true, voterGuide.google_civic_election_id);
+            OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, true, false, voterGuide.google_civic_election_id);
+          }
           // Positions for this organization, for this election
           // Might cause a loop
           // OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, false, true, voterGuide.google_civic_election_id);
@@ -160,6 +169,7 @@ export default class VoterGuideSettingsPositions extends Component {
     const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
     this.setState({
       organization,
+      positionListForOneElection: organization.position_list_for_one_election,
     });
     // Positions for this organization, for this voter / election
     // OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, true);
@@ -233,7 +243,7 @@ export default class VoterGuideSettingsPositions extends Component {
   }
 
   goToVoterGuideDisplay () {
-    let voterGuideDisplay = "/ballot";
+    let voterGuideDisplay = '/ballot';
     if (this.state.voterGuide) {
       voterGuideDisplay = `/voterguide/${this.state.voterGuide.organization_we_vote_id}/ballot/election/${this.state.voterGuide.google_civic_election_id}/ballot`;
     }
@@ -264,7 +274,7 @@ export default class VoterGuideSettingsPositions extends Component {
       return LoadingWheel;
     }
 
-    const positionListForOneElection = this.state.organization.position_list_for_one_election;
+    const { positionListForOneElection } = this.state;
     // console.log("VoterGuideSettingsPositions, positionListForOneElection:", positionListForOneElection);
 
     let lookingAtSelf = false;
@@ -293,12 +303,12 @@ export default class VoterGuideSettingsPositions extends Component {
                 onKeyDown={this.onKeyDownEditMode.bind(this)}
                 onClick={this.toggleEditMode.bind(this)}
               >
-                {this.state.editMode ? "Done Editing" : "Edit Positions"}
+                {this.state.editMode ? 'Done Editing' : 'Edit Positions'}
               </a>
             ) : null
             }
             <h4 className="h4 card__additional-heading">
-              <span className="u-push--sm">{ electionName || "This Election"}</span>
+              <span className="u-push--sm">{ electionName || 'This Election'}</span>
             </h4>
             { lookingAtSelf ? (
               <div className="u-margin-left--md u-push--md">

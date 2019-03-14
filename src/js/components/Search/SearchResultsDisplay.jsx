@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
-import { Link } from "react-router";
-import { capitalizeString } from "../../utils/textFormat";
-import ImageHandler from "../ImageHandler";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import { Link } from 'react-router';
+import { capitalizeString } from '../../utils/textFormat';
+import ImageHandler from '../ImageHandler';
 
 export default class SearchResultsDisplay extends Component {
   static propTypes = {
@@ -41,16 +41,16 @@ export default class SearchResultsDisplay extends Component {
     if (this.searchHasContent()) {
       searchResultsDisplay = searchResults.map((oneResult, idx) => {
         const capitalizedTitle = capitalizeString(oneResult.result_title);
-        if (oneResult.kind_of_owner === "ELECTION") {
+        if (oneResult.kind_of_owner === 'ELECTION') {
           const searchResultClasses = classNames({
-            "search-container__election_results": true,
-            "search-container__election_results--highlighted": idx === selectedIndex,
-            "u-flex u-align-start u-justify-between": true,
+            'search-container__election_results': true,
+            'search-container__election_results--highlighted': idx === selectedIndex,
+            'u-flex u-align-start u-justify-between': true,
           });
-          const electionDay = oneResult.result_summary.split(" ").splice(-1);
+          const electionDay = oneResult.result_summary.split(' ').splice(-1);
           const today = new Date();
           const electionDate = new Date(`${electionDay} 0:00:00`);
-          const pastElection = today > electionDate ? " In Past" : "Upcoming Election";
+          const pastElection = today > electionDate ? ' In Past' : 'Upcoming Election';
           return (
             <Link
               key={oneResult.local_id}
@@ -71,8 +71,8 @@ export default class SearchResultsDisplay extends Component {
           );
         } else {
           const searchResultClasses = classNames({
-            "search-container__results": true,
-            "search-container__results--highlighted": idx === selectedIndex,
+            'search-container__results': true,
+            'search-container__results--highlighted': idx === selectedIndex,
           });
 
           return (
@@ -113,11 +113,11 @@ export default class SearchResultsDisplay extends Component {
     }
     return (
       <div>
-        {" "}
+        {' '}
         {searchResultsDisplay}
-        {" "}
+        {' '}
         {seeMoreLink}
-        {" "}
+        {' '}
       </div>
     );
   }

@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Button } from "react-bootstrap";
-import LoadingWheel from "../LoadingWheel";
-import FriendActions from "../../actions/FriendActions";
-import FriendStore from "../../stores/FriendStore";
-import VoterStore from "../../stores/VoterStore";
-import validateEmail from "../../utils/email-functions";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
+import LoadingWheel from '../LoadingWheel';
+import FriendActions from '../../actions/FriendActions';
+import FriendStore from '../../stores/FriendStore';
+import VoterStore from '../../stores/VoterStore';
+import validateEmail from '../../utils/email-functions';
+import { renderLog } from '../../utils/logging';
 
 export default class AddFriendsByEmail extends Component {
   static propTypes = {
@@ -14,29 +14,29 @@ export default class AddFriendsByEmail extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      add_friends_message: "Please join me in preparing for the upcoming election.",
+      add_friends_message: 'Please join me in preparing for the upcoming election.',
       row2Open: false,
       row3Open: false,
       row4Open: false,
       row5Open: false,
       friendTotal: 5,
-      friend1FirstName: "",
-      friend1LastName: "",
-      friend1EmailAddress: "",
-      friend2FirstName: "",
-      friend2LastName: "",
-      friend2EmailAddress: "",
-      friend3FirstName: "",
-      friend3LastName: "",
-      friend3EmailAddress: "",
-      friend4FirstName: "",
-      friend4LastName: "",
-      friend4EmailAddress: "",
-      friend5FirstName: "",
-      friend5LastName: "",
-      friend5EmailAddress: "",
+      friend1FirstName: '',
+      friend1LastName: '',
+      friend1EmailAddress: '',
+      friend2FirstName: '',
+      friend2LastName: '',
+      friend2EmailAddress: '',
+      friend3FirstName: '',
+      friend3LastName: '',
+      friend3EmailAddress: '',
+      friend4FirstName: '',
+      friend4LastName: '',
+      friend4EmailAddress: '',
+      friend5FirstName: '',
+      friend5LastName: '',
+      friend5EmailAddress: '',
       emailAddressesError: false,
-      senderEmailAddress: "",
+      senderEmailAddress: '',
       senderEmailAddressError: false,
       loading: false,
       onEnterEmailAddressesStep: true,
@@ -70,7 +70,7 @@ export default class AddFriendsByEmail extends Component {
     const addFriendsByEmailStep = FriendStore.switchToAddFriendsByEmailStep();
     const errorMessageToShowVoter = FriendStore.getErrorMessageToShowVoter();
     // console.log("AddFriendsByEmail, onFriendStoreChange, addFriendsByEmailStep:", addFriendsByEmailStep);
-    if (addFriendsByEmailStep === "on_collect_email_step") {
+    if (addFriendsByEmailStep === 'on_collect_email_step') {
       // Switch to "on_collect_email_step"
       this.setState({
         loading: false,
@@ -83,7 +83,7 @@ export default class AddFriendsByEmail extends Component {
     } else {
       this.setState({
         loading: false,
-        errorMessageToShowVoter: "",
+        errorMessageToShowVoter: '',
       });
     }
   }
@@ -108,7 +108,7 @@ export default class AddFriendsByEmail extends Component {
     // This function is called when the next button is  submitted;
     // this funtion is called twice per cycle
     // console.log("Entering function addFriendsByEmailStepsManager");
-    const errorMessage = "";
+    const errorMessage = '';
 
     if (this.state.onEnterEmailAddressesStep) {
       // Validate friends' email addresses
@@ -207,9 +207,9 @@ export default class AddFriendsByEmail extends Component {
 
   closeRow (rowNumber) {
     this.setState({
-      [`friend${rowNumber}EmailAddress`]: "",
-      [`friend${rowNumber}FirstName`]: "",
-      [`friend${rowNumber}LastName`]: "",
+      [`friend${rowNumber}EmailAddress`]: '',
+      [`friend${rowNumber}FirstName`]: '',
+      [`friend${rowNumber}LastName`]: '',
       [`row${rowNumber}Open`]: false,
     });
   }
@@ -233,7 +233,7 @@ export default class AddFriendsByEmail extends Component {
     // console.log("firstNameArray: ", firstNameArray);
     // console.log("lastNameArray: ", lastNameArray);
     FriendActions.friendInvitationByEmailSend(emailAddressArray, firstNameArray,
-      lastNameArray, "", this.state.add_friends_message,
+      lastNameArray, '', this.state.add_friends_message,
       this.state.senderEmailAddress);
     // After calling the API, reset the form
     this.setState({
@@ -242,23 +242,23 @@ export default class AddFriendsByEmail extends Component {
       row3Open: false,
       row4Open: false,
       row5Open: false,
-      friend1FirstName: "",
-      friend1LastName: "",
-      friend1EmailAddress: "",
-      friend2FirstName: "",
-      friend2LastName: "",
-      friend2EmailAddress: "",
-      friend3FirstName: "",
-      friend3LastName: "",
-      friend3EmailAddress: "",
-      friend4FirstName: "",
-      friend4LastName: "",
-      friend4EmailAddress: "",
-      friend5FirstName: "",
-      friend5LastName: "",
-      friend5EmailAddress: "",
+      friend1FirstName: '',
+      friend1LastName: '',
+      friend1EmailAddress: '',
+      friend2FirstName: '',
+      friend2LastName: '',
+      friend2EmailAddress: '',
+      friend3FirstName: '',
+      friend3LastName: '',
+      friend3EmailAddress: '',
+      friend4FirstName: '',
+      friend4LastName: '',
+      friend4EmailAddress: '',
+      friend5FirstName: '',
+      friend5LastName: '',
+      friend5EmailAddress: '',
       emailAddressesError: false,
-      senderEmailAddress: "",
+      senderEmailAddress: '',
       onEnterEmailAddressesStep: true,
       onCollectEmailStep: false,
       onFriendInvitationsSentStep: true,
@@ -278,7 +278,7 @@ export default class AddFriendsByEmail extends Component {
       return LoadingWheel;
     }
     const floatRight = {
-      float: "right",
+      float: 'right',
     };
 
     return (
@@ -597,7 +597,7 @@ export default class AddFriendsByEmail extends Component {
                 <span>
                   <label htmlFor="addFriendsMessage">
                     Include a Message
-                    {" "}
+                    {' '}
                     <span className="small">(Optional)</span>
                     <input
                       type="text"
@@ -629,7 +629,7 @@ export default class AddFriendsByEmail extends Component {
                 </Button>
               </span>
               <span>
-                These friends will see what you support, oppose, and which opinions you listen to.
+                These friends will see what you support, oppose, and which opinions you follow.
                 We will never sell your email.
               </span>
             </div>

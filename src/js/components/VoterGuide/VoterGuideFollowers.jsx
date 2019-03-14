@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { _ } from "lodash";
-import Helmet from "react-helmet";
-import { renderLog } from "../../utils/logging";
-import VoterGuideStore from "../../stores/VoterGuideStore";
-import GuideList from "./GuideList";
-import LoadingWheel from "../LoadingWheel";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { _ } from 'lodash';
+import Helmet from 'react-helmet';
+import { renderLog } from '../../utils/logging';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import GuideList from './GuideList';
+import LoadingWheel from '../LoadingWheel';
+import VoterStore from '../../stores/VoterStore';
 
 export default class VoterGuideFollowers extends Component {
   static propTypes = {
@@ -18,7 +18,7 @@ export default class VoterGuideFollowers extends Component {
     this.state = {
       organization: {},
       searchFilter: false,
-      searchTerm: "",
+      searchTerm: '',
       voterGuideFollowersList: [],
       voterGuideFollowersListFilteredBySearch: [],
     };
@@ -64,7 +64,7 @@ export default class VoterGuideFollowers extends Component {
     if (searchTerm.length === 0) {
       this.setState({
         searchFilter: false,
-        searchTerm: "",
+        searchTerm: '',
         voterGuideFollowersListFilteredBySearch: [],
       });
     } else {
@@ -113,9 +113,10 @@ export default class VoterGuideFollowers extends Component {
                 { !this.state.searchFilter ? (
                   <span>
                     {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ?
-                      <h4 className="card__additional-heading">Your Listeners</h4> : (
+                      <h4 className="card__additional-heading">Your Followers</h4> : (
                         <h4 className="card__additional-heading">
-                          Listeners of
+                          Followers of
+                          {' '}
                           {this.state.organization.organization_name}
                         </h4>
                       )}
@@ -137,7 +138,7 @@ export default class VoterGuideFollowers extends Component {
                     type="text"
                     className="form-control"
                     name="search_followers_voter_guides_text"
-                    placeholder="Search these listeners"
+                    placeholder="Search these followers"
                     onChange={this.searchFollowers.bind(this)}
                   />
                 ) : null
@@ -153,11 +154,13 @@ export default class VoterGuideFollowers extends Component {
             ) : (
               <span>
                 {this.state.voter.linked_organization_we_vote_id === this.state.organization.organization_we_vote_id ?
-                  <h4 className="card__additional-heading">No listeners can be found.</h4> : (
+                  <h4 className="card__additional-heading">No followers can be found.</h4> : (
                     <h4 className="card__additional-heading">
-                      No listeners can be found for
+                      No followers of
+                      {' '}
                       {this.state.organization.organization_name}
-                      .
+                      {' '}
+                      can be found.
                     </h4>
                   )}
               </span>

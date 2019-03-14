@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import { Link } from "react-router";
-import AddFriendsByEmail from "../../components/Friends/AddFriendsByEmail";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import CurrentFriends from "../../components/Connect/CurrentFriends";
-import FriendActions from "../../actions/FriendActions";
-import FriendStore from "../../stores/FriendStore";
-import { renderLog } from "../../utils/logging";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import { Link } from 'react-router';
+import AddFriendsByEmail from '../../components/Friends/AddFriendsByEmail';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import CurrentFriends from '../../components/Connect/CurrentFriends';
+import FriendActions from '../../actions/FriendActions';
+import FriendStore from '../../stores/FriendStore';
+import { renderLog } from '../../utils/logging';
+import VoterStore from '../../stores/VoterStore';
 
 export default class InviteByEmail extends Component {
   static propTypes = {
@@ -52,7 +52,7 @@ export default class InviteByEmail extends Component {
 
         { this.state.currentFriendsList && this.state.currentFriendsList.length ? (
           <div className="container-fluid well u-stack--md u-inset--md">
-            <Link className="u-cursor--pointer u-no-underline" to="/friends">
+            <Link className="u-cursor--pointer u-no-underline" to="/friends/current">
               <h4 className="text-left">Your Current Friends</h4>
             </Link>
             <div className="card-child__list-group">
@@ -62,7 +62,7 @@ export default class InviteByEmail extends Component {
                   maximumFriendDisplay={this.state.maximumFriendDisplay}
                 />
               }
-              <Link className="pull-right" to="/friends">See Full Friend List</Link>
+              <Link className="pull-right" to="/friends/current">See Full Friend List</Link>
             </div>
           </div>
         ) : null

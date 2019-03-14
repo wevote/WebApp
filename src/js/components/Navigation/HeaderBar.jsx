@@ -1,83 +1,102 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import BallotStore from "../../stores/BallotStore";
-import { cordovaDot, historyPush, isCordova, isWebApp } from "../../utils/cordovaUtils";
-import cookies from "../../utils/cookies";
-import FriendStore from "../../stores/FriendStore";
-import HeaderBarProfilePopUp from "./HeaderBarProfilePopUp";
-import HeaderBarAboutMenu from "./HeaderBarAboutMenu";
-import HeaderBarLogo from "./HeaderBarLogo";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import VoterGuideActions from "../../actions/VoterGuideActions";
-import VoterSessionActions from "../../actions/VoterSessionActions";
-import ballotIcon from "../../../img/global/svg-icons/nav/ballot-icon-24.svg";
-import networkIcon from "../../../img/global/svg-icons/nav/network-icon-24.svg";
-import donateIcon from "../../../img/global/svg-icons/nav/donate-icon-24.svg";
-import genericAvatar from "../../../img/global/svg-icons/avatar-generic.svg";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import styled from 'styled-components';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+import Badge from '@material-ui/core/Badge';
+import PlaceIcon from '@material-ui/icons/Place';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import Headroom from 'react-headroom';
+import { withStyles } from '@material-ui/core/styles';
+import BallotStore from '../../stores/BallotStore';
+import { historyPush, isWebApp, hasIPhoneNotch } from '../../utils/cordovaUtils';
+import cookies from '../../utils/cookies';
+import FriendStore from '../../stores/FriendStore';
+import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
+import HeaderBarLogo from './HeaderBarLogo';
+import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
+import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterSessionActions from '../../actions/VoterSessionActions';
+import AppActions from '../../actions/AppActions';
+import AppStore from '../../stores/AppStore';
+import { stringContains } from '../../utils/textFormat';
 
-export default class HeaderBar extends Component {
+const styles = theme => ({
+  headerBadge: {
+    right: -15,
+    top: 9,
+  },
+  padding: {
+    padding: `0 ${theme.spacing.unit * 2}px`,
+  },
+  headerButtonRoot: {
+    paddingTop: 2,
+    paddingBottom: 2,
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    color: 'rgb(6, 95, 212)',
+    marginLeft: '1rem',
+    outline: 'none !important',
+    [theme.breakpoints.down('md')]: {
+      marginLeft: '.1rem',
+    },
+  },
+  iconButtonRoot: {
+    color: 'rgba(17, 17, 17, .4)',
+    outline: 'none !important',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    [theme.breakpoints.down('md')]: {
+      padding: 4,
+    },
+  },
+  tooltipPlacementBottom: {
+    marginTop: 0,
+  },
+  outlinedPrimary: {
+    minWidth: 36,
+    marginRight: '.5rem',
+    [theme.breakpoints.down('md')]: {
+      padding: 2,
+    },
+  },
+  tabRoot: {
+    minWidth: 130,
+  },
+  indicator: {
+    minWidth: 130,
+    height: 4,
+  },
+});
+
+const Wrapper = styled.div`
+  margin-top: ${({ hasNotch }) => (hasNotch ? '1.5rem' : '0')};
+`;
+
+const headroomWrapperStyle = {
+  maxHeight: 0,
+};
+
+class HeaderBar extends Component {
   static propTypes = {
     location: PropTypes.object,
     voter: PropTypes.object,
     pathname: PropTypes.string,
+    classes: PropTypes.object,
   };
 
-  static ballot (active) {
-    return (
-      <Link to="/ballot" className={`header-nav__item${active ? " active-icon" : ""}`}>
-        <img className="header-nav__icon--ballot"
-             src={cordovaDot(ballotIcon)}
-             color="#ffffff"
-             alt="Ballot"
-        />
-        <span className="header-nav__label">
-          Ballot
-        </span>
-      </Link>
-    );
-  }
-
-  static network (active, numberOfIncomingFriendRequests) {
-    return (
-      <Link to="/more/network" className={`header-nav__item${active ? " active-icon" : ""}`}>
-        <div title="Network">
-          <img className="header-nav__icon"
-               src={cordovaDot(networkIcon)}
-               color="#ffffff"
-               alt="Network"
-          />
-          {numberOfIncomingFriendRequests ?         // eslint-disable-line no-nested-ternary
-            numberOfIncomingFriendRequests < 9 ?
-              <span className="badge-total badge footerNav.badge-total">{numberOfIncomingFriendRequests}</span> :
-              <span className="badge-total badge-total--overLimit badge">9+</span> :
-            null }
-        </div>
-        <span className="header-nav__label">
-          Network
-        </span>
-      </Link>
-    );
-  }
-
-  static donate (active) {
-    return (
-      <Link to="/more/donate" className={`header-nav__item--donate header-nav__item d-none d-sm-block${active ? " active-icon" : ""}`}>
-        <img className="header-nav__icon"
-             src={cordovaDot(donateIcon)}
-             color="#ffffff"
-             alt="Donate"
-        />
-        <span className="header-nav__label">
-        Donate
-        </span>
-      </Link>
-    );
-  }
-
   static goToGetStarted () {
-    const getStartedNow = "/ballot";
+    const getStartedNow = '/ballot';
     historyPush(getStartedNow);
   }
 
@@ -85,27 +104,30 @@ export default class HeaderBar extends Component {
     super(props);
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
     this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
-    this.toggleAboutMenu = this.toggleAboutMenu.bind(this);
     this.toggleProfilePopUp = this.toggleProfilePopUp.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
+    this.onHeadroomUnpin = this.onHeadroomUnpin.bind(this);
     this.state = {
       aboutMenuOpen: false,
       componentDidMountFinished: false,
       profilePopUpOpen: false,
-      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      friendInvitationsSentToMe: 0,
+      showEditAddressButton: AppStore.showEditAddressButton(),
     };
   }
 
   componentDidMount () {
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     // this.onBallotStoreChange();
 
     // this.props.location &&
     const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-    const weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off");
+    const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     this.setState({
       componentDidMountFinished: true,
+      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
@@ -122,6 +144,13 @@ export default class HeaderBar extends Component {
     }
     if (this.state.aboutMenuOpen === true || nextState.aboutMenuOpen === true) {
       // console.log("shouldComponentUpdate: this.state.aboutMenuOpen", this.state.aboutMenuOpen, ", nextState.aboutMenuOpen", nextState.aboutMenuOpen);
+      return true;
+    }
+    if (this.state.friendInvitationsSentToMe !== nextState.friendInvitationsSentToMe) {
+      // console.log("shouldComponentUpdate: this.state.friendInvitationsSentToMe", this.state.friendInvitationsSentToMe, ", nextState.friendInvitationsSentToMe", nextState.friendInvitationsSentToMe);
+      return true;
+    }
+    if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
       return true;
     }
     const currentPathnameExists = this.props.location && this.props.location.pathname;
@@ -159,6 +188,7 @@ export default class HeaderBar extends Component {
   componentWillUnmount () {
     this.ballotStoreListener.remove();
     this.friendStoreListener.remove();
+    this.appStoreListener.remove();
   }
 
   onBallotStoreChange () {
@@ -171,14 +201,32 @@ export default class HeaderBar extends Component {
     });
   }
 
-  toggleAboutMenu () {
-    const { aboutMenuOpen } = this.state;
-    this.setState({ aboutMenuOpen: !aboutMenuOpen });
+  onAppStoreChange () {
+    this.setState({ showEditAddressButton: AppStore.showEditAddressButton() });
   }
+
+  onHeadroomUnpin (unpinned) {
+    AppActions.setHeadroomUnpinned(unpinned);
+  }
+
+  getSelectedTab = () => {
+    const { pathname } = this.props;
+    // if (stringContains('/ballot', pathname.slice(0, 7))) return 0;
+    if (pathname.indexOf('/ballot') === 0) return 0;
+    if (stringContains('/friends', pathname)) return 2;
+    if (stringContains('/values', pathname)) return 1;
+    return false;
+  }
+
+  handleNavigation = to => historyPush(to);
 
   toggleProfilePopUp () {
     const { profilePopUpOpen } = this.state;
     this.setState({ profilePopUpOpen: !profilePopUpOpen });
+  }
+
+  toggleSelectBallotModal () {
+    AppActions.setShowSelectBallotModal(true);
   }
 
   hideProfilePopUp () {
@@ -204,97 +252,143 @@ export default class HeaderBar extends Component {
 
   render () {
     renderLog(__filename);
-    const { pathname, voter } = this.props;
+    const { voter, classes, pathname } = this.props;
+    const { showEditAddressButton } = this.state;
+    const ballotBaseUrl = '/ballot';
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
-    const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length;
+    const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0;
     const voterIsSignedIn = this.props.voter && this.props.voter.is_signed_in;
-    const showFullNavigation = cookies.getItem("show_full_navigation") || voterIsSignedIn;
+    const showFullNavigation = cookies.getItem('show_full_navigation') || voterIsSignedIn;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
-    const inNetworkSection = pathname === "/more/network" || pathname === "/more/network/organizations" || pathname === "/more/network/issues" || pathname === "/more/network/friends";
+    const showingBallot = stringContains(ballotBaseUrl, pathname.slice(0, 7));
 
     return (
-      <header className={isWebApp() ? "page-header" : "page-header page-header__cordova"}>
-        {!weVoteBrandingOff && isWebApp() && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />
-        }
-        <div className="header-nav">
-          { showFullNavigation && isWebApp() && HeaderBar.ballot(pathname === "/ballot") }
+      <Headroom
+        onUnpin={() => this.onHeadroomUnpin(true)}
+        onPin={() => this.onHeadroomUnpin(false)}
+        wrapperStyle={headroomWrapperStyle}
+        disable={!showingBallot}
+      >
+        <Wrapper hasNotch={hasIPhoneNotch()}>
+          <AppBar position="relative" color="default" className={`page-header${!isWebApp() ? ' page-header__cordova' : ''}${showingBallot ? ' page-header__ballot' : ''}`}>
+            <Toolbar className="header-toolbar" disableGutters>
+              {!weVoteBrandingOff && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />}
+              <div className="header-nav">
+                <Tabs
+                  className="u-show-desktop"
+                  value={this.getSelectedTab()}
+                  indicatorColor="primary"
+                  classes={{ indicator: classes.indicator }}
+                >
+                  {showFullNavigation && (
+                    <Tab classes={{ root: classes.tabRoot }} label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
+                  )
+                  }
+                  {showFullNavigation && (
+                    <Tab classes={{ root: classes.tabRoot }} label="My Values" onClick={() => this.handleNavigation('/values')} />
+                  )
+                  }
+                  {showFullNavigation && (
+                    <Tab classes={{ root: classes.tabRoot }} label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} onClick={() => this.handleNavigation('/friends')}>My Friends</Badge>} />
+                  )
+                  }
+                  {/* showFullNavigation && isWebApp() && <Tab className="u-show-desktop" label="Vote" /> */}
+                </Tabs>
+              </div>
 
-          { showFullNavigation && isWebApp() && HeaderBar.network(inNetworkSection, numberOfIncomingFriendRequests) }
+              {/* (showFullNavigation || isCordova()) && <SearchAllBox /> */}
 
-          { weVoteBrandingOff || isCordova() ? null : (
-            <span>
-              { showFullNavigation ? (
-                <span onClick={this.toggleAboutMenu} className={`header-nav__item header-nav__item--about d-none d-sm-block${pathname === "/more/about" ? " active-icon" : ""}`}>
-                  <span className="header-nav__icon--about">About</span>
-                  <span className="header-nav__label">We Vote</span>
-                  <HeaderBarAboutMenu toggleAboutMenu={this.toggleAboutMenu} aboutMenuOpen={this.state.aboutMenuOpen} />
-                </span>
-              ) : (
-                <div>
-                  <Link to="/more/about" className={`header-nav__item header-nav__item--about${pathname === "/more/about" ? " active-icon" : ""}`}>
-                    <span className="header-nav__icon--about">About</span>
-                    <span className="header-nav__label">We Vote</span>
-                  </Link>
-                </div>
+              { (!showFullNavigation || !voterIsSignedIn) && (
+              <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
+                {
+                  showEditAddressButton && (
+                  <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                    <IconButton
+                      classes={{ root: classes.iconButtonRoot }}
+                      onClick={this.toggleSelectBallotModal}
+                    >
+                      <PlaceIcon />
+                    </IconButton>
+                  </Tooltip>
+                  )
+                }
+                <Link to="/settings/menu" className="header-link">
+                  <Tooltip title="Settings" aria-label="settings" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                    <IconButton
+                      classes={{ root: classes.iconButtonRoot }}
+                    >
+                      <MoreVertIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Link>
+                <Link to="/settings/account" className="header-link">
+                  <Button
+                        color="primary"
+                        classes={{ root: classes.headerButtonRoot }}
+                  >
+                        Sign In
+                  </Button>
+                </Link>
+              </div>
               )}
-            </span>
-          )}
 
-          { showFullNavigation && !weVoteBrandingOff && isWebApp() ? HeaderBar.donate(pathname === "/more/donate") : null }
-
-          { !showFullNavigation && isWebApp() && (
-          <button
-            type="button"
-            className="btn btn-sm btn-success"
-            onClick={HeaderBar.goToGetStarted}
-          >
-            Sample Ballot
-          </button>
-          )}
-
-          { !showFullNavigation && isWebApp() && (
-          <Link to="/settings/account" className="sign_in header-nav__item">
-              Sign In
-          </Link>
-          )}
-        </div>
-
-        {/* (showFullNavigation || isCordova()) && <SearchAllBox /> */}
-
-        { showFullNavigation && isWebApp() && (
-        <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleProfilePopUp}>
-          {voterPhotoUrlMedium ? (
-            <div id="js-header-avatar" className="header-nav__avatar-container">
-              <img
+              {
+            (showFullNavigation && voterIsSignedIn) && (
+            <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
+              {voterPhotoUrlMedium ? (
+                <div id="js-header-avatar" className="header-nav__avatar-container" onClick={this.toggleProfilePopUp}>
+                  <img
                 className="header-nav__avatar"
                 src={voterPhotoUrlMedium}
                 height={34}
                 width={34}
                 alt="generic avatar"
-              />
-            </div>
-          ) : (
-            <div id="anonIcon" className="header-nav__avatar">
-              <img src={cordovaDot(genericAvatar)} width="34" height="34" color="#c0c0c0" alt="generic voter" />
-            </div>
-          )
+                  />
+                </div>
+              ) : (
+                <div>
+                  {
+                    showEditAddressButton && (
+                    <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot }}
+                        onClick={this.toggleSelectBallotModal}
+                      >
+                        <PlaceIcon />
+                      </IconButton>
+                    </Tooltip>
+                    )
+                  }
+                  <IconButton
+                      onClick={this.toggleProfilePopUp}
+                      classes={{ root: classes.iconButtonRoot }}
+                  >
+                    <AccountCircleIcon />
+                  </IconButton>
+                </div>
+              )
           }
-          {/* Was AccountMenu */}
-          {this.state.profilePopUpOpen && (
-          <HeaderBarProfilePopUp
-            {...this.props}
-            onClick={this.toggleProfilePopUp}
-            profilePopUpOpen={this.state.profilePopUpOpen}
-            weVoteBrandingOff={this.state.we_vote_branding_off}
-            toggleProfilePopUp={this.toggleProfilePopUp}
-            hideProfilePopUp={this.hideProfilePopUp}
-            transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-            signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
-          />
-          )}
-        </div>
-        )}
-      </header>
+              {/* Was AccountMenu */}
+              {this.state.profilePopUpOpen && voter.is_signed_in && (
+              <HeaderBarProfilePopUp
+                {...this.props}
+                onClick={this.toggleProfilePopUp}
+                profilePopUpOpen={this.state.profilePopUpOpen}
+                weVoteBrandingOff={this.state.we_vote_branding_off}
+                toggleProfilePopUp={this.toggleProfilePopUp}
+                hideProfilePopUp={this.hideProfilePopUp}
+                transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+                signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+              />
+              )}
+            </div>
+            )}
+            </Toolbar>
+          </AppBar>
+        </Wrapper>
+      </Headroom>
     );
   }
 }
+
+export default withStyles(styles)(HeaderBar);

@@ -1,5 +1,5 @@
-import { ReduceStore } from "flux/utils";
-import Dispatcher from "../dispatcher/Dispatcher";
+import { ReduceStore } from 'flux/utils';
+import Dispatcher from '../dispatcher/Dispatcher';
 
 class ElectionStore extends ReduceStore {
   getInitialState () {
@@ -60,7 +60,7 @@ class ElectionStore extends ReduceStore {
     const electionListByGoogleCivicElectionId = {};
 
     switch (action.type) {
-      case "electionsRetrieve":
+      case 'electionsRetrieve':
         // console.log("In ElectionStore, electionsRetrieve, action.res: ", action.res);
         // console.log("In ElectionStore, electionsRetrieve, electionList: ", electionList);
         electionList.forEach((election) => {
@@ -75,7 +75,7 @@ class ElectionStore extends ReduceStore {
           electionListByGoogleCivicElectionId,
         };
 
-      case "error-electionsRetrieve":
+      case 'error-electionsRetrieve':
       default:
         return state;
     }

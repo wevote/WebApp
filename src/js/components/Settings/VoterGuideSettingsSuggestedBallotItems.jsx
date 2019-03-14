@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import BallotStore from "../../stores/BallotStore";
-import CandidateItemCompressed from "../Ballot/CandidateItemCompressed";
-import { cordovaDot } from "../../utils/cordovaUtils";
-import LoadingWheel from "../LoadingWheel";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import BallotStore from '../../stores/BallotStore';
+import CandidateItemCompressed from '../Ballot/CandidateItemCompressed';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import LoadingWheel from '../LoadingWheel';
+import { renderLog } from '../../utils/logging';
 
 
 export default class VoterGuideSettingsSuggestedBallotItems extends Component {
@@ -24,7 +24,7 @@ export default class VoterGuideSettingsSuggestedBallotItems extends Component {
       return LoadingWheel;
     }
 
-    let suggestedBallotItemsHtml = "";
+    let suggestedBallotItemsHtml = '';
     let suggestedItemsCount = 0;
     const maximumSuggestedItems = this.props.maximumSuggestedItems || 3;
     let candidateList;
@@ -33,7 +33,7 @@ export default class VoterGuideSettingsSuggestedBallotItems extends Component {
       suggestedBallotItemsHtml = ballotItemList.map((ballotItem) => {
         if (suggestedItemsCount >= maximumSuggestedItems) {
           return null;
-        } else if (ballotItem.kind_of_ballot_item === "OFFICE") {
+        } else if (ballotItem.kind_of_ballot_item === 'OFFICE') {
           candidateList = ballotItem.candidate_list;
           if (candidateList) {
             return candidateList.map((oneCandidate) => {
@@ -41,13 +41,13 @@ export default class VoterGuideSettingsSuggestedBallotItems extends Component {
                 return null;
               } else {
                 suggestedItemsCount += 1;
-                return <CandidateItemCompressed oneCandidate={oneCandidate} />;
+                return <CandidateItemCompressed candidateWeVoteId={oneCandidate.we_vote_id} />;
               }
             });
           } else {
             return null;
           }
-        } else if (ballotItem.kind_of_ballot_item === "MEASURE") {
+        } else if (ballotItem.kind_of_ballot_item === 'MEASURE') {
           return null;
         } else {
           return null;
@@ -56,7 +56,7 @@ export default class VoterGuideSettingsSuggestedBallotItems extends Component {
     }
 
     const iconSize = 18;
-    const iconColor = "#999";
+    const iconColor = '#999';
 
     return (
       <span>
@@ -67,34 +67,34 @@ export default class VoterGuideSettingsSuggestedBallotItems extends Component {
                 <h3 className="h3">Suggestions</h3>
                 <div className="u-padding-bottom--sm">
                   Click
-                  {" "}
+                  {' '}
                   <span className="u-no-break">
                     <span className="btn__icon">
-                      <img src={cordovaDot("/img/global/svg-icons/issues/thumbs-up-icon.svg")}
+                      <img src={cordovaDot('/img/global/svg-icons/issues/thumbs-up-icon.svg')}
                            width={iconSize}
                            height={iconSize}
                            color={iconColor}
                            alt="Thumbs up"
                       />
                     </span>
-                    {" "}
+                    {' '}
                     Support
                   </span>
-                  {" "}
+                  {' '}
                   or&nbsp;
                   <span className="u-no-break">
                     <span className="btn__icon">
-                      <img src={cordovaDot("/img/global/svg-icons/issues/thumbs-down-icon.svg")}
+                      <img src={cordovaDot('/img/global/svg-icons/issues/thumbs-down-icon.svg')}
                            width={iconSize}
                            height={iconSize}
                            color={iconColor}
                            alt="Thumbs down"
                       />
                     </span>
-                    {" "}
+                    {' '}
                     Oppose
                   </span>
-                  {" "}
+                  {' '}
                   to add any of these suggestions to your ballot.
                 </div>
                 <div className="">{suggestedBallotItemsHtml}</div>

@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Tooltip from "@material-ui/core/Tooltip";
-import ReactSVG from "react-svg";
-import { cordovaDot } from "../../utils/cordovaUtils";
-import ImageHandler from "../ImageHandler";
-import IssueActions from "../../actions/IssueActions";
-import { showToastError, showToastSuccess } from "../../utils/showToast";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Tooltip from '@material-ui/core/Tooltip';
+import ReactSVG from 'react-svg';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import ImageHandler from '../ImageHandler';
+import IssueActions from '../../actions/IssueActions';
+import { showToastError, showToastSuccess } from '../../utils/showToast';
+import { renderLog } from '../../utils/logging';
 
 const svgStyle = { fill: '#4B4B4B', padding: '1px', width: '67%', height: '100%', marginBottom: '33%' };
 
@@ -73,7 +73,7 @@ export default class IssueFollowToggleSquare extends Component {
           <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${issueIconLocalPath}.svg`)} svgStyle={svgStyle} />
           <ImageHandler
             className="intro-modal__square-check-mark"
-            imageUrl={cordovaDot("/img/global/svg-icons/check-mark-v2-40x43.svg")}
+            imageUrl={cordovaDot('/img/global/svg-icons/check-mark-v2-40x43.svg')}
             alt="Following"
           />
           <h4 className="intro-modal__white-space intro-modal__square-name">{issueName}</h4>
@@ -91,7 +91,7 @@ export default class IssueFollowToggleSquare extends Component {
           <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${issueIconLocalPath}.svg`)} svgStyle={svgStyle} />
           <ImageHandler
             className="intro-modal__square-check-mark"
-            imageUrl={cordovaDot("/img/global/svg-icons/check-mark-v2-40x43.svg")}
+            imageUrl={cordovaDot('/img/global/svg-icons/check-mark-v2-40x43.svg')}
             alt="Following"
           />
           <h4 className="intro-modal__white-space intro-modal__square-name intro-modal__following">{issueName}</h4>

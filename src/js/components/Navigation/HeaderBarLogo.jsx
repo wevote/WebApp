@@ -1,27 +1,18 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import { cordovaDot } from "../../utils/cordovaUtils";
-import weVoteLogoHorizontalColor from "../../../img/global/svg-icons/we-vote-logo-horizontal-color.svg";
-import weVoteIconSquareColor from "../../../img/global/svg-icons/we-vote-icon-square-color.svg";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
 
-const HeaderBarLogo = ({ isBeta, showFullNavigation }) => (
+const HeaderBarLogo = ({ isBeta }) => (
   <span>
-    <Link to="/welcome" className="page-logo page-logo-full-size d-none d-sm-inline-block">
-      <img src={cordovaDot(weVoteLogoHorizontalColor)} />
+    <Link to={`${isCordova() ? '/ballot' : '/welcome'}`} className="page-logo page-logo-full-size">
+      <img className="header-logo-img" alt="We Vote logo" src={cordovaDot('/img/global/svg-icons/we-vote-logo-horizontal-color-dark.svg')} />
       {isBeta && <span className="beta-marker"><span className="beta-marker-inner">beta</span></span>}
     </Link>
-    <span>
-      <Link to="/welcome" className={`page-logo page-logo-short h4 d-inline-block d-sm-none ${showFullNavigation ? "wikiki" : "WAKAKA"}`}>
-        <img className="glyphicon" src={cordovaDot(weVoteIconSquareColor)} />
-        {isBeta && <span className="beta-marker"><span className="beta-marker-inner">beta</span></span>}
-      </Link>
-    </span>
   </span>
 );
 
 HeaderBarLogo.propTypes = {
-  showFullNavigation: PropTypes.bool.isRequired,
   isBeta: PropTypes.bool,
 };
 

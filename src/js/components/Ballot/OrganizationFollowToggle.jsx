@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Tooltip from "@material-ui/core/Tooltip";
-import { cordovaDot } from "../../utils/cordovaUtils";
-import ImageHandler from "../ImageHandler";
-import OrganizationActions from "../../actions/OrganizationActions";
-import { showToastError, showToastSuccess } from "../../utils/showToast";
-import { renderLog } from "../../utils/logging";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Tooltip from '@material-ui/core/Tooltip';
+import { cordovaDot } from '../../utils/cordovaUtils';
+import ImageHandler from '../ImageHandler';
+import OrganizationActions from '../../actions/OrganizationActions';
+import { showToastError, showToastSuccess } from '../../utils/showToast';
+import { renderLog } from '../../utils/logging';
 
 export default class OrganizationFollowToggle extends Component {
   static propTypes = {
@@ -61,7 +61,7 @@ export default class OrganizationFollowToggle extends Component {
     return (
       <div className={`${this.props.grid} intro-modal__square u-cursor--pointer`} onClick={isFollowing ? this.onOrganizationStopFollowing : this.onOrganizationFollow}>
         <ImageHandler
-          sizeClassName={isFollowing ? "intro-modal__square-image intro-modal__square-following" : "intro-modal__square-image"}
+          sizeClassName={isFollowing ? 'intro-modal__square-image intro-modal__square-following' : 'intro-modal__square-image'}
           imageUrl={this.props.organization_image_url}
           kind_of_image="ORGANIZATION"
           alt="organization-photo"
@@ -69,7 +69,7 @@ export default class OrganizationFollowToggle extends Component {
         { isFollowing && (
         <ImageHandler
           className="intro-modal__square-check-mark"
-          imageUrl={cordovaDot("/img/global/svg-icons/check-mark-v2-40x43.svg")}
+          imageUrl={cordovaDot('/img/global/svg-icons/check-mark-v2-40x43.svg')}
           alt="Following"
         />
         ) }

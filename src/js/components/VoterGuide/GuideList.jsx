@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
-import CandidateStore from "../../stores/CandidateStore";
-import FollowToggle from "../Widgets/FollowToggle";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
+import CandidateStore from '../../stores/CandidateStore';
+import FollowToggle from '../Widgets/FollowToggle';
 // import FilterBase from "../Filter/FilterBase";
 // import VoterGuideOrganizationFilter from "../Filter/VoterGuideOrganizationFilter";
-import MeasureStore from "../../stores/MeasureStore";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
-import OrganizationActions from "../../actions/OrganizationActions";
-import { stringContains } from "../../utils/textFormat";
-import VoterGuideDisplayForList from "./VoterGuideDisplayForList";
-import { showToastSuccess } from "../../utils/showToast";
-import { renderLog } from "../../utils/logging";
+import MeasureStore from '../../stores/MeasureStore';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OrganizationActions from '../../actions/OrganizationActions';
+import { stringContains } from '../../utils/textFormat';
+import VoterGuideDisplayForList from './VoterGuideDisplayForList';
+import { showToastSuccess } from '../../utils/showToast';
+import { renderLog } from '../../utils/logging';
 
 /*
 const groupedFilters = [
@@ -50,8 +50,8 @@ export default class GuideList extends Component {
     super(props);
     this.state = {
       organizationsToFollow: [],
-      ballotItemWeVoteId: "",
-      organizationsWithPositions: [],
+      ballotItemWeVoteId: '',
+      // organizationsWithPositions: [],
     };
   }
 
@@ -65,10 +65,10 @@ export default class GuideList extends Component {
     }, () => {
       const orgsWithPositions = this.getOrganizationsWithPositions();
       this.setState({
-        organizationsWithPositions: orgsWithPositions,
+        // organizationsWithPositions: orgsWithPositions,
         filteredOrganizationsWithPositions: orgsWithPositions,
       });
-      console.log(orgsWithPositions);
+      // console.log(orgsWithPositions);
     });
   }
 
@@ -82,10 +82,10 @@ export default class GuideList extends Component {
       ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
     }, () => {
       const orgsWithPositions = this.getOrganizationsWithPositions();
-      this.setState({
-        organizationsWithPositions: orgsWithPositions,
-      });
-      if (!this.state.filteredOrganizationsWithPositions.length) {
+      // this.setState({
+      //   organizationsWithPositions: orgsWithPositions,
+      // });
+      if (!this.state.filteredOrganizationsWithPositions || !this.state.filteredOrganizationsWithPositions.length) {
         this.setState({ filteredOrganizationsWithPositions: orgsWithPositions });
       }
     });
@@ -95,10 +95,10 @@ export default class GuideList extends Component {
 
   getOrganizationsWithPositions = () => this.state.organizationsToFollow.map((organization) => {
     let organizationPositionForThisBallotItem;
-    if (stringContains("cand", this.state.ballotItemWeVoteId)) {
+    if (stringContains('cand', this.state.ballotItemWeVoteId)) {
       organizationPositionForThisBallotItem = CandidateStore.getPositionAboutCandidateFromOrganization(this.state.ballotItemWeVoteId, organization.organization_we_vote_id);
       // console.log({ ...organizationPositionForThisBallotItem, ...organization });
-    } else if (stringContains("meas", this.state.ballotItemWeVoteId)) {
+    } else if (stringContains('meas', this.state.ballotItemWeVoteId)) {
       organizationPositionForThisBallotItem = MeasureStore.getPositionAboutMeasureFromOrganization(this.state.ballotItemWeVoteId, organization.organization_we_vote_id);
     }
     return { ...organizationPositionForThisBallotItem, ...organization };
@@ -116,9 +116,9 @@ export default class GuideList extends Component {
         organization = organizationsList[i];
         organizationPositionForThisBallotItem = null;
         if (ballotItemWeVoteId && organization.organization_we_vote_id) {
-          if (stringContains("cand", ballotItemWeVoteId)) {
+          if (stringContains('cand', ballotItemWeVoteId)) {
             organizationPositionForThisBallotItem = CandidateStore.getPositionAboutCandidateFromOrganization(ballotItemWeVoteId, organization.organization_we_vote_id);
-          } else if (stringContains("meas", ballotItemWeVoteId)) {
+          } else if (stringContains('meas', ballotItemWeVoteId)) {
             organizationPositionForThisBallotItem = MeasureStore.getPositionAboutMeasureFromOrganization(ballotItemWeVoteId, organization.organization_we_vote_id);
           }
         }
@@ -143,7 +143,7 @@ export default class GuideList extends Component {
         org => org.organization_we_vote_id !== id,
       ),
     });
-    showToastSuccess("Added to ignore list.");
+    showToastSuccess('Added to ignore list.');
   }
 
   render () {
@@ -171,7 +171,7 @@ export default class GuideList extends Component {
               body={<Button className="u-stack--xs">Organization Missing?</Button>}
             />
             <div className="opinions-followed__missing-org-text u-stack--sm u-no-break">
-              Don’t see an organization you want to Listen to?
+              Don’t see an organization you want to Follow?
             </div>
           </div>
         </div>

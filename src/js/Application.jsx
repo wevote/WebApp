@@ -1,40 +1,45 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { ToastContainer } from "react-toastify";
-import Headroom from "headroom.js";
-import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from "./utils/applicationUtils";
-import cookies from "./utils/cookies";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { ToastContainer } from 'react-toastify';
+import styled from 'styled-components';
+import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from './utils/applicationUtils';
+import cookies from './utils/cookies';
 import {
-  getAppBaseClass, getToastClass, historyPush, isCordova, isWebApp,
-} from "./utils/cordovaUtils";
-import ElectionActions from "./actions/ElectionActions";
-import FooterBarCordova from "./components/Navigation/FooterBarCordova";
-import FriendActions from "./actions/FriendActions";
-import Header from "./components/Navigation/Header";
-import IssueActions from "./actions/IssueActions";
-import IssueStore from "./stores/IssueStore";
-import { renderLog, routingLog } from "./utils/logging";
-import OrganizationActions from "./actions/OrganizationActions";
-import TwitterSignIn from "./components/Twitter/TwitterSignIn";
-import VoterActions from "./actions/VoterActions";
-import VoterStore from "./stores/VoterStore";
-import webAppConfig from "./config";
+  getAppBaseClass, getToastClass, historyPush, isCordova,
+} from './utils/cordovaUtils';
+import ElectionActions from './actions/ElectionActions';
+// import FooterBarCordova from "./components/Navigation/FooterBarCordova";
+import FooterBar from './components/Navigation/FooterBar';
+import FriendActions from './actions/FriendActions';
+import Header from './components/Navigation/Header';
+import AppActions from './actions/AppActions';
+import AppStore from './stores/AppStore';
+import { renderLog, routingLog } from './utils/logging';
+import OrganizationActions from './actions/OrganizationActions';
+import TwitterSignIn from './components/Twitter/TwitterSignIn';
+import VoterActions from './actions/VoterActions';
+import VoterStore from './stores/VoterStore';
+import webAppConfig from './config';
+import { stringContains } from './utils/textFormat';
 
+const Wrapper = styled.div`
+  padding-top: ${({ padTop }) => padTop};
+`;
 
-const loadingScreenStyles = {
-  position: "fixed",
-  height: "100vh",
-  width: "100vw",
-  display: "flex",
+const LoadingScreen = styled.div`
+  position: 'fixed',
+  height: '100vh',
+  width: '100vw',
+  display: 'flex',
   top: 0,
   left: 0,
-  backgroundColor: "#25536D",
-  justifyContent: "center",
-  alignItems: "center",
-  fontSize: "30px",
-  color: "#fff",
-  flexDirection: "column",
-};
+  background-color: '#2E3C5D',
+  justify-content: 'center',
+  align-items: 'center',
+  font-size: '30px',
+  color: '#fff',
+  flex-direction: 'column',
+`;
 
 export default class Application extends Component {
   static propTypes = {
@@ -57,7 +62,6 @@ export default class Application extends Component {
     polyfillObjectEntries();
     this.initFacebook();
     this.initCordova();
-    this.preloadIssueImages = this.preloadIssueImages.bind(this);
 
     const voterDeviceId = VoterStore.voterDeviceId();
     VoterActions.voterRetrieve();
@@ -70,32 +74,19 @@ export default class Application extends Component {
     ElectionActions.electionsRetrieve();
 
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-
-    // Preload Issue images. Note that for brand new browsers that don't have a voterDeviceId yet, we retrieve all issues
-    IssueActions.retrieveIssuesToFollow();
-    this.issueStoreListener = IssueStore.addListener(this.preloadIssueImages);
   }
 
   componentDidUpdate () {
-    // let voterDeviceId = VoterStore.voterDeviceId();
-    // console.log("Application, componentDidUpdate, voterDeviceId:", voterDeviceId);
-    if (this.loadedHeader) return;
-    if (!this.refs.pageHeader) return;
+    const { location: { pathname } } = this.props;
+    const { voterGuideMode } = getApplicationViewBooleans(pathname);
 
-    if (isWebApp()) {
-      // Initialize headroom element
-      new Headroom(this.refs.pageHeader, {
-        offset: 20,
-        tolerance: 1,
-        classes: {
-          initial: "headroom--animated",
-          pinned: "headroom--slide-down",
-          unpinned: "headroom--slide-up",
-        },
-      }).init();
+    if (!voterGuideMode && AppStore.showEditAddressButton()) {
+      AppActions.setShowEditAddressButton(false);
     }
 
-    this.loadedHeader = true;
+    if ((voterGuideMode && !AppStore.showEditAddressButton()) || stringContains('/ballot', pathname.slice(0, 7))) {
+      AppActions.setShowEditAddressButton(true);
+    }
   }
 
   componentWillUnmount () {
@@ -119,7 +110,7 @@ export default class Application extends Component {
           appId: webAppConfig.FACEBOOK_APP_ID,
           autoLogAppEvents: true,
           xfbml: true,
-          version: "v3.2",
+          version: 'v3.2',
           status: true, // set this status to true, this will fix the popup blocker issue
         });
       };
@@ -133,16 +124,16 @@ export default class Application extends Component {
 
         js = d.createElement(s);    // eslint-disable-line prefer-const
         js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        js.src = 'https://connect.facebook.net/en_US/sdk.js';
         fjs.parentNode.insertBefore(js, fjs);
-      }(document, "script", "facebook-jssdk"));
+      }(document, 'script', 'facebook-jssdk'));
     }
   }
 
   onVoterStoreChange () {
     // console.log("Application, onVoterStoreChange");
     const voterDeviceId = VoterStore.voterDeviceId();
-    if (voterDeviceId && voterDeviceId !== "") {
+    if (voterDeviceId && voterDeviceId !== '') {
       if (this.state.voter_initial_retrieve_needed) {
         VoterActions.voterEmailAddressRetrieve();
         FriendActions.friendInvitationsSentToMe();
@@ -169,31 +160,31 @@ export default class Application extends Component {
       let atLeastOneQueryVariableFound = false;
       const oneDayExpires = 86400;
       const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
-      const weVoteBrandingOffFromCookie = cookies.getItem("we_vote_branding_off") || 0;
+      const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off') || 0;
       if (weVoteBrandingOffFromUrl && !weVoteBrandingOffFromCookie) {
-        cookies.setItem("we_vote_branding_off", weVoteBrandingOffFromUrl, oneDayExpires, "/");
+        cookies.setItem('we_vote_branding_off', weVoteBrandingOffFromUrl, oneDayExpires, '/');
       }
 
       if (weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie) {
-        cookies.setItem("show_full_navigation", "1", Infinity, "/");
+        cookies.setItem('show_full_navigation', '1', Infinity, '/');
       }
 
       this.setState({ we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie });
 
       const hideIntroModalFromUrl = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
-      const hideIntroModalFromUrlTrue = hideIntroModalFromUrl === 1 || hideIntroModalFromUrl === "1" || hideIntroModalFromUrl === "true";
+      const hideIntroModalFromUrlTrue = hideIntroModalFromUrl === 1 || hideIntroModalFromUrl === '1' || hideIntroModalFromUrl === 'true';
       if (hideIntroModalFromUrl) {
         // console.log("hideIntroModalFromUrl: ", hideIntroModalFromUrl);
         atLeastOneQueryVariableFound = true;
       }
 
-      const hideIntroModalFromCookie = cookies.getItem("hide_intro_modal");
-      const hideIntroModalFromCookieTrue = hideIntroModalFromCookie === 1 || hideIntroModalFromCookie === "1" || hideIntroModalFromCookie === "true";
+      const hideIntroModalFromCookie = cookies.getItem('hide_intro_modal');
+      const hideIntroModalFromCookieTrue = hideIntroModalFromCookie === 1 || hideIntroModalFromCookie === '1' || hideIntroModalFromCookie === 'true';
       if (hideIntroModalFromUrlTrue && !hideIntroModalFromCookieTrue) {
-        cookies.setItem("hide_intro_modal", hideIntroModalFromUrl, oneDayExpires, "/");
+        cookies.setItem('hide_intro_modal', hideIntroModalFromUrl, oneDayExpires, '/');
       }
 
-      let autoFollowListFromUrl = "";
+      let autoFollowListFromUrl = '';
       if (this.props.location.query) {
         // console.log("this.props.location.query: ", this.props.location.query);
         if (this.props.location.query.af) {
@@ -204,16 +195,16 @@ export default class Application extends Component {
           autoFollowListFromUrl = this.props.location.query.auto_follow;
         }
 
-        const autoFollowList = autoFollowListFromUrl ? autoFollowListFromUrl.split(",") : [];
+        const autoFollowList = autoFollowListFromUrl ? autoFollowListFromUrl.split(',') : [];
         autoFollowList.forEach((organizationTwitterHandle) => {
-          OrganizationActions.organizationFollow("", organizationTwitterHandle);
+          OrganizationActions.organizationFollow('', organizationTwitterHandle);
         });
 
         if (this.props.location.query.voter_address) {
           // console.log("this.props.location.query.voter_address: ", this.props.location.query.voter_address);
           atLeastOneQueryVariableFound = true;
           const voterAddress = this.props.location.query.voter_address;
-          if (voterAddress && voterAddress !== "") {
+          if (voterAddress && voterAddress !== '') {
             // Do not save a blank voterAddress -- we don't want to over-ride an existing address with a blank
             VoterActions.voterAddressSave(voterAddress);
           }
@@ -228,15 +219,6 @@ export default class Application extends Component {
     }
   }
 
-  preloadIssueImages () {
-    // console.log("preloadIssueImages func")
-    IssueStore.getIssuesVoterCanFollow().forEach((issue) => {
-      document.createElement("img").src = issue.issue_image_url;
-    });
-
-    // only need to preload once
-    this.issueStoreListener.remove();
-  }
 
   render () {
     renderLog(__filename);
@@ -244,7 +226,7 @@ export default class Application extends Component {
 
     if (this.state.voter === undefined || this.props.location === undefined) {
       return (
-        <div style={loadingScreenStyles}>
+        <LoadingScreen>
           <div style={{ padding: 30 }}>
             <h1 className="h1">Loading We Vote...</h1>
             { isCordova() &&
@@ -252,7 +234,7 @@ export default class Application extends Component {
             }
             <div className="u-loading-spinner u-loading-spinner--light" />
           </div>
-        </div>
+        </LoadingScreen>
       );
     }
 
@@ -261,20 +243,21 @@ export default class Application extends Component {
 
     const { inTheaterMode, contentFullWidthMode, settingsMode, voterGuideMode } = getApplicationViewBooleans(pathname);
 
-
     if (inTheaterMode) {
       // console.log("inTheaterMode", inTheaterMode);
       return (
         <div className="app-base" id="app-base-id">
-          <div className="page-content-container">
-            <div className="container-fluid">
-              <div className="row">
-                <div className="col-12 container-main">
-                  { this.props.children }
+          <Wrapper padTop={isCordova() ? '85px' : '0'}>
+            <div className="page-content-container">
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-12 container-main">
+                    { this.props.children }
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </Wrapper>
         </div>
       );
     } else if (voterGuideMode) {
@@ -288,14 +271,16 @@ export default class Application extends Component {
                   voter={this.state.voter}
                   weVoteBrandingOff={this.state.weVoteBrandingOff}
           />
-          <div className="page-content-container">
-            <div className="container-voter-guide">
-              { this.props.children }
+          <Wrapper padTop={isCordova() ? '55px' : '0'}>
+            <div className="page-content-container">
+              <div className="container-voter-guide">
+                { this.props.children }
+              </div>
             </div>
-          </div>
-          { isCordova() && (
+          </Wrapper>
+          {(
             <div className="footroom-wrapper">
-              <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter} />
+              <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
             </div>
           )
           }
@@ -313,14 +298,16 @@ export default class Application extends Component {
                   voter={this.state.voter}
                   weVoteBrandingOff={this.state.weVoteBrandingOff}
           />
-          <div className="page-content-container">
-            <div className="container-settings">
-              { this.props.children }
+          <Wrapper padTop={isCordova() ? '60px' : '0'}>
+            <div className="page-content-container">
+              <div className="container-settings">
+                { this.props.children }
+              </div>
             </div>
-          </div>
-          { isCordova() && (
+          </Wrapper>
+          {(
             <div className="footroom-wrapper">
-              <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter} />
+              <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
             </div>
           )}
         </div>
@@ -336,24 +323,26 @@ export default class Application extends Component {
                 voter={this.state.voter}
                 weVoteBrandingOff={this.state.weVoteBrandingOff}
         />
-        { pathname === "/welcome" || !contentFullWidthMode ?
+        { pathname === '/welcome' || !contentFullWidthMode ?
           (
             <div className="welcome-or-not-full-width">
               { this.props.children }
             </div>
           ) :
           (
-            <div className="page-content-container">
-              <div className="container-fluid">
-                <div className="container-main">
-                  { this.props.children }
+            <Wrapper padTop={isCordova() ? '85px' : '0'}>
+              <div className="page-content-container">
+                <div className="container-fluid">
+                  <div className="container-main">
+                    { this.props.children }
+                  </div>
                 </div>
               </div>
-            </div>
+            </Wrapper>
           )}
-        { isCordova() && (
+        { pathname !== '/welcome' && (
           <div className="footroom-wrapper">
-            <FooterBarCordova location={this.props.location} pathname={pathname} voter={this.state.voter} />
+            <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
           </div>
         )}
       </div>

@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
-import { deviceTypeString, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
-import FriendActions from "../../actions/FriendActions";
-import FriendStore from "../../stores/FriendStore";
-import LoadingWheel from "../LoadingWheel";
-import validateEmail from "../../utils/email-functions";
-import VoterStore from "../../stores/VoterStore";
-import webAppConfig from "../../config";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
+import { deviceTypeString, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import FriendActions from '../../actions/FriendActions';
+import FriendStore from '../../stores/FriendStore';
+import LoadingWheel from '../LoadingWheel';
+import validateEmail from '../../utils/email-functions';
+import VoterStore from '../../stores/VoterStore';
+import webAppConfig from '../../config';
 
 export default class EmailBallotModal extends Component {
   static propTypes = {
@@ -19,7 +19,7 @@ export default class EmailBallotModal extends Component {
 
   constructor (props) {
     super(props);
-    let ballotLink = "";
+    let ballotLink = '';
     if (this.props.ballot_link) {
       ballotLink = webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME + this.props.ballot_link;
     } else {
@@ -27,7 +27,7 @@ export default class EmailBallotModal extends Component {
     }
 
     this.state = {
-      emailBallotMessage: "This is We Vote Ballot data for the upcoming election.",
+      emailBallotMessage: 'This is We Vote Ballot data for the upcoming election.',
       voter: VoterStore.getVoter(),
       loading: false,
       senderEmailAddress: VoterStore.getVoter().email,
@@ -65,7 +65,7 @@ export default class EmailBallotModal extends Component {
   onFriendStoreChange () {
     const emailBallotDataStep = FriendStore.switchToEmailBallotDataStep();
     // console.log("EmailBallotModal, onFriendStoreChange, email_ballot_data_step:", email_ballot_data_step);
-    if (emailBallotDataStep === "on_collect_email_step") {
+    if (emailBallotDataStep === 'on_collect_email_step') {
       // Switch to "on_collect_email_step"
       this.setState({
         loading: false,
@@ -94,15 +94,15 @@ export default class EmailBallotModal extends Component {
 
   ballotEmailSendStepsManager = () => {
     // This function is called when the form is submitted
-    console.log("ballotEmailSendStepsManager");
-    let errorMessage = "";
+    console.log('ballotEmailSendStepsManager');
+    let errorMessage = '';
 
     if (this.state.onEnterEmailAddressesStep) {
       // Validate friends' email addresses
       let senderEmailAddressError = false;
       if (!this.state.senderEmailAddress || !validateEmail(this.state.senderEmailAddress)) {
         senderEmailAddressError = true;
-        errorMessage += "Please enter a valid email address for yourself.";
+        errorMessage += 'Please enter a valid email address for yourself.';
       }
 
       if (senderEmailAddressError) {
@@ -147,11 +147,11 @@ export default class EmailBallotModal extends Component {
       <span>
         Success! This ballot has been sent to the email address
         {this.state.senderEmailAddress}
-        {" "}
+        {' '}
       </span>
     );
 
-    FriendActions.emailBallotData("", "", "", this.state.senderEmailAddress, this.state.emailBallotMessage,
+    FriendActions.emailBallotData('', '', '', this.state.senderEmailAddress, this.state.emailBallotMessage,
       this.state.ballot_link, this.state.senderEmailAddress, this.state.verificationEmailSent, deviceTypeString());
 
     if (!this.hasValidEmail()) {
@@ -159,10 +159,10 @@ export default class EmailBallotModal extends Component {
       successMessage = (
         <span>
           Success! This ballot has been sent to the email address
-          {" "}
+          {' '}
           {this.state.senderEmailAddress}
           . Please check your email and verify your email address to send Ballot to your friends.
-          {" "}
+          {' '}
         </span>
       );
     }
@@ -191,8 +191,8 @@ export default class EmailBallotModal extends Component {
       return LoadingWheel;
     }
 
-    const floatRight = { float: "right" };
-    const textGray = { color: "gray" };
+    const floatRight = { float: 'right' };
+    const textGray = { color: 'gray' };
 
     return (
       <div className="share-modal">
@@ -228,7 +228,7 @@ export default class EmailBallotModal extends Component {
                           onChange={this.cacheSenderEmailAddress}
                           placeholder="For example: name@domain.com"
                           type="text"
-                          value={this.state.senderEmailAddress || ""}
+                          value={this.state.senderEmailAddress || ''}
                         />
                       </div>
                       {/* <form onSubmit={this.ballotEmailSendStepsManager.bind(this)} className="u-stack--md"> */}

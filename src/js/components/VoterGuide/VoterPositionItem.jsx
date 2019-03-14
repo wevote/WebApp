@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import ImageHandler from "../ImageHandler";
-import VoterStore from "../../stores/VoterStore";
-import { renderLog } from "../../utils/logging";
-import OfficeNameText from "../Widgets/OfficeNameText";
-import PositionInformationOnlySnippet from "../Widgets/PositionInformationOnlySnippet";
-import PositionPublicToggle from "../Widgets/PositionPublicToggle";
-import PositionSupportOpposeSnippet from "../Widgets/PositionSupportOpposeSnippet";
-import SupportStore from "../../stores/SupportStore";
-import { capitalizeString } from "../../utils/textFormat";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import ImageHandler from '../ImageHandler';
+import VoterStore from '../../stores/VoterStore';
+import { renderLog } from '../../utils/logging';
+import OfficeNameText from '../Widgets/OfficeNameText';
+import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
+import PositionPublicToggle from '../Widgets/PositionPublicToggle';
+import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
+import SupportStore from '../../stores/SupportStore';
+import { capitalizeString } from '../../utils/textFormat';
 
 export default class VoterPositionItem extends Component {
   static propTypes = {
@@ -73,11 +73,11 @@ export default class VoterPositionItem extends Component {
     const isOppose = supportProps && supportProps.is_oppose ? supportProps.is_oppose : position.is_oppose;
 
     // TwitterHandle-based link
-    const ballotItemUrl = position.kind_of_ballot_item === "MEASURE" ? "/measure/" : "/candidate/";
+    const ballotItemUrl = position.kind_of_ballot_item === 'MEASURE' ? '/measure/' : '/candidate/';
     const ballotItemLink = ballotItemUrl + position.ballot_item_we_vote_id;
-    let positionDescription = "";
-    const isCandidate = position.kind_of_ballot_item === "CANDIDATE";
-    let ballotItemDisplayName = "";
+    let positionDescription = '';
+    const isCandidate = position.kind_of_ballot_item === 'CANDIDATE';
+    let ballotItemDisplayName = '';
     if (position.ballot_item_display_name) {
       ballotItemDisplayName = capitalizeString(position.ballot_item_display_name);
     }
@@ -111,7 +111,7 @@ export default class VoterPositionItem extends Component {
 
     let contestOfficeName;
     let politicalParty;
-    if (position.kind_of_ballot_item === "CANDIDATE") {
+    if (position.kind_of_ballot_item === 'CANDIDATE') {
       contestOfficeName = position.contest_office_name;
       politicalParty = position.ballot_item_political_party;
     }
@@ -145,7 +145,7 @@ export default class VoterPositionItem extends Component {
               <span className="position-rating__candidate-name">{ballotItemDisplayName}</span>
             </Link>
             <br />
-            { position.kind_of_ballot_item === "CANDIDATE" && contestOfficeName !== undefined ? (
+            { position.kind_of_ballot_item === 'CANDIDATE' && contestOfficeName !== undefined ? (
               <OfficeNameText
                 politicalParty={politicalParty}
                 contestOfficeName={contestOfficeName}
@@ -154,7 +154,7 @@ export default class VoterPositionItem extends Component {
             }
             {positionDescription}
             <PositionPublicToggle
-              ballot_item_we_vote_id={position.ballot_item_we_vote_id}
+              ballotItemWeVoteId={position.ballot_item_we_vote_id}
               type={position.kind_of_ballot_item}
               supportProps={supportProps}
               className="organization-position-item-toggle"

@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import FacebookSignIn from "../../components/Facebook/FacebookSignIn";
-import FacebookStore from "../../stores/FacebookStore";
-import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
-import LoadingWheel from "../../components/LoadingWheel";
-import { renderLog } from "../../utils/logging";
-import TwitterSignIn from "../../components/Twitter/TwitterSignIn";
-import VoterStore from "../../stores/VoterStore";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import FacebookSignIn from '../../components/Facebook/FacebookSignIn';
+import FacebookStore from '../../stores/FacebookStore';
+import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import LoadingWheel from '../../components/LoadingWheel';
+import { renderLog } from '../../utils/logging';
+import TwitterSignIn from '../../components/Twitter/TwitterSignIn';
+import VoterStore from '../../stores/VoterStore';
 import closeIcon from "../../../img/global/icons/x-close.png";
 
 export default class GetStarted extends Component {
@@ -18,8 +18,8 @@ export default class GetStarted extends Component {
   }
 
   componentWillMount () {
-    document.body.style.backgroundColor = "#A3A3A3";
-    document.body.className = "story-view";
+    document.body.style.backgroundColor = '#A3A3A3';
+    document.body.className = 'story-view';
   }
 
   componentDidMount () {
@@ -30,7 +30,7 @@ export default class GetStarted extends Component {
 
   componentWillUnmount () {
     document.body.style.backgroundColor = null;
-    document.body.className = "";
+    document.body.className = '';
     this.facebookStoreListener.remove();
     this.voterStoreListener.remove();
   }
@@ -48,7 +48,7 @@ export default class GetStarted extends Component {
   }
 
   goToBallotLink () {
-    const sampleBallotLink = "/intro/sample_ballot";
+    const sampleBallotLink = '/intro/sample_ballot';
     historyPush(sampleBallotLink);
   }
 
@@ -59,14 +59,14 @@ export default class GetStarted extends Component {
     }
 
     if (this.state.voter.signed_in_facebook && this.state.voter.signed_in_twitter) {
-      historyPush("/intro/sample_ballot");
+      historyPush('/intro/sample_ballot');
       return LoadingWheel;
     }
 
     if (!this.state.voter.signed_in_facebook && this.state.facebook_auth_response &&
         this.state.facebook_auth_response.facebook_retrieve_attempted) {
-      console.log("GetStarted.jsx facebook_retrieve_attempted");
-      historyPush("/facebook_sign_in");
+      console.log('GetStarted.jsx facebook_retrieve_attempted');
+      historyPush('/facebook_sign_in');
       return LoadingWheel;
     }
 

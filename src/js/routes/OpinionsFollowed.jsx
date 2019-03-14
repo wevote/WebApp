@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { Link } from "react-router";
-import Helmet from "react-helmet";
-import { _ } from "lodash";
-import { renderLog } from "../utils/logging";
-import OrganizationActions from "../actions/OrganizationActions";
-import OrganizationStore from "../stores/OrganizationStore";
-import OpinionsFollowedList from "../components/Organization/OpinionsFollowedList";
-import SearchBar from "../components/Search/SearchBar";
+import React, { Component } from 'react';
+import { Link } from 'react-router';
+import Helmet from 'react-helmet';
+import { _ } from 'lodash';
+import { renderLog } from '../utils/logging';
+import OrganizationActions from '../actions/OrganizationActions';
+import OrganizationStore from '../stores/OrganizationStore';
+import OpinionsFollowedList from '../components/Organization/OpinionsFollowedList';
+import SearchBar from '../components/Search/SearchBar';
 
 export default class OpinionsFollowed extends Component {
   constructor (props) {
@@ -14,7 +14,7 @@ export default class OpinionsFollowed extends Component {
     this.state = {
       organizationsFollowedList: [],
       editMode: false,
-      searchQuery: "",
+      searchQuery: '',
     };
     this.searchFunction = this.searchFunction.bind(this);
     this.clearFunction = this.clearFunction.bind(this);
@@ -47,17 +47,17 @@ export default class OpinionsFollowed extends Component {
   }
 
   getCurrentRoute () {
-    const currentRoute = "/opinions_followed";
+    const currentRoute = '/opinions_followed';
     return currentRoute;
   }
 
   getFollowingType () {
     switch (this.getCurrentRoute()) {
-      case "/opinions":
-        return "WHO_YOU_CAN_FOLLOW";
-      case "/opinions_followed":
+      case '/opinions':
+        return 'WHO_YOU_CAN_FOLLOW';
+      case '/opinions_followed':
       default:
-        return "WHO_YOU_FOLLOW";
+        return 'WHO_YOU_FOLLOW';
     }
   }
 
@@ -71,7 +71,7 @@ export default class OpinionsFollowed extends Component {
   }
 
   clearFunction () {
-    this.searchFunction("");
+    this.searchFunction('');
   }
 
   render () {
@@ -89,20 +89,20 @@ export default class OpinionsFollowed extends Component {
     // console.log("OpinionsFollowed, this.state.organizationsFollowedList: ", this.state.organizationsFollowedList);
     return (
       <div className="opinions-followed__container">
-        <Helmet title="Organizations You Listen To - We Vote" />
+        <Helmet title="Who You're Following - We Vote" />
         <section className="card">
           <div className="card-main">
-            <h1 className="h1">Who You&apos;re Listening To</h1>
+            <h1 className="h1">Who You&apos;re Following</h1>
             <a
               className="fa-pull-right"
               onKeyDown={this.onKeyDownEditMode.bind(this)}
               onClick={this.toggleEditMode.bind(this)}
             >
-              {this.state.editMode ? "Done Editing" : "Edit"}
+              {this.state.editMode ? 'Done Editing' : 'Edit'}
             </a>
             <p>
-              Organizations, public figures and other voters you currently listen to.
-              {" "}
+              Organizations, public figures and other voters you currently follow.
+              {' '}
               <em>We will never sell your email</em>
               .
             </p>
@@ -128,7 +128,7 @@ export default class OpinionsFollowed extends Component {
                 }
               </div>
             </div>
-            <Link className="pull-left" to="/opinions">Find organizations to listen to</Link>
+            <Link className="pull-left" to="/opinions">Find organizations to follow</Link>
             <Link className="pull-right" to="/opinions_ignored">Organizations you are ignoring</Link>
             <br />
             <br />

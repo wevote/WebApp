@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import { renderLog } from "../utils/logging";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import { renderLog } from '../utils/logging';
 
 export default class Activity extends Component {
   static propTypes = {

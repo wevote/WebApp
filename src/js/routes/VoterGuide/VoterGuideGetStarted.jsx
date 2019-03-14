@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import AnalyticsActions from "../../actions/AnalyticsActions";
-import { cordovaDot, historyPush } from "../../utils/cordovaUtils";
-import { renderLog } from "../../utils/logging";
-import OrganizationActions from "../../actions/OrganizationActions";
-import OrganizationStore from "../../stores/OrganizationStore";
-import VoterStore from "../../stores/VoterStore";
-import closeIcon from "../../../img/global/icons/x-close.png";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import AnalyticsActions from '../../actions/AnalyticsActions';
+import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+import VoterStore from '../../stores/VoterStore';
+import closeIcon from '../../../img/global/icons/x-close.png';
 
 const delayBeforeApiSearchCall = 500;
 
@@ -15,10 +15,10 @@ export default class VoterGuideGetStarted extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      linkedOrganizationWeVoteId: "",
-      searchResultsOrganizationName: "",
-      twitterHandleEntered: "",
-      twitterSearchStatus: "",
+      linkedOrganizationWeVoteId: '',
+      searchResultsOrganizationName: '',
+      twitterHandleEntered: '',
+      twitterSearchStatus: '',
       isLoadingTwitterData: false,
       didUserPressEnter: false,
       isTwitterHandleValid: false,
@@ -31,8 +31,8 @@ export default class VoterGuideGetStarted extends Component {
   }
 
   componentWillMount () {
-    document.body.style.backgroundColor = "#A3A3A3";
-    document.body.className = "story-view";
+    document.body.style.backgroundColor = '#A3A3A3';
+    document.body.className = 'story-view';
   }
 
   componentDidMount () {
@@ -64,7 +64,7 @@ export default class VoterGuideGetStarted extends Component {
 
   componentWillUnmount () {
     document.body.style.backgroundColor = null;
-    document.body.className = "";
+    document.body.className = '';
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
     this.timer = null;
@@ -72,12 +72,12 @@ export default class VoterGuideGetStarted extends Component {
 
   onOrganizationStoreChange () {
     const twitterHandleFound = OrganizationStore.getOrganizationSearchResultsTwitterHandle();
-    let twitterSearchStatus = "";
+    let twitterSearchStatus = '';
     if (this.state.twitterHandleEntered.length) {
       if (twitterHandleFound.length) {
-        twitterSearchStatus += "Voter guide found!";
+        twitterSearchStatus += 'Voter guide found!';
       } else {
-        twitterSearchStatus += "Voter guide not found.";
+        twitterSearchStatus += 'Voter guide not found.';
       }
     }
     const voter = VoterStore.getVoter();
@@ -114,12 +114,12 @@ export default class VoterGuideGetStarted extends Component {
   }
 
   goToBallotLink = () => {
-    const sampleBallotLink = "/ballot";
+    const sampleBallotLink = '/ballot';
     historyPush(sampleBallotLink);
   }
 
   goToOrganizationType = () => {
-    historyPush("/voterguideorgtype");
+    historyPush('/voterguideorgtype');
   }
 
   validOrganizationNameExists = (voter, organization) => {
@@ -132,7 +132,7 @@ export default class VoterGuideGetStarted extends Component {
         }
       }
       // Everyone requires a valid organization name
-      if (organization.organization_name && organization.organization_name.length > 3 && !organization.organization_name.startsWith("Voter-") && !voterAndOrganizationNameMatches) {
+      if (organization.organization_name && organization.organization_name.length > 3 && !organization.organization_name.startsWith('Voter-') && !voterAndOrganizationNameMatches) {
         return true;
       }
     }
@@ -156,20 +156,20 @@ export default class VoterGuideGetStarted extends Component {
       OrganizationActions.organizationGetStartedSave(this.state.linkedOrganizationWeVoteId, this.state.searchResultsOrganizationName, this.state.searchResultsWebsite);
     }
     // console.log("submit by clicking button");
-    historyPush("/voterguideorgtype");
+    historyPush('/voterguideorgtype');
   }
 
   leaveThisComponentIfProfileComplete (voter, organization) {
     if (voter && organization) {
       if (voter && voter.is_signed_in) {
         // If voter is signed in, skip "/voterguideorgtype"
-        historyPush("/voterguideorginfo");
-      } else if (voter && voter.organization_type && voter.organization_type !== "I") {
+        historyPush('/voterguideorginfo');
+      } else if (voter && voter.organization_type && voter.organization_type !== 'I') {
         // If voter is NOT an INDIVIDUAL, skip "/voterguideorgtype"
-        historyPush("/voterguideorginfo");
+        historyPush('/voterguideorginfo');
       } else if (this.validOrganizationNameExists(voter, organization)) {
         // If they have already chosen a valid name, then don't ask for Twitter handle
-        historyPush("/voterguideorginfo");
+        historyPush('/voterguideorginfo');
       }
     }
   }
@@ -182,7 +182,7 @@ export default class VoterGuideGetStarted extends Component {
       this.setState({
         isLoadingTwitterData: true,
         twitterHandleEntered: event.target.value,
-        twitterSearchStatus: "Searching...",
+        twitterSearchStatus: 'Searching...',
       });
     } else {
       this.resetState();
@@ -191,7 +191,7 @@ export default class VoterGuideGetStarted extends Component {
 
   validateTwitterHandleAction (twitterHandle) {
     this.timer = setTimeout(() => {
-      OrganizationActions.organizationSearch("", twitterHandle, true);
+      OrganizationActions.organizationSearch('', twitterHandle, true);
     }, delayBeforeApiSearchCall);
   }
 
@@ -200,7 +200,7 @@ export default class VoterGuideGetStarted extends Component {
       didUserPressEnter: false,
       isLoadingTwitterData: false,
       isTwitterHandleValid: false,
-      twitterSearchStatus: "",
+      twitterSearchStatus: '',
     });
   }
 
@@ -261,9 +261,9 @@ export default class VoterGuideGetStarted extends Component {
                   { this.state.twitterSearchStatus.length ? (
                     <p className={!this.state.isLoadingTwitterData ?     // eslint-disable-line no-nested-ternary
                       this.state.isTwitterHandleValid ?
-                        "voter-guide-get-started__status-success" :
-                        "voter-guide-get-started__status-error" :
-                      "u-stack--md"}
+                        'voter-guide-get-started__status-success' :
+                        'voter-guide-get-started__status-error' :
+                      'u-stack--md'}
                     >
                       {this.state.twitterSearchStatus}
                     </p>
@@ -273,12 +273,11 @@ export default class VoterGuideGetStarted extends Component {
                   <input
                     type="text"
                     className={this.state.twitterSearchStatus.length ?
-                      "form-control input-lg " :
-                      "form-control input-lg u-margin-top--sm"}
+                      'form-control input-lg ' :
+                      'form-control input-lg u-margin-top--sm'}
                     name="twitterHandle"
                     placeholder="Enter Twitter Handle"
                     onChange={this.validateTwitterHandle}
-                    autoFocus
                   />
                 </div>
               </form>

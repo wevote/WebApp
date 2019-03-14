@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import Helmet from "react-helmet";
-import Slider from "react-slick";
-import { cordovaDot, historyPush, isWebApp } from "../../utils/cordovaUtils";
-import IntroNetworkSafety from "../../components/Intro/IntroNetworkSafety";
-import IntroNetworkDefinition from "../../components/Intro/IntroNetworkDefinition";
-import IntroNetworkBallotIsNext from "../../components/Intro/IntroNetworkBallotIsNext";
-import { renderLog } from "../../utils/logging";
-import closeIcon from "../../../img/global/icons/x-close.png";
+import React, { Component } from 'react';
+import Helmet from 'react-helmet';
+import Slider from 'react-slick';
+import { cordovaDot, historyPush, isWebApp } from '../../utils/cordovaUtils';
+import IntroNetworkSafety from '../../components/Intro/IntroNetworkSafety';
+import IntroNetworkDefinition from '../../components/Intro/IntroNetworkDefinition';
+import IntroNetworkBallotIsNext from '../../components/Intro/IntroNetworkBallotIsNext';
+import { renderLog } from '../../utils/logging';
+import closeIcon from '../../../img/global/icons/x-close.png';
 
 export default class IntroNetwork extends Component {
   constructor (props) {
@@ -19,13 +19,13 @@ export default class IntroNetwork extends Component {
   }
 
   componentWillMount () {
-    document.body.style.backgroundColor = "#A3A3A3";
-    document.body.className = "story-view";
+    document.body.style.backgroundColor = '#A3A3A3';
+    document.body.className = 'story-view';
   }
 
   componentWillUnmount () {
     document.body.style.backgroundColor = null;
-    document.body.className = "";
+    document.body.className = '';
   }
 
   next () {
@@ -36,8 +36,8 @@ export default class IntroNetwork extends Component {
     this.slider.current.slickPrev();
   }
 
-  goToBallotLink () {
-    const ballotLink = "/ballot";
+  static goToBallotLink () {
+    const ballotLink = '/ballot';
     historyPush(ballotLink);
   }
 
@@ -63,7 +63,7 @@ export default class IntroNetwork extends Component {
           <img
             src={cordovaDot(closeIcon)}
             onClick={IntroNetwork.goToBallotLink}
-            className={isWebApp() ? "x-close" : "x-close x-close__cordova"}
+            className={isWebApp() ? 'x-close' : 'x-close x-close__cordova'}
             alt="close"
           />
           <Slider {...settings} dotsClass="slick-dots intro-modal__gray-dots" ref={this.slider}>

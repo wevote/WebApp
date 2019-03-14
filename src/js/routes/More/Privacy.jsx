@@ -1,7 +1,7 @@
-import React from "react";
-import Helmet from "react-helmet";
-import { renderLog } from "../../utils/logging";
-import OpenExternalWebSite from "../../utils/OpenExternalWebSite";
+import React from 'react';
+import Helmet from 'react-helmet';
+import { renderLog } from '../../utils/logging';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 
 export default class Privacy extends React.Component {
   static getProps () {
@@ -36,8 +36,9 @@ export default class Privacy extends React.Component {
               We use this information to operate this Site, to sends you news and information about We Vote, to measure the effectiveness of our
               programs, and to send you timely election reminders.
               You may opt-out of receiving messages from We Vote by sending any email to
+              {' '}
               <a href="mailto:info@WeVote.US" target="_blank" rel="noopener noreferrer">info@WeVote.US</a>
-              {" "}
+              {' '}
               and asking that you not receive future email messages.
               You may also opt-out by following the unsubscribe link at the bottom of each email.
             </span>
@@ -73,7 +74,7 @@ export default class Privacy extends React.Component {
               />
             </span>
             <span>
-              {" "}
+              {' '}
               and Full Story (
               <OpenExternalWebSite
                 url="https://www.fullstory.com/legal/privacy/"
@@ -112,8 +113,9 @@ export default class Privacy extends React.Component {
           <p>
             <span>
               If you have any questions about this Privacy Policy, you may contact us by sending an e-mail to
+              {' '}
               <a href="mailto:info@WeVote.US" target="_blank" rel="noopener noreferrer">info@WeVote.US</a>
-              {" "}
+              {' '}
             </span>
             <br />
             <span>You can also write to us at the following address:</span>
@@ -121,13 +123,13 @@ export default class Privacy extends React.Component {
           <p>
             We Vote USA
             <br />
-            {" "}
+            {' '}
             1717 Clemens Rd
             <br />
-            {" "}
+            {' '}
             Oakland, CA 94602
             <br />
-            {" "}
+            {' '}
             Attn: Privacy Policy
           </p>
           <p>&nbsp;</p>

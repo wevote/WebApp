@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { renderLog } from "../utils/logging";
-import SearchBar from "../components/Search/SearchBar";
+import React, { Component } from 'react';
+import { renderLog } from '../utils/logging';
+import SearchBar from '../components/Search/SearchBar';
 
 const updateInputValue = (event) => {
   this.setState({ query: event.target.value });

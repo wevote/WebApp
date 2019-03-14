@@ -1,5 +1,5 @@
-import { ReduceStore } from "flux/utils";
-import Dispatcher from "../dispatcher/Dispatcher";
+import { ReduceStore } from 'flux/utils';
+import Dispatcher from '../dispatcher/Dispatcher';
 
 class DonateStore extends ReduceStore {
   getInitialState () {
@@ -16,7 +16,7 @@ class DonateStore extends ReduceStore {
   }
 
   donationError () {
-    return this.getState().errorMessageForVoter || "";
+    return this.getState().errorMessageForVoter || '';
   }
 
   donationResponseReceived () {
@@ -40,7 +40,7 @@ class DonateStore extends ReduceStore {
     if (!action.res || !action.res.success) return state;
 
     switch (action.type) {
-      case "donationWithStripe":
+      case 'donationWithStripe':
         return {
           ...state,
           donationAmount: action.res.donation_amount,
@@ -51,25 +51,25 @@ class DonateStore extends ReduceStore {
           donationResponseReceived: true,
         };
 
-      case "error-donateRetrieve":
+      case 'error-donateRetrieve':
         console.log(`error-donateRetrieve${action}`);
         return state;
 
-      case "donationCancelSubscription":
+      case 'donationCancelSubscription':
         console.log(`donationCancelSubscription: ${action}`);
         return {
           subscriptionId: action.res.subscription_id,
           donationCancelCompleted: false,
         };
 
-      case "donationRefund":
+      case 'donationRefund':
         console.log(`donationRefund: ${action}`);
         return {
           charge: action.res.charge,
           donationRefundCompleted: false,
         };
 
-      case "voterSignOut":
+      case 'voterSignOut':
         // console.log("resetting DonateStore");
         return this.resetState();
 
