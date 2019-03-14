@@ -132,7 +132,7 @@ const SearchWrapper = styled.div`
   border: 1px solid ${props => (!props.searching ? 'rgba(0, 0, 0, 0.23)' : props.brandBlue)};
   padding: 0 3px 0 3px;
   margin-right: 16px;
-  @media (max-width: 960px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     height: 22.5px;
     margin-right: 4px;
   }

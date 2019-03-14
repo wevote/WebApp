@@ -247,7 +247,7 @@ const Wrapper = styled.div`
   background-color: #F5F5F5;
   padding: 16px;
   border-radius: 4px;
-  @media (max-width: 768px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     background-color: white;
     padding: 0;
   }

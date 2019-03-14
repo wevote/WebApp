@@ -211,7 +211,6 @@ class OfficeItemCompressed extends Component {
     let { ballot_item_display_name: ballotItemDisplayName } = this.props;
     const { we_vote_id: weVoteId, theme, classes } = this.props;
     const { candidateList } = this.state;
-    console.log(ballotItemDisplayName, candidateList.length);
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
     const unsortedCandidateList = this.state.candidateList ? this.state.candidateList.slice(0) : {};
     const totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
@@ -494,7 +493,7 @@ const Container = styled.div`
   display: flex;
   flex-flow: ${({ candLength }) => (candLength > 2 ? 'row wrap' : 'row')};
   justify-content: center;
-  @media (max-width: 768px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-flow: row wrap;
   }
 `;
@@ -505,7 +504,7 @@ const Title = styled.h1`
   margin: .1rem 0;
   cursor: pointer;
   padding-bottom: 16px;
-  @media (max-width: 960px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     font-size: 16px;
     padding-bottom: 0;
   }
@@ -527,13 +526,13 @@ const CandidateInfo = styled.div`
     border: 1px solid ${({ brandBlue }) => brandBlue};
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
   }
-  @media (max-width: 768px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-flow: column;
     border: none;
     border-bottom: 1px solid #eee;
     padding: 16px 0 0 0;
     margin-bottom: 8px;
-    max-width: 100%;
+    width: 100%;
   }
 `;
 
@@ -553,7 +552,7 @@ const Candidate = styled.div`
 //   text-align: center;
 //   user-select: none;
 //   cursor: pointer;
-//   @media (max-width: 960px) {
+//   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
 //     padding: 0;
 //   }
 // `;
