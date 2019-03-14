@@ -286,7 +286,7 @@ const CandidateWrapper = styled.div`
   flex-flow: row;
   justify-content: space-between;
   width: 90%;
-  @media (max-width: 768px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 100%;
     flex-flow: column;
   }

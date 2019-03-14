@@ -176,7 +176,7 @@ const Issues = styled.div`
   display: flex;
   flex-flow: row;
   max-width: 60%;
-  @media (max-width: 768) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     max-width: 68%;
   }
 `;

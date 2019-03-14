@@ -4,10 +4,12 @@ import {
   browserHistory, hashHistory, Router, applyRouterMiddleware,
 } from 'react-router';
 import { MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from 'styled-components';
 import { useScroll } from 'react-router-scroll';
 import { isCordova } from './utils/cordovaUtils';
 import routes from './Root';
-import theme from './mui-theme';
+import muiTheme from './mui-theme';
+import styledTheme from './styled-theme';
 import stringOccurs from './utils/stringOccurs';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
@@ -45,13 +47,15 @@ function startApp () {
 
   render(
     // eslint-disable-next-line react/jsx-filename-extension
-    <MuiThemeProvider theme={theme}>
-      <Router
-        history={isCordova() ? hashHistory : browserHistory}
-        render={applyRouterMiddleware(useScroll(() => true))}
-      >
-        {routes()}
-      </Router>
+    <MuiThemeProvider theme={muiTheme}>
+      <ThemeProvider theme={styledTheme}>
+        <Router
+          history={isCordova() ? hashHistory : browserHistory}
+          render={applyRouterMiddleware(useScroll(() => true))}
+        >
+          {routes()}
+        </Router>
+      </ThemeProvider>
     </MuiThemeProvider>, document.getElementById('app'),
   );
 }
