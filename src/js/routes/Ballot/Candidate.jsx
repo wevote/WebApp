@@ -188,6 +188,7 @@ export default class Candidate extends Component {
             organizationWeVoteId={this.state.organizationWeVoteId}
             linkToOfficePage
             showLargeImage
+            showOfficeName
             showPositionStatementActionBar
           />
           <div className="card__additional">

@@ -5,9 +5,10 @@ import { renderLog } from '../../utils/logging';
 
 export default class OfficeNameText extends Component {
   static propTypes = {
-    politicalParty: PropTypes.string,
     contestOfficeName: PropTypes.string,
     officeLink: PropTypes.string,
+    politicalParty: PropTypes.string,
+    showOfficeName: PropTypes.bool,
   };
 
   constructor (props) {
@@ -23,21 +24,23 @@ export default class OfficeNameText extends Component {
   render () {
     renderLog(__filename);
     let nameText = '';
-    const { contestOfficeName, politicalParty, officeLink } = this.props;
+    const { contestOfficeName, officeLink, politicalParty, showOfficeName } = this.props;
     if (politicalParty === undefined) {
-      nameText = (
-        <span className="no-political-party">
-          <span>Candidate for </span>
-          { officeLink ? (
-            <Link to={officeLink}>
+      if (showOfficeName) {
+        nameText = (
+          <span className="no-political-party">
+            <span>Candidate for </span>
+            { officeLink ? (
+              <Link to={officeLink}>
+                <span className="candidate-card-main__office">{ contestOfficeName }</span>
+              </Link>
+            ) :
               <span className="candidate-card-main__office">{ contestOfficeName }</span>
-            </Link>
-          ) :
-            <span className="candidate-card-main__office">{ contestOfficeName }</span>
-        }
-        </span>
-      );
-    } else {
+            }
+          </span>
+        );
+      }
+    } else if (showOfficeName) {
       nameText = (
         <span>
           <span className="card-main__political-party u-bold u-gray-darker">
@@ -51,7 +54,13 @@ export default class OfficeNameText extends Component {
             </Link>
           ) :
             <span className="candidate-card-main__office u-bold u-gray-darker">{ contestOfficeName }</span>
-        }
+          }
+        </span>
+      );
+    } else {
+      nameText = (
+        <span className="card-main__political-party u-gray-darker">
+          {politicalParty}
         </span>
       );
     }

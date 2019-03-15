@@ -33,6 +33,7 @@ class CandidateItem extends Component {
     linkToOfficePage: PropTypes.bool,
     organizationWeVoteId: PropTypes.string,
     party: PropTypes.string,
+    showOfficeName: PropTypes.bool,
     showPositionStatementActionBar: PropTypes.bool,
     showTopCommentByBallotItem: PropTypes.bool,
     twitter_description: PropTypes.string,
@@ -199,9 +200,10 @@ class CandidateItem extends Component {
               >
                 { contestOfficeName ? (
                   <OfficeNameText
-                  politicalParty={party}
-                  contestOfficeName={contestOfficeName}
-                  officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
+                    contestOfficeName={contestOfficeName}
+                    officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
+                    politicalParty={party}
+                    showOfficeName={this.props.showOfficeName}
                   />
                 ) :
                   null
