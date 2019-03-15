@@ -11,10 +11,10 @@ import { renderLog } from '../../utils/logging';
 import extractNumber from '../../utils/extractNumber';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
+import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import { capitalizeString, shortenText } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 
 
 class MeasureItemCompressed extends Component {
@@ -253,7 +253,7 @@ class MeasureItemCompressed extends Component {
           </Choice>
         </ChoicesRow>
         <Divider />
-        <ShowMoreFooter showMoreLink={this.goToMeasureLink} measureWeVoteId={measureWeVoteId} />
+        <ShowMoreFooter showMoreLink={() => this.goToMeasureLink(measureWeVoteId)} />
       </Card>
     );
   }
