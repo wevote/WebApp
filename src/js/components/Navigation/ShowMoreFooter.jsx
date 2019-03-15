@@ -9,7 +9,6 @@ import { renderLog } from '../../utils/logging';
 class ShowMoreFooter extends React.Component {
   static propTypes = {
     classes: PropTypes.object,
-    measureWeVoteId: PropTypes.string,
     showMoreLink: PropTypes.func.isRequired,
     showMoreText: PropTypes.string,
   };
@@ -17,10 +16,6 @@ class ShowMoreFooter extends React.Component {
   render () {
     renderLog(__filename);
     const { showMoreLink, classes } = this.props;
-    let { measureWeVoteId } = this.props;
-    if (!measureWeVoteId) {
-      measureWeVoteId = '';
-    }
 
     let { showMoreText } = this.props;
     if (!showMoreText) {
@@ -28,7 +23,7 @@ class ShowMoreFooter extends React.Component {
     }
 
     return (
-      <ShowMoreFooterStyled onClick={() => showMoreLink(measureWeVoteId)}>
+      <ShowMoreFooterStyled onClick={showMoreLink}>
         { showMoreText }
         {' '}
         <ArrowForwardIcon classes={{ root: classes.cardFooterIconRoot }} />
