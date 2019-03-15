@@ -629,7 +629,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                   { totalNetworkScoreWithSign }
                 </span>
               )}
-              <NetworkScoreLabel className="u-show-mobile-tablet">Network Score</NetworkScoreLabel>
             </NetworkScore>
           </OverlayTrigger>
         ) : null
@@ -662,7 +661,7 @@ const styles = theme => ({
 
 const Wrapper = styled.div`
   margin-top: .1rem;
-  @media (max-width: 768px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     margin-top: 0;
     width: 100%;
     max-width: 100%;
@@ -676,7 +675,7 @@ const EndorsementsContainer = styled.div`
   display: flex;
   flex-flow: column;
   justify-content: space-between;
-  @media (max-width: 768px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-flow: row;
   }
 `;
@@ -724,7 +723,7 @@ const NetworkScore = styled.div`
   padding: 8px;
   border-radius: 8px;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
-  @media (max-width: 768px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     color: #777;
     padding: 0 0 8px 0;
     font-size: 14px;
@@ -733,15 +732,6 @@ const NetworkScore = styled.div`
     background: transparent;
     box-shadow: none;
   }
-`;
-
-const NetworkScoreLabel = styled.h1`
-  color: #888;
-  font-weight: 600;
-  font-size: 12px;
-  margin: 0 0 0 .3rem;
-  text-align: right;
-  display: inline-block;
 `;
 
 export default withTheme()(withStyles(styles)(BallotItemSupportOpposeCountDisplay));

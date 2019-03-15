@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {  Modal } from 'react-bootstrap'; // , OverlayTrigger, Popover
 import Slider from 'react-slick';
+import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
@@ -209,7 +210,7 @@ class OfficeItemCompressed extends Component {
     renderLog(__filename);
     let { ballot_item_display_name: ballotItemDisplayName } = this.props;
     const { we_vote_id: weVoteId, theme, classes } = this.props;
-
+    const { candidateList } = this.state;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
     const unsortedCandidateList = this.state.candidateList ? this.state.candidateList.slice(0) : {};
     const totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
@@ -390,18 +391,20 @@ class OfficeItemCompressed extends Component {
         <a className="anchor-under-header" name={weVoteId} />
         <div className="card-main__content">
           {/* Desktop */}
-          <Title onClick={this.gotoOfficeLink}>
-            {ballotItemDisplayName}
-            <ArrowForwardIcon
-              className="u-show-desktop"
-              classes={{ root: classes.cardHeaderIconRoot }}
-            />
-          </Title>
+          <Link to={this.getOfficeLink()}>
+            <Title>
+              {ballotItemDisplayName}
+              <ArrowForwardIcon
+                className="u-show-desktop"
+                classes={{ root: classes.cardHeaderIconRoot }}
+              />
+            </Title>
+          </Link>
           {/* *************************
             Display either a) the candidates the voter supports, or b) the first several candidates running for this office
             ************************* */}
-          <Container>
-            { this.state.candidateList.map((oneCandidate) => {
+          <Container candLength={candidateList.length}>
+            { candidateList.map((oneCandidate) => {
               if (!oneCandidate || !oneCandidate.we_vote_id) {
                 return null;
               }
@@ -414,9 +417,10 @@ class OfficeItemCompressed extends Component {
               if (candidatePreviewCount <= candidatePreviewLimit) {
                 oneCandidateDisplay = (
                   <CandidateInfo
+                    onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
                     key={`candidate_preview-${oneCandidate.we_vote_id}`}
                     brandBlue={theme.palette.primary.main}
-                    onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
+                    candLength={candidateList.length}
                   >
                     <CandidateTopRow>
                       {/* Candidate Image */}
@@ -487,7 +491,11 @@ const styles = theme => ({
 
 const Container = styled.div`
   display: flex;
-  flex-flow: column;
+  flex-flow: ${({ candLength }) => (candLength > 2 ? 'row wrap' : 'row')};
+  justify-content: center;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    flex-flow: row wrap;
+  }
 `;
 
 const Title = styled.h1`
@@ -496,7 +504,7 @@ const Title = styled.h1`
   margin: .1rem 0;
   cursor: pointer;
   padding-bottom: 16px;
-  @media (max-width: 960px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     font-size: 16px;
     padding-bottom: 0;
   }
@@ -508,20 +516,23 @@ const CandidateInfo = styled.div`
   padding: 16px 16px 0 16px;
   margin-bottom: 8px;
   overflow-x: hidden;
-  cursor: pointer;
   transition: all 200ms ease-in;
   border: 1px solid #eee;
+  width: ${({ candLength }) => (candLength > 1 ? '48%' : '100%')};
+  margin-right: 8px;
   border-radius: 4px;
+  cursor: pointer;
   &:hover {
     border: 1px solid ${({ brandBlue }) => brandBlue};
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
   }
-  @media (max-width: 768px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-flow: column;
     border: none;
     border-bottom: 1px solid #eee;
     padding: 16px 0 0 0;
     margin-bottom: 8px;
+    width: 100%;
   }
 `;
 
@@ -533,6 +544,7 @@ const CandidateTopRow = styled.div`
 
 const Candidate = styled.div`
   display: flex;
+  cursor: pointer;
 `;
 
 // const CardFooter = styled.div`
@@ -540,7 +552,7 @@ const Candidate = styled.div`
 //   text-align: center;
 //   user-select: none;
 //   cursor: pointer;
-//   @media (max-width: 960px) {
+//   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
 //     padding: 0;
 //   }
 // `;

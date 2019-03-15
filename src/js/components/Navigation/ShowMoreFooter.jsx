@@ -52,7 +52,7 @@ const ShowMoreFooterStyled = styled.div`
   text-align: center;
   user-select: none;
   cursor: pointer;
-  @media (max-width: 960px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     padding-top: 5px;
     padding-bottom: 3px;
     border-top: 1px solid;

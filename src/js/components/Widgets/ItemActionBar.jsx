@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Tooltip, OverlayTrigger } from 'react-bootstrap';
-import ReactSVG from 'react-svg';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import DoneIcon from '@material-ui/icons/Done';
+import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import { cordovaDot } from '../../utils/cordovaUtils'; // historyPush
 import { renderLog } from '../../utils/logging';
 import { showToastError, showToastSuccess } from '../../utils/showToast';
@@ -16,7 +19,7 @@ import VoterStore from '../../stores/VoterStore';
 import PositionPublicToggle from './PositionPublicToggle';
 import webAppConfig from '../../config';
 
-export default class ItemActionBar extends Component {
+class ItemActionBar extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
     commentButtonHide: PropTypes.bool,
@@ -29,6 +32,7 @@ export default class ItemActionBar extends Component {
     type: PropTypes.string.isRequired,
     ballotItemDisplayName: PropTypes.string,
     supportOrOpposeHasBeenClicked: PropTypes.func,
+    classes: PropTypes.object,
     // urlWithoutHash: PropTypes.string,
   };
 
@@ -396,7 +400,7 @@ export default class ItemActionBar extends Component {
 
   render () {
     renderLog(__filename);
-
+    const { classes } = this.props;
     // // let { support_count: supportCount, oppose_count: opposeCount } = this.props.supportProps;
     if (this.state.supportCount === undefined ||
       this.state.opposeCount === undefined ||
@@ -415,9 +419,7 @@ export default class ItemActionBar extends Component {
 
     const iconSize = 18;
     const iconColor = '#00749e'; // $link-color
-    const chooseIconSize = 24;
     const chooseIconColor = this.isSupportCalculated() ? 'white' : '#00749e'; // $link-color
-    const opposeIconSize = 24;
     const opposeIconColor = this.isOpposeCalculated() ? 'white' : '#00749e'; // $link-color
 
     let urlBeingShared;
@@ -525,19 +527,12 @@ export default class ItemActionBar extends Component {
     const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip">{this.isOpposeCalculated() ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
 
     const supportButton = (
-      <button
-        className={`item-actionbar__btn item-actionbar__btn--support btn btn-outline-primary${this.isSupportCalculated() ? ' support-at-state' : ''}`}
+      <Button
+        variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
+        color="primary"
         onClick={() => this.supportItem()}
-        type="button"
       >
-        <span className="btn__icon">
-          <img src={cordovaDot('/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-262-tick.svg')}
-               width={chooseIconSize}
-               height={chooseIconSize}
-               color={chooseIconColor}
-               alt="choose"
-          />
-        </span>
+        <DoneIcon classes={{ root: classes.buttonIcon }} />
         { this.isSupportCalculated() ? (
           <span
             className={this.props.shareButtonHide ? 'item-actionbar--inline__position-choose-btn-label--at-state' :
@@ -553,11 +548,12 @@ export default class ItemActionBar extends Component {
             Choose
           </span>
         )}
-      </button>
+      </Button>
     );
 
     const measureYesButton = (
-      <button
+      <Button
+        variant="contained"
         className={`item-actionbar__btn item-actionbar__btn--support btn btn-default${this.isSupportCalculated() ? ' support-at-state' : ''}`}
         onClick={() => this.supportItem()}
         type="button"
@@ -585,26 +581,23 @@ export default class ItemActionBar extends Component {
             Vote Yes
           </span>
         )}
-      </button>
+      </Button>
     );
 
     const opposeButton = (
-      <button
-        className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}item-actionbar__btn item-actionbar__btn--oppose btn btn-default${this.isOpposeCalculated() ? ' oppose-at-state' : ''}`}
+      <Button
+        variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
+        color="primary"
+        className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
         onClick={() => this.opposeItem()}
-        type="button"
       >
-        <span className="btn__icon">
-          <ReactSVG src={cordovaDot('/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-90-ban-circle.svg')}
-                    svgStyle={{ fill: opposeIconColor, height: opposeIconSize, width: opposeIconSize }}
-          />
-        </span>
+        <NotInterestedIcon classes={{ root: classes.buttonIcon }} />
         { this.isOpposeCalculated() ? (
           <span
             className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
               'item-actionbar__position-btn-label--at-state'}
           >
-            Oppose
+            Opposed
           </span>
         ) : (
           <span
@@ -614,11 +607,12 @@ export default class ItemActionBar extends Component {
             Oppose
           </span>
         )}
-      </button>
+      </Button>
     );
 
     const measureNoButton = (
-      <button
+      <Button
+        variant="contained"
         className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}item-actionbar__btn item-actionbar__btn--oppose btn btn-default${this.isOpposeCalculated() ? ' oppose-at-state' : ''}`}
         onClick={() => this.opposeItem()}
         type="button"
@@ -646,11 +640,12 @@ export default class ItemActionBar extends Component {
             Vote No
           </span>
         )}
-      </button>
+      </Button>
     );
 
     const commentButton = (
-      <button
+      <Button
+        variant="contained"
         className={`${this.props.commentButtonHideInMobile ? 'd-none d-sm-block ' : null}item-actionbar__btn item-actionbar__btn--comment btn btn-default`}
         onClick={this.props.toggleFunction}
         type="button"
@@ -668,7 +663,7 @@ export default class ItemActionBar extends Component {
         >
           Comment
         </span>
-      </button>
+      </Button>
     );
 
     return (
@@ -752,3 +747,16 @@ export default class ItemActionBar extends Component {
     );
   }
 }
+
+const styles = theme => ({
+  buttonIcon: {
+    root: {
+      fontSize: 18,
+      [theme.breakpoints.down('lg')]: {
+        fontSize: 16,
+      },
+    },
+  },
+});
+
+export default withStyles(styles)(ItemActionBar);
