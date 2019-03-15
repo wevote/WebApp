@@ -139,6 +139,7 @@ export default class VerifyThisIsMe extends Component {
             <CandidateItem
               {...candidate}
               showLargeImage
+              showOfficeName
             />
           </section>
           <div>
