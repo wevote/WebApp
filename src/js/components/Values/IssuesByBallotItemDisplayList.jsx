@@ -163,10 +163,12 @@ class IssuesByBallotItemDisplayList extends Component {
             {issuesVoterIsNotFollowingHtml}
           </IssueList>
         </Issues>
-        <MoreWrapper onClick={this.handleExpandIssues}>
-          <MoreHorizIcon />
-          {expand ? 'Less' : 'More'}
-        </MoreWrapper>
+        {expand ? null : (
+          <MoreWrapper onClick={this.handleExpandIssues}>
+            <MoreHorizIcon />
+          </MoreWrapper>
+        )
+        }
       </Wrapper>
     );
   }
