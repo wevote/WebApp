@@ -64,6 +64,7 @@ class OfficeItemCompressed extends Component {
     this.goToOfficeLink = this.goToOfficeLink.bind(this);
     this._nextSliderPage = this._nextSliderPage.bind(this);
     this._toggleBallotIntroFollowIssues = this._toggleBallotIntroFollowIssues.bind(this);
+    this.generateCandidates = this.generateCandidates.bind(this);
   }
 
   componentDidMount () {
@@ -205,12 +206,74 @@ class OfficeItemCompressed extends Component {
     historyPush(officeLink);
   }
 
+  generateCandidates () {
+    const { theme } = this.props;
+    const { candidateList } = this.state;
+    const candidatePreviewLimit = this.state.maximumNumberOrganizationsToDisplay;
+    const supportedCandidatesList = candidateList.filter(candidate => SupportStore.get(candidate.we_vote_id) && SupportStore.get(candidate.we_vote_id).is_support);
+    const candidatesToRender = supportedCandidatesList.length ? supportedCandidatesList : candidateList;
+    return (
+      <Container candidateLength={candidatesToRender.length}>
+        { candidatesToRender.slice(0, candidatePreviewLimit)
+          .map((oneCandidate) => {
+            if (!oneCandidate || !oneCandidate.we_vote_id) {
+              return null;
+            }
+            const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
+
+            return (
+              <CandidateInfo
+                  onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
+                  key={`candidate_preview-${oneCandidate.we_vote_id}`}
+                  brandBlue={theme.palette.primary.main}
+                  candidateLength={candidatesToRender.length}
+              >
+                <CandidateTopRow>
+                  {/* Candidate Image */}
+                  <Candidate>
+                    <ImageHandler
+                        className="card-main__avatar-compressed"
+                        sizeClassName="icon-candidate-small u-push--sm "
+                        imageUrl={oneCandidate.candidate_photo_url_large}
+                        alt="candidate-photo"
+                        kind_of_ballot_item="CANDIDATE"
+                    />
+                    {/* Candidate Name */}
+                    <div>
+                      <h4 className="card-main__candidate-name card-main__candidate-name-link u-f5">
+                        {oneCandidate.ballot_item_display_name}
+                        <br />
+                        <span className="card-main__candidate-party-description">{candidatePartyText}</span>
+                      </h4>
+                    </div>
+                  </Candidate>
+                  {/* Endorsement count or Network score */}
+                  <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
+                </CandidateTopRow>
+                <div className="u-stack--md">
+                  {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
+                  <TopCommentByBallotItem
+                      ballotItemWeVoteId={oneCandidate.we_vote_id}
+                      learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
+                  >
+                    <IssuesByBallotItemDisplayList
+                        ballotItemWeVoteId={oneCandidate.we_vote_id}
+                        placement="bottom"
+                    />
+                  </TopCommentByBallotItem>
+                </div>
+              </CandidateInfo>
+            );
+          })}
+      </Container>
+    );
+  }
+
   render () {
     // console.log("OfficeItemCompressed render");
     renderLog(__filename);
     let { ballot_item_display_name: ballotItemDisplayName } = this.props;
-    const { we_vote_id: weVoteId, theme, classes } = this.props;
-    const { candidateList } = this.state;
+    const { we_vote_id: weVoteId, classes } = this.props;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
     const unsortedCandidateList = this.state.candidateList ? this.state.candidateList.slice(0) : {};
     const totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
@@ -359,10 +422,8 @@ class OfficeItemCompressed extends Component {
       afterChange: this.afterChangeHandler,
       arrows: false,
     };
-    let candidatePreviewCount = 0;
-    const candidatePreviewLimit = this.state.maximumNumberOrganizationsToDisplay;
+
     // const candidatePreviewList = [];
-    let oneCandidateDisplay = <span />;
     const BallotIntroFollowIssuesModal = (
       <Modal
         bsPrefix="background-brand-blue modal"
@@ -403,67 +464,8 @@ class OfficeItemCompressed extends Component {
           {/* *************************
             Display either a) the candidates the voter supports, or b) the first several candidates running for this office
             ************************* */}
-          <Container candLength={candidateList.length}>
-            { candidateList.map((oneCandidate) => {
-              if (!oneCandidate || !oneCandidate.we_vote_id) {
-                return null;
-              }
 
-              // const voterSupportsThisCandidate = SupportStore.get(oneCandidate.we_vote_id) && SupportStore.get(oneCandidate.we_vote_id).is_support;
-              const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
-
-              // If at the end the candidates, none were chosen by voter, we use this preview list.
-              candidatePreviewCount += 1;
-              if (candidatePreviewCount <= candidatePreviewLimit) {
-                oneCandidateDisplay = (
-                  <CandidateInfo
-                    onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
-                    key={`candidate_preview-${oneCandidate.we_vote_id}`}
-                    brandBlue={theme.palette.primary.main}
-                    candLength={candidateList.length}
-                  >
-                    <CandidateTopRow>
-                      {/* Candidate Image */}
-                      <Candidate>
-                        <ImageHandler
-                          className="card-main__avatar-compressed"
-                          sizeClassName="icon-candidate-small u-push--sm "
-                          imageUrl={oneCandidate.candidate_photo_url_large}
-                          alt="candidate-photo"
-                          kind_of_ballot_item="CANDIDATE"
-                        />
-                        {/* Candidate Name */}
-                        <div>
-                          <h4 className="card-main__candidate-name card-main__candidate-name-link u-f5">
-                            {oneCandidate.ballot_item_display_name}
-                            <br />
-                            <span className="card-main__candidate-party-description">{candidatePartyText}</span>
-                          </h4>
-                        </div>
-                      </Candidate>
-                      {/* Endorsement count or Network score */}
-                      <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
-                    </CandidateTopRow>
-                    <div className="u-stack--md">
-                      {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
-                      <TopCommentByBallotItem
-                        ballotItemWeVoteId={oneCandidate.we_vote_id}
-                        learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
-                      >
-                        <IssuesByBallotItemDisplayList
-                          ballotItemWeVoteId={oneCandidate.we_vote_id}
-                          placement="bottom"
-                        />
-                      </TopCommentByBallotItem>
-                    </div>
-                  </CandidateInfo>
-                );
-                return oneCandidateDisplay;
-              }
-              return null;
-            })}
-          </Container>
-          {' '}
+          {this.generateCandidates()}
           { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ?
             <ShowMoreFooter showMoreLink={this.goToOfficeLink} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay} candidates`} /> :
             <ShowMoreFooter showMoreLink={this.goToOfficeLink} />
@@ -491,7 +493,7 @@ const styles = theme => ({
 
 const Container = styled.div`
   display: flex;
-  flex-flow: ${({ candLength }) => (candLength > 2 ? 'row wrap' : 'row')};
+  flex-flow: ${({ candidateLength }) => (candidateLength > 2 ? 'row wrap' : 'row')};
   justify-content: center;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-flow: row wrap;
@@ -518,7 +520,7 @@ const CandidateInfo = styled.div`
   overflow-x: hidden;
   transition: all 200ms ease-in;
   border: 1px solid #eee;
-  width: ${({ candLength }) => (candLength > 1 ? '48%' : '100%')};
+  width: ${({ candidateLength }) => (candidateLength > 1 ? '48%' : '100%')};
   margin-right: 8px;
   border-radius: 4px;
   cursor: pointer;
