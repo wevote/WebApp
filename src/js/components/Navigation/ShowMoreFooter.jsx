@@ -16,13 +16,14 @@ class ShowMoreFooter extends React.Component {
   render () {
     renderLog(__filename);
     const { showMoreLink, classes } = this.props;
+
     let { showMoreText } = this.props;
     if (!showMoreText) {
       showMoreText = 'Show more';
     }
 
     return (
-      <ShowMoreFooterStyled onClick={() => showMoreLink()}>
+      <ShowMoreFooterStyled onClick={showMoreLink}>
         { showMoreText }
         {' '}
         <ArrowForwardIcon classes={{ root: classes.cardFooterIconRoot }} />

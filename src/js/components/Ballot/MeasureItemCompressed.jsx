@@ -11,6 +11,7 @@ import { renderLog } from '../../utils/logging';
 import extractNumber from '../../utils/extractNumber';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
+import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import { capitalizeString, shortenText } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -252,10 +253,7 @@ class MeasureItemCompressed extends Component {
           </Choice>
         </ChoicesRow>
         <Divider />
-        <CardFooter onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
-          Show More
-          <ArrowForwardIcon classes={{ root: classes.cardFooterIconRoot }} />
-        </CardFooter>
+        <ShowMoreFooter showMoreLink={() => this.goToMeasureLink(measureWeVoteId)} />
       </Card>
     );
   }
@@ -363,15 +361,15 @@ const Info = styled.p`
   color: #777;
 `;
 
-const CardFooter = styled.div`
-  font-size: 12px;
-  padding-top: 8px;
-  text-align: center;
-  user-select: none;
-  cursor: pointer;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    padding-bottom: 8px;
-  }
-`;
+// const CardFooter = styled.div`
+//   font-size: 12px;
+//   padding-top: 8px;
+//   text-align: center;
+//   user-select: none;
+//   cursor: pointer;
+//   @media (max-width: 960px) {
+//     padding-bottom: 8px;
+//   }
+// `;
 
 export default withTheme()(withStyles(styles)(MeasureItemCompressed));
