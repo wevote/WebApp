@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { cordovaDot } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
+import avatarGeneric from '../../img/global/svg-icons/avatar-generic.svg'
+import issueGeneric from '../../img/global/svg-icons/issue-generic.svg'
 
 export default class ImageHandler extends Component {
   static propTypes = {
@@ -40,22 +42,22 @@ export default class ImageHandler extends Component {
     switch (kindOfImage) {
       case 'CANDIDATE':
         replacementClass = 'icon-main image-person-placeholder card-main__avatar-border';
-        placeHolderImageUrl = cordovaDot('/img/global/svg-icons/avatar-generic.svg');
+        placeHolderImageUrl = avatarGeneric;
         break;
       case 'MEASURE' || 'OFFICE':
         // TODO: Refactor to remove font icons
         return <i className="search-image__filler" />;
       case 'ISSUE':
         replacementClass = 'icon-main image-issue-placeholder';
-        placeHolderImageUrl = cordovaDot('/img/global/svg-icons/issue-generic.svg');
+        placeHolderImageUrl = issueGeneric;
         break;
       case 'ISSUE-PHOTO':
         replacementClass = 'image-issue-photo-placeholder';
-        placeHolderImageUrl = cordovaDot('/img/global/svg-icons/issue-photo-generic.svg');
+        placeHolderImageUrl = '/img/global/svg-icons/issue-photo-generic.svg';
         break;
       default:
         replacementClass = 'icon-main image-organization-placeholder';
-        placeHolderImageUrl = cordovaDot('/img/global/svg-icons/organization-icon.svg');
+        placeHolderImageUrl = '/img/global/svg-icons/organization-icon.svg';
         break;
     }
 
@@ -66,7 +68,7 @@ export default class ImageHandler extends Component {
           <img
             alt={alt}
             className={`${sizeClassName} ${incomingClassName} ${replacementClass}`}
-            src={placeHolderImageUrl}
+            src={cordovaDot(placeHolderImageUrl)}
           />
         ) : (
           <img
