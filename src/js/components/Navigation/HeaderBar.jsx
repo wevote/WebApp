@@ -335,6 +335,18 @@ class HeaderBar extends Component {
               {
             (showFullNavigation && voterIsSignedIn) && (
             <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
+              {
+                showEditAddressButton && (
+                <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                  <IconButton
+                    classes={{ root: classes.iconButtonRoot }}
+                    onClick={this.toggleSelectBallotModal}
+                  >
+                    <PlaceIcon />
+                  </IconButton>
+                </Tooltip>
+                )
+              }
               {voterPhotoUrlMedium ? (
                 <div id="js-header-avatar" className="header-nav__avatar-container" onClick={this.toggleProfilePopUp}>
                   <img
@@ -347,18 +359,6 @@ class HeaderBar extends Component {
                 </div>
               ) : (
                 <div>
-                  {
-                    showEditAddressButton && (
-                    <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-                      <IconButton
-                        classes={{ root: classes.iconButtonRoot }}
-                        onClick={this.toggleSelectBallotModal}
-                      >
-                        <PlaceIcon />
-                      </IconButton>
-                    </Tooltip>
-                    )
-                  }
                   <IconButton
                       onClick={this.toggleProfilePopUp}
                       classes={{ root: classes.iconButtonRoot }}
