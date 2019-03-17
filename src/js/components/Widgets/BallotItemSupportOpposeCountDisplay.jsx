@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import DoneIcon from '@material-ui/icons/Done';
 import CommentIcon from '@material-ui/icons/Comment';
+import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import BallotStore from '../../stores/BallotStore';
@@ -288,7 +290,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     }
 
     // Voter Support or opposition
-    // const { is_voter_support: isVoterSupport, is_voter_oppose: isVoterOppose, voter_statement_text: voterStatementText } = this.state.ballotItemSupportProps || {};
+    const isVoterOppose = SupportStore.get(this.state.ballotItemWeVoteId) && SupportStore.get(this.state.ballotItemWeVoteId).is_oppose;
+    const isVoterSupport = SupportStore.get(this.state.ballotItemWeVoteId) && SupportStore.get(this.state.ballotItemWeVoteId).is_support;
 
     const { organizationsToFollowSupport, organizationsToFollowOppose } = this.state;
 
@@ -569,8 +572,24 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
     return (
       <Wrapper>
+        { isVoterSupport ? (
+          <NetworkScore className={classes.voterSupports}>
+            <DoneIcon classes={{ root: classes.buttonIcon }} />
+          </NetworkScore>
+        ) :
+          null
+        }
+
+        { isVoterOppose ? (
+          <NetworkScore className={classes.voterOpposes}>
+            <NotInterestedIcon classes={{ root: classes.buttonIcon }} />
+          </NetworkScore>
+        ) :
+          null
+        }
+
         {/* Total counts of all support, opposition and info only comments for this ballot item */}
-        { showNetworkScore ?
+        { showNetworkScore || isVoterSupport || isVoterOppose ?
           null : (
             <OverlayTrigger
               trigger="click"
@@ -610,7 +629,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         }
 
         {/* Network Score for this ballot item here */}
-        { showNetworkScore ? (
+        { showNetworkScore && !isVoterSupport && !isVoterOppose ? (
           <OverlayTrigger
             trigger="click"
             ref="network-score-overlay"
@@ -643,6 +662,14 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 }
 
 const styles = theme => ({
+  buttonIcon: {
+    root: {
+      fontSize: 18,
+      [theme.breakpoints.down('lg')]: {
+        fontSize: 16,
+      },
+    },
+  },
   cardRoot: {
     padding: '8px 16px',
     [theme.breakpoints.down('lg')]: {
@@ -656,6 +683,12 @@ const styles = theme => ({
   cardFooterIconRoot: {
     fontSize: 14,
     margin: '0 0 .1rem .4rem',
+  },
+  voterOpposes: {
+    background: 'rgb(255, 73, 34)',
+  },
+  voterSupports: {
+    background: 'rgb(31, 192, 111)',
   },
 });
 

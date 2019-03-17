@@ -29,8 +29,8 @@ class CandidateStore extends ReduceStore {
 
   getPositionAboutCandidateFromOrganization (candidateId, orgWeVoteId) {
     const positionsAboutCandidate = this.getState().allCachedPositionsAboutCandidates[candidateId] || [];
-    // console.log("CandidateStore, candidateId: ", candidateId, "organization_we_vote_id: ", organization_we_vote_id);
-    // console.log("CandidateStore, getPositionAboutCandidateFromOrganization: ", positions_about_candidate[organization_we_vote_id]);
+    // console.log('CandidateStore, candidateId: ', candidateId, 'organization_we_vote_id: ', organization_we_vote_id);
+    // console.log('CandidateStore, getPositionAboutCandidateFromOrganization: ', positions_about_candidate[organization_we_vote_id]);
     return positionsAboutCandidate[orgWeVoteId] || [];
   }
 
@@ -45,7 +45,7 @@ class CandidateStore extends ReduceStore {
 
   createCandidatePosition (oneCandidateWeVoteId, oneVoterGuide) {
     const candidateObject = this.getCandidate(oneCandidateWeVoteId);
-    // console.log("candidateObject: ", candidateObject);
+    // console.log('candidateObject: ', candidateObject);
     const onePosition = {
       position_we_vote_id: '', // Currently empty
       ballot_item_display_name: candidateObject.ballot_item_display_name,
@@ -76,12 +76,12 @@ class CandidateStore extends ReduceStore {
       vote_smart_time_span: '',
       google_civic_election_id: oneVoterGuide.google_civic_election_id,
 
-      // state_code: "",
+      // state_code: '',
       more_info_url: '',
       statement_text: '',
       last_updated: '',
     };
-    // console.log("CandidateStore, voterGuidesToFollowRetrieve, onePosition: ", onePosition);
+    // console.log('CandidateStore, voterGuidesToFollowRetrieve, onePosition: ', onePosition);
     return onePosition;
   }
 
@@ -177,14 +177,15 @@ class CandidateStore extends ReduceStore {
         return state;
 
       case 'positionListForBallotItem':
+        // console.log('positionListForBallotItem action.res:', action.res);
+        if (action.res.count === 0) return state;
 
-        // console.log("positionListForBallotItem action.res:", action.res);
         if (action.res.kind_of_ballot_item === 'CANDIDATE') {
           candidateId = action.res.ballot_item_we_vote_id;
           newPositionList = action.res.position_list;
           positionListFromAdvisersFollowedByVoter[candidateId] = newPositionList;
 
-          // console.log("positionListForBallotItem positionListFromAdvisersFollowedByVoter[ballotItemWeVoteId]:", positionListFromAdvisersFollowedByVoter[candidate_we_vote_id]);
+          // console.log('positionListForBallotItem positionListFromAdvisersFollowedByVoter[ballotItemWeVoteId]:', positionListFromAdvisersFollowedByVoter[candidate_we_vote_id]);
           return {
             ...state,
             positionListFromAdvisersFollowedByVoter,
@@ -196,7 +197,7 @@ class CandidateStore extends ReduceStore {
           // Now reset the lists for all candidates under this office
           const candidateWeVoteIdsUnderThisOffice = BallotStore.getCandidateWeVoteIdsForOfficeWeVoteId(officeWeVoteId);
 
-          // console.log("candidateWeVoteIdsUnderThisOffice: ", candidateWeVoteIdsUnderThisOffice);
+          // console.log('candidateWeVoteIdsUnderThisOffice: ', candidateWeVoteIdsUnderThisOffice);
           if (candidateWeVoteIdsUnderThisOffice) {
             candidateWeVoteIdsUnderThisOffice.forEach((id) => {
               positionListFromAdvisersFollowedByVoter[id] = []; // Reset list
@@ -208,7 +209,7 @@ class CandidateStore extends ReduceStore {
             positionListFromAdvisersFollowedByVoter[candidateId].push(one);
           });
 
-          // console.log("positionListForBallotItem OFFICE positionListFromAdvisersFollowedByVoter[ballot_item_we_vote_id]:", positionListFromAdvisersFollowedByVoter[candidate_we_vote_id]);
+          // console.log('positionListForBallotItem OFFICE positionListFromAdvisersFollowedByVoter[ballot_item_we_vote_id]:', positionListFromAdvisersFollowedByVoter[candidate_we_vote_id]);
           return {
             ...state,
             positionListFromAdvisersFollowedByVoter,
@@ -218,7 +219,7 @@ class CandidateStore extends ReduceStore {
         }
 
       case 'positionListForOpinionMaker':
-        // console.log("CandidateStore, positionListForOpinionMaker response");
+        // console.log('CandidateStore, positionListForOpinionMaker response');
 
         positionList.forEach((one) => {
           ballotItemWeVoteId = one.ballot_item_we_vote_id;
@@ -231,7 +232,7 @@ class CandidateStore extends ReduceStore {
             allCachedPositionsAboutCandidates[ballotItemWeVoteId][organizationWeVoteId] = {};
           }
 
-          // console.log("CandidateStore one_position_here: ", one_position_here);
+          // console.log('CandidateStore one_position_here: ', one_position_here);
           allCachedPositionsAboutCandidates[ballotItemWeVoteId][organizationWeVoteId] = one;
         });
         return {
@@ -244,13 +245,13 @@ class CandidateStore extends ReduceStore {
         //  and stores them so we can request them in cases where the response package for
         //  voterGuidesToFollowRetrieve does not include the position data
 
-        // console.log("CandidateStore voterGuidesToFollowRetrieve");
+        // console.log('CandidateStore voterGuidesToFollowRetrieve');
         voterGuides = action.res.voter_guides;
         ballotItemWeVoteId = action.res.ballot_item_we_vote_id || '';
 
         if (isEmpty || searchTermExists) {
           // Exit this routine
-          // console.log("exiting CandidateStore voterGuidesToFollowRetrieve - no voter guides or search results");
+          // console.log('exiting CandidateStore voterGuidesToFollowRetrieve - no voter guides or search results');
           return state;
         }
 
@@ -280,10 +281,10 @@ class CandidateStore extends ReduceStore {
                 // ballot_item_id: 0,
                 ballotItemWeVoteId,
 
-                // ballot_item_state_code: "",
+                // ballot_item_state_code: '',
                 // contest_office_id: 0,
-                // contestOfficeWeVoteId: "",
-                // contest_office_name: "",
+                // contestOfficeWeVoteId: '',
+                // contest_office_name: '',
                 is_support: oneVoterGuide.is_support,
                 is_positive_rating: oneVoterGuide.is_positive_rating,
                 is_support_or_positive_rating: oneVoterGuide.is_support_or_positive_rating,
@@ -297,14 +298,14 @@ class CandidateStore extends ReduceStore {
                 vote_smart_time_span: oneVoterGuide.vote_smart_time_span,
                 googleCivicElectionId: oneVoterGuide.google_civic_election_id,
 
-                // state_code: "",
+                // state_code: '',
                 more_info_url: oneVoterGuide.more_info_url,
                 statement_text: oneVoterGuide.statement_text,
                 last_updated: oneVoterGuide.last_updated,
               };
-              // console.log("CandidateStore, voterGuidesToFollowRetrieve, onePosition: ", onePosition);
+              // console.log('CandidateStore, voterGuidesToFollowRetrieve, onePosition: ', onePosition);
 
-              // console.log("CandidateStore onePosition: ", onePosition);
+              // console.log('CandidateStore onePosition: ', onePosition);
               allCachedPositionsAboutCandidates[ballotItemWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
             }
           });
@@ -317,7 +318,7 @@ class CandidateStore extends ReduceStore {
                 !oneVoterGuide.ballot_item_we_vote_ids_this_org_opposes ||
                 !oneVoterGuide.organization_we_vote_id) {
               // If any of these are undefined, ignore this voter_guide
-              // console.log("Something wrong with voter guide.");
+              // console.log('Something wrong with voter guide.');
             } else {
               // Support
               oneVoterGuide.ballot_item_we_vote_ids_this_org_supports.forEach((oneCandidateWeVoteId) => {
@@ -333,7 +334,7 @@ class CandidateStore extends ReduceStore {
                 // Only proceed if the position doesn't already exist
                 if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                   // Do not proceed
-                  // console.log("position already exists");
+                  // console.log('position already exists');
                 } else {
                   onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                   // These are support positions
@@ -341,7 +342,7 @@ class CandidateStore extends ReduceStore {
                   onePosition.is_positive_rating = false;
                   onePosition.is_support_or_positive_rating = true;
 
-                  // console.log("CandidateStore support onePosition: ", onePosition);
+                  // console.log('CandidateStore support onePosition: ', onePosition);
                   allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
                 }
               });
@@ -359,13 +360,13 @@ class CandidateStore extends ReduceStore {
                 // Only proceed if the position doesn't already exist
                 if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                   // Do not proceed
-                  // console.log("position already exists");
+                  // console.log('position already exists');
                 } else {
                   onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                   // These are information only positions
                   onePosition.is_information_only = true;
 
-                  // console.log("CandidateStore info onePosition: ", onePosition);
+                  // console.log('CandidateStore info onePosition: ', onePosition);
                   allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
                 }
               });
@@ -384,7 +385,7 @@ class CandidateStore extends ReduceStore {
 
                 if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                   // Do not proceed
-                  // console.log("position already exists");
+                  // console.log('position already exists');
                 } else {
                   onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                   // These are oppose positions
@@ -392,7 +393,7 @@ class CandidateStore extends ReduceStore {
                   onePosition.is_negative_rating = false;
                   onePosition.is_oppose_or_negative_rating = true;
 
-                  // console.log("CandidateStore oppose onePosition: ", onePosition);
+                  // console.log('CandidateStore oppose onePosition: ', onePosition);
                   allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
                 }
               });
@@ -400,7 +401,7 @@ class CandidateStore extends ReduceStore {
           });
         }
 
-        // console.log("CandidateStore allCachedPositionsAboutCandidates:", allCachedPositionsAboutCandidates);
+        // console.log('CandidateStore allCachedPositionsAboutCandidates:', allCachedPositionsAboutCandidates);
         return {
           ...state,
           allCachedPositionsAboutCandidates,
@@ -409,7 +410,7 @@ class CandidateStore extends ReduceStore {
       case 'voterGuidesUpcomingRetrieve':
         // This code harvests the support/oppose positions that are passed in along with voter guides
 
-        // console.log("CandidateStore voterGuidesUpcomingRetrieve");
+        // console.log('CandidateStore voterGuidesUpcomingRetrieve');
         voterGuides = action.res.voter_guides;
         ballotItemWeVoteId = action.res.ballot_item_we_vote_id || '';
 
@@ -420,7 +421,7 @@ class CandidateStore extends ReduceStore {
               !oneVoterGuide.ballot_item_we_vote_ids_this_org_opposes ||
               !oneVoterGuide.organization_we_vote_id) {
             // If any of these are undefined, ignore this voter_guide
-            // console.log("Something wrong with voter guide.");
+            // console.log('Something wrong with voter guide.');
           } else {
             // Support
             oneVoterGuide.ballot_item_we_vote_ids_this_org_supports.forEach((oneCandidateWeVoteId) => {
@@ -436,7 +437,7 @@ class CandidateStore extends ReduceStore {
               // Only proceed if the position doesn't already exist
               if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                 // Do not proceed
-                // console.log("position already exists");
+                // console.log('position already exists');
               } else {
                 onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                 // These are support positions
@@ -444,7 +445,7 @@ class CandidateStore extends ReduceStore {
                 onePosition.is_positive_rating = false;
                 onePosition.is_support_or_positive_rating = true;
 
-                // console.log("CandidateStore support onePosition: ", onePosition);
+                // console.log('CandidateStore support onePosition: ', onePosition);
                 allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
               }
             });
@@ -462,13 +463,13 @@ class CandidateStore extends ReduceStore {
               // Only proceed if the position doesn't already exist
               if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                 // Do not proceed
-                // console.log("position already exists");
+                // console.log('position already exists');
               } else {
                 onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                 // These are information only positions
                 onePosition.is_information_only = true;
 
-                // console.log("CandidateStore info onePosition: ", onePosition);
+                // console.log('CandidateStore info onePosition: ', onePosition);
                 allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
               }
             });
@@ -486,7 +487,7 @@ class CandidateStore extends ReduceStore {
               // Only proceed if the position doesn't already exist
               if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                 // Do not proceed
-                // console.log("position already exists");
+                // console.log('position already exists');
               } else {
                 onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                 // These are oppose positions
@@ -494,14 +495,14 @@ class CandidateStore extends ReduceStore {
                 onePosition.is_negative_rating = false;
                 onePosition.is_oppose_or_negative_rating = true;
 
-                // console.log("CandidateStore oppose onePosition: ", onePosition);
+                // console.log('CandidateStore oppose onePosition: ', onePosition);
                 allCachedPositionsAboutCandidates[oneCandidateWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
               }
             });
           }
         });
 
-        // console.log("CandidateStore allCachedPositionsAboutCandidates:", allCachedPositionsAboutCandidates);
+        // console.log('CandidateStore allCachedPositionsAboutCandidates:', allCachedPositionsAboutCandidates);
         return {
           ...state,
           allCachedPositionsAboutCandidates,
