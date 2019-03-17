@@ -247,7 +247,7 @@ class OfficeItemCompressed extends Component {
                       </h4>
                     </div>
                   </Candidate>
-                  {/* Endorsement count or Network score */}
+                  {/* Show check mark or score */}
                   <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
                 </CandidateTopRow>
                 <div className="u-stack--md">

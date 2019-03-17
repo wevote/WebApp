@@ -184,7 +184,6 @@ class BallotItemSupportOpposeComment extends Component {
           commentButtonHideInMobile
           currentBallotIdInUrl={this.props.currentBallotIdInUrl}
           shareButtonHide
-          supportProps={this.state.ballotItemSupportProps}
           supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
           toggleFunction={this.togglePositionStatement}
           transitioning={this.state.transitioning}
