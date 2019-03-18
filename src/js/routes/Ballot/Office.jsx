@@ -11,7 +11,10 @@ import { renderLog } from '../../utils/logging';
 import OfficeActions from '../../actions/OfficeActions';
 import OfficeStore from '../../stores/OfficeStore';
 import SearchAllActions from '../../actions/SearchAllActions';
+import Testimonial from '../../components/Widgets/Testimonial';
 import VoterStore from '../../stores/VoterStore';
+import {cordovaDot} from "../../utils/cordovaUtils";
+
 
 // This is related to routes/VoterGuide/OrganizationVoterGuideOffice
 export default class Office extends Component {
@@ -94,11 +97,25 @@ export default class Office extends Component {
     const titleText = `${officeName} - We Vote`;
     const descriptionText = `Choose who you support for ${officeName} in this election`;
 
+    // =========== Testimonial variables ============================
+
+    let testimonialAuthor = "Dale M., Oakland, California";
+    let imageUrl = cordovaDot('/img/global/photos/Dale_McGrew-200x200.jpg');
+    let testimonial = "Following the values that are important to me shows me opinions on my ballot from other people who share my values.";
+
+    // ==============================================================
+
+
     return (
       <div>
         <Helmet
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
+        />
+        <Testimonial
+          imageUrl={imageUrl}
+          testimonialAuthor={testimonialAuthor}
+          testimonial={testimonial}
         />
         { office.candidate_list ? (
           <div>
@@ -115,3 +132,5 @@ export default class Office extends Component {
     );
   }
 }
+
+
