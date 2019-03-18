@@ -165,6 +165,7 @@ class BallotItemSupportOpposeComment extends Component {
   }
 
   render () {
+    if (!this.state.ballotItemWeVoteId) return null;
     // console.log('BallotItemSupportOpposeComment render, ballotItemWeVoteId:', this.state.ballotItemWeVoteId);
     renderLog(__filename);
 

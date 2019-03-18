@@ -59,42 +59,44 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   }
 
   componentDidMount () {
+    // console.log('componentDidMount, this.props: ', this.props);
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     let ballotItemDisplayName = '';
-    const ballotItemSupportProps = SupportStore.get(this.props.ballotItemWeVoteId);
+    const { ballotItemWeVoteId } = this.props;
+    const ballotItemSupportProps = SupportStore.get(ballotItemWeVoteId);
     let isCandidate = false;
     let isMeasure = false;
-    if (stringContains('cand', this.props.ballotItemWeVoteId)) {
-      const candidate = CandidateStore.getCandidate(this.props.ballotItemWeVoteId);
+    if (stringContains('cand', ballotItemWeVoteId)) {
+      const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
       ballotItemDisplayName = candidate.ballot_item_display_name || '';
       isCandidate = true;
-    } else if (stringContains('meas', this.props.ballotItemWeVoteId)) {
-      const measure = MeasureStore.getMeasure(this.props.ballotItemWeVoteId);
+    } else if (stringContains('meas', ballotItemWeVoteId)) {
+      const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
       ballotItemDisplayName = measure.ballot_item_display_name || '';
       isMeasure = true;
     }
 
     let positionListFromAdvisersFollowedByVoter;
     if (isCandidate) {
-      if (!BallotStore.positionListHasBeenRetrievedOnce(this.props.ballotItemWeVoteId)) {
-        CandidateActions.positionListForBallotItem(this.props.ballotItemWeVoteId);
+      if (!BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)) {
+        CandidateActions.positionListForBallotItem(ballotItemWeVoteId);
       }
-      positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(this.props.ballotItemWeVoteId);
+      positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(ballotItemWeVoteId);
     } else if (isMeasure) {
-      if (!BallotStore.positionListHasBeenRetrievedOnce(this.props.ballotItemWeVoteId)) {
-        MeasureActions.positionListForBallotItem(this.props.ballotItemWeVoteId);
+      if (!BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)) {
+        MeasureActions.positionListForBallotItem(ballotItemWeVoteId);
       }
-      positionListFromAdvisersFollowedByVoter = MeasureStore.getPositionList(this.props.ballotItemWeVoteId);
+      positionListFromAdvisersFollowedByVoter = MeasureStore.getPositionList(ballotItemWeVoteId);
     }
-    const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(this.props.ballotItemWeVoteId);
-    const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(this.props.ballotItemWeVoteId);
-    this.setState(props => ({
+    const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(ballotItemWeVoteId);
+    const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(ballotItemWeVoteId);
+    this.setState({
       ballotItemDisplayName,
       ballotItemSupportProps,
-      ballotItemWeVoteId: props.ballotItemWeVoteId,
+      ballotItemWeVoteId,
       componentDidMountFinished: true,
       isCandidate,
       isMeasure,
@@ -102,37 +104,39 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       organizationsToFollowOppose,
       positionListFromAdvisersFollowedByVoter,
       voter: VoterStore.getVoter(), // We only set this once since the info we need isn't dynamic
-    }));
+    });
   }
 
   componentWillReceiveProps (nextProps) {
+    // console.log('componentWillReceiveProps, nextProps: ', nextProps);
     let ballotItemDisplayName;
-    const ballotItemSupportProps = SupportStore.get(nextProps.ballotItemWeVoteId);
+    const { ballotItemWeVoteId } = nextProps;
+    const ballotItemSupportProps = SupportStore.get(ballotItemWeVoteId);
     let isCandidate = false;
     let isMeasure = false;
-    if (stringContains('cand', nextProps.ballotItemWeVoteId)) {
-      const candidate = CandidateStore.getCandidate(nextProps.ballotItemWeVoteId);
+    if (stringContains('cand', ballotItemWeVoteId)) {
+      const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
       ballotItemDisplayName = candidate.ballot_item_display_name || '';
       isCandidate = true;
-    } else if (stringContains('meas', nextProps.ballotItemWeVoteId)) {
-      const measure = MeasureStore.getMeasure(nextProps.ballotItemWeVoteId);
+    } else if (stringContains('meas', ballotItemWeVoteId)) {
+      const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
       ballotItemDisplayName = measure.ballot_item_display_name || '';
       isMeasure = true;
     }
     let positionListFromAdvisersFollowedByVoter;
     if (isCandidate) {
-      // CandidateActions.positionListForBallotItem(nextProps.ballotItemWeVoteId);
-      positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(nextProps.ballotItemWeVoteId);
+      // CandidateActions.positionListForBallotItem(ballotItemWeVoteId);
+      positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(ballotItemWeVoteId);
     } else if (isMeasure) {
-      // MeasureActions.positionListForBallotItem(nextProps.ballotItemWeVoteId);
-      positionListFromAdvisersFollowedByVoter = MeasureStore.getPositionList(nextProps.ballotItemWeVoteId);
+      // MeasureActions.positionListForBallotItem(ballotItemWeVoteId);
+      positionListFromAdvisersFollowedByVoter = MeasureStore.getPositionList(ballotItemWeVoteId);
     }
-    const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(nextProps.ballotItemWeVoteId);
-    const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(nextProps.ballotItemWeVoteId);
+    const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(ballotItemWeVoteId);
+    const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(ballotItemWeVoteId);
     this.setState(() => ({
       ballotItemDisplayName,
       ballotItemSupportProps,
-      ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
+      ballotItemWeVoteId,
       isCandidate,
       isMeasure,
       organizationsToFollowSupport,
@@ -248,7 +252,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   }
 
   render () {
-    // console.log("BallotItemSupportOpposeCountDisplay render, ballotItemWeVoteId:", this.props.ballotItemWeVoteId);
+    if (!this.state.ballotItemWeVoteId) return null;
+    // console.log('BallotItemSupportOpposeCountDisplay render, ballotItemWeVoteId:', this.state.ballotItemWeVoteId);
     renderLog(__filename);
     // Issue Score
     // const voterIssuesScore = IssueStore.getIssuesScoreByBallotItemWeVoteId(this.state.ballotItemWeVoteId);
@@ -260,7 +265,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     // } else {
     //   voterIssuesScoreWithSign = voterIssuesScore;
     // }
-    // // console.log("BallotItemSupportOpposeCountDisplay, voterIssuesScore: ", voterIssuesScore, ", ballotItemWeVoteId: ", this.state.ballotItemWeVoteId);
+    // // console.log('BallotItemSupportOpposeCountDisplay, voterIssuesScore: ', voterIssuesScore, ', ballotItemWeVoteId: ', this.state.ballotItemWeVoteId);
     // const issueCountUnderThisBallotItem = IssueStore.getIssuesCountUnderThisBallotItem(this.state.ballotItemWeVoteId);
     // const issueCountUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesCountUnderThisBallotItemVoterIsFollowing(this.state.ballotItemWeVoteId);
     const { classes } = this.props;
@@ -290,8 +295,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     }
 
     // Voter Support or opposition
-    const isVoterOppose = SupportStore.get(this.state.ballotItemWeVoteId) && SupportStore.get(this.state.ballotItemWeVoteId).is_oppose;
-    const isVoterSupport = SupportStore.get(this.state.ballotItemWeVoteId) && SupportStore.get(this.state.ballotItemWeVoteId).is_support;
+    const isVoterOppose = SupportStore.getIsOpposeByBallotItemWeVoteId(this.state.ballotItemWeVoteId);
+    const isVoterSupport = SupportStore.getIsSupportByBallotItemWeVoteId(this.state.ballotItemWeVoteId);
 
     const { organizationsToFollowSupport, organizationsToFollowOppose } = this.state;
 
@@ -299,13 +304,13 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     const organizationsToFollowOpposeCount =  organizationsToFollowOppose ? organizationsToFollowOppose.length :  0;
     const positionsCount = networkSupportCount + networkOpposeCount + organizationsToFollowSupportCount + organizationsToFollowOpposeCount;
 
-    // console.log("this.state.positionListFromAdvisersFollowedByVoter: ", this.state.positionListFromAdvisersFollowedByVoter);
+    // console.log('this.state.positionListFromAdvisersFollowedByVoter: ', this.state.positionListFromAdvisersFollowedByVoter);
     // if (positionsCount) {
     //   let supportPositionsListCount = 0;
     //   let opposePositionsListCount = 0;
     //   // let info_only_positions_list_count = 0;
     //   this.state.positionListFromAdvisersFollowedByVoter.map((onePosition) => {
-    //     // console.log("onePosition: ", onePosition);
+    //     // console.log('onePosition: ', onePosition);
     //     // Filter out the positions that we don't want to display
     //     if (onePosition.is_support_or_positive_rating) {
     //       supportPositionsListCount++;
@@ -316,7 +321,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     //     // }
     //     return null;
     //   });
-    //   // console.log("supportPositionsListCount:", supportPositionsListCount);
+    //   // console.log('supportPositionsListCount:', supportPositionsListCount);
     //
     //   // We calculate how many organizations_to_follow based on the number of positions from advisers we follow
     //   const offsetForMoreText = 3;

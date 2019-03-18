@@ -156,9 +156,9 @@ export default class OrganizationVoterGuideCandidate extends Component {
             { this.state.positionListFromAdvisersFollowedByVoter ? (
               <div>
                 <PositionList
-                  position_list={this.state.positionListFromAdvisersFollowedByVoter}
+                  incomingPositionList={this.state.positionListFromAdvisersFollowedByVoter}
                   hideSimpleSupportOrOppose
-                  ballot_item_display_name={this.state.candidate.ballot_item_display_name}
+                  ballotItemDisplayName={this.state.candidate.ballot_item_display_name}
                 />
               </div>
             ) : null
@@ -170,7 +170,7 @@ export default class OrganizationVoterGuideCandidate extends Component {
                   <GuideList
                     id={electionId}
                     ballotItemWeVoteId={this.state.candidateWeVoteId}
-                    organizationsToFollow={this.state.voterGuidesToFollowForLatestBallotItem}
+                    incomingVoterGuideList={this.state.voterGuidesToFollowForLatestBallotItem}
                   />
                 </div>
               )

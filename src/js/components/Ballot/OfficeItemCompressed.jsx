@@ -456,7 +456,7 @@ class OfficeItemCompressed extends Component {
             <Title>
               {ballotItemDisplayName}
               <ArrowForwardIcon
-                className="u-show-desktop"
+                className="u-show-desktop-tablet"
                 classes={{ root: classes.cardHeaderIconRoot }}
               />
             </Title>

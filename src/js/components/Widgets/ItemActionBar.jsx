@@ -309,7 +309,7 @@ class ItemActionBar extends Component {
     }
 
     if (this.isOpposeCalculated()) {
-      console.log('opposeItem about to call stopOpposingItem after isOpposeCalculated');
+      // console.log('opposeItem about to call stopOpposingItem after isOpposeCalculated');
       this.stopOpposingItem();
       return;
     }

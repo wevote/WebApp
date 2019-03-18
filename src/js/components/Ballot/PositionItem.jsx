@@ -13,7 +13,7 @@ import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippe
 
 export default class PositionItem extends Component {
   static propTypes = {
-    ballot_item_display_name: PropTypes.string.isRequired,
+    ballotItemDisplayName: PropTypes.string.isRequired,
     organization: PropTypes.object, // .isRequired,
     position: PropTypes.object.isRequired,
   };
@@ -21,6 +21,7 @@ export default class PositionItem extends Component {
   render () {
     renderLog(__filename);
     const { position } = this.props;
+    // console.log('PositionItem render, position:', position);
     const dateStr = position.last_updated;
     const dateText = moment(dateStr).startOf('day').fromNow();
     // TwitterHandle-based link
@@ -45,7 +46,7 @@ export default class PositionItem extends Component {
     } else if (isSpeakerTypeIndividual(position.speaker_type)) {
       positionDescription = (
         <p className="">
-          <span>{this.props.ballot_item_display_name}</span>
+          <span>{this.props.ballotItemDisplayName}</span>
           <span className="small">
             {' '}
             { dateText }

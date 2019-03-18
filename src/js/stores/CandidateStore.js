@@ -27,6 +27,10 @@ class CandidateStore extends ReduceStore {
     return this.getState().positionListFromAdvisersFollowedByVoter[candidateId] || [];
   }
 
+  getAllCachedPositionsByCandidateWeVoteId (candidateWeVoteId) {
+    return this.getState().allCachedPositionsAboutCandidates[candidateWeVoteId] || [];
+  }
+
   getPositionAboutCandidateFromOrganization (candidateId, orgWeVoteId) {
     const positionsAboutCandidate = this.getState().allCachedPositionsAboutCandidates[candidateId] || [];
     // console.log('CandidateStore, candidateId: ', candidateId, 'organization_we_vote_id: ', organization_we_vote_id);
@@ -61,7 +65,7 @@ class CandidateStore extends ReduceStore {
 
       ballot_item_state_code: candidateObject.state_code,
       contest_office_id: candidateObject.contest_office_id,
-      contestOfficeWeVoteId: candidateObject.contest_office_we_vote_id,
+      contest_office_we_vote_id: candidateObject.contest_office_we_vote_id,
       contest_office_name: candidateObject.contest_office_name,
       is_support: false,
       is_positive_rating: false,
@@ -71,7 +75,13 @@ class CandidateStore extends ReduceStore {
       is_oppose_or_negative_rating: false,
       is_information_only: false,
       is_public_position: true,
+      organization_we_vote_id: oneVoterGuide.organization_we_vote_id,
       speaker_display_name: oneVoterGuide.voter_guide_display_name,
+      speaker_image_url_https_large: oneVoterGuide.voter_guide_image_url_large,
+      speaker_image_url_https_medium: oneVoterGuide.voter_guide_image_url_medium,
+      speaker_image_url_https_tiny: oneVoterGuide.voter_guide_image_url_tiny,
+      speaker_type: oneVoterGuide.voter_guide_owner_type,
+      voter_guide_we_vote_id: oneVoterGuide.we_vote_id,
       vote_smart_rating: '',
       vote_smart_time_span: '',
       google_civic_election_id: oneVoterGuide.google_civic_election_id,
@@ -104,7 +114,7 @@ class CandidateStore extends ReduceStore {
     let onePosition;
     let voterGuides;
     let contestOfficeWeVoteId = '';
-    const organizationWeVoteId = action.res.opinion_maker_we_vote_id;
+    let organizationWeVoteId = '';
     const positionList = action.res.position_list;
     const isEmpty = voterGuides && voterGuides.length === 0;
     const searchTermExists = action.res.search_string !== '';
@@ -114,7 +124,6 @@ class CandidateStore extends ReduceStore {
 
     switch (action.type) {
       case 'candidateRetrieve':
-
         // Make sure we have information for the office the candidate is running for
         if (action.res.contest_office_we_vote_id) {
           const office = OfficeStore.getOffice(action.res.contest_office_we_vote_id);
@@ -131,7 +140,6 @@ class CandidateStore extends ReduceStore {
         };
 
       case 'candidatesRetrieve':
-
         // Make sure we have information for the office the candidate is running for
         if (action.res.contest_office_we_vote_id) {
           contestOfficeWeVoteId = action.res.contest_office_we_vote_id;
@@ -184,10 +192,26 @@ class CandidateStore extends ReduceStore {
           candidateId = action.res.ballot_item_we_vote_id;
           newPositionList = action.res.position_list;
           positionListFromAdvisersFollowedByVoter[candidateId] = newPositionList;
+          newPositionList.forEach((one) => {
+            ballotItemWeVoteId = one.ballot_item_we_vote_id;
+            organizationWeVoteId = one.speaker_we_vote_id;
+
+            if (!allCachedPositionsAboutCandidates[ballotItemWeVoteId]) {
+              allCachedPositionsAboutCandidates[ballotItemWeVoteId] = {};
+            }
+
+            if (!allCachedPositionsAboutCandidates[ballotItemWeVoteId][organizationWeVoteId]) {
+              allCachedPositionsAboutCandidates[ballotItemWeVoteId][organizationWeVoteId] = {};
+            }
+
+            // console.log('CandidateStore one_position_here: ', one_position_here);
+            allCachedPositionsAboutCandidates[ballotItemWeVoteId][organizationWeVoteId] = one;
+          });
 
           // console.log('positionListForBallotItem positionListFromAdvisersFollowedByVoter[ballotItemWeVoteId]:', positionListFromAdvisersFollowedByVoter[candidate_we_vote_id]);
           return {
             ...state,
+            allCachedPositionsAboutCandidates,
             positionListFromAdvisersFollowedByVoter,
           };
         } else if (action.res.kind_of_ballot_item === 'OFFICE') {
@@ -220,7 +244,7 @@ class CandidateStore extends ReduceStore {
 
       case 'positionListForOpinionMaker':
         // console.log('CandidateStore, positionListForOpinionMaker response');
-
+        organizationWeVoteId = action.res.opinion_maker_we_vote_id;
         positionList.forEach((one) => {
           ballotItemWeVoteId = one.ballot_item_we_vote_id;
 
@@ -268,42 +292,55 @@ class CandidateStore extends ReduceStore {
                 allCachedPositionsAboutCandidates[ballotItemWeVoteId][oneVoterGuide.organization_we_vote_id] = {};
               }
 
-              onePosition = {
-                position_we_vote_id: oneVoterGuide.position_we_vote_id, // Currently empty
-                ballot_item_display_name: oneVoterGuide.ballot_item_display_name,
-                ballot_item_image_url_https_large: oneVoterGuide.ballot_item_image_url_https_large,
-                ballot_item_image_url_https_medium: oneVoterGuide.ballot_item_image_url_https_medium,
-                ballot_item_image_url_https_tiny: oneVoterGuide.ballot_item_image_url_https_tiny,
-                ballot_item_twitter_handle: oneVoterGuide.ballot_item_twitter_handle,
-                ballot_item_political_party: oneVoterGuide.ballot_item_political_party,
-                kind_of_ballot_item: 'CANDIDATE',
+              onePosition = allCachedPositionsAboutCandidates[ballotItemWeVoteId][oneVoterGuide.organization_we_vote_id];
+              // Only proceed if the position doesn't already exist
+              if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
+                // Do not proceed
+                // console.log('voterGuidesToFollowRetrieve part 1 position already exists');
+              } else {
+                onePosition = {
+                  position_we_vote_id: oneVoterGuide.position_we_vote_id, // Currently empty
+                  ballot_item_display_name: oneVoterGuide.ballot_item_display_name,
+                  ballot_item_image_url_https_large: oneVoterGuide.ballot_item_image_url_https_large,
+                  ballot_item_image_url_https_medium: oneVoterGuide.ballot_item_image_url_https_medium,
+                  ballot_item_image_url_https_tiny: oneVoterGuide.ballot_item_image_url_https_tiny,
+                  ballot_item_twitter_handle: oneVoterGuide.ballot_item_twitter_handle,
+                  ballot_item_political_party: oneVoterGuide.ballot_item_political_party,
+                  kind_of_ballot_item: 'CANDIDATE',
 
-                // ballot_item_id: 0,
-                ballotItemWeVoteId,
+                  // ballot_item_id: 0,
+                  ballot_item_we__vote_id: ballotItemWeVoteId,
 
-                // ballot_item_state_code: '',
-                // contest_office_id: 0,
-                // contestOfficeWeVoteId: '',
-                // contest_office_name: '',
-                is_support: oneVoterGuide.is_support,
-                is_positive_rating: oneVoterGuide.is_positive_rating,
-                is_support_or_positive_rating: oneVoterGuide.is_support_or_positive_rating,
-                is_oppose: oneVoterGuide.is_oppose,
-                is_negative_rating: oneVoterGuide.is_negative_rating,
-                is_oppose_or_negative_rating: oneVoterGuide.is_oppose_or_negative_rating,
-                is_information_only: oneVoterGuide.is_information_only,
-                is_public_position: oneVoterGuide.is_public_position,
-                speaker_display_name: oneVoterGuide.speaker_display_name,
-                vote_smart_rating: oneVoterGuide.vote_smart_rating,
-                vote_smart_time_span: oneVoterGuide.vote_smart_time_span,
-                googleCivicElectionId: oneVoterGuide.google_civic_election_id,
+                  // ballot_item_state_code: '',
+                  // contest_office_id: 0,
+                  // contest_office_we_vote_id: '',
+                  // contest_office_name: '',
+                  is_support: oneVoterGuide.is_support,
+                  is_positive_rating: oneVoterGuide.is_positive_rating,
+                  is_support_or_positive_rating: oneVoterGuide.is_support_or_positive_rating,
+                  is_oppose: oneVoterGuide.is_oppose,
+                  is_negative_rating: oneVoterGuide.is_negative_rating,
+                  is_oppose_or_negative_rating: oneVoterGuide.is_oppose_or_negative_rating,
+                  is_information_only: oneVoterGuide.is_information_only,
+                  is_public_position: oneVoterGuide.is_public_position,
+                  organization_we_vote_id: oneVoterGuide.organization_we_vote_id,
+                  speaker_display_name: oneVoterGuide.speaker_display_name,
+                  speaker_image_url_https_large: oneVoterGuide.voter_guide_image_url_large,
+                  speaker_image_url_https_medium: oneVoterGuide.voter_guide_image_url_medium,
+                  speaker_image_url_https_tiny: oneVoterGuide.voter_guide_image_url_tiny,
+                  speaker_type: oneVoterGuide.voter_guide_owner_type,
+                  vote_smart_rating: oneVoterGuide.vote_smart_rating,
+                  vote_smart_time_span: oneVoterGuide.vote_smart_time_span,
+                  voter_guide_we_vote_id: oneVoterGuide.we_vote_id,
+                  google_civic_election_id: oneVoterGuide.google_civic_election_id,
 
-                // state_code: '',
-                more_info_url: oneVoterGuide.more_info_url,
-                statement_text: oneVoterGuide.statement_text,
-                last_updated: oneVoterGuide.last_updated,
-              };
-              // console.log('CandidateStore, voterGuidesToFollowRetrieve, onePosition: ', onePosition);
+                  // state_code: '',
+                  more_info_url: oneVoterGuide.more_info_url,
+                  statement_text: oneVoterGuide.statement_text,
+                  last_updated: oneVoterGuide.last_updated,
+                };
+                // console.log('CandidateStore, voterGuidesToFollowRetrieve, onePosition: ', onePosition);
+              }
 
               // console.log('CandidateStore onePosition: ', onePosition);
               allCachedPositionsAboutCandidates[ballotItemWeVoteId][oneVoterGuide.organization_we_vote_id] = onePosition;
@@ -334,7 +371,7 @@ class CandidateStore extends ReduceStore {
                 // Only proceed if the position doesn't already exist
                 if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                   // Do not proceed
-                  // console.log('position already exists');
+                  console.log('voterGuidesToFollowRetrieve Support position already exists');
                 } else {
                   onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                   // These are support positions
@@ -360,7 +397,7 @@ class CandidateStore extends ReduceStore {
                 // Only proceed if the position doesn't already exist
                 if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                   // Do not proceed
-                  // console.log('position already exists');
+                  console.log('voterGuidesToFollowRetrieve Info only position already exists');
                 } else {
                   onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                   // These are information only positions
@@ -385,7 +422,7 @@ class CandidateStore extends ReduceStore {
 
                 if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                   // Do not proceed
-                  // console.log('position already exists');
+                  console.log('voterGuidesToFollowRetrieve Oppose position already exists');
                 } else {
                   onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                   // These are oppose positions
@@ -437,7 +474,7 @@ class CandidateStore extends ReduceStore {
               // Only proceed if the position doesn't already exist
               if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                 // Do not proceed
-                // console.log('position already exists');
+                // console.log('voterGuidesUpcomingRetrieve Support position already exists');
               } else {
                 onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                 // These are support positions
@@ -463,7 +500,7 @@ class CandidateStore extends ReduceStore {
               // Only proceed if the position doesn't already exist
               if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                 // Do not proceed
-                // console.log('position already exists');
+                // console.log('voterGuidesUpcomingRetrieve Info only position already exists');
               } else {
                 onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                 // These are information only positions
@@ -487,7 +524,7 @@ class CandidateStore extends ReduceStore {
               // Only proceed if the position doesn't already exist
               if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                 // Do not proceed
-                // console.log('position already exists');
+                // console.log('voterGuidesUpcomingRetrieve Oppose position already exists');
               } else {
                 onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                 // These are oppose positions

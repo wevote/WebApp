@@ -56,9 +56,9 @@ export default class VoterGuideRecommendationsFromOneOrganization extends Compon
         <div className="">
         These are recommended voter guides to follow from this election.
           <GuideList
-            organizationsToFollow={this.state.voterGuidesToFollowOrganizationRecommendationThisElection}
-            hide_stop_following_button
-            hide_ignore_button
+            incomingVoterGuideList={this.state.voterGuidesToFollowOrganizationRecommendationThisElection}
+            hideStopFollowingButton
+            hideIgnoreButton
             instantRefreshOn={false}
           />
         </div>
@@ -68,9 +68,9 @@ export default class VoterGuideRecommendationsFromOneOrganization extends Compon
         <div className="">
         These are recommended voter guides to follow.
           <GuideList
-            organizationsToFollow={this.state.voterGuidesToFollowOrganizationRecommendationAllElections}
-            hide_stop_following_button
-            hide_ignore_button
+            incomingVoterGuideList={this.state.voterGuidesToFollowOrganizationRecommendationAllElections}
+            hideStopFollowingButton
+            hideIgnoreButton
             instantRefreshOn={false}
           />
         </div>

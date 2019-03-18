@@ -40,16 +40,16 @@ const islandFilters = [
 export default class GuideList extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
-    organizationsToFollow: PropTypes.array,
+    incomingVoterGuideList: PropTypes.array,
     instantRefreshOn: PropTypes.bool,
-    hide_stop_following_button: PropTypes.bool,
-    hide_ignore_button: PropTypes.bool,
+    hideStopFollowingButton: PropTypes.bool,
+    hideIgnoreButton: PropTypes.bool,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      organizationsToFollow: [],
+      voterGuideList: [],
       ballotItemWeVoteId: '',
       // organizationsWithPositions: [],
     };
@@ -58,9 +58,9 @@ export default class GuideList extends Component {
   componentDidMount () {
     // console.log("GuideList componentDidMount");
     const { ballotItemWeVoteId } = this.state;
-    const organizationsToFollow = this.sortOrganizations(this.props.organizationsToFollow, ballotItemWeVoteId);
+    const voterGuideList = this.sortOrganizations(this.props.incomingVoterGuideList, ballotItemWeVoteId);
     this.setState({
-      organizationsToFollow,
+      voterGuideList,
       ballotItemWeVoteId: this.props.ballotItemWeVoteId,
     }, () => {
       const orgsWithPositions = this.getOrganizationsWithPositions();
@@ -74,11 +74,11 @@ export default class GuideList extends Component {
 
   componentWillReceiveProps (nextProps) {
     // console.log("GuideList componentWillReceiveProps");
-    // Do not update the state if the organizationsToFollow list looks the same, and the ballotItemWeVoteId hasn't changed
+    // Do not update the state if the voterGuideList list looks the same, and the ballotItemWeVoteId hasn't changed
     const { ballotItemWeVoteId } = this.state;
-    const organizationsToFollow = this.sortOrganizations(nextProps.organizationsToFollow, ballotItemWeVoteId);
+    const voterGuideList = this.sortOrganizations(nextProps.incomingVoterGuideList, ballotItemWeVoteId);
     this.setState({
-      organizationsToFollow,
+      voterGuideList,
       ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
     }, () => {
       const orgsWithPositions = this.getOrganizationsWithPositions();
@@ -93,7 +93,7 @@ export default class GuideList extends Component {
 
   handleFilteredOrgsChange = filteredOrgs => this.setState({ filteredOrganizationsWithPositions: filteredOrgs });
 
-  getOrganizationsWithPositions = () => this.state.organizationsToFollow.map((organization) => {
+  getOrganizationsWithPositions = () => this.state.voterGuideList.map((organization) => {
     let organizationPositionForThisBallotItem;
     if (stringContains('cand', this.state.ballotItemWeVoteId)) {
       organizationPositionForThisBallotItem = CandidateStore.getPositionAboutCandidateFromOrganization(this.state.ballotItemWeVoteId, organization.organization_we_vote_id);
@@ -136,10 +136,10 @@ export default class GuideList extends Component {
   }
 
   handleIgnore (id) {
-    const { organizationsToFollow } = this.state;
+    const { voterGuideList } = this.state;
     OrganizationActions.organizationFollowIgnore(id);
     this.setState({
-      organizationsToFollow: organizationsToFollow.filter(
+      voterGuideList: voterGuideList.filter(
         org => org.organization_we_vote_id !== id,
       ),
     });
@@ -154,7 +154,7 @@ export default class GuideList extends Component {
       return null;
     }
 
-    // console.log("GuideList organizationsToFollow: ", this.state.organizationsToFollow);
+    // console.log("GuideList voterGuideList: ", this.state.voterGuideList);
 
     if (!this.state.filteredOrganizationsWithPositions) {
       return (
@@ -177,10 +177,6 @@ export default class GuideList extends Component {
         </div>
       );
     }
-    // Updated version for Bootstrap 4?
-    //           <Button variant="outline-secondary" size="sm" onClick={this.handleIgnore.bind(this, organization.organization_we_vote_id)}>
-    //             Ignore
-    //           </Button>
     return (
       <div className="guidelist card-child__list-group">
         {
@@ -202,9 +198,9 @@ export default class GuideList extends Component {
           >
             <FollowToggle
                 organizationWeVoteId={organization.organization_we_vote_id}
-                hide_stop_following_button={this.props.hide_stop_following_button}
+                hideStopFollowingButton={this.props.hideStopFollowingButton}
             />
-            { this.props.hide_ignore_button ?
+            { this.props.hideIgnoreButton ?
               null : (
                 <button
                     className="btn btn-default btn-sm"
