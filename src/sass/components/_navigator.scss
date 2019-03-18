@@ -256,12 +256,13 @@ $container-margin: -15px;
     border-radius: $radius-sm;
     background: #fff;
     overflow: hidden;
-    height: 34px;
-    width: 34px;
-    display: block;
+    display: inline;
     @include breakpoints(max mid-small) {
       margin-top: $space-xs;
       margin-bottom: $space-xs;
+    }
+    &-container {
+      display: inline;
     }
   }
 
@@ -269,9 +270,7 @@ $container-margin: -15px;
     border-radius: $radius-sm;
     background: #fff;
     overflow: hidden;
-    height: 34px;
-    width: 34px;
-    display: block;
+    display: inline;
   }
 
   &__avatar-iphone-xr {
