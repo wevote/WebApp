@@ -9,6 +9,7 @@ class Testimonial extends React.Component {
   static propTypes = {
     testimonialAuthor: PropTypes.string,
     testimonial: PropTypes.string,
+    imageUrl: PropTypes.string,
   };
 
   render () {
@@ -25,7 +26,7 @@ class Testimonial extends React.Component {
           kind_of_ballot_item="CANDIDATE"
         />
         {testimonialAuthor}
-        <span style={{"display": "block"}}>{testimonial}</span>
+        <span style={{ display: 'block' }}>{testimonial}</span>
       </TestimonialStyled>
     );
   }
