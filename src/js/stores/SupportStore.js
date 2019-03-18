@@ -34,6 +34,22 @@ class SupportStore extends ReduceStore {
     };
   }
 
+  getIsOpposeByBallotItemWeVoteId (ballotItemWeVoteId) {
+    if (!(this.opposeList)) {
+      return false;
+    }
+
+    return this.opposeList[ballotItemWeVoteId] || false;
+  }
+
+  getIsSupportByBallotItemWeVoteId (ballotItemWeVoteId) {
+    if (!(this.supportList)) {
+      return false;
+    }
+
+    return this.supportList[ballotItemWeVoteId] || false;
+  }
+
   get supportList () {
     return this.getState().voter_supports;
   }

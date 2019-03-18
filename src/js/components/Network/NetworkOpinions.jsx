@@ -82,7 +82,7 @@ export default class NetworkOpinions extends Component {
             }
             <div className="card">
               <Suspense fallback={<span>Loading...</span>}>
-                <GuideList organizationsToFollow={voterGuidesToFollowAll} instantRefreshOn />
+                <GuideList incomingVoterGuideList={voterGuidesToFollowAll} instantRefreshOn />
               </Suspense>
             </div>
             <Link className="pull-right d-print-none" to="/opinions_ignored">Organizations you are ignoring</Link>

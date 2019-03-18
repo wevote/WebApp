@@ -76,7 +76,7 @@ export default class Opinions extends Component {
           }
           <div className="card">
             <Suspense fallback={<span>Loading...</span>}>
-              <GuideList organizationsToFollow={voterGuidesToFollowAll} instantRefreshOn />
+              <GuideList incomingVoterGuideList={voterGuidesToFollowAll} instantRefreshOn />
             </Suspense>
           </div>
         </div>

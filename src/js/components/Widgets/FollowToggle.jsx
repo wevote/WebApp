@@ -14,7 +14,7 @@ export default class FollowToggle extends Component {
   static propTypes = {
     classNameOverride: PropTypes.string,
     currentBallotIdInUrl: PropTypes.string,
-    hide_stop_following_button: PropTypes.bool,
+    hideStopFollowingButton: PropTypes.bool,
     ballotItemWeVoteId: PropTypes.string,
     organization_for_display: PropTypes.object,
     opposesThisBallotItem: PropTypes.bool,
@@ -174,7 +174,7 @@ export default class FollowToggle extends Component {
 
     return this.state.isFollowing ? (
       <span className="d-print-none">
-        { this.props.hide_stop_following_button ?
+        { this.props.hideStopFollowingButton ?
           null : (
             <Button
               variant="warning"

@@ -34,16 +34,27 @@ class BallotTabsRaccoon extends Component {
   }
 
   getSelectedTab = () => {
-    const { completionLevelFilterType } = this.props;
+    const { ballotLength, ballotLengthRemaining, completionLevelFilterType } = this.props;
+    const remainingDecisionsCountIsDifferentThanAllItems = ballotLength !== ballotLengthRemaining;
+    const showRemainingDecisions = (remainingDecisionsCountIsDifferentThanAllItems && ballotLengthRemaining) || false;
+    const showDecisionsMade = (remainingDecisionsCountIsDifferentThanAllItems && ballotLengthRemaining) || false;
     switch (completionLevelFilterType) {
       case 'filterAllBallotItems':
         return 0;
       case 'filterRemaining':
-        return 1;
+        if (showRemainingDecisions) {
+          return 1;
+        } else {
+          return 0;
+        }
       case 'filterDecided':
-        return 2;
+        if (showDecisionsMade) {
+          return 2;
+        } else {
+          return 0;
+        }
       default:
-        return false;
+        return 0;
     }
   }
 
@@ -67,7 +78,7 @@ class BallotTabsRaccoon extends Component {
         classes={{ root: classes.tabsRoot, flexContainer: classes.tabsFlexContainer, scroller: classes.scroller }}
       >
         <Tab
-          classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot, indicator: classes.indicator }}
+          classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot }}
           onClick={() => this.goToDifferentCompletionLevelTab('filterAllBallotItems')}
           label={(
             <Badge
@@ -88,7 +99,7 @@ class BallotTabsRaccoon extends Component {
 
         { showRemainingDecisions ? (
           <Tab
-            classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot, indicator: classes.indicator }}
+            classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot }}
             onClick={() => this.goToDifferentCompletionLevelTab('filterRemaining')}
             label={(
               <Badge
