@@ -347,6 +347,15 @@ class HeaderBar extends Component {
                 </Tooltip>
                 )
               }
+              <Link to="/settings/menu" className="header-link">
+                <Tooltip title="Settings" aria-label="settings" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                  <IconButton
+                    classes={{ root: classes.iconButtonRoot }}
+                  >
+                    <MoreVertIcon />
+                  </IconButton>
+                </Tooltip>
+              </Link>
               {voterPhotoUrlMedium ? (
                 <div id="js-header-avatar" className="header-nav__avatar-container" onClick={this.toggleProfilePopUp}>
                   <img
