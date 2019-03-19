@@ -7,7 +7,7 @@ import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 import ReadMore from './ReadMore';
 import { vimeoRegX, youTubeRegX } from '../../utils/textFormat';
-
+import noPositionIcon from '../../../img/global/svg-icons/no-position-icon.svg';
 
 export default class PositionInformationOnlySnippet extends Component {
   static propTypes = {
@@ -83,7 +83,7 @@ export default class PositionInformationOnlySnippet extends Component {
               <span>
                 <OverlayTrigger placement="top" overlay={tooltip}>
                   <div className="public-friends-indicator">
-                    <img src={cordovaDot('/img/global/svg-icons/no-position-icon.svg')}
+                    <img src={cordovaDot(noPositionIcon)}
                          className={className}
                          width={24}
                          height={24}
