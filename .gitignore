@@ -158,6 +158,7 @@ staticfiles
 /**/migrations/*.py
 !/**/migrations/__init__.py
 src/js/config.js
+tests/browserstack/config.js
 src/javascript/google-tag-manager.js
 src/javascript/google-analytics.js
 web_app/build/*
