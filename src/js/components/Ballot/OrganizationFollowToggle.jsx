@@ -6,6 +6,7 @@ import ImageHandler from '../ImageHandler';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { showToastError, showToastSuccess } from '../../utils/showToast';
 import { renderLog } from '../../utils/logging';
+import checkMarkIcon from '../../../img/global/svg-icons/check-mark-v2-40x43.svg';
 
 export default class OrganizationFollowToggle extends Component {
   static propTypes = {
@@ -69,7 +70,7 @@ export default class OrganizationFollowToggle extends Component {
         { isFollowing && (
         <ImageHandler
           className="intro-modal__square-check-mark"
-          imageUrl={cordovaDot('/img/global/svg-icons/check-mark-v2-40x43.svg')}
+          imageUrl={cordovaDot(checkMarkIcon)}
           alt="Following"
         />
         ) }
