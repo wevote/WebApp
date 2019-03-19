@@ -36,7 +36,7 @@ class FooterBar extends React.Component {
     if (stringContains('/values', pathname)) return 1;
     if (stringContains('/settings/', pathname)) return 3;
     return -1;
-  }
+  };
 
   render () {
     return (
