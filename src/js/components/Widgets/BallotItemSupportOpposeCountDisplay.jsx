@@ -18,6 +18,8 @@ import SupportStore from '../../stores/SupportStore';
 import { stringContains } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import thumbsUpColorIcon from '../../../img/global/icons/thumbs-up-color-icon.svg';
+import thumbsDownColorIcon from '../../../img/global/icons/thumbs-down-color-icon.svg';
 // import { findDOMNode } from 'react-dom';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize complex changes
@@ -361,7 +363,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     const nameNetworkSupportList = SupportStore.getNameSupportListUnderThisBallotItem(this.state.ballotItemWeVoteId);
     const nameNetworkSupportListDisplay = nameNetworkSupportList.map(speakerDisplayName => (
       <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start">
-        <img src={cordovaDot('/img/global/icons/thumbs-up-color-icon.svg')} alt="Thumbs Up" width="20" height="20" />
+        <img src={cordovaDot(thumbsUpColorIcon)} alt="Thumbs Up" width="20" height="20" />
         <span>&nbsp;</span>
         <span>
           {speakerDisplayName}
@@ -373,7 +375,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     const nameNetworkOpposeList = SupportStore.getNameOpposeListUnderThisBallotItem(this.state.ballotItemWeVoteId);
     const nameNetworkOpposeListDisplay = nameNetworkOpposeList.map(speakerDisplayName => (
       <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start">
-        <img src={cordovaDot('/img/global/icons/thumbs-down-color-icon.svg')} alt="Thumbs Down" width="20" height="20" />
+        <img src={cordovaDot(thumbsDownColorIcon)} alt="Thumbs Down" width="20" height="20" />
         <span>&nbsp;</span>
         <span>
           {speakerDisplayName}
@@ -431,7 +433,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           <span className="u-no-break">
             {' '}
             <img
-              src={cordovaDot('/img/global/icons/thumbs-up-color-icon.svg')}
+              src={cordovaDot(thumbsUpColorIcon)}
               alt="Thumbs Up"
               width="20"
               height="20"
@@ -450,7 +452,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           {' '}
           <span className="u-no-break">
             <img
-              src={cordovaDot('/img/global/icons/thumbs-down-color-icon.svg')}
+              src={cordovaDot(thumbsDownColorIcon)}
               alt="Thumbs Down"
               width="20"
               height="20"
@@ -494,7 +496,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         {' '}
         <span className="u-no-break">
           <img
-            src={cordovaDot('/img/global/icons/thumbs-up-color-icon.svg')}
+            src={cordovaDot(thumbsUpColorIcon)}
             alt="Thumbs Up"
             width="20"
             height="20"
@@ -506,7 +508,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         or&nbsp;
         <span className="u-no-break">
           <img
-            src={cordovaDot('/img/global/icons/thumbs-down-color-icon.svg')}
+            src={cordovaDot(thumbsDownColorIcon)}
             alt="Thumbs Down"
             width="20"
             height="20"
