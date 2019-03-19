@@ -7,6 +7,8 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import SearchBar from '../Search/SearchBar';
+import thumbUpIcon from '../../../img/global/svg-icons/thumbs-up-icon.svg';
+import thumbDownIcon from '../../../img/global/svg-icons/thumbs-down-icon.svg';
 
 
 export default class BallotSearchResults extends Component {
@@ -108,7 +110,7 @@ export default class BallotSearchResults extends Component {
         {' '}
         <span className="u-no-break">
           <span className="btn__icon">
-            <img src={cordovaDot('/img/global/svg-icons/thumbs-up-icon.svg')}
+            <img src={cordovaDot(thumbUpIcon)}
                  width={iconSize}
                  height={iconSize}
                  color={iconColor}
@@ -122,7 +124,7 @@ export default class BallotSearchResults extends Component {
         or&nbsp;
         <span className="u-no-break">
           <span className="btn__icon">
-            <img src={cordovaDot('/img/global/svg-icons/thumbs-down-icon.svg')}
+            <img src={cordovaDot(thumbDownIcon)}
                  width={iconSize}
                  height={iconSize}
                  color={iconColor}
