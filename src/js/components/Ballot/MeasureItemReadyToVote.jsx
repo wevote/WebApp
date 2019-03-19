@@ -5,7 +5,10 @@ import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import SupportStore from '../../stores/SupportStore';
 import { capitalizeString } from '../../utils/textFormat';
-
+import thumbsUpColorIcon from '../../../img/global/svg-icons/thumbs-up-color-icon.svg';
+import thumbsDownColorIcon from '../../../img/global/svg-icons/thumbs-down-color-icon.svg';
+import upArrowColorIcon from '../../../img/global/icons/up-arrow-color-icon.svg';
+import downArrowColorIcon from '../../../img/global/icons/down-arrow-color-icon.svg';
 
 export default class MeasureItemReadyToVote extends Component {
   static propTypes = {
@@ -69,7 +72,7 @@ export default class MeasureItemReadyToVote extends Component {
               supportProps && supportProps.is_support ? (
                 <div className="u-flex-none u-justify-end">
                   <span className="u-push--xs">Supported by you</span>
-                  <img src={cordovaDot('/img/global/svg-icons/thumbs-up-color-icon.svg')} width="24" height="24" />
+                  <img src={cordovaDot(thumbsUpColorIcon)} width="24" height="24" />
                 </div>
               ) :
                 null
@@ -78,7 +81,7 @@ export default class MeasureItemReadyToVote extends Component {
               supportProps && supportProps.is_oppose ? (
                 <div className="u-flex-none u-justify-end">
                   <span className="u-push--xs">Opposed by you</span>
-                  <img src={cordovaDot('/img/global/svg-icons/thumbs-down-color-icon.svg')} width="24" height="24" />
+                  <img src={cordovaDot(thumbsDownColorIcon)} width="24" height="24" />
                 </div>
               ) :
                 null
@@ -87,7 +90,7 @@ export default class MeasureItemReadyToVote extends Component {
               supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count > supportProps.oppose_count ? (
                 <div className="u-flex-none u-justify-end">
                   <span className="u-push--xs">Your network supports</span>
-                  <img src={cordovaDot('/img/global/icons/up-arrow-color-icon.svg')} className="network-positions__support-icon" width="20" height="20" />
+                  <img src={cordovaDot(upArrowColorIcon)} className="network-positions__support-icon" width="20" height="20" />
                 </div>
               ) :
                 null
@@ -96,7 +99,7 @@ export default class MeasureItemReadyToVote extends Component {
               supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count < supportProps.oppose_count ? (
                 <div className="u-flex-none u-justify-end">
                   <span className="u-push--xs">Your network opposes</span>
-                  <img src={cordovaDot('/img/global/icons/down-arrow-color-icon.svg')} className="network-positions__oppose-icon" width="20" height="20" />
+                  <img src={cordovaDot(downArrowColorIcon)} className="network-positions__oppose-icon" width="20" height="20" />
                 </div>
               ) :
                 null
