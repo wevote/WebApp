@@ -944,7 +944,7 @@ class Ballot extends Component {
                   />
                 ) : null
                   }
-                <div className="col-xs-12 col-md-8">
+                <div className="col-sm-12 col-lg-9">
                   { inReadyToVoteMode ? (
                     <div>
                       <div className="alert alert-success d-print-none">
@@ -1032,7 +1032,7 @@ class Ballot extends Component {
 
                 { ballotWithItemsFromCompletionFilterType.length === 0 || isCordova() ?
                   null : (
-                    <div className="col-md-4 d-none d-sm-block sidebar-menu">
+                    <div className="col-lg-3 d-none d-lg-block sidebar-menu">
                       <BallotSideBar
                       displayTitle
                       displaySubtitles

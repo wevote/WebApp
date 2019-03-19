@@ -55,7 +55,7 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       // main: "#25536D",
-      main: '#2E3C5D',
+      main: '#2E3C5D', // brandBlue
     },
     secondary: amber, // Feel free to change this
   },
