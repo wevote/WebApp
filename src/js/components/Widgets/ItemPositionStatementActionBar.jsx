@@ -13,7 +13,7 @@ import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { vimeoRegX, youTubeRegX, stringContains } from '../../utils/textFormat';
-
+import avatarGeneric from '../../../img/global/svg-icons/avatar-generic.svg';
 
 export default class ItemPositionStatementActionBar extends Component {
   static propTypes = {
@@ -210,7 +210,7 @@ export default class ItemPositionStatementActionBar extends Component {
 
     const speakerImageUrlHttps = voterPhotoUrlMedium;
     const speakerDisplayName = stringContains('Voter-', voterFullName) ? '' : voterFullName;
-    const imagePlaceholder = <span className="position-statement__avatar"><img src={cordovaDot('/img/global/svg-icons/avatar-generic.svg')} width="34" height="34" color="#c0c0c0" alt="generic voter" /></span>;
+    const imagePlaceholder = <span className="position-statement__avatar"><img src={cordovaDot(avatarGeneric)} width="34" height="34" color="#c0c0c0" alt="generic voter" /></span>;
 
     // The short version can be used to cut-off an exceedingly long comment. This applies to entries by the viewer,
     //  for viewing by him or herself. Not used currently.
