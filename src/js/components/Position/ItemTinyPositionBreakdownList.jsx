@@ -7,6 +7,7 @@ import OrganizationCard from '../VoterGuide/OrganizationCard';
 import OrganizationTinyDisplay from '../VoterGuide/OrganizationTinyDisplay';
 import PositionsNotShownList from '../Ballot/PositionsNotShownList';
 import VoterStore from '../../stores/VoterStore';
+import avatarGeneric from '../../../img/global/svg-icons/avatar-generic.svg';
 
 // This component can be used to show either supporters, opposers, or groups with info only that the Voter
 // is already following
@@ -131,7 +132,7 @@ export default class ItemTinyPositionBreakdownList extends Component {
         } else {
           voterOrganizationTinyDisplay = (
             <span key="anonIconKey" className={`${supportOpposeClass}position-rating__source with-popover`}>
-              <img src={cordovaDot('/img/global/svg-icons/avatar-generic.svg')} width="24" height="24" color="#c0c0c0" alt="generic voter" />
+              <img src={cordovaDot(avatarGeneric)} width="24" height="24" color="#c0c0c0" alt="generic voter" />
               You
             </span>
           );
