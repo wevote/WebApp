@@ -20,6 +20,10 @@ import SupportStore from '../../stores/SupportStore';
 import { stringContains } from '../../utils/textFormat';
 import VoterStore from '../../stores/VoterStore';
 import thumbsUpIcon from '../../../img/global/svg-icons/issues/thumbs-up-icon.svg';
+import thumbsDownIcon from '../../../img/global/svg-icons/issues/thumbs-down-icon.svg';
+import thumbsUpColorIcon from '../../../img/global/icons/thumbs-up-color-icon.svg';
+import thumbsDownColorIcon from '../../../img/global/icons/thumbs-down-color-icon.svg';
+import issueV1Icon from '../../../img/global/svg-icons/issues-v1-64x42.svg';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize complex changes
 /* eslint react/no-find-dom-node: 1 */
@@ -502,7 +506,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       const organizationNameIssueSupportList = IssueStore.getOrganizationNameSupportListUnderThisBallotItem(this.state.ballotItemWeVoteId);
       const organizationNameIssueSupportListDisplay = organizationNameIssueSupportList.map(organizationName => (
         <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start">
-          <img src={cordovaDot('/img/global/icons/thumbs-up-color-icon.svg')} alt="Thumbs Up" width="20" height="20" />
+          <img src={cordovaDot(thumbsUpColorIcon)} alt="Thumbs Up" width="20" height="20" />
           <span>&nbsp;</span>
           <span>
             {organizationName}
@@ -514,7 +518,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
       const organizationNameIssueOpposeList = IssueStore.getOrganizationNameOpposeListUnderThisBallotItem(this.state.ballotItemWeVoteId);
       const organizationNameIssueOpposeListDisplay = organizationNameIssueOpposeList.map(organizationName => (
         <span key={organizationName} className="u-flex u-flex-row u-justify-start u-items-start">
-          <img src={cordovaDot('/img/global/icons/thumbs-down-color-icon.svg')} alt="Thumbs Down" width="20" height="20" />
+          <img src={cordovaDot(thumbsDownColorIcon)} alt="Thumbs Down" width="20" height="20" />
           <span>&nbsp;</span>
           <span>
             {organizationName}
@@ -598,7 +602,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
             {' '}
             <strong>
               <img
-                src={cordovaDot('/img/global/svg-icons/issues-v1-64x42.svg')}
+                src={cordovaDot(issueV1Icon)}
                 width="24px"
                 alt="Issues"
               />
@@ -648,7 +652,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     const nameNetworkSupportList = SupportStore.getNameSupportListUnderThisBallotItem(this.state.ballotItemWeVoteId);
     const nameNetworkSupportListDisplay = nameNetworkSupportList.map(speakerDisplayName => (
       <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start">
-        <img src={cordovaDot('/img/global/icons/thumbs-up-color-icon.svg')} alt="Thumbs Up" width="20" height="20" />
+        <img src={cordovaDot(thumbsUpColorIcon)} alt="Thumbs Up" width="20" height="20" />
         <span>&nbsp;</span>
         <span>
           {speakerDisplayName}
@@ -660,7 +664,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
     const nameNetworkOpposeList = SupportStore.getNameOpposeListUnderThisBallotItem(this.state.ballotItemWeVoteId);
     const nameNetworkOpposeListDisplay = nameNetworkOpposeList.map(speakerDisplayName => (
       <span key={speakerDisplayName} className="u-flex u-flex-row u-justify-start u-items-start">
-        <img src={cordovaDot('/img/global/icons/thumbs-down-color-icon.svg')} alt="Thumbs Down" width="20" height="20" />
+        <img src={cordovaDot(thumbsDownColorIcon)} alt="Thumbs Down" width="20" height="20" />
         <span>&nbsp;</span>
         <span>
           {speakerDisplayName}
@@ -718,7 +722,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
           <span className="u-no-break">
             {' '}
             <img
-              src={cordovaDot('/img/global/icons/thumbs-up-color-icon.svg')}
+              src={cordovaDot(thumbsUpColorIcon)}
               alt="Thumbs Up"
               width="20"
               height="20"
@@ -737,7 +741,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
           {' '}
           <span className="u-no-break">
             <img
-              src={cordovaDot('/img/global/icons/thumbs-down-color-icon.svg')}
+              src={cordovaDot(thumbsDownColorIcon)}
               alt="Thumbs Down"
               width="20"
               height="20"
@@ -781,7 +785,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         {' '}
         <span className="u-no-break">
           <img
-            src={cordovaDot('/img/global/icons/thumbs-up-color-icon.svg')}
+            src={cordovaDot(thumbsUpColorIcon)}
             alt="Thumbs Up"
             width="20"
             height="20"
@@ -793,7 +797,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
         or&nbsp;
         <span className="u-no-break">
           <img
-            src={cordovaDot('/img/global/icons/thumbs-down-color-icon.svg')}
+            src={cordovaDot(thumbsDownColorIcon)}
             alt="Thumbs Down"
             width="20"
             height="20"
@@ -886,7 +890,7 @@ export default class ItemSupportOpposeRaccoon extends Component {
           <span className="u-no-break issue-icon-list__endorsements-label">
             <img
               src={cordovaDot(
-                '/img/global/svg-icons/issues/thumbs-down-icon.svg',
+                thumbsDownIcon,
               )}
               className="issue-icon-list__endorsement-icon"
               alt="Thumbs Down"
