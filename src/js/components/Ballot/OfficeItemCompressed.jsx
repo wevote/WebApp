@@ -519,7 +519,7 @@ const CandidateInfo = styled.div`
   margin-bottom: 8px;
   overflow-x: hidden;
   transition: all 200ms ease-in;
-  border: 1px solid #eee;
+  border: 1px solid ${({ theme }) => theme.colors.grayBorder};
   width: ${({ candidateLength }) => (candidateLength > 1 ? '48%' : '100%')};
   margin-right: 8px;
   border-radius: 4px;

@@ -182,17 +182,17 @@ class CandidateItem extends Component {
               </h2>
               {twitterFollowersCount ? (
                 <span
-                className={this.props.link_to_ballot_item_page ?
-                  'twitter-followers__badge u-cursor--pointer' :
-                  'twitter-followers__badge'}
-                onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}
+                  className={this.props.link_to_ballot_item_page ?
+                    'twitter-followers__badge u-show-desktop-tablet u-cursor--pointer' :
+                    'twitter-followers__badge u-show-desktop-tablet'}
+                  onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}
                 >
                   <span className="fa fa-twitter twitter-followers__icon" />
                   <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
                 </span>
               ) :
                 null
-          }
+              }
               <p className={this.props.link_to_ballot_item_page ?
                 'u-gray-darker u-cursor--pointer' :
                 'u-gray-darker'
@@ -288,9 +288,8 @@ const CandidateWrapper = styled.div`
   flex-flow: row;
   justify-content: space-between;
   width: 90%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     width: 100%;
-    flex-flow: column;
   }
 `;
 
