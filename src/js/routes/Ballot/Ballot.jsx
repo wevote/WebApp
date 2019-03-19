@@ -46,14 +46,6 @@ import { formatVoterBallotList, checkShouldUpdate } from './utils';
 import SelectBallotModal from '../../components/Ballot/SelectBallotModal';
 import AppActions from '../../actions/AppActions';
 
-// December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
-/* eslint class-methods-use-this: 0 */
-/* eslint react/jsx-indent-props: 0 */
-/* eslint jsx-a11y/no-static-element-interactions: 0 */
-/* eslint jsx-a11y/no-noninteractive-element-to-interactive-role: 0 */
-/* eslint jsx-a11y/click-events-have-key-events: 0 */
-/* eslint jsx-a11y/anchor-is-valid: 0 */
-/* eslint no-param-reassign: 0 */
 
 // Related to WebApp/src/js/components/VoterGuide/VoterGuideBallot.jsx
 const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];
@@ -617,16 +609,16 @@ class Ballot extends Component {
       default:
         return null;
     }
-  }
+  };
 
   handleSearch = (filteredItems) => {
     this.setState({ ballotSearchResults: filteredItems });
-  }
+  };
 
   handleToggleSearchBallot = () => {
     const { isSearching } = this.state;
     this.setState({ isSearching: !isSearching });
-  }
+  };
 
   toggleBallotIntroModal () {
     const { showBallotIntroModal, location, pathname } = this.state;
