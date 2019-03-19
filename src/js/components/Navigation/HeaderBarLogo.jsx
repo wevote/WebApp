@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
-import logo from "../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark.svg";
+import logo from '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark.svg';
 const HeaderBarLogo = ({ isBeta }) => (
   <span>
     <Link to={`${isCordova() ? '/ballot' : '/welcome'}`} className="page-logo page-logo-full-size">
