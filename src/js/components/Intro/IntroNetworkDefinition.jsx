@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import introListenToFriendsGraphic from '../../../img/global/intro-story/intro-listen-to-friends-graphic.svg';
 
 export default class IntroNetworkDefinition extends Component {
   static propTypes = {
@@ -38,7 +39,7 @@ export default class IntroNetworkDefinition extends Component {
           network.
         </div>
         <div><br /></div>
-        <div><img className="center-block intro-story__img-height--extra u-bg-white" src={cordovaDot('/img/global/intro-story/intro-listen-to-friends-graphic.svg')} /></div>
+        <div><img className="center-block intro-story__img-height--extra u-bg-white" src={cordovaDot(introListenToFriendsGraphic)} /></div>
         <div className="intro-story__padding-btn">
           <button type="button" className="btn btn-success btn-lg" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
         </div>
