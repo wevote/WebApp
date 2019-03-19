@@ -11,6 +11,8 @@ import SupportActions from '../../actions/SupportActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
 import VoterStore from '../../stores/VoterStore';
+import publicIconSvg from '../../../img/global/svg-icons/public-icon.svg';
+import groupIcon from '../../../img/global/svg-icons/group-icon.svg';
 
 export default class PositionPublicToggle extends Component {
   static propTypes = {
@@ -120,8 +122,8 @@ export default class PositionPublicToggle extends Component {
     let { is_public_position: isPublicPosition } = this.props.supportProps;
     const visibilityPublic = 'Currently visible to public';
     const visibilityFriendsOnly = 'Currently only shared with We Vote friends';
-    const publicIcon = <ReactSVG src={cordovaDot('/img/global/svg-icons/public-icon.svg')} svgStyle={{ fill: '#000', width: 18, height: 18 }} alt="Visible to Public" />;
-    const friendsIcon = <ReactSVG src={cordovaDot('/img/global/svg-icons/group-icon.svg')} svgStyle={{ fill: '#fff', width: 18, height: 18 }} alt="Visible to Friends Only" />;
+    const publicIcon = <ReactSVG src={cordovaDot(publicIconSvg)} svgStyle={{ fill: '#000', width: 18, height: 18 }} alt="Visible to Public" />;
+    const friendsIcon = <ReactSVG src={cordovaDot(groupIcon)} svgStyle={{ fill: '#fff', width: 18, height: 18 }} alt="Visible to Friends Only" />;
     const tooltip = <Tooltip id="visibility-tooltip">{isPublicPosition ? visibilityPublic : visibilityFriendsOnly}</Tooltip>;
     const noTooltip = <span />;
 
