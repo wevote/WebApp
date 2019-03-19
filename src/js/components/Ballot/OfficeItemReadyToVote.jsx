@@ -6,7 +6,8 @@ import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import SupportStore from '../../stores/SupportStore';
 import { capitalizeString } from '../../utils/textFormat';
-
+import thumbsUpColorIcon from '../../../img/global/svg-icons/thumbs-up-color-icon.svg';
+import upArrowColorIcon from '../../../img/global/icons/up-arrow-color-icon.svg';
 
 export default class OfficeItemReadyToVote extends Component {
   static propTypes = {
@@ -124,7 +125,7 @@ export default class OfficeItemReadyToVote extends Component {
 
                     <div className="u-flex-none u-justify-end">
                       <span className="u-push--xs">Chosen by you</span>
-                      <img src={cordovaDot('/img/global/svg-icons/thumbs-up-color-icon.svg')} width="24" height="24" />
+                      <img src={cordovaDot(thumbsUpColorIcon)} width="24" height="24" />
                     </div>
                   </div>
                 ) :
@@ -140,7 +141,7 @@ export default class OfficeItemReadyToVote extends Component {
                       </div>
                       <div className="u-flex-none u-justify-end">
                         <span className="u-push--xs">Your network supports</span>
-                        <img src={cordovaDot('/img/global/icons/up-arrow-color-icon.svg')} className="network-positions__support-icon" width="20" height="20" />
+                        <img src={cordovaDot(upArrowColorIcon)} className="network-positions__support-icon" width="20" height="20" />
                       </div>
                     </div>
                   ) :
