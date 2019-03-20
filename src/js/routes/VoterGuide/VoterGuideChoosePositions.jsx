@@ -15,6 +15,8 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
 import closeIcon from '../../../img/global/icons/x-close.png';
+import thumbsUpIcon from '../../../img/global/svg-icons/thumbs-up-icon.svg';
+import thumbsDownIcon from '../../../img/global/svg-icons/thumbs-down-icon.svg';
 
 export default class VoterGuideChoosePositions extends Component {
   static propTypes = {
@@ -225,7 +227,7 @@ export default class VoterGuideChoosePositions extends Component {
             {' '}
             <span className="u-no-break">
               <span className="btn__icon">
-                <img src={cordovaDot('/img/global/svg-icons/thumbs-up-icon.svg')}
+                <img src={cordovaDot(thumbsUpIcon)}
                      width={iconSize}
                      height={iconSize}
                      color={iconColor}
@@ -239,7 +241,7 @@ export default class VoterGuideChoosePositions extends Component {
             or&nbsp;
             <span className="u-no-break">
               <span className="btn__icon">
-                <img src={cordovaDot('/img/global/svg-icons/thumbs-down-icon.svg')}
+                <img src={cordovaDot(thumbsDownIcon)}
                      width={iconSize}
                      height={iconSize}
                      color={iconColor}
