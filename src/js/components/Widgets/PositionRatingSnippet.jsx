@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { renderLog } from '../../utils/logging';
 import { cordovaDot } from '../../utils/cordovaUtils';
+import upArrowColorIcon from '../../../img/global/icons/up-arrow-color-icon.svg';
+import downArrowColorIcon from '../../../img/global/icons/down-arrow-color-icon.svg';
+import mixedRatingIcon from '../../../img/global/icons/mixed-rating-icon.svg';
 
 export default class PositionRatingSnippet extends Component {
   static propTypes = {
@@ -22,15 +25,15 @@ export default class PositionRatingSnippet extends Component {
     let alt;
 
     if (rating >= 65) {
-      src = cordovaDot('/img/global/icons/up-arrow-color-icon.svg');
+      src = cordovaDot(upArrowColorIcon);
       className = 'position-rating__icon position-rating__icon--positive u-cursor--pointer';
       alt = 'Positive Rating';
     } else if (rating < 35) {
-      src = cordovaDot('/img/global/icons/down-arrow-color-icon.svg');
+      src = cordovaDot(downArrowColorIcon);
       className = 'position-rating__icon position-rating__icon--negative u-cursor--pointer';
       alt = 'Negative Rating';
     } else {
-      src = cordovaDot('/img/global/icons/mixed-rating-icon.svg');
+      src = cordovaDot(mixedRatingIcon);
       className = 'position-rating__icon position-rating__icon--mixed u-cursor--pointer';
       alt = 'Mixed Rating';
     }
