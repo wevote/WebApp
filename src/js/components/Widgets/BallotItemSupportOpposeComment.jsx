@@ -118,6 +118,9 @@ class BallotItemSupportOpposeComment extends Component {
     if (this.state.showPositionStatement !== nextState.showPositionStatement) {
       return true;
     }
+    if (this.state.positionPublic !== nextState.positionPublic) {
+      return true;
+    }
     return false;
   }
 
