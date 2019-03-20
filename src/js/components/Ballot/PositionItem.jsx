@@ -25,7 +25,8 @@ export default class PositionItem extends Component {
     const dateStr = position.last_updated;
     const dateText = moment(dateStr).startOf('day').fromNow();
     // TwitterHandle-based link
-    const speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : `/voterguide/${position.speaker_we_vote_id}`;
+    const voterGuideWeVoteIdLink = position.organization_we_vote_id ? `/voterguide/${position.organization_we_vote_id}` : `/voterguide/${position.speaker_we_vote_id}`;
+    const speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : voterGuideWeVoteIdLink;
 
     let imagePlaceholder = '';
     if (isSpeakerTypeOrganization(position.speaker_type)) {
@@ -64,11 +65,11 @@ export default class PositionItem extends Component {
           {/* One Position on this Candidate */}
           <div className="card-child__media-object-anchor">
             <Link to={speakerLink} className="u-no-underline">
-              { position.speaker_image_url_https_large ? (
+              { position.speaker_image_url_https_medium ? (
                 <ImageHandler
                   className="card-child__avatar"
                   sizeClassName="icon-lg "
-                  imageUrl={position.speaker_image_url_https_large}
+                  imageUrl={position.speaker_image_url_https_medium}
                 />
               ) :
                 imagePlaceholder }

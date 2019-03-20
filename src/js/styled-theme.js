@@ -14,6 +14,7 @@ const theme = {
     grayMid: '#999', // $gray-mid:     #999 !default;
     grayDark: '#555', // $gray-dark:    #555 !default;
     grayDarker: '#333', // $gray-darker:  #333 !default;
+    linkHoverBorder: '#3771c8',
     opposeRedRgb: 'rgb(255, 73, 34)',
     supportGreenRgb: 'rgb(31, 192, 111)',
   },
