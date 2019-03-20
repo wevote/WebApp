@@ -642,6 +642,13 @@ class ItemActionBar extends Component {
 
     return (
       <div className={this.props.shareButtonHide ? 'item-actionbar--inline' : 'item-actionbar'}>
+        <PositionPublicToggle
+          ballotItemWeVoteId="null"
+          className="null"
+          type="MEASURE"
+          supportProps={modalSupportProps}
+          inTestMode
+        />
         <div className={(this.state.yesVoteDescriptionExists || this.state.noVoteDescriptionExists ? '' : 'btn-group') + (!this.props.shareButtonHide ? ' u-push--sm' : '')}>
 
           {/* Start of Support Button */}

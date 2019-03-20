@@ -118,6 +118,9 @@ class BallotItemSupportOpposeComment extends Component {
     if (this.state.showPositionStatement !== nextState.showPositionStatement) {
       return true;
     }
+    if (this.state.positionPublic !== nextState.positionPublic) {
+      return true;
+    }
     return false;
   }
 
@@ -177,21 +180,19 @@ class BallotItemSupportOpposeComment extends Component {
       commentBoxIsVisible = true;
     }
     const itemActionBar = (
-      <span>
-        <ItemActionBar
-          ballot_item_display_name={this.state.ballotItemDisplayName}
-          ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-          commentButtonHide={commentBoxIsVisible}
-          commentButtonHideInMobile
-          currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-          shareButtonHide
-          supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
-          toggleFunction={this.togglePositionStatement}
-          transitioning={this.state.transitioning}
-          type={this.state.ballotItemType}
-          urlWithoutHash={this.props.urlWithoutHash}
-        />
-      </span>
+      <ItemActionBar
+        ballot_item_display_name={this.state.ballotItemDisplayName}
+        ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+        commentButtonHide={commentBoxIsVisible}
+        commentButtonHideInMobile
+        currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+        shareButtonHide
+        supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
+        toggleFunction={this.togglePositionStatement}
+        transitioning={this.state.transitioning}
+        type={this.state.ballotItemType}
+        urlWithoutHash={this.props.urlWithoutHash}
+      />
     );
 
     const commentDisplayDesktop = this.props.showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText || this.state.showPositionStatement ? (
@@ -231,10 +232,10 @@ class BallotItemSupportOpposeComment extends Component {
 
     return (
       <Wrapper>
-        <div className="network-positions-stacked__support">
+        <ActionBar>
           {/* Support/Oppose/Comment toggle here */}
           {itemActionBar}
-        </div>
+        </ActionBar>
         { commentDisplayDesktop }
         { commentDisplayMobile }
       </Wrapper>
@@ -252,5 +253,12 @@ const Wrapper = styled.div`
     padding: 0;
   }
 `;
+
+const ActionBar = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+`;
+
 
 export default BallotItemSupportOpposeComment;
