@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import downArrowColorIcon from '../../../img/global/icons/down-arrow-color-icon.svg';
+import upArrowColorIcon from '../../../img/global/icons/up-arrow-color-icon.svg';
 
 export default class RatingPopover extends Component {
   static propTypes = {
@@ -20,7 +22,7 @@ export default class RatingPopover extends Component {
       nonprofit Vote Smart.
         <br />
         <span className="u-no-break">
-          <img src={cordovaDot('/img/global/icons/down-arrow-color-icon.svg')} width="20" height="20" />
+          <img src={cordovaDot(downArrowColorIcon)} width="20" height="20" />
           {' '}
           0%
         </span>
@@ -28,7 +30,7 @@ export default class RatingPopover extends Component {
         is a low score, and
         <br />
         <span className="u-no-break">
-          <img src={cordovaDot('/img/global/icons/up-arrow-color-icon.svg')} width="20" height="20" />
+          <img src={cordovaDot(upArrowColorIcon)} width="20" height="20" />
           {' '}
           100%
         </span>
