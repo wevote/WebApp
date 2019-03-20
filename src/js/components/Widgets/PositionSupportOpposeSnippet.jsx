@@ -6,7 +6,8 @@ import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 import ReadMore from './ReadMore';
 import { vimeoRegX, youTubeRegX } from '../../utils/textFormat';
-
+import thumbsUpColorIcon from '../../../img/global/svg-icons/thumbs-up-color-icon.svg';
+import thumbsDownColorIcon from '../../../img/global/svg-icons/thumbs-down-color-icon.svg';
 
 export default class PositionSupportOpposeSnippet extends Component {
   static propTypes = {
@@ -62,13 +63,13 @@ export default class PositionSupportOpposeSnippet extends Component {
     }
 
     if (this.props.is_support) {
-      stanceIconSrc = cordovaDot('/img/global/svg-icons/thumbs-up-color-icon.svg');
+      stanceIconSrc = cordovaDot(thumbsUpColorIcon);
       className = 'explicit-position__icon';
       alt = 'Supports';
       actorSupportsBallotItemLabel = isLookingAtSelf ? 'You Support' : 'Supports'; // Actor supports Ballot item (Active voice)
       ballotItemIsSupportedByActorLabel = isLookingAtSelf ? 'is Supported by You' : 'is Supported by'; // Ballot item is supported by Actor (Passive voice)
     } else if (this.props.is_oppose) {
-      stanceIconSrc = cordovaDot('/img/global/svg-icons/thumbs-down-color-icon.svg');
+      stanceIconSrc = cordovaDot(thumbsDownColorIcon);
       className = 'explicit-position__icon';
       alt = 'Opposes';
       actorSupportsBallotItemLabel = isLookingAtSelf ? 'You Oppose' : 'Opposes';
