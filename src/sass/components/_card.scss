@@ -71,6 +71,17 @@
       // max-width: 60px;
       border-radius: $radius-xs;
       width: 48px;
+      &__testimonial {
+        border-radius: 25px;
+        // width: 48px;
+        height: 40px;
+        display: block;
+        /* align-content: center; */
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 20px;
+        filter: grayscale(100%);
+      }
       .card-main & {
         @include breakpoints(mid-small) {
           // max-width: 60px;
