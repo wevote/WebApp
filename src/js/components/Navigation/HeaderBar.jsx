@@ -285,7 +285,7 @@ class HeaderBar extends Component {
                   )
                   }
                   {showFullNavigation && (
-                    <Tab classes={{ root: classes.tabRoot }} label="My Values" onClick={() => this.handleNavigation('/values')} />
+                    <Tab classes={{ root: classes.tabRoot }} id="valuesTabHeaderBar" label="My Values" onClick={() => this.handleNavigation('/values')} />
                   )
                   }
                   {showFullNavigation && (

@@ -15,11 +15,23 @@ async function runTests () {
     .withCapabilities(capabilities)
     .build();
   try {
-    await driver.get('https://quality.wevote.us/');
+    // Go to the QA site
+    await driver.get('https://quality.wevote.us/ballot');
+    await driver.sleep(2000);
+
+    // Go to the Values tab
+    const valuesButton =
+        await driver.wait(until.elementLocated(By.css("button[id='valuesTabHeaderBar']")), 100000);
+    await valuesButton.click();
+    await driver.sleep(2000);
+
+    // Go to the Settings tab
     const settingsButton =
         await driver.wait(until.elementLocated(By.css("button[title='Settings']")), 100000);
     await settingsButton.click();
     await driver.sleep(2000);
+
+    await driver.sleep(3000);
   } finally {
     await driver.quit();
   }

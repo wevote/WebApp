@@ -158,9 +158,15 @@ staticfiles
 /**/migrations/*.py
 !/**/migrations/__init__.py
 src/js/config.js
+src/js/config-qa.js
+src/js/config-www.js
 tests/browserstack/config.js
 src/javascript/google-tag-manager.js
+src/javascript/google-tag-manager-qa.js
+src/javascript/google-tag-manager-www.js
 src/javascript/google-analytics.js
+src/javascript/google-analytics-qa.js
+src/javascript/google-analytics-www.js
 web_app/build/*
 *.crt
 *.key
