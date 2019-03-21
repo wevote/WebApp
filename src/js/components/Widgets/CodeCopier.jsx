@@ -172,7 +172,7 @@ export default class CodeCopier extends Component {
                 placeholder="Enter Twitter Handle"
                 onKeyDown={this.resetState}
                 onChange={this.validateTwitterHandle}
-                autoComplete
+                autoComplete="on"
               />
               { this.state.status.length ? (
                 <p className={!this.state.isLoading ?      // eslint-disable-line no-nested-ternary
