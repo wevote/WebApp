@@ -2,9 +2,11 @@
 // This style is for when the item-actionbar is on its own line
 .item-actionbar {
   display: flex;
+  flex-flow: row;
   border-top: 1px solid $gray-lighter;
   margin: $space-md $space-none;
   padding-top: $space-sm;
+  justify-content: space-between;
 
   &__position-bar {
     display: flex;
@@ -19,21 +21,25 @@
   }
 
   &__position-btn-label {
-    color: $link-color;
+    color: $black;
+    font-weight: bold;
     text-transform: uppercase;
 
     &--at-state {
       color: $white;
+      font-weight: bold;
       text-transform: uppercase;
     }
   }
 
   &__position-choose-btn-label {
-    color: $link-color;
+    color: $black;
+    font-weight: bold;
     text-transform: uppercase;
 
     &--at-state {
       // color: $white;
+      font-weight: bold;
       text-transform: uppercase;
     }
   }
@@ -44,6 +50,7 @@
 
   .support-at-state {
     color: $white;
+    font-weight: bold;
     background-color: $green;
   }
 
@@ -56,12 +63,14 @@
 // This style is for when the item-actionbar is added to a line with other elements (like for a candidate on ballot page)
 .item-actionbar--inline {
   display: flex;
+  flex-flow: row;
   padding-top: $space-none;
-  justify-content: flex-end;
+  justify-content: space-between;
   flex: auto;
 
   &__position-btn-label {
-    color: $link-color;
+    color: $black;
+    font-weight: bold;
     text-transform: uppercase;
 
     &--at-state {
@@ -71,11 +80,13 @@
   }
 
   &__position-choose-btn-label {
-    color: $link-color;
+    color: $black;
+    font-weight: bold;
     text-transform: uppercase;
 
     &--at-state {
       // color: $white;
+      font-weight: bold;
       text-transform: uppercase;
     }
   }

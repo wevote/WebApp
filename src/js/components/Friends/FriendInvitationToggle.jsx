@@ -19,7 +19,7 @@ export default class FriendInvitationToggle extends Component {
       },
     };
     this.acceptFriendInvite = FriendActions.acceptFriendInvite.bind(this, this.props.otherVoterWeVoteId);
-    this.unFriend = FriendActions.unFriend.bind(this, this.props.otherVoterWeVoteId);
+    // this.unFriend = FriendActions.unFriend.bind(this, this.props.otherVoterWeVoteId);
   }
 
   componentDidMount () {
@@ -63,16 +63,8 @@ export default class FriendInvitationToggle extends Component {
 
     return (
       <span className="u-margin-left-right--xs" style={floatRight}>
-        {isFriend ? (
-          <Button
-            variant="warning"
-            size="small"
-            onClick={this.unFriend}
-          >
-            <span>Remove Friend</span>
-          </Button>
-        ) :
-          <Button variant="info" size="small" onClick={this.acceptFriendInvite}><span>Add Friend</span></Button>
+        {isFriend ? null :
+        <Button variant="info" size="small" onClick={this.acceptFriendInvite}><span>Add Friend</span></Button>
       }
       </span>
     );

@@ -154,7 +154,7 @@ export default class VoterPositionItem extends Component {
             }
             {positionDescription}
             <PositionPublicToggle
-              ballot_item_we_vote_id={position.ballot_item_we_vote_id}
+              ballotItemWeVoteId={position.ballot_item_we_vote_id}
               type={position.kind_of_ballot_item}
               supportProps={supportProps}
               className="organization-position-item-toggle"

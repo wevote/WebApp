@@ -92,7 +92,7 @@ class BallotStore extends ReduceStore {
     if (!this.isLoaded()) { return undefined; }
     return this.ballot.filter((item) => {
       const { kind_of_ballot_item: kindOfBallot, we_vote_id: weVoteId, candidate_list: candidateList } = item;
-      // console.log("BallotStore ballotRemainingChoices, kindOfBallot: ", kindOfBallot);
+      // console.log('BallotStore ballotRemainingChoices, kindOfBallot: ', kindOfBallot);
       if (kindOfBallot === 'OFFICE') { // OFFICE - you are undecided if you haven't supported anyone
         return candidateList.filter(candidate => SupportStore.supportList[candidate.we_vote_id]).length === 0;
       } else { // MEASURES - you haven't decided if you neither support nor oppose
@@ -181,12 +181,12 @@ class BallotStore extends ReduceStore {
   }
 
   getCompletionLevelFilterTypeSaved () {
-    // console.log("getCompletionLevelFilterTypeSaved:", this.getState().completionLevelFilterTypeSaved);
+    // console.log('getCompletionLevelFilterTypeSaved:', this.getState().completionLevelFilterTypeSaved);
     return this.getState().completionLevelFilterTypeSaved || '';
   }
 
   getRaceLevelFilterTypeSaved () {
-    // console.log("getRaceLevelFilterTypeSaved:", this.getState().raceLevelFilterTypeSaved);
+    // console.log('getRaceLevelFilterTypeSaved:', this.getState().raceLevelFilterTypeSaved);
     return this.getState().raceLevelFilterTypeSaved || '';
   }
 
@@ -222,7 +222,7 @@ class BallotStore extends ReduceStore {
 
     switch (action.type) {
       case 'ballotItemOptionsClear':
-        // console.log("action.res", action.res)
+        // console.log('action.res', action.res)
         return {
           ...state,
           ballotItemSearchResultsList: [],
@@ -235,7 +235,9 @@ class BallotStore extends ReduceStore {
         };
 
       case 'positionListForBallotItem':
-        // console.log("BallotStore, positionListForBallotItem response received.");
+        // console.log('BallotStore, positionListForBallotItem response received.');
+        if (action.res.count === 0) return state;
+
         state.positionListHasBeenRetrievedOnceByBallotItem[action.res.ballot_item_we_vote_id] = true;
 
         return {
@@ -244,7 +246,7 @@ class BallotStore extends ReduceStore {
         };
 
       case 'raceLevelFilterTypeSave':
-        // console.log("raceLevelFilterTypeSave action.res", action.res);
+        // console.log('raceLevelFilterTypeSave action.res', action.res);
         return {
           ...state,
           raceLevelFilterTypeSaved: action.res.race_level_filter_type_saved,
@@ -252,21 +254,21 @@ class BallotStore extends ReduceStore {
 
 
       case 'completionLevelFilterTypeSave':
-        // console.log("completionLevelFilterTypeSave action.res", action.res);
+        // console.log('completionLevelFilterTypeSave action.res', action.res);
         return {
           ...state,
           completionLevelFilterTypeSaved: action.res.completion_level_filter_type_saved,
         };
 
       case 'voterAddressRetrieve':
-        // console.log("BallotStore, voterAddressRetrieve response received, calling voterBallotItemsRetrieve now.");
+        // console.log('BallotStore, voterAddressRetrieve response received, calling voterBallotItemsRetrieve now.');
         BallotActions.voterBallotItemsRetrieve();
         return state;
 
       case 'voterBallotItemsRetrieve':
-        // console.log("BallotStore, voterBallotItemsRetrieve response received.");
+        // console.log('BallotStore, voterBallotItemsRetrieve response received.');
         tempBallotItemList = action.res.ballot_item_list;
-        // console.log("BallotStore, voterBallotItemsRetrieve, action.res.ballot_item_list: ", action.res.ballot_item_list);
+        // console.log('BallotStore, voterBallotItemsRetrieve, action.res.ballot_item_list: ', action.res.ballot_item_list);
         newBallots = {};
         if (state.ballots) {
           newBallots = state.ballots;
@@ -283,6 +285,10 @@ class BallotStore extends ReduceStore {
           newBallots[googleCivicElectionId].ballot_item_list.forEach((ballotItem) => {
             if (!weVoteIdAlreadySeen.includes(ballotItem.we_vote_id)) {
               weVoteIdAlreadySeen.push(ballotItem.we_vote_id);
+              // If office data is received without a race_office_level, default to 'Federal'
+              if (ballotItem.kind_of_ballot_item === 'OFFICE' && !ballotItem.race_office_level) {
+                ballotItem.race_office_level = 'Federal';
+              }
               filteredBallotItems.push(ballotItem);
             }
             if (ballotItem.kind_of_ballot_item === 'OFFICE') {
@@ -341,14 +347,14 @@ class BallotStore extends ReduceStore {
 
       case 'voterBallotListRetrieve':
         voterBallotList = action.res.voter_ballot_list;
-        // console.log("BallotStore, voterBallotListRetrieve response received, voterBallotList: ", voterBallotList);
+        // console.log('BallotStore, voterBallotListRetrieve response received, voterBallotList: ', voterBallotList);
         return {
           ...state,
           ballotElectionList: voterBallotList,
         };
 
       case 'voterAddressSave':
-        // console.log("BallotStore, voterAddressSave response received.");
+        // console.log('BallotStore, voterAddressSave response received.');
         if (action.res.status === 'SIMPLE_ADDRESS_SAVE') {
           return state;
         } else {
@@ -371,14 +377,14 @@ class BallotStore extends ReduceStore {
         return state;
 
       case 'voterBallotItemOpenOrClosedSave':
-        // console.log("action.res", action.res)
+        // console.log('action.res', action.res)
         return {
           ...state,
           ballotItemUnfurledTracker: action.res.ballot_item_unfurled_tracker,
         };
 
       case 'voterSignOut':
-        // console.log("resetting BallotStore");
+        // console.log('resetting BallotStore');
         BallotActions.voterBallotItemsRetrieve();
         return this.resetState();
 

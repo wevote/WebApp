@@ -4,7 +4,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 const overrides = {
   MuiButton: {
     root: {
-      // Button global overrides here
+      userSelect: 'none',
     },
   },
   MuiTooltip: {
@@ -55,12 +55,12 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       // main: "#25536D",
-      main: '#2E3C5D',
+      main: '#2E3C5D', // brandBlue
     },
     secondary: amber, // Feel free to change this
   },
-  overrides,
   breakpoints,
+  overrides,
   typography: {
     useNextVariants: true,
   },

@@ -7,41 +7,6 @@ import { withStyles } from '@material-ui/core/styles';
 import BallotActions from '../../actions/BallotActions';
 import { renderLog } from '../../utils/logging';
 
-const styles = theme => ({
-  badge: {
-    top: 0,
-    right: -26,
-    width: 20,
-    height: 19.5,
-    [theme.breakpoints.down('md')]: {
-      fontSize: 9,
-      right: -20,
-      width: 16,
-      height: 16,
-      top: 3,
-    },
-  },
-  tabLabelContainer: {
-    padding: '6px 6px',
-    [theme.breakpoints.down('md')]: {
-      padding: '6px 20px',
-    },
-  },
-  tabsRoot: {
-    minHeight: 38,
-    height: 38,
-    [theme.breakpoints.down('md')]: {
-      fontSize: 12,
-    },
-  },
-  tabsFlexContainer: {
-    height: 38,
-  },
-  scroller: {
-    overflowY: 'hidden',
-  },
-});
-
 class BallotTabsRaccoon extends Component {
   static propTypes = {
     completionLevelFilterType: PropTypes.string,
@@ -69,16 +34,27 @@ class BallotTabsRaccoon extends Component {
   }
 
   getSelectedTab = () => {
-    const { completionLevelFilterType } = this.props;
+    const { ballotLength, ballotLengthRemaining, completionLevelFilterType } = this.props;
+    const remainingDecisionsCountIsDifferentThanAllItems = ballotLength !== ballotLengthRemaining;
+    const showRemainingDecisions = (remainingDecisionsCountIsDifferentThanAllItems && ballotLengthRemaining) || false;
+    const showDecisionsMade = (remainingDecisionsCountIsDifferentThanAllItems && ballotLengthRemaining) || false;
     switch (completionLevelFilterType) {
       case 'filterAllBallotItems':
         return 0;
       case 'filterRemaining':
-        return 1;
+        if (showRemainingDecisions) {
+          return 1;
+        } else {
+          return 0;
+        }
       case 'filterDecided':
-        return 2;
+        if (showDecisionsMade) {
+          return 2;
+        } else {
+          return 0;
+        }
       default:
-        return false;
+        return 0;
     }
   }
 
@@ -102,32 +78,42 @@ class BallotTabsRaccoon extends Component {
         classes={{ root: classes.tabsRoot, flexContainer: classes.tabsFlexContainer, scroller: classes.scroller }}
       >
         <Tab
-          classes={{ labelContainer: classes.tabLabelContainer }}
+          classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot }}
           onClick={() => this.goToDifferentCompletionLevelTab('filterAllBallotItems')}
           label={(
             <Badge
-              classes={{ badge: classes.badge }}
+              classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 0 ? null : classes.badgeColorPrimary }}
               color="primary"
               badgeContent={ballotLength}
               invisible={ballotLength === 0}
             >
-              All
+              <span className="u-show-mobile">
+                All
+              </span>
+              <span className="u-show-desktop-tablet">
+                All Items
+              </span>
             </Badge>
           )}
         />
 
         { showRemainingDecisions ? (
           <Tab
-            classes={{ labelContainer: classes.tabLabelContainer }}
+            classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot }}
             onClick={() => this.goToDifferentCompletionLevelTab('filterRemaining')}
             label={(
               <Badge
-                classes={{ badge: classes.badge }}
+                classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 1 ? null : classes.badgeColorPrimary }}
                 color="primary"
                 badgeContent={ballotLengthRemaining}
                 invisible={ballotLengthRemaining === 0}
               >
-                Choices
+                <span className="u-show-mobile">
+                  Choices
+                </span>
+                <span className="u-show-desktop-tablet">
+                  Remaining Choices
+                </span>
               </Badge>
             )}
           />
@@ -136,16 +122,21 @@ class BallotTabsRaccoon extends Component {
 
         { showDecisionsMade ? (
           <Tab
-            classes={{ labelContainer: classes.tabLabelContainer }}
+            classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot }}
             onClick={() => this.goToDifferentCompletionLevelTab('filterDecided')}
             label={(
               <Badge
-                classes={{ badge: classes.badge }}
+                classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 2 ? null : classes.badgeColorPrimary }}
                 color="primary"
                 badgeContent={itemsDecidedCount}
                 invisible={itemsDecidedCount === 0}
               >
-                Decided
+                <span className="u-show-mobile">
+                  Decided
+                </span>
+                <span className="u-show-desktop-tablet">
+                  Items Decided
+                </span>
               </Badge>
             )}
           />
@@ -155,6 +146,56 @@ class BallotTabsRaccoon extends Component {
     );
   }
 }
+
+const styles = theme => ({
+  badge: {
+    top: 9,
+    right: -14,
+    minWidth: 16,
+    width: 20,
+    height: 19.5,
+    [theme.breakpoints.down('md')]: {
+      fontSize: 8,
+      right: -11,
+      width: 16,
+      height: 16,
+      top: 11,
+    },
+  },
+  badgeColorPrimary: {
+    background: 'rgba(0, 0, 0, .15)',
+    color: '#333',
+  },
+  tabLabelContainer: {
+    padding: '6px 6px',
+    [theme.breakpoints.down('md')]: {
+      padding: '6px 20px',
+    },
+  },
+  tabsRoot: {
+    minHeight: 38,
+    height: 38,
+    [theme.breakpoints.down('md')]: {
+      fontSize: 12,
+    },
+  },
+  tabsFlexContainer: {
+    height: 38,
+  },
+  tabRoot: {
+    [theme.breakpoints.up('md')]: {
+      minWidth: 200,
+    },
+  },
+  indicator: {
+    [theme.breakpoints.up('md')]: {
+      minWidth: 200,
+    },
+  },
+  scroller: {
+    overflowY: 'hidden',
+  },
+});
 
 export default withStyles(styles)(BallotTabsRaccoon);
 

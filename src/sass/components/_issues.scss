@@ -34,25 +34,18 @@
   }
   &__issue-icon {
     color: $gray-mid;
-    height: calc(24px + #{$space-xs});
-    width: calc(24px + #{$space-xs});
+    font-weight: 900;
+    height: calc(16px + #{$space-xs});
+    width: calc(16px + #{$space-xs});
     flex: none;
     margin-right: $space-xs;
-    border: 1px solid $gray-mid;
-    border-radius: $radius-rounded;
     padding: $space-xxs;
   }
   &__issue-label-name {
-    color: $gray-mid;
+    $issue-label-name-padding: 6px;
+    color: $gray-dark;
     font-size: .7rem;
-    text-transform: uppercase;
-    min-width: 40px;
-    max-width: 120px;
-    // Trying to get name to wrap to two lines
-    //height: 3em; /* height is 2x line-height, so two lines will display */
-    //line-height: 1.5em;
-    //overflow: hidden;  /* prevents extra lines from being visible */
-    //width: 100px;
+    padding-top: $issue-label-name-padding;
   }
 }
 
@@ -62,8 +55,6 @@
   position: relative;
   width: 100%;
   align-items: center;
-  // flex: 5 0 130px;
-  // min-width: 130px; // flex-basis not being respected (Chrome)
 
   &__bar {
     position: absolute;
@@ -124,7 +115,7 @@
     $list-height-visible: $list-height - $scrollbar-height;
     $scroll-icon-margin: $space-none $space-sm;
     $scroll-icon-margin-small: $space-none 13px;
-    $support-list-margin-left: -36px;
+    $support-list-margin-left: $space-none;
     $support-list-margin-right: -16px;
     margin-left: $support-list-margin-left;
     margin-right: $support-list-margin-right;

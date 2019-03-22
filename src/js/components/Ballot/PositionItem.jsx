@@ -13,7 +13,7 @@ import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippe
 
 export default class PositionItem extends Component {
   static propTypes = {
-    ballot_item_display_name: PropTypes.string.isRequired,
+    ballotItemDisplayName: PropTypes.string.isRequired,
     organization: PropTypes.object, // .isRequired,
     position: PropTypes.object.isRequired,
   };
@@ -21,10 +21,12 @@ export default class PositionItem extends Component {
   render () {
     renderLog(__filename);
     const { position } = this.props;
+    // console.log('PositionItem render, position:', position);
     const dateStr = position.last_updated;
     const dateText = moment(dateStr).startOf('day').fromNow();
     // TwitterHandle-based link
-    const speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : `/voterguide/${position.speaker_we_vote_id}`;
+    const voterGuideWeVoteIdLink = position.organization_we_vote_id ? `/voterguide/${position.organization_we_vote_id}` : `/voterguide/${position.speaker_we_vote_id}`;
+    const speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : voterGuideWeVoteIdLink;
 
     let imagePlaceholder = '';
     if (isSpeakerTypeOrganization(position.speaker_type)) {
@@ -45,7 +47,7 @@ export default class PositionItem extends Component {
     } else if (isSpeakerTypeIndividual(position.speaker_type)) {
       positionDescription = (
         <p className="">
-          <span>{this.props.ballot_item_display_name}</span>
+          <span>{this.props.ballotItemDisplayName}</span>
           <span className="small">
             {' '}
             { dateText }
@@ -63,11 +65,11 @@ export default class PositionItem extends Component {
           {/* One Position on this Candidate */}
           <div className="card-child__media-object-anchor">
             <Link to={speakerLink} className="u-no-underline">
-              { position.speaker_image_url_https_large ? (
+              { position.speaker_image_url_https_medium ? (
                 <ImageHandler
                   className="card-child__avatar"
                   sizeClassName="icon-lg "
-                  imageUrl={position.speaker_image_url_https_large}
+                  imageUrl={position.speaker_image_url_https_medium}
                 />
               ) :
                 imagePlaceholder }

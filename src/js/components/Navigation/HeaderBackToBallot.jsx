@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import Toolbar from '@material-ui/core/Toolbar';
+import { withStyles } from '@material-ui/core/styles';
 import CandidateStore from '../../stores/CandidateStore';
 import cookies from '../../utils/cookies';
 import { hasIPhoneNotch, historyPush, isWebApp } from '../../utils/cordovaUtils';
@@ -13,14 +14,32 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import { shortenText } from '../../utils/textFormat';
+import { shortenText, stringContains } from '../../utils/textFormat';
+import OfficeStore from '../../stores/OfficeStore';
+import OfficeItem from '../Ballot/OfficeItem';
 
-export default class HeaderBackToBar extends Component {
+const styles = theme => ({
+  headerButtonRoot: {
+    paddingTop: 2,
+    paddingBottom: 2,
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    color: 'rgb(6, 95, 212)',
+    marginLeft: '1rem',
+    outline: 'none !important',
+    [theme.breakpoints.down('md')]: {
+      marginLeft: '.1rem',
+    },
+  },
+});
+class HeaderBackToBallot extends Component {
   static propTypes = {
     location: PropTypes.object,
     params: PropTypes.object.isRequired,
     pathname: PropTypes.string,
     voter: PropTypes.object,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -28,7 +47,7 @@ export default class HeaderBackToBar extends Component {
     this.state = {
       profilePopUpOpen: false,
       candidateWeVoteId: '',
-      // office_we_vote_id: "",
+      officeWeVoteId: '',
       organization: {},
       organizationWeVoteId: '',
       voter: {},
@@ -43,10 +62,11 @@ export default class HeaderBackToBar extends Component {
   }
 
   componentDidMount () {
-    // console.log("HeaderBackToBar componentDidMount, this.props: ", this.props);
+    // console.log("HeaderBackToBallot componentDidMount, this.props: ", this.props);
     // this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.officeStoreListener = OfficeStore.addListener(this.onOfficeStoreChange.bind(this));
     // this.onBallotStoreChange();
 
     let candidateWeVoteId;
@@ -56,12 +76,16 @@ export default class HeaderBackToBar extends Component {
     let organizationWeVoteId;
     if (this.props.params) {
       candidateWeVoteId = this.props.params.candidate_we_vote_id || '';
+      officeWeVoteId = this.props.params.office_we_vote_id || '';
       if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
-        // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
+        // console.log("HeaderBackToBallot, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
         officeWeVoteId = candidate.contest_officeWeVoteId;
         officeName = candidate.contest_office_name;
+      } else if (officeWeVoteId && officeWeVoteId !== '') {
+        const office = OfficeStore.getOffice(officeWeVoteId);
+        officeName = office ? office.ballot_item_display_name : '';
       }
 
       organizationWeVoteId = this.props.params.organization_we_vote_id || '';
@@ -89,7 +113,7 @@ export default class HeaderBackToBar extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("HeaderBackToBar componentWillReceiveProps, nextProps: ", nextProps);
+    // console.log("HeaderBackToBallot componentWillReceiveProps, nextProps: ", nextProps);
     let candidateWeVoteId;
     let officeWeVoteId;
     let officeName;
@@ -97,12 +121,16 @@ export default class HeaderBackToBar extends Component {
     let organizationWeVoteId;
     if (nextProps.params) {
       candidateWeVoteId = nextProps.params.candidate_we_vote_id || '';
+      officeWeVoteId = nextProps.params.office_we_vote_id || '';
       if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
-
-        // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
+        // console.log("HeaderBackToBallot, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
         officeWeVoteId = candidate.contest_office_we_vote_id;
         officeName = candidate.contest_office_name;
+      } else if (officeWeVoteId && officeWeVoteId !== '') {
+        candidateWeVoteId = '';
+        const office = OfficeStore.getOffice(officeWeVoteId);
+        officeName = office ? office.ballot_item_display_name : '';
       }
 
       organizationWeVoteId = nextProps.params.organization_we_vote_id || '';
@@ -133,6 +161,7 @@ export default class HeaderBackToBar extends Component {
     // this.ballotStoreListener.remove();
     this.candidateStoreListener.remove();
     this.organizationStoreListener.remove();
+    this.officeStoreListener.remove();
   }
 
   /*
@@ -144,15 +173,20 @@ export default class HeaderBackToBar extends Component {
   onCandidateStoreChange () {
     const { candidateWeVoteId } = this.state;
     // console.log("Candidate onCandidateStoreChange");
-
     let officeName;
     let officeWeVoteId;
     if (candidateWeVoteId && candidateWeVoteId !== '') {
       const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
-      // console.log("HeaderBackToBar -- onCandidateStoreChange, candidateWeVoteId:", this.state.candidateWeVoteId, ", candidate:", candidate);
+      // console.log("HeaderBackToBallot -- onCandidateStoreChange, candidateWeVoteId:", this.state.candidateWeVoteId, ", candidate:", candidate);
       officeName = candidate.contest_office_name;
       officeWeVoteId = candidate.contest_office_we_vote_id;
+    } else {
+      officeWeVoteId = this.props.params.office_we_vote_id || '';
+      if (officeWeVoteId && officeWeVoteId !== '') {
+        const office = OfficeStore.getOffice(officeWeVoteId);
+        officeName = office ? office.ballot_item_display_name : '';
+      }
     }
 
     this.setState({
@@ -169,11 +203,24 @@ export default class HeaderBackToBar extends Component {
     });
   }
 
+  onOfficeStoreChange () {
+    const { officeWeVoteId } = this.state;
+    let officeName;
+    if (officeWeVoteId && officeWeVoteId !== '') {
+      const office = OfficeStore.getOffice(officeWeVoteId);
+      officeName = office ? office.ballot_item_display_name : '';
+    }
+
+    this.setState({
+      officeName,
+    });
+  }
+
   getOfficeLink () {
     if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== '') {
       return `/office/${this.state.officeWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
     } else {
-      return `/office/${this.state.officeWeVoteId}/b/btdb/`;
+      return `/office/${this.state.officeWeVoteId}/b/btdb/`; // back-to-default-ballot
     }
   }
 
@@ -223,7 +270,8 @@ export default class HeaderBackToBar extends Component {
   }
 
   render () {
-    const { organizationWeVoteId, candidate, voter } = this.state;
+    const { organizationWeVoteId, candidate, voter, officeName, officeWeVoteId } = this.state;
+    const { classes, pathname } = this.props;
     renderLog(__filename);
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
 
@@ -238,7 +286,7 @@ export default class HeaderBackToBar extends Component {
       backToLink = '/ballot'; // Default to this
     }
 
-    if (this.props.params.back_to_variable === 'bto' || this.props.params.back_to_variable === 'btdo') {
+    if (this.props.params.back_to_variable === 'bto' || this.props.params.back_to_variable === 'btdo') { // back-to-default-office
       backToLink = this.getOfficeLink();
     }
 
@@ -249,7 +297,7 @@ export default class HeaderBackToBar extends Component {
       backToOrganizationLinkText = 'Back to Ballot';
     }
 
-    if (this.props.params.back_to_variable === 'bto' || this.props.params.back_to_variable === 'btdo') {
+    if (this.props.params.back_to_variable === 'bto' || this.props.params.back_to_variable === 'btdo') { // back-to-default-office
       if (this.state.officeName) {
         backToOrganizationLinkText = `Back to ${this.state.officeName}`;
       } else {
@@ -261,10 +309,12 @@ export default class HeaderBackToBar extends Component {
 
     const backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 20);
     const headerClassName = (function header () {
+      const prefix = stringContains('/office', pathname) ? 'page-header page-header__back-to-ballot' : 'page-header';
       if (isWebApp()) {
-        return 'page-header';
+        return prefix;
       } else {
-        return hasIPhoneNotch() ? 'page-header page-header__cordova-iphonex' : 'page-header page-header__cordova';
+        const suffix = hasIPhoneNotch() ? ' page-header__cordova-iphonex' : ' page-header__cordova';
+        return prefix + suffix;
       }
     }());
 
@@ -272,10 +322,10 @@ export default class HeaderBackToBar extends Component {
       <AppBar className={headerClassName} color="default">
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
           <Button
-          variant="contained"
-          color="primary"
-          className={`page-header__backToButton ${hasIPhoneNotch() ? 'page-header__backToButtonIPhoneX' : ''}`}
-          onClick={() => historyPush(backToLink)}
+            variant="contained"
+            color="primary"
+            className={`page-header__backToButton ${hasIPhoneNotch() ? 'page-header__backToButtonIPhoneX' : ''}`}
+            onClick={() => historyPush(backToLink)}
           >
             <KeyboardBackspaceIcon className="button-icon" />
             {backToOrganizationLinkTextMobile}
@@ -283,14 +333,14 @@ export default class HeaderBackToBar extends Component {
 
           {this.state.profilePopUpOpen && voter.is_signed_in && (
           <HeaderBarProfilePopUp
-          {...this.props}
-          onClick={this.toggleProfilePopUp}
-          profilePopUpOpen={this.state.profilePopUpOpen}
-          weVoteBrandingOff={this.state.we_vote_branding_off}
-          toggleProfilePopUp={this.toggleProfilePopUp}
-          hideProfilePopUp={this.hideProfilePopUp}
-          transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-          signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+            {...this.props}
+            onClick={this.toggleProfilePopUp}
+            profilePopUpOpen={this.state.profilePopUpOpen}
+            weVoteBrandingOff={this.state.we_vote_branding_off}
+            toggleProfilePopUp={this.toggleProfilePopUp}
+            hideProfilePopUp={this.hideProfilePopUp}
+            transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+            signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
           />
           )}
 
@@ -299,19 +349,20 @@ export default class HeaderBackToBar extends Component {
             {voterPhotoUrlMedium ? (
               <div id="js-header-avatar" className="header-nav__avatar-container">
                 <img
-                className="header-nav__avatar"
-                alt="profile avatar"
-                src={voterPhotoUrlMedium}
-                height={34}
-                width={34}
+                  className="header-nav__avatar"
+                  alt="profile avatar"
+                  src={voterPhotoUrlMedium}
+                  height={34}
+                  width={34}
                 />
               </div>
             ) : (
               <Button
-              className="header-sign-in"
-              variant="text"
-              color="primary"
-              href="/settings/account"
+                className="header-sign-in"
+                classes={{ root: classes.headerButtonRoot }}
+                variant="text"
+                color="primary"
+                href="/settings/account"
               >
               Sign In
               </Button>
@@ -319,7 +370,15 @@ export default class HeaderBackToBar extends Component {
           </div>
           )}
         </Toolbar>
+        {stringContains('/office', pathname)  && officeName && (
+          <OfficeItem
+          weVoteId={officeWeVoteId}
+          ballotItemDisplayName={officeName}
+          />
+        )}
       </AppBar>
     );
   }
 }
+
+export default withStyles(styles)(HeaderBackToBallot);

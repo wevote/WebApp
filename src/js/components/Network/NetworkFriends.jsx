@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import { _ } from 'lodash';
-import FriendListCompressed from '../Friends/FriendListCompressed';
+import FriendListCompressed from './FriendListCompressed';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
 import { renderLog } from '../../utils/logging';

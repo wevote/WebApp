@@ -8,7 +8,7 @@ import Textarea from 'react-textarea-autosize';
 import { cordovaDot, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import ReadMore from './ReadMore';
-import PositionPublicToggle from './PositionPublicToggle';
+// import PositionPublicToggle from './PositionPublicToggle';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
@@ -272,68 +272,70 @@ export default class ItemPositionStatementActionBar extends Component {
                     inputRef={(tag) => { this.textarea = tag; }}
                   />
                   <div className="u-flex u-flex-column u-justify-between u-items-end">
-                    <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
-                                          type={this.props.type}
-                                          supportProps={this.props.supportProps}
-                                          className="u-flex-auto u-tr d-print-block"
-                    />
                     <Button variant="outline-secondary" size="sm" type="submit">{postButtonText}</Button>
                   </div>
                 </span>
               </div>
-            </form>) : (
-              // Show the comment, but in read-only mode
-              <div className={shortVersion ? 'position-statement--truncated' : 'position-statement'}>
-                { speakerImageUrlHttps ? (
-                  <img className="position-statement__avatar"
+            </form>
+          ) : (
+          // Show the comment, but in read-only mode
+            <div className={shortVersion ? 'position-statement--truncated' : 'position-statement'}>
+              { speakerImageUrlHttps ? (
+                <img className="position-statement__avatar"
                        src={speakerImageUrlHttps}
                        width="34px"
-                  />
-                ) :
-                  imagePlaceholder
+                       alt="avatar"
+                />
+              ) :
+                imagePlaceholder
                 }
-                <div className="position-statement__description u-flex u-items-start">
-                  <div className="u-flex u-flex-column u-justify-between">
-                    { speakerDisplayName ? (
-                      <span className="u-bold">
-                        {speakerDisplayName}
-                        <br />
-                      </span>
-                    ) : null
+              <div className="position-statement__description u-flex u-items-start">
+                <div className="u-flex u-flex-column u-justify-between">
+                  { speakerDisplayName ? (
+                    <span className="u-bold">
+                      {speakerDisplayName}
+                      <br />
+                    </span>
+                  ) : null
                     }
-                    { statementTextNoUrl ?
-                      <ReadMore text_to_display={statementTextNoUrl} /> :
-                      <ReadMore text_to_display={statementTextToBeSaved} />
+                  { statementTextNoUrl ?
+                    <ReadMore text_to_display={statementTextNoUrl} /> :
+                    <ReadMore text_to_display={statementTextToBeSaved} />
                     }
-                    { videoUrl ?
-                      <ReactPlayer url={`${videoUrl}`} width="300px" height="231px" /> :
-                      null
+                  { videoUrl ?
+                    <ReactPlayer url={`${videoUrl}`} width="300px" height="231px" /> :
+                    null
                     }
-                    { shortVersion ? (
-                      <span onKeyDown={onKeyDown}
+                  { shortVersion ? (
+                    <span onKeyDown={onKeyDown}
                             className="position-statement__edit-position-pseudo"
                             onClick={onSavePositionStatementClick}
                             title="Edit this position"
-                      />
-                    ) : null
+                    />
+                  ) : null
                     }
-                    <div onKeyDown={onKeyDown}
+                  <div onKeyDown={onKeyDown}
                          className="position-statement__edit-position-link"
                          onClick={onSavePositionStatementClick}
                          title="Edit this position"
-                    >
+                  >
                       Edit
-                    </div>
-                  </div>
-                  <div className="u-flex u-flex-column u-justify-between u-items-end">
-                    <PositionPublicToggle ballot_item_we_vote_id={this.props.ballot_item_we_vote_id}
-                                          type={this.props.type}
-                                          supportProps={this.props.supportProps}
-                                          className="u-flex-auto u-tr d-print-block"
-                    />
                   </div>
                 </div>
+                {
+                /*
+                <div className="u-flex u-flex-column u-justify-between u-items-end">
+                  <PositionPublicToggle
+                    ballotItemWeVoteId={this.props.ballot_item_we_vote_id}
+                    type={this.props.type}
+                    supportProps={this.props.supportProps}
+                    className="u-flex-auto u-tr d-print-block"
+                  />
+                </div>
+                */
+                }
               </div>
+            </div>
           )
        }
       </div>

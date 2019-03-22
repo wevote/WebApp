@@ -81,10 +81,6 @@ export default class FacebookInvitableFriends extends Component {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  facebookLogin () {
-    FacebookActions.login();
-  }
-
   onFacebookStoreChange () {
     this.setState({
       facebookLoggedIn: FacebookStore.loggedIn,
@@ -145,53 +141,13 @@ export default class FacebookInvitableFriends extends Component {
     this.sendFacebookAppRequest(selectedFacebookFriendsIds, selectedFacebookFriendsNames);
   };
 
-  voterFacebookSaveToCurrentAccount () {
-    VoterActions.voterFacebookSaveToCurrentAccount();
-  }
-
-  voterMergeTwoAccountsByFacebookKey (facebookSecretKey, voterHasDataToPreserve = false) {
-    if (!this.state.merging_two_accounts) {
-      VoterActions.voterMergeTwoAccountsByFacebookKey(facebookSecretKey);
-
-      // Prevent voterMergeTwoAccountsByFacebookKey from being called multiple times
-      console.log('voter_has_data_to_preserve: ', voterHasDataToPreserve);
-      this.setState({ merging_two_accounts: true });
-    }
+  yesPleaseMergeAccounts = () => {
+    this.setState({ yes_please_merge_accounts: true });
   }
 
   cacheAddFriendsByFacebookMessage (e) {
     this.setState({
       add_friends_message: e.target.value,
-    });
-  }
-
-  sendFacebookAppRequest (selectedFacebookFriendsIds, selectedFacebookFriendsNames) {
-    const api = isWebApp() ? window.FB : window.facebookConnectPlugin; // eslint-disable-line no-undef
-    api.ui({
-      title: 'We Vote USA',
-      redirect_uri: `${webAppConfig.WE_VOTE_HOSTNAME}/more/network`,
-      method: 'apprequests',
-      message: this.state.add_friends_message,
-      to: selectedFacebookFriendsIds,
-    }, (response) => {
-      if (response.error_code === 4201) {
-        oAuthLog('User Canceled the request');
-      } else if (response) {
-        oAuthLog('Successfully Invited', response, selectedFacebookFriendsNames);
-        const data = { request_id: response.request, recipients_facebook_id_array: response.to, recipients_facebook_name_array: selectedFacebookFriendsNames };
-
-        oAuthLog('Final data for all invitations', data);
-        FriendActions.friendInvitationByFacebookSend(data);
-        historyPush({
-          pathname: '/more/network/friends',
-          state: {
-            message: 'You have successfully sent Invitation to your friends.',
-            message_type: 'success',
-          },
-        });
-      } else {
-        oAuthLog('Failed To Invite');
-      }
     });
   }
 
@@ -217,8 +173,52 @@ export default class FacebookInvitableFriends extends Component {
     }
   }
 
-  yesPleaseMergeAccounts = () => {
-    this.setState({ yes_please_merge_accounts: true });
+  sendFacebookAppRequest (selectedFacebookFriendsIds, selectedFacebookFriendsNames) {
+    const api = isWebApp() ? window.FB : window.facebookConnectPlugin; // eslint-disable-line no-undef
+    api.ui({
+      title: 'We Vote USA',
+      redirect_uri: `${webAppConfig.WE_VOTE_HOSTNAME}/more/network`,
+      method: 'apprequests',
+      message: this.state.add_friends_message,
+      to: selectedFacebookFriendsIds,
+    }, (response) => {
+      if (response.error_code === 4201) {
+        oAuthLog('User Canceled the request');
+      } else if (response) {
+        oAuthLog('Successfully Invited', response, selectedFacebookFriendsNames);
+        const data = { request_id: response.request, recipients_facebook_id_array: response.to, recipients_facebook_name_array: selectedFacebookFriendsNames };
+
+        oAuthLog('Final data for all invitations', data);
+        FriendActions.friendInvitationByFacebookSend(data);
+        historyPush({
+          pathname: '/friends',
+          state: {
+            message: 'You have successfully sent Invitation to your friends.',
+            message_type: 'success',
+          },
+        });
+      } else {
+        oAuthLog('Failed To Invite');
+      }
+    });
+  }
+
+  voterMergeTwoAccountsByFacebookKey (facebookSecretKey, voterHasDataToPreserve = false) {
+    if (!this.state.merging_two_accounts) {
+      VoterActions.voterMergeTwoAccountsByFacebookKey(facebookSecretKey);
+
+      // Prevent voterMergeTwoAccountsByFacebookKey from being called multiple times
+      console.log('voter_has_data_to_preserve: ', voterHasDataToPreserve);
+      this.setState({ merging_two_accounts: true });
+    }
+  }
+
+  facebookLogin () {
+    FacebookActions.login();
+  }
+
+  voterFacebookSaveToCurrentAccount () {
+    VoterActions.voterFacebookSaveToCurrentAccount();
   }
 
   render () {
@@ -296,7 +296,7 @@ export default class FacebookInvitableFriends extends Component {
     // console.log("facebook friends not exist:", this.state.facebookInvitableFriends.facebook_friends_not_exist);
     if (this.state.facebookInvitableFriends.facebook_friends_not_exist) {
       historyPush({
-        pathname: '/more/network/friends',
+        pathname: '/friends',
         state: {
           message: 'There are no friends to invite from Facebook. Either there is an error, or you already invited all of your friends on Facebook!',
           message_type: 'success',

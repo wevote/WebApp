@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import FriendInvitationToggle from './FriendInvitationToggle';
 import ImageHandler from '../ImageHandler';
 import FriendActions from '../../actions/FriendActions';
+import FriendInvitationToggle from './FriendInvitationToggle';
+import FriendStore from '../../stores/FriendStore';
 import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 
@@ -17,12 +18,28 @@ export default class FriendInvitationDisplayForList extends Component {
     voter_twitter_description: PropTypes.string,
     voter_twitter_followers_count: PropTypes.number,
     voter_email_address: PropTypes.string,
+    previewMode: PropTypes.bool,
   };
 
   constructor (props) {
     super(props);
     this.state = {
     };
+  }
+
+  componentDidMount () {
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    this.onFriendStoreChange();
+  }
+
+  componentWillUnmount () {
+    this.friendStoreListener.remove();
+  }
+
+  onFriendStoreChange () {
+    this.setState({
+      isFriend: FriendStore.isFriend(this.props.voter_we_vote_id),
+    });
   }
 
   deleteFriendInviteEmail (voterEmailAddress) {
@@ -37,8 +54,8 @@ export default class FriendInvitationDisplayForList extends Component {
     FriendActions.deleteFriendInviteVoter(otherVoterWeVoteId);
   }
 
-  handleIgnore (voterWeVoteId) {
-    FriendActions.ignoreFriendInvite(voterWeVoteId);
+  handleIgnore (otherVoterWeVoteId) {
+    FriendActions.ignoreFriendInvite(otherVoterWeVoteId);
   }
 
   render () {
@@ -47,7 +64,7 @@ export default class FriendInvitationDisplayForList extends Component {
       invitationsSentByMe,
       voter_twitter_followers_count: voterTwitterFollowersCount,
       voter_twitter_handle: voterTwitterHandle,
-      voter_we_vote_id: voterWeVoteId,
+      voter_we_vote_id: otherVoterWeVoteId,
       voter_photo_url_medium: voterPhotoUrlMedium,
     } = this.props;
 
@@ -60,59 +77,77 @@ export default class FriendInvitationDisplayForList extends Component {
     const voterGuideLink = voterTwitterHandle ? `/${voterTwitterHandle}` : null;
     const voterImage = <ImageHandler sizeClassName="image-lg " imageUrl={voterPhotoUrlMedium} kind_of_ballot_item="CANDIDATE" />;
     const voterDisplayNameFormatted = <span className="card-child__display-name">{voterDisplayName}</span>;
-    // console.log("FriendInvitationDisplayForList, voterWeVoteId:", voterWeVoteId);
+    // console.log("FriendInvitationDisplayForList, otherVoterWeVoteId:", otherVoterWeVoteId);
 
     const deleteInvitationHtml = '';
 
-    return (
-      <div className="position-item card-child card-child--not-followed">
-        <div className="card-child__avatar">
-          { voterGuideLink ? (
-            <Link to={voterGuideLink} className="u-no-underline">
-              {voterImage}
-            </Link>
-          ) :
-            <span>{voterImage}</span> }
-        </div>
-        <div className="card-child__media-object-content">
-          <div className="card-child__content">
+    const friendInvitationHtml = (
+      <div>
+        <div className="position-item card-child card-child--not-followed">
+          <div className="card-child__avatar">
             { voterGuideLink ? (
               <Link to={voterGuideLink} className="u-no-underline">
-                {voterDisplayNameFormatted}
+                {voterImage}
               </Link>
             ) :
-              <span>{voterDisplayNameFormatted}</span> }
-            { invitationsSentByMe ?
-              <span> has an open invitation from you.</span> :
-              <span> invited you.</span>}
-            { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> : null }
+              <span>{voterImage}</span> }
           </div>
-          <div className="card-child__additional">
-            <div className="card-child__follow-buttons">
-              { this.props.invitationsSentByMe ?
-                <span>{deleteInvitationHtml}</span> : (
-                  <span>
-                    <FriendInvitationToggle otherVoterWeVoteId={voterWeVoteId} />
-                    <button
-                      className="btn btn-default btn-sm"
-                      onClick={this.handleIgnore.bind(this, voterWeVoteId)}
-                      type="button"
-                    >
-                  Ignore
-                    </button>
-                  </span>
-                )}
+          <div className="card-child__media-object-content">
+            <div className="card-child__content">
+              { voterGuideLink ? (
+                <Link to={voterGuideLink} className="u-no-underline">
+                  {voterDisplayNameFormatted}
+                </Link>
+              ) :
+                <span>{voterDisplayNameFormatted}</span> }
+              { invitationsSentByMe ?
+                <span> has an open invitation from you.</span> :
+                <span> invited you.</span>}
+              { twitterDescriptionMinusName ? <p>{twitterDescriptionMinusName}</p> : null }
             </div>
-            {voterTwitterFollowersCount ? (
-              <span className="twitter-followers__badge">
-                <span className="fa fa-twitter twitter-followers__icon" />
-                {numberWithCommas(voterTwitterFollowersCount)}
-              </span>
-            ) : null
-            }
+            <div className="card-child__additional">
+              {this.state.isFriend ? <span>Is Friend</span> :
+                (
+                  <div className="card-child__follow-buttons">
+                    { this.props.invitationsSentByMe ?
+                      <span>{deleteInvitationHtml}</span> : (
+                        <span>
+                          <FriendInvitationToggle otherVoterWeVoteId={otherVoterWeVoteId} />
+                          <button
+                            className="btn btn-default btn-sm"
+                            onClick={this.handleIgnore.bind(this, otherVoterWeVoteId)}
+                            type="button"
+                          >
+                        Ignore
+                          </button>
+                        </span>
+                      )}
+                  </div>
+                )
+              }
+              {voterTwitterFollowersCount ? (
+                <span className="twitter-followers__badge">
+                  <span className="fa fa-twitter twitter-followers__icon" />
+                  {numberWithCommas(voterTwitterFollowersCount)}
+                </span>
+              ) : null
+              }
+            </div>
           </div>
         </div>
       </div>
     );
+
+    if (this.props.previewMode) {
+      return <span>{friendInvitationHtml}</span>;
+    } else {
+      return (
+        <section className="card">
+          <div className="card-main">
+            {friendInvitationHtml}
+          </div>
+        </section>
+      );
+    }
   }
 }

@@ -25,7 +25,7 @@ $neg-padding: -10px;
 
   &__filter {
     white-space: nowrap;
-    overflow-x: scroll;
+    overflow-x: hidden;
     overflow-y: hidden;
 
     &__container {
@@ -43,7 +43,7 @@ $neg-padding: -10px;
     z-index: 1;
     padding-top: $cordova-shim;
     transform: $pinned-transform;
-    transition: all .2s ease-in-out 0s;
+    transition: all 100ms ease-in-out 0s;
     box-shadow: 0 2px 4px -1px rgba(0, 0, 0, .2), 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12);
     &__unpinned {
       $unpinned-transform: translate3d(0, -58px, 0);
@@ -51,9 +51,9 @@ $neg-padding: -10px;
       top: $space-none;
       left: $space-none;
       right: $space-none;
-      z-index: 1;
+      z-index: 3;
       transform: $unpinned-transform;
-      transition: all .2s ease-in-out 0s;
+      transition: all 100ms ease-in-out 0s;
     }
   }
 
@@ -66,6 +66,7 @@ $neg-padding: -10px;
     &__title {
       display: inline-block;
       margin-bottom: $space-none;
+      margin-top: $space-sm;
       font-size: 14px;
       @include breakpoints(medium) {
         font-size: $scrollbar-height;
@@ -142,6 +143,11 @@ $neg-padding: -10px;
     }
   }
 
+  &__filter-row {
+    display: flex;
+    flex-flow: row;
+  }
+
   // ===========================================
   // Ballot Body
   // ===========================================
@@ -154,12 +160,19 @@ $neg-padding: -10px;
     }
   }
 
+  &__body-vg {
+    padding-top: $space-none;
+  }
+
   &__item-filter-tabs {
     display: flex;
-    overflow-x: scroll;
     overflow-y: hidden;
+    overflow-x: scroll;
     justify-content: flex-start;
     margin-top: $race-filter-margin;
+    @include breakpoints(large) {
+      overflow-x: hidden;
+    }
   }
 
   &__edit-address-preview {

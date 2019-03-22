@@ -116,6 +116,7 @@ export default class VoterGuideFollowers extends Component {
                       <h4 className="card__additional-heading">Your Followers</h4> : (
                         <h4 className="card__additional-heading">
                           Followers of
+                          {' '}
                           {this.state.organization.organization_name}
                         </h4>
                       )}
@@ -144,8 +145,8 @@ export default class VoterGuideFollowers extends Component {
                 }
                 <span>
                   <GuideList
-                    organizationsToFollow={voterGuideFollowersList}
-                    hide_ignore_button
+                    incomingVoterGuideList={voterGuideFollowersList}
+                    hideIgnoreButton
                     instantRefreshOn
                   />
                 </span>

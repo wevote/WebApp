@@ -134,19 +134,14 @@ export default class OrganizationVoterGuideMeasure extends Component {
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
         />
-        <MeasureItem
-          {...this.state.measure}
-          positionList={this.state.positionListFromAdvisersFollowedByVoter}
-          commentButtonHide
-          showPositionsInYourNetworkBreakdown
-        />
+        <MeasureItem measureWeVoteId={this.state.measure.we_vote_id} />
         <div className="card__additional">
           { this.state.positionListFromAdvisersFollowedByVoter ? (
             <div>
               <PositionList
-                position_list={this.state.positionListFromAdvisersFollowedByVoter}
+                incomingPositionList={this.state.positionListFromAdvisersFollowedByVoter}
                 hideSimpleSupportOrOppose
-                ballot_item_display_name={this.state.measure.ballot_item_display_name}
+                ballotItemDisplayName={this.state.measure.ballot_item_display_name}
               />
             </div>
           ) : null
@@ -158,7 +153,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
                 <GuideList
                   id={electionId}
                   ballotItemWeVoteId={this.state.measureWeVoteId}
-                  organizationsToFollow={this.state.voterGuidesToFollowForLatestBallotItem}
+                  incomingVoterGuideList={this.state.voterGuidesToFollowForLatestBallotItem}
                 />
               </div>
             )

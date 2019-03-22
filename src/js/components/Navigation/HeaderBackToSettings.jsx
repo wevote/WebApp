@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import cookies from '../../utils/cookies';
@@ -15,12 +16,29 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import { shortenText } from '../../utils/textFormat';
 
-export default class HeaderBackToSettings extends Component {
+const styles = theme => ({
+  headerButtonRoot: {
+    paddingTop: 2,
+    paddingBottom: 2,
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    color: 'rgb(6, 95, 212)',
+    marginLeft: '1rem',
+    outline: 'none !important',
+    [theme.breakpoints.down('md')]: {
+      marginLeft: '.1rem',
+    },
+  },
+});
+
+class HeaderBackToSettings extends Component {
   static propTypes = {
     location: PropTypes.object,
     params: PropTypes.object.isRequired,
     pathname: PropTypes.string,
     voter: PropTypes.object,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -37,12 +55,11 @@ export default class HeaderBackToSettings extends Component {
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
     this.toggleProfilePopUp = this.toggleProfilePopUp.bind(this);
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
-    this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
     this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
   }
 
   componentDidMount () {
-    // console.log("HeaderBackToBar componentDidMount, this.props: ", this.props);
+    // console.log("HeaderBackToSettings componentDidMount, this.props: ", this.props);
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -58,7 +75,7 @@ export default class HeaderBackToSettings extends Component {
       if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
-        // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
+        // console.log("HeaderBackToSettings, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
         officeWeVoteId = candidate.contest_officeWeVoteId;
         officeName = candidate.contest_office_name;
       }
@@ -88,7 +105,7 @@ export default class HeaderBackToSettings extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("HeaderBackToBar componentWillReceiveProps, nextProps: ", nextProps);
+    // console.log("HeaderBackToSettings componentWillReceiveProps, nextProps: ", nextProps);
     let candidateWeVoteId;
     let officeWeVoteId;
     let officeName;
@@ -99,7 +116,7 @@ export default class HeaderBackToSettings extends Component {
       if (candidateWeVoteId && candidateWeVoteId !== '') {
         const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
-        // console.log("HeaderBackToBar, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
+        // console.log("HeaderBackToSettings, candidateWeVoteId:", candidateWeVoteId, ", candidate:", candidate);
         officeWeVoteId = candidate.contest_office_we_vote_id;
         officeName = candidate.contest_office_name;
       }
@@ -146,7 +163,7 @@ export default class HeaderBackToSettings extends Component {
     if (candidateWeVoteId && candidateWeVoteId !== '') {
       const candidate = CandidateStore.getCandidate(candidateWeVoteId);
 
-      // console.log("HeaderBackToBar -- onCandidateStoreChange, candidateWeVoteId:", this.state.candidateWeVoteId, ", candidate:", candidate);
+      // console.log("HeaderBackToSettings -- onCandidateStoreChange, candidateWeVoteId:", this.state.candidateWeVoteId, ", candidate:", candidate);
       officeName = candidate.contest_office_name;
       officeWeVoteId = candidate.contest_office_we_vote_id;
     }
@@ -168,7 +185,7 @@ export default class HeaderBackToSettings extends Component {
     if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== '') {
       return `/office/${this.state.officeWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
     } else {
-      return `/office/${this.state.officeWeVoteId}/b/btdb/`;
+      return `/office/${this.state.officeWeVoteId}/b/btdb/`; // back-to-default-ballot
     }
   }
 
@@ -219,6 +236,7 @@ export default class HeaderBackToSettings extends Component {
   render () {
     renderLog(__filename);
     const { voter } = this.state;
+    const { classes } = this.props;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     const backToLink = isWebApp() ? '/settings/menu' : '/more/hamburger';
 
@@ -229,7 +247,7 @@ export default class HeaderBackToSettings extends Component {
       backToOrganizationLinkText = 'Back to Settings';
     }
 
-    if (this.props.params.back_to_variable === 'bto' || this.props.params.back_to_variable === 'btdo') {
+    if (this.props.params.back_to_variable === 'bto' || this.props.params.back_to_variable === 'btdo') { // back-to-default-office
       if (this.state.officeName) {
         backToOrganizationLinkText = `Back to ${this.state.officeName}`;
       } else {
@@ -291,6 +309,7 @@ export default class HeaderBackToSettings extends Component {
             ) : (
               <Button
               className="header-sign-in"
+              classes={{ root: classes.headerButtonRoot }}
               variant="text"
               color="primary"
               href="/settings/account"
@@ -305,3 +324,6 @@ export default class HeaderBackToSettings extends Component {
     );
   }
 }
+
+export default withStyles(styles)(HeaderBackToSettings);
+

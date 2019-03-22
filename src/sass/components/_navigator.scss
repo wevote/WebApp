@@ -1,3 +1,5 @@
+@import '../base/variables';
+
 $icon-color-base: $gray-mid;
 $icon-color-active: $link-color;
 $icon-color-hover: $gray-dark;
@@ -6,6 +8,7 @@ $header-height: 54px;
 $headroom-wrapper-webapp-ballot: 48px;
 $headroom-wrapper-webapp-default: 54px;
 $headroom-wrapper-webapp-voter-guide: 48px;
+$headroom-wrapper-webapp-office: 102px;
 $headroom-webapp: 104px;
 $header-height-cordova-ballot-ios: -1vh;
 
@@ -119,6 +122,9 @@ $container-margin: -15px;
   &__ballot {
     margin-top: $headroom-wrapper-webapp-ballot;
   }
+  &__office {
+    margin-top: $headroom-wrapper-webapp-office;
+  }
   &__default {
     margin-top: $headroom-wrapper-webapp-default;
   }
@@ -169,7 +175,7 @@ $container-margin: -15px;
   $nav-item-active-color: darken($page-header-color, 10%);
   display: flex;
   width: 920px;
-  justify-content: center;
+  margin-left: $space-lg;
   @include breakpoints(small xsmall-bootstrap) {
     justify-content: flex-end;
   }
@@ -250,12 +256,13 @@ $container-margin: -15px;
     border-radius: $radius-sm;
     background: #fff;
     overflow: hidden;
-    height: 34px;
-    width: 34px;
-    display: block;
+    display: inline;
     @include breakpoints(max mid-small) {
       margin-top: $space-xs;
       margin-bottom: $space-xs;
+    }
+    &-container {
+      display: inline;
     }
   }
 
@@ -263,9 +270,7 @@ $container-margin: -15px;
     border-radius: $radius-sm;
     background: #fff;
     overflow: hidden;
-    height: 34px;
-    width: 34px;
-    display: block;
+    display: inline;
   }
 
   &__avatar-iphone-xr {

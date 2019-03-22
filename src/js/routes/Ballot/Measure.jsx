@@ -139,19 +139,14 @@ export default class Measure extends Component {
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
         />
-        <MeasureItem
-          {...measure}
-          positionList={positionListFromAdvisersFollowedByVoter}
-          commentButtonHide
-          showPositionsInYourNetworkBreakdown
-        />
+        <MeasureItem measureWeVoteId={measure.we_vote_id} />
         <div className="card__additional">
           { positionListFromAdvisersFollowedByVoter ? (
             <div>
               <PositionList
-                position_list={positionListFromAdvisersFollowedByVoter}
+                incomingPositionList={positionListFromAdvisersFollowedByVoter}
                 hideSimpleSupportOrOppose
-                ballot_item_display_name={measure.ballot_item_display_name}
+                ballotItemDisplayName={measure.ballot_item_display_name}
               />
             </div>
           ) : null
@@ -163,7 +158,7 @@ export default class Measure extends Component {
                 <GuideList
                   id={electionId}
                   ballotItemWeVoteId={measureWeVoteId}
-                  organizationsToFollow={voterGuidesToFollowForLatestBallotItem}
+                  incomingVoterGuideList={voterGuidesToFollowForLatestBallotItem}
                 />
               </div>
             )}

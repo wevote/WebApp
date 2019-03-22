@@ -1,16 +1,28 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import Snackbar from '@material-ui/core/Snackbar';
+import { withStyles } from '@material-ui/core/styles';
 import BallotStore from '../../stores/BallotStore';
 import cookies from '../../utils/cookies';
 import ElectionStore from '../../stores/ElectionStore';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
 
-export default class BallotStatusMessage extends Component {
+const styles = theme => ({
+  anchorOriginBottomCenter: {
+    bottom: 54,
+    [theme.breakpoints.up('md')]: {
+      bottom: 20,
+    },
+  },
+});
+
+class BallotStatusMessage extends Component {
   static propTypes = {
     ballotLocationChosen: PropTypes.bool.isRequired,
     googleCivicElectionId: PropTypes.number,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -27,7 +39,10 @@ export default class BallotStatusMessage extends Component {
       substitutedAddressNearby: '',
       voterEnteredAddress: false,
       voterSpecificBallotFromGoogleCivic: false,
+      open: true,
     };
+
+    this.handleMessageClose = this.handleMessageClose.bind(this);
   }
 
   componentDidMount () {
@@ -92,6 +107,9 @@ export default class BallotStatusMessage extends Component {
     }
     if (this.state.voterSpecificBallotFromGoogleCivic !== nextState.voterSpecificBallotFromGoogleCivic) {
       // console.log("shouldComponentUpdate: changed, this.state.voterSpecificBallotFromGoogleCivic: ", this.state.voterSpecificBallotFromGoogleCivic, ", nextState.voterSpecificBallotFromGoogleCivic", nextState.voterSpecificBallotFromGoogleCivic);
+      return true;
+    }
+    if (this.state.open !== nextState.open) {
       return true;
     }
     return false;
@@ -163,6 +181,7 @@ export default class BallotStatusMessage extends Component {
       cookies.setItem('elections_with_ballot_status_message_closed', electionsWithBallotStatusMessageClosedForCookie, Infinity, '/');
       this.setState({
         electionsWithBallotStatusMessageClosed: electionsWithBallotStatusMessageClosedUpdated,
+        open: false,
       });
     }
   }
@@ -170,13 +189,12 @@ export default class BallotStatusMessage extends Component {
   render () {
     // console.log("BallotStatusMessage render");
     renderLog(__filename);
-    let ballotStatusStyle;
+    const { classes } = this.props;
     let messageString = '';
     const today = moment(new Date());
     const isVotingDay = today.isSame(this.state.electionDayText, 'day');
 
     if (isVotingDay) {
-      ballotStatusStyle = 'alert-info';
       messageString = `It is Voting Day,  ${
         moment(this.state.electionDayText).format('MMM Do, YYYY')
       }.  If you haven't already voted, please go vote!`;
@@ -184,7 +202,6 @@ export default class BallotStatusMessage extends Component {
       // messageString += !this.state.voterSpecificBallotFromGoogleCivic && this.state.ballotLocationChosen && this.state.ballotLocationDisplayName ?
       //   "  Some items shown below may not have been on your official ballot." : "  Some items below may not have been on your official ballot.";
     } else if (this.state.electionIsUpcoming) {
-      ballotStatusStyle = 'alert-info';
       if (this.state.voterSpecificBallotFromGoogleCivic) {
         // We do not have an equivalent flag when we retrieve a ballot from Ballotpedia
         messageString += ''; // No additional text
@@ -197,7 +214,6 @@ export default class BallotStatusMessage extends Component {
         // messageString += "Some items below may not be on your official ballot.";
       }
     } else {
-      ballotStatusStyle = 'alert-info';
       let messageInPastString;
       if (this.state.electionDayText) {
         messageInPastString = `This election was held on ${moment(this.state.electionDayText).format('MMM Do, YYYY')}.`;
@@ -230,19 +246,25 @@ export default class BallotStatusMessage extends Component {
       return null;
     } else if (this.state.showBallotStatus && messageStringLength > 0) {
       return (
-        <div className="u-stack--sm d-print-none">
-          <div className={`alert ${ballotStatusStyle}`}>
-            <a href="#" className="close" data-dismiss="alert">
-              <div id="ballot-status-message-close-container" onClick={this.handleMessageClose.bind(this)}>
-                &times;
-              </div>
-            </a>
-            {messageString}
-          </div>
-        </div>
+        <Snackbar
+          classes={{ anchorOriginBottomCenter: classes.anchorOriginBottomCenter }}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          open={this.state.open && messageStringLength > 0}
+          autoHideDuration={5000}
+          onClose={this.handleMessageClose}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span id="message-id">{messageString}</span>}
+        />
       );
     } else {
-      return <div />;
+      return <React.Fragment />;
     }
   }
 }
+
+export default withStyles(styles)(BallotStatusMessage);

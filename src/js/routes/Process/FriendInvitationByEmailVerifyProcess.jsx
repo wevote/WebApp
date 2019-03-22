@@ -93,7 +93,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     // This process starts when we return from attempting friendInvitationByEmailVerify
     if (!this.state.invitationStatus.invitationFound) {
       historyPush({
-        pathname: '/more/network/friends',
+        pathname: '/friends',
         state: {
           message: 'Invitation not found. You may have already accepted this invitation. Invitation links may only be used once.',
           message_type: 'warning',
@@ -104,7 +104,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
 
     if (this.state.invitationStatus.attemptedToApproveOwnInvitation) {
       historyPush({
-        pathname: '/more/network/friends',
+        pathname: '/friends',
         state: {
           message: 'You are not allowed to approve your own invitation.',
           message_type: 'danger',
@@ -116,7 +116,7 @@ export default class FriendInvitationByEmailVerifyProcess extends Component {
     if (this.state.invitationStatus.invitationSecretKeyBelongsToThisVoter) {
       // We don't need to do anything more except redirect to the email management page
       historyPush({
-        pathname: '/more/network/friends',
+        pathname: '/friends',
         state: {
           message: "You have accepted your friend's invitation. Visit your ballot to see what your friends are supporting or opposing.",
           message_type: 'success',

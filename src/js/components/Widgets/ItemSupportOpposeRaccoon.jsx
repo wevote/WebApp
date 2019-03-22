@@ -7,7 +7,7 @@ import BallotStore from '../../stores/BallotStore';
 import CandidateActions from '../../actions/CandidateActions';
 import CandidateStore from '../../stores/CandidateStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import IssuesByBallotItemDisplayList from '../Issues/IssuesByBallotItemDisplayList';
+import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
 import IssueStore from '../../stores/IssueStore';
 import ItemActionBar from './ItemActionBar';
 import ItemPositionStatementActionBar from './ItemPositionStatementActionBar';
@@ -397,18 +397,16 @@ export default class ItemSupportOpposeRaccoon extends Component {
       <span>
         <ItemActionBar
           ballot_item_display_name={this.state.ballotItemDisplayName}
-          ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
+          ballotItemWeVoteId={this.state.ballotItemWeVoteId}
           commentButtonHide={commentBoxIsVisible}
           commentButtonHideInMobile
           currentBallotIdInUrl={this.props.currentBallotIdInUrl}
           shareButtonHide
-          supportProps={ballotItemSupportStore}
           supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
           toggleFunction={this.togglePositionStatement}
           transitioning={this.state.transitioning}
           type={this.state.ballotItemType}
           urlWithoutHash={this.props.urlWithoutHash}
-          we_vote_id={this.props.we_vote_id}
         />
       </span>
     );

@@ -6,6 +6,8 @@ $space-search-right:   10%;
 $back-button-font-size: .8rem;
 $iphone-x-padding-left: env(safe-area-inset-left);
 $iphone-x-padding-right: env(safe-area-inset-right);
+$header-height: 48px;
+$header-height-back-to-ballot: 96px;
 
 .page-header {
   // required overrides for Bootstrap :(
@@ -18,10 +20,10 @@ $iphone-x-padding-right: env(safe-area-inset-right);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: $header-height;
   &__ballot {
-    @include breakpoints(small medium) {
-      box-shadow: none !important;
-    }
+    box-shadow: none !important;
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
   }
 
   &__container {
@@ -57,6 +59,10 @@ $iphone-x-padding-right: env(safe-area-inset-right);
     }
   }
 
+  &__back-to-ballot {
+    height: $header-height-back-to-ballot;
+  }
+
   &__backToButtonIPhoneX {
     margin-top: $space-xs;
   }
@@ -89,12 +95,13 @@ $iphone-x-padding-right: env(safe-area-inset-right);
 }
 
 .header-logo-img {
-  width: 800px;
+  width: 200px;
   @include breakpoints(mid-small small-bootstrap) {
-    width: 250px;
+    min-width: 120px;
   }
-  @include breakpoints(small-bootstrap) {
-    width: 150px;
+
+  @include breakpoints(small mid-small) {
+    min-width: 110px;
   }
 }
 
@@ -310,12 +317,10 @@ $iphone-x-padding-right: env(safe-area-inset-right);
   top: 0;
   left: 0;
   right: 0;
+  background: white;
   z-index: 2;
   transform: translateY(0);
   transition: all .2s ease-in-out;
-  &--pinned {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
-  }
   &--slide-up {
     transform: translateY(-100%);
   }

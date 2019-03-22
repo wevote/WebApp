@@ -99,7 +99,8 @@ export default class PositionListForFriends extends Component {
                     key={item.position_we_vote_id}
                     position={item}
                     organization={this.state.organization}
-                  />))
+                  />
+                ))
                 }
               </span>
             ) :

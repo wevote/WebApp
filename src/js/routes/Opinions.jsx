@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import { renderLog } from '../utils/logging';
@@ -75,7 +75,9 @@ export default class Opinions extends Component {
             <p>There are no organizations with opinions on your ballot. Here are some popular organizations:</p>
           }
           <div className="card">
-            <GuideList organizationsToFollow={voterGuidesToFollowAll} instantRefreshOn />
+            <Suspense fallback={<span>Loading...</span>}>
+              <GuideList incomingVoterGuideList={voterGuidesToFollowAll} instantRefreshOn />
+            </Suspense>
           </div>
         </div>
         <Link className="pull-right" to="/opinions_ignored">Organizations you are ignoring</Link>

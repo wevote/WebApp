@@ -71,6 +71,7 @@ class MeasureStore extends ReduceStore {
         };
 
       case 'positionListForBallotItem':
+        if (action.res.count === 0) return state;
         positionListForMeasure = action.res.kind_of_ballot_item === 'MEASURE';
         if (positionListForMeasure) {
           measureWeVoteId = action.res.ballot_item_we_vote_id;
@@ -87,7 +88,8 @@ class MeasureStore extends ReduceStore {
       case 'voterBallotItemsRetrieve':
         if (tempBallotItemList) {
           tempBallotItemList.forEach((oneBallotItem) => {
-            if (oneBallotItem.kind_of_ballot_item === 'MEASURE' && oneBallotItem.we_vote_id) {
+            if (oneBallotItem.kind_of_ballot_item === 'MEASURE' && oneBallotItem.we_vote_id && !(oneBallotItem.we_vote_id in allCachedMeasures)) {
+              // Only add new entries that aren't already stored
               allCachedMeasures[oneBallotItem.we_vote_id] = oneBallotItem;
             }
           });
