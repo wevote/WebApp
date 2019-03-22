@@ -13,6 +13,8 @@
   @include clearfix;
   @include breakpoints(max mid-small) {
     margin-bottom: $space-sm;
+    margin-right: $gutter-offset;
+    margin-left: $gutter-offset;
     border-radius: $radius-none;
     [class^='col'] & {
       margin-right: $gutter-offset;

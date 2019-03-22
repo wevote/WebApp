@@ -333,7 +333,7 @@ const MeasureInfoWrapper = styled.div`
   user-select: none;
   padding-right: 8px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    max-width: 100%;
+    max-width: 70%;
   }
 `;
 
@@ -350,6 +350,8 @@ const SubTitle = styled.h3`
   font-size: 16px;
   font-weight: 300;
   color: #555;
+  margin-top: .6rem;
+  width: 135%;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     font-size: 13px;
   }
@@ -359,6 +361,7 @@ const Info = styled.p`
   font-size: 13px;
   font-weight: 300;
   color: #777;
+  width: 135%;
 `;
 
 // const CardFooter = styled.div`

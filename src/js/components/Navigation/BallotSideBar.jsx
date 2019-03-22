@@ -226,9 +226,8 @@ const styles = theme => ({
     padding: '16px 0',
     textAlign: 'center',
     color: '#555',
-    fontSize: 18,
+    fontSize: 16,
     [theme.breakpoints.down('lg')]: {
-      fontSize: 16,
       padding: '12px 0',
     },
   },

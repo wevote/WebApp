@@ -380,7 +380,7 @@ class ItemActionBar extends Component {
 
   render () {
     renderLog(__filename);
-    const { classes } = this.props;
+    const { classes, type } = this.props;
     if (this.state.supportCount === undefined ||
       this.state.opposeCount === undefined ||
       this.state.isOpposeAPIState === undefined ||
@@ -437,7 +437,7 @@ class ItemActionBar extends Component {
               <PositionPublicToggle
                 ballotItemWeVoteId="null"
                 className="null"
-                type="MEASURE"
+                type={type}
                 supportProps={modalSupportProps}
                 inTestMode
               />
@@ -505,6 +505,7 @@ class ItemActionBar extends Component {
         variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
         color="primary"
         onClick={() => this.supportItem()}
+        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
         <DoneIcon classes={{ root: classes.buttonIcon }} />
         { this.isSupportCalculated() ? (
@@ -530,7 +531,7 @@ class ItemActionBar extends Component {
         variant="contained"
         className={`item-actionbar__btn item-actionbar__btn--support btn btn-default${this.isSupportCalculated() ? ' support-at-state' : ''}`}
         onClick={() => this.supportItem()}
-        type="button"
+        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
         <span className="btn__icon">
           <img src={cordovaDot('/img/global/svg-icons/thumbs-up-icon.svg')}
@@ -564,6 +565,7 @@ class ItemActionBar extends Component {
         color="primary"
         className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
         onClick={() => this.opposeItem()}
+        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
         <NotInterestedIcon classes={{ root: classes.buttonIcon }} />
         { this.isOpposeCalculated() ? (
@@ -589,7 +591,7 @@ class ItemActionBar extends Component {
         variant="contained"
         className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}item-actionbar__btn item-actionbar__btn--oppose btn btn-default${this.isOpposeCalculated() ? ' oppose-at-state' : ''}`}
         onClick={() => this.opposeItem()}
-        type="button"
+        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
         <span className="btn__icon">
           <img src={cordovaDot('/img/global/svg-icons/thumbs-down-icon.svg')}
@@ -642,10 +644,11 @@ class ItemActionBar extends Component {
 
     return (
       <div className={this.props.shareButtonHide ? 'item-actionbar--inline' : 'item-actionbar'}>
+        <hr className="ballot-header-divider u-show-mobile" />
         <PositionPublicToggle
           ballotItemWeVoteId="null"
           className="null"
-          type="MEASURE"
+          type={type}
           supportProps={modalSupportProps}
           inTestMode
         />
@@ -731,12 +734,25 @@ class ItemActionBar extends Component {
 
 const styles = theme => ({
   buttonIcon: {
-    root: {
-      fontSize: 18,
-      [theme.breakpoints.down('lg')]: {
-        fontSize: 16,
-      },
+    fontSize: 18,
+    marginRight: '.3rem',
+    [theme.breakpoints.down('lg')]: {
+      fontSize: 12,
+      marginRight: '.1rem',
     },
+  },
+  buttonRoot: {
+    marginLeft: '1rem',
+    [theme.breakpoints.down('md')]: {
+      padding: 0,
+      fontSize: 10,
+      width: 72,
+      height: 28,
+      marginLeft: '.1rem',
+    },
+  },
+  buttonOutlinedPrimary: {
+    background: 'white',
   },
 });
 
