@@ -7,6 +7,7 @@ class AppStore extends ReduceStore {
       headroomUnpinned: false,
       showSelectBallotModal: false,
       showEditAddressButton: false,
+      scrolledDown: false,
     };
   }
 
@@ -22,6 +23,10 @@ class AppStore extends ReduceStore {
     return this.getState().showEditAddressButton;
   }
 
+  getScrolledDown () {
+    return this.getState().scrolledDown;
+  }
+
   reduce (state, action) {
     switch (action.type) {
       case 'headroomUnpinned':
@@ -30,6 +35,8 @@ class AppStore extends ReduceStore {
         return { ...state, showSelectBallotModal: action.payload };
       case 'showEditAddressButton':
         return { ...state, showEditAddressButton: action.payload };
+      case 'scrolledDown':
+        return { ...state, scrolledDown: action.payload };
       default:
         return state;
     }

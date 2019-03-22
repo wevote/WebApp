@@ -8,7 +8,7 @@ import Textarea from 'react-textarea-autosize';
 import { cordovaDot, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import ReadMore from './ReadMore';
-import PositionPublicToggle from './PositionPublicToggle';
+// import PositionPublicToggle from './PositionPublicToggle';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
@@ -272,12 +272,6 @@ export default class ItemPositionStatementActionBar extends Component {
                     inputRef={(tag) => { this.textarea = tag; }}
                   />
                   <div className="u-flex u-flex-column u-justify-between u-items-end">
-                    <PositionPublicToggle
-                      ballotItemWeVoteId={this.props.ballot_item_we_vote_id}
-                      type={this.props.type}
-                      supportProps={this.props.supportProps}
-                      className="u-flex-auto u-tr d-print-block"
-                    />
                     <Button variant="outline-secondary" size="sm" type="submit">{postButtonText}</Button>
                   </div>
                 </span>
@@ -328,6 +322,8 @@ export default class ItemPositionStatementActionBar extends Component {
                       Edit
                   </div>
                 </div>
+                {
+                /*
                 <div className="u-flex u-flex-column u-justify-between u-items-end">
                   <PositionPublicToggle
                     ballotItemWeVoteId={this.props.ballot_item_we_vote_id}
@@ -336,6 +332,8 @@ export default class ItemPositionStatementActionBar extends Component {
                     className="u-flex-auto u-tr d-print-block"
                   />
                 </div>
+                */
+                }
               </div>
             </div>
           )

@@ -388,7 +388,7 @@ class Ballot extends Component {
 
   onAppStoreChange () {
     this.setState({
-      ballotHeaderUnpinned: AppStore.headroomIsUnpinned(),
+      ballotHeaderUnpinned: AppStore.getScrolledDown(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
     });
   }

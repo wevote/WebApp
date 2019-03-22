@@ -21,21 +21,25 @@
   }
 
   &__position-btn-label {
-    color: $link-color;
+    color: $black;
+    font-weight: bold;
     text-transform: uppercase;
 
     &--at-state {
       color: $white;
+      font-weight: bold;
       text-transform: uppercase;
     }
   }
 
   &__position-choose-btn-label {
-    color: $link-color;
+    color: $black;
+    font-weight: bold;
     text-transform: uppercase;
 
     &--at-state {
       // color: $white;
+      font-weight: bold;
       text-transform: uppercase;
     }
   }
@@ -46,6 +50,7 @@
 
   .support-at-state {
     color: $white;
+    font-weight: bold;
     background-color: $green;
   }
 
@@ -64,7 +69,8 @@
   flex: auto;
 
   &__position-btn-label {
-    color: $link-color;
+    color: $black;
+    font-weight: bold;
     text-transform: uppercase;
 
     &--at-state {
@@ -74,11 +80,13 @@
   }
 
   &__position-choose-btn-label {
-    color: $link-color;
+    color: $black;
+    font-weight: bold;
     text-transform: uppercase;
 
     &--at-state {
       // color: $white;
+      font-weight: bold;
       text-transform: uppercase;
     }
   }

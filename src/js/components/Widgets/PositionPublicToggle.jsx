@@ -250,12 +250,18 @@ const PublicToggle = styled.div`
 
 const RadioLabel = styled.div`
   height: 44px;
-  padding: 8px 4px;
+  padding: 10px 4px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 10px;
+  }
 `;
 
 const RadioGroup = styled.div`
   display: flex;
   flex-flow: row nowrap;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-bottom: -10px;
+  }
 `;
 
 
