@@ -154,8 +154,8 @@ class HeaderBar extends Component {
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    // if (stringContains('/ballot', pathname.slice(0, 7))) return 0;
-    if (pathname.indexOf('/ballot') === 0) return 0;
+    // if (pathname.indexOf('/ballot') === 0) return 0; // If '/ballot' is found any
+    if (pathname && pathname.startsWith('/ballot')) return 0;
     if (stringContains('/friends', pathname)) return 2;
     if (stringContains('/values', pathname)) return 1;
     return false;
@@ -194,6 +194,7 @@ class HeaderBar extends Component {
   }
 
   render () {
+    // console.log('HeaderBar render');
     renderLog(__filename);
     const { voter, classes, pathname } = this.props;
     const { showEditAddressButton, scrolledDown } = this.state;

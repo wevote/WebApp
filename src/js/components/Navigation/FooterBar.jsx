@@ -39,6 +39,7 @@ class FooterBar extends React.Component {
   };
 
   render () {
+    // console.log('FooterBar render');
     return (
       <div className="footer-container u-show-mobile-tablet">
         <BottomNavigation

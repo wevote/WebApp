@@ -146,7 +146,7 @@ export default class TopCommentByBallotItem extends Component {
     const { endorsementOrganization, endorsementText } = this.state;
     if (!endorsementText) {
       // console.log('TopCommentByBallotItem no endorsementText');
-      // If we don't have any endorsement text, show the Values
+      // If we don't have any endorsement text, show the alternate component passed in
       return this.props.children || null;
     }
 

@@ -18,7 +18,6 @@ class PositionPublicToggle extends Component {
     ballotItemWeVoteId: PropTypes.string.isRequired,
     className: PropTypes.string.isRequired,
     inTestMode: PropTypes.bool,
-    // onToggleChangeFunction: PropTypes.func, // This was written for react-bootstrap-toggle version 2.3.1, but we are having some troubles upgrading
     supportProps: PropTypes.object,
     type: PropTypes.string.isRequired,
     classes: PropTypes.object,
@@ -31,8 +30,6 @@ class PositionPublicToggle extends Component {
       positionPublicToggleCurrentState: '',
       showToThePublicOn: false,
     };
-
-    this.onToggleChangeFunction = this.onToggleChangeFunction.bind(this);
   }
 
   componentDidMount () {
@@ -52,17 +49,12 @@ class PositionPublicToggle extends Component {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  onToggleChangeFunction (state) {
-    // This was written for react-bootstrap-toggle version 2.3.1, but we are having some troubles upgrading
-    console.log('PositionPublicToggle onToggleChangeFunction, state:', state);
-    if (state === 'SHOW_PUBLIC') {
-      this.setState({
-        positionPublicToggleCurrentState: 'Show publicly',
-      });
+  handlePositionToggle = (evt) => {
+    const { value } = evt.target;
+    if (value === 'Public') {
+      this.showItemToPublic();
     } else {
-      this.setState({
-        positionPublicToggleCurrentState: 'Show to friends only',
-      });
+      this.showItemToFriendsOnly();
     }
   }
 
@@ -102,15 +94,6 @@ class PositionPublicToggle extends Component {
     this.setState({
       showPositionPublicHelpModal: !showPositionPublicHelpModal,
     });
-  }
-
-  handlePositionToggle = (evt) => {
-    const { value } = evt.target;
-    if (value === 'Public') {
-      this.showItemToPublic();
-    } else {
-      this.showItemToFriendsOnly();
-    }
   }
 
   render () {
