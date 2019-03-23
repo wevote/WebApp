@@ -19,52 +19,59 @@ class Testimonial extends React.Component {
     const { testimonialAuthor, testimonial } = this.props;
 
     return (
-      <TestimonialStyled>
+      <TestimonialContainer>
         <ImageHandler
           className="card-main__avatar__testimonial"
-          // sizeClassName="icon-candidate-small u-push--sm"
           imageUrl={this.props.imageUrl}
           alt="candidate-photo"
           kind_of_ballot_item="CANDIDATE"
         />
-        <div
-          style={{
-            'text-align': 'center',
-            color: '#999',
-            'font-style': 'italic',
-            'font-size': '10px',
-          }}
-        >
+        <TestimonialAuthor>
           {testimonialAuthor}
-        </div>
-        <span
-          style={{
-            display: 'block',
-            color: '#2E3C5D',
-            'font-weight': 500,
-            'text-align': 'center',
-            margin: '15px 20px 20px 20px',
-            'border-bottom': '1px solid',
-            'padding-bottom': '15px',
-            'border-width': 'medium',
-            'font-size': '12px',
-          }}
-        >
+        </TestimonialAuthor>
+        <TextStyled>
           <FormatQuote />
           {testimonial}
-        </span>
-      </TestimonialStyled>
+        </TextStyled>
+      </TestimonialContainer>
     );
   }
 }
 
-const TestimonialStyled = styled.div`
+const TestimonialContainer = styled.div`
   display: block;
   float: right;
   width: 30%;
   background-color: white;
-  margin-left: 50px;
+  margin-left: 30px;
   border-radius: 4px;
+`;
+
+const TestimonialAuthor = styled.div`
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  font-size: 10px;
+`;
+
+const TextStyled = styled.div`
+  display: block;
+  color: #00749e;
+  font-weight: 500;
+  font-family: ${`$heading-font-stack`};
+  text-align: center;
+  margin: 10px 15px 15px 15px;
+  border-width: medium;
+  font-size: 11px;
+  line-height: normal;
+  :after {
+    content: '';
+    display: block;
+    margin: 0 auto;
+    width: 40%;
+    padding-top: 15px;
+    border-bottom: 2px solid;
+  }
 `;
 
 export default withTheme()(withStyles()(Testimonial));
