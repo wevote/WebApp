@@ -77,16 +77,6 @@ class Application extends Component {
     window.removeEventListener('scroll', this.handleWindowScroll);
   }
 
-  handleWindowScroll = (evt) => {
-    const { scrollTop } = evt.target.scrollingElement;
-    if (scrollTop > 60 && !AppStore.getScrolledDown()) {
-      AppActions.setScrolled(true);
-    }
-    if (scrollTop < 60 && AppStore.getScrolledDown()) {
-      AppActions.setScrolled(false);
-    }
-  }
-
   initCordova () { // eslint-disable-line
     if (isCordova()) {
       console.log(`Application initCordova ------------ ${__filename}`);
@@ -146,6 +136,16 @@ class Application extends Component {
     // console.log("SignedIn Voter in Application onVoterStoreChange voter: ", VoterStore.getVoter().full_name);
   }
 
+  handleWindowScroll = (evt) => {
+    const { scrollTop } = evt.target.scrollingElement;
+    if (scrollTop > 60 && !AppStore.getScrolledDown()) {
+      AppActions.setScrolled(true);
+    }
+    if (scrollTop < 60 && AppStore.getScrolledDown()) {
+      AppActions.setScrolled(false);
+    }
+  }
+
   incomingVariableManagement () {
     // console.log("Application, incomingVariableManagement, this.props.location.query: ", this.props.location.query);
     if (this.props.location.query) {
@@ -162,7 +162,8 @@ class Application extends Component {
         cookies.setItem('show_full_navigation', '1', Infinity, '/');
       }
 
-      this.setState({ we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie });
+      // Currently not used, but it seems like it should be
+      // this.setState({ we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie });
 
       const hideIntroModalFromUrl = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
       const hideIntroModalFromUrlTrue = hideIntroModalFromUrl === 1 || hideIntroModalFromUrl === '1' || hideIntroModalFromUrl === 'true';
@@ -211,7 +212,6 @@ class Application extends Component {
       }
     }
   }
-
 
   render () {
     renderLog(__filename);
@@ -281,7 +281,6 @@ class Application extends Component {
       );
     } else if (settingsMode) {
       // console.log("settingsMode", settingsMode);
-
       return (
         <div className={getAppBaseClass(pathname)} id="app-base-id">
           <ToastContainer closeButton={false} className={getToastClass()} />
@@ -298,7 +297,7 @@ class Application extends Component {
               </div>
             </div>
           </Wrapper>
-          {(
+          {(pathname === '/settings/menu') && (
             <div className="footroom-wrapper">
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
             </div>
@@ -333,7 +332,13 @@ class Application extends Component {
               </div>
             </Wrapper>
           )}
-        { pathname !== '/welcome' && (
+        {/* Do not show the FooterBar if any of these pathname patterns are found */}
+        { !(pathname && pathname.startsWith('/candidate')) &&
+          !(pathname && pathname.startsWith('/friends/')) &&
+          !(pathname && pathname.startsWith('/measure')) &&
+          !(pathname && pathname.startsWith('/office')) &&
+          !(pathname && pathname.startsWith('/values/')) &&
+          !(pathname === '/welcome') && (
           <div className="footroom-wrapper">
             <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
           </div>

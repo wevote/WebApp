@@ -893,6 +893,7 @@ class Ballot extends Component {
                                         color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
                                         badgeContent={ballotItemsByFilterType.length}
                                         invisible={ballotItemsByFilterType.length === 0}
+                                        onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
                                       >
                                         <Chip variant="outlined"
                                           color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
@@ -1055,6 +1056,7 @@ const styles = theme => ({
     right: 14,
     background: 'rgba(46, 60, 93, 0.08)',
     color: '#333',
+    cursor: 'pointer',
     [theme.breakpoints.down('md')]: {
       fontSize: 9,
       width: 16,

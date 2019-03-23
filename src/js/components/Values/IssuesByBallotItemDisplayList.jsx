@@ -12,6 +12,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 class IssuesByBallotItemDisplayList extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
+    children: PropTypes.object,
   };
 
   constructor (props) {
@@ -85,7 +86,8 @@ class IssuesByBallotItemDisplayList extends Component {
       !issuesUnderThisBallotItemVoterIsFollowingFound &&
       !issuesUnderThisBallotItemVoterIsNotFollowingFound
     ) {
-      return null;
+      // If we don't have any endorsement text, show the alternate component passed in
+      return this.props.children || null;
     }
 
     let localCounter = 0;

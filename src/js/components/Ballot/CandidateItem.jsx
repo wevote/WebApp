@@ -213,27 +213,6 @@ class CandidateItem extends Component {
             </Candidate>
             <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={candidateWeVoteId} />
           </CandidateWrapper>
-          { candidateText.length ? (
-            <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
-              <div className="card-main__description">
-                <LearnMore
-                    learn_more_text="Read more on Ballotpedia"
-                    num_of_lines={3}
-                    learn_more_link={ballotpediaCandidateUrl}
-                    text_to_display={candidateText}
-                />
-              </div>
-              <Link to={this.getCandidateLink}>
-                { this.props.link_to_ballot_item_page ? <span className="card-main__read-more-pseudo" /> : null }
-              </Link>
-              { this.props.link_to_ballot_item_page ?
-                <Link to={this.getCandidateLink} className="card-main__read-more-link">&nbsp;Read more</Link> :
-                null
-              }
-            </div>
-          ) :
-            null
-          }
           {' '}
           {/* END .card-main__media-object-content */}
         </CandidateInfo>
@@ -251,7 +230,30 @@ class CandidateItem extends Component {
               <TopCommentByBallotItem
                 ballotItemWeVoteId={candidateWeVoteId}
                 learnMoreUrl={this.getCandidateLink()}
-              />
+              >
+                {/* If there aren't any comments about the candidate, show the text description of the candidate */}
+                { candidateText.length ? (
+                  <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
+                    <div className="card-main__description">
+                      <LearnMore
+                          learn_more_text="Read more on Ballotpedia"
+                          num_of_lines={2}
+                          learn_more_link={ballotpediaCandidateUrl}
+                          text_to_display={candidateText}
+                      />
+                    </div>
+                    <Link to={this.getCandidateLink}>
+                      { this.props.link_to_ballot_item_page ? <span className="card-main__read-more-pseudo" /> : null }
+                    </Link>
+                    { this.props.link_to_ballot_item_page ?
+                      <Link to={this.getCandidateLink} className="card-main__read-more-link">&nbsp;more</Link> :
+                      null
+                    }
+                  </div>
+                ) :
+                  null
+                }
+              </TopCommentByBallotItem>
             )
             }
           </div>
