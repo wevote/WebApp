@@ -109,7 +109,7 @@ export default class Office extends Component {
             </CandidateList>
           </div>
         ) :
-          <span>No candidates found.</span>
+          <span>Loading candidates...</span>
         }
       </div>
     );

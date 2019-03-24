@@ -290,24 +290,25 @@ class HeaderBackToBallot extends Component {
       backToLink = this.getOfficeLink();
     }
 
-    let backToOrganizationLinkText;
+    let backToLinkText;
     if (organizationWeVoteId) {
-      backToOrganizationLinkText = 'Back to Voter Guide';
+      backToLinkText = 'Voter Guide'; // Back to
     } else {
-      backToOrganizationLinkText = 'Back to Ballot';
+      backToLinkText = 'Ballot'; // Back to
     }
 
     if (this.props.params.back_to_variable === 'bto' || this.props.params.back_to_variable === 'btdo') { // back-to-default-office
       if (this.state.officeName) {
-        backToOrganizationLinkText = `Back to ${this.state.officeName}`;
+        backToLinkText = `${this.state.officeName}`; // Back to
       } else {
-        backToOrganizationLinkText = 'Back';
+        backToLinkText = 'Back';
       }
     } else if (this.state.organization && this.state.organization.organization_name) {
-      backToOrganizationLinkText = `Back to ${this.state.organization.organization_name}`;
+      backToLinkText = `${this.state.organization.organization_name}`; // Back to
     }
 
-    const backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 20);
+    const backToLinkTextDesktop = shortenText(backToLinkText, 60);
+    const backToLinkTextMobile = shortenText(backToLinkText, 25);
     const headerClassName = (function header () {
       const prefix = stringContains('/office', pathname) ? 'page-header page-header__back-to-ballot' : 'page-header';
       if (isWebApp()) {
@@ -328,7 +329,8 @@ class HeaderBackToBallot extends Component {
             onClick={() => historyPush(backToLink)}
           >
             <KeyboardBackspaceIcon className="button-icon" />
-            {backToOrganizationLinkTextMobile}
+            <span className="u-show-desktop-tablet">{backToLinkTextDesktop}</span>
+            <span className="u-show-mobile">{backToLinkTextMobile}</span>
           </Button>
 
           {this.state.profilePopUpOpen && voter.is_signed_in && (
