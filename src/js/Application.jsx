@@ -297,7 +297,7 @@ class Application extends Component {
               </div>
             </div>
           </Wrapper>
-          {(pathname === '/settings/menu') && (
+          {(
             <div className="footroom-wrapper">
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
             </div>

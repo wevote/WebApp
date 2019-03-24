@@ -150,8 +150,8 @@ export default class TopCommentByBallotItem extends Component {
       return this.props.children || null;
     }
 
-    const croppedEndorsementTextDesktop = shortenText(endorsementText, 200);
-    const croppedEndorsementTextMobile = shortenText(endorsementText, 100);
+    const croppedEndorsementTextDesktopTablet = shortenText(endorsementText, 200);
+    const croppedEndorsementTextMobile = shortenText(endorsementText, 125);
     const learnMoreText = this.props.learnMoreText ? this.props.learnMoreText : 'more';
 
     // console.log("GuideList organizationsToFollow: ", this.state.organizationsToFollow);
@@ -164,7 +164,7 @@ export default class TopCommentByBallotItem extends Component {
             .
           </span>
           {' "'}
-          <span className="u-show-desktop-tablet">{croppedEndorsementTextDesktop}</span>
+          <span className="u-show-desktop-tablet">{croppedEndorsementTextDesktopTablet}</span>
           <span className="u-show-mobile">{croppedEndorsementTextMobile}</span>
           {'"'}
           { this.props.learnMoreUrl && (

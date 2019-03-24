@@ -103,7 +103,7 @@ export default class OrganizationVoterGuideOffice extends Component {
             </OrganizationVoterGuideCandidateList>
           </div>
         ) :
-          <span>No candidates found.</span>
+          <span>Loading candidates...</span>
         }
       </div>
     );
