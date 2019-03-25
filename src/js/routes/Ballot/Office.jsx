@@ -107,27 +107,31 @@ export default class Office extends Component {
 
 
     return (
-      <div>
+      <div style={{ display: 'flex' }}>
         <Helmet
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
         />
-        <Testimonial
-          imageUrl={imageUrl}
-          testimonialAuthor={testimonialAuthor}
-          testimonial={testimonial}
-        />
-        { office.candidate_list ? (
-          <div>
-            <CandidateList
-              contest_office_name={office.ballot_item_display_name}
-            >
-              {office.candidate_list}
-            </CandidateList>
-          </div>
-        ) :
-          <span>No candidates found.</span>
+        <div className="col-sm-12 col-lg-9">
+          { office.candidate_list ? (
+            <div>
+              <CandidateList
+                contest_office_name={office.ballot_item_display_name}
+              >
+                {office.candidate_list}
+              </CandidateList>
+            </div>
+          ) :
+            <span>No candidates found.</span>
         }
+        </div>
+        <div className="col-lg-3 d-none d-lg-block">
+          <Testimonial
+            imageUrl={imageUrl}
+            testimonialAuthor={testimonialAuthor}
+            testimonial={testimonial}
+          />
+        </div>
       </div>
     );
   }
