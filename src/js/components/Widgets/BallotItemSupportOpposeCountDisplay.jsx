@@ -20,7 +20,6 @@ import SupportStore from '../../stores/SupportStore';
 import { stringContains } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-// import { findDOMNode } from 'react-dom';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize complex changes
 /* eslint react/no-find-dom-node: 1 */
@@ -64,6 +63,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
+    this.voterGuideStoreListener = SupportStore.addListener(this.onVoterGuideStoreChange.bind(this));
     let ballotItemDisplayName = '';
     const { ballotItemWeVoteId } = this.props;
     const ballotItemSupportProps = SupportStore.get(ballotItemWeVoteId);
@@ -169,7 +169,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       // console.log("shouldComponentUpdate: this.state.organizationsToFollowSupport.length", this.state.organizationsToFollowSupport.length, ", nextState.organizationsToFollowSupport.length", nextState.organizationsToFollowSupport.length);
       return true;
     }
-    if (this.state.organizationsToFollowOppose.length !== nextState.organizationsToFollowOppose.length) {
+    if ((!this.state.organizationsToFollowOppose) || (!nextState.organizationsToFollowOppose) || (this.state.organizationsToFollowOppose.length !== nextState.organizationsToFollowOppose.length)) {
       // console.log("shouldComponentUpdate: this.state.organizationsToFollowOppose.length", this.state.organizationsToFollowOppose.length, ", nextState.organizationsToFollowOppose.length", nextState.organizationsToFollowOppose.length);
       return true;
     }
@@ -191,6 +191,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     this.issueStoreListener.remove();
     this.measureStoreListener.remove();
     this.supportStoreListener.remove();
+    this.voterGuideStoreListener.remove();
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -228,6 +229,15 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   onSupportStoreChange () {
     this.setState(state => ({
       ballotItemSupportProps: SupportStore.get(state.ballotItemWeVoteId),
+    }));
+  }
+
+  onVoterGuideStoreChange () {
+    const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(this.state.ballotItemWeVoteId);
+    const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(this.state.ballotItemWeVoteId);
+    this.setState(() => ({
+      organizationsToFollowSupport,
+      organizationsToFollowOppose,
     }));
   }
 
