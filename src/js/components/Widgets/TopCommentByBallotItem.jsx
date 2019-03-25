@@ -6,7 +6,6 @@ import MeasureStore from '../../stores/MeasureStore';
 import extractFirstEndorsementFromPositionList from '../../utils/positionFunctions';
 import { shortenText, stringContains } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
-// import VoterGuideStore from '../../stores/VoterGuideStore';
 
 export default class TopCommentByBallotItem extends Component {
   static propTypes = {
@@ -27,18 +26,17 @@ export default class TopCommentByBallotItem extends Component {
   componentDidMount () {
     // console.log("GuideList componentDidMount");
     const { ballotItemWeVoteId } = this.props;
-    // const organizationsToFollow = this.sortOrganizations(this.props.organizationsToFollow, ballotItemWeVoteId);
-    const positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(ballotItemWeVoteId);
-    // const voterGuidesToFollowForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
-    // console.log('componentDidMount positionListFromAdvisersFollowedByVoter: ', positionListFromAdvisersFollowedByVoter);
-    const results = extractFirstEndorsementFromPositionList(positionListFromAdvisersFollowedByVoter);
+    const allCachedPositionsForCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
+    // console.log('componentDidMount allCachedPositionsForCandidate: ', allCachedPositionsForCandidate);
+    const results = extractFirstEndorsementFromPositionList(allCachedPositionsForCandidate);
     // console.log('endorsementText: ', endorsementText);
-    // console.log('voterGuidesToFollowForThisBallotItem: ', voterGuidesToFollowForThisBallotItem);
 
     this.setState({
+      ballotItemWeVoteId,
       endorsementOrganization: results.endorsementOrganization,
       endorsementText: results.endorsementText,
     });
+    this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
 
     // this.setState({
     //   ballotItemWeVoteId,
@@ -58,15 +56,13 @@ export default class TopCommentByBallotItem extends Component {
     // console.log("GuideList componentWillReceiveProps");
     // Do not update the state if the organizationsToFollow list looks the same, and the ballotItemWeVoteId hasn't changed
     const { ballotItemWeVoteId } = nextProps;
-    // const organizationsToFollow = this.sortOrganizations(nextProps.organizationsToFollow, ballotItemWeVoteId);
-    const positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(ballotItemWeVoteId);
-    // const voterGuidesToFollowForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(ballotItemWeVoteId);
-    // console.log('componentWillReceiveProps positionListFromAdvisersFollowedByVoter: ', positionListFromAdvisersFollowedByVoter);
-    const results = extractFirstEndorsementFromPositionList(positionListFromAdvisersFollowedByVoter);
+    const allCachedPositionsForCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
+    // console.log('componentDidMount allCachedPositionsForCandidate: ', allCachedPositionsForCandidate);
+    const results = extractFirstEndorsementFromPositionList(allCachedPositionsForCandidate);
     // console.log('endorsementText: ', endorsementText);
-    // console.log('voterGuidesToFollowForThisBallotItem: ', voterGuidesToFollowForThisBallotItem);
 
     this.setState({
+      ballotItemWeVoteId,
       endorsementOrganization: results.endorsementOrganization,
       endorsementText: results.endorsementText,
     });
@@ -86,17 +82,38 @@ export default class TopCommentByBallotItem extends Component {
     // });
   }
 
-  // onCandidateStoreChange () {
-  //   // console.log("Candidate onCandidateStoreChange");
-  //   if (this.isCandidate()) {
-  //     const { ballotItemWeVoteId } = this.state;
-  //     this.setState(state => ({
-  //       positionListFromAdvisersFollowedByVoter: CandidateStore.getPositionList(ballotItemWeVoteId),
-  //     }));
-  //   }
-  // }
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    if (this.state.endorsementOrganization !== nextState.endorsementOrganization) {
+      // console.log("shouldComponentUpdate: this.state.endorsementOrganization", this.state.endorsementOrganization, ", nextState.endorsementOrganization", nextState.endorsementOrganization);
+      return true;
+    }
+    if (this.state.endorsementText !== nextState.endorsementText) {
+      // console.log("shouldComponentUpdate: this.state.endorsementText", this.state.endorsementText, ", nextState.endorsementText", nextState.endorsementText);
+      return true;
+    }
+    return false;
+  }
+
+  componentWillUnmount () {
+    this.candidateStoreListener.remove();
+  }
 
   // handleFilteredOrgsChange = filteredOrgs => this.setState({ filteredOrganizationsWithPositions: filteredOrgs });
+
+  onCandidateStoreChange () {
+    // console.log("GuideList componentDidMount");
+    const { ballotItemWeVoteId } = this.state;
+    const allCachedPositionsForCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
+    // console.log('componentDidMount allCachedPositionsForCandidate: ', allCachedPositionsForCandidate);
+    const results = extractFirstEndorsementFromPositionList(allCachedPositionsForCandidate);
+    // console.log('endorsementText: ', endorsementText);
+
+    this.setState({
+      endorsementOrganization: results.endorsementOrganization,
+      endorsementText: results.endorsementText,
+    });
+  }
 
   getOrganizationsWithPositions = () => this.state.organizationsToFollow.map((organization) => {
     let organizationPositionForThisBallotItem;

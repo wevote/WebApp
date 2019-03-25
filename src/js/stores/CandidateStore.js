@@ -23,8 +23,8 @@ class CandidateStore extends ReduceStore {
     return this.getState().numberOfCandidatesRetrievedByOffice[officeWeVoteId] || 0;
   }
 
-  getPositionList (candidateId) {
-    return this.getState().positionListFromAdvisersFollowedByVoter[candidateId] || [];
+  getPositionList (candidateWeVoteId) {
+    return this.getState().positionListFromAdvisersFollowedByVoter[candidateWeVoteId] || [];
   }
 
   getAllCachedPositionsByCandidateWeVoteId (candidateWeVoteId) {
@@ -50,6 +50,7 @@ class CandidateStore extends ReduceStore {
   createCandidatePosition (oneCandidateWeVoteId, oneVoterGuide) {
     const candidateObject = this.getCandidate(oneCandidateWeVoteId);
     // console.log('candidateObject: ', candidateObject);
+    // console.log('createCandidatePosition oneVoterGuide: ', oneVoterGuide);
     const onePosition = {
       position_we_vote_id: '', // Currently empty
       ballot_item_display_name: candidateObject.ballot_item_display_name,
@@ -297,7 +298,7 @@ class CandidateStore extends ReduceStore {
               // Only proceed if the position doesn't already exist
               if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                 // Do not proceed
-                // console.log('voterGuidesToFollowRetrieve part 1 position already exists');
+                console.log('voterGuidesToFollowRetrieve part 1 position already exists');
               } else {
                 onePosition = {
                   position_we_vote_id: oneVoterGuide.position_we_vote_id, // Currently empty
@@ -338,7 +339,7 @@ class CandidateStore extends ReduceStore {
 
                   // state_code: '',
                   more_info_url: oneVoterGuide.more_info_url,
-                  statement_text: oneVoterGuide.statement_text,
+                  statement_text: '',
                   last_updated: oneVoterGuide.last_updated,
                 };
                 // console.log('CandidateStore, voterGuidesToFollowRetrieve, onePosition: ', onePosition);
