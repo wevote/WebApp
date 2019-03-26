@@ -11,6 +11,13 @@ import checkMarkIcon from '../../../img/global/svg-icons/check-mark-v2-40x43.svg
 
 const svgStyle = { fill: '#4B4B4B', padding: '1px', width: '67%', height: '100%', marginBottom: '33%' };
 
+function importAll(r) {
+  const images = {};
+  r.keys().forEach((item, index) => { images[item.replace('./', '')] = r(item); });
+  return images;
+}
+const images = importAll(require.context('../../../img/global/svg-icons/issues', false, /\.(svg)$/));
+
 export default class IssueFollowToggleSquare extends Component {
   static propTypes = {
     editMode: PropTypes.bool,
@@ -71,7 +78,7 @@ export default class IssueFollowToggleSquare extends Component {
     if (readOnly === true && !editMode) {
       return (
         <div className={`${grid} intro-modal__square${sideBar ? '__sidebar' : ''}`}>
-          <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${issueIconLocalPath}.svg`)} svgStyle={svgStyle} />
+          <ReactSVG src={cordovaDot(images[`${issueIconLocalPath}.svg`])} svgStyle={svgStyle} />
           <ImageHandler
             className="intro-modal__square-check-mark"
             imageUrl={cordovaDot(checkMarkIcon)}
@@ -89,7 +96,7 @@ export default class IssueFollowToggleSquare extends Component {
     } else {
       return isFollowing ? (
         <div className={`${grid} intro-modal__square u-cursor--pointer`} onClick={this.onIssueStopFollowing}>
-          <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${issueIconLocalPath}.svg`)} svgStyle={svgStyle} />
+          <ReactSVG src={cordovaDot(images[`${issueIconLocalPath}.svg`])} svgStyle={svgStyle} />
           <ImageHandler
             className="intro-modal__square-check-mark"
             imageUrl={cordovaDot(checkMarkIcon)}
