@@ -16,7 +16,13 @@ class Testimonial extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     // This lifecycle method tells the component to NOT render if not needed
+    if (this.props.testimonialAuthor !== nextProps.testimonialAuthor) {
+      return true;
+    }
     if (this.props.testimonial !== nextProps.testimonial) {
+      return true;
+    }
+    if (this.props.imageUrl !== nextProps.imageUrl) {
       return true;
     }
     return false;
