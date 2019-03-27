@@ -30,7 +30,12 @@ class Testimonial extends React.Component {
           {testimonialAuthor}
         </TestimonialAuthor>
         <TextStyled>
-          <FormatQuote style={{ transform: 'rotate(180deg)' }} />
+          <FormatQuote style={{ 
+            transform: 'rotate(180deg)',
+            verticalAlign: 'text-bottom',
+            position: 'relative',
+            top: '5px'
+}} />
           {testimonial}
         </TextStyled>
       </TestimonialContainer>
@@ -54,16 +59,16 @@ const TestimonialAuthor = styled.div`
 
 const TextStyled = styled.div`
   display: block;
-  color: #00749e;
-  font-weight: 500;
-  font-family: ${'$heading-font-stack'};
-  text-align: center;
+  color: #2e3c5d;
+  font-weight: 600;
+  font-family: ${"$heading-font-stack"};
+  text-align: left;
   margin: 10px 15px 15px 15px;
   border-width: medium;
   font-size: 11px;
   line-height: normal;
   :after {
-    content: '';
+    content: "";
     display: block;
     margin: 0 auto;
     width: 40%;
