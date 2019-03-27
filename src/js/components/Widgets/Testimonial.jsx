@@ -14,6 +14,14 @@ class Testimonial extends React.Component {
     imageUrl: PropTypes.string,
   };
 
+  shouldComponentUpdate(nextProps) {
+    // This lifecycle method tells the component to NOT render if not needed
+    if (this.props.testimonial !== nextProps.testimonial) {
+      return true;
+    }
+    return false;
+  }
+
   render () {
     renderLog(__filename);
     const { testimonialAuthor, testimonial } = this.props;
@@ -30,12 +38,14 @@ class Testimonial extends React.Component {
           {testimonialAuthor}
         </TestimonialAuthor>
         <TextStyled>
-          <FormatQuote style={{ 
+          <FormatQuote style={{
             transform: 'rotate(180deg)',
             verticalAlign: 'text-bottom',
             position: 'relative',
-            top: '5px'
-}} />
+            top: '5px',
+            marginLeft: '-4px',
+          }}
+          />
           {testimonial}
         </TextStyled>
       </TestimonialContainer>
@@ -61,9 +71,9 @@ const TextStyled = styled.div`
   display: block;
   color: #2e3c5d;
   font-weight: 600;
-  font-family: ${"$heading-font-stack"};
+  font-family: ${'$heading-font-stack'};
   text-align: left;
-  margin: 10px 15px 15px 15px;
+  margin: -5px 15px 15px 15px;
   border-width: medium;
   font-size: 11px;
   line-height: normal;
@@ -71,7 +81,7 @@ const TextStyled = styled.div`
     content: "";
     display: block;
     margin: 0 auto;
-    width: 40%;
+    width: 50%;
     padding-top: 15px;
     border-bottom: 2px solid;
   }
