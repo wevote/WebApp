@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Tooltip, OverlayTrigger } from 'react-bootstrap';
-import ReactSVG from 'react-svg';
-import Toggle from 'react-toggle';
+import { Modal } from 'react-bootstrap';
+import styled from 'styled-components';
+import Radio from '@material-ui/core/Radio';
+import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
-import { cordovaDot, hasIPhoneNotch } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { showToastSuccess } from '../../utils/showToast';
 import SettingsAccount from '../Settings/SettingsAccount';
 import SupportActions from '../../actions/SupportActions';
@@ -12,14 +13,14 @@ import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
 import VoterStore from '../../stores/VoterStore';
 
-export default class PositionPublicToggle extends Component {
+class PositionPublicToggle extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
     className: PropTypes.string.isRequired,
     inTestMode: PropTypes.bool,
-    // onToggleChangeFunction: PropTypes.func, // This was written for react-bootstrap-toggle version 2.3.1, but we are having some troubles upgrading
     supportProps: PropTypes.object,
     type: PropTypes.string.isRequired,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -29,8 +30,6 @@ export default class PositionPublicToggle extends Component {
       positionPublicToggleCurrentState: '',
       showToThePublicOn: false,
     };
-
-    this.onToggleChangeFunction = this.onToggleChangeFunction.bind(this);
   }
 
   componentDidMount () {
@@ -50,17 +49,12 @@ export default class PositionPublicToggle extends Component {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  onToggleChangeFunction (state) {
-    // This was written for react-bootstrap-toggle version 2.3.1, but we are having some troubles upgrading
-    console.log('PositionPublicToggle onToggleChangeFunction, state:', state);
-    if (state === 'SHOW_PUBLIC') {
-      this.setState({
-        positionPublicToggleCurrentState: 'Show publicly',
-      });
+  handlePositionToggle = (evt) => {
+    const { value } = evt.target;
+    if (value === 'Public') {
+      this.showItemToPublic();
     } else {
-      this.setState({
-        positionPublicToggleCurrentState: 'Show to friends only',
-      });
+      this.showItemToFriendsOnly();
     }
   }
 
@@ -104,6 +98,8 @@ export default class PositionPublicToggle extends Component {
 
   render () {
     renderLog(__filename);
+    const { classes } = this.props;
+    const { voter, showToThePublicOn } = this.state;
     if (!this.state.voter) {
       return <div className="undefined-props" />;
     }
@@ -118,12 +114,6 @@ export default class PositionPublicToggle extends Component {
     }
 
     let { is_public_position: isPublicPosition } = this.props.supportProps;
-    const visibilityPublic = 'Currently visible to public';
-    const visibilityFriendsOnly = 'Currently only shared with We Vote friends';
-    const publicIcon = <ReactSVG src={cordovaDot('/img/global/svg-icons/public-icon.svg')} svgStyle={{ fill: '#000', width: 18, height: 18 }} alt="Visible to Public" />;
-    const friendsIcon = <ReactSVG src={cordovaDot('/img/global/svg-icons/group-icon.svg')} svgStyle={{ fill: '#fff', width: 18, height: 18 }} alt="Visible to Friends Only" />;
-    const tooltip = <Tooltip id="visibility-tooltip">{isPublicPosition ? visibilityPublic : visibilityFriendsOnly}</Tooltip>;
-    const noTooltip = <span />;
 
     let onChange;
     const _this = this;
@@ -159,9 +149,7 @@ export default class PositionPublicToggle extends Component {
 
     // This modal is shown when the user clicks on public position toggle either when not signed in
     // or for the first time after being signed in.
-    const { voter } = this.state;
     const localModalStyle = hasIPhoneNotch() ? { marginTop: 20 } : {};
-    const modalSupportProps = { isPublicPosition: false };
     const PositionPublicToggleHelpModal = (
       <Modal
         show={this.state.showPositionPublicHelpModal}
@@ -192,18 +180,6 @@ export default class PositionPublicToggle extends Component {
               We Vote makes it easy to share your views either publicly, or privately with your We Vote friends.
               <br />
               <br />
-              Test the privacy toggle here:
-              <br />
-              <br />
-              <PositionPublicToggle
-                ballotItemWeVoteId="null"
-                className="null"
-                type="MEASURE"
-                supportProps={modalSupportProps}
-                inTestMode
-              />
-              {this.state.positionPublicToggleCurrentState}
-              <br />
             </div>
           </section>
         </Modal.Body>
@@ -212,48 +188,64 @@ export default class PositionPublicToggle extends Component {
 
     return (
       <div className={this.props.className}>
-        <div style={{ display: 'inline-block' }}>
-          {/* Mobile Mode */}
-          <span className="d-block d-sm-none">
-            <div onKeyDown={onKeyDown}>
-              {/* tabIndex and onKeyDown are for accessibility */}
-              <Toggle
-                defaultChecked={this.state.showToThePublicOn}
-                className="toggle-override"
-                icons={{
-                  checked: publicIcon,
-                  unchecked: friendsIcon,
-                }}
-                onChange={onChange}
-              />
-            </div>
-          </span>
-
-          {/* Desktop Mode */}
-          <span className="d-none d-sm-block">
-            <OverlayTrigger
-              className="trigger"
-              enforceFocus={false}
-              placement="top"
-              overlay={inTestMode ? noTooltip : tooltip}
-            >
-              <div onKeyDown={onKeyDown}>
-                {/* tabIndex and onKeyDown are for accessibility */}
-                <Toggle
-                  defaultChecked={this.state.showToThePublicOn}
-                  className="toggle-override"
-                  icons={{
-                    checked: publicIcon,
-                    unchecked: friendsIcon,
-                  }}
-                  onChange={onChange}
-                />
-              </div>
-            </OverlayTrigger>
-          </span>
-        </div>
         { this.state.showPositionPublicHelpModal ? PositionPublicToggleHelpModal : null }
+        <PublicToggle onKeyDown={onKeyDown}>
+          <RadioGroup>
+            <Radio
+              classes={{ colorPrimary: classes.radioPrimary }}
+              color="primary"
+              checked={showToThePublicOn === false}
+              value="Friends Only"
+              onChange={this.handlePositionToggle}
+            />
+            <RadioLabel>Friends Only</RadioLabel>
+          </RadioGroup>
+          <RadioGroup>
+            <Radio
+              classes={{ colorPrimary: classes.radioPrimary }}
+              color="primary"
+              checked={showToThePublicOn === true}
+              value="Public"
+              onChange={this.handlePositionToggle}
+            />
+            <RadioLabel>Public</RadioLabel>
+          </RadioGroup>
+        </PublicToggle>
       </div>
     );
   }
 }
+
+const styles = theme => ({
+  radioPrimary: {
+    padding: '.1rem',
+    margin: '.1rem .1rem .6rem .6rem',
+    [theme.breakpoints.down('md')]: {
+      marginLeft: 0,
+    },
+  },
+});
+
+const PublicToggle = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+`;
+
+const RadioLabel = styled.div`
+  height: 44px;
+  padding: 10px 4px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 10px;
+  }
+`;
+
+const RadioGroup = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-bottom: -10px;
+  }
+`;
+
+
+export default withStyles(styles)(PositionPublicToggle);

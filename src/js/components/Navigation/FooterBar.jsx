@@ -36,9 +36,10 @@ class FooterBar extends React.Component {
     if (stringContains('/values', pathname)) return 1;
     if (stringContains('/settings/', pathname)) return 3;
     return -1;
-  }
+  };
 
   render () {
+    // console.log('FooterBar render');
     return (
       <div className="footer-container u-show-mobile-tablet">
         <BottomNavigation
@@ -50,7 +51,7 @@ class FooterBar extends React.Component {
           <BottomNavigationAction className="no-outline" label="Values" showLabel icon={<QuestionAnswerIcon />} />
           <BottomNavigationAction className="no-outline" label="Friends" showLabel icon={<PeopleIcon />} />
           {/* <BottomNavigationAction className="no-outline" label="Vote" showLabel icon={<ion-icon class="footer-icon" name="clipboard" />} /> */}
-          <BottomNavigationAction className="no-outline" label="Settings" showLabel icon={<SettingsIcon />} />
+          <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Settings" showLabel icon={<SettingsIcon />} />
         </BottomNavigation>
       </div>
     );

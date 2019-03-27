@@ -519,22 +519,31 @@ const CandidateInfo = styled.div`
   margin-bottom: 8px;
   overflow-x: hidden;
   transition: all 200ms ease-in;
-  border: 1px solid #eee;
+  border: 1px solid ${({ theme }) => theme.colors.grayBorder};
   width: ${({ candidateLength }) => (candidateLength > 1 ? '48%' : '100%')};
   margin-right: 8px;
   border-radius: 4px;
   cursor: pointer;
   &:hover {
-    border: 1px solid ${({ brandBlue }) => brandBlue};
+    border: 1px solid ${({ theme }) => theme.colors.linkHoverBorder};
     box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-flow: column;
+    width: 100%;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    flex-flow: column;
     border: none;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.grayBorder};
     padding: 16px 0 0 0;
     margin-bottom: 8px;
     width: 100%;
+    &:hover {
+      border: none;
+      border-bottom: 1px solid ${({ theme }) => theme.colors.grayBorder};
+      box-shadow: none;
+    }
   }
 `;
 
@@ -548,15 +557,5 @@ const Candidate = styled.div`
   display: flex;
   cursor: pointer;
 `;
-
-// const CardFooter = styled.div`
-//   font-size: 12px;
-//   text-align: center;
-//   user-select: none;
-//   cursor: pointer;
-//   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-//     padding: 0;
-//   }
-// `;
 
 export default withTheme()(withStyles(styles)(OfficeItemCompressed));

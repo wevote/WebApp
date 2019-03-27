@@ -20,7 +20,6 @@ import SupportStore from '../../stores/SupportStore';
 import { stringContains } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-// import { findDOMNode } from 'react-dom';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize complex changes
 /* eslint react/no-find-dom-node: 1 */
@@ -64,6 +63,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
+    this.voterGuideStoreListener = SupportStore.addListener(this.onVoterGuideStoreChange.bind(this));
     let ballotItemDisplayName = '';
     const { ballotItemWeVoteId } = this.props;
     const ballotItemSupportProps = SupportStore.get(ballotItemWeVoteId);
@@ -169,7 +169,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       // console.log("shouldComponentUpdate: this.state.organizationsToFollowSupport.length", this.state.organizationsToFollowSupport.length, ", nextState.organizationsToFollowSupport.length", nextState.organizationsToFollowSupport.length);
       return true;
     }
-    if (this.state.organizationsToFollowOppose.length !== nextState.organizationsToFollowOppose.length) {
+    if ((!this.state.organizationsToFollowOppose) || (!nextState.organizationsToFollowOppose) || (this.state.organizationsToFollowOppose.length !== nextState.organizationsToFollowOppose.length)) {
       // console.log("shouldComponentUpdate: this.state.organizationsToFollowOppose.length", this.state.organizationsToFollowOppose.length, ", nextState.organizationsToFollowOppose.length", nextState.organizationsToFollowOppose.length);
       return true;
     }
@@ -191,6 +191,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     this.issueStoreListener.remove();
     this.measureStoreListener.remove();
     this.supportStoreListener.remove();
+    this.voterGuideStoreListener.remove();
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -228,6 +229,15 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   onSupportStoreChange () {
     this.setState(state => ({
       ballotItemSupportProps: SupportStore.get(state.ballotItemWeVoteId),
+    }));
+  }
+
+  onVoterGuideStoreChange () {
+    const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(this.state.ballotItemWeVoteId);
+    const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(this.state.ballotItemWeVoteId);
+    this.setState(() => ({
+      organizationsToFollowSupport,
+      organizationsToFollowOppose,
     }));
   }
 
@@ -575,6 +585,17 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     const totalOpposeCount = networkOpposeCount + organizationsToFollowOppose.length;
     const totalInfoOnlyCount = 0;
 
+    const commentCountExists = totalInfoOnlyCount > 0;
+    const opposeCountExists = totalOpposeCount > 0;
+    // Default settings
+    let showCommentCount = false;
+    let showOpposeCount = true;
+    if (commentCountExists && !opposeCountExists) {
+      // Override if comment count exists, and oppose count does not
+      showCommentCount = true;
+      showOpposeCount = false;
+    }
+
     return (
       <Wrapper>
         { isVoterSupport ? (
@@ -614,18 +635,24 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                         {totalSupportCount}
                       </EndorsementCount>
                     </Endorsement>
-                    <Endorsement>
-                      <ThumbDownIcon classes={{ root: classes.endorsementIconRoot }} />
-                      <EndorsementCount>
-                        {totalOpposeCount}
-                      </EndorsementCount>
-                    </Endorsement>
-                    <Endorsement>
-                      <CommentIcon classes={{ root: classes.endorsementIconRoot }} />
-                      <EndorsementCount>
-                        {totalInfoOnlyCount}
-                      </EndorsementCount>
-                    </Endorsement>
+                    { showOpposeCount ? (
+                      <Endorsement>
+                        <ThumbDownIcon classes={{ root: classes.endorsementIconRoot }} />
+                        <EndorsementCount>
+                          {totalOpposeCount}
+                        </EndorsementCount>
+                      </Endorsement>
+                    ) :
+                      null }
+                    { showCommentCount ? (
+                      <Endorsement>
+                        <CommentIcon classes={{ root: classes.endorsementIconRoot }} />
+                        <EndorsementCount>
+                          {totalInfoOnlyCount}
+                        </EndorsementCount>
+                      </Endorsement>
+                    ) :
+                      null }
                   </EndorsementRow>
                 </EndorsementWrapper>
               </EndorsementsContainer>
@@ -666,6 +693,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   }
 }
 
+// ${theme.colors.opposeRedRgb}  // Why doesn't this pull from WebApp/src/js/styled-theme.js ?
 const styles = theme => ({
   buttonIcon: {
     root: {
@@ -690,38 +718,38 @@ const styles = theme => ({
     margin: '0 0 .1rem .4rem',
   },
   voterOpposes: {
-    background: 'rgb(255, 73, 34)',
+    background: 'rgb(255, 73, 34)', // colors.opposeRedRgb
   },
   voterSupports: {
-    background: 'rgb(31, 192, 111)',
+    background: 'rgb(31, 192, 111)', // colors.supportGreenRgb
   },
 });
 
 const Wrapper = styled.div`
   margin-top: .1rem;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    margin-top: 0;
-    width: 100%;
-    max-width: 100%;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    padding-top: 8px;
-  }
 `;
+// @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+//   margin-top: 0;
+//   width: 100%;
+//   max-width: 100%;
+//   border-top: 1px solid #eee;
+//   border-bottom: 1px solid #eee;
+//   padding-top: 8px;
+// }
 
 const EndorsementsContainer = styled.div`
   display: flex;
   flex-flow: column;
   justify-content: space-between;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    flex-flow: row;
-  }
 `;
+// @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+//   flex-flow: row;
+// }
 
 const EndorsementsTitle = styled.div`
   color: #888;
-  font-weight: 600;
-  font-size: 12px;
+  font-weight: 500;
+  font-size: 10px;
   text-align: right;
 `;
 
@@ -762,14 +790,11 @@ const NetworkScore = styled.div`
   border-radius: 8px;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    color: #777;
-    padding: 0 0 8px 0;
     font-size: 14px;
     text-align: right;
     justify-content: flex-end;
-    background: transparent;
-    box-shadow: none;
   }
 `;
+
 
 export default withTheme()(withStyles(styles)(BallotItemSupportOpposeCountDisplay));

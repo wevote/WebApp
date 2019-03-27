@@ -23,8 +23,8 @@ class CandidateStore extends ReduceStore {
     return this.getState().numberOfCandidatesRetrievedByOffice[officeWeVoteId] || 0;
   }
 
-  getPositionList (candidateId) {
-    return this.getState().positionListFromAdvisersFollowedByVoter[candidateId] || [];
+  getPositionList (candidateWeVoteId) {
+    return this.getState().positionListFromAdvisersFollowedByVoter[candidateWeVoteId] || [];
   }
 
   getAllCachedPositionsByCandidateWeVoteId (candidateWeVoteId) {
@@ -50,6 +50,7 @@ class CandidateStore extends ReduceStore {
   createCandidatePosition (oneCandidateWeVoteId, oneVoterGuide) {
     const candidateObject = this.getCandidate(oneCandidateWeVoteId);
     // console.log('candidateObject: ', candidateObject);
+    // console.log('createCandidatePosition oneVoterGuide: ', oneVoterGuide);
     const onePosition = {
       position_we_vote_id: '', // Currently empty
       ballot_item_display_name: candidateObject.ballot_item_display_name,
@@ -80,6 +81,7 @@ class CandidateStore extends ReduceStore {
       speaker_image_url_https_large: oneVoterGuide.voter_guide_image_url_large,
       speaker_image_url_https_medium: oneVoterGuide.voter_guide_image_url_medium,
       speaker_image_url_https_tiny: oneVoterGuide.voter_guide_image_url_tiny,
+      speaker_twitter_handle: oneVoterGuide.twitter_handle,
       speaker_type: oneVoterGuide.voter_guide_owner_type,
       voter_guide_we_vote_id: oneVoterGuide.we_vote_id,
       vote_smart_rating: '',
@@ -296,7 +298,7 @@ class CandidateStore extends ReduceStore {
               // Only proceed if the position doesn't already exist
               if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                 // Do not proceed
-                // console.log('voterGuidesToFollowRetrieve part 1 position already exists');
+                console.log('voterGuidesToFollowRetrieve part 1 position already exists');
               } else {
                 onePosition = {
                   position_we_vote_id: oneVoterGuide.position_we_vote_id, // Currently empty
@@ -328,6 +330,7 @@ class CandidateStore extends ReduceStore {
                   speaker_image_url_https_large: oneVoterGuide.voter_guide_image_url_large,
                   speaker_image_url_https_medium: oneVoterGuide.voter_guide_image_url_medium,
                   speaker_image_url_https_tiny: oneVoterGuide.voter_guide_image_url_tiny,
+                  speaker_twitter_handle: oneVoterGuide.twitter_handle,
                   speaker_type: oneVoterGuide.voter_guide_owner_type,
                   vote_smart_rating: oneVoterGuide.vote_smart_rating,
                   vote_smart_time_span: oneVoterGuide.vote_smart_time_span,
@@ -336,7 +339,7 @@ class CandidateStore extends ReduceStore {
 
                   // state_code: '',
                   more_info_url: oneVoterGuide.more_info_url,
-                  statement_text: oneVoterGuide.statement_text,
+                  statement_text: '',
                   last_updated: oneVoterGuide.last_updated,
                 };
                 // console.log('CandidateStore, voterGuidesToFollowRetrieve, onePosition: ', onePosition);
@@ -371,7 +374,7 @@ class CandidateStore extends ReduceStore {
                 // Only proceed if the position doesn't already exist
                 if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                   // Do not proceed
-                  console.log('voterGuidesToFollowRetrieve Support position already exists');
+                  // console.log('voterGuidesToFollowRetrieve Support position already exists');
                 } else {
                   onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                   // These are support positions
@@ -397,7 +400,7 @@ class CandidateStore extends ReduceStore {
                 // Only proceed if the position doesn't already exist
                 if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                   // Do not proceed
-                  console.log('voterGuidesToFollowRetrieve Info only position already exists');
+                  // console.log('voterGuidesToFollowRetrieve Info only position already exists');
                 } else {
                   onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                   // These are information only positions
@@ -422,7 +425,7 @@ class CandidateStore extends ReduceStore {
 
                 if (Object.prototype.hasOwnProperty.call(onePosition, 'ballot_item_we_vote_id')) {
                   // Do not proceed
-                  console.log('voterGuidesToFollowRetrieve Oppose position already exists');
+                  // console.log('voterGuidesToFollowRetrieve Oppose position already exists');
                 } else {
                   onePosition = this.createCandidatePosition(oneCandidateWeVoteId, oneVoterGuide);
                   // These are oppose positions

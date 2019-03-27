@@ -46,14 +46,6 @@ import { formatVoterBallotList, checkShouldUpdate } from './utils';
 import SelectBallotModal from '../../components/Ballot/SelectBallotModal';
 import AppActions from '../../actions/AppActions';
 
-// December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
-/* eslint class-methods-use-this: 0 */
-/* eslint react/jsx-indent-props: 0 */
-/* eslint jsx-a11y/no-static-element-interactions: 0 */
-/* eslint jsx-a11y/no-noninteractive-element-to-interactive-role: 0 */
-/* eslint jsx-a11y/click-events-have-key-events: 0 */
-/* eslint jsx-a11y/anchor-is-valid: 0 */
-/* eslint no-param-reassign: 0 */
 
 // Related to WebApp/src/js/components/VoterGuide/VoterGuideBallot.jsx
 const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];
@@ -396,7 +388,7 @@ class Ballot extends Component {
 
   onAppStoreChange () {
     this.setState({
-      ballotHeaderUnpinned: AppStore.headroomIsUnpinned(),
+      ballotHeaderUnpinned: AppStore.getScrolledDown(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
     });
   }
@@ -617,16 +609,16 @@ class Ballot extends Component {
       default:
         return null;
     }
-  }
+  };
 
   handleSearch = (filteredItems) => {
     this.setState({ ballotSearchResults: filteredItems });
-  }
+  };
 
   handleToggleSearchBallot = () => {
     const { isSearching } = this.state;
     this.setState({ isSearching: !isSearching });
-  }
+  };
 
   toggleBallotIntroModal () {
     const { showBallotIntroModal, location, pathname } = this.state;
@@ -901,6 +893,7 @@ class Ballot extends Component {
                                         color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
                                         badgeContent={ballotItemsByFilterType.length}
                                         invisible={ballotItemsByFilterType.length === 0}
+                                        onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
                                       >
                                         <Chip variant="outlined"
                                           color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
@@ -944,7 +937,7 @@ class Ballot extends Component {
                   />
                 ) : null
                   }
-                <div className="col-xs-12 col-md-8">
+                <div className="col-sm-12 col-lg-9">
                   { inReadyToVoteMode ? (
                     <div>
                       <div className="alert alert-success d-print-none">
@@ -1032,7 +1025,7 @@ class Ballot extends Component {
 
                 { ballotWithItemsFromCompletionFilterType.length === 0 || isCordova() ?
                   null : (
-                    <div className="col-md-4 d-none d-sm-block sidebar-menu">
+                    <div className="col-lg-3 d-none d-lg-block sidebar-menu">
                       <BallotSideBar
                       displayTitle
                       displaySubtitles
@@ -1063,6 +1056,7 @@ const styles = theme => ({
     right: 14,
     background: 'rgba(46, 60, 93, 0.08)',
     color: '#333',
+    cursor: 'pointer',
     [theme.breakpoints.down('md')]: {
       fontSize: 9,
       width: 16,

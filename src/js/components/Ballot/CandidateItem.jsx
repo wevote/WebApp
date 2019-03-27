@@ -182,17 +182,17 @@ class CandidateItem extends Component {
               </h2>
               {twitterFollowersCount ? (
                 <span
-                className={this.props.link_to_ballot_item_page ?
-                  'twitter-followers__badge u-cursor--pointer' :
-                  'twitter-followers__badge'}
-                onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}
+                  className={this.props.link_to_ballot_item_page ?
+                    'twitter-followers__badge u-show-desktop-tablet u-cursor--pointer' :
+                    'twitter-followers__badge u-show-desktop-tablet'}
+                  onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}
                 >
                   <span className="fa fa-twitter twitter-followers__icon" />
                   <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
                 </span>
               ) :
                 null
-          }
+              }
               <p className={this.props.link_to_ballot_item_page ?
                 'u-gray-darker u-cursor--pointer' :
                 'u-gray-darker'
@@ -213,27 +213,6 @@ class CandidateItem extends Component {
             </Candidate>
             <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={candidateWeVoteId} />
           </CandidateWrapper>
-          { candidateText.length ? (
-            <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
-              <div className="card-main__description">
-                <LearnMore
-                    learn_more_text="Read more on Ballotpedia"
-                    num_of_lines={3}
-                    learn_more_link={ballotpediaCandidateUrl}
-                    text_to_display={candidateText}
-                />
-              </div>
-              <Link to={this.getCandidateLink}>
-                { this.props.link_to_ballot_item_page ? <span className="card-main__read-more-pseudo" /> : null }
-              </Link>
-              { this.props.link_to_ballot_item_page ?
-                <Link to={this.getCandidateLink} className="card-main__read-more-link">&nbsp;Read more</Link> :
-                null
-              }
-            </div>
-          ) :
-            null
-          }
           {' '}
           {/* END .card-main__media-object-content */}
         </CandidateInfo>
@@ -251,7 +230,30 @@ class CandidateItem extends Component {
               <TopCommentByBallotItem
                 ballotItemWeVoteId={candidateWeVoteId}
                 learnMoreUrl={this.getCandidateLink()}
-              />
+              >
+                {/* If there aren't any comments about the candidate, show the text description of the candidate */}
+                { candidateText.length ? (
+                  <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
+                    <div className="card-main__description">
+                      <LearnMore
+                          learn_more_text="Read more on Ballotpedia"
+                          num_of_lines={2}
+                          learn_more_link={ballotpediaCandidateUrl}
+                          text_to_display={candidateText}
+                      />
+                    </div>
+                    <Link to={this.getCandidateLink}>
+                      { this.props.link_to_ballot_item_page ? <span className="card-main__read-more-pseudo" /> : null }
+                    </Link>
+                    { this.props.link_to_ballot_item_page ?
+                      <Link to={this.getCandidateLink} className="card-main__read-more-link">&nbsp;more</Link> :
+                      null
+                    }
+                  </div>
+                ) :
+                  null
+                }
+              </TopCommentByBallotItem>
             )
             }
           </div>
@@ -288,9 +290,8 @@ const CandidateWrapper = styled.div`
   flex-flow: row;
   justify-content: space-between;
   width: 90%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     width: 100%;
-    flex-flow: column;
   }
 `;
 

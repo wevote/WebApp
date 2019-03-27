@@ -31,6 +31,7 @@ export default class Header extends Component {
   }
 
   render () {
+    // console.log('Header render');
     renderLog(__filename);
 
     const { params, location, pathname, voter, weVoteBrandingOff } = this.props;

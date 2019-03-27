@@ -215,10 +215,10 @@ export default class HeaderBackToVoterGuides extends Component {
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
 
     let backToLink = '/settings/voterguidelist'; // default
-    let backToOrganizationLinkText = 'Back to Voter Guides';
+    let backToOrganizationLinkText = 'Voter Guides'; // Back to
 
     if (stringContains('/settings/menu', this.props.pathname)) {
-      backToOrganizationLinkText = 'Back to Your Voter Guides';
+      backToOrganizationLinkText = 'Your Voter Guides'; // Back to
       if (isWebApp()) {
         backToLink = isMobile() ? '/settings/voterguidesmenu' : '/settings/voterguidelist';
       } else {
@@ -238,7 +238,7 @@ export default class HeaderBackToVoterGuides extends Component {
         backToLink = '/settings/voterguidelist';
       }
     } else if (stringContains('/vg/', this.props.pathname) && stringContains('/settings', this.props.pathname)) {
-      backToOrganizationLinkText = 'Back to Your Voter Guides';
+      backToOrganizationLinkText = 'Your Voter Guides'; // Back to
 
       backToLink = '/settings/voterguidelist';
     }

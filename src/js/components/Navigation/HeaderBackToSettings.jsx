@@ -242,14 +242,14 @@ class HeaderBackToSettings extends Component {
 
     let backToOrganizationLinkText;
     if (this.state.organizationWeVoteId && this.state.organizationWeVoteId !== '') {
-      backToOrganizationLinkText = 'Back to Voter Guide22';
+      backToOrganizationLinkText = 'Voter Guide'; // Back to
     } else {
-      backToOrganizationLinkText = 'Back to Settings';
+      backToOrganizationLinkText = 'Settings'; // Back to
     }
 
     if (this.props.params.back_to_variable === 'bto' || this.props.params.back_to_variable === 'btdo') { // back-to-default-office
       if (this.state.officeName) {
-        backToOrganizationLinkText = `Back to ${this.state.officeName}`;
+        backToOrganizationLinkText = `${this.state.officeName}`; // Back to
       } else {
         backToOrganizationLinkText = 'Back';
       }

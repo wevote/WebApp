@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import TextTruncate from 'react-text-truncate';
 import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 import { renderLog } from '../../utils/logging';
 
-export default class LearnMore extends Component {
+class LearnMore extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     text_to_display: PropTypes.node.isRequired,
-    show_more_text: PropTypes.node,
+    show_more_text: PropTypes.string,
     learn_more_link: PropTypes.string,
-    learn_more_text: PropTypes.node,
+    learn_more_text: PropTypes.string,
     num_of_lines: PropTypes.number,
     on_click: PropTypes.func,
     always_show_external_link: PropTypes.bool,
@@ -21,6 +24,7 @@ export default class LearnMore extends Component {
     this.state = {
       readMore: true,
     };
+    this.onKeyDown = this.onKeyDown.bind(this);
     this.showMore = this.showMore.bind(this);
   }
 
@@ -45,19 +49,16 @@ export default class LearnMore extends Component {
   render () {
     renderLog(__filename);
     let {
-      text_to_display: textToDisplay, show_more_text: showMoreText, num_of_lines: numOfLines,
+      text_to_display: textToDisplay, num_of_lines: numOfLines,
       learn_more_text: learnMoreText,
     } = this.props;
     const {
-      learn_more_link: learnMoreLink, on_click: onClick, always_show_external_link: alwaysShowExternalLink,
+      always_show_external_link: alwaysShowExternalLink, classes, learn_more_link: learnMoreLink,
+      on_click: onClick, show_more_text: showMoreText,
     } = this.props;
     // default prop values
     if (numOfLines === undefined) {
       numOfLines = 1;
-    }
-
-    if (showMoreText === undefined) {
-      showMoreText = 'more';
     }
 
     if (learnMoreText === undefined) {
@@ -129,12 +130,14 @@ export default class LearnMore extends Component {
         )}
       />
     ) : (
-      <a
+      <Button
+        color="primary"
+        classes={{ root: classes.headerButtonRoot }}
         onClick={onClick}
-        onKeyDown={this.onKeyDown.bind(this)}
+        onKeyDown={this.onKeyDown}
       >
         {learnMoreText}
-      </a>
+      </Button>
     );
     if (notEnoughTextToTruncate) {
       return (
@@ -147,7 +150,7 @@ export default class LearnMore extends Component {
         </span>
       );
     }
-
+    // console.log('numOfLines: ', numOfLines, ', textToDisplay: ', textToDisplay, ', showMoreText:', showMoreText);
     if (this.state.readMore) {
       return (
         <span>
@@ -155,14 +158,16 @@ export default class LearnMore extends Component {
             line={numOfLines}
             truncateText="..."
             text={textToDisplay}
-            textTruncateChild={(
-              <a
+            textTruncateChild={showMoreText ? (
+              <Button
+                color="primary"
+                classes={{ root: classes.headerButtonRoot }}
                 onClick={this.showMore}
-                onKeyDown={this.onKeyDown.bind(this)}
+                onKeyDown={this.onKeyDown}
               >
                 {showMoreText}
-              </a>
-            )}
+              </Button>
+            ) : null}
           />
         </span>
       );
@@ -180,3 +185,21 @@ export default class LearnMore extends Component {
     }
   }
 }
+
+const styles = theme => ({
+  headerButtonRoot: {
+    paddingTop: 2,
+    paddingBottom: 2,
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    color: 'rgb(6, 95, 212)',
+    marginLeft: '1rem',
+    outline: 'none !important',
+    [theme.breakpoints.down('md')]: {
+      marginLeft: '.1rem',
+    },
+  },
+});
+
+export default withStyles(styles)(LearnMore);

@@ -13,6 +13,8 @@
   @include clearfix;
   @include breakpoints(max mid-small) {
     margin-bottom: $space-sm;
+    margin-right: $gutter-offset;
+    margin-left: $gutter-offset;
     border-radius: $radius-none;
     [class^='col'] & {
       margin-right: $gutter-offset;
@@ -174,6 +176,7 @@
 
     &__description {
       color: $gray-dark;
+      font-size: 12px;
     }
 
     &__rating-description {
@@ -194,7 +197,7 @@
         overflow: hidden;
         position: relative;
         height: $text-container-height;
-        line-height: $line-height;
+        // line-height: $line-height;
 
         &::before {
           content: '';
@@ -210,7 +213,7 @@
         }
 
         &::after {
-          content: '\00A0 Read More';
+          // content: '\00A0 Read More';
           box-sizing: content-box;
           float: right;
           position: relative;
