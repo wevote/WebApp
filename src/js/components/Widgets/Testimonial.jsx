@@ -14,7 +14,7 @@ class Testimonial extends React.Component {
     imageUrl: PropTypes.string,
   };
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate (nextProps) {
     // This lifecycle method tells the component to NOT render if not needed
     if (this.props.testimonial !== nextProps.testimonial) {
       return true;
