@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import Badge from '@material-ui/core/Badge';
 import Chip from '@material-ui/core/Chip';
 import { withStyles } from '@material-ui/core/styles';
+import PlaceIcon from '@material-ui/icons/Place';
 import AddressBox from '../../components/AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotActions from '../../actions/BallotActions';
@@ -938,6 +939,11 @@ class Ballot extends Component {
                 ) : null
                   }
                 <div className="col-sm-12 col-lg-9">
+                  <div className="card-main__location-guess">
+                    <PlaceIcon style={{ margin: '15px' }} />
+                    <p>Our best guess for your location is &quot;Oakland,CA&quot;. Enter your full address to see the correct ballot items.</p>
+                    <span style={{ fontSize: '25px', margin: '15px' }}>x</span>
+                  </div>
                   { inReadyToVoteMode ? (
                     <div>
                       <div className="alert alert-success d-print-none">
