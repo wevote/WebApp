@@ -81,7 +81,6 @@ export default class Values extends Component {
             {publicFiguresBlockToDisplay}
             {organizationsBlockToDisplay}
           </div>
-
           <div className="col-md-4 d-none d-sm-block">
             { this.state.voter.signed_in_twitter ?
               null : (
