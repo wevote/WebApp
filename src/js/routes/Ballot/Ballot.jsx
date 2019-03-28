@@ -28,6 +28,7 @@ import {
 } from '../../utils/cordovaUtils';
 import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
+// import HeaderBar from '../../components/Navigation/HeaderBar';
 import isMobile from '../../utils/isMobile';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import IssueActions from '../../actions/IssueActions';
@@ -939,7 +940,7 @@ class Ballot extends Component {
                 ) : null
                   }
                 <div className="col-sm-12 col-lg-9">
-                  <div className="card-main__location-guess">
+                  <div className="card-main__location-guess" onClick={this.toggleSelectBallotModal}>
                     <PlaceIcon style={{ margin: '15px' }} />
                     <p>Our best guess for your location is &quot;Oakland,CA&quot;. Enter your full address to see the correct ballot items.</p>
                     <span style={{ fontSize: '25px', margin: '15px' }}>x</span>
