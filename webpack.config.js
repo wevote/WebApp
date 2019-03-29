@@ -32,7 +32,14 @@ module.exports = {
       },
       {
         test: /\.(png|jp(e*)g|svg|eot|woff|ttf)$/,
-        use: ['file-loader'],
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              publicPath: '/',
+            },
+          },
+        ],
       },
     ]
   },
