@@ -36,12 +36,12 @@ class HeaderBar extends Component {
     classes: PropTypes.object,
   };
 
-  static goToGetStarted() {
+  static goToGetStarted () {
     const getStartedNow = '/ballot';
     historyPush(getStartedNow);
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
     this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
@@ -57,7 +57,7 @@ class HeaderBar extends Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
@@ -129,23 +129,23 @@ class HeaderBar extends Component {
   //   return false;
   // }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.ballotStoreListener.remove();
     this.friendStoreListener.remove();
     this.appStoreListener.remove();
   }
 
-  onBallotStoreChange() {
+  onBallotStoreChange () {
     // this.setState({ bookmarks: BallotStore.bookmarks });
   }
 
-  onFriendStoreChange() {
+  onFriendStoreChange () {
     this.setState({
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
     });
   }
 
-  onAppStoreChange() {
+  onAppStoreChange () {
     this.setState({
       showEditAddressButton: AppStore.showEditAddressButton(),
       scrolledDown: AppStore.getScrolledDown(),
@@ -155,49 +155,43 @@ class HeaderBar extends Component {
   getSelectedTab = () => {
     console.log('Getting selected tab');
     const { pathname } = this.props;
-    let value;
 
-    // if (pathname.indexOf('/ballot') === 0) return 0; // If '/ballot' is found any
-
-
+    // if (pathname.indexOf('/ballot') === 0) return 0; // If '/ballot' is found any 
     if (stringContains('/ballot', pathname)) {
-      console.log('HeaderBar 160: Return 0');
-      value = 0;
-    } else if (stringContains('/friends', pathname)) {
-      console.log('HeaderBar 163: Return 2');
-      value = 2;
+      console.log('HeaderBar: Return 0');
+      return 0;
     } else if (stringContains('/values', pathname)) {
-      console.log('HeaderBar 166: Return 1');
-      value = 1;
-    } else  {
-      console.log('It does not have /ballot on the end');
-      value = false;
+      console.log('HeaderBar: Return 1');
+      return 1;
+    } else if (stringContains('/friends', pathname)) {
+      console.log('HeaderBar: Return 2');
+      return 2;
     }
 
-    return value;
+    return false;
   }
 
   handleNavigation = to => historyPush(to);
 
-  toggleProfilePopUp() {
+  toggleProfilePopUp () {
     const { profilePopUpOpen } = this.state;
     this.setState({ profilePopUpOpen: !profilePopUpOpen });
   }
 
-  toggleSelectBallotModal() {
+  toggleSelectBallotModal () {
     AppActions.setShowSelectBallotModal(true);
   }
 
-  hideProfilePopUp() {
+  hideProfilePopUp () {
     this.setState({ profilePopUpOpen: false });
   }
 
-  signOutAndHideProfilePopUp() {
+  signOutAndHideProfilePopUp () {
     VoterSessionActions.voterSignOut();
     this.setState({ profilePopUpOpen: false });
   }
 
-  transitionToYourVoterGuide() {
+  transitionToYourVoterGuide () {
     // Positions for this organization, for this voter/election
     OrganizationActions.positionListForOpinionMaker(this.props.voter.linked_organization_we_vote_id, true);
 
@@ -209,7 +203,7 @@ class HeaderBar extends Component {
     this.setState({ profilePopUpOpen: false });
   }
 
-  render() {
+  render () {
     console.log('HeaderBar render');
     renderLog(__filename);
     const { voter, classes, pathname } = this.props;
@@ -221,7 +215,7 @@ class HeaderBar extends Component {
     const showFullNavigation = cookies.getItem('show_full_navigation') || voterIsSignedIn;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
     const showingBallot = stringContains(ballotBaseUrl, pathname.slice(0, 7));
-
+    console.log('Line 219', this.getSelectedTab());
     return (
       <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown}>
         <AppBar position="relative" color="default" className={`page-header${!isWebApp() ? ' page-header__cordova' : ''}${showingBallot ? ' page-header__ballot' : ''}`}>
@@ -230,9 +224,9 @@ class HeaderBar extends Component {
             <div className="header-nav">
               <div className="u-show-desktop">
                 <Tabs
+                  value={this.getSelectedTab()}
                   indicatorColor="primary"
                   classes={{ indicator: classes.indicator }}
-                  value={this.getSelectedTab()}
                 >
                   {showFullNavigation && (
                     <Tab classes={{ root: classes.tabRoot }} label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
@@ -282,7 +276,7 @@ class HeaderBar extends Component {
                     classes={{ root: classes.headerButtonRoot }}
                   >
                     Sign In
-                </Button>
+                  </Button>
                 </Link>
               </div>
             )}
@@ -322,15 +316,15 @@ class HeaderBar extends Component {
                       />
                     </div>
                   ) : (
-                      <div>
-                        <IconButton
-                          onClick={this.toggleProfilePopUp}
-                          classes={{ root: classes.iconButtonRoot }}
-                        >
-                          <AccountCircleIcon />
-                        </IconButton>
-                      </div>
-                    )
+                    <div>
+                      <IconButton
+                        onClick={this.toggleProfilePopUp}
+                        classes={{ root: classes.iconButtonRoot }}
+                      >
+                        <AccountCircleIcon />
+                      </IconButton>
+                    </div>
+                  )
                   }
                   {/* Was AccountMenu */}
                   {this.state.profilePopUpOpen && voter.is_signed_in && (
