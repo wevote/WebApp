@@ -80,9 +80,9 @@
         border-color: $gray-border;
         height: 40px;
         display: block;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 15px;
+        margin-left: $space-auto;
+        margin-right: $space-auto;
+        margin-top: $space-md;
         filter: grayscale(100%);
       }
       .card-main & {

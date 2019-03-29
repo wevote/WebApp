@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import styled from 'styled-components';
@@ -45,6 +44,8 @@ import webAppConfig from '../../config';
 import { formatVoterBallotList, checkShouldUpdate } from './utils';
 import SelectBallotModal from '../../components/Ballot/SelectBallotModal';
 import AppActions from '../../actions/AppActions';
+// import IconButton from '@material-ui/core/IconButton';
+// import PlaceIcon from '@material-ui/core/SvgIcon/SvgIcon';
 
 
 // Related to WebApp/src/js/components/VoterGuide/VoterGuideBallot.jsx
@@ -745,18 +746,29 @@ class Ballot extends Component {
             null
           }
           <div className={`ballot__header ${isWebApp() ? 'ballot__header__top-cordova' : ''}`}>
-            <p className="ballot__date_location">
-              If your ballot does not appear momentarily, please
-              {' '}
-              <Link to="/settings/location">change your address</Link>
+            <p>
+              <span className="u-cursor--pointer" onClick={this.toggleSelectBallotModal}>
+                If your ballot does not appear momentarily, please click to change your address
+                {/* {' '}
+                <IconButton>
+                  <PlaceIcon />
+                </IconButton> */}
+              </span>
               .
             </p>
           </div>
-          <BallotElectionList
-            ballotBaseUrl={ballotBaseUrl}
-            ballotElectionList={this.state.voterBallotList}
-            showRelevantElections
-          />
+          {
+            this.state.showSelectBallotModal ? (
+              <SelectBallotModal
+                ballotElectionList={this.state.ballotElectionList}
+                ballotBaseUrl={ballotBaseUrl}
+                location={this.props.location}
+                pathname={this.props.pathname}
+                show={this.state.showSelectBallotModal}
+                toggleFunction={this.toggleSelectBallotModal}
+              />
+            ) : null
+          }
         </div>
       );
     }
