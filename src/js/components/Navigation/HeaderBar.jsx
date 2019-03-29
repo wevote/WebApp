@@ -36,12 +36,12 @@ class HeaderBar extends Component {
     classes: PropTypes.object,
   };
 
-  static goToGetStarted () {
+  static goToGetStarted() {
     const getStartedNow = '/ballot';
     historyPush(getStartedNow);
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
     this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
@@ -57,7 +57,7 @@ class HeaderBar extends Component {
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
@@ -73,79 +73,79 @@ class HeaderBar extends Component {
     });
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    if (this.state.componentDidMountFinished === false) {
-      // console.log("shouldComponentUpdate: componentDidMountFinished === false");
-      return true;
-    }
-    if (this.state.profilePopUpOpen === true || nextState.profilePopUpOpen === true) {
-      // console.log("shouldComponentUpdate: this.state.profilePopUpOpen", this.state.profilePopUpOpen, ", nextState.profilePopUpOpen", nextState.profilePopUpOpen);
-      return true;
-    }
-    if (this.state.aboutMenuOpen === true || nextState.aboutMenuOpen === true) {
-      // console.log("shouldComponentUpdate: this.state.aboutMenuOpen", this.state.aboutMenuOpen, ", nextState.aboutMenuOpen", nextState.aboutMenuOpen);
-      return true;
-    }
-    if (this.state.friendInvitationsSentToMe !== nextState.friendInvitationsSentToMe) {
-      // console.log("shouldComponentUpdate: this.state.friendInvitationsSentToMe", this.state.friendInvitationsSentToMe, ", nextState.friendInvitationsSentToMe", nextState.friendInvitationsSentToMe);
-      return true;
-    }
-    if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
-      return true;
-    }
-    const currentPathnameExists = this.props.location && this.props.location.pathname;
-    const nextPathnameExists = nextProps.location && nextProps.location.pathname;
-    // One exists, and the other doesn't
-    if ((currentPathnameExists && !nextPathnameExists) || (!currentPathnameExists && nextPathnameExists)) {
-      // console.log("shouldComponentUpdate: PathnameExistsDifference");
-      return true;
-    }
-    if (currentPathnameExists && nextPathnameExists && this.props.location.pathname !== nextProps.location.pathname) {
-      // console.log("shouldComponentUpdate: this.props.location.pathname", this.props.location.pathname, ", nextProps.location.pathname", nextProps.location.pathname);
-      return true;
-    }
-    const thisVoterExists = this.props.voter !== undefined;
-    const nextVoterExists = nextProps.voter !== undefined;
-    if (nextVoterExists && !thisVoterExists) {
-      // console.log("shouldComponentUpdate: thisVoterExists", thisVoterExists, ", nextVoterExists", nextVoterExists);
-      return true;
-    }
-    if (thisVoterExists && nextVoterExists && this.props.voter.signed_in_twitter !== nextProps.voter.signed_in_twitter) {
-      // console.log("shouldComponentUpdate: this.props.voter.signed_in_twitter", this.props.voter.signed_in_twitter, ", nextProps.voter.signed_in_twitter", nextProps.voter.signed_in_twitter);
-      return true;
-    }
-    if (thisVoterExists && nextVoterExists && this.props.voter.signed_in_facebook !== nextProps.voter.signed_in_facebook) {
-      // console.log("shouldComponentUpdate: this.props.voter.signed_in_facebook", this.props.voter.signed_in_facebook, ", nextProps.voter.signed_in_facebook", nextProps.voter.signed_in_facebook);
-      return true;
-    }
-    if (thisVoterExists && nextVoterExists && this.props.voter.signed_in_with_email !== nextProps.voter.signed_in_with_email) {
-      // console.log("shouldComponentUpdate: this.props.voter.signed_in_with_email", this.props.voter.signed_in_with_email, ", nextProps.voter.signed_in_with_email", nextProps.voter.signed_in_with_email);
-      return true;
-    }
-    if (this.state.scrolledDown !== nextState.scrolledDown) {
-      return true;
-    }
-    return false;
-  }
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+  //   if (this.state.componentDidMountFinished === false) {
+  //     // console.log("shouldComponentUpdate: componentDidMountFinished === false");
+  //     return true;
+  //   }
+  //   if (this.state.profilePopUpOpen === true || nextState.profilePopUpOpen === true) {
+  //     // console.log("shouldComponentUpdate: this.state.profilePopUpOpen", this.state.profilePopUpOpen, ", nextState.profilePopUpOpen", nextState.profilePopUpOpen);
+  //     return true;
+  //   }
+  //   if (this.state.aboutMenuOpen === true || nextState.aboutMenuOpen === true) {
+  //     // console.log("shouldComponentUpdate: this.state.aboutMenuOpen", this.state.aboutMenuOpen, ", nextState.aboutMenuOpen", nextState.aboutMenuOpen);
+  //     return true;
+  //   }
+  //   if (this.state.friendInvitationsSentToMe !== nextState.friendInvitationsSentToMe) {
+  //     // console.log("shouldComponentUpdate: this.state.friendInvitationsSentToMe", this.state.friendInvitationsSentToMe, ", nextState.friendInvitationsSentToMe", nextState.friendInvitationsSentToMe);
+  //     return true;
+  //   }
+  //   if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
+  //     return true;
+  //   }
+  //   const currentPathnameExists = this.props.location && this.props.location.pathname;
+  //   const nextPathnameExists = nextProps.location && nextProps.location.pathname;
+  //   // One exists, and the other doesn't
+  //   if ((currentPathnameExists && !nextPathnameExists) || (!currentPathnameExists && nextPathnameExists)) {
+  //     // console.log("shouldComponentUpdate: PathnameExistsDifference");
+  //     return true;
+  //   }
+  //   if (currentPathnameExists && nextPathnameExists && this.props.location.pathname !== nextProps.location.pathname) {
+  //     // console.log("shouldComponentUpdate: this.props.location.pathname", this.props.location.pathname, ", nextProps.location.pathname", nextProps.location.pathname);
+  //     return true;
+  //   }
+  //   const thisVoterExists = this.props.voter !== undefined;
+  //   const nextVoterExists = nextProps.voter !== undefined;
+  //   if (nextVoterExists && !thisVoterExists) {
+  //     // console.log("shouldComponentUpdate: thisVoterExists", thisVoterExists, ", nextVoterExists", nextVoterExists);
+  //     return true;
+  //   }
+  //   if (thisVoterExists && nextVoterExists && this.props.voter.signed_in_twitter !== nextProps.voter.signed_in_twitter) {
+  //     // console.log("shouldComponentUpdate: this.props.voter.signed_in_twitter", this.props.voter.signed_in_twitter, ", nextProps.voter.signed_in_twitter", nextProps.voter.signed_in_twitter);
+  //     return true;
+  //   }
+  //   if (thisVoterExists && nextVoterExists && this.props.voter.signed_in_facebook !== nextProps.voter.signed_in_facebook) {
+  //     // console.log("shouldComponentUpdate: this.props.voter.signed_in_facebook", this.props.voter.signed_in_facebook, ", nextProps.voter.signed_in_facebook", nextProps.voter.signed_in_facebook);
+  //     return true;
+  //   }
+  //   if (thisVoterExists && nextVoterExists && this.props.voter.signed_in_with_email !== nextProps.voter.signed_in_with_email) {
+  //     // console.log("shouldComponentUpdate: this.props.voter.signed_in_with_email", this.props.voter.signed_in_with_email, ", nextProps.voter.signed_in_with_email", nextProps.voter.signed_in_with_email);
+  //     return true;
+  //   }
+  //   if (this.state.scrolledDown !== nextState.scrolledDown) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.ballotStoreListener.remove();
     this.friendStoreListener.remove();
     this.appStoreListener.remove();
   }
 
-  onBallotStoreChange () {
+  onBallotStoreChange() {
     // this.setState({ bookmarks: BallotStore.bookmarks });
   }
 
-  onFriendStoreChange () {
+  onFriendStoreChange() {
     this.setState({
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
     });
   }
 
-  onAppStoreChange () {
+  onAppStoreChange() {
     this.setState({
       showEditAddressButton: AppStore.showEditAddressButton(),
       scrolledDown: AppStore.getScrolledDown(),
@@ -153,35 +153,51 @@ class HeaderBar extends Component {
   }
 
   getSelectedTab = () => {
+    console.log('Getting selected tab');
     const { pathname } = this.props;
+    let value;
+
     // if (pathname.indexOf('/ballot') === 0) return 0; // If '/ballot' is found any
-    if (pathname && pathname.startsWith('/ballot')) return 0;
-    if (stringContains('/friends', pathname)) return 2;
-    if (stringContains('/values', pathname)) return 1;
-    return false;
+
+
+    if (stringContains('/ballot', pathname)) {
+      console.log('HeaderBar 160: Return 0');
+      value = 0;
+    } else if (stringContains('/friends', pathname)) {
+      console.log('HeaderBar 163: Return 2');
+      value = 2;
+    } else if (stringContains('/values', pathname)) {
+      console.log('HeaderBar 166: Return 1');
+      value = 1;
+    } else  {
+      console.log('It does not have /ballot on the end');
+      value = false;
+    }
+
+    return value;
   }
 
   handleNavigation = to => historyPush(to);
 
-  toggleProfilePopUp () {
+  toggleProfilePopUp() {
     const { profilePopUpOpen } = this.state;
     this.setState({ profilePopUpOpen: !profilePopUpOpen });
   }
 
-  toggleSelectBallotModal () {
+  toggleSelectBallotModal() {
     AppActions.setShowSelectBallotModal(true);
   }
 
-  hideProfilePopUp () {
+  hideProfilePopUp() {
     this.setState({ profilePopUpOpen: false });
   }
 
-  signOutAndHideProfilePopUp () {
+  signOutAndHideProfilePopUp() {
     VoterSessionActions.voterSignOut();
     this.setState({ profilePopUpOpen: false });
   }
 
-  transitionToYourVoterGuide () {
+  transitionToYourVoterGuide() {
     // Positions for this organization, for this voter/election
     OrganizationActions.positionListForOpinionMaker(this.props.voter.linked_organization_we_vote_id, true);
 
@@ -193,8 +209,8 @@ class HeaderBar extends Component {
     this.setState({ profilePopUpOpen: false });
   }
 
-  render () {
-    // console.log('HeaderBar render');
+  render() {
+    console.log('HeaderBar render');
     renderLog(__filename);
     const { voter, classes, pathname } = this.props;
     const { showEditAddressButton, scrolledDown } = this.state;
@@ -212,124 +228,125 @@ class HeaderBar extends Component {
           <Toolbar className="header-toolbar" disableGutters>
             {!weVoteBrandingOff && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />}
             <div className="header-nav">
-              <Tabs
-                className="u-show-desktop"
-                value={this.getSelectedTab()}
-                indicatorColor="primary"
-                classes={{ indicator: classes.indicator }}
-              >
-                {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRoot }} label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
-                )
-                }
-                {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRoot }} id="valuesTabHeaderBar" label="My Values" onClick={() => this.handleNavigation('/values')} />
-                )
-                }
-                {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRoot }} label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} onClick={() => this.handleNavigation('/friends')}>My Friends</Badge>} />
-                )
-                }
-                {/* showFullNavigation && isWebApp() && <Tab className="u-show-desktop" label="Vote" /> */}
-              </Tabs>
+              <div className="u-show-desktop">
+                <Tabs
+                  indicatorColor="primary"
+                  classes={{ indicator: classes.indicator }}
+                  value={this.getSelectedTab()}
+                >
+                  {showFullNavigation && (
+                    <Tab classes={{ root: classes.tabRoot }} label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
+                  )
+                  }
+                  {showFullNavigation && (
+                    <Tab classes={{ root: classes.tabRoot }} id="valuesTabHeaderBar" label="My Values" onClick={() => this.handleNavigation('/values')} />
+                  )
+                  }
+                  {showFullNavigation && (
+                    <Tab classes={{ root: classes.tabRoot }} label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} onClick={() => this.handleNavigation('/friends')}>My Friends</Badge>} />
+                  )
+                  }
+                  {/* showFullNavigation && isWebApp() && <Tab className="u-show-desktop" label="Vote" /> */}
+                </Tabs>
+              </div>
             </div>
 
             {/* (showFullNavigation || isCordova()) && <SearchAllBox /> */}
 
-            { (!showFullNavigation || !voterIsSignedIn) && (
-            <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
-              {
-                showEditAddressButton && (
-                <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-                  <IconButton
-                    classes={{ root: classes.iconButtonRoot }}
-                    onClick={this.toggleSelectBallotModal}
+            {(!showFullNavigation || !voterIsSignedIn) && (
+              <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
+                {
+                  showEditAddressButton && (
+                    <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot }}
+                        onClick={this.toggleSelectBallotModal}
+                      >
+                        <PlaceIcon />
+                      </IconButton>
+                    </Tooltip>
+                  )
+                }
+                <Link to="/settings/menu" className="header-link">
+                  <Tooltip title="Settings" aria-label="settings" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                    <IconButton
+                      classes={{ root: classes.iconButtonRoot }}
+                    >
+                      <MoreVertIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Link>
+                <Link to="/settings/account" className="header-link">
+                  <Button
+                    color="primary"
+                    classes={{ root: classes.headerButtonRoot }}
                   >
-                    <PlaceIcon />
-                  </IconButton>
-                </Tooltip>
-                )
-              }
-              <Link to="/settings/menu" className="header-link">
-                <Tooltip title="Settings" aria-label="settings" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-                  <IconButton
-                    classes={{ root: classes.iconButtonRoot }}
-                  >
-                    <MoreVertIcon />
-                  </IconButton>
-                </Tooltip>
-              </Link>
-              <Link to="/settings/account" className="header-link">
-                <Button
-                      color="primary"
-                      classes={{ root: classes.headerButtonRoot }}
-                >
-                      Sign In
+                    Sign In
                 </Button>
-              </Link>
-            </div>
+                </Link>
+              </div>
             )}
 
             {
-          (showFullNavigation && voterIsSignedIn) && (
-          <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
-            {
-              showEditAddressButton && (
-              <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-                <IconButton
-                  classes={{ root: classes.iconButtonRoot }}
-                  onClick={this.toggleSelectBallotModal}
-                >
-                  <PlaceIcon />
-                </IconButton>
-              </Tooltip>
-              )
-            }
-            <Link to="/settings/menu" className="header-link">
-              <Tooltip title="Settings" aria-label="settings" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-                <IconButton
-                  classes={{ root: classes.iconButtonRoot }}
-                >
-                  <MoreVertIcon />
-                </IconButton>
-              </Tooltip>
-            </Link>
-            {voterPhotoUrlMedium ? (
-              <div id="js-header-avatar" className="header-nav__avatar-container" onClick={this.toggleProfilePopUp}>
-                <img
-              className="header-nav__avatar"
-              src={voterPhotoUrlMedium}
-              height={34}
-              width={34}
-              alt="generic avatar"
-                />
-              </div>
-            ) : (
-              <div>
-                <IconButton
-                    onClick={this.toggleProfilePopUp}
-                    classes={{ root: classes.iconButtonRoot }}
-                >
-                  <AccountCircleIcon />
-                </IconButton>
-              </div>
-            )
-        }
-            {/* Was AccountMenu */}
-            {this.state.profilePopUpOpen && voter.is_signed_in && (
-            <HeaderBarProfilePopUp
-              {...this.props}
-              onClick={this.toggleProfilePopUp}
-              profilePopUpOpen={this.state.profilePopUpOpen}
-              weVoteBrandingOff={this.state.we_vote_branding_off}
-              toggleProfilePopUp={this.toggleProfilePopUp}
-              hideProfilePopUp={this.hideProfilePopUp}
-              transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-              signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
-            />
-            )}
-          </div>
-          )}
+              (showFullNavigation && voterIsSignedIn) && (
+                <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
+                  {
+                    showEditAddressButton && (
+                      <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                        <IconButton
+                          classes={{ root: classes.iconButtonRoot }}
+                          onClick={this.toggleSelectBallotModal}
+                        >
+                          <PlaceIcon />
+                        </IconButton>
+                      </Tooltip>
+                    )
+                  }
+                  <Link to="/settings/menu" className="header-link">
+                    <Tooltip title="Settings" aria-label="settings" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot }}
+                      >
+                        <MoreVertIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </Link>
+                  {voterPhotoUrlMedium ? (
+                    <div id="js-header-avatar" className="header-nav__avatar-container" onClick={this.toggleProfilePopUp}>
+                      <img
+                        className="header-nav__avatar"
+                        src={voterPhotoUrlMedium}
+                        height={34}
+                        width={34}
+                        alt="generic avatar"
+                      />
+                    </div>
+                  ) : (
+                      <div>
+                        <IconButton
+                          onClick={this.toggleProfilePopUp}
+                          classes={{ root: classes.iconButtonRoot }}
+                        >
+                          <AccountCircleIcon />
+                        </IconButton>
+                      </div>
+                    )
+                  }
+                  {/* Was AccountMenu */}
+                  {this.state.profilePopUpOpen && voter.is_signed_in && (
+                    <HeaderBarProfilePopUp
+                      {...this.props}
+                      onClick={this.toggleProfilePopUp}
+                      profilePopUpOpen={this.state.profilePopUpOpen}
+                      weVoteBrandingOff={this.state.we_vote_branding_off}
+                      toggleProfilePopUp={this.toggleProfilePopUp}
+                      hideProfilePopUp={this.hideProfilePopUp}
+                      transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+                      signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+                    />
+                  )}
+                </div>
+              )}
           </Toolbar>
         </AppBar>
       </Wrapper>
