@@ -393,8 +393,8 @@ const styles = theme => ({
     minWidth: 130,
   },
   indicator: {
-    minWidth: 130,
     height: 4,
+    width: 130,
   },
 });
 
