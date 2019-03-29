@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
@@ -14,7 +14,7 @@ import { stringContains } from '../../utils/textFormat';
 /* eslint react/no-find-dom-node: 1 */
 /* eslint array-callback-return: 1 */
 
-class BallotItemSupportOpposeComment extends Component {
+class BallotItemSupportOpposeComment extends PureComponent {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     currentBallotIdInUrl: PropTypes.string,
@@ -220,6 +220,7 @@ const Wrapper = styled.div`
   width: 100%;
   background-color: ${({ showPositionStatementActionBar }) => (showPositionStatementActionBar ? '#F5F5F5' : 'white')};
   padding: 16px;
+  padding-left: 0;
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     background-color: white;

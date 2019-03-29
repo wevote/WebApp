@@ -97,7 +97,6 @@ class MeasureItem extends Component {
       measureText, measureWeVoteId, electionDisplayName, regionalDisplayName, stateCode,
       scrolledDown,
     } = this.state;
-    console.log(scrolledDown);
     if (stateDisplayName === undefined && stateCode) {
       stateDisplayName = stateCode.toUpperCase();
     }

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { withStyles } from '@material-ui/core/styles';
@@ -20,7 +20,7 @@ import PositionPublicToggle from './PositionPublicToggle';
 import SupportStore from '../../stores/SupportStore';
 import webAppConfig from '../../config';
 
-class ItemActionBar extends Component {
+class ItemActionBar extends PureComponent {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
     commentButtonHide: PropTypes.bool,
@@ -40,7 +40,7 @@ class ItemActionBar extends Component {
     super(props);
     this.state = {
       ballotItemWeVoteId: '',
-      componentDidMountFinished: false,
+      // componentDidMountFinished: false,
       isOpposeAPIState: undefined,
       isOpposeLocalState: undefined,
       isPublicPosition: undefined,
@@ -50,9 +50,9 @@ class ItemActionBar extends Component {
       supportCount: 0,
       opposeCount: 0,
       yesVoteDescription: '',
-      yesVoteDescriptionExists: false,
+      // yesVoteDescriptionExists: false,
       noVoteDescription: '',
-      noVoteDescriptionExists: false,
+      // noVoteDescriptionExists: false,
       transitioning: false,
     };
     this.isOpposeCalculated = this.isOpposeCalculated.bind(this);
@@ -80,7 +80,7 @@ class ItemActionBar extends Component {
 
     this.setState({
       ballotItemWeVoteId: this.props.ballotItemWeVoteId,
-      componentDidMountFinished: true,
+      // componentDidMountFinished: true,
       isOpposeAPIState,
       isPublicPosition,
       isSupportAPIState,

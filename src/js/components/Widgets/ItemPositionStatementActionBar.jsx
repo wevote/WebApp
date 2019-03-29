@@ -178,9 +178,10 @@ export default class ItemPositionStatementActionBar extends Component {
     let { statementTextToBeSaved } = this.state;
     const { voterFullName, voterPhotoUrlMedium } = this.state;
     statementTextToBeSaved = statementTextToBeSaved.length === 0 ? null : statementTextToBeSaved;
-
-    let statementPlaceholderText;
     const horizontalEllipsis = '\u2026';
+    const statementPlaceholderText = `Your thoughts${horizontalEllipsis}`;
+
+    /*
     if (this.state.supportProps.is_support) {
       if (this.props.ballotItemDisplayName) {
         statementPlaceholderText = `Why you chose ${this.props.ballotItemDisplayName}${horizontalEllipsis}`;
@@ -198,6 +199,7 @@ export default class ItemPositionStatementActionBar extends Component {
     } else {
       statementPlaceholderText = `Your thoughts${horizontalEllipsis}`;
     }
+    */
 
     // Currently this "Post" text is the same given we display the visibility setting, but we may want to change this
     //  here if the near by visibility setting text changes
