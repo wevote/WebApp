@@ -156,8 +156,9 @@ class HeaderBar extends Component {
     const { pathname } = this.props;
     // if (pathname.indexOf('/ballot') === 0) return 0; // If '/ballot' is found any
     if (pathname && pathname.startsWith('/ballot')) return 0;
-    if (stringContains('/friends', pathname)) return 2;
     if (stringContains('/values', pathname)) return 1;
+    if (stringContains('/friends', pathname)) return 2;
+
     return false;
   }
 
@@ -236,100 +237,100 @@ class HeaderBar extends Component {
 
             {/* (showFullNavigation || isCordova()) && <SearchAllBox /> */}
 
-            { (!showFullNavigation || !voterIsSignedIn) && (
-            <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
-              {
-                showEditAddressButton && (
-                <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-                  <IconButton
-                    classes={{ root: classes.iconButtonRoot }}
-                    onClick={this.toggleSelectBallotModal}
+            {(!showFullNavigation || !voterIsSignedIn) && (
+              <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
+                {
+                  showEditAddressButton && (
+                    <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot }}
+                        onClick={this.toggleSelectBallotModal}
+                      >
+                        <PlaceIcon />
+                      </IconButton>
+                    </Tooltip>
+                  )
+                }
+                <Link to="/settings/menu" className="header-link">
+                  <Tooltip title="Settings" aria-label="settings" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                    <IconButton
+                      classes={{ root: classes.iconButtonRoot }}
+                    >
+                      <MoreVertIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Link>
+                <Link to="/settings/account" className="header-link">
+                  <Button
+                    color="primary"
+                    classes={{ root: classes.headerButtonRoot }}
                   >
-                    <PlaceIcon />
-                  </IconButton>
-                </Tooltip>
-                )
-              }
-              <Link to="/settings/menu" className="header-link">
-                <Tooltip title="Settings" aria-label="settings" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-                  <IconButton
-                    classes={{ root: classes.iconButtonRoot }}
-                  >
-                    <MoreVertIcon />
-                  </IconButton>
-                </Tooltip>
-              </Link>
-              <Link to="/settings/account" className="header-link">
-                <Button
-                      color="primary"
-                      classes={{ root: classes.headerButtonRoot }}
-                >
-                      Sign In
-                </Button>
-              </Link>
-            </div>
+                    Sign In
+                  </Button>
+                </Link>
+              </div>
             )}
 
             {
-          (showFullNavigation && voterIsSignedIn) && (
-          <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
-            {
-              showEditAddressButton && (
-              <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-                <IconButton
-                  classes={{ root: classes.iconButtonRoot }}
-                  onClick={this.toggleSelectBallotModal}
-                >
-                  <PlaceIcon />
-                </IconButton>
-              </Tooltip>
-              )
-            }
-            <Link to="/settings/menu" className="header-link">
-              <Tooltip title="Settings" aria-label="settings" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-                <IconButton
-                  classes={{ root: classes.iconButtonRoot }}
-                >
-                  <MoreVertIcon />
-                </IconButton>
-              </Tooltip>
-            </Link>
-            {voterPhotoUrlMedium ? (
-              <div id="js-header-avatar" className="header-nav__avatar-container" onClick={this.toggleProfilePopUp}>
-                <img
-              className="header-nav__avatar"
-              src={voterPhotoUrlMedium}
-              height={34}
-              width={34}
-              alt="generic avatar"
-                />
-              </div>
-            ) : (
-              <div>
-                <IconButton
-                    onClick={this.toggleProfilePopUp}
-                    classes={{ root: classes.iconButtonRoot }}
-                >
-                  <AccountCircleIcon />
-                </IconButton>
-              </div>
-            )
-        }
-            {/* Was AccountMenu */}
-            {this.state.profilePopUpOpen && voter.is_signed_in && (
-            <HeaderBarProfilePopUp
-              {...this.props}
-              onClick={this.toggleProfilePopUp}
-              profilePopUpOpen={this.state.profilePopUpOpen}
-              weVoteBrandingOff={this.state.we_vote_branding_off}
-              toggleProfilePopUp={this.toggleProfilePopUp}
-              hideProfilePopUp={this.hideProfilePopUp}
-              transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-              signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
-            />
-            )}
-          </div>
-          )}
+              (showFullNavigation && voterIsSignedIn) && (
+                <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
+                  {
+                    showEditAddressButton && (
+                      <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                        <IconButton
+                          classes={{ root: classes.iconButtonRoot }}
+                          onClick={this.toggleSelectBallotModal}
+                        >
+                          <PlaceIcon />
+                        </IconButton>
+                      </Tooltip>
+                    )
+                  }
+                  <Link to="/settings/menu" className="header-link">
+                    <Tooltip title="Settings" aria-label="settings" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot }}
+                      >
+                        <MoreVertIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </Link>
+                  {voterPhotoUrlMedium ? (
+                    <div id="js-header-avatar" className="header-nav__avatar-container" onClick={this.toggleProfilePopUp}>
+                      <img
+                        className="header-nav__avatar"
+                        src={voterPhotoUrlMedium}
+                        height={34}
+                        width={34}
+                        alt="generic avatar"
+                      />
+                    </div>
+                  ) : (
+                    <div>
+                      <IconButton
+                        onClick={this.toggleProfilePopUp}
+                        classes={{ root: classes.iconButtonRoot }}
+                      >
+                        <AccountCircleIcon />
+                      </IconButton>
+                    </div>
+                  )
+                  }
+                  {/* Was AccountMenu */}
+                  {this.state.profilePopUpOpen && voter.is_signed_in && (
+                    <HeaderBarProfilePopUp
+                      {...this.props}
+                      onClick={this.toggleProfilePopUp}
+                      profilePopUpOpen={this.state.profilePopUpOpen}
+                      weVoteBrandingOff={this.state.we_vote_branding_off}
+                      toggleProfilePopUp={this.toggleProfilePopUp}
+                      hideProfilePopUp={this.hideProfilePopUp}
+                      transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+                      signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+                    />
+                  )}
+                </div>
+              )}
           </Toolbar>
         </AppBar>
       </Wrapper>
@@ -382,7 +383,6 @@ const styles = theme => ({
     minWidth: 130,
   },
   indicator: {
-    minWidth: 130,
     height: 4,
   },
 });
