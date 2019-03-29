@@ -98,6 +98,7 @@ class Ballot extends Component {
 
     this.ballotItems = {};
     this.ballotItemLinkHasBeenClicked = this.ballotItemLinkHasBeenClicked.bind(this);
+    // this.hideLocationsGuessComponent = this.hideLocationsGuessComponent.bind(this);
     this.toggleBallotIntroModal = this.toggleBallotIntroModal.bind(this);
     this.toggleBallotSummaryModal = this.toggleBallotSummaryModal.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
@@ -622,6 +623,10 @@ class Ballot extends Component {
     this.setState({ isSearching: !isSearching });
   };
 
+  hideLocationsGuessComponent () {
+    document.getElementById('location_guess').style.display = 'none';
+  }
+
   toggleBallotIntroModal () {
     const { showBallotIntroModal, location, pathname } = this.state;
     if (showBallotIntroModal) {
@@ -940,10 +945,44 @@ class Ballot extends Component {
                 ) : null
                   }
                 <div className="col-sm-12 col-lg-9">
-                  <div className="card-main__location-guess" onClick={this.toggleSelectBallotModal}>
-                    <PlaceIcon style={{ margin: '15px' }} />
-                    <p>Our best guess for your location is &quot;Oakland,CA&quot;. Enter your full address to see the correct ballot items.</p>
-                    <span style={{ fontSize: '25px', margin: '15px' }}>x</span>
+                  <div id="location_guess" className="card-main__location-guess">
+                    <PlaceIcon style={{
+                      fontSize: '35px',
+                      margin: 'auto 10px',
+                    }}
+                    />
+                    <p style={{
+                      margin: 'auto',
+                      fontFamily: 'Source Sans Pro,sans-serif',
+                    }}
+                    >
+                    Our best guess for your location is
+                      <strong> &quot;Oakland,CA&quot;</strong>
+                    .
+                      <a style={{
+                        color: '#4371cc',
+                        textDecoration: 'underline',
+                      }}
+                      onClick={this.toggleSelectBallotModal}
+                      >
+                       Enter your full address
+                      </a>
+                       to see the correct ballot items.
+                    </p>
+                    <span style={{
+                      fontSize: '25px',
+                      margin: '15px 25px 15px 35px',
+                      position: 'relative',
+                      bottom: '2px',
+                      cursor: 'pointer',
+                      fontWeight: '700',
+                      color: '#000',
+                      opacity: '.5',
+                    }}
+                    onClick={this.hideLocationsGuessComponent}
+                    >
+                    &times;
+                    </span>
                   </div>
                   { inReadyToVoteMode ? (
                     <div>
