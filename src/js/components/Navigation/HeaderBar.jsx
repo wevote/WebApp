@@ -394,7 +394,6 @@ const styles = theme => ({
   },
   indicator: {
     height: 4,
-    width: 130,
   },
 });
 
