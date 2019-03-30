@@ -872,7 +872,7 @@ class Ballot extends Component {
                         />
                       </div>
                       <hr className="ballot-header-divider" />
-                      <div className="ballot__filter-row">
+                      <BallotFilterRow showFilterTabs={showFilterTabs}>
                         <div className="ballot__item-filter-tabs" ref={(chips) => { this.chipContainer = chips; }}>
                           { ballotWithItemsFromCompletionFilterType.length && showFilterTabs ? (
                             <React.Fragment>
@@ -926,7 +926,7 @@ class Ballot extends Component {
                           ) : null
                       }
                         </div>
-                      </div>
+                      </BallotFilterRow>
                     </div>
                   ) : null
                   }
@@ -1058,6 +1058,11 @@ class Ballot extends Component {
 
 const Wrapper = styled.div`
   padding-top: ${({ cordova }) => (cordova ? '100px' : 0)};
+`;
+
+const BallotFilterRow = styled.div`
+  display: flex;
+  ${({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
 `;
 
 const styles = theme => ({

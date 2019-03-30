@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Modal } from 'react-bootstrap';
 import styled from 'styled-components';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import Radio from '@material-ui/core/Radio';
 import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
@@ -149,19 +151,16 @@ class PositionPublicToggle extends Component {
 
     // This modal is shown when the user clicks on public position toggle either when not signed in
     // or for the first time after being signed in.
-    const localModalStyle = hasIPhoneNotch() ? { marginTop: 20 } : {};
     const PositionPublicToggleHelpModal = (
-      <Modal
-        show={this.state.showPositionPublicHelpModal}
-        enforceFocus={false}
-        onHide={() => { this.togglePositionPublicHelpModal(); }}
+      <Dialog
+        classes={{ paper: classes.dialogPaper }}
+        open={this.state.showPositionPublicHelpModal}
+        onClose={() => { this.togglePositionPublicHelpModal(); }}
       >
-        <Modal.Header closeButton style={localModalStyle}>
-          <Modal.Title>
-            <div className="text-center">Make Your Positions Public</div>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+        <DialogTitle>
+          <div className="text-center">Make Your Positions Public</div>
+        </DialogTitle>
+        <DialogContent>
           <section className="card">
             <div className="text-center">
               {voter && voter.is_signed_in ? (
@@ -182,8 +181,8 @@ class PositionPublicToggle extends Component {
               <br />
             </div>
           </section>
-        </Modal.Body>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     );
 
     return (
@@ -223,6 +222,9 @@ const styles = theme => ({
     [theme.breakpoints.down('md')]: {
       marginLeft: 0,
     },
+  },
+  dialogPaper: {
+    marginTop: hasIPhoneNotch() ? 68 : 48,
   },
 });
 

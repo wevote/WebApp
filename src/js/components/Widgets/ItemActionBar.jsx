@@ -4,6 +4,9 @@ import { Modal, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import DoneIcon from '@material-ui/icons/Done';
+import ThumbsUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbsDownIcon from '@material-ui/icons/ThumbDown';
+import CommentIcon from '@material-ui/icons/Comment';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import { cordovaDot } from '../../utils/cordovaUtils'; // historyPush
 import { renderLog } from '../../utils/logging';
@@ -352,8 +355,6 @@ class ItemActionBar extends PureComponent {
 
     const iconSize = 18;
     const iconColor = '#00749e'; // $link-color
-    const chooseIconColor = this.isSupportCalculated() ? 'white' : '#00749e'; // $link-color
-    const opposeIconColor = this.isOpposeCalculated() ? 'white' : '#00749e'; // $link-color
 
     let urlBeingShared;
     if (this.props.type === 'CANDIDATE') {
@@ -492,14 +493,7 @@ class ItemActionBar extends PureComponent {
         onClick={() => this.supportItem()}
         classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <span className="btn__icon">
-          <img src={cordovaDot('/img/global/svg-icons/thumbs-up-icon.svg')}
-               width={18}
-               height={18}
-               color={chooseIconColor}
-               alt="thumbs up"
-          />
-        </span>
+        <ThumbsUpIcon classes={{ root: classes.buttonIcon }} />
         { this.isSupportCalculated() ? (
           <span
             className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
@@ -552,14 +546,7 @@ class ItemActionBar extends PureComponent {
         onClick={() => this.opposeItem()}
         classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <span className="btn__icon">
-          <img src={cordovaDot('/img/global/svg-icons/thumbs-down-icon.svg')}
-               width={18}
-               height={18}
-               color={opposeIconColor}
-               alt="thumbs down"
-          />
-        </span>
+        <ThumbsDownIcon classes={{ root: classes.buttonIcon }} />
         { this.isOpposeCalculated() ? (
           <span
             className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
@@ -585,14 +572,7 @@ class ItemActionBar extends PureComponent {
         onClick={this.props.toggleFunction}
         classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <span className="btn__icon">
-          <img src={cordovaDot('/img/global/svg-icons/comment-icon.svg')}
-               width={18}
-               height={18}
-               color={iconColor}
-               alt="comment"
-          />
-        </span>
+        <CommentIcon classes={{ root: classes.buttonIcon }} />
         <span className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
           'item-actionbar__position-btn-label'}
         >
