@@ -558,7 +558,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                             commentButtonHide
                             currentBallotIdInUrl={this.props.location.hash.slice(1)}
                             shareButtonHide
-                            supportProps={candidateSupportStore}
                             transitioning={this.state.transitioning}
                             type="CANDIDATE"
                             urlWithoutHash={this.props.location.pathname + this.props.location.search}

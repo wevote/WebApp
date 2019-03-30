@@ -44,7 +44,7 @@ export default class OrganizationsToFollowPreview extends Component {
           <div className="card-main">
             <h1 className="h4">Organizations to Follow</h1>
             <Suspense fallback={<span>Loading...</span>}>
-              <GuideList organizationsToFollow={voterGuidesToFollow} instantRefreshOn />
+              <GuideList incomingVoterGuideList={voterGuidesToFollow} instantRefreshOn />
             </Suspense>
             <div>
               <Link to="/opinions">Explore more organizations</Link>

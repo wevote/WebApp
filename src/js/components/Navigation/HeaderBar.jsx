@@ -13,7 +13,6 @@ import Badge from '@material-ui/core/Badge';
 import PlaceIcon from '@material-ui/icons/Place';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import Headroom from 'react-headroom';
 import { withStyles } from '@material-ui/core/styles';
 import BallotStore from '../../stores/BallotStore';
 import { historyPush, isWebApp, hasIPhoneNotch } from '../../utils/cordovaUtils';
@@ -28,64 +27,6 @@ import VoterSessionActions from '../../actions/VoterSessionActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import { stringContains } from '../../utils/textFormat';
-
-const styles = theme => ({
-  headerBadge: {
-    right: -15,
-    top: 9,
-  },
-  padding: {
-    padding: `0 ${theme.spacing.unit * 2}px`,
-  },
-  headerButtonRoot: {
-    paddingTop: 2,
-    paddingBottom: 2,
-    '&:hover': {
-      backgroundColor: 'transparent',
-    },
-    color: 'rgb(6, 95, 212)',
-    marginLeft: '1rem',
-    outline: 'none !important',
-    [theme.breakpoints.down('md')]: {
-      marginLeft: '.1rem',
-    },
-  },
-  iconButtonRoot: {
-    color: 'rgba(17, 17, 17, .4)',
-    outline: 'none !important',
-    '&:hover': {
-      backgroundColor: 'transparent',
-    },
-    [theme.breakpoints.down('md')]: {
-      padding: 4,
-    },
-  },
-  tooltipPlacementBottom: {
-    marginTop: 0,
-  },
-  outlinedPrimary: {
-    minWidth: 36,
-    marginRight: '.5rem',
-    [theme.breakpoints.down('md')]: {
-      padding: 2,
-    },
-  },
-  tabRoot: {
-    minWidth: 130,
-  },
-  indicator: {
-    minWidth: 130,
-    height: 4,
-  },
-});
-
-const Wrapper = styled.div`
-  margin-top: ${({ hasNotch }) => (hasNotch ? '1.5rem' : '0')};
-`;
-
-const headroomWrapperStyle = {
-  maxHeight: 0,
-};
 
 class HeaderBar extends Component {
   static propTypes = {
@@ -106,13 +47,13 @@ class HeaderBar extends Component {
     this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
     this.toggleProfilePopUp = this.toggleProfilePopUp.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
-    this.onHeadroomUnpin = this.onHeadroomUnpin.bind(this);
     this.state = {
       aboutMenuOpen: false,
       componentDidMountFinished: false,
       profilePopUpOpen: false,
       friendInvitationsSentToMe: 0,
       showEditAddressButton: AppStore.showEditAddressButton(),
+      scrolledDown: AppStore.getScrolledDown(),
     };
   }
 
@@ -182,6 +123,9 @@ class HeaderBar extends Component {
       // console.log("shouldComponentUpdate: this.props.voter.signed_in_with_email", this.props.voter.signed_in_with_email, ", nextProps.voter.signed_in_with_email", nextProps.voter.signed_in_with_email);
       return true;
     }
+    if (this.state.scrolledDown !== nextState.scrolledDown) {
+      return true;
+    }
     return false;
   }
 
@@ -202,19 +146,19 @@ class HeaderBar extends Component {
   }
 
   onAppStoreChange () {
-    this.setState({ showEditAddressButton: AppStore.showEditAddressButton() });
-  }
-
-  onHeadroomUnpin (unpinned) {
-    AppActions.setHeadroomUnpinned(unpinned);
+    this.setState({
+      showEditAddressButton: AppStore.showEditAddressButton(),
+      scrolledDown: AppStore.getScrolledDown(),
+    });
   }
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    // if (stringContains('/ballot', pathname.slice(0, 7))) return 0;
-    if (pathname.indexOf('/ballot') === 0) return 0;
-    if (stringContains('/friends', pathname)) return 2;
+    // if (pathname.indexOf('/ballot') === 0) return 0; // If '/ballot' is found any
+    if (pathname && pathname.startsWith('/ballot')) return 0;
     if (stringContains('/values', pathname)) return 1;
+    if (stringContains('/friends', pathname)) return 2;
+
     return false;
   }
 
@@ -251,9 +195,10 @@ class HeaderBar extends Component {
   }
 
   render () {
+    // console.log('HeaderBar render');
     renderLog(__filename);
     const { voter, classes, pathname } = this.props;
-    const { showEditAddressButton } = this.state;
+    const { showEditAddressButton, scrolledDown } = this.state;
     const ballotBaseUrl = '/ballot';
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0;
@@ -263,53 +208,47 @@ class HeaderBar extends Component {
     const showingBallot = stringContains(ballotBaseUrl, pathname.slice(0, 7));
 
     return (
-      <Headroom
-        onUnpin={() => this.onHeadroomUnpin(true)}
-        onPin={() => this.onHeadroomUnpin(false)}
-        wrapperStyle={headroomWrapperStyle}
-        disable={!showingBallot}
-      >
-        <Wrapper hasNotch={hasIPhoneNotch()}>
-          <AppBar position="relative" color="default" className={`page-header${!isWebApp() ? ' page-header__cordova' : ''}${showingBallot ? ' page-header__ballot' : ''}`}>
-            <Toolbar className="header-toolbar" disableGutters>
-              {!weVoteBrandingOff && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />}
-              <div className="header-nav">
-                <Tabs
-                  className="u-show-desktop"
-                  value={this.getSelectedTab()}
-                  indicatorColor="primary"
-                  classes={{ indicator: classes.indicator }}
-                >
-                  {showFullNavigation && (
-                    <Tab classes={{ root: classes.tabRoot }} label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
-                  )
-                  }
-                  {showFullNavigation && (
-                    <Tab classes={{ root: classes.tabRoot }} label="My Values" onClick={() => this.handleNavigation('/values')} />
-                  )
-                  }
-                  {showFullNavigation && (
-                    <Tab classes={{ root: classes.tabRoot }} label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} onClick={() => this.handleNavigation('/friends')}>My Friends</Badge>} />
-                  )
-                  }
-                  {/* showFullNavigation && isWebApp() && <Tab className="u-show-desktop" label="Vote" /> */}
-                </Tabs>
-              </div>
+      <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown}>
+        <AppBar position="relative" color="default" className={`page-header${!isWebApp() ? ' page-header__cordova' : ''}${showingBallot ? ' page-header__ballot' : ''}`}>
+          <Toolbar className="header-toolbar" disableGutters>
+            {!weVoteBrandingOff && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />}
+            <div className="header-nav">
+              <Tabs
+                className="u-show-desktop"
+                value={this.getSelectedTab()}
+                indicatorColor="primary"
+                classes={{ indicator: classes.indicator }}
+              >
+                {showFullNavigation && (
+                  <Tab classes={{ root: classes.tabRoot }} label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
+                )
+                }
+                {showFullNavigation && (
+                  <Tab classes={{ root: classes.tabRoot }} id="valuesTabHeaderBar" label="My Values" onClick={() => this.handleNavigation('/values')} />
+                )
+                }
+                {showFullNavigation && (
+                  <Tab classes={{ root: classes.tabRoot }} label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} onClick={() => this.handleNavigation('/friends')}>My Friends</Badge>} />
+                )
+                }
+                {/* showFullNavigation && isWebApp() && <Tab className="u-show-desktop" label="Vote" /> */}
+              </Tabs>
+            </div>
 
-              {/* (showFullNavigation || isCordova()) && <SearchAllBox /> */}
+            {/* (showFullNavigation || isCordova()) && <SearchAllBox /> */}
 
-              { (!showFullNavigation || !voterIsSignedIn) && (
+            {(!showFullNavigation || !voterIsSignedIn) && (
               <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
                 {
                   showEditAddressButton && (
-                  <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-                    <IconButton
-                      classes={{ root: classes.iconButtonRoot }}
-                      onClick={this.toggleSelectBallotModal}
-                    >
-                      <PlaceIcon />
-                    </IconButton>
-                  </Tooltip>
+                    <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot }}
+                        onClick={this.toggleSelectBallotModal}
+                      >
+                        <PlaceIcon />
+                      </IconButton>
+                    </Tooltip>
                   )
                 }
                 <Link to="/settings/menu" className="header-link">
@@ -323,72 +262,135 @@ class HeaderBar extends Component {
                 </Link>
                 <Link to="/settings/account" className="header-link">
                   <Button
-                        color="primary"
-                        classes={{ root: classes.headerButtonRoot }}
+                    color="primary"
+                    classes={{ root: classes.headerButtonRoot }}
                   >
-                        Sign In
+                    Sign In
                   </Button>
                 </Link>
               </div>
-              )}
+            )}
 
-              {
-            (showFullNavigation && voterIsSignedIn) && (
-            <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
-              {voterPhotoUrlMedium ? (
-                <div id="js-header-avatar" className="header-nav__avatar-container" onClick={this.toggleProfilePopUp}>
-                  <img
-                className="header-nav__avatar"
-                src={voterPhotoUrlMedium}
-                height={34}
-                width={34}
-                alt="generic avatar"
-                  />
-                </div>
-              ) : (
-                <div>
+            {
+              (showFullNavigation && voterIsSignedIn) && (
+                <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
                   {
                     showEditAddressButton && (
-                    <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-                      <IconButton
-                        classes={{ root: classes.iconButtonRoot }}
-                        onClick={this.toggleSelectBallotModal}
-                      >
-                        <PlaceIcon />
-                      </IconButton>
-                    </Tooltip>
+                      <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                        <IconButton
+                          classes={{ root: classes.iconButtonRoot }}
+                          onClick={this.toggleSelectBallotModal}
+                        >
+                          <PlaceIcon />
+                        </IconButton>
+                      </Tooltip>
                     )
                   }
-                  <IconButton
+                  <Link to="/settings/menu" className="header-link">
+                    <Tooltip title="Settings" aria-label="settings" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot }}
+                      >
+                        <MoreVertIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </Link>
+                  {voterPhotoUrlMedium ? (
+                    <div id="js-header-avatar" className="header-nav__avatar-container" onClick={this.toggleProfilePopUp}>
+                      <img
+                        className="header-nav__avatar"
+                        src={voterPhotoUrlMedium}
+                        height={34}
+                        width={34}
+                        alt="generic avatar"
+                      />
+                    </div>
+                  ) : (
+                    <div>
+                      <IconButton
+                        onClick={this.toggleProfilePopUp}
+                        classes={{ root: classes.iconButtonRoot }}
+                      >
+                        <AccountCircleIcon />
+                      </IconButton>
+                    </div>
+                  )
+                  }
+                  {/* Was AccountMenu */}
+                  {this.state.profilePopUpOpen && voter.is_signed_in && (
+                    <HeaderBarProfilePopUp
+                      {...this.props}
                       onClick={this.toggleProfilePopUp}
-                      classes={{ root: classes.iconButtonRoot }}
-                  >
-                    <AccountCircleIcon />
-                  </IconButton>
+                      profilePopUpOpen={this.state.profilePopUpOpen}
+                      weVoteBrandingOff={this.state.we_vote_branding_off}
+                      toggleProfilePopUp={this.toggleProfilePopUp}
+                      hideProfilePopUp={this.hideProfilePopUp}
+                      transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+                      signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+                    />
+                  )}
                 </div>
-              )
-          }
-              {/* Was AccountMenu */}
-              {this.state.profilePopUpOpen && voter.is_signed_in && (
-              <HeaderBarProfilePopUp
-                {...this.props}
-                onClick={this.toggleProfilePopUp}
-                profilePopUpOpen={this.state.profilePopUpOpen}
-                weVoteBrandingOff={this.state.we_vote_branding_off}
-                toggleProfilePopUp={this.toggleProfilePopUp}
-                hideProfilePopUp={this.hideProfilePopUp}
-                transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-                signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
-              />
               )}
-            </div>
-            )}
-            </Toolbar>
-          </AppBar>
-        </Wrapper>
-      </Headroom>
+          </Toolbar>
+        </AppBar>
+      </Wrapper>
     );
   }
 }
+
+const styles = theme => ({
+  headerBadge: {
+    right: -15,
+    top: 9,
+  },
+  padding: {
+    padding: `0 ${theme.spacing.unit * 2}px`,
+  },
+  headerButtonRoot: {
+    paddingTop: 2,
+    paddingBottom: 2,
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    color: 'rgb(6, 95, 212)',
+    marginLeft: '1rem',
+    outline: 'none !important',
+    [theme.breakpoints.down('md')]: {
+      marginLeft: '.1rem',
+    },
+  },
+  iconButtonRoot: {
+    color: 'rgba(17, 17, 17, .4)',
+    outline: 'none !important',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    [theme.breakpoints.down('md')]: {
+      padding: 4,
+    },
+  },
+  tooltipPlacementBottom: {
+    marginTop: 0,
+  },
+  outlinedPrimary: {
+    minWidth: 36,
+    marginRight: '.5rem',
+    [theme.breakpoints.down('md')]: {
+      padding: 2,
+    },
+  },
+  tabRoot: {
+    minWidth: 130,
+  },
+  indicator: {
+    height: 4,
+  },
+});
+
+const Wrapper = styled.div`
+  margin-top: ${({ hasNotch }) => (hasNotch ? '1.5rem' : '0')};
+  transition: all 50ms ease-in;
+  ${({ scrolledDown }) => (scrolledDown ? 'transform: translateY(-100%);' : '')}
+`;
 
 export default withStyles(styles)(HeaderBar);

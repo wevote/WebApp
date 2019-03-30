@@ -13,6 +13,8 @@
   @include clearfix;
   @include breakpoints(max mid-small) {
     margin-bottom: $space-sm;
+    margin-right: $gutter-offset;
+    margin-left: $gutter-offset;
     border-radius: $radius-none;
     [class^='col'] & {
       margin-right: $gutter-offset;
@@ -71,6 +73,18 @@
       // max-width: 60px;
       border-radius: $radius-xs;
       width: 48px;
+      &__testimonial {
+        border-radius: $radius-rounded;
+        border-style: solid;
+        border-width: 1px;
+        border-color: $gray-border;
+        height: 40px;
+        display: block;
+        margin-left: $space-auto;
+        margin-right: $space-auto;
+        margin-top: $space-md;
+        filter: grayscale(100%);
+      }
       .card-main & {
         @include breakpoints(mid-small) {
           // max-width: 60px;
@@ -165,6 +179,7 @@
 
     &__description {
       color: $gray-dark;
+      font-size: 12px;
     }
 
     &__rating-description {
@@ -185,7 +200,7 @@
         overflow: hidden;
         position: relative;
         height: $text-container-height;
-        line-height: $line-height;
+        // line-height: $line-height;
 
         &::before {
           content: '';
@@ -201,7 +216,7 @@
         }
 
         &::after {
-          content: '\00A0 Read More';
+          // content: '\00A0 Read More';
           box-sizing: content-box;
           float: right;
           position: relative;

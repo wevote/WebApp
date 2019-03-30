@@ -407,7 +407,6 @@ export default class ItemSupportOpposeRaccoon extends Component {
           commentButtonHideInMobile
           currentBallotIdInUrl={this.props.currentBallotIdInUrl}
           shareButtonHide
-          supportProps={ballotItemSupportStore}
           supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
           toggleFunction={this.togglePositionStatement}
           transitioning={this.state.transitioning}

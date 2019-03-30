@@ -260,7 +260,6 @@ export default class OrganizationPositionItem extends Component {
                   ballotItemDisplayName={ballotItemDisplayName}
                   commentButtonHide
                   shareButtonHide
-                  supportProps={supportProps}
                   transitioning={this.state.transitioning}
                   type={position.kind_of_ballot_item}
                   toggleFunction={this.togglePositionStatement}

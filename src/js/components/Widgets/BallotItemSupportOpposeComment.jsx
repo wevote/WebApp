@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
 import ItemActionBar from './ItemActionBar';
 import ItemPositionStatementActionBar from './ItemPositionStatementActionBar';
@@ -13,7 +14,7 @@ import VoterStore from '../../stores/VoterStore';
 /* eslint react/no-find-dom-node: 1 */
 /* eslint array-callback-return: 1 */
 
-export default class BallotItemSupportOpposeComment extends Component {
+class BallotItemSupportOpposeComment extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     currentBallotIdInUrl: PropTypes.string,
@@ -117,6 +118,9 @@ export default class BallotItemSupportOpposeComment extends Component {
     if (this.state.showPositionStatement !== nextState.showPositionStatement) {
       return true;
     }
+    if (this.state.positionPublic !== nextState.positionPublic) {
+      return true;
+    }
     return false;
   }
 
@@ -164,6 +168,7 @@ export default class BallotItemSupportOpposeComment extends Component {
   }
 
   render () {
+    if (!this.state.ballotItemWeVoteId) return null;
     // console.log('BallotItemSupportOpposeComment render, ballotItemWeVoteId:', this.state.ballotItemWeVoteId);
     renderLog(__filename);
 
@@ -175,22 +180,19 @@ export default class BallotItemSupportOpposeComment extends Component {
       commentBoxIsVisible = true;
     }
     const itemActionBar = (
-      <span>
-        <ItemActionBar
-          ballot_item_display_name={this.state.ballotItemDisplayName}
-          ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-          commentButtonHide={commentBoxIsVisible}
-          commentButtonHideInMobile
-          currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-          shareButtonHide
-          supportProps={this.state.ballotItemSupportProps}
-          supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
-          toggleFunction={this.togglePositionStatement}
-          transitioning={this.state.transitioning}
-          type={this.state.ballotItemType}
-          urlWithoutHash={this.props.urlWithoutHash}
-        />
-      </span>
+      <ItemActionBar
+        ballot_item_display_name={this.state.ballotItemDisplayName}
+        ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+        commentButtonHide={commentBoxIsVisible}
+        commentButtonHideInMobile
+        currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+        shareButtonHide
+        supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
+        toggleFunction={this.togglePositionStatement}
+        transitioning={this.state.transitioning}
+        type={this.state.ballotItemType}
+        urlWithoutHash={this.props.urlWithoutHash}
+      />
     );
 
     const commentDisplayDesktop = this.props.showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText || this.state.showPositionStatement ? (
@@ -229,14 +231,34 @@ export default class BallotItemSupportOpposeComment extends Component {
       null;
 
     return (
-      <div className="network-positions-stacked">
-        <div className="network-positions-stacked__support">
+      <Wrapper>
+        <ActionBar>
           {/* Support/Oppose/Comment toggle here */}
           {itemActionBar}
-        </div>
+        </ActionBar>
         { commentDisplayDesktop }
         { commentDisplayMobile }
-      </div>
+      </Wrapper>
     );
   }
 }
+
+const Wrapper = styled.div`
+  width: 100%;
+  background-color: #F5F5F5;
+  padding: 16px;
+  border-radius: 4px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    background-color: white;
+    padding: 0;
+  }
+`;
+
+const ActionBar = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+`;
+
+
+export default BallotItemSupportOpposeComment;

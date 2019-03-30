@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import DoneIcon from '@material-ui/icons/Done';
 import CommentIcon from '@material-ui/icons/Comment';
+import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import BallotStore from '../../stores/BallotStore';
@@ -59,42 +61,45 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   }
 
   componentDidMount () {
+    // console.log('componentDidMount, this.props: ', this.props);
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
+    this.voterGuideStoreListener = SupportStore.addListener(this.onVoterGuideStoreChange.bind(this));
     let ballotItemDisplayName = '';
-    const ballotItemSupportProps = SupportStore.get(this.props.ballotItemWeVoteId);
+    const { ballotItemWeVoteId } = this.props;
+    const ballotItemSupportProps = SupportStore.get(ballotItemWeVoteId);
     let isCandidate = false;
     let isMeasure = false;
-    if (stringContains('cand', this.props.ballotItemWeVoteId)) {
-      const candidate = CandidateStore.getCandidate(this.props.ballotItemWeVoteId);
+    if (stringContains('cand', ballotItemWeVoteId)) {
+      const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
       ballotItemDisplayName = candidate.ballot_item_display_name || '';
       isCandidate = true;
-    } else if (stringContains('meas', this.props.ballotItemWeVoteId)) {
-      const measure = MeasureStore.getMeasure(this.props.ballotItemWeVoteId);
+    } else if (stringContains('meas', ballotItemWeVoteId)) {
+      const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
       ballotItemDisplayName = measure.ballot_item_display_name || '';
       isMeasure = true;
     }
 
     let positionListFromAdvisersFollowedByVoter;
     if (isCandidate) {
-      if (!BallotStore.positionListHasBeenRetrievedOnce(this.props.ballotItemWeVoteId)) {
-        CandidateActions.positionListForBallotItem(this.props.ballotItemWeVoteId);
+      if (!BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)) {
+        CandidateActions.positionListForBallotItem(ballotItemWeVoteId);
       }
-      positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(this.props.ballotItemWeVoteId);
+      positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(ballotItemWeVoteId);
     } else if (isMeasure) {
-      if (!BallotStore.positionListHasBeenRetrievedOnce(this.props.ballotItemWeVoteId)) {
-        MeasureActions.positionListForBallotItem(this.props.ballotItemWeVoteId);
+      if (!BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)) {
+        MeasureActions.positionListForBallotItem(ballotItemWeVoteId);
       }
-      positionListFromAdvisersFollowedByVoter = MeasureStore.getPositionList(this.props.ballotItemWeVoteId);
+      positionListFromAdvisersFollowedByVoter = MeasureStore.getPositionList(ballotItemWeVoteId);
     }
-    const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(this.props.ballotItemWeVoteId);
-    const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(this.props.ballotItemWeVoteId);
-    this.setState(props => ({
+    const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(ballotItemWeVoteId);
+    const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(ballotItemWeVoteId);
+    this.setState({
       ballotItemDisplayName,
       ballotItemSupportProps,
-      ballotItemWeVoteId: props.ballotItemWeVoteId,
+      ballotItemWeVoteId,
       componentDidMountFinished: true,
       isCandidate,
       isMeasure,
@@ -102,37 +107,39 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       organizationsToFollowOppose,
       positionListFromAdvisersFollowedByVoter,
       voter: VoterStore.getVoter(), // We only set this once since the info we need isn't dynamic
-    }));
+    });
   }
 
   componentWillReceiveProps (nextProps) {
+    // console.log('componentWillReceiveProps, nextProps: ', nextProps);
     let ballotItemDisplayName;
-    const ballotItemSupportProps = SupportStore.get(nextProps.ballotItemWeVoteId);
+    const { ballotItemWeVoteId } = nextProps;
+    const ballotItemSupportProps = SupportStore.get(ballotItemWeVoteId);
     let isCandidate = false;
     let isMeasure = false;
-    if (stringContains('cand', nextProps.ballotItemWeVoteId)) {
-      const candidate = CandidateStore.getCandidate(nextProps.ballotItemWeVoteId);
+    if (stringContains('cand', ballotItemWeVoteId)) {
+      const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
       ballotItemDisplayName = candidate.ballot_item_display_name || '';
       isCandidate = true;
-    } else if (stringContains('meas', nextProps.ballotItemWeVoteId)) {
-      const measure = MeasureStore.getMeasure(nextProps.ballotItemWeVoteId);
+    } else if (stringContains('meas', ballotItemWeVoteId)) {
+      const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
       ballotItemDisplayName = measure.ballot_item_display_name || '';
       isMeasure = true;
     }
     let positionListFromAdvisersFollowedByVoter;
     if (isCandidate) {
-      // CandidateActions.positionListForBallotItem(nextProps.ballotItemWeVoteId);
-      positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(nextProps.ballotItemWeVoteId);
+      // CandidateActions.positionListForBallotItem(ballotItemWeVoteId);
+      positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(ballotItemWeVoteId);
     } else if (isMeasure) {
-      // MeasureActions.positionListForBallotItem(nextProps.ballotItemWeVoteId);
-      positionListFromAdvisersFollowedByVoter = MeasureStore.getPositionList(nextProps.ballotItemWeVoteId);
+      // MeasureActions.positionListForBallotItem(ballotItemWeVoteId);
+      positionListFromAdvisersFollowedByVoter = MeasureStore.getPositionList(ballotItemWeVoteId);
     }
-    const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(nextProps.ballotItemWeVoteId);
-    const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(nextProps.ballotItemWeVoteId);
+    const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(ballotItemWeVoteId);
+    const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(ballotItemWeVoteId);
     this.setState(() => ({
       ballotItemDisplayName,
       ballotItemSupportProps,
-      ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
+      ballotItemWeVoteId,
       isCandidate,
       isMeasure,
       organizationsToFollowSupport,
@@ -165,7 +172,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       // console.log("shouldComponentUpdate: this.state.organizationsToFollowSupport.length", this.state.organizationsToFollowSupport.length, ", nextState.organizationsToFollowSupport.length", nextState.organizationsToFollowSupport.length);
       return true;
     }
-    if (this.state.organizationsToFollowOppose.length !== nextState.organizationsToFollowOppose.length) {
+    if ((!this.state.organizationsToFollowOppose) || (!nextState.organizationsToFollowOppose) || (this.state.organizationsToFollowOppose.length !== nextState.organizationsToFollowOppose.length)) {
       // console.log("shouldComponentUpdate: this.state.organizationsToFollowOppose.length", this.state.organizationsToFollowOppose.length, ", nextState.organizationsToFollowOppose.length", nextState.organizationsToFollowOppose.length);
       return true;
     }
@@ -187,6 +194,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     this.issueStoreListener.remove();
     this.measureStoreListener.remove();
     this.supportStoreListener.remove();
+    this.voterGuideStoreListener.remove();
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -227,6 +235,15 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     }));
   }
 
+  onVoterGuideStoreChange () {
+    const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(this.state.ballotItemWeVoteId);
+    const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(this.state.ballotItemWeVoteId);
+    this.setState(() => ({
+      organizationsToFollowSupport,
+      organizationsToFollowOppose,
+    }));
+  }
+
   closeNetworkScorePopover () {
     this.refs['network-score-overlay'].hide();
   }
@@ -248,7 +265,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   }
 
   render () {
-    // console.log("BallotItemSupportOpposeCountDisplay render, ballotItemWeVoteId:", this.props.ballotItemWeVoteId);
+    if (!this.state.ballotItemWeVoteId) return null;
+    // console.log('BallotItemSupportOpposeCountDisplay render, ballotItemWeVoteId:', this.state.ballotItemWeVoteId);
     renderLog(__filename);
     // Issue Score
     // const voterIssuesScore = IssueStore.getIssuesScoreByBallotItemWeVoteId(this.state.ballotItemWeVoteId);
@@ -260,7 +278,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     // } else {
     //   voterIssuesScoreWithSign = voterIssuesScore;
     // }
-    // // console.log("BallotItemSupportOpposeCountDisplay, voterIssuesScore: ", voterIssuesScore, ", ballotItemWeVoteId: ", this.state.ballotItemWeVoteId);
+    // // console.log('BallotItemSupportOpposeCountDisplay, voterIssuesScore: ', voterIssuesScore, ', ballotItemWeVoteId: ', this.state.ballotItemWeVoteId);
     // const issueCountUnderThisBallotItem = IssueStore.getIssuesCountUnderThisBallotItem(this.state.ballotItemWeVoteId);
     // const issueCountUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesCountUnderThisBallotItemVoterIsFollowing(this.state.ballotItemWeVoteId);
     const { classes } = this.props;
@@ -290,7 +308,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     }
 
     // Voter Support or opposition
-    // const { is_voter_support: isVoterSupport, is_voter_oppose: isVoterOppose, voter_statement_text: voterStatementText } = this.state.ballotItemSupportProps || {};
+    const isVoterOppose = SupportStore.getIsOpposeByBallotItemWeVoteId(this.state.ballotItemWeVoteId);
+    const isVoterSupport = SupportStore.getIsSupportByBallotItemWeVoteId(this.state.ballotItemWeVoteId);
 
     const { organizationsToFollowSupport, organizationsToFollowOppose } = this.state;
 
@@ -298,13 +317,13 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     const organizationsToFollowOpposeCount =  organizationsToFollowOppose ? organizationsToFollowOppose.length :  0;
     const positionsCount = networkSupportCount + networkOpposeCount + organizationsToFollowSupportCount + organizationsToFollowOpposeCount;
 
-    // console.log("this.state.positionListFromAdvisersFollowedByVoter: ", this.state.positionListFromAdvisersFollowedByVoter);
+    // console.log('this.state.positionListFromAdvisersFollowedByVoter: ', this.state.positionListFromAdvisersFollowedByVoter);
     // if (positionsCount) {
     //   let supportPositionsListCount = 0;
     //   let opposePositionsListCount = 0;
     //   // let info_only_positions_list_count = 0;
     //   this.state.positionListFromAdvisersFollowedByVoter.map((onePosition) => {
-    //     // console.log("onePosition: ", onePosition);
+    //     // console.log('onePosition: ', onePosition);
     //     // Filter out the positions that we don't want to display
     //     if (onePosition.is_support_or_positive_rating) {
     //       supportPositionsListCount++;
@@ -315,7 +334,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     //     // }
     //     return null;
     //   });
-    //   // console.log("supportPositionsListCount:", supportPositionsListCount);
+    //   // console.log('supportPositionsListCount:', supportPositionsListCount);
     //
     //   // We calculate how many organizations_to_follow based on the number of positions from advisers we follow
     //   const offsetForMoreText = 3;
@@ -569,10 +588,37 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     const totalOpposeCount = networkOpposeCount + organizationsToFollowOppose.length;
     const totalInfoOnlyCount = 0;
 
+    const commentCountExists = totalInfoOnlyCount > 0;
+    const opposeCountExists = totalOpposeCount > 0;
+    // Default settings
+    let showCommentCount = false;
+    let showOpposeCount = true;
+    if (commentCountExists && !opposeCountExists) {
+      // Override if comment count exists, and oppose count does not
+      showCommentCount = true;
+      showOpposeCount = false;
+    }
+
     return (
       <Wrapper>
+        { isVoterSupport ? (
+          <NetworkScore className={classes.voterSupports}>
+            <DoneIcon classes={{ root: classes.buttonIcon }} />
+          </NetworkScore>
+        ) :
+          null
+        }
+
+        { isVoterOppose ? (
+          <NetworkScore className={classes.voterOpposes}>
+            <NotInterestedIcon classes={{ root: classes.buttonIcon }} />
+          </NetworkScore>
+        ) :
+          null
+        }
+
         {/* Total counts of all support, opposition and info only comments for this ballot item */}
-        { showNetworkScore ?
+        { showNetworkScore || isVoterSupport || isVoterOppose ?
           null : (
             <OverlayTrigger
               trigger="click"
@@ -592,18 +638,24 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                         {totalSupportCount}
                       </EndorsementCount>
                     </Endorsement>
-                    <Endorsement>
-                      <ThumbDownIcon classes={{ root: classes.endorsementIconRoot }} />
-                      <EndorsementCount>
-                        {totalOpposeCount}
-                      </EndorsementCount>
-                    </Endorsement>
-                    <Endorsement>
-                      <CommentIcon classes={{ root: classes.endorsementIconRoot }} />
-                      <EndorsementCount>
-                        {totalInfoOnlyCount}
-                      </EndorsementCount>
-                    </Endorsement>
+                    { showOpposeCount ? (
+                      <Endorsement>
+                        <ThumbDownIcon classes={{ root: classes.endorsementIconRoot }} />
+                        <EndorsementCount>
+                          {totalOpposeCount}
+                        </EndorsementCount>
+                      </Endorsement>
+                    ) :
+                      null }
+                    { showCommentCount ? (
+                      <Endorsement>
+                        <CommentIcon classes={{ root: classes.endorsementIconRoot }} />
+                        <EndorsementCount>
+                          {totalInfoOnlyCount}
+                        </EndorsementCount>
+                      </Endorsement>
+                    ) :
+                      null }
                   </EndorsementRow>
                 </EndorsementWrapper>
               </EndorsementsContainer>
@@ -612,7 +664,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         }
 
         {/* Network Score for this ballot item here */}
-        { showNetworkScore ? (
+        { showNetworkScore && !isVoterSupport && !isVoterOppose ? (
           <OverlayTrigger
             trigger="click"
             ref="network-score-overlay"
@@ -631,7 +683,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                   { totalNetworkScoreWithSign }
                 </span>
               )}
-              <NetworkScoreLabel className="u-show-mobile-tablet">Network Score</NetworkScoreLabel>
             </NetworkScore>
           </OverlayTrigger>
         ) : null
@@ -645,7 +696,16 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   }
 }
 
+// ${theme.colors.opposeRedRgb}  // Why doesn't this pull from WebApp/src/js/styled-theme.js ?
 const styles = theme => ({
+  buttonIcon: {
+    root: {
+      fontSize: 18,
+      [theme.breakpoints.down('lg')]: {
+        fontSize: 16,
+      },
+    },
+  },
   cardRoot: {
     padding: '8px 16px',
     [theme.breakpoints.down('lg')]: {
@@ -660,33 +720,39 @@ const styles = theme => ({
     fontSize: 14,
     margin: '0 0 .1rem .4rem',
   },
+  voterOpposes: {
+    background: 'rgb(255, 73, 34)', // colors.opposeRedRgb
+  },
+  voterSupports: {
+    background: 'rgb(31, 192, 111)', // colors.supportGreenRgb
+  },
 });
 
 const Wrapper = styled.div`
   margin-top: .1rem;
-  @media (max-width: 768px) {
-    margin-top: 0;
-    width: 100%;
-    max-width: 100%;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-    padding-top: 8px;
-  }
 `;
+// @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+//   margin-top: 0;
+//   width: 100%;
+//   max-width: 100%;
+//   border-top: 1px solid #eee;
+//   border-bottom: 1px solid #eee;
+//   padding-top: 8px;
+// }
 
 const EndorsementsContainer = styled.div`
   display: flex;
   flex-flow: column;
   justify-content: space-between;
-  @media (max-width: 768px) {
-    flex-flow: row;
-  }
 `;
+// @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+//   flex-flow: row;
+// }
 
 const EndorsementsTitle = styled.div`
   color: #888;
-  font-weight: 600;
-  font-size: 12px;
+  font-weight: 500;
+  font-size: 10px;
   text-align: right;
 `;
 
@@ -726,24 +792,12 @@ const NetworkScore = styled.div`
   padding: 8px;
   border-radius: 8px;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
-  @media (max-width: 768px) {
-    color: #777;
-    padding: 0 0 8px 0;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 14px;
     text-align: right;
     justify-content: flex-end;
-    background: transparent;
-    box-shadow: none;
   }
 `;
 
-const NetworkScoreLabel = styled.h1`
-  color: #888;
-  font-weight: 600;
-  font-size: 12px;
-  margin: 0 0 0 .3rem;
-  text-align: right;
-  display: inline-block;
-`;
 
 export default withTheme()(withStyles(styles)(BallotItemSupportOpposeCountDisplay));

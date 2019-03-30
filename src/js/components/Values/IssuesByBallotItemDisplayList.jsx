@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg';
 import styled from 'styled-components';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
@@ -11,6 +12,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 class IssuesByBallotItemDisplayList extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
+    children: PropTypes.object,
   };
 
   constructor (props) {
@@ -19,6 +21,7 @@ class IssuesByBallotItemDisplayList extends Component {
       issuesUnderThisBallotItemVoterIsFollowing: [],
       issuesUnderThisBallotItemVoterIsNotFollowing: [],
       maximumNumberOfIssuesToDisplay: 26,
+      expand: false,
     };
   }
 
@@ -61,8 +64,14 @@ class IssuesByBallotItemDisplayList extends Component {
     this.setState();
   }
 
+  handleExpandIssues = () => {
+    const { expand } = this.state;
+    this.setState({ expand: !expand });
+  }
+
   render () {
     renderLog(__filename);
+    const { expand } = this.state;
     const issuesUnderThisBallotItemVoterIsFollowingFound =
       this.state.issuesUnderThisBallotItemVoterIsFollowing &&
       this.state.issuesUnderThisBallotItemVoterIsFollowing.length;
@@ -77,7 +86,8 @@ class IssuesByBallotItemDisplayList extends Component {
       !issuesUnderThisBallotItemVoterIsFollowingFound &&
       !issuesUnderThisBallotItemVoterIsNotFollowingFound
     ) {
-      return null;
+      // If we don't have any endorsement text, show the alternate component passed in
+      return this.props.children || null;
     }
 
     let localCounter = 0;
@@ -146,24 +156,57 @@ class IssuesByBallotItemDisplayList extends Component {
 
     return (
       <Wrapper>
-        <div className="issues-list-stacked__support-list__container-wrap">
+        <Issues>
           {/* Show a break-down of the current positions in your network */}
-          <div className="issues-list-stacked__support-list__container u-flex u-items-start u-inset__v--xs">
-            <ul className="issues-list-stacked__support-list__items">
-              {/* Issues the voter is already following */}
-              {issuesVoterIsFollowingHtml}
-              {/* Issues the voter is not following yet */}
-              {issuesVoterIsNotFollowingHtml}
-            </ul>
-          </div>
-        </div>
+          <IssueList expand={expand}>
+            {/* Issues the voter is already following */}
+            {issuesVoterIsFollowingHtml}
+            {/* Issues the voter is not following yet */}
+            {issuesVoterIsNotFollowingHtml}
+          </IssueList>
+        </Issues>
+        {expand ? null : (
+          <MoreWrapper onClick={this.handleExpandIssues}>
+            <MoreHorizIcon />
+          </MoreWrapper>
+        )
+        }
       </Wrapper>
     );
   }
 }
 
+const Issues = styled.div`
+  display: flex;
+  flex-flow: row;
+  max-width: 60%;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    max-width: 68%;
+  }
+`;
+
+const IssueList = styled.ul`
+  display: flex;
+  flex-flow: row${({ expand }) => (expand ? ' wrap' : '')};
+  padding-inline-start: 0;
+`;
+
 const Wrapper = styled.div`
-  overflow-x: scroll;
+  overflow-x: hidden;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+`;
+
+const MoreWrapper = styled.p`
+  display: flex;
+  flex-flow: row;
+  display: inline;
+  background-color: white;
+  padding-top: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  cursor: pointer;
 `;
 
 export default IssuesByBallotItemDisplayList;

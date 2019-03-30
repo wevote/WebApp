@@ -11,6 +11,7 @@ import { renderLog } from '../../utils/logging';
 import extractNumber from '../../utils/extractNumber';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
+import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import { capitalizeString, shortenText } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -252,10 +253,7 @@ class MeasureItemCompressed extends Component {
           </Choice>
         </ChoicesRow>
         <Divider />
-        <CardFooter onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
-          Show More
-          <ArrowForwardIcon classes={{ root: classes.cardFooterIconRoot }} />
-        </CardFooter>
+        <ShowMoreFooter showMoreLink={() => this.goToMeasureLink(measureWeVoteId)} />
       </Card>
     );
   }
@@ -322,7 +320,7 @@ const ChoiceTitle = styled.h1`
 const ChoiceInfo = styled.p`
   font-size: 12px;
   color: #777;
-  @media (max-width: 768px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     max-width: 140%;
   }
 `;
@@ -334,8 +332,8 @@ const MeasureInfoWrapper = styled.div`
   cursor: pointer;
   user-select: none;
   padding-right: 8px;
-  @media (max-width: 768px) {
-    max-width: 100%;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    max-width: 70%;
   }
 `;
 
@@ -343,7 +341,7 @@ const Title = styled.h1`
   font-size: 18px;
   font-weight: bold;
   margin: .1rem 0;
-  @media (max-width: 960px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     font-size: 16px;
   }
 `;
@@ -352,7 +350,9 @@ const SubTitle = styled.h3`
   font-size: 16px;
   font-weight: 300;
   color: #555;
-  @media (max-width: 960px) {
+  margin-top: .6rem;
+  width: 135%;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     font-size: 13px;
   }
 `;
@@ -361,17 +361,18 @@ const Info = styled.p`
   font-size: 13px;
   font-weight: 300;
   color: #777;
+  width: 135%;
 `;
 
-const CardFooter = styled.div`
-  font-size: 12px;
-  padding-top: 8px;
-  text-align: center;
-  user-select: none;
-  cursor: pointer;
-  @media (max-width: 960px) {
-    padding-bottom: 8px;
-  }
-`;
+// const CardFooter = styled.div`
+//   font-size: 12px;
+//   padding-top: 8px;
+//   text-align: center;
+//   user-select: none;
+//   cursor: pointer;
+//   @media (max-width: 960px) {
+//     padding-bottom: 8px;
+//   }
+// `;
 
 export default withTheme()(withStyles(styles)(MeasureItemCompressed));

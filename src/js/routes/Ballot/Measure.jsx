@@ -144,9 +144,9 @@ export default class Measure extends Component {
           { positionListFromAdvisersFollowedByVoter ? (
             <div>
               <PositionList
-                position_list={positionListFromAdvisersFollowedByVoter}
+                incomingPositionList={positionListFromAdvisersFollowedByVoter}
                 hideSimpleSupportOrOppose
-                ballot_item_display_name={measure.ballot_item_display_name}
+                ballotItemDisplayName={measure.ballot_item_display_name}
               />
             </div>
           ) : null
@@ -158,7 +158,7 @@ export default class Measure extends Component {
                 <GuideList
                   id={electionId}
                   ballotItemWeVoteId={measureWeVoteId}
-                  organizationsToFollow={voterGuidesToFollowForLatestBallotItem}
+                  incomingVoterGuideList={voterGuidesToFollowForLatestBallotItem}
                 />
               </div>
             )}

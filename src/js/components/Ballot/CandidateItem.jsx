@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import styled from 'styled-components';
 import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import CandidateStore from '../../stores/CandidateStore';
@@ -17,7 +18,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
 
 // This is related to /js/components/VoterGuide/OrganizationVoterGuideCandidateItem.jsx
-export default class CandidateItem extends Component {
+class CandidateItem extends Component {
   static propTypes = {
     ballot_item_display_name: PropTypes.string.isRequired,
     ballotpedia_candidate_summary: PropTypes.string,
@@ -32,6 +33,7 @@ export default class CandidateItem extends Component {
     linkToOfficePage: PropTypes.bool,
     organizationWeVoteId: PropTypes.string,
     party: PropTypes.string,
+    showOfficeName: PropTypes.bool,
     showPositionStatementActionBar: PropTypes.bool,
     showTopCommentByBallotItem: PropTypes.bool,
     twitter_description: PropTypes.string,
@@ -163,79 +165,57 @@ export default class CandidateItem extends Component {
 
     return (
       <div className="card-main candidate-card">
-        <div className="card-main__media-object">
+        <CandidateInfo className="card-main__media-object">
           <div className="card-main__media-object-anchor">
             {this.props.link_to_ballot_item_page ?
               <Link to={this.getCandidateLink} className="u-no-underline">{candidatePhotoUrlHtml}</Link> :
               candidatePhotoUrlHtml
             }
-
-            {twitterFollowersCount ? (
-              <span
-                className={this.props.link_to_ballot_item_page ?
-                  'twitter-followers__badge u-cursor--pointer' :
-                  'twitter-followers__badge'}
-                onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}
-              >
-                <span className="fa fa-twitter twitter-followers__icon" />
-                <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
-              </span>
-            ) :
-              null
-          }
           </div>
-
-          <div className="card-main__media-object-content">
-            <h2 className="card-main__display-name">
-              { this.props.link_to_ballot_item_page ?
-                <Link to={this.getCandidateLink}>{ballotItemDisplayName}</Link> :
-                ballotItemDisplayName
+          <CandidateWrapper>
+            <Candidate>
+              <h2 className="card-main__display-name">
+                { this.props.link_to_ballot_item_page ?
+                  <Link to={this.getCandidateLink}>{ballotItemDisplayName}</Link> :
+                  ballotItemDisplayName
               }
-            </h2>
-            <p className={this.props.link_to_ballot_item_page ?
-              'u-gray-darker u-cursor--pointer' :
-              'u-gray-darker'
-              }
-            >
-              { contestOfficeName ? (
-                <OfficeNameText
-                  politicalParty={party}
-                  contestOfficeName={contestOfficeName}
-                  officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
-                />
+              </h2>
+              {twitterFollowersCount ? (
+                <span
+                  className={this.props.link_to_ballot_item_page ?
+                    'twitter-followers__badge u-show-desktop-tablet u-cursor--pointer' :
+                    'twitter-followers__badge u-show-desktop-tablet'}
+                  onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}
+                >
+                  <span className="fa fa-twitter twitter-followers__icon" />
+                  <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
+                </span>
               ) :
                 null
               }
-            </p>
-            { candidateText.length ? (
-              <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
-                <div className="card-main__description">
-                  <LearnMore
-                    learn_more_text="Read more on Ballotpedia"
-                    num_of_lines={3}
-                    learn_more_link={ballotpediaCandidateUrl}
-                    text_to_display={candidateText}
+              <p className={this.props.link_to_ballot_item_page ?
+                'u-gray-darker u-cursor--pointer' :
+                'u-gray-darker'
+              }
+              >
+                { contestOfficeName ? (
+                  <OfficeNameText
+                    contestOfficeName={contestOfficeName}
+                    officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
+                    politicalParty={party}
+                    showOfficeName={this.props.showOfficeName}
                   />
-                </div>
-                <Link to={this.getCandidateLink}>
-                  { this.props.link_to_ballot_item_page ? <span className="card-main__read-more-pseudo" /> : null }
-                </Link>
-                { this.props.link_to_ballot_item_page ?
-                  <Link to={this.getCandidateLink} className="card-main__read-more-link">&nbsp;Read more</Link> :
+                ) :
                   null
               }
-              </div>
-            ) :
-              null
-          }
-          </div>
-          {' '}
-          {/* Endorsement count or Network score */}
-          <span>
+              </p>
+              {/* Endorsement count or Network score */}
+            </Candidate>
             <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={candidateWeVoteId} />
-          </span>
+          </CandidateWrapper>
+          {' '}
           {/* END .card-main__media-object-content */}
-        </div>
+        </CandidateInfo>
         {' '}
         {/* END .card-main__media-object */}
         <div className="card-main__actions">
@@ -250,7 +230,30 @@ export default class CandidateItem extends Component {
               <TopCommentByBallotItem
                 ballotItemWeVoteId={candidateWeVoteId}
                 learnMoreUrl={this.getCandidateLink()}
-              />
+              >
+                {/* If there aren't any comments about the candidate, show the text description of the candidate */}
+                { candidateText.length ? (
+                  <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
+                    <div className="card-main__description">
+                      <LearnMore
+                          learn_more_text="Read more on Ballotpedia"
+                          num_of_lines={2}
+                          learn_more_link={ballotpediaCandidateUrl}
+                          text_to_display={candidateText}
+                      />
+                    </div>
+                    <Link to={this.getCandidateLink}>
+                      { this.props.link_to_ballot_item_page ? <span className="card-main__read-more-pseudo" /> : null }
+                    </Link>
+                    { this.props.link_to_ballot_item_page ?
+                      <Link to={this.getCandidateLink} className="card-main__read-more-link">&nbsp;more</Link> :
+                      null
+                    }
+                  </div>
+                ) :
+                  null
+                }
+              </TopCommentByBallotItem>
             )
             }
           </div>
@@ -273,3 +276,23 @@ export default class CandidateItem extends Component {
     );
   }
 }
+
+const CandidateInfo = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+`;
+
+const Candidate = styled.div`
+`;
+
+const CandidateWrapper = styled.div`
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  width: 90%;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    width: 100%;
+  }
+`;
+
+export default CandidateItem;

@@ -7,7 +7,6 @@ import CandidateActions from '../../actions/CandidateActions';
 import CandidateItem from '../../components/Ballot/CandidateItem';
 import CandidateStore from '../../stores/CandidateStore';
 import { capitalizeString } from '../../utils/textFormat';
-import GuideList from '../../components/VoterGuide/GuideList';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import LoadingWheel from '../../components/LoadingWheel';
@@ -35,18 +34,14 @@ export default class Candidate extends Component {
       candidate: {},
       candidateWeVoteId: '',
       organizationWeVoteId: '',
-      positionListFromAdvisersFollowedByVoter: [],
-
-      // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidateWeVoteId, but we can't now
-      //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-      // guidesToFollowList: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.candidate_we_vote_id)
-      voterGuidesToFollowForThisBallotItem: [],
+      allCachedPositionsForThisCandidate: [],
     };
   }
 
   componentDidMount () {
-    // console.log("Candidate componentDidMount");
+    // console.log('Candidate componentDidMount');
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
 
     let organizationWeVoteId = '';
     if (this.props.params) {
@@ -56,7 +51,7 @@ export default class Candidate extends Component {
       organizationWeVoteId = this.props.params.organization_we_vote_id || '';
       // If needed, activate this
       // organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-      // if (organizationWeVoteId && organizationWeVoteId !== "" && !organization.organization_we_vote_id) {
+      // if (organizationWeVoteId && organizationWeVoteId !== '' && !organization.organization_we_vote_id) {
       //   // Retrieve the organization object
       //   OrganizationActions.organizationRetrieve(organizationWeVoteId);
       // }
@@ -67,7 +62,6 @@ export default class Candidate extends Component {
     }
 
     // Get the latest guides to follow for this candidate
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
 
     // June 2018: Avoid hitting this same api multiple times, if we already have the data
     const voterGuidesForId = VoterGuideStore.getVoterGuideForOrganizationId(this.props.params.candidate_we_vote_id);
@@ -80,14 +74,19 @@ export default class Candidate extends Component {
     OrganizationActions.organizationsFollowedRetrieve();
 
     // We want to make sure we have all of the position information so that comments show up
-    const voterGuidesToFollowForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.candidate_we_vote_id);
+    const voterGuidesForThisBallotItem = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.candidate_we_vote_id);
 
-    if (voterGuidesToFollowForThisBallotItem) {
-      voterGuidesToFollowForThisBallotItem.forEach((oneVoterGuide) => {
-        // console.log("oneVoterGuide: ", oneVoterGuide);
+    if (voterGuidesForThisBallotItem) {
+      voterGuidesForThisBallotItem.forEach((oneVoterGuide) => {
+        // console.log('oneVoterGuide: ', oneVoterGuide);
         OrganizationActions.positionListForOpinionMaker(oneVoterGuide.organization_we_vote_id, false, true, oneVoterGuide.google_civic_election_id);
       });
     }
+
+    // getAllCachedPositionsByCandidateWeVoteId returns a dict with organization_we_vote_id as the key
+    // We convert to a simple list
+    const allCachedPositionsForThisCandidateDict = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(this.props.params.candidate_we_vote_id);
+    const allCachedPositionsForThisCandidate = Object.values(allCachedPositionsForThisCandidateDict);
 
     // Display the candidate's name in the search box
     const searchBoxText = this.state.candidate.ballot_item_display_name || ''; // TODO DALE Not working right now
@@ -96,67 +95,67 @@ export default class Candidate extends Component {
     this.setState({
       candidateWeVoteId: this.props.params.candidate_we_vote_id,
       organizationWeVoteId,
-      positionListFromAdvisersFollowedByVoter: CandidateStore.getPositionList(this.props.params.candidate_we_vote_id),
-      voterGuidesToFollowForThisBallotItem,
+      allCachedPositionsForThisCandidate,
     });
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("Candidate componentWillReceiveProps");
+    // console.log('Candidate componentWillReceiveProps');
     // When a new candidate is passed in, update this component to show the new data
     if (nextProps.params.candidate_we_vote_id !== this.state.candidateWeVoteId) {
       CandidateActions.candidateRetrieve(nextProps.params.candidate_we_vote_id);
       CandidateActions.positionListForBallotItem(nextProps.params.candidate_we_vote_id);
       VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.candidate_we_vote_id, 'CANDIDATE');
+
+      // getAllCachedPositionsByCandidateWeVoteId returns a dict with organization_we_vote_id as the key
+      // We convert to a simple list
+      const allCachedPositionsForThisCandidateDict = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(nextProps.params.candidate_we_vote_id);
+      const allCachedPositionsForThisCandidate = Object.values(allCachedPositionsForThisCandidateDict);
       this.setState({
         candidateWeVoteId: nextProps.params.candidate_we_vote_id,
-        positionListFromAdvisersFollowedByVoter: CandidateStore.getPositionList(nextProps.params.candidate_we_vote_id),
-        voterGuidesToFollowForThisBallotItem: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(nextProps.params.candidate_we_vote_id),
+        allCachedPositionsForThisCandidate,
       });
     }
 
     // Display the candidate's name in the search box
     // var { candidate } = this.state;
-    // var searchBoxText = candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
+    // var searchBoxText = candidate.ballot_item_display_name || '';  // TODO DALE Not working right now
     SearchAllActions.exitSearch('');
   }
 
   componentWillUnmount () {
-    // console.log("Candidate componentWillUnmount");
+    // console.log('Candidate componentWillUnmount');
     this.candidateStoreListener.remove();
     this.voterGuideStoreListener.remove();
   }
 
   onCandidateStoreChange () {
-    // console.log("Candidate onCandidateStoreChange");
-    this.setState(state => ({
-      candidate: CandidateStore.getCandidate(state.candidateWeVoteId),
-      positionListFromAdvisersFollowedByVoter: CandidateStore.getPositionList(state.candidateWeVoteId),
-    }));
+    // console.log('Candidate onCandidateStoreChange');
+    const allCachedPositionsForThisCandidateDict = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(this.state.candidateWeVoteId);
+    const allCachedPositionsForThisCandidate = Object.values(allCachedPositionsForThisCandidateDict);
+    const { candidateWeVoteId } = this.state;
+    this.setState({
+      candidate: CandidateStore.getCandidate(candidateWeVoteId),
+      allCachedPositionsForThisCandidate,
+    });
   }
 
   onVoterGuideStoreChange () {
-    // console.log("Candidate onVoterGuideStoreChange");
+    // console.log('Candidate onVoterGuideStoreChange');
     // Trigger an update of the candidate so we can get an updated position_list
     //  CandidateActions.candidateRetrieve(this.state.candidateWeVoteId);
     CandidateActions.positionListForBallotItem(this.state.candidateWeVoteId);
 
     // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
     SupportActions.retrievePositionsCountsForOneBallotItem(this.state.candidateWeVoteId);
-
-    // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidateWeVoteId, but we can't now
-    //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
-    this.setState(state => ({
-      voterGuidesToFollowForThisBallotItem: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(state.candidateWeVoteId),
-    }));
   }
 
   render () {
     renderLog(__filename);
-    const electionId = VoterStore.electionId();
-    const NO_VOTER_GUIDES_TEXT = 'We could not find any more voter guides to follow related to this candidate.';
+    // const electionId = VoterStore.electionId();
+    // const NO_VOTER_GUIDES_TEXT = 'We could not find any more voter guides to follow related to this candidate.';
 
-    // console.log("Candidate render, this.state.positionListFromAdvisersFollowedByVoter: ", this.state.positionListFromAdvisersFollowedByVoter);
+    // console.log('Candidate render, this.state.allCachedPositionsForThisCandidate: ', this.state.allCachedPositionsForThisCandidate);
 
     if (!this.state.candidate || !this.state.candidate.ballot_item_display_name) {
       // TODO DALE If the candidate we_vote_id is not valid, we need to update this with a notice
@@ -188,32 +187,34 @@ export default class Candidate extends Component {
             organizationWeVoteId={this.state.organizationWeVoteId}
             linkToOfficePage
             showLargeImage
+            showOfficeName
             showPositionStatementActionBar
           />
           <div className="card__additional">
-            { this.state.positionListFromAdvisersFollowedByVoter ? (
+            {/* this.state.positionListFromAdvisersFollowedByVoter */}
+            { this.state.allCachedPositionsForThisCandidate ? (
               <div>
                 <PositionList
-                  position_list={this.state.positionListFromAdvisersFollowedByVoter}
-                  hideSimpleSupportOrOppose
-                  ballot_item_display_name={this.state.candidate.ballot_item_display_name}
+                  incomingPositionList={this.state.allCachedPositionsForThisCandidate}
+                  ballotItemDisplayName={this.state.candidate.ballot_item_display_name}
                   positionListExistsTitle={<div><h3 className="card__additional-heading">Your Network&apos;s Opinions</h3></div>}
                 />
               </div>
             ) : null
             }
-            {this.state.voterGuidesToFollowForThisBallotItem.length === 0 ?
+            {/* Formerly voterGuidesToFollowForThisBallotItem */}
+            {/* this.state.voterGuidesForThisBallotItem.length === 0 ?
               <div className="card__additional-text">{NO_VOTER_GUIDES_TEXT}</div> : (
                 <div>
-                  <h3 className="card__additional-heading">{`More opinions about ${this.state.candidate.ballot_item_display_name}`}</h3>
+                  <h3 className="card__additional-heading">{`Opinions about ${this.state.candidate.ballot_item_display_name}`}</h3>
                   <GuideList
                     id={electionId}
                     ballotItemWeVoteId={this.state.candidateWeVoteId}
-                    organizationsToFollow={this.state.voterGuidesToFollowForThisBallotItem}
+                    incomingVoterGuideList={this.state.voterGuidesForThisBallotItem}
                   />
                 </div>
               )
-            }
+            */}
           </div>
         </section>
         <OpenExternalWebSite

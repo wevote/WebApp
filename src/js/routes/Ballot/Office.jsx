@@ -11,7 +11,10 @@ import { renderLog } from '../../utils/logging';
 import OfficeActions from '../../actions/OfficeActions';
 import OfficeStore from '../../stores/OfficeStore';
 import SearchAllActions from '../../actions/SearchAllActions';
+import Testimonial from '../../components/Widgets/Testimonial';
 import VoterStore from '../../stores/VoterStore';
+import { cordovaDot } from '../../utils/cordovaUtils';
+
 
 // This is related to routes/VoterGuide/OrganizationVoterGuideOffice
 export default class Office extends Component {
@@ -94,24 +97,44 @@ export default class Office extends Component {
     const titleText = `${officeName} - We Vote`;
     const descriptionText = `Choose who you support for ${officeName} in this election`;
 
+    // =========== Testimonial variables ============================
+
+    const testimonialAuthor = 'Dale M., Oakland, California';
+    const imageUrl = cordovaDot('/img/global/photos/Dale_McGrew-200x200.jpg');
+    const testimonial = 'Following the values that are important to me shows me opinions on my ballot from other people who share my values.';
+
+    // ==============================================================
+
+
     return (
-      <div>
+      <div style={{ display: 'flex' }}>
         <Helmet
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
         />
-        { office.candidate_list ? (
-          <div>
-            <CandidateList
-              contest_office_name={office.ballot_item_display_name}
-            >
-              {office.candidate_list}
-            </CandidateList>
-          </div>
-        ) :
-          <span>No candidates found.</span>
+        <div className="col-sm-12 col-lg-9">
+          { office.candidate_list ? (
+            <div>
+              <CandidateList
+                contest_office_name={office.ballot_item_display_name}
+              >
+                {office.candidate_list}
+              </CandidateList>
+            </div>
+          ) :
+            <span>No candidates found.</span>
         }
+        </div>
+        <div className="col-lg-3 d-none d-lg-block">
+          <Testimonial
+            imageUrl={imageUrl}
+            testimonialAuthor={testimonialAuthor}
+            testimonial={testimonial}
+          />
+        </div>
       </div>
     );
   }
 }
+
+

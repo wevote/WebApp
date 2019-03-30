@@ -1030,10 +1030,10 @@ class VoterGuideBallot extends Component {
                       return (
                         <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
                           <Badge
-                          classes={{ badge: classes.badge, colorPrimary: classes.badgeColorPrimary }}
-                          color={oneTypeOfBallotItem === raceLevelFilterType ? 'primary' : 'default'}
-                          badgeContent={ballotItemsByFilterType.length}
-                          invisible={ballotItemsByFilterType.length === 0}
+                            classes={{ badge: classes.badge, colorPrimary: classes.badgeColorPrimary }}
+                            color={oneTypeOfBallotItem === raceLevelFilterType ? 'primary' : 'default'}
+                            badgeContent={ballotItemsByFilterType.length}
+                            invisible={ballotItemsByFilterType.length === 0}
                           >
                             {oneTypeOfBallotItem === raceLevelFilterType ?
                               <RadioButtonCheckedIcon classes={{ root: classes.iconRoot }} onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)} /> : <RadioButtonUncheckedIcon classes={{ root: classes.iconRoot }} onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)} />}

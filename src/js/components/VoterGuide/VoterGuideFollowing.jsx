@@ -201,9 +201,9 @@ export default class VoterGuideFollowing extends Component {
                 }
                 <span>
                   <GuideList
-                    organizationsToFollow={voterGuideFollowedList}
-                    hide_stop_following_button={hideStopFollowingButton}
-                    hide_ignore_button
+                    incomingVoterGuideList={voterGuideFollowedList}
+                    hideStopFollowingButton={hideStopFollowingButton}
+                    hideIgnoreButton
                     instantRefreshOn
                   />
                 </span>

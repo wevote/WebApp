@@ -9,6 +9,8 @@ import styled from 'styled-components';
 import _ from 'lodash';
 import ballotSearchPriority from '../../utils/ballotSearchPriority';
 
+const delayBeforeSearchExecution = 400;
+
 class BallotSearch extends Component {
   static propTypes = {
     classes: PropTypes.object,
@@ -24,6 +26,24 @@ class BallotSearch extends Component {
     this.state = {
       searchValue: '',
     };
+    this.handleSearch = this.handleSearch.bind(this);
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if not needed
+    if (this.props.isSearching !== nextProps.isSearching) {
+      // console.log("shouldComponentUpdate: this.state.isSearching", this.state.isSearching, ", nextState.isSearching", nextState.isSearching);
+      return true;
+    }
+    if (this.state.searchValue !== nextState.searchValue) {
+      // console.log("shouldComponentUpdate: this.state.searchValue", this.state.searchValue, ", nextState.searchValue", nextState.searchValue);
+      return true;
+    }
+    return false;
+  }
+
+  componentWillUnmount () {
+    this.searchInputTimer = null;
   }
 
   filterItems = search => this.props.items.map((item) => {
@@ -41,14 +61,23 @@ class BallotSearch extends Component {
     this.props.onToggleSearch(!isSearching);
   }
 
-  handleSearch = (evt) => {
-    const { items } = this.props;
-    const { value } = evt.target;
+  handleSearch (event) { // eslint-disable-line consistent-return
+    clearTimeout(this.searchInputTimer);
+    const { value } = event.target;
     this.setState({ searchValue: value });
-    const sortedFiltered = _.sortBy(this.filterItems(value), ['priority']).reverse().filter(item => item.priority > 0);
+
+    // If search value is empty, exit
     if (!value.length) return this.props.onBallotSearch([]);
-    if (value.length < 3) return null;
-    return this.props.onBallotSearch(sortedFiltered.length ? sortedFiltered : items);
+
+    // If search value shorter than minimum length, exit
+    // if (value.length < 3) return null;
+
+    this.searchInputTimer = setTimeout(() => {
+      // Filter out items without the search terms, and put the most likely search result at the top
+      const sortedFiltered = _.sortBy(this.filterItems(value), ['priority']).reverse().filter(item => item.priority > 0);
+      // Only return results if they get past the filter
+      return this.props.onBallotSearch(sortedFiltered.length ? sortedFiltered : []);
+    }, delayBeforeSearchExecution);
   }
 
   render () {
@@ -132,7 +161,7 @@ const SearchWrapper = styled.div`
   border: 1px solid ${props => (!props.searching ? 'rgba(0, 0, 0, 0.23)' : props.brandBlue)};
   padding: 0 3px 0 3px;
   margin-right: 16px;
-  @media (max-width: 960px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     height: 22.5px;
     margin-right: 4px;
   }

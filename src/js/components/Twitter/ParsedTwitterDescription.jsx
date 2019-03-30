@@ -48,9 +48,9 @@ const ParsedTwitterDescription = (props) => {
   return (
     <span className="card-main__description">
       {
-        parsedTwitterDescription.map(snippet => (
+        parsedTwitterDescription.map((snippet, index) => (
           snippet.type === 'text' ? (
-            <span key={snippet.toString()}>
+            <span key={snippet.toString() + index}>
               {props.twitter_description.slice(snippet.location[0], snippet.location[1])}
               &nbsp;
             </span>
