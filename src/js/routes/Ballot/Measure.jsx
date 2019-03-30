@@ -6,6 +6,7 @@ import GuideList from '../../components/VoterGuide/GuideList';
 import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import MeasureItem from '../../components/Ballot/MeasureItem';
+import MeasureStickyHeader from '../../components/Ballot/MeasureStickyHeader';
 import MeasureActions from '../../actions/MeasureActions';
 import MeasureStore from '../../stores/MeasureStore';
 import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
@@ -15,6 +16,7 @@ import SupportActions from '../../actions/SupportActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import AppStore from '../../stores/AppStore';
 import SearchAllActions from '../../actions/SearchAllActions';
 import webAppConfig from '../../config';
 
@@ -34,11 +36,13 @@ export default class Measure extends Component {
       //  because we don't always have the ballot_item_we_vote_id for certain API calls like organizationFollow
       // guides_to_follow_list: VoterGuideStore.getVoterGuidesToFollowForBallotItemId(this.props.params.measureWeVoteId)
       voterGuidesToFollowForLatestBallotItem: [],
+      scrolledDown: AppStore.getScrolledDown(),
     };
   }
 
   componentDidMount () {
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     MeasureActions.measureRetrieve(this.props.params.measure_we_vote_id);
     MeasureActions.positionListForBallotItem(this.props.params.measure_we_vote_id);
 
@@ -81,6 +85,13 @@ export default class Measure extends Component {
   componentWillUnmount () {
     this.measureStoreListener.remove();
     this.voterGuideStoreListener.remove();
+    this.appStoreListener.remove();
+  }
+
+  onAppStoreChange () {
+    this.setState({
+      scrolledDown: AppStore.getScrolledDown(),
+    });
   }
 
   onMeasureStoreChange () {
@@ -110,7 +121,7 @@ export default class Measure extends Component {
   render () {
     const {
       positionListFromAdvisersFollowedByVoter, voterGuidesToFollowForLatestBallotItem, measure,
-      measureWeVoteId,
+      measureWeVoteId, scrolledDown,
     } = this.state;
     renderLog(__filename);
 
@@ -139,6 +150,11 @@ export default class Measure extends Component {
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
         />
+        {
+          scrolledDown && (
+            <MeasureStickyHeader measureWeVoteId={measure.we_vote_id} />
+          )
+        }
         <MeasureItem measureWeVoteId={measure.we_vote_id} />
         <div className="card__additional">
           { positionListFromAdvisersFollowedByVoter ? (
