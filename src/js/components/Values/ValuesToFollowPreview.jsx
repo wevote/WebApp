@@ -50,6 +50,7 @@ export default class ValuesToFollowPreview extends Component {
       } else {
         return (
           <IssueCard
+            followToggleOn
             issue={issue}
             issueImageSize="SMALL"
             key={`issue-list-key-${issue.issue_we_vote_id}`}
