@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
+import AppStore from '../../stores/AppStore';
 import ReadMore from '../Widgets/ReadMore';
 import { capitalizeString } from '../../utils/textFormat';
+import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
 // import SupportStore from '../../stores/SupportStore';
 
-export default class MeasureItem extends Component {
+class MeasureItem extends Component {
   static propTypes = {
     measureWeVoteId: PropTypes.string.isRequired,
   };
@@ -23,6 +25,8 @@ export default class MeasureItem extends Component {
       regionalDisplayName: '',
       stateCode: '',
       stateDisplayName: '',
+      showPositionStatementActionBar: true,
+      scrolledDown: AppStore.getScrolledDown(),
     };
     this.getMeasureLink = this.getMeasureLink.bind(this);
     this.goToMeasureLink = this.goToMeasureLink.bind(this);
@@ -31,6 +35,7 @@ export default class MeasureItem extends Component {
   componentDidMount () {
     this.onMeasureStoreChange();
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     // this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     // this.setState({
     //   supportProps: SupportStore.get(this.props.we_vote_id)
@@ -39,6 +44,7 @@ export default class MeasureItem extends Component {
 
   componentWillUnmount () {
     this.measureStoreListener.remove();
+    this.appStoreListener.remove();
     // this.supportStoreListener.remove();
   }
 
@@ -53,6 +59,12 @@ export default class MeasureItem extends Component {
       regionalDisplayName: measure.regional_display_name,
       stateCode: measure.state_code,
       stateDisplayName: measure.state_display_name,
+    });
+  }
+
+  onAppStoreChange () {
+    this.setState({
+      scrolledDown: AppStore.getScrolledDown(),
     });
   }
 
@@ -83,6 +95,7 @@ export default class MeasureItem extends Component {
     } = this.state;
     const {
       measureText, measureWeVoteId, electionDisplayName, regionalDisplayName, stateCode,
+      scrolledDown,
     } = this.state;
     if (stateDisplayName === undefined && stateCode) {
       stateDisplayName = stateCode.toUpperCase();
@@ -129,12 +142,18 @@ export default class MeasureItem extends Component {
           ) :
             null
           }
-
-          <div className="row" style={{ paddingBottom: '0.5rem' }}>
-            <div className="col-12" />
-          </div>
+          {
+            !scrolledDown && (
+              <BallotItemSupportOpposeComment
+                ballotItemWeVoteId={measureWeVoteId}
+                showPositionStatementActionBar={this.state.showPositionStatementActionBar}
+              />
+            )
+          }
         </div>
       </div>
     );
   }
 }
+
+export default MeasureItem;
