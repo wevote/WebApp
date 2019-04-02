@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import Badge from '@material-ui/core/Badge';
 import Chip from '@material-ui/core/Chip';
 import { withStyles } from '@material-ui/core/styles';
-import PlaceIcon from '@material-ui/icons/Place';
 import AddressBox from '../../components/AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotActions from '../../actions/BallotActions';
@@ -30,6 +29,7 @@ import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
 // import HeaderBar from '../../components/Navigation/HeaderBar';
 import isMobile from '../../utils/isMobile';
+import LocationGuess from './LocationGuess';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
@@ -98,7 +98,6 @@ class Ballot extends Component {
 
     this.ballotItems = {};
     this.ballotItemLinkHasBeenClicked = this.ballotItemLinkHasBeenClicked.bind(this);
-    // this.hideLocationsGuessComponent = this.hideLocationsGuessComponent.bind(this);
     this.toggleBallotIntroModal = this.toggleBallotIntroModal.bind(this);
     this.toggleBallotSummaryModal = this.toggleBallotSummaryModal.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
@@ -945,45 +944,10 @@ class Ballot extends Component {
                 ) : null
                   }
                 <div className="col-sm-12 col-lg-9">
-                  <div id="location_guess" className="card-main__location-guess">
-                    <PlaceIcon style={{
-                      fontSize: '35px',
-                      margin: 'auto 10px',
-                    }}
-                    />
-                    <p style={{
-                      margin: 'auto',
-                      fontFamily: 'Source Sans Pro,sans-serif',
-                    }}
-                    >
-                    Our best guess for your location is
-                      <strong> &quot;Oakland,CA&quot;</strong>
-                    .
-                      <a style={{
-                        color: '#4371cc',
-                        textDecoration: 'underline',
-                      }}
-                      onClick={this.toggleSelectBallotModal}
-                      >
-                       Enter your full address
-                      </a>
-                       to see the correct ballot items.
-                    </p>
-                    <span style={{
-                      fontSize: '25px',
-                      margin: '15px 25px 15px 35px',
-                      position: 'relative',
-                      bottom: '2px',
-                      cursor: 'pointer',
-                      fontWeight: '700',
-                      color: '#000',
-                      opacity: '.5',
-                    }}
-                    onClick={this.hideLocationsGuessComponent}
-                    >
-                    &times;
-                    </span>
-                  </div>
+                  <LocationGuess
+                    toggleSelectBallotModal={this.toggleSelectBallotModal}
+                    hideLocationsGuessComponent={this.hideLocationsGuessComponent}
+                  />
                   { inReadyToVoteMode ? (
                     <div>
                       <div className="alert alert-success d-print-none">
