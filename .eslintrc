@@ -18,7 +18,7 @@
     "class-methods-use-this": 0,                  // We want to allow helper functions that don't use 'this' in classes
     "jsx-a11y/alt-text": 0,
     "jsx-a11y/anchor-has-content": 1,
-    "jsx-a11y/anchor-is-valid": 1,
+    "jsx-a11y/anchor-is-valid": 0,
     "jsx-a11y/click-events-have-key-events": 0,
     "jsx-a11y/heading-has-content": 1,
     "jsx-a11y/iframe-has-title": 1,
