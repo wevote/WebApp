@@ -61,19 +61,20 @@ class LocationGuess extends React.Component {
 }
 
 const ParagraphStyled = styled.div`
-    margin: auto;
-    font-family: Source Sans Pro,sans-serif;
-    font-weight: normal;
+  margin: auto;
+  margin-left: 5px;
+  font-weight: normal;
 `;
 const CloseComponent = styled.div`
-    font-size: 25px;
-    margin: 15px 25px 15px 35px;
-    position: relative;
-    bottom: 2px;
-    cursor: pointer;
-    font-weight: 700;
-    color: #000;
-    opacity: .5;
+  font-size: 25px;
+  margin: 15px 25px 15px 35px;
+  position: relative;
+  bottom: 2px;
+  align-self: center;
+  cursor: pointer;
+  font-weight: 700;
+  color: #000;
+  opacity: 0.5;
 `;
 
 export default withTheme()(withStyles()(LocationGuess));
