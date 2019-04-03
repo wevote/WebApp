@@ -17,6 +17,7 @@ const theme = {
     linkHoverBorder: '#3771c8',
     opposeRedRgb: 'rgb(255, 73, 34)',
     supportGreenRgb: 'rgb(31, 192, 111)',
+    brandBlue: '#2e3c5d',
   },
 };
 

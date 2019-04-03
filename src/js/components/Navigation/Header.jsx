@@ -38,7 +38,6 @@ export default class Header extends Component {
     const { friendsMode, settingsMode, valuesMode, voterGuideMode,
       showBackToFriends, showBackToBallotHeader, showBackToSettings, showBackToValues, showBackToVoterGuides } = getApplicationViewBooleans(pathname);
     // const hideGettingStartedButtons = voterGuideShowGettingStartedNavigation;
-
     let iPhoneSpacer = '';
     if (isCordova() && isIOS() && hasIPhoneNotch()) {
       iPhoneSpacer = <div className="ios-notched-spacer" />;
@@ -129,6 +128,8 @@ export default class Header extends Component {
           </div>
         </div>
       );
+    } else if (pathname === '/welcome') {
+      return null;
     } else {
       // This handles other pages, like Welcome and the Ballot display
       return (

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withTheme, withStyles } from '@material-ui/core/styles';
 import FormatQuote from '@material-ui/icons/FormatQuote';
 import { renderLog } from '../../utils/logging';
 import ImageHandler from '../ImageHandler';
@@ -93,4 +92,4 @@ const TextStyled = styled.div`
   }
 `;
 
-export default withTheme()(withStyles()(Testimonial));
+export default Testimonial;
