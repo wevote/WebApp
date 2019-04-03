@@ -37,6 +37,15 @@
     @include print {
       padding: $space-none;
     }
+    &__location-guess {
+      position: relative;
+      display: flex;
+      margin-bottom: 16px;
+      font-size: 14px;
+      background-color: #fff;
+      background-clip: border-box;
+      border: 2px solid #999;
+    }
 
     &__content {
       position: relative;

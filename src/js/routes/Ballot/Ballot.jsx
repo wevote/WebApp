@@ -26,7 +26,9 @@ import {
 } from '../../utils/cordovaUtils';
 import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
+// import HeaderBar from '../../components/Navigation/HeaderBar';
 import isMobile from '../../utils/isMobile';
+import LocationGuess from './LocationGuess';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
@@ -621,6 +623,10 @@ class Ballot extends Component {
     this.setState({ isSearching: !isSearching });
   };
 
+  hideLocationsGuessComponent () {
+    document.getElementById('location_guess').style.display = 'none';
+  }
+
   toggleBallotIntroModal () {
     const { showBallotIntroModal, location, pathname } = this.state;
     if (showBallotIntroModal) {
@@ -950,6 +956,10 @@ class Ballot extends Component {
                 ) : null
                   }
                 <div className="col-sm-12 col-lg-9">
+                  <LocationGuess
+                    toggleSelectBallotModal={this.toggleSelectBallotModal}
+                    hideLocationsGuessComponent={this.hideLocationsGuessComponent}
+                  />
                   { inReadyToVoteMode ? (
                     <div>
                       <div className="alert alert-success d-print-none">
