@@ -79,7 +79,7 @@ import VoterGuideSettingsMenuMobile from './routes/Settings/VoterGuideSettingsMe
 import VoterGuidesMenuMobile from './routes/Settings/VoterGuidesMenuMobile';
 import VerifyRegistration from './routes/More/VerifyRegistration';
 import VerifyThisIsMe from './routes/VoterGuide/VerifyThisIsMe';
-import Welcome from './routes/Welcome';
+import Welcome from './routes/WelcomeNew';
 import WeVoteBallotEmbed from './routes/More/WeVoteBallotEmbed';
 import YourPage from './routes/YourPage';
 import { isWebApp } from './utils/cordovaUtils';
