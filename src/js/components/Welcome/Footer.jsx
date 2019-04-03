@@ -87,7 +87,8 @@ const styles = theme => ({
     fontWeight: 'bold',
     [theme.breakpoints.down('md')]: {
       width: '47%',
-      fontSize: 14,
+      fontSize: 12,
+      padding: '8px 0',
     },
   },
   link: {

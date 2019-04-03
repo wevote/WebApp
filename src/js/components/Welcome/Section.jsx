@@ -146,9 +146,7 @@ const NetworkImage = styled.img`
 const SignUpContainer = styled.div`
   width: 350px;
   padding-bottom: 2em;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    width: 90vw;
-  }
+  max-width: 90vw;
 `;
 
 export {

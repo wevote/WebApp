@@ -28,10 +28,14 @@ class TextBox extends Component {
   }
 }
 
-const styles = ({
+const styles = theme => ({
   input: {
     paddingTop: 4,
     color: '#555',
+    [theme.breakpoints.down('md')]: {
+      fontSize: 12,
+      paddingTop: 8,
+    },
   },
   root: {
     width: '100%',
@@ -48,11 +52,19 @@ const Container = styled.div`
   text-align: left;
   padding-bottom: 8px;
   margin-bottom: 1em;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    height: 36px;
+    padding: 8px 16px;
+    font-size: 10px;
+  }
 `;
 
 const IconContainer = styled.div`
   color: rgb(107, 122, 155);
   padding-right: 4px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-top: -2px;
+  }
 `;
 
 export default withStyles(styles)(TextBox);

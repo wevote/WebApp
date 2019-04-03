@@ -249,7 +249,7 @@ export default class Intro extends Component {
                       }
                       <section className="quick-links__section--mobile u-flex">
                         {/* Link to onboarding sequence: /wevoteintro/network */}
-                        <a className="quick-links__button quick-links__button--left" onClick={() => historyPush('/ballot')}>Get Started</a>
+                        <a href="#" className="quick-links__button quick-links__button--left" onClick={() => historyPush('/ballot')}>Get Started</a>
                       </section>
 
                       <div className="share-your-vision__h1">

@@ -170,11 +170,13 @@ class Welcome extends PureComponent {
             testimonialAuthor={testimonialAuthor}
             testimonial={testimonial}
           />
+          {/*
           <Testimonial
             imageUrl={imageUrl}
             testimonialAuthor={testimonialAuthor}
             testimonial={testimonial}
           />
+          */}
         </Section>
         <Section variant="dark" rounded>
           <SectionTitle>Our Network</SectionTitle>
@@ -215,7 +217,7 @@ class Welcome extends PureComponent {
   }
 }
 
-const styles = ({
+const styles = theme => ({
   appBarRoot: {
     background: 'transparent',
     alignItems: 'center',
@@ -230,6 +232,9 @@ const styles = ({
   buttonContained: {
     borderRadius: 32,
     height: 50,
+    [theme.breakpoints.down('md')]: {
+      height: 36,
+    },
   },
   buttonMaxWidth: {
     width: '100%',
