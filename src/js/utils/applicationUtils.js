@@ -159,7 +159,7 @@ export function setZenDeskHelpVisibility (pathname) {
   if (isWebApp()) {
     if (['/ballot', '/candidate', '/friends', '/measure', '/more/network', '/office', '/opinions', '/settings',
       '/values'].some(match => pathname.startsWith(match))) {
-      global.zE('webWidget', 'hide');
+      global.zE('webWidget', 'show');
     } else {
       global.zE('webWidget', 'hide');
     }
