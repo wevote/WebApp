@@ -182,9 +182,9 @@ export default class HeaderSecondaryNavBar extends Component {
       >
         <Modal.Body>
           <div className="intro-modal__close">
-            <a onClick={this._toggleBallotIntroFollowIssues} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}>
+            <button type="button" onClick={this._toggleBallotIntroFollowIssues} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}>
               <img src={cordovaDot('/img/global/icons/x-close.png')} alt="close" />
-            </a>
+            </button>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height intro-modal__height-full" ref="slider" {...sliderSettings}>
             <div className="intro-modal__height-full" key={1}><BallotIntroFollowIssues next={this._nextSliderPage} /></div>
@@ -203,12 +203,12 @@ export default class HeaderSecondaryNavBar extends Component {
       >
         <Modal.Body>
           <div className="intro-modal__close">
-            <a
+            <button type="button"
               onClick={this._toggleEmailModal}
               className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}
             >
               <img src={cordovaDot('/img/global/icons/x-close.png')} alt="close" />
-            </a>
+            </button>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettingsWithSwipe}>
             <div key={1} className="share-modal__calc-height">
@@ -240,12 +240,12 @@ export default class HeaderSecondaryNavBar extends Component {
       >
         <Modal.Body>
           <div className="intro-modal__close">
-            <a
+            <button type="button"
               onClick={this._toggleFacebookModal}
               className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}
             >
               <img src={cordovaDot('/img/global/icons/x-close.png')} alt="close" />
-            </a>
+            </button>
           </div>
           <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettingsWithSwipe}>
             <div key={1} className="share-modal__calc-height">

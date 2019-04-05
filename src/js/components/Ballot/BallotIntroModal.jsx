@@ -64,9 +64,9 @@ export default class BallotIntroModal extends Component {
       >
         <Modal.Body>
           <div className="intro-modal__close">
-            <a onClick={this.props.toggleFunction} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}>
+            <button type="button" onClick={this.props.toggleFunction} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}>
               <img src={cordovaDot('/img/global/icons/x-close.png')} alt="close" />
-            </a>
+            </button>
           </div>
           <Slider
             dotsClass="slick-dots intro-modal__gray-dots"
