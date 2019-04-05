@@ -42,7 +42,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
     this.popover_state = {};
     this.mobile = 'ontouchstart' in document.documentElement;
-
+    this.networkScoreRef = 'network-score-overlay';
+    this.issueScoreRef = 'issue-score-overlay';
     this.state = {
       ballotItemDisplayName: '',
       ballotItemWeVoteId: '',
@@ -242,11 +243,11 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   }
 
   closeNetworkScorePopover () {
-    this.refs['network-score-overlay'].hide();
+    this.networkScoreRef.hide();
   }
 
   closeIssueScorePopover () {
-    this.refs['issue-score-overlay'].hide();
+    this.issueScoreRef.hide();
   }
 
   componentDidCatch (error, info) {
@@ -664,7 +665,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         { showNetworkScore && !isVoterSupport && !isVoterOppose ? (
           <OverlayTrigger
             trigger="click"
-            ref="network-score-overlay"
+            ref={this.networkScoreRef}
             onExit={this.closeNetworkScorePopover}
             rootClose
             placement={this.props.popoverBottom ? 'bottom' : 'top'}
