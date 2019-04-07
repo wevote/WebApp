@@ -40,9 +40,9 @@
     &__location-guess {
       position: relative;
       display: flex;
-      margin-bottom: 16px;
+      margin-bottom: $space-md;
       font-size: 14px;
-      background-color: #fff;
+      background-color: $white;
       background-clip: border-box;
       border: 2px solid #999;
     }

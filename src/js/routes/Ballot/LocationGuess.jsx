@@ -26,26 +26,28 @@ class LocationGuess extends React.Component {
     render () {
       renderLog(__filename);
       const { toggleSelectBallotModal, hideLocationsGuessComponent } = this.props;
-      let bestGuess = VoterStore.getTextForMapSearch();
-      console.log('bestGuess before: ', bestGuess);
-      if (bestGuess === '') {
-        bestGuess = 'Oakland,CA';
-      }
-      console.log('bestGuess after: ', bestGuess);
-
+      const bestGuess = VoterStore.getTextForMapSearch();
+      // console.log('bestGuess before: ', bestGuess);
       return (
         <div id="location_guess" className="card-main__location-guess">
           <PlaceIcon style={{ fontSize: '35px', margin: 'auto 10px' }} />
           <ParagraphStyled>
-            Our best guess for your location is
-            {' '}
-            <span style={{ fontWeight: 'bold' }}>
-              &quot;
-              {bestGuess}
-              &quot;
-            </span>
-            .
-            {' '}
+            { bestGuess ?
+              (
+                <span>
+                  Our best guess for your location is
+                  {' '}
+                  <span style={{ fontWeight: 'bold' }}>
+                    &quot;
+                    {bestGuess}
+                    &quot;
+                  </span>
+                  .
+                  {' '}
+                </span>
+              ) :
+              null
+            }
             <a style={{ color: '#4371cc', textDecoration: 'underline' }} onClick={toggleSelectBallotModal}>
               Enter your full address
             </a>

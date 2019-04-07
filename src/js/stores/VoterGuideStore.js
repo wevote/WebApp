@@ -16,6 +16,7 @@ class VoterGuideStore extends ReduceStore {
       allCachedVoterGuidesByOrganization: {}, // Dictionary with organization_we_vote_id as key and list of ALL voter_guides (regardless of election) as value
       allCachedVoterGuidesByVoterGuide: {}, // Dictionary with voterGuideWeVoteId as key and voter_guides as value
       ballotHasGuides: true,
+      organizationWeVoteIdsByIssueWeVoteId: {}, // This is a dictionary with issue_we_vote_id as key and list of organization_we_vote_id's as value
       organizationWeVoteIdsToFollowAll: [],
       organizationWeVoteIdsToFollowBallotItemsDict: {}, // Dictionary with ballot_item_we_vote_id as key and list of organization we_vote_ids as value
       organizationWeVoteIdsToFollowForLatestBallotItem: [], // stores organization_we_vote_ids for latest ballot_item_we_vote_id
@@ -47,6 +48,11 @@ class VoterGuideStore extends ReduceStore {
 
   ballotHasGuides () {
     return this.getState().ballotHasGuides;
+  }
+
+  ballotHasGuidesForValue (issueWeVoteId) {
+    const organizationWeVoteIdsByValue = this.getState().organizationWeVoteIdsByIssueWeVoteId[issueWeVoteId] || [];
+    return organizationWeVoteIdsByValue.length;
   }
 
   sortVoterGuidesByDate (unsortedVoterGuides) { // eslint-disable-line
@@ -116,6 +122,11 @@ class VoterGuideStore extends ReduceStore {
       organizationWeVoteIdsToFollowWithLimit = organizationWeVoteIdsToFollow.slice(0, limit);
     }
     return this.returnVoterGuidesFromListOfIds(organizationWeVoteIdsToFollowWithLimit) || [];
+  }
+
+  getVoterGuidesForValue (issueWeVoteId) {
+    const organizationWeVoteIdsByValue = this.getState().organizationWeVoteIdsByIssueWeVoteId[issueWeVoteId] || [];
+    return this.returnVoterGuidesFromListOfIds(organizationWeVoteIdsByValue) || [];
   }
 
   getVoterGuidesToFollowForLatestBallotItem () {
@@ -226,8 +237,8 @@ class VoterGuideStore extends ReduceStore {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
     const {
-      organizationWeVoteIdsToFollowOrganizationRecommendationDict, allCachedVoterGuides, allCachedVoterGuidesByElection,
-      organizationWeVoteIdsToFollowBallotItemsDict,
+      allCachedVoterGuides, allCachedVoterGuidesByElection, organizationWeVoteIdsByIssueWeVoteId,
+      organizationWeVoteIdsToFollowOrganizationRecommendationDict, organizationWeVoteIdsToFollowBallotItemsDict,
     } = state;
     let allCachedVoterGuidesByOrganization;
     let allCachedVoterGuidesByVoterGuide;
@@ -432,7 +443,7 @@ class VoterGuideStore extends ReduceStore {
                   newList.push(oneVoterGuide.organization_we_vote_id);
                   organizationWeVoteIdsToFollowBallotItemsDict[oneBallotItemWeVoteId] = newList;
                 }
-                ballotItemsWeAreTracking  = Object.keys(organizationWeVoteIdsToFollowBallotItemsDict);
+                ballotItemsWeAreTracking = Object.keys(organizationWeVoteIdsToFollowBallotItemsDict);
               });
             }
             if (oneVoterGuide.ballot_item_we_vote_ids_this_org_info_only) {
@@ -446,7 +457,7 @@ class VoterGuideStore extends ReduceStore {
                   newList.push(oneVoterGuide.organization_we_vote_id);
                   organizationWeVoteIdsToFollowBallotItemsDict[oneBallotItemWeVoteId] = newList;
                 }
-                ballotItemsWeAreTracking  = Object.keys(organizationWeVoteIdsToFollowBallotItemsDict);
+                ballotItemsWeAreTracking = Object.keys(organizationWeVoteIdsToFollowBallotItemsDict);
               });
             }
             if (oneVoterGuide.ballot_item_we_vote_ids_this_org_opposes) {
@@ -460,7 +471,7 @@ class VoterGuideStore extends ReduceStore {
                   newList.push(oneVoterGuide.organization_we_vote_id);
                   organizationWeVoteIdsToFollowBallotItemsDict[oneBallotItemWeVoteId] = newList;
                 }
-                ballotItemsWeAreTracking  = Object.keys(organizationWeVoteIdsToFollowBallotItemsDict);
+                ballotItemsWeAreTracking = Object.keys(organizationWeVoteIdsToFollowBallotItemsDict);
               });
             }
 
@@ -541,7 +552,7 @@ class VoterGuideStore extends ReduceStore {
                 newList.push(oneVoterGuide.organization_we_vote_id);
                 organizationWeVoteIdsToFollowBallotItemsDict[oneBallotItemWeVoteId] = newList;
               }
-              ballotItemsWeAreTracking  = Object.keys(organizationWeVoteIdsToFollowBallotItemsDict);
+              ballotItemsWeAreTracking = Object.keys(organizationWeVoteIdsToFollowBallotItemsDict);
             });
           }
           if (oneVoterGuide.ballot_item_we_vote_ids_this_org_info_only) {
@@ -555,7 +566,7 @@ class VoterGuideStore extends ReduceStore {
                 newList.push(oneVoterGuide.organization_we_vote_id);
                 organizationWeVoteIdsToFollowBallotItemsDict[oneBallotItemWeVoteId] = newList;
               }
-              ballotItemsWeAreTracking  = Object.keys(organizationWeVoteIdsToFollowBallotItemsDict);
+              ballotItemsWeAreTracking = Object.keys(organizationWeVoteIdsToFollowBallotItemsDict);
             });
           }
           if (oneVoterGuide.ballot_item_we_vote_ids_this_org_opposes) {
@@ -569,7 +580,15 @@ class VoterGuideStore extends ReduceStore {
                 newList.push(oneVoterGuide.organization_we_vote_id);
                 organizationWeVoteIdsToFollowBallotItemsDict[oneBallotItemWeVoteId] = newList;
               }
-              ballotItemsWeAreTracking  = Object.keys(organizationWeVoteIdsToFollowBallotItemsDict);
+              ballotItemsWeAreTracking = Object.keys(organizationWeVoteIdsToFollowBallotItemsDict);
+            });
+          }
+          if (oneVoterGuide.issue_we_vote_ids_linked && oneVoterGuide.organization_we_vote_id) {
+            oneVoterGuide.issue_we_vote_ids_linked.forEach((oneVoterGuideIssueWeVoteId) => {
+              if (organizationWeVoteIdsByIssueWeVoteId[oneVoterGuideIssueWeVoteId] === undefined) {
+                organizationWeVoteIdsByIssueWeVoteId[oneVoterGuideIssueWeVoteId] = [];
+              }
+              organizationWeVoteIdsByIssueWeVoteId[oneVoterGuideIssueWeVoteId].push(oneVoterGuide.organization_we_vote_id);
             });
           }
         });
@@ -577,6 +596,7 @@ class VoterGuideStore extends ReduceStore {
         return {
           ...state,
           ballotHasGuides,
+          organizationWeVoteIdsByIssueWeVoteId,
           organizationWeVoteIdsToFollowAll: organizationWeVoteIdListFromVoterGuidesReturned,
           organizationWeVoteIdsToFollowBallotItemsDict,
           allCachedVoterGuides,

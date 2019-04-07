@@ -156,7 +156,7 @@ class HeaderBar extends Component {
     const { pathname } = this.props;
     // if (pathname.indexOf('/ballot') === 0) return 0; // If '/ballot' is found any
     if (pathname && pathname.startsWith('/ballot')) return 0;
-    if (stringContains('/values', pathname)) return 1;
+    if (stringContains('/value', pathname)) return 1; // '/values'
     if (stringContains('/friends', pathname)) return 2;
 
     return false;

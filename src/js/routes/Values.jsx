@@ -13,7 +13,7 @@ import NetworkOpinionsFollowed from '../components/Network/NetworkOpinionsFollow
 import TwitterSignIn from '../components/Twitter/TwitterSignIn';
 import VoterStore from '../stores/VoterStore';
 
-const twitterInfoText = 'Signing into Twitter is the fastest way to find voter guides related to your values and the issues you care about. When you sign into Twitter, We Vote will find the voter guides for everyone you are following.';
+const twitterInfoText = 'Signing into Twitter is the fastest way to find voter guides related to your values. We Vote will find the voter guides for everyone you are following on Twitter.';
 
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 
