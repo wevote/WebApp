@@ -337,6 +337,7 @@ class Application extends Component {
           !(pathname && pathname.startsWith('/friends/')) &&
           !(pathname && pathname.startsWith('/measure')) &&
           !(pathname && pathname.startsWith('/office')) &&
+          !(pathname && pathname.startsWith('/value/')) &&
           !(pathname && pathname.startsWith('/values/')) &&
           !(pathname === '/welcome') && (
           <div className="footroom-wrapper">

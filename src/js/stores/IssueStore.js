@@ -6,7 +6,7 @@ import OrganizationStore from './OrganizationStore';
 import VoterStore from './VoterStore';
 import VoterGuideStore from './VoterGuideStore';
 import VoterGuideActions from '../actions/VoterGuideActions';
-import { arrayContains, removeValueFromArray } from '../utils/textFormat';
+import { arrayContains, convertNameToSlug, removeValueFromArray } from '../utils/textFormat';
 
 class IssueStore extends ReduceStore {
   getInitialState () {
@@ -19,6 +19,7 @@ class IssueStore extends ReduceStore {
       organizationNameSupportListForEachBallotItem: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
       organizationNameOpposeListForEachBallotItem: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
       issueScoreForEachBallotItem: {}, // Dictionary with key: candidate or measure we_vote_id, value: calculated score
+      issueWeVoteIdBySlug: {}, // Dictionary with key: slug, lower case, value: issue_we_vote_id
       issueWeVoteIdsVoterIsFollowing: [], // These are issues a particular voter is following
       issueWeVoteIdsVoterCanFollow: [], // These are issues a particular voter can follow
       issueWeVoteIdsToLinkToByOrganizationDict: {}, // Dictionary with key: organizationWeVoteId, list: issueWeVoteId that the organization can link to
@@ -43,6 +44,7 @@ class IssueStore extends ReduceStore {
       organizationNameSupportListForEachBallotItem: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs supporting this ballot item
       organizationNameOpposeListForEachBallotItem: {}, // Dictionary with key: candidate or measure we_vote_id, value: list of orgs opposing this ballot item
       issueScoreForEachBallotItem: {}, // Dictionary with key: candidate or measure we_vote_id, value: calculated score
+      // LEAVE DATA: issueWeVoteIdBySlug: {}, // Dictionary with key: slug, lower case, value: issue_we_vote_id
       issueWeVoteIdsVoterIsFollowing: [], // These are issues a particular voter is following
       issueWeVoteIdsVoterCanFollow, // These are issues a particular voter can follow
       issueWeVoteIdsToLinkToByOrganizationDict: {}, // Dictionary with key: organizationWeVoteId, list: issueWeVoteId that the organization can link to
@@ -160,6 +162,19 @@ class IssueStore extends ReduceStore {
     }
     //
     return issueScore;
+  }
+
+  getIssueBySlug (issueSlug) {
+    if (issueSlug === undefined) {
+      return {};
+    }
+    const issueSlugLowerCase = issueSlug.toLowerCase();
+    const issueWeVoteId = this.getState().issueWeVoteIdBySlug[issueSlugLowerCase];
+    const issue = this.getState().allCachedIssues[issueWeVoteId];
+    if (issue === undefined) {
+      return {};
+    }
+    return issue;
   }
 
   getIssueByWeVoteId (issueWeVoteId) {
@@ -331,12 +346,13 @@ class IssueStore extends ReduceStore {
       organizationNameSupportListForEachBallotItem, organizationNameOpposeListForEachBallotItem,
       issueScoreForEachBallotItem, issueWeVoteIdsVoterCanFollow, issueWeVoteIdsLinkedToByOrganizationDict,
     } = state;
-    const { issueWeVoteIdsVoterIsFollowing, issueWeVoteIdsToLinkToByOrganizationDict } = state;
+    const { issueWeVoteIdBySlug, issueWeVoteIdsVoterIsFollowing, issueWeVoteIdsToLinkToByOrganizationDict } = state;
     let { allCachedIssues } = state;
     let ballotItemWeVoteId;
     let electionsIdsForWhichIssuesHaveBeenRetrievedOnce;
     let issueList;
     let issueScoreList;
+    let issueSlug;
     let issuesUnderBallotItemsList;
     let organizationWeVoteIdsForIssue;
     let linkedIssueListForOneOrganization = [];
@@ -462,9 +478,14 @@ class IssueStore extends ReduceStore {
         } else {
           issueList.forEach((issue) => {
             allCachedIssues[issue.issue_we_vote_id] = issue;
+            issueSlug = convertNameToSlug(issue.issue_name);
+            issueWeVoteIdBySlug[issueSlug] = issue.issue_we_vote_id;
             if (issue.is_issue_followed === true) {
               issueWeVoteIdsVoterIsFollowing.push(issue.issue_we_vote_id);
             }
+          });
+          revisedState = Object.assign({}, revisedState, {
+            issueWeVoteIdBySlug,
           });
         }
         revisedState = Object.assign({}, revisedState, {

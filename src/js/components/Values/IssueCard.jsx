@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
 import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import ReadMore from '../Widgets/ReadMore';
+import { convertNameToSlug } from '../../utils/textFormat';
 
 export default class IssueCard extends Component {
   static propTypes = {
@@ -23,9 +25,11 @@ export default class IssueCard extends Component {
     this.state = {
       ballotItemWeVoteId: '',
       followToggleOn: false,
+      issue: {},
       issueImageSize: 'SMALL', // We support SMALL, MEDIUM, LARGE
       issueWeVoteId: '',
     };
+    this.getIssueLink = this.getIssueLink.bind(this);
   }
 
   componentDidMount () {
@@ -61,6 +65,16 @@ export default class IssueCard extends Component {
         issueImageSize,
         issueWeVoteId: nextProps.issue.issue_we_vote_id,
       });
+    }
+  }
+
+  getIssueLink () {
+    const { issue } = this.state;
+    if (issue && issue.issue_name) {
+      const issueSlug = convertNameToSlug(issue.issue_name);
+      return `/value/${issueSlug}`;
+    } else {
+      return '';
     }
   }
 
@@ -130,30 +144,50 @@ export default class IssueCard extends Component {
         <div className="card-main__media-object-anchor">
           {this.props.turnOffIssueImage ?
             null :
-            issueImage
-          }
-          {this.props.followToggleOn && this.state.issueWeVoteId ? (
-            <div className="">
-              <IssueFollowToggleButton
-                ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-                classNameOverride="pull-left"
-                currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                issueName={this.state.issue.issue_name}
-                issueWeVoteId={this.state.issueWeVoteId}
-                urlWithoutHash={this.props.urlWithoutHash}
-              />
-            </div>
-          ) : null
+            (
+              <Link to={this.getIssueLink}
+                    className="u-no-underline"
+              >
+                {issueImage}
+              </Link>
+            )
           }
         </div>
         <div className="card-main__media-object-content">
-          <h3 className="card-main__display-name">{issueDisplayName}</h3>
+          <Link to={this.getIssueLink}
+                className="u-no-underline"
+          >
+            <h3 className="card-main__display-name">{issueDisplayName}</h3>
+          </Link>
 
-          { !this.props.turnOffDescription ?
-            <span className="card-main__description"><ReadMore text_to_display={issueDescription} num_of_lines={numberOfLines} /></span> :
-            <span className="card-main__description" />
+          { this.props.turnOffDescription ?
+            <span className="card-main__description" /> :
+            (
+              <span className="card-main__description">
+                <Link to={this.getIssueLink}
+                      className="u-no-underline"
+                >
+                  <ReadMore text_to_display={issueDescription}
+                            num_of_lines={numberOfLines}
+                  />
+                </Link>
+              </span>
+            )
           }
         </div>
+        {this.props.followToggleOn && this.state.issueWeVoteId ? (
+          <div className="">
+            <IssueFollowToggleButton
+              ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+              classNameOverride="pull-left"
+              currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+              issueName={this.state.issue.issue_name}
+              issueWeVoteId={this.state.issueWeVoteId}
+              urlWithoutHash={this.props.urlWithoutHash}
+            />
+          </div>
+        ) : null
+        }
       </div>
     );
   }

@@ -11,6 +11,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
+import { stringContains } from '../../utils/textFormat';
 
 const styles = theme => ({
   headerButtonRoot: {
@@ -115,9 +116,12 @@ class HeaderBackToValues extends Component {
   render () {
     renderLog(__filename);
     const { voter } = this.state;
-    const { classes } = this.props;
+    const { classes, pathname } = this.props;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
-    const backToLink = '/values';
+    let backToLink = '/values';
+    if (stringContains('/value/', pathname)) {
+      backToLink = '/values/list';
+    }
     const backToValuesLinkText = 'Back';
 
     const headerClassName = (function header () {

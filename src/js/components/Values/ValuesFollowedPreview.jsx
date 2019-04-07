@@ -19,8 +19,8 @@ export default class ValuesFollowedPreview extends Component {
       IssueActions.issuesRetrieve();
     }
 
-    this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange.bind(this));
-    this._onIssueStoreChange();
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
+    this.onIssueStoreChange();
   }
 
   componentWillUnmount () {
@@ -39,7 +39,7 @@ export default class ValuesFollowedPreview extends Component {
     return '/issues_followed';
   }
 
-  _onIssueStoreChange () {
+  onIssueStoreChange () {
     this.setState({
       issuesFollowed: IssueStore.getIssuesVoterIsFollowing(),
     });

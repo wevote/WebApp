@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import { _ } from 'lodash';
 import Helmet from 'react-helmet';
 import IssueActions from '../../actions/IssueActions';
-import IssueFollowToggleSquare from '../../components/Values/IssueFollowToggleSquare';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import SearchBar from '../../components/Search/SearchBar';
+import IssueCard from '../../components/Values/IssueCard';
 
 export default class ValuesList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      issuesToFollow: [],
+      allIssues: [],
       searchQuery: '',
     };
 
@@ -22,16 +21,16 @@ export default class ValuesList extends Component {
 
   componentDidMount () {
     IssueActions.retrieveIssuesToFollow();
-    this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange.bind(this));
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.issueStoreListener.remove();
   }
 
-  _onIssueStoreChange () {
+  onIssueStoreChange () {
     this.setState({
-      issuesToFollow: IssueStore.getIssuesVoterCanFollow(),
+      allIssues: IssueStore.getAllIssues(),
     });
   }
 
@@ -44,11 +43,11 @@ export default class ValuesList extends Component {
   }
 
   render () {
-    const { issuesToFollow, searchQuery } = this.state;
+    const { allIssues, searchQuery } = this.state;
     renderLog(__filename);
     let issueList = [];
-    if (issuesToFollow) {
-      issueList = issuesToFollow;
+    if (allIssues) {
+      issueList = allIssues;
     }
 
     if (searchQuery.length > 0) {
@@ -59,16 +58,11 @@ export default class ValuesList extends Component {
     }
 
     const issueListForDisplay = issueList.map(issue => (
-      <IssueFollowToggleSquare
-        key={issue.issue_we_vote_id}
-        issueWeVoteId={issue.issue_we_vote_id}
-        issueName={issue.issue_name}
-        issueDescription={issue.issue_description}
-        issueImageUrl={issue.issue_image_url}
-        issueIconLocalPath={issue.issue_icon_local_path}
-        editMode
-        isFollowing={false}
-        grid="col-4 col-sm-2"
+      <IssueCard
+        followToggleOn
+        issue={issue}
+        issueImageSize="SMALL"
+        key={`issue-list-key-${issue.issue_we_vote_id}`}
       />
     ));
 
@@ -91,13 +85,11 @@ export default class ValuesList extends Component {
             />
             <br />
             <div className="network-issues-list voter-guide-list card">
-              { this.state.issuesToFollow && this.state.issuesToFollow.length ?
+              { this.state.allIssues && this.state.allIssues.length ?
                 issueListForDisplay :
                 null
               }
             </div>
-            <Link className="pull-left" to="/issues_followed">Issues you are following</Link>
-            <br />
           </div>
         </section>
       </div>

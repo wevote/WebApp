@@ -60,7 +60,7 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/more/hamburger') {
     contentFullWidthMode = true;
     settingsMode = true;
-  } else if (pathname.startsWith('/values') ||
+  } else if (pathname.startsWith('/value') || // '/values'
     pathname === '/opinions' ||
     pathname === '/opinions_followed' ||
     pathname === '/opinions_ignored') {
@@ -105,6 +105,7 @@ export function getApplicationViewBooleans (pathname) {
   } else if (pathname === '/opinions' ||
     pathname === '/opinions_followed' ||
     pathname === '/opinions_ignored' ||
+    stringContains('/value/', pathname) ||
     pathname === '/values/list') {
     showBackToValues = true;
   } else if (pathname === '/friends/add' ||
@@ -158,7 +159,7 @@ export function polyfillObjectEntries () {
 export function setZenDeskHelpVisibility (pathname) {
   if (isWebApp()) {
     if (['/ballot', '/candidate', '/friends', '/measure', '/more/network', '/office', '/opinions', '/settings',
-      '/values'].some(match => pathname.startsWith(match))) {
+      '/value'].some(match => pathname.startsWith(match))) { // '/values'
       global.zE('webWidget', 'show');
     } else {
       global.zE('webWidget', 'hide');

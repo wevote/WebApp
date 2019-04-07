@@ -77,6 +77,7 @@ import VoterGuideOrganizationType from './routes/VoterGuide/VoterGuideOrganizati
 import VoterGuideSettingsDashboard from './routes/Settings/VoterGuideSettingsDashboard';
 import VoterGuideSettingsMenuMobile from './routes/Settings/VoterGuideSettingsMenuMobile';
 import VoterGuidesMenuMobile from './routes/Settings/VoterGuidesMenuMobile';
+import VoterGuidesUnderOneValue from './routes/Values/VoterGuidesUnderOneValue';
 import VerifyRegistration from './routes/More/VerifyRegistration';
 import VerifyThisIsMe from './routes/VoterGuide/VerifyThisIsMe';
 import Welcome from './routes/WelcomeNew';
@@ -195,6 +196,7 @@ const routes = () => (
     <Route path="/more/vision" component={Organization} />
     <Route path="/values" component={Values} />
     <Route path="/values/list" component={ValuesList} />
+    <Route path="/value/:value_slug" component={VoterGuidesUnderOneValue} />
 
     {/* Voter Guide Pages - By Organization */}
     <Route path="/voterguide/:organization_we_vote_id" component={props => <OrganizationVoterGuide {...props} active_route="ballot" />} />
