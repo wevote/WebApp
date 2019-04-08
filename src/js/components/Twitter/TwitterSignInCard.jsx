@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
-import TwitterSignIn from "./TwitterSignIn";
+import PropTypes from 'prop-types';
+import TwitterSignIn from './TwitterSignIn';
+
+const twitterDescriptionText = 'Signing into Twitter is the fastest way to find voter guides related to your values. We Vote will find the voter guides for everyone you are following on Twitter';
 
 const twitterInfoText = (
   <span className="social-btn-description">
     <i className="fa fa-info-circle" />
-      Signing into Twitter is the fastest way to find voter guides related to your
-      values. We Vote will find the voter guides for everyone you are following on
-      Twitter
+    {twitterDescriptionText}
   </span>
 );
 
 class TwitterSignInCard extends Component {
-  render() {
+  render () {
     return (
       <div className="col-md-4 d-none d-md-block">
         {this.props.voter.signed_in_twitter ? null : (
@@ -28,8 +29,12 @@ class TwitterSignInCard extends Component {
           </div>
         )}
       </div>
-    )
+    );
   }
 }
+
+TwitterSignInCard.propTypes = {
+  voter: PropTypes.object,
+};
 
 export default TwitterSignInCard;
