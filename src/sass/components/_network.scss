@@ -19,13 +19,14 @@ $backdrop-border-radius: 8px;
   color: $gray-mid;
 }
 
+.fa-twitter {
+  font-size: inherit;
+  margin-top: -3px;
+}
+
 .btn-twitter-values {
   max-width: $button-div-max-width;
   width: 100%;
-  .fa-twitter {
-    font-size: inherit;
-    margin-top: -3px;
-  }
   @include breakpoints (medium) {
     font-size: 12px;
     padding: 8px 8px 8px 52px !important;
