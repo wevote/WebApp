@@ -9,7 +9,7 @@ import FriendsCurrentPreview from '../components/Friends/FriendsCurrentPreview';
 import FriendInvitationsSentByMePreview from '../components/Friends/FriendInvitationsSentByMePreview';
 import FriendInvitationsSentToMePreview from '../components/Friends/FriendInvitationsSentToMePreview';
 import SuggestedFriendsPreview from '../components/Friends/SuggestedFriendsPreview';
-import TwitterSignIn from '../components/Twitter/TwitterSignIn';
+import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
 import VoterStore from '../stores/VoterStore';
 
 const twitterInfoText = 'Signing into Twitter is the fastest way to find voter guides related to your values and the issues you care about. When you sign into Twitter, We Vote will find the voter guides for everyone you are following.';
@@ -66,16 +66,7 @@ export default class Friends extends Component {
             <FriendInvitationsSentByMePreview />
           </div>
 
-          <div className="col-md-4 d-none d-sm-block">
-            { this.state.voter.signed_in_twitter ?
-              null : (
-                <div className="network-btn">
-                  <TwitterSignIn className="btn btn-social btn-lg btn-twitter text-center" buttonText="Sign In to Find Voter Guides" />
-                  {twitterInfoText}
-                </div>
-              )
-            }
-          </div>
+          <TwitterSignInCard voter={this.state.voter} />
         </div>
       </span>
     );
