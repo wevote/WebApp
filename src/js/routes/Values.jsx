@@ -11,7 +11,7 @@ import ValuesFollowedPreview from '../components/Values/ValuesFollowedPreview';
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import NetworkOpinionsFollowed from '../components/Network/NetworkOpinionsFollowed';
 import VoterStore from '../stores/VoterStore';
-import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
+import TwitterSignInCard from "../components/Twitter/TwitterSignInCard";
 
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 
