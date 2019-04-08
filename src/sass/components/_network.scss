@@ -67,16 +67,6 @@ $backdrop-border-radius: 8px;
   }
 }
 
-@media (max-width: 767px) {
-  .btn-twitter-values {
-    display: block;
-    width: 100%;
-  }
-  .mobile-container {
-    
-  }
-}
-
 .social-btn-description {
   margin-top: $description-margin-top;
   word-wrap: break-word;
