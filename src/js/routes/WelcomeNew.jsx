@@ -4,10 +4,14 @@ import styled from 'styled-components';
 import Appbar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import PersonIcon from '@material-ui/icons/Person';
+import CloseIcon from '@material-ui/icons/Close';
+import MenuIcon from '@material-ui/icons/Menu';
 import EmailIcon from '@material-ui/icons/Email';
+import Navigation, { LogoContainer, Divider, NavLink, MobileNavigationMenu, MobileNavDivider, NavRow } from '../components/Welcome/Navigation';
 import Header, { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/Header';
 import Section, { SectionTitle, SectionTitleBold, Step, StepNumber, StepLabel, GetStarted, ButtonContainer, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage, SignUpContainer } from '../components/Welcome/Section';
 import Footer from '../components/Welcome/Footer';
@@ -35,6 +39,7 @@ class Welcome extends PureComponent {
       voter: {},
       voterEmail: '',
       voterFullName: '',
+      showMobileNavigationMenu: false,
     };
   }
 
@@ -85,8 +90,18 @@ class Welcome extends PureComponent {
     }
   }
 
+  handleShowMobileNavigation = (show) => {
+    this.setState({ showMobileNavigationMenu: show });
+    if (show) {
+      document.querySelector('body').style.overflow = 'hidden';
+      return;
+    }
+    document.querySelector('body').style.overflow = '';
+  }
+
   render () {
     const { classes } = this.props;
+    const { showMobileNavigationMenu } = this.state;
     const testimonialAuthor = 'Dale M., Oakland, California';
     const imageUrl = cordovaDot('/img/global/photos/Dale_McGrew-200x200.jpg');
     const testimonial = 'Following the values that are important to me shows me opinions on my ballot from other people who share my values.';
@@ -94,7 +109,65 @@ class Welcome extends PureComponent {
       <Wrapper>
         <Appbar position="relative" classes={{ root: classes.appBarRoot }}>
           <Toolbar classes={{ root: classes.toolbar }} disableGutters>
-            <HeaderBarLogo light />
+            <LogoContainer>
+              <HeaderBarLogo light />
+            </LogoContainer>
+            <Navigation>
+              <NavLink>For Campaigns</NavLink>
+              <DesktopView>
+                <Divider />
+                <NavLink>How It Works</NavLink>
+                <Divider />
+                <NavLink href="/ballot">Get Started</NavLink>
+                <Divider />
+                <NavLink href="/settings/account">Sign In</NavLink>
+              </DesktopView>
+              <MobileTabletView>
+                <IconButton
+                  classes={{ root: classes.iconButton }}
+                  onClick={() => this.handleShowMobileNavigation(true)}
+                >
+                  <MenuIcon />
+                </IconButton>
+                {
+                  showMobileNavigationMenu && (
+                    <MobileNavigationMenu>
+                      <NavRow>
+                        <CloseIcon
+                          classes={{ root: classes.navClose }}
+                          onClick={() => this.handleShowMobileNavigation(false)}
+                        />
+                      </NavRow>
+                      <MobileNavDivider />
+                      <NavRow>
+                        <NavLink>For Campaigns</NavLink>
+                      </NavRow>
+                      <MobileNavDivider />
+                      <NavRow>
+                        <NavLink>How It Works</NavLink>
+                      </NavRow>
+                      <MobileNavDivider />
+                      <NavRow>
+                        <Button
+                          variant="outlined"
+                          classes={{ root: classes.navButtonOutlined }}
+                          onClick={() => historyPush('/ballot')}
+                        >
+                          Get Started
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          classes={{ root: classes.navButtonOutlined }}
+                          onClick={() => historyPush('/settings/account')}
+                        >
+                          Sign In
+                        </Button>
+                      </NavRow>
+                    </MobileNavigationMenu>
+                  )
+                }
+              </MobileTabletView>
+            </Navigation>
           </Toolbar>
         </Appbar>
         <Header>
@@ -239,6 +312,26 @@ const styles = theme => ({
   buttonMaxWidth: {
     width: '100%',
   },
+  iconButton: {
+    color: 'white',
+  },
+  navButtonOutlined: {
+    height: 32,
+    borderRadius: 32,
+    color: 'white',
+    border: '1px solid white',
+    marginBottom: '1em',
+    fontWeight: '300',
+    width: '47%',
+    fontSize: 12,
+    padding: '5px 0',
+    marginTop: 8,
+  },
+  navClose: {
+    position: 'fixed',
+    right: 16,
+    cursor: 'pointer',
+  },
 });
 
 const Wrapper = styled.div`
@@ -247,6 +340,20 @@ const Wrapper = styled.div`
   align-items: center;
   background: white;
   overflow-x: hidden;
+`;
+
+const DesktopView = styled.div`
+  display: inherit;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    display: none;
+  }
+`;
+
+const MobileTabletView = styled.div`
+  display: inherit;
+  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+    display: none;
+  }
 `;
 
 export default withStyles(styles)(Welcome);
