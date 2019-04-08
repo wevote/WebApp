@@ -20,17 +20,17 @@ class Footer extends Component {
             </Column>
             <Column>
               <ColumnTitle>Elections</ColumnTitle>
-              <Link className={classes.link}>Supported Elections</Link>
+              <Link className={classes.link} to="/more/elections">Supported Elections</Link>
               <Link className={classes.link}>Register to Vote</Link>
               <Link className={classes.link}>Get Your Absentee Ballot</Link>
               <Link className={classes.link}>See Your Ballot</Link>
               <Link className={classes.link}>Polling Place Locator</Link>
-              <Link className={classes.link}>Free Online Tools</Link>
+              <Link className={classes.link} to="/more/tools">Free Online Tools</Link>
               <Link className={classes.link}>Premium Online Tools</Link>
             </Column>
             <Column>
               <ColumnTitle>About We Vote</ColumnTitle>
-              <Link className={classes.link}>About &amp; Team</Link>
+              <Link className={classes.link} to="/more/about">About &amp; Team</Link>
               <Link className={classes.link} to="/more/donate">Donate</Link>
               <Link className={classes.link}>Blog</Link>
               <Link className={classes.link}>Media Inquiries</Link>
@@ -89,6 +89,8 @@ const styles = theme => ({
       width: '47%',
       fontSize: 12,
       padding: '8px 0',
+      border: '1px solid white',
+      height: 40,
     },
   },
   link: {
@@ -112,12 +114,15 @@ const styles = theme => ({
 const Wrapper = styled.div`
   color: rgb(255, 255, 255, .6) !important;
   background-image: linear-gradient(to bottom, #415a99, #2d3b5e);
-  padding: 4em 1em 2em 1em;
+  padding: 4em 1em 1em 1em;
   display: flex;
   flex-flow: column;
   align-items: center;
   justify-content: center;
   width: 100%;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    padding-top: 2em;
+  }
 `;
 
 const Top = styled.div`
