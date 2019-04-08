@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
-import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
 import CandidateStore from '../../stores/CandidateStore';
 import cookies from '../../utils/cookies';
-import { hasIPhoneNotch, historyPush, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -17,6 +16,7 @@ import VoterSessionActions from '../../actions/VoterSessionActions';
 import { shortenText, stringContains } from '../../utils/textFormat';
 import OfficeStore from '../../stores/OfficeStore';
 import OfficeItem from '../Ballot/OfficeItem';
+import HeaderBackToButton from './HeaderBackToButton';
 
 const styles = theme => ({
   headerButtonRoot: {
@@ -322,16 +322,11 @@ class HeaderBackToBallot extends Component {
     return (
       <AppBar className={headerClassName} color="default">
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
-          <Button
-            variant="contained"
-            color="primary"
-            className={`page-header__backToButton ${hasIPhoneNotch() ? 'page-header__backToButtonIPhoneX' : ''}`}
-            onClick={() => historyPush(backToLink)}
-          >
-            <KeyboardBackspaceIcon className="button-icon" />
-            <span className="u-show-desktop-tablet">{backToLinkTextDesktop}</span>
-            <span className="u-show-mobile">{backToLinkTextMobile}</span>
-          </Button>
+          <HeaderBackToButton
+            backToLink={backToLink}
+            backToLinkTextDesktop={backToLinkTextDesktop}
+            backToLinkTextMobile={backToLinkTextMobile}
+          />
 
           {this.state.profilePopUpOpen && voter.is_signed_in && (
           <HeaderBarProfilePopUp
