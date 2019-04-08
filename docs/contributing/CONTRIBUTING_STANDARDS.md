@@ -101,7 +101,7 @@ We value Software Craftsmanship for the We Vote project since it makes working o
 * Do no harm:  Stuff happens, but if you are not sure, ask before you commit.
 * Software Craftsmenship: Leave every file they touch in better shape than they found it. 
 * In React JSX files: commit files that (as much as possible) comply with the “airbnb” preset for jslint (with our few modifications). If you understand the warnings in the files you work on, make small changes to clear the warnings in the areas you are modifying.
-* In /WebApp/src/sass files: [BEM Naming Conventions](../../working/STYLING.md) should be followed -- BEM Naming makes it straightforward to organize where to group styles together in an object-oriented fashion. (Ex/ We can use a style named `ballot__header__title` and find where it is defined.)
+* In /WebApp/src/sass files: [BEM Naming Conventions](../working/STYLING.md) should be followed -- BEM Naming makes it straightforward to organize where to group styles together in an object-oriented fashion. (Ex/ We can use a style named `ballot__header__title` and find where it is defined.)
 * In Python: Clear all PEP8 warnings before committing.
 * Do not copy classes and make small changes, instead examine existing classes and components to see how they modified for the new use case and then reused.  If you absolutely have to copy, be sure to remove, or temporarily comment out, code that is not immediately in use.  
 * Commented out code should be rare and should include the date of commenting, and why it remains in place.
