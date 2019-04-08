@@ -59,12 +59,13 @@ export default class IntroNetwork extends Component {
       <div>
         <Helmet title="Welcome to We Vote" />
         <div className="intro-story container-fluid well u-inset--md">
-          <img
-            src={cordovaDot('/img/global/icons/x-close.png')}
-            onClick={IntroNetwork.goToBallotLink}
-            className={isWebApp() ? 'x-close' : 'x-close x-close__cordova'}
-            alt="close"
-          />
+          <a href="/ballot" onClick={IntroNetwork.goToBallotLink}>
+            <img
+              src={cordovaDot('/img/global/icons/x-close.png')}
+              className={isWebApp() ? 'x-close' : 'x-close x-close__cordova'}
+              alt="close"
+            />
+          </a>
           <Slider {...settings} dotsClass="slick-dots intro-modal__gray-dots" ref={this.slider}>
             <div key={1}><IntroNetworkSafety next={this.next} /></div>
             <div key={2}><IntroNetworkDefinition next={this.next} /></div>
