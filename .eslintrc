@@ -15,7 +15,7 @@
   "rules": {
     "array-bracket-spacing": [1, "never"],
     "camelcase": [1],
-    "class-methods-use-this": 0,                  // We want to allow helper functions that don't use 'this' in classes
+    "class-methods-use-this": 0, // We want to allow helper functions that don't use 'this' in classes
     "jsx-a11y/alt-text": 0,
     "jsx-a11y/anchor-has-content": 1,
     "jsx-a11y/anchor-is-valid": 1,
@@ -23,7 +23,7 @@
     "jsx-a11y/heading-has-content": 1,
     "jsx-a11y/iframe-has-title": 1,
     "jsx-a11y/label-has-associated-control": 1,
-    "jsx-a11y/label-has-for": 0,                  // Deprecated in favor of 'label-has-associated-control'
+    "jsx-a11y/label-has-for": 0, // Deprecated in favor of 'label-has-associated-control'
     "jsx-a11y/mouse-events-have-key-events": 1,
     "jsx-a11y/no-autofocus": 1,
     "jsx-a11y/no-noninteractive-element-interactions": 1,
@@ -33,12 +33,14 @@
     "no-console": [0],
     "no-else-return": [0],
     "no-multi-spaces": [0],
-    "no-multiple-empty-lines": [0],               // allow indented comments (like this one)
+    "no-multiple-empty-lines": [0], // allow indented comments (like this one)
     "no-plusplus": [0],
     "no-underscore-dangle": [0],
     "object-curly-newline": 0,
-    "object-curly-spacing": [1,
-      "always", {
+    "object-curly-spacing": [
+      1,
+      "always",
+      {
         "arraysInObjects": false,
         "objectsInObjects": true
       }
@@ -47,14 +49,14 @@
     "padded-blocks": [1],
     "prefer-destructuring": 1,
     "quotes": [1, "single", "avoid-escape"],
-    "radix": 0,                                   // Dec 2018: We always use base 10, so specifying it each time seems excessive
+    "radix": 0, // Dec 2018: We always use base 10, so specifying it each time seems excessive
     "react/button-has-type": 1,
-    "react/destructuring-assignment": 0,          // Dec 2018: We should do this!  But right now we have 3990 warnings/errors if enabled.
-    "react/forbid-prop-types": 0,                 // Dec 2018: Should consider someday
+    "react/destructuring-assignment": 0, // Dec 2018: We should do this!  But right now we have 3990 warnings/errors if enabled.
+    "react/forbid-prop-types": 0, // Dec 2018: Should consider someday
     "react/indent-prop": 0,
     "react/jsx-first-prop-new-line": 0,
     "react/jsx-indent-props": 0,
-    "react/jsx-no-bind": 1,                       // Dec 2018: Should these be errors?
+    "react/jsx-no-bind": 1, // Dec 2018: Should these be errors?
     "react/no-access-state-in-setstate": 1,
     "react/no-array-index-key": 1,
     "react/no-children-prop": 1,
@@ -65,13 +67,15 @@
     "react/no-unused-state": 1,
     "react/prefer-stateless-function": 0,
     "react/prop-types": 1,
-    "react/require-default-props": 0,              // Dec 2018: Might have value someday
+    "react/require-default-props": 0, // Dec 2018: Might have value someday
     "react/sort-comp": 1,
-    "space-before-function-paren": [1, {"anonymous": "always", "named": "always"}],
+    "space-before-function-paren": [
+      1,
+      { "anonymous": "always", "named": "always" }
+    ],
     "space-in-parens": [1],
-    "template-curly-spacing": ["warn", "never"]
+    "template-curly-spacing": ["warn", "never"],
+    "linebreak-style": ["error", "windows"]
   },
-    "plugins": [
-        "react"
-    ]
+  "plugins": ["react"]
 }

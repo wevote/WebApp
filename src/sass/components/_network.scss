@@ -1,4 +1,4 @@
-$button-div-max-width: 240px;
+$button-div-max-width: 100%;
 $button-margin-horizontal: 10px;
 $description-margin-top: 10px;
 $social-left-padding-mobile: 40px;
@@ -13,12 +13,22 @@ $backdrop-border-radius: 8px;
   justify-content: space-around;
 }
 
+.fa-info-circle {
+  font-size: 18px;
+  margin-right: 5px;
+  color: $gray-mid;
+}
+
 @media (min-width: 768px) {
+  .btn-twitter-values {
+    font-size: 16px;
+    max-width: $button-div-max-width;
+  }
   .network-btn {
     display: inline-block;
     max-width: $button-div-max-width;
-    margin-right: $button-margin-horizontal;
-    margin-left: $button-margin-horizontal;
+    margin-right: 0;
+    margin-left: 0;
   }
   .mobile-container {
     display: none;
@@ -26,9 +36,14 @@ $backdrop-border-radius: 8px;
 }
 
 @media (max-width: 767px) {
+  .btn-twitter-values {
+    display: block;
+    width: 100%;
+  }
   .network-btn {
     display: inline-block;
     margin-left: $button-margin-horizontal / 2;
+    margin-right: $button-margin-horizontal / 2;
   }
   .mobile-container {
     display: flex;
@@ -47,6 +62,8 @@ $backdrop-border-radius: 8px;
   word-wrap: break-word;
   float: left;
   text-align: left;
+  color: $gray-dark;
+  font-size: 14px;
 }
 
 // Network: list of issues to follow
@@ -67,32 +84,32 @@ $backdrop-border-radius: 8px;
     font-size: 1rem;
     word-wrap: break-word;
     color: $white;
-    text-shadow: 1px 1px 2px rgba($black, .6);
-    background: rgba(0, 0, 0, .45);
+    text-shadow: 1px 1px 2px rgba($black, 0.6);
+    background: rgba(0, 0, 0, 0.45);
     padding: $description-padding;
     width: 100%;
     border-radius: $backdrop-border-radius;
     border: 2px solid $white;
-    transition: all .2s ease-in;
+    transition: all 0.2s ease-in;
     &:hover {
       border: 2px solid $brand-blue;
-      background: rgba(0, 0, 0, .55);
+      background: rgba(0, 0, 0, 0.55);
     }
 
-    @include breakpoints (xsmall-bootstrap medium-bootstrap) {
-      font-size: .9rem;
+    @include breakpoints(xsmall-bootstrap medium-bootstrap) {
+      font-size: 0.9rem;
     }
 
-    @include breakpoints (iphone5 mid-small) {
-      font-size: .9rem;
+    @include breakpoints(iphone5 mid-small) {
+      font-size: 0.9rem;
       -webkit-hyphens: auto;
       -moz-hyphens: auto;
       -ms-hyphens: auto;
       hyphens: auto;
     }
 
-    @include breakpoints (max iphone5) {
-      font-size: .85rem;
+    @include breakpoints(max iphone5) {
+      font-size: 0.85rem;
       -webkit-hyphens: auto;
       -moz-hyphens: auto;
       -ms-hyphens: auto;
@@ -102,7 +119,7 @@ $backdrop-border-radius: 8px;
 }
 
 .network__card {
-  @include breakpoints (max mid-small) {
+  @include breakpoints(max mid-small) {
     margin: $network-card-margin-mobile;
   }
 }
