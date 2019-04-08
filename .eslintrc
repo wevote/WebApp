@@ -69,7 +69,8 @@
     "react/sort-comp": 1,
     "space-before-function-paren": [1, {"anonymous": "always", "named": "always"}],
     "space-in-parens": [1],
-    "template-curly-spacing": ["warn", "never"]
+    "template-curly-spacing": ["warn", "never"],
+    "linebreak-style": ["error", "windows"]
   },
     "plugins": [
         "react"
