@@ -13,7 +13,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import EmailIcon from '@material-ui/icons/Email';
 import Navigation, { LogoContainer, Divider, NavLink, MobileNavigationMenu, MobileNavDivider, NavRow } from '../components/Welcome/Navigation';
 import Header, { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/Header';
-import Section, { SectionTitle, SectionTitleBold, Step, StepNumber, StepLabel, GetStarted, ButtonContainer, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage, SignUpContainer } from '../components/Welcome/Section';
+import Section, { SectionTitle, SectionTitleBold, Step, StepNumber, StepLabel, GetStarted, ButtonContainer, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage, SignUpContainer, SignUpMessage } from '../components/Welcome/Section';
 import Footer from '../components/Welcome/Footer';
 import TextBox from '../components/Welcome/TextBox';
 import AddressBox from '../components/Welcome/AddressBox';
@@ -99,9 +99,16 @@ class Welcome extends PureComponent {
     document.querySelector('body').style.overflow = '';
   }
 
+  handleToPageFromMobileNav = (destination) => {
+    this.handleShowMobileNavigation(false);
+    historyPush(destination);
+  }
+
   render () {
     const { classes } = this.props;
-    const { showMobileNavigationMenu } = this.state;
+    const { showMobileNavigationMenu, voter, newsletterOptInTrue } = this.state;
+    const isVoterSignedIn = voter.is_signed_in;
+
     const testimonialAuthor = 'Dale M., Oakland, California';
     const imageUrl = cordovaDot('/img/global/photos/Dale_McGrew-200x200.jpg');
     const testimonial = 'Following the values that are important to me shows me opinions on my ballot from other people who share my values.';
@@ -151,14 +158,14 @@ class Welcome extends PureComponent {
                         <Button
                           variant="outlined"
                           classes={{ root: classes.navButtonOutlined }}
-                          onClick={() => historyPush('/ballot')}
+                          onClick={() => this.handleToPageFromMobileNav('/ballot')}
                         >
                           Get Started
                         </Button>
                         <Button
                           variant="outlined"
                           classes={{ root: classes.navButtonOutlined }}
-                          onClick={() => historyPush('/settings/account')}
+                          onClick={() => this.handleToPageFromMobileNav('/settings/account')}
                         >
                           Sign In
                         </Button>
@@ -178,12 +185,11 @@ class Welcome extends PureComponent {
           <SubTitle>Finally, a simple way to fill out your ballot.</SubTitle>
           <PlayerContainer>
             <Video
-              src="https://www.youtube.com/embed/s8fGNj_nvWs"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen="1"
-              title="YouTube video player"
+              src="https://player.vimeo.com/video/329164243"
               frameBorder="0"
+              allow="fullscreen"
             />
+            <script src="https://player.vimeo.com/api/player.js" />
           </PlayerContainer>
         </Header>
         <Section>
@@ -251,7 +257,7 @@ class Welcome extends PureComponent {
           />
           */}
         </Section>
-        <Section variant="dark" rounded>
+        <Section variant="dark" rounded={!isVoterSignedIn}>
           <SectionTitle>Our Network</SectionTitle>
           <NetworkContainer>
             <NetworkImage src={cordovaDot('/img/welcome/partners/google-logo.svg')} alt="Google" />
@@ -260,30 +266,36 @@ class Welcome extends PureComponent {
             <NetworkImage src={cordovaDot('/img/welcome/partners/voting-information-project.png')} alt="Voting Information Project" />
           </NetworkContainer>
         </Section>
-        <Section>
-          <SectionTitle>Sign up to get updates about We Vote</SectionTitle>
-          <SignUpContainer>
-            <TextBox
-              icon={<PersonIcon />}
-              placeholder="Full Name"
-              value={this.state.voterFullName}
-              inputProps={{ onChange: this.updateVoterFullName }}
-            />
-            <TextBox
-              icon={<EmailIcon />}
-              placeholder="Email"
-              value={this.state.voterEmail}
-              inputProps={{ type: 'email', onChange: this.updateVoterEmailAddress }}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
-            >
-              Sign Up
-            </Button>
-          </SignUpContainer>
-        </Section>
+        {
+          !isVoterSignedIn && (
+            <Section>
+              <SectionTitle>Sign up to get updates about We Vote</SectionTitle>
+              <SignUpContainer>
+                <TextBox
+                  icon={<PersonIcon />}
+                  placeholder="Full Name"
+                  value={this.state.voterFullName}
+                  inputProps={{ onChange: this.updateVoterFullName }}
+                />
+                <TextBox
+                  icon={<EmailIcon />}
+                  placeholder="Email"
+                  value={this.state.voterEmail}
+                  inputProps={{ type: 'email', onChange: this.updateVoterEmailAddress }}
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
+                  onClick={this.voterEmailAddressSignUpSave}
+                >
+                  Sign Up
+                </Button>
+                {newsletterOptInTrue === 1 && <SignUpMessage>Please check your email for a verification link</SignUpMessage>}
+              </SignUpContainer>
+            </Section>
+          )
+        }
         <Footer />
       </Wrapper>
     );

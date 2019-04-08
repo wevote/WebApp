@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
@@ -7,6 +8,10 @@ import { historyPush } from '../../utils/cordovaUtils';
 
 
 class Footer extends Component {
+  static propTypes = {
+    classes: PropTypes.object,
+  };
+
   render () {
     const { classes } = this.props;
     return (
@@ -114,7 +119,7 @@ const styles = theme => ({
 const Wrapper = styled.div`
   color: rgb(255, 255, 255, .6) !important;
   background-image: linear-gradient(to bottom, #415a99, #2d3b5e);
-  padding: 4em 1em 1em 1em;
+  padding: 4em 1em 0 1em;
   display: flex;
   flex-flow: column;
   align-items: center;

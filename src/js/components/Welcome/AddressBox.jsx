@@ -73,7 +73,7 @@ class AddressBox extends PureComponent {
     }
   }
 
-  render( ) {
+  render () {
     const { textForMapSearch } = this.state;
     return (
       <TextBox

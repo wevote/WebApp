@@ -40,7 +40,7 @@ const MobileNavigationMenu = styled.div`
   width: calc(100vw + 32px);
   height: 120vh;
   background: rgba(0, 0, 0, .9);
-  padding: 16px 48px;
+  padding: 16px 32px 16px 48px;
   transition: all 150ms ease-in;
 `;
 
