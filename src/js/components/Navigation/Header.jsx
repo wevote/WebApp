@@ -57,7 +57,7 @@ export default class Header extends Component {
         <div id="app-header">
           {iPhoneSpacer}
           <div className={isWebApp ? 'headroom-wrapper-webapp__voter-guide' : ''}>
-            <div ref="pageHeader" className={pageHeaderStyle} id="header-container">
+            <div className={pageHeaderStyle} id="header-container">
               {showBackToBallotHeader ?
                 <HeaderBackToBallot location={location} params={params} pathname={pathname} voter={voter} /> : (
                   <span>
@@ -77,7 +77,7 @@ export default class Header extends Component {
         <div id="app-header">
           { iPhoneSpacer }
           <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
-            <div ref="pageHeader" className={pageHeaderStyle} id="header-container">
+            <div className={pageHeaderStyle} id="header-container">
               { showBackToSettings ? (
                 <span>
                   <span className="d-block d-sm-none">
@@ -105,7 +105,7 @@ export default class Header extends Component {
         <div id="app-header">
           { iPhoneSpacer }
           <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
-            <div ref="pageHeader" className={pageHeaderStyle} id="header-container">
+            <div className={pageHeaderStyle} id="header-container">
               { showBackToValues ?
                 <HeaderBackToValues location={location} params={params} pathname={pathname} voter={voter} /> :
                 <HeaderBar location={location} pathname={pathname} voter={voter} />
@@ -119,7 +119,7 @@ export default class Header extends Component {
         <div id="app-header">
           { iPhoneSpacer }
           <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
-            <div ref="pageHeader" className={pageHeaderStyle} id="header-container">
+            <div className={pageHeaderStyle} id="header-container">
               { showBackToFriends ?
                 <HeaderBackToFriends location={location} params={params} pathname={pathname} voter={voter} /> :
                 <HeaderBar location={location} pathname={pathname} voter={voter} />
@@ -140,7 +140,7 @@ export default class Header extends Component {
               stringContains('/office', pathname) ? 'headroom-wrapper-webapp__office' : 'headroom-wrapper-webapp__default' : ''}
             id="headroom-wrapper"
           >
-            <div ref="pageHeader" className={pageHeaderStyle} id="header-container">
+            <div className={pageHeaderStyle} id="header-container">
               { showBackToBallotHeader ?
                 <HeaderBackToBallot location={location} params={params} pathname={pathname} voter={voter} /> :
                 <HeaderBar location={location} pathname={pathname} voter={voter} />

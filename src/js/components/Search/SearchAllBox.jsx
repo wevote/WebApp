@@ -267,10 +267,6 @@ export default class SearchAllBox extends Component {
       selectedIndex: 0,
       searchResults: [],
     });
-
-    // setTimeout(() => {
-    //   this.refs.searchAllBox.focus();
-    // }, 0);
   }
 
   navigateToSelectedLink () {
@@ -361,7 +357,6 @@ export default class SearchAllBox extends Component {
               onChange={this.onSearchFieldTextChange}
               onKeyDown={this.onSearchKeyDown}
               value={this.state.textFromSearchField}
-              ref="searchAllBox"
             />
             <div className="input-group-btn">
               {' '}

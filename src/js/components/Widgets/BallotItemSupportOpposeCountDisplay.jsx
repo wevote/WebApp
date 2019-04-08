@@ -29,7 +29,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     goToCandidate: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
-    popoverBottom: PropTypes.bool,
+    popoverTop: PropTypes.bool,
     classes: PropTypes.object,
   };
 
@@ -42,8 +42,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
     this.popover_state = {};
     this.mobile = 'ontouchstart' in document.documentElement;
-    this.networkScoreRef = 'network-score-overlay';
-    this.issueScoreRef = 'issue-score-overlay';
+    this.networkScoreRef = React.createRef();
+    this.issueScoreRef = React.createRef();
+    // this.networkScoreRef = 'network-score-overlay';
+    // this.issueScoreRef = 'issue-score-overlay';
     this.state = {
       ballotItemDisplayName: '',
       ballotItemWeVoteId: '',
@@ -621,7 +623,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             <OverlayTrigger
               trigger="click"
               rootClose
-              placement={this.props.popoverBottom ? 'bottom' : 'top'}
+              placement={this.props.popoverTop ? 'top' : 'bottom'}
               overlay={positionsPopover}
             >
               <EndorsementsContainer>
@@ -665,10 +667,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         { showNetworkScore && !isVoterSupport && !isVoterOppose ? (
           <OverlayTrigger
             trigger="click"
-            ref={this.networkScoreRef}
+            ref={(ref) => { this.networkScoreRef = ref; }}
             onExit={this.closeNetworkScorePopover}
             rootClose
-            placement={this.props.popoverBottom ? 'bottom' : 'top'}
+            placement={this.props.popoverTop ? 'top' : 'bottom'}
             overlay={scoreInYourNetworkPopover}
           >
             <NetworkScore>
