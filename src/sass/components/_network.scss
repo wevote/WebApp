@@ -50,23 +50,22 @@ $backdrop-border-radius: 8px;
   }
 }
 
-@media (min-width: 768px) {
-  .mobile-container {
-    @include breakpoints (medium) {
-      display: none;
-    }
-    @include breakpoints (small medium) {
-      display: flex;
-      flex-flow: row nowrap;
-      justify-content: space-around;
-      .btn-social {
-        width: 100%;
-        padding-left: $social-left-padding-mobile;
-        padding-right: $social-right-padding-mobile;
-      }
+.mobile-container {
+  @include breakpoints (medium) {
+    display: none;
+  }
+  @include breakpoints (small medium) {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    .btn-social {
+      width: 100%;
+      padding-left: $social-left-padding-mobile;
+      padding-right: $social-right-padding-mobile;
     }
   }
 }
+
 
 .social-btn-description {
   margin-top: $description-margin-top;

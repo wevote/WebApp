@@ -5,24 +5,17 @@ import { oAuthLog, renderLog } from '../../utils/logging';
 import $ajax from '../../utils/service';
 import cookies from '../../utils/cookies';
 import {
-  isWebApp,
-  cordovaOpenSafariView,
-  isIOS,
-  isAndroid,
-  historyPush,
+  isWebApp, cordovaOpenSafariView, isIOS, isAndroid, historyPush,
 } from '../../utils/cordovaUtils';
 import webAppConfig from '../../config';
 import TwitterActions from '../../actions/TwitterActions';
 
-const returnURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL +
-  webAppConfig.WE_VOTE_HOSTNAME}/twitter_sign_in`;
+const returnURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/twitter_sign_in`;
 
 class TwitterSignIn extends Component {
   // TODO: April 17, 2018, this is used by Twitter and SignIn by Email, and should be refactored out of here.  It is really the handleOpenURL function.
   static handleTwitterOpenURL (url) {
-    oAuthLog(
-      `---------------xxxxxx-------- Application handleTwitterOpenUrl: ${url}`,
-    );
+    oAuthLog(`---------------xxxxxx-------- Application handleTwitterOpenUrl: ${url}`);
     if (url.startsWith('wevotetwitterscheme://')) {
       oAuthLog(`handleTwitterOpenURL received wevotetwitterscheme: ${url}`);
       const search = url.replace(new RegExp('&amp;', 'g'), '&');
@@ -38,11 +31,7 @@ class TwitterSignIn extends Component {
           cordovaOpenSafariView(redirectURL, null, 500);
         } else {
           oAuthLog('redirectURL: ', redirectURL);
-          const inAppBrowserRef = cordova.InAppBrowser.open(
-            redirectURL,
-            '_blank',
-            'toolbar=no,location=yes,hardwareback=no',
-          );
+          const inAppBrowserRef = cordova.InAppBrowser.open(redirectURL, '_blank', 'toolbar=no,location=yes,hardwareback=no');
           inAppBrowserRef.addEventListener('exit', () => {
             oAuthLog('inAppBrowserRef on exit: ', redirectURL);
           });
@@ -59,20 +48,11 @@ class TwitterSignIn extends Component {
           TwitterActions.twitterSignInRetrieve();
           historyPush('/ballot');
         } else {
-          oAuthLog(
-            'twitterSignIn cordova, FAILED to receive secret -- push /twitter_sign_in',
-          );
+          oAuthLog('twitterSignIn cordova, FAILED to receive secret -- push /twitter_sign_in');
           historyPush('/twitter_sign_in');
         }
-      } else if (
-        urlParams.has('twitter_handle_found') &&
-        urlParams.get('twitter_handle_found') === 'True'
-      ) {
-        oAuthLog(
-          `twitterSignIn cordova, twitter_handle_found -- push /twitter_sign_in -- received handle = ${urlParams.get(
-            'twitter_handle',
-          )}`,
-        );
+      } else if (urlParams.has('twitter_handle_found') && urlParams.get('twitter_handle_found') === 'True') {
+        oAuthLog(`twitterSignIn cordova, twitter_handle_found -- push /twitter_sign_in -- received handle = ${urlParams.get('twitter_handle')}`);
 
         if (isIOS()) {
           // eslint-disable-next-line no-undef
@@ -81,9 +61,7 @@ class TwitterSignIn extends Component {
 
         historyPush('/twitter_sign_in');
       } else if (url.startsWith('wevotetwitterscheme://sign_in_email')) {
-        oAuthLog(
-          `twitterSignIn by email cordova, (not really twitter) -- received url = ${url}`,
-        );
+        oAuthLog(`twitterSignIn by email cordova, (not really twitter) -- received url = ${url}`);
 
         // Example url: wevotetwitterscheme://sign_in_email/1278821
         const n = url.indexOf('/');
@@ -99,7 +77,8 @@ class TwitterSignIn extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+    };
   }
 
   twitterSignInWebApp () {
@@ -136,11 +115,8 @@ class TwitterSignIn extends Component {
   }
 
   twitterSignInWebAppCordova () {
-    const requestURL =
-      `${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}twitterSignInStart` +
-      `?cordova=true&voter_device_id=${cookies.getItem(
-        'voter_device_id',
-      )}&return_url=http://nonsense.com`;
+    const requestURL = `${webAppConfig.WE_VOTE_SERVER_API_ROOT_URL}twitterSignInStart` +
+      `?cordova=true&voter_device_id=${cookies.getItem('voter_device_id')}&return_url=http://nonsense.com`;
     oAuthLog(`twitterSignInWebAppCordova requestURL: ${requestURL}`);
     if (isIOS()) {
       cordovaOpenSafariView(requestURL, null, 50);
@@ -149,11 +125,7 @@ class TwitterSignIn extends Component {
       // https://github.com/apache/cordova-plugin-inappbrowser/pull/263
       /* global cordova */
       /* eslint no-undef: ["error", { "typeof": true }] */
-      const inAppBrowserRef = cordova.InAppBrowser.open(
-        requestURL,
-        '_blank',
-        'toolbar=no,location=yes,hardwareback=no',
-      );
+      const inAppBrowserRef = cordova.InAppBrowser.open(requestURL, '_blank', 'toolbar=no,location=yes,hardwareback=no');
       inAppBrowserRef.addEventListener('exit', () => {
         oAuthLog('inAppBrowserRef on exit: ', requestURL);
       });
@@ -171,16 +143,8 @@ class TwitterSignIn extends Component {
     renderLog(__filename);
     return (
       <Button
-        bsPrefix={
-          this.props.className ?
-            this.props.className :
-            'btn btn-social btn-twitter'
-        }
-        onClick={
-          isWebApp() ?
-            this.twitterSignInWebApp :
-            this.twitterSignInWebAppCordova
-        }
+        bsPrefix={this.props.className ? this.props.className : 'btn btn-social btn-twitter'}
+        onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova}
       >
         <span className="fa fa-twitter" />
         {' '}
@@ -196,3 +160,4 @@ TwitterSignIn.propTypes = {
 };
 
 export default TwitterSignIn;
+
