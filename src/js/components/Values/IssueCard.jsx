@@ -142,24 +142,16 @@ export default class IssueCard extends Component {
         key={`issue-card-${this.state.issueWeVoteId}`}
       >
         <div className="card-main__media-object-anchor">
-          {this.props.turnOffIssueImage ?
-            null :
-            (
-              <Link to={this.getIssueLink}
-                    className="u-no-underline"
-              >
-                {issueImage}
-              </Link>
-            )
-          }
+          {this.props.turnOffIssueImage ? null : (
+            <Link to={this.getIssueLink} className="u-no-underline">
+              {issueImage}
+            </Link>
+          )}
         </div>
         <div className="card-main__media-object-content">
-          <Link to={this.getIssueLink}
-                className="u-no-underline"
-          >
+          <Link to={this.getIssueLink} className="u-no-underline">
             <h3 className="card-main__display-name">{issueDisplayName}</h3>
           </Link>
-
           { this.props.turnOffDescription ?
             <span className="card-main__description" /> :
             (
@@ -186,8 +178,7 @@ export default class IssueCard extends Component {
               urlWithoutHash={this.props.urlWithoutHash}
             />
           </div>
-        ) : null
-        }
+        ) : null}
       </div>
     );
   }

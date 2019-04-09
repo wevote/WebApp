@@ -37,7 +37,9 @@ export default class PositionRatingSnippet extends Component {
 
     return (
       <div className="position-rating">
-        <img onClick={showRatingDescriptionFunction} src={src} width="20" height="20" className={className} alt={alt} />
+        <a onClick={showRatingDescriptionFunction}>
+          <img src={src} width="20" height="20" className={className} alt={alt} />
+        </a>
         <div className="position-rating__text">
           <span className="position-rating__name">
             Gave
