@@ -16,18 +16,18 @@ import TwitterSignInCard from "../components/Twitter/TwitterSignInCard";
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 
 export default class Values extends Component {
-  static propTypes = {};
+  static propTypes = {
+  };
 
   constructor (props) {
     super(props);
-    this.state = {};
+    this.state = {
+    };
   }
 
   componentDidMount () {
     this.onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(
-      this.onVoterStoreChange.bind(this),
-    );
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
   }
 

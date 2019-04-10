@@ -1,4 +1,4 @@
-$button-div-max-width: 100%;
+$button-div-max-width: 240px;
 $button-margin-horizontal: 10px;
 $description-margin-top: 10px;
 $social-left-padding-mobile: 40px;
@@ -45,8 +45,8 @@ $backdrop-border-radius: 8px;
   }
   @include breakpoints (medium) {
     max-width: $button-div-max-width;
-    margin-right: 0;
-    margin-left: 0;
+    margin-right: $button-margin-horizontal;
+    margin-left: $button-margin-horizontal;
   }
 }
 
@@ -72,8 +72,6 @@ $backdrop-border-radius: 8px;
   word-wrap: break-word;
   float: left;
   text-align: left;
-  color: $gray-dark;
-  font-size: 14px;
 }
 
 // Network: list of issues to follow
@@ -94,32 +92,32 @@ $backdrop-border-radius: 8px;
     font-size: 1rem;
     word-wrap: break-word;
     color: $white;
-    text-shadow: 1px 1px 2px rgba($black, 0.6);
-    background: rgba(0, 0, 0, 0.45);
+    text-shadow: 1px 1px 2px rgba($black, .6);
+    background: rgba(0, 0, 0, .45);
     padding: $description-padding;
     width: 100%;
     border-radius: $backdrop-border-radius;
     border: 2px solid $white;
-    transition: all 0.2s ease-in;
+    transition: all .2s ease-in;
     &:hover {
       border: 2px solid $brand-blue;
-      background: rgba(0, 0, 0, 0.55);
+      background: rgba(0, 0, 0, .55);
     }
 
-    @include breakpoints(xsmall-bootstrap medium-bootstrap) {
-      font-size: 0.9rem;
+    @include breakpoints (xsmall-bootstrap medium-bootstrap) {
+      font-size: .9rem;
     }
 
-    @include breakpoints(iphone5 mid-small) {
-      font-size: 0.9rem;
+    @include breakpoints (iphone5 mid-small) {
+      font-size: .9rem;
       -webkit-hyphens: auto;
       -moz-hyphens: auto;
       -ms-hyphens: auto;
       hyphens: auto;
     }
 
-    @include breakpoints(max iphone5) {
-      font-size: 0.85rem;
+    @include breakpoints (max iphone5) {
+      font-size: .85rem;
       -webkit-hyphens: auto;
       -moz-hyphens: auto;
       -ms-hyphens: auto;
@@ -129,7 +127,7 @@ $backdrop-border-radius: 8px;
 }
 
 .network__card {
-  @include breakpoints(max mid-small) {
+  @include breakpoints (max mid-small) {
     margin: $network-card-margin-mobile;
   }
 }
