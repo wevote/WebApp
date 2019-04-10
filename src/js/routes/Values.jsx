@@ -22,18 +22,18 @@ const imageUrl = cordovaDot('/img/global/photos/Dale_McGrew-200x200.jpg');
 const testimonial = 'Following the values that are important to me shows me opinions on my ballot from other people who share my values.';
 
 export default class Values extends Component {
-  static propTypes = {
-  };
+  static propTypes = {};
 
   constructor (props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   componentDidMount () {
     this.onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(
+      this.onVoterStoreChange.bind(this),
+    );
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
   }
 
