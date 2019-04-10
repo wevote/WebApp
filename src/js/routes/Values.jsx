@@ -11,12 +11,7 @@ import ValuesFollowedPreview from '../components/Values/ValuesFollowedPreview';
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import NetworkOpinionsFollowed from '../components/Network/NetworkOpinionsFollowed';
 import VoterStore from '../stores/VoterStore';
-<<<<<<< HEAD
-
-const twitterInfoText = 'Signing into Twitter is the fastest way to find voter guides related to your values. We Vote will find the voter guides for everyone you are following on Twitter.';
-=======
 import TwitterSignInCard from "../components/Twitter/TwitterSignInCard";
->>>>>>> 60b79e5643787e226debeede0d25c9dce940f3bc
 
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 
@@ -84,23 +79,10 @@ export default class Values extends Component {
             {publicFiguresBlockToDisplay}
             {organizationsBlockToDisplay}
           </div>
-<<<<<<< HEAD
-
-          <div className="col-md-4 d-none d-sm-block">
-            { this.state.voter.signed_in_twitter ?
-              null : (
-                <div className="network-btn">
-                  <TwitterSignIn className="btn btn-social btn-lg btn-twitter text-center" buttonText="Sign In to Find Voter Guides" />
-                  {twitterInfoText}
-                </div>
-              )
-            }
-=======
           <div className="col-md-4 d-none d-md-block">
             {this.state.voter.signed_in_twitter ? null : (
               <TwitterSignInCard />
             )}
->>>>>>> 60b79e5643787e226debeede0d25c9dce940f3bc
           </div>
         </div>
       </span>

@@ -13,11 +13,6 @@ $backdrop-border-radius: 8px;
   justify-content: space-around;
 }
 
-<<<<<<< HEAD
-@media (min-width: 768px) {
-  .network-btn {
-    display: inline-block;
-=======
 .fa-info-circle {
   font-size: 18px;
   margin-right: 5px;
@@ -49,23 +44,15 @@ $backdrop-border-radius: 8px;
     margin-right: $button-margin-horizontal / 2;
   }
   @include breakpoints (medium) {
->>>>>>> 60b79e5643787e226debeede0d25c9dce940f3bc
     max-width: $button-div-max-width;
     margin-right: $button-margin-horizontal;
     margin-left: $button-margin-horizontal;
   }
 }
 
-<<<<<<< HEAD
-@media (max-width: 767px) {
-  .network-btn {
-    display: inline-block;
-    margin-left: $button-margin-horizontal / 2;
-=======
 .mobile-container {
   @include breakpoints (medium) {
     display: none;
->>>>>>> 60b79e5643787e226debeede0d25c9dce940f3bc
   }
   @include breakpoints (small medium) {
     display: flex;
