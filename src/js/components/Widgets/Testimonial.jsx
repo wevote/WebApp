@@ -29,13 +29,13 @@ class Testimonial extends React.Component {
 
   render () {
     renderLog(__filename);
-    const { testimonialAuthor, testimonial } = this.props;
+    const { testimonialAuthor, imageUrl, testimonial } = this.props;
 
     return (
       <TestimonialContainer>
         <ImageHandler
           className="card-main__avatar__testimonial"
-          imageUrl={this.props.imageUrl}
+          imageUrl={imageUrl}
           alt="candidate-photo"
           kind_of_ballot_item="CANDIDATE"
         />
@@ -63,6 +63,7 @@ const TestimonialContainer = styled.div`
   float: right;
   background-color: white;
   border-radius: 4px;
+  width: 100%;
 `;
 
 const TestimonialAuthor = styled.div`
@@ -80,7 +81,7 @@ const TextStyled = styled.div`
   text-align: left;
   margin: -5px 15px 15px 15px;
   border-width: medium;
-  font-size: 11px;
+  font-size: 14px;
   line-height: normal;
   :after {
     content: "";

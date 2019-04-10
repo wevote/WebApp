@@ -11,23 +11,29 @@ import ValuesFollowedPreview from '../components/Values/ValuesFollowedPreview';
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import NetworkOpinionsFollowed from '../components/Network/NetworkOpinionsFollowed';
 import VoterStore from '../stores/VoterStore';
-import TwitterSignInCard from "../components/Twitter/TwitterSignInCard";
+import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
+import Testimonial from '../components/Widgets/Testimonial';
+import { cordovaDot } from '../utils/cordovaUtils';
 
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 
+const testimonialAuthor = 'Dale M., Oakland, California';
+const imageUrl = cordovaDot('/img/global/photos/Dale_McGrew-200x200.jpg');
+const testimonial = 'Following the values that are important to me shows me opinions on my ballot from other people who share my values.';
+
 export default class Values extends Component {
-  static propTypes = {
-  };
+  static propTypes = {};
 
   constructor (props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   componentDidMount () {
     this.onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(
+      this.onVoterStoreChange.bind(this),
+    );
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
   }
 
@@ -75,11 +81,31 @@ export default class Values extends Component {
         <BrowserPushMessage incomingProps={this.props} />
         <div className="row">
           <div className="col-sm-12 col-md-8">
+            <div className="d-md-none d-block">
+              <div className="card">
+                <div className="card-main">
+                  <Testimonial
+                    imageUrl={imageUrl}
+                    testimonialAuthor={testimonialAuthor}
+                    testimonial={testimonial}
+                  />
+                </div>
+              </div>
+            </div>
             {valuesBlockToDisplay}
             {publicFiguresBlockToDisplay}
             {organizationsBlockToDisplay}
           </div>
           <div className="col-md-4 d-none d-md-block">
+            <div className="card">
+              <div className="card-main">
+                <Testimonial
+                  imageUrl={imageUrl}
+                  testimonialAuthor={testimonialAuthor}
+                  testimonial={testimonial}
+                />
+              </div>
+            </div>
             {this.state.voter.signed_in_twitter ? null : (
               <TwitterSignInCard />
             )}
