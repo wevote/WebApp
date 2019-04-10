@@ -29,6 +29,7 @@ class Testimonial extends React.Component {
 
   render () {
     renderLog(__filename);
+    const { testimonialAuthor, imageUrl, testimonial } = this.props;
 
     return (
       <div className="card">
@@ -36,12 +37,12 @@ class Testimonial extends React.Component {
           <TestimonialContainer>
             <ImageHandler
               className="card-main__avatar__testimonial"
-              imageUrl={this.props.imageUrl}
+              imageUrl={imageUrl}
               alt="candidate-photo"
               kind_of_ballot_item="CANDIDATE"
             />
             <TestimonialAuthor>
-              {this.props.TestimonialAuthor}
+              {testimonialAuthor}
             </TestimonialAuthor>
             <TextStyled>
               <FormatQuote style={{
@@ -52,7 +53,7 @@ class Testimonial extends React.Component {
                 marginLeft: '-4px',
               }}
               />
-              {this.props.testimonial}
+              {testimonial}
             </TextStyled>
           </TestimonialContainer>
         </div>
