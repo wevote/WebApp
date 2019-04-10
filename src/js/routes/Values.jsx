@@ -82,22 +82,30 @@ export default class Values extends Component {
         <div className="row">
           <div className="col-sm-12 col-md-8">
             <div className="d-md-none d-block">
-              <Testimonial
-                imageUrl={imageUrl}
-                testimonialAuthor={testimonialAuthor}
-                testimonial={testimonial}
-              />
+              <div className="card">
+                <div className="card-main">
+                  <Testimonial
+                    imageUrl={imageUrl}
+                    testimonialAuthor={testimonialAuthor}
+                    testimonial={testimonial}
+                  />
+                </div>
+              </div>
             </div>
             {valuesBlockToDisplay}
             {publicFiguresBlockToDisplay}
             {organizationsBlockToDisplay}
           </div>
           <div className="col-md-4 d-none d-md-block">
-            <Testimonial
-              imageUrl={imageUrl}
-              testimonialAuthor={testimonialAuthor}
-              testimonial={testimonial}
-            />
+            <div className="card">
+              <div className="card-main">
+                <Testimonial
+                  imageUrl={imageUrl}
+                  testimonialAuthor={testimonialAuthor}
+                  testimonial={testimonial}
+                />
+              </div>
+            </div>
             {this.state.voter.signed_in_twitter ? null : (
               <TwitterSignInCard />
             )}

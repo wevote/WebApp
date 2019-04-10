@@ -32,32 +32,28 @@ class Testimonial extends React.Component {
     const { testimonialAuthor, imageUrl, testimonial } = this.props;
 
     return (
-      <div className="card">
-        <div className="card-main">
-          <TestimonialContainer>
-            <ImageHandler
-              className="card-main__avatar__testimonial"
-              imageUrl={imageUrl}
-              alt="candidate-photo"
-              kind_of_ballot_item="CANDIDATE"
-            />
-            <TestimonialAuthor>
-              {testimonialAuthor}
-            </TestimonialAuthor>
-            <TextStyled>
-              <FormatQuote style={{
-                transform: 'rotate(180deg)',
-                verticalAlign: 'text-bottom',
-                position: 'relative',
-                top: '5px',
-                marginLeft: '-4px',
-              }}
-              />
-              {testimonial}
-            </TextStyled>
-          </TestimonialContainer>
-        </div>
-      </div>
+      <TestimonialContainer>
+        <ImageHandler
+          className="card-main__avatar__testimonial"
+          imageUrl={imageUrl}
+          alt="candidate-photo"
+          kind_of_ballot_item="CANDIDATE"
+        />
+        <TestimonialAuthor>
+          {testimonialAuthor}
+        </TestimonialAuthor>
+        <TextStyled>
+          <FormatQuote style={{
+            transform: 'rotate(180deg)',
+            verticalAlign: 'text-bottom',
+            position: 'relative',
+            top: '5px',
+            marginLeft: '-4px',
+          }}
+          />
+          {testimonial}
+        </TextStyled>
+      </TestimonialContainer>
     );
   }
 }
