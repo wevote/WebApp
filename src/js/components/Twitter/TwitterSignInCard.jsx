@@ -1,24 +1,24 @@
-import React,{Component} from 'react';
-import TwitterSignIn from "./TwitterSignIn";
+import React, { Component } from 'react';
+import TwitterSignIn from './TwitterSignIn';
 
-const twitterInfoText=(
+const twitterText = 'Signing into Twitter is the fastest way to find voter guides related to your values. We Vote will find the voter guides for everyone you are following on Twitter';
+
+const twitterInfoText = (
   <span className="social-btn-description">
     <i className="fa fa-info-circle" />
-    Signing into Twitter is the fastest way to find voter guides related to your
-    values. We Vote will find the voter guides for everyone you are following on
-    Twitter
+    {twitterText}
   </span>
 );
 
 class TwitterSignInCard extends Component {
   static propTypes={};
 
-  constructor(props) {
+  constructor (props) {
     super(props);
-    this.state={};
+    this.state = {};
   }
 
-  render() {
+  render () {
     return (
       <div className="card">
         <div className="card-main">
@@ -31,7 +31,7 @@ class TwitterSignInCard extends Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
