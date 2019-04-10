@@ -116,6 +116,7 @@ const Description = styled.p`
 
 const Image = styled.img`
   width: 100%:
+  max-width: 60vw;
 `;
 
 const Bold = styled.span`
@@ -149,6 +150,18 @@ const SignUpContainer = styled.div`
   max-width: 90vw;
 `;
 
+const SignUpMessage = styled.div`
+  border-radius: 4px;
+  color: ${({ theme }) => theme.colors.brandBlue};
+  padding: 8px 16px;
+  font-size: 14px;
+  margin-top: 2em;
+  background: rgb(243,243,247);
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 12px;
+  }
+`;
+
 export {
   SectionTitle,
   SectionTitleBold,
@@ -166,6 +179,7 @@ export {
   NetworkContainer,
   NetworkImage,
   SignUpContainer,
+  SignUpMessage,
 };
 
 export default Section;
