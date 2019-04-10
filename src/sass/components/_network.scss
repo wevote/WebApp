@@ -13,24 +13,61 @@ $backdrop-border-radius: 8px;
   justify-content: space-around;
 }
 
+<<<<<<< HEAD
 @media (min-width: 768px) {
   .network-btn {
     display: inline-block;
+=======
+.fa-info-circle {
+  font-size: 18px;
+  margin-right: 5px;
+  color: $gray-mid;
+}
+
+.fa-twitter {
+  font-size: inherit;
+  margin-top: -3px;
+}
+
+.btn-twitter-values {
+  max-width: $button-div-max-width;
+  width: 100%;
+  @include breakpoints (medium) {
+    font-size: 12px;
+    padding: 8px 8px 8px 52px !important;
+  }
+  @include breakpoints (large) {
+    font-size: 14px;
+    padding: 8px 16px 8px 64px;
+  }
+}
+
+.network-btn {
+  display: inline-block;
+  @include breakpoints (small medium) {
+    margin-left: $button-margin-horizontal / 2;
+    margin-right: $button-margin-horizontal / 2;
+  }
+  @include breakpoints (medium) {
+>>>>>>> 60b79e5643787e226debeede0d25c9dce940f3bc
     max-width: $button-div-max-width;
     margin-right: $button-margin-horizontal;
     margin-left: $button-margin-horizontal;
   }
-  .mobile-container {
-    display: none;
-  }
 }
 
+<<<<<<< HEAD
 @media (max-width: 767px) {
   .network-btn {
     display: inline-block;
     margin-left: $button-margin-horizontal / 2;
+=======
+.mobile-container {
+  @include breakpoints (medium) {
+    display: none;
+>>>>>>> 60b79e5643787e226debeede0d25c9dce940f3bc
   }
-  .mobile-container {
+  @include breakpoints (small medium) {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-around;
@@ -41,6 +78,7 @@ $backdrop-border-radius: 8px;
     }
   }
 }
+
 
 .social-btn-description {
   margin-top: $description-margin-top;
