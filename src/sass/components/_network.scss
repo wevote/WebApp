@@ -1,4 +1,4 @@
-$button-div-max-width: 240px;
+$button-div-max-width: 100%;
 $button-margin-horizontal: 10px;
 $description-margin-top: 10px;
 $social-left-padding-mobile: 40px;
@@ -45,8 +45,8 @@ $backdrop-border-radius: 8px;
   }
   @include breakpoints (medium) {
     max-width: $button-div-max-width;
-    margin-right: $button-margin-horizontal;
-    margin-left: $button-margin-horizontal;
+    margin-right: 0;
+    margin-left: 0;
   }
 }
 
