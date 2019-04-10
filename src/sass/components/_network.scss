@@ -107,11 +107,11 @@ $backdrop-border-radius: 8px;
     }
 
     @include breakpoints(xsmall-bootstrap medium-bootstrap) {
-      font-size: .9rem;
+      font-size: 0.9rem;
     }
 
     @include breakpoints(iphone5 mid-small) {
-      font-size: .9rem;
+      font-size: 0.9rem;
       -webkit-hyphens: auto;
       -moz-hyphens: auto;
       -ms-hyphens: auto;
@@ -119,7 +119,7 @@ $backdrop-border-radius: 8px;
     }
 
     @include breakpoints(max iphone5) {
-      font-size: .85rem;
+      font-size: 0.85rem;
       -webkit-hyphens: auto;
       -moz-hyphens: auto;
       -ms-hyphens: auto;
