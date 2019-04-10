@@ -29,31 +29,35 @@ class Testimonial extends React.Component {
 
   render () {
     renderLog(__filename);
-    const { testimonialAuthor, testimonial } = this.props;
+    const { testimonialAuthor, testimonial, imageUrl } = this.props;
 
     return (
-      <TestimonialContainer>
-        <ImageHandler
-          className="card-main__avatar__testimonial"
-          imageUrl={this.props.imageUrl}
-          alt="candidate-photo"
-          kind_of_ballot_item="CANDIDATE"
-        />
-        <TestimonialAuthor>
-          {testimonialAuthor}
-        </TestimonialAuthor>
-        <TextStyled>
-          <FormatQuote style={{
-            transform: 'rotate(180deg)',
-            verticalAlign: 'text-bottom',
-            position: 'relative',
-            top: '5px',
-            marginLeft: '-4px',
-          }}
-          />
-          {testimonial}
-        </TextStyled>
-      </TestimonialContainer>
+      <div className="card">
+        <div className="card-main">
+          <TestimonialContainer>
+            <ImageHandler
+              className="card-main__avatar__testimonial"
+              imageUrl={this.props.imageUrl}
+              alt="candidate-photo"
+              kind_of_ballot_item="CANDIDATE"
+            />
+            <TestimonialAuthor>
+              {this.props.TestimonialAuthor}
+            </TestimonialAuthor>
+            <TextStyled>
+              <FormatQuote style={{
+                transform: 'rotate(180deg)',
+                verticalAlign: 'text-bottom',
+                position: 'relative',
+                top: '5px',
+                marginLeft: '-4px',
+              }}
+              />
+              {this.props.testimonial}
+            </TextStyled>
+          </TestimonialContainer>
+        </div>
+      </div>
     );
   }
 }
@@ -63,6 +67,7 @@ const TestimonialContainer = styled.div`
   float: right;
   background-color: white;
   border-radius: 4px;
+  width: 100%;
 `;
 
 const TestimonialAuthor = styled.div`
@@ -80,7 +85,7 @@ const TextStyled = styled.div`
   text-align: left;
   margin: -5px 15px 15px 15px;
   border-width: medium;
-  font-size: 11px;
+  font-size: 14px;
   line-height: normal;
   :after {
     content: "";
