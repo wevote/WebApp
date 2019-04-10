@@ -81,7 +81,7 @@ export default class Values extends Component {
         <BrowserPushMessage incomingProps={this.props} />
         <div className="row">
           <div className="col-sm-12 col-md-8">
-            <div className="u-show-mobile-tablet">
+            <div className="d-md-none d-block">
               <Testimonial
                 imageUrl={imageUrl}
                 testimonialAuthor={testimonialAuthor}
@@ -93,13 +93,11 @@ export default class Values extends Component {
             {organizationsBlockToDisplay}
           </div>
           <div className="col-md-4 d-none d-md-block">
-            <div className="u-show-desktop">
-              <Testimonial
-                imageUrl={imageUrl}
-                testimonialAuthor={testimonialAuthor}
-                testimonial={testimonial}
-              />
-            </div>
+            <Testimonial
+              imageUrl={imageUrl}
+              testimonialAuthor={testimonialAuthor}
+              testimonial={testimonial}
+            />
             {this.state.voter.signed_in_twitter ? null : (
               <TwitterSignInCard />
             )}

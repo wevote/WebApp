@@ -29,7 +29,6 @@ class Testimonial extends React.Component {
 
   render () {
     renderLog(__filename);
-    const { testimonialAuthor, testimonial, imageUrl } = this.props;
 
     return (
       <div className="card">
