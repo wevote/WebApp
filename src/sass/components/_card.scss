@@ -72,8 +72,8 @@
       // additional styling set with 'media-object' mixin
       @include breakpoints (mid-small) {
         //more space and spacing for candidate bio
-        padding: $space-xs $space-lg;
-        margin-bottom: $space-lg;
+        // padding: $space-xs $space-lg;
+        // margin-bottom: $space-lg;
         font-size: 16px;
       }
     }

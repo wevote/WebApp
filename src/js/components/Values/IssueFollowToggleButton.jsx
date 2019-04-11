@@ -73,14 +73,22 @@ export default class IssueFollowToggleButton extends Component {
     if (!this.state) { return <div />; }
 
     return this.state.isFollowing ? (
-      <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
-        <Button variant="warning" size="small" onClick={this.onIssueStopFollowing}>
+      <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark" style={{ padding: '0', margin: '-2px' }}>
+        <Button variant="warning"
+          size="small"
+          onClick={this.onIssueStopFollowing}
+          style={{ backgroundColor: '#2E3C5D', borderColor: '#2E3C5D', borderRadius: '0px 0.25rem 0.25rem 0px' }}
+        >
           <span>Following</span>
         </Button>
       </div>
     ) : (
-      <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
-        <Button variant="success" size="small" onClick={this.onIssueFollow}>
+      <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark" style={{ padding: '0', margin: '-2px' }}>
+        <Button variant="success"
+          size="small"
+          onClick={this.onIssueFollow}
+          style={{ backgroundColor: '#2E3C5D', borderColor: '#2E3C5D', borderRadius: '0px 0.25rem 0.25rem 0px' }}
+        >
           <span>Follow</span>
         </Button>
       </div>

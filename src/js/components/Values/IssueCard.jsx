@@ -5,7 +5,7 @@ import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
 import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging';
-import ReadMore from '../Widgets/ReadMore';
+// import ReadMore from '../Widgets/ReadMore';
 import { convertNameToSlug } from '../../utils/textFormat';
 
 export default class IssueCard extends Component {
@@ -84,10 +84,11 @@ export default class IssueCard extends Component {
       return <div className="card-popover__width--minimum">{LoadingWheel}</div>;
     }
 
-    let { issue_description: issueDescription, issue_name: issueDisplayName } = this.state.issue;
+    let { issue_name: issueDisplayName } = this.state.issue;
+    // let { issue_description: issueDescription, issue_name: issueDisplayName } = this.state.issue;
 
     issueDisplayName = issueDisplayName || '';
-    issueDescription = issueDescription || '';
+    // issueDescription = issueDescription || '';
 
     let issueImage;
     let numberOfLines;
@@ -134,21 +135,22 @@ export default class IssueCard extends Component {
         numberOfLines = 4;
       }
     }
-
+    console.log(numberOfLines);
 
     return (
       <div
         className="card-main__media-object u-stack--md"
         key={`issue-card-${this.state.issueWeVoteId}`}
+        style={{ border: '2px solid', borderRadius: '.25rem', borderColor: '#eee' }}
       >
-        <div className="card-main__media-object-anchor">
+        <div className="card-main__media-object-anchor" style={{ padding: '3px' }}>
           {this.props.turnOffIssueImage ? null : (
             <Link to={this.getIssueLink} className="u-no-underline">
               {issueImage}
             </Link>
           )}
         </div>
-        <div className="card-main__media-object-content">
+        <div className="card-main__media-object-content" style={{ position: 'relative', top: '7px' }}>
           <Link to={this.getIssueLink} className="u-no-underline">
             <h3 className="card-main__display-name">{issueDisplayName}</h3>
           </Link>
@@ -159,9 +161,9 @@ export default class IssueCard extends Component {
                 <Link to={this.getIssueLink}
                       className="u-no-underline"
                 >
-                  <ReadMore text_to_display={issueDescription}
+                  {/* <ReadMore text_to_display={issueDescription}
                             num_of_lines={numberOfLines}
-                  />
+                  /> */}
                 </Link>
               </span>
             )
