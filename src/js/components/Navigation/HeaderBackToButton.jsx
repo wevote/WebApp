@@ -5,6 +5,8 @@ import KeyboardBackspaceIcon from '@material-ui/icons/ArrowBack';
 import KeyboardBackSpaceIconCordovaIOS from '@material-ui/icons/ArrowBackIos';
 import { withStyles } from '@material-ui/core/styles';
 import { hasIPhoneNotch, historyPush, isIOS } from '../../utils/cordovaUtils';
+
+import { shortenText } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 
 const styles = {
@@ -21,14 +23,13 @@ const styles = {
 class HeaderBackToButton extends Component {
   static propTypes = {
     backToLink: PropTypes.string.isRequired,
-    backToLinkTextDesktop: PropTypes.string,
-    backToLinkTextMobile: PropTypes.string,
+    backToLinkText: PropTypes.string,
     classes: PropTypes.object,
   };
 
   render () {
     renderLog(__filename);
-    const { classes, backToLink, backToLinkTextMobile, backToLinkTextDesktop } = this.props;
+    const { classes, backToLink, backToLinkText } = this.props;
 
     return (
       <Button
@@ -43,8 +44,8 @@ class HeaderBackToButton extends Component {
         ) : (
           <KeyboardBackspaceIcon className="button-icon" />
         )}
-        <span className="u-show-desktop-tablet">{backToLinkTextDesktop}</span>
-        <span className="u-show-mobile">{backToLinkTextMobile}</span>
+        <span className="u-show-desktop-tablet">{shortenText(backToLinkText,60)}</span>
+        <span className="u-show-mobile">{shortenText(backToLinkText, 25)}</span>
       </Button>
 
     );

@@ -13,7 +13,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import { shortenText, stringContains } from '../../utils/textFormat';
+import { stringContains } from '../../utils/textFormat';
 import OfficeStore from '../../stores/OfficeStore';
 import OfficeItem from '../Ballot/OfficeItem';
 import HeaderBackToButton from './HeaderBackToButton';
@@ -307,8 +307,6 @@ class HeaderBackToBallot extends Component {
       backToLinkText = `${this.state.organization.organization_name}`; // Back to
     }
 
-    const backToLinkTextDesktop = shortenText(backToLinkText, 60);
-    const backToLinkTextMobile = shortenText(backToLinkText, 25);
     const headerClassName = (function header () {
       const prefix = stringContains('/office', pathname) ? 'page-header page-header__back-to-ballot' : 'page-header';
       if (isWebApp()) {
@@ -324,8 +322,7 @@ class HeaderBackToBallot extends Component {
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
           <HeaderBackToButton
             backToLink={backToLink}
-            backToLinkTextDesktop={backToLinkTextDesktop}
-            backToLinkTextMobile={backToLinkTextMobile}
+            backToLinkText={backToLinkText}
           />
 
           {this.state.profilePopUpOpen && voter.is_signed_in && (
