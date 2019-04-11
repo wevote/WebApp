@@ -44,7 +44,7 @@ class HeaderBackToButton extends Component {
         ) : (
           <KeyboardBackspaceIcon className="button-icon" />
         )}
-        <span className="u-show-desktop-tablet">{shortenText(backToLinkText,60)}</span>
+        <span className="u-show-desktop-tablet">{shortenText(backToLinkText, 60)}</span>
         <span className="u-show-mobile">{shortenText(backToLinkText, 25)}</span>
       </Button>
 
