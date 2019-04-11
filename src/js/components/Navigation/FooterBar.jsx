@@ -76,19 +76,14 @@ class FooterBar extends React.Component {
 
     return (
       <div className="footer-container u-show-mobile-tablet">
-        <BottomNavigation
-          value={this.getSelectedTab()}
-          onChange={this.handleChange}
-          showLabels
-        >
+        <BottomNavigation value={this.getSelectedTab()} onChange={this.handleChange} showLabels>
           <BottomNavigationAction className="no-outline" label="Ballot" showLabel icon={<DescriptionIcon />} />
           <BottomNavigationAction className="no-outline" label="Values" showLabel icon={<QuestionAnswerIcon />} />
           <BottomNavigationAction
             className="no-outline"
             label="Friends"
             showLabel
-            icon={
-            (
+            icon={(
               <span>
                 <PeopleIcon />
                 <Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} style={badgeStyle} onClick={() => this.handleNavigation('/friends')} />
