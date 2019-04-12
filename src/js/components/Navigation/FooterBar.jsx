@@ -65,7 +65,7 @@ class FooterBar extends React.Component {
 
   render () {
     // console.log('FooterBar render');
-    const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 2;
+    const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0;
 
     const badgeStyle = {
       display: 'inline-block',
