@@ -66,12 +66,9 @@ class FooterBar extends React.Component {
   render () {
     // console.log('FooterBar render');
     const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0;
-    const classes = this.props;
 
     const badgeStyle = {
-      position: 'absolute',
-      left: 'calc(50% + 25px)',
-      top: '10px',
+      display: 'inline-block',
     };
 
     return (
@@ -84,10 +81,9 @@ class FooterBar extends React.Component {
             label="Friends"
             showLabel
             icon={(
-              <span>
+              <Badge badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} style={badgeStyle} onClick={() => this.handleNavigation('/friends')}>
                 <PeopleIcon />
-                <Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} style={badgeStyle} onClick={() => this.handleNavigation('/friends')} />
-              </span>
+              </Badge>
             )}
           />
           {/* <BottomNavigationAction className="no-outline" label="Vote" showLabel icon={<ion-icon class="footer-icon" name="clipboard" />} /> */}
