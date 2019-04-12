@@ -64,7 +64,7 @@ export default class ValuesToFollowPreview extends Component {
         <section className="card">
           <div className="card-main">
             <h1 className="h4">Values to Follow</h1>
-            <div>
+            <div style={{ display: 'flex', flexFlow: 'row wrap' }}>
               { issueListForDisplay }
             </div>
             <div>
