@@ -5,13 +5,14 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import cookies from '../../utils/cookies';
-import { hasIPhoneNotch, historyPush, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import { stringContains } from '../../utils/textFormat';
+import HeaderBackToButton from './HeaderBackToButton';
 
 const styles = theme => ({
   headerButtonRoot: {
@@ -136,16 +137,10 @@ class HeaderBackToValues extends Component {
     return (
       <AppBar className={headerClassName} color="default">
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
-          <Button
-            variant="contained"
-            color="primary"
-            className={`page-header__backToButton ${hasIPhoneNotch() ? 'page-header__backToButtonIPhoneX' : ''}`}
-            onClick={() => historyPush(backToLink)}
-          >
-            <ion-icon name="arrow-back" />
-            &nbsp;
-            {backToValuesLinkText}
-          </Button>
+          <HeaderBackToButton
+            backToLink={backToLink}
+            backToLinkText={backToValuesLinkText}
+          />
 
           {this.state.profilePopUpOpen && voter.is_signed_in && (
           <HeaderBarProfilePopUp
