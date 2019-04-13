@@ -79,4 +79,4 @@ const CloseComponent = styled.div`
   opacity: 0.5;
 `;
 
-export default withTheme()(withStyles()(LocationGuess));
+export default (withTheme)(withStyles)(LocationGuess);
