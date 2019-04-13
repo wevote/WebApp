@@ -45,5 +45,3 @@ export default class IntroNetworkSafety extends Component {
     );
   }
 }
-
-{/*  */}
