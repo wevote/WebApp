@@ -272,12 +272,12 @@ $scrollcard-padding: 2px 2px 0 0;
   // We need to disable stylelint type selector rule because we need to override existing slick package styles.
   /* stylelint-disable selector-max-type */
   &__gray-dots li button::before {
-    color: $gray-pale;
+    color: $gray-light;
     font-size: 12px;
     content: $slick-dot-character;
   }
   &__gray-dots li.slick-active button::before {
-    color: $white;
+    color: $brand-blue;
     opacity: 1;
     content: $slick-dot-character;
   }
@@ -530,7 +530,7 @@ $scrollcard-padding: 2px 2px 0 0;
 }
 
 .slick-dots {
-  bottom: 0;
+  top: 83vh;
   content: $slick-dot-character;
 }
 

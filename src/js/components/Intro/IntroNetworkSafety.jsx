@@ -25,34 +25,25 @@ export default class IntroNetworkSafety extends Component {
   render () {
     renderLog(__filename);
     return (
-      <div
-        className="intro-story__background background--image2"
-        style={isCordova() ? { backgroundImage: 'url(./img/global/intro-story/slide2-lady-liberty-698x600.jpg)' } : null}
-      >
-        <div className="intro-story__h1">We Vote in Safety</div>
-        <div className="intro-story__h2">
-          You control who is in
-          <br />
-          your
-          {' '}
-          <strong>We Vote</strong>
-          {' '}
-          network.
-          <br />
-          No fist fights required.
-        </div>
-        <div><br /></div>
+      <div className="intro-story__padding">
+        <div className="intro-story__h1">Plan your entire ballot<br /><span className="intro-story__h1--highlight">in 6 minutes</span></div>
+        <div><hr /></div>
         <div>
-          <img
-            className="center-block intro-story__img-height"
-            src={cordovaDot('/img/global/intro-story/no-fighting-256x256.png')}
-          />
+          {/* <img
+            className="center-block intro-story__img-height intro-story__placeholder"
+            src={cordovaDot('/img/global/intro-story/followvalues.gif')}
+          /> */
+            <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: FollowValues.GIF</div>
+          }
         </div>
-        <div className="intro-story__padding-btn">
-          <button type="button" className="btn btn-success btn-lg" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
+        <div className="intro-story__h2 intro-story__h2--highlight">
+          Choose your interests
         </div>
+        <p className="intro-story__info">Follow topics that interest you.  We will suggest endorsements based on your interests.</p>
+        <button type="button" className="btn intro-story__btn intro-story__btn--bottom" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
       </div>
     );
   }
 }
 
+{/*  */}

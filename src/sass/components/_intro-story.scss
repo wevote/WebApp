@@ -1,21 +1,24 @@
 .intro-story {
-  background-color: $gray-dark;
+  background-color: $white;
   padding: $space-none;
   height: 600px;
   width: 100%;
-  color: $white;
+  color: $black;
   text-align: center;
   @include breakpoints (max large) {
     height: 100vh;
     max-height: 990px; // We set this so that when We Vote is in a frame, the modal isn't too long.
   }
   &__h1 {
-    font-weight: 700;
-    font-size: 30px;
+    font-weight: 800;
+    font-size: 34px;
     padding: $space-lg $space-none $space-md;
     @include breakpoints (max large) {
-      font-size: 22px;
+      font-size: 28px;
     }
+  }
+  &__h1--highlight {
+    color: $brand-blue;
   }
   &__h1--alt {
     font-weight: 700;
@@ -27,22 +30,32 @@
   }
 
   &__h2 {
-    padding-top: $space-md;
-    font-size: 20px;
+    padding-top: $space-lg;
+    padding-bottom: $space-md;
+    font-size: 30px;
+    font-weight: 600;
     @include breakpoints (max large) {
-      font-size: 18px;
+      font-size: 22px;
     }
+  }
+  &__h2--highlight {
+    color: $brand-blue;
+  }
+
+  &__info {
+    color: $gray-dark;
   }
 
   &__padding {
     padding: $space-md;
+    min-height: 100%;
     @include breakpoints (max large) {
       padding-top: $space-md;
       padding-bottom: $space-md;
     }
   }
 
-  &__padding-top {
+  &__padding--top {
     padding-top: $space-md;
   }
 
@@ -60,10 +73,7 @@
   }
 
   &__img-height {
-    height: 200px;
-    @include breakpoints (max mid-small) {
-      height: 165px;
-    }
+    width: 100%;
   }
 
   &__img-height--extra {
@@ -71,6 +81,19 @@
     @include breakpoints (max mid-small) {
       height: 175px;
     }
+  }
+
+  &__placeholder {
+    background: $gray-lighter;
+    height: 200px;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: $gray-dark;
+    margin-top: $space-md;
   }
 
   &__background {
@@ -115,8 +138,29 @@
       bottom: 10%;
     }
   }
+
+  &__btn {
+    width: 100%;
+    background: $brand-blue;
+    color: white;
+    border: none;
+    border-radius: 0;
+    text-transform: uppercase;
+    font-size: 18px;
+    line-height: 2.2rem;
+  }
+  &__btn--bottom {
+    position: relative;
+    top: 16vh;
+    left: 0;
+  }
 }
 
+hr {
+  height: 2px;
+  background: $gray-lighter;
+  border: none;
+}
 
 .background--image2 {
   @include breakpoints (small) {
