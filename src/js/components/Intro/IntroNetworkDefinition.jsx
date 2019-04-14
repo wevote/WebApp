@@ -12,7 +12,7 @@ assets relative to the HTML. So if the CSS isn't in the same place as the HTML
 then you can't use relative paths."
 */
 
-export default class IntroNetworkSafety extends Component {
+export default class IntroNetworkDefenition extends Component {
   static propTypes = {
     next: PropTypes.func,
   };
@@ -37,9 +37,9 @@ export default class IntroNetworkSafety extends Component {
           }
         </div>
         <div className="intro-story__h2 intro-story__h2--highlight">
-          Choose your interests
+          See who endorsed each choice on your ballot
         </div>
-        <p className="intro-story__info">Follow topics that interest you.  We will suggest endorsements based on your interests.</p>
+        <p className="intro-story__info">Learn from the people you trust.</p>
         <button type="button" className="btn intro-story__btn intro-story__btn--bottom" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
       </div>
     );

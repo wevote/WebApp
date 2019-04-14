@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
+import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
 /*
@@ -12,10 +12,15 @@ assets relative to the HTML. So if the CSS isn't in the same place as the HTML
 then you can't use relative paths."
 */
 
-export default class IntroNetworkSafety extends Component {
+export default class IntroNetworkBallotIsNext extends Component {
   static propTypes = {
     next: PropTypes.func,
   };
+
+  static goToBallotLink () {
+    const goToBallot = '/ballot';
+    historyPush(goToBallot);
+  }
 
   constructor (props) {
     super(props);
@@ -33,14 +38,14 @@ export default class IntroNetworkSafety extends Component {
             className="center-block intro-story__img-height intro-story__placeholder"
             src={cordovaDot('/img/global/intro-story/followvalues.gif')}
           /> */
-            <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: FollowValues.GIF</div>
+            <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: Decide.GIF</div>
           }
         </div>
         <div className="intro-story__h2 intro-story__h2--highlight">
-          Choose your interests
+          Get Started Now
         </div>
-        <p className="intro-story__info">Follow topics that interest you.  We will suggest endorsements based on your interests.</p>
-        <button type="button" className="btn intro-story__btn intro-story__btn--bottom" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
+        <p className="intro-story__info">Make sure to enter the correct address to have the correct ballot.</p>
+        <button type="button" className="btn intro-story__btn intro-story__btn--bottom" onClick={IntroNetworkBallotIsNext.goToBallotLink}>Next&nbsp;&nbsp;&gt;</button>
       </div>
     );
   }
