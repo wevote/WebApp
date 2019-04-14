@@ -297,22 +297,23 @@ class HeaderBackToSettings extends Component {
           {isWebApp() && (
           <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
             {voterPhotoUrlMedium ? (
-              <div id="js-header-avatar" className="header-nav__avatar-container">
+              <div id="profileAvatarHeaderBar" className="header-nav__avatar-container">
                 <img
-                className="header-nav__avatar"
-                alt="profile avatar"
-                src={voterPhotoUrlMedium}
-                height={34}
-                width={34}
+                  className="header-nav__avatar"
+                  alt="profile avatar"
+                  src={voterPhotoUrlMedium}
+                  height={34}
+                  width={34}
                 />
               </div>
             ) : (
               <Button
-              className="header-sign-in"
-              classes={{ root: classes.headerButtonRoot }}
-              variant="text"
-              color="primary"
-              href="/settings/account"
+                className="header-sign-in"
+                classes={{ root: classes.headerButtonRoot }}
+                color="primary"
+                href="/settings/account"
+                id="signInHeaderBar"
+                variant="text"
               >
               Sign In
               </Button>

@@ -35,7 +35,6 @@ import IssuesFollowed from './routes/IssuesFollowed';
 import InviteByEmail from './routes/Friends/InviteByEmail';
 import Location from './routes/Settings/Location';
 import Measure from './routes/Ballot/Measure';
-import Network from './routes/Network';
 import Office from './routes/Ballot/Office';
 import Opinions from './routes/Opinions';
 import OpinionsFollowed from './routes/OpinionsFollowed';
@@ -179,10 +178,12 @@ const routes = () => (
     <Route path="/more/hamburger" component={HamburgerMenu} />
     <Route path="/more/jump" component={SignInJumpProcess} />
     <Route path="/more/myballot" component={WeVoteBallotEmbed} />
-    <Route path="/more/network" component={Network} />
+    <Route path="/more/network" component={Friends} />
     <Route path="/more/network/key/:invitation_secret_key" component={FriendInvitationByEmailVerifyProcess} />
     <Route path="/more/network/key/:invitation_secret_key/ignore" component={FriendInvitationByEmailVerifyProcess} />
-    <Route path="/more/network/:edit_mode" component={Network} />
+    {/* Redirecting old URLs to new components */}
+    <Route path="/more/network/friends" component={Friends} />
+    <Route path="/more/network/organizations" component={Values} />
     <Route path="/more/organization" component={Organization} />
     <Route path="/more/privacy" component={Privacy} />
     <Route path="/more/processing_donation" component={ProcessingDonation} />

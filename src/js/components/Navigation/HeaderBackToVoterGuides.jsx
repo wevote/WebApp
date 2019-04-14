@@ -275,7 +275,7 @@ export default class HeaderBackToVoterGuides extends Component {
           {isWebApp() && (
           <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
             {voterPhotoUrlMedium ? (
-              <div id="js-header-avatar" className="header-nav__avatar-container">
+              <div id="profileAvatarHeaderBar" className="header-nav__avatar-container">
                 <img
                   className="header-nav__avatar"
                   alt="profile avatar"
@@ -287,9 +287,10 @@ export default class HeaderBackToVoterGuides extends Component {
             ) : (
               <Button
                 className="header-sign-in"
-                variant="text"
                 color="primary"
                 href="/settings/account"
+                id="signInHeaderBar"
+                variant="text"
               >
               Sign In
               </Button>
