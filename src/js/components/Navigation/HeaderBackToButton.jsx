@@ -37,6 +37,7 @@ class HeaderBackToButton extends Component {
         color="primary"
         classes={{ root: classes.root }}
         className={`page-header__backToButton ${hasIPhoneNotch() ? 'page-header__backToButtonIPhoneX' : ''}`}
+        id="backToLinkTabHeader"
         onClick={() => historyPush(backToLink)}
       >
         {isIOS() ? (

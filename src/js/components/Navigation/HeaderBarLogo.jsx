@@ -6,7 +6,7 @@ import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
 
 const HeaderBarLogo = ({ isBeta, light }) => (
   <span>
-    <Link to={`${isCordova() ? '/ballot' : '/welcome'}`} className="page-logo page-logo-full-size">
+    <Link to={`${isCordova() ? '/ballot' : '/welcome'}`} className="page-logo page-logo-full-size" id="logoHeaderBar">
       <img className="header-logo-img" alt="We Vote logo" src={cordovaDot(`/img/global/svg-icons/we-vote-logo-horizontal-color${light ? '' : '-dark'}.svg`)} />
       {isBeta && <span className="beta-marker"><BetaMarkerInner light={light}>beta</BetaMarkerInner></span>}
     </Link>

@@ -74,10 +74,11 @@ class FooterBar extends React.Component {
     return (
       <div className="footer-container u-show-mobile-tablet">
         <BottomNavigation value={this.getSelectedTab()} onChange={this.handleChange} showLabels>
-          <BottomNavigationAction className="no-outline" label="Ballot" showLabel icon={<DescriptionIcon />} />
-          <BottomNavigationAction className="no-outline" label="Values" showLabel icon={<QuestionAnswerIcon />} />
+          <BottomNavigationAction className="no-outline" id="ballotTabFooterBar" label="Ballot" showLabel icon={<DescriptionIcon />} />
+          <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Values" showLabel icon={<QuestionAnswerIcon />} />
           <BottomNavigationAction
             className="no-outline"
+            id="friendsTabFooterBar"
             label="Friends"
             showLabel
             icon={(
@@ -86,8 +87,8 @@ class FooterBar extends React.Component {
               </Badge>
             )}
           />
-          {/* <BottomNavigationAction className="no-outline" label="Vote" showLabel icon={<ion-icon class="footer-icon" name="clipboard" />} /> */}
-          <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Settings" showLabel icon={<SettingsIcon />} />
+          {/* <BottomNavigationAction className="no-outline" id="voteTabFooterBar" label="Vote" showLabel icon={<ion-icon class="footer-icon" name="clipboard" />} /> */}
+          <BottomNavigationAction className="no-outline" id="settingsTabFooterBar" label="Settings" showLabel icon={<SettingsIcon />} />
         </BottomNavigation>
       </div>
     );

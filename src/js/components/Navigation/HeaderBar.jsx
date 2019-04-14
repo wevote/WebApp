@@ -220,7 +220,7 @@ class HeaderBar extends Component {
                 classes={{ indicator: classes.indicator }}
               >
                 {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRoot }} label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
+                  <Tab classes={{ root: classes.tabRoot }} id="ballotTabHeaderBar" label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
                 )
                 }
                 {showFullNavigation && (
@@ -228,7 +228,7 @@ class HeaderBar extends Component {
                 )
                 }
                 {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRoot }} label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} onClick={() => this.handleNavigation('/friends')}>My Friends</Badge>} />
+                  <Tab classes={{ root: classes.tabRoot }} id="friendsTabHeaderBar" label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} onClick={() => this.handleNavigation('/friends')}>My Friends</Badge>} />
                 )
                 }
                 {/* showFullNavigation && isWebApp() && <Tab className="u-show-desktop" label="Vote" /> */}
@@ -244,6 +244,7 @@ class HeaderBar extends Component {
                     <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
                       <IconButton
                         classes={{ root: classes.iconButtonRoot }}
+                        id="changeAddressHeaderBar"
                         onClick={this.toggleSelectBallotModal}
                       >
                         <PlaceIcon />
@@ -251,7 +252,7 @@ class HeaderBar extends Component {
                     </Tooltip>
                   )
                 }
-                <Link to="/settings/menu" className="header-link">
+                <Link id="settingsLinkHeaderBar" to="/settings/menu" className="header-link">
                   <Tooltip title="Settings" aria-label="settings" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
                     <IconButton
                       classes={{ root: classes.iconButtonRoot }}
@@ -260,7 +261,7 @@ class HeaderBar extends Component {
                     </IconButton>
                   </Tooltip>
                 </Link>
-                <Link to="/settings/account" className="header-link">
+                <Link id="signInHeaderBar" to="/settings/account" className="header-link">
                   <Button
                     color="primary"
                     classes={{ root: classes.headerButtonRoot }}
@@ -279,6 +280,7 @@ class HeaderBar extends Component {
                       <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
                         <IconButton
                           classes={{ root: classes.iconButtonRoot }}
+                          id="changeAddressHeaderBar"
                           onClick={this.toggleSelectBallotModal}
                         >
                           <PlaceIcon />
@@ -286,7 +288,7 @@ class HeaderBar extends Component {
                       </Tooltip>
                     )
                   }
-                  <Link to="/settings/menu" className="header-link">
+                  <Link id="settingsLinkHeaderBar" to="/settings/menu" className="header-link">
                     <Tooltip title="Settings" aria-label="settings" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
                       <IconButton
                         classes={{ root: classes.iconButtonRoot }}
@@ -296,7 +298,7 @@ class HeaderBar extends Component {
                     </Tooltip>
                   </Link>
                   {voterPhotoUrlMedium ? (
-                    <div id="js-header-avatar" className="header-nav__avatar-container" onClick={this.toggleProfilePopUp}>
+                    <div id="profileAvatarHeaderBar" className="header-nav__avatar-container" onClick={this.toggleProfilePopUp}>
                       <img
                         className="header-nav__avatar"
                         src={voterPhotoUrlMedium}
@@ -308,8 +310,9 @@ class HeaderBar extends Component {
                   ) : (
                     <div>
                       <IconButton
-                        onClick={this.toggleProfilePopUp}
                         classes={{ root: classes.iconButtonRoot }}
+                        id="profileAvatarHeaderBar"
+                        onClick={this.toggleProfilePopUp}
                       >
                         <AccountCircleIcon />
                       </IconButton>
