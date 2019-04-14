@@ -522,16 +522,17 @@ $scrollcard-padding: 2px 2px 0 0;
 
 .slick-list,
 .slick-track {
-  height: 100%;
+  // height: 100%;
 }
 
 .slick-slide > div { // stylelint-disable-line selector-max-type
-  height: 100%;
+  // height: 100%;
 }
 
 .slick-dots {
   top: 83vh;
   content: $slick-dot-character;
+  height: 0px;
 }
 
 .facebook-intro-connect,

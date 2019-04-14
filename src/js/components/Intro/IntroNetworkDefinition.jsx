@@ -3,7 +3,16 @@ import PropTypes from 'prop-types';
 import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
-export default class IntroNetworkDefinition extends Component {
+/*
+The problem with urls in css for Apache Cordova
+https://github.com/webpack-contrib/file-loader/issues/46
+... cordova ...
+"The core of the problem is that CSS loads assets relative to itself, and js loads
+assets relative to the HTML. So if the CSS isn't in the same place as the HTML
+then you can't use relative paths."
+*/
+
+export default class IntroNetworkSafety extends Component {
   static propTypes = {
     next: PropTypes.func,
   };
@@ -16,32 +25,22 @@ export default class IntroNetworkDefinition extends Component {
   render () {
     renderLog(__filename);
     return (
-      <div
-        className="intro-story__background background--image4"
-        style={isCordova() ? { backgroundImage: 'url(./img/global/intro-story/slide4-working-together-698x600.jpg)' } : null}
-      >
-        <div className="intro-story__h1">We Vote Together</div>
-        <div className="intro-story__h2">
-          Your friends, and the
-          <br />
-          organizations you
-          {' '}
-          <strong>Follow</strong>
-          {' '}
-          to,
-          {' '}
-          <br />
-          are your
-          {' '}
-          <strong>We Vote</strong>
-          {' '}
-          network.
+      <div className="intro-story__padding">
+        <div className="intro-story__h1">Plan your entire ballot<br /><span className="intro-story__h1--highlight">in 6 minutes</span></div>
+        <div><hr /></div>
+        <div>
+          {/* <img
+            className="center-block intro-story__img-height intro-story__placeholder"
+            src={cordovaDot('/img/global/intro-story/followvalues.gif')}
+          /> */
+            <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: FollowValues.GIF</div>
+          }
         </div>
-        <div><br /></div>
-        <div><img className="center-block intro-story__img-height--extra u-bg-white" src={cordovaDot('/img/global/intro-story/intro-listen-to-friends-graphic.svg')} /></div>
-        <div className="intro-story__padding-btn">
-          <button type="button" className="btn btn-success btn-lg" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
+        <div className="intro-story__h2 intro-story__h2--highlight">
+          Choose your interests
         </div>
+        <p className="intro-story__info">Follow topics that interest you.  We will suggest endorsements based on your interests.</p>
+        <button type="button" className="btn intro-story__btn intro-story__btn--bottom" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
       </div>
     );
   }

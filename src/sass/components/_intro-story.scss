@@ -1,7 +1,7 @@
 .intro-story {
   background-color: $white;
   padding: $space-none;
-  height: 600px;
+  height: 100vh;
   width: 100%;
   color: $black;
   text-align: center;
@@ -48,10 +48,12 @@
 
   &__padding {
     padding: $space-md;
-    min-height: 100%;
+    height: 100vh;
+    position: relative;
     @include breakpoints (max large) {
       padding-top: $space-md;
       padding-bottom: $space-md;
+      height: 100vh;
     }
   }
 
@@ -140,7 +142,6 @@
   }
 
   &__btn {
-    width: 100%;
     background: $brand-blue;
     color: white;
     border: none;
@@ -148,11 +149,15 @@
     text-transform: uppercase;
     font-size: 18px;
     line-height: 2.2rem;
+    z-index: 999;
   }
   &__btn--bottom {
-    position: relative;
-    top: 16vh;
+    position: absolute;
+    margin-left: $space-md;
+    width: calc((100%) - 32px);
     left: 0;
+    top: 90vh;
+    display: block;
   }
 }
 
