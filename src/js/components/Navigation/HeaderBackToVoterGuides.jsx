@@ -6,15 +6,16 @@ import Button from '@material-ui/core/Button';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import cookies from '../../utils/cookies';
-import { hasIPhoneNotch, historyPush, isWebApp } from '../../utils/cordovaUtils';
+import { isWebApp } from '../../utils/cordovaUtils';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import isMobile from '../../utils/isMobile';
 import { renderLog } from '../../utils/logging';
-import { shortenText, stringContains } from '../../utils/textFormat';
+import { stringContains } from '../../utils/textFormat';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
+import HeaderBackToButton from './HeaderBackToButton';
 
 export default class HeaderBackToVoterGuides extends Component {
   static propTypes = {
@@ -243,21 +244,13 @@ export default class HeaderBackToVoterGuides extends Component {
       backToLink = '/settings/voterguidelist';
     }
 
-    const backToOrganizationLinkTextMobile = shortenText(backToOrganizationLinkText, 20);
-
     return (
       <AppBar className={isWebApp() ? 'page-header' : 'page-header page-header__cordova'} color="default">
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
-          <Button
-            variant="contained"
-            color="primary"
-            className={`page-header__backToButton ${hasIPhoneNotch() ? 'page-header__backToButtonIPhoneX' : ''}`}
-            onClick={() => historyPush(backToLink)}
-          >
-            <ion-icon name="arrow-back" />
-            &nbsp;
-            {backToOrganizationLinkTextMobile}
-          </Button>
+          <HeaderBackToButton
+            backToLink={backToLink}
+            backToLinkText={backToOrganizationLinkText}
+          />
 
           {this.state.profilePopUpOpen && voter.is_signed_in && (
           <HeaderBarProfilePopUp
