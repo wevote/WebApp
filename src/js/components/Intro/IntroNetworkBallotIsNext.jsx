@@ -13,10 +13,6 @@ then you can't use relative paths."
 */
 
 export default class IntroNetworkBallotIsNext extends Component {
-  static propTypes = {
-    next: PropTypes.func,
-  };
-
   static goToBallotLink () {
     const goToBallot = '/ballot';
     historyPush(goToBallot);
