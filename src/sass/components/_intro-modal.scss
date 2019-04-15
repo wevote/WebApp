@@ -272,12 +272,13 @@ $scrollcard-padding: 2px 2px 0 0;
   // We need to disable stylelint type selector rule because we need to override existing slick package styles.
   /* stylelint-disable selector-max-type */
   &__gray-dots li button::before {
-    color: $gray-pale;
+    color: $gray-mid;
     font-size: 12px;
     content: $slick-dot-character;
+    opacity: 0.5;
   }
   &__gray-dots li.slick-active button::before {
-    color: $white;
+    color: $brand-blue;
     opacity: 1;
     content: $slick-dot-character;
   }
@@ -520,18 +521,19 @@ $scrollcard-padding: 2px 2px 0 0;
   }
 }
 
-.slick-list,
-.slick-track {
-  height: 100%;
-}
+// .slick-list,
+// .slick-track {
+//   // height: 100%;
+// }
 
-.slick-slide > div { // stylelint-disable-line selector-max-type
-  height: 100%;
-}
+// .slick-slide > div { // stylelint-disable-line selector-max-type
+//   // height: 100%;
+// }
 
 .slick-dots {
-  bottom: 0;
+  top: 83vh;
   content: $slick-dot-character;
+  height: 0px;
 }
 
 .facebook-intro-connect,
@@ -581,9 +583,9 @@ $scrollcard-padding: 2px 2px 0 0;
   @include breakpoints (small) {
     height: inherit;
 
-    .intro-modal__button-wrap {
-      // justify-content: auto;  May 7, 2018, auto is not a valid choice
-    }
+    // .intro-modal__button-wrap {
+    //   // justify-content: auto;  May 7, 2018, auto is not a valid choice
+    // }
 
     .calc-height {
       height: calc(100vh - 100px);
