@@ -25,7 +25,7 @@ $mobile-btn-padding: 52px;
   margin-top: -$space-xs;
 }
 
-.btn-twitter-values {
+.value-btn {
   max-width: $button-div-max-width;
   width: 100%;
   @include breakpoints (medium) {
@@ -35,6 +35,15 @@ $mobile-btn-padding: 52px;
   @include breakpoints (large) {
     font-size: 14px;
     padding: $space-sm $space-md $space-sm $space-xl;
+  }
+  &__endorsements {
+    background: $selected-color;
+    color: white;
+    svg {
+      vertical-align: baseline;
+      position: relative;
+      top: -$space-xs / 2;
+    }
   }
 }
 
