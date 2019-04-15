@@ -75,10 +75,22 @@ $mobile-btn-padding: 52px;
     width: 100%;
     margin-top: $space-md;
     padding: $space-sm $space-md !important;
+    svg {
+      display: none;
+    }
     @include breakpoints (small-bootstrap) {
       width: auto;
-      margin-top: 0;
+      margin-top: 0;    
+      svg {
+        display: block;
+        vertical-align: middle;
+        position: relative;
+        padding-left: -$space-md;
+        margin: 0 $space-md 0 0;
+        top: $space-xxs * .8;
+      }
     }
+
   }
   &__text {
     padding: $space-md 0;
