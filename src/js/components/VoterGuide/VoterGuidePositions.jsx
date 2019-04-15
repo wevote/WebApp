@@ -19,6 +19,7 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideRecommendationsFromOneOrganization from './VoterGuideRecommendationsFromOneOrganization';
 import VoterStore from '../../stores/VoterStore';
 import YourPositionsVisibilityMessage from './YourPositionsVisibilityMessage';
+import EndorsementCard from "../Widgets/EndorsementCard";
 
 export default class VoterGuidePositions extends Component {
   static propTypes = {
@@ -359,20 +360,27 @@ export default class VoterGuidePositions extends Component {
           </span>
         ) : null
         }
-        <OpenExternalWebSite
+        {/* <OpenExternalWebSite
           url="https://api.wevoteusa.org/vg/create/"
           className="opinions-followed__missing-org-link"
           target="_blank"
           title="Endorsements Missing?"
           body={<Button className="btn btn-success btn-sm" bsPrefix="u-stack--xs" variant="primary">Endorsements Missing?</Button>}
+        /> */}
+        <EndorsementCard
+          bsPrefix="u-stack--xs"
+          variant="primary"
+          buttonText="Endorsements Missing?"
+          text={`Are there endorsements from ${organizationName} that you expected to see?`}
+          title="Endorsements Missing?"
         />
-        <div className="opinions-followed__missing-org-text u-stack--lg">
+        {/* <div className="opinions-followed__missing-org-text u-stack--lg">
         Are there endorsements from
           {' '}
           {organizationName}
           {' '}
           that you expected to see?
-        </div>
+        </div> */}
       </div>
     );
   }

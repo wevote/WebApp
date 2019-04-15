@@ -60,6 +60,37 @@ $mobile-btn-padding: 52px;
   }
 }
 
+.endorsement {
+  display: flex;
+  margin-top: -$space-sm;
+  flex-direction: column;
+  @include breakpoints (small-bootstrap) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__btn {
+    background: $selected-color !important;
+    color: white !important;
+    width: 100%;
+    margin-top: $space-md;
+    padding: $space-sm $space-md !important;
+    @include breakpoints (small-bootstrap) {
+      width: auto;
+      margin-top: 0;
+    }
+  }
+  &__text {
+    padding: $space-md 0;
+    font-size: 17px;
+    color: $gray-dark;
+    @include breakpoints (small-bootstrap) {
+      padding: 0 $space-md;
+      justify-self: flex-end;
+    }
+  }
+}
+
 .mobile-container {
   @include breakpoints (medium) {
     display: none;

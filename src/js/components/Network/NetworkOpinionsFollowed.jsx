@@ -6,6 +6,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 import OpinionsFollowedListCompressed from '../Organization/OpinionsFollowedListCompressed';
+import EndorsementCard from "../Widgets/EndorsementCard";
 
 export default class NetworkOpinionsFollowed extends Component {
   static propTypes = {
@@ -94,16 +95,23 @@ export default class NetworkOpinionsFollowed extends Component {
                 }
               </div>
             </div>
-            <OpenExternalWebSite
+            {/* <OpenExternalWebSite
               url="https://api.wevoteusa.org/vg/create/"
               className="opinions-followed__missing-org-link"
               target="_blank"
               title="Suggest Organization"
               body={<Button className="btn btn-success btn-sm" bsPrefix="u-stack--xs" variant="primary">Suggest Organization</Button>}
+            /> */}
+            <EndorsementCard
+              bsPrefix="u-stack--xs"
+              variant="primary"
+              buttonText="Suggest Organization"
+              text="Don’t see your favorite organization?"
+              title="Suggest Organization"
             />
-            <div className="opinions-followed__missing-org-text u-no-break">
+            {/* <div className="opinions-followed__missing-org-text u-no-break">
               Don’t see your favorite organization?
-            </div>
+            </div> */}
             <br />
           </div>
         </section>
