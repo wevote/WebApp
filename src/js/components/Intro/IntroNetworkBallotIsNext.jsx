@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
@@ -27,7 +26,13 @@ export default class IntroNetworkBallotIsNext extends Component {
     renderLog(__filename);
     return (
       <div className="intro-story__padding">
-        <div className="intro-story__h1">Plan your entire ballot<br /><span className="intro-story__h1--highlight">in 6 minutes</span></div>
+        <div className="intro-story__h1">
+          Plan your entire ballot
+          <br />
+          <span className="intro-story__h1--highlight">
+            in 6 minutes
+          </span>
+        </div>
         <div><hr /></div>
         <div>
           {/* <img
