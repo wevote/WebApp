@@ -43,7 +43,9 @@ export default class VoterGuideOrganizationType extends Component {
       <div>
         <Helmet title="Type of Profile - We Vote" />
         <div className="intro-story container well u-inset--md">
-          <img src={cordovaDot('/img/global/icons/x-close.png')} onClick={this.goToBallotLink} className="x-close" alt="close" />
+          <a href="/voterguideorgtype" onClick={this.goToBallotLink}>
+            <img src={cordovaDot('/img/global/icons/x-close.png')} className="x-close" alt="close" />
+          </a>
           <div className="create-voter-guide__h1 xs-text-left">Create Your Voter Guide</div>
           <div className="create-voter-guide__steps xs-text-left">
             Step 2 of 5

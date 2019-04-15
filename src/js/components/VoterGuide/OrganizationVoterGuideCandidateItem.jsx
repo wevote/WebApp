@@ -184,23 +184,23 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
                 ballotItemDisplayName
             }
             </h2>
-            <p
-              className={this.props.link_to_ballot_item_page ?
-                'u-gray-darker u-cursor--pointer' :
-                'u-gray-darker'
-              }
-              onClick={this.props.link_to_ballot_item_page ?
-                this.goToCandidateLink : null}
-            >
-              { contestOfficeName ? (
-                <OfficeNameText
-                  politicalParty={party}
-                  contestOfficeName={contestOfficeName}
-                  officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
-                />
-              ) : null
-              }
-            </p>
+            <a onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}>
+              <p
+                className={this.props.link_to_ballot_item_page ?
+                  'u-gray-darker u-cursor--pointer' :
+                  'u-gray-darker'
+                }
+              >
+                { contestOfficeName ? (
+                  <OfficeNameText
+                    politicalParty={party}
+                    contestOfficeName={contestOfficeName}
+                    officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
+                  />
+                ) : null
+                }
+              </p>
+            </a>
             { twitterDescription ? (
               <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
                 <div>
