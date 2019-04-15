@@ -6,6 +6,7 @@ $social-right-padding-mobile: 9px;
 $network-card-margin-mobile: (-$space-md) (-$space-md) $space-none (-$space-md);
 $description-padding: 10px;
 $backdrop-border-radius: 8px;
+$mobile-btn-padding: 52px;
 
 .buttons-container {
   display: flex;
@@ -15,13 +16,13 @@ $backdrop-border-radius: 8px;
 
 .fa-info-circle {
   font-size: 18px;
-  margin-right: 5px;
+  margin-right: $space-xs;
   color: $gray-mid;
 }
 
 .fa-twitter {
   font-size: inherit;
-  margin-top: -3px;
+  margin-top: -$space-xs;
 }
 
 .btn-twitter-values {
@@ -29,11 +30,11 @@ $backdrop-border-radius: 8px;
   width: 100%;
   @include breakpoints (medium) {
     font-size: 12px;
-    padding: 8px 8px 8px 52px !important;
+    padding: $space-sm $space-sm $space-sm $mobile-btn-padding !important;
   }
   @include breakpoints (large) {
     font-size: 14px;
-    padding: 8px 16px 8px 64px;
+    padding: $space-sm $space-md $space-sm $space-xl;
   }
 }
 
@@ -45,8 +46,8 @@ $backdrop-border-radius: 8px;
   }
   @include breakpoints (medium) {
     max-width: $button-div-max-width;
-    margin-right: 0;
-    margin-left: 0;
+    margin-right: $space-none;
+    margin-left: $space-none;
   }
 }
 
@@ -93,24 +94,24 @@ $backdrop-border-radius: 8px;
     font-size: 1rem;
     word-wrap: break-word;
     color: $white;
-    text-shadow: 1px 1px 2px rgba($black, 0.6);
-    background: rgba(0, 0, 0, 0.45);
+    text-shadow: 1px 1px 2px rgba($black, .6);
+    background: rgba(0, 0, 0, .45);
     padding: $description-padding;
     width: 100%;
     border-radius: $backdrop-border-radius;
     border: 2px solid $white;
-    transition: all 0.2s ease-in;
+    transition: all .2s ease-in;
     &:hover {
       border: 2px solid $brand-blue;
-      background: rgba(0, 0, 0, 0.55);
+      background: rgba(0, 0, 0, .55);
     }
 
     @include breakpoints(xsmall-bootstrap medium-bootstrap) {
-      font-size: 0.9rem;
+      font-size: .9rem;
     }
 
     @include breakpoints(iphone5 mid-small) {
-      font-size: 0.9rem;
+      font-size: .9rem;
       -webkit-hyphens: auto;
       -moz-hyphens: auto;
       -ms-hyphens: auto;
@@ -118,7 +119,7 @@ $backdrop-border-radius: 8px;
     }
 
     @include breakpoints(max iphone5) {
-      font-size: 0.85rem;
+      font-size: .85rem;
       -webkit-hyphens: auto;
       -moz-hyphens: auto;
       -ms-hyphens: auto;
