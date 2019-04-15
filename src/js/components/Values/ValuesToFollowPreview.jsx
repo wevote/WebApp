@@ -60,6 +60,7 @@ export default class ValuesToFollowPreview extends Component {
             issue={issue}
             issueImageSize="SMALL"
             key={`issue-list-key-${issue.issue_we_vote_id}`}
+            turnOffDescription
           />
         );
       }

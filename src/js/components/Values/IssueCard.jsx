@@ -5,7 +5,7 @@ import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
 import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging';
-// import ReadMore from '../Widgets/ReadMore';
+import ReadMore from '../Widgets/ReadMore';
 import { convertNameToSlug } from '../../utils/textFormat';
 
 export default class IssueCard extends Component {
@@ -84,11 +84,11 @@ export default class IssueCard extends Component {
       return <div className="card-popover__width--minimum">{LoadingWheel}</div>;
     }
 
-    let { issue_name: issueDisplayName } = this.state.issue;
-    // let { issue_description: issueDescription, issue_name: issueDisplayName } = this.state.issue;
+    // let { issue_name: issueDisplayName } = this.state.issue;
+    let { issue_description: issueDescription, issue_name: issueDisplayName } = this.state.issue;
 
     issueDisplayName = issueDisplayName || '';
-    // issueDescription = issueDescription || '';
+    issueDescription = issueDescription || '';
 
     let issueImage;
     let numberOfLines;
@@ -135,7 +135,7 @@ export default class IssueCard extends Component {
         numberOfLines = 4;
       }
     }
-    console.log(numberOfLines);
+    // console.log(numberOfLines);
 
     return (
       <div
@@ -143,7 +143,7 @@ export default class IssueCard extends Component {
         key={`issue-card-${this.state.issueWeVoteId}`}
         style={{ border: '2px solid', borderRadius: '.25rem', borderColor: '#eee', width: '48%', height: '38px', marginBottom: '8px', marginRight: '8px' }}
       >
-        <div className="card-main__media-object-anchor" style={{ padding: '3px', marginRight: '0px' }}>
+        <div className="card-main__media-object-anchor" style={{ alignSelf: 'center', padding: '3px', marginRight: '0px' }}>
           {this.props.turnOffIssueImage ? null : (
             <Link to={this.getIssueLink} className="u-no-underline">
               {issueImage}
@@ -161,9 +161,9 @@ export default class IssueCard extends Component {
                 <Link to={this.getIssueLink}
                       className="u-no-underline"
                 >
-                  {/* <ReadMore text_to_display={issueDescription}
+                  <ReadMore text_to_display={issueDescription}
                             num_of_lines={numberOfLines}
-                  /> */}
+                  />
                 </Link>
               </span>
             )
