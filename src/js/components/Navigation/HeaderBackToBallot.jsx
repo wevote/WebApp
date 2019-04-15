@@ -2,21 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
-import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
 import CandidateStore from '../../stores/CandidateStore';
 import cookies from '../../utils/cookies';
-import { hasIPhoneNotch, historyPush, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import { shortenText, stringContains } from '../../utils/textFormat';
+import { stringContains } from '../../utils/textFormat';
 import OfficeStore from '../../stores/OfficeStore';
 import OfficeItem from '../Ballot/OfficeItem';
+import HeaderBackToButton from './HeaderBackToButton';
 
 const styles = theme => ({
   headerButtonRoot: {
@@ -307,8 +307,6 @@ class HeaderBackToBallot extends Component {
       backToLinkText = `${this.state.organization.organization_name}`; // Back to
     }
 
-    const backToLinkTextDesktop = shortenText(backToLinkText, 60);
-    const backToLinkTextMobile = shortenText(backToLinkText, 25);
     const headerClassName = (function header () {
       const prefix = stringContains('/office', pathname) ? 'page-header page-header__back-to-ballot' : 'page-header';
       if (isWebApp()) {
@@ -322,16 +320,10 @@ class HeaderBackToBallot extends Component {
     return (
       <AppBar className={headerClassName} color="default">
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
-          <Button
-            variant="contained"
-            color="primary"
-            className={`page-header__backToButton ${hasIPhoneNotch() ? 'page-header__backToButtonIPhoneX' : ''}`}
-            onClick={() => historyPush(backToLink)}
-          >
-            <KeyboardBackspaceIcon className="button-icon" />
-            <span className="u-show-desktop-tablet">{backToLinkTextDesktop}</span>
-            <span className="u-show-mobile">{backToLinkTextMobile}</span>
-          </Button>
+          <HeaderBackToButton
+            backToLink={backToLink}
+            backToLinkText={backToLinkText}
+          />
 
           {this.state.profilePopUpOpen && voter.is_signed_in && (
           <HeaderBarProfilePopUp
@@ -349,7 +341,7 @@ class HeaderBackToBallot extends Component {
           {isWebApp() && (
           <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
             {voterPhotoUrlMedium ? (
-              <div id="js-header-avatar" className="header-nav__avatar-container">
+              <div id="profileAvatarHeaderBar" className="header-nav__avatar-container">
                 <img
                   className="header-nav__avatar"
                   alt="profile avatar"
@@ -362,9 +354,10 @@ class HeaderBackToBallot extends Component {
               <Button
                 className="header-sign-in"
                 classes={{ root: classes.headerButtonRoot }}
-                variant="text"
                 color="primary"
                 href="/settings/account"
+                id="signInHeaderBar"
+                variant="text"
               >
               Sign In
               </Button>

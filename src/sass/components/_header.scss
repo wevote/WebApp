@@ -48,15 +48,6 @@ $header-height-back-to-ballot: 96px;
     @include breakpoints(small xsmall-bootstrap) {
       font-size: $back-button-font-size !important;
     }
-
-    &:focus {
-      background-color: $page-header-color !important;
-      color: $white;
-    }
-    &:hover {
-      background-color: $page-header-color !important;
-      color: $white;
-    }
   }
 
   &__back-to-ballot {

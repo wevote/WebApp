@@ -43,7 +43,7 @@ export default class SearchAllBox extends Component {
     this.siteLogoText = $('.page-logo:nth-child(1)'); // eslint-disable-line requireDollarBeforejQueryAssignment
     this.ballot = $('.header-nav__item:nth-child(1)'); // eslint-disable-line requireDollarBeforejQueryAssignment
     this.network = $('.header-nav__item:nth-child(2)'); // eslint-disable-line requireDollarBeforejQueryAssignment
-    this.avatar = $('#js-header-avatar'); // eslint-disable-line requireDollarBeforejQueryAssignment
+    this.avatar = $('#profileAvatarHeaderBar'); // eslint-disable-line requireDollarBeforejQueryAssignment
     this.about = document.getElementsByClassName('header-nav__item--about')[0]; // eslint-disable-line prefer-destructuring
     this.donate = document.getElementsByClassName('header-nav__item--donate')[0]; // eslint-disable-line prefer-destructuring
 

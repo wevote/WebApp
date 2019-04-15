@@ -136,6 +136,7 @@ class HeaderBackToFriends extends Component {
             variant="contained"
             color="primary"
             className={`page-header__backToButton ${hasIPhoneNotch() ? 'page-header__backToButtonIPhoneX' : ''}`}
+            id="backToLinkTabHeader"
             onClick={() => historyPush(backToLink)}
           >
             <ion-icon name="arrow-back" />
@@ -159,7 +160,7 @@ class HeaderBackToFriends extends Component {
           {isWebApp() && (
           <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
             {voterPhotoUrlMedium ? (
-              <div id="js-header-avatar" className="header-nav__avatar-container">
+              <div id="profileAvatarHeaderBar" className="header-nav__avatar-container">
                 <img
                 className="header-nav__avatar"
                 alt="profile avatar"
@@ -172,9 +173,10 @@ class HeaderBackToFriends extends Component {
               <Button
                 className="header-sign-in"
                 classes={{ root: classes.headerButtonRoot }}
-                variant="text"
                 color="primary"
                 href="/settings/account"
+                id="signInHeaderBar"
+                variant="text"
               >
               Sign In
               </Button>
