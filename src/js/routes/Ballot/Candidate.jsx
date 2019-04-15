@@ -222,7 +222,7 @@ export default class Candidate extends Component {
           className="opinions-followed__missing-org-link"
           target="_blank"
           title="Endorsements Missing?"
-          body={<Button className="btn btn-success btn-sm" bsPrefix="u-margin-top--sm u-stack--xs" variant="primary">Endorsements Missing?</Button>}
+          body={<Button className="btn btn-sm value-btn text-center" bsPrefix="u-margin-top--sm u-stack--xs" variant="primary">Endorsements Missing?</Button>}
         />
         <div className="opinions-followed__missing-org-text">
           Are there endorsements for

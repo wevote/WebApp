@@ -168,7 +168,7 @@ export default class GuideList extends Component {
               className="opinions-followed__missing-org-link"
               target="_blank"
               title="Organization Missing?"
-              body={<Button className="u-stack--xs">Organization Missing?</Button>}
+              body={<Button className="btn btn-sm value-btn text-center">Organization Missing?</Button>}
             />
             <div className="opinions-followed__missing-org-text u-stack--sm u-no-break">
               Don’t see an organization you want to Follow?
