@@ -152,7 +152,7 @@ export default class IssueCard extends Component {
         </div>
         <div className="card-main__media-object-content" style={{ alignSelf: 'center' }}>
           <Link to={this.getIssueLink} className="u-no-underline">
-            <h3 className="card-main__display-name" style={{ fontSize: '14px', marginTop: '0px', marginBottom: '0px' }}>{issueDisplayName}</h3>
+            <h3 className="card-main__display-name" style={{ fontSize: '10px', marginTop: '0px', marginBottom: '0px' }}>{issueDisplayName}</h3>
           </Link>
           { this.props.turnOffDescription ?
             <span className="card-main__description" /> :

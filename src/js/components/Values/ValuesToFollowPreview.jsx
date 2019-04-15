@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import IssueActions from '../../actions/IssueActions';
 import IssueCard from './IssueCard';
 import IssueStore from '../../stores/IssueStore';
+import ShowMoreFooter from '../Navigation/ShowMoreFooter';
+import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
 export default class ValuesToFollowPreview extends Component {
@@ -31,6 +32,11 @@ export default class ValuesToFollowPreview extends Component {
     this.setState({
       issuesToFollow: IssueStore.getIssuesVoterCanFollow(),
     });
+  }
+
+  getValuesList () {
+    const valuesLink = `/values/list`;
+    historyPush(valuesLink);
   }
 
   render () {
@@ -65,10 +71,10 @@ export default class ValuesToFollowPreview extends Component {
           <div className="card-main">
             <h1 className="h4">Values to Follow</h1>
             <div style={{ display: 'flex', flexFlow: 'row wrap' }}>
-              { issueListForDisplay }
+              {issueListForDisplay}
             </div>
             <div>
-              <Link to="/values/list">Explore all 26 values</Link>
+              <ShowMoreFooter showMoreLink={() => this.getValuesList()} showMoreText="Explore all 26 values" />
             </div>
           </div>
         </section>

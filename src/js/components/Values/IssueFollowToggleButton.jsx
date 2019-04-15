@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import Button from '@material-ui/core/Button';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
@@ -74,22 +74,22 @@ export default class IssueFollowToggleButton extends Component {
 
     return this.state.isFollowing ? (
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark" style={{ padding: '0', margin: '-2px' }}>
-        <Button variant="warning"
-          size="small"
-          onClick={this.onIssueStopFollowing}
-          style={{ backgroundColor: '#2E3C5D', borderColor: '#2E3C5D', borderRadius: '0px 0.25rem 0.25rem 0px' }}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={this.onIssueFollow}
         >
-          <span>Following</span>
+          {'Following'}
         </Button>
       </div>
     ) : (
       <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark" style={{ padding: '0', margin: '-2px' }}>
-        <Button variant="success"
-          size="small"
+        <Button
+          variant="contained"
+          color="primary"
           onClick={this.onIssueFollow}
-          style={{ backgroundColor: '#2E3C5D', borderColor: '#2E3C5D', borderRadius: '0px 0.25rem 0.25rem 0px' }}
         >
-          <span>Follow</span>
+          {'Follow'}
         </Button>
       </div>
     );
