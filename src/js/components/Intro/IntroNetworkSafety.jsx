@@ -25,7 +25,7 @@ export default class IntroNetworkSafety extends Component {
   render () {
     renderLog(__filename);
     return (
-      <div className="intro-story__padding">
+      <div className="intro-story__padding intro-story__margin--auto">
         <div className="intro-story__h1">
           Plan your entire ballot
           <br />
