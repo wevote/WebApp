@@ -520,14 +520,14 @@ $scrollcard-padding: 2px 2px 0 0;
   }
 }
 
-.slick-list,
-.slick-track {
-  // height: 100%;
-}
+// .slick-list,
+// .slick-track {
+//   // height: 100%;
+// }
 
-.slick-slide > div { // stylelint-disable-line selector-max-type
-  // height: 100%;
-}
+// .slick-slide > div { // stylelint-disable-line selector-max-type
+//   // height: 100%;
+// }
 
 .slick-dots {
   top: 83vh;
@@ -582,9 +582,9 @@ $scrollcard-padding: 2px 2px 0 0;
   @include breakpoints (small) {
     height: inherit;
 
-    .intro-modal__button-wrap {
-      // justify-content: auto;  May 7, 2018, auto is not a valid choice
-    }
+    // .intro-modal__button-wrap {
+    //   // justify-content: auto;  May 7, 2018, auto is not a valid choice
+    // }
 
     .calc-height {
       height: calc(100vh - 100px);
