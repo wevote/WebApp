@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { renderLog } from '../../utils/logging';
+import { cordovaDot } from '../../utils/cordovaUtils';
 
 /*
 The problem with urls in css for Apache Cordova
@@ -34,11 +35,11 @@ export default class IntroNetworkSafety extends Component {
         </div>
         <div><hr /></div>
         <div>
-          {/* <img
+          {<img
             className="center-block intro-story__img-height intro-story__placeholder"
-            src={cordovaDot('/img/global/intro-story/followvalues.gif')}
-          /> */
-            <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: FollowValues.GIF</div>
+            src={cordovaDot('/img/global/intro-story/FollowValues-20190401.gif')}
+          />
+            // <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: FollowValues.GIF</div>
           }
         </div>
         <div className="intro-story__h2 intro-story__h2--highlight">

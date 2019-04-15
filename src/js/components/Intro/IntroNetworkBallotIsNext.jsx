@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { historyPush } from '../../utils/cordovaUtils';
+import { historyPush, cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
 /*
@@ -35,11 +35,11 @@ export default class IntroNetworkBallotIsNext extends Component {
         </div>
         <div><hr /></div>
         <div>
-          {/* <img
+          {<img
             className="center-block intro-story__img-height intro-story__placeholder"
-            src={cordovaDot('/img/global/intro-story/followvalues.gif')}
-          /> */
-            <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: Decide.GIF</div>
+            src={cordovaDot('/img/global/intro-story/Decide-20190401.gif')}
+          />
+            // <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: Decide.GIF</div>
           }
         </div>
         <div className="intro-story__h2 intro-story__h2--highlight">
