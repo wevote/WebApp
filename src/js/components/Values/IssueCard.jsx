@@ -141,18 +141,18 @@ export default class IssueCard extends Component {
       <div
         className="card-main__media-object u-stack--md"
         key={`issue-card-${this.state.issueWeVoteId}`}
-        style={{ border: '2px solid', borderRadius: '.25rem', borderColor: '#eee', width: '48%', marginBottom: '8px', marginRight: '8px' }}
+        style={{ border: '2px solid', borderRadius: '.25rem', borderColor: '#eee', width: '48%', height: '38px', marginBottom: '8px', marginRight: '8px' }}
       >
-        <div className="card-main__media-object-anchor" style={{ padding: '3px' }}>
+        <div className="card-main__media-object-anchor" style={{ padding: '3px', marginRight: '0px' }}>
           {this.props.turnOffIssueImage ? null : (
             <Link to={this.getIssueLink} className="u-no-underline">
               {issueImage}
             </Link>
           )}
         </div>
-        <div className="card-main__media-object-content">
+        <div className="card-main__media-object-content" style={{ alignSelf: 'center' }}>
           <Link to={this.getIssueLink} className="u-no-underline">
-            <h3 className="card-main__display-name" style={{ fontSize: '14px' }}>{issueDisplayName}</h3>
+            <h3 className="card-main__display-name" style={{ fontSize: '14px', marginTop: '0px', marginBottom: '0px' }}>{issueDisplayName}</h3>
           </Link>
           { this.props.turnOffDescription ?
             <span className="card-main__description" /> :
