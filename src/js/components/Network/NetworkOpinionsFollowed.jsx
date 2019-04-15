@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+// import { Button } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { renderLog } from '../../utils/logging';
 import OrganizationStore from '../../stores/OrganizationStore';
 import OrganizationActions from '../../actions/OrganizationActions';
-import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+// import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 import OpinionsFollowedListCompressed from '../Organization/OpinionsFollowedListCompressed';
-import EndorsementCard from "../Widgets/EndorsementCard";
+import EndorsementCard from '../Widgets/EndorsementCard';
 
 export default class NetworkOpinionsFollowed extends Component {
   static propTypes = {
