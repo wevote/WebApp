@@ -13,7 +13,7 @@
   &__h1 {
     font-weight: 800;
     font-size: 24px;
-    padding: $space-lg $space-none $space-md;
+    padding: $space-lg $space-none $space-none;
     @include breakpoints (mid-small) {
       font-size: 28px;
     }
@@ -97,6 +97,7 @@
     height: 2px;
     background: $gray-lighter;
     border: none;
+    margin: $space-lg $space-none;
   }
 
   // &__placeholder {
