@@ -5,6 +5,13 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 
 class EndorsementCard extends PureComponent {
+  static propTypes = {
+    buttonText: PropTypes.string,
+    title: PropTypes.string,
+    bsPrefix: PropTypes.string,
+    text: PropTypes.string,
+  };
+
   render () {
     return (
       <div>
@@ -42,12 +49,5 @@ class EndorsementCard extends PureComponent {
     );
   }
 }
-
-EndorsementCard.propTypes = {
-  buttonText: PropTypes.string,
-  title: PropTypes.string,
-  bsPrefix: PropTypes.string,
-  text: PropTypes.string,
-};
 
 export default EndorsementCard;
