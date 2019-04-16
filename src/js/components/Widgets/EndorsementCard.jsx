@@ -10,7 +10,7 @@ class EndorsementCard extends PureComponent {
       <div>
         <div className="card">
           <div className="card-main">
-            <div className="endorsement">
+            <div className="endorsement-card">
               <OpenExternalWebSite
                 url="https://api.wevoteusa.org/vg/create/"
                 target="_blank"
