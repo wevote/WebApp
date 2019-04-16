@@ -25,7 +25,7 @@ $mobile-btn-padding: 52px;
   margin-top: -$space-xs;
 }
 
-.btn-twitter-values {
+.value-btn {
   max-width: $button-div-max-width;
   width: 100%;
   @include breakpoints (medium) {
@@ -35,6 +35,15 @@ $mobile-btn-padding: 52px;
   @include breakpoints (large) {
     font-size: 14px;
     padding: $space-sm $space-md $space-sm $space-xl;
+  }
+  &__endorsements {
+    background: $selected-color;
+    color: white;
+    svg {
+      vertical-align: baseline;
+      position: relative;
+      top: -$space-xs / 2;
+    }
   }
 }
 
@@ -48,6 +57,49 @@ $mobile-btn-padding: 52px;
     max-width: $button-div-max-width;
     margin-right: $space-none;
     margin-left: $space-none;
+  }
+}
+
+.endorsement {
+  display: flex;
+  margin-top: -$space-sm;
+  flex-direction: column;
+  @include breakpoints (small-bootstrap) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__btn {
+    background: $selected-color !important;
+    color: white !important;
+    width: 100%;
+    margin-top: $space-md;
+    padding: $space-sm $space-md !important;
+    svg {
+      display: none;
+    }
+    @include breakpoints (small-bootstrap) {
+      width: auto;
+      margin-top: 0;    
+      svg {
+        display: block;
+        vertical-align: middle;
+        position: relative;
+        padding-left: -$space-md;
+        margin: 0 $space-md 0 0;
+        top: $space-xxs * .8;
+      }
+    }
+
+  }
+  &__text {
+    padding: $space-md 0;
+    font-size: 17px;
+    color: $gray-dark;
+    @include breakpoints (small-bootstrap) {
+      padding: 0 $space-md;
+      justify-self: flex-end;
+    }
   }
 }
 
