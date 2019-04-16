@@ -5,7 +5,7 @@ import FollowToggle from '../Widgets/FollowToggle';
 // import FilterBase from "../Filter/FilterBase";
 // import VoterGuideOrganizationFilter from "../Filter/VoterGuideOrganizationFilter";
 import MeasureStore from '../../stores/MeasureStore';
-import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+// import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { stringContains } from '../../utils/textFormat';
 import VoterGuideDisplayForList from './VoterGuideDisplayForList';
