@@ -76,14 +76,14 @@
   }
 
   &__margin--auto {
-    margin: 0 auto;
+    margin: $space-none auto;
     max-width: 600px;
   }
 
   &__img-height {
     width: 100%;
     max-width: 500px;
-    margin: 0 auto;
+    margin: $space-none auto;
   }
 
   &__img-height--extra {
@@ -151,9 +151,9 @@
 
   &__btn {
     background: $brand-blue;
-    color: white;
+    color: $white;
     border: none;
-    border-radius: 0;
+    border-radius: $btn-margin-bottom;
     text-transform: uppercase;
     font-size: 18px;
     line-height: 2.2rem;

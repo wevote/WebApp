@@ -22,7 +22,7 @@ $mobile-btn-padding: 52px;
 
 .fa-twitter {
   font-size: inherit;
-  margin-top: -$space-xs;
+  bottom: $space-xs;
 }
 
 .value-btn {
@@ -38,7 +38,7 @@ $mobile-btn-padding: 52px;
   }
   &__endorsements {
     background: $selected-color;
-    color: white;
+    color: $white;
     img {
       vertical-align: baseline;
       position: relative;
@@ -62,7 +62,7 @@ $mobile-btn-padding: 52px;
 
 .endorsement-card {
   display: flex;
-  margin-top: -$space-sm;
+  bottom: $space-sm;
   flex-direction: column;
   @include breakpoints (small-bootstrap) {
     flex-direction: row;
@@ -71,7 +71,7 @@ $mobile-btn-padding: 52px;
   }
   &__btn {
     background: $selected-color !important;
-    color: white !important;
+    color: $white !important;
     text-align: center;
     width: 100%;
     margin-top: $space-md;
@@ -82,15 +82,15 @@ $mobile-btn-padding: 52px;
     } 
     @include breakpoints (small-bootstrap) {
       width: auto;
-      margin-top: 0; 
+      margin-top: $space-none;
     }
   }
   &__text {
-    padding: $space-md 0;
+    padding: $space-md $space-none;
     font-size: 17px;
     color: $gray-dark;
     @include breakpoints (small-bootstrap) {
-      padding: 0 $space-md;
+      padding: $space-none $space-md;
       justify-self: flex-end;
     }
   }
