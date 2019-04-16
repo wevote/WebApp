@@ -16,7 +16,7 @@ class EndorsementCard extends PureComponent {
                 target="_blank"
                 title={this.props.title}
                 body={(
-                  <Button className="btn endorsement-card__btn" bsPrefix={this.props.bsPrefix} variant="primary">
+                  <Button className="btn endorsement-card__btn btn-social" bsPrefix={this.props.bsPrefix} variant="primary">
                     <span>
                       {/* <svg xmlns="http://www.w3.org/2000/svg" xlinkHref="http://www.w3.org/1999/xlink" width="20" height="20">
                         <defs><path id="a" d="M0 0h24v24H0z" /></defs>
@@ -32,7 +32,7 @@ class EndorsementCard extends PureComponent {
                   </Button>
                 )}
               />
-              <div className="endorsement__text">
+              <div className="endorsement-card__text">
                 {this.props.text}
               </div>
             </div>

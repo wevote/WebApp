@@ -72,25 +72,18 @@ $mobile-btn-padding: 52px;
   &__btn {
     background: $selected-color !important;
     color: white !important;
+    text-align: center;
     width: 100%;
     margin-top: $space-md;
-    padding: $space-sm $space-md !important;
+    padding: $space-sm $space-md $space-sm $mobile-btn-padding !important;
     img {
-      display: none;
-    }
+      width: 22.5px !important;
+      height: 22.5px !important;
+    } 
     @include breakpoints (small-bootstrap) {
       width: auto;
-      margin-top: 0;    
-      img {
-        display: block;
-        vertical-align: middle;
-        position: relative;
-        padding-left: -$space-md;
-        margin: 0 $space-md 0 0;
-        top: $space-xxs * .8;
-      }
+      margin-top: 0; 
     }
-
   }
   &__text {
     padding: $space-md 0;
@@ -101,6 +94,11 @@ $mobile-btn-padding: 52px;
       justify-self: flex-end;
     }
   }
+}
+
+.btn-social>:first-child {
+  width: 46px;
+  line-height: 36px; 
 }
 
 .mobile-container {
@@ -118,7 +116,6 @@ $mobile-btn-padding: 52px;
     }
   }
 }
-
 
 .social-btn-description {
   margin-top: $description-margin-top;
