@@ -33,7 +33,6 @@ class AddEndorsements extends Component {
               body={(
                 <Button
                   className="btn btn-social btn-lg value-btn value-btn__endorsements text-center"
-                  buttonText="Sign in to Find Voter Guides"
                   bsPrefix="u-margin-top--sm u-stack--xs"
                   variant="primary"
                 >
