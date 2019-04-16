@@ -33,7 +33,7 @@ export default class IntroNetworkSafety extends Component {
           in 6 minutes
           </span>
         </div>
-        <div><hr /></div>
+        <div className="intro-story__seperator" />
         <div>
           {<img
             className="center-block intro-story__img-height intro-story__placeholder"

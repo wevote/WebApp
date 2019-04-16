@@ -93,6 +93,12 @@
     }
   }
 
+  &__seperator {
+    height: 2px;
+    background: $gray-lighter;
+    border: none;
+  }
+
   // &__placeholder {
   //   background: $gray-lighter;
   //   height: 200px;
@@ -167,12 +173,6 @@
     top: 90vh;
     display: block;
   }
-}
-
-hr {
-  height: 2px;
-  background: $gray-lighter;
-  border: none;
 }
 
 .background--image2 {

@@ -39,7 +39,7 @@ $mobile-btn-padding: 52px;
   &__endorsements {
     background: $selected-color;
     color: $white;
-    img {
+    &--icon {
       vertical-align: baseline;
       position: relative;
       top: -$space-xs / 2;
@@ -76,10 +76,11 @@ $mobile-btn-padding: 52px;
     width: 100%;
     margin-top: $space-md;
     padding: $space-sm $space-md $space-sm $mobile-btn-padding !important;
-    img {
+    &--icon {
       width: 22.5px !important;
       height: 22.5px !important;
-    } 
+    }
+
     @include breakpoints (small-bootstrap) {
       width: auto;
       margin-top: $space-none;
@@ -96,9 +97,9 @@ $mobile-btn-padding: 52px;
   }
 }
 
-.btn-social>:first-child {
+.btn-social > :first-child {
   width: 46px;
-  line-height: 36px; 
+  line-height: 36px;
 }
 
 .mobile-container {
