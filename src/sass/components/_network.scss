@@ -22,7 +22,7 @@ $mobile-btn-padding: 52px;
 
 .fa-twitter {
   font-size: inherit;
-  margin-top: -$space-xs;
+  bottom: $space-xs;
 }
 
 .value-btn {
@@ -38,8 +38,8 @@ $mobile-btn-padding: 52px;
   }
   &__endorsements {
     background: $selected-color;
-    color: white;
-    svg {
+    color: $white;
+    &--icon {
       vertical-align: baseline;
       position: relative;
       top: -$space-xs / 2;
@@ -60,9 +60,9 @@ $mobile-btn-padding: 52px;
   }
 }
 
-.endorsement {
+.endorsement-card {
   display: flex;
-  margin-top: -$space-sm;
+  bottom: $space-sm;
   flex-direction: column;
   @include breakpoints (small-bootstrap) {
     flex-direction: row;
@@ -71,36 +71,35 @@ $mobile-btn-padding: 52px;
   }
   &__btn {
     background: $selected-color !important;
-    color: white !important;
+    color: $white !important;
+    text-align: center;
     width: 100%;
     margin-top: $space-md;
-    padding: $space-sm $space-md !important;
-    svg {
-      display: none;
-    }
-    @include breakpoints (small-bootstrap) {
-      width: auto;
-      margin-top: 0;    
-      svg {
-        display: block;
-        vertical-align: middle;
-        position: relative;
-        padding-left: -$space-md;
-        margin: 0 $space-md 0 0;
-        top: $space-xxs * .8;
-      }
+    padding: $space-sm $space-md $space-sm $mobile-btn-padding !important;
+    &--icon {
+      width: 22.5px !important;
+      height: 22.5px !important;
     }
 
+    @include breakpoints (small-bootstrap) {
+      width: auto;
+      margin-top: $space-none;
+    }
   }
   &__text {
-    padding: $space-md 0;
+    padding: $space-md $space-none;
     font-size: 17px;
     color: $gray-dark;
     @include breakpoints (small-bootstrap) {
-      padding: 0 $space-md;
+      padding: $space-none $space-md;
       justify-self: flex-end;
     }
   }
+}
+
+.btn-social > :first-child {
+  width: 46px;
+  line-height: 36px;
 }
 
 .mobile-container {
@@ -118,7 +117,6 @@ $mobile-btn-padding: 52px;
     }
   }
 }
-
 
 .social-btn-description {
   margin-top: $description-margin-top;

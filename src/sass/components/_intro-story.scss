@@ -13,7 +13,7 @@
   &__h1 {
     font-weight: 800;
     font-size: 24px;
-    padding: $space-lg $space-none $space-md;
+    padding: $space-lg $space-none $space-none;
     @include breakpoints (mid-small) {
       font-size: 28px;
     }
@@ -76,14 +76,14 @@
   }
 
   &__margin--auto {
-    margin: 0 auto;
+    margin: $space-none auto;
     max-width: 600px;
   }
 
   &__img-height {
     width: 100%;
     max-width: 500px;
-    margin: 0 auto;
+    margin: $space-none auto;
   }
 
   &__img-height--extra {
@@ -91,6 +91,13 @@
     @include breakpoints (max mid-small) {
       height: 175px;
     }
+  }
+
+  &__seperator {
+    height: 2px;
+    background: $gray-lighter;
+    border: none;
+    margin: $space-lg $space-none;
   }
 
   // &__placeholder {
@@ -151,9 +158,9 @@
 
   &__btn {
     background: $brand-blue;
-    color: white;
+    color: $white;
     border: none;
-    border-radius: 0;
+    border-radius: $btn-margin-bottom;
     text-transform: uppercase;
     font-size: 18px;
     line-height: 2.2rem;
@@ -167,12 +174,6 @@
     top: 90vh;
     display: block;
   }
-}
-
-hr {
-  height: 2px;
-  background: $gray-lighter;
-  border: none;
 }
 
 .background--image2 {

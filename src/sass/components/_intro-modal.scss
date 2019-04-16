@@ -275,7 +275,7 @@ $scrollcard-padding: 2px 2px 0 0;
     color: $gray-mid;
     font-size: 12px;
     content: $slick-dot-character;
-    opacity: 0.5;
+    opacity: .5;
   }
   &__gray-dots li.slick-active button::before {
     color: $brand-blue;
@@ -533,7 +533,7 @@ $scrollcard-padding: 2px 2px 0 0;
 .slick-dots {
   top: 83vh;
   content: $slick-dot-character;
-  height: 0px;
+  height: 0;
 }
 
 .facebook-intro-connect,
