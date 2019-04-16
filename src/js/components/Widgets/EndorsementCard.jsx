@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@material-ui/core';
+import { Button } from 'react-bootstrap';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 
