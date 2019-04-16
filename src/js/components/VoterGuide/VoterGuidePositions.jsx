@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+// import { Button } from 'react-bootstrap';
 import Helmet from 'react-helmet';
 import { calculateBallotBaseUrl, capitalizeString } from '../../utils/textFormat';
 import BallotActions from '../../actions/BallotActions';
@@ -9,7 +9,7 @@ import BallotStore from '../../stores/BallotStore';
 import FooterDoneBar from '../Navigation/FooterDoneBar';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+// import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import OrganizationPositionItem from './OrganizationPositionItem';
