@@ -142,14 +142,10 @@ class MeasureItem extends Component {
           ) :
             null
           }
-          {
-            !scrolledDown && (
-              <BallotItemSupportOpposeComment
-                ballotItemWeVoteId={measureWeVoteId}
-                showPositionStatementActionBar={this.state.showPositionStatementActionBar}
-              />
-            )
-          }
+          {<BallotItemSupportOpposeComment
+              ballotItemWeVoteId={measureWeVoteId}
+              showPositionStatementActionBar={this.state.showPositionStatementActionBar}
+          />}
         </div>
       </div>
     );
