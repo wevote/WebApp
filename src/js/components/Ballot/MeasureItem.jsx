@@ -26,7 +26,7 @@ class MeasureItem extends Component {
       stateCode: '',
       stateDisplayName: '',
       showPositionStatementActionBar: true,
-      scrolledDown: AppStore.getScrolledDown(),
+      // scrolledDown: AppStore.getScrolledDown(),
     };
     this.getMeasureLink = this.getMeasureLink.bind(this);
     this.goToMeasureLink = this.goToMeasureLink.bind(this);
@@ -62,11 +62,11 @@ class MeasureItem extends Component {
     });
   }
 
-  onAppStoreChange () {
-    this.setState({
-      scrolledDown: AppStore.getScrolledDown(),
-    });
-  }
+  // onAppStoreChange () {
+  //   this.setState({
+  //     // scrolledDown: AppStore.getScrolledDown(),
+  //   });
+  // }
 
   // onSupportStoreChange () {
   //   this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
@@ -95,7 +95,6 @@ class MeasureItem extends Component {
     } = this.state;
     const {
       measureText, measureWeVoteId, electionDisplayName, regionalDisplayName, stateCode,
-      scrolledDown,
     } = this.state;
     if (stateDisplayName === undefined && stateCode) {
       stateDisplayName = stateCode.toUpperCase();
