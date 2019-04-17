@@ -1,5 +1,17 @@
 // Issue related styles
 
+.issue-card {
+  &__issue-block {
+    border: $space-xxs solid $gray-border;
+    border-radius: $radius-rounded; 
+    // border-color: #eee; 
+    // width: 48%; 
+    // height: '38px'; 
+    margin-bottom: $space-sm; 
+    margin-right: $space-sm;
+  }  
+}
+
 .issue-icon-list {
   &__endorsements-label {
     display: flex;
