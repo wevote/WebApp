@@ -173,7 +173,7 @@
 .issues-follow-container{
   display: flex;
   position: relative;
-  width: 105px;
+  width: fit-content;
 }
 
 .issues-follow-btn {
@@ -182,13 +182,15 @@
   padding-left: 0px !important;
   padding-right: 0px !important;
   &--blue {
-    background: $selected-color !important;
+    background: $brand-blue !important;
     color: white !important;
   }
   &__main {
-    border-top-right-radius: 0px !important;
-    border-bottom-right-radius: 0px !important;
-    width: 70%;
+    border-radius: 3px !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    width: fit-content;
+    padding: 5px 10px;
   }
   &__seperator {
     display: inline-block;
@@ -206,10 +208,26 @@
     border-radius: 3px !important;
     border-top-left-radius: 0px !important;
     border-bottom-left-radius: 0px !important;
-    width: 30%;
+    width: fit-content;
+    padding: 5px;
     height: 100% !important;
   }
   &__menu {
     font-size: 12.5px !important;
+    position: absolute;
+    width: 125px !important;
+    transform: translate3d(-54px, 34px, 0px) !important;
+    top: 0px !important;
+    left: 0px !important;
+    will-change: transform !important;
+    padding: 0 !important;
   }
+  &__menu-item {
+    padding: 7px 0 !important;
+  }
+}
+
+.dropdown-divider {
+  margin: 0 auto !important;
+  width: 75% !important;
 }
