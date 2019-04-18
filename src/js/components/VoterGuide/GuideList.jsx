@@ -11,7 +11,7 @@ import { stringContains } from '../../utils/textFormat';
 import VoterGuideDisplayForList from './VoterGuideDisplayForList';
 import { showToastSuccess } from '../../utils/showToast';
 import { renderLog } from '../../utils/logging';
-import EndorsementCard from "../Widgets/EndorsementCard";
+import EndorsementCard from '../Widgets/EndorsementCard';
 
 /*
 const groupedFilters = [
@@ -206,18 +206,8 @@ export default class GuideList extends Component {
             <FollowToggle
                 organizationWeVoteId={organization.organization_we_vote_id}
                 hideStopFollowingButton={this.props.hideStopFollowingButton}
+                hideIgnoreButton={this.props.hideIgnoreButton}
             />
-            { this.props.hideIgnoreButton ?
-              null : (
-                <button
-                    className="btn btn-default btn-sm"
-                    onClick={this.handleIgnore.bind(this, organization.organization_we_vote_id)}
-                    type="button"
-                >
-                    Ignore
-                </button>
-              )
-              }
           </VoterGuideDisplayForList>
         ))
         }

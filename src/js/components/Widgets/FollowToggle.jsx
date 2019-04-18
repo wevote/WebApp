@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import Button from '@material-ui/core/Button';
 import { historyPush } from '../../utils/cordovaUtils';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { renderLog } from '../../utils/logging';
@@ -32,6 +32,8 @@ export default class FollowToggle extends Component {
       voter: {
         we_vote_id: '',
       },
+      anchorElement: null,
+      open: false,
     };
 
     this.followInstantly = this.followInstantly.bind(this);
@@ -142,6 +144,18 @@ export default class FollowToggle extends Component {
     this.startFollowingLocalState();
   }
 
+  onMenuClick () {
+    this.setState(state => ({ open: !state.open }));
+  }
+
+  onMenuClose (event) {
+    if (this.anchorEl.contains(event.target)) {
+      return;
+    }
+
+    this.setState({ open: false });
+  }
+
   render () {
     // console.log("FollowToggle render");
     renderLog(__filename);
@@ -155,7 +169,7 @@ export default class FollowToggle extends Component {
 
     const { currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId } = this.props;
     const followFunc = OrganizationActions.organizationFollow.bind(this, weVoteId);
-    const stopFollowingFunc = OrganizationActions.organizationStopFollowing.bind(this, weVoteId);
+    // const stopFollowingFunc = OrganizationActions.organizationStopFollowing.bind(this, weVoteId);
 
     // NOTE: We want to leave this as showing only if this.props.organization_for_display comes in
     if (organizationForDisplay) {
@@ -172,29 +186,63 @@ export default class FollowToggle extends Component {
       );
     }
 
-    return this.state.isFollowing ? (
-      <span className="d-print-none">
-        { this.props.hideStopFollowingButton ?
-          null : (
-            <Button
-              variant="warning"
-              size="sm"
-              onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
-            >
-              Following
-            </Button>
-          )}
-      </span>
-    ) : (
-      <span className="d-print-none">
-        <Button
-          variant="success"
-          size="sm"
-          onClick={() => this.followInstantly(followFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
-        >
-          Follow
+    return (
+      // <div>
+      //   <Button
+      //     id="anchor-button"
+      //     aria-owns="simple-menu"
+      //     aria-haspopup="true"
+      //     onClick={this.onMenuClick}
+      //   >
+      //     Open Menu
+      //   </Button>
+      //   <Menu
+      //     id="simple-menu"
+      //     anchorEl="anchor-button"
+      //     open={open}
+      //     onClose={this.onMenuClose}
+      //   >
+      //     <MenuItem onClick={this.onMenuClose}>Follow</MenuItem>
+      //     <MenuItem onClick={this.onMenuClose}>Ignore</MenuItem>
+      //   </Menu>
+      // </div>
+      <div className="issues-follow-container">
+        <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn--blue">Action</Button>
+        <div className="issues-follow-btn__seperator" />
+        <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--blue" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span className="sr-only">Toggle Dropdown</span>
         </Button>
-      </span>
+        <div className="dropdown-menu issues-follow-btn__menu">
+          <Button type="button" className="dropdown-item issues-follow-btn">Follow</Button>
+          <div className="dropdown-divider" />
+          <Button type="button" className="dropdown-item issues-follow-btn">Ignore</Button>
+        </div>
+      </div>
     );
+
+    // const followButton = this.state.isFollowing ? (
+    //   <span className="d-print-none">
+    //     { this.props.hideStopFollowingButton ?
+    //       null : (
+    //         <Button
+    //           variant="warning"
+    //           size="sm"
+    //           onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+    //         >
+    //           Following
+    //         </Button>
+    //       )}
+    //   </span>
+    // ) : (
+    //   <span className="d-print-none">
+    //     <Button
+    //       variant="success"
+    //       size="sm"
+    //       onClick={() => this.followInstantly(followFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+    //     >
+    //       Follow
+    //     </Button>
+    //   </span>
+    // );
   }
 }

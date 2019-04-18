@@ -170,3 +170,46 @@
     }
   }
 }
+.issues-follow-container{
+  display: flex;
+  position: relative;
+  width: 105px;
+}
+
+.issues-follow-btn {
+  min-width: 0px !important;
+  font-size: 12.5px !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  &--blue {
+    background: $selected-color !important;
+    color: white !important;
+  }
+  &__main {
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    width: 70%;
+  }
+  &__seperator {
+    display: inline-block;
+    height: 65%;
+    top: 17.5%;
+    left: 70%;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.596);
+    position: absolute;
+    z-index: 999;
+  }
+  &__dropdown {
+    display: inline-block !important;
+    min-width: 0px !important;
+    border-radius: 3px !important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    width: 30%;
+    height: 100% !important;
+  }
+  &__menu {
+    font-size: 12.5px !important;
+  }
+}
