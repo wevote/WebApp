@@ -27,6 +27,7 @@ import VoterSessionActions from '../../actions/VoterSessionActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import { stringContains } from '../../utils/textFormat';
+import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 
 class HeaderBar extends Component {
   static propTypes = {
@@ -208,7 +209,7 @@ class HeaderBar extends Component {
     const showingBallot = stringContains(ballotBaseUrl, pathname.slice(0, 7));
 
     return (
-      <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown}>
+      <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && shouldHeaderRetreat(pathname)}>
         <AppBar position="relative" color="default" className={`page-header${!isWebApp() ? ' page-header__cordova' : ''}${showingBallot ? ' page-header__ballot' : ''}`}>
           <Toolbar className="header-toolbar" disableGutters>
             {!weVoteBrandingOff && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />}
