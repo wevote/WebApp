@@ -39,10 +39,7 @@ class AnnotatedSlideshow extends PureComponent {
           <Nav disabled={index === 0} onClick={() => this.handleChangeSlide(0)}>
             <ArrowLeftIcon classes={{ root: classes.navIconRoot }} />
           </Nav>
-          <Image
-            src={cordovaDot(imgSrc)}
-            ref={(img) => { this.currentImage = img; }}
-          />
+          <Image src={cordovaDot(imgSrc)} />
           <Nav disabled={index === length - 1} onClick={() => this.handleChangeSlide(1)}>
             <ArrowRightIcon classes={{ root: classes.navIconRoot }} />
           </Nav>
@@ -106,7 +103,6 @@ const Slide = styled.div`
   margin: 1em 0 3em 0;
   width: 100%;
   justify-content: space-between;
-  overflow-x: hidden;
 `;
 
 const Nav = styled.div`
