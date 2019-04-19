@@ -5,7 +5,7 @@ import styled, { withTheme } from 'styled-components';
 class HeaderSwitch extends PureComponent {
   static propTypes = {
     color: PropTypes.string.isRequired,
-    choices: PropTypes.object.isRequired,
+    choices: PropTypes.array.isRequired,
     selected: PropTypes.number.isRequired,
     onSwitch: PropTypes.func,
   };
@@ -29,7 +29,7 @@ const Container = styled.div`
   display: flex;
   flex-flow: row;
   border-radius: 64px;
-  height: 40px;
+  height: 36px;
   min-width: 250px;
   width: 350px;
   cursor: pointer;
@@ -38,13 +38,15 @@ const Container = styled.div`
 `;
 
 const Choice = styled.div`
+  display: flex;
   background: ${({ selected, color }) => (selected ? color : 'transparent')};
   color: ${({ selected, color, theme }) => (selected ? theme.colors.brandBlue : color)};
   border-radius: 64px;
   text-transform: uppercase;
   width: 50%;
   font-weight: bold;
-  padding: 8px 16px;
+  align-items: center;
+  justify-content: center;
   transition: all 150ms ease-in;
 `;
 

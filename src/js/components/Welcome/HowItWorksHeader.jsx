@@ -19,13 +19,20 @@ const Container = styled.div`
   flex-flow: row;
   justify-content: space-between;
   width: 960px;
-  max-width: 95%;
   padding-bottom: 1em;
+  height: 48px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    margin: 0 -1em;
+  }
 `;
 
-const Title = styled.div`
+const Title = styled.h3`
   font-size: 24px;
   font-weight: bold;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    font-size: 16px;
+    margin: auto 0;
+  }
 `;
 
 export { Title, Container };

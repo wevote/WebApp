@@ -45,7 +45,7 @@ class WelcomeAppbar extends Component {
             <NavLink>For Campaigns</NavLink>
             <DesktopView>
               <Divider />
-              <NavLink>How It Works</NavLink>
+              <NavLink href="/how">How It Works</NavLink>
               <Divider />
               <NavLink href="/ballot">Get Started</NavLink>
               <Divider />
@@ -73,7 +73,7 @@ class WelcomeAppbar extends Component {
                     </NavRow>
                     <MobileNavDivider />
                     <NavRow>
-                      <NavLink>How It Works</NavLink>
+                      <NavLink href="/how">How It Works</NavLink>
                     </NavRow>
                     <MobileNavDivider />
                     <NavRow>

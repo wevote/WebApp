@@ -3,17 +3,25 @@ import PropTypes from 'prop-types';
 import styled, { withTheme } from 'styled-components';
 
 class StepChips extends PureComponent {
-
   static propTypes = {
-    chips: PropTypes.object.isRequired,
+    chips: PropTypes.array.isRequired,
     selected: PropTypes.number,
+    mobile: PropTypes.bool,
   };
 
   generateChips = () => this.props.chips.map((item, idx) => (
-    <Chip key={item} count={this.props.chips.length} selected={this.props.selected === idx}>
-      <ChipIndex selected={this.props.selected === idx}>{idx + 1}</ChipIndex>
-      <ChipLabel>{item}</ChipLabel>
-    </Chip>
+    <React.Fragment key={item}>
+      {
+        !this.props.mobile ? (
+          <Chip count={this.props.chips.length} selected={this.props.selected === idx}>
+            <ChipIndex selected={this.props.selected === idx}>{idx + 1}</ChipIndex>
+            <ChipLabel>{item}</ChipLabel>
+          </Chip>
+        ) : (
+          <ChipIndex selected={this.props.selected === idx}>{idx + 1}</ChipIndex>
+        )
+      }
+    </React.Fragment>
   ));
 
   render () {
@@ -34,6 +42,12 @@ const Wrapper = styled.div`
   background: ${({ theme }) => theme.colors.grayPale};
   justify-content: space-between;
   border-radius: 64px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    background: rgba(255, 255, 255, 0.1);
+    height: 32px;
+    margin: auto 0;
+    padding: 0 4px;
+  }
 `;
 
 const Chip = styled.div`
@@ -58,6 +72,13 @@ const ChipIndex = styled.p`
   font-weight: bold;
   transition: all 150ms ease-in;
   filter: ${({ selected }) => (selected ? 'brightness(150%)' : 'brightness(100%)')};
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    color: ${({ theme }) => theme.colors.brandBlue};
+    background: ${({ selected }) => (selected ? 'white' : 'rgba(255, 255, 255, 0.2)')};
+    margin: auto 2px;
+    font-size: 14px;
+    padding: 2px 8px;
+  }
 `;
 
 const ChipLabel = styled.p`
