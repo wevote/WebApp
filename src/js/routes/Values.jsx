@@ -14,6 +14,7 @@ import VoterStore from '../stores/VoterStore';
 import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
 import Testimonial from '../components/Widgets/Testimonial';
 import { cordovaDot } from '../utils/cordovaUtils';
+import AddEndorsements from '../components/Widgets/AddEndorsements';
 
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 
@@ -109,6 +110,7 @@ export default class Values extends Component {
             {this.state.voter.signed_in_twitter ? null : (
               <TwitterSignInCard />
             )}
+            <AddEndorsements />
           </div>
         </div>
       </span>

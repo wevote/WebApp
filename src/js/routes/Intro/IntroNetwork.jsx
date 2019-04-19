@@ -52,7 +52,7 @@ export default class IntroNetwork extends Component {
       slidesToScroll: 1,
       swipe: true,
       accessibility: true,
-      arrows: true,
+      arrows: false,
     };
 
     return (

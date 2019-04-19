@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
 import Helmet from 'react-helmet';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
@@ -23,6 +22,9 @@ import VoterStore from '../../stores/VoterStore';
 import AppStore from '../../stores/AppStore';
 import SearchAllActions from '../../actions/SearchAllActions';
 import webAppConfig from '../../config';
+import EndorsementCard from '../../components/Widgets/EndorsementCard';
+
+
 
 // The component /routes/VoterGuide/OrganizationVoterGuideCandidate is based on this component
 export default class Candidate extends Component {
@@ -233,20 +235,21 @@ export default class Candidate extends Component {
             */}
           </div>
         </section>
-        <OpenExternalWebSite
-          url="https://api.wevoteusa.org/vg/create/"
-          className="opinions-followed__missing-org-link"
-          target="_blank"
-          title="Endorsements Missing?"
-          body={<Button className="btn btn-success btn-sm" bsPrefix="u-margin-top--sm u-stack--xs" variant="primary">Endorsements Missing?</Button>}
+        <EndorsementCard
+          bsPrefix="u-margin-top--sm u-stack--xs"
+          variant="primary"
+          buttonText="Endorsements Missing?"
+          text={`Are there endorsements for
+          ${candidateName}
+          that you expected to see?`}
         />
-        <div className="opinions-followed__missing-org-text">
+        {/* <div className="opinions-followed__missing-org-text">
           Are there endorsements for
           {' '}
           {candidateName}
           {' '}
           that you expected to see?
-        </div>
+        </div> */}
         <br />
         <ThisIsMeAction
           twitter_handle_being_viewed={this.state.candidate.twitter_handle}

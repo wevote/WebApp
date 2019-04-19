@@ -79,6 +79,7 @@ class BallotTabsRaccoon extends Component {
       >
         <Tab
           classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot }}
+          id="allItemsCompletionLevelTab"
           onClick={() => this.goToDifferentCompletionLevelTab('filterAllBallotItems')}
           label={(
             <Badge
@@ -100,6 +101,7 @@ class BallotTabsRaccoon extends Component {
         { showRemainingDecisions ? (
           <Tab
             classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot }}
+            id="remainingChoicesCompletionLevelTab"
             onClick={() => this.goToDifferentCompletionLevelTab('filterRemaining')}
             label={(
               <Badge
@@ -123,6 +125,7 @@ class BallotTabsRaccoon extends Component {
         { showDecisionsMade ? (
           <Tab
             classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot }}
+            id="decidedItemsCompletionLevelTab"
             onClick={() => this.goToDifferentCompletionLevelTab('filterDecided')}
             label={(
               <Badge

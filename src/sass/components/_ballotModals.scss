@@ -24,7 +24,7 @@ $ballot-upcoming: 50px;
     left: 0;
     overflow: auto;
     z-index: 1050;
-    background: rgba(43, 43, 43, 0.164);
+    background: rgba(43, 43, 43, .164);
 
     &-mobile {
       @include breakpoints(small mid-small) {

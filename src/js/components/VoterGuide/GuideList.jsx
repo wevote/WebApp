@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
 import CandidateStore from '../../stores/CandidateStore';
 import FollowToggle from '../Widgets/FollowToggle';
 // import FilterBase from "../Filter/FilterBase";
 // import VoterGuideOrganizationFilter from "../Filter/VoterGuideOrganizationFilter";
 import MeasureStore from '../../stores/MeasureStore';
-import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+// import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { stringContains } from '../../utils/textFormat';
 import VoterGuideDisplayForList from './VoterGuideDisplayForList';
 import { showToastSuccess } from '../../utils/showToast';
 import { renderLog } from '../../utils/logging';
+import EndorsementCard from "../Widgets/EndorsementCard";
 
 /*
 const groupedFilters = [
@@ -163,16 +163,23 @@ export default class GuideList extends Component {
             <div className="u-margin-top--sm u-stack--sm u-no-break">
               No results found.
             </div>
-            <OpenExternalWebSite
+            {/* <OpenExternalWebSite
               url="https://api.wevoteusa.org/vg/create/"
               className="opinions-followed__missing-org-link"
               target="_blank"
               title="Organization Missing?"
-              body={<Button className="u-stack--xs">Organization Missing?</Button>}
+              body={<EndorsementCard className="u-stack--xs" buttonText="Endorsements Missing?" />}
+            /> */}
+            <EndorsementCard
+              className="btn endorsement-btn btn-sm"
+              bsPrefix="u-margin-top--sm u-stack--xs"
+              variant="primary"
+              buttonText="Organization Missing?"
+              text="Don't see an organization you want to follow?"
             />
-            <div className="opinions-followed__missing-org-text u-stack--sm u-no-break">
+            {/* <div className="opinions-followed__missing-org-text u-stack--sm u-no-break">
               Don’t see an organization you want to Follow?
-            </div>
+            </div> */}
           </div>
         </div>
       );
