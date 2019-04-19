@@ -80,6 +80,7 @@ import VoterGuidesUnderOneValue from './routes/Values/VoterGuidesUnderOneValue';
 import VerifyRegistration from './routes/More/VerifyRegistration';
 import VerifyThisIsMe from './routes/VoterGuide/VerifyThisIsMe';
 import Welcome from './routes/WelcomeNew';
+import HowItWorks from './routes/HowItWorks';
 import WeVoteBallotEmbed from './routes/More/WeVoteBallotEmbed';
 import YourPage from './routes/YourPage';
 import { isWebApp } from './utils/cordovaUtils';
@@ -122,7 +123,7 @@ const routes = () => (
     <Route path="/ballot/election/:google_civic_election_id" component={Ballot} />
 
     <Route path="/polling-place-locator" component={PollingPlaceLocatorModal} />
-
+    <Route path="/how" component={HowItWorks} />
     <Route path="/intro" component={Intro} />
     <Route path="/wevoteintro/network" component={IntroNetwork} />
     <Route path="/intro/sample_ballot" component={SampleBallot} />

@@ -10,6 +10,7 @@ const theme = {
     grayPale: '#f8f8f8', // $gray-pale:    #f8f8f8 !default;
     grayLighter: '#eee', // $gray-lighter: #eee !default;
     grayBorder: '#ddd', // $gray-border:  #ddd !default;
+    grayChip: '#dee2eb',
     grayLight: '#ccc', // $gray-light:   #ccc !default;
     grayMid: '#999', // $gray-mid:     #999 !default;
     grayDark: '#555', // $gray-dark:    #555 !default;

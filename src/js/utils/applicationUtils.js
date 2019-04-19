@@ -52,7 +52,7 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/more/verify' ||
     pathname === '/more/vision' ||
     pathname.startsWith('/verifythisisme/') ||
-    pathname === '/welcome') {
+    pathname === '/welcome' || pathname === '/how') {
     contentFullWidthMode = true;
   } else if (pathname.startsWith('/ballot')) {
     contentFullWidthMode = false;

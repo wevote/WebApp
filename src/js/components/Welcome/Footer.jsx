@@ -20,7 +20,7 @@ class Footer extends Component {
           <LinksContainer>
             <Column>
               <ColumnTitle>How it Works</ColumnTitle>
-              <Link className={classes.link}>For Voters</Link>
+              <Link className={classes.link} to="/how">For Voters</Link>
               <Link className={classes.link}>For Campaigns</Link>
             </Column>
             <Column>
