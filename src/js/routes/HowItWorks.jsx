@@ -80,13 +80,13 @@ class HowItWorks extends Component {
               />
             </DesktopView>
             <MobileTabletView>
-              <StepsChips selected={selectedStep} chips={stepLabels} mobile />
+              <StepsChips onSelectStep={this.handleChangeSlide} selected={selectedStep} chips={stepLabels} mobile />
             </MobileTabletView>
           </Container>
         </Header>
         <Section>
           <DesktopView>
-            <StepsChips selected={selectedStep} chips={stepLabels} />
+            <StepsChips onSelectStep={this.handleChangeSlide} selected={selectedStep} chips={stepLabels} />
           </DesktopView>
           <AnnotatedSlideshow
             slides={steps}
