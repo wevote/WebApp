@@ -32,8 +32,6 @@ export default class FollowToggle extends Component {
       voter: {
         we_vote_id: '',
       },
-      anchorElement: null,
-      open: false,
     };
 
     this.followInstantly = this.followInstantly.bind(this);
@@ -144,24 +142,12 @@ export default class FollowToggle extends Component {
     this.startFollowingLocalState();
   }
 
-  onMenuClick () {
-    this.setState(state => ({ open: !state.open }));
-  }
-
-  onMenuClose (event) {
-    if (this.anchorEl.contains(event.target)) {
-      return;
-    }
-
-    this.setState({ open: false });
-  }
-
   render () {
     // console.log("FollowToggle render");
     renderLog(__filename);
     if (!this.state) { return <div />; }
 
-    const { organizationWeVoteId: weVoteId, organization_for_display: organizationForDisplay } = this.props;
+    const { organizationWeVoteId: weVoteId, organization_for_display: organizationForDisplay, organizationWeVoteId } = this.props;
     const isLookingAtSelf = this.state.voter.linked_organization_we_vote_id === weVoteId;
 
     // You should not be able to follow yourself
@@ -189,14 +175,15 @@ export default class FollowToggle extends Component {
     return (
       <div className="issues-follow-container">
         {this.state.isFollowing ? (
-          <span className="d-print-none">
-            { this.props.hideStopFollowingButton ?
-              null : (
-                <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__main issues-follow-btn--blue" onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-                  Following
-                </Button>
-              )}
-          </span>
+          // <span className="d-print-none">
+          //   { this.props.hideStopFollowingButton ?
+          //     null : (
+          <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__main issues-follow-btn--blue" onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+            Following
+          </Button>
+        //       )}
+        //   </span>
+        // )
         ) : (
           <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__main issues-follow-btn--blue" onClick={() => this.followInstantly(followFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
             Follow
@@ -206,7 +193,7 @@ export default class FollowToggle extends Component {
         <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--blue" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span className="sr-only">Toggle Dropdown</span>
         </Button>
-        <div className="dropdown-menu issues-follow-btn__menu">
+        <div className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
           {this.state.isFollowing ? (
             <span className="d-print-none">
               { this.props.hideStopFollowingButton ?
@@ -222,7 +209,13 @@ export default class FollowToggle extends Component {
             </Button>
           )}
           <div className="dropdown-divider" />
-          <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item">Ignore</Button>
+          <Button
+            type="button"
+            className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+            onClick={this.props.handleIgnore}
+          >
+            Ignore
+          </Button>
         </div>
       </div>
     );

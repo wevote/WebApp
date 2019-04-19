@@ -136,6 +136,8 @@ export default class GuideList extends Component {
   }
 
   handleIgnore (id) {
+    console.log('GuideList: 139 - Running handleIgnore main');
+
     const { voterGuideList } = this.state;
     OrganizationActions.organizationFollowIgnore(id);
     this.setState({
@@ -198,18 +200,26 @@ export default class GuideList extends Component {
           </FilterBase>
           */
         }
-        {this.state.filteredOrganizationsWithPositions.map(organization => (
-          <VoterGuideDisplayForList
+        {this.state.filteredOrganizationsWithPositions.map((organization) => {
+          const handleIgnoreFunc = () => {
+            console.log('GuideList: 203 - Running handleIgnoreFunc');
+            this.handleIgnore(organization.organization_we_vote_id);
+          };
+
+          return (
+            <VoterGuideDisplayForList
               key={organization.organization_we_vote_id}
               {...organization}
-          >
-            <FollowToggle
-                organizationWeVoteId={organization.organization_we_vote_id}
-                hideStopFollowingButton={this.props.hideStopFollowingButton}
-                hideIgnoreButton={this.props.hideIgnoreButton}
-            />
-          </VoterGuideDisplayForList>
-        ))
+            >
+              <FollowToggle
+                  organizationWeVoteId={organization.organization_we_vote_id}
+                  hideStopFollowingButton={this.props.hideStopFollowingButton}
+                  hideIgnoreButton={this.props.hideIgnoreButton}
+                  handleIgnore={handleIgnoreFunc}
+              />
+            </VoterGuideDisplayForList>
+          );
+        })
         }
       </div>
     );
