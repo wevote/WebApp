@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import WelcomeAppbar from '../components/Welcome/WelcomeAppbar';
 import Footer from '../components/Welcome/Footer';
 import Header, { Container, Title } from '../components/Welcome/HowItWorksHeader';
 import HeaderSwitch from '../components/Widgets/HeaderSwitch';
 import StepsChips from '../components/Widgets/StepsChips';
 import AnnotatedSlideshow from '../components/Widgets/AnnotatedSlideshow';
+import { historyPush } from '../utils/cordovaUtils';
 
 class HowItWorks extends Component {
+  static propTypes = {
+    classes: PropTypes.object,
+  };
+
   constructor (props) {
     super(props);
     this.state = {
@@ -54,6 +62,7 @@ class HowItWorks extends Component {
   }
 
   render () {
+    const { classes } = this.props;
     const { selectedChoice, selectedStep, stepLabels, steps } = this.state;
     const step = steps[stepLabels[selectedStep]];
     return (
@@ -84,12 +93,32 @@ class HowItWorks extends Component {
             index={step.index}
             onChangeSlide={this.handleChangeSlide}
           />
+          {
+            selectedStep === stepLabels.length - 1 && (
+              <MobileTabletView>
+                <Button
+                  classes={{ root: classes.getStartedButtonRoot }}
+                  color="primary"
+                  variant="contained"
+                  onClick={() => historyPush('/ballot')}
+                >
+                  Get Started
+                </Button>
+              </MobileTabletView>
+            )
+          }
         </Section>
         <Footer />
       </Wrapper>
     );
   }
 }
+
+const styles = ({
+  getStartedButtonRoot: {
+    width: '100%',
+  },
+});
 
 const Wrapper = styled.div`
   display: flex;
@@ -105,6 +134,7 @@ const Section = styled.div`
   flex-flow: column;
   width: 960px;
   max-width: 90%;
+  padding-bottom: 2em;
 `;
 
 const DesktopView = styled.div`
@@ -121,4 +151,4 @@ const MobileTabletView = styled.div`
   }
 `;
 
-export default HowItWorks;
+export default withStyles(styles)(HowItWorks);

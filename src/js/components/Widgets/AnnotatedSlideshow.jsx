@@ -21,6 +21,7 @@ class AnnotatedSlideshow extends PureComponent {
     if ((!num && index === 0) || (num && index === length - 1)) {
       return;
     }
+    // this.handleSlideImage(num);
     this.props.onChangeSlide(num ? index + 1 : index - 1);
   }
 
@@ -29,19 +30,19 @@ class AnnotatedSlideshow extends PureComponent {
     const data = Object.values(slides);
     const { length } = data;
     const { title, description, imgSrc } = data.find(slide => slide.index === index);
+
     return (
       <Wrapper>
-        <Title>
-          {title}
-        </Title>
-        <Description>
-          {description}
-        </Description>
+        <Title>{title}</Title>
+        <Description>{description}</Description>
         <Slide>
           <Nav disabled={index === 0} onClick={() => this.handleChangeSlide(0)}>
             <ArrowLeftIcon classes={{ root: classes.navIconRoot }} />
           </Nav>
-          <Image src={cordovaDot(imgSrc)} />
+          <Image
+            src={cordovaDot(imgSrc)}
+            ref={(img) => { this.currentImage = img; }}
+          />
           <Nav disabled={index === length - 1} onClick={() => this.handleChangeSlide(1)}>
             <ArrowRightIcon classes={{ root: classes.navIconRoot }} />
           </Nav>
@@ -105,6 +106,7 @@ const Slide = styled.div`
   margin: 1em 0 3em 0;
   width: 100%;
   justify-content: space-between;
+  overflow-x: hidden;
 `;
 
 const Nav = styled.div`
@@ -121,10 +123,10 @@ const Nav = styled.div`
   background: ${({ disabled, theme }) => (disabled ? theme.colors.grayPale : theme.colors.grayChip)};
   color: ${({ disabled, theme }) => (disabled ? theme.colors.grayChip : theme.colors.brandBlue)};
   &:hover {
-    filter: brightness(102%);
+    filter: ${({ disabled }) => (disabled ? '' : 'brightness(102%)')};
   }
   &:active {
-    filter: brightness(105%);
+    filter: ${({ disabled }) => (disabled ? '' : 'brightness(105%)')};
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     display: none;
@@ -136,6 +138,7 @@ const Image = styled.img`
   border-radius: 16px;
   height: 360px;
   max-width: 90vw;
+  transition: 150ms ease-in;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     width: 90vw;
     height: calc(90vw * 0.5625);

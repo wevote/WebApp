@@ -7,7 +7,7 @@ import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpp
 class CandidateStickyHeader extends Component {
   static propTypes = {
     candidate: PropTypes.object,
-    weVoteId: PropTypes.string,
+    // weVoteId: PropTypes.string,
   };
 
   render () {

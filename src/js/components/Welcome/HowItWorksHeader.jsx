@@ -30,7 +30,7 @@ const Title = styled.h3`
   font-size: 24px;
   font-weight: bold;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    font-size: 16px;
+    font-size: 18px;
     margin: auto 0;
   }
 `;
