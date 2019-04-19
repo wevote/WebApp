@@ -5,6 +5,7 @@ import Helmet from 'react-helmet';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
 import CandidateItem from '../../components/Ballot/CandidateItem';
+import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
 import CandidateStore from '../../stores/CandidateStore';
 import { capitalizeString } from '../../utils/textFormat';
 import IssueActions from '../../actions/IssueActions';
@@ -19,6 +20,7 @@ import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import AppStore from '../../stores/AppStore';
 import SearchAllActions from '../../actions/SearchAllActions';
 import webAppConfig from '../../config';
 
@@ -35,6 +37,7 @@ export default class Candidate extends Component {
       candidateWeVoteId: '',
       organizationWeVoteId: '',
       allCachedPositionsForThisCandidate: [],
+      scrolledDown: AppStore.getScrolledDown(),
     };
   }
 
@@ -42,7 +45,7 @@ export default class Candidate extends Component {
     // console.log('Candidate componentDidMount');
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     let organizationWeVoteId = '';
     if (this.props.params) {
       CandidateActions.candidateRetrieve(this.props.params.candidate_we_vote_id);
@@ -127,6 +130,7 @@ export default class Candidate extends Component {
     // console.log('Candidate componentWillUnmount');
     this.candidateStoreListener.remove();
     this.voterGuideStoreListener.remove();
+    this.appStoreListener.remove();
   }
 
   onCandidateStoreChange () {
@@ -150,8 +154,15 @@ export default class Candidate extends Component {
     SupportActions.retrievePositionsCountsForOneBallotItem(this.state.candidateWeVoteId);
   }
 
+  onAppStoreChange () {
+    this.setState({
+      scrolledDown: AppStore.getScrolledDown(),
+    });
+  }
+
   render () {
     renderLog(__filename);
+    const { scrolledDown } = this.state;
     // const electionId = VoterStore.electionId();
     // const NO_VOTER_GUIDES_TEXT = 'We could not find any more voter guides to follow related to this candidate.';
 
@@ -179,6 +190,11 @@ export default class Candidate extends Component {
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
         />
+        {
+          scrolledDown && (
+            <CandidateStickyHeader candidate={this.state.candidate} />
+          )
+        }
         <section className="card">
           <CandidateItem
             {...this.state.candidate}

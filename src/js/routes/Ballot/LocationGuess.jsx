@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withTheme, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import PlaceIcon from '@material-ui/icons/Place';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
@@ -10,6 +10,7 @@ class LocationGuess extends React.Component {
     static propTypes = {
       toggleSelectBallotModal: PropTypes.func.isRequired,
       hideLocationsGuessComponent: PropTypes.func.isRequired,
+      classes: PropTypes.object,
     };
 
     shouldComponentUpdate (nextProps) {
@@ -25,32 +26,32 @@ class LocationGuess extends React.Component {
 
     render () {
       renderLog(__filename);
-      const { toggleSelectBallotModal, hideLocationsGuessComponent } = this.props;
+      const { toggleSelectBallotModal, hideLocationsGuessComponent, classes } = this.props;
       const bestGuess = VoterStore.getTextForMapSearch();
       // console.log('bestGuess before: ', bestGuess);
       return (
         <div id="location_guess" className="card-main__location-guess">
-          <PlaceIcon style={{ fontSize: '35px', margin: 'auto 10px' }} />
+          <PlaceIcon classes={{ root: classes.iconRoot }} />
           <ParagraphStyled>
             { bestGuess ?
               (
                 <span>
                   Our best guess for your location is
                   {' '}
-                  <span style={{ fontWeight: 'bold' }}>
+                  <BestGuess>
                     &quot;
                     {bestGuess}
                     &quot;
-                  </span>
+                  </BestGuess>
                   .
                   {' '}
                 </span>
               ) :
               null
             }
-            <a style={{ color: '#4371cc', textDecoration: 'underline' }} onClick={toggleSelectBallotModal}>
+            <AddressLink onClick={toggleSelectBallotModal}>
               Enter your full address
-            </a>
+            </AddressLink>
             {' '}
             to see the correct ballot items.
           </ParagraphStyled>
@@ -61,6 +62,13 @@ class LocationGuess extends React.Component {
       );
     }
 }
+
+const styles = ({
+  iconRoot: {
+    fontSize: 36,
+    margin: 'auto 10px',
+  },
+});
 
 const ParagraphStyled = styled.div`
   margin: auto;
@@ -79,4 +87,14 @@ const CloseComponent = styled.div`
   opacity: 0.5;
 `;
 
-export default (withTheme)(withStyles)(LocationGuess);
+const BestGuess = styled.span`
+  font-weight: bold;
+`;
+
+const AddressLink = styled.span`
+  color: #4371cc;
+  text-decoration: underline;
+  cursor: pointer;
+`;
+
+export default withStyles(styles)(LocationGuess);

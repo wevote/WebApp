@@ -315,7 +315,7 @@ class Application extends Component {
                 voter={this.state.voter}
                 weVoteBrandingOff={this.state.weVoteBrandingOff}
         />
-        { pathname === '/welcome' || !contentFullWidthMode ?
+        { pathname === '/welcome' || pathname === '/how' || !contentFullWidthMode ?
           (
             <div className="welcome-or-not-full-width">
               { this.props.children }
@@ -339,6 +339,7 @@ class Application extends Component {
           !(pathname && pathname.startsWith('/office')) &&
           !(pathname && pathname.startsWith('/value/')) &&
           !(pathname && pathname.startsWith('/values/')) &&
+          !(pathname === '/how') &&
           !(pathname === '/welcome') && (
           <div className="footroom-wrapper">
             <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
