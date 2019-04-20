@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router';
 
 const LogoContainer = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -12,7 +13,7 @@ const Navigation = styled.div`
   color: white;
 `;
 
-const NavLink = styled.a`
+const NavLink = styled(Link)`
   text-transform: uppercase;
   font-size: 14px;
   color: white !important;

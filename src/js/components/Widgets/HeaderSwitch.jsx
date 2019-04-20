@@ -6,19 +6,28 @@ class HeaderSwitch extends PureComponent {
   static propTypes = {
     color: PropTypes.string.isRequired,
     choices: PropTypes.array.isRequired,
-    selected: PropTypes.number.isRequired,
-    onSwitch: PropTypes.func,
+    selectedCategoryIndex: PropTypes.number.isRequired,
+    switchToDifferentCategoryFunction: PropTypes.func,
   };
 
+  switchToDifferentCategory (switchToChoice = 0) {
+    if (this.props.switchToDifferentCategoryFunction) {
+      this.props.switchToDifferentCategoryFunction(switchToChoice);
+    }
+  }
+
   render () {
-    const { color, choices, selected } = this.props;
+    const { color, choices, selectedCategoryIndex } = this.props;
     return (
-      <Container color={color} onClick={this.props.onSwitch}>
-        <Choice selected={selected === 0} color={color}>
+      <Container color={color}>
+        <Choice selectedCategoryIndex={selectedCategoryIndex === 0} color={color} onClick={() => this.switchToDifferentCategory(0)}>
           <ChoiceText>{choices[0]}</ChoiceText>
         </Choice>
-        <Choice selected={selected === 1} color={color}>
+        <Choice selectedCategoryIndex={selectedCategoryIndex === 1} color={color} onClick={() => this.switchToDifferentCategory(1)}>
           <ChoiceText>{choices[1]}</ChoiceText>
+        </Choice>
+        <Choice selectedCategoryIndex={selectedCategoryIndex === 2} color={color} onClick={() => this.switchToDifferentCategory(2)}>
+          <ChoiceText>{choices[2]}</ChoiceText>
         </Choice>
       </Container>
     );
@@ -31,7 +40,7 @@ const Container = styled.div`
   border-radius: 64px;
   height: 36px;
   min-width: 250px;
-  width: 350px;
+  width: 720px;
   cursor: pointer;
   border: 1px solid ${({ color }) => color};
   transition: all 150ms ease-in;
@@ -39,8 +48,8 @@ const Container = styled.div`
 
 const Choice = styled.div`
   display: flex;
-  background: ${({ selected, color }) => (selected ? color : 'transparent')};
-  color: ${({ selected, color, theme }) => (selected ? theme.colors.brandBlue : color)};
+  background: ${({ selectedCategoryIndex, color }) => (selectedCategoryIndex ? color : 'transparent')};
+  color: ${({ selectedCategoryIndex, color, theme }) => (selectedCategoryIndex ? theme.colors.brandBlue : color)};
   border-radius: 64px;
   text-transform: uppercase;
   width: 50%;

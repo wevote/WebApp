@@ -10,42 +10,42 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 class AnnotatedSlideshow extends PureComponent {
   static propTypes = {
     slides: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired,
+    selectedStepIndex: PropTypes.number.isRequired,
     onChangeSlide: PropTypes.func,
     classes: PropTypes.object,
   };
 
   handleChangeSlide = (num) => {
-    const { index, slides } = this.props;
+    const { selectedStepIndex, slides } = this.props;
     const { length } = Object.keys(slides);
-    if ((!num && index === 0) || (num && index === length - 1)) {
+    if ((!num && selectedStepIndex === 0) || (num && selectedStepIndex === length - 1)) {
       return;
     }
     // this.handleSlideImage(num);
-    this.props.onChangeSlide(num ? index + 1 : index - 1);
+    this.props.onChangeSlide(num ? selectedStepIndex + 1 : selectedStepIndex - 1);
   }
 
   render () {
-    const { slides, index, classes } = this.props;
+    const { slides, selectedStepIndex, classes } = this.props;
     const data = Object.values(slides);
     const { length } = data;
-    const { title, description, imgSrc } = data.find(slide => slide.index === index);
+    const { title, description, imgSrc } = data.find(slide => slide.index === selectedStepIndex);
 
     return (
       <Wrapper>
         <Title>{title}</Title>
         <Description>{description}</Description>
         <Slide>
-          <Nav disabled={index === 0} id="howItWorksLeftArrow" onClick={() => this.handleChangeSlide(0)}>
+          <Nav disabled={selectedStepIndex === 0} id="howItWorksLeftArrow" onClick={() => this.handleChangeSlide(0)}>
             <ArrowLeftIcon classes={{ root: classes.navIconRoot }} />
           </Nav>
           <Image src={cordovaDot(imgSrc)} />
-          <Nav disabled={index === length - 1} id="howItWorksRightArrow" onClick={() => this.handleChangeSlide(1)}>
+          <Nav disabled={selectedStepIndex === length - 1} id="howItWorksRightArrow" onClick={() => this.handleChangeSlide(1)}>
             <ArrowRightIcon classes={{ root: classes.navIconRoot }} />
           </Nav>
         </Slide>
         {
-          index < length - 1 && (
+          selectedStepIndex < length - 1 && (
             <Button
               color="primary"
               id="howItWorksNext"

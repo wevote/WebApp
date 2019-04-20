@@ -20,7 +20,7 @@ import VoterActions from '../actions/VoterActions';
 import VoterConstants from '../constants/VoterConstants';
 import VoterStore from '../stores/VoterStore';
 
-class Welcome extends PureComponent {
+class WelcomeForOrganizations extends PureComponent {
   static propTypes = {
     classes: PropTypes.object,
     pathname: PropTypes.string,
@@ -91,7 +91,7 @@ class Welcome extends PureComponent {
 
   render () {
     const { classes, pathname } = this.props;
-    console.log('WelcomeNew, pathname: ', pathname);
+    // console.log('WelcomeForOrganizations, pathname: ', pathname);
     const { voter, newsletterOptInTrue } = this.state;
     const isVoterSignedIn = voter.is_signed_in;
 
@@ -103,10 +103,10 @@ class Welcome extends PureComponent {
         <WelcomeAppbar pathname={pathname} />
         <Header>
           <Title>
-            Plan Your Entire Ballot
-            <BlueTitle> in 6 Minutes</BlueTitle>
+            <BlueTitle>Supercharge </BlueTitle>
+            Your Members
           </Title>
-          <SubTitle>Finally, a simple way to fill out your ballot.</SubTitle>
+          <SubTitle>Empower voters with neutral information.</SubTitle>
           <PlayerContainer>
             <Video
               src="https://player.vimeo.com/video/329164243"
@@ -250,4 +250,4 @@ const Wrapper = styled.div`
   overflow-x: hidden;
 `;
 
-export default withStyles(styles)(Welcome);
+export default withStyles(styles)(WelcomeForOrganizations);

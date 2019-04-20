@@ -23,6 +23,9 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/wevoteintro/network') {
     inTheaterMode = true;
   } else if (pathname.startsWith('/candidate/') ||
+    pathname === '/for-campaigns' ||
+    pathname === '/for-organizations' ||
+    pathname.startsWith('/how') ||
     pathname === '/intro' ||
     pathname === '/issues_followed' ||
     pathname === '/issues_to_follow' ||
@@ -52,7 +55,7 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/more/verify' ||
     pathname === '/more/vision' ||
     pathname.startsWith('/verifythisisme/') ||
-    pathname === '/welcome' || pathname === '/how') {
+    pathname === '/welcome') {
     contentFullWidthMode = true;
   } else if (pathname.startsWith('/ballot')) {
     contentFullWidthMode = false;

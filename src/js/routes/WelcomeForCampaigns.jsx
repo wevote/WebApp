@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import PersonIcon from '@material-ui/icons/Person';
 import EmailIcon from '@material-ui/icons/Email';
-import Header, { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/Header';
+import Header, { Title, BlueTitle, SubTitle } from '../components/Welcome/Header';
 import Section, { SectionTitle, SectionTitleBold, Step, StepNumber, StepLabel, GetStarted, ButtonContainer, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage, SignUpContainer, SignUpMessage } from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Welcome/WelcomeAppbar';
 import Footer from '../components/Welcome/Footer';
@@ -20,7 +20,7 @@ import VoterActions from '../actions/VoterActions';
 import VoterConstants from '../constants/VoterConstants';
 import VoterStore from '../stores/VoterStore';
 
-class Welcome extends PureComponent {
+class WelcomeForCampaigns extends PureComponent {
   static propTypes = {
     classes: PropTypes.object,
     pathname: PropTypes.string,
@@ -91,7 +91,7 @@ class Welcome extends PureComponent {
 
   render () {
     const { classes, pathname } = this.props;
-    console.log('WelcomeNew, pathname: ', pathname);
+    // console.log('WelcomeForCampaigns, pathname: ', pathname);
     const { voter, newsletterOptInTrue } = this.state;
     const isVoterSignedIn = voter.is_signed_in;
 
@@ -103,18 +103,10 @@ class Welcome extends PureComponent {
         <WelcomeAppbar pathname={pathname} />
         <Header>
           <Title>
-            Plan Your Entire Ballot
-            <BlueTitle> in 6 Minutes</BlueTitle>
+            <BlueTitle>Supercharge </BlueTitle>
+            Your Supporters
           </Title>
-          <SubTitle>Finally, a simple way to fill out your ballot.</SubTitle>
-          <PlayerContainer>
-            <Video
-              src="https://player.vimeo.com/video/329164243"
-              frameBorder="0"
-              allow="fullscreen"
-            />
-            <script src="https://player.vimeo.com/api/player.js" />
-          </PlayerContainer>
+          <SubTitle>Leverage social ballot planning tools to empower supporters to triple your reach.</SubTitle>
         </Header>
         <Section>
           <SectionTitle>
@@ -132,10 +124,6 @@ class Welcome extends PureComponent {
           <Step>
             <StepNumber>3</StepNumber>
             <StepLabel>See who endorsed each choice on your ballot</StepLabel>
-          </Step>
-          <Step>
-            <StepNumber>4</StepNumber>
-            <StepLabel>Fill out the whole thing in under 6 minutes</StepLabel>
           </Step>
           <GetStarted>
             <AddressBox icon={<LocationIcon />} />
@@ -250,4 +238,4 @@ const Wrapper = styled.div`
   overflow-x: hidden;
 `;
 
-export default withStyles(styles)(Welcome);
+export default withStyles(styles)(WelcomeForCampaigns);

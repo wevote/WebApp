@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { historyPush } from '../../utils/cordovaUtils';
+import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 
 
 class Footer extends Component {
@@ -20,36 +21,86 @@ class Footer extends Component {
           <LinksContainer>
             <Column>
               <ColumnTitle>How it Works</ColumnTitle>
-              <Link className={classes.link} to="/how">For Voters</Link>
-              <Link className={classes.link}>For Campaigns</Link>
+              <Link className={classes.link} to="/how/for-voters">For Voters</Link>
+              <Link className={classes.link} to="/how/for-organizations">For Organizations</Link>
+              <Link className={classes.link} to="/how/for-campaigns">For Campaigns</Link>
             </Column>
             <Column>
               <ColumnTitle>Elections</ColumnTitle>
               <Link className={classes.link} to="/more/elections">Supported Elections</Link>
-              <Link className={classes.link}>Register to Vote</Link>
-              <Link className={classes.link}>Get Your Absentee Ballot</Link>
-              <Link className={classes.link}>See Your Ballot</Link>
-              <Link className={classes.link}>Polling Place Locator</Link>
+              <Link className={classes.link} to="/more/register">Register to Vote</Link>
+              <Link className={classes.link} to="/more/absentee">Get Your Absentee Ballot</Link>
+              <Link className={classes.link} to="/ballot">See Your Ballot</Link>
+              <Link className={classes.link} to="/polling-place-locator">Polling Place Locator</Link>
               <Link className={classes.link} to="/more/tools">Free Online Tools</Link>
-              <Link className={classes.link}>Premium Online Tools</Link>
+              <Link className={classes.link} to="/more/tools">Premium Online Tools</Link>
             </Column>
             <Column>
               <ColumnTitle>About We Vote</ColumnTitle>
               <Link className={classes.link} to="/more/about">About &amp; Team</Link>
               <Link className={classes.link} to="/more/donate">Donate</Link>
-              <Link className={classes.link}>Blog</Link>
-              <Link className={classes.link}>Media Inquiries</Link>
-              <Link className={classes.link}>Careers</Link>
-              <Link className={classes.link}>Join Our Newsletter</Link>
-              <Link className={classes.link}>Facebook</Link>
-              <Link className={classes.link}>Twitter</Link>
+              <OpenExternalWebSite
+                url="https://blog.wevote.us/"
+                target="_blank"
+                body={(
+                  <span>Blog</span>
+                )}
+                className={classes.link}
+              />
+              <OpenExternalWebSite
+                url="https://help.wevote.us/hc/en-us/requests/new"
+                target="_blank"
+                body={(
+                  <span>Media Inquiries</span>
+                )}
+                className={classes.link}
+              />
+              <OpenExternalWebSite
+                url="https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland#volops"
+                target="_blank"
+                body={(
+                  <span>Careers</span>
+                )}
+                className={classes.link}
+              />
+              <OpenExternalWebSite
+                url="http://eepurl.com/cx_frP"
+                target="_blank"
+                body={(
+                  <span>Join Our Newsletter</span>
+                )}
+                className={classes.link}
+              />
+              <OpenExternalWebSite
+                url="https://www.facebook.com/wevoteusa"
+                target="_blank"
+                body={(
+                  <span>Facebook</span>
+                )}
+                className={classes.link}
+              />
+              <OpenExternalWebSite
+                url="https://twitter.com/wevote"
+                target="_blank"
+                body={(
+                  <span>Twitter</span>
+                )}
+                className={classes.link}
+              />
             </Column>
             <Column>
               <ColumnTitle>Support</ColumnTitle>
-              <Link className={classes.link}>We Vote Help</Link>
+              <OpenExternalWebSite
+                url="https://help.wevote.us/hc/en-us"
+                target="_blank"
+                body={(
+                  <span>We Vote Help</span>
+                )}
+                className={classes.link}
+              />
               <Link className={classes.link} to="/more/privacy">Privacy</Link>
               <Link className={classes.link} to="/more/terms">Terms of Use</Link>
-              <Link className={classes.link}>Attributions</Link>
+              <Link className={classes.link} to="/more/attributions">Attributions</Link>
             </Column>
           </LinksContainer>
           <OptionsContainer>
@@ -66,7 +117,14 @@ class Footer extends Component {
               variant="outlined"
               classes={{ root: classes.buttonOutlined }}
             >
-              Contact Sales
+              <OpenExternalWebSite
+                url="https://help.wevote.us/hc/en-us/requests/new"
+                target="_blank"
+                body={(
+                  <span className="u-no-break">Contact Sales</span>
+                )}
+                className={classes.bottomLink}
+              />
             </Button>
           </OptionsContainer>
         </Top>
@@ -74,7 +132,16 @@ class Footer extends Component {
           <Text>WeVote.US is brought to you by a partnership between two registered nonprofit organizations, one 501(c)(3) and one 501(c)(4). We do not support or oppose any political candidate or party.</Text>
           <Text>
             The software that powers We Vote is
-            <Link className={classes.bottomLink} to="https://github.com/wevote"> open source.</Link>
+            {' '}
+            <OpenExternalWebSite
+              url="https://github.com/wevote"
+              target="_blank"
+              body={(
+                <span>open source</span>
+              )}
+              className={classes.bottomLink}
+            />
+            .
           </Text>
         </Bottom>
       </Wrapper>
