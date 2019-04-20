@@ -15,7 +15,7 @@ class StepChips extends PureComponent {
       {
         !this.props.mobile ? (
           <Chip
-            id={`chip${idx}`}
+            id={`howItWorksChip${idx}`}
             count={this.props.chips.length}
             selected={this.props.selected === idx}
             onClick={() => this.props.onSelectStep(idx)}
@@ -25,7 +25,7 @@ class StepChips extends PureComponent {
           </Chip>
         ) : (
           <ChipIndex
-            id={`mChip${idx}`}
+            id={`howItWorksChipMobile${idx}`}
             selected={this.props.selected === idx}
             onClick={() => this.props.onSelectStep(idx)}
           >
