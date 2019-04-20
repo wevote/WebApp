@@ -36,11 +36,11 @@ class AnnotatedSlideshow extends PureComponent {
         <Title>{title}</Title>
         <Description>{description}</Description>
         <Slide>
-          <Nav disabled={index === 0} onClick={() => this.handleChangeSlide(0)}>
+          <Nav disabled={index === 0} id="howItWorksLeftArrow" onClick={() => this.handleChangeSlide(0)}>
             <ArrowLeftIcon classes={{ root: classes.navIconRoot }} />
           </Nav>
           <Image src={cordovaDot(imgSrc)} />
-          <Nav disabled={index === length - 1} onClick={() => this.handleChangeSlide(1)}>
+          <Nav disabled={index === length - 1} id="howItWorksRightArrow" onClick={() => this.handleChangeSlide(1)}>
             <ArrowRightIcon classes={{ root: classes.navIconRoot }} />
           </Nav>
         </Slide>
@@ -48,6 +48,7 @@ class AnnotatedSlideshow extends PureComponent {
           index < length - 1 && (
             <Button
               color="primary"
+              id="howItWorksNext"
               variant="contained"
               classes={{ root: classes.nextButtonRoot }}
               onClick={() => this.handleChangeSlide(1)}
