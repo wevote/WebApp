@@ -171,9 +171,9 @@
   }
 }
 .issues-follow-container{
-  display: flex;
   position: relative;
-  width: fit-content !important;
+  display: flex; 
+  justify-content: space-between;
 }
 
 .issues-follow-btn {
@@ -185,20 +185,24 @@
     background: $brand-blue !important;
     color: white !important;
   }
+  &--white {
+    color: $selected-color !important;
+    background: white !important;
+  }
   &__main {
     border-radius: 3px !important;
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
-    min-width: 70% !important;
     width: fit-content !important;
     padding: 5px 10px !important;
+    flex: 0 0 1 !important;
   }
   &__seperator {
     display: inline-block;
     height: 65%;
     top: 17.5%;
     width: 1px;
-    background: rgba(255, 255, 255, 0.596);
+    background: rgb(187, 187, 187);
     z-index: 100;
     position: absolute;
     right: 32.98px;
@@ -210,8 +214,16 @@
     border-top-left-radius: 0px !important;
     border-bottom-left-radius: 0px !important;
     width: 35px !important;
+    min-width: 35px !important;
     padding: 5px 10px !important;
     height: 100% !important;
+  }
+  &__dropdown ::after {
+    font-size: 16px !important;
+  }
+  &__icon path, &__icon svg {
+    width: 18px !important;
+    height: 18px !important;
   }
   &__menu {
     font-size: 12.5px !important;
@@ -243,4 +255,10 @@
   border: none !important;
   height: 1px !important;
   background: $gray-light !important;
+}
+
+.dropdown-toggle::after{
+  font-size: 16px !important;
+  vertical-align: middle !important;
+  bottom: 3px !important;
 }
