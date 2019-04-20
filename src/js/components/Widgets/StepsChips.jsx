@@ -7,18 +7,30 @@ class StepChips extends PureComponent {
     chips: PropTypes.array.isRequired,
     selected: PropTypes.number,
     mobile: PropTypes.bool,
+    onSelectStep: PropTypes.func,
   };
 
   generateChips = () => this.props.chips.map((item, idx) => (
     <React.Fragment key={item}>
       {
         !this.props.mobile ? (
-          <Chip count={this.props.chips.length} selected={this.props.selected === idx}>
+          <Chip
+            id={`howItWorksChip${idx}`}
+            count={this.props.chips.length}
+            selected={this.props.selected === idx}
+            onClick={() => this.props.onSelectStep(idx)}
+          >
             <ChipIndex selected={this.props.selected === idx}>{idx + 1}</ChipIndex>
             <ChipLabel>{item}</ChipLabel>
           </Chip>
         ) : (
-          <ChipIndex selected={this.props.selected === idx}>{idx + 1}</ChipIndex>
+          <ChipIndex
+            id={`howItWorksChipMobile${idx}`}
+            selected={this.props.selected === idx}
+            onClick={() => this.props.onSelectStep(idx)}
+          >
+            {idx + 1}
+          </ChipIndex>
         )
       }
     </React.Fragment>
@@ -57,11 +69,18 @@ const Chip = styled.div`
   width: ${({ count }) => `${100 / count}%`};
   font-size: 16px;
   height: 36px;
+  cursor: pointer;
   background: ${({ selected, theme }) => (selected ? theme.colors.brandBlue : theme.colors.grayChip)};
   color: ${({ selected, theme }) => (selected ? 'white' : theme.colors.brandBlue)};
   border-radius: 64px;
   margin: auto 6px;
   transition: all 150ms ease-in;
+  &:hover {
+    filter: brightness(98%);
+  }
+  &:active {
+    filter: brightness(102%);
+  }
 `;
 
 const ChipIndex = styled.p`
@@ -71,6 +90,7 @@ const ChipIndex = styled.p`
   padding: 2px 9px;
   font-weight: bold;
   transition: all 150ms ease-in;
+  cursor: pointer;
   filter: ${({ selected }) => (selected ? 'brightness(150%)' : 'brightness(100%)')};
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     color: ${({ theme }) => theme.colors.brandBlue};
