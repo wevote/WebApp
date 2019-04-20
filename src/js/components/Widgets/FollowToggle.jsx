@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
+import CheckCircle from '@material-ui/icons/CheckCircle';
 // import AccessAlarm from '@material-ui/icons';
 import { historyPush } from '../../utils/cordovaUtils';
-import CheckCircle from '@material-ui/icons/CheckCircle';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
