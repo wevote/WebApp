@@ -170,3 +170,95 @@
     }
   }
 }
+.issues-follow-container{
+  position: relative;
+  display: flex; 
+  justify-content: space-between;
+}
+
+.issues-follow-btn {
+  min-width: 0px !important;
+  font-size: 12.5px !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  &--blue {
+    background: $brand-blue !important;
+    color: white !important;
+  }
+  &--white {
+    color: $selected-color !important;
+    background: white !important;
+  }
+  &__main {
+    border-radius: 3px !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    width: fit-content !important;
+    padding: 5px 10px !important;
+    flex: 0 0 1 !important;
+  }
+  &__seperator {
+    display: inline-block;
+    height: 65%;
+    top: 17.5%;
+    width: 1px;
+    background: rgb(187, 187, 187);
+    z-index: 100;
+    position: absolute;
+    right: 32.98px;
+  }
+  &__dropdown {
+    display: inline-block !important;
+    min-width: 0px !important;
+    border-radius: 3px !important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    width: 35px !important;
+    min-width: 35px !important;
+    padding: 5px 10px !important;
+    height: 100% !important;
+  }
+  &__dropdown ::after {
+    font-size: 16px !important;
+  }
+  &__icon path, &__icon svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+  &__menu {
+    font-size: 12.5px !important;
+    position: absolute !important;
+    width: 140px !important;
+    min-width: 0px !important;
+    max-width: 140px !important;
+    padding: 0px !important;
+    z-index: 999 !important;
+  }
+  &__menu * {
+    width: 140px !important;
+    max-width: 140px !important;
+  }
+  &__menu-item {
+    padding: 7px 0 !important;
+    border-radius: 0px !important;
+  }
+}
+
+.card-main {
+  position: relative !important;
+  overflow: auto !important;
+}
+
+.dropdown-divider {
+  margin: 0 auto !important;
+  width: 75% !important;
+  border: none !important;
+  height: 1px !important;
+  background: $gray-light !important;
+}
+
+.dropdown-toggle::after{
+  font-size: 16px !important;
+  vertical-align: middle !important;
+  bottom: 3px !important;
+}

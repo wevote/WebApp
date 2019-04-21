@@ -11,7 +11,7 @@ import { stringContains } from '../../utils/textFormat';
 import VoterGuideDisplayForList from './VoterGuideDisplayForList';
 import { showToastSuccess } from '../../utils/showToast';
 import { renderLog } from '../../utils/logging';
-import EndorsementCard from "../Widgets/EndorsementCard";
+import EndorsementCard from '../Widgets/EndorsementCard';
 
 /*
 const groupedFilters = [
@@ -136,6 +136,8 @@ export default class GuideList extends Component {
   }
 
   handleIgnore (id) {
+    console.log('GuideList: 139 - Running handleIgnore main');
+
     const { voterGuideList } = this.state;
     OrganizationActions.organizationFollowIgnore(id);
     this.setState({
@@ -198,28 +200,26 @@ export default class GuideList extends Component {
           </FilterBase>
           */
         }
-        {this.state.filteredOrganizationsWithPositions.map(organization => (
-          <VoterGuideDisplayForList
+        {this.state.filteredOrganizationsWithPositions.map((organization) => {
+          const handleIgnoreFunc = () => {
+            console.log('GuideList: 203 - Running handleIgnoreFunc');
+            this.handleIgnore(organization.organization_we_vote_id);
+          };
+
+          return (
+            <VoterGuideDisplayForList
               key={organization.organization_we_vote_id}
               {...organization}
-          >
-            <FollowToggle
-                organizationWeVoteId={organization.organization_we_vote_id}
-                hideStopFollowingButton={this.props.hideStopFollowingButton}
-            />
-            { this.props.hideIgnoreButton ?
-              null : (
-                <button
-                    className="btn btn-default btn-sm"
-                    onClick={this.handleIgnore.bind(this, organization.organization_we_vote_id)}
-                    type="button"
-                >
-                    Ignore
-                </button>
-              )
-              }
-          </VoterGuideDisplayForList>
-        ))
+            >
+              <FollowToggle
+                  organizationWeVoteId={organization.organization_we_vote_id}
+                  hideStopFollowingButton={this.props.hideStopFollowingButton}
+                  hideIgnoreButton={this.props.hideIgnoreButton}
+                  handleIgnore={handleIgnoreFunc}
+              />
+            </VoterGuideDisplayForList>
+          );
+        })
         }
       </div>
     );
