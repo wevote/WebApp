@@ -174,10 +174,8 @@
 .issues-follow-container{
   position: relative;
   display: flex; 
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
-  border: 1px solid $gray-light !important;
-  border-radius: 3px;
 }
 
 .issues-follow-btn {
@@ -185,6 +183,7 @@
   font-size: 12.5px !important;
   padding-left: 0px !important;
   padding-right: 0px !important;
+  max-height: none !important;
   &--blue {
     background: $brand-blue !important;
     color: white !important;
@@ -198,6 +197,8 @@
     border-radius: 3px !important;
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
+    border: 1px solid $gray-light !important;
+    border-right: none !important;
     padding: 5px 10px !important;
     flex: 1 0 0 !important;
     text-align: center !important;
@@ -223,6 +224,8 @@
     padding: 5px 10px !important;
     height: 100% !important;
     vertical-align: middle !important;
+    border: 1px solid $gray-light !important;
+    border-left: none !important;
   }
   &__dropdown ::after {
     font-size: 16px !important;
