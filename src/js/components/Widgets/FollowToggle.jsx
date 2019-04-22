@@ -154,7 +154,7 @@ export default class FollowToggle extends Component {
     // You should not be able to follow yourself
     if (isLookingAtSelf) { return <div />; }
 
-    const { currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId } = this.props;
+    const { currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId, showFollowingText } = this.props;
     const followFunc = OrganizationActions.organizationFollow.bind(this, weVoteId);
     const stopFollowingFunc = OrganizationActions.organizationStopFollowing.bind(this, weVoteId);
 
@@ -179,8 +179,15 @@ export default class FollowToggle extends Component {
           // <span className="d-print-none">
           //   { this.props.hideStopFollowingButton ?
           //     null : (
-          <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn__icon issues-follow-btn--white" onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-            <CheckCircle className="following-icon" />
+          <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn__icon issues-follow-btn--white issues-followed-btn--disabled" onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)} disabled>
+            {showFollowingText ? (
+              <span>
+                <CheckCircle className="following-icon" />
+                <span className="pl-2">Following</span>
+              </span>
+            ) : (
+              <CheckCircle className="following-icon" />
+            )}
           </Button>
         //       )}
         //   </span>
@@ -213,7 +220,7 @@ export default class FollowToggle extends Component {
               { this.props.hideStopFollowingButton ?
                 null : (
                   <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-                    Following
+                    Unfollow
                   </Button>
                 )}
             </span>
