@@ -176,7 +176,8 @@
   display: flex; 
   justify-content: space-between;
   width: 100%;
-  border: 1px solid $gray-lighter !important;
+  border: 1px solid $gray-light !important;
+  border-radius: 3px;
 }
 
 .issues-follow-btn {
@@ -221,6 +222,7 @@
     min-width: 35px !important;
     padding: 5px 10px !important;
     height: 100% !important;
+    vertical-align: middle !important;
   }
   &__dropdown ::after {
     font-size: 16px !important;
