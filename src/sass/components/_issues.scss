@@ -7,7 +7,7 @@
     align-items: center;
     padding: $space-xxs $space-xs;
     border-radius: $radius-rounded;
-    border: 1px solid $gray-lighter;
+    border: 1px solid $gray-light;
     // background-color: $gray-lighter;
     margin-right: $space-xs;
   }
@@ -170,10 +170,12 @@
     }
   }
 }
+
 .issues-follow-container{
   position: relative;
   display: flex; 
-  justify-content: space-between;
+  justify-content: center;
+  width: 100%;
 }
 
 .issues-follow-btn {
@@ -181,6 +183,7 @@
   font-size: 12.5px !important;
   padding-left: 0px !important;
   padding-right: 0px !important;
+  max-height: none !important;
   &--blue {
     background: $brand-blue !important;
     color: white !important;
@@ -188,14 +191,17 @@
   &--white {
     color: $selected-color !important;
     background: white !important;
+    font-weight: 600 !important;
   }
   &__main {
     border-radius: 3px !important;
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
-    width: fit-content !important;
+    border: 1px solid $gray-light !important;
+    border-right: none !important;
     padding: 5px 10px !important;
-    flex: 0 0 1 !important;
+    flex: 1 0 0 !important;
+    text-align: center !important;
   }
   &__seperator {
     display: inline-block;
@@ -217,6 +223,9 @@
     min-width: 35px !important;
     padding: 5px 10px !important;
     height: 100% !important;
+    vertical-align: middle !important;
+    border: 1px solid $gray-light !important;
+    border-left: none !important;
   }
   &__dropdown ::after {
     font-size: 16px !important;
@@ -241,6 +250,9 @@
   &__menu-item {
     padding: 7px 0 !important;
     border-radius: 0px !important;
+  }
+  &[disabled] {
+    background: $white;
   }
 }
 

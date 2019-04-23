@@ -225,7 +225,7 @@ export default class OrganizationVoterGuide extends Component {
                     <span>Edit</span>
                   </Button>
                 ) :
-                  <FollowToggle organizationWeVoteId={this.state.organization.organization_we_vote_id} />
+                  <FollowToggle organizationWeVoteId={this.state.organization.organization_we_vote_id} showFollowingText />
                 }
                 <OrganizationCard organization={this.state.organization} />
               </div>
