@@ -161,7 +161,7 @@ $neg-padding: -10px;
       padding-top: $mobile-body-padding-top;
     }
 
-    &__noRaccoon {
+    &__no-decision-tabs {
       margin-top: $space-md;
       padding-top: $body-padding-top-no-raccoon;
       @include breakpoints(small xsmall-bootstrap) {
