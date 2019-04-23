@@ -88,10 +88,10 @@ export default class ValuesToFollowPreview extends Component {
         <section className="card">
           <div className="card-main">
             <h1 className="h4">Values to Follow</h1>
-            <div className="u-show-desktop-tablet">
+            <div className="u-show-desktop-tablet issue-card__issues-wrap">
               {issueListForDisplayDesktop}
             </div>
-            <div className="u-show-mobile">
+            <div className="u-show-mobile issue-card__issues-wrap">
               {issueListForDisplayMobile}
             </div>
             <div>

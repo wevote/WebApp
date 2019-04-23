@@ -73,7 +73,7 @@ export default class IssueFollowToggleButton extends Component {
     if (!this.state) { return <div />; }
 
     return this.state.isFollowing ? (
-      <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark" style={{ padding: '0', margin: '-2px' }}>
+      <div className="u-flex u-items-center u-justify-between card-main__values intro-modal__text-dark">
         <Button
           variant="contained"
           color="primary"
@@ -83,7 +83,7 @@ export default class IssueFollowToggleButton extends Component {
         </Button>
       </div>
     ) : (
-      <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark" style={{ padding: '0', margin: '-2px' }}>
+      <div className="u-flex u-items-center u-justify-between card-main__values intro-modal__text-dark">
         <Button
           variant="contained"
           color="primary"

@@ -139,7 +139,7 @@ export default class IssueCard extends Component {
 
     return (
       <div
-        className="issue-card card-main__media-object u-stack--md"
+        className="issue-card__issue-block card-main__media-object u-stack--md"
         key={`issue-card-${this.state.issueWeVoteId}`}
       >
         <div className="card-main__media-object-anchor">
@@ -151,7 +151,7 @@ export default class IssueCard extends Component {
         </div>
         <div className="card-main__media-object-content">
           <Link to={this.getIssueLink} className="u-no-underline">
-            <h3 className="card-main__display-name">{issueDisplayName}</h3>
+            <h3 className="card-main__display-name__issue-name">{issueDisplayName}</h3>
           </Link>
           { this.props.turnOffDescription ?
             <span className="card-main__description" /> :
