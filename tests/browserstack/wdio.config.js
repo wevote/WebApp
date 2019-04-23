@@ -33,7 +33,7 @@ exports.config = {
   ],
   coloredLogs: true,
   baseUrl: '',
-  waitforTimeout: 10000,
+  waitforTimeout: 50000,
   connectionRetryTimeout: 90000,
   connectionRetryCount: 3,
 
