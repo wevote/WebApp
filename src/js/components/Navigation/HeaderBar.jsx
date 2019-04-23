@@ -229,7 +229,7 @@ class HeaderBar extends Component {
                 )
                 }
                 {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRoot }} id="friendsTabHeaderBar" label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} onClick={() => this.handleNavigation('/friends')}>My Friends</Badge>} />
+                  <Tab classes={{ root: classes.tabRoot }} id="friendsTabHeaderBar" label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9}>My Friends</Badge>} onClick={() => this.handleNavigation('/friends')} />
                 )
                 }
                 {/* showFullNavigation && isWebApp() && <Tab className="u-show-desktop" label="Vote" /> */}
