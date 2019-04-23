@@ -2,7 +2,7 @@ import styled, { keyframes } from 'styled-components';
 
 const Header = styled.div`
   position: relative;
-  height: 82vh;
+  height: 72vh;
   width: 110%;
   color: white;
   background-image: linear-gradient(to bottom, #415a99, #2d3b5e);
@@ -11,10 +11,28 @@ const Header = styled.div`
   padding: 0 2em;
   margin-top: -72px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    height: 60vh;
+    height: 50vh;
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    height: 70vh;
+    height: 50vh;
+  }
+`;
+
+const HeaderForCampaigns = styled.div`
+  position: relative;
+  height: 32vh;
+  width: 110%;
+  color: white;
+  background-image: linear-gradient(to bottom, #415a99, #2d3b5e);
+  border-bottom-left-radius: 50% 25%;
+  border-bottom-right-radius: 50% 25%;
+  padding: 0 2em;
+  margin-top: -72px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    height: 28vh;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    height: 32vh;
   }
 `;
 
@@ -98,6 +116,6 @@ const PlayerContainer = styled.div`
   }
 `;
 
-export { Title, BlueTitle, SubTitle, Video, PlayerContainer };
+export { HeaderForCampaigns, Title, BlueTitle, SubTitle, Video, PlayerContainer };
 
 export default Header;

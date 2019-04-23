@@ -4,13 +4,10 @@ import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import LocationIcon from '@material-ui/icons/LocationOn';
-import PersonIcon from '@material-ui/icons/Person';
-import EmailIcon from '@material-ui/icons/Email';
-import Header, { Title, BlueTitle, SubTitle } from '../components/Welcome/Header';
-import Section, { SectionTitle, SectionTitleBold, Step, StepNumber, StepLabel, GetStarted, ButtonContainer, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage, SignUpContainer, SignUpMessage } from '../components/Welcome/Section';
+import { HeaderForCampaigns, Title, BlueTitle, SubTitle } from '../components/Welcome/Header';
+import Section, { SectionTitle, SectionTitleBold, Step, StepNumber, StepLabel, GetStarted, ButtonContainer, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage } from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Welcome/WelcomeAppbar';
 import Footer from '../components/Welcome/Footer';
-import TextBox from '../components/Welcome/TextBox';
 import AddressBox from '../components/Welcome/AddressBox';
 import { historyPush, cordovaDot } from '../utils/cordovaUtils';
 import Testimonial from '../components/Widgets/Testimonial';
@@ -92,7 +89,7 @@ class WelcomeForCampaigns extends PureComponent {
   render () {
     const { classes, pathname } = this.props;
     // console.log('WelcomeForCampaigns, pathname: ', pathname);
-    const { voter, newsletterOptInTrue } = this.state;
+    const { voter } = this.state;
     const isVoterSignedIn = voter.is_signed_in;
 
     const testimonialAuthor = 'Dale M., Oakland, California';
@@ -101,13 +98,13 @@ class WelcomeForCampaigns extends PureComponent {
     return (
       <Wrapper>
         <WelcomeAppbar pathname={pathname} />
-        <Header>
+        <HeaderForCampaigns>
           <Title>
             <BlueTitle>Supercharge </BlueTitle>
             Your Supporters
           </Title>
           <SubTitle>Leverage social ballot planning tools to empower supporters to triple your reach.</SubTitle>
-        </Header>
+        </HeaderForCampaigns>
         <Section>
           <SectionTitle>
             We Vote is
@@ -115,15 +112,15 @@ class WelcomeForCampaigns extends PureComponent {
           </SectionTitle>
           <Step>
             <StepNumber>1</StepNumber>
-            <StepLabel>Choose your interests</StepLabel>
+            <StepLabel>Claim your Campaign Profile</StepLabel>
           </Step>
           <Step>
             <StepNumber>2</StepNumber>
-            <StepLabel>Follow organizations and people you trust</StepLabel>
+            <StepLabel>Import your Endorsements</StepLabel>
           </Step>
           <Step>
             <StepNumber>3</StepNumber>
-            <StepLabel>See who endorsed each choice on your ballot</StepLabel>
+            <StepLabel>Add More Customizations for your Supporters</StepLabel>
           </Step>
           <GetStarted>
             <AddressBox icon={<LocationIcon />} />
@@ -143,11 +140,40 @@ class WelcomeForCampaigns extends PureComponent {
           <DescriptionContainer>
             <DescriptionLeftColumn>
               <Description>
-                <Bold>We&apos;ve all been there. </Bold>
-                Election day is almost here, but besides the President and a few other choices we&apos;ve made, we don&apos;t know how we are going to vote! Between the nonstop misleading TV ads, texts, calls and oveflowing mailboxes, who has time to make sense of the madness? There has to be a better way.
+                More and more money is spent on elections each year,
+                <Bold> yet our ballots remain mysterious and difficult to fill out. </Bold>
+                Endorsements are fragmented, and as a result many voters chose not to vote down ballot at all rather than unintentionally vote the wrong way. Until now.
               </Description>
-              <Description>Now, there is!</Description>
-              <Description>We&apos;ll help you confidently fill out your specific ballot with views of endorsements from organizaitons and friends you trust, all in one place.</Description>
+              <Description>
+                We Vote is a free, easy tool that allows voters to view ballot endorsements they trust from friends and organizations all in one place.
+                {' '}
+                We help users geolocate their specific ballot and then plan who to vote for using easy visual guides.
+                {' '}
+                Voters can now confidently fill out their whole ballot in six minutes.
+              </Description>
+              <Description>
+                Here&apos;s where you come in:
+              </Description>
+              <Step>
+                <StepNumber>1</StepNumber>
+                <StepLabel>Sharing endorsements (free)</StepLabel>
+              </Step>
+              <Description>
+                As an organization, you have your own landing page and endorsement page with unique URLs to bring in supporters.
+                {' '}
+                Make sure everyone can see your endorsements when they are voting, whether or not they got your mailer, texts or reminders.
+              </Description>
+              <Step>
+                <StepNumber>2</StepNumber>
+                <StepLabel>Supercharging your Supporters (paid, but worth it!)</StepLabel>
+              </Step>
+              <Description>
+                We know relational organizing can increase voter turnout by 25%. But we shouldn&apos;t stop at turnout, we need to make it easier to voters to cast their ballots with the right choices. Empower your supporters to share your ballot guides with
+                {' '}
+                <i>their</i>
+                {' '}
+                most relevant social networks.
+              </Description>
             </DescriptionLeftColumn>
             <DescriptionImageColumn>
               <Image src={cordovaDot('/img/welcome/screenshot.png')} />
@@ -178,36 +204,6 @@ class WelcomeForCampaigns extends PureComponent {
             <NetworkImage src={cordovaDot('/img/welcome/partners/voting-information-project.png')} alt="Voting Information Project" />
           </NetworkContainer>
         </Section>
-        {
-          !isVoterSignedIn && (
-            <Section>
-              <SectionTitle>Sign up to get updates about We Vote</SectionTitle>
-              <SignUpContainer>
-                <TextBox
-                  icon={<PersonIcon />}
-                  placeholder="Full Name"
-                  value={this.state.voterFullName}
-                  inputProps={{ onChange: this.updateVoterFullName }}
-                />
-                <TextBox
-                  icon={<EmailIcon />}
-                  placeholder="Email"
-                  value={this.state.voterEmail}
-                  inputProps={{ type: 'email', onChange: this.updateVoterEmailAddress }}
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
-                  onClick={this.voterEmailAddressSignUpSave}
-                >
-                  Sign Up
-                </Button>
-                {newsletterOptInTrue === 1 && <SignUpMessage>Please check your email for a verification link</SignUpMessage>}
-              </SignUpContainer>
-            </Section>
-          )
-        }
         <Footer />
       </Wrapper>
     );

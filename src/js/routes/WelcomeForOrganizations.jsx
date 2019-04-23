@@ -1,17 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import LocationIcon from '@material-ui/icons/LocationOn';
-import PersonIcon from '@material-ui/icons/Person';
-import EmailIcon from '@material-ui/icons/Email';
 import Header, { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/Header';
-import Section, { SectionTitle, SectionTitleBold, Step, StepNumber, StepLabel, GetStarted, ButtonContainer, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage, SignUpContainer, SignUpMessage } from '../components/Welcome/Section';
+import Section, { SectionTitle, SectionTitleBold, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage } from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Welcome/WelcomeAppbar';
 import Footer from '../components/Welcome/Footer';
-import TextBox from '../components/Welcome/TextBox';
-import AddressBox from '../components/Welcome/AddressBox';
 import { historyPush, cordovaDot } from '../utils/cordovaUtils';
 import Testimonial from '../components/Widgets/Testimonial';
 import AnalyticsActions from '../actions/AnalyticsActions';
@@ -30,7 +25,6 @@ class WelcomeForOrganizations extends PureComponent {
     super(props);
     this.state = {
       submitEnabled: false,
-      newsletterOptInTrue: false,
       voter: {},
       voterEmail: '',
       voterFullName: '',
@@ -49,7 +43,6 @@ class WelcomeForOrganizations extends PureComponent {
 
   onVoterStoreChange () {
     this.setState({
-      newsletterOptInTrue: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
       voter: VoterStore.getVoter(),
     });
   }
@@ -90,14 +83,14 @@ class WelcomeForOrganizations extends PureComponent {
   }
 
   render () {
-    const { classes, pathname } = this.props;
+    const { pathname } = this.props;
     // console.log('WelcomeForOrganizations, pathname: ', pathname);
-    const { voter, newsletterOptInTrue } = this.state;
+    const { voter } = this.state;
     const isVoterSignedIn = voter.is_signed_in;
 
-    const testimonialAuthor = 'Dale M., Oakland, California';
-    const imageUrl = cordovaDot('/img/global/photos/Dale_McGrew-200x200.jpg');
-    const testimonial = 'Following the values that are important to me shows me opinions on my ballot from other people who share my values.';
+    const testimonialAuthor = 'Debra Cleaver, Vote.org';
+    const imageUrl = cordovaDot('/img/global/photos/Debra_Cleaver-200x200.jpg');
+    const testimonial = 'We don\'t care who you vote for, just VOTE.';
     return (
       <Wrapper>
         <WelcomeAppbar pathname={pathname} />
@@ -106,7 +99,7 @@ class WelcomeForOrganizations extends PureComponent {
             <BlueTitle>Supercharge </BlueTitle>
             Your Members
           </Title>
-          <SubTitle>Empower voters with neutral information.</SubTitle>
+          <SubTitle>Only 6 out of 10 eligible voters are predicted to cast a ballot next year.</SubTitle>
           <PlayerContainer>
             <Video
               src="https://player.vimeo.com/video/329164243"
@@ -118,51 +111,94 @@ class WelcomeForOrganizations extends PureComponent {
         </Header>
         <Section>
           <SectionTitle>
-            We Vote is
-            <SectionTitleBold> Free &amp; Easy</SectionTitleBold>
+            Empower voters with
+            <SectionTitleBold> neutral information</SectionTitleBold>
+            .
           </SectionTitle>
-          <Step>
-            <StepNumber>1</StepNumber>
-            <StepLabel>Choose your interests</StepLabel>
-          </Step>
-          <Step>
-            <StepNumber>2</StepNumber>
-            <StepLabel>Follow organizations and people you trust</StepLabel>
-          </Step>
-          <Step>
-            <StepNumber>3</StepNumber>
-            <StepLabel>See who endorsed each choice on your ballot</StepLabel>
-          </Step>
-          <Step>
-            <StepNumber>4</StepNumber>
-            <StepLabel>Fill out the whole thing in under 6 minutes</StepLabel>
-          </Step>
-          <GetStarted>
-            <AddressBox icon={<LocationIcon />} />
-            <ButtonContainer>
-              <Button
-                variant="contained"
-                color="primary"
-                classes={{ containedPrimary: classes.buttonContained }}
-                onClick={() => historyPush('/ballot')}
-              >
-                Get Started
-              </Button>
-            </ButtonContainer>
-          </GetStarted>
+          <Description>
+            Current U.S. voter turnout rates trail most developed countries.
+            {' '}
+            Fortunately, this problem is solvable, and you don’t have to be involved with politics to help.
+            {' '}
+            There are easy, appropriate ways for every organization or business to help increase voter participation:
+          </Description>
+          <Description>
+            <Bold>Help your staff, customers or members get easy, accurate, and helpful information about voting. </Bold>
+          </Description>
+          <Description>
+            (GET STARTED)
+          </Description>
         </Section>
         <Section variant="dark" rounded>
+          <SectionTitle>
+            <SectionTitleBold>Unbiased</SectionTitleBold>
+            {' '}
+            Ballot Guide for Voters
+          </SectionTitle>
           <DescriptionContainer>
             <DescriptionLeftColumn>
               <Description>
-                <Bold>We&apos;ve all been there. </Bold>
-                Election day is almost here, but besides the President and a few other choices we&apos;ve made, we don&apos;t know how we are going to vote! Between the nonstop misleading TV ads, texts, calls and oveflowing mailboxes, who has time to make sense of the madness? There has to be a better way.
+                There are many reasons why millions of people don
+                {'\''}
+                t vote. One of the culprits is lack of access to unbiased information
+                {' '}
+                to help citizens decide know who to vote for. While opinions on elections in the U.S. can be an intimidating topic to bring up,
+                {' '}
+                <Bold>one thing we can all agree on is how important it is to vote!</Bold>
               </Description>
-              <Description>Now, there is!</Description>
-              <Description>We&apos;ll help you confidently fill out your specific ballot with views of endorsements from organizaitons and friends you trust, all in one place.</Description>
             </DescriptionLeftColumn>
             <DescriptionImageColumn>
               <Image src={cordovaDot('/img/welcome/screenshot.png')} />
+            </DescriptionImageColumn>
+          </DescriptionContainer>
+        </Section>
+        <Section>
+          <SectionTitle>
+            For
+            {' '}
+            <SectionTitleBold>Non-Partisan Organizations</SectionTitleBold>
+          </SectionTitle>
+          <Description>
+            As a
+            {' '}
+            <Bold>nonpartisan partner</Bold>
+            , your organization or business can customize and share a branded landing page with unique URLs to bring in supporters.
+            {' '}
+            From there your supporters can view their ballot, adding private settings and endorsement compilations to make decisions.
+          </Description>
+          <Description>
+            As a nonpartisan
+            {' '}
+            <Bold>turnout partner</Bold>
+            , you can empower your supporters to share this resource with
+            {' '}
+            <i>their</i>
+            {' '}
+            most relevant social networks,
+            {' '}
+            and gather more fans and kudos for your help in increasing turnout and voter confidence.
+          </Description>
+        </Section>
+        <Section variant="dark" rounded>
+          <SectionTitle>
+            <SectionTitleBold>Voting Should be Simple</SectionTitleBold>
+          </SectionTitle>
+          <DescriptionContainer>
+            <DescriptionLeftColumn>
+              <Description>
+                We Vote is a free, easy tool that allows voters to geolocate their specific ballot, and then plan who to vote for using easy visual guides.
+                {' '}
+                Voters can customize their own ballot to display endorsements they trust from friends and organizations.
+                {' '}
+                Using We Vote, voters can now confidently plan out their whole ballot in six minutes or less.
+              </Description>
+              <Description>
+                It has never been easier. Now, we need your help to spread the word! (GET STARTED)
+                {' '}
+              </Description>
+            </DescriptionLeftColumn>
+            <DescriptionImageColumn>
+              <Image src={cordovaDot('/img/welcome/organization-landing-page.png')} />
             </DescriptionImageColumn>
           </DescriptionContainer>
         </Section>
@@ -173,13 +209,31 @@ class WelcomeForOrganizations extends PureComponent {
             testimonialAuthor={testimonialAuthor}
             testimonial={testimonial}
           />
-          {/*
-          <Testimonial
-            imageUrl={imageUrl}
-            testimonialAuthor={testimonialAuthor}
-            testimonial={testimonial}
-          />
-          */}
+        </Section>
+        <Section>
+          <SectionTitle>
+            Partnering with
+            {' '}
+            <SectionTitleBold>We Vote</SectionTitleBold>
+          </SectionTitle>
+          <Description>
+            We also offer advanced (paid) partnership opportunities to customize or expand your reach.
+            {' '}
+            Promoting WeVote.US to your audiences is a legal, helpful, and
+            {' '}
+            <Bold>
+              neutral way for businesses and nonpartisan organizations to assist with increasing voter turnout
+            </Bold>
+            {' '}
+            without the risks of telling people who to vote for.
+          </Description>
+          <Description>
+            Our team can partner with your brand to configure a customized landing page for you to share with members,
+            {' '}
+            add a We Vote widget to your website, assist in messaging to launch the partnership, drive additional traffic, or provide analytics.
+            {' '}
+            (LEARN MORE)
+          </Description>
         </Section>
         <Section variant="dark" rounded={!isVoterSignedIn}>
           <SectionTitle>Our Network</SectionTitle>
@@ -190,36 +244,6 @@ class WelcomeForOrganizations extends PureComponent {
             <NetworkImage src={cordovaDot('/img/welcome/partners/voting-information-project.png')} alt="Voting Information Project" />
           </NetworkContainer>
         </Section>
-        {
-          !isVoterSignedIn && (
-            <Section>
-              <SectionTitle>Sign up to get updates about We Vote</SectionTitle>
-              <SignUpContainer>
-                <TextBox
-                  icon={<PersonIcon />}
-                  placeholder="Full Name"
-                  value={this.state.voterFullName}
-                  inputProps={{ onChange: this.updateVoterFullName }}
-                />
-                <TextBox
-                  icon={<EmailIcon />}
-                  placeholder="Email"
-                  value={this.state.voterEmail}
-                  inputProps={{ type: 'email', onChange: this.updateVoterEmailAddress }}
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
-                  onClick={this.voterEmailAddressSignUpSave}
-                >
-                  Sign Up
-                </Button>
-                {newsletterOptInTrue === 1 && <SignUpMessage>Please check your email for a verification link</SignUpMessage>}
-              </SignUpContainer>
-            </Section>
-          )
-        }
         <Footer />
       </Wrapper>
     );
