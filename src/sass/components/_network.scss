@@ -22,10 +22,10 @@ $mobile-btn-padding: 52px;
 
 .fa-twitter {
   font-size: inherit;
-  margin-top: -$space-xs;
+  bottom: $space-xs;
 }
 
-.btn-twitter-values {
+.value-btn {
   max-width: $button-div-max-width;
   width: 100%;
   @include breakpoints (medium) {
@@ -35,6 +35,15 @@ $mobile-btn-padding: 52px;
   @include breakpoints (large) {
     font-size: 14px;
     padding: $space-sm $space-md $space-sm $space-xl;
+  }
+  &__endorsements {
+    background: $selected-color;
+    color: $white;
+    &--icon {
+      vertical-align: baseline;
+      position: relative;
+      top: -$space-xs / 2;
+    }
   }
 }
 
@@ -49,6 +58,48 @@ $mobile-btn-padding: 52px;
     margin-right: $space-none;
     margin-left: $space-none;
   }
+}
+
+.endorsement-card {
+  display: flex;
+  bottom: $space-sm;
+  flex-direction: column;
+  @include breakpoints (small-bootstrap) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__btn {
+    background: $selected-color !important;
+    color: $white !important;
+    text-align: center;
+    width: 100%;
+    margin-top: $space-md;
+    padding: $space-sm $space-md $space-sm $mobile-btn-padding !important;
+    &--icon {
+      width: 22.5px !important;
+      height: 22.5px !important;
+    }
+
+    @include breakpoints (small-bootstrap) {
+      width: auto;
+      margin-top: $space-none;
+    }
+  }
+  &__text {
+    padding: $space-md $space-none;
+    font-size: 17px;
+    color: $gray-dark;
+    @include breakpoints (small-bootstrap) {
+      padding: $space-none $space-md;
+      justify-self: flex-end;
+    }
+  }
+}
+
+.btn-social > :first-child {
+  width: 46px;
+  line-height: 36px;
 }
 
 .mobile-container {
@@ -66,7 +117,6 @@ $mobile-btn-padding: 52px;
     }
   }
 }
-
 
 .social-btn-description {
   margin-top: $description-margin-top;

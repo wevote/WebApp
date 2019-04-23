@@ -90,6 +90,7 @@ const Title = styled.h1`
   font-size: 22px;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     font-size: 16px;
+    margin: auto 0;
   }
 `;
 

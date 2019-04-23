@@ -128,10 +128,13 @@ export default class Header extends Component {
           </div>
         </div>
       );
-    } else if (pathname === '/welcome') {
+    } else if (pathname === '/for-campaigns' ||
+               pathname === '/for-organizations' ||
+               pathname.startsWith('/how') ||
+               pathname === '/welcome') {
       return null;
     } else {
-      // This handles other pages, like Welcome and the Ballot display
+      // This handles other pages, like the Ballot display
       return (
         <div id="app-header">
           { iPhoneSpacer }

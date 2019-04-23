@@ -7,7 +7,6 @@ import AppStore from '../../stores/AppStore';
 import ReadMore from '../Widgets/ReadMore';
 import { capitalizeString } from '../../utils/textFormat';
 import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
-// import SupportStore from '../../stores/SupportStore';
 
 class MeasureItem extends Component {
   static propTypes = {
@@ -26,7 +25,7 @@ class MeasureItem extends Component {
       stateCode: '',
       stateDisplayName: '',
       showPositionStatementActionBar: true,
-      scrolledDown: AppStore.getScrolledDown(),
+      // scrolledDown: AppStore.getScrolledDown(),
     };
     this.getMeasureLink = this.getMeasureLink.bind(this);
     this.goToMeasureLink = this.goToMeasureLink.bind(this);
@@ -36,16 +35,11 @@ class MeasureItem extends Component {
     this.onMeasureStoreChange();
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
-    // this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    // this.setState({
-    //   supportProps: SupportStore.get(this.props.we_vote_id)
-    // });
   }
 
   componentWillUnmount () {
     this.measureStoreListener.remove();
     this.appStoreListener.remove();
-    // this.supportStoreListener.remove();
   }
 
   onMeasureStoreChange () {
@@ -64,13 +58,9 @@ class MeasureItem extends Component {
 
   onAppStoreChange () {
     this.setState({
-      scrolledDown: AppStore.getScrolledDown(),
+      // scrolledDown: AppStore.getScrolledDown(),
     });
   }
-
-  // onSupportStoreChange () {
-  //   this.setState({ supportProps: SupportStore.get(this.props.we_vote_id) });
-  // }
 
   getMeasureLink (oneMeasureWeVoteId) {
     if (this.state.organization && this.state.organization.organization_we_vote_id) {
@@ -95,7 +85,6 @@ class MeasureItem extends Component {
     } = this.state;
     const {
       measureText, measureWeVoteId, electionDisplayName, regionalDisplayName, stateCode,
-      scrolledDown,
     } = this.state;
     if (stateDisplayName === undefined && stateCode) {
       stateDisplayName = stateCode.toUpperCase();
@@ -104,8 +93,6 @@ class MeasureItem extends Component {
     const numberOfLines = 2;
     measureSubtitle = capitalizeString(measureSubtitle);
     ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
-
-    // const positionsInYourNetwork = SupportStore.get(measureWeVoteId) && (SupportStore.get(measureWeVoteId).oppose_count || SupportStore.get(measureWeVoteId).support_count);
 
     return (
       <div className="card-main">
@@ -142,14 +129,10 @@ class MeasureItem extends Component {
           ) :
             null
           }
-          {
-            !scrolledDown && (
-              <BallotItemSupportOpposeComment
-                ballotItemWeVoteId={measureWeVoteId}
-                showPositionStatementActionBar={this.state.showPositionStatementActionBar}
-              />
-            )
-          }
+          {<BallotItemSupportOpposeComment
+              ballotItemWeVoteId={measureWeVoteId}
+              showPositionStatementActionBar={this.state.showPositionStatementActionBar}
+          />}
         </div>
       </div>
     );

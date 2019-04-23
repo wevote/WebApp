@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
 import Helmet from 'react-helmet';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import CandidateActions from '../../actions/CandidateActions';
 import CandidateItem from '../../components/Ballot/CandidateItem';
+import CandidateStickyHeader from '../../components/Ballot/CandidateStickyHeader';
 import CandidateStore from '../../stores/CandidateStore';
 import { capitalizeString } from '../../utils/textFormat';
 import IssueActions from '../../actions/IssueActions';
@@ -19,8 +19,12 @@ import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import AppStore from '../../stores/AppStore';
 import SearchAllActions from '../../actions/SearchAllActions';
 import webAppConfig from '../../config';
+import EndorsementCard from '../../components/Widgets/EndorsementCard';
+
+
 
 // The component /routes/VoterGuide/OrganizationVoterGuideCandidate is based on this component
 export default class Candidate extends Component {
@@ -35,6 +39,7 @@ export default class Candidate extends Component {
       candidateWeVoteId: '',
       organizationWeVoteId: '',
       allCachedPositionsForThisCandidate: [],
+      scrolledDown: AppStore.getScrolledDown(),
     };
   }
 
@@ -42,7 +47,7 @@ export default class Candidate extends Component {
     // console.log('Candidate componentDidMount');
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     let organizationWeVoteId = '';
     if (this.props.params) {
       CandidateActions.candidateRetrieve(this.props.params.candidate_we_vote_id);
@@ -127,6 +132,7 @@ export default class Candidate extends Component {
     // console.log('Candidate componentWillUnmount');
     this.candidateStoreListener.remove();
     this.voterGuideStoreListener.remove();
+    this.appStoreListener.remove();
   }
 
   onCandidateStoreChange () {
@@ -150,8 +156,15 @@ export default class Candidate extends Component {
     SupportActions.retrievePositionsCountsForOneBallotItem(this.state.candidateWeVoteId);
   }
 
+  onAppStoreChange () {
+    this.setState({
+      scrolledDown: AppStore.getScrolledDown(),
+    });
+  }
+
   render () {
     renderLog(__filename);
+    const { scrolledDown } = this.state;
     // const electionId = VoterStore.electionId();
     // const NO_VOTER_GUIDES_TEXT = 'We could not find any more voter guides to follow related to this candidate.';
 
@@ -179,6 +192,11 @@ export default class Candidate extends Component {
           title={titleText}
           meta={[{ name: 'description', content: descriptionText }]}
         />
+        {
+          scrolledDown && (
+            <CandidateStickyHeader candidate={this.state.candidate} />
+          )
+        }
         <section className="card">
           <CandidateItem
             {...this.state.candidate}
@@ -217,20 +235,21 @@ export default class Candidate extends Component {
             */}
           </div>
         </section>
-        <OpenExternalWebSite
-          url="https://api.wevoteusa.org/vg/create/"
-          className="opinions-followed__missing-org-link"
-          target="_blank"
-          title="Endorsements Missing?"
-          body={<Button className="btn btn-success btn-sm" bsPrefix="u-margin-top--sm u-stack--xs" variant="primary">Endorsements Missing?</Button>}
+        <EndorsementCard
+          bsPrefix="u-margin-top--sm u-stack--xs"
+          variant="primary"
+          buttonText="Endorsements Missing?"
+          text={`Are there endorsements for
+          ${candidateName}
+          that you expected to see?`}
         />
-        <div className="opinions-followed__missing-org-text">
+        {/* <div className="opinions-followed__missing-org-text">
           Are there endorsements for
           {' '}
           {candidateName}
           {' '}
           that you expected to see?
-        </div>
+        </div> */}
         <br />
         <ThisIsMeAction
           twitter_handle_being_viewed={this.state.candidate.twitter_handle}

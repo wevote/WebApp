@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
 import CandidateStore from '../../stores/CandidateStore';
 import FollowToggle from '../Widgets/FollowToggle';
 // import FilterBase from "../Filter/FilterBase";
 // import VoterGuideOrganizationFilter from "../Filter/VoterGuideOrganizationFilter";
 import MeasureStore from '../../stores/MeasureStore';
-import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+// import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { stringContains } from '../../utils/textFormat';
 import VoterGuideDisplayForList from './VoterGuideDisplayForList';
 import { showToastSuccess } from '../../utils/showToast';
 import { renderLog } from '../../utils/logging';
+import EndorsementCard from '../Widgets/EndorsementCard';
 
 /*
 const groupedFilters = [
@@ -136,6 +136,8 @@ export default class GuideList extends Component {
   }
 
   handleIgnore (id) {
+    console.log('GuideList: 139 - Running handleIgnore main');
+
     const { voterGuideList } = this.state;
     OrganizationActions.organizationFollowIgnore(id);
     this.setState({
@@ -163,16 +165,23 @@ export default class GuideList extends Component {
             <div className="u-margin-top--sm u-stack--sm u-no-break">
               No results found.
             </div>
-            <OpenExternalWebSite
+            {/* <OpenExternalWebSite
               url="https://api.wevoteusa.org/vg/create/"
               className="opinions-followed__missing-org-link"
               target="_blank"
               title="Organization Missing?"
-              body={<Button className="u-stack--xs">Organization Missing?</Button>}
+              body={<EndorsementCard className="u-stack--xs" buttonText="Endorsements Missing?" />}
+            /> */}
+            <EndorsementCard
+              className="btn endorsement-btn btn-sm"
+              bsPrefix="u-margin-top--sm u-stack--xs"
+              variant="primary"
+              buttonText="Organization Missing?"
+              text="Don't see an organization you want to follow?"
             />
-            <div className="opinions-followed__missing-org-text u-stack--sm u-no-break">
+            {/* <div className="opinions-followed__missing-org-text u-stack--sm u-no-break">
               Don’t see an organization you want to Follow?
-            </div>
+            </div> */}
           </div>
         </div>
       );
@@ -191,28 +200,26 @@ export default class GuideList extends Component {
           </FilterBase>
           */
         }
-        {this.state.filteredOrganizationsWithPositions.map(organization => (
-          <VoterGuideDisplayForList
+        {this.state.filteredOrganizationsWithPositions.map((organization) => {
+          const handleIgnoreFunc = () => {
+            console.log('GuideList: 203 - Running handleIgnoreFunc');
+            this.handleIgnore(organization.organization_we_vote_id);
+          };
+
+          return (
+            <VoterGuideDisplayForList
               key={organization.organization_we_vote_id}
               {...organization}
-          >
-            <FollowToggle
-                organizationWeVoteId={organization.organization_we_vote_id}
-                hideStopFollowingButton={this.props.hideStopFollowingButton}
-            />
-            { this.props.hideIgnoreButton ?
-              null : (
-                <button
-                    className="btn btn-default btn-sm"
-                    onClick={this.handleIgnore.bind(this, organization.organization_we_vote_id)}
-                    type="button"
-                >
-                    Ignore
-                </button>
-              )
-              }
-          </VoterGuideDisplayForList>
-        ))
+            >
+              <FollowToggle
+                  organizationWeVoteId={organization.organization_we_vote_id}
+                  hideStopFollowingButton={this.props.hideStopFollowingButton}
+                  hideIgnoreButton={this.props.hideIgnoreButton}
+                  handleIgnore={handleIgnoreFunc}
+              />
+            </VoterGuideDisplayForList>
+          );
+        })
         }
       </div>
     );

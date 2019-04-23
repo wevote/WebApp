@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import Button from '@material-ui/core/Button';
+import CheckCircle from '@material-ui/icons/CheckCircle';
 import { historyPush } from '../../utils/cordovaUtils';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { renderLog } from '../../utils/logging';
@@ -153,7 +154,7 @@ export default class FollowToggle extends Component {
     // You should not be able to follow yourself
     if (isLookingAtSelf) { return <div />; }
 
-    const { currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId } = this.props;
+    const { currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId, showFollowingText } = this.props;
     const followFunc = OrganizationActions.organizationFollow.bind(this, weVoteId);
     const stopFollowingFunc = OrganizationActions.organizationStopFollowing.bind(this, weVoteId);
 
@@ -172,29 +173,72 @@ export default class FollowToggle extends Component {
       );
     }
 
-    return this.state.isFollowing ? (
-      <span className="d-print-none">
-        { this.props.hideStopFollowingButton ?
-          null : (
-            <Button
-              variant="warning"
-              size="sm"
-              onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
-            >
-              Following
+    return (
+      <div className="issues-follow-container">
+        {this.state.isFollowing ? (
+          // <span className="d-print-none">
+          //   { this.props.hideStopFollowingButton ?
+          //     null : (
+          <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn__icon issues-follow-btn--white issues-followed-btn--disabled" onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)} disabled>
+            {showFollowingText ? (
+              <span>
+                <CheckCircle className="following-icon" />
+                <span className="pl-2">Following</span>
+              </span>
+            ) : (
+              <CheckCircle className="following-icon" />
+            )}
+          </Button>
+        //       )}
+        //   </span>
+        // )
+        ) : (
+          <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn--blue" onClick={() => this.followInstantly(followFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+            Follow
+          </Button>
+        )}
+        <div className="issues-follow-btn__seperator" />
+        {/*  */}
+        {this.state.isFollowing ? (
+          // <span className="d-print-none">
+          //   { this.props.hideStopFollowingButton ?
+          //     null : (
+          <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span className="sr-only">Toggle Dropdown</span>
+          </Button>
+        //       )}
+        //   </span>
+        // )
+        ) : (
+          <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--blue" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span className="sr-only">Toggle Dropdown</span>
+          </Button>
+        )}
+        <div className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
+          {this.state.isFollowing ? (
+            <span className="d-print-none">
+              { this.props.hideStopFollowingButton ?
+                null : (
+                  <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                    Unfollow
+                  </Button>
+                )}
+            </span>
+          ) : (
+            <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.followInstantly(followFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+              Follow
             </Button>
           )}
-      </span>
-    ) : (
-      <span className="d-print-none">
-        <Button
-          variant="success"
-          size="sm"
-          onClick={() => this.followInstantly(followFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
-        >
-          Follow
-        </Button>
-      </span>
+          <div className="dropdown-divider" />
+          <Button
+            type="button"
+            className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+            onClick={this.props.handleIgnore}
+          >
+            Ignore
+          </Button>
+        </div>
+      </div>
     );
   }
 }

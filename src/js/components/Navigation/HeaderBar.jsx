@@ -27,6 +27,7 @@ import VoterSessionActions from '../../actions/VoterSessionActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import { stringContains } from '../../utils/textFormat';
+import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 
 class HeaderBar extends Component {
   static propTypes = {
@@ -208,7 +209,7 @@ class HeaderBar extends Component {
     const showingBallot = stringContains(ballotBaseUrl, pathname.slice(0, 7));
 
     return (
-      <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown}>
+      <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && shouldHeaderRetreat(pathname)}>
         <AppBar position="relative" color="default" className={`page-header${!isWebApp() ? ' page-header__cordova' : ''}${showingBallot ? ' page-header__ballot' : ''}`}>
           <Toolbar className="header-toolbar" disableGutters>
             {!weVoteBrandingOff && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />}
@@ -228,7 +229,7 @@ class HeaderBar extends Component {
                 )
                 }
                 {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRoot }} id="friendsTabHeaderBar" label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} onClick={() => this.handleNavigation('/friends')}>My Friends</Badge>} />
+                  <Tab classes={{ root: classes.tabRoot }} id="friendsTabHeaderBar" label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9}>My Friends</Badge>} onClick={() => this.handleNavigation('/friends')} />
                 )
                 }
                 {/* showFullNavigation && isWebApp() && <Tab className="u-show-desktop" label="Vote" /> */}
