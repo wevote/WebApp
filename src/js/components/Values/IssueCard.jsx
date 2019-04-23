@@ -5,7 +5,7 @@ import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
 import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging';
-// import ReadMore from '../Widgets/ReadMore';
+import ReadMore from '../Widgets/ReadMore';
 import { convertNameToSlug } from '../../utils/textFormat';
 
 export default class IssueCard extends Component {
@@ -84,11 +84,11 @@ export default class IssueCard extends Component {
       return <div className="card-popover__width--minimum">{LoadingWheel}</div>;
     }
 
-    let { issue_name: issueDisplayName } = this.state.issue;
-    // let { issue_description: issueDescription, issue_name: issueDisplayName } = this.state.issue;
+    // let { issue_name: issueDisplayName } = this.state.issue;
+    let { issue_description: issueDescription, issue_name: issueDisplayName } = this.state.issue;
 
     issueDisplayName = issueDisplayName || '';
-    // issueDescription = issueDescription || '';
+    issueDescription = issueDescription || '';
 
     let issueImage;
     let numberOfLines;
@@ -135,24 +135,23 @@ export default class IssueCard extends Component {
         numberOfLines = 4;
       }
     }
-    console.log(numberOfLines);
+    // console.log(numberOfLines);
 
     return (
       <div
-        className="card-main__media-object u-stack--md"
+        className="issue-card__issue-block card-main__media-object u-stack--md"
         key={`issue-card-${this.state.issueWeVoteId}`}
-        style={{ border: '2px solid', borderRadius: '.25rem', borderColor: '#eee', width: '48%', height: '38px', marginBottom: '8px', marginRight: '8px' }}
       >
-        <div className="card-main__media-object-anchor" style={{ padding: '3px', marginRight: '0px' }}>
+        <div className="card-main__media-object-anchor">
           {this.props.turnOffIssueImage ? null : (
             <Link to={this.getIssueLink} className="u-no-underline">
               {issueImage}
             </Link>
           )}
         </div>
-        <div className="card-main__media-object-content" style={{ alignSelf: 'center' }}>
+        <div className="card-main__media-object-content">
           <Link to={this.getIssueLink} className="u-no-underline">
-            <h3 className="card-main__display-name" style={{ fontSize: '10px', marginTop: '0px', marginBottom: '0px' }}>{issueDisplayName}</h3>
+            <h3 className="card-main__display-name__issue-name">{issueDisplayName}</h3>
           </Link>
           { this.props.turnOffDescription ?
             <span className="card-main__description" /> :
@@ -161,9 +160,9 @@ export default class IssueCard extends Component {
                 <Link to={this.getIssueLink}
                       className="u-no-underline"
                 >
-                  {/* <ReadMore text_to_display={issueDescription}
+                  <ReadMore text_to_display={issueDescription}
                             num_of_lines={numberOfLines}
-                  /> */}
+                  />
                 </Link>
               </span>
             )
@@ -185,39 +184,3 @@ export default class IssueCard extends Component {
     );
   }
 }
-
-// const CandidateInfo = styled.div`
-//   display: flex;
-//   flex-flow: column;
-//   padding: 16px 16px 0 16px;
-//   margin-bottom: 8px;
-//   overflow-x: hidden;
-//   transition: all 200ms ease-in;
-//   border: 1px solid ${({ theme }) => theme.colors.grayBorder};
-//   width: ${({ candidateLength }) => (candidateLength > 1 ? '48%' : '100%')};
-//   margin-right: 8px;
-//   border-radius: 4px;
-//   cursor: pointer;
-//   &:hover {
-//     border: 1px solid ${({ theme }) => theme.colors.linkHoverBorder};
-//     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
-//       0 2px 1px -1px rgba(0, 0, 0, 0.12);
-//   }
-//   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-//     flex-flow: column;
-//     width: 100%;
-//   }
-//   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-//     flex-flow: column;
-//     border: none;
-//     border-bottom: 1px solid ${({ theme }) => theme.colors.grayBorder};
-//     padding: 16px 0 0 0;
-//     margin-bottom: 8px;
-//     width: 100%;
-//     &:hover {
-//       border: none;
-//       border-bottom: 1px solid ${({ theme }) => theme.colors.grayBorder};
-//       box-shadow: none;
-//     }
-//   }
-// `;

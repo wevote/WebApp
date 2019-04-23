@@ -171,3 +171,4 @@ web_app/build/*
 *.crt
 *.key
 .vscode
+report.*

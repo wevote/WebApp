@@ -152,21 +152,21 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
     &--small {
       margin-left: $space-xxs;
       margin-right: $space-xxs;
-      width: 32px; // 32px is set in WeVoteServer environment_variables as PROFILE_IMAGE_TINY_WIDTH
+      width: 24px;
       border-radius: $radius-xs;
     }
 
     &--medium {
       margin-left: $space-xxs;
       margin-right: $space-xxs;
-      width: 48px; // 48px is set in WeVoteServer environment_variables as PROFILE_IMAGE_MEDIUM_WIDTH
+      width: 32px;
       border-radius: $radius-xs;
     }
 
     &--large {
       margin-left: $space-xxs;
       margin-right: $space-xxs;
-      width: 125px; // 48px is set in WeVoteServer environment_variables as PROFILE_IMAGE_MEDIUM_WIDTH
+      width: 125px;
       border-radius: $radius-xs;
     }
   }

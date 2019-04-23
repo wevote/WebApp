@@ -37,6 +37,11 @@
     @include print {
       padding: $space-none;
     }
+    
+    &__values {
+      padding: $space-none;
+    }
+    
     &__location-guess {
       position: relative;
       display: flex;
@@ -175,6 +180,9 @@
       margin-right: $space-sm;  // space between candidate name and description
       margin-bottom: $space-sm;
       vertical-align: middle;
+      &__issue-name {
+        font-size: 12px;
+      }
       @include breakpoints(mid-small) {
         font-size: 18px;
       }

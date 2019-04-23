@@ -1,5 +1,19 @@
 // Issue related styles
 
+.issue-card {
+  &__issue-block {
+    border: $space-xxs solid $gray-border;
+    border-radius: $radius-sm; 
+    width: 48%; 
+    margin-bottom: $space-sm; 
+    margin-right: $space-sm;
+  }
+  &__issues-wrap {
+    display: flex;
+    flex-flow: row wrap;
+  }
+}
+
 .issue-icon-list {
   &__endorsements-label {
     display: flex;
