@@ -5,8 +5,7 @@ exports.config = {
   key: browserStackConfig.BROWSERSTACK_KEY,
   updateJob: false,
   specs: [
-    // CHANGE THIS AFTER RENAMING FOLDER
-    './tests/browserstack-2/specs/test.js',
+    './tests/browserstack/specs/test.js',
   ],
   exclude: [],
   capabilities: [
