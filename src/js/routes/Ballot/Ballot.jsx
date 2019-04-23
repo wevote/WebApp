@@ -829,7 +829,7 @@ class Ballot extends Component {
       historyPush(this.state.pathname);
     }
 
-    const showBallotTabsRaccoon = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) &&
+    const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) &&
       (BallotStore.ballotRemainingChoicesLength > 0);
 
     return (
@@ -873,7 +873,7 @@ class Ballot extends Component {
 
                   { textForMapSearch || ballotWithItemsFromCompletionFilterType.length > 0 ? (
                     <div className="ballot__filter__container">
-                      { showBallotTabsRaccoon && (
+                      { showBallotDecisionTabs && (
                         <div className="ballot__filter d-print-none">
                           <BallotTabsRaccoon
                             completionLevelFilterType={BallotStore.cleanCompletionLevelFilterType(completionLevelFilterType)}
@@ -954,7 +954,7 @@ class Ballot extends Component {
           <div className="container-fluid">
             {emptyBallot}
             <Wrapper cordova={isCordova()}>
-              <div className={showBallotTabsRaccoon ? 'row ballot__body' : 'row ballot__body__noRaccoon'}>
+              <div className={showBallotDecisionTabs ? 'row ballot__body' : 'row ballot__body__no-decision-tabs'}>
                 <BrowserPushMessage incomingProps={this.props} />
                 {ballotWithItemsFromCompletionFilterType.length > 0 ? (
                   <BallotStatusMessage
