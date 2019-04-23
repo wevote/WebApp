@@ -31,7 +31,6 @@ exports.config = {
       'browserstack.geoLocation': 'US',
     },
   ],
-  
   coloredLogs: true,
   baseUrl: '',
   waitforTimeout: 10000,
