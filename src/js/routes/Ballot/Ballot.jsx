@@ -829,6 +829,9 @@ class Ballot extends Component {
       historyPush(this.state.pathname);
     }
 
+    const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) &&
+      (BallotStore.ballotRemainingChoicesLength > 0);
+
     return (
       <div className="ballot_root">
         { this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
@@ -870,13 +873,15 @@ class Ballot extends Component {
 
                   { textForMapSearch || ballotWithItemsFromCompletionFilterType.length > 0 ? (
                     <div className="ballot__filter__container">
-                      <div className="ballot__filter d-print-none">
-                        <BallotTabsRaccoon
-                          completionLevelFilterType={BallotStore.cleanCompletionLevelFilterType(completionLevelFilterType)}
-                          ballotLength={BallotStore.ballotLength}
-                          ballotLengthRemaining={BallotStore.ballotRemainingChoicesLength}
-                        />
-                      </div>
+                      { showBallotDecisionTabs && (
+                        <div className="ballot__filter d-print-none">
+                          <BallotTabsRaccoon
+                            completionLevelFilterType={BallotStore.cleanCompletionLevelFilterType(completionLevelFilterType)}
+                            ballotLength={BallotStore.ballotLength}
+                            ballotLengthRemaining={BallotStore.ballotRemainingChoicesLength}
+                          />
+                        </div>
+                      )}
                       <hr className="ballot-header-divider" />
                       <BallotFilterRow showFilterTabs={showFilterTabs}>
                         <div className="ballot__item-filter-tabs" ref={(chips) => { this.chipContainer = chips; }}>
@@ -949,7 +954,7 @@ class Ballot extends Component {
           <div className="container-fluid">
             {emptyBallot}
             <Wrapper cordova={isCordova()}>
-              <div className="row ballot__body">
+              <div className={showBallotDecisionTabs ? 'row ballot__body' : 'row ballot__body__no-decision-tabs'}>
                 <BrowserPushMessage incomingProps={this.props} />
                 {ballotWithItemsFromCompletionFilterType.length > 0 ? (
                   <BallotStatusMessage
