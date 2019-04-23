@@ -15,6 +15,8 @@ $bottom-spacing-cordova: 50px;
 $cordova-shim: 58px;
 $mobile-body-padding-top: 150px;
 $body-padding-top: 150px;
+$mobile-body-padding-top-no-raccoon: 112px;
+$body-padding-top-no-raccoon: 112px;
 $race-filter-margin: 8px;
 $neg-padding: -10px;
 
@@ -157,6 +159,14 @@ $neg-padding: -10px;
     padding-top: $body-padding-top;
     @include breakpoints(small xsmall-bootstrap) {
       padding-top: $mobile-body-padding-top;
+    }
+
+    &__noRaccoon {
+      margin-top: $space-md;
+      padding-top: $body-padding-top-no-raccoon;
+      @include breakpoints(small xsmall-bootstrap) {
+        padding-top: $mobile-body-padding-top-no-raccoon;
+      }
     }
   }
 
