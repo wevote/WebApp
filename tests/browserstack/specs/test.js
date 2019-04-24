@@ -2,8 +2,8 @@ const assert = require('assert');
 
 describe('Basic cross-platform WeVote test',  () => {
   it('can visit the different pages in the app', async () => {
-    const isWebApp = !!driver.getContexts;
-    if (isWebApp) {
+    const isCordova = !!driver.getContexts;
+    if (isCordova) {
       // switch contexts and click through intro
       await driver.switchContext('WEBVIEW_org.wevote.cordova');
       const firstNextButton = await $('.background--image2 .btn.btn-lg');
@@ -18,7 +18,7 @@ describe('Basic cross-platform WeVote test',  () => {
       await browser.url('https://quality.wevote.us/');
 
     }
-    const valuesButtonSelector = (isWebApp) ? 'span=Values' : 'button[id="valuesTabHeaderBar"]';
+    const valuesButtonSelector = (isCordova) ? 'span=Values' : 'button[id="valuesTabHeaderBar"]';
     const valuesButton =
       await $(valuesButtonSelector);
     await valuesButton.click();
