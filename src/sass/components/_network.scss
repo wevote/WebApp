@@ -37,7 +37,7 @@ $mobile-btn-padding: 52px;
     padding: $space-sm $space-md $space-sm $space-xl;
   }
   &__endorsements {
-    background: $selected-color;
+    background: $brand-blue;
     color: $white;
     &--icon {
       vertical-align: baseline;
@@ -70,7 +70,7 @@ $mobile-btn-padding: 52px;
     justify-content: space-between;
   }
   &__btn {
-    background: $selected-color !important;
+    background: $brand-blue !important;
     color: $white !important;
     text-align: center;
     width: 100%;
