@@ -61,7 +61,7 @@ export default class SecondaryNavBarItem extends Component {
         )}
       />
     ) : (
-      <Link
+      <Link // eslint-disable-line
         onClick={this.props.show}
         className={`${this.props.iconPrint ? 'd-none d-md-flex ' : ''}header-secondary-nav__item`}
       >

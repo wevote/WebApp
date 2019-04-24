@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import { Button } from 'react-bootstrap';
 import Helmet from 'react-helmet';
 import { calculateBallotBaseUrl, capitalizeString } from '../../utils/textFormat';
 import BallotActions from '../../actions/BallotActions';
@@ -9,7 +8,6 @@ import BallotStore from '../../stores/BallotStore';
 import FooterDoneBar from '../Navigation/FooterDoneBar';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-// import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import OrganizationPositionItem from './OrganizationPositionItem';
@@ -19,7 +17,7 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideRecommendationsFromOneOrganization from './VoterGuideRecommendationsFromOneOrganization';
 import VoterStore from '../../stores/VoterStore';
 import YourPositionsVisibilityMessage from './YourPositionsVisibilityMessage';
-import EndorsementCard from "../Widgets/EndorsementCard";
+import EndorsementCard from '../Widgets/EndorsementCard';
 
 export default class VoterGuidePositions extends Component {
   static propTypes = {
@@ -262,7 +260,8 @@ export default class VoterGuidePositions extends Component {
         <div className="card">
           <ul className="card-child__list-group">
             { lookingAtSelf && atLeastOnePositionFoundForThisElection && !this.state.searchIsUnderway ? (
-              <a className="fa-pull-right u-push--md"
+              <a // eslint-disable-line
+                className="fa-pull-right u-push--md"
                 onKeyDown={this.onKeyDownEditMode.bind(this)}
                 onClick={this.toggleEditMode.bind(this)}
               >
@@ -329,7 +328,7 @@ export default class VoterGuidePositions extends Component {
               { positionListForAllExceptOneElection.length && !atLeastOnePositionFoundForThisElection ? (
                 <span>
                   { lookingAtSelf ? (
-                    <a
+                    <a // eslint-disable-line
                       className="fa-pull-right u-push--md"
                       onKeyDown={this.onKeyDownEditMode.bind(this)}
                       onClick={this.toggleEditMode.bind(this)}

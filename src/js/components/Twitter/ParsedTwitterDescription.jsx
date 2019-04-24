@@ -50,7 +50,9 @@ const ParsedTwitterDescription = (props) => {
       {
         parsedTwitterDescription.map((snippet, index) => (
           snippet.type === 'text' ? (
-            <span key={snippet.toString() + index}>
+            <span
+              key={snippet.toString() + index} // eslint-disable-line
+            >
               {props.twitter_description.slice(snippet.location[0], snippet.location[1])}
               &nbsp;
             </span>

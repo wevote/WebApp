@@ -9,7 +9,15 @@ class FacebookLogout extends React.Component {
 
   render () {
     renderLog(__filename);
-    return <button ref="logoutButton" onClick={this.didClickFacebookLogoutButton} type="button">Sign Out of Facebook</button>;
+    return (
+      <button
+        ref="logoutButton" // eslint-disable-line
+        onClick={this.didClickFacebookLogoutButton}
+        type="button"
+      >
+        Sign Out of Facebook
+      </button>
+    );
   }
 }
 

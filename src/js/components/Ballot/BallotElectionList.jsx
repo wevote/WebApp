@@ -354,23 +354,23 @@ export default class BallotElectionList extends Component {
             { upcomingElectionListOutsideCount ?          // eslint-disable-line no-nested-ternary
               this.state.showMoreUpcomingElections ? (
                 <div className="ballot-election-list__show-all">
-                  <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
+                  <div className="ballot-election-list__toggle-link" onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
                     { this.state.stateName && this.state.stateName.length ?
                       `Only show elections in ${this.state.stateName}` :
                       'Hide state elections'
                     }
-                  </a>
+                  </div>
                 </div>
               ) : (
                 <div className="ballot-election-list__show-all">
-                  <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
+                  <div className="ballot-election-list__toggle-link" onClick={this.toggleShowMoreUpcomingElections.bind(this)}>
                     Show all states -
                     {' '}
                     { upcomingElectionListOutsideCount }
                     {' '}
                     more election
                     { upcomingElectionListOutsideCount !== 1 ? 's' : null }
-                  </a>
+                  </div>
                 </div>
               ) :
               null
@@ -404,29 +404,29 @@ export default class BallotElectionList extends Component {
               }
               { priorElectionListOutsideCount ?          // eslint-disable-line no-nested-ternary
                 this.state.showMorePriorElections ? (
-                  <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMorePriorElections.bind(this)}>
+                  <div className="ballot-election-list__toggle-link" onClick={this.toggleShowMorePriorElections.bind(this)}>
                     { this.state.stateName && this.state.stateName.length ?
                       `Only show elections in ${this.state.stateName}` :
                       'Hide state elections'
                     }
-                  </a>
+                  </div>
                 ) : (
-                  <a className="ballot-election-list__toggle-link" onClick={this.toggleShowMorePriorElections.bind(this)}>
+                  <div className="ballot-election-list__toggle-link" onClick={this.toggleShowMorePriorElections.bind(this)}>
                     Show all states -
                     {' '}
                     { priorElectionListOutsideCount }
                     {' '}
                     more election
                     { priorElectionListOutsideCount !== 1 ? 's' : null }
-                  </a>
+                  </div>
                 ) : null
               }
             </div>
           ) : (
             <div className="ballot-election-list__prior">
-              <a className="ballot-election-list__toggle-link" onClick={this.toggleShowPriorElectionsList.bind(this)}>
+              <div className="ballot-election-list__toggle-link" onClick={this.toggleShowPriorElectionsList.bind(this)}>
                 Show prior elections
-              </a>
+              </div>
             </div>
           )}
         </div>

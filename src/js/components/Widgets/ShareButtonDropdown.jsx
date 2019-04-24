@@ -89,12 +89,16 @@ export default class ShareButtonDropDown extends Component {
           {this.state.open ? (
             <ul className="dropdown-menu d-block">
               <li className="dropdown-item">
-                <a onClick={onCopyLinkClick}>
+                <a // eslint-disable-line
+                  onClick={onCopyLinkClick}
+                >
                   Copy link
                 </a>
               </li>
               <li className="dropdown-item">
-                <a onClick={this.shareFacebookComment.bind(this)}>
+                <a // eslint-disable-line
+                  onClick={this.shareFacebookComment.bind(this)}
+                >
                   Share on Facebook
                 </a>
               </li>

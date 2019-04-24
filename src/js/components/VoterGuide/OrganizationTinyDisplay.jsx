@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 
-// OrganizationTinyDisplay is used by ItemTinyOpinionsToFollow for viewing the logos/icons for voter guides
-//  you can follow on the Ballot page
 export default class OrganizationTinyDisplay extends Component {
   static propTypes = {
     showPlaceholderImage: PropTypes.bool,

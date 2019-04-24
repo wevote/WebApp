@@ -12,7 +12,10 @@ class FacebookDisconnect extends React.Component {
     renderLog(__filename);
     return (
       <span>
-        <a className="btn btn-social btn-lg btn-facebook" onClick={this.didClickDisconnectFromFacebookButton}>
+        <a // eslint-disable-line
+          className="btn btn-social btn-lg btn-facebook"
+          onClick={this.didClickDisconnectFromFacebookButton}
+        >
           <i className="fa fa-facebook" />
           Disconnect from Facebook
         </a>

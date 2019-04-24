@@ -6,8 +6,6 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 import IssueStore from '../../stores/IssueStore';
 
 
-// IssueImageDisplay is used by IssuesDisplayListWithOrganizationPopovers for viewing the icons for issues
-//  you can follow on the Ballot page
 export default class IssueImageDisplay extends Component {
   static propTypes = {
     issueWeVoteId: PropTypes.string.isRequired,

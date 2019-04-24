@@ -29,7 +29,6 @@ class PositionPublicToggle extends Component {
     super(props);
     this.state = {
       showPositionPublicHelpModal: false,
-      positionPublicToggleCurrentState: '',
       showToThePublicOn: false,
     };
   }
