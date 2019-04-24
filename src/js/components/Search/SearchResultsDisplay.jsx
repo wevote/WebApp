@@ -52,7 +52,7 @@ export default class SearchResultsDisplay extends Component {
           const electionDate = new Date(`${electionDay} 0:00:00`);
           const pastElection = today > electionDate ? ' In Past' : 'Upcoming Election';
           return (
-            <Link
+            <Link // eslint-disable-line
               key={oneResult.local_id}
               data-idx={idx}
               onFocus={onSearchResultMouseOver}

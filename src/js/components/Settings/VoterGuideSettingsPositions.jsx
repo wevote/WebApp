@@ -298,7 +298,7 @@ export default class VoterGuideSettingsPositions extends Component {
           <div className="card-main">
             <h3 className="h3">Your Positions</h3>
             { lookingAtSelf && atLeastOnePositionFoundForThisElection && !this.state.searchIsUnderway ? (
-              <a
+              <a // eslint-disable-line
                 className="fa-pull-right u-push--md"
                 onKeyDown={this.onKeyDownEditMode.bind(this)}
                 onClick={this.toggleEditMode.bind(this)}

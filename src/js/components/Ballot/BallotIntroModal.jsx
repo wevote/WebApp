@@ -31,7 +31,7 @@ export default class BallotIntroModal extends Component {
 
   _nextSliderPage () {
     VoterActions.voterUpdateRefresh();
-    this.refs.slider.slickNext();
+    this.refs.slider.slickNext(); // eslint-disable-line react/no-string-refs
   }
 
   afterChangeHandler (index) {
@@ -71,7 +71,7 @@ export default class BallotIntroModal extends Component {
           <Slider
             dotsClass="slick-dots intro-modal__gray-dots"
             className="calc-height intro-modal__height-full"
-            ref="slider"
+            ref="slider" // eslint-disable-line react/no-string-refs
             {...sliderSettings}
           >
             <div className="intro-modal__height-full" key={1}><BallotIntroFollowIssues next={this._nextSliderPage} /></div>

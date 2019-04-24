@@ -224,19 +224,28 @@ export default class OrganizationVoterGuideTabs extends Component {
           <div className="tabs__tabs-container d-print-none">
             <ul className="nav tabs__tabs">
               <li className="tab-item">
-                <a onClick={() => this.switchTab('ballot')} className={this.state.activeRoute === 'ballot' ? 'tab tab-active' : 'tab tab-default'}>
+                <a // eslint-disable-line
+                  onClick={() => this.switchTab('ballot')}
+                  className={this.state.activeRoute === 'ballot' ? 'tab tab-active' : 'tab tab-default'}
+                >
                   <span>Your Ballot</span>
                 </a>
               </li>
 
               <li className="tab-item">
-                <a onClick={() => this.switchTab('positions')} className={this.state.activeRoute === 'positions' ? 'tab tab-active' : 'tab tab-default'}>
+                <a // eslint-disable-line
+                  onClick={() => this.switchTab('positions')}
+                  className={this.state.activeRoute === 'positions' ? 'tab tab-active' : 'tab tab-default'}
+                >
                   <span>{positionsTitle}</span>
                 </a>
               </li>
 
               <li className="tab-item">
-                <a onClick={() => this.switchTab('following')} className={this.state.activeRoute === 'following' ? 'tab tab-active' : 'tab tab-default'}>
+                <a // eslint-disable-line
+                  onClick={() => this.switchTab('following')}
+                  className={this.state.activeRoute === 'following' ? 'tab tab-active' : 'tab tab-default'}
+                >
                   <span>
                     <span className="d-none d-sm-block">{followingTitleLong}</span>
                     <span className="d-block d-sm-none">{followingTitleShort}</span>
@@ -245,7 +254,10 @@ export default class OrganizationVoterGuideTabs extends Component {
               </li>
 
               <li className="tab-item">
-                <a onClick={() => this.switchTab('followers')} className={this.state.activeRoute === 'followers' ? 'tab tab-active' : 'tab tab-default'}>
+                <a // eslint-disable-line
+                  onClick={() => this.switchTab('followers')}
+                  className={this.state.activeRoute === 'followers' ? 'tab tab-active' : 'tab tab-default'}
+                >
                   <span>{followersTitle}</span>
                 </a>
               </li>

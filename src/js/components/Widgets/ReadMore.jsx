@@ -113,7 +113,7 @@ export default class ReadMore extends Component {
             truncateText="..."
             text={textToDisplay}
             textTruncateChild={(
-              <a
+              <a // eslint-disable-line
                 tabIndex="0"
                 href="#"
                 onClick={this.toggleLines}
@@ -131,7 +131,7 @@ export default class ReadMore extends Component {
           {' '}
           {expandedTextToDisplay}
           &nbsp;&nbsp;
-          <a
+          <a // eslint-disable-line
             tabIndex="0"
             href="#"
             onClick={this.toggleLines}

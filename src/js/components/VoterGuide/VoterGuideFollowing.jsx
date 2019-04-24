@@ -136,7 +136,7 @@ export default class VoterGuideFollowing extends Component {
             { this.state.voterGuideFollowedList && this.state.voterGuideFollowedList.length > 0 ? (
               <span>
                 { lookingAtSelf ? (
-                  <a
+                  <a // eslint-disable-line
                     className="fa-pull-right u-push--md"
                     onKeyDown={this.onKeyDownEditMode.bind(this)}
                     onClick={this.toggleEditMode.bind(this)}

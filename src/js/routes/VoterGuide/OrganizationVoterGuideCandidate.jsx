@@ -19,7 +19,7 @@ import VoterStore from '../../stores/VoterStore';
 import SearchAllActions from '../../actions/SearchAllActions';
 import webAppConfig from '../../config';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
-import {renderLog} from '../../utils/logging';
+import { renderLog } from '../../utils/logging';
 
 // This is based on routes/Ballot/Candidate
 export default class OrganizationVoterGuideCandidate extends Component {

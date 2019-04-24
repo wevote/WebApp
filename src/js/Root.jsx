@@ -80,7 +80,7 @@ import VoterGuidesMenuMobile from './routes/Settings/VoterGuidesMenuMobile';
 import VoterGuidesUnderOneValue from './routes/Values/VoterGuidesUnderOneValue';
 import VerifyRegistration from './routes/More/VerifyRegistration';
 import VerifyThisIsMe from './routes/VoterGuide/VerifyThisIsMe';
-import Welcome from './routes/WelcomeNew';
+import Welcome from './routes/WelcomeForVoters';
 import WelcomeForCampaigns from './routes/WelcomeForCampaigns';
 import WelcomeForOrganizations from './routes/WelcomeForOrganizations';
 import WeVoteBallotEmbed from './routes/More/WeVoteBallotEmbed';

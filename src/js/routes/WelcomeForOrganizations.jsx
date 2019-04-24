@@ -17,7 +17,6 @@ import VoterStore from '../stores/VoterStore';
 
 class WelcomeForOrganizations extends PureComponent {
   static propTypes = {
-    classes: PropTypes.object,
     pathname: PropTypes.string,
   };
 

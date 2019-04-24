@@ -93,7 +93,7 @@ export default class OpinionsFollowed extends Component {
         <section className="card">
           <div className="card-main">
             <h1 className="h1">Who You&apos;re Following</h1>
-            <a
+            <a // eslint-disable-line
               className="fa-pull-right"
               onKeyDown={this.onKeyDownEditMode.bind(this)}
               onClick={this.toggleEditMode.bind(this)}

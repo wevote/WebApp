@@ -371,7 +371,10 @@ export default class SearchAllBox extends Component {
             </div>
           </div>
         </form>
-        <div className={searchContainerClasses} ref="searchContainer">
+        <div
+          className={searchContainerClasses}
+          ref="searchContainer" // eslint-disable-line react/no-string-refs
+        >
           <SearchResultsDisplay
             searchResults={this.state.searchResults}
             selectedIndex={this.state.selectedIndex}

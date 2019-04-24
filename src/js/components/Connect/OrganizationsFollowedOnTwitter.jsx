@@ -44,7 +44,7 @@ export default class OrganizationsFollowedOnTwitter extends Component {
   }
 
   onTriggerEnter (organizationWeVoteId) {
-    this.refs[`overlay-${organizationWeVoteId}`].show();
+    this.refs[`overlay-${organizationWeVoteId}`].show(); // eslint-disable-line react/no-string-refs
     this.show_popover = true;
     clearTimeout(this.hide_popover_timer);
   }
@@ -54,7 +54,7 @@ export default class OrganizationsFollowedOnTwitter extends Component {
     clearTimeout(this.hide_popover_timer);
     this.hide_popover_timer = setTimeout(() => {
       if (!this.show_popover) {
-        this.refs[`overlay-${organizationWeVoteId}`].hide();
+        this.refs[`overlay-${organizationWeVoteId}`].hide(); // eslint-disable-line react/no-string-refs
       }
     }, 100);
   }

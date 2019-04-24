@@ -73,7 +73,9 @@ export default class GetStarted extends Component {
       <div>
         <Helmet title="Welcome to We Vote" />
         <div className="intro-story container-fluid well u-inset--md">
-          <img src={cordovaDot('/img/global/icons/x-close.png')} onClick={this.goToBallotLink} className="x-close" alt="close" />
+          <span onClick={this.goToBallotLink}>
+            <img src={cordovaDot('/img/global/icons/x-close.png')} className="x-close" alt="close" />
+          </span>
           <div className="intro-story__h1 xs-text-left">Sign In</div>
           <div className="intro-story__padding--btm">
             It&apos;s not required but it helps
