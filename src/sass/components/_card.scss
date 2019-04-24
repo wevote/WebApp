@@ -456,6 +456,10 @@
 
   // ----------------------------------------
 
+  &__blue, &__blue * {
+    color: $selected-color !important;
+  }
+
   &__additional {
     @include clearfix;
     border-top: 5px solid $gray-lighter;
