@@ -59,7 +59,7 @@ export default class MeasureItemReadyToVote extends Component {
             <div className="u-flex-auto u-cursor--pointer">
               <h2 className="card-main__display-name">
                 { this.props.linkToBallotItemPage ?
-                  <a onClick={measureLink}>{ballotItemDisplayName}</a> :
+                  <span onClick={measureLink}>{ballotItemDisplayName}</span> :
                   ballotItemDisplayName
                 }
               </h2>

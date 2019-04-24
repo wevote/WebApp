@@ -190,7 +190,12 @@ export default class SettingsWidgetAccountType extends Component {
                   {this.state.showEditToggleOption ? (
                     <span className="pull-right">
                       (
-                      <a className="" onClick={() => this.toggleEditForm()}>close</a>
+                      <a // eslint-disable-line
+                        className=""
+                        onClick={() => this.toggleEditForm()}
+                      >
+                        close
+                      </a>
                       )
                     </span>
                   ) : null}
@@ -214,9 +219,14 @@ export default class SettingsWidgetAccountType extends Component {
               {this.state.showEditToggleOption ? (
                 <span className="">
                   {' '}
-(
-                  <a className="" onClick={() => this.toggleEditForm()}>edit</a>
-)
+                  (
+                  <a // eslint-disable-line
+                    className=""
+                    onClick={() => this.toggleEditForm()}
+                  >
+                    edit
+                  </a>
+                  )
                 </span>
               ) : null
               }

@@ -27,7 +27,6 @@ class WelcomeForCampaigns extends PureComponent {
     super(props);
     this.state = {
       submitEnabled: false,
-      newsletterOptInTrue: false,
       voter: {},
       voterEmail: '',
       voterFullName: '',
@@ -46,7 +45,6 @@ class WelcomeForCampaigns extends PureComponent {
 
   onVoterStoreChange () {
     this.setState({
-      newsletterOptInTrue: VoterStore.getNotificationSettingsFlagState(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN),
       voter: VoterStore.getVoter(),
     });
   }

@@ -47,7 +47,7 @@
     "lint": "eslint --format stylish --ext .jsx --ext .js src/js",
     "lint-css": "gulp lint-css",
     "test": "npm run lint && npm run lint-css",
-    "test-browserstack": "./node_modules/.bin/wdio ./tests/browserstack-wdio/wdio.config.js",
+    "test-browserstack": "./node_modules/.bin/wdio ./tests/browserstack/wdio.config.js",
     "start": "gulp",
     "start-profile": "node --inspect-brk ./node_modules/.bin/gulp",
     "prod": "NODE_ENV=production gulp build",

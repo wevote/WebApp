@@ -42,7 +42,7 @@ export default class CurrentFriends extends Component {
   }
 
   onTriggerEnter (friendWeVoteId) {
-    this.refs[`overlay-${friendWeVoteId}`].show();
+    this.refs[`overlay-${friendWeVoteId}`].show(); // eslint-disable-line react/no-string-refs
     this.show_popover = true;
     clearTimeout(this.hide_popover_timer);
   }
@@ -52,7 +52,7 @@ export default class CurrentFriends extends Component {
     clearTimeout(this.hide_popover_timer);
     this.hide_popover_timer = setTimeout(() => {
       if (!this.show_popover) {
-        this.refs[`overlay-${friendWeVoteId}`].hide();
+        this.refs[`overlay-${friendWeVoteId}`].hide(); // eslint-disable-line react/no-string-refs
       }
     }, 100);
   }

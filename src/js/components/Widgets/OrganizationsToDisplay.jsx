@@ -26,8 +26,8 @@ export default class OrganizationsToDisplay extends Component {
 
 
   onTriggerEnter (orgWeVoteId, visibleTag) {
-    if (this.refs[`cheetah-overlay-${orgWeVoteId}-${visibleTag}`]) {
-      this.refs[`cheetah-overlay-${orgWeVoteId}-${visibleTag}`].show();
+    if (this.refs[`cheetah-overlay-${orgWeVoteId}-${visibleTag}`]) { // eslint-disable-line react/no-string-refs
+      this.refs[`cheetah-overlay-${orgWeVoteId}-${visibleTag}`].show(); // eslint-disable-line react/no-string-refs
     }
     if (!this.popover_state[orgWeVoteId]) {
       // If it wasn't created, create it now
@@ -46,8 +46,8 @@ export default class OrganizationsToDisplay extends Component {
     clearTimeout(this.popover_state[orgWeVoteId].timer);
     this.popover_state[orgWeVoteId].timer = setTimeout(() => {
       if (!this.popover_state[orgWeVoteId].show) {
-        if (this.refs[`cheetah-overlay-${orgWeVoteId}-${visibleTag}`]) {
-          this.refs[`cheetah-overlay-${orgWeVoteId}-${visibleTag}`].hide();
+        if (this.refs[`cheetah-overlay-${orgWeVoteId}-${visibleTag}`]) { // eslint-disable-line react/no-string-refs
+          this.refs[`cheetah-overlay-${orgWeVoteId}-${visibleTag}`].hide(); // eslint-disable-line react/no-string-refs
         }
       }
     }, 100);

@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
 import CandidateStore from '../../stores/CandidateStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
-import ItemSupportOpposeRaccoon from '../Widgets/ItemSupportOpposeRaccoon';
 import { renderLog } from '../../utils/logging';
 import OfficeNameText from '../Widgets/OfficeNameText';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
-import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
 
@@ -24,7 +23,6 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     linkToOfficePage: PropTypes.bool,
     organization_we_vote_id: PropTypes.string.isRequired,
     party: PropTypes.string,
-    showPositionStatementActionBar: PropTypes.bool,
     twitter_description: PropTypes.string,
     twitter_followers_count: PropTypes.number,
     we_vote_id: PropTypes.string.isRequired, // This is the candidateWeVoteId
@@ -33,7 +31,6 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      candidateSupportStore: {},
       candidateWeVoteId: '',
       officeWeVoteId: '',
       organizationWeVoteId: '',
@@ -47,13 +44,6 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
   componentDidMount () {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.onVoterGuideStoreChange();
-    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    const candidateSupportStore = SupportStore.get(this.props.we_vote_id);
-    if (candidateSupportStore !== undefined) {
-      this.setState({
-        candidateSupportStore,
-      });
-    }
 
     // console.log("OrganizationVoterGuideCandidateItem, this.props:", this.props);
     if (this.props.we_vote_id) {
@@ -80,13 +70,6 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
   onVoterGuideStoreChange () {
     // We just want to trigger a re-render
     this.setState();
-  }
-
-  onSupportStoreChange () {
-    const candidateSupportStore = SupportStore.get(this.state.candidateWeVoteId);
-    if (candidateSupportStore !== undefined) {
-      this.setState({ candidateSupportStore });
-    }
   }
 
   getCandidateLink () {
@@ -150,11 +133,6 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
     }
     // let positions_in_your_network = SupportStore.get(we_vote_id) && ( SupportStore.get(we_vote_id).oppose_count || SupportStore.get(we_vote_id).support_count);
 
-    const oneCandidate = CandidateStore.getCandidate(candidateWeVoteId);
-    const { candidateSupportStore } = this.state;
-    const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidateWeVoteId);
-    const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidateWeVoteId);
-
     return (
       <div className="card-main candidate-card">
         <div className="card-main__media-object">
@@ -184,7 +162,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
                 ballotItemDisplayName
             }
             </h2>
-            <a onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}>
+            <span onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}>
               <p
                 className={this.props.link_to_ballot_item_page ?
                   'u-gray-darker u-cursor--pointer' :
@@ -200,7 +178,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
                 ) : null
                 }
               </p>
-            </a>
+            </span>
             { twitterDescription ? (
               <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
                 <div>
@@ -227,18 +205,9 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
         <div className="card-main__actions">
           <div>
             <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
-              {/* Positions in Your Network and Possible Voter Guides to Follow */}
-              <ItemSupportOpposeRaccoon
+              <BallotItemSupportOpposeComment
                 ballotItemWeVoteId={candidateWeVoteId}
-                ballot_item_display_name={oneCandidate.ballot_item_display_name}
-                goToCandidate={this.goToCandidateLink}
-                maximumOrganizationDisplay={8}
-                organizationsToFollowSupport={organizationsToFollowSupport}
-                organizationsToFollowOppose={organizationsToFollowOppose}
-                popoverBottom
-                showPositionStatementActionBar={this.props.showPositionStatementActionBar}
-                supportProps={candidateSupportStore}
-                type="CANDIDATE"
+                showPositionStatementActionBar={this.state.showPositionStatementActionBar}
               />
             </div>
           </div>

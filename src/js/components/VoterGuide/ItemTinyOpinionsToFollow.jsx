@@ -53,8 +53,8 @@ export default class ItemTinyOpinionsToFollow extends Component {
   }
 
   onTriggerEnter (organizationWeVoteId) {
-    if (this.refs[`to-follow-overlay-${organizationWeVoteId}`]) {
-      this.refs[`to-follow-overlay-${organizationWeVoteId}`].show();
+    if (this.refs[`to-follow-overlay-${organizationWeVoteId}`]) { // eslint-disable-line react/no-string-refs
+      this.refs[`to-follow-overlay-${organizationWeVoteId}`].show(); // eslint-disable-line react/no-string-refs
     }
     if (!this.popover_state[organizationWeVoteId]) {
       // If it wasn't created, create it now
@@ -78,8 +78,8 @@ export default class ItemTinyOpinionsToFollow extends Component {
     clearTimeout(this.popover_state[organizationWeVoteId].timer);
     this.popover_state[organizationWeVoteId].timer = setTimeout(() => {
       if (!this.popover_state[organizationWeVoteId].show) {
-        if (this.refs[`to-follow-overlay-${organizationWeVoteId}`]) {
-          this.refs[`to-follow-overlay-${organizationWeVoteId}`].hide();
+        if (this.refs[`to-follow-overlay-${organizationWeVoteId}`]) { // eslint-disable-line react/no-string-refs
+          this.refs[`to-follow-overlay-${organizationWeVoteId}`].hide(); // eslint-disable-line react/no-string-refs
         }
       }
     }, 100);

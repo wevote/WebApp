@@ -197,9 +197,9 @@ export default class VoterGuideOrganizationInfo extends Component {
       <div>
         <Helmet title="Create Profile - We Vote" />
         <div className="intro-story container well u-inset--md">
-          <a href="/voterguideorginfo" onClick={this.goToBallotLink}>
+          <span onClick={this.goToBallotLink}>
             <img src={cordovaDot('/img/global/icons/x-close.png')} className="x-close" alt="close" />
-          </a>
+          </span>
           <div className="create-voter-guide__h1 xs-text-left">Create Profile</div>
           <div className="create-voter-guide__steps xs-text-left">
             Step 3 of 5

@@ -971,7 +971,13 @@ class Ballot extends Component {
                   { inReadyToVoteMode ? (
                     <div>
                       <div className="alert alert-success d-print-none">
-                        <a href="#" className="close" data-dismiss="alert">&times;</a>
+                        <a // eslint-disable-line
+                          href="#"
+                          className="close"
+                          data-dismiss="alert"
+                        >
+                          &times;
+                        </a>
                       We Vote helps you get ready to vote,
                         {' '}
                         <strong>but you cannot use We Vote to cast your vote</strong>

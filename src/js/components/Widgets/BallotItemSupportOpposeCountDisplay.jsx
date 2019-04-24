@@ -317,7 +317,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     const organizationsToFollowOpposeCount =  organizationsToFollowOppose ? organizationsToFollowOppose.length :  0;
     const positionsCount = networkSupportCount + networkOpposeCount + organizationsToFollowSupportCount + organizationsToFollowOpposeCount;
 
-    // console.log('this.state.positionListFromAdvisersFollowedByVoter: ', this.state.positionListFromAdvisersFollowedByVoter);
+    console.log('this.state.positionListFromAdvisersFollowedByVoter: ', this.state.positionListFromAdvisersFollowedByVoter);
     // if (positionsCount) {
     //   let supportPositionsListCount = 0;
     //   let opposePositionsListCount = 0;

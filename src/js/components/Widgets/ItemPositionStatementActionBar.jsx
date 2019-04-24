@@ -8,7 +8,6 @@ import Textarea from 'react-textarea-autosize';
 import { cordovaDot, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import ReadMore from './ReadMore';
-// import PositionPublicToggle from './PositionPublicToggle';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
@@ -18,7 +17,7 @@ import { vimeoRegX, youTubeRegX, stringContains } from '../../utils/textFormat';
 export default class ItemPositionStatementActionBar extends Component {
   static propTypes = {
     ballot_item_we_vote_id: PropTypes.string.isRequired,
-    ballotItemDisplayName: PropTypes.string,
+    // ballotItemDisplayName: PropTypes.string,
     type: PropTypes.string.isRequired,
     comment_edit_mode_on: PropTypes.bool,
     supportProps: PropTypes.object,

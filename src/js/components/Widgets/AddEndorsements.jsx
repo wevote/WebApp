@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 import { cordovaDot } from '../../utils/cordovaUtils';
 
-const text = 'Don\'t see your favorite organization or endorsement? We Vote is nonartisan and welcomes public endorsements of candidates and measures from any organization or public figure.';
+const text = 'Don\'t see your favorite organization or endorsement? We Vote is nonpartisan and welcomes public endorsements of candidates and measures from any organization or public figure.';
 
 const endorsementText = (
   <span className="social-btn-description">

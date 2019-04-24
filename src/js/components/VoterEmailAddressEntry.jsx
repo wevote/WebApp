@@ -229,16 +229,20 @@ export default class VoterEmailAddressEntry extends Component {
                 {isPrimaryEmailAddress ?
                   null : (
                     <span>
-                      <a onClick={this.setAsPrimaryEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}>
-                      Make Primary
+                      <a // eslint-disable-line
+                        onClick={this.setAsPrimaryEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
+                      >
+                        Make Primary
                       </a>
                       &nbsp;&nbsp;&nbsp;
                     </span>
                   )}
                 <span>&nbsp;&nbsp;&nbsp;</span>
                 {allowRemoveEmail ? (
-                  <a onClick={this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}>
-                  Remove Email
+                  <a // eslint-disable-line
+                    onClick={this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
+                  >
+                    Remove Email
                   </a>
                 ) : null
                 }
@@ -273,14 +277,18 @@ export default class VoterEmailAddressEntry extends Component {
                 <span>&nbsp;&nbsp;&nbsp;</span>
                 {voterEmailAddressFromList.email_ownership_is_verified ?
                   null : (
-                    <a onClick={this.sendVerificationEmail.bind(this, voterEmailAddressFromList.email_we_vote_id)}>
+                    <a // eslint-disable-line
+                      onClick={this.sendVerificationEmail.bind(this, voterEmailAddressFromList.email_we_vote_id)}
+                    >
                       Send Verification Again
                     </a>
                   )}
 
                 <span>&nbsp;&nbsp;&nbsp;</span>
                 {allowRemoveEmail ? (
-                  <a onClick={this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}>
+                  <a // eslint-disable-line
+                    onClick={this.removeVoterEmailAddress.bind(this, voterEmailAddressFromList.email_we_vote_id)}
+                  >
                     Remove Email
                   </a>
                 ) : null

@@ -91,7 +91,7 @@ class Welcome extends PureComponent {
 
   render () {
     const { classes, pathname } = this.props;
-    console.log('WelcomeNew, pathname: ', pathname);
+    // console.log('WelcomeNew, pathname: ', pathname);
     const { voter, newsletterOptInTrue } = this.state;
     const isVoterSignedIn = voter.is_signed_in;
 

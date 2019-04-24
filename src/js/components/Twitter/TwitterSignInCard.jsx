@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import TwitterSignIn from './TwitterSignIn';
 
-const twitterText = 'Signing into Twitter is the fastest way to find voter guides related to your values. We Vote will find the voter guides for everyone you are following on Twitter';
+const twitterText = 'Signing into Twitter is the fastest way to find voter guides related to your values. We Vote will find the voter guides for everyone you are following on Twitter.';
 
 const twitterInfoText = (
   <span className="social-btn-description">

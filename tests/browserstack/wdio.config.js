@@ -5,8 +5,7 @@ exports.config = {
   key: browserStackConfig.BROWSERSTACK_KEY,
   updateJob: false,
   specs: [
-    // CHANGE THIS AFTER RENAMING FOLDER
-    './tests/browserstack-2/specs/test.js',
+    './tests/browserstack/specs/test.js',
   ],
   exclude: [],
   capabilities: [
@@ -32,10 +31,9 @@ exports.config = {
       'browserstack.geoLocation': 'US',
     },
   ],
-  
   coloredLogs: true,
   baseUrl: '',
-  waitforTimeout: 10000,
+  waitforTimeout: 50000,
   connectionRetryTimeout: 90000,
   connectionRetryCount: 3,
 

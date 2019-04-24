@@ -379,9 +379,9 @@ export default class BallotElectionListWithFilters extends Component {
             </div>
           ) : (
             <div className="ballot-election-list__prior">
-              <a className="ballot-election-list__toggle-link" onClick={this.toggleShowPriorElectionsList.bind(this)}>
+              <div className="ballot-election-list__toggle-link" onClick={this.toggleShowPriorElectionsList.bind(this)}>
                 Show prior elections
-              </a>
+              </div>
             </div>
           )}
         </div>
