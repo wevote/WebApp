@@ -47,7 +47,7 @@
     "lint": "eslint --format stylish --ext .jsx --ext .js src/js",
     "lint-css": "gulp lint-css",
     "test": "npm run lint && npm run lint-css",
-    "webpack-build": "webpack",
+    "webpack-build": "NODE_ENV=production webpack -p ",
     "webpack-start": "webpack-dev-server",
     "start": "gulp",
     "start-profile": "node --inspect-brk ./node_modules/.bin/gulp",

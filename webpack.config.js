@@ -7,7 +7,7 @@ module.exports = {
   mode: 'development',
   entry: './src/js/index.js',
   output: {
-    filename: 'bundle.[hash].js',
+    filename: 'bundle.js',
     path: path.resolve(__dirname, 'build')
   }, 
   plugins: [
