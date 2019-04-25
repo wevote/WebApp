@@ -31,6 +31,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     goToCandidate: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
     popoverTop: PropTypes.bool,
     classes: PropTypes.object,
+    handleLeave: PropTypes.func,
+    handleHover: PropTypes.func,
   };
 
   static closePositionsPopover () {
@@ -600,7 +602,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     }
 
     return (
-      <Wrapper>
+      <Wrapper
+      onMouseEnter={this.props.handleLeave}
+      onMouseLeave={this.props.handleHover}
+      >
         { isVoterSupport ? (
           <NetworkScore className={classes.voterSupports}>
             <DoneIcon classes={{ root: classes.buttonIcon }} />

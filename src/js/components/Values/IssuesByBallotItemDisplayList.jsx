@@ -13,6 +13,8 @@ class IssuesByBallotItemDisplayList extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
     children: PropTypes.object,
+    handleLeave: PropTypes.func,
+    handleHover: PropTypes.func,
   };
 
   constructor (props) {
@@ -155,7 +157,10 @@ class IssuesByBallotItemDisplayList extends Component {
     );
 
     return (
-      <Wrapper>
+      <Wrapper
+      onMouseEnter={this.props.handleLeave}
+      onMouseLeave={this.props.handleHover}
+      >
         <Issues>
           {/* Show a break-down of the current positions in your network */}
           <IssueList expand={expand}>
