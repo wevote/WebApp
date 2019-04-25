@@ -126,13 +126,13 @@ class CandidateItem extends Component {
   }
 
   render () {
-    const handleHover = (e) => {
-      console.log('Handle hover', e.target);
+    const handleHover = () => {
+      // console.log('Handle hover', e.target);
       this.setState({ hover: true });
     };
 
-    const handleLeave = (e) => {
-      console.log('Handle leave', e.target);
+    const handleLeave = () => {
+      // console.log('Handle leave', e.target);
       this.setState({ hover: false });
     };
 
@@ -177,9 +177,9 @@ class CandidateItem extends Component {
     return (
       <div
         className={this.state.hover ? (
-          "card-main candidate-card card-main--outline"
+          'card-main candidate-card card-main--outline'
         ) : (
-          "card-main candidate-card"
+          'card-main candidate-card'
         )}
         onMouseEnter={handleHover}
         onMouseLeave={handleLeave}
@@ -188,277 +188,272 @@ class CandidateItem extends Component {
           <Link to={this.getCandidateLink} className="card-main__no-underline">
             <div>
               <CandidateInfo className="card-main__media-object">
-          <div className="card-main__media-object-anchor">
-            {this.props.link_to_ballot_item_page ?
-              <Link to={this.getCandidateLink} className="u-no-underline">{candidatePhotoUrlHtml}</Link> :
-              candidatePhotoUrlHtml
-            }
-          </div>
-          <CandidateWrapper>
-            <Candidate>
-              <h2 className={this.state.hover ? (
-                'card-main__display-name card__blue'
-              ) : (
-                'card-main__display-name'
-              )}
-              >
-                { this.props.link_to_ballot_item_page ?
-                  <Link to={this.getCandidateLink}>{ballotItemDisplayName}</Link> :
-                  ballotItemDisplayName
-              }
-              </h2>
-              {twitterFollowersCount ? (
-                <span
-                  className={this.props.link_to_ballot_item_page ?
-                    'twitter-followers__badge u-show-desktop-tablet u-cursor--pointer' :
-                    'twitter-followers__badge u-show-desktop-tablet'}
-                  onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}
-                >
-                  <span className="fa fa-twitter twitter-followers__icon" />
-                  <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
-                </span>
-              ) :
-                null
-              }
-              {
-                <p /* className={this.props.link_to_ballot_item_page ?
-                  'u-gray-darker u-cursor--pointer' :
-                  'u-gray-darker'
-                } */
-                className={this.state.hover ? (
-                  'card__blue'
-                ) : (
-                  ''
-                )}
-                >
-                  { contestOfficeName ? (
-                    <OfficeNameText
-                      contestOfficeName={contestOfficeName}
-                      officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
-                      politicalParty={party}
-                      showOfficeName={this.props.showOfficeName}
-                    />
-                  ) :
-                    null
-                }
-                </p>
-              }
-              {/* Endorsement count or Network score */}
-            </Candidate>
-            <BallotItemSupportOpposeCountDisplay
-            handleLeave={handleLeave}
-            handleHover={handleHover}
-            // onMouseEnter={handleLeave}
-            // onMouseLeave={handleHover}
-            ballotItemWeVoteId={candidateWeVoteId}
-            />
-          </CandidateWrapper>
-          {' '}
-          {/* END .card-main__media-object-content */}
-        </CandidateInfo>
-        {' '}
-        {/* END .card-main__media-object */}
-        <div className="card-main__actions">
-          <div>
-            {/* Issues related to this Candidate */}
-            <IssuesByBallotItemDisplayList
-              handleLeave={handleLeave}
-              handleHover={handleHover}
-              ballotItemWeVoteId={candidateWeVoteId}
-              placement="bottom"
-            />
-            {/* If there is a quote about the candidate, show that too. */}
-            <div className={this.state.hover ? (
-              'card__blue'
-            ) : (
-              ''
-            )}
-            >
-              { this.props.showTopCommentByBallotItem && (
-                <TopCommentByBallotItem
-                  ballotItemWeVoteId={candidateWeVoteId}
-                  learnMoreUrl={this.getCandidateLink()}
-                >
-                  {/* If there aren't any comments about the candidate, show the text description of the candidate */}
-                  { candidateText.length ? (
-                    <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
-                      <div className="card-main__description">
-                        <LearnMore
-                            learn_more_text="Read more on Ballotpedia"
-                            num_of_lines={2}
-                            learn_more_link={ballotpediaCandidateUrl}
-                            text_to_display={candidateText}
-                        />
-                      </div>
-                      <Link to={this.getCandidateLink}>
-                        { this.props.link_to_ballot_item_page ? <span className="card-main__read-more-pseudo" /> : null }
-                      </Link>
-                      { this.props.link_to_ballot_item_page ?
-                        <Link to={this.getCandidateLink} className="card-main__read-more-link">&nbsp;more</Link> :
-                        null
-                      }
-                    </div>
-                  ) :
-                    null
+                <div className="card-main__media-object-anchor">
+                  {this.props.link_to_ballot_item_page ?
+                    <Link to={this.getCandidateLink} className="u-no-underline">{candidatePhotoUrlHtml}</Link> :
+                    candidatePhotoUrlHtml
                   }
-                </TopCommentByBallotItem>
-              )
-              }
-            </div>
-            <div>
-              {this.props.hideBallotItemSupportOpposeComment ?
-                null : (
-                  <BallotItemSupportOpposeComment
-                    ballotItemWeVoteId={candidateWeVoteId}
-                    showPositionStatementActionBar={this.state.showPositionStatementActionBar}
+                </div>
+                <CandidateWrapper>
+                  <Candidate>
+                    <h2 className={this.state.hover ? (
+                      'card-main__display-name card__blue'
+                    ) : (
+                      'card-main__display-name'
+                    )}
+                    >
+                      { this.props.link_to_ballot_item_page ?
+                        <Link to={this.getCandidateLink}>{ballotItemDisplayName}</Link> :
+                        ballotItemDisplayName
+                      }
+                    </h2>
+                    {twitterFollowersCount ? (
+                      <span
+                        className={this.props.link_to_ballot_item_page ?
+                          'twitter-followers__badge u-show-desktop-tablet u-cursor--pointer' :
+                          'twitter-followers__badge u-show-desktop-tablet'}
+                        onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}
+                      >
+                        <span className="fa fa-twitter twitter-followers__icon" />
+                        <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
+                      </span>
+                    ) :
+                      null
+                    }
+                    {
+                      <p /* className={this.props.link_to_ballot_item_page ?
+                        'u-gray-darker u-cursor--pointer' :
+                        'u-gray-darker'
+                      } */
+                      className={this.state.hover ? (
+                        'card__blue'
+                      ) : (
+                        ''
+                      )}
+                      >
+                        { contestOfficeName ? (
+                          <OfficeNameText
+                            contestOfficeName={contestOfficeName}
+                            officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
+                            politicalParty={party}
+                            showOfficeName={this.props.showOfficeName}
+                          />
+                        ) :
+                          null
+                      }
+                      </p>
+                    }
+                    {/* Endorsement count or Network score */}
+                  </Candidate>
+                  <BallotItemSupportOpposeCountDisplay
+                  handleLeave={handleLeave}
+                  handleHover={handleHover}
+                  ballotItemWeVoteId={candidateWeVoteId}
                   />
-                )
+                </CandidateWrapper>
+                {' '}
+                {/* END .card-main__media-object-content */}
+              </CandidateInfo>
+              {' '}
+              {/* END .card-main__media-object */}
+              <div className="card-main__actions">
+                <div>
+                  {/* Issues related to this Candidate */}
+                  <IssuesByBallotItemDisplayList
+                    handleLeave={handleLeave}
+                    handleHover={handleHover}
+                    ballotItemWeVoteId={candidateWeVoteId}
+                    placement="bottom"
+                  />
+                  {/* If there is a quote about the candidate, show that too. */}
+                  <div className={this.state.hover ? (
+                    'card__blue'
+                  ) : (
+                    ''
+                  )}
+                  >
+                    { this.props.showTopCommentByBallotItem && (
+                      <TopCommentByBallotItem
+                        ballotItemWeVoteId={candidateWeVoteId}
+                        learnMoreUrl={this.getCandidateLink()}
+                      >
+                        {/* If there aren't any comments about the candidate, show the text description of the candidate */}
+                        { candidateText.length ? (
+                          <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
+                            <div className="card-main__description">
+                              <LearnMore
+                                  learn_more_text="Read more on Ballotpedia"
+                                  num_of_lines={2}
+                                  learn_more_link={ballotpediaCandidateUrl}
+                                  text_to_display={candidateText}
+                              />
+                            </div>
+                            <Link to={this.getCandidateLink}>
+                              { this.props.link_to_ballot_item_page ? <span className="card-main__read-more-pseudo" /> : null }
+                            </Link>
+                            { this.props.link_to_ballot_item_page ?
+                              <Link to={this.getCandidateLink} className="card-main__read-more-link">&nbsp;more</Link> :
+                              null
+                            }
+                          </div>
+                        ) :
+                          null
+                        }
+                      </TopCommentByBallotItem>
+                    )}
+                  </div>
+                  <div>
+                    {this.props.hideBallotItemSupportOpposeComment ?
+                      null : (
+                        <BallotItemSupportOpposeComment
+                          ballotItemWeVoteId={candidateWeVoteId}
+                          showPositionStatementActionBar={this.state.showPositionStatementActionBar}
+                        />
+                      )
+                    }
+                  </div>
+                </div>
+              </div>
+              {this.props.hideShowMoreFooter ?
+                null :
+                <ShowMoreFooter showMoreLink={this.goToCandidateLink} />
               }
-            </div>
-          </div>
-        </div>
-        {this.props.hideShowMoreFooter ?
-          null :
-          <ShowMoreFooter showMoreLink={this.goToCandidateLink} />
-        }
             </div>
           </Link>
         ) : (
           <div>
             <CandidateInfo className="card-main__media-object">
-          <div className="card-main__media-object-anchor">
-            {this.props.link_to_ballot_item_page ?
-              <Link to={this.getCandidateLink} className="u-no-underline">{candidatePhotoUrlHtml}</Link> :
-              candidatePhotoUrlHtml
-            }
-          </div>
-          <CandidateWrapper>
-            <Candidate>
-              <h2 className={this.state.hover ? (
-                'card-main__display-name card__blue'
-              ) : (
-                'card-main__display-name'
-              )}
-              >
-                { this.props.link_to_ballot_item_page ?
-                  <Link to={this.getCandidateLink}>{ballotItemDisplayName}</Link> :
-                  ballotItemDisplayName
-              }
-              </h2>
-              {twitterFollowersCount ? (
-                <span
-                  className={this.props.link_to_ballot_item_page ?
-                    'twitter-followers__badge u-show-desktop-tablet u-cursor--pointer' :
-                    'twitter-followers__badge u-show-desktop-tablet'}
-                  onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}
-                >
-                  <span className="fa fa-twitter twitter-followers__icon" />
-                  <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
-                </span>
-              ) :
-                null
-              }
-              {
-                <p /* className={this.props.link_to_ballot_item_page ?
-                  'u-gray-darker u-cursor--pointer' :
-                  'u-gray-darker'
-                } */
-                className={this.state.hover ? (
+              <div className="card-main__media-object-anchor">
+                {this.props.link_to_ballot_item_page ?
+                  <Link to={this.getCandidateLink} className="u-no-underline">{candidatePhotoUrlHtml}</Link> :
+                  candidatePhotoUrlHtml
+                }
+              </div>
+              <CandidateWrapper>
+                <Candidate>
+                  <h2 className={this.state.hover ? (
+                    'card-main__display-name card__blue'
+                  ) : (
+                    'card-main__display-name'
+                  )}
+                  >
+                    { this.props.link_to_ballot_item_page ?
+                      <Link to={this.getCandidateLink}>{ballotItemDisplayName}</Link> :
+                      ballotItemDisplayName
+                  }
+                  </h2>
+                  {twitterFollowersCount ? (
+                    <span
+                      className={this.props.link_to_ballot_item_page ?
+                        'twitter-followers__badge u-show-desktop-tablet u-cursor--pointer' :
+                        'twitter-followers__badge u-show-desktop-tablet'}
+                      onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}
+                    >
+                      <span className="fa fa-twitter twitter-followers__icon" />
+                      <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
+                    </span>
+                  ) :
+                    null
+                  }
+                  {
+                    <p /* className={this.props.link_to_ballot_item_page ?
+                      'u-gray-darker u-cursor--pointer' :
+                      'u-gray-darker'
+                    } */
+                    className={this.state.hover ? (
+                      'card__blue'
+                    ) : (
+                      ''
+                    )}
+                    >
+                      { contestOfficeName ? (
+                        <OfficeNameText
+                          contestOfficeName={contestOfficeName}
+                          officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
+                          politicalParty={party}
+                          showOfficeName={this.props.showOfficeName}
+                        />
+                      ) :
+                        null
+                    }
+                    </p>
+                  }
+                  {/* Endorsement count or Network score */}
+                </Candidate>
+                <BallotItemSupportOpposeCountDisplay
+                handleLeave={handleLeave}
+                handleHover={handleHover}
+                ballotItemWeVoteId={candidateWeVoteId}
+                />
+              </CandidateWrapper>
+              {' '}
+              {/* END .card-main__media-object-content */}
+            </CandidateInfo>
+            {' '}
+            {/* END .card-main__media-object */}
+            <div className="card-main__actions">
+              <div>
+                {/* Issues related to this Candidate */}
+                <IssuesByBallotItemDisplayList
+                  handleLeave={handleLeave}
+                  handleHover={handleHover}
+                  ballotItemWeVoteId={candidateWeVoteId}
+                  placement="bottom"
+                />
+                {/* If there is a quote about the candidate, show that too. */}
+                <div className={this.state.hover ? (
                   'card__blue'
                 ) : (
                   ''
                 )}
                 >
-                  { contestOfficeName ? (
-                    <OfficeNameText
-                      contestOfficeName={contestOfficeName}
-                      officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
-                      politicalParty={party}
-                      showOfficeName={this.props.showOfficeName}
-                    />
-                  ) :
-                    null
-                }
-                </p>
-              }
-              {/* Endorsement count or Network score */}
-            </Candidate>
-            <BallotItemSupportOpposeCountDisplay
-            handleLeave={handleLeave}
-            handleHover={handleHover}
-            // onMouseEnter={handleLeave}
-            // onMouseLeave={handleHover}
-            ballotItemWeVoteId={candidateWeVoteId}
-            />
-          </CandidateWrapper>
-          {' '}
-          {/* END .card-main__media-object-content */}
-        </CandidateInfo>
-        {' '}
-        {/* END .card-main__media-object */}
-        <div className="card-main__actions">
-          <div>
-            {/* Issues related to this Candidate */}
-            <IssuesByBallotItemDisplayList
-              handleLeave={handleLeave}
-              handleHover={handleHover}
-              ballotItemWeVoteId={candidateWeVoteId}
-              placement="bottom"
-            />
-            {/* If there is a quote about the candidate, show that too. */}
-            <div className={this.state.hover ? (
-              'card__blue'
-            ) : (
-              ''
-            )}
-            >
-              { this.props.showTopCommentByBallotItem && (
-                <TopCommentByBallotItem
-                  ballotItemWeVoteId={candidateWeVoteId}
-                  learnMoreUrl={this.getCandidateLink()}
-                >
-                  {/* If there aren't any comments about the candidate, show the text description of the candidate */}
-                  { candidateText.length ? (
-                    <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
-                      <div className="card-main__description">
-                        <LearnMore
-                            learn_more_text="Read more on Ballotpedia"
-                            num_of_lines={2}
-                            learn_more_link={ballotpediaCandidateUrl}
-                            text_to_display={candidateText}
-                        />
-                      </div>
-                      <Link to={this.getCandidateLink}>
-                        { this.props.link_to_ballot_item_page ? <span className="card-main__read-more-pseudo" /> : null }
-                      </Link>
-                      { this.props.link_to_ballot_item_page ?
-                        <Link to={this.getCandidateLink} className="card-main__read-more-link">&nbsp;more</Link> :
+                  { this.props.showTopCommentByBallotItem && (
+                    <TopCommentByBallotItem
+                      ballotItemWeVoteId={candidateWeVoteId}
+                      learnMoreUrl={this.getCandidateLink()}
+                    >
+                      {/* If there aren't any comments about the candidate, show the text description of the candidate */}
+                      { candidateText.length ? (
+                        <div className={`u-stack--sm${this.props.link_to_ballot_item_page ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
+                          <div className="card-main__description">
+                            <LearnMore
+                                learn_more_text="Read more on Ballotpedia"
+                                num_of_lines={2}
+                                learn_more_link={ballotpediaCandidateUrl}
+                                text_to_display={candidateText}
+                            />
+                          </div>
+                          <Link to={this.getCandidateLink}>
+                            { this.props.link_to_ballot_item_page ? <span className="card-main__read-more-pseudo" /> : null }
+                          </Link>
+                          { this.props.link_to_ballot_item_page ?
+                            <Link to={this.getCandidateLink} className="card-main__read-more-link">&nbsp;more</Link> :
+                            null
+                          }
+                        </div>
+                      ) :
                         null
                       }
-                    </div>
-                  ) :
-                    null
+                    </TopCommentByBallotItem>
+                  )
                   }
-                </TopCommentByBallotItem>
-              )
-              }
+                </div>
+                <div>
+                  {this.props.hideBallotItemSupportOpposeComment ?
+                    null : (
+                      <BallotItemSupportOpposeComment
+                        ballotItemWeVoteId={candidateWeVoteId}
+                        showPositionStatementActionBar={this.state.showPositionStatementActionBar}
+                      />
+                    )
+                  }
+                </div>
+              </div>
             </div>
-            <div>
-              {this.props.hideBallotItemSupportOpposeComment ?
-                null : (
-                  <BallotItemSupportOpposeComment
-                    ballotItemWeVoteId={candidateWeVoteId}
-                    showPositionStatementActionBar={this.state.showPositionStatementActionBar}
-                  />
-                )
-              }
-            </div>
-          </div>
-        </div>
-        {this.props.hideShowMoreFooter ?
-          null :
-          <ShowMoreFooter showMoreLink={this.goToCandidateLink} />
-        }
+            {this.props.hideShowMoreFooter ?
+              null :
+              <ShowMoreFooter showMoreLink={this.goToCandidateLink} />
+            }
           </div>
         )}
       </div>

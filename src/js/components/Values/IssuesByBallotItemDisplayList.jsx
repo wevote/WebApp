@@ -13,6 +13,8 @@ class IssuesByBallotItemDisplayList extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
     children: PropTypes.object,
+    handleLeave: PropTypes.func,
+    handleHover: PropTypes.func,
   };
 
   constructor (props) {
