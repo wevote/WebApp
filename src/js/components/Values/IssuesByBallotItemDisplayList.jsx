@@ -155,7 +155,10 @@ class IssuesByBallotItemDisplayList extends Component {
     );
 
     return (
-      <Wrapper>
+      <Wrapper
+      onMouseEnter={this.props.handleLeave}
+      onMouseLeave={this.props.handleHover}
+      >
         <Issues>
           {/* Show a break-down of the current positions in your network */}
           <IssueList expand={expand}>

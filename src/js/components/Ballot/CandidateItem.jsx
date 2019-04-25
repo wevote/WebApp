@@ -48,7 +48,7 @@ class CandidateItem extends Component {
       candidateWeVoteId: '',
       showPositionStatementActionBar: this.props.showPositionStatementActionBar,
       officeWeVoteId: '',
-      hover: true,
+      hover: null,
     };
     this.getCandidateLink = this.getCandidateLink.bind(this);
     this.getOfficeLink = this.getOfficeLink.bind(this);
@@ -126,11 +126,13 @@ class CandidateItem extends Component {
   }
 
   render () {
-    const handleHover = () => {
+    const handleHover = (e) => {
+      console.log('Handle hover', e.target);
       this.setState({ hover: true });
     };
 
-    const handleLeave = () => {
+    const handleLeave = (e) => {
+      console.log('Handle leave', e.target);
       this.setState({ hover: false });
     };
 
@@ -175,8 +177,8 @@ class CandidateItem extends Component {
     return (
       <div
         className="card-main candidate-card"
-        onMouseOut={handleLeave}
         onMouseEnter={handleHover}
+        onMouseLeave={handleLeave}
       >
         <CandidateInfo className="card-main__media-object">
           <div className="card-main__media-object-anchor">
@@ -237,9 +239,12 @@ class CandidateItem extends Component {
               {/* Endorsement count or Network score */}
             </Candidate>
             <BallotItemSupportOpposeCountDisplay
-            onMouseOver={handleLeave}
-            onMouseOut={handleHover}
-            ballotItemWeVoteId={candidateWeVoteId} />
+            handleLeave={handleLeave}
+            handleHover={handleHover}
+            // onMouseEnter={handleLeave}
+            // onMouseLeave={handleHover}
+            ballotItemWeVoteId={candidateWeVoteId}
+            />
           </CandidateWrapper>
           {' '}
           {/* END .card-main__media-object-content */}
@@ -250,8 +255,8 @@ class CandidateItem extends Component {
           <div>
             {/* Issues related to this Candidate */}
             <IssuesByBallotItemDisplayList
-              onMouseOver={handleLeave}
-              onMouseOut={handleHover}
+              handleLeave={handleLeave}
+              handleHover={handleHover}
               ballotItemWeVoteId={candidateWeVoteId}
               placement="bottom"
             />

@@ -600,7 +600,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     }
 
     return (
-      <Wrapper>
+      <Wrapper
+      onMouseEnter={this.props.handleLeave}
+      onMouseLeave={this.props.handleHover}
+      >
         { isVoterSupport ? (
           <NetworkScore className={classes.voterSupports}>
             <DoneIcon classes={{ root: classes.buttonIcon }} />
