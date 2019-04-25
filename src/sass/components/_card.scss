@@ -49,10 +49,11 @@
 
     &--outline {
       border: 1px solid $selected-color;
-      border-radius: 3px;
+      border-radius: $space-space;
     }
 
-    &__no-underline *, &--outline a {
+    &__no-underline *,
+    &--outline a {
       text-decoration: none !important;
     }
 
@@ -465,7 +466,8 @@
 
   // ----------------------------------------
 
-  &__blue, &__blue * {
+  &__blue,
+  &__blue * {
     color: $selected-color !important;
   }
 
