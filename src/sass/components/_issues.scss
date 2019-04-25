@@ -1,5 +1,5 @@
 // Issue related styles
- $menu-item-padding: 7px;
+$menu-item-padding: 7px;
 
 .issue-icon-list {
   &__endorsements-label {
@@ -195,7 +195,7 @@
     font-weight: 600 !important;
   }
   &__main {
-    border-radius: $space-space !important;
+    border-radius: $radius-sm3 !important;
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
     border: 1px solid $gray-light !important;
@@ -216,7 +216,7 @@
   }
   &__dropdown {
     display: inline-block !important;
-    border-radius: $space-space !important;
+    border-radius: $radius-sm3 !important;
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
     width: 35px !important;
