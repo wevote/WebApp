@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import BallotActions from '../../actions/BallotActions';
 import { renderLog } from '../../utils/logging';
 
-class BallotTabsRaccoon extends Component {
+class BallotDecisionsTabs extends Component {
   static propTypes = {
     completionLevelFilterType: PropTypes.string,
     ballotLength: PropTypes.number,
@@ -17,7 +17,7 @@ class BallotTabsRaccoon extends Component {
 
   shouldComponentUpdate (nextProps) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    // console.log("BallotTabsRaccoon shouldComponentUpdate");
+    // console.log("BallotDecisionsTabs shouldComponentUpdate");
     if (this.props.completionLevelFilterType !== nextProps.completionLevelFilterType) {
       // console.log("shouldComponentUpdate: this.props.completionLevelFilterType", this.props.completionLevelFilterType, ", nextProps.completionLevelFilterType", nextProps.completionLevelFilterType);
       return true;
@@ -63,7 +63,7 @@ class BallotTabsRaccoon extends Component {
   }
 
   render () {
-    // console.log("BallotTabsRaccoon render, this.props.completionLevelFilterType:", this.props.completionLevelFilterType);
+    // console.log("BallotDecisionsTabs render, this.props.completionLevelFilterType:", this.props.completionLevelFilterType);
     renderLog(__filename);
     const { classes, ballotLength, ballotLengthRemaining } = this.props;
     const remainingDecisionsCountIsDifferentThanAllItems = this.props.ballotLength !== this.props.ballotLengthRemaining;
@@ -200,5 +200,5 @@ const styles = theme => ({
   },
 });
 
-export default withStyles(styles)(BallotTabsRaccoon);
+export default withStyles(styles)(BallotDecisionsTabs);
 
