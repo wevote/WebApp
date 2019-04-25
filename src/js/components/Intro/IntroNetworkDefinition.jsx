@@ -12,7 +12,7 @@ assets relative to the HTML. So if the CSS isn't in the same place as the HTML
 then you can't use relative paths."
 */
 
-export default class IntroNetworkDefenition extends Component {
+export default class IntroNetworkDefinition extends Component {
   static propTypes = {
     next: PropTypes.func,
   };
