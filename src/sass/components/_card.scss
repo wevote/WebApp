@@ -47,6 +47,15 @@
       border: 2px solid #999;
     }
 
+    &--outline {
+      border: 1px solid $selected-color;
+      border-radius: 3px;
+    }
+
+    &__no-underline *, &--outline a {
+      text-decoration: none !important;
+    }
+
     &__content {
       position: relative;
       @include print {
