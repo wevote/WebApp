@@ -27,25 +27,25 @@ class HowItWorks extends Component {
         Claim: {
           title: 'Claim your campaign profile',
           description: 'Sign in & verify your account using your official Twitter account or other secure method. We Vote takes verification very seriously. (No trolls allowed!)',
-          imgSrc: '',
+          imgSrc: '/img/global/intro-story/ClaimProfile-20190425.gif',
           index: 0,
         },
         Import: {
           title: 'Import your endorsements',
-          description: 'We are here to help you get your opinions in front of voters, whether you have 5 endorsements, or 1,005.',
-          imgSrc: '',
+          description: 'We are here to help you get your opinions in front of voters, whether you have 5 endorsements, or 1,005. We Vote’s unique tech instamagically captures endorsement data from your website, spreadsheets, or text lists of candidates. No formatting overhauls required.',
+          imgSrc: '/img/global/intro-story/Campaign-ImportEndorsements-20190425.gif',
           index: 1,
         },
         Customize: {
           title: 'Add more customizations for your supporters',
           description: 'Want all the bells and whistles?  We Vote offers a lot for free, but offers premium features as well.',
-          imgSrc: '',
+          imgSrc: '/img/global/intro-story/Campaign-PromoteChapters-20190425.gif',
           index: 2,
         },
         Launch: {
           title: 'Launch to your people!',
           description: 'Promote your unique url over your email, text, and social media channels. Add the We Vote widget directly to your campaign website. Watch your social lift in real time.',
-          imgSrc: '',
+          imgSrc: '/img/global/intro-story/Campaign-Launch-20190425.gif',
           index: 3,
         },
       },
@@ -54,7 +54,7 @@ class HowItWorks extends Component {
         Claim: {
           title: 'Claim your organization profile',
           description: 'Sign in & verify your account using your official Twitter account or other secure method. We Vote takes verification very seriously. (No trolls allowed!)',
-          imgSrc: '',
+          imgSrc: '/img/global/intro-story/ClaimProfile-20190425.gif',
           index: 0,
         },
         Customize: {
@@ -66,7 +66,7 @@ class HowItWorks extends Component {
         Launch: {
           title: 'Launch!',
           description: 'Promote your unique url over your email, text, and social media channels. Add the We Vote widget directly to your campaign website. Watch your social lift in real time.',
-          imgSrc: '',
+          imgSrc: '/img/global/intro-story/Organizations-Launch-20190425.gif',
           index: 2,
         },
       },

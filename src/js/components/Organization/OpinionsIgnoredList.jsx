@@ -11,7 +11,6 @@ export default class OpinionsIgnoredList extends Component {
     ballotItemWeVoteId: PropTypes.string,
     organizationsIgnored: PropTypes.array,
     instantRefreshOn: PropTypes.bool,
-    editMode: PropTypes.bool,
   };
 
   constructor (props) {
@@ -43,20 +42,13 @@ export default class OpinionsIgnoredList extends Component {
 
     let counter = 0;
 
-    // zachmonteith: extra span tags inside of VoterGuideDisplayForList are to ensure that {org} gets passed in
-    // as an array rather than an object, so that our propTypes validations in VoterGuideDisplayForList work.
     return (
       <div className="guidelist card-child__list-group">
         <TransitionGroup className="org-ignore">
           {this.state.organizationsIgnored.map(oneOrganization => (
             <CSSTransition key={counter++} timeout={500} classNames="fade">
               <VoterGuideDisplayForList key={oneOrganization.organization_we_vote_id} {...oneOrganization}>
-                { this.props.editMode ? <FollowToggle organizationWeVoteId={oneOrganization.organization_we_vote_id} /> : (
-                  <span>
-                    <span />
-                    <span />
-                  </span>
-                ) }
+                <FollowToggle organizationWeVoteId={oneOrganization.organization_we_vote_id} />
               </VoterGuideDisplayForList>
             </CSSTransition>
           ))

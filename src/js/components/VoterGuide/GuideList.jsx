@@ -6,7 +6,6 @@ import FollowToggle from '../Widgets/FollowToggle';
 // import VoterGuideOrganizationFilter from "../Filter/VoterGuideOrganizationFilter";
 import MeasureStore from '../../stores/MeasureStore';
 // import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
-import OrganizationActions from '../../actions/OrganizationActions';
 import { stringContains } from '../../utils/textFormat';
 import VoterGuideDisplayForList from './VoterGuideDisplayForList';
 import { showToastSuccess } from '../../utils/showToast';
@@ -42,8 +41,6 @@ export default class GuideList extends Component {
     ballotItemWeVoteId: PropTypes.string,
     incomingVoterGuideList: PropTypes.array,
     instantRefreshOn: PropTypes.bool,
-    hideStopFollowingButton: PropTypes.bool,
-    hideIgnoreButton: PropTypes.bool,
   };
 
   constructor (props) {
@@ -135,14 +132,14 @@ export default class GuideList extends Component {
     return organizationsList;
   }
 
-  handleIgnore (id) {
+  handleIgnore (organizationWeVoteId) {
     console.log('GuideList: 139 - Running handleIgnore main');
 
     const { voterGuideList } = this.state;
-    OrganizationActions.organizationFollowIgnore(id);
+    // OrganizationActions.organizationFollowIgnore(organizationWeVoteId); // This is run within FollowToggle
     this.setState({
       voterGuideList: voterGuideList.filter(
-        org => org.organization_we_vote_id !== id,
+        org => org.organization_we_vote_id !== organizationWeVoteId,
       ),
     });
     showToastSuccess('Added to ignore list.');
@@ -213,8 +210,6 @@ export default class GuideList extends Component {
             >
               <FollowToggle
                   organizationWeVoteId={organization.organization_we_vote_id}
-                  hideStopFollowingButton={this.props.hideStopFollowingButton}
-                  hideIgnoreButton={this.props.hideIgnoreButton}
                   handleIgnore={handleIgnoreFunc}
               />
             </VoterGuideDisplayForList>
