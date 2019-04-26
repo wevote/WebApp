@@ -1,4 +1,5 @@
 // 'Card' styling for Candidates, Organizations, etc.
+$outline-radius: 3px;
 
 @include media-object('.card-main__media-object', '.card-main__media-object-anchor', '.card-main__media-object-content');
 
@@ -50,7 +51,7 @@
 
     &--outline {
       border: 1px solid $link-color;
-      border-radius: 3px;
+      border-radius: $outline-radius;
     }
 
     &__no-underline *,
@@ -467,7 +468,7 @@
 
   // ----------------------------------------
 
-  &__blue, 
+  &__blue,
   &__blue * {
     color: $link-color !important;
   }

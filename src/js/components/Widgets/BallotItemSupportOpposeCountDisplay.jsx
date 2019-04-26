@@ -268,11 +268,15 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
   render () {
     const handleEnterHoverLocalArea = () => {
-      this.props.handleLeaveCandidateCard();
+      if (this.props.handleLeaveCandidateCard) {
+        this.props.handleLeaveCandidateCard();
+      }
     };
 
     const handleLeaveHoverLocalArea = () => {
-      this.props.handleEnterCandidateCard();
+      if (this.props.handleEnterCandidateCard) {
+        this.props.handleEnterCandidateCard();
+      }
     };
 
     if (!this.state.ballotItemWeVoteId) return null;
