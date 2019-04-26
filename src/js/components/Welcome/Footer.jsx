@@ -21,24 +21,24 @@ class Footer extends Component {
           <LinksContainer>
             <Column>
               <ColumnTitle>How it Works</ColumnTitle>
-              <Link className={classes.link} to="/how/for-voters">For Voters</Link>
-              <Link className={classes.link} to="/how/for-organizations">For Organizations</Link>
-              <Link className={classes.link} to="/how/for-campaigns">For Campaigns</Link>
+              <Link id="footerLinkForVoters" className={classes.link} to="/how/for-voters">For Voters</Link>
+              <Link id="footerLinkForOrganizations" className={classes.link} to="/how/for-organizations">For Organizations</Link>
+              <Link id="footerLinkForCampaigns" className={classes.link} to="/how/for-campaigns">For Campaigns</Link>
             </Column>
             <Column>
               <ColumnTitle>Elections</ColumnTitle>
-              <Link className={classes.link} to="/more/elections">Supported Elections</Link>
-              <Link className={classes.link} to="/more/register">Register to Vote</Link>
-              <Link className={classes.link} to="/more/absentee">Get Your Absentee Ballot</Link>
-              <Link className={classes.link} to="/ballot">See Your Ballot</Link>
-              <Link className={classes.link} to="/polling-place-locator">Polling Place Locator</Link>
-              <Link className={classes.link} to="/more/tools">Free Online Tools</Link>
-              <Link className={classes.link} to="/more/tools">Premium Online Tools</Link>
+              <Link id="footerLinkSupportedElections" className={classes.link} to="/more/elections">Supported Elections</Link>
+              <Link id="footerLinkRegisterToVote" className={classes.link} to="/more/register">Register to Vote</Link>
+              <Link id="footerLinkGetYourAbsenteeBallot" className={classes.link} to="/more/absentee">Get Your Absentee Ballot</Link>
+              <Link id="footerLinkSeeYourBallot" className={classes.link} to="/ballot">See Your Ballot</Link>
+              <Link id="footerLinkPollingPlaceLocator" className={classes.link} to="/polling-place-locator">Polling Place Locator</Link>
+              <Link id="footerLinkFreeOnlineTools" className={classes.link} to="/more/tools">Free Online Tools</Link>
+              <Link id="footerLinkPremiumOnlineTools" className={classes.link} to="/more/tools">Premium Online Tools</Link>
             </Column>
             <Column>
               <ColumnTitle>About We Vote</ColumnTitle>
-              <Link className={classes.link} to="/more/about">About &amp; Team</Link>
-              <Link className={classes.link} to="/more/donate">Donate</Link>
+              <Link id="footerLinkAbout&amp;Team" className={classes.link} to="/more/about">About &amp; Team</Link>
+              <Link id="footerLinkDonate" className={classes.link} to="/more/donate">Donate</Link>
               <OpenExternalWebSite
                 url="https://blog.wevote.us/"
                 target="_blank"
@@ -98,9 +98,9 @@ class Footer extends Component {
                 )}
                 className={classes.link}
               />
-              <Link className={classes.link} to="/more/privacy">Privacy</Link>
-              <Link className={classes.link} to="/more/terms">Terms of Use</Link>
-              <Link className={classes.link} to="/more/attributions">Attributions</Link>
+              <Link id="footerLinkPrivacy" className={classes.link} to="/more/privacy">Privacy</Link>
+              <Link id="footerLinkTermsOfUse" className={classes.link} to="/more/terms">Terms of Use</Link>
+              <Link id="footerLinkAttributions" className={classes.link} to="/more/attributions">Attributions</Link>
             </Column>
           </LinksContainer>
           <OptionsContainer>
