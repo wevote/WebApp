@@ -13,8 +13,8 @@ class IssuesByBallotItemDisplayList extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
     children: PropTypes.object,
-    handleLeave: PropTypes.func,
-    handleHover: PropTypes.func,
+    handleLeaveCandidateCard: PropTypes.func,
+    handleEnterCandidateCard: PropTypes.func,
   };
 
   constructor (props) {
@@ -72,6 +72,18 @@ class IssuesByBallotItemDisplayList extends Component {
   }
 
   render () {
+    const handleEnterHoverLocalArea = () => {
+      if (this.props.handleLeaveCandidateCard) {
+        this.props.handleLeaveCandidateCard();
+      }
+    };
+
+    const handleLeaveHoverLocalArea = () => {
+      if (this.props.handleEnterCandidateCard) {
+        this.props.handleEnterCandidateCard();
+      }
+    };
+
     renderLog(__filename);
     const { expand } = this.state;
     const issuesUnderThisBallotItemVoterIsFollowingFound =
@@ -158,8 +170,8 @@ class IssuesByBallotItemDisplayList extends Component {
 
     return (
       <Wrapper
-      onMouseEnter={this.props.handleLeave}
-      onMouseLeave={this.props.handleHover}
+      onMouseEnter={handleEnterHoverLocalArea}
+      onMouseLeave={handleLeaveHoverLocalArea}
       >
         <Issues>
           {/* Show a break-down of the current positions in your network */}
