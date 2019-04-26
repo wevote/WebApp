@@ -40,7 +40,7 @@ class Footer extends Component {
               <Link id="footerLinkAbout&amp;Team" className={classes.link} to="/more/about">About &amp; Team</Link>
               <Link id="footerLinkDonate" className={classes.link} to="/more/donate">Donate</Link>
               <OpenExternalWebSite
-                id="footerLinkBlog"
+                linkIdAttribute="footerLinkBlog"
                 url="https://blog.wevote.us/"
                 target="_blank"
                 body={(
@@ -49,7 +49,7 @@ class Footer extends Component {
                 className={classes.link}
               />
               <OpenExternalWebSite
-                id="footerLinkMediaInquiries"
+                linkIdAttribute="footerLinkMediaInquiries"
                 url="https://help.wevote.us/hc/en-us/requests/new"
                 target="_blank"
                 body={(
@@ -58,7 +58,7 @@ class Footer extends Component {
                 className={classes.link}
               />
               <OpenExternalWebSite
-                id="footerLinkCareers"
+                linkIdAttribute="footerLinkCareers"
                 url="https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland#volops"
                 target="_blank"
                 body={(
@@ -67,7 +67,7 @@ class Footer extends Component {
                 className={classes.link}
               />
               <OpenExternalWebSite
-                id="footerLinkJoinOurNewsletter"
+                linkIdAttribute="footerLinkJoinOurNewsletter"
                 url="http://eepurl.com/cx_frP"
                 target="_blank"
                 body={(
@@ -76,7 +76,7 @@ class Footer extends Component {
                 className={classes.link}
               />
               <OpenExternalWebSite
-                id="footerLinkFacebook"
+                linkIdAttribute="footerLinkFacebook"
                 url="https://www.facebook.com/wevoteusa"
                 target="_blank"
                 body={(
@@ -85,7 +85,7 @@ class Footer extends Component {
                 className={classes.link}
               />
               <OpenExternalWebSite
-                id="footerLinkTwitter"
+                linkIdAttribute="footerLinkTwitter"
                 url="https://twitter.com/wevote"
                 target="_blank"
                 body={(
@@ -97,7 +97,7 @@ class Footer extends Component {
             <Column>
               <ColumnTitle>Support</ColumnTitle>
               <OpenExternalWebSite
-                id="footerLinkWeVoteHelp"
+                linkIdAttribute="footerLinkWeVoteHelp"
                 url="https://help.wevote.us/hc/en-us"
                 target="_blank"
                 body={(
@@ -125,7 +125,7 @@ class Footer extends Component {
               classes={{ root: classes.buttonOutlined }}
             >
               <OpenExternalWebSite
-                id="footerLinkContactSales"
+                linkIdAttribute="footerLinkContactSales"
                 url="https://help.wevote.us/hc/en-us/requests/new"
                 target="_blank"
                 body={(
@@ -142,7 +142,7 @@ class Footer extends Component {
             The software that powers We Vote is
             {' '}
             <OpenExternalWebSite
-              id="footerLinkOpenSource"
+              linkIdAttribute="footerLinkOpenSource"
               url="https://github.com/wevote"
               target="_blank"
               body={(
