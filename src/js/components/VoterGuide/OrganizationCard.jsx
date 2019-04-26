@@ -171,7 +171,6 @@ export default class OrganizationCard extends Component {
           {this.props.followToggleOn ? (
             <div className="u-margin-top--md">
               <FollowToggle
-                classNameOverride="pull-left"
                 currentBallotIdInUrl={this.props.currentBallotIdInUrl}
                 ballotItemWeVoteId={this.props.we_vote_id}
                 urlWithoutHash={this.props.urlWithoutHash}

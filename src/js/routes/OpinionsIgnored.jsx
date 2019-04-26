@@ -12,7 +12,6 @@ export default class OpinionsIgnored extends Component {
     super(props);
     this.state = {
       voter_guide_ignored_list: [],
-      editMode: false,
     };
   }
 
@@ -35,19 +34,6 @@ export default class OpinionsIgnored extends Component {
     }
   }
 
-  onKeyDownEditMode (event) {
-    const enterAndSpaceKeyCodes = [13, 32];
-    const scope = this;
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      scope.setState({ editMode: !this.state.editMode });
-    }
-  }
-
-  toggleEditMode () {
-    const { editMode } = this.state;
-    this.setState({ editMode: !editMode });
-  }
-
   render () {
     renderLog(__filename);
     return (
@@ -56,13 +42,6 @@ export default class OpinionsIgnored extends Component {
         <section className="card">
           <div className="card-main">
             <h1 className="h1">Who You&apos;re Ignoring</h1>
-            <a // eslint-disable-line
-              className="fa-pull-right"
-              onKeyDown={this.onKeyDownEditMode.bind(this)}
-              onClick={this.toggleEditMode.bind(this)}
-            >
-              {this.state.editMode ? 'Done Editing' : 'Edit'}
-            </a>
             <p>
               Organizations, public figures and other voters you&apos;re ignoring.
             </p>
@@ -71,7 +50,6 @@ export default class OpinionsIgnored extends Component {
                 { this.state.voter_guide_ignored_list && this.state.voter_guide_ignored_list.length ? (
                   <OpinionsIgnoredList
                     organizationsIgnored={this.state.voter_guide_ignored_list}
-                    editMode={this.state.editMode}
                     instantRefreshOn
                   />
                 ) : null
