@@ -40,6 +40,7 @@ class CandidateItem extends Component {
     twitter_followers_count: PropTypes.number,
     // twitter_handle: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired, // This is the candidate_we_vote_id
+    showHover: PropTypes.bool,
   };
 
   constructor (props) {
@@ -176,7 +177,7 @@ class CandidateItem extends Component {
 
     return (
       <div
-        className={this.state.hover ? (
+        className={this.state.hover && this.props.showHover ? (
           'card-main candidate-card card-main--outline'
         ) : (
           'card-main candidate-card'
@@ -184,7 +185,7 @@ class CandidateItem extends Component {
         onMouseEnter={this.handleEnter}
         onMouseLeave={this.handleLeave}
       >
-        {this.state.hover ? (
+        {this.state.hover && this.props.showHover ? (
           <Link to={this.getCandidateLink} className="card-main__no-underline">
             <div>
               <CandidateInfo className="card-main__media-object">
@@ -197,7 +198,7 @@ class CandidateItem extends Component {
                 </div>
                 <CandidateWrapper>
                   <Candidate>
-                    <h2 className={this.state.hover ? (
+                    <h2 className={this.state.hover && this.props.showHover ? (
                       'card-main__display-name card__blue'
                     ) : (
                       'card-main__display-name'
@@ -227,7 +228,7 @@ class CandidateItem extends Component {
                         'u-gray-darker u-cursor--pointer' :
                         'u-gray-darker'
                       } */
-                      className={this.state.hover ? (
+                      className={this.state.hover && this.props.showHover ? (
                         'card__blue'
                       ) : (
                         ''
@@ -268,7 +269,7 @@ class CandidateItem extends Component {
                   placement="bottom"
                   />
                   {/* If there is a quote about the candidate, show that too. */}
-                  <div className={this.state.hover ? (
+                  <div className={this.state.hover && this.props.showHover ? (
                     'card__blue'
                   ) : (
                     ''
@@ -338,7 +339,7 @@ class CandidateItem extends Component {
               </div>
               <CandidateWrapper>
                 <Candidate>
-                  <h2 className={this.state.hover ? (
+                  <h2 className={this.state.hover && this.props.showHover ? (
                     'card-main__display-name card__blue'
                   ) : (
                     'card-main__display-name'
@@ -368,7 +369,7 @@ class CandidateItem extends Component {
                       'u-gray-darker u-cursor--pointer' :
                       'u-gray-darker'
                     } */
-                    className={this.state.hover ? (
+                    className={this.state.hover && this.props.showHover ? (
                       'card__blue'
                     ) : (
                       ''
@@ -409,7 +410,7 @@ class CandidateItem extends Component {
                   placement="bottom"
                 />
                 {/* If there is a quote about the candidate, show that too. */}
-                <div className={this.state.hover ? (
+                <div className={this.state.hover && this.props.showHover ? (
                   'card__blue'
                 ) : (
                   ''
