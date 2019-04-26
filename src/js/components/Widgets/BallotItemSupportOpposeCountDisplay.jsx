@@ -31,8 +31,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     goToCandidate: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
     popoverTop: PropTypes.bool,
     classes: PropTypes.object,
-    handleLeave: PropTypes.func,
-    handleHover: PropTypes.func,
+    handleLeaveCandidateCard: PropTypes.func,
+    handleEnterCandidateCard: PropTypes.func,
   };
 
   static closePositionsPopover () {
@@ -267,6 +267,14 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   }
 
   render () {
+    const handleEnterHoverLocalArea = () => {
+      this.props.handleLeaveCandidateCard();
+    };
+
+    const handleLeaveHoverLocalArea = () => {
+      this.props.handleEnterCandidateCard();
+    };
+
     if (!this.state.ballotItemWeVoteId) return null;
     // console.log('BallotItemSupportOpposeCountDisplay render, ballotItemWeVoteId:', this.state.ballotItemWeVoteId);
     renderLog(__filename);
@@ -603,8 +611,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
     return (
       <Wrapper
-      onMouseEnter={this.props.handleLeave}
-      onMouseLeave={this.props.handleHover}
+      onMouseEnter={handleEnterHoverLocalArea}
+      onMouseLeave={handleLeaveHoverLocalArea}
       >
         { isVoterSupport ? (
           <NetworkScore className={classes.voterSupports}>
