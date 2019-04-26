@@ -7,6 +7,7 @@ export default class OpenExternalWebSite extends Component {
   static propTypes = {
     url: PropTypes.string.isRequired,
     className: PropTypes.string,
+    linkIdAttribute: PropTypes.string,
     target: PropTypes.string,
     title: PropTypes.string,
     body: PropTypes.oneOfType([
@@ -25,6 +26,7 @@ export default class OpenExternalWebSite extends Component {
     if (isWebApp()) {
       return (
         <a
+          id={this.props.linkIdAttribute ? this.props.linkIdAttribute : ''}
           href={this.props.url}
           className={classNameString}
           target={this.props.target ? this.props.target : ''}
@@ -36,6 +38,7 @@ export default class OpenExternalWebSite extends Component {
     } else {
       return (
         <span
+          id={this.props.linkIdAttribute ? this.props.linkIdAttribute : ''}
           className={classNameString}
           title={this.props.title ? this.props.title : ''}
           onClick={() => cordovaOpenSafariView(this.props.url, null, integerDelay)}
