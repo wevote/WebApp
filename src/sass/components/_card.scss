@@ -32,6 +32,7 @@
 
   &-main { // primary subject of card
     position: relative;
+    border: 1px solid $white;
     padding: $space-md $item-padding $space-sm;
     font-size: 14px; // remove once global defaults are set
     @include print {
@@ -48,8 +49,8 @@
     }
 
     &--outline {
-      border: 1px solid $selected-color;
-      border-radius: $radius-sm3;
+      border: 1px solid $link-color;
+      border-radius: 3px;
     }
 
     &__no-underline *,
@@ -466,9 +467,9 @@
 
   // ----------------------------------------
 
-  &__blue,
+  &__blue, 
   &__blue * {
-    color: $selected-color !important;
+    color: $link-color !important;
   }
 
   &__additional {
