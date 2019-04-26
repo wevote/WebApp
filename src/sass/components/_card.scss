@@ -1,4 +1,5 @@
 // 'Card' styling for Candidates, Organizations, etc.
+$outline-radius: 3px;
 
 @include media-object('.card-main__media-object', '.card-main__media-object-anchor', '.card-main__media-object-content');
 
@@ -32,6 +33,7 @@
 
   &-main { // primary subject of card
     position: relative;
+    border: 1px solid $white;
     padding: $space-md $item-padding $space-sm;
     font-size: 14px; // remove once global defaults are set
     @include print {
@@ -50,6 +52,16 @@
       background-color: $white;
       background-clip: border-box;
       border: 2px solid #999;
+    }
+
+    &--outline {
+      border: 1px solid $link-color;
+      border-radius: $outline-radius;
+    }
+
+    &__no-underline *,
+    &--outline a {
+      text-decoration: none !important;
     }
 
     &__content {
@@ -463,6 +475,11 @@
   } // end .card-child
 
   // ----------------------------------------
+
+  &__blue,
+  &__blue * {
+    color: $link-color !important;
+  }
 
   &__additional {
     @include clearfix;

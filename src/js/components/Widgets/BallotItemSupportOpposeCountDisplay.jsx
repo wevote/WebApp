@@ -31,6 +31,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     goToCandidate: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
     popoverTop: PropTypes.bool,
     classes: PropTypes.object,
+    handleLeaveCandidateCard: PropTypes.func,
+    handleEnterCandidateCard: PropTypes.func,
   };
 
   static closePositionsPopover () {
@@ -265,6 +267,18 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   }
 
   render () {
+    const handleEnterHoverLocalArea = () => {
+      if (this.props.handleLeaveCandidateCard) {
+        this.props.handleLeaveCandidateCard();
+      }
+    };
+
+    const handleLeaveHoverLocalArea = () => {
+      if (this.props.handleEnterCandidateCard) {
+        this.props.handleEnterCandidateCard();
+      }
+    };
+
     if (!this.state.ballotItemWeVoteId) return null;
     // console.log('BallotItemSupportOpposeCountDisplay render, ballotItemWeVoteId:', this.state.ballotItemWeVoteId);
     renderLog(__filename);
@@ -317,7 +331,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     const organizationsToFollowOpposeCount =  organizationsToFollowOppose ? organizationsToFollowOppose.length :  0;
     const positionsCount = networkSupportCount + networkOpposeCount + organizationsToFollowSupportCount + organizationsToFollowOpposeCount;
 
-    console.log('this.state.positionListFromAdvisersFollowedByVoter: ', this.state.positionListFromAdvisersFollowedByVoter);
+    // console.log('this.state.positionListFromAdvisersFollowedByVoter: ', this.state.positionListFromAdvisersFollowedByVoter);
     // if (positionsCount) {
     //   let supportPositionsListCount = 0;
     //   let opposePositionsListCount = 0;
@@ -600,7 +614,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     }
 
     return (
-      <Wrapper>
+      <Wrapper
+      onMouseEnter={handleEnterHoverLocalArea}
+      onMouseLeave={handleLeaveHoverLocalArea}
+      >
         { isVoterSupport ? (
           <NetworkScore className={classes.voterSupports}>
             <DoneIcon classes={{ root: classes.buttonIcon }} />

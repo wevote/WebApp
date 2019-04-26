@@ -1,4 +1,5 @@
 // Issue related styles
+$menu-item-padding: 7px;
 
 .issue-card {
   &__issue-block {
@@ -185,22 +186,22 @@
   }
 }
 
-.issues-follow-container{
+.issues-follow-container {
   position: relative;
-  display: flex; 
+  display: flex;
   justify-content: center;
   width: 100%;
 }
 
 .issues-follow-btn {
-  min-width: 0px !important;
+  min-width: 0 !important;
   font-size: 12.5px !important;
-  padding-left: 0px !important;
-  padding-right: 0px !important;
+  padding-left: $space-none !important;
+  padding-right: $space-none !important;
   max-height: none !important;
   &--blue {
     background: $brand-blue !important;
-    color: white !important;
+    color: $white !important;
   }
   &--white {
     color: $selected-color !important;
@@ -208,12 +209,12 @@
     font-weight: 600 !important;
   }
   &__main {
-    border-radius: 3px !important;
+    border-radius: $radius-sm3 !important;
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
     border: 1px solid $gray-light !important;
     border-right: none !important;
-    padding: 5px 10px !important;
+    padding: $space-xs $space-sm !important;
     flex: 1 0 0 !important;
     text-align: center !important;
   }
@@ -229,13 +230,12 @@
   }
   &__dropdown {
     display: inline-block !important;
-    min-width: 0px !important;
-    border-radius: 3px !important;
-    border-top-left-radius: 0px !important;
-    border-bottom-left-radius: 0px !important;
+    border-radius: $radius-sm3 !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
     width: 35px !important;
     min-width: 35px !important;
-    padding: 5px 10px !important;
+    padding: $space-xs $space-sm !important;
     height: 100% !important;
     vertical-align: middle !important;
     border: 1px solid $gray-light !important;
@@ -244,7 +244,7 @@
   &__dropdown ::after {
     font-size: 16px !important;
   }
-  &__icon path, &__icon svg {
+  &__icon svg {
     width: 18px !important;
     height: 18px !important;
   }
@@ -252,9 +252,9 @@
     font-size: 12.5px !important;
     position: absolute !important;
     width: 140px !important;
-    min-width: 0px !important;
+    min-width: 0 !important;
     max-width: 140px !important;
-    padding: 0px !important;
+    padding: $space-none !important;
     z-index: 999 !important;
   }
   &__menu * {
@@ -262,8 +262,8 @@
     max-width: 140px !important;
   }
   &__menu-item {
-    padding: 7px 0 !important;
-    border-radius: 0px !important;
+    padding: $menu-item-padding $space-none !important;
+    border-radius: $space-none !important;
   }
   &[disabled] {
     background: $white;
@@ -276,14 +276,14 @@
 }
 
 .dropdown-divider {
-  margin: 0 auto !important;
+  margin: $space-none auto !important;
   width: 75% !important;
   border: none !important;
   height: 1px !important;
   background: $gray-light !important;
 }
 
-.dropdown-toggle::after{
+.dropdown-toggle::after {
   font-size: 16px !important;
   vertical-align: middle !important;
   bottom: 3px !important;

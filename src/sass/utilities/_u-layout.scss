@@ -13,7 +13,7 @@
 }
 
 .u-show-desktop-tablet {
-  @include breakpoints(0px xsmall-bootstrap) {
+  @include breakpoints(0 xsmall-bootstrap) {
     display: none !important;
   }
 }
@@ -25,7 +25,7 @@
 }
 
 .u-show-desktop {
-  @include breakpoints(0px large) {
+  @include breakpoints(0 large) {
     display: none !important;
   }
 }

@@ -10,7 +10,7 @@ import AddressBox from '../../components/AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotActions from '../../actions/BallotActions';
 import BallotElectionList from '../../components/Ballot/BallotElectionList';
-import BallotTabsRaccoon from '../../components/Navigation/BallotTabsRaccoon';
+import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 import BallotItemReadyToVote from '../../components/Ballot/BallotItemReadyToVote';
 import BallotIntroModal from '../../components/Ballot/BallotIntroModal';
@@ -875,7 +875,7 @@ class Ballot extends Component {
                     <div className="ballot__filter__container">
                       { showBallotDecisionTabs && (
                         <div className="ballot__filter d-print-none">
-                          <BallotTabsRaccoon
+                          <BallotDecisionsTabs
                             completionLevelFilterType={BallotStore.cleanCompletionLevelFilterType(completionLevelFilterType)}
                             ballotLength={BallotStore.ballotLength}
                             ballotLengthRemaining={BallotStore.ballotRemainingChoicesLength}

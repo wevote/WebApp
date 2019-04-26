@@ -17,6 +17,7 @@ export default class CandidateList extends Component {
         { this.props.children.map(child => (
           <div key={child.we_vote_id} className="card">
             <CandidateItem
+              showHover
               key={child.we_vote_id}
               contest_office_name={this.props.contest_office_name}
               hideBallotItemSupportOpposeComment

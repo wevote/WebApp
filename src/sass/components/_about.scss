@@ -29,10 +29,9 @@ $logo-max-height: 120px;
 }
 
 .open-web-site {
-  $space-space: 3px;
   color: $link-color;
-  padding-right: $space-space;
-  padding-left: $space-space;
+  padding-right: $space-xs;
+  padding-left: $space-xs;
   &__no-right-padding {
     padding-right: $space-none;
   }

@@ -754,6 +754,7 @@ class VoterGuideStore extends ReduceStore {
 
       case 'organizationFollow':
         // The heavy lift of the reaction to "organizationFollow" is in OrganizationStore
+        VoterGuideActions.voterGuidesIgnoredRetrieve();
 
         // voterLinkedOrganizationWeVoteId is the voter who clicked the Follow button
         voterLinkedOrganizationWeVoteId = action.res.voter_linked_organization_we_vote_id;
@@ -779,6 +780,7 @@ class VoterGuideStore extends ReduceStore {
 
       case 'organizationFollowIgnore':
         // The heavy lift of the reaction to "organizationFollowIgnore" is in OrganizationStore
+        VoterGuideActions.voterGuidesIgnoredRetrieve();
 
         // voterLinkedOrganizationWeVoteId is the voter who clicked the Follow button
         voterLinkedOrganizationWeVoteId = action.res.voter_linked_organization_we_vote_id;

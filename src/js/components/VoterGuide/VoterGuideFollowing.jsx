@@ -124,7 +124,6 @@ export default class VoterGuideFollowing extends Component {
     if (this.state.searchFilter) {
       voterGuideFollowedList = this.state.voterGuideFollowedListFilteredBySearch;
     }
-    const hideStopFollowingButton = !lookingAtSelf || !this.state.editMode;
     const showSearchWhenMoreThanThisNumber = 3;
 
     return (
@@ -202,8 +201,6 @@ export default class VoterGuideFollowing extends Component {
                 <span>
                   <GuideList
                     incomingVoterGuideList={voterGuideFollowedList}
-                    hideStopFollowingButton={hideStopFollowingButton}
-                    hideIgnoreButton
                     instantRefreshOn
                   />
                 </span>

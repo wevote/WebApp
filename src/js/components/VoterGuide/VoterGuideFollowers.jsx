@@ -146,7 +146,6 @@ export default class VoterGuideFollowers extends Component {
                 <span>
                   <GuideList
                     incomingVoterGuideList={voterGuideFollowersList}
-                    hideIgnoreButton
                     instantRefreshOn
                   />
                 </span>
