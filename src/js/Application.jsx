@@ -318,6 +318,7 @@ class Application extends Component {
         { pathname === '/for-campaigns' ||
           pathname === '/for-organizations' ||
           pathname.startsWith('/how') ||
+          pathname === '/more/about' ||
           pathname === '/welcome' ||
           !contentFullWidthMode ?
           (
@@ -346,6 +347,7 @@ class Application extends Component {
           !(pathname === '/for-campaigns') &&
           !(pathname === '/for-organizations') &&
           !(pathname.startsWith('/how')) &&
+          !(pathname === '/more/about') &&
           !(pathname === '/welcome') && (
           <div className="footroom-wrapper">
             <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />

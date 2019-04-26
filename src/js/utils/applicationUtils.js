@@ -45,15 +45,12 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/more/network/friends' ||
     pathname === '/more/network/issues' ||
     pathname === '/more/network/organizations' ||
-    pathname === '/more/organization' ||
     pathname === '/more/privacy' ||
     pathname === '/more/register' ||
     pathname === '/more/sign_in' ||
-    pathname === '/more/team' ||
     pathname === '/more/terms' ||
     pathname === '/more/tools' ||
     pathname === '/more/verify' ||
-    pathname === '/more/vision' ||
     pathname.startsWith('/verifythisisme/') ||
     pathname === '/welcome') {
     contentFullWidthMode = true;

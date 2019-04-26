@@ -8,7 +8,7 @@ if (window.cordova) { // Static constants are initialized before the app starts
 const photoPath = cordovaDot('/img/global/photos/');
 const logoPath = cordovaDot('/img/global/logos/');
 
-export const weVoteBoard = [{
+export const weVoteFounders = [{
   name: 'Jenifer Fernandez Ancona',
   image: `${photoPath}Jenifer_Fernandez_Ancona-200x200.jpg`,
   title: [
@@ -16,6 +16,16 @@ export const weVoteBoard = [{
     'VP, Strategy & Member Engagement at the Women Donors Network.',
   ],
 }, {
+  name: 'Dale John McGrew',
+  image: `${photoPath}Dale_McGrew-200x200.jpg`,
+  title: [
+    'Co-Founder / CTO & c3 + c4 Board Member',
+    'Managed large software projects for companies like Disney and over 60 nonprofits.',
+  ],
+},
+];
+
+export const weVoteBoard = [{
   name: 'Debra Cleaver',
   image: `${photoPath}Debra_Cleaver-200x200.jpg`,
   title: [
@@ -42,13 +52,6 @@ export const weVoteBoard = [{
   title: [
     'c3 Board Chair',
     'Civic Tech communications and innovation at CivicMakers. Formerly at Change.org.',
-  ],
-}, {
-  name: 'Dale John McGrew',
-  image: `${photoPath}Dale_McGrew-200x200.jpg`,
-  title: [
-    'Co-Founder / CTO & c3 + c4 Board Member',
-    'Managed large software projects for companies like Disney and over 60 nonprofits.',
   ],
 }, {
   name: 'Alicia Kolar Prevost',
@@ -96,22 +99,16 @@ export const weVoteBoard = [{
 ];
 
 export const weVoteStaff = [{
-  name: 'Dale John McGrew',
-  image: `${photoPath}Dale_McGrew-200x200.jpg`,
-  title: [
-    'Executive Director / Co-Founder / CTO',
-  ],
-}, {
   name: 'Yuanhsin Chang',
   image: `${photoPath}Yuanhsin_Chang-200x200.jpg`,
   title: [
     'User Experience Design Intern',
   ],
 }, {
-  name: 'Neil Dullaghan',
-  image: `${photoPath}Neil_Dullaghan-200x200.jpg`,
+  name: 'Ahmed Elgamal',
+  image: `${photoPath}Ahmed_Elgamal-200x200.jpg`,
   title: [
-    'Political Data Manager',
+    'User Experience Designer',
   ],
 }, {
   name: 'Irene Florez',

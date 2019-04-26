@@ -43,6 +43,44 @@ class WelcomeAppbar extends Component {
     const { classes, pathname } = this.props;
     // console.log('WelcomeAppbar, pathname: ', pathname);
     const { showMobileNavigationMenu } = this.state;
+    let showWelcomeForVoters = false;
+    let showWelcomeForOrganizations = false;
+    let showWelcomeForCampaigns = false;
+    let showForCampaignsDesktop = false;
+    let showForOrganizations = false;
+    let showForOrganizationsDesktop = false;
+    let showForVoters = false;
+    let showHowItWorksForCampaigns = false;
+    let showHowItWorksForOrganizations = false;
+    let showHowItWorksForVoters = false;
+    if (pathname === '/how' || pathname === '/how/for-voters') {
+      showWelcomeForVoters = true;
+    } else if (pathname === '/how/for-organizations') {
+      showWelcomeForOrganizations = true;
+    } else if (pathname === '/how/for-campaigns') {
+      showWelcomeForCampaigns = true;
+    }
+    if (pathname === '/welcome') {
+      showForOrganizations = true;
+    }
+    if (!pathname.startsWith('/how') && pathname !== '/welcome') {
+      showForVoters = true;
+    }
+    if (!pathname.startsWith('/how') && (pathname === '/for-campaigns' || pathname === '/more/about')) {
+      showForOrganizationsDesktop = true;
+    }
+    if (!pathname.startsWith('/how') && (pathname === '/welcome' || pathname === '/for-organizations')) {
+      showForCampaignsDesktop = true;
+    }
+    if (pathname === '/for-campaigns') {
+      showHowItWorksForCampaigns = true;
+    }
+    if (pathname === '/for-organizations') {
+      showHowItWorksForOrganizations = true;
+    }
+    if (pathname === '/welcome' || pathname === '/more/about') {
+      showHowItWorksForVoters = true;
+    }
     return (
       <Appbar position="relative" classes={{ root: classes.appBarRoot }}>
         <Toolbar classes={{ root: classes.toolbar }} disableGutters>
@@ -50,30 +88,21 @@ class WelcomeAppbar extends Component {
             <HeaderBarLogo light />
           </LogoContainer>
           <Navigation>
-            {pathname === '/how' ?
-              <NavLink to="/welcome">Welcome</NavLink> :
-              null
+            {showWelcomeForVoters &&
+              <NavLink to="/welcome">Welcome</NavLink>
             }
-            {pathname === '/how/for-voters' ?
-              <NavLink to="/welcome">Welcome</NavLink> :
-              null
+            {showWelcomeForOrganizations &&
+              <NavLink to="/for-organizations">Welcome</NavLink>
             }
-            {pathname === '/how/for-organizations' ?
-              <NavLink to="/for-organizations">Welcome</NavLink> :
-              null
-            }
-            {pathname === '/how/for-campaigns' ?
-              <NavLink to="/for-campaigns">Welcome</NavLink> :
-              null
+            {showWelcomeForCampaigns &&
+              <NavLink to="/for-campaigns">Welcome</NavLink>
             }
             {/* Don't show 'For Organizations' or 'For Voters' when on How It Works page */}
-            {pathname === '/welcome' ?
-              <NavLink to="/for-organizations">For Organizations</NavLink> :
-              null
+            {showForOrganizations &&
+              <NavLink to="/for-organizations">For Organizations</NavLink>
             }
-            {!pathname.startsWith('/how') && pathname !== '/welcome' ?
-              <NavLink to="/welcome">For Voters</NavLink> :
-              null
+            {showForVoters &&
+              <NavLink to="/welcome">For Voters</NavLink>
             }
             <DesktopView>
               {/* Don't show 'For Organizations' or 'For Campaigns' when on How It Works page */}
@@ -81,13 +110,11 @@ class WelcomeAppbar extends Component {
                 <Divider /> :
                 null
               }
-              { !pathname.startsWith('/how') && pathname === '/for-campaigns' ?
-                <NavLink to="/for-organizations">For Organizations</NavLink> :
-                null
+              { showForOrganizationsDesktop &&
+                <NavLink to="/for-organizations">For Organizations</NavLink>
               }
-              { !pathname.startsWith('/how') && pathname !== '/for-campaigns' ?
-                <NavLink to="/for-campaigns">For Campaigns</NavLink> :
-                null
+              { showForCampaignsDesktop &&
+                <NavLink to="/for-campaigns">For Campaigns</NavLink>
               }
               {/* Turn off How It Works link on that page */}
               { !pathname.startsWith('/how') ?
@@ -95,20 +122,17 @@ class WelcomeAppbar extends Component {
                 null
               }
               {/* Change the How It Works link depending on which welcome page you are on */}
-              { pathname === '/welcome' ?
-                <NavLink to="/how/for-voters">How It Works</NavLink> :
-                null
+              { showHowItWorksForVoters &&
+                <NavLink to="/how/for-voters">How It Works</NavLink>
               }
-              { pathname === '/for-campaigns' ?
-                <NavLink to="/how/for-campaigns">How It Works</NavLink> :
-                null
+              { showHowItWorksForCampaigns &&
+                <NavLink to="/how/for-campaigns">How It Works</NavLink>
               }
-              { pathname === '/for-organizations' ?
-                <NavLink to="/how/for-organizations">How It Works</NavLink> :
-                null
+              { showHowItWorksForOrganizations &&
+                <NavLink to="/how/for-organizations">How It Works</NavLink>
               }
               <Divider />
-              <NavLink to="/ballot">Get Started</NavLink>
+              <NavLink to="/ballot">Your Ballot</NavLink>
               <Divider />
               <NavLink to="/settings/account">Sign In</NavLink>
             </DesktopView>

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
@@ -100,6 +101,7 @@ class Welcome extends PureComponent {
     const testimonial = 'Following the values that are important to me shows me opinions on my ballot from other people who share my values.';
     return (
       <Wrapper>
+        <Helmet title="Welcome Voters - We Vote" />
         <WelcomeAppbar pathname={pathname} />
         <Header>
           <Title>
