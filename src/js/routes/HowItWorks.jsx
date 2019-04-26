@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
@@ -163,18 +164,22 @@ class HowItWorks extends Component {
       selectedCategoryIndex } = this.state;
     const { selectedStepIndex } = this.state;
     let currentSlides;
+    let helmetTitle;
     let simulatedPathname = '/how';
     let stepLabels;
     if (selectedCategoryIndex === 2) {
       currentSlides = forCampaignsSteps;
+      helmetTitle = 'How We Vote Works for Campaigns';
       simulatedPathname = '/how/for-campaigns';
       stepLabels = forCampaignsStepLabels;
     } else if (selectedCategoryIndex === 1) {
       currentSlides = forOrganizationsSteps;
+      helmetTitle = 'How We Vote Works for Organizations';
       simulatedPathname = '/how/for-organizations';
       stepLabels = forOrganizationsStepLabels;
     } else {
       currentSlides = forVoterSteps;
+      helmetTitle = 'How We Vote Works for Voters';
       simulatedPathname = '/how/for-voters';
       stepLabels = forVoterStepLabels;
     }
@@ -182,6 +187,7 @@ class HowItWorks extends Component {
 
     return (
       <Wrapper>
+        <Helmet title={helmetTitle} />
         <WelcomeAppbar pathname={simulatedPathname} />
         <Header>
           <Container>

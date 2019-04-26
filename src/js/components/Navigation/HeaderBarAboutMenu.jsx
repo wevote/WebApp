@@ -31,13 +31,8 @@ export default class HeaderBarAboutMenu extends Component {
               </Link>
             </li>
             <li>
-              <Link onClick={toggleAboutMenu} to="/more/organization">
-                <span className="header-slide-out-menu-text-left">Organization</span>
-              </Link>
-            </li>
-            <li>
-              <Link onClick={toggleAboutMenu} to="/more/team">
-                <span className="header-slide-out-menu-text-left">Our Team</span>
+              <Link onClick={toggleAboutMenu} to="/more/about">
+                <span className="header-slide-out-menu-text-left">About</span>
               </Link>
             </li>
           </ul>

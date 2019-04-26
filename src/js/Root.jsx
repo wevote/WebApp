@@ -40,7 +40,6 @@ import Office from './routes/Ballot/Office';
 import Opinions from './routes/Opinions';
 import OpinionsFollowed from './routes/OpinionsFollowed';
 import OpinionsIgnored from './routes/OpinionsIgnored';
-import Organization from './routes/More/Organization';
 import OrganizationVoterGuide from './routes/VoterGuide/OrganizationVoterGuide';
 import OrganizationVoterGuideCandidate from './routes/VoterGuide/OrganizationVoterGuideCandidate';
 import OrganizationVoterGuideEdit from './routes/VoterGuide/OrganizationVoterGuideEdit';
@@ -59,7 +58,6 @@ import SignInJumpProcess from './routes/Process/SignInJumpProcess';
 import FacebookLandingProcess from './routes/Process/FacebookLandingProcess';
 import FacebookRedirectToWeVote from './routes/More/FacebookRedirectToWeVote';
 import SignInEmailProcess from './routes/Process/SignInEmailProcess';
-import Team from './routes/More/Team';
 import TermsOfService from './routes/More/TermsOfService';
 import ToolsToShareOnOtherWebsites from './routes/More/ToolsToShareOnOtherWebsites';
 import TwitterHandleLanding from './routes/TwitterHandleLanding';
@@ -190,17 +188,14 @@ const routes = () => (
     {/* Redirecting old URLs to new components */}
     <Route path="/more/network/friends" component={Friends} />
     <Route path="/more/network/organizations" component={Values} />
-    <Route path="/more/organization" component={Organization} />
     <Route path="/more/privacy" component={Privacy} />
     <Route path="/more/processing_donation" component={ProcessingDonation} />
     <Route path="/more/register" component={RegisterToVote} />
     <Route path="/more/search_page" component={SearchPage} />
     <Route path="/more/search_page/:encoded_search_string" component={SearchPage} />
-    <Route path="/more/team" component={Team} />
     <Route path="/more/tools" component={ToolsToShareOnOtherWebsites} />
     <Route path="/more/terms" component={TermsOfService} />
     <Route path="/more/verify" component={VerifyRegistration} />
-    <Route path="/more/vision" component={Organization} />
     <Route path="/values" component={Values} />
     <Route path="/values/list" component={ValuesList} />
     <Route path="/value/:value_slug" component={VoterGuidesUnderOneValue} />

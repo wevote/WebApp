@@ -354,7 +354,7 @@ class VoterGuideStore extends ReduceStore {
             revisedState = Object.assign({}, revisedState, { voterGuidesFollowedRetrieveStopped: true });
           }
         }
-
+        VoterGuideActions.voterGuidesIgnoredRetrieve();
         return revisedState;
 
       case 'voterFollowAllOrganizationsFollowedByOrganization':

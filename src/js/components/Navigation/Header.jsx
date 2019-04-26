@@ -131,6 +131,7 @@ export default class Header extends Component {
     } else if (pathname === '/for-campaigns' ||
                pathname === '/for-organizations' ||
                pathname.startsWith('/how') ||
+               pathname === '/more/about' ||
                pathname === '/welcome') {
       return null;
     } else {
