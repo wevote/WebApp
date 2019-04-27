@@ -52,6 +52,7 @@ $outline-radius: 3px;
     &--outline {
       border: 1px solid $link-color;
       border-radius: $outline-radius;
+      text-decoration: none !important;
     }
 
     &__no-underline *,
