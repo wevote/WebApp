@@ -28,7 +28,6 @@ import SuggestedFriends from './routes/Friends/SuggestedFriends';
 import GetStarted from './routes/Intro/GetStarted';
 import HamburgerMenu from './routes/More/HamburgerMenu';
 import HowItWorks from './routes/HowItWorks';
-import HowToUse from './routes/More/HowToUse';
 import Intro from './routes/Intro/Intro';
 import IntroNetwork from './routes/Intro/IntroNetwork';
 import IssuesToFollow from './routes/IssuesToFollow';
@@ -94,7 +93,7 @@ const routes = () => (
     {                       // 12/4/18: Not sure why we need the following disabled
       (function redir () {  // eslint-disable-line wrap-iife
         if (isWebApp()) {
-          return <IndexRedirect to="/ballot" />;
+          return <IndexRedirect to="/welcome" />;
         } else {
           return firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ballot" />;
         }
@@ -178,7 +177,6 @@ const routes = () => (
     <Route path="/more/facebooklandingprocess" component={FacebookLandingProcess} />
     <Route path="/more/facebookredirecttowevote" component={FacebookRedirectToWeVote} />
     <Route path="/more/faq" component={FAQ} />
-    <Route path="/more/howtouse" component={HowToUse} />
     <Route path="/more/hamburger" component={HamburgerMenu} />
     <Route path="/more/jump" component={SignInJumpProcess} />
     <Route path="/more/myballot" component={WeVoteBallotEmbed} />

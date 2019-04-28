@@ -26,11 +26,6 @@ export default class HeaderBarAboutMenu extends Component {
         <div className="about-menu">
           <ul className="nav flex-column text-left">
             <li>
-              <Link onClick={toggleAboutMenu} to="/more/howtouse">
-                <span className="header-slide-out-menu-text-left">Getting&nbsp;Started</span>
-              </Link>
-            </li>
-            <li>
               <Link onClick={toggleAboutMenu} to="/more/about">
                 <span className="header-slide-out-menu-text-left">About</span>
               </Link>

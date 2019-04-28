@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
+import Toolbar from '@material-ui/core/Toolbar';
+import AppStore from '../../stores/AppStore';
+import AppActions from '../../actions/AppActions';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import cookies from '../../utils/cookies';
@@ -16,6 +18,7 @@ import { stringContains } from '../../utils/textFormat';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import HeaderBackToButton from './HeaderBackToButton';
+import SignInModal from '../Widgets/SignInModal';
 
 export default class HeaderBackToVoterGuides extends Component {
   static propTypes = {
@@ -31,19 +34,21 @@ export default class HeaderBackToVoterGuides extends Component {
       profilePopUpOpen: false,
       candidateWeVoteId: '',
       organizationWeVoteId: '',
+      showSignInModal: AppStore.showSignInModal(),
       voter: {},
     };
     this.toggleAccountMenu = this.toggleAccountMenu.bind(this);
     this.hideAccountMenu = this.hideAccountMenu.bind(this);
-    this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
-    this.toggleProfilePopUp = this.toggleProfilePopUp.bind(this);
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
-    this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
     this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
+    this.toggleProfilePopUp = this.toggleProfilePopUp.bind(this);
+    this.toggleSignInModal = this.toggleSignInModal.bind(this);
+    this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
   }
 
   componentDidMount () {
     // console.log("HeaderBackToVoterGuides componentDidMount, this.props: ", this.props);
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -126,9 +131,16 @@ export default class HeaderBackToVoterGuides extends Component {
   }
 
   componentWillUnmount () {
+    this.appStoreListener.remove();
     this.ballotStoreListener.remove();
     this.candidateStoreListener.remove();
     this.organizationStoreListener.remove();
+  }
+
+  onAppStoreChange () {
+    this.setState({
+      showSignInModal: AppStore.showSignInModal(),
+    });
   }
 
   onBallotStoreChange () {
@@ -170,20 +182,6 @@ export default class HeaderBackToVoterGuides extends Component {
     return `/voterguide/${this.state.organizationWeVoteId}`;
   }
 
-  toggleAccountMenu () {
-    const { profilePopUpOpen } = this.state;
-    this.setState({ profilePopUpOpen: !profilePopUpOpen });
-  }
-
-  hideAccountMenu () {
-    this.setState({ profilePopUpOpen: false });
-  }
-
-  signOutAndHideAccountMenu () {
-    VoterSessionActions.voterSignOut();
-    this.setState({ profilePopUpOpen: false });
-  }
-
   transitionToYourVoterGuide () {
     // Positions for this organization, for this voter / election
     OrganizationActions.positionListForOpinionMaker(this.state.voter.linked_organization_we_vote_id, true);
@@ -196,9 +194,23 @@ export default class HeaderBackToVoterGuides extends Component {
     this.setState({ profilePopUpOpen: false });
   }
 
+  hideAccountMenu () {
+    this.setState({ profilePopUpOpen: false });
+  }
+
+  toggleAccountMenu () {
+    const { profilePopUpOpen } = this.state;
+    this.setState({ profilePopUpOpen: !profilePopUpOpen });
+  }
+
   toggleProfilePopUp () {
     const { profilePopUpOpen } = this.state;
     this.setState({ profilePopUpOpen: !profilePopUpOpen });
+  }
+
+  toggleSignInModal () {
+    const { showSignInModal } = this.state;
+    AppActions.setShowSignInModal(!showSignInModal);
   }
 
   hideProfilePopUp () {
@@ -206,6 +218,11 @@ export default class HeaderBackToVoterGuides extends Component {
   }
 
   signOutAndHideProfilePopUp () {
+    VoterSessionActions.voterSignOut();
+    this.setState({ profilePopUpOpen: false });
+  }
+
+  signOutAndHideAccountMenu () {
     VoterSessionActions.voterSignOut();
     this.setState({ profilePopUpOpen: false });
   }
@@ -250,6 +267,7 @@ export default class HeaderBackToVoterGuides extends Component {
           <HeaderBackToButton
             backToLink={backToLink}
             backToLinkText={backToOrganizationLinkText}
+            id="backToLinkTabHeader"
           />
 
           {this.state.profilePopUpOpen && voter.is_signed_in && (
@@ -281,8 +299,8 @@ export default class HeaderBackToVoterGuides extends Component {
               <Button
                 className="header-sign-in"
                 color="primary"
-                href="/settings/account"
                 id="signInHeaderBar"
+                onClick={this.toggleSignInModal}
                 variant="text"
               >
               Sign In
@@ -291,6 +309,14 @@ export default class HeaderBackToVoterGuides extends Component {
           </div>
           )}
         </Toolbar>
+        {
+          this.state.showSignInModal ? (
+            <SignInModal
+              show
+              toggleFunction={this.toggleSignInModal}
+            />
+          ) : null
+        }
       </AppBar>
     );
   }

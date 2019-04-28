@@ -26,7 +26,6 @@ import {
 } from '../../utils/cordovaUtils';
 import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
-// import HeaderBar from '../../components/Navigation/HeaderBar';
 import isMobile from '../../utils/isMobile';
 import LocationGuess from './LocationGuess';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
@@ -46,8 +45,6 @@ import webAppConfig from '../../config';
 import { formatVoterBallotList, checkShouldUpdate } from './utils';
 import SelectBallotModal from '../../components/Ballot/SelectBallotModal';
 import AppActions from '../../actions/AppActions';
-// import IconButton from '@material-ui/core/IconButton';
-// import PlaceIcon from '@material-ui/core/SvgIcon/SvgIcon';
 
 
 // Related to WebApp/src/js/components/VoterGuide/VoterGuideBallot.jsx

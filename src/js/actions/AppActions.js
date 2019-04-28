@@ -5,14 +5,23 @@ export default {
     Dispatcher.dispatch({ type: 'headroomUnpinned', payload: unpinned });
   },
 
-  setShowSelectBallotModal (show) {
-    Dispatcher.dispatch({ type: 'showSelectBallotModal', payload: show });
+  setScrolled (scrolledDown) {
+    Dispatcher.dispatch({ type: 'scrolledDown', payload: scrolledDown });
   },
 
   setShowEditAddressButton (show) {
     Dispatcher.dispatch({ type: 'showEditAddressButton', payload: show });
   },
-  setScrolled (scrolledDown) {
-    Dispatcher.dispatch({ type: 'scrolledDown', payload: scrolledDown });
+
+  setShowSelectBallotModal (show) {
+    Dispatcher.dispatch({ type: 'showSelectBallotModal', payload: show });
+  },
+
+  setShowSignInModal (show) {
+    Dispatcher.dispatch({ type: 'showSignInModal', payload: show });
+  },
+
+  storeSignInStartPath () {
+    Dispatcher.dispatch({ type: 'storeSignInStartPath', payload: true });
   },
 };
