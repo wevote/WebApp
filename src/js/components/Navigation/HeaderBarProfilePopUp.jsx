@@ -69,15 +69,6 @@ export default class HeaderBarProfilePopUp extends Component {
                   </Link>
                 </li>
               )}
-            {weVoteBrandingOff || (isWebApp() && (
-            <li className="d-block d-sm-none">
-              <Link onClick={this.hideProfilePopUp} to="/more/howtouse">
-                <div>
-                  <span className="header-slide-out-menu-text-left">Getting Started</span>
-                </div>
-              </Link>
-            </li>
-            ))}
             {weVoteBrandingOff || isCordova() ? null : (
               <li className="d-block d-sm-none">
                 <Link onClick={this.hideProfilePopUp} to="/more/about">

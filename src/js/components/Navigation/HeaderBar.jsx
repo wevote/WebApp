@@ -22,6 +22,7 @@ import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import HeaderBarLogo from './HeaderBarLogo';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
+import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import AppActions from '../../actions/AppActions';
@@ -44,18 +45,20 @@ class HeaderBar extends Component {
 
   constructor (props) {
     super(props);
-    this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
-    this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
-    this.toggleProfilePopUp = this.toggleProfilePopUp.bind(this);
-    this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
     this.state = {
       aboutMenuOpen: false,
       componentDidMountFinished: false,
       profilePopUpOpen: false,
       friendInvitationsSentToMe: 0,
       showEditAddressButton: AppStore.showEditAddressButton(),
+      showSignInModal: AppStore.showSignInModal(),
       scrolledDown: AppStore.getScrolledDown(),
     };
+    this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
+    this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
+    this.toggleProfilePopUp = this.toggleProfilePopUp.bind(this);
+    this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
+    this.toggleSignInModal = this.toggleSignInModal.bind(this);
   }
 
   componentDidMount () {
@@ -95,6 +98,12 @@ class HeaderBar extends Component {
     if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
       return true;
     }
+    if (this.state.scrolledDown !== nextState.scrolledDown) {
+      return true;
+    }
+    if (this.state.showSignInModal !== nextState.showSignInModal) {
+      return true;
+    }
     const currentPathnameExists = this.props.location && this.props.location.pathname;
     const nextPathnameExists = nextProps.location && nextProps.location.pathname;
     // One exists, and the other doesn't
@@ -124,9 +133,6 @@ class HeaderBar extends Component {
       // console.log("shouldComponentUpdate: this.props.voter.signed_in_with_email", this.props.voter.signed_in_with_email, ", nextProps.voter.signed_in_with_email", nextProps.voter.signed_in_with_email);
       return true;
     }
-    if (this.state.scrolledDown !== nextState.scrolledDown) {
-      return true;
-    }
     return false;
   }
 
@@ -148,8 +154,9 @@ class HeaderBar extends Component {
 
   onAppStoreChange () {
     this.setState({
-      showEditAddressButton: AppStore.showEditAddressButton(),
       scrolledDown: AppStore.getScrolledDown(),
+      showEditAddressButton: AppStore.showEditAddressButton(),
+      showSignInModal: AppStore.showSignInModal(),
     });
   }
 
@@ -174,6 +181,11 @@ class HeaderBar extends Component {
     AppActions.setShowSelectBallotModal(true);
   }
 
+  toggleSignInModal () {
+    const { showSignInModal } = this.state;
+    AppActions.setShowSignInModal(!showSignInModal);
+  }
+
   hideProfilePopUp () {
     this.setState({ profilePopUpOpen: false });
   }
@@ -196,7 +208,7 @@ class HeaderBar extends Component {
   }
 
   render () {
-    // console.log('HeaderBar render');
+    // console.log('HeaderBar render, this.state.showSignInModal:', this.state.showSignInModal);
     renderLog(__filename);
     const { voter, classes, pathname } = this.props;
     const { showEditAddressButton, scrolledDown } = this.state;
@@ -262,14 +274,14 @@ class HeaderBar extends Component {
                     </IconButton>
                   </Tooltip>
                 </Link>
-                <Link id="signInHeaderBar" to="/settings/account" className="header-link">
-                  <Button
-                    color="primary"
-                    classes={{ root: classes.headerButtonRoot }}
-                  >
-                    Sign In
-                  </Button>
-                </Link>
+                <Button
+                  color="primary"
+                  classes={{ root: classes.headerButtonRoot }}
+                  id="signInHeaderBar"
+                  onClick={this.toggleSignInModal}
+                >
+                  Sign In
+                </Button>
               </div>
             )}
 
@@ -337,6 +349,14 @@ class HeaderBar extends Component {
               )}
           </Toolbar>
         </AppBar>
+        {
+          this.state.showSignInModal ? (
+            <SignInModal
+              show
+              toggleFunction={this.toggleSignInModal}
+            />
+          ) : null
+        }
       </Wrapper>
     );
   }

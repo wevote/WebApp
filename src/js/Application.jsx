@@ -54,6 +54,7 @@ class Application extends Component {
 
     ElectionActions.electionsRetrieve();
 
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     window.addEventListener('scroll', this.handleWindowScroll);
   }
@@ -72,6 +73,7 @@ class Application extends Component {
   }
 
   componentWillUnmount () {
+    this.appStoreListener.remove();
     this.voterStoreListener.remove();
     this.loadedHeader = false;
     window.removeEventListener('scroll', this.handleWindowScroll);
@@ -110,6 +112,16 @@ class Application extends Component {
         js.src = 'https://connect.facebook.net/en_US/sdk.js';
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));
+    }
+  }
+
+  onAppStoreChange () {
+    if (AppStore.storeSignInStartPath()) {
+      const { location: { pathname } } = this.props;
+      if (pathname) {
+        const oneDayExpires = 86400;
+        cookies.setItem('sign_in_start_path', pathname, oneDayExpires, '/');
+      }
     }
   }
 
@@ -216,6 +228,7 @@ class Application extends Component {
   render () {
     renderLog(__filename);
     const { location: { pathname } } = this.props;
+    // console.log('Application render, pathname:', pathname);
 
     if (this.state.voter === undefined || this.props.location === undefined) {
       return (

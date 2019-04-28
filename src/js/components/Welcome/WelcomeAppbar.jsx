@@ -11,6 +11,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Navigation, { LogoContainer, Divider, NavLink, MobileNavigationMenu, MobileNavDivider, NavRow } from './Navigation';
 import HeaderBarLogo from '../Navigation/HeaderBarLogo';
 import { historyPush } from '../../utils/cordovaUtils';
+import SignInModal from '../Widgets/SignInModal';
+import AppStore from '../../stores/AppStore';
+import AppActions from '../../actions/AppActions';
 
 class WelcomeAppbar extends Component {
   static propTypes = {
@@ -22,7 +25,22 @@ class WelcomeAppbar extends Component {
     super(props);
     this.state = {
       showMobileNavigationMenu: false,
+      showSignInModal: AppStore.showSignInModal(),
     };
+  }
+
+  componentDidMount () {
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+  }
+
+  componentWillUnmount () {
+    this.appStoreListener.remove();
+  }
+
+  onAppStoreChange () {
+    this.setState({
+      showSignInModal: AppStore.showSignInModal(),
+    });
   }
 
   handleShowMobileNavigation = (show) => {
@@ -37,6 +55,11 @@ class WelcomeAppbar extends Component {
   handleToPageFromMobileNav = (destination) => {
     this.handleShowMobileNavigation(false);
     historyPush(destination);
+  }
+
+  toggleSignInModal = () => {
+    const { showSignInModal } = this.state;
+    AppActions.setShowSignInModal(!showSignInModal);
   }
 
   render () {
@@ -134,7 +157,7 @@ class WelcomeAppbar extends Component {
               <Divider />
               <NavLink to="/ballot">Your Ballot</NavLink>
               <Divider />
-              <NavLink to="/settings/account">Sign In</NavLink>
+              <NavLink to="" onClick={() => this.toggleSignInModal()}>Sign In</NavLink>
             </DesktopView>
             <MobileTabletView>
               <IconButton
@@ -191,6 +214,14 @@ class WelcomeAppbar extends Component {
             </MobileTabletView>
           </Navigation>
         </Toolbar>
+        {
+          this.state.showSignInModal ? (
+            <SignInModal
+              show
+              toggleFunction={this.toggleSignInModal}
+            />
+          ) : null
+        }
       </Appbar>
     );
   }

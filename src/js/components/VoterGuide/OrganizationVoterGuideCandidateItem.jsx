@@ -64,7 +64,6 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
 
   componentWillUnmount () {
     this.voterGuideStoreListener.remove();
-    this.supportStoreListener.remove();
   }
 
   onVoterGuideStoreChange () {
