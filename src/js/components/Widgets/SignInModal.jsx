@@ -12,6 +12,7 @@ import VoterStore from '../../stores/VoterStore';
 
 class SignInModal extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     show: PropTypes.bool,
     toggleFunction: PropTypes.func.isRequired,
   };
@@ -82,6 +83,5 @@ const styles = ({
     marginTop: hasIPhoneNotch() ? 68 : 48,
   },
 });
-
 
 export default withStyles(styles)(SignInModal);
