@@ -154,6 +154,12 @@ $outline-radius: 3px;
       }
     }
 
+    &__flex {
+      display: flex;
+      align-content: center;
+      justify-content: flex-start; 
+    }
+
     &__position-icon {
       display: inline-block;
       margin-right: $space-xs;
@@ -192,6 +198,10 @@ $outline-radius: 3px;
       }
       @include print {
         font-size: 22px;
+      }
+      &--inline {
+        margin: 0;
+        padding: 5px 10px;
       }
     }
 
