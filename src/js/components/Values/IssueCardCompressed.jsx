@@ -149,7 +149,7 @@ class IssueCardCompressed extends Component {
               </Link>
             </div>
             {this.props.followToggleOn && this.state.issueWeVoteId ? (
-              <FollowButton>
+              <div className="follow-toggle__values">
                 <IssueFollowToggleButton
                   ballotItemWeVoteId={this.state.ballotItemWeVoteId}
                   classNameOverride="pull-left"
@@ -158,7 +158,7 @@ class IssueCardCompressed extends Component {
                   issueWeVoteId={this.state.issueWeVoteId}
                   urlWithoutHash={this.props.urlWithoutHash}
                 />
-              </FollowButton>
+              </div>
             ) : null
             }
           </Flex>
@@ -194,9 +194,9 @@ const Item = styled.div`
 `;
 
 const Wrapper = styled.div`
-  padding: 15px 0 10px 0;
+  padding: 15px 0 15px 0;
   border: none;
-  border-bottom: 2px solid #888;
+  border-bottom: 2px solid #e3e3e3;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     border: 1px solid #888;
     padding: 8px 0px 8px 4px;
@@ -220,22 +220,6 @@ const Flex = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-`;
-
-const FollowButton = styled.div`
-  margin-left: auto;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    position: absolute;
-    right: 0;
-    height: 100%;
-    * {
-      height: 100%;
-      border-radius: 3px !important;
-      border-bottom-left-radius: 0 !important;
-      border-top-left-radius: 0 !important;
-    }
-  }
-
 `;
 
 const Description = styled.div`

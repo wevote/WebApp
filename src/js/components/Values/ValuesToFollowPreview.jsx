@@ -43,21 +43,21 @@ class ValuesToFollowPreview extends Component {
       issueList = this.state.issuesToFollow;
     }
 
-    let ISSUES_TO_SHOW;
+    const ISSUES_TO_SHOW = 4;
 
-    if (width < 768) {
-      ISSUES_TO_SHOW = 3;
-    } else {
-      ISSUES_TO_SHOW = 4;
-    }
+    // if (width < 768) {
+    //   ISSUES_TO_SHOW = 3;
+    // } else {
+    //   ISSUES_TO_SHOW = 4;
+    // }
 
-    window.onresize = () => {
-      if (width < 768) {
-        ISSUES_TO_SHOW = 3;
-      } else {
-        ISSUES_TO_SHOW = 4;
-      }
-    };
+    // window.onresize = () => {
+    //   if (width < 768) {
+    //     ISSUES_TO_SHOW = 3;
+    //   } else {
+    //     ISSUES_TO_SHOW = 4;
+    //   }
+    // };
 
     let issueCount = 0;
     const issueListForDisplay = issueList.map((issue) => {

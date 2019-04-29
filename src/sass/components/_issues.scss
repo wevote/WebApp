@@ -177,6 +177,7 @@ $menu-item-padding: 7px;
   display: flex;
   justify-content: center;
   width: 100%;
+  height: 32px;
 }
 
 .issues-follow-btn {
@@ -203,6 +204,12 @@ $menu-item-padding: 7px;
     padding: $space-xs $space-sm !important;
     flex: 1 0 0 !important;
     text-align: center !important;
+    &--radius {
+      border-radius: 3px !important;
+      .issues-follow-btn__dropdown {
+        display: none;
+      }
+    }
   }
   &__seperator {
     display: inline-block;
@@ -256,6 +263,25 @@ $menu-item-padding: 7px;
   }
 }
 
+.follow-toggle {
+  &__values {
+    margin-left: auto;
+    @include breakpoints (medium) {
+      position: absolute;
+      right: 0;
+      height: 50px;
+      .issues-follow-container {
+        height: 100% !important;
+      }
+      .issues-follow-btn {
+        border-radius: 3px !important;
+        border-bottom-left-radius: 0 !important;
+        border-top-left-radius: 0 !important;
+      }
+    }
+  }
+}
+
 .card-main {
   position: relative !important;
   overflow: auto !important;
@@ -270,7 +296,8 @@ $menu-item-padding: 7px;
 }
 
 .dropdown-toggle::after {
+  position: absolute !important;
   font-size: 16px !important;
-  vertical-align: middle !important;
-  bottom: 3px !important;
+  top: calc(50% - 1px);
+  right: calc((35px / 2px) - 6px)
 }
