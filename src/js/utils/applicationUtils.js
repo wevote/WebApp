@@ -9,6 +9,7 @@ export function getApplicationViewBooleans (pathname) {
   let contentFullWidthMode = false;
   let friendsMode = false;
   let settingsMode = false;
+  let voteMode = false;
   let valuesMode = false;
   let voterGuideMode = false;
   let voterGuideShowGettingStartedNavigation = false;
@@ -53,6 +54,9 @@ export function getApplicationViewBooleans (pathname) {
     pathname.startsWith('/verifythisisme/') ||
     pathname === '/welcome') {
     contentFullWidthMode = true;
+  } else if (pathname.startsWith('/ballot/vote')) {
+    contentFullWidthMode = true;
+    voteMode = true;
   } else if (pathname.startsWith('/ballot')) {
     contentFullWidthMode = false;
   } else if (stringContains('/settings', pathname) ||
@@ -128,6 +132,7 @@ export function getApplicationViewBooleans (pathname) {
     contentFullWidthMode,
     friendsMode,
     settingsMode,
+    voteMode,
     valuesMode,
     voterGuideMode,
     voterGuideShowGettingStartedNavigation,
@@ -157,7 +162,7 @@ export function polyfillObjectEntries () {
 // Choose to show/hide zendesk help widget based on route
 export function setZenDeskHelpVisibility (pathname) {
   if (isWebApp()) {
-    if (['/ballot', '/candidate', '/friends', '/measure', '/more/network', '/office', '/opinions', '/settings',
+    if (['/ballot', '/ballot/vote', '/candidate', '/friends', '/measure', '/more/network', '/office', '/opinions', '/settings',
       '/value'].some(match => pathname.startsWith(match))) { // '/values'
       global.zE('webWidget', 'show');
     } else {

@@ -257,6 +257,10 @@ class HeaderBackToBallot extends Component {
     this.setState({ profilePopUpOpen: !profilePopUpOpen });
   }
 
+  closeSignInModal () {
+    AppActions.setShowSignInModal(false);
+  }
+
   toggleSignInModal () {
     const { showSignInModal } = this.state;
     AppActions.setShowSignInModal(!showSignInModal);
@@ -375,14 +379,10 @@ class HeaderBackToBallot extends Component {
           ballotItemDisplayName={officeName}
           />
         )}
-        {
-          this.state.showSignInModal ? (
-            <SignInModal
-              show
-              toggleFunction={this.toggleSignInModal}
-            />
-          ) : null
-        }
+        <SignInModal
+          show={this.state.showSignInModal}
+          toggleFunction={this.closeSignInModal}
+        />
       </AppBar>
     );
   }

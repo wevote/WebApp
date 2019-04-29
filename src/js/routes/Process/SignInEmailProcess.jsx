@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import AppActions from '../../actions/AppActions';
+import cookies from '../../utils/cookies';
 import { historyPush } from '../../utils/cordovaUtils';
 import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
@@ -54,6 +56,7 @@ export default class SignInEmailProcess extends Component {
   render () {
     renderLog(__filename);
     const { email_secret_key: emailSecretKey } = this.props.params;
+    const voterIsSignedIn = this.state.voter && this.state.voter.is_signed_in;
     // console.log("SignInEmailProcess, emailSecretKey:", emailSecretKey);
     if (!emailSecretKey ||
       this.state.saving ||
@@ -63,11 +66,20 @@ export default class SignInEmailProcess extends Component {
       return LoadingWheel;
     }
 
+    let redirectPathname;
+    const signInStartPath = cookies.getItem('sign_in_start_path');
+
     // We redirect after voterMergeTwoAccountsByEmailKey comes back
     if (this.state.emailSignInStatus.voter_merge_two_accounts_attempted) {
       // console.log("voterMergeTwoAccountsByEmailKey attempted - push to /settings/account");
+      redirectPathname = '/ballot';
+      if (signInStartPath) {
+        redirectPathname = signInStartPath;
+        AppActions.unsetStoreSignInStartPath();
+        cookies.removeItem('sign_in_start_path', '/');
+      }
       historyPush({
-        pathname: '/ballot',
+        pathname: redirectPathname,
         state: {
           message: 'You have successfully signed in.',
           message_type: 'success',
@@ -79,7 +91,25 @@ export default class SignInEmailProcess extends Component {
     // This process starts when we return from attempting voterEmailAddressSignIn
     if (!this.state.emailSignInStatus.email_address_found) {
       // console.log("Could not find secret_key in database - push to /settings/account");
-      historyPush('/settings/account');
+      if (voterIsSignedIn) {
+        // Key isn't found in database, but they are already signed in and are
+        //  probably following a link in their email that has already been used
+        redirectPathname = '/settings/account';
+        if (signInStartPath) {
+          redirectPathname = signInStartPath;
+          AppActions.unsetStoreSignInStartPath();
+          cookies.removeItem('sign_in_start_path', '/');
+        }
+        historyPush( redirectPathname );
+      } else {
+        historyPush({
+          pathname: '/settings/account',
+          state: {
+            message: 'Could not find your email key code in the database.',
+            message_type: 'error',
+          },
+        });
+      }
       return LoadingWheel;
     }
 
@@ -88,8 +118,14 @@ export default class SignInEmailProcess extends Component {
       if (this.state.emailSignInStatus.email_secret_key_belongs_to_this_voter) {
         // We don't need to do anything more except redirect to the email management page
         // console.log("secret key owned by this voter - push to /settings/account");
+        redirectPathname = '/ballot';
+        if (signInStartPath) {
+          redirectPathname = signInStartPath;
+          AppActions.unsetStoreSignInStartPath();
+          cookies.removeItem('sign_in_start_path', '/');
+        }
         historyPush({
-          pathname: '/ballot',
+          pathname: redirectPathname,
           state: {
             message: 'You have successfully signed in.',
             message_type: 'success',

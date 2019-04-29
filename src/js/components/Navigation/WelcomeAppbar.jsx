@@ -99,6 +99,10 @@ class WelcomeAppbar extends Component {
     this.setState({ profilePopUpOpen: !profilePopUpOpen });
   }
 
+  closeSignInModal () {
+    AppActions.setShowSignInModal(false);
+  }
+
   toggleSignInModal = () => {
     const { showSignInModal } = this.state;
     AppActions.setShowSignInModal(!showSignInModal);
@@ -333,14 +337,10 @@ class WelcomeAppbar extends Component {
             </MobileTabletView>
           </Navigation>
         </Toolbar>
-        {
-          this.state.showSignInModal ? (
-            <SignInModal
-              show
-              toggleFunction={this.toggleSignInModal}
-            />
-          ) : null
-        }
+        <SignInModal
+          show={this.state.showSignInModal}
+          toggleFunction={this.closeSignInModal}
+        />
       </Appbar>
     );
   }
