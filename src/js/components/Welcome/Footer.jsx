@@ -37,7 +37,7 @@ class Footer extends Component {
             </Column>
             <Column>
               <ColumnTitle>About We Vote</ColumnTitle>
-              <Link id="footerLinkAbout&amp;Team" className={classes.link} to="/more/about">About &amp; Team</Link>
+              <Link id="footerLinkAbout" className={classes.link} to="/more/about">About &amp; Team</Link>
               <Link id="footerLinkDonate" className={classes.link} to="/more/donate">Donate</Link>
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkBlog"
