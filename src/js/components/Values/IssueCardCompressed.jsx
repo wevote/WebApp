@@ -198,7 +198,7 @@ const Wrapper = styled.div`
   border: none;
   border-bottom: 2px solid #e3e3e3;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    border: 1px solid #888;
+    border: 1px solid #e3e3e3;
     padding: 8px 0px 8px 4px;
     border-radius: 4px;
     position: relative;
