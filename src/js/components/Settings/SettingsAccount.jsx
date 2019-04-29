@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import Helmet from 'react-helmet';
+import PropTypes from 'prop-types';
+import cookies from '../../utils/cookies';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import AppActions from '../../actions/AppActions';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
@@ -19,6 +22,10 @@ import VoterStore from '../../stores/VoterStore';
 const debugMode = false;
 
 export default class SettingsAccount extends Component {
+  static propTypes = {
+    toggleSignInModal: PropTypes.func,
+  };
+
   constructor (props) {
     super(props);
     this.state = {
@@ -43,6 +50,8 @@ export default class SettingsAccount extends Component {
     this.onVoterStoreChange();
     this.facebookStoreListener = FacebookStore.addListener(this.onFacebookChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    cookies.removeItem('sign_in_start_path', '/');
+    AppActions.storeSignInStartPath();
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
   }
 
@@ -158,7 +167,7 @@ export default class SettingsAccount extends Component {
                 }
                 { !this.state.voter.signed_in_facebook && (
                   <span>
-                    <FacebookSignIn className="btn btn-social btn-lg btn-facebook" />
+                    <FacebookSignIn className="btn btn-social btn-lg btn-facebook" toggleSignInModal={this.props.toggleSignInModal} />
                   </span>
                 )
                 }

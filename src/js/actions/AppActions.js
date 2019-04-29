@@ -24,4 +24,8 @@ export default {
   storeSignInStartPath () {
     Dispatcher.dispatch({ type: 'storeSignInStartPath', payload: true });
   },
+
+  unsetStoreSignInStartPath () {
+    Dispatcher.dispatch({ type: 'unsetStoreSignInStartPath', payload: false });
+  },
 };

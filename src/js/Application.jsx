@@ -116,11 +116,16 @@ class Application extends Component {
   }
 
   onAppStoreChange () {
-    if (AppStore.storeSignInStartPath()) {
+    const signInStartPath = cookies.getItem('sign_in_start_path');
+    // console.log('Application onAppStoreChange, current signInStartPath: ', signInStartPath);
+    // Do not let sign_in_start_path be set again. Different logic while we figure out how to call AppActions.unsetStoreSignInStartPath()
+    if (AppStore.storeSignInStartPath() && !signInStartPath) {
       const { location: { pathname } } = this.props;
+      // console.log('Application onAppStoreChange, new pathname: ', pathname);
       if (pathname) {
         const oneDayExpires = 86400;
         cookies.setItem('sign_in_start_path', pathname, oneDayExpires, '/');
+        // AppActions.unsetStoreSignInStartPath(); // Throws this error: Cannot dispatch in the middle of a dispatch.
       }
     }
   }

@@ -149,6 +149,7 @@ class HeaderBackTo extends Component {
             profilePopUpOpen={this.state.profilePopUpOpen}
             weVoteBrandingOff={this.state.we_vote_branding_off}
             toggleProfilePopUp={this.toggleProfilePopUp}
+            toggleSignInModal={this.toggleSignInModal}
             hideProfilePopUp={this.hideProfilePopUp}
             transitionToYourVoterGuide={this.transitionToYourVoterGuide}
             signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}

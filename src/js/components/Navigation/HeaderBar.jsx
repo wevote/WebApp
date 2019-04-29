@@ -332,17 +332,17 @@ class HeaderBar extends Component {
                     </div>
                   )
                   }
-                  {/* Was AccountMenu */}
-                  {this.state.profilePopUpOpen && voter.is_signed_in && (
+                  {this.state.profilePopUpOpen && voterIsSignedIn && (
                     <HeaderBarProfilePopUp
-                      {...this.props}
+                      hideProfilePopUp={this.hideProfilePopUp}
                       onClick={this.toggleProfilePopUp}
                       profilePopUpOpen={this.state.profilePopUpOpen}
-                      weVoteBrandingOff={this.state.we_vote_branding_off}
-                      toggleProfilePopUp={this.toggleProfilePopUp}
-                      hideProfilePopUp={this.hideProfilePopUp}
-                      transitionToYourVoterGuide={this.transitionToYourVoterGuide}
                       signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+                      toggleProfilePopUp={this.toggleProfilePopUp}
+                      toggleSignInModal={this.toggleSignInModal}
+                      transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+                      voter={this.props.voter}
+                      weVoteBrandingOff={this.state.we_vote_branding_off}
                     />
                   )}
                 </div>

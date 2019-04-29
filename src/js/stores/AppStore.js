@@ -50,6 +50,10 @@ class AppStore extends ReduceStore {
       case 'showEditAddressButton':
         return { ...state, showEditAddressButton: action.payload };
       case 'storeSignInStartPath':
+        // Send a signal to src/js/Application.jsx to write the current pathname to the cookie 'sign_in_start_path'
+        return { ...state, storeSignInStartPath: action.payload };
+      case 'unsetStoreSignInStartPath':
+        // Turn off the signal to src/js/Application.jsx to write the current pathname to the cookie 'sign_in_start_path'
         return { ...state, storeSignInStartPath: action.payload };
       default:
         return state;
