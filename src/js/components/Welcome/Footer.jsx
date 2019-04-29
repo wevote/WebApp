@@ -21,25 +21,26 @@ class Footer extends Component {
           <LinksContainer>
             <Column>
               <ColumnTitle>How it Works</ColumnTitle>
-              <Link className={classes.link} to="/how/for-voters">For Voters</Link>
-              <Link className={classes.link} to="/how/for-organizations">For Organizations</Link>
-              <Link className={classes.link} to="/how/for-campaigns">For Campaigns</Link>
+              <Link id="footerLinkForVoters" className={classes.link} to="/how/for-voters">For Voters</Link>
+              <Link id="footerLinkForOrganizations" className={classes.link} to="/how/for-organizations">For Organizations</Link>
+              <Link id="footerLinkForCampaigns" className={classes.link} to="/how/for-campaigns">For Campaigns</Link>
             </Column>
             <Column>
               <ColumnTitle>Elections</ColumnTitle>
-              <Link className={classes.link} to="/more/elections">Supported Elections</Link>
-              <Link className={classes.link} to="/more/register">Register to Vote</Link>
-              <Link className={classes.link} to="/more/absentee">Get Your Absentee Ballot</Link>
-              <Link className={classes.link} to="/ballot">See Your Ballot</Link>
-              <Link className={classes.link} to="/polling-place-locator">Polling Place Locator</Link>
-              <Link className={classes.link} to="/more/tools">Free Online Tools</Link>
-              <Link className={classes.link} to="/more/tools">Premium Online Tools</Link>
+              <Link id="footerLinkSupportedElections" className={classes.link} to="/more/elections">Supported Elections</Link>
+              <Link id="footerLinkRegisterToVote" className={classes.link} to="/more/register">Register to Vote</Link>
+              <Link id="footerLinkGetYourAbsenteeBallot" className={classes.link} to="/more/absentee">Get Your Absentee Ballot</Link>
+              <Link id="footerLinkSeeYourBallot" className={classes.link} to="/ballot">See Your Ballot</Link>
+              <Link id="footerLinkPollingPlaceLocator" className={classes.link} to="/polling-place-locator">Polling Place Locator</Link>
+              <Link id="footerLinkFreeOnlineTools" className={classes.link} to="/more/tools">Free Online Tools</Link>
+              <Link id="footerLinkPremiumOnlineTools" className={classes.link} to="/more/tools">Premium Online Tools</Link>
             </Column>
             <Column>
               <ColumnTitle>About We Vote</ColumnTitle>
-              <Link className={classes.link} to="/more/about">About &amp; Team</Link>
-              <Link className={classes.link} to="/more/donate">Donate</Link>
+              <Link id="footerLinkAbout" className={classes.link} to="/more/about">About &amp; Team</Link>
+              <Link id="footerLinkDonate" className={classes.link} to="/more/donate">Donate</Link>
               <OpenExternalWebSite
+                linkIdAttribute="footerLinkBlog"
                 url="https://blog.wevote.us/"
                 target="_blank"
                 body={(
@@ -48,6 +49,7 @@ class Footer extends Component {
                 className={classes.link}
               />
               <OpenExternalWebSite
+                linkIdAttribute="footerLinkMediaInquiries"
                 url="https://help.wevote.us/hc/en-us/requests/new"
                 target="_blank"
                 body={(
@@ -56,6 +58,7 @@ class Footer extends Component {
                 className={classes.link}
               />
               <OpenExternalWebSite
+                linkIdAttribute="footerLinkCareers"
                 url="https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland#volops"
                 target="_blank"
                 body={(
@@ -64,6 +67,7 @@ class Footer extends Component {
                 className={classes.link}
               />
               <OpenExternalWebSite
+                linkIdAttribute="footerLinkJoinOurNewsletter"
                 url="http://eepurl.com/cx_frP"
                 target="_blank"
                 body={(
@@ -72,6 +76,7 @@ class Footer extends Component {
                 className={classes.link}
               />
               <OpenExternalWebSite
+                linkIdAttribute="footerLinkFacebook"
                 url="https://www.facebook.com/wevoteusa"
                 target="_blank"
                 body={(
@@ -80,6 +85,7 @@ class Footer extends Component {
                 className={classes.link}
               />
               <OpenExternalWebSite
+                linkIdAttribute="footerLinkTwitter"
                 url="https://twitter.com/wevote"
                 target="_blank"
                 body={(
@@ -91,6 +97,7 @@ class Footer extends Component {
             <Column>
               <ColumnTitle>Support</ColumnTitle>
               <OpenExternalWebSite
+                linkIdAttribute="footerLinkWeVoteHelp"
                 url="https://help.wevote.us/hc/en-us"
                 target="_blank"
                 body={(
@@ -98,9 +105,9 @@ class Footer extends Component {
                 )}
                 className={classes.link}
               />
-              <Link className={classes.link} to="/more/privacy">Privacy</Link>
-              <Link className={classes.link} to="/more/terms">Terms of Use</Link>
-              <Link className={classes.link} to="/more/attributions">Attributions</Link>
+              <Link id="footerLinkPrivacy" className={classes.link} to="/more/privacy">Privacy</Link>
+              <Link id="footerLinkTermsOfUse" className={classes.link} to="/more/terms">Terms of Use</Link>
+              <Link id="footerLinkAttributions" className={classes.link} to="/more/attributions">Attributions</Link>
             </Column>
           </LinksContainer>
           <OptionsContainer>
@@ -118,6 +125,7 @@ class Footer extends Component {
               classes={{ root: classes.buttonOutlined }}
             >
               <OpenExternalWebSite
+                linkIdAttribute="footerLinkContactSales"
                 url="https://help.wevote.us/hc/en-us/requests/new"
                 target="_blank"
                 body={(
@@ -134,6 +142,7 @@ class Footer extends Component {
             The software that powers We Vote is
             {' '}
             <OpenExternalWebSite
+              linkIdAttribute="footerLinkOpenSource"
               url="https://github.com/wevote"
               target="_blank"
               body={(
