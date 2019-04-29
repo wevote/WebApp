@@ -31,6 +31,10 @@ class FooterBar extends React.Component {
     });
   }
 
+  componentWillUnmount () {
+    this.friendStoreListener.remove();
+  }
+
   onFriendStoreChange () {
     this.setState({
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),

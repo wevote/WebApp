@@ -11,7 +11,7 @@ import TeamMemberDisplayForList from '../../components/More/TeamMemberDisplayFor
 import ToolBar from './ToolBar';
 import VoterStore from '../../stores/VoterStore';
 import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../components/More/people';
-import WelcomeAppbar from '../../components/Welcome/WelcomeAppbar';
+import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
 import { HeaderForCampaigns, Title } from '../../components/Welcome/Header';
 import Section from '../../components/Welcome/Section';
 

@@ -6,7 +6,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
-import AppActions from '../../actions/AppActions';
 import SettingsAccount from '../Settings/SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
 
@@ -27,7 +26,6 @@ class SignInModal extends Component {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // When this modal is opened, set a cookie with the current path (done in Application.js)
-    AppActions.storeSignInStartPath();
   }
 
   componentWillUnmount () {
@@ -66,7 +64,7 @@ class SignInModal extends Component {
               ) : (
                 <div>
                   { !this.state.voter.is_signed_in ?
-                    <SettingsAccount /> :
+                    <SettingsAccount toggleSignInModal={this.props.toggleFunction} /> :
                     null }
                 </div>
               )}

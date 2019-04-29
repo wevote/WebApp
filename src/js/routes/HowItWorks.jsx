@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import WelcomeAppbar from '../components/Welcome/WelcomeAppbar';
+import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 import Footer from '../components/Welcome/Footer';
 import Header, { Container, Title } from '../components/Welcome/HowItWorksHeader';
 import HeaderSwitch from '../components/Widgets/HeaderSwitch';

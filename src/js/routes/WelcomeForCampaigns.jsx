@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import { HeaderForCampaigns, Title, BlueTitle, SubTitle } from '../components/Welcome/Header';
 import Section, { SectionTitle, SectionTitleBold, Step, StepNumber, StepLabel, GetStarted, ButtonContainer, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage } from '../components/Welcome/Section';
-import WelcomeAppbar from '../components/Welcome/WelcomeAppbar';
+import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 import Footer from '../components/Welcome/Footer';
 import AddressBox from '../components/Welcome/AddressBox';
 import { historyPush, cordovaDot } from '../utils/cordovaUtils';

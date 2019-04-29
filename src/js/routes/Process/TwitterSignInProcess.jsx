@@ -1,4 +1,6 @@
 import { Component } from 'react';
+import AppActions from '../../actions/AppActions';
+import cookies from '../../utils/cookies';
 import { historyPush } from '../../utils/cordovaUtils';
 import LoadingWheel from '../../components/LoadingWheel';
 import { oAuthLog, renderLog } from '../../utils/logging';
@@ -61,17 +63,31 @@ export default class TwitterSignInProcess extends Component {
       // Prevent voterMergeTwoAccountsByFacebookKey from being called multiple times
       this.setState({ mergingTwoAccounts: true });
     }
+    let redirectPathname = '';
+    const signInStartPath = cookies.getItem('sign_in_start_path');
     if (voterHasDataToPreserve) {
+      redirectPathname = '/more/network';
+      if (signInStartPath) {
+        redirectPathname = signInStartPath;
+        AppActions.unsetStoreSignInStartPath();
+        cookies.removeItem('sign_in_start_path', '/');
+      }
       historyPush({
-        pathname: '/more/network',
+        pathname: redirectPathname,
         state: {
           message: 'Your accounts have been merged.',
           message_type: 'success',
         },
       });
     } else {
+      redirectPathname = '/ballot';
+      if (signInStartPath) {
+        redirectPathname = signInStartPath;
+        AppActions.unsetStoreSignInStartPath();
+        cookies.removeItem('sign_in_start_path', '/');
+      }
       historyPush({
-        pathname: '/ballot',
+        pathname: redirectPathname,
         query: { wait_until_voter_sign_in_completes: 1 },
         state: {
           message: 'You have successfully signed in with Twitter.',
@@ -85,8 +101,15 @@ export default class TwitterSignInProcess extends Component {
   // to establish is_signed_in within the voter.voter
   voterTwitterSaveToCurrentAccount () {
     VoterActions.voterTwitterSaveToCurrentAccount();
+    let redirectPathname = '/more/network';
+    const signInStartPath = cookies.getItem('sign_in_start_path');
+    if (signInStartPath) {
+      redirectPathname = signInStartPath;
+      AppActions.unsetStoreSignInStartPath();
+      cookies.removeItem('sign_in_start_path', '/');
+    }
     historyPush({
-      pathname: '/more/network',
+      pathname: redirectPathname,
       state: {
         message: 'You have successfully signed in with Twitter.',
         message_type: 'success',
