@@ -36,7 +36,7 @@ class ValuesToFollowPreview extends Component {
   }
 
   render () {
-    const width = document.documentElement.clientWidth;
+    // const width = document.documentElement.clientWidth;
     renderLog(__filename);
     let issueList = [];
     if (this.state.issuesToFollow) {
