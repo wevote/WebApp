@@ -5,7 +5,7 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import Badge from '@material-ui/core/Badge';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import DescriptionIcon from '@material-ui/icons/Description';
-import SettingsIcon from '@material-ui/icons/Settings';
+import HowToVoteIcon from '@material-ui/icons/HowToVote';
 import PeopleIcon from '@material-ui/icons/People';
 import { historyPush } from '../../utils/cordovaUtils';
 import { stringContains } from '../../utils/textFormat';
@@ -50,7 +50,7 @@ class FooterBar extends React.Component {
       case 2:
         return historyPush('/friends');
       case 3:
-        return historyPush('/settings/menu');
+        return historyPush('/ballot/vote');
       default:
         return null;
     }
@@ -58,10 +58,10 @@ class FooterBar extends React.Component {
 
   getSelectedTab = () => {
     const { pathname } = this.props;
+    if (stringContains('/ballot/vote', pathname)) return 3;
     if (stringContains('/ballot', pathname)) return 0;
     if (stringContains('/friends', pathname)) return 2;
     if (stringContains('/value', pathname)) return 1; // '/values'
-    if (stringContains('/settings/', pathname)) return 3;
     return -1;
   };
 
@@ -92,7 +92,7 @@ class FooterBar extends React.Component {
             )}
           />
           {/* <BottomNavigationAction className="no-outline" id="voteTabFooterBar" label="Vote" showLabel icon={<ion-icon class="footer-icon" name="clipboard" />} /> */}
-          <BottomNavigationAction className="no-outline" id="settingsTabFooterBar" label="Settings" showLabel icon={<SettingsIcon />} />
+          <BottomNavigationAction className="no-outline" id="voteTabFooterBar" label="Vote" showLabel icon={<HowToVoteIcon />} />
         </BottomNavigation>
       </div>
     );

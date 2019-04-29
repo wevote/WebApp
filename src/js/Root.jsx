@@ -63,6 +63,7 @@ import TwitterHandleLanding from './routes/TwitterHandleLanding';
 import TwitterSignInProcess from './routes/Process/TwitterSignInProcess';
 import Values from './routes/Values';
 import ValuesList from './routes/Values/ValuesList';
+import Vote from './routes/Vote';
 import VerifyEmailProcess from './routes/Process/VerifyEmailProcess';
 import FriendInvitationByEmailVerifyProcess from './routes/Process/FriendInvitationByEmailVerifyProcess';
 import VoterGuideChooseElection from './routes/VoterGuide/VoterGuideChooseElection';
@@ -117,6 +118,7 @@ const routes = () => (
       <Route path="/measure/:measure_we_vote_id/:back_to_variable/:organization_we_vote_id" component={OrganizationVoterGuideMeasure} />
       <Route path="/measure/:measure_we_vote_id" component={Measure} />
     </Route>
+    <Route path="/ballot/vote" component={Vote} />
     <Route path="/ballot/:ballot_location_shortcut" component={Ballot} />
     <Route path="/ballot/id/:ballot_returned_we_vote_id" component={Ballot} />
     <Route path="/ballot/election/:google_civic_election_id" component={Ballot} />

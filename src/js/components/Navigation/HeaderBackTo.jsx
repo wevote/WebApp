@@ -33,10 +33,10 @@ class HeaderBackTo extends Component {
       showSignInModal: AppStore.showSignInModal(),
       voter: {},
     };
-    this.toggleAccountMenu = this.toggleAccountMenu.bind(this);
     this.hideAccountMenu = this.hideAccountMenu.bind(this);
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
     this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
+    this.toggleAccountMenu = this.toggleAccountMenu.bind(this);
     this.toggleProfilePopUp = this.toggleProfilePopUp.bind(this);
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
@@ -98,6 +98,10 @@ class HeaderBackTo extends Component {
   toggleProfilePopUp () {
     const { profilePopUpOpen } = this.state;
     this.setState({ profilePopUpOpen: !profilePopUpOpen });
+  }
+
+  closeSignInModal () {
+    AppActions.setShowSignInModal(false);
   }
 
   toggleSignInModal () {
@@ -183,14 +187,10 @@ class HeaderBackTo extends Component {
           </div>
           )}
         </Toolbar>
-        {
-          this.state.showSignInModal ? (
-            <SignInModal
-              show
-              toggleFunction={this.toggleSignInModal}
-            />
-          ) : null
-        }
+        <SignInModal
+          show={this.state.showSignInModal}
+          toggleFunction={this.closeSignInModal}
+        />
       </AppBar>
     );
   }

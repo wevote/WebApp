@@ -61,13 +61,14 @@ class Application extends Component {
 
   componentDidUpdate () {
     const { location: { pathname } } = this.props;
-    const { voterGuideMode } = getApplicationViewBooleans(pathname);
+    const { voteMode, voterGuideMode } = getApplicationViewBooleans(pathname);
 
     if (!voterGuideMode && AppStore.showEditAddressButton()) {
       AppActions.setShowEditAddressButton(false);
     }
 
-    if ((voterGuideMode && !AppStore.showEditAddressButton()) || stringContains('/ballot', pathname.slice(0, 7))) {
+    if (!voteMode &&
+      ((voterGuideMode && !AppStore.showEditAddressButton()) || stringContains('/ballot', pathname.slice(0, 7)))) {
       AppActions.setShowEditAddressButton(true);
     }
   }

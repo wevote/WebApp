@@ -50,9 +50,9 @@ class HeaderBar extends Component {
       componentDidMountFinished: false,
       profilePopUpOpen: false,
       friendInvitationsSentToMe: 0,
-      showEditAddressButton: AppStore.showEditAddressButton(),
-      showSignInModal: AppStore.showSignInModal(),
-      scrolledDown: AppStore.getScrolledDown(),
+      showEditAddressButton: false,
+      showSignInModal: false,
+      scrolledDown: false,
     };
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
     this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
@@ -73,6 +73,9 @@ class HeaderBar extends Component {
     this.setState({
       componentDidMountFinished: true,
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      scrolledDown: AppStore.getScrolledDown(),
+      showEditAddressButton: AppStore.showEditAddressButton(),
+      showSignInModal: AppStore.showSignInModal(),
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
@@ -162,7 +165,7 @@ class HeaderBar extends Component {
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    // if (pathname.indexOf('/ballot') === 0) return 0; // If '/ballot' is found any
+    if (stringContains('/ballot/vote', pathname)) return 3;
     if (pathname && pathname.startsWith('/ballot')) return 0;
     if (stringContains('/value', pathname)) return 1; // '/values'
     if (stringContains('/friends', pathname)) return 2;
@@ -179,6 +182,10 @@ class HeaderBar extends Component {
 
   toggleSelectBallotModal () {
     AppActions.setShowSelectBallotModal(true);
+  }
+
+  closeSignInModal () {
+    AppActions.setShowSignInModal(false);
   }
 
   toggleSignInModal () {
@@ -216,7 +223,7 @@ class HeaderBar extends Component {
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0;
     const voterIsSignedIn = this.props.voter && this.props.voter.is_signed_in;
-    const showFullNavigation = cookies.getItem('show_full_navigation') || voterIsSignedIn;
+    const showFullNavigation = true;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
     const showingBallot = stringContains(ballotBaseUrl, pathname.slice(0, 7));
 
@@ -244,49 +251,14 @@ class HeaderBar extends Component {
                   <Tab classes={{ root: classes.tabRoot }} id="friendsTabHeaderBar" label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9}>My Friends</Badge>} onClick={() => this.handleNavigation('/friends')} />
                 )
                 }
-                {/* showFullNavigation && isWebApp() && <Tab className="u-show-desktop" label="Vote" /> */}
+                {showFullNavigation && (
+                  <Tab classes={{ root: classes.tabRoot }} id="voteTabHeaderBar" label="Vote" onClick={() => this.handleNavigation('/ballot/vote')} />
+                )
+                }
               </Tabs>
             </div>
-
-            {/* (showFullNavigation || isCordova()) && <SearchAllBox /> */}
-
-            {(!showFullNavigation || !voterIsSignedIn) && (
-              <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
-                {
-                  showEditAddressButton && (
-                    <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-                      <IconButton
-                        classes={{ root: classes.iconButtonRoot }}
-                        id="changeAddressHeaderBar"
-                        onClick={this.toggleSelectBallotModal}
-                      >
-                        <PlaceIcon />
-                      </IconButton>
-                    </Tooltip>
-                  )
-                }
-                <Link id="settingsLinkHeaderBar" to="/settings/menu" className="header-link">
-                  <Tooltip title="Settings" aria-label="settings" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-                    <IconButton
-                      classes={{ root: classes.iconButtonRoot }}
-                    >
-                      <MoreVertIcon />
-                    </IconButton>
-                  </Tooltip>
-                </Link>
-                <Button
-                  color="primary"
-                  classes={{ root: classes.headerButtonRoot }}
-                  id="signInHeaderBar"
-                  onClick={this.toggleSignInModal}
-                >
-                  Sign In
-                </Button>
-              </div>
-            )}
-
             {
-              (showFullNavigation && voterIsSignedIn) && (
+              voterIsSignedIn && (
                 <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
                   {
                     showEditAddressButton && (
@@ -301,7 +273,7 @@ class HeaderBar extends Component {
                       </Tooltip>
                     )
                   }
-                  <Link id="settingsLinkHeaderBar" to="/settings/menu" className="header-link">
+                  <Link id="settingsLinkHeaderBar" to="/settings" className="header-link u-show-desktop">
                     <Tooltip title="Settings" aria-label="settings" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
                       <IconButton
                         classes={{ root: classes.iconButtonRoot }}
@@ -346,17 +318,41 @@ class HeaderBar extends Component {
                     />
                   )}
                 </div>
-              )}
+              )
+            }
+            {
+              !voterIsSignedIn && (
+              <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
+                {
+                  showEditAddressButton && (
+                    <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot }}
+                        id="changeAddressHeaderBar"
+                        onClick={this.toggleSelectBallotModal}
+                      >
+                        <PlaceIcon />
+                      </IconButton>
+                    </Tooltip>
+                  )
+                }
+                <Button
+                  color="primary"
+                  classes={{ root: classes.headerButtonRoot }}
+                  id="signInHeaderBar"
+                  onClick={this.toggleSignInModal}
+                >
+                  Sign In
+                </Button>
+              </div>
+              )
+            }
           </Toolbar>
         </AppBar>
-        {
-          this.state.showSignInModal ? (
-            <SignInModal
-              show
-              toggleFunction={this.toggleSignInModal}
-            />
-          ) : null
-        }
+        <SignInModal
+          show={this.state.showSignInModal}
+          toggleFunction={this.closeSignInModal}
+        />
       </Wrapper>
     );
   }
