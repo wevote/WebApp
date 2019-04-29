@@ -22,7 +22,7 @@ export default class OpenExternalWebSite extends Component {
     const { delay, className } = this.props;
     const integerDelay = delay && delay >= 0 ? delay : 50;
     const classNameString = className !== undefined ? className : 'open-web-site';
-    console.log(this.props.linkIdAttribute)
+
     if (isWebApp()) {
       return (
         <a
