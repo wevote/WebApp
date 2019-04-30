@@ -67,6 +67,8 @@ export default class IssueFollowToggleButton extends Component {
     if (currentBallotIdInUrl !== ballotItemWeVoteId) {
       historyPush(`${urlWithoutHash}#${this.props.ballotItemWeVoteId}`);
     }
+
+    document.getElementById('dropdown_menu').style.visibility = 'hidden';
   }
 
   render () {
@@ -106,18 +108,18 @@ export default class IssueFollowToggleButton extends Component {
         {this.state.isFollowing ? (
           <React.Fragment>
             <div className="issues-follow-btn__seperator" />
-            <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <Button type="button" id="dropdown-toggle" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <span className="sr-only">Toggle Dropdown</span>
             </Button>
           </React.Fragment>
         ) : (
           null
         )}
-        <div className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
+        <div id="dropdown_menu" className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
           {this.state.isFollowing ? (
             <span className="d-print-none">
               <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={this.onIssueStopFollowing}>
-                Following
+                Unfollow
               </Button>
             </span>
           ) : (
