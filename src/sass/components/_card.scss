@@ -1,5 +1,6 @@
 // 'Card' styling for Candidates, Organizations, etc.
 $outline-radius: 3px;
+$space-5: 5px;
 
 @include media-object('.card-main__media-object', '.card-main__media-object-anchor', '.card-main__media-object-content');
 
@@ -158,7 +159,7 @@ $outline-radius: 3px;
     &__flex {
       display: flex;
       align-content: center;
-      justify-content: flex-start; 
+      justify-content: flex-start;
     }
 
     &__position-icon {
@@ -201,8 +202,8 @@ $outline-radius: 3px;
         font-size: 22px;
       }
       &--inline {
-        margin: 0;
-        padding: 5px 10px;
+        margin: $space-none;
+        padding: $space-5 ($space-5 * 2);
       }
     }
 
