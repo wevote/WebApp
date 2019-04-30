@@ -39,7 +39,7 @@ class HowItWorks extends Component {
         },
         Customize: {
           title: 'Add more customizations for your supporters',
-          description: 'Want all the bells and whistles?  We Vote offers a lot for free, but offers premium features as well.',
+          description: 'Want all the bells and whistles?  We Vote offers a lot for free, but has paid premium features that include the endorsements from your chapters and partners, and give you deeper analytics.',
           imgSrc: '/img/global/intro-story/Campaign-PromoteChapters-20190425.gif',
           index: 2,
         },
@@ -60,13 +60,13 @@ class HowItWorks extends Component {
         },
         Customize: {
           title: 'Customize your Election Center',
-          description: 'Want all the bells and whistles?  We Vote offers a lot for free, but offers premium features as well to help you further customize branding and messaging.',
+          description: 'Want all the bells and whistles?  We Vote offers a lot for free, but has paid premium features to help you further customize branding and messaging, and give you deeper analytics.',
           imgSrc: '',
           index: 1,
         },
         Launch: {
           title: 'Launch!',
-          description: 'Promote your unique url over your email, text, and social media channels. Add the We Vote widget directly to your campaign website. Watch your social lift in real time.',
+          description: 'Share your unique url over your email, text, and social media channels. Add the We Vote widget directly to your website. Watch your social lift in real time.',
           imgSrc: '/img/global/intro-story/Organizations-Launch-20190425.gif',
           index: 2,
         },

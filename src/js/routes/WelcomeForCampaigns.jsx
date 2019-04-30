@@ -2,14 +2,11 @@ import React, { PureComponent } from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import LocationIcon from '@material-ui/icons/LocationOn';
 import { HeaderForCampaigns, Title, BlueTitle, SubTitle } from '../components/Welcome/Header';
-import Section, { SectionTitle, SectionTitleBold, Step, StepNumber, StepLabel, GetStarted, ButtonContainer, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage } from '../components/Welcome/Section';
+import Section, { SectionTitle, Step, StepNumber, StepLabel, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage } from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 import Footer from '../components/Welcome/Footer';
-import AddressBox from '../components/Welcome/AddressBox';
 import { historyPush, cordovaDot } from '../utils/cordovaUtils';
 import Testimonial from '../components/Widgets/Testimonial';
 import AnalyticsActions from '../actions/AnalyticsActions';
@@ -20,7 +17,7 @@ import VoterStore from '../stores/VoterStore';
 
 class WelcomeForCampaigns extends PureComponent {
   static propTypes = {
-    classes: PropTypes.object,
+    // classes: PropTypes.object,
     pathname: PropTypes.string,
   };
 
@@ -86,7 +83,7 @@ class WelcomeForCampaigns extends PureComponent {
   }
 
   render () {
-    const { classes, pathname } = this.props;
+    const { pathname } = this.props;
     // console.log('WelcomeForCampaigns, pathname: ', pathname);
     const { voter } = this.state;
     const isVoterSignedIn = voter.is_signed_in;
@@ -106,10 +103,6 @@ class WelcomeForCampaigns extends PureComponent {
           <SubTitle>Leverage social ballot planning tools to empower supporters to triple your reach.</SubTitle>
         </HeaderForCampaigns>
         <Section>
-          <SectionTitle>
-            We Vote is
-            <SectionTitleBold> Free &amp; Easy</SectionTitleBold>
-          </SectionTitle>
           <Step>
             <StepNumber>1</StepNumber>
             <StepLabel>Claim your Campaign Profile</StepLabel>
@@ -120,21 +113,8 @@ class WelcomeForCampaigns extends PureComponent {
           </Step>
           <Step>
             <StepNumber>3</StepNumber>
-            <StepLabel>Add More Customizations for your Supporters</StepLabel>
+            <StepLabel>Launch! Watch your social lift in real time.</StepLabel>
           </Step>
-          <GetStarted>
-            <AddressBox icon={<LocationIcon />} />
-            <ButtonContainer>
-              <Button
-                variant="contained"
-                color="primary"
-                classes={{ containedPrimary: classes.buttonContained }}
-                onClick={() => historyPush('/ballot')}
-              >
-                Get Started
-              </Button>
-            </ButtonContainer>
-          </GetStarted>
         </Section>
         <Section variant="dark" rounded>
           <DescriptionContainer>
@@ -142,12 +122,12 @@ class WelcomeForCampaigns extends PureComponent {
               <Description>
                 More and more money is spent on elections each year,
                 <Bold> yet our ballots remain mysterious and difficult to fill out. </Bold>
-                Endorsements are fragmented, and as a result many voters chose not to vote down ballot at all rather than unintentionally vote the wrong way. Until now.
+                Endorsements are fragmented, and as a result many voters choose not to vote down ballot at all rather than unintentionally vote the wrong way. Until now.
               </Description>
               <Description>
                 We Vote is a free, easy tool that allows voters to view ballot endorsements they trust from friends and organizations all in one place.
                 {' '}
-                We help users geolocate their specific ballot and then plan who to vote for using easy visual guides.
+                We help voters geolocate their specific ballot and then plan who to vote for using easy visual guides.
                 {' '}
                 Voters can now confidently fill out their whole ballot in six minutes.
               </Description>
@@ -168,11 +148,19 @@ class WelcomeForCampaigns extends PureComponent {
                 <StepLabel>Supercharging your Supporters (paid, but worth it!)</StepLabel>
               </Step>
               <Description>
-                We know relational organizing can increase voter turnout by 25%. But we shouldn&apos;t stop at turnout, we need to make it easier to voters to cast their ballots with the right choices. Empower your supporters to share your ballot guides with
+                We know relational organizing can increase voter turnout by 25%.
+                {' '}
+                But we shouldn&apos;t stop at turnout, we need to make it easier to voters to cast their ballots with the
+                {' '}
+                <Bold>right choices</Bold>
+                . Empower your supporters to share your ballot guides with
                 {' '}
                 <i>their</i>
                 {' '}
                 most relevant social networks.
+              </Description>
+              <Description>
+                (GET STARTED BUTTON)
               </Description>
             </DescriptionLeftColumn>
             <DescriptionImageColumn>

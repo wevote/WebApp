@@ -117,9 +117,9 @@ class WelcomeForOrganizations extends PureComponent {
             .
           </SectionTitle>
           <Description>
-            Current U.S. voter turnout rates trail most developed countries.
-            {' '}
-            Fortunately, this problem is solvable, and you don’t have to be involved with politics to help.
+            Regardless of how people vote, the most important thing is that they VOTE. You don
+            {'’'}
+            t have to be involved with politics to boost civic engagement.
             {' '}
             There are easy, appropriate ways for every organization or business to help increase voter participation:
           </Description>
@@ -179,6 +179,9 @@ class WelcomeForOrganizations extends PureComponent {
             {' '}
             and gather more fans and kudos for your help in increasing turnout and voter confidence.
           </Description>
+          <Description>
+            (HOW IT WORKS BUTTON)
+          </Description>
         </Section>
         <Section variant="dark" rounded>
           <SectionTitle>
@@ -194,8 +197,11 @@ class WelcomeForOrganizations extends PureComponent {
                 Using We Vote, voters can now confidently plan out their whole ballot in six minutes or less.
               </Description>
               <Description>
-                It has never been easier. Now, we need your help to spread the word! (GET STARTED)
+                It has never been easier. Now, we need your help to spread the word!
                 {' '}
+              </Description>
+              <Description>
+                (GET STARTED BUTTON)
               </Description>
             </DescriptionLeftColumn>
             <DescriptionImageColumn>
