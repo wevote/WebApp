@@ -100,7 +100,7 @@ export default class SignInEmailProcess extends Component {
           AppActions.unsetStoreSignInStartPath();
           cookies.removeItem('sign_in_start_path', '/');
         }
-        historyPush( redirectPathname );
+        historyPush(redirectPathname);
       } else {
         historyPush({
           pathname: '/settings/account',

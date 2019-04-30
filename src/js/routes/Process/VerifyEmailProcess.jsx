@@ -1,12 +1,12 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import AppActions from '../../actions/AppActions';
+import cookies from '../../utils/cookies';
 import { historyPush } from '../../utils/cordovaUtils';
 import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
-import cookies from "../../utils/cookies";
-import AppActions from "../../actions/AppActions";
 // This will be needed in the future
 // import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
 

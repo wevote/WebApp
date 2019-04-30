@@ -99,10 +99,6 @@ class WelcomeAppbar extends Component {
     this.setState({ profilePopUpOpen: !profilePopUpOpen });
   }
 
-  closeSignInModal () {
-    AppActions.setShowSignInModal(false);
-  }
-
   toggleSignInModal = () => {
     const { showSignInModal } = this.state;
     AppActions.setShowSignInModal(!showSignInModal);
@@ -118,6 +114,10 @@ class WelcomeAppbar extends Component {
     VoterGuideActions.voterGuideFollowersRetrieve(this.state.voter.linked_organization_we_vote_id);
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.state.voter.linked_organization_we_vote_id);
     this.setState({ profilePopUpOpen: false });
+  }
+
+  closeSignInModal () {
+    AppActions.setShowSignInModal(false);
   }
 
   render () {
