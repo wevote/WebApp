@@ -84,9 +84,12 @@ export default class ValuesList extends Component {
               searchUpdateDelayTime={0}
             />
             <br />
-            <div className="network-issues-list voter-guide-list card">
-              { this.state.allIssues && this.state.allIssues.length ?
-                issueListForDisplay :
+            <div className="network-issues-list voter-guide-list">
+              { this.state.allIssues && this.state.allIssues.length ? (
+                <div className="row">
+                  {issueListForDisplay}
+                </div>
+              ) :
                 null
               }
             </div>
