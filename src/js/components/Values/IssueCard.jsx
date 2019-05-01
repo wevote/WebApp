@@ -25,7 +25,7 @@ class IssueCard extends Component {
     super(props);
     this.state = {
       ballotItemWeVoteId: '',
-      followToggleOn: false,
+      // followToggleOn: false,
       issue: {},
       issueImageSize: 'SMALL', // We support SMALL, MEDIUM, LARGE
       issueWeVoteId: '',
@@ -43,7 +43,7 @@ class IssueCard extends Component {
       }
       this.setState({
         ballotItemWeVoteId: this.props.ballotItemWeVoteId,
-        followToggleOn: this.props.followToggleOn,
+        // followToggleOn: this.props.followToggleOn,
         issue: this.props.issue,
         issueImageSize,
         issueWeVoteId: this.props.issue.issue_we_vote_id,
@@ -61,7 +61,7 @@ class IssueCard extends Component {
       }
       this.setState({
         ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
-        followToggleOn: nextProps.followToggleOn,
+        // followToggleOn: nextProps.followToggleOn,
         issue: nextProps.issue,
         issueImageSize,
         issueWeVoteId: nextProps.issue.issue_we_vote_id,
