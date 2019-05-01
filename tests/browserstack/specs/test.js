@@ -6,11 +6,14 @@ describe('Basic cross-platform WeVote test',  () => {
     if (isCordova) {
       // switch contexts and click through intro
       await driver.switchContext('WEBVIEW_org.wevote.cordova');
-      const firstNextButton = await $('.background--image2 .btn.btn-lg');
+      const firstNextButton = await $('div[data-index="0"] .intro-story__btn--bottom');
+      await browser.pause(1000);
       await firstNextButton.click();
-      const secondNextButton = await $('.background--image4 .btn.btn-lg');
+      const secondNextButton = await $('div[data-index="1"] .intro-story__btn--bottom');
+      await browser.pause(1000);
       await secondNextButton.click();
-      const thirdNextButton = await $('.background--image5 .btn.btn-lg');
+      const thirdNextButton = await $('div[data-index="2"] .intro-story__btn--bottom');
+      await browser.pause(1000);
       await thirdNextButton.click();
       await browser.pause(1000);
     } else {
