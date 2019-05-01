@@ -52,7 +52,14 @@ export default class IssueFollowToggleButton extends Component {
     }
   }
 
-  onIssueStopFollowing () {
+  onIssueStopFollowing (e) {
+    if (this.state.isFollowing) {
+      if (e.target.classList.contains('MuiButton-label-44')) {
+        e.target.parentElement.parentElement.parentElement.classList.remove('show');
+      } else if (e.target.classList.contains('issues-follow-btn__menu-item')) {
+        e.target.parentElement.parentElement.classList.remove('show');
+      }
+    }
     this.setState({ isFollowing: false });
     IssueActions.issueStopFollowing(this.props.issueWeVoteId, VoterStore.electionId());
     // console.log("IssueFollowToggleButton, this.props.ballotItemWeVoteId:", this.props.ballotItemWeVoteId);
@@ -115,7 +122,7 @@ export default class IssueFollowToggleButton extends Component {
         ) : (
           null
         )}
-        <div id="dropdown_menu" className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
+        <div id="issues-follow-btn__menu" className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
           {this.state.isFollowing ? (
             <span className="d-print-none">
               <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={this.onIssueStopFollowing}>
