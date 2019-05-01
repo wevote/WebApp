@@ -91,7 +91,7 @@ class IssueCard extends Component {
     issueDescription = issueDescription || '';
 
     let issueImage;
-    let numberOfLines;
+    const numberOfLines = 3;
     if (this.state.issueImageSize === 'SMALL') {
       issueImage = (
         <IssueImageDisplay
@@ -101,11 +101,11 @@ class IssueCard extends Component {
           turnOffIssueFade
         />
       );
-      if (this.state.followToggleOn) {
-        numberOfLines = 5; // Allow more vertical space for Follow button
-      } else {
-        numberOfLines = 2;
-      }
+      // if (this.state.followToggleOn) {
+      //   numberOfLines = 5; // Allow more vertical space for Follow button
+      // } else {
+      //   numberOfLines = 2;
+      // }
     } else if (this.state.issueImageSize === 'MEDIUM') {
       issueImage = (
         <IssueImageDisplay
@@ -115,11 +115,11 @@ class IssueCard extends Component {
           turnOffIssueFade
         />
       );
-      if (this.state.followToggleOn) {
-        numberOfLines = 6; // Allow more vertical space for Follow button
-      } else {
-        numberOfLines = 3;
-      }
+      // if (this.state.followToggleOn) {
+      //   numberOfLines = 6; // Allow more vertical space for Follow button
+      // } else {
+      //   numberOfLines = 3;
+      // }
     } else if (this.state.issueImageSize === 'LARGE') {
       issueImage = (
         <IssueImageDisplay
@@ -129,11 +129,11 @@ class IssueCard extends Component {
           turnOffIssueFade
         />
       );
-      if (this.state.followToggleOn) {
-        numberOfLines = 7; // Allow more vertical space for Follow button
-      } else {
-        numberOfLines = 4;
-      }
+      // if (this.state.followToggleOn) {
+      //   numberOfLines = 7; // Allow more vertical space for Follow button
+      // } else {
+      //   numberOfLines = 4;
+      // }
     }
 
 
@@ -141,7 +141,7 @@ class IssueCard extends Component {
       <div className="col col-12 col-md-6 u-stack--md">
         <div
           key={`issue-card-${this.state.issueWeVoteId}`}
-          className="card u-inset--md u-full-height"
+          className="card u-inset__h--md u-padding-top--md u-padding-bottom--xs u-full-height"
         >
           <Flex>
             <div className="card-main__media-object-anchor">
@@ -160,7 +160,7 @@ class IssueCard extends Component {
               <Link to={this.getIssueLink}
                     className="u-no-underline"
               >
-                <h3 className="card-main__display-name">{issueDisplayName}</h3>
+                <h3>{issueDisplayName}</h3>
               </Link>
             </IssueName>
             {this.props.followToggleOn && this.state.issueWeVoteId ? (
@@ -201,6 +201,9 @@ const IssueName = styled.h3`
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 0;
+  h3 {
+    margin-bottom: 0;
+  }
 `;
 
 const FollowToggleContainer = styled.div`
