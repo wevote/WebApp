@@ -1,6 +1,5 @@
 // 'Card' styling for Candidates, Organizations, etc.
 $outline-radius: 3px;
-$space-5: 5px;
 
 @include media-object('.card-main__media-object', '.card-main__media-object-anchor', '.card-main__media-object-content');
 
@@ -203,7 +202,7 @@ $space-5: 5px;
       }
       &--inline {
         margin: $space-none;
-        padding: $space-5 ($space-5 * 2);
+        padding: $space-xs $space-sm;
       }
     }
 
