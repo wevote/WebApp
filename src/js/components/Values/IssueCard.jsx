@@ -9,7 +9,7 @@ import { renderLog } from '../../utils/logging';
 import ReadMore from '../Widgets/ReadMore';
 import { convertNameToSlug } from '../../utils/textFormat';
 
-export default class IssueCard extends Component {
+class IssueCard extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     currentBallotIdInUrl: PropTypes.string,
@@ -141,7 +141,7 @@ export default class IssueCard extends Component {
       <div className="col col-12 col-md-6 u-stack--md">
         <div
           key={`issue-card-${this.state.issueWeVoteId}`}
-          className="card u-inset__squish--sm u-full-height"
+          className="card u-inset--md u-full-height"
         >
           <Flex>
             <div className="card-main__media-object-anchor">
@@ -149,7 +149,7 @@ export default class IssueCard extends Component {
                 null :
                 (
                   <Link to={this.getIssueLink}
-                        className="u-no-underline"
+                    className="u-no-underline"
                   >
                     {issueImage}
                   </Link>
@@ -218,3 +218,5 @@ const Description = styled.div`
   font-size: 14px;
   color: #333;
 `;
+
+export default IssueCard;
