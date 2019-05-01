@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { _ } from 'lodash';
+import styled from 'styled-components';
 import Helmet from 'react-helmet';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
@@ -84,9 +85,12 @@ export default class ValuesList extends Component {
               searchUpdateDelayTime={0}
             />
             <br />
-            <div className="network-issues-list voter-guide-list card">
-              { this.state.allIssues && this.state.allIssues.length ?
-                issueListForDisplay :
+            <div className="network-issues-list voter-guide-list">
+              { this.state.allIssues && this.state.allIssues.length ? (
+                <Row className="row">
+                  {issueListForDisplay}
+                </Row>
+              ) :
                 null
               }
             </div>
@@ -96,3 +100,8 @@ export default class ValuesList extends Component {
     );
   }
 }
+
+const Row = styled.div`
+  margin-left: -16px;
+  margin-right: -16px;
+`;

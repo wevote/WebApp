@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import IssueFollowToggleButton from './IssueFollowToggleButton';
 import IssueImageDisplay from './IssueImageDisplay';
@@ -8,7 +9,7 @@ import { renderLog } from '../../utils/logging';
 import ReadMore from '../Widgets/ReadMore';
 import { convertNameToSlug } from '../../utils/textFormat';
 
-export default class IssueCard extends Component {
+class IssueCard extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     currentBallotIdInUrl: PropTypes.string,
@@ -24,7 +25,7 @@ export default class IssueCard extends Component {
     super(props);
     this.state = {
       ballotItemWeVoteId: '',
-      followToggleOn: false,
+      // followToggleOn: false,
       issue: {},
       issueImageSize: 'SMALL', // We support SMALL, MEDIUM, LARGE
       issueWeVoteId: '',
@@ -42,7 +43,7 @@ export default class IssueCard extends Component {
       }
       this.setState({
         ballotItemWeVoteId: this.props.ballotItemWeVoteId,
-        followToggleOn: this.props.followToggleOn,
+        // followToggleOn: this.props.followToggleOn,
         issue: this.props.issue,
         issueImageSize,
         issueWeVoteId: this.props.issue.issue_we_vote_id,
@@ -60,7 +61,7 @@ export default class IssueCard extends Component {
       }
       this.setState({
         ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
-        followToggleOn: nextProps.followToggleOn,
+        // followToggleOn: nextProps.followToggleOn,
         issue: nextProps.issue,
         issueImageSize,
         issueWeVoteId: nextProps.issue.issue_we_vote_id,
@@ -90,7 +91,7 @@ export default class IssueCard extends Component {
     issueDescription = issueDescription || '';
 
     let issueImage;
-    let numberOfLines;
+    const numberOfLines = 3;
     if (this.state.issueImageSize === 'SMALL') {
       issueImage = (
         <IssueImageDisplay
@@ -100,11 +101,11 @@ export default class IssueCard extends Component {
           turnOffIssueFade
         />
       );
-      if (this.state.followToggleOn) {
-        numberOfLines = 5; // Allow more vertical space for Follow button
-      } else {
-        numberOfLines = 2;
-      }
+      // if (this.state.followToggleOn) {
+      //   numberOfLines = 5; // Allow more vertical space for Follow button
+      // } else {
+      //   numberOfLines = 2;
+      // }
     } else if (this.state.issueImageSize === 'MEDIUM') {
       issueImage = (
         <IssueImageDisplay
@@ -114,11 +115,11 @@ export default class IssueCard extends Component {
           turnOffIssueFade
         />
       );
-      if (this.state.followToggleOn) {
-        numberOfLines = 6; // Allow more vertical space for Follow button
-      } else {
-        numberOfLines = 3;
-      }
+      // if (this.state.followToggleOn) {
+      //   numberOfLines = 6; // Allow more vertical space for Follow button
+      // } else {
+      //   numberOfLines = 3;
+      // }
     } else if (this.state.issueImageSize === 'LARGE') {
       issueImage = (
         <IssueImageDisplay
@@ -128,42 +129,58 @@ export default class IssueCard extends Component {
           turnOffIssueFade
         />
       );
-      if (this.state.followToggleOn) {
-        numberOfLines = 7; // Allow more vertical space for Follow button
-      } else {
-        numberOfLines = 4;
-      }
+      // if (this.state.followToggleOn) {
+      //   numberOfLines = 7; // Allow more vertical space for Follow button
+      // } else {
+      //   numberOfLines = 4;
+      // }
     }
 
 
     return (
-      <div
-        className="card-main__media-object u-stack--md"
-        key={`issue-card-${this.state.issueWeVoteId}`}
-      >
-        <div className="card-main__media-object-anchor">
-          {this.props.turnOffIssueImage ?
-            null :
-            (
+      <div className="col col-12 col-md-6 u-stack--md">
+        <div
+          key={`issue-card-${this.state.issueWeVoteId}`}
+          className="card u-inset__h--md u-padding-top--md u-padding-bottom--xs u-full-height"
+        >
+          <Flex>
+            <div className="card-main__media-object-anchor">
+              {this.props.turnOffIssueImage ?
+                null :
+                (
+                  <Link to={this.getIssueLink}
+                    className="u-no-underline"
+                  >
+                    {issueImage}
+                  </Link>
+                )
+              }
+            </div>
+            <IssueName>
               <Link to={this.getIssueLink}
                     className="u-no-underline"
               >
-                {issueImage}
+                <h3>{issueDisplayName}</h3>
               </Link>
-            )
-          }
-        </div>
-        <div className="card-main__media-object-content">
-          <Link to={this.getIssueLink}
-                className="u-no-underline"
-          >
-            <h3 className="card-main__display-name">{issueDisplayName}</h3>
-          </Link>
-
+            </IssueName>
+            {this.props.followToggleOn && this.state.issueWeVoteId ? (
+              <FollowToggleContainer>
+                <IssueFollowToggleButton
+                  ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+                  classNameOverride="pull-left"
+                  currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                  issueName={this.state.issue.issue_name}
+                  issueWeVoteId={this.state.issueWeVoteId}
+                  urlWithoutHash={this.props.urlWithoutHash}
+                />
+              </FollowToggleContainer>
+            ) : null
+            }
+          </Flex>
           { this.props.turnOffDescription ?
             <span className="card-main__description" /> :
             (
-              <span className="card-main__description">
+              <Description>
                 <Link to={this.getIssueLink}
                       className="u-no-underline"
                 >
@@ -171,24 +188,38 @@ export default class IssueCard extends Component {
                             num_of_lines={numberOfLines}
                   />
                 </Link>
-              </span>
+              </Description>
             )
           }
         </div>
-        {this.props.followToggleOn && this.state.issueWeVoteId ? (
-          <div className="">
-            <IssueFollowToggleButton
-              ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-              classNameOverride="pull-left"
-              currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-              issueName={this.state.issue.issue_name}
-              issueWeVoteId={this.state.issueWeVoteId}
-              urlWithoutHash={this.props.urlWithoutHash}
-            />
-          </div>
-        ) : null
-        }
       </div>
     );
   }
 }
+
+const IssueName = styled.h3`
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 0;
+  h3 {
+    margin-bottom: 0;
+  }
+`;
+
+const FollowToggleContainer = styled.div`
+  margin-left: auto;
+`;
+
+const Flex = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+const Description = styled.div`
+  margin-top: 8px;
+  font-size: 14px;
+  color: #333;
+`;
+
+export default IssueCard;
