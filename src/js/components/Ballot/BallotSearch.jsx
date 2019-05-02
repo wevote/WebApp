@@ -93,7 +93,7 @@ class BallotSearch extends Component {
     const { classes, theme, isSearching, alwaysOpen } = this.props;
     const { searchValue } = this.state;
     return (
-      <SearchWrapper searching={isSearching || alwaysOpen} brandBlue={theme.palette.primary.main}>
+      <SearchWrapper searchOpen={isSearching || alwaysOpen} brandBlue={theme.palette.primary.main}>
         <IconButton
           classes={{ root: classes.iconButtonRoot }}
           onClick={!alwaysOpen ? this.toggleSearch : undefined}
@@ -106,7 +106,7 @@ class BallotSearch extends Component {
           onChange={this.handleSearch}
           value={searchValue}
         />
-        <Closer searching={isSearching || alwaysOpen} brandBlue={theme.palette.primary.main}>
+        <Closer searchOpen={isSearching || alwaysOpen} brandBlue={theme.palette.primary.main}>
           <IconButton
             classes={{ root: classes.iconButtonRoot }}
             onClick={(isSearching || !alwaysOpen) ? this.toggleSearch : undefined}
@@ -159,7 +159,7 @@ const Closer = styled.div`
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-left: 1px solid ${({ brandBlue }) => (brandBlue)};
-  display: ${({ searching }) => (searching ? 'inherit' : 'none')};
+  display: ${({ searchOpen }) => (searchOpen ? 'inherit' : 'none')};
 `;
 
 const SearchWrapper = styled.div`
@@ -167,7 +167,7 @@ const SearchWrapper = styled.div`
   flex-flow: row;
   border-radius: 16px;
   height: 26px;
-  border: 1px solid ${props => (!props.searching ? 'rgba(0, 0, 0, 0.23)' : props.brandBlue)};
+  border: 1px solid ${props => (!props.searchOpen ? 'rgba(0, 0, 0, 0.23)' : props.brandBlue)};
   padding: 0 3px 0 3px;
   margin-right: 16px;
   margin-bottom: 8px;
