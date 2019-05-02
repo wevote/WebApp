@@ -39,6 +39,7 @@ class HeaderBackToBallot extends Component {
       organization: {},
       organizationWeVoteId: '',
       showSignInModal: AppStore.showSignInModal(),
+      scrolledDown: AppStore.getScrolledDown(),
       voter: {},
     };
     this.toggleAccountMenu = this.toggleAccountMenu.bind(this);
@@ -158,6 +159,7 @@ class HeaderBackToBallot extends Component {
   onAppStoreChange () {
     this.setState({
       showSignInModal: AppStore.showSignInModal(),
+      scrolledDown: AppStore.getScrolledDown(),
     });
   }
 
@@ -276,7 +278,7 @@ class HeaderBackToBallot extends Component {
   }
 
   render () {
-    const { organizationWeVoteId, candidate, voter, officeName, officeWeVoteId } = this.state;
+    const { organizationWeVoteId, candidate, voter, officeName, officeWeVoteId, scrolledDown } = this.state;
     const { classes, pathname } = this.props;
     renderLog(__filename);
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
@@ -324,7 +326,7 @@ class HeaderBackToBallot extends Component {
     }());
 
     return (
-      <AppBar className={headerClassName} color="default">
+      <AppBar classes={scrolledDown && { root: classes.noBoxShadow }} className={headerClassName} color="default">
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
           <HeaderBackToButton
             backToLink={backToLink}
@@ -389,6 +391,9 @@ class HeaderBackToBallot extends Component {
 }
 
 const styles = theme => ({
+  noBoxShadow: {
+    boxShadow: '0 0 0 0',
+  },
   headerButtonRoot: {
     paddingTop: 2,
     paddingBottom: 2,
