@@ -325,8 +325,13 @@ class HeaderBackToBallot extends Component {
       }
     }());
 
+    let appBarClasses;
+    if (scrolledDown) {
+      appBarClasses = { root: classes.noBoxShadow };
+    }
+
     return (
-      <AppBar classes={scrolledDown && { root: classes.noBoxShadow }} className={headerClassName} color="default">
+      <AppBar className={headerClassName} color="default" classes={appBarClasses}>
         <Toolbar className="header-toolbar header-backto-toolbar" disableGutters>
           <HeaderBackToButton
             backToLink={backToLink}
