@@ -889,6 +889,7 @@ class Ballot extends Component {
                               onToggleSearch={this.handleToggleSearchBallot}
                               items={ballotWithAllItems}
                               onBallotSearch={this.handleSearch}
+                              alwaysOpen={!showFilterTabs}
                               />
                               { showFilterTabs ? (
                                 BALLOT_ITEM_FILTER_TYPES.map((oneTypeOfBallotItem) => {
