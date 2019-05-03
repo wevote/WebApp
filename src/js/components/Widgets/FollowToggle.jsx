@@ -21,6 +21,7 @@ export default class FollowToggle extends Component {
     urlWithoutHash: PropTypes.string,
     organizationWeVoteId: PropTypes.string,
     hideDropdownButtonUntilFollowing: PropTypes.bool,
+    lightModeOn: PropTypes.bool,
   };
 
   constructor (props) {
