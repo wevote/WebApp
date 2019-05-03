@@ -264,9 +264,36 @@ export default class FollowToggle extends Component {
         ) : (
           <div>
             {this.props.hideDropdownButtonUntilFollowing ? (
-              <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn--blue issues-follow-btn__main--radius" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-                Follow
-              </Button>
+              <React.Fragment>
+                <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius issues-follow-btn--blue" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Follow
+                </Button>
+                <div className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
+                  {this.state.isFollowing ? (
+                    <span className="d-print-none">
+                      { this.props.hideStopFollowingButton ?
+                        null : (
+                          <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                            Unfollow
+                          </Button>
+                        )}
+                    </span>
+                  ) : (
+                    <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                      Follow
+                    </Button>
+                  )}
+                  <div className="dropdown-divider" />
+                  <Button
+                    type="button"
+                    className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+                    onClick={() => this.ignoreInstantly(ignoreFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+                  >
+                    Ignore
+                  </Button>
+                </div>
+              </React.Fragment>
+
             ) : (
               <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn--blue" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
                 Follow

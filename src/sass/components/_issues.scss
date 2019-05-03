@@ -180,6 +180,13 @@ $menu-item-padding: 7px;
   height: 32px;
 }
 
+.dropdown-toggle::after {
+  position: absolute;
+  font-size: 16px;
+  top: calc(50% - 1px);
+  right: calc((35px / 2px) - 6px);
+}
+
 .issues-follow-btn {
   min-width: 0 !important;
   font-size: 12.5px !important;
@@ -209,6 +216,10 @@ $menu-item-padding: 7px;
       .issues-follow-btn__dropdown {
         display: none;
       }
+    }
+    &--radius.dropdown-toggle::after {
+      display: none !important;
+      font-size: 0px !important;
     }
   }
   &__seperator {
@@ -293,11 +304,4 @@ $menu-item-padding: 7px;
   border: none !important;
   height: 1px !important;
   background: $gray-light !important;
-}
-
-.dropdown-toggle::after {
-  position: absolute !important;
-  font-size: 16px !important;
-  top: calc(50% - 1px);
-  right: calc((35px / 2px) - 6px);
 }
