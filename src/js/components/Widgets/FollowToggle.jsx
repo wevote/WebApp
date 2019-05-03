@@ -265,7 +265,7 @@ export default class FollowToggle extends Component {
           <div>
             {this.props.hideDropdownButtonUntilFollowing ? (
               <React.Fragment>
-                {!this.state.lightModeOn ? (
+                {this.props.lightModeOn ? (
                   <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Follow
                   </Button>
@@ -301,9 +301,17 @@ export default class FollowToggle extends Component {
               </React.Fragment>
 
             ) : (
-              <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn--blue" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-                Follow
-              </Button>
+              <div>
+                {this.props.lightModeOn ? (
+                  <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn--white" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                    Follow
+                  </Button>
+                ) : (
+                  <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn--blue" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                    Follow
+                  </Button>
+                )}
+              </div>
             )}
           </div>
         )}
@@ -380,9 +388,15 @@ export default class FollowToggle extends Component {
             ) : (
               <React.Fragment>
                 <div className="issues-follow-btn__seperator" />
-                <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--blue" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span className="sr-only">Toggle Dropdown</span>
-                </Button>
+                {this.props.lightModeOn ? (
+                  <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span className="sr-only">Toggle Dropdown</span>
+                  </Button>
+                ) : (
+                  <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--blue" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span className="sr-only">Toggle Dropdown</span>
+                  </Button>
+                )}
                 <div className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
                   {this.state.isFollowing ? (
                     <span className="d-print-none">
