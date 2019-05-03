@@ -97,9 +97,9 @@ $mobile-btn-padding: 52px;
   }
 }
 
-.btn-social > :first-child {
-  width: 46px;
-  line-height: 36px;
+.btn-social .fa.fa-twitter {
+  width: 46px !important;
+  line-height: 36px !important;
 }
 
 .mobile-container {
