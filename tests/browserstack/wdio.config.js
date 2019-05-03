@@ -20,7 +20,7 @@ exports.config = {
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
     },
-    {
+    /* {
       // capabilities for a cordova android test
       name: browserStackConfig.NAME,
       build: browserStackConfig.BUILD,
@@ -30,6 +30,16 @@ exports.config = {
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
     },
+    {
+      // capabilities for a cordova iOS test
+      name: browserStackConfig.NAME,
+      build: browserStackConfig.BUILD,
+      device: 'iPhone 8 Plus',
+      os_version: '11',
+      app: browserStackConfig.BROWSERSTACK_IPA_URL,
+      'browserstack.debug': true,
+      'browserstack.geoLocation': 'US',
+    }, */
   ],
   coloredLogs: true,
   baseUrl: '',
