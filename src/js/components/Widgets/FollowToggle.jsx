@@ -20,6 +20,7 @@ export default class FollowToggle extends Component {
     showFollowingText: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
     organizationWeVoteId: PropTypes.string,
+    hideDropdownButtonUntilFollowing: PropTypes.bool,
   };
 
   constructor (props) {
@@ -261,9 +262,17 @@ export default class FollowToggle extends Component {
             )}
           </Button>
         ) : (
-          <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn--blue" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-            Follow
-          </Button>
+          <div>
+            {this.props.hideDropdownButtonUntilFollowing ? (
+              <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn--blue issues-follow-btn__main--radius" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                Follow
+              </Button>
+            ) : (
+              <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn--blue" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                Follow
+              </Button>
+            )}
+          </div>
         )}
         {this.props.hideDropdownButtonUntilFollowing ? (
           <div>
