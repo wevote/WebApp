@@ -76,7 +76,7 @@ export default class PositionItem extends Component {
               ) :
                 imagePlaceholder }
             </Link>
-            <FollowToggle organizationWeVoteId={organizationWeVoteId} />
+            <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
           </div>
           <div className="card-child__media-object-content">
             <div className="card-child__content">
