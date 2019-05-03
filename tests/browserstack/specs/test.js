@@ -1,3 +1,5 @@
+/* eslint-env mocha */
+
 const assert = require('assert');
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
