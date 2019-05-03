@@ -213,6 +213,7 @@ $menu-item-padding: 7px;
     text-align: center !important;
     &--radius {
       border-radius: $outline-radius !important;
+      border: 1px solid $gray-light !important;
       .issues-follow-btn__dropdown {
         display: none;
       }
