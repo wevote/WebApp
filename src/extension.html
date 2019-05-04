@@ -16,13 +16,13 @@
     <div id="app" class="test-page">
       <p>There's nothing to see here.</p>
       <p>Move along.</p>
-      <span id="test" style="display: none"></span>
+      <span id="testExt" style="display: none"></span>
     </div>
   <script>
     let out = document.cookie.match("(^|[^;]+)\\s*voter_device_id\\s*=\\s*([^;]+)");
     let id = out ? out.pop() : '';
-    let test = document.getElementById("test");
-    test.innerHTML = id;
+    let testExt = document.getElementById("testExt");
+    testExt.innerHTML = id;
   </script>
    </body>
 </html>
