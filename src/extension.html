@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<!--
+    Extension page for the We Vote WebApp -- Do not delete
+-->
+<html lang="en">
+  <head>
+    <meta name="description"
+          content="Extension page"
+          />
+    <title>We Vote</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+  </head>
+  <body>
+    <div id="app" class="test-page">
+      <p>There's nothing to see here.</p>
+      <p>Move along.</p>
+      <span id="test" style="display: none"></span>
+    </div>
+  <script>
+    let out = document.cookie.match("(^|[^;]+)\\s*voter_device_id\\s*=\\s*([^;]+)");
+    let id = out ? out.pop() : '';
+    let test = document.getElementById("test");
+    test.innerHTML = id;
+  </script>
+   </body>
+</html>
