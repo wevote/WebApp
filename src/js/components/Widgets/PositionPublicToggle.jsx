@@ -5,6 +5,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Radio from '@material-ui/core/Radio';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
 import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
@@ -188,26 +190,42 @@ class PositionPublicToggle extends Component {
       <div className={this.props.className}>
         { this.state.showPositionPublicHelpModal ? PositionPublicToggleHelpModal : null }
         <PublicToggle onKeyDown={onKeyDown}>
-          <RadioGroup>
-            <Radio
-              classes={{ colorPrimary: classes.radioPrimary }}
-              color="primary"
-              checked={showToThePublicOn === false}
-              value="Friends Only"
+          <FormControl>
+            <RadioGroup
               onChange={this.handlePositionToggle}
-            />
-            <RadioLabel>Friends Only</RadioLabel>
-          </RadioGroup>
-          <RadioGroup>
-            <Radio
-              classes={{ colorPrimary: classes.radioPrimary }}
-              color="primary"
-              checked={showToThePublicOn === true}
-              value="Public"
-              onChange={this.handlePositionToggle}
-            />
-            <RadioLabel>Public</RadioLabel>
-          </RadioGroup>
+            >
+              <FormControlLabel
+                classes={{ label: classes.radioLabel }}
+                value="Friends Only"
+                label="Friends Only"
+                labelPlacement="end"
+                control={
+                  (
+                    <Radio
+                      classes={{ colorPrimary: classes.radioPrimary }}
+                      color="primary"
+                      checked={showToThePublicOn === false}
+                    />
+                  )
+                }
+              />
+              <FormControlLabel
+                classes={{ label: classes.radioLabel }}
+                value="Public"
+                label="Public"
+                labelPlacement="end"
+                control={
+                  (
+                    <Radio
+                      classes={{ colorPrimary: classes.radioPrimary }}
+                      color="primary"
+                      checked={showToThePublicOn === true}
+                    />
+                  )
+                }
+              />
+            </RadioGroup>
+          </FormControl>
         </PublicToggle>
       </div>
     );
@@ -225,20 +243,35 @@ const styles = theme => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
   },
+  radioLabel: {
+    fontSize: '14px',
+    bottom: '4px',
+    position: 'relative',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '11px',
+    },
+  },
 });
 
 const PublicToggle = styled.div`
   display: flex;
   flex-flow: row wrap;
-`;
-
-const RadioLabel = styled.div`
-  height: 44px;
-  padding: 10px 4px;
+  padding-left: 15px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 10px;
+    padding-top: 4px;
+    margin-bottom: 4px;
   }
 `;
+
+// const RadioLabel = styled.div`
+//   height: 44px;
+//   padding: 10px 4px;
+//   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+//     font-size: 10px;
+//     position: relative;
+//     top: 4px;
+//   }
+// `;
 
 const RadioGroup = styled.div`
   display: flex;

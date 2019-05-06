@@ -220,7 +220,7 @@ const Wrapper = styled.div`
   width: 100%;
   background-color: ${({ showPositionStatementActionBar }) => (showPositionStatementActionBar ? '#F5F5F5' : 'white')};
   padding: 16px;
-  padding-left: 0;
+  /* padding-left: 0; */
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     background-color: white;
