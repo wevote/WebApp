@@ -1,5 +1,3 @@
-/* eslint-env mocha */
-
 const assert = require('assert');
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
@@ -26,7 +24,6 @@ describe('Basic cross-platform WeVote test',  () => {
     } else {
       // navigate browser to WeVote QA site
       await browser.url('https://quality.wevote.us/ballot');
-
     }
     const valuesButtonSelector = (isCordova) ? 'span=Values' : '#valuesTabHeaderBar';
     const valuesButton =
