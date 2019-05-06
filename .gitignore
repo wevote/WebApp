@@ -160,7 +160,7 @@ staticfiles
 src/js/config.js
 src/js/config-qa.js
 src/js/config-www.js
-tests/browserstack/config.js
+tests/browserstack/browserstack.config.js
 src/javascript/google-tag-manager.js
 src/javascript/google-tag-manager-qa.js
 src/javascript/google-tag-manager-www.js
