@@ -20,6 +20,8 @@ export default class FollowToggle extends Component {
     showFollowingText: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
     organizationWeVoteId: PropTypes.string,
+    hideDropdownButtonUntilFollowing: PropTypes.bool,
+    lightModeOn: PropTypes.bool,
   };
 
   constructor (props) {
@@ -261,45 +263,169 @@ export default class FollowToggle extends Component {
             )}
           </Button>
         ) : (
-          <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn--blue" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-            Follow
-          </Button>
-        )}
-        <div className="issues-follow-btn__seperator" />
-        {/*  */}
-        {this.state.isFollowing || this.state.isIgnoring ? (
-          <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span className="sr-only">Toggle Dropdown</span>
-          </Button>
-        ) : (
-          <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--blue" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span className="sr-only">Toggle Dropdown</span>
-          </Button>
-        )}
-        <div className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
-          {this.state.isFollowing ? (
-            <span className="d-print-none">
-              { this.props.hideStopFollowingButton ?
-                null : (
-                  <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-                    Unfollow
+          <div>
+            {this.props.hideDropdownButtonUntilFollowing ? (
+              <React.Fragment>
+                {this.props.lightModeOn ? (
+                  <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Follow
+                  </Button>
+                ) : (
+                  <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius issues-follow-btn--blue" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Follow
                   </Button>
                 )}
-            </span>
-          ) : (
-            <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
-              Follow
-            </Button>
-          )}
-          <div className="dropdown-divider" />
-          <Button
-            type="button"
-            className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
-            onClick={() => this.ignoreInstantly(ignoreFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
-          >
-            Ignore
-          </Button>
-        </div>
+                <div className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
+                  {this.state.isFollowing ? (
+                    <span className="d-print-none">
+                      { this.props.hideStopFollowingButton ?
+                        null : (
+                          <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                            Unfollow
+                          </Button>
+                        )}
+                    </span>
+                  ) : (
+                    <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                      Follow
+                    </Button>
+                  )}
+                  <div className="dropdown-divider" />
+                  <Button
+                    type="button"
+                    className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+                    onClick={() => this.ignoreInstantly(ignoreFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+                  >
+                    Ignore
+                  </Button>
+                </div>
+              </React.Fragment>
+
+            ) : (
+              <div>
+                {this.props.lightModeOn ? (
+                  <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn--white" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                    Follow
+                  </Button>
+                ) : (
+                  <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn--blue" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                    Follow
+                  </Button>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+        {this.props.hideDropdownButtonUntilFollowing ? (
+          <div>
+            {this.state.isFollowing || this.state.isIgnoring ? (
+              <React.Fragment>
+                <div className="issues-follow-btn__seperator" />
+                <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span className="sr-only">Toggle Dropdown</span>
+                </Button>
+                <div className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
+                  {this.state.isFollowing ? (
+                    <span className="d-print-none">
+                      { this.props.hideStopFollowingButton ?
+                        null : (
+                          <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                            Unfollow
+                          </Button>
+                        )}
+                    </span>
+                  ) : (
+                    <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                      Follow
+                    </Button>
+                  )}
+                  <div className="dropdown-divider" />
+                  <Button
+                    type="button"
+                    className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+                    onClick={() => this.ignoreInstantly(ignoreFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+                  >
+                    Ignore
+                  </Button>
+                </div>
+              </React.Fragment>
+            ) : (
+              null
+            )}
+          </div>
+        ) : (
+          <div>
+            {this.state.isFollowing || this.state.isIgnoring ? (
+              <React.Fragment>
+                <div className="issues-follow-btn__seperator" />
+                <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span className="sr-only">Toggle Dropdown</span>
+                </Button>
+                <div className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
+                  {this.state.isFollowing ? (
+                    <span className="d-print-none">
+                      { this.props.hideStopFollowingButton ?
+                        null : (
+                          <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                            Unfollow
+                          </Button>
+                        )}
+                    </span>
+                  ) : (
+                    <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                      Follow
+                    </Button>
+                  )}
+                  <div className="dropdown-divider" />
+                  <Button
+                    type="button"
+                    className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+                    onClick={() => this.ignoreInstantly(ignoreFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+                  >
+                    Ignore
+                  </Button>
+                </div>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <div className="issues-follow-btn__seperator" />
+                {this.props.lightModeOn ? (
+                  <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span className="sr-only">Toggle Dropdown</span>
+                  </Button>
+                ) : (
+                  <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--blue" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span className="sr-only">Toggle Dropdown</span>
+                  </Button>
+                )}
+                <div className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
+                  {this.state.isFollowing ? (
+                    <span className="d-print-none">
+                      { this.props.hideStopFollowingButton ?
+                        null : (
+                          <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.stopFollowingInstantly(stopFollowingFunc, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                            Unfollow
+                          </Button>
+                        )}
+                    </span>
+                  ) : (
+                    <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                      Follow
+                    </Button>
+                  )}
+                  <div className="dropdown-divider" />
+                  <Button
+                    type="button"
+                    className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+                    onClick={() => this.ignoreInstantly(ignoreFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}
+                  >
+                    Ignore
+                  </Button>
+                </div>
+              </React.Fragment>
+            )}
+          </div>
+        )}
       </div>
     );
   }
