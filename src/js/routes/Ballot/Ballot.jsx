@@ -871,15 +871,17 @@ class Ballot extends Component {
                   { textForMapSearch || ballotWithItemsFromCompletionFilterType.length > 0 ? (
                     <div className="ballot__filter__container">
                       { showBallotDecisionTabs && (
-                        <div className="ballot__filter d-print-none">
-                          <BallotDecisionsTabs
-                            completionLevelFilterType={BallotStore.cleanCompletionLevelFilterType(completionLevelFilterType)}
-                            ballotLength={BallotStore.ballotLength}
-                            ballotLengthRemaining={BallotStore.ballotRemainingChoicesLength}
-                          />
-                        </div>
+                        <React.Fragment>
+                          <div className="ballot__filter d-print-none">
+                            <BallotDecisionsTabs
+                              completionLevelFilterType={BallotStore.cleanCompletionLevelFilterType(completionLevelFilterType)}
+                              ballotLength={BallotStore.ballotLength}
+                              ballotLengthRemaining={BallotStore.ballotRemainingChoicesLength}
+                            />
+                          </div>
+                          <hr className="ballot-header-divider" />
+                        </React.Fragment>
                       )}
-                      <hr className="ballot-header-divider" />
                       <BallotFilterRow showFilterTabs={showFilterTabs}>
                         <div className="ballot__item-filter-tabs" ref={(chips) => { this.chipContainer = chips; }}>
                           { ballotWithItemsFromCompletionFilterType.length ? (
@@ -889,6 +891,7 @@ class Ballot extends Component {
                               onToggleSearch={this.handleToggleSearchBallot}
                               items={ballotWithAllItems}
                               onBallotSearch={this.handleSearch}
+                              alwaysOpen={!showFilterTabs}
                               />
                               { showFilterTabs ? (
                                 BALLOT_ITEM_FILTER_TYPES.map((oneTypeOfBallotItem) => {
