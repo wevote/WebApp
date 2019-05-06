@@ -20,7 +20,7 @@ exports.config = {
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
     },
-    /* {
+    {
       // capabilities for a cordova android test
       name: browserStackConfig.NAME,
       build: browserStackConfig.BUILD,
@@ -39,7 +39,7 @@ exports.config = {
       app: browserStackConfig.BROWSERSTACK_IPA_URL,
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
-    }, */
+    },
   ],
   coloredLogs: true,
   baseUrl: '',
