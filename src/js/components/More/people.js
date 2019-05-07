@@ -174,10 +174,6 @@ export const organizationalDonors = [{
   title: 'Data',
   logo: `${logoPath}center-for-tech-and-civic-life-logo.png`,
 }, {
-  name: 'Change.org',
-  title: 'Data',
-  logo: `${logoPath}change-logo.png`,
-}, {
   name: 'CivicMakers',
   title: 'Event Collaborations',
   logo: `${logoPath}civicmakers-logo.png`,
@@ -217,10 +213,6 @@ export const organizationalDonors = [{
   name: 'Microsoft',
   title: 'For supporting Code for San Francisco',
   logo: `${logoPath}microsoft-logo.png`,
-}, {
-  name: 'Sunlight Foundation',
-  title: 'Data',
-  logo: `${logoPath}sunlight-foundation-logo.png`,
 }, {
   name: 'TurboVote, Democracy Works',
   title: 'Data',
