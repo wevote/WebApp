@@ -164,7 +164,7 @@ class Welcome extends PureComponent {
               <Description>We&apos;ll help you confidently fill out your specific ballot with views of endorsements from organizaitons and friends you trust, all in one place.</Description>
             </DescriptionLeftColumn>
             <DescriptionImageColumn>
-              <Image src={cordovaDot('/img/welcome/screenshot.png')} />
+              <Image src={cordovaDot('/img/welcome/WelcomeForVoters-Ballot-20190507.png')} />
             </DescriptionImageColumn>
           </DescriptionContainer>
         </Section>

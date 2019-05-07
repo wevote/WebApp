@@ -164,7 +164,7 @@ class WelcomeForCampaigns extends PureComponent {
               </Description>
             </DescriptionLeftColumn>
             <DescriptionImageColumn>
-              <Image src={cordovaDot('/img/welcome/screenshot.png')} />
+              <Image src={cordovaDot('/img/welcome/WelcomeForCampaigns-SierraClubScreenShot-20190507.png')} />
             </DescriptionImageColumn>
           </DescriptionContainer>
         </Section>
