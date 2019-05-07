@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
+import { toTitleCase } from '../../utils/textFormat';
 
 class CandidateStickyHeader extends Component {
   static propTypes = {
@@ -17,30 +18,41 @@ class CandidateStickyHeader extends Component {
       contest_office_name: officeName,
       we_vote_id: candidateWeVoteId,
       candidate_photo_url_medium: candidatePhotoUrl,
+      party,
     } = candidate;
+
+    let descriptionText = `${party} candidate for ${officeName}`;
     console.log(candidate);
+
+    descriptionText = toTitleCase(descriptionText);
+
     return (
       <Wrapper>
-        <Flex>
-          <ColumnOne>
-            <Profile>
-              <Avatar src={candidatePhotoUrl} alt="candidate-photo" />
-              <div>
-                <Title>{displayName}</Title>
-                <SubTitle>{officeName}</SubTitle>
-              </div>
-            </Profile>
-          </ColumnOne>
-          <ColumnTwo>
-            <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={candidateWeVoteId} />
-          </ColumnTwo>
-        </Flex>
-        <BallotCommentContainer>
-          <BallotItemSupportOpposeComment
-            ballotItemWeVoteId={candidateWeVoteId}
-            showPositionStatementActionBar={false}
-          />
-        </BallotCommentContainer>
+        <Container>
+          <Flex>
+            <ColumnOne>
+              <Profile>
+                <Avatar src={candidatePhotoUrl} alt="candidate-photo" />
+                <div>
+                  <Title>{displayName}</Title>
+                  <SubTitle>{descriptionText}</SubTitle>
+                </div>
+              </Profile>
+              <MobileSubtitle className="u-show-mobile-tablet">
+                {descriptionText}
+              </MobileSubtitle>
+            </ColumnOne>
+            <ColumnTwo>
+              <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={candidateWeVoteId} />
+            </ColumnTwo>
+          </Flex>
+          <BallotCommentContainer>
+            <BallotItemSupportOpposeComment
+              ballotItemWeVoteId={candidateWeVoteId}
+              showPositionStatementActionBar={false}
+            />
+          </BallotCommentContainer>
+        </Container>
       </Wrapper>
     );
   }
@@ -73,13 +85,16 @@ const Wrapper = styled.div`
   }
 `;
 
+const Container = styled.div`
+  max-width: calc(960px - 18px);
+  margin: 0 auto;
+`;
+
 const ColumnOne = styled.div`
   width: 100%;
   @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
     flex: 1 1 0;
   }
-  display: flex;
-  align-items: flex-start; 
 `;
 
 const ColumnTwo = styled.div`
@@ -92,18 +107,29 @@ const ColumnTwo = styled.div`
 const Title = styled.h1`
   font-size: 16px;
   margin-bottom: 2px;
-  margin-top: 0;
-  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+  font-size: 26px;
+  margin-top: 8px;
+  font-weight: bold;
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-top: 0;
     font-size: 22px;
-    font-weight: bold;
   }
 `;
 
 const SubTitle = styled.p`
-  font-size: 11px;
-  margin: 0;
-  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+  display: none;
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     font-size: 15px;
+    display: block;
+  }
+`;
+
+const MobileSubtitle = styled.h2`
+  display: none;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 18px;
+    display: block;
+    font-weight: 400;
   }
 `;
 
@@ -129,8 +155,11 @@ const Flex = styled.div`
 const BallotCommentContainer = styled.div`
   width: fit-content;
   margin-top: 8px;
-  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    margin-left: -16px;
+  @media (max-width : ${({ theme }) => theme.breakpoints.sm}) {
+    padding-top: 8px;
+  }
+  > * {
+    padding: 0;
   }
 `;
 

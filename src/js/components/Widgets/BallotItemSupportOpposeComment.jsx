@@ -37,6 +37,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
       ballotItemSupportProps: {},
     };
     this.passDataBetweenItemActionToItemPosition = this.passDataBetweenItemActionToItemPosition.bind(this);
+    this.togglePositionStatement = this.togglePositionStatement.bind(this);
   }
 
   componentDidMount () {
