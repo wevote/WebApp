@@ -326,7 +326,8 @@ class HeaderBackToBallot extends Component {
     }());
 
     let appBarClasses;
-    if (scrolledDown) {
+    const onCandidateOrMeasureRoute = stringContains('/candidate/', pathname) || stringContains('/measure/', pathname);
+    if (scrolledDown && onCandidateOrMeasureRoute) {
       appBarClasses = { root: classes.noBoxShadow };
     }
 
