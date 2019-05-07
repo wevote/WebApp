@@ -60,7 +60,7 @@ class HowItWorks extends Component {
       forOrganizationsSteps: {
         Claim: {
           title: 'Claim your organization profile',
-          description: 'Sign in & verify your account using your official Twitter account or other secure method. We Vote takes verification very seriously. (No trolls allowed!)',
+          description: 'Sign in & verify your organization using your official Twitter account or other secure method. We Vote takes verification very seriously. (No trolls allowed!)',
           imgSrc: '/img/how-it-works/HowItWorksForOrgs-Claim-20190506.gif?',
           index: 0,
         },
@@ -88,13 +88,13 @@ class HowItWorks extends Component {
         Choose: {
           title: 'Choose your interests',
           description: 'Follow topics that interest you. We will suggest endorsements based on your interests.',
-          imgSrc: '/img/how-it-works/HowItWorksForVoters-Choose-20190401.gif?',
+          imgSrc: '/img/how-it-works/HowItWorksForVoters-Choose-20190507.gif?',
           index: 0,
         },
         Follow: {
           title: 'Follow organizations and people you trust',
-          description: 'As you follow trusted organizations and people you know, their recommendations are added to your ballot.',
-          imgSrc: '/img/how-it-works/HowItWorksForVoters-Follow-20190401.gif?',
+          description: 'As you follow organizations and people you trust, their recommendations are added to your ballot.',
+          imgSrc: '/img/how-it-works/HowItWorksForVoters-Follow-20190507.gif?',
           index: 1,
         },
         Review: {
@@ -111,7 +111,7 @@ class HowItWorks extends Component {
         },
         Friends: {
           title: 'Share with friends who could use a guide',
-          description: 'Are your family and friends feeling lost when it’s time to vote? Be their hero.',
+          description: 'Are your family and friends feeling lost when it’s time to vote? Be their hero, no matter which state they vote in.',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Friends-20190401.gif?',
           index: 4,
         },
