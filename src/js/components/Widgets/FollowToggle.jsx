@@ -265,7 +265,7 @@ export default class FollowToggle extends Component {
         ) : (
           <div>
             {this.props.hideDropdownButtonUntilFollowing ? (
-              <React.Fragment>
+              <div>
                 {this.props.lightModeOn ? (
                   <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Follow
@@ -299,7 +299,7 @@ export default class FollowToggle extends Component {
                     Ignore
                   </Button>
                 </div>
-              </React.Fragment>
+              </div>
 
             ) : (
               <div>
