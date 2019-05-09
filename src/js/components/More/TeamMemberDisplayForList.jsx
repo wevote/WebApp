@@ -57,7 +57,6 @@ class TeamMemberDisplayForList extends Component {
         <MemberContainer onMouseEnter={this.handleEnterCard} onMouseLeave={this.handleLeaveCard} onTouchStart={this.handleEnterCard} onTouchEnd={this.handleLeaveCard}>
           {this.state.hover && this.state.hasDescription ? (
             <CardHover>
-              {/* <FlexMobile> */}
               <ImageHover>
                 <ImageHandler
                   className="img-responsive team-member__photo"
@@ -70,16 +69,11 @@ class TeamMemberDisplayForList extends Component {
                 <NameHover>{teamMemberName}</NameHover>
                 <TitleHover>{teamMemberTitle[0]}</TitleHover>
               </TextWrapper>
-              {/* </FlexMobile> */}
               <Divider />
               <Description>{teamMemberTitle[1]}</Description>
-              {/* <MemberSubTitle></MemberSubTitle>
-              <Divider></Divider>
-              <MemberDescription></MemberDescription> */}
             </CardHover>
           ) : (
             <CardDefault>
-              {/* <FlexMobile> */}
               <Image>
                 <ImageHandler
                   imageUrl={teamMemberImage}
@@ -122,13 +116,6 @@ const CardDefault = styled.div`
     text-align: center;
   }
 `;
-
-// const FlexMobile = styled.div`
-//   @media (max-width: 576px) {
-//     display: flex;
-//     align-items: center;
-//   }
-// `;
 
 const scaleCard = keyframes`
   from {

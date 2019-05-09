@@ -13,7 +13,6 @@ import VoterStore from '../../stores/VoterStore';
 import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../components/More/people';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
 import { HeaderForCampaigns, Title } from '../../components/Welcome/Header';
-// import Section from '../../components/Welcome/Section';
 
 class About extends Component {
   static getProps () {
