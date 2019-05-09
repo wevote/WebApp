@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
+import BallotStore from '../../stores/BallotStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { toTitleCase } from '../../utils/textFormat';
 import CandidateStore from '../../stores/CandidateStore';
@@ -12,13 +13,12 @@ import ImageHandler from '../ImageHandler';
 import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
+import OfficeActions from '../../actions/OfficeActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import BallotStore from "../../stores/BallotStore";
-import OfficeActions from "../../actions/OfficeActions";
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */

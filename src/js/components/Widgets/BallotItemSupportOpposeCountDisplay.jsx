@@ -229,7 +229,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(candidateWeVoteId);
       const { numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = countResults;
       this.setState({
-        ballotItem: CandidateStore.getCandidate(candidateWeVoteId),
         numberOfSupportPositions,
         numberOfOpposePositions,
         numberOfInfoOnlyPositions,
@@ -244,7 +243,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(measureWeVoteId);
       const { numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = countResults;
       this.setState({
-        ballotItem: MeasureStore.getMeasure(measureWeVoteId),
         numberOfSupportPositions,
         numberOfOpposePositions,
         numberOfInfoOnlyPositions,

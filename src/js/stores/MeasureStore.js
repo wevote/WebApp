@@ -1,7 +1,7 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/Dispatcher';
 import { stringContains } from '../utils/textFormat';
-import {extractNumberOfPositionsFromPositionList} from "../utils/positionFunctions";
+import { extractNumberOfPositionsFromPositionList } from '../utils/positionFunctions';
 
 class MeasureStore extends ReduceStore {
   getInitialState () {
