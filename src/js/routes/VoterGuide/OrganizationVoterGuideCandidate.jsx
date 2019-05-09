@@ -45,7 +45,7 @@ export default class OrganizationVoterGuideCandidate extends Component {
     // console.log('Candidate componentDidMount');
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     CandidateActions.candidateRetrieve(this.props.params.candidate_we_vote_id);
-    CandidateActions.positionListForBallotItem(this.props.params.candidate_we_vote_id);
+    CandidateActions.positionListForBallotItemPublic(this.props.params.candidate_we_vote_id);
 
     // Get the latest guides to follow for this candidate
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
@@ -73,7 +73,7 @@ export default class OrganizationVoterGuideCandidate extends Component {
     // When a new candidate is passed in, update this component to show the new data
     if (nextProps.params.candidate_we_vote_id !== this.state.candidateWeVoteId) {
       CandidateActions.candidateRetrieve(nextProps.params.candidate_we_vote_id);
-      CandidateActions.positionListForBallotItem(nextProps.params.candidate_we_vote_id);
+      CandidateActions.positionListForBallotItemPublic(nextProps.params.candidate_we_vote_id);
       VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.candidate_we_vote_id, 'CANDIDATE');
       this.setState({
         candidateWeVoteId: nextProps.params.candidate_we_vote_id,
@@ -107,7 +107,7 @@ export default class OrganizationVoterGuideCandidate extends Component {
     // console.log('Candidate onVoterGuideStoreChange');
     // When the voterGuidesToFollowForLatestBallotItem changes, trigger an update of the candidate so we can get an updated position_list
     // CandidateActions.candidateRetrieve(this.state.candidateWeVoteId);
-    CandidateActions.positionListForBallotItem(this.state.candidateWeVoteId);
+    CandidateActions.positionListForBallotItemPublic(this.state.candidateWeVoteId);
     // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
     SupportActions.retrievePositionsCountsForOneBallotItem(this.state.candidateWeVoteId);
     // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidateWeVoteId, but we can't now

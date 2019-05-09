@@ -5,15 +5,18 @@ import Card from '@material-ui/core/Card';
 import Divider from '@material-ui/core/Divider';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { withStyles, withTheme } from '@material-ui/core/styles';
+import BallotStore from '../../stores/BallotStore';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import extractNumber from '../../utils/extractNumber';
+import MeasureActions from '../../actions/MeasureActions';
 import MeasureStore from '../../stores/MeasureStore';
 import OrganizationStore from '../../stores/OrganizationStore';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import { capitalizeString, shortenText } from '../../utils/textFormat';
+import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 
 
@@ -51,6 +54,10 @@ class MeasureItemCompressed extends Component {
     this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     const measure = MeasureStore.getMeasure(this.props.measureWeVoteId);
+
+    if (this.props.measureWeVoteId && !BallotStore.positionListHasBeenRetrievedOnce(this.props.measureWeVoteId)) {
+      MeasureActions.positionListForBallotItemPublic(this.props.measureWeVoteId);
+    }
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
       componentDidMountFinished: true,
@@ -76,6 +83,10 @@ class MeasureItemCompressed extends Component {
       });
     }
     const measure = MeasureStore.getMeasure(nextProps.measureWeVoteId);
+
+    if (nextProps.measureWeVoteId && !BallotStore.positionListHasBeenRetrievedOnce(nextProps.measureWeVoteId)) {
+      MeasureActions.positionListForBallotItemPublic(nextProps.measureWeVoteId);
+    }
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
       measure,
@@ -179,6 +190,9 @@ class MeasureItemCompressed extends Component {
     const { noVoteDescription, yesVoteDescription } = this.state;
     let { ballotItemDisplayName } = this.state;
     const { measureText, measureWeVoteId } = this.state;
+    if (!measureWeVoteId) {
+      return null;
+    }
     const { classes, theme } = this.props;
     let ballotDisplay = [];
     if (ballotItemDisplayName) {
@@ -240,7 +254,16 @@ class MeasureItemCompressed extends Component {
             <ChoiceTitle brandBlue={theme.palette.primary.main}>
               {`Yes On ${extractNumber(ballotItemDisplayName)}`}
             </ChoiceTitle>
-            <ChoiceInfo>{shortenText(yesVoteDescription, 200)}</ChoiceInfo>
+            <ChoiceInfo>
+              {/* If there is a "yes vote" quote about the measure, show that. If not, show the yesVoteDescription */}
+              <TopCommentByBallotItem
+                ballotItemWeVoteId={measureWeVoteId}
+                learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
+                limitToYes
+              >
+                <span>{shortenText(yesVoteDescription, 200)}</span>
+              </TopCommentByBallotItem>
+            </ChoiceInfo>
           </Choice>
           <Choice
             brandBlue={theme.palette.primary.main}
@@ -249,7 +272,16 @@ class MeasureItemCompressed extends Component {
             <ChoiceTitle brandBlue={theme.palette.primary.main}>
               {`No On ${extractNumber(ballotItemDisplayName)}`}
             </ChoiceTitle>
-            <ChoiceInfo>{shortenText(noVoteDescription, 200)}</ChoiceInfo>
+            <ChoiceInfo>
+              {/* If there is a "yes vote" quote about the measure, show that. If not, show the yesVoteDescription */}
+              <TopCommentByBallotItem
+                ballotItemWeVoteId={measureWeVoteId}
+                learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
+                limitToNo
+              >
+                <span>{shortenText(noVoteDescription, 200)}</span>
+              </TopCommentByBallotItem>
+            </ChoiceInfo>
           </Choice>
         </ChoicesRow>
         <Divider />

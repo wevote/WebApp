@@ -8,13 +8,10 @@ import CommentIcon from '@material-ui/icons/Comment';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
-import BallotStore from '../../stores/BallotStore';
-import CandidateActions from '../../actions/CandidateActions';
 import CandidateStore from '../../stores/CandidateStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
-import MeasureActions from '../../actions/MeasureActions';
 import MeasureStore from '../../stores/MeasureStore';
 import SupportStore from '../../stores/SupportStore';
 import { stringContains } from '../../utils/textFormat';
@@ -27,7 +24,7 @@ import VoterStore from '../../stores/VoterStore';
 
 class BallotItemSupportOpposeCountDisplay extends Component {
   static propTypes = {
-    ballotItemWeVoteId: PropTypes.string,
+    ballotItemWeVoteId: PropTypes.string.isRequired,
     goToCandidate: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
     popoverTop: PropTypes.bool,
     classes: PropTypes.object,
@@ -63,7 +60,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   }
 
   componentDidMount () {
-    // console.log('componentDidMount, this.props: ', this.props);
+    // console.log('BallotItemSupportOpposeCountDisplay componentDidMount');
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
@@ -72,28 +69,29 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     let ballotItemDisplayName = '';
     const { ballotItemWeVoteId } = this.props;
     const ballotItemSupportProps = SupportStore.get(ballotItemWeVoteId);
-    let isCandidate = false;
-    let isMeasure = false;
-    if (stringContains('cand', ballotItemWeVoteId)) {
+    const isCandidate = stringContains('cand', ballotItemWeVoteId);
+    const isMeasure = stringContains('meas', ballotItemWeVoteId);
+    let numberOfSupportPositions = 0;
+    let numberOfOpposePositions = 0;
+    let numberOfInfoOnlyPositions = 0;
+    if (isCandidate) {
       const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
       ballotItemDisplayName = candidate.ballot_item_display_name || '';
-      isCandidate = true;
-    } else if (stringContains('meas', ballotItemWeVoteId)) {
+      const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(ballotItemWeVoteId);
+      ({ numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = countResults);
+    } else if (isMeasure) {
       const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
       ballotItemDisplayName = measure.ballot_item_display_name || '';
-      isMeasure = true;
+      const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(ballotItemWeVoteId);
+      ({ numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = countResults);
     }
+    // console.log('BallotItemSupportOpposeCountDisplay positionsNeededForThisWeVoteId:', positionsNeededForThisWeVoteId);
+    // console.log('isCandidate:', isCandidate, 'isMeasure:', isMeasure);
 
     let positionListFromAdvisersFollowedByVoter;
     if (isCandidate) {
-      if (!BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)) {
-        CandidateActions.positionListForBallotItem(ballotItemWeVoteId);
-      }
       positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(ballotItemWeVoteId);
     } else if (isMeasure) {
-      if (!BallotStore.positionListHasBeenRetrievedOnce(ballotItemWeVoteId)) {
-        MeasureActions.positionListForBallotItem(ballotItemWeVoteId);
-      }
       positionListFromAdvisersFollowedByVoter = MeasureStore.getPositionList(ballotItemWeVoteId);
     }
     const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(ballotItemWeVoteId);
@@ -105,6 +103,9 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       componentDidMountFinished: true,
       isCandidate,
       isMeasure,
+      numberOfSupportPositions,
+      numberOfOpposePositions,
+      numberOfInfoOnlyPositions,
       organizationsToFollowSupport,
       organizationsToFollowOppose,
       positionListFromAdvisersFollowedByVoter,
@@ -117,23 +118,28 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     let ballotItemDisplayName;
     const { ballotItemWeVoteId } = nextProps;
     const ballotItemSupportProps = SupportStore.get(ballotItemWeVoteId);
-    let isCandidate = false;
-    let isMeasure = false;
-    if (stringContains('cand', ballotItemWeVoteId)) {
+    const isCandidate = stringContains('cand', ballotItemWeVoteId);
+    const isMeasure = stringContains('meas', ballotItemWeVoteId);
+    let numberOfSupportPositions = 0;
+    let numberOfOpposePositions = 0;
+    let numberOfInfoOnlyPositions = 0;
+    if (isCandidate) {
       const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
       ballotItemDisplayName = candidate.ballot_item_display_name || '';
-      isCandidate = true;
-    } else if (stringContains('meas', ballotItemWeVoteId)) {
+      const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(ballotItemWeVoteId);
+      ({ numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = countResults);
+    } else if (isMeasure) {
       const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
       ballotItemDisplayName = measure.ballot_item_display_name || '';
-      isMeasure = true;
+      const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(ballotItemWeVoteId);
+      ({ numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = countResults);
     }
     let positionListFromAdvisersFollowedByVoter;
     if (isCandidate) {
-      // CandidateActions.positionListForBallotItem(ballotItemWeVoteId);
+      // CandidateActions.positionListForBallotItemPublic(ballotItemWeVoteId);
       positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(ballotItemWeVoteId);
     } else if (isMeasure) {
-      // MeasureActions.positionListForBallotItem(ballotItemWeVoteId);
+      // MeasureActions.positionListForBallotItemPublic(ballotItemWeVoteId);
       positionListFromAdvisersFollowedByVoter = MeasureStore.getPositionList(ballotItemWeVoteId);
     }
     const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(ballotItemWeVoteId);
@@ -144,6 +150,9 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       ballotItemWeVoteId,
       isCandidate,
       isMeasure,
+      numberOfSupportPositions,
+      numberOfOpposePositions,
+      numberOfInfoOnlyPositions,
       organizationsToFollowSupport,
       organizationsToFollowOppose,
       positionListFromAdvisersFollowedByVoter,
@@ -168,6 +177,15 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     }
     if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
       // console.log("shouldComponentUpdate: this.state.ballotItemWeVoteId", this.state.ballotItemWeVoteId, ", nextState.ballotItemWeVoteId", nextState.ballotItemWeVoteId);
+      return true;
+    }
+    if (this.state.numberOfSupportPositions !== nextState.numberOfSupportPositions) {
+      return true;
+    }
+    if (this.state.numberOfOpposePositions !== nextState.numberOfOpposePositions) {
+      return true;
+    }
+    if (this.state.numberOfInfoOnlyPositions !== nextState.numberOfInfoOnlyPositions) {
       return true;
     }
     if ((!this.state.organizationsToFollowSupport) || (!nextState.organizationsToFollowSupport) || (this.state.organizationsToFollowSupport.length !== nextState.organizationsToFollowSupport.length)) {
@@ -207,19 +225,29 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
   onCandidateStoreChange () {
     if (this.state.isCandidate) {
-      this.setState(state => ({
-        ballotItem: CandidateStore.getCandidate(state.ballotItemWeVoteId),
-        positionListFromAdvisersFollowedByVoter: CandidateStore.getPositionList(state.ballotItemWeVoteId),
-      }));
+      const { ballotItemWeVoteId: candidateWeVoteId } = this.state;
+      const countResults = CandidateStore.getNumberOfPositionsByCandidateWeVoteId(candidateWeVoteId);
+      const { numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = countResults;
+      this.setState({
+        numberOfSupportPositions,
+        numberOfOpposePositions,
+        numberOfInfoOnlyPositions,
+        positionListFromAdvisersFollowedByVoter: CandidateStore.getPositionList(candidateWeVoteId),
+      });
     }
   }
 
   onMeasureStoreChange () {
     if (this.state.isMeasure) {
-      this.setState(state => ({
-        ballotItem: MeasureStore.getMeasure(state.ballotItemWeVoteId),
-        positionListFromAdvisersFollowedByVoter: MeasureStore.getPositionList(state.ballotItemWeVoteId),
-      }));
+      const { ballotItemWeVoteId: measureWeVoteId } = this.state;
+      const countResults = MeasureStore.getNumberOfPositionsByMeasureWeVoteId(measureWeVoteId);
+      const { numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = countResults;
+      this.setState({
+        numberOfSupportPositions,
+        numberOfOpposePositions,
+        numberOfInfoOnlyPositions,
+        positionListFromAdvisersFollowedByVoter: MeasureStore.getPositionList(measureWeVoteId),
+      });
     }
   }
 
@@ -326,6 +354,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     const isVoterSupport = SupportStore.getIsSupportByBallotItemWeVoteId(this.state.ballotItemWeVoteId);
 
     const { organizationsToFollowSupport, organizationsToFollowOppose } = this.state;
+    const { numberOfSupportPositions, numberOfOpposePositions, numberOfInfoOnlyPositions } = this.state;
 
     const organizationsToFollowSupportCount =  organizationsToFollowSupport ? organizationsToFollowSupport.length :  0;
     const organizationsToFollowOpposeCount =  organizationsToFollowOppose ? organizationsToFollowOppose.length :  0;
@@ -591,19 +620,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         </Popover>
       );
 
-    const ballotItemSupportProps = SupportStore.get(this.state.ballotItemWeVoteId);
-    networkSupportCount = 0;
-    networkOpposeCount = 0;
-    if (ballotItemSupportProps !== undefined) {
-      networkSupportCount = ballotItemSupportProps.support_count ? parseInt(ballotItemSupportProps.support_count || '0') : 0;
-      networkOpposeCount = ballotItemSupportProps.oppose_count ? parseInt(ballotItemSupportProps.oppose_count || '0') : 0;
-    }
-    const totalSupportCount = networkSupportCount + organizationsToFollowSupport.length;
-    const totalOpposeCount = networkOpposeCount + organizationsToFollowOppose.length;
-    const totalInfoOnlyCount = 0;
-
-    const commentCountExists = totalInfoOnlyCount > 0;
-    const opposeCountExists = totalOpposeCount > 0;
+    const commentCountExists = numberOfInfoOnlyPositions > 0;
+    const opposeCountExists = numberOfOpposePositions > 0;
     // Default settings
     let showCommentCount = false;
     let showOpposeCount = true;
@@ -615,8 +633,8 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
     return (
       <Wrapper
-      onMouseEnter={handleEnterHoverLocalArea}
-      onMouseLeave={handleLeaveHoverLocalArea}
+        onMouseEnter={handleEnterHoverLocalArea}
+        onMouseLeave={handleLeaveHoverLocalArea}
       >
         { isVoterSupport ? (
           <NetworkScore className={classes.voterSupports}>
@@ -652,14 +670,14 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                     <Endorsement>
                       <ThumbUpIcon classes={{ root: classes.endorsementIconRoot }} />
                       <EndorsementCount>
-                        {totalSupportCount}
+                        {numberOfSupportPositions}
                       </EndorsementCount>
                     </Endorsement>
                     { showOpposeCount ? (
                       <Endorsement>
                         <ThumbDownIcon classes={{ root: classes.endorsementIconRoot }} />
                         <EndorsementCount>
-                          {totalOpposeCount}
+                          {numberOfOpposePositions}
                         </EndorsementCount>
                       </Endorsement>
                     ) :
@@ -668,7 +686,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                       <Endorsement>
                         <CommentIcon classes={{ root: classes.endorsementIconRoot }} />
                         <EndorsementCount>
-                          {totalInfoOnlyCount}
+                          {numberOfInfoOnlyPositions}
                         </EndorsementCount>
                       </Endorsement>
                     ) :

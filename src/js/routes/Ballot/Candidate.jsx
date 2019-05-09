@@ -51,7 +51,7 @@ export default class Candidate extends Component {
     let organizationWeVoteId = '';
     if (this.props.params) {
       CandidateActions.candidateRetrieve(this.props.params.candidate_we_vote_id);
-      CandidateActions.positionListForBallotItem(this.props.params.candidate_we_vote_id);
+      CandidateActions.positionListForBallotItemPublic(this.props.params.candidate_we_vote_id);
 
       organizationWeVoteId = this.props.params.organization_we_vote_id || '';
       // If needed, activate this
@@ -109,7 +109,7 @@ export default class Candidate extends Component {
     // When a new candidate is passed in, update this component to show the new data
     if (nextProps.params.candidate_we_vote_id !== this.state.candidateWeVoteId) {
       CandidateActions.candidateRetrieve(nextProps.params.candidate_we_vote_id);
-      CandidateActions.positionListForBallotItem(nextProps.params.candidate_we_vote_id);
+      CandidateActions.positionListForBallotItemPublic(nextProps.params.candidate_we_vote_id);
       VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.candidate_we_vote_id, 'CANDIDATE');
 
       // getAllCachedPositionsByCandidateWeVoteId returns a dict with organization_we_vote_id as the key
@@ -150,7 +150,7 @@ export default class Candidate extends Component {
     // console.log('Candidate onVoterGuideStoreChange');
     // Trigger an update of the candidate so we can get an updated position_list
     //  CandidateActions.candidateRetrieve(this.state.candidateWeVoteId);
-    CandidateActions.positionListForBallotItem(this.state.candidateWeVoteId);
+    CandidateActions.positionListForBallotItemPublic(this.state.candidateWeVoteId);
 
     // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
     SupportActions.retrievePositionsCountsForOneBallotItem(this.state.candidateWeVoteId);
