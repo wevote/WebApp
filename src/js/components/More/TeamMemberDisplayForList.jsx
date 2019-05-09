@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 import ImageHandler from '../ImageHandler';
 
-export default class TeamMemberDisplayForList extends Component {
+class TeamMemberDisplayForList extends Component {
   static propTypes = {
     teamMember: PropTypes.object,
   };
@@ -11,7 +12,30 @@ export default class TeamMemberDisplayForList extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      hover: null,
+      hasDescription: null,
     };
+    this.handleEnterCard = this.handleEnterCard.bind(this);
+    this.handleLeaveCard = this.handleLeaveCard.bind(this);
+    this.setDescriptionTrue = this.setDescriptionTrue.bind(this);
+    this.setDescriptionFalse = this.setDescriptionFalse.bind(this);
+  }
+
+  setDescriptionTrue () {
+    this.setState({ hasDescription: true });
+  }
+
+  setDescriptionFalse () {
+    this.setState({ hasDescription: false });
+  }
+
+  handleEnterCard () {
+    console.log('Handling enter');
+    this.setState({ hover: true });
+  }
+
+  handleLeaveCard () {
+    this.setState({ hover: false });
   }
 
   render () {
@@ -21,21 +45,158 @@ export default class TeamMemberDisplayForList extends Component {
 
     const { image: teamMemberImage, name: teamMemberName, title: teamMemberTitle } = this.props.teamMember;
 
+    if (teamMemberTitle[1]) {
+      this.setDescriptionTrue();
+    } else {
+      this.setDescriptionFalse();
+    }
+
     return (
-      <div className="col-4 col-sm-3" key={`${teamMemberName}-${teamMemberTitle}`}>
-        <div className="team-member">
-          <ImageHandler
-            className="img-responsive team-member__photo"
-            imageUrl={teamMemberImage}
-            alt={teamMemberName}
-          />
-          <div className="media-body">
-            <h4 className="team-member__name"><strong>{teamMemberName}</strong></h4>
-            <p className="team-member__title">{teamMemberTitle[0]}</p>
-            {/* Move to rollover: <p className="xx-small d-none d-sm-block">{teamMemberTitle[1]}</p> */}
-          </div>
-        </div>
+      <div className="col-12 col-sm-6 col-md-4 col-lg-3" key={`${teamMemberName}-${teamMemberTitle}`}>
+        <Card onMouseEnter={this.handleEnterCard} onMouseLeave={this.handleLeaveCard}>
+          {this.state.hover && this.state.hasDescription ? (
+            <CardHover>
+              {/* <FlexMobile> */}
+              <ImageHover>
+                <ImageHandler
+                  className="img-responsive team-member__photo"
+                  sizeClassName="small"
+                  imageUrl={teamMemberImage}
+                  alt={teamMemberName}
+                />
+              </ImageHover>
+              <TextWrapper>
+                <NameHover>{teamMemberName}</NameHover>
+                <TitleHover>{teamMemberTitle[0]}</TitleHover>
+              </TextWrapper>
+              {/* </FlexMobile> */}
+              <Divider />
+              <Description>{teamMemberTitle[1]}</Description>
+              {/* <MemberSubTitle></MemberSubTitle>
+              <Divider></Divider>
+              <MemberDescription></MemberDescription> */}
+            </CardHover>
+          ) : (
+            <CardDefault>
+              {/* <FlexMobile> */}
+              <Image>
+                <ImageHandler
+                  imageUrl={teamMemberImage}
+                  alt={teamMemberName}
+                />
+              </Image>
+              <div>
+                <NameDefault>{teamMemberName}</NameDefault>
+                <TitleDefault>{teamMemberTitle[0]}</TitleDefault>
+              </div>
+              {/* </FlexMobile> */}
+            </CardDefault>
+          )}
+        </Card>
       </div>
     );
   }
 }
+
+const Card = styled.div`
+  width: 80%;
+  margin: 0 auto;
+`;
+
+const CardDefault = styled.div`
+  text-align: left;
+  @media (max-width: 576px) {
+    padding: 16px;
+    box-shadow: 1px .5px 5px 0 #cacaca;
+    border-radius: 3px;
+    margin: 8px 0;
+    text-align: center;
+  }
+`;
+
+// const FlexMobile = styled.div`
+//   @media (max-width: 576px) {
+//     display: flex;
+//     align-items: center;
+//   }
+// `;
+
+const CardHover = styled.div`
+  text-align: left;
+  border-radius: 3px;
+  box-shadow: 1px .5px 5px 0 #cacaca;
+  padding: 16px;
+  // @media (max-width: 576px) {
+  //   height: 100px;
+  //   margin: 8px 0;
+  // }
+`;
+
+const Image = styled.div`
+  width: 100%;
+  > * {
+    width: 100%;
+  }
+  @media (max-width: 576px) {
+    width: 40%;
+    margin: 0 auto;
+    border-radius: 100px;
+  }
+`;
+
+const ImageHover = styled.div`
+  width: 75px;
+  height: 75px;
+  margin-bottom: 8px;
+`;
+
+const TextWrapper = styled.div`
+  @media (max-width: 576px) {
+    position: relative;
+    bottom: 4px;
+  }
+`;
+
+const NameHover = styled.h4`
+  @media (max-width: 576px) {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  font-size: 14px;
+  font-weight: bold;
+  text-align: left;
+`;
+
+const NameDefault = styled.h3`
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+`;
+
+const TitleHover = styled.p`
+  color: #cacaca;
+  font-size: 10px;
+  text-align: left;
+  @media (max-width: 576px) {
+    font-size: 14px;
+  }
+`;
+
+const TitleDefault = styled.p`
+  font-size: 14px;
+  color: #cacaca;
+  text-align: left;
+`;
+
+const Divider = styled.div`
+  height: 2px;
+  background: #e3e3e3;
+  width: 100%;
+`;
+
+const Description = styled.p`
+  font-size: 16px;
+  color: black;
+`;
+
+export default TeamMemberDisplayForList;
