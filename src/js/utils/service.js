@@ -44,7 +44,8 @@ export default function $ajax (options) {
   options.success = options.success || defaults.success;
   options.error = options.error || defaults.error;
   // console.log("service.js, options.endpoint: ", options.endpoint);
-  if (options.endpoint === 'voterGuidesUpcomingRetrieve') {
+  if (options.endpoint === 'positionListForBallotItem' ||
+      options.endpoint === 'voterGuidesUpcomingRetrieve') {
     options.data = assign({}, options.data || {}); // Do not pass voter_device_id
     options.url = `${url.resolve(defaults.baseCdnUrl, options.endpoint)}/`;
   } else {

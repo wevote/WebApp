@@ -339,7 +339,7 @@ class OrganizationStore extends ReduceStore {
         // VoterGuideActions.voterGuideFollowersRetrieve(organizationWeVoteId);
         // Go through all of the candidates currently on the ballot and update their positions
         // candidateWeVoteId = "wv01cand5887"; // TODO TEMP
-        // CandidateActions.positionListForBallotItem(candidateWeVoteId);
+        // CandidateActions.positionListForBallotItemPublic(candidateWeVoteId);
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
         if (!arrayContains(organizationWeVoteId, organizationWeVoteIdsVoterIsIgnoring)) {

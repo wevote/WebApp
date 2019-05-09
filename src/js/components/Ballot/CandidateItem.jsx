@@ -249,9 +249,9 @@ class CandidateItem extends Component {
                     {/* Endorsement count or Network score */}
                   </Candidate>
                   <BallotItemSupportOpposeCountDisplay
-                  handleLeaveCandidateCard={this.handleLeave}
-                  handleEnterCandidateCard={this.handleEnter}
-                  ballotItemWeVoteId={candidateWeVoteId}
+                    handleLeaveCandidateCard={this.handleLeave}
+                    handleEnterCandidateCard={this.handleEnter}
+                    ballotItemWeVoteId={candidateWeVoteId}
                   />
                 </CandidateWrapper>
                 {' '}
@@ -392,7 +392,7 @@ class CandidateItem extends Component {
                 <BallotItemSupportOpposeCountDisplay
                   handleLeaveCandidateCard={this.handleLeave}
                   handleEnterCandidateCard={this.handleEnter}
-                ballotItemWeVoteId={candidateWeVoteId}
+                  ballotItemWeVoteId={candidateWeVoteId}
                 />
               </CandidateWrapper>
               {' '}

@@ -33,7 +33,7 @@ class AnnotatedSlideshow extends PureComponent {
 
     return (
       <Wrapper>
-        <Title>{title}</Title>
+        <SlideShowTitle>{title}</SlideShowTitle>
         <Description>{description}</Description>
         <Slide>
           <Nav disabled={selectedStepIndex === 0} id="howItWorksLeftArrow" onClick={() => this.handleChangeSlide(0)}>
@@ -86,11 +86,13 @@ const Wrapper = styled.div`
   }
 `;
 
-const Title = styled.h3`
+const SlideShowTitle = styled.h3`
   font-weight: bold;
   font-size: 24px;
+  margin-top: 36px;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     font-size: 20px;
+    margin-top: 16px;
   }
 `;
 
@@ -132,7 +134,9 @@ const Nav = styled.div`
 
 const Image = styled.img`
   width: 640px;
+  border: 1px solid #999;
   border-radius: 16px;
+  box-shadow: 2px 2px 4px 2px ${({ theme }) => theme.colors.grayLight};
   height: 360px;
   max-width: 90vw;
   transition: 150ms ease-in;

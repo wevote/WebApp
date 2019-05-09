@@ -17,6 +17,8 @@ import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import BallotStore from "../../stores/BallotStore";
+import OfficeActions from "../../actions/OfficeActions";
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */
@@ -97,8 +99,12 @@ class OfficeItemCompressed extends Component {
   }
 
   onCandidateStoreChange () {
-    if (this.props.candidate_list && this.props.candidate_list.length && this.props.we_vote_id) {
+    const { we_vote_id: officeWeVoteId } = this.props;
+    if (this.props.candidate_list && this.props.candidate_list.length && officeWeVoteId) {
       // console.log("onCandidateStoreChange");
+      if (!BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)) {
+        OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
+      }
       const newCandidateList = [];
       if (this.props.candidate_list) {
         this.props.candidate_list.forEach((candidate) => {
@@ -191,20 +197,20 @@ class OfficeItemCompressed extends Component {
 
             return (
               <CandidateInfo
-                  onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
-                  key={`candidate_preview-${oneCandidate.we_vote_id}`}
-                  brandBlue={theme.palette.primary.main}
-                  candidateLength={candidatesToRender.length}
+                onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
+                key={`candidate_preview-${oneCandidate.we_vote_id}`}
+                brandBlue={theme.palette.primary.main}
+                candidateLength={candidatesToRender.length}
               >
                 <CandidateTopRow>
                   {/* Candidate Image */}
                   <Candidate>
                     <ImageHandler
-                        className="card-main__avatar-compressed"
-                        sizeClassName="icon-candidate-small u-push--sm "
-                        imageUrl={oneCandidate.candidate_photo_url_large}
-                        alt="candidate-photo"
-                        kind_of_ballot_item="CANDIDATE"
+                      className="card-main__avatar-compressed"
+                      sizeClassName="icon-candidate-small u-push--sm "
+                      imageUrl={oneCandidate.candidate_photo_url_large}
+                      alt="candidate-photo"
+                      kind_of_ballot_item="CANDIDATE"
                     />
                     {/* Candidate Name */}
                     <div>
@@ -221,12 +227,12 @@ class OfficeItemCompressed extends Component {
                 <div className="u-stack--md">
                   {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
                   <TopCommentByBallotItem
-                      ballotItemWeVoteId={oneCandidate.we_vote_id}
-                      learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
+                    ballotItemWeVoteId={oneCandidate.we_vote_id}
+                    learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
                   >
                     <IssuesByBallotItemDisplayList
-                        ballotItemWeVoteId={oneCandidate.we_vote_id}
-                        placement="bottom"
+                      ballotItemWeVoteId={oneCandidate.we_vote_id}
+                      placement="bottom"
                     />
                   </TopCommentByBallotItem>
                 </div>

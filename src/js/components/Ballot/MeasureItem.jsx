@@ -16,7 +16,7 @@ class MeasureItem extends Component {
   static propTypes = {
     classes: PropTypes.object,
     measureWeVoteId: PropTypes.string.isRequired,
-    theme: PropTypes.object,
+    // theme: PropTypes.object,
   };
 
   constructor (props) {
