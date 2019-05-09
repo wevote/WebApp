@@ -13,7 +13,7 @@ import VoterStore from '../../stores/VoterStore';
 import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../components/More/people';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
 import { HeaderForCampaigns, Title } from '../../components/Welcome/Header';
-import Section from '../../components/Welcome/Section';
+// import Section from '../../components/Welcome/Section';
 
 class About extends Component {
   static getProps () {
@@ -131,7 +131,7 @@ class About extends Component {
               <h1 className="h1">Our Team</h1>
 
               <h2 className="h2">Founders</h2>
-              <div className="row">
+              <div className="row position-relative">
                 {
                 weVoteFounders.map(teamMember => (
                   <TeamMemberDisplayForList teamMember={teamMember} />
@@ -140,7 +140,7 @@ class About extends Component {
               </div>
 
               <h2 className="h2">Board Members &amp; Advisers</h2>
-              <div className="row">
+              <div className="row position-relative">
                 {
                 weVoteBoard.map(teamMember => (
                   <TeamMemberDisplayForList teamMember={teamMember} />
@@ -149,7 +149,7 @@ class About extends Component {
               </div>
 
               <h2 className="h2">Staff &amp; Senior Volunteers</h2>
-              <div className="row">
+              <div className="row position-relative">
                 {
                 weVoteStaff.map(teamMember => (
                   <TeamMemberDisplayForList teamMember={teamMember} />

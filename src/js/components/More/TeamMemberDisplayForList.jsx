@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { renderLog } from '../../utils/logging';
 import ImageHandler from '../ImageHandler';
 
@@ -38,7 +38,6 @@ class TeamMemberDisplayForList extends Component {
   }
 
   handleEnterCard () {
-    console.log('Handling enter');
     this.setState({ hover: true });
   }
 
@@ -54,8 +53,8 @@ class TeamMemberDisplayForList extends Component {
     const { image: teamMemberImage, name: teamMemberName, title: teamMemberTitle } = this.props.teamMember;
 
     return (
-      <div className="col-12 col-sm-6 col-md-4" key={`${teamMemberName}-${teamMemberTitle}`}>
-        <Card onMouseEnter={this.handleEnterCard} onMouseLeave={this.handleLeaveCard}>
+      <Col className="col-12 col-sm-6 col-md-4 mb-3" key={`${teamMemberName}-${teamMemberTitle}`}>
+        <MemberContainer onMouseEnter={this.handleEnterCard} onMouseLeave={this.handleLeaveCard} onTouchStart={this.handleEnterCard} onTouchEnd={this.handleLeaveCard}>
           {this.state.hover && this.state.hasDescription ? (
             <CardHover>
               {/* <FlexMobile> */}
@@ -94,14 +93,22 @@ class TeamMemberDisplayForList extends Component {
               {/* </FlexMobile> */}
             </CardDefault>
           )}
-        </Card>
-      </div>
+        </MemberContainer>
+      </Col>
     );
   }
 }
 
-const Card = styled.div`
+const Col = styled.div`
+  @media (min-width: 992px) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+`;
+
+const MemberContainer = styled.div`
   width: 90%;
+  height: 100%;
   margin: 0 auto;
 `;
 
@@ -112,7 +119,6 @@ const CardDefault = styled.div`
     padding: 16px;
     box-shadow: 1px .5px 5px 0 #cacaca;
     border-radius: 3px;
-    margin: 8px 0;
     text-align: center;
   }
 `;
@@ -124,13 +130,28 @@ const CardDefault = styled.div`
 //   }
 // `;
 
+const scaleCard = keyframes`
+  from {
+    box-shadow: 1px .5px 5px 0 #cacaca;
+  }
+  to {
+    box-shadow: 2px 1px 20px 5px #e1e1e1;
+  }
+`;
+
 const CardHover = styled.div`
+  background: white;
+  margin: 0 auto;
+  z-index: 999;
   text-align: left;
   border-radius: 3px;
-  box-shadow: 1px .5px 5px 0 #cacaca;
   padding: 16px;
-  margin: 8px 0;
-  height: 100%;
+  box-shadow: 1px .5px 5px 0 #cacaca;
+  border: 1px solid #cacaca;
+  @media (min-width: 576px) {
+    animation: ${scaleCard} .25s ease-out;
+    animation-fill-mode: forwards;
+  }
 `;
 
 const Image = styled.div`
@@ -141,7 +162,9 @@ const Image = styled.div`
   @media (max-width: 576px) {
     width: 40%;
     margin: 0 auto;
-    border-radius: 50%;
+    > * {
+      border-radius: 50%;
+    }
   }
 `;
 
@@ -200,6 +223,7 @@ const Divider = styled.div`
 const Description = styled.p`
   font-size: 16px;
   color: black;
+  margin-top: 8px;
 `;
 
 export default TeamMemberDisplayForList;
