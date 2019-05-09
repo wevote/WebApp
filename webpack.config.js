@@ -9,7 +9,7 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'build')
-  }, 
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html'
@@ -37,6 +37,7 @@ module.exports = {
             loader: 'file-loader',
             options: {
               publicPath: '/',
+              name: 'img/[name].[ext]',
             },
           },
         ],
