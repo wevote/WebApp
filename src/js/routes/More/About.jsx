@@ -33,7 +33,7 @@ class About extends Component {
         <HeaderForCampaigns>
           <Title>About We Vote</Title>
         </HeaderForCampaigns>
-        <Section>
+        <Container>
           <ToolBar />
           <div className="u-inset--sm" />
           <div className="our-story">
@@ -203,7 +203,7 @@ class About extends Component {
               />
             </section>
           </div>
-        </Section>
+        </Container>
         <Footer />
       </Wrapper>
     );
@@ -232,6 +232,33 @@ const Wrapper = styled.div`
   align-items: center;
   background: white;
   overflow-x: hidden;
+`;
+
+const Container = styled.div`
+  max-width: 960px;
+  display: flex;
+  flex-flow: column;
+  padding: 5em 1em 3em 1em;
+  text-align: center;
+  align-items: center;
+  color: #333;
+  width: 100%;
+  margin: 0 auto;
+  background: ${({ variant }) => (variant === 'dark' ? 'rgb(235, 236, 240)' : 'white')};
+  ${({ rounded }) => (rounded ? // eslint-disable-next-line
+      'border-radius: 50% 50%;\nwidth: 200%;\npadding: 3em 2em;' : '')}
+  @media(min-width: 576px) {
+    width: 90%;
+  }
+  @media(min-width: 769px) {
+    width: 85%;
+  }
+  @media(min-width: 992px) {
+    width: 80%;
+  }
+  @media(min-width: 1200px) {
+    width: 75%;
+  }
 `;
 
 export default withStyles(styles)(About);

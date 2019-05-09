@@ -13,12 +13,20 @@ class TeamMemberDisplayForList extends Component {
     super(props);
     this.state = {
       hover: null,
-      hasDescription: null,
+      hasDescription: false,
     };
     this.handleEnterCard = this.handleEnterCard.bind(this);
     this.handleLeaveCard = this.handleLeaveCard.bind(this);
     this.setDescriptionTrue = this.setDescriptionTrue.bind(this);
     this.setDescriptionFalse = this.setDescriptionFalse.bind(this);
+  }
+
+  componentDidMount () {
+    if (this.props.teamMember.title[1]) {
+      this.setDescriptionTrue();
+    } else {
+      this.setDescriptionFalse();
+    }
   }
 
   setDescriptionTrue () {
@@ -45,14 +53,8 @@ class TeamMemberDisplayForList extends Component {
 
     const { image: teamMemberImage, name: teamMemberName, title: teamMemberTitle } = this.props.teamMember;
 
-    if (teamMemberTitle[1]) {
-      this.setDescriptionTrue();
-    } else {
-      this.setDescriptionFalse();
-    }
-
     return (
-      <div className="col-12 col-sm-6 col-md-4 col-lg-3" key={`${teamMemberName}-${teamMemberTitle}`}>
+      <div className="col-12 col-sm-6 col-md-4" key={`${teamMemberName}-${teamMemberTitle}`}>
         <Card onMouseEnter={this.handleEnterCard} onMouseLeave={this.handleLeaveCard}>
           {this.state.hover && this.state.hasDescription ? (
             <CardHover>
@@ -99,12 +101,13 @@ class TeamMemberDisplayForList extends Component {
 }
 
 const Card = styled.div`
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
 `;
 
 const CardDefault = styled.div`
   text-align: left;
+  height: 100%;
   @media (max-width: 576px) {
     padding: 16px;
     box-shadow: 1px .5px 5px 0 #cacaca;
@@ -126,10 +129,8 @@ const CardHover = styled.div`
   border-radius: 3px;
   box-shadow: 1px .5px 5px 0 #cacaca;
   padding: 16px;
-  // @media (max-width: 576px) {
-  //   height: 100px;
-  //   margin: 8px 0;
-  // }
+  margin: 8px 0;
+  height: 100%;
 `;
 
 const Image = styled.div`
@@ -140,7 +141,7 @@ const Image = styled.div`
   @media (max-width: 576px) {
     width: 40%;
     margin: 0 auto;
-    border-radius: 100px;
+    border-radius: 50%;
   }
 `;
 
@@ -162,28 +163,30 @@ const NameHover = styled.h4`
     font-size: 18px;
     font-weight: bold;
   }
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   text-align: left;
 `;
 
 const NameDefault = styled.h3`
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   text-align: left;
+  margin-top: 8px;
+  margin-bottom: 4px;
 `;
 
 const TitleHover = styled.p`
   color: #cacaca;
-  font-size: 10px;
+  font-size: 12px;
   text-align: left;
   @media (max-width: 576px) {
-    font-size: 14px;
+    font-size: 16px;
   }
 `;
 
 const TitleDefault = styled.p`
-  font-size: 14px;
+  font-size: 16px;
   color: #cacaca;
   text-align: left;
 `;
