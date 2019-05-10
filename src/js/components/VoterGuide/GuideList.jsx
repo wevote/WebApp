@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CandidateStore from '../../stores/CandidateStore';
 import FollowToggle from '../Widgets/FollowToggle';
-// import FilterBase from "../Filter/FilterBase";
-// import VoterGuideOrganizationFilter from "../Filter/VoterGuideOrganizationFilter";
 import MeasureStore from '../../stores/MeasureStore';
 // import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 import { stringContains } from '../../utils/textFormat';
@@ -12,30 +10,6 @@ import { showToastSuccess } from '../../utils/showToast';
 import { renderLog } from '../../utils/logging';
 import EndorsementCard from '../Widgets/EndorsementCard';
 
-/*
-const groupedFilters = [
-  {
-    filterName: "support",
-    iconName: "thumbs-up",
-  },
-  {
-    filterName: "oppose",
-    iconName: "thumbs-down",
-  },
-  {
-    filterName: "information",
-    iconName: "information-circle",
-  },
-];
-
-const islandFilters = [
-  {
-    filterName: "comment",
-    iconName: "paper",
-    filterDisplayName: "Has Comment",
-  },
-];
-*/
 export default class GuideList extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
@@ -87,8 +61,6 @@ export default class GuideList extends Component {
       }
     });
   }
-
-  handleFilteredOrgsChange = filteredOrgs => this.setState({ filteredOrganizationsWithPositions: filteredOrgs });
 
   getOrganizationsWithPositions = () => this.state.voterGuideList.map((organization) => {
     let organizationPositionForThisBallotItem;
@@ -185,18 +157,6 @@ export default class GuideList extends Component {
     }
     return (
       <div className="guidelist card-child__list-group">
-        {
-          /*
-          <FilterBase
-            groupedFilters={groupedFilters}
-            islandFilters={islandFilters}
-            allItems={this.state.organizationsWithPositions}
-            onFilteredItemsChange={this.handleFilteredOrgsChange}
-          >
-            <VoterGuideOrganizationFilter />
-          </FilterBase>
-          */
-        }
         {this.state.filteredOrganizationsWithPositions.map((organization) => {
           const handleIgnoreFunc = () => {
             console.log('GuideList: 203 - Running handleIgnoreFunc');

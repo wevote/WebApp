@@ -3,26 +3,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import _ from 'lodash';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import IssueStore from '../../stores/IssueStore';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
-
-const Wrapper = styled.div`
-  display: ${({ showAllFilters }) => (showAllFilters ? 'flex' : 'none')};
-  flex-flow: column;
-  padding-top: 1rem;
-`;
-
-const FilterRow = styled.div`
-  display: flex;
-  flex-flow: row;
-`;
-
-const FilterColumn = styled.div`
-  display: flex;
-  flex-flow: column;
-  margin-right: 2rem;
-`;
 
 class VoterGuideOrganizationFilter extends Component {
   static propTypes = {
@@ -31,6 +15,7 @@ class VoterGuideOrganizationFilter extends Component {
     onFilteredItemsChange: PropTypes.func,
     selectedFilters: PropTypes.array,
     showAllFilters: PropTypes.bool,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -59,16 +44,16 @@ class VoterGuideOrganizationFilter extends Component {
     selectedFilters.forEach((filter) => {
       switch (filter) {
         case 'news':
-          filteredItems = [...filteredItems, ...allItems.filter(item => item.voter_guide_owner_type === 'NW')];
+          filteredItems = [...filteredItems, ...allItems.filter(item => item.speaker_type === 'NW')];
           break;
         case 'group':
-          filteredItems = [...filteredItems, ...allItems.filter(item => item.voter_guide_owner_type === 'G')];
+          filteredItems = [...filteredItems, ...allItems.filter(item => item.speaker_type === 'O')];
           break;
         case 'publicFigure':
-          filteredItems = [...filteredItems, ...allItems.filter(item => item.voter_guide_owner_type === 'PF')];
+          filteredItems = [...filteredItems, ...allItems.filter(item => item.speaker_type === 'PF')];
           break;
         case 'pac':
-          filteredItems = [...filteredItems, ...allItems.filter(item => item.voter_guide_owner_type === 'P')];
+          filteredItems = [...filteredItems, ...allItems.filter(item => item.speaker_type === 'P')];
           break;
         case 'support':
           filteredItems = [...filteredItems, ...allItems.filter(item => item.is_support_or_positive_rating)];
@@ -77,7 +62,7 @@ class VoterGuideOrganizationFilter extends Component {
           filteredItems = [...filteredItems, ...allItems.filter(item => item.is_oppose_or_negative_rating)];
           break;
         case 'comment':
-          filteredItems = [...filteredItems, ...allItems.filter(item => item.statement_text)];
+          filteredItems = [...filteredItems, ...allItems.filter(item => item.statement_text.length)];
           break;
         case 'reach':
           if (filteredItems.length) {
@@ -93,7 +78,7 @@ class VoterGuideOrganizationFilter extends Component {
           break;
       }
     });
-    return _.uniqBy(filteredItems, x => x.we_vote_id);
+    return _.uniqBy(filteredItems, x => x.position_we_vote_id);
   }
 
   handleChange = (name) => {
@@ -125,50 +110,27 @@ class VoterGuideOrganizationFilter extends Component {
   ));
 
   render () {
-    const { showAllFilters } = this.props;
+    const { showAllFilters, classes } = this.props;
 
     return (
       <Wrapper showAllFilters={showAllFilters}>
         <FilterRow>
           <FilterColumn>
             <b>Sort By</b>
-            <FormControlLabel
-              control={(
-                <Checkbox
-                  checked={this.props.selectedFilters.indexOf('reach') > -1}
-                  onChange={() => this.handleChange('reach')}
-                  value="reach"
-                  color="primary"
-                />
-              )}
-              label="Reach"
-            />
-            <FormControlLabel
-              control={(
-                <Checkbox
-                  checked={this.props.selectedFilters.indexOf('useful') > -1}
-                  onChange={() => this.handleChange('useful')}
-                  value="useful"
-                  color="primary"
-                />
-              )}
-              label="Useful"
-            />
-            <FormControlLabel
-              control={(
-                <Checkbox
-                  checked={this.props.selectedFilters.indexOf('network') > -1}
-                  onChange={() => this.handleChange('network')}
-                  value="network"
-                  color="primary"
-                />
-              )}
-              label="Network"
-            />
+            <SortByContainer>
+              <SortBy onClick={() => this.handleChange('reach')}>Reach</SortBy>
+            </SortByContainer>
+            <SortByContainer>
+              <SortBy onClick={() => this.handleChange('useful')}>Useful</SortBy>
+            </SortByContainer>
+            <SortByContainer>
+              <SortBy onClick={() => this.handleChange('network')}>Network</SortBy>
+            </SortByContainer>
           </FilterColumn>
           <FilterColumn>
             <b>Organization</b>
             <FormControlLabel
+              classes={{ label: classes.formControlLabel }}
               control={(
                 <Checkbox
                   checked={this.props.selectedFilters.indexOf('news') > -1}
@@ -180,6 +142,7 @@ class VoterGuideOrganizationFilter extends Component {
               label="News"
             />
             <FormControlLabel
+              classes={{ label: classes.formControlLabel }}
               control={(
                 <Checkbox
                   checked={this.props.selectedFilters.indexOf('group') > -1}
@@ -191,6 +154,7 @@ class VoterGuideOrganizationFilter extends Component {
               label="Group"
             />
             <FormControlLabel
+              classes={{ label: classes.formControlLabel }}
               control={(
                 <Checkbox
                   checked={this.props.selectedFilters.indexOf('publicFigure') > -1}
@@ -202,6 +166,7 @@ class VoterGuideOrganizationFilter extends Component {
               label="Public Figure"
             />
             <FormControlLabel
+              classes={{ label: classes.formControlLabel }}
               control={(
                 <Checkbox
                   checked={this.props.selectedFilters.indexOf('pac') > -1}
@@ -219,4 +184,47 @@ class VoterGuideOrganizationFilter extends Component {
   }
 }
 
-export default VoterGuideOrganizationFilter;
+const styles = theme => ({
+  formControlLabel: {
+    [theme.breakpoints.down('lg')]: {
+      fontSize: 14,
+    },
+  },
+});
+
+const Wrapper = styled.div`
+  display: ${({ showAllFilters }) => (showAllFilters ? 'flex' : 'none')};
+  flex-flow: column;
+  padding-top: 1rem;
+`;
+
+const FilterRow = styled.div`
+  display: flex;
+  flex-flow: row;
+`;
+
+const FilterColumn = styled.div`
+  display: flex;
+  flex-flow: column;
+  margin-right: 2rem;
+`;
+
+const SortByContainer = styled.div`
+  height: 40px;
+  display: flex;
+  align-items: center;
+`;
+
+const SortBy = styled.p`
+  font-size: .875rem;
+  margin: 8px 0 0 0;
+  cursor: pointer;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    font-size: 14px;
+  }
+  &:hover {
+    filter: opacity(0.7);
+  }
+`;
+
+export default withStyles(styles)(VoterGuideOrganizationFilter);

@@ -1,6 +1,8 @@
 $filter-margin-right: 1rem;
-$filter-padding: 7px 13px 4.25px 13px;
+$filter-margin-right-mobile: .5rem;
+$filter-padding: 0 8px;
 $btn-margin-bottom: 0;
+$text-margin: auto 0;
 
 .listFilter,
 .groupedFilter {
@@ -12,7 +14,12 @@ $btn-margin-bottom: 0;
   user-select: none;
   display: flex;
   flex-flow: row;
-  height: fit-content;
+  height: 36px;
+  @include breakpoints (0 medium) {
+    height: 24px;
+    margin-right: $filter-margin-right-mobile;
+  }
+  white-space: nowrap;
   cursor: pointer;
   transition: background .13s ease-in;
   &:hover {
@@ -20,15 +27,23 @@ $btn-margin-bottom: 0;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
   }
   &__text {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    margin: $text-margin;
+    @include breakpoints (0 medium) {
+      font-size: 12px;
+    }
+  }
+  svg {
+    font-size: 18px;
+    margin: $text-margin;
+    @include breakpoints (0 medium) {
+      font-size: 12px;
+    }
   }
 }
 
 .listFilterSelected {
-  background: #eee;
-  -webkit-box-shadow: inset 0 0 4px -1px rgba(28, 28, 28, 1);
-  -moz-box-shadow: inset 0 0 4px -1px rgba(28, 28, 28, 1);
-  box-shadow: inset 0 0 4px -1px rgba(28, 28, 28, 1);
+  background: rgb(137, 237, 159);
 }
 
 .groupedFilter {
@@ -50,9 +65,7 @@ $btn-margin-bottom: 0;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   margin-right: $filter-margin-right;
-}
-
-.ion {
-  font-size: 20px;
-  margin-top: $radius-xs;
+  @include breakpoints (0 medium) {
+    margin-right: $filter-margin-right-mobile;
+  }
 }
