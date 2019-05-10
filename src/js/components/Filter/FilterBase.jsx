@@ -2,30 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Badge from '@material-ui/core/Badge';
+import FilterListIcon from '@material-ui/icons/FilterList';
 import { withStyles } from '@material-ui/core/styles';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
-
-const styles = theme => ({
-  badge: {
-    right: 2,
-    background: theme.palette.primary,
-  },
-});
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-flow: column;
-  padding: 1rem;
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
-`;
-
-const FilterTop = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  overflow-x: scroll;
-  padding: 0.7rem 0;
-`;
 
 class FilterBase extends React.Component {
   static propTypes = {
@@ -69,11 +48,7 @@ class FilterBase extends React.Component {
         onClick={() => this.toggleFilter(item.filterName)}
     >
       {
-          item.iconName ? (
-            <div>
-              <ion-icon name={item.iconName} />
-            </div>
-          ) : null
+          item.icon ? item.icon : null
       }
       {
         item.filterDisplayName ? (
@@ -93,11 +68,7 @@ class FilterBase extends React.Component {
       onClick={() => this.toggleFilter(item.filterName)}
     >
       {
-          item.iconName ? (
-            <div>
-              <ion-icon className="ion" name={item.iconName} />
-            </div>
-          ) : null
+          item.icon ? item.icon : null
       }
       {
         item.filterDisplayName ? (
@@ -126,7 +97,7 @@ class FilterBase extends React.Component {
               className={`listFilter ${showAllFilters ? 'listFilterSelected' : ''}`}
               onClick={this.toggleShowAllFilters}
             >
-              <ion-icon className="ion" name="options" />
+              <FilterListIcon />
               &nbsp;
               <span className="listFilter__text">Filters</span>
             </div>
@@ -151,5 +122,27 @@ class FilterBase extends React.Component {
     );
   }
 }
+
+const styles = theme => ({
+  badge: {
+    right: '1rem',
+    background: theme.palette.primary.main,
+  },
+});
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-flow: column;
+  padding: 1rem;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+`;
+
+const FilterTop = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  overflow-x: scroll;
+  padding: 0.7rem 0;
+`;
 
 export default withStyles(styles)(FilterBase);
