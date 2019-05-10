@@ -10,8 +10,8 @@ const Section = styled.div`
   width: 100%;
   background: ${({ variant }) => (variant === 'dark' ? 'rgb(235, 236, 240)' : 'white')};
   ${({ rounded }) => (rounded ? // eslint-disable-next-line
-      'border-radius: 50% 50%;\nwidth: 200%;\npadding: 3em 2em;' : '')
-}`;
+      'border-radius: 50% 50%;\nwidth: 200%;\npadding: 3em 2em;' : '')}
+`;
 
 const SectionTitle = styled.h1`
   font-size: 36px;

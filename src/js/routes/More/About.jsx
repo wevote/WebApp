@@ -13,7 +13,6 @@ import VoterStore from '../../stores/VoterStore';
 import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../components/More/people';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
 import { HeaderForCampaigns, Title } from '../../components/Welcome/Header';
-import Section from '../../components/Welcome/Section';
 
 class About extends Component {
   static getProps () {
@@ -33,7 +32,7 @@ class About extends Component {
         <HeaderForCampaigns>
           <Title>About We Vote</Title>
         </HeaderForCampaigns>
-        <Section>
+        <Container>
           <ToolBar />
           <div className="u-inset--sm" />
           <div className="our-story">
@@ -131,7 +130,7 @@ class About extends Component {
               <h1 className="h1">Our Team</h1>
 
               <h2 className="h2">Founders</h2>
-              <div className="row">
+              <div className="row position-relative">
                 {
                 weVoteFounders.map(teamMember => (
                   <TeamMemberDisplayForList teamMember={teamMember} />
@@ -140,7 +139,7 @@ class About extends Component {
               </div>
 
               <h2 className="h2">Board Members &amp; Advisers</h2>
-              <div className="row">
+              <div className="row position-relative">
                 {
                 weVoteBoard.map(teamMember => (
                   <TeamMemberDisplayForList teamMember={teamMember} />
@@ -149,7 +148,7 @@ class About extends Component {
               </div>
 
               <h2 className="h2">Staff &amp; Senior Volunteers</h2>
-              <div className="row">
+              <div className="row position-relative">
                 {
                 weVoteStaff.map(teamMember => (
                   <TeamMemberDisplayForList teamMember={teamMember} />
@@ -203,7 +202,7 @@ class About extends Component {
               />
             </section>
           </div>
-        </Section>
+        </Container>
         <Footer />
       </Wrapper>
     );
@@ -232,6 +231,33 @@ const Wrapper = styled.div`
   align-items: center;
   background: white;
   overflow-x: hidden;
+`;
+
+const Container = styled.div`
+  max-width: 960px;
+  display: flex;
+  flex-flow: column;
+  padding: 5em 1em 3em 1em;
+  text-align: center;
+  align-items: center;
+  color: #333;
+  width: 100%;
+  margin: 0 auto;
+  background: ${({ variant }) => (variant === 'dark' ? 'rgb(235, 236, 240)' : 'white')};
+  ${({ rounded }) => (rounded ? // eslint-disable-next-line
+      'border-radius: 50% 50%;\nwidth: 200%;\npadding: 3em 2em;' : '')}
+  @media(min-width: 576px) {
+    width: 90%;
+  }
+  @media(min-width: 769px) {
+    width: 85%;
+  }
+  @media(min-width: 992px) {
+    width: 80%;
+  }
+  @media(min-width: 1200px) {
+    width: 75%;
+  }
 `;
 
 export default withStyles(styles)(About);
