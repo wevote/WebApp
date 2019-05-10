@@ -74,7 +74,6 @@ export default class PositionList extends Component {
     // console.log('PositionList with positionList: ', this.state.positionList);
     let showTitle = false;
     let count;
-    console.log(this.state.filteredPositionList);
     if (this.props.hideSimpleSupportOrOppose) {
       // Only show a position if it has a comment associated with it
       for (count = 0; count < this.state.positionList.length; count++) {
