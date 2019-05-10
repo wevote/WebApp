@@ -709,10 +709,10 @@ class Ballot extends Component {
     }
   }
 
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('Ballot caught error: ', `${error} with info: `, info);
-  }
+  // componentDidCatch (error, info) {
+  //   // We should get this information to Splunk!
+  //   console.error('Ballot caught error: ', `${error} with info: `, info);
+  // }
 
   updateOfficeDisplayUnfurledTracker (weVoteId, status) {
     const { ballotItemUnfurledTracker } = this.state;
