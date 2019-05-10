@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import PersonIcon from '@material-ui/icons/Person';
 import EmailIcon from '@material-ui/icons/Email';
-import Header, { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/Header';
+import { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/Header';
 import Section, { SectionTitle, SectionTitleBold, Step, StepNumber, StepLabel, GetStarted, ButtonContainer, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage, SignUpContainer, SignUpMessage } from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 import Footer from '../components/Welcome/Footer';
@@ -103,7 +103,7 @@ class Welcome extends PureComponent {
       <Wrapper>
         <Helmet title="Welcome Voters - We Vote" />
         <WelcomeAppbar pathname={pathname} />
-        <Header>
+        <HeaderForVoters>
           <Title>
             Plan Your Entire Ballot
             <BlueTitle> in 6 Minutes</BlueTitle>
@@ -117,7 +117,7 @@ class Welcome extends PureComponent {
             />
             <script src="https://player.vimeo.com/api/player.js" />
           </PlayerContainer>
-        </Header>
+        </HeaderForVoters>
         <Section>
           <SectionTitle>
             We Vote is
@@ -148,12 +148,16 @@ class Welcome extends PureComponent {
                 classes={{ containedPrimary: classes.buttonContained }}
                 onClick={() => historyPush('/ballot')}
               >
-                Get Started
+                View Ballot
               </Button>
             </ButtonContainer>
           </GetStarted>
         </Section>
         <Section variant="dark" rounded>
+          <SectionTitle>
+            Voting Should be
+            <SectionTitleBold> Simple</SectionTitleBold>
+          </SectionTitle>
           <DescriptionContainer>
             <DescriptionLeftColumn>
               <Description>
@@ -161,7 +165,17 @@ class Welcome extends PureComponent {
                 Election day is almost here, but besides the President and a few other choices we&apos;ve made, we don&apos;t know how we are going to vote! Between the nonstop misleading TV ads, texts, calls and oveflowing mailboxes, who has time to make sense of the madness? There has to be a better way.
               </Description>
               <Description>Now, there is!</Description>
-              <Description>We&apos;ll help you confidently fill out your specific ballot with views of endorsements from organizaitons and friends you trust, all in one place.</Description>
+              <Description>We&apos;ll help you confidently fill out your specific ballot with endorsements from organizations and friends you trust, all in one place.</Description>
+              <Description>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
+                  onClick={() => historyPush('/how/for-voters')}
+                >
+                  How it Works For Voters
+                </Button>
+              </Description>
             </DescriptionLeftColumn>
             <DescriptionImageColumn>
               <Image src={cordovaDot('/img/welcome/WelcomeForVoters-Ballot-20190507.png')} />
@@ -170,23 +184,25 @@ class Welcome extends PureComponent {
         </Section>
         <Section>
           <SectionTitle>Testimonials</SectionTitle>
-          <Testimonial
-            imageUrl={imageUrl}
-            testimonialAuthor={testimonialAuthor}
-            testimonial={testimonial}
-          />
-          {/*
-          <Testimonial
-            imageUrl={imageUrl}
-            testimonialAuthor={testimonialAuthor}
-            testimonial={testimonial}
-          />
-          */}
+          <DescriptionContainer>
+            <Testimonial
+              imageUrl={imageUrl}
+              testimonialAuthor={testimonialAuthor}
+              testimonial={testimonial}
+            />
+            {/*
+            <Testimonial
+              imageUrl={imageUrl}
+              testimonialAuthor={testimonialAuthor}
+              testimonial={testimonial}
+            />
+            */}
+          </DescriptionContainer>
         </Section>
         <Section variant="dark" rounded={!isVoterSignedIn}>
           <SectionTitle>Our Network</SectionTitle>
           <NetworkContainer>
-            <NetworkImage src={cordovaDot('/img/welcome/partners/google-logo.svg')} alt="Google" />
+            <NetworkImage src={cordovaDot('/img/welcome/partners/google-logo.png')} alt="Google" />
             <NetworkImage src={cordovaDot('/img/welcome/partners/center-for-technology.png')} alt="Center for Technology and Civic Life" />
             <NetworkImage src={cordovaDot('/img/welcome/partners/vote-org.png')} alt="Vote.org" />
             <NetworkImage src={cordovaDot('/img/welcome/partners/voting-information-project.png')} alt="Voting Information Project" />
@@ -243,6 +259,24 @@ const styles = theme => ({
     color: 'white',
   },
 });
+
+const HeaderForVoters = styled.div`
+  position: relative;
+  height: 590px;
+  width: 110%;
+  color: white;
+  background-image: linear-gradient(to bottom, #415a99, #2d3b5e);
+  border-bottom-left-radius: 50% 25%;
+  border-bottom-right-radius: 50% 25%;
+  padding: 0 2em;
+  margin-top: -72px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    height: 450px;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    height: 350px;
+  }
+`;
 
 const Wrapper = styled.div`
   display: flex;

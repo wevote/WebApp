@@ -40,7 +40,7 @@ class VoterGuideOrganizationFilter extends Component {
   getNewFilteredItems = () => {
     const { allItems, selectedFilters } = this.props;
     let filteredItems = [];
-    if (!selectedFilters.length) return allItems;
+    if (!selectedFilters || !selectedFilters.length) return allItems;
     selectedFilters.forEach((filter) => {
       switch (filter) {
         case 'news':
@@ -62,7 +62,7 @@ class VoterGuideOrganizationFilter extends Component {
           filteredItems = [...filteredItems, ...allItems.filter(item => item.is_oppose_or_negative_rating)];
           break;
         case 'comment':
-          filteredItems = [...filteredItems, ...allItems.filter(item => item.statement_text.length)];
+          filteredItems = [...filteredItems, ...allItems.filter(item => item.statement_text && item.statement_text.length)];
           break;
         case 'reach':
           if (filteredItems.length) {
