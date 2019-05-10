@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const Section = styled.div`
   display: flex;
   flex-flow: column;
-  padding: 5em 1em 3em 1em;
+  padding: 3em 1em 2em 1em;
   text-align: center;
   align-items: center;
   color: #333;
@@ -16,9 +16,9 @@ const Section = styled.div`
 const SectionTitle = styled.h1`
   font-size: 36px;
   font-weight: 300;
-  margin-bottom: 2em;
+  margin-bottom: 10px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    margin-bottom: 1em;
+    margin-bottom: 9px;
     font-size: 24px;
   }
 `;
@@ -82,7 +82,7 @@ const ButtonContainer = styled.div`
 
 const DescriptionContainer = styled.div`
   display: flex;
-  margin: 2em 3em;
+  margin: 1em 3em;
   flex-flow: row wrap;
   width: 960px;
   max-width: 90vw;
@@ -140,7 +140,7 @@ const NetworkImage = styled.img`
   width: 45%;
   margin-top: 2em;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    width: 70vw;
+    width: 100%;
   }
 `;
 

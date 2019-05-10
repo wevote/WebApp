@@ -12,7 +12,7 @@ import ToolBar from './ToolBar';
 import VoterStore from '../../stores/VoterStore';
 import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../components/More/people';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
-import { HeaderForCampaigns, Title } from '../../components/Welcome/Header';
+import { Title } from '../../components/Welcome/Header';
 
 class About extends Component {
   static getProps () {
@@ -29,9 +29,9 @@ class About extends Component {
       <Wrapper>
         <Helmet title="About Us - We Vote" />
         <WelcomeAppbar pathname="/more/about" />
-        <HeaderForCampaigns>
+        <HeaderForAbout>
           <Title>About We Vote</Title>
-        </HeaderForCampaigns>
+        </HeaderForAbout>
         <Container>
           <ToolBar />
           <div className="u-inset--sm" />
@@ -257,6 +257,24 @@ const Container = styled.div`
   }
   @media(min-width: 1200px) {
     width: 75%;
+  }
+`;
+
+const HeaderForAbout = styled.div`
+  position: relative;
+  height: 190px;
+  width: 110%;
+  color: white;
+  background-image: linear-gradient(to bottom, #415a99, #2d3b5e);
+  border-bottom-left-radius: 50% 25%;
+  border-bottom-right-radius: 50% 25%;
+  padding: 0 2em;
+  margin-top: -72px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    height: 530px;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    height: 530px;
   }
 `;
 

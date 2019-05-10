@@ -22,7 +22,7 @@ class CandidateStickyHeader extends Component {
     } = candidate;
 
     let descriptionText = `${party} candidate for ${officeName}`;
-    console.log(candidate);
+    // console.log(candidate);
 
     descriptionText = toTitleCase(descriptionText);
 

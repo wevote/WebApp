@@ -222,7 +222,7 @@ $menu-item-padding: 7px;
     }
     &--radius.dropdown-toggle::after {
       display: none !important;
-      font-size: 0px !important;
+      font-size: 0 !important;
     }
   }
   &__seperator {
