@@ -60,7 +60,6 @@ class TeamMemberDisplayForList extends Component {
               <ImageHover>
                 <ImageHandler
                   className="img-responsive team-member__photo"
-                  sizeClassName="small"
                   imageUrl={teamMemberImage}
                   alt={teamMemberName}
                 />
@@ -130,7 +129,7 @@ const CardHover = styled.div`
   background: white;
   margin: 0 auto;
   z-index: 999;
-  text-align: left;
+  text-align: center;
   border-radius: 3px;
   padding: 16px;
   box-shadow: 1px .5px 5px 0 #cacaca;
@@ -138,6 +137,7 @@ const CardHover = styled.div`
   @media (min-width: 576px) {
     animation: ${scaleCard} .25s ease-out;
     animation-fill-mode: forwards;
+    text-align: left;
   }
 `;
 
@@ -158,7 +158,10 @@ const Image = styled.div`
 const ImageHover = styled.div`
   width: 75px;
   height: 75px;
-  margin-bottom: 8px;
+  @media (max-width: 576px) {
+    margin: 0 auto;
+    text-align: center;
+  }
 `;
 
 const TextWrapper = styled.div`
@@ -172,6 +175,7 @@ const NameHover = styled.h4`
   @media (max-width: 576px) {
     font-size: 18px;
     font-weight: bold;
+    text-align: center;
   }
   font-size: 16px;
   font-weight: bold;
@@ -184,6 +188,9 @@ const NameDefault = styled.h3`
   text-align: left;
   margin-top: 8px;
   margin-bottom: 4px;
+  @media (max-width: 576px) {
+    text-align: center;
+  }
 `;
 
 const TitleHover = styled.p`
@@ -192,6 +199,7 @@ const TitleHover = styled.p`
   text-align: left;
   @media (max-width: 576px) {
     font-size: 16px;
+    text-align: center;
   }
 `;
 
@@ -199,6 +207,9 @@ const TitleDefault = styled.p`
   font-size: 16px;
   color: #cacaca;
   text-align: left;
+  @media (max-width: 576px) {
+    text-align: center;
+  }
 `;
 
 const Divider = styled.div`

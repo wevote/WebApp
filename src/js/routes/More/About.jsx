@@ -7,7 +7,7 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import { renderLog } from '../../utils/logging';
 import Footer from '../../components/Welcome/Footer';
 import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
-import Section, { Bold, DescriptionContainer, SectionTitle } from '../../components/Welcome/Section';
+import Section, { Bold, DescriptionContainer, SectionTitle, MemberListContainer } from '../../components/Welcome/Section';
 import TeamMemberDisplayForList from '../../components/More/TeamMemberDisplayForList';
 import ToolBar from './ToolBar';
 import VoterStore from '../../stores/VoterStore';
@@ -89,12 +89,7 @@ class About extends Component {
             Our Approach
           </SectionTitle>
           <DescriptionContainer>
-            We Vote is made of two fully nonpartisan nonprofit organizations (501(c)(3) and 501(c)(4)) based in Oakland, California.
-            {' '}
-            Our software is open source, and our work is driven by over 100 volunteers who have contributed so far.
-            {' '}
-            Inspired by groups like
-            {' '}
+            We Vote is made of two fully nonpartisan nonprofit organizations (501(c)(3) and 501(c)(4)) based in Oakland, California. Our software is open source, and our work is driven by over 100 volunteers who have contributed so far. Inspired by groups like
             <OpenExternalWebSite
               url="http://codeforsanfrancisco.org/"
               target="_blank"
@@ -105,9 +100,7 @@ class About extends Component {
                 </span>
               )}
             />
-            {' '}
             and the
-            {' '}
             <OpenExternalWebSite
               url="https://www.mozilla.org/en-US/foundation/"
               target="_blank"
@@ -119,14 +112,10 @@ class About extends Component {
                 </span>
               )}
             />
-            , we use technology to make democracy stronger by increasing voter turnout.
-            {' '}
-            Our incredible teams of volunteers help us to compile and verify endorsement data from every election.
+            , we use technology to make democracy stronger by increasing voter turnout. Our incredible teams of volunteers help us to compile and verify endorsement data from every election.
           </DescriptionContainer>
           <DescriptionContainer>
-            We are purposefully nonpartisan because we know that voters and their networks are complex.
-            {' '}
-            Voting decisions are rarely single issue, and we make better decisions when lots of information is present.
+            We are purposefully nonpartisan because we know that voters and their networks are complex. Voting decisions are rarely single issue, and we make better decisions when lots of information is present.
           </DescriptionContainer>
         </Section>
         <Section>
@@ -136,7 +125,7 @@ class About extends Component {
           <DescriptionContainer>
             <h2 className="h2">Founders</h2>
           </DescriptionContainer>
-          <DescriptionContainer>
+          <MemberListContainer>
             <div className="row position-relative">
               {
               weVoteFounders.map(teamMember => (
@@ -144,7 +133,7 @@ class About extends Component {
               ))
               }
             </div>
-          </DescriptionContainer>
+          </MemberListContainer>
           <DescriptionContainer>
             <h2 className="h2">Board Members &amp; Advisers</h2>
           </DescriptionContainer>
