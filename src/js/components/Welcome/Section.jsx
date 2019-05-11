@@ -80,15 +80,16 @@ const ButtonContainer = styled.div`
   margin-left: -134px;
 `;
 
+// @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+//   flex-flow: column-reverse;
+// }
 const DescriptionContainer = styled.div`
   display: flex;
   margin: 1em 3em;
   flex-flow: row wrap;
   width: 960px;
   max-width: 90vw;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    flex-flow: column-reverse;
-  }
+  text-align: left;
 `;
 
 const DescriptionLeftColumn = styled.div`
