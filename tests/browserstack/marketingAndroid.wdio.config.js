@@ -1,4 +1,7 @@
 const browserStackConfig = require('./browserstack.config');
+const date = new Date();
+const dateForDisplay = date.toDateString();
+const buildNameForDisplay = `${browserStackConfig.BUILD}: ${dateForDisplay}`;
 
 exports.config = {
   user: browserStackConfig.BROWSERSTACK_USER,
@@ -12,7 +15,7 @@ exports.config = {
     {
       // capabilities for a cordova android test
       name: 'marketingWelcomeTest-Android',
-      build: browserStackConfig.BUILD,
+      build: buildNameForDisplay,
       device: 'Samsung Galaxy Tab S4',
       os_version: '8.1',
       app: browserStackConfig.BROWSERSTACK_APK_URL,

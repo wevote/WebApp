@@ -1,4 +1,7 @@
 const browserStackConfig = require('./browserstack.config');
+const date = new Date();
+const dateForDisplay = date.toDateString();
+const buildNameForDisplay = `${browserStackConfig.BUILD}: ${dateForDisplay}`;
 
 exports.config = {
   user: browserStackConfig.BROWSERSTACK_USER,
@@ -12,7 +15,7 @@ exports.config = {
     {
       // capabilities for a browser web app test
       name: 'marketingWelcomeTest-Browser',
-      build: browserStackConfig.BUILD,
+      build: buildNameForDisplay,
       os: 'Windows',
       os_version: '7',
       browserName: 'Chrome',

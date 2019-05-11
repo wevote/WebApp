@@ -1,4 +1,7 @@
 const browserStackConfig = require('./browserstack.config');
+const date = new Date();
+const dateForDisplay = date.toDateString();
+const buildNameForDisplay = `${browserStackConfig.BUILD}: ${dateForDisplay}`;
 
 exports.config = {
   user: browserStackConfig.BROWSERSTACK_USER,
@@ -12,7 +15,7 @@ exports.config = {
     {
       // capabilities for a cordova iOS test
       name: 'marketingWelcomeTest-iOS',
-      build: browserStackConfig.BUILD,
+      build: buildNameForDisplay,
       device: 'iPhone 8 Plus',
       os_version: '11',
       app: browserStackConfig.BROWSERSTACK_IPA_URL,
