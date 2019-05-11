@@ -158,10 +158,9 @@ const Image = styled.div`
 const ImageHover = styled.div`
   width: 75px;
   height: 75px;
-  margin-bottom: 8px;
-  > * {
-    text-align: center;
+  @media (max-width: 576px) {
     margin: 0 auto;
+    text-align: center;
   }
 `;
 
