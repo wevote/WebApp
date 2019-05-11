@@ -13,8 +13,13 @@ You will also need the URL for the android app .apk file. You can get this by as
 
 You may also wish to add a string for the build and name of your test (these are useful to help identify your tests on Browserstack's console)
 
-To run the tests, run
+To run the tests, run one or more of the following:
 
-    (WebAppEnv) $ npm run test-browserstack
+    (WebAppEnv) $ npm run ballotTest-Android
+    (WebAppEnv) $ npm run ballotTest-Browser
+    (WebAppEnv) $ npm run ballotTest-iOS
+    (WebAppEnv) $ npm run marketingTest-Android
+    (WebAppEnv) $ npm run marketingTest-Browser
+    (WebAppEnv) $ npm run marketingTest-iOS
 
 When the test finishes, you should be able to see the video of the browser test on the BrowserStack Automate dashboard and video of the mobile apps on BrowserStack App Automate.
