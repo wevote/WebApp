@@ -2,16 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from '@material-ui/core';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 
-export default class ToolBar extends Component {
+class ToolBar extends Component {
   static propTypes = {
+    // classes: PropTypes.object,
     hideGitHub: PropTypes.bool,
   };
 
   render () {
     renderLog(__filename);
+    // const { classes } = this.props;
     const hideGitHub = this.props.hideGitHub ? this.props.hideGitHub : false;
 
     return (
@@ -51,3 +54,18 @@ export default class ToolBar extends Component {
     );
   }
 }
+
+const styles = theme => ({
+  iconButtonRoot: {
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    color: 'white',
+    outline: 'none !important',
+    [theme.breakpoints.down('md')]: {
+      marginLeft: '.1rem',
+    },
+  },
+});
+
+export default withStyles(styles)(ToolBar);
