@@ -84,12 +84,17 @@ const ButtonContainer = styled.div`
 //   flex-flow: column-reverse;
 // }
 const DescriptionContainer = styled.div`
-  display: flex;
-  margin: 1em 3em;
-  flex-flow: row wrap;
+  margin: 0 auto;
   width: 960px;
   max-width: 90vw;
   text-align: left;
+`;
+
+const MemberListContainer = styled.div`
+  margin: 0 auto;
+  width: 960px;
+  max-width: 90vw;
+  text-align: center;
 `;
 
 const DescriptionLeftColumn = styled.div`
@@ -181,6 +186,7 @@ export {
   NetworkImage,
   SignUpContainer,
   SignUpMessage,
+  MemberListContainer,
 };
 
 export default Section;
