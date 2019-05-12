@@ -7,7 +7,7 @@ import AnalyticsActions from '../../actions/AnalyticsActions';
 import { renderLog } from '../../utils/logging';
 import Footer from '../../components/Welcome/Footer';
 import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
-import Section, { Bold, DescriptionContainer, SectionTitle, MemberListContainer } from '../../components/Welcome/Section';
+import Section, { Bold, SectionTitle, MemberListContainer } from '../../components/Welcome/Section';
 import TeamMemberDisplayForList from '../../components/More/TeamMemberDisplayForList';
 import ToolBar from './ToolBar';
 import VoterStore from '../../stores/VoterStore';
@@ -35,7 +35,7 @@ class About extends Component {
           <ToolBar />
         </HeaderForAbout>
         <Section>
-          <DescriptionContainer>
+          <AboutDescriptionContainer>
             We Vote is a nonprofit technology startup, building the next generation of voting tech. We
             {'\''}
             re starting by creating a digital voter guide informed by issues you care about, and people you trust.
@@ -43,16 +43,16 @@ class About extends Component {
             Through our nonpartisan, open source platform, we
             {'\''}
             ll help you become a better voter, up and down the ballot.
-          </DescriptionContainer>
+          </AboutDescriptionContainer>
         </Section>
         <Section>
           <SectionTitle>
             Our Vision
           </SectionTitle>
-          <DescriptionContainer>
+          <AboutDescriptionContainer>
             Imagine what would be different if everyone voted in every election...
-          </DescriptionContainer>
-          <DescriptionContainer>
+          </AboutDescriptionContainer>
+          <AboutDescriptionContainer>
             Currently, the U.S. trails most developed nations in voter turnout.
             {' '}
             Only 6 out of 10 eligible voters is expected to cast a ballot next year.
@@ -62,8 +62,8 @@ class About extends Component {
             Even in today
             {'\''}
             s tense political climate, we all can agree that it should be much easier to decide how to vote.
-          </DescriptionContainer>
-          <DescriptionContainer>
+          </AboutDescriptionContainer>
+          <AboutDescriptionContainer>
             Our vision is to build a world where
             &nbsp;
             <Bold>no one misses a voting opportunity</Bold>
@@ -71,8 +71,8 @@ class About extends Component {
             because they don
             {'\''}
             t have the info they need to make their individual choice.
-          </DescriptionContainer>
-          <DescriptionContainer>
+          </AboutDescriptionContainer>
+          <AboutDescriptionContainer>
             We are creating easy-to-use tools that cut through the election noise and help voters easily understand what
             {'\''}
             s on their ballot.
@@ -82,13 +82,13 @@ class About extends Component {
             information and opinions across personal networks.
             {' '}
             So you can help your friends be better voters too.
-          </DescriptionContainer>
+          </AboutDescriptionContainer>
         </Section>
         <Section variant="dark" rounded>
           <SectionTitle>
             Our Approach
           </SectionTitle>
-          <DescriptionContainer>
+          <AboutDescriptionContainer>
             We Vote is made of two fully nonpartisan nonprofit organizations (501(c)(3) and 501(c)(4)) based in Oakland, California. Our software is open source, and our work is driven by over 100 volunteers who have contributed so far. Inspired by groups like
             <OpenExternalWebSite
               url="http://codeforsanfrancisco.org/"
@@ -113,18 +113,18 @@ class About extends Component {
               )}
             />
             , we use technology to make democracy stronger by increasing voter turnout. Our incredible teams of volunteers help us to compile and verify endorsement data from every election.
-          </DescriptionContainer>
-          <DescriptionContainer>
+          </AboutDescriptionContainer>
+          <AboutDescriptionContainer>
             We are purposefully nonpartisan because we know that voters and their networks are complex. Voting decisions are rarely single issue, and we make better decisions when lots of information is present.
-          </DescriptionContainer>
+          </AboutDescriptionContainer>
         </Section>
         <Section>
           <SectionTitle>
             Our Team
           </SectionTitle>
-          <DescriptionContainer>
+          <AboutDescriptionContainer>
             <h2 className="h2">Founders</h2>
-          </DescriptionContainer>
+          </AboutDescriptionContainer>
           <MemberListContainer>
             <div className="row position-relative">
               {
@@ -134,10 +134,10 @@ class About extends Component {
               }
             </div>
           </MemberListContainer>
-          <DescriptionContainer>
+          <AboutDescriptionContainer>
             <h2 className="h2">Board Members &amp; Advisers</h2>
-          </DescriptionContainer>
-          <DescriptionContainer>
+          </AboutDescriptionContainer>
+          <AboutDescriptionContainer>
             <div className="row position-relative">
               {
               weVoteBoard.map(teamMember => (
@@ -145,11 +145,11 @@ class About extends Component {
               ))
               }
             </div>
-          </DescriptionContainer>
-          <DescriptionContainer>
+          </AboutDescriptionContainer>
+          <AboutDescriptionContainer>
             <h2 className="h2">Staff &amp; Senior Volunteers</h2>
-          </DescriptionContainer>
-          <DescriptionContainer>
+          </AboutDescriptionContainer>
+          <AboutDescriptionContainer>
             <div className="row position-relative">
               {
               weVoteStaff.map(teamMember => (
@@ -157,13 +157,13 @@ class About extends Component {
               ))
               }
             </div>
-          </DescriptionContainer>
+          </AboutDescriptionContainer>
         </Section>
         <Section variant="dark" rounded>
           <SectionTitle>
             Our Funders &amp; Champions
           </SectionTitle>
-          <DescriptionContainer>
+          <AboutDescriptionContainer>
             We are thankful for
             &nbsp;
             <Link to="/more/credits">
@@ -173,13 +173,13 @@ class About extends Component {
             </Link>
             {' '}
             that are critical to our work.
-          </DescriptionContainer>
+          </AboutDescriptionContainer>
         </Section>
         <Section>
           <SectionTitle>
             Our Story
           </SectionTitle>
-          <DescriptionContainer>
+          <AboutDescriptionContainer>
             After meeting in Oakland in the spring of 2012, We Vote co-founders Dale McGrew and Jenifer Fernandez Ancona became fast friends.
             {' '}
             Dale brings Silicon Valley experience from founding and successfully selling two high tech startups,
@@ -191,7 +191,7 @@ class About extends Component {
             Founded in 2014, We Vote would be a community for voters, they decided, created by people concerned about where this country is heading.
             {' '}
             Being an open source, volunteer-driven project means anyone can contribute. Kind of like democracy.
-          </DescriptionContainer>
+          </AboutDescriptionContainer>
         </Section>
         <Section>
           &nbsp;
@@ -218,19 +218,6 @@ const styles = theme => ({
   },
 });
 
-// max-width: 960px;
-//   @media(min-width: 576px) {
-//     width: 90%;
-//   }
-//   @media(min-width: 769px) {
-//     width: 85%;
-//   }
-//   @media(min-width: 992px) {
-//     width: 80%;
-//   }
-//   @media(min-width: 1200px) {
-//     width: 75%;
-//   }
 const Wrapper = styled.div`
   display: flex;
   flex-flow: column nowrap;
@@ -238,33 +225,6 @@ const Wrapper = styled.div`
   background: white;
   overflow-x: hidden;
 `;
-
-// const TeamContainer = styled.div`
-//   max-width: 960px;
-//   display: flex;
-//   flex-flow: column;
-//   padding: 5em 1em 3em 1em;
-//   text-align: center;
-//   align-items: center;
-//   color: #333;
-//   width: 100%;
-//   margin: 0 auto;
-//   background: ${({ variant }) => (variant === 'dark' ? 'rgb(235, 236, 240)' : 'white')};
-//   ${({ rounded }) => (rounded ? // eslint-disable-next-line
-//       'border-radius: 50% 50%;\nwidth: 200%;\npadding: 3em 2em;' : '')}
-//   @media(min-width: 576px) {
-//     width: 90%;
-//   }
-//   @media(min-width: 769px) {
-//     width: 85%;
-//   }
-//   @media(min-width: 992px) {
-//     width: 80%;
-//   }
-//   @media(min-width: 1200px) {
-//     width: 75%;
-//   }
-// `;
 
 const HeaderForAbout = styled.div`
   position: relative;
@@ -282,6 +242,13 @@ const HeaderForAbout = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
     height: 190px;
   }
+`;
+
+const AboutDescriptionContainer = styled.div`
+  margin: 1em auto;
+  width: 960px;
+  max-width: 90vw;
+  text-align: left;
 `;
 
 export default withStyles(styles)(About);

@@ -84,7 +84,9 @@ const ButtonContainer = styled.div`
 //   flex-flow: column-reverse;
 // }
 const DescriptionContainer = styled.div`
-  margin: 0 auto;
+  display: flex;
+  margin: 1em 3em;
+  flex-flow: row wrap;
   width: 960px;
   max-width: 90vw;
   text-align: left;
