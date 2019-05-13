@@ -71,6 +71,13 @@ class VoterGuideOrganizationFilter extends Component {
             filteredItems = allItems.sort((firstGuide, secondGuide) => secondGuide.twitter_followers_count - firstGuide.twitter_followers_count);
           }
           break;
+        case 'network':
+          if (filteredItems.length) {
+            filteredItems = filteredItems.sort((firstGuide, secondGuide) => secondGuide.followed - firstGuide.followed);
+          } else {
+            filteredItems = allItems.sort((firstGuide, secondGuide) => secondGuide.followed - firstGuide.followed);
+          }
+          break;
         default:
           if (typeof filter === 'object') {
             filteredItems = [...filteredItems, ...this.getFilteredItemsByLinkedIssue(filter)];
@@ -110,7 +117,7 @@ class VoterGuideOrganizationFilter extends Component {
   ));
 
   render () {
-    const { showAllFilters, classes } = this.props;
+    const { showAllFilters, classes, selectedFilters } = this.props;
 
     return (
       <Wrapper showAllFilters={showAllFilters}>
@@ -118,13 +125,13 @@ class VoterGuideOrganizationFilter extends Component {
           <FilterColumn>
             <b>Sort By</b>
             <SortByContainer>
-              <SortBy onClick={() => this.handleChange('reach')}>Reach</SortBy>
+              <SortBy selected={selectedFilters.indexOf('reach') > -1} onClick={() => this.handleChange('reach')}>Reach</SortBy>
             </SortByContainer>
             <SortByContainer>
-              <SortBy onClick={() => this.handleChange('useful')}>Useful</SortBy>
+              <SortBy selected={selectedFilters.indexOf('useful') > -1} onClick={() => this.handleChange('useful')}>Useful</SortBy>
             </SortByContainer>
             <SortByContainer>
-              <SortBy onClick={() => this.handleChange('network')}>Network</SortBy>
+              <SortBy selected={selectedFilters.indexOf('network') > -1} onClick={() => this.handleChange('network')}>Network</SortBy>
             </SortByContainer>
           </FilterColumn>
           <FilterColumn>
@@ -219,6 +226,8 @@ const SortBy = styled.p`
   font-size: .875rem;
   margin: 8px 0 0 0;
   cursor: pointer;
+  color: ${({ selected, theme }) => (selected ? theme.colors.brandBlue : '#333')};
+  font-weight: ${({ selected }) => (selected ? 'bold' : 'normal')};
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     font-size: 14px;
   }

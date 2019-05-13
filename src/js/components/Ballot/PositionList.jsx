@@ -8,6 +8,9 @@ import { renderLog } from '../../utils/logging';
 import PositionItem from './PositionItem';
 import FilterBase from '../Filter/FilterBase';
 import VoterGuideOrganizationFilter from '../Filter/VoterGuideOrganizationFilter';
+import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
+
 
 const groupedFilters = [
   {
@@ -49,17 +52,31 @@ export default class PositionList extends Component {
   }
 
   componentDidMount () {
+    const { incomingPositionList } = this.props;
     this.setState({
-      positionList: this.props.incomingPositionList,
-      filteredPositionList: this.props.incomingPositionList,
+      positionList: incomingPositionList,
+      filteredPositionList: incomingPositionList,
     });
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
+    incomingPositionList.forEach(position => OrganizationActions.organizationRetrieve(position.speaker_we_vote_id));
+    OrganizationActions.organizationsFollowedRetrieve();
   }
 
-  componentWillReceiveProps (nextProps) {
-    const { positionList, filteredPositionList } = this.state;
+  componentWillUnmount () {
+    this.organizationStoreListener.remove();
+  }
+
+  onOrganizationStoreChange () {
+    const { positionList } = this.state;
+    const followed = OrganizationStore.getOrganizationsVoterIsFollowing();
+    const positionsWithOrgs = positionList.map(position => ({
+      ...position,
+      followed: followed.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
+      ...OrganizationStore.getOrganizationByWeVoteId(position.speaker_we_vote_id),
+    }));
     this.setState({
-      positionList: nextProps.incomingPositionList,
-      filteredPositionList: positionList.length ? filteredPositionList : nextProps.incomingPositionList,
+      positionList: positionsWithOrgs,
+      filteredPositionList: positionsWithOrgs,
     });
   }
 
@@ -90,7 +107,7 @@ export default class PositionList extends Component {
           <FilterBase
             groupedFilters={groupedFilters}
             islandFilters={islandFilters}
-            allItems={this.props.incomingPositionList}
+            allItems={this.state.positionList}
             onFilteredItemsChange={this.handleFilteredOrgsChange}
           >
             <VoterGuideOrganizationFilter />
@@ -124,7 +141,7 @@ export default class PositionList extends Component {
           <FilterBase
             groupedFilters={groupedFilters}
             islandFilters={islandFilters}
-            allItems={this.props.incomingPositionList}
+            allItems={this.state.positionList}
             onFilteredItemsChange={this.handleFilteredOrgsChange}
           >
             <VoterGuideOrganizationFilter />
