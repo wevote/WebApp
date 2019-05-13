@@ -146,6 +146,7 @@ class Welcome extends PureComponent {
                 variant="contained"
                 color="primary"
                 classes={{ containedPrimary: classes.buttonContained }}
+                id="welcomeForVotersViewBallot"
                 onClick={() => historyPush('/ballot')}
               >
                 View Ballot
@@ -171,6 +172,7 @@ class Welcome extends PureComponent {
                   variant="contained"
                   color="primary"
                   classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
+                  id="welcomeForVotersHowItWorksForVoters"
                   onClick={() => historyPush('/how/for-voters')}
                 >
                   How it Works For Voters

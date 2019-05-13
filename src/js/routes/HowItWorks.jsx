@@ -4,13 +4,15 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
+import AnnotatedSlideshow from '../components/Widgets/AnnotatedSlideshow';
+import AppActions from '../actions/AppActions';
 import Footer from '../components/Welcome/Footer';
 import Header, { Container, Title } from '../components/Welcome/HowItWorksHeader';
 import HeaderSwitch from '../components/Widgets/HeaderSwitch';
 import StepsChips from '../components/Widgets/StepsChips';
-import AnnotatedSlideshow from '../components/Widgets/AnnotatedSlideshow';
 import { historyPush } from '../utils/cordovaUtils';
+import VoterStore from '../stores/VoterStore';
+import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 
 class HowItWorks extends Component {
   static propTypes = {
@@ -21,8 +23,6 @@ class HowItWorks extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      selectedCategoryIndex: 0,
-      selectedStepIndex: 0,
       forCampaignsStepLabels: ['Claim', 'Import', 'Customize', 'Launch', 'Social Lift'],
       forCampaignsSteps: {
         Claim: {
@@ -116,22 +116,33 @@ class HowItWorks extends Component {
           index: 4,
         },
       },
+      selectedCategoryIndex: 0,
+      selectedStepIndex: 0,
+      voter: {},
     };
   }
 
   componentDidMount () {
+    this.onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     if (this.props.params.category_string === 'for-campaigns') {
       this.setState({
+        getStartedMode: 'getStartedForCampaigns',
+        getStartedUrl: '/settings/profile',
         selectedCategoryIndex: 2,
         selectedStepIndex: 0,
       });
     } else if (this.props.params.category_string === 'for-organizations') {
       this.setState({
+        getStartedMode: 'getStartedForOrganizations',
+        getStartedUrl: '/settings/profile',
         selectedCategoryIndex: 1,
         selectedStepIndex: 0,
       });
     } else {
       this.setState({
+        getStartedMode: 'getStartedForVoters',
+        getStartedUrl: '/ballot',
         selectedCategoryIndex: 0,
         selectedStepIndex: 0,
       });
@@ -141,20 +152,36 @@ class HowItWorks extends Component {
   componentWillReceiveProps (nextProps) {
     if (nextProps.params.category_string === 'for-campaigns') {
       this.setState({
+        getStartedMode: 'getStartedForCampaigns',
+        getStartedUrl: '/settings/profile',
         selectedCategoryIndex: 2,
         selectedStepIndex: 0,
       });
     } else if (nextProps.params.category_string === 'for-organizations') {
       this.setState({
+        getStartedMode: 'getStartedForOrganizations',
+        getStartedUrl: '/settings/profile',
         selectedCategoryIndex: 1,
         selectedStepIndex: 0,
       });
     } else {
       this.setState({
+        getStartedMode: 'getStartedForVoters',
+        getStartedUrl: '/ballot',
         selectedCategoryIndex: 0,
         selectedStepIndex: 0,
       });
     }
+  }
+
+  componentWillUnmount () {
+    this.voterStoreListener.remove();
+  }
+
+  onVoterStoreChange () {
+    this.setState({
+      voter: VoterStore.getVoter(),
+    });
   }
 
   handleChangeSlide = (selectedStepIndex) => {
@@ -162,10 +189,36 @@ class HowItWorks extends Component {
   }
 
   switchToDifferentCategoryFunction = (selectedCategoryIndex) => {
+    let getStartedMode = 'getStartedForVoters';
+    let getStartedUrl = '/ballot';
+    if (selectedCategoryIndex === 1) {
+      getStartedMode = 'getStartedForOrganizations';
+      getStartedUrl = '/settings/profile';
+    } else if (selectedCategoryIndex === 2) {
+      getStartedMode = 'getStartedForCampaigns';
+      getStartedUrl = '/settings/profile';
+    }
     this.setState({
+      getStartedMode,
+      getStartedUrl,
       selectedCategoryIndex: selectedCategoryIndex || 0,
       selectedStepIndex: 0,
     });
+  }
+
+  howItWorksGetStarted () {
+    const { getStartedMode, getStartedUrl, voter } = this.state;
+    let isSignedIn = false;
+    if (voter) {
+      ({ is_signed_in: isSignedIn } = voter);
+      isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
+    }
+    if (isSignedIn) {
+      historyPush(getStartedUrl);
+    } else {
+      AppActions.setGetStartedMode(getStartedMode);
+      AppActions.setShowSignInModal(true);
+    }
   }
 
   render () {
@@ -228,16 +281,15 @@ class HowItWorks extends Component {
           />
           {
             selectedStepIndex === stepLabels.length - 1 && (
-              <MobileTabletView>
-                <Button
-                  classes={{ root: classes.getStartedButtonRoot }}
-                  color="primary"
-                  variant="contained"
-                  onClick={() => historyPush('/ballot')}
-                >
-                  Get Started
-                </Button>
-              </MobileTabletView>
+              <Button
+                classes={{ root: classes.getStartedButtonRoot }}
+                color="primary"
+                variant="contained"
+                onClick={() => this.howItWorksGetStarted()}
+                id="howItWorksGetStarted"
+              >
+                Get Started
+              </Button>
             )
           }
         </Section>

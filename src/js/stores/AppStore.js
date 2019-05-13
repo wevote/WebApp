@@ -4,6 +4,7 @@ import Dispatcher from '../dispatcher/AppDispatcher';
 class AppStore extends ReduceStore {
   getInitialState () {
     return {
+      getStartedMode: '',
       headroomUnpinned: false,
       scrolledDown: false,
       showEditAddressButton: false,
@@ -15,6 +16,10 @@ class AppStore extends ReduceStore {
 
   getScrolledDown () {
     return this.getState().scrolledDown;
+  }
+
+  getStartedMode () {
+    return this.getState().getStartedMode;
   }
 
   headroomIsUnpinned () {
@@ -39,6 +44,8 @@ class AppStore extends ReduceStore {
 
   reduce (state, action) {
     switch (action.type) {
+      case 'getStartedMode':
+        return { ...state, getStartedMode: action.payload };
       case 'headroomUnpinned':
         return { ...state, headroomUnpinned: action.payload };
       case 'scrolledDown':

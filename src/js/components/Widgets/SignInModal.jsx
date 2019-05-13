@@ -64,7 +64,11 @@ class SignInModal extends Component {
               ) : (
                 <div>
                   { !this.state.voter.is_signed_in ?
-                    <SettingsAccount toggleSignInModal={this.props.toggleFunction} /> :
+                    (
+                      <SettingsAccount
+                        toggleSignInModal={this.props.toggleFunction}
+                      />
+                    ) :
                     null }
                 </div>
               )}

@@ -45,6 +45,7 @@ import OrganizationVoterGuideEdit from './routes/VoterGuide/OrganizationVoterGui
 import OrganizationVoterGuideMeasure from './routes/VoterGuide/OrganizationVoterGuideMeasure';
 import OrganizationVoterGuideOffice from './routes/VoterGuide/OrganizationVoterGuideOffice';
 import PollingPlaceLocatorModal from './routes/Ballot/PollingPlaceLocatorModal';
+import Pricing from './routes/More/Pricing';
 import Privacy from './routes/More/Privacy';
 import ProcessingDonation from './routes/More/ProcessingDonation';
 import RegisterToVote from './routes/More/RegisterToVote';
@@ -188,6 +189,7 @@ const routes = () => (
     {/* Redirecting old URLs to new components */}
     <Route path="/more/network/friends" component={Friends} />
     <Route path="/more/network/organizations" component={Values} />
+    <Route path="/more/pricing" component={Pricing} />
     <Route path="/more/privacy" component={Privacy} />
     <Route path="/more/processing_donation" component={ProcessingDonation} />
     <Route path="/more/register" component={RegisterToVote} />
