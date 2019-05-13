@@ -128,15 +128,17 @@ class WelcomeForCampaigns extends PureComponent {
               <HeaderStepNumber>3</HeaderStepNumber>
               <HeaderStepLabel>Spark social lift</HeaderStepLabel>
             </HeaderStep>
-            <HeaderStep>
+            <HeaderStepButton>
               <Button
                 variant="contained"
-                color="primary"
-                classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
+                color="secondary"
+                size="large"
+                // className={classes.whiteButton}
+                classes={{ root: classes.buttonMaxWidth, containedSecondary: classes.buttonContained }}
               >
                 Get Started
               </Button>
-            </HeaderStep>
+            </HeaderStepButton>
           </HeaderSection>
         </HeaderForCampaigns>
         <Section>
@@ -176,10 +178,11 @@ class WelcomeForCampaigns extends PureComponent {
                 {' '}
                 access + analyze social sharing data.
               </Description>
-              <Description>
+              <Description className="u_margin-center">
                 <Button
                   variant="contained"
                   color="primary"
+                  size="large"
                   classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
                   onClick={() => historyPush('/how/for-campaigns')}
                 >
@@ -216,10 +219,11 @@ class WelcomeForCampaigns extends PureComponent {
                 {' '}
                 six minutes or less.
               </Description>
-              <Description>
+              <Description className="u_margin-center">
                 <Button
                   variant="contained"
                   color="primary"
+                  size="large"
                   classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
                   onClick={() => historyPush('/how/for-voters')}
                 >
@@ -261,13 +265,10 @@ class WelcomeForCampaigns extends PureComponent {
   }
 }
 
-const styles = theme => ({
+const styles = () => ({
   buttonContained: {
     borderRadius: 32,
-    height: 50,
-    [theme.breakpoints.down('md')]: {
-      height: 36,
-    },
+    fontWeight: 500,
   },
   buttonMaxWidth: {
     width: '100%',
@@ -275,6 +276,10 @@ const styles = theme => ({
   iconButton: {
     color: 'white',
   },
+  // whiteButton: {
+  //   background: 'white',
+  //   color: '#2e3c5d',
+  // },
 });
 
 const Wrapper = styled.div`
@@ -349,6 +354,10 @@ const HeaderStepLabel = styled.p`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     margin: auto .7rem;
   }
+`;
+
+const HeaderStepButton = styled.p`
+  margin: 10px auto;
 `;
 
 const FeatureStep = styled.div`
