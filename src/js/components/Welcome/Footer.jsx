@@ -24,6 +24,7 @@ class Footer extends Component {
               <Link id="footerLinkForVoters" className={classes.link} to="/how/for-voters">For Voters</Link>
               <Link id="footerLinkForOrganizations" className={classes.link} to="/how/for-organizations">For Organizations</Link>
               <Link id="footerLinkForCampaigns" className={classes.link} to="/how/for-campaigns">For Campaigns</Link>
+              <Link id="footerLinkForPricing" className={classes.link} to="/more/pricing">Pricing</Link>
             </Column>
             <Column>
               <ColumnTitle>Elections</ColumnTitle>
@@ -115,6 +116,7 @@ class Footer extends Component {
               color="default"
               variant="outlined"
               classes={{ root: classes.buttonOutlined }}
+              id="footerLinkGetStarted"
               onClick={() => historyPush('/ballot')}
             >
               Get Started

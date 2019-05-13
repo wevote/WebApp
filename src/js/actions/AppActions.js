@@ -1,6 +1,10 @@
 import Dispatcher from '../dispatcher/AppDispatcher';
 
 export default {
+  setGetStartedMode (getStartedMode) {
+    Dispatcher.dispatch({ type: 'getStartedMode', payload: getStartedMode });
+  },
+
   setHeadroomUnpinned (unpinned) {
     Dispatcher.dispatch({ type: 'headroomUnpinned', payload: unpinned });
   },

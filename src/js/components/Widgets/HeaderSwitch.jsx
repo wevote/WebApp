@@ -20,13 +20,13 @@ class HeaderSwitch extends PureComponent {
     const { color, choices, selectedCategoryIndex } = this.props;
     return (
       <Container color={color}>
-        <Choice selectedCategoryIndex={selectedCategoryIndex === 0} color={color} onClick={() => this.switchToDifferentCategory(0)}>
+        <Choice id="howItWorksSwitchForVoters" selectedCategoryIndex={selectedCategoryIndex === 0} color={color} onClick={() => this.switchToDifferentCategory(0)}>
           <ChoiceText>{choices[0]}</ChoiceText>
         </Choice>
-        <Choice selectedCategoryIndex={selectedCategoryIndex === 1} color={color} onClick={() => this.switchToDifferentCategory(1)}>
+        <Choice id="howItWorksSwitchForOrganizations" selectedCategoryIndex={selectedCategoryIndex === 1} color={color} onClick={() => this.switchToDifferentCategory(1)}>
           <ChoiceText>{choices[1]}</ChoiceText>
         </Choice>
-        <Choice selectedCategoryIndex={selectedCategoryIndex === 2} color={color} onClick={() => this.switchToDifferentCategory(2)}>
+        <Choice id="howItWorksSwitchForCampaigns" selectedCategoryIndex={selectedCategoryIndex === 2} color={color} onClick={() => this.switchToDifferentCategory(2)}>
           <ChoiceText>{choices[2]}</ChoiceText>
         </Choice>
       </Container>
