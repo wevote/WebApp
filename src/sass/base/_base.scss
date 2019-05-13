@@ -107,4 +107,9 @@ img {
   max-width: 100%;
 }
 
+// Remove blue border around buttons in Chrome
+button:focus {
+  outline:0 !important;
+}
+
 // stylelint-enable

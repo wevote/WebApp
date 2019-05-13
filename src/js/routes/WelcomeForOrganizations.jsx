@@ -132,10 +132,11 @@ class WelcomeForOrganizations extends PureComponent {
                 s on their ballot.
               </Bold>
             </Description>
-            <Description>
+            <Description className="u_margin-center">
               <Button
                 variant="contained"
                 color="primary"
+                size="large"
                 classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
                 onClick={() => historyPush('/how/for-organizations')}
               >
@@ -165,11 +166,13 @@ class WelcomeForOrganizations extends PureComponent {
                 {' '}
                 find their polling location, and use We Vote tools to confidently make voting decisions.
               </Description>
-              <Description>
+              <Description className="u_margin-center">
                 <Button
                   variant="contained"
                   color="primary"
+                  size="large"
                   classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
+                  onClick={() => historyPush('/how/for-organizations')}
                 >
                   Get Started
                 </Button>
@@ -204,10 +207,11 @@ class WelcomeForOrganizations extends PureComponent {
                 {' '}
                 six minutes or less.
               </Description>
-              <Description>
+              <Description className="u_margin-center">
                 <Button
                   variant="contained"
                   color="primary"
+                  size="large"
                   classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
                   onClick={() => historyPush('/how/for-voters')}
                 >
@@ -242,10 +246,12 @@ class WelcomeForOrganizations extends PureComponent {
               {' '}
               add a We Vote widget to your website, assist in messaging to launch the partnership, drive additional traffic, or provide analytics. Learn more!
             </Description>
-            <Description>
+            <Description className="u_margin-center">
               <Button
                 variant="contained"
                 color="primary"
+                size="large"
+                className={classes.goldButton}
                 classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
               >
                 View Pricing
@@ -268,19 +274,19 @@ class WelcomeForOrganizations extends PureComponent {
   }
 }
 
-const styles = theme => ({
+const styles = () => ({
   buttonContained: {
     borderRadius: 32,
-    height: 50,
-    [theme.breakpoints.down('md')]: {
-      height: 36,
-    },
   },
   buttonMaxWidth: {
     width: '100%',
+    margin: '0 auto',
   },
   iconButton: {
     color: 'white',
+  },
+  goldButton: {
+    background: 'linear-gradient(70deg, rgba(219,179,86,1) 14%, rgba(162,124,33,1) 94%)',
   },
 });
 
