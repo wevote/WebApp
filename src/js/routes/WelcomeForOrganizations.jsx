@@ -9,7 +9,7 @@ import Section, { SectionTitle, SectionTitleBold, DescriptionContainer, Descript
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 import Footer from '../components/Welcome/Footer';
 import { historyPush, cordovaDot } from '../utils/cordovaUtils';
-import Testimonial from '../components/Widgets/Testimonial';
+import TestimonialCompany from '../components/Widgets/TestimonialCompany';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import validateEmail from '../utils/email-functions';
 import VoterActions from '../actions/VoterActions';
@@ -91,7 +91,8 @@ class WelcomeForOrganizations extends PureComponent {
 
     const testimonialAuthor = 'Debra Cleaver, Vote.org';
     const imageUrl = cordovaDot('/img/global/photos/Debra_Cleaver-200x200.jpg');
-    const testimonial = 'We don\'t care who you vote for, just VOTE.';
+    const testimonial = 'Our company is dedicated to social impact, and definitely neutral politically so WeVote is perfect for us.  WeVote allows us to provide a great staff benefit that helps our geographically distributed team to make their own informed local ballot choices quickly and easily.  We have gotten great feedback and appreciation so far!';
+    const testimonialCompanyLogo = cordovaDot('/img/welcome/VoteOrgLogo.png');
     return (
       <Wrapper>
         <Helmet title="Welcome Organizations - We Vote" />
@@ -224,10 +225,11 @@ class WelcomeForOrganizations extends PureComponent {
         <Section>
           <SectionTitle>Testimonials</SectionTitle>
           <DescriptionContainer>
-            <Testimonial
+            <TestimonialCompany
               imageUrl={imageUrl}
               testimonialAuthor={testimonialAuthor}
               testimonial={testimonial}
+              testimonialCompanyLogo={testimonialCompanyLogo}
             />
           </DescriptionContainer>
         </Section>
