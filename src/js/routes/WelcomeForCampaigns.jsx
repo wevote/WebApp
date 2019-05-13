@@ -21,6 +21,7 @@ import Footer from '../components/Welcome/Footer';
 import { historyPush, cordovaDot } from '../utils/cordovaUtils';
 import Testimonial from '../components/Widgets/Testimonial';
 import AnalyticsActions from '../actions/AnalyticsActions';
+import AppActions from '../actions/AppActions';
 import validateEmail from '../utils/email-functions';
 import VoterActions from '../actions/VoterActions';
 import VoterConstants from '../constants/VoterConstants';
@@ -56,6 +57,21 @@ class WelcomeForCampaigns extends PureComponent {
     this.setState({
       voter: VoterStore.getVoter(),
     });
+  }
+
+  getStartedForCampaigns () {
+    const { voter } = this.state;
+    let isSignedIn = false;
+    if (voter) {
+      ({ is_signed_in: isSignedIn } = voter);
+      isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
+    }
+    if (isSignedIn) {
+      historyPush('/settings/profile');
+    } else {
+      AppActions.setGetStartedMode('getStartedForCampaigns');
+      AppActions.setShowSignInModal(true);
+    }
   }
 
   updateVoterFullName = (event) => {
@@ -133,8 +149,9 @@ class WelcomeForCampaigns extends PureComponent {
                 variant="contained"
                 color="secondary"
                 size="large"
-                // className={classes.whiteButton}
                 classes={{ root: classes.buttonMaxWidth, containedSecondary: classes.buttonContained }}
+                onClick={() => this.getStartedForCampaigns()}
+                id="welcomeForCampaignsGetStarted"
               >
                 Get Started
               </Button>
@@ -184,6 +201,7 @@ class WelcomeForCampaigns extends PureComponent {
                   color="primary"
                   size="large"
                   classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
+                  id="welcomeForCampaignsHowItWorksForCampaigns"
                   onClick={() => historyPush('/how/for-campaigns')}
                 >
                   How it Works For Campaigns
@@ -225,6 +243,7 @@ class WelcomeForCampaigns extends PureComponent {
                   color="primary"
                   size="large"
                   classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
+                  id="welcomeForCampaignsHowItWorksForVoters"
                   onClick={() => historyPush('/how/for-voters')}
                 >
                   How it Works For Voters
@@ -276,10 +295,6 @@ const styles = () => ({
   iconButton: {
     color: 'white',
   },
-  // whiteButton: {
-  //   background: 'white',
-  //   color: '#2e3c5d',
-  // },
 });
 
 const Wrapper = styled.div`
@@ -293,7 +308,7 @@ const Wrapper = styled.div`
 const HeaderSection = styled.div`
   display: flex;
   flex-flow: column;
-  padding: 2em 1em 3em 1em;
+  padding: 1em 1em 3em 1em;
   text-align: center;
   align-items: center;
   color: #333;
@@ -314,7 +329,7 @@ const HeaderForCampaigns = styled.div`
     height: 530px;
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    height: 530px;
+    height: 560px;
   }
 `;
 
@@ -357,7 +372,7 @@ const HeaderStepLabel = styled.p`
 `;
 
 const HeaderStepButton = styled.p`
-  margin: 10px auto;
+  margin: 30px auto;
 `;
 
 const FeatureStep = styled.div`

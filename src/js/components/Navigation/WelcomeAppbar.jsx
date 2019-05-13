@@ -144,13 +144,13 @@ class WelcomeAppbar extends Component {
     if (pathname === '/welcome') {
       showForOrganizations = true;
     }
-    if (!pathname.startsWith('/how') && pathname !== '/welcome') {
+    if (!pathname.startsWith('/how') && pathname !== '/welcome' && pathname !== '/more/pricing') {
       showForVoters = true;
     }
-    if (!pathname.startsWith('/how') && (pathname === '/for-campaigns' || pathname === '/more/about')) {
+    if (!pathname.startsWith('/how') && (pathname === '/for-campaigns' || pathname === '/more/about' || pathname === '/more/pricing')) {
       showForOrganizationsDesktop = true;
     }
-    if (!pathname.startsWith('/how') && (pathname === '/welcome' || pathname === '/for-organizations')) {
+    if (!pathname.startsWith('/how') && (pathname === '/welcome' || pathname === '/for-organizations' || pathname === '/more/pricing')) {
       showForCampaignsDesktop = true;
     }
     if (pathname === '/for-campaigns') {
@@ -189,20 +189,21 @@ class WelcomeAppbar extends Component {
                 <NavLink id="welcomeForVoters" to="/welcome">For Voters</NavLink>
               }
               {/* Don't show 'For Organizations' or 'For Campaigns' when on How It Works page */}
-              { !pathname.startsWith('/how') ?
-                <Divider /> :
-                null
+              { (showWelcomeForVoters || showWelcomeForOrganizations || showWelcomeForCampaigns || showForOrganizations || showForVoters) &&
+                <Divider />
               }
               { showForOrganizationsDesktop &&
                 <NavLink id="welcomeForOrganizations" to="/for-organizations">For Organizations</NavLink>
+              }
+              { showForOrganizationsDesktop && showForCampaignsDesktop &&
+                <Divider />
               }
               { showForCampaignsDesktop &&
                 <NavLink id="welcomeForCampaigns" to="/for-campaigns">For Campaigns</NavLink>
               }
               {/* Turn off How It Works link on that page */}
-              { !pathname.startsWith('/how') ?
-                <Divider /> :
-                null
+              { (showForOrganizationsDesktop || showForCampaignsDesktop) &&
+                <Divider />
               }
               {/* Change the How It Works link depending on which welcome page you are on */}
               { showHowItWorksForVoters &&
@@ -214,7 +215,9 @@ class WelcomeAppbar extends Component {
               { showHowItWorksForOrganizations &&
                 <NavLink id="welcomeHowItWorks" to="/how/for-organizations">How It Works</NavLink>
               }
-              <Divider />
+              { (showHowItWorksForVoters || showHowItWorksForCampaigns || showHowItWorksForOrganizations) &&
+                <Divider />
+              }
               <NavLink id="welcomeYourBallot" to="/ballot">Your Ballot</NavLink>
               <Divider />
               {!voterIsSignedIn && <NavLink id="welcomeSignIn" to="" onClick={() => this.toggleSignInModal()}>Sign In</NavLink> }
