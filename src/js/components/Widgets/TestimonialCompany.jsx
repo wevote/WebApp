@@ -57,10 +57,9 @@ class TestimonialCompany extends React.Component {
         </ImageLogoContainer>
         <TextStyled>
           <FormatQuote style={{
-            transform: 'rotate(180deg)',
+            transform: 'rotateY(180deg) scale(1.4)',
             verticalAlign: 'text-bottom',
             position: 'relative',
-            top: '5px',
             marginLeft: '-4px',
           }}
           />
@@ -139,7 +138,7 @@ const TextStyled = styled.div`
   margin: 0 0 5px;
   border-width: medium;
   font-size: 16px;
-  line-height: normal;
+  line-height: 1.5;
 `;
 
 export default TestimonialCompany;
