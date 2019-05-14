@@ -84,6 +84,7 @@ class FilterBase extends React.Component {
   render () {
     const { showAllFilters, selectedFilters } = this.state;
     const { classes } = this.props;
+    // console.log('FilterBase, selectedFilters: ', selectedFilters);
     return (
       <Wrapper>
         <FilterTop>
