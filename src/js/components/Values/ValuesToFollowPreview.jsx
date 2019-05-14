@@ -85,7 +85,7 @@ class ValuesToFollowPreview extends Component {
               { issueListForDisplay }
             </Row>
             <div>
-              <Link to="/values/list">Explore all 26 values</Link>
+              <Link id="myValuesExploreAllValues" to="/values/list">Explore all 26 values</Link>
             </div>
           </div>
         </section>

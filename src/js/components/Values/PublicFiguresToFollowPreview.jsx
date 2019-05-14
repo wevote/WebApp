@@ -46,7 +46,7 @@ export default class PublicFiguresToFollowPreview extends Component {
               <GuideList incomingVoterGuideList={voterGuidesToFollow} instantRefreshOn />
             </Suspense>
             <div>
-              <Link to="/opinions">Explore more public figures</Link>
+              <Link id="myValuesExploreMorePublicFigures" to="/opinions">Explore more public figures</Link>
             </div>
           </div>
         </section>
