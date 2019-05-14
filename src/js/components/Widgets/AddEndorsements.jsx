@@ -32,8 +32,9 @@ class AddEndorsements extends Component {
               title="Endorsements Missing?"
               body={(
                 <Button
-                  className="btn btn-social btn-lg value-btn value-btn__endorsements text-center"
                   bsPrefix="u-margin-top--sm u-stack--xs"
+                  className="btn btn-social btn-lg value-btn value-btn__endorsements text-center"
+                  id="myValuesAddEndorsementsToWeVote"
                   variant="primary"
                 >
                   <span>

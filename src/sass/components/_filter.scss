@@ -22,22 +22,27 @@ $text-margin: auto 0;
   white-space: nowrap;
   cursor: pointer;
   transition: background .13s ease-in;
-  &:hover {
-    background: #f2f2f2;
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+  &:active {
+    background: rgb(137, 237, 159);
   }
   &__text {
     font-size: 1rem;
     margin: $text-margin;
-    @include breakpoints (0 medium) {
-      font-size: 12px;
+    @include breakpoints(0 mid-small) {
+      font-size: 14px;
+    }
+    @include breakpoints (mid-small medium) {
+      font-size: 16px;
     }
   }
   svg {
     font-size: 18px;
     margin: $text-margin;
-    @include breakpoints (0 medium) {
+    @include breakpoints(0 mid-small) {
       font-size: 12px;
+    }
+    @include breakpoints (mid-small medium) {
+      font-size: 16px;
     }
   }
 }

@@ -84,6 +84,7 @@ class FilterBase extends React.Component {
   render () {
     const { showAllFilters, selectedFilters } = this.state;
     const { classes } = this.props;
+    // console.log('FilterBase, selectedFilters: ', selectedFilters);
     return (
       <Wrapper>
         <FilterTop>
@@ -127,6 +128,9 @@ const styles = theme => ({
   badge: {
     right: '1rem',
     background: theme.palette.primary.main,
+    [theme.breakpoints.down('sm')]: {
+      right: '.8rem',
+    },
   },
 });
 

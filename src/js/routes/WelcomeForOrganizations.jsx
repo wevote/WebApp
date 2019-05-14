@@ -11,6 +11,7 @@ import Footer from '../components/Welcome/Footer';
 import { historyPush, cordovaDot } from '../utils/cordovaUtils';
 import Testimonial from '../components/Widgets/Testimonial';
 import AnalyticsActions from '../actions/AnalyticsActions';
+import AppActions from '../actions/AppActions';
 import validateEmail from '../utils/email-functions';
 import VoterActions from '../actions/VoterActions';
 import VoterConstants from '../constants/VoterConstants';
@@ -46,6 +47,21 @@ class WelcomeForOrganizations extends PureComponent {
     this.setState({
       voter: VoterStore.getVoter(),
     });
+  }
+
+  getStartedForOrganizations () {
+    const { voter } = this.state;
+    let isSignedIn = false;
+    if (voter) {
+      ({ is_signed_in: isSignedIn } = voter);
+      isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
+    }
+    if (isSignedIn) {
+      historyPush('/settings/profile');
+    } else {
+      AppActions.setGetStartedMode('getStartedForOrganizations');
+      AppActions.setShowSignInModal(true);
+    }
   }
 
   updateVoterFullName = (event) => {
@@ -138,6 +154,7 @@ class WelcomeForOrganizations extends PureComponent {
                 color="primary"
                 size="large"
                 classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
+                id="welcomeForOrganizationsHowItWorksForOrganizations"
                 onClick={() => historyPush('/how/for-organizations')}
               >
                 How it Works for Organizations
@@ -172,7 +189,8 @@ class WelcomeForOrganizations extends PureComponent {
                   color="primary"
                   size="large"
                   classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
-                  onClick={() => historyPush('/how/for-organizations')}
+                  id="welcomeForOrganizationsGetStarted"
+                  onClick={() => this.getStartedForOrganizations()}
                 >
                   Get Started
                 </Button>
@@ -213,6 +231,7 @@ class WelcomeForOrganizations extends PureComponent {
                   color="primary"
                   size="large"
                   classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
+                  id="welcomeForOrganizationsHowItWorksForVoters"
                   onClick={() => historyPush('/how/for-voters')}
                 >
                   How it Works For Voters
@@ -253,6 +272,8 @@ class WelcomeForOrganizations extends PureComponent {
                 size="large"
                 className={classes.goldButton}
                 classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
+                id="welcomeForOrganizationsPricing"
+                onClick={() => historyPush('/more/pricing')}
               >
                 View Pricing
               </Button>

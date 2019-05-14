@@ -54,12 +54,6 @@ export default class Candidate extends Component {
       CandidateActions.positionListForBallotItemPublic(this.props.params.candidate_we_vote_id);
 
       organizationWeVoteId = this.props.params.organization_we_vote_id || '';
-      // If needed, activate this
-      // organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-      // if (organizationWeVoteId && organizationWeVoteId !== '' && !organization.organization_we_vote_id) {
-      //   // Retrieve the organization object
-      //   OrganizationActions.organizationRetrieve(organizationWeVoteId);
-      // }
     }
 
     if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
@@ -210,12 +204,11 @@ export default class Candidate extends Component {
           />
           <div className="card__additional">
             {/* this.state.positionListFromAdvisersFollowedByVoter */}
-            { this.state.allCachedPositionsForThisCandidate ? (
+            { this.state.allCachedPositionsForThisCandidate.length ? (
               <div>
                 <PositionList
                   incomingPositionList={this.state.allCachedPositionsForThisCandidate}
                   ballotItemDisplayName={this.state.candidate.ballot_item_display_name}
-                  positionListExistsTitle={<div><h3 className="card__additional-heading">Opinions</h3></div>}
                 />
               </div>
             ) : null
