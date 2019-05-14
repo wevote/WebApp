@@ -28,7 +28,7 @@ $text-margin: auto 0;
   &__text {
     font-size: 1rem;
     margin: $text-margin;
-    @include breakpoints(small mid-small) {
+    @include breakpoints(0 mid-small) {
       font-size: 14px;
     }
     @include breakpoints (mid-small medium) {
@@ -38,7 +38,7 @@ $text-margin: auto 0;
   svg {
     font-size: 18px;
     margin: $text-margin;
-    @include breakpoints(small mid-small) {
+    @include breakpoints(0 mid-small) {
       font-size: 12px;
     }
     @include breakpoints (mid-small medium) {

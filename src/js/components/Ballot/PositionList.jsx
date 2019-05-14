@@ -58,7 +58,19 @@ export default class PositionList extends Component {
       filteredPositionList: incomingPositionList,
     });
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    incomingPositionList.forEach(position => OrganizationActions.organizationRetrieve(position.speaker_we_vote_id));
+    let oneOrganization = {};
+    const organizationWeVoteIdsNeeded = [];
+    incomingPositionList.forEach((position) => {
+      oneOrganization = OrganizationStore.getOrganizationByWeVoteId(position.speaker_we_vote_id);
+      if (!oneOrganization || !oneOrganization.organization_we_vote_id) {
+        organizationWeVoteIdsNeeded.push(position.speaker_we_vote_id);
+      }
+      // Replace with bulk retrieve, since one call per organization is too expensive
+      // OrganizationActions.organizationRetrieve(position.speaker_we_vote_id)
+    });
+    if (organizationWeVoteIdsNeeded.length) {
+      // Add bulk Organization retrieve here
+    }
     OrganizationActions.organizationsFollowedRetrieve();
   }
 
@@ -69,14 +81,22 @@ export default class PositionList extends Component {
   onOrganizationStoreChange () {
     const { positionList } = this.state;
     const followed = OrganizationStore.getOrganizationsVoterIsFollowing();
-    const positionsWithOrgs = positionList.map(position => ({
-      ...position,
-      followed: followed.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
-      ...OrganizationStore.getOrganizationByWeVoteId(position.speaker_we_vote_id),
-    }));
+    let oneOrganization = {};
+    const positionListWithOrganizationData = positionList.map((position) => {
+      // console.log('PositionList onOrganizationStoreChange, position: ', position);
+      oneOrganization = OrganizationStore.getOrganizationByWeVoteId(position.speaker_we_vote_id);
+      // console.log('Organization: ', oneOrganization);
+      // Rework to only add specific needed values to the position list
+      // Consider sending fields we need to sort with via the positions API call instead of weaving together here
+      return ({
+        ...position,
+        followed: followed.filter(org => org.organization_we_vote_id === position.speaker_we_vote_id).length > 0,
+        ...oneOrganization,
+      });
+    });
     this.setState({
-      positionList: positionsWithOrgs,
-      filteredPositionList: positionsWithOrgs,
+      positionList: positionListWithOrganizationData,
+      filteredPositionList: positionListWithOrganizationData,
     });
   }
 

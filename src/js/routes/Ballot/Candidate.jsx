@@ -209,7 +209,6 @@ export default class Candidate extends Component {
                 <PositionList
                   incomingPositionList={this.state.allCachedPositionsForThisCandidate}
                   ballotItemDisplayName={this.state.candidate.ballot_item_display_name}
-                  positionListExistsTitle={<div><h3 className="card__additional-heading">Opinions</h3></div>}
                 />
               </div>
             ) : null
