@@ -108,6 +108,7 @@ class WelcomeForOrganizations extends PureComponent {
     const testimonialAuthor = 'Judy J., Oakland, California';
     const imageUrl = cordovaDot('/img/global/photos/Judy_Johnson-200x200.jpg');
     const testimonial = 'I\'d rather not vote than vote the wrong way, so I usually skip some of the lower down options on my ballot like judges, school board and commissioners. I don\'t want to risk guessing, and now with We Vote I can check these choices on the spot.';
+    // const testimonialCompanyLogo = cordovaDot('/img/welcome/VoteOrgLogo.png');
     return (
       <Wrapper>
         <Helmet title="Welcome Organizations - We Vote" />
