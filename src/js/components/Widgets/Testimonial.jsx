@@ -47,7 +47,7 @@ class Testimonial extends React.Component {
             transform: 'rotate(180deg)',
             verticalAlign: 'text-bottom',
             position: 'relative',
-            top: '5px',
+            top: '3px',
             marginLeft: '-4px',
           }}
           />

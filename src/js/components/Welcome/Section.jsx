@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const Section = styled.div`
   display: flex;
   flex-flow: column;
-  padding: 3em 1em 2em 1em;
+  padding: ${({ noTopMargin }) => (noTopMargin ? '0' : '3em')} 1em 2em 1em;
   text-align: center;
   align-items: center;
   color: #333;
@@ -114,6 +114,7 @@ const DescriptionImageColumn = styled.div`
   width: 30%;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 100%;
+    text-align: center;
   }
 `;
 

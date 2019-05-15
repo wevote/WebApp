@@ -105,7 +105,7 @@ $outline-radius: 3px;
         margin-left: $space-auto;
         margin-right: $space-auto;
         margin-top: $space-md;
-        filter: grayscale(100%);
+        // filter: grayscale(100%);
       }
       .card-main & {
         @include breakpoints(mid-small) {

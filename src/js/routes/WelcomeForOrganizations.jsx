@@ -106,9 +106,8 @@ class WelcomeForOrganizations extends PureComponent {
     const isVoterSignedIn = voter.is_signed_in;
 
     const testimonialAuthor = 'Judy J., Oakland, California';
-    const imageUrl = cordovaDot('/img/global/photos/Judy_Johnson-200x200.jpg');
-    const testimonial = 'I\'d rather not vote than vote the wrong way, so I usually skip some of the lower down options on my ballot like judges, school board and commissioners. I don\'t want to risk guessing, and now with We Vote I can check these choices on the spot.';
-    // const testimonialCompanyLogo = cordovaDot('/img/welcome/VoteOrgLogo.png');
+    const testimonialImageUrl = cordovaDot('/img/global/photos/Judy_J-109x109.jpg');
+    const testimonial = 'Let\'s be real: few people are reading those wonky ballot descriptions. I want deciding how to vote to be as easy and obvious as a solid Yelp review. Finally We Vote helps me plan the whole thing out way faster.';
     return (
       <Wrapper>
         <Helmet title="Welcome Organizations - We Vote" />
@@ -245,7 +244,7 @@ class WelcomeForOrganizations extends PureComponent {
           <SectionTitle>Testimonials</SectionTitle>
           <DescriptionContainer>
             <Testimonial
-              imageUrl={imageUrl}
+              imageUrl={testimonialImageUrl}
               testimonialAuthor={testimonialAuthor}
               testimonial={testimonial}
             />
