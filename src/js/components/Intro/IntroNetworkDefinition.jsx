@@ -37,7 +37,7 @@ export default class IntroNetworkDefinition extends Component {
         <div>
           {<img
             className="center-block intro-story__img-height intro-story__placeholder"
-            src={cordovaDot('/img/global/intro-story/CandidateScore-20190401.gif')}
+            src={cordovaDot('/img/how-it-works/HowItWorksForVoters-Review-20190401.gif')}
             alt="View candidate endorsements from friends"
           />
             // <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: FollowValues.GIF</div>
