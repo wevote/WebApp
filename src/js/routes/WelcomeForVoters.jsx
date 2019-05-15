@@ -96,9 +96,9 @@ class Welcome extends PureComponent {
     const { voter, newsletterOptInTrue } = this.state;
     const isVoterSignedIn = voter.is_signed_in;
 
-    const testimonialAuthor = 'Dale M., Oakland, California';
-    const imageUrl = cordovaDot('/img/global/photos/Dale_McGrew-200x200.jpg');
-    const testimonial = 'Following the values that are important to me shows me opinions on my ballot from other people who share my values.';
+    const testimonialAuthor = 'Alissa B., Oakland, California';
+    const imageUrl = cordovaDot('/img/global/photos/Alissa_B-128x128.jpg');
+    const testimonial = 'Great way to sort through my ballot! My husband and I used We Vote during the last election to learn more about our ballots and make some tough choices. Between following various organizations, and friending a couple of trusted friends, we felt like we had an excellent pool of information to draw from. It was so great!';
     return (
       <Wrapper>
         <Helmet title="Welcome Voters - We Vote" />
@@ -204,10 +204,11 @@ class Welcome extends PureComponent {
         <Section variant="dark" rounded={!isVoterSignedIn}>
           <SectionTitle>Our Network</SectionTitle>
           <NetworkContainer>
-            <NetworkImage src={cordovaDot('/img/welcome/partners/google-logo.png')} alt="Google" />
-            <NetworkImage src={cordovaDot('/img/welcome/partners/center-for-technology.png')} alt="Center for Technology and Civic Life" />
-            <NetworkImage src={cordovaDot('/img/welcome/partners/vote-org.png')} alt="Vote.org" />
-            <NetworkImage src={cordovaDot('/img/welcome/partners/voting-information-project.png')} alt="Voting Information Project" />
+            <NetworkImage src={cordovaDot('/img/global/logos/ffwd-logo.png')} alt="Fast Forward" />
+            <NetworkImage src={cordovaDot('/img/global/logos/google-logo.svg')} alt="Google" />
+            {/* <NetworkImage src={cordovaDot('/img/global/logos/ctcl_logo-200x200.png')} alt="Center for Technology and Civic Life" /> */}
+            <NetworkImage src={cordovaDot('/img/global/logos/vote_dot_org_logo-530x200.png')} alt="Vote.org" />
+            <NetworkImage src={cordovaDot('/img/global/logos/vip-logo-1000x208.png')} alt="Voting Information Project" />
           </NetworkContainer>
         </Section>
         {

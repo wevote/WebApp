@@ -63,21 +63,21 @@ export default class SettingsAccount extends Component {
       pathname = '/settings/profile';
       cookies.setItem('sign_in_start_path', pathname, oneDayExpires, '/');
       this.setState({
-        pleaseSignInTitle: 'Please sign in to get started (campaign).',
+        pleaseSignInTitle: 'Please sign in to get started.',
         pleaseSignInSubTitle: 'Use Twitter to verify your account most quickly.',
       });
     } else if (getStartedMode && getStartedMode === 'getStartedForOrganizations') {
       pathname = '/settings/profile';
       cookies.setItem('sign_in_start_path', pathname, oneDayExpires, '/');
       this.setState({
-        pleaseSignInTitle: 'Please sign in to get started (organization).',
+        pleaseSignInTitle: 'Please sign in to get started.',
         pleaseSignInSubTitle: 'Use Twitter to verify your account most quickly.',
       });
     } else if (getStartedMode && getStartedMode === 'getStartedForVoters') {
       pathname = '/settings/profile';
       cookies.setItem('sign_in_start_path', pathname, oneDayExpires, '/');
       this.setState({
-        pleaseSignInTitle: 'Please sign in to get started (voter).',
+        pleaseSignInTitle: 'Please sign in to get started.',
         pleaseSignInSubTitle: 'Don\'t worry, we won\'t post anything automatically.',
       });
     } else {
