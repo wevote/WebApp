@@ -124,10 +124,22 @@ export const weVoteStaff = [{
     'Marketing',
   ],
 }, {
+  name: 'Filip Francetic',
+  image: `${photoPath}Filip_Francetic-256x256.jpg`,
+  title: [
+    'Engineering Intern',
+  ],
+}, {
   name: 'Jeff French',
   image: `${photoPath}Jeff_French-200x200.jpg`,
   title: [
     'Lead Designer',
+  ],
+}, {
+  name: 'Ashwini Gawande',
+  image: `${photoPath}Ashwini_Gawande-251x251.jpg`,
+  title: [
+    'Quality Assurance',
   ],
 }, {
   name: 'Cody Gohl',
@@ -149,7 +161,7 @@ export const weVoteStaff = [{
   ],
 }, {
   name: 'Judy Johnson',
-  image: `${photoPath}Judy_Johnson-200x200.jpg`,
+  image: `${photoPath}Judy_Johnson-256x256.jpg`,
   title: [
     'Operations',
   ],
@@ -176,6 +188,12 @@ export const weVoteStaff = [{
   image: `${photoPath}Phil_Marshall-256x256.jpg`,
   title: [
     'Engineering Volunteer',
+  ],
+}, {
+  name: 'Valerie Patel',
+  image: `${photoPath}Valerie_Patel-256x256.jpg`,
+  title: [
+    'Political Data Manager',
   ],
 }, {
   name: 'Jarod Peachey',

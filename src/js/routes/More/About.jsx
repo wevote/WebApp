@@ -3,11 +3,17 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
+import { cordovaDot } from '../../utils/cordovaUtils';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { renderLog } from '../../utils/logging';
 import Footer from '../../components/Welcome/Footer';
 import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
-import Section, { Bold, SectionTitle, MemberListContainer } from '../../components/Welcome/Section';
+import Section, {
+  Bold,
+  DescriptionContainer,
+  SectionTitle,
+  MemberListContainer,
+} from '../../components/Welcome/Section';
 import TeamMemberDisplayForList from '../../components/More/TeamMemberDisplayForList';
 import ToolBar from './ToolBar';
 import VoterStore from '../../stores/VoterStore';
@@ -34,18 +40,30 @@ class About extends Component {
           <Title>About We Vote</Title>
           <ToolBar />
         </HeaderForAbout>
-        <Section>
-          <AboutDescriptionContainer>
-            We Vote is a nonprofit technology startup, building the next generation of voting tech. We
-            {'\''}
-            re starting by creating a digital voter guide informed by issues you care about, and people you trust.
-            {' '}
-            Through our nonpartisan, open source platform, we
-            {'\''}
-            ll help you become a better voter, up and down the ballot.
-          </AboutDescriptionContainer>
+        <Section noTopMargin>
+          <DescriptionContainer>
+            <DescriptionLeftColumn>
+              We Vote is a nonprofit technology startup, building the next generation of voting tech. We
+              {'\''}
+              re starting by creating a digital voter guide informed by issues you care about, and people you trust.
+              {' '}
+              Through our nonpartisan, open source platform, we
+              {'\''}
+              ll help you become a better voter, up and down the ballot.
+            </DescriptionLeftColumn>
+            <DescriptionImageColumn>
+              <figure>
+                <Image
+                  alt="We Vote at iOS Dev camp, where we won 'Best App for Good'."
+                  title="We Vote at iOS Dev camp, where we won 'Best App for Good'."
+                  src={cordovaDot('/img/global/photos/iOSDevCamp2016.png')}
+                />
+                <AboutFigCaption>We Vote at iOS Dev camp.</AboutFigCaption>
+              </figure>
+            </DescriptionImageColumn>
+          </DescriptionContainer>
         </Section>
-        <Section>
+        <Section noTopMargin>
           <SectionTitle>
             Our Vision
           </SectionTitle>
@@ -240,7 +258,7 @@ const HeaderForAbout = styled.div`
     height: 190px;
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    height: 190px;
+    height: 160px;
   }
 `;
 
@@ -249,6 +267,39 @@ const AboutDescriptionContainer = styled.div`
   width: 960px;
   max-width: 90vw;
   text-align: left;
+`;
+
+const DescriptionLeftColumn = styled.div`
+  display: flex;
+  flex-flow: column;
+  padding: 0 20px 0 0;
+  width: 65%;
+  justify-content: center;
+  text-align: left;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    width: 100%;
+    text-align: center;
+  }
+`;
+
+const DescriptionImageColumn = styled.div`
+  width: 35%;
+  text-align: right;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin: 1em 0 0 0;
+    text-align: center;
+    width: 100%;
+  }
+`;
+
+const Image = styled.img`
+  width: 100%:
+`;
+
+const AboutFigCaption = styled.figcaption`
+  color: #555 !default;
+  font-size: .8rem;
+  text-align: center;
 `;
 
 export default withStyles(styles)(About);
