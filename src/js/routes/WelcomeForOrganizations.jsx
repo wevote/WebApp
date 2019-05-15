@@ -108,6 +108,7 @@ class WelcomeForOrganizations extends PureComponent {
     const testimonialAuthor = 'Debra Cleaver, Vote.org';
     const imageUrl = cordovaDot('/img/global/photos/Debra_Cleaver-200x200.jpg');
     const testimonial = 'We don\'t care who you vote for, just VOTE.';
+    // const testimonialCompanyLogo = cordovaDot('/img/welcome/VoteOrgLogo.png');
     return (
       <Wrapper>
         <Helmet title="Welcome Organizations - We Vote" />
