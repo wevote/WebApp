@@ -408,8 +408,8 @@ class OfficeItemCompressed extends Component {
 
           {this.generateCandidates()}
           { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ?
-            <ShowMoreFooter showMoreLink={() => this.goToOfficeLink()} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay} candidates`} /> :
-            <ShowMoreFooter showMoreLink={() => this.goToOfficeLink()} />
+            <ShowMoreFooter showMoreId="officeItemCompressedShowMoreFooter" showMoreLink={() => this.goToOfficeLink()} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay} candidates`} /> :
+            <ShowMoreFooter showMoreId="officeItemCompressedShowMoreFooter" showMoreLink={() => this.goToOfficeLink()} />
           }
         </div>
       </div>

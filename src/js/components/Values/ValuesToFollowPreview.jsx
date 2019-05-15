@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withTheme } from '@material-ui/core/styles';
 import IssueActions from '../../actions/IssueActions';
 import IssueCardCompressed from './IssueCardCompressed';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
+import ShowMoreFooter from '../Navigation/ShowMoreFooter';
+import { historyPush } from '../../utils/cordovaUtils';
 
 class ValuesToFollowPreview extends Component {
   constructor (props) {
@@ -33,6 +34,10 @@ class ValuesToFollowPreview extends Component {
     this.setState({
       issuesToFollow: IssueStore.getIssuesVoterCanFollow(),
     });
+  }
+
+  goToValuesLink () {
+    historyPush('/values/list');
   }
 
   render () {
@@ -84,9 +89,7 @@ class ValuesToFollowPreview extends Component {
             <Row className="row">
               { issueListForDisplay }
             </Row>
-            <div>
-              <Link id="myValuesExploreAllValues" to="/values/list">Explore all 26 values</Link>
-            </div>
+            <ShowMoreFooter showMoreId="valuesToFollowPreviewShowMoreId" showMoreLink={() => this.goToValuesLink()} showMoreText="Explore all 26 values" />
           </div>
         </section>
       </div>

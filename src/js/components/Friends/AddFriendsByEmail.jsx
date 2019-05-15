@@ -580,8 +580,9 @@ export default class AddFriendsByEmail extends Component {
                     {!this.state.friend1EmailAddress || this.allRowsOpen() ?
                       null : (
                         <Button
-                          tabIndex="0"
+                          id="friendsAddAnotherInvitation"
                           onClick={this.addAnotherInvitation}
+                          tabIndex="0"
                         >
                           <span>+ Add another invitation</span>
                         </Button>
@@ -616,11 +617,12 @@ export default class AddFriendsByEmail extends Component {
             <div className="u-gutter__top--small">
               <span style={floatRight}>
                 <Button
-                  tabIndex="0"
-                  onKeyDown={this.onKeyDown}
-                  onClick={this.addFriendsByEmailStepsManager}
-                  variant="primary"
                   disabled={!this.state.friend1EmailAddress || !this.allEnteredEmailsVerified()}
+                  id="friendsNextButton"
+                  onClick={this.addFriendsByEmailStepsManager}
+                  onKeyDown={this.onKeyDown}
+                  tabIndex="0"
+                  variant="primary"
                 >
                   { this.hasValidEmail() ?
                     <span>Send &gt;</span> :
@@ -652,11 +654,12 @@ export default class AddFriendsByEmail extends Component {
             <div>
               <span style={floatRight}>
                 <Button
-                  tabIndex="0"
-                  onKeyDown={this.onKeyDown}
-                  onClick={this.addFriendsByEmailStepsManager}
-                  variant="primary"
                   disabled={!this.state.senderEmailAddress || !this.senderEmailAddressVerified()}
+                  id="friendsSendButton"
+                  onClick={this.addFriendsByEmailStepsManager}
+                  onKeyDown={this.onKeyDown}
+                  tabIndex="0"
+                  variant="primary"
                 >
                   <span>Send</span>
                 </Button>
