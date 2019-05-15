@@ -9,6 +9,7 @@ import Section from '../../components/Welcome/Section';
 import VoterStore from '../../stores/VoterStore';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
 import { Title } from '../../components/Welcome/Header';
+import PricingCard from '../../components/More/PricingCard';
 
 class Pricing extends Component {
   static getProps () {
@@ -30,7 +31,35 @@ class Pricing extends Component {
         </HeaderForAbout>
         <Section>
           <AboutDescriptionContainer>
-            Coming soon.
+            <div className="container">
+              <div className="row">
+                <PricingCard
+                  planName="Free"
+                  price={0}
+                  priceDescribe="For life"
+                  description="Just start creating: get a free site and be on your way to empowering your supporters in less than five minutes"
+                  bullets={['Create your own endorsements', 'Add to your own website', 'See visitor metrics']}
+                  buttonText="Start with Free"
+                />
+                <PricingCard
+                  premium
+                  planName="Professional"
+                  price={125}
+                  priceDescribe="Per month billed annually"
+                  description="Best for regional campaigns to grow your reach"
+                  bullets={['Custom domain name', 'Prioritize unlimited endorsements', 'Fine tune for social media sharing']}
+                  buttonText="Start with Professional"
+                />
+                <PricingCard
+                  premium
+                  priceDescribe={null}
+                  planName="Enterprise"
+                  description="Best for local political clubs"
+                  bullets={['Branding control', 'Analytics integration', 'Up to 3 administrators']}
+                  buttonText="Request a Demo"
+                />
+              </div>
+            </div>
           </AboutDescriptionContainer>
         </Section>
         <Section>
