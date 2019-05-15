@@ -145,9 +145,12 @@ const NetworkContainer = styled.div`
 `;
 
 const NetworkImage = styled.img`
-  width: 45%;
+  filter: grayscale(100%);
+  height: 20%;
+  width: 20%;
   margin-top: 2em;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    height: 100% !important;
     width: 100%;
   }
 `;

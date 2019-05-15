@@ -10,14 +10,14 @@ const logoPath = cordovaDot('/img/global/logos/');
 
 export const weVoteFounders = [{
   name: 'Jenifer Fernandez Ancona',
-  image: `${photoPath}Jenifer_Fernandez_Ancona-200x200.jpg`,
+  image: `${photoPath}Jenifer_Fernandez_Ancona-256x256.jpg`,
   title: [
     'Co-Founder & c4 Board Chair',
     'VP, Strategy & Member Engagement at the Women Donors Network.',
   ],
 }, {
   name: 'Dale John McGrew',
-  image: `${photoPath}Dale_McGrew-200x200.jpg`,
+  image: `${photoPath}Dale_McGrew-256x256.jpg`,
   title: [
     'Co-Founder / CTO & c3 + c4 Board Member',
     'Managed large software projects for companies like Disney and over 60 nonprofits.',
@@ -82,6 +82,13 @@ export const weVoteBoard = [{
     '',
   ],
 }, {
+  name: 'Jessica St. John',
+  image: `${photoPath}Jessica_St.John-214x214.jpg`,
+  title: [
+    'Director',
+    '',
+  ],
+}, {
   name: 'Billy Wimsatt',
   image: `${photoPath}Billy_Wimsatt-200x200.jpg`,
   title: [
@@ -114,13 +121,19 @@ export const weVoteStaff = [{
   name: 'Irene Florez',
   image: `${photoPath}Irene_Florez-200x200.jpg`,
   title: [
-    'Marketing Manager',
+    'Marketing',
   ],
 }, {
   name: 'Jeff French',
   image: `${photoPath}Jeff_French-200x200.jpg`,
   title: [
     'Lead Designer',
+  ],
+}, {
+  name: 'Cody Gohl',
+  image: `${photoPath}Cody_Gohl-256x256.jpg`,
+  title: [
+    'Social Media Manager',
   ],
 }, {
   name: 'Anisha Jain',
@@ -141,8 +154,32 @@ export const weVoteStaff = [{
     'Operations',
   ],
 }, {
+  name: 'Hillary Lehr',
+  image: `${photoPath}Hillary_Lehr-256x256.png`,
+  title: [
+    'Marketing',
+  ],
+}, {
+  name: 'Josh Levinger',
+  image: `${photoPath}Josh_Levinger-256x256.jpg`,
+  title: [
+    'User Experience Designer',
+  ],
+}, {
   name: 'Edward Ly',
   image: `${photoPath}Edward_Ly-200x200.jpg`,
+  title: [
+    'Engineering Intern',
+  ],
+}, {
+  name: 'Phil Marshall',
+  image: `${photoPath}Phil_Marshall-256x256.jpg`,
+  title: [
+    'Engineering Volunteer',
+  ],
+}, {
+  name: 'Jarod Peachey',
+  image: `${photoPath}Jarod_Peachey-256x256.png`,
   title: [
     'Engineering Intern',
   ],
@@ -153,6 +190,18 @@ export const weVoteStaff = [{
     'Volunteer',
   ],
 }, {
+  name: 'Utsab Saha',
+  image: `${photoPath}Utsab_Saha-256x256.png`,
+  title: [
+    'Volunteer',
+  ],
+}, {
+  name: 'Urosh Stojkovikj',
+  image: `${photoPath}Urosh_Stojkovikj-256x256.jpg`,
+  title: [
+    'Engineering Intern',
+  ],
+}, {
   name: 'Aaron Travis',
   image: `${photoPath}Aaron_Travis-200x200.jpg`,
   title: [
@@ -160,6 +209,7 @@ export const weVoteStaff = [{
   ],
 },
 ];
+//
 
 export const organizationalDonors = [{
   name: 'Amazon Web Services',
@@ -171,8 +221,8 @@ export const organizationalDonors = [{
   logo: `${logoPath}ballotpedia-logo.png`,
 }, {
   name: 'Center for Technology and Civic Life',
-  title: 'Data',
-  logo: `${logoPath}center-for-tech-and-civic-life-logo.png`,
+  title: 'Data & Love',
+  logo: `${logoPath}ctcl_logo-600x230.jpg`,
 }, {
   name: 'CivicMakers',
   title: 'Event Collaborations',
@@ -190,13 +240,17 @@ export const organizationalDonors = [{
   title: 'Authentication & Data',
   logo: `${logoPath}facebook-logo.png`,
 }, {
+  name: 'Fast Forward',
+  title: 'Most Amazing Nonprofit Technology Accelerator Ever',
+  logo: `${logoPath}ffwd-logo.png`,
+}, {
   name: 'Fastly.com',
   title: 'Scalable Content Delivery (CDN)',
   logo: `${logoPath}fastly-logo.png`,
 }, {
   name: 'Google Civic',
   title: 'Data',
-  logo: `${logoPath}google-logo.png`,
+  logo: `${logoPath}google-logo.svg`,
 }, {
   name: 'Greenberg Traurig, LLP',
   title: 'Legal',
@@ -325,8 +379,8 @@ export const teamOfVolunteers = [{
   name: 'Eric Ogawa',
   title: 'San Francisco, CA',
 }, {
-  name: 'Mary O&apos;Connor',
-  title: 'Sebastopol, CA',
+  name: 'Mary O\'Connor',
+  title: 'Asheville, NC',
 }, {
   name: 'Harsha Dronamraju',
   title: 'San Francisco, CA',
@@ -365,6 +419,9 @@ export const teamOfVolunteers = [{
   title: 'Menlo Park, CA',
 }, {
   name: 'Paul A. "Dash" McLean',
+  title: 'E. Palo Alto, CA',
+}, {
+  name: 'Tamara Suden',
   title: 'E. Palo Alto, CA',
 }, {
   name: 'Fernando Mendoza',

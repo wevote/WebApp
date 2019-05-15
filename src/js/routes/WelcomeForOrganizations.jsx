@@ -105,9 +105,9 @@ class WelcomeForOrganizations extends PureComponent {
     const { voter } = this.state;
     const isVoterSignedIn = voter.is_signed_in;
 
-    const testimonialAuthor = 'Debra Cleaver, Vote.org';
-    const imageUrl = cordovaDot('/img/global/photos/Debra_Cleaver-200x200.jpg');
-    const testimonial = 'We don\'t care who you vote for, just VOTE.';
+    const testimonialAuthor = 'Judy J., Oakland, California';
+    const imageUrl = cordovaDot('/img/global/photos/Judy_Johnson-200x200.jpg');
+    const testimonial = 'I\'d rather not vote than vote the wrong way, so I usually skip some of the lower down options on my ballot like judges, school board and commissioners. I don\'t want to risk guessing, and now with We Vote I can check these choices on the spot.';
     return (
       <Wrapper>
         <Helmet title="Welcome Organizations - We Vote" />
@@ -283,10 +283,11 @@ class WelcomeForOrganizations extends PureComponent {
         <Section variant="dark" rounded={!isVoterSignedIn}>
           <SectionTitle>Our Network</SectionTitle>
           <NetworkContainer>
-            <NetworkImage src={cordovaDot('/img/welcome/partners/google-logo.png')} alt="Google" />
-            <NetworkImage src={cordovaDot('/img/welcome/partners/center-for-technology.png')} alt="Center for Technology and Civic Life" />
-            <NetworkImage src={cordovaDot('/img/welcome/partners/vote-org.png')} alt="Vote.org" />
-            <NetworkImage src={cordovaDot('/img/welcome/partners/voting-information-project.png')} alt="Voting Information Project" />
+            <NetworkImage src={cordovaDot('/img/global/logos/ffwd-logo.png')} alt="Fast Forward" />
+            <NetworkImage src={cordovaDot('/img/global/logos/google-logo.svg')} alt="Google" />
+            {/* <NetworkImage src={cordovaDot('/img/global/logos/ctcl_logo-200x200.png')} alt="Center for Technology and Civic Life" /> */}
+            <NetworkImage src={cordovaDot('/img/global/logos/vote_dot_org_logo-530x200.png')} alt="Vote.org" />
+            <NetworkImage src={cordovaDot('/img/global/logos/vip-logo-1000x208.png')} alt="Voting Information Project" />
           </NetworkContainer>
         </Section>
         <Footer />
