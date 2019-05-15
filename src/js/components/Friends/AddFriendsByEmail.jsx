@@ -400,7 +400,15 @@ export default class AddFriendsByEmail extends Component {
                           </label>
                         </div>
                       </div>
-                      <span className="close close-on-right" name="row2Open" aria-label="Close" onClick={this.closeRow.bind(this, 2)}><span aria-hidden="true">&times;</span></span>
+                      <span
+                        aria-label="Close"
+                        className="close close-on-right"
+                        id="addFriendsByEmailClosingX1"
+                        name="row2Open"
+                        onClick={this.closeRow.bind(this, 2)}
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </span>
                     </div>
                   ) : null
                   }
@@ -454,7 +462,12 @@ export default class AddFriendsByEmail extends Component {
                           </label>
                         </div>
                       </div>
-                      <span className="close close-on-right" aria-label="Close" onClick={this.closeRow.bind(this, 3)}>
+                      <span
+                        aria-label="Close"
+                        className="close close-on-right"
+                        id="addFriendsByEmailClosingX2"
+                        onClick={this.closeRow.bind(this, 3)}
+                      >
                         <span aria-hidden="true">&times;</span>
                       </span>
                     </div>
@@ -510,7 +523,12 @@ export default class AddFriendsByEmail extends Component {
                           </label>
                         </div>
                       </div>
-                      <span className="close close-on-right" aria-label="Close" onClick={this.closeRow.bind(this, 4)}>
+                      <span
+                        aria-label="Close"
+                        className="close close-on-right"
+                        id="addFriendsByEmailClosingX3"
+                        onClick={this.closeRow.bind(this, 4)}
+                      >
                         <span aria-hidden="true">
                           &times;
                         </span>
@@ -568,7 +586,12 @@ export default class AddFriendsByEmail extends Component {
                           </label>
                         </div>
                       </div>
-                      <span className="close close-on-right" aria-label="Close" onClick={this.closeRow.bind(this, 5)}>
+                      <span
+                        aria-label="Close"
+                        className="close close-on-right"
+                        id="addFriendsByEmailClosingX4"
+                        onClick={this.closeRow.bind(this, 5)}
+                      >
                         <span aria-hidden="true">
                           &times;
                         </span>
