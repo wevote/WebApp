@@ -400,7 +400,15 @@ export default class AddFriendsByEmail extends Component {
                           </label>
                         </div>
                       </div>
-                      <span className="close close-on-right" name="row2Open" aria-label="Close" onClick={this.closeRow.bind(this, 2)}><span aria-hidden="true">&times;</span></span>
+                      <span
+                        aria-label="Close"
+                        className="close close-on-right"
+                        id="addFriendsByEmailClosingX1"
+                        name="row2Open"
+                        onClick={this.closeRow.bind(this, 2)}
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </span>
                     </div>
                   ) : null
                   }
@@ -454,7 +462,12 @@ export default class AddFriendsByEmail extends Component {
                           </label>
                         </div>
                       </div>
-                      <span className="close close-on-right" aria-label="Close" onClick={this.closeRow.bind(this, 3)}>
+                      <span
+                        aria-label="Close"
+                        className="close close-on-right"
+                        id="addFriendsByEmailClosingX2"
+                        onClick={this.closeRow.bind(this, 3)}
+                      >
                         <span aria-hidden="true">&times;</span>
                       </span>
                     </div>
@@ -510,7 +523,12 @@ export default class AddFriendsByEmail extends Component {
                           </label>
                         </div>
                       </div>
-                      <span className="close close-on-right" aria-label="Close" onClick={this.closeRow.bind(this, 4)}>
+                      <span
+                        aria-label="Close"
+                        className="close close-on-right"
+                        id="addFriendsByEmailClosingX3"
+                        onClick={this.closeRow.bind(this, 4)}
+                      >
                         <span aria-hidden="true">
                           &times;
                         </span>
@@ -568,7 +586,12 @@ export default class AddFriendsByEmail extends Component {
                           </label>
                         </div>
                       </div>
-                      <span className="close close-on-right" aria-label="Close" onClick={this.closeRow.bind(this, 5)}>
+                      <span
+                        aria-label="Close"
+                        className="close close-on-right"
+                        id="addFriendsByEmailClosingX4"
+                        onClick={this.closeRow.bind(this, 5)}
+                      >
                         <span aria-hidden="true">
                           &times;
                         </span>
@@ -580,8 +603,9 @@ export default class AddFriendsByEmail extends Component {
                     {!this.state.friend1EmailAddress || this.allRowsOpen() ?
                       null : (
                         <Button
-                          tabIndex="0"
+                          id="friendsAddAnotherInvitation"
                           onClick={this.addAnotherInvitation}
+                          tabIndex="0"
                         >
                           <span>+ Add another invitation</span>
                         </Button>
@@ -616,11 +640,12 @@ export default class AddFriendsByEmail extends Component {
             <div className="u-gutter__top--small">
               <span style={floatRight}>
                 <Button
-                  tabIndex="0"
-                  onKeyDown={this.onKeyDown}
-                  onClick={this.addFriendsByEmailStepsManager}
-                  variant="primary"
                   disabled={!this.state.friend1EmailAddress || !this.allEnteredEmailsVerified()}
+                  id="friendsNextButton"
+                  onClick={this.addFriendsByEmailStepsManager}
+                  onKeyDown={this.onKeyDown}
+                  tabIndex="0"
+                  variant="primary"
                 >
                   { this.hasValidEmail() ?
                     <span>Send &gt;</span> :
@@ -652,11 +677,12 @@ export default class AddFriendsByEmail extends Component {
             <div>
               <span style={floatRight}>
                 <Button
-                  tabIndex="0"
-                  onKeyDown={this.onKeyDown}
-                  onClick={this.addFriendsByEmailStepsManager}
-                  variant="primary"
                   disabled={!this.state.senderEmailAddress || !this.senderEmailAddressVerified()}
+                  id="friendsSendButton"
+                  onClick={this.addFriendsByEmailStepsManager}
+                  onKeyDown={this.onKeyDown}
+                  tabIndex="0"
+                  variant="primary"
                 >
                   <span>Send</span>
                 </Button>
