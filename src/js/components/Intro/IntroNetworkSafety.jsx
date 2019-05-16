@@ -37,7 +37,7 @@ export default class IntroNetworkSafety extends Component {
         <div>
           {<img
             className="center-block intro-story__img-height intro-story__placeholder"
-            src={cordovaDot('/img/global/intro-story/FollowValues-20190401.gif')}
+            src={cordovaDot('/img/how-it-works/HowItWorksForVoters-Choose-20190507.gif')}
             alt="Create your ballot with ease with we Vote"
           />
             // <div className="center-block intro-story__img-height intro-story__placeholder">Fle Nme: FollowValues.GIF</div>
