@@ -194,8 +194,9 @@ class AddressBox extends Component {
           { this.props.cancelEditAddress ? (
             <Button
               className={classes.cancelButton}
-              onClick={this.props.cancelEditAddress}
               color="primary"
+              id="addressBoxModalCancelButton"
+              onClick={this.props.cancelEditAddress}
             >
               Cancel
             </Button>
@@ -204,8 +205,9 @@ class AddressBox extends Component {
           <br />
           <Button
             className={classes.saveButton}
-            onClick={this.voterAddressSave}
             color="primary"
+            id="addressBoxModalSaveButton"
+            onClick={this.voterAddressSave}
             variant="contained"
           >
             Save
