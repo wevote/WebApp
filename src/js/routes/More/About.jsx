@@ -267,6 +267,9 @@ const AboutDescriptionContainer = styled.div`
   width: 960px;
   max-width: 90vw;
   text-align: left;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    text-align: center;
+  }
 `;
 
 const DescriptionLeftColumn = styled.div`

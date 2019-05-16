@@ -54,6 +54,13 @@ export const weVoteBoard = [{
     'Civic Tech communications and innovation at CivicMakers. Formerly at Change.org.',
   ],
 }, {
+  name: 'Matt Holford',
+  image: `${photoPath}Matt_Holford-256x256.jpg`,
+  title: [
+    'Senior Adviser',
+    'As Chief Technology Officer at DoSomething.org, Matt oversees engineering at the largest tech company exclusively for young people and social change.',
+  ],
+}, {
   name: 'Alicia Kolar Prevost',
   image: `${photoPath}Alicia_Prevost-200x200.jpg`,
   title: [
@@ -79,7 +86,7 @@ export const weVoteBoard = [{
   image: `${photoPath}Betsy_Sikma-256x256.jpg`,
   title: [
     'c3 Board Member',
-    'Betsy Sikma is Director, Corporate PR at Milliken & Co. She holds degrees from Furman University, Vanderbilt University, and the Kellogg School of Management.',
+    'Betsy Sikma is Director, Corporate PR at Milliken & Co. She holds degrees from Furman University and Vanderbilt University, and a certificate in Nonprofit Finance from Kellogg School of Management.',
   ],
 }, {
   name: 'Jessica St. John',
@@ -115,7 +122,8 @@ export const weVoteStaff = [{
   name: 'Ahmed Elgamal',
   image: `${photoPath}Ahmed_Elgamal-200x200.jpg`,
   title: [
-    'User Experience Designer',
+    'UI/UX Designer',
+    'Digital Product Designer with 2 years of experience in Graphic Design, User Interface Design, User Experience Design, and User Experience Research.',
   ],
 }, {
   name: 'Irene Florez',
@@ -344,6 +352,9 @@ export const teamOfVolunteers = [{
   name: 'Irene Florez',
   title: 'San Francisco, CA',
 }, {
+  name: 'Daniel Bellerose',
+  title: 'Harrisonberg, VA',
+}, {
   name: 'Yuanhsin Chang',
   title: 'San Francisco, CA',
 }, {
@@ -364,6 +375,9 @@ export const teamOfVolunteers = [{
 }, {
   name: 'Lisa Cho',
   title: 'San Francisco, CA',
+}, {
+  name: 'Nicolay Kreidler',
+  title: 'Mill Valley, CA',
 }, {
   name: 'Nicolas Fiorini',
   title: 'Arlington, VA',
@@ -416,6 +430,9 @@ export const teamOfVolunteers = [{
   name: 'Niko Barry',
   title: 'Berkeley, CA',
 }, {
+  name: 'Eva Konigsberg',
+  title: 'Oakland, CA',
+}, {
   name: 'Adam Barry',
   title: 'San Francisco, CA',
 }, {
@@ -448,6 +465,9 @@ export const teamOfVolunteers = [{
 }, {
   name: 'Andrew Roy Chen',
   title: 'San Francisco, CA',
+}, {
+  name: 'Alex Gaensler',
+  title: 'New York, NY',
 }, {
   name: 'Eric Olivera',
   title: 'San Francisco, CA',
