@@ -47,7 +47,7 @@ class Pricing extends Component {
         <Section>
           <AboutDescriptionContainer>
             <div className="container">
-              <div className="row u-show-mobile-tablet">
+              <div className="u-show-mobile-tablet">
                 <SwitchContainer>
                   <PricingSwitch
                     color="white"
@@ -57,7 +57,7 @@ class Pricing extends Component {
                   />
                 </SwitchContainer>
 
-                <div>
+                <div className="row">
                   {selectedCategoryIndex === 0 ? (
                     <PricingCard
                       fullWidth

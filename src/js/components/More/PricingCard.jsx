@@ -35,15 +35,7 @@ class PricingCard extends Component {
                 )}
                 {price === 0 || price ? (
                   <React.Fragment>
-                    <span style={{
-                      fontSize: '18px',
-                      fontWeight: '500',
-                      position: 'relative',
-                      bottom: '8px',
-                    }}
-                    >
-                    $
-                    </span>
+                    <DollarSign>$</DollarSign>
                     <Price>{price}</Price>
                     <PriceDescribe>
                       {priceDescribe}
@@ -617,6 +609,13 @@ const DefaultName = styled.h4`
   color: #2E3C5D;
   font-size: 18px;
   font-weight: bold;
+`;
+
+const DollarSign = styled.span`
+  font-size: 18px;
+  font-weight: 500;
+  position: relative;
+  bottom: 8px;
 `;
 
 const Price = styled.h2`
