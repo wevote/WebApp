@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import Button from '@material-ui/core/Button';
 import LoadingWheel from '../LoadingWheel';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';
@@ -603,9 +603,11 @@ export default class AddFriendsByEmail extends Component {
                     {!this.state.friend1EmailAddress || this.allRowsOpen() ?
                       null : (
                         <Button
+                          color="primary"
                           id="friendsAddAnotherInvitation"
                           onClick={this.addAnotherInvitation}
                           tabIndex="0"
+                          variant="contained"
                         >
                           <span>+ Add another invitation</span>
                         </Button>
@@ -640,12 +642,12 @@ export default class AddFriendsByEmail extends Component {
             <div className="u-gutter__top--small">
               <span style={floatRight}>
                 <Button
+                  color="primary"
                   disabled={!this.state.friend1EmailAddress || !this.allEnteredEmailsVerified()}
                   id="friendsNextButton"
                   onClick={this.addFriendsByEmailStepsManager}
                   onKeyDown={this.onKeyDown}
-                  tabIndex="0"
-                  variant="primary"
+                  variant="contained"
                 >
                   { this.hasValidEmail() ?
                     <span>Send &gt;</span> :
@@ -677,12 +679,13 @@ export default class AddFriendsByEmail extends Component {
             <div>
               <span style={floatRight}>
                 <Button
+                  color="primary"
                   disabled={!this.state.senderEmailAddress || !this.senderEmailAddressVerified()}
                   id="friendsSendButton"
                   onClick={this.addFriendsByEmailStepsManager}
                   onKeyDown={this.onKeyDown}
                   tabIndex="0"
-                  variant="primary"
+                  variant="contained"
                 >
                   <span>Send</span>
                 </Button>
