@@ -7,19 +7,35 @@ import { renderLog } from '../../utils/logging';
 import Footer from '../../components/Welcome/Footer';
 import Section from '../../components/Welcome/Section';
 import VoterStore from '../../stores/VoterStore';
+import PricingSwitch from '../../components/Widgets/PricingSwitch';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
 import { Title } from '../../components/Welcome/Header';
+import PricingCard from '../../components/More/PricingCard';
 
 class Pricing extends Component {
   static getProps () {
     return {};
   }
 
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      selectedCategoryIndex: 0,
+    };
+  }
+
   componentDidMount () {
     AnalyticsActions.saveActionAboutMobile(VoterStore.electionId());
   }
 
+  switchToDifferentCategoryFunction = (selectedCategoryIndex) => {
+    this.setState({ selectedCategoryIndex });
+  }
+
   render () {
+    const { selectedCategoryIndex } = this.state;
+
     renderLog(__filename);
     return (
       <Wrapper>
@@ -30,7 +46,84 @@ class Pricing extends Component {
         </HeaderForAbout>
         <Section>
           <AboutDescriptionContainer>
-            Coming soon.
+            <div className="container">
+              <div className="row u-show-mobile-tablet">
+                <SwitchContainer>
+                  <PricingSwitch
+                    color="white"
+                    choices={['Free', 'Professional', 'Enterprise']}
+                    selectedCategoryIndex={selectedCategoryIndex}
+                    switchToDifferentCategoryFunction={this.switchToDifferentCategoryFunction}
+                  />
+                </SwitchContainer>
+
+                <div>
+                  {selectedCategoryIndex === 0 ? (
+                    <PricingCard
+                      fullWidth
+                      planName="Free"
+                      price={0}
+                      priceDescribe="For life"
+                      description="Just start creating: get a free site and be on your way to empowering your supporters in less than five minutes"
+                      bullets={['Create your own endorsements', 'Add to your own website', 'See visitor metrics']}
+                      buttonText="Start with Free"
+                    />
+                  ) : (
+                    <React.Fragment>
+                      {selectedCategoryIndex === 1 ? (
+                        <PricingCard
+                          fullWidth
+                          premium
+                          planName="Professional"
+                          price={125}
+                          priceDescribe="Per month billed annually"
+                          description="Best for regional campaigns to grow your reach"
+                          bullets={['Custom domain name', 'Prioritize unlimited endorsements', 'Fine tune for social media sharing']}
+                          buttonText="Start with Professional"
+                        />
+                      ) : (
+                        <PricingCard
+                          fullWidth
+                          premium
+                          priceDescribe={null}
+                          planName="Enterprise"
+                          description="Best for local political clubs"
+                          bullets={['Branding control', 'Analytics integration', 'Up to 3 administrators']}
+                          buttonText="Request a Demo"
+                        />
+                      )}
+                    </React.Fragment>
+                  )}
+                </div>
+              </div>
+              <div className="row u-show-desktop">
+                <PricingCard
+                  planName="Free"
+                  price={0}
+                  priceDescribe="For life"
+                  description="Just start creating: get a free site and be on your way to empowering your supporters in less than five minutes"
+                  bullets={['Create your own endorsements', 'Add to your own website', 'See visitor metrics']}
+                  buttonText="Start with Free"
+                />
+                <PricingCard
+                  premium
+                  planName="Professional"
+                  price={125}
+                  priceDescribe="Per month billed annually"
+                  description="Best for regional campaigns to grow your reach"
+                  bullets={['Custom domain name', 'Prioritize unlimited endorsements', 'Fine tune for social media sharing']}
+                  buttonText="Start with Professional"
+                />
+                <PricingCard
+                  premium
+                  priceDescribe={null}
+                  planName="Enterprise"
+                  description="Best for local political clubs"
+                  bullets={['Branding control', 'Analytics integration', 'Up to 3 administrators']}
+                  buttonText="Request a Demo"
+                />
+              </div>
+            </div>
           </AboutDescriptionContainer>
         </Section>
         <Section>
@@ -89,6 +182,15 @@ const AboutDescriptionContainer = styled.div`
   width: 960px;
   max-width: 90vw;
   text-align: left;
+`;
+
+const SwitchContainer = styled.div`
+  background: #2e3c5d;
+  border-radius: 50px;
+  width: calc(100% - 30px);
+  margin: 0 auto;
+  padding: 4px;
+  margin-bottom: 32px;
 `;
 
 export default withStyles(styles)(Pricing);
