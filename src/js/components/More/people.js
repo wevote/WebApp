@@ -20,7 +20,7 @@ export const weVoteFounders = [{
   image: `${photoPath}Dale_McGrew-256x256.jpg`,
   title: [
     'Co-Founder / CTO & c3 + c4 Board Member',
-    'Managed large software projects for companies like Disney and over 60 nonprofits.',
+    'Co-Founded and sold two prior high tech startups. Managed large software projects for companies like Disney and over 60 nonprofits.',
   ],
 },
 ];
@@ -34,17 +34,17 @@ export const weVoteBoard = [{
   ],
 }, {
   name: 'Tiana Epps-Johnson',
-  image: `${photoPath}Tiana_Epps_Johnson-200x200.jpg`,
+  image: `${photoPath}Tiana_Epps_Johnson-256x256.jpg`,
   title: [
     'Senior Adviser',
-    'Exec. Dir. of CTCL, software for election administrators. Former Voting Info Project Harvard Ash Center for Democratic Governance and Innovation.',
+    'Executive Director of CTCL, software for election administrators. Former Voting Info Project Harvard Ash Center for Democratic Governance and Innovation.',
   ],
 }, {
   name: 'Tory Gavito',
   image: `${photoPath}Tory_Gavito-200x200.jpg`,
   title: [
     'c4 Board Member',
-    'Exec. Dir. at Texas Future Project.',
+    'Executive Director at Way to Win.',
   ],
 }, {
   name: 'Lawrence Grodeska',
@@ -76,10 +76,10 @@ export const weVoteBoard = [{
   ],
 }, {
   name: 'Betsy Sikma',
-  image: `${photoPath}Betsy_Sikma-200x200.jpg`,
+  image: `${photoPath}Betsy_Sikma-256x256.jpg`,
   title: [
     'c3 Board Member',
-    '',
+    'Betsy Sikma is Director, Corporate PR at Milliken & Co. She holds degrees from Furman University, Vanderbilt University, and the Kellogg School of Management.',
   ],
 }, {
   name: 'Jessica St. John',
@@ -200,6 +200,7 @@ export const weVoteStaff = [{
   image: `${photoPath}Jarod_Peachey-256x256.png`,
   title: [
     'Engineering Intern',
+    'Jarod is a senior in high school, and has been coding since 2018. He is on We Vote\'s React and Javascript team. He enjoys playing guitar in his spare time.',
   ],
 }, {
   name: 'Steve Podell',
