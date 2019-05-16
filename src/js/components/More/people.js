@@ -90,10 +90,10 @@ export const weVoteBoard = [{
   ],
 }, {
   name: 'Jessica St. John',
-  image: `${photoPath}Jessica_St.John-214x214.jpg`,
+  image: `${photoPath}Jessica_St.John-201905-256x256.png`,
   title: [
     'Director',
-    '',
+    'Advisor to businesses and non-profits. Believes in the power of the polis. Lover of nature.',
   ],
 }, {
   name: 'Billy Wimsatt',
@@ -139,9 +139,10 @@ export const weVoteStaff = [{
   ],
 }, {
   name: 'Jeff French',
-  image: `${photoPath}Jeff_French-200x200.jpg`,
+  image: `${photoPath}Jeff_French-256x256.png`,
   title: [
-    'Lead Designer',
+    'Senior Designer',
+    'Digital product designer focused on creating engaging experiences and contributing to the systems that hold them together. Jeff designed the We Vote logo and has been critical to establishing We Vote\'s design systems.',
   ],
 }, {
   name: 'Ashwini Gawande',

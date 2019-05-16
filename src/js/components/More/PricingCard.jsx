@@ -15,12 +15,27 @@ class PricingCard extends Component {
     priceDescribe: PropTypes.string,
     description: PropTypes.string,
     classes: PropTypes.object,
+    buttonOnClickFunction: PropTypes.func,
+    buttonOnClickId: PropTypes.string,
     buttonText: PropTypes.string,
     fullWidth: PropTypes.bool,
   };
 
+  constructor (props) {
+    super(props);
+
+    this.state = {};
+    this.buttonOnClickFunction = this.buttonOnClickFunction.bind(this);
+  }
+
+  buttonOnClickFunction () {
+    if (this.props.buttonOnClickFunction) {
+      this.props.buttonOnClickFunction();
+    }
+  }
+
   render () {
-    const { premium, bullets, price, planName, priceDescribe, description, classes, buttonText, fullWidth } = this.props;
+    const { premium, bullets, price, planName, priceDescribe, description, classes, buttonOnClickId, buttonText, fullWidth } = this.props;
 
     return (
       <React.Fragment>
@@ -61,7 +76,7 @@ class PricingCard extends Component {
                     }}
                     >
                       <strong>
-                        our sales team for a qoute
+                        our sales team for a quote.
                       </strong>
                     </p>
                   </React.Fragment>
@@ -85,7 +100,8 @@ class PricingCard extends Component {
                     null
                   )}
                   classes={{ containedPrimary: classes.buttonContained }}
-                  id="welcomeForOrganizationsPricing"
+                  id={buttonOnClickId}
+                  onClick={() => this.buttonOnClickFunction()}
                 >
                   <ButtonText>{buttonText}</ButtonText>
                 </Button>
@@ -113,7 +129,7 @@ class PricingCard extends Component {
                         color: '#2E3C5D',
                       }}
                     />
-                    Add Voter Guide to Your Website
+                    Add Ballot to Your Website
                   </CollectionItem>
                   <CollectionItem>
                     <Check
@@ -340,7 +356,7 @@ class PricingCard extends Component {
                     }}
                     >
                       <strong>
-                        our sales team for a qoute
+                        our sales team for a quote.
                       </strong>
                     </p>
                   </React.Fragment>
@@ -364,7 +380,8 @@ class PricingCard extends Component {
                     null
                   )}
                   classes={{ containedPrimary: classes.buttonContained }}
-                  id="welcomeForOrganizationsPricing"
+                  id={buttonOnClickId}
+                  onClick={() => this.buttonOnClickFunction()}
                 >
                   <ButtonText>{buttonText}</ButtonText>
                 </Button>
@@ -392,7 +409,7 @@ class PricingCard extends Component {
                         color: '#2E3C5D',
                       }}
                     />
-                    Add Voter Guide to Your Website
+                    Add Ballot to Your Website
                   </CollectionItem>
                   <CollectionItem>
                     <Check
@@ -634,7 +651,7 @@ const PriceDescribe = styled.div`
 `;
 
 const PriceDescribeLight = styled.div`
-  margin: 0;
+  margin: 3px 0 0 0;
   padding: 0;
   color: #888;
   font-weight: normal;

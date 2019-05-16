@@ -59,7 +59,7 @@ class WelcomeForCampaigns extends PureComponent {
     });
   }
 
-  getStartedForCampaigns () {
+  getStartedForCampaigns = () => {
     const { voter } = this.state;
     let isSignedIn = false;
     if (voter) {
