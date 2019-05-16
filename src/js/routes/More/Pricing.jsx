@@ -47,7 +47,7 @@ class Pricing extends Component {
         <Section>
           <AboutDescriptionContainer>
             <div className="container">
-              <div className="u-show-mobile-tablet">
+              <div className="row u-show-mobile-tablet">
                 <SwitchContainer>
                   <PricingSwitch
                     color="white"

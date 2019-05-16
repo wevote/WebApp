@@ -23,7 +23,7 @@ class PricingCard extends Component {
     const { premium, bullets, price, planName, priceDescribe, description, classes, buttonText, fullWidth } = this.props;
 
     return (
-      <span>
+      <React.Fragment>
         {fullWidth ? (
           <div className="col col-12">
             <Card>
@@ -305,146 +305,128 @@ class PricingCard extends Component {
           </div>
         ) : (
           <div className="col col-4">
-          <Card>
-            <CardWrapper>
-              {premium ? (
-                <PremiumName>{planName}</PremiumName>
-              ) : (
-                <DefaultName>{planName}</DefaultName>
-              )}
-              {price === 0 || price ? (
-                <React.Fragment>
-                  <span style={{
-                    fontSize: '18px',
-                    fontWeight: '500',
-                    position: 'relative',
-                    bottom: '8px',
-                  }}
-                  >
-                  $
-                  </span>
-                  <Price>{price}</Price>
-                  <PriceDescribe>
-                    {priceDescribe}
-                    {planName === 'Professional' ? (
-                      <PriceDescribeLight>or $150 month to month</PriceDescribeLight>
-                    ) : (
-                      null
-                    )}
-                  </PriceDescribe>
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  <h6 className="mb-0"
-                  style={{
-                    fontSize: '20px',
-                  }}
-                  >
-                  Contact
-                  </h6>
-                  <p style={{
-                    fontSize: '10px',
-                    color: '#333',
-                  }}
-                  >
-                    <strong>
-                      our sales team for a qoute
-                    </strong>
-                  </p>
-                </React.Fragment>
-              )}
-              <hr />
-              <Description>
-                {description}
-              </Description>
-              <Bullets>
-                <BulletItem>{bullets[0]}</BulletItem>
-                <BulletItem>{bullets[1]}</BulletItem>
-                <BulletItem>{bullets[2]}</BulletItem>
-              </Bullets>
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                className={premium ? (
-                  classes.goldButton
-                ) : (
-                  null
-                )}
-                classes={{ containedPrimary: classes.buttonContained }}
-                id="welcomeForOrganizationsPricing"
-              >
-                <ButtonText>{buttonText}</ButtonText>
-              </Button>
-              <br />
-              <Collection>
-                <CollectionItem>
-                  <Check
-                    style={{
-                      color: '#2E3C5D',
-                    }}
-                  />
-                  Enter Your Own Positions
-                </CollectionItem>
-                <CollectionItem>
-                  <Check
-                    style={{
-                      color: '#2E3C5D',
-                    }}
-                  />
-                  Voter Guide Creation Tools
-                </CollectionItem>
-                <CollectionItem>
-                  <Check
-                    style={{
-                      color: '#2E3C5D',
-                    }}
-                  />
-                  Add Voter Guide to Your Website
-                </CollectionItem>
-                <CollectionItem>
-                  <Check
-                    style={{
-                      color: '#2E3C5D',
-                    }}
-                  />
-                  Visitor Metrics
-                </CollectionItem>
-                <CollectionItem>
-                  <Check
-                    style={{
-                      color: '#2E3C5D',
-                    }}
-                  />
-                  WeVote.US Subdomain
-                </CollectionItem>
-                <CollectionItem>
-                  <Check
-                    style={{
-                      color: '#2E3C5D',
-                    }}
-                  />
-                  Upload Your Logo
-                </CollectionItem>
+            <Card>
+              <CardWrapper>
                 {premium ? (
-                  <CollectionItem>
-                    {planName === 'Professional' || planName === 'Enterprise' ? (
-                      <Check
-                        style={{
-                          color: 'rgb(219,179,86)',
-                        }}
-                      />
-                    ) : (
-                      <Close
-                        style={{
-                          color: 'rgb(219,179,86)',
-                        }}
-                      />
-                    )}
-                    Edit Social Media Sharing Links
-                  </CollectionItem>
+                  <PremiumName>{planName}</PremiumName>
+                ) : (
+                  <DefaultName>{planName}</DefaultName>
+                )}
+                {price === 0 || price ? (
+                  <React.Fragment>
+                    <span style={{
+                      fontSize: '18px',
+                      fontWeight: '500',
+                      position: 'relative',
+                      bottom: '8px',
+                    }}
+                    >
+                    $
+                    </span>
+                    <Price>{price}</Price>
+                    <PriceDescribe>
+                      {priceDescribe}
+                      {planName === 'Professional' ? (
+                        <PriceDescribeLight>or $150 month to month</PriceDescribeLight>
+                      ) : (
+                        null
+                      )}
+                    </PriceDescribe>
+                  </React.Fragment>
                 ) : (
                   <React.Fragment>
+                    <h6 className="mb-0"
+                    style={{
+                      fontSize: '20px',
+                    }}
+                    >
+                    Contact
+                    </h6>
+                    <p style={{
+                      fontSize: '10px',
+                      color: '#333',
+                    }}
+                    >
+                      <strong>
+                        our sales team for a qoute
+                      </strong>
+                    </p>
+                  </React.Fragment>
+                )}
+                <hr />
+                <Description>
+                  {description}
+                </Description>
+                <Bullets>
+                  <BulletItem>{bullets[0]}</BulletItem>
+                  <BulletItem>{bullets[1]}</BulletItem>
+                  <BulletItem>{bullets[2]}</BulletItem>
+                </Bullets>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  className={premium ? (
+                    classes.goldButton
+                  ) : (
+                    null
+                  )}
+                  classes={{ containedPrimary: classes.buttonContained }}
+                  id="welcomeForOrganizationsPricing"
+                >
+                  <ButtonText>{buttonText}</ButtonText>
+                </Button>
+                <br />
+                <Collection>
+                  <CollectionItem>
+                    <Check
+                      style={{
+                        color: '#2E3C5D',
+                      }}
+                    />
+                    Enter Your Own Positions
+                  </CollectionItem>
+                  <CollectionItem>
+                    <Check
+                      style={{
+                        color: '#2E3C5D',
+                      }}
+                    />
+                    Voter Guide Creation Tools
+                  </CollectionItem>
+                  <CollectionItem>
+                    <Check
+                      style={{
+                        color: '#2E3C5D',
+                      }}
+                    />
+                    Add Voter Guide to Your Website
+                  </CollectionItem>
+                  <CollectionItem>
+                    <Check
+                      style={{
+                        color: '#2E3C5D',
+                      }}
+                    />
+                    Visitor Metrics
+                  </CollectionItem>
+                  <CollectionItem>
+                    <Check
+                      style={{
+                        color: '#2E3C5D',
+                      }}
+                    />
+                    WeVote.US Subdomain
+                  </CollectionItem>
+                  <CollectionItem>
+                    <Check
+                      style={{
+                        color: '#2E3C5D',
+                      }}
+                    />
+                    Upload Your Logo
+                  </CollectionItem>
+                  {premium ? (
                     <CollectionItem>
                       {planName === 'Professional' || planName === 'Enterprise' ? (
                         <Check
@@ -460,29 +442,29 @@ class PricingCard extends Component {
                         />
                       )}
                       Edit Social Media Sharing Links
-                      <CollectionItemLight />
                     </CollectionItem>
-                  </React.Fragment>
-                )}
-                {premium ? (
-                  <CollectionItem>
-                    {planName === 'Professional' || planName === 'Enterprise' ? (
-                      <Check
-                        style={{
-                          color: 'rgb(219,179,86)',
-                        }}
-                      />
-                    ) : (
-                      <Close
-                        style={{
-                          color: 'rgb(219,179,86)',
-                        }}
-                      />
-                    )}
-                    Create Multi-Organization Voter Guides
-                  </CollectionItem>
-                ) : (
-                  <React.Fragment>
+                  ) : (
+                    <React.Fragment>
+                      <CollectionItem>
+                        {planName === 'Professional' || planName === 'Enterprise' ? (
+                          <Check
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        ) : (
+                          <Close
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        )}
+                        Edit Social Media Sharing Links
+                        <CollectionItemLight />
+                      </CollectionItem>
+                    </React.Fragment>
+                  )}
+                  {premium ? (
                     <CollectionItem>
                       {planName === 'Professional' || planName === 'Enterprise' ? (
                         <Check
@@ -498,29 +480,29 @@ class PricingCard extends Component {
                         />
                       )}
                       Create Multi-Organization Voter Guides
-                      <CollectionItemLight />
                     </CollectionItem>
-                  </React.Fragment>
-                )}
-                {planName === 'Enterprise' ? (
-                  <CollectionItem>
-                    {planName === 'Enterprise' ? (
-                      <Check
-                        style={{
-                          color: 'rgb(219,179,86)',
-                        }}
-                      />
-                    ) : (
-                      <Close
-                        style={{
-                          color: 'rgb(219,179,86)',
-                        }}
-                      />
-                    )}
-                    Additional Administrators
-                  </CollectionItem>
-                ) : (
-                  <React.Fragment>
+                  ) : (
+                    <React.Fragment>
+                      <CollectionItem>
+                        {planName === 'Professional' || planName === 'Enterprise' ? (
+                          <Check
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        ) : (
+                          <Close
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        )}
+                        Create Multi-Organization Voter Guides
+                        <CollectionItemLight />
+                      </CollectionItem>
+                    </React.Fragment>
+                  )}
+                  {planName === 'Enterprise' ? (
                     <CollectionItem>
                       {planName === 'Enterprise' ? (
                         <Check
@@ -536,29 +518,29 @@ class PricingCard extends Component {
                         />
                       )}
                       Additional Administrators
-                      <CollectionItemLight />
                     </CollectionItem>
-                  </React.Fragment>
-                )}
-                {planName === 'Enterprise' ? (
-                  <CollectionItem>
-                    {planName === 'Enterprise' ? (
-                      <Check
-                        style={{
-                          color: 'rgb(219,179,86)',
-                        }}
-                      />
-                    ) : (
-                      <Close
-                        style={{
-                          color: 'rgb(219,179,86)',
-                        }}
-                      />
-                    )}
-                    Analytics Integration
-                  </CollectionItem>
-                ) : (
-                  <React.Fragment>
+                  ) : (
+                    <React.Fragment>
+                      <CollectionItem>
+                        {planName === 'Enterprise' ? (
+                          <Check
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        ) : (
+                          <Close
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        )}
+                        Additional Administrators
+                        <CollectionItemLight />
+                      </CollectionItem>
+                    </React.Fragment>
+                  )}
+                  {planName === 'Enterprise' ? (
                     <CollectionItem>
                       {planName === 'Enterprise' ? (
                         <Check
@@ -574,16 +556,34 @@ class PricingCard extends Component {
                         />
                       )}
                       Analytics Integration
-                      <CollectionItemLight />
                     </CollectionItem>
-                  </React.Fragment>
-                )}
-              </Collection>
-            </CardWrapper>
-          </Card>
-        </div>
+                  ) : (
+                    <React.Fragment>
+                      <CollectionItem>
+                        {planName === 'Enterprise' ? (
+                          <Check
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        ) : (
+                          <Close
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        )}
+                        Analytics Integration
+                        <CollectionItemLight />
+                      </CollectionItem>
+                    </React.Fragment>
+                  )}
+                </Collection>
+              </CardWrapper>
+            </Card>
+          </div>
         )}
-      </span>
+      </React.Fragment>
     );
   }
 }
