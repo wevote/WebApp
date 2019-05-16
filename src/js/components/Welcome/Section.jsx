@@ -50,10 +50,10 @@ const StepNumber = styled.div`
   color: white;
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    width: 50px;
-    height: 50px;
-    min-width: 50px;
-    font-size: 36px;
+    width: 35px;
+    height: 35px;
+    min-width: 35px;
+    font-size: 24px;
   }
 `;
 
