@@ -101,7 +101,7 @@ export default class Office extends Component {
 
     const testimonialAuthor = 'Dale M., Oakland, California';
     const imageUrl = cordovaDot('/img/global/photos/Dale_McGrew-200x200.jpg');
-    const testimonial = 'Following the values that are important to me shows me opinions on my ballot from other people who share my values.';
+    const testimonial = 'Following values that are important to me shows me opinions on my ballot from other people who share my values.';
 
     // ==============================================================
 

@@ -10,17 +10,17 @@ const logoPath = cordovaDot('/img/global/logos/');
 
 export const weVoteFounders = [{
   name: 'Jenifer Fernandez Ancona',
-  image: `${photoPath}Jenifer_Fernandez_Ancona-200x200.jpg`,
+  image: `${photoPath}Jenifer_Fernandez_Ancona-256x256.jpg`,
   title: [
     'Co-Founder & c4 Board Chair',
     'VP, Strategy & Member Engagement at the Women Donors Network.',
   ],
 }, {
   name: 'Dale John McGrew',
-  image: `${photoPath}Dale_McGrew-200x200.jpg`,
+  image: `${photoPath}Dale_McGrew-256x256.jpg`,
   title: [
     'Co-Founder / CTO & c3 + c4 Board Member',
-    'Managed large software projects for companies like Disney and over 60 nonprofits.',
+    'Co-Founded and sold two prior high tech startups. Managed large software projects for companies like Disney and over 60 nonprofits.',
   ],
 },
 ];
@@ -34,17 +34,17 @@ export const weVoteBoard = [{
   ],
 }, {
   name: 'Tiana Epps-Johnson',
-  image: `${photoPath}Tiana_Epps_Johnson-200x200.jpg`,
+  image: `${photoPath}Tiana_Epps_Johnson-256x256.jpg`,
   title: [
     'Senior Adviser',
-    'Exec. Dir. of CTCL, software for election administrators. Former Voting Info Project Harvard Ash Center for Democratic Governance and Innovation.',
+    'Executive Director of CTCL, software for election administrators. Former Voting Info Project Harvard Ash Center for Democratic Governance and Innovation.',
   ],
 }, {
   name: 'Tory Gavito',
   image: `${photoPath}Tory_Gavito-200x200.jpg`,
   title: [
     'c4 Board Member',
-    'Exec. Dir. at Texas Future Project.',
+    'Executive Director at Way to Win.',
   ],
 }, {
   name: 'Lawrence Grodeska',
@@ -76,9 +76,16 @@ export const weVoteBoard = [{
   ],
 }, {
   name: 'Betsy Sikma',
-  image: `${photoPath}Betsy_Sikma-200x200.jpg`,
+  image: `${photoPath}Betsy_Sikma-256x256.jpg`,
   title: [
     'c3 Board Member',
+    'Betsy Sikma is Director, Corporate PR at Milliken & Co. She holds degrees from Furman University, Vanderbilt University, and the Kellogg School of Management.',
+  ],
+}, {
+  name: 'Jessica St. John',
+  image: `${photoPath}Jessica_St.John-214x214.jpg`,
+  title: [
+    'Director',
     '',
   ],
 }, {
@@ -114,13 +121,31 @@ export const weVoteStaff = [{
   name: 'Irene Florez',
   image: `${photoPath}Irene_Florez-200x200.jpg`,
   title: [
-    'Marketing Manager',
+    'Marketing',
+  ],
+}, {
+  name: 'Filip Francetic',
+  image: `${photoPath}Filip_Francetic-256x256.jpg`,
+  title: [
+    'Engineering Intern',
   ],
 }, {
   name: 'Jeff French',
   image: `${photoPath}Jeff_French-200x200.jpg`,
   title: [
     'Lead Designer',
+  ],
+}, {
+  name: 'Ashwini Gawande',
+  image: `${photoPath}Ashwini_Gawande-251x251.jpg`,
+  title: [
+    'Quality Assurance',
+  ],
+}, {
+  name: 'Cody Gohl',
+  image: `${photoPath}Cody_Gohl-256x256.jpg`,
+  title: [
+    'Social Media Manager',
   ],
 }, {
   name: 'Anisha Jain',
@@ -136,9 +161,21 @@ export const weVoteStaff = [{
   ],
 }, {
   name: 'Judy Johnson',
-  image: `${photoPath}Judy_Johnson-200x200.jpg`,
+  image: `${photoPath}Judy_Johnson-256x256.jpg`,
   title: [
     'Operations',
+  ],
+}, {
+  name: 'Hillary Lehr',
+  image: `${photoPath}Hillary_Lehr-256x256.png`,
+  title: [
+    'Marketing',
+  ],
+}, {
+  name: 'Josh Levinger',
+  image: `${photoPath}Josh_Levinger-256x256.jpg`,
+  title: [
+    'User Experience Designer',
   ],
 }, {
   name: 'Edward Ly',
@@ -147,10 +184,41 @@ export const weVoteStaff = [{
     'Engineering Intern',
   ],
 }, {
+  name: 'Phil Marshall',
+  image: `${photoPath}Phil_Marshall-256x256.jpg`,
+  title: [
+    'Engineering Volunteer',
+  ],
+}, {
+  name: 'Valerie Patel',
+  image: `${photoPath}Valerie_Patel-256x256.jpg`,
+  title: [
+    'Political Data Manager',
+  ],
+}, {
+  name: 'Jarod Peachey',
+  image: `${photoPath}Jarod_Peachey-256x256.png`,
+  title: [
+    'Engineering Intern',
+    'Jarod is a senior in high school, and has been coding since 2018. He is on We Vote\'s React and Javascript team. He enjoys playing guitar in his spare time.',
+  ],
+}, {
   name: 'Steve Podell',
   image: `${photoPath}Steve_Podell-200x200.jpg`,
   title: [
     'Volunteer',
+  ],
+}, {
+  name: 'Utsab Saha',
+  image: `${photoPath}Utsab_Saha-256x256.png`,
+  title: [
+    'Volunteer',
+  ],
+}, {
+  name: 'Urosh Stojkovikj',
+  image: `${photoPath}Urosh_Stojkovikj-256x256.jpg`,
+  title: [
+    'Engineering Intern',
   ],
 }, {
   name: 'Aaron Travis',
@@ -160,6 +228,7 @@ export const weVoteStaff = [{
   ],
 },
 ];
+//
 
 export const organizationalDonors = [{
   name: 'Amazon Web Services',
@@ -171,8 +240,8 @@ export const organizationalDonors = [{
   logo: `${logoPath}ballotpedia-logo.png`,
 }, {
   name: 'Center for Technology and Civic Life',
-  title: 'Data',
-  logo: `${logoPath}center-for-tech-and-civic-life-logo.png`,
+  title: 'Data & Love',
+  logo: `${logoPath}ctcl_logo-600x230.jpg`,
 }, {
   name: 'CivicMakers',
   title: 'Event Collaborations',
@@ -190,13 +259,17 @@ export const organizationalDonors = [{
   title: 'Authentication & Data',
   logo: `${logoPath}facebook-logo.png`,
 }, {
+  name: 'Fast Forward',
+  title: 'Most Amazing Nonprofit Technology Accelerator Ever',
+  logo: `${logoPath}ffwd-logo.png`,
+}, {
   name: 'Fastly.com',
   title: 'Scalable Content Delivery (CDN)',
   logo: `${logoPath}fastly-logo.png`,
 }, {
   name: 'Google Civic',
   title: 'Data',
-  logo: `${logoPath}google-logo.png`,
+  logo: `${logoPath}google-logo.svg`,
 }, {
   name: 'Greenberg Traurig, LLP',
   title: 'Legal',
@@ -325,8 +398,8 @@ export const teamOfVolunteers = [{
   name: 'Eric Ogawa',
   title: 'San Francisco, CA',
 }, {
-  name: 'Mary O&apos;Connor',
-  title: 'Sebastopol, CA',
+  name: 'Mary O\'Connor',
+  title: 'Asheville, NC',
 }, {
   name: 'Harsha Dronamraju',
   title: 'San Francisco, CA',
@@ -365,6 +438,9 @@ export const teamOfVolunteers = [{
   title: 'Menlo Park, CA',
 }, {
   name: 'Paul A. "Dash" McLean',
+  title: 'E. Palo Alto, CA',
+}, {
+  name: 'Tamara Suden',
   title: 'E. Palo Alto, CA',
 }, {
   name: 'Fernando Mendoza',

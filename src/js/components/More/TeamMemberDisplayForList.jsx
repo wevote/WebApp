@@ -48,12 +48,13 @@ class TeamMemberDisplayForList extends Component {
   render () {
     renderLog(__filename);
 
-    if (!this.props.teamMember) return null;
-
     const { image: teamMemberImage, name: teamMemberName, title: teamMemberTitle } = this.props.teamMember;
+    // console.log(teamMemberName, '-', teamMemberTitle[0]);
+
+    if (!this.props.teamMember || !teamMemberName) return null;
 
     return (
-      <Col className="col-12 col-sm-6 col-md-4 mb-3" key={`${teamMemberName}-${teamMemberTitle}`}>
+      <Col className="col-12 col-sm-6 col-md-4 mb-3" key={`${teamMemberName}-${teamMemberTitle[0]}`}>
         <MemberContainer onMouseEnter={this.handleEnterCard} onMouseLeave={this.handleLeaveCard} onTouchStart={this.handleEnterCard} onTouchEnd={this.handleLeaveCard}>
           {this.state.hover && this.state.hasDescription ? (
             <CardHover>

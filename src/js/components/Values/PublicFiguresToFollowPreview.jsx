@@ -1,8 +1,9 @@
 import React, { Component, Suspense } from 'react';
-import { Link } from 'react-router';
 import GuideList from '../VoterGuide/GuideList';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { renderLog } from '../../utils/logging';
+import ShowMoreFooter from '../Navigation/ShowMoreFooter';
+import { historyPush } from '../../utils/cordovaUtils';
 
 
 export default class PublicFiguresToFollowPreview extends Component {
@@ -33,6 +34,10 @@ export default class PublicFiguresToFollowPreview extends Component {
     });
   }
 
+  goToPublicFigures () {
+    historyPush('/opinions');
+  }
+
   render () {
     renderLog(__filename);
     const { voterGuidesToFollow } = this.state;
@@ -45,9 +50,7 @@ export default class PublicFiguresToFollowPreview extends Component {
             <Suspense fallback={<span>Loading...</span>}>
               <GuideList incomingVoterGuideList={voterGuidesToFollow} instantRefreshOn />
             </Suspense>
-            <div>
-              <Link id="myValuesExploreMorePublicFigures" to="/opinions">Explore more public figures</Link>
-            </div>
+            <ShowMoreFooter showMoreId="publicFiguresToFollowPreviewShowMoreId" showMoreLink={() => this.goToPublicFigures()} showMoreText="Explore more public figures" />
           </div>
         </section>
       </div>

@@ -323,7 +323,7 @@ class CandidateItem extends Component {
               </div>
               {this.props.hideShowMoreFooter ?
                 null :
-                <ShowMoreFooter showMoreLink={this.goToCandidateLink} />
+                <ShowMoreFooter showMoreId="candidateItemShowMoreFooter" showMoreLink={this.goToCandidateLink} />
               }
             </div>
           </Link>
@@ -465,7 +465,7 @@ class CandidateItem extends Component {
             </div>
             {this.props.hideShowMoreFooter ?
               null :
-              <ShowMoreFooter showMoreLink={this.goToCandidateLink} />
+              <ShowMoreFooter showMoreId="candidateItemShowMoreFooter" showMoreLink={this.goToCandidateLink} />
             }
           </div>
         )}

@@ -183,6 +183,9 @@ const styles = theme => ({
     '&:hover': {
       color: 'white',
     },
+    [theme.breakpoints.down('md')]: {
+      fontSize: 16,
+    },
   },
   bottomLink: {
     color: 'white',
@@ -190,6 +193,9 @@ const styles = theme => ({
     fontWeight: 'bold',
     '&:hover': {
       color: 'white',
+    },
+    [theme.breakpoints.down('md')]: {
+      fontSize: 16,
     },
   },
 });
@@ -267,6 +273,9 @@ const Bottom = styled.div`
 
 const Text = styled.p`
   font-size: 12px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 16px;
+  }
 `;
 
 export default withStyles(styles)(Footer);
