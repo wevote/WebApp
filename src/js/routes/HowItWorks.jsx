@@ -28,7 +28,7 @@ class HowItWorks extends Component {
         Claim: {
           title: 'Claim your campaign profile',
           description: 'Sign in & verify your account using your official Twitter account or other secure method. We Vote takes verification very seriously. (No trolls allowed!)',
-          imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Claim-20190425.gif?',
+          imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Claim-20190516.gif?',
           index: 0,
         },
         Import: {
@@ -104,7 +104,7 @@ class HowItWorks extends Component {
           index: 2,
         },
         Decide: {
-          title: 'Fill the whole thing out in under six minutes',
+          title: 'Complete your ballot in under six minutes',
           description: 'We Vote is fast, mobile, and helps you decide on the go. Vote with confidence!',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Decide-20190401.gif?',
           index: 3,

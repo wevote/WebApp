@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import AnalyticsActions from '../../actions/AnalyticsActions';
+import AppActions from '../../actions/AppActions';
 import { renderLog } from '../../utils/logging';
 import Footer from '../../components/Welcome/Footer';
 import Section from '../../components/Welcome/Section';
-import VoterStore from '../../stores/VoterStore';
+import PricingCard from '../../components/More/PricingCard';
 import PricingSwitch from '../../components/Widgets/PricingSwitch';
+import VoterStore from '../../stores/VoterStore';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
 import { Title } from '../../components/Welcome/Header';
-import PricingCard from '../../components/More/PricingCard';
+import { historyPush } from '../../utils/cordovaUtils';
 
 class Pricing extends Component {
   static getProps () {
@@ -22,15 +23,43 @@ class Pricing extends Component {
 
     this.state = {
       selectedCategoryIndex: 0,
+      voter: {},
     };
   }
 
   componentDidMount () {
-    AnalyticsActions.saveActionAboutMobile(VoterStore.electionId());
+    this.onVoterStoreChange();
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+  }
+
+  componentWillUnmount () {
+    this.voterStoreListener.remove();
+  }
+
+  onVoterStoreChange () {
+    this.setState({
+      voter: VoterStore.getVoter(),
+    });
   }
 
   switchToDifferentCategoryFunction = (selectedCategoryIndex) => {
     this.setState({ selectedCategoryIndex });
+  }
+
+  getStartedForOrganizations = () => {
+    const { voter } = this.state;
+    let isSignedIn = false;
+    if (voter) {
+      ({ is_signed_in: isSignedIn } = voter);
+      isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
+    }
+    console.log('Pricing getStartedForOrganizations, isSignedIn: ', isSignedIn);
+    if (isSignedIn) {
+      historyPush('/settings/profile');
+    } else {
+      AppActions.setGetStartedMode('getStartedForOrganizations');
+      AppActions.setShowSignInModal(true);
+    }
   }
 
   render () {
@@ -51,7 +80,7 @@ class Pricing extends Component {
                 <SwitchContainer>
                   <PricingSwitch
                     color="white"
-                    choices={['Free', 'Professional', 'Enterprise']}
+                    choices={['Free', 'Pro', 'Enterprise']}
                     selectedCategoryIndex={selectedCategoryIndex}
                     switchToDifferentCategoryFunction={this.switchToDifferentCategoryFunction}
                   />
@@ -64,9 +93,11 @@ class Pricing extends Component {
                       planName="Free"
                       price={0}
                       priceDescribe="For life"
-                      description="Just start creating: get a free site and be on your way to empowering your supporters in less than five minutes"
+                      description="Just start creating: get a free site and be on your way to empowering your supporters in less than five minutes."
                       bullets={['Create your own endorsements', 'Add to your own website', 'See visitor metrics']}
                       buttonText="Start with Free"
+                      buttonOnClickId="pricingStartWithFree"
+                      buttonOnClickFunction={this.getStartedForOrganizations}
                     />
                   ) : (
                     <React.Fragment>
@@ -76,10 +107,12 @@ class Pricing extends Component {
                           premium
                           planName="Professional"
                           price={125}
-                          priceDescribe="Per month billed annually"
-                          description="Best for regional campaigns to grow your reach"
+                          priceDescribe="Per month, billed annually"
+                          description="Best for regional campaigns."
                           bullets={['Custom domain name', 'Prioritize unlimited endorsements', 'Fine tune for social media sharing']}
-                          buttonText="Start with Professional"
+                          buttonText="Start with Pro"
+                          buttonOnClickId="pricingStartWithPro"
+                          buttonOnClickFunction={this.getStartedForOrganizations}
                         />
                       ) : (
                         <PricingCard
@@ -87,9 +120,11 @@ class Pricing extends Component {
                           premium
                           priceDescribe={null}
                           planName="Enterprise"
-                          description="Best for local political clubs"
-                          bullets={['Branding control', 'Analytics integration', 'Up to 3 administrators']}
-                          buttonText="Request a Demo"
+                          description="Best for local political clubs."
+                          bullets={['Branding control', 'Analytics integration', 'Additional administrators']}
+                          buttonText="Contact Sales"
+                          buttonOnClickId="pricingStartWithEnterprise"
+                          buttonOnClickFunction={this.getStartedForOrganizations}
                         />
                       )}
                     </React.Fragment>
@@ -101,26 +136,32 @@ class Pricing extends Component {
                   planName="Free"
                   price={0}
                   priceDescribe="For life"
-                  description="Just start creating: get a free site and be on your way to empowering your supporters in less than five minutes"
+                  description="Just start creating: get a free site and be on your way to empowering your supporters in less than five minutes."
                   bullets={['Create your own endorsements', 'Add to your own website', 'See visitor metrics']}
                   buttonText="Start with Free"
+                  buttonOnClickId="pricingStartWithFreeDesktop"
+                  buttonOnClickFunction={this.getStartedForOrganizations}
                 />
                 <PricingCard
                   premium
                   planName="Professional"
                   price={125}
-                  priceDescribe="Per month billed annually"
-                  description="Best for regional campaigns to grow your reach"
+                  priceDescribe="Per month, billed annually"
+                  description="Best for regional campaigns."
                   bullets={['Custom domain name', 'Prioritize unlimited endorsements', 'Fine tune for social media sharing']}
                   buttonText="Start with Professional"
+                  buttonOnClickId="pricingStartWithProDesktop"
+                  buttonOnClickFunction={this.getStartedForOrganizations}
                 />
                 <PricingCard
                   premium
                   priceDescribe={null}
                   planName="Enterprise"
-                  description="Best for local political clubs"
+                  description="Best for local political clubs."
                   bullets={['Branding control', 'Analytics integration', 'Up to 3 administrators']}
-                  buttonText="Request a Demo"
+                  buttonText="Contact Sales"
+                  buttonOnClickId="pricingStartWithEnterpriseDesktop"
+                  buttonOnClickFunction={this.getStartedForOrganizations}
                 />
               </div>
             </div>
