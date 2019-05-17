@@ -13,14 +13,14 @@ export const weVoteFounders = [{
   image: `${photoPath}Jenifer_Fernandez_Ancona-256x256.jpg`,
   title: [
     'Co-Founder & c4 Board Chair',
-    'VP, Strategy & Member Engagement at the Women Donors Network.',
+    'Jenifer helps to run Women Donors Network, a national community of 220 progressive women donors. Jenifer also directs WDN Action, a 501(c)(4) organization advancing justice through advocacy, funding, and civic engagement of underrepresented communities.',
   ],
 }, {
   name: 'Dale John McGrew',
   image: `${photoPath}Dale_McGrew-256x256.jpg`,
   title: [
     'Co-Founder / CTO & c3 + c4 Board Member',
-    'Co-Founded and sold two prior high tech startups. Managed large software projects for companies like Disney and over 60 nonprofits.',
+    'Prior to running We Vote, Dale successfully co-founded, built and sold two high tech startups (Gravity.com and GoLightly.com). Dale has managed large software projects for companies like Disney, IBM and Crayola and over 60 nonprofits.',
   ],
 },
 ];
@@ -213,9 +213,10 @@ export const weVoteStaff = [{
   ],
 }, {
   name: 'Steve Podell',
-  image: `${photoPath}Steve_Podell-200x200.jpg`,
+  image: `${photoPath}Steve_Podell-256x256.jpg`,
   title: [
     'Volunteer',
+    'Steve has been volunteering with We Vote since 2017, and single-handedly launched our iOS and Android apps, as well as contributing to all of We Vote\'s code repositories.',
   ],
 }, {
   name: 'Utsab Saha',
