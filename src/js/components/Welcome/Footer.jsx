@@ -125,16 +125,9 @@ class Footer extends Component {
               color="default"
               variant="outlined"
               classes={{ root: classes.buttonOutlined }}
+              onClick={() => window.open('https://help.wevote.us/hc/en-us/requests/new', '_blank')}
             >
-              <OpenExternalWebSite
-                linkIdAttribute="footerLinkContactSales"
-                url="https://help.wevote.us/hc/en-us/requests/new"
-                target="_blank"
-                body={(
-                  <span className="u-no-break">Contact Sales</span>
-                )}
-                className={classes.bottomLink}
-              />
+              Contact Sales
             </Button>
           </OptionsContainer>
         </Top>
@@ -169,11 +162,14 @@ const styles = theme => ({
     marginBottom: '1em',
     fontWeight: 'bold',
     [theme.breakpoints.down('md')]: {
+      padding: '8px 0',
+      border: '1.5px solid white',
+      height: 40,
+    },
+    [theme.breakpoints.down('sm')]: {
       width: '47%',
       fontSize: 12,
-      padding: '8px 0',
       border: '1px solid white',
-      height: 40,
     },
   },
   link: {
