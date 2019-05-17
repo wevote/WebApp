@@ -1,16 +1,19 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import DoneIcon from '@material-ui/icons/Done';
+import ThumbsUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbsDownIcon from '@material-ui/icons/ThumbDown';
+import CommentIcon from '@material-ui/icons/Comment';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import { cordovaDot } from '../../utils/cordovaUtils'; // historyPush
 import { renderLog } from '../../utils/logging';
 import { showToastError, showToastSuccess } from '../../utils/showToast';
 import { stringContains } from '../../utils/textFormat';
 import MeasureStore from '../../stores/MeasureStore';
-import ReadMore from './ReadMore';
+// import ReadMore from './ReadMore';
 import ShareButtonDropDown from './ShareButtonDropdown';
 import SupportActions from '../../actions/SupportActions';
 import VoterActions from '../../actions/VoterActions';
@@ -20,11 +23,8 @@ import PositionPublicToggle from './PositionPublicToggle';
 import SupportStore from '../../stores/SupportStore';
 import webAppConfig from '../../config';
 import shareIconSvg from '../../../img/global/svg-icons/share-icon.svg';
-import thumbsUpIcon from '../../../img/global/svg-icons/thumbs-up-icon.svg';
-import thumbsDownIcon from '../../../img/global/svg-icons/thumbs-down-icon.svg';
-import commentIcon from '../../../img/global/svg-icons/comment-icon.svg';
 
-class ItemActionBar extends Component {
+class ItemActionBar extends PureComponent {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
     commentButtonHide: PropTypes.bool,
@@ -44,7 +44,7 @@ class ItemActionBar extends Component {
     super(props);
     this.state = {
       ballotItemWeVoteId: '',
-      componentDidMountFinished: false,
+      // componentDidMountFinished: false,
       isOpposeAPIState: undefined,
       isOpposeLocalState: undefined,
       isPublicPosition: undefined,
@@ -54,9 +54,9 @@ class ItemActionBar extends Component {
       supportCount: 0,
       opposeCount: 0,
       yesVoteDescription: '',
-      yesVoteDescriptionExists: false,
+      // yesVoteDescriptionExists: false,
       noVoteDescription: '',
-      noVoteDescriptionExists: false,
+      // noVoteDescriptionExists: false,
       transitioning: false,
     };
     this.isOpposeCalculated = this.isOpposeCalculated.bind(this);
@@ -84,7 +84,7 @@ class ItemActionBar extends Component {
 
     this.setState({
       ballotItemWeVoteId: this.props.ballotItemWeVoteId,
-      componentDidMountFinished: true,
+      // componentDidMountFinished: true,
       isOpposeAPIState,
       isPublicPosition,
       isSupportAPIState,
@@ -103,47 +103,6 @@ class ItemActionBar extends Component {
         ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
       }, this.onNewBallotItemWeVoteId);
     }
-  }
-
-  shouldComponentUpdate (nextProps, nextState) {
-    // console.log('ItemActionBar, shouldComponentUpdate');
-    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    // We added this because ItemActionBar was rendering with practically every API response received
-    // console.log('itemActionBar, shouldComponentUpdate');
-    if (this.state.transitioning || nextState.transitioning) {
-      // console.log('shouldComponentUpdate: transitioning YES');
-      return true;
-    }
-    if (this.state.componentDidMountFinished === false) {
-      // console.log('shouldComponentUpdate: componentDidMountFinished === false');
-      return true;
-    }
-
-    if (nextProps.ballotItemWeVoteId !== undefined && nextProps.ballotItemWeVoteId && nextProps.ballotItemWeVoteId !== this.state.ballotItemWeVoteId) {
-      // console.log('shouldComponentUpdate: itemActionBar, ballotItemWeVoteId');
-      return true;
-    }
-    if (this.state.isOpposeAPIState !== nextState.isOpposeAPIState) {
-      // console.log('shouldComponentUpdate: itemActionBar, isOpposeAPIState different');
-      return true;
-    }
-    if (this.state.isSupportAPIState !== nextState.isSupportAPIState) {
-      // console.log('shouldComponentUpdate: itemActionBar, isSupportAPIState different');
-      return true;
-    }
-    if (this.state.showSupportOrOpposeHelpModal !== nextState.showSupportOrOpposeHelpModal) {
-      // console.log('shouldComponentUpdate: itemActionBar, showSupportOrOpposeHelpModal different');
-      return true;
-    }
-    if (this.state.yesVoteDescriptionExists !== nextState.yesVoteDescriptionExists) {
-      // console.log('shouldComponentUpdate: itemActionBar, yesVoteDescriptionExists different');
-      return true;
-    }
-    if (this.state.noVoteDescriptionExists !== nextState.noVoteDescriptionExists) {
-      // console.log('shouldComponentUpdate: itemActionBar, noVoteDescriptionExists different');
-      return true;
-    }
-    return false;
   }
 
   componentWillUnmount () {
@@ -397,8 +356,6 @@ class ItemActionBar extends Component {
 
     const iconSize = 18;
     const iconColor = '#00749e'; // $link-color
-    const chooseIconColor = this.isSupportCalculated() ? 'white' : '#00749e'; // $link-color
-    const opposeIconColor = this.isOpposeCalculated() ? 'white' : '#00749e'; // $link-color
 
     let urlBeingShared;
     if (this.props.type === 'CANDIDATE') {
@@ -532,19 +489,12 @@ class ItemActionBar extends Component {
 
     const measureYesButton = (
       <Button
-        variant="contained"
-        className={`item-actionbar__btn item-actionbar__btn--support btn btn-default${this.isSupportCalculated() ? ' support-at-state' : ''}`}
+        variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
+        color="primary"
         onClick={() => this.supportItem()}
         classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <span className="btn__icon">
-          <img src={cordovaDot(thumbsUpIcon)}
-               width={18}
-               height={18}
-               color={chooseIconColor}
-               alt="thumbs up"
-          />
-        </span>
+        <ThumbsUpIcon classes={{ root: classes.buttonIcon }} />
         { this.isSupportCalculated() ? (
           <span
             className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
@@ -592,19 +542,12 @@ class ItemActionBar extends Component {
 
     const measureNoButton = (
       <Button
-        variant="contained"
-        className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}item-actionbar__btn item-actionbar__btn--oppose btn btn-default${this.isOpposeCalculated() ? ' oppose-at-state' : ''}`}
+        variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
+        color="primary"
         onClick={() => this.opposeItem()}
         classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <span className="btn__icon">
-          <img src={cordovaDot(thumbsDownIcon)}
-               width={18}
-               height={18}
-               color={opposeIconColor}
-               alt="thumbs down"
-          />
-        </span>
+        <ThumbsDownIcon classes={{ root: classes.buttonIcon }} />
         { this.isOpposeCalculated() ? (
           <span
             className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
@@ -628,16 +571,9 @@ class ItemActionBar extends Component {
         variant="contained"
         className={`${this.props.commentButtonHideInMobile ? 'd-none d-sm-block ' : null}item-actionbar__btn item-actionbar__btn--comment btn btn-default`}
         onClick={this.props.toggleFunction}
-        type="button"
+        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
-        <span className="btn__icon">
-          <img src={cordovaDot(commentIcon)}
-               width={18}
-               height={18}
-               color={iconColor}
-               alt="comment"
-          />
-        </span>
+        <CommentIcon classes={{ root: classes.buttonIcon }} />
         <span className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
           'item-actionbar__position-btn-label'}
         >
@@ -656,7 +592,7 @@ class ItemActionBar extends Component {
           supportProps={modalSupportProps}
           inTestMode
         />
-        <div className={(this.state.yesVoteDescriptionExists || this.state.noVoteDescriptionExists ? '' : 'btn-group') + (!this.props.shareButtonHide ? ' u-push--sm' : '')}>
+        <div className={`btn-group ${!this.props.shareButtonHide ? ' u-push--sm' : ''}`}>
 
           {/* Start of Support Button */}
           {/* Visible on desktop screens */}
@@ -666,19 +602,22 @@ class ItemActionBar extends Component {
                 measureYesButton
             }
             </OverlayTrigger>
-            {this.state.yesVoteDescriptionExists ? (
+            {/*
+            this.state.yesVoteDescriptionExists ? (
               <span className="item-actionbar__following-text">
                 {this.state.yesVoteDescription}
               </span>
             ) : null
-            }
+            */
+           }
           </div>
           {/* Visible on mobile devices and tablets */}
           <div className="u-push--xs d-lg-none d-xl-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
             {this.props.type === 'CANDIDATE' ? supportButton :
               measureYesButton
             }
-            {this.state.yesVoteDescriptionExists ? (
+            {/*
+            this.state.yesVoteDescriptionExists ? (
               <span className="item-actionbar__following-text">
                 <ReadMore
                   num_of_lines={2}
@@ -686,6 +625,7 @@ class ItemActionBar extends Component {
                 />
               </span>
             ) : null
+            */
             }
           </div>
 
@@ -697,19 +637,22 @@ class ItemActionBar extends Component {
                 measureNoButton
             }
             </OverlayTrigger>
-            {this.state.noVoteDescriptionExists ? (
+            {/*
+            this.state.noVoteDescriptionExists ? (
               <span className="item-actionbar__following-text">
                 {this.state.noVoteDescription}
               </span>
             ) : null
-            }
+            */
+           }
           </div>
           {/* Visible on mobile devices and tablets */}
           <div className="u-push--xs d-lg-none d-xl-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
             {this.props.type === 'CANDIDATE' ? opposeButton :
               measureNoButton
           }
-            {this.state.noVoteDescriptionExists ? (
+            {/*
+            this.state.noVoteDescriptionExists ? (
               <span className="item-actionbar__following-text">
                 <ReadMore
                   num_of_lines={2}
@@ -717,7 +660,7 @@ class ItemActionBar extends Component {
                 />
               </span>
             ) : null
-            }
+            */}
           </div>
           { this.props.commentButtonHide ?
             null : (
@@ -750,9 +693,10 @@ const styles = theme => ({
     [theme.breakpoints.down('md')]: {
       padding: 0,
       fontSize: 10,
-      width: 72,
+      width: 100,
       height: 28,
       marginLeft: '.1rem',
+      marginTop: '.3rem',
     },
   },
   buttonOutlinedPrimary: {

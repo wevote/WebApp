@@ -77,7 +77,7 @@ export default class OrganizationVoterGuideCard extends Component {
             <span>Edit Your Voter Guide</span>
           </Button>
         ) :
-          <FollowToggle organizationWeVoteId={organizationWeVoteId} />
+          <FollowToggle organizationWeVoteId={organizationWeVoteId} showFollowingText />
         }
         { twitterDescriptionMinusName && !this.props.turnOffDescription ? (
           <ParsedTwitterDescription

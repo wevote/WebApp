@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
-import extractFirstEndorsementFromPositionList from '../../utils/positionFunctions';
+import { extractFirstEndorsementFromPositionList } from '../../utils/positionFunctions';
 import { shortenText, stringContains } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
 
@@ -13,6 +13,8 @@ export default class TopCommentByBallotItem extends Component {
     children: PropTypes.object,
     learnMoreText: PropTypes.string,
     learnMoreUrl: PropTypes.string,
+    limitToNo: PropTypes.bool,
+    limitToYes: PropTypes.bool,
   };
 
   constructor (props) {
@@ -20,66 +22,81 @@ export default class TopCommentByBallotItem extends Component {
     this.state = {
       // organizationsToFollow: [],
       ballotItemWeVoteId: '',
+      endorsementOrganization: {},
+      endorsementText: '',
     };
   }
 
   componentDidMount () {
-    // console.log("GuideList componentDidMount");
+    // console.log('TopCommentByBallotItem componentDidMount');
     const { ballotItemWeVoteId } = this.props;
-    const allCachedPositionsForCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
-    // console.log('componentDidMount allCachedPositionsForCandidate: ', allCachedPositionsForCandidate);
-    const results = extractFirstEndorsementFromPositionList(allCachedPositionsForCandidate);
-    // console.log('endorsementText: ', endorsementText);
+    const isForCandidate = stringContains('cand', ballotItemWeVoteId);
+    const isForMeasure = stringContains('meas', ballotItemWeVoteId);
 
-    this.setState({
-      ballotItemWeVoteId,
-      endorsementOrganization: results.endorsementOrganization,
-      endorsementText: results.endorsementText,
-    });
+    if (isForCandidate) {
+      const allCachedPositionsForCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
+      // console.log('componentDidMount allCachedPositionsForCandidate: ', allCachedPositionsForCandidate);
+      const limitToYes = true;
+      const candidateResults = extractFirstEndorsementFromPositionList(allCachedPositionsForCandidate, limitToYes);
+      // console.log('candidateResults.endorsementText: ', candidateResults.endorsementText);
+
+      this.setState({
+        ballotItemWeVoteId,
+        endorsementOrganization: candidateResults.endorsementOrganization,
+        endorsementText: candidateResults.endorsementText,
+      });
+    }
+
+    if (isForMeasure) {
+      const allCachedPositionsForMeasure = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(ballotItemWeVoteId);
+      // console.log('TopCommentByBallotItem componentDidMount allCachedPositionsForMeasure: ', allCachedPositionsForMeasure);
+      const measureResults = extractFirstEndorsementFromPositionList(allCachedPositionsForMeasure, this.props.limitToYes, this.props.limitToNo);
+      // console.log('measureResults.endorsementText: ', measureResults.endorsementText);
+
+      this.setState({
+        ballotItemWeVoteId,
+        endorsementOrganization: measureResults.endorsementOrganization,
+        endorsementText: measureResults.endorsementText,
+      });
+    }
+
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
-
-    // this.setState({
-    //   ballotItemWeVoteId,
-    //   positionListFromAdvisersFollowedByVoter,
-    //   voterGuidesToFollowForThisBallotItem,
-    // }, () => {
-    //   const orgsWithPositions = this.getOrganizationsWithPositions();
-    //   this.setState({
-    //     // organizationsWithPositions: orgsWithPositions,
-    //     filteredOrganizationsWithPositions: orgsWithPositions,
-    //   });
-    //   // console.log(orgsWithPositions);
-    // });
+    this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("GuideList componentWillReceiveProps");
+    // console.log('TopCommentByBallotItem componentWillReceiveProps');
     // Do not update the state if the organizationsToFollow list looks the same, and the ballotItemWeVoteId hasn't changed
     const { ballotItemWeVoteId } = nextProps;
-    const allCachedPositionsForCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
-    // console.log('componentDidMount allCachedPositionsForCandidate: ', allCachedPositionsForCandidate);
-    const results = extractFirstEndorsementFromPositionList(allCachedPositionsForCandidate);
-    // console.log('endorsementText: ', endorsementText);
+    const isForCandidate = stringContains('cand', ballotItemWeVoteId);
+    const isForMeasure = stringContains('meas', ballotItemWeVoteId);
 
-    this.setState({
-      ballotItemWeVoteId,
-      endorsementOrganization: results.endorsementOrganization,
-      endorsementText: results.endorsementText,
-    });
+    if (isForCandidate) {
+      const allCachedPositionsForCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
+      // console.log('componentWillReceiveProps allCachedPositionsForCandidate: ', allCachedPositionsForCandidate);
+      const limitToYes = true;
+      const candidateResults = extractFirstEndorsementFromPositionList(allCachedPositionsForCandidate, limitToYes);
+      // console.log('candidateResults.endorsementText: ', candidateResults.endorsementText);
 
-    // this.setState({
-    //   ballotItemWeVoteId,
-    //   positionListFromAdvisersFollowedByVoter,
-    //   voterGuidesToFollowForThisBallotItem,
-    // }, () => {
-    //   const orgsWithPositions = this.getOrganizationsWithPositions();
-    //   // this.setState({
-    //   //   organizationsWithPositions: orgsWithPositions,
-    //   // });
-    //   if (!this.state.filteredOrganizationsWithPositions.length) {
-    //     this.setState({ filteredOrganizationsWithPositions: orgsWithPositions });
-    //   }
-    // });
+      this.setState({
+        ballotItemWeVoteId,
+        endorsementOrganization: candidateResults.endorsementOrganization,
+        endorsementText: candidateResults.endorsementText,
+      });
+    }
+
+    if (isForMeasure) {
+      const allCachedPositionsForMeasure = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(ballotItemWeVoteId);
+      // console.log('componentWillReceiveProps allCachedPositionsForMeasure: ', allCachedPositionsForMeasure);
+      const measureResults = extractFirstEndorsementFromPositionList(allCachedPositionsForMeasure, this.props.limitToYes, this.props.limitToNo);
+      // console.log('measureResults.endorsementText: ', measureResults.endorsementText);
+
+      this.setState({
+        ballotItemWeVoteId,
+        endorsementOrganization: measureResults.endorsementOrganization,
+        endorsementText: measureResults.endorsementText,
+      });
+    }
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -97,22 +114,41 @@ export default class TopCommentByBallotItem extends Component {
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
+    this.measureStoreListener.remove();
   }
 
-  // handleFilteredOrgsChange = filteredOrgs => this.setState({ filteredOrganizationsWithPositions: filteredOrgs });
-
   onCandidateStoreChange () {
-    // console.log("GuideList componentDidMount");
     const { ballotItemWeVoteId } = this.state;
-    const allCachedPositionsForCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
-    // console.log('componentDidMount allCachedPositionsForCandidate: ', allCachedPositionsForCandidate);
-    const results = extractFirstEndorsementFromPositionList(allCachedPositionsForCandidate);
-    // console.log('endorsementText: ', endorsementText);
+    const isForCandidate = stringContains('cand', ballotItemWeVoteId);
 
-    this.setState({
-      endorsementOrganization: results.endorsementOrganization,
-      endorsementText: results.endorsementText,
-    });
+    if (isForCandidate) {
+      const allCachedPositionsForCandidate = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(ballotItemWeVoteId);
+      // console.log('onCandidateStoreChange allCachedPositionsForCandidate: ', allCachedPositionsForCandidate);
+      const limitToYes = true;
+      const results = extractFirstEndorsementFromPositionList(allCachedPositionsForCandidate, limitToYes);
+      // console.log('results.endorsementText: ', results.endorsementText);
+
+      this.setState({
+        endorsementOrganization: results.endorsementOrganization,
+        endorsementText: results.endorsementText,
+      });
+    }
+  }
+
+  onMeasureStoreChange () {
+    const { ballotItemWeVoteId } = this.state;
+    const isForMeasure = stringContains('meas', ballotItemWeVoteId);
+    if (isForMeasure) {
+      const allCachedPositionsForMeasure = MeasureStore.getAllCachedPositionsByMeasureWeVoteId(ballotItemWeVoteId);
+      // console.log('onMeasureStoreChange allCachedPositionsForMeasure: ', allCachedPositionsForMeasure);
+      const results = extractFirstEndorsementFromPositionList(allCachedPositionsForMeasure, this.props.limitToYes, this.props.limitToNo);
+      // console.log('results.endorsementText: ', results.endorsementText);
+
+      this.setState({
+        endorsementOrganization: results.endorsementOrganization,
+        endorsementText: results.endorsementText,
+      });
+    }
   }
 
   getOrganizationsWithPositions = () => this.state.organizationsToFollow.map((organization) => {
@@ -174,25 +210,23 @@ export default class TopCommentByBallotItem extends Component {
     // console.log("GuideList organizationsToFollow: ", this.state.organizationsToFollow);
     //       on_click={this.goToCandidateLink(this.state.oneCandidate.we_vote_id)}
     return (
-      <div>
-        <span className="BallotItem__top-comment">
-          <span className="BallotItem__top-comment__endorser-name">
-            {endorsementOrganization}
-            .
-          </span>
-          {' "'}
-          <span className="u-show-desktop-tablet">{croppedEndorsementTextDesktopTablet}</span>
-          <span className="u-show-mobile">{croppedEndorsementTextMobile}</span>
-          {'"'}
-          { this.props.learnMoreUrl && (
-            <span>
-              {' '}
-              <Link to={this.props.learnMoreUrl}>{learnMoreText}</Link>
-            </span>
-          )
-          }
+      <span className="BallotItem__top-comment">
+        <span className="BallotItem__top-comment__endorser-name">
+          {endorsementOrganization}
+          .
         </span>
-      </div>
+        {' "'}
+        <span className="u-show-desktop-tablet">{croppedEndorsementTextDesktopTablet}</span>
+        <span className="u-show-mobile">{croppedEndorsementTextMobile}</span>
+        {'"'}
+        { this.props.learnMoreUrl && (
+          <span>
+            {' '}
+            <Link to={this.props.learnMoreUrl}>{learnMoreText}</Link>
+          </span>
+        )
+        }
+      </span>
     );
   }
 }

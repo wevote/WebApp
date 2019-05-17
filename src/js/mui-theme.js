@@ -1,4 +1,3 @@
-import amber from '@material-ui/core/colors/amber';
 import { createMuiTheme } from '@material-ui/core/styles';
 
 const overrides = {
@@ -57,7 +56,11 @@ const theme = createMuiTheme({
       // main: "#25536D",
       main: '#2E3C5D', // brandBlue
     },
-    secondary: amber, // Feel free to change this
+    secondary: {
+      main: '#ffffff',
+      dark: '#f7f7f7',
+      contrastText: '#2e3c5d',
+    }, // Feel free to change this
   },
   breakpoints,
   overrides,

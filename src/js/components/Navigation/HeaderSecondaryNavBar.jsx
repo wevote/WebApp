@@ -125,7 +125,7 @@ export default class HeaderSecondaryNavBar extends Component {
 
   _nextSliderPage () {
     VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
-    this.refs.slider.slickNext();
+    this.refs.slider.slickNext(); // eslint-disable-line react/no-string-refs
   }
 
   afterChangeHandler (index) {
@@ -144,7 +144,7 @@ export default class HeaderSecondaryNavBar extends Component {
       verificationEmailSent,
     });
     if (shouldChangeSlide) {
-      this.refs.slider.slickNext();
+      this.refs.slider.slickNext(); // eslint-disable-line react/no-string-refs
     }
   }
 
@@ -158,7 +158,7 @@ export default class HeaderSecondaryNavBar extends Component {
       verificationEmailSent,
     });
     if (shouldChangeSlide) {
-      this.refs.slider.slickNext();
+      this.refs.slider.slickNext(); // eslint-disable-line react/no-string-refs
     }
   }
 
@@ -187,11 +187,16 @@ export default class HeaderSecondaryNavBar extends Component {
       >
         <Modal.Body>
           <div className="intro-modal__close">
-            <a onClick={this._toggleBallotIntroFollowIssues} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}>
+            <button type="button" onClick={this._toggleBallotIntroFollowIssues} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}>
               <img src={cordovaDot(closeIcon)} alt="close" />
-            </a>
+            </button>
           </div>
-          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height intro-modal__height-full" ref="slider" {...sliderSettings}>
+          <Slider
+            dotsClass="slick-dots intro-modal__gray-dots"
+            className="calc-height intro-modal__height-full"
+            ref="slider" // eslint-disable-line react/no-string-refs
+            {...sliderSettings}
+          >
             <div className="intro-modal__height-full" key={1}><BallotIntroFollowIssues next={this._nextSliderPage} /></div>
             <div className="intro-modal__height-full" key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage} /></div>
             <div className="intro-modal__height-full" key={3}><BallotIntroVerifyAddress next={this._toggleBallotIntroFollowIssues} manualFocus={this.state.currentPageIndex === 2} /></div>
@@ -208,14 +213,18 @@ export default class HeaderSecondaryNavBar extends Component {
       >
         <Modal.Body>
           <div className="intro-modal__close">
-            <a
+            <button type="button"
               onClick={this._toggleEmailModal}
               className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}
             >
               <img src={cordovaDot(closeIcon)} alt="close" />
-            </a>
+            </button>
           </div>
-          <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettingsWithSwipe}>
+          <Slider
+            dotsClass="slick-dots intro-modal__gray-dots"
+            ref="slider" // eslint-disable-line react/no-string-refs
+            {...sliderSettingsWithSwipe}
+          >
             <div key={1} className="share-modal__calc-height">
               <EmailBallotModal
                 ballot_link={this.props.pathname}
@@ -245,14 +254,18 @@ export default class HeaderSecondaryNavBar extends Component {
       >
         <Modal.Body>
           <div className="intro-modal__close">
-            <a
+            <button type="button"
               onClick={this._toggleFacebookModal}
               className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}
             >
               <img src={cordovaDot(closeIcon)} alt="close" />
-            </a>
+            </button>
           </div>
-          <Slider dotsClass="slick-dots intro-modal__gray-dots" ref="slider" {...sliderSettingsWithSwipe}>
+          <Slider
+            dotsClass="slick-dots intro-modal__gray-dots"
+            ref="slider" // eslint-disable-line react/no-string-refs
+            {...sliderSettingsWithSwipe}
+          >
             <div key={1} className="share-modal__calc-height">
               <FacebookBallotModal
                 ballotLink={this.props.pathname}

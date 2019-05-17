@@ -47,7 +47,7 @@ export default class OrganizationsToFollowPreview extends Component {
               <GuideList incomingVoterGuideList={voterGuidesToFollow} instantRefreshOn />
             </Suspense>
             <div>
-              <Link to="/opinions">Explore more organizations</Link>
+              <Link id="myValuesExploreMoreOrganizations" to="/opinions">Explore more organizations</Link>
             </div>
           </div>
         </section>

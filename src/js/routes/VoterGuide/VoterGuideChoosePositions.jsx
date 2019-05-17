@@ -216,7 +216,9 @@ export default class VoterGuideChoosePositions extends Component {
       <div>
         <Helmet title="Choose Positions - We Vote" />
         <div className="create-voter-guide container well">
-          <img src={cordovaDot(closeIcon)} onClick={this.goToVoterGuideDisplay} className="x-close" alt="close" />
+          <span onClick={this.goToVoterGuideDisplay}>
+            <img src={cordovaDot(closeIcon)} className="x-close" alt="close" />
+          </span>
           <div className="create-voter-guide__h1 xs-text-left">Enter Your Positions</div>
           <div className="create-voter-guide__steps xs-text-left">
             Step 5 of 5

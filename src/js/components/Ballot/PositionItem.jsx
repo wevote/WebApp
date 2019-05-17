@@ -9,6 +9,7 @@ import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/
 import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
 import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
 import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
+import FollowToggle from '../Widgets/FollowToggle';
 
 
 export default class PositionItem extends Component {
@@ -58,6 +59,7 @@ export default class PositionItem extends Component {
 
     const showPosition = true;
     const nothingToDisplay = null;
+    const organizationWeVoteId = position.organization_we_vote_id || position.speaker_we_vote_id;
 
     if (showPosition) {
       return (
@@ -74,6 +76,7 @@ export default class PositionItem extends Component {
               ) :
                 imagePlaceholder }
             </Link>
+            <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
           </div>
           <div className="card-child__media-object-content">
             <div className="card-child__content">

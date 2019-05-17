@@ -1,32 +1,41 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { isWebApp, isCordova } from '../../utils/cordovaUtils';
+import { withStyles } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
-export default class HeaderBarProfilePopUp extends Component {
+class HeaderBarProfilePopUp extends Component {
   static propTypes = {
-    profilePopUpOpen: PropTypes.bool,
-    weVoteBrandingOff: PropTypes.bool,
-    voter: PropTypes.object,
-    toggleProfilePopUp: PropTypes.func.isRequired,
+    classes: PropTypes.object,
     hideProfilePopUp: PropTypes.func.isRequired,
-    transitionToYourVoterGuide: PropTypes.func.isRequired,
+    profilePopUpOpen: PropTypes.bool,
     signOutAndHideProfilePopUp: PropTypes.func.isRequired,
+    toggleProfilePopUp: PropTypes.func.isRequired,
+    toggleSignInModal: PropTypes.func.isRequired,
+    transitionToYourVoterGuide: PropTypes.func.isRequired,
+    voter: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
-    this.toggleProfilePopUp = this.props.toggleProfilePopUp.bind(this);
     this.hideProfilePopUp = this.props.hideProfilePopUp.bind(this);
-    this.transitionToYourVoterGuide = this.props.transitionToYourVoterGuide.bind(this);
     this.signOutAndHideProfilePopUp = this.props.signOutAndHideProfilePopUp.bind(this);
+    this.toggleProfilePopUp = this.props.toggleProfilePopUp.bind(this);
+    this.toggleSignInModal = this.props.toggleSignInModal.bind(this);
+    this.transitionToYourVoterGuide = this.props.transitionToYourVoterGuide.bind(this);
+  }
+
+  signInFromPopUp = () => {
+    this.hideProfilePopUp();
+    this.toggleSignInModal();
   }
 
   render () {
     renderLog(__filename);
-    const { voter, profilePopUpOpen, weVoteBrandingOff } = this.props;
-    const isSignedIn = voter.is_signed_in;
+    const { classes, voter, profilePopUpOpen } = this.props;
+    const isSignedIn = voter && voter.is_signed_in;
 
     /* eslint-disable no-extra-parens */
     const popUpOpen = (function opener () {
@@ -44,65 +53,62 @@ export default class HeaderBarProfilePopUp extends Component {
           <ul className="nav flex-column">
             {/* Desktop only */}
             <li className="d-none d-sm-block">
-              <Link onClick={this.hideProfilePopUp} to="/settings/profile">
-                <div>
+              <Link id="profilePopUpYourSettings" onClick={this.hideProfilePopUp} to="/settings/profile">
+                <Button
+                  variant="text"
+                  color="primary"
+                  classes={{ root: classes.signOutButton }}
+                >
                   <span className="header-slide-out-menu-text-left">Your Settings</span>
-                </div>
+                </Button>
               </Link>
             </li>
             {/* Mobile only */}
             <li className="navli d-block d-sm-none">
-              <Link onClick={this.hideProfilePopUp} to="/settings/menu">
-                <div>
+              <Link id="profilePopUpYourSettingsMobile" onClick={this.hideProfilePopUp} to="/settings/menu">
+                <Button
+                  variant="text"
+                  color="primary"
+                  classes={{ root: classes.signOutButton }}
+                >
                   <span className="header-slide-out-menu-text-left">Your Settings</span>
-                </div>
+                </Button>
               </Link>
             </li>
             {/* Desktop or Mobile */}
             {voter && isSignedIn ?
               null : (
                 <li>
-                  <Link onClick={this.hideProfilePopUp} to="/settings/account">
-                    <div>
+                  <Link // eslint-disable-line
+                    to=""
+                  >
+                    <Button
+                      variant="text"
+                      color="primary"
+                      classes={{ root: classes.signOutButton }}
+                      id="profilePopUpSignIn"
+                      onClick={this.signInFromPopUp}
+                    >
                       <span className="header-slide-out-menu-text-left">Sign In</span>
-                    </div>
+                    </Button>
                   </Link>
                 </li>
               )}
-            {weVoteBrandingOff || (isWebApp() && (
-            <li className="d-block d-sm-none">
-              <Link onClick={this.hideProfilePopUp} to="/more/howtouse">
-                <div>
-                  <span className="header-slide-out-menu-text-left">Getting Started</span>
-                </div>
-              </Link>
-            </li>
-            ))}
-            {weVoteBrandingOff || isCordova() ? null : (
-              <li className="d-block d-sm-none">
-                <Link onClick={this.hideProfilePopUp} to="/more/about">
-                  <div>
-                    <span className="header-slide-out-menu-text-left">About We Vote</span>
-                  </div>
-                </Link>
-              </li>
-            )}
-            {weVoteBrandingOff || isCordova() ? null : (
-              <li className="d-block d-sm-none">
-                <Link onClick={this.hideProfilePopUp} to="/more/donate">
-                  <div>
-                    <span className="header-slide-out-menu-text-left">Donate</span>
-                  </div>
-                </Link>
-              </li>
-            )}
             {/* Desktop or Mobile */}
             {voter && isSignedIn ? (
               <li>
-                <Link onClick={this.signOutAndHideProfilePopUp} to="/settings/account">
-                  <div>
+                <Link // eslint-disable-line
+                  to=""
+                >
+                  <Button
+                    variant="text"
+                    color="primary"
+                    classes={{ root: classes.signOutButton }}
+                    id="profilePopUpSignOut"
+                    onClick={this.signOutAndHideProfilePopUp}
+                  >
                     <span className="header-slide-out-menu-text-left">Sign Out</span>
-                  </div>
+                  </Button>
                 </Link>
               </li>
             ) : null
@@ -110,18 +116,18 @@ export default class HeaderBarProfilePopUp extends Component {
           </ul>
           <div>
             <span className="terms-and-privacy">
-              <Link onClick={this.hideProfilePopUp} to="/more/terms">
+              <Link id="profilePopUpTermsOfService" onClick={this.hideProfilePopUp} to="/more/terms">
                 <span className="u-no-break">Terms of Service</span>
               </Link>
               <span style={{ paddingLeft: 20 }} />
-              <Link onClick={this.hideProfilePopUp} to="/more/privacy">
+              <Link id="profilePopUpPrivacyPolicy" onClick={this.hideProfilePopUp} to="/more/privacy">
                 <span className="u-no-break">Privacy Policy</span>
               </Link>
             </span>
           </div>
           <div>
             <span className="terms-and-privacy">
-              <Link onClick={this.hideProfilePopUp} to="/more/attributions">Attributions</Link>
+              <Link id="profilePopUpAttributions" onClick={this.hideProfilePopUp} to="/more/attributions">Attributions</Link>
             </span>
           </div>
         </div>
@@ -129,3 +135,15 @@ export default class HeaderBarProfilePopUp extends Component {
     );
   }
 }
+
+const styles = {
+  signOutButton: {
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    color: 'rgb(6, 95, 212)',
+    outline: 'none !important',
+  },
+};
+
+export default withStyles(styles)(HeaderBarProfilePopUp);

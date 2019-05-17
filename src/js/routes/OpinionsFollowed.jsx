@@ -13,7 +13,6 @@ export default class OpinionsFollowed extends Component {
     super(props);
     this.state = {
       organizationsFollowedList: [],
-      editMode: false,
       searchQuery: '',
     };
     this.searchFunction = this.searchFunction.bind(this);
@@ -38,14 +37,6 @@ export default class OpinionsFollowed extends Component {
     });
   }
 
-  onKeyDownEditMode (event) {
-    const enterAndSpaceKeyCodes = [13, 32];
-    const scope = this;
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      scope.setState({ editMode: !this.state.editMode });
-    }
-  }
-
   getCurrentRoute () {
     const currentRoute = '/opinions_followed';
     return currentRoute;
@@ -59,11 +50,6 @@ export default class OpinionsFollowed extends Component {
       default:
         return 'WHO_YOU_FOLLOW';
     }
-  }
-
-  toggleEditMode () {
-    const { editMode } = this.state;
-    this.setState(() => ({ editMode: !editMode }));
   }
 
   searchFunction (searchQuery) {
@@ -86,20 +72,13 @@ export default class OpinionsFollowed extends Component {
       organizationsFollowedListForDisplay = this.state.organizationsFollowedList;
     }
 
-    // console.log("OpinionsFollowed, this.state.organizationsFollowedList: ", this.state.organizationsFollowedList);
+    // console.log('OpinionsFollowed, organizationsFollowedListForDisplay: ', organizationsFollowedListForDisplay);
     return (
       <div className="opinions-followed__container">
         <Helmet title="Who You're Following - We Vote" />
         <section className="card">
           <div className="card-main">
             <h1 className="h1">Who You&apos;re Following</h1>
-            <a
-              className="fa-pull-right"
-              onKeyDown={this.onKeyDownEditMode.bind(this)}
-              onClick={this.toggleEditMode.bind(this)}
-            >
-              {this.state.editMode ? 'Done Editing' : 'Edit'}
-            </a>
             <p>
               Organizations, public figures and other voters you currently follow.
               {' '}
@@ -117,12 +96,9 @@ export default class OpinionsFollowed extends Component {
             <br />
             <div className="voter-guide-list card">
               <div className="card-child__list-group">
-                {
-                this.state.organizationsFollowedList && this.state.organizationsFollowedList.length ? (
+                { organizationsFollowedListForDisplay && organizationsFollowedListForDisplay.length ? (
                   <OpinionsFollowedList
                     organizationsFollowed={organizationsFollowedListForDisplay}
-                    editMode={this.state.editMode}
-                    instantRefreshOn
                   />
                 ) : null
                 }

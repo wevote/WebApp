@@ -54,24 +54,27 @@ class Application extends Component {
 
     ElectionActions.electionsRetrieve();
 
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     window.addEventListener('scroll', this.handleWindowScroll);
   }
 
   componentDidUpdate () {
     const { location: { pathname } } = this.props;
-    const { voterGuideMode } = getApplicationViewBooleans(pathname);
+    const { voteMode, voterGuideMode } = getApplicationViewBooleans(pathname);
 
     if (!voterGuideMode && AppStore.showEditAddressButton()) {
       AppActions.setShowEditAddressButton(false);
     }
 
-    if ((voterGuideMode && !AppStore.showEditAddressButton()) || stringContains('/ballot', pathname.slice(0, 7))) {
+    if (!voteMode &&
+      ((voterGuideMode && !AppStore.showEditAddressButton()) || stringContains('/ballot', pathname.slice(0, 7)))) {
       AppActions.setShowEditAddressButton(true);
     }
   }
 
   componentWillUnmount () {
+    this.appStoreListener.remove();
     this.voterStoreListener.remove();
     this.loadedHeader = false;
     window.removeEventListener('scroll', this.handleWindowScroll);
@@ -110,6 +113,21 @@ class Application extends Component {
         js.src = 'https://connect.facebook.net/en_US/sdk.js';
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));
+    }
+  }
+
+  onAppStoreChange () {
+    const signInStartPath = cookies.getItem('sign_in_start_path');
+    // console.log('Application onAppStoreChange, current signInStartPath: ', signInStartPath);
+    // Do not let sign_in_start_path be set again. Different logic while we figure out how to call AppActions.unsetStoreSignInStartPath()
+    if (AppStore.storeSignInStartPath() && !signInStartPath) {
+      const { location: { pathname } } = this.props;
+      // console.log('Application onAppStoreChange, new pathname: ', pathname);
+      if (pathname) {
+        const oneDayExpires = 86400;
+        cookies.setItem('sign_in_start_path', pathname, oneDayExpires, '/');
+        // AppActions.unsetStoreSignInStartPath(); // Throws this error: Cannot dispatch in the middle of a dispatch.
+      }
     }
   }
 
@@ -216,6 +234,7 @@ class Application extends Component {
   render () {
     renderLog(__filename);
     const { location: { pathname } } = this.props;
+    // console.log('Application render, pathname:', pathname);
 
     if (this.state.voter === undefined || this.props.location === undefined) {
       return (
@@ -315,7 +334,13 @@ class Application extends Component {
                 voter={this.state.voter}
                 weVoteBrandingOff={this.state.weVoteBrandingOff}
         />
-        { pathname === '/welcome' || !contentFullWidthMode ?
+        { pathname === '/for-campaigns' ||
+          pathname === '/for-organizations' ||
+          pathname.startsWith('/how') ||
+          pathname === '/more/about' ||
+          pathname === '/more/pricing' ||
+          pathname === '/welcome' ||
+          !contentFullWidthMode ?
           (
             <div className="welcome-or-not-full-width">
               { this.props.children }
@@ -337,7 +362,13 @@ class Application extends Component {
           !(pathname && pathname.startsWith('/friends/')) &&
           !(pathname && pathname.startsWith('/measure')) &&
           !(pathname && pathname.startsWith('/office')) &&
+          !(pathname && pathname.startsWith('/value/')) &&
           !(pathname && pathname.startsWith('/values/')) &&
+          !(pathname === '/for-campaigns') &&
+          !(pathname === '/for-organizations') &&
+          !(pathname.startsWith('/how')) &&
+          !(pathname === '/more/about') &&
+          !(pathname === '/more/pricing') &&
           !(pathname === '/welcome') && (
           <div className="footroom-wrapper">
             <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />

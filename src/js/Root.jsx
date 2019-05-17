@@ -27,7 +27,7 @@ import FriendInvitationsSentToMe from './routes/Friends/FriendInvitationsSentToM
 import SuggestedFriends from './routes/Friends/SuggestedFriends';
 import GetStarted from './routes/Intro/GetStarted';
 import HamburgerMenu from './routes/More/HamburgerMenu';
-import HowToUse from './routes/More/HowToUse';
+import HowItWorks from './routes/HowItWorks';
 import Intro from './routes/Intro/Intro';
 import IntroNetwork from './routes/Intro/IntroNetwork';
 import IssuesToFollow from './routes/IssuesToFollow';
@@ -35,18 +35,17 @@ import IssuesFollowed from './routes/IssuesFollowed';
 import InviteByEmail from './routes/Friends/InviteByEmail';
 import Location from './routes/Settings/Location';
 import Measure from './routes/Ballot/Measure';
-import Network from './routes/Network';
 import Office from './routes/Ballot/Office';
 import Opinions from './routes/Opinions';
 import OpinionsFollowed from './routes/OpinionsFollowed';
 import OpinionsIgnored from './routes/OpinionsIgnored';
-import Organization from './routes/More/Organization';
 import OrganizationVoterGuide from './routes/VoterGuide/OrganizationVoterGuide';
 import OrganizationVoterGuideCandidate from './routes/VoterGuide/OrganizationVoterGuideCandidate';
 import OrganizationVoterGuideEdit from './routes/VoterGuide/OrganizationVoterGuideEdit';
 import OrganizationVoterGuideMeasure from './routes/VoterGuide/OrganizationVoterGuideMeasure';
 import OrganizationVoterGuideOffice from './routes/VoterGuide/OrganizationVoterGuideOffice';
 import PollingPlaceLocatorModal from './routes/Ballot/PollingPlaceLocatorModal';
+import Pricing from './routes/More/Pricing';
 import Privacy from './routes/More/Privacy';
 import ProcessingDonation from './routes/More/ProcessingDonation';
 import RegisterToVote from './routes/More/RegisterToVote';
@@ -59,13 +58,13 @@ import SignInJumpProcess from './routes/Process/SignInJumpProcess';
 import FacebookLandingProcess from './routes/Process/FacebookLandingProcess';
 import FacebookRedirectToWeVote from './routes/More/FacebookRedirectToWeVote';
 import SignInEmailProcess from './routes/Process/SignInEmailProcess';
-import Team from './routes/More/Team';
 import TermsOfService from './routes/More/TermsOfService';
 import ToolsToShareOnOtherWebsites from './routes/More/ToolsToShareOnOtherWebsites';
 import TwitterHandleLanding from './routes/TwitterHandleLanding';
 import TwitterSignInProcess from './routes/Process/TwitterSignInProcess';
 import Values from './routes/Values';
 import ValuesList from './routes/Values/ValuesList';
+import Vote from './routes/Vote';
 import VerifyEmailProcess from './routes/Process/VerifyEmailProcess';
 import FriendInvitationByEmailVerifyProcess from './routes/Process/FriendInvitationByEmailVerifyProcess';
 import VoterGuideChooseElection from './routes/VoterGuide/VoterGuideChooseElection';
@@ -77,9 +76,12 @@ import VoterGuideOrganizationType from './routes/VoterGuide/VoterGuideOrganizati
 import VoterGuideSettingsDashboard from './routes/Settings/VoterGuideSettingsDashboard';
 import VoterGuideSettingsMenuMobile from './routes/Settings/VoterGuideSettingsMenuMobile';
 import VoterGuidesMenuMobile from './routes/Settings/VoterGuidesMenuMobile';
+import VoterGuidesUnderOneValue from './routes/Values/VoterGuidesUnderOneValue';
 import VerifyRegistration from './routes/More/VerifyRegistration';
 import VerifyThisIsMe from './routes/VoterGuide/VerifyThisIsMe';
-import Welcome from './routes/Welcome';
+import Welcome from './routes/WelcomeForVoters';
+import WelcomeForCampaigns from './routes/WelcomeForCampaigns';
+import WelcomeForOrganizations from './routes/WelcomeForOrganizations';
 import WeVoteBallotEmbed from './routes/More/WeVoteBallotEmbed';
 import YourPage from './routes/YourPage';
 import { isWebApp } from './utils/cordovaUtils';
@@ -93,14 +95,14 @@ const routes = () => (
     {                       // 12/4/18: Not sure why we need the following disabled
       (function redir () {  // eslint-disable-line wrap-iife
         if (isWebApp()) {
-          return <IndexRedirect to="/ballot" />;
+          return <IndexRedirect to="/welcome" />;
         } else {
           return firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ballot" />;
         }
       }
       )()
     }
-    <Route path="/welcome" component={Welcome} />
+    <Route path="/welcome" component={props => <Welcome {...props} pathname="/welcome" />} />
     <Route path="/activity" component={Activity} />
     <Route path="/ballot" component={BallotIndex}>
       <IndexRoute component={Ballot} />
@@ -117,12 +119,16 @@ const routes = () => (
       <Route path="/measure/:measure_we_vote_id/:back_to_variable/:organization_we_vote_id" component={OrganizationVoterGuideMeasure} />
       <Route path="/measure/:measure_we_vote_id" component={Measure} />
     </Route>
+    <Route path="/ballot/vote" component={Vote} />
     <Route path="/ballot/:ballot_location_shortcut" component={Ballot} />
     <Route path="/ballot/id/:ballot_returned_we_vote_id" component={Ballot} />
     <Route path="/ballot/election/:google_civic_election_id" component={Ballot} />
 
     <Route path="/polling-place-locator" component={PollingPlaceLocatorModal} />
-
+    <Route path="/for-campaigns" component={props => <WelcomeForCampaigns {...props} pathname="/for-campaigns" />} />
+    <Route path="/for-organizations" component={props => <WelcomeForOrganizations {...props} pathname="/for-organizations" />} />
+    <Route path="/how" component={HowItWorks} />
+    <Route path="/how/:category_string" component={HowItWorks} />
     <Route path="/intro" component={Intro} />
     <Route path="/wevoteintro/network" component={IntroNetwork} />
     <Route path="/intro/sample_ballot" component={SampleBallot} />
@@ -174,27 +180,27 @@ const routes = () => (
     <Route path="/more/facebooklandingprocess" component={FacebookLandingProcess} />
     <Route path="/more/facebookredirecttowevote" component={FacebookRedirectToWeVote} />
     <Route path="/more/faq" component={FAQ} />
-    <Route path="/more/howtouse" component={HowToUse} />
     <Route path="/more/hamburger" component={HamburgerMenu} />
     <Route path="/more/jump" component={SignInJumpProcess} />
     <Route path="/more/myballot" component={WeVoteBallotEmbed} />
-    <Route path="/more/network" component={Network} />
+    <Route path="/more/network" component={Friends} />
     <Route path="/more/network/key/:invitation_secret_key" component={FriendInvitationByEmailVerifyProcess} />
     <Route path="/more/network/key/:invitation_secret_key/ignore" component={FriendInvitationByEmailVerifyProcess} />
-    <Route path="/more/network/:edit_mode" component={Network} />
-    <Route path="/more/organization" component={Organization} />
+    {/* Redirecting old URLs to new components */}
+    <Route path="/more/network/friends" component={Friends} />
+    <Route path="/more/network/organizations" component={Values} />
+    <Route path="/more/pricing" component={Pricing} />
     <Route path="/more/privacy" component={Privacy} />
     <Route path="/more/processing_donation" component={ProcessingDonation} />
     <Route path="/more/register" component={RegisterToVote} />
     <Route path="/more/search_page" component={SearchPage} />
     <Route path="/more/search_page/:encoded_search_string" component={SearchPage} />
-    <Route path="/more/team" component={Team} />
     <Route path="/more/tools" component={ToolsToShareOnOtherWebsites} />
     <Route path="/more/terms" component={TermsOfService} />
     <Route path="/more/verify" component={VerifyRegistration} />
-    <Route path="/more/vision" component={Organization} />
     <Route path="/values" component={Values} />
     <Route path="/values/list" component={ValuesList} />
+    <Route path="/value/:value_slug" component={VoterGuidesUnderOneValue} />
 
     {/* Voter Guide Pages - By Organization */}
     <Route path="/voterguide/:organization_we_vote_id" component={props => <OrganizationVoterGuide {...props} active_route="ballot" />} />

@@ -56,12 +56,12 @@ class OrganizationStore extends ReduceStore {
     const { allCachedOrganizationsDict } = this.getState();
     let requestedPosition = {};
     let resultFound = false;
-    // console.log("getOrganizationPositionByWeVoteId, organizationWeVoteId: ", organizationWeVoteId, ", ballotItemWeVoteId: ", ballotItemWeVoteId);
+    // console.log('getOrganizationPositionByWeVoteId, organizationWeVoteId: ', organizationWeVoteId, ', ballotItemWeVoteId: ', ballotItemWeVoteId);
     const organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
     if (organization.position_list_for_one_election) {
       organization.position_list_for_one_election.forEach((onePosition) => {
         if (onePosition.ballot_item_we_vote_id && onePosition.ballot_item_we_vote_id === ballotItemWeVoteId && !resultFound) {
-          // console.log("OrganizationStore, getOrganizationPositionByWeVoteId, onePosition: ", onePosition);
+          // console.log('OrganizationStore, getOrganizationPositionByWeVoteId, onePosition: ', onePosition);
           requestedPosition = onePosition;
           resultFound = true; // Once a result is found, ignore all other positions
         }
@@ -71,7 +71,7 @@ class OrganizationStore extends ReduceStore {
   }
 
   getOrganizationsVoterIsFollowing () {
-    // console.log("OrganizationStore.getOrganizationsVoterIsFollowing, organizationWeVoteIdsVoterIsFollowing: ", this.getState().organizationWeVoteIdsVoterIsFollowing);
+    // console.log('OrganizationStore.getOrganizationsVoterIsFollowing, organizationWeVoteIdsVoterIsFollowing: ', this.getState().organizationWeVoteIdsVoterIsFollowing);
     return this.returnOrganizationsFromListOfIds(this.getState().organizationWeVoteIdsVoterIsFollowing) || [];
   }
 
@@ -83,7 +83,7 @@ class OrganizationStore extends ReduceStore {
     const state = this.getState();
     const organization = state.allCachedOrganizationsDict[organizationWeVoteId];
     if (organization) {
-      // console.log("OrganizationStore, doesOrganizationHavePositionOnCandidate, organization found");
+      // console.log('OrganizationStore, doesOrganizationHavePositionOnCandidate, organization found');
       const positionListForOneElection = organization.position_list_for_one_election || [];
       // let positionListForAllExceptOneElection = organization.position_list_for_all_except_one_election || [];
       let onePosition = null;
@@ -95,7 +95,7 @@ class OrganizationStore extends ReduceStore {
         }
         return arrayContains(candidateWeVoteId, candidateWeVoteIdsExtracted);
       } else {
-        // console.log("OrganizationStore, isVoterFollowingThisOrganization: NO organizationWeVoteIdsVoterIsFollowing, org_we_vote_id: ", organizationWeVoteId);
+        // console.log('OrganizationStore, isVoterFollowingThisOrganization: NO organizationWeVoteIdsVoterIsFollowing, org_we_vote_id: ', organizationWeVoteId);
         return false;
       }
     } else {
@@ -109,7 +109,7 @@ class OrganizationStore extends ReduceStore {
     if (organization) {
       const positionListForOneElection = organization.position_list_for_one_election || [];
       // let positionListForAllExceptOneElection = organization.position_list_for_all_except_one_election || [];
-      // console.log("OrganizationStore, doesOrganizationHavePositionOnOffice, organization found");
+      // console.log('OrganizationStore, doesOrganizationHavePositionOnOffice, organization found');
       let onePosition = null;
       if (positionListForOneElection.length) {
         const contestOfficeWeVoteIdsExtracted = [];
@@ -119,7 +119,7 @@ class OrganizationStore extends ReduceStore {
         }
         return arrayContains(contestOfficeWeVoteId, contestOfficeWeVoteIdsExtracted);
       } else {
-        // console.log("OrganizationStore, isVoterFollowingThisOrganization: NO organizationWeVoteIdsVoterIsFollowing, org_we_vote_id: ", organizationWeVoteId);
+        // console.log('OrganizationStore, isVoterFollowingThisOrganization: NO organizationWeVoteIdsVoterIsFollowing, org_we_vote_id: ', organizationWeVoteId);
         return false;
       }
     } else {
@@ -129,13 +129,26 @@ class OrganizationStore extends ReduceStore {
 
   isVoterFollowingThisOrganization (organizationWeVoteId) {
     const { organizationWeVoteIdsVoterIsFollowing } = this.getState();
-    // console.log("OrganizationStore, isVoterFollowingThisOrganization, organizationWeVoteIdsVoterIsFollowing: ", organizationWeVoteIdsVoterIsFollowing);
+    // console.log('OrganizationStore, isVoterFollowingThisOrganization, organizationWeVoteIdsVoterIsFollowing: ', organizationWeVoteIdsVoterIsFollowing);
     if (organizationWeVoteIdsVoterIsFollowing.length) {
       const isFollowing = arrayContains(organizationWeVoteId, organizationWeVoteIdsVoterIsFollowing);
-      // console.log("OrganizationStore, isVoterFollowingThisOrganization:", isFollowing, ", organizationWeVoteId:", organizationWeVoteId);
+      // console.log('OrganizationStore, isVoterFollowingThisOrganization:', isFollowing, ', organizationWeVoteId:', organizationWeVoteId);
       return isFollowing;
     } else {
-      // console.log("OrganizationStore, isVoterFollowingThisOrganization: NO organizationWeVoteIdsVoterIsFollowing, org_we_vote_id: ", organizationWeVoteId);
+      // console.log('OrganizationStore, isVoterFollowingThisOrganization: NO organizationWeVoteIdsVoterIsFollowing, org_we_vote_id: ', organizationWeVoteId);
+      return false;
+    }
+  }
+
+  isVoterIgnoringThisOrganization (organizationWeVoteId) {
+    const { organizationWeVoteIdsVoterIsIgnoring } = this.getState();
+    // console.log('OrganizationStore, isVoterIgnoringThisOrganization, organizationWeVoteIdsVoterIsIgnoring: ', organizationWeVoteIdsVoterIsIgnoring);
+    if (organizationWeVoteIdsVoterIsIgnoring.length) {
+      const isIgnoring = arrayContains(organizationWeVoteId, organizationWeVoteIdsVoterIsIgnoring);
+      // console.log('OrganizationStore, isVoterIgnoringThisOrganization:', isIgnoring, ', organizationWeVoteId:', organizationWeVoteId);
+      return isIgnoring;
+    } else {
+      // console.log('OrganizationStore, isVoterIgnoringThisOrganization: NO organizationWeVoteIdsVoterIsIgnoring, org_we_vote_id: ', organizationWeVoteId);
       return false;
     }
   }
@@ -176,8 +189,8 @@ class OrganizationStore extends ReduceStore {
   }
 
   _copyListsToNewOrganization (newOrganization, priorCopyOfOrganization) { // eslint-disable-line
-    // console.log("newOrganization (_copyListsToNewOrganization): ", newOrganization);
-    // console.log("priorCopyOfOrganization (_copyListsToNewOrganization): ", priorCopyOfOrganization);
+    // console.log('newOrganization (_copyListsToNewOrganization): ', newOrganization);
+    // console.log('priorCopyOfOrganization (_copyListsToNewOrganization): ', priorCopyOfOrganization);
     newOrganization.friends_position_list_for_one_election = priorCopyOfOrganization.friends_position_list_for_one_election;
     newOrganization.friends_position_list_for_all_except_one_election = priorCopyOfOrganization.friends_position_list_for_all_except_one_election;
     newOrganization.friends_position_list = priorCopyOfOrganization.friends_position_list;
@@ -215,7 +228,7 @@ class OrganizationStore extends ReduceStore {
       case 'organizationFollow':
         // Following one org can change the support/oppose count for many ballot items for the voter
         SupportActions.positionsCountForAllBallotItems(VoterStore.electionId());
-        // We also listen to "organizationFollow" in VoterGuideStore so we can alter organizationWeVoteIds_to_follow_all and organizationWeVoteIds_to_follow_for_latest_ballot_item
+        // We also listen to 'organizationFollow' in VoterGuideStore so we can alter organizationWeVoteIds_to_follow_all and organizationWeVoteIds_to_follow_for_latest_ballot_item
         // voterLinkedOrganizationWeVoteId is the voter who clicked the Follow button
         voterLinkedOrganizationWeVoteId = action.res.voter_linked_organization_we_vote_id;
         // organizationWeVoteId is the organization that was just followed
@@ -326,7 +339,7 @@ class OrganizationStore extends ReduceStore {
         // VoterGuideActions.voterGuideFollowersRetrieve(organizationWeVoteId);
         // Go through all of the candidates currently on the ballot and update their positions
         // candidateWeVoteId = "wv01cand5887"; // TODO TEMP
-        // CandidateActions.positionListForBallotItem(candidateWeVoteId);
+        // CandidateActions.positionListForBallotItemPublic(candidateWeVoteId);
         // Retrieve the organizations followed by voter
         OrganizationActions.organizationsFollowedRetrieve();
         if (!arrayContains(organizationWeVoteId, organizationWeVoteIdsVoterIsIgnoring)) {
@@ -363,6 +376,7 @@ class OrganizationStore extends ReduceStore {
         return state;
 
       case 'organizationsFollowedRetrieve':
+        // console.log('OrganizationStore organizationsFollowedRetrieve, action.res: ', action.res);
         if (action.res.success) {
           if (action.res.auto_followed_from_twitter_suggestion) {
             organizationsFollowedOnTwitterList = action.res.organization_list;
@@ -394,6 +408,8 @@ class OrganizationStore extends ReduceStore {
                 organizationWeVoteIdsVoterIsFollowing.push(oneOrganization.organization_we_vote_id);
               }
             });
+            // console.log('organizationWeVoteIdsVoterIsFollowing:', organizationWeVoteIdsVoterIsFollowing);
+            // console.log('allCachedOrganizationsDict:', allCachedOrganizationsDict);
             return {
               ...state,
               organizationWeVoteIdsVoterIsFollowing,
@@ -419,7 +435,7 @@ class OrganizationStore extends ReduceStore {
         };
 
       case 'positionListForOpinionMaker': // ...and positionListForOpinionMakerForFriends
-        // console.log("OrganizationStore, positionListForOpinionMaker response");
+        // console.log('OrganizationStore, positionListForOpinionMaker response');
         // TODO: position_list *might* include positions from multiple elections
         organizationWeVoteId = action.res.opinion_maker_we_vote_id;
         if (action.res.friends_vs_public === 'FRIENDS_ONLY') { // positionListForOpinionMakerForFriends
@@ -434,7 +450,7 @@ class OrganizationStore extends ReduceStore {
             }
             // And now update the friendsPositionListForOneElection
             organization.friends_position_list_for_one_election = friendsPositionListForOneElection;
-            // console.log("organization-FRIENDS_ONLY-filter_for_voter: ", organization);
+            // console.log('organization-FRIENDS_ONLY-filter_for_voter: ', organization);
             allCachedOrganizationsDict[organizationWeVoteId] = organization;
             return {
               ...state,
@@ -451,7 +467,7 @@ class OrganizationStore extends ReduceStore {
             }
             // And now update the friendsPositionListForAllExceptOneElection
             organization.friends_position_list_for_all_except_one_election = friendsPositionListForAllExceptOneElection;
-            // console.log("organization-FRIENDS_ONLY-filter_out_voter: ", organization);
+            // console.log('organization-FRIENDS_ONLY-filter_out_voter: ', organization);
             allCachedOrganizationsDict[organizationWeVoteId] = organization;
             return {
               ...state,
@@ -468,7 +484,7 @@ class OrganizationStore extends ReduceStore {
             }
             // And now update the friendsPositionList
             organization.friends_position_list = friendsPositionList;
-            // console.log("organization-FRIENDS_ONLY-first else: ", organization);
+            // console.log('organization-FRIENDS_ONLY-first else: ', organization);
             allCachedOrganizationsDict[organizationWeVoteId] = organization;
             return {
               ...state,
@@ -486,7 +502,7 @@ class OrganizationStore extends ReduceStore {
             organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
           }
           organization.position_list_for_one_election = positionListForOneElection;
-          // console.log("organization-NOT FRIENDS_ONLY-filter_for_voter: ", organization);
+          // console.log('organization-NOT FRIENDS_ONLY-filter_for_voter: ', organization);
           allCachedOrganizationsDict[organizationWeVoteId] = organization;
           return {
             ...state,
@@ -502,7 +518,7 @@ class OrganizationStore extends ReduceStore {
             organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
           }
           organization.position_list_for_all_except_one_election = positionListForAllExceptOneElection;
-          // console.log("organization-NOT FRIENDS_ONLY-filter_out_voter: ", organization);
+          // console.log('organization-NOT FRIENDS_ONLY-filter_out_voter: ', organization);
           allCachedOrganizationsDict[organizationWeVoteId] = organization;
           return {
             ...state,
@@ -518,7 +534,7 @@ class OrganizationStore extends ReduceStore {
             organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
           }
           organization.position_list = positionList;
-          // console.log("organization-NOT FRIENDS_ONLY-no filter: ", organization);
+          // console.log('organization-NOT FRIENDS_ONLY-no filter: ', organization);
           allCachedOrganizationsDict[organizationWeVoteId] = organization;
           return {
             ...state,
@@ -537,7 +553,7 @@ class OrganizationStore extends ReduceStore {
             ...state,
           };
         } else {
-          // console.log("voterGuidesFollowedByOrganizationRetrieve NO election_id, organizationWeVoteIdForVoterGuideOwner: ", organizationWeVoteIdForVoterGuideOwner);
+          // console.log('voterGuidesFollowedByOrganizationRetrieve NO election_id, organizationWeVoteIdForVoterGuideOwner: ', organizationWeVoteIdForVoterGuideOwner);
           organizationWeVoteIdsFollowedByOrganizationDict[organizationWeVoteIdForVoterGuideOwner] = [];
           voterGuides.forEach((oneVoterGuide) => {
             organizationWeVoteIdsFollowedByOrganizationDict[organizationWeVoteIdForVoterGuideOwner].push(oneVoterGuide.organization_we_vote_id);
@@ -561,7 +577,7 @@ class OrganizationStore extends ReduceStore {
           organizationWeVoteIdsFollowingByOrganizationDict,
         };
 
-        // case "voterGuidesFollowedRetrieve":
+        // case 'voterGuidesFollowedRetrieve':
         //   // In VoterGuideStore, we listen for a response to "voterGuidesFollowedRetrieve" and update all_cached_voterGuides
         //   // In OrganizationStore, we listen for a response to "organizationsFollowedRetrieve" instead of "voterGuidesFollowedRetrieve"
 
@@ -580,7 +596,7 @@ class OrganizationStore extends ReduceStore {
         };
 
       case 'voterSignOut':
-        // console.log("resetting OrganicationStore");
+        // console.log('resetting OrganizationStore');
         return this.resetState();
 
       default:

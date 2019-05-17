@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import { Button } from '@material-ui/core';
+import CheckCircle from '@material-ui/icons/CheckCircle';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
@@ -51,7 +52,14 @@ export default class IssueFollowToggleButton extends Component {
     }
   }
 
-  onIssueStopFollowing () {
+  onIssueStopFollowing (e) {
+    if (this.state.isFollowing) {
+      if (e.target.classList.contains('MuiButton-label-44')) {
+        e.target.parentElement.parentElement.parentElement.classList.remove('show');
+      } else if (e.target.classList.contains('issues-follow-btn__menu-item')) {
+        e.target.parentElement.parentElement.classList.remove('show');
+      }
+    }
     this.setState({ isFollowing: false });
     IssueActions.issueStopFollowing(this.props.issueWeVoteId, VoterStore.electionId());
     // console.log("IssueFollowToggleButton, this.props.ballotItemWeVoteId:", this.props.ballotItemWeVoteId);
@@ -66,23 +74,67 @@ export default class IssueFollowToggleButton extends Component {
     if (currentBallotIdInUrl !== ballotItemWeVoteId) {
       historyPush(`${urlWithoutHash}#${this.props.ballotItemWeVoteId}`);
     }
+
+    document.getElementById('dropdown_menu').style.visibility = 'hidden';
   }
 
   render () {
     renderLog(__filename);
     if (!this.state) { return <div />; }
 
-    return this.state.isFollowing ? (
-      <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
-        <Button variant="warning" size="small" onClick={this.onIssueStopFollowing}>
-          <span>Following</span>
-        </Button>
-      </div>
-    ) : (
-      <div className="u-flex u-items-center u-justify-between card-main intro-modal__text-dark">
-        <Button variant="success" size="small" onClick={this.onIssueFollow}>
-          <span>Follow</span>
-        </Button>
+    return (
+    //   <div className="issues-follow-container">
+    //     <Button variant="contained" color="primary" size="small" onClick={this.onIssueStopFollowing}>
+    //       <span>Following</span>
+    //     </Button>
+    //   </div>
+    // ) : (
+    //   <div className="intro-modal__text-dark">
+    //     <Button variant="contained" color="primary" size="small" onClick={this.onIssueFollow}>
+    //       <span>Follow</span>
+    //     </Button>
+    //   </div>
+      <div className="issues-follow-container">
+        {this.state.isFollowing ? (
+          <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn__icon issues-follow-btn--white issues-followed-btn--disabled" disabled>
+            <span>
+              { this.state.isFollowing &&
+                <CheckCircle className="following-icon" /> }
+            </span>
+          </Button>
+        ) : (
+          <Button
+          type="button"
+          className="issues-follow-btn
+          issues-follow-btn__main issues-follow-btn__main--radius issues-follow-btn--blue"
+          onClick={this.onIssueFollow}
+          >
+            Follow
+          </Button>
+        )}
+        {this.state.isFollowing ? (
+          <React.Fragment>
+            <div className="issues-follow-btn__seperator" />
+            <Button type="button" id="dropdown-toggle" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span className="sr-only">Toggle Dropdown</span>
+            </Button>
+          </React.Fragment>
+        ) : (
+          null
+        )}
+        <div id="issues-follow-btn__menu" className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
+          {this.state.isFollowing ? (
+            <span className="d-print-none">
+              <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={this.onIssueStopFollowing}>
+                Unfollow
+              </Button>
+            </span>
+          ) : (
+            <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={this.onIssueFollow}>
+              Follow
+            </Button>
+          )}
+        </div>
       </div>
     );
   }

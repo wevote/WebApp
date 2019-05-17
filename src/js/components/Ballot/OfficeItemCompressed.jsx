@@ -1,29 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {  Modal } from 'react-bootstrap'; // , OverlayTrigger, Popover
-import Slider from 'react-slick';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
-import { cordovaDot, historyPush, hasIPhoneNotch } from '../../utils/cordovaUtils';
+import BallotStore from '../../stores/BallotStore';
+import { historyPush } from '../../utils/cordovaUtils';
 import { toTitleCase } from '../../utils/textFormat';
-import AnalyticsActions from '../../actions/AnalyticsActions';
-import BallotIntroFollowIssues from './BallotIntroFollowIssues';
-import BallotIntroFollowAdvisers from './BallotIntroFollowAdvisers';
-import BallotIntroVerifyAddress from './BallotIntroVerifyAddress';
 import CandidateStore from '../../stores/CandidateStore';
 import ImageHandler from '../ImageHandler';
 import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
+import OfficeActions from '../../actions/OfficeActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
-import VoterActions from '../../actions/VoterActions';
-import VoterStore from '../../stores/VoterStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
@@ -34,17 +28,11 @@ const NUMBER_OF_CANDIDATES_TO_DISPLAY = 4;
 // This is related to components/VoterGuide/VoterGuideOfficeItemCompressed
 class OfficeItemCompressed extends Component {
   static propTypes = {
-    allBallotItemsCount: PropTypes.number,
     we_vote_id: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,
     candidate_list: PropTypes.array,
-    currentBallotIdInUrl: PropTypes.string,
-    kind_of_ballot_item: PropTypes.string.isRequired,
-    link_to_ballot_item_page: PropTypes.bool,
     organization: PropTypes.object,
     organization_we_vote_id: PropTypes.string,
-    updateOfficeDisplayUnfurledTracker: PropTypes.func,
-    urlWithoutHash: PropTypes.string,
     theme: PropTypes.object,
     classes: PropTypes.object,
   };
@@ -55,15 +43,12 @@ class OfficeItemCompressed extends Component {
       candidateList: [],
       maximumNumberOrganizationsToDisplay: NUMBER_OF_CANDIDATES_TO_DISPLAY,
       organization: {},
-      showBallotIntroFollowIssues: false,
     };
 
     this.getCandidateLink = this.getCandidateLink.bind(this);
     this.getOfficeLink = this.getOfficeLink.bind(this);
     this.goToCandidateLink = this.goToCandidateLink.bind(this);
     this.goToOfficeLink = this.goToOfficeLink.bind(this);
-    this._nextSliderPage = this._nextSliderPage.bind(this);
-    this._toggleBallotIntroFollowIssues = this._toggleBallotIntroFollowIssues.bind(this);
     this.generateCandidates = this.generateCandidates.bind(this);
   }
 
@@ -114,8 +99,12 @@ class OfficeItemCompressed extends Component {
   }
 
   onCandidateStoreChange () {
-    if (this.props.candidate_list && this.props.candidate_list.length && this.props.we_vote_id) {
+    const { we_vote_id: officeWeVoteId } = this.props;
+    if (this.props.candidate_list && this.props.candidate_list.length && officeWeVoteId) {
       // console.log("onCandidateStoreChange");
+      if (!BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)) {
+        OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
+      }
       const newCandidateList = [];
       if (this.props.candidate_list) {
         this.props.candidate_list.forEach((candidate) => {
@@ -181,21 +170,6 @@ class OfficeItemCompressed extends Component {
     console.error('OfficeItemCompressed caught error: ', `${error} with info: `, info);
   }
 
-  _toggleBallotIntroFollowIssues () {
-    VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
-    const { showBallotIntroFollowIssues } = this.state;
-    if (!showBallotIntroFollowIssues) {
-      AnalyticsActions.saveActionModalIssues(VoterStore.electionId());
-    }
-
-    this.setState({ showBallotIntroFollowIssues: !showBallotIntroFollowIssues });
-  }
-
-  _nextSliderPage () {
-    VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
-    this.refs.slider.slickNext();
-  }
-
   goToCandidateLink (candidateWeVoteId) {
     const candidateLink = this.getCandidateLink(candidateWeVoteId);
     historyPush(candidateLink);
@@ -223,20 +197,20 @@ class OfficeItemCompressed extends Component {
 
             return (
               <CandidateInfo
-                  onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
-                  key={`candidate_preview-${oneCandidate.we_vote_id}`}
-                  brandBlue={theme.palette.primary.main}
-                  candidateLength={candidatesToRender.length}
+                onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
+                key={`candidate_preview-${oneCandidate.we_vote_id}`}
+                brandBlue={theme.palette.primary.main}
+                candidateLength={candidatesToRender.length}
               >
                 <CandidateTopRow>
                   {/* Candidate Image */}
                   <Candidate>
                     <ImageHandler
-                        className="card-main__avatar-compressed"
-                        sizeClassName="icon-candidate-small u-push--sm "
-                        imageUrl={oneCandidate.candidate_photo_url_large}
-                        alt="candidate-photo"
-                        kind_of_ballot_item="CANDIDATE"
+                      className="card-main__avatar-compressed"
+                      sizeClassName="icon-candidate-small u-push--sm "
+                      imageUrl={oneCandidate.candidate_photo_url_large}
+                      alt="candidate-photo"
+                      kind_of_ballot_item="CANDIDATE"
                     />
                     {/* Candidate Name */}
                     <div>
@@ -253,12 +227,12 @@ class OfficeItemCompressed extends Component {
                 <div className="u-stack--md">
                   {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
                   <TopCommentByBallotItem
-                      ballotItemWeVoteId={oneCandidate.we_vote_id}
-                      learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
+                    ballotItemWeVoteId={oneCandidate.we_vote_id}
+                    learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
                   >
                     <IssuesByBallotItemDisplayList
-                        ballotItemWeVoteId={oneCandidate.we_vote_id}
-                        placement="bottom"
+                      ballotItemWeVoteId={oneCandidate.we_vote_id}
+                      placement="bottom"
                     />
                   </TopCommentByBallotItem>
                 </div>
@@ -411,45 +385,12 @@ class OfficeItemCompressed extends Component {
       // }
     }
 
-    const sliderSettings = {
-      dots: true,
-      infinite: false,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      swipe: true,
-      accessibility: true,
-      afterChange: this.afterChangeHandler,
-      arrows: false,
-    };
-
-    // const candidatePreviewList = [];
-    const BallotIntroFollowIssuesModal = (
-      <Modal
-        bsPrefix="background-brand-blue modal"
-        id="ballotIntroFollowIssuesId"
-        show={this.state.showBallotIntroFollowIssues}
-        onHide={() => this._toggleBallotIntroFollowIssues(this)}
-      >
-        <Modal.Body>
-          <div className="intro-modal__close">
-            <a onClick={this._toggleBallotIntroFollowIssues} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}>
-              <img src={cordovaDot('/img/global/icons/x-close.png')} alt="close" />
-            </a>
-          </div>
-          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height intro-modal__height-full" ref="slider" {...sliderSettings}>
-            <div className="intro-modal__height-full" key={1}><BallotIntroFollowIssues next={this._nextSliderPage} /></div>
-            <div className="intro-modal__height-full" key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage} /></div>
-            <div className="intro-modal__height-full" key={3}><BallotIntroVerifyAddress next={this._toggleBallotIntroFollowIssues} manualFocus={this.state.current_page_index === 2} /></div>
-          </Slider>
-        </Modal.Body>
-      </Modal>
-    );
-
     return (
       <div className="card-main office-item">
-        { BallotIntroFollowIssuesModal }
-        <a className="anchor-under-header" name={weVoteId} />
+        <a // eslint-disable-line
+          className="anchor-under-header"
+          name={weVoteId}
+        />
         <div className="card-main__content">
           {/* Desktop */}
           <Link to={this.getOfficeLink()}>

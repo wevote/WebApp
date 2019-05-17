@@ -2,9 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import { renderLog } from '../../utils/logging';
+import AppActions from '../../actions/AppActions';
 import FacebookActions from '../../actions/FacebookActions';
 
 class FacebookSignIn extends Component {
+  static propTypes = {
+    toggleSignInModal: PropTypes.func,
+  };
+
   constructor (props) {
     super(props);
     this.state = {
@@ -13,15 +18,27 @@ class FacebookSignIn extends Component {
     this.onKeyDown = this.onKeyDown.bind(this);
   }
 
-  onKeyDown (event) {
+  componentWillUnmount () {
+    // Close the Sign In Modal
+    this.toggleSignInModalLocal();
+  }
+
+  onKeyDown = (event) => {
     const enterAndSpaceKeyCodes = [13, 32];
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       this.didClickFacebookSignInButton();
     }
   }
 
-  didClickFacebookSignInButton () {
+  didClickFacebookSignInButton = () => {
+    AppActions.unsetStoreSignInStartPath();
     FacebookActions.login();
+  }
+
+  toggleSignInModalLocal = () => {
+    if (this.props.toggleSignInModal) {
+      this.props.toggleSignInModal();
+    }
   }
 
   render () {

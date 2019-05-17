@@ -1,29 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { Modal } from 'react-bootstrap';
 import TextTruncate from 'react-text-truncate';
-import Slider from 'react-slick';
-import { cordovaDot, historyPush, hasIPhoneNotch } from '../../utils/cordovaUtils';
+import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import { toTitleCase } from '../../utils/textFormat';
-import AnalyticsActions from '../../actions/AnalyticsActions';
-import BallotIntroFollowIssues from '../Ballot/BallotIntroFollowIssues';
-import BallotIntroFollowAdvisers from '../Ballot/BallotIntroFollowAdvisers';
-import BallotIntroVerifyAddress from '../Ballot/BallotIntroVerifyAddress';
+import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
 import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import ImageHandler from '../ImageHandler';
 import IssueStore from '../../stores/IssueStore';
 import ItemActionBar from '../Widgets/ItemActionBar';
 import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
-import ItemSupportOpposeRaccoon from '../Widgets/ItemSupportOpposeRaccoon';
 import LearnMore from '../Widgets/LearnMore';
 import { renderLog } from '../../utils/logging';
 import OrganizationPositionItem from './OrganizationPositionItem';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
-import VoterActions from '../../actions/VoterActions';
-import VoterStore from '../../stores/VoterStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import closeIcon from '../../../img/global/icons/x-close.png';
 import triangleBottomIcon from '../../../img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-252-triangle-bottom.svg';
@@ -41,7 +33,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     ballot_item_display_name: PropTypes.string.isRequired,
     candidate_list: PropTypes.array,
     currentBallotIdInUrl: PropTypes.string,
-    kind_of_ballot_item: PropTypes.string.isRequired,
     link_to_ballot_item_page: PropTypes.bool,
     location: PropTypes.object,
     organization: PropTypes.object.isRequired,
@@ -57,9 +48,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
       displayAllCandidatesFlag: false,
       displayOfficeUnfurled: false,
       editMode: false,
-      maxOrganizationDisplay: 4,
       organization: {},
-      showBallotIntroFollowIssues: false,
       // show_position_statement: true,
       transitioning: false,
     };
@@ -71,8 +60,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     this.getOfficeLink = this.getOfficeLink.bind(this);
     this.goToCandidateLink = this.goToCandidateLink.bind(this);
     this.goToOfficeLink = this.goToOfficeLink.bind(this);
-    this._nextSliderPage = this._nextSliderPage.bind(this);
-    this._toggleBallotIntroFollowIssues = this._toggleBallotIntroFollowIssues.bind(this);
     this.toggleDisplayAllCandidates = this.toggleDisplayAllCandidates.bind(this);
     this.toggleExpandDetails = this.toggleExpandDetails.bind(this);
   }
@@ -200,21 +187,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     return onePositionToReturn;
   }
 
-  _toggleBallotIntroFollowIssues () {
-    const { showBallotIntroFollowIssues } = this.state;
-    // VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
-    if (!showBallotIntroFollowIssues) {
-      AnalyticsActions.saveActionModalIssues(VoterStore.electionId());
-    }
-
-    this.setState({ showBallotIntroFollowIssues: !showBallotIntroFollowIssues });
-  }
-
-  _nextSliderPage () {
-    VoterActions.voterUpdateRefresh(); // Grab the latest voter information which includes interface_status_flags
-    this.refs.slider.slickNext();
-  }
-
   toggleDisplayAllCandidates () {
     const { displayAllCandidatesFlag } = this.state;
     this.setState({ displayAllCandidatesFlag: !displayAllCandidatesFlag });
@@ -258,15 +230,15 @@ export default class VoterGuideOfficeItemCompressed extends Component {
   }
 
   closeYourNetworkSupportsPopover () {
-    this.refs['supports-overlay'].hide();
+    this.refs['supports-overlay'].hide(); // eslint-disable-line react/no-string-refs
   }
 
   closeHighestIssueScorePopover () {
-    this.refs['highest-issue-score-overlay'].hide();
+    this.refs['highest-issue-score-overlay'].hide(); // eslint-disable-line react/no-string-refs
   }
 
   closeYourNetworkIsUndecidedPopover () {
-    this.refs['undecided-overlay'].hide();
+    this.refs['undecided-overlay'].hide(); // eslint-disable-line react/no-string-refs
   }
 
   render () {
@@ -356,48 +328,17 @@ export default class VoterGuideOfficeItemCompressed extends Component {
     let orgPositionForCandidate;
     let candidateWeVoteId;
     let candidateSupportStore;
-
-    const sliderSettings = {
-      dots: true,
-      infinite: false,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      swipe: true,
-      accessibility: true,
-      afterChange: this.afterChangeHandler,
-      arrows: false,
-    };
     // let candidatePreviewCount = 0;
     // let candidatePreviewLimit = 5;
     const candidatePreviewList = [];
     // let oneCandidateDisplay = <span />;
-    const BallotIntroFollowIssuesModal = (
-      <Modal
-        bsPrefix="background-brand-blue modal"
-        id="ballotIntroFollowIssuesId"
-        show={this.state.showBallotIntroFollowIssues}
-        onHide={() => this._toggleBallotIntroFollowIssues(this)}
-      >
-        <Modal.Body>
-          <div className="intro-modal__close">
-            <a onClick={this._toggleBallotIntroFollowIssues} className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}>
-              <img src={cordovaDot(closeIcon)} alt="close" />
-            </a>
-          </div>
-          <Slider dotsClass="slick-dots intro-modal__gray-dots" className="calc-height intro-modal__height-full" ref="slider" {...sliderSettings}>
-            <div className="intro-modal__height-full" key={1}><BallotIntroFollowIssues next={this._nextSliderPage} /></div>
-            <div className="intro-modal__height-full" key={2}><BallotIntroFollowAdvisers next={this._nextSliderPage} /></div>
-            <div className="intro-modal__height-full" key={3}><BallotIntroVerifyAddress next={this._toggleBallotIntroFollowIssues} manualFocus={this.state.current_page_index === 2} /></div>
-          </Slider>
-        </Modal.Body>
-      </Modal>
-    );
 
     return (
       <div className="card-main office-item">
-        { BallotIntroFollowIssuesModal }
-        <a className="anchor-under-header" name={weVoteId} />
+        <a // eslint-disable-line
+          className="anchor-under-header"
+          name={weVoteId}
+        />
         <div className="card-main__content">
           {/* Desktop */}
           {/* On the voter guide, we bring the size of the office name down so we can emphasize the candidate being supported */}
@@ -429,8 +370,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
 
                 candidateWeVoteId = oneCandidate.we_vote_id;
                 candidateSupportStore = SupportStore.get(candidateWeVoteId);
-                const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(candidateWeVoteId);
-                const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(candidateWeVoteId);
                 const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}. ` : '';
                 const candidateDescriptionTextext = oneCandidate.twitter_description && oneCandidate.twitter_description.length ? oneCandidate.twitter_description : '';
                 const candidateText = candidatePartyText + candidateDescriptionTextext;
@@ -456,7 +395,9 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                       <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
                         {/* Candidate Name */}
                         <h4 className={`card-main__candidate-name${this.doesOrganizationHavePositionOnCandidate(candidateWeVoteId) ? ' u-f2' : ' u-f6'}`}>
-                          <a onClick={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(oneCandidate.we_vote_id) : null}>
+                          <a // eslint-disable-line
+                            onClick={this.props.link_to_ballot_item_page ? () => this.goToCandidateLink(oneCandidate.we_vote_id) : null}
+                          >
                             <TextTruncate
                               line={1}
                               truncateText="…"
@@ -486,21 +427,9 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                         { this.doesOrganizationHavePositionOnCandidate(candidateWeVoteId) ? (
                           <div>
                             <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
-                              {/* Positions in Your Network and Possible Voter Guides to Follow */}
-                              <ItemSupportOpposeRaccoon
+                              <BallotItemSupportOpposeComment
                                 ballotItemWeVoteId={candidateWeVoteId}
-                                ballot_item_display_name={oneCandidate.ballot_item_display_name}
-                                currentBallotIdInUrl={this.props.location.hash.slice(1)}
-                                display_raccoon_details_flag={this.state.displayOfficeUnfurled}
-                                goToCandidate={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
-                                maximumOrganizationDisplay={this.state.maxOrganizationDisplay}
-                                organizationsToFollowSupport={organizationsToFollowSupport}
-                                organizationsToFollowOppose={organizationsToFollowOppose}
-                                popoverBottom
-                                supportProps={candidateSupportStore}
-                                type="CANDIDATE"
-                                urlWithoutHash={this.props.location.pathname + this.props.location.search}
-                                we_vote_id={this.props.we_vote_id}
+                                showPositionStatementActionBar={this.state.showPositionStatementActionBar}
                               />
                             </div>
                           </div>
@@ -619,15 +548,6 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                           <span onClick={this.toggleExpandDetails}>
                             { candidatePreviewList }
                           </span>
-                          <div className="u-tr d-print-none">
-                            <Link onClick={this._toggleBallotIntroFollowIssues}>
-                              <span className=" u-cursor--pointer">
-                                Follow issues or organizations for advice
-                                {' '}
-                                <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover hidden-print" aria-hidden="true" />
-                              </span>
-                            </Link>
-                          </div>
                         </div>
                       )}
                   </span>
@@ -639,7 +559,9 @@ export default class VoterGuideOfficeItemCompressed extends Component {
           {/* End of "!this.state.displayOfficeUnfurled ?", yes, a 200 line if clause */}
 
           { !this.state.displayAllCandidatesFlag && this.state.displayOfficeUnfurled && remainingCandidatesToDisplayCount ? (
-            <Link onClick={this.toggleDisplayAllCandidates}>
+            <Link // eslint-disable-line
+              onClick={this.toggleDisplayAllCandidates}
+            >
               <span className="u-items-center u-no-break d-print-none">
                 <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
                 <span>
@@ -655,13 +577,17 @@ export default class VoterGuideOfficeItemCompressed extends Component {
           ) : null
           }
           { this.state.displayOfficeUnfurled ? (
-            <Link onClick={this.toggleExpandDetails}>
+            <Link // eslint-disable-line
+              onClick={this.toggleExpandDetails}
+            >
               <span className="BallotItem__view-more u-items-center pull-right u-no-break d-print-none">
               show fewer
               </span>
             </Link>
           ) : (
-            <Link onClick={this.toggleExpandDetails}>
+            <Link // eslint-disable-line
+              onClick={this.toggleExpandDetails}
+            >
               <div className="BallotItem__view-more u-items-center u-no-break d-print-none">
                 <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
                 { totalNumberOfCandidatesToDisplay > 1 ? (

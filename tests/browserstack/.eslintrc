@@ -1,0 +1,11 @@
+{
+  "env": {
+    "mocha": true
+  },
+
+  "extends": "plugin:wdio/recommended",
+
+  "plugins": [
+      "wdio"
+  ]
+}

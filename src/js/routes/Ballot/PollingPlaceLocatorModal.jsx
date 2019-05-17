@@ -39,12 +39,12 @@ export default class PollingPlaceLocatorModal extends Component {
         >
           <Modal.Body>
             <div className="intro-modal__close">
-              <a
+              <button type="button"
                 onClick={this.openPollingLocationModal}
                 className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}
               >
                 <img src={cordovaDot(closeIcon)} alt="close" />
-              </a>
+              </button>
             </div>
             <div key={1}><PollingPlaceLocator /></div>
           </Modal.Body>

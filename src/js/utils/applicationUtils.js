@@ -9,6 +9,7 @@ export function getApplicationViewBooleans (pathname) {
   let contentFullWidthMode = false;
   let friendsMode = false;
   let settingsMode = false;
+  let voteMode = false;
   let valuesMode = false;
   let voterGuideMode = false;
   let voterGuideShowGettingStartedNavigation = false;
@@ -23,6 +24,9 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/wevoteintro/network') {
     inTheaterMode = true;
   } else if (pathname.startsWith('/candidate/') ||
+    pathname === '/for-campaigns' ||
+    pathname === '/for-organizations' ||
+    pathname.startsWith('/how') ||
     pathname === '/intro' ||
     pathname === '/issues_followed' ||
     pathname === '/issues_to_follow' ||
@@ -36,31 +40,31 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/more/donate' ||
     pathname === '/more/donate_thank_you' ||
     pathname === '/more/elections' ||
-    pathname === '/more/howtouse' ||
     pathname.startsWith('/office/') ||
     pathname === '/more/network' ||
     pathname === '/more/network/friends' ||
     pathname === '/more/network/issues' ||
     pathname === '/more/network/organizations' ||
-    pathname === '/more/organization' ||
+    pathname === '/more/pricing' ||
     pathname === '/more/privacy' ||
     pathname === '/more/register' ||
     pathname === '/more/sign_in' ||
-    pathname === '/more/team' ||
     pathname === '/more/terms' ||
     pathname === '/more/tools' ||
     pathname === '/more/verify' ||
-    pathname === '/more/vision' ||
     pathname.startsWith('/verifythisisme/') ||
     pathname === '/welcome') {
     contentFullWidthMode = true;
+  } else if (pathname.startsWith('/ballot/vote')) {
+    contentFullWidthMode = true;
+    voteMode = true;
   } else if (pathname.startsWith('/ballot')) {
     contentFullWidthMode = false;
   } else if (stringContains('/settings', pathname) ||
     pathname === '/more/hamburger') {
     contentFullWidthMode = true;
     settingsMode = true;
-  } else if (pathname.startsWith('/values') ||
+  } else if (pathname.startsWith('/value') || // '/values'
     pathname === '/opinions' ||
     pathname === '/opinions_followed' ||
     pathname === '/opinions_ignored') {
@@ -105,6 +109,7 @@ export function getApplicationViewBooleans (pathname) {
   } else if (pathname === '/opinions' ||
     pathname === '/opinions_followed' ||
     pathname === '/opinions_ignored' ||
+    stringContains('/value/', pathname) ||
     pathname === '/values/list') {
     showBackToValues = true;
   } else if (pathname === '/friends/add' ||
@@ -128,6 +133,7 @@ export function getApplicationViewBooleans (pathname) {
     contentFullWidthMode,
     friendsMode,
     settingsMode,
+    voteMode,
     valuesMode,
     voterGuideMode,
     voterGuideShowGettingStartedNavigation,
@@ -157,8 +163,8 @@ export function polyfillObjectEntries () {
 // Choose to show/hide zendesk help widget based on route
 export function setZenDeskHelpVisibility (pathname) {
   if (isWebApp()) {
-    if (['/ballot', '/candidate', '/friends', '/measure', '/more/network', '/office', '/opinions', '/settings',
-      '/values'].some(match => pathname.startsWith(match))) {
+    if (['/ballot', '/ballot/vote', '/candidate', '/friends', '/measure', '/more/network', '/office', '/opinions', '/settings',
+      '/value'].some(match => pathname.startsWith(match))) { // '/values'
       global.zE('webWidget', 'show');
     } else {
       global.zE('webWidget', 'hide');

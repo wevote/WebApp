@@ -127,7 +127,10 @@ export default class CodeCopier extends Component {
               <button className="btn btn-success u-stack--sm" onClick={this.copyCode} type="button">Click to copy code</button>
               <br />
               <div className="u-stack--sm">
-                <a className="code-copier__link" onClick={this.toggleCode}>
+                <a // eslint-disable-line
+                  className="code-copier__link"
+                  onClick={this.toggleCode}
+                >
                   { this.state.viewCode ? 'Hide Code' : 'Show Code' }
                 </a>
               </div>
@@ -198,7 +201,10 @@ export default class CodeCopier extends Component {
               <br />
               { !this.state.isLoading && this.state.isTwitterHandleValid ? (
                 <div className="u-stack--sm">
-                  <a className="code-copier__link" onClick={this.toggleCode}>
+                  <a // eslint-disable-line
+                    className="code-copier__link"
+                    onClick={this.toggleCode}
+                  >
                     { this.state.viewCode ? 'Hide Code' : 'Show Code' }
                   </a>
                 </div>
@@ -242,7 +248,10 @@ export default class CodeCopier extends Component {
               <button className="btn btn-success u-stack--sm" onClick={this.copyCode} type="button">Click to copy code</button>
               <br />
               <div className="u-stack--sm">
-                <a className="code-copier__link" onClick={this.toggleCode}>
+                <a // eslint-disable-line
+                  className="code-copier__link"
+                  onClick={this.toggleCode}
+                >
                   { this.state.viewCode ? 'Hide Code' : 'Show Code' }
                 </a>
               </div>

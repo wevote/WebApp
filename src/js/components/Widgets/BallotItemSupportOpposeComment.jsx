@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import CandidateStore from '../../stores/CandidateStore';
@@ -8,13 +8,13 @@ import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
 import SupportStore from '../../stores/SupportStore';
 import { stringContains } from '../../utils/textFormat';
-import VoterStore from '../../stores/VoterStore';
+// import VoterStore from '../../stores/VoterStore';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize complex changes
 /* eslint react/no-find-dom-node: 1 */
 /* eslint array-callback-return: 1 */
 
-class BallotItemSupportOpposeComment extends Component {
+class BallotItemSupportOpposeComment extends PureComponent {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     currentBallotIdInUrl: PropTypes.string,
@@ -31,12 +31,13 @@ class BallotItemSupportOpposeComment extends Component {
       ballotItemDisplayName: '',
       ballotItemType: '',
       ballotItemWeVoteId: '',
-      componentDidMountFinished: false,
+      // componentDidMountFinished: false,
       showPositionStatement: false,
       shouldFocusCommentArea: false,
       ballotItemSupportProps: {},
     };
     this.passDataBetweenItemActionToItemPosition = this.passDataBetweenItemActionToItemPosition.bind(this);
+    this.togglePositionStatement = this.togglePositionStatement.bind(this);
   }
 
   componentDidMount () {
@@ -63,10 +64,10 @@ class BallotItemSupportOpposeComment extends Component {
       ballotItemSupportProps,
       ballotItemType,
       ballotItemWeVoteId: props.ballotItemWeVoteId,
-      componentDidMountFinished: true,
+      // componentDidMountFinished: true,
       isCandidate,
       isMeasure,
-      voter: VoterStore.getVoter(), // We only set this once since the info we need isn't dynamic
+      // voter: VoterStore.getVoter(), // We only set this once since the info we need isn't dynamic
     }));
   }
 
@@ -95,33 +96,6 @@ class BallotItemSupportOpposeComment extends Component {
       isCandidate,
       isMeasure,
     }));
-  }
-
-  shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    if (this.state.componentDidMountFinished === false) {
-      // console.log("shouldComponentUpdate: componentDidMountFinished === false");
-      return true;
-    }
-    if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
-      // console.log("shouldComponentUpdate: this.state.ballotItemDisplayName", this.state.ballotItemDisplayName, ", nextState.ballotItemDisplayName", nextState.ballotItemDisplayName);
-      return true;
-    }
-    if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
-      // console.log("shouldComponentUpdate: this.state.ballotItemWeVoteId", this.state.ballotItemWeVoteId, ", nextState.ballotItemWeVoteId", nextState.ballotItemWeVoteId);
-      return true;
-    }
-    if (this.props.showPositionStatementActionBar !== nextProps.showPositionStatementActionBar) {
-      // console.log("shouldComponentUpdate: this.props.showPositionStatementActionBar change");
-      return true;
-    }
-    if (this.state.showPositionStatement !== nextState.showPositionStatement) {
-      return true;
-    }
-    if (this.state.positionPublic !== nextState.positionPublic) {
-      return true;
-    }
-    return false;
   }
 
   componentWillUnmount () {
@@ -171,12 +145,12 @@ class BallotItemSupportOpposeComment extends Component {
     if (!this.state.ballotItemWeVoteId) return null;
     // console.log('BallotItemSupportOpposeComment render, ballotItemWeVoteId:', this.state.ballotItemWeVoteId);
     renderLog(__filename);
-
+    const { showPositionStatementActionBar } = this.props;
     // Voter Support or opposition
     const { is_voter_support: isVoterSupport, is_voter_oppose: isVoterOppose, voter_statement_text: voterStatementText } = this.state.ballotItemSupportProps || {};
 
     let commentBoxIsVisible = false;
-    if (this.props.showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText || this.state.showPositionStatement) {
+    if (showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText || this.state.showPositionStatement) {
       commentBoxIsVisible = true;
     }
     const itemActionBar = (
@@ -195,7 +169,7 @@ class BallotItemSupportOpposeComment extends Component {
       />
     );
 
-    const commentDisplayDesktop = this.props.showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText || this.state.showPositionStatement ? (
+    const commentDisplayDesktop = showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText || this.state.showPositionStatement ? (
       <div className="d-none d-sm-block o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar
@@ -213,7 +187,7 @@ class BallotItemSupportOpposeComment extends Component {
     ) :
       null;
 
-    const commentDisplayMobile = this.props.showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText ? (
+    const commentDisplayMobile = showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText ? (
       <div className="d-block d-sm-none o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
         <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
           <ItemPositionStatementActionBar
@@ -231,7 +205,7 @@ class BallotItemSupportOpposeComment extends Component {
       null;
 
     return (
-      <Wrapper>
+      <Wrapper showPositionStatementActionBar={showPositionStatementActionBar}>
         <ActionBar>
           {/* Support/Oppose/Comment toggle here */}
           {itemActionBar}
@@ -245,8 +219,9 @@ class BallotItemSupportOpposeComment extends Component {
 
 const Wrapper = styled.div`
   width: 100%;
-  background-color: #F5F5F5;
+  background-color: ${({ showPositionStatementActionBar }) => (showPositionStatementActionBar ? '#F5F5F5' : 'white')};
   padding: 16px;
+  /* padding-left: 0; */
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     background-color: white;

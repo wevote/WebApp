@@ -85,6 +85,8 @@ export default {
   },
 
   voterGuidesUpcomingRetrieve (googleCivicElectionId = 0) {
+    // This API is always retrieved from our CDN per: WebApp/src/js/utils/service.js
+
     // let maximumNumberToRetrieve = 500;
     // For now, just pass one googleCivicElectionId into list. If we want multiple, we will need to dispatch
     // with multiple "google_civic_election_id_list" entries (or comma separate)?

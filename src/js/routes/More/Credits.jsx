@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
-import { organizationalDonors, teamOfVolunteers } from './people';
+import { organizationalDonors, teamOfVolunteers } from '../../components/More/people';
 
 export default class Credits extends Component {
   static getProps () {

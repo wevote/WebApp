@@ -19,6 +19,7 @@ class BallotSearch extends Component {
     onToggleSearch: PropTypes.func,
     items: PropTypes.array,
     onBallotSearch: PropTypes.func,
+    alwaysOpen: PropTypes.bool,
   };
 
   constructor (props) {
@@ -37,6 +38,10 @@ class BallotSearch extends Component {
     }
     if (this.state.searchValue !== nextState.searchValue) {
       // console.log("shouldComponentUpdate: this.state.searchValue", this.state.searchValue, ", nextState.searchValue", nextState.searchValue);
+      return true;
+    }
+
+    if (this.props.alwaysOpen !== nextProps.alwaysOpen) {
       return true;
     }
     return false;
@@ -62,6 +67,10 @@ class BallotSearch extends Component {
   }
 
   handleSearch (event) { // eslint-disable-line consistent-return
+    // if search bar always open, isSearching is toggled only when input is given text is cleared with 'x' button
+    if (this.props.alwaysOpen && event.target.value && !this.props.isSearching) {
+      this.toggleSearch();
+    }
     clearTimeout(this.searchInputTimer);
     const { value } = event.target;
     this.setState({ searchValue: value });
@@ -81,26 +90,26 @@ class BallotSearch extends Component {
   }
 
   render () {
-    const { classes, theme, isSearching } = this.props;
+    const { classes, theme, isSearching, alwaysOpen } = this.props;
     const { searchValue } = this.state;
     return (
-      <SearchWrapper searching={isSearching} brandBlue={theme.palette.primary.main}>
+      <SearchWrapper searchOpen={isSearching || alwaysOpen} brandBlue={theme.palette.primary.main}>
         <IconButton
           classes={{ root: classes.iconButtonRoot }}
-          onClick={this.toggleSearch}
+          onClick={!alwaysOpen ? this.toggleSearch : undefined}
         >
           <SearchIcon classes={{ root: classes.iconRoot }} />
         </IconButton>
         <InputBase
-          classes={{ input: isSearching ? classes.input : classes.inputHidden }}
+          classes={{ input: (isSearching || alwaysOpen) ? classes.input : classes.inputHidden }}
           inputRef={(input) => { this.searchInput = input; }}
           onChange={this.handleSearch}
           value={searchValue}
         />
-        <Closer searching={isSearching} brandBlue={theme.palette.primary.main}>
+        <Closer searchOpen={isSearching || alwaysOpen} brandBlue={theme.palette.primary.main}>
           <IconButton
             classes={{ root: classes.iconButtonRoot }}
-            onClick={this.toggleSearch}
+            onClick={(isSearching || !alwaysOpen) ? this.toggleSearch : undefined}
           >
             <CloseIcon classes={{ root: classes.closeIconRoot }} />
           </IconButton>
@@ -150,7 +159,7 @@ const Closer = styled.div`
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-left: 1px solid ${({ brandBlue }) => (brandBlue)};
-  display: ${({ searching }) => (searching ? 'inherit' : 'none')};
+  display: ${({ searchOpen }) => (searchOpen ? 'inherit' : 'none')};
 `;
 
 const SearchWrapper = styled.div`
@@ -158,9 +167,10 @@ const SearchWrapper = styled.div`
   flex-flow: row;
   border-radius: 16px;
   height: 26px;
-  border: 1px solid ${props => (!props.searching ? 'rgba(0, 0, 0, 0.23)' : props.brandBlue)};
+  border: 1px solid ${props => (!props.searchOpen ? 'rgba(0, 0, 0, 0.23)' : props.brandBlue)};
   padding: 0 3px 0 3px;
   margin-right: 16px;
+  margin-bottom: 8px;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     height: 22.5px;
     margin-right: 4px;

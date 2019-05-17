@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
 import { hasIPhoneNotch, isAndroid, isCordova, isIOS, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBackToBallot from './HeaderBackToBallot';
-import HeaderBackToFriends from './HeaderBackToFriends';
-import HeaderBackToValues from './HeaderBackToValues';
+import HeaderBackTo from './HeaderBackTo';
 import HeaderBackToVoterGuides from './HeaderBackToVoterGuides';
 import HeaderBar from './HeaderBar';
 import { stringContains } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
-import HeaderBackToSettings from './HeaderBackToSettings';
 
 
 export default class Header extends Component {
@@ -38,7 +36,6 @@ export default class Header extends Component {
     const { friendsMode, settingsMode, valuesMode, voterGuideMode,
       showBackToFriends, showBackToBallotHeader, showBackToSettings, showBackToValues, showBackToVoterGuides } = getApplicationViewBooleans(pathname);
     // const hideGettingStartedButtons = voterGuideShowGettingStartedNavigation;
-
     let iPhoneSpacer = '';
     if (isCordova() && isIOS() && hasIPhoneNotch()) {
       iPhoneSpacer = <div className="ios-notched-spacer" />;
@@ -58,7 +55,7 @@ export default class Header extends Component {
         <div id="app-header">
           {iPhoneSpacer}
           <div className={isWebApp ? 'headroom-wrapper-webapp__voter-guide' : ''}>
-            <div ref="pageHeader" className={pageHeaderStyle} id="header-container">
+            <div className={pageHeaderStyle} id="header-container">
               {showBackToBallotHeader ?
                 <HeaderBackToBallot location={location} params={params} pathname={pathname} voter={voter} /> : (
                   <span>
@@ -74,15 +71,18 @@ export default class Header extends Component {
         </div>
       );
     } else if (settingsMode) {
+      const backToSettingsLink = isWebApp() ? '/settings/menu' : '/more/hamburger';
+      const backToSettingsLinkText = 'Settings';
+
       return (
         <div id="app-header">
           { iPhoneSpacer }
           <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
-            <div ref="pageHeader" className={pageHeaderStyle} id="header-container">
+            <div className={pageHeaderStyle} id="header-container">
               { showBackToSettings ? (
                 <span>
                   <span className="d-block d-sm-none">
-                    <HeaderBackToSettings location={location} params={params} pathname={pathname} voter={voter} />
+                    <HeaderBackTo backToLink={backToSettingsLink} backToLinkText={backToSettingsLinkText} location={location} params={params} voter={voter} />
                   </span>
                   <span className="d-none d-sm-block">
                     <HeaderBar location={location} pathname={pathname} voter={voter} />
@@ -102,13 +102,19 @@ export default class Header extends Component {
         </div>
       );
     } else if (valuesMode) {
+      let backToValuesLink = '/values';
+      if (stringContains('/value/', pathname)) {
+        backToValuesLink = '/values/list';
+      }
+      const backToValuesLinkText = 'Back';
+
       return (
         <div id="app-header">
           { iPhoneSpacer }
           <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
-            <div ref="pageHeader" className={pageHeaderStyle} id="header-container">
+            <div className={pageHeaderStyle} id="header-container">
               { showBackToValues ?
-                <HeaderBackToValues location={location} params={params} pathname={pathname} voter={voter} /> :
+                <HeaderBackTo backToLink={backToValuesLink} backToLinkText={backToValuesLinkText} location={location} params={params} voter={voter} /> :
                 <HeaderBar location={location} pathname={pathname} voter={voter} />
               }
             </div>
@@ -116,21 +122,31 @@ export default class Header extends Component {
         </div>
       );
     } else if (friendsMode) {
+      const backToFriendsLink = '/friends';
+      const backToFriendsLinkText = 'Back';
+
       return (
         <div id="app-header">
           { iPhoneSpacer }
           <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
-            <div ref="pageHeader" className={pageHeaderStyle} id="header-container">
+            <div className={pageHeaderStyle} id="header-container">
               { showBackToFriends ?
-                <HeaderBackToFriends location={location} params={params} pathname={pathname} voter={voter} /> :
+                <HeaderBackTo backToLink={backToFriendsLink} backToLinkText={backToFriendsLinkText} location={location} params={params} voter={voter} /> :
                 <HeaderBar location={location} pathname={pathname} voter={voter} />
               }
             </div>
           </div>
         </div>
       );
+    } else if (pathname === '/for-campaigns' ||
+               pathname === '/for-organizations' ||
+               pathname.startsWith('/how') ||
+               pathname === '/more/about' ||
+               pathname === '/more/pricing' ||
+               pathname === '/welcome') {
+      return null;
     } else {
-      // This handles other pages, like Welcome and the Ballot display
+      // This handles other pages, like the Ballot display
       return (
         <div id="app-header">
           { iPhoneSpacer }
@@ -139,7 +155,7 @@ export default class Header extends Component {
               stringContains('/office', pathname) ? 'headroom-wrapper-webapp__office' : 'headroom-wrapper-webapp__default' : ''}
             id="headroom-wrapper"
           >
-            <div ref="pageHeader" className={pageHeaderStyle} id="header-container">
+            <div className={pageHeaderStyle} id="header-container">
               { showBackToBallotHeader ?
                 <HeaderBackToBallot location={location} params={params} pathname={pathname} voter={voter} /> :
                 <HeaderBar location={location} pathname={pathname} voter={voter} />

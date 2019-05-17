@@ -22,11 +22,13 @@ import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import HeaderBarLogo from './HeaderBarLogo';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
+import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import { stringContains } from '../../utils/textFormat';
+import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 
 class HeaderBar extends Component {
   static propTypes = {
@@ -43,18 +45,20 @@ class HeaderBar extends Component {
 
   constructor (props) {
     super(props);
-    this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
-    this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
-    this.toggleProfilePopUp = this.toggleProfilePopUp.bind(this);
-    this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
     this.state = {
       aboutMenuOpen: false,
       componentDidMountFinished: false,
       profilePopUpOpen: false,
       friendInvitationsSentToMe: 0,
-      showEditAddressButton: AppStore.showEditAddressButton(),
-      scrolledDown: AppStore.getScrolledDown(),
+      showEditAddressButton: false,
+      showSignInModal: false,
+      scrolledDown: false,
     };
+    this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
+    this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
+    this.toggleProfilePopUp = this.toggleProfilePopUp.bind(this);
+    this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
+    this.toggleSignInModal = this.toggleSignInModal.bind(this);
   }
 
   componentDidMount () {
@@ -69,6 +73,9 @@ class HeaderBar extends Component {
     this.setState({
       componentDidMountFinished: true,
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      scrolledDown: AppStore.getScrolledDown(),
+      showEditAddressButton: AppStore.showEditAddressButton(),
+      showSignInModal: AppStore.showSignInModal(),
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
@@ -92,6 +99,12 @@ class HeaderBar extends Component {
       return true;
     }
     if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
+      return true;
+    }
+    if (this.state.scrolledDown !== nextState.scrolledDown) {
+      return true;
+    }
+    if (this.state.showSignInModal !== nextState.showSignInModal) {
       return true;
     }
     const currentPathnameExists = this.props.location && this.props.location.pathname;
@@ -123,9 +136,6 @@ class HeaderBar extends Component {
       // console.log("shouldComponentUpdate: this.props.voter.signed_in_with_email", this.props.voter.signed_in_with_email, ", nextProps.voter.signed_in_with_email", nextProps.voter.signed_in_with_email);
       return true;
     }
-    if (this.state.scrolledDown !== nextState.scrolledDown) {
-      return true;
-    }
     return false;
   }
 
@@ -147,16 +157,17 @@ class HeaderBar extends Component {
 
   onAppStoreChange () {
     this.setState({
-      showEditAddressButton: AppStore.showEditAddressButton(),
       scrolledDown: AppStore.getScrolledDown(),
+      showEditAddressButton: AppStore.showEditAddressButton(),
+      showSignInModal: AppStore.showSignInModal(),
     });
   }
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    // if (pathname.indexOf('/ballot') === 0) return 0; // If '/ballot' is found any
+    if (stringContains('/ballot/vote', pathname)) return 3;
     if (pathname && pathname.startsWith('/ballot')) return 0;
-    if (stringContains('/values', pathname)) return 1;
+    if (stringContains('/value', pathname)) return 1; // '/values'
     if (stringContains('/friends', pathname)) return 2;
 
     return false;
@@ -171,6 +182,15 @@ class HeaderBar extends Component {
 
   toggleSelectBallotModal () {
     AppActions.setShowSelectBallotModal(true);
+  }
+
+  closeSignInModal () {
+    AppActions.setShowSignInModal(false);
+  }
+
+  toggleSignInModal () {
+    const { showSignInModal } = this.state;
+    AppActions.setShowSignInModal(!showSignInModal);
   }
 
   hideProfilePopUp () {
@@ -195,7 +215,7 @@ class HeaderBar extends Component {
   }
 
   render () {
-    // console.log('HeaderBar render');
+    // console.log('HeaderBar render, this.state.showSignInModal:', this.state.showSignInModal);
     renderLog(__filename);
     const { voter, classes, pathname } = this.props;
     const { showEditAddressButton, scrolledDown } = this.state;
@@ -203,12 +223,12 @@ class HeaderBar extends Component {
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0;
     const voterIsSignedIn = this.props.voter && this.props.voter.is_signed_in;
-    const showFullNavigation = cookies.getItem('show_full_navigation') || voterIsSignedIn;
+    const showFullNavigation = true;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
     const showingBallot = stringContains(ballotBaseUrl, pathname.slice(0, 7));
 
     return (
-      <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown}>
+      <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && shouldHeaderRetreat(pathname)}>
         <AppBar position="relative" color="default" className={`page-header${!isWebApp() ? ' page-header__cordova' : ''}${showingBallot ? ' page-header__ballot' : ''}`}>
           <Toolbar className="header-toolbar" disableGutters>
             {!weVoteBrandingOff && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />}
@@ -220,7 +240,7 @@ class HeaderBar extends Component {
                 classes={{ indicator: classes.indicator }}
               >
                 {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRoot }} label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
+                  <Tab classes={{ root: classes.tabRoot }} id="ballotTabHeaderBar" label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
                 )
                 }
                 {showFullNavigation && (
@@ -228,57 +248,24 @@ class HeaderBar extends Component {
                 )
                 }
                 {showFullNavigation && (
-                  <Tab classes={{ root: classes.tabRoot }} label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9} onClick={() => this.handleNavigation('/friends')}>My Friends</Badge>} />
+                  <Tab classes={{ root: classes.tabRoot }} id="friendsTabHeaderBar" label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9}>My Friends</Badge>} onClick={() => this.handleNavigation('/friends')} />
                 )
                 }
-                {/* showFullNavigation && isWebApp() && <Tab className="u-show-desktop" label="Vote" /> */}
+                {showFullNavigation && (
+                  <Tab classes={{ root: classes.tabRoot }} id="voteTabHeaderBar" label="Vote" onClick={() => this.handleNavigation('/ballot/vote')} />
+                )
+                }
               </Tabs>
             </div>
-
-            {/* (showFullNavigation || isCordova()) && <SearchAllBox /> */}
-
-            {(!showFullNavigation || !voterIsSignedIn) && (
-              <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
-                {
-                  showEditAddressButton && (
-                    <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-                      <IconButton
-                        classes={{ root: classes.iconButtonRoot }}
-                        onClick={this.toggleSelectBallotModal}
-                      >
-                        <PlaceIcon />
-                      </IconButton>
-                    </Tooltip>
-                  )
-                }
-                <Link to="/settings/menu" className="header-link">
-                  <Tooltip title="Settings" aria-label="settings" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-                    <IconButton
-                      classes={{ root: classes.iconButtonRoot }}
-                    >
-                      <MoreVertIcon />
-                    </IconButton>
-                  </Tooltip>
-                </Link>
-                <Link to="/settings/account" className="header-link">
-                  <Button
-                    color="primary"
-                    classes={{ root: classes.headerButtonRoot }}
-                  >
-                    Sign In
-                  </Button>
-                </Link>
-              </div>
-            )}
-
             {
-              (showFullNavigation && voterIsSignedIn) && (
+              voterIsSignedIn && (
                 <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
                   {
                     showEditAddressButton && (
                       <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
                         <IconButton
                           classes={{ root: classes.iconButtonRoot }}
+                          id="changeAddressHeaderBar"
                           onClick={this.toggleSelectBallotModal}
                         >
                           <PlaceIcon />
@@ -286,7 +273,7 @@ class HeaderBar extends Component {
                       </Tooltip>
                     )
                   }
-                  <Link to="/settings/menu" className="header-link">
+                  <Link id="settingsLinkHeaderBar" to="/settings" className="header-link u-show-desktop">
                     <Tooltip title="Settings" aria-label="settings" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
                       <IconButton
                         classes={{ root: classes.iconButtonRoot }}
@@ -296,7 +283,7 @@ class HeaderBar extends Component {
                     </Tooltip>
                   </Link>
                   {voterPhotoUrlMedium ? (
-                    <div id="js-header-avatar" className="header-nav__avatar-container" onClick={this.toggleProfilePopUp}>
+                    <div id="profileAvatarHeaderBar" className="header-nav__avatar-container" onClick={this.toggleProfilePopUp}>
                       <img
                         className="header-nav__avatar"
                         src={voterPhotoUrlMedium}
@@ -308,31 +295,64 @@ class HeaderBar extends Component {
                   ) : (
                     <div>
                       <IconButton
-                        onClick={this.toggleProfilePopUp}
                         classes={{ root: classes.iconButtonRoot }}
+                        id="profileAvatarHeaderBar"
+                        onClick={this.toggleProfilePopUp}
                       >
                         <AccountCircleIcon />
                       </IconButton>
                     </div>
                   )
                   }
-                  {/* Was AccountMenu */}
-                  {this.state.profilePopUpOpen && voter.is_signed_in && (
+                  {this.state.profilePopUpOpen && voterIsSignedIn && (
                     <HeaderBarProfilePopUp
-                      {...this.props}
+                      hideProfilePopUp={this.hideProfilePopUp}
                       onClick={this.toggleProfilePopUp}
                       profilePopUpOpen={this.state.profilePopUpOpen}
-                      weVoteBrandingOff={this.state.we_vote_branding_off}
-                      toggleProfilePopUp={this.toggleProfilePopUp}
-                      hideProfilePopUp={this.hideProfilePopUp}
-                      transitionToYourVoterGuide={this.transitionToYourVoterGuide}
                       signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+                      toggleProfilePopUp={this.toggleProfilePopUp}
+                      toggleSignInModal={this.toggleSignInModal}
+                      transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+                      voter={this.props.voter}
+                      weVoteBrandingOff={this.state.we_vote_branding_off}
                     />
                   )}
                 </div>
-              )}
+              )
+            }
+            {
+              !voterIsSignedIn && (
+              <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
+                {
+                  showEditAddressButton && (
+                    <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot }}
+                        id="changeAddressHeaderBar"
+                        onClick={this.toggleSelectBallotModal}
+                      >
+                        <PlaceIcon />
+                      </IconButton>
+                    </Tooltip>
+                  )
+                }
+                <Button
+                  color="primary"
+                  classes={{ root: classes.headerButtonRoot }}
+                  id="signInHeaderBar"
+                  onClick={this.toggleSignInModal}
+                >
+                  Sign In
+                </Button>
+              </div>
+              )
+            }
           </Toolbar>
         </AppBar>
+        <SignInModal
+          show={this.state.showSignInModal}
+          toggleFunction={this.closeSignInModal}
+        />
       </Wrapper>
     );
   }

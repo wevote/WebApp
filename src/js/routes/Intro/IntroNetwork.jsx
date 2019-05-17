@@ -9,6 +9,11 @@ import { renderLog } from '../../utils/logging';
 import closeIcon from '../../../img/global/icons/x-close.png';
 
 export default class IntroNetwork extends Component {
+  static goToBallotLink () {
+    const ballotLink = '/ballot';
+    historyPush(ballotLink);
+  }
+
   constructor (props) {
     super(props);
     this.state = {};
@@ -36,11 +41,6 @@ export default class IntroNetwork extends Component {
     this.slider.current.slickPrev();
   }
 
-  static goToBallotLink () {
-    const ballotLink = '/ballot';
-    historyPush(ballotLink);
-  }
-
   render () {
     renderLog(__filename);
 
@@ -53,19 +53,20 @@ export default class IntroNetwork extends Component {
       slidesToScroll: 1,
       swipe: true,
       accessibility: true,
-      arrows: true,
+      arrows: false,
     };
 
     return (
       <div>
         <Helmet title="Welcome to We Vote" />
         <div className="intro-story container-fluid well u-inset--md">
-          <img
-            src={cordovaDot(closeIcon)}
-            onClick={IntroNetwork.goToBallotLink}
-            className={isWebApp() ? 'x-close' : 'x-close x-close__cordova'}
-            alt="close"
-          />
+          <span onClick={IntroNetwork.goToBallotLink}>
+            <img
+              src={cordovaDot(closeIcon)}
+              className={isWebApp() ? 'x-close' : 'x-close x-close__cordova'}
+              alt="close"
+            />
+          </span>
           <Slider {...settings} dotsClass="slick-dots intro-modal__gray-dots" ref={this.slider}>
             <div key={1}><IntroNetworkSafety next={this.next} /></div>
             <div key={2}><IntroNetworkDefinition next={this.next} /></div>

@@ -10,7 +10,7 @@ import AddressBox from '../../components/AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotActions from '../../actions/BallotActions';
 import BallotElectionList from '../../components/Ballot/BallotElectionList';
-import BallotTabsRaccoon from '../../components/Navigation/BallotTabsRaccoon';
+import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 import BallotItemReadyToVote from '../../components/Ballot/BallotItemReadyToVote';
 import BallotIntroModal from '../../components/Ballot/BallotIntroModal';
@@ -27,6 +27,7 @@ import {
 import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
 import isMobile from '../../utils/isMobile';
+import LocationGuess from './LocationGuess';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
@@ -44,8 +45,6 @@ import webAppConfig from '../../config';
 import { formatVoterBallotList, checkShouldUpdate } from './utils';
 import SelectBallotModal from '../../components/Ballot/SelectBallotModal';
 import AppActions from '../../actions/AppActions';
-// import IconButton from '@material-ui/core/IconButton';
-// import PlaceIcon from '@material-ui/core/SvgIcon/SvgIcon';
 
 
 // Related to WebApp/src/js/components/VoterGuide/VoterGuideBallot.jsx
@@ -621,6 +620,10 @@ class Ballot extends Component {
     this.setState({ isSearching: !isSearching });
   };
 
+  hideLocationsGuessComponent () {
+    document.getElementById('location_guess').style.display = 'none';
+  }
+
   toggleBallotIntroModal () {
     const { showBallotIntroModal, location, pathname } = this.state;
     if (showBallotIntroModal) {
@@ -706,10 +709,10 @@ class Ballot extends Component {
     }
   }
 
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('Ballot caught error: ', `${error} with info: `, info);
-  }
+  // componentDidCatch (error, info) {
+  //   // We should get this information to Splunk!
+  //   console.error('Ballot caught error: ', `${error} with info: `, info);
+  // }
 
   updateOfficeDisplayUnfurledTracker (weVoteId, status) {
     const { ballotItemUnfurledTracker } = this.state;
@@ -823,6 +826,9 @@ class Ballot extends Component {
       historyPush(this.state.pathname);
     }
 
+    const showBallotDecisionTabs = (BallotStore.ballotLength !== BallotStore.ballotRemainingChoicesLength) &&
+      (BallotStore.ballotRemainingChoicesLength > 0);
+
     return (
       <div className="ballot_root">
         { this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
@@ -864,69 +870,77 @@ class Ballot extends Component {
 
                   { textForMapSearch || ballotWithItemsFromCompletionFilterType.length > 0 ? (
                     <div className="ballot__filter__container">
-                      <div className="ballot__filter d-print-none">
-                        <BallotTabsRaccoon
-                          completionLevelFilterType={BallotStore.cleanCompletionLevelFilterType(completionLevelFilterType)}
-                          ballotLength={BallotStore.ballotLength}
-                          ballotLengthRemaining={BallotStore.ballotRemainingChoicesLength}
-                        />
-                      </div>
-                      <hr className="ballot-header-divider" />
-                      <div className="ballot__filter-row">
+                      { showBallotDecisionTabs && (
+                        <React.Fragment>
+                          <div className="ballot__filter d-print-none">
+                            <BallotDecisionsTabs
+                              completionLevelFilterType={BallotStore.cleanCompletionLevelFilterType(completionLevelFilterType)}
+                              ballotLength={BallotStore.ballotLength}
+                              ballotLengthRemaining={BallotStore.ballotRemainingChoicesLength}
+                            />
+                          </div>
+                          <hr className="ballot-header-divider" />
+                        </React.Fragment>
+                      )}
+                      <BallotFilterRow showFilterTabs={showFilterTabs}>
                         <div className="ballot__item-filter-tabs" ref={(chips) => { this.chipContainer = chips; }}>
-                          { ballotWithItemsFromCompletionFilterType.length && showFilterTabs ? (
+                          { ballotWithItemsFromCompletionFilterType.length ? (
                             <React.Fragment>
                               <BallotSearch
                               isSearching={isSearching}
                               onToggleSearch={this.handleToggleSearchBallot}
                               items={ballotWithAllItems}
                               onBallotSearch={this.handleSearch}
+                              alwaysOpen={!showFilterTabs}
                               />
-                              {BALLOT_ITEM_FILTER_TYPES.map((oneTypeOfBallotItem) => {
-                                const allBallotItemsByFilterType = this.state.ballotWithAllItems.filter((item) => {
-                                  if (oneTypeOfBallotItem === 'Measure') {
-                                    return item.kind_of_ballot_item === 'MEASURE';
-                                  } else {
-                                    return oneTypeOfBallotItem === item.race_office_level;
-                                  }
-                                });
-                                if (allBallotItemsByFilterType.length) {
-                                  const ballotItemsByFilterType = ballotWithItemsFromCompletionFilterType.filter((item) => {
+                              { showFilterTabs ? (
+                                BALLOT_ITEM_FILTER_TYPES.map((oneTypeOfBallotItem) => {
+                                  const allBallotItemsByFilterType = this.state.ballotWithAllItems.filter((item) => {
                                     if (oneTypeOfBallotItem === 'Measure') {
                                       return item.kind_of_ballot_item === 'MEASURE';
                                     } else {
                                       return oneTypeOfBallotItem === item.race_office_level;
                                     }
                                   });
-                                  return (
-                                    <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
-                                      <Badge
-                                        classes={{ badge: classes.badge, colorPrimary: classes.badgeColorPrimary }}
-                                        color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
-                                        badgeContent={ballotItemsByFilterType.length}
-                                        invisible={ballotItemsByFilterType.length === 0}
-                                        onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
-                                      >
-                                        <Chip variant="outlined"
+                                  if (allBallotItemsByFilterType.length) {
+                                    const ballotItemsByFilterType = ballotWithItemsFromCompletionFilterType.filter((item) => {
+                                      if (oneTypeOfBallotItem === 'Measure') {
+                                        return item.kind_of_ballot_item === 'MEASURE';
+                                      } else {
+                                        return oneTypeOfBallotItem === item.race_office_level;
+                                      }
+                                    });
+                                    return (
+                                      <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
+                                        <Badge
+                                          classes={{ badge: classes.badge, colorPrimary: classes.badgeColorPrimary }}
                                           color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
+                                          badgeContent={ballotItemsByFilterType.length}
+                                          invisible={ballotItemsByFilterType.length === 0}
                                           onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
-                                          className="btn_ballot_filter"
-                                          classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
-                                          label={oneTypeOfBallotItem}
-                                        />
-                                      </Badge>
-                                    </div>
-                                  );
-                                } else {
-                                  return null;
-                                }
-                              })
-                          }
+                                        >
+                                          <Chip variant="outlined"
+                                            color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
+                                            onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
+                                            className="btn_ballot_filter"
+                                            classes={{ root: classes.chipRoot, label: classes.chipLabel, outlinedPrimary: (oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? classes.chipOutlined : null }}
+                                            label={oneTypeOfBallotItem}
+                                          />
+                                        </Badge>
+                                      </div>
+                                    );
+                                  } else {
+                                    return null;
+                                  }
+                                })
+                              ) :
+                                null
+                            }
                             </React.Fragment>
                           ) : null
                       }
                         </div>
-                      </div>
+                      </BallotFilterRow>
                     </div>
                   ) : null
                   }
@@ -940,7 +954,7 @@ class Ballot extends Component {
           <div className="container-fluid">
             {emptyBallot}
             <Wrapper cordova={isCordova()}>
-              <div className="row ballot__body">
+              <div className={showBallotDecisionTabs ? 'row ballot__body' : 'row ballot__body__no-decision-tabs'}>
                 <BrowserPushMessage incomingProps={this.props} />
                 {ballotWithItemsFromCompletionFilterType.length > 0 ? (
                   <BallotStatusMessage
@@ -950,10 +964,20 @@ class Ballot extends Component {
                 ) : null
                   }
                 <div className="col-sm-12 col-lg-9">
+                  <LocationGuess
+                    toggleSelectBallotModal={this.toggleSelectBallotModal}
+                    hideLocationsGuessComponent={this.hideLocationsGuessComponent}
+                  />
                   { inReadyToVoteMode ? (
                     <div>
                       <div className="alert alert-success d-print-none">
-                        <a href="#" className="close" data-dismiss="alert">&times;</a>
+                        <a // eslint-disable-line
+                          href="#"
+                          className="close"
+                          data-dismiss="alert"
+                        >
+                          &times;
+                        </a>
                       We Vote helps you get ready to vote,
                         {' '}
                         <strong>but you cannot use We Vote to cast your vote</strong>
@@ -1058,6 +1082,11 @@ class Ballot extends Component {
 
 const Wrapper = styled.div`
   padding-top: ${({ cordova }) => (cordova ? '100px' : 0)};
+`;
+
+// If we want to turn off filter tabs navigation bar:  ${({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
+const BallotFilterRow = styled.div`
+  display: flex;
 `;
 
 const styles = theme => ({

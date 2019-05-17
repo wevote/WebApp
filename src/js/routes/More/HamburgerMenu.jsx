@@ -37,10 +37,11 @@ export default class HamburgerMenu extends Component {
     return (
       <span
         className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none"
+        id="profileAvatarHeaderBar"
         onClick={this.toggleProfilePopUp}
       >
         {voterPhotoUrlMedium ? (
-          <div id="js-header-avatar" className={isWebApp() ? 'header-nav__avatar' : 'header-nav__avatar-cordova header-nav__cordova'}>
+          <div className={isWebApp() ? 'header-nav__avatar' : 'header-nav__avatar-cordova header-nav__cordova'}>
             <img
               alt="Signed in voter"
               src={voterPhotoUrlMedium}

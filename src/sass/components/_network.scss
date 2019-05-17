@@ -1,4 +1,4 @@
-$button-div-max-width: 240px;
+$button-div-max-width: 100%;
 $button-margin-horizontal: 10px;
 $description-margin-top: 10px;
 $social-left-padding-mobile: 40px;
@@ -6,6 +6,7 @@ $social-right-padding-mobile: 9px;
 $network-card-margin-mobile: (-$space-md) (-$space-md) $space-none (-$space-md);
 $description-padding: 10px;
 $backdrop-border-radius: 8px;
+$mobile-btn-padding: 52px;
 
 .buttons-container {
   display: flex;
@@ -13,24 +14,99 @@ $backdrop-border-radius: 8px;
   justify-content: space-around;
 }
 
-@media (min-width: 768px) {
-  .network-btn {
-    display: inline-block;
-    max-width: $button-div-max-width;
-    margin-right: $button-margin-horizontal;
-    margin-left: $button-margin-horizontal;
+.fa-info-circle {
+  font-size: 18px;
+  margin-right: $space-xs;
+  color: $gray-mid;
+}
+
+.fa-twitter {
+  font-size: inherit;
+  bottom: $space-xs;
+}
+
+.value-btn {
+  max-width: $button-div-max-width;
+  width: 100%;
+  @include breakpoints (medium) {
+    font-size: 12px;
+    padding: $space-sm $space-sm $space-sm $mobile-btn-padding !important;
   }
-  .mobile-container {
-    display: none;
+  @include breakpoints (large) {
+    font-size: 14px;
+    padding: $space-sm $space-md $space-sm $space-xl;
+  }
+  &__endorsements {
+    background: $brand-blue;
+    color: $white;
+    &--icon {
+      vertical-align: baseline;
+      position: relative;
+      top: -$space-xs / 2;
+    }
   }
 }
 
-@media (max-width: 767px) {
-  .network-btn {
-    display: inline-block;
+.network-btn {
+  display: inline-block;
+  @include breakpoints (small medium) {
     margin-left: $button-margin-horizontal / 2;
+    margin-right: $button-margin-horizontal / 2;
   }
-  .mobile-container {
+  @include breakpoints (medium) {
+    max-width: $button-div-max-width;
+    margin-right: $space-none;
+    margin-left: $space-none;
+  }
+}
+
+.endorsement-card {
+  display: flex;
+  bottom: $space-sm;
+  flex-direction: column;
+  @include breakpoints (small-bootstrap) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__btn {
+    background: $brand-blue !important;
+    color: $white !important;
+    text-align: center;
+    width: 100%;
+    margin-top: $space-md;
+    padding: $space-sm $space-md $space-sm $mobile-btn-padding !important;
+    &--icon {
+      width: 22.5px !important;
+      height: 22.5px !important;
+    }
+
+    @include breakpoints (small-bootstrap) {
+      width: auto;
+      margin-top: $space-none;
+    }
+  }
+  &__text {
+    padding: $space-md $space-none;
+    font-size: 17px;
+    color: $gray-dark;
+    @include breakpoints (small-bootstrap) {
+      padding: $space-none $space-md;
+      justify-self: flex-end;
+    }
+  }
+}
+
+.btn-social .fa.fa-twitter {
+  width: 46px !important;
+  line-height: 36px !important;
+}
+
+.mobile-container {
+  @include breakpoints (medium) {
+    display: none;
+  }
+  @include breakpoints (small medium) {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-around;
@@ -47,10 +123,11 @@ $backdrop-border-radius: 8px;
   word-wrap: break-word;
   float: left;
   text-align: left;
+  color: $gray-dark;
+  font-size: 14px;
 }
 
 // Network: list of issues to follow
-
 .network-issues-list {
   padding: $space-xs;
   display: flex;
@@ -79,11 +156,11 @@ $backdrop-border-radius: 8px;
       background: rgba(0, 0, 0, .55);
     }
 
-    @include breakpoints (xsmall-bootstrap medium-bootstrap) {
+    @include breakpoints(xsmall-bootstrap medium-bootstrap) {
       font-size: .9rem;
     }
 
-    @include breakpoints (iphone5 mid-small) {
+    @include breakpoints(iphone5 mid-small) {
       font-size: .9rem;
       -webkit-hyphens: auto;
       -moz-hyphens: auto;
@@ -91,7 +168,7 @@ $backdrop-border-radius: 8px;
       hyphens: auto;
     }
 
-    @include breakpoints (max iphone5) {
+    @include breakpoints(max iphone5) {
       font-size: .85rem;
       -webkit-hyphens: auto;
       -moz-hyphens: auto;
@@ -102,7 +179,7 @@ $backdrop-border-radius: 8px;
 }
 
 .network__card {
-  @include breakpoints (max mid-small) {
+  @include breakpoints(max mid-small) {
     margin: $network-card-margin-mobile;
   }
 }

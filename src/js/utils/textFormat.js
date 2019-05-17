@@ -59,6 +59,19 @@ export function calculateBallotBaseUrl (incomingBallotBaseUrl, incomingPathname)
   return ballotBaseUrl;
 }
 
+export function convertNameToSlug (incomingString) {
+  // This is used to turn issue/value names into URL paths
+  if (!incomingString) {
+    return '';
+  }
+  let convertedString = incomingString.toLowerCase();
+  convertedString = convertedString.split(' ').join('_');
+  convertedString = convertedString.split('&_').join('_');
+  convertedString = convertedString.split('/_').join('_');
+  // console.log('convertedString: ', convertedString);
+  return convertedString;
+}
+
 export function toTitleCase (incomingString) {
   if (!incomingString) {
     return '';

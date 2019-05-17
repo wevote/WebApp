@@ -43,7 +43,7 @@ export default class SearchAllBox extends Component {
     this.siteLogoText = $('.page-logo:nth-child(1)'); // eslint-disable-line requireDollarBeforejQueryAssignment
     this.ballot = $('.header-nav__item:nth-child(1)'); // eslint-disable-line requireDollarBeforejQueryAssignment
     this.network = $('.header-nav__item:nth-child(2)'); // eslint-disable-line requireDollarBeforejQueryAssignment
-    this.avatar = $('#js-header-avatar'); // eslint-disable-line requireDollarBeforejQueryAssignment
+    this.avatar = $('#profileAvatarHeaderBar'); // eslint-disable-line requireDollarBeforejQueryAssignment
     this.about = document.getElementsByClassName('header-nav__item--about')[0]; // eslint-disable-line prefer-destructuring
     this.donate = document.getElementsByClassName('header-nav__item--donate')[0]; // eslint-disable-line prefer-destructuring
 
@@ -267,10 +267,6 @@ export default class SearchAllBox extends Component {
       selectedIndex: 0,
       searchResults: [],
     });
-
-    // setTimeout(() => {
-    //   this.refs.searchAllBox.focus();
-    // }, 0);
   }
 
   navigateToSelectedLink () {
@@ -361,7 +357,6 @@ export default class SearchAllBox extends Component {
               onChange={this.onSearchFieldTextChange}
               onKeyDown={this.onSearchKeyDown}
               value={this.state.textFromSearchField}
-              ref="searchAllBox"
             />
             <div className="input-group-btn">
               {' '}
@@ -376,7 +371,10 @@ export default class SearchAllBox extends Component {
             </div>
           </div>
         </form>
-        <div className={searchContainerClasses} ref="searchContainer">
+        <div
+          className={searchContainerClasses}
+          ref="searchContainer" // eslint-disable-line react/no-string-refs
+        >
           <SearchResultsDisplay
             searchResults={this.state.searchResults}
             selectedIndex={this.state.selectedIndex}

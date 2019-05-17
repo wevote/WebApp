@@ -124,7 +124,6 @@ export default class VoterGuideFollowing extends Component {
     if (this.state.searchFilter) {
       voterGuideFollowedList = this.state.voterGuideFollowedListFilteredBySearch;
     }
-    const hideStopFollowingButton = !lookingAtSelf || !this.state.editMode;
     const showSearchWhenMoreThanThisNumber = 3;
 
     return (
@@ -136,7 +135,7 @@ export default class VoterGuideFollowing extends Component {
             { this.state.voterGuideFollowedList && this.state.voterGuideFollowedList.length > 0 ? (
               <span>
                 { lookingAtSelf ? (
-                  <a
+                  <a // eslint-disable-line
                     className="fa-pull-right u-push--md"
                     onKeyDown={this.onKeyDownEditMode.bind(this)}
                     onClick={this.toggleEditMode.bind(this)}
@@ -202,8 +201,6 @@ export default class VoterGuideFollowing extends Component {
                 <span>
                   <GuideList
                     incomingVoterGuideList={voterGuideFollowedList}
-                    hideStopFollowingButton={hideStopFollowingButton}
-                    hideIgnoreButton
                     instantRefreshOn
                   />
                 </span>

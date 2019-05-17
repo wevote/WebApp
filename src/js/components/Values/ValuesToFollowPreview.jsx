@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import styled from 'styled-components';
+import { withTheme } from '@material-ui/core/styles';
 import IssueActions from '../../actions/IssueActions';
-import IssueCard from './IssueCard';
+import IssueCardCompressed from './IssueCardCompressed';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 
-export default class ValuesToFollowPreview extends Component {
+class ValuesToFollowPreview extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -34,13 +36,28 @@ export default class ValuesToFollowPreview extends Component {
   }
 
   render () {
+    // const width = document.documentElement.clientWidth;
     renderLog(__filename);
     let issueList = [];
     if (this.state.issuesToFollow) {
       issueList = this.state.issuesToFollow;
     }
 
-    const ISSUES_TO_SHOW = 3;
+    const ISSUES_TO_SHOW = 4;
+
+    // if (width < 768) {
+    //   ISSUES_TO_SHOW = 3;
+    // } else {
+    //   ISSUES_TO_SHOW = 4;
+    // }
+
+    // window.onresize = () => {
+    //   if (width < 768) {
+    //     ISSUES_TO_SHOW = 3;
+    //   } else {
+    //     ISSUES_TO_SHOW = 4;
+    //   }
+    // };
 
     let issueCount = 0;
     const issueListForDisplay = issueList.map((issue) => {
@@ -49,7 +66,8 @@ export default class ValuesToFollowPreview extends Component {
         return null;
       } else {
         return (
-          <IssueCard
+          <IssueCardCompressed
+            followToggleOn
             issue={issue}
             issueImageSize="SMALL"
             key={`issue-list-key-${issue.issue_we_vote_id}`}
@@ -63,11 +81,11 @@ export default class ValuesToFollowPreview extends Component {
         <section className="card">
           <div className="card-main">
             <h1 className="h4">Values to Follow</h1>
-            <div>
+            <Row className="row">
               { issueListForDisplay }
-            </div>
+            </Row>
             <div>
-              <Link to="/values/list">Explore all 26 values</Link>
+              <Link id="myValuesExploreAllValues" to="/values/list">Explore all 26 values</Link>
             </div>
           </div>
         </section>
@@ -75,3 +93,9 @@ export default class ValuesToFollowPreview extends Component {
     );
   }
 }
+
+const Row = styled.div`
+  margin: 0px -4px;
+`;
+
+export default withTheme()((ValuesToFollowPreview));

@@ -8,7 +8,6 @@ import Textarea from 'react-textarea-autosize';
 import { cordovaDot, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import ReadMore from './ReadMore';
-// import PositionPublicToggle from './PositionPublicToggle';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
@@ -18,7 +17,7 @@ import avatarGeneric from '../../../img/global/svg-icons/avatar-generic.svg';
 export default class ItemPositionStatementActionBar extends Component {
   static propTypes = {
     ballot_item_we_vote_id: PropTypes.string.isRequired,
-    ballotItemDisplayName: PropTypes.string,
+    // ballotItemDisplayName: PropTypes.string,
     type: PropTypes.string.isRequired,
     comment_edit_mode_on: PropTypes.bool,
     supportProps: PropTypes.object,
@@ -178,9 +177,10 @@ export default class ItemPositionStatementActionBar extends Component {
     let { statementTextToBeSaved } = this.state;
     const { voterFullName, voterPhotoUrlMedium } = this.state;
     statementTextToBeSaved = statementTextToBeSaved.length === 0 ? null : statementTextToBeSaved;
-
-    let statementPlaceholderText;
     const horizontalEllipsis = '\u2026';
+    const statementPlaceholderText = `Your thoughts${horizontalEllipsis}`;
+
+    /*
     if (this.state.supportProps.is_support) {
       if (this.props.ballotItemDisplayName) {
         statementPlaceholderText = `Why you chose ${this.props.ballotItemDisplayName}${horizontalEllipsis}`;
@@ -198,6 +198,7 @@ export default class ItemPositionStatementActionBar extends Component {
     } else {
       statementPlaceholderText = `Your thoughts${horizontalEllipsis}`;
     }
+    */
 
     // Currently this "Post" text is the same given we display the visibility setting, but we may want to change this
     //  here if the near by visibility setting text changes

@@ -18,6 +18,8 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import SearchAllActions from '../../actions/SearchAllActions';
 import webAppConfig from '../../config';
+import EndorsementCard from '../../components/Widgets/EndorsementCard';
+import { renderLog } from '../../utils/logging';
 
 // This is based on routes/Ballot/Candidate
 export default class OrganizationVoterGuideCandidate extends Component {
@@ -40,10 +42,10 @@ export default class OrganizationVoterGuideCandidate extends Component {
   }
 
   componentDidMount () {
-    // console.log("Candidate componentDidMount");
+    // console.log('Candidate componentDidMount');
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     CandidateActions.candidateRetrieve(this.props.params.candidate_we_vote_id);
-    CandidateActions.positionListForBallotItem(this.props.params.candidate_we_vote_id);
+    CandidateActions.positionListForBallotItemPublic(this.props.params.candidate_we_vote_id);
 
     // Get the latest guides to follow for this candidate
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
@@ -63,15 +65,15 @@ export default class OrganizationVoterGuideCandidate extends Component {
       positionListFromAdvisersFollowedByVoter: CandidateStore.getPositionList(this.props.params.candidate_we_vote_id),
       voterGuidesToFollowForLatestBallotItem: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
     });
-    // console.log("OrganizationVoterGuideCandidate, organization_we_vote_id: ", this.props.params.organization_we_vote_id);
+    // console.log('OrganizationVoterGuideCandidate, organization_we_vote_id: ', this.props.params.organization_we_vote_id);
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("Candidate componentWillReceiveProps");
+    // console.log('Candidate componentWillReceiveProps');
     // When a new candidate is passed in, update this component to show the new data
     if (nextProps.params.candidate_we_vote_id !== this.state.candidateWeVoteId) {
       CandidateActions.candidateRetrieve(nextProps.params.candidate_we_vote_id);
-      CandidateActions.positionListForBallotItem(nextProps.params.candidate_we_vote_id);
+      CandidateActions.positionListForBallotItemPublic(nextProps.params.candidate_we_vote_id);
       VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.candidate_we_vote_id, 'CANDIDATE');
       this.setState({
         candidateWeVoteId: nextProps.params.candidate_we_vote_id,
@@ -82,19 +84,19 @@ export default class OrganizationVoterGuideCandidate extends Component {
 
     // Display the candidate's name in the search box
     // var { candidate } = this.state;
-    // var searchBoxText = candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
+    // var searchBoxText = candidate.ballot_item_display_name || '';  // TODO DALE Not working right now
     SearchAllActions.exitSearch('');
   }
 
   componentWillUnmount () {
-    // console.log("Candidate componentWillUnmount");
+    // console.log('Candidate componentWillUnmount');
     this.candidateStoreListener.remove();
     this.voterGuideStoreListener.remove();
   }
 
   onCandidateStoreChange () {
+    // console.log('Candidate onCandidateStoreChange');
     const { candidateWeVoteId } = this.state;
-    // console.log("Candidate onCandidateStoreChange");
     this.setState({
       candidate: CandidateStore.getCandidate(candidateWeVoteId),
       positionListFromAdvisersFollowedByVoter: CandidateStore.getPositionList(candidateWeVoteId),
@@ -102,10 +104,10 @@ export default class OrganizationVoterGuideCandidate extends Component {
   }
 
   onVoterGuideStoreChange () {
-    // console.log("Candidate onVoterGuideStoreChange");
+    // console.log('Candidate onVoterGuideStoreChange');
     // When the voterGuidesToFollowForLatestBallotItem changes, trigger an update of the candidate so we can get an updated position_list
     // CandidateActions.candidateRetrieve(this.state.candidateWeVoteId);
-    CandidateActions.positionListForBallotItem(this.state.candidateWeVoteId);
+    CandidateActions.positionListForBallotItemPublic(this.state.candidateWeVoteId);
     // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
     SupportActions.retrievePositionsCountsForOneBallotItem(this.state.candidateWeVoteId);
     // Eventually we could use this getVoterGuidesToFollowForBallotItemId with candidateWeVoteId, but we can't now
@@ -117,9 +119,11 @@ export default class OrganizationVoterGuideCandidate extends Component {
   }
 
   render () {
+    renderLog(__filename);
     const electionId = VoterStore.electionId();
     const NO_VOTER_GUIDES_TEXT = 'We could not find any more voter guides to follow related to this candidate.';
-    // console.log("Candidate render, this.state.positionListFromAdvisersFollowedByVoter: ", this.state.positionListFromAdvisersFollowedByVoter);
+
+    // console.log('Candidate render, this.state.positionListFromAdvisersFollowedByVoter: ', this.state.positionListFromAdvisersFollowedByVoter);
 
     if (!this.state.candidate || !this.state.candidate.ballot_item_display_name) {
       // TODO DALE If the candidate we_vote_id is not valid, we need to update this with a notice
@@ -177,6 +181,14 @@ export default class OrganizationVoterGuideCandidate extends Component {
             }
           </div>
         </section>
+        <EndorsementCard
+          bsPrefix="u-margin-top--sm u-stack--xs"
+          variant="primary"
+          buttonText="Endorsements Missing?"
+          text={`Are there endorsements for
+          ${candidateName}
+          that you expected to see?`}
+        />
         <br />
         <ThisIsMeAction
           twitter_handle_being_viewed={this.state.candidate.twitter_handle}

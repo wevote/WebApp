@@ -1,5 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import AppActions from '../../actions/AppActions';
+import cookies from '../../utils/cookies';
 import { historyPush } from '../../utils/cordovaUtils';
 import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
@@ -55,17 +57,32 @@ export default class VerifyEmailProcess extends Component {
 
   voterMergeTwoAccountsByEmailKey (emailSecretKey, voterHasDataToPreserve = true) {
     VoterActions.voterMergeTwoAccountsByEmailKey(emailSecretKey);
+    let redirectPathname;
+    const signInStartPath = cookies.getItem('sign_in_start_path');
+
     if (voterHasDataToPreserve) {
+      redirectPathname = '/settings/account';
+      if (signInStartPath) {
+        redirectPathname = signInStartPath;
+        AppActions.unsetStoreSignInStartPath();
+        cookies.removeItem('sign_in_start_path', '/');
+      }
       historyPush({
-        pathname: '/settings/account',
+        pathname: redirectPathname,
         state: {
           message: 'Your accounts have been merged.',
           message_type: 'success',
         },
       });
     } else {
+      redirectPathname = '/ballot';
+      if (signInStartPath) {
+        redirectPathname = signInStartPath;
+        AppActions.unsetStoreSignInStartPath();
+        cookies.removeItem('sign_in_start_path', '/');
+      }
       historyPush({
-        pathname: '/ballot',
+        pathname: redirectPathname,
         state: {
           message: 'You have successfully verified and signed in with your email.',
           message_type: 'success',
@@ -94,6 +111,9 @@ export default class VerifyEmailProcess extends Component {
       !this.state.voter) {
       return LoadingWheel;
     }
+
+    let redirectPathname;
+    const signInStartPath = cookies.getItem('sign_in_start_path');
 
     // This process starts when we return from attempting voterEmailAddressVerify
     if (!this.state.emailSignInStatus.email_address_found) {
@@ -126,9 +146,15 @@ export default class VerifyEmailProcess extends Component {
 
     if (this.state.emailSignInStatus.email_secret_key_belongs_to_this_voter) {
       // We don't need to do anything more except redirect
-      console.log('secret key owned by this voter - push to /ballot');
+      // console.log('secret key owned by this voter - push to /ballot');
+      redirectPathname = '/ballot';
+      if (signInStartPath) {
+        redirectPathname = signInStartPath;
+        AppActions.unsetStoreSignInStartPath();
+        cookies.removeItem('sign_in_start_path', '/');
+      }
       historyPush({
-        pathname: '/ballot',
+        pathname: redirectPathname,
         state: {
           message: 'You have successfully verified your email.',
           message_type: 'success',

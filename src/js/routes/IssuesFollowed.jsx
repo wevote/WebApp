@@ -35,7 +35,7 @@ export default class IssuesFollowed extends Component {
       issuesFollowed: IssueStore.getIssuesVoterIsFollowing(),
     });
 
-    this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange.bind(this));
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
   }
 
   componentWillUnmount () {
@@ -54,7 +54,7 @@ export default class IssuesFollowed extends Component {
     return '/issues_followed';
   }
 
-  _onIssueStoreChange () {
+  onIssueStoreChange () {
     this.setState({
       issuesFollowed: IssueStore.getIssuesVoterIsFollowing(),
     });
@@ -109,7 +109,7 @@ export default class IssuesFollowed extends Component {
         <section className="card">
           <div className="card-main">
             <h1 className="h1">Issues You Are Following</h1>
-            <a
+            <a // eslint-disable-line
               className="fa-pull-right"
               onKeyDown={this.onKeyDownEditMode}
               onClick={this.toggleEditMode}

@@ -28,14 +28,14 @@ export default class NetworkIssuesToFollow extends Component {
       IssueActions.issuesRetrieve();
     }
 
-    this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange.bind(this));
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.issueStoreListener.remove();
   }
 
-  _onIssueStoreChange () {
+  onIssueStoreChange () {
     this.setState({
       issuesToFollow: IssueStore.getIssuesVoterCanFollow(),
       issuesFollowed: IssueStore.getIssuesVoterIsFollowing(),

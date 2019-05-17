@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import Helmet from 'react-helmet';
+import PropTypes from 'prop-types';
+import cookies from '../../utils/cookies';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import AppActions from '../../actions/AppActions';
+import AppStore from '../../stores/AppStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
@@ -19,10 +23,16 @@ import VoterStore from '../../stores/VoterStore';
 const debugMode = false;
 
 export default class SettingsAccount extends Component {
+  static propTypes = {
+    toggleSignInModal: PropTypes.func,
+  };
+
   constructor (props) {
     super(props);
     this.state = {
       facebookAuthResponse: {},
+      pleaseSignInTitle: '',
+      pleaseSignInSubTitle: '',
       showTwitterDisconnect: false,
     };
     this.toggleTwitterDisconnectClose = this.toggleTwitterDisconnectClose.bind(this);
@@ -43,7 +53,40 @@ export default class SettingsAccount extends Component {
     this.onVoterStoreChange();
     this.facebookStoreListener = FacebookStore.addListener(this.onFacebookChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    cookies.removeItem('sign_in_start_path', '/');
+    const oneDayExpires = 86400;
+    let  pathname = '';
+
+    const getStartedMode = AppStore.getStartedMode();
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
+    if (getStartedMode && getStartedMode === 'getStartedForCampaigns') {
+      pathname = '/settings/profile';
+      cookies.setItem('sign_in_start_path', pathname, oneDayExpires, '/');
+      this.setState({
+        pleaseSignInTitle: 'Please sign in to get started (campaign).',
+        pleaseSignInSubTitle: 'Use Twitter to verify your account most quickly.',
+      });
+    } else if (getStartedMode && getStartedMode === 'getStartedForOrganizations') {
+      pathname = '/settings/profile';
+      cookies.setItem('sign_in_start_path', pathname, oneDayExpires, '/');
+      this.setState({
+        pleaseSignInTitle: 'Please sign in to get started (organization).',
+        pleaseSignInSubTitle: 'Use Twitter to verify your account most quickly.',
+      });
+    } else if (getStartedMode && getStartedMode === 'getStartedForVoters') {
+      pathname = '/settings/profile';
+      cookies.setItem('sign_in_start_path', pathname, oneDayExpires, '/');
+      this.setState({
+        pleaseSignInTitle: 'Please sign in to get started (voter).',
+        pleaseSignInSubTitle: 'Don\'t worry, we won\'t post anything automatically.',
+      });
+    } else {
+      AppActions.storeSignInStartPath();
+      this.setState({
+        pleaseSignInTitle: 'Please sign in so you can share.',
+        pleaseSignInSubTitle: 'Don\'t worry, we won\'t post anything automatically.',
+      });
+    }
   }
 
   componentWillUnmount () {
@@ -110,6 +153,7 @@ export default class SettingsAccount extends Component {
       return LoadingWheel;
     }
 
+    const { pleaseSignInTitle, pleaseSignInSubTitle } = this.state;
     let pageTitle = 'Sign In - We Vote';
     let yourAccountTitle = 'Your Account';
     let yourAccountExplanation = '';
@@ -137,8 +181,8 @@ export default class SettingsAccount extends Component {
             {this.state.voter.is_signed_in ?
               <div className="u-stack--sm">{yourAccountExplanation}</div> : (
                 <div>
-                  <div className="u-f3">Please sign in so you can share.</div>
-                  <div className="u-stack--sm">Don&apos;t worry, we won&apos;t post anything automatically.</div>
+                  <div className="u-f3">{pleaseSignInTitle}</div>
+                  <div className="u-stack--sm">{pleaseSignInSubTitle}</div>
                 </div>
               )
             }
@@ -158,7 +202,7 @@ export default class SettingsAccount extends Component {
                 }
                 { !this.state.voter.signed_in_facebook && (
                   <span>
-                    <FacebookSignIn className="btn btn-social btn-lg btn-facebook" />
+                    <FacebookSignIn className="btn btn-social btn-lg btn-facebook" toggleSignInModal={this.props.toggleSignInModal} />
                   </span>
                 )
                 }

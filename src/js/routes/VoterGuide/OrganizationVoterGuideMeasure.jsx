@@ -40,7 +40,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
   componentDidMount () {
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     MeasureActions.measureRetrieve(this.props.params.measure_we_vote_id);
-    MeasureActions.positionListForBallotItem(this.props.params.measure_we_vote_id);
+    MeasureActions.positionListForBallotItemPublic(this.props.params.measure_we_vote_id);
 
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(this.props.params.measure_we_vote_id, 'MEASURE');
@@ -64,7 +64,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
     // When a new measure is passed in, update this component to show the new data
     if (nextProps.params.measure_we_vote_id !== this.state.measureWeVoteId) {
       MeasureActions.measureRetrieve(nextProps.params.measure_we_vote_id);
-      MeasureActions.positionListForBallotItem(nextProps.params.measure_we_vote_id);
+      MeasureActions.positionListForBallotItemPublic(nextProps.params.measure_we_vote_id);
       VoterGuideActions.voterGuidesToFollowRetrieveByBallotItem(nextProps.params.measure_we_vote_id, 'MEASURE');
       this.setState({
         measureWeVoteId: nextProps.params.measure_we_vote_id,
@@ -95,7 +95,7 @@ export default class OrganizationVoterGuideMeasure extends Component {
   onVoterGuideStoreChange () {
     const { measureWeVoteId } = this.state;
     // MeasureActions.measureRetrieve(measureWeVoteId);
-    MeasureActions.positionListForBallotItem(measureWeVoteId);
+    MeasureActions.positionListForBallotItemPublic(measureWeVoteId);
     // Also update the position count for *just* this candidate, since it might not come back with positionsCountForAllBallotItems
 
     SupportActions.retrievePositionsCountsForOneBallotItem(measureWeVoteId);

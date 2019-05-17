@@ -67,7 +67,9 @@ export default class Intro extends Component {
         { this.props.children || (
         <div className="container-fluid well u-stack--md u-inset--md">
           <h2 className="text-center">We Vote</h2>
-          <label htmlFor="address">
+          <label // eslint-disable-line
+            htmlFor="address"
+          >
               Your Address.&nbsp;
           </label>
           <span className="medium">

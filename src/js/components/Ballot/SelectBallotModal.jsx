@@ -44,12 +44,12 @@ export default class SelectBallotModal extends Component {
     renderLog(__filename);
 
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
-    // console.log("SelectBallotModal render, ballotBaseUrl: ", ballotBaseUrl);
+    // console.log('SelectBallotModal render, ballotBaseUrl: ', ballotBaseUrl);
 
     const ballotElectionList = this.props.ballotElectionList || [];
 
     const voterAddressObject = VoterStore.getAddressObject();
-    // console.log("SelectBallotModal render, voter_address_object: ", voter_address_object);
+    // console.log('SelectBallotModal render, voter_address_object: ', voter_address_object);
     return (
       <Modal
         bsPrefix={`ballot-election-list ballot-election-list__modal ballot-election-list__modal-mobile ${isCordova() && 'ballot-election-list__modal-cordova'}`}

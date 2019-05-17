@@ -10,26 +10,31 @@ import PublicFiguresToFollowPreview from '../components/Values/PublicFiguresToFo
 import ValuesFollowedPreview from '../components/Values/ValuesFollowedPreview';
 import ValuesToFollowPreview from '../components/Values/ValuesToFollowPreview';
 import NetworkOpinionsFollowed from '../components/Network/NetworkOpinionsFollowed';
-import TwitterSignIn from '../components/Twitter/TwitterSignIn';
 import VoterStore from '../stores/VoterStore';
-
-const twitterInfoText = 'Signing into Twitter is the fastest way to find voter guides related to your values and the issues you care about. When you sign into Twitter, We Vote will find the voter guides for everyone you are following.';
+import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
+import Testimonial from '../components/Widgets/Testimonial';
+import { cordovaDot } from '../utils/cordovaUtils';
+import AddEndorsements from '../components/Widgets/AddEndorsements';
 
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 
+const testimonialAuthor = 'Dale M., Oakland, California';
+const imageUrl = cordovaDot('/img/global/photos/Dale_McGrew-200x200.jpg');
+const testimonial = 'Following the values that are important to me shows me opinions on my ballot from other people who share my values.';
+
 export default class Values extends Component {
-  static propTypes = {
-  };
+  static propTypes = {};
 
   constructor (props) {
     super(props);
-    this.state = {
-    };
+    this.state = {};
   }
 
   componentDidMount () {
     this.onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(
+      this.onVoterStoreChange.bind(this),
+    );
     AnalyticsActions.saveActionNetwork(VoterStore.electionId());
   }
 
@@ -77,20 +82,35 @@ export default class Values extends Component {
         <BrowserPushMessage incomingProps={this.props} />
         <div className="row">
           <div className="col-sm-12 col-md-8">
+            <div className="d-md-none d-block">
+              <div className="card">
+                <div className="card-main">
+                  <Testimonial
+                    imageUrl={imageUrl}
+                    testimonialAuthor={testimonialAuthor}
+                    testimonial={testimonial}
+                  />
+                </div>
+              </div>
+            </div>
             {valuesBlockToDisplay}
             {publicFiguresBlockToDisplay}
             {organizationsBlockToDisplay}
           </div>
-
-          <div className="col-md-4 d-none d-sm-block">
-            { this.state.voter.signed_in_twitter ?
-              null : (
-                <div className="network-btn">
-                  <TwitterSignIn className="btn btn-social btn-lg btn-twitter text-center" buttonText="Sign In to Find Voter Guides" />
-                  {twitterInfoText}
-                </div>
-              )
-            }
+          <div className="col-md-4 d-none d-md-block">
+            <div className="card">
+              <div className="card-main">
+                <Testimonial
+                  imageUrl={imageUrl}
+                  testimonialAuthor={testimonialAuthor}
+                  testimonial={testimonial}
+                />
+              </div>
+            </div>
+            {this.state.voter.signed_in_twitter ? null : (
+              <TwitterSignInCard />
+            )}
+            <AddEndorsements />
           </div>
         </div>
       </span>

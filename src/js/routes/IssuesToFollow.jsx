@@ -22,14 +22,14 @@ export default class IssuesToFollow extends Component {
 
   componentDidMount () {
     IssueActions.retrieveIssuesToFollow();
-    this.issueStoreListener = IssueStore.addListener(this._onIssueStoreChange.bind(this));
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
   }
 
   componentWillUnmount () {
     this.issueStoreListener.remove();
   }
 
-  _onIssueStoreChange () {
+  onIssueStoreChange () {
     this.setState({
       issuesToFollow: IssueStore.getIssuesVoterCanFollow(),
     });

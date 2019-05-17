@@ -13,7 +13,6 @@ import OrganizationActions from '../actions/OrganizationActions';
 import OrganizationsFollowedOnTwitter from '../components/Connect/OrganizationsFollowedOnTwitter';
 import OrganizationStore from '../stores/OrganizationStore';
 import AddFacebookFriends from '../components/Connect/AddFacebookFriends';
-import ItemTinyOpinionsToFollow from '../components/VoterGuide/ItemTinyOpinionsToFollow';
 
 export default class Connect extends Component {
   static propTypes = {
@@ -127,10 +126,6 @@ export default class Connect extends Component {
               <p>Follow organizations to see what they recommend</p>
             </Link>
             <div className="card-child__list-group">
-              <ItemTinyOpinionsToFollow
-                organizationsToFollow={this.state.voterGuidesToFollowAll}
-                maximumOrganizationDisplay={this.state.maximumNumberOfOrganizationsToDisplay}
-              />
               <Link className="pull-right" to="/opinions">See all</Link>
             </div>
           </div>
