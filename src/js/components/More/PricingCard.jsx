@@ -41,7 +41,7 @@ class PricingCard extends Component {
       <React.Fragment>
         {fullWidth ? (
           <div className="col col-12">
-            <Card>
+            <CardMobile>
               <CardWrapper>
                 {premium ? (
                   <PremiumName>{planName}</PremiumName>
@@ -113,7 +113,7 @@ class PricingCard extends Component {
                         color: '#2E3C5D',
                       }}
                     />
-                    Enter Your Own Positions
+                    <ItemText>Enter Your Own Positions</ItemText>
                   </CollectionItem>
                   <CollectionItem>
                     <Check
@@ -121,7 +121,7 @@ class PricingCard extends Component {
                         color: '#2E3C5D',
                       }}
                     />
-                    Voter Guide Creation Tools
+                    <ItemText>Voter Guide Creation Tools</ItemText>
                   </CollectionItem>
                   <CollectionItem>
                     <Check
@@ -129,7 +129,7 @@ class PricingCard extends Component {
                         color: '#2E3C5D',
                       }}
                     />
-                    Add Ballot to Your Website
+                    <ItemText>Add Ballot to Your Website</ItemText>
                   </CollectionItem>
                   <CollectionItem>
                     <Check
@@ -137,7 +137,7 @@ class PricingCard extends Component {
                         color: '#2E3C5D',
                       }}
                     />
-                    Visitor Metrics
+                    <ItemText>Visitor Metrics</ItemText>
                   </CollectionItem>
                   <CollectionItem>
                     <Check
@@ -145,7 +145,7 @@ class PricingCard extends Component {
                         color: '#2E3C5D',
                       }}
                     />
-                    WeVote.US Subdomain
+                    <ItemText>WeVote.US Subdomain</ItemText>
                   </CollectionItem>
                   <CollectionItem>
                     <Check
@@ -153,7 +153,7 @@ class PricingCard extends Component {
                         color: '#2E3C5D',
                       }}
                     />
-                    Upload Your Logo
+                    <ItemText>Upload Your Logo</ItemText>
                   </CollectionItem>
                   {premium ? (
                     <CollectionItem>
@@ -170,7 +170,7 @@ class PricingCard extends Component {
                           }}
                         />
                       )}
-                      Edit Social Media Sharing Links
+                      <ItemText>Edit Social Media Sharing Links</ItemText>
                     </CollectionItem>
                   ) : (
                     <React.Fragment>
@@ -184,11 +184,11 @@ class PricingCard extends Component {
                         ) : (
                           <Close
                             style={{
-                              color: 'rgb(219,179,86)',
+                              color: 'red',
                             }}
                           />
                         )}
-                        Edit Social Media Sharing Links
+                        <ItemText>Edit Social Media Sharing Links</ItemText>
                         <CollectionItemLight />
                       </CollectionItem>
                     </React.Fragment>
@@ -208,7 +208,7 @@ class PricingCard extends Component {
                           }}
                         />
                       )}
-                      Create Multi-Organization Voter Guides
+                      <ItemText>Create Multi-Organization Voter Guides</ItemText>
                     </CollectionItem>
                   ) : (
                     <React.Fragment>
@@ -222,11 +222,11 @@ class PricingCard extends Component {
                         ) : (
                           <Close
                             style={{
-                              color: 'rgb(219,179,86)',
+                              color: 'red',
                             }}
                           />
                         )}
-                        Create Multi-Organization Voter Guides
+                        <ItemText>Create Multi-Organization Voter Guides</ItemText>
                         <CollectionItemLight />
                       </CollectionItem>
                     </React.Fragment>
@@ -246,7 +246,7 @@ class PricingCard extends Component {
                           }}
                         />
                       )}
-                      Additional Administrators
+                      <ItemText>Additional Administrators</ItemText>
                     </CollectionItem>
                   ) : (
                     <React.Fragment>
@@ -260,11 +260,11 @@ class PricingCard extends Component {
                         ) : (
                           <Close
                             style={{
-                              color: 'rgb(219,179,86)',
+                              color: 'red',
                             }}
                           />
                         )}
-                        Additional Administrators
+                        <ItemText>Additional Administrators</ItemText>
                         <CollectionItemLight />
                       </CollectionItem>
                     </React.Fragment>
@@ -284,7 +284,7 @@ class PricingCard extends Component {
                           }}
                         />
                       )}
-                      Analytics Integration
+                      <ItemText>Analytics Integration</ItemText>
                     </CollectionItem>
                   ) : (
                     <React.Fragment>
@@ -298,18 +298,18 @@ class PricingCard extends Component {
                         ) : (
                           <Close
                             style={{
-                              color: 'rgb(219,179,86)',
+                              color: 'red',
                             }}
                           />
                         )}
-                        Analytics Integration
+                        <ItemText>Analytics Integration</ItemText>
                         <CollectionItemLight />
                       </CollectionItem>
                     </React.Fragment>
                   )}
                 </Collection>
               </CardWrapper>
-            </Card>
+            </CardMobile>
           </div>
         ) : (
           <div className="col col-4">
@@ -393,7 +393,7 @@ class PricingCard extends Component {
                         color: '#2E3C5D',
                       }}
                     />
-                    Enter Your Own Positions
+                    <ItemText>Enter Your Own Positions</ItemText>
                   </CollectionItem>
                   <CollectionItem>
                     <Check
@@ -401,7 +401,7 @@ class PricingCard extends Component {
                         color: '#2E3C5D',
                       }}
                     />
-                    Voter Guide Creation Tools
+                    <ItemText>Voter Guide Creation Tools</ItemText>
                   </CollectionItem>
                   <CollectionItem>
                     <Check
@@ -409,7 +409,7 @@ class PricingCard extends Component {
                         color: '#2E3C5D',
                       }}
                     />
-                    Add Ballot to Your Website
+                    <ItemText>Add Ballot to Your Website</ItemText>
                   </CollectionItem>
                   <CollectionItem>
                     <Check
@@ -417,7 +417,7 @@ class PricingCard extends Component {
                         color: '#2E3C5D',
                       }}
                     />
-                    Visitor Metrics
+                    <ItemText>Visitor Metrics</ItemText>
                   </CollectionItem>
                   <CollectionItem>
                     <Check
@@ -425,7 +425,7 @@ class PricingCard extends Component {
                         color: '#2E3C5D',
                       }}
                     />
-                    WeVote.US Subdomain
+                    <ItemText>WeVote.US Subdomain</ItemText>
                   </CollectionItem>
                   <CollectionItem>
                     <Check
@@ -433,7 +433,7 @@ class PricingCard extends Component {
                         color: '#2E3C5D',
                       }}
                     />
-                    Upload Your Logo
+                    <ItemText>Upload Your Logo</ItemText>
                   </CollectionItem>
                   {premium ? (
                     <CollectionItem>
@@ -450,7 +450,7 @@ class PricingCard extends Component {
                           }}
                         />
                       )}
-                      Edit Social Media Sharing Links
+                      <ItemText>Edit Social Media Sharing Links</ItemText>
                     </CollectionItem>
                   ) : (
                     <React.Fragment>
@@ -464,11 +464,11 @@ class PricingCard extends Component {
                         ) : (
                           <Close
                             style={{
-                              color: 'rgb(219,179,86)',
+                              color: 'red',
                             }}
                           />
                         )}
-                        Edit Social Media Sharing Links
+                        <ItemText>Edit Social Media Sharing Links</ItemText>
                         <CollectionItemLight />
                       </CollectionItem>
                     </React.Fragment>
@@ -488,7 +488,7 @@ class PricingCard extends Component {
                           }}
                         />
                       )}
-                      Create Multi-Organization Voter Guides
+                      <ItemText>Create Multi-Organization Voter Guides</ItemText>
                     </CollectionItem>
                   ) : (
                     <React.Fragment>
@@ -502,11 +502,11 @@ class PricingCard extends Component {
                         ) : (
                           <Close
                             style={{
-                              color: 'rgb(219,179,86)',
+                              color: 'red',
                             }}
                           />
                         )}
-                        Create Multi-Organization Voter Guides
+                        <ItemText>Create Multi-Organization Voter Guides</ItemText>
                         <CollectionItemLight />
                       </CollectionItem>
                     </React.Fragment>
@@ -526,7 +526,7 @@ class PricingCard extends Component {
                           }}
                         />
                       )}
-                      Additional Administrators
+                      <ItemText>Additional Administrators</ItemText>
                     </CollectionItem>
                   ) : (
                     <React.Fragment>
@@ -540,11 +540,11 @@ class PricingCard extends Component {
                         ) : (
                           <Close
                             style={{
-                              color: 'rgb(219,179,86)',
+                              color: 'red',
                             }}
                           />
                         )}
-                        Additional Administrators
+                        <ItemText>Additional Administrators</ItemText>
                         <CollectionItemLight />
                       </CollectionItem>
                     </React.Fragment>
@@ -564,7 +564,7 @@ class PricingCard extends Component {
                           }}
                         />
                       )}
-                      Analytics Integration
+                      <ItemText>Analytics Integration</ItemText>
                     </CollectionItem>
                   ) : (
                     <React.Fragment>
@@ -578,11 +578,11 @@ class PricingCard extends Component {
                         ) : (
                           <Close
                             style={{
-                              color: 'rgb(219,179,86)',
+                              color: 'red',
                             }}
                           />
                         )}
-                        Analytics Integration
+                        <ItemText>Analytics Integration</ItemText>
                         <CollectionItemLight />
                       </CollectionItem>
                     </React.Fragment>
@@ -612,8 +612,13 @@ const Card = styled.div`
   box-shadow: 1px 1px 8px 2px #e3e3e3;
 `;
 
+const CardMobile = styled.div`
+  border-radius: 2px;
+  box-shadow: 1px 1px 10px 4px #e1e1e1;
+`;
+
 const CardWrapper = styled.div`
-  padding: 16px;
+  padding: 8px;
 `;
 
 const PremiumName = styled.h4`
@@ -707,8 +712,12 @@ const CollectionItemLight = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  background: rgba(255, 255, 255, 0.8)
+  background: rgba(255, 255, 255, 0.6)
 
+`;
+
+const ItemText = styled.span`
+  margin-left: 6px;
 `;
 
 export default withStyles(styles)(PricingCard);

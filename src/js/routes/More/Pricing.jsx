@@ -72,20 +72,19 @@ class Pricing extends Component {
         <WelcomeAppbar pathname="/more/pricing" />
         <HeaderForAbout>
           <Title>Pricing</Title>
+          <div className="u-show-mobile-tablet">
+            <PricingSwitch
+              color="white"
+              choices={['Free', 'Pro', 'Enterprise']}
+              selectedCategoryIndex={selectedCategoryIndex}
+              switchToDifferentCategoryFunction={this.switchToDifferentCategoryFunction}
+            />
+          </div>
         </HeaderForAbout>
         <Section>
           <AboutDescriptionContainer>
             <div className="container">
               <div className="u-show-mobile-tablet">
-                <SwitchContainer>
-                  <PricingSwitch
-                    color="white"
-                    choices={['Free', 'Pro', 'Enterprise']}
-                    selectedCategoryIndex={selectedCategoryIndex}
-                    switchToDifferentCategoryFunction={this.switchToDifferentCategoryFunction}
-                  />
-                </SwitchContainer>
-
                 <div className="row">
                   {selectedCategoryIndex === 0 ? (
                     <PricingCard
@@ -202,7 +201,7 @@ const Wrapper = styled.div`
 
 const HeaderForAbout = styled.div`
   position: relative;
-  height: 190px;
+  height: 240px;
   width: 110%;
   color: white;
   background-image: linear-gradient(to bottom, #415a99, #2d3b5e);
@@ -210,12 +209,12 @@ const HeaderForAbout = styled.div`
   border-bottom-right-radius: 50% 25%;
   padding: 0 2em;
   margin-top: -72px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    height: 190px;
-  }
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    height: 190px;
-  }
+  // @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  //   height: 240px;
+  // }
+  // @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  //   height: 240px;
+  // }
 `;
 
 const AboutDescriptionContainer = styled.div`
@@ -223,15 +222,18 @@ const AboutDescriptionContainer = styled.div`
   width: 960px;
   max-width: 90vw;
   text-align: left;
+  @media (max-width: 569px) {
+    margin-top: -2em;
+  }
 `;
 
-const SwitchContainer = styled.div`
-  background: #2e3c5d;
-  border-radius: 50px;
-  width: calc(100% - 30px);
-  margin: 0 auto;
-  padding: 4px;
-  margin-bottom: 32px;
-`;
+// const SwitchContainer = styled.div`
+//   background: #2e3c5d;
+//   border-radius: 50px;
+//   width: calc(100% - 30px);
+//   margin: 0 auto;
+//   padding: 4px;
+//   margin-bottom: 32px;
+// `;
 
 export default withStyles(styles)(Pricing);
