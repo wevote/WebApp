@@ -222,7 +222,9 @@ const AboutDescriptionContainer = styled.div`
   width: 960px;
   max-width: 90vw;
   text-align: left;
-  margin-top: -2em;
+  @media (max-width: 569px) {
+    margin-top: -2em;
+  }
 `;
 
 // const SwitchContainer = styled.div`
