@@ -39,8 +39,10 @@ const Container = styled.div`
   flex-flow: row;
   border-radius: 64px;
   height: 36px;
-  max-width: 100%;
+  max-width: 90%;
   width: 720px;
+  margin: 0 auto;
+  margin-bottom: 32px;
   cursor: pointer;
   border: 1px solid ${({ color }) => color};
   transition: all 150ms ease-in;
@@ -64,6 +66,9 @@ const ChoiceText = styled.p`
   font-size: 14px;
   text-align: center;
   transition: all 150ms ease-in;
+  @media (max-width: 569px) {
+    font-size: 12px;
+  }
 `;
 
 export default withTheme(PricingSwitch);
