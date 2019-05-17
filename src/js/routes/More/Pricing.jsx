@@ -22,6 +22,55 @@ class Pricing extends Component {
     super(props);
 
     this.state = {
+      pricingCardLabels: ['Free', 'Professional', 'Enterprise'],
+      forCampaignsPricingCards: {
+        Free: {
+          planName: 'Free',
+          price: 0,
+          priceDescribe: 'For life',
+          premium: false,
+          description: 'Just start creating: get a free site and be on your way to empowering your supporters in less than five minutes.',
+          bullets: ['Create your own endorsements', 'Add to your own website', 'See visitor metrics'],
+          buttonText: 'Start with Free',
+          buttonOnClickId: 'pricingStartWithFree',
+          buttonOnClickFunction: undefined,
+          index: 0,
+          pricingCardFeatures: [
+            {
+              iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
+              featureDescription: 'Enter Your Own Positions',
+            },
+          ],
+        },
+        Professional: {
+        },
+        Enterprise: {
+        },
+      },
+      forOrganizationsPricingCards: {
+        Free: {
+          planName: 'Free',
+          price: 0,
+          priceDescribe: 'For life',
+          premium: false,
+          description: 'Just start creating: get a free site and be on your way to empowering your supporters in less than five minutes.',
+          bullets: ['Create your own endorsements', 'Add to your own website', 'See visitor metrics'],
+          buttonText: 'Start with Free',
+          buttonOnClickId: 'pricingStartWithFree',
+          buttonOnClickFunction: undefined,
+          index: 0,
+          pricingCardFeatures: [
+            {
+              iconType: 'checkMark',  // 'goldCheckMark', 'notAvailable'
+              featureDescription: 'Enter Your Own Positions',
+            },
+          ],
+        },
+        Professional: {
+        },
+        Enterprise: {
+        },
+      },
       selectedCategoryIndex: 0,
       voter: {},
     };
@@ -53,7 +102,7 @@ class Pricing extends Component {
       ({ is_signed_in: isSignedIn } = voter);
       isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
     }
-    console.log('Pricing getStartedForOrganizations, isSignedIn: ', isSignedIn);
+    // console.log('Pricing getStartedForOrganizations, isSignedIn: ', isSignedIn);
     if (isSignedIn) {
       historyPush('/settings/profile');
     } else {
@@ -119,7 +168,7 @@ class Pricing extends Component {
                           premium
                           priceDescribe={null}
                           planName="Enterprise"
-                          description="Best for local political clubs."
+                          description="Best for statewide or national organizations or companies."
                           bullets={['Branding control', 'Analytics integration', 'Additional administrators']}
                           buttonText="Contact Sales"
                           buttonOnClickId="pricingStartWithEnterprise"
@@ -156,7 +205,7 @@ class Pricing extends Component {
                   premium
                   priceDescribe={null}
                   planName="Enterprise"
-                  description="Best for local political clubs."
+                  description="Best for statewide or national organizations or companies."
                   bullets={['Branding control', 'Analytics integration', 'Up to 3 administrators']}
                   buttonText="Contact Sales"
                   buttonOnClickId="pricingStartWithEnterpriseDesktop"
