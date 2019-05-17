@@ -7,7 +7,7 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { renderLog } from '../../utils/logging';
 import Footer from '../../components/Welcome/Footer';
-import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import Section, {
   Bold,
   DescriptionContainer,

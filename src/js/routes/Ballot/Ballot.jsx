@@ -31,7 +31,7 @@ import LocationGuess from './LocationGuess';
 import mapCategoryFilterType from '../../utils/map-category-filter-type';
 import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
-import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
 import SupportActions from '../../actions/SupportActions';

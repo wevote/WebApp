@@ -4,7 +4,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core';
 import { renderLog } from '../../utils/logging';
-import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 
 class ToolBar extends Component {
   static propTypes = {

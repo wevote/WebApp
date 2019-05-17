@@ -10,7 +10,7 @@ import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
 import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
 import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
 import RatingPopover from '../Widgets/RatingPopover';
-import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { removeTwitterNameFromDescription } from '../../utils/textFormat';

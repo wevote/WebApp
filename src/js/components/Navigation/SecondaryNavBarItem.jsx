@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import { renderLog } from '../../utils/logging';
 
 export default class SecondaryNavBarItem extends Component {

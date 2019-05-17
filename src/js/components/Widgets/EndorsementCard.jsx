@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import { cordovaDot } from '../../utils/cordovaUtils';
-import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OpenExternalWebSite from './OpenExternalWebSite';
 
 class EndorsementCard extends PureComponent {
   static propTypes = {

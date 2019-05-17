@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { historyPush } from '../../utils/cordovaUtils';
-import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 
 
 class Footer extends Component {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ReactPlayer from 'react-player';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OpenExternalWebSite from './OpenExternalWebSite';
 import ReadMore from './ReadMore';
 import { vimeoRegX, youTubeRegX } from '../../utils/textFormat';
 
