@@ -6,6 +6,7 @@ import SupportActions from '../actions/SupportActions';
 import VoterGuideActions from '../actions/VoterGuideActions';
 import VoterStore from './VoterStore';
 import { arrayContains } from '../utils/textFormat';
+import { isSpeakerTypeOrganization, isSpeakerTypePublicFigure } from '../utils/organization-functions';
 
 class VoterGuideStore extends ReduceStore {
   // The store keeps nested attributes of voter guides in allCachedVoterGuides, whereas the followed, ignoring, to_follow are just lists of ids.
@@ -97,7 +98,7 @@ class VoterGuideStore extends ReduceStore {
       let step;
       for (step = 0; step < listToFilter1.length; step++) {
         // console.log('listToFilter1[step].voter_guide_owner_type:', listToFilter1[step].voter_guide_owner_type);
-        if (listToFilter1[step].voter_guide_owner_type === 'PF') {
+        if (isSpeakerTypePublicFigure(listToFilter1[step].voter_guide_owner_type)) {
           organizationWeVoteIdsToFollowWithLimit.push(listToFilter1[step].organization_we_vote_id);
           voterGuidesFound++;
           if (voterGuidesFound >= limit) {
@@ -110,7 +111,7 @@ class VoterGuideStore extends ReduceStore {
       let voterGuidesFound = 0;
       let step;
       for (step = 0; step < listToFilter2.length; step++) {
-        if (listToFilter2[step].voter_guide_owner_type !== 'PF') {
+        if (isSpeakerTypeOrganization(listToFilter2[step].voter_guide_owner_type)) {
           organizationWeVoteIdsToFollowWithLimit.push(listToFilter2[step].organization_we_vote_id);
           voterGuidesFound++;
           if (voterGuidesFound >= limit) {

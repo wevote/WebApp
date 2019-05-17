@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { cordovaOpenSafariView, isWebApp } from './cordovaUtils';
-import { renderLog } from './logging';
+import { cordovaOpenSafariView, isWebApp } from '../../utils/cordovaUtils';
+import { renderLog } from '../../utils/logging';
 
 export default class OpenExternalWebSite extends Component {
   static propTypes = {

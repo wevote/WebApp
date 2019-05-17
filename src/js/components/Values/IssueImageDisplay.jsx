@@ -21,7 +21,7 @@ export default class IssueImageDisplay extends Component {
     renderLog(__filename);
 
     if (!this.props.issueWeVoteId) {
-      console.log('IssueImageDisplay no props.image');
+      // console.log('IssueImageDisplay no props.image');
       return null;
     }
 

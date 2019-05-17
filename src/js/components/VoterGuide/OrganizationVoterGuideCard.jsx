@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { historyPush } from '../../utils/cordovaUtils';
-import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging'; // numberWithCommas,

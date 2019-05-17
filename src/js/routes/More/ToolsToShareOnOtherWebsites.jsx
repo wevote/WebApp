@@ -2,7 +2,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import CodeCopier from '../../components/Widgets/CodeCopier';
 import ImageHandler from '../../components/ImageHandler';
-import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 
 export default function ToolsToShareOnOtherWebsites () {
   return (
