@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { renderLog } from '../../utils/logging';
-import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 
 export default class Privacy extends React.Component {
   static getProps () {

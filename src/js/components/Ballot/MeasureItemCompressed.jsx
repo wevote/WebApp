@@ -285,7 +285,7 @@ class MeasureItemCompressed extends Component {
           </Choice>
         </ChoicesRow>
         <Divider />
-        <ShowMoreFooter showMoreLink={() => this.goToMeasureLink(measureWeVoteId)} />
+        <ShowMoreFooter showMoreId="measureItemCompressedShowMoreFooter" showMoreLink={() => this.goToMeasureLink(measureWeVoteId)} />
       </Card>
     );
   }

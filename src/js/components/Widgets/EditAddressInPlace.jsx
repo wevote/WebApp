@@ -85,6 +85,7 @@ export default class EditAddressInPlace extends Component {
           <span className="d-print-none ballot__edit-address-preview-link u-padding-left--sm">
             <button
               className="btn btn-primary"
+              id="editAddressInPlaceModalEditButton"
               onClick={this.toggleEditingAddress}
               type="button"
             >

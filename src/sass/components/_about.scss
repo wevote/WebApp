@@ -4,15 +4,21 @@ $company-logo-margin-bottom: 10px;
 $logo-width: 300px;
 $logo-max-width: 100%;
 $logo-max-height: 120px;
+$team-member-photo-border-radius: 50%;
 
 .team-member {
   margin-bottom: $space-md;
   &__photo {
     border-radius: $radius-sm;
     margin-bottom: $space-sm;
+    @include breakpoints (max medium) {
+      border-radius: $team-member-photo-border-radius;
+      width: 100%;
+    }
   }
   &__name {
     line-height: 1.2;
+    margin-top: $radius-sm;
   }
   &__title {
     font-size: .8rem;

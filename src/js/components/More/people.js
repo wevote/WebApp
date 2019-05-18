@@ -10,17 +10,17 @@ const logoPath = cordovaDot('/img/global/logos/');
 
 export const weVoteFounders = [{
   name: 'Jenifer Fernandez Ancona',
-  image: `${photoPath}Jenifer_Fernandez_Ancona-200x200.jpg`,
+  image: `${photoPath}Jenifer_Fernandez_Ancona-256x256.jpg`,
   title: [
     'Co-Founder & c4 Board Chair',
-    'VP, Strategy & Member Engagement at the Women Donors Network.',
+    'Jenifer helps to run Women Donors Network, a national community of 220 progressive women donors. Jenifer also directs WDN Action, a 501(c)(4) organization advancing justice through advocacy, funding, and civic engagement of underrepresented communities.',
   ],
 }, {
   name: 'Dale John McGrew',
-  image: `${photoPath}Dale_McGrew-200x200.jpg`,
+  image: `${photoPath}Dale_McGrew-256x256.jpg`,
   title: [
     'Co-Founder / CTO & c3 + c4 Board Member',
-    'Managed large software projects for companies like Disney and over 60 nonprofits.',
+    'Prior to running We Vote, Dale successfully co-founded, built and sold two high tech startups (Gravity.com and GoLightly.com). Dale has managed large software projects for companies like Disney, IBM and Crayola and over 60 nonprofits.',
   ],
 },
 ];
@@ -34,17 +34,17 @@ export const weVoteBoard = [{
   ],
 }, {
   name: 'Tiana Epps-Johnson',
-  image: `${photoPath}Tiana_Epps_Johnson-200x200.jpg`,
+  image: `${photoPath}Tiana_Epps_Johnson-256x256.jpg`,
   title: [
     'Senior Adviser',
-    'Exec. Dir. of CTCL, software for election administrators. Former Voting Info Project Harvard Ash Center for Democratic Governance and Innovation.',
+    'Executive Director of CTCL, software for election administrators. Former Voting Info Project Harvard Ash Center for Democratic Governance and Innovation.',
   ],
 }, {
   name: 'Tory Gavito',
   image: `${photoPath}Tory_Gavito-200x200.jpg`,
   title: [
     'c4 Board Member',
-    'Exec. Dir. at Texas Future Project.',
+    'Executive Director at Way to Win.',
   ],
 }, {
   name: 'Lawrence Grodeska',
@@ -52,6 +52,13 @@ export const weVoteBoard = [{
   title: [
     'c3 Board Chair',
     'Civic Tech communications and innovation at CivicMakers. Formerly at Change.org.',
+  ],
+}, {
+  name: 'Matt Holford',
+  image: `${photoPath}Matt_Holford-256x256.jpg`,
+  title: [
+    'Senior Adviser',
+    'As Chief Technology Officer at DoSomething.org, Matt oversees engineering at the largest tech company exclusively for young people and social change.',
   ],
 }, {
   name: 'Alicia Kolar Prevost',
@@ -76,10 +83,17 @@ export const weVoteBoard = [{
   ],
 }, {
   name: 'Betsy Sikma',
-  image: `${photoPath}Betsy_Sikma-200x200.jpg`,
+  image: `${photoPath}Betsy_Sikma-256x256.jpg`,
   title: [
     'c3 Board Member',
-    '',
+    'Betsy Sikma is Director, Corporate PR at Milliken & Co. She holds degrees from Furman University and Vanderbilt University, and a certificate in Nonprofit Finance from Kellogg School of Management.',
+  ],
+}, {
+  name: 'Jessica St. John',
+  image: `${photoPath}Jessica_St.John-201905-256x256.png`,
+  title: [
+    'Director',
+    'Advisor to businesses and non-profits. Believes in the power of the polis. Lover of nature.',
   ],
 }, {
   name: 'Billy Wimsatt',
@@ -108,19 +122,39 @@ export const weVoteStaff = [{
   name: 'Ahmed Elgamal',
   image: `${photoPath}Ahmed_Elgamal-200x200.jpg`,
   title: [
-    'User Experience Designer',
+    'UI/UX Designer',
+    'Digital Product Designer with 2 years of experience in Graphic Design, User Interface Design, User Experience Design, and User Experience Research.',
   ],
 }, {
   name: 'Irene Florez',
   image: `${photoPath}Irene_Florez-200x200.jpg`,
   title: [
-    'Marketing Manager',
+    'Marketing',
+  ],
+}, {
+  name: 'Filip Francetic',
+  image: `${photoPath}Filip_Francetic-256x256.jpg`,
+  title: [
+    'Engineering Intern',
   ],
 }, {
   name: 'Jeff French',
-  image: `${photoPath}Jeff_French-200x200.jpg`,
+  image: `${photoPath}Jeff_French-256x256.png`,
   title: [
-    'Lead Designer',
+    'Senior Designer',
+    'Digital product designer focused on creating engaging experiences and contributing to the systems that hold them together. Jeff designed the We Vote logo and has been critical to establishing We Vote\'s design systems.',
+  ],
+}, {
+  name: 'Ashwini Gawande',
+  image: `${photoPath}Ashwini_Gawande-251x251.jpg`,
+  title: [
+    'Quality Assurance',
+  ],
+}, {
+  name: 'Cody Gohl',
+  image: `${photoPath}Cody_Gohl-256x256.jpg`,
+  title: [
+    'Social Media Manager',
   ],
 }, {
   name: 'Anisha Jain',
@@ -136,9 +170,21 @@ export const weVoteStaff = [{
   ],
 }, {
   name: 'Judy Johnson',
-  image: `${photoPath}Judy_Johnson-200x200.jpg`,
+  image: `${photoPath}Judy_Johnson-256x256.jpg`,
   title: [
     'Operations',
+  ],
+}, {
+  name: 'Hillary Lehr',
+  image: `${photoPath}Hillary_Lehr-256x256.png`,
+  title: [
+    'Marketing',
+  ],
+}, {
+  name: 'Josh Levinger',
+  image: `${photoPath}Josh_Levinger-256x256.jpg`,
+  title: [
+    'User Experience Designer',
   ],
 }, {
   name: 'Edward Ly',
@@ -147,10 +193,42 @@ export const weVoteStaff = [{
     'Engineering Intern',
   ],
 }, {
+  name: 'Phil Marshall',
+  image: `${photoPath}Phil_Marshall-256x256.jpg`,
+  title: [
+    'Engineering Volunteer',
+  ],
+}, {
+  name: 'Valerie Patel',
+  image: `${photoPath}Valerie_Patel-256x256.jpg`,
+  title: [
+    'Political Data Manager',
+  ],
+}, {
+  name: 'Jarod Peachey',
+  image: `${photoPath}Jarod_Peachey-256x256.png`,
+  title: [
+    'Engineering Intern',
+    'Jarod is a senior in high school, and has been coding since 2018. He is on We Vote\'s React and Javascript team. He enjoys playing guitar in his spare time.',
+  ],
+}, {
   name: 'Steve Podell',
-  image: `${photoPath}Steve_Podell-200x200.jpg`,
+  image: `${photoPath}Steve_Podell-256x256.jpg`,
   title: [
     'Volunteer',
+    'Steve has been volunteering with We Vote since 2017, and single-handedly launched our iOS and Android apps, as well as contributing to all of We Vote\'s code repositories.',
+  ],
+}, {
+  name: 'Utsab Saha',
+  image: `${photoPath}Utsab_Saha-256x256.png`,
+  title: [
+    'Volunteer',
+  ],
+}, {
+  name: 'Urosh Stojkovikj',
+  image: `${photoPath}Urosh_Stojkovikj-256x256.jpg`,
+  title: [
+    'Engineering Intern',
   ],
 }, {
   name: 'Aaron Travis',
@@ -160,6 +238,7 @@ export const weVoteStaff = [{
   ],
 },
 ];
+//
 
 export const organizationalDonors = [{
   name: 'Amazon Web Services',
@@ -171,8 +250,8 @@ export const organizationalDonors = [{
   logo: `${logoPath}ballotpedia-logo.png`,
 }, {
   name: 'Center for Technology and Civic Life',
-  title: 'Data',
-  logo: `${logoPath}center-for-tech-and-civic-life-logo.png`,
+  title: 'Data & Love',
+  logo: `${logoPath}ctcl_logo-600x230.jpg`,
 }, {
   name: 'CivicMakers',
   title: 'Event Collaborations',
@@ -190,13 +269,17 @@ export const organizationalDonors = [{
   title: 'Authentication & Data',
   logo: `${logoPath}facebook-logo.png`,
 }, {
+  name: 'Fast Forward',
+  title: 'Most Amazing Nonprofit Technology Accelerator Ever',
+  logo: `${logoPath}ffwd-logo.png`,
+}, {
   name: 'Fastly.com',
   title: 'Scalable Content Delivery (CDN)',
   logo: `${logoPath}fastly-logo.png`,
 }, {
   name: 'Google Civic',
   title: 'Data',
-  logo: `${logoPath}google-logo.png`,
+  logo: `${logoPath}google-logo.svg`,
 }, {
   name: 'Greenberg Traurig, LLP',
   title: 'Legal',
@@ -271,6 +354,9 @@ export const teamOfVolunteers = [{
   name: 'Irene Florez',
   title: 'San Francisco, CA',
 }, {
+  name: 'Daniel Bellerose',
+  title: 'Harrisonberg, VA',
+}, {
   name: 'Yuanhsin Chang',
   title: 'San Francisco, CA',
 }, {
@@ -291,6 +377,9 @@ export const teamOfVolunteers = [{
 }, {
   name: 'Lisa Cho',
   title: 'San Francisco, CA',
+}, {
+  name: 'Nicolay Kreidler',
+  title: 'Mill Valley, CA',
 }, {
   name: 'Nicolas Fiorini',
   title: 'Arlington, VA',
@@ -325,8 +414,8 @@ export const teamOfVolunteers = [{
   name: 'Eric Ogawa',
   title: 'San Francisco, CA',
 }, {
-  name: 'Mary O&apos;Connor',
-  title: 'Sebastopol, CA',
+  name: 'Mary O\'Connor',
+  title: 'Asheville, NC',
 }, {
   name: 'Harsha Dronamraju',
   title: 'San Francisco, CA',
@@ -342,6 +431,9 @@ export const teamOfVolunteers = [{
 }, {
   name: 'Niko Barry',
   title: 'Berkeley, CA',
+}, {
+  name: 'Eva Konigsberg',
+  title: 'Oakland, CA',
 }, {
   name: 'Adam Barry',
   title: 'San Francisco, CA',
@@ -367,11 +459,17 @@ export const teamOfVolunteers = [{
   name: 'Paul A. "Dash" McLean',
   title: 'E. Palo Alto, CA',
 }, {
+  name: 'Tamara Suden',
+  title: 'E. Palo Alto, CA',
+}, {
   name: 'Fernando Mendoza',
   title: 'San Francisco, CA',
 }, {
   name: 'Andrew Roy Chen',
   title: 'San Francisco, CA',
+}, {
+  name: 'Alex Gaensler',
+  title: 'New York, NY',
 }, {
   name: 'Eric Olivera',
   title: 'San Francisco, CA',

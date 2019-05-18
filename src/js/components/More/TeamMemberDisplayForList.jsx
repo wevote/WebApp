@@ -48,12 +48,13 @@ class TeamMemberDisplayForList extends Component {
   render () {
     renderLog(__filename);
 
-    if (!this.props.teamMember) return null;
-
     const { image: teamMemberImage, name: teamMemberName, title: teamMemberTitle } = this.props.teamMember;
+    // console.log(teamMemberName, '-', teamMemberTitle[0]);
+
+    if (!this.props.teamMember || !teamMemberName) return null;
 
     return (
-      <Col className="col-12 col-sm-6 col-md-4 mb-3" key={`${teamMemberName}-${teamMemberTitle}`}>
+      <Col className="col-12 col-sm-6 col-md-4 mb-3" key={`${teamMemberName}-${teamMemberTitle[0]}`}>
         <MemberContainer onMouseEnter={this.handleEnterCard} onMouseLeave={this.handleLeaveCard} onTouchStart={this.handleEnterCard} onTouchEnd={this.handleLeaveCard}>
           {this.state.hover && this.state.hasDescription ? (
             <CardHover>
@@ -83,7 +84,6 @@ class TeamMemberDisplayForList extends Component {
                 <NameDefault>{teamMemberName}</NameDefault>
                 <TitleDefault>{teamMemberTitle[0]}</TitleDefault>
               </div>
-              {/* </FlexMobile> */}
             </CardDefault>
           )}
         </MemberContainer>
@@ -159,8 +159,11 @@ const ImageHover = styled.div`
   width: 75px;
   height: 75px;
   @media (max-width: 576px) {
+    border-radius: 50%;
     margin: 0 auto;
     text-align: center;
+    width: 50px;
+    height: 50px;
   }
 `;
 
@@ -172,14 +175,16 @@ const TextWrapper = styled.div`
 `;
 
 const NameHover = styled.h4`
-  @media (max-width: 576px) {
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-  }
   font-size: 16px;
   font-weight: bold;
+  margin-top: 4px;
   text-align: left;
+  @media (max-width: 576px) {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 8px;
+  }
 `;
 
 const NameDefault = styled.h3`

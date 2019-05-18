@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { renderLog } from '../../utils/logging';
-import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import { organizationalDonors, teamOfVolunteers } from '../../components/More/people';
 
 export default class Credits extends Component {
@@ -17,7 +17,7 @@ export default class Credits extends Component {
         <div className="container-fluid card">
           <h1 className="h1">Credits</h1>
 
-          <h3 className="h4">We are grateful for these organizations that are critical to our work.</h3>
+          <h3 className="h4">We are grateful to these organizations which are critical to our work.</h3>
           { organizationalDonors.map(item => (
             <div className="company" key={item.name}>
               <div className="company__logo_container">

@@ -671,7 +671,7 @@ class ItemActionBar extends PureComponent {
 
           { this.props.shareButtonHide ?
             null :
-            <ShareButtonDropDown urlBeingShared={urlBeingShared} shareIcon={shareIcon} shareText="Share" /> }
+            <ShareButtonDropDown showMoreId="itemActionBarShowMoreFooter" urlBeingShared={urlBeingShared} shareIcon={shareIcon} shareText="Share" /> }
           { this.state.showSupportOrOpposeHelpModal ? SupportOrOpposeHelpModal : null}
         </div>
       </div>

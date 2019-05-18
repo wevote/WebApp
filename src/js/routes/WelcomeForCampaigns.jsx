@@ -59,7 +59,7 @@ class WelcomeForCampaigns extends PureComponent {
     });
   }
 
-  getStartedForCampaigns () {
+  getStartedForCampaigns = () => {
     const { voter } = this.state;
     let isSignedIn = false;
     if (voter) {
@@ -115,12 +115,9 @@ class WelcomeForCampaigns extends PureComponent {
     const { voter } = this.state;
     const isVoterSignedIn = voter.is_signed_in;
 
-    const testimonialAuthor = 'Alissa Blackman, Org.org';
+    const testimonialAuthor = 'Neelam J., Columbus, Ohio';
     const imageUrl = cordovaDot('/img/global/photos/Neelam_Joshi-200x200.jpg');
-    const testimonial = 'This is a great tool! For our campaign, We Vote combines ' +
-      'the super-efficient results we see with relational organizing through a ' +
-      'smart platform that allows voters to plan their whole ballot. ' +
-      'I loved the premium analytics that showed our reach, and so did my boss!';
+    const testimonial = 'I don\'t have time to attend rallies and listen to campaign speeches, and I don’t trust much of what I see on Facebook. We Vote helps me cut through the chatter and use endorsements from people I trust.';
     return (
       <Wrapper>
         <Helmet title="Welcome Campaigns - We Vote" />
@@ -272,10 +269,11 @@ class WelcomeForCampaigns extends PureComponent {
         <Section variant="dark" rounded={!isVoterSignedIn}>
           <SectionTitle>Our Network</SectionTitle>
           <NetworkContainer>
-            <NetworkImage src={cordovaDot('/img/welcome/partners/google-logo.png')} alt="Google" />
-            <NetworkImage src={cordovaDot('/img/welcome/partners/center-for-technology.png')} alt="Center for Technology and Civic Life" />
-            <NetworkImage src={cordovaDot('/img/welcome/partners/vote-org.png')} alt="Vote.org" />
-            <NetworkImage src={cordovaDot('/img/welcome/partners/voting-information-project.png')} alt="Voting Information Project" />
+            <NetworkImage src={cordovaDot('/img/global/logos/ffwd-logo.png')} alt="Fast Forward" />
+            <NetworkImage src={cordovaDot('/img/global/logos/google-logo.svg')} alt="Google" />
+            {/* <NetworkImage src={cordovaDot('/img/global/logos/ctcl_logo-200x200.png')} alt="Center for Technology and Civic Life" /> */}
+            <NetworkImage src={cordovaDot('/img/global/logos/vote_dot_org_logo-530x200.png')} alt="Vote.org" />
+            <NetworkImage src={cordovaDot('/img/global/logos/vip-logo-1000x208.png')} alt="Voting Information Project" />
           </NetworkContainer>
         </Section>
         <Footer />

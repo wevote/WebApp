@@ -89,9 +89,9 @@ export default {
 
     // let maximumNumberToRetrieve = 500;
     // For now, just pass one googleCivicElectionId into list. If we want multiple, we will need to dispatch
-    // with multiple "google_civic_election_id_list" entries (or comma separate)?
+    // with multiple "google_civic_election_id_list" entries
     Dispatcher.loadEndpoint('voterGuidesUpcomingRetrieve', {
-      google_civic_election_id_list: googleCivicElectionId,
+      google_civic_election_id_list: [googleCivicElectionId],
       // maximum_number_to_retrieve: maximumNumberToRetrieve,
     });
   },

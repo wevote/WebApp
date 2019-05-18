@@ -26,7 +26,7 @@ class TwitterSignInCard extends Component {
             <TwitterSignIn
               buttonText="Sign in to Find Voter Guides"
               className="btn btn-social btn-lg btn-twitter value-btn text-center"
-              id="myValuesSignInToFindVoterGuides"
+              id="signInToFindVoterGuides"
             />
             {twitterInfoText}
           </div>

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
 import styled from 'styled-components';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -11,7 +10,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Badge from '@material-ui/core/Badge';
 import PlaceIcon from '@material-ui/icons/Place';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { withStyles } from '@material-ui/core/styles';
 import BallotStore from '../../stores/BallotStore';
@@ -273,15 +271,6 @@ class HeaderBar extends Component {
                       </Tooltip>
                     )
                   }
-                  <Link id="settingsLinkHeaderBar" to="/settings" className="header-link u-show-desktop">
-                    <Tooltip title="Settings" aria-label="settings" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-                      <IconButton
-                        classes={{ root: classes.iconButtonRoot }}
-                      >
-                        <MoreVertIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </Link>
                   {voterPhotoUrlMedium ? (
                     <div id="profileAvatarHeaderBar" className="header-nav__avatar-container" onClick={this.toggleProfilePopUp}>
                       <img
@@ -289,7 +278,7 @@ class HeaderBar extends Component {
                         src={voterPhotoUrlMedium}
                         height={34}
                         width={34}
-                        alt="generic avatar"
+                        alt="Your Profile"
                       />
                     </div>
                   ) : (

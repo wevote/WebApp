@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const Section = styled.div`
   display: flex;
   flex-flow: column;
-  padding: 3em 1em 2em 1em;
+  padding: ${({ noTopMargin }) => (noTopMargin ? '0' : '3em')} 1em 2em 1em;
   text-align: center;
   align-items: center;
   color: #333;
@@ -50,10 +50,10 @@ const StepNumber = styled.div`
   color: white;
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    width: 50px;
-    height: 50px;
-    min-width: 50px;
-    font-size: 36px;
+    width: 35px;
+    height: 35px;
+    min-width: 35px;
+    font-size: 24px;
   }
 `;
 
@@ -114,6 +114,7 @@ const DescriptionImageColumn = styled.div`
   width: 30%;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 100%;
+    text-align: center;
   }
 `;
 
@@ -145,9 +146,12 @@ const NetworkContainer = styled.div`
 `;
 
 const NetworkImage = styled.img`
-  width: 45%;
+  filter: grayscale(100%);
+  height: 20%;
+  width: 20%;
   margin-top: 2em;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    height: 100% !important;
     width: 100%;
   }
 `;

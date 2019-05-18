@@ -3,7 +3,7 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import TextTruncate from 'react-text-truncate';
-import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
+import OpenExternalWebSite from './OpenExternalWebSite';
 import { renderLog } from '../../utils/logging';
 
 class LearnMore extends Component {
