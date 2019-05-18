@@ -19,6 +19,7 @@ class PricingCard extends Component {
     buttonOnClickId: PropTypes.string,
     buttonText: PropTypes.string,
     fullWidth: PropTypes.bool,
+    pricingCardFeatures: PropTypes.array,
   };
 
   constructor (props) {
@@ -35,7 +36,41 @@ class PricingCard extends Component {
   }
 
   render () {
-    const { premium, bullets, price, planName, priceDescribe, description, classes, buttonOnClickId, buttonText, fullWidth } = this.props;
+    const { premium, bullets, price, planName, priceDescribe, description, classes, buttonOnClickId, buttonText, fullWidth, pricingCardFeatures } = this.props;
+
+    const items = pricingCardFeatures.map(item => (
+      <CollectionItem key={`pricingItem-${item.featureDescription}`}>
+        {item.iconType === 'checkMark' ? (
+          <Check
+            style={{
+              color: '#2E3C5D',
+            }}
+          />
+        ) : (
+          <React.Fragment>
+            {item.iconType === 'paidCheckMark' ? (
+              <Check
+                style={{
+                  color: 'rgb(219,179,86)',
+                }}
+              />
+            ) : (
+              <Close
+                style={{
+                  color: 'red',
+                }}
+              />
+            )}
+          </React.Fragment>
+        )}
+        <ItemText>{item.featureDescription}</ItemText>
+        {item.iconType === 'notAvailable' ? (
+          <CollectionItemLight />
+        ) : (
+          null
+        )}
+      </CollectionItem>
+    ));
 
     return (
       <React.Fragment>
@@ -107,206 +142,7 @@ class PricingCard extends Component {
                 </Button>
                 <br />
                 <Collection>
-                  <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
-                    <ItemText>Enter Your Own Positions</ItemText>
-                  </CollectionItem>
-                  <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
-                    <ItemText>Voter Guide Creation Tools</ItemText>
-                  </CollectionItem>
-                  <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
-                    <ItemText>Add Ballot to Your Website</ItemText>
-                  </CollectionItem>
-                  <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
-                    <ItemText>Visitor Metrics</ItemText>
-                  </CollectionItem>
-                  <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
-                    <ItemText>WeVote.US Subdomain</ItemText>
-                  </CollectionItem>
-                  <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
-                    <ItemText>Upload Your Logo</ItemText>
-                  </CollectionItem>
-                  {premium ? (
-                    <CollectionItem>
-                      {planName === 'Professional' || planName === 'Enterprise' ? (
-                        <Check
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
-                      ) : (
-                        <Close
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
-                      )}
-                      <ItemText>Edit Social Media Sharing Links</ItemText>
-                    </CollectionItem>
-                  ) : (
-                    <React.Fragment>
-                      <CollectionItem>
-                        {planName === 'Professional' || planName === 'Enterprise' ? (
-                          <Check
-                            style={{
-                              color: 'rgb(219,179,86)',
-                            }}
-                          />
-                        ) : (
-                          <Close
-                            style={{
-                              color: 'red',
-                            }}
-                          />
-                        )}
-                        <ItemText>Edit Social Media Sharing Links</ItemText>
-                        <CollectionItemLight />
-                      </CollectionItem>
-                    </React.Fragment>
-                  )}
-                  {premium ? (
-                    <CollectionItem>
-                      {planName === 'Professional' || planName === 'Enterprise' ? (
-                        <Check
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
-                      ) : (
-                        <Close
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
-                      )}
-                      <ItemText>Create Multi-Organization Voter Guides</ItemText>
-                    </CollectionItem>
-                  ) : (
-                    <React.Fragment>
-                      <CollectionItem>
-                        {planName === 'Professional' || planName === 'Enterprise' ? (
-                          <Check
-                            style={{
-                              color: 'rgb(219,179,86)',
-                            }}
-                          />
-                        ) : (
-                          <Close
-                            style={{
-                              color: 'red',
-                            }}
-                          />
-                        )}
-                        <ItemText>Create Multi-Organization Voter Guides</ItemText>
-                        <CollectionItemLight />
-                      </CollectionItem>
-                    </React.Fragment>
-                  )}
-                  {planName === 'Enterprise' ? (
-                    <CollectionItem>
-                      {planName === 'Enterprise' ? (
-                        <Check
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
-                      ) : (
-                        <Close
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
-                      )}
-                      <ItemText>Additional Administrators</ItemText>
-                    </CollectionItem>
-                  ) : (
-                    <React.Fragment>
-                      <CollectionItem>
-                        {planName === 'Enterprise' ? (
-                          <Check
-                            style={{
-                              color: 'rgb(219,179,86)',
-                            }}
-                          />
-                        ) : (
-                          <Close
-                            style={{
-                              color: 'red',
-                            }}
-                          />
-                        )}
-                        <ItemText>Additional Administrators</ItemText>
-                        <CollectionItemLight />
-                      </CollectionItem>
-                    </React.Fragment>
-                  )}
-                  {planName === 'Enterprise' ? (
-                    <CollectionItem>
-                      {planName === 'Enterprise' ? (
-                        <Check
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
-                      ) : (
-                        <Close
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
-                      )}
-                      <ItemText>Analytics Integration</ItemText>
-                    </CollectionItem>
-                  ) : (
-                    <React.Fragment>
-                      <CollectionItem>
-                        {planName === 'Enterprise' ? (
-                          <Check
-                            style={{
-                              color: 'rgb(219,179,86)',
-                            }}
-                          />
-                        ) : (
-                          <Close
-                            style={{
-                              color: 'red',
-                            }}
-                          />
-                        )}
-                        <ItemText>Analytics Integration</ItemText>
-                        <CollectionItemLight />
-                      </CollectionItem>
-                    </React.Fragment>
-                  )}
+                  {items}
                 </Collection>
               </CardWrapper>
             </CardMobile>
@@ -387,206 +223,7 @@ class PricingCard extends Component {
                 </Button>
                 <br />
                 <Collection>
-                  <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
-                    <ItemText>Enter Your Own Positions</ItemText>
-                  </CollectionItem>
-                  <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
-                    <ItemText>Voter Guide Creation Tools</ItemText>
-                  </CollectionItem>
-                  <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
-                    <ItemText>Add Ballot to Your Website</ItemText>
-                  </CollectionItem>
-                  <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
-                    <ItemText>Visitor Metrics</ItemText>
-                  </CollectionItem>
-                  <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
-                    <ItemText>WeVote.US Subdomain</ItemText>
-                  </CollectionItem>
-                  <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
-                    <ItemText>Upload Your Logo</ItemText>
-                  </CollectionItem>
-                  {premium ? (
-                    <CollectionItem>
-                      {planName === 'Professional' || planName === 'Enterprise' ? (
-                        <Check
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
-                      ) : (
-                        <Close
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
-                      )}
-                      <ItemText>Edit Social Media Sharing Links</ItemText>
-                    </CollectionItem>
-                  ) : (
-                    <React.Fragment>
-                      <CollectionItem>
-                        {planName === 'Professional' || planName === 'Enterprise' ? (
-                          <Check
-                            style={{
-                              color: 'rgb(219,179,86)',
-                            }}
-                          />
-                        ) : (
-                          <Close
-                            style={{
-                              color: 'red',
-                            }}
-                          />
-                        )}
-                        <ItemText>Edit Social Media Sharing Links</ItemText>
-                        <CollectionItemLight />
-                      </CollectionItem>
-                    </React.Fragment>
-                  )}
-                  {premium ? (
-                    <CollectionItem>
-                      {planName === 'Professional' || planName === 'Enterprise' ? (
-                        <Check
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
-                      ) : (
-                        <Close
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
-                      )}
-                      <ItemText>Create Multi-Organization Voter Guides</ItemText>
-                    </CollectionItem>
-                  ) : (
-                    <React.Fragment>
-                      <CollectionItem>
-                        {planName === 'Professional' || planName === 'Enterprise' ? (
-                          <Check
-                            style={{
-                              color: 'rgb(219,179,86)',
-                            }}
-                          />
-                        ) : (
-                          <Close
-                            style={{
-                              color: 'red',
-                            }}
-                          />
-                        )}
-                        <ItemText>Create Multi-Organization Voter Guides</ItemText>
-                        <CollectionItemLight />
-                      </CollectionItem>
-                    </React.Fragment>
-                  )}
-                  {planName === 'Enterprise' ? (
-                    <CollectionItem>
-                      {planName === 'Enterprise' ? (
-                        <Check
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
-                      ) : (
-                        <Close
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
-                      )}
-                      <ItemText>Additional Administrators</ItemText>
-                    </CollectionItem>
-                  ) : (
-                    <React.Fragment>
-                      <CollectionItem>
-                        {planName === 'Enterprise' ? (
-                          <Check
-                            style={{
-                              color: 'rgb(219,179,86)',
-                            }}
-                          />
-                        ) : (
-                          <Close
-                            style={{
-                              color: 'red',
-                            }}
-                          />
-                        )}
-                        <ItemText>Additional Administrators</ItemText>
-                        <CollectionItemLight />
-                      </CollectionItem>
-                    </React.Fragment>
-                  )}
-                  {planName === 'Enterprise' ? (
-                    <CollectionItem>
-                      {planName === 'Enterprise' ? (
-                        <Check
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
-                      ) : (
-                        <Close
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
-                      )}
-                      <ItemText>Analytics Integration</ItemText>
-                    </CollectionItem>
-                  ) : (
-                    <React.Fragment>
-                      <CollectionItem>
-                        {planName === 'Enterprise' ? (
-                          <Check
-                            style={{
-                              color: 'rgb(219,179,86)',
-                            }}
-                          />
-                        ) : (
-                          <Close
-                            style={{
-                              color: 'red',
-                            }}
-                          />
-                        )}
-                        <ItemText>Analytics Integration</ItemText>
-                        <CollectionItemLight />
-                      </CollectionItem>
-                    </React.Fragment>
-                  )}
+                  {items}
                 </Collection>
               </CardWrapper>
             </Card>
