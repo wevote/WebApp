@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
-import { toTitleCase } from '../../utils/textFormat';
+// import { toTitleCase } from '../../utils/textFormat';
 
 class CandidateStickyHeader extends Component {
   static propTypes = {
@@ -21,10 +21,11 @@ class CandidateStickyHeader extends Component {
       party,
     } = candidate;
 
-    let descriptionText = `${party} candidate for ${officeName}`;
+    // const descriptionText = `${party} candidate for ${officeName}`;
     // console.log(candidate);
 
-    descriptionText = toTitleCase(descriptionText);
+    // descriptionText = toTitleCase(descriptionText);
+    // console.log('CandidateStickyHeader, displayName/candidateWeVoteId:', displayName, candidateWeVoteId);
 
     return (
       <Wrapper>
@@ -34,13 +35,23 @@ class CandidateStickyHeader extends Component {
               <Profile>
                 <Avatar src={candidatePhotoUrl} alt="candidate-photo" />
                 <div>
-                  <Title>{displayName}</Title>
-                  <SubTitle>{descriptionText}</SubTitle>
+                  <CandidateName>{displayName}</CandidateName>
+                  <CandidateDescriptionDesktop>
+                    <Bold>{party}</Bold>
+                    {' '}
+                    candidate for
+                    {' '}
+                    <Bold>{officeName}</Bold>
+                  </CandidateDescriptionDesktop>
                 </div>
               </Profile>
-              <MobileSubtitle className="u-show-mobile-tablet">
-                {descriptionText}
-              </MobileSubtitle>
+              <CandidateDescriptionMobile className="u-show-mobile-tablet">
+                <Bold>{party}</Bold>
+                {' '}
+                candidate for
+                {' '}
+                <Bold>{officeName}</Bold>
+              </CandidateDescriptionMobile>
             </ColumnOne>
             <ColumnTwo>
               <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={candidateWeVoteId} />
@@ -85,6 +96,10 @@ const Wrapper = styled.div`
   }
 `;
 
+const Bold = styled.span`
+  font-weight: 550;
+`;
+
 const Container = styled.div`
   max-width: calc(960px - 18px);
   margin: 0 auto;
@@ -104,32 +119,35 @@ const ColumnTwo = styled.div`
   }
 `;
 
-const Title = styled.h1`
-  font-size: 16px;
+// Defaults to style in mobile
+const CandidateName = styled.h1`
+  font-size: 14px;
   margin-bottom: 2px;
-  font-size: 26px;
   margin-top: 8px;
   font-weight: bold;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
     margin-top: 0;
-    font-size: 22px;
+    font-size: 16px;
   }
 `;
 
-const SubTitle = styled.p`
+// Uses min-width. Parallel style is CandidateDescriptionMobile
+const CandidateDescriptionDesktop = styled.p`
   display: none;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 15px;
+    font-size: 14px;
     display: block;
+    font-weight: 100;
   }
 `;
 
-const MobileSubtitle = styled.h2`
+// Uses max-width. Parallel style is CandidateDescriptionDesktop
+const CandidateDescriptionMobile = styled.h2`
   display: none;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 18px;
+    font-size: 12px;
     display: block;
-    font-weight: 400;
+    font-weight: 100;
   }
 `;
 

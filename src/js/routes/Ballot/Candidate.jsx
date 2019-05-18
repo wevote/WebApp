@@ -39,7 +39,7 @@ export default class Candidate extends Component {
       candidateWeVoteId: '',
       organizationWeVoteId: '',
       allCachedPositionsForThisCandidate: [],
-      scrolledDown: AppStore.getScrolledDown(),
+      scrolledDown: false,
     };
   }
 
@@ -92,9 +92,10 @@ export default class Candidate extends Component {
     SearchAllActions.exitSearch(searchBoxText); // TODO: still not used :)
     AnalyticsActions.saveActionCandidate(VoterStore.electionId(), this.props.params.candidate_we_vote_id);
     this.setState({
+      allCachedPositionsForThisCandidate,
       candidateWeVoteId: this.props.params.candidate_we_vote_id,
       organizationWeVoteId,
-      allCachedPositionsForThisCandidate,
+      scrolledDown: AppStore.getScrolledDown(),
     });
   }
 
@@ -111,6 +112,7 @@ export default class Candidate extends Component {
       const allCachedPositionsForThisCandidateDict = CandidateStore.getAllCachedPositionsByCandidateWeVoteId(nextProps.params.candidate_we_vote_id);
       const allCachedPositionsForThisCandidate = Object.values(allCachedPositionsForThisCandidateDict);
       this.setState({
+        scrolledDown: AppStore.getScrolledDown(),
         candidateWeVoteId: nextProps.params.candidate_we_vote_id,
         allCachedPositionsForThisCandidate,
       });
@@ -119,7 +121,7 @@ export default class Candidate extends Component {
     // Display the candidate's name in the search box
     // var { candidate } = this.state;
     // var searchBoxText = candidate.ballot_item_display_name || '';  // TODO DALE Not working right now
-    SearchAllActions.exitSearch('');
+    // SearchAllActions.exitSearch('');
   }
 
   componentWillUnmount () {
@@ -137,6 +139,7 @@ export default class Candidate extends Component {
     this.setState({
       candidate: CandidateStore.getCandidate(candidateWeVoteId),
       allCachedPositionsForThisCandidate,
+      scrolledDown: AppStore.getScrolledDown(),
     });
   }
 
@@ -180,6 +183,7 @@ export default class Candidate extends Component {
     const voter = VoterStore.getVoter();
     const candidateAdminEditUrl = `${webAppConfig.WE_VOTE_SERVER_ROOT_URL}c/${this.state.candidate.id}/edit/?google_civic_election_id=${VoterStore.electionId()}&state_code=`;
 
+    // console.log('Candidate, scrolledDown: ', scrolledDown);
     return (
       <span>
         <Helmet
