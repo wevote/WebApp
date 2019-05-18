@@ -204,6 +204,10 @@ class BallotStore extends ReduceStore {
     return [];
   }
 
+  getTextForMapSearch () {
+    return this.getState().textForMapSearch || '';
+  }
+
   positionListHasBeenRetrievedOnce (ballotItemWeVoteId) {
     return this.getState().positionListHasBeenRetrievedOnceByBallotItem[ballotItemWeVoteId] || false;
   }
@@ -217,6 +221,7 @@ class BallotStore extends ReduceStore {
     let newBallots = {};
     let revisedState;
     let tempBallotItemList = [];
+    let textForMapSearch = '';
     let voterBallotList = [];
     const { ballotItemListCandidatesDict, ballotItemUnfurledTracker: newBallotItemUnfurledTracker } = state;
 
@@ -276,6 +281,10 @@ class BallotStore extends ReduceStore {
         googleCivicElectionId = action.res.google_civic_election_id || 0;
         googleCivicElectionId = parseInt(googleCivicElectionId, 10);
         revisedState = state;
+        textForMapSearch = action.res.text_for_map_search;
+        revisedState = Object.assign({}, revisedState, {
+          textForMapSearch,
+        });
         if (googleCivicElectionId !== 0) {
           newBallots[googleCivicElectionId] = action.res;
 

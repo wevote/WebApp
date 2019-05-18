@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
@@ -6,61 +6,89 @@ import PlaceIcon from '@material-ui/icons/Place';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
 
-class LocationGuess extends React.Component {
-    static propTypes = {
-      toggleSelectBallotModal: PropTypes.func.isRequired,
-      hideLocationsGuessComponent: PropTypes.func.isRequired,
-      classes: PropTypes.object,
+class LocationGuess extends Component {
+  static propTypes = {
+    toggleSelectBallotModal: PropTypes.func.isRequired,
+    hideLocationsGuessComponent: PropTypes.func.isRequired,
+    classes: PropTypes.object,
+  };
+
+  constructor (props) {
+    super(props);
+    this.state = {
+      textForMapSearch: '',
     };
+  }
 
-    shouldComponentUpdate (nextProps) {
-      // This lifecycle method tells the component to NOT render if not needed
-      if (this.props.toggleSelectBallotModal !== nextProps.toggleSelectBallotModal) {
-        return true;
-      }
-      if (this.props.hideLocationsGuessComponent !== nextProps.hideLocationsGuessComponent) {
-        return true;
-      }
-      return false;
-    }
+  componentDidMount () {
+    this.setState({
+      textForMapSearch: VoterStore.getTextForMapSearch(),
+    });
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+  }
 
-    render () {
-      renderLog(__filename);
-      const { toggleSelectBallotModal, hideLocationsGuessComponent, classes } = this.props;
-      const bestGuess = VoterStore.getTextForMapSearch();
-      // console.log('bestGuess before: ', bestGuess);
-      return (
-        <div id="location_guess" className="card-main__location-guess">
-          <PlaceIcon classes={{ root: classes.iconRoot }} />
-          <ParagraphStyled>
-            { bestGuess ?
-              (
-                <span>
-                  Our best guess for your location is
-                  {' '}
-                  <BestGuess>
-                    &quot;
-                    {bestGuess}
-                    &quot;
-                  </BestGuess>
-                  .
-                  {' '}
-                </span>
-              ) :
-              null
-            }
-            <AddressLink onClick={toggleSelectBallotModal}>
-              Enter your full address
-            </AddressLink>
-            {' '}
-            to see the correct ballot items.
-          </ParagraphStyled>
-          <CloseComponent onClick={hideLocationsGuessComponent}>
-            &times;
-          </CloseComponent>
-        </div>
-      );
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if not needed
+    if (this.props.toggleSelectBallotModal !== nextProps.toggleSelectBallotModal) {
+      return true;
     }
+    if (this.props.hideLocationsGuessComponent !== nextProps.hideLocationsGuessComponent) {
+      return true;
+    }
+    if (this.state.textForMapSearch !== nextState.textForMapSearch) {
+      return true;
+    }
+    return false;
+  }
+
+  componentWillUnmount () {
+    this.voterStoreListener.remove();
+  }
+
+  onVoterStoreChange () {
+    // console.log('Ballot.jsx onVoterStoreChange, voter: ', VoterStore.getVoter());
+    this.setState({
+      textForMapSearch: VoterStore.getTextForMapSearch(),
+    });
+  }
+
+  render () {
+    renderLog(__filename);
+    const { toggleSelectBallotModal, hideLocationsGuessComponent, classes } = this.props;
+    const { textForMapSearch } = this.state;
+    // console.log('textForMapSearch before: ', textForMapSearch);
+    return (
+      <div id="location_guess" className="card-main__location-guess">
+        <PlaceIcon classes={{ root: classes.iconRoot }} />
+        <ParagraphStyled>
+          { textForMapSearch ?
+            (
+              <span>
+                Our best guess for your location is
+                {' '}
+                <BestGuess>
+                  &quot;
+                  {textForMapSearch}
+                  &quot;
+                </BestGuess>
+                .
+                {' '}
+              </span>
+            ) :
+            null
+          }
+          <AddressLink onClick={toggleSelectBallotModal}>
+            Enter your full address
+          </AddressLink>
+          {' '}
+          to see the correct ballot items.
+        </ParagraphStyled>
+        <CloseComponent onClick={hideLocationsGuessComponent}>
+          &times;
+        </CloseComponent>
+      </div>
+    );
+  }
 }
 
 const styles = ({
