@@ -13,7 +13,6 @@ import { renderLog } from '../../utils/logging';
 import { showToastError, showToastSuccess } from '../../utils/showToast';
 import { stringContains } from '../../utils/textFormat';
 import MeasureStore from '../../stores/MeasureStore';
-// import ReadMore from './ReadMore';
 import ShareButtonDropDown from './ShareButtonDropdown';
 import SupportActions from '../../actions/SupportActions';
 import VoterActions from '../../actions/VoterActions';
@@ -342,6 +341,7 @@ class ItemActionBar extends PureComponent {
   }
 
   render () {
+    // console.log('ItemActionBar render');
     renderLog(__filename);
     const { classes, type } = this.props;
     if (this.state.supportCount === undefined ||
@@ -352,7 +352,6 @@ class ItemActionBar extends PureComponent {
       // Do not render until componentDidMount has set the initial states
       return null;
     }
-    // console.log('ItemActionBar render');
 
     const iconSize = 18;
     const iconColor = '#00749e'; // $link-color

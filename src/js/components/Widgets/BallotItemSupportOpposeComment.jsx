@@ -41,6 +41,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
   }
 
   componentDidMount () {
+    // console.log('BallotItemSupportOpposeComment, componentDidMount, this.props: ', this.props);
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
     let ballotItemDisplayName = '';
@@ -59,19 +60,20 @@ class BallotItemSupportOpposeComment extends PureComponent {
       ballotItemType = 'MEASURE';
       isMeasure = true;
     }
-    this.setState(props => ({
+    this.setState({
       ballotItemDisplayName,
       ballotItemSupportProps,
       ballotItemType,
-      ballotItemWeVoteId: props.ballotItemWeVoteId,
+      ballotItemWeVoteId: this.props.ballotItemWeVoteId,
       // componentDidMountFinished: true,
       isCandidate,
       isMeasure,
       // voter: VoterStore.getVoter(), // We only set this once since the info we need isn't dynamic
-    }));
+    });
   }
 
   componentWillReceiveProps (nextProps) {
+    // console.log('BallotItemSupportOpposeComment, componentWillReceiveProps');
     let ballotItemDisplayName = '';
     const ballotItemSupportProps = SupportStore.get(nextProps.ballotItemWeVoteId);
     let ballotItemType;
@@ -88,14 +90,14 @@ class BallotItemSupportOpposeComment extends PureComponent {
       ballotItemType = 'MEASURE';
       isMeasure = true;
     }
-    this.setState(() => ({
+    this.setState({
       ballotItemDisplayName,
       ballotItemSupportProps,
       ballotItemType,
       ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
       isCandidate,
       isMeasure,
-    }));
+    });
   }
 
   componentWillUnmount () {
@@ -142,8 +144,8 @@ class BallotItemSupportOpposeComment extends PureComponent {
   }
 
   render () {
+    // console.log('BallotItemSupportOpposeComment render, this.state.ballotItemWeVoteId:', this.state.ballotItemWeVoteId);
     if (!this.state.ballotItemWeVoteId) return null;
-    // console.log('BallotItemSupportOpposeComment render, ballotItemWeVoteId:', this.state.ballotItemWeVoteId);
     renderLog(__filename);
     const { showPositionStatementActionBar } = this.props;
     // Voter Support or opposition
