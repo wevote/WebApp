@@ -19,6 +19,7 @@ class PricingCard extends Component {
     buttonOnClickId: PropTypes.string,
     buttonText: PropTypes.string,
     fullWidth: PropTypes.bool,
+    pricingCardFeatures: PropTypes.array,
   };
 
   constructor (props) {
@@ -35,7 +36,9 @@ class PricingCard extends Component {
   }
 
   render () {
-    const { premium, bullets, price, planName, priceDescribe, description, classes, buttonOnClickId, buttonText, fullWidth } = this.props;
+    const { premium, bullets, price, planName, priceDescribe, description, classes, buttonOnClickId, buttonText, fullWidth, pricingCardFeatures } = this.props;
+
+    console.log(pricingCardFeatures);
 
     return (
       <React.Fragment>
@@ -108,202 +111,456 @@ class PricingCard extends Component {
                 <br />
                 <Collection>
                   <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
-                    <ItemText>Enter Your Own Positions</ItemText>
+                    {pricingCardFeatures[0].iconType === 'checkMark' ? (
+                      <Check
+                        style={{
+                          color: '#2E3C5D',
+                        }}
+                      />
+                    ) : (
+                      <React.Fragment>
+                        {pricingCardFeatures[0].iconType === 'paidCheckMark' ? (
+                          <Check
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        ) : (
+                          <Close
+                            style={{
+                              color: 'red',
+                            }}
+                          />
+                        )}
+                      </React.Fragment>
+                    )}
+                    <ItemText>{pricingCardFeatures[0].featureDescription}</ItemText>
+                    {pricingCardFeatures[0].iconType === 'notAvailable' ? (
+                      <CollectionItemLight />
+                    ) : (
+                      null
+                    )}
                   </CollectionItem>
                   <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
+                    {pricingCardFeatures[1].iconType === 'checkMark' ? (
+                      <Check
+                        style={{
+                          color: '#2E3C5D',
+                        }}
+                      />
+                    ) : (
+                      <React.Fragment>
+                        {pricingCardFeatures[1].iconType === 'paidCheckMark' ? (
+                          <Check
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        ) : (
+                          <Close
+                            style={{
+                              color: 'red',
+                            }}
+                          />
+                        )}
+                      </React.Fragment>
+                    )}
                     <ItemText>Voter Guide Creation Tools</ItemText>
+                    {pricingCardFeatures[1].iconType === 'notAvailable' ? (
+                      <CollectionItemLight />
+                    ) : (
+                      null
+                    )}
                   </CollectionItem>
                   <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
+                    {pricingCardFeatures[2].iconType === 'checkMark' ? (
+                      <Check
+                        style={{
+                          color: '#2E3C5D',
+                        }}
+                      />
+                    ) : (
+                      <React.Fragment>
+                        {pricingCardFeatures[2].iconType === 'paidCheckMark' ? (
+                          <Check
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        ) : (
+                          <Close
+                            style={{
+                              color: 'red',
+                            }}
+                          />
+                        )}
+                      </React.Fragment>
+                    )}
                     <ItemText>Add Ballot to Your Website</ItemText>
+                    {pricingCardFeatures[2].iconType === 'notAvailable' ? (
+                      <CollectionItemLight />
+                    ) : (
+                      null
+                    )}
                   </CollectionItem>
                   <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
+                    {pricingCardFeatures[3].iconType === 'checkMark' ? (
+                      <Check
+                        style={{
+                          color: '#2E3C5D',
+                        }}
+                      />
+                    ) : (
+                      <React.Fragment>
+                        {pricingCardFeatures[3].iconType === 'paidCheckMark' ? (
+                          <Check
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        ) : (
+                          <Close
+                            style={{
+                              color: 'red',
+                            }}
+                          />
+                        )}
+                      </React.Fragment>
+                    )}
                     <ItemText>Visitor Metrics</ItemText>
+                    {pricingCardFeatures[3].iconType === 'notAvailable' ? (
+                      <CollectionItemLight />
+                    ) : (
+                      null
+                    )}
                   </CollectionItem>
                   <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
+                    {pricingCardFeatures[4].iconType === 'checkMark' ? (
+                      <Check
+                        style={{
+                          color: '#2E3C5D',
+                        }}
+                      />
+                    ) : (
+                      <React.Fragment>
+                        {pricingCardFeatures[4].iconType === 'paidCheckMark' ? (
+                          <Check
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        ) : (
+                          <Close
+                            style={{
+                              color: 'red',
+                            }}
+                          />
+                        )}
+                      </React.Fragment>
+                    )}
                     <ItemText>WeVote.US Subdomain</ItemText>
+                    {pricingCardFeatures[4].iconType === 'notAvailable' ? (
+                      <CollectionItemLight />
+                    ) : (
+                      null
+                    )}
                   </CollectionItem>
                   <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
+                    {pricingCardFeatures[5].iconType === 'checkMark' ? (
+                      <Check
+                        style={{
+                          color: '#2E3C5D',
+                        }}
+                      />
+                    ) : (
+                      <React.Fragment>
+                        {pricingCardFeatures[5].iconType === 'paidCheckMark' ? (
+                          <Check
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        ) : (
+                          <Close
+                            style={{
+                              color: 'red',
+                            }}
+                          />
+                        )}
+                      </React.Fragment>
+                    )}
                     <ItemText>Upload Your Logo</ItemText>
+                    {pricingCardFeatures[5].iconType === 'notAvailable' ? (
+                      <CollectionItemLight />
+                    ) : (
+                      null
+                    )}
                   </CollectionItem>
                   {premium ? (
                     <CollectionItem>
-                      {planName === 'Professional' || planName === 'Enterprise' ? (
+                      {pricingCardFeatures[6].iconType === 'checkMark' ? (
                         <Check
                           style={{
-                            color: 'rgb(219,179,86)',
+                            color: '#2E3C5D',
                           }}
                         />
                       ) : (
-                        <Close
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
+                        <React.Fragment>
+                          {pricingCardFeatures[6].iconType === 'paidCheckMark' ? (
+                            <Check
+                              style={{
+                                color: 'rgb(219,179,86)',
+                              }}
+                            />
+                          ) : (
+                            <Close
+                              style={{
+                                color: 'red',
+                              }}
+                            />
+                          )}
+                        </React.Fragment>
                       )}
                       <ItemText>Edit Social Media Sharing Links</ItemText>
+                      {pricingCardFeatures[6].iconType === 'notAvailable' ? (
+                        <CollectionItemLight />
+                      ) : (
+                        null
+                      )}
                     </CollectionItem>
                   ) : (
                     <React.Fragment>
                       <CollectionItem>
-                        {planName === 'Professional' || planName === 'Enterprise' ? (
+                        {pricingCardFeatures[6].iconType === 'checkMark' ? (
                           <Check
                             style={{
-                              color: 'rgb(219,179,86)',
+                              color: '#2E3C5D',
                             }}
                           />
                         ) : (
-                          <Close
-                            style={{
-                              color: 'red',
-                            }}
-                          />
+                          <React.Fragment>
+                            {pricingCardFeatures[6].iconType === 'paidCheckMark' ? (
+                              <Check
+                                style={{
+                                  color: 'rgb(219,179,86)',
+                                }}
+                              />
+                            ) : (
+                              <Close
+                                style={{
+                                  color: 'red',
+                                }}
+                              />
+                            )}
+                          </React.Fragment>
                         )}
                         <ItemText>Edit Social Media Sharing Links</ItemText>
-                        <CollectionItemLight />
+                        {pricingCardFeatures[6].iconType === 'notAvailable' ? (
+                          <CollectionItemLight />
+                        ) : (
+                          null
+                        )}
                       </CollectionItem>
                     </React.Fragment>
                   )}
                   {premium ? (
                     <CollectionItem>
-                      {planName === 'Professional' || planName === 'Enterprise' ? (
+                      {pricingCardFeatures[7].iconType === 'checkMark' ? (
                         <Check
                           style={{
-                            color: 'rgb(219,179,86)',
+                            color: '#2E3C5D',
                           }}
                         />
                       ) : (
-                        <Close
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
+                        <React.Fragment>
+                          {pricingCardFeatures[7].iconType === 'paidCheckMark' ? (
+                            <Check
+                              style={{
+                                color: 'rgb(219,179,86)',
+                              }}
+                            />
+                          ) : (
+                            <Close
+                              style={{
+                                color: 'red',
+                              }}
+                            />
+                          )}
+                        </React.Fragment>
                       )}
                       <ItemText>Create Multi-Organization Voter Guides</ItemText>
+                      {pricingCardFeatures[7].iconType === 'notAvailable' ? (
+                        <CollectionItemLight />
+                      ) : (
+                        null
+                      )}
                     </CollectionItem>
                   ) : (
                     <React.Fragment>
                       <CollectionItem>
-                        {planName === 'Professional' || planName === 'Enterprise' ? (
+                        {pricingCardFeatures[7].iconType === 'checkMark' ? (
                           <Check
                             style={{
-                              color: 'rgb(219,179,86)',
+                              color: '#2E3C5D',
                             }}
                           />
                         ) : (
-                          <Close
-                            style={{
-                              color: 'red',
-                            }}
-                          />
+                          <React.Fragment>
+                            {pricingCardFeatures[7].iconType === 'paidCheckMark' ? (
+                              <Check
+                                style={{
+                                  color: 'rgb(219,179,86)',
+                                }}
+                              />
+                            ) : (
+                              <Close
+                                style={{
+                                  color: 'red',
+                                }}
+                              />
+                            )}
+                          </React.Fragment>
                         )}
                         <ItemText>Create Multi-Organization Voter Guides</ItemText>
-                        <CollectionItemLight />
+                        {pricingCardFeatures[7].iconType === 'notAvailable' ? (
+                          <CollectionItemLight />
+                        ) : (
+                          null
+                        )}
                       </CollectionItem>
                     </React.Fragment>
                   )}
                   {planName === 'Enterprise' ? (
                     <CollectionItem>
-                      {planName === 'Enterprise' ? (
+                      {pricingCardFeatures[8].iconType === 'checkMark' ? (
                         <Check
                           style={{
-                            color: 'rgb(219,179,86)',
+                            color: '#2E3C5D',
                           }}
                         />
                       ) : (
-                        <Close
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
+                        <React.Fragment>
+                          {pricingCardFeatures[8].iconType === 'paidCheckMark' ? (
+                            <Check
+                              style={{
+                                color: 'rgb(219,179,86)',
+                              }}
+                            />
+                          ) : (
+                            <Close
+                              style={{
+                                color: 'red',
+                              }}
+                            />
+                          )}
+                        </React.Fragment>
                       )}
                       <ItemText>Additional Administrators</ItemText>
+                      {pricingCardFeatures[8].iconType === 'notAvailable' ? (
+                        <CollectionItemLight />
+                      ) : (
+                        null
+                      )}
                     </CollectionItem>
                   ) : (
                     <React.Fragment>
                       <CollectionItem>
-                        {planName === 'Enterprise' ? (
+                        {pricingCardFeatures[8].iconType === 'checkMark' ? (
                           <Check
                             style={{
-                              color: 'rgb(219,179,86)',
+                              color: '#2E3C5D',
                             }}
                           />
                         ) : (
-                          <Close
-                            style={{
-                              color: 'red',
-                            }}
-                          />
+                          <React.Fragment>
+                            {pricingCardFeatures[8].iconType === 'paidCheckMark' ? (
+                              <Check
+                                style={{
+                                  color: 'rgb(219,179,86)',
+                                }}
+                              />
+                            ) : (
+                              <Close
+                                style={{
+                                  color: 'red',
+                                }}
+                              />
+                            )}
+                          </React.Fragment>
                         )}
                         <ItemText>Additional Administrators</ItemText>
-                        <CollectionItemLight />
+                        {pricingCardFeatures[8].iconType === 'notAvailable' ? (
+                          <CollectionItemLight />
+                        ) : (
+                          null
+                        )}
                       </CollectionItem>
                     </React.Fragment>
                   )}
                   {planName === 'Enterprise' ? (
                     <CollectionItem>
-                      {planName === 'Enterprise' ? (
+                      {pricingCardFeatures[9].iconType === 'checkMark' ? (
                         <Check
                           style={{
-                            color: 'rgb(219,179,86)',
+                            color: '#2E3C5D',
                           }}
                         />
                       ) : (
-                        <Close
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
+                        <React.Fragment>
+                          {pricingCardFeatures[9].iconType === 'paidCheckMark' ? (
+                            <Check
+                              style={{
+                                color: 'rgb(219,179,86)',
+                              }}
+                            />
+                          ) : (
+                            <Close
+                              style={{
+                                color: 'red',
+                              }}
+                            />
+                          )}
+                        </React.Fragment>
                       )}
                       <ItemText>Analytics Integration</ItemText>
+                      {pricingCardFeatures[9].iconType === 'notAvailable' ? (
+                        <CollectionItemLight />
+                      ) : (
+                        null
+                      )}
                     </CollectionItem>
                   ) : (
                     <React.Fragment>
                       <CollectionItem>
-                        {planName === 'Enterprise' ? (
+                        {pricingCardFeatures[9].iconType === 'checkMark' ? (
                           <Check
                             style={{
-                              color: 'rgb(219,179,86)',
+                              color: '#2E3C5D',
                             }}
                           />
                         ) : (
-                          <Close
-                            style={{
-                              color: 'red',
-                            }}
-                          />
+                          <React.Fragment>
+                            {pricingCardFeatures[9].iconType === 'paidCheckMark' ? (
+                              <Check
+                                style={{
+                                  color: 'rgb(219,179,86)',
+                                }}
+                              />
+                            ) : (
+                              <Close
+                                style={{
+                                  color: 'red',
+                                }}
+                              />
+                            )}
+                          </React.Fragment>
                         )}
                         <ItemText>Analytics Integration</ItemText>
-                        <CollectionItemLight />
+                        {pricingCardFeatures[9].iconType === 'notAvailable' ? (
+                          <CollectionItemLight />
+                        ) : (
+                          null
+                        )}
                       </CollectionItem>
                     </React.Fragment>
                   )}
@@ -388,202 +645,456 @@ class PricingCard extends Component {
                 <br />
                 <Collection>
                   <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
-                    <ItemText>Enter Your Own Positions</ItemText>
+                    {pricingCardFeatures[0].iconType === 'checkMark' ? (
+                      <Check
+                        style={{
+                          color: '#2E3C5D',
+                        }}
+                      />
+                    ) : (
+                      <React.Fragment>
+                        {pricingCardFeatures[0].iconType === 'paidCheckMark' ? (
+                          <Check
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        ) : (
+                          <Close
+                            style={{
+                              color: 'red',
+                            }}
+                          />
+                        )}
+                      </React.Fragment>
+                    )}
+                    <ItemText>{pricingCardFeatures[0].featureDescription}</ItemText>
+                    {pricingCardFeatures[0].iconType === 'notAvailable' ? (
+                      <CollectionItemLight />
+                    ) : (
+                      null
+                    )}
                   </CollectionItem>
                   <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
+                    {pricingCardFeatures[1].iconType === 'checkMark' ? (
+                      <Check
+                        style={{
+                          color: '#2E3C5D',
+                        }}
+                      />
+                    ) : (
+                      <React.Fragment>
+                        {pricingCardFeatures[1].iconType === 'paidCheckMark' ? (
+                          <Check
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        ) : (
+                          <Close
+                            style={{
+                              color: 'red',
+                            }}
+                          />
+                        )}
+                      </React.Fragment>
+                    )}
                     <ItemText>Voter Guide Creation Tools</ItemText>
+                    {pricingCardFeatures[1].iconType === 'notAvailable' ? (
+                      <CollectionItemLight />
+                    ) : (
+                      null
+                    )}
                   </CollectionItem>
                   <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
+                    {pricingCardFeatures[2].iconType === 'checkMark' ? (
+                      <Check
+                        style={{
+                          color: '#2E3C5D',
+                        }}
+                      />
+                    ) : (
+                      <React.Fragment>
+                        {pricingCardFeatures[2].iconType === 'paidCheckMark' ? (
+                          <Check
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        ) : (
+                          <Close
+                            style={{
+                              color: 'red',
+                            }}
+                          />
+                        )}
+                      </React.Fragment>
+                    )}
                     <ItemText>Add Ballot to Your Website</ItemText>
+                    {pricingCardFeatures[2].iconType === 'notAvailable' ? (
+                      <CollectionItemLight />
+                    ) : (
+                      null
+                    )}
                   </CollectionItem>
                   <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
+                    {pricingCardFeatures[3].iconType === 'checkMark' ? (
+                      <Check
+                        style={{
+                          color: '#2E3C5D',
+                        }}
+                      />
+                    ) : (
+                      <React.Fragment>
+                        {pricingCardFeatures[3].iconType === 'paidCheckMark' ? (
+                          <Check
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        ) : (
+                          <Close
+                            style={{
+                              color: 'red',
+                            }}
+                          />
+                        )}
+                      </React.Fragment>
+                    )}
                     <ItemText>Visitor Metrics</ItemText>
+                    {pricingCardFeatures[3].iconType === 'notAvailable' ? (
+                      <CollectionItemLight />
+                    ) : (
+                      null
+                    )}
                   </CollectionItem>
                   <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
+                    {pricingCardFeatures[4].iconType === 'checkMark' ? (
+                      <Check
+                        style={{
+                          color: '#2E3C5D',
+                        }}
+                      />
+                    ) : (
+                      <React.Fragment>
+                        {pricingCardFeatures[4].iconType === 'paidCheckMark' ? (
+                          <Check
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        ) : (
+                          <Close
+                            style={{
+                              color: 'red',
+                            }}
+                          />
+                        )}
+                      </React.Fragment>
+                    )}
                     <ItemText>WeVote.US Subdomain</ItemText>
+                    {pricingCardFeatures[4].iconType === 'notAvailable' ? (
+                      <CollectionItemLight />
+                    ) : (
+                      null
+                    )}
                   </CollectionItem>
                   <CollectionItem>
-                    <Check
-                      style={{
-                        color: '#2E3C5D',
-                      }}
-                    />
+                    {pricingCardFeatures[5].iconType === 'checkMark' ? (
+                      <Check
+                        style={{
+                          color: '#2E3C5D',
+                        }}
+                      />
+                    ) : (
+                      <React.Fragment>
+                        {pricingCardFeatures[5].iconType === 'paidCheckMark' ? (
+                          <Check
+                            style={{
+                              color: 'rgb(219,179,86)',
+                            }}
+                          />
+                        ) : (
+                          <Close
+                            style={{
+                              color: 'red',
+                            }}
+                          />
+                        )}
+                      </React.Fragment>
+                    )}
                     <ItemText>Upload Your Logo</ItemText>
+                    {pricingCardFeatures[5].iconType === 'notAvailable' ? (
+                      <CollectionItemLight />
+                    ) : (
+                      null
+                    )}
                   </CollectionItem>
                   {premium ? (
                     <CollectionItem>
-                      {planName === 'Professional' || planName === 'Enterprise' ? (
+                      {pricingCardFeatures[6].iconType === 'checkMark' ? (
                         <Check
                           style={{
-                            color: 'rgb(219,179,86)',
+                            color: '#2E3C5D',
                           }}
                         />
                       ) : (
-                        <Close
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
+                        <React.Fragment>
+                          {pricingCardFeatures[6].iconType === 'paidCheckMark' ? (
+                            <Check
+                              style={{
+                                color: 'rgb(219,179,86)',
+                              }}
+                            />
+                          ) : (
+                            <Close
+                              style={{
+                                color: 'red',
+                              }}
+                            />
+                          )}
+                        </React.Fragment>
                       )}
                       <ItemText>Edit Social Media Sharing Links</ItemText>
+                      {pricingCardFeatures[6].iconType === 'notAvailable' ? (
+                        <CollectionItemLight />
+                      ) : (
+                        null
+                      )}
                     </CollectionItem>
                   ) : (
                     <React.Fragment>
                       <CollectionItem>
-                        {planName === 'Professional' || planName === 'Enterprise' ? (
+                        {pricingCardFeatures[6].iconType === 'checkMark' ? (
                           <Check
                             style={{
-                              color: 'rgb(219,179,86)',
+                              color: '#2E3C5D',
                             }}
                           />
                         ) : (
-                          <Close
-                            style={{
-                              color: 'red',
-                            }}
-                          />
+                          <React.Fragment>
+                            {pricingCardFeatures[6].iconType === 'paidCheckMark' ? (
+                              <Check
+                                style={{
+                                  color: 'rgb(219,179,86)',
+                                }}
+                              />
+                            ) : (
+                              <Close
+                                style={{
+                                  color: 'red',
+                                }}
+                              />
+                            )}
+                          </React.Fragment>
                         )}
                         <ItemText>Edit Social Media Sharing Links</ItemText>
-                        <CollectionItemLight />
+                        {pricingCardFeatures[6].iconType === 'notAvailable' ? (
+                          <CollectionItemLight />
+                        ) : (
+                          null
+                        )}
                       </CollectionItem>
                     </React.Fragment>
                   )}
                   {premium ? (
                     <CollectionItem>
-                      {planName === 'Professional' || planName === 'Enterprise' ? (
+                      {pricingCardFeatures[7].iconType === 'checkMark' ? (
                         <Check
                           style={{
-                            color: 'rgb(219,179,86)',
+                            color: '#2E3C5D',
                           }}
                         />
                       ) : (
-                        <Close
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
+                        <React.Fragment>
+                          {pricingCardFeatures[7].iconType === 'paidCheckMark' ? (
+                            <Check
+                              style={{
+                                color: 'rgb(219,179,86)',
+                              }}
+                            />
+                          ) : (
+                            <Close
+                              style={{
+                                color: 'red',
+                              }}
+                            />
+                          )}
+                        </React.Fragment>
                       )}
                       <ItemText>Create Multi-Organization Voter Guides</ItemText>
+                      {pricingCardFeatures[7].iconType === 'notAvailable' ? (
+                        <CollectionItemLight />
+                      ) : (
+                        null
+                      )}
                     </CollectionItem>
                   ) : (
                     <React.Fragment>
                       <CollectionItem>
-                        {planName === 'Professional' || planName === 'Enterprise' ? (
+                        {pricingCardFeatures[7].iconType === 'checkMark' ? (
                           <Check
                             style={{
-                              color: 'rgb(219,179,86)',
+                              color: '#2E3C5D',
                             }}
                           />
                         ) : (
-                          <Close
-                            style={{
-                              color: 'red',
-                            }}
-                          />
+                          <React.Fragment>
+                            {pricingCardFeatures[7].iconType === 'paidCheckMark' ? (
+                              <Check
+                                style={{
+                                  color: 'rgb(219,179,86)',
+                                }}
+                              />
+                            ) : (
+                              <Close
+                                style={{
+                                  color: 'red',
+                                }}
+                              />
+                            )}
+                          </React.Fragment>
                         )}
                         <ItemText>Create Multi-Organization Voter Guides</ItemText>
-                        <CollectionItemLight />
+                        {pricingCardFeatures[7].iconType === 'notAvailable' ? (
+                          <CollectionItemLight />
+                        ) : (
+                          null
+                        )}
                       </CollectionItem>
                     </React.Fragment>
                   )}
                   {planName === 'Enterprise' ? (
                     <CollectionItem>
-                      {planName === 'Enterprise' ? (
+                      {pricingCardFeatures[8].iconType === 'checkMark' ? (
                         <Check
                           style={{
-                            color: 'rgb(219,179,86)',
+                            color: '#2E3C5D',
                           }}
                         />
                       ) : (
-                        <Close
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
+                        <React.Fragment>
+                          {pricingCardFeatures[8].iconType === 'paidCheckMark' ? (
+                            <Check
+                              style={{
+                                color: 'rgb(219,179,86)',
+                              }}
+                            />
+                          ) : (
+                            <Close
+                              style={{
+                                color: 'red',
+                              }}
+                            />
+                          )}
+                        </React.Fragment>
                       )}
                       <ItemText>Additional Administrators</ItemText>
+                      {pricingCardFeatures[8].iconType === 'notAvailable' ? (
+                        <CollectionItemLight />
+                      ) : (
+                        null
+                      )}
                     </CollectionItem>
                   ) : (
                     <React.Fragment>
                       <CollectionItem>
-                        {planName === 'Enterprise' ? (
+                        {pricingCardFeatures[8].iconType === 'checkMark' ? (
                           <Check
                             style={{
-                              color: 'rgb(219,179,86)',
+                              color: '#2E3C5D',
                             }}
                           />
                         ) : (
-                          <Close
-                            style={{
-                              color: 'red',
-                            }}
-                          />
+                          <React.Fragment>
+                            {pricingCardFeatures[8].iconType === 'paidCheckMark' ? (
+                              <Check
+                                style={{
+                                  color: 'rgb(219,179,86)',
+                                }}
+                              />
+                            ) : (
+                              <Close
+                                style={{
+                                  color: 'red',
+                                }}
+                              />
+                            )}
+                          </React.Fragment>
                         )}
                         <ItemText>Additional Administrators</ItemText>
-                        <CollectionItemLight />
+                        {pricingCardFeatures[8].iconType === 'notAvailable' ? (
+                          <CollectionItemLight />
+                        ) : (
+                          null
+                        )}
                       </CollectionItem>
                     </React.Fragment>
                   )}
                   {planName === 'Enterprise' ? (
                     <CollectionItem>
-                      {planName === 'Enterprise' ? (
+                      {pricingCardFeatures[9].iconType === 'checkMark' ? (
                         <Check
                           style={{
-                            color: 'rgb(219,179,86)',
+                            color: '#2E3C5D',
                           }}
                         />
                       ) : (
-                        <Close
-                          style={{
-                            color: 'rgb(219,179,86)',
-                          }}
-                        />
+                        <React.Fragment>
+                          {pricingCardFeatures[9].iconType === 'paidCheckMark' ? (
+                            <Check
+                              style={{
+                                color: 'rgb(219,179,86)',
+                              }}
+                            />
+                          ) : (
+                            <Close
+                              style={{
+                                color: 'red',
+                              }}
+                            />
+                          )}
+                        </React.Fragment>
                       )}
                       <ItemText>Analytics Integration</ItemText>
+                      {pricingCardFeatures[9].iconType === 'notAvailable' ? (
+                        <CollectionItemLight />
+                      ) : (
+                        null
+                      )}
                     </CollectionItem>
                   ) : (
                     <React.Fragment>
                       <CollectionItem>
-                        {planName === 'Enterprise' ? (
+                        {pricingCardFeatures[9].iconType === 'checkMark' ? (
                           <Check
                             style={{
-                              color: 'rgb(219,179,86)',
+                              color: '#2E3C5D',
                             }}
                           />
                         ) : (
-                          <Close
-                            style={{
-                              color: 'red',
-                            }}
-                          />
+                          <React.Fragment>
+                            {pricingCardFeatures[9].iconType === 'paidCheckMark' ? (
+                              <Check
+                                style={{
+                                  color: 'rgb(219,179,86)',
+                                }}
+                              />
+                            ) : (
+                              <Close
+                                style={{
+                                  color: 'red',
+                                }}
+                              />
+                            )}
+                          </React.Fragment>
                         )}
                         <ItemText>Analytics Integration</ItemText>
-                        <CollectionItemLight />
+                        {pricingCardFeatures[9].iconType === 'notAvailable' ? (
+                          <CollectionItemLight />
+                        ) : (
+                          null
+                        )}
                       </CollectionItem>
                     </React.Fragment>
                   )}
