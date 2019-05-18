@@ -134,7 +134,7 @@ class Pricing extends Component {
         },
         Enterprise: {
           planName: 'Enterprise',
-          price: 125,
+          price: null,
           priceDescribe: null,
           premium: true,
           description: 'Best for statewide or national organizations or companies',
@@ -187,7 +187,7 @@ class Pricing extends Component {
           ],
         },
       },
-      /* Need to change the data for organizations pricing cards */
+      /* Need to change the data for organizations */
       forOrganizationsPricingCards: {
         Free: {
           planName: 'Free',
@@ -299,7 +299,7 @@ class Pricing extends Component {
         },
         Enterprise: {
           planName: 'Enterprise',
-          price: 125,
+          price: null,
           priceDescribe: null,
           premium: true,
           description: 'Best for statewide or national organizations or companies',
