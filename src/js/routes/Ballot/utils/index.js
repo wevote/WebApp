@@ -83,6 +83,12 @@ function checkShouldUpdate (state, nextState) {
   if (state.showFilterTabs !== nextState.showFilterTabs) {
     return true;
   }
+  if (state.textForMapSearch !== nextState.textForMapSearch) {
+    return true;
+  }
+  if (state.textForMapSearchFromBallot !== nextState.textForMapSearchFromBallot) {
+    return true;
+  }
   if (state.ballotHeaderUnpinned !== nextState.ballotHeaderUnpinned) {
     return true;
   }
