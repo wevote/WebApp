@@ -4,6 +4,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
+import ffwdLogo from '../../img/global/logos/ffwd-logo.png';
+import googleLogo from '../../img/global/logos/google-logo.svg';
+import voteDotOrgLogo from '../../img/global/logos/vote_dot_org_logo-530x200.png';
+import vipLogo from '../../img/global/logos/vip-logo-1000x208.png';
 import { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/Header';
 import Section, { SectionTitle, SectionTitleBold, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage } from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
@@ -283,11 +287,11 @@ class WelcomeForOrganizations extends PureComponent {
         <Section variant="dark" rounded={!isVoterSignedIn}>
           <SectionTitle>Our Network</SectionTitle>
           <NetworkContainer>
-            <NetworkImage src={cordovaDot('/img/global/logos/ffwd-logo.png')} alt="Fast Forward" />
-            <NetworkImage src={cordovaDot('/img/global/logos/google-logo.svg')} alt="Google" />
+            <NetworkImage src={cordovaDot(ffwdLogo)} alt="Fast Forward" />
+            <NetworkImage src={cordovaDot(googleLogo)} alt="Google" />
             {/* <NetworkImage src={cordovaDot('/img/global/logos/ctcl_logo-200x200.png')} alt="Center for Technology and Civic Life" /> */}
-            <NetworkImage src={cordovaDot('/img/global/logos/vote_dot_org_logo-530x200.png')} alt="Vote.org" />
-            <NetworkImage src={cordovaDot('/img/global/logos/vip-logo-1000x208.png')} alt="Voting Information Project" />
+            <NetworkImage src={cordovaDot(voteDotOrgLogo)} alt="Vote.org" />
+            <NetworkImage src={cordovaDot(vipLogo)} alt="Voting Information Project" />
           </NetworkContainer>
         </Section>
         <Footer />
