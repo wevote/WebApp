@@ -246,7 +246,7 @@ const Wrapper = styled.div`
 
 const HeaderForAbout = styled.div`
   position: relative;
-  height: 190px;
+  height: 230px;
   width: 110%;
   color: white;
   background-image: linear-gradient(to bottom, #415a99, #2d3b5e);
@@ -255,10 +255,10 @@ const HeaderForAbout = styled.div`
   padding: 0 2em;
   margin-top: -72px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    height: 190px;
+    height: 230px;
   }
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    height: 160px;
+    height: 215px;
   }
 `;
 
