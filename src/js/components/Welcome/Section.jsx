@@ -137,6 +137,7 @@ const NetworkContainer = styled.div`
   max-width: 90vw;
   display: flex;
   flex-flow: row wrap;
+  align-items: center;
   justify-content: space-between;
   padding: 2em;
   padding-bottom: 3em;
