@@ -412,95 +412,93 @@ class Pricing extends Component {
           </div>
         </HeaderForPricing>
         <Section>
-          <PricingDescriptionContainer>
-            <div className="container">
-              <div className="u-show-mobile-tablet">
-                <div className="row">
-                  {selectedCategoryIndex === 0 ? (
-                    <PricingCard
-                      fullWidth
-                      planName={this.state.forCampaignsPricingCards.Free.planName}
-                      price={this.state.forCampaignsPricingCards.Free.price}
-                      priceDescribe={this.state.forCampaignsPricingCards.Free.priceDescribe}
-                      description={this.state.forCampaignsPricingCards.Free.description}
-                      bullets={this.state.forCampaignsPricingCards.Free.bullets}
-                      buttonText={this.state.forCampaignsPricingCards.Free.buttonText}
-                      buttonOnClickId={this.state.forCampaignsPricingCards.Free.buttonOnClickId}
-                      buttonOnClickFunction={this.state.forCampaignsPricingCards.Free.buttonOnClickFunction}
-                      pricingCardFeatures={this.state.forCampaignsPricingCards.Free.pricingCardFeatures}
-                    />
-                  ) : (
-                    <React.Fragment>
-                      {selectedCategoryIndex === 1 ? (
-                        <PricingCard
-                          fullWidth
-                          planName={this.state.forCampaignsPricingCards.Professional.planName}
-                          price={this.state.forCampaignsPricingCards.Professional.price}
-                          priceDescribe={this.state.forCampaignsPricingCards.Professional.priceDescribe}
-                          premium
-                          description={this.state.forCampaignsPricingCards.Professional.description}
-                          bullets={this.state.forCampaignsPricingCards.Professional.bullets}
-                          buttonText={this.state.forCampaignsPricingCards.Professional.buttonText}
-                          buttonOnClickId={this.state.forCampaignsPricingCards.Professional.buttonOnClickId}
-                          buttonOnClickFunction={this.state.forCampaignsPricingCards.Professional.buttonOnClickFunction}
-                          pricingCardFeatures={this.state.forCampaignsPricingCards.Professional.pricingCardFeatures}
-                        />
-                      ) : (
-                        <PricingCard
-                          fullWidth
-                          planName={this.state.forCampaignsPricingCards.Enterprise.planName}
-                          price={this.state.forCampaignsPricingCards.Enterprise.price}
-                          priceDescribe={this.state.forCampaignsPricingCards.Enterprise.priceDescribe}
-                          premium
-                          description={this.state.forCampaignsPricingCards.Enterprise.description}
-                          bullets={this.state.forCampaignsPricingCards.Enterprise.bullets}
-                          buttonText={this.state.forCampaignsPricingCards.Enterprise.buttonText}
-                          buttonOnClickId={this.state.forCampaignsPricingCards.Enterprise.buttonOnClickId}
-                          buttonOnClickFunction={this.state.forCampaignsPricingCards.Enterprise.buttonOnClickFunction}
-                          pricingCardFeatures={this.state.forCampaignsPricingCards.Enterprise.pricingCardFeatures}
-                        />
-                      )}
-                    </React.Fragment>
-                  )}
-                </div>
+          <PricingDescriptionContainer className="container">
+            <div className="u-show-mobile-tablet">
+              <div className="row">
+                {selectedCategoryIndex === 0 ? (
+                  <PricingCard
+                    fullWidth
+                    planName={this.state.forCampaignsPricingCards.Free.planName}
+                    price={this.state.forCampaignsPricingCards.Free.price}
+                    priceDescribe={this.state.forCampaignsPricingCards.Free.priceDescribe}
+                    description={this.state.forCampaignsPricingCards.Free.description}
+                    bullets={this.state.forCampaignsPricingCards.Free.bullets}
+                    buttonText={this.state.forCampaignsPricingCards.Free.buttonText}
+                    buttonOnClickId={this.state.forCampaignsPricingCards.Free.buttonOnClickId}
+                    buttonOnClickFunction={this.state.forCampaignsPricingCards.Free.buttonOnClickFunction}
+                    pricingCardFeatures={this.state.forCampaignsPricingCards.Free.pricingCardFeatures}
+                  />
+                ) : (
+                  <React.Fragment>
+                    {selectedCategoryIndex === 1 ? (
+                      <PricingCard
+                        fullWidth
+                        planName={this.state.forCampaignsPricingCards.Professional.planName}
+                        price={this.state.forCampaignsPricingCards.Professional.price}
+                        priceDescribe={this.state.forCampaignsPricingCards.Professional.priceDescribe}
+                        premium
+                        description={this.state.forCampaignsPricingCards.Professional.description}
+                        bullets={this.state.forCampaignsPricingCards.Professional.bullets}
+                        buttonText={this.state.forCampaignsPricingCards.Professional.buttonText}
+                        buttonOnClickId={this.state.forCampaignsPricingCards.Professional.buttonOnClickId}
+                        buttonOnClickFunction={this.state.forCampaignsPricingCards.Professional.buttonOnClickFunction}
+                        pricingCardFeatures={this.state.forCampaignsPricingCards.Professional.pricingCardFeatures}
+                      />
+                    ) : (
+                      <PricingCard
+                        fullWidth
+                        planName={this.state.forCampaignsPricingCards.Enterprise.planName}
+                        price={this.state.forCampaignsPricingCards.Enterprise.price}
+                        priceDescribe={this.state.forCampaignsPricingCards.Enterprise.priceDescribe}
+                        premium
+                        description={this.state.forCampaignsPricingCards.Enterprise.description}
+                        bullets={this.state.forCampaignsPricingCards.Enterprise.bullets}
+                        buttonText={this.state.forCampaignsPricingCards.Enterprise.buttonText}
+                        buttonOnClickId={this.state.forCampaignsPricingCards.Enterprise.buttonOnClickId}
+                        buttonOnClickFunction={this.state.forCampaignsPricingCards.Enterprise.buttonOnClickFunction}
+                        pricingCardFeatures={this.state.forCampaignsPricingCards.Enterprise.pricingCardFeatures}
+                      />
+                    )}
+                  </React.Fragment>
+                )}
               </div>
-              <div className="row u-show-desktop">
-                <PricingCard
-                  planName={this.state.forCampaignsPricingCards.Free.planName}
-                  price={this.state.forCampaignsPricingCards.Free.price}
-                  priceDescribe={this.state.forCampaignsPricingCards.Free.priceDescribe}
-                  description={this.state.forCampaignsPricingCards.Free.description}
-                  bullets={this.state.forCampaignsPricingCards.Free.bullets}
-                  buttonText={this.state.forCampaignsPricingCards.Free.buttonText}
-                  buttonOnClickId={this.state.forCampaignsPricingCards.Free.buttonOnClickId}
-                  buttonOnClickFunction={this.state.forCampaignsPricingCards.Free.buttonOnClickFunction}
-                  pricingCardFeatures={this.state.forCampaignsPricingCards.Free.pricingCardFeatures}
-                />
-                <PricingCard
-                  planName={this.state.forCampaignsPricingCards.Professional.planName}
-                  price={this.state.forCampaignsPricingCards.Professional.price}
-                  priceDescribe={this.state.forCampaignsPricingCards.Professional.priceDescribe}
-                  premium
-                  description={this.state.forCampaignsPricingCards.Professional.description}
-                  bullets={this.state.forCampaignsPricingCards.Professional.bullets}
-                  buttonText={this.state.forCampaignsPricingCards.Professional.buttonText}
-                  buttonOnClickId={this.state.forCampaignsPricingCards.Professional.buttonOnClickId}
-                  buttonOnClickFunction={this.state.forCampaignsPricingCards.Professional.buttonOnClickFunction}
-                  pricingCardFeatures={this.state.forCampaignsPricingCards.Professional.pricingCardFeatures}
-                />
-                <PricingCard
-                  planName={this.state.forCampaignsPricingCards.Enterprise.planName}
-                  price={this.state.forCampaignsPricingCards.Enterprise.price}
-                  priceDescribe={this.state.forCampaignsPricingCards.Enterprise.priceDescribe}
-                  premium
-                  description={this.state.forCampaignsPricingCards.Enterprise.description}
-                  bullets={this.state.forCampaignsPricingCards.Enterprise.bullets}
-                  buttonText={this.state.forCampaignsPricingCards.Enterprise.buttonText}
-                  buttonOnClickId={this.state.forCampaignsPricingCards.Enterprise.buttonOnClickId}
-                  buttonOnClickFunction={this.state.forCampaignsPricingCards.Enterprise.buttonOnClickFunction}
-                  pricingCardFeatures={this.state.forCampaignsPricingCards.Enterprise.pricingCardFeatures}
-                />
-              </div>
+            </div>
+            <div className="row u-show-desktop">
+              <PricingCard
+                planName={this.state.forCampaignsPricingCards.Free.planName}
+                price={this.state.forCampaignsPricingCards.Free.price}
+                priceDescribe={this.state.forCampaignsPricingCards.Free.priceDescribe}
+                description={this.state.forCampaignsPricingCards.Free.description}
+                bullets={this.state.forCampaignsPricingCards.Free.bullets}
+                buttonText={this.state.forCampaignsPricingCards.Free.buttonText}
+                buttonOnClickId={this.state.forCampaignsPricingCards.Free.buttonOnClickId}
+                buttonOnClickFunction={this.state.forCampaignsPricingCards.Free.buttonOnClickFunction}
+                pricingCardFeatures={this.state.forCampaignsPricingCards.Free.pricingCardFeatures}
+              />
+              <PricingCard
+                planName={this.state.forCampaignsPricingCards.Professional.planName}
+                price={this.state.forCampaignsPricingCards.Professional.price}
+                priceDescribe={this.state.forCampaignsPricingCards.Professional.priceDescribe}
+                premium
+                description={this.state.forCampaignsPricingCards.Professional.description}
+                bullets={this.state.forCampaignsPricingCards.Professional.bullets}
+                buttonText={this.state.forCampaignsPricingCards.Professional.buttonText}
+                buttonOnClickId={this.state.forCampaignsPricingCards.Professional.buttonOnClickId}
+                buttonOnClickFunction={this.state.forCampaignsPricingCards.Professional.buttonOnClickFunction}
+                pricingCardFeatures={this.state.forCampaignsPricingCards.Professional.pricingCardFeatures}
+              />
+              <PricingCard
+                planName={this.state.forCampaignsPricingCards.Enterprise.planName}
+                price={this.state.forCampaignsPricingCards.Enterprise.price}
+                priceDescribe={this.state.forCampaignsPricingCards.Enterprise.priceDescribe}
+                premium
+                description={this.state.forCampaignsPricingCards.Enterprise.description}
+                bullets={this.state.forCampaignsPricingCards.Enterprise.bullets}
+                buttonText={this.state.forCampaignsPricingCards.Enterprise.buttonText}
+                buttonOnClickId={this.state.forCampaignsPricingCards.Enterprise.buttonOnClickId}
+                buttonOnClickFunction={this.state.forCampaignsPricingCards.Enterprise.buttonOnClickFunction}
+                pricingCardFeatures={this.state.forCampaignsPricingCards.Enterprise.pricingCardFeatures}
+              />
             </div>
           </PricingDescriptionContainer>
         </Section>
@@ -562,6 +560,16 @@ const PricingDescriptionContainer = styled.div`
   text-align: left;
   @media (max-width: 569px) {
     margin-top: -2em;
+  }
+  @media (min-width: 960px) and (max-width: 991px) {
+    > * {
+      width: 90%;
+      margin: 0 auto;   
+    }
+    max-width: 100%;
+    min-width: 100%;
+    width: 100%;
+    margin: 0 auto;
   }
 `;
 
