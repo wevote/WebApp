@@ -22,7 +22,7 @@ class Pricing extends Component {
     super(props);
 
     this.state = {
-      pricingCardLabels: ['Free', 'Professional', 'Enterprise'],
+      pricingCardLabels: ['Free', 'Pro', 'Enterprise'],
       forCampaignsPricingCards: {
         Free: {
           planName: 'Free',
@@ -400,7 +400,7 @@ class Pricing extends Component {
       <Wrapper>
         <Helmet title="Pricing - We Vote" />
         <WelcomeAppbar pathname="/more/pricing" />
-        <HeaderForAbout>
+        <HeaderForPricing>
           <Title>Pricing</Title>
           <div className="u-show-mobile-tablet">
             <PricingSwitch
@@ -410,10 +410,10 @@ class Pricing extends Component {
               switchToDifferentCategoryFunction={this.switchToDifferentCategoryFunction}
             />
           </div>
-        </HeaderForAbout>
+        </HeaderForPricing>
         <Section>
-          <AboutDescriptionContainer>
-            <div>
+          <PricingDescriptionContainer>
+            <div className="container">
               <div className="u-show-mobile-tablet">
                 <div className="row">
                   {selectedCategoryIndex === 0 ? (
@@ -437,6 +437,7 @@ class Pricing extends Component {
                           planName={this.state.forCampaignsPricingCards.Professional.planName}
                           price={this.state.forCampaignsPricingCards.Professional.price}
                           priceDescribe={this.state.forCampaignsPricingCards.Professional.priceDescribe}
+                          premium
                           description={this.state.forCampaignsPricingCards.Professional.description}
                           bullets={this.state.forCampaignsPricingCards.Professional.bullets}
                           buttonText={this.state.forCampaignsPricingCards.Professional.buttonText}
@@ -450,6 +451,7 @@ class Pricing extends Component {
                           planName={this.state.forCampaignsPricingCards.Enterprise.planName}
                           price={this.state.forCampaignsPricingCards.Enterprise.price}
                           priceDescribe={this.state.forCampaignsPricingCards.Enterprise.priceDescribe}
+                          premium
                           description={this.state.forCampaignsPricingCards.Enterprise.description}
                           bullets={this.state.forCampaignsPricingCards.Enterprise.bullets}
                           buttonText={this.state.forCampaignsPricingCards.Enterprise.buttonText}
@@ -478,6 +480,7 @@ class Pricing extends Component {
                   planName={this.state.forCampaignsPricingCards.Professional.planName}
                   price={this.state.forCampaignsPricingCards.Professional.price}
                   priceDescribe={this.state.forCampaignsPricingCards.Professional.priceDescribe}
+                  premium
                   description={this.state.forCampaignsPricingCards.Professional.description}
                   bullets={this.state.forCampaignsPricingCards.Professional.bullets}
                   buttonText={this.state.forCampaignsPricingCards.Professional.buttonText}
@@ -489,6 +492,7 @@ class Pricing extends Component {
                   planName={this.state.forCampaignsPricingCards.Enterprise.planName}
                   price={this.state.forCampaignsPricingCards.Enterprise.price}
                   priceDescribe={this.state.forCampaignsPricingCards.Enterprise.priceDescribe}
+                  premium
                   description={this.state.forCampaignsPricingCards.Enterprise.description}
                   bullets={this.state.forCampaignsPricingCards.Enterprise.bullets}
                   buttonText={this.state.forCampaignsPricingCards.Enterprise.buttonText}
@@ -498,7 +502,7 @@ class Pricing extends Component {
                 />
               </div>
             </div>
-          </AboutDescriptionContainer>
+          </PricingDescriptionContainer>
         </Section>
         <Section>
           &nbsp;
@@ -533,7 +537,7 @@ const Wrapper = styled.div`
   overflow-x: hidden;
 `;
 
-const HeaderForAbout = styled.div`
+const HeaderForPricing = styled.div`
   position: relative;
   height: 240px;
   width: 110%;
@@ -551,7 +555,7 @@ const HeaderForAbout = styled.div`
   // }
 `;
 
-const AboutDescriptionContainer = styled.div`
+const PricingDescriptionContainer = styled.div`
   margin: 1em auto;
   width: 960px;
   max-width: 90vw;
@@ -564,14 +568,5 @@ const AboutDescriptionContainer = styled.div`
     margin: 0 auto;
   }
 `;
-
-// const SwitchContainer = styled.div`
-//   background: #2e3c5d;
-//   border-radius: 50px;
-//   width: calc(100% - 30px);
-//   margin: 0 auto;
-//   padding: 4px;
-//   margin-bottom: 32px;
-// `;
 
 export default withStyles(styles)(Pricing);
