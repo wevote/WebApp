@@ -151,52 +151,54 @@ class PricingCard extends Component {
           <div className="col col-4">
             <Card>
               <CardWrapper>
-                {premium ? (
-                  <PremiumName>{planName}</PremiumName>
-                ) : (
-                  <DefaultName>{planName}</DefaultName>
-                )}
-                {price === 0 || price ? (
-                  <React.Fragment>
-                    <span style={{
-                      fontSize: '18px',
-                      fontWeight: '500',
-                      position: 'relative',
-                      bottom: '8px',
-                    }}
-                    >
-                    $
-                    </span>
-                    <Price>{price}</Price>
-                    <PriceDescribe>
-                      {priceDescribe}
-                      {planName === 'Professional' ? (
-                        <PriceDescribeLight>or $150 month to month</PriceDescribeLight>
-                      ) : (
-                        null
-                      )}
-                    </PriceDescribe>
-                  </React.Fragment>
-                ) : (
-                  <React.Fragment>
-                    <h6 className="mb-0"
-                    style={{
-                      fontSize: '20px',
-                    }}
-                    >
-                    Contact
-                    </h6>
-                    <p style={{
-                      fontSize: '10px',
-                      color: '#333',
-                    }}
-                    >
-                      <strong>
-                        our sales team for a quote.
-                      </strong>
-                    </p>
-                  </React.Fragment>
-                )}
+                <PricingCardHeader>
+                  {premium ? (
+                    <PremiumName>{planName}</PremiumName>
+                  ) : (
+                    <DefaultName>{planName}</DefaultName>
+                  )}
+                  {price === 0 || price ? (
+                    <React.Fragment>
+                      <span style={{
+                        fontSize: '18px',
+                        fontWeight: '500',
+                        position: 'relative',
+                        bottom: '8px',
+                      }}
+                      >
+                      $
+                      </span>
+                      <Price>{price}</Price>
+                      <PriceDescribe>
+                        {priceDescribe}
+                        {planName === 'Professional' ? (
+                          <PriceDescribeLight>or $150 month to month</PriceDescribeLight>
+                        ) : (
+                          null
+                        )}
+                      </PriceDescribe>
+                    </React.Fragment>
+                  ) : (
+                    <React.Fragment>
+                      <h6 className="mb-0"
+                      style={{
+                        fontSize: '20px',
+                      }}
+                      >
+                      Contact
+                      </h6>
+                      <p style={{
+                        fontSize: '10px',
+                        color: '#333',
+                      }}
+                      >
+                        <strong>
+                          our sales team for a quote.
+                        </strong>
+                      </p>
+                    </React.Fragment>
+                  )}
+                </PricingCardHeader>
                 <hr />
                 <Description>
                   {description}
@@ -256,6 +258,13 @@ const CardMobile = styled.div`
 
 const CardWrapper = styled.div`
   padding: 8px;
+`;
+
+const PricingCardHeader = styled.div`
+  min-height: 75px;
+  @media (min-width: 960px) and (max-width: 991px) {
+    min-height: 100px;
+  }
 `;
 
 const PremiumName = styled.h4`
