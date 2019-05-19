@@ -413,7 +413,7 @@ class Pricing extends Component {
         </HeaderForAbout>
         <Section>
           <AboutDescriptionContainer>
-            <div className="container">
+            <div>
               <div className="u-show-mobile-tablet">
                 <div className="row">
                   {selectedCategoryIndex === 0 ? (
@@ -558,6 +558,10 @@ const AboutDescriptionContainer = styled.div`
   text-align: left;
   @media (max-width: 569px) {
     margin-top: -2em;
+  }
+  @media (min-width: 960px) and (max-width: 991px) {
+    width: 90%;
+    margin: 0 auto;
   }
 `;
 
