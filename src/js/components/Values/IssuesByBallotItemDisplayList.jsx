@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg';
 import styled from 'styled-components';
@@ -16,6 +17,10 @@ class IssuesByBallotItemDisplayList extends Component {
     handleLeaveCandidateCard: PropTypes.func,
     handleEnterCandidateCard: PropTypes.func,
   };
+
+  static closePopover () {
+    document.body.click();
+  }
 
   constructor (props) {
     super(props);
@@ -71,6 +76,62 @@ class IssuesByBallotItemDisplayList extends Component {
     this.setState({ expand: !expand });
   }
 
+  generateValueListItem = (oneIssue) => {
+    const valuePopover = (
+      <Popover
+        id="positions-popover-trigger-click-root-close"
+        title={(
+          <PopoverTitle className="u-f4 u-no-break">
+            <PopoverTitleIcon>
+              <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
+                        svgStyle={{ fill: '#fff', padding: '1px 1px 1px 0px' }}
+              />
+            </PopoverTitleIcon>
+            <PopoverTitleText>
+              {oneIssue.issue_name}
+            </PopoverTitleText>
+            <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" />
+          </PopoverTitle>
+        )}
+        onClick={IssuesByBallotItemDisplayList.closePopover}
+      >
+        Value Popover Text
+      </Popover>
+    );
+
+    const valueIconAndText = (
+      <ValueIconAndText className="u-no-break u-cursor--pointer issue-icon-list__issue-block">
+        {oneIssue.issue_icon_local_path ? (
+          <span className="issue-icon-list__issue-icon">
+            <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
+                      svgStyle={{ fill: '#999', padding: '1px 1px 1px 0px' }}
+            />
+          </span>
+        ) : null
+        }
+        <div className="u-margin-left--xxs issue-icon-list__issue-label-name">
+          {oneIssue.issue_name}
+        </div>
+      </ValueIconAndText>
+    );
+
+    return (
+      <ValueIconAndTextListItem
+        className="u-push--sm"
+        key={`issue-icon-${oneIssue.issue_we_vote_id}`}
+      >
+        <OverlayTrigger
+          trigger="click"
+          rootClose
+          placement="bottom"
+          overlay={valuePopover}
+        >
+          {valueIconAndText}
+        </OverlayTrigger>
+      </ValueIconAndTextListItem>
+    );
+  }
+
   render () {
     const handleEnterHoverLocalArea = () => {
       if (this.props.handleLeaveCandidateCard) {
@@ -113,24 +174,7 @@ class IssuesByBallotItemDisplayList extends Component {
         // console.log('oneIssue.issue_name: ', oneIssue.issue_name);
         localCounter++;
         if (localCounter <= this.state.maximumNumberOfIssuesToDisplay) {
-          return (
-            <li
-              className="u-push--sm issue-icon-list__issue-block"
-              key={`issue-icon-${oneIssue.issue_we_vote_id}`}
-            >
-              {oneIssue.issue_icon_local_path ? (
-                <span className="issue-icon-list__issue-icon">
-                  <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-                            svgStyle={{ fill: '#999', padding: '1px 1px 1px 0px' }}
-                  />
-                </span>
-              ) : null
-              }
-              <div className="u-margin-left--xxs issue-icon-list__issue-label-name">
-                {oneIssue.issue_name}
-              </div>
-            </li>
-          );
+          return this.generateValueListItem(oneIssue);
         } else {
           return null;
         }
@@ -144,24 +188,7 @@ class IssuesByBallotItemDisplayList extends Component {
         }
         localCounter++;
         if (localCounter <= this.state.maximumNumberOfIssuesToDisplay) {
-          return (
-            <li
-              className="u-push--sm issue-icon-list__issue-block"
-              key={`issue-icon-${oneIssue.issue_we_vote_id}`}
-            >
-              {oneIssue.issue_icon_local_path ? (
-                <span className="issue-icon-list__issue-icon">
-                  <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-                            svgStyle={{ fill: '#4B4B4B', padding: '1px 1px 1px 0px' }}
-                  />
-                </span>
-              ) : null
-              }
-              <div className="u-margin-left--xxs issue-icon-list__issue-label-name">
-                {oneIssue.issue_name}
-              </div>
-            </li>
-          );
+          return this.generateValueListItem(oneIssue);
         } else {
           return null;
         }
@@ -224,6 +251,28 @@ const MoreWrapper = styled.p`
   padding-left: 10px;
   padding-right: 10px;
   cursor: pointer;
+`;
+
+const PopoverTitle = styled.span`
+  display: flex;
+  flex: 1 0 auto;
+  align-items: start;
+`;
+
+const PopoverTitleIcon = styled.span`
+  flex: none;
+`;
+
+const PopoverTitleText = styled.div`
+`;
+
+const ValueIconAndTextListItem = styled.li`
+  display: flex;
+  flex: 1 0 auto;
+  align-items: start;
+`;
+
+const ValueIconAndText = styled.span`
 `;
 
 export default IssuesByBallotItemDisplayList;

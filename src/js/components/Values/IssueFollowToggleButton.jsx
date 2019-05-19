@@ -75,7 +75,9 @@ export default class IssueFollowToggleButton extends Component {
       historyPush(`${urlWithoutHash}#${this.props.ballotItemWeVoteId}`);
     }
 
-    document.getElementById('dropdown_menu').style.visibility = 'hidden';
+    if (document.getElementById('dropdown_menu')) {
+      document.getElementById('dropdown_menu').style.visibility = 'hidden';
+    }
   }
 
   render () {
