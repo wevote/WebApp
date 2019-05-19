@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import SettingsAccount from '../Settings/SettingsAccount';
@@ -80,10 +80,19 @@ class SignInModal extends Component {
   }
 }
 
-const styles = ({
+const styles = theme => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '90%',
+      maxWidth: '90%',
+      width: '90%',
+      minHeight: '90%',
+      maxHeight: '90%',
+      height: '90%',
+      margin: '0 auto',
+    },
   },
 });
 
-export default withStyles(styles)(SignInModal);
+export default withTheme()(withStyles(styles)(SignInModal));
