@@ -1,16 +1,15 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import CandidateStore from '../../stores/CandidateStore';
 import FollowToggle from '../Widgets/FollowToggle';
 import MeasureStore from '../../stores/MeasureStore';
-// import OpenExternalWebSite from '../../utils/OpenExternalWebSite';
 import { stringContains } from '../../utils/textFormat';
 import VoterGuideDisplayForList from './VoterGuideDisplayForList';
 import { showToastSuccess } from '../../utils/showToast';
 import { renderLog } from '../../utils/logging';
 import EndorsementCard from '../Widgets/EndorsementCard';
 
-export default class GuideList extends Component {
+export default class GuideList extends PureComponent {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     incomingVoterGuideList: PropTypes.array,
@@ -27,7 +26,7 @@ export default class GuideList extends Component {
   }
 
   componentDidMount () {
-    // console.log("GuideList componentDidMount");
+    // console.log('GuideList componentDidMount');
     const { ballotItemWeVoteId } = this.state;
     const voterGuideList = this.sortOrganizations(this.props.incomingVoterGuideList, ballotItemWeVoteId);
     this.setState({
@@ -44,7 +43,7 @@ export default class GuideList extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("GuideList componentWillReceiveProps");
+    // console.log('GuideList componentWillReceiveProps');
     // Do not update the state if the voterGuideList list looks the same, and the ballotItemWeVoteId hasn't changed
     const { ballotItemWeVoteId } = this.state;
     const voterGuideList = this.sortOrganizations(nextProps.incomingVoterGuideList, ballotItemWeVoteId);
@@ -74,9 +73,9 @@ export default class GuideList extends Component {
   });
 
   sortOrganizations (organizationsList, ballotItemWeVoteId) {
-    // console.log("sortOrganizations: ", organizationsList, "ballotItemWeVoteId: ", ballotItemWeVoteId);
+    // console.log('sortOrganizations: ', organizationsList, 'ballotItemWeVoteId: ', ballotItemWeVoteId);
     if (organizationsList && ballotItemWeVoteId) {
-      // console.log("Checking for resort");
+      // console.log('Checking for resort');
       const arrayLength = organizationsList.length;
       let organization;
       let organizationPositionForThisBallotItem;
@@ -92,10 +91,10 @@ export default class GuideList extends Component {
           }
         }
         if (organizationPositionForThisBallotItem && organizationPositionForThisBallotItem.statement_text) {
-          // console.log("sortOrganizations unshift");
+          // console.log('sortOrganizations unshift');
           sortedOrganizations.unshift(organization);
         } else {
-          // console.log("sortOrganizations push");
+          // console.log('sortOrganizations push');
           sortedOrganizations.push(organization);
         }
       }
@@ -105,8 +104,6 @@ export default class GuideList extends Component {
   }
 
   handleIgnore (organizationWeVoteId) {
-    console.log('GuideList: 139 - Running handleIgnore main');
-
     const { voterGuideList } = this.state;
     // OrganizationActions.organizationFollowIgnore(organizationWeVoteId); // This is run within FollowToggle
     this.setState({
@@ -118,14 +115,14 @@ export default class GuideList extends Component {
   }
 
   render () {
-    // console.log("GuideList render");
+    // console.log('GuideList render');
     renderLog(__filename);
     if (this.state.filteredOrganizationsWithPositions === undefined) {
-      // console.log("GuideList this.state.organizations_to_follow === undefined");
+      // console.log('GuideList this.state.organizations_to_follow === undefined');
       return null;
     }
 
-    // console.log("GuideList voterGuideList: ", this.state.voterGuideList);
+    // console.log('GuideList voterGuideList: ', this.state.voterGuideList);
 
     if (!this.state.filteredOrganizationsWithPositions) {
       return (
@@ -134,13 +131,6 @@ export default class GuideList extends Component {
             <div className="u-margin-top--sm u-stack--sm u-no-break">
               No results found.
             </div>
-            {/* <OpenExternalWebSite
-              url="https://api.wevoteusa.org/vg/create/"
-              className="opinions-followed__missing-org-link"
-              target="_blank"
-              title="Organization Missing?"
-              body={<EndorsementCard className="u-stack--xs" buttonText="Endorsements Missing?" />}
-            /> */}
             <EndorsementCard
               className="btn endorsement-btn btn-sm"
               bsPrefix="u-margin-top--sm u-stack--xs"
@@ -148,9 +138,6 @@ export default class GuideList extends Component {
               buttonText="Organization Missing?"
               text="Don't see an organization you want to follow?"
             />
-            {/* <div className="opinions-followed__missing-org-text u-stack--sm u-no-break">
-              Don’t see an organization you want to Follow?
-            </div> */}
           </div>
         </div>
       );
@@ -159,7 +146,6 @@ export default class GuideList extends Component {
       <div className="guidelist card-child__list-group">
         {this.state.filteredOrganizationsWithPositions.map((organization) => {
           const handleIgnoreFunc = () => {
-            console.log('GuideList: 203 - Running handleIgnoreFunc');
             this.handleIgnore(organization.organization_we_vote_id);
           };
 

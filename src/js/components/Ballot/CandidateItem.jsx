@@ -263,10 +263,10 @@ class CandidateItem extends Component {
                 <div>
                   {/* Issues related to this Candidate */}
                   <IssuesByBallotItemDisplayList
-                  handleLeaveCandidateCard={this.handleLeave}
-                  handleEnterCandidateCard={this.handleEnter}
-                  ballotItemWeVoteId={candidateWeVoteId}
-                  placement="bottom"
+                    handleLeaveCandidateCard={this.handleLeave}
+                    handleEnterCandidateCard={this.handleEnter}
+                    ballotItemWeVoteId={candidateWeVoteId}
+                    placement="bottom"
                   />
                   {/* If there is a quote about the candidate, show that too. */}
                   <div className={this.state.hover && this.props.showHover ? (

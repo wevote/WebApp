@@ -1,23 +1,30 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import moment from 'moment';
 import ImageHandler from '../ImageHandler';
 import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
+import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
 import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
 import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
 import FollowToggle from '../Widgets/FollowToggle';
 
 
-export default class PositionItem extends Component {
+class PositionItem extends Component {
   static propTypes = {
     ballotItemDisplayName: PropTypes.string.isRequired,
     organization: PropTypes.object, // .isRequired,
     position: PropTypes.object.isRequired,
   };
+
+  static closePopover () {
+    document.body.click();
+  }
 
   render () {
     renderLog(__filename);
@@ -62,39 +69,69 @@ export default class PositionItem extends Component {
     const organizationWeVoteId = position.organization_we_vote_id || position.speaker_we_vote_id;
 
     if (showPosition) {
+      const organizationCardPopover = (
+        <Popover
+          id="positions-popover-trigger-click-root-close"
+          onClick={PositionItem.closePopover}
+        >
+          <OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />
+        </Popover>
+      );
+
       return (
-        <li className="card-child position-item">
+        <PositionItemListItem className="card-child position-item">
           {/* One Position on this Candidate */}
           <div className="card-child__media-object-anchor">
-            <Link to={speakerLink} className="u-no-underline">
-              { position.speaker_image_url_https_medium ? (
-                <ImageHandler
-                  className="card-child__avatar"
-                  sizeClassName="icon-lg "
-                  imageUrl={position.speaker_image_url_https_medium}
-                />
-              ) :
-                imagePlaceholder }
-            </Link>
+            <OverlayTrigger
+              delay={{ show: 700, hide: 100 }}
+              trigger={['hover', 'focus']}
+              rootClose
+              placement="bottom"
+              overlay={organizationCardPopover}
+            >
+              <Link to={speakerLink} className="u-no-underline">
+                { position.speaker_image_url_https_medium ? (
+                  <ImageHandler
+                    className="card-child__avatar"
+                    sizeClassName="icon-lg "
+                    imageUrl={position.speaker_image_url_https_medium}
+                  />
+                ) :
+                  imagePlaceholder }
+              </Link>
+            </OverlayTrigger>
             <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
           </div>
           <div className="card-child__media-object-content">
             <div className="card-child__content">
               <div className="u-flex">
                 <h4 className="card-child__display-name">
-                  <Link to={speakerLink}>
-                    { position.speaker_display_name }
-                  </Link>
+                  <OverlayTrigger
+                    delay={{ show: 700, hide: 100 }}
+                    trigger={['hover', 'focus']}
+                    rootClose
+                    placement="bottom"
+                    overlay={organizationCardPopover}
+                  >
+                    <Link to={speakerLink}>
+                      { position.speaker_display_name }
+                    </Link>
+                  </OverlayTrigger>
                 </h4>
                 <FriendsOnlyIndicator isFriendsOnly={!position.is_public_position} />
               </div>
               {positionDescription}
             </div>
           </div>
-        </li>
+        </PositionItemListItem>
       );
     } else {
       return nothingToDisplay;
     }
   }
 }
+
+const PositionItemListItem = styled.li`
+`;
+
+export default PositionItem;
