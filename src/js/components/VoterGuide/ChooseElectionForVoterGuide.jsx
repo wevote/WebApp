@@ -125,7 +125,7 @@ export default class ChooseElectionForVoterGuide extends Component {
         <div key={`choose-election-${item.google_civic_election_id}`}>
           <dl className="list-unstyled text-center">
             <Button
-              id="chooseElectionForVoterGuideButton"
+              id={`chooseElectionForVoterGuideButton-${item.google_civic_election_id}`}
               color="primary"
               onClick={() => this.saveVoterGuideForElection(item.google_civic_election_id)}
               variant="contained"
