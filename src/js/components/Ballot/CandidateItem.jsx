@@ -302,6 +302,7 @@ class CandidateItem extends Component {
                         </div>
                         <div className="col col-4">
                           <ItemActionBar
+                            className="u-float-right"
                             handleDisableLink={this.handleDisableLink}
                             handleEnableLink={this.handleEnableLink}
                             ballotItemWeVoteId={candidateWeVoteId}
@@ -663,7 +664,7 @@ const CandidateWrapper = styled.div`
   display: flex;
   flex-flow: row;
   justify-content: space-between;
-  width: 90%;
+  width: 100%;
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     width: 100%;
   }
