@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import Button from '@material-ui/core/Button';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import Candidate from './Ballot/Candidate';
@@ -178,7 +178,14 @@ export default class TwitterHandleLanding extends Component {
           </div>
           <br />
           <Link to="/twittersigninprocess/signinswitchstart">
-            <Button variant="primary">Sign Into Twitter to Create Voter Guide</Button>
+            <Button
+              color="primary"
+              id="TwitterHandleLandingSignIntoTwitterToCreateVoterGuideButton"
+              onClick={this.voterAddressSave}
+              variant="contained"
+            >
+              Sign Into Twitter to Create Voter Guide
+            </Button>
           </Link>
           <br />
           <br />

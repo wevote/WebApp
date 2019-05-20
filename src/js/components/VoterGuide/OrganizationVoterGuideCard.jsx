@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import Button from '@material-ui/core/Button';
 import { Link } from 'react-router';
 import { historyPush } from '../../utils/cordovaUtils';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
@@ -73,9 +73,17 @@ export default class OrganizationVoterGuideCard extends Component {
         }
         <br />
         { this.props.is_voter_owner ? (
-          <Button variant="warning" size="small" bsPrefix="pull-right" onClick={this.onEdit}>
+          <Button
+            color="primary"
+            id="OrganizationVoterGuideCardEditYourVoterGuideButton"
+            onClick={this.onEdit}
+            variant="contained"
+          >
             <span>Edit Your Voter Guide</span>
           </Button>
+          // <Button variant="warning" size="small" bsPrefix="pull-right" onClick={this.onEdit}>
+          //   <span>Edit Your Voter Guide</span>
+          // </Button>
         ) :
           <FollowToggle organizationWeVoteId={organizationWeVoteId} showFollowingText />
         }

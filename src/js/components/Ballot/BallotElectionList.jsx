@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import Button from '@material-ui/core/Button';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
-import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import LoadingWheel from '../LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -13,6 +14,7 @@ import { cleanArray } from '../../utils/textFormat';
 import convertStateCodeToStateText from '../../utils/address-functions';
 
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 36;
+const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP = 36;
 
 export default class BallotElectionList extends Component {
   static propTypes = {
@@ -88,7 +90,7 @@ export default class BallotElectionList extends Component {
     }
   }
 
-  goToDifferentElection (ballotLocationShortcut, ballotReturnedWeVoteId, googleCivicElectionId, originalTextForMapSearch = '') {
+  goToDifferentElection = (ballotLocationShortcut, ballotReturnedWeVoteId, googleCivicElectionId, originalTextForMapSearch = '') => {
     const ballotBaseurl = this.props.ballotBaseUrl || '/ballot';
     let destinationUrlForHistoryPush = '';
     if (ballotLocationShortcut && ballotLocationShortcut !== '' && ballotLocationShortcut !== 'none') {
@@ -171,44 +173,46 @@ export default class BallotElectionList extends Component {
       return electionDateTomorrow > currentDate ? (
         <div key={`upcoming-election-${item.google_civic_election_id}`}>
           <dl className="list-unstyled text-center">
-            <button
-              type="button"
-              className="btn btn-success ballot-election-list__button"
-              onClick={this.goToDifferentElection.bind(this, item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}
+            <Button
+              color="primary"
+              fullWidth
+              id={`ballotElectionListButton-${item.google_civic_election_id}`}
+              onClick={() => this.goToDifferentElection(item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}
+              variant="contained"
             >
               {/* Mobile */}
-              { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
-                <span className="d-block d-sm-none">
-                  {item.election_description_text}
-                  &nbsp;
-                  <img
-                    src={cordovaDot('/img/global/icons/Circle-Arrow.png')}
-                  />
-                </span>
-              ) : (
-                <span
-                  className="d-block d-sm-none"
-                >
-                  {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
-                  ...&nbsp;
-                  <img src={cordovaDot('/img/global/icons/Circle-Arrow.png')} alt="circle arrow" />
-                </span>
-              )}
+              <span className="d-block d-sm-none">
+                { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
+                  <span>
+                    {item.election_description_text}
+                    &nbsp;
+                  </span>
+                ) : (
+                  <span>
+                    {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
+                    ...&nbsp;
+                  </span>
+                )}
+              </span>
               {/* Desktop */}
               <span className="d-none d-sm-block">
-                {moment(item.election_day_text).format('MMMM Do, YYYY')}
-                {' '}
-                -
-                {' '}
-                {item.election_description_text}
-                &nbsp;
-                <img
-                  src={cordovaDot('/img/global/icons/Circle-Arrow.png')}
-                />
+                { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP ? (
+                  <span>
+                    {item.election_description_text}
+                    &nbsp;
+                  </span>
+                ) : (
+                  <span>
+                    {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP - 3)}
+                    ...&nbsp;
+                  </span>
+                )}
               </span>
 
-              <div className="d-block d-sm-none ballot-election-list__h2">{moment(item.election_day_text).format('MMMM Do, YYYY')}</div>
-            </button>
+              <div className="ballot-election-list__h2">
+                {moment(item.election_day_text).format('MMM Do, YYYY')}
+              </div>
+            </Button>
           </dl>
         </div>
       ) :
@@ -225,44 +229,44 @@ export default class BallotElectionList extends Component {
         null : (
           <div key={`prior-election-${item.google_civic_election_id}`}>
             <dl className="list-unstyled text-center">
-              <button
-                type="button"
-                className="btn btn-success ballot-election-list__button"
-                onClick={this.goToDifferentElection.bind(this, item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}
+              <Button
+                color="primary"
+                fullWidth
+                id={`ballotElectionListButton-${item.google_civic_election_id}`}
+                onClick={() => this.goToDifferentElection(item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}
+                variant="contained"
               >
                 {/* Mobile */}
-                { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
-                  <span className="d-block d-sm-none">
-                    {item.election_description_text}
-                    &nbsp;
-                    <img
-                      src={cordovaDot('/img/global/icons/Circle-Arrow.png')}
-                    />
-                  </span>
-                ) : (
-                  <span
-                    className="d-block d-sm-none"
-                  >
-                    {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
-                    ...&nbsp;
-                    <img src={cordovaDot('/img/global/icons/Circle-Arrow.png')} alt="circle arrow" />
-                  </span>
-                )}
+                <span className="d-block d-sm-none">
+                  { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
+                    <span>
+                      {item.election_description_text}
+                      &nbsp;
+                    </span>
+                  ) : (
+                    <span>
+                      {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
+                      ...&nbsp;
+                    </span>
+                  )}
+                </span>
                 {/* Desktop */}
                 <span className="d-none d-sm-block">
-                  {moment(item.election_day_text).format('MMMM Do, YYYY')}
-                  {' '}
-                  -
-                  {' '}
-                  {item.election_description_text}
-                  &nbsp;
-                  <img
-                    src={cordovaDot('/img/global/icons/Circle-Arrow.png')}
-                  />
+                  { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP ? (
+                    <span>
+                      {item.election_description_text}
+                      &nbsp;
+                    </span>
+                  ) : (
+                    <span>
+                      {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP - 3)}
+                      ...&nbsp;
+                    </span>
+                  )}
                 </span>
 
-                <div className="d-block d-sm-none ballot-election-list__h2">{moment(item.election_day_text).format('MMMM Do, YYYY')}</div>
-              </button>
+                <div className="ballot-election-list__h2">{moment(item.election_day_text).format('MMM Do, YYYY')}</div>
+              </Button>
             </dl>
           </div>
         );

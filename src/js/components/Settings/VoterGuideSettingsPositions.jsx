@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import Button from '@material-ui/core/Button';
 import BallotSearchResults from '../Ballot/BallotSearchResults';
 import BallotStore from '../../stores/BallotStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
@@ -346,14 +347,15 @@ export default class VoterGuideSettingsPositions extends Component {
         </div> :
         null */}
         <div className="fa-pull-right">
-          <button
-            type="button"
+          <Button
+            color="primary"
             className="btn btn-lg btn-success"
             onClick={this.goToVoterGuideDisplay}
+            variant="contained"
           >
             <span className="d-none d-sm-block">See Full Ballot to Enter More Positions&nbsp;&nbsp;&gt;</span>
             <span className="d-block d-sm-none">Enter More Positions&nbsp;&nbsp;&gt;</span>
-          </button>
+          </Button>
         </div>
         {this.state.searchIsUnderway ? (
           <span className="d-block d-sm-none">

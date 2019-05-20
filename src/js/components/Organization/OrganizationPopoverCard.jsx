@@ -116,7 +116,7 @@ class OrganizationPopoverCard extends Component {
       <Wrapper>
         { organizationPhotoUrlLarge ? (
           <Link to={voterGuideLink} className="u-no-underline">
-            <img src={organizationPhotoUrlLarge} height="180" alt={`${displayName} Image`} />
+            <img src={organizationPhotoUrlLarge} height="180" alt={`${displayName}`} />
           </Link>
         ) : null
         }
