@@ -115,13 +115,20 @@ class OrganizationPopoverCard extends Component {
     return (
       <Wrapper>
         { organizationPhotoUrlLarge ? (
-          <Link to={voterGuideLink} className="u-no-underline">
+          <Link
+            id="organizationPopoverCardImage"
+            to={voterGuideLink}
+            className="u-no-underline"
+          >
             <img src={organizationPhotoUrlLarge} height="180" alt={`${displayName}`} />
           </Link>
         ) : null
         }
         <br />
-        <Link to={voterGuideLink}>
+        <Link
+          id="organizationPopoverCardName"
+          to={voterGuideLink}
+        >
           <h3 className="card-main__display-name">{displayName}</h3>
         </Link>
         { organizationTwitterHandle ? (

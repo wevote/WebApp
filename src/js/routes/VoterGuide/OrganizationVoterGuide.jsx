@@ -183,10 +183,12 @@ export default class OrganizationVoterGuide extends Component {
         <div className="card">
           <div style={{ margin: 10 }}>
             <span style={floatRight}>
-              <Link to="/ballot">
+              <Link
+                id="OrganizationVoterGuideGoToBallot"
+                to="/ballot"
+              >
                 <Button
                   color="primary"
-                  id="OrganizationVoterGuideGoToBallotButton"
                   variant="contained"
                 >
                   Go to Ballot &#x21AC;

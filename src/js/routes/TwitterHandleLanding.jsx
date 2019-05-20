@@ -177,11 +177,12 @@ export default class TwitterHandleLanding extends Component {
             .
           </div>
           <br />
-          <Link to="/twittersigninprocess/signinswitchstart">
+          <Link
+            id="TwitterHandleLandingSignIntoTwitterToCreateVoterGuideButton"
+            to="/twittersigninprocess/signinswitchstart"
+          >
             <Button
               color="primary"
-              id="TwitterHandleLandingSignIntoTwitterToCreateVoterGuideButton"
-              onClick={this.voterAddressSave}
               variant="contained"
             >
               Sign Into Twitter to Create Voter Guide
