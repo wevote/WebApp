@@ -232,9 +232,10 @@ export default class OrganizationVoterGuide extends Component {
                 { isVoterOwner ? (
                   <div className="u-float-right">
                     <Button
-                      variant="outlined"
-                      size="small"
+                      id="organizationVoterGuideEdit"
                       onClick={this.onEdit}
+                      size="small"
+                      variant="outlined"
                     >
                       <span>Edit</span>
                     </Button>

@@ -349,7 +349,7 @@ export default class VoterGuideSettingsPositions extends Component {
         <div className="fa-pull-right">
           <Button
             color="primary"
-            className="btn btn-lg btn-success"
+            id="voterGuideSettingsPositionsSeeFullBallot"
             onClick={this.goToVoterGuideDisplay}
             variant="contained"
           >
