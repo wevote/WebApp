@@ -4,7 +4,7 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import Badge from '@material-ui/core/Badge';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
-import DescriptionIcon from '@material-ui/icons/Description';
+import BallotIcon from '@material-ui/icons/Ballot';
 import HowToVoteIcon from '@material-ui/icons/HowToVote';
 import PeopleIcon from '@material-ui/icons/People';
 import { historyPush } from '../../utils/cordovaUtils';
@@ -78,7 +78,7 @@ class FooterBar extends React.Component {
     return (
       <div className="footer-container u-show-mobile-tablet">
         <BottomNavigation value={this.getSelectedTab()} onChange={this.handleChange} showLabels>
-          <BottomNavigationAction className="no-outline" id="ballotTabFooterBar" label="Ballot" showLabel icon={<DescriptionIcon />} />
+          <BottomNavigationAction className="no-outline" id="ballotTabFooterBar" label="Ballot" showLabel icon={<BallotIcon />} />
           <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Values" showLabel icon={<QuestionAnswerIcon />} />
           <BottomNavigationAction
             className="no-outline"
