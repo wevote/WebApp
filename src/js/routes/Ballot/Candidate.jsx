@@ -197,8 +197,7 @@ export default class Candidate extends Component {
         }
         <section className="card">
           <CandidateItem
-            {...this.state.candidate}
-            contest_office_name={this.state.candidate.contest_office_name}
+            candidateWeVoteId={this.state.candidate.we_vote_id}
             hideShowMoreFooter
             organizationWeVoteId={this.state.organizationWeVoteId}
             linkToOfficePage

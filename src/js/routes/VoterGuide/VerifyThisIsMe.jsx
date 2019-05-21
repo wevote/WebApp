@@ -137,7 +137,7 @@ export default class VerifyThisIsMe extends Component {
           <Helmet title="Claim This Page - We Vote" />
           <section className="card">
             <CandidateItem
-              {...candidate}
+              candidateWeVoteId={candidate.we_vote_id}
               showLargeImage
               showOfficeName
             />

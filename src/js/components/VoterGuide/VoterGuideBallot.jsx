@@ -280,6 +280,7 @@ class VoterGuideBallot extends Component {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
 
     // Once a voter hits the ballot, they have gone through orientation
+    cookies.setItem('ballot_has_been_visited', '1', Infinity, '/');
     cookies.setItem('show_full_navigation', '1', Infinity, '/');
 
     this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));

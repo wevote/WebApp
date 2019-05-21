@@ -246,7 +246,7 @@ class Ballot extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     // Once a voter hits the ballot, they have gone through orientation
-    cookies.setItem('show_full_navigation', '1', Infinity, '/');
+    cookies.setItem('ballot_has_been_visited', '1', Infinity, '/');
 
     this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
     ElectionActions.electionsRetrieve();
