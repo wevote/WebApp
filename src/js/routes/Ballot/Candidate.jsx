@@ -13,6 +13,7 @@ import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
+import OrganizationStore from '../../stores/OrganizationStore';
 import PositionList from '../../components/Ballot/PositionList';
 import SupportActions from '../../actions/SupportActions';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
@@ -23,7 +24,6 @@ import AppStore from '../../stores/AppStore';
 import SearchAllActions from '../../actions/SearchAllActions';
 import webAppConfig from '../../config';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
-
 
 
 // The component /routes/VoterGuide/OrganizationVoterGuideCandidate is based on this component
@@ -78,7 +78,9 @@ export default class Candidate extends Component {
     if (voterGuidesForThisBallotItem) {
       voterGuidesForThisBallotItem.forEach((oneVoterGuide) => {
         // console.log('oneVoterGuide: ', oneVoterGuide);
-        OrganizationActions.positionListForOpinionMaker(oneVoterGuide.organization_we_vote_id, false, true, oneVoterGuide.google_civic_election_id);
+        if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(oneVoterGuide.google_civic_election_id, oneVoterGuide.organization_we_vote_id)) {
+          OrganizationActions.positionListForOpinionMaker(oneVoterGuide.organization_we_vote_id, false, true, oneVoterGuide.google_civic_election_id);
+        }
       });
     }
 

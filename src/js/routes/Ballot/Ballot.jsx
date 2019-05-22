@@ -104,8 +104,6 @@ class Ballot extends Component {
 
   componentDidMount () {
     const ballotBaseUrl = '/ballot';
-    // console.log('Ballot componentDidMount');
-
     const hideIntroModalFromUrl = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
     const hideIntroModalFromCookie = cookies.getItem('hide_intro_modal') || 0;
     const waitUntilVoterSignInCompletes = this.props.location.query ? this.props.location.query.wait_until_voter_sign_in_completes : 0;
@@ -298,6 +296,7 @@ class Ballot extends Component {
         ballotLocationShortcut !== this.state.ballotLocationShortcut ||
         googleCivicElectionId !== this.state.googleCivicElectionId ||
         completionLevelFilterType !== this.state.completionLevelFilterType) {
+      // console.log('Ballot componentWillReceiveProps changes found');
       this.setState({
         ballotWithAllItems: BallotStore.getBallotByCompletionLevelFilterType('all'),
         ballotWithItemsFromCompletionFilterType: BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType),
@@ -314,6 +313,8 @@ class Ballot extends Component {
       } else {
         AnalyticsActions.saveActionBallotVisit(VoterStore.electionId());
       }
+    } else {
+      // console.log('Ballot componentWillReceiveProps NO changes found');
     }
 
     if (nextProps.location && nextProps.location.hash) {
@@ -328,40 +329,88 @@ class Ballot extends Component {
   }
 
   componentDidUpdate (prevProps, prevState) {
-    const { foundFirstRaceLevel } = this.state;
-    let { raceLevelFilterType } = this.state;
-    if (!raceLevelFilterType) {
-      raceLevelFilterType = ''; // Make sure this is a string
-    }
-    if (this.state.lastHashUsedInLinkScroll && this.state.lastHashUsedInLinkScroll !== prevState.lastHashUsedInLinkScroll) {
-      this.hashLinkScroll();
-    }
-    // If we haven't found our default race level, run this check
-    if (this.state.ballotWithAllItems && this.state.ballotWithAllItems.length && !foundFirstRaceLevel) {
-      const { ballotWithAllItems } = this.state;
-      const raceLevelFilterItems = ballotWithAllItems.filter(item => item.race_office_level === raceLevelFilterType ||
-        item.kind_of_ballot_item === raceLevelFilterType.toUpperCase());
-      // If there are items mapped to the current race level filter, set foundFirstRaceLevel to true
-      // so we don't have to re-run this check
-      if (raceLevelFilterItems.length) {
-        this.setState({
-          foundFirstRaceLevel: true,
-          showFilterTabs: raceLevelFilterItems.length !== ballotWithAllItems.length,
+    const { ballotWithAllItems, foundFirstRaceLevel, raceLevelFilterType } = this.state;
+    if (!foundFirstRaceLevel) {
+      // We only need to be here if we haven't found the first Race level we are going to show, or we don't have a raceLevelFilterType identified
+      let { newRaceLevelFilterType } = this.state;
+      let raceLevelFilterTypeChanged = false;
+      // console.log('Ballot, componentDidUpdate raceLevelFilterType BEFORE:', raceLevelFilterType, ', newRaceLevelFilterType: ', newRaceLevelFilterType);
+
+      let raceLevelFilterItemsInThisBallot = [];
+      if (ballotWithAllItems && ballotWithAllItems.length) {
+        // console.log('Ballot, componentDidUpdate ballotWithAllItems:', this.state.ballotWithAllItems);
+        // const raceLevelFilterItems = ballotWithAllItems.filter(item => item.race_office_level === raceLevelFilterType ||
+        //   item.kind_of_ballot_item === raceLevelFilterType.toUpperCase());
+        let currentIndex = 0;
+        let lowestIndexFound = 3;
+        const raceLevelsAlreadyFound = [];
+        let ballotItemRaceOfficeLevel;
+        let raceLevelCapitalized;
+        let ballotItemKindOfOfficeItem;
+        raceLevelFilterItemsInThisBallot = ballotWithAllItems.filter((ballotItem) => {
+          // If true comes back from this filter, the "map" tacked onto the end of this returns just the race_office_level
+          raceLevelCapitalized = '';
+          ballotItemRaceOfficeLevel = ballotItem.race_office_level || '';
+          if (ballotItemRaceOfficeLevel) {
+            // For Federal, State, Local
+            raceLevelCapitalized = ballotItemRaceOfficeLevel.charAt(0).toUpperCase() + ballotItemRaceOfficeLevel.slice(1).toLowerCase();
+          } else {
+            // For Measures
+            ballotItemKindOfOfficeItem = ballotItem.kind_of_ballot_item || '';
+            raceLevelCapitalized = ballotItemKindOfOfficeItem.charAt(0).toUpperCase() + ballotItemKindOfOfficeItem.slice(1).toLowerCase();
+          }
+          currentIndex = BALLOT_ITEM_FILTER_TYPES.indexOf(raceLevelCapitalized);
+          if (currentIndex > -1) {
+            if (currentIndex < lowestIndexFound) {
+              newRaceLevelFilterType = raceLevelCapitalized;
+              lowestIndexFound = currentIndex;
+            }
+            if (raceLevelsAlreadyFound.indexOf(raceLevelCapitalized) === -1) {
+              // If this office level hasn't already been added, then add it
+              raceLevelsAlreadyFound.push(raceLevelCapitalized);
+              return raceLevelCapitalized;
+            } else {
+              return null;
+            }
+          }
+          return null;
+        }).map((ballotItem) => {
+          raceLevelCapitalized = '';
+          ballotItemRaceOfficeLevel = ballotItem.race_office_level || '';
+          if (ballotItemRaceOfficeLevel) {
+            // For Federal, State, Local
+            raceLevelCapitalized = ballotItemRaceOfficeLevel.charAt(0).toUpperCase() + ballotItemRaceOfficeLevel.slice(1).toLowerCase();
+          } else {
+            // For Measures
+            ballotItemKindOfOfficeItem = ballotItem.kind_of_ballot_item || '';
+            raceLevelCapitalized = ballotItemKindOfOfficeItem.charAt(0).toUpperCase() + ballotItemKindOfOfficeItem.slice(1).toLowerCase();
+          }
+          return raceLevelCapitalized;
         });
-      } else {
-        // If there are no items mapped to the current race level filter, set the raceLevelFilterType
-        // to the next item in BALLOT_ITEM_FILTER_TYPES
-        const raceLevelIdx = BALLOT_ITEM_FILTER_TYPES.indexOf(raceLevelFilterType);
-        // console.log('componentDidUpdate raceLevelFilterType:', raceLevelFilterType, ', raceLevelIdx: ', raceLevelIdx);
-        if (raceLevelIdx >= 0) {
-          this.setState({ raceLevelFilterType: BALLOT_ITEM_FILTER_TYPES[raceLevelIdx + 1] });
-        } else {
-          // If the raceLevelFilterType is not a valid type, turn off the tabs and set foundFirstRaceLevel to stop cycling through
+        // We must have a raceLevelFilterType that matches this ballot
+        const currentRaceLevelFilterTypeNotFoundInBallot = raceLevelFilterItemsInThisBallot.indexOf(raceLevelFilterType) === -1;
+        if (!raceLevelFilterType || currentRaceLevelFilterTypeNotFoundInBallot) {
+          newRaceLevelFilterType = BALLOT_ITEM_FILTER_TYPES[lowestIndexFound];
+          raceLevelFilterTypeChanged = true;
+        }
+      }
+      // console.log('Ballot, componentDidUpdate raceLevelFilterType AFTER:', raceLevelFilterType, ', newRaceLevelFilterType: ', newRaceLevelFilterType);
+      // console.log('Ballot, componentDidUpdate raceLevelFilterItemsInThisBallot:', raceLevelFilterItemsInThisBallot);
+
+      if (this.state.lastHashUsedInLinkScroll && this.state.lastHashUsedInLinkScroll !== prevState.lastHashUsedInLinkScroll) {
+        this.hashLinkScroll();
+      }
+
+      if (!foundFirstRaceLevel || raceLevelFilterTypeChanged) {
+        if (raceLevelFilterTypeChanged) {
           this.setState({
-            foundFirstRaceLevel: true,
-            showFilterTabs: false,
+            raceLevelFilterType: newRaceLevelFilterType,
           });
         }
+        this.setState({
+          foundFirstRaceLevel: true,
+          showFilterTabs: raceLevelFilterItemsInThisBallot.length > 1,
+        });
       }
     }
   }
@@ -442,6 +491,7 @@ class Ballot extends Component {
     // console.log('Ballot.jsx onBallotStoreChange');
     const completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || '';
     const { ballot, ballotProperties } = BallotStore;
+    // console.log('Ballot.jsx onBallotStorechange, ballotProperties: ', ballotProperties);
     const {
       mounted, issuesRetrievedFromGoogleCivicElectionId,
       issuesRetrievedFromBallotReturnedWeVoteId, issuesRetrievedFromBallotLocationShortcut,
@@ -456,6 +506,7 @@ class Ballot extends Component {
         // Ballot is found but ballot is empty. We want to stay put.
         // console.log('onBallotStoreChange: ballotWithItemsFromCompletionFilterType is empty');
       } else {
+        // console.log('completionLevelFilterType: ', completionLevelFilterType);
         const ballotWithItemsFromCompletionFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
         this.setState({
           ballotWithAllItems: BallotStore.getBallotByCompletionLevelFilterType('all'),
@@ -650,11 +701,11 @@ class Ballot extends Component {
 
   toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
     const { showSelectBallotModal } = this.state;
-    if (showSelectBallotModal) {
-      if (destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
-        historyPush(destinationUrlForHistoryPush);
-      }
+    // console.log('Ballot toggleSelectBallotModal, destinationUrlForHistoryPush:', destinationUrlForHistoryPush, ', showSelectBallotModal:', showSelectBallotModal);
+    if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
+      historyPush(destinationUrlForHistoryPush);
     } else {
+      // console.log('Ballot toggleSelectBallotModal, BallotActions.voterBallotListRetrieve()');
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
 
@@ -698,18 +749,24 @@ class Ballot extends Component {
     // If the ballot item exists in the array of ballot items filtered by the completion filter type
     if (ballotItem) {
       const raceCategoryDisplayText = mapCategoryFilterType(ballotItem.race_office_level || ballotItem.kind_of_ballot_item);
-      this.setState({
-        raceLevelFilterType: raceCategoryDisplayText,
-      }, () => this.toggleExpandBallotItemDetails(selectedBallotItemId));
+      // console.log('ballotItemLinkHasBeenClicked raceLevelFilterType ballotItem=True:', raceCategoryDisplayText);
+      if (raceCategoryDisplayText) {
+        this.setState({
+          raceLevelFilterType: raceCategoryDisplayText,
+        }, () => this.toggleExpandBallotItemDetails(selectedBallotItemId));
+      }
     } else {
       // The ballot item was not found in the array of ballot items filtered by completion filter type
       const ballotItemFromAll = ballotWithAllItems.find(item => item.we_vote_id === selectedBallotItemId);
       const raceCategoryDisplayText = mapCategoryFilterType(ballotItemFromAll.race_office_level || ballotItemFromAll.kind_of_ballot_item);
+      // console.log('ballotItemLinkHasBeenClicked raceLevelFilterType ballotItem=False:', raceCategoryDisplayText);
       BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
       BallotActions.raceLevelFilterTypeSave(raceCategoryDisplayText);
-      this.setState({
-        raceLevelFilterType: raceCategoryDisplayText,
-      }, () => this.toggleExpandBallotItemDetails(selectedBallotItemId));
+      if (raceCategoryDisplayText) {
+        this.setState({
+          raceLevelFilterType: raceCategoryDisplayText,
+        }, () => this.toggleExpandBallotItemDetails(selectedBallotItemId));
+      }
     }
   }
 
@@ -728,6 +785,7 @@ class Ballot extends Component {
   }
 
   render () {
+    // console.log('Ballot render');
     renderLog(__filename);
     const ballotBaseUrl = '/ballot';
     const { classes } = this.props;
@@ -792,8 +850,8 @@ class Ballot extends Component {
     const emptyBallotButton = completionLevelFilterType !== 'none' && !voterAddressMissing ? (
       <span>
         {/* <Link to={ballotBaseUrl}>
-              <Button variant="primary">View Full Ballot</Button>
-          </Link> */}
+          <Button variant="primary">View Full Ballot</Button>
+        </Link> */}
       </span>
     ) : (
       <div className="container-fluid well u-stack--md u-inset--md">
@@ -807,7 +865,7 @@ class Ballot extends Component {
       </div>
     );
 
-    // console.log("ballotWithItemsFromCompletionFilterType: ", this.state.ballotWithItemsFromCompletionFilterType);
+    // console.log('ballotWithItemsFromCompletionFilterType.length: ', ballotWithItemsFromCompletionFilterType.length);
     const emptyBallot = ballotWithItemsFromCompletionFilterType.length === 0 ? (
       <div>
         <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3>
@@ -966,7 +1024,7 @@ class Ballot extends Component {
                     googleCivicElectionId={this.state.googleCivicElectionId}
                   />
                 ) : null
-                  }
+                }
                 <div className="col-sm-12 col-lg-9">
                   <LocationGuess
                     toggleSelectBallotModal={this.toggleSelectBallotModal}
@@ -1004,9 +1062,9 @@ class Ballot extends Component {
                       {/* The rest of the ballot items */}
                       <div className={isWebApp() ? 'BallotList' : 'BallotList__cordova'}>
                         {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => {
-                          // ballot limited by items by filter typeß
+                          // Ballot limited by items by race_office_level = (Federal, State, Local) or kind_of_ballot_item = (Measure)
                           if ((raceLevelFilterType === 'All' || (isSearching && ballotSearchResults.length) ||
-                          (item.kind_of_ballot_item === raceLevelFilterType.toUpperCase()) ||
+                            (item.kind_of_ballot_item === raceLevelFilterType.toUpperCase()) ||
                             raceLevelFilterType === item.race_office_level)) {
                             return (
                               <BallotItemCompressed
@@ -1023,7 +1081,7 @@ class Ballot extends Component {
                             return null;
                           }
                         })
-                    }
+                        }
                         {
                         doubleFilteredBallotItemsLength === 0 &&
                         this.showUserEmptyOptions()

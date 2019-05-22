@@ -92,6 +92,7 @@ export default class BallotElectionList extends Component {
 
   goToDifferentElection = (ballotLocationShortcut, ballotReturnedWeVoteId, googleCivicElectionId, originalTextForMapSearch = '') => {
     const ballotBaseurl = this.props.ballotBaseUrl || '/ballot';
+    const { organization_we_vote_id: organizationWeVoteId } = this.props;
     let destinationUrlForHistoryPush = '';
     if (ballotLocationShortcut && ballotLocationShortcut !== '' && ballotLocationShortcut !== 'none') {
       // console.log("goToDifferentElection, ballotLocationShortcut: ", ballotLocationShortcut);
@@ -114,9 +115,11 @@ export default class BallotElectionList extends Component {
     }
 
     // Request positions for the different election
-    if (this.props.organization_we_vote_id && this.props.organization_we_vote_id !== '') {
-      // console.log("BallotElectionList calling positionListForOpinionMaker, this.props.organization_we_vote_id: ", this.props.organization_we_vote_id, ", googleCivicElectionId:", googleCivicElectionId);
-      OrganizationActions.positionListForOpinionMaker(this.props.organization_we_vote_id, true, false, googleCivicElectionId);
+    if (organizationWeVoteId && organizationWeVoteId !== '') {
+      // console.log("BallotElectionList calling positionListForOpinionMaker, organizationWeVoteId: ", organizationWeVoteId, ", googleCivicElectionId:", googleCivicElectionId);
+      // if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(googleCivicElectionId, organizationWeVoteId)) {
+      OrganizationActions.positionListForOpinionMaker(organizationWeVoteId, true, false, googleCivicElectionId);
+      // }
     }
 
     if (this.props.toggleFunction) {

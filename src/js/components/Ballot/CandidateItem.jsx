@@ -8,15 +8,16 @@ import CandidateStore from '../../stores/CandidateStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
+import ItemActionBar from '../Widgets/ItemActionBar';
 import LearnMore from '../Widgets/LearnMore';
 import { renderLog } from '../../utils/logging';
 import OfficeNameText from '../Widgets/OfficeNameText';
+import ReadMore from '../Widgets/ReadMore';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
-import ItemActionBar from '../Widgets/ItemActionBar';
 
 // This is related to /js/components/VoterGuide/OrganizationVoterGuideCandidateItem.jsx
 class CandidateItem extends Component {
@@ -286,19 +287,12 @@ class CandidateItem extends Component {
               {candidatePhotoUrlHtml}
             </div>
             <Candidate>
-              <h2 className={this.state.largeAreaHoverColorOnNow && this.props.showHover ? (
-                'card-main__display-name card__blue'
-              ) : (
-                'card-main__display-name'
-              )}
-              >
+              <h2 className={`card-main__display-name ${this.props.linkToBallotItemPage && this.state.largeAreaHoverColorOnNow && this.props.showHover ? 'card__blue' : ''}`}>
                 {ballotItemDisplayName}
               </h2>
               {twitterFollowersCount ? (
                 <span
-                  className={this.props.linkToBallotItemPage ?
-                    'twitter-followers__badge u-show-desktop-tablet u-cursor--pointer' :
-                    'twitter-followers__badge u-show-desktop-tablet'}
+                  className={`u-show-desktop twitter-followers__badge ${this.props.linkToBallotItemPage ? 'u-cursor--pointer' : ''}`}
                   onClick={this.props.linkToBallotItemPage ? this.goToCandidateLink : null}
                 >
                   <span className="fa fa-twitter twitter-followers__icon" />
@@ -307,9 +301,9 @@ class CandidateItem extends Component {
               ) :
                 null
               }
-              <span className="u-show-desktop-tablet">
+              <span className="u-show-desktop">
                 { contestOfficeName ? (
-                  <p className={this.state.largeAreaHoverColorOnNow && this.props.showHover ? 'card__blue' : ''}>
+                  <p className={this.props.linkToBallotItemPage && this.state.largeAreaHoverColorOnNow && this.props.showHover ? 'card__blue' : ''}>
                     <OfficeNameText
                       contestOfficeName={contestOfficeName}
                       officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
@@ -323,17 +317,22 @@ class CandidateItem extends Component {
               </span>
             </Candidate>
           </CandidateInfo>
-          <BallotItemSupportOpposeCountDisplay
-            handleLeaveCandidateCard={this.handleLeave}
-            handleEnterCandidateCard={this.handleEnter}
-            ballotItemWeVoteId={candidateWeVoteId}
-          />
+          <div className="u-show-desktop">
+            <BallotItemSupportOpposeCountDisplay
+              handleLeaveCandidateCard={this.handleLeave}
+              handleEnterCandidateCard={this.handleEnter}
+              ballotItemWeVoteId={candidateWeVoteId}
+            />
+          </div>
+          <div className="u-show-mobile-tablet">
+            <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={candidateWeVoteId} />
+          </div>
           {' '}
         </CandidateWrapper>
         {' '}
-        <span className="u-show-mobile">
+        <span className="u-show-mobile-tablet">
           { contestOfficeName ? (
-            <p className={this.state.largeAreaHoverColorOnNow && this.props.showHover ? 'card__blue' : ''}>
+            <p>
               <OfficeNameText
                 contestOfficeName={contestOfficeName}
                 officeLink={this.props.linkToOfficePage ? this.getOfficeLink() : ''}
@@ -358,40 +357,62 @@ class CandidateItem extends Component {
               placement="bottom"
             />
             {/* If there is a quote about the candidate, show that too. */}
-            { this.props.showTopCommentByBallotItem && (
+            { this.props.showTopCommentByBallotItem ? (
               <div>
-                { this.state.largeAreaHoverLinkOnNow && this.props.showHover ?
-                  (
-                    <div className="row">
-                      <div className="col col-9 card__blue">
-                        <Link to={this.getCandidateLink} className="card-main__no-underline">
-                          {topCommentByBallotItem}
-                        </Link>
+                <div className="u-show-desktop">
+                  { this.props.linkToBallotItemPage && this.state.largeAreaHoverLinkOnNow && this.props.showHover ?
+                    (
+                      <div className="row">
+                        <div className="col col-9 card__blue">
+                          <Link to={this.getCandidateLink} className="card-main__no-underline">
+                            {topCommentByBallotItem}
+                          </Link>
+                        </div>
+                        <div className="col col-3">
+                          <ItemActionBar
+                            ballotItemWeVoteId={candidateWeVoteId}
+                            buttonsOnly
+                            className="u-float-right"
+                            commentButtonHide
+                            shareButtonHide
+                            type="CANDIDATE"
+                          />
+                        </div>
                       </div>
-                      <div className="col col-3">
-                        <ItemActionBar
-                          ballotItemWeVoteId={candidateWeVoteId}
-                          buttonsOnly
-                          className="u-float-right"
-                          commentButtonHide
-                          shareButtonHide
-                          type="CANDIDATE"
-                        />
+                    ) :
+                    (
+                      <div className={this.props.linkToBallotItemPage && this.state.largeAreaHoverColorOnNow && this.props.showHover ? (
+                        'card__blue'
+                      ) : (
+                        ''
+                      )}
+                      >
+                        {topCommentByBallotItem}
                       </div>
-                    </div>
-                  ) :
-                  (
-                    <div className={this.state.largeAreaHoverColorOnNow && this.props.showHover ? (
-                      'card__blue'
-                    ) : (
-                      ''
-                    )}
-                    >
-                      {topCommentByBallotItem}
-                    </div>
-                  )
-                }
+                    )
+                  }
+                </div>
+                <div className="u-show-mobile-tablet">
+                  <Link to={this.getCandidateLink} className="card-main__no-underline">
+                    {topCommentByBallotItem}
+                  </Link>
+                </div>
               </div>
+            ) : (
+              <span>
+                { candidateText.length ? (
+                  <div className={`u-stack--sm ${this.props.linkToBallotItemPage ? 'card-main__description-container--truncated' : 'card-main__description-container'}`}>
+                    <div className="card-main__description">
+                      <ReadMore
+                        text_to_display={candidateText}
+                        num_of_lines={4}
+                      />
+                    </div>
+                  </div>
+                ) :
+                  null
+                }
+              </span>
             )}
             <div>
               {this.props.hideBallotItemSupportOpposeComment ?
@@ -413,26 +434,38 @@ class CandidateItem extends Component {
     );
 
     return (
-      <div
-        className={this.state.largeAreaHoverColorOnNow && this.props.showHover ? (
-          'card-main candidate-card card-main--outline'
-        ) : (
-          'card-main candidate-card'
-        )}
-        onMouseEnter={this.handleEnter}
-        onMouseLeave={this.handleLeave}
-      >
-        {this.state.largeAreaHoverLinkOnNow && this.props.showHover ? (
-          <Link to={this.getCandidateLink} className="card-main__no-underline">
-            {candidateRenderBlock}
-          </Link>
-        ) : (
+      <div>
+        <div
+          className={`u-show-desktop card-main candidate-card ${this.props.linkToBallotItemPage && this.state.largeAreaHoverColorOnNow && this.props.showHover ? ' card-main--outline' : ''}`}
+          onMouseEnter={this.handleEnter}
+          onMouseLeave={this.handleLeave}
+        >
+          {this.props.linkToBallotItemPage && this.state.largeAreaHoverLinkOnNow && this.props.showHover ? (
+            <Link to={this.getCandidateLink} className="card-main__no-underline">
+              {candidateRenderBlock}
+            </Link>
+          ) : (
+            <div>
+              {candidateRenderBlock}
+            </div>
+          )}
           <div>
-            {candidateRenderBlock}
+            {candidateIssuesAndCommentBlock}
           </div>
-        )}
-        <div>
-          {candidateIssuesAndCommentBlock}
+        </div>
+        <div className="u-show-mobile-tablet card-main candidate-card">
+          {this.props.linkToBallotItemPage ? (
+            <Link to={this.getCandidateLink} className="card-main__no-underline">
+              {candidateRenderBlock}
+            </Link>
+          ) : (
+            <span>
+              {candidateRenderBlock}
+            </span>
+          )}
+          <div>
+            {candidateIssuesAndCommentBlock}
+          </div>
         </div>
       </div>
     );

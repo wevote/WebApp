@@ -56,73 +56,77 @@ export default class BallotElectionListWithFilters extends Component {
   }
 
   onBallotStoreChange () {
-    // console.log("BallotElectionList.jsx onBallotStoreChange, priorElectionId: ", this.state.priorElectionId, ", updatedElectionId: ", this.state.updatedElectionId);
-    // console.log("BallotStore.ballotProperties: ", BallotStore.ballotProperties);
+    // console.log('BallotElectionListWithFilters.jsx onBallotStoreChange, priorElectionId: ', this.state.priorElectionId, ', updatedElectionId: ', this.state.updatedElectionId);
+    // console.log('BallotStore.ballotProperties: ', BallotStore.ballotProperties);
     if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found && BallotStore.ballot && BallotStore.ballot.length === 0) {
       // Ballot is found but ballot is empty. We want to stay put.
-      // console.log("onBallotStoreChange: ballot_with_all_items is empty");
+      // console.log('onBallotStoreChange: ballot_with_all_items is empty');
     }
     if (this.state.priorElectionId !== this.state.updatedElectionId && this.state.loadingNewBallotItems && this.props.toggleFunction) {
-      // console.log("onBallotStoreChange--------- loadingNewBallotItems:", this.state.loadingNewBallotItems);
+      // console.log('onBallotStoreChange--------- loadingNewBallotItems:', this.state.loadingNewBallotItems);
       this.setState({
         loadingNewBallotItems: false,
         updatedElectionId: BallotStore.ballotProperties.google_civic_election_id,
       });
-      // console.log("onBallotStoreChange--------- this.props.toggleFunction()");
+      // console.log('onBallotStoreChange--------- this.props.toggleFunction()');
       this.props.toggleFunction(this.state.destinationUrlForHistoryPush);
     }
   }
 
   onVoterStoreChange () {
-    // console.log("BallotElectionList.jsx onVoterStoreChange, VoterStore.electionId(): ", VoterStore.electionId(), ", priorElectionId: ", this.state.priorElectionId, ", updatedElectionId: ", this.state.updatedElectionId);
+    // console.log('BallotElectionListWithFilters.jsx onVoterStoreChange, VoterStore.electionId(): ', VoterStore.electionId(), ', priorElectionId: ', this.state.priorElectionId, ', updatedElectionId: ', this.state.updatedElectionId);
     // if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found && BallotStore.ballot && BallotStore.ballot.length !== 0) {
     if (VoterStore.electionId() && VoterStore.electionId() !== this.state.priorElectionId) {
       if (this.state.loadingNewBallotItems && this.props.toggleFunction) {
-        // console.log("onVoterStoreChange--------- loadingNewBallotItems:", this.state.loadingNewBallotItems);
+        // console.log('onVoterStoreChange--------- loadingNewBallotItems:', this.state.loadingNewBallotItems);
         const stateCode = VoterStore.getStateCodeFromIPAddress();
         this.setState({
           loadingNewBallotItems: false,
           stateName: convertStateCodeToStateText(stateCode),
           updatedElectionId: VoterStore.electionId(),
         });
-        // console.log("onVoterStoreChange--------- this.props.toggleFunction()");
+        // console.log('onVoterStoreChange--------- this.props.toggleFunction()');
         this.props.toggleFunction(this.state.destinationUrlForHistoryPush);
       }
     }
   }
 
   goToDifferentElection (ballotLocationShortcut, ballotReturnedWeVoteId, googleCivicElectionId, originalTextForMapSearch = '') {
+    // console.log('BallotElectionListWithFilters, goToDifferentElection');
     const ballotBaseurl = this.props.ballotBaseUrl || '/ballot';
+    const { organization_we_vote_id: organizationWeVoteId } = this.props;
     let destinationUrlForHistoryPush = '';
     if (ballotLocationShortcut && ballotLocationShortcut !== '' && ballotLocationShortcut !== 'none') {
-      // console.log("goToDifferentElection, ballotLocationShortcut: ", ballotLocationShortcut);
+      // console.log('goToDifferentElection, ballotLocationShortcut: ', ballotLocationShortcut);
       BallotActions.voterBallotItemsRetrieve(0, '', ballotLocationShortcut);
       destinationUrlForHistoryPush = `${ballotBaseurl}/${ballotLocationShortcut}`; // Used with historyPush once modal is closed
     } else if (ballotReturnedWeVoteId && ballotReturnedWeVoteId !== '' && ballotReturnedWeVoteId !== 'none') {
-      // console.log("goToDifferentElection, ballotReturnedWeVoteId: ", ballotReturnedWeVoteId);
+      // console.log('goToDifferentElection, ballotReturnedWeVoteId: ', ballotReturnedWeVoteId);
       BallotActions.voterBallotItemsRetrieve(0, ballotReturnedWeVoteId, '');
       destinationUrlForHistoryPush = `${ballotBaseurl}/id/${ballotReturnedWeVoteId}`; // Used with historyPush once modal is closed
     } else if (originalTextForMapSearch && originalTextForMapSearch !== '') {
       // Do we still want to be updating addresses? Maybe instead just update google_civic_election_id?
-      // console.log("goToDifferentElection, originalTextForMapSearch: ", originalTextForMapSearch);
+      // console.log('goToDifferentElection, originalTextForMapSearch: ', originalTextForMapSearch);
       const simpleSave = false;
       VoterActions.voterAddressSave(originalTextForMapSearch, simpleSave, googleCivicElectionId);
       destinationUrlForHistoryPush = ballotBaseurl; // Used with historyPush once modal is closed
     } else if (googleCivicElectionId && googleCivicElectionId !== 0) {
       BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, '', '');
-      // console.log("goToDifferentElection, googleCivicElectionId: ", googleCivicElectionId);
+      // console.log('goToDifferentElection, googleCivicElectionId: ', googleCivicElectionId);
       destinationUrlForHistoryPush = `${ballotBaseurl}/election/${googleCivicElectionId}`; // Used with historyPush once modal is closed
     }
 
     // Request positions for the different election
-    if (this.props.organization_we_vote_id && this.props.organization_we_vote_id !== '') {
-      // console.log("BallotElectionList calling positionListForOpinionMaker, this.props.organization_we_vote_id: ", this.props.organization_we_vote_id, ", googleCivicElectionId:", googleCivicElectionId);
-      OrganizationActions.positionListForOpinionMaker(this.props.organization_we_vote_id, true, false, googleCivicElectionId);
+    if (organizationWeVoteId && organizationWeVoteId !== '') {
+      // console.log('BallotElectionListWithFilters calling positionListForOpinionMaker, this.props.organization_we_vote_id: ', this.props.organization_we_vote_id, ', googleCivicElectionId:', googleCivicElectionId);
+      // if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(googleCivicElectionId, organizationWeVoteId)) {
+      OrganizationActions.positionListForOpinionMaker(organizationWeVoteId, true, false, googleCivicElectionId);
+      // }
     }
 
     if (this.props.toggleFunction) {
-      // console.log("goToDifferentElection, loadingNewBallotItems: ", this.state.loadingNewBallotItems);
-      // console.log("goToDifferentElection, priorElectionId: ", this.state.priorElectionId, ", updatedElectionId: ", this.state.updatedElectionId);
+      // console.log('goToDifferentElection, loadingNewBallotItems: ', this.state.loadingNewBallotItems);
+      // console.log('goToDifferentElection, priorElectionId: ', this.state.priorElectionId, ', updatedElectionId: ', this.state.updatedElectionId, ', destinationUrlForHistoryPush: ', destinationUrlForHistoryPush, ', BallotStore.ballotProperties.google_civic_election_id: ', BallotStore.ballotProperties.google_civic_election_id, ', VoterStore.electionId():', VoterStore.electionId());
       this.setState({
         destinationUrlForHistoryPush,
         loadingNewBallotItems: true,
@@ -130,6 +134,7 @@ export default class BallotElectionListWithFilters extends Component {
         updatedElectionId: 0,
       });
     } else {
+      // console.log('destinationUrlForHistoryPush: ', destinationUrlForHistoryPush);
       historyPush(destinationUrlForHistoryPush);
     }
   }

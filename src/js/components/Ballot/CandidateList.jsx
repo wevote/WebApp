@@ -7,7 +7,6 @@ import { renderLog } from '../../utils/logging';
 export default class CandidateList extends Component {
   static propTypes = {
     children: PropTypes.array.isRequired,
-    contest_office_name: PropTypes.string,
   };
 
   render () {
