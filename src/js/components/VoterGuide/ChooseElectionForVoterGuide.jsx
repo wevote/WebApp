@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import Button from '@material-ui/core/Button';
 import BallotStore from '../../stores/BallotStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
 import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
 import { renderLog } from '../../utils/logging';
@@ -126,6 +125,7 @@ export default class ChooseElectionForVoterGuide extends Component {
           <dl className="list-unstyled text-center">
             <Button
               id={`chooseElectionForVoterGuideButton-${item.google_civic_election_id}`}
+              fullWidth
               color="primary"
               onClick={() => this.saveVoterGuideForElection(item.google_civic_election_id)}
               variant="contained"
@@ -135,9 +135,6 @@ export default class ChooseElectionForVoterGuide extends Component {
                 <span className="d-block d-sm-none">
                   {item.election_description_text}
                   &nbsp;
-                  <img
-                    src={cordovaDot('/img/global/icons/Circle-Arrow.png')}
-                  />
                 </span>
               ) : (
                 <span
@@ -145,16 +142,12 @@ export default class ChooseElectionForVoterGuide extends Component {
                 >
                   {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
                   ...&nbsp;
-                  <img src={cordovaDot('/img/global/icons/Circle-Arrow.png')} />
                 </span>
               )}
               {/* Desktop */}
               <span className="d-none d-sm-block">
                 {item.election_description_text}
                 &nbsp;
-                <img
-                  src={cordovaDot('/img/global/icons/Circle-Arrow.png')}
-                />
               </span>
               <div className="ballot-election-list__h2">{moment(item.election_day_text).format('MMMM Do, YYYY')}</div>
             </Button>
