@@ -102,6 +102,13 @@ or
 
 `git commit FILENAME` and then individually add files with `git add`  
 
+#### Windows machines only
+
+You need to commit files via the command line so git doesn't throw an error (based on the line endings)
+
+1. Stage your changes using `git add .` or using your IDE.  
+
+2. Run `$ git commit -n -m 'Your commit message'` in the terminal
 
 ## How to Put Your Changes on your Personal Fork on the github servers
 
