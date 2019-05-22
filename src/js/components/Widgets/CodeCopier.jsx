@@ -114,6 +114,7 @@ export default class CodeCopier extends Component {
 
   render () {
     let { sourceUrl } = this.props;
+    const { codeCopierButtonId } = this.props;
     renderLog(__filename);
     if (!sourceUrl) sourceUrl = `https://wevote.us/${this.state.twitterHandle}`;
 
@@ -128,7 +129,7 @@ export default class CodeCopier extends Component {
               <h3 className="h3">{this.props.title}</h3>
               <Button
                 color="primary"
-                id={this.props.codeCopierButtonId}
+                id={codeCopierButtonId}
                 onClick={this.copyCode}
                 variant="contained"
               >
@@ -199,7 +200,7 @@ export default class CodeCopier extends Component {
               }
               <Button
                 color="primary"
-                id={this.props.codeCopierButtonId}
+                id={codeCopierButtonId}
                 disabled={!this.state.isTwitterHandleValid}
                 onClick={this.copyCode}
                 variant="text"
@@ -255,7 +256,7 @@ export default class CodeCopier extends Component {
               <h3 className="h3">{this.props.title}</h3>
               <Button
                 color="primary"
-                id={this.props.codeCopierButtonId}
+                id={codeCopierButtonId}
                 onClick={this.copyCode}
                 variant="contained"
               >
