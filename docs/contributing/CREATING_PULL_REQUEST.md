@@ -72,6 +72,18 @@ Now you need to merge locally the latest code from "develop" with your branch na
 the PyCharm IDE. How you do this depends on the development environment you use. 
 TODO: Add instructions for merging with develop via command line
 
+### Merging via the command line
+
+To merge your local develop branch with <your-feature-branch>:
+
+`$ git checkout develop` # Switch to the develop branch
+
+`$ git merge <your-feature-branch>` # Merge your branch with develop
+
+You can than delete you branch if you are done making changes
+
+`$ git branch -d <your-featre-branch>`
+
 ## Test Before Creating Pull Request
 We use a tool that verifies our Javascript meets the eslint spec.
 
