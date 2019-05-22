@@ -80,7 +80,9 @@ export default class VoterGuideChoosePositions extends Component {
           });
           // Positions for this organization, for this election
           if (voterGuide && voterGuide.google_civic_election_id) {
-            OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, false, true, voterGuide.google_civic_election_id);
+            if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(voterGuide.google_civic_election_id, organization.organization_we_vote_id)) {
+              OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, false, true, voterGuide.google_civic_election_id);
+            }
             OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, true, false, voterGuide.google_civic_election_id);
           }
         } else {

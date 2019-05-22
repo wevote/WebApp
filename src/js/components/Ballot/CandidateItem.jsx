@@ -8,15 +8,16 @@ import CandidateStore from '../../stores/CandidateStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
+import ItemActionBar from '../Widgets/ItemActionBar';
 import LearnMore from '../Widgets/LearnMore';
 import { renderLog } from '../../utils/logging';
 import OfficeNameText from '../Widgets/OfficeNameText';
+import ReadMore from '../Widgets/ReadMore';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import { abbreviateNumber, numberWithCommas } from '../../utils/textFormat';
-import ItemActionBar from '../Widgets/ItemActionBar';
 
 // This is related to /js/components/VoterGuide/OrganizationVoterGuideCandidateItem.jsx
 class CandidateItem extends Component {
@@ -358,7 +359,7 @@ class CandidateItem extends Component {
               placement="bottom"
             />
             {/* If there is a quote about the candidate, show that too. */}
-            { this.props.showTopCommentByBallotItem && (
+            { this.props.showTopCommentByBallotItem ? (
               <div>
                 { this.state.largeAreaHoverLinkOnNow && this.props.showHover ?
                   (
@@ -392,6 +393,21 @@ class CandidateItem extends Component {
                   )
                 }
               </div>
+            ) : (
+              <span>
+                { candidateText.length ? (
+                  <div className={`u-stack--sm${this.props.linkToBallotItemPage ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
+                    <div className="card-main__description">
+                      <ReadMore
+                        text_to_display={candidateText}
+                        num_of_lines={4}
+                      />
+                    </div>
+                  </div>
+                ) :
+                  null
+                }
+              </span>
             )}
             <div>
               {this.props.hideBallotItemSupportOpposeComment ?
