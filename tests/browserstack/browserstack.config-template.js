@@ -4,4 +4,5 @@ module.exports = {
   BROWSERSTACK_USER: '',
   BROWSERSTACK_KEY: '',
   BROWSERSTACK_APK_URL: '',
+  BROWSERSTACK_IPA_URL: '',
 };
