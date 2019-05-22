@@ -45,7 +45,7 @@ class PositionItem extends Component {
     }
 
     // console.log(position);
-    let supportOpposeInfo;
+    let supportOpposeInfo = 'info';
 
     if (position.is_information_only) {
       supportOpposeInfo = 'info';
