@@ -101,9 +101,84 @@ class PositionItem extends Component {
 
       return (
         <React.Fragment>
-          <div className="u-show-desktop-tablet">Desktop stuff</div>
+          <div className="u-show-desktop-tablet">
+            <DesktopContainer>
+              <DesktopItemLeft>
+                <DesktopItemImage>
+                  <OverlayTrigger
+                    delay={{ show: 700, hide: 100 }}
+                    trigger={['hover', 'focus']}
+                    rootClose
+                    placement="bottom"
+                    overlay={organizationCardPopover}
+                  >
+                    <Link to={speakerLink} className="u-no-underline">
+                      { position.speaker_image_url_https_medium ? (
+                        <ImageHandler
+                          className="card-child__avatar"
+                          sizeClassName="icon-lg"
+                          imageUrl={position.speaker_image_url_https_medium}
+                        />
+                      ) :
+                        imagePlaceholder }
+                    </Link>
+                  </OverlayTrigger>
+                </DesktopItemImage>
+                <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
+              </DesktopItemLeft>
+              <PositionItemDesktop className={`position-item--${supportOpposeInfo} position-item`}>
+                <DesktopItemHeader>
+                  <DesktopItemNameIssueContainer>
+                    <DesktopItemName>
+                      <Link to={speakerLink}>
+                        { position.speaker_display_name }
+                      </Link>
+                    </DesktopItemName>
+                    <DesktopItemIssues>Issues go here</DesktopItemIssues>
+                  </DesktopItemNameIssueContainer>
+                  <DesktopItemEndorsementDisplay>
+                    {supportOpposeInfo === 'supportFollow' ? (
+                      <SupportFollow>
+                        +1
+                      </SupportFollow>
+                    ) : (
+                      <React.Fragment>
+                        {supportOpposeInfo === 'support' ? (
+                          <Support>
+                            <i className="fa fa-thumbs-up" />
+                          </Support>
+                        ) : (
+                          <React.Fragment>
+                            {supportOpposeInfo === 'oppose' ? (
+                              <Oppose>
+                                <i className="fa fa-thumbs-down" />
+                              </Oppose>
+                            ) : (
+                              null
+                            )}
+                          </React.Fragment>
+                        )}
+                      </React.Fragment>
+                    )}
+                  </DesktopItemEndorsementDisplay>
+                </DesktopItemHeader>
+                <DesktopItemBody>
+                  <DesktopItemDescription>
+                    {positionDescription}
+                  </DesktopItemDescription>
+                  <DesktopItemFooter>
+                    <strong>Was this Useful?</strong>
+                    Yes  No
+                    <div className="u-float-right">
+                      Flag Links
+                    </div>
+                  </DesktopItemFooter>
+                </DesktopItemBody>
+              </PositionItemDesktop>
+            </DesktopContainer>
+          </div>
           <div className="u-show-mobile">
-            <PositionItemMobile>
+            <PositionItemMobile className={`position-item--${supportOpposeInfo} position-item`}>
               <MobileItemHeader>
                 <MobileItemImage>
                   <OverlayTrigger
@@ -235,7 +310,6 @@ class PositionItem extends Component {
 const PositionItemMobile = styled.li`
   border-radius: 5px;
   margin: 16px;
-  border-left: 4px solid #1fc06f;
   list-style: none;
 `;
 
@@ -304,6 +378,73 @@ const MobileItemEndorsementDisplay = styled.div`
 
 const MobileItemFooter = styled.div`
   padding-top: 4px;
+`;
+
+const DesktopContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 24px;
+`;
+
+const DesktopItemLeft = styled.div`
+  width: 75px;
+  padding: 0 8px 0 0;
+`;
+
+const DesktopItemImage = styled.div`
+  width: 45px;
+  margin: 0 auto;
+  height: 45px;
+  margin-bottom: 8px;
+  * {
+    border-radius: 45px;
+  }
+`;
+
+const PositionItemDesktop = styled.div`
+  border-radius: 5px;
+  list-style: none;
+  padding: 16px;
+  background: #f7f7f7;
+`;
+
+const DesktopItemHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+const DesktopItemNameIssueContainer = styled.div`
+  padding: 0px;
+`;
+
+const DesktopItemName = styled.h4`
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+`;
+
+const DesktopItemIssues = styled.div`
+  margin: 0;
+`;
+
+const DesktopItemEndorsementDisplay = styled.div`
+  margin-left: auto;
+  padding: 0;
+`;
+
+const DesktopItemBody = styled.div`
+  margin: 0;
+`;
+
+const DesktopItemDescription = styled.p`
+  font-size: 14px;
+  margin-top: 8px;
+`;
+
+const DesktopItemFooter = styled.div`
+  margin-top: 8px;
+  font-size: 14px;
 `;
 
 const SupportFollow = styled.div`
