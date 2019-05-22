@@ -24,6 +24,7 @@ class OrganizationStore extends ReduceStore {
         number_of_search_results: 0,
         search_results: [],
       },
+      positionListForOpinionMakerHasBeenRetrievedOnce: {}, // Dictionary with googleCivicElectionId as key and organizationWeVoteId as key and true/false as value
     };
   }
 
@@ -202,6 +203,14 @@ class OrganizationStore extends ReduceStore {
     return newOrganization;
   }
 
+  positionListForOpinionMakerHasBeenRetrievedOnce (googleCivicElectionId, organizationWeVoteId) {
+    if (this.getState().positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionId]) {
+      return this.getState().positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionId][organizationWeVoteId] || false;
+    } else {
+      return false;
+    }
+  }
+
   reduce (state, action) {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
@@ -213,6 +222,7 @@ class OrganizationStore extends ReduceStore {
       organizationWeVoteIdsVoterIsFollowing, organizationWeVoteIdsVoterIsIgnoring,
     } = state;
     // let add_voterGuides_not_from_election;
+    let googleCivicElectionId;
     let organizationWeVoteId;
     let organization;
     let priorCopyOfOrganization;
@@ -438,6 +448,7 @@ class OrganizationStore extends ReduceStore {
         // console.log('OrganizationStore, positionListForOpinionMaker response');
         // TODO: position_list *might* include positions from multiple elections
         organizationWeVoteId = action.res.opinion_maker_we_vote_id;
+        googleCivicElectionId = action.res.google_civic_election_id;
         if (action.res.friends_vs_public === 'FRIENDS_ONLY') { // positionListForOpinionMakerForFriends
           if (action.res.filter_for_voter) {
             const friendsPositionListForOneElection = action.res.position_list;
@@ -512,6 +523,13 @@ class OrganizationStore extends ReduceStore {
           const positionListForAllExceptOneElection = action.res.position_list;
           organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
 
+          if (googleCivicElectionId) {
+            if (!state.positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionId]) {
+              state.positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionId] = [];
+            }
+            state.positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionId][organizationWeVoteId] = true;
+          }
+
           // Make sure to maintain the lists we attach to the organization from other API calls
           if (allCachedOrganizationsDict[organizationWeVoteId]) {
             priorCopyOfOrganization = allCachedOrganizationsDict[organizationWeVoteId];
@@ -527,6 +545,13 @@ class OrganizationStore extends ReduceStore {
         } else {
           const positionList = action.res.position_list;
           organization = allCachedOrganizationsDict[organizationWeVoteId] || {};
+
+          if (googleCivicElectionId) {
+            if (!state.positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionId]) {
+              state.positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionId] = [];
+            }
+            state.positionListForOpinionMakerHasBeenRetrievedOnce[googleCivicElectionId][organizationWeVoteId] = true;
+          }
 
           // Make sure to maintain the lists we attach to the organization from other API calls
           if (allCachedOrganizationsDict[organizationWeVoteId]) {
