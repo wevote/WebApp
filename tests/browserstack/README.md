@@ -23,3 +23,5 @@ To run the tests, run one or more of the following:
     (WebAppEnv) $ npm run marketingTest-iOS
 
 When the test finishes, you should be able to see the video of the browser test on the BrowserStack Automate dashboard and video of the mobile apps on BrowserStack App Automate.
+
+[Additional instructions can be found here](../../docs/testing/README_TESTING.md) 

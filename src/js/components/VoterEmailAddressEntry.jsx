@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Alert, Button } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
+import Button from '@material-ui/core/Button';
 import { isWebApp } from '../utils/cordovaUtils';
 import LoadingWheel from './LoadingWheel';
 import { renderLog } from '../utils/logging';
@@ -180,10 +181,10 @@ export default class VoterEmailAddressEntry extends Component {
             placeholder="Email Address"
           />
           <Button
-            className="u-stack--xs"
-            variant="success"
-            type="submit"
+            color="primary"
+            id="voterEmailAddressEntrySendMagicLink"
             onClick={this.voterEmailAddressSave}
+            variant="contained"
           >
             Send Magic Link
           </Button>
