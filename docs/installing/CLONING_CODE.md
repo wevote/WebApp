@@ -25,6 +25,21 @@ Make sure you have created a place to put all of the code from Github, for examp
 
     `$ git remote add upstream git@github.com:wevote/WebApp.git`  
 
+#### Windows machines only
+
+5. Set the line endings to LF in git so ESLint doesn't flag CRLF line endings as errors
+
+    $ git config --global core.autocrlf false
+
+Next, set `text=auto` in your `.gitattributes` file
+
+    * text=auto
+
+Finally, set the core.eol to LF
+
+    $ git config --global core.eol lf
+
+
 ### Create and set up SSH keys. (For Windows machines, refer to [these instructions instead](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#platform-windows)).
 
   1. Create SSH key: 
