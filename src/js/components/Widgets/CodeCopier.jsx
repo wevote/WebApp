@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -8,6 +9,7 @@ import { showToastSuccess } from '../../utils/showToast';
 
 export default class CodeCopier extends Component {
   static propTypes = {
+    codeCopierButtonId: PropTypes.string,
     exampleUrl: PropTypes.string,
     imageUrl: PropTypes.string,
     sourceUrl: PropTypes.string,
@@ -112,6 +114,7 @@ export default class CodeCopier extends Component {
 
   render () {
     let { sourceUrl } = this.props;
+    const { codeCopierButtonId } = this.props;
     renderLog(__filename);
     if (!sourceUrl) sourceUrl = `https://wevote.us/${this.state.twitterHandle}`;
 
@@ -124,7 +127,14 @@ export default class CodeCopier extends Component {
           <div className="col-xs-12 col-sm-6 col-md-4">
             <div className="code-copier">
               <h3 className="h3">{this.props.title}</h3>
-              <button className="btn btn-success u-stack--sm" onClick={this.copyCode} type="button">Click to copy code</button>
+              <Button
+                color="primary"
+                id={codeCopierButtonId}
+                onClick={this.copyCode}
+                variant="contained"
+              >
+                Click to copy code
+              </Button>
               <br />
               <div className="u-stack--sm">
                 <a // eslint-disable-line
@@ -188,16 +198,15 @@ export default class CodeCopier extends Component {
                 </p>
               ) : null
               }
-              <button
-                onClick={this.copyCode}
+              <Button
+                color="primary"
+                id={codeCopierButtonId}
                 disabled={!this.state.isTwitterHandleValid}
-                className={this.state.isTwitterHandleValid ?
-                  'btn btn-success u-stack--sm' :
-                  'btn u-stack--sm'}
-                type="button"
+                onClick={this.copyCode}
+                variant="text"
               >
                 Click to copy code
-              </button>
+              </Button>
               <br />
               { !this.state.isLoading && this.state.isTwitterHandleValid ? (
                 <div className="u-stack--sm">
@@ -245,7 +254,14 @@ export default class CodeCopier extends Component {
           <div className="col-xs-12 col-sm-6 col-md-4">
             <div className="code-copier">
               <h3 className="h3">{this.props.title}</h3>
-              <button className="btn btn-success u-stack--sm" onClick={this.copyCode} type="button">Click to copy code</button>
+              <Button
+                color="primary"
+                id={codeCopierButtonId}
+                onClick={this.copyCode}
+                variant="contained"
+              >
+                Click to copy
+              </Button>
               <br />
               <div className="u-stack--sm">
                 <a // eslint-disable-line

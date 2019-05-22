@@ -98,9 +98,12 @@ class IssuesByBallotItemDisplayList extends Component {
         Value Popover Text
       </Popover>
     );
-
+    // Tried to make the issues icons accessible via tabbing, caused too many side affects
     const valueIconAndText = (
-      <ValueIconAndText className="u-no-break u-cursor--pointer issue-icon-list__issue-block">
+      <ValueIconAndText
+        id={`valueIconAndText-${oneIssue.issue_we_vote_id}`}
+        className="u-no-break u-cursor--pointer issue-icon-list__issue-block"
+      >
         {oneIssue.issue_icon_local_path ? (
           <span className="issue-icon-list__issue-icon">
             <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
@@ -125,6 +128,7 @@ class IssuesByBallotItemDisplayList extends Component {
           rootClose
           placement="bottom"
           overlay={valuePopover}
+          id={`overlayTrigger-${oneIssue.issue_we_vote_id}`}
         >
           {valueIconAndText}
         </OverlayTrigger>
@@ -197,8 +201,10 @@ class IssuesByBallotItemDisplayList extends Component {
 
     return (
       <Wrapper
-      onMouseEnter={handleEnterHoverLocalArea}
-      onMouseLeave={handleLeaveHoverLocalArea}
+        onBlur={handleLeaveHoverLocalArea}
+        onFocus={handleEnterHoverLocalArea}
+        onMouseOut={handleLeaveHoverLocalArea}
+        onMouseOver={handleEnterHoverLocalArea}
       >
         <Issues>
           {/* Show a break-down of the current positions in your network */}
