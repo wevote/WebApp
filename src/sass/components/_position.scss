@@ -100,3 +100,16 @@ $toggle-icon-margin-top: 3px;
     left: 6px;
   }
 }
+
+.position-item {
+  border-left: 4px solid #e8e8e8;
+  &--support {
+    border-left: 4px solid #1fc06f;
+  }
+  &--supportFollow {
+    border-left: 4px solid #1fc06f;
+  }
+  &--oppose {
+    border-left: 4px solid #eb2929;
+  }
+}

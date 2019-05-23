@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import styled from 'styled-components';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import CommentIcon from '@material-ui/icons/Comment';
 import InfoIcon from '@material-ui/icons/Info';
@@ -132,7 +133,7 @@ export default class PositionList extends Component {
           >
             <VoterGuideOrganizationFilter />
           </FilterBase>
-          <ul className="card-child__list-group">
+          <PositionsList className="card-child__list-group">
             { this.state.filteredPositionList.map(onePosition => (
               <span key={`${onePosition.position_we_vote_id}-${onePosition.voter_guide_we_vote_id}-${onePosition.speaker_display_name}`}>
                 { onePosition.statement_text || onePosition.has_video ? (
@@ -145,7 +146,7 @@ export default class PositionList extends Component {
               </span>
             ))
           }
-          </ul>
+          </PositionsList>
         </div>
       );
     } else {
@@ -181,3 +182,7 @@ export default class PositionList extends Component {
     }
   }
 }
+
+const PositionsList = styled.ul`
+  list-style: none;
+`;
