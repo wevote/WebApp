@@ -126,7 +126,7 @@ class About extends Component {
               body={(
                 <span>
                   Mozilla Foundation&nbsp;
-                  <i className="fa fa-external-link" />
+                  <i className="fas fa-external-link-alt" />
                 </span>
               )}
             />
