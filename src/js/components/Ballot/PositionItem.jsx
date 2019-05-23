@@ -168,13 +168,13 @@ class PositionItem extends Component {
                   <DesktopItemDescription>
                     {positionDescription}
                   </DesktopItemDescription>
-                  {/* <DesktopItemFooter>
-                    <strong>Was this Useful?</strong>
+                  <DesktopItemFooter>
+                    {/* <strong>Was this Useful?</strong>
                     Yes  No
                     <div className="u-float-right">
                       Flag Links
-                    </div>
-                  </DesktopItemFooter> */}
+                    </div> */}
+                  </DesktopItemFooter>
                 </DesktopItemBody>
               </PositionItemDesktop>
             </DesktopContainer>
@@ -237,13 +237,13 @@ class PositionItem extends Component {
                     )}
                   </MobileItemEndorsementDisplay>
                 </MobileItemDescriptionEndorsementContainer>
-                {/* <MobileItemFooter>
-                  <strong>Was this Useful?</strong>
+                <MobileItemFooter>
+                  {/* <strong>Was this Useful?</strong>
                   Yes  No
                   <div className="u-float-right">
                     Flag Links
-                  </div>
-                </MobileItemFooter> */}
+                  </div> */}
+                </MobileItemFooter>
               </MobileItemBody>
             </PositionItemMobile>
           </div>
@@ -370,9 +370,9 @@ const MobileItemEndorsementDisplay = styled.div`
   width: 15%;
 `;
 
-// const MobileItemFooter = styled.div`
-//   padding-top: 4px;
-// `;
+const MobileItemFooter = styled.div`
+  padding-top: 4px;
+`;
 
 const DesktopContainer = styled.div`
   display: flex;
@@ -436,10 +436,10 @@ const DesktopItemDescription = styled.p`
   margin-top: 8px;
 `;
 
-// const DesktopItemFooter = styled.div`
-//   margin-top: 8px;
-//   font-size: 14px;
-// `;
+const DesktopItemFooter = styled.div`
+  margin-top: 8px;
+  font-size: 14px;
+`;
 
 const SupportFollow = styled.div`
   color: white;
