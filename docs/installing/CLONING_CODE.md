@@ -31,7 +31,7 @@ Make sure you have created a place to put all of the code from Github, for examp
 
     $ git config --global core.autocrlf false
 
-Next, set `text=auto` in your `.gitattributes` file
+Next, set `* text=auto` in your `.gitattributes` file (you may need to create this file in your root WebApp folder)
 
     * text=auto
 
