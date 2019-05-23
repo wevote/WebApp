@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
-import { _ } from 'lodash';
+import _ from 'lodash';
 import { renderLog } from '../utils/logging';
 import OrganizationActions from '../actions/OrganizationActions';
 import OrganizationStore from '../stores/OrganizationStore';

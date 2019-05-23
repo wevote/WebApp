@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
-import { _ } from 'lodash';
+import _ from 'lodash';
 import IssueActions from '../../actions/IssueActions';
 import IssueFollowToggleSquare from '../Values/IssueFollowToggleSquare';
 import IssueStore from '../../stores/IssueStore';

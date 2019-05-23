@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { Button } from 'react-bootstrap';
-import { _ } from 'lodash';
+import _ from 'lodash';
 import GuideList from './GuideList';
 import LoadingWheel from '../LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';

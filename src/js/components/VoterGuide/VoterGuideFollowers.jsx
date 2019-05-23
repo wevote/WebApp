@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { _ } from 'lodash';
+import _ from 'lodash';
 import Helmet from 'react-helmet';
 import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';

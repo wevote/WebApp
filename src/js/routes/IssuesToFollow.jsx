@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import { _ } from 'lodash';
+import _ from 'lodash';
 import Helmet from 'react-helmet';
 import IssueActions from '../actions/IssueActions';
 import IssueFollowToggleSquare from '../components/Values/IssueFollowToggleSquare';

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Helmet from 'react-helmet';
-import { _ } from 'lodash';
+import _ from 'lodash';
 import { isCordova } from '../utils/cordovaUtils';
 import IssueActions from '../actions/IssueActions';
 import IssueFollowToggleSquare from '../components/Values/IssueFollowToggleSquare';
