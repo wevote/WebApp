@@ -197,7 +197,7 @@ class VoterEmailAddressEntry extends Component {
             id="voterEmailAddressEntrySendMagicLink"
             onClick={this.voterEmailAddressSave}
             variant="contained"
-            className="u-full-width"
+            className={classes.button}
           >
             SEND SIGN IN LINK
           </Button>
@@ -391,6 +391,10 @@ const styles = {
     marginLeft: 8,
     flex: 1,
     padding: 8,
+  },
+  button: {
+    width: '100%',
+    padding: '12px',
   },
 };
 

@@ -191,20 +191,20 @@ export default class SettingsAccount extends Component {
               <div className="u-stack--md">
                 { !this.state.voter.signed_in_twitter && (
                   <span>
-                    <RecommendedText className="u-tl">Recommended</RecommendedText>
-                    <TwitterSignIn className="btn btn-social btn-lg btn-twitter u-full-width u-tc u-f4" buttonText="SIGN IN WITH TWITTER" />
+                    <RecommendedText className="u-tl u-stack--sm">Recommended</RecommendedText>
+                    <TwitterSignIn className="btn btn-social btn-lg btn-twitter u-full-width u-tc u-f4 u-inset--md" buttonText="SIGN IN WITH TWITTER" />
                   </span>
                 )
                 }
-                { !this.state.voter.signed_in_twitter && !this.state.voter.signed_in_facebook && (
+                {/* { !this.state.voter.signed_in_twitter && !this.state.voter.signed_in_facebook && (
                   <span>
                     <span className="u-margin-left--sm" />
                   </span>
                 )
-                }
+                } */}
                 { !this.state.voter.signed_in_facebook && (
                   <span>
-                    <FacebookSignIn className="btn btn-social btn-lg btn-facebook u-full-width u-tc u-f4" toggleSignInModal={this.props.toggleSignInModal} buttonText="SIGN IN WITH FACEBOOK" />
+                    <FacebookSignIn className="btn btn-social btn-lg btn-facebook u-full-width u-tc u-f4 u-inset--md" toggleSignInModal={this.props.toggleSignInModal} buttonText="SIGN IN WITH FACEBOOK" />
                   </span>
                 )
                 }
