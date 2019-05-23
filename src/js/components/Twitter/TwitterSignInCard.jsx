@@ -5,7 +5,7 @@ const twitterText = 'Signing into Twitter is the fastest way to find voter guide
 
 const twitterInfoText = (
   <span className="social-btn-description">
-    <i className="fa fa-info-circle" />
+    <i className="fas fa-info-circle" />
     {twitterText}
   </span>
 );

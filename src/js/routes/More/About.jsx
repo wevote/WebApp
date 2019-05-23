@@ -114,7 +114,7 @@ class About extends Component {
               body={(
                 <span>
                   Code for America&nbsp;
-                  <i className="fa fa-external-link" />
+                  <i className="fas fa-external-link-alt" />
                 </span>
               )}
             />
@@ -187,7 +187,7 @@ class About extends Component {
             <Link to="/more/credits">
               our volunteers, our board of directors, our funders, and the organizations
               &nbsp;
-              <i className="fa fa-external-link" />
+              <i className="fas fa-external-link-alt" />
             </Link>
             {' '}
             that are critical to our work.

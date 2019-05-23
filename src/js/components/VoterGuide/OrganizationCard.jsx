@@ -206,8 +206,8 @@ export default class OrganizationCard extends Component {
                 null
               }
               {/* twitter_followers_count ?
-                <span className="twitter-followers__badge">
-                  <span className="fa fa-twitter twitter-followers__icon" />
+                </i><span className="twitter-followers__badge">
+                  <span className="fab fa-twitter twitter-followers__icon" />
                   {numberWithCommas(twitter_followers_count)}
                 </span> :
                 null
@@ -221,7 +221,7 @@ export default class OrganizationCard extends Component {
                     body={(
                       <span>
                         Website
-                        <i className="fa fa-external-link" />
+                        <i className="fas fa-external-link-alt" />
                       </span>
                     )}
                   />

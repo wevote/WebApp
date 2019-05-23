@@ -105,7 +105,7 @@ export default class MeasureItemReadyToVote extends Component {
               supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count === supportProps.oppose_count ? (
                 <div className="u-flex-none u-justify-end">
                   Your network is undecided
-                  <i className="fa fa-info-circle fa-md network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" />
+                  <i className="fas fa-info-circle fa-lg network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" />
                 </div>
               ) :
                 null

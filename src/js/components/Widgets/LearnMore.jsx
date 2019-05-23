@@ -125,7 +125,7 @@ class LearnMore extends Component {
           <span>
             {learnMoreText}
             &nbsp;
-            <i className="fa fa-external-link" />
+            <i className="fas fa-external-link-alt" />
           </span>
         )}
       />

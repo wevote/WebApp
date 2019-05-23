@@ -586,7 +586,7 @@ export default class FacebookBallotToFriendsModal extends Component {
                           type="submit"
                           onClick={this.sendDirectMessageToFacebookFriends}
                         >
-                          <span className="fa fa-facebook" />
+                          <span className="fab fa-facebook" />
                           Send Ballot Through Facebook
                         </Button>
                       </div>
@@ -603,7 +603,7 @@ export default class FacebookBallotToFriendsModal extends Component {
                             type="submit"
                             onClick={this.shareOnFacebook}
                           >
-                            <span className="fa fa-facebook" />
+                            <span className="fab fa-facebook" />
                             Share Ballot on Facebook
                           </Button>
                         </div>

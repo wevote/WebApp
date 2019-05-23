@@ -224,7 +224,7 @@ export default class SettingsAccount extends Component {
                   {this.state.voter.signed_in_twitter ? (
                     <div>
                       <span className="btn btn-social btn-md btn-twitter" href="#">
-                        <i className="fa fa-twitter" />
+                        <i className="fab fa-twitter" />
                         @
                         {this.state.voter.twitter_screen_name}
                       </span>
@@ -263,7 +263,7 @@ export default class SettingsAccount extends Component {
                     {this.state.voter.signed_in_facebook && (
                     <span>
                       <span className="btn btn-social-icon btn-lg btn-facebook">
-                        <span className="fa fa-facebook" />
+                        <span className="fab fa-facebook" />
                       </span>
                       <span className="u-margin-left--sm" />
                     </span>
@@ -271,7 +271,7 @@ export default class SettingsAccount extends Component {
                     {this.state.voter.signed_in_with_email && (
                     <span>
                       <span className="btn btn-social-icon btn-lg btn-openid">
-                        <span className="fa fa-envelope-o" />
+                        <span className="fas fa-envelope" />
                       </span>
                     </span>
                     )}

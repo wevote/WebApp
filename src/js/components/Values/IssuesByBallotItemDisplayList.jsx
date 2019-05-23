@@ -90,7 +90,7 @@ class IssuesByBallotItemDisplayList extends Component {
             <PopoverTitleText>
               {oneIssue.issue_name}
             </PopoverTitleText>
-            <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" />
+            <span className="fas fa-times pull-right u-cursor--pointer" aria-hidden="true" />
           </PopoverTitle>
         )}
         onClick={IssuesByBallotItemDisplayList.closePopover}
