@@ -191,6 +191,7 @@ const routes = () => (
     <Route path="/more/network/friends" component={Friends} />
     <Route path="/more/network/organizations" component={Values} />
     <Route path="/more/pricing" component={Pricing} />
+    <Route path="/more/pricing/:pricing_choice" component={Pricing} />
     <Route path="/more/privacy" component={Privacy} />
     <Route path="/more/processing_donation" component={ProcessingDonation} />
     <Route path="/more/register" component={RegisterToVote} />

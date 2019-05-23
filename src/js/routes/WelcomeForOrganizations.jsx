@@ -273,7 +273,7 @@ class WelcomeForOrganizations extends PureComponent {
                 className={classes.goldButton}
                 classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
                 id="welcomeForOrganizationsPricing"
-                onClick={() => historyPush('/more/pricing')}
+                onClick={() => historyPush('/more/pricing/organizations')}
               >
                 View Pricing
               </Button>

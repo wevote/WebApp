@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import Button from '@material-ui/core/Button';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import DonateActions from '../../actions/DonateActions';
 import { renderLog } from '../../utils/logging';
@@ -11,7 +11,6 @@ export default class DonationForm extends Component {
     donationAmount: PropTypes.number,
     donateButtonText: PropTypes.string,
     donateMonthly: PropTypes.bool,
-    donateOther: PropTypes.bool,
   };
 
   constructor (props) {
@@ -76,9 +75,9 @@ export default class DonationForm extends Component {
     return (
       <span>
         <Button
-          bsPrefix={this.props.donateOther ? '' : 'btn_donate btn btn-success'}
-          variant="success"
+          color="primary"
           onClick={this._openStripeModal}
+          variant="contained"
         >
           {donateButtonText}
         </Button>

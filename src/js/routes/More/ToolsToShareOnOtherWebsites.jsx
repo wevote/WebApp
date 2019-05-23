@@ -43,36 +43,42 @@ WeVote.US wants to give you our technology to use, for
           <CodeCopier
             title="Interactive Ballot Tool"
             sourceUrl="https://wevote.us/ballot"
+            codeCopierButtonId="codeCopierInteractiveBallotTool"
             imageUrl="/img/tools/We-Vote-Example-Ballot.png"
             exampleUrl="https://wevote.us/more/myballot"
           />
           <CodeCopier
             title="Voter Guide Tool"
             exampleUrl="https://wevote.us/lwv_oakland"
+            codeCopierButtonId="codeCopierVoterGuideTool"
             imageUrl="/img/tools/guide.png"
           />
           <CodeCopier
             title="Voter Registration Tool"
             sourceUrl="https://register.vote.org/?partner=111111&campaign=free-tools"
             exampleUrl="https://wevote.us/more/register"
+            codeCopierButtonId="codeCopierVoterRegistrationTool"
             imageUrl="/img/tools/register.png"
           />
           <CodeCopier
             title="Absentee Ballot Tool"
             sourceUrl="https://absentee.vote.org/?partner=111111&campaign=free-tools"
             exampleUrl="https://wevote.us/more/absentee"
+            codeCopierButtonId="codeCopierAbsenteeBallotTool"
             imageUrl="/img/tools/absentee.png"
           />
           <CodeCopier
             title="Check Registration Status Tool"
             sourceUrl="https://verify.vote.org/?partner=111111&campaign=free-tools"
             exampleUrl="https://wevote.us/more/verify"
+            codeCopierButtonId="codeCopierCheckRegistrationStatusTool"
             imageUrl="/img/tools/verify.png"
           />
           <CodeCopier
             title="Election Reminder Tool"
             sourceUrl="https://reminders.vote.org/?partner=111111&campaign=free-tools"
             exampleUrl="https://wevote.us/more/alerts"
+            codeCopierButtonId="codeCopierElectionReminderTool"
             imageUrl="/img/tools/reminders.png"
           />
         </div>

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
-  Button, Form, InputGroup, FormControl,
+  Form, InputGroup, FormControl,
 } from 'react-bootstrap';
+import Button from '@material-ui/core/Button';
 import Helmet from 'react-helmet';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import DonationForm from '../../components/Donation/DonationForm';
@@ -152,8 +153,12 @@ export default class Donate extends Component {
               donateMonthly={this.state.donateMonthly}
             />
 
-            <Button bsPrefix="btn_donate btn btn-success" variant="success" onClick={this._toggleCustomAmount}>
-            Other Amount
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={this._toggleCustomAmount}
+            >
+              Other Amount
             </Button>
 
             {this.state.showCustomInput ? (
