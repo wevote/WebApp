@@ -3,23 +3,18 @@ import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-// import moment from 'moment';
 import ImageHandler from '../ImageHandler';
-// import FriendsOnlyIndicator from '../Widgets/FriendsOnlyIndicator';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import ReadMore from '../Widgets/ReadMore';
-// import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
-// import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
-// import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
 import FollowToggle from '../Widgets/FollowToggle';
 
 
 class PositionItem extends Component {
   static propTypes = {
     ballotItemDisplayName: PropTypes.string.isRequired,
-    organization: PropTypes.object, // .isRequired,
+    // organization: PropTypes.object, // .isRequired,
     position: PropTypes.object.isRequired,
   };
 
@@ -27,12 +22,31 @@ class PositionItem extends Component {
     document.body.click();
   }
 
+  shouldComponentUpdate (nextProps) {
+    if (this.props.ballotItemDisplayName !== nextProps.ballotItemDisplayName) {
+      return true;
+    }
+    const { position: priorPosition } = this.props;
+    const { position: nextPosition } = nextProps;
+    if (priorPosition.speaker_we_vote_id !== nextPosition.speaker_we_vote_id) {
+      return true;
+    }
+    if (priorPosition.organization_we_vote_id !== nextPosition.organization_we_vote_id) {
+      return true;
+    }
+    if (priorPosition.statement_text !== nextPosition.statement_text) {
+      return true;
+    }
+    if (priorPosition.speaker_twitter_handle !== nextPosition.speaker_twitter_handle) {
+      return true;
+    }
+    return false;
+  }
+
   render () {
     renderLog(__filename);
     const { position } = this.props;
     // console.log('PositionItem render, position:', position);
-    // const dateStr = position.last_updated;
-    // const dateText = moment(dateStr).startOf('day').fromNow();
     // TwitterHandle-based link
     const voterGuideWeVoteIdLink = position.organization_we_vote_id ? `/voterguide/${position.organization_we_vote_id}` : `/voterguide/${position.speaker_we_vote_id}`;
     const speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : voterGuideWeVoteIdLink;
@@ -58,32 +72,12 @@ class PositionItem extends Component {
     }
 
     console.log(supportOpposeInfo);
-    const positionDescription = (
+    const positionDescription = position.statement_text && (
       <ReadMore
         num_of_lines={3}
         text_to_display={position.statement_text}
       />
     );
-
-    // const isOnBallotItemPage = true;
-    // if (position.vote_smart_rating) {
-    //   positionDescription =
-    //     <PositionRatingSnippet {...position} />;
-    // } else if (position.is_support || position.is_oppose) {
-    //   positionDescription = <PositionSupportOpposeSnippet {...position} is_on_ballot_item_page={isOnBallotItemPage} />;
-    // } else if (position.is_information_only) {
-    //   positionDescription = <PositionInformationOnlySnippet {...position} is_on_ballot_item_page={isOnBallotItemPage} />;
-    // } else if (isSpeakerTypeIndividual(position.speaker_type)) {
-    //   positionDescription = (
-    //     <p className="">
-    //       <span>{this.props.ballotItemDisplayName}</span>
-    //       <span className="small">
-    //         {' '}
-    //         { dateText }
-    //       </span>
-    //     </p>
-    //   );
-    // }
 
     const showPosition = true;
     const nothingToDisplay = null;
@@ -130,11 +124,19 @@ class PositionItem extends Component {
                 <DesktopItemHeader>
                   <DesktopItemNameIssueContainer>
                     <DesktopItemName>
-                      <Link to={speakerLink}>
-                        { position.speaker_display_name }
-                      </Link>
+                      <OverlayTrigger
+                        delay={{ show: 700, hide: 100 }}
+                        trigger={['hover', 'focus']}
+                        rootClose
+                        placement="bottom"
+                        overlay={organizationCardPopover}
+                      >
+                        <Link to={speakerLink}>
+                          { position.speaker_display_name }
+                        </Link>
+                      </OverlayTrigger>
                     </DesktopItemName>
-                    <DesktopItemIssues>Issues go here</DesktopItemIssues>
+                    <DesktopItemIssues>{/* Issues go here */}</DesktopItemIssues>
                   </DesktopItemNameIssueContainer>
                   <DesktopItemEndorsementDisplay>
                     {supportOpposeInfo === 'supportFollow' ? (
@@ -166,13 +168,13 @@ class PositionItem extends Component {
                   <DesktopItemDescription>
                     {positionDescription}
                   </DesktopItemDescription>
-                  <DesktopItemFooter>
+                  {/* <DesktopItemFooter>
                     <strong>Was this Useful?</strong>
                     Yes  No
                     <div className="u-float-right">
                       Flag Links
                     </div>
-                  </DesktopItemFooter>
+                  </DesktopItemFooter> */}
                 </DesktopItemBody>
               </PositionItemDesktop>
             </DesktopContainer>
@@ -181,24 +183,16 @@ class PositionItem extends Component {
             <PositionItemMobile className={`position-item--${supportOpposeInfo} position-item`}>
               <MobileItemHeader>
                 <MobileItemImage>
-                  <OverlayTrigger
-                    delay={{ show: 700, hide: 100 }}
-                    trigger={['hover', 'focus']}
-                    rootClose
-                    placement="bottom"
-                    overlay={organizationCardPopover}
-                  >
-                    <Link to={speakerLink} className="u-no-underline">
-                      { position.speaker_image_url_https_medium ? (
-                        <ImageHandler
-                          className="card-child__avatar"
-                          sizeClassName="icon-lg"
-                          imageUrl={position.speaker_image_url_https_medium}
-                        />
-                      ) :
-                        imagePlaceholder }
-                    </Link>
-                  </OverlayTrigger>
+                  <Link to={speakerLink} className="u-no-underline">
+                    { position.speaker_image_url_https_medium ? (
+                      <ImageHandler
+                        className="card-child__avatar"
+                        sizeClassName="icon-lg"
+                        imageUrl={position.speaker_image_url_https_medium}
+                      />
+                    ) :
+                      imagePlaceholder }
+                  </Link>
                 </MobileItemImage>
                 <MobileItemNameIssueContainer>
                   <MobileItemName>
@@ -206,7 +200,7 @@ class PositionItem extends Component {
                       { position.speaker_display_name }
                     </Link>
                   </MobileItemName>
-                  <MobileItemIssues>Issues go here</MobileItemIssues>
+                  <MobileItemIssues>{/* Issues go here */}</MobileItemIssues>
                 </MobileItemNameIssueContainer>
                 <MobileItemFollowToggle>
                   <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
@@ -243,13 +237,13 @@ class PositionItem extends Component {
                     )}
                   </MobileItemEndorsementDisplay>
                 </MobileItemDescriptionEndorsementContainer>
-                <MobileItemFooter>
+                {/* <MobileItemFooter>
                   <strong>Was this Useful?</strong>
                   Yes  No
                   <div className="u-float-right">
                     Flag Links
                   </div>
-                </MobileItemFooter>
+                </MobileItemFooter> */}
               </MobileItemBody>
             </PositionItemMobile>
           </div>
@@ -376,9 +370,9 @@ const MobileItemEndorsementDisplay = styled.div`
   width: 15%;
 `;
 
-const MobileItemFooter = styled.div`
-  padding-top: 4px;
-`;
+// const MobileItemFooter = styled.div`
+//   padding-top: 4px;
+// `;
 
 const DesktopContainer = styled.div`
   display: flex;
@@ -442,10 +436,10 @@ const DesktopItemDescription = styled.p`
   margin-top: 8px;
 `;
 
-const DesktopItemFooter = styled.div`
-  margin-top: 8px;
-  font-size: 14px;
-`;
+// const DesktopItemFooter = styled.div`
+//   margin-top: 8px;
+//   font-size: 14px;
+// `;
 
 const SupportFollow = styled.div`
   color: white;
