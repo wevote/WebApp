@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-bootstrap';
 import Button from '@material-ui/core/Button';
-import { isWebApp } from '../utils/cordovaUtils';
 import LoadingWheel from './LoadingWheel';
 import { renderLog } from '../utils/logging';
 import VoterActions from '../actions/VoterActions';
@@ -151,13 +150,13 @@ export default class VoterEmailAddressEntry extends Component {
       </span>
     );
 
-    let enterEmailTitle = 'Or, sign in with email';
-    let enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to be signed into your We Vote account." :
-      "You'll receive a magic link in the email on this phone. Click that link to be signed into your We Vote account.";
+    let enterEmailTitle = 'Sign in with Email Link';
+    // let enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to be signed into your We Vote account." :
+    //   "You'll receive a magic link in the email on this phone. Click that link to be signed into your We Vote account.";
     if (this.state.voter && this.state.voter.is_signed_in) {
       enterEmailTitle = 'Add New Email';
-      enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to verify this new email." :
-        "You'll receive a magic link in the email on this phone. Click that link to verify this new email.";
+      // enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to verify this new email." :
+      //   "You'll receive a magic link in the email on this phone. Click that link to verify this new email.";
     }
 
     const enterEmailHtml = (
@@ -165,10 +164,9 @@ export default class VoterEmailAddressEntry extends Component {
         <div className="u-stack--sm">
           <strong>
             {enterEmailTitle}
-            .
           </strong>
           {' '}
-          {enterEmailExplanation}
+          {/* enterEmailExplanation */}
         </div>
         <form className="form-inline" onSubmit={this.voterEmailAddressSave.bind(this)}>
           <input
