@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
+import { Link } from 'react-router';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import AppActions from '../../actions/AppActions';
@@ -10,7 +12,6 @@ import PricingCard from '../../components/More/PricingCard';
 import PricingSwitch from '../../components/Widgets/PricingSwitch';
 import VoterStore from '../../stores/VoterStore';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
-import { Title } from '../../components/Welcome/Header';
 import { historyPush } from '../../utils/cordovaUtils';
 
 class Pricing extends Component {
@@ -18,12 +19,20 @@ class Pricing extends Component {
     return {};
   }
 
+  static propTypes = {
+    classes: PropTypes.object,
+    params: PropTypes.object,
+  };
+
   constructor (props) {
     super(props);
 
     this.state = {
       pricingCardLabels: ['Free', 'Pro', 'Enterprise'],
       forCampaignsPricingCards: {
+        pageTitle: 'Pricing for Campaigns',
+        alternateLinkPath: '/more/pricing/organizations',
+        alternateLinkText: 'For Organizations?',
         Free: {
           planName: 'Free',
           price: 0,
@@ -83,7 +92,7 @@ class Pricing extends Component {
           price: 125,
           priceDescribe: 'Per month, billed annually',
           premium: true,
-          description: 'Best for regional campaigns',
+          description: 'Best for regional campaigns.',
           bullets: ['Custom domain name', 'Prioritize unlimited endorsements', 'Fine tune for social media sharing'],
           buttonText: 'Start with Pro',
           buttonOnClickId: 'pricingStartWithPro',
@@ -104,11 +113,11 @@ class Pricing extends Component {
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'Visitor Metrics',
+              featureDescription: 'Engagement Metrics',
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'WeVote.US Subdomain',
+              featureDescription: 'Custom Domain Name',
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
@@ -137,9 +146,9 @@ class Pricing extends Component {
           price: null,
           priceDescribe: null,
           premium: true,
-          description: 'Best for statewide or national organizations or companies',
-          bullets: ['Branding Control', 'Analytics Integration', 'Additional Administrators'],
-          buttonText: 'Contact Sales',
+          description: 'Best for statewide or national campaigns.',
+          bullets: ['Deeper branding control', 'Analytics integration', 'Add additional administrators'],
+          buttonText: 'Start with Enterprise',
           buttonOnClickId: 'pricingStartWithEnterprise',
           buttonOnClickFunction: this.getStartedForOrganizations,
           index: 2,
@@ -158,11 +167,11 @@ class Pricing extends Component {
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'Visitor Metrics',
+              featureDescription: 'Engagement Metrics',
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'WeVote.US Subdomain',
+              featureDescription: 'Custom Domain Name',
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
@@ -189,26 +198,21 @@ class Pricing extends Component {
       },
       /* Need to change the data for organizations */
       forOrganizationsPricingCards: {
+        pageTitle: 'Pricing for Organizations',
+        alternateLinkPath: '/more/pricing/campaigns',
+        alternateLinkText: 'For Campaigns?',
         Free: {
           planName: 'Free',
           price: 0,
           priceDescribe: 'For life',
           premium: false,
-          description: 'Just start creating: get a free site and be on your way to empowering your supporters in less than five minutes.',
-          bullets: ['Create your own endorsements', 'Add to your own website', 'See visitor metrics'],
+          description: 'Just start creating: get a free site and be on your way to empowering your members, constituents, or staff in less than five minutes.',
+          bullets: ['Add your own logo', 'Add to your own website', 'See visitor metrics'],
           buttonText: 'Start with Free',
           buttonOnClickId: 'pricingStartWithFree',
           buttonOnClickFunction: this.getStartedForOrganizations,
           index: 0,
           pricingCardFeatures: [
-            {
-              iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'Enter Your Own Positions',
-            },
-            {
-              iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'Voter Guide Creation Tools',
-            },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
               featureDescription: 'Add Ballot to Your Website',
@@ -228,10 +232,6 @@ class Pricing extends Component {
             {
               iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
               featureDescription: 'Edit Social Media Sharing Links',
-            },
-            {
-              iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
-              featureDescription: 'Create Multi-Organization Voter Guides',
             },
             {
               iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
@@ -248,8 +248,8 @@ class Pricing extends Component {
           price: 125,
           priceDescribe: 'Per month, billed annually',
           premium: true,
-          description: 'Best for regional campaigns',
-          bullets: ['Custom domain name', 'Prioritize unlimited endorsements', 'Fine tune for social media sharing'],
+          description: 'Best for regional or statewide organizations or companies.',
+          bullets: ['Custom domain name', 'Fine tune for social media sharing', 'See engagement metrics'],
           buttonText: 'Start with Pro',
           buttonOnClickId: 'pricingStartWithPro',
           buttonOnClickFunction: this.getStartedForOrganizations,
@@ -257,23 +257,15 @@ class Pricing extends Component {
           pricingCardFeatures: [
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'Enter Your Own Positions',
-            },
-            {
-              iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'Voter Guide Creation Tools',
-            },
-            {
-              iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
               featureDescription: 'Add Ballot to Your Website',
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'Visitor Metrics',
+              featureDescription: 'Engagement Metrics',
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'WeVote.US Subdomain',
+              featureDescription: 'Custom Domain Name',
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
@@ -282,10 +274,6 @@ class Pricing extends Component {
             {
               iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
               featureDescription: 'Edit Social Media Sharing Links',
-            },
-            {
-              iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
-              featureDescription: 'Create Multi-Organization Voter Guides',
             },
             {
               iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
@@ -302,32 +290,24 @@ class Pricing extends Component {
           price: null,
           priceDescribe: null,
           premium: true,
-          description: 'Best for statewide or national organizations or companies',
-          bullets: ['Branding Control', 'Analytics Integration', 'Additional Administrators'],
-          buttonText: 'Contact Sales',
+          description: 'Best for statewide or national organizations or companies.',
+          bullets: ['Deeper branding control', 'Analytics integration', 'Add additional administrators'],
+          buttonText: 'Start with Enterprise',
           buttonOnClickId: 'pricingStartWithEnterprise',
           buttonOnClickFunction: this.getStartedForOrganizations,
           index: 2,
           pricingCardFeatures: [
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'Enter Your Own Positions',
-            },
-            {
-              iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'Voter Guide Creation Tools',
-            },
-            {
-              iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
               featureDescription: 'Add Ballot to Your Website',
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'Visitor Metrics',
+              featureDescription: 'Engagement Metrics',
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'WeVote.US Subdomain',
+              featureDescription: 'Custom Domain Name',
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
@@ -336,10 +316,6 @@ class Pricing extends Component {
             {
               iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
               featureDescription: 'Edit Social Media Sharing Links',
-            },
-            {
-              iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
-              featureDescription: 'Create Multi-Organization Voter Guides',
             },
             {
               iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
@@ -360,6 +336,17 @@ class Pricing extends Component {
   componentDidMount () {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    const currentPricingChoice = (this.props.params.pricing_choice === 'campaigns') ? 'forCampaigns' : 'forOrganizations';
+    this.setState({
+      currentPricingChoice,
+    });
+  }
+
+  componentWillReceiveProps (nextProps) {
+    const currentPricingChoice = (nextProps.params.pricing_choice === 'campaigns') ? 'forCampaigns' : 'forOrganizations';
+    this.setState({
+      currentPricingChoice,
+    });
   }
 
   componentWillUnmount () {
@@ -393,7 +380,9 @@ class Pricing extends Component {
   }
 
   render () {
-    const { selectedCategoryIndex } = this.state;
+    const { classes } = this.props;
+    const { currentPricingChoice, forCampaignsPricingCards, forOrganizationsPricingCards, selectedCategoryIndex } = this.state;
+    const currentPricingDict = (currentPricingChoice === 'forCampaigns') ? forCampaignsPricingCards : forOrganizationsPricingCards;
 
     renderLog(__filename);
     return (
@@ -401,15 +390,25 @@ class Pricing extends Component {
         <Helmet title="Pricing - We Vote" />
         <WelcomeAppbar pathname="/more/pricing" />
         <HeaderForPricing>
-          <Title>Pricing</Title>
-          <div className="u-show-mobile-tablet">
-            <PricingSwitch
-              color="white"
-              choices={this.state.pricingCardLabels}
-              selectedCategoryIndex={selectedCategoryIndex}
-              switchToDifferentCategoryFunction={this.switchToDifferentCategoryFunction}
-            />
-          </div>
+          <PricingTitle>{currentPricingDict.pageTitle}</PricingTitle>
+          <PricingSubTitleDesktop className="u-show-desktop">
+            <Link to={currentPricingDict.alternateLinkPath} className={classes.pricingChoiceLink}>
+              {currentPricingDict.alternateLinkText}
+            </Link>
+          </PricingSubTitleDesktop>
+          <PricingSubTitleMobile className="u-show-mobile-tablet">
+            <Link to={currentPricingDict.alternateLinkPath} className={classes.pricingChoiceLink}>
+              {currentPricingDict.alternateLinkText}
+            </Link>
+            <div className={classes.pricingSwitch}>
+              <PricingSwitch
+                choices={this.state.pricingCardLabels}
+                color="white"
+                selectedCategoryIndex={selectedCategoryIndex}
+                switchToDifferentCategoryFunction={this.switchToDifferentCategoryFunction}
+              />
+            </div>
+          </PricingSubTitleMobile>
         </HeaderForPricing>
         <Section>
           <PricingDescriptionContainer className="container">
@@ -418,45 +417,45 @@ class Pricing extends Component {
                 {selectedCategoryIndex === 0 ? (
                   <PricingCard
                     fullWidth
-                    planName={this.state.forCampaignsPricingCards.Free.planName}
-                    price={this.state.forCampaignsPricingCards.Free.price}
-                    priceDescribe={this.state.forCampaignsPricingCards.Free.priceDescribe}
-                    description={this.state.forCampaignsPricingCards.Free.description}
-                    bullets={this.state.forCampaignsPricingCards.Free.bullets}
-                    buttonText={this.state.forCampaignsPricingCards.Free.buttonText}
-                    buttonOnClickId={this.state.forCampaignsPricingCards.Free.buttonOnClickId}
-                    buttonOnClickFunction={this.state.forCampaignsPricingCards.Free.buttonOnClickFunction}
-                    pricingCardFeatures={this.state.forCampaignsPricingCards.Free.pricingCardFeatures}
+                    planName={currentPricingDict.Free.planName}
+                    price={currentPricingDict.Free.price}
+                    priceDescribe={currentPricingDict.Free.priceDescribe}
+                    description={currentPricingDict.Free.description}
+                    bullets={currentPricingDict.Free.bullets}
+                    buttonText={currentPricingDict.Free.buttonText}
+                    buttonOnClickId={currentPricingDict.Free.buttonOnClickId}
+                    buttonOnClickFunction={currentPricingDict.Free.buttonOnClickFunction}
+                    pricingCardFeatures={currentPricingDict.Free.pricingCardFeatures}
                   />
                 ) : (
                   <React.Fragment>
                     {selectedCategoryIndex === 1 ? (
                       <PricingCard
                         fullWidth
-                        planName={this.state.forCampaignsPricingCards.Professional.planName}
-                        price={this.state.forCampaignsPricingCards.Professional.price}
-                        priceDescribe={this.state.forCampaignsPricingCards.Professional.priceDescribe}
+                        planName={currentPricingDict.Professional.planName}
+                        price={currentPricingDict.Professional.price}
+                        priceDescribe={currentPricingDict.Professional.priceDescribe}
                         premium
-                        description={this.state.forCampaignsPricingCards.Professional.description}
-                        bullets={this.state.forCampaignsPricingCards.Professional.bullets}
-                        buttonText={this.state.forCampaignsPricingCards.Professional.buttonText}
-                        buttonOnClickId={this.state.forCampaignsPricingCards.Professional.buttonOnClickId}
-                        buttonOnClickFunction={this.state.forCampaignsPricingCards.Professional.buttonOnClickFunction}
-                        pricingCardFeatures={this.state.forCampaignsPricingCards.Professional.pricingCardFeatures}
+                        description={currentPricingDict.Professional.description}
+                        bullets={currentPricingDict.Professional.bullets}
+                        buttonText={currentPricingDict.Professional.buttonText}
+                        buttonOnClickId={currentPricingDict.Professional.buttonOnClickId}
+                        buttonOnClickFunction={currentPricingDict.Professional.buttonOnClickFunction}
+                        pricingCardFeatures={currentPricingDict.Professional.pricingCardFeatures}
                       />
                     ) : (
                       <PricingCard
                         fullWidth
-                        planName={this.state.forCampaignsPricingCards.Enterprise.planName}
-                        price={this.state.forCampaignsPricingCards.Enterprise.price}
-                        priceDescribe={this.state.forCampaignsPricingCards.Enterprise.priceDescribe}
+                        planName={currentPricingDict.Enterprise.planName}
+                        price={currentPricingDict.Enterprise.price}
+                        priceDescribe={currentPricingDict.Enterprise.priceDescribe}
                         premium
-                        description={this.state.forCampaignsPricingCards.Enterprise.description}
-                        bullets={this.state.forCampaignsPricingCards.Enterprise.bullets}
-                        buttonText={this.state.forCampaignsPricingCards.Enterprise.buttonText}
-                        buttonOnClickId={this.state.forCampaignsPricingCards.Enterprise.buttonOnClickId}
-                        buttonOnClickFunction={this.state.forCampaignsPricingCards.Enterprise.buttonOnClickFunction}
-                        pricingCardFeatures={this.state.forCampaignsPricingCards.Enterprise.pricingCardFeatures}
+                        description={currentPricingDict.Enterprise.description}
+                        bullets={currentPricingDict.Enterprise.bullets}
+                        buttonText={currentPricingDict.Enterprise.buttonText}
+                        buttonOnClickId={currentPricingDict.Enterprise.buttonOnClickId}
+                        buttonOnClickFunction={currentPricingDict.Enterprise.buttonOnClickFunction}
+                        pricingCardFeatures={currentPricingDict.Enterprise.pricingCardFeatures}
                       />
                     )}
                   </React.Fragment>
@@ -465,39 +464,39 @@ class Pricing extends Component {
             </div>
             <div className="row u-show-desktop">
               <PricingCard
-                planName={this.state.forCampaignsPricingCards.Free.planName}
-                price={this.state.forCampaignsPricingCards.Free.price}
-                priceDescribe={this.state.forCampaignsPricingCards.Free.priceDescribe}
-                description={this.state.forCampaignsPricingCards.Free.description}
-                bullets={this.state.forCampaignsPricingCards.Free.bullets}
-                buttonText={this.state.forCampaignsPricingCards.Free.buttonText}
-                buttonOnClickId={this.state.forCampaignsPricingCards.Free.buttonOnClickId}
-                buttonOnClickFunction={this.state.forCampaignsPricingCards.Free.buttonOnClickFunction}
-                pricingCardFeatures={this.state.forCampaignsPricingCards.Free.pricingCardFeatures}
+                planName={currentPricingDict.Free.planName}
+                price={currentPricingDict.Free.price}
+                priceDescribe={currentPricingDict.Free.priceDescribe}
+                description={currentPricingDict.Free.description}
+                bullets={currentPricingDict.Free.bullets}
+                buttonText={currentPricingDict.Free.buttonText}
+                buttonOnClickId={currentPricingDict.Free.buttonOnClickId}
+                buttonOnClickFunction={currentPricingDict.Free.buttonOnClickFunction}
+                pricingCardFeatures={currentPricingDict.Free.pricingCardFeatures}
               />
               <PricingCard
-                planName={this.state.forCampaignsPricingCards.Professional.planName}
-                price={this.state.forCampaignsPricingCards.Professional.price}
-                priceDescribe={this.state.forCampaignsPricingCards.Professional.priceDescribe}
+                planName={currentPricingDict.Professional.planName}
+                price={currentPricingDict.Professional.price}
+                priceDescribe={currentPricingDict.Professional.priceDescribe}
                 premium
-                description={this.state.forCampaignsPricingCards.Professional.description}
-                bullets={this.state.forCampaignsPricingCards.Professional.bullets}
-                buttonText={this.state.forCampaignsPricingCards.Professional.buttonText}
-                buttonOnClickId={this.state.forCampaignsPricingCards.Professional.buttonOnClickId}
-                buttonOnClickFunction={this.state.forCampaignsPricingCards.Professional.buttonOnClickFunction}
-                pricingCardFeatures={this.state.forCampaignsPricingCards.Professional.pricingCardFeatures}
+                description={currentPricingDict.Professional.description}
+                bullets={currentPricingDict.Professional.bullets}
+                buttonText={currentPricingDict.Professional.buttonText}
+                buttonOnClickId={currentPricingDict.Professional.buttonOnClickId}
+                buttonOnClickFunction={currentPricingDict.Professional.buttonOnClickFunction}
+                pricingCardFeatures={currentPricingDict.Professional.pricingCardFeatures}
               />
               <PricingCard
-                planName={this.state.forCampaignsPricingCards.Enterprise.planName}
-                price={this.state.forCampaignsPricingCards.Enterprise.price}
-                priceDescribe={this.state.forCampaignsPricingCards.Enterprise.priceDescribe}
+                planName={currentPricingDict.Enterprise.planName}
+                price={currentPricingDict.Enterprise.price}
+                priceDescribe={currentPricingDict.Enterprise.priceDescribe}
                 premium
-                description={this.state.forCampaignsPricingCards.Enterprise.description}
-                bullets={this.state.forCampaignsPricingCards.Enterprise.bullets}
-                buttonText={this.state.forCampaignsPricingCards.Enterprise.buttonText}
-                buttonOnClickId={this.state.forCampaignsPricingCards.Enterprise.buttonOnClickId}
-                buttonOnClickFunction={this.state.forCampaignsPricingCards.Enterprise.buttonOnClickFunction}
-                pricingCardFeatures={this.state.forCampaignsPricingCards.Enterprise.pricingCardFeatures}
+                description={currentPricingDict.Enterprise.description}
+                bullets={currentPricingDict.Enterprise.bullets}
+                buttonText={currentPricingDict.Enterprise.buttonText}
+                buttonOnClickId={currentPricingDict.Enterprise.buttonOnClickId}
+                buttonOnClickFunction={currentPricingDict.Enterprise.buttonOnClickFunction}
+                pricingCardFeatures={currentPricingDict.Enterprise.pricingCardFeatures}
               />
             </div>
           </PricingDescriptionContainer>
@@ -525,6 +524,19 @@ const styles = theme => ({
   iconButton: {
     color: 'white',
   },
+  pricingChoiceLink: {
+    color: 'white',
+    fontSize: 12,
+    '&:hover': {
+      color: 'white',
+    },
+    [theme.breakpoints.down('md')]: {
+      fontSize: 12,
+    },
+  },
+  pricingSwitch: {
+    marginTop: 18,
+  },
 });
 
 const Wrapper = styled.div`
@@ -537,7 +549,7 @@ const Wrapper = styled.div`
 
 const HeaderForPricing = styled.div`
   position: relative;
-  height: 240px;
+  height: 210px;
   width: 110%;
   color: white;
   background-image: linear-gradient(to bottom, #415a99, #2d3b5e);
@@ -545,12 +557,36 @@ const HeaderForPricing = styled.div`
   border-bottom-right-radius: 50% 25%;
   padding: 0 2em;
   margin-top: -72px;
-  // @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-  //   height: 240px;
-  // }
-  // @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-  //   height: 240px;
-  // }
+  text-align: center;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    height: 280px;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    height: 240px;
+  }
+`;
+
+const PricingTitle = styled.h1`
+  font-weight: bold;
+  font-size: 36px;
+  text-align: center;
+  margin-top: 3em;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 28px;
+    margin-top: 3em;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    font-size: 18px;
+    margin-top: 5em;
+  }
+`;
+
+const PricingSubTitleDesktop = styled.div`
+`;
+
+const PricingSubTitleMobile = styled.div`
 `;
 
 const PricingDescriptionContainer = styled.div`

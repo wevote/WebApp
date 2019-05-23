@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
 import IconButton from '@material-ui/core/IconButton';
 import styled from 'styled-components';
 import Tooltip from '@material-ui/core/Tooltip';

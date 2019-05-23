@@ -83,7 +83,7 @@ export default class SettingsAccount extends Component {
     } else {
       AppActions.storeSignInStartPath();
       this.setState({
-        pleaseSignInTitle: 'Please sign in so you can share.',
+        pleaseSignInTitle: '',
         pleaseSignInSubTitle: 'Don\'t worry, we won\'t post anything automatically.',
       });
     }

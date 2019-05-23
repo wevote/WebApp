@@ -45,7 +45,7 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/more/network/friends' ||
     pathname === '/more/network/issues' ||
     pathname === '/more/network/organizations' ||
-    pathname === '/more/pricing' ||
+    pathname.startsWith('/more/pricing') ||
     pathname === '/more/privacy' ||
     pathname === '/more/register' ||
     pathname === '/more/sign_in' ||
