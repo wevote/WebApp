@@ -11,7 +11,6 @@ export default class MeasureItemReadyToVote extends Component {
   static propTypes = {
     measureWeVoteId: PropTypes.string.isRequired,
     ballot_item_display_name: PropTypes.string.isRequired,
-    linkToBallotItemPage: PropTypes.bool,
   };
 
   constructor (props) {
@@ -45,8 +44,6 @@ export default class MeasureItemReadyToVote extends Component {
     const { supportProps } = this.state;
 
     let { ballot_item_display_name: ballotItemDisplayName } = this.props;
-    const { measureWeVoteId }  = this.props;
-    const measureLink = `/measure/${measureWeVoteId}`;
 
     ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
 
@@ -56,15 +53,12 @@ export default class MeasureItemReadyToVote extends Component {
         <div className="card-main__content">
           <div className="u-flex u-items-center">
 
-            <div className="u-flex-auto u-cursor--pointer">
+            <div className="u-flex-auto">
               <h2 className="card-main__display-name">
-                { this.props.linkToBallotItemPage ?
-                  <span onClick={measureLink}>{ballotItemDisplayName}</span> :
-                  ballotItemDisplayName
-                }
+                {/* Measure name */}
+                {ballotItemDisplayName}
               </h2>
             </div>
-
             {
               supportProps && supportProps.is_support ? (
                 <div className="u-flex-none u-justify-end">
@@ -83,38 +77,8 @@ export default class MeasureItemReadyToVote extends Component {
               ) :
                 null
             }
-            {
-              supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count > supportProps.oppose_count ? (
-                <div className="u-flex-none u-justify-end">
-                  <span className="u-push--xs">Your network supports</span>
-                  <img src={cordovaDot('/img/global/icons/up-arrow-color-icon.svg')} className="network-positions__support-icon" width="20" height="20" />
-                </div>
-              ) :
-                null
-            }
-            {
-              supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count < supportProps.oppose_count ? (
-                <div className="u-flex-none u-justify-end">
-                  <span className="u-push--xs">Your network opposes</span>
-                  <img src={cordovaDot('/img/global/icons/down-arrow-color-icon.svg')} className="network-positions__oppose-icon" width="20" height="20" />
-                </div>
-              ) :
-                null
-            }
-            {
-              supportProps && !supportProps.is_support && !supportProps.is_oppose && supportProps.support_count === supportProps.oppose_count ? (
-                <div className="u-flex-none u-justify-end">
-                  Your network is undecided
-                  <i className="fas fa-info-circle fa-lg network-positions-stacked__info-icon-for-popover d-print-none" aria-hidden="true" />
-                </div>
-              ) :
-                null
-            }
-            {/* This is the area *under* the measure title */}
           </div>
         </div>
-        {' '}
-        {/* END .card-main__content */}
       </div>
     );
   }

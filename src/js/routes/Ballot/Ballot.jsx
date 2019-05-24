@@ -949,11 +949,11 @@ class Ballot extends Component {
                           { ballotWithItemsFromCompletionFilterType.length ? (
                             <React.Fragment>
                               <BallotSearch
-                              isSearching={isSearching}
-                              onToggleSearch={this.handleToggleSearchBallot}
-                              items={ballotWithAllItems}
-                              onBallotSearch={this.handleSearch}
-                              alwaysOpen={!showFilterTabs}
+                                isSearching={isSearching}
+                                onToggleSearch={this.handleToggleSearchBallot}
+                                items={ballotWithAllItems}
+                                onBallotSearch={this.handleSearch}
+                                alwaysOpen={!showFilterTabs}
                               />
                               { showFilterTabs ? (
                                 BALLOT_ITEM_FILTER_TYPES.map((oneTypeOfBallotItem) => {
@@ -1000,7 +1000,7 @@ class Ballot extends Component {
                             }
                             </React.Fragment>
                           ) : null
-                      }
+                          }
                         </div>
                       </BallotFilterRow>
                     </div>

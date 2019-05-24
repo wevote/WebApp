@@ -250,7 +250,7 @@ export function getAppBaseClass (pathname) {
       appBaseClass += getAndroidSize();
     }
   }
-  if (stringContains('/ballot', pathname)) {
+  if (stringContains('/ballot', pathname) || stringContains('/ballot/vote', pathname)) {
     appBaseClass += '--secondary';
   } else if (stringContains('/candidate/', pathname) ||
     (stringContains('/settings/', pathname) && isCordova()) ||
