@@ -156,7 +156,7 @@ export default class Donate extends Component {
             <Button
               color="primary"
               onClick={this._toggleCustomAmount}
-              className="u-margin-left--sm u-margin-top--xs"
+              style={{ width: '17%', margin: 5 }}
               variant="contained"
             >
               Other Amount
