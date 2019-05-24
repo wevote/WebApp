@@ -146,7 +146,7 @@ class TwitterSignIn extends Component {
         bsPrefix={this.props.className ? this.props.className : 'btn btn-social btn-twitter'}
         onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova}
       >
-        <span className="fa fa-twitter" />
+        <span className="fab fa-twitter" />
         {' '}
         {this.props.buttonText ? this.props.buttonText : 'Sign In'}
       </Button>

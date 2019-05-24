@@ -116,7 +116,7 @@ export default class OrganizationDisplayForList extends Component {
               { twitterFollowersCount ?
                 (
                   <span className="twitter-followers__badge">
-                    <span className="fa fa-twitter twitter-followers__icon" />
+                    <span className="fab fa-twitter" />
                     {numberWithCommas(twitterFollowersCount)}
                   </span>
                 ) :

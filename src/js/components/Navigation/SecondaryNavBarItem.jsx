@@ -28,9 +28,9 @@ export default class SecondaryNavBarItem extends Component {
 
     let icon;
     if (this.props.iconFacebook) {
-      icon = <i className="fa fa-facebook-square" style={{ color: '#0d5470' }} />;
+      icon = <i className="fab fa-facebook-square" style={{ color: '#0d5470' }} />;
     } else if (this.props.iconTwitter) {
-      icon = <i className="fa fa-twitter" />;
+      icon = <i className="fab fa-twitter" />;
     } else {
       icon = <img className={`nav-secondary-nav__image${this.props.completed ? '--fade' : ''}`} src={this.props.source} alt="twtter" />;
     }
@@ -43,7 +43,7 @@ export default class SecondaryNavBarItem extends Component {
         body={(
           <div>
             <div className="header-secondary-nav__item-image-wrapper" title={this.props.title}>
-              {this.props.iconTwitter ? <i className="fa fa-twitter fa-2x" /> : null}
+              {this.props.iconTwitter ? <i className="fab fa-twitter fa-2x" /> : null}
               {!this.props.iconPrint && !this.props.iconEmail && !this.props.iconMapMarker && !this.props.iconTwitter ? (
                 <img
                   className={`glyphicon nav-secondary-nav__image${this.props.completed ? '--fade' : ''}`}

@@ -295,7 +295,7 @@ class CandidateItem extends Component {
                   className={`u-show-desktop twitter-followers__badge ${this.props.linkToBallotItemPage ? 'u-cursor--pointer' : ''}`}
                   onClick={this.props.linkToBallotItemPage ? this.goToCandidateLink : null}
                 >
-                  <span className="fa fa-twitter twitter-followers__icon" />
+                  <span className="fab fa-twitter fa-sm" />
                   <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
                 </span>
               ) :

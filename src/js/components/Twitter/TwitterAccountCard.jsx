@@ -56,7 +56,7 @@ export default class TwitterAccountCard extends Component {
               }
               {twitterFollowersCount ? (
                 <span className="twitter-followers__badge">
-                  <span className="fa fa-twitter twitter-followers__icon" />
+                  <span className="fab fa-twitter" />
                   <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
                 </span>
               ) : null
@@ -70,7 +70,7 @@ export default class TwitterAccountCard extends Component {
                     body={(
                       <span>
                         Website
-                        <i className="fa fa-external-link" />
+                        <i className="fas fa-external-link-alt" />
                       </span>
                     )}
                   />

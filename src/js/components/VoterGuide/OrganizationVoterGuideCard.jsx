@@ -104,7 +104,7 @@ export default class OrganizationVoterGuideCard extends Component {
                 <span>
                   {organizationWebsite}
                   {' '}
-                  <i className="fa fa-external-link" />
+                  <i className="fas fa-external-link-alt" />
                 </span>
               )}
             />
@@ -115,7 +115,7 @@ export default class OrganizationVoterGuideCard extends Component {
 
         {/* twitter_followers_count ?
           <span className="twitter-followers__badge">
-              <span className="fa fa-twitter twitter-followers__icon" />
+              <span className="fab fa-twitter twitter-followers__icon" />
             {numberWithCommas(twitter_followers_count)}
             </span> :
           null

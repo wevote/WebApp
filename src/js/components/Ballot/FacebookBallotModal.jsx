@@ -330,7 +330,7 @@ export default class FacebookBallotModal extends Component {
                           type="submit"
                           onClick={this.sendDirectMessageToSelfFacebook}
                         >
-                          <span className="fa fa-facebook" />
+                          <span className="fab fa-facebook" />
                           Send to Your Facebook Email &gt;
                         </Button>
                       </div>
@@ -344,7 +344,7 @@ export default class FacebookBallotModal extends Component {
                             type="submit"
                             onClick={this.shareOnFacebook}
                           >
-                            <span className="fa fa-facebook" />
+                            <span className="fab fa-facebook" />
                             Send to Your Email &gt;
                           </Button>
                         </div>

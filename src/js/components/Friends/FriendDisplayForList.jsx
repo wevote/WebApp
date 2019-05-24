@@ -82,7 +82,7 @@ export default class FriendDisplayForList extends Component {
             </div>
             {voterTwitterFollowersCount ? (
               <span className="twitter-followers__badge">
-                <span className="fa fa-twitter twitter-followers__icon" />
+                <span className="fab fa-twitter" />
                 {numberWithCommas(voterTwitterFollowersCount)}
               </span>
             ) : null

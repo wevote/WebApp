@@ -98,7 +98,7 @@ export default class VoterGuideDisplayForList extends PureComponent {
               {this.props.children}
               {/* twitter_followers_count ?
                 <span className="twitter-followers__badge">
-                  <span className="fa fa-twitter twitter-followers__icon" />
+                  <span className="fab fa-twitter twitter-followers__icon" />
                   {numberWithCommas(twitter_followers_count)}
                 </span> :
                 null */}

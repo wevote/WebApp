@@ -366,7 +366,7 @@ export default class SearchAllBox extends Component {
                 <i className="glyphicon glyphicon-remove-circle u-gray-light" />
               </button>
               <button className="site-search__button btn btn-default" type="submit">
-                <i className="fa fa-search" />
+                <i className="fas fa-search" />
               </button>
             </div>
           </div>

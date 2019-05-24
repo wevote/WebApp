@@ -7,7 +7,7 @@ const text = 'Don\'t see your favorite organization or endorsement? We Vote is n
 
 const endorsementText = (
   <span className="social-btn-description">
-    <i className="fa fa-info-circle" />
+    <i className="fas fa-info-circle" />
     {text}
   </span>
 );
