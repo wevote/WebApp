@@ -91,7 +91,7 @@ export default class DonationForm extends Component {
         <Button
           color="primary"
           onClick={this._openStripeModal}
-          style={{ width: '7%', margin: 5 }}
+          style={{ width: '7%', margin: 4 }}
           variant="contained"
         >
           {donateButtonText}
