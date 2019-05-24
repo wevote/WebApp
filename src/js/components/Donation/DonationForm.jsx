@@ -21,6 +21,22 @@ export default class DonationForm extends Component {
   }
 
   componentDidMount () {
+    // console.log('DonationForm componentDidMount');
+    this.configureStripe();
+  }
+
+  // componentWillReceiveProps (nextProps) {
+  //   // console.log('DonationForm componentWillReceiveProps');
+  //   this.configureStripe();
+  // }
+
+  componentWillUnmount () {
+    if (this.stripeHandler) {
+      this.stripeHandler.close();
+    }
+  }
+
+  configureStripe = () => {
     const self = this;
     const { StripeCheckout } = window;
     if (StripeCheckout !== undefined) {
@@ -40,12 +56,6 @@ export default class DonationForm extends Component {
     }
   }
 
-  componentWillUnmount () {
-    if (this.stripeHandler) {
-      this.stripeHandler.close();
-    }
-  }
-
   _donationDescription () {
     if (this.props.donateMonthly) {
       return 'Donate Monthly';
@@ -56,13 +66,17 @@ export default class DonationForm extends Component {
 
   _openStripeModal (event) {
     event.preventDefault();
-    this.stripeHandler.open({
-      name: 'We Vote',
-      description: this._donationDescription(),
-      zipCode: true,
-      amount: this.props.donationAmount,
-      panelLabel: 'Donate ',
-    });
+    if (this.stripeHandler) {
+      this.stripeHandler.open({
+        name: 'We Vote',
+        description: this._donationDescription(),
+        zipCode: true,
+        amount: this.props.donationAmount,
+        panelLabel: 'Donate ',
+      });
+    } else {
+      console.log('DonationForm cannot open');
+    }
   }
 
   render () {
@@ -77,6 +91,7 @@ export default class DonationForm extends Component {
         <Button
           color="primary"
           onClick={this._openStripeModal}
+          style={{ width: '7%', margin: 5 }}
           variant="contained"
         >
           {donateButtonText}
