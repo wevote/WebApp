@@ -257,12 +257,12 @@ export const organizationalDonors = [{
   title: 'Data & Love',
   logo: `${logoPath}ctcl_logo-600x230.jpg`,
 }, {
-  alt: '', // CivicMakers
+  alt: 'CivicMakers',
   name: '',
   title: 'Event Collaborations',
   logo: `${logoPath}civicmakers-logo.png`,
 }, {
-  alt: '', // Code for San Francisco & Code for America
+  alt: 'Code for San Francisco & Code for America',
   name: '',
   title: 'Our Home for Volunteer Work',
   logo: `${logoPath}cfa-logo.png`,
