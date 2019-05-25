@@ -353,9 +353,7 @@ const MobileItemFollowToggleEndorsementDisplay = styled.div`
 const MobileItemEndorsementDisplay = styled.div`
   width: 100%;
   height: 100%;
-  * {
-    margin-bottom: 16px;
-  }
+  margin-bottom: calc(50px + 16px);
 `;
 
 const MobileItemBody = styled.div`
