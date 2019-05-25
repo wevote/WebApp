@@ -146,18 +146,24 @@ class WelcomeAppbar extends Component {
     }
     if (!pathname.startsWith('/how') &&
       pathname !== '/welcome' &&
+      pathname !== '/more/credits' &&
+      !pathname.startsWith('/more/donate') &&
       !pathname.startsWith('/more/pricing')) {
       showForVoters = true;
     }
     if (!pathname.startsWith('/how') &&
       (pathname === '/for-campaigns' ||
         pathname === '/more/about' ||
+        pathname === '/more/credits' ||
+        pathname.startsWith('/more/donate') ||
         pathname.startsWith('/more/pricing'))) {
       showForOrganizationsDesktop = true;
     }
     if (!pathname.startsWith('/how') &&
       (pathname === '/welcome' ||
         pathname === '/for-organizations' ||
+        pathname === '/more/credits' ||
+        pathname.startsWith('/more/donate') ||
         pathname.startsWith('/more/pricing'))) {
       showForCampaignsDesktop = true;
     }

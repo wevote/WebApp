@@ -183,7 +183,7 @@ class About extends Component {
           </SectionTitle>
           <AboutDescriptionContainer>
             We are thankful for
-            &nbsp;
+            {' '}
             <Link to="/more/credits">
               our volunteers, our board of directors, our funders, and the organizations
               &nbsp;

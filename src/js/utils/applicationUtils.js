@@ -37,8 +37,7 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/more/myballot' ||
     pathname === '/more/connect' ||
     pathname === '/more/credits' ||
-    pathname === '/more/donate' ||
-    pathname === '/more/donate_thank_you' ||
+    pathname.startsWith('/more/donate') ||
     pathname === '/more/elections' ||
     pathname.startsWith('/office/') ||
     pathname === '/more/network' ||

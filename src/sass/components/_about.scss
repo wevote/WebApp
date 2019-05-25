@@ -1,6 +1,7 @@
 $company-margin: 1em 0 1em 0;
 $company-title-color: #555;
 $company-logo-margin-bottom: 10px;
+$credits-company-max-width: 220px;
 $logo-width: 300px;
 $logo-max-width: 100%;
 $logo-max-height: 120px;
@@ -50,13 +51,18 @@ $team-member-photo-border-radius: 50%;
   }
 }
 
-.company {
-  display: flex;
-  flex-flow: column;
+.credits-company {
+  //display: flex;
+  //flex-flow: column;
   margin: $company-margin;
+  max-width: $credits-company-max-width;
+  @include breakpoints (max medium) {
+    max-width: 45%;
+    width: 45%;
+  }
   &__info {
-    display: flex;
-    flex-flow: column;
+    //display: flex;
+    //flex-flow: column;
   }
   &__title {
     color: $company-title-color;
