@@ -242,94 +242,115 @@ export const weVoteStaff = [{
 //
 
 export const organizationalDonors = [{
-  name: 'Amazon Web Services',
+  alt: 'Amazon Web Services',
+  name: '',
   title: 'Servers',
   logo: `${logoPath}aws-logo.png`,
 }, {
-  name: 'Ballotpedia',
+  alt: 'Ballotpedia',
+  name: '',
   title: 'Data',
   logo: `${logoPath}ballotpedia-logo.png`,
 }, {
-  name: 'Center for Technology and Civic Life',
+  alt: 'Center for Technology and Civic Life',
+  name: '',
   title: 'Data & Love',
   logo: `${logoPath}ctcl_logo-600x230.jpg`,
 }, {
-  name: 'CivicMakers',
+  alt: 'CivicMakers',
+  name: '',
   title: 'Event Collaborations',
   logo: `${logoPath}civicmakers-logo.png`,
 }, {
-  name: 'Code for San Francisco & Code for America',
+  alt: 'Code for San Francisco & Code for America',
+  name: '',
   title: 'Our Home for Volunteer Work',
   logo: `${logoPath}cfa-logo.png`,
 }, {
-  name: 'DLA Piper',
+  alt: 'DLA Piper',
+  name: '',
   title: 'Legal',
   logo: `${logoPath}dla-piper-logo.png`,
 }, {
-  name: 'Facebook',
+  alt: 'Facebook',
+  name: '',
   title: 'Authentication & Data',
   logo: `${logoPath}facebook-logo.png`,
 }, {
-  name: 'Fast Forward',
+  alt: 'Fast Forward',
+  name: '',
   title: 'Most Amazing Nonprofit Technology Accelerator Ever',
   logo: `${logoPath}ffwd-logo.png`,
 }, {
-  name: 'Fastly.com',
+  alt: 'Fastly.com',
+  name: '',
   title: 'Scalable Content Delivery (CDN)',
   logo: `${logoPath}fastly-logo.png`,
 }, {
-  name: 'Google Civic',
+  alt: 'Google Civic',
+  name: '',
   title: 'Data',
   logo: `${logoPath}google-logo.svg`,
 }, {
-  name: 'Greenberg Traurig, LLP',
+  alt: 'Greenberg Traurig, LLP',
+  name: '',
   title: 'Legal',
   logo: `${logoPath}gt-logo.png`,
 }, {
-  name: 'League of Women Voters',
+  alt: 'League of Women Voters',
+  name: '',
   title: 'Data',
   logo: `${logoPath}league-of-women-logo.png`,
 }, {
-  name: 'MapLight',
+  alt: 'MapLight',
+  name: '',
   title: 'Data',
   logo: `${logoPath}maplight-logo.png`,
 }, {
-  name: 'Microsoft',
+  alt: 'Microsoft',
+  name: '',
   title: 'For supporting Code for San Francisco',
   logo: `${logoPath}microsoft-logo.png`,
 }, {
-  name: 'TurboVote, Democracy Works',
+  alt: 'TurboVote, Democracy Works',
+  name: '',
   title: 'Data',
   logo: `${logoPath}turbovote-logo.png`,
 }, {
-  name: 'Twilio',
+  alt: 'Twilio',
+  name: '',
   title: 'Mobile Tech & for supporting nonprofit tech',
   logo: `${logoPath}twilio-logo.png`,
 }, {
-  name: 'Twitter',
+  alt: 'Twitter',
+  name: '',
   title: 'Authentication & Data',
   logo: `${logoPath}twitter-logo.png`,
 }, {
-  name: 'Vote Smart',
+  alt: 'Vote Smart',
+  name: '',
   title: 'Data',
   logo: `${logoPath}vote-smart-logo.jpeg`,
 }, {
-  name: 'Voting Information Project, Pew Charitable Trusts',
+  alt: 'Voting Information Project, Pew Charitable Trusts',
+  name: 'Voting Information Project',
   title: 'Data',
   logo: `${logoPath}pew-logo.jpeg`,
 }, {
+  alt: 'We Vote Education',
   name: 'We Vote Education',
   title: 'Data',
   logo: `${logoPath}we-vote-logo.png`,
 }, {
-  name: 'Wikipedia',
+  alt: 'Wikipedia',
+  name: '',
   title: 'Data',
   logo: `${logoPath}wikipedia-logo.png`,
 },
 ];
 
 export const teamOfVolunteers = [{
-  name: 'Dale McGrew',
+  name: 'Dale John McGrew',
   title: 'Oakland, CA',
 }, {
   name: 'Jenifer Fernandez Ancona',
@@ -359,8 +380,14 @@ export const teamOfVolunteers = [{
   name: 'Irene Florez',
   title: 'San Francisco, CA',
 }, {
+  name: 'Neil Dullaghan',
+  title: 'San Francisco, CA',
+}, {
   name: 'Daniel Bellerose',
   title: 'Harrisonberg, VA',
+}, {
+  name: 'Ahmed Elgamal',
+  title: 'Berkeley, CA',
 }, {
   name: 'Yuanhsin Chang',
   title: 'San Francisco, CA',
@@ -368,8 +395,11 @@ export const teamOfVolunteers = [{
   name: 'Mansi Desai',
   title: 'San Francisco, CA',
 }, {
-  name: 'Neil Dullaghan',
-  title: 'San Francisco, CA',
+  name: 'Joe Evans',
+  title: 'Santa Cruz, CA',
+}, {
+  name: 'Leon Li',
+  title: 'Livermore, CA',
 }, {
   name: 'Bharath D N Reddy',
   title: 'Mountain View, CA',
@@ -392,11 +422,11 @@ export const teamOfVolunteers = [{
   name: 'Colette Phair',
   title: 'Oakland, CA',
 }, {
+  name: 'Jessica St. John',
+  title: 'Portland, OR',
+}, {
   name: 'Jennifer Holmes',
   title: 'Pacifica, CA',
-}, {
-  name: 'Joe Evans',
-  title: 'Santa Cruz, CA',
 }, {
   name: 'Andrea Moed',
   title: 'San Francisco, CA',
@@ -416,11 +446,17 @@ export const teamOfVolunteers = [{
   name: 'Elizabeth Janeczko',
   title: 'Madison, WI',
 }, {
+  name: 'Aaron Travis',
+  title: 'New York, NY',
+}, {
   name: 'Eric Ogawa',
   title: 'San Francisco, CA',
 }, {
   name: 'Mary O\'Connor',
   title: 'Asheville, NC',
+}, {
+  name: 'Jarod Peachey',
+  title: '',
 }, {
   name: 'Harsha Dronamraju',
   title: 'San Francisco, CA',

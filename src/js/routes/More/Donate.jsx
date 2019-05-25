@@ -133,29 +133,30 @@ class Donate extends Component {
               <span>Please give what you can to help us reach more voters.</span>}
           </DonateDescriptionContainer>
           <DonateDescriptionContainer>
-            <Form className="d-flex flex-row">
-              {/* <div key={'default-radio'} */}
-              <Form.Check
-                type="radio"
-                label="Monthly"
-                bsPrefix="radio"
-                value="monthly"
-                style={{ margin: 24 }}
-                onChange={this._toggleDonateMonthly}
-                checked={this.state.radioSelected === 'monthly'}
-              />
-              {' '}
-              <Form.Check
-                type="radio"
-                label="One-Time"
-                name="radioGroup"
-                bsPrefix="radio"
-                value="once"
-                style={{ margin: 24 }}
-                onChange={this._toggleDonateMonthly}
-                checked={this.state.radioSelected === 'once'}
-              />
-              {' '}
+            <Form className="donate-frequency">
+              <div className="donate-frequency__radio-button-div">
+                <Form.Check
+                  type="radio"
+                  label="Monthly"
+                  bsPrefix="radio"
+                  value="monthly"
+                  // classes={{ root: classes.radioButtonMargins }}
+                  onChange={this._toggleDonateMonthly}
+                  checked={this.state.radioSelected === 'monthly'}
+                />
+              </div>
+              <div className="donate-frequency__radio-button-div">
+                <Form.Check
+                  type="radio"
+                  label="One-Time"
+                  name="radioGroup"
+                  bsPrefix="radio"
+                  value="once"
+                  // classes={{ root: classes.radioButtonMargins }}
+                  onChange={this._toggleDonateMonthly}
+                  checked={this.state.radioSelected === 'once'}
+                />
+              </div>
             </Form>
             <DonationForm
               donationAmount={500}
@@ -222,8 +223,8 @@ class Donate extends Component {
               </span>
             ) : null
             }
-            <div className="d-none d-sm-block"><br /></div>
-            <br />
+          </DonateDescriptionContainer>
+          <DonateDescriptionContainer>
             These contributions or gifts are not tax deductible. These donations are for We Vote&apos;s 501(c)(4) nonprofit.
             We Vote&apos;s 501(c)(3) nonprofit also
             {' '}
@@ -252,25 +253,6 @@ const styles = theme => ({
     [theme.breakpoints.down('md')]: {
       height: 36,
     },
-  },
-  buttonMaxWidth: {
-    width: '100%',
-  },
-  iconButton: {
-    color: 'white',
-  },
-  pricingChoiceLink: {
-    color: 'white',
-    fontSize: 12,
-    '&:hover': {
-      color: 'white',
-    },
-    [theme.breakpoints.down('md')]: {
-      fontSize: 12,
-    },
-  },
-  pricingSwitch: {
-    marginTop: 18,
   },
 });
 
