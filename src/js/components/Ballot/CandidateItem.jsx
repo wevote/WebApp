@@ -453,7 +453,7 @@ class CandidateItem extends Component {
             {candidateIssuesAndCommentBlock}
           </div>
         </div>
-        <div className="u-show-mobile-tablet card-main candidate-card">
+        <div className="u-show-mobile-tablet card-main candidate-card u-no-scroll">
           {this.props.linkToBallotItemPage ? (
             <Link to={this.getCandidateLink} className="card-main__no-underline">
               {candidateRenderBlock}
