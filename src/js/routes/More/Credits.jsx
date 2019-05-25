@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import Helmet from 'react-helmet';
@@ -25,66 +26,85 @@ class Credits extends Component {
         </HeaderForCredits>
         <Section noTopMargin>
           <CreditsDescriptionContainer>
-            <h3 className="h4">We are thankful to these organizations which are critical to our work! We really appreciate you.</h3>
+            <span>We are thankful to these organizations which are critical to our work! We really appreciate you.</span>
             <CompanyWrapper>
               { organizationalDonors.map(item => (
-                <div className="credits-company" key={item.name}>
-                  <div className="credits-company__logo_container">
-                    {
-                      item.logo && (
-                        <img className="credits-company__logo"
-                          src={item.logo}
-                          alt={`${item.name} logo`}
-                        />
+                <div className="credits-company" key={item.alt}>
+                  <div>
+                    <div className="credits-company__logo-container">
+                      {
+                        item.logo && (
+                          <img className="credits-company__logo"
+                            src={item.logo}
+                            alt={`${item.alt} logo`}
+                          />
+                        )
+                      }
+                    </div>
+                    <div className="credits-company__info">
+                      {item.name && <strong>{item.name}</strong>}
+                      {item.title && (
+                        <p className="credits-company__title">
+                          {item.title}
+                        </p>
                       )
-                    }
-                  </div>
-                  <div className="credits-company__info">
-                    <strong>{item.name}</strong>
-                    <p className="credits-company__title">
-                      {item.title}
-                    </p>
+                      }
+                    </div>
                   </div>
                 </div>
               )) }
             </CompanyWrapper>
           </CreditsDescriptionContainer>
           <CreditsDescriptionContainer>
-            <h3 className="h4">Special thanks to our team of volunteers. You are the best!</h3>
-            <p>
-              (This is a list of volunteers who have contributed 10 or more hours, in rough order of hours contributed.)
-              <br />
-            </p>
+            <SectionTitle>Volunteers, Interns &amp; Donors</SectionTitle>
+            We couldn
+            {'\''}
+            t do what we do without volunteers, interns and donors.
+            {' '}
+            This is a list of volunteers who have contributed 10+ hours, in rough order of hours donated.
+            {' '}
+            (Please contact Dale McGrew if should be on this list and aren
+            {'\''}
+            t.)
+            {' '}
+            Please join us by
+            <OpenExternalWebSite
+              url="https://www.idealist.org/en/nonprofit/f917ce3db61a46cb8ad2b0d4e335f0af-we-vote-oakland#volops"
+              target="_blank"
+              className="open-web-site open-web-site__no-right-padding"
+              body={(
+                <span>
+                  finding a role that excites you on our volunteer on our page at Idealist.org&nbsp;
+                  <i className="fas fa-external-link-alt" />
+                </span>
+              )}
+            />
+            , or
+            {' '}
+            <Link to="/more/donate">
+              donating now
+            </Link>
+            . (Individual donors only listed with express permission.)
+            <br />
+            <br />
             <ul>
               { teamOfVolunteers.map(item => (
                 <div key={item.name}>
                   <li>
                     <strong>{item.name}</strong>
-                    {' '}
-                    -
-                    {' '}
-                    {item.title}
+                    {item.title && (
+                      <span>
+                        {' '}
+                        -
+                        {' '}
+                        {item.title}
+                      </span>
+                    )}
                   </li>
                 </div>
               ))
               }
             </ul>
-          </CreditsDescriptionContainer>
-          <CreditsDescriptionContainer>
-            <h3>Join Us!</h3>
-            We couldn’t do what we do without volunteers, interns and donors. Please sign up at
-            <OpenExternalWebSite
-              url="http://WeVoteTeam.org/volunteer"
-              target="_blank"
-              className="open-web-site open-web-site__no-right-padding"
-              body={(
-                <span>
-                  http://WeVoteTeam.org&nbsp;
-                  <i className="fas fa-external-link-alt" />
-                </span>
-              )}
-            />
-            .
           </CreditsDescriptionContainer>
         </Section>
         <Footer />
@@ -100,25 +120,6 @@ const styles = theme => ({
     [theme.breakpoints.down('md')]: {
       height: 36,
     },
-  },
-  buttonMaxWidth: {
-    width: '100%',
-  },
-  iconButton: {
-    color: 'white',
-  },
-  pricingChoiceLink: {
-    color: 'white',
-    fontSize: 12,
-    '&:hover': {
-      color: 'white',
-    },
-    [theme.breakpoints.down('md')]: {
-      fontSize: 12,
-    },
-  },
-  pricingSwitch: {
-    marginTop: 18,
   },
 });
 
@@ -189,6 +190,16 @@ const CompanyWrapper = styled.div`
   flex-flow: row wrap;
   justify-content: space-between;
   text-align: center;
+`;
+
+const SectionTitle = styled.h1`
+  font-size: 28px;
+  font-weight: 300;
+  margin-bottom: 10px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 24px;
+    margin-bottom: 9px;
+  }
 `;
 
 export default withStyles(styles)(Credits);
