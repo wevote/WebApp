@@ -173,6 +173,7 @@ export const weVoteStaff = [{
   image: `${photoPath}Judy_Johnson-256x256.jpg`,
   title: [
     'Operations',
+    'Joined We Vote in 2015 with over 20 years of financial and office administration experience both in the private and public sector. Truly believes every vote counts!',
   ],
 }, {
   name: 'Hillary Lehr',
@@ -301,6 +302,10 @@ export const organizationalDonors = [{
   title: 'Data',
   logo: `${logoPath}turbovote-logo.png`,
 }, {
+  name: 'Twilio',
+  title: 'Mobile Tech & for supporting nonprofit tech',
+  logo: `${logoPath}twilio-logo.png`,
+}, {
   name: 'Twitter',
   title: 'Authentication & Data',
   logo: `${logoPath}twitter-logo.png`,
@@ -330,6 +335,9 @@ export const teamOfVolunteers = [{
   name: 'Jenifer Fernandez Ancona',
   title: 'Oakland, CA',
 }, {
+  name: 'Steve Podell',
+  title: 'Oakland, CA',
+}, {
   name: 'Anisha Jain',
   title: 'San Jose, CA',
 }, {
@@ -344,9 +352,6 @@ export const teamOfVolunteers = [{
 }, {
   name: 'Alicia Kolar Prevost',
   title: 'Washington, DC',
-}, {
-  name: 'Steve Podell',
-  title: 'Oakland, CA',
 }, {
   name: 'Edward Ly',
   title: 'Gresham, OR',
@@ -463,6 +468,9 @@ export const teamOfVolunteers = [{
   title: 'E. Palo Alto, CA',
 }, {
   name: 'Fernando Mendoza',
+  title: 'San Francisco, CA',
+}, {
+  name: 'Filip Francetic',
   title: 'San Francisco, CA',
 }, {
   name: 'Andrew Roy Chen',

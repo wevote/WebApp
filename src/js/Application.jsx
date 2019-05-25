@@ -339,6 +339,8 @@ class Application extends Component {
           pathname === '/for-organizations' ||
           pathname.startsWith('/how') ||
           pathname === '/more/about' ||
+          pathname === '/more/credits' ||
+          pathname.startsWith('/more/donate') ||
           pathname.startsWith('/more/pricing') ||
           pathname === '/welcome' ||
           !contentFullWidthMode ?
@@ -369,6 +371,8 @@ class Application extends Component {
           !(pathname === '/for-organizations') &&
           !(pathname.startsWith('/how')) &&
           !(pathname === '/more/about') &&
+          !(pathname === '/more/credits') &&
+          !(pathname.startsWith('/more/donate')) &&
           !(pathname.startsWith('/more/pricing')) &&
           !(pathname === '/welcome') && (
           <div className="footroom-wrapper">
