@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from './utils/applicationUtils';
 import cookies from './utils/cookies';
 import {
-  getAppBaseClass, getToastClass, historyPush, isCordova,
+  getAppBaseClass, getToastClass, historyPush, ifCordovaGetOffset, isCordova,
 } from './utils/cordovaUtils';
 import ElectionActions from './actions/ElectionActions';
 // import FooterBarCordova from "./components/Navigation/FooterBarCordova";
@@ -163,7 +163,7 @@ class Application extends Component {
     if (scrollTop < 60 && AppStore.getScrolledDown()) {
       AppActions.setScrolled(false);
     }
-  }
+  };
 
   incomingVariableManagement () {
     // console.log("Application, incomingVariableManagement, this.props.location.query: ", this.props.location.query);
@@ -260,7 +260,7 @@ class Application extends Component {
       // console.log("inTheaterMode", inTheaterMode);
       return (
         <div className="app-base" id="app-base-id">
-          <Wrapper padTop={isCordova() ? '85px' : '0'}>
+          <Wrapper padTop={ifCordovaGetOffset(__filename)}>
             <div className="page-content-container">
               <div className="container-fluid">
                 <div className="row">
@@ -350,7 +350,7 @@ class Application extends Component {
             </div>
           ) :
           (
-            <Wrapper padTop={isCordova() ? '85px' : '0'}>
+            <Wrapper padTop={ifCordovaGetOffset(__filename)}>
               <div className="page-content-container">
                 <div className="container-fluid">
                   <div className="container-main">

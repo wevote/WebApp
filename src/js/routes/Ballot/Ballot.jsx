@@ -22,7 +22,7 @@ import BallotSummaryModal from '../../components/Ballot/BallotSummaryModal';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import cookies from '../../utils/cookies';
 import {
-  historyPush, isCordova, isWebApp,
+  historyPush, ifCordovaGetOffset, isCordova, isWebApp,
 } from '../../utils/cordovaUtils';
 import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
@@ -1015,7 +1015,7 @@ class Ballot extends Component {
         <div className="page-content-container">
           <div className="container-fluid">
             {emptyBallot}
-            <Wrapper cordova={isCordova()}>
+            <Wrapper padTop={ifCordovaGetOffset(__filename)}>
               <div className={showBallotDecisionTabs ? 'row ballot__body' : 'row ballot__body__no-decision-tabs'}>
                 <BrowserPushMessage incomingProps={this.props} />
                 {ballotWithItemsFromCompletionFilterType.length > 0 ? (
@@ -1143,7 +1143,7 @@ class Ballot extends Component {
 }
 
 const Wrapper = styled.div`
-  padding-top: ${({ cordova }) => (cordova ? '100px' : 0)};
+  padding-top: ${({ padTop }) => padTop};
 `;
 
 // If we want to turn off filter tabs navigation bar:  ${({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}

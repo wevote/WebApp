@@ -47,12 +47,10 @@ $container-margin: -15px;
   }
 }
 
-.profile-foot-menu {
+.profile-foot-menu {  /* May 2019, only cordova uses this */
   position: fixed; /* Stay in place */
   z-index: 10; /* Sit on top */
-  left: 0;
-  top: 70px !important;
-  bottom: 50px !important;
+  right: 10px; /* move to right */
   width: 100%; /* Full width */
   overflow: auto; /* Enable scroll if needed */
   background-color: $white;

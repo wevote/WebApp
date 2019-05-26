@@ -264,6 +264,59 @@ export function getAppBaseClass (pathname) {
   return appBaseClass;
 }
 
+export function ifCordovaGetOffset (filePath) {
+  const fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
+  if (isIOS()) {
+    if (isIPad() || isIPhone678Plus()) {
+      if (fileName === 'Application.jsx') {
+        return '21px';
+      } else if (fileName === 'Ballot.jsx') {
+        return '21px';
+      }
+    } else if (isIPhone678()) {
+      if (fileName === 'Application.jsx') {
+        return '19px';
+      } else if (fileName === 'Ballot.jsx') {
+        return '33px';
+      }
+    } else if (hasIPhoneNotch()) {
+      if (fileName === 'Application.jsx') {
+        return '33px';
+      } else if (fileName === 'Ballot.jsx') {
+        return '32px';
+      }
+    }
+  } else if (isAndroid()) {
+    const sizeString = getAndroidSize();
+    if (sizeString === '--xl') {
+      if (fileName === 'Application.jsx') {
+        return '0';
+      } else if (fileName === 'Ballot.jsx') {
+        return '1px';
+      }
+    } else if (sizeString === '--lg') {
+      if (fileName === 'Application.jsx') {
+        return '0';
+      } else if (fileName === 'Ballot.jsx') {
+        return '30px';
+      }
+    } if (sizeString === '--md') {
+      if (fileName === 'Application.jsx') {
+        return '0';
+      } else if (fileName === 'Ballot.jsx') {
+        return '23px';
+      }
+    } else if (sizeString === '--sm') {
+      if (fileName === 'Application.jsx') {
+        return '0';
+      } else if (fileName === 'Ballot.jsx') {
+        return '52px';
+      }
+    }
+  }
+  return '0';
+}
+
 export function getToastClass () {
   let toastClass = '';
   if (hasIPhoneNotch()) {
