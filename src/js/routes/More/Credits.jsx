@@ -26,7 +26,13 @@ class Credits extends Component {
         </HeaderForCredits>
         <Section noTopMargin>
           <CreditsDescriptionContainer>
-            <span>We are thankful to these organizations which are critical to our work! We really appreciate you.</span>
+            <span>
+              We are thankful to these organizations which are critical to our work.
+              {' '}
+              The companies on this list give us free or heavily discounted services (since we are a nonprofit), and
+              {' '}
+              the nonprofits overcome so many challenges to provide the data or other services we rely on.
+            </span>
             <CompanyWrapper>
               { organizationalDonors.map(item => (
                 <div className="credits-company" key={item.alt}>
@@ -59,13 +65,7 @@ class Credits extends Component {
             <SectionTitle>Volunteers, Interns &amp; Donors</SectionTitle>
             We couldn
             {'\''}
-            t do what we do without volunteers, interns and donors.
-            {' '}
-            This is a list of volunteers who have contributed 10+ hours, in rough order of hours donated.
-            {' '}
-            (Please contact Dale McGrew if should be on this list and aren
-            {'\''}
-            t.)
+            t do what we do without your help.
             {' '}
             Please join us by
             <OpenExternalWebSite
@@ -74,7 +74,7 @@ class Credits extends Component {
               className="open-web-site open-web-site__no-right-padding"
               body={(
                 <span>
-                  finding a role that excites you on our volunteer on our page at Idealist.org&nbsp;
+                  finding a role that excites you on our page at Idealist.org&nbsp;
                   <i className="fas fa-external-link-alt" />
                 </span>
               )}
@@ -84,7 +84,7 @@ class Credits extends Component {
             <Link to="/more/donate">
               donating now
             </Link>
-            . (Individual donors only listed with express permission.)
+            .
             <br />
             <br />
             <ul>
@@ -105,6 +105,11 @@ class Credits extends Component {
               ))
               }
             </ul>
+            <br />
+            <br />
+            This list is in rough order of number of volunteer hours spent (10+ hours) or monetary donation level. Individual monetary donors only listed with express permission.
+            {' '}
+            (Our apologies if you should be on this list and are missing. Please contact Dale McGrew with corrections.)
           </CreditsDescriptionContainer>
         </Section>
         <Footer />
