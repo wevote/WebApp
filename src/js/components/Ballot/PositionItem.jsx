@@ -3,13 +3,14 @@ import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import ReadMore from '../Widgets/ReadMore';
 import FollowToggle from '../Widgets/FollowToggle';
-
 
 class PositionItem extends Component {
   static propTypes = {
@@ -147,13 +148,13 @@ class PositionItem extends Component {
                       <React.Fragment>
                         {supportOpposeInfo === 'support' ? (
                           <Support>
-                            <i className="fa fa-thumbs-up" />
+                            <ThumbUpIcon />
                           </Support>
                         ) : (
                           <React.Fragment>
                             {supportOpposeInfo === 'oppose' ? (
                               <Oppose>
-                                <i className="fa fa-thumbs-down" />
+                                <ThumbDownIcon />
                               </Oppose>
                             ) : (
                               null
@@ -202,15 +203,7 @@ class PositionItem extends Component {
                   </MobileItemName>
                   <MobileItemIssues>{/* Issues go here */}</MobileItemIssues>
                 </MobileItemNameIssueContainer>
-                <MobileItemFollowToggle>
-                  <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
-                </MobileItemFollowToggle>
-              </MobileItemHeader>
-              <MobileItemBody>
-                <MobileItemDescriptionEndorsementContainer>
-                  <MobileItemDescription>
-                    {positionDescription}
-                  </MobileItemDescription>
+                <MobileItemFollowToggleEndorsementDisplay>
                   <MobileItemEndorsementDisplay>
                     {supportOpposeInfo === 'supportFollow' ? (
                       <SupportFollow>
@@ -220,13 +213,13 @@ class PositionItem extends Component {
                       <React.Fragment>
                         {supportOpposeInfo === 'support' ? (
                           <Support>
-                            <i className="fa fa-thumbs-up" />
+                            <ThumbUpIcon />
                           </Support>
                         ) : (
                           <React.Fragment>
                             {supportOpposeInfo === 'oppose' ? (
                               <Oppose>
-                                <i className="fa fa-thumbs-down" />
+                                <ThumbDownIcon />
                               </Oppose>
                             ) : (
                               null
@@ -236,6 +229,14 @@ class PositionItem extends Component {
                       </React.Fragment>
                     )}
                   </MobileItemEndorsementDisplay>
+                  <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
+                </MobileItemFollowToggleEndorsementDisplay>
+              </MobileItemHeader>
+              <MobileItemBody>
+                <MobileItemDescriptionEndorsementContainer>
+                  <MobileItemDescription>
+                    {positionDescription}
+                  </MobileItemDescription>
                 </MobileItemDescriptionEndorsementContainer>
                 <MobileItemFooter>
                   {/* <strong>Was this Useful?</strong>
@@ -305,11 +306,14 @@ const PositionItemMobile = styled.li`
   border-radius: 5px;
   margin: 16px;
   list-style: none;
+  @media (max-width: 476px) {
+    margin: 16px 0;
+  }
 `;
 
 const MobileItemHeader = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   padding: 16px 0 16px 8px;
 `;
@@ -340,8 +344,16 @@ const MobileItemIssues = styled.div`
   font-size: 14px;
 `;
 
-const MobileItemFollowToggle = styled.div`
+const MobileItemFollowToggleEndorsementDisplay = styled.div`
   margin-left: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+`;
+
+const MobileItemEndorsementDisplay = styled.div`
+  width: 100%;
+  height: 100%;
+  margin-bottom: calc(50px + 16px);
 `;
 
 const MobileItemBody = styled.div`
@@ -353,21 +365,12 @@ const MobileItemBody = styled.div`
 `;
 
 const MobileItemDescriptionEndorsementContainer = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  position: relative;
   left: 2px;
 `;
 
 const MobileItemDescription = styled.div`
   font-size: 16px;
   color: #333;
-  flex: 1 1 0;
-`;
-
-const MobileItemEndorsementDisplay = styled.div`
-  width: 15%;
 `;
 
 const MobileItemFooter = styled.div`
@@ -400,6 +403,7 @@ const PositionItemDesktop = styled.div`
   list-style: none;
   padding: 16px;
   background: #f7f7f7;
+  flex: 1 1 0;
 `;
 
 const DesktopItemHeader = styled.div`
