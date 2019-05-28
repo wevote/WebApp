@@ -77,7 +77,10 @@ class LocationGuess extends Component {
             ) :
             null
           }
-          <AddressLink onClick={toggleSelectBallotModal}>
+          <AddressLink
+            id="locationGuessEnterYourFullAddress"
+            onClick={toggleSelectBallotModal}
+          >
             Enter your full address
           </AddressLink>
           {' '}

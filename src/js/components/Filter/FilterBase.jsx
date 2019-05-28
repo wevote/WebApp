@@ -96,6 +96,7 @@ class FilterBase extends React.Component {
           >
             <div
               className={`listFilter ${showAllFilters ? 'listFilterSelected' : ''}`}
+              id="filterBaseFilters"
               onClick={this.toggleShowAllFilters}
             >
               <FilterListIcon />

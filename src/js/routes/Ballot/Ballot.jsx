@@ -975,9 +975,10 @@ class Ballot extends Component {
                                     return (
                                       <div className="ballot_filter_btns" key={oneTypeOfBallotItem}>
                                         <Badge
+                                          badgeContent={ballotItemsByFilterType.length}
                                           classes={{ badge: classes.badge, colorPrimary: classes.badgeColorPrimary }}
                                           color={(oneTypeOfBallotItem === raceLevelFilterType && !isSearching) ? 'primary' : 'default'}
-                                          badgeContent={ballotItemsByFilterType.length}
+                                          id={`ballotBadge-${oneTypeOfBallotItem}`}
                                           invisible={ballotItemsByFilterType.length === 0}
                                           onClick={() => this.setBallotItemFilterType(oneTypeOfBallotItem, ballotItemsByFilterType.length)}
                                         >

@@ -452,6 +452,7 @@ class ItemActionBar extends PureComponent {
 
     const supportButton = (
       <Button
+        id="itemActionBarSupportButton"
         variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
         color="primary"
         onClick={() => this.supportItem()}
@@ -478,6 +479,7 @@ class ItemActionBar extends PureComponent {
 
     const measureYesButton = (
       <Button
+        id="itemActionBarYesButton"
         variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
         color="primary"
         onClick={() => this.supportItem()}
@@ -504,6 +506,7 @@ class ItemActionBar extends PureComponent {
 
     const opposeButton = (
       <Button
+        id="itemActionBarOpposeButton"
         variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
         color="primary"
         className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
@@ -531,6 +534,7 @@ class ItemActionBar extends PureComponent {
 
     const measureNoButton = (
       <Button
+        id="itemActionBarNoButton"
         variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
         color="primary"
         onClick={() => this.opposeItem()}
@@ -557,6 +561,7 @@ class ItemActionBar extends PureComponent {
 
     const commentButton = (
       <Button
+        id="itemActionBarCommentButton"
         variant="contained"
         className={`${this.props.commentButtonHideInMobile ? 'd-none d-sm-block ' : null}item-actionbar__btn item-actionbar__btn--comment btn btn-default`}
         onClick={this.props.toggleFunction}
