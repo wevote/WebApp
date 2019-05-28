@@ -452,6 +452,7 @@ class ItemActionBar extends PureComponent {
 
     const supportButton = (
       <Button
+        id="ItemActionBarChoose"
         variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
         color="primary"
         onClick={() => this.supportItem()}
@@ -504,6 +505,7 @@ class ItemActionBar extends PureComponent {
 
     const opposeButton = (
       <Button
+        id="itemActionBarOpposed"
         variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
         color="primary"
         className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
