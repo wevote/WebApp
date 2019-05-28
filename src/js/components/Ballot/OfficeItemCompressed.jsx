@@ -394,7 +394,7 @@ class OfficeItemCompressed extends Component {
         />
         <div className="card-main__content">
           {/* Desktop */}
-          <Link id={`officeItemCompressedLink-${weVoteId}`} to={this.getOfficeLink()}>
+          <Link id={`officeItemCompressedTopNameLink-${weVoteId}`} to={this.getOfficeLink()}>
             <Title>
               {ballotItemDisplayName}
               <ArrowForwardIcon
