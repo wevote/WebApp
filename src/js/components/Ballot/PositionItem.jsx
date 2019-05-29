@@ -54,9 +54,9 @@ class PositionItem extends Component {
 
     let imagePlaceholder = '';
     if (isSpeakerTypeOrganization(position.speaker_type)) {
-      imagePlaceholder = <i className="icon-org-lg icon-icon-org-placeholder-6-2 icon-org-resting-color" />;
+      imagePlaceholder = <i className="icon-45 icon-icon-org-placeholder-6-2 icon-org-resting-color" />;
     } else if (isSpeakerTypeIndividual(position.speaker_type)) {
-      imagePlaceholder = <i className="icon-org-lg icon-icon-person-placeholder-6-1 icon-org-resting-color" />;
+      imagePlaceholder = <i className="icon-45 icon-icon-person-placeholder-6-1 icon-org-resting-color" />;
     }
 
     // console.log(position);
@@ -384,17 +384,25 @@ const DesktopContainer = styled.div`
 `;
 
 const DesktopItemLeft = styled.div`
-  width: 75px;
-  padding: 0 8px 0 0;
+  width: 85px;
+  padding: 0 16px 0 0;
 `;
 
 const DesktopItemImage = styled.div`
-  width: 45px;
+  width: 57.76px;
   margin: 0 auto;
-  height: 45px;
+  height: 57.76px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
   margin-bottom: 8px;
   * {
-    border-radius: 45px;
+    border-radius: 57.76px;
+    width: 57.76px !important;
+    height: 57.76px !important;
+    max-width: 57.76px !important;
+    display: flex;
+    align-items: flex-start;
   }
 `;
 
