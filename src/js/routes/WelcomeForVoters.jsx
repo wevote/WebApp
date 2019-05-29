@@ -7,7 +7,7 @@ import { withStyles } from '@material-ui/core/styles';
 import LocationIcon from '@material-ui/icons/LocationOn';
 import PersonIcon from '@material-ui/icons/Person';
 import EmailIcon from '@material-ui/icons/Email';
-import { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/Header';
+import { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/HeaderWelcome';
 import Section, { SectionTitle, SectionTitleBold, Step, StepNumber, StepLabel, GetStarted, ButtonContainer, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage, SignUpContainer, SignUpMessage } from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 import Footer from '../components/Welcome/Footer';
@@ -59,7 +59,7 @@ class Welcome extends PureComponent {
     this.setState({
       voterFullName: event.target.value,
     });
-  }
+  };
 
   updateVoterEmailAddress = (event) => {
     const isEmailValid = validateEmail(event.target.value);
@@ -72,7 +72,7 @@ class Welcome extends PureComponent {
       voterEmail: event.target.value,
       submitEnabled,
     });
-  }
+  };
 
   voterEmailAddressSignUpSave = (event) => {
     // Only proceed after we have a valid email address, which will enable the submit
@@ -83,12 +83,12 @@ class Welcome extends PureComponent {
       VoterActions.voterFullNameSoftSave('', '', this.state.voterFullName);
       VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
     }
-  }
+  };
 
   handleToPageFromMobileNav = (destination) => {
     this.handleShowMobileNavigation(false);
     historyPush(destination);
-  }
+  };
 
   render () {
     const { classes, pathname } = this.props;

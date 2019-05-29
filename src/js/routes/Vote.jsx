@@ -424,7 +424,7 @@ class Vote extends Component {
                   <header className="ballot__header__group">
                     <h1 className={isCordova() ? 'ballot__header__title__cordova' : 'ballot__header__title'}>
                       { electionName ? (
-                        <span className="u-push--sm">
+                        <span className={isWebApp() ? 'u-push--sm' : 'ballot__header__title__cordova-text'}>
                           {electionName}
                           {' '}
                           <span className="d-none d-sm-inline">&mdash; </span>

@@ -19,7 +19,7 @@ import ToolBar from './ToolBar';
 import VoterStore from '../../stores/VoterStore';
 import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../components/More/people';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
-import { Title } from '../../components/Welcome/Header';
+import { Title } from '../../components/Welcome/HeaderWelcome';
 
 class About extends Component {
   static getProps () {

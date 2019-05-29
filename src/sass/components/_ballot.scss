@@ -77,7 +77,10 @@ $neg-padding: -10px;
       }
       &__cordova {
         font-size: 1.5rem;
-        margin-top: $space-md;
+        margin: 0 !important;
+      }
+      &__cordova-text {
+        font-size: 14px;
       }
     }
 
@@ -155,6 +158,9 @@ $neg-padding: -10px;
   // ===========================================
   // Ballot Body
   // ===========================================
+  // May 2019: Breakpoints don't work as expected in Cordova due to the window.devicePixelRatio
+  // Since there are iPhones models with various heights and the same width, using device width to predict device height is a bug.
+  // TODO: The following css adjusts height based on device width, and may work much of the time, but it DOES NOT work reliably for iPhones
 
   &__body {
     margin-top: $space-md;
