@@ -45,6 +45,7 @@ $neg-padding: -10px;
     overflow: hidden;
     position: fixed;
     z-index: 1;
+    left: $space-none;
     padding-top: $cordova-shim;
     transform: $pinned-transform;
     transition: all 100ms ease-in-out 0s;

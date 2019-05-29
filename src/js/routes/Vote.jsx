@@ -4,6 +4,9 @@ import Helmet from 'react-helmet';
 import moment from 'moment';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import BallotIcon from '@material-ui/icons/Ballot';
+import Button from '@material-ui/core/Button';
 import AddEndorsements from '../components/Widgets/AddEndorsements';
 import BallotActions from '../actions/BallotActions';
 import BallotItemReadyToVote from '../components/Ballot/BallotItemReadyToVote';
@@ -33,6 +36,7 @@ class Vote extends Component {
     location: PropTypes.object,
     pathname: PropTypes.string,
     params: PropTypes.object,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -405,6 +409,7 @@ class Vote extends Component {
       ballotWithItemsFromCompletionFilterType,
       ballotHeaderUnpinned, isSearching, ballotSearchResults,
     } = this.state;
+    const { classes } = this.props;
 
     // const ballot_caveat = BallotStore.ballotProperties.ballot_caveat; // ballotProperties might be undefined
     const electionName = BallotStore.currentBallotElectionName;
@@ -497,9 +502,23 @@ class Vote extends Component {
                         {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map(item => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
                       </div>
                     </div>
-                  ) : (
+                  ) : /* No items decided */ (
                     <div>
-                      Please choose items from the ballot.
+                      <Card>
+                        <EmptyBallotMessageContainer>
+                          <BallotIcon classes={{ root: classes.ballotIconRoot }} />
+                          <EmptyBallotText>You haven&apos;t chosen any candidates or measures yet. Go to &quot;Ballot&quot; to decide what to vote for.</EmptyBallotText>
+                          <Button
+                            classes={{ root: classes.ballotButtonRoot }}
+                            color="primary"
+                            variant="contained"
+                            onClick={() => historyPush('/ballot')}
+                          >
+                            <BallotIcon classes={{ root: classes.ballotButtonIconRoot }} />
+                            Go to &quot;Ballot&quot;
+                          </Button>
+                        </EmptyBallotMessageContainer>
+                      </Card>
                     </div>
                   )
                   }
@@ -527,7 +546,37 @@ const BallotFilterRow = styled.div`
   display: flex;
 `;
 
-const styles = () => ({
+const EmptyBallotMessageContainer = styled.div`
+  padding: 3em 2em;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+`;
+
+const EmptyBallotText = styled.p`
+  font-size: 16px;
+  text-align: center;
+  margin: 1em 2em;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin: 1em;
+  }
+`;
+
+const styles = theme => ({
+  ballotIconRoot: {
+    width: 150,
+    height: 150,
+    color: 'rgb(171, 177, 191)',
+  },
+  ballotButtonIconRoot: {
+    marginRight: 8,
+  },
+  ballotButtonRoot: {
+    width: 250,
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
+  },
 });
 
 export default withStyles(styles)(Vote);
