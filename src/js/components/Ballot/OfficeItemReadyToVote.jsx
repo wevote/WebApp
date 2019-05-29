@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import Avatar from '@material-ui/core/Avatar';
+import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
+import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import SupportStore from '../../stores/SupportStore';
-import { capitalizeString } from '../../utils/textFormat';
+import { toTitleCase } from '../../utils/textFormat';
+import { Wrapper, InnerWrapper, BioColumn, OfficeColumn, OfficeText, BioInformation, NameText, DescriptionText, HR, DesktopTabletView, MobileView } from './BallotItemReadyToVote';
 
 
-export default class OfficeItemReadyToVote extends Component {
+class OfficeItemReadyToVote extends Component {
   static propTypes = {
-    ballot_item_display_name: PropTypes.string.isRequired,
+    // ballot_item_display_name: PropTypes.string.isRequired,
     candidate_list: PropTypes.array,
+    weVoteId: PropTypes.string,
   };
 
   constructor (props) {
     super(props);
     this.state = {
     };
+    this.getOfficeLink = this.getOfficeLink.bind(this);
   }
 
   componentDidMount () {
@@ -41,14 +46,17 @@ export default class OfficeItemReadyToVote extends Component {
     this.setState();
   }
 
+  getOfficeLink () {
+    return `/office/${this.props.weVoteId}/`;
+  }
+
   render () {
     renderLog(__filename);
-    let { ballot_item_display_name: ballotItemDisplayName } = this.props;
     const isSupportArray = [];
     let supportProps;
     let isSupport;
 
-    ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
+    // ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
 
     this.props.candidate_list.forEach((candidate) => {
       supportProps = SupportStore.get(candidate.we_vote_id);
@@ -83,42 +91,42 @@ export default class OfficeItemReadyToVote extends Component {
         }
       });
     }
-
     return (
-      <div className="card-main office-item">
-        <div className="card-main__content">
-          <h2 className="card-main__display-name">
-            {/* Office name */}
-            {ballotItemDisplayName}
-          </h2>
-
-          <div>
-            { this.props.candidate_list.map(oneCandidate => (
-              <div key={oneCandidate.we_vote_id}>
-                { SupportStore.get(oneCandidate.we_vote_id) && SupportStore.get(oneCandidate.we_vote_id).is_support ? (  // eslint-disable-line no-nested-ternary
-                  <div className="u-flex u-items-center">
-                    <div
-                      className="u-flex-auto"
-                    >
-                      <h2 className="h5">
-                        {oneCandidate.ballot_item_display_name}
-                      </h2>
-                    </div>
-
-                    <div className="u-flex-none u-justify-end">
-                      <span className="u-push--xs">Chosen by you</span>
-                      <img src={cordovaDot('/img/global/svg-icons/thumbs-up-color-icon.svg')} width="24" height="24" />
-                    </div>
-                  </div>
-                ) :
-                  null
-                }
-              </div>
-            ))
-            }
-          </div>
-        </div>
-      </div>
+      <React.Fragment>
+        <Wrapper onClick={() => historyPush(this.getOfficeLink())}>
+          { this.props.candidate_list.map(oneCandidate => (
+            <React.Fragment key={oneCandidate.we_vote_id}>
+              { SupportStore.get(oneCandidate.we_vote_id) && SupportStore.get(oneCandidate.we_vote_id).is_support && (  // eslint-disable-line no-nested-ternary
+                <InnerWrapper>
+                  <BioColumn>
+                    <Avatar src={cordovaDot(oneCandidate.candidate_photo_url_medium)} />
+                    <BioInformation>
+                      <NameText>{oneCandidate.ballot_item_display_name}</NameText>
+                      <DesktopTabletView>
+                        <DescriptionText>{toTitleCase(oneCandidate.party)}</DescriptionText>
+                      </DesktopTabletView>
+                      <MobileView>
+                        <DescriptionText>{oneCandidate.contest_office_name}</DescriptionText>
+                      </MobileView>
+                    </BioInformation>
+                  </BioColumn>
+                  <OfficeColumn>
+                    <DesktopTabletView>
+                      <OfficeText>{oneCandidate.contest_office_name}</OfficeText>
+                    </DesktopTabletView>
+                    <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
+                  </OfficeColumn>
+                </InnerWrapper>
+              )
+              }
+            </React.Fragment>
+          ))
+          }
+        </Wrapper>
+        <HR />
+      </React.Fragment>
     );
   }
 }
+
+export default OfficeItemReadyToVote;

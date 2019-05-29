@@ -15,7 +15,7 @@ import BallotStore from '../stores/BallotStore';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import cookies from '../utils/cookies';
 import {
-  historyPush, isCordova, isWebApp,
+  historyPush, isCordova, /* isWebApp, */
 } from '../utils/cordovaUtils';
 import ElectionActions from '../actions/ElectionActions';
 import IssueActions from '../actions/IssueActions';
@@ -419,7 +419,7 @@ class Vote extends Component {
     const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format('MMM Do, YYYY')}</span> : <span />;
 
     return (
-      <div className="ballot_root">
+      <VoteContainer>
         <div className={`ballot__heading ${ballotHeaderUnpinned ? 'ballot__heading__unpinned' : ''}`}>
           <div className="page-content-container">
             <div className="container-fluid">
@@ -498,28 +498,27 @@ class Vote extends Component {
                           body="See more information about casting your official vote."
                         />
                       </div>
-                      <div className={isWebApp() ? 'BallotList' : 'BallotList__cordova'}>
-                        {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map(item => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
-                      </div>
-                    </div>
-                  ) : /* No items decided */ (
-                    <div>
+                      <TitleText>Your Choices</TitleText>
                       <Card>
-                        <EmptyBallotMessageContainer>
-                          <BallotIcon classes={{ root: classes.ballotIconRoot }} />
-                          <EmptyBallotText>You haven&apos;t chosen any candidates or measures yet. Go to &quot;Ballot&quot; to decide what to vote for.</EmptyBallotText>
-                          <Button
-                            classes={{ root: classes.ballotButtonRoot }}
-                            color="primary"
-                            variant="contained"
-                            onClick={() => historyPush('/ballot')}
-                          >
-                            <BallotIcon classes={{ root: classes.ballotButtonIconRoot }} />
-                            Go to &quot;Ballot&quot;
-                          </Button>
-                        </EmptyBallotMessageContainer>
+                        {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map(item => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
                       </Card>
                     </div>
+                  ) : /* No items decided */ (
+                    <Card>
+                      <EmptyBallotMessageContainer>
+                        <BallotIcon classes={{ root: classes.ballotIconRoot }} />
+                        <EmptyBallotText>You haven&apos;t chosen any candidates or measures yet. Go to &quot;Ballot&quot; to decide what to vote for.</EmptyBallotText>
+                        <Button
+                          classes={{ root: classes.ballotButtonRoot }}
+                          color="primary"
+                          variant="contained"
+                          onClick={() => historyPush('/ballot')}
+                        >
+                          <BallotIcon classes={{ root: classes.ballotButtonIconRoot }} />
+                          Go to &quot;Ballot&quot;
+                        </Button>
+                      </EmptyBallotMessageContainer>
+                    </Card>
                   )
                   }
                 </div>
@@ -532,13 +531,30 @@ class Vote extends Component {
             </Wrapper>
           </div>
         </div>
-      </div>
+      </VoteContainer>
     );
   }
 }
 
+const VoteContainer = styled.div`
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin: 0 -16px;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    margin: 0 -32px;
+  }
+`;
+
 const Wrapper = styled.div`
   padding-top: ${({ cordova }) => (cordova ? '100px' : 0)};
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin: 1em 0;
+  }
+`;
+
+const TitleText = styled.h3`
+  font-weight: bold;
+  font-size: 24px;
 `;
 
 // If we want to turn off filter tabs navigation bar:  ${({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
