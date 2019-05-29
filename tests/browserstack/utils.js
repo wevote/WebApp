@@ -45,4 +45,11 @@ async function simpleClick (elementIdName) {
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
-module.exports = { scrollThroughPage, simpleClick };
+async function simpleTextInput (elementIdName, textValue) {
+  const clickableSelector = `#${elementIdName}`;
+  const clickableItem = await $(clickableSelector);
+  await clickableItem.setValue(textValue);
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
+module.exports = { scrollThroughPage, simpleClick, simpleTextInput };
