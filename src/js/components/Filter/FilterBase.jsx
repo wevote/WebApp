@@ -46,6 +46,7 @@ class FilterBase extends React.Component {
         key={item.filterName}
         className={`groupedFilter ${getGroupedFilterSecondClass(itemIndex, this.props.groupedFilters.length)} ${this.state.selectedFilters.indexOf(item.filterName) > -1 ? 'listFilterSelected' : ''}`}
         onClick={() => this.toggleFilter(item.filterName)}
+        id={item.filterId}
     >
       {
           item.icon ? item.icon : null
@@ -66,6 +67,7 @@ class FilterBase extends React.Component {
       key={item.filterName}
       className={`listFilter ${this.state.selectedFilters.indexOf(item.filterName) > -1 ? 'listFilterSelected' : ''}`}
       onClick={() => this.toggleFilter(item.filterName)}
+      id={item.filterId}
     >
       {
           item.icon ? item.icon : null

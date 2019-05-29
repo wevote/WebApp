@@ -199,18 +199,18 @@ class BallotSideBar extends Component {
           <div className="h4 text-left" />
           <SidebarFooter>
             <span className="terms-and-privacy">
-              <Link to="/more/terms">
+              <Link id="ballotSideBarTermsOfService" to="/more/terms">
                 <span className="u-no-break">Terms of Service</span>
               </Link>
               <span style={{ paddingLeft: 20 }} />
-              <Link to="/more/privacy">
+              <Link id="ballotSideBarPrivacyPolicy" to="/more/privacy">
                 <span className="u-no-break">Privacy Policy</span>
               </Link>
             </span>
           </SidebarFooter>
           <SidebarFooter>
             <span className="terms-and-privacy">
-              <Link to="/more/attributions">Attributions</Link>
+              <Link id="ballotSideBarAttributions" to="/more/attributions">Attributions</Link>
             </span>
           </SidebarFooter>
         </div>
