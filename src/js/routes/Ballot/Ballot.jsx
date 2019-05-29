@@ -22,7 +22,7 @@ import BallotSummaryModal from '../../components/Ballot/BallotSummaryModal';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import cookies from '../../utils/cookies';
 import {
-  historyPush, ifCordovaGetOffset, isCordova, isWebApp,
+  cordovaBallotFilterTopMargin, historyPush, cordovaScrollablePaneTopPadding, isCordova, isWebApp,
 } from '../../utils/cordovaUtils';
 import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
@@ -908,15 +908,15 @@ class Ballot extends Component {
         */}
         { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this.toggleBallotSummaryModal} /> : null }
         <div className={`ballot__heading ${ballotHeaderUnpinned ? 'ballot__heading__unpinned' : ''}`}>
-          <div className="page-content-container">
+          <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
             <div className="container-fluid">
               <div className="row">
                 <div className="col-md-12">
                   <Helmet title="Ballot - We Vote" />
                   <header className="ballot__header__group">
-                    <h1 className={isCordova() ? 'ballot__header__title__cordova' : 'ballot__header__title'}>
+                    <h1 className={isCordova() ?  'ballot__header__title__cordova' : 'ballot__header__title'}>
                       { electionName ? (
-                        <span className="u-push--sm">
+                        <span className={isWebApp() ? 'u-push--sm' : 'ballot__header__title__cordova-text'}>
                           {electionName}
                           {' '}
                           <span className="d-none d-sm-inline">&mdash; </span>
@@ -932,7 +932,7 @@ class Ballot extends Component {
 
                   { textForMapSearch || ballotWithItemsFromCompletionFilterType.length > 0 ? (
                     <div className="ballot__filter__container">
-                      { showBallotDecisionTabs && (
+                      { showBallotDecisionTabs ? (
                         <React.Fragment>
                           <div className="ballot__filter d-print-none">
                             <BallotDecisionsTabs
@@ -943,7 +943,7 @@ class Ballot extends Component {
                           </div>
                           <hr className="ballot-header-divider" />
                         </React.Fragment>
-                      )}
+                      ) : undefined}
                       <BallotFilterRow showFilterTabs={showFilterTabs}>
                         <div className="ballot__item-filter-tabs" ref={(chips) => { this.chipContainer = chips; }}>
                           { ballotWithItemsFromCompletionFilterType.length ? (
@@ -1016,8 +1016,9 @@ class Ballot extends Component {
         <div className="page-content-container">
           <div className="container-fluid">
             {emptyBallot}
-            <Wrapper padTop={ifCordovaGetOffset(__filename)}>
-              <div className={showBallotDecisionTabs ? 'row ballot__body' : 'row ballot__body__no-decision-tabs'}>
+            <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
+              {/* eslint-disable-next-line no-nested-ternary */}
+              <div className={showBallotDecisionTabs ? 'row ballot__body' : isWebApp() ? 'row ballot__body__no-decision-tabs' : undefined}>
                 <BrowserPushMessage incomingProps={this.props} />
                 {ballotWithItemsFromCompletionFilterType.length > 0 ? (
                   <BallotStatusMessage

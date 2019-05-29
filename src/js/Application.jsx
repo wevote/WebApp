@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from './utils/applicationUtils';
 import cookies from './utils/cookies';
 import {
-  getAppBaseClass, getToastClass, historyPush, ifCordovaGetOffset, isCordova,
+  cordovaScrollablePaneTopPadding, getToastClass, historyPush, isCordova, isWebApp,
 } from './utils/cordovaUtils';
 import ElectionActions from './actions/ElectionActions';
 // import FooterBarCordova from "./components/Navigation/FooterBarCordova";
@@ -155,6 +155,17 @@ class Application extends Component {
     // console.log("SignedIn Voter in Application onVoterStoreChange voter: ", VoterStore.getVoter().full_name);
   }
 
+  getAppBaseClass () {
+    // console.log("Determine the headroom space pathname:" + pathname);
+    let appBaseClass = 'app-base';
+    if (isWebApp()) {
+      appBaseClass += ' headroom-webapp';
+    } else {
+      appBaseClass += ' cordova-base';
+    }
+    return appBaseClass;
+  }
+
   handleWindowScroll = (evt) => {
     const { scrollTop } = evt.target.scrollingElement;
     if (scrollTop > 60 && !AppStore.getScrolledDown()) {
@@ -260,7 +271,7 @@ class Application extends Component {
       // console.log("inTheaterMode", inTheaterMode);
       return (
         <div className="app-base" id="app-base-id">
-          <Wrapper padTop={ifCordovaGetOffset(__filename)}>
+          <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
             <div className="page-content-container">
               <div className="container-fluid">
                 <div className="row">
@@ -276,7 +287,7 @@ class Application extends Component {
     } else if (voterGuideMode) {
       // console.log("voterGuideMode", voterGuideMode);
       return (
-        <div className={getAppBaseClass(pathname)} id="app-base-id">
+        <div className={this.getAppBaseClass()} id="app-base-id">
           <ToastContainer closeButton={false} className={getToastClass()} />
           <Header params={this.props.params}
                   location={this.props.location}
@@ -302,7 +313,7 @@ class Application extends Component {
     } else if (settingsMode) {
       // console.log("settingsMode", settingsMode);
       return (
-        <div className={getAppBaseClass(pathname)} id="app-base-id">
+        <div className={this.getAppBaseClass()} id="app-base-id">
           <ToastContainer closeButton={false} className={getToastClass()} />
           <Header params={this.props.params}
                   location={this.props.location}
@@ -327,7 +338,7 @@ class Application extends Component {
     }
     // This handles other pages, like Welcome and the Ballot display
     return (
-      <div className={getAppBaseClass(pathname)} id="app-base-id">
+      <div className={this.getAppBaseClass()} id="app-base-id">
         <ToastContainer closeButton={false} className={getToastClass()} />
         <Header params={this.props.params}
                 location={this.props.location}
@@ -350,7 +361,7 @@ class Application extends Component {
             </div>
           ) :
           (
-            <Wrapper padTop={ifCordovaGetOffset(__filename)}>
+            <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
               <div className="page-content-container">
                 <div className="container-fluid">
                   <div className="container-main">

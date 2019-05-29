@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import KeyboardBackspaceIcon from '@material-ui/icons/ArrowBack';
 import KeyboardBackSpaceIconCordovaIOS from '@material-ui/icons/ArrowBackIos';
 import { withStyles } from '@material-ui/core/styles';
-import { hasIPhoneNotch, historyPush, isIOS } from '../../utils/cordovaUtils';
+import { historyPush, isIOS } from '../../utils/cordovaUtils';
 
 import { shortenText } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
@@ -36,7 +36,7 @@ class HeaderBackToButton extends Component {
         variant="text"
         color="primary"
         classes={{ root: classes.root }}
-        className={`page-header__backToButton ${hasIPhoneNotch() ? 'page-header__backToButtonIPhoneX' : ''}`}
+        className="page-header__backToButton"
         id="backToLinkTabHeader"
         onClick={() => historyPush(backToLink)}
       >

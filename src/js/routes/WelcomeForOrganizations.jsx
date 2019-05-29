@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/Header';
+import { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/HeaderWelcome';
 import Section, { SectionTitle, SectionTitleBold, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage } from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 import Footer from '../components/Welcome/Footer';
@@ -68,7 +68,7 @@ class WelcomeForOrganizations extends PureComponent {
     this.setState({
       voterFullName: event.target.value,
     });
-  }
+  };
 
   updateVoterEmailAddress = (event) => {
     const isEmailValid = validateEmail(event.target.value);
@@ -81,7 +81,7 @@ class WelcomeForOrganizations extends PureComponent {
       voterEmail: event.target.value,
       submitEnabled,
     });
-  }
+  };
 
   voterEmailAddressSignUpSave = (event) => {
     // Only proceed after we have a valid email address, which will enable the submit
@@ -92,12 +92,12 @@ class WelcomeForOrganizations extends PureComponent {
       VoterActions.voterFullNameSoftSave('', '', this.state.voterFullName);
       VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
     }
-  }
+  };
 
   handleToPageFromMobileNav = (destination) => {
     this.handleShowMobileNavigation(false);
     historyPush(destination);
-  }
+  };
 
   render () {
     const { classes, pathname } = this.props;
