@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { simpleClick, scrollThroughPage } = require('../utils');
+const { simpleClick, scrollThroughPage, simpleTextInput } = require('../utils');
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
@@ -43,53 +43,74 @@ describe('Basic cross-platform We Vote test',  () => {
 
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('changeAddressHeaderBar'); // Open the "Change Address" modal
-    // TODO: Choose 2018 General election
     await simpleCloseBootstrapModal(); // Close the "Change Address" modal
     // TODO Figure out how to close a Material UI Dialog
     // await simpleClick('signInHeaderBar'); // Open the "Sign In" modal
     // await simpleCloseModal(); // Close the "Sign In" modal
 
-    // Build out path that goes through a ballot
-    // await simpleClick('allItemsCompletionLevelTab'); // Go to the All Items tab
-    // await simpleClick('Embed'); // Go to the embed tab
+    // TODO: Click on enter your full address
+    await simpleClick('locationGuessEnterYourFullAddress'); // Opens the Enter Your Full Address link
+    // TODO: Add text to address textbox
+    await simpleTextInput('addressBoxText','Oakland, CA 94610'); // Sets the text for the address box
+    // TODO: Save
+    await simpleClick('addressBoxModalSaveButton'); // Saves the new address
+    await simpleClick('ballotElectionListWithFiltersButton-6000'); // Clicks on US 2018 Midterm Election
 
-    await scrollThroughPage(); // Scroll to the bottom of the ballot page
+    // await simpleClick('locationGuessEnterYourFullAddress'); // Opens the Enter Your Full Address link
+  //   await simpleClick('ballotElectionListWithFiltersButton-6000'); // Clicks the 2018 US Midterm Election
+  //   await simpleClick('officeItemCompressedCandidateInfo-wv02cand40208'); // Clicks the candidate
+  //   await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
+  //   await simpleClick('officeItemCompressedShowMoreFooter-wv02off19922'); // Clicks Show More link
+  //   await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
+  //   await simpleClick('officeItemCompressedTopNameLink-wv02off19866'); // Clicks Office Item link
+  //   await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
+  // // Build out path that goes through a ballot
+  //   // await simpleClick('allItemsCompletionLevelTab'); // Go to the All Items tab
+  //   // await simpleClick('Embed'); // Go to the embed tab
+  //
+  //   await scrollThroughPage(); // Scroll to the bottom of the ballot page
 
     // Go to the Values tab
-    if (desktopSize) {
-      // Desktop screen size - HEADER TABS
-      await simpleClick('valuesTabHeaderBar');
-    } else {
-      // Mobile or tablet screen size - FOOTER ICONS
-      await simpleClick('valuesTabFooterBar');
-    }
-
+    // if (desktopSize) {
+    //   // Desktop screen size - HEADER TABS
+    //   await simpleClick('valuesTabHeaderBar');
+    // } else {
+    //   // Mobile or tablet screen size - FOOTER ICONS
+    //   await simpleClick('valuesTabFooterBar');
+    // }
+    //
     // Go to the My Friends tab
-    if (desktopSize) {
-      // Desktop screen size - HEADER TABS
-      await simpleClick('friendsTabHeaderBar');
-    } else {
-      // Mobile or tablet screen size - FOOTER ICONS
-      await simpleClick('friendsTabFooterBar');
-    }
-
-    // Go to the Vote tab
-    if (desktopSize) {
-      // Desktop screen size - HEADER TABS
-      await simpleClick('voteTabHeaderBar');
-    } else {
-      // Mobile or tablet screen size - FOOTER ICONS
-      await simpleClick('voteTabFooterBar');
-    }
-
-    // Go back to the Ballot tab
-    if (desktopSize) {
-      // Desktop screen size - HEADER TABS
-      await simpleClick('ballotTabHeaderBar');
-    } else {
-      // Mobile or tablet screen size - FOOTER ICONS
-      await simpleClick('ballotTabFooterBar');
-    }
+    // if (desktopSize) {
+    //   // Desktop screen size - HEADER TABS
+    //   await simpleClick('friendsTabHeaderBar');
+    // } else {
+    //   // Mobile or tablet screen size - FOOTER ICONS
+    //   await simpleClick('friendsTabFooterBar');
+    // }
+    // await simpleTextInput('friend1EmailAddress','filipfrancetic@gmail.com');
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick('friendsAddAnotherInvitation');
+    // await simpleClick('friendsNextButton');
+    //
+    // // Go to the Vote tab
+    // if (desktopSize) {
+    //   // Desktop screen size - HEADER TABS
+    //   await simpleClick('voteTabHeaderBar');
+    // } else {
+    //   // Mobile or tablet screen size - FOOTER ICONS
+    //   await simpleClick('voteTabFooterBar');
+    // }
+    //
+    // // Go back to the Ballot tab
+    // if (desktopSize) {
+    //   // Desktop screen size - HEADER TABS
+    //   await simpleClick('ballotTabHeaderBar');
+    // } else {
+    //   // Mobile or tablet screen size - FOOTER ICONS
+    //   await simpleClick('ballotTabFooterBar');
+    // }
 
     assert(true);
   });
