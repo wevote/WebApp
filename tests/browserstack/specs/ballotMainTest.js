@@ -1,15 +1,9 @@
 const assert = require('assert');
+const { simpleClick, scrollThroughPage } = require('../utils');
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
 const PAUSE_DURATION_MICROSECONDS = 1250;
-
-async function simpleClick (elementIdName) {
-  const clickableSelector = `#${elementIdName}`;
-  const clickableItem = await $(clickableSelector);
-  await clickableItem.click();
-  await browser.pause(PAUSE_DURATION_MICROSECONDS);
-}
 
 async function simpleCloseBootstrapModal () {
   const clickableSelector = 'button[class="close"]';
@@ -48,11 +42,9 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.url('https://quality.wevote.us/ballot');
 
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-
     await simpleClick('changeAddressHeaderBar'); // Open the "Change Address" modal
     // TODO: Choose 2018 General election
     await simpleCloseBootstrapModal(); // Close the "Change Address" modal
-
     // TODO Figure out how to close a Material UI Dialog
     // await simpleClick('signInHeaderBar'); // Open the "Sign In" modal
     // await simpleCloseModal(); // Close the "Sign In" modal
@@ -60,6 +52,8 @@ describe('Basic cross-platform We Vote test',  () => {
     // Build out path that goes through a ballot
     // await simpleClick('allItemsCompletionLevelTab'); // Go to the All Items tab
     // await simpleClick('Embed'); // Go to the embed tab
+
+    await scrollThroughPage(); // Scroll to the bottom of the ballot page
 
     // Go to the Values tab
     if (desktopSize) {
