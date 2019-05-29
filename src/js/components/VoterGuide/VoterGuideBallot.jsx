@@ -752,16 +752,16 @@ class VoterGuideBallot extends Component {
       default:
         return null;
     }
-  }
+  };
 
   handleSearch = (filteredItems) => {
     this.setState({ ballotSearchResults: filteredItems });
-  }
+  };
 
   handleToggleSearchBallot = () => {
     const { isSearching } = this.state;
     this.setState({ isSearching: !isSearching });
-  }
+  };
 
   toggleBallotIntroModal () {
     const { showBallotIntroModal, location, pathname } = this.state;
@@ -992,7 +992,7 @@ class VoterGuideBallot extends Component {
             <header className="ballot__header__group">
               <h1 className={isCordova() ? 'ballot__header__title__cordova' : 'ballot__header__title'}>
                 { electionName ? (
-                  <span className="u-push--sm">
+                  <span className={isWebApp() ? 'u-push--sm' : 'ballot__header__title__cordova-text'}>
                     {electionName}
                     {' '}
                     <span className="d-none d-sm-inline">&mdash; </span>

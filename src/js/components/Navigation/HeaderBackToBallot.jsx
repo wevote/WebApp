@@ -8,7 +8,7 @@ import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
 import CandidateStore from '../../stores/CandidateStore';
 import cookies from '../../utils/cookies';
-import { hasIPhoneNotch, isWebApp } from '../../utils/cordovaUtils';
+import { isWebApp } from '../../utils/cordovaUtils';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -316,13 +316,17 @@ class HeaderBackToBallot extends Component {
     }
 
     const headerClassName = (function header () {
-      const prefix = stringContains('/office', pathname) ? 'page-header page-header__back-to-ballot' : 'page-header';
-      if (isWebApp()) {
-        return prefix;
+      let cname;
+      if (stringContains('/office', pathname)) {
+        if (isWebApp()) {
+          cname = 'page-header page-header__back-to-ballot';
+        } else {
+          cname = 'page-header page-header__back-to-ballot-cordova  page-header__cordova';
+        }
       } else {
-        const suffix = hasIPhoneNotch() ? ' page-header__cordova-iphonex' : ' page-header__cordova';
-        return prefix + suffix;
+        cname = 'page-header';
       }
+      return cname;
     }());
 
     let appBarClasses;

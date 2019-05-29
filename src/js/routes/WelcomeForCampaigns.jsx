@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import { Title, BlueTitle, SubTitle } from '../components/Welcome/Header';
+import { Title, BlueTitle, SubTitle } from '../components/Welcome/HeaderWelcome';
 import Section, {
   SectionTitle,
   DescriptionContainer,
@@ -64,7 +64,7 @@ class WelcomeForCampaigns extends PureComponent {
     let isSignedIn = false;
     if (voter) {
       ({ is_signed_in: isSignedIn } = voter);
-      isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
+      isSignedIn = (isSignedIn === undefined) || (isSignedIn === null) ? false : isSignedIn;
     }
     if (isSignedIn) {
       historyPush('/settings/profile');
@@ -72,13 +72,13 @@ class WelcomeForCampaigns extends PureComponent {
       AppActions.setGetStartedMode('getStartedForCampaigns');
       AppActions.setShowSignInModal(true);
     }
-  }
+  };
 
   updateVoterFullName = (event) => {
     this.setState({
       voterFullName: event.target.value,
     });
-  }
+  };
 
   updateVoterEmailAddress = (event) => {
     const isEmailValid = validateEmail(event.target.value);
@@ -91,7 +91,7 @@ class WelcomeForCampaigns extends PureComponent {
       voterEmail: event.target.value,
       submitEnabled,
     });
-  }
+  };
 
   voterEmailAddressSignUpSave = (event) => {
     // Only proceed after we have a valid email address, which will enable the submit
@@ -102,12 +102,12 @@ class WelcomeForCampaigns extends PureComponent {
       VoterActions.voterFullNameSoftSave('', '', this.state.voterFullName);
       VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
     }
-  }
+  };
 
   handleToPageFromMobileNav = (destination) => {
     this.handleShowMobileNavigation(false);
     historyPush(destination);
-  }
+  };
 
   render () {
     const { classes, pathname } = this.props;

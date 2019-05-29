@@ -13,7 +13,7 @@ import PlaceIcon from '@material-ui/icons/Place';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { withStyles } from '@material-ui/core/styles';
 import BallotStore from '../../stores/BallotStore';
-import { historyPush, isWebApp, hasIPhoneNotch } from '../../utils/cordovaUtils';
+import { historyPush, isWebApp, isCordova, hasIPhoneNotch } from '../../utils/cordovaUtils';
 import cookies from '../../utils/cookies';
 import FriendStore from '../../stores/FriendStore';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
@@ -169,7 +169,7 @@ class HeaderBar extends Component {
     if (stringContains('/friends', pathname)) return 2;
 
     return false;
-  }
+  };
 
   handleNavigation = to => historyPush(to);
 
@@ -275,7 +275,10 @@ class HeaderBar extends Component {
                     )
                   }
                   {voterPhotoUrlMedium ? (
-                    <div id="profileAvatarHeaderBar" className="header-nav__avatar-container" onClick={this.toggleProfilePopUp}>
+                    <div id="profileAvatarHeaderBar"
+                         className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
+                         onClick={this.toggleProfilePopUp}
+                    >
                       <img
                         className="header-nav__avatar"
                         src={voterPhotoUrlMedium}

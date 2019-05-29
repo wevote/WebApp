@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { capitalizeString } from '../../utils/textFormat';
-import { historyPush } from '../../utils/cordovaUtils';
+import { historyPush, isCordova } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
 export default class OfficeItem extends Component {
@@ -23,7 +23,7 @@ export default class OfficeItem extends Component {
     const candidatesHtml = <span />; // For a preview of the candidates
 
     return (
-      <div className="card-main__office-item">
+      <div className="card-main__office-item" style={{ marginLeft: `${isCordova() ? '16px' : 'undefined'}` }}>
         <div className="card-main__content">
           <h2 className="card-main__display-name">
             { this.props.linkToBallotItemPage ?
