@@ -319,11 +319,19 @@ const MobileItemHeader = styled.div`
 `;
 
 const MobileItemImage = styled.div`
-  margin-right: 8px;
+  margin-right: 16px;
   width: 50px;
   height: 50px;
   * {
     border-radius: 50px;
+    width: 50px !important;
+    height: 50px !important;
+    max-width: 50px !important;
+    display: flex;
+    align-items: flex-start;
+    &::before {
+      font-size: 50px !important;
+    }
   }
 `;
 
