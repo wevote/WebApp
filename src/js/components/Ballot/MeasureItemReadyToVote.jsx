@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
+import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import SupportStore from '../../stores/SupportStore';
-import { capitalizeString } from '../../utils/textFormat';
+import { Wrapper, InnerWrapper, BioColumn, OfficeColumn, OfficeText, BioInformation, HR } from './BallotItemReadyToVote';
 
 
 export default class MeasureItemReadyToVote extends Component {
@@ -16,6 +17,7 @@ export default class MeasureItemReadyToVote extends Component {
   constructor (props) {
     super(props);
     this.state = {};
+    this.getMeasureLink = this.getMeasureLink.bind(this);
   }
 
   componentDidMount () {
@@ -39,47 +41,35 @@ export default class MeasureItemReadyToVote extends Component {
     this.setState({ supportProps: SupportStore.get(this.props.measureWeVoteId) });
   }
 
+  getMeasureLink () {
+    return `/measure/${this.props.measureWeVoteId}/`;
+  }
+
   render () {
     renderLog(__filename);
     const { supportProps } = this.state;
 
-    let { ballot_item_display_name: ballotItemDisplayName } = this.props;
-
-    ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
+    const { measureWeVoteId, ballot_item_display_name: ballotItemDisplayName } = this.props;
 
     return (
-      <div className="card-main measure-card">
-
-        <div className="card-main__content">
-          <div className="u-flex u-items-center">
-
-            <div className="u-flex-auto">
-              <h2 className="card-main__display-name">
-                {/* Measure name */}
-                {ballotItemDisplayName}
-              </h2>
-            </div>
-            {
-              supportProps && supportProps.is_support ? (
-                <div className="u-flex-none u-justify-end">
-                  <span className="u-push--xs">Supported by you</span>
-                  <img src={cordovaDot('/img/global/svg-icons/thumbs-up-color-icon.svg')} width="24" height="24" />
-                </div>
-              ) :
-                null
-            }
-            {
-              supportProps && supportProps.is_oppose ? (
-                <div className="u-flex-none u-justify-end">
-                  <span className="u-push--xs">Opposed by you</span>
-                  <img src={cordovaDot('/img/global/svg-icons/thumbs-down-color-icon.svg')} width="24" height="24" />
-                </div>
-              ) :
-                null
-            }
-          </div>
-        </div>
-      </div>
+      <React.Fragment>
+        <Wrapper onClick={() => historyPush(this.getMeasureLink())}>
+          { supportProps && supportProps.is_support && (  // eslint-disable-line no-nested-ternary
+            <InnerWrapper>
+              <BioColumn>
+                <BioInformation>
+                  <OfficeText>{ballotItemDisplayName}</OfficeText>
+                </BioInformation>
+              </BioColumn>
+              <OfficeColumn>
+                <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
+              </OfficeColumn>
+            </InnerWrapper>
+          )
+          }
+        </Wrapper>
+        <HR />
+      </React.Fragment>
     );
   }
 }

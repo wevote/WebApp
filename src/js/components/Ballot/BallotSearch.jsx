@@ -26,6 +26,7 @@ class BallotSearch extends Component {
     super(props);
     this.state = {
       searchValue: '',
+      showCloser: false,
     };
     this.handleSearch = this.handleSearch.bind(this);
   }
@@ -58,10 +59,8 @@ class BallotSearch extends Component {
 
   toggleSearch = () => {
     const { isSearching } = this.props;
-    if (!isSearching) {
-      this.searchInput.select();
-    } else {
-      this.setState({ searchValue: '' });
+    if (isSearching) {
+      this.setState({ searchValue: '', showCloser: false });
     }
     this.props.onToggleSearch(!isSearching);
   }
@@ -73,7 +72,7 @@ class BallotSearch extends Component {
     }
     clearTimeout(this.searchInputTimer);
     const { value } = event.target;
-    this.setState({ searchValue: value });
+    this.setState({ searchValue: value, showCloser: value.length > 0 });
 
     // If search value is empty, exit
     if (!value.length) return this.props.onBallotSearch([]);
@@ -91,7 +90,7 @@ class BallotSearch extends Component {
 
   render () {
     const { classes, theme, isSearching, alwaysOpen } = this.props;
-    const { searchValue } = this.state;
+    const { searchValue, showCloser } = this.state;
     return (
       <SearchWrapper searchOpen={isSearching || alwaysOpen} brandBlue={theme.palette.primary.main}>
         <IconButton
@@ -100,13 +99,15 @@ class BallotSearch extends Component {
         >
           <SearchIcon classes={{ root: classes.iconRoot }} />
         </IconButton>
+        <Separator />
         <InputBase
           classes={{ input: (isSearching || alwaysOpen) ? classes.input : classes.inputHidden }}
           inputRef={(input) => { this.searchInput = input; }}
           onChange={this.handleSearch}
           value={searchValue}
+          placeholder="Search"
         />
-        <Closer searchOpen={isSearching || alwaysOpen} brandBlue={theme.palette.primary.main}>
+        <Closer showCloser={showCloser} brandBlue={theme.palette.primary.main}>
           <IconButton
             classes={{ root: classes.iconButtonRoot }}
             onClick={(isSearching || !alwaysOpen) ? this.toggleSearch : undefined}
@@ -121,31 +122,36 @@ class BallotSearch extends Component {
 
 const styles = theme => ({
   searchRoot: {
-    height: 26,
+    height: 36,
     [theme.breakpoints.down('md')]: {
-      height: 22.5,
+      height: 28,
     },
   },
   iconButtonRoot: {
     padding: 0,
     borderRadius: 16,
+    margin: 'auto 4px',
     outline: 'none !important',
     '&:hover': {
       backgroundColor: 'transparent',
     },
   },
   iconRoot: {
-    width: 20,
-    height: 20,
+    width: 24,
+    height: 24,
   },
   closeIconRoot: {
-    width: 20,
-    height: 20,
+    width: 24,
+    height: 24,
   },
   input: {
-    padding: '0 3px',
-    width: 150,
+    padding: 0,
+    marginLeft: 8,
+    width: '50vw',
     transition: 'all ease-in 150ms',
+    [theme.breakpoints.down('md')]: {
+      width: '60vw',
+    },
   },
   inputHidden: {
     padding: 0,
@@ -155,24 +161,32 @@ const styles = theme => ({
 });
 
 const Closer = styled.div`
+  display: inherit;
   border-radius: 16px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-  border-left: 1px solid ${({ brandBlue }) => (brandBlue)};
-  display: ${({ searchOpen }) => (searchOpen ? 'inherit' : 'none')};
+  opacity: ${({ showCloser }) => (showCloser ? '1' : '0')};
+  pointer-events: ${({ showCloser }) => (showCloser ? 'auto' : 'none')};
+  transition: all 150ms ease-in;
+`;
+
+const Separator = styled.div`
+  height: 100%;
+  width: 1px;
+  background: rgba(0, 0, 0, .3);
 `;
 
 const SearchWrapper = styled.div`
   display: flex;
   flex-flow: row;
-  border-radius: 16px;
-  height: 26px;
-  border: 1px solid ${props => (!props.searchOpen ? 'rgba(0, 0, 0, 0.23)' : props.brandBlue)};
+  border-radius: 4px;
+  height: 36px;
+  border: 1px solid rgba(0, 0, 0, .3);
   padding: 0 3px 0 3px;
   margin-right: 16px;
   margin-bottom: 8px;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    height: 22.5px;
+    height: 28px;
     margin-right: 4px;
   }
 `;
