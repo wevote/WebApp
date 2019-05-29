@@ -189,6 +189,7 @@ class AddressBox extends Component {
               value={this.state.textForMapSearch}
               inputRef={(autocomplete) => { this.autoComplete = autocomplete; }}
               inputProps={{ onChange: this.updateVoterAddress, onKeyDown: this.handleKeyPress, autoFocus: (!isCordova() && !this.props.disableAutoFocus) }}
+              id="addressBoxText"
             />
           </Paper>
           { this.props.cancelEditAddress ? (
