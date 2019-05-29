@@ -49,7 +49,7 @@ export default class OfficeNameText extends Component {
           </span>
           <span>candidate for </span>
           { officeLink ? (
-            <Link to={officeLink}>
+            <Link id="officeNameTextContestOfficeName" to={officeLink}>
               <span className="candidate-card-main__office u-bold u-gray-darker">{ contestOfficeName }</span>
             </Link>
           ) :

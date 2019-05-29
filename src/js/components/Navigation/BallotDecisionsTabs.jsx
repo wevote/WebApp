@@ -86,6 +86,7 @@ class BallotDecisionsTabs extends Component {
               classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 0 ? null : classes.badgeColorPrimary }}
               color="primary"
               badgeContent={ballotLength}
+              id="ballotDecisionsTabsAllItems"
               invisible={ballotLength === 0}
             >
               <span className="u-show-mobile">
@@ -108,6 +109,7 @@ class BallotDecisionsTabs extends Component {
                 classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 1 ? null : classes.badgeColorPrimary }}
                 color="primary"
                 badgeContent={ballotLengthRemaining}
+                id="ballotDecisionTabsRemainingChoices"
                 invisible={ballotLengthRemaining === 0}
               >
                 <span className="u-show-mobile">
@@ -132,6 +134,7 @@ class BallotDecisionsTabs extends Component {
                 classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 2 ? null : classes.badgeColorPrimary }}
                 color="primary"
                 badgeContent={itemsDecidedCount}
+                id="ballotDecisionsTabsItemsDecided"
                 invisible={itemsDecidedCount === 0}
               >
                 <span className="u-show-mobile">

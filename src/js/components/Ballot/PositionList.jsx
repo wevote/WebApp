@@ -17,14 +17,17 @@ const groupedFilters = [
   {
     filterName: 'support',
     icon: <ThumbUpIcon />,
+    filterId: 'thumbUpFilter',
   },
   {
     filterName: 'oppose',
     icon: <ThumbDownIcon />,
+    filterId: 'thumbDownFilter',
   },
   {
     filterName: 'information',
     icon: <InfoIcon />,
+    filterId: 'infoFilter',
   },
 ];
 
@@ -33,6 +36,7 @@ const islandFilters = [
     filterName: 'comment',
     icon: <CommentIcon />,
     filterDisplayName: 'Commented',
+    filterId: 'islandFilterCommented',
   },
 ];
 
