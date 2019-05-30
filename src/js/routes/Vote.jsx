@@ -15,6 +15,7 @@ import BallotStore from '../stores/BallotStore';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import cookies from '../utils/cookies';
 import {
+  cordovaBallotFilterTopMargin,
   historyPush, isCordova, isWebApp,
 } from '../utils/cordovaUtils';
 import ElectionActions from '../actions/ElectionActions';
@@ -421,7 +422,7 @@ class Vote extends Component {
     return (
       <VoteContainer>
         <div className={`ballot__heading ${ballotHeaderUnpinned ? 'ballot__heading__unpinned' : ''}`}>
-          <div className="page-content-container">
+          <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
             <div className="container-fluid">
               <div className="row">
                 <div className="col-md-12">
@@ -442,7 +443,7 @@ class Vote extends Component {
                       )}
                     </h1>
                   </header>
-                  <div className="ballot__filter__container">
+                  <div className="ballot__filter__container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
                     <BallotFilterRow>
                       <div className="ballot__item-filter-tabs">
                         { ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length ? (
@@ -467,7 +468,7 @@ class Vote extends Component {
         </div>
 
         <div className="page-content-container">
-          <div className="container-fluid">
+          <div className="container-fluid" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
             <Wrapper cordova={isCordova()}>
               <div className="row ballot__body__ready-to-vote">
                 <BrowserPushMessage incomingProps={this.props} />
