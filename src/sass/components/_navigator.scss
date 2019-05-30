@@ -259,19 +259,18 @@ $container-margin: -15px;
       margin-top: $space-xs;
       margin-bottom: $space-xs;
     }
-    &-container {
-      display: inline;
-    }
-    &-cordova {
-      margin-right: 4px;
-    }
+  }
+
+  &__avatar-container {
+    display: inline;
   }
 
   &__avatar-cordova {
     border-radius: $radius-sm;
     background: #fff;
-    overflow: hidden;
     display: inline;
+    overflow: hidden;
+    margin-right: $space-xs;
   }
 
   &__avatar-iphone-xr {

@@ -21,6 +21,7 @@ $mobile-body-padding-top-ready-to-vote: 92px;
 $body-padding-top-ready-to-vote: 92px;
 $race-filter-margin: 8px;
 $neg-padding: -10px;
+$margin-zero: 0;
 
 .ballot {
   // ===========================================
@@ -78,7 +79,7 @@ $neg-padding: -10px;
       }
       &__cordova {
         font-size: 1.5rem;
-        margin: 0 !important;
+        margin: $margin-zero !important;
       }
       &__cordova-text {
         font-size: 14px;
