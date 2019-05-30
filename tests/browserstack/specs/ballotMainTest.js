@@ -112,19 +112,19 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
 
     //
-    // Go to the My Friends tab
-    if (desktopSize) {
-      // Desktop screen size - HEADER TABS
-      await simpleClick('friendsTabHeaderBar');
-    } else {
-      // Mobile or tablet screen size - FOOTER ICONS
-      await simpleClick('friendsTabFooterBar');
-    }
-    await simpleTextInput('friend1EmailAddress','filipfrancetic@gmail.com');
-    await simpleClick('friendsAddAnotherInvitation');
-    await simpleClick('friendsNextButton');
-
-    await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
+    // Go to the My Friends tab // DALE: FRIENDS TEMPORARILY DISABLED
+    // if (desktopSize) {
+    //   // Desktop screen size - HEADER TABS
+    //   await simpleClick('friendsTabHeaderBar');
+    // } else {
+    //   // Mobile or tablet screen size - FOOTER ICONS
+    //   await simpleClick('friendsTabFooterBar');
+    // }
+    // await simpleTextInput('friend1EmailAddress','filipfrancetic@gmail.com');
+    // await simpleClick('friendsAddAnotherInvitation');
+    // await simpleClick('friendsNextButton');
+    //
+    // await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
 
     // Go to the Vote tab
     if (desktopSize) {

@@ -8,7 +8,7 @@ import Tab from '@material-ui/core/Tab';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-import Badge from '@material-ui/core/Badge';
+// import Badge from '@material-ui/core/Badge'; // DALE: FRIENDS TEMPORARILY DISABLED
 import PlaceIcon from '@material-ui/icons/Place';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { withStyles } from '@material-ui/core/styles';
@@ -166,7 +166,7 @@ class HeaderBar extends Component {
     if (stringContains('/ballot/vote', pathname)) return 3;
     if (pathname && pathname.startsWith('/ballot')) return 0;
     if (stringContains('/value', pathname)) return 1; // '/values'
-    if (stringContains('/friends', pathname)) return 2;
+    // if (stringContains('/friends', pathname)) return 2; // DALE: FRIENDS TEMPORARILY DISABLED
 
     return false;
   };
@@ -222,7 +222,7 @@ class HeaderBar extends Component {
     const { showEditAddressButton, scrolledDown } = this.state;
     const ballotBaseUrl = '/ballot';
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
-    const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0;
+    // const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0; // DALE: FRIENDS TEMPORARILY DISABLED
     const voterIsSignedIn = this.props.voter && this.props.voter.is_signed_in;
     const showFullNavigation = true;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
@@ -248,10 +248,10 @@ class HeaderBar extends Component {
                   <Tab classes={{ root: classes.tabRoot }} id="valuesTabHeaderBar" label="My Values" onClick={() => this.handleNavigation('/values')} />
                 )
                 }
-                {showFullNavigation && (
+                {/* showFullNavigation && (
                   <Tab classes={{ root: classes.tabRoot }} id="friendsTabHeaderBar" label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9}>My Friends</Badge>} onClick={() => this.handleNavigation('/friends')} />
                 )
-                }
+                */}
                 {showFullNavigation && (
                   <Tab classes={{ root: classes.tabRoot }} id="voteTabHeaderBar" label="Vote" onClick={() => this.handleNavigation('/ballot/vote')} />
                 )
