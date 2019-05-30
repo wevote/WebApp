@@ -23,6 +23,17 @@ exports.config = {
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
     },
+    {
+      name: 'ballotMainTest-AndroidOnePlus6T',
+      build: buildNameForDisplay,
+      device: 'OnePlus 6T',
+      os_version: '9.0',
+      app: browserStackConfig.BROWSERSTACK_APK_URL,
+      'browserstack.console': 'info',
+      'browserstack.debug': true,
+      'browserstack.geoLocation': 'US',
+    },
+
   ],
   coloredLogs: true,
   baseUrl: '',
