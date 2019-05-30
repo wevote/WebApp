@@ -9,7 +9,6 @@ import BallotIcon from '@material-ui/icons/Ballot';
 import Button from '@material-ui/core/Button';
 import AddEndorsements from '../components/Widgets/AddEndorsements';
 import BallotActions from '../actions/BallotActions';
-import BallotItemReadyToVote from '../components/Ballot/BallotItemReadyToVote';
 import BallotSearch from '../components/Ballot/BallotSearch';
 import BallotStore from '../stores/BallotStore';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
@@ -20,7 +19,6 @@ import {
 import ElectionActions from '../actions/ElectionActions';
 import IssueActions from '../actions/IssueActions';
 import IssueStore from '../stores/IssueStore';
-import OpenExternalWebSite from '../components/Widgets/OpenExternalWebSite';
 import OrganizationActions from '../actions/OrganizationActions';
 import { renderLog } from '../utils/logging';
 import SupportActions from '../actions/SupportActions';
@@ -29,6 +27,8 @@ import VoterActions from '../actions/VoterActions';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import AppStore from '../stores/AppStore';
 import VoterStore from '../stores/VoterStore';
+import ReturnOfficialBallot from '../components/Vote/ReturnOfficialBallot';
+import BallotItemReadyToVote from '../components/Ballot/BallotItemReadyToVote';
 
 
 class Vote extends Component {
@@ -477,27 +477,7 @@ class Vote extends Component {
                   </div>
                   {ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length ? (
                     <div>
-                      <div className="alert alert-success d-print-none">
-                        <a // eslint-disable-line
-                          href="#"
-                          className="close"
-                          data-dismiss="alert"
-                        >
-                          &times;
-                        </a>
-                        We Vote helps you get ready to vote,
-                        {' '}
-                        <strong>but you cannot use We Vote to cast your vote</strong>
-                        .
-                        {' '}
-                        Make sure to return your official ballot to your polling place!
-                        {' '}
-                        <OpenExternalWebSite
-                          url="https://help.wevote.us/hc/en-us/articles/115002401353-Can-I-cast-my-vote-with-We-Vote-"
-                          target="_blank"
-                          body="See more information about casting your official vote."
-                        />
-                      </div>
+                      <ReturnOfficialBallot />
                       <TitleText>Your Choices</TitleText>
                       <Card>
                         {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map(item => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
