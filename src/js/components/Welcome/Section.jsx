@@ -77,7 +77,7 @@ const GetStarted = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  margin-left: -134px;
+  margin-left: -132px;
 `;
 
 // @media (max-width: ${({ theme }) => theme.breakpoints.md}) {

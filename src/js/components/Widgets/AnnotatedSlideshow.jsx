@@ -139,7 +139,7 @@ const Image = styled.img`
   box-shadow: 2px 2px 4px 2px ${({ theme }) => theme.colors.grayLight};
   height: 360px;
   max-width: 90vw;
-  transition: 150ms ease-in;
+  transition: all 150ms ease-in;
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     width: 90vw;
     height: calc(90vw * 0.5625);

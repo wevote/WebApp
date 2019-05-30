@@ -199,7 +199,7 @@ const styles = theme => ({
 
 const Wrapper = styled.div`
   color: rgb(255, 255, 255, .6) !important;
-  background-image: linear-gradient(to bottom, #415a99, #2d3b5e);
+  background-image: linear-gradient(to bottom, #415a99, ${({ theme }) => theme.colors.brandBlue});
   padding: 4em 1em 0 1em;
   display: flex;
   flex-flow: column;

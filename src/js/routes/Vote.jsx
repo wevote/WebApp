@@ -452,7 +452,6 @@ class Vote extends Component {
                               onToggleSearch={this.handleToggleSearchBallot}
                               items={ballotWithItemsFromCompletionFilterType}
                               onBallotSearch={this.handleSearch}
-                              alwaysOpen
                             />
                           </React.Fragment>
                         ) : null
