@@ -279,7 +279,7 @@ class ItemPositionStatementActionBar extends Component {
                   onBlur={() => restoreStylesAfterCordovaKeyboard(__filename)}
                   inputRef={(tag) => { this.textarea = tag; }}
                   multiline
-                  rows={this.props.mobile ? 1 : 3}
+                  rows={this.props.mobile ? 2 : 3}
                 />
                 <PostSaveButton>
                   <Button variant="outlined" color="primary" classes={{ outlinedPrimary: classes.buttonOutlinedPrimary }} type="submit" size="small">
@@ -304,7 +304,7 @@ class ItemPositionStatementActionBar extends Component {
                 inputRef={(tag) => { this.textarea = tag; }}
                 multiline
                 disabled
-                rows={this.props.mobile ? 1 : 3}
+                rows={this.props.mobile ? 2 : 3}
               />
               <PostSaveButton>
                 <Button variant="outlined" color="primary" classes={{ outlinedPrimary: classes.buttonOutlinedPrimary }} onClick={onSavePositionStatementClick} size="small">
@@ -414,6 +414,10 @@ const styles = theme => ({
     [theme.breakpoints.down('md')]: {
       padding: '2px 4px',
       fontWeight: 500,
+      height: '100%',
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontWeight: 600,
     },
   },
 });
@@ -422,6 +426,10 @@ const PostSaveButton = styled.div`
   width: auto;
   margin-left: auto;
   margin-top: auto;
+  @media(max-width: 576px) {
+    height: 36.8px;
+    margin-top: 0;
+  }
 `;
 
 export default withTheme()(withStyles(styles)(ItemPositionStatementActionBar));
