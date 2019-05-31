@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 // import ReactPlayer from 'react-player';
 // import Textarea from 'react-textarea-autosize';
@@ -28,6 +28,7 @@ class ItemPositionStatementActionBar extends Component {
     shown_in_list: PropTypes.bool,
     shouldFocus: PropTypes.bool,
     classes: PropTypes.object,
+    mobile: PropTypes.bool,
   };
 
   constructor (props) {
@@ -278,10 +279,10 @@ class ItemPositionStatementActionBar extends Component {
                   onBlur={() => restoreStylesAfterCordovaKeyboard(__filename)}
                   inputRef={(tag) => { this.textarea = tag; }}
                   multiline
-                  rows={3}
+                  rows={this.props.mobile ? 1 : 3}
                 />
                 <PostSaveButton>
-                  <Button variant="contained" color="primary" type="submit" size="small">
+                  <Button variant="outlined" color="primary" classes={{ outlinedPrimary: classes.buttonOutlinedPrimary }} type="submit" size="small">
                     {postButtonText}
                   </Button>
                 </PostSaveButton>
@@ -294,7 +295,7 @@ class ItemPositionStatementActionBar extends Component {
               <InputBase
                 onKeyDown={onKeyDown}
                 name="statementTextToBeSaved"
-                className={classes.input}
+                classes={{ root: classes.input, disabled: classes.disabledInput }}
                 minRows={1}
                 placeholder={statementPlaceholderText}
                 defaultValue={statementTextToBeSaved}
@@ -303,10 +304,10 @@ class ItemPositionStatementActionBar extends Component {
                 inputRef={(tag) => { this.textarea = tag; }}
                 multiline
                 disabled
-                rows={3}
+                rows={this.props.mobile ? 1 : 3}
               />
               <PostSaveButton>
-                <Button variant="contained" color="secondary" onClick={onSavePositionStatementClick} size="small">
+                <Button variant="outlined" color="primary" classes={{ outlinedPrimary: classes.buttonOutlinedPrimary }} onClick={onSavePositionStatementClick} size="small">
                   Edit
                 </Button>
               </PostSaveButton>
@@ -376,25 +377,46 @@ class ItemPositionStatementActionBar extends Component {
   }
 }
 
-const styles = {
+const styles = theme => ({
   root: {
     boxShadow: 'none',
     border: '1px solid #333',
     padding: '8px',
+    [theme.breakpoints.down('sm')]: {
+      height: 'auto',
+      padding: '4px 8px',
+    },
   },
   flex: {
     display: 'flex',
     width: '100%',
     alignItems: 'flex-end',
     justifyContent: 'flex-start',
+    [theme.breakpoints.down('sm')]: {
+      alignItems: 'center',
+    },
   },
   input: {
     flex: '1 1 0',
+    height: '100%',
   },
   disabled: {
-    background: '#e6e6e6',
+    background: '#f5f5f5',
   },
-};
+  disabledInput: {
+    color: '#313131',
+  },
+  buttonOutlinedPrimary: {
+    padding: '4px 8px',
+    fontWeight: 600,
+    background: 'white',
+    color: '#313131',
+    [theme.breakpoints.down('md')]: {
+      padding: '2px 4px',
+      fontWeight: 500,
+    },
+  },
+});
 
 const PostSaveButton = styled.div`
   width: auto;
@@ -402,4 +424,4 @@ const PostSaveButton = styled.div`
   margin-top: auto;
 `;
 
-export default withStyles(styles)(ItemPositionStatementActionBar);
+export default withTheme()(withStyles(styles)(ItemPositionStatementActionBar));
