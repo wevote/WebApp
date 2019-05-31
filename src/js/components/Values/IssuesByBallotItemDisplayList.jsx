@@ -95,7 +95,7 @@ class IssuesByBallotItemDisplayList extends Component {
         )}
         onClick={IssuesByBallotItemDisplayList.closePopover}
       >
-        Value Popover Text
+        {oneIssue.issue_description}
       </Popover>
     );
     // Tried to make the issues icons accessible via tabbing, caused too many side affects

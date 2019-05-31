@@ -12,7 +12,7 @@ import EmailBallotModal from '../Ballot/EmailBallotModal';
 import EmailBallotToFriendsModal from '../Ballot/EmailBallotToFriendsModal';
 import FacebookBallotModal from '../Ballot/FacebookBallotModal';
 import FacebookBallotToFriendsModal from '../Ballot/FacebookBallotToFriendsModal';
-import PollingPlaceLocatorModal from '../../routes/Ballot/PollingPlaceLocatorModal';
+import PollingPlaceLocatorModal from '../../routes/Vote/PollingPlaceLocatorModal';
 import { renderLog } from '../../utils/logging';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
