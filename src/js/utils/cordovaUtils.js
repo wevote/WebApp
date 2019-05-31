@@ -401,13 +401,13 @@ export function cordovaBallotFilterTopMargin () {
       if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
         return '55px';
       }
-      return '50px';
+      return '53px';
     } else if (isIPhone678()) {
-      return '50px';
+      return '53px';
     } else if (hasIPhoneNotch()) {
       return '74px';
     } else if (isIPad()) {
-      return '50px';
+      return '54px';
     }
   } else if (isAndroid()) {
     const sizeString = getAndroidSize();
@@ -415,17 +415,17 @@ export function cordovaBallotFilterTopMargin () {
       if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
         return '-12px';
       }
-      return '27px';
+      return '32px';
     } else if (sizeString === '--md') {
       if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
         return '-58px';
       }
-      return '30px';
+      return '32px';
     } else if (sizeString === '--lg') {
       if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
         return '-32px';
       }
-      return '28px';
+      return '32px';
     } else if (sizeString === '--xl') {
       if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
         return '-10px';
@@ -488,9 +488,9 @@ export function cordovaTopHeaderTopMargin () {
         } else if (window.location.href.indexOf('/index.html#/friends') > 0) {
           style.marginTop = '16px';
         } else if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
-          style.marginTop = '16px';
+          style.marginTop = '19px';
         } else if (window.location.href.indexOf('index.html#/ballot') > 0) {
-          style.marginTop = '16px';
+          style.marginTop = '19px';
         } else {
           style.marginTop = '19px';
         }
@@ -511,10 +511,10 @@ export function cordovaTopHeaderTopMargin () {
           style.marginTop = '34px';
         }
       } else {
-        style.marginTop = '16px';
+        style.marginTop = '20px';
       }
     } else {  // Android
-      style.marginTop = '-7px'; // nexus one
+      style.marginTop = '-2px';
     }
     return style;
   }
