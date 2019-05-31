@@ -11,6 +11,7 @@ import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import ReadMore from '../Widgets/ReadMore';
 import FollowToggle from '../Widgets/FollowToggle';
+import StickyPopover from './StickyPopover';
 
 class PositionItem extends Component {
   static propTypes = {
@@ -93,6 +94,7 @@ class PositionItem extends Component {
           <OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />
         </Popover>
       );
+      const myPopoverComponent = ( <OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
 
       return (
         <React.Fragment>
@@ -100,12 +102,10 @@ class PositionItem extends Component {
             <DesktopContainer>
               <DesktopItemLeft>
                 <DesktopItemImage>
-                  <OverlayTrigger
+                  <StickyPopover
                     delay={{ show: 700, hide: 100 }}
-                    trigger={['hover', 'focus']}
-                    rootClose
+                    popoverComponent={myPopoverComponent}
                     placement="bottom"
-                    overlay={organizationCardPopover}
                   >
                     <Link to={speakerLink} className="u-no-underline">
                       { position.speaker_image_url_https_medium ? (
@@ -117,7 +117,7 @@ class PositionItem extends Component {
                       ) :
                         imagePlaceholder }
                     </Link>
-                  </OverlayTrigger>
+                  </StickyPopover>
                 </DesktopItemImage>
                 <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
               </DesktopItemLeft>
