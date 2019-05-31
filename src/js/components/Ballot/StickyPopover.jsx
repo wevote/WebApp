@@ -16,13 +16,20 @@ class StickyPopover extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { showPopover: true };
+    this.state = { showPopover: false };
     this.attachRef = target => this.setState({ target });
+    this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onMouseLeave = this.onMouseLeave.bind(this);
   }
 
-  myAlert () {
-    console.log('it worked!');
-    this.setState({ showPopover: true });
+  onMouseEnter () {
+    const { delay } = this.props;
+    setTimeout(this.setState({ showPopover: true }), delay.show);
+  }
+
+  onMouseLeave () {
+    const { delay } = this.props;
+    setTimeout(this.setState({ showPopover: false }), delay.hide);
   }
 
   render () {
@@ -31,13 +38,20 @@ class StickyPopover extends Component {
     renderLog(__filename);
     return (
       <React.Fragment>
-        {React.Children.map(children, child => React.cloneElement(child, { ref: this.attachRef }))}
+        {React.Children.map(children, child => React.cloneElement(child, {
+          ref: this.attachRef,
+          onMouseEnter: this.onMouseEnter,
+          onMouseLeave: this.onMouseLeave,
+        }))}
         <Overlay
           show={showPopover}
           target={target}
           placement={placement}
         >
-          <Popover>
+          <Popover
+            onMouseEnter={this.onMouseEnter}
+            onMouseLeave={this.onMouseLeave}
+          >
             {popoverComponent}
           </Popover>
         </Overlay>
