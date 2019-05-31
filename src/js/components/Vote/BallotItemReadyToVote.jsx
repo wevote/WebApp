@@ -28,13 +28,12 @@ class BallotItemReadyToVote extends Component {
       <React.Fragment>
         { this.isMeasure() ? (
           <MeasureItemReadyToVote
-            {...this.props}
+            ballotItemDisplayName={this.props.ballot_item_display_name}
             measureWeVoteId={this.props.we_vote_id}
           />
         ) : (
           <OfficeItemReadyToVote
-            {...this.props}
-            weVoteId={this.props.we_vote_id}
+            candidateList={this.props.candidate_list}
           />
         )}
       </React.Fragment>
@@ -43,22 +42,17 @@ class BallotItemReadyToVote extends Component {
 }
 
 const Wrapper = styled.div`
-  display: flex;
-  padding: 24px;
+  padding: 24px 24px 20px 24px;
   transition: all 200ms ease-in;
-  cursor: pointer;
   border: 1px solid transparent;
   border-radius: 4px;
-  &:hover {
-    border: 1px solid ${({ theme }) => theme.colors.brandBlue};
-    box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 2px 1px -1px rgba(0,0,0,0.12);
-  }
 `;
 
 const InnerWrapper = styled.div`
   display: flex;
-  width: 100%;
   justify-content: space-between;
+  margin-bottom: 4px;
+  width: 100%;
 `;
 
 const BioColumn = styled.div`

@@ -15,7 +15,7 @@ export default class PollingPlaceLocator extends Component {
     return (
       <div className="intro-modal">
         <div className="intro-modal__h1">
-        Are you looking for your Polling Location?
+          Find Your Polling Location
         </div>
 
         <div className="intro-modal-vertical-scroll-contain_without_slider">

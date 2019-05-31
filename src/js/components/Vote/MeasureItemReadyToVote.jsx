@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
-import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import SupportStore from '../../stores/SupportStore';
@@ -11,13 +10,12 @@ import { Wrapper, InnerWrapper, BioColumn, OfficeColumn, OfficeText, BioInformat
 export default class MeasureItemReadyToVote extends Component {
   static propTypes = {
     measureWeVoteId: PropTypes.string.isRequired,
-    ballot_item_display_name: PropTypes.string.isRequired,
+    ballotItemDisplayName: PropTypes.string.isRequired,
   };
 
   constructor (props) {
     super(props);
     this.state = {};
-    this.getMeasureLink = this.getMeasureLink.bind(this);
   }
 
   componentDidMount () {
@@ -41,20 +39,16 @@ export default class MeasureItemReadyToVote extends Component {
     this.setState({ supportProps: SupportStore.get(this.props.measureWeVoteId) });
   }
 
-  getMeasureLink () {
-    return `/measure/${this.props.measureWeVoteId}/`;
-  }
-
   render () {
     renderLog(__filename);
     const { supportProps } = this.state;
 
-    const { measureWeVoteId, ballot_item_display_name: ballotItemDisplayName } = this.props;
+    const { measureWeVoteId, ballotItemDisplayName } = this.props;
 
     return (
       <React.Fragment>
-        <Wrapper onClick={() => historyPush(this.getMeasureLink())}>
-          { supportProps && supportProps.is_support && (  // eslint-disable-line no-nested-ternary
+        <Wrapper>
+          { supportProps && (supportProps.is_support || supportProps.is_oppose) && (  // eslint-disable-line no-nested-ternary
             <InnerWrapper>
               <BioColumn>
                 <BioInformation>

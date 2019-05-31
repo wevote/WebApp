@@ -10,6 +10,22 @@ import VoterSessionActions from '../../actions/VoterSessionActions';
 import { renderLog } from '../../utils/logging';
 
 export default class HamburgerMenu extends Component {
+  // This can only be called by a developer running Cordova in an emulator.  Voters will never see it.
+  static clearAllCookies () {
+    const cookies = document.cookie.split(';');
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+
+    for (let i = 0; i < cookies.length; i++) {
+      const spcook =  cookies[i].split('=');
+
+      console.log('DEBUG CORDOVA delete one Cookie: ', spcook[0]);
+      document.cookie = `${spcook[0]}=; expires=${d}; path=/;`;
+    }
+
+    window.location = ''; // TO REFRESH THE PAGE
+  }
+
   constructor (props) {
     super(props);
     this.state = {
@@ -55,22 +71,6 @@ export default class HamburgerMenu extends Component {
         )}
       </span>
     );
-  }
-
-  // This can only be called by a developer running Cordova in an emulator.  Voters will never see it.
-  static clearAllCookies () {
-    const cookies = document.cookie.split(';');
-    const d = new Date();
-    d.setDate(d.getDate() - 1);
-
-    for (let i = 0; i < cookies.length; i++) {
-      const spcook =  cookies[i].split('=');
-
-      console.log('DEBUG CORDOVA delete one Cookie: ', spcook[0]);
-      document.cookie = `${spcook[0]}=; expires=${d}; path=/;`;
-    }
-
-    window.location = ''; // TO REFRESH THE PAGE
   }
 
   render () {
@@ -203,19 +203,22 @@ export default class HamburgerMenu extends Component {
                     <Link onClick={this.hideProfilePopUp} to="/more/attributions">Attributions</Link>
                   </span>
                 </div>
-                { isCordova() && (window.location.href.startsWith('file:///Users') || window.location.href.startsWith('file:///android')) ? (
-                  <div>
+                { isCordova() && (window.location.href.startsWith('file:///Users') || window.location.href.startsWith('file:///android')) ?
+                  (
                     <div>
-                      <span className="hamburger-terms__text">
-                        <Link onClick={HamburgerMenu.clearAllCookies} to="/">Clear Cookies</Link>
-                      </span>
+                      <div>
+                        <span className="hamburger-terms__text">
+                          <Link onClick={HamburgerMenu.clearAllCookies} to="/">Clear Cookies</Link>
+                        </span>
+                      </div>
+                      <div>
+                        <span className="hamburger-terms__text">
+                          <Link to="/wevoteintro/network">Navigate to Welcome</Link>
+                        </span>
+                      </div>
                     </div>
-                    <div>
-                      <span className="hamburger-terms__text">
-                        <Link to="/wevoteintro/network">Navigate to Welcome</Link>
-                      </span>
-                    </div>
-                  </div>) : null
+                  ) :
+                  null
                 }
               </td>
             </tr>
