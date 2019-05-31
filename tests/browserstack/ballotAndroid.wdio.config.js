@@ -14,24 +14,36 @@ exports.config = {
   capabilities: [
     {
       // capabilities for a cordova android test
-      name: 'ballotMainTest-Android',
+      name: 'ballotMainTest-AndroidGalaxyTabS4',
       build: buildNameForDisplay,
       device: 'Samsung Galaxy Tab S4',
       os_version: '8.1',
       app: browserStackConfig.BROWSERSTACK_APK_URL,
+      'browserstack.console': 'info',
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
     },
+    {
+      name: 'ballotMainTest-AndroidOnePlus6T',
+      build: buildNameForDisplay,
+      device: 'OnePlus 6T',
+      os_version: '9.0',
+      app: browserStackConfig.BROWSERSTACK_APK_URL,
+      'browserstack.console': 'info',
+      'browserstack.debug': true,
+      'browserstack.geoLocation': 'US',
+    },
+
   ],
   coloredLogs: true,
   baseUrl: '',
-  waitforTimeout: 50000,
+  waitforTimeout: 180000, // 3 minutes
   connectionRetryTimeout: 90000,
   connectionRetryCount: 3,
 
   framework: 'mocha',
   mochaOpts: {
     ui: 'bdd',
-    timeout: 50000,
+    timeout: 180000, // 3 minutes
   },
 };

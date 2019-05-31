@@ -16,40 +16,40 @@ async function simpleCloseBootstrapModal () {
 
 describe('Basic cross-platform We Vote test',  () => {
   it('can visit the different pages in the app', async () => {
-    const isCordova = !!driver.getContexts;
-    const desktopSize = !isCordova;
+    // const isCordova = !!driver.getContexts;
+    const isCordova = true; // Set to True when testing APK or IPA files, and false when testing in mobile browser
+    const isMobile = !!driver.getContexts;
+    const isDesktop = !isMobile;
 
     // NOTE FROM Dale: This is commented out so we can test We Vote in a mobile browser
     //  I would be curious to see what is in driver.getContexts
-    // if (isCordova) {
-    //   // switch contexts and click through intro
-    //   const contexts = await driver.getContexts();
-    //   const context = contexts.includes(ANDROID_CONTEXT) ? ANDROID_CONTEXT : IOS_CONTEXT;
-    //   await driver.switchContext(context);
-    //   const firstNextButton = await $('div[data-index="0"] .intro-story__btn--bottom');
-    //   await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    //   await firstNextButton.click();
-    //   const secondNextButton = await $('div[data-index="1"] .intro-story__btn--bottom');
-    //   await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    //   await secondNextButton.click();
-    //   const thirdNextButton = await $('div[data-index="2"] .intro-story__btn--bottom');
-    //   await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    //   await thirdNextButton.click();
-    //   await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // } else {
-    //   // navigate browser to WeVote QA site
-    //   await browser.url('https://quality.wevote.us/ballot');
-    // }
-
-    await browser.url('https://quality.wevote.us/ballot');
+    if (isCordova) {
+      // switch contexts and click through intro
+      const contexts = await driver.getContexts();
+      const context = contexts.includes(ANDROID_CONTEXT) ? ANDROID_CONTEXT : IOS_CONTEXT;
+      await driver.switchContext(context);
+      const firstNextButton = await $('div[data-index="0"] .intro-story__btn--bottom');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await firstNextButton.click();
+      const secondNextButton = await $('div[data-index="1"] .intro-story__btn--bottom');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await secondNextButton.click();
+      const thirdNextButton = await $('div[data-index="2"] .intro-story__btn--bottom');
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+      await thirdNextButton.click();
+      await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    } else {
+      // navigate browser to WeVote QA site
+      await browser.url('https://quality.wevote.us/ballot');
+    }
 
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    if (!desktopSize) {
+    if (isMobile) {
       // Extra pause for mobile until we can fix Issue #2225
       await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
     }
 
-    if (desktopSize) {
+    if (isDesktop) {
       // Only run on desktop until we can fix Issue #2225
       await simpleClick('changeAddressHeaderBar'); // Open the "Change Address" modal
       await simpleCloseBootstrapModal(); // Close the "Change Address" modal
@@ -57,10 +57,14 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // //////////////////////
     // We want to start by setting the location, which will automatically choose the next upcoming election for that address
-    await simpleClick('locationGuessEnterYourFullAddress'); // Opens the "Enter Your Full Address" link
+    if (isCordova) {
+      await simpleClick('changeAddressHeaderBar'); // Open the "Change Address" modal
+    } else {
+      await simpleClick('locationGuessEnterYourFullAddress'); // Opens the "Enter Your Full Address" link
+    }
     await clearTextInputValue('addressBoxText'); // Clear the contents of this input box
     await simpleTextInput('addressBoxText','Oakland, CA 94610'); // Sets the text for the address box
-    if (desktopSize) {
+    if (isDesktop) {
       // Send "Enter" since the "Google address complete" is blocking the button
       await simpleTextInput('addressBoxText', '\uE007');
     } else {
@@ -70,7 +74,7 @@ describe('Basic cross-platform We Vote test',  () => {
     // await simpleClick('addressBoxModalSaveButton'); // Saves the new address
 
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
-    if (!desktopSize) {
+    if (!isDesktop) {
       // Extra pause for mobile
       await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
     }
@@ -101,7 +105,7 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
 
     // Go to the Values tab
-    if (desktopSize) {
+    if (isDesktop) {
       // Desktop screen size - HEADER TABS
       await simpleClick('valuesTabHeaderBar');
     } else {
@@ -112,22 +116,22 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
 
     //
-    // Go to the My Friends tab
-    if (desktopSize) {
-      // Desktop screen size - HEADER TABS
-      await simpleClick('friendsTabHeaderBar');
-    } else {
-      // Mobile or tablet screen size - FOOTER ICONS
-      await simpleClick('friendsTabFooterBar');
-    }
-    await simpleTextInput('friend1EmailAddress','filipfrancetic@gmail.com');
-    await simpleClick('friendsAddAnotherInvitation');
-    await simpleClick('friendsNextButton');
-
-    await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
+    // Go to the My Friends tab // DALE: FRIENDS TEMPORARILY DISABLED
+    // if (isDesktop) {
+    //   // Desktop screen size - HEADER TABS
+    //   await simpleClick('friendsTabHeaderBar');
+    // } else {
+    //   // Mobile or tablet screen size - FOOTER ICONS
+    //   await simpleClick('friendsTabFooterBar');
+    // }
+    // await simpleTextInput('friend1EmailAddress','filipfrancetic@gmail.com');
+    // await simpleClick('friendsAddAnotherInvitation');
+    // await simpleClick('friendsNextButton');
+    //
+    // await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
 
     // Go to the Vote tab
-    if (desktopSize) {
+    if (isDesktop) {
       // Desktop screen size - HEADER TABS
       await simpleClick('voteTabHeaderBar');
     } else {
@@ -138,7 +142,7 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
 
     // Go back to the Ballot tab
-    if (desktopSize) {
+    if (isDesktop) {
       // Desktop screen size - HEADER TABS
       await simpleClick('ballotTabHeaderBar');
     } else {

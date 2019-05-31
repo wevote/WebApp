@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router';
 import { Table } from 'react-bootstrap';
-import { cordovaDot, isWebApp } from '../../utils/cordovaUtils';
+import { cordovaDot, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import VoterStore from '../../stores/VoterStore';
 import HamburgerMenuRow from '../../components/Navigation/HamburgerMenuRow';
 import LoadingWheel from '../../components/LoadingWheel';
@@ -55,6 +55,22 @@ export default class HamburgerMenu extends Component {
         )}
       </span>
     );
+  }
+
+  // This can only be called by a developer running Cordova in an emulator.  Voters will never see it.
+  static clearAllCookies () {
+    const cookies = document.cookie.split(';');
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+
+    for (let i = 0; i < cookies.length; i++) {
+      const spcook =  cookies[i].split('=');
+
+      console.log('DEBUG CORDOVA delete one Cookie: ', spcook[0]);
+      document.cookie = `${spcook[0]}=; expires=${d}; path=/;`;
+    }
+
+    window.location = ''; // TO REFRESH THE PAGE
   }
 
   render () {
@@ -187,6 +203,20 @@ export default class HamburgerMenu extends Component {
                     <Link onClick={this.hideProfilePopUp} to="/more/attributions">Attributions</Link>
                   </span>
                 </div>
+                { isCordova() && (window.location.href.startsWith('file:///Users') || window.location.href.startsWith('file:///android')) ? (
+                  <div>
+                    <div>
+                      <span className="hamburger-terms__text">
+                        <Link onClick={HamburgerMenu.clearAllCookies} to="/">Clear Cookies</Link>
+                      </span>
+                    </div>
+                    <div>
+                      <span className="hamburger-terms__text">
+                        <Link to="/wevoteintro/network">Navigate to Welcome</Link>
+                      </span>
+                    </div>
+                  </div>) : null
+                }
               </td>
             </tr>
           </tbody>
