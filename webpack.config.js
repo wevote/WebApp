@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const path = require('path');
+
 const port = process.env.PORT || 3000;
 
 module.exports = {
@@ -9,12 +10,12 @@ module.exports = {
   entry: './src/js/index.js',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'build')
+    path: path.resolve(__dirname, 'build'),
   },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: './src/index.html'
+      template: './src/index.html',
     }),
   ],
   module: {
@@ -22,15 +23,15 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
+        use: ['babel-loader'],
       },
       {
         test: /\.scss$/,
         use: [
-          "style-loader", // creates style nodes from JS strings
-          "css-loader", //translates CSS into CommonJS
-          "sass-loader" // compiles Sass to CSS, using Node Sass by default
-        ]
+          'style-loader', // creates style nodes from JS strings
+          'css-loader', // translates CSS into CommonJS
+          'sass-loader', // compiles Sass to CSS, using Node Sass by default
+        ],
       },
       {
         test: /\.(png|jp(e*)g|svg|eot|woff|ttf)$/,
@@ -44,17 +45,17 @@ module.exports = {
           },
         ],
       },
-    ]
+    ],
   },
   resolve: {
     modules: [path.resolve(__dirname, 'src'), 'node_modules'],
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
   devServer: {
     host: 'localhost',
-    port: port,
+    port,
     historyApiFallback: true,
     open: true,
     writeToDisk: true,
-  }
+  },
 };
