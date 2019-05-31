@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const path = require('path');
 const port = process.env.PORT || 3000;
 
@@ -11,6 +12,7 @@ module.exports = {
     path: path.resolve(__dirname, 'build')
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html'
     }),
