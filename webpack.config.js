@@ -52,6 +52,7 @@ module.exports = {
     host: 'localhost',
     port: port,
     historyApiFallback: true,
-    open: true
+    open: true,
+    writeToDisk: true,
   }
 };
