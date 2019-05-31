@@ -8,27 +8,26 @@ import Card from '@material-ui/core/Card';
 import BallotIcon from '@material-ui/icons/Ballot';
 import Button from '@material-ui/core/Button';
 import BallotActions from '../actions/BallotActions';
+import AppStore from '../stores/AppStore';
 import BallotSearch from '../components/Ballot/BallotSearch';
 import BallotStore from '../stores/BallotStore';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import cookies from '../utils/cookies';
 import {
-  cordovaBallotFilterTopMargin,
-  historyPush, isCordova, isWebApp,
+  cordovaVoteMiniHeader, historyPush, isCordova, isWebApp,
 } from '../utils/cordovaUtils';
 import ElectionActions from '../actions/ElectionActions';
 import FindPollingLocation from '../components/Vote/FindPollingLocation';
 import IssueActions from '../actions/IssueActions';
 import IssueStore from '../stores/IssueStore';
-import OrganizationActions from '../actions/OrganizationActions';
 import { renderLog } from '../utils/logging';
+import OrganizationActions from '../actions/OrganizationActions';
+import ReturnOfficialBallot from '../components/Vote/ReturnOfficialBallot';
 import SupportActions from '../actions/SupportActions';
 import SupportStore from '../stores/SupportStore';
 import VoterActions from '../actions/VoterActions';
 import VoterGuideStore from '../stores/VoterGuideStore';
-import AppStore from '../stores/AppStore';
 import VoterStore from '../stores/VoterStore';
-import ReturnOfficialBallot from '../components/Vote/ReturnOfficialBallot';
 import BallotItemReadyToVote from '../components/Vote/BallotItemReadyToVote';
 
 
@@ -420,117 +419,119 @@ class Vote extends Component {
     const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format('MMM Do, YYYY')}</span> : <span />;
 
     return (
-      <VoteContainer>
-        <div className={`ballot__heading-vote-section ${ballotHeaderUnpinned ? 'ballot__heading__unpinned' : ''}`}>
-          <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
-            <div className="container-fluid">
-              <div className="row">
-                <div className="col-md-12">
-                  <Helmet title="Vote - We Vote" />
-                  <header className="ballot__header__group">
-                    <h1 className={isCordova() ? 'ballot__header__title__cordova' : 'ballot__header__title'}>
-                      { electionName ? (
-                        <span className={isWebApp() ? 'u-push--sm' : 'ballot__header__title__cordova-text'}>
-                          {electionName}
-                          {' '}
-                          <span className="d-none d-sm-inline">&mdash; </span>
-                          <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
-                        </span>
-                      ) : (
-                        <span className="u-push--sm">
-                         Loading Election...
-                        </span>
-                      )}
-                    </h1>
-                  </header>
-                  <div className="ballot__filter__container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
-                    <BallotFilterRow>
-                      <div className="ballot__item-filter-tabs">
-                        { ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length ? (
-                          <React.Fragment>
-                            <BallotSearch
-                              isSearching={isSearching}
-                              onToggleSearch={this.handleToggleSearchBallot}
-                              items={ballotWithItemsFromCompletionFilterType}
-                              onBallotSearch={this.handleSearch}
-                              alwaysOpen
-                            />
-                          </React.Fragment>
-                        ) : null
-                        }
-                      </div>
-                    </BallotFilterRow>
+      <div id="the next styled div is the VoteContainer">
+        <VoteContainer>
+          <div className={`ballot__heading-vote-section ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`} style={cordovaVoteMiniHeader()}>
+            <div className="page-content-container">
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-md-12">
+                    <Helmet title="Vote - We Vote" />
+                    <header className="ballot__header__group">
+                      <h1 className={isCordova() ? 'ballot__header__title__cordova' : 'ballot__header__title'}>
+                        { electionName ? (
+                          <span className={isWebApp() ? 'u-push--sm' : 'ballot__header__title__cordova-text'}>
+                            {electionName}
+                            {' '}
+                            <span className="d-none d-sm-inline">&mdash; </span>
+                            <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
+                          </span>
+                        ) : (
+                          <span className="u-push--sm">
+                           Loading Election...
+                          </span>
+                        )}
+                      </h1>
+                    </header>
+                    <div className="ballot__filter__container">
+                      <BallotFilterRow>
+                        <div className="ballot__item-filter-tabs">
+                          { ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length ? (
+                            <React.Fragment>
+                              <BallotSearch
+                                isSearching={isSearching}
+                                onToggleSearch={this.handleToggleSearchBallot}
+                                items={ballotWithItemsFromCompletionFilterType}
+                                onBallotSearch={this.handleSearch}
+                                alwaysOpen
+                              />
+                            </React.Fragment>
+                          ) : null
+                          }
+                        </div>
+                      </BallotFilterRow>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="page-content-container">
-          <div className="container-fluid" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
-            <Wrapper cordova={isCordova()}>
-              <div className="row ballot__body__ready-to-vote">
-                <BrowserPushMessage incomingProps={this.props} />
-                <div className="col-sm-12 col-lg-8">
-                  {ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length ? (
-                    <Card>
-                      <TitleContainer>
-                        <TitleText>Your Choices</TitleText>
-                      </TitleContainer>
-                      <div className="u-show-mobile-tablet">
-                        <PollingLocationContainer>
-                          <FindPollingLocation />
-                        </PollingLocationContainer>
-                      </div>
-                      <ReturnOfficialBallotContainer>
-                        <ReturnOfficialBallot />
-                      </ReturnOfficialBallotContainer>
-                      {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map(item => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
-                    </Card>
-                  ) : /* No items decided */ (
-                    <div>
-                      <div className="u-show-mobile-tablet">
-                        <Card>
+          <div className="page-content-container">
+            <div className="container-fluid">
+              <Wrapper cordova={isCordova()}>
+                <div className="row ballot__body__ready-to-vote">
+                  <BrowserPushMessage incomingProps={this.props} />
+                  <div className="col-sm-12 col-lg-8">
+                    {ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length ? (
+                      <Card>
+                        <TitleContainer>
+                          <TitleText>Your Choices</TitleText>
+                        </TitleContainer>
+                        <div className="u-show-mobile-tablet">
                           <PollingLocationContainer>
                             <FindPollingLocation />
                           </PollingLocationContainer>
-                        </Card>
-                        <CardGap />
-                      </div>
-                      <Card>
-                        <EmptyBallotMessageContainer>
-                          <BallotIcon classes={{ root: classes.ballotIconRoot }} />
-                          <EmptyBallotText>You haven&apos;t chosen any candidates or measures yet. Go to &quot;Ballot&quot; to decide what to vote for.</EmptyBallotText>
-                          <Button
-                            classes={{ root: classes.ballotButtonRoot }}
-                            color="primary"
-                            variant="contained"
-                            onClick={() => historyPush('/ballot')}
-                          >
-                            <BallotIcon classes={{ root: classes.ballotButtonIconRoot }} />
-                            Go to Ballot
-                          </Button>
-                        </EmptyBallotMessageContainer>
+                        </div>
+                        <ReturnOfficialBallotContainer>
+                          <ReturnOfficialBallot />
+                        </ReturnOfficialBallotContainer>
+                        {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map(item => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
                       </Card>
-                    </div>
-                  )
-                  }
-                </div>
+                    ) : /* No items decided */ (
+                      <div>
+                        <div className="u-show-mobile-tablet">
+                          <Card>
+                            <PollingLocationContainer>
+                              <FindPollingLocation />
+                            </PollingLocationContainer>
+                          </Card>
+                          <CardGap />
+                        </div>
+                        <Card>
+                          <EmptyBallotMessageContainer>
+                            <BallotIcon classes={{ root: classes.ballotIconRoot }} />
+                            <EmptyBallotText>You haven&apos;t chosen any candidates or measures yet. Go to &quot;Ballot&quot; to decide what to vote for.</EmptyBallotText>
+                            <Button
+                              classes={{ root: classes.ballotButtonRoot }}
+                              color="primary"
+                              variant="contained"
+                              onClick={() => historyPush('/ballot')}
+                            >
+                              <BallotIcon classes={{ root: classes.ballotButtonIconRoot }} />
+                              Go to Ballot
+                            </Button>
+                          </EmptyBallotMessageContainer>
+                        </Card>
+                      </div>
+                    )
+                    }
+                  </div>
 
-                {/* Right column */}
-                <div className="col-lg-4 d-none d-lg-block sidebar-menu">
-                  <Card>
-                    <PollingLocationContainer>
-                      <FindPollingLocation />
-                    </PollingLocationContainer>
-                  </Card>
+                  {/* Right column */}
+                  <div className="col-lg-4 d-none d-lg-block sidebar-menu">
+                    <Card>
+                      <PollingLocationContainer>
+                        <FindPollingLocation />
+                      </PollingLocationContainer>
+                    </Card>
+                  </div>
                 </div>
-              </div>
-            </Wrapper>
+              </Wrapper>
+            </div>
           </div>
-        </div>
-      </VoteContainer>
+        </VoteContainer>
+      </div>
     );
   }
 }
@@ -545,7 +546,6 @@ const VoteContainer = styled.div`
 `;
 
 const Wrapper = styled.div`
-  padding-top: ${({ cordova }) => (cordova ? '100px' : 0)};
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     margin: 1em 0;
   }
