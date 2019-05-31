@@ -173,11 +173,9 @@ const Flex = styled.div`
 const BallotCommentContainer = styled.div`
   width: fit-content;
   margin-top: 8px;
+  width: 100%;
   @media (max-width : ${({ theme }) => theme.breakpoints.sm}) {
     padding-top: 8px;
-  }
-  @media (max-width : ${({ theme }) => theme.breakpoints.md}) {
-    width: 100%;
   }
   > * {
     padding: 0;
