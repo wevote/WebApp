@@ -172,19 +172,17 @@ class BallotItemSupportOpposeComment extends PureComponent {
     );
 
     const commentDisplayDesktop = showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText || this.state.showPositionStatement ? (
-      <div className="d-none d-sm-block o-media-object u-flex-auto u-min-50 u-push--sm u-stack--sm">
-        <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
-          <ItemPositionStatementActionBar
-            ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
-            ballotItemDisplayName={this.state.ballotItemDisplayName}
-            comment_edit_mode_on={this.state.showPositionStatement}
-            supportProps={this.state.ballotItemSupportProps}
-            shouldFocus={this.state.shouldFocusCommentArea}
-            transitioning={this.state.transitioning}
-            type={this.state.ballotItemType}
-            shown_in_list
-          />
-        </div>
+      <div className="d-none d-sm-block u-min-50 u-stack--sm u-push--xs">
+        <ItemPositionStatementActionBar
+          ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
+          ballotItemDisplayName={this.state.ballotItemDisplayName}
+          comment_edit_mode_on={this.state.showPositionStatement}
+          supportProps={this.state.ballotItemSupportProps}
+          shouldFocus={this.state.shouldFocusCommentArea}
+          transitioning={this.state.transitioning}
+          type={this.state.ballotItemType}
+          shown_in_list
+        />
       </div>
     ) :
       null;

@@ -1,20 +1,24 @@
 // This file is flooded with non-camel case, so don't flag for now, in order to find more important issues
 // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import Button from '@material-ui/core/Button';
+import styled from 'styled-components';
+import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import ReactPlayer from 'react-player';
-import Textarea from 'react-textarea-autosize';
+// import ReactPlayer from 'react-player';
+// import Textarea from 'react-textarea-autosize';
+import Paper from '@material-ui/core/Paper';
+import InputBase from '@material-ui/core/InputBase';
 import { cordovaDot, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import ReadMore from './ReadMore';
+// import ReadMore from './ReadMore';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 import { vimeoRegX, youTubeRegX, stringContains } from '../../utils/textFormat';
 
 
-export default class ItemPositionStatementActionBar extends Component {
+class ItemPositionStatementActionBar extends Component {
   static propTypes = {
     ballot_item_we_vote_id: PropTypes.string.isRequired,
     // ballotItemDisplayName: PropTypes.string,
@@ -23,6 +27,7 @@ export default class ItemPositionStatementActionBar extends Component {
     supportProps: PropTypes.object,
     shown_in_list: PropTypes.bool,
     shouldFocus: PropTypes.bool,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -33,6 +38,7 @@ export default class ItemPositionStatementActionBar extends Component {
       supportProps: undefined,
       statementTextToBeSaved: undefined,
       voterPhotoUrlMedium: '',
+      // disabled: undefined,
     };
     this.updateStatementTextToBeSaved = this.updateStatementTextToBeSaved.bind(this);
   }
@@ -51,6 +57,7 @@ export default class ItemPositionStatementActionBar extends Component {
 
     this.setState({
       showEditPositionStatementInput: this.props.comment_edit_mode_on,
+      // disabled: !this.props.comment_edit_mode_on,
       voterFullName: VoterStore.getFullName(),
       voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
       voterPhotoUrlMedium: VoterStore.getVoterPhotoUrlMedium(),
@@ -71,12 +78,14 @@ export default class ItemPositionStatementActionBar extends Component {
       this.setState({
         statementTextToBeSaved: nextProps.supportProps.voter_statement_text,
         showEditPositionStatementInput: false,
+        // disabled: true,
       });
     } else {
       const voterStatementText = (nextProps.supportProps && nextProps.supportProps.voter_statement_text) || '';
       this.setState({
         statementTextToBeSaved: voterStatementText,
         showEditPositionStatementInput: nextProps.comment_edit_mode_on,
+        // disabled: !nextProps.comment_edit_mode_on,
       });
     }
   }
@@ -149,6 +158,7 @@ export default class ItemPositionStatementActionBar extends Component {
     this.setState({
       statementTextToBeSaved: e.target.value,
       showEditPositionStatementInput: true,
+      // disabled: false,
     });
   }
 
@@ -161,11 +171,11 @@ export default class ItemPositionStatementActionBar extends Component {
   }
 
   closeEditPositionStatementInput () {
-    this.setState({ showEditPositionStatementInput: false });
+    this.setState({ showEditPositionStatementInput: false/*,  disabled: true */ });
   }
 
   openEditPositionStatementInput () {
-    this.setState({ showEditPositionStatementInput: true });
+    this.setState({ showEditPositionStatementInput: true /*, disabled: false */ });
   }
 
   render () {
@@ -173,6 +183,8 @@ export default class ItemPositionStatementActionBar extends Component {
     if (this.state.supportProps === undefined) {
       return <div />;
     }
+
+    const { classes } = this.props;
 
     let { statementTextToBeSaved } = this.state;
     const { voterFullName, voterPhotoUrlMedium } = this.state;
@@ -219,6 +231,7 @@ export default class ItemPositionStatementActionBar extends Component {
 
     const noStatementText = !(statementTextToBeSaved !== null && statementTextToBeSaved.length);
     const editMode = this.state.showEditPositionStatementInput || noStatementText;
+
     const onSavePositionStatementClick = this.state.showEditPositionStatementInput ? this.closeEditPositionStatementInput.bind(this) : this.openEditPositionStatementInput.bind(this);
     const onKeyDown = (e) => {
       const enterAndSpaceKeyCodes = [13, 32];
@@ -251,95 +264,142 @@ export default class ItemPositionStatementActionBar extends Component {
       <div className={this.props.shown_in_list ? 'position-statement__container__in-list' : 'position-statement__container'}>
         { // Show the edit box (Viewing self)
           editMode ? (
-            <form onSubmit={this.savePositionStatement.bind(this)}>
-              <div className="position-statement d-print-block">
-                { speakerImageUrlHttps ? (
-                  <img className="position-statement__avatar"
-                       src={speakerImageUrlHttps}
-                       width="34px"
-                  />
-                ) :
-                  imagePlaceholder
-                }
-                <span className="position-statement__input-group u-flex u-items-start">
-                  <Textarea onChange={this.updateStatementTextToBeSaved}
-                    name="statementTextToBeSaved"
-                    className="position-statement__input u-push--sm form-control"
-                    minRows={2}
-                    placeholder={statementPlaceholderText}
-                    defaultValue={statementTextToBeSaved}
-                    onFocus={() => prepareForCordovaKeyboard(__filename)}
-                    onBlur={() => restoreStylesAfterCordovaKeyboard(__filename)}
-                    inputRef={(tag) => { this.textarea = tag; }}
-                  />
-                  <div className="u-flex u-flex-column u-justify-between u-items-end">
-                    <Button variant="outline-secondary" size="sm" type="submit">{postButtonText}</Button>
-                  </div>
-                </span>
-              </div>
-            </form>
-          ) : (
-          // Show the comment, but in read-only mode
-            <div className={shortVersion ? 'position-statement--truncated' : 'position-statement'}>
-              { speakerImageUrlHttps ? (
-                <img className="position-statement__avatar"
-                       src={speakerImageUrlHttps}
-                       width="34px"
-                       alt="avatar"
+            <Paper
+              className={classes.root}
+            >
+              <form className={classes.flex} onSubmit={this.savePositionStatement.bind(this)}>
+                <InputBase onChange={this.updateStatementTextToBeSaved}
+                  name="statementTextToBeSaved"
+                  className={classes.input}
+                  minRows={1}
+                  placeholder={statementPlaceholderText}
+                  defaultValue={statementTextToBeSaved}
+                  onFocus={() => prepareForCordovaKeyboard(__filename)}
+                  onBlur={() => restoreStylesAfterCordovaKeyboard(__filename)}
+                  inputRef={(tag) => { this.textarea = tag; }}
+                  multiline
+                  rows={3}
                 />
-              ) :
-                imagePlaceholder
-                }
-              <div className="position-statement__description u-flex u-items-start">
-                <div className="u-flex u-flex-column u-justify-between">
-                  { speakerDisplayName ? (
-                    <span className="u-bold">
-                      {speakerDisplayName}
-                      <br />
-                    </span>
-                  ) : null
-                    }
-                  { statementTextNoUrl ?
-                    <ReadMore text_to_display={statementTextNoUrl} /> :
-                    <ReadMore text_to_display={statementTextToBeSaved} />
-                    }
-                  { videoUrl ?
-                    <ReactPlayer url={`${videoUrl}`} width="300px" height="231px" /> :
-                    null
-                    }
-                  { shortVersion ? (
-                    <span onKeyDown={onKeyDown}
-                            className="position-statement__edit-position-pseudo"
-                            onClick={onSavePositionStatementClick}
-                            title="Edit this position"
-                    />
-                  ) : null
-                    }
-                  <div onKeyDown={onKeyDown}
-                         className="position-statement__edit-position-link"
-                         onClick={onSavePositionStatementClick}
-                         title="Edit this position"
-                  >
-                      Edit
-                  </div>
-                </div>
-                {
-                /*
-                <div className="u-flex u-flex-column u-justify-between u-items-end">
-                  <PositionPublicToggle
-                    ballotItemWeVoteId={this.props.ballot_item_we_vote_id}
-                    type={this.props.type}
-                    supportProps={this.props.supportProps}
-                    className="u-flex-auto u-tr d-print-block"
-                  />
-                </div>
-                */
-                }
-              </div>
-            </div>
+                <PostSaveButton>
+                  <Button variant="contained" color="primary" type="submit" size="small">
+                    {postButtonText}
+                  </Button>
+                </PostSaveButton>
+              </form>
+            </Paper>
+          ) : (
+            <Paper
+              className={[classes.disabled, classes.flex, classes.root]}
+            >
+              <InputBase
+                onKeyDown={onKeyDown}
+                name="statementTextToBeSaved"
+                className={classes.input}
+                minRows={1}
+                placeholder={statementPlaceholderText}
+                defaultValue={statementTextToBeSaved}
+                onFocus={() => prepareForCordovaKeyboard(__filename)}
+                onBlur={() => restoreStylesAfterCordovaKeyboard(__filename)}
+                inputRef={(tag) => { this.textarea = tag; }}
+                multiline
+                disabled
+                rows={3}
+              />
+              <PostSaveButton>
+                <Button variant="contained" color="secondary" onClick={onSavePositionStatementClick} size="small">
+                  Edit
+                </Button>
+              </PostSaveButton>
+            </Paper>
+          // // Show the comment, but in read-only mode
+          //   <div className={shortVersion ? 'position-statement--truncated' : 'position-statement'}>
+          //     { speakerImageUrlHttps ? (
+          //       <img className="position-statement__avatar"
+          //              src={speakerImageUrlHttps}
+          //              width="34px"
+          //              alt="avatar"
+          //       />
+          //     ) :
+          //       imagePlaceholder
+          //       }
+          //     <div className="position-statement__description u-flex u-items-start">
+          //       <div className="u-flex u-flex-column u-justify-between">
+          //         { speakerDisplayName ? (
+          //           <span className="u-bold">
+          //             {speakerDisplayName}
+          //             <br />
+          //           </span>
+          //         ) : null
+          //           }
+          //         { statementTextNoUrl ?
+          //           <ReadMore text_to_display={statementTextNoUrl} /> :
+          //           <ReadMore text_to_display={statementTextToBeSaved} />
+          //           }
+          //         { videoUrl ?
+          //           <ReactPlayer url={`${videoUrl}`} width="300px" height="231px" /> :
+          //           null
+          //           }
+          //         { shortVersion ? (
+          //           <span onKeyDown={onKeyDown}
+          //                   className="position-statement__edit-position-pseudo"
+          //                   onClick={onSavePositionStatementClick}
+          //                   title="Edit this position"
+          //           />
+          //         ) : null
+          //           }
+          //         <div onKeyDown={onKeyDown}
+          //                className="position-statement__edit-position-link"
+          //                onClick={onSavePositionStatementClick}
+          //                title="Edit this position"
+          //         >
+          //             Edit
+          //         </div>
+          //       </div>
+          //       {
+          //       /*
+          //       <div className="u-flex u-flex-column u-justify-between u-items-end">
+          //         <PositionPublicToggle
+          //           ballotItemWeVoteId={this.props.ballot_item_we_vote_id}
+          //           type={this.props.type}
+          //           supportProps={this.props.supportProps}
+          //           className="u-flex-auto u-tr d-print-block"
+          //         />
+          //       </div>
+          //       */
+          //       }
+          //     </div>
+          //   </div>
           )
        }
       </div>
     );
   }
 }
+
+const styles = {
+  root: {
+    boxShadow: 'none',
+    border: '1px solid #333',
+    padding: '8px',
+  },
+  flex: {
+    display: 'flex',
+    width: '100%',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-start',
+  },
+  input: {
+    flex: '1 1 0',
+  },
+  disabled: {
+    background: '#e6e6e6',
+  },
+};
+
+const PostSaveButton = styled.div`
+  width: auto;
+  margin-left: auto;
+  margin-top: auto;
+`;
+
+export default withStyles(styles)(ItemPositionStatementActionBar);
