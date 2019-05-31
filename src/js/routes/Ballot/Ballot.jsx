@@ -903,7 +903,7 @@ class Ballot extends Component {
         ) : null
         */}
         { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this.toggleBallotSummaryModal} /> : null }
-        <div className={`ballot__heading ${ballotHeaderUnpinned ? 'ballot__heading__unpinned' : ''}`}>
+        <div className={`ballot__heading ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`}>
           <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
             <div className="container-fluid">
               <div className="row">
@@ -1012,126 +1012,128 @@ class Ballot extends Component {
         <div className="page-content-container">
           <div className="container-fluid">
             {emptyBallot}
-            <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
-              {/* eslint-disable-next-line no-nested-ternary */}
-              <div className={showBallotDecisionTabs ? 'row ballot__body' : isWebApp() ? 'row ballot__body__no-decision-tabs' : undefined}>
-                <BrowserPushMessage incomingProps={this.props} />
-                {ballotWithItemsFromCompletionFilterType.length > 0 ? (
-                  <BallotStatusMessage
-                    ballotLocationChosen
-                    googleCivicElectionId={this.state.googleCivicElectionId}
-                  />
-                ) : null
-                }
-                <div className="col-sm-12 col-lg-9">
-                  <LocationGuess
-                    toggleSelectBallotModal={this.toggleSelectBallotModal}
-                  />
-                  { inReadyToVoteMode ? (
-                    <div>
-                      <div className="alert alert-success d-print-none">
-                        <a // eslint-disable-line
-                          href="#"
-                          className="close"
-                          data-dismiss="alert"
-                        >
-                          &times;
-                        </a>
-                      We Vote helps you get ready to vote,
-                        {' '}
-                        <strong>but you cannot use We Vote to cast your vote</strong>
-                      .
-                      Make sure to return your official ballot to your polling
-                      place!
-                        <br />
+            <div id="the next styled div is the wrapper in Ballot, that receives the cordova TopPadding">
+              <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
+                {/* eslint-disable-next-line no-nested-ternary */}
+                <div className={showBallotDecisionTabs ? 'row ballot__body' : isWebApp() ? 'row ballot__body__no-decision-tabs' : undefined}>
+                  <BrowserPushMessage incomingProps={this.props} />
+                  {ballotWithItemsFromCompletionFilterType.length > 0 ? (
+                    <BallotStatusMessage
+                      ballotLocationChosen
+                      googleCivicElectionId={this.state.googleCivicElectionId}
+                    />
+                  ) : null
+                  }
+                  <div className="col-sm-12 col-lg-9">
+                    <LocationGuess
+                      toggleSelectBallotModal={this.toggleSelectBallotModal}
+                    />
+                    { inReadyToVoteMode ? (
+                      <div>
+                        <div className="alert alert-success d-print-none">
+                          <a // eslint-disable-line
+                            href="#"
+                            className="close"
+                            data-dismiss="alert"
+                          >
+                            &times;
+                          </a>
+                        We Vote helps you get ready to vote,
+                          {' '}
+                          <strong>but you cannot use We Vote to cast your vote</strong>
+                        .
+                        Make sure to return your official ballot to your polling
+                        place!
+                          <br />
+                          <OpenExternalWebSite
+                          url="https://help.wevote.us/hc/en-us/articles/115002401353-Can-I-cast-my-vote-with-We-Vote-"
+                          target="_blank"
+                          body="See more information about casting your official vote."
+                          />
+                        </div>
+                        <div className={isWebApp() ? 'BallotList' : 'BallotList__cordova'}>
+                          {ballotWithItemsFromCompletionFilterType.map(item => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
+                        </div>
+                      </div>
+                    ) : (
+                      <div>
+                        {/* The rest of the ballot items */}
+                        <div className={isWebApp() ? 'BallotList' : 'BallotList__cordova'}>
+                          {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => {
+                            // Ballot limited by items by race_office_level = (Federal, State, Local) or kind_of_ballot_item = (Measure)
+                            if ((raceLevelFilterType === 'All' || (isSearching && ballotSearchResults.length) ||
+                              (item.kind_of_ballot_item === raceLevelFilterType.toUpperCase()) ||
+                              raceLevelFilterType === item.race_office_level)) {
+                              return (
+                                <BallotItemCompressed
+                                  currentBallotIdInUrl={this.props.location.hash.slice(1)}
+                                  key={item.we_vote_id}
+                                  updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
+                                  allBallotItemsCount={ballotWithItemsFromCompletionFilterType.length}
+                                  urlWithoutHash={this.props.location.pathname + this.props.location.search}
+                                  ref={(ref) => { this.ballotItems[item.we_vote_id] = ref; }}
+                                  {...item}
+                                />
+                              );
+                            } else {
+                              return null;
+                            }
+                          })
+                          }
+                          {
+                          doubleFilteredBallotItemsLength === 0 &&
+                          this.showUserEmptyOptions()
+                        }
+                        </div>
+                        {
+                          this.state.showSelectBallotModal ? (
+                            <SelectBallotModal
+                              ballotElectionList={this.state.ballotElectionList}
+                              ballotBaseUrl={ballotBaseUrl}
+                              location={this.props.location}
+                              pathname={this.props.pathname}
+                              show={this.state.showSelectBallotModal}
+                              toggleFunction={this.toggleSelectBallotModal}
+                            />
+                          ) : null
+                        }
+                      </div>
+                    )}
+                    {/* Show links to this candidate in the admin tools */}
+                    { (this.state.voter && sourcePollingLocationWeVoteId) && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ? (
+                      <span className="u-wrap-links d-print-none">
+                        <span>Admin:</span>
                         <OpenExternalWebSite
-                        url="https://help.wevote.us/hc/en-us/articles/115002401353-Can-I-cast-my-vote-with-We-Vote-"
+                        url={ballotReturnedAdminEditUrl}
                         target="_blank"
-                        body="See more information about casting your official vote."
+                        body={(
+                          <span>
+                            Ballot copied from polling location &quot;
+                            {sourcePollingLocationWeVoteId}
+                            &quot;
+                          </span>
+                        )}
+                        />
+                      </span>
+                    ) : null
+                  }
+                  </div>
+
+                  { ballotWithItemsFromCompletionFilterType.length === 0 || isCordova() ?
+                    null : (
+                      <div className="col-lg-3 d-none d-lg-block sidebar-menu">
+                        <BallotSideBar
+                        displayTitle
+                        displaySubtitles
+                        rawUrlVariablesString={this.props.location.search}
+                        ballotWithAllItemsByFilterType={this.state.ballotWithItemsFromCompletionFilterType}
+                        ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
                         />
                       </div>
-                      <div className={isWebApp() ? 'BallotList' : 'BallotList__cordova'}>
-                        {ballotWithItemsFromCompletionFilterType.map(item => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
-                      </div>
-                    </div>
-                  ) : (
-                    <div>
-                      {/* The rest of the ballot items */}
-                      <div className={isWebApp() ? 'BallotList' : 'BallotList__cordova'}>
-                        {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => {
-                          // Ballot limited by items by race_office_level = (Federal, State, Local) or kind_of_ballot_item = (Measure)
-                          if ((raceLevelFilterType === 'All' || (isSearching && ballotSearchResults.length) ||
-                            (item.kind_of_ballot_item === raceLevelFilterType.toUpperCase()) ||
-                            raceLevelFilterType === item.race_office_level)) {
-                            return (
-                              <BallotItemCompressed
-                                currentBallotIdInUrl={this.props.location.hash.slice(1)}
-                                key={item.we_vote_id}
-                                updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
-                                allBallotItemsCount={ballotWithItemsFromCompletionFilterType.length}
-                                urlWithoutHash={this.props.location.pathname + this.props.location.search}
-                                ref={(ref) => { this.ballotItems[item.we_vote_id] = ref; }}
-                                {...item}
-                              />
-                            );
-                          } else {
-                            return null;
-                          }
-                        })
-                        }
-                        {
-                        doubleFilteredBallotItemsLength === 0 &&
-                        this.showUserEmptyOptions()
-                      }
-                      </div>
-                      {
-                        this.state.showSelectBallotModal ? (
-                          <SelectBallotModal
-                            ballotElectionList={this.state.ballotElectionList}
-                            ballotBaseUrl={ballotBaseUrl}
-                            location={this.props.location}
-                            pathname={this.props.pathname}
-                            show={this.state.showSelectBallotModal}
-                            toggleFunction={this.toggleSelectBallotModal}
-                          />
-                        ) : null
-                      }
-                    </div>
-                  )}
-                  {/* Show links to this candidate in the admin tools */}
-                  { (this.state.voter && sourcePollingLocationWeVoteId) && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ? (
-                    <span className="u-wrap-links d-print-none">
-                      <span>Admin:</span>
-                      <OpenExternalWebSite
-                      url={ballotReturnedAdminEditUrl}
-                      target="_blank"
-                      body={(
-                        <span>
-                          Ballot copied from polling location &quot;
-                          {sourcePollingLocationWeVoteId}
-                          &quot;
-                        </span>
-                      )}
-                      />
-                    </span>
-                  ) : null
-                }
+                    )}
                 </div>
-
-                { ballotWithItemsFromCompletionFilterType.length === 0 || isCordova() ?
-                  null : (
-                    <div className="col-lg-3 d-none d-lg-block sidebar-menu">
-                      <BallotSideBar
-                      displayTitle
-                      displaySubtitles
-                      rawUrlVariablesString={this.props.location.search}
-                      ballotWithAllItemsByFilterType={this.state.ballotWithItemsFromCompletionFilterType}
-                      ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
-                      />
-                    </div>
-                  )}
-              </div>
-            </Wrapper>
+              </Wrapper>
+            </div>
           </div>
         </div>
       </div>
