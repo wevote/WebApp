@@ -176,6 +176,9 @@ const BallotCommentContainer = styled.div`
   @media (max-width : ${({ theme }) => theme.breakpoints.sm}) {
     padding-top: 8px;
   }
+  @media (max-width : ${({ theme }) => theme.breakpoints.md}) {
+    width: 100%;
+  }
   > * {
     padding: 0;
   }
