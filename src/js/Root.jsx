@@ -44,7 +44,7 @@ import OrganizationVoterGuideCandidate from './routes/VoterGuide/OrganizationVot
 import OrganizationVoterGuideEdit from './routes/VoterGuide/OrganizationVoterGuideEdit';
 import OrganizationVoterGuideMeasure from './routes/VoterGuide/OrganizationVoterGuideMeasure';
 import OrganizationVoterGuideOffice from './routes/VoterGuide/OrganizationVoterGuideOffice';
-import PollingPlaceLocatorModal from './routes/Ballot/PollingPlaceLocatorModal';
+import PollingPlaceLocatorModal from './routes/Vote/PollingPlaceLocatorModal';
 import Pricing from './routes/More/Pricing';
 import Privacy from './routes/More/Privacy';
 import ProcessingDonation from './routes/More/ProcessingDonation';

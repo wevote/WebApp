@@ -7,7 +7,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import BallotIcon from '@material-ui/icons/Ballot';
 import Button from '@material-ui/core/Button';
-import AddEndorsements from '../components/Widgets/AddEndorsements';
 import BallotActions from '../actions/BallotActions';
 import BallotSearch from '../components/Ballot/BallotSearch';
 import BallotStore from '../stores/BallotStore';
@@ -18,6 +17,7 @@ import {
   historyPush, isCordova, isWebApp,
 } from '../utils/cordovaUtils';
 import ElectionActions from '../actions/ElectionActions';
+import FindPollingLocation from '../components/Vote/FindPollingLocation';
 import IssueActions from '../actions/IssueActions';
 import IssueStore from '../stores/IssueStore';
 import OrganizationActions from '../actions/OrganizationActions';
@@ -29,7 +29,7 @@ import VoterGuideStore from '../stores/VoterGuideStore';
 import AppStore from '../stores/AppStore';
 import VoterStore from '../stores/VoterStore';
 import ReturnOfficialBallot from '../components/Vote/ReturnOfficialBallot';
-import BallotItemReadyToVote from '../components/Ballot/BallotItemReadyToVote';
+import BallotItemReadyToVote from '../components/Vote/BallotItemReadyToVote';
 
 
 class Vote extends Component {
@@ -421,7 +421,7 @@ class Vote extends Component {
 
     return (
       <VoteContainer>
-        <div className={`ballot__heading ${ballotHeaderUnpinned ? 'ballot__heading__unpinned' : ''}`}>
+        <div className={`ballot__heading-vote-section ${ballotHeaderUnpinned ? 'ballot__heading__unpinned' : ''}`}>
           <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
             <div className="container-fluid">
               <div className="row">
@@ -473,40 +473,58 @@ class Vote extends Component {
               <div className="row ballot__body__ready-to-vote">
                 <BrowserPushMessage incomingProps={this.props} />
                 <div className="col-sm-12 col-lg-8">
-                  <div className="u-show-mobile-tablet">
-                    <AddEndorsements />
-                  </div>
                   {ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length ? (
+                    <Card>
+                      <TitleContainer>
+                        <TitleText>Your Choices</TitleText>
+                      </TitleContainer>
+                      <div className="u-show-mobile-tablet">
+                        <PollingLocationContainer>
+                          <FindPollingLocation />
+                        </PollingLocationContainer>
+                      </div>
+                      <ReturnOfficialBallotContainer>
+                        <ReturnOfficialBallot />
+                      </ReturnOfficialBallotContainer>
+                      {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map(item => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
+                    </Card>
+                  ) : /* No items decided */ (
                     <div>
-                      <ReturnOfficialBallot />
-                      <TitleText>Your Choices</TitleText>
+                      <div className="u-show-mobile-tablet">
+                        <Card>
+                          <PollingLocationContainer>
+                            <FindPollingLocation />
+                          </PollingLocationContainer>
+                        </Card>
+                        <CardGap />
+                      </div>
                       <Card>
-                        {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map(item => <BallotItemReadyToVote key={item.we_vote_id} {...item} />)}
+                        <EmptyBallotMessageContainer>
+                          <BallotIcon classes={{ root: classes.ballotIconRoot }} />
+                          <EmptyBallotText>You haven&apos;t chosen any candidates or measures yet. Go to &quot;Ballot&quot; to decide what to vote for.</EmptyBallotText>
+                          <Button
+                            classes={{ root: classes.ballotButtonRoot }}
+                            color="primary"
+                            variant="contained"
+                            onClick={() => historyPush('/ballot')}
+                          >
+                            <BallotIcon classes={{ root: classes.ballotButtonIconRoot }} />
+                            Go to Ballot
+                          </Button>
+                        </EmptyBallotMessageContainer>
                       </Card>
                     </div>
-                  ) : /* No items decided */ (
-                    <Card>
-                      <EmptyBallotMessageContainer>
-                        <BallotIcon classes={{ root: classes.ballotIconRoot }} />
-                        <EmptyBallotText>You haven&apos;t chosen any candidates or measures yet. Go to &quot;Ballot&quot; to decide what to vote for.</EmptyBallotText>
-                        <Button
-                          classes={{ root: classes.ballotButtonRoot }}
-                          color="primary"
-                          variant="contained"
-                          onClick={() => historyPush('/ballot')}
-                        >
-                          <BallotIcon classes={{ root: classes.ballotButtonIconRoot }} />
-                          Go to &quot;Ballot&quot;
-                        </Button>
-                      </EmptyBallotMessageContainer>
-                    </Card>
                   )
                   }
                 </div>
 
                 {/* Right column */}
                 <div className="col-lg-4 d-none d-lg-block sidebar-menu">
-                  <AddEndorsements />
+                  <Card>
+                    <PollingLocationContainer>
+                      <FindPollingLocation />
+                    </PollingLocationContainer>
+                  </Card>
                 </div>
               </div>
             </Wrapper>
@@ -533,9 +551,19 @@ const Wrapper = styled.div`
   }
 `;
 
+const TitleContainer = styled.div`
+  padding: 1em 1em 0 1em;
+  align-items: center;
+`;
+
 const TitleText = styled.h3`
   font-weight: bold;
-  font-size: 24px;
+  font-size: 18px;
+`;
+
+const ReturnOfficialBallotContainer = styled.div`
+  padding: 0 1em 0 1em;
+  align-items: center;
 `;
 
 // If we want to turn off filter tabs navigation bar:  ${({ showFilterTabs }) => !showFilterTabs && 'height: 0;'}
@@ -557,6 +585,15 @@ const EmptyBallotText = styled.p`
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     margin: 1em;
   }
+`;
+
+const PollingLocationContainer = styled.div`
+  padding: 1em 1em;
+  align-items: center;
+`;
+
+const CardGap = styled.div`
+  padding: 15px;
 `;
 
 const styles = theme => ({

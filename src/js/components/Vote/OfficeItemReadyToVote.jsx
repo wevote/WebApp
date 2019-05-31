@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Avatar from '@material-ui/core/Avatar';
+import Avatar from '@material-ui/core/Avatar/index';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
-import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
+import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import SupportStore from '../../stores/SupportStore';
@@ -12,16 +12,13 @@ import { Wrapper, InnerWrapper, BioColumn, OfficeColumn, OfficeText, BioInformat
 
 class OfficeItemReadyToVote extends Component {
   static propTypes = {
-    // ballot_item_display_name: PropTypes.string.isRequired,
-    candidate_list: PropTypes.array,
-    weVoteId: PropTypes.string,
+    candidateList: PropTypes.array,
   };
 
   constructor (props) {
     super(props);
     this.state = {
     };
-    this.getOfficeLink = this.getOfficeLink.bind(this);
   }
 
   componentDidMount () {
@@ -46,10 +43,6 @@ class OfficeItemReadyToVote extends Component {
     this.setState();
   }
 
-  getOfficeLink () {
-    return `/office/${this.props.weVoteId}/`;
-  }
-
   render () {
     renderLog(__filename);
     const isSupportArray = [];
@@ -58,7 +51,7 @@ class OfficeItemReadyToVote extends Component {
 
     // ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
 
-    this.props.candidate_list.forEach((candidate) => {
+    this.props.candidateList.forEach((candidate) => {
       supportProps = SupportStore.get(candidate.we_vote_id);
       if (supportProps) {
         isSupport = supportProps.is_support;
@@ -77,7 +70,7 @@ class OfficeItemReadyToVote extends Component {
       let networkSupportCount;
       let networkOpposeCount;
 
-      this.props.candidate_list.forEach((candidate) => {
+      this.props.candidateList.forEach((candidate) => {
         supportProps = SupportStore.get(candidate.we_vote_id);
         if (supportProps) {
           networkSupportCount = supportProps.support_count;
@@ -93,8 +86,8 @@ class OfficeItemReadyToVote extends Component {
     }
     return (
       <React.Fragment>
-        <Wrapper onClick={() => historyPush(this.getOfficeLink())}>
-          { this.props.candidate_list.map(oneCandidate => (
+        <Wrapper>
+          { this.props.candidateList.map(oneCandidate => (
             <React.Fragment key={oneCandidate.we_vote_id}>
               { SupportStore.get(oneCandidate.we_vote_id) && SupportStore.get(oneCandidate.we_vote_id).is_support && (  // eslint-disable-line no-nested-ternary
                 <InnerWrapper>

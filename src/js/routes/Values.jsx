@@ -78,10 +78,13 @@ export default class Values extends Component {
 
     return (
       <span>
-        <Helmet title="Your Network - We Vote" />
+        <Helmet title="Values, Public Figures & Organizations - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
         <div className="row">
           <div className="col-sm-12 col-md-8">
+            {valuesBlockToDisplay}
+            {publicFiguresBlockToDisplay}
+            {organizationsBlockToDisplay}
             <div className="d-md-none d-block">
               <div className="card">
                 <div className="card-main">
@@ -93,9 +96,6 @@ export default class Values extends Component {
                 </div>
               </div>
             </div>
-            {valuesBlockToDisplay}
-            {publicFiguresBlockToDisplay}
-            {organizationsBlockToDisplay}
           </div>
           <div className="col-md-4 d-none d-md-block">
             <div className="card">

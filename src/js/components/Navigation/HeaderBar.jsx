@@ -163,7 +163,7 @@ class HeaderBar extends Component {
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    if (stringContains('/ballot/vote', pathname)) return 3;
+    if (stringContains('/ballot/vote', pathname)) return 2; // DALE: FRIENDS TEMPORARILY DISABLED - Switch back to "3"
     if (pathname && pathname.startsWith('/ballot')) return 0;
     if (stringContains('/value', pathname)) return 1; // '/values'
     // if (stringContains('/friends', pathname)) return 2; // DALE: FRIENDS TEMPORARILY DISABLED
