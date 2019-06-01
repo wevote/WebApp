@@ -5,23 +5,19 @@ import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-// import ReactPlayer from 'react-player';
-// import Textarea from 'react-textarea-autosize';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
-import { cordovaDot, prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
+import { prepareForCordovaKeyboard, restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-// import ReadMore from './ReadMore';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
-import { vimeoRegX, youTubeRegX, stringContains } from '../../utils/textFormat';
 
 
 class ItemPositionStatementActionBar extends Component {
   static propTypes = {
     ballot_item_we_vote_id: PropTypes.string.isRequired,
-    // ballotItemDisplayName: PropTypes.string,
+    ballotItemDisplayName: PropTypes.string,
     type: PropTypes.string.isRequired,
     comment_edit_mode_on: PropTypes.bool,
     supportProps: PropTypes.object,
@@ -38,7 +34,6 @@ class ItemPositionStatementActionBar extends Component {
       showEditPositionStatementInput: undefined,
       supportProps: undefined,
       statementTextToBeSaved: undefined,
-      voterPhotoUrlMedium: '',
       // disabled: undefined,
       commentActive: false,
     };
@@ -62,9 +57,7 @@ class ItemPositionStatementActionBar extends Component {
     this.setState({
       showEditPositionStatementInput: this.props.comment_edit_mode_on,
       // disabled: !this.props.comment_edit_mode_on,
-      voterFullName: VoterStore.getFullName(),
       voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
-      voterPhotoUrlMedium: VoterStore.getVoterPhotoUrlMedium(),
     });
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -147,15 +140,8 @@ class ItemPositionStatementActionBar extends Component {
 
   onVoterStoreChange () {
     this.setState({
-      voterFullName: VoterStore.getFullName(),
       voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
-      voterPhotoUrlMedium: VoterStore.getVoterPhotoUrlMedium(),
     });
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('ItemPositionStatementActionBar caught error: ', `${error} with info: `, info);
   }
 
   updateStatementTextToBeSaved (e) {
@@ -174,12 +160,17 @@ class ItemPositionStatementActionBar extends Component {
     }
   }
 
-  closeEditPositionStatementInput () {
-    this.setState({ showEditPositionStatementInput: false/*,  disabled: true */ });
+  closeEditPositionStatementInput = () => {
+    this.setState({ showEditPositionStatementInput: false/* ,  disabled: true */ });
   }
 
-  openEditPositionStatementInput () {
-    this.setState({ showEditPositionStatementInput: true /*, disabled: false */ });
+  openEditPositionStatementInput = () => {
+    this.setState({ showEditPositionStatementInput: true /* , disabled: false */ });
+  }
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('ItemPositionStatementActionBar caught error: ', `${error} with info: `, info);
   }
 
   render () {
@@ -201,12 +192,10 @@ class ItemPositionStatementActionBar extends Component {
     }
 
     let { statementTextToBeSaved } = this.state;
-    const { voterFullName, voterPhotoUrlMedium } = this.state;
     statementTextToBeSaved = statementTextToBeSaved.length === 0 ? null : statementTextToBeSaved;
     const horizontalEllipsis = '\u2026';
-    const statementPlaceholderText = `Your thoughts${horizontalEllipsis}`;
+    let statementPlaceholderText = `Your thoughts${horizontalEllipsis}`;
 
-    /*
     if (this.state.supportProps.is_support) {
       if (this.props.ballotItemDisplayName) {
         statementPlaceholderText = `Why you chose ${this.props.ballotItemDisplayName}${horizontalEllipsis}`;
@@ -224,7 +213,6 @@ class ItemPositionStatementActionBar extends Component {
     } else {
       statementPlaceholderText = `Your thoughts${horizontalEllipsis}`;
     }
-    */
 
     // Currently this "Post" text is the same given we display the visibility setting, but we may want to change this
     //  here if the near by visibility setting text changes
@@ -236,7 +224,7 @@ class ItemPositionStatementActionBar extends Component {
     }
 
     const onBlurInput = () => {
-      console.log('Setting commentActive to false');
+      // console.log('Setting commentActive to false');
 
       restoreStylesAfterCordovaKeyboard(__filename);
 
@@ -244,25 +232,17 @@ class ItemPositionStatementActionBar extends Component {
     };
 
     const onFocusInput = () => {
-      console.log('Setting commentActive to true');
+      // console.log('Setting commentActive to true');
 
       prepareForCordovaKeyboard(__filename);
 
       this.setState({ commentActive: true });
     };
 
-    const speakerImageUrlHttps = voterPhotoUrlMedium;
-    const speakerDisplayName = stringContains('Voter-', voterFullName) ? '' : voterFullName;
-    const imagePlaceholder = <span className="position-statement__avatar"><img src={cordovaDot('/img/global/svg-icons/avatar-generic.svg')} width="34" height="34" color="#c0c0c0" alt="generic voter" /></span>;
-
-    // The short version can be used to cut-off an exceedingly long comment. This applies to entries by the viewer,
-    //  for viewing by him or herself. Not used currently.
-    const shortVersion = false;
-
     const noStatementText = !(statementTextToBeSaved !== null && statementTextToBeSaved.length);
     const editMode = this.state.showEditPositionStatementInput || noStatementText;
 
-    const onSavePositionStatementClick = this.state.showEditPositionStatementInput ? this.closeEditPositionStatementInput.bind(this) : this.openEditPositionStatementInput.bind(this);
+    const onSavePositionStatementClick = this.state.showEditPositionStatementInput ? this.closeEditPositionStatementInput : this.openEditPositionStatementInput;
     const onKeyDown = (e) => {
       const enterAndSpaceKeyCodes = [13, 32];
       if (enterAndSpaceKeyCodes.includes(e.keyCode)) {
@@ -270,25 +250,25 @@ class ItemPositionStatementActionBar extends Component {
       }
     };
 
-    let videoUrl = '';
-    let statementTextNoUrl = null;
-    let youTubeUrl;
-    let vimeoUrl;
-
-    if (statementTextToBeSaved) {
-      youTubeUrl = statementTextToBeSaved.match(youTubeRegX);
-      vimeoUrl = statementTextToBeSaved.match(vimeoRegX);
-    }
-
-    if (youTubeUrl) {
-      [videoUrl] = youTubeUrl;
-      statementTextNoUrl = statementTextToBeSaved.replace(videoUrl, '');
-    }
-
-    if (vimeoUrl) {
-      [videoUrl] = vimeoUrl;
-      statementTextNoUrl = statementTextToBeSaved.replace(videoUrl, '');
-    }
+    // let videoUrl = '';
+    // let statementTextNoUrl = null;
+    // let youTubeUrl;
+    // let vimeoUrl;
+    //
+    // if (statementTextToBeSaved) {
+    //   youTubeUrl = statementTextToBeSaved.match(youTubeRegX);
+    //   vimeoUrl = statementTextToBeSaved.match(vimeoRegX);
+    // }
+    //
+    // if (youTubeUrl) {
+    //   [videoUrl] = youTubeUrl;
+    //   statementTextNoUrl = statementTextToBeSaved.replace(videoUrl, '');
+    // }
+    //
+    // if (vimeoUrl) {
+    //   [videoUrl] = vimeoUrl;
+    //   statementTextNoUrl = statementTextToBeSaved.replace(videoUrl, '');
+    // }
 
     return (
       <div className={this.props.shown_in_list ? 'position-statement__container__in-list' : 'position-statement__container'}>
@@ -336,69 +316,17 @@ class ItemPositionStatementActionBar extends Component {
                 rows={2}
               />
               <PostSaveButton>
-                <Button variant="outlined" color="primary" classes={{ outlinedPrimary: classes.buttonOutlinedPrimary }} onClick={onSavePositionStatementClick} size="small">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  classes={{ outlinedPrimary: classes.buttonOutlinedPrimary }}
+                  onClick={onSavePositionStatementClick}
+                  size="small"
+                >
                   Edit
                 </Button>
               </PostSaveButton>
             </Paper>
-          // // Show the comment, but in read-only mode
-          //   <div className={shortVersion ? 'position-statement--truncated' : 'position-statement'}>
-          //     { speakerImageUrlHttps ? (
-          //       <img className="position-statement__avatar"
-          //              src={speakerImageUrlHttps}
-          //              width="34px"
-          //              alt="avatar"
-          //       />
-          //     ) :
-          //       imagePlaceholder
-          //       }
-          //     <div className="position-statement__description u-flex u-items-start">
-          //       <div className="u-flex u-flex-column u-justify-between">
-          //         { speakerDisplayName ? (
-          //           <span className="u-bold">
-          //             {speakerDisplayName}
-          //             <br />
-          //           </span>
-          //         ) : null
-          //           }
-          //         { statementTextNoUrl ?
-          //           <ReadMore text_to_display={statementTextNoUrl} /> :
-          //           <ReadMore text_to_display={statementTextToBeSaved} />
-          //           }
-          //         { videoUrl ?
-          //           <ReactPlayer url={`${videoUrl}`} width="300px" height="231px" /> :
-          //           null
-          //           }
-          //         { shortVersion ? (
-          //           <span onKeyDown={onKeyDown}
-          //                   className="position-statement__edit-position-pseudo"
-          //                   onClick={onSavePositionStatementClick}
-          //                   title="Edit this position"
-          //           />
-          //         ) : null
-          //           }
-          //         <div onKeyDown={onKeyDown}
-          //                className="position-statement__edit-position-link"
-          //                onClick={onSavePositionStatementClick}
-          //                title="Edit this position"
-          //         >
-          //             Edit
-          //         </div>
-          //       </div>
-          //       {
-          //       /*
-          //       <div className="u-flex u-flex-column u-justify-between u-items-end">
-          //         <PositionPublicToggle
-          //           ballotItemWeVoteId={this.props.ballot_item_we_vote_id}
-          //           type={this.props.type}
-          //           supportProps={this.props.supportProps}
-          //           className="u-flex-auto u-tr d-print-block"
-          //         />
-          //       </div>
-          //       */
-          //       }
-          //     </div>
-          //   </div>
           )
        }
       </div>

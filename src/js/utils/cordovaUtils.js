@@ -225,7 +225,7 @@ export function getAndroidSize () {
 // renders approximately as ...  <div class="sc-ifAKCX kFFaGy">
 export function cordovaScrollablePaneTopPadding (filePath) {
   const fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
-  console.log("STEVE cordovaScrollablePaneTopPadding: ", fileName);
+  console.log('STEVE cordovaScrollablePaneTopPadding: ', fileName);
   if (isIOS()) {
     if (isIPad() || isIPhone678Plus()) {
       if (window.location.href.indexOf('/index.html#/wevoteintro/') > 0) {
