@@ -40,8 +40,11 @@ class ItemPositionStatementActionBar extends Component {
       statementTextToBeSaved: undefined,
       voterPhotoUrlMedium: '',
       // disabled: undefined,
+      commentActive: false,
     };
     this.updateStatementTextToBeSaved = this.updateStatementTextToBeSaved.bind(this);
+    // this.onFocusInput = this.onFocusInput.bind(this);
+    // this.onBlurInput = this.onBlurInput.bind(this);
   }
 
   componentDidMount () {
@@ -187,6 +190,16 @@ class ItemPositionStatementActionBar extends Component {
 
     const { classes } = this.props;
 
+    let rows = 1;
+
+    if (this.state.commentActive && this.props.mobile) {
+      rows = 4;
+    } else if (this.state.commentActive && !this.props.mobile) {
+      rows = 5;
+    } else if (!this.state.commentActive && !this.props.mobile) {
+      rows = 3;
+    }
+
     let { statementTextToBeSaved } = this.state;
     const { voterFullName, voterPhotoUrlMedium } = this.state;
     statementTextToBeSaved = statementTextToBeSaved.length === 0 ? null : statementTextToBeSaved;
@@ -221,6 +234,22 @@ class ItemPositionStatementActionBar extends Component {
         postButtonText = 'Post';
       }
     }
+
+    const onBlurInput = () => {
+      console.log('Setting commentActive to false');
+
+      restoreStylesAfterCordovaKeyboard(__filename);
+
+      this.setState({ commentActive: false });
+    };
+
+    const onFocusInput = () => {
+      console.log('Setting commentActive to true');
+
+      prepareForCordovaKeyboard(__filename);
+
+      this.setState({ commentActive: true });
+    };
 
     const speakerImageUrlHttps = voterPhotoUrlMedium;
     const speakerDisplayName = stringContains('Voter-', voterFullName) ? '' : voterFullName;
@@ -275,11 +304,11 @@ class ItemPositionStatementActionBar extends Component {
                   minRows={1}
                   placeholder={statementPlaceholderText}
                   defaultValue={statementTextToBeSaved}
-                  onFocus={() => prepareForCordovaKeyboard(__filename)}
-                  onBlur={() => restoreStylesAfterCordovaKeyboard(__filename)}
+                  onFocus={onFocusInput}
+                  onBlur={onBlurInput}
                   inputRef={(tag) => { this.textarea = tag; }}
                   multiline
-                  rows={this.props.mobile ? 2 : 3}
+                  rows={rows}
                 />
                 <PostSaveButton>
                   <Button variant="outlined" color="primary" classes={{ outlinedPrimary: classes.buttonOutlinedPrimary }} type="submit" size="small">
@@ -304,7 +333,7 @@ class ItemPositionStatementActionBar extends Component {
                 inputRef={(tag) => { this.textarea = tag; }}
                 multiline
                 disabled
-                rows={this.props.mobile ? 2 : 3}
+                rows={2}
               />
               <PostSaveButton>
                 <Button variant="outlined" color="primary" classes={{ outlinedPrimary: classes.buttonOutlinedPrimary }} onClick={onSavePositionStatementClick} size="small">
@@ -382,9 +411,8 @@ const styles = theme => ({
     boxShadow: 'none',
     border: '1px solid #333',
     padding: '8px',
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       height: 'auto',
-      padding: '4px 8px',
     },
   },
   flex: {
@@ -428,7 +456,8 @@ const PostSaveButton = styled.div`
   margin-top: auto;
   @media(max-width: 576px) {
     height: 36.8px;
-    margin-top: 0;
+    display: flex;
+    align-items: center;
   }
 `;
 
