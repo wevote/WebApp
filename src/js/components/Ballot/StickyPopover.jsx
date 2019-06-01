@@ -24,12 +24,12 @@ class StickyPopover extends Component {
 
   onMouseEnter () {
     const { delay } = this.props;
-    setTimeout(this.setState({ showPopover: true }), delay.show);
+    setTimeout(() => this.setState({ showPopover: true }), delay.show);
   }
 
   onMouseLeave () {
     const { delay } = this.props;
-    setTimeout(this.setState({ showPopover: false }), delay.hide);
+    setTimeout(() => this.setState({ showPopover: false }), delay.hide);
   }
 
   render () {
