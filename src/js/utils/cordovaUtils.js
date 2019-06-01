@@ -225,6 +225,7 @@ export function getAndroidSize () {
 // renders approximately as ...  <div class="sc-ifAKCX kFFaGy">
 export function cordovaScrollablePaneTopPadding (filePath) {
   const fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
+  console.log("STEVE cordovaScrollablePaneTopPadding: ", fileName);
   if (isIOS()) {
     if (isIPad() || isIPhone678Plus()) {
       if (window.location.href.indexOf('/index.html#/wevoteintro/') > 0) {
@@ -239,10 +240,10 @@ export function cordovaScrollablePaneTopPadding (filePath) {
         return '0px';
       } else if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
         return '0px';
+      } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
+        return '130px';
       } else if (fileName === 'Application.jsx') {
         return '60px';
-      } else if (fileName === 'Ballot.jsx') {
-        return '130px';
       } else {
         return '0px';
       }
@@ -259,10 +260,10 @@ export function cordovaScrollablePaneTopPadding (filePath) {
         return '0px';
       } else if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
         return '0px';
+      } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
+        return '124px';
       } else if (fileName === 'Application.jsx') {
         return '62px';
-      } else if (fileName === 'Ballot.jsx') {
-        return '124px';
       } else {
         return '0px';
       }
@@ -279,12 +280,12 @@ export function cordovaScrollablePaneTopPadding (filePath) {
         return '0px';
       } else if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '0px';
+      } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
+        return '150px';
       } else if (window.location.href.indexOf('/index.html#/opinions') > 0) {
         return '0px';
       } else if (fileName === 'Application.jsx') {
         return '80px';
-      } else if (fileName === 'Ballot.jsx') {
-        return '150px';
       } else {
         return '0px';
       }
@@ -299,10 +300,10 @@ export function cordovaScrollablePaneTopPadding (filePath) {
         return '0px';
       } else if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
         return '0px';
+      } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
+        return '22px';
       } else if (fileName === 'Application.jsx') {
         return '80px';
-      } else if (fileName === 'Ballot.jsx') {
-        return '22px';
       } else {
         return '0px';
       }
@@ -319,10 +320,10 @@ export function cordovaScrollablePaneTopPadding (filePath) {
         return '0px';
       } else if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '0px';
+      } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
+        return '150px';
       } else if (fileName === 'Application.jsx') {
         return '80px';
-      } else if (fileName === 'Ballot.jsx') {
-        return '150px';
       } else {
         return '0px';
       }
@@ -340,10 +341,10 @@ export function cordovaScrollablePaneTopPadding (filePath) {
         return '0px';
       } else if (window.location.href.indexOf('/index.html#/friends') > 0) {
         return '0px';
+      } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
+        return '108px';
       } else if (fileName === 'Application.jsx') {
         return '45px';
-      } else if (fileName === 'Ballot.jsx') {
-        return '108px';
       } else {
         return '0px';
       }
@@ -358,12 +359,12 @@ export function cordovaScrollablePaneTopPadding (filePath) {
         return '0px';
       } else if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
         return '0px';
+      } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
+        return '104px';
       } else  if (window.location.href.indexOf('/index.html#/wevoteintro/') > 0) {
         return '0px';
       } else if (fileName === 'Application.jsx') {
         return '0px';
-      } else if (fileName === 'Ballot.jsx') {
-        return '104px';
       } else {
         return '0px';
       }
@@ -380,12 +381,12 @@ export function cordovaScrollablePaneTopPadding (filePath) {
         return '0px';
       } else if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
         return '16px';
+      } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
+        return '104px';
       } else  if (window.location.href.indexOf('/index.html#/wevoteintro/') > 0) {
         return '0px';
       } else if (fileName === 'Application.jsx') {
         return '18px';
-      } else if (fileName === 'Ballot.jsx') {
-        return '104px';
       } else {
         return '0px';
       }
@@ -400,10 +401,10 @@ export function cordovaScrollablePaneTopPadding (filePath) {
         return '0px';
       } else  if (window.location.href.indexOf('/index.html#/wevoteintro/') > 0) {
         return '0px';
+      } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
+        return '130px';
       } else if (fileName === 'Application.jsx') {
         return '45px';
-      } else if (fileName === 'Ballot.jsx') {
-        return '130px';
       } else {
         return '0px';
       }
@@ -452,6 +453,26 @@ export function cordovaBallotFilterTopMargin () {
     }
   }
   return undefined;
+}
+
+// URLs that end with a twitter handle...
+// <div id="the styled div that follows is the wrapper for voter guide mode">
+//   <Wrapper padTop={cordovaVoterGuideTopPadding()}>
+export function cordovaVoterGuideTopPadding () {
+  if (isIOS()) {
+    if (isIPhone678Plus()) {
+      return '0px';
+    } else if (isIPhone678()) {
+      return '0px';
+    } else if (hasIPhoneNotch()) {
+      return '18px';
+    } else if (isIPad()) {
+      return '8px';
+    }
+  } else if (isAndroid()) {
+    return '0px';
+  }
+  return '0px';
 }
 
 export function cordovaVoteMiniHeader () {
@@ -530,7 +551,7 @@ export function cordovaTopHeaderTopMargin () {
         } else if (window.location.href.indexOf('index.html#/ballot') > 0) {
           style.marginTop = '16px';
         } else {
-          style.marginTop = '34px';
+          style.marginTop = '16px';
         }
       } else {
         style.marginTop = '20px';

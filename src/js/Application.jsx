@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from './utils/applicationUtils';
 import cookies from './utils/cookies';
 import {
-  cordovaScrollablePaneTopPadding, getToastClass, historyPush, isCordova, isWebApp,
+  cordovaScrollablePaneTopPadding, cordovaVoterGuideTopPadding, getToastClass, historyPush, isCordova, isWebApp,
 } from './utils/cordovaUtils';
 import ElectionActions from './actions/ElectionActions';
 // import FooterBarCordova from "./components/Navigation/FooterBarCordova";
@@ -295,13 +295,15 @@ class Application extends Component {
                   voter={this.state.voter}
                   weVoteBrandingOff={this.state.weVoteBrandingOff}
           />
-          <Wrapper padTop={isCordova() ? '55px' : '0'}>
-            <div className="page-content-container">
-              <div className="container-voter-guide">
-                { this.props.children }
+          <div id="the styled div that follows is the wrapper for voter guide mode">
+            <Wrapper padTop={cordovaVoterGuideTopPadding()}>
+              <div className="page-content-container">
+                <div className="container-voter-guide">
+                  { this.props.children }
+                </div>
               </div>
-            </div>
-          </Wrapper>
+            </Wrapper>
+          </div>
           {(
             <div className="footroom-wrapper">
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
