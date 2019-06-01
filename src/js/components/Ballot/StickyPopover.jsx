@@ -18,18 +18,29 @@ class StickyPopover extends Component {
     super(props);
     this.state = { showPopover: false };
     this.attachRef = target => this.setState({ target });
-    this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onMouseEnterTarget = this.onMouseEnterTarget.bind(this);
+    this.onMouseEnterPopover = this.onMouseEnterPopover.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
   }
 
-  onMouseEnter () {
+  onMouseEnterTarget () {
     const { delay } = this.props;
-    setTimeout(() => this.setState({ showPopover: true }), delay.show);
+    this.enterTimeoutId = setTimeout(() => this.setState({ showPopover: true }), delay.show);
+  }
+
+  onMouseEnterPopover () {
+    if (this.leaveTimeoutId) {
+      clearTimeout(this.leaveTimeoutId);
+    }
+    this.setState({ showPopover: true });
   }
 
   onMouseLeave () {
     const { delay } = this.props;
-    setTimeout(() => this.setState({ showPopover: false }), delay.hide);
+    if (this.enterTimeoutId) {
+      clearTimeout(this.enterTimeoutId);
+    }
+    this.leaveTimeoutId = setTimeout(() => this.setState({ showPopover: false }), delay.hide);
   }
 
   render () {
@@ -40,7 +51,7 @@ class StickyPopover extends Component {
       <React.Fragment>
         {React.Children.map(children, child => React.cloneElement(child, {
           ref: this.attachRef,
-          onMouseEnter: this.onMouseEnter,
+          onMouseEnter: this.onMouseEnterTarget,
           onMouseLeave: this.onMouseLeave,
         }))}
         <Overlay
@@ -49,7 +60,7 @@ class StickyPopover extends Component {
           placement={placement}
         >
           <Popover
-            onMouseEnter={this.onMouseEnter}
+            onMouseEnter={this.onMouseEnterPopover}
             onMouseLeave={this.onMouseLeave}
           >
             {popoverComponent}
