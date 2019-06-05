@@ -17,7 +17,6 @@ import OrganizationPositionItem from './OrganizationPositionItem';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
-import closeIcon from '../../../img/global/icons/x-close.png';
 import triangleBottomIcon from '../../../img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-252-triangle-bottom.svg';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes

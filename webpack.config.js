@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 
 const port = process.env.PORT || 3000;
@@ -17,6 +18,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.html',
     }),
+    new CopyPlugin([
+      { from: 'src/javascript/', to: 'javascript/' },
+    ]),
   ],
   module: {
     rules: [

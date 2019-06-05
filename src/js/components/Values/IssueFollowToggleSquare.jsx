@@ -11,9 +11,9 @@ import checkMarkIcon from '../../../img/global/svg-icons/check-mark-v2-40x43.svg
 
 const svgStyle = { fill: '#4B4B4B', padding: '1px', width: '67%', height: '100%', marginBottom: '33%' };
 
-function importAll(r) {
+function importAll (r) {
   const images = {};
-  r.keys().forEach((item, index) => { images[item.replace('./', '')] = r(item); });
+  r.keys().forEach((item) => { images[item.replace('./', '')] = r(item); });
   return images;
 }
 const images = importAll(require.context('../../../img/global/svg-icons/issues', false, /\.(svg)$/));

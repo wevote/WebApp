@@ -8,7 +8,7 @@ import logoDark from '../../../img/global/svg-icons/we-vote-logo-horizontal-colo
 
 
 const HeaderBarLogo = ({ isBeta, light }) => {
-  const logo = light ? logoLight : logoDark; 
+  const logo = light ? logoLight : logoDark;
   return (
     <span>
       <Link to={`${isCordova() ? '/ballot' : '/welcome'}`} className="page-logo page-logo-full-size" id="logoHeaderBar">
@@ -16,8 +16,8 @@ const HeaderBarLogo = ({ isBeta, light }) => {
         {isBeta && <span className="beta-marker"><BetaMarkerInner light={light}>beta</BetaMarkerInner></span>}
       </Link>
     </span>
-  )
-}
+  );
+};
 
 HeaderBarLogo.propTypes = {
   isBeta: PropTypes.bool,
