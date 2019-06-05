@@ -27,6 +27,8 @@ import AppActions from '../../actions/AppActions';
 import AppStore from '../../stores/AppStore';
 import { stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
+import SelectBallotModal from '../Ballot/SelectBallotModal';
+import BallotActions from '../../actions/BallotActions';
 
 class HeaderBar extends Component {
   static propTypes = {
@@ -50,6 +52,7 @@ class HeaderBar extends Component {
       friendInvitationsSentToMe: 0,
       showEditAddressButton: false,
       showSignInModal: false,
+      showSelectBallotModal: false,
       scrolledDown: false,
     };
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
@@ -57,6 +60,7 @@ class HeaderBar extends Component {
     this.toggleProfilePopUp = this.toggleProfilePopUp.bind(this);
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
+    this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
   }
 
   componentDidMount () {
@@ -76,6 +80,8 @@ class HeaderBar extends Component {
       showSignInModal: AppStore.showSignInModal(),
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
+
+    this.setState({ ballotElectionList: BallotStore.ballotElectionList() });
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -103,6 +109,9 @@ class HeaderBar extends Component {
       return true;
     }
     if (this.state.showSignInModal !== nextState.showSignInModal) {
+      return true;
+    }
+    if (this.state.showSelectBallotModal !== nextState.showSelectBallotModal) {
       return true;
     }
     const currentPathnameExists = this.props.location && this.props.location.pathname;
@@ -141,6 +150,9 @@ class HeaderBar extends Component {
 
   onBallotStoreChange () {
     // this.setState({ bookmarks: BallotStore.bookmarks });
+    this.setState({
+      ballotElectionList: BallotStore.ballotElectionList(),
+    });
   }
 
   onFriendStoreChange () {
@@ -154,6 +166,7 @@ class HeaderBar extends Component {
       scrolledDown: AppStore.getScrolledDown(),
       showEditAddressButton: AppStore.showEditAddressButton(),
       showSignInModal: AppStore.showSignInModal(),
+      showSelectBallotModal: AppStore.showSelectBallotModal(),
     });
   }
 
@@ -174,8 +187,22 @@ class HeaderBar extends Component {
     this.setState({ profilePopUpOpen: !profilePopUpOpen });
   }
 
-  toggleSelectBallotModal () {
-    AppActions.setShowSelectBallotModal(true);
+  // toggleSelectBallotModal () {
+  //   AppActions.setShowSelectBallotModal(true);
+  // }
+
+  toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
+    const { showSelectBallotModal } = this.state;
+    console.log('Toggle selectBallotModal');
+    // console.log('Ballot toggleSelectBallotModal, destinationUrlForHistoryPush:', destinationUrlForHistoryPush, ', showSelectBallotModal:', showSelectBallotModal);
+    if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
+      historyPush(destinationUrlForHistoryPush);
+    } else {
+      // console.log('Ballot toggleSelectBallotModal, BallotActions.voterBallotListRetrieve()');
+      BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
+    }
+
+    AppActions.setShowSelectBallotModal(!showSelectBallotModal);
   }
 
   closeSignInModal () {
@@ -214,7 +241,7 @@ class HeaderBar extends Component {
   render () {
     // console.log('HeaderBar render, this.state.showSignInModal:', this.state.showSignInModal);
     renderLog(__filename);
-    const { voter, classes, pathname } = this.props;
+    const { voter, classes, pathname, location } = this.props;
     const { showEditAddressButton, scrolledDown } = this.state;
     const ballotBaseUrl = '/ballot';
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
@@ -345,6 +372,18 @@ class HeaderBar extends Component {
             show={this.state.showSignInModal}
             toggleFunction={this.closeSignInModal}
           />
+          {this.state.showSelectBallotModal ? (
+            <SelectBallotModal
+              ballotElectionList={this.state.ballotElectionList}
+              ballotBaseUrl="/ballot"
+              location={location}
+              pathname={pathname}
+              show={this.state.showSelectBallotModal}
+              toggleFunction={this.toggleSelectBallotModal}
+            />
+          ) : (
+            null
+          )}
         </Wrapper>
       </div>
     );
