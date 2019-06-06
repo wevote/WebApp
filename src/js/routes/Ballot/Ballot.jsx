@@ -42,7 +42,7 @@ import AppStore from '../../stores/AppStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 import { formatVoterBallotList, checkShouldUpdate } from './utils';
-import SelectBallotModal from '../../components/Ballot/SelectBallotModal';
+// import SelectBallotModal from '../../components/Ballot/SelectBallotModal';
 import AppActions from '../../actions/AppActions';
 
 
@@ -817,7 +817,7 @@ class Ballot extends Component {
               .
             </p>
           </div>
-          {
+          {/* {
             this.state.showSelectBallotModal ? (
               <SelectBallotModal
                 ballotElectionList={this.state.ballotElectionList}
@@ -828,7 +828,7 @@ class Ballot extends Component {
                 toggleFunction={this.toggleSelectBallotModal}
               />
             ) : null
-          }
+          } */}
         </div>
       );
     }
@@ -1054,7 +1054,7 @@ class Ballot extends Component {
                           this.showUserEmptyOptions()
                         }
                       </div>
-                      {
+                      {/* {
                         this.state.showSelectBallotModal ? (
                           <SelectBallotModal
                             ballotElectionList={this.state.ballotElectionList}
@@ -1065,7 +1065,7 @@ class Ballot extends Component {
                             toggleFunction={this.toggleSelectBallotModal}
                           />
                         ) : null
-                      }
+                      } */}
                     </div>
                     {/* Show links to this candidate in the admin tools */}
                     { (this.state.voter && sourcePollingLocationWeVoteId) && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ? (
