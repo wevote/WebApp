@@ -62,6 +62,7 @@ export default class HamburgerMenu extends Component {
               src={voterPhotoUrlMedium}
               height={34}
               width={34}
+              style={{ maxWidth: 'unset' }}
             />
           </div>
         ) : (

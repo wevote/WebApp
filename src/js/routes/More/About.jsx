@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import {cordovaDot, cordovaScrollablePaneTopPadding} from '../../utils/cordovaUtils';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { renderLog } from '../../utils/logging';
 import Footer from '../../components/Welcome/Footer';
@@ -33,7 +33,7 @@ class About extends Component {
   render () {
     renderLog(__filename);
     return (
-      <Wrapper>
+      <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
         <Helmet title="About We Vote" />
         <WelcomeAppbar pathname="/more/about" />
         <HeaderForAbout>
@@ -242,6 +242,7 @@ const Wrapper = styled.div`
   align-items: center;
   background: white;
   overflow-x: hidden;
+  padding-top: ${({ padTop }) => padTop};
 `;
 
 const HeaderForAbout = styled.div`

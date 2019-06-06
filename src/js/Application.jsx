@@ -271,17 +271,19 @@ class Application extends Component {
       // console.log("inTheaterMode", inTheaterMode);
       return (
         <div className="app-base" id="app-base-id">
-          <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
-            <div className="page-content-container">
-              <div className="container-fluid">
-                <div className="row">
-                  <div className="col-12 container-main">
-                    { this.props.children }
+          <div id="the styled div that follows is the wrapper for theatre mode">
+            <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
+              <div className="page-content-container">
+                <div className="container-fluid">
+                  <div className="row">
+                    <div className="col-12 container-main">
+                      { this.props.children }
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </Wrapper>
+            </Wrapper>
+          </div>
         </div>
       );
     } else if (voterGuideMode) {
@@ -323,13 +325,15 @@ class Application extends Component {
                   voter={this.state.voter}
                   weVoteBrandingOff={this.state.weVoteBrandingOff}
           />
-          <Wrapper padTop={isCordova() ? '60px' : '0'}>
-            <div className="page-content-container">
-              <div className="container-settings">
-                { this.props.children }
+          <div id="the styled div that follows is the wrapper for settings mode">
+            <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
+              <div className="page-content-container">
+                <div className="container-settings">
+                  { this.props.children }
+                </div>
               </div>
-            </div>
-          </Wrapper>
+            </Wrapper>
+          </div>
           {(
             <div className="footroom-wrapper">
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
