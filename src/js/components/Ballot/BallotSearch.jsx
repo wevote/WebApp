@@ -191,6 +191,7 @@ const SearchWrapper = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     height: 28px;
     margin-right: 4px;
+    margin-top: 8px;
   }
 `;
 
