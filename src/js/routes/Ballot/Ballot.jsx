@@ -42,7 +42,7 @@ import AppStore from '../../stores/AppStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 import { formatVoterBallotList, checkShouldUpdate } from './utils';
-import SelectBallotModal from '../../components/Ballot/SelectBallotModal';
+// import SelectBallotModal from '../../components/Ballot/SelectBallotModal';
 import AppActions from '../../actions/AppActions';
 
 
