@@ -13,6 +13,7 @@ $neg-space-sm: -$space-sm;
 $neg-space-lg: -$space-lg;
 $bottom-spacing-cordova: 50px;
 $cordova-shim: 58px;
+$cordova-shim-vote-section: 20px;
 $mobile-body-padding-top: 150px;
 $body-padding-top: 150px;
 $mobile-body-padding-top-no-decision-tabs: 97px;
@@ -61,6 +62,21 @@ $margin-zero: 0;
       transform: $unpinned-transform;
       transition: all 100ms ease-in-out 0s;
     }
+  }
+
+  &__heading-vote-section {
+    $pinned-transform: translate3d(0, -53px, 0);
+    width: 100%;
+    background-color: $white;
+    border-bottom: 1px solid #aaa;
+    overflow: hidden;
+    position: fixed;
+    z-index: 1;
+    left: $space-none;
+    padding-top: $cordova-shim-vote-section;
+    transform: $pinned-transform;
+    transition: all 100ms ease-in-out 0s;
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, .2), 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12);
   }
 
   &__heading-webapp {

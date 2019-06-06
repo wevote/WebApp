@@ -203,20 +203,22 @@ export default class HamburgerMenu extends Component {
                     <Link onClick={this.hideProfilePopUp} to="/more/attributions">Attributions</Link>
                   </span>
                 </div>
-                { isCordova() && (window.location.href.startsWith('file:///Users') || window.location.href.startsWith('file:///android')) ? (
-                  <div>
+                { isCordova() && (window.location.href.startsWith('file:///Users') || window.location.href.startsWith('file:///android')) ?
+                  (
                     <div>
-                      <span className="hamburger-terms__text">
-                        <Link onClick={HamburgerMenu.clearAllCookies} to="/">Clear Cookies</Link>
-                      </span>
+                      <div>
+                        <span className="hamburger-terms__text">
+                          <Link onClick={HamburgerMenu.clearAllCookies} to="/">Clear Cookies</Link>
+                        </span>
+                      </div>
+                      <div>
+                        <span className="hamburger-terms__text">
+                          <Link to="/wevoteintro/network">Navigate to Welcome</Link>
+                        </span>
+                      </div>
                     </div>
-                    <div>
-                      <span className="hamburger-terms__text">
-                        <Link to="/wevoteintro/network">Navigate to Welcome</Link>
-                      </span>
-                    </div>
-                  </div>
-                ) : null
+                  ) :
+                  null
                 }
               </td>
             </tr>

@@ -58,7 +58,7 @@ export default class Header extends Component {
                   <span>
                     {showBackToVoterGuides ?
                       <HeaderBackToVoterGuides location={location} params={params} pathname={pathname} voter={voter} /> :
-                      <HeaderBar location={location} pathname={pathname} voter={voter} />
+                      <HeaderBar location={location} pathname={pathname} voter={voter} ballotElectionList={this.props.ballotElectionList} />
                     }
                   </span>
                 )

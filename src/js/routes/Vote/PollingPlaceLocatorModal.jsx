@@ -5,7 +5,7 @@ import {
   cordovaDot, cordovaOpenSafariView, hasIPhoneNotch, historyPush, isWebApp,
 } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import PollingPlaceLocator from '../../components/Ballot/PollingPlaceLocator';
+import PollingPlaceLocator from '../../components/Vote/PollingPlaceLocator';
 
 export default class PollingPlaceLocatorModal extends Component {
   static propTypes = {
@@ -23,7 +23,7 @@ export default class PollingPlaceLocatorModal extends Component {
   openPollingLocationModal () {
     const { showPollingLocatorModal } = this.state;
     this.setState({ showPollingLocatorModal: !showPollingLocatorModal });
-    historyPush('/ballot');
+    historyPush('/ballot/vote');
   }
 
   render () {
