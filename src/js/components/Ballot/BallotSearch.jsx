@@ -101,7 +101,7 @@ class BallotSearch extends Component {
         >
           <SearchIcon classes={{ root: classes.iconRoot }} />
         </IconButton>
-        <Separator isSearching={isSearching} />
+        <Separator isSearching={isSearching} alwaysOpen={alwaysOpen} />
         <InputBase
           classes={{ input: (isSearching || alwaysOpen) ? classes.input : classes.inputHidden }}
           inputRef={(input) => { this.searchInput = input; }}
@@ -124,7 +124,7 @@ class BallotSearch extends Component {
 
 const styles = theme => ({
   searchRoot: {
-    height: 36,
+    height: 32,
     [theme.breakpoints.down('md')]: {
       height: 28,
     },
@@ -173,7 +173,7 @@ const Closer = styled.div`
 `;
 
 const Separator = styled.div`
-  display: ${({ isSearching }) => (isSearching ? 'inherit' : 'none')};
+  display: ${({ isSearching, alwaysOpen }) => (isSearching || alwaysOpen ? 'inherit' : 'none')};
   height: 100%;
   width: 1px;
   background: rgba(0, 0, 0, .3);
@@ -183,7 +183,7 @@ const SearchWrapper = styled.div`
   display: flex;
   flex-flow: row;
   border-radius: 4px;
-  height: 36px;
+  height: 32px;
   border: 1px solid rgba(0, 0, 0, .3);
   padding: 0 3px 0 3px;
   margin-right: 16px;

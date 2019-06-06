@@ -409,6 +409,7 @@ class Vote extends Component {
     const {
       ballotWithItemsFromCompletionFilterType,
       ballotHeaderUnpinned, isSearching, ballotSearchResults,
+      showFilterTabs,
     } = this.state;
     const { classes } = this.props;
 
@@ -453,6 +454,7 @@ class Vote extends Component {
                               onToggleSearch={this.handleToggleSearchBallot}
                               items={ballotWithItemsFromCompletionFilterType}
                               onBallotSearch={this.handleSearch}
+                              alwaysOpen={!showFilterTabs}
                             />
                           </React.Fragment>
                         ) : null
@@ -537,11 +539,8 @@ class Vote extends Component {
 }
 
 const VoteContainer = styled.div`
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    margin: 0 -16px;
-  }
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    margin: 0 -32px;
+    overflow-x: hidden;
   }
 `;
 
