@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -11,6 +10,7 @@ import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import ReadMore from '../Widgets/ReadMore';
 import FollowToggle from '../Widgets/FollowToggle';
+import StickyPopover from './StickyPopover';
 
 class PositionItem extends Component {
   static propTypes = {
@@ -18,10 +18,6 @@ class PositionItem extends Component {
     // organization: PropTypes.object, // .isRequired,
     position: PropTypes.object.isRequired,
   };
-
-  static closePopover () {
-    document.body.click();
-  }
 
   shouldComponentUpdate (nextProps) {
     if (this.props.ballotItemDisplayName !== nextProps.ballotItemDisplayName) {
@@ -85,27 +81,18 @@ class PositionItem extends Component {
     const organizationWeVoteId = position.organization_we_vote_id || position.speaker_we_vote_id;
 
     if (showPosition) {
-      const organizationCardPopover = (
-        <Popover
-          id="positions-popover-trigger-click-root-close"
-          onClick={PositionItem.closePopover}
-        >
-          <OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />
-        </Popover>
-      );
-
+      const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
       return (
         <React.Fragment>
           <div className="u-show-desktop-tablet">
             <DesktopContainer>
               <DesktopItemLeft>
                 <DesktopItemImage>
-                  <OverlayTrigger
+                  <StickyPopover
                     delay={{ show: 700, hide: 100 }}
-                    trigger={['hover', 'focus']}
-                    rootClose
+                    popoverComponent={organizationPopoverCard}
                     placement="bottom"
-                    overlay={organizationCardPopover}
+                    id="positions-popover-trigger-click-root-close"
                   >
                     <Link to={speakerLink} className="u-no-underline">
                       { position.speaker_image_url_https_medium ? (
@@ -117,7 +104,7 @@ class PositionItem extends Component {
                       ) :
                         imagePlaceholder }
                     </Link>
-                  </OverlayTrigger>
+                  </StickyPopover>
                 </DesktopItemImage>
                 <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
               </DesktopItemLeft>
@@ -125,17 +112,16 @@ class PositionItem extends Component {
                 <DesktopItemHeader>
                   <DesktopItemNameIssueContainer>
                     <DesktopItemName>
-                      <OverlayTrigger
+                      <StickyPopover
                         delay={{ show: 700, hide: 100 }}
-                        trigger={['hover', 'focus']}
-                        rootClose
+                        popoverComponent={organizationPopoverCard}
                         placement="bottom"
-                        overlay={organizationCardPopover}
+                        id="positions-popover-trigger-click-root-close"
                       >
                         <Link to={speakerLink}>
                           { position.speaker_display_name }
                         </Link>
-                      </OverlayTrigger>
+                      </StickyPopover>
                     </DesktopItemName>
                     <DesktopItemIssues>{/* Issues go here */}</DesktopItemIssues>
                   </DesktopItemNameIssueContainer>
