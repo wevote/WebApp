@@ -464,7 +464,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           title={(
             <span>
               Score in Your Network
-              <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" />
+              <span className="fas fa-times fa-lg" aria-hidden="true" />
             </span>
           )}
           onClick={this.closeNetworkScorePopover}
@@ -484,7 +484,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
           title={(
             <span>
               Score in Your Network
-              <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" />
+              <span className="fas fa-times fa-lg" aria-hidden="true" />
             </span>
           )}
           onClick={this.closeNetworkScorePopover}
@@ -552,7 +552,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             Opinions
             {this.state.ballotItemDisplayName ? ` about ${this.state.ballotItemDisplayName}` : ''}
             {' '}
-            <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" />
+            <span className="fas fa-times fa-lg" aria-hidden="true" />
           </span>
         )}
         onClick={BallotItemSupportOpposeCountDisplay.closePositionsPopover}
@@ -593,7 +593,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               Opinions
               {this.state.ballotItemDisplayName ? ` about ${this.state.ballotItemDisplayName}` : ''}
               {' '}
-              <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" />
+              <span className="fas fa-times fa-lg" aria-hidden="true" />
             </span>
           )}
           onClick={BallotItemSupportOpposeCountDisplay.closePositionsPopover}
@@ -611,7 +611,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               Opinions
               {this.state.ballotItemDisplayName ? ` about ${this.state.ballotItemDisplayName}` : ''}
               {' '}
-              <span className="fa fa-times pull-right u-cursor--pointer" aria-hidden="true" />
+              <span className="fas fa-times fa-lg" aria-hidden="true" />
             </span>
           )}
           onClick={BallotItemSupportOpposeCountDisplay.closePositionsPopover}

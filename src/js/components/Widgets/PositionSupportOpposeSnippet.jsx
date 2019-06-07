@@ -141,7 +141,7 @@ export default class PositionSupportOpposeSnippet extends Component {
                           <span>
                             view source
                             {' '}
-                            <i className="fa fa-external-link" aria-hidden="true" />
+                            <i className="fas fa-external-link-alt" aria-hidden="true" />
                           </span>
                         )}
                       />

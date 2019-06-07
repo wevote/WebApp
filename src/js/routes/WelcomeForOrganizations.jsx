@@ -8,7 +8,7 @@ import ffwdLogo from '../../img/global/logos/ffwd-logo.png';
 import googleLogo from '../../img/global/logos/google-logo.svg';
 import voteDotOrgLogo from '../../img/global/logos/vote_dot_org_logo-530x200.png';
 import vipLogo from '../../img/global/logos/vip-logo-1000x208.png';
-import { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/Header';
+import { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/HeaderWelcome';
 import Section, { SectionTitle, SectionTitleBold, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage } from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 import Footer from '../components/Welcome/Footer';
@@ -72,7 +72,7 @@ class WelcomeForOrganizations extends PureComponent {
     this.setState({
       voterFullName: event.target.value,
     });
-  }
+  };
 
   updateVoterEmailAddress = (event) => {
     const isEmailValid = validateEmail(event.target.value);
@@ -85,7 +85,7 @@ class WelcomeForOrganizations extends PureComponent {
       voterEmail: event.target.value,
       submitEnabled,
     });
-  }
+  };
 
   voterEmailAddressSignUpSave = (event) => {
     // Only proceed after we have a valid email address, which will enable the submit
@@ -96,12 +96,12 @@ class WelcomeForOrganizations extends PureComponent {
       VoterActions.voterFullNameSoftSave('', '', this.state.voterFullName);
       VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
     }
-  }
+  };
 
   handleToPageFromMobileNav = (destination) => {
     this.handleShowMobileNavigation(false);
     historyPush(destination);
-  }
+  };
 
   render () {
     const { classes, pathname } = this.props;
@@ -277,7 +277,7 @@ class WelcomeForOrganizations extends PureComponent {
                 className={classes.goldButton}
                 classes={{ root: classes.buttonMaxWidth, containedPrimary: classes.buttonContained }}
                 id="welcomeForOrganizationsPricing"
-                onClick={() => historyPush('/more/pricing')}
+                onClick={() => historyPush('/more/pricing/organizations')}
               >
                 View Pricing
               </Button>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
+import Button from '@material-ui/core/Button';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import { isValidUrl } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
@@ -216,13 +217,14 @@ export default class VoterGuideOrganizationInfo extends Component {
             <div className="col-1 col-md-2">&nbsp;</div>
           </div>
           <footer className="create-voter-guide__footer">
-            <button
-              type="button"
-              className="btn btn-lg btn-success"
+            <Button
+              color="primary"
+              id="voterGuideOrganizationInfoNext"
               onClick={this.goToChooseElection}
+              variant="contained"
             >
               Next&nbsp;&nbsp;&gt;
-            </button>
+            </Button>
           </footer>
         </div>
       </div>

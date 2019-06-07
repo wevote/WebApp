@@ -1,10 +1,13 @@
 $company-margin: 1em 0 1em 0;
 $company-title-color: #555;
 $company-logo-margin-bottom: 10px;
+$credits-company-max-width: 220px;
 $logo-width: 300px;
 $logo-max-width: 100%;
 $logo-max-height: 120px;
 $team-member-photo-border-radius: 50%;
+$radio-button-margin-left: 28px;
+$radio-button-width: 80px;
 
 .team-member {
   margin-bottom: $space-md;
@@ -50,23 +53,39 @@ $team-member-photo-border-radius: 50%;
   }
 }
 
-.company {
+.credits-company {
   display: flex;
-  flex-flow: column;
+  justify-content: center;
+  align-items: center;
   margin: $company-margin;
+  max-width: $credits-company-max-width;
+  @include breakpoints (max medium) {
+    max-width: 45%;
+    width: 45%;
+  }
   &__info {
-    display: flex;
-    flex-flow: column;
+    //display: flex;
+    //flex-flow: column;
   }
   &__title {
     color: $company-title-color;
   }
-  &__logo_container {
+  &__logo-container {
     margin-bottom: $company-logo-margin-bottom;
   }
   &__logo {
     width: $logo-width;
     max-height: $logo-max-height;
     max-width: $logo-max-width;
+  }
+}
+
+.donate-frequency {
+  display: flex;
+  flex-flow: row;
+  &__radio-button-div {
+    margin-left: $radio-button-margin-left;
+    margin-bottom: $space-sm;
+    width: $radio-button-width;
   }
 }

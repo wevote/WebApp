@@ -13,16 +13,8 @@ import LoadingWheel from './LoadingWheel';
 import { renderLog } from '../utils/logging';
 import VoterActions from '../actions/VoterActions';
 import VoterStore from '../stores/VoterStore';
+import cookies from '../utils/cookies';
 
-// December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
-/* eslint react/sort-comp: 0 */
-/* eslint class-methods-use-this: 0 */
-/* eslint react/jsx-indent-props: 0 */
-/* eslint jsx-a11y/no-static-element-interactions: 0 */
-/* eslint jsx-a11y/no-noninteractive-element-to-interactive-role: 0 */
-/* eslint jsx-a11y/click-events-have-key-events: 0 */
-/* eslint jsx-a11y/anchor-is-valid: 0 */
-/* eslint no-param-reassign: 0 */
 class AddressBox extends Component {
   static propTypes = {
     cancelEditAddress: PropTypes.func,
@@ -66,17 +58,6 @@ class AddressBox extends Component {
     this.googleAutocompleteListener = addressAutocomplete.addListener('place_changed', this._placeChanged.bind(this, addressAutocomplete));
   }
 
-  componentWillUnmount () {
-    this.voterStoreListener.remove();
-    this.ballotStoreListener.remove();
-    if (this.googleAutocompleteListener !== undefined) { // Temporary fix until google maps key is fixed.
-      this.googleAutocompleteListener.remove();
-    } else {
-      console.log('Google Maps Error: DeletedApiProjectMapError');
-    }
-    restoreStylesAfterCordovaKeyboard(__filename);
-  }
-
   componentDidUpdate () {
     // If we're in the slide with this component, autofocus the address box, otherwise defocus.
     if (this.props.manualFocus !== undefined) {
@@ -91,15 +72,21 @@ class AddressBox extends Component {
     }
   }
 
+  componentWillUnmount () {
+    this.voterStoreListener.remove();
+    this.ballotStoreListener.remove();
+    if (this.googleAutocompleteListener !== undefined) { // Temporary fix until google maps key is fixed.
+      this.googleAutocompleteListener.remove();
+    } else {
+      console.log('Google Maps Error: DeletedApiProjectMapError');
+    }
+    restoreStylesAfterCordovaKeyboard(__filename);
+  }
+
   // See https://reactjs.org/docs/error-boundaries.html
   static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
     // Update state so the next render will show the fallback UI, We should have a "Oh snap" page
     return { hasError: true };
-  }
-
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('AddressBox caught error: ', `${error} with info: `, info);
   }
 
   onVoterStoreChange () {
@@ -123,6 +110,11 @@ class AddressBox extends Component {
     this.setState({
       ballotCaveat: BallotStore.getBallotCaveat(),
     });
+  }
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('AddressBox caught error: ', `${error} with info: `, info);
   }
 
   _placeChanged (addressAutocomplete) {
@@ -158,6 +150,8 @@ class AddressBox extends Component {
     event.preventDefault();
     VoterActions.voterAddressSave(this.state.textForMapSearch);
     BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
+    const oneMonthExpires = 86400 * 31;
+    cookies.setItem('location_guess_closed', '1', oneMonthExpires, '/');
     this.setState({ loading: true, voterSavedAddress: true });
   }
 
@@ -189,6 +183,7 @@ class AddressBox extends Component {
               value={this.state.textForMapSearch}
               inputRef={(autocomplete) => { this.autoComplete = autocomplete; }}
               inputProps={{ onChange: this.updateVoterAddress, onKeyDown: this.handleKeyPress, autoFocus: (!isCordova() && !this.props.disableAutoFocus) }}
+              id="addressBoxText"
             />
           </Paper>
           { this.props.cancelEditAddress ? (

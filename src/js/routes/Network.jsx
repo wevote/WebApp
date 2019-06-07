@@ -140,7 +140,7 @@ export default class Network extends Component {
               {/* Commented out since choose Friends via Facebook is currently broken */}
               {/* <div className="network-btn">
               <Link to="/facebook_invitable_friends" className="btn btn-social btn-lg btn-facebook text-center">
-                <i className="fa fa-facebook"/>Choose Friends
+                <i className="fab fa-facebook"/>Choose Friends
               </Link>
               <ReadMore
                 className="social-btn-description"
@@ -150,7 +150,7 @@ export default class Network extends Component {
             </div> */}
               <div className="network-btn">
                 <Link to="/friends/invitebyemail" className="btn btn-social btn-lg btn--email text-center">
-                  <i className="fa fa-envelope" />
+                  <i className="fas fa-envelope" />
                   Invite Friends
                 </Link>
                 <ReadMore
@@ -173,12 +173,12 @@ export default class Network extends Component {
               {/* Commented out since choose Friends via Facebook is currently broken */}
               {/* <div className="network-btn">
                 <Link to="/facebook_invitable_friends" className="btn btn-social btn-md btn-facebook">
-                 <i className="fa fa-facebook"/>Choose
+                 <i className="fab fa-facebook"/>Choose
                 </Link>
               </div> */}
               <div className="network-btn">
                 <Link to="/friends/invitebyemail" className="btn btn-social btn-md btn--email">
-                  <i className="fa fa-envelope" />
+                  <i className="fas fa-envelope" />
                   Invite
                 </Link>
               </div>

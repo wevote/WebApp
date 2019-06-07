@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
-import { hasIPhoneNotch, isAndroid, isCordova, isIOS, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, cordovaTopHeaderTopMargin, isCordova, isIOS, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBackToBallot from './HeaderBackToBallot';
 import HeaderBackTo from './HeaderBackTo';
 import HeaderBackToVoterGuides from './HeaderBackToVoterGuides';
@@ -43,25 +43,22 @@ export default class Header extends Component {
       iPhoneSpacer = <div className="ios-no-notch-spacer" />;
     }
 
-    let pageHeaderStyle = weVoteBrandingOff ? 'page-header__container_branding_off headroom' : 'page-header__container headroom';
-    if (isIOS()) {
-      pageHeaderStyle = 'page-header__container headroom page-header-cordova-ios';   // Note March 2018: no headroom.js for Cordova
-    } else if (isAndroid()) {
-      pageHeaderStyle = 'page-header__container headroom';
-    }
+    const pageHeaderStyle = weVoteBrandingOff ? 'page-header__container_branding_off headroom' : 'page-header__container headroom';
+    // console.log(`Header href: ${window.location.href}  cordovaStyle: `, cordovaTopHeaderTopMargin());
+
 
     if (voterGuideMode) {
       return (
         <div id="app-header">
           {iPhoneSpacer}
           <div className={isWebApp ? 'headroom-wrapper-webapp__voter-guide' : ''}>
-            <div className={pageHeaderStyle} id="header-container">
+            <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
               {showBackToBallotHeader ?
                 <HeaderBackToBallot location={location} params={params} pathname={pathname} voter={voter} /> : (
                   <span>
                     {showBackToVoterGuides ?
                       <HeaderBackToVoterGuides location={location} params={params} pathname={pathname} voter={voter} /> :
-                      <HeaderBar location={location} pathname={pathname} voter={voter} />
+                      <HeaderBar location={location} pathname={pathname} voter={voter} ballotElectionList={this.props.ballotElectionList} />
                     }
                   </span>
                 )
@@ -78,7 +75,7 @@ export default class Header extends Component {
         <div id="app-header">
           { iPhoneSpacer }
           <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
-            <div className={pageHeaderStyle} id="header-container">
+            <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToSettings ? (
                 <span>
                   <span className="d-block d-sm-none">
@@ -112,7 +109,7 @@ export default class Header extends Component {
         <div id="app-header">
           { iPhoneSpacer }
           <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
-            <div className={pageHeaderStyle} id="header-container">
+            <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToValues ?
                 <HeaderBackTo backToLink={backToValuesLink} backToLinkText={backToValuesLinkText} location={location} params={params} voter={voter} /> :
                 <HeaderBar location={location} pathname={pathname} voter={voter} />
@@ -129,7 +126,7 @@ export default class Header extends Component {
         <div id="app-header">
           { iPhoneSpacer }
           <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
-            <div className={pageHeaderStyle} id="header-container">
+            <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToFriends ?
                 <HeaderBackTo backToLink={backToFriendsLink} backToLinkText={backToFriendsLinkText} location={location} params={params} voter={voter} /> :
                 <HeaderBar location={location} pathname={pathname} voter={voter} />
@@ -142,7 +139,9 @@ export default class Header extends Component {
                pathname === '/for-organizations' ||
                pathname.startsWith('/how') ||
                pathname === '/more/about' ||
-               pathname === '/more/pricing' ||
+               pathname === '/more/credits' ||
+               pathname.startsWith('/more/donate') ||
+               pathname.startsWith('/more/pricing') ||
                pathname === '/welcome') {
       return null;
     } else {
@@ -155,7 +154,7 @@ export default class Header extends Component {
               stringContains('/office', pathname) ? 'headroom-wrapper-webapp__office' : 'headroom-wrapper-webapp__default' : ''}
             id="headroom-wrapper"
           >
-            <div className={pageHeaderStyle} id="header-container">
+            <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToBallotHeader ?
                 <HeaderBackToBallot location={location} params={params} pathname={pathname} voter={voter} /> :
                 <HeaderBar location={location} pathname={pathname} voter={voter} />

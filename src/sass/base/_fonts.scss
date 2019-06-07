@@ -24,7 +24,7 @@
   font-weight: normal !important;
   font-variant: normal !important;
   text-transform: none !important;
-  speak: none;
+  // speak: none;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -37,7 +37,7 @@
   font-weight: normal !important;
   font-variant: normal !important;
   text-transform: none !important;
-  speak: none;
+  // speak: none;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -144,4 +144,11 @@
 .ion-input-icon {
   font-size: 24px;
   color: $gray-mid;
+}
+
+.icon-45 {
+  font-size: 1.9em !important;
+  &::before {
+    font-size: 1.9em !important;
+  }
 }

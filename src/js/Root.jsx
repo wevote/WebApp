@@ -44,7 +44,7 @@ import OrganizationVoterGuideCandidate from './routes/VoterGuide/OrganizationVot
 import OrganizationVoterGuideEdit from './routes/VoterGuide/OrganizationVoterGuideEdit';
 import OrganizationVoterGuideMeasure from './routes/VoterGuide/OrganizationVoterGuideMeasure';
 import OrganizationVoterGuideOffice from './routes/VoterGuide/OrganizationVoterGuideOffice';
-import PollingPlaceLocatorModal from './routes/Ballot/PollingPlaceLocatorModal';
+import PollingPlaceLocatorModal from './routes/Vote/PollingPlaceLocatorModal';
 import Pricing from './routes/More/Pricing';
 import Privacy from './routes/More/Privacy';
 import ProcessingDonation from './routes/More/ProcessingDonation';
@@ -87,6 +87,7 @@ import YourPage from './routes/YourPage';
 import { isWebApp } from './utils/cordovaUtils';
 
 // See /js/components/Navigation/HeaderBar.jsx for show_full_navigation cookie
+const ballotHasBeenVisited = cookies.getItem('ballot_has_been_visited');
 const firstVisit = !cookies.getItem('voter_device_id');
 
 const routes = () => (
@@ -95,7 +96,7 @@ const routes = () => (
     {                       // 12/4/18: Not sure why we need the following disabled
       (function redir () {  // eslint-disable-line wrap-iife
         if (isWebApp()) {
-          return <IndexRedirect to="/welcome" />;
+          return ballotHasBeenVisited ? <IndexRedirect to="/ballot" /> : <IndexRedirect to="/welcome" />;
         } else {
           return firstVisit ? <IndexRedirect to="/wevoteintro/network" /> : <IndexRedirect to="/ballot" />;
         }
@@ -190,6 +191,7 @@ const routes = () => (
     <Route path="/more/network/friends" component={Friends} />
     <Route path="/more/network/organizations" component={Values} />
     <Route path="/more/pricing" component={Pricing} />
+    <Route path="/more/pricing/:pricing_choice" component={Pricing} />
     <Route path="/more/privacy" component={Privacy} />
     <Route path="/more/processing_donation" component={ProcessingDonation} />
     <Route path="/more/register" component={RegisterToVote} />

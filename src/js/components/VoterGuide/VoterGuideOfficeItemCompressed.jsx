@@ -562,7 +562,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
               onClick={this.toggleDisplayAllCandidates}
             >
               <span className="u-items-center u-no-break d-print-none">
-                <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
+                <i className="fas fa-plus BallotItem__view-more-plus" aria-hidden="true" />
                 <span>
                   {' '}
                   Show
@@ -588,7 +588,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
               onClick={this.toggleExpandDetails}
             >
               <div className="BallotItem__view-more u-items-center u-no-break d-print-none">
-                <i className="fa fa-plus BallotItem__view-more-plus" aria-hidden="true" />
+                <i className="fas fa-plus BallotItem__view-more-plus" aria-hidden="true" />
                 { totalNumberOfCandidatesToDisplay > 1 ? (
                   <span>
                     {' '}

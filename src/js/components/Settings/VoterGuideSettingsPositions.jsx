@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import Button from '@material-ui/core/Button';
 import BallotSearchResults from '../Ballot/BallotSearchResults';
 import BallotStore from '../../stores/BallotStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
@@ -80,7 +81,9 @@ export default class VoterGuideSettingsPositions extends Component {
           });
           // Positions for this organization, for this election
           if (voterGuide && voterGuide.google_civic_election_id) {
-            OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, false, true, voterGuide.google_civic_election_id);
+            if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(voterGuide.google_civic_election_id, organization.organization_we_vote_id)) {
+              OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, false, true, voterGuide.google_civic_election_id);
+            }
             OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, true, false, voterGuide.google_civic_election_id);
           }
         } else {
@@ -137,7 +140,9 @@ export default class VoterGuideSettingsPositions extends Component {
           // Positions for this organization, for this election
           if (voterGuide && voterGuide.google_civic_election_id && voterGuide.google_civic_election_id !== this.state.currentGoogleCivicElectionId) {
             this.setState({ currentGoogleCivicElectionId: voterGuide.google_civic_election_id });
-            OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, false, true, voterGuide.google_civic_election_id);
+            if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(voterGuide.google_civic_election_id, organization.organization_we_vote_id)) {
+              OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, false, true, voterGuide.google_civic_election_id);
+            }
             OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, true, false, voterGuide.google_civic_election_id);
           }
           // Positions for this organization, for this election
@@ -346,14 +351,15 @@ export default class VoterGuideSettingsPositions extends Component {
         </div> :
         null */}
         <div className="fa-pull-right">
-          <button
-            type="button"
-            className="btn btn-lg btn-success"
+          <Button
+            color="primary"
+            id="voterGuideSettingsPositionsSeeFullBallot"
             onClick={this.goToVoterGuideDisplay}
+            variant="contained"
           >
             <span className="d-none d-sm-block">See Full Ballot to Enter More Positions&nbsp;&nbsp;&gt;</span>
             <span className="d-block d-sm-none">Enter More Positions&nbsp;&nbsp;&gt;</span>
-          </button>
+          </Button>
         </div>
         {this.state.searchIsUnderway ? (
           <span className="d-block d-sm-none">

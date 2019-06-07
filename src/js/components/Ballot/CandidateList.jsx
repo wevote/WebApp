@@ -7,7 +7,6 @@ import { renderLog } from '../../utils/logging';
 export default class CandidateList extends Component {
   static propTypes = {
     children: PropTypes.array.isRequired,
-    contest_office_name: PropTypes.string,
   };
 
   render () {
@@ -17,13 +16,12 @@ export default class CandidateList extends Component {
         { this.props.children.map(child => (
           <div key={child.we_vote_id} className="card">
             <CandidateItem
-              showHover
-              key={child.we_vote_id}
-              contest_office_name={this.props.contest_office_name}
+              candidateWeVoteId={child.we_vote_id}
               hideBallotItemSupportOpposeComment
-              link_to_ballot_item_page
+              key={child.we_vote_id}
+              linkToBallotItemPage
+              showHover
               showTopCommentByBallotItem
-              {...child}
             />
           </div>
         ))

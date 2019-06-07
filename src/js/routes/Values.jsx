@@ -20,7 +20,7 @@ import AddEndorsements from '../components/Widgets/AddEndorsements';
 
 const testimonialAuthor = 'Dale M., Oakland, California';
 const imageUrl = cordovaDot('/img/global/photos/Dale_McGrew-200x200.jpg');
-const testimonial = 'Following values that are important to me shows me opinions on my ballot from other people who share my values.';
+const testimonial = 'Following values that are important to me lets me see the opinions of other people who share my values.';
 
 export default class Values extends Component {
   static propTypes = {};
@@ -78,10 +78,13 @@ export default class Values extends Component {
 
     return (
       <span>
-        <Helmet title="Your Network - We Vote" />
+        <Helmet title="Values, Public Figures & Organizations - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
         <div className="row">
           <div className="col-sm-12 col-md-8">
+            {valuesBlockToDisplay}
+            {publicFiguresBlockToDisplay}
+            {organizationsBlockToDisplay}
             <div className="d-md-none d-block">
               <div className="card">
                 <div className="card-main">
@@ -93,9 +96,6 @@ export default class Values extends Component {
                 </div>
               </div>
             </div>
-            {valuesBlockToDisplay}
-            {publicFiguresBlockToDisplay}
-            {organizationsBlockToDisplay}
           </div>
           <div className="col-md-4 d-none d-md-block">
             <div className="card">

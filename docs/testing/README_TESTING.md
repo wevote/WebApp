@@ -1,30 +1,83 @@
 # Testing WebApp - Overview of Process
 
 ## Minimum Browsers
+
 [Click here to see the minimum browser versions](https://docs.google.com/spreadsheets/d/1FlUMCvg1pNIO0IzJm0jQyvUW1YC_KHh-LO4l-OVIcog/edit#gid=1774503729) 
 that we support.
 
-## User Interaction Automated Testing with SauceLabs and Selenium
+# How to test Wevote WebApp with BrowserStack
 
-This is where we imitate a Voter interacting with our website. 
-In Travis we automate this with a Travis powered test with every pull request. 
-In Travis, we reach out to Sauce Labs, and have them run tests recorded with Selenium.
+If you haven't updated your dependencies in a while, run `npm install` from your terminal to install WebdriverIO (this is a framework that lets us test both the browser app and Cordova mobile apps with a single script). 
 
-Configuration in WebApp/.travis.yml and WebApp/tests/selenium/interpreter_config.json
+Copy `WebApp/tests/browserstack/browserstack.config-template.js` into `WebApp/tests/browserstack/browserstack.config.js`:
 
-Please see /tests/selenium
+    (WebAppEnv) $ cd WebApp
+    (WebAppEnv) $ cp tests/browserstack/browserstack.config-template.js tests/browserstack/browserstack.config.js
 
-## Component automated testing
+You'll need to add your credentials to `browserstack.config.js`. Sign into Browserstack and navigate to the [BrowserStack Automate dashboard](https://automate.browserstack.com/). Press "show" next to where it says "Username and Access Keys" on the left panel. You should see your username and access key.
 
-This is where we test one component at a time. 
-Currently in Travis we automate this with a Travis powered test with every pull request. 
+You will also need the URL for the android app .apk file. You can get this by asking someone else or by uploading the file with Browserstack's REST API as described [here](https://www.browserstack.com/app-automate/rest-api?framework=appium).
+Visit this page when you are signed into Browserstack, and they will customize the command that you need to run from your terminal window:
 
-Configuration in WebApp/.travis.yml and WebApp/package.json
+    curl -u "dalemcgrew1:GENERATED-STRING-HERE" -X POST https://api-cloud.browserstack.com/app-automate/upload -F "file=@/path/to/app/file/Application-debug.apk" -F 'data={"custom_id": "MyApp"}'
 
-Developers can run “npm run autoTest”
+You can find the latest We Vote APK (for Android) and IPA (for iOS) in [this Google Drive folder](https://drive.google.com/drive/u/0/folders/10tK7oqY7FKWhe0ilHDcli-DWpT9ldTFs).
+Please download it to your Download folder. For example, to find this path on a Mac:
 
-What are the components we want to test separately from user interaction testing?
-/src/js/components/AddressBox.jsx
+    (WebAppEnv) $ cd ~/Downloads
+    (WebAppEnv) $ pwd
+    /Users/dalemcgrew/Downloads
+
+In this example, the Android APK downloaded file is `app-debug-5-29-19.apk`. The full path to this downloaded file is now:
+
+    /Users/dalemcgrew/Downloads/app-debug-5-29-19.apk
+
+So the terminal command to upload the file would look like this:
+
+    curl -u "dalemcgrew1:GENERATED-STRING-HERE" -X POST https://api-cloud.browserstack.com/app-automate/upload -F "file=@/Users/dalemcgrew/Downloads/app-debug-5-29-19.apk" -F 'data={"custom_id": "MyApp"}'
+
+It will typically take 30-60 seconds to upload (without any feedback), and then return a path like this:
+
+    {"app_url":"bs://ANOTHER-GENERATED-STRING-HERE","custom_id":"MyApp","shareable_id":"dalemcgrew1/MyApp"}
+
+Copy the path `bs://ANOTHER-GENERATED-STRING-HERE` into your `WebApp/tests/browserstack/browserstack.config.js` file,
+and put it into the `BROWSERSTACK_APK_URL` value field like this:
+
+    BROWSERSTACK_APK_URL: 'bs://ANOTHER-GENERATED-STRING-HERE',
+
+With this `BROWSERSTACK_APK_URL` variable set now, we can run `npm run ballotTest-Android`.
+
+To run the tests, run one or more of the following:
+
+    (WebAppEnv) $ npm run ballotTest-Browser
+    (WebAppEnv) $ npm run ballotTest-Android
+    (WebAppEnv) $ npm run ballotTest-iOS
+    (WebAppEnv) $ npm run marketingTest-Browser
+
+When the test finishes, you should be able to see the video of the browser test on the BrowserStack Automate dashboard and video of the mobile apps on BrowserStack App Automate.
+
+
+[//]: <> ( ## User Interaction Automated Testing with SauceLabs and Selenium)
+
+[//]: <> ( (This is where we imitate a Voter interacting with our website. )
+[//]: <> ( (In Travis we automate this with a Travis powered test with every pull request. )
+[//]: <> ( (In Travis, we reach out to Sauce Labs, and have them run tests recorded with Selenium.)
+
+[//]: <> (Configuration in WebApp/.travis.yml and WebApp/tests/selenium/interpreter_config.json)
+
+[//]: <> (Please see /tests/selenium)
+
+[//]: <> (## Component automated testing)
+
+[//]: <> (This is where we test one component at a time. )
+[//]: <> (Currently in Travis we automate this with a Travis powered test with every pull request. )
+
+[//]: <> (Configuration in WebApp/.travis.yml and WebApp/package.json)
+
+[//]: <> (Developers can run “npm run autoTest”)
+
+[//]: <> (What are the components we want to test separately from user interaction testing?)
+[//]: <> (/src/js/components/AddressBox.jsx)
 
 ---
 

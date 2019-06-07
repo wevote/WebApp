@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import cookies from '../../utils/cookies';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import AppActions from '../../actions/AppActions';
@@ -83,7 +84,7 @@ export default class SettingsAccount extends Component {
     } else {
       AppActions.storeSignInStartPath();
       this.setState({
-        pleaseSignInTitle: 'Please sign in so you can share.',
+        pleaseSignInTitle: '',
         pleaseSignInSubTitle: 'Don\'t worry, we won\'t post anything automatically.',
       });
     }
@@ -182,7 +183,7 @@ export default class SettingsAccount extends Component {
               <div className="u-stack--sm">{yourAccountExplanation}</div> : (
                 <div>
                   <div className="u-f3">{pleaseSignInTitle}</div>
-                  <div className="u-stack--sm">{pleaseSignInSubTitle}</div>
+                  <SignInSubtitle className="u-stack--sm">{pleaseSignInSubTitle}</SignInSubtitle>
                 </div>
               )
             }
@@ -190,19 +191,20 @@ export default class SettingsAccount extends Component {
               <div className="u-stack--md">
                 { !this.state.voter.signed_in_twitter && (
                   <span>
-                    <TwitterSignIn className="btn btn-social btn-lg btn-twitter" />
+                    <RecommendedText className="u-tl u-stack--sm">Recommended</RecommendedText>
+                    <TwitterSignIn className="btn btn-social btn-lg btn-twitter u-full-width u-tc u-f4 u-inset--md" buttonText="SIGN IN WITH TWITTER" />
                   </span>
                 )
                 }
-                { !this.state.voter.signed_in_twitter && !this.state.voter.signed_in_facebook && (
+                {/* { !this.state.voter.signed_in_twitter && !this.state.voter.signed_in_facebook && (
                   <span>
                     <span className="u-margin-left--sm" />
                   </span>
                 )
-                }
+                } */}
                 { !this.state.voter.signed_in_facebook && (
                   <span>
-                    <FacebookSignIn className="btn btn-social btn-lg btn-facebook" toggleSignInModal={this.props.toggleSignInModal} />
+                    <FacebookSignIn className="btn btn-social btn-lg btn-facebook u-full-width u-tc u-f4 u-inset--md" toggleSignInModal={this.props.toggleSignInModal} buttonText="SIGN IN WITH FACEBOOK" />
                   </span>
                 )
                 }
@@ -222,7 +224,7 @@ export default class SettingsAccount extends Component {
                   {this.state.voter.signed_in_twitter ? (
                     <div>
                       <span className="btn btn-social btn-md btn-twitter" href="#">
-                        <i className="fa fa-twitter" />
+                        <i className="fab fa-twitter" />
                         @
                         {this.state.voter.twitter_screen_name}
                       </span>
@@ -261,7 +263,7 @@ export default class SettingsAccount extends Component {
                     {this.state.voter.signed_in_facebook && (
                     <span>
                       <span className="btn btn-social-icon btn-lg btn-facebook">
-                        <span className="fa fa-facebook" />
+                        <span className="fab fa-facebook" />
                       </span>
                       <span className="u-margin-left--sm" />
                     </span>
@@ -269,7 +271,7 @@ export default class SettingsAccount extends Component {
                     {this.state.voter.signed_in_with_email && (
                     <span>
                       <span className="btn btn-social-icon btn-lg btn-openid">
-                        <span className="fa fa-envelope-o" />
+                        <span className="fas fa-envelope" />
                       </span>
                     </span>
                     )}
@@ -278,7 +280,7 @@ export default class SettingsAccount extends Component {
               </div>
             ) : null
             }
-
+            <br />
             <VoterEmailAddressEntry />
 
             {debugMode && (
@@ -327,3 +329,16 @@ export default class SettingsAccount extends Component {
     );
   }
 }
+
+const SignInSubtitle = styled.p`
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 24px;
+`;
+
+const RecommendedText = styled.p`
+  margin: 0;
+  color: #333;
+  font-weight: bold;
+  font-size: 14px;
+`;

@@ -77,7 +77,7 @@ const GetStarted = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  margin-left: -134px;
+  margin-left: -132px;
 `;
 
 // @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -137,22 +137,21 @@ const NetworkContainer = styled.div`
   max-width: 90vw;
   display: flex;
   flex-flow: row wrap;
+  align-items: center;
   justify-content: space-between;
   padding: 2em;
   padding-bottom: 3em;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    flex-flow: column nowrap;
-  }
 `;
 
 const NetworkImage = styled.img`
   filter: grayscale(100%);
-  height: 20%;
-  width: 20%;
-  margin-top: 2em;
+  flex: 25%
+  max-width: 25%
+  padding: 0 2%;
+  object-fit: scale-down;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    height: 100% !important;
-    width: 100%;
+    flex: 50% !important;
+    max-width: 50% !important;
   }
 `;
 

@@ -280,6 +280,7 @@ class VoterGuideBallot extends Component {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
 
     // Once a voter hits the ballot, they have gone through orientation
+    cookies.setItem('ballot_has_been_visited', '1', Infinity, '/');
     cookies.setItem('show_full_navigation', '1', Infinity, '/');
 
     this.electionListListener = ElectionStore.addListener(this.onElectionStoreChange.bind(this));
@@ -751,16 +752,16 @@ class VoterGuideBallot extends Component {
       default:
         return null;
     }
-  }
+  };
 
   handleSearch = (filteredItems) => {
     this.setState({ ballotSearchResults: filteredItems });
-  }
+  };
 
   handleToggleSearchBallot = () => {
     const { isSearching } = this.state;
     this.setState({ isSearching: !isSearching });
-  }
+  };
 
   toggleBallotIntroModal () {
     const { showBallotIntroModal, location, pathname } = this.state;
@@ -991,7 +992,7 @@ class VoterGuideBallot extends Component {
             <header className="ballot__header__group">
               <h1 className={isCordova() ? 'ballot__header__title__cordova' : 'ballot__header__title'}>
                 { electionName ? (
-                  <span className="u-push--sm">
+                  <span className={isWebApp() ? 'u-push--sm' : 'ballot__header__title__cordova-text'}>
                     {electionName}
                     {' '}
                     <span className="d-none d-sm-inline">&mdash; </span>

@@ -37,15 +37,14 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/more/myballot' ||
     pathname === '/more/connect' ||
     pathname === '/more/credits' ||
-    pathname === '/more/donate' ||
-    pathname === '/more/donate_thank_you' ||
+    pathname.startsWith('/more/donate') ||
     pathname === '/more/elections' ||
     pathname.startsWith('/office/') ||
     pathname === '/more/network' ||
     pathname === '/more/network/friends' ||
     pathname === '/more/network/issues' ||
     pathname === '/more/network/organizations' ||
-    pathname === '/more/pricing' ||
+    pathname.startsWith('/more/pricing') ||
     pathname === '/more/privacy' ||
     pathname === '/more/register' ||
     pathname === '/more/sign_in' ||
@@ -56,7 +55,7 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/welcome') {
     contentFullWidthMode = true;
   } else if (pathname.startsWith('/ballot/vote')) {
-    contentFullWidthMode = true;
+    contentFullWidthMode = false; // I set this to false to fix the header padding issues in /ballot/vote
     voteMode = true;
   } else if (pathname.startsWith('/ballot')) {
     contentFullWidthMode = false;

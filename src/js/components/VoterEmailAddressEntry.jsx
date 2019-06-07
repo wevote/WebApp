@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
-import { Alert, Button } from 'react-bootstrap';
-import { isWebApp } from '../utils/cordovaUtils';
+import { Alert } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import Mail from '@material-ui/icons/Mail';
+import InputBase from '@material-ui/core/InputBase';
 import LoadingWheel from './LoadingWheel';
 import { renderLog } from '../utils/logging';
 import VoterActions from '../actions/VoterActions';
 import VoterStore from '../stores/VoterStore';
+// import {FormHelperText} from "@material-ui/core";
 
-export default class VoterEmailAddressEntry extends Component {
+class VoterEmailAddressEntry extends Component {
   static propTypes = {
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -27,6 +34,8 @@ export default class VoterEmailAddressEntry extends Component {
       voterEmailAddress: '',
       voterEmailAddressList: [],
     };
+
+    this.updateVoterEmailAddress = this.updateVoterEmailAddress.bind(this);
   }
 
   componentDidMount () {
@@ -120,6 +129,8 @@ export default class VoterEmailAddressEntry extends Component {
       return LoadingWheel;
     }
 
+    const { classes } = this.props;
+
     const emailAddressStatusHtml = (
       <span>
         { this.state.emailAddressStatus.email_address_already_owned_by_other_voter &&
@@ -150,42 +161,45 @@ export default class VoterEmailAddressEntry extends Component {
       </span>
     );
 
-    let enterEmailTitle = 'Or, sign in with email';
-    let enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to be signed into your We Vote account." :
-      "You'll receive a magic link in the email on this phone. Click that link to be signed into your We Vote account.";
+    let enterEmailTitle = 'Sign in with Email Link';
+    // let enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to be signed into your We Vote account." :
+    //   "You'll receive a magic link in the email on this phone. Click that link to be signed into your We Vote account.";
     if (this.state.voter && this.state.voter.is_signed_in) {
       enterEmailTitle = 'Add New Email';
-      enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to verify this new email." :
-        "You'll receive a magic link in the email on this phone. Click that link to verify this new email.";
+      // enterEmailExplanation = isWebApp() ? "You'll receive a magic link in your email. Click that link to verify this new email." :
+      //   "You'll receive a magic link in the email on this phone. Click that link to verify this new email.";
     }
 
     const enterEmailHtml = (
       <div>
-        <div className="u-stack--sm">
+        <div className="u-stack--sm u-tl">
           <strong>
             {enterEmailTitle}
-            .
           </strong>
           {' '}
-          {enterEmailExplanation}
+          {/* enterEmailExplanation */}
         </div>
         <form className="form-inline" onSubmit={this.voterEmailAddressSave.bind(this)}>
-          <input
-            className="form-control col-sm-8 mr-sm-3 u-stack--xs"
-            type="email"
-            name="voter_email_address"
-            id=""
-            value={this.state.voterEmailAddress}
-            onChange={this.updateVoterEmailAddress.bind(this)}
-            placeholder="Email Address"
-          />
+          <Paper className={classes.root} elevation={1}>
+            <Mail />
+            <InputBase
+              className={classes.input}
+              type="email"
+              name="voter_email_address"
+              id=""
+              value={this.state.voterEmailAddress}
+              onChange={this.updateVoterEmailAddress}
+              placeholder="Type email here..."
+            />
+          </Paper>
           <Button
-            className="u-stack--xs"
-            variant="success"
-            type="submit"
+            color="primary"
+            id="voterEmailAddressEntrySendMagicLink"
             onClick={this.voterEmailAddressSave}
+            variant="contained"
+            className={classes.button}
           >
-            Send Magic Link
+            SEND SIGN IN LINK
           </Button>
         </form>
       </div>
@@ -363,3 +377,25 @@ export default class VoterEmailAddressEntry extends Component {
     );
   }
 }
+
+const styles = {
+  root: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    paddingLeft: 8,
+    marginBottom: 8,
+  },
+  input: {
+    marginLeft: 8,
+    flex: 1,
+    padding: 8,
+  },
+  button: {
+    width: '100%',
+    padding: '12px',
+  },
+};
+
+export default withStyles(styles)(VoterEmailAddressEntry);

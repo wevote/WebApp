@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import {cordovaDot, cordovaScrollablePaneTopPadding} from '../../utils/cordovaUtils';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { renderLog } from '../../utils/logging';
 import Footer from '../../components/Welcome/Footer';
@@ -19,7 +19,7 @@ import ToolBar from './ToolBar';
 import VoterStore from '../../stores/VoterStore';
 import { weVoteBoard, weVoteFounders, weVoteStaff } from '../../components/More/people';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
-import { Title } from '../../components/Welcome/Header';
+import { Title } from '../../components/Welcome/HeaderWelcome';
 
 class About extends Component {
   static getProps () {
@@ -33,7 +33,7 @@ class About extends Component {
   render () {
     renderLog(__filename);
     return (
-      <Wrapper>
+      <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
         <Helmet title="About We Vote" />
         <WelcomeAppbar pathname="/more/about" />
         <HeaderForAbout>
@@ -114,7 +114,7 @@ class About extends Component {
               body={(
                 <span>
                   Code for America&nbsp;
-                  <i className="fa fa-external-link" />
+                  <i className="fas fa-external-link-alt" />
                 </span>
               )}
             />
@@ -126,7 +126,7 @@ class About extends Component {
               body={(
                 <span>
                   Mozilla Foundation&nbsp;
-                  <i className="fa fa-external-link" />
+                  <i className="fas fa-external-link-alt" />
                 </span>
               )}
             />
@@ -183,11 +183,11 @@ class About extends Component {
           </SectionTitle>
           <AboutDescriptionContainer>
             We are thankful for
-            &nbsp;
+            {' '}
             <Link to="/more/credits">
               our volunteers, our board of directors, our funders, and the organizations
               &nbsp;
-              <i className="fa fa-external-link" />
+              <i className="fas fa-external-link-alt" />
             </Link>
             {' '}
             that are critical to our work.
@@ -242,6 +242,7 @@ const Wrapper = styled.div`
   align-items: center;
   background: white;
   overflow-x: hidden;
+  padding-top: ${({ padTop }) => padTop};
 `;
 
 const HeaderForAbout = styled.div`

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { Button } from 'react-bootstrap';
+// import { Button } from 'react-bootstrap';
+import Button from '@material-ui/core/Button';
 import BallotSideBar from '../../components/Navigation/BallotSideBar';
 import BallotStore from '../../stores/BallotStore';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -182,7 +183,17 @@ export default class OrganizationVoterGuide extends Component {
         <div className="card">
           <div style={{ margin: 10 }}>
             <span style={floatRight}>
-              <Link to="/ballot"><Button variant="primary">Go to Ballot &#x21AC;</Button></Link>
+              <Link
+                id="OrganizationVoterGuideGoToBallot"
+                to="/ballot"
+              >
+                <Button
+                  color="primary"
+                  variant="contained"
+                >
+                  Go to Ballot &#x21AC;
+                </Button>
+              </Link>
             </span>
             <p>
               Find voter guides you can follow.
@@ -221,9 +232,16 @@ export default class OrganizationVoterGuide extends Component {
             <div className="card">
               <div className="card-main">
                 { isVoterOwner ? (
-                  <Button variant="warning" size="small" bsPrefix="pull-right" onClick={this.onEdit}>
-                    <span>Edit</span>
-                  </Button>
+                  <div className="u-float-right">
+                    <Button
+                      id="organizationVoterGuideEdit"
+                      onClick={this.onEdit}
+                      size="small"
+                      variant="outlined"
+                    >
+                      <span>Edit</span>
+                    </Button>
+                  </div>
                 ) :
                   <FollowToggle organizationWeVoteId={this.state.organization.organization_we_vote_id} showFollowingText />
                 }

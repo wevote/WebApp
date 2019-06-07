@@ -1,27 +1,29 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles/index';
 import PlaceIcon from '@material-ui/icons/Place';
+import cookies from '../../utils/cookies';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
 
 class LocationGuess extends Component {
   static propTypes = {
     toggleSelectBallotModal: PropTypes.func.isRequired,
-    hideLocationsGuessComponent: PropTypes.func.isRequired,
     classes: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
+      locationGuessClosed: false,
       textForMapSearch: '',
     };
   }
 
   componentDidMount () {
     this.setState({
+      locationGuessClosed: cookies.getItem('location_guess_closed'),
       textForMapSearch: VoterStore.getTextForMapSearch(),
     });
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -32,7 +34,7 @@ class LocationGuess extends Component {
     if (this.props.toggleSelectBallotModal !== nextProps.toggleSelectBallotModal) {
       return true;
     }
-    if (this.props.hideLocationsGuessComponent !== nextProps.hideLocationsGuessComponent) {
+    if (this.state.locationGuessClosed !== nextState.locationGuessClosed) {
       return true;
     }
     if (this.state.textForMapSearch !== nextState.textForMapSearch) {
@@ -48,46 +50,62 @@ class LocationGuess extends Component {
   onVoterStoreChange () {
     // console.log('Ballot.jsx onVoterStoreChange, voter: ', VoterStore.getVoter());
     this.setState({
+      locationGuessClosed: cookies.getItem('location_guess_closed'),
       textForMapSearch: VoterStore.getTextForMapSearch(),
+    });
+  }
+
+  closeLocationGuess = () => {
+    const oneMonthExpires = 86400 * 31;
+    cookies.setItem('location_guess_closed', '1', oneMonthExpires, '/');
+    this.setState({
+      locationGuessClosed: true,
     });
   }
 
   render () {
     renderLog(__filename);
-    const { toggleSelectBallotModal, hideLocationsGuessComponent, classes } = this.props;
-    const { textForMapSearch } = this.state;
-    // console.log('textForMapSearch before: ', textForMapSearch);
-    return (
-      <div id="location_guess" className="card-main__location-guess">
-        <PlaceIcon classes={{ root: classes.iconRoot }} />
-        <ParagraphStyled>
-          { textForMapSearch ?
-            (
-              <span>
-                Our best guess for your location is
-                {' '}
-                <BestGuess>
-                  &quot;
-                  {textForMapSearch}
-                  &quot;
-                </BestGuess>
-                .
-                {' '}
-              </span>
-            ) :
-            null
-          }
-          <AddressLink onClick={toggleSelectBallotModal}>
-            Enter your full address
-          </AddressLink>
-          {' '}
-          to see the correct ballot items.
-        </ParagraphStyled>
-        <CloseComponent onClick={hideLocationsGuessComponent}>
-          &times;
-        </CloseComponent>
-      </div>
-    );
+    const { locationGuessClosed, textForMapSearch } = this.state;
+    if (locationGuessClosed) {
+      return null;
+    } else {
+      const { toggleSelectBallotModal, classes } = this.props;
+      // console.log('textForMapSearch before: ', textForMapSearch);
+      return (
+        <div id="location_guess" className="card-main__location-guess">
+          <PlaceIcon classes={{ root: classes.iconRoot }} />
+          <ParagraphStyled>
+            {textForMapSearch ?
+              (
+                <span>
+                  Our best guess for your location is
+                  {' '}
+                  <BestGuess>
+                    &quot;
+                    {textForMapSearch}
+                    &quot;
+                  </BestGuess>
+                  .
+                  {' '}
+                </span>
+              ) :
+              null
+            }
+            <AddressLink
+              id="locationGuessEnterYourFullAddress"
+              onClick={toggleSelectBallotModal}
+            >
+              Enter your full address
+            </AddressLink>
+            {' '}
+            to see the correct ballot items.
+          </ParagraphStyled>
+          <CloseComponent id="closeLocationGuess" onClick={this.closeLocationGuess}>
+            &times;
+          </CloseComponent>
+        </div>
+      );
+    }
   }
 }
 
@@ -105,7 +123,7 @@ const ParagraphStyled = styled.div`
 `;
 const CloseComponent = styled.div`
   font-size: 25px;
-  margin: 15px 25px 15px 35px;
+  margin: 15px 15px 15px 15px;
   position: relative;
   bottom: 2px;
   align-self: center;

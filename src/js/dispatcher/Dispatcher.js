@@ -1,6 +1,6 @@
-import Dispatcher from "flux/lib/Dispatcher";
-import $ajax from "../utils/service";
-import { httpLog } from "../utils/logging";
+import Dispatcher from 'flux/lib/Dispatcher';
+import $ajax from '../utils/service';
+import { httpLog } from '../utils/logging';
 
 
 Dispatcher.prototype.$ajax = $ajax;

@@ -20,15 +20,19 @@ $mobile-btn-padding: 52px;
   color: $gray-mid;
 }
 
-.fa-twitter {
+.fa.fa-twitter,
+.fa.fa-facebook {
   font-size: inherit;
   bottom: $space-xs;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .value-btn {
   max-width: $button-div-max-width;
   width: 100%;
-  @include breakpoints (medium) {
+  @include breakpoints (small medium) {
     font-size: 12px;
     padding: $space-sm $space-sm $space-sm $mobile-btn-padding !important;
   }

@@ -13,12 +13,16 @@ $neg-space-sm: -$space-sm;
 $neg-space-lg: -$space-lg;
 $bottom-spacing-cordova: 50px;
 $cordova-shim: 58px;
+$cordova-shim-vote-section: 20px;
 $mobile-body-padding-top: 150px;
 $body-padding-top: 150px;
-$mobile-body-padding-top-no-decision-tabs: 112px;
-$body-padding-top-no-decision-tabs: 112px;
+$mobile-body-padding-top-no-decision-tabs: 97px;
+$body-padding-top-no-decision-tabs: 97px;
+$mobile-body-padding-top-ready-to-vote: 92px;
+$body-padding-top-ready-to-vote: 92px;
 $race-filter-margin: 8px;
 $neg-padding: -10px;
+$margin-zero: 0;
 
 .ballot {
   // ===========================================
@@ -43,6 +47,7 @@ $neg-padding: -10px;
     overflow: hidden;
     position: fixed;
     z-index: 1;
+    left: $space-none;
     padding-top: $cordova-shim;
     transform: $pinned-transform;
     transition: all 100ms ease-in-out 0s;
@@ -57,6 +62,21 @@ $neg-padding: -10px;
       transform: $unpinned-transform;
       transition: all 100ms ease-in-out 0s;
     }
+  }
+
+  &__heading-vote-section {
+    $pinned-transform: translate3d(0, -53px, 0);
+    width: 100%;
+    background-color: $white;
+    border-bottom: 1px solid #aaa;
+    overflow: hidden;
+    position: fixed;
+    z-index: 1;
+    left: $space-none;
+    padding-top: $cordova-shim-vote-section;
+    transform: $pinned-transform;
+    transition: all 100ms ease-in-out 0s;
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, .2), 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12);
   }
 
   &__heading-webapp {
@@ -75,7 +95,10 @@ $neg-padding: -10px;
       }
       &__cordova {
         font-size: 1.5rem;
-        margin-top: $space-md;
+        margin: $margin-zero !important;
+      }
+      &__cordova-text {
+        font-size: 14px;
       }
     }
 
@@ -153,6 +176,9 @@ $neg-padding: -10px;
   // ===========================================
   // Ballot Body
   // ===========================================
+  // May 2019: Breakpoints don't work as expected in Cordova due to the window.devicePixelRatio
+  // Since there are iPhones models with various heights and the same width, using device width to predict device height is a bug.
+  // TODO: The following css adjusts height based on device width, and may work much of the time, but it DOES NOT work reliably for iPhones
 
   &__body {
     margin-top: $space-md;
@@ -166,6 +192,14 @@ $neg-padding: -10px;
       padding-top: $body-padding-top-no-decision-tabs;
       @include breakpoints(small xsmall-bootstrap) {
         padding-top: $mobile-body-padding-top-no-decision-tabs;
+      }
+    }
+
+    &__ready-to-vote {
+      margin-top: $space-md;
+      padding-top: $body-padding-top-ready-to-vote;
+      @include breakpoints(small xsmall-bootstrap) {
+        padding-top: $mobile-body-padding-top-ready-to-vote;
       }
     }
   }

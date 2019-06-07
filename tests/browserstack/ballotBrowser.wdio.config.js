@@ -14,26 +14,40 @@ exports.config = {
   exclude: [],
   capabilities: [
     {
-      // capabilities for a browser web app test
-      name: 'ballotMainTest-Browser',
+      // Testing with a Windows Desktop Chrome browser
+      name: 'ballotMainTest-WindowsDesktopChromeBrowser',
       build: buildNameForDisplay,
       os: 'Windows',
-      os_version: '7',
+      os_version: '10',
       browserName: 'Chrome',
       browser_version: '72.0',
+      'browserstack.console': 'info',
+      'browserstack.debug': true,
+      'browserstack.geoLocation': 'US',
+    },
+    {
+      // Testing with an iPhone Safari browser
+      name: 'ballotMainTest-iPhoneSafariBrowser',
+      build: buildNameForDisplay,
+      device: 'iPhone 6',
+      os_version: '11',
+      real_mobile: true,
+      browserName: 'Safari',
+      browser_version: '11',
+      'browserstack.console': 'info',
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
     },
   ],
   coloredLogs: true,
   baseUrl: '',
-  waitforTimeout: 50000,
+  waitforTimeout: 180000, // 3 minutes
   connectionRetryTimeout: 90000,
   connectionRetryCount: 3,
 
   framework: 'mocha',
   mochaOpts: {
     ui: 'bdd',
-    timeout: 50000,
+    timeout: 180000, // 3 minutes
   },
 };

@@ -27,10 +27,7 @@ class AnalyticsStore extends ReduceStore {
       case 'saveAnalyticsAction':
         // if (action.res.action_constant === ACTION_VOTER_GUIDE_VISIT) {
         // }
-
-        return {
-          ...state,
-        };
+        return state;
 
       default:
         return state;

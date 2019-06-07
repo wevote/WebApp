@@ -49,7 +49,7 @@ class FacebookSignIn extends Component {
         onClick={this.didClickFacebookSignInButton}
         onKeyDown={this.onKeyDown}
       >
-        <span className="fa fa-facebook" />
+        <span className="fab fa-facebook-square" />
         {' '}
         {this.props.buttonText ? this.props.buttonText : 'Sign In'}
       </Button>

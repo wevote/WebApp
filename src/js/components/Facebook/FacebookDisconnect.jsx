@@ -16,7 +16,7 @@ class FacebookDisconnect extends React.Component {
           className="btn btn-social btn-lg btn-facebook"
           onClick={this.didClickDisconnectFromFacebookButton}
         >
-          <i className="fa fa-facebook" />
+          <i className="fab fa-facebook" />
           Disconnect from Facebook
         </a>
       </span>

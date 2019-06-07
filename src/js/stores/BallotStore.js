@@ -107,6 +107,7 @@ class BallotStore extends ReduceStore {
   }
 
   get ballotDecided () {
+    // console.log('BallotStore, ballotDecided');
     if (!this.isLoaded()) { return undefined; }
 
     return this.ballotFilteredUnsupportedCandidates().filter((item) => {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import ImageHandler from '../ImageHandler';
@@ -12,7 +12,7 @@ import ReadMore from '../Widgets/ReadMore';
 // VoterGuideDisplayForList is used by GuideList for viewing voter guides you can follow on the Candidate
 // and Opinions (you can follow) Components
 // Please see VoterGuide/OrganizationCard for the Component displayed by TwitterHandle
-export default class VoterGuideDisplayForList extends Component {
+export default class VoterGuideDisplayForList extends PureComponent {
   static propTypes = {
     children: PropTypes.object, // This is how we pass in the FollowToggle
     organization_we_vote_id: PropTypes.string,
@@ -35,6 +35,7 @@ export default class VoterGuideDisplayForList extends Component {
 
   render () {
     renderLog(__filename);
+    // console.log('VoterGuideDisplayForList, render');
     if (this.props.organization_we_vote_id === undefined) {
       // console.log("VoterGuideDisplayForList this.props.organization_we_vote_id === undefined");
       return null;
@@ -66,6 +67,8 @@ export default class VoterGuideDisplayForList extends Component {
       positionDescription = <PositionSupportOpposeSnippet {...position} isOnBallotItemPage={isOnBallotItemPage} />;
     } else if (position.is_information_only) {
       positionDescription = <PositionInformationOnlySnippet {...position} is_on_ballot_item_page={isOnBallotItemPage} />;
+    } else {
+      // console.log('VoterGuideDisplayForList NO positionDescription');
     }
 
     return (
@@ -95,7 +98,7 @@ export default class VoterGuideDisplayForList extends Component {
               {this.props.children}
               {/* twitter_followers_count ?
                 <span className="twitter-followers__badge">
-                  <span className="fa fa-twitter twitter-followers__icon" />
+                  <span className="fab fa-twitter twitter-followers__icon" />
                   {numberWithCommas(twitter_followers_count)}
                 </span> :
                 null */}

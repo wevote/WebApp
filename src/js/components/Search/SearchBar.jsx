@@ -91,7 +91,7 @@ export default class SearchBar extends Component {
             className={this.props.searchButton ? 'search-options-btn' : 'hidden'}
             type="button"
           >
-            <i className="fa fa-search" />
+            <i className="fas fa-search" />
           </button>
         </div>
       </div>

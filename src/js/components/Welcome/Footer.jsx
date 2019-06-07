@@ -39,6 +39,7 @@ class Footer extends Component {
             <Column>
               <ColumnTitle>About We Vote</ColumnTitle>
               <Link id="footerLinkAbout" className={classes.link} to="/more/about">About &amp; Team</Link>
+              <Link id="footerLinkCredits" className={classes.link} to="/more/credits">Credits &amp; Thanks</Link>
               <Link id="footerLinkDonate" className={classes.link} to="/more/donate">Donate</Link>
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkBlog"
@@ -198,7 +199,7 @@ const styles = theme => ({
 
 const Wrapper = styled.div`
   color: rgb(255, 255, 255, .6) !important;
-  background-image: linear-gradient(to bottom, #415a99, #2d3b5e);
+  background-image: linear-gradient(to bottom, #415a99, ${({ theme }) => theme.colors.brandBlue});
   padding: 4em 1em 0 1em;
   display: flex;
   flex-flow: column;

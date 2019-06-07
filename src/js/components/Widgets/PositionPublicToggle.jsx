@@ -196,6 +196,7 @@ class PositionPublicToggle extends Component {
             >
               <FormControlLabel
                 classes={{ label: classes.radioLabel }}
+                id="positionPublicToggleFriendsOnly"
                 value="Friends Only"
                 label="Friends Only"
                 labelPlacement="end"
@@ -210,6 +211,7 @@ class PositionPublicToggle extends Component {
                 }
               />
               <FormControlLabel
+                id="positionPublicTogglePublic"
                 classes={{ label: classes.radioLabel }}
                 value="Public"
                 label="Public"

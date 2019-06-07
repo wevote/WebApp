@@ -25,13 +25,13 @@ exports.config = {
   ],
   coloredLogs: true,
   baseUrl: '',
-  waitforTimeout: 50000,
+  waitforTimeout: 180000, // 3 minutes
   connectionRetryTimeout: 90000,
   connectionRetryCount: 3,
 
   framework: 'mocha',
   mochaOpts: {
     ui: 'bdd',
-    timeout: 50000,
+    timeout: 180000, // 3 minutes
   },
 };

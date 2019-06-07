@@ -184,7 +184,7 @@ $menu-item-padding: 7px;
   position: absolute;
   font-size: 16px;
   top: calc(50% - 1px);
-  right: calc((35px / 2px) - 6px);
+  right: calc((35px / 2) - 6px);
 }
 
 .issues-follow-btn {
@@ -300,7 +300,7 @@ $menu-item-padding: 7px;
 
 .card-main {
   position: relative !important;
-  overflow: auto !important;
+  overflow: auto;
 }
 
 .dropdown-divider {

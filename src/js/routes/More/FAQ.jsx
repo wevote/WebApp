@@ -164,7 +164,7 @@ export default class About extends Component {
             body={(
               <span>
                 Code for America&nbsp;
-                <i className="fa fa-external-link" />
+                <i className="fas fa-external-link-alt" />
               </span>
             )}
           />

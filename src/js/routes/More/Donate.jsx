@@ -1,19 +1,35 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import {
-  Button, Form, InputGroup, FormControl,
+  Form, InputGroup, FormControl,
 } from 'react-bootstrap';
+import Button from '@material-ui/core/Button';
+import styled from 'styled-components';
+import { withStyles } from '@material-ui/core/styles';
 import Helmet from 'react-helmet';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import DonationForm from '../../components/Donation/DonationForm';
 import DonationError from '../../components/Donation/DonationError';
 import DonateStore from '../../stores/DonateStore';
 import DonationListForm from '../../components/Donation/DonationListForm';
+import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
+import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
+import Section from '../../components/Welcome/Section';
+import Footer from '../../components/Welcome/Footer';
 
-export default class Donate extends Component {
+class Donate extends Component {
+  static getProps () {
+    return {};
+  }
+
+  static propTypes = {
+  };
+
   constructor (props) {
     super(props);
+
     this.state = {
       showCustomInput: false,
       custom_amount: '',
@@ -27,10 +43,6 @@ export default class Donate extends Component {
     this._updateCustomAmount = this._updateCustomAmount.bind(this);
     this._toggleDonateMonthly = this._toggleDonateMonthly.bind(this);
     this._donateStoreChange = this._donateStoreChange.bind(this);
-  }
-
-  static getProps () {
-    return {};
   }
 
   componentDidMount () {
@@ -88,44 +100,64 @@ export default class Donate extends Component {
     const donateMailtoUrl = "mailto:donate@WeVoteEducation.org?subject=Donate to We Vote's 501(c)(3)&body=I am interested in making at tax deductible donating to We Vote's 501(c)(3).";
 
     return (
-      <div className="Donate">
+      <Wrapper>
         <Helmet title="Donate - We Vote" />
-        <div className="container-fluid card">
-          <div style={{ marginTop: 0, marginBottom: 0 }}>
-            <h1 className="h4">Your donations keep us going. Thank you!</h1>
-
+        <WelcomeAppbar pathname="/more/pricing" />
+        <HeaderForDonate>
+          <DonateTitle>Donate</DonateTitle>
+        </HeaderForDonate>
+        <Section noTopMargin>
+          <DonateDescriptionContainer>
+            We Vote is a nonprofit technology startup,
+            {' '}
+            <Link to="/more/about">
+              built by volunteers
+            </Link>
+            {' '}
+            to strengthen American democracy.
+            {' '}
+            <OpenExternalWebSite
+              url="https://projects.propublica.org/nonprofits/organizations/811052585"
+              target="_blank"
+              body={(
+                <span>
+                  Our annual budgets are very small&nbsp;
+                  <i className="fas fa-external-link-alt" />
+                </span>
+              )}
+            />
+            , so every donation helps us pay for critical services. Over 50 awesome people like yourself have donated to make We Vote possible.
+            {' '}
             {this.state.donationErrorMessage.length > 0 ?
               <DonationError errorMessage={this.state.donationErrorMessage} /> :
-              <p>Please give what you can to help us reach more voters.</p>}
-            <div className="d-none d-sm-block"><br /></div>
-            <br />
-            Gift Type:
-            <Form className="d-flex flex-row">
-              {/* <div key={'default-radio'} */}
-              <Form.Check
-                type="radio"
-                label="Monthly"
-                bsPrefix="radio"
-                value="monthly"
-                style={{ margin: 24 }}
-                onChange={this._toggleDonateMonthly}
-                checked={this.state.radioSelected === 'monthly'}
-              />
-              {' '}
-              <Form.Check
-                type="radio"
-                label="One-Time"
-                name="radioGroup"
-                bsPrefix="radio"
-                value="once"
-                style={{ margin: 24 }}
-                onChange={this._toggleDonateMonthly}
-                checked={this.state.radioSelected === 'once'}
-              />
-              {' '}
+              <span>Please give what you can to help us reach more voters.</span>}
+          </DonateDescriptionContainer>
+          <DonateDescriptionContainer>
+            <Form className="donate-frequency">
+              <div className="donate-frequency__radio-button-div">
+                <Form.Check
+                  type="radio"
+                  label="Monthly"
+                  bsPrefix="radio"
+                  value="monthly"
+                  // classes={{ root: classes.radioButtonMargins }}
+                  onChange={this._toggleDonateMonthly}
+                  checked={this.state.radioSelected === 'monthly'}
+                />
+              </div>
+              <div className="donate-frequency__radio-button-div">
+                <Form.Check
+                  type="radio"
+                  label="One-Time"
+                  name="radioGroup"
+                  bsPrefix="radio"
+                  value="once"
+                  // classes={{ root: classes.radioButtonMargins }}
+                  onChange={this._toggleDonateMonthly}
+                  checked={this.state.radioSelected === 'once'}
+                />
+              </div>
             </Form>
-            Select an Amount:
-            <br />
             <DonationForm
               donationAmount={500}
               donateButtonText="$5"
@@ -151,11 +183,14 @@ export default class Donate extends Component {
               donateButtonText="$100"
               donateMonthly={this.state.donateMonthly}
             />
-
-            <Button bsPrefix="btn_donate btn btn-success" variant="success" onClick={this._toggleCustomAmount}>
-            Other Amount
+            <Button
+              color="primary"
+              onClick={this._toggleCustomAmount}
+              style={{ margin: 5 }}
+              variant="contained"
+            >
+              <span className="u-no-break">Other Amount</span>
             </Button>
-
             {this.state.showCustomInput ? (
               <span>
                 <InputGroup className="mb-3" style={{ width: '50%' }}>
@@ -170,7 +205,6 @@ export default class Donate extends Component {
                     value={this.state.custom_amount}
                     placeholder="250.00"
                   />
-
                   <InputGroup.Append>
                     <DonationForm
                       donationAmount={parseInt(parseFloat(this.state.custom_amount.replace(/[^0-9.]+/g, '')) * 100, 10)}
@@ -183,29 +217,106 @@ export default class Donate extends Component {
               </span>
             ) : null
             }
-
             {Number.isNaN(this.state.custom_amount) || this.state.custom_amount === '0' ? (
               <span>
                 <p>Please enter a valid number</p>
               </span>
             ) : null
             }
-            <div className="d-none d-sm-block"><br /></div>
-            <br />
+          </DonateDescriptionContainer>
+          <DonateDescriptionContainer>
             These contributions or gifts are not tax deductible. These donations are for We Vote&apos;s 501(c)(4) nonprofit.
             We Vote&apos;s 501(c)(3) nonprofit also
             {' '}
-            {/* This is a mailto! */}
-            <a href={donateMailtoUrl} title="Donate to We Vote's 501(c)(3)">accepts tax deductible donations.</a>
-            <br />
-            <br />
+            {/* This is a mailto! Shouldn't be visible in iPhone or Android apps. */}
+            <a href={donateMailtoUrl} title="I would like to donate to We Vote's 501(c)(3)" rel="noopener noreferrer" target="_blank">
+              accepts tax deductible donations
+              {' '}
+              <i className="fas fa-external-link-alt" />
+              .
+            </a>
+          </DonateDescriptionContainer>
+          <DonateDescriptionContainer>
             <DonationListForm />
-          </div>
-          <div id="users-device-size">
-            <div id="xs" className="d-none d-sm-block" />
-          </div>
-        </div>
-      </div>
+          </DonateDescriptionContainer>
+        </Section>
+        <Footer />
+      </Wrapper>
     );
   }
 }
+
+const styles = theme => ({
+  buttonContained: {
+    borderRadius: 32,
+    height: 50,
+    [theme.breakpoints.down('md')]: {
+      height: 36,
+    },
+  },
+});
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  background: white;
+  overflow-x: hidden;
+`;
+
+const HeaderForDonate = styled.div`
+  position: relative;
+  height: 190px;
+  width: 110%;
+  color: white;
+  background-image: linear-gradient(to bottom, #415a99, #2d3b5e);
+  border-bottom-left-radius: 50% 25%;
+  border-bottom-right-radius: 50% 25%;
+  padding: 0 2em;
+  margin-top: -72px;
+  text-align: center;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    height: 190px;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    height: 150px;
+  }
+`;
+
+const DonateTitle = styled.h1`
+  font-weight: bold;
+  font-size: 36px;
+  text-align: center;
+  margin-top: 3em;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 28px;
+    margin-top: 3em;
+  }
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    font-size: 18px;
+    margin-top: 5em;
+  }
+`;
+
+// }
+const DonateDescriptionContainer = styled.div`
+  margin: 1em auto;
+  margin-bottom: 0;
+  width: 960px;
+  max-width: 90vw;
+  text-align: left;
+  @media (min-width: 960px) and (max-width: 991px) {
+    > * {
+      width: 90%;
+      margin: 0 auto;   
+    }
+    max-width: 100%;
+    min-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+  }
+`;
+
+export default withStyles(styles)(Donate);

@@ -46,6 +46,7 @@ class FilterBase extends React.Component {
         key={item.filterName}
         className={`groupedFilter ${getGroupedFilterSecondClass(itemIndex, this.props.groupedFilters.length)} ${this.state.selectedFilters.indexOf(item.filterName) > -1 ? 'listFilterSelected' : ''}`}
         onClick={() => this.toggleFilter(item.filterName)}
+        id={item.filterId}
     >
       {
           item.icon ? item.icon : null
@@ -66,6 +67,7 @@ class FilterBase extends React.Component {
       key={item.filterName}
       className={`listFilter ${this.state.selectedFilters.indexOf(item.filterName) > -1 ? 'listFilterSelected' : ''}`}
       onClick={() => this.toggleFilter(item.filterName)}
+      id={item.filterId}
     >
       {
           item.icon ? item.icon : null
@@ -96,6 +98,7 @@ class FilterBase extends React.Component {
           >
             <div
               className={`listFilter ${showAllFilters ? 'listFilterSelected' : ''}`}
+              id="filterBaseFilters"
               onClick={this.toggleShowAllFilters}
             >
               <FilterListIcon />
@@ -145,7 +148,7 @@ const Wrapper = styled.div`
 const FilterTop = styled.div`
   display: flex;
   flex-flow: row nowrap;
-  overflow-x: scroll;
+  // overflow-x: scroll;
   padding: 0.7rem 0;
 `;
 

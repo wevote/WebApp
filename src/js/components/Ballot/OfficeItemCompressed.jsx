@@ -197,10 +197,11 @@ class OfficeItemCompressed extends Component {
 
             return (
               <CandidateInfo
-                onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
-                key={`candidate_preview-${oneCandidate.we_vote_id}`}
                 brandBlue={theme.palette.primary.main}
                 candidateLength={candidatesToRender.length}
+                id={`officeItemCompressedCandidateInfo-${oneCandidate.we_vote_id}`}
+                key={`candidate_preview-${oneCandidate.we_vote_id}`}
+                onClick={() => this.goToCandidateLink(oneCandidate.we_vote_id)}
               >
                 <CandidateTopRow>
                   {/* Candidate Image */}
@@ -393,7 +394,7 @@ class OfficeItemCompressed extends Component {
         />
         <div className="card-main__content">
           {/* Desktop */}
-          <Link to={this.getOfficeLink()}>
+          <Link id={`officeItemCompressedTopNameLink-${weVoteId}`} to={this.getOfficeLink()}>
             <Title>
               {ballotItemDisplayName}
               <ArrowForwardIcon
@@ -405,11 +406,11 @@ class OfficeItemCompressed extends Component {
           {/* *************************
             Display either a) the candidates the voter supports, or b) the first several candidates running for this office
             ************************* */}
-
           {this.generateCandidates()}
+
           { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ?
-            <ShowMoreFooter showMoreId="officeItemCompressedShowMoreFooter" showMoreLink={() => this.goToOfficeLink()} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay} candidates`} /> :
-            <ShowMoreFooter showMoreId="officeItemCompressedShowMoreFooter" showMoreLink={() => this.goToOfficeLink()} />
+            <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${weVoteId}`} showMoreLink={() => this.goToOfficeLink()} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay} candidates`} /> :
+            <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${weVoteId}`} showMoreLink={() => this.goToOfficeLink()} />
           }
         </div>
       </div>

@@ -14,24 +14,43 @@ exports.config = {
   capabilities: [
     {
       // capabilities for a cordova iOS test
-      name: 'ballotMainTest-iOS',
+      name: 'ballotMainTest-iOSiPhone6',
       build: buildNameForDisplay,
-      device: 'iPhone 8 Plus',
+      device: 'iPhone 6',
       os_version: '11',
       app: browserStackConfig.BROWSERSTACK_IPA_URL,
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
     },
+    {
+      name: 'ballotMainTest-iOSiPhone8',
+      build: buildNameForDisplay,
+      device: 'iPhone 8',
+      os_version: '11',
+      app: browserStackConfig.BROWSERSTACK_IPA_URL,
+      'browserstack.debug': true,
+      'browserstack.geoLocation': 'US',
+    },
+    {
+      name: 'ballotMainTest-iOSiPhoneX',
+      build: buildNameForDisplay,
+      device: 'iPhone X',
+      os_version: '11',
+      app: browserStackConfig.BROWSERSTACK_IPA_URL,
+      'browserstack.debug': true,
+      'browserstack.geoLocation': 'US',
+    },
+
   ],
   coloredLogs: true,
   baseUrl: '',
-  waitforTimeout: 50000,
+  waitforTimeout: 180000, // 3 minutes
   connectionRetryTimeout: 90000,
   connectionRetryCount: 3,
 
   framework: 'mocha',
   mochaOpts: {
     ui: 'bdd',
-    timeout: 50000,
+    timeout: 180000, // 3 minutes
   },
 };

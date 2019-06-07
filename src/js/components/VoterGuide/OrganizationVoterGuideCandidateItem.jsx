@@ -147,7 +147,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
                   'twitter-followers__badge'}
                 onClick={this.props.link_to_ballot_item_page ? this.goToCandidateLink : null}
               >
-                <span className="fa fa-twitter twitter-followers__icon" />
+                <span className="fab fa-twitter" />
                 <span title={numberWithCommas(twitterFollowersCount)}>{abbreviateNumber(twitterFollowersCount)}</span>
               </span>
             ) : null

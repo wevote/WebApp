@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
 import IconButton from '@material-ui/core/IconButton';
 import styled from 'styled-components';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -21,9 +20,6 @@ class ToolBar extends Component {
 
     return (
       <div>
-        <Helmet>
-          <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossOrigin="anonymous" />
-        </Helmet>
         <ToolBarContainer className="btn-toolbar">
           <OpenExternalWebSite
             className="u-no-underline"

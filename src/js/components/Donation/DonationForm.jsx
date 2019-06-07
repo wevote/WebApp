@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import Button from '@material-ui/core/Button';
 import { cordovaDot, historyPush } from '../../utils/cordovaUtils';
 import DonateActions from '../../actions/DonateActions';
 import { renderLog } from '../../utils/logging';
@@ -11,7 +11,6 @@ export default class DonationForm extends Component {
     donationAmount: PropTypes.number,
     donateButtonText: PropTypes.string,
     donateMonthly: PropTypes.bool,
-    donateOther: PropTypes.bool,
   };
 
   constructor (props) {
@@ -22,6 +21,22 @@ export default class DonationForm extends Component {
   }
 
   componentDidMount () {
+    // console.log('DonationForm componentDidMount');
+    this.configureStripe();
+  }
+
+  // componentWillReceiveProps (nextProps) {
+  //   // console.log('DonationForm componentWillReceiveProps');
+  //   this.configureStripe();
+  // }
+
+  componentWillUnmount () {
+    if (this.stripeHandler) {
+      this.stripeHandler.close();
+    }
+  }
+
+  configureStripe = () => {
     const self = this;
     const { StripeCheckout } = window;
     if (StripeCheckout !== undefined) {
@@ -41,12 +56,6 @@ export default class DonationForm extends Component {
     }
   }
 
-  componentWillUnmount () {
-    if (this.stripeHandler) {
-      this.stripeHandler.close();
-    }
-  }
-
   _donationDescription () {
     if (this.props.donateMonthly) {
       return 'Donate Monthly';
@@ -57,13 +66,17 @@ export default class DonationForm extends Component {
 
   _openStripeModal (event) {
     event.preventDefault();
-    this.stripeHandler.open({
-      name: 'We Vote',
-      description: this._donationDescription(),
-      zipCode: true,
-      amount: this.props.donationAmount,
-      panelLabel: 'Donate ',
-    });
+    if (this.stripeHandler) {
+      this.stripeHandler.open({
+        name: 'We Vote',
+        description: this._donationDescription(),
+        zipCode: true,
+        amount: this.props.donationAmount,
+        panelLabel: 'Donate ',
+      });
+    } else {
+      console.log('DonationForm cannot open');
+    }
   }
 
   render () {
@@ -76,9 +89,10 @@ export default class DonationForm extends Component {
     return (
       <span>
         <Button
-          bsPrefix={this.props.donateOther ? '' : 'btn_donate btn btn-success'}
-          variant="success"
+          color="primary"
           onClick={this._openStripeModal}
+          style={{ width: '7%', margin: 5 }}
+          variant="contained"
         >
           {donateButtonText}
         </Button>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
+import Button from '@material-ui/core/Button';
 import BallotSearchResults from '../../components/Ballot/BallotSearchResults';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
@@ -82,7 +83,9 @@ export default class VoterGuideChoosePositions extends Component {
           });
           // Positions for this organization, for this election
           if (voterGuide && voterGuide.google_civic_election_id) {
-            OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, false, true, voterGuide.google_civic_election_id);
+            if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(voterGuide.google_civic_election_id, organization.organization_we_vote_id)) {
+              OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, false, true, voterGuide.google_civic_election_id);
+            }
             OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, true, false, voterGuide.google_civic_election_id);
           }
         } else {
@@ -293,13 +296,14 @@ export default class VoterGuideChoosePositions extends Component {
               </div>
 
               <div className="fa-pull-right">
-                <button
-                  type="button"
-                  className="btn btn-lg btn-success"
+                <Button
+                  color="primary"
+                  id="voterGuideChoosePositionsSeeFullBallot"
                   onClick={this.goToVoterGuideDisplay}
+                  variant="contained"
                 >
                   See Full Ballot&nbsp;&nbsp;&gt;
-                </button>
+                </Button>
               </div>
 
               <div className="clearfix" />

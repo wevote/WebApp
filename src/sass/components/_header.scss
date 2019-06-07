@@ -1,6 +1,7 @@
 @import '../base/variables';
 
 $space-header-height:  35px;
+$iphone-x-notch-height: 22px;
 $space-header-x-height: 40px;
 $space-search-right:   10%;
 $back-button-font-size: .8rem;
@@ -8,6 +9,7 @@ $iphone-x-padding-left: env(safe-area-inset-left);
 $iphone-x-padding-right: env(safe-area-inset-right);
 $header-height: 48px;
 $header-height-back-to-ballot: 96px;
+$header-height-back-to-ballot-cordova: 71px;
 
 .page-header {
   // required overrides for Bootstrap :(
@@ -53,6 +55,9 @@ $header-height-back-to-ballot: 96px;
   &__back-to-ballot {
     height: $header-height-back-to-ballot;
   }
+  &__back-to-ballot-cordova {
+    height: $header-height-back-to-ballot-cordova;
+  }
 
   &__backToButtonIPhoneX {
     margin-top: $space-xs;
@@ -68,7 +73,7 @@ $header-height-back-to-ballot: 96px;
   &__cordova-iphonex {
     margin: $space-none;
     padding-bottom: $space-xs;
-    padding-top: $space-md;
+    padding-top: $space-none;
   }
 }
 
@@ -113,9 +118,7 @@ $header-height-back-to-ballot: 96px;
   }
 }
 
-.page-header-cordova-ios {
-  margin: $space-header-height auto $space-none;
-}
+
 
 .search-cordova {
   width: 100%;
@@ -130,7 +133,7 @@ $header-height-back-to-ballot: 96px;
 .ios-no-notch-spacer {
   top: $space-none;
   position: fixed;
-  height: $space-header-height;
+  height: $iphone-x-notch-height;
   background: $brand-blue;
   width: 100%;
   opacity: 1;

@@ -101,7 +101,7 @@ export default class Office extends Component {
 
     const testimonialAuthor = 'Dale M., Oakland, California';
     const imageUrl = cordovaDot('/img/global/photos/Dale_McGrew-200x200.jpg');
-    const testimonial = 'Following values that are important to me shows me opinions on my ballot from other people who share my values.';
+    const testimonial = 'Following values that are important to me lets me see the opinions of other people who share my values.';
 
     // ==============================================================
 
@@ -122,7 +122,7 @@ export default class Office extends Component {
               </CandidateList>
             </div>
           ) :
-            <span>No candidates found.</span>
+            <span>Loading candidates...</span>
         }
         </div>
         <div className="col-lg-3 d-none d-lg-block">

@@ -87,7 +87,7 @@ export default class IssueFollowToggleSquare extends Component {
           <h4 className="intro-modal__white-space intro-modal__square-name">{issueName}</h4>
           { issueDescription && issueDescription.length ? (
             <Tooltip id="organizationDescriptionTooltip" title={issueDescription}>
-              <i className="fa fa-info-circle fa-lg d-none d-sm-block intro-modal__square-details" aria-hidden="true" />
+              <i className="fas fa-info-circle fa-lg d-none d-sm-block intro-modal__square-details" aria-hidden="true" />
             </Tooltip>
           ) : null
           }
@@ -105,7 +105,7 @@ export default class IssueFollowToggleSquare extends Component {
           <h4 className="intro-modal__white-space intro-modal__square-name intro-modal__following">{issueName}</h4>
           { issueDescription && issueDescription.length ? (
             <Tooltip id="organizationDescriptionTooltip" title={issueDescription}>
-              <i className="fa fa-info-circle fa-lg d-none d-sm-block intro-modal__square-details" aria-hidden="true" />
+              <i className="fas fa-info-circle fa-lg d-none d-sm-block intro-modal__square-details" aria-hidden="true" />
             </Tooltip>
           ) : null
           }
@@ -117,7 +117,7 @@ export default class IssueFollowToggleSquare extends Component {
           <h4 className="intro-modal__white-space intro-modal__square-name">{issueName}</h4>
           { issueDescription && issueDescription.length ? (
             <Tooltip id="organizationDescriptionTooltip" title={issueDescription}>
-              <i className="fa fa-info-circle fa-lg d-none d-sm-block intro-modal__square-details" aria-hidden="true" />
+              <i className="fas fa-info-circle fa-lg d-none d-sm-block intro-modal__square-details" aria-hidden="true" />
             </Tooltip>
           ) : null
             }

@@ -12,3 +12,7 @@
 .u-gray-border-bottom {
   border-bottom: 1px solid $gray-border;
 }
+
+.u-no-scroll {
+  overflow: hidden !important;
+}

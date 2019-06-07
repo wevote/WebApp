@@ -48,6 +48,7 @@ export default class OrganizationVoterGuideTabs extends Component {
     // Positions for this organization, for this voter / election
     OrganizationActions.positionListForOpinionMaker(this.props.organization.organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
+
     OrganizationActions.positionListForOpinionMaker(this.props.organization.organization_we_vote_id, false, true);
 
     // console.log("OrganizationVoterGuideTabs, componentDidMount, this.props.active_route: ", this.props.active_route);
