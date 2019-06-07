@@ -183,8 +183,12 @@ class HeaderBar extends Component {
   handleNavigation = to => historyPush(to);
 
   toggleProfilePopUp () {
-    const { profilePopUpOpen } = this.state;
-    this.setState({ profilePopUpOpen: !profilePopUpOpen });
+    if (isWebApp()) {
+      const { profilePopUpOpen } = this.state;
+      this.setState({ profilePopUpOpen: !profilePopUpOpen });
+    } else {
+      this.handleNavigation('/more/hamburger');
+    }
   }
 
   // toggleSelectBallotModal () {

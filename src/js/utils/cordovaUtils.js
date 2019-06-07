@@ -225,7 +225,12 @@ export function getAndroidSize () {
 // renders approximately as ...  <div class="sc-ifAKCX kFFaGy">
 export function cordovaScrollablePaneTopPadding (filePath) {
   const fileName = filePath.substring(filePath.lastIndexOf('/') + 1);
-  console.log('STEVE cordovaScrollablePaneTopPadding: ', fileName);
+  if (window.location.href.startsWith('file:///Users') || window.location.href.startsWith('file:///android')) {
+    console.log(`cordovaScrollablePaneTopPadding: ${window.location.href.slice(50)}`);
+    console.log(`cordovaScrollablePaneTopPadding: ${window.location.href.slice(0, 50)}`);
+    console.log('cordovaScrollablePaneTopPadding: ', fileName);
+  }
+
   if (isIOS()) {
     if (isIPad() || isIPhone678Plus()) {
       if (window.location.href.indexOf('/index.html#/wevoteintro/') > 0) {
@@ -242,6 +247,12 @@ export function cordovaScrollablePaneTopPadding (filePath) {
         return '0px';
       } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
         return '130px';
+      } else if (window.location.href.indexOf('/index.html#/more/about') > 0) {
+        return '22px';
+      } else if (window.location.href.indexOf('/index.html#/more/hamburger') > 0) {
+        return isIPad() ? '15px' : '10px';
+      } else if (window.location.href.indexOf('/index.html#/settings/') > 0) {
+        return isIPad() ? '15px' : '16px';
       } else if (fileName === 'Application.jsx') {
         return '60px';
       } else {
@@ -262,6 +273,12 @@ export function cordovaScrollablePaneTopPadding (filePath) {
         return '0px';
       } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
         return '124px';
+      } else if (window.location.href.indexOf('/index.html#/more/about') > 0) {
+        return '22px';
+      } else if (window.location.href.indexOf('/index.html#/more/hamburger') > 0) {
+        return '10px';
+      } else if (window.location.href.indexOf('/index.html#/settings/') > 0) {
+        return '16px';
       } else if (fileName === 'Application.jsx') {
         return '62px';
       } else {
@@ -282,6 +299,12 @@ export function cordovaScrollablePaneTopPadding (filePath) {
         return '0px';
       } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
         return '150px';
+      } else if (window.location.href.indexOf('/index.html#/more/about') > 0) {
+        return '22px';
+      } else if (window.location.href.indexOf('/index.html#/more/hamburger') > 0) {
+        return '35px';
+      } else if (window.location.href.indexOf('/index.html#/settings/') > 0) {
+        return '32px';
       } else if (window.location.href.indexOf('/index.html#/opinions') > 0) {
         return '0px';
       } else if (fileName === 'Application.jsx') {
@@ -302,6 +325,12 @@ export function cordovaScrollablePaneTopPadding (filePath) {
         return '0px';
       } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
         return '22px';
+      } else if (window.location.href.indexOf('/index.html#/more/about') > 0) {
+        return '22px';
+      } else if (window.location.href.indexOf('/index.html#/more/hamburger') > 0) {
+        return '35px';
+      } else if (window.location.href.indexOf('/index.html#/settings/') > 0) {
+        return '32px';
       } else if (fileName === 'Application.jsx') {
         return '80px';
       } else {
@@ -322,6 +351,12 @@ export function cordovaScrollablePaneTopPadding (filePath) {
         return '0px';
       } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
         return '150px';
+      } else if (window.location.href.indexOf('/index.html#/more/about') > 0) {
+        return '22px';
+      } else if (window.location.href.indexOf('/index.html#/more/hamburger') > 0) {
+        return '35px';
+      } else if (window.location.href.indexOf('/index.html#/settings/') > 0) {
+        return '32px';
       } else if (fileName === 'Application.jsx') {
         return '80px';
       } else {
@@ -331,9 +366,9 @@ export function cordovaScrollablePaneTopPadding (filePath) {
   } else if (isAndroid()) {
     const sizeString = getAndroidSize();
     if (sizeString === '--xl') {
-      if (window.location.href.indexOf('index.html#/office/') > 0) {
+      if (window.location.href.indexOf('/index.html#/office/') > 0) {
         return '40px';
-      } else if (window.location.href.indexOf('index.html#/candidate') > 0) {
+      } else if (window.location.href.indexOf('/index.html#/candidate') > 0) {
         return '20px';
       } else if (window.location.href.indexOf('/index.html#/opinions') > 0) {
         return '0px';
@@ -343,24 +378,36 @@ export function cordovaScrollablePaneTopPadding (filePath) {
         return '0px';
       } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
         return '108px';
+      } else if (window.location.href.indexOf('/index.html#/more/about') > 0) {
+        return '0px';
+      } else if (window.location.href.indexOf('/index.html#/more/hamburger') > 0) {
+        return '0px';
+      } else if (window.location.href.indexOf('/index.html#/settings/') > 0) {
+        return '0px';
       } else if (fileName === 'Application.jsx') {
         return '45px';
       } else {
         return '0px';
       }
     } else if (sizeString === '--lg') {
-      if (window.location.href.indexOf('index.html#/office/') > 0) {
+      if (window.location.href.indexOf('/index.html#/office/') > 0) {
         return '40px';
-      } else if (window.location.href.indexOf('index.html#/candidate') > 0) {
+      } else if (window.location.href.indexOf('/index.html#/candidate') > 0) {
         return '16px';
       } else if (window.location.href.indexOf('/index.html#/values') > 0) {
         return '0px';
       } else if (window.location.href.indexOf('/index.html#/friends') > 0) {
         return '0px';
-      } else if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
+      } else if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '0px';
       } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
         return '104px';
+      } else if (window.location.href.indexOf('/index.html#/more/about') > 0) {
+        return '0px';
+      } else if (window.location.href.indexOf('/index.html#/more/hamburger') > 0) {
+        return '0px';
+      } else if (window.location.href.indexOf('/index.html#/settings/') > 0) {
+        return '0px';
       } else  if (window.location.href.indexOf('/index.html#/wevoteintro/') > 0) {
         return '0px';
       } else if (fileName === 'Application.jsx') {
@@ -369,7 +416,7 @@ export function cordovaScrollablePaneTopPadding (filePath) {
         return '0px';
       }
     } if (sizeString === '--md') {
-      if (window.location.href.indexOf('index.html#/office/') > 0) {
+      if (window.location.href.indexOf('/index.html#/office/') > 0) {
         return '40px';
       } else if (window.location.href.indexOf('/index.html#/values') > 0) {
         return '0px';
@@ -379,10 +426,16 @@ export function cordovaScrollablePaneTopPadding (filePath) {
         return '0px';
       } else if (window.location.href.indexOf('/index.html#/friends') > 0) {
         return '0px';
-      } else if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
+      } else if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '16px';
       } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
         return '104px';
+      } else if (window.location.href.indexOf('/index.html#/more/about') > 0) {
+        return '22px';
+      } else if (window.location.href.indexOf('/index.html#/more/hamburger') > 0) {
+        return '0px';
+      } else if (window.location.href.indexOf('/index.html#/settings/') > 0) {
+        return '0px';
       } else  if (window.location.href.indexOf('/index.html#/wevoteintro/') > 0) {
         return '0px';
       } else if (fileName === 'Application.jsx') {
@@ -391,7 +444,7 @@ export function cordovaScrollablePaneTopPadding (filePath) {
         return '0px';
       }
     } else if (sizeString === '--sm') {
-      if (window.location.href.indexOf('index.html#/candidate') > 0) {
+      if (window.location.href.indexOf('/index.html#/candidate') > 0) {
         return '24px';
       } else if (window.location.href.indexOf('/index.html#/opinions') > 0) {
         return '0px';
@@ -403,6 +456,12 @@ export function cordovaScrollablePaneTopPadding (filePath) {
         return '0px';
       } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
         return '130px';
+      } else if (window.location.href.indexOf('/index.html#/more/about') > 0) {
+        return '22px';
+      } else if (window.location.href.indexOf('/index.html#/more/hamburger') > 0) {
+        return '0px';
+      } else if (window.location.href.indexOf('/index.html#/settings/') > 0) {
+        return '0px';
       } else if (fileName === 'Application.jsx') {
         return '45px';
       } else {
@@ -417,7 +476,7 @@ export function cordovaScrollablePaneTopPadding (filePath) {
 export function cordovaBallotFilterTopMargin () {
   if (isIOS()) {
     if (isIPhone678Plus()) {
-      if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
+      if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '55px';
       }
       return '53px';
@@ -431,22 +490,22 @@ export function cordovaBallotFilterTopMargin () {
   } else if (isAndroid()) {
     const sizeString = getAndroidSize();
     if (sizeString === '--sm') {
-      if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
+      if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '-12px';
       }
       return '32px';
     } else if (sizeString === '--md') {
-      if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
+      if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '-58px';
       }
       return '32px';
     } else if (sizeString === '--lg') {
-      if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
+      if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '-32px';
       }
       return '32px';
     } else if (sizeString === '--xl') {
-      if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
+      if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
         return '-10px';
       }
       return '31px';
@@ -522,16 +581,18 @@ export function cordovaTopHeaderTopMargin () {
     }
     if (isIOS()) {
       if (isIPhone678Plus() || isIPhone678()) {
-        if (window.location.href.indexOf('index.html#/office') > 0) {
+        if (window.location.href.indexOf('/index.html#/office') > 0) {
           style.marginTop = '16px';
         } else if (window.location.href.indexOf('/index.html#/values') > 0) {
           style.marginTop = '16px';
         } else if (window.location.href.indexOf('/index.html#/friends') > 0) {
           style.marginTop = '16px';
-        } else if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
+        } else if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
           style.marginTop = '19px';
-        } else if (window.location.href.indexOf('index.html#/ballot') > 0) {
+        } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
           style.marginTop = '19px';
+        } else if (window.location.href.indexOf('/index.html#/settings/') > 0) {
+          style.marginTop = '22px';
         } else {
           style.marginTop = '19px';
         }
@@ -540,16 +601,18 @@ export function cordovaTopHeaderTopMargin () {
           style.marginTop = '38px';
         } else if (window.location.href.indexOf('/index.html#/values') > 0) {
           style.marginTop = '16px';
-        } else if (window.location.href.indexOf('index.html#/office') > 0) {
+        } else if (window.location.href.indexOf('/index.html#/office') > 0) {
           style.marginTop = '30px';
         } else if (window.location.href.indexOf('/index.html#/values') > 0) {
           style.marginTop = '8px';
         } else if (window.location.href.indexOf('/index.html#/friends') > 0) {
           style.marginTop = '16px';
-        } else if (window.location.href.indexOf('index.html#/ballot/vote') > 0) {
+        } else if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
           style.marginTop = '16px';
-        } else if (window.location.href.indexOf('index.html#/ballot') > 0) {
+        } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
           style.marginTop = '16px';
+        } else if (window.location.href.indexOf('/index.html#/settings/') > 0) {
+          style.marginTop = '38px';
         } else {
           style.marginTop = '16px';
         }
