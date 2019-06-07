@@ -12,6 +12,7 @@ class StickyPopover extends Component {
     children: PropTypes.element.isRequired,
     popoverComponent: PropTypes.node.isRequired,
     placement: PropTypes.string,
+    popoverId: PropTypes.string,
   };
 
   constructor (props) {
@@ -44,7 +45,7 @@ class StickyPopover extends Component {
   }
 
   render () {
-    const { popoverComponent, children, placement } = this.props;
+    const { popoverComponent, children, placement, popoverId } = this.props;
     const { showPopover, target } = this.state;
     renderLog(__filename);
     return (
@@ -62,6 +63,7 @@ class StickyPopover extends Component {
           <Popover
             onMouseEnter={this.onMouseEnterPopover}
             onMouseLeave={this.onMouseLeave}
+            id={popoverId || undefined}
           >
             {popoverComponent}
           </Popover>

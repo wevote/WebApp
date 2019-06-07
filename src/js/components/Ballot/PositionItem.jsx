@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -86,16 +85,7 @@ class PositionItem extends Component {
     const organizationWeVoteId = position.organization_we_vote_id || position.speaker_we_vote_id;
 
     if (showPosition) {
-      const organizationCardPopover = (
-        <Popover
-          id="positions-popover-trigger-click-root-close"
-          onClick={PositionItem.closePopover}
-        >
-          <OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />
-        </Popover>
-      );
       const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
-
       return (
         <React.Fragment>
           <div className="u-show-desktop-tablet">
