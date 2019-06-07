@@ -19,10 +19,6 @@ class PositionItem extends Component {
     position: PropTypes.object.isRequired,
   };
 
-  static closePopover () {
-    document.body.click();
-  }
-
   shouldComponentUpdate (nextProps) {
     if (this.props.ballotItemDisplayName !== nextProps.ballotItemDisplayName) {
       return true;
