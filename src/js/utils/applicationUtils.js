@@ -55,7 +55,7 @@ export function getApplicationViewBooleans (pathname) {
     pathname === '/welcome') {
     contentFullWidthMode = true;
   } else if (pathname.startsWith('/ballot/vote')) {
-    contentFullWidthMode = true;
+    contentFullWidthMode = false; // I set this to false to fix the header padding issues in /ballot/vote
     voteMode = true;
   } else if (pathname.startsWith('/ballot')) {
     contentFullWidthMode = false;

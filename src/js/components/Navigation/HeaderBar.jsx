@@ -300,8 +300,8 @@ class HeaderBar extends Component {
                     }
                     {voterPhotoUrlMedium ? (
                       <div id="profileAvatarHeaderBar"
-                           className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
-                           onClick={this.toggleProfilePopUp}
+                            className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
+                            onClick={this.toggleProfilePopUp}
                       >
                         <img
                           className="header-nav__avatar"

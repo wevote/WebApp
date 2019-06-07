@@ -41,7 +41,9 @@ class BallotSearch extends Component {
       // console.log("shouldComponentUpdate: this.state.searchValue", this.state.searchValue, ", nextState.searchValue", nextState.searchValue);
       return true;
     }
-
+    if (this.state.showCloser !== nextState.showCloser) {
+      return true;
+    }
     if (this.props.alwaysOpen !== nextProps.alwaysOpen) {
       return true;
     }
@@ -99,7 +101,7 @@ class BallotSearch extends Component {
         >
           <SearchIcon classes={{ root: classes.iconRoot }} />
         </IconButton>
-        <Separator />
+        <Separator isSearching={isSearching} alwaysOpen={alwaysOpen} />
         <InputBase
           classes={{ input: (isSearching || alwaysOpen) ? classes.input : classes.inputHidden }}
           inputRef={(input) => { this.searchInput = input; }}
@@ -107,7 +109,7 @@ class BallotSearch extends Component {
           value={searchValue}
           placeholder="Search"
         />
-        <Closer showCloser={showCloser} brandBlue={theme.palette.primary.main}>
+        <Closer isSearching={isSearching} showCloser={showCloser} brandBlue={theme.palette.primary.main}>
           <IconButton
             classes={{ root: classes.iconButtonRoot }}
             onClick={(isSearching || !alwaysOpen) ? this.toggleSearch : undefined}
@@ -122,7 +124,7 @@ class BallotSearch extends Component {
 
 const styles = theme => ({
   searchRoot: {
-    height: 36,
+    height: 32,
     [theme.breakpoints.down('md')]: {
       height: 28,
     },
@@ -161,7 +163,7 @@ const styles = theme => ({
 });
 
 const Closer = styled.div`
-  display: inherit;
+  display: ${({ isSearching }) => (isSearching ? 'inherit' : 'none')};
   border-radius: 16px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
@@ -171,6 +173,7 @@ const Closer = styled.div`
 `;
 
 const Separator = styled.div`
+  display: ${({ isSearching, alwaysOpen }) => (isSearching || alwaysOpen ? 'inherit' : 'none')};
   height: 100%;
   width: 1px;
   background: rgba(0, 0, 0, .3);
@@ -180,7 +183,7 @@ const SearchWrapper = styled.div`
   display: flex;
   flex-flow: row;
   border-radius: 4px;
-  height: 36px;
+  height: 32px;
   border: 1px solid rgba(0, 0, 0, .3);
   padding: 0 3px 0 3px;
   margin-right: 16px;
@@ -188,6 +191,7 @@ const SearchWrapper = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     height: 28px;
     margin-right: 4px;
+    margin-top: 8px;
   }
 `;
 
