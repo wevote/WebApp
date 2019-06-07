@@ -94,7 +94,7 @@ class PositionItem extends Component {
           <OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />
         </Popover>
       );
-      const myPopoverComponent = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
+      const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
 
       return (
         <React.Fragment>
@@ -104,8 +104,9 @@ class PositionItem extends Component {
                 <DesktopItemImage>
                   <StickyPopover
                     delay={{ show: 700, hide: 100 }}
-                    popoverComponent={myPopoverComponent}
+                    popoverComponent={organizationPopoverCard}
                     placement="bottom"
+                    id="positions-popover-trigger-click-root-close"
                   >
                     <Link to={speakerLink} className="u-no-underline">
                       { position.speaker_image_url_https_medium ? (
@@ -125,17 +126,16 @@ class PositionItem extends Component {
                 <DesktopItemHeader>
                   <DesktopItemNameIssueContainer>
                     <DesktopItemName>
-                      <OverlayTrigger
+                      <StickyPopover
                         delay={{ show: 700, hide: 100 }}
-                        trigger={['hover', 'focus']}
-                        rootClose
+                        popoverComponent={organizationPopoverCard}
                         placement="bottom"
-                        overlay={organizationCardPopover}
+                        id="positions-popover-trigger-click-root-close"
                       >
                         <Link to={speakerLink}>
                           { position.speaker_display_name }
                         </Link>
-                      </OverlayTrigger>
+                      </StickyPopover>
                     </DesktopItemName>
                     <DesktopItemIssues>{/* Issues go here */}</DesktopItemIssues>
                   </DesktopItemNameIssueContainer>
