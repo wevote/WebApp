@@ -94,7 +94,7 @@ class PositionItem extends Component {
           <OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />
         </Popover>
       );
-      const myPopoverComponent = ( <OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
+      const myPopoverComponent = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
 
       return (
         <React.Fragment>
