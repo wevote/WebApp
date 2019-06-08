@@ -19,7 +19,6 @@ const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP = 36;
 
 export default class BallotElectionListWithFilters extends Component {
   static propTypes = {
-    ballotElectionList: PropTypes.array.isRequired,
     ballotBaseUrl: PropTypes.string,
     organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
     showRelevantElections: PropTypes.bool,
@@ -28,6 +27,21 @@ export default class BallotElectionListWithFilters extends Component {
 
   constructor (props) {
     super(props);
+
+    this.state = {
+      ballotElectionList: [],
+      loadingNewBallotItems: false,
+      showMoreUpcomingElections: false,
+      showMorePriorElections: false,
+      showPriorElectionsList: true,
+      stateName: '',
+      updatedElectionId: '',
+    };
+  }
+
+  componentDidMount () {
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     let priorElectionId = '';
     if (BallotStore.ballotProperties) {
       priorElectionId = BallotStore.ballotProperties.google_civic_election_id;
@@ -35,19 +49,11 @@ export default class BallotElectionListWithFilters extends Component {
       priorElectionId = VoterStore.electionId();
     }
     const stateCode = VoterStore.getStateCodeFromIPAddress();
-
-    this.state = {
-      loadingNewBallotItems: false,
+    this.setState({
+      ballotElectionList: BallotStore.ballotElectionList(),
       priorElectionId,
-      showMoreUpcomingElections: false,
-      showMorePriorElections: false,
-      showPriorElectionsList: true,
       stateName: convertStateCodeToStateText(stateCode),
-      updatedElectionId: '',
-    };
-
-    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    });
   }
 
   componentWillUnmount () {
@@ -62,22 +68,25 @@ export default class BallotElectionListWithFilters extends Component {
       // Ballot is found but ballot is empty. We want to stay put.
       // console.log('onBallotStoreChange: ballot_with_all_items is empty');
     }
-    if (this.state.priorElectionId !== this.state.updatedElectionId && this.state.loadingNewBallotItems && this.props.toggleFunction) {
+    if (this.state.priorElectionId !== this.state.updatedElectionId && this.state.loadingNewBallotItems) {
       // console.log('onBallotStoreChange--------- loadingNewBallotItems:', this.state.loadingNewBallotItems);
       this.setState({
         loadingNewBallotItems: false,
         updatedElectionId: BallotStore.ballotProperties.google_civic_election_id,
       });
       // console.log('onBallotStoreChange--------- this.props.toggleFunction()');
-      this.props.toggleFunction(this.state.destinationUrlForHistoryPush);
+      this.incomingToggleFunction(this.state.destinationUrlForHistoryPush);
     }
+    this.setState({
+      ballotElectionList: BallotStore.ballotElectionList(),
+    });
   }
 
   onVoterStoreChange () {
     // console.log('BallotElectionListWithFilters.jsx onVoterStoreChange, VoterStore.electionId(): ', VoterStore.electionId(), ', priorElectionId: ', this.state.priorElectionId, ', updatedElectionId: ', this.state.updatedElectionId);
     // if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found && BallotStore.ballot && BallotStore.ballot.length !== 0) {
     if (VoterStore.electionId() && VoterStore.electionId() !== this.state.priorElectionId) {
-      if (this.state.loadingNewBallotItems && this.props.toggleFunction) {
+      if (this.state.loadingNewBallotItems) {
         // console.log('onVoterStoreChange--------- loadingNewBallotItems:', this.state.loadingNewBallotItems);
         const stateCode = VoterStore.getStateCodeFromIPAddress();
         this.setState({
@@ -86,8 +95,14 @@ export default class BallotElectionListWithFilters extends Component {
           updatedElectionId: VoterStore.electionId(),
         });
         // console.log('onVoterStoreChange--------- this.props.toggleFunction()');
-        this.props.toggleFunction(this.state.destinationUrlForHistoryPush);
+        this.incomingToggleFunction(this.state.destinationUrlForHistoryPush);
       }
+    }
+  }
+
+  incomingToggleFunction = (destinationUrlForHistoryPush) => {
+    if (this.props.toggleFunction) {
+      this.props.toggleFunction(destinationUrlForHistoryPush);
     }
   }
 
@@ -159,7 +174,6 @@ export default class BallotElectionListWithFilters extends Component {
            electionName.includes('US') ||
            electionName.includes('United States');
   }
-
 
   toggleShowMoreUpcomingElections () {
     this.setState(prevState => ({ showMoreUpcomingElections: !prevState.showMoreUpcomingElections }));
@@ -295,7 +309,7 @@ export default class BallotElectionListWithFilters extends Component {
 
     const currentDate = moment().format('YYYY-MM-DD');
 
-    const ballotElectionListUpcomingSorted = this.props.ballotElectionList.concat();
+    const ballotElectionListUpcomingSorted = this.state.ballotElectionList.concat();
     // We want to sort ascending so the next upcoming election is first
     ballotElectionListUpcomingSorted.sort((a, b) => {
       const electionDayTextA = a.election_day_text.toLowerCase();
@@ -307,7 +321,7 @@ export default class BallotElectionListWithFilters extends Component {
       return 0; // default return value (no sorting)
     });
 
-    const ballotElectionListPastSorted = this.props.ballotElectionList.concat();
+    const ballotElectionListPastSorted = this.state.ballotElectionList.concat();
     // We want to sort descending so the most recent election is first
     ballotElectionListPastSorted.sort((a, b) => {
       const electionDayTextA = a.election_day_text.toLowerCase();

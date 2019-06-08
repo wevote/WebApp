@@ -58,6 +58,22 @@ class AddressBox extends Component {
     this.googleAutocompleteListener = addressAutocomplete.addListener('place_changed', this._placeChanged.bind(this, addressAutocomplete));
   }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    if (this.state.loading !== nextState.loading) {
+      return true;
+    }
+    if (this.state.voterSavedAddress !== nextState.voterSavedAddress) {
+      return true;
+    }
+    if (this.state.textForMapSearch !== nextState.textForMapSearch) {
+      return true;
+    }
+    if (this.state.ballotCaveat !== nextState.ballotCaveat) {
+      return true;
+    }
+    return false;
+  }
+
   componentDidUpdate () {
     // If we're in the slide with this component, autofocus the address box, otherwise defocus.
     if (this.props.manualFocus !== undefined) {
@@ -90,31 +106,32 @@ class AddressBox extends Component {
   }
 
   onVoterStoreChange () {
-    // console.log("AddressBox, onVoterStoreChange, this.state:", this.state);
-    if (this.props.toggleSelectAddressModal) {
-      this.props.toggleSelectAddressModal();
-    }
+    // console.log('AddressBox, onVoterStoreChange, this.state:', this.state);
+    const { textForMapSearch, voterSavedAddress } = this.state;
 
-    if (this.state.textForMapSearch && this.state.voterSavedAddress) {
+    if (textForMapSearch && voterSavedAddress) {
+      this.incomingToggleSelectAddressModal();
       historyPush(this.props.saveUrl);
     } else {
       this.setState({
-        textForMapSearch: VoterStore.getTextForMapSearch(),
         loading: false,
+        textForMapSearch: VoterStore.getTextForMapSearch(),
+        voterSavedAddress,
       });
     }
   }
 
   onBallotStoreChange () {
-    // console.log("AddressBox, onBallotStoreChange, this.state:", this.state);
+    // console.log('AddressBox, onBallotStoreChange, this.state:', this.state);
     this.setState({
       ballotCaveat: BallotStore.getBallotCaveat(),
     });
   }
 
-  componentDidCatch (error, info) {
-    // We should get this information to Splunk!
-    console.error('AddressBox caught error: ', `${error} with info: `, info);
+  incomingToggleSelectAddressModal = () => {
+    if (this.props.toggleSelectAddressModal) {
+      this.props.toggleSelectAddressModal();
+    }
   }
 
   _placeChanged (addressAutocomplete) {
@@ -130,32 +147,39 @@ class AddressBox extends Component {
     }
   }
 
+  handleKeyPress (event) {
+    // console.log('AddressBox, handleKeyPress, event: ', event);
+    const ENTER_KEY_CODE = 13;
+    if (event.keyCode === ENTER_KEY_CODE) {
+      event.preventDefault();
+      this.voterAddressSave(event);
+    }
+  }
+
   updateVoterAddress (event) {
     this.setState({ textForMapSearch: event.target.value });
   }
 
-  handleKeyPress (event) {
-    // Wait for 1/2 of a second after the last keypress to make a call to the voterAddressSave API
-    const ENTER_KEY_CODE = 13;
-    if (event.keyCode === ENTER_KEY_CODE) {
-      event.preventDefault();
-      setTimeout(() => {
-        VoterActions.voterAddressSave(this.state.textForMapSearch);
-        this.setState({ loading: true });
-      }, 500);
-    }
-  }
-
   voterAddressSave (event) {
+    // console.log('AddressBox, voterAddressSave');
     event.preventDefault();
     VoterActions.voterAddressSave(this.state.textForMapSearch);
     BallotActions.completionLevelFilterTypeSave('filterAllBallotItems');
     const oneMonthExpires = 86400 * 31;
     cookies.setItem('location_guess_closed', '1', oneMonthExpires, '/');
-    this.setState({ loading: true, voterSavedAddress: true });
+    this.setState({
+      loading: true,
+      voterSavedAddress: true,
+    });
+  }
+
+  componentDidCatch (error, info) {
+    // We should get this information to Splunk!
+    console.error('AddressBox caught error: ', `${error} with info: `, info);
   }
 
   render () {
+    // console.log('AddressBox, render');
     let { waitingMessage } = this.props;
     const { classes } = this.props;
     renderLog(__filename);

@@ -39,6 +39,12 @@ export default class EditAddressInPlace extends Component {
     });
   }
 
+  incomingToggleFunction = () => {
+    if (this.props.toggleFunction) {
+      this.props.toggleFunction();
+    }
+  }
+
   toggleEditingAddress () {
     const { editingAddress } = this.state;
     if (isWebApp()) {
@@ -50,18 +56,17 @@ export default class EditAddressInPlace extends Component {
       // error in Cordova, when you try to expand it to fit for entering text in the address box, and Cordova messes up
       // the display as in https://github.com/wevote/WeVoteCordova/issues/52  So instead use the non modal version in
       // the settings/location route.
-      this.props.toggleFunction();
+      this.incomingToggleFunction();
       historyPush('/settings/address');
     }
   }
 
   render () {
+    // console.log('EditAddressInPlace render');
     renderLog(__filename);
     const noAddressMessage = this.props.noAddressMessage ? this.props.noAddressMessage : '- no address entered -';
     const maximumAddressDisplayLength = 60;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
-
-    // console.log("EditAddressInPlace render, ballotBaseUrl: ", ballotBaseUrl);
 
     if (this.state.editingAddress) {
       return (

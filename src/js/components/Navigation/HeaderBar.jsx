@@ -8,11 +8,9 @@ import Tab from '@material-ui/core/Tab';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-// import Badge from '@material-ui/core/Badge'; // DALE: FRIENDS TEMPORARILY DISABLED
 import PlaceIcon from '@material-ui/icons/Place';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { withStyles } from '@material-ui/core/styles';
-import BallotStore from '../../stores/BallotStore';
 import { historyPush, isWebApp, isCordova, hasIPhoneNotch } from '../../utils/cordovaUtils';
 import cookies from '../../utils/cookies';
 import FriendStore from '../../stores/FriendStore';
@@ -29,6 +27,7 @@ import { stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import SelectBallotModal from '../Ballot/SelectBallotModal';
 import BallotActions from '../../actions/BallotActions';
+// import Badge from '@material-ui/core/Badge'; // DALE: FRIENDS TEMPORARILY DISABLED
 
 class HeaderBar extends Component {
   static propTypes = {
@@ -52,7 +51,6 @@ class HeaderBar extends Component {
       friendInvitationsSentToMe: 0,
       showEditAddressButton: false,
       showSignInModal: false,
-      showSelectBallotModal: false,
       scrolledDown: false,
     };
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
@@ -64,7 +62,6 @@ class HeaderBar extends Component {
   }
 
   componentDidMount () {
-    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     // this.onBallotStoreChange();
@@ -77,11 +74,10 @@ class HeaderBar extends Component {
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
       scrolledDown: AppStore.getScrolledDown(),
       showEditAddressButton: AppStore.showEditAddressButton(),
+      showSelectBallotModal: AppStore.showSelectBallotModal(),
       showSignInModal: AppStore.showSignInModal(),
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
-
-    this.setState({ ballotElectionList: BallotStore.ballotElectionList() });
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -143,16 +139,8 @@ class HeaderBar extends Component {
   }
 
   componentWillUnmount () {
-    this.ballotStoreListener.remove();
     this.friendStoreListener.remove();
     this.appStoreListener.remove();
-  }
-
-  onBallotStoreChange () {
-    // this.setState({ bookmarks: BallotStore.bookmarks });
-    this.setState({
-      ballotElectionList: BallotStore.ballotElectionList(),
-    });
   }
 
   onFriendStoreChange () {
@@ -191,21 +179,15 @@ class HeaderBar extends Component {
     }
   }
 
-  // toggleSelectBallotModal () {
-  //   AppActions.setShowSelectBallotModal(true);
-  // }
-
   toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
     const { showSelectBallotModal } = this.state;
-    console.log('Toggle selectBallotModal');
-    // console.log('Ballot toggleSelectBallotModal, destinationUrlForHistoryPush:', destinationUrlForHistoryPush, ', showSelectBallotModal:', showSelectBallotModal);
+    // console.log('HeaderBar toggleSelectBallotModal, destinationUrlForHistoryPush:', destinationUrlForHistoryPush, ', prior showSelectBallotModal:', showSelectBallotModal);
     if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
       historyPush(destinationUrlForHistoryPush);
-    } else {
+    } else if (!showSelectBallotModal) {
       // console.log('Ballot toggleSelectBallotModal, BallotActions.voterBallotListRetrieve()');
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
-
     AppActions.setShowSelectBallotModal(!showSelectBallotModal);
   }
 
@@ -243,7 +225,10 @@ class HeaderBar extends Component {
   }
 
   render () {
-    // console.log('HeaderBar render, this.state.showSignInModal:', this.state.showSignInModal);
+    // console.log('HeaderBar render, this.state.showSelectBallotModal:', this.state.showSelectBallotModal, ', this.state.componentDidMountFinished:', this.state.componentDidMountFinished);
+    if (!this.state.componentDidMountFinished) {
+      return null;
+    }
     renderLog(__filename);
     const { voter, classes, pathname, location } = this.props;
     const { showEditAddressButton, scrolledDown } = this.state;
@@ -378,7 +363,6 @@ class HeaderBar extends Component {
           />
           {this.state.showSelectBallotModal ? (
             <SelectBallotModal
-              ballotElectionList={this.state.ballotElectionList}
               ballotBaseUrl="/ballot"
               location={location}
               pathname={pathname}

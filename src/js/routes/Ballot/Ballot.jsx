@@ -807,28 +807,15 @@ class Ballot extends Component {
           }
           <div className={`ballot__header ${isWebApp() ? 'ballot__header__top-cordova' : ''}`}>
             <p>
-              <span className="u-cursor--pointer" onClick={this.toggleSelectBallotModal}>
-                If your ballot does not appear momentarily, please click to change your address
-                {/* {' '}
-                <IconButton>
-                  <PlaceIcon />
-                </IconButton> */}
+              <span
+                className="u-cursor--pointer"
+                id="ballotIfBallotDoesNotAppear"
+                onClick={this.toggleSelectBallotModal}
+              >
+                If your ballot does not appear momentarily, please click to change your address.
               </span>
-              .
             </p>
           </div>
-          {/* {
-            this.state.showSelectBallotModal ? (
-              <SelectBallotModal
-                ballotElectionList={this.state.ballotElectionList}
-                ballotBaseUrl={ballotBaseUrl}
-                location={this.props.location}
-                pathname={this.props.pathname}
-                show={this.state.showSelectBallotModal}
-                toggleFunction={this.toggleSelectBallotModal}
-              />
-            ) : null
-          } */}
         </div>
       );
     }
@@ -888,18 +875,6 @@ class Ballot extends Component {
     return (
       <div className="ballot_root">
         { this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
-        {/*
-          this.state.showSelectBallotModal ? (
-          <SelectBallotModal
-            ballotElectionList={this.state.ballotElectionList}
-            ballotBaseUrl={ballotBaseUrl}
-            location={this.state.location}
-            pathname={this.state.pathname}
-            show={this.state.showSelectBallotModal}
-            toggleFunction={this.toggleSelectBallotModal}
-          />
-        ) : null
-        */}
         { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this.toggleBallotSummaryModal} /> : null }
         <div className={`ballot__heading ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`}>
           <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
@@ -1054,18 +1029,6 @@ class Ballot extends Component {
                           this.showUserEmptyOptions()
                         }
                       </div>
-                      {/* {
-                        this.state.showSelectBallotModal ? (
-                          <SelectBallotModal
-                            ballotElectionList={this.state.ballotElectionList}
-                            ballotBaseUrl={ballotBaseUrl}
-                            location={this.props.location}
-                            pathname={this.props.pathname}
-                            show={this.state.showSelectBallotModal}
-                            toggleFunction={this.toggleSelectBallotModal}
-                          />
-                        ) : null
-                      } */}
                     </div>
                     {/* Show links to this candidate in the admin tools */}
                     { (this.state.voter && sourcePollingLocationWeVoteId) && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ? (
