@@ -15,11 +15,12 @@ import TwitterSignInCard from '../components/Twitter/TwitterSignInCard';
 import Testimonial from '../components/Widgets/Testimonial';
 import { cordovaDot } from '../utils/cordovaUtils';
 import AddEndorsements from '../components/Widgets/AddEndorsements';
+import daleMcGrewJpm from '../../img/global/photos/Dale_McGrew-200x200.jpg';
 
 // const facebookInfoText = "By signing into Facebook here, you can choose which friends you want to talk politics with, and avoid the trolls (or that guy from work who rambles on)! You control who is in your We Vote network.";
 
 const testimonialAuthor = 'Dale M., Oakland, California';
-const imageUrl = cordovaDot('/img/global/photos/Dale_McGrew-200x200.jpg');
+const imageUrl = cordovaDot(daleMcGrewJpm);
 const testimonial = 'Following values that are important to me lets me see the opinions of other people who share my values.';
 
 export default class Values extends Component {
