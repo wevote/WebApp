@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import OpenExternalWebSite from './OpenExternalWebSite';
 import { cordovaDot } from '../../utils/cordovaUtils';
+import positionIcon from '../../../img/global/svg-icons/positions-icon-24-x-24.svg';
 
 const text = 'Don\'t see your favorite organization or endorsement? We Vote is nonpartisan and welcomes public endorsements of candidates and measures from any organization or public figure.';
 
@@ -38,7 +39,7 @@ class AddEndorsements extends Component {
                   variant="primary"
                 >
                   <span>
-                    <img src={cordovaDot('/img/global/svg-icons/positions-icon-24-x-24.svg')} className="value-btn__endorsements--icon" alt="" />
+                    <img src={cordovaDot(positionIcon)} className="value-btn__endorsements--icon" alt="" />
                   </span>
                   Add endorsements to We Vote
                 </Button>
