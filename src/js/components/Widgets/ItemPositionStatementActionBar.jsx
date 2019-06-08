@@ -144,12 +144,12 @@ class ItemPositionStatementActionBar extends Component {
     });
   }
 
-  updateStatementTextToBeSaved (e) {
-    this.setState({
-      statementTextToBeSaved: e.target.value,
-      showEditPositionStatementInput: true,
-      // disabled: false,
-    });
+  closeEditPositionStatementInput = () => {
+    this.setState({ showEditPositionStatementInput: false/* ,  disabled: true */ });
+  }
+
+  openEditPositionStatementInput = () => {
+    this.setState({ showEditPositionStatementInput: true /* , disabled: false */ });
   }
 
   savePositionStatement (e) {
@@ -160,12 +160,12 @@ class ItemPositionStatementActionBar extends Component {
     }
   }
 
-  closeEditPositionStatementInput = () => {
-    this.setState({ showEditPositionStatementInput: false/* ,  disabled: true */ });
-  }
-
-  openEditPositionStatementInput = () => {
-    this.setState({ showEditPositionStatementInput: true /* , disabled: false */ });
+  updateStatementTextToBeSaved (e) {
+    this.setState({
+      statementTextToBeSaved: e.target.value,
+      showEditPositionStatementInput: true,
+      // disabled: false,
+    });
   }
 
   componentDidCatch (error, info) {

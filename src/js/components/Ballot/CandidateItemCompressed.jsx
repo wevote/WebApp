@@ -130,7 +130,7 @@ export default class CandidateItemCompressed extends Component {
             <ImageHandler
               className="card-main__avatar-compressed o-media-object__anchor u-cursor--pointer u-self-start u-push--sm"
               sizeClassName="icon-candidate-small u-push--sm "
-              imageUrl={this.state.oneCandidate.candidate_photo_url_large}
+              imageUrl={this.state.oneCandidate.candidate_photo_url_medium}
               alt="candidate-photo"
               kind_of_ballot_item="CANDIDATE"
             />
