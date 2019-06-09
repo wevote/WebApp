@@ -242,7 +242,6 @@ if (isEmulator()) {
   }
 }
 
-
 const enums = {
   ballotVote: 1,
   moreAbout: 2,
@@ -259,7 +258,6 @@ const enums = {
   values: 203,
   defaultVal: 1000,
 };
-
 
 function pageEnumeration () {
   // second level paths must be tried first
@@ -316,6 +314,7 @@ export function cordovaScrollablePaneTopPadding () {
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '18px';
         case enums.candidate:       return '40px';
+        case enums.ballotVote:      return '18px';
         case enums.officeWild:      return '64px';
         case enums.ballotSmHdrWild: return '130px';
         case enums.ballotLgHdrWild: return '4px';
@@ -328,6 +327,7 @@ export function cordovaScrollablePaneTopPadding () {
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '18px';
         case enums.candidate:       return '42px';
+        case enums.ballotVote:      return '10px';
         case enums.officeWild:      return '62px';
         case enums.ballotSmHdrWild: return '126px';
         case enums.ballotLgHdrWild: return '5px';
@@ -342,7 +342,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidate:       return '56px';
         case enums.officeWild:      return '76px';
         case enums.values:          return '10px';
-        case enums.ballotVote:      return '18px';
+        case enums.ballotVote:      return '30px';
         case enums.ballotSmHdrWild: return '150px';
         case enums.ballotLgHdrWild: return '18px';
         case enums.moreAbout:       return '22px';
@@ -369,7 +369,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidate:       return '66px';
         case enums.opinions:        return '10px';
         case enums.officeWild:      return '76px';
-        case enums.ballotVote:      return '18px';
+        case enums.ballotVote:      return '30px';
         case enums.ballotSmHdrWild: return '150px';
         case enums.ballotLgHdrWild: return '16px';
         case enums.moreAbout:       return '22px';
@@ -385,7 +385,6 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.officeWild:      return '40px';
         case enums.candidate:       return '20px';
         case enums.ballotSmHdrWild: return '108px';
-        case enums.ballotLgHdrWild: return '108px';
         default:                    return '0px';
       }
     } else if (sizeString === '--lg') {
@@ -393,15 +392,14 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.officeWild:      return '40px';
         case enums.candidate:       return '16px';
         case enums.ballotSmHdrWild: return '104px';
-        case enums.ballotLgHdrWild: return '104px';
         default:                    return '0px';
       }
     } if (sizeString === '--md') {
       switch (pageEnumeration()) {
         case enums.officeWild:      return '40px';
         case enums.candidate:       return '22px';
+        case enums.ballotSmHdrWild: return '108px';
         case enums.ballotVote:      return '16px';
-        case enums.ballotSmHdrWild: return '104px';
         case enums.moreAbout:       return '22px';
         default:                    return '0px';
       }
