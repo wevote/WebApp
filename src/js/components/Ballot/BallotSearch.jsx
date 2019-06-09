@@ -7,6 +7,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import styled from 'styled-components';
 import _ from 'lodash';
+import { isCordova } from "../../utils/cordovaUtils";
 import ballotSearchPriority from '../../utils/ballotSearchPriority';
 
 const delayBeforeSearchExecution = 400;
@@ -65,7 +66,7 @@ class BallotSearch extends Component {
       this.setState({ searchValue: '', showCloser: false });
     }
     this.props.onToggleSearch(!isSearching);
-  }
+  };
 
   handleSearch (event) { // eslint-disable-line consistent-return
     // if search bar always open, isSearching is toggled only when input is given text is cleared with 'x' button
@@ -94,7 +95,7 @@ class BallotSearch extends Component {
     const { classes, theme, isSearching, alwaysOpen } = this.props;
     const { searchValue, showCloser } = this.state;
     return (
-      <SearchWrapper searchOpen={isSearching || alwaysOpen} brandBlue={theme.palette.primary.main}>
+      <SearchWrapper searchOpen={isSearching || alwaysOpen} brandBlue={theme.palette.primary.main} isCordova={isCordova()}>
         <IconButton
           classes={{ root: classes.iconButtonRoot }}
           onClick={!alwaysOpen ? this.toggleSearch : undefined}
@@ -191,7 +192,7 @@ const SearchWrapper = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     height: 28px;
     margin-right: 4px;
-    margin-top: 8px;
+    margin-top: ${isCordova ? undefined : '8px'});
   }
 `;
 
