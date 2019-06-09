@@ -298,7 +298,7 @@ function pageEnumeration () {
 }
 
 // <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
-// renders approximately as ...  <div class="sc-ifAKCX kFFaGy">
+// renders approximately as ...  <div className="Ballot__Wrapper-sc-11u8kf3-0 dYbfmq"><div>
 export function cordovaScrollablePaneTopPadding () {
   if (isEmulator()) {
     if (isAndroidEmulator()) {

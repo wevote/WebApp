@@ -985,86 +985,85 @@ class Ballot extends Component {
         <div className="page-content-container">
           <div className="container-fluid">
             {emptyBallot}
-            <div id="the next styled div is the wrapper in Ballot, that receives the cordova TopPadding">
-              <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
-                {/* eslint-disable-next-line no-nested-ternary */}
-                <div className={showBallotDecisionTabs ? 'row ballot__body' : isWebApp() ? 'row ballot__body__no-decision-tabs' : undefined}>
-                  <BrowserPushMessage incomingProps={this.props} />
-                  {ballotWithItemsFromCompletionFilterType.length > 0 ? (
-                    <BallotStatusMessage
-                      ballotLocationChosen
-                      googleCivicElectionId={this.state.googleCivicElectionId}
-                    />
-                  ) : null
-                  }
-                  <div className="col-sm-12 col-lg-9">
-                    <LocationGuess
-                      toggleSelectBallotModal={this.toggleSelectBallotModal}
-                    />
-                    <div>
-                      {/* The rest of the ballot items */}
-                      <div className={isWebApp() ? 'BallotList' : 'BallotList__cordova'}>
-                        {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => {
-                          // Ballot limited by items by race_office_level = (Federal, State, Local) or kind_of_ballot_item = (Measure)
-                          if ((raceLevelFilterType === 'All' || (isSearching && ballotSearchResults.length) ||
-                            (item.kind_of_ballot_item === raceLevelFilterType.toUpperCase()) ||
-                            raceLevelFilterType === item.race_office_level)) {
-                            return (
-                              <BallotItemCompressed
-                                currentBallotIdInUrl={this.props.location.hash.slice(1)}
-                                key={item.we_vote_id}
-                                updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
-                                allBallotItemsCount={ballotWithItemsFromCompletionFilterType.length}
-                                urlWithoutHash={this.props.location.pathname + this.props.location.search}
-                                ref={(ref) => { this.ballotItems[item.we_vote_id] = ref; }}
-                                {...item}
-                              />
-                            );
-                          } else {
-                            return null;
-                          }
-                        })
+            <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
+              {/* eslint-disable-next-line no-nested-ternary */}
+              <div className={showBallotDecisionTabs ? 'row ballot__body' : isWebApp() ? 'row ballot__body__no-decision-tabs' : undefined}>
+                <BrowserPushMessage incomingProps={this.props} />
+                {ballotWithItemsFromCompletionFilterType.length > 0 ? (
+                  <BallotStatusMessage
+                    ballotLocationChosen
+                    googleCivicElectionId={this.state.googleCivicElectionId}
+                  />
+                ) : null
+                }
+                <div className="col-sm-12 col-lg-9">
+                  <LocationGuess
+                    toggleSelectBallotModal={this.toggleSelectBallotModal}
+                  />
+                  <div>
+                    {/* The rest of the ballot items */}
+                    <div className={isWebApp() ? 'BallotList' : 'BallotList__cordova'}>
+                      {(isSearching && ballotSearchResults.length ? ballotSearchResults : ballotWithItemsFromCompletionFilterType).map((item) => {
+                        // Ballot limited by items by race_office_level = (Federal, State, Local) or kind_of_ballot_item = (Measure)
+                        if ((raceLevelFilterType === 'All' || (isSearching && ballotSearchResults.length) ||
+                          (item.kind_of_ballot_item === raceLevelFilterType.toUpperCase()) ||
+                          raceLevelFilterType === item.race_office_level)) {
+                          return (
+                            <BallotItemCompressed
+                              currentBallotIdInUrl={this.props.location.hash.slice(1)}
+                              key={item.we_vote_id}
+                              updateOfficeDisplayUnfurledTracker={this.updateOfficeDisplayUnfurledTracker}
+                              allBallotItemsCount={ballotWithItemsFromCompletionFilterType.length}
+                              urlWithoutHash={this.props.location.pathname + this.props.location.search}
+                              ref={(ref) => { this.ballotItems[item.we_vote_id] = ref; }}
+                              {...item}
+                            />
+                          );
+                        } else {
+                          return null;
                         }
-                        {doubleFilteredBallotItemsLength === 0 &&
-                          this.showUserEmptyOptions()
-                        }
-                      </div>
+                      })
+                      }
+                      {doubleFilteredBallotItemsLength === 0 &&
+                        this.showUserEmptyOptions()
+                      }
                     </div>
-                    {/* Show links to this candidate in the admin tools */}
-                    { (this.state.voter && sourcePollingLocationWeVoteId) && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ? (
-                      <span className="u-wrap-links d-print-none">
-                        <span>Admin:</span>
-                        <OpenExternalWebSite
-                        url={ballotReturnedAdminEditUrl}
-                        target="_blank"
-                        body={(
-                          <span>
-                            Ballot copied from polling location &quot;
-                            {sourcePollingLocationWeVoteId}
-                            &quot;
-                          </span>
-                        )}
-                        />
-                      </span>
-                    ) : null
-                  }
                   </div>
-
-                  { ballotWithItemsFromCompletionFilterType.length === 0 || isCordova() ?
-                    null : (
-                      <div className="col-lg-3 d-none d-lg-block sidebar-menu">
-                        <BallotSideBar
-                        displayTitle
-                        displaySubtitles
-                        rawUrlVariablesString={this.props.location.search}
-                        ballotWithAllItemsByFilterType={this.state.ballotWithItemsFromCompletionFilterType}
-                        ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
-                        />
-                      </div>
-                    )}
+                  {/* Show links to this candidate in the admin tools */}
+                  { (this.state.voter && sourcePollingLocationWeVoteId) && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) ? (
+                    <span className="u-wrap-links d-print-none">
+                      <span>Admin:</span>
+                      <OpenExternalWebSite
+                      url={ballotReturnedAdminEditUrl}
+                      target="_blank"
+                      body={(
+                        <span>
+                          Ballot copied from polling location &quot;
+                          {sourcePollingLocationWeVoteId}
+                          &quot;
+                        </span>
+                      )}
+                      />
+                    </span>
+                  ) : null
+                }
                 </div>
-              </Wrapper>
-            </div>
+
+                { ballotWithItemsFromCompletionFilterType.length === 0 || isCordova() ?
+                  null : (
+                    <div className="col-lg-3 d-none d-lg-block sidebar-menu">
+                      <BallotSideBar
+                      displayTitle
+                      displaySubtitles
+                      rawUrlVariablesString={this.props.location.search}
+                      ballotWithAllItemsByFilterType={this.state.ballotWithItemsFromCompletionFilterType}
+                      ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
+                      />
+                    </div>
+                  )
+                }
+              </div>
+            </Wrapper>
           </div>
         </div>
       </div>
