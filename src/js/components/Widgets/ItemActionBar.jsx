@@ -486,7 +486,7 @@ class ItemActionBar extends PureComponent {
         classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
         size="small"
       >
-        <DoneIcon classes={{ root: classes.buttonIcon }} />
+        <DoneIcon className="supportOpposeMobileIcon" classes={{ root: classes.buttonIcon }} />
       </Button>
     );
 
@@ -526,7 +526,7 @@ class ItemActionBar extends PureComponent {
         classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
         size="small"
       >
-        <ThumbsUpIcon classes={{ root: classes.buttonIcon }} />
+        <ThumbsUpIcon className="supportOpposeMobileIcon" classes={{ root: classes.buttonIcon }} />
       </Button>
     );
 
@@ -568,7 +568,7 @@ class ItemActionBar extends PureComponent {
         classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
         size="small"
       >
-        <NotInterestedIcon classes={{ root: classes.buttonIcon }} />
+        <NotInterestedIcon className="supportOpposeMobileIcon" classes={{ root: classes.buttonIcon }} />
       </Button>
     );
 
@@ -608,7 +608,7 @@ class ItemActionBar extends PureComponent {
         classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
         size="small"
       >
-        <ThumbsDownIcon classes={{ root: classes.buttonIcon }} />
+        <ThumbsDownIcon className="supportOpposeMobileIcon" classes={{ root: classes.buttonIcon }} />
       </Button>
     );
 
@@ -653,7 +653,7 @@ class ItemActionBar extends PureComponent {
             inTestMode
           />
         )}
-        <div className={`${this.props.buttonsOnly ? '' : 'btn-group'} ${!this.props.shareButtonHide ? ' u-push--sm' : ''}`}>
+        <ButtonGroup className={`${this.props.buttonsOnly ? '' : 'btn-group'} ${!this.props.shareButtonHide ? ' u-push--sm' : ''}`}>
           {/* Start of Support Button */}
           {/* Visible on desktop screens */}
           {this.props.buttonsOnly ? (
@@ -676,10 +676,10 @@ class ItemActionBar extends PureComponent {
             </StackedButton>
           ) : (
             <>
-              <div className="u-push--xs d-none d-sm-block d-lg-none d-xl-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
+              <div className="u-push--xs d-lg-none d-xl-none d-sm-block d-none ">
                 {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
               </div>
-              <div className="u-push--xs d-block d-sm-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
+              <div className="u-push--xs d-block d-sm-none ">
                 {this.props.type === 'CANDIDATE' ? supportButtonMobile : measureYesButtonMobile}
               </div>
             </>
@@ -707,10 +707,10 @@ class ItemActionBar extends PureComponent {
             </StackedButton>
           ) : (
             <>
-              <div className="u-push--xs d-none d-sm-block d-lg-none d-xl-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
+              <div className="u-push--xs d-lg-none d-xl-none d-sm-block d-none ">
                 {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
               </div>
-              <div className="u-push--xs d-block d-sm-none d-xl-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
+              <div className="u-push--xs d-block d-sm-none ">
                 {this.props.type === 'CANDIDATE' ? opposeButtonMobile : measureNoButtonMobile}
               </div>
             </>
@@ -726,7 +726,7 @@ class ItemActionBar extends PureComponent {
             null :
             <ShareButtonDropDown showMoreId="itemActionBarShowMoreFooter" urlBeingShared={urlBeingShared} shareIcon={shareIcon} shareText="Share" /> }
           { this.state.showSupportOrOpposeHelpModal ? SupportOrOpposeHelpModal : null}
-        </div>
+        </ButtonGroup>
       </div>
     );
   }
@@ -751,11 +751,26 @@ const styles = theme => ({
       marginLeft: '.1rem',
       marginTop: '.3rem',
     },
+    [theme.breakpoints.down('xs')]: {
+      width: 42.5,
+      minWidth: 42.5,
+      maxWidth: 42.5,
+      height: 40,
+      minHeight: 40,
+      maxHeight: 40,
+      fontSize: '15px !important',
+    },
   },
   buttonOutlinedPrimary: {
     background: 'white',
   },
 });
+
+const ButtonGroup = styled.div`
+  margin-left: auto;
+  width: fit-content;
+  flex: none;
+`;
 
 const StackedButton = styled.div`
   margin: 0;

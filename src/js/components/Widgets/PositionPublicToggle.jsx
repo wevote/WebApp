@@ -187,10 +187,10 @@ class PositionPublicToggle extends Component {
     );
 
     return (
-      <div className={this.props.className}>
+      <Wrapper className={this.props.className}>
         { this.state.showPositionPublicHelpModal ? PositionPublicToggleHelpModal : null }
         <PublicToggle onKeyDown={onKeyDown}>
-          <FormControl>
+          <FormControl classes={{ root: classes.formControl }}>
             <RadioGroup
               onChange={this.handlePositionToggle}
             >
@@ -229,7 +229,7 @@ class PositionPublicToggle extends Component {
             </RadioGroup>
           </FormControl>
         </PublicToggle>
-      </div>
+      </Wrapper>
     );
   }
 }
@@ -253,7 +253,14 @@ const styles = theme => ({
       fontSize: '11px',
     },
   },
+  formControl: {
+    width: '100%',
+  },
 });
+
+const Wrapper = styled.div`
+  flex: 1 1 0;
+`;
 
 const PublicToggle = styled.div`
   display: flex;
@@ -277,6 +284,7 @@ const PublicToggle = styled.div`
 
 const RadioGroup = styled.div`
   display: flex;
+  width: 100%;
   flex-flow: row nowrap;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     margin-bottom: -10px;
