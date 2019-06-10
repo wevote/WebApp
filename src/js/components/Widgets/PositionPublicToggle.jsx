@@ -187,49 +187,53 @@ class PositionPublicToggle extends Component {
     );
 
     return (
-      <div className={this.props.className}>
+      <Wrapper className={this.props.className}>
         { this.state.showPositionPublicHelpModal ? PositionPublicToggleHelpModal : null }
         <PublicToggle onKeyDown={onKeyDown}>
-          <FormControl>
+          <FormControl classes={{ root: classes.formControl }}>
             <RadioGroup
               onChange={this.handlePositionToggle}
             >
-              <FormControlLabel
-                classes={{ label: classes.radioLabel }}
-                id="positionPublicToggleFriendsOnly"
-                value="Friends Only"
-                label="Friends Only"
-                labelPlacement="end"
-                control={
-                  (
-                    <Radio
-                      classes={{ colorPrimary: classes.radioPrimary }}
-                      color="primary"
-                      checked={showToThePublicOn === false}
-                    />
-                  )
-                }
-              />
-              <FormControlLabel
-                id="positionPublicTogglePublic"
-                classes={{ label: classes.radioLabel }}
-                value="Public"
-                label="Public"
-                labelPlacement="end"
-                control={
-                  (
-                    <Radio
-                      classes={{ colorPrimary: classes.radioPrimary }}
-                      color="primary"
-                      checked={showToThePublicOn === true}
-                    />
-                  )
-                }
-              />
+              <RadioItem>
+                <FormControlLabel
+                  classes={{ label: classes.radioLabel }}
+                  id="positionPublicToggleFriendsOnly"
+                  value="Friends Only"
+                  label="Friends Only"
+                  labelPlacement="end"
+                  control={
+                    (
+                      <Radio
+                        classes={{ colorPrimary: classes.radioPrimary }}
+                        color="primary"
+                        checked={showToThePublicOn === false}
+                      />
+                    )
+                  }
+                />
+              </RadioItem>
+              <RadioItem>
+                <FormControlLabel
+                  id="positionPublicTogglePublic"
+                  classes={{ label: classes.radioLabel }}
+                  value="Public"
+                  label="Public"
+                  labelPlacement="end"
+                  control={
+                    (
+                      <Radio
+                        classes={{ colorPrimary: classes.radioPrimary }}
+                        color="primary"
+                        checked={showToThePublicOn === true}
+                      />
+                    )
+                  }
+                />
+              </RadioItem>
             </RadioGroup>
           </FormControl>
         </PublicToggle>
-      </div>
+      </Wrapper>
     );
   }
 }
@@ -253,15 +257,27 @@ const styles = theme => ({
       fontSize: '11px',
     },
   },
+  formControl: {
+    width: '100%',
+  },
 });
 
+const Wrapper = styled.div`
+  flex: 1 1 0;
+`;
+
 const PublicToggle = styled.div`
-  display: flex;
-  flex-flow: row wrap;
   padding-left: 15px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     padding-top: 4px;
     margin-bottom: 4px;
+  }
+`;
+
+const RadioItem = styled.div`
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    width: 100% !important;
+    min-width: 100% !important;
   }
 `;
 
@@ -276,10 +292,13 @@ const PublicToggle = styled.div`
 // `;
 
 const RadioGroup = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
+  width: 100%;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     margin-bottom: -10px;
+  }
+  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+    display: flex;
+    flex-flow: row nowrap;;
   }
 `;
 

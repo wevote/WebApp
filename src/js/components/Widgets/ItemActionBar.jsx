@@ -600,7 +600,7 @@ class ItemActionBar extends PureComponent {
             inTestMode
           />
         )}
-        <div className={`${this.props.buttonsOnly ? '' : 'btn-group'} ${!this.props.shareButtonHide ? ' u-push--sm' : ''}`}>
+        <ButtonGroup className={`${this.props.buttonsOnly ? '' : 'btn-group'} ${!this.props.shareButtonHide ? ' u-push--sm' : ''}`}>
           {/* Start of Support Button */}
           {/* Visible on desktop screens */}
           {this.props.buttonsOnly ? (
@@ -622,9 +622,11 @@ class ItemActionBar extends PureComponent {
               {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
             </StackedButton>
           ) : (
-            <div className="u-push--xs d-lg-none d-xl-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
-              {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
-            </div>
+            <>
+              <div className="u-push--xs u-push--xs d-lg-none">
+                {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
+              </div>
+            </>
           )}
 
           {/* Start of Oppose Button */}
@@ -648,9 +650,11 @@ class ItemActionBar extends PureComponent {
               {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
             </StackedButton>
           ) : (
-            <div className="u-push--xs d-lg-none d-xl-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
-              {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
-            </div>
+            <>
+              <div className="u-push--xs d-lg-none">
+                {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
+              </div>
+            </>
           )}
           { this.props.commentButtonHide ?
             null : (
@@ -663,7 +667,7 @@ class ItemActionBar extends PureComponent {
             null :
             <ShareButtonDropDown showMoreId="itemActionBarShowMoreFooter" urlBeingShared={urlBeingShared} shareIcon={shareIcon} shareText="Share" /> }
           { this.state.showSupportOrOpposeHelpModal ? SupportOrOpposeHelpModal : null}
-        </div>
+        </ButtonGroup>
       </div>
     );
   }
@@ -688,11 +692,21 @@ const styles = theme => ({
       marginLeft: '.1rem',
       marginTop: '.3rem',
     },
+    [theme.breakpoints.down('sm')]: {
+      width: 80,
+      minWidth: 80,
+    },
   },
   buttonOutlinedPrimary: {
     background: 'white',
   },
 });
+
+const ButtonGroup = styled.div`
+  margin-left: auto;
+  width: fit-content;
+  flex: none;
+`;
 
 const StackedButton = styled.div`
   margin: 0;
