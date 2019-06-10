@@ -67,6 +67,7 @@ class SignInModal extends Component {
                     (
                       <SettingsAccount
                         toggleSignInModal={this.props.toggleFunction}
+                        inModal
                       />
                     ) :
                     null }

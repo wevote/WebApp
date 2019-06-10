@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import Fab from '@material-ui/core/Fab';
+import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import AppActions from '../../actions/AppActions';
 import FacebookActions from '../../actions/FacebookActions';
@@ -8,13 +10,12 @@ import FacebookActions from '../../actions/FacebookActions';
 class FacebookSignIn extends Component {
   static propTypes = {
     toggleSignInModal: PropTypes.func,
+    buttonText: PropTypes.string,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
-    this.state = {
-    };
-
     this.onKeyDown = this.onKeyDown.bind(this);
   }
 
@@ -43,23 +44,33 @@ class FacebookSignIn extends Component {
 
   render () {
     renderLog(__filename);
+    const { classes, buttonText } = this.props;
     return (
-      <Button
-        bsPrefix={this.props.className ? this.props.className : 'btn btn-social btn-facebook'}
-        onClick={this.didClickFacebookSignInButton}
-        onKeyDown={this.onKeyDown}
+      <Tooltip
+        title={buttonText}
       >
-        <span className="fab fa-facebook-square" />
-        {' '}
-        {this.props.buttonText ? this.props.buttonText : 'Sign In'}
-      </Button>
+        <Fab
+          classes={{ root: classes.fabRoot }}
+          onClick={this.didClickFacebookSignInButton}
+          onKeyDown={this.onKeyDown}
+        >
+          <span className="fab fa-facebook-square" />
+        </Fab>
+      </Tooltip>
     );
   }
 }
 
-FacebookSignIn.propTypes = {
-  buttonText: PropTypes.string,
-  className: PropTypes.string,
-};
+const styles = ({
+  fabRoot: {
+    background: '#3b5998',
+    fontSize: '1.5em',
+    color: 'white',
+    margin: 'auto 8px',
+    '&:hover': {
+      background: '#2d4373',
+    },
+  },
+});
 
-export default FacebookSignIn;
+export default withStyles(styles)(FacebookSignIn);
