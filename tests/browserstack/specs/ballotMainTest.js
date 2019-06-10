@@ -17,7 +17,7 @@ async function simpleCloseBootstrapModal () {
 describe('Basic cross-platform We Vote test',  () => {
   it('can visit the different pages in the app', async () => {
     // const isCordova = !!driver.getContexts;
-    const isCordova = true; // Set to True when testing APK or IPA files, and false when testing in mobile browser
+    const isCordova = false; // Set to True when testing APK or IPA files, and false when testing in mobile browser
     const isMobile = !!driver.getContexts;
     const isDesktop = !isMobile;
 
@@ -81,7 +81,7 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // //////////////////////
     // Next we want to switch to a known election
-    await simpleClick('locationGuessEnterYourFullAddress'); // Opens the Enter Your Full Address link
+    await simpleClick('changeAddressHeaderBar'); // Opens the Enter Your Full Address link
     await simpleClick('ballotElectionListWithFiltersButton-6000'); // Clicks on US 2018 Midterm Election
 
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
@@ -108,6 +108,13 @@ describe('Basic cross-platform We Vote test',  () => {
     if (isDesktop) {
       // Desktop screen size - HEADER TABS
       await simpleClick('valuesTabHeaderBar');
+      await simpleClick('valuesToFollowPreviewShowMoreId');// Clicks on the link to show more public figures/organizations
+      await simpleClick('backToLinkTabHeader');
+      await simpleClick('publicFiguresToFollowPreviewShowMoreId');
+      await simpleClick('backToLinkTabHeader');
+      await simpleClick('organizationsToFollowPreviewShowMoreId');
+      await simpleClick('backToLinkTabHeader');
+
     } else {
       // Mobile or tablet screen size - FOOTER ICONS
       await simpleClick('valuesTabFooterBar');
@@ -145,6 +152,11 @@ describe('Basic cross-platform We Vote test',  () => {
     if (isDesktop) {
       // Desktop screen size - HEADER TABS
       await simpleClick('ballotTabHeaderBar');
+      await simpleClick('changeAddressHeaderBar');
+      await simpleCloseBootstrapModal(); // Close the "Change Address" modal
+      await simpleClick('ballotBadge-State');
+      await simpleClick('ballotBadge-Measure');
+      await simpleClick('ballotBadge-Local');
     } else {
       // Mobile or tablet screen size - FOOTER ICONS
       await simpleClick('ballotTabFooterBar');
