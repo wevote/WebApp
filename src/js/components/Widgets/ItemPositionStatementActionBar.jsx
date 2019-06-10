@@ -145,11 +145,11 @@ class ItemPositionStatementActionBar extends Component {
   }
 
   closeEditPositionStatementInput = () => {
-    this.setState({ showEditPositionStatementInput: false/* ,  disabled: true */ });
+    this.setState({ showEditPositionStatementInput: false, commentActive: true/* ,  disabled: true */ });
   }
 
   openEditPositionStatementInput = () => {
-    this.setState({ showEditPositionStatementInput: true /* , disabled: false */ });
+    this.setState({ showEditPositionStatementInput: true, commentActive: true /* , disabled: false */ });
   }
 
   savePositionStatement (e) {
@@ -223,20 +223,21 @@ class ItemPositionStatementActionBar extends Component {
       }
     }
 
-    const onBlurInput = () => {
-      // console.log('Setting commentActive to false');
+    const onBlurInput = (e) => {
+      if (!e.target.className.contains('postsave-button')) {
+        this.setState({ commentActive: false });
+      }
 
       restoreStylesAfterCordovaKeyboard(__filename);
-
-      this.setState({ commentActive: false });
     };
 
-    const onFocusInput = () => {
+    const onFocusInput = (e) => {
       // console.log('Setting commentActive to true');
+      if (!e.target.className.contains('postsave-button')) {
+        this.setState({ commentActive: true });
+      }
 
       prepareForCordovaKeyboard(__filename);
-
-      this.setState({ commentActive: true });
     };
 
     const noStatementText = !(statementTextToBeSaved !== null && statementTextToBeSaved.length);
@@ -290,8 +291,14 @@ class ItemPositionStatementActionBar extends Component {
                   multiline
                   rows={rows}
                 />
-                <PostSaveButton>
-                  <Button variant="outlined" color="primary" classes={{ outlinedPrimary: classes.buttonOutlinedPrimary }} type="submit" size="small">
+                <PostSaveButton className="postsave-button">
+                  <Button className="postsave-button"
+                  variant="outlined"
+                  color="primary"
+                  classes={{ outlinedPrimary: classes.buttonOutlinedPrimary }}
+                  type="submit"
+                  size="small"
+                  >
                     {postButtonText}
                   </Button>
                 </PostSaveButton>
@@ -315,10 +322,11 @@ class ItemPositionStatementActionBar extends Component {
                 disabled
                 rows={2}
               />
-              <PostSaveButton>
+              <PostSaveButton className="postsave-button">
                 <Button
                   variant="outlined"
                   color="primary"
+                  className="postsave-button"
                   classes={{ outlinedPrimary: classes.buttonOutlinedPrimary }}
                   onClick={onSavePositionStatementClick}
                   size="small"
@@ -357,7 +365,9 @@ const styles = theme => ({
     height: '100%',
   },
   disabled: {
-    background: '#f5f5f5',
+    background: '#dcdcdc',
+    border: 'none',
+
   },
   disabledInput: {
     color: '#313131',
@@ -369,7 +379,7 @@ const styles = theme => ({
     color: '#313131',
     [theme.breakpoints.down('md')]: {
       padding: '2px 4px',
-      fontWeight: 500,
+      fontWeight: 600,
       height: '100%',
     },
     [theme.breakpoints.down('sm')]: {
