@@ -153,6 +153,7 @@ class ItemPositionStatementActionBar extends Component {
   }
 
   savePositionStatement (e) {
+    // console.log('ItemPositionStatementActionBar this.props.ballot_item_we_vote_id:', this.props.ballot_item_we_vote_id, 'this.props.type: ', this.props.type, 'this.state.statementTextToBeSaved: ', this.state.statementTextToBeSaved);
     e.preventDefault();
     SupportActions.voterPositionCommentSave(this.props.ballot_item_we_vote_id, this.props.type, this.state.statementTextToBeSaved);
     if (this.state.statementTextToBeSaved.length) {
@@ -224,7 +225,7 @@ class ItemPositionStatementActionBar extends Component {
     }
 
     const onBlurInput = (e) => {
-      if (!e.target.className.contains('postsave-button')) {
+      if (e.target && e.target.className && !e.target.className.contains('postsave-button')) {
         this.setState({ commentActive: false });
       }
 
@@ -233,7 +234,7 @@ class ItemPositionStatementActionBar extends Component {
 
     const onFocusInput = (e) => {
       // console.log('Setting commentActive to true');
-      if (!e.target.className.contains('postsave-button')) {
+      if (e.target && e.target.className && !e.target.className.contains('postsave-button')) {
         this.setState({ commentActive: true });
       }
 
@@ -243,6 +244,7 @@ class ItemPositionStatementActionBar extends Component {
     const noStatementText = !(statementTextToBeSaved !== null && statementTextToBeSaved.length);
     const editMode = this.state.showEditPositionStatementInput || noStatementText;
 
+    // console.log('ItemPositionStatementActionBar: this.state.showEditPositionStatementInput: ', this.state.showEditPositionStatementInput);
     const onSavePositionStatementClick = this.state.showEditPositionStatementInput ? this.closeEditPositionStatementInput : this.openEditPositionStatementInput;
     const onKeyDown = (e) => {
       const enterAndSpaceKeyCodes = [13, 32];
@@ -271,6 +273,8 @@ class ItemPositionStatementActionBar extends Component {
     //   statementTextNoUrl = statementTextToBeSaved.replace(videoUrl, '');
     // }
 
+    // console.log('ItemPositionStatementActionBar, editMode: ', editMode);
+    // minRows={1}
     return (
       <div className={this.props.shown_in_list ? 'position-statement__container__in-list' : 'position-statement__container'}>
         { // Show the edit box (Viewing self)
@@ -282,7 +286,6 @@ class ItemPositionStatementActionBar extends Component {
                 <InputBase onChange={this.updateStatementTextToBeSaved}
                   name="statementTextToBeSaved"
                   className={classes.input}
-                  minRows={1}
                   placeholder={statementPlaceholderText}
                   defaultValue={statementTextToBeSaved}
                   onFocus={onFocusInput}
@@ -306,13 +309,12 @@ class ItemPositionStatementActionBar extends Component {
             </Paper>
           ) : (
             <Paper
-              className={[classes.disabled, classes.flex, classes.root]}
+              className={`${classes.disabled} ${classes.flex} ${classes.root}`}
             >
               <InputBase
                 onKeyDown={onKeyDown}
                 name="statementTextToBeSaved"
                 classes={{ root: classes.input, disabled: classes.disabledInput }}
-                minRows={1}
                 placeholder={statementPlaceholderText}
                 defaultValue={statementTextToBeSaved}
                 onFocus={() => prepareForCordovaKeyboard(__filename)}
