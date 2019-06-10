@@ -149,8 +149,8 @@ class AddressBox extends Component {
 
   handleKeyPress (event) {
     // console.log('AddressBox, handleKeyPress, event: ', event);
-    const ENTER_KEY_CODE = 13;
-    if (event.keyCode === ENTER_KEY_CODE) {
+    const enterAndSpaceKeyCodes = [13, 32];
+    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       event.preventDefault();
       this.voterAddressSave(event);
     }
