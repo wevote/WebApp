@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Fab from '@material-ui/core/Fab';
-import Tooltip from '@material-ui/core/Tooltip';
+import styled from 'styled-components';
+import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import AppActions from '../../actions/AppActions';
@@ -46,31 +46,36 @@ class FacebookSignIn extends Component {
     renderLog(__filename);
     const { classes, buttonText } = this.props;
     return (
-      <Tooltip
-        title={buttonText}
+      <Button
+        variant="contained"
+        classes={{ root: classes.fabRoot }}
+        onClick={this.didClickFacebookSignInButton}
+        onKeyDown={this.onKeyDown}
       >
-        <Fab
-          classes={{ root: classes.fabRoot }}
-          onClick={this.didClickFacebookSignInButton}
-          onKeyDown={this.onKeyDown}
-        >
-          <span className="fab fa-facebook-square" />
-        </Fab>
-      </Tooltip>
+        <span className="fab fa-facebook-square" />
+        <ButtonText>{buttonText}</ButtonText>
+      </Button>
     );
   }
 }
 
 const styles = ({
   fabRoot: {
+    fontSize: 20,
+    minWidth: 300,
+    whiteSpace: 'nowrap',
     background: '#3b5998',
-    fontSize: '1.5em',
     color: 'white',
-    margin: 'auto 8px',
+    margin: '8px',
     '&:hover': {
       background: '#2d4373',
     },
   },
 });
+
+const ButtonText = styled.span`
+  margin-left: 8px;
+  font-size: 18px;
+`;
 
 export default withStyles(styles)(FacebookSignIn);
