@@ -160,10 +160,10 @@ class HeaderBar extends Component {
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    if (stringContains('/ballot/vote', pathname)) return 2; // DALE: FRIENDS TEMPORARILY DISABLED - Switch back to "3"
-    if (pathname && pathname.startsWith('/ballot')) return 0;
-    if (stringContains('/value', pathname)) return 1; // '/values'
-    // if (stringContains('/friends', pathname)) return 2; // DALE: FRIENDS TEMPORARILY DISABLED
+    if (stringContains('/ballot/vote', pathname.toLowerCase())) return 2; // DALE: FRIENDS TEMPORARILY DISABLED - Switch back to "3"
+    if (pathname && pathname.toLowerCase().startsWith('/ballot')) return 0;
+    if (stringContains('/value', pathname.toLowerCase())) return 1; // '/values'
+    // if (stringContains('/friends', pathname.toLowerCase())) return 2; // DALE: FRIENDS TEMPORARILY DISABLED
 
     return false;
   };
@@ -238,7 +238,7 @@ class HeaderBar extends Component {
     const voterIsSignedIn = this.props.voter && this.props.voter.is_signed_in;
     const showFullNavigation = true;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
-    const showingBallot = stringContains(ballotBaseUrl, pathname.slice(0, 7));
+    const showingBallot = stringContains(ballotBaseUrl, pathname.toLowerCase().slice(0, 7));
 
     return (
       <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}>

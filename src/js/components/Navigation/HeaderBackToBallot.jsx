@@ -317,7 +317,7 @@ class HeaderBackToBallot extends Component {
 
     const headerClassName = (function header () {
       let cname;
-      if (stringContains('/office', pathname)) {
+      if (stringContains('/office', pathname.toLowerCase())) {
         if (isWebApp()) {
           cname = 'page-header page-header__back-to-ballot';
         } else {
@@ -330,7 +330,7 @@ class HeaderBackToBallot extends Component {
     }());
 
     let appBarClasses;
-    const onCandidateOrMeasureRoute = stringContains('/candidate/', pathname) || stringContains('/measure/', pathname);
+    const onCandidateOrMeasureRoute = stringContains('/candidate/', pathname.toLowerCase()) || stringContains('/measure/', pathname.toLowerCase());
     if (scrolledDown && onCandidateOrMeasureRoute) {
       appBarClasses = { root: classes.noBoxShadow };
     }
@@ -385,7 +385,7 @@ class HeaderBackToBallot extends Component {
           </div>
           )}
         </Toolbar>
-        {stringContains('/office', pathname)  && officeName && (
+        {stringContains('/office', pathname.toLowerCase())  && officeName && (
           <OfficeItem
           weVoteId={officeWeVoteId}
           ballotItemDisplayName={officeName}
