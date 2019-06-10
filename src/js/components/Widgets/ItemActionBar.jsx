@@ -477,6 +477,19 @@ class ItemActionBar extends PureComponent {
       </Button>
     );
 
+    const supportButtonMobile = (
+      <Button
+        id="itemActionBarSupportButton"
+        variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
+        color="primary"
+        onClick={() => this.supportItem()}
+        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+        size="small"
+      >
+        <DoneIcon classes={{ root: classes.buttonIcon }} />
+      </Button>
+    );
+
     const measureYesButton = (
       <Button
         id="itemActionBarYesButton"
@@ -501,6 +514,19 @@ class ItemActionBar extends PureComponent {
             Vote Yes
           </span>
         )}
+      </Button>
+    );
+
+    const measureYesButtonMobile = (
+      <Button
+        id="itemActionBarYesButton"
+        variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
+        color="primary"
+        onClick={() => this.supportItem()}
+        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+        size="small"
+      >
+        <ThumbsUpIcon classes={{ root: classes.buttonIcon }} />
       </Button>
     );
 
@@ -532,6 +558,20 @@ class ItemActionBar extends PureComponent {
       </Button>
     );
 
+    const opposeButtonMobile = (
+      <Button
+        id="itemActionBarOpposeButton"
+        variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
+        color="primary"
+        className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
+        onClick={() => this.opposeItem()}
+        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+        size="small"
+      >
+        <NotInterestedIcon classes={{ root: classes.buttonIcon }} />
+      </Button>
+    );
+
     const measureNoButton = (
       <Button
         id="itemActionBarNoButton"
@@ -556,6 +596,19 @@ class ItemActionBar extends PureComponent {
             Vote No
           </span>
         )}
+      </Button>
+    );
+
+    const measureNoButtonMobile = (
+      <Button
+        id="itemActionBarNoButton"
+        variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
+        color="primary"
+        onClick={() => this.opposeItem()}
+        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+        size="small"
+      >
+        <ThumbsDownIcon classes={{ root: classes.buttonIcon }} />
       </Button>
     );
 
@@ -622,9 +675,14 @@ class ItemActionBar extends PureComponent {
               {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
             </StackedButton>
           ) : (
-            <div className="u-push--xs d-lg-none d-xl-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
-              {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
-            </div>
+            <>
+              <div className="u-push--xs d-none d-sm-block d-lg-none d-xl-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
+                {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
+              </div>
+              <div className="u-push--xs d-block d-sm-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
+                {this.props.type === 'CANDIDATE' ? supportButtonMobile : measureYesButtonMobile}
+              </div>
+            </>
           )}
 
           {/* Start of Oppose Button */}
@@ -648,9 +706,14 @@ class ItemActionBar extends PureComponent {
               {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
             </StackedButton>
           ) : (
-            <div className="u-push--xs d-lg-none d-xl-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
-              {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
-            </div>
+            <>
+              <div className="u-push--xs d-none d-sm-block d-lg-none d-xl-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
+                {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
+              </div>
+              <div className="u-push--xs d-block d-sm-none d-xl-none item-actionbar__position-bar item-actionbar__position-bar--mobile">
+                {this.props.type === 'CANDIDATE' ? opposeButtonMobile : measureNoButtonMobile}
+              </div>
+            </>
           )}
           { this.props.commentButtonHide ?
             null : (
