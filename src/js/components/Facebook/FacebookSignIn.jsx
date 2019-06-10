@@ -59,10 +59,11 @@ class FacebookSignIn extends Component {
   }
 }
 
-const styles = ({
+const styles = theme => ({
   fabRoot: {
     fontSize: 20,
-    minWidth: 300,
+    width: 300,
+    maxWidth: '100%',
     whiteSpace: 'nowrap',
     background: '#3b5998',
     color: 'white',
@@ -70,12 +71,18 @@ const styles = ({
     '&:hover': {
       background: '#2d4373',
     },
+    [theme.breakpoints.down('md')]: {
+      fontSize: 16,
+    },
   },
 });
 
 const ButtonText = styled.span`
   margin-left: 8px;
   font-size: 18px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 14px;
+  }
 `;
 
 export default withStyles(styles)(FacebookSignIn);
