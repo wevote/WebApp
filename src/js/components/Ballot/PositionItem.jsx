@@ -68,7 +68,7 @@ class PositionItem extends Component {
       supportOpposeInfo = 'oppose';
     }
 
-    console.log(supportOpposeInfo);
+    // console.log('PositionItem supportOpposeInfo: ', supportOpposeInfo);
     const positionDescription = position.statement_text && (
       <ReadMore
         num_of_lines={3}
