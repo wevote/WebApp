@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { clearTextInputValue, scrollThroughPage, simpleClick, simpleTextInput } = require('../utils');
+const { scrollThroughPage, simpleClick, simpleCloseBootstrapModal, setNewAddress } = require('../utils');
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
@@ -7,17 +7,10 @@ const PAUSE_DURATION_MICROSECONDS = 1250;
 const PAUSE_DURATION_BALLOT_LOAD = 6000;
 const PAUSE_DURATION_REVIEW_RESULTS = 3000;
 
-async function simpleCloseBootstrapModal () {
-  const clickableSelector = 'button[class="close"]';
-  const clickableItem = await $(clickableSelector);
-  await clickableItem.click();
-  await browser.pause(PAUSE_DURATION_MICROSECONDS);
-}
-
 describe('Basic cross-platform We Vote test',  () => {
   it('can visit the different pages in the app', async () => {
     // const isCordova = !!driver.getContexts;
-    const isCordova = false; // Set to True when testing APK or IPA files, and false when testing in mobile browser
+    const isCordova = false; // Set to true when testing APK or IPA files, and false when testing in mobile browser
     const isMobile = !!driver.getContexts;
     const isDesktop = !isMobile;
 
@@ -43,17 +36,10 @@ describe('Basic cross-platform We Vote test',  () => {
       await browser.url('https://quality.wevote.us/ballot');
     }
 
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    if (isMobile) {
-      // Extra pause for mobile until we can fix Issue #2225
-      await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
-    }
+    await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
 
-    if (isDesktop) {
-      // Only run on desktop until we can fix Issue #2225
-      await simpleClick('changeAddressHeaderBar'); // Open the "Change Address" modal
-      await simpleCloseBootstrapModal(); // Close the "Change Address" modal
-    }
+    await simpleClick('changeAddressHeaderBar'); // Open the "Change Address" modal
+    await simpleCloseBootstrapModal(); // Close the "Change Address" modal
 
     // //////////////////////
     // We want to start by setting the location, which will automatically choose the next upcoming election for that address
@@ -62,28 +48,13 @@ describe('Basic cross-platform We Vote test',  () => {
     } else {
       await simpleClick('locationGuessEnterYourFullAddress'); // Opens the "Enter Your Full Address" link
     }
-    await clearTextInputValue('addressBoxText'); // Clear the contents of this input box
-    await simpleTextInput('addressBoxText','Oakland, CA 94610'); // Sets the text for the address box
-    if (isDesktop) {
-      // Send "Enter" since the "Google address complete" is blocking the button
-      await simpleTextInput('addressBoxText', '\uE007');
-    } else {
-      // Send "Return" for mobile since the "Google address complete" is blocking the button
-      await simpleTextInput('addressBoxText', '\uE006');
-    }
-    // await simpleClick('addressBoxModalSaveButton'); // Saves the new address
-
+    await setNewAddress('addressBoxText', 'Oakland, CA 94610'); // Sets the text for the address box and hits enter
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
-    if (!isDesktop) {
-      // Extra pause for mobile
-      await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
-    }
 
     // //////////////////////
     // Next we want to switch to a known election
     await simpleClick('changeAddressHeaderBar'); // Opens the Enter Your Full Address link
     await simpleClick('ballotElectionListWithFiltersButton-6000'); // Clicks on US 2018 Midterm Election
-
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
 
     // //////////////////////
