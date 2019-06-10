@@ -230,7 +230,6 @@ class PositionPublicToggle extends Component {
                   }
                 />
               </RadioItem>
-              
             </RadioGroup>
           </FormControl>
         </PublicToggle>
