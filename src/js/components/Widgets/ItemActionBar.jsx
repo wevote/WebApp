@@ -477,19 +477,6 @@ class ItemActionBar extends PureComponent {
       </Button>
     );
 
-    const supportButtonMobile = (
-      <Button
-        id="itemActionBarSupportButton"
-        variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
-        color="primary"
-        onClick={() => this.supportItem()}
-        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-        size="small"
-      >
-        <DoneIcon className="supportOpposeMobileIcon" classes={{ root: classes.buttonIcon }} />
-      </Button>
-    );
-
     const measureYesButton = (
       <Button
         id="itemActionBarYesButton"
@@ -514,19 +501,6 @@ class ItemActionBar extends PureComponent {
             Vote Yes
           </span>
         )}
-      </Button>
-    );
-
-    const measureYesButtonMobile = (
-      <Button
-        id="itemActionBarYesButton"
-        variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
-        color="primary"
-        onClick={() => this.supportItem()}
-        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-        size="small"
-      >
-        <ThumbsUpIcon className="supportOpposeMobileIcon" classes={{ root: classes.buttonIcon }} />
       </Button>
     );
 
@@ -558,20 +532,6 @@ class ItemActionBar extends PureComponent {
       </Button>
     );
 
-    const opposeButtonMobile = (
-      <Button
-        id="itemActionBarOpposeButton"
-        variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
-        color="primary"
-        className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
-        onClick={() => this.opposeItem()}
-        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-        size="small"
-      >
-        <NotInterestedIcon className="supportOpposeMobileIcon" classes={{ root: classes.buttonIcon }} />
-      </Button>
-    );
-
     const measureNoButton = (
       <Button
         id="itemActionBarNoButton"
@@ -596,19 +556,6 @@ class ItemActionBar extends PureComponent {
             Vote No
           </span>
         )}
-      </Button>
-    );
-
-    const measureNoButtonMobile = (
-      <Button
-        id="itemActionBarNoButton"
-        variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
-        color="primary"
-        onClick={() => this.opposeItem()}
-        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-        size="small"
-      >
-        <ThumbsDownIcon className="supportOpposeMobileIcon" classes={{ root: classes.buttonIcon }} />
       </Button>
     );
 
@@ -676,11 +623,8 @@ class ItemActionBar extends PureComponent {
             </StackedButton>
           ) : (
             <>
-              <div className="u-push--xs d-lg-none d-xl-none d-sm-block d-none ">
+              <div className="u-push--xs u-push--xs d-lg-none">
                 {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
-              </div>
-              <div className="u-push--xs d-block d-sm-none ">
-                {this.props.type === 'CANDIDATE' ? supportButtonMobile : measureYesButtonMobile}
               </div>
             </>
           )}
@@ -707,11 +651,8 @@ class ItemActionBar extends PureComponent {
             </StackedButton>
           ) : (
             <>
-              <div className="u-push--xs d-lg-none d-xl-none d-sm-block d-none ">
+              <div className="u-push--xs d-lg-none">
                 {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
-              </div>
-              <div className="u-push--xs d-block d-sm-none ">
-                {this.props.type === 'CANDIDATE' ? opposeButtonMobile : measureNoButtonMobile}
               </div>
             </>
           )}
@@ -751,14 +692,9 @@ const styles = theme => ({
       marginLeft: '.1rem',
       marginTop: '.3rem',
     },
-    [theme.breakpoints.down('xs')]: {
-      width: 42.5,
-      minWidth: 42.5,
-      maxWidth: 42.5,
-      height: 40,
-      minHeight: 40,
-      maxHeight: 40,
-      fontSize: '15px !important',
+    [theme.breakpoints.down('sm')]: {
+      width: 80,
+      minWidth: 80,
     },
   },
   buttonOutlinedPrimary: {
