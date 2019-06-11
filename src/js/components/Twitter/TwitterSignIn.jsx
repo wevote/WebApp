@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import $ajax from '../../utils/service';
 import cookies from '../../utils/cookies';
@@ -11,13 +8,13 @@ import {
 } from '../../utils/cordovaUtils';
 import webAppConfig from '../../config';
 import TwitterActions from '../../actions/TwitterActions';
+import ContainedIconButton from './ContainedIconButton';
 
 const returnURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/twitter_sign_in`;
 
 class TwitterSignIn extends Component {
   static propTypes = {
     buttonText: PropTypes.string,
-    classes: PropTypes.object,
   };
 
   // TODO: April 17, 2018, this is used by Twitter and SignIn by Email, and should be refactored out of here.  It is really the handleOpenURL function.
@@ -147,46 +144,18 @@ class TwitterSignIn extends Component {
   }
 
   render () {
-    const { classes, buttonText } = this.props;
+    const { buttonText } = this.props;
     renderLog(__filename);
     return (
-      <Button
-        variant="contained"
-        classes={{ root: classes.fabRoot }}
+      <ContainedIconButton
+        buttonText={buttonText}
+        color="#55acee"
+        icon={<span className="fab fa-twitter" />}
         onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova}
-      >
-        <span className="fab fa-twitter" />
-        <ButtonText>{buttonText}</ButtonText>
-      </Button>
+      />
     );
   }
 }
 
-const styles = theme => ({
-  fabRoot: {
-    fontSize: 20,
-    width: 300,
-    maxWidth: '100%',
-    whiteSpace: 'nowrap',
-    background: '#55acee',
-    color: 'white',
-    margin: '8px',
-    '&:hover': {
-      background: '#219fff',
-    },
-    [theme.breakpoints.down('md')]: {
-      fontSize: 16,
-    },
-  },
-});
-
-const ButtonText = styled.span`
-  margin-left: 8px;
-  font-size: 18px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 14px;
-  }
-`;
-
-export default withStyles(styles)(TwitterSignIn);
+export default TwitterSignIn;
 
