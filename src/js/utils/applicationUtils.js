@@ -8,69 +8,70 @@ export function getApplicationViewBooleans (pathname) {
   let inTheaterMode = false;
   let contentFullWidthMode = false;
   let friendsMode = false;
+  const pathnameLowerCase = pathname.toLowerCase() || '';
   let settingsMode = false;
   let voteMode = false;
   let valuesMode = false;
   let voterGuideMode = false;
   let voterGuideShowGettingStartedNavigation = false;
-  if (pathname === '/intro/story' ||
-    pathname === '/intro/sample_ballot' ||
-    pathname === '/intro/get_started' ||
-    pathname === '/voterguidechooseelection' ||
-    pathname === '/voterguidegetstarted' ||
-    pathname === '/voterguideorgtype' ||
-    pathname === '/voterguideorginfo' ||
-    pathname.startsWith('/voterguidepositions') ||
-    pathname === '/wevoteintro/network') {
+  if (pathnameLowerCase === '/intro/story' ||
+    pathnameLowerCase === '/intro/sample_ballot' ||
+    pathnameLowerCase === '/intro/get_started' ||
+    pathnameLowerCase === '/voterguidechooseelection' ||
+    pathnameLowerCase === '/voterguidegetstarted' ||
+    pathnameLowerCase === '/voterguideorgtype' ||
+    pathnameLowerCase === '/voterguideorginfo' ||
+    pathnameLowerCase.startsWith('/voterguidepositions') ||
+    pathnameLowerCase === '/wevoteintro/network') {
     inTheaterMode = true;
-  } else if (pathname.startsWith('/candidate/') ||
-    pathname === '/for-campaigns' ||
-    pathname === '/for-organizations' ||
-    pathname.startsWith('/how') ||
-    pathname === '/intro' ||
-    pathname === '/issues_followed' ||
-    pathname === '/issues_to_follow' ||
-    pathname.startsWith('/measure/') ||
-    pathname === '/more/about' ||
-    pathname === '/more/absentee' ||
-    pathname === '/more/alerts' ||
-    pathname === '/more/myballot' ||
-    pathname === '/more/connect' ||
-    pathname === '/more/credits' ||
-    pathname.startsWith('/more/donate') ||
-    pathname === '/more/elections' ||
-    pathname.startsWith('/office/') ||
-    pathname === '/more/network' ||
-    pathname === '/more/network/friends' ||
-    pathname === '/more/network/issues' ||
-    pathname === '/more/network/organizations' ||
-    pathname.startsWith('/more/pricing') ||
-    pathname === '/more/privacy' ||
-    pathname === '/more/register' ||
-    pathname === '/more/sign_in' ||
-    pathname === '/more/terms' ||
-    pathname === '/more/tools' ||
-    pathname === '/more/verify' ||
-    pathname.startsWith('/verifythisisme/') ||
-    pathname === '/welcome') {
+  } else if (pathnameLowerCase.startsWith('/candidate/') ||
+    pathnameLowerCase === '/for-campaigns' ||
+    pathnameLowerCase === '/for-organizations' ||
+    pathnameLowerCase.startsWith('/how') ||
+    pathnameLowerCase === '/intro' ||
+    pathnameLowerCase === '/issues_followed' ||
+    pathnameLowerCase === '/issues_to_follow' ||
+    pathnameLowerCase.startsWith('/measure/') ||
+    pathnameLowerCase === '/more/about' ||
+    pathnameLowerCase === '/more/absentee' ||
+    pathnameLowerCase === '/more/alerts' ||
+    pathnameLowerCase === '/more/myballot' ||
+    pathnameLowerCase === '/more/connect' ||
+    pathnameLowerCase === '/more/credits' ||
+    pathnameLowerCase.startsWith('/more/donate') ||
+    pathnameLowerCase === '/more/elections' ||
+    pathnameLowerCase.startsWith('/office/') ||
+    pathnameLowerCase === '/more/network' ||
+    pathnameLowerCase === '/more/network/friends' ||
+    pathnameLowerCase === '/more/network/issues' ||
+    pathnameLowerCase === '/more/network/organizations' ||
+    pathnameLowerCase.startsWith('/more/pricing') ||
+    pathnameLowerCase === '/more/privacy' ||
+    pathnameLowerCase === '/more/register' ||
+    pathnameLowerCase === '/more/sign_in' ||
+    pathnameLowerCase === '/more/terms' ||
+    pathnameLowerCase === '/more/tools' ||
+    pathnameLowerCase === '/more/verify' ||
+    pathnameLowerCase.startsWith('/verifythisisme/') ||
+    pathnameLowerCase === '/welcome') {
     contentFullWidthMode = true;
-  } else if (pathname.startsWith('/ballot/vote')) {
+  } else if (pathnameLowerCase.startsWith('/ballot/vote')) {
     contentFullWidthMode = false; // I set this to false to fix the header padding issues in /ballot/vote
     voteMode = true;
-  } else if (pathname.startsWith('/ballot')) {
+  } else if (pathnameLowerCase.startsWith('/ballot')) {
     contentFullWidthMode = false;
-  } else if (stringContains('/settings', pathname) ||
-    pathname === '/more/hamburger') {
+  } else if (stringContains('/settings', pathnameLowerCase) ||
+    pathnameLowerCase === '/more/hamburger') {
     contentFullWidthMode = true;
     settingsMode = true;
-  } else if (pathname.startsWith('/value') || // '/values'
-    pathname === '/opinions' ||
-    pathname === '/opinions_followed' ||
-    pathname === '/opinions_ignored') {
+  } else if (pathnameLowerCase.startsWith('/value') || // '/values'
+    pathnameLowerCase === '/opinions' ||
+    pathnameLowerCase === '/opinions_followed' ||
+    pathnameLowerCase === '/opinions_ignored') {
     contentFullWidthMode = true;
     valuesMode = true;
-  } else if (pathname.startsWith('/friends') ||
-    pathname === '/facebook_invitable_friends') {
+  } else if (pathnameLowerCase.startsWith('/friends') ||
+    pathnameLowerCase === '/facebook_invitable_friends') {
     contentFullWidthMode = true;
     friendsMode = true;
   } else {
@@ -83,11 +84,11 @@ export function getApplicationViewBooleans (pathname) {
   let showBackToSettings = false;
   let showBackToValues = false;
   let showBackToVoterGuides = false;
-  if (stringContains('/btdb/', pathname) || // back-to-default-ballot
-    stringContains('/btdo/', pathname) || // back-to-default-office
-    stringContains('/bto/', pathname) ||
-    stringContains('/btvg/', pathname) ||
-    stringContains('/more/myballot', pathname)
+  if (stringContains('/btdb/', pathnameLowerCase) || // back-to-default-ballot
+    stringContains('/btdo/', pathnameLowerCase) || // back-to-default-office
+    stringContains('/bto/', pathnameLowerCase) ||
+    stringContains('/btvg/', pathnameLowerCase) ||
+    stringContains('/more/myballot', pathnameLowerCase)
   ) {
     // If here, we want the top header to be "Back To..."
     // "/btdb/" stands for "Back To Default Ballot Page" back-to-default-ballot
@@ -95,35 +96,35 @@ export function getApplicationViewBooleans (pathname) {
     // "/btvg/" stands for "Back To Voter Guide Page"
     // "/bto/" stands for "Back To Voter Guide Office Page"
     showBackToBallotHeader = true;
-  } else if (pathname === '/settings/account' ||
-    pathname === '/settings/address' ||
-    pathname === '/settings/election' ||
-    stringContains('/settings/issues', pathname) ||
-    pathname === '/settings/notifications' ||
-    pathname === '/settings/profile' ||
-    stringContains('/settings/voter_guide', pathname) ||
-    pathname === '/settings/voterguidesmenu' ||
-    pathname === '/settings/voterguidelist') {
+  } else if (pathnameLowerCase === '/settings/account' ||
+    pathnameLowerCase === '/settings/address' ||
+    pathnameLowerCase === '/settings/election' ||
+    stringContains('/settings/issues', pathnameLowerCase) ||
+    pathnameLowerCase === '/settings/notifications' ||
+    pathnameLowerCase === '/settings/profile' ||
+    stringContains('/settings/voter_guide', pathnameLowerCase) ||
+    pathnameLowerCase === '/settings/voterguidesmenu' ||
+    pathnameLowerCase === '/settings/voterguidelist') {
     showBackToSettings = true;
-  } else if (pathname === '/opinions' ||
-    pathname === '/opinions_followed' ||
-    pathname === '/opinions_ignored' ||
-    stringContains('/value/', pathname) ||
-    pathname === '/values/list') {
+  } else if (pathnameLowerCase === '/opinions' ||
+    pathnameLowerCase === '/opinions_followed' ||
+    pathnameLowerCase === '/opinions_ignored' ||
+    stringContains('/value/', pathnameLowerCase) ||
+    pathnameLowerCase === '/values/list') {
     showBackToValues = true;
-  } else if (pathname === '/friends/add' ||
-    pathname === '/friends/current' ||
-    pathname === '/friends/requests' ||
-    pathname === '/friends/invitationsbyme' ||
-    pathname === '/friends/suggested' ||
-    pathname === '/friends/invitebyemail' ||
-    pathname === '/facebook_invitable_friends') {
+  } else if (pathnameLowerCase === '/friends/add' ||
+    pathnameLowerCase === '/friends/current' ||
+    pathnameLowerCase === '/friends/requests' ||
+    pathnameLowerCase === '/friends/invitationsbyme' ||
+    pathnameLowerCase === '/friends/suggested' ||
+    pathnameLowerCase === '/friends/invitebyemail' ||
+    pathnameLowerCase === '/facebook_invitable_friends') {
     showBackToFriends = true;
-  } else if (stringContains('/vg/', pathname)) {
+  } else if (stringContains('/vg/', pathnameLowerCase)) {
     showBackToVoterGuides = true; // DALE 2019-02-19 Soon we should be able to delete the interim voter guides page
   }
 
-  if (pathname.startsWith('/measure') && isCordova()) {
+  if (pathnameLowerCase.startsWith('/measure') && isCordova()) {
     showBackToBallotHeader = true;
   }
 
@@ -163,7 +164,7 @@ export function polyfillObjectEntries () {
 export function setZenDeskHelpVisibility (pathname) {
   if (isWebApp()) {
     if (['/ballot', '/ballot/vote', '/candidate', '/friends', '/measure', '/more/network', '/office', '/opinions', '/settings',
-      '/value'].some(match => pathname.startsWith(match))) { // '/values'
+      '/value'].some(match => pathname.toLowerCase().startsWith(match))) { // '/values'
       global.zE('webWidget', 'show');
     } else {
       global.zE('webWidget', 'hide');

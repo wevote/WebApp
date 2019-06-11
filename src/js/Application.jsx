@@ -69,7 +69,7 @@ class Application extends Component {
 
     if (!voteMode &&
       ((voterGuideMode && !AppStore.showEditAddressButton()) ||
-        stringContains('/ballot', pathname.slice(0, 7)))) {
+        stringContains('/ballot', pathname.toLowerCase().slice(0, 7)))) {
       AppActions.setShowEditAddressButton(true);
     }
   }

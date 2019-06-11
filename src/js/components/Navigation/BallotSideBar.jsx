@@ -144,6 +144,7 @@ class BallotSideBar extends Component {
             subtitle={item.measure_subtitle}
             key={`ballot-side-bar-${item.we_vote_id}`}
             displaySubtitles={this.props.displaySubtitles}
+            id={`ballotSideBarLink-${item.we_vote_id}`}
             onClick={this.handleClick}
           />
         );
