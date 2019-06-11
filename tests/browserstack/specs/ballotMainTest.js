@@ -10,7 +10,7 @@ const PAUSE_DURATION_REVIEW_RESULTS = 3000;
 describe('Basic cross-platform We Vote test',  () => {
   it('can visit the different pages in the app', async () => {
     // const isCordova = !!driver.getContexts;
-    const isCordova = false; // Set to true when testing APK or IPA files, and false when testing in mobile browser
+    const isCordova = true; // Set to true when testing APK or IPA files, and false when testing in mobile browser
     const isMobile = !!driver.getContexts;
     const isDesktop = !isMobile;
 
@@ -57,7 +57,12 @@ describe('Basic cross-platform We Vote test',  () => {
     await simpleClick('ballotElectionListWithFiltersButton-6000'); // Clicks on US 2018 Midterm Election
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
 
-    // //////////////////////
+    await simpleClick('ballotBadge-State');
+    await simpleClick('ballotBadge-Measure');
+    await simpleClick('ballotBadge-Local');
+    await simpleClick('ballotBadge-Federal');
+
+  // //////////////////////
     // Visit the candidate page
     await simpleClick('officeItemCompressedCandidateInfo-wv02cand40208'); // Clicks the candidate
     await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
@@ -123,11 +128,6 @@ describe('Basic cross-platform We Vote test',  () => {
     if (isDesktop) {
       // Desktop screen size - HEADER TABS
       await simpleClick('ballotTabHeaderBar');
-      await simpleClick('changeAddressHeaderBar');
-      await simpleCloseBootstrapModal(); // Close the "Change Address" modal
-      await simpleClick('ballotBadge-State');
-      await simpleClick('ballotBadge-Measure');
-      await simpleClick('ballotBadge-Local');
     } else {
       // Mobile or tablet screen size - FOOTER ICONS
       await simpleClick('ballotTabFooterBar');
@@ -137,7 +137,7 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // //////////////////////
     // Review the full length of the page
-    await scrollThroughPage(); // Scroll to the bottom of the ballot page
+    // await scrollThroughPage(); // Scroll to the bottom of the ballot page
     // TODO: We will need a way to scroll back to the top of the page for the tab navigation to work in Desktop
 
     await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);

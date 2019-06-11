@@ -40,6 +40,15 @@ exports.config = {
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
     },
+    {
+      name: 'ballotMainTest-iOSiPadPro12.92018',
+      build: buildNameForDisplay,
+      device: 'iPad Pro 12.9 2018',
+      os_version: '12',
+      app: browserStackConfig.BROWSERSTACK_IPA_URL,
+      'browserstack.debug': true,
+      'browserstack.geoLocation': 'US',
+    },
 
   ],
   coloredLogs: true,
