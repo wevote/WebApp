@@ -22,6 +22,7 @@ export default class FollowToggle extends Component {
     organizationWeVoteId: PropTypes.string,
     hideDropdownButtonUntilFollowing: PropTypes.bool,
     lightModeOn: PropTypes.bool,
+    anchorLeft: PropTypes.bool,
   };
 
   constructor (props) {
@@ -263,9 +264,9 @@ export default class FollowToggle extends Component {
             )}
           </Button>
         ) : (
-          <div>
+          <>
             {this.props.hideDropdownButtonUntilFollowing ? (
-              <div>
+              <>
                 {this.props.lightModeOn ? (
                   <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Follow
@@ -275,7 +276,11 @@ export default class FollowToggle extends Component {
                     Follow
                   </Button>
                 )}
-                <div className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
+                <div className={this.props.anchorLeft ? (
+                  "dropdown-menu dropdown-menu-left issues-follow-btn__menu"
+                ) : (
+                  "dropdown-menu dropdown-menu-right issues-follow-btn__menu"
+                )}>
                   {this.state.isFollowing ? (
                     <span className="d-print-none">
                       { this.props.hideStopFollowingButton ?
@@ -299,10 +304,9 @@ export default class FollowToggle extends Component {
                     Ignore
                   </Button>
                 </div>
-              </div>
-
+              </>
             ) : (
-              <div>
+              <>
                 {this.props.lightModeOn ? (
                   <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn--white" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
                     Follow
@@ -312,19 +316,23 @@ export default class FollowToggle extends Component {
                     Follow
                   </Button>
                 )}
-              </div>
+              </>
             )}
-          </div>
+          </>
         )}
         {this.props.hideDropdownButtonUntilFollowing ? (
-          <div>
+          <>
             {this.state.isFollowing || this.state.isIgnoring ? (
-              <React.Fragment>
+              <>
                 <div className="issues-follow-btn__seperator" />
                 <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span className="sr-only">Toggle Dropdown</span>
                 </Button>
-                <div className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
+                <div className={this.props.anchorLeft ? (
+                  "dropdown-menu dropdown-menu-left issues-follow-btn__menu"
+                ) : (
+                  "dropdown-menu dropdown-menu-right issues-follow-btn__menu"
+                )}>
                   {this.state.isFollowing ? (
                     <span className="d-print-none">
                       { this.props.hideStopFollowingButton ?
@@ -348,20 +356,20 @@ export default class FollowToggle extends Component {
                     Ignore
                   </Button>
                 </div>
-              </React.Fragment>
+              </>
             ) : (
               null
             )}
-          </div>
+          </>
         ) : (
-          <div>
+          <>
             {this.state.isFollowing || this.state.isIgnoring ? (
-              <React.Fragment>
+              <>
                 <div className="issues-follow-btn__seperator" />
                 <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span className="sr-only">Toggle Dropdown</span>
                 </Button>
-                <div className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
+                <div className="dropdown-menu issues-follow-btn__menu">
                   {this.state.isFollowing ? (
                     <span className="d-print-none">
                       { this.props.hideStopFollowingButton ?
@@ -385,9 +393,9 @@ export default class FollowToggle extends Component {
                     Ignore
                   </Button>
                 </div>
-              </React.Fragment>
+              </>
             ) : (
-              <React.Fragment>
+              <>
                 <div className="issues-follow-btn__seperator" />
                 {this.props.lightModeOn ? (
                   <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -398,7 +406,11 @@ export default class FollowToggle extends Component {
                     <span className="sr-only">Toggle Dropdown</span>
                   </Button>
                 )}
-                <div className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
+                <div className={this.props.anchorLeftLeft ? (
+                  "dropdown-menu dropdown-menu-left issues-follow-btn__menu"
+                ) : (
+                  "dropdown-menu dropdown-menu-right issues-follow-btn__menu"
+                )}>
                   {this.state.isFollowing ? (
                     <span className="d-print-none">
                       { this.props.hideStopFollowingButton ?
@@ -422,9 +434,9 @@ export default class FollowToggle extends Component {
                     Ignore
                   </Button>
                 </div>
-              </React.Fragment>
+              </>
             )}
-          </div>
+          </>
         )}
       </div>
     );
