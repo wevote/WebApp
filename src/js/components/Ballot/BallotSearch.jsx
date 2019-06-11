@@ -7,6 +7,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import styled from 'styled-components';
 import _ from 'lodash';
+import { isCordova } from '../../utils/cordovaUtils';
 import ballotSearchPriority from '../../utils/ballotSearchPriority';
 
 const delayBeforeSearchExecution = 400;
@@ -63,9 +64,11 @@ class BallotSearch extends Component {
     const { isSearching } = this.props;
     if (isSearching) {
       this.setState({ searchValue: '', showCloser: false });
+    } else {
+      this.searchInput.focus();
     }
     this.props.onToggleSearch(!isSearching);
-  }
+  };
 
   handleSearch (event) { // eslint-disable-line consistent-return
     // if search bar always open, isSearching is toggled only when input is given text is cleared with 'x' button
@@ -94,7 +97,7 @@ class BallotSearch extends Component {
     const { classes, theme, isSearching, alwaysOpen } = this.props;
     const { searchValue, showCloser } = this.state;
     return (
-      <SearchWrapper searchOpen={isSearching || alwaysOpen} brandBlue={theme.palette.primary.main}>
+      <SearchWrapper searchOpen={isSearching || alwaysOpen} brandBlue={theme.palette.primary.main} isCordova={isCordova()}>
         <IconButton
           classes={{ root: classes.iconButtonRoot }}
           onClick={!alwaysOpen ? this.toggleSearch : undefined}
@@ -124,9 +127,9 @@ class BallotSearch extends Component {
 
 const styles = theme => ({
   searchRoot: {
-    height: 32,
+    height: 26,
     [theme.breakpoints.down('md')]: {
-      height: 28,
+      height: 22.5,
     },
   },
   iconButtonRoot: {
@@ -139,12 +142,12 @@ const styles = theme => ({
     },
   },
   iconRoot: {
-    width: 24,
-    height: 24,
+    width: 18,
+    height: 18,
   },
   closeIconRoot: {
-    width: 24,
-    height: 24,
+    width: 18,
+    height: 18,
   },
   input: {
     padding: 0,
@@ -153,6 +156,7 @@ const styles = theme => ({
     transition: 'all ease-in 150ms',
     [theme.breakpoints.down('md')]: {
       width: '60vw',
+      fontSize: 14,
     },
   },
   inputHidden: {
@@ -183,15 +187,14 @@ const SearchWrapper = styled.div`
   display: flex;
   flex-flow: row;
   border-radius: 4px;
-  height: 32px;
+  height: 26px;
   border: 1px solid rgba(0, 0, 0, .3);
   padding: 0 3px 0 3px;
   margin-right: 16px;
   margin-bottom: 8px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    height: 28px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    height: 22.5px;
     margin-right: 4px;
-    margin-top: 8px;
   }
 `;
 

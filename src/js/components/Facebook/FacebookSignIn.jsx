@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import styled from 'styled-components';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import AppActions from '../../actions/AppActions';
 import FacebookActions from '../../actions/FacebookActions';
@@ -8,13 +10,12 @@ import FacebookActions from '../../actions/FacebookActions';
 class FacebookSignIn extends Component {
   static propTypes = {
     toggleSignInModal: PropTypes.func,
+    buttonText: PropTypes.string,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
-    this.state = {
-    };
-
     this.onKeyDown = this.onKeyDown.bind(this);
   }
 
@@ -43,23 +44,45 @@ class FacebookSignIn extends Component {
 
   render () {
     renderLog(__filename);
+    const { classes, buttonText } = this.props;
     return (
       <Button
-        bsPrefix={this.props.className ? this.props.className : 'btn btn-social btn-facebook'}
+        variant="contained"
+        classes={{ root: classes.fabRoot }}
         onClick={this.didClickFacebookSignInButton}
         onKeyDown={this.onKeyDown}
       >
         <span className="fab fa-facebook-square" />
-        {' '}
-        {this.props.buttonText ? this.props.buttonText : 'Sign In'}
+        <ButtonText>{buttonText}</ButtonText>
       </Button>
     );
   }
 }
 
-FacebookSignIn.propTypes = {
-  buttonText: PropTypes.string,
-  className: PropTypes.string,
-};
+const styles = theme => ({
+  fabRoot: {
+    fontSize: 20,
+    width: 300,
+    maxWidth: '100%',
+    whiteSpace: 'nowrap',
+    background: '#3b5998',
+    color: 'white',
+    margin: '8px',
+    '&:hover': {
+      background: '#2d4373',
+    },
+    [theme.breakpoints.down('md')]: {
+      fontSize: 16,
+    },
+  },
+});
 
-export default FacebookSignIn;
+const ButtonText = styled.span`
+  margin-left: 8px;
+  font-size: 18px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 14px;
+  }
+`;
+
+export default withStyles(styles)(FacebookSignIn);

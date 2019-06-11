@@ -1,5 +1,17 @@
 const PAUSE_DURATION_MICROSECONDS = 1250;
 
+async function clearTextInputValue (elementIdName) {
+  const clickableSelector = `#${elementIdName}`;
+  const clickableItem = await $(clickableSelector);
+  // const charactersToDelete = 1;
+  // for (let i = 0; i <= charactersToDelete; i++) {
+  //   // Delete 30 characters at a time. If we delete 1 at a time the Google location popover refills the input box too fast.
+  //   await clickableItem.setValue('\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003');
+  // }
+  await clickableItem.setValue('\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003');
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
 function scrollThroughPage () {
   browser.setTimeout({ script: 60000 });
   browser.executeAsync((done) => {
@@ -38,19 +50,24 @@ function scrollThroughPage () {
   });
 }
 
-async function clearTextInputValue (elementIdName) {
+async function setNewAddress (elementIdName, addressValue) {
   const clickableSelector = `#${elementIdName}`;
   const clickableItem = await $(clickableSelector);
-  const charactersToDelete = 3;
-  for (let i = 0; i <= charactersToDelete; i++) {
-    // Delete 20 characters at a time. If we delete 1 at a time the Google location popover refills the input box too fast.
-    await clickableItem.setValue('\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003');
-  }
+  // Delete 30 characters, add new address, then enter key
+  const addressConcatenation = `\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003${addressValue}\uE007`;
+  await clickableItem.setValue(addressConcatenation);
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
 async function simpleClick (elementIdName) {
   const clickableSelector = `#${elementIdName}`;
+  const clickableItem = await $(clickableSelector);
+  await clickableItem.click();
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
+async function simpleCloseBootstrapModal () {
+  const clickableSelector = 'button[class="close"]';
   const clickableItem = await $(clickableSelector);
   await clickableItem.click();
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -63,4 +80,4 @@ async function simpleTextInput (elementIdName, textValue) {
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
-module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, simpleTextInput };
+module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, simpleCloseBootstrapModal, simpleTextInput, setNewAddress };

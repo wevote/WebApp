@@ -42,6 +42,11 @@ class VoterStore extends ReduceStore {
     return this.getState().address.text_for_map_search || '';
   }
 
+  getVoterSavedAddress () {
+    // console.log('VoterStore, getVoterSavedAddress: ', this.getState().address.voter_entered_address);
+    return this.getState().address.voter_entered_address || false;
+  }
+
   getAddressObject () {
     return this.getState().address || {};
   }

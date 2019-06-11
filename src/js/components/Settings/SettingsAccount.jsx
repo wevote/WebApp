@@ -26,6 +26,7 @@ const debugMode = false;
 export default class SettingsAccount extends Component {
   static propTypes = {
     toggleSignInModal: PropTypes.func,
+    inModal: PropTypes.bool,
   };
 
   constructor (props) {
@@ -145,6 +146,8 @@ export default class SettingsAccount extends Component {
       return LoadingWheel;
     }
 
+    const { inModal } = this.props;
+
     // console.log("SignIn.jsx this.state.facebookAuthResponse:", this.state.facebookAuthResponse);
     if (!this.state.voter.signed_in_facebook && this.state.facebookAuthResponse && this.state.facebookAuthResponse.facebook_retrieve_attempted) {
       oAuthLog('SignIn.jsx facebook_retrieve_attempted');
@@ -173,8 +176,8 @@ export default class SettingsAccount extends Component {
       <div className="">
         <Helmet title={pageTitle} />
         <BrowserPushMessage incomingProps={this.props} />
-        <div className="card">
-          <div className="card-main">
+        <div className={inModal ? '' : 'card'}>
+          <Main inModal={inModal}>
             {this.state.voter.signed_in_twitter && this.state.voter.signed_in_facebook ?
               null :
               <h1 className="h3">{this.state.voter.is_signed_in ? <span>{yourAccountTitle}</span> : null}</h1>
@@ -192,7 +195,7 @@ export default class SettingsAccount extends Component {
                 { !this.state.voter.signed_in_twitter && (
                   <span>
                     <RecommendedText className="u-tl u-stack--sm">Recommended</RecommendedText>
-                    <TwitterSignIn className="btn btn-social btn-lg btn-twitter u-full-width u-tc u-f4 u-inset--md" buttonText="SIGN IN WITH TWITTER" />
+                    <TwitterSignIn buttonText="Sign in with Twitter" />
                   </span>
                 )
                 }
@@ -204,7 +207,7 @@ export default class SettingsAccount extends Component {
                 } */}
                 { !this.state.voter.signed_in_facebook && (
                   <span>
-                    <FacebookSignIn className="btn btn-social btn-lg btn-facebook u-full-width u-tc u-f4 u-inset--md" toggleSignInModal={this.props.toggleSignInModal} buttonText="SIGN IN WITH FACEBOOK" />
+                    <FacebookSignIn toggleSignInModal={this.props.toggleSignInModal} buttonText="Sign in with Facebook" />
                   </span>
                 )
                 }
@@ -323,12 +326,19 @@ export default class SettingsAccount extends Component {
               <br />
             </div>
             )}
-          </div>
+          </Main>
         </div>
       </div>
     );
   }
 }
+
+const Main = styled.div`
+  margin-top: ${({ inModal }) => (inModal ? '-16px' : '0')};
+  padding: 16px;
+  text-align: center;
+  padding-top: 0;
+`;
 
 const SignInSubtitle = styled.p`
   font-weight: 500;
@@ -340,5 +350,5 @@ const RecommendedText = styled.p`
   margin: 0;
   color: #333;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 16px;
 `;

@@ -49,6 +49,7 @@ const styles = theme => ({
   },
   ballotButtonRoot: {
     width: 250,
+    whiteSpace: 'nowrap',
     [theme.breakpoints.down('md')]: {
       width: '100%',
     },

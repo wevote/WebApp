@@ -8,11 +8,9 @@ import Tab from '@material-ui/core/Tab';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-// import Badge from '@material-ui/core/Badge'; // DALE: FRIENDS TEMPORARILY DISABLED
 import PlaceIcon from '@material-ui/icons/Place';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { withStyles } from '@material-ui/core/styles';
-import BallotStore from '../../stores/BallotStore';
 import { historyPush, isWebApp, isCordova, hasIPhoneNotch } from '../../utils/cordovaUtils';
 import cookies from '../../utils/cookies';
 import FriendStore from '../../stores/FriendStore';
@@ -29,6 +27,7 @@ import { stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 import SelectBallotModal from '../Ballot/SelectBallotModal';
 import BallotActions from '../../actions/BallotActions';
+// import Badge from '@material-ui/core/Badge'; // DALE: FRIENDS TEMPORARILY DISABLED
 
 class HeaderBar extends Component {
   static propTypes = {
@@ -52,7 +51,6 @@ class HeaderBar extends Component {
       friendInvitationsSentToMe: 0,
       showEditAddressButton: false,
       showSignInModal: false,
-      showSelectBallotModal: false,
       scrolledDown: false,
     };
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
@@ -64,7 +62,6 @@ class HeaderBar extends Component {
   }
 
   componentDidMount () {
-    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     // this.onBallotStoreChange();
@@ -77,11 +74,10 @@ class HeaderBar extends Component {
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
       scrolledDown: AppStore.getScrolledDown(),
       showEditAddressButton: AppStore.showEditAddressButton(),
+      showSelectBallotModal: AppStore.showSelectBallotModal(),
       showSignInModal: AppStore.showSignInModal(),
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
-
-    this.setState({ ballotElectionList: BallotStore.ballotElectionList() });
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -143,16 +139,8 @@ class HeaderBar extends Component {
   }
 
   componentWillUnmount () {
-    this.ballotStoreListener.remove();
     this.friendStoreListener.remove();
     this.appStoreListener.remove();
-  }
-
-  onBallotStoreChange () {
-    // this.setState({ bookmarks: BallotStore.bookmarks });
-    this.setState({
-      ballotElectionList: BallotStore.ballotElectionList(),
-    });
   }
 
   onFriendStoreChange () {
@@ -172,10 +160,10 @@ class HeaderBar extends Component {
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    if (stringContains('/ballot/vote', pathname)) return 2; // DALE: FRIENDS TEMPORARILY DISABLED - Switch back to "3"
-    if (pathname && pathname.startsWith('/ballot')) return 0;
-    if (stringContains('/value', pathname)) return 1; // '/values'
-    // if (stringContains('/friends', pathname)) return 2; // DALE: FRIENDS TEMPORARILY DISABLED
+    if (stringContains('/ballot/vote', pathname.toLowerCase())) return 2; // DALE: FRIENDS TEMPORARILY DISABLED - Switch back to "3"
+    if (pathname && pathname.toLowerCase().startsWith('/ballot')) return 0;
+    if (stringContains('/value', pathname.toLowerCase())) return 1; // '/values'
+    // if (stringContains('/friends', pathname.toLowerCase())) return 2; // DALE: FRIENDS TEMPORARILY DISABLED
 
     return false;
   };
@@ -191,21 +179,15 @@ class HeaderBar extends Component {
     }
   }
 
-  // toggleSelectBallotModal () {
-  //   AppActions.setShowSelectBallotModal(true);
-  // }
-
   toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
     const { showSelectBallotModal } = this.state;
-    console.log('Toggle selectBallotModal');
-    // console.log('Ballot toggleSelectBallotModal, destinationUrlForHistoryPush:', destinationUrlForHistoryPush, ', showSelectBallotModal:', showSelectBallotModal);
+    // console.log('HeaderBar toggleSelectBallotModal, destinationUrlForHistoryPush:', destinationUrlForHistoryPush, ', prior showSelectBallotModal:', showSelectBallotModal);
     if (showSelectBallotModal && destinationUrlForHistoryPush && destinationUrlForHistoryPush !== '') {
       historyPush(destinationUrlForHistoryPush);
-    } else {
+    } else if (!showSelectBallotModal) {
       // console.log('Ballot toggleSelectBallotModal, BallotActions.voterBallotListRetrieve()');
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
-
     AppActions.setShowSelectBallotModal(!showSelectBallotModal);
   }
 
@@ -243,7 +225,10 @@ class HeaderBar extends Component {
   }
 
   render () {
-    // console.log('HeaderBar render, this.state.showSignInModal:', this.state.showSignInModal);
+    // console.log('HeaderBar render, this.state.showSelectBallotModal:', this.state.showSelectBallotModal, ', this.state.componentDidMountFinished:', this.state.componentDidMountFinished);
+    if (!this.state.componentDidMountFinished) {
+      return null;
+    }
     renderLog(__filename);
     const { voter, classes, pathname, location } = this.props;
     const { showEditAddressButton, scrolledDown } = this.state;
@@ -253,98 +238,40 @@ class HeaderBar extends Component {
     const voterIsSignedIn = this.props.voter && this.props.voter.is_signed_in;
     const showFullNavigation = true;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
-    const showingBallot = stringContains(ballotBaseUrl, pathname.slice(0, 7));
+    const showingBallot = stringContains(ballotBaseUrl, pathname.toLowerCase().slice(0, 7));
 
     return (
-      <div id="the next styled div is the Wrapper in HeaderBar">
-        <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}>
-          <AppBar position="relative" color="default" className={`page-header${!isWebApp() ? ' page-header__cordova' : ''}${showingBallot ? ' page-header__ballot' : ''}`}>
-            <Toolbar className="header-toolbar" disableGutters>
-              {!weVoteBrandingOff && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />}
-              <div className="header-nav">
-                <Tabs
-                  className="u-show-desktop"
-                  value={this.getSelectedTab()}
-                  indicatorColor="primary"
-                  classes={{ indicator: classes.indicator }}
-                >
-                  {showFullNavigation && (
-                    <Tab classes={{ root: classes.tabRoot }} id="ballotTabHeaderBar" label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
-                  )
-                  }
-                  {showFullNavigation && (
-                    <Tab classes={{ root: classes.tabRoot }} id="valuesTabHeaderBar" label="My Values" onClick={() => this.handleNavigation('/values')} />
-                  )
-                  }
-                  {/* showFullNavigation && (
-                    <Tab classes={{ root: classes.tabRoot }} id="friendsTabHeaderBar" label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9}>My Friends</Badge>} onClick={() => this.handleNavigation('/friends')} />
-                  )
-                  */}
-                  {showFullNavigation && (
-                    <Tab classes={{ root: classes.tabRoot }} id="voteTabHeaderBar" label="Vote" onClick={() => this.handleNavigation('/ballot/vote')} />
-                  )
-                  }
-                </Tabs>
-              </div>
-              {
-                voterIsSignedIn && (
-                  <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
-                    {
-                      showEditAddressButton && (
-                        <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-                          <IconButton
-                            classes={{ root: classes.iconButtonRoot }}
-                            id="changeAddressHeaderBar"
-                            onClick={this.toggleSelectBallotModal}
-                          >
-                            <PlaceIcon />
-                          </IconButton>
-                        </Tooltip>
-                      )
-                    }
-                    {voterPhotoUrlMedium ? (
-                      <div id="profileAvatarHeaderBar"
-                            className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
-                            onClick={this.toggleProfilePopUp}
-                      >
-                        <img
-                          className="header-nav__avatar"
-                          src={voterPhotoUrlMedium}
-                          height={34}
-                          width={34}
-                          alt="Your Profile"
-                        />
-                      </div>
-                    ) : (
-                      <div>
-                        <IconButton
-                          classes={{ root: classes.iconButtonRoot }}
-                          id="profileAvatarHeaderBar"
-                          onClick={this.toggleProfilePopUp}
-                        >
-                          <AccountCircleIcon />
-                        </IconButton>
-                      </div>
-                    )
-                    }
-                    {this.state.profilePopUpOpen && voterIsSignedIn && (
-                      <HeaderBarProfilePopUp
-                        hideProfilePopUp={this.hideProfilePopUp}
-                        onClick={this.toggleProfilePopUp}
-                        profilePopUpOpen={this.state.profilePopUpOpen}
-                        signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
-                        toggleProfilePopUp={this.toggleProfilePopUp}
-                        toggleSignInModal={this.toggleSignInModal}
-                        transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-                        voter={this.props.voter}
-                        weVoteBrandingOff={this.state.we_vote_branding_off}
-                      />
-                    )}
-                  </div>
+      <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}>
+        <AppBar position="relative" color="default" className={`page-header${!isWebApp() ? ' page-header__cordova' : ''}${showingBallot ? ' page-header__ballot' : ''}`}>
+          <Toolbar className="header-toolbar" disableGutters>
+            {!weVoteBrandingOff && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />}
+            <div className="header-nav">
+              <Tabs
+                className="u-show-desktop"
+                value={this.getSelectedTab()}
+                indicatorColor="primary"
+                classes={{ indicator: classes.indicator }}
+              >
+                {showFullNavigation && (
+                  <Tab classes={{ root: classes.tabRoot }} id="ballotTabHeaderBar" label="Ballot" onClick={() => this.handleNavigation('/ballot')} />
                 )
-              }
-              {
-                !voterIsSignedIn && (
+                }
+                {showFullNavigation && (
+                  <Tab classes={{ root: classes.tabRoot }} id="valuesTabHeaderBar" label="My Values" onClick={() => this.handleNavigation('/values')} />
+                )
+                }
+                {/* showFullNavigation && (
+                  <Tab classes={{ root: classes.tabRoot }} id="friendsTabHeaderBar" label={<Badge classes={{ badge: classes.headerBadge }} badgeContent={numberOfIncomingFriendRequests} color="primary" max={9}>My Friends</Badge>} onClick={() => this.handleNavigation('/friends')} />
+                )
+                */}
+                {showFullNavigation && (
+                  <Tab classes={{ root: classes.tabRoot }} id="voteTabHeaderBar" label="Vote" onClick={() => this.handleNavigation('/ballot/vote')} />
+                )
+                }
+              </Tabs>
+            </div>
+            {
+              voterIsSignedIn && (
                 <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
                   {
                     showEditAddressButton && (
@@ -359,37 +286,92 @@ class HeaderBar extends Component {
                       </Tooltip>
                     )
                   }
-                  <Button
-                    color="primary"
-                    classes={{ root: classes.headerButtonRoot }}
-                    id="signInHeaderBar"
-                    onClick={this.toggleSignInModal}
-                  >
-                    Sign In
-                  </Button>
+                  {voterPhotoUrlMedium ? (
+                    <div id="profileAvatarHeaderBar"
+                          className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
+                          onClick={this.toggleProfilePopUp}
+                    >
+                      <img
+                        className="header-nav__avatar"
+                        src={voterPhotoUrlMedium}
+                        height={34}
+                        width={34}
+                        alt="Your Profile"
+                      />
+                    </div>
+                  ) : (
+                    <div>
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot }}
+                        id="profileAvatarHeaderBar"
+                        onClick={this.toggleProfilePopUp}
+                      >
+                        <AccountCircleIcon />
+                      </IconButton>
+                    </div>
+                  )
+                  }
+                  {this.state.profilePopUpOpen && voterIsSignedIn && (
+                    <HeaderBarProfilePopUp
+                      hideProfilePopUp={this.hideProfilePopUp}
+                      onClick={this.toggleProfilePopUp}
+                      profilePopUpOpen={this.state.profilePopUpOpen}
+                      signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+                      toggleProfilePopUp={this.toggleProfilePopUp}
+                      toggleSignInModal={this.toggleSignInModal}
+                      transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+                      voter={this.props.voter}
+                      weVoteBrandingOff={this.state.we_vote_branding_off}
+                    />
+                  )}
                 </div>
-                )
-              }
-            </Toolbar>
-          </AppBar>
-          <SignInModal
-            show={this.state.showSignInModal}
-            toggleFunction={this.closeSignInModal}
+              )
+            }
+            {
+              !voterIsSignedIn && (
+              <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
+                {
+                  showEditAddressButton && (
+                    <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot }}
+                        id="changeAddressHeaderBar"
+                        onClick={this.toggleSelectBallotModal}
+                      >
+                        <PlaceIcon />
+                      </IconButton>
+                    </Tooltip>
+                  )
+                }
+                <Button
+                  color="primary"
+                  classes={{ root: classes.headerButtonRoot }}
+                  id="signInHeaderBar"
+                  onClick={this.toggleSignInModal}
+                >
+                  Sign In
+                </Button>
+              </div>
+              )
+            }
+          </Toolbar>
+        </AppBar>
+        <SignInModal
+          show={this.state.showSignInModal}
+          toggleFunction={this.closeSignInModal}
+        />
+        {this.state.showSelectBallotModal ? (
+          <SelectBallotModal
+            ballotBaseUrl="/ballot"
+            location={location}
+            pathname={pathname}
+            show={this.state.showSelectBallotModal}
+            toggleFunction={this.toggleSelectBallotModal}
           />
-          {this.state.showSelectBallotModal ? (
-            <SelectBallotModal
-              ballotElectionList={this.state.ballotElectionList}
-              ballotBaseUrl="/ballot"
-              location={location}
-              pathname={pathname}
-              show={this.state.showSelectBallotModal}
-              toggleFunction={this.toggleSelectBallotModal}
-            />
-          ) : (
-            null
-          )}
-        </Wrapper>
-      </div>
+        ) : (
+          null
+        )}
+      </Wrapper>
     );
   }
 }

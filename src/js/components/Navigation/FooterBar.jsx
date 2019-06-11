@@ -7,7 +7,7 @@ import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import BallotIcon from '@material-ui/icons/Ballot';
 import HowToVoteIcon from '@material-ui/icons/HowToVote';
 // import PeopleIcon from '@material-ui/icons/People'; // DALE: FRIENDS TEMPORARILY DISABLED
-import { historyPush } from '../../utils/cordovaUtils';
+import { cordovaFooterHeight, historyPush } from '../../utils/cordovaUtils';
 import { stringContains } from '../../utils/textFormat';
 import FriendStore from '../../stores/FriendStore';
 
@@ -58,10 +58,10 @@ class FooterBar extends React.Component {
 
   getSelectedTab = () => {
     const { pathname } = this.props;
-    if (stringContains('/ballot/vote', pathname)) return 2; // // DALE: FRIENDS TEMPORARILY DISABLED - Switch back to "3"
-    if (stringContains('/ballot', pathname)) return 0;
-    // if (stringContains('/friends', pathname)) return 2; // DALE: FRIENDS TEMPORARILY DISABLED
-    if (stringContains('/value', pathname)) return 1; // '/values'
+    if (stringContains('/ballot/vote', pathname.toLowerCase())) return 2; // // DALE: FRIENDS TEMPORARILY DISABLED - Switch back to "3"
+    if (stringContains('/ballot', pathname.toLowerCase())) return 0;
+    // if (stringContains('/friends', pathname.toLowerCase())) return 2; // DALE: FRIENDS TEMPORARILY DISABLED
+    if (stringContains('/value', pathname.toLowerCase())) return 1; // '/values'
     return -1;
   };
 
@@ -76,7 +76,7 @@ class FooterBar extends React.Component {
     // };
 
     return (
-      <div className="footer-container u-show-mobile-tablet">
+      <div className="footer-container u-show-mobile-tablet" style={{ height: `${cordovaFooterHeight()}` }}>
         <BottomNavigation value={this.getSelectedTab()} onChange={this.handleChange} showLabels>
           <BottomNavigationAction className="no-outline" id="ballotTabFooterBar" label="Ballot" showLabel icon={<BallotIcon />} />
           <BottomNavigationAction className="no-outline" id="valuesTabFooterBar" label="Values" showLabel icon={<QuestionAnswerIcon />} />

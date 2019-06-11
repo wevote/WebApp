@@ -209,7 +209,7 @@ class OfficeItemCompressed extends Component {
                     <ImageHandler
                       className="card-main__avatar-compressed"
                       sizeClassName="icon-candidate-small u-push--sm "
-                      imageUrl={oneCandidate.candidate_photo_url_large}
+                      imageUrl={oneCandidate.candidate_photo_url_medium}
                       alt="candidate-photo"
                       kind_of_ballot_item="CANDIDATE"
                     />

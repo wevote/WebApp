@@ -9,6 +9,7 @@ export default class BallotSideBarLink extends Component {
   static propTypes = {
     ballotItemLinkHasBeenClicked: PropTypes.func,
     url: PropTypes.string,
+    id: PropTypes.string,
     label: PropTypes.string,
     subtitle: PropTypes.string,
     displaySubtitles: PropTypes.bool,
@@ -26,7 +27,7 @@ export default class BallotSideBarLink extends Component {
     const subtitleInSentenceCase = sentenceCaseString(this.props.subtitle);
 
     return (
-      <Link to={this.props.url} className="BallotItem__summary__item__display-name">
+      <Link id={this.props.id} to={this.props.url} className="BallotItem__summary__item__display-name">
         <ListItem
           button
           onClick={() => {

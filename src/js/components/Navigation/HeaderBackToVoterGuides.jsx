@@ -238,15 +238,17 @@ export default class HeaderBackToVoterGuides extends Component {
 
     let backToLink = '/settings/voterguidelist'; // default
     let backToOrganizationLinkText = 'Voter Guides'; // Back to
+    const { pathname } = this.props;
+    const pathnameLowerCase = pathname.toLowerCase() || '';
 
-    if (stringContains('/settings/menu', this.props.pathname)) {
+    if (stringContains('/settings/menu', pathnameLowerCase)) {
       backToOrganizationLinkText = 'Your Voter Guides'; // Back to
       if (isWebApp()) {
         backToLink = isMobile() ? '/settings/voterguidesmenu' : '/settings/voterguidelist';
       } else {
         backToLink = '/settings/voterguidesmenu';
       }
-    } else if (stringContains('/settings/general', this.props.pathname) || stringContains('/settings/positions', this.props.pathname)) {
+    } else if (stringContains('/settings/general', pathnameLowerCase) || stringContains('/settings/positions', pathnameLowerCase)) {
       const voterGuideWeVoteId = this.props.params.voter_guide_we_vote_id;
       if (isMobile()) {
         backToOrganizationLinkText = 'Voter Guide Options';
@@ -259,7 +261,7 @@ export default class HeaderBackToVoterGuides extends Component {
 
         backToLink = '/settings/voterguidelist';
       }
-    } else if (stringContains('/vg/', this.props.pathname) && stringContains('/settings', this.props.pathname)) {
+    } else if (stringContains('/vg/', pathnameLowerCase) && stringContains('/settings', pathnameLowerCase)) {
       backToOrganizationLinkText = 'Your Voter Guides'; // Back to
 
       backToLink = '/settings/voterguidelist';

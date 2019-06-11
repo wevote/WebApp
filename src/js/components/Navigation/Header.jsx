@@ -58,7 +58,7 @@ export default class Header extends Component {
                   <span>
                     {showBackToVoterGuides ?
                       <HeaderBackToVoterGuides location={location} params={params} pathname={pathname} voter={voter} /> :
-                      <HeaderBar location={location} pathname={pathname} voter={voter} ballotElectionList={this.props.ballotElectionList} />
+                      <HeaderBar location={location} pathname={pathname} voter={voter} />
                     }
                   </span>
                 )
@@ -150,8 +150,8 @@ export default class Header extends Component {
         <div id="app-header">
           { iPhoneSpacer }
           <div className={isWebApp() ?    // eslint-disable-line no-nested-ternary
-            stringContains('/ballot', pathname) ? 'headroom-wrapper-webapp__ballot' : // eslint-disable-line no-nested-ternary
-              stringContains('/office', pathname) ? 'headroom-wrapper-webapp__office' : 'headroom-wrapper-webapp__default' : ''}
+            stringContains('/ballot', pathname.toLowerCase()) ? 'headroom-wrapper-webapp__ballot' : // eslint-disable-line no-nested-ternary
+              stringContains('/office', pathname.toLowerCase()) ? 'headroom-wrapper-webapp__office' : 'headroom-wrapper-webapp__default' : ''}
             id="headroom-wrapper"
           >
             <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">

@@ -54,7 +54,7 @@ class SignInModal extends Component {
         <DialogTitle>
           <div className="text-center">Sign In</div>
         </DialogTitle>
-        <DialogContent>
+        <DialogContent classes={{ root: classes.dialogContent }}>
           <section>
             <div className="text-center">
               {voter && voter.is_signed_in ? (
@@ -67,6 +67,7 @@ class SignInModal extends Component {
                     (
                       <SettingsAccount
                         toggleSignInModal={this.props.toggleFunction}
+                        inModal
                       />
                     ) :
                     null }
@@ -91,6 +92,11 @@ const styles = theme => ({
       maxHeight: '90%',
       height: '90%',
       margin: '0 auto',
+    },
+  },
+  dialogContent: {
+    [theme.breakpoints.down('md')]: {
+      padding: '0 8px 8px',
     },
   },
 });

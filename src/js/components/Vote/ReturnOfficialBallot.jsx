@@ -32,7 +32,7 @@ class ReturnOfficialBallot extends Component {
 
   closeReturnOfficialBallot = () => {
     const oneMonthExpires = 86400 * 31;
-    cookies.setItem('return_offical_ballot_closed', '1', oneMonthExpires, '/');
+    cookies.setItem('return_official_ballot_closed', '1', oneMonthExpires, '/');
     this.setState({
       returnOfficialBallotClosed: true,
     });
