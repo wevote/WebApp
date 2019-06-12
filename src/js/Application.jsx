@@ -21,6 +21,7 @@ import VoterActions from './actions/VoterActions';
 import VoterStore from './stores/VoterStore';
 import webAppConfig from './config';
 import { stringContains } from './utils/textFormat';
+import SnackNotifier from './components/Widgets/SnackNotifier';
 
 class Application extends Component {
   static propTypes = {
@@ -352,6 +353,7 @@ class Application extends Component {
                 voter={this.state.voter}
                 weVoteBrandingOff={this.state.weVoteBrandingOff}
         />
+        <SnackNotifier />
         { pathname === '/for-campaigns' ||
           pathname === '/for-organizations' ||
           pathname.startsWith('/how') ||

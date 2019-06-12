@@ -41,9 +41,9 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import AppStore from '../../stores/AppStore';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
-import { showToastSuccess } from '../../utils/showToast';
 import webAppConfig from '../../config';
 import AppActions from '../../actions/AppActions';
+import { openSnackbar } from '../Widgets/SnackNotifier';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 1 */
@@ -854,7 +854,7 @@ class VoterGuideBallot extends Component {
     console.log('VoterGuideBallot pledgeToVoteWithVoterGuide, this.state.voterGuideOnStage:', this.state.voterGuideOnStage);
     const toastMessage = `Now you match what ${this.state.organization.organization_name} supports or opposes`;
     VoterGuideActions.pledgeToVoteWithVoterGuide(this.state.voterGuideOnStage.we_vote_id);
-    showToastSuccess(toastMessage);
+    openSnackbar({ message: toastMessage });
   }
 
   updateOfficeDisplayUnfurledTracker (weVoteId, status) {

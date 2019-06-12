@@ -10,12 +10,12 @@ import FormControl from '@material-ui/core/FormControl';
 import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
-import { showToastSuccess } from '../../utils/showToast';
 import SettingsAccount from '../Settings/SettingsAccount';
 import SupportActions from '../../actions/SupportActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
 import VoterStore from '../../stores/VoterStore';
+import { openSnackbar } from './SnackNotifier';
 
 class PositionPublicToggle extends Component {
   static propTypes = {
@@ -68,7 +68,7 @@ class PositionPublicToggle extends Component {
 
     // console.log("PositionPublicToggle-showItemToFriendsOnly, this.props.type:", this.props.type);
     SupportActions.voterPositionVisibilitySave(this.props.ballotItemWeVoteId, this.props.type, 'FRIENDS_ONLY');
-    showToastSuccess('Position now visible to friends only!');
+    openSnackbar({ message: 'Position now visible to friends only!' });
   }
 
   showItemToPublic () {
@@ -85,7 +85,7 @@ class PositionPublicToggle extends Component {
         this.togglePositionPublicHelpModal();
         VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
       } else {
-        showToastSuccess('This position now visible to anyone on We Vote!');
+        openSnackbar({ message: 'This position now visible to anyone on We Vote!' });
       }
     } else {
       this.togglePositionPublicHelpModal();

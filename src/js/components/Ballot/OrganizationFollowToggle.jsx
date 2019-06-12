@@ -4,8 +4,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import OrganizationActions from '../../actions/OrganizationActions';
-import { showToastError, showToastSuccess } from '../../utils/showToast';
 import { renderLog } from '../../utils/logging';
+import { openSnackbar } from '../Widgets/SnackNotifier';
+
 
 export default class OrganizationFollowToggle extends Component {
   static propTypes = {
@@ -40,7 +41,7 @@ export default class OrganizationFollowToggle extends Component {
       if (this.props.on_organization_follow) {
         this.props.on_organization_follow(this.props.organization_we_vote_id);
       }
-      showToastSuccess(`Now following ${this.props.organization_name}!`);
+      openSnackbar({ message: `Now following ${this.props.organization_name}!` });
     }
   }
 
@@ -50,7 +51,7 @@ export default class OrganizationFollowToggle extends Component {
     if (this.props.on_organization_stop_following) {
       this.props.on_organization_stop_following(this.props.organization_we_vote_id);
     }
-    showToastError(`You've stopped following ${this.props.organization_name}.`);
+    openSnackbar({ message: `You've stopped following ${this.props.organization_name}.` });
   }
 
   render () {
