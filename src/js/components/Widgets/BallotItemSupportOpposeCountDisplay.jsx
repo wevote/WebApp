@@ -638,7 +638,9 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       >
         { isVoterSupport ? (
           <NetworkScore className={classes.voterSupports}>
-            <DoneIcon classes={{ root: classes.buttonIcon }} />
+            <VoterChoiceWrapper>
+              <DoneIcon classes={{ root: classes.buttonIcon }} />
+            </VoterChoiceWrapper>
           </NetworkScore>
         ) :
           null
@@ -646,7 +648,9 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
         { isVoterOppose ? (
           <NetworkScore className={classes.voterOpposes}>
-            <NotInterestedIcon classes={{ root: classes.buttonIcon }} />
+            <VoterChoiceWrapper>
+              <NotInterestedIcon classes={{ root: classes.buttonIcon }} />
+            </VoterChoiceWrapper>
           </NetworkScore>
         ) :
           null
@@ -756,7 +760,7 @@ const styles = theme => ({
     margin: '0 0 .1rem .4rem',
   },
   voterOpposes: {
-    background: 'rgb(255, 73, 34)', // colors.opposeRedRgb
+    background: 'rgb(255, 73, 34)', // colors.opposeRedRg
   },
   voterSupports: {
     background: 'rgb(31, 192, 111)', // colors.supportGreenRgb
@@ -832,7 +836,18 @@ const NetworkScore = styled.div`
     text-align: right;
     justify-content: flex-end;
   }
+  @media print{
+    border-width: 1 px;
+    border-style: solid;
+    border-color: #888;
+  }
 `;
 
+const VoterChoiceWrapper = styled.div`
+  color: white;
+  @media print{
+    color: #888;
+  }
+`;
 
 export default withTheme()(withStyles(styles)(BallotItemSupportOpposeCountDisplay));
