@@ -30,7 +30,7 @@ export default class RatingPopover extends Component {
         is a low score, and
         <br />
         <span className="u-no-break">
-          <img src={cordovaDot(upArrowColorIcon)} width="20" height="20" />
+          <img src={cordovaDot(upArrowColorIcon)} width="20" height="20" alt="up-arrow" />
           {' '}
           100%
         </span>
