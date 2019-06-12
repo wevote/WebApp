@@ -22,7 +22,7 @@ export default class RatingPopover extends Component {
       nonprofit Vote Smart.
         <br />
         <span className="u-no-break">
-          <img src={cordovaDot(downArrowColorIcon)} width="20" height="20" />
+          <img src={cordovaDot(downArrowColorIcon)} width="20" height="20" alt="down-arrow" />
           {' '}
           0%
         </span>
