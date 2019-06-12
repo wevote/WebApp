@@ -144,7 +144,7 @@ class ItemPositionStatementActionBar extends Component {
   }
 
   closeEditPositionStatementInput = () => {
-    this.setState({ showEditPositionStatementInput: false, commentActive: true/* ,  disabled: true */ });
+    this.setState({ showEditPositionStatementInput: false, commentActive: false/* ,  disabled: true */ });
   }
 
   openEditPositionStatementInput = () => {
@@ -285,9 +285,7 @@ class ItemPositionStatementActionBar extends Component {
               <form className={classes.flex} onSubmit={this.savePositionStatement.bind(this)} onFocus={onFocusInput} onBlur={onBlurInput}>
                 <InputBase onChange={this.updateStatementTextToBeSaved}
                   name="statementTextToBeSaved"
-                  className="commentBoxForm"
                   classes={{ root: classes.input }}
-                  id="commentBoxForm"
                   placeholder={statementPlaceholderText}
                   defaultValue={statementTextToBeSaved}
                   inputRef={(tag) => { this.textarea = tag; }}
