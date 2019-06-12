@@ -4,12 +4,13 @@ $outline-radius: 3px;
 @include media-object('.card-main__media-object', '.card-main__media-object-anchor', '.card-main__media-object-content');
 
 .card {
+  position: relative !important;
   $item-padding: $space-md;
   background-color: $white;
   border-radius: $radius-sm;
   box-shadow: $default-box-shadow;
   margin-bottom: $space-md;
-  overflow: hidden;
+  overflow-y: hidden;
   border: none;
   @include clearfix;
   @include breakpoints(max mid-small) {

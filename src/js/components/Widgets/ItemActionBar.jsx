@@ -677,24 +677,33 @@ const styles = theme => ({
   buttonIcon: {
     fontSize: 18,
     marginRight: '.3rem',
-    [theme.breakpoints.down('lg')]: {
-      fontSize: 12,
-      marginRight: '.1rem',
+    fontWeight: 'bold',
+    [theme.breakpoints.down('md')]: {
+      fontSize: 16,
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 14,
+      marginTop: -2,
     },
   },
   buttonRoot: {
-    marginLeft: '1rem',
+    padding: 4,
+    fontSize: 12,
+    width: 110,
+    height: 32,
+    marginLeft: '.1rem',
+    marginTop: '.3rem',
+    marginBottom: 4,
     [theme.breakpoints.down('md')]: {
-      padding: 0,
-      fontSize: 10,
       width: 100,
-      height: 28,
-      marginLeft: '.1rem',
-      marginTop: '.3rem',
+      height: 30,
     },
     [theme.breakpoints.down('sm')]: {
-      width: 80,
+      width: 'fit-content',
       minWidth: 80,
+      height: 28,
+      padding: '0 8px',
+      fontSize: 10,
     },
   },
   buttonOutlinedPrimary: {
@@ -709,8 +718,7 @@ const ButtonGroup = styled.div`
 `;
 
 const StackedButton = styled.div`
-  margin: 0;
-  width: 100%;
+  width: 90% !important;
 `;
 
 export default withStyles(styles)(ItemActionBar);

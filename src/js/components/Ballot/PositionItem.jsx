@@ -106,7 +106,7 @@ class PositionItem extends Component {
                     </Link>
                   </StickyPopover>
                 </DesktopItemImage>
-                <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
+                <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing anchorLeft />
               </DesktopItemLeft>
               <PositionItemDesktop className={`position-item--${supportOpposeInfo} position-item`}>
                 <DesktopItemHeader>
