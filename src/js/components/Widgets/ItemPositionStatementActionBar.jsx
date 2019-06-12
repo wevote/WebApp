@@ -13,7 +13,6 @@ import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 
-
 class ItemPositionStatementActionBar extends Component {
   static propTypes = {
     ballot_item_we_vote_id: PropTypes.string.isRequired,
@@ -224,23 +223,6 @@ class ItemPositionStatementActionBar extends Component {
       }
     }
 
-    const onBlurInput = (e) => {
-      if (e.target && e.target.className && !e.target.className.contains('postsave-button')) {
-        this.setState({ commentActive: false });
-      }
-
-      restoreStylesAfterCordovaKeyboard(__filename);
-    };
-
-    const onFocusInput = (e) => {
-      // console.log('Setting commentActive to true');
-      if (e.target && e.target.className && !e.target.className.contains('postsave-button')) {
-        this.setState({ commentActive: true });
-      }
-
-      prepareForCordovaKeyboard(__filename);
-    };
-
     const noStatementText = !(statementTextToBeSaved !== null && statementTextToBeSaved.length);
     const editMode = this.state.showEditPositionStatementInput || noStatementText;
 
@@ -251,6 +233,24 @@ class ItemPositionStatementActionBar extends Component {
       if (enterAndSpaceKeyCodes.includes(e.keyCode)) {
         onSavePositionStatementClick();
       }
+    };
+
+    const onBlurInput = (e) => {
+      // if (e.target && e.target.className && !e.target.className.contains('postsave-button')) {
+      this.setState({ commentActive: false });
+      // }
+      console.log(e.target);
+
+      restoreStylesAfterCordovaKeyboard(__filename);
+    };
+
+    const onFocusInput = () => {
+      // console.log('Setting commentActive to true');
+      // if (e.target && e.target.className && !e.target.className.contains('postsave-button')) {
+      this.setState({ commentActive: true });
+      // }
+
+      prepareForCordovaKeyboard(__filename);
     };
 
     // let videoUrl = '';
@@ -282,14 +282,14 @@ class ItemPositionStatementActionBar extends Component {
             <Paper
               className={classes.root}
             >
-              <form className={classes.flex} onSubmit={this.savePositionStatement.bind(this)}>
+              <form className={classes.flex} onSubmit={this.savePositionStatement.bind(this)} onFocus={onFocusInput} onBlur={onBlurInput}>
                 <InputBase onChange={this.updateStatementTextToBeSaved}
                   name="statementTextToBeSaved"
-                  className={classes.input}
+                  className="commentBoxForm"
+                  classes={{ root: classes.input }}
+                  id="commentBoxForm"
                   placeholder={statementPlaceholderText}
                   defaultValue={statementTextToBeSaved}
-                  onFocus={onFocusInput}
-                  onBlur={onBlurInput}
                   inputRef={(tag) => { this.textarea = tag; }}
                   multiline
                   rows={rows}
@@ -322,7 +322,7 @@ class ItemPositionStatementActionBar extends Component {
                 inputRef={(tag) => { this.textarea = tag; }}
                 multiline
                 disabled
-                rows={2}
+                rows={rows}
               />
               <PostSaveButton className="postsave-button">
                 <Button
