@@ -277,10 +277,11 @@ export default class FollowToggle extends Component {
                   </Button>
                 )}
                 <div className={this.props.anchorLeft ? (
-                  "dropdown-menu dropdown-menu-left issues-follow-btn__menu"
+                  'dropdown-menu dropdown-menu-left issues-follow-btn__menu'
                 ) : (
-                  "dropdown-menu dropdown-menu-right issues-follow-btn__menu"
-                )}>
+                  'dropdown-menu dropdown-menu-right issues-follow-btn__menu'
+                )}
+                >
                   {this.state.isFollowing ? (
                     <span className="d-print-none">
                       { this.props.hideStopFollowingButton ?
@@ -329,10 +330,11 @@ export default class FollowToggle extends Component {
                   <span className="sr-only">Toggle Dropdown</span>
                 </Button>
                 <div className={this.props.anchorLeft ? (
-                  "dropdown-menu dropdown-menu-left issues-follow-btn__menu"
+                  'dropdown-menu dropdown-menu-left issues-follow-btn__menu'
                 ) : (
-                  "dropdown-menu dropdown-menu-right issues-follow-btn__menu"
-                )}>
+                  'dropdown-menu dropdown-menu-right issues-follow-btn__menu'
+                )}
+                >
                   {this.state.isFollowing ? (
                     <span className="d-print-none">
                       { this.props.hideStopFollowingButton ?
@@ -406,11 +408,12 @@ export default class FollowToggle extends Component {
                     <span className="sr-only">Toggle Dropdown</span>
                   </Button>
                 )}
-                <div className={this.props.anchorLeftLeft ? (
-                  "dropdown-menu dropdown-menu-left issues-follow-btn__menu"
+                <div className={this.props.anchorLeft ? (
+                  'dropdown-menu dropdown-menu-left issues-follow-btn__menu'
                 ) : (
-                  "dropdown-menu dropdown-menu-right issues-follow-btn__menu"
-                )}>
+                  'dropdown-menu dropdown-menu-right issues-follow-btn__menu'
+                )}
+                >
                   {this.state.isFollowing ? (
                     <span className="d-print-none">
                       { this.props.hideStopFollowingButton ?
