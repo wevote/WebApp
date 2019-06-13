@@ -13,11 +13,7 @@ export default class PollingPlaceLocator extends Component {
   render () {
     renderLog(__filename);
     return (
-      <div className="intro-modal">
-        <div className="intro-modal__h1">
-          Find Your Polling Location
-        </div>
-
+      <div>
         <div className="intro-modal-vertical-scroll-contain_without_slider">
           <div className="intro-modal-vertical-scroll card">
             <div className="row intro-modal__grid intro-modal__default-text u_margin-center">
