@@ -58,7 +58,7 @@ class Application extends Component {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     if (isWebApp()) {
-      // disabled for cordova June 2019, see note in tbd
+      // disabled for cordova June 2019, see note in https://github.com/wevote/WebApp/pull/2303
       window.addEventListener('scroll', this.handleWindowScroll);
     }
   }
