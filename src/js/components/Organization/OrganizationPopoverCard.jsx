@@ -47,8 +47,6 @@ class OrganizationPopoverCard extends Component {
       organization,
       organizationWeVoteId,
     });
-
-    console.log(organization);
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -101,10 +99,12 @@ class OrganizationPopoverCard extends Component {
       return <div>{LoadingWheel}</div>;
     }
 
+    console.log(this.state.organization);
+
     const {
       organization_twitter_handle: organizationTwitterHandle, twitter_description: twitterDescriptionRaw,
       organization_photo_url_large: organizationPhotoUrlLarge, organization_website: organizationWebsiteRaw,
-      organization_name: organizationName, organization_we_vote_id: organizationWeVoteId,
+      organization_name: organizationName, organization_we_vote_id: organizationWeVoteId, organization_banner_url: organizationBannerUrl
     } = this.state.organization; // , twitter_followers_count
     const organizationWebsite = organizationWebsiteRaw && organizationWebsiteRaw.slice(0, 4) !== 'http' ? `http://${organizationWebsiteRaw}` : organizationWebsiteRaw;
 
@@ -116,7 +116,7 @@ class OrganizationPopoverCard extends Component {
 
     return (
       <Wrapper>
-        <BackgroundImage />
+        <img src={organizationBannerUrl} alt={organizationName} />
         <Container>
           <LogoFollowToggleContainer>
             { organizationPhotoUrlLarge ? (
@@ -207,17 +207,6 @@ const Wrapper = styled.div`
   right: 12px;
   bottom: 8px;
   border-radius: 3px;
-`;
-
-const BackgroundImage = styled.div`
-  background: #f7f7f7;
-  display: block;
-  width: 100%;
-  height: 100px;
-  content: '';
-  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbd8Ksn95RhjzyaKlBMOECQmJ7d7NXoYVOU4qdcc-boz5ZdbO6');
-  background-position: top;
-  background-size: cover;
 `;
 
 const Container = styled.div`
