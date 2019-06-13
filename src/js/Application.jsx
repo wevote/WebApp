@@ -298,6 +298,7 @@ class Application extends Component {
                   voter={this.state.voter}
                   weVoteBrandingOff={this.state.weVoteBrandingOff}
           />
+          <SnackNotifier />
           <div id="the styled div that follows is the wrapper for voter guide mode">
             <Wrapper padTop={cordovaVoterGuideTopPadding()}>
               <div className="page-content-container">
@@ -326,6 +327,7 @@ class Application extends Component {
                   voter={this.state.voter}
                   weVoteBrandingOff={this.state.weVoteBrandingOff}
           />
+          <SnackNotifier />
           <div id="the styled div that follows is the wrapper for settings mode">
             <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
               <div className="page-content-container">

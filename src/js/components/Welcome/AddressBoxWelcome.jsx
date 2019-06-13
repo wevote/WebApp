@@ -6,7 +6,7 @@ import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
 import { restoreStylesAfterCordovaKeyboard } from '../../utils/cordovaUtils';
 
-class AddressBox extends PureComponent {
+class AddressBoxWelcome extends PureComponent {
   static propTypes = {
     inputProps: PropTypes.object,
   }
@@ -91,4 +91,4 @@ class AddressBox extends PureComponent {
   }
 }
 
-export default AddressBox;
+export default AddressBoxWelcome;

@@ -12,7 +12,7 @@ import Section, { SectionTitle, SectionTitleBold, Step, StepNumber, StepLabel, G
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 import Footer from '../components/Welcome/Footer';
 import TextBox from '../components/Welcome/TextBox';
-import AddressBox from '../components/Welcome/AddressBox';
+import AddressBoxWelcome from '../components/Welcome/AddressBoxWelcome';
 import { historyPush, cordovaDot } from '../utils/cordovaUtils';
 import Testimonial from '../components/Widgets/Testimonial';
 import AnalyticsActions from '../actions/AnalyticsActions';
@@ -140,7 +140,7 @@ class Welcome extends PureComponent {
             <StepLabel>Fill out the whole thing in under 6 minutes</StepLabel>
           </Step>
           <GetStarted>
-            <AddressBox icon={<LocationIcon />} />
+            <AddressBoxWelcome icon={<LocationIcon />} />
             <ButtonContainer>
               <Button
                 variant="contained"
