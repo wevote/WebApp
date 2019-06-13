@@ -113,7 +113,7 @@ class PositionItem extends Component {
                   <DesktopItemNameIssueContainer>
                     <DesktopItemName>
                       <StickyPopover
-                        delay={{ show: 700, hide: 100 }}
+                        delay={{ show: 700, hide: 100000000 }}
                         popoverComponent={organizationPopoverCard}
                         placement="bottom"
                         id="positions-popover-trigger-click-root-close"

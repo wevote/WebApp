@@ -47,6 +47,8 @@ class OrganizationPopoverCard extends Component {
       organization,
       organizationWeVoteId,
     });
+
+    console.log(organization);
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -114,72 +116,84 @@ class OrganizationPopoverCard extends Component {
 
     return (
       <Wrapper>
-        { organizationPhotoUrlLarge ? (
-          <Link
-            id="organizationPopoverCardImage"
-            to={voterGuideLink}
-            className="u-no-underline"
-          >
-            <img src={organizationPhotoUrlLarge} height="180" alt={`${displayName}`} />
-          </Link>
-        ) : null
-        }
-        <br />
-        <Link
-          id="organizationPopoverCardName"
-          to={voterGuideLink}
-        >
-          <h3 className="card-main__display-name">{displayName}</h3>
-        </Link>
-        { organizationTwitterHandle ? (
-          <span>
-            @
-            {organizationTwitterHandle}
-            &nbsp;&nbsp;
-          </span>
-        ) :
-          null
-        }
-        <br />
-        { this.state.isVoterOwner ? (
-          <Button variant="warning" size="small" bsPrefix="pull-right" onClick={this.onEdit}>
-            <span>Edit Your Voter Guide</span>
-          </Button>
-        ) :
-          <FollowToggle organizationWeVoteId={organizationWeVoteId} showFollowingText />
-        }
-        { twitterDescriptionMinusName && (
-          <ParsedTwitterDescription
-            twitter_description={twitterDescriptionMinusName}
-          />
-        )
-        }
+        <BackgroundImage />
+        <Container>
+          <LogoFollowToggleContainer>
+            { organizationPhotoUrlLarge ? (
+              <Link
+                id="organizationPopoverCardImage"
+                to={voterGuideLink}
+                className="u-no-underline"
+              >
+                <ImageContainer>
+                  <img src={organizationPhotoUrlLarge} width="60" height="60" alt={`${displayName}`} />
+                </ImageContainer>
+              </Link>
+            ) : null
+            }
+            { this.state.isVoterOwner ? (
+              <Button variant="warning" size="small" bsPrefix="pull-right" onClick={this.onEdit}>
+                <span>Edit Your Voter Guide</span>
+              </Button>
+            ) : (
+              <div>
+                <FollowToggleContainer>
+                  <FollowToggle organizationWeVoteId={organizationWeVoteId} />
+                </FollowToggleContainer>
+              </div>
+            )}
+          </LogoFollowToggleContainer>
+          <MainContent>
+            <Link
+              id="organizationPopoverCardName"
+              to={voterGuideLink}
+            >
+              <OrganizationName>{displayName}</OrganizationName>
+            </Link>
+            { organizationTwitterHandle ? (
+              <OrganizationTwitterHandle>
+                @
+                {organizationTwitterHandle}
+                &nbsp;&nbsp;
+              </OrganizationTwitterHandle>
+            ) :
+              null
+            }
+            { twitterDescriptionMinusName && (
+              <Description>
+                <ParsedTwitterDescription
+                  twitter_description={twitterDescriptionMinusName}
+                />
+              </Description>
+            )
+            }
+            { organizationWebsite ? (
+              <span className="u-wrap-links">
+                <OpenExternalWebSite
+                  url={organizationWebsite}
+                  target="_blank"
+                  body={(
+                    <span>
+                      {organizationWebsite}
+                      {' '}
+                      <i className="fas fa-external-link-alt" />
+                    </span>
+                  )}
+                />
+              </span>
+            ) : null
+            }
+            {/* 5 of your friends follow Organization Name<br /> */}
 
-        { organizationWebsite ? (
-          <span className="u-wrap-links">
-            <OpenExternalWebSite
-              url={organizationWebsite}
-              target="_blank"
-              body={(
-                <span>
-                  {organizationWebsite}
-                  {' '}
-                  <i className="fas fa-external-link-alt" />
-                </span>
-              )}
-            />
-          </span>
-        ) : null
-        }
-        {/* 5 of your friends follow Organization Name<br /> */}
-
-        {/* twitter_followers_count ?
-          <span className="twitter-followers__badge">
-              <span className="fab fa-twitter twitter-followers__icon" />
-            {numberWithCommas(twitter_followers_count)}
-            </span> :
-          null
-        */}
+            {/* twitter_followers_count ?
+              <span className="twitter-followers__badge">
+                  <span className="fab fa-twitter twitter-followers__icon" />
+                {numberWithCommas(twitter_followers_count)}
+                </span> :
+              null
+            */}
+          </MainContent>
+        </Container>
       </Wrapper>
     );
   }
@@ -187,6 +201,73 @@ class OrganizationPopoverCard extends Component {
 
 const Wrapper = styled.div`
   overflow-x: hidden;
+  width: calc(100% + 24px);
+  height: calc(100% + 16px);
+  position: relative;
+  right: 12px;
+  bottom: 8px;
+  border-radius: 3px;
+`;
+
+const BackgroundImage = styled.div`
+  background: #f7f7f7;
+  display: block;
+  width: 100%;
+  height: 100px;
+  content: '';
+  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbd8Ksn95RhjzyaKlBMOECQmJ7d7NXoYVOU4qdcc-boz5ZdbO6');
+  background-position: top;
+  background-size: cover;
+`;
+
+const Container = styled.div`
+  padding: 0 8px;
+`;
+
+const LogoFollowToggleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  bottom: 32px;
+`;
+
+const ImageContainer = styled.div`
+  * {
+    border-radius: 50px;
+  }
+`;
+
+const FollowToggleContainer = styled.div`
+  width: 125px;
+`;
+
+const MainContent = styled.div`
+  position: relative;
+  bottom: 24px;
+`;
+
+const OrganizationName = styled.h3`
+  font-weight: bold;
+  font-size: 18px;
+  color: ${({ theme }) => theme.colors.brandBlue};
+  margin-bottom: 4px;
+  text-decoration: none !important;
+`;
+
+const OrganizationTwitterHandle = styled.div`
+  font-weight: 500;
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+  color: #ccc;
+`;
+
+const Description = styled.div`
+  margin-top: 8px;
+  color: #333 !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
 `;
 
 export default OrganizationPopoverCard;
