@@ -70,8 +70,8 @@ export default class PositionListForFriends extends Component {
       <span>
         <div className="card">
           <div className="card-main">
-            <FollowToggle organizationWeVoteId={organizationWeVoteId} />
             <OrganizationCard organization={this.state.organization} />
+            <FollowToggle organizationWeVoteId={organizationWeVoteId} />
           </div>
           <ul className="list-group">
             { friendsPositionListForOneElection ?
@@ -110,9 +110,9 @@ export default class PositionListForFriends extends Component {
         </div>
         <br />
         <ThisIsMeAction
-          twitter_handle_being_viewed={this.state.organization.organization_twitter_handle}
-          name_being_viewed={this.state.organization.organization_name}
-          kind_of_owner="ORGANIZATION"
+          twitterHandleBeingViewed={this.state.organization.organization_twitter_handle}
+          nameBeingViewed={this.state.organization.organization_name}
+          kindOfOwner="ORGANIZATION"
         />
         <br />
       </span>

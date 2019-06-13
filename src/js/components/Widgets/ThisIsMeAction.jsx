@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
+import { cordovaDot } from '../../utils/cordovaUtils';
 
 export default class ThisIsMeAction extends Component {
   static propTypes = {
-    name_being_viewed: PropTypes.string,
-    twitter_handle_being_viewed: PropTypes.string,
-    kind_of_owner: PropTypes.string,
+    bsPrefix: PropTypes.string,
+    kindOfOwner: PropTypes.string,
+    nameBeingViewed: PropTypes.string,
+    twitterHandleBeingViewed: PropTypes.string,
   };
 
   constructor (props) {
@@ -32,12 +35,12 @@ export default class ThisIsMeAction extends Component {
 
   render () {
     renderLog(__filename);
-    const { twitter_handle_being_viewed: twitterHandleBeingViewed } = this.props;
+    const { twitterHandleBeingViewed } = this.props;
     if (!twitterHandleBeingViewed) {
       // We do not want to show the "This is me" link if there isn't a twitter_handle associated with this organization
       return <span />;
     }
-    const { kind_of_owner: kindOfOwner, name_being_viewed: nameBeingViewed } = this.props;
+    const { kindOfOwner, nameBeingViewed } = this.props;
     // Manage the control over this organization voter guide
     const { voter } = this.state;
     const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
@@ -48,31 +51,47 @@ export default class ThisIsMeAction extends Component {
     let thisIsMeActionText;
     if (kindOfOwner === 'ORGANIZATION') {
       if (nameBeingViewed) {
-        thisIsMeActionText = `I represent ${nameBeingViewed}`;
+        thisIsMeActionText = `Is this you, or do you work with ${nameBeingViewed}?`;
       } else {
-        thisIsMeActionText = 'I represent this organization';
+        thisIsMeActionText = 'Is this you, or do you work here?';
       }
     } else if (kindOfOwner === 'POLITICIAN') {
       if (nameBeingViewed) {
-        thisIsMeActionText = `I represent ${nameBeingViewed}`;
+        thisIsMeActionText = `Is this you, or do you work for ${nameBeingViewed}?`;
       } else {
-        thisIsMeActionText = 'I represent this politician';
+        thisIsMeActionText = 'Is this you, or do you work for this politician?';
       }
     } else {
-      thisIsMeActionText = 'This is me';
+      thisIsMeActionText = 'Is this you, or do you work here?';
     }
 
     return (
-      <span>
+      <div>
         {signedInWithThisTwitterAccount ?
           <span /> : (
-            <Link to={`/verifythisisme/${twitterHandleBeingViewed}`}>
-              <span className="u-wrap-links">
-                {thisIsMeActionText}
-              </span>
-            </Link>
-          )}
-      </span>
+            <div className="card">
+              <div className="card-main">
+                <div className="endorsement-card">
+                  <Link to={`/verifythisisme/${twitterHandleBeingViewed}`}>
+                    <Button className="btn endorsement-card__btn btn-social" bsPrefix={this.props.bsPrefix} variant="primary">
+                      <span>
+                        <img src={cordovaDot('/img/global/svg-icons/glyphicons-pro-social/glyphicons-social-32-twitter.svg')} className="endorsement-card__btn--icon" alt="" />
+                      </span>
+                      Claim
+                      {' '}
+                      @
+                      {this.props.twitterHandleBeingViewed}
+                    </Button>
+                  </Link>
+                  <div className="endorsement-card__text">
+                    {thisIsMeActionText}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )
+        }
+      </div>
     );
   }
 }

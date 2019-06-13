@@ -37,6 +37,18 @@ class PositionItem extends Component {
     if (priorPosition.speaker_twitter_handle !== nextPosition.speaker_twitter_handle) {
       return true;
     }
+    if (priorPosition.is_information_only !== nextPosition.is_information_only) {
+      return true;
+    }
+    if (priorPosition.is_oppose !== nextPosition.is_oppose) {
+      return true;
+    }
+    if (priorPosition.is_support !== nextPosition.is_support) {
+      return true;
+    }
+    if (priorPosition.followed !== nextPosition.followed) {
+      return true;
+    }
     return false;
   }
 
@@ -113,7 +125,7 @@ class PositionItem extends Component {
                   <DesktopItemNameIssueContainer>
                     <DesktopItemName>
                       <StickyPopover
-                        delay={{ show: 700, hide: 100000000 }}
+                        delay={{ show: 700, hide: 100 }}
                         popoverComponent={organizationPopoverCard}
                         placement="bottom"
                         id="positions-popover-trigger-click-root-close"
