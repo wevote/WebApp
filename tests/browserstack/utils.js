@@ -81,4 +81,8 @@ async function simpleTextInput (elementIdName, textValue) {
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
-module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, simpleCloseBootstrapModal, simpleTextInput, setNewAddress };
+function getIsCordova () {
+  return browser.execute(() => !!window.cordova);
+}
+
+module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, simpleCloseBootstrapModal, simpleTextInput, setNewAddress, getIsCordova };
