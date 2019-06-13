@@ -5,6 +5,7 @@ import { calculateBallotBaseUrl, capitalizeString } from '../../utils/textFormat
 import BallotActions from '../../actions/BallotActions';
 import BallotSearchResults from '../Ballot/BallotSearchResults';
 import BallotStore from '../../stores/BallotStore';
+import EndorsementCard from '../Widgets/EndorsementCard';
 import FooterDoneBar from '../Navigation/FooterDoneBar';
 import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
@@ -13,11 +14,11 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import OrganizationPositionItem from './OrganizationPositionItem';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
+import ThisIsMeAction from '../Widgets/ThisIsMeAction';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideRecommendationsFromOneOrganization from './VoterGuideRecommendationsFromOneOrganization';
 import VoterStore from '../../stores/VoterStore';
 import YourPositionsVisibilityMessage from './YourPositionsVisibilityMessage';
-import EndorsementCard from '../Widgets/EndorsementCard';
 
 export default class VoterGuidePositions extends Component {
   static propTypes = {
@@ -359,27 +360,21 @@ export default class VoterGuidePositions extends Component {
           </span>
         ) : null
         }
-        {/* <OpenExternalWebSite
-          url="https://api.wevoteusa.org/vg/create/"
-          className="opinions-followed__missing-org-link"
-          target="_blank"
-          title="Endorsements Missing?"
-          body={<Button className="btn btn-success btn-sm" bsPrefix="u-stack--xs" variant="primary">Endorsements Missing?</Button>}
-        /> */}
         <EndorsementCard
           bsPrefix="u-stack--xs"
           variant="primary"
-          buttonText="Endorsements Missing?"
+          buttonText="ENDORSEMENTS MISSING?"
           text={`Are there endorsements from ${organizationName} that you expected to see?`}
           title="Endorsements Missing?"
         />
-        {/* <div className="opinions-followed__missing-org-text u-stack--lg">
-        Are there endorsements from
-          {' '}
-          {organizationName}
-          {' '}
-          that you expected to see?
-        </div> */}
+        {this.state.organization.organization_twitter_handle && (
+          <ThisIsMeAction
+            twitterHandleBeingViewed={this.state.organization.organization_twitter_handle}
+            nameBeingViewed={this.state.organization.organization_name}
+            kindOfOwner="ORGANIZATION"
+          />
+        )
+        }
       </div>
     );
   }

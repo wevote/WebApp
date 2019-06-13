@@ -10,6 +10,8 @@ import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import { withStyles } from '@material-ui/core/styles';
 import AddressBox from '../AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import AppActions from '../../actions/AppActions';
+import AppStore from '../../stores/AppStore';
 import BallotActions from '../../actions/BallotActions';
 import BallotElectionList from '../Ballot/BallotElectionList';
 import BallotItemCompressed from '../Ballot/BallotItemCompressed';
@@ -19,6 +21,7 @@ import BallotStore from '../../stores/BallotStore';
 import BallotSummaryModal from '../Ballot/BallotSummaryModal';
 import BallotSearch from '../Ballot/BallotSearch';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
+import { calculateBallotBaseUrl } from '../../utils/textFormat';
 import cookies from '../../utils/cookies';
 import {
   historyPush, isCordova, isWebApp,
@@ -27,6 +30,7 @@ import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
 import isMobile from '../../utils/isMobile';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
+import { openSnackbar } from '../Widgets/SnackNotifier';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import PledgeToSupportOrganizationButton from './PledgeToSupportOrganizationButton';
@@ -35,15 +39,12 @@ import { renderLog } from '../../utils/logging';
 import SelectBallotModal from '../Ballot/SelectBallotModal';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
+import ThisIsMeAction from '../Widgets/ThisIsMeAction';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideBallotItemCompressed from './VoterGuideBallotItemCompressed';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import AppStore from '../../stores/AppStore';
-import { calculateBallotBaseUrl } from '../../utils/textFormat';
 import webAppConfig from '../../config';
-import AppActions from '../../actions/AppActions';
-import { openSnackbar } from '../Widgets/SnackNotifier';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 1 */
@@ -1148,6 +1149,14 @@ class VoterGuideBallot extends Component {
                   </div>
                   )}
                 </div>
+                {this.state.organization.organization_twitter_handle && (
+                  <ThisIsMeAction
+                    twitterHandleBeingViewed={this.state.organization.organization_twitter_handle}
+                    nameBeingViewed={this.state.organization.organization_name}
+                    kindOfOwner="ORGANIZATION"
+                  />
+                )
+                }
 
                 {/* Show links to this candidate in the admin tools */}
                 { this.state.voter && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) &&

@@ -29,7 +29,7 @@ class AddEndorsements extends Component {
               url="https://api.wevoteusa.org/vg/create/"
               className="opinions-followed__missing-org-link"
               target="_blank"
-              title="Endorsements Missing?"
+              title="ENDORSEMENTS MISSING?"
               body={(
                 <Button
                   bsPrefix="u-margin-top--sm u-stack--xs"

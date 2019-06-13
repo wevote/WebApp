@@ -184,16 +184,17 @@ export default class OrganizationVoterGuideCandidate extends Component {
         <EndorsementCard
           bsPrefix="u-margin-top--sm u-stack--xs"
           variant="primary"
-          buttonText="Endorsements Missing?"
+          buttonText="ENDORSEMENTS MISSING?"
           text={`Are there endorsements for
           ${candidateName}
           that you expected to see?`}
         />
         <br />
         <ThisIsMeAction
-          twitter_handle_being_viewed={this.state.candidate.twitter_handle}
-          name_being_viewed={this.state.candidate.ballot_item_display_name}
-          kind_of_owner="POLITICIAN"
+          bsPrefix="u-margin-top--sm u-stack--xs"
+          twitterHandleBeingViewed={this.state.candidate.twitter_handle}
+          nameBeingViewed={this.state.candidate.ballot_item_display_name}
+          kindOfOwner="POLITICIAN"
         />
         <br />
         {/* Show links to this candidate in the admin tools */}
