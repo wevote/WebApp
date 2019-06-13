@@ -5,9 +5,9 @@ import FollowToggle from '../Widgets/FollowToggle';
 import MeasureStore from '../../stores/MeasureStore';
 import { stringContains } from '../../utils/textFormat';
 import VoterGuideDisplayForList from './VoterGuideDisplayForList';
-import { showToastSuccess } from '../../utils/showToast';
 import { renderLog } from '../../utils/logging';
 import EndorsementCard from '../Widgets/EndorsementCard';
+import { openSnackbar } from '../Widgets/SnackNotifier';
 
 export default class GuideList extends PureComponent {
   static propTypes = {
@@ -111,7 +111,7 @@ export default class GuideList extends PureComponent {
         org => org.organization_we_vote_id !== organizationWeVoteId,
       ),
     });
-    showToastSuccess('Added to ignore list.');
+    openSnackbar({ message: 'Added to ignore list.' });
   }
 
   render () {

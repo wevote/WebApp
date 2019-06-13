@@ -6,8 +6,9 @@ import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
-import { showToastError, showToastSuccess } from '../../utils/showToast';
 import { historyPush } from '../../utils/cordovaUtils';
+import { openSnackbar } from '../Widgets/SnackNotifier';
+
 
 export default class IssueFollowToggleButton extends Component {
   static propTypes = {
@@ -42,8 +43,7 @@ export default class IssueFollowToggleButton extends Component {
       if (this.props.onIssueFollowFunction) {
         this.props.onIssueFollowFunction(this.props.issueWeVoteId);
       }
-
-      showToastSuccess(`Now following ${this.props.issueName}!`);
+      openSnackbar({ message: `Now following ${this.props.issueName}!` });
     }
 
     const { currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId } = this.props;
@@ -69,7 +69,7 @@ export default class IssueFollowToggleButton extends Component {
     if (this.props.onIssueStopFollowingFunction) {
       this.props.onIssueStopFollowingFunction(this.props.issueWeVoteId);
     }
-    showToastError(`You've stopped following ${this.props.issueName}.`);
+    openSnackbar({ message: `You've stopped following ${this.props.issueName}.` });
     const { currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId } = this.props;
     if (currentBallotIdInUrl !== ballotItemWeVoteId) {
       historyPush(`${urlWithoutHash}#${this.props.ballotItemWeVoteId}`);

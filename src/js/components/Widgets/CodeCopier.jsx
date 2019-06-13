@@ -5,7 +5,7 @@ import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { showToastSuccess } from '../../utils/showToast';
+import { openSnackbar } from './SnackNotifier';
 
 export default class CodeCopier extends Component {
   static propTypes = {
@@ -66,7 +66,7 @@ export default class CodeCopier extends Component {
         //  const successful = document.execCommand("copy");
         document.execCommand('copy');
 
-        showToastSuccess('Code copied to clipboard!');
+        openSnackbar({ message: 'Code copied to clipboard!' });
         // console.log('copy_status', successful);
         // perhaps a tooltip that fades out after a moment should be created
       } else {

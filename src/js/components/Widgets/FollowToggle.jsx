@@ -8,8 +8,8 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { showToastError, showToastSuccess } from '../../utils/showToast';
 import VoterStore from '../../stores/VoterStore';
+import { openSnackbar } from './SnackNotifier';
 
 export default class FollowToggle extends Component {
   static propTypes = {
@@ -169,7 +169,7 @@ export default class FollowToggle extends Component {
     }
 
     stopFollowingFunc();
-    showToastError(toastMessage);
+    openSnackbar({ message: toastMessage });
     this.stopFollowingLocalState();
   }
 
@@ -188,7 +188,7 @@ export default class FollowToggle extends Component {
     }
 
     followFunction();
-    showToastSuccess(toastMessage);
+    openSnackbar({ message: toastMessage });
     this.startFollowingLocalState();
   }
 
@@ -215,7 +215,7 @@ export default class FollowToggle extends Component {
 
     ignoreFunction();
     this.handleIgnoreLocal();
-    showToastError(toastMessage);
+    openSnackbar({ message: toastMessage });
     this.startIgnoringLocalState();
   }
 

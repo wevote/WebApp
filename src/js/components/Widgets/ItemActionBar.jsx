@@ -11,7 +11,6 @@ import CommentIcon from '@material-ui/icons/Comment';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import { showToastError, showToastSuccess } from '../../utils/showToast';
 import { stringContains } from '../../utils/textFormat';
 import ShareButtonDropDown from './ShareButtonDropdown';
 import SupportActions from '../../actions/SupportActions';
@@ -21,6 +20,7 @@ import VoterStore from '../../stores/VoterStore';
 import PositionPublicToggle from './PositionPublicToggle';
 import SupportStore from '../../stores/SupportStore';
 import webAppConfig from '../../config';
+import { openSnackbar } from './SnackNotifier';
 
 class ItemActionBar extends PureComponent {
   static propTypes = {
@@ -218,7 +218,8 @@ class ItemActionBar extends PureComponent {
     this.setState({
       transitioning: true,
     });
-    showToastSuccess('Support added!');
+    openSnackbar({ message: 'Support added!' });
+    // showToastSuccess('Support added!');
   }
 
   stopSupportingItem () {
@@ -234,7 +235,8 @@ class ItemActionBar extends PureComponent {
     this.setState({
       transitioning: true,
     });
-    showToastSuccess('Support removed!');
+    openSnackbar({ message: 'Support removed!' });
+    // showToastSuccess('Support removed!');
   }
 
   opposeItem () {
@@ -272,7 +274,7 @@ class ItemActionBar extends PureComponent {
     this.setState({
       transitioning: true,
     });
-    showToastError('Opposition added!');
+    openSnackbar({ message: 'Opposition added!' });
   }
 
   stopOpposingItem () {
@@ -289,7 +291,7 @@ class ItemActionBar extends PureComponent {
     this.setState({
       transitioning: true,
     });
-    showToastError('Opposition removed!');
+    openSnackbar({ message: 'Opposition removed!' });
   }
 
   toggleSupportOrOpposeHelpModal () {
