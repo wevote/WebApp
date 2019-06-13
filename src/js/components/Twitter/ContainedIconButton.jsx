@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import { shortenText } from '../../utils/textFormat';
+import { getTextColorFromBackground } from '../../utils/color';
 
-class ContainedIconButton extends Component {
+class ContainedIconButton extends PureComponent {
   static propTypes = {
     buttonText: PropTypes.string,
     classes: PropTypes.object,
@@ -17,12 +18,13 @@ class ContainedIconButton extends Component {
 
   render () {
     const { classes, buttonText, icon, color } = this.props;
+    const buttonStyle = { background: color, color: getTextColorFromBackground(color) };
 
     return (
       <Button
         variant="contained"
         classes={{ root: classes.fabRoot, label: classes.buttonLabel }}
-        style={{ background: color }}
+        style={buttonStyle}
         onClick={this.props.onClick}
         onKeyDown={this.props.onKeyDown}
       >
@@ -40,7 +42,6 @@ const styles = theme => ({
     maxWidth: '100%',
     padding: 0,
     whiteSpace: 'nowrap',
-    color: 'white',
     margin: '8px',
     transition: '150ms ease-in',
     '&:hover': {
