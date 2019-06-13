@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Table, Card } from 'react-bootstrap';
 import moment from 'moment';
-import VoterStore from '../../stores/VoterStore';
-import { renderLog } from '../../utils/logging';
+import { isCordovaButNotATablet } from '../../utils/cordovaUtils';
 import DonateStore from '../../stores/DonateStore';
 import DonationCancelOrRefund from './DonationCancelOrRefund';
+import { renderLog } from '../../utils/logging';
+import VoterStore from '../../stores/VoterStore';
 import VoterActions from '../../actions/VoterActions';
 
 const styles = {
@@ -37,7 +38,7 @@ export default class DonationList extends Component {
     this.state = {
       journal: null,
     };
-    this.isNotMobile = this.isNotMobile.bind(this);
+    this.hideSomeColsIfMobile = this.hideSomeColsIfMobile.bind(this);
   }
 
   componentDidMount () {
@@ -59,18 +60,16 @@ export default class DonationList extends Component {
     VoterActions.voterRefreshDonations();
   }
 
-  // October 2018: This is a workaround, since the current react-bootstrap does not handle the "d-none d-sm-block" correctly in th and td styles
-  isNotMobile () {
-    // eslint-disable-next-line no-undef
-    const bootstrapDetectedSizeXs = $('#users-device-size').find('div:visible').first().attr('id');
-    return bootstrapDetectedSizeXs === undefined;
+  hideSomeColsIfMobile () {
+    const width = window.innerWidth > 0 ? window.innerWidth : window.screen.width;
+    return width < 900 || isCordovaButNotATablet();
   }
 
   render () {
     renderLog(__filename);
     if (this.state.journal && this.state.journal.length > 0) {
       const donations = this.props.displayDonations;
-      const isNotMobile = this.isNotMobile();
+      const hideSomeColsIfMobile = this.hideSomeColsIfMobile();
 
       if (donations) {
         return (
@@ -82,10 +81,10 @@ export default class DonationList extends Component {
                   <tr>
                     <th>Date</th>
                     <th>Amount</th>
-                    <th hidden={isNotMobile}>Payment</th>
-                    <th hidden={isNotMobile}>Card</th>
-                    <th hidden={isNotMobile}>Expires</th>
-                    <th hidden={isNotMobile}>Status</th>
+                    <th hidden={hideSomeColsIfMobile}>Payment</th>
+                    <th hidden={hideSomeColsIfMobile}>Card</th>
+                    <th hidden={hideSomeColsIfMobile}>Expires</th>
+                    <th hidden={hideSomeColsIfMobile}>Status</th>
                     <th>Info</th>
                   </tr>
                 </thead>
@@ -100,18 +99,18 @@ export default class DonationList extends Component {
                         <tr key={`${item.charge_id}-${item.subscription_id}-donations`}>
                           <td>{moment.utc(item.created).local().format('MMM D, YYYY')}</td>
                           <td>{item.amount}</td>
-                          <td hidden={isNotMobile}>
+                          <td hidden={hideSomeColsIfMobile}>
                             {item.record_enum === 'PAYMENT_FROM_UI' ? 'One time' :
                               'Subscription'}
                           </td>
-                          <td hidden={isNotMobile}>{item.brand}</td>
-                          <td hidden={isNotMobile}>{`... ${item.last4}`}</td>
-                          <td hidden={isNotMobile}>{`${item.exp_month}/${item.exp_year}`}</td>
-                          <td hidden={isNotMobile}>
+                          <td hidden={hideSomeColsIfMobile}>{item.brand}</td>
+                          <td hidden={hideSomeColsIfMobile}>{`... ${item.last4}`}</td>
+                          <td hidden={hideSomeColsIfMobile}>{`${item.exp_month}/${item.exp_year}`}</td>
+                          <td hidden={hideSomeColsIfMobile}>
                             {item.stripe_status === 'succeeded' ? 'Paid' :
                               item.stripe_status}
                           </td>
-                          <td hidden={isNotMobile} />
+                          <td hidden={hideSomeColsIfMobile} />
                           <td>
                             <DonationCancelOrRefund item={item} refundDonation={donations} active={active} cancelText="" />
                           </td>
@@ -134,14 +133,14 @@ export default class DonationList extends Component {
                 { /* Subscriptions */ }
                 <thead>
                   <tr>
-                    <th hidden={isNotMobile}>Active</th>
+                    <th hidden={hideSomeColsIfMobile}>Active</th>
                     <th>Started</th>
                     <th>Monthly</th>
-                    <th hidden={isNotMobile}>Last Charged</th>
-                    <th hidden={isNotMobile}>Card</th>
-                    <th hidden={isNotMobile}>Ends with</th>
-                    <th hidden={isNotMobile}>Expires</th>
-                    <th hidden={isNotMobile}>Canceled</th>
+                    <th hidden={hideSomeColsIfMobile}>Last Charged</th>
+                    <th hidden={hideSomeColsIfMobile}>Card</th>
+                    <th hidden={hideSomeColsIfMobile}>Ends with</th>
+                    <th hidden={hideSomeColsIfMobile}>Expires</th>
+                    <th hidden={hideSomeColsIfMobile}>Canceled</th>
                     <th>Info</th>
                   </tr>
                 </thead>
@@ -157,16 +156,16 @@ export default class DonationList extends Component {
 
                       return (
                         <tr key={`${item.charge_id}-${item.subscription_id}-journal`}>
-                          <td hidden={isNotMobile}>{active ? 'Active' : '----'}</td>
+                          <td hidden={hideSomeColsIfMobile}>{active ? 'Active' : '----'}</td>
                           <td>{moment.utc(item.created).format('MMM D, YYYY')}</td>
                           <td>{!waiting ? item.amount : 'waiting'}</td>
-                          <td hidden={isNotMobile}>{!waiting ? lastcharged : 'waiting'}</td>
-                          <td hidden={isNotMobile}>{!waiting ? item.brand : 'waiting'}</td>
-                          <td hidden={isNotMobile}>{!waiting ? `... ${item.last4}` : 'waiting'}</td>
+                          <td hidden={hideSomeColsIfMobile}>{!waiting ? lastcharged : 'waiting'}</td>
+                          <td hidden={hideSomeColsIfMobile}>{!waiting ? item.brand : 'waiting'}</td>
+                          <td hidden={hideSomeColsIfMobile}>{!waiting ? `... ${item.last4}` : 'waiting'}</td>
                           <td>
                             {!waiting > 0 ? `${item.exp_month}/${item.exp_year}` : 'waiting'}
                           </td>
-                          <td hidden={isNotMobile}>{cancel}</td>
+                          <td hidden={hideSomeColsIfMobile}>{cancel}</td>
                           <td>
                             <DonationCancelOrRefund item={item} refundDonation={donations} active={active} cancelText={cancel} />
                           </td>
