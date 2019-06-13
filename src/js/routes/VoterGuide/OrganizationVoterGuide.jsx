@@ -231,6 +231,7 @@ export default class OrganizationVoterGuide extends Component {
           <div className="col-12">
             <div className="card">
               <div className="card-main">
+                <OrganizationCard organization={this.state.organization} />
                 { isVoterOwner ? (
                   <div className="u-float-right">
                     <Button
@@ -245,7 +246,6 @@ export default class OrganizationVoterGuide extends Component {
                 ) :
                   <FollowToggle organizationWeVoteId={this.state.organization.organization_we_vote_id} showFollowingText />
                 }
-                <OrganizationCard organization={this.state.organization} />
               </div>
             </div>
           </div>

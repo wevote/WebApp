@@ -21,7 +21,6 @@ export default class SnackNotifier extends Component {
   };
 
   openSnackbar = ({ message }) => {
-    console.log('openSnackBar message:', message);
     this.setState({ open: true, message });
   };
 
@@ -45,6 +44,5 @@ export default class SnackNotifier extends Component {
 }
 
 export function openSnackbar ({ message }) {
-  console.log('function openSnackBar, message: ', message);
   openSnackbarFn({ message });
 }
