@@ -113,7 +113,7 @@ export function deviceTypeString () {
 
 export function isIOS () {
   const { platform } = window.device || '';
-  return isCordova() && platform === 'iOS';
+  return isCordova() && platform === 'iOS';  // Ignore the "Condition is always false" warning.  This line works correctly.
 }
 
 export function isIPhoneXorXS () {
@@ -193,7 +193,7 @@ export function hasIPhoneNotch () {
 
 export function isAndroid () {
   const { platform } = window.device || '';
-  return isCordova() && platform === 'Android';
+  return isCordova() && platform === 'Android';  // Ignore the "Condition is always false" warning.  This line works correctly.
 }
 
 export function getAndroidSize () {
@@ -227,8 +227,8 @@ export function isAndroidSimulator () {
   return window.location.href.startsWith('file:///android');
 }
 
-export function isCordovaButNotATablet() {
-  return isCordova() && !isIPad() && !( getAndroidSize() !== '--xl');
+export function isCordovaButNotATablet () {
+  return isCordova() && !isIPad() && !(getAndroidSize() !== '--xl');
 }
 
 export function isIOsSimulator () {
@@ -321,7 +321,7 @@ export function cordovaScrollablePaneTopPadding () {
   if (isIOS()) {
     if (isIPad() || isIPhone678Plus()) {
       if (isSimulator()) {
-        console.log("cordovaScrollablePaneTopPadding: is IPad or isIPhone678Plus");
+        console.log('cordovaScrollablePaneTopPadding: is IPad or isIPhone678Plus');
       }
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '18px';
@@ -338,7 +338,7 @@ export function cordovaScrollablePaneTopPadding () {
       }
     } else if (isIPhone678()) {
       if (isSimulator()) {
-        console.log("cordovaScrollablePaneTopPadding: isIPhone678");
+        console.log('cordovaScrollablePaneTopPadding: isIPhone678');
       }
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '18px';
@@ -355,7 +355,7 @@ export function cordovaScrollablePaneTopPadding () {
       }
     } else if (isIPhoneXR()) {
       if (isSimulator()) {
-        console.log("cordovaScrollablePaneTopPadding: isIPhoneXR");
+        console.log('cordovaScrollablePaneTopPadding: isIPhoneXR');
       }
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '32px';
@@ -373,7 +373,7 @@ export function cordovaScrollablePaneTopPadding () {
       }
     } else if (isIPhoneXSMax()) {
       if (isSimulator()) {
-        console.log("cordovaScrollablePaneTopPadding: isIPhoneXSMax");
+        console.log('cordovaScrollablePaneTopPadding: isIPhoneXSMax');
       }
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '32px';
@@ -390,7 +390,7 @@ export function cordovaScrollablePaneTopPadding () {
       }
     } else if (hasIPhoneNotch()) {
       if (isSimulator()) {
-        console.log("cordovaScrollablePaneTopPadding: hasIPhoneNotch");
+        console.log('cordovaScrollablePaneTopPadding: hasIPhoneNotch');
       }
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '32px';
