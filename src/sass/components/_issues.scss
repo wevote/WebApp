@@ -230,7 +230,7 @@ $menu-item-padding: 7px;
     display: inline-block;
     height: 100%;
     width: 1.5px;
-    background: rgba(204, 204, 204, 0.425);
+    background: rgba(204, 204, 204, .425);
     z-index: 1;
     position: absolute;
     right: 34px;
@@ -263,7 +263,7 @@ $menu-item-padding: 7px;
     max-width: 140px !important;
     padding: $space-none !important;
     border: none !important;
-    box-shadow: 1px 1px 4px 0px #ddd;
+    box-shadow: 1px 1px 4px 0 #ddd;
   }
   &__menu * {
     width: 140px !important;
