@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
-import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import {
-  cordovaDot, cordovaOpenSafariView, hasIPhoneNotch, historyPush, isWebApp,
-} from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import { withStyles, withTheme } from '@material-ui/core';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import PollingPlaceLocator from '../../components/Vote/PollingPlaceLocator';
+import { renderLog } from '../../utils/logging';
+import {
+  cordovaOpenSafariView, hasIPhoneNotch, historyPush, isWebApp,
+} from '../../utils/cordovaUtils';
 
-export default class PollingPlaceLocatorModal extends Component {
+
+class PollingPlaceLocatorModal extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     onExit: PropTypes.func,
   };
 
@@ -28,26 +33,25 @@ export default class PollingPlaceLocatorModal extends Component {
 
   render () {
     renderLog(__filename);
+    const { classes } = this.props;
 
     if (isWebApp()) {
       return (
-        <Modal
-          bsPrefix="background-brand-blue modal"
-          show={this.state.showPollingLocatorModal}
-          onHide={() => this.openPollingLocationModal(this)}
+        <Dialog
+          classes={{ paper: classes.dialogPaper }}
+          open
+          onClose={() => { this.openPollingLocationModal(); }}
         >
-          <Modal.Body>
-            <div className="intro-modal__close">
-              <button type="button"
-                onClick={this.openPollingLocationModal}
-                className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}
-              >
-                <img src={cordovaDot('/img/global/icons/x-close.png')} alt="close" />
-              </button>
+          <DialogTitle>
+            <div className="intro-modal__h1">
+              Find Your Polling Location
             </div>
+          </DialogTitle>
+
+          <DialogContent classes={{ root: classes.dialogContent }}>
             <div key={1}><PollingPlaceLocator /></div>
-          </Modal.Body>
-        </Modal>
+          </DialogContent>
+        </Dialog>
       );
     } else {
       return (
@@ -58,3 +62,24 @@ export default class PollingPlaceLocatorModal extends Component {
     }
   }
 }
+const styles = theme => ({
+  dialogPaper: {
+    marginTop: hasIPhoneNotch() ? 68 : 48,
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '90%',
+      maxWidth: '90%',
+      width: '90%',
+      minHeight: '90%',
+      maxHeight: '90%',
+      height: '90%',
+      margin: '0 auto',
+    },
+  },
+  dialogContent: {
+    [theme.breakpoints.down('md')]: {
+      padding: '0 8px 8px',
+    },
+  },
+});
+
+export default withTheme()(withStyles(styles)(PollingPlaceLocatorModal));
