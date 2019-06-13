@@ -10,7 +10,7 @@ import VoterSessionActions from '../../actions/VoterSessionActions';
 import { renderLog } from '../../utils/logging';
 
 export default class HamburgerMenu extends Component {
-  // This can only be called by a developer running Cordova in an emulator.  Voters will never see it.
+  // This can only be called by a developer running Cordova in an Simulator.  Voters will never see it.
   static clearAllCookies () {
     const cookies = document.cookie.split(';');
     const d = new Date();
