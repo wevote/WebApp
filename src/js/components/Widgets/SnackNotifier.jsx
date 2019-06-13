@@ -26,12 +26,8 @@ export default class SnackNotifier extends Component {
   };
 
   render () {
-    console.log('SnackNotifier.jsx, render');
-    // const message = (
-    //   <span id="snackbar-message-id" dangerouslySetInnerHTML={{ __html: this.state.message }} />
-    // );
     const { message } = this.state;
-    console.log('SnackNotifier.jsx message: ', message);
+    // console.log('SnackNotifier.jsx message: ', message);
 
     return (
       <Snackbar
