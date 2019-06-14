@@ -199,7 +199,7 @@ class PositionItem extends Component {
                       { position.speaker_display_name }
                     </Link>
                   </MobileItemName>
-                  <MobileItemIssues>{'Issues'}</MobileItemIssues>
+                  <MobileItemIssues>{/* Issues go here */}</MobileItemIssues>
                 </MobileItemNameIssueContainer>
                 <MobileItemEndorsementContainer>
                   <MobileItemEndorsementDisplay>
