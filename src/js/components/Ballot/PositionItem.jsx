@@ -199,9 +199,9 @@ class PositionItem extends Component {
                       { position.speaker_display_name }
                     </Link>
                   </MobileItemName>
-                  <MobileItemIssues>{/* Issues go here */}</MobileItemIssues>
+                  <MobileItemIssues>{'Issues'}</MobileItemIssues>
                 </MobileItemNameIssueContainer>
-                <MobileItemFollowToggleEndorsementDisplay>
+                <MobileItemEndorsementContainer>
                   <MobileItemEndorsementDisplay>
                     {supportOpposeInfo === 'supportFollow' ? (
                       <SupportFollow>
@@ -227,15 +227,17 @@ class PositionItem extends Component {
                       </React.Fragment>
                     )}
                   </MobileItemEndorsementDisplay>
-                  <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
-                </MobileItemFollowToggleEndorsementDisplay>
+                </MobileItemEndorsementContainer>
               </MobileItemHeader>
               <MobileItemBody>
-                <MobileItemDescriptionEndorsementContainer>
+                <MobileItemDescriptionFollowTogglContainer>
                   <MobileItemDescription>
                     {positionDescription}
                   </MobileItemDescription>
-                </MobileItemDescriptionEndorsementContainer>
+                  <MobileItemFollowToggleDisplay>
+                    <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
+                  </MobileItemFollowToggleDisplay>
+                </MobileItemDescriptionFollowTogglContainer>
                 <MobileItemFooter>
                   {/* <strong>Was this Useful?</strong>
                   Yes  No
@@ -247,52 +249,6 @@ class PositionItem extends Component {
             </PositionItemMobile>
           </div>
         </React.Fragment>
-
-      // <PositionItemListItem className="card-child position-item">
-      //   {/* One Position on this Candidate */}
-      //   <div className="card-child__media-object-anchor">
-      //     <OverlayTrigger
-      //       delay={{ show: 700, hide: 100 }}
-      //       trigger={['hover', 'focus']}
-      //       rootClose
-      //       placement="bottom"
-      //       overlay={organizationCardPopover}
-      //     >
-      //       <Link to={speakerLink} className="u-no-underline">
-      //         { position.speaker_image_url_https_medium ? (
-      //           <ImageHandler
-      //             className="card-child__avatar"
-      //             sizeClassName="icon-lg"
-      //             imageUrl={position.speaker_image_url_https_medium}
-      //           />
-      //         ) :
-      //           imagePlaceholder }
-      //       </Link>
-      //     </OverlayTrigger>
-      //     <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
-      //   </div>
-      //   <div className="card-child__media-object-content">
-      //     <div className="card-child__content">
-      //       <div className="u-flex">
-      //         <h4 className="card-child__display-name">
-      //           <OverlayTrigger
-      //             delay={{ show: 700, hide: 100 }}
-      //             trigger={['hover', 'focus']}
-      //             rootClose
-      //             placement="bottom"
-      //             overlay={organizationCardPopover}
-      //           >
-      //             <Link to={speakerLink}>
-      //               { position.speaker_display_name }
-      //             </Link>
-      //           </OverlayTrigger>
-      //         </h4>
-      //         <FriendsOnlyIndicator isFriendsOnly={!position.is_public_position} />
-      //       </div>
-      //       {positionDescription}
-      //     </div>
-      //   </div>
-      // </PositionItemListItem>
       );
     } else {
       return nothingToDisplay;
@@ -350,7 +306,7 @@ const MobileItemIssues = styled.div`
   font-size: 14px;
 `;
 
-const MobileItemFollowToggleEndorsementDisplay = styled.div`
+const MobileItemEndorsementContainer = styled.div`
   margin-left: auto;
   margin-top: auto;
   margin-bottom: auto;
@@ -370,13 +326,20 @@ const MobileItemBody = styled.div`
   border-bottom-left-radius: 5px;
 `;
 
-const MobileItemDescriptionEndorsementContainer = styled.div`
+const MobileItemDescriptionFollowTogglContainer = styled.div`
   left: 2px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const MobileItemDescription = styled.div`
   font-size: 16px;
   color: #333;
+  flex: 1 1 0;
+`;
+
+const MobileItemFollowToggleDisplay = styled.div`
+  width: 75px;
 `;
 
 const MobileItemFooter = styled.div`
