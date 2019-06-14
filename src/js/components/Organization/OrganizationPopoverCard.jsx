@@ -104,7 +104,7 @@ class OrganizationPopoverCard extends Component {
     const {
       organization_twitter_handle: organizationTwitterHandle, twitter_description: twitterDescriptionRaw,
       organization_photo_url_large: organizationPhotoUrlLarge, organization_website: organizationWebsiteRaw,
-      organization_name: organizationName, organization_we_vote_id: organizationWeVoteId, organization_banner_url: organizationBannerUrl
+      organization_name: organizationName, organization_we_vote_id: organizationWeVoteId, organization_banner_url: organizationBannerUrl,
     } = this.state.organization; // , twitter_followers_count
     const organizationWebsite = organizationWebsiteRaw && organizationWebsiteRaw.slice(0, 4) !== 'http' ? `http://${organizationWebsiteRaw}` : organizationWebsiteRaw;
 
