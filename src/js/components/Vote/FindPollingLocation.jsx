@@ -63,6 +63,9 @@ const styles = theme => ({
 
 const Wrapper = styled.div`
   margin-bottom: 15px;
+  @media print{
+    display: none;
+  }
 `;
 
 const InformationTextWrapper = styled.div`
@@ -72,6 +75,7 @@ const InformationTextWrapper = styled.div`
   text-align: left;
   color: #555;
   font-size: 14px;
+  
 `;
 
 export default withStyles(styles)(FindPollingLocation);

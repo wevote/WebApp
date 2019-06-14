@@ -171,7 +171,7 @@ class Application extends Component {
   }
 
   handleWindowScroll = (evt) => {
-    const {scrollTop} = evt.target.scrollingElement;
+    const { scrollTop } = evt.target.scrollingElement;
     if (scrollTop > 60 && !AppStore.getScrolledDown()) {
       AppActions.setScrolled(true);
     }
@@ -426,6 +426,9 @@ const LoadingScreen = styled.div`
   font-size: '30px',
   color: '#fff',
   flex-direction: 'column',
+  @media print{
+    color: '#2E3C5D';
+  }
 `;
 
 export default Application;
