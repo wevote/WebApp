@@ -57,7 +57,10 @@ class Application extends Component {
 
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    window.addEventListener('scroll', this.handleWindowScroll);
+    if (isWebApp()) {
+      // disabled for cordova June 2019, see note in https://github.com/wevote/WebApp/pull/2303
+      window.addEventListener('scroll', this.handleWindowScroll);
+    }
   }
 
   componentDidUpdate () {
@@ -168,7 +171,7 @@ class Application extends Component {
   }
 
   handleWindowScroll = (evt) => {
-    const { scrollTop } = evt.target.scrollingElement;
+    const {scrollTop} = evt.target.scrollingElement;
     if (scrollTop > 60 && !AppStore.getScrolledDown()) {
       AppActions.setScrolled(true);
     }
@@ -176,6 +179,7 @@ class Application extends Component {
       AppActions.setScrolled(false);
     }
   };
+
 
   incomingVariableManagement () {
     // console.log("Application, incomingVariableManagement, this.props.location.query: ", this.props.location.query);
