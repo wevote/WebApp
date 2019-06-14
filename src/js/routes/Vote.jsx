@@ -519,7 +519,7 @@ class Vote extends Component {
                 </div>
 
                 {/* Right column */}
-                <div className="col-lg-4 d-none d-lg-block sidebar-menu">
+                <div className="col-lg-4 d-none d-lg-block d-print-none sidebar-menu">
                   <Card>
                     <PollingLocationContainer>
                       <FindPollingLocation />
