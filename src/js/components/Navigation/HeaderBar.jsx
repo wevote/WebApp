@@ -329,7 +329,7 @@ class HeaderBar extends Component {
             }
             {
               !voterIsSignedIn && (
-              <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
+              <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none d-print-none">
                 {
                   showEditAddressButton && (
                     <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
