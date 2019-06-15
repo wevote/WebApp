@@ -135,7 +135,13 @@ class HeaderBar extends Component {
       // console.log("shouldComponentUpdate: this.props.voter.signed_in_facebook", this.props.voter.signed_in_facebook, ", nextProps.voter.signed_in_facebook", nextProps.voter.signed_in_facebook);
       return true;
     }
-    return thisVoterExists && nextVoterExists && this.props.voter.signed_in_with_email !== nextProps.voter.signed_in_with_email;
+    if (thisVoterExists && nextVoterExists && this.props.voter.signed_in_with_email !== nextProps.voter.signed_in_with_email) {
+      return true;
+    }
+    if (thisVoterExists && nextVoterExists && this.props.voter.is_signed_in !== nextProps.voter.is_signed_in) {
+      return true;
+    }
+    return false;
   }
 
   componentWillUnmount () {
