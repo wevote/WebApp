@@ -5,6 +5,7 @@ import FollowToggle from '../Widgets/FollowToggle';
 import ImageHandler from '../ImageHandler';
 import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging';
+import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
 import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
@@ -13,7 +14,7 @@ import RatingPopover from '../Widgets/RatingPopover';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
-import { removeTwitterNameFromDescription } from '../../utils/textFormat';
+import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
 
 // This Component is used to display the Organization by TwitterHandle
 // Please see VoterGuide/Organization for the Component used by GuideList for Candidate and Opinions (you can follow)
@@ -123,9 +124,10 @@ export default class OrganizationCard extends Component {
 
     const {
       organization_twitter_handle: organizationTwitterHandle, twitter_description: twitterDescriptionRaw,
+      twitter_followers_count: twitterFollowersCount,
       organization_photo_url_large: organizationPhotoUrlLarge, organization_website: organizationWebsiteRaw,
       organization_name: organizationName,
-    } = this.props.organization; // twitter_followers_count
+    } = this.props.organization;
     const organizationWebsite = organizationWebsiteRaw && organizationWebsiteRaw.slice(0, 4) !== 'http' ? `http://${organizationWebsiteRaw}` : organizationWebsiteRaw;
 
     // If the displayName is in the twitterDescription, remove it from twitterDescription
@@ -205,16 +207,18 @@ export default class OrganizationCard extends Component {
               ) :
                 null
               }
-              {/* twitter_followers_count ?
-                </i><span className="twitter-followers__badge">
+              { twitterFollowersCount && !this.props.turnOffTwitterHandle && (
+                <span className="twitter-followers__badge">
                   <span className="fab fa-twitter twitter-followers__icon" />
-                  {numberWithCommas(twitter_followers_count)}
-                </span> :
-                null
-              */}
-              &nbsp;&nbsp;
+                  {numberWithCommas(twitterFollowersCount)}
+                </span>
+              )}
+              <IssuesByOrganizationDisplayList
+                organizationWeVoteId={this.state.organizationWeVoteId}
+                placement="bottom"
+              />
               { organizationWebsite ? (
-                <span>
+                <div>
                   <OpenExternalWebSite
                     url={organizationWebsite}
                     target="_blank"
@@ -225,7 +229,7 @@ export default class OrganizationCard extends Component {
                       </span>
                     )}
                   />
-                </span>
+                </div>
               ) : null
               }
               {/* 5 of your friends follow Organization Name<br /> */}

@@ -12,7 +12,6 @@ import BallotActions from '../../actions/BallotActions';
 import BallotElectionList from '../../components/Ballot/BallotElectionList';
 import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
-import BallotIntroModal from '../../components/Ballot/BallotIntroModal';
 import BallotSideBar from '../../components/Navigation/BallotSideBar';
 import BallotSearch from '../../components/Ballot/BallotSearch';
 import BallotStatusMessage from '../../components/Ballot/BallotStatusMessage';
@@ -794,17 +793,10 @@ class Ballot extends Component {
     }
     // console.log(ballotWithAllItems);
     const textForMapSearch = VoterStore.getTextForMapSearch();
-    const issuesVoterCanFollow = IssueStore.getIssuesVoterCanFollow(); // Don't auto-open intro until Issues are loaded
-    const issuesVoterCanFollowExist = issuesVoterCanFollow && issuesVoterCanFollow.length;
-    // console.log('Ballot render issuesVoterCanFollowExist: ', issuesVoterCanFollowExist);
 
     if (!ballotWithItemsFromCompletionFilterType) {
       return (
         <div className="ballot container-fluid well u-stack--md u-inset--md">
-          { this.state.showBallotIntroModal && issuesVoterCanFollowExist ?
-            <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> :
-            null
-          }
           <div className={`ballot__header ${isWebApp() ? 'ballot__header__top-cordova' : ''}`}>
             <p>
               <span
@@ -874,7 +866,6 @@ class Ballot extends Component {
 
     return (
       <div className="ballot_root">
-        { this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
         { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this.toggleBallotSummaryModal} /> : null }
         <div className={`ballot__heading ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`}>
           <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>

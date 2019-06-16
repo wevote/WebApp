@@ -11,7 +11,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
-import { removeTwitterNameFromDescription } from '../../utils/textFormat';
+import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
 
 
 class OrganizationPopoverCard extends Component {
@@ -99,13 +99,14 @@ class OrganizationPopoverCard extends Component {
       return <div>{LoadingWheel}</div>;
     }
 
-    console.log(this.state.organization);
+    // console.log('OrganizationPopoverCard, organization: ', this.state.organization);
 
     const {
       organization_twitter_handle: organizationTwitterHandle, twitter_description: twitterDescriptionRaw,
+      twitter_followers_count: twitterFollowersCount,
       organization_photo_url_large: organizationPhotoUrlLarge, organization_website: organizationWebsiteRaw,
       organization_name: organizationName, organization_we_vote_id: organizationWeVoteId, organization_banner_url: organizationBannerUrl,
-    } = this.state.organization; // , twitter_followers_count
+    } = this.state.organization;
     const organizationWebsite = organizationWebsiteRaw && organizationWebsiteRaw.slice(0, 4) !== 'http' ? `http://${organizationWebsiteRaw}` : organizationWebsiteRaw;
 
     // If the displayName is in the twitterDescription, remove it from twitterDescription
@@ -116,10 +117,12 @@ class OrganizationPopoverCard extends Component {
 
     return (
       <Wrapper>
-        <img src={organizationBannerUrl} alt={organizationName} />
+        {organizationBannerUrl &&
+          <img src={organizationBannerUrl} alt={organizationName} />
+        }
         <Container>
           <LogoFollowToggleContainer>
-            { organizationPhotoUrlLarge ? (
+            { organizationPhotoUrlLarge && (
               <Link
                 id="organizationPopoverCardImage"
                 to={voterGuideLink}
@@ -129,8 +132,7 @@ class OrganizationPopoverCard extends Component {
                   <img src={organizationPhotoUrlLarge} width="60" height="60" alt={`${displayName}`} />
                 </ImageContainer>
               </Link>
-            ) : null
-            }
+            )}
             { this.state.isVoterOwner ? (
               <Button variant="warning" size="small" bsPrefix="pull-right" onClick={this.onEdit}>
                 <span>Edit Your Voter Guide</span>
@@ -150,15 +152,19 @@ class OrganizationPopoverCard extends Component {
             >
               <OrganizationName>{displayName}</OrganizationName>
             </Link>
-            { organizationTwitterHandle ? (
+            { organizationTwitterHandle && (
               <OrganizationTwitterHandle>
                 @
                 {organizationTwitterHandle}
                 &nbsp;&nbsp;
+                { twitterFollowersCount && (
+                  <span>
+                    <span className="fab fa-twitter twitter-followers__icon" />
+                    {numberWithCommas(twitterFollowersCount)}
+                  </span>
+                )}
               </OrganizationTwitterHandle>
-            ) :
-              null
-            }
+            )}
             { twitterDescriptionMinusName && (
               <Description>
                 <ParsedTwitterDescription
@@ -167,7 +173,7 @@ class OrganizationPopoverCard extends Component {
               </Description>
             )
             }
-            { organizationWebsite ? (
+            { organizationWebsite && (
               <span className="u-wrap-links">
                 <OpenExternalWebSite
                   url={organizationWebsite}
@@ -181,17 +187,8 @@ class OrganizationPopoverCard extends Component {
                   )}
                 />
               </span>
-            ) : null
-            }
+            )}
             {/* 5 of your friends follow Organization Name<br /> */}
-
-            {/* twitter_followers_count ?
-              <span className="twitter-followers__badge">
-                  <span className="fab fa-twitter twitter-followers__icon" />
-                {numberWithCommas(twitter_followers_count)}
-                </span> :
-              null
-            */}
           </MainContent>
         </Container>
       </Wrapper>

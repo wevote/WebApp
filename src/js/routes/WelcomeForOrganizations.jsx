@@ -5,7 +5,18 @@ import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/HeaderWelcome';
-import Section, { SectionTitle, SectionTitleBold, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage } from '../components/Welcome/Section';
+import Section, {
+  SectionTitle,
+  SectionTitleBold,
+  DescriptionContainer,
+  DescriptionLeftColumn,
+  DescriptionImageColumn,
+  Description,
+  Image,
+  Bold,
+  NetworkContainer,
+  NetworkImage,
+} from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 import Footer from '../components/Welcome/Footer';
 import { historyPush, cordovaDot } from '../utils/cordovaUtils';

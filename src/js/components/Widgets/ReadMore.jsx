@@ -59,6 +59,7 @@ export default class ReadMore extends Component {
     textToDisplay = textToDisplay.replace(/[\x0D-\x1F]/g, ''); // eslint-disable-line no-control-regex
     // convert text into array, splitting on line breaks
     const expandedTextArray = textToDisplay.replace(/(?:\r\n|\r|\n){2,}/g, '\r\n\r\n').split(/(?:\r\n|\r|\n)/g);
+    const keyBasedOnTextToDisplay = textToDisplay.substring(0, 20).toLowerCase().replace(/\s/g, '') || 'notext';
 
     // There are cases where we would like to show line breaks when there is a little bit of text
     let notEnoughTextToTruncate = false;
@@ -78,22 +79,24 @@ export default class ReadMore extends Component {
       notEnoughTextToTruncate = true;
     }
     // wrap text in array in separate spans with html line breaks
+    let itemKey = 'x';
     const expandedTextToDisplay = expandedTextArray.map((item, index) => { // https://dev.to/jtonzing/the-significance-of-react-keys---a-visual-explanation--56l7
+      itemKey = `${item}-${index.toString()}`;
       if (index === 0) {
         return (
-          <span key={`key-${item}`}>
+          <span key={`key-a-${itemKey}-${keyBasedOnTextToDisplay}`}>
             {item}
           </span>
         );
       } else if (index >= expandedTextArray.length - 2 && item === '') {
         return (
-          <span key={`key-${item}`}>
+          <span key={`key-b-${itemKey}-${keyBasedOnTextToDisplay}`}>
             {item}
           </span>
         );
       } else {
         return (
-          <span key={`key-${item}`}>
+          <span key={`key-c-${itemKey}-${keyBasedOnTextToDisplay}`}>
             <br />
             {item}
           </span>

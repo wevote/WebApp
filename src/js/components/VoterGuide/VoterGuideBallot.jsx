@@ -15,7 +15,6 @@ import AppStore from '../../stores/AppStore';
 import BallotActions from '../../actions/BallotActions';
 import BallotElectionList from '../Ballot/BallotElectionList';
 import BallotItemCompressed from '../Ballot/BallotItemCompressed';
-import BallotIntroModal from '../Ballot/BallotIntroModal';
 import BallotStatusMessage from '../Ballot/BallotStatusMessage';
 import BallotStore from '../../stores/BallotStore';
 import BallotSummaryModal from '../Ballot/BallotSummaryModal';
@@ -884,10 +883,6 @@ class VoterGuideBallot extends Component {
     if (!ballotWithItemsFromCompletionFilterType) {
       return (
         <div className="ballot container-fluid well u-stack--md u-inset--md">
-          { this.state.showBallotIntroModal ?
-            <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> :
-            null
-          }
           <div className={`ballot__header ${isWebApp() ? 'ballot__header__top-cordova' : ''}`}>
             <BrowserPushMessage incomingProps={this.props} />
             <p className="ballot__date_location">
@@ -973,7 +968,6 @@ class VoterGuideBallot extends Component {
     // console.log("VoterGuideBallot SelectBallotModal, this.state.organization.organization_we_vote_id:", this.state.organization.organization_we_vote_id);
     return (
       <div className="ballot">
-        { this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
         { this.state.showSelectBallotModal ? (
           <SelectBallotModal
             ballotElectionList={this.state.ballotElectionList}

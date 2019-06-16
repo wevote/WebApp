@@ -30,8 +30,6 @@ import HamburgerMenu from './routes/More/HamburgerMenu';
 import HowItWorks from './routes/HowItWorks';
 import Intro from './routes/Intro/Intro';
 import IntroNetwork from './routes/Intro/IntroNetwork';
-import IssuesToFollow from './routes/IssuesToFollow';
-import IssuesFollowed from './routes/IssuesFollowed';
 import InviteByEmail from './routes/Friends/InviteByEmail';
 import Location from './routes/Settings/Location';
 import Measure from './routes/Ballot/Measure';
@@ -154,8 +152,6 @@ const routes = () => (
     <Route path="/opinions" component={Opinions} />
     <Route path="/opinions_followed" component={OpinionsFollowed} />
     <Route path="/opinions_ignored" component={OpinionsIgnored} />
-    <Route path="/issues_to_follow" component={IssuesToFollow} />
-    <Route path="/issues_followed" component={IssuesFollowed} />
 
     {/* Friend related Pages */}
     <Route path="/friends" component={Friends} />
