@@ -8,7 +8,25 @@ import LocationIcon from '@material-ui/icons/LocationOn';
 import PersonIcon from '@material-ui/icons/Person';
 import EmailIcon from '@material-ui/icons/Email';
 import { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/HeaderWelcome';
-import Section, { SectionTitle, SectionTitleBold, Step, StepNumber, StepLabel, GetStarted, ButtonContainer, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage, SignUpContainer, SignUpMessage } from '../components/Welcome/Section';
+import Section, {
+  SectionTitle,
+  SectionTitleBold,
+  Step,
+  StepNumber,
+  StepLabel,
+  GetStarted,
+  ButtonContainer,
+  DescriptionContainer,
+  DescriptionLeftColumn,
+  DescriptionImageColumn,
+  Description,
+  Image,
+  Bold,
+  NetworkContainer,
+  NetworkImage,
+  SignUpContainer,
+  SignUpMessage,
+} from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 import Footer from '../components/Welcome/Footer';
 import TextBox from '../components/Welcome/TextBox';

@@ -5,8 +5,10 @@ import styled from 'styled-components';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ImageHandler from '../ImageHandler';
+import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import ReadMore from '../Widgets/ReadMore';
 import FollowToggle from '../Widgets/FollowToggle';
@@ -94,6 +96,12 @@ class PositionItem extends Component {
 
     if (showPosition) {
       const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
+      let moreInfoUrl = position.more_info_url;
+      if (moreInfoUrl) {
+        if (!moreInfoUrl.toLowerCase().startsWith('http')) {
+          moreInfoUrl = `http://${moreInfoUrl}`;
+        }
+      }
       return (
         <React.Fragment>
           <div className="u-show-desktop-tablet">
@@ -135,7 +143,12 @@ class PositionItem extends Component {
                         </Link>
                       </StickyPopover>
                     </DesktopItemName>
-                    <DesktopItemIssues>{/* Issues go here */}</DesktopItemIssues>
+                    <DesktopItemIssues>
+                      <IssuesByOrganizationDisplayList
+                        organizationWeVoteId={organizationWeVoteId}
+                        placement="bottom"
+                      />
+                    </DesktopItemIssues>
                   </DesktopItemNameIssueContainer>
                   <DesktopItemEndorsementDisplay>
                     {supportOpposeInfo === 'supportFollow' ? (
@@ -173,6 +186,23 @@ class PositionItem extends Component {
                     <div className="u-float-right">
                       Flag Links
                     </div> */}
+                    {moreInfoUrl ? (
+                      <div className="u-float-right">
+                        <OpenExternalWebSite
+                          url={moreInfoUrl}
+                          target="_blank"
+                          className="u-gray-mid"
+                          body={(
+                            <span>
+                              view source
+                              {' '}
+                              <i className="fas fa-external-link-alt" aria-hidden="true" />
+                            </span>
+                          )}
+                        />
+                      </div>
+                    ) : null
+                    }
                   </DesktopItemFooter>
                 </DesktopItemBody>
               </PositionItemDesktop>
@@ -199,7 +229,12 @@ class PositionItem extends Component {
                       { position.speaker_display_name }
                     </Link>
                   </MobileItemName>
-                  <MobileItemIssues>{/* Issues go here */}</MobileItemIssues>
+                  <MobileItemIssues>
+                    <IssuesByOrganizationDisplayList
+                      organizationWeVoteId={organizationWeVoteId}
+                      placement="bottom"
+                    />
+                  </MobileItemIssues>
                 </MobileItemNameIssueContainer>
                 <MobileItemEndorsementContainer>
                   <MobileItemEndorsementDisplay>
@@ -244,6 +279,23 @@ class PositionItem extends Component {
                   <div className="u-float-right">
                     Flag Links
                   </div> */}
+                  {moreInfoUrl ? (
+                    <div className="u-float-right">
+                      <OpenExternalWebSite
+                        url={moreInfoUrl}
+                        target="_blank"
+                        className="u-gray-mid"
+                        body={(
+                          <span>
+                            source
+                            {' '}
+                            <i className="fas fa-external-link-alt" aria-hidden="true" />
+                          </span>
+                        )}
+                      />
+                    </div>
+                  ) : null
+                  }
                 </MobileItemFooter>
               </MobileItemBody>
             </PositionItemMobile>
@@ -412,7 +464,7 @@ const DesktopItemBody = styled.div`
   margin: 0;
 `;
 
-const DesktopItemDescription = styled.p`
+const DesktopItemDescription = styled.div`
   font-size: 14px;
   margin-top: 8px;
 `;

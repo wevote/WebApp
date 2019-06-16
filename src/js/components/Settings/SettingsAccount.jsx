@@ -10,7 +10,7 @@ import AppStore from '../../stores/AppStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
-import { historyPush } from '../../utils/cordovaUtils';
+import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import FacebookSignIn from '../Facebook/FacebookSignIn';
 import LoadingWheel from '../LoadingWheel';
 import { oAuthLog, renderLog } from '../../utils/logging';
@@ -284,6 +284,9 @@ export default class SettingsAccount extends Component {
             ) : null
             }
             <br />
+            {isWebApp() &&
+              <span id="onlyShowVoterEmailAddressEntryInBrowser" />
+            }
             <VoterEmailAddressEntry />
 
             {debugMode && (

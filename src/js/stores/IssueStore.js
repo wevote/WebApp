@@ -653,7 +653,7 @@ class IssueStore extends ReduceStore {
         issueWeVoteIdsLinkedToByOrganizationDict = state.issueWeVoteIdsLinkedToByOrganizationDict || {};
         if (voterGuides) {
           voterGuides.forEach((voterGuide) => {
-            const { issueWeVoteIdsLinked } = voterGuide;
+            const { issue_we_vote_ids_linked: issueWeVoteIdsLinked } = voterGuide;
             linkedIssueListForOneOrganization = issueWeVoteIdsLinkedToByOrganizationDict[voterGuide.organization_we_vote_id] || [];
             // console.log('IssueStore, case voterGuidesToFollowRetrieve, issueWeVoteIdsLinked:', issueWeVoteIdsLinked);
             if (issueWeVoteIdsLinked) {
@@ -774,7 +774,7 @@ class IssueStore extends ReduceStore {
         issueWeVoteIdsLinkedToByOrganizationDict = state.issueWeVoteIdsLinkedToByOrganizationDict || {};
         if (voterGuides) {
           voterGuides.forEach((voterGuide) => {
-            const { issueWeVoteIdsLinked } = voterGuide;
+            const { issue_we_vote_ids_linked: issueWeVoteIdsLinked } = voterGuide;
             linkedIssueListForOneOrganization = issueWeVoteIdsLinkedToByOrganizationDict[voterGuide.organization_we_vote_id] || [];
             // console.log('IssueStore, case voterGuidesToFollowRetrieve, issueWeVoteIdsLinked:', issueWeVoteIdsLinked);
             if (issueWeVoteIdsLinked) {
