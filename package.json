@@ -57,6 +57,7 @@
     "ballotTest-Browser": "./node_modules/.bin/wdio ./tests/browserstack/ballotBrowser.wdio.config.js",
     "ballotTest-iOS": "./node_modules/.bin/wdio ./tests/browserstack/ballotIos.wdio.config.js",
     "marketingTest-Browser": "./node_modules/.bin/wdio ./tests/browserstack/marketingBrowser.wdio.config.js",
+    "exampleTest": "./node_modules/.bin/wdio ./tests/browserstack/example.wdio.config.js",
     "start": "gulp",
     "start-profile": "node --inspect-brk ./node_modules/.bin/gulp",
     "prod": "NODE_ENV=production gulp build",

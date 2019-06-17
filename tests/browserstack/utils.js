@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const PAUSE_DURATION_MICROSECONDS = 1250;
 
 async function clearTextInputValue (elementIdName) {
@@ -81,4 +83,12 @@ async function simpleTextInput (elementIdName, textValue) {
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
-module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, simpleCloseBootstrapModal, simpleTextInput, setNewAddress };
+function writeToLog (message) {
+  const time = (new Date(Date.now())).toISOString();
+  const { name } = driver.config.capabilities;
+  fs.appendFile('./browserstack.log', `${time} ${message} [${name}]\n`, (err) => {
+    if (err) throw err;
+  });
+}
+
+module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, simpleCloseBootstrapModal, simpleTextInput, setNewAddress, writeToLog };

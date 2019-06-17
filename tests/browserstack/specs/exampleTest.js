@@ -3,9 +3,9 @@ const assert = require('assert');
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
 
-describe('Basic cross-platform WeVote test',  () => {
-  it('can visit the different pages in the app', async () => {
-    const isCordova = !!driver.getContexts;
+describe('example test',  () => {
+  it('can check capabilities in order to identify platform', async () => {
+    const { isCordova, isMobile } = driver.config.capabilities;
     if (isCordova) {
       // switch contexts and click through intro
       const contexts = await driver.getContexts();
@@ -25,7 +25,7 @@ describe('Basic cross-platform WeVote test',  () => {
       // navigate browser to WeVote QA site
       await browser.url('https://quality.wevote.us/ballot');
     }
-    const valuesButtonSelector = (isCordova) ? 'span=Values' : '#valuesTabHeaderBar';
+    const valuesButtonSelector = (isMobile) ? '#valuesTabFooterBar' : '#valuesTabHeaderBar';
     const valuesButton =
       await $(valuesButtonSelector);
     await valuesButton.click();
