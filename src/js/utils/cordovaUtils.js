@@ -2,6 +2,8 @@ import { browserHistory, hashHistory } from 'react-router';
 import { oAuthLog } from './logging';
 /* global $  */
 
+const logCordovaOffsets = false;
+
 export function isWebApp () {
   const { cordova } = window;
   return cordova === undefined;
@@ -239,7 +241,7 @@ export function isSimulator () {
   return isAndroidSimulator() || isIOsSimulator();
 }
 
-if (isSimulator()) {
+if (isSimulator() && logCordovaOffsets) {
   if (isAndroidSimulator()) {
     console.log(`cordovaScrollablePaneTopPadding: ${window.location.href}`);
   } else {
@@ -309,7 +311,7 @@ function pageEnumeration () {
 // <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
 // renders approximately as ...  <div className="Ballot__Wrapper-sc-11u8kf3-0 dYbfmq"><div>
 export function cordovaScrollablePaneTopPadding () {
-  if (isSimulator()) {
+  if (isSimulator() && logCordovaOffsets) {
     if (isAndroidSimulator()) {
       console.log(`cordovaScrollablePaneTopPadding android: ${window.location.href}`);
     } else {
@@ -320,7 +322,7 @@ export function cordovaScrollablePaneTopPadding () {
 
   if (isIOS()) {
     if (isIPad() || isIPhone678Plus()) {
-      if (isSimulator()) {
+      if (isSimulator()  && logCordovaOffsets) {
         console.log('cordovaScrollablePaneTopPadding: is IPad or isIPhone678Plus');
       }
       switch (pageEnumeration()) {
@@ -337,7 +339,7 @@ export function cordovaScrollablePaneTopPadding () {
         default:                    return '0px';
       }
     } else if (isIPhone678()) {
-      if (isSimulator()) {
+      if (isSimulator() && logCordovaOffsets) {
         console.log('cordovaScrollablePaneTopPadding: isIPhone678');
       }
       switch (pageEnumeration()) {
@@ -354,7 +356,7 @@ export function cordovaScrollablePaneTopPadding () {
         default:                    return '0px';
       }
     } else if (isIPhoneXR()) {
-      if (isSimulator()) {
+      if (isSimulator() && logCordovaOffsets) {
         console.log('cordovaScrollablePaneTopPadding: isIPhoneXR');
       }
       switch (pageEnumeration()) {
@@ -372,7 +374,7 @@ export function cordovaScrollablePaneTopPadding () {
         default:                    return '0px';
       }
     } else if (isIPhoneXSMax()) {
-      if (isSimulator()) {
+      if (isSimulator() && logCordovaOffsets) {
         console.log('cordovaScrollablePaneTopPadding: isIPhoneXSMax');
       }
       switch (pageEnumeration()) {
@@ -389,7 +391,7 @@ export function cordovaScrollablePaneTopPadding () {
         default:                    return '0px';
       }
     } else if (hasIPhoneNotch()) {
-      if (isSimulator()) {
+      if (isSimulator() && logCordovaOffsets) {
         console.log('cordovaScrollablePaneTopPadding: hasIPhoneNotch');
       }
       switch (pageEnumeration()) {
@@ -410,7 +412,7 @@ export function cordovaScrollablePaneTopPadding () {
   } else if (isAndroid()) {
     const sizeString = getAndroidSize();
     if (sizeString === '--xl') {
-      if (isSimulator()) {
+      if (isSimulator() && logCordovaOffsets) {
         console.log(`cordovaScrollablePaneTopPadding sizeString: ${sizeString}`);
       }
       switch (pageEnumeration()) {
@@ -567,7 +569,7 @@ export function cordovaTopHeaderTopMargin () {
   };
 
   if (isCordova()) {
-    if (isSimulator()) {
+    if (isSimulator() && logCordovaOffsets) {
       if (isAndroidSimulator()) {
         console.log(`cordovaTopHeaderTopMargin android: ${window.location.href}`);
       } else {
