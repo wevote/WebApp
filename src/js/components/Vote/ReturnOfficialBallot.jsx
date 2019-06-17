@@ -59,11 +59,13 @@ class ReturnOfficialBallot extends Component {
             {' '}
             Make sure to return your official ballot!
             {' '}
-            <OpenExternalWebSite
-              url="https://help.wevote.us/hc/en-us/articles/115002401353-Can-I-cast-my-vote-with-We-Vote-"
-              target="_blank"
-              body="See more information about casting your official vote."
-            />
+            <HidePopupWrapper>
+              <OpenExternalWebSite
+                url="https://help.wevote.us/hc/en-us/articles/115002401353-Can-I-cast-my-vote-with-We-Vote-"
+                target="_blank"
+                body="See more information about casting your official vote."
+              />
+            </HidePopupWrapper>
           </ParagraphStyled>
           <CloseComponent id="closeReturnOfficialBallot" onClick={this.closeReturnOfficialBallot}>
             &times;
@@ -98,4 +100,12 @@ const CloseComponent = styled.div`
   opacity: 0.5;
 `;
 
+const HidePopupWrapper = styled.div`
+  @media print{
+    display: none;
+  }
+`;
+
 export default withStyles(styles)(ReturnOfficialBallot);
+
+

@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
 import CandidateStore from '../../stores/CandidateStore';
 import cookies from '../../utils/cookies';
-import { isWebApp } from '../../utils/cordovaUtils';
+import { isCordova, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -35,6 +37,7 @@ class HeaderBackToBallot extends Component {
     this.state = {
       profilePopUpOpen: false,
       candidateWeVoteId: '',
+      officeName: '',
       officeWeVoteId: '',
       organization: {},
       organizationWeVoteId: '',
@@ -53,12 +56,10 @@ class HeaderBackToBallot extends Component {
 
   componentDidMount () {
     // console.log('HeaderBackToBallot componentDidMount, this.props: ', this.props);
-    // this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.officeStoreListener = OfficeStore.addListener(this.onOfficeStoreChange.bind(this));
-    // this.onBallotStoreChange();
 
     let candidateWeVoteId;
     let officeWeVoteId;
@@ -148,6 +149,57 @@ class HeaderBackToBallot extends Component {
     });
   }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if not needed
+    if (this.state.candidateWeVoteId !== nextState.candidateWeVoteId) {
+      // console.log('this.state.candidateWeVoteId: ', this.state.candidateWeVoteId, ', nextState.candidateWeVoteId', nextState.candidateWeVoteId);
+      return true;
+    }
+    if (this.state.officeName !== nextState.officeName) {
+      // console.log('this.state.officeName: ', this.state.officeName, ', nextState.officeName', nextState.officeName);
+      return true;
+    }
+    if (this.state.officeWeVoteId !== nextState.officeWeVoteId) {
+      // console.log('this.state.officeWeVoteId: ', this.state.officeWeVoteId, ', nextState.officeWeVoteId', nextState.officeWeVoteId);
+      return true;
+    }
+    if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
+      // console.log('this.state.organizationWeVoteId: ', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId', nextState.organizationWeVoteId);
+      return true;
+    }
+    if (this.state.scrolledDown !== nextState.scrolledDown) {
+      // console.log('this.state.scrolledDown: ', this.state.scrolledDown, ', nextState.scrolledDown', nextState.scrolledDown);
+      return true;
+    }
+    if (this.state.showSignInModal !== nextState.showSignInModal) {
+      // console.log('this.state.showSignInModal: ', this.state.showSignInModal, ', nextState.showSignInModal', nextState.showSignInModal);
+      return true;
+    }
+    const { voter } = this.state;
+    const { nextVoter } = nextState;
+    let voterIsSignedIn = null;
+    let voterPhotoUrlMedium = null;
+    let nextVoterIsSignedIn = null;
+    let nextVoterPhotoUrlMedium = null;
+    if (voter) {
+      voterIsSignedIn = voter.is_signed_in;
+      voterPhotoUrlMedium = voter.voter_photo_url_medium;
+    }
+    if (nextVoter) {
+      nextVoterIsSignedIn = nextVoter.is_signed_in;
+      nextVoterPhotoUrlMedium = nextVoter.voter_photo_url_medium;
+    }
+    if (nextVoterIsSignedIn && voterIsSignedIn !== nextVoterIsSignedIn) {
+      // console.log('voterIsSignedIn: ', voterIsSignedIn, ', nextVoterIsSignedIn: ', nextVoterIsSignedIn);
+      return true;
+    }
+    if (nextVoterPhotoUrlMedium && voterPhotoUrlMedium !== nextVoterPhotoUrlMedium) {
+      // console.log('voterPhotoUrlMedium: ', voterPhotoUrlMedium, ', nextVoterPhotoUrlMedium: ', nextVoterPhotoUrlMedium);
+      return true;
+    }
+    return false;
+  }
+
   componentWillUnmount () {
     // this.ballotStoreListener.remove();
     this.appStoreListener.remove();
@@ -158,16 +210,10 @@ class HeaderBackToBallot extends Component {
 
   onAppStoreChange () {
     this.setState({
-      showSignInModal: AppStore.showSignInModal(),
       scrolledDown: AppStore.getScrolledDown(),
+      showSignInModal: AppStore.showSignInModal(),
     });
   }
-
-  /*
-  onBallotStoreChange () {
-    this.setState({ bookmarks: BallotStore.bookmarks });
-  }
-  */
 
   onCandidateStoreChange () {
     const { candidateWeVoteId } = this.state;
@@ -278,10 +324,12 @@ class HeaderBackToBallot extends Component {
   }
 
   render () {
+    renderLog(__filename);
     const { organizationWeVoteId, candidate, voter, officeName, officeWeVoteId, scrolledDown } = this.state;
     const { classes, pathname } = this.props;
-    renderLog(__filename);
+    const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
+    // console.log('HeaderBackToBallot render');
 
     let backToLink;
     if (organizationWeVoteId && candidate && candidate.google_civic_election_id) {
@@ -344,32 +392,50 @@ class HeaderBackToBallot extends Component {
             id="backToLinkTabHeader"
           />
 
-          {this.state.profilePopUpOpen && voter.is_signed_in && (
-          <HeaderBarProfilePopUp
-            hideProfilePopUp={this.hideProfilePopUp}
-            onClick={this.toggleProfilePopUp}
-            profilePopUpOpen={this.state.profilePopUpOpen}
-            signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
-            toggleProfilePopUp={this.toggleProfilePopUp}
-            toggleSignInModal={this.toggleSignInModal}
-            transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-            voter={this.props.voter}
-            weVoteBrandingOff={this.state.we_vote_branding_off}
-          />
-          )}
-
           {isWebApp() && (
           <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
-            {voterPhotoUrlMedium ? (
-              <div id="profileAvatarHeaderBar" className="header-nav__avatar-container">
-                <img
-                  className="header-nav__avatar"
-                  alt="profile avatar"
-                  src={voterPhotoUrlMedium}
-                  height={34}
-                  width={34}
+            {voterIsSignedIn ? (
+              <span>
+                {voterPhotoUrlMedium ? (
+                  <div
+                    id="profileAvatarHeaderBar"
+                    className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
+                    onClick={this.toggleProfilePopUp}
+                  >
+                    <img
+                      className="header-nav__avatar"
+                      src={voterPhotoUrlMedium}
+                      height={34}
+                      width={34}
+                      alt="Your Profile"
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <IconButton
+                      classes={{ root: classes.iconButtonRoot }}
+                      id="profileAvatarHeaderBar"
+                      onClick={this.toggleProfilePopUp}
+                    >
+                      <AccountCircleIcon />
+                    </IconButton>
+                  </div>
+                )
+                }
+                {this.state.profilePopUpOpen && (
+                <HeaderBarProfilePopUp
+                  hideProfilePopUp={this.hideProfilePopUp}
+                  onClick={this.toggleProfilePopUp}
+                  profilePopUpOpen={this.state.profilePopUpOpen}
+                  signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+                  toggleProfilePopUp={this.toggleProfilePopUp}
+                  toggleSignInModal={this.toggleSignInModal}
+                  transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+                  voter={this.props.voter}
+                  weVoteBrandingOff={this.state.we_vote_branding_off}
                 />
-              </div>
+                )}
+              </span>
             ) : (
               <Button
                 className="header-sign-in"

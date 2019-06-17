@@ -5,8 +5,10 @@ import styled from 'styled-components';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ImageHandler from '../ImageHandler';
+import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import ReadMore from '../Widgets/ReadMore';
 import FollowToggle from '../Widgets/FollowToggle';
@@ -92,14 +94,20 @@ class PositionItem extends Component {
     const nothingToDisplay = null;
     const organizationWeVoteId = position.organization_we_vote_id || position.speaker_we_vote_id;
 
-    const popoverId = '';
-    
+    let popoverId = '';
+
     document.onScroll = () => {
-      popoverId="on-scroll-popover"
-    }
+      popoverId = 'on-scroll-popover';
+    };
 
     if (showPosition) {
       const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
+      let moreInfoUrl = position.more_info_url;
+      if (moreInfoUrl) {
+        if (!moreInfoUrl.toLowerCase().startsWith('http')) {
+          moreInfoUrl = `http://${moreInfoUrl}`;
+        }
+      }
       return (
         <>
           <div className="u-show-desktop-tablet">
@@ -143,7 +151,12 @@ class PositionItem extends Component {
                         </Link>
                       </StickyPopover>
                     </DesktopItemName>
-                    <DesktopItemIssues>{/* Issues go here */}</DesktopItemIssues>
+                    <DesktopItemIssues>
+                      <IssuesByOrganizationDisplayList
+                        organizationWeVoteId={organizationWeVoteId}
+                        placement="bottom"
+                      />
+                    </DesktopItemIssues>
                   </DesktopItemNameIssueContainer>
                   <DesktopItemEndorsementDisplay>
                     {supportOpposeInfo === 'supportFollow' ? (
@@ -181,6 +194,23 @@ class PositionItem extends Component {
                     <div className="u-float-right">
                       Flag Links
                     </div> */}
+                    {moreInfoUrl ? (
+                      <div className="u-float-right">
+                        <OpenExternalWebSite
+                          url={moreInfoUrl}
+                          target="_blank"
+                          className="u-gray-mid"
+                          body={(
+                            <span>
+                              view source
+                              {' '}
+                              <i className="fas fa-external-link-alt" aria-hidden="true" />
+                            </span>
+                          )}
+                        />
+                      </div>
+                    ) : null
+                    }
                   </DesktopItemFooter>
                 </DesktopItemBody>
               </PositionItemDesktop>
@@ -207,9 +237,14 @@ class PositionItem extends Component {
                       { position.speaker_display_name }
                     </Link>
                   </MobileItemName>
-                  <MobileItemIssues>{/* Issues go here */}</MobileItemIssues>
+                  <MobileItemIssues>
+                    <IssuesByOrganizationDisplayList
+                      organizationWeVoteId={organizationWeVoteId}
+                      placement="bottom"
+                    />
+                  </MobileItemIssues>
                 </MobileItemNameIssueContainer>
-                <MobileItemFollowToggleEndorsementDisplay>
+                <MobileItemEndorsementContainer>
                   <MobileItemEndorsementDisplay>
                     {supportOpposeInfo === 'supportFollow' ? (
                       <SupportFollow>
@@ -235,72 +270,45 @@ class PositionItem extends Component {
                       </>
                     )}
                   </MobileItemEndorsementDisplay>
-                  <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
-                </MobileItemFollowToggleEndorsementDisplay>
+                </MobileItemEndorsementContainer>
               </MobileItemHeader>
               <MobileItemBody>
-                <MobileItemDescriptionEndorsementContainer>
+                <MobileItemDescriptionFollowTogglContainer>
                   <MobileItemDescription>
                     {positionDescription}
                   </MobileItemDescription>
-                </MobileItemDescriptionEndorsementContainer>
+                  <MobileItemFollowToggleDisplay>
+                    <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
+                  </MobileItemFollowToggleDisplay>
+                </MobileItemDescriptionFollowTogglContainer>
                 <MobileItemFooter>
                   {/* <strong>Was this Useful?</strong>
                   Yes  No
                   <div className="u-float-right">
                     Flag Links
                   </div> */}
+                  {moreInfoUrl ? (
+                    <div className="u-float-right">
+                      <OpenExternalWebSite
+                        url={moreInfoUrl}
+                        target="_blank"
+                        className="u-gray-mid"
+                        body={(
+                          <span>
+                            source
+                            {' '}
+                            <i className="fas fa-external-link-alt" aria-hidden="true" />
+                          </span>
+                        )}
+                      />
+                    </div>
+                  ) : null
+                  }
                 </MobileItemFooter>
               </MobileItemBody>
             </PositionItemMobile>
           </div>
         </>
-
-      // <PositionItemListItem className="card-child position-item">
-      //   {/* One Position on this Candidate */}
-      //   <div className="card-child__media-object-anchor">
-      //     <OverlayTrigger
-      //       delay={{ show: 700, hide: 100 }}
-      //       trigger={['hover', 'focus']}
-      //       rootClose
-      //       placement="bottom"
-      //       overlay={organizationCardPopover}
-      //     >
-      //       <Link to={speakerLink} className="u-no-underline">
-      //         { position.speaker_image_url_https_medium ? (
-      //           <ImageHandler
-      //             className="card-child__avatar"
-      //             sizeClassName="icon-lg"
-      //             imageUrl={position.speaker_image_url_https_medium}
-      //           />
-      //         ) :
-      //           imagePlaceholder }
-      //       </Link>
-      //     </OverlayTrigger>
-      //     <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
-      //   </div>
-      //   <div className="card-child__media-object-content">
-      //     <div className="card-child__content">
-      //       <div className="u-flex">
-      //         <h4 className="card-child__display-name">
-      //           <OverlayTrigger
-      //             delay={{ show: 700, hide: 100 }}
-      //             trigger={['hover', 'focus']}
-      //             rootClose
-      //             placement="bottom"
-      //             overlay={organizationCardPopover}
-      //           >
-      //             <Link to={speakerLink}>
-      //               { position.speaker_display_name }
-      //             </Link>
-      //           </OverlayTrigger>
-      //         </h4>
-      //         <FriendsOnlyIndicator isFriendsOnly={!position.is_public_position} />
-      //       </div>
-      //       {positionDescription}
-      //     </div>
-      //   </div>
-      // </PositionItemListItem>
       );
     } else {
       return nothingToDisplay;
@@ -358,7 +366,7 @@ const MobileItemIssues = styled.div`
   font-size: 14px;
 `;
 
-const MobileItemFollowToggleEndorsementDisplay = styled.div`
+const MobileItemEndorsementContainer = styled.div`
   margin-left: auto;
   margin-top: auto;
   margin-bottom: auto;
@@ -378,13 +386,20 @@ const MobileItemBody = styled.div`
   border-bottom-left-radius: 5px;
 `;
 
-const MobileItemDescriptionEndorsementContainer = styled.div`
+const MobileItemDescriptionFollowTogglContainer = styled.div`
   left: 2px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const MobileItemDescription = styled.div`
   font-size: 16px;
   color: #333;
+  flex: 1 1 0;
+`;
+
+const MobileItemFollowToggleDisplay = styled.div`
+  width: 75px;
 `;
 
 const MobileItemFooter = styled.div`
@@ -457,7 +472,7 @@ const DesktopItemBody = styled.div`
   margin: 0;
 `;
 
-const DesktopItemDescription = styled.p`
+const DesktopItemDescription = styled.div`
   font-size: 14px;
   margin-top: 8px;
 `;

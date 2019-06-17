@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import AccountCircleIcon from '@material-ui/core/SvgIcon/SvgIcon';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Appbar from '@material-ui/core/AppBar/index';
 import Toolbar from '@material-ui/core/Toolbar/index';
 import Button from '@material-ui/core/Button/index';
