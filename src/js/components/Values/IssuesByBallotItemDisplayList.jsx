@@ -124,7 +124,6 @@ class IssuesByBallotItemDisplayList extends Component {
         key={`issueByBallotItemPopover-${this.state.ballotItemWeVoteId}-${oneIssue.issue_we_vote_id}`}
         openOnClick
         showCloseIcon
-        popoverId="custom-popover-component"
       >
         {valueIconAndText}
         {/* <ValueIconAndTextListItem
@@ -282,6 +281,7 @@ const PopoverWrapper = styled.div`
 const PopoverHeader = styled.div`
   background: ${({ theme }) => theme.colors.brandBlue};
   padding: 4px 8px;
+  height: 35px;
   color: white;
   display: flex;
   justify-content: flex-start;
