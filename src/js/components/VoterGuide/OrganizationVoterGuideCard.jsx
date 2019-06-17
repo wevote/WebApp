@@ -8,7 +8,7 @@ import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging'; // numberWithCommas,
 import FollowToggle from '../Widgets/FollowToggle';
-import {numberWithCommas, removeTwitterNameFromDescription} from '../../utils/textFormat';
+import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
 import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 
 // This Component is used to display the Organization by TwitterHandle

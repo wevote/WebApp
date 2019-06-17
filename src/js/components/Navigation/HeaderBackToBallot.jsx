@@ -167,6 +167,10 @@ class HeaderBackToBallot extends Component {
       // console.log('this.state.organizationWeVoteId: ', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId', nextState.organizationWeVoteId);
       return true;
     }
+    if (this.state.profilePopUpOpen !== nextState.profilePopUpOpen) {
+      // console.log('this.state.profilePopUpOpen: ', this.state.profilePopUpOpen, ', nextState.profilePopUpOpen', nextState.profilePopUpOpen);
+      return true;
+    }
     if (this.state.scrolledDown !== nextState.scrolledDown) {
       // console.log('this.state.scrolledDown: ', this.state.scrolledDown, ', nextState.scrolledDown', nextState.scrolledDown);
       return true;

@@ -140,7 +140,7 @@ class IssuesByOrganizationDisplayList extends Component {
 
     // console.log('this.state.organizationWeVoteId: ', this.state.organizationWeVoteId);
     // console.log('this.state.issuesUnderThisOrganization: ', this.state.issuesUnderThisOrganization);
-    if ( !issuesUnderThisOrganizationFound ) {
+    if (!issuesUnderThisOrganizationFound) {
       // If we don't have any endorsement text, show the alternate component passed in
       return this.props.children || null;
     }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import TextTruncate from 'react-text-truncate';
 import styled from 'styled-components';
 import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
@@ -9,7 +10,6 @@ import { historyPush } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayList';
 import ItemActionBar from '../Widgets/ItemActionBar';
-import LearnMore from '../Widgets/LearnMore';
 import { renderLog } from '../../utils/logging';
 import OfficeNameText from '../Widgets/OfficeNameText';
 import ReadMore from '../Widgets/ReadMore';
@@ -40,7 +40,7 @@ class CandidateItem extends Component {
     this.state = {
       ballotItemDisplayName: '',
       ballotpediaCandidateSummary: '',
-      ballotpediaCandidateUrl: '',
+      // ballotpediaCandidateUrl: '',
       candidatePhotoUrl: '',
       candidateWeVoteId: '',
       contestOfficeName: '',
@@ -83,7 +83,7 @@ class CandidateItem extends Component {
       this.setState({
         ballotItemDisplayName: candidate.ballot_item_display_name,
         ballotpediaCandidateSummary: candidate.ballotpedia_candidate_summary,
-        ballotpediaCandidateUrl: candidate.ballotpedia_candidate_url,
+        // ballotpediaCandidateUrl: candidate.ballotpedia_candidate_url,
         candidatePhotoUrl,
         candidateWeVoteId: this.props.candidateWeVoteId,
         contestOfficeName: candidate.contest_office_name,
@@ -141,7 +141,7 @@ class CandidateItem extends Component {
     this.setState({
       ballotItemDisplayName: candidate.ballot_item_display_name,
       ballotpediaCandidateSummary: candidate.ballotpedia_candidate_summary,
-      ballotpediaCandidateUrl: candidate.ballotpedia_candidate_url,
+      // ballotpediaCandidateUrl: candidate.ballotpedia_candidate_url,
       candidatePhotoUrl,
       contestOfficeName: candidate.contest_office_name,
       officeWeVoteId: candidate.contest_office_we_vote_id,
@@ -226,7 +226,7 @@ class CandidateItem extends Component {
     const {
       ballotItemDisplayName,
       ballotpediaCandidateSummary,
-      ballotpediaCandidateUrl,
+      // ballotpediaCandidateUrl,
       politicalParty,
       twitterDescription,
       twitterFollowersCount,
@@ -252,20 +252,20 @@ class CandidateItem extends Component {
     ballotpediaCandidateSummaryText = ballotpediaCandidateSummaryText.split(/<[^<>]*>/).join('');
     const candidateText = twitterDescriptionText + ballotpediaCandidateSummaryText;
 
+    // learnMoreUrl={this.getCandidateLink()}
     const topCommentByBallotItem = (
       <TopCommentByBallotItem
         ballotItemWeVoteId={candidateWeVoteId}
-        learnMoreUrl={this.getCandidateLink()}
       >
         {/* If there aren't any comments about the candidate, show the text description of the candidate */}
         { candidateText.length ? (
           <div className={`u-stack--sm${this.props.linkToBallotItemPage ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
             <div className="card-main__description">
-              <LearnMore
-                  learn_more_text="Read more on Ballotpedia"
-                  num_of_lines={2}
-                  learn_more_link={ballotpediaCandidateUrl}
-                  text_to_display={candidateText}
+              <TextTruncate
+                line={2}
+                truncateText="..."
+                text={candidateText}
+                textTruncateChild={null}
               />
             </div>
             <span className="card-main__read-more-pseudo" />
