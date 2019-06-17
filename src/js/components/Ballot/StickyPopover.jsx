@@ -35,7 +35,8 @@ class StickyPopover extends Component {
   }
 
   onClickTarget () {
-    this.setState({ showPopover: true });
+    const currentState = this.state.showPopover;
+    this.setState({ showPopover: !currentState });
   }
 
   onMouseEnterPopover () {
