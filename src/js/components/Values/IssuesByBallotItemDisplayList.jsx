@@ -119,7 +119,7 @@ class IssuesByBallotItemDisplayList extends Component {
       <StickyPopover
         delay={{ show: 1000000, hide: 100 }}
         popoverComponent={valuePopover}
-        placement="bottom"
+        placement="auto"
         id="issues-popover-trigger-click-root-close"
         openOnClick
         showCloseIcon
@@ -224,12 +224,19 @@ class IssuesByBallotItemDisplayList extends Component {
   }
 }
 
-const Issues = styled.div`
+const Wrapper = styled.div`
+  overflow: show;
   display: flex;
   flex-flow: row;
-  max-width: 60%;
+  justify-content: space-between;
+`;
+
+const Issues = styled.div`
+  width: 70%
+  padding: 8px 0;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    max-width: 68%;
+    width: 78%;
+    padding: 12px 0;
   }
 `;
 
@@ -239,11 +246,11 @@ const IssueList = styled.ul`
   padding-inline-start: 0;
 `;
 
-const Wrapper = styled.div`
-  overflow-x: hidden;
-  display: flex;
-  flex-flow: row;
-  justify-content: space-between;
+const ValueIconAndText = styled.span`
+  position: relative;
+  width: fit-content;
+  flex: none;
+  padding: 4px;
 `;
 
 const MoreWrapper = styled.p`
@@ -251,9 +258,12 @@ const MoreWrapper = styled.p`
   flex-flow: row;
   display: inline;
   background-color: white;
-  padding-top: 2px;
-  padding-left: 10px;
-  padding-right: 10px;
+  position: absolute;
+  right: -14px;
+  width: 90px;
+  height: 40px;
+  display: flex;
+  align-items: center;
   cursor: pointer;
 `;
 
@@ -298,9 +308,5 @@ const PopoverDescriptionText = styled.div`
 //   flex: 1 0 auto;
 //   align-items: start;
 // `;
-
-const ValueIconAndText = styled.span`
-  
-`;
 
 export default IssuesByBallotItemDisplayList;
