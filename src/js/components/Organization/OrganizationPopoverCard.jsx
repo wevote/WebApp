@@ -117,9 +117,11 @@ class OrganizationPopoverCard extends Component {
 
     return (
       <Wrapper>
-        {organizationBannerUrl &&
-          <img src={organizationBannerUrl} alt={organizationName} />
-        }
+        {organizationBannerUrl && (
+          // <BannerImage>
+          <img src={organizationBannerUrl} />
+          // </BannerImage>
+        )}
         <Container>
           <LogoFollowToggleContainer>
             { organizationPhotoUrlLarge && (
@@ -229,8 +231,7 @@ const FollowToggleContainer = styled.div`
 `;
 
 const MainContent = styled.div`
-  position: relative;
-  bottom: 24px;
+  margin-top: -24px;
 `;
 
 const OrganizationName = styled.h3`

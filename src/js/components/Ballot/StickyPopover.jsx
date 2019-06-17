@@ -86,7 +86,7 @@ class StickyPopover extends Component {
           <Popover
             onMouseEnter={this.onMouseEnterPopover}
             onMouseLeave={this.onMouseLeave}
-            id={'on-scroll-popover'}
+            id={popoverId}
           >
             {popoverComponent}
             {this.props.showCloseIcon ? (

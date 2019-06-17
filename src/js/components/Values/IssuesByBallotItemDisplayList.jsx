@@ -117,7 +117,7 @@ class IssuesByBallotItemDisplayList extends Component {
 
     return (
       <StickyPopover
-        delay={{ show: 1000000, hide: 10000000 }}
+        delay={{ show: 1000000, hide: 100 }}
         popoverComponent={valuePopover}
         placement="bottom"
         id="issues-popover-trigger-click-root-close"
@@ -300,7 +300,7 @@ const PopoverDescriptionText = styled.div`
 // `;
 
 const ValueIconAndText = styled.span`
-  position: relative;
+  
 `;
 
 export default IssuesByBallotItemDisplayList;

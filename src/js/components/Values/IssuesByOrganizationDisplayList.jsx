@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
+// import { OverlayTrigger, Popover } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg';
 import styled from 'styled-components';
@@ -7,6 +7,7 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import StickyPopover from '../Ballot/StickyPopover';
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
 class IssuesByOrganizationDisplayList extends Component {
@@ -66,26 +67,23 @@ class IssuesByOrganizationDisplayList extends Component {
 
   generateValueListItem = (oneIssue) => {
     const valuePopover = (
-      <Popover
-        id="positions-popover-trigger-click-root-close"
-        title={(
-          <PopoverTitle className="u-f4 u-no-break">
-            <PopoverTitleIcon>
-              <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-                        svgStyle={{ fill: '#fff', padding: '1px 1px 1px 0px' }}
-              />
-            </PopoverTitleIcon>
-            <PopoverTitleText>
-              {oneIssue.issue_name}
-            </PopoverTitleText>
-            <span className="fas fa-times pull-right u-cursor--pointer" aria-hidden="true" />
-          </PopoverTitle>
-        )}
-        onClick={IssuesByOrganizationDisplayList.closePopover}
-      >
-        {oneIssue.issue_description}
-      </Popover>
+      <PopoverWrapper>
+        <PopoverHeader>
+          <PopoverTitleIcon>
+            <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
+              svgStyle={{ fill: '#fff', padding: '1px 1px 1px 0px' }}
+            />
+          </PopoverTitleIcon>
+          <PopoverTitleText>
+            {oneIssue.issue_name}
+          </PopoverTitleText>
+        </PopoverHeader>
+        <PopoverDescriptionText>
+          {oneIssue.issue_description}
+        </PopoverDescriptionText>
+      </PopoverWrapper>
     );
+
     // Tried to make the issues icons accessible via tabbing, caused too many side affects
     const valueIconAndText = (
       <ValueIconAndText
@@ -93,11 +91,11 @@ class IssuesByOrganizationDisplayList extends Component {
         className="u-no-break u-cursor--pointer issue-icon-list__issue-block"
       >
         {oneIssue.issue_icon_local_path ? (
-          <span className="issue-icon-list__issue-icon">
+          <div className="issue-icon-list__issue-icon">
             <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
                       svgStyle={{ fill: '#999', padding: '1px 1px 1px 0px' }}
             />
-          </span>
+          </div>
         ) : null
         }
         <div className="u-margin-left--xxs issue-icon-list__issue-label-name">
@@ -107,20 +105,21 @@ class IssuesByOrganizationDisplayList extends Component {
     );
 
     return (
-      <ValueIconAndTextListItem
-        className="u-push--sm"
-        key={`issue-icon-${oneIssue.issue_we_vote_id}`}
+      <StickyPopover
+        delay={{ show: 10000000, hide: 100 }}
+        popoverComponent={valuePopover}
+        placement="auto"
+        id="issues-popover-trigger-click-root-close"
+        openOnClick
+        showCloseIcon
+        popoverId="custom-popover-component-organization"
       >
-        <OverlayTrigger
-          trigger="click"
-          rootClose
-          placement="bottom"
-          overlay={valuePopover}
-          id={`overlayTrigger-${oneIssue.issue_we_vote_id}`}
-        >
-          {valueIconAndText}
-        </OverlayTrigger>
-      </ValueIconAndTextListItem>
+        {valueIconAndText}
+        {/* <ValueIconAndTextListItem
+          className="u-push--sm"
+          key={`issue-icon-${oneIssue.issue_we_vote_id}`}
+        /> */}
+      </StickyPopover>
     );
   }
 
@@ -174,48 +173,71 @@ class IssuesByOrganizationDisplayList extends Component {
   }
 }
 
-const IssuesByOrganization = styled.div`
-  display: flex;
-  flex-flow: row;
-  max-width: 80%;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    max-width: 88%;
-  }
-`;
-
-const IssueByOrganizationList = styled.ul`
-  display: flex;
-  flex-flow: row wrap;
-  padding-inline-start: 0;
-`;
-
 const Wrapper = styled.div`
-  overflow-x: hidden;
+  overflow: show;
   display: flex;
   flex-flow: row;
   justify-content: space-between;
 `;
 
-const PopoverTitle = styled.span`
+const IssuesByOrganization = styled.div`
+  width: 85%
+  padding: 8px 0;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    width: 90%;
+    padding: 12px 0;
+  }
+`;
+
+const IssueByOrganizationList = styled.ul`
   display: flex;
-  flex: 1 0 auto;
-  align-items: start;
-`;
-
-const PopoverTitleIcon = styled.span`
-  flex: none;
-`;
-
-const PopoverTitleText = styled.div`
-`;
-
-const ValueIconAndTextListItem = styled.li`
-  display: flex;
-  flex: 1 0 auto;
-  align-items: start;
+  flex-wrap: wrap;
+  padding-inline-start: 0;
+  justify-content: flex-start;
+  width: 100%;
 `;
 
 const ValueIconAndText = styled.span`
+  position: relative;
+  width: fit-content;
+  flex: none;
+  padding: 4px;
+`;
+
+const PopoverWrapper = styled.div`
+  width: calc(100% + 24px);
+  height: 100%;
+  position: relative;
+  right: 12px;
+  bottom: 8px;
+  border-radius: 3px;
+`;
+
+const PopoverHeader = styled.div`
+  background: ${({ theme }) => theme.colors.brandBlue};
+  padding: 4px 8px;
+  color: white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 4px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+`;
+
+const PopoverTitleIcon = styled.span`
+  font-weight: bold;
+  font-size: 16px;
+`;
+
+const PopoverTitleText = styled.div`
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 8px;
+`;
+
+const PopoverDescriptionText = styled.div`
+  padding: 8px;
 `;
 
 export default IssuesByOrganizationDisplayList;

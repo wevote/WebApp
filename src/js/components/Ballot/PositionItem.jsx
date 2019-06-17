@@ -94,11 +94,7 @@ class PositionItem extends Component {
     const nothingToDisplay = null;
     const organizationWeVoteId = position.organization_we_vote_id || position.speaker_we_vote_id;
 
-    let popoverId = '';
-
-    document.onScroll = () => {
-      popoverId = 'on-scroll-popover';
-    };
+    const popoverId = '';
 
     if (showPosition) {
       const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
@@ -115,11 +111,11 @@ class PositionItem extends Component {
               <DesktopItemLeft>
                 <DesktopItemImage>
                   <StickyPopover
-                    delay={{ show: 700, hide: 1000000 }}
+                    delay={{ show: 700, hide: 100 }}
                     popoverComponent={organizationPopoverCard}
-                    placement="bottom"
-                    id="positions-popover-trigger-click-root-close"
-                    popoverId={popoverId}
+                    placement="auto"
+                    // id="positions-popover-trigger-click-root-close"
+                    // popoverId={popoverId}
                   >
                     <Link to={speakerLink} className="u-no-underline">
                       { position.speaker_image_url_https_medium ? (
@@ -142,7 +138,7 @@ class PositionItem extends Component {
                       <StickyPopover
                         delay={{ show: 700, hide: 100 }}
                         popoverComponent={organizationPopoverCard}
-                        placement="bottom"
+                        placement="auto"
                         id="positions-popover-trigger-click-root-close"
                         popoverId={popoverId}
                       >
@@ -154,7 +150,7 @@ class PositionItem extends Component {
                     <DesktopItemIssues>
                       <IssuesByOrganizationDisplayList
                         organizationWeVoteId={organizationWeVoteId}
-                        placement="bottom"
+                        placement="auto"
                       />
                     </DesktopItemIssues>
                   </DesktopItemNameIssueContainer>
