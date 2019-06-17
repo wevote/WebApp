@@ -109,6 +109,7 @@ class IssuesByOrganizationDisplayList extends Component {
         popoverComponent={valuePopover}
         placement="auto"
         id="issues-popover-trigger-click-root-close"
+        key={`issueByOrganizationPopover-${this.state.organizationWeVoteId}-${oneIssue.issue_we_vote_id}`}
         openOnClick
         showCloseIcon
       >
