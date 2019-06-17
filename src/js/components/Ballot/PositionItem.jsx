@@ -92,19 +92,26 @@ class PositionItem extends Component {
     const nothingToDisplay = null;
     const organizationWeVoteId = position.organization_we_vote_id || position.speaker_we_vote_id;
 
+    const popoverId = '';
+    
+    document.onScroll = () => {
+      popoverId="on-scroll-popover"
+    }
+
     if (showPosition) {
       const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
       return (
-        <React.Fragment>
+        <>
           <div className="u-show-desktop-tablet">
             <DesktopContainer>
               <DesktopItemLeft>
                 <DesktopItemImage>
                   <StickyPopover
-                    delay={{ show: 700, hide: 100 }}
+                    delay={{ show: 700, hide: 1000000 }}
                     popoverComponent={organizationPopoverCard}
                     placement="bottom"
                     id="positions-popover-trigger-click-root-close"
+                    popoverId={popoverId}
                   >
                     <Link to={speakerLink} className="u-no-underline">
                       { position.speaker_image_url_https_medium ? (
@@ -129,6 +136,7 @@ class PositionItem extends Component {
                         popoverComponent={organizationPopoverCard}
                         placement="bottom"
                         id="positions-popover-trigger-click-root-close"
+                        popoverId={popoverId}
                       >
                         <Link to={speakerLink}>
                           { position.speaker_display_name }
@@ -143,13 +151,13 @@ class PositionItem extends Component {
                         +1
                       </SupportFollow>
                     ) : (
-                      <React.Fragment>
+                      <>
                         {supportOpposeInfo === 'support' ? (
                           <Support>
                             <ThumbUpIcon />
                           </Support>
                         ) : (
-                          <React.Fragment>
+                          <>
                             {supportOpposeInfo === 'oppose' ? (
                               <Oppose>
                                 <ThumbDownIcon />
@@ -157,9 +165,9 @@ class PositionItem extends Component {
                             ) : (
                               null
                             )}
-                          </React.Fragment>
+                          </>
                         )}
-                      </React.Fragment>
+                      </>
                     )}
                   </DesktopItemEndorsementDisplay>
                 </DesktopItemHeader>
@@ -208,13 +216,13 @@ class PositionItem extends Component {
                         +1
                       </SupportFollow>
                     ) : (
-                      <React.Fragment>
+                      <>
                         {supportOpposeInfo === 'support' ? (
                           <Support>
                             <ThumbUpIcon />
                           </Support>
                         ) : (
-                          <React.Fragment>
+                          <>
                             {supportOpposeInfo === 'oppose' ? (
                               <Oppose>
                                 <ThumbDownIcon />
@@ -222,9 +230,9 @@ class PositionItem extends Component {
                             ) : (
                               null
                             )}
-                          </React.Fragment>
+                          </>
                         )}
-                      </React.Fragment>
+                      </>
                     )}
                   </MobileItemEndorsementDisplay>
                   <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
@@ -246,7 +254,7 @@ class PositionItem extends Component {
               </MobileItemBody>
             </PositionItemMobile>
           </div>
-        </React.Fragment>
+        </>
 
       // <PositionItemListItem className="card-child position-item">
       //   {/* One Position on this Candidate */}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Overlay, Popover } from 'react-bootstrap';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { renderLog } from '../../utils/logging';
 
@@ -13,20 +14,28 @@ class StickyPopover extends Component {
     popoverComponent: PropTypes.node.isRequired,
     placement: PropTypes.string,
     popoverId: PropTypes.string,
+    showCloseIcon: PropTypes.bool,
+    openOnClick: PropTypes.bool,
   };
 
   constructor (props) {
     super(props);
     this.state = { showPopover: false };
     this.attachRef = target => this.setState({ target });
+    this.onClickTarget = this.onClickTarget.bind(this);
     this.onMouseEnterTarget = this.onMouseEnterTarget.bind(this);
     this.onMouseEnterPopover = this.onMouseEnterPopover.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
+    this.closePopover = this.closePopover.bind(this);
   }
 
   onMouseEnterTarget () {
     const { delay } = this.props;
     this.enterTimeoutId = setTimeout(() => this.setState({ showPopover: true }), delay.show);
+  }
+
+  onClickTarget () {
+    this.setState({ showPopover: true });
   }
 
   onMouseEnterPopover () {
@@ -44,28 +53,49 @@ class StickyPopover extends Component {
     this.leaveTimeoutId = setTimeout(() => this.setState({ showPopover: false }), delay.hide);
   }
 
+  closePopover () {
+    this.setState({ showPopover: false });
+  }
+
   render () {
     const { popoverComponent, children, placement, popoverId } = this.props;
     const { showPopover, target } = this.state;
     renderLog(__filename);
     return (
       <React.Fragment>
-        {React.Children.map(children, child => React.cloneElement(child, {
-          ref: this.attachRef,
-          onMouseEnter: this.onMouseEnterTarget,
-          onMouseLeave: this.onMouseLeave,
-        }))}
+        {this.props.openOnClick ? (
+          React.Children.map(children, child => React.cloneElement(child, {
+            ref: this.attachRef,
+            onMouseEnter: this.onMouseEnterTarget,
+            onMouseLeave: this.onMouseLeave,
+            onClick: this.onClickTarget,
+          }))
+        ) : (
+          React.Children.map(children, child => React.cloneElement(child, {
+            ref: this.attachRef,
+            onMouseEnter: this.onMouseEnterTarget,
+            onMouseLeave: this.onMouseLeave,
+          }))
+        )}
         <Overlay
           show={showPopover}
           target={target}
           placement={placement}
+          className="u-position-relative"
         >
           <Popover
             onMouseEnter={this.onMouseEnterPopover}
             onMouseLeave={this.onMouseLeave}
-            id={popoverId || undefined}
+            id={'on-scroll-popover'}
           >
             {popoverComponent}
+            {this.props.showCloseIcon ? (
+              <CloseIcon>
+                <span className="fas fa-times u-cursor--pointer" aria-hidden="true" onClick={this.closePopover} />
+              </CloseIcon>
+            ) : (
+              null
+            )}
           </Popover>
         </Overlay>
 
@@ -73,5 +103,17 @@ class StickyPopover extends Component {
     );
   }
 }
+
+const CloseIcon = styled.div`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 15px;
+  height: 15px;
+  * {
+    width: 100%;
+  }
+  color: white;
+`;
 
 export default StickyPopover;

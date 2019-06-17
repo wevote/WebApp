@@ -41,3 +41,17 @@
     }
   }
 }
+
+.bs-popover-bottom {
+  border: none !important;
+  box-shadow: 1px 1px 4px 0 #ddd !important;
+}
+
+#custom-popover-component {
+  margin-bottom: -100px !important;
+}
+
+#on-scroll-popover {
+  // transform: translateY(100px) !important;
+  margin-bottom: -100px !important;
+}
