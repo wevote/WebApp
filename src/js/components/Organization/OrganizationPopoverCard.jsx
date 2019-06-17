@@ -117,20 +117,17 @@ class OrganizationPopoverCard extends Component {
 
     return (
       <Wrapper>
-        {organizationBannerUrl && (
+        {organizationBannerUrl ? (
           <BannerImage>
-            {organizationBannerUrl ? (
-              <img src={organizationBannerUrl} />
-            ) : (
-              <>
-                <br />
-                <br />
-                <br />
-              </>
-            )}
-
+            <img src={organizationBannerUrl} />
           </BannerImage>
+        ) : (
+          <>
+            <br />
+            <br />
+          </>
         )}
+
         <Container>
           <LogoFollowToggleContainer>
             { organizationPhotoUrlLarge && (

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { OverlayTrigger, Popover } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg';
 import styled from 'styled-components';

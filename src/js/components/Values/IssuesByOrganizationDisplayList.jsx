@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { OverlayTrigger, Popover } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg';
 import styled from 'styled-components';
@@ -112,7 +111,6 @@ class IssuesByOrganizationDisplayList extends Component {
         id="issues-popover-trigger-click-root-close"
         openOnClick
         showCloseIcon
-        popoverId="custom-popover-component-organization"
       >
         {valueIconAndText}
         {/* <ValueIconAndTextListItem

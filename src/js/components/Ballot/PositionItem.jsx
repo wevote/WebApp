@@ -94,8 +94,6 @@ class PositionItem extends Component {
     const nothingToDisplay = null;
     const organizationWeVoteId = position.organization_we_vote_id || position.speaker_we_vote_id;
 
-    const popoverId = '';
-
     if (showPosition) {
       const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
       let moreInfoUrl = position.more_info_url;
@@ -114,8 +112,7 @@ class PositionItem extends Component {
                     delay={{ show: 700, hide: 100 }}
                     popoverComponent={organizationPopoverCard}
                     placement="auto"
-                    // id="positions-popover-trigger-click-root-close"
-                    // popoverId={popoverId}
+                    id="positions-popover-trigger-click-root-close"
                   >
                     <Link to={speakerLink} className="u-no-underline">
                       { position.speaker_image_url_https_medium ? (
@@ -140,7 +137,6 @@ class PositionItem extends Component {
                         popoverComponent={organizationPopoverCard}
                         placement="auto"
                         id="positions-popover-trigger-click-root-close"
-                        popoverId={popoverId}
                       >
                         <Link to={speakerLink}>
                           { position.speaker_display_name }
