@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg';
 import styled from 'styled-components';
@@ -7,6 +6,7 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
+import StickyPopover from '../Ballot/StickyPopover';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
@@ -78,25 +78,21 @@ class IssuesByBallotItemDisplayList extends Component {
 
   generateValueListItem = (oneIssue) => {
     const valuePopover = (
-      <Popover
-        id="positions-popover-trigger-click-root-close"
-        title={(
-          <PopoverTitle className="u-f4 u-no-break">
-            <PopoverTitleIcon>
-              <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
-                        svgStyle={{ fill: '#fff', padding: '1px 1px 1px 0px' }}
-              />
-            </PopoverTitleIcon>
-            <PopoverTitleText>
-              {oneIssue.issue_name}
-            </PopoverTitleText>
-            <span className="fas fa-times pull-right u-cursor--pointer" aria-hidden="true" />
-          </PopoverTitle>
-        )}
-        onClick={IssuesByBallotItemDisplayList.closePopover}
-      >
-        {oneIssue.issue_description}
-      </Popover>
+      <PopoverWrapper>
+        <PopoverHeader>
+          <PopoverTitleIcon>
+            <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
+              svgStyle={{ fill: '#fff', padding: '1px 1px 1px 0px' }}
+            />
+          </PopoverTitleIcon>
+          <PopoverTitleText>
+            {oneIssue.issue_name}
+          </PopoverTitleText>
+        </PopoverHeader>
+        <PopoverDescriptionText>
+          {oneIssue.issue_description}
+        </PopoverDescriptionText>
+      </PopoverWrapper>
     );
     // Tried to make the issues icons accessible via tabbing, caused too many side affects
     const valueIconAndText = (
@@ -105,11 +101,11 @@ class IssuesByBallotItemDisplayList extends Component {
         className="u-no-break u-cursor--pointer issue-icon-list__issue-block"
       >
         {oneIssue.issue_icon_local_path ? (
-          <span className="issue-icon-list__issue-icon">
+          <div className="issue-icon-list__issue-icon">
             <ReactSVG src={cordovaDot(`/img/global/svg-icons/issues/${oneIssue.issue_icon_local_path}.svg`)}
                       svgStyle={{ fill: '#999', padding: '1px 1px 1px 0px' }}
             />
-          </span>
+          </div>
         ) : null
         }
         <div className="u-margin-left--xxs issue-icon-list__issue-label-name">
@@ -119,20 +115,21 @@ class IssuesByBallotItemDisplayList extends Component {
     );
 
     return (
-      <ValueIconAndTextListItem
-        className="u-push--sm"
-        key={`issue-icon-${oneIssue.issue_we_vote_id}`}
+      <StickyPopover
+        delay={{ show: 1000000, hide: 100 }}
+        popoverComponent={valuePopover}
+        placement="auto"
+        id="issues-popover-trigger-click-root-close"
+        openOnClick
+        showCloseIcon
+        popoverId="custom-popover-component"
       >
-        <OverlayTrigger
-          trigger="click"
-          rootClose
-          placement="bottom"
-          overlay={valuePopover}
-          id={`overlayTrigger-${oneIssue.issue_we_vote_id}`}
-        >
-          {valueIconAndText}
-        </OverlayTrigger>
-      </ValueIconAndTextListItem>
+        {valueIconAndText}
+        {/* <ValueIconAndTextListItem
+          className="u-push--sm"
+          key={`issue-icon-${oneIssue.issue_we_vote_id}`}
+        /> */}
+      </StickyPopover>
     );
   }
 
@@ -226,12 +223,19 @@ class IssuesByBallotItemDisplayList extends Component {
   }
 }
 
-const Issues = styled.div`
+const Wrapper = styled.div`
+  overflow: show;
   display: flex;
   flex-flow: row;
-  max-width: 60%;
+  justify-content: space-between;
+`;
+
+const Issues = styled.div`
+  width: 70%
+  padding: 8px 0;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    max-width: 68%;
+    width: 78%;
+    padding: 12px 0;
   }
 `;
 
@@ -241,11 +245,11 @@ const IssueList = styled.ul`
   padding-inline-start: 0;
 `;
 
-const Wrapper = styled.div`
-  overflow-x: hidden;
-  display: flex;
-  flex-flow: row;
-  justify-content: space-between;
+const ValueIconAndText = styled.span`
+  position: relative;
+  width: fit-content;
+  flex: none;
+  padding: 4px;
 `;
 
 const MoreWrapper = styled.p`
@@ -253,32 +257,57 @@ const MoreWrapper = styled.p`
   flex-flow: row;
   display: inline;
   background-color: white;
-  padding-top: 2px;
-  padding-left: 10px;
-  padding-right: 10px;
+  position: absolute;
+  right: -30px;
+  margin-top: -3px;
+  width: 90px;
+  height: 40px;
+  display: flex;
+  align-items: center;
   cursor: pointer;
+  padding-left: 4px;
 `;
 
-const PopoverTitle = styled.span`
+const PopoverWrapper = styled.div`
+  width: calc(100% + 24px);
+  height: 100%;
+  position: relative;
+  right: 12px;
+  bottom: 8px;
+  border-radius: 3px;
+`;
+
+const PopoverHeader = styled.div`
+  background: ${({ theme }) => theme.colors.brandBlue};
+  padding: 4px 8px;
+  color: white;
   display: flex;
-  flex: 1 0 auto;
-  align-items: start;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 4px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
 `;
 
 const PopoverTitleIcon = styled.span`
-  flex: none;
+  font-weight: bold;
+  font-size: 16px;
 `;
 
 const PopoverTitleText = styled.div`
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 8px;
 `;
 
-const ValueIconAndTextListItem = styled.li`
-  display: flex;
-  flex: 1 0 auto;
-  align-items: start;
+const PopoverDescriptionText = styled.div`
+  padding: 8px;
 `;
 
-const ValueIconAndText = styled.span`
-`;
+// const ValueIconAndTextListItem = styled.li`
+//   display: flex;
+//   flex: 1 0 auto;
+//   align-items: start;
+// `;
 
 export default IssuesByBallotItemDisplayList;

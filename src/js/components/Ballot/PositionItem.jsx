@@ -103,7 +103,7 @@ class PositionItem extends Component {
         }
       }
       return (
-        <React.Fragment>
+        <>
           <div className="u-show-desktop-tablet">
             <DesktopContainer>
               <DesktopItemLeft>
@@ -111,7 +111,7 @@ class PositionItem extends Component {
                   <StickyPopover
                     delay={{ show: 700, hide: 100 }}
                     popoverComponent={organizationPopoverCard}
-                    placement="bottom"
+                    placement="auto"
                     id="positions-popover-trigger-click-root-close"
                   >
                     <Link to={speakerLink} className="u-no-underline">
@@ -135,7 +135,7 @@ class PositionItem extends Component {
                       <StickyPopover
                         delay={{ show: 700, hide: 100 }}
                         popoverComponent={organizationPopoverCard}
-                        placement="bottom"
+                        placement="auto"
                         id="positions-popover-trigger-click-root-close"
                       >
                         <Link to={speakerLink}>
@@ -146,7 +146,7 @@ class PositionItem extends Component {
                     <DesktopItemIssues>
                       <IssuesByOrganizationDisplayList
                         organizationWeVoteId={organizationWeVoteId}
-                        placement="bottom"
+                        placement="auto"
                       />
                     </DesktopItemIssues>
                   </DesktopItemNameIssueContainer>
@@ -156,13 +156,13 @@ class PositionItem extends Component {
                         +1
                       </SupportFollow>
                     ) : (
-                      <React.Fragment>
+                      <>
                         {supportOpposeInfo === 'support' ? (
                           <Support>
                             <ThumbUpIcon />
                           </Support>
                         ) : (
-                          <React.Fragment>
+                          <>
                             {supportOpposeInfo === 'oppose' ? (
                               <Oppose>
                                 <ThumbDownIcon />
@@ -170,9 +170,9 @@ class PositionItem extends Component {
                             ) : (
                               null
                             )}
-                          </React.Fragment>
+                          </>
                         )}
-                      </React.Fragment>
+                      </>
                     )}
                   </DesktopItemEndorsementDisplay>
                 </DesktopItemHeader>
@@ -243,13 +243,13 @@ class PositionItem extends Component {
                         +1
                       </SupportFollow>
                     ) : (
-                      <React.Fragment>
+                      <>
                         {supportOpposeInfo === 'support' ? (
                           <Support>
                             <ThumbUpIcon />
                           </Support>
                         ) : (
-                          <React.Fragment>
+                          <>
                             {supportOpposeInfo === 'oppose' ? (
                               <Oppose>
                                 <ThumbDownIcon />
@@ -257,9 +257,9 @@ class PositionItem extends Component {
                             ) : (
                               null
                             )}
-                          </React.Fragment>
+                          </>
                         )}
-                      </React.Fragment>
+                      </>
                     )}
                   </MobileItemEndorsementDisplay>
                 </MobileItemEndorsementContainer>
@@ -300,7 +300,7 @@ class PositionItem extends Component {
               </MobileItemBody>
             </PositionItemMobile>
           </div>
-        </React.Fragment>
+        </>
       );
     } else {
       return nothingToDisplay;

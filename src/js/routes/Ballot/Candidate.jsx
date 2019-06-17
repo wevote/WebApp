@@ -210,12 +210,10 @@ export default class Candidate extends Component {
           <div className="card__additional">
             {/* this.state.positionListFromAdvisersFollowedByVoter */}
             { this.state.allCachedPositionsForThisCandidate.length ? (
-              <div>
-                <PositionList
-                  incomingPositionList={this.state.allCachedPositionsForThisCandidate}
-                  ballotItemDisplayName={this.state.candidate.ballot_item_display_name}
-                />
-              </div>
+              <PositionList
+                incomingPositionList={this.state.allCachedPositionsForThisCandidate}
+                ballotItemDisplayName={this.state.candidate.ballot_item_display_name}
+              />
             ) : null
             }
             {/* Formerly voterGuidesToFollowForThisBallotItem */}
