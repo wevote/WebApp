@@ -1,12 +1,11 @@
 const assert = require('assert');
-const fs = require('fs');
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
 
 describe('example test',  () => {
   it('can check capabilities in order to identify platform', async () => {
-    const { isCordova, isMobile } = browser.capabilities;
+    const { isCordova, isMobile } = driver.config.capabilities;
     if (isCordova) {
       // switch contexts and click through intro
       const contexts = await driver.getContexts();

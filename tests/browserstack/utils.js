@@ -83,15 +83,12 @@ async function simpleTextInput (elementIdName, textValue) {
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
-let alreadyLoggedThisSession = false;
-function logToFile (message) {
-  if (alreadyLoggedThisSession) {
-    fs.appendFile('./browserstack.log', `${message}\n`, (err) => {
-      if (err) throw err;
-    });
-  } else {
-    alreadyLoggedThisSession = true;
-  }
+function writeToLog (message) {
+  const time = (new Date(Date.now())).toISOString();
+  const { name } = driver.config.capabilities;
+  fs.appendFile('./browserstack.log', `${time} ${message} [${name}]\n`, (err) => {
+    if (err) throw err;
+  });
 }
 
-module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, simpleCloseBootstrapModal, simpleTextInput, setNewAddress, logToFile };
+module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, simpleCloseBootstrapModal, simpleTextInput, setNewAddress, writeToLog };
