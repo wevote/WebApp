@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const PAUSE_DURATION_MICROSECONDS = 1250;
 
 async function clearTextInputValue (elementIdName) {
@@ -81,8 +83,15 @@ async function simpleTextInput (elementIdName, textValue) {
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
-function getIsCordova () {
-  return browser.execute(() => !!window.cordova);
+let alreadyLoggedThisSession = false;
+function logToFile (message) {
+  if (alreadyLoggedThisSession) {
+    fs.appendFile('./browserstack.log', `${message}\n`, (err) => {
+      if (err) throw err;
+    });
+  } else {
+    alreadyLoggedThisSession = true;
+  }
 }
 
-module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, simpleCloseBootstrapModal, simpleTextInput, setNewAddress, getIsCordova };
+module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, simpleCloseBootstrapModal, simpleTextInput, setNewAddress, logToFile };
