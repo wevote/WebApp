@@ -145,8 +145,8 @@ const NetworkContainer = styled.div`
 
 const NetworkImage = styled.img`
   filter: grayscale(100%);
-  flex: 25%
-  max-width: 25%
+  flex: 25%;
+  max-width: 25%;
   padding: 0 2%;
   object-fit: scale-down;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
