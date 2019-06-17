@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import DoneIcon from '@material-ui/icons/Done';
 import CommentIcon from '@material-ui/icons/Comment';
@@ -27,7 +26,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
     goToCandidate: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
-    popoverTop: PropTypes.bool,
     classes: PropTypes.object,
     handleLeaveCandidateCard: PropTypes.func,
     handleEnterCandidateCard: PropTypes.func,
@@ -50,7 +48,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       componentDidMountFinished: false,
       organizationsToFollowSupport: [],
       organizationsToFollowOppose: [],
-      positionListFromAdvisersFollowedByVoter: [],
+      // positionListFromAdvisersFollowedByVoter: [],
       ballotItemSupportProps: {},
     };
     this.closeIssueScorePopover = this.closeIssueScorePopover.bind(this);
@@ -87,12 +85,12 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     // console.log('BallotItemSupportOpposeCountDisplay positionsNeededForThisWeVoteId:', positionsNeededForThisWeVoteId);
     // console.log('isCandidate:', isCandidate, 'isMeasure:', isMeasure);
 
-    let positionListFromAdvisersFollowedByVoter;
-    if (isCandidate) {
-      positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(ballotItemWeVoteId);
-    } else if (isMeasure) {
-      positionListFromAdvisersFollowedByVoter = MeasureStore.getPositionList(ballotItemWeVoteId);
-    }
+    // let positionListFromAdvisersFollowedByVoter;
+    // if (isCandidate) {
+    //   positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(ballotItemWeVoteId);
+    // } else if (isMeasure) {
+    //   positionListFromAdvisersFollowedByVoter = MeasureStore.getPositionList(ballotItemWeVoteId);
+    // }
     const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(ballotItemWeVoteId);
     const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(ballotItemWeVoteId);
     this.setState({
@@ -107,7 +105,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       numberOfInfoOnlyPositions,
       organizationsToFollowSupport,
       organizationsToFollowOppose,
-      positionListFromAdvisersFollowedByVoter,
+      // positionListFromAdvisersFollowedByVoter,
       voter: VoterStore.getVoter(), // We only set this once since the info we need isn't dynamic
     });
   }
@@ -231,7 +229,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         numberOfSupportPositions,
         numberOfOpposePositions,
         numberOfInfoOnlyPositions,
-        positionListFromAdvisersFollowedByVoter: CandidateStore.getPositionList(candidateWeVoteId),
+        // positionListFromAdvisersFollowedByVoter: CandidateStore.getPositionList(candidateWeVoteId),
       });
     }
   }
@@ -245,7 +243,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         numberOfSupportPositions,
         numberOfOpposePositions,
         numberOfInfoOnlyPositions,
-        positionListFromAdvisersFollowedByVoter: MeasureStore.getPositionList(measureWeVoteId),
+        // positionListFromAdvisersFollowedByVoter: MeasureStore.getPositionList(measureWeVoteId),
       });
     }
   }
@@ -533,43 +531,43 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       (this.state.ballotItemSupportProps.is_support || this.state.ballotItemSupportProps.is_oppose);
 
     const positionsPopover = positionsCount > 1 || (positionsCount && !voterDecidedItem) ? (     // eslint-disable-line no-nested-ternary
-    <PopoverWrapper>
-      <PopoverHeader>
-        <PopoverTitleText>
-          Opinions
-          {this.state.ballotItemDisplayName ? ` about ${this.state.ballotItemDisplayName}` : ''}
+      <PopoverWrapper>
+        <PopoverHeader>
+          <PopoverTitleText>
+            Opinions
+            {this.state.ballotItemDisplayName ? ` about ${this.state.ballotItemDisplayName}` : ''}
+            {' '}
+          </PopoverTitleText>
+        </PopoverHeader>
+        <PopoverBody>
+          These organizations
           {' '}
-        </PopoverTitleText>
-      </PopoverHeader>
-      <PopoverBody>
-        These organizations
-        {' '}
-        <span className="u-no-break">
-          <img
-            src={cordovaDot('/img/global/icons/thumbs-up-color-icon.svg')}
-            alt="Thumbs Up"
-            width="20"
-            height="20"
-          />
+          <span className="u-no-break">
+            <img
+              src={cordovaDot('/img/global/icons/thumbs-up-color-icon.svg')}
+              alt="Thumbs Up"
+              width="20"
+              height="20"
+            />
+            {' '}
+            support
+          </span>
           {' '}
-          support
-        </span>
-        {' '}
-        or&nbsp;
-        <span className="u-no-break">
-          <img
-            src={cordovaDot('/img/global/icons/thumbs-down-color-icon.svg')}
-            alt="Thumbs Down"
-            width="20"
-            height="20"
-          />
-          {' '}
-          oppose
-        </span>
-        {this.state.ballotItemDisplayName ? ` ${this.state.ballotItemDisplayName}` : ''}
-        .
-      </PopoverBody>
-    </PopoverWrapper>
+          or&nbsp;
+          <span className="u-no-break">
+            <img
+              src={cordovaDot('/img/global/icons/thumbs-down-color-icon.svg')}
+              alt="Thumbs Down"
+              width="20"
+              height="20"
+            />
+            {' '}
+            oppose
+          </span>
+          {this.state.ballotItemDisplayName ? ` ${this.state.ballotItemDisplayName}` : ''}
+          .
+        </PopoverBody>
+      </PopoverWrapper>
     ) :
       positionsCount && voterDecidedItem ? (
         <PopoverWrapper>
