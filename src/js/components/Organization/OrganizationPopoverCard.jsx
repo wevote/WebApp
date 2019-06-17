@@ -122,9 +122,13 @@ class OrganizationPopoverCard extends Component {
             {organizationBannerUrl ? (
               <img src={organizationBannerUrl} />
             ) : (
-              null
+              <>
+                <br />
+                <br />
+                <br />
+              </>
             )}
-            
+
           </BannerImage>
         )}
         <Container>
@@ -219,8 +223,9 @@ const Container = styled.div`
 
 const BannerImage = styled.div`
   background: #f7f7f7;
-  height: 90.05px;
+  min-height: 90.05px !important;
   display: block;
+  width: 100%;
 `;
 
 const LogoFollowToggleContainer = styled.div`

@@ -259,12 +259,14 @@ const MoreWrapper = styled.p`
   display: inline;
   background-color: white;
   position: absolute;
-  right: -14px;
+  right: -30px;
+  margin-top: -3px;
   width: 90px;
   height: 40px;
   display: flex;
   align-items: center;
   cursor: pointer;
+  padding-left: 4px;
 `;
 
 const PopoverWrapper = styled.div`
