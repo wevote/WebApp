@@ -98,6 +98,7 @@ class IssuesByBallotItemDisplayList extends Component {
     const valueIconAndText = (
       <ValueIconAndText
         id={`valueIconAndText-${oneIssue.issue_we_vote_id}`}
+        key={`valueIconAndTextKey-${oneIssue.issue_we_vote_id}`}
         className="u-no-break u-cursor--pointer issue-icon-list__issue-block"
       >
         {oneIssue.issue_icon_local_path ? (
@@ -120,6 +121,7 @@ class IssuesByBallotItemDisplayList extends Component {
         popoverComponent={valuePopover}
         placement="auto"
         id="issues-popover-trigger-click-root-close"
+        key={`issueByBallotItemPopover-${this.state.ballotItemWeVoteId}-${oneIssue.issue_we_vote_id}`}
         openOnClick
         showCloseIcon
         popoverId="custom-popover-component"
@@ -147,7 +149,7 @@ class IssuesByBallotItemDisplayList extends Component {
     };
 
     renderLog(__filename);
-    const { expand } = this.state;
+    const { ballotItemWeVoteId, expand } = this.state;
     const issuesUnderThisBallotItemVoterIsFollowingFound =
       this.state.issuesUnderThisBallotItemVoterIsFollowing &&
       this.state.issuesUnderThisBallotItemVoterIsFollowing.length;
@@ -205,7 +207,7 @@ class IssuesByBallotItemDisplayList extends Component {
       >
         <Issues>
           {/* Show a break-down of the current positions in your network */}
-          <IssueList expand={expand}>
+          <IssueList key={`issuesByBallotItemDisplayList-${ballotItemWeVoteId}`} expand={expand}>
             {/* Issues the voter is already following */}
             {issuesVoterIsFollowingHtml}
             {/* Issues the voter is not following yet */}
