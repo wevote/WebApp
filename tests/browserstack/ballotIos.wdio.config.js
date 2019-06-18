@@ -21,6 +21,8 @@ exports.config = {
       app: browserStackConfig.BROWSERSTACK_IPA_URL,
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
+      isCordovaFromAppStore: true,
+      isMobileScreenSize: true,
     },
     {
       name: 'ballotMainTest-iOSiPhone8',
@@ -30,6 +32,8 @@ exports.config = {
       app: browserStackConfig.BROWSERSTACK_IPA_URL,
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
+      isCordovaFromAppStore: true,
+      isMobileScreenSize: true,
     },
     {
       name: 'ballotMainTest-iOSiPhoneX',
@@ -39,6 +43,8 @@ exports.config = {
       app: browserStackConfig.BROWSERSTACK_IPA_URL,
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
+      isCordovaFromAppStore: true,
+      isMobileScreenSize: true,
     },
     {
       name: 'ballotMainTest-iOSiPadPro12.92018',
@@ -48,6 +54,8 @@ exports.config = {
       app: browserStackConfig.BROWSERSTACK_IPA_URL,
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
+      isCordovaFromAppStore: true,
+      isMobileScreenSize: true,
     },
 
   ],

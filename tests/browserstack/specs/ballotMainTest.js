@@ -10,13 +10,11 @@ const PAUSE_DURATION_REVIEW_RESULTS = 3000;
 describe('Basic cross-platform We Vote test',  () => {
   it('can visit the different pages in the app', async () => {
     // const isCordova = !!driver.getContexts;
-    const isCordova = true; // Set to true when testing APK or IPA files, and false when testing in mobile browser
-    const isMobile = !!driver.getContexts;
-    const isDesktop = !isMobile;
-
+    const { isCordovaFromAppStore, isMobileScreenSize } = driver.config.capabilities;
+    const isDesktopScreenSize = !isMobileScreenSize;
     // NOTE FROM Dale: This is commented out so we can test We Vote in a mobile browser
     //  I would be curious to see what is in driver.getContexts
-    if (isCordova) {
+    if (isCordovaFromAppStore) {
       // switch contexts and click through intro
       const contexts = await driver.getContexts();
       const context = contexts.includes(ANDROID_CONTEXT) ? ANDROID_CONTEXT : IOS_CONTEXT;
@@ -43,7 +41,7 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // //////////////////////
     // We want to start by setting the location, which will automatically choose the next upcoming election for that address
-    if (isCordova) {
+    if (isCordovaFromAppStore) {
       await simpleClick('changeAddressHeaderBar'); // Open the "Change Address" modal
     } else {
       await simpleClick('locationGuessEnterYourFullAddress'); // Opens the "Enter Your Full Address" link
@@ -81,7 +79,7 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
 
     // Go to the Values tab
-    if (isDesktop) {
+    if (isDesktopScreenSize) {
       // Desktop screen size - HEADER TABS
       await simpleClick('valuesTabHeaderBar');
       await simpleClick('valuesToFollowPreviewShowMoreId');// Clicks on the link to show more public figures/organizations
@@ -100,7 +98,7 @@ describe('Basic cross-platform We Vote test',  () => {
 
     //
     // Go to the My Friends tab // DALE: FRIENDS TEMPORARILY DISABLED
-    // if (isDesktop) {
+    // if (isDesktopScreenSize) {
     //   // Desktop screen size - HEADER TABS
     //   await simpleClick('friendsTabHeaderBar');
     // } else {
@@ -114,7 +112,7 @@ describe('Basic cross-platform We Vote test',  () => {
     // await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
 
     // Go to the Vote tab
-    if (isDesktop) {
+    if (isDesktopScreenSize) {
       // Desktop screen size - HEADER TABS
       await simpleClick('voteTabHeaderBar');
     } else {
@@ -125,7 +123,7 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
 
     // Go back to the Ballot tab
-    if (isDesktop) {
+    if (isDesktopScreenSize) {
       // Desktop screen size - HEADER TABS
       await simpleClick('ballotTabHeaderBar');
     } else {
