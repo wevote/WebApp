@@ -436,7 +436,7 @@ class CandidateItem extends Component {
     return (
       <div>
         <div
-          className={`u-show-desktop card-main candidate-card ${this.props.linkToBallotItemPage && this.state.largeAreaHoverColorOnNow && this.props.showHover ? ' card-main--outline' : ''}`}
+          className={`u-show-desktop card-main u-overflow-hidden candidate-card ${this.props.linkToBallotItemPage && this.state.largeAreaHoverColorOnNow && this.props.showHover ? ' card-main--outline' : ''}`}
           onMouseEnter={this.handleEnter}
           onMouseLeave={this.handleLeave}
         >

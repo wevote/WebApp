@@ -586,98 +586,95 @@ class ItemActionBar extends PureComponent {
     );
 
     return (
-      <div
-        onMouseOver={handleEnterHoverLocalArea}
-        onFocus={handleEnterHoverLocalArea}
-        onMouseOut={handleLeaveHoverLocalArea}
-        onBlur={handleLeaveHoverLocalArea}
-        className={`${this.props.buttonsOnly && ''} ${this.props.shareButtonHide ? 'item-actionbar--inline' : 'item-actionbar'}`}
-      >
-        {this.props.buttonsOnly ? (
-          null
-        ) : (
-          <hr className="ballot-header-divider u-show-mobile" />
-        )}
-        {this.props.buttonsOnly ? (
-          null
-        ) : (
-          <PositionPublicToggle
-            ballotItemWeVoteId="null"
-            className="null"
-            type={type}
-            supportProps={modalSupportProps}
-            inTestMode
-          />
-        )}
-        <ButtonGroup className={`${this.props.buttonsOnly ? '' : 'btn-group'} ${!this.props.shareButtonHide ? ' u-push--sm' : ''}`}>
-          {/* Start of Support Button */}
-          {/* Visible on desktop screens */}
+      <>
+        <div
+          onMouseOver={handleEnterHoverLocalArea}
+          onFocus={handleEnterHoverLocalArea}
+          onMouseOut={handleLeaveHoverLocalArea}
+          onBlur={handleLeaveHoverLocalArea}
+          className={`${this.props.buttonsOnly && ''} ${this.props.shareButtonHide ? 'item-actionbar--inline' : 'item-actionbar'}`}
+        >
           {this.props.buttonsOnly ? (
-            <StackedButton className="d-none d-lg-block">
-              <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
-                {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
-              </OverlayTrigger>
-            </StackedButton>
+            null
           ) : (
-            <div className="u-push--xs d-none d-lg-block item-actionbar__position-bar">
-              <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
-                {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
-              </OverlayTrigger>
-            </div>
+            <PositionPublicToggle
+              ballotItemWeVoteId="null"
+              className="null"
+              type={type}
+              supportProps={modalSupportProps}
+              inTestMode
+            />
           )}
-          {/* Visible on mobile devices and tablets */}
-          {this.props.buttonsOnly ? (
-            <StackedButton className="d-lg-none d-xl-none">
-              {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
-            </StackedButton>
-          ) : (
-            <>
-              <div className="u-push--xs u-push--xs d-lg-none">
-                {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
-              </div>
-            </>
-          )}
-
-          {/* Start of Oppose Button */}
-          {/* Visible on desktop screens */}
-          {this.props.buttonsOnly ? (
-            <StackedButton className="d-none d-lg-block">
-              <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
-                {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
-              </OverlayTrigger>
-            </StackedButton>
-          ) : (
-            <div className="u-push--xs d-none d-lg-block item-actionbar__position-bar">
-              <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
-                {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
-              </OverlayTrigger>
-            </div>
-          )}
-          {/* Visible on mobile devices and tablets */}
-          {this.props.buttonsOnly ? (
-            <StackedButton className="d-lg-none d-xl-none">
-              {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
-            </StackedButton>
-          ) : (
-            <>
-              <div className="u-push--xs d-lg-none">
-                {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
-              </div>
-            </>
-          )}
-          { this.props.commentButtonHide ?
-            null : (
-              <div className="u-push--sm item-actionbar__position-bar">
-                {commentButton}
+          <ButtonGroup className={`${this.props.buttonsOnly ? '' : 'btn-group'} ${!this.props.shareButtonHide ? ' u-push--sm' : ''}`}>
+            {/* Start of Support Button */}
+            {/* Visible on desktop screens */}
+            {this.props.buttonsOnly ? (
+              <StackedButton className="d-none d-lg-block">
+                <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
+                  {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
+                </OverlayTrigger>
+              </StackedButton>
+            ) : (
+              <div className="u-push--xs d-none d-lg-block item-actionbar__position-bar">
+                <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
+                  {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
+                </OverlayTrigger>
               </div>
             )}
+            {/* Visible on mobile devices and tablets */}
+            {this.props.buttonsOnly ? (
+              <StackedButton className="d-lg-none d-xl-none">
+                {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
+              </StackedButton>
+            ) : (
+              <>
+                <div className="u-push--xs u-push--xs d-lg-none">
+                  {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
+                </div>
+              </>
+            )}
 
-          { this.props.shareButtonHide ?
-            null :
-            <ShareButtonDropDown showMoreId="itemActionBarShowMoreFooter" urlBeingShared={urlBeingShared} shareIcon={shareIcon} shareText="Share" /> }
-          { this.state.showSupportOrOpposeHelpModal ? SupportOrOpposeHelpModal : null}
-        </ButtonGroup>
-      </div>
+            {/* Start of Oppose Button */}
+            {/* Visible on desktop screens */}
+            {this.props.buttonsOnly ? (
+              <StackedButton className="d-none d-lg-block">
+                <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
+                  {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
+                </OverlayTrigger>
+              </StackedButton>
+            ) : (
+              <div className="u-push--xs d-none d-lg-block item-actionbar__position-bar">
+                <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
+                  {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
+                </OverlayTrigger>
+              </div>
+            )}
+            {/* Visible on mobile devices and tablets */}
+            {this.props.buttonsOnly ? (
+              <StackedButton className="d-lg-none d-xl-none">
+                {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
+              </StackedButton>
+            ) : (
+              <>
+                <div className="u-push--xs d-lg-none">
+                  {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
+                </div>
+              </>
+            )}
+            { this.props.commentButtonHide ?
+              null : (
+                <div className="u-push--sm item-actionbar__position-bar">
+                  {commentButton}
+                </div>
+              )}
+
+            { this.props.shareButtonHide ?
+              null :
+              <ShareButtonDropDown showMoreId="itemActionBarShowMoreFooter" urlBeingShared={urlBeingShared} shareIcon={shareIcon} shareText="Share" /> }
+            { this.state.showSupportOrOpposeHelpModal ? SupportOrOpposeHelpModal : null}
+          </ButtonGroup>
+        </div>
+      </>
     );
   }
 }

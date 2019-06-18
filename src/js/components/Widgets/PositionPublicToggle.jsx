@@ -273,7 +273,7 @@ const PublicToggle = styled.div`
   padding-left: 15px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     padding-top: 4px;
-    margin-bottom: 4px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -281,6 +281,7 @@ const RadioItem = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     width: 100% !important;
     min-width: 100% !important;
+    margin-bottom: -6px;
   }
 `;
 
