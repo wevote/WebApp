@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import Button from '@material-ui/core/Button';
 import OpenExternalWebSite from './OpenExternalWebSite';
 import { cordovaDot } from '../../utils/cordovaUtils';
 
@@ -27,20 +27,23 @@ class AddEndorsements extends Component {
           <div className="network-btn">
             <OpenExternalWebSite
               url="https://api.wevoteusa.org/vg/create/"
-              className="opinions-followed__missing-org-link"
+              className="u-no-underline"
               target="_blank"
               title="ENDORSEMENTS MISSING?"
               body={(
                 <Button
-                  bsPrefix="u-margin-top--sm u-stack--xs"
-                  className="btn btn-social btn-lg value-btn value-btn__endorsements text-center"
+                  className="split-button split-button__left"
                   id="myValuesAddEndorsementsToWeVote"
-                  variant="primary"
+                  color="primary"
+                  variant="contained"
                 >
-                  <span>
-                    <img src={cordovaDot('/img/global/svg-icons/positions-icon-24-x-24.svg')} className="value-btn__endorsements--icon" alt="" />
+                  <span className="split-button__icon">
+                    <img src={cordovaDot('/img/global/svg-icons/positions-icon-24-x-24.svg')} alt="" />
                   </span>
-                  Add endorsements to We Vote
+                  <div className="split-button__seperator split-button__seperator--left" />
+                  <span className="split-button__text">
+                    Add endorsements
+                  </span>
                 </Button>
               )}
             />

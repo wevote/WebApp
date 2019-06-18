@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import Button from '@material-ui/core/Button';
 import { Link } from 'react-router';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
@@ -8,7 +8,6 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 
 export default class ThisIsMeAction extends Component {
   static propTypes = {
-    bsPrefix: PropTypes.string,
     kindOfOwner: PropTypes.string,
     nameBeingViewed: PropTypes.string,
     twitterHandleBeingViewed: PropTypes.string,
@@ -72,15 +71,22 @@ export default class ThisIsMeAction extends Component {
             <div className="card">
               <div className="card-main">
                 <div className="endorsement-card">
-                  <Link to={`/verifythisisme/${twitterHandleBeingViewed}`}>
-                    <Button className="btn endorsement-card__btn btn-social" bsPrefix={this.props.bsPrefix} variant="primary">
-                      <span>
-                        <img src={cordovaDot('/img/global/svg-icons/glyphicons-pro-social/glyphicons-social-32-twitter.svg')} className="endorsement-card__btn--icon" alt="" />
+                  <Link to={`/verifythisisme/${twitterHandleBeingViewed}`} className="u-no-underline">
+                    <Button
+                      className="split-button split-button__left"
+                      color="primary"
+                      variant="contained"
+                    >
+                      <span className="split-button__icon">
+                        <i className="fab fa-twitter-square" />
                       </span>
-                      Claim
-                      {' '}
-                      @
-                      {this.props.twitterHandleBeingViewed}
+                      <div className="split-button__seperator split-button__seperator--left" />
+                      <span className="split-button__text">
+                        Claim
+                        {' '}
+                        @
+                        {this.props.twitterHandleBeingViewed}
+                      </span>
                     </Button>
                   </Link>
                   <div className="endorsement-card__text">
