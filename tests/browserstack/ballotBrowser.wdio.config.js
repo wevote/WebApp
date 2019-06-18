@@ -24,6 +24,8 @@ exports.config = {
       'browserstack.console': 'info',
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
+      isCordovaFromAppStore: false,
+      isMobileScreenSize: false,
     },
     {
       // Testing with an iPhone Safari browser
@@ -37,6 +39,8 @@ exports.config = {
       'browserstack.console': 'info',
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
+      isCordovaFromAppStore: false,
+      isMobileScreenSize: true,
     },
     {
       // Testing with an iPhone Safari browser
@@ -50,6 +54,8 @@ exports.config = {
       'browserstack.console': 'info',
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
+      isCordovaFromAppStore: false,
+      isMobileScreenSize: true,
     },
   ],
   coloredLogs: true,
