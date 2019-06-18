@@ -1,5 +1,7 @@
 // Issue related styles
 $menu-item-padding: 7px;
+$space-icon: 12px;
+$space-button-span: 10px;
 
 .issue-icon-list {
   &__endorsements-label {
@@ -312,11 +314,11 @@ $menu-item-padding: 7px;
 }
 
 .split-button {
-  padding: 0 !important;
+  padding: $space-none !important;
   box-shadow: none !important;
   width: 100%;
   > span {
-    padding: 10px 0 !important;
+    padding: $space-button-span $space-none !important;
     height: 100%;
     display: flex;
     align-items: center;
@@ -345,14 +347,14 @@ $menu-item-padding: 7px;
     display: flex;
     align-items: center;
     height: 100%;
-    padding: 0px 12px;
+    padding: $space-none $space-icon;
     * {
       width: 100%;
       font-size: 22px;
     }
   }
   &__text {
-    padding: 0px 8px 0;
+    padding: $space-none $space-sm $space-none;
     font-size: 13px;
     text-align: center;
     flex: 1 1 0;
