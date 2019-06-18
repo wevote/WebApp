@@ -70,7 +70,7 @@ export default class VerifyEmailProcess extends Component {
       historyPush({
         pathname: redirectPathname,
         state: {
-          message: 'Your accounts have been merged.',
+          message: 'Your have signed in with email.',
           message_type: 'success',
         },
       });

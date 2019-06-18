@@ -75,7 +75,7 @@ export default class TwitterSignInProcess extends Component {
       historyPush({
         pathname: redirectPathname,
         state: {
-          message: 'Your accounts have been merged.',
+          message: 'Your have signed in with Twitter.',
           message_type: 'success',
         },
       });

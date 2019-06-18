@@ -147,7 +147,7 @@ class About extends Component {
             <div className="row position-relative">
               {
               weVoteFounders.map(teamMember => (
-                <TeamMemberDisplayForList teamMember={teamMember} />
+                <TeamMemberDisplayForList key={`teamDisplay-${teamMember.name}-${teamMember.title[0]}`} teamMember={teamMember} />
               ))
               }
             </div>
@@ -159,7 +159,7 @@ class About extends Component {
             <div className="row position-relative">
               {
               weVoteBoard.map(teamMember => (
-                <TeamMemberDisplayForList teamMember={teamMember} />
+                <TeamMemberDisplayForList key={`teamDisplay-${teamMember.name}-${teamMember.title[0]}`} teamMember={teamMember} />
               ))
               }
             </div>
@@ -171,7 +171,7 @@ class About extends Component {
             <div className="row position-relative">
               {
               weVoteStaff.map(teamMember => (
-                <TeamMemberDisplayForList teamMember={teamMember} />
+                <TeamMemberDisplayForList key={`teamDisplay-${teamMember.name}-${teamMember.title[0]}`} teamMember={teamMember} />
               ))
               }
             </div>
