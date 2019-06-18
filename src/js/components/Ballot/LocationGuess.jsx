@@ -72,7 +72,7 @@ class LocationGuess extends Component {
       const { toggleSelectBallotModal, classes } = this.props;
       // console.log('textForMapSearch before: ', textForMapSearch);
       return (
-        <div id="location_guess" className="card-main__location-guess">
+        <PrintWrapper id="location_guess" className="card-main__location-guess">
           <PlaceIcon classes={{ root: classes.iconRoot }} />
           <ParagraphStyled>
             {textForMapSearch ?
@@ -103,7 +103,7 @@ class LocationGuess extends Component {
           <CloseComponent id="closeLocationGuess" onClick={this.closeLocationGuess}>
             &times;
           </CloseComponent>
-        </div>
+        </PrintWrapper>
       );
     }
   }
@@ -121,6 +121,13 @@ const ParagraphStyled = styled.div`
   margin-left: 5px;
   font-weight: normal;
 `;
+
+const PrintWrapper = styled.div`
+  @media print {
+    display: none;
+  }
+`;
+
 const CloseComponent = styled.div`
   font-size: 25px;
   margin: 15px 15px 15px 15px;

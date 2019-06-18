@@ -79,11 +79,17 @@ const NameText = styled.h3`
   font-size: 18px;
   font-weight: bold;
   margin: 0;
+  @media print{
+    font-size: 1.5rem;
+  }
 `;
 
 const DescriptionText = styled.p`
   font-size: 12px;
   margin: 0;
+  @media print {
+    font-size: 1.5rem;
+  } 
 `;
 
 const HR = styled.hr`

@@ -556,6 +556,9 @@ const TitleContainer = styled.div`
 const TitleText = styled.h3`
   font-weight: bold;
   font-size: 18px;
+  @media print{
+    font-size: 2rem;
+  }
 `;
 
 const ReturnOfficialBallotContainer = styled.div`
