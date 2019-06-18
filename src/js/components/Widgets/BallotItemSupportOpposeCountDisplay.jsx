@@ -159,21 +159,21 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (this.state.componentDidMountFinished === false) {
-      // console.log("shouldComponentUpdate: componentDidMountFinished === false");
+      // console.log('shouldComponentUpdate: componentDidMountFinished === false');
       return true;
     }
     if (this.state.forceReRender === true) {
       if (this.state.voterIssuesScore !== nextState.voterIssuesScore) {
-        // console.log("shouldComponentUpdate: forceReRender === true and voterIssuesScore change");
+        // console.log('shouldComponentUpdate: forceReRender === true and voterIssuesScore change');
         return true;
       }
     }
     if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
-      // console.log("shouldComponentUpdate: this.state.ballotItemDisplayName", this.state.ballotItemDisplayName, ", nextState.ballotItemDisplayName", nextState.ballotItemDisplayName);
+      // console.log('this.state.ballotItemDisplayName', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName', nextState.ballotItemDisplayName);
       return true;
     }
     if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
-      // console.log("shouldComponentUpdate: this.state.ballotItemWeVoteId", this.state.ballotItemWeVoteId, ", nextState.ballotItemWeVoteId", nextState.ballotItemWeVoteId);
+      // console.log('this.state.ballotItemWeVoteId', this.state.ballotItemWeVoteId, ', nextState.ballotItemWeVoteId', nextState.ballotItemWeVoteId);
       return true;
     }
     if (this.state.numberOfSupportPositions !== nextState.numberOfSupportPositions) {
@@ -186,11 +186,11 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       return true;
     }
     if ((!this.state.organizationsToFollowSupport) || (!nextState.organizationsToFollowSupport) || (this.state.organizationsToFollowSupport.length !== nextState.organizationsToFollowSupport.length)) {
-      // console.log("shouldComponentUpdate: this.state.organizationsToFollowSupport.length", this.state.organizationsToFollowSupport.length, ", nextState.organizationsToFollowSupport.length", nextState.organizationsToFollowSupport.length);
+      // console.log('this.state.organizationsToFollowSupport.length', this.state.organizationsToFollowSupport.length, ', nextState.organizationsToFollowSupport.length', nextState.organizationsToFollowSupport.length);
       return true;
     }
     if ((!this.state.organizationsToFollowOppose) || (!nextState.organizationsToFollowOppose) || (this.state.organizationsToFollowOppose.length !== nextState.organizationsToFollowOppose.length)) {
-      // console.log("shouldComponentUpdate: this.state.organizationsToFollowOppose.length", this.state.organizationsToFollowOppose.length, ", nextState.organizationsToFollowOppose.length", nextState.organizationsToFollowOppose.length);
+      // console.log('this.state.organizationsToFollowOppose.length', this.state.organizationsToFollowOppose.length, ', nextState.organizationsToFollowOppose.length', nextState.organizationsToFollowOppose.length);
       return true;
     }
     if (this.state.ballotItemSupportProps !== undefined && nextState.ballotItemSupportProps !== undefined) {
@@ -199,7 +199,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       const currentNetworkOpposeCount = parseInt(this.state.ballotItemSupportProps.oppose_count) || 0;
       const nextNetworkOpposeCount = parseInt(nextState.ballotItemSupportProps.oppose_count) || 0;
       if (currentNetworkSupportCount !== nextNetworkSupportCount || currentNetworkOpposeCount !== nextNetworkOpposeCount) {
-        // console.log("shouldComponentUpdate: support or oppose count change");
+        // console.log('shouldComponentUpdate: support or oppose count change');
         return true;
       }
     }

@@ -12,18 +12,17 @@ import { renderLog } from '../../utils/logging';
 import extractNumber from '../../utils/extractNumber';
 import MeasureActions from '../../actions/MeasureActions';
 import MeasureStore from '../../stores/MeasureStore';
-import OrganizationStore from '../../stores/OrganizationStore';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import { capitalizeString, shortenText } from '../../utils/textFormat';
 import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
-import VoterGuideStore from '../../stores/VoterGuideStore';
 
 
 class MeasureItemCompressed extends Component {
   static propTypes = {
     // currentBallotIdInUrl: PropTypes.string,
     organization: PropTypes.object,
+    organization_we_vote_id: PropTypes.string,
     showPositionStatementActionBar: PropTypes.bool,
     // urlWithoutHash: PropTypes.string,
     measureWeVoteId: PropTypes.string.isRequired,
@@ -39,7 +38,7 @@ class MeasureItemCompressed extends Component {
       measureText: '',
       measureWeVoteId: '',
       noVoteDescription: '',
-      organization: {},
+      organizationWeVoteId: '',
       showPositionStatement: false,
       yesVoteDescription: '',
     };
@@ -49,15 +48,13 @@ class MeasureItemCompressed extends Component {
   }
 
   componentDidMount () {
-    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    this.onVoterGuideStoreChange();
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     const measure = MeasureStore.getMeasure(this.props.measureWeVoteId);
 
     if (this.props.measureWeVoteId && !BallotStore.positionListHasBeenRetrievedOnce(this.props.measureWeVoteId)) {
       MeasureActions.positionListForBallotItemPublic(this.props.measureWeVoteId);
     }
+    const organizationWeVoteId = (this.props.organization && this.props.organization.organization_we_vote_id) ? this.props.organization.organization_we_vote_id : this.props.organization_we_vote_id;
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
       componentDidMountFinished: true,
@@ -68,22 +65,13 @@ class MeasureItemCompressed extends Component {
       measureWeVoteId: this.props.measureWeVoteId,
       noVoteDescription: measure.no_vote_description,
       yesVoteDescription: measure.yes_vote_description,
+      organizationWeVoteId,
     });
-    if (this.props.organization && this.props.organization.organization_we_vote_id) {
-      this.setState({
-        organization: this.props.organization,
-      });
-    }
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.organization && nextProps.organization.organization_we_vote_id) {
-      this.setState({
-        organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
-      });
-    }
+    const organizationWeVoteId = (nextProps.organization && nextProps.organization.organization_we_vote_id) ? nextProps.organization.organization_we_vote_id : nextProps.organization_we_vote_id;
     const measure = MeasureStore.getMeasure(nextProps.measureWeVoteId);
-
     if (nextProps.measureWeVoteId && !BallotStore.positionListHasBeenRetrievedOnce(nextProps.measureWeVoteId)) {
       MeasureActions.positionListForBallotItemPublic(nextProps.measureWeVoteId);
     }
@@ -96,29 +84,34 @@ class MeasureItemCompressed extends Component {
       measureWeVoteId: nextProps.measureWeVoteId,
       noVoteDescription: measure.no_vote_description,
       yesVoteDescription: measure.yes_vote_description,
+      organizationWeVoteId,
     });
   }
 
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (this.state.componentDidMountFinished === false) {
-      // console.log("shouldComponentUpdate: componentDidMountFinished === false");
+      // console.log('shouldComponentUpdate: componentDidMountFinished === false');
+      return true;
+    }
+    if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
+      // console.log('this.state.organizationWeVoteId:', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId:', nextState.organizationWeVoteId);
       return true;
     }
     if (this.state.ballotItemDisplayName !== nextState.ballotItemDisplayName) {
-      // console.log("shouldComponentUpdate: this.state.ballotItemDisplayName", this.state.ballotItemDisplayName, ", nextState.ballotItemDisplayName", nextState.ballotItemDisplayName);
+      // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
       return true;
     }
     if (this.state.measure !== nextState.measure) {
-      // console.log("shouldComponentUpdate: this.state.measure", this.state.measure, ", nextState.measure", nextState.measure);
+      // console.log('this.state.measure:', this.state.measure, ', nextState.measure:', nextState.measure);
       return true;
     }
     if (this.props.showPositionStatementActionBar !== nextProps.showPositionStatementActionBar) {
-      // console.log("shouldComponentUpdate: this.props.showPositionStatementActionBar change");
+      // console.log('this.props.showPositionStatementActionBar change');
       return true;
     }
     if (this.state.showPositionStatement !== nextState.showPositionStatement) {
-      // console.log("shouldComponentUpdate: this.state.showPositionStatement change");
+      // console.log('this.state.showPositionStatement change');
       return true;
     }
     if (this.state.measureSupportProps !== undefined && nextState.measureSupportProps !== undefined) {
@@ -127,7 +120,7 @@ class MeasureItemCompressed extends Component {
       const currentNetworkOpposeCount = parseInt(this.state.measureSupportProps.oppose_count) || 0;
       const nextNetworkOpposeCount = parseInt(nextState.measureSupportProps.oppose_count) || 0;
       if (currentNetworkSupportCount !== nextNetworkSupportCount || currentNetworkOpposeCount !== nextNetworkOpposeCount) {
-        // console.log("shouldComponentUpdate: support or oppose count change");
+        // console.log('shouldComponentUpdate: support or oppose count change');
         return true;
       }
     }
@@ -135,37 +128,22 @@ class MeasureItemCompressed extends Component {
   }
 
   componentWillUnmount () {
-    this.organizationStoreListener.remove();
-    this.voterGuideStoreListener.remove();
     this.supportStoreListener.remove();
   }
 
-  onOrganizationStoreChange () {
-    const { organization } = this.state;
-    this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(organization.organization_we_vote_id),
-    });
-  }
-
-  onVoterGuideStoreChange () {
-    // We just want to trigger a re-render
-    this.setState();
-  }
-
   onSupportStoreChange () {
-    const { measureWeVoteId, organization } = this.state;
+    const { measureWeVoteId } = this.state;
     // Whenever positions change, we want to make sure to get the latest organization, because it has
     //  position_list_for_one_election and position_list_for_all_except_one_election attached to it
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(organization.organization_we_vote_id),
       measureSupportProps: SupportStore.get(measureWeVoteId),
     });
   }
 
   getMeasureLink (oneMeasureWeVoteId) {
-    if (this.state.organization && this.state.organization.organization_we_vote_id) {
+    if (this.state.organizationWeVoteId) {
       // If there is an organization_we_vote_id, signal that we want to link back to voter_guide for that organization
-      return `/measure/${oneMeasureWeVoteId}/btvg/${this.state.organization.organization_we_vote_id}`;
+      return `/measure/${oneMeasureWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
     } else {
       // If no organization_we_vote_id, signal that we want to link back to default ballot
       return `/measure/${oneMeasureWeVoteId}/b/btdb/`; // back-to-default-ballot
@@ -185,7 +163,7 @@ class MeasureItemCompressed extends Component {
   }
 
   render () {
-    // console.log("MeasureItemCompressed render");
+    // console.log('MeasureItemCompressed render');
     renderLog(__filename);
     const { noVoteDescription, yesVoteDescription } = this.state;
     let { ballotItemDisplayName } = this.state;
@@ -224,7 +202,7 @@ class MeasureItemCompressed extends Component {
     // let voterStatementText = false;
     // const ballotItemSupportStore = SupportStore.get(this.state.ballotItemWeVoteId);
     // if (ballotItemSupportStore !== undefined) {
-    //   // console.log("ballotItemSupportStore: ", ballotItemSupportStore);
+    //   // console.log('ballotItemSupportStore: ', ballotItemSupportStore);
     //   isVoterSupport = ballotItemSupportStore.is_support;
     //   isVoterOppose = ballotItemSupportStore.is_oppose;
     //   voterStatementText = ballotItemSupportStore.voter_statement_text;
