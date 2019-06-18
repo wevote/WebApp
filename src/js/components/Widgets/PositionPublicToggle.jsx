@@ -32,6 +32,7 @@ class PositionPublicToggle extends Component {
     this.state = {
       showPositionPublicHelpModal: false,
       showToThePublicOn: false,
+      inTestMode: false,
     };
   }
 
@@ -39,8 +40,10 @@ class PositionPublicToggle extends Component {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const isPublicOpinion = this.props.supportProps && this.props.supportProps.is_public_position;
+    const isInTestMode = this.props !== undefined && this.props.inTestMode !== undefined && this.props.inTestMode;
     this.setState({
       showToThePublicOn: isPublicOpinion || false,
+      inTestMode: isInTestMode || false,
     });
   }
 
@@ -72,10 +75,15 @@ class PositionPublicToggle extends Component {
   }
 
   showItemToPublic () {
-    const { voter } = this.state;
+    const { inTestMode, voter } = this.state;
 
     // console.log("PositionPublicToggle-showItemToPublic, this.props.type:", this.props.type);
-    if (voter && voter.is_signed_in) {
+    if (inTestMode) {
+      this.setState({
+        showToThePublicOn: true,
+      });
+      openSnackbar({ message: 'This position now visible to anyone on We Vote!' });
+    } else if (voter && voter.is_signed_in) {
       this.setState({
         showToThePublicOn: true,
       });
@@ -102,18 +110,13 @@ class PositionPublicToggle extends Component {
   render () {
     renderLog(__filename);
     const { classes } = this.props;
-    const { voter, showToThePublicOn } = this.state;
+    const { voter, showToThePublicOn, inTestMode } = this.state;
     if (!this.state.voter) {
       return <div className="undefined-props" />;
     }
 
     if (this.props.supportProps === undefined) {
       return <div className="undefined-props" />;
-    }
-
-    let inTestMode = false;
-    if (this.props !== undefined && this.props.inTestMode !== undefined && this.props.inTestMode) {
-      inTestMode = true;
     }
 
     let { is_public_position: isPublicPosition } = this.props.supportProps;
