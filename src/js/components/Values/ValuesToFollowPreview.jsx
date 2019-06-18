@@ -85,7 +85,7 @@ class ValuesToFollowPreview extends Component {
       <div className="opinions-followed__container">
         <section className="card">
           <div className="card-main">
-            <h1 className="h4">Values to Follow</h1>
+            <PrintWrapper className="h4">Values to Follow</PrintWrapper>
             <Row className="row">
               { issueListForDisplay }
             </Row>
@@ -100,5 +100,10 @@ class ValuesToFollowPreview extends Component {
 const Row = styled.div`
   margin: 0px -4px;
 `;
-
+const PrintWrapper = styled.h1`
+  text-size: 1rem;
+  @media print {
+    text-size: 2rem;
+  }
+`;
 export default withTheme()((ValuesToFollowPreview));

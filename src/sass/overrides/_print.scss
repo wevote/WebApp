@@ -6,7 +6,7 @@
     background-color: $white !important;
     color: $black;
   }
-  .ballot__filter__container,
+  //.ballot__filter__container,
   .sidebar-menu {
     display: none;
   }
@@ -22,5 +22,9 @@
   }
   a[href]::after {
     content: ""; // Override Bootstrap styles adding href
+    text-decoration: none;
+  }
+  a, a:not(.btn) {
+    text-decoration: none;
   }
 }
