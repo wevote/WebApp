@@ -17,38 +17,71 @@ import StickyPopover from './StickyPopover';
 class PositionItem extends Component {
   static propTypes = {
     ballotItemDisplayName: PropTypes.string.isRequired,
-    // organization: PropTypes.object, // .isRequired,
     position: PropTypes.object.isRequired,
   };
 
-  shouldComponentUpdate (nextProps) {
+  constructor (props) {
+    super(props);
+    this.state = {
+      componentDidMount: false,
+    };
+  }
+
+  componentDidMount () {
+    this.setState({
+      componentDidMount: true,
+    });
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    if (this.state.componentDidMount !== nextState.componentDidMount) {
+      // console.log('this.state.componentDidMount: ', this.state.componentDidMount, ', nextState.componentDidMount', nextState.componentDidMount);
+      return true;
+    }
     if (this.props.ballotItemDisplayName !== nextProps.ballotItemDisplayName) {
+      // console.log('this.props.ballotItemDisplayName: ', this.props.ballotItemDisplayName, ', nextProps.ballotItemDisplayName', nextProps.ballotItemDisplayName);
       return true;
     }
     const { position: priorPosition } = this.props;
     const { position: nextPosition } = nextProps;
     if (priorPosition.speaker_we_vote_id !== nextPosition.speaker_we_vote_id) {
+      // console.log('priorPosition.speaker_we_vote_id: ', priorPosition.speaker_we_vote_id, ', nextPosition.speaker_we_vote_id:', nextPosition.speaker_we_vote_id);
       return true;
     }
-    if (priorPosition.organization_we_vote_id !== nextPosition.organization_we_vote_id) {
-      return true;
-    }
+    // if (priorPosition.organization_we_vote_id !== nextPosition.organization_we_vote_id) {
+    //   console.log('priorPosition.organization_we_vote_id: ', priorPosition.organization_we_vote_id, ', nextPosition.organization_we_vote_id:', nextPosition.organization_we_vote_id);
+    //   return true;
+    // }
     if (priorPosition.statement_text !== nextPosition.statement_text) {
+      // console.log('priorPosition.statement_text: ', priorPosition.statement_text, ', nextPosition.statement_text:', nextPosition.statement_text);
       return true;
     }
     if (priorPosition.speaker_twitter_handle !== nextPosition.speaker_twitter_handle) {
+      // console.log('priorPosition.speaker_twitter_handle: ', priorPosition.speaker_twitter_handle, ', nextPosition.speaker_twitter_handle:', nextPosition.speaker_twitter_handle);
       return true;
     }
     if (priorPosition.is_information_only !== nextPosition.is_information_only) {
+      // console.log('priorPosition.is_information_only: ', priorPosition.is_information_only, ', nextPosition.is_information_only:', nextPosition.is_information_only);
       return true;
     }
     if (priorPosition.is_oppose !== nextPosition.is_oppose) {
+      // console.log('priorPosition.is_oppose: ', priorPosition.is_oppose, ', nextPosition.is_oppose:', nextPosition.is_oppose);
       return true;
     }
     if (priorPosition.is_support !== nextPosition.is_support) {
+      // console.log('priorPosition.is_oppose: ', priorPosition.is_oppose, ', nextPosition.is_oppose:', nextPosition.is_oppose);
       return true;
     }
-    if (priorPosition.followed !== nextPosition.followed) {
+    let priorPositionFollowed = false;
+    let nextPositionFollowed = false;
+    if (priorPosition.followed !== undefined) {
+      priorPositionFollowed = priorPosition.followed;
+    }
+    if (nextPosition.followed !== undefined) {
+      nextPositionFollowed = nextPosition.followed;
+    }
+    if (priorPositionFollowed !== nextPositionFollowed) {
+      // console.log('priorPositionFollowed: ', priorPositionFollowed, ', nextPositionFollowed:', nextPositionFollowed);
       return true;
     }
     return false;
@@ -57,7 +90,7 @@ class PositionItem extends Component {
   render () {
     renderLog(__filename);
     const { position } = this.props;
-    // console.log('PositionItem render, position:', position);
+    // console.log('PositionItem render');
     // TwitterHandle-based link
     const voterGuideWeVoteIdLink = position.organization_we_vote_id ? `/voterguide/${position.organization_we_vote_id}` : `/voterguide/${position.speaker_we_vote_id}`;
     const speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : voterGuideWeVoteIdLink;
@@ -71,7 +104,6 @@ class PositionItem extends Component {
 
     // console.log(position);
     let supportOpposeInfo = 'info';
-
     if (position.is_information_only) {
       supportOpposeInfo = 'info';
     } else if (position.followed && position.is_support) {

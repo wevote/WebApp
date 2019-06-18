@@ -14,11 +14,9 @@ import IssuesByBallotItemDisplayList from '../Values/IssuesByBallotItemDisplayLi
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import OfficeActions from '../../actions/OfficeActions';
-import OrganizationStore from '../../stores/OrganizationStore';
 import ShowMoreFooter from '../Navigation/ShowMoreFooter';
 import SupportStore from '../../stores/SupportStore';
 import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
-import VoterGuideStore from '../../stores/VoterGuideStore';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */
@@ -41,8 +39,10 @@ class OfficeItemCompressed extends Component {
     super(props);
     this.state = {
       candidateList: [],
+      changeFound: false,
+      componentDidMount: false,
       maximumNumberOrganizationsToDisplay: NUMBER_OF_CANDIDATES_TO_DISPLAY,
-      organization: {},
+      organizationWeVoteId: '',
     };
 
     this.getCandidateLink = this.getCandidateLink.bind(this);
@@ -54,21 +54,16 @@ class OfficeItemCompressed extends Component {
 
   componentDidMount () {
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
-    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
-    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
-    this.onVoterGuideStoreChange();
     this.onCandidateStoreChange();
-    if (this.props.organization && this.props.organization.organization_we_vote_id) {
-      this.setState({
-        organization: this.props.organization,
-      });
-    }
+    const organizationWeVoteId = (this.props.organization && this.props.organization.organization_we_vote_id) ? this.props.organization.organization_we_vote_id : this.props.organization_we_vote_id;
+    // console.log('OfficeItemCompressed componentDidMount, organizationWeVoteId:', organizationWeVoteId);
+    this.setState({
+      organizationWeVoteId,
+      componentDidMount: true,
+    });
   }
 
   componentWillReceiveProps (nextProps) {
-    // console.log("officeItemCompressed componentWillReceiveProps, nextProps.candidate_list:", nextProps.candidate_list);
     // 2018-05-10 I don't think we need to trigger a new render because the incoming candidate_list should be the same
     // if (nextProps.candidate_list && nextProps.candidate_list.length) {
     //   this.setState({
@@ -76,20 +71,35 @@ class OfficeItemCompressed extends Component {
     //   });
     // }
 
-    // Only update organization if it is a different organization
-    if (nextProps.organization && nextProps.organization.organization_we_vote_id && this.state.organization.organization_we_vote_id !== nextProps.organization.organization_we_vote_id) {
-      this.setState({
-        organization: OrganizationStore.getOrganizationByWeVoteId(nextProps.organization.organization_we_vote_id),
-      });
+    const organizationWeVoteId = (nextProps.organization && nextProps.organization.organization_we_vote_id) ? nextProps.organization.organization_we_vote_id : nextProps.organization_we_vote_id;
+    // console.log('officeItemCompressed componentWillReceiveProps, organizationWeVoteId:', organizationWeVoteId);
+    this.setState({
+      organizationWeVoteId,
+    });
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    if (this.state.componentDidMount !== nextState.componentDidMount) {
+      // console.log('this.state.componentDidMount: ', this.state.componentDidMount, ', nextState.componentDidMount: ', nextState.componentDidMount);
+      return true;
     }
+    if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
+      // console.log('this.state.organizationWeVoteId: ', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId: ', nextState.organizationWeVoteId);
+      return true;
+    }
+    if (this.state.changeFound !== nextState.changeFound) {
+      // console.log('this.state.changeFound: ', this.state.changeFound, ', nextState.changeFound: ', nextState.changeFound);
+      return true;
+    }
+    if (this.props.ballot_item_display_name !== nextProps.ballot_item_display_name) {
+      // console.log('this.props.ballot_item_display_name: ', this.props.ballot_item_display_name, ', nextProps.ballot_item_display_name: ', nextProps.ballot_item_display_name);
+      return true;
+    }
+    return false;
   }
 
   componentWillUnmount () {
     this.candidateStoreListener.remove();
-    this.issueStoreListener.remove();
-    this.organizationStoreListener.remove();
-    this.supportStoreListener.remove();
-    this.voterGuideStoreListener.remove();
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -99,56 +109,44 @@ class OfficeItemCompressed extends Component {
   }
 
   onCandidateStoreChange () {
-    const { we_vote_id: officeWeVoteId } = this.props;
-    if (this.props.candidate_list && this.props.candidate_list.length && officeWeVoteId) {
-      // console.log("onCandidateStoreChange");
+    const { candidate_list: candidateList, we_vote_id: officeWeVoteId } = this.props;
+    let changeFound = false;
+    if (candidateList && candidateList.length && officeWeVoteId) {
       if (!BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)) {
         OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
       }
       const newCandidateList = [];
-      if (this.props.candidate_list) {
-        this.props.candidate_list.forEach((candidate) => {
+      let newCandidate = {};
+      if (candidateList) {
+        candidateList.forEach((candidate) => {
           if (candidate && candidate.we_vote_id) {
-            newCandidateList.push(CandidateStore.getCandidate(candidate.we_vote_id));
+            newCandidate = CandidateStore.getCandidate(candidate.we_vote_id);
+            newCandidateList.push(newCandidate);
+            if (!changeFound) {
+              if (candidate.ballot_item_display_name !== newCandidate.ballot_item_display_name) {
+                changeFound = true;
+              }
+              if (candidate.candidate_photo_url_medium !== newCandidate.candidate_photo_url_medium) {
+                changeFound = true;
+              }
+              if (candidate.party !== newCandidate.party) {
+                changeFound = true;
+              }
+            }
           }
         });
       }
       this.setState({
         candidateList: newCandidateList,
+        changeFound,
       });
-      // console.log(this.props.candidate_list);
     }
   }
 
-  onIssueStoreChange () {
-    this.setState();
-  }
-
-  onVoterGuideStoreChange () {
-    this.setState();
-  }
-
-  onOrganizationStoreChange () {
-    // console.log("VoterGuideOfficeItemCompressed onOrganizationStoreChange, org_we_vote_id: ", this.state.organization.organization_we_vote_id);
-    const { organization } = this.state;
-    this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(organization.organization_we_vote_id),
-    });
-  }
-
-  onSupportStoreChange () {
-    // Whenever positions change, we want to make sure to get the latest organization, because it has
-    //  position_list_for_one_election and position_list_for_all_except_one_election attached to it
-    const { organization } = this.state;
-    this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(organization.organization_we_vote_id),
-    });
-  }
-
   getCandidateLink (candidateWeVoteId) {
-    if (this.state.organization && this.state.organization.organization_we_vote_id) {
+    if (this.state.organizationWeVoteId) {
       // If there is an organization_we_vote_id, signal that we want to link back to voter_guide for that organization
-      return `/candidate/${candidateWeVoteId}/btvg/${this.state.organization.organization_we_vote_id}`;
+      return `/candidate/${candidateWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
     } else {
       // If no organization_we_vote_id, signal that we want to link back to default ballot
       return `/candidate/${candidateWeVoteId}/b/btdb/`; // back-to-default-ballot
@@ -156,9 +154,9 @@ class OfficeItemCompressed extends Component {
   }
 
   getOfficeLink () {
-    if (this.state.organization && this.state.organization.organization_we_vote_id) {
+    if (this.state.organizationWeVoteId) {
       // If there is an organization_we_vote_id, signal that we want to link back to voter_guide for that organization
-      return `/office/${this.props.we_vote_id}/btvg/${this.state.organization.organization_we_vote_id}`;
+      return `/office/${this.props.we_vote_id}/btvg/${this.state.organizationWeVoteId}`;
     } else {
       // If no organization_we_vote_id, signal that we want to link back to default ballot
       return `/office/${this.props.we_vote_id}/b/btdb/`; // back-to-default-ballot
@@ -245,7 +243,7 @@ class OfficeItemCompressed extends Component {
   }
 
   render () {
-    // console.log("OfficeItemCompressed render");
+    // console.log('OfficeItemCompressed render');
     renderLog(__filename);
     let { ballot_item_display_name: ballotItemDisplayName } = this.props;
     const { we_vote_id: weVoteId, classes } = this.props;

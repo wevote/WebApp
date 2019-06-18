@@ -27,6 +27,8 @@ class IssuesByBallotItemDisplayList extends Component {
     this.state = {
       issuesUnderThisBallotItemVoterIsFollowing: [],
       issuesUnderThisBallotItemVoterIsNotFollowing: [],
+      issuesUnderThisBallotItemVoterIsFollowingLength: 0,
+      issuesUnderThisBallotItemVoterIsNotFollowingLength: 0,
       maximumNumberOfIssuesToDisplay: 26,
       expand: false,
     };
@@ -34,23 +36,53 @@ class IssuesByBallotItemDisplayList extends Component {
 
   componentDidMount () {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
-    this.voterGuideStoreListener = VoterGuideStore.addListener(
-      this.onVoterGuideStoreChange.bind(this),
-    );
-    this.onVoterGuideStoreChange();
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(this.props.ballotItemWeVoteId) || [];
+    const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(this.props.ballotItemWeVoteId) || [];
+    const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
+    const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
     this.setState({
       ballotItemWeVoteId: this.props.ballotItemWeVoteId,
-      issuesUnderThisBallotItemVoterIsFollowing: IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(this.props.ballotItemWeVoteId),
-      issuesUnderThisBallotItemVoterIsNotFollowing: IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(this.props.ballotItemWeVoteId),
+      issuesUnderThisBallotItemVoterIsFollowing,
+      issuesUnderThisBallotItemVoterIsNotFollowing,
+      issuesUnderThisBallotItemVoterIsFollowingLength,
+      issuesUnderThisBallotItemVoterIsNotFollowingLength,
     });
   }
 
   componentWillReceiveProps (nextProps) {
+    const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(nextProps.ballotItemWeVoteId) || [];
+    const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(nextProps.ballotItemWeVoteId) || [];
+    const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
+    const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
     this.setState({
       ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
-      issuesUnderThisBallotItemVoterIsFollowing: IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(nextProps.ballotItemWeVoteId),
-      issuesUnderThisBallotItemVoterIsNotFollowing: IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(nextProps.ballotItemWeVoteId),
+      issuesUnderThisBallotItemVoterIsFollowing,
+      issuesUnderThisBallotItemVoterIsNotFollowing,
+      issuesUnderThisBallotItemVoterIsFollowingLength,
+      issuesUnderThisBallotItemVoterIsNotFollowingLength,
     });
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if not needed
+    if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
+      // console.log('this.state.ballotItemWeVoteId: ', this.state.ballotItemWeVoteId, ', nextState.ballotItemWeVoteId', nextState.ballotItemWeVoteId);
+      return true;
+    }
+    if (this.state.expand !== nextState.expand) {
+      // console.log('this.state.expand: ', this.state.expand, ', nextState.expand', nextState.expand);
+      return true;
+    }
+    if (this.state.issuesUnderThisBallotItemVoterIsFollowingLength !== nextState.issuesUnderThisBallotItemVoterIsFollowingLength) {
+      // console.log('this.state.issuesUnderThisBallotItemVoterIsFollowingLength: ', this.state.issuesUnderThisBallotItemVoterIsFollowingLength, ', nextState.issuesUnderThisBallotItemVoterIsFollowingLength', nextState.issuesUnderThisBallotItemVoterIsFollowingLength);
+      return true;
+    }
+    if (this.state.issuesUnderThisBallotItemVoterIsNotFollowingLength !== nextState.issuesUnderThisBallotItemVoterIsNotFollowingLength) {
+      // console.log('this.state.issuesUnderThisBallotItemVoterIsNotFollowingLength: ', this.state.issuesUnderThisBallotItemVoterIsNotFollowingLength, ', nextState.issuesUnderThisBallotItemVoterIsNotFollowingLength', nextState.issuesUnderThisBallotItemVoterIsNotFollowingLength);
+      return true;
+    }
+    return false;
   }
 
   componentWillUnmount () {
@@ -60,20 +92,21 @@ class IssuesByBallotItemDisplayList extends Component {
 
   onIssueStoreChange () {
     const { ballotItemWeVoteId } = this.state;
+    const issuesUnderThisBallotItemVoterIsFollowing = IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(ballotItemWeVoteId) || [];
+    const issuesUnderThisBallotItemVoterIsNotFollowing = IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(ballotItemWeVoteId) || [];
+    const issuesUnderThisBallotItemVoterIsFollowingLength = issuesUnderThisBallotItemVoterIsFollowing.length;
+    const issuesUnderThisBallotItemVoterIsNotFollowingLength = issuesUnderThisBallotItemVoterIsNotFollowing.length;
     this.setState({
-      issuesUnderThisBallotItemVoterIsFollowing: IssueStore.getIssuesUnderThisBallotItemVoterIsFollowing(ballotItemWeVoteId),
-      issuesUnderThisBallotItemVoterIsNotFollowing: IssueStore.getIssuesUnderThisBallotItemVoterNotFollowing(ballotItemWeVoteId),
+      issuesUnderThisBallotItemVoterIsFollowing,
+      issuesUnderThisBallotItemVoterIsNotFollowing,
+      issuesUnderThisBallotItemVoterIsFollowingLength,
+      issuesUnderThisBallotItemVoterIsNotFollowingLength,
     });
   }
 
   onVoterGuideStoreChange () {
     // We just want to trigger a re-render
     this.setState();
-  }
-
-  handleExpandIssues = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
   }
 
   generateValueListItem = (oneIssue) => {
@@ -134,48 +167,54 @@ class IssuesByBallotItemDisplayList extends Component {
     );
   }
 
-  render () {
-    const handleEnterHoverLocalArea = () => {
-      if (this.props.handleLeaveCandidateCard) {
-        this.props.handleLeaveCandidateCard();
-      }
-    };
+  handleEnterHoverLocalArea = () => {
+    if (this.props.handleLeaveCandidateCard) {
+      this.props.handleLeaveCandidateCard();
+    }
+  }
 
-    const handleLeaveHoverLocalArea = () => {
-      if (this.props.handleEnterCandidateCard) {
-        this.props.handleEnterCandidateCard();
-      }
-    };
+  handleExpandIssues = () => {
+    const { expand } = this.state;
+    this.setState({ expand: !expand });
+  }
+
+  handleLeaveHoverLocalArea = () => {
+    if (this.props.handleEnterCandidateCard) {
+      this.props.handleEnterCandidateCard();
+    }
+  }
+
+  render () {
+    // console.log('IssuesByBallotItemDisplayList, render');
 
     renderLog(__filename);
-    const { ballotItemWeVoteId, expand } = this.state;
-    const issuesUnderThisBallotItemVoterIsFollowingFound =
-      this.state.issuesUnderThisBallotItemVoterIsFollowing &&
-      this.state.issuesUnderThisBallotItemVoterIsFollowing.length;
-    const issuesUnderThisBallotItemVoterIsNotFollowingFound =
-      this.state.issuesUnderThisBallotItemVoterIsNotFollowing &&
-      this.state.issuesUnderThisBallotItemVoterIsNotFollowing.length;
+    const {
+      ballotItemWeVoteId, expand,
+      issuesUnderThisBallotItemVoterIsFollowing, issuesUnderThisBallotItemVoterIsNotFollowing,
+      issuesUnderThisBallotItemVoterIsFollowingLength, issuesUnderThisBallotItemVoterIsNotFollowingLength,
+      maximumNumberOfIssuesToDisplay,
+    } = this.state;
 
     // console.log('this.state.ballotItemWeVoteId: ', this.state.ballotItemWeVoteId);
-    // console.log('this.state.issuesUnderThisBallotItemVoterIsFollowing: ', this.state.issuesUnderThisBallotItemVoterIsFollowing);
-    // console.log('this.state.issuesUnderThisBallotItemVoterIsNotFollowing: ', this.state.issuesUnderThisBallotItemVoterIsNotFollowing);
+    // console.log('issuesUnderThisBallotItemVoterIsFollowing: ', issuesUnderThisBallotItemVoterIsFollowing);
+    // console.log('issuesUnderThisBallotItemVoterIsNotFollowing: ', issuesUnderThisBallotItemVoterIsNotFollowing);
     if (
-      !issuesUnderThisBallotItemVoterIsFollowingFound &&
-      !issuesUnderThisBallotItemVoterIsNotFollowingFound
+      !issuesUnderThisBallotItemVoterIsFollowingLength &&
+      !issuesUnderThisBallotItemVoterIsNotFollowingLength
     ) {
       // If we don't have any endorsement text, show the alternate component passed in
       return this.props.children || null;
     }
 
     let localCounter = 0;
-    const issuesVoterIsFollowingHtml = this.state.issuesUnderThisBallotItemVoterIsFollowing.map(
+    const issuesVoterIsFollowingHtml = issuesUnderThisBallotItemVoterIsFollowing.map(
       (oneIssue) => {
         if (!oneIssue) {
           return null;
         }
         // console.log('oneIssue.issue_name: ', oneIssue.issue_name);
         localCounter++;
-        if (localCounter <= this.state.maximumNumberOfIssuesToDisplay) {
+        if (localCounter <= maximumNumberOfIssuesToDisplay) {
           return this.generateValueListItem(oneIssue);
         } else {
           return null;
@@ -183,13 +222,13 @@ class IssuesByBallotItemDisplayList extends Component {
       },
     );
     localCounter = 0;
-    const issuesVoterIsNotFollowingHtml = this.state.issuesUnderThisBallotItemVoterIsNotFollowing.map(
+    const issuesVoterIsNotFollowingHtml = issuesUnderThisBallotItemVoterIsNotFollowing.map(
       (oneIssue) => {
         if (!oneIssue) {
           return null;
         }
         localCounter++;
-        if (localCounter <= this.state.maximumNumberOfIssuesToDisplay) {
+        if (localCounter <= maximumNumberOfIssuesToDisplay) {
           return this.generateValueListItem(oneIssue);
         } else {
           return null;
@@ -199,10 +238,10 @@ class IssuesByBallotItemDisplayList extends Component {
 
     return (
       <Wrapper
-        onBlur={handleLeaveHoverLocalArea}
-        onFocus={handleEnterHoverLocalArea}
-        onMouseOut={handleLeaveHoverLocalArea}
-        onMouseOver={handleEnterHoverLocalArea}
+        onBlur={this.handleLeaveHoverLocalArea}
+        onFocus={this.handleEnterHoverLocalArea}
+        onMouseOut={this.handleLeaveHoverLocalArea}
+        onMouseOver={this.handleEnterHoverLocalArea}
       >
         <Issues>
           {/* Show a break-down of the current positions in your network */}

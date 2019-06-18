@@ -24,27 +24,46 @@ class IssuesByOrganizationDisplayList extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      componentDidMount: false,
       issuesUnderThisOrganization: [],
+      issuesUnderThisOrganizationLength: 0,
     };
   }
 
   componentDidMount () {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
-    this.voterGuideStoreListener = VoterGuideStore.addListener(
-      this.onVoterGuideStoreChange.bind(this),
-    );
-    this.onVoterGuideStoreChange();
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
+    const issuesUnderThisOrganization = IssueStore.getIssuesLinkedToByOrganization(this.props.organizationWeVoteId) || [];
+    const issuesUnderThisOrganizationLength = issuesUnderThisOrganization.length;
     this.setState({
+      componentDidMount: true,
       organizationWeVoteId: this.props.organizationWeVoteId,
-      issuesUnderThisOrganization: IssueStore.getIssuesLinkedToByOrganization(this.props.organizationWeVoteId),
+      issuesUnderThisOrganization,
+      issuesUnderThisOrganizationLength,
     });
   }
 
   componentWillReceiveProps (nextProps) {
+    const issuesUnderThisOrganization = IssueStore.getIssuesLinkedToByOrganization(nextProps.organizationWeVoteId) || [];
+    const issuesUnderThisOrganizationLength = issuesUnderThisOrganization.length;
     this.setState({
       organizationWeVoteId: nextProps.organizationWeVoteId,
-      issuesUnderThisOrganization: IssueStore.getIssuesLinkedToByOrganization(nextProps.organizationWeVoteId),
+      issuesUnderThisOrganization,
+      issuesUnderThisOrganizationLength,
     });
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if not needed
+    if (this.state.componentDidMount !== nextState.componentDidMount) {
+      // console.log('this.state.componentDidMount: ', this.state.componentDidMount, ', nextState.componentDidMount', nextState.componentDidMount);
+      return true;
+    }
+    if (this.state.issuesUnderThisOrganizationLength !== nextState.issuesUnderThisOrganizationLength) {
+      // console.log('this.state.issuesUnderThisOrganizationLength: ', this.state.issuesUnderThisOrganizationLength, ', nextState.issuesUnderThisOrganizationLength', nextState.issuesUnderThisOrganizationLength);
+      return true;
+    }
+    return false;
   }
 
   componentWillUnmount () {
@@ -54,8 +73,11 @@ class IssuesByOrganizationDisplayList extends Component {
 
   onIssueStoreChange () {
     const { organizationWeVoteId } = this.state;
+    const issuesUnderThisOrganization = IssueStore.getIssuesLinkedToByOrganization(organizationWeVoteId) || [];
+    const issuesUnderThisOrganizationLength = issuesUnderThisOrganization.length;
     this.setState({
-      issuesUnderThisOrganization: IssueStore.getIssuesLinkedToByOrganization(organizationWeVoteId),
+      issuesUnderThisOrganization,
+      issuesUnderThisOrganizationLength,
     });
   }
 
@@ -122,31 +144,38 @@ class IssuesByOrganizationDisplayList extends Component {
     );
   }
 
+  handleEnterHoverLocalArea = () => {
+    if (this.props.handleLeaveCandidateCard) {
+      this.props.handleLeaveCandidateCard();
+    }
+  };
+
+  handleLeaveHoverLocalArea = () => {
+    if (this.props.handleEnterCandidateCard) {
+      this.props.handleEnterCandidateCard();
+    }
+  };
+
   render () {
-    // console.log('IssuesByOrganizationDisplayList render');
-    const handleEnterHoverLocalArea = () => {
-      if (this.props.handleLeaveCandidateCard) {
-        this.props.handleLeaveCandidateCard();
-      }
-    };
-
-    const handleLeaveHoverLocalArea = () => {
-      if (this.props.handleEnterCandidateCard) {
-        this.props.handleEnterCandidateCard();
-      }
-    };
-
     renderLog(__filename);
-    const issuesUnderThisOrganizationFound = this.state.issuesUnderThisOrganization && this.state.issuesUnderThisOrganization.length;
+    const {
+      issuesUnderThisOrganization, issuesUnderThisOrganizationLength, organizationWeVoteId,
+    } = this.state;
+
+    if (!organizationWeVoteId) {
+      return null;
+    }
+
+    // console.log('IssuesByOrganizationDisplayList render');
 
     // console.log('this.state.organizationWeVoteId: ', this.state.organizationWeVoteId);
     // console.log('this.state.issuesUnderThisOrganization: ', this.state.issuesUnderThisOrganization);
-    if (!issuesUnderThisOrganizationFound) {
+    if (!issuesUnderThisOrganizationLength) {
       // If we don't have any endorsement text, show the alternate component passed in
       return this.props.children || null;
     }
 
-    const issuesUnderThisOrganizationHtml = this.state.issuesUnderThisOrganization.map(
+    const issuesUnderThisOrganizationHtml = issuesUnderThisOrganization.map(
       (oneIssue) => {
         if (!oneIssue) {
           return null;
@@ -157,10 +186,10 @@ class IssuesByOrganizationDisplayList extends Component {
 
     return (
       <Wrapper
-        onBlur={handleLeaveHoverLocalArea}
-        onFocus={handleEnterHoverLocalArea}
-        onMouseOut={handleLeaveHoverLocalArea}
-        onMouseOver={handleEnterHoverLocalArea}
+        onBlur={this.handleLeaveHoverLocalArea}
+        onFocus={this.handleEnterHoverLocalArea}
+        onMouseOut={this.handleLeaveHoverLocalArea}
+        onMouseOver={this.handleEnterHoverLocalArea}
       >
         <IssuesByOrganization>
           <IssueByOrganizationList>

@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 import { Link } from 'react-router';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
-import { cordovaDot } from '../../utils/cordovaUtils';
 
 export default class ThisIsMeAction extends Component {
   static propTypes = {
