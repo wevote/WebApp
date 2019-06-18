@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
@@ -9,6 +9,9 @@ import ThumbsUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbsDownIcon from '@material-ui/icons/ThumbDown';
 import CommentIcon from '@material-ui/icons/Comment';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import { stringContains } from '../../utils/textFormat';
@@ -369,13 +372,17 @@ class ItemActionBar extends PureComponent {
     // This modal is shown when user clicks on support or oppose button for the first time only.
     const modalSupportProps = { is_public_position: false };
     const SupportOrOpposeHelpModal = (
-      <Modal show={this.state.showSupportOrOpposeHelpModal} onHide={() => { this.toggleSupportOrOpposeHelpModal(); }}>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            <div className="text-center">Choose or Oppose</div>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+      <Dialog
+        classes={{ paper: classes.dialogPaper }}
+        open
+        onClose={() => { this.toggleSupportOrOpposeHelpModal(); }}
+      >
+        <DialogTitle>
+          <div className="intro-modal__h1">
+            Choose or Oppose
+          </div>
+        </DialogTitle>
+        <DialogContent classes={{ root: classes.dialogContent }}>
           <section className="card">
             <div className="text-center">
               <div className="u-f2">Your position is only visible to your We Vote friends.</div>
@@ -404,8 +411,8 @@ class ItemActionBar extends PureComponent {
               <br />
             </div>
           </section>
-        </Modal.Body>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     );
 
     const ballotItemDisplayName = this.props.ballotItemDisplayName || '';
