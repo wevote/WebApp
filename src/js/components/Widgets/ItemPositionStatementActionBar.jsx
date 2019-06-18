@@ -403,6 +403,9 @@ const styles = theme => ({
   input: {
     flex: '1 1 0',
     height: '100%',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 14,
+    },
   },
   disabled: {
     background: '#dcdcdc',
@@ -433,9 +436,10 @@ const PostSaveButton = styled.div`
   margin-left: auto;
   margin-top: auto;
   @media(max-width: 576px) {
-    height: 36.8px;
+    height: 28px;
     display: flex;
     align-items: center;
+    margin-bottom: auto;
   }
 `;
 

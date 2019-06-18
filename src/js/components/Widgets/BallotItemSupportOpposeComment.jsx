@@ -188,7 +188,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
       null;
 
     const commentDisplayMobile = showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText ? (
-      <div className="d-block d-sm-none u-min-50 u-push--xs u-stack--sm">
+      <div className="d-block d-sm-none u-min-50 u-push--xs">
         <ItemPositionStatementActionBar
           ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
           ballotItemDisplayName={this.state.ballotItemDisplayName}
@@ -205,6 +205,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
 
     return (
       <Wrapper showPositionStatementActionBar={showPositionStatementActionBar}>
+        <BallotHeaderDivider className="u-show-mobile" />
         <ActionBar>
           {/* Support/Oppose/Comment toggle here */}
           {itemActionBar}
@@ -232,6 +233,13 @@ const ActionBar = styled.div`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
+`;
+
+const BallotHeaderDivider = styled.div`
+  margin: 8px 0;
+  width: 100%;
+  background: #f7f7f7;
+  height: 2px;
 `;
 
 
