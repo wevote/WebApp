@@ -40,15 +40,6 @@ $mobile-btn-padding: 52px;
     font-size: 14px;
     padding: $space-sm $space-md $space-sm $space-xl;
   }
-  &__endorsements {
-    background: $brand-blue;
-    color: $white;
-    &--icon {
-      vertical-align: baseline;
-      position: relative;
-      top: -$space-xs / 2;
-    }
-  }
 }
 
 .network-btn {

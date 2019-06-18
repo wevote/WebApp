@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
+import { shortenText } from '../../utils/textFormat';
 import { oAuthLog, renderLog } from '../../utils/logging';
 import $ajax from '../../utils/service';
 import cookies from '../../utils/cookies';
@@ -8,7 +10,7 @@ import {
 } from '../../utils/cordovaUtils';
 import webAppConfig from '../../config';
 import TwitterActions from '../../actions/TwitterActions';
-import ContainedIconButton from './ContainedIconButton';
+// import ContainedIconButton from './ContainedIconButton';
 
 const returnURL = `${webAppConfig.WE_VOTE_URL_PROTOCOL + webAppConfig.WE_VOTE_HOSTNAME}/twitter_sign_in`;
 
@@ -147,12 +149,24 @@ class TwitterSignIn extends Component {
     const { buttonText } = this.props;
     renderLog(__filename);
     return (
-      <ContainedIconButton
-        buttonText={buttonText}
-        color="#55acee"
-        icon={<span className="fab fa-twitter" />}
+      <Button
+        className="split-button split-button__left"
+        color="primary"
+        variant="contained"
         onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova}
-      />
+        style={{
+          backgroundColor: '#55acee',
+        }}
+        title="Sign in to find voter guides"
+      >
+        <span className="split-button__icon">
+          <i className="fab fa-twitter" />
+        </span>
+        <div className="split-button__seperator split-button__seperator--left" />
+        <span className="split-button__text">
+          {shortenText(buttonText, 22)}
+        </span>
+      </Button>
     );
   }
 }

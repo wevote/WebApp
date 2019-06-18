@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import Button from '@material-ui/core/Button';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import OpenExternalWebSite from './OpenExternalWebSite';
 
@@ -8,7 +8,7 @@ class EndorsementCard extends PureComponent {
   static propTypes = {
     buttonText: PropTypes.string,
     title: PropTypes.string,
-    bsPrefix: PropTypes.string,
+    // bsPrefix: PropTypes.string,
     text: PropTypes.string,
   };
 
@@ -22,12 +22,20 @@ class EndorsementCard extends PureComponent {
                 url="https://api.wevoteusa.org/vg/create/"
                 target="_blank"
                 title={this.props.title}
+                className="u-no-underline"
                 body={(
-                  <Button className="btn endorsement-card__btn btn-social" bsPrefix={this.props.bsPrefix} variant="primary">
-                    <span>
-                      <img src={cordovaDot('/img/global/svg-icons/positions-icon-24-x-24.svg')} className="endorsement-card__btn--icon" alt="" />
+                  <Button
+                    className="split-button split-button__left"
+                    color="primary"
+                    variant="contained"
+                  >
+                    <span className="split-button__icon">
+                      <img src={cordovaDot('/img/global/svg-icons/positions-icon-24-x-24.svg')} alt="" />
                     </span>
-                    {this.props.buttonText}
+                    <div className="split-button__seperator split-button__seperator--left" />
+                    <span className="split-button__text">
+                      {this.props.buttonText}
+                    </span>
                   </Button>
                 )}
               />
