@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import DoneIcon from '@material-ui/icons/Done';
 import CommentIcon from '@material-ui/icons/Comment';
@@ -17,6 +16,7 @@ import SupportStore from '../../stores/SupportStore';
 import { stringContains } from '../../utils/textFormat';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
+import StickyPopover from '../Ballot/StickyPopover';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize complex changes
 /* eslint react/no-find-dom-node: 1 */
@@ -26,7 +26,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
     goToCandidate: PropTypes.func, // We don't require this because sometimes we don't want the link to do anything
-    popoverTop: PropTypes.bool,
     classes: PropTypes.object,
     handleLeaveCandidateCard: PropTypes.func,
     handleEnterCandidateCard: PropTypes.func,
@@ -38,8 +37,6 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
   constructor (props) {
     super(props);
-
-    this.popover_state = {};
     this.mobile = 'ontouchstart' in document.documentElement;
     this.networkScoreRef = React.createRef();
     this.issueScoreRef = React.createRef();
@@ -51,7 +48,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       componentDidMountFinished: false,
       organizationsToFollowSupport: [],
       organizationsToFollowOppose: [],
-      positionListFromAdvisersFollowedByVoter: [],
+      // positionListFromAdvisersFollowedByVoter: [],
       ballotItemSupportProps: {},
     };
     this.closeIssueScorePopover = this.closeIssueScorePopover.bind(this);
@@ -88,12 +85,12 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     // console.log('BallotItemSupportOpposeCountDisplay positionsNeededForThisWeVoteId:', positionsNeededForThisWeVoteId);
     // console.log('isCandidate:', isCandidate, 'isMeasure:', isMeasure);
 
-    let positionListFromAdvisersFollowedByVoter;
-    if (isCandidate) {
-      positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(ballotItemWeVoteId);
-    } else if (isMeasure) {
-      positionListFromAdvisersFollowedByVoter = MeasureStore.getPositionList(ballotItemWeVoteId);
-    }
+    // let positionListFromAdvisersFollowedByVoter;
+    // if (isCandidate) {
+    //   positionListFromAdvisersFollowedByVoter = CandidateStore.getPositionList(ballotItemWeVoteId);
+    // } else if (isMeasure) {
+    //   positionListFromAdvisersFollowedByVoter = MeasureStore.getPositionList(ballotItemWeVoteId);
+    // }
     const organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(ballotItemWeVoteId);
     const organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(ballotItemWeVoteId);
     this.setState({
@@ -108,7 +105,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       numberOfInfoOnlyPositions,
       organizationsToFollowSupport,
       organizationsToFollowOppose,
-      positionListFromAdvisersFollowedByVoter,
+      // positionListFromAdvisersFollowedByVoter,
       voter: VoterStore.getVoter(), // We only set this once since the info we need isn't dynamic
     });
   }
@@ -232,7 +229,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         numberOfSupportPositions,
         numberOfOpposePositions,
         numberOfInfoOnlyPositions,
-        positionListFromAdvisersFollowedByVoter: CandidateStore.getPositionList(candidateWeVoteId),
+        // positionListFromAdvisersFollowedByVoter: CandidateStore.getPositionList(candidateWeVoteId),
       });
     }
   }
@@ -246,7 +243,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         numberOfSupportPositions,
         numberOfOpposePositions,
         numberOfInfoOnlyPositions,
-        positionListFromAdvisersFollowedByVoter: MeasureStore.getPositionList(measureWeVoteId),
+        // positionListFromAdvisersFollowedByVoter: MeasureStore.getPositionList(measureWeVoteId),
       });
     }
   }
@@ -456,44 +453,96 @@ class BallotItemSupportOpposeCountDisplay extends Component {
 
     if (advisersThatMakeVoterNetworkScoreCount > 0) {
       scoreInYourNetworkPopover = (
-        <Popover
-          id="score-popover-trigger-click-root-close"
-          title={(
-            <span>
-              Score in Your Network
-              <span className="fas fa-times fa-lg" aria-hidden="true" />
-            </span>
-          )}
-          onClick={this.closeNetworkScorePopover}
-        >
-          These friends or organizations support or oppose
-          {' '}
-          <strong>{this.state.ballotItemDisplayName}</strong>
-          :
-          <br />
-          {advisersThatMakeVoterNetworkScoreDisplay}
-        </Popover>
+        <PopoverWrapper>
+          <PopoverHeader>
+            <PopoverTitleText>Score in Your Network</PopoverTitleText>
+          </PopoverHeader>
+          <PopoverBody>
+            These friends or organizations support or oppose
+            {' '}
+            <strong>{this.state.ballotItemDisplayName}</strong>
+            :
+            <br />
+            {advisersThatMakeVoterNetworkScoreDisplay}
+          </PopoverBody>
+        </PopoverWrapper>
       );
     } else {
       scoreInYourNetworkPopover = (
-        <Popover
-          id="score-popover-trigger-click-root-close"
-          title={(
-            <span>
-              Score in Your Network
-              <span className="fas fa-times fa-lg" aria-hidden="true" />
+        <PopoverWrapper>
+          <PopoverHeader>
+            <PopoverTitleText>Score in Your Network</PopoverTitleText>
+          </PopoverHeader>
+          <PopoverBody>
+            Your friends, and the organizations you follow, are
+            {' '}
+            <strong>Your Network</strong>
+            .
+            Everyone in your network that
+            {' '}
+            <span className="u-no-break">
+              {' '}
+              <img
+                src={cordovaDot('/img/global/icons/thumbs-up-color-icon.svg')}
+                alt="Thumbs Up"
+                width="20"
+                height="20"
+              />
+              {' '}
+              supports
             </span>
-          )}
-          onClick={this.closeNetworkScorePopover}
-        >
-          Your friends, and the organizations you follow, are
-          {' '}
-          <strong>Your Network</strong>
-          .
-          Everyone in your network that
+            {' '}
+            {this.state.ballotItemDisplayName}
+            adds
+            +1 to this
+            {' '}
+            <strong>Score</strong>
+            .
+            Each one that
+            {' '}
+            <span className="u-no-break">
+              <img
+                src={cordovaDot('/img/global/icons/thumbs-down-color-icon.svg')}
+                alt="Thumbs Down"
+                width="20"
+                height="20"
+              />
+              {' '}
+              opposes
+            </span>
+            {' '}
+            subtracts 1 from this
+            {' '}
+            <strong>Score</strong>
+            .
+            {' '}
+            <strong>Listen</strong>
+            {' '}
+            to an organization to add their opinion to your personalized
+            {' '}
+            <strong>Score</strong>
+            .
+          </PopoverBody>
+        </PopoverWrapper>
+      );
+    }
+
+    const voterDecidedItem = this.state.ballotItemSupportProps && this.state.voter &&
+      (this.state.ballotItemSupportProps.is_support || this.state.ballotItemSupportProps.is_oppose);
+
+    const positionsPopover = positionsCount > 1 || (positionsCount && !voterDecidedItem) ? (     // eslint-disable-line no-nested-ternary
+      <PopoverWrapper>
+        <PopoverHeader>
+          <PopoverTitleText>
+            Opinions
+            {this.state.ballotItemDisplayName ? ` about ${this.state.ballotItemDisplayName}` : ''}
+            {' '}
+          </PopoverTitleText>
+        </PopoverHeader>
+        <PopoverBody>
+          These organizations
           {' '}
           <span className="u-no-break">
-            {' '}
             <img
               src={cordovaDot('/img/global/icons/thumbs-up-color-icon.svg')}
               alt="Thumbs Up"
@@ -501,17 +550,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               height="20"
             />
             {' '}
-            supports
+            support
           </span>
           {' '}
-          {this.state.ballotItemDisplayName}
-          adds
-          +1 to this
-          {' '}
-          <strong>Score</strong>
-          .
-          Each one that
-          {' '}
+          or&nbsp;
           <span className="u-no-break">
             <img
               src={cordovaDot('/img/global/icons/thumbs-down-color-icon.svg')}
@@ -520,104 +562,45 @@ class BallotItemSupportOpposeCountDisplay extends Component {
               height="20"
             />
             {' '}
-            opposes
+            oppose
           </span>
-          {' '}
-          subtracts 1 from this
-          {' '}
-          <strong>Score</strong>
+          {this.state.ballotItemDisplayName ? ` ${this.state.ballotItemDisplayName}` : ''}
           .
-          {' '}
-          <strong>Listen</strong>
-          {' '}
-          to an organization to add their opinion to your personalized
-          {' '}
-          <strong>Score</strong>
-          .
-        </Popover>
-      );
-    }
-
-    const voterDecidedItem = this.state.ballotItemSupportProps && this.state.voter &&
-      (this.state.ballotItemSupportProps.is_support || this.state.ballotItemSupportProps.is_oppose);
-
-    const positionsPopover = positionsCount > 1 || (positionsCount && !voterDecidedItem) ? (     // eslint-disable-line no-nested-ternary
-      <Popover
-        id="positions-popover-trigger-click-root-close"
-        title={(
-          <span className="u-f4 u-no-break">
-            Opinions
-            {this.state.ballotItemDisplayName ? ` about ${this.state.ballotItemDisplayName}` : ''}
-            {' '}
-            <span className="fas fa-times fa-lg" aria-hidden="true" />
-          </span>
-        )}
-        onClick={BallotItemSupportOpposeCountDisplay.closePositionsPopover}
-      >
-        These organizations
-        {' '}
-        <span className="u-no-break">
-          <img
-            src={cordovaDot('/img/global/icons/thumbs-up-color-icon.svg')}
-            alt="Thumbs Up"
-            width="20"
-            height="20"
-          />
-          {' '}
-          support
-        </span>
-        {' '}
-        or&nbsp;
-        <span className="u-no-break">
-          <img
-            src={cordovaDot('/img/global/icons/thumbs-down-color-icon.svg')}
-            alt="Thumbs Down"
-            width="20"
-            height="20"
-          />
-          {' '}
-          oppose
-        </span>
-        {this.state.ballotItemDisplayName ? ` ${this.state.ballotItemDisplayName}` : ''}
-        .
-      </Popover>
+        </PopoverBody>
+      </PopoverWrapper>
     ) :
       positionsCount && voterDecidedItem ? (
-        <Popover
-          id="positions-popover-trigger-click-root-close"
-          title={(
-            <span className="u-f4 u-no-break">
+        <PopoverWrapper>
+          <PopoverHeader>
+            <PopoverTitleText>
               Opinions
               {this.state.ballotItemDisplayName ? ` about ${this.state.ballotItemDisplayName}` : ''}
               {' '}
-              <span className="fas fa-times fa-lg" aria-hidden="true" />
-            </span>
-          )}
-          onClick={BallotItemSupportOpposeCountDisplay.closePositionsPopover}
-        >
-          You have the only opinion
-          {this.state.ballotItemDisplayName ? ` about ${this.state.ballotItemDisplayName}` : ''}
-          {' '}
-          so far.
-        </Popover>
+            </PopoverTitleText>
+          </PopoverHeader>
+          <PopoverBody>
+            You have the only opinion
+            {this.state.ballotItemDisplayName ? ` about ${this.state.ballotItemDisplayName}` : ''}
+            {' '}
+            so far.
+          </PopoverBody>
+        </PopoverWrapper>
       ) : (
-        <Popover
-          id="positions-popover-trigger-click-root-close"
-          title={(
-            <span className="u-f4 u-no-break">
+        <PopoverWrapper>
+          <PopoverHeader>
+            <PopoverTitleText>
               Opinions
               {this.state.ballotItemDisplayName ? ` about ${this.state.ballotItemDisplayName}` : ''}
               {' '}
-              <span className="fas fa-times fa-lg" aria-hidden="true" />
-            </span>
-          )}
-          onClick={BallotItemSupportOpposeCountDisplay.closePositionsPopover}
-        >
-          There are no opinions
-          {this.state.ballotItemDisplayName ? ` about ${this.state.ballotItemDisplayName}` : ''}
-          {' '}
-          yet.
-        </Popover>
+            </PopoverTitleText>
+          </PopoverHeader>
+          <PopoverBody>
+            There are no opinions
+            {this.state.ballotItemDisplayName ? ` about ${this.state.ballotItemDisplayName}` : ''}
+            {' '}
+            yet.
+          </PopoverBody>
+        </PopoverWrapper>
       );
 
     const commentCountExists = numberOfInfoOnlyPositions > 0;
@@ -659,11 +642,13 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         {/* Total counts of all support, opposition and info only comments for this ballot item */}
         { showNetworkScore || isVoterSupport || isVoterOppose ?
           null : (
-            <OverlayTrigger
-              trigger="click"
-              rootClose
-              placement={this.props.popoverTop ? 'top' : 'bottom'}
-              overlay={positionsPopover}
+            <StickyPopover
+              delay={{ show: 100000, hide: 100 }}
+              popoverComponent={positionsPopover}
+              placement="auto"
+              id="ballot-support-oppose-count-trigger-click-root-close"
+              openOnClick
+              showCloseIcon
             >
               <EndorsementsContainer>
                 <EndorsementsTitle>
@@ -698,19 +683,19 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                   </EndorsementRow>
                 </EndorsementWrapper>
               </EndorsementsContainer>
-            </OverlayTrigger>
+            </StickyPopover>
           )
         }
 
         {/* Network Score for this ballot item here */}
         { showNetworkScore && !isVoterSupport && !isVoterOppose ? (
-          <OverlayTrigger
-            trigger="click"
-            ref={(ref) => { this.networkScoreRef = ref; }}
-            onExit={this.closeNetworkScorePopover}
-            rootClose
-            placement={this.props.popoverTop ? 'top' : 'bottom'}
-            overlay={scoreInYourNetworkPopover}
+          <StickyPopover
+            delay={{ show: 100000, hide: 100 }}
+            popoverComponent={scoreInYourNetworkPopover}
+            placement="auto"
+            id="ballot-support-oppose-count-trigger-click-root-close"
+            openOnClick
+            showCloseIcon
           >
             <NetworkScore>
               { totalNetworkScore === 0 ? (
@@ -723,7 +708,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
                 </span>
               )}
             </NetworkScore>
-          </OverlayTrigger>
+          </StickyPopover>
         ) : null
         }
         <span className="sr-only">
@@ -848,6 +833,38 @@ const VoterChoiceWrapper = styled.div`
   @media print{
     color: #888;
   }
+`;
+
+const PopoverWrapper = styled.div`
+  width: calc(100% + 24px);
+  height: 100%;
+  position: relative;
+  right: 12px;
+  bottom: 8px;
+  border-radius: 3px;
+`;
+
+const PopoverHeader = styled.div`
+  background: ${({ theme }) => theme.colors.brandBlue};
+  padding: 4px 8px;
+  height: 35px;
+  color: white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 4px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+`;
+
+const PopoverTitleText = styled.div`
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 8px;
+`;
+
+const PopoverBody = styled.div`
+  padding: 8px;
 `;
 
 export default withTheme()(withStyles(styles)(BallotItemSupportOpposeCountDisplay));
