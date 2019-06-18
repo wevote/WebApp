@@ -228,15 +228,15 @@ const Wrapper = styled.div`
   overflow: show;
   display: flex;
   flex-flow: row;
+  align-items: center;
   justify-content: space-between;
 `;
 
 const Issues = styled.div`
-  width: 70%
-  padding: 8px 0;
+  width: 70%;
+  margin-left: -10px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 78%;
-    padding: 12px 0;
   }
 `;
 
