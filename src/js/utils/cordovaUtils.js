@@ -261,6 +261,7 @@ const enums = {
   ballotSmHdrWild: 103,
   ballotLgHdrWild: 104,
   measureWild: 105,
+  welcomeWild: 106,
   candidate: 200,
   friends: 201,
   opinions: 202,
@@ -269,46 +270,53 @@ const enums = {
 };
 
 function pageEnumeration () {
+  const { href } = window.location;
+
   // second level paths must be tried first
-  if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
+  if (href.indexOf('/index.html#/ballot/vote') > 0) {
     return enums.ballotVote;
-  } else if (window.location.href.indexOf('/index.html#/more/about') > 0) {
+  } else if (href.indexOf('/index.html#/more/about') > 0) {
     return enums.moreAbout;
-  } else if (window.location.href.indexOf('/index.html#/more/hamburger') > 0) {
+  } else if (href.indexOf('/index.html#/more/hamburger') > 0) {
     return enums.moreHamburger;
-  } else if (window.location.href.indexOf('/index.html#/values/list') > 0) {
+  } else if (href.indexOf('/index.html#/values/list') > 0) {
     return enums.valuesList;
 
   // then wildcarded second level paths
-  } else if (window.location.href.indexOf('/index.html#/office/') > 0) {
+  } else if (href.indexOf('/index.html#/office/') > 0) {
     return enums.officeWild;
-  } else if (window.location.href.indexOf('/index.html#/settings/') > 0) {
+  } else if (href.indexOf('/index.html#/settings/') > 0) {
     return enums.settingsWild;
-  } else if (window.location.href.indexOf('/index.html#/wevoteintro/') > 0) {
+  } else if (href.indexOf('/index.html#/wevoteintro/') > 0) {
     return enums.wevoteintroWild;
-  } else if (window.location.href.indexOf('/index.html#/ballot') > 0) {
+  } else if (href.indexOf('/index.html#/ballot') > 0) {
     if ($('#allItemsCompletionLevelTab').length > 0) {
       return enums.ballotLgHdrWild;
     } else {
       return enums.ballotSmHdrWild;
     }
-  } else if (window.location.href.indexOf('/index.html#/measure/') > 0) {
+  } else if (href.indexOf('/index.html#/measure/') > 0) {
     return enums.measureWild;
 
     // then specific first level paths
-  } if (window.location.href.indexOf('/index.html#/candidate') > 0) {
+  } if (href.indexOf('/index.html#/candidate') > 0) {
     return enums.candidate;
-  } else if (window.location.href.indexOf('/index.html#/friends') > 0) {
+  } else if (href.indexOf('/index.html#/friends') > 0) {
     return enums.friends;
-  } else if (window.location.href.indexOf('/index.html#/opinions') > 0) {
+  } else if (href.indexOf('/index.html#/opinions') > 0) {
     return enums.opinions;
-  } else if (window.location.href.indexOf('/index.html#/values') > 0) {
+  } else if (href.indexOf('/index.html#/values') > 0) {
     return enums.values;
+  } else if (href.indexOf('/index.html#/welcome') > 0 ||
+             href.indexOf('/index.html#/for-organizations') > 0 ||
+             href.indexOf('/index.html#/for-campaigns') > 0 ||
+             href.indexOf('/index.html#/how') > 0) {
+    return enums.welcomeWild;
   }
   return enums.defaultVal;
 }
 
-// <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
+// <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
 // renders approximately as ...  <div className="Ballot__Wrapper-sc-11u8kf3-0 dYbfmq"><div>
 export function cordovaScrollablePaneTopPadding () {
   if (isSimulator() && logCordovaOffsets) {
@@ -334,6 +342,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotSmHdrWild: return '130px';
         case enums.ballotLgHdrWild: return '4px';
         case enums.moreAbout:       return '22px';
+        case enums.welcomeWild:     return '22px';
         case enums.moreHamburger:   return isIPad() ? '15px' : '10px';
         case enums.settingsWild:    return isIPad() ? '15px' : '16px';
         default:                    return '0px';
@@ -351,6 +360,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotSmHdrWild: return '126px';
         case enums.ballotLgHdrWild: return '5px';
         case enums.moreAbout:       return '22px';
+        case enums.welcomeWild:     return '10px';
         case enums.moreHamburger:   return '10px';
         case enums.settingsWild:    return '16px';
         default:                    return '0px';
@@ -369,6 +379,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotSmHdrWild: return '150px';
         case enums.ballotLgHdrWild: return '18px';
         case enums.moreAbout:       return '22px';
+        case enums.welcomeWild:     return '22px';
         case enums.moreHamburger:   return '35px';
         case enums.settingsWild:    return '32px';
         default:                    return '0px';
@@ -386,6 +397,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotSmHdrWild: return '22px';
         case enums.ballotLgHdrWild: return '22px';
         case enums.moreAbout:       return '22px';
+        case enums.welcomeWild:     return '22px';
         case enums.moreHamburger:   return '35px';
         case enums.settingsWild:    return '32px';
         default:                    return '0px';
@@ -404,6 +416,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotSmHdrWild: return '150px';
         case enums.ballotLgHdrWild: return '16px';
         case enums.moreAbout:       return '22px';
+        case enums.welcomeWild:     return '22px';
         case enums.moreHamburger:   return '35px';
         case enums.settingsWild:    return '32px';
         default:                    return '0px';
@@ -437,7 +450,6 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidate:       return '22px';
         case enums.ballotSmHdrWild: return '108px';
         case enums.ballotVote:      return '16px';
-        case enums.moreAbout:       return '22px';
         default:                    return '0px';
       }
     } else if (sizeString === '--sm') {
@@ -446,7 +458,6 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.measureWild:     return '42px';
         case enums.candidate:       return '24px';
         case enums.ballotSmHdrWild: return '130px';
-        case enums.moreAbout:       return '22px';
         default:                    return '0px';
       }
     }

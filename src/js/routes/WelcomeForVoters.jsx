@@ -31,13 +31,14 @@ import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 import Footer from '../components/Welcome/Footer';
 import TextBox from '../components/Welcome/TextBox';
 import AddressBoxWelcome from '../components/Welcome/AddressBoxWelcome';
-import { historyPush, cordovaDot } from '../utils/cordovaUtils';
+import {historyPush, cordovaDot, cordovaScrollablePaneTopPadding} from '../utils/cordovaUtils';
 import Testimonial from '../components/Widgets/Testimonial';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import validateEmail from '../utils/email-functions';
 import VoterActions from '../actions/VoterActions';
 import VoterConstants from '../constants/VoterConstants';
 import VoterStore from '../stores/VoterStore';
+import {renderLog} from "../utils/logging";
 
 class Welcome extends PureComponent {
   static propTypes = {
@@ -109,6 +110,7 @@ class Welcome extends PureComponent {
   };
 
   render () {
+    renderLog(__filename);
     const { classes, pathname } = this.props;
     // console.log('WelcomeNew, pathname: ', pathname);
     const { voter, newsletterOptInTrue } = this.state;
@@ -118,7 +120,7 @@ class Welcome extends PureComponent {
     const imageUrl = cordovaDot('/img/global/photos/Alissa_B-128x128.jpg');
     const testimonial = 'Great way to sort through my ballot! My husband and I used We Vote during the last election to learn more about our ballots and make some tough choices. Between following various organizations, and friending a couple of trusted friends, we felt like we had an excellent pool of information to draw from. It was so great!';
     return (
-      <Wrapper>
+      <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="Welcome Voters - We Vote" />
         <WelcomeAppbar pathname={pathname} />
         <HeaderForVoters>
@@ -305,6 +307,7 @@ const Wrapper = styled.div`
   align-items: center;
   background: white;
   overflow-x: hidden;
+  padding-top: ${({ padTop }) => padTop};
 `;
 
 export default withStyles(styles)(Welcome);

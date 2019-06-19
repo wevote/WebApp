@@ -33,7 +33,7 @@ class About extends Component {
   render () {
     renderLog(__filename);
     return (
-      <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
+      <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="About We Vote" />
         <WelcomeAppbar pathname="/more/about" />
         <HeaderForAbout>

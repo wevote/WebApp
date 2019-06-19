@@ -976,7 +976,7 @@ class Ballot extends Component {
         <div className="page-content-container">
           <div className="container-fluid">
             {emptyBallot}
-            <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
+            <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
               {/* eslint-disable-next-line no-nested-ternary */}
               <div className={showBallotDecisionTabs ? 'row ballot__body' : isWebApp() ? 'row ballot__body__no-decision-tabs' : undefined}>
                 <BrowserPushMessage incomingProps={this.props} />

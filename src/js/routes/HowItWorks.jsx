@@ -10,9 +10,10 @@ import Footer from '../components/Welcome/Footer';
 import Header, { Container, Title } from '../components/Welcome/HowItWorksHeader';
 import HeaderSwitch from '../components/Widgets/HeaderSwitch';
 import StepsChips from '../components/Widgets/StepsChips';
-import { historyPush } from '../utils/cordovaUtils';
+import { cordovaScrollablePaneTopPadding, historyPush, isCordova } from '../utils/cordovaUtils';
 import VoterStore from '../stores/VoterStore';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
+import {renderLog} from "../utils/logging";
 
 class HowItWorks extends Component {
   static propTypes = {
@@ -186,7 +187,7 @@ class HowItWorks extends Component {
 
   handleChangeSlide = (selectedStepIndex) => {
     this.setState({ selectedStepIndex });
-  }
+  };
 
   switchToDifferentCategoryFunction = (selectedCategoryIndex) => {
     let getStartedMode = 'getStartedForVoters';
@@ -204,7 +205,7 @@ class HowItWorks extends Component {
       selectedCategoryIndex: selectedCategoryIndex || 0,
       selectedStepIndex: 0,
     });
-  }
+  };
 
   howItWorksGetStarted () {
     const { getStartedMode, getStartedUrl, voter } = this.state;
@@ -222,6 +223,7 @@ class HowItWorks extends Component {
   }
 
   render () {
+    renderLog(__filename);
     const { classes } = this.props;
     const { forCampaignsStepLabels, forCampaignsSteps,
       forOrganizationsStepLabels, forOrganizationsSteps,
@@ -251,7 +253,7 @@ class HowItWorks extends Component {
     // console.log('HowItWorks, selectedStepIndex: ', selectedStepIndex);
 
     return (
-      <Wrapper>
+      <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title={helmetTitle} />
         <WelcomeAppbar pathname={simulatedPathname} />
         <Header>
@@ -265,7 +267,7 @@ class HowItWorks extends Component {
                 switchToDifferentCategoryFunction={this.switchToDifferentCategoryFunction}
               />
             </DesktopView>
-            <MobileTabletView>
+            <MobileTabletView margin={isCordova()}>
               <StepsChips onSelectStep={this.handleChangeSlide} selected={selectedStepIndex} chips={stepLabels} mobile />
             </MobileTabletView>
           </Container>
@@ -311,6 +313,7 @@ const Wrapper = styled.div`
   align-items: center;
   background: white;
   overflow-x: hidden;
+  padding-top: ${({ padTop }) => padTop};
 `;
 
 const Section = styled.div`
@@ -331,6 +334,7 @@ const DesktopView = styled.div`
 
 const MobileTabletView = styled.div`
   display: inherit;
+  margin-top: ${({ marginTop }) => marginTop || '-11px'};
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
     display: none;
   }
