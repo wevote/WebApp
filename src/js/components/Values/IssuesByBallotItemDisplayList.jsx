@@ -270,14 +270,12 @@ const Wrapper = styled.div`
   flex-flow: row;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 `;
 
 const Issues = styled.div`
-  width: 70%;
+  width: 90%;
   margin-left: -10px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    width: 78%;
-  }
 `;
 
 const IssueList = styled.ul`
