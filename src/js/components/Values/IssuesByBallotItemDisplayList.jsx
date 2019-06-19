@@ -16,6 +16,7 @@ class IssuesByBallotItemDisplayList extends Component {
     children: PropTypes.object,
     handleLeaveCandidateCard: PropTypes.func,
     handleEnterCandidateCard: PropTypes.func,
+    disableMoreWrapper: PropTypes.bool,
   };
 
   static closePopover () {
@@ -252,7 +253,7 @@ class IssuesByBallotItemDisplayList extends Component {
             {issuesVoterIsNotFollowingHtml}
           </IssueList>
         </Issues>
-        {expand ? null : (
+        {(expand || this.props.disableMoreWrapper) ? null : (
           <MoreWrapper onClick={this.handleExpandIssues}>
             <MoreHorizIcon />
           </MoreWrapper>

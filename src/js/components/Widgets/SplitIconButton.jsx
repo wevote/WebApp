@@ -15,6 +15,9 @@ class SplitIconButton extends PureComponent {
     iconRight: PropTypes.bool,
     seperatorColor: PropTypes.string,
     title: PropTypes.string,
+    onClick: PropTypes.func,
+    onKeyDown: PropTypes.func,
+
   };
 
   render () {
@@ -32,6 +35,8 @@ class SplitIconButton extends PureComponent {
           color: buttonStyle.color,
           fontSize: buttonStyle.fontSize,
         }}
+        onClick={this.props.onClick}
+        onKeyDown={this.props.onKeyDown}
       >
         <SplitButtonIcon>
           {icon}
@@ -108,7 +113,7 @@ const SplitButtonIcon = styled.span`
   display: flex;
   align-items: center;
   height: 100%;
-  padding: 0 12px;
+  padding: 0 13.3px;
   * {
     width: 100%;
     font-size: 22px;

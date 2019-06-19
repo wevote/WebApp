@@ -231,7 +231,7 @@ class OfficeItemCompressed extends Component {
                   >
                     <IssuesByBallotItemDisplayList
                       ballotItemWeVoteId={oneCandidate.we_vote_id}
-                      placement="bottom"
+                      disableMoreWrapper
                     />
                   </TopCommentByBallotItem>
                 </div>
