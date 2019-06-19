@@ -324,6 +324,7 @@ class ItemPositionStatementActionBar extends Component {
             >
               <form className={classes.flex} onSubmit={this.savePositionStatement.bind(this)} onFocus={this.onFocusInput} onBlur={this.onBlurInput}>
                 <InputBase onChange={this.updateStatementTextToBeSaved}
+                  id="itemPositionStatementActionBarTextArea"
                   name="statementTextToBeSaved"
                   classes={{ root: classes.input }}
                   placeholder={statementPlaceholderText}
@@ -333,12 +334,14 @@ class ItemPositionStatementActionBar extends Component {
                   rows={rows}
                 />
                 <PostSaveButton className="postsave-button">
-                  <Button className="postsave-button"
-                  variant="outlined"
-                  color="primary"
-                  classes={{ outlinedPrimary: classes.buttonOutlinedPrimary }}
-                  type="submit"
-                  size="small"
+                  <Button
+                    id="itemPositionStatementActionBarSave"
+                    className="postsave-button"
+                    variant="outlined"
+                    color="primary"
+                    classes={{ outlinedPrimary: classes.buttonOutlinedPrimary }}
+                    type="submit"
+                    size="small"
                   >
                     {postButtonText}
                   </Button>

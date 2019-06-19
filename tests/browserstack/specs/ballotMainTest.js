@@ -66,6 +66,24 @@ describe('Basic cross-platform We Vote test',  () => {
     // //////////////////////
     // Visit the candidate page
     await simpleClick('officeItemCompressedCandidateInfo-wv02cand40208'); // Clicks the candidate
+    await simpleClick('valueIconAndText-wv02issue25'); // Clicks on the issue icon
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('valueIconAndText-wv02issue25'); // Clicks on the issue icon
+    await simpleClick('valueIconAndText-wv02issue65'); // Clicks on the issue icon
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('valueIconAndText-wv02issue65'); // Clicks on the issue icon
+    await simpleClick('valueIconAndText-wv02issue4'); // Clicks on the issue icon
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('valueIconAndText-wv02issue4'); // Clicks on the issue icon
+    await simpleClick('valueIconAndText-wv02issue2'); // Clicks on the issue icon
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('valueIconAndText-wv02issue2'); // Clicks on the issue icon
+    await simpleClick('valueIconAndText-wv02issue84'); // Clicks on the issue icon
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('valueIconAndText-wv02issue84'); // Clicks on the issue icon
+    await simpleClick('valueIconAndText-wv02issue66'); // Clicks on the issue icon
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('valueIconAndText-wv02issue66'); // Clicks on the issue icon
     await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
 
     // //////////////////////

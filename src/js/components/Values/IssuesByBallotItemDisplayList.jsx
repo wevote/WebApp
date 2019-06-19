@@ -255,7 +255,9 @@ class IssuesByBallotItemDisplayList extends Component {
         </Issues>
         {(expand || this.props.disableMoreWrapper) ? null : (
           <MoreWrapper onClick={this.handleExpandIssues}>
-            <MoreHorizIcon />
+            <MoreHorizIcon
+              id="issuesByBallotItemDisplayListMoreIssuesIcon"
+            />
           </MoreWrapper>
         )
         }
