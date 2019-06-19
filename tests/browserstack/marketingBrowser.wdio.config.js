@@ -23,6 +23,10 @@ exports.config = {
       'browserstack.console': 'info',
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
+      isAndroid: false,
+      isCordovaFromAppStore: false,
+      isIOS: false,
+      isMobileScreenSize: false,
     },
 
     {
@@ -37,6 +41,10 @@ exports.config = {
       'browserstack.console': 'info',
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
+      isAndroid: false,
+      isCordovaFromAppStore: false,
+      isIOS: true,
+      isMobileScreenSize: true,
     },
   ],
   coloredLogs: true,

@@ -149,7 +149,7 @@ class AddressBox extends Component {
 
   handleKeyPress (event) {
     // console.log('AddressBox, handleKeyPress, event: ', event);
-    const enterAndSpaceKeyCodes = [13, 32];
+    const enterAndSpaceKeyCodes = [13]; // We actually don't want to use the space character to save, 32
     if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
       event.preventDefault();
       this.voterAddressSave(event);

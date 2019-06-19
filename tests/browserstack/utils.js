@@ -62,6 +62,16 @@ async function setNewAddress (elementIdName, addressValue) {
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
+async function setNewAddressIOS (elementIdName, addressValue) {
+  const clickableSelector = `#${elementIdName}`;
+  const clickableItem = await $(clickableSelector);
+  await clickableItem.click();
+  // Delete 30 characters, add new address, then enter key
+  const addressConcatenation = `\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003${addressValue}\uE007`;
+  await clickableItem.setValue(addressConcatenation);
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
 async function simpleClick (elementIdName) {
   const clickableSelector = `#${elementIdName}`;
   const clickableItem = await $(clickableSelector);
@@ -91,4 +101,4 @@ function writeToLog (message) {
   });
 }
 
-module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, simpleCloseBootstrapModal, simpleTextInput, setNewAddress, writeToLog };
+module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, simpleCloseBootstrapModal, simpleTextInput, setNewAddress, setNewAddressIOS, writeToLog };

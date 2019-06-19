@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { scrollThroughPage, simpleClick, simpleCloseBootstrapModal, setNewAddress } = require('../utils');
+const { scrollThroughPage, setNewAddress, setNewAddressIOS, simpleClick, simpleCloseBootstrapModal } = require('../utils');
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
@@ -10,7 +10,7 @@ const PAUSE_DURATION_REVIEW_RESULTS = 3000;
 describe('Basic cross-platform We Vote test',  () => {
   it('can visit the different pages in the app', async () => {
     // const isCordova = !!driver.getContexts;
-    const { isCordovaFromAppStore, isMobileScreenSize } = driver.config.capabilities;
+    const { isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
     const isDesktopScreenSize = !isMobileScreenSize;
     // NOTE FROM Dale: This is commented out so we can test We Vote in a mobile browser
     //  I would be curious to see what is in driver.getContexts
@@ -46,7 +46,12 @@ describe('Basic cross-platform We Vote test',  () => {
     } else {
       await simpleClick('locationGuessEnterYourFullAddress'); // Opens the "Enter Your Full Address" link
     }
-    await setNewAddress('addressBoxText', 'Oakland, CA 94610'); // Sets the text for the address box and hits enter
+
+    if (isIOS) {
+      await setNewAddressIOS('addressBoxText', 'Oakland, CA 94602'); // Sets the text for the address box and hits enter
+    } else {
+      await setNewAddress('addressBoxText', 'Oakland, CA 94602'); // Sets the text for the address box and hits enter
+    }
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
 
     // //////////////////////
@@ -60,7 +65,7 @@ describe('Basic cross-platform We Vote test',  () => {
     await simpleClick('ballotBadge-Local');
     await simpleClick('ballotBadge-Federal');
 
-  // //////////////////////
+    // //////////////////////
     // Visit the candidate page
     await simpleClick('officeItemCompressedCandidateInfo-wv02cand40208'); // Clicks the candidate
     await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
