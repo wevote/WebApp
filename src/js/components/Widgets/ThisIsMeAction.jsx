@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
 import { Link } from 'react-router';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
+import SplitIconButton from './SplitIconButton';
 
 export default class ThisIsMeAction extends Component {
   static propTypes = {
@@ -71,7 +71,7 @@ export default class ThisIsMeAction extends Component {
               <div className="card-main">
                 <div className="endorsement-card">
                   <Link to={`/verifythisisme/${twitterHandleBeingViewed}`} className="u-no-underline">
-                    <Button
+                    {/* <Button
                       className="split-button split-button__left"
                       color="primary"
                       variant="contained"
@@ -81,12 +81,15 @@ export default class ThisIsMeAction extends Component {
                       </span>
                       <div className="split-button__seperator split-button__seperator--left" />
                       <span className="split-button__text">
-                        Claim
-                        {' '}
-                        @
-                        {this.props.twitterHandleBeingViewed}
+                        {`Claim @${this.props.twitterHandleBeingViewed}`}
                       </span>
-                    </Button>
+                    </Button> */}
+                    <SplitIconButton
+                      title={`Claim @${this.props.twitterHandleBeingViewed}`}
+                      id="candidateVerifyThisIsMeAction"
+                      icon={<i className="fab fa-twitter-square" />}
+                      buttonText={`Claim @${this.props.twitterHandleBeingViewed}`}
+                    />
                   </Link>
                   <div className="endorsement-card__text">
                     {thisIsMeActionText}

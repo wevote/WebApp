@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { renderLog } from '../../utils/logging';
 import AppActions from '../../actions/AppActions';
 import FacebookActions from '../../actions/FacebookActions';
-import ContainedIconButton from '../Twitter/ContainedIconButton';
+import SplitIconButton from '../Widgets/SplitIconButton';
 
 class FacebookSignIn extends Component {
   static propTypes = {
@@ -43,9 +43,10 @@ class FacebookSignIn extends Component {
     renderLog(__filename);
     const { buttonText } = this.props;
     return (
-      <ContainedIconButton
+      <SplitIconButton
+        seperatorColor="rgba(250, 250, 250, .6)"
         buttonText={buttonText}
-        color="#3b5998"
+        backgroundColor="#3b5998"
         icon={<span className="fab fa-facebook-square" />}
         onClick={this.didClickFacebookSignInButton}
         onKeyDown={this.onKeyDown}

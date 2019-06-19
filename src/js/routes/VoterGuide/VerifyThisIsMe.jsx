@@ -165,7 +165,6 @@ export default class VerifyThisIsMe extends Component {
           ) : (
             <TwitterSignIn
               buttonText={`Sign in to @${this.state.twitterHandle}`}
-              className="btn btn-social btn-lg btn-twitter value-btn text-center"
               id="signInToVerifyAccess"
             />
           )}
@@ -209,7 +208,6 @@ export default class VerifyThisIsMe extends Component {
           ) : (
             <TwitterSignIn
               buttonText={`Sign in to @${this.state.twitterHandle}`}
-              className="btn btn-social btn-lg btn-twitter value-btn text-center"
               id="signInToVerifyAccess"
             />
           )}
@@ -242,7 +240,6 @@ export default class VerifyThisIsMe extends Component {
           ) : (
             <TwitterSignIn
               buttonText={`Sign in to @${this.state.twitterHandle}`}
-              className="btn btn-social btn-lg btn-twitter value-btn text-center"
               id="signInToVerifyAccess"
             />
           )}

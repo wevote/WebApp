@@ -191,27 +191,25 @@ export default class SettingsAccount extends Component {
               )
             }
             {!this.state.voter.signed_in_twitter || !this.state.voter.signed_in_facebook ? (
-              <div className="u-stack--md">
-                { !this.state.voter.signed_in_twitter && (
-                  <span>
-                    <RecommendedText className="u-tl u-stack--sm">Recommended</RecommendedText>
-                    <TwitterSignIn buttonText="Sign in with Twitter" />
-                  </span>
-                )
-                }
-                {/* { !this.state.voter.signed_in_twitter && !this.state.voter.signed_in_facebook && (
-                  <span>
-                    <span className="u-margin-left--sm" />
-                  </span>
-                )
-                } */}
-                { !this.state.voter.signed_in_facebook && (
-                  <span>
-                    <FacebookSignIn toggleSignInModal={this.props.toggleSignInModal} buttonText="Sign in with Facebook" />
-                  </span>
-                )
-                }
-              </div>
+              <>
+                <div className="u-stack--md">
+                  { !this.state.voter.signed_in_twitter && (
+                    <span>
+                      <RecommendedText className="u-tl u-stack--sm">Recommended</RecommendedText>
+                      <TwitterSignIn buttonText="Sign in with Twitter" />
+                    </span>
+                  )
+                  }
+                </div>
+                <div className="u-stack--md">
+                  { !this.state.voter.signed_in_facebook && (
+                    <span>
+                      <FacebookSignIn toggleSignInModal={this.props.toggleSignInModal} buttonText="Sign in with Facebook" />
+                    </span>
+                  )
+                  }
+                </div>
+              </>
             ) : null
             }
             {this.state.voter.is_signed_in ? (

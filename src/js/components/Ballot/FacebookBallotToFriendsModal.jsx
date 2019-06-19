@@ -11,6 +11,8 @@ import { oAuthLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import validateEmail from '../../utils/email-functions';
 import webAppConfig from '../../config';
+import { shortenText } from '../../utils/textFormat';
+import SplitIconButton from '../Widgets/SplitIconButton';
 
 export default class FacebookBallotToFriendsModal extends Component {
   static propTypes = {
@@ -580,7 +582,7 @@ export default class FacebookBallotToFriendsModal extends Component {
                       <div className="d-none d-sm-block">
                         <span>Send this ballot to specific friends through Facebook. The friends you choose will see what you support or oppose.</span>
                         <div className="u-inset--xs" />
-                        <Button
+                        {/* <Button
                           bsPrefix="btn btn-social btn-facebook u-push--sm"
                           variant="danger"
                           type="submit"
@@ -588,7 +590,15 @@ export default class FacebookBallotToFriendsModal extends Component {
                         >
                           <span className="fab fa-facebook" />
                           Send Ballot Through Facebook
-                        </Button>
+                        </Button> */}
+                        <SplitIconButton
+                          seperatorColor="rgba(250, 250, 250, .6)"
+                          backgroundColor="rgb(255, 73, 34)"
+                          title="Send ballot through Facebook"
+                          onClick={this.sendDirectMessageToFacebookFriends}
+                          icon={<span className="fab fa-facebook" />}
+                          buttonText={shortenText('Send Ballot Through Facebook', 22)}
+                        />
                       </div>
 
                       {/* July 10, 2018 Steve:  Disable Share Ballot via Facebook, in Cordova, until it is fixed for the Webapp */}
@@ -597,7 +607,7 @@ export default class FacebookBallotToFriendsModal extends Component {
                         <div>
                           <span>Share this ballot to your (or a friend&apos;s) Facebook Timeline, or as a private message through Facebook.</span>
                           <div className="u-inset--xs" />
-                          <Button
+                          {/* <Button
                             bsPrefix="btn btn-social btn-facebook u-push--sm"
                             variant="danger"
                             type="submit"
@@ -605,7 +615,15 @@ export default class FacebookBallotToFriendsModal extends Component {
                           >
                             <span className="fab fa-facebook" />
                             Share Ballot on Facebook
-                          </Button>
+                          </Button> */}
+                          <SplitIconButton
+                            seperatorColor="rgba(250, 250, 250, .6)"
+                            backgroundColor="rgb(255, 73, 34)"
+                            title="Share ballot on Facebook"
+                            onClick={this.shareOnFacebook}
+                            icon={<span className="fab fa-facebook" />}
+                            buttonText={shortenText('Share Ballot on Facebook', 22)}
+                          />
                         </div>
                       </div>
                       )}
