@@ -9,11 +9,9 @@ const PAUSE_DURATION_REVIEW_RESULTS = 3000;
 
 describe('Basic cross-platform We Vote test',  () => {
   it('can visit the different pages in the app', async () => {
-    // const isCordova = !!driver.getContexts;
     const { isAndroid, isCordovaFromAppStore, isMobileScreenSize, isIOS } = driver.config.capabilities;
     const isDesktopScreenSize = !isMobileScreenSize;
-    // NOTE FROM Dale: This is commented out so we can test We Vote in a mobile browser
-    //  I would be curious to see what is in driver.getContexts
+
     if (isCordovaFromAppStore) {
       // switch contexts and click through intro
       const contexts = await driver.getContexts();

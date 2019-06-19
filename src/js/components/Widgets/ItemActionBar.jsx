@@ -326,6 +326,8 @@ class ItemActionBar extends PureComponent {
     // console.log('ItemActionBar render');
     renderLog(__filename);
     const { classes, type } = this.props;
+    const { ballotItemWeVoteId } = this.state;
+
     if (this.state.supportCount === undefined ||
       this.state.opposeCount === undefined ||
       this.state.isOpposeAPIState === undefined ||
@@ -598,11 +600,9 @@ class ItemActionBar extends PureComponent {
             null
           ) : (
             <PositionPublicToggle
-              ballotItemWeVoteId="null"
+              ballotItemWeVoteId={ballotItemWeVoteId}
               className="null"
               type={type}
-              supportProps={modalSupportProps}
-              inTestMode
             />
           )}
           <ButtonGroup className={`${this.props.buttonsOnly ? '' : 'btn-group'} ${!this.props.shareButtonHide ? ' u-push--sm' : ''}`}>
