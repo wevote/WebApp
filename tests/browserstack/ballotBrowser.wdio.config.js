@@ -58,9 +58,9 @@ exports.config = {
       'browserstack.console': 'info',
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
-      isAndroid: false,
+      isAndroid: true,
       isCordovaFromAppStore: false,
-      isIOS: true,
+      isIOS: false,
       isMobileScreenSize: true,
     },
     {
