@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import AppActions from '../../actions/AppActions';
+import { cordovaScrollablePaneTopPadding, historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import Footer from '../../components/Welcome/Footer';
 import Section from '../../components/Welcome/Section';
@@ -12,7 +13,7 @@ import PricingCard from '../../components/More/PricingCard';
 import PricingSwitch from '../../components/Widgets/PricingSwitch';
 import VoterStore from '../../stores/VoterStore';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
-import { historyPush } from '../../utils/cordovaUtils';
+
 
 class Pricing extends Component {
   static getProps () {
@@ -361,7 +362,7 @@ class Pricing extends Component {
 
   switchToDifferentCategoryFunction = (selectedCategoryIndex) => {
     this.setState({ selectedCategoryIndex });
-  }
+  };
 
   getStartedForOrganizations = () => {
     const { voter } = this.state;
@@ -377,7 +378,7 @@ class Pricing extends Component {
       AppActions.setGetStartedMode('getStartedForOrganizations');
       AppActions.setShowSignInModal(true);
     }
-  }
+  };
 
   render () {
     const { classes } = this.props;
@@ -386,7 +387,7 @@ class Pricing extends Component {
 
     renderLog(__filename);
     return (
-      <Wrapper>
+      <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="Pricing - We Vote" />
         <WelcomeAppbar pathname="/more/pricing" />
         <HeaderForPricing>
@@ -545,6 +546,7 @@ const Wrapper = styled.div`
   align-items: center;
   background: white;
   overflow-x: hidden;
+  padding-top: ${({ padTop }) => padTop};
 `;
 
 const HeaderForPricing = styled.div`

@@ -34,7 +34,7 @@ export default class Attributions extends React.Component {
     renderLog(__filename);
 
     return (
-      <div>
+      <div style={{ marginBottom: 30 }}>
         <Helmet title="Attributions - We Vote" />
         <div className="container-fluid well">
           <br />

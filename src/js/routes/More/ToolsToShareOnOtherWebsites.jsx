@@ -1,20 +1,22 @@
 import React from 'react';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import CodeCopier from '../../components/Widgets/CodeCopier';
+import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaUtils';
 import ImageHandler from '../../components/ImageHandler';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 
 export default function ToolsToShareOnOtherWebsites () {
   return (
-    <div>
+    <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
       <Helmet title="Free civic engagement tools - We Vote" />
       <div className="container-fluid well">
         <h1 className="h1">Tools For Your Website</h1>
 
         <p>
-WeVote.US wants to give you our technology to use, for
+          WeVote.US wants to give you our technology to use, for
           <strong> FREE</strong>
-, on your website.
+          , on your website.
         </p>
 
         <h2 className="h3">Why use WeVote.US tools?</h2>
@@ -97,6 +99,10 @@ WeVote.US wants to give you our technology to use, for
         </ul>
         <p>&nbsp;</p>
       </div>
-    </div>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+  padding-top: ${({ padTop }) => padTop};
+`;
