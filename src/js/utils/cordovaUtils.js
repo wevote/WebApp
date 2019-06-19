@@ -1,5 +1,6 @@
 import { browserHistory, hashHistory } from 'react-router';
 import { oAuthLog } from './logging';
+
 /* global $  */
 
 const logCordovaOffsets = false;
@@ -531,6 +532,24 @@ export function cordovaVoterGuideTopPadding () {
       return '18px';
     } else if (isIPad()) {
       return '8px';
+    }
+  } else if (isAndroid()) {
+    return '0px';
+  }
+  return '0px';
+}
+
+// <Toolbar classes={{ root: classes.toolbar }} disableGutters style={{ top: cordovaWelcomeAppToolbarTop() }}>
+export function cordovaWelcomeAppToolbarTop () {
+  if (isIOS()) {
+    if (isIPhone678Plus()) {
+      return '10px';
+    } else if (isIPhone678()) {
+      return '10px';
+    } else if (hasIPhoneNotch()) {
+      return '14px';
+    } else if (isIPad()) {
+      return '10px';
     }
   } else if (isAndroid()) {
     return '0px';

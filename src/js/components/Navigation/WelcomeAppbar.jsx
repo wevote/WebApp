@@ -12,7 +12,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import cookies from '../../utils/cookies';
 import Navigation, { LogoContainer, Divider, NavLink, MobileNavigationMenu, MobileNavDivider, NavRow } from '../Welcome/Navigation';
 import HeaderBarLogo from './HeaderBarLogo';
-import { historyPush, isWebApp } from '../../utils/cordovaUtils';
+import { historyPush, cordovaWelcomeAppToolbarTop } from '../../utils/cordovaUtils';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
@@ -180,7 +180,7 @@ class WelcomeAppbar extends Component {
     const voterPhotoUrlMedium = voter && voter.voter_photo_url_medium;
     return (
       <Appbar position="relative" classes={{ root: classes.appBarRoot }}>
-        <Toolbar classes={{ root: classes.toolbar }} disableGutters>
+        <Toolbar classes={{ root: classes.toolbar }} disableGutters style={{ top: cordovaWelcomeAppToolbarTop() }}>
           <LogoContainer>
             <HeaderBarLogo light />
           </LogoContainer>
@@ -235,7 +235,7 @@ class WelcomeAppbar extends Component {
               <NavLink id="welcomeYourBallot" to="/ballot">Your Ballot</NavLink>
               <Divider />
               {!voterIsSignedIn && <NavLink id="welcomeSignIn" to="" onClick={() => this.toggleSignInModal()}>Sign In</NavLink> }
-              {voterIsSignedIn &&  isWebApp() &&
+              {voterIsSignedIn &&
               (
                 <div>
                   {voterPhotoUrlMedium ? (
@@ -283,17 +283,13 @@ class WelcomeAppbar extends Component {
             </DesktopView>
             <MobileTabletView>
               <NavLink id="welcomeYourBallotMobile" to="/ballot">Your Ballot</NavLink>
-              {isWebApp() &&   // June 2019, temporarily removed since the menu is all tangled with media queries and would require a bunch of work
-              (
-                <IconButton
-                  classes={{ root: classes.iconButton }}
-                  id="profileAvatarHeaderBar"
-                  onClick={() => this.handleShowMobileNavigation(true)}
-                >
-                  <MenuIcon />
-                </IconButton>
-              )
-              }
+              <IconButton
+                classes={{ root: classes.iconButton }}
+                id="profileAvatarHeaderBar"
+                onClick={() => this.handleShowMobileNavigation(true)}
+              >
+                <MenuIcon />
+              </IconButton>
               {
                 showMobileNavigationMenu && (
                   <MobileNavigationMenu>
