@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { historyPush } from '../../utils/cordovaUtils';
+import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 
 
@@ -40,7 +40,9 @@ class Footer extends Component {
               <ColumnTitle>About We Vote</ColumnTitle>
               <Link id="footerLinkAbout" className={classes.link} to="/more/about">About &amp; Team</Link>
               <Link id="footerLinkCredits" className={classes.link} to="/more/credits">Credits &amp; Thanks</Link>
-              <Link id="footerLinkDonate" className={classes.link} to="/more/donate">Donate</Link>
+              {isWebApp() && (
+                <Link id="footerLinkDonate" className={classes.link} to="/more/donate">Donate</Link>
+              )}
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkBlog"
                 url="https://blog.wevote.us/"

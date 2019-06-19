@@ -277,7 +277,7 @@ class Application extends Component {
       return (
         <div className="app-base" id="app-base-id">
           <div id="the styled div that follows is the wrapper for theatre mode">
-            <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
+            <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
               <div className="page-content-container">
                 <div className="container-fluid">
                   <div className="row">
@@ -333,7 +333,7 @@ class Application extends Component {
           />
           <SnackNotifier />
           <div id="the styled div that follows is the wrapper for settings mode">
-            <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
+            <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
               <div className="page-content-container">
                 <div className="container-settings">
                   { this.props.children }
@@ -375,7 +375,7 @@ class Application extends Component {
             </div>
           ) :
           (
-            <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
+            <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
               <div className="page-content-container">
                 <div className="container-fluid">
                   <div className="container-main">

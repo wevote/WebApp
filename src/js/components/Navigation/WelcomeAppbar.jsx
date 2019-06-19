@@ -12,7 +12,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import cookies from '../../utils/cookies';
 import Navigation, { LogoContainer, Divider, NavLink, MobileNavigationMenu, MobileNavDivider, NavRow } from '../Welcome/Navigation';
 import HeaderBarLogo from './HeaderBarLogo';
-import { historyPush } from '../../utils/cordovaUtils';
+import { historyPush, cordovaWelcomeAppToolbarTop } from '../../utils/cordovaUtils';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
@@ -180,7 +180,7 @@ class WelcomeAppbar extends Component {
     const voterPhotoUrlMedium = voter && voter.voter_photo_url_medium;
     return (
       <Appbar position="relative" classes={{ root: classes.appBarRoot }}>
-        <Toolbar classes={{ root: classes.toolbar }} disableGutters>
+        <Toolbar classes={{ root: classes.toolbar }} disableGutters style={{ top: cordovaWelcomeAppToolbarTop() }}>
           <LogoContainer>
             <HeaderBarLogo light />
           </LogoContainer>

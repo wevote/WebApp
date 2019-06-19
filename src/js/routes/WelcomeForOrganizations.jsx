@@ -19,7 +19,7 @@ import Section, {
 } from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 import Footer from '../components/Welcome/Footer';
-import { historyPush, cordovaDot } from '../utils/cordovaUtils';
+import {historyPush, cordovaDot, cordovaScrollablePaneTopPadding} from '../utils/cordovaUtils';
 import Testimonial from '../components/Widgets/Testimonial';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import AppActions from '../actions/AppActions';
@@ -27,6 +27,7 @@ import validateEmail from '../utils/email-functions';
 import VoterActions from '../actions/VoterActions';
 import VoterConstants from '../constants/VoterConstants';
 import VoterStore from '../stores/VoterStore';
+import {renderLog} from "../utils/logging";
 
 class WelcomeForOrganizations extends PureComponent {
   static propTypes = {
@@ -111,6 +112,7 @@ class WelcomeForOrganizations extends PureComponent {
   };
 
   render () {
+    renderLog(__filename);
     const { classes, pathname } = this.props;
     // console.log('WelcomeForOrganizations, pathname: ', pathname);
     const { voter } = this.state;
@@ -120,7 +122,7 @@ class WelcomeForOrganizations extends PureComponent {
     const testimonialImageUrl = cordovaDot('/img/global/photos/Judy_J-109x109.jpg');
     const testimonial = 'Let\'s be real: few people are reading those wonky ballot descriptions. I want deciding how to vote to be as easy and obvious as a solid Yelp review. Finally We Vote helps me plan the whole thing out way faster.';
     return (
-      <Wrapper>
+      <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="Welcome Organizations - We Vote" />
         <WelcomeAppbar pathname={pathname} />
         <HeaderForOrganizations>
@@ -146,17 +148,13 @@ class WelcomeForOrganizations extends PureComponent {
           </SectionTitle>
           <DescriptionContainer>
             <Description>
-              You don
-              {'’'}
-              t have to be involved with politics to boost civic engagement.
+              You don&apos;t have to be involved with politics to boost civic engagement.
               {' '}
               There are easy, appropriate ways for every organization or business to increase voter participation:
             </Description>
             <Description>
               <Bold>
-                Help your staff, customers or members get accurate, helpful information about what
-                {'’'}
-                s on their ballot.
+                Help your staff, customers or members get accurate, helpful information about what&apos;s on their ballot.
               </Bold>
             </Description>
             <Description className="u_margin-center">
@@ -329,6 +327,7 @@ const Wrapper = styled.div`
   align-items: center;
   background: white;
   overflow-x: hidden;
+  padding-top: ${({ padTop }) => padTop};
 `;
 
 const HeaderForOrganizations = styled.div`
