@@ -21,7 +21,9 @@ exports.config = {
       app: browserStackConfig.BROWSERSTACK_IPA_URL,
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
+      isAndroid: false,
       isCordovaFromAppStore: true,
+      isIOS: true,
       isMobileScreenSize: true,
     },
     {
@@ -32,7 +34,9 @@ exports.config = {
       app: browserStackConfig.BROWSERSTACK_IPA_URL,
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
+      isAndroid: false,
       isCordovaFromAppStore: true,
+      isIOS: true,
       isMobileScreenSize: true,
     },
     {
@@ -43,7 +47,9 @@ exports.config = {
       app: browserStackConfig.BROWSERSTACK_IPA_URL,
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
+      isAndroid: false,
       isCordovaFromAppStore: true,
+      isIOS: true,
       isMobileScreenSize: true,
     },
     {
@@ -54,7 +60,9 @@ exports.config = {
       app: browserStackConfig.BROWSERSTACK_IPA_URL,
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
+      isAndroid: false,
       isCordovaFromAppStore: true,
+      isIOS: true,
       isMobileScreenSize: true,
     },
 
