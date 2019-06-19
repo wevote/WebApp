@@ -335,13 +335,13 @@ class ItemPositionStatementActionBar extends Component {
                 />
                 <PostSaveButton className="postsave-button">
                   <Button
-                  id="itemPositionStatementActionBarSave"
-                  className="postsave-button"
-                  variant="outlined"
-                  color="primary"
-                  classes={{ outlinedPrimary: classes.buttonOutlinedPrimary }}
-                  type="submit"
-                  size="small"
+                    id="itemPositionStatementActionBarSave"
+                    className="postsave-button"
+                    variant="outlined"
+                    color="primary"
+                    classes={{ outlinedPrimary: classes.buttonOutlinedPrimary }}
+                    type="submit"
+                    size="small"
                   >
                     {postButtonText}
                   </Button>
