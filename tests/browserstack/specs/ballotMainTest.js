@@ -42,7 +42,7 @@ describe('Basic cross-platform We Vote test',  () => {
     if (isCordovaFromAppStore) {
       await simpleClick('changeAddressHeaderBar'); // Open the "Change Address" modal
     } else {
-      await simpleClick('locationGuessEnterYourFullAddress'); // Opens the "Enter Your Full Address" link
+      await simpleClick('changeAddressHeaderBar'); // Opens the "Enter Your Full Address" link
     }
 
     if (isIOS) {
@@ -70,8 +70,8 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // //////////////////////
     // Visit the office page
-    await simpleClick('officeItemCompressedShowMoreFooter-wv02off19922'); // Clicks Show More link
-    await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
+    // await simpleClick('officeItemCompressedShowMoreFooter-wv02off19922'); // Clicks Show More link
+    // await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
     await simpleClick('officeItemCompressedTopNameLink-wv02off19866'); // Clicks Office Item link
     await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
 
