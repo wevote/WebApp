@@ -16,6 +16,7 @@ class IssuesByBallotItemDisplayList extends Component {
     children: PropTypes.object,
     handleLeaveCandidateCard: PropTypes.func,
     handleEnterCandidateCard: PropTypes.func,
+    disableMoreWrapper: PropTypes.bool,
   };
 
   static closePopover () {
@@ -252,7 +253,7 @@ class IssuesByBallotItemDisplayList extends Component {
             {issuesVoterIsNotFollowingHtml}
           </IssueList>
         </Issues>
-        {expand ? null : (
+        {(expand || this.props.disableMoreWrapper) ? null : (
           <MoreWrapper onClick={this.handleExpandIssues}>
             <MoreHorizIcon />
           </MoreWrapper>
@@ -269,14 +270,12 @@ const Wrapper = styled.div`
   flex-flow: row;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 `;
 
 const Issues = styled.div`
-  width: 70%;
+  width: 90%;
   margin-left: -10px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    width: 78%;
-  }
 `;
 
 const IssueList = styled.ul`

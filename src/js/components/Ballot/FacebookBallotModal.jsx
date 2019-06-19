@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
 import { deviceTypeString, isWebApp } from '../../utils/cordovaUtils';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
@@ -11,6 +10,8 @@ import LoadingWheel from '../LoadingWheel';
 import validateEmail from '../../utils/email-functions';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
+import SplitIconButton from '../Widgets/SplitIconButton';
+import { shortenText } from '../../utils/textFormat';
 
 export default class FacebookBallotModal extends Component {
   static propTypes = {
@@ -324,7 +325,7 @@ export default class FacebookBallotModal extends Component {
                       <div className="d-none d-sm-block">
                         <span>Send a link to this ballot to the email address you use for Facebook.</span>
                         <div className="u-inset--xs" />
-                        <Button
+                        {/* <Button
                           bsPrefix="btn btn-social btn-facebook u-push--sm"
                           variant="danger"
                           type="submit"
@@ -332,13 +333,21 @@ export default class FacebookBallotModal extends Component {
                         >
                           <span className="fab fa-facebook" />
                           Send to Your Facebook Email &gt;
-                        </Button>
+                        </Button> */}
+                        <SplitIconButton
+                          seperatorColor="rgba(250, 250, 250, .6)"
+                          backgroundColor="rgb(255, 73, 34)"
+                          title="Send a link to your Facebook email"
+                          onClick={this.sendDirectMessageToSelfFacebook}
+                          icon={<span className="fab fa-facebook" />}
+                          buttonText={shortenText('Send to Your Facebook Email', 22)}
+                        />
                       </div>
                       <div className="mobile-container">
                         <div>
                           <span>Send a link to this ballot to the email address you use for Facebook.</span>
                           <div className="u-inset--xs" />
-                          <Button
+                          {/* <Button
                             bsPrefix="btn btn-social btn-facebook u-push--sm"
                             variant="danger"
                             type="submit"
@@ -346,7 +355,15 @@ export default class FacebookBallotModal extends Component {
                           >
                             <span className="fab fa-facebook" />
                             Send to Your Email &gt;
-                          </Button>
+                          </Button> */}
+                          <SplitIconButton
+                            seperatorColor="rgba(250, 250, 250, .6)"
+                            backgroundColor="rgb(255, 73, 34)"
+                            title="Send to your email"
+                            onClick={this.shareOnFacebook}
+                            icon={<span className="fab fa-facebook" />}
+                            buttonText={shortenText('Send to your email', 22)}
+                          />
                         </div>
                       </div>
                     </div>
