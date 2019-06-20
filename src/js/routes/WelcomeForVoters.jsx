@@ -8,6 +8,17 @@ import LocationIcon from '@material-ui/icons/LocationOn';
 import PersonIcon from '@material-ui/icons/Person';
 import EmailIcon from '@material-ui/icons/Email';
 import { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/HeaderWelcome';
+import AddressBoxWelcome from '../components/Welcome/AddressBoxWelcome';
+import AnalyticsActions from '../actions/AnalyticsActions';
+import { historyPush, cordovaDot, cordovaScrollablePaneTopPadding } from '../utils/cordovaUtils';
+import Footer from '../components/Welcome/Footer';
+import { renderLog } from '../utils/logging';
+import TextBox from '../components/Welcome/TextBox';
+import Testimonial from '../components/Widgets/Testimonial';
+import validateEmail from '../utils/email-functions';
+import VoterActions from '../actions/VoterActions';
+import VoterConstants from '../constants/VoterConstants';
+import VoterStore from '../stores/VoterStore';
 import Section, {
   SectionTitle,
   SectionTitleBold,
@@ -28,17 +39,6 @@ import Section, {
   SignUpMessage,
 } from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
-import Footer from '../components/Welcome/Footer';
-import TextBox from '../components/Welcome/TextBox';
-import AddressBoxWelcome from '../components/Welcome/AddressBoxWelcome';
-import {historyPush, cordovaDot, cordovaScrollablePaneTopPadding} from '../utils/cordovaUtils';
-import Testimonial from '../components/Widgets/Testimonial';
-import AnalyticsActions from '../actions/AnalyticsActions';
-import validateEmail from '../utils/email-functions';
-import VoterActions from '../actions/VoterActions';
-import VoterConstants from '../constants/VoterConstants';
-import VoterStore from '../stores/VoterStore';
-import {renderLog} from "../utils/logging";
 
 class Welcome extends PureComponent {
   static propTypes = {

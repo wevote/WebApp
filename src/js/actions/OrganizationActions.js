@@ -27,6 +27,10 @@ export default {
     Dispatcher.loadEndpoint('organizationStopFollowing', { organization_we_vote_id: organizationWeVoteId });
   },
 
+  organizationStopIgnoring (organizationWeVoteId) {
+    Dispatcher.loadEndpoint('organizationStopIgnoring', { organization_we_vote_id: organizationWeVoteId });
+  },
+
   organizationsFollowedRetrieve (autoFollowedFromTwitterSuggestion) {
     Dispatcher.loadEndpoint('organizationsFollowedRetrieve', { auto_followed_from_twitter_suggestion: autoFollowedFromTwitterSuggestion });
   },
