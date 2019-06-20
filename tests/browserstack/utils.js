@@ -79,6 +79,22 @@ async function simpleClick (elementIdName) {
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
+async function clickTopLeftCornerOfElement (elementSelector) {
+  const clickableSelector = `${elementSelector}`;
+  const clickableItem = await $(clickableSelector);
+  const { x, y } = await browser.getElementRect(clickableItem);
+  await browser.performActions([{
+    type: 'pointer',
+    id: 'clickTopLeftCornerAction',
+    actions: [
+      { type: 'pointerMove', x, y },
+      { type: 'pointerDown', button: 0 },
+      { type: 'pointerUp', button: 0 },
+    ],
+  }]).then(() => browser.releaseActions());
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
 async function simpleCloseBootstrapModal () {
   const clickableSelector = 'button[class="close"]';
   const clickableItem = await $(clickableSelector);
@@ -101,4 +117,4 @@ function writeToLog (message) {
   });
 }
 
-module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, simpleCloseBootstrapModal, simpleTextInput, setNewAddress, setNewAddressIOS, writeToLog };
+module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, clickTopLeftCornerOfElement, simpleCloseBootstrapModal, simpleTextInput, setNewAddress, setNewAddressIOS, writeToLog };
