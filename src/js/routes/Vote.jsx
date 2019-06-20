@@ -476,7 +476,6 @@ class Vote extends Component {
                 // No items to display - adjust padding as neccesary
                 "row ballot__body__ready-to-vote--empty"
               )}
-              
               >
                 <BrowserPushMessage incomingProps={this.props} />
                 <div className="col-sm-12 col-lg-8">
