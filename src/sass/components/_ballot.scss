@@ -20,6 +20,8 @@ $mobile-body-padding-top-no-decision-tabs: 97px;
 $body-padding-top-no-decision-tabs: 97px;
 $mobile-body-padding-top-ready-to-vote: 92px;
 $body-padding-top-ready-to-vote: 92px;
+$mobile-body-padding-top-ready-to-vote-small: 44px;
+$body-padding-top-ready-to-vote-small: 64px; 
 $race-filter-margin: 8px;
 $neg-padding: -10px;
 $margin-zero: 0;
@@ -58,7 +60,7 @@ $margin-zero: 0;
       top: $space-none;
       left: $space-none;
       right: $space-none;
-      z-index: 3;
+      z-index: 6 !important;
       transform: $unpinned-transform;
       transition: all 100ms ease-in-out 0s;
     }
@@ -200,6 +202,12 @@ $margin-zero: 0;
       padding-top: $body-padding-top-ready-to-vote;
       @include breakpoints(small xsmall-bootstrap) {
         padding-top: $mobile-body-padding-top-ready-to-vote;
+      }
+      &--empty {
+        padding-top: $body-padding-top-ready-to-vote-small;
+        @include breakpoints(small xsmall-bootstrap) {
+          padding-top: $mobile-body-padding-top-ready-to-vote-small;
+        }
       }
     }
   }
