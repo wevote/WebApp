@@ -29,10 +29,19 @@ class Footer extends Component {
             <Column>
               <ColumnTitle>Elections</ColumnTitle>
               <Link id="footerLinkSupportedElections" className={classes.link} to="/more/elections">Supported Elections</Link>
-              <Link id="footerLinkRegisterToVote" className={classes.link} to="/more/register">Register to Vote</Link>
-              <Link id="footerLinkGetYourAbsenteeBallot" className={classes.link} to="/more/absentee">Get Your Absentee Ballot</Link>
+              {isWebApp() ?
+                <Link id="footerLinkRegisterToVote" className={classes.link} to="/more/register">Register to Vote</Link> :
+                <OpenExternalWebSite className={classes.link} url="https://register.vote.org/?partner=111111&campaign=free-tools" target="_blank" body={(<span>Register to Vote</span>)} />
+              }
+              {isWebApp() ?
+                <Link id="footerLinkGetYourAbsenteeBallot" className={classes.link} to="/more/absentee">Get Your Absentee Ballot</Link> :
+                <OpenExternalWebSite className={classes.link} url="https://absentee.vote.org/?partner=111111&campaign=free-tools" target="_blank" body={(<span>Get Your Absentee Ballot</span>)} />
+              }
               <Link id="footerLinkSeeYourBallot" className={classes.link} to="/ballot">See Your Ballot</Link>
-              <Link id="footerLinkPollingPlaceLocator" className={classes.link} to="/polling-place-locator">Polling Place Locator</Link>
+              {isWebApp() ?
+                <Link id="footerLinkPollingPlaceLocator" className={classes.link} to="/polling-place-locator">Polling Place Locator</Link> :
+                <OpenExternalWebSite className={classes.link} url="https://wevote.us/vip.html" target="_blank" body={(<span>Polling Place Locator</span>)} />
+              }
               <Link id="footerLinkFreeOnlineTools" className={classes.link} to="/more/tools">Free Online Tools</Link>
               <Link id="footerLinkPremiumOnlineTools" className={classes.link} to="/more/tools">Premium Online Tools</Link>
             </Column>

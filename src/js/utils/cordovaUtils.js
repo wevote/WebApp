@@ -255,7 +255,9 @@ const enums = {
   ballotVote: 1,
   moreAbout: 2,
   moreHamburger: 3,
-  valuesList: 4,
+  moreTools: 4,
+  moreTerms: 5,
+  valuesList: 6,
   officeWild: 100,
   settingsWild: 101,
   wevoteintroWild: 102,
@@ -278,8 +280,13 @@ function pageEnumeration () {
     return enums.ballotVote;
   } else if (href.indexOf('/index.html#/more/about') > 0) {
     return enums.moreAbout;
+  } else if (href.indexOf('/index.html#/more/privacy') > 0 ||
+             href.indexOf('/index.html#/more/terms') > 0) {
+    return enums.moreTerms;
   } else if (href.indexOf('/index.html#/more/hamburger') > 0) {
     return enums.moreHamburger;
+  } else if (href.indexOf('/index.html#/more/tools') > 0) {
+    return enums.moreTools;
   } else if (href.indexOf('/index.html#/values/list') > 0) {
     return enums.valuesList;
 
@@ -311,6 +318,7 @@ function pageEnumeration () {
   } else if (href.indexOf('/index.html#/welcome') > 0 ||
              href.indexOf('/index.html#/for-organizations') > 0 ||
              href.indexOf('/index.html#/for-campaigns') > 0 ||
+             href.indexOf('/index.html#/more/pricing') > 0 ||
              href.indexOf('/index.html#/how') > 0) {
     return enums.welcomeWild;
   }
@@ -332,7 +340,7 @@ export function cordovaScrollablePaneTopPadding () {
   if (isIOS()) {
     if (isIPad() || isIPhone678Plus()) {
       if (isSimulator()  && logCordovaOffsets) {
-        console.log('cordovaScrollablePaneTopPadding: is IPad or isIPhone678Plus');
+        console.log('cordovaScrollablePaneTopPadding: is IPad or isIPhone678Plus .');
       }
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '18px';
@@ -343,8 +351,10 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotSmHdrWild: return '130px';
         case enums.ballotLgHdrWild: return '4px';
         case enums.moreAbout:       return '22px';
+        case enums.moreTerms:       return '44px';
         case enums.welcomeWild:     return '22px';
         case enums.moreHamburger:   return isIPad() ? '15px' : '10px';
+        case enums.moreTools:       return '44px';
         case enums.settingsWild:    return isIPad() ? '15px' : '16px';
         default:                    return '0px';
       }
@@ -361,8 +371,10 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotSmHdrWild: return '126px';
         case enums.ballotLgHdrWild: return '5px';
         case enums.moreAbout:       return '22px';
+        case enums.moreTerms:       return '40px';
         case enums.welcomeWild:     return '10px';
         case enums.moreHamburger:   return '10px';
+        case enums.moreTools:       return '44px';
         case enums.settingsWild:    return '16px';
         default:                    return '0px';
       }
@@ -380,8 +392,10 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotSmHdrWild: return '150px';
         case enums.ballotLgHdrWild: return '18px';
         case enums.moreAbout:       return '22px';
+        case enums.moreTerms:       return '60px';
         case enums.welcomeWild:     return '22px';
         case enums.moreHamburger:   return '35px';
+        case enums.moreTools:       return '44px';
         case enums.settingsWild:    return '32px';
         default:                    return '0px';
       }
@@ -398,8 +412,10 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotSmHdrWild: return '22px';
         case enums.ballotLgHdrWild: return '22px';
         case enums.moreAbout:       return '22px';
+        case enums.moreTerms:       return '60px';
         case enums.welcomeWild:     return '22px';
         case enums.moreHamburger:   return '35px';
+        case enums.moreTools:       return '44px';
         case enums.settingsWild:    return '32px';
         default:                    return '0px';
       }
@@ -417,8 +433,10 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotSmHdrWild: return '150px';
         case enums.ballotLgHdrWild: return '16px';
         case enums.moreAbout:       return '22px';
+        case enums.moreTerms:       return '60px';
         case enums.welcomeWild:     return '22px';
         case enums.moreHamburger:   return '35px';
+        case enums.moreTools:       return '44px';
         case enums.settingsWild:    return '32px';
         default:                    return '0px';
       }
@@ -434,6 +452,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.measureWild:     return '40px';
         case enums.candidate:       return '20px';
         case enums.ballotSmHdrWild: return '108px';
+        case enums.moreTerms:       return '32px';
         default:                    return '0px';
       }
     } else if (sizeString === '--lg') {
@@ -442,6 +461,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.measureWild:     return '40px';
         case enums.candidate:       return '16px';
         case enums.ballotSmHdrWild: return '104px';
+        case enums.moreTerms:       return '32px';
         default:                    return '0px';
       }
     } if (sizeString === '--md') {
@@ -451,6 +471,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidate:       return '22px';
         case enums.ballotSmHdrWild: return '108px';
         case enums.ballotVote:      return '16px';
+        case enums.moreTerms:       return '32px';
         default:                    return '0px';
       }
     } else if (sizeString === '--sm') {
@@ -459,6 +480,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.measureWild:     return '42px';
         case enums.candidate:       return '24px';
         case enums.ballotSmHdrWild: return '130px';
+        case enums.moreTerms:       return '32px';
         default:                    return '0px';
       }
     }
