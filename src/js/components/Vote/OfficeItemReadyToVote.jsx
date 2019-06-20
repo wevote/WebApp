@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar/index';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
-import { cordovaDot } from '../../utils/cordovaUtils';
+import { isCordova } from '../../utils/cordovaUtils';
+import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import SupportStore from '../../stores/SupportStore';
@@ -84,36 +85,54 @@ class OfficeItemReadyToVote extends Component {
         }
       });
     }
+    let candidatePhotoUrl;
     return (
       <React.Fragment>
         <Wrapper>
-          { this.props.candidateList.map(oneCandidate => (
-            <React.Fragment key={oneCandidate.we_vote_id}>
-              { SupportStore.get(oneCandidate.we_vote_id) && SupportStore.get(oneCandidate.we_vote_id).is_support && (  // eslint-disable-line no-nested-ternary
-                <InnerWrapper>
-                  <BioColumn>
-                    <Avatar src={cordovaDot(oneCandidate.candidate_photo_url_medium)} />
-                    <BioInformation>
-                      <NameText>{oneCandidate.ballot_item_display_name}</NameText>
+          { this.props.candidateList.map((oneCandidate) => {
+            candidatePhotoUrl = '';
+            if (oneCandidate.candidate_photo_url_medium) {
+              candidatePhotoUrl = oneCandidate.candidate_photo_url_medium;
+            } else if (oneCandidate.candidate_photo_url_large) {
+              candidatePhotoUrl = oneCandidate.candidate_photo_url_large;
+            }
+            const candidatePhotoUrlHtml = (
+              <ImageHandler
+                className="card-main__avatar"
+                sizeClassName="icon-office-child "
+                imageUrl={candidatePhotoUrl}
+                alt="candidate-photo"
+                kind_of_ballot_item="CANDIDATE"
+              />
+            );
+            return (
+              <React.Fragment key={oneCandidate.we_vote_id}>
+                { SupportStore.get(oneCandidate.we_vote_id) && SupportStore.get(oneCandidate.we_vote_id).is_support && (  // eslint-disable-line no-nested-ternary
+                  <InnerWrapper>
+                    <BioColumn>
+                      {isCordova() ? candidatePhotoUrlHtml : <Avatar src={candidatePhotoUrl} /> }
+                      <BioInformation>
+                        <NameText>{oneCandidate.ballot_item_display_name}</NameText>
+                        <DesktopTabletView>
+                          <DescriptionText>{toTitleCase(oneCandidate.party)}</DescriptionText>
+                        </DesktopTabletView>
+                        <MobileView>
+                          <DescriptionText>{oneCandidate.contest_office_name}</DescriptionText>
+                        </MobileView>
+                      </BioInformation>
+                    </BioColumn>
+                    <OfficeColumn>
                       <DesktopTabletView>
-                        <DescriptionText>{toTitleCase(oneCandidate.party)}</DescriptionText>
+                        <OfficeText>{oneCandidate.contest_office_name}</OfficeText>
                       </DesktopTabletView>
-                      <MobileView>
-                        <DescriptionText>{oneCandidate.contest_office_name}</DescriptionText>
-                      </MobileView>
-                    </BioInformation>
-                  </BioColumn>
-                  <OfficeColumn>
-                    <DesktopTabletView>
-                      <OfficeText>{oneCandidate.contest_office_name}</OfficeText>
-                    </DesktopTabletView>
-                    <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
-                  </OfficeColumn>
-                </InnerWrapper>
-              )
-              }
-            </React.Fragment>
-          ))
+                      <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={oneCandidate.we_vote_id} />
+                    </OfficeColumn>
+                  </InnerWrapper>
+                )
+                }
+              </React.Fragment>
+            );
+          })
           }
         </Wrapper>
         <HR />
