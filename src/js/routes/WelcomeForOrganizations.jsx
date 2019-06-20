@@ -19,7 +19,7 @@ import Section, {
 } from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 import Footer from '../components/Welcome/Footer';
-import {historyPush, cordovaDot, cordovaScrollablePaneTopPadding} from '../utils/cordovaUtils';
+import { historyPush, cordovaDot, cordovaScrollablePaneTopPadding } from '../utils/cordovaUtils';
 import Testimonial from '../components/Widgets/Testimonial';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import AppActions from '../actions/AppActions';
@@ -27,7 +27,7 @@ import validateEmail from '../utils/email-functions';
 import VoterActions from '../actions/VoterActions';
 import VoterConstants from '../constants/VoterConstants';
 import VoterStore from '../stores/VoterStore';
-import {renderLog} from "../utils/logging";
+import { renderLog } from '../utils/logging';
 
 class WelcomeForOrganizations extends PureComponent {
   static propTypes = {

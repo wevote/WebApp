@@ -135,7 +135,7 @@ $container-margin: -15px;
 }
 
 .footroom-wrapper {
-  margin-bottom: $header-height;
+  padding-bottom: $header-height;
   &__hide {
     display: none;
   }
