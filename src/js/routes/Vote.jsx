@@ -470,7 +470,14 @@ class Vote extends Component {
         <div className="page-content-container">
           <div className="container-fluid">
             <Wrapper cordova={isCordova()}>
-              <div className="row ballot__body__ready-to-vote">
+              <div className={ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length ? (
+                "row ballot__body__ready-to-vote"
+              ) : (
+                // No items to display - adjust padding as neccesary
+                "row ballot__body__ready-to-vote--empty"
+              )}
+              
+              >
                 <BrowserPushMessage incomingProps={this.props} />
                 <div className="col-sm-12 col-lg-8">
                   {ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length ? (
