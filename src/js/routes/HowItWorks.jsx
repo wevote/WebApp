@@ -9,11 +9,11 @@ import AppActions from '../actions/AppActions';
 import Footer from '../components/Welcome/Footer';
 import Header, { Container, Title } from '../components/Welcome/HowItWorksHeader';
 import HeaderSwitch from '../components/Widgets/HeaderSwitch';
+import { renderLog } from '../utils/logging';
 import StepsChips from '../components/Widgets/StepsChips';
 import { cordovaScrollablePaneTopPadding, historyPush, isCordova } from '../utils/cordovaUtils';
 import VoterStore from '../stores/VoterStore';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
-import {renderLog} from "../utils/logging";
 
 class HowItWorks extends Component {
   static propTypes = {

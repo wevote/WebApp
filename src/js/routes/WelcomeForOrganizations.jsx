@@ -4,6 +4,16 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
+import AnalyticsActions from '../actions/AnalyticsActions';
+import AppActions from '../actions/AppActions';
+import Footer from '../components/Welcome/Footer';
+import { historyPush, cordovaDot, cordovaScrollablePaneTopPadding } from '../utils/cordovaUtils';
+import { renderLog } from '../utils/logging';
+import Testimonial from '../components/Widgets/Testimonial';
+import validateEmail from '../utils/email-functions';
+import VoterActions from '../actions/VoterActions';
+import VoterConstants from '../constants/VoterConstants';
+import VoterStore from '../stores/VoterStore';
 import { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/HeaderWelcome';
 import Section, {
   SectionTitle,
@@ -18,16 +28,6 @@ import Section, {
   NetworkImage,
 } from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
-import Footer from '../components/Welcome/Footer';
-import {historyPush, cordovaDot, cordovaScrollablePaneTopPadding} from '../utils/cordovaUtils';
-import Testimonial from '../components/Widgets/Testimonial';
-import AnalyticsActions from '../actions/AnalyticsActions';
-import AppActions from '../actions/AppActions';
-import validateEmail from '../utils/email-functions';
-import VoterActions from '../actions/VoterActions';
-import VoterConstants from '../constants/VoterConstants';
-import VoterStore from '../stores/VoterStore';
-import {renderLog} from "../utils/logging";
 
 class WelcomeForOrganizations extends PureComponent {
   static propTypes = {
