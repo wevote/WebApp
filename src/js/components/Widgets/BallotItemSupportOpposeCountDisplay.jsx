@@ -21,7 +21,6 @@ import StickyPopover from '../Ballot/StickyPopover';
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize complex changes
 /* eslint react/no-find-dom-node: 1 */
 /* eslint array-callback-return: 1 */
-
 class BallotItemSupportOpposeCountDisplay extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
@@ -327,14 +326,18 @@ class BallotItemSupportOpposeCountDisplay extends Component {
     let networkOpposeCount = 0;
     let totalNetworkScore = 0;
     let totalNetworkScoreWithSign;
+    let totalNetworkScoreIsNegative = false;
+    let totalNetworkScoreIsPositive = false;
     if (this.state.ballotItemSupportProps !== undefined) {
       networkSupportCount = parseInt(this.state.ballotItemSupportProps.support_count) || 0;
       networkOpposeCount = parseInt(this.state.ballotItemSupportProps.oppose_count) || 0;
       totalNetworkScore = parseInt(networkSupportCount - networkOpposeCount);
       if (totalNetworkScore > 0) {
         totalNetworkScoreWithSign = `+${totalNetworkScore}`;
+        totalNetworkScoreIsPositive = true;
       } else if (totalNetworkScore < 0) {
         totalNetworkScoreWithSign = totalNetworkScore;
+        totalNetworkScoreIsNegative = true;
       } else {
         totalNetworkScoreWithSign = totalNetworkScore;
       }
@@ -620,7 +623,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         onMouseLeave={handleLeaveHoverLocalArea}
       >
         { isVoterSupport ? (
-          <NetworkScore className={classes.voterSupports}>
+          <NetworkScore className={classes.voterSupports} totalNetworkScoreIsNegative={totalNetworkScoreIsNegative} totalNetworkScoreIsPositive={totalNetworkScoreIsPositive}>
             <VoterChoiceWrapper>
               <DoneIcon classes={{ root: classes.buttonIcon }} />
             </VoterChoiceWrapper>
@@ -630,7 +633,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
         }
 
         { isVoterOppose ? (
-          <NetworkScore className={classes.voterOpposes}>
+          <NetworkScore className={classes.voterOpposes} totalNetworkScoreIsNegative={totalNetworkScoreIsNegative} totalNetworkScoreIsPositive={totalNetworkScoreIsPositive}>
             <VoterChoiceWrapper>
               <NotInterestedIcon classes={{ root: classes.buttonIcon }} />
             </VoterChoiceWrapper>
@@ -697,10 +700,10 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             openOnClick
             showCloseIcon
           >
-            <NetworkScore>
+            <NetworkScore totalNetworkScoreIsNegative={totalNetworkScoreIsNegative} totalNetworkScoreIsPositive={totalNetworkScoreIsPositive}>
               { totalNetworkScore === 0 ? (
-                <span className="u-margin-left--md">
-                  { totalNetworkScoreWithSign }
+                <span className="u-margin-left-right--sm">
+                  { totalNetworkScoreWithSign}
                 </span>
               ) : (
                 <span className="u-margin-left--xs">
@@ -811,7 +814,7 @@ const EndorsementCount = styled.div`
 
 const NetworkScore = styled.div`
   font-size: 18px;
-  background: rgb(31, 192, 111);
+  background: ${({ totalNetworkScoreIsNegative, totalNetworkScoreIsPositive }) => ((totalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (totalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888')};
   color: white;
   padding: 8px;
   border-radius: 8px;
@@ -824,14 +827,14 @@ const NetworkScore = styled.div`
   @media print{
     border-width: 1 px;
     border-style: solid;
-    border-color: #888;
+    border-color: ${({ totalNetworkScoreIsNegative, totalNetworkScoreIsPositive }) => ((totalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (totalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888')};
   }
 `;
 
 const VoterChoiceWrapper = styled.div`
   color: white;
   @media print{
-    color: #888;
+    color: #1fc06f;
   }
 `;
 

@@ -110,6 +110,8 @@ class PositionItem extends Component {
       supportOpposeInfo = 'supportFollow';
     } else if (!position.followed && position.is_support) {
       supportOpposeInfo = 'support';
+    } else if (position.followed && position.is_oppose) {
+      supportOpposeInfo = 'opposeFollow';
     } else if (!position.support) {
       supportOpposeInfo = 'oppose';
     }
@@ -189,19 +191,27 @@ class PositionItem extends Component {
                       </SupportFollow>
                     ) : (
                       <>
-                        {supportOpposeInfo === 'support' ? (
-                          <Support>
-                            <ThumbUpIcon />
-                          </Support>
+                        {supportOpposeInfo === 'opposeFollow' ? (
+                          <OpposeFollow>
+                            -1
+                          </OpposeFollow>
                         ) : (
-                          <>
-                            {supportOpposeInfo === 'oppose' ? (
-                              <Oppose>
-                                <ThumbDownIcon />
-                              </Oppose>
-                            ) : (
-                              null
-                            )}
+                        <>
+                          {supportOpposeInfo === 'support' ? (
+                            <Support>
+                              <ThumbUpIcon />
+                            </Support>
+                          ) : (
+                              <>
+                                {supportOpposeInfo === 'oppose' ? (
+                                  <Oppose>
+                                    <ThumbDownIcon />
+                                  </Oppose>
+                                ) : (
+                                  null
+                                )}
+                              </>
+                          )}
                           </>
                         )}
                       </>
@@ -276,11 +286,17 @@ class PositionItem extends Component {
                       </SupportFollow>
                     ) : (
                       <>
-                        {supportOpposeInfo === 'support' ? (
-                          <Support>
-                            <ThumbUpIcon />
-                          </Support>
+                        {supportOpposeInfo === 'opposeFollow' ? (
+                          <OpposeFollow>
+                            -1
+                          </OpposeFollow>
                         ) : (
+                        <>
+                          {supportOpposeInfo === 'support' ? (
+                            <Support>
+                              <ThumbUpIcon />
+                            </Support>
+                          ) : (
                           <>
                             {supportOpposeInfo === 'oppose' ? (
                               <Oppose>
@@ -289,6 +305,8 @@ class PositionItem extends Component {
                             ) : (
                               null
                             )}
+                            </>
+                          )}
                           </>
                         )}
                       </>
@@ -509,6 +527,20 @@ const DesktopItemFooter = styled.div`
 const SupportFollow = styled.div`
   color: white;
   background: #1fc06f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  float: right;
+  font-size: 16px;
+  font-weight: bold;
+`;
+
+const OpposeFollow = styled.div`
+  color: white;
+  background: rgb(255, 73, 34);
   display: flex;
   align-items: center;
   justify-content: center;

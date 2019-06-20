@@ -3,7 +3,7 @@
     size: portrait
   }
   body {
-    background-color: $white !important;
+    background-color: white !important;
     color: $black;
   }
   //.ballot__filter__container,
@@ -27,4 +27,5 @@
   a, a:not(.btn) {
     text-decoration: none;
   }
+
 }
