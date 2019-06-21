@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import OpenExternalWebSite from './OpenExternalWebSite';
 import SplitIconButton from './SplitIconButton';
@@ -16,7 +17,7 @@ class EndorsementCard extends PureComponent {
     return (
       <div>
         <div className="card">
-          <div className="card-main">
+          <Container>
             <div className="endorsement-card">
               <OpenExternalWebSite
                 url="https://api.wevoteusa.org/vg/create/"
@@ -49,11 +50,15 @@ class EndorsementCard extends PureComponent {
                 {this.props.text}
               </div>
             </div>
-          </div>
+          </Container>
         </div>
       </div>
     );
   }
 }
+
+const Container = styled.div`
+  padding: 16px;
+`;
 
 export default EndorsementCard;
