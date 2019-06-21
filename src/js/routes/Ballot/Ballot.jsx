@@ -797,13 +797,9 @@ class Ballot extends Component {
     if (!ballotWithItemsFromCompletionFilterType) {
       return (
         <div className="ballot container-fluid well u-stack--md u-inset--md">
-          <div className={`ballot__header ${isWebApp() ? 'ballot__header__top-cordova' : ''}`}>
+          <div className="ballot__header" style={{ marginTop: `${isCordova() ? '100px' : 'undefined'}` }}>
             <p>
-              <span
-                className="u-cursor--pointer"
-                id="ballotIfBallotDoesNotAppear"
-                onClick={this.toggleSelectBallotModal}
-              >
+              <span className="u-cursor--pointer" id="ballotIfBallotDoesNotAppear" onClick={this.toggleSelectBallotModal}>
                 If your ballot does not appear momentarily, please click to change your address.
               </span>
             </p>
