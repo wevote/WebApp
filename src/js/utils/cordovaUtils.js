@@ -217,13 +217,16 @@ export function getAndroidSize () {
 
   const size = screen.width * screen.height;
   let sizeString = 'default';
+  const ratioString = parseFloat(ratio).toFixed(2);
 
   /* sm = 480*800 = 384,000      Nexus One
      md = 1080*1920 = 2,073,600  PixelXL, Nexus5X, Moto G5
      lg = 1440*2560 = 3,686,400  Nexus6P
-     xl = 2560*1600 = 4,096,000  Nexus10 Tablet   */
+     xl = 2560*1600 = 4,096,000  Nexus10 Tablet
+     xl = 1200 x 1920 = 2,306,705 Galaxy Tab A 10.1", ratio = 1.3312500715255737
+     June 2019: detecting the Galaxy Tab A by ratio, is a bit of a hack, and could bite us someday if there was an android phone with a 1.33 ratio */
 
-  if (size > 3.7E6) {
+  if (size > 3.7E6 || ratioString === '1.33') {
     sizeString = '--xl';
   } else if (size > 3E6) {
     sizeString = '--lg';
@@ -556,6 +559,28 @@ export function cordovaBallotFilterTopMargin () {
         return '-10px';
       }
       return '31px';
+    }
+  }
+  return undefined;
+}
+
+export function cordovaNetworkNextButtonTop () {
+  if (isIOS()) {
+    if (isIPhone678Plus()) {
+      return '89vh';
+    } else if (isIPhone678()) {
+      return '89vh';
+    } else if (hasIPhoneNotch()) {
+      return '88vh';
+    } else if (isIPad()) {
+      return '89vh';
+    } else if (isIPhone5sSE()) {
+      return '88vh';
+    }
+  } else if (isAndroid()) {
+    const sizeString = getAndroidSize();
+    if (sizeString === '--xl') {
+      return '89vh';
     }
   }
   return undefined;
