@@ -14,7 +14,6 @@ import {
 class PollingPlaceLocatorModal extends Component {
   static propTypes = {
     classes: PropTypes.object,
-    onExit: PropTypes.func,
   };
 
   constructor (props) {

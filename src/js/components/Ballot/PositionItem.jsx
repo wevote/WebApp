@@ -190,19 +190,19 @@ class PositionItem extends Component {
                         +1
                       </SupportFollow>
                     ) : (
-                      <>
+                      <span>
                         {supportOpposeInfo === 'opposeFollow' ? (
                           <OpposeFollow>
                             -1
                           </OpposeFollow>
                         ) : (
-                        <>
-                          {supportOpposeInfo === 'support' ? (
-                            <Support>
-                              <ThumbUpIcon />
-                            </Support>
-                          ) : (
-                              <>
+                          <span>
+                            {supportOpposeInfo === 'support' ? (
+                              <Support>
+                                <ThumbUpIcon />
+                              </Support>
+                            ) : (
+                              <span>
                                 {supportOpposeInfo === 'oppose' ? (
                                   <Oppose>
                                     <ThumbDownIcon />
@@ -210,11 +210,11 @@ class PositionItem extends Component {
                                 ) : (
                                   null
                                 )}
-                              </>
-                          )}
-                          </>
+                              </span>
+                            )}
+                          </span>
                         )}
-                      </>
+                      </span>
                     )}
                   </DesktopItemEndorsementDisplay>
                 </DesktopItemHeader>
@@ -285,31 +285,31 @@ class PositionItem extends Component {
                         +1
                       </SupportFollow>
                     ) : (
-                      <>
+                      <span>
                         {supportOpposeInfo === 'opposeFollow' ? (
                           <OpposeFollow>
                             -1
                           </OpposeFollow>
                         ) : (
-                        <>
-                          {supportOpposeInfo === 'support' ? (
-                            <Support>
-                              <ThumbUpIcon />
-                            </Support>
-                          ) : (
-                          <>
-                            {supportOpposeInfo === 'oppose' ? (
-                              <Oppose>
-                                <ThumbDownIcon />
-                              </Oppose>
+                          <span>
+                            {supportOpposeInfo === 'support' ? (
+                              <Support>
+                                <ThumbUpIcon />
+                              </Support>
                             ) : (
-                              null
+                              <span>
+                                {supportOpposeInfo === 'oppose' ? (
+                                  <Oppose>
+                                    <ThumbDownIcon />
+                                  </Oppose>
+                                ) : (
+                                  null
+                                )}
+                              </span>
                             )}
-                            </>
-                          )}
-                          </>
+                          </span>
                         )}
-                      </>
+                      </span>
                     )}
                   </MobileItemEndorsementDisplay>
                 </MobileItemEndorsementContainer>

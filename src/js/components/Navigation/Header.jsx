@@ -29,7 +29,6 @@ export default class Header extends Component {
   }
 
   render () {
-    // console.log('Header render');
     renderLog(__filename);
 
     const { params, location, pathname, voter, weVoteBrandingOff } = this.props;
@@ -102,6 +101,8 @@ export default class Header extends Component {
       let backToValuesLink = '/values';
       if (stringContains('/value/', pathname)) {
         backToValuesLink = '/values/list';
+      } else if (stringContains('/values/list', pathname)) {
+        backToValuesLink = '/values';
       }
       const backToValuesLinkText = 'Back';
 

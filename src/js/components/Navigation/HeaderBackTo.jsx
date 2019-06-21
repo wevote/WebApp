@@ -52,8 +52,10 @@ class HeaderBackTo extends Component {
     const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     this.setState({
+      backToLink: this.props.backToLink,
+      backToLinkText: this.props.backToLinkText,
       voter: this.props.voter,
-      voterWeVoteId: this.props.voter.we_vote_id,
+      voterWeVoteId: this.props.voter.we_vote_id || this.props.voterWeVoteId,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
@@ -63,14 +65,24 @@ class HeaderBackTo extends Component {
     const weVoteBrandingOffFromUrl = nextProps.location.query ? nextProps.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     this.setState({
+      backToLink: nextProps.backToLink,
+      backToLinkText: nextProps.backToLinkText,
       voter: nextProps.voter,
-      voterWeVoteId: nextProps.voter.we_vote_id,
+      voterWeVoteId: nextProps.voter.we_vote_id || nextProps.voterWeVoteId,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
 
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if not needed
+    if (this.state.backToLink !== nextState.backToLink) {
+      // console.log('this.state.backToLink: ', this.state.backToLink, ', nextState.backToLink', nextState.backToLink);
+      return true;
+    }
+    if (this.state.backToLinkText !== nextState.backToLinkText) {
+      // console.log('this.state.backToLinkText: ', this.state.backToLinkText, ', nextState.backToLinkText', nextState.backToLinkText);
+      return true;
+    }
     if (this.state.profilePopUpOpen !== nextState.profilePopUpOpen) {
       // console.log('this.state.profilePopUpOpen: ', this.state.profilePopUpOpen, ', nextState.profilePopUpOpen', nextState.profilePopUpOpen);
       return true;
@@ -174,10 +186,10 @@ class HeaderBackTo extends Component {
   render () {
     renderLog(__filename);
     const { voter } = this.state;
-    const { backToLink, backToLinkText, classes } = this.props;
+    const { classes } = this.props;
+    const { backToLink, backToLinkText } = this.state;
     const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
-    // console.log('HeaderBackTo render');
 
     const headerClassName = (function header () {
       if (isWebApp()) {

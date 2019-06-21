@@ -104,11 +104,11 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/settings/voterguidesmenu' ||
     pathnameLowerCase === '/settings/voterguidelist') {
     showBackToSettings = true;
-  } else if (pathnameLowerCase === '/opinions' ||
+  } else if (pathnameLowerCase.startsWith('/value/') ||
+    pathnameLowerCase === '/values/list' ||
+    pathnameLowerCase === '/opinions' ||
     pathnameLowerCase === '/opinions_followed' ||
-    pathnameLowerCase === '/opinions_ignored' ||
-    stringContains('/value/', pathnameLowerCase) ||
-    pathnameLowerCase === '/values/list') {
+    pathnameLowerCase === '/opinions_ignored') {
     showBackToValues = true;
   } else if (pathnameLowerCase === '/friends/add' ||
     pathnameLowerCase === '/friends/current' ||
