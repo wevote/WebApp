@@ -277,7 +277,7 @@ class HeaderBar extends Component {
               </Tabs>
             </div>
             {
-              voterIsSignedIn && (
+              voterIsSignedIn && voterPhotoUrlMedium ? (
                 <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
                   {
                     showEditAddressButton && (
@@ -292,31 +292,21 @@ class HeaderBar extends Component {
                       </Tooltip>
                     )
                   }
-                  {voterPhotoUrlMedium ? (
-                    <div id="profileAvatarHeaderBar"
-                          className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
-                          onClick={this.toggleProfilePopUp}
-                    >
-                      <img
-                        className="header-nav__avatar"
-                        src={voterPhotoUrlMedium}
-                        height={34}
-                        width={34}
-                        alt="Your Profile"
-                      />
-                    </div>
-                  ) : (
-                    <div>
-                      <IconButton
-                        classes={{ root: classes.iconButtonRoot }}
-                        id="profileAvatarHeaderBar"
-                        onClick={this.toggleProfilePopUp}
-                      >
-                        <AccountCircleIcon />
-                      </IconButton>
-                    </div>
-                  )
-                  }
+                  <div id="profileAvatarHeaderBar"
+                    className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
+                    onClick={this.toggleProfilePopUp}
+                  >
+                    <img
+                      className="header-nav__avatar"
+                      style={{
+                        marginLeft: 16,
+                      }}
+                      src={voterPhotoUrlMedium}
+                      height={34}
+                      width={34}
+                      alt="Your Profile"
+                    />
+                  </div>
                   {this.state.profilePopUpOpen && voterIsSignedIn && (
                     <HeaderBarProfilePopUp
                       hideProfilePopUp={this.hideProfilePopUp}
@@ -331,6 +321,46 @@ class HeaderBar extends Component {
                     />
                   )}
                 </div>
+              ) : (
+                voterIsSignedIn && (
+                  <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex">
+                    {
+                      showEditAddressButton && (
+                        <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+                          <IconButton
+                            classes={{ root: classes.iconButtonRoot }}
+                            id="changeAddressHeaderBar"
+                            onClick={this.toggleSelectBallotModal}
+                          >
+                            <PlaceIcon />
+                          </IconButton>
+                        </Tooltip>
+                      )
+                    }
+                    <div>
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot }}
+                        id="profileAvatarHeaderBar"
+                        onClick={this.toggleProfilePopUp}
+                      >
+                        <AccountCircleIcon />
+                      </IconButton>
+                    </div>
+                    {this.state.profilePopUpOpen && voterIsSignedIn && (
+                      <HeaderBarProfilePopUp
+                        hideProfilePopUp={this.hideProfilePopUp}
+                        onClick={this.toggleProfilePopUp}
+                        profilePopUpOpen={this.state.profilePopUpOpen}
+                        signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+                        toggleProfilePopUp={this.toggleProfilePopUp}
+                        toggleSignInModal={this.toggleSignInModal}
+                        transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+                        voter={this.props.voter}
+                        weVoteBrandingOff={this.state.we_vote_branding_off}
+                      />
+                    )}
+                  </div>
+                )
               )
             }
             {

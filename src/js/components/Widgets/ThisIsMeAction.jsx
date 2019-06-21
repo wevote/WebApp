@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import SplitIconButton from './SplitIconButton';
 
-export default class ThisIsMeAction extends Component {
+class ThisIsMeAction extends Component {
   static propTypes = {
     kindOfOwner: PropTypes.string,
     nameBeingViewed: PropTypes.string,
@@ -68,7 +69,7 @@ export default class ThisIsMeAction extends Component {
         {signedInWithThisTwitterAccount ?
           <span /> : (
             <div className="card">
-              <div className="card-main">
+              <Container>
                 <div className="endorsement-card">
                   <Link to={`/verifythisisme/${twitterHandleBeingViewed}`} className="u-no-underline">
                     {/* <Button
@@ -95,7 +96,7 @@ export default class ThisIsMeAction extends Component {
                     {thisIsMeActionText}
                   </div>
                 </div>
-              </div>
+              </Container>
             </div>
           )
         }
@@ -103,3 +104,9 @@ export default class ThisIsMeAction extends Component {
     );
   }
 }
+
+const Container = styled.div`
+  padding: 16px;
+`;
+
+export default  ThisIsMeAction;

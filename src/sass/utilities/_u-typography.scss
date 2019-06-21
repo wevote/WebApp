@@ -144,6 +144,10 @@
   width: auto; // helpful for form inputs
 }
 
+.u-break-word {
+  word-break: break-all !important;
+}
+
 // Alignment
 
 .u-tr { text-align: right; }

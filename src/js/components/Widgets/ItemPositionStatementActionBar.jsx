@@ -427,9 +427,7 @@ const styles = theme => ({
       padding: '2px 4px',
       fontWeight: 600,
       height: '100%',
-    },
-    [theme.breakpoints.down('sm')]: {
-      fontWeight: 600,
+      fontSize: 10,
     },
   },
 });
@@ -441,8 +439,7 @@ const PostSaveButton = styled.div`
   @media(max-width: 576px) {
     height: 28px;
     display: flex;
-    align-items: center;
-    margin-bottom: auto;
+    align-items: flex-end;
   }
 `;
 

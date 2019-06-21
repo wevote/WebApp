@@ -265,19 +265,21 @@ class PositionItem extends Component {
                       imagePlaceholder }
                   </Link>
                 </MobileItemImage>
-                <MobileItemNameIssueContainer>
+                <MobileItemNameContainer>
                   <MobileItemName>
-                    <Link to={speakerLink}>
+                    <Link to={speakerLink} className="u-break-word">
                       { position.speaker_display_name }
                     </Link>
                   </MobileItemName>
-                  <MobileItemIssues>
-                    <IssuesByOrganizationDisplayList
-                      organizationWeVoteId={organizationWeVoteId}
-                      placement="bottom"
-                    />
-                  </MobileItemIssues>
-                </MobileItemNameIssueContainer>
+                </MobileItemNameContainer>
+              </MobileItemHeader>
+              <MobileItemIssuesEndorsementContainer>
+                <MobileItemIssues>
+                  <IssuesByOrganizationDisplayList
+                    organizationWeVoteId={organizationWeVoteId}
+                    placement="bottom"
+                  />
+                </MobileItemIssues>
                 <MobileItemEndorsementContainer>
                   <MobileItemEndorsementDisplay>
                     {supportOpposeInfo === 'supportFollow' ? (
@@ -313,7 +315,7 @@ class PositionItem extends Component {
                     )}
                   </MobileItemEndorsementDisplay>
                 </MobileItemEndorsementContainer>
-              </MobileItemHeader>
+              </MobileItemIssuesEndorsementContainer>
               <MobileItemBody>
                 <MobileItemDescriptionFollowTogglContainer>
                   <MobileItemDescription>
@@ -330,7 +332,7 @@ class PositionItem extends Component {
                     Flag Links
                   </div> */}
                   {moreInfoUrl ? (
-                    <div className="u-float-right">
+                    <SourceLink>
                       <OpenExternalWebSite
                         url={moreInfoUrl}
                         target="_blank"
@@ -343,7 +345,7 @@ class PositionItem extends Component {
                           </span>
                         )}
                       />
-                    </div>
+                    </SourceLink>
                   ) : null
                   }
                 </MobileItemFooter>
@@ -365,6 +367,7 @@ const PositionItemMobile = styled.li`
   @media (max-width: 476px) {
     margin: 16px 0;
   }
+  max-width: 100% !important;
 `;
 
 const MobileItemHeader = styled.div`
@@ -391,10 +394,8 @@ const MobileItemImage = styled.div`
   }
 `;
 
-const MobileItemNameIssueContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+const MobileItemNameContainer = styled.div`
+  
 `;
 
 const MobileItemName = styled.h4`
@@ -403,15 +404,22 @@ const MobileItemName = styled.h4`
   margin-bottom: 4px;
 `;
 
+const MobileItemIssuesEndorsementContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+`;
+
 const MobileItemIssues = styled.div`
   margin: 0;
   font-size: 14px;
+  flex: 1 1 0;
 `;
 
 const MobileItemEndorsementContainer = styled.div`
   margin-left: auto;
-  margin-top: auto;
   margin-bottom: auto;
+  width: 50px;
 `;
 
 const MobileItemEndorsementDisplay = styled.div`
@@ -445,7 +453,10 @@ const MobileItemFollowToggleDisplay = styled.div`
 `;
 
 const MobileItemFooter = styled.div`
-  padding-top: 4px;
+  height: 20px;
+  width: 100%;
+  margin-top: 8px;
+  font-size: 14px;
 `;
 
 const DesktopContainer = styled.div`
@@ -580,6 +591,11 @@ const Oppose = styled.div`
   border: 3px solid red;
   font-size: 20px;
   font-weight: bold;
+`;
+
+const SourceLink = styled.div`
+  float: right;
+  padding-bottom: 4px;
 `;
 
 export default PositionItem;
