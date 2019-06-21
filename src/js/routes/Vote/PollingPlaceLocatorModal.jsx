@@ -31,6 +31,12 @@ class PollingPlaceLocatorModal extends Component {
     historyPush('/ballot/vote');
   }
 
+  // goBackForCordova () {
+  //   const { showPollingLocatorModal } = this.state;
+  //   this.setState({ showPollingLocatorModal: !showPollingLocatorModal });
+  //   historyPush('/ballot/vote');
+  // }
+
   render () {
     renderLog(__filename);
     const { classes } = this.props;
@@ -56,7 +62,7 @@ class PollingPlaceLocatorModal extends Component {
     } else {
       return (
         <div>
-          { cordovaOpenSafariView('https://wevote.us/vip.html', this.props.onExit, 50) }
+          { cordovaOpenSafariView('https://wevote.us/vip.html', historyPush('/ballot/vote'), 50) }
         </div>
       );
     }
