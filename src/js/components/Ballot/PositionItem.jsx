@@ -376,17 +376,17 @@ const MobileItemHeader = styled.div`
 
 const MobileItemImage = styled.div`
   margin-right: 16px;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   * {
-    border-radius: 50px;
-    width: 50px !important;
-    height: 50px !important;
-    max-width: 50px !important;
+    border-radius: 40px;
+    width: 40px !important;
+    height: 40px !important;
+    max-width: 40px !important;
     display: flex;
     align-items: flex-start;
     &::before {
-      font-size: 50px !important;
+      font-size: 40px !important;
     }
   }
 `;
@@ -530,8 +530,8 @@ const SupportFollow = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 5px;
   float: right;
   font-size: 16px;
@@ -544,8 +544,8 @@ const OpposeFollow = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 5px;
   float: right;
   font-size: 16px;
@@ -558,8 +558,8 @@ const Support = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 5px;
   border: 3px solid #1fc06f;
   float: right;
@@ -573,8 +573,8 @@ const Oppose = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 5px;
   float: right;
   border: 3px solid red;
