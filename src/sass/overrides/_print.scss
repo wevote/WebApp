@@ -2,6 +2,7 @@
   @page {
     size: portrait
   }
+  //FireFox specific CSS
   @-moz-document url-prefix('') {
     body {
       background-color: white !important;
