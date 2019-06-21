@@ -283,9 +283,8 @@ export default class SettingsAccount extends Component {
             }
             <br />
             {isWebApp() &&
-              <span id="onlyShowVoterEmailAddressEntryInBrowser" />
+              <VoterEmailAddressEntry />
             }
-            <VoterEmailAddressEntry />
 
             {debugMode && (
             <div className="text-center">
