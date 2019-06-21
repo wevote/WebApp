@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { historyPush, cordovaDot } from '../../utils/cordovaUtils';
+import { cordovaDot, cordovaNetworkNextButtonTop, historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
 /*
@@ -48,7 +48,13 @@ export default class IntroNetworkBallotIsNext extends Component {
           Get Started Now
         </div>
         <p className="intro-story__info">Make sure to enter the correct address to have the correct ballot.</p>
-        <button type="button" className="btn intro-story__btn intro-story__btn--bottom" onClick={IntroNetworkBallotIsNext.goToBallotLink}>Next&nbsp;&nbsp;&gt;</button>
+        <button type="button"
+                className="btn intro-story__btn intro-story__btn--bottom"
+                onClick={IntroNetworkBallotIsNext.goToBallotLink}
+                style={{ top: `${cordovaNetworkNextButtonTop()}` }}
+        >
+          Next&nbsp;&nbsp;&gt;
+        </button>
       </div>
     );
   }

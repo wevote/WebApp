@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { cordovaDot, cordovaNetworkNextButtonTop } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import { cordovaDot } from '../../utils/cordovaUtils';
 
 /*
 The problem with urls in css for Apache Cordova
@@ -47,7 +47,13 @@ export default class IntroNetworkSafety extends Component {
           Choose your interests
         </div>
         <p className="intro-story__info">Follow topics that interest you.  We will suggest endorsements based on your interests.</p>
-        <button type="button" className="btn intro-story__btn intro-story__btn--bottom" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
+        <button type="button"
+                className="btn intro-story__btn intro-story__btn--bottom"
+                onClick={this.props.next}
+                style={{ top: `${cordovaNetworkNextButtonTop()}` }}
+        >
+          Next&nbsp;&nbsp;&gt;
+        </button>
       </div>
     );
   }
