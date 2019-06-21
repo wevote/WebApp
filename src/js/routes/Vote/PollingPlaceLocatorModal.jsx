@@ -30,12 +30,6 @@ class PollingPlaceLocatorModal extends Component {
     historyPush('/ballot/vote');
   }
 
-  // goBackForCordova () {
-  //   const { showPollingLocatorModal } = this.state;
-  //   this.setState({ showPollingLocatorModal: !showPollingLocatorModal });
-  //   historyPush('/ballot/vote');
-  // }
-
   render () {
     renderLog(__filename);
     const { classes } = this.props;

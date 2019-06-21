@@ -151,6 +151,15 @@ export function isIPhone678 () {
   return isIOS() && screen.width === 750 && screen.height === 1334;
 }
 
+export function isIPhone5sSE () {
+  const ratio = window.devicePixelRatio || 1;
+  const screen = {
+    width: window.screen.width * ratio,
+    height: window.screen.height * ratio,
+  };
+  return isIOS() && screen.width === 640 && screen.height === 1136;
+}
+
 export function isIPhoneXR () {
   const ratio = window.devicePixelRatio || 1;
   const screen = {
@@ -440,6 +449,26 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.settingsWild:    return '32px';
         default:                    return '0px';
       }
+    } else if (isIPhone5sSE()) {
+      if (isSimulator() && logCordovaOffsets) {
+        console.log('cordovaScrollablePaneTopPadding: isIPhone5sSE');
+      }
+      switch (pageEnumeration()) {
+        case enums.wevoteintroWild: return '18px';
+        case enums.measureWild:     return '42px';
+        case enums.candidate:       return '42px';
+        case enums.ballotVote:      return '62px';
+        case enums.officeWild:      return '62px';
+        case enums.ballotSmHdrWild: return '146px';
+        case enums.ballotLgHdrWild: return '0px';
+        case enums.moreAbout:       return '22px';
+        case enums.moreTerms:       return '40px';
+        case enums.welcomeWild:     return '10px';
+        case enums.moreHamburger:   return '10px';
+        case enums.moreTools:       return '44px';
+        case enums.settingsWild:    return '16px';
+        default:                    return '0px';
+      }
     }
   } else if (isAndroid()) {
     const sizeString = getAndroidSize();
@@ -501,6 +530,8 @@ export function cordovaBallotFilterTopMargin () {
     } else if (hasIPhoneNotch()) {
       return '74px';
     } else if (isIPad()) {
+      return '54px';
+    } else if (isIPhone5sSE()) {
       return '54px';
     }
   } else if (isAndroid()) {
