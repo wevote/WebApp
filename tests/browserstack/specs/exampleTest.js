@@ -1,4 +1,5 @@
 const assert = require('assert');
+const { writeToLog } = require('../utils');
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
@@ -28,7 +29,9 @@ describe('example test',  () => {
     const valuesButtonSelector = (isMobile) ? '#valuesTabFooterBar' : '#valuesTabHeaderBar';
     const valuesButton =
       await $(valuesButtonSelector);
-    await valuesButton.click();
+    // see if we are is W3C compliant
+    writeToLog(`isW3C: ${valuesButton.isW3C}`);
+    valuesButton.click();
     await browser.pause(1000);
     assert(true);
   });

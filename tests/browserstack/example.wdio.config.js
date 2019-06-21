@@ -4,6 +4,9 @@ const date = new Date();
 const dateForDisplay = date.toDateString();
 const buildNameForDisplay = `${browserStackConfig.BUILD}: ${dateForDisplay}`;
 
+const myOnPrepare = function (config, capabilities) {
+  console.log('**** let\'s go ****');
+};
 
 exports.config = {
   user: browserStackConfig.BROWSERSTACK_USER,
@@ -70,6 +73,7 @@ exports.config = {
     },
   ],
   coloredLogs: true,
+  logLevel: 'trace',
   baseUrl: '',
   waitforTimeout: 180000, // 3 minutes
   connectionRetryTimeout: 90000,

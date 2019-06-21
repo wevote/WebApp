@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { scrollThroughPage, setNewAddress, setNewAddressIOS, simpleClick, simpleCloseBootstrapModal } = require('../utils');
+const { scrollThroughPage, clickTopLeftCornerOfElement, setNewAddress, setNewAddressIOS, simpleClick, simpleCloseBootstrapModal } = require('../utils');
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
@@ -33,7 +33,7 @@ describe('Basic cross-platform We Vote test',  () => {
     }
 
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
-
+/*
     await simpleClick('changeAddressHeaderBar'); // Open the "Change Address" modal
     await simpleCloseBootstrapModal(); // Close the "Change Address" modal
 
@@ -158,12 +158,18 @@ describe('Basic cross-platform We Vote test',  () => {
     // Review the full length of the page
     // await scrollThroughPage(); // Scroll to the bottom of the ballot page
     // TODO: We will need a way to scroll back to the top of the page for the tab navigation to work in Desktop
-
+*/
     await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
 
     // TODO Figure out how to close a Material UI Dialog so we can test sign in
-    // await simpleClick('signInHeaderBar'); // Open the "Sign In" modal
-    // await simpleCloseModal(); // Close the "Sign In" modal
+    await simpleClick('signInHeaderBar'); // Open the "Sign In" modal
+    await simpleClick('signInCloseButton');
+    if (browser.isW3C) {
+      // click outside of modal. Still need to
+    await clickTopLeftCornerOfElement('div[role="document"]'); // Close the "Sign In" modal by clicking outside of modal
+    if (hasKeyboard) {
+      // open it up again and test pressing escape
+    } else 
 
     assert(true);
   });

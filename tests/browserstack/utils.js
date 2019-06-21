@@ -79,22 +79,6 @@ async function simpleClick (elementIdName) {
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
-async function clickTopLeftCornerOfElement (elementSelector) {
-  const clickableSelector = `${elementSelector}`;
-  const clickableItem = await $(clickableSelector);
-  const { x, y } = await browser.getElementRect(clickableItem);
-  await browser.performActions([{
-    type: 'pointer',
-    id: 'clickTopLeftCornerAction',
-    actions: [
-      { type: 'pointerMove', x, y },
-      { type: 'pointerDown', button: 0 },
-      { type: 'pointerUp', button: 0 },
-    ],
-  }]).then(() => browser.releaseActions());
-  await browser.pause(PAUSE_DURATION_MICROSECONDS);
-}
-
 async function simpleCloseBootstrapModal () {
   const clickableSelector = 'button[class="close"]';
   const clickableItem = await $(clickableSelector);
@@ -115,6 +99,55 @@ function writeToLog (message) {
   fs.appendFile('./browserstack.log', `${time} ${message} [${name}]\n`, (err) => {
     if (err) throw err;
   });
+}
+
+// await browser.performActions([{
+//   type: 'pointer',
+//   id: 'clickTopLeftCornerAction',
+//   actions: [
+//     { type: 'pointerMove', x, y },
+//     { type: 'pointerDown', button: 0 },
+//     { type: 'pointerUp', button: 0 },
+//   ],
+// }]).then(() => browser.releaseActions());
+
+async function clickTopLeftCornerOfElement (selector) {
+  const element = await $(selector);
+  if (!element.isW3C) {
+    await element.moveTo(1, 1);
+    await element.positionClick();
+  } else {
+    writeToLog("we're fucked");
+    await element.performActions([{
+      type: 'pointer',
+      id: 'pointer1',
+      parameters: { pointerType: 'mouse' },
+      actions: [
+          { type: 'pointerMove', origin: element, x: 0, y: 0 },
+          { type: 'pointerDown', button: 0 },
+          { type: 'pointerUp', button: 0 },
+          { type: 'pause', duration: 10 },
+          { type: 'pointerDown', button: 0 },
+          { type: 'pointerUp', button: 0 }
+      ]
+  }])
+
+return this.releaseActions()
+    // await browser.performActions([{
+    //   type: 'pointer',
+    //   id: 'clickTopLeftCornerAction',
+    //   parameters: { pointerType: 'touch' },
+    //   actions: [
+    //     { type: 'pointerMove', x: 5, y: 5 },
+    //     // { type: 'pointerDown', button: 0 },
+    //     // { type: 'pointerUp', button: 0 },
+    //   ],
+    // }]).then(() => {
+    //   writeToLog('about to release actions');
+    //   browser.releaseActions();
+    // });
+  }
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
 module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, clickTopLeftCornerOfElement, simpleCloseBootstrapModal, simpleTextInput, setNewAddress, setNewAddressIOS, writeToLog };
