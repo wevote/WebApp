@@ -272,7 +272,6 @@ class PositionItem extends Component {
                     </Link>
                   </MobileItemName>
                 </MobileItemNameContainer>
-                
               </MobileItemHeader>
               <MobileItemIssuesEndorsementContainer>
                 <MobileItemIssues>
