@@ -44,6 +44,7 @@ export default class ValuesList extends Component {
   }
 
   render () {
+    // console.log('ValuesList render');
     const { allIssues, searchQuery } = this.state;
     renderLog(__filename);
     let issueList = [];

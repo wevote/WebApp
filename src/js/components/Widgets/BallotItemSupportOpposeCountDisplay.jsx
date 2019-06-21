@@ -700,17 +700,15 @@ class BallotItemSupportOpposeCountDisplay extends Component {
             openOnClick
             showCloseIcon
           >
-            <NetworkScore totalNetworkScoreIsNegative={totalNetworkScoreIsNegative} totalNetworkScoreIsPositive={totalNetworkScoreIsPositive}>
-              { totalNetworkScore === 0 ? (
-                <span className="u-margin-left-right--sm">
-                  { totalNetworkScoreWithSign}
-                </span>
-              ) : (
-                <span className="u-margin-left--xs">
-                  { totalNetworkScoreWithSign }
-                </span>
-              )}
-            </NetworkScore>
+            { totalNetworkScore === 0 ? (
+              <NetworkScore totalNetworkScoreIsNegative={totalNetworkScoreIsNegative} totalNetworkScoreIsPositive={totalNetworkScoreIsPositive}>
+                0
+              </NetworkScore>
+            ) : (
+              <NetworkScore totalNetworkScoreIsNegative={totalNetworkScoreIsNegative} totalNetworkScoreIsPositive={totalNetworkScoreIsPositive}>
+                { totalNetworkScoreWithSign }
+              </NetworkScore>
+            )}
           </StickyPopover>
         ) : null
         }
@@ -758,23 +756,12 @@ const styles = theme => ({
 const Wrapper = styled.div`
   margin-top: .1rem;
 `;
-// @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-//   margin-top: 0;
-//   width: 100%;
-//   max-width: 100%;
-//   border-top: 1px solid #eee;
-//   border-bottom: 1px solid #eee;
-//   padding-top: 8px;
-// }
 
 const EndorsementsContainer = styled.div`
   display: flex;
   flex-flow: column;
   justify-content: space-between;
 `;
-// @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-//   flex-flow: row;
-// }
 
 const EndorsementsTitle = styled.div`
   color: #888;
@@ -813,17 +800,19 @@ const EndorsementCount = styled.div`
 `;
 
 const NetworkScore = styled.div`
-  font-size: 18px;
+  font-size: 16px;
   background: ${({ totalNetworkScoreIsNegative, totalNetworkScoreIsPositive }) => ((totalNetworkScoreIsNegative && 'rgb(255, 73, 34)') || (totalNetworkScoreIsPositive && 'rgb(31, 192, 111)') || '#888')};
   color: white;
-  padding: 8px;
-  border-radius: 8px;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: 14px;
-    text-align: right;
-    justify-content: flex-end;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  float: right;
+  font-size: 16px;
+  font-weight: bold;
   @media print{
     border-width: 1 px;
     border-style: solid;

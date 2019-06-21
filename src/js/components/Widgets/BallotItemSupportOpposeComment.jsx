@@ -8,7 +8,6 @@ import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
 import SupportStore from '../../stores/SupportStore';
 import { stringContains } from '../../utils/textFormat';
-// import VoterStore from '../../stores/VoterStore';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize complex changes
 /* eslint react/no-find-dom-node: 1 */
@@ -113,17 +112,23 @@ class BallotItemSupportOpposeComment extends PureComponent {
 
   onCandidateStoreChange () {
     if (this.state.isCandidate) {
-      this.setState(state => ({
-        ballotItem: CandidateStore.getCandidate(state.ballotItemWeVoteId),
-      }));
+      const { ballotItemWeVoteId } = this.state;
+      const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
+      const ballotItemDisplayName = candidate.ballot_item_display_name || '';
+      this.setState({
+        ballotItemDisplayName,
+      });
     }
   }
 
   onMeasureStoreChange () {
     if (this.state.isMeasure) {
-      this.setState(state => ({
-        ballotItem: MeasureStore.getMeasure(state.ballotItemWeVoteId),
-      }));
+      const { ballotItemWeVoteId } = this.state;
+      const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
+      const ballotItemDisplayName = measure.ballot_item_display_name || '';
+      this.setState({
+        ballotItemDisplayName,
+      });
     }
   }
 

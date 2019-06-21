@@ -53,51 +53,14 @@ import webAppConfig from '../../config';
 
 const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];
 
-const styles = theme => ({
-  badge: {
-    top: 13,
-    minWidth: 16,
-    width: 20,
-    right: 14,
-    background: 'rgba(46, 60, 93, 0.08)',
-    color: '#333',
-    [theme.breakpoints.down('md')]: {
-      fontSize: 9,
-      width: 16,
-      height: 16,
-      top: 11,
-      right: 11,
-    },
-  },
-  badgeColorPrimary: {
-    background: theme.palette.primary.main,
-    color: 'white',
-  },
-  chipRoot: {
-    height: 26,
-    [theme.breakpoints.down('md')]: {
-      height: 22.5,
-    },
-  },
-  iconRoot: {
-    position: 'absolute',
-    left: 3,
-    top: 1,
-    color: theme.palette.primary.main,
-    cursor: 'pointer',
-    [theme.breakpoints.down('md')]: {
-      fontSize: 16,
-      top: 3,
-    },
-  },
-});
-
 class VoterGuideBallot extends Component {
   static propTypes = {
     active_route: PropTypes.string,
+    classes: PropTypes.object,
     location: PropTypes.object,
     organization: PropTypes.object.isRequired,
     params: PropTypes.object,
+    pathname: PropTypes.string,
   };
 
   constructor (props) {
@@ -1210,5 +1173,44 @@ class VoterGuideBallot extends Component {
     );
   }
 }
+
+const styles = theme => ({
+  badge: {
+    top: 13,
+    minWidth: 16,
+    width: 20,
+    right: 14,
+    background: 'rgba(46, 60, 93, 0.08)',
+    color: '#333',
+    [theme.breakpoints.down('md')]: {
+      fontSize: 9,
+      width: 16,
+      height: 16,
+      top: 11,
+      right: 11,
+    },
+  },
+  badgeColorPrimary: {
+    background: theme.palette.primary.main,
+    color: 'white',
+  },
+  chipRoot: {
+    height: 26,
+    [theme.breakpoints.down('md')]: {
+      height: 22.5,
+    },
+  },
+  iconRoot: {
+    position: 'absolute',
+    left: 3,
+    top: 1,
+    color: theme.palette.primary.main,
+    cursor: 'pointer',
+    [theme.breakpoints.down('md')]: {
+      fontSize: 16,
+      top: 3,
+    },
+  },
+});
 
 export default withStyles(styles)(VoterGuideBallot);
