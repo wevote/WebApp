@@ -15,6 +15,7 @@ class IssuesByOrganizationDisplayList extends Component {
     children: PropTypes.object,
     handleLeaveCandidateCard: PropTypes.func,
     handleEnterCandidateCard: PropTypes.func,
+    fullWidth: PropTypes.bool,
   };
 
   static closePopover () {
@@ -191,11 +192,19 @@ class IssuesByOrganizationDisplayList extends Component {
         onMouseOut={this.handleLeaveHoverLocalArea}
         onMouseOver={this.handleEnterHoverLocalArea}
       >
-        <IssuesByOrganization>
-          <IssueByOrganizationList>
-            {issuesUnderThisOrganizationHtml}
-          </IssueByOrganizationList>
-        </IssuesByOrganization>
+        {this.props.fullWidth ? (
+          <IssuesByOrganizationFullWidth>
+            <IssueByOrganizationList>
+              {issuesUnderThisOrganizationHtml}
+            </IssueByOrganizationList>
+          </IssuesByOrganizationFullWidth>
+        ) : (
+          <IssuesByOrganization>
+            <IssueByOrganizationList>
+              {issuesUnderThisOrganizationHtml}
+            </IssueByOrganizationList>
+          </IssuesByOrganization>
+        )}
       </Wrapper>
     );
   }
@@ -213,6 +222,14 @@ const IssuesByOrganization = styled.div`
   padding: 8px 0;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 90%;
+    padding: 12px 0;
+  }
+`;
+
+const IssuesByOrganizationFullWidth = styled.div`
+  width: 100%
+  padding: 8px 0;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     padding: 12px 0;
   }
 `;
