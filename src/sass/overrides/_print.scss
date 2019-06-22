@@ -2,6 +2,12 @@
   @page {
     size: portrait
   }
+  //FireFox specific CSS
+  @-moz-document url-prefix('') {
+    body {
+      background-color: white !important;
+    }
+  }
   body {
     background-color: white !important;
     color: $black;
@@ -27,5 +33,4 @@
   a, a:not(.btn) {
     text-decoration: none;
   }
-
 }
