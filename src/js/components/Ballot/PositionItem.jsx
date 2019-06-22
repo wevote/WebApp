@@ -420,19 +420,19 @@ const MobileItemName = styled.h4`
 
 const MobileItemNameIssuesContainer = styled.div`
   display: block;
-  @media (max-width: 375px) {
+  @media (max-width: 374px) {
     display: none;
   }
 `;
 
 const MobileSmallItemNameContainer = styled.div`
-  @media (min-width: 376px) {
+  @media (min-width: 375px) {
     display: none;
   }
 `;
 
 const MobileSmallItemIssuesContainer = styled.div`
-  @media (min-width: 376px) {
+  @media (min-width: 375px) {
     display: none;
   }
   width: 100%;
