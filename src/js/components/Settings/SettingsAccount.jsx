@@ -159,10 +159,10 @@ export default class SettingsAccount extends Component {
 
     const { pleaseSignInTitle, pleaseSignInSubTitle } = this.state;
     let pageTitle = 'Sign In - We Vote';
-    let yourAccountTitle = 'Your Account';
+    let yourAccountTitle = 'Security & Sign In';
     let yourAccountExplanation = '';
     if (this.state.voter.is_signed_in) {
-      pageTitle = 'Your Account - We Vote';
+      pageTitle = 'Security & Sign In - We Vote';
       if (this.state.voter.signed_in_facebook && !this.state.voter.signed_in_twitter) {
         yourAccountTitle = 'Have Twitter Too?';
         yourAccountExplanation = 'By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.';

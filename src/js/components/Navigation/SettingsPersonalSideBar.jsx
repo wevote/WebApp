@@ -84,7 +84,7 @@ export default class SettingsPersonalSideBar extends Component {
                   'SettingsItem__summary__item__display-name'}
                 >
                   {this.props.isSignedIn ?
-                    <span>Your Account</span> :
+                    <span>Security & Sign In</span> :
                     <span>Sign In</span> }
                 </span>
               </Link>

@@ -31,6 +31,8 @@ class HeaderBackTo extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      backToLink: '',
+      backToLinkText: '',
       profilePopUpOpen: false,
       showSignInModal: AppStore.showSignInModal(),
       voter: {},
