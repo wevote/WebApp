@@ -77,6 +77,7 @@ const styles = theme => ({
   dialogContent: {
     [theme.breakpoints.down('md')]: {
       padding: '0 8px 8px',
+      overflow: 'hidden',
     },
   },
 });
