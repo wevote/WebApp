@@ -265,21 +265,29 @@ class PositionItem extends Component {
                       imagePlaceholder }
                   </Link>
                 </MobileItemImage>
-                <MobileItemNameContainer>
+                {/* Visible for most phones */}
+                <MobileItemNameIssuesContainer>
                   <MobileItemName>
                     <Link to={speakerLink} className="u-break-word">
                       { position.speaker_display_name }
                     </Link>
                   </MobileItemName>
-                </MobileItemNameContainer>
-              </MobileItemHeader>
-              <MobileItemIssuesEndorsementContainer>
-                <MobileItemIssues>
-                  <IssuesByOrganizationDisplayList
-                    organizationWeVoteId={organizationWeVoteId}
-                    placement="bottom"
-                  />
-                </MobileItemIssues>
+                  <MobileItemIssues>
+                    <IssuesByOrganizationDisplayList
+                      organizationWeVoteId={organizationWeVoteId}
+                      placement="bottom"
+                      fullWidth
+                    />
+                  </MobileItemIssues>
+                </MobileItemNameIssuesContainer>
+                {/* Visible on iPhone 5/se */}
+                <MobileSmallItemNameContainer>
+                  <MobileItemName>
+                    <Link to={speakerLink} className="u-break-word">
+                      { position.speaker_display_name }
+                    </Link>
+                  </MobileItemName>
+                </MobileSmallItemNameContainer>
                 <MobileItemEndorsementContainer>
                   <MobileItemEndorsementDisplay>
                     {supportOpposeInfo === 'supportFollow' ? (
@@ -315,7 +323,16 @@ class PositionItem extends Component {
                     )}
                   </MobileItemEndorsementDisplay>
                 </MobileItemEndorsementContainer>
-              </MobileItemIssuesEndorsementContainer>
+              </MobileItemHeader>
+              <MobileSmallItemIssuesContainer>
+                <MobileItemIssues>
+                  <IssuesByOrganizationDisplayList
+                    organizationWeVoteId={organizationWeVoteId}
+                    placement="bottom"
+                    fullWidth
+                  />
+                </MobileItemIssues>
+              </MobileSmallItemIssuesContainer>
               <MobileItemBody>
                 <MobileItemDescriptionFollowTogglContainer>
                   <MobileItemDescription>
@@ -375,6 +392,7 @@ const MobileItemHeader = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   padding: 16px 0 16px 8px;
+  min-height: 75px;
 `;
 
 const MobileItemImage = styled.div`
@@ -394,20 +412,31 @@ const MobileItemImage = styled.div`
   }
 `;
 
-const MobileItemNameContainer = styled.div`
-  
-`;
-
 const MobileItemName = styled.h4`
   font-size: 18px;
   font-weight: 500;
   margin-bottom: 4px;
 `;
 
-const MobileItemIssuesEndorsementContainer = styled.div`
+const MobileItemNameIssuesContainer = styled.div`
+  display: block;
+  @media (max-width: 374px) {
+    display: none;
+  }
+`;
+
+const MobileSmallItemNameContainer = styled.div`
+  @media (min-width: 375px) {
+    display: none;
+  }
+`;
+
+const MobileSmallItemIssuesContainer = styled.div`
+  @media (min-width: 375px) {
+    display: none;
+  }
   width: 100%;
-  display: flex;
-  align-items: flex-start;
+  margin-top: -12px;
 `;
 
 const MobileItemIssues = styled.div`
@@ -420,6 +449,8 @@ const MobileItemEndorsementContainer = styled.div`
   margin-left: auto;
   margin-bottom: auto;
   width: 50px;
+  height: 100%;
+  max-height: 100%;
 `;
 
 const MobileItemEndorsementDisplay = styled.div`
@@ -429,7 +460,7 @@ const MobileItemEndorsementDisplay = styled.div`
 `;
 
 const MobileItemBody = styled.div`
-  padding: 16px;
+  padding: 16px 16px 8px;
   background: #f7f7f7;
   border-bottom-right-radius: 8px;
   border-top-right-radius: 8px;
@@ -595,7 +626,7 @@ const Oppose = styled.div`
 
 const SourceLink = styled.div`
   float: right;
-  padding-bottom: 4px;
+  margin-bottom: -4px;
 `;
 
 export default PositionItem;
