@@ -460,7 +460,7 @@ const MobileItemEndorsementDisplay = styled.div`
 `;
 
 const MobileItemBody = styled.div`
-  padding: 16px;
+  padding: 16px 16px 8px;
   background: #f7f7f7;
   border-bottom-right-radius: 8px;
   border-top-right-radius: 8px;
