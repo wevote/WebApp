@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { renderLog } from '../../utils/logging';
 import styled from 'styled-components';
+import { renderLog } from '../../utils/logging';
 
 const iframeStyle = {
   border: 'none',
