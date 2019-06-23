@@ -40,7 +40,7 @@ export default class IntroNetwork extends Component {
     this.slider.current.slickPrev();
   }
 
-  overrideMediaQueryForAndroidTablets() {
+  overrideMediaQueryForAndroidTablets () {
     // Media queries in CSS often don't work as expected in Cordova, due to window.devicePixelRatio greater than one
     if (isAndroid()) {
       const sizeString = getAndroidSize();

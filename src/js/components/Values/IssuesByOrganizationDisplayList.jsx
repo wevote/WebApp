@@ -108,7 +108,7 @@ class IssuesByOrganizationDisplayList extends Component {
 
     // Tried to make the issues icons accessible via tabbing, caused too many side affects
     const valueIconAndText = (
-      <ValueIconAndText
+      <ValueIconAndTextOrganization
         id={`valueIconAndText-${oneIssue.issue_we_vote_id}`}
         className="u-no-break u-cursor--pointer issue-icon-list__issue-block"
       >
@@ -123,7 +123,7 @@ class IssuesByOrganizationDisplayList extends Component {
         <div className="u-margin-left--xxs issue-icon-list__issue-label-name">
           {oneIssue.issue_name}
         </div>
-      </ValueIconAndText>
+      </ValueIconAndTextOrganization>
     );
 
     return (
@@ -222,16 +222,12 @@ const IssuesByOrganization = styled.div`
   padding: 8px 0;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 90%;
-    padding: 12px 0;
   }
 `;
 
 const IssuesByOrganizationFullWidth = styled.div`
   width: 100%
   padding: 8px 0;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    padding: 12px 0;
-  }
 `;
 
 const IssueByOrganizationList = styled.ul`
@@ -242,11 +238,11 @@ const IssueByOrganizationList = styled.ul`
   width: 100%;
 `;
 
-const ValueIconAndText = styled.span`
+const ValueIconAndTextOrganization = styled.span`
   position: relative;
   width: fit-content;
   flex: none;
-  padding: 4px;
+  padding: 2px 4px 2px 0;
 `;
 
 const PopoverWrapper = styled.div`
