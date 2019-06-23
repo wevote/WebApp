@@ -32,7 +32,7 @@ class Testimonial extends React.Component {
     const { testimonialAuthor, imageUrl, testimonial } = this.props;
 
     return (
-      <TestimonialContainer>
+      <TestimonialContainer className="card">
         <ImageHandler
           className="card-main__avatar__testimonial"
           imageUrl={imageUrl}
