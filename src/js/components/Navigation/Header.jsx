@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
-import { hasIPhoneNotch, cordovaTopHeaderTopMargin, isCordova, isIOS, isWebApp } from '../../utils/cordovaUtils';
+import {hasIPhoneNotch, cordovaTopHeaderTopMargin, isCordova, isIOS, isWebApp, isIPad} from '../../utils/cordovaUtils';
 import HeaderBackToBallot from './HeaderBackToBallot';
 import HeaderBackTo from './HeaderBackTo';
 import HeaderBackToVoterGuides from './HeaderBackToVoterGuides';
@@ -39,7 +39,7 @@ export default class Header extends Component {
     if (isCordova() && isIOS() && hasIPhoneNotch()) {
       iPhoneSpacer = <div className="ios-notched-spacer" />;
     } else if (isCordova() && isIOS() && !hasIPhoneNotch()) {
-      iPhoneSpacer = <div className="ios-no-notch-spacer" />;
+      iPhoneSpacer = <div className="ios-no-notch-spacer" style={{ height: `${isIPad() ? '0px' : 'undefined'}` }} />;
     }
 
     const pageHeaderStyle = weVoteBrandingOff ? 'page-header__container_branding_off headroom' : 'page-header__container headroom';
