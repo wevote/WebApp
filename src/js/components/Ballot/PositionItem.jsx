@@ -568,7 +568,7 @@ const DesktopItemFooter = styled.div`
 
 const SupportFollow = styled.div`
   color: white;
-  background: #1fc06f;
+  background: ${({ theme }) => theme.colors.supportGreenRgb};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -582,7 +582,7 @@ const SupportFollow = styled.div`
 
 const OpposeFollow = styled.div`
   color: white;
-  background: rgb(255, 73, 34);
+  background: ${({ theme }) => theme.colors.opposeRedRgb};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -595,7 +595,7 @@ const OpposeFollow = styled.div`
 `;
 
 const Support = styled.div`
-  color: #1fc06f;
+  color: ${({ theme }) => theme.colors.supportGreenRgb};
   background: white;
   display: flex;
   align-items: center;
@@ -603,14 +603,14 @@ const Support = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 5px;
-  border: 3px solid #1fc06f;
+  border: 3px solid ${({ theme }) => theme.colors.supportGreenRgb};
   float: right;
   font-size: 20px;
   font-weight: bold;
 `;
 
 const Oppose = styled.div`
-  color: red;
+  color: ${({ theme }) => theme.colors.opposeRedRgb};
   background: white;
   display: flex;
   align-items: center;
@@ -619,7 +619,7 @@ const Oppose = styled.div`
   height: 40px;
   border-radius: 5px;
   float: right;
-  border: 3px solid red;
+  border: 3px solid ${({ theme }) => theme.colors.opposeRedRgb};
   font-size: 20px;
   font-weight: bold;
 `;
