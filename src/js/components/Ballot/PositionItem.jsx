@@ -334,14 +334,14 @@ class PositionItem extends Component {
                 </MobileItemIssues>
               </MobileSmallItemIssuesContainer>
               <MobileItemBody>
-                <MobileItemDescriptionFollowTogglContainer>
+                <MobileItemDescriptionFollowToggleContainer>
                   <MobileItemDescription>
                     {positionDescription}
                   </MobileItemDescription>
                   <MobileItemFollowToggleDisplay>
                     <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
                   </MobileItemFollowToggleDisplay>
-                </MobileItemDescriptionFollowTogglContainer>
+                </MobileItemDescriptionFollowToggleContainer>
                 <MobileItemFooter>
                   {/* <strong>Was this Useful?</strong>
                   Yes  No
@@ -391,8 +391,8 @@ const MobileItemHeader = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 16px 0 16px 8px;
-  min-height: 75px;
+  padding: 6px 0 6px 8px;
+  min-height: 46px;
 `;
 
 const MobileItemImage = styled.div`
@@ -456,18 +456,18 @@ const MobileItemEndorsementContainer = styled.div`
 const MobileItemEndorsementDisplay = styled.div`
   width: 100%;
   height: 100%;
-  margin-bottom: calc(50px + 16px);
+  margin-bottom: 46px;
 `;
 
 const MobileItemBody = styled.div`
-  padding: 16px 16px 8px;
+  padding: 6px 6px 6px;
   background: #f7f7f7;
   border-bottom-right-radius: 8px;
   border-top-right-radius: 8px;
   border-bottom-left-radius: 5px;
 `;
 
-const MobileItemDescriptionFollowTogglContainer = styled.div`
+const MobileItemDescriptionFollowToggleContainer = styled.div`
   left: 2px;
   display: flex;
   justify-content: space-between;
@@ -477,6 +477,9 @@ const MobileItemDescription = styled.div`
   font-size: 16px;
   color: #333;
   flex: 1 1 0;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 14px;
+  }
 `;
 
 const MobileItemFollowToggleDisplay = styled.div`
@@ -486,8 +489,8 @@ const MobileItemFollowToggleDisplay = styled.div`
 const MobileItemFooter = styled.div`
   height: 20px;
   width: 100%;
-  margin-top: 8px;
-  font-size: 14px;
+  margin-top: 2px;
+  font-size: 12px;
 `;
 
 const DesktopContainer = styled.div`
@@ -522,7 +525,7 @@ const DesktopItemImage = styled.div`
 const PositionItemDesktop = styled.div`
   border-radius: 5px;
   list-style: none;
-  padding: 16px;
+  padding: 6px 16px;
   background: #f7f7f7;
   flex: 1 1 0;
 `;
@@ -562,8 +565,8 @@ const DesktopItemDescription = styled.div`
 `;
 
 const DesktopItemFooter = styled.div`
-  margin-top: 8px;
-  font-size: 14px;
+  font-size: 12px;
+  margin-top: 2px;
 `;
 
 const SupportFollow = styled.div`
