@@ -207,29 +207,29 @@ export default class Candidate extends Component {
             showOfficeName
             showPositionStatementActionBar
           />
-          <div className="card__additional">
-            {/* this.state.positionListFromAdvisersFollowedByVoter */}
-            { this.state.allCachedPositionsForThisCandidate.length ? (
-              <PositionList
-                incomingPositionList={this.state.allCachedPositionsForThisCandidate}
-                ballotItemDisplayName={this.state.candidate.ballot_item_display_name}
-              />
-            ) : null
-            }
-            {/* Formerly voterGuidesToFollowForThisBallotItem */}
-            {/* this.state.voterGuidesForThisBallotItem.length === 0 ?
-              <div className="card__additional-text">{NO_VOTER_GUIDES_TEXT}</div> : (
-                <div>
-                  <h3 className="card__additional-heading">{`Opinions about ${this.state.candidate.ballot_item_display_name}`}</h3>
-                  <GuideList
-                    id={electionId}
-                    ballotItemWeVoteId={this.state.candidateWeVoteId}
-                    incomingVoterGuideList={this.state.voterGuidesForThisBallotItem}
-                  />
-                </div>
-              )
-            */}
-          </div>
+        </section>
+        <section className="card">
+          {/* this.state.positionListFromAdvisersFollowedByVoter */}
+          { this.state.allCachedPositionsForThisCandidate.length ? (
+            <PositionList
+              incomingPositionList={this.state.allCachedPositionsForThisCandidate}
+              ballotItemDisplayName={this.state.candidate.ballot_item_display_name}
+            />
+          ) : null
+          }
+          {/* Formerly voterGuidesToFollowForThisBallotItem */}
+          {/* this.state.voterGuidesForThisBallotItem.length === 0 ?
+            <div className="card__additional-text">{NO_VOTER_GUIDES_TEXT}</div> : (
+              <div>
+                <h3 className="card__additional-heading">{`Opinions about ${this.state.candidate.ballot_item_display_name}`}</h3>
+                <GuideList
+                  id={electionId}
+                  ballotItemWeVoteId={this.state.candidateWeVoteId}
+                  incomingVoterGuideList={this.state.voterGuidesForThisBallotItem}
+                />
+              </div>
+            )
+          */}
         </section>
         <EndorsementCard
           bsPrefix="u-margin-top--sm u-stack--xs"
