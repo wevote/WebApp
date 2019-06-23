@@ -85,9 +85,9 @@ const styles = theme => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
     [theme.breakpoints.down('sm')]: {
-      minWidth: '90%',
-      maxWidth: '90%',
-      width: '90%',
+      minWidth: '95%',
+      maxWidth: '95%',
+      width: '95%',
       minHeight: '90%',
       maxHeight: '90%',
       height: '90%',
