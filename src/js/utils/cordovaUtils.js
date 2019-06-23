@@ -360,7 +360,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidate:       return '40px';
         case enums.ballotVote:      return '18px';
         case enums.officeWild:      return '64px';
-        case enums.ballotSmHdrWild: return '130px';
+        case enums.ballotSmHdrWild: return isIPad() ? '116px' : '130px';
         case enums.ballotLgHdrWild: return '4px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '44px';
@@ -533,7 +533,7 @@ export function cordovaBallotFilterTopMargin () {
     } else if (hasIPhoneNotch()) {
       return '74px';
     } else if (isIPad()) {
-      return '54px';
+      return '38px';
     } else if (isIPhone5sSE()) {
       return '54px';
     }
@@ -655,7 +655,7 @@ export function cordovaVoteMiniHeader () {
       };
     } else if (isIPad()) {
       return {
-        top: '94px',
+        top: '52px',
         height: '90px',
       };
     }
@@ -711,6 +711,10 @@ export function cordovaTopHeaderTopMargin () {
           case enums.ballotVote:      style.marginTop = '16px'; break;
           case enums.settingsWild:    style.marginTop = '38px'; break;
           default:                    style.marginTop = '16px'; break;
+        }
+      } else if (isIPad()) {
+        switch (pageEnumeration()) {
+          default:                    style.marginTop = '0px'; break;
         }
       } else {
         style.marginTop = '20px';
