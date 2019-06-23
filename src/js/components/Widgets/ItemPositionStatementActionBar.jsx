@@ -424,6 +424,11 @@ const styles = theme => ({
     background: 'white',
     color: '#313131',
     [theme.breakpoints.down('md')]: {
+      fontWeight: 500,
+      height: '100%',
+      fontSize: 12,
+    },
+    [theme.breakpoints.down('sm')]: {
       padding: '2px 4px',
       fontWeight: 600,
       height: '100%',
