@@ -60,7 +60,7 @@ class SignInModal extends Component {
             aria-label="Close"
             classes={{ root: classes.closeButton }}
             onClick={() => { this.props.toggleFunction(); }}
-            id="profileCloseSignUpModal"
+            id="profileCloseSignInModal"
           >
             <CloseIcon />
           </IconButton>
