@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
-import {hasIPhoneNotch, cordovaTopHeaderTopMargin, isCordova, isIOS, isWebApp, isIPad} from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, cordovaTopHeaderTopMargin, isCordova, isIOS, isWebApp, isIPad } from '../../utils/cordovaUtils';
 import HeaderBackToBallot from './HeaderBackToBallot';
 import HeaderBackTo from './HeaderBackTo';
 import HeaderBackToVoterGuides from './HeaderBackToVoterGuides';

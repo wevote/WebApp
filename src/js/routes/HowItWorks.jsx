@@ -15,6 +15,7 @@ import { cordovaScrollablePaneTopPadding, historyPush, isCordova } from '../util
 import VoterStore from '../stores/VoterStore';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 
+// const delayBeforeMovingToNextSlide = 5000;
 class HowItWorks extends Component {
   static propTypes = {
     classes: PropTypes.object,
