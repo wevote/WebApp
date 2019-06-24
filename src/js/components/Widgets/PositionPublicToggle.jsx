@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -237,7 +240,15 @@ class PositionPublicToggle extends Component {
         onClose={() => { this.togglePositionPublicHelpModal(); }}
       >
         <DialogTitle>
-          <div className="text-center">Make Your Positions Public</div>
+          <Typography variant="h6" className="text-center">Make Your Positions Public</Typography>
+          <IconButton
+            aria-label="Close"
+            classes={{ root: classes.closeButton }}
+            onClick={() => { this.togglePositionPublicHelpModal(); }}
+            id="profileClosePositionPublicToggle"
+          >
+            <CloseIcon />
+          </IconButton>
         </DialogTitle>
         <DialogContent>
           <section className="card">
@@ -335,6 +346,11 @@ const styles = theme => ({
   },
   formControl: {
     width: '100%',
+  },
+  closeButton: {
+    position: 'absolute',
+    right: `${theme.spacing.unit}px`,
+    top: `${theme.spacing.unit}px`,
   },
 });
 
