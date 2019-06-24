@@ -11,6 +11,9 @@ import CommentIcon from '@material-ui/icons/Comment';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
 import DialogContent from '@material-ui/core/DialogContent';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
@@ -380,9 +383,15 @@ class ItemActionBar extends PureComponent {
         onClose={() => { this.toggleSupportOrOpposeHelpModal(); }}
       >
         <DialogTitle>
-          <div className="intro-modal__h1">
-            Choose or Oppose
-          </div>
+          <Typography variant="h6" className="text-center">Choose or Oppose</Typography>
+          <IconButton
+            aria-label="Close"
+            classes={{ root: classes.closeButton }}
+            onClick={() => { this.toggleSupportOrOpposeHelpModal(); }}
+            id="profileCloseItemActionBar"
+          >
+            <CloseIcon />
+          </IconButton>
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
           <section className="card">
@@ -714,6 +723,11 @@ const styles = theme => ({
   },
   buttonOutlinedPrimary: {
     background: 'white',
+  },
+  closeButton: {
+    position: 'absolute',
+    right: `${theme.spacing.unit}px`,
+    top: `${theme.spacing.unit}px`,
   },
 });
 

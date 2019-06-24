@@ -4,6 +4,9 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import { withStyles, withTheme } from '@material-ui/core';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
 import PollingPlaceLocator from '../../components/Vote/PollingPlaceLocator';
 import { renderLog } from '../../utils/logging';
 import {
@@ -42,9 +45,15 @@ class PollingPlaceLocatorModal extends Component {
           onClose={() => { this.openPollingLocationModal(); }}
         >
           <DialogTitle>
-            <div className="intro-modal__h1">
-              Find Your Polling Location
-            </div>
+            <Typography variant="h6" className="text-center">Find Your Polling Location</Typography>
+            <IconButton
+              aria-label="Close"
+              classes={{ root: classes.closeButton }}
+              onClick={() => { this.openPollingLocationModal(); }}
+              id="profileClosePollingPlaceLocatorModal"
+            >
+              <CloseIcon />
+            </IconButton>
           </DialogTitle>
 
           <DialogContent classes={{ root: classes.dialogContent }}>
@@ -64,10 +73,19 @@ class PollingPlaceLocatorModal extends Component {
 const styles = theme => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
+    [theme.breakpoints.up('sm')]: {
+      minWidth: '80%',
+      maxWidth: '80%',
+      width: '80%',
+      minHeight: '90%',
+      maxHeight: '90%',
+      height: '90%',
+      margin: '0 auto',
+    },
     [theme.breakpoints.down('sm')]: {
-      minWidth: '90%',
-      maxWidth: '90%',
-      width: '90%',
+      minWidth: '95%',
+      maxWidth: '95%',
+      width: '95%',
       minHeight: '90%',
       maxHeight: '90%',
       height: '90%',
@@ -79,6 +97,11 @@ const styles = theme => ({
       padding: '0 8px 8px',
       overflow: 'hidden',
     },
+  },
+  closeButton: {
+    position: 'absolute',
+    right: `${theme.spacing.unit}px`,
+    top: `${theme.spacing.unit}px`,
   },
 });
 
