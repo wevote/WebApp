@@ -5,6 +5,7 @@ import FormatQuote from '@material-ui/icons/FormatQuote';
 import { renderLog } from '../../utils/logging';
 import ImageHandler from '../ImageHandler';
 
+
 class Testimonial extends React.Component {
   static propTypes = {
     testimonialAuthor: PropTypes.string,
@@ -59,7 +60,7 @@ class Testimonial extends React.Component {
 
 const TestimonialContainer = styled.div`
   display: block;
-  margin: 0 auto;
+  float: right;
   background-color: white;
   border-radius: 4px;
   width: 100%;
@@ -69,7 +70,6 @@ const TestimonialContainer = styled.div`
 `;
 
 const TestimonialAuthor = styled.div`
-  display: block;
   text-align: center;
   color: #999;
   font-style: italic;
