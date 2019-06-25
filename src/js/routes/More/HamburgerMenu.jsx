@@ -3,6 +3,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router';
 import { Table } from 'react-bootstrap';
 import { cordovaDot, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import DeviceDialog from '../../components/Widgets/DeviceDialog';
 import VoterStore from '../../stores/VoterStore';
 import HamburgerMenuRow from '../../components/Navigation/HamburgerMenuRow';
 import LoadingWheel from '../../components/LoadingWheel';
@@ -30,7 +31,10 @@ export default class HamburgerMenu extends Component {
     super(props);
     this.state = {
       voter: undefined,
+      showDeviceDialog: false,
     };
+    this.deviceTableVisibilityOn = this.deviceTableVisibilityOn.bind(this);
+    this.deviceTableVisibilityOff = this.deviceTableVisibilityOff.bind(this);
   }
 
   componentDidMount () {
@@ -74,6 +78,17 @@ export default class HamburgerMenu extends Component {
     );
   }
 
+  deviceTableVisibilityOff () {
+    const { showDeviceDialog } = this.state;
+    if (showDeviceDialog === true) {
+      this.setState({ showDeviceDialog: false });
+    }
+  }
+
+  deviceTableVisibilityOn () {
+    this.setState({ showDeviceDialog: true });
+  }
+
   render () {
     renderLog(__filename);
     const { voter } = this.state;
@@ -84,6 +99,8 @@ export default class HamburgerMenu extends Component {
     let { is_signed_in: isSignedIn } = voter;
     const { voter_photo_url_medium: photoUrl } = voter;
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
+
+    // console.log("Hamburger menu this.state.showDeviceDialog " + this.state.showDeviceDialog);
 
     return (
       <div>
@@ -204,23 +221,14 @@ export default class HamburgerMenu extends Component {
                     <Link onClick={this.hideProfilePopUp} to="/more/attributions">Attributions</Link>
                   </span>
                 </div>
-                { isCordova() && (window.location.href.startsWith('file:///Users') || window.location.href.startsWith('file:///android')) ?
-                  (
-                    <div>
-                      <div>
-                        <span className="hamburger-terms__text">
-                          <Link onClick={HamburgerMenu.clearAllCookies} to="/">Clear Cookies</Link>
-                        </span>
-                      </div>
-                      <div>
-                        <span className="hamburger-terms__text">
-                          <Link to="/wevoteintro/network">Navigate to Welcome</Link>
-                        </span>
-                      </div>
-                    </div>
-                  ) :
-                  null
-                }
+                {isCordova() && (
+                <div>
+                  <span className="hamburger-terms__text" onClick={() => this.deviceTableVisibilityOn()} style={{ color: 'black' }}>
+                    Device Information
+                  </span>
+                  <DeviceDialog visibilityOffFunction={this.deviceTableVisibilityOff} show={this.state.showDeviceDialog} />
+                </div>
+                )}
               </td>
             </tr>
           </tbody>
