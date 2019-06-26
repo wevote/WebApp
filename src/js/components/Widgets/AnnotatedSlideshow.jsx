@@ -15,6 +15,10 @@ class AnnotatedSlideshow extends PureComponent {
     classes: PropTypes.object,
   };
 
+  componentDidMount() {
+    this.autoAdvanceSlide();
+  }
+
   handleChangeSlide = (num) => {
     const { selectedStepIndex, slides } = this.props;
     const { length } = Object.keys(slides);
@@ -23,6 +27,19 @@ class AnnotatedSlideshow extends PureComponent {
     }
     // this.handleSlideImage(num);
     this.props.onChangeSlide(num ? selectedStepIndex + 1 : selectedStepIndex - 1);
+    this.autoAdvanceSlide();
+  }
+
+  autoAdvanceSlide () {
+    clearTimeout(this.timer);
+    const { slides, selectedStepIndex} = this.props;
+    const data = Object.values(slides);
+    // const { length } = data;
+    const { delayBeforeAdvancingSlide } = data.find(slide => slide.index === selectedStepIndex);
+    this.timer = setTimeout(() => {
+      this.handleChangeSlide(1);
+    }, delayBeforeAdvancingSlide);
+
   }
 
   render () {
@@ -30,7 +47,7 @@ class AnnotatedSlideshow extends PureComponent {
     const data = Object.values(slides);
     const { length } = data;
     const { title, description, imgSrc } = data.find(slide => slide.index === selectedStepIndex);
-
+    this.componentDidMount();
     return (
       <Wrapper>
         <SlideShowTitle>{title}</SlideShowTitle>
