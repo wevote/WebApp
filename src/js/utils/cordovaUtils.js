@@ -171,6 +171,7 @@ export function isIPhone678 () {
 }
 
 export function isIPhone678Plus () {
+  if (!window.device) return false;
   if (isIOS && (
     window.device.model === 'iPhone7,1'  ||  // iPhone 6Plus
     window.device.model === 'iPhone8,2'  ||  // iPhone 6s Plus
@@ -181,6 +182,7 @@ export function isIPhone678Plus () {
     cordovaOffsetLog('Matched ---- iPhone 678 Plus by window.device.model');
     return true;
   } else {
+    if (!window.screen) return false;
     const ratio = window.devicePixelRatio || 1;
     const screen = {
       width: window.screen.width * ratio,
@@ -191,6 +193,7 @@ export function isIPhone678Plus () {
 }
 
 export function isIPhoneXorXS () {
+  if (!window.device) return false;
   if (isIOS && (
     window.device.model === 'iPhone10,3' ||  // iPhone X
     window.device.model === 'iPhone10,6' ||  // iPhone X
@@ -198,6 +201,7 @@ export function isIPhoneXorXS () {
     cordovaOffsetLog('Matched ---- iPhone X or Xs by window.device.model');
     return true;
   } else {
+    if (!window.screen) return false;
     const ratio = window.devicePixelRatio || 1;
     const screen = {
       width: window.screen.width * ratio,
@@ -209,9 +213,11 @@ export function isIPhoneXorXS () {
 }
 
 export function isIPhoneXR () {
+  if (!window.device) return false;
   if (isIOS && (window.device.model === 'iPhone11,8')) { // iPhone XR
     return true;
   } else {
+    if (!window.screen) return false;
     const ratio = window.devicePixelRatio || 1;
     const screen = {
       width: window.screen.width * ratio,
@@ -224,9 +230,11 @@ export function isIPhoneXR () {
 // Sometimes in the simulator, an XSMax reports X sized screen, which messes things up
 // There is a cordova window.device.model which reports "iPhone11,6" for a physical device, but unfortunately reports "x86_64" on the simulator
 export function isIPhoneXSMax () {
+  if (!window.device) return false;
   if (isIOS && (window.device.model === 'iPhone11,6')) { // iPhone XS Max
     return true;
   } else {
+    if (!window.screen) return false;
     const ratio = window.devicePixelRatio || 1;
     const screen = {
       width: window.screen.width * ratio,
@@ -237,6 +245,7 @@ export function isIPhoneXSMax () {
 }
 
 export function isIPad () {
+  if (!window.device) return false;
   if (isIOS && (window.device.model.substring(0, 4) === 'iPad')) {
     // June 2019, save this, we will need it, if we need to distinguish between types of iPads
     // window.device.model === 'iPad4,1'  ||  // iPad Air

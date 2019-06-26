@@ -95,7 +95,7 @@ class HowItWorks extends Component {
         },
         Follow: {
           title: 'Follow organizations and people you trust',
-          description: 'As you follow organizations and people you trust, their recommendations are added to your ballot.',
+          description: 'Their recommendations are highlighted on your ballot.',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Follow-20190507.gif?',
           index: 1,
         },

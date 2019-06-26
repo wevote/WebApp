@@ -161,7 +161,6 @@ export default class OrganizationVoterGuideCandidate extends Component {
               <div>
                 <PositionList
                   incomingPositionList={this.state.positionListFromAdvisersFollowedByVoter}
-                  hideSimpleSupportOrOppose
                   ballotItemDisplayName={this.state.candidate.ballot_item_display_name}
                 />
               </div>
