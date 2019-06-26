@@ -2,14 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import List from '@material-ui/core/List';
-// import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-// import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-// import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-// import Accordion from 'react-bootstrap/Accordion';
-// import Card from 'react-bootstrap/Card';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import BallotStore from '../../stores/BallotStore';
 import BallotSideBarLink from './BallotSideBarLink';
@@ -26,7 +18,6 @@ class BallotSideBar extends Component {
     displaySubtitles: PropTypes.bool,
     onClick: PropTypes.func,
     pathname: PropTypes.string,
-    classes: PropTypes.object,
   };
 
   static defaultProps = {
@@ -169,35 +160,7 @@ class BallotSideBar extends Component {
     });
 
     return (
-      // <ExpansionPanel expanded={this.state.expanded === `panel-${key}`} key={key} onChange={this.handleChange(`panel-${key}`)}>
-      //   <ExpansionPanelSummary
-      //     expandIcon="+"
-      //     aria-controls={`panel${key}-content`}
-      //     id={`panel${key}-header`}
-      //   >
-      //     {type === 'Measure' ? 'Ballot Measures' : type}
-      //   </ExpansionPanelSummary>
-      //   <ExpansionPanelDetails>
-      //     <ul className="BallotItem__summary__list">
-      //       {filteredBallotListItems}
-      //     </ul>
-      //   </ExpansionPanelDetails>
-      // </ExpansionPanel>
-
-      // <Card className="BallotItem__summary__wrapper">
-      //   <Accordion.Toggle as={Card.Header} eventKey={key} className="BallotItem__summary__title">
-      //     {type === 'Measure' ? 'Ballot Measures' : type}
-      //   </Accordion.Toggle>
-      //   <Accordion.Collapse eventKey={key}>
-      //     <Card.Body className="BallotItem__summary__body">
-      //       <ul className="BallotItem__summary__list">
-      //         {filteredBallotListItems}
-      //       </ul>
-      //     </Card.Body>
-      //   </Accordion.Collapse>
-      // </Card>
-      
-      <div label={type === 'Measure' ? 'Ballot Measures' : `${type} (${filteredBallot.length})`}>
+      <div key={key} label={type === 'Measure' ? 'Ballot Measures' : `${type} (${filteredBallot.length})`}>
         <ul className="BallotItem__summary__list">
           {filteredBallotListItems}
         </ul>
@@ -218,7 +181,7 @@ class BallotSideBar extends Component {
     const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];
 
     const { ballot } = this.state;
-    const { classes, ballotWithAllItemsByFilterType } = this.props;
+    const { ballotWithAllItemsByFilterType } = this.props;
     if (ballot && ballot.length) {
       const ballotWithAllItemIdsByFilterType = [];
       ballotWithAllItemsByFilterType.forEach((itemByFilterType) => {
