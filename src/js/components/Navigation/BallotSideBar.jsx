@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import List from '@material-ui/core/List';
+// import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+// import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+// import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+// import Accordion from 'react-bootstrap/Accordion';
+// import Card from 'react-bootstrap/Card';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
@@ -9,6 +14,7 @@ import styled from 'styled-components';
 import BallotStore from '../../stores/BallotStore';
 import BallotSideBarLink from './BallotSideBarLink';
 import { renderLog } from '../../utils/logging';
+import BallotSummaryAccordion from './BallotSummaryAccordion';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-restricted-syntax: 1 */
@@ -31,6 +37,7 @@ class BallotSideBar extends Component {
     super(props);
     this.state = {
       componentDidMountFinished: false,
+      // expanded: undefined,
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -70,6 +77,9 @@ class BallotSideBar extends Component {
       // console.log("shouldComponentUpdate: changed this.props.pathname", this.props.pathname, ", nextState.pathname", nextProps.pathname);
       return true;
     }
+    // if (this.state.expanded !== nextState.expanded) {
+    //   return true;
+    // }
     return false;
   }
 
@@ -118,6 +128,11 @@ class BallotSideBar extends Component {
     }
   }
 
+  // handleChange (panel) {
+  //   this.setState({ expanded: panel });
+  //   console.log('Running handle change, setting expanded to ', panel);
+  // }
+
   filteredBallotToRender (ballot, ballotWithAllItemIdsByFilterType, type, key) {
     const filteredBallot = ballot.filter((item) => {
       if (item.kind_of_ballot_item === 'MEASURE') {
@@ -154,10 +169,35 @@ class BallotSideBar extends Component {
     });
 
     return (
-      <div className="BallotItem__summary__group" key={key}>
-        <div className="BallotItem__summary__group-title">
-          {type === 'Measure' ? 'Ballot Measures' : type}
-        </div>
+      // <ExpansionPanel expanded={this.state.expanded === `panel-${key}`} key={key} onChange={this.handleChange(`panel-${key}`)}>
+      //   <ExpansionPanelSummary
+      //     expandIcon="+"
+      //     aria-controls={`panel${key}-content`}
+      //     id={`panel${key}-header`}
+      //   >
+      //     {type === 'Measure' ? 'Ballot Measures' : type}
+      //   </ExpansionPanelSummary>
+      //   <ExpansionPanelDetails>
+      //     <ul className="BallotItem__summary__list">
+      //       {filteredBallotListItems}
+      //     </ul>
+      //   </ExpansionPanelDetails>
+      // </ExpansionPanel>
+
+      // <Card className="BallotItem__summary__wrapper">
+      //   <Accordion.Toggle as={Card.Header} eventKey={key} className="BallotItem__summary__title">
+      //     {type === 'Measure' ? 'Ballot Measures' : type}
+      //   </Accordion.Toggle>
+      //   <Accordion.Collapse eventKey={key}>
+      //     <Card.Body className="BallotItem__summary__body">
+      //       <ul className="BallotItem__summary__list">
+      //         {filteredBallotListItems}
+      //       </ul>
+      //     </Card.Body>
+      //   </Accordion.Collapse>
+      // </Card>
+      
+      <div label={type === 'Measure' ? 'Ballot Measures' : `${type} (${filteredBallot.length})`}>
         <ul className="BallotItem__summary__list">
           {filteredBallotListItems}
         </ul>
@@ -187,15 +227,18 @@ class BallotSideBar extends Component {
 
       return (
         <div className="card">
-          { this.props.displayTitle ? (
-            <Paper>
+          {/* { this.props.displayTitle ? (
+            <>
               <Typography variant="h4" classes={{ root: classes.typography }}>Summary of Ballot Items</Typography>
-            </Paper>
+              <Seperator />
+            </>
           ) :
             null
-          }
+          } */}
           <List>
-            { BALLOT_ITEM_FILTER_TYPES.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key))}
+            <BallotSummaryAccordion>
+              { BALLOT_ITEM_FILTER_TYPES.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key))}
+            </BallotSummaryAccordion>
           </List>
           <div className="h4 text-left" />
           <SidebarFooter>
@@ -222,20 +265,29 @@ class BallotSideBar extends Component {
   }
 }
 
-const styles = theme => ({
-  typography: {
-    padding: '16px 0',
-    textAlign: 'center',
-    color: '#555',
-    fontSize: 16,
-    [theme.breakpoints.down('lg')]: {
-      padding: '12px 0',
-    },
-  },
-});
+// const styles = theme => ({
+//   typography: {
+//     padding: '16px 0',
+//     textAlign: 'center',
+//     color: '#555',
+//     fontSize: 16,
+//     [theme.breakpoints.down('lg')]: {
+//       padding: '12px 0',
+//     },
+//   },
+// });
 
 const SidebarFooter = styled.div`
   margin-left: 8px;
 `;
 
-export default withStyles(styles)(BallotSideBar);
+// const Seperator = styled.div`
+//   height: 2px;
+//   width: 90%;
+//   margin: 0 auto;
+//   background: #2a3757;
+// `;
+
+// export default withStyles(styles)(BallotSideBar);
+
+export default BallotSideBar;
