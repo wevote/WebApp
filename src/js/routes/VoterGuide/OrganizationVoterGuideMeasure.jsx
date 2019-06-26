@@ -140,7 +140,6 @@ export default class OrganizationVoterGuideMeasure extends Component {
             <div>
               <PositionList
                 incomingPositionList={this.state.positionListFromAdvisersFollowedByVoter}
-                hideSimpleSupportOrOppose
                 ballotItemDisplayName={this.state.measure.ballot_item_display_name}
               />
             </div>
