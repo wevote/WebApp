@@ -15,31 +15,29 @@ class AnnotatedSlideshow extends PureComponent {
     classes: PropTypes.object,
   };
 
-  componentDidMount() {
+  componentDidMount () {
     this.autoAdvanceSlide();
   }
 
-  handleChangeSlide = (num) => {
+  handleChangeSlide = (advanceIfTrue) => {
     const { selectedStepIndex, slides } = this.props;
     const { length } = Object.keys(slides);
-    if ((!num && selectedStepIndex === 0) || (num && selectedStepIndex === length - 1)) {
+    if ((!advanceIfTrue && selectedStepIndex === 0) || (advanceIfTrue && selectedStepIndex === length - 1)) {
       return;
     }
     // this.handleSlideImage(num);
-    this.props.onChangeSlide(num ? selectedStepIndex + 1 : selectedStepIndex - 1);
+    this.props.onChangeSlide(advanceIfTrue ? selectedStepIndex + 1 : selectedStepIndex - 1);
     this.autoAdvanceSlide();
   }
 
   autoAdvanceSlide () {
     clearTimeout(this.timer);
-    const { slides, selectedStepIndex} = this.props;
+    const { slides, selectedStepIndex } = this.props;
     const data = Object.values(slides);
-    // const { length } = data;
     const { delayBeforeAdvancingSlide } = data.find(slide => slide.index === selectedStepIndex);
     this.timer = setTimeout(() => {
-      this.handleChangeSlide(1);
+      this.handleChangeSlide(true);
     }, delayBeforeAdvancingSlide);
-
   }
 
   render () {
@@ -52,11 +50,11 @@ class AnnotatedSlideshow extends PureComponent {
         <SlideShowTitle>{title}</SlideShowTitle>
         <Description>{description}</Description>
         <Slide>
-          <Nav disabled={selectedStepIndex === 0} id="howItWorksLeftArrow" onClick={() => this.handleChangeSlide(0)}>
+          <Nav disabled={selectedStepIndex === 0} id="howItWorksLeftArrow" onClick={() => this.handleChangeSlide(false)}>
             <ArrowLeftIcon classes={{ root: classes.navIconRoot }} />
           </Nav>
           <Image src={cordovaDot(imgSrc)} />
-          <Nav disabled={selectedStepIndex === length - 1} id="howItWorksRightArrow" onClick={() => this.handleChangeSlide(1)}>
+          <Nav disabled={selectedStepIndex === length - 1} id="howItWorksRightArrow" onClick={() => this.handleChangeSlide(true)}>
             <ArrowRightIcon classes={{ root: classes.navIconRoot }} />
           </Nav>
         </Slide>
@@ -67,7 +65,7 @@ class AnnotatedSlideshow extends PureComponent {
               id="howItWorksNext"
               variant="contained"
               classes={{ root: classes.nextButtonRoot }}
-              onClick={() => this.handleChangeSlide(1)}
+              onClick={() => this.handleChangeSlide(true)}
             >
               Next
             </Button>
