@@ -69,14 +69,14 @@ class HowItWorks extends Component {
           description: 'Sign in & verify your organization using your official Twitter account or other secure method. We Vote takes verification very seriously. (No trolls allowed!)',
           imgSrc: '/img/how-it-works/HowItWorksForOrgs-Claim-20190506.gif?',
           index: 0,
-          delayBeforeAdvancingSlide: 9100,
+          delayBeforeAdvancingSlide: 10100,
         },
         Customize: {
           title: 'Customize your Election Center',
           description: 'Want all the bells and whistles?  We Vote offers a lot for free, but has paid premium features to help you further customize branding and messaging, and give you deeper analytics.',
           imgSrc: '/img/how-it-works/HowItWorksForOrgs-Customize-20190507.gif?',
           index: 1,
-          delayBeforeAdvancingSlide: 8000,
+          delayBeforeAdvancingSlide: 9000,
         },
         Launch: {
           title: 'Launch',
