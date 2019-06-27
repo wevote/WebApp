@@ -47,7 +47,6 @@ class AnnotatedSlideshow extends PureComponent {
     const data = Object.values(slides);
     const { length } = data;
     const { title, description, imgSrc } = data.find(slide => slide.index === selectedStepIndex);
-    this.componentDidMount();
     return (
       <Wrapper>
         <SlideShowTitle>{title}</SlideShowTitle>
