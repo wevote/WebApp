@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import { withStyles } from '@material-ui/core/styles'
 import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography'
 import styled from 'styled-components';
 import BallotStore from '../../stores/BallotStore';
 import BallotSideBarLink from './BallotSideBarLink';
@@ -66,6 +68,9 @@ class BallotSideBar extends Component {
     }
     if (this.props.pathname !== nextProps.pathname) {
       // console.log("shouldComponentUpdate: changed this.props.pathname", this.props.pathname, ", nextState.pathname", nextProps.pathname);
+      return true;
+    }
+    if (this.props.raceLevelFilterItemsInThisBallot !== nextProps.raceLevelFilterItemsInThisBallot) {
       return true;
     }
     // if (this.state.expanded !== nextState.expanded) {
@@ -178,10 +183,20 @@ class BallotSideBar extends Component {
     renderLog(__filename);
 
     // let turnedOnNPSInput = false;
-    const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];
+    // const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];
+
+    // let BallotItemsUsedToFilter = [];
+    
+    // for (let i = 0; i < this.props.raceLevelFilterItemsInThisBallot.length; i++) {
+    //   BallotItemsUsedToFilter.push(BALLOT_ITEM_FILTER_TYPES[i]); 
+    // }
 
     const { ballot } = this.state;
-    const { ballotWithAllItemsByFilterType } = this.props;
+    const { classes, ballotWithAllItemsByFilterType, raceLevelFilterItemsInThisBallot } = this.props;
+
+    const BALLOT_ITEM_FILTER_TYPES = raceLevelFilterItemsInThisBallot;
+    console.log('raceLevelFilterItemsInThisBallot', raceLevelFilterItemsInThisBallot)
+
     if (ballot && ballot.length) {
       const ballotWithAllItemIdsByFilterType = [];
       ballotWithAllItemsByFilterType.forEach((itemByFilterType) => {
@@ -190,16 +205,16 @@ class BallotSideBar extends Component {
 
       return (
         <div className="card">
-          {/* { this.props.displayTitle ? (
+          { this.props.displayTitle ? (
             <>
-              <Typography variant="h4" classes={{ root: classes.typography }}>Summary of Ballot Items</Typography>
+              <Typography variant="h3" classes={{ root: classes.typography }}>Summary of Ballot Items</Typography>
               <Seperator />
             </>
           ) :
             null
-          } */}
+          }
           <List>
-            <BallotSummaryAccordion>
+            <BallotSummaryAccordion allowMultipleOpen>
               { BALLOT_ITEM_FILTER_TYPES.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key))}
             </BallotSummaryAccordion>
           </List>
@@ -228,29 +243,28 @@ class BallotSideBar extends Component {
   }
 }
 
-// const styles = theme => ({
-//   typography: {
-//     padding: '16px 0',
-//     textAlign: 'center',
-//     color: '#555',
-//     fontSize: 16,
-//     [theme.breakpoints.down('lg')]: {
-//       padding: '12px 0',
-//     },
-//   },
-// });
+const styles = theme => ({
+  typography: {
+    padding: '16px 0',
+    textAlign: 'center',
+    color: '#555',
+    fontSize: 18,
+    fontWeight: 600,
+    [theme.breakpoints.down('lg')]: {
+      padding: '12px 0',
+    },
+  },
+});
 
 const SidebarFooter = styled.div`
   margin-left: 8px;
 `;
 
-// const Seperator = styled.div`
-//   height: 2px;
-//   width: 90%;
-//   margin: 0 auto;
-//   background: #2a3757;
-// `;
+const Seperator = styled.div`
+  height: 2px;
+  width: 90%;
+  margin: 0 auto;
+  background: #2a3757;
+`;
 
-// export default withStyles(styles)(BallotSideBar);
-
-export default BallotSideBar;
+export default withStyles(styles)(BallotSideBar);

@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 
-class AccordionSection extends Component {
+class BallotSummaryAccordionSection extends Component {
   static propTypes = {
     children: PropTypes.instanceOf(Object).isRequired,
     isOpen: PropTypes.bool.isRequired,
@@ -99,4 +99,4 @@ const AccordionBody = styled.div`
   padding-top: 8px;
 `;
 
-export default withStyles(styles)(AccordionSection);
+export default withStyles(styles)(BallotSummaryAccordionSection);
