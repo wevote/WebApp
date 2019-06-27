@@ -207,7 +207,7 @@ class BallotSideBar extends Component {
         <div className="card">
           { this.props.displayTitle ? (
             <>
-              <Typography variant="h3" classes={{ root: classes.typography }}>Summary of Ballot Items</Typography>
+              <Typography variant="h3" classes={{ root: classes.typography }}>Ballot Items</Typography>
               <Seperator />
             </>
           ) :
@@ -247,7 +247,6 @@ const styles = theme => ({
   typography: {
     padding: '16px 0',
     textAlign: 'center',
-    color: '#555',
     fontSize: 18,
     fontWeight: 600,
     [theme.breakpoints.down('lg')]: {
