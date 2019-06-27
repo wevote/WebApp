@@ -26,12 +26,12 @@ $ballot-upcoming: 50px;
     z-index: 1050;
     background: rgba(43, 43, 43, .164);
 
-    &-mobile {
+    &--mobile {
       @include breakpoints(small mid-small) {
         top: 0;
       }
     }
-    &-cordova {
+    &--cordova {
       margin-top: $cordova-ballot-top-margin;
     }
   }

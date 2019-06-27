@@ -22,7 +22,7 @@ export default class BallotSummaryModal extends Component {
     renderLog(__filename);
     return (
       <Modal
-        bsPrefix="ballot-summary ballot-summary__modal ballot-summary__modal-mobile"
+        bsPrefix="ballot-summary ballot-summary__modal ballot-summary__modal--mobile"
         show={this.props.show}
         onHide={this.props.toggleFunction}
       >

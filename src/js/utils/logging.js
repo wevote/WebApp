@@ -50,3 +50,13 @@ export function oAuthLog (text, res) {
   }
 }
 
+//  Cordova offsets
+export function cordovaOffsetLog (text, res) {
+  if (webAppConfig.LOG_CORDOVA_OFFSETS) {
+    if (res) {
+      console.log('Cordova: ', text, res);
+    } else {
+      console.log('Cordova: ', text);
+    }
+  }
+}

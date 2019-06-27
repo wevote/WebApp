@@ -6,14 +6,17 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { withStyles } from '@material-ui/core/styles';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
 
+const sortFilters = ['sortByNetwork', 'sortByReach'];
+
 class FilterBase extends React.Component {
   static propTypes = {
+    allItems: PropTypes.array,
+    children: PropTypes.node, // This is the component that updates the items displayed
+    classes: PropTypes.object,
     groupedFilters: PropTypes.array,
     islandFilters: PropTypes.array,
-    allItems: PropTypes.array,
     onFilteredItemsChange: PropTypes.func,
-    children: PropTypes.node,
-    classes: PropTypes.object,
+    selectedFiltersDefault: PropTypes.array,
   };
 
   constructor (props) {
@@ -25,6 +28,13 @@ class FilterBase extends React.Component {
     };
   }
 
+  componentDidMount () {
+    this.setState({
+      selectedFilters: this.props.selectedFiltersDefault || [],
+    });
+  }
+
+
   toggleShowAllFilters = () => {
     const { showAllFilters } = this.state;
     this.setState({ showAllFilters: !showAllFilters });
@@ -33,10 +43,26 @@ class FilterBase extends React.Component {
   toggleFilter = (filterName) => {
     const { selectedFilters } = this.state;
     if (selectedFilters.indexOf(filterName) > -1) {
+      // Remove this filter
       this.setState({ selectedFilters: selectedFilters.filter(filter => filter !== filterName) });
     } else {
+      // Add this filter
       this.setState({ selectedFilters: [...selectedFilters, filterName]});
     }
+  }
+
+  selectSortByFilter = (filterName) => {
+    const { selectedFilters } = this.state;
+    let updatedFilters = selectedFilters;
+    // Figure out which other filters to remove when we switch to a new sortBy filter
+    const remainingSortFiltersToRemove = sortFilters.filter(item => item !== filterName);
+
+    if (updatedFilters.indexOf(filterName) > -1) {
+      // Sort-by already selected. Do nothing.
+    } else {
+      updatedFilters = [...updatedFilters, filterName];
+    }
+    this.setState({ selectedFilters: updatedFilters.filter(item => !remainingSortFiltersToRemove.includes(item)) });
   }
 
   setFilteredItems = filteredItems => this.setState({ filteredItems }, () => this.props.onFilteredItemsChange(this.state.filteredItems));
@@ -84,16 +110,18 @@ class FilterBase extends React.Component {
   ));
 
   render () {
-    const { showAllFilters, selectedFilters } = this.state;
+    const { selectedFilters, showAllFilters } = this.state;
     const { classes } = this.props;
-    // console.log('FilterBase, selectedFilters: ', selectedFilters);
+    const selectedFiltersWithoutSorts = selectedFilters.filter(item => !sortFilters.includes(item));
+    const numberOfFiltersSelected = selectedFiltersWithoutSorts.length;
+    // console.log('FilterBase, selectedFilters: ', selectedFilters, ', filteredItems: ', filteredItems);
     return (
       <Wrapper>
         <FilterTop>
           <Badge
             classes={{ badge: classes.badge }}
-            badgeContent={selectedFilters.length}
-            invisible={selectedFilters.length === 0}
+            badgeContent={numberOfFiltersSelected}
+            invisible={numberOfFiltersSelected === 0}
             color="primary"
           >
             <div
@@ -117,6 +145,7 @@ class FilterBase extends React.Component {
           React.cloneElement(this.props.children, {
             allItems: this.props.allItems,
             selectedFilters: this.state.selectedFilters,
+            onSelectSortByFilter: this.selectSortByFilter,
             onToggleFilter: this.toggleFilter,
             onFilteredItemsChange: this.setFilteredItems,
             showAllFilters: this.state.showAllFilters,

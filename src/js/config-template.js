@@ -16,6 +16,7 @@ module.exports = {
   LOG_HTTP_REQUESTS: false,
   LOG_ROUTING: false,
   LOG_SIGNIN_STEPS: false,
+  LOG_CORDOVA_OFFSETS: false,
 
   // Use 1 or 0 as opposed to true or false
   test: {
