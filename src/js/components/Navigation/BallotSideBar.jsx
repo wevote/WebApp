@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { withStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography'
+import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import BallotStore from '../../stores/BallotStore';
 import BallotSideBarLink from './BallotSideBarLink';
@@ -20,6 +20,8 @@ class BallotSideBar extends Component {
     displaySubtitles: PropTypes.bool,
     onClick: PropTypes.func,
     pathname: PropTypes.string,
+    raceLevelFilterItemsInThisBallot: PropTypes.array,
+    classes: PropTypes.object,
   };
 
   static defaultProps = {
@@ -185,17 +187,11 @@ class BallotSideBar extends Component {
     // let turnedOnNPSInput = false;
     // const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];
 
-    // let BallotItemsUsedToFilter = [];
-    
-    // for (let i = 0; i < this.props.raceLevelFilterItemsInThisBallot.length; i++) {
-    //   BallotItemsUsedToFilter.push(BALLOT_ITEM_FILTER_TYPES[i]); 
-    // }
-
     const { ballot } = this.state;
     const { classes, ballotWithAllItemsByFilterType, raceLevelFilterItemsInThisBallot } = this.props;
 
     const BALLOT_ITEM_FILTER_TYPES = raceLevelFilterItemsInThisBallot;
-    console.log('raceLevelFilterItemsInThisBallot', raceLevelFilterItemsInThisBallot)
+    console.log('raceLevelFilterItemsInThisBallot', raceLevelFilterItemsInThisBallot);
 
     if (ballot && ballot.length) {
       const ballotWithAllItemIdsByFilterType = [];

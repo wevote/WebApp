@@ -34,14 +34,14 @@ class BallotSummaryAccordion extends Component {
       this.setState({
         openSections: {
           ...openSections,
-          [label]: !isOpen
-        }
+          [label]: !isOpen,
+        },
       });
     } else {
       this.setState({
         openSections: {
-          [label]: !isOpen
-        }
+          [label]: !isOpen,
+        },
       });
     }
   };
@@ -50,22 +50,18 @@ class BallotSummaryAccordion extends Component {
     const { children } = this.props;
     const { openSections } = this.state;
     const { onClick } = this;
-    
-    console.log(children);
 
     return (
       <div>
-        {children.map(child => {
-          return (
-            <BallotSummaryAccordionSection
-              isOpen={!!openSections[child.props.label]}
-              label={child.props.label}
-              onClick={onClick}
-            >
-              {child.props.children}
-            </BallotSummaryAccordionSection>
-          )
-        })}
+        {children.map(child => (
+          <BallotSummaryAccordionSection
+            isOpen={!!openSections[child.props.label]}
+            label={child.props.label}
+            onClick={onClick}
+          >
+            {child.props.children}
+          </BallotSummaryAccordionSection>
+        ))}
       </div>
     );
   }

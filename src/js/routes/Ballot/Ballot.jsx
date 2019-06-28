@@ -395,7 +395,7 @@ class Ballot extends Component {
         }
       }
 
-      this.setState({ raceLevelFilterItemsInThisBallot: raceLevelFilterItemsInThisBallot });
+      this.setState({ raceLevelFilterItemsInThisBallot });
       // console.log('Ballot, componentDidUpdate raceLevelFilterType AFTER:', raceLevelFilterType, ', newRaceLevelFilterType: ', newRaceLevelFilterType);
       // console.log('Ballot, componentDidUpdate raceLevelFilterItemsInThisBallot:', raceLevelFilterItemsInThisBallot);
 
@@ -789,7 +789,7 @@ class Ballot extends Component {
     const { classes } = this.props;
     const {
       ballotWithItemsFromCompletionFilterType, showFilterTabs, doubleFilteredBallotItemsLength, completionLevelFilterType,
-      ballotHeaderUnpinned, isSearching, ballotWithAllItems, ballotSearchResults, raceLevelFilterItemsInThisBallot
+      ballotHeaderUnpinned, isSearching, ballotWithAllItems, ballotSearchResults, raceLevelFilterItemsInThisBallot,
     } = this.state;
     let { raceLevelFilterType } = this.state;
     if (!raceLevelFilterType) {
