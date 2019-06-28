@@ -1,4 +1,5 @@
 const browserStackConfig = require('./browserstack.config');
+
 const date = new Date();
 const dateForDisplay = date.toDateString();
 const buildNameForDisplay = `${browserStackConfig.BUILD}: ${dateForDisplay}`;
@@ -14,22 +15,22 @@ exports.config = {
   exclude: [],
   logLevel: 'trace',
   capabilities: [
-    // {
-    //   // Testing with a Windows Desktop Chrome browser
-    //   name: 'ballotMainTest-WindowsDesktopChromeBrowser',
-    //   build: buildNameForDisplay,
-    //   os: 'Windows',
-    //   os_version: '10',
-    //   browserName: 'Chrome',
-    //   browser_version: '72.0',
-    //   'browserstack.console': 'info',
-    //   'browserstack.debug': true,
-    //   'browserstack.geoLocation': 'US',
-    //   isAndroid: false,
-    //   isCordovaFromAppStore: false,
-    //   isIOS: false,
-    //   isMobileScreenSize: false,
-    // },
+    {
+      // Testing with a Windows Desktop Chrome browser
+      name: 'ballotMainTest-WindowsDesktopChromeBrowser',
+      build: buildNameForDisplay,
+      os: 'Windows',
+      os_version: '10',
+      browserName: 'Chrome',
+      browser_version: '72.0',
+      'browserstack.console': 'info',
+      'browserstack.debug': true,
+      'browserstack.geoLocation': 'US',
+      isAndroid: false,
+      isCordovaFromAppStore: false,
+      isIOS: false,
+      isMobileScreenSize: false,
+    },
     {
       // Testing with an iPhone Safari browser
       name: 'ballotMainTest-iPhoneSafariBrowser',
@@ -38,7 +39,6 @@ exports.config = {
       os_version: '11',
       real_mobile: true,
       browserName: 'Safari',
-<<<<<<< HEAD
       browser_version: '11',
       'browserstack.console': 'info',
       'browserstack.debug': true,
@@ -74,9 +74,6 @@ exports.config = {
       real_mobile: true,
       browserName: 'Safari',
       browser_version: '11',
-=======
-      browser_version: '12',
->>>>>>> commit current work on this issue
       'browserstack.console': 'info',
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
@@ -85,23 +82,23 @@ exports.config = {
       isIOS: true,
       isMobileScreenSize: false,
     },
-    // {
-    //   // Testing with an iPhone Safari browser
-    //   name: 'ballotMainTest-iPadSafariBrowser',
-    //   build: buildNameForDisplay,
-    //   device: 'iPad Pro 12.9 2018',
-    //   os_version: '12',
-    //   real_mobile: true,
-    //   browserName: 'Safari',
-    //   browser_version: '11',
-    //   'browserstack.console': 'info',
-    //   'browserstack.debug': true,
-    //   'browserstack.geoLocation': 'US',
-    //   isAndroid: false,
-    //   isCordovaFromAppStore: false,
-    //   isIOS: true,
-    //   isMobileScreenSize: true,
-    // },
+    {
+      // Testing with an iPhone Safari browser
+      name: 'ballotMainTest-iPadSafariBrowser',
+      build: buildNameForDisplay,
+      device: 'iPad Pro 12.9 2018',
+      os_version: '12',
+      real_mobile: true,
+      browserName: 'Safari',
+      browser_version: '11',
+      'browserstack.console': 'info',
+      'browserstack.debug': true,
+      'browserstack.geoLocation': 'US',
+      isAndroid: false,
+      isCordovaFromAppStore: false,
+      isIOS: true,
+      isMobileScreenSize: true,
+    },
   ],
   coloredLogs: true,
   baseUrl: '',

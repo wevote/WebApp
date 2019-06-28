@@ -113,39 +113,12 @@ function writeToLog (message) {
 
 async function clickTopLeftCornerOfElement (selector) {
   const element = await $(selector);
-  if (!element.isW3C) {
+  if (element.isW3C) {
+    // need to figure out how to use webdriverio's performActions with BrowserStack
+  } else {
+    // JSON Wire Protocol
     await element.moveTo(1, 1);
     await element.positionClick();
-  } else {
-    writeToLog("we're fucked");
-    await element.performActions([{
-      type: 'pointer',
-      id: 'pointer1',
-      parameters: { pointerType: 'mouse' },
-      actions: [
-          { type: 'pointerMove', origin: element, x: 0, y: 0 },
-          { type: 'pointerDown', button: 0 },
-          { type: 'pointerUp', button: 0 },
-          { type: 'pause', duration: 10 },
-          { type: 'pointerDown', button: 0 },
-          { type: 'pointerUp', button: 0 }
-      ]
-  }])
-
-return this.releaseActions()
-    // await browser.performActions([{
-    //   type: 'pointer',
-    //   id: 'clickTopLeftCornerAction',
-    //   parameters: { pointerType: 'touch' },
-    //   actions: [
-    //     { type: 'pointerMove', x: 5, y: 5 },
-    //     // { type: 'pointerDown', button: 0 },
-    //     // { type: 'pointerUp', button: 0 },
-    //   ],
-    // }]).then(() => {
-    //   writeToLog('about to release actions');
-    //   browser.releaseActions();
-    // });
   }
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
