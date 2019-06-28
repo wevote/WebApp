@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -29,7 +29,7 @@ import Section, {
 } from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 
-class WelcomeForOrganizations extends PureComponent {
+class WelcomeForOrganizations extends Component {
   static propTypes = {
     classes: PropTypes.object,
     pathname: PropTypes.string,
@@ -42,6 +42,8 @@ class WelcomeForOrganizations extends PureComponent {
       voter: {},
       voterEmail: '',
       voterFullName: '',
+      animateTextArray: ['Members', 'Staff', 'Constituents', 'Fans', 'Subscribers', 'Followers', 'Voters'],
+      currentAnimateTextIndex: 0,
     };
   }
 
@@ -49,11 +51,24 @@ class WelcomeForOrganizations extends PureComponent {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionWelcomeVisit(VoterStore.electionId());
+
+    this.autoAnimateText();
   }
 
   componentWillUnmount () {
     this.voterStoreListener.remove();
   }
+
+  // shouldComponentUpdate (nextState, nextProps) {
+  //   if (this.state.currentAnimateTextIndex !== nextState.currentAnimateTextIndex) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  // componentDidUpdate () {
+  //   this.autoAnimateText();
+  // }
 
   onVoterStoreChange () {
     this.setState({
@@ -111,12 +126,27 @@ class WelcomeForOrganizations extends PureComponent {
     historyPush(destination);
   };
 
+  autoAnimateText () {
+    const currentStateAnimateTextIndex = this.state.currentAnimateTextIndex;
+    if (this.state.currentAnimateTextIndex < this.state.animateTextArray.length - 1) {
+      setTimeout(() => {
+        this.setState({ currentAnimateTextIndex: currentStateAnimateTextIndex + 1 });
+
+        this.autoAnimateText();
+      }, 3000);
+    }
+  }
+
   render () {
     renderLog(__filename);
     const { classes, pathname } = this.props;
     // console.log('WelcomeForOrganizations, pathname: ', pathname);
-    const { voter } = this.state;
+    const { voter, animateTextArray, currentAnimateTextIndex } = this.state;
     const isVoterSignedIn = voter.is_signed_in;
+
+    const currentTitleTextToDisplay = animateTextArray[currentAnimateTextIndex];
+
+    console.log(currentTitleTextToDisplay);
 
     const testimonialAuthor = 'Judy J., Oakland, California';
     const testimonialImageUrl = cordovaDot('/img/global/photos/Judy_J-109x109.jpg');
@@ -127,8 +157,8 @@ class WelcomeForOrganizations extends PureComponent {
         <WelcomeAppbar pathname={pathname} />
         <HeaderForOrganizations>
           <Title>
-            <BlueTitle>Supercharge </BlueTitle>
-            Your Members
+            Supercharge Your
+            <BlueTitle>{` ${currentTitleTextToDisplay}`}</BlueTitle>
           </Title>
           <SubTitle>Only 6 out of 10 eligible voters are predicted to cast a ballot next year.</SubTitle>
           <PlayerContainer>
