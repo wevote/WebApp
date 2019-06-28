@@ -126,11 +126,16 @@ export default class Office extends Component {
         }
         </div>
         <div className="col-lg-3 d-none d-lg-block">
-          <Testimonial
-            imageUrl={imageUrl}
-            testimonialAuthor={testimonialAuthor}
-            testimonial={testimonial}
-          />
+          <div className="card">
+            <div className="card-main">
+              <Testimonial
+                imageUrl={imageUrl}
+                testimonialAuthor={testimonialAuthor}
+                testimonial={testimonial}
+              />
+            </div>
+          </div>
+
         </div>
       </div>
     );

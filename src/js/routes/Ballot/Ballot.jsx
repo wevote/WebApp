@@ -90,6 +90,7 @@ class Ballot extends Component {
       ballotHeaderUnpinned: false,
       isSearching: false,
       ballotSearchResults: [],
+      raceLevelFilterItemsInThisBallot: undefined,
     };
 
     this.ballotItems = {};
@@ -385,6 +386,7 @@ class Ballot extends Component {
           }
           return raceLevelCapitalized;
         });
+
         // We must have a raceLevelFilterType that matches this ballot
         const currentRaceLevelFilterTypeNotFoundInBallot = raceLevelFilterItemsInThisBallot.indexOf(raceLevelFilterType) === -1;
         if (!raceLevelFilterType || currentRaceLevelFilterTypeNotFoundInBallot) {
@@ -392,6 +394,8 @@ class Ballot extends Component {
           raceLevelFilterTypeChanged = true;
         }
       }
+
+      this.setState({ raceLevelFilterItemsInThisBallot });
       // console.log('Ballot, componentDidUpdate raceLevelFilterType AFTER:', raceLevelFilterType, ', newRaceLevelFilterType: ', newRaceLevelFilterType);
       // console.log('Ballot, componentDidUpdate raceLevelFilterItemsInThisBallot:', raceLevelFilterItemsInThisBallot);
 
@@ -785,7 +789,7 @@ class Ballot extends Component {
     const { classes } = this.props;
     const {
       ballotWithItemsFromCompletionFilterType, showFilterTabs, doubleFilteredBallotItemsLength, completionLevelFilterType,
-      ballotHeaderUnpinned, isSearching, ballotWithAllItems, ballotSearchResults,
+      ballotHeaderUnpinned, isSearching, ballotWithAllItems, ballotSearchResults, raceLevelFilterItemsInThisBallot,
     } = this.state;
     let { raceLevelFilterType } = this.state;
     if (!raceLevelFilterType) {
@@ -1045,6 +1049,7 @@ class Ballot extends Component {
                       rawUrlVariablesString={this.props.location.search}
                       ballotWithAllItemsByFilterType={this.state.ballotWithItemsFromCompletionFilterType}
                       ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
+                      raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
                       />
                     </div>
                   )

@@ -66,56 +66,24 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
   // //////////////////////////////////////////////
 
   &__summary {
+    &__wrapper {
+      box-shadow: none !important;
+    }
+
     &__title {
-      font-family: $heading-font-stack;
-      font-size: 20px;
-      color: $gray-dark;
-      padding: $space-md $space-none;
-      text-align: center;
-      box-shadow: $default-box-shadow;
+      width: 100% !important;
+      border-bottom: 1px solid #333 !important;
+      background: white !important;
     }
 
-    &__group {
-      margin-bottom: $space-md;
-    }
-
-    &__group-title {
-      font-family: $heading-font-stack;
-      font-size: 18px;
-      color: $gray-mid;
-      padding-bottom: $space-sm;
-      padding-top: $space-md;
-      margin-left: $space-md;
-      font-weight: bold;
+    &__body {
+      padding-left: 8px !important;
     }
 
     &__list {
-      padding: $space-none;
-    }
-
-    &__item {
-      display: block;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis; // Not working currently
-      color: $gray-mid;
-      line-height: 19.6px;
-      position: relative;
-      font-size: 14px;
-
-      &__display-name {
-        font-family: $heading-font-stack;
-        font-size: 15px;
-        color: $link-color;
-      }
-    }
-
-    &__item-container {
-      overflow: hidden;
-      align-items: center;
-      position: relative;
-      margin-top: $space-none;
-      margin-bottom: $space-xs;
+      list-style: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
     }
   }
 

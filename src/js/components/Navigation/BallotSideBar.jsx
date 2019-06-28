@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import List from '@material-ui/core/List';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import BallotStore from '../../stores/BallotStore';
 import BallotSideBarLink from './BallotSideBarLink';
 import { renderLog } from '../../utils/logging';
+import BallotSummaryAccordion from './BallotSummaryAccordion';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-restricted-syntax: 1 */
@@ -20,6 +20,7 @@ class BallotSideBar extends Component {
     displaySubtitles: PropTypes.bool,
     onClick: PropTypes.func,
     pathname: PropTypes.string,
+    raceLevelFilterItemsInThisBallot: PropTypes.array,
     classes: PropTypes.object,
   };
 
@@ -31,6 +32,7 @@ class BallotSideBar extends Component {
     super(props);
     this.state = {
       componentDidMountFinished: false,
+      // expanded: undefined,
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -70,6 +72,12 @@ class BallotSideBar extends Component {
       // console.log("shouldComponentUpdate: changed this.props.pathname", this.props.pathname, ", nextState.pathname", nextProps.pathname);
       return true;
     }
+    if (this.props.raceLevelFilterItemsInThisBallot !== nextProps.raceLevelFilterItemsInThisBallot) {
+      return true;
+    }
+    // if (this.state.expanded !== nextState.expanded) {
+    //   return true;
+    // }
     return false;
   }
 
@@ -118,6 +126,11 @@ class BallotSideBar extends Component {
     }
   }
 
+  // handleChange (panel) {
+  //   this.setState({ expanded: panel });
+  //   console.log('Running handle change, setting expanded to ', panel);
+  // }
+
   filteredBallotToRender (ballot, ballotWithAllItemIdsByFilterType, type, key) {
     const filteredBallot = ballot.filter((item) => {
       if (item.kind_of_ballot_item === 'MEASURE') {
@@ -154,10 +167,7 @@ class BallotSideBar extends Component {
     });
 
     return (
-      <div className="BallotItem__summary__group" key={key}>
-        <div className="BallotItem__summary__group-title">
-          {type === 'Measure' ? 'Ballot Measures' : type}
-        </div>
+      <div key={key} label={type === 'Measure' ? 'Ballot Measures' : `${type} (${filteredBallot.length})`}>
         <ul className="BallotItem__summary__list">
           {filteredBallotListItems}
         </ul>
@@ -175,10 +185,14 @@ class BallotSideBar extends Component {
     renderLog(__filename);
 
     // let turnedOnNPSInput = false;
-    const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];
+    // const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];
 
     const { ballot } = this.state;
-    const { classes, ballotWithAllItemsByFilterType } = this.props;
+    const { classes, ballotWithAllItemsByFilterType, raceLevelFilterItemsInThisBallot } = this.props;
+
+    const BALLOT_ITEM_FILTER_TYPES = raceLevelFilterItemsInThisBallot;
+    console.log('raceLevelFilterItemsInThisBallot', raceLevelFilterItemsInThisBallot);
+
     if (ballot && ballot.length) {
       const ballotWithAllItemIdsByFilterType = [];
       ballotWithAllItemsByFilterType.forEach((itemByFilterType) => {
@@ -188,14 +202,17 @@ class BallotSideBar extends Component {
       return (
         <div className="card">
           { this.props.displayTitle ? (
-            <Paper>
-              <Typography variant="h4" classes={{ root: classes.typography }}>Summary of Ballot Items</Typography>
-            </Paper>
+            <>
+              <Typography variant="h3" classes={{ root: classes.typography }}>Ballot Items</Typography>
+              <Seperator />
+            </>
           ) :
             null
           }
           <List>
-            { BALLOT_ITEM_FILTER_TYPES.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key))}
+            <BallotSummaryAccordion allowMultipleOpen>
+              { BALLOT_ITEM_FILTER_TYPES.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key))}
+            </BallotSummaryAccordion>
           </List>
           <div className="h4 text-left" />
           <SidebarFooter>
@@ -226,8 +243,8 @@ const styles = theme => ({
   typography: {
     padding: '16px 0',
     textAlign: 'center',
-    color: '#555',
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: 600,
     [theme.breakpoints.down('lg')]: {
       padding: '12px 0',
     },
@@ -236,6 +253,13 @@ const styles = theme => ({
 
 const SidebarFooter = styled.div`
   margin-left: 8px;
+`;
+
+const Seperator = styled.div`
+  height: 2px;
+  width: 90%;
+  margin: 0 auto;
+  background: #2a3757;
 `;
 
 export default withStyles(styles)(BallotSideBar);
