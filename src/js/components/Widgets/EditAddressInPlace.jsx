@@ -13,6 +13,7 @@ export default class EditAddressInPlace extends Component {
     pathname: PropTypes.string,
     toggleFunction: PropTypes.func.isRequired,
     defaultIsEditingAddress: PropTypes.bool,
+    cancelButtonAction: PropTypes.func,
   };
 
   constructor (props, context) {
@@ -73,7 +74,7 @@ export default class EditAddressInPlace extends Component {
         <span>
           <h4 className="h4">Address</h4>
           <AddressBox
-            cancelEditAddress={this.toggleEditingAddress}
+            cancelEditAddress={this.props.cancelButtonAction ? this.props.cancelButtonAction : this.toggleEditingAddress}
             saveUrl={ballotBaseUrl}
             toggleSelectAddressModal={this.props.toggleFunction}
           />
