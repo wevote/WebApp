@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Button } from '@material-ui/core/Button';
 import AddressBox from '../AddressBox';
 import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import { calculateBallotBaseUrl, shortenText } from '../../utils/textFormat';
@@ -89,14 +90,14 @@ export default class EditAddressInPlace extends Component {
             {' '}
           </span>
           <span className="d-print-none ballot__edit-address-preview-link u-padding-left--sm">
-            <button
-              className="btn btn-primary"
+            <Button
+              variant="contained"
+              color="primary"
               id="editAddressInPlaceModalEditButton"
               onClick={this.toggleEditingAddress}
-              type="button"
             >
               Edit
-            </button>
+            </Button>
           </span>
         </span>
       );
