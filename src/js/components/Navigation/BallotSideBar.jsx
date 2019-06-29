@@ -211,7 +211,7 @@ class BallotSideBar extends Component {
           }
           <List>
             <BallotSummaryAccordion allowMultipleOpen>
-              { BALLOT_ITEM_FILTER_TYPES.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key))}
+              { BALLOT_ITEM_FILTER_TYPES ? BALLOT_ITEM_FILTER_TYPES.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key)) : null}
             </BallotSummaryAccordion>
           </List>
           <div className="h4 text-left" />

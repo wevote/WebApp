@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
-import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaUtils';
+import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 

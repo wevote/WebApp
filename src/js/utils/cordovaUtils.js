@@ -1,5 +1,6 @@
 import { browserHistory, hashHistory } from 'react-router';
 import { cordovaOffsetLog, oAuthLog } from './logging';
+import webAppConfig from '../config';
 
 /* global $  */
 
@@ -31,7 +32,7 @@ export function cordovaDot (path) {
   }
 }
 
-function cordovaOpenSafariViewSub (requestURL, onExit) {
+export function cordovaOpenSafariViewSub (requestURL, onExit) {
   // console.log("cordovaOpenSafariView -1- requestURL: " + requestURL);
   SafariViewController.isAvailable(() => { // eslint-disable-line no-undef
     oAuthLog(`cordovaOpenSafariView requestURL: ${requestURL}`);
@@ -101,6 +102,21 @@ export function enclosingRectangle (objectNameString, instance) {
   }, height ${rect.height}`);
 }
 
+export function isDeviceMatchByUUID (deviceString) {
+  const array  = webAppConfig.CORDOVA_IPHONE_UUIDS;
+  for (let i = 0; i < array.length; i++) {
+    if (array[i].name === deviceString) {
+      if (array[i].val === window.device.uuid) {
+        return 1;
+      }
+      return 0;
+    }
+  }
+  // alert('CORDOVA_IPHONE_UUIDS does not contain a key for this device type');
+  cordovaOffsetLog(`CORDOVA_IPHONE_UUIDS does not contain a key for the ${deviceString} device type`);
+  return 0;
+}
+
 // webapp, webapp:iOS, webapp:Android
 export function deviceTypeString () {
   let deviceString = isWebApp() ? 'webapp' : 'cordova';
@@ -113,14 +129,22 @@ export function deviceTypeString () {
 }
 
 export function isIOS () {
+  if (isWebApp()) return false;
+  // console.log("<><><><> uuid:  " + window.device.uuid);
   const { platform } = window.device || '';
   return isCordova() && platform === 'iOS';  // Ignore the "Condition is always false" warning.  This line works correctly.
+}
+
+export function isAndroid () {
+  if (isWebApp()) return false;
+  const { platform } = window.device || '';
+  return isCordova() && platform === 'Android';  // Ignore the "Condition is always false" warning.  This line works correctly.
 }
 
 // https://www.theiphonewiki.com/wiki/Models
 
 export function isIPhone1234 () {
-  return !!(isIOS && (
+  return !!(isIOS() && (
     window.device.model === 'iPhone1,1' ||  // iPhone
     window.device.model === 'iPhone1,2' ||  // iPhone 3G
     window.device.model === 'iPhone2,1' ||  // iPhone 3GS
@@ -131,122 +155,113 @@ export function isIPhone1234 () {
 }
 
 export function isIPhone5sSE () {
-  if (isIOS && (
-    window.device.model === 'iPhone5,1' ||  // iPhone 5
-    window.device.model === 'iPhone5,2' ||  // iPhone 5
-    window.device.model === 'iPhone5,3' ||  // iPhone 5c
-    window.device.model === 'iPhone5,4' ||  // iPhone 5c
-    window.device.model === 'iPhone6,1' ||  // iPhone 5s
-    window.device.model === 'iPhone6,2' ||  // iPhone 5s
-    window.device.model === 'iPhone8,4')) { // iPhone SE
-    return true;
-  } else {
-    const ratio = window.devicePixelRatio || 1;
-    const screen = {
-      width: window.screen.width * ratio,
-      height: window.screen.height * ratio,
-    };
-    return (isIOS() && screen.width === 640 && screen.height === 1136);
+  if (isIOS()) {
+    if (window.device.model === 'iPhone5,1' ||  // iPhone 5
+      window.device.model === 'iPhone5,2' ||  // iPhone 5
+      window.device.model === 'iPhone5,3' ||  // iPhone 5c
+      window.device.model === 'iPhone5,4' ||  // iPhone 5c
+      window.device.model === 'iPhone6,1' ||  // iPhone 5s
+      window.device.model === 'iPhone6,2' ||  // iPhone 5s
+      window.device.model === 'iPhone8,4') { // iPhone SE
+      cordovaOffsetLog('Matched ---- iPhone 5s SE by window.device.model');
+      return true;
+    } else if (isDeviceMatchByUUID('i5s')) {
+      cordovaOffsetLog('Matched ---- iPhone 5s by uuid');
+      return true;
+    }
   }
+  return false;
 }
 
 export function isIPhone678 () {
-  if (isIOS && (
-    window.device.model === 'iPhone7,2'  ||  // iPhone 6
-    window.device.model === 'iPhone8,1'  ||  // iPhone 6s
-    window.device.model === 'iPhone9,1'  ||  // iPhone 7
-    window.device.model === 'iPhone9,3'  ||  // iPhone 7
-    window.device.model === 'iPhone10,1' ||  // iPhone 8
-    window.device.model === 'iPhone10,4')) { // iPhone 8
-    cordovaOffsetLog('Matched ---- iPhone 678 by window.device.model');
-    return true;
-  } else {
-    const ratio = window.devicePixelRatio || 1;
-    const screen = {
-      width: window.screen.width * ratio,
-      height: window.screen.height * ratio,
-    };
-    return isIOS() && screen.width === 750 && screen.height === 1334;
+  if (isIOS()) {
+    if (window.device.model === 'iPhone7,2' ||  // iPhone 6
+      window.device.model === 'iPhone8,1' ||  // iPhone 6s
+      window.device.model === 'iPhone9,1' ||  // iPhone 7
+      window.device.model === 'iPhone9,3' ||  // iPhone 7
+      window.device.model === 'iPhone10,1' ||  // iPhone 8
+      window.device.model === 'iPhone10,4') { // iPhone 8
+      cordovaOffsetLog('Matched ---- iPhone 678 by window.device.model');
+      return true;
+    } else if (isDeviceMatchByUUID('i6')) {
+      cordovaOffsetLog('Matched ---- iPhone 6 by uuid');
+      return true;
+    } else if (isDeviceMatchByUUID('i6s')) {
+      cordovaOffsetLog('Matched ---- iPhone 6s by uuid');
+      return true;
+    } else if (isDeviceMatchByUUID('i8')) {
+      cordovaOffsetLog('Matched ---- iPhone 8 by uuid');
+      return true;
+    }
   }
+  return false;
 }
 
+
 export function isIPhone678Plus () {
-  if (!window.device) return false;
-  if (isIOS && (
-    window.device.model === 'iPhone7,1'  ||  // iPhone 6Plus
-    window.device.model === 'iPhone8,2'  ||  // iPhone 6s Plus
-    window.device.model === 'iPhone9,2'  ||  // iPhone 7 Plus
-    window.device.model === 'iPhone9,4'  ||  // iPhone 7 Plus
-    window.device.model === 'iPhone10,2' ||  // iPhone 8 Plus
-    window.device.model === 'iPhone10,5')) { // iPhone 8 Plus
-    cordovaOffsetLog('Matched ---- iPhone 678 Plus by window.device.model');
-    return true;
-  } else {
-    if (!window.screen) return false;
-    const ratio = window.devicePixelRatio || 1;
-    const screen = {
-      width: window.screen.width * ratio,
-      height: window.screen.height * ratio,
-    };
-    return isIOS() && screen.width === 1242 && screen.height === 2208;
+  if (isIOS()) {
+    if (window.device.model === 'iPhone7,1'  ||  // iPhone 6Plus
+        window.device.model === 'iPhone8,2'  ||  // iPhone 6s Plus
+        window.device.model === 'iPhone9,2'  ||  // iPhone 7 Plus
+        window.device.model === 'iPhone9,4'  ||  // iPhone 7 Plus
+        window.device.model === 'iPhone10,2' ||  // iPhone 8 Plus
+        window.device.model === 'iPhone10,5') {  // iPhone 8 Plus
+      cordovaOffsetLog('Matched ---- iPhone 678 Plus by window.device.model');
+      return true;
+    } else if (isDeviceMatchByUUID('i8plus')) {
+      cordovaOffsetLog('Matched ---- iPhone i8plus by uuid');
+      return true;
+    }
   }
+  return false;
 }
 
 export function isIPhoneXorXS () {
-  if (!window.device) return false;
-  if (isIOS && (
-    window.device.model === 'iPhone10,3' ||  // iPhone X
-    window.device.model === 'iPhone10,6' ||  // iPhone X
-    window.device.model === 'iPhone11,2')) { // iPhone XS
-    cordovaOffsetLog('Matched ---- iPhone X or Xs by window.device.model');
-    return true;
-  } else {
-    if (!window.screen) return false;
-    const ratio = window.devicePixelRatio || 1;
-    const screen = {
-      width: window.screen.width * ratio,
-      height: window.screen.height * ratio,
-    };
-    // iPhone X and XS are 1125 x 2436
-    return isIOS() && (screen.width === 1125 && screen.height === 2436);
+  if (isIOS()) {
+    if (window.device.model === 'iPhone10,3' ||  // iPhone X
+        window.device.model === 'iPhone10,6' ||  // iPhone X
+        window.device.model === 'iPhone11,2') {  // iPhone XS
+      cordovaOffsetLog('Matched ---- iPhone X or Xs by window.device.model');
+      return true;
+    } else if (isDeviceMatchByUUID('iX')) {
+      cordovaOffsetLog('Matched ---- iPhone X by uuid');
+      return true;
+    }
   }
+  return false;
 }
 
 export function isIPhoneXR () {
-  if (!window.device) return false;
-  if (isIOS && (window.device.model === 'iPhone11,8')) { // iPhone XR
-    return true;
-  } else {
-    if (!window.screen) return false;
-    const ratio = window.devicePixelRatio || 1;
-    const screen = {
-      width: window.screen.width * ratio,
-      height: window.screen.height * ratio,
-    };
-    return isIOS() && screen.width === 750 && screen.height === 1624;
+  if (isIOS()) {
+    if (window.device.model === 'iPhone11,8') { // iPhone XR
+      cordovaOffsetLog('Matched ---- iPhone XR by window.device.model');
+      return true;
+    } else if (isDeviceMatchByUUID('iXR')) {
+      cordovaOffsetLog('Matched ---- iPhone XR by uuid');
+      return true;
+    }
   }
+  return false;
 }
 
 // Sometimes in the simulator, an XSMax reports X sized screen, which messes things up
 // There is a cordova window.device.model which reports "iPhone11,6" for a physical device, but unfortunately reports "x86_64" on the simulator
 export function isIPhoneXSMax () {
-  if (!window.device) return false;
-  if (isIOS && (window.device.model === 'iPhone11,6')) { // iPhone XS Max
-    return true;
-  } else {
-    if (!window.screen) return false;
-    const ratio = window.devicePixelRatio || 1;
-    const screen = {
-      width: window.screen.width * ratio,
-      height: window.screen.height * ratio,
-    };
-    return isIOS && screen.width === 1242 && screen.height === 2688;
+  if (isIOS()) {
+    if (window.device.model === 'iPhone11,6') { // iPhone XS Max
+      cordovaOffsetLog('Matched ---- iPhone XsMax by window.device.model');
+      return true;
+    } else if (isDeviceMatchByUUID('iXsMax')) {
+      cordovaOffsetLog('Matched ---- iPhone iXsMax by uuid');
+      return true;
+    }
   }
+  return false;
 }
 
 export function isIPad () {
-  if (!window.device) return false;
-  if (isIOS && (window.device.model.substring(0, 4) === 'iPad')) {
+  if (isIOS()) {
+    if (window.device.model.substring(0, 4) === 'iPad') {
     // June 2019, save this, we will need it, if we need to distinguish between types of iPads
     // window.device.model === 'iPad4,1'  ||  // iPad Air
     // window.device.model === 'iPad4,2'  ||  // iPad Air
@@ -283,31 +298,34 @@ export function isIPad () {
     // window.device.model === 'iPad5,2'  ||  // iPad mini 4
     // window.device.model === 'iPad11,1' ||  // iPad mini (5th generation)
     // window.device.model === 'iPad11,2')) { // iPad mini (5th generation)
-    return true;
-  } else {
-    const ratio = window.devicePixelRatio || 1;
-    const screen = {
-      width: window.screen.width * ratio,
-      height: window.screen.height * ratio,
-    };
-    /* eslint-disable no-extra-parens */
-    return isIOS() && (
-      (screen.width === 768 && screen.height === 1024) ||  // iPad, 9.7" 2010 and Gen 2, 2011 and Mini 2012
-      (screen.width === 1536 && screen.height === 2048) || // iPad, 9.7" Gen 3 2012, Gen 4 2013, 2018 iPad, iPad Pro 2016, iPad Air 2013, and Mini Retina 2013
-      (screen.width === 1668 && screen.height === 2224) || // iPad Pro 10.5" Gen 2  2017
-      (screen.width === 1668 && screen.height === 2388) || // iPad Pro 11", iPad Pro 12.9" October 2018
-      (screen.width === 2048 && screen.height === 2732)    // iPad Pro 12.9" Gen 2, 2018
-    );
+      cordovaOffsetLog('Matched ---- iPad by window.device.model');
+      return true;
+    } else {
+      const ratio = window.devicePixelRatio || 1;
+      const screen = {
+        width: window.screen.width * ratio,
+        height: window.screen.height * ratio,
+      };
+      /* eslint-disable no-extra-parens */
+      if ((screen.width === 768 && screen.height === 1024) ||  // iPad, 9.7" 2010 and Gen 2, 2011 and Mini 2012
+          (screen.width === 1536 && screen.height === 2048) || // iPad, 9.7" Gen 3 2012, Gen 4 2013, 2018 iPad, iPad Pro 2016, iPad Air 2013, and Mini Retina 2013
+          (screen.width === 1668 && screen.height === 2224) || // iPad Pro 10.5" Gen 2  2017
+          (screen.width === 1668 && screen.height === 2388) || // iPad Pro 11", iPad Pro 12.9" October 2018
+          (screen.width === 2048 && screen.height === 2732)) { // iPad Pro 12.9" Gen 2, 2018
+        cordovaOffsetLog('Matched ---- iPad by screen dimensions');
+        return true;
+      }
+    }
   }
+  return false;
 }
 
 export function hasIPhoneNotch () {
   return isIPhoneXorXS() || isIPhoneXR() || isIPhoneXSMax();
 }
 
-export function isAndroid () {
-  const { platform } = window.device || '';
-  return isCordova() && platform === 'Android';  // Ignore the "Condition is always false" warning.  This line works correctly.
+export function isIOsSmallerThanPlus () {
+  return isIPhone1234() || isIPhone5sSE() || isIPhone678();
 }
 
 export function getAndroidSize () {
@@ -340,6 +358,8 @@ export function getAndroidSize () {
   } else {
     sizeString = '--sm';
   }
+  cordovaOffsetLog(`getAndroidSize(): ${sizeString}`);
+
   return sizeString;
 }
 
@@ -363,12 +383,12 @@ if (isSimulator()) {
   if (isAndroidSimulator()) {
     cordovaOffsetLog(`cordovaScrollablePaneTopPadding: ${window.location.href}`);
   } else {
-    cordovaOffsetLog(`cordovaScrollablePaneTopPadding: ${window.location.href.slice(0, 50)}`);
-    cordovaOffsetLog(`cordovaScrollablePaneTopPadding: ${window.location.href.slice(50)}`);
+    cordovaOffsetLog(`cordovaScrollablePaneTopPadding: ${window.location.href.slice(0, 40)}`);
+    cordovaOffsetLog(`cordovaScrollablePaneTopPadding: ${window.location.href.slice(window.location.href.indexOf('WeVoteCordova.app') - 1)}`);
   }
 }
 
-const enums = {
+export const enums = {
   ballotVote: 1,
   moreAbout: 2,
   moreHamburger: 3,
@@ -389,7 +409,7 @@ const enums = {
   defaultVal: 1000,
 };
 
-function pageEnumeration () {
+export function pageEnumeration () {
   const { href } = window.location;
 
   // second level paths must be tried first
@@ -442,431 +462,6 @@ function pageEnumeration () {
   return enums.defaultVal;
 }
 
-// <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
-// renders approximately as ...  <div className="Ballot__Wrapper-sc-11u8kf3-0 dYbfmq"><div>
-// <VoteContainer padTop={cordovaScrollablePaneTopPadding()}>   /index.html#/ballot/vote
-export function cordovaScrollablePaneTopPadding () {
-  if (isSimulator()) {
-    if (isAndroidSimulator()) {
-      cordovaOffsetLog(`cordovaScrollablePaneTopPadding android: ${window.location.href}`);
-    } else {
-      cordovaOffsetLog(`cordovaScrollablePaneTopPadding iOS: ${window.location.href.slice(0, 50)}`);
-      cordovaOffsetLog(`cordovaScrollablePaneTopPadding iOS: ${window.location.href.slice(50)}`);
-    }
-  }
-  const isSignedIn = $('#profileAvatarHeaderBar').length > 0;
-
-  if (isIOS()) {
-    if (isIPad() || isIPhone678Plus()) {
-      if (isSimulator()) {
-        cordovaOffsetLog('cordovaScrollablePaneTopPadding: is IPad or isIPhone678Plus .');
-      }
-      switch (pageEnumeration()) {
-        case enums.wevoteintroWild: return '18px';
-        case enums.measureWild:     return '58px';
-        case enums.candidate:       return '40px';
-        case enums.ballotVote:      return '50px';
-        case enums.officeWild:      return '64px';
-        case enums.ballotSmHdrWild: return isIPad() ? '116px' : '130px';
-        case enums.ballotLgHdrWild: return '4px';
-        case enums.moreAbout:       return '22px';
-        case enums.moreTerms:       return '44px';
-        case enums.welcomeWild:     return '22px';
-        case enums.moreHamburger:   return isIPad() ? '15px' : '10px';
-        case enums.moreTools:       return '44px';
-        case enums.settingsWild:    return isIPad() ? '15px' : '16px';
-        default:                    return '0px';
-      }
-    } else if (isIPhone678()) {
-      if (isSimulator()) {
-        cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone678');
-      }
-      switch (pageEnumeration()) {
-        case enums.wevoteintroWild: return '18px';
-        case enums.measureWild:     return '58px';
-        case enums.candidate:       return '42px';
-        case enums.ballotVote:      return isSignedIn ? '28px' : '76px';
-        case enums.officeWild:      return '62px';
-        case enums.ballotSmHdrWild: return '126px';
-        case enums.ballotLgHdrWild: return '5px';
-        case enums.moreAbout:       return '22px';
-        case enums.moreTerms:       return '40px';
-        case enums.welcomeWild:     return '10px';
-        case enums.moreHamburger:   return '10px';
-        case enums.moreTools:       return '44px';
-        case enums.settingsWild:    return '16px';
-        default:                    return '0px';
-      }
-    } else if (isIPhoneXR()) {
-      if (isSimulator()) {
-        cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhoneXR');
-      }
-      switch (pageEnumeration()) {
-        case enums.wevoteintroWild: return '32px';
-        case enums.measureWild:     return '58px';
-        case enums.candidate:       return '56px';
-        case enums.officeWild:      return '76px';
-        case enums.values:          return '10px';
-        case enums.ballotVote:      return '30px';
-        case enums.ballotSmHdrWild: return '150px';
-        case enums.ballotLgHdrWild: return '18px';
-        case enums.moreAbout:       return '22px';
-        case enums.moreTerms:       return '60px';
-        case enums.welcomeWild:     return '22px';
-        case enums.moreHamburger:   return '35px';
-        case enums.moreTools:       return '44px';
-        case enums.settingsWild:    return '32px';
-        default:                    return '0px';
-      }
-    } else if (isIPhoneXSMax()) {
-      if (isSimulator()) {
-        cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhoneXSMax');
-      }
-      switch (pageEnumeration()) {
-        case enums.wevoteintroWild: return '32px';
-        case enums.measureWild:     return '56px';
-        case enums.candidate:       return '56px';
-        case enums.officeWild:      return '76px';
-        case enums.ballotVote:      return '18px';
-        case enums.ballotSmHdrWild: return '22px';
-        case enums.ballotLgHdrWild: return '22px';
-        case enums.moreAbout:       return '22px';
-        case enums.moreTerms:       return '60px';
-        case enums.welcomeWild:     return '22px';
-        case enums.moreHamburger:   return '35px';
-        case enums.moreTools:       return '44px';
-        case enums.settingsWild:    return '32px';
-        default:                    return '0px';
-      }
-    } else if (hasIPhoneNotch()) {
-      if (isSimulator()) {
-        cordovaOffsetLog(`cordovaScrollablePaneTopPadding: hasIPhoneNotch -- signed in: ${isSignedIn}`);
-      }
-      switch (pageEnumeration()) {
-        case enums.wevoteintroWild: return '32px';
-        case enums.measureWild:     return '72px';
-        case enums.candidate:       return '66px';
-        case enums.opinions:        return '10px';
-        case enums.officeWild:      return '76px';
-        case enums.ballotVote:      return isSignedIn ? '43px' : '92px';
-        case enums.ballotSmHdrWild: return '150px';
-        case enums.ballotLgHdrWild: return '16px';
-        case enums.moreAbout:       return '22px';
-        case enums.moreTerms:       return '60px';
-        case enums.welcomeWild:     return '22px';
-        case enums.moreHamburger:   return '35px';
-        case enums.moreTools:       return '44px';
-        case enums.settingsWild:    return '32px';
-        default:                    return '0px';
-      }
-    } else if (isIPhone5sSE()) {
-      if (isSimulator()) {
-        cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone5sSE');
-      }
-      switch (pageEnumeration()) {
-        case enums.wevoteintroWild: return '18px';
-        case enums.measureWild:     return '42px';
-        case enums.candidate:       return '42px';
-        case enums.ballotVote:      return '62px';
-        case enums.officeWild:      return '62px';
-        case enums.ballotSmHdrWild: return '146px';
-        case enums.ballotLgHdrWild: return '0px';
-        case enums.moreAbout:       return '22px';
-        case enums.moreTerms:       return '40px';
-        case enums.welcomeWild:     return '10px';
-        case enums.moreHamburger:   return '10px';
-        case enums.moreTools:       return '44px';
-        case enums.settingsWild:    return '16px';
-        default:                    return '0px';
-      }
-    }
-  } else if (isAndroid()) {
-    const sizeString = getAndroidSize();
-    if (sizeString === '--xl') {
-      if (isSimulator()) {
-        cordovaOffsetLog(`cordovaScrollablePaneTopPadding sizeString: ${sizeString}`);
-      }
-      switch (pageEnumeration()) {
-        case enums.officeWild:      return '40px';
-        case enums.measureWild:     return '40px';
-        case enums.candidate:       return '20px';
-        case enums.ballotSmHdrWild: return '108px';
-        case enums.ballotVote:      return isSignedIn ? '0px' : '52px';
-        case enums.moreTerms:       return '32px';
-        default:                    return '0px';
-      }
-    } else if (sizeString === '--lg') {
-      switch (pageEnumeration()) {
-        case enums.officeWild:      return '40px';
-        case enums.measureWild:     return '40px';
-        case enums.candidate:       return '16px';
-        case enums.ballotSmHdrWild: return '104px';
-        case enums.ballotVote:      return isSignedIn ? '0px' : '42px';
-        case enums.moreTerms:       return '32px';
-        default:                    return '0px';
-      }
-    } if (sizeString === '--md') {
-      switch (pageEnumeration()) {
-        case enums.officeWild:      return '40px';
-        case enums.measureWild:     return '40px';
-        case enums.candidate:       return '22px';
-        case enums.ballotSmHdrWild: return '108px';
-        case enums.ballotVote:      return isSignedIn ? '16px' : '50px';
-        case enums.moreTerms:       return '32px';
-        default:                    return '0px';
-      }
-    } else if (sizeString === '--sm') {
-      switch (pageEnumeration()) {
-        case enums.officeWild:      return '42px';
-        case enums.measureWild:     return '42px';
-        case enums.candidate:       return '24px';
-        case enums.ballotSmHdrWild: return '130px';
-        case enums.ballotVote:      return isSignedIn ? '4px' : '44px';
-        case enums.moreTerms:       return '32px';
-        default:                    return '0px';
-      }
-    }
-  }
-  return '0px';
-}
-
-// <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
-export function cordovaBallotFilterTopMargin () {
-  if (isIOS()) {
-    if (isIPhone678Plus()) {
-      if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
-        return '55px';
-      }
-      return '53px';
-    } else if (isIPhone678()) {
-      return '53px';
-    } else if (hasIPhoneNotch()) {
-      return '74px';
-    } else if (isIPad()) {
-      return '38px';
-    } else if (isIPhone5sSE()) {
-      return '54px';
-    }
-  } else if (isAndroid()) {
-    const sizeString = getAndroidSize();
-    if (sizeString === '--sm') {
-      if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
-        return '-12px';
-      }
-      return '32px';
-    } else if (sizeString === '--md') {
-      if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
-        return '-58px';
-      }
-      return '32px';
-    } else if (sizeString === '--lg') {
-      if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
-        return '-32px';
-      }
-      return '32px';
-    } else if (sizeString === '--xl') {
-      if (window.location.href.indexOf('/index.html#/ballot/vote') > 0) {
-        return '-10px';
-      }
-      return '31px';
-    }
-  }
-  return undefined;
-}
-
-export function cordovaNetworkNextButtonTop () {
-  if (isIOS()) {
-    if (isIPhone678Plus()) {
-      return '89vh';
-    } else if (isIPhone678()) {
-      return '89vh';
-    } else if (hasIPhoneNotch()) {
-      return '88vh';
-    } else if (isIPad()) {
-      return '89vh';
-    } else if (isIPhone5sSE()) {
-      return '88vh';
-    }
-  } else if (isAndroid()) {
-    const sizeString = getAndroidSize();
-    if (sizeString === '--xl') {
-      return '89vh';
-    }
-  }
-  return undefined;
-}
-
-// <div className="footer-container u-show-mobile-tablet" style={{ height: `${cordovaFooterHeight()}` }}>
-export function cordovaFooterHeight () {
-  if (isIOS()) {
-    if (hasIPhoneNotch()) {
-      return '67px';
-    }
-  }
-
-  return undefined;
-}
-
-// URLs that end with a twitter handle...
-// <div id="the styled div that follows is the wrapper for voter guide mode">
-//   <Wrapper padTop={cordovaVoterGuideTopPadding()}>
-export function cordovaVoterGuideTopPadding () {
-  if (isIOS()) {
-    if (isIPhone678Plus()) {
-      return '50px';
-    } else if (isIPhone678()) {
-      return '0px';
-    } else if (hasIPhoneNotch()) {
-      return '18px';
-    } else if (isIPad()) {
-      return '8px';
-    }
-  } else if (isAndroid()) {
-    return '0px';
-  }
-  return '0px';
-}
-
-// <Toolbar classes={{ root: classes.toolbar }} disableGutters style={{ top: cordovaWelcomeAppToolbarTop() }}>
-export function cordovaWelcomeAppToolbarTop () {
-  if (isIOS()) {
-    if (isIPhone678Plus()) {
-      return '10px';
-    } else if (isIPhone678()) {
-      return '10px';
-    } else if (hasIPhoneNotch()) {
-      return '14px';
-    } else if (isIPad()) {
-      return '10px';
-    }
-  } else if (isAndroid()) {
-    return '0px';
-  }
-  return '0px';
-}
-
-// <div className="ballot__heading-vote-section " style="top: 112px; height: 90px;">
-export function cordovaVoteMiniHeader () {
-  if (isIOS()) {
-    if (isIPhone678Plus()) {
-      return {
-        top: '66px',
-        height: '118px',
-      };
-    } else if (isIPhone678()) {
-      return {
-        top: '66px',
-        height: '118px',
-      };
-    } else if (hasIPhoneNotch()) {
-      return {
-        top: '82px',
-        height: '118px',
-      };
-    } else if (isIPad()) {
-      return {
-        top: '52px',
-        height: '90px',
-      };
-    }
-  } else if (isAndroid()) {
-    return {
-      top: '44px',
-      height: '118px',
-    };
-  }
-  return undefined;
-}
-
-// <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
-export function cordovaTopHeaderTopMargin () {
-  const style = {
-    marginRight: 'auto',
-    marginLeft: 'auto',
-    marginBottom: '0',
-  };
-
-  if (isCordova()) {
-    if (isSimulator()) {
-      if (isAndroidSimulator()) {
-        cordovaOffsetLog(`cordovaTopHeaderTopMargin android: ${window.location.href}`);
-      } else {
-        cordovaOffsetLog(`cordovaTopHeaderTopMargin iOS: ${window.location.href.slice(0, 50)}`);
-        cordovaOffsetLog(`cordovaTopHeaderTopMargin iOS: ${window.location.href.slice(50)}`);
-      }
-    }
-
-    if (isIOS()) {
-      if (isIPhone678Plus() || isIPhone678()) {
-        switch (pageEnumeration()) {
-          case enums.officeWild:      style.marginTop = '16px'; break;
-          case enums.measureWild:     style.marginTop = '22px'; break;
-          case enums.values:          style.marginTop = '16px'; break;
-          case enums.friends:         style.marginTop = '16px'; break;
-          case enums.ballot:          style.marginTop = '19px'; break;
-          case enums.ballotVote:      style.marginTop = '19px'; break;
-          case enums.settingsWild:    style.marginTop = '22px'; break;
-          default:                    style.marginTop = '19px'; break;
-        }
-      } else if (hasIPhoneNotch()) {
-        switch (pageEnumeration()) {
-          case enums.officeWild:      style.marginTop = '30px'; break;
-          case enums.measureWild:     style.marginTop = '34px'; break;
-          case enums.candidate:       style.marginTop = '35px'; break;
-          case enums.valuesList:      style.marginTop = '38px'; break;
-          case enums.values:          style.marginTop = '12px'; break;
-          case enums.opinions:        style.marginTop = '36px'; break;
-          case enums.friends:         style.marginTop = '16px'; break;
-          case enums.ballot:          style.marginTop = '16px'; break;
-          case enums.ballotVote:      style.marginTop = '16px'; break;
-          case enums.settingsWild:    style.marginTop = '38px'; break;
-          default:                    style.marginTop = '16px'; break;
-        }
-      } else if (isIPad()) {
-        switch (pageEnumeration()) {
-          default:                    style.marginTop = '0px'; break;
-        }
-      } else {
-        style.marginTop = '20px';
-      }
-    } else {  // Android
-      style.marginTop = '-2px';
-    }
-    return style;
-  }
-
-  return undefined;
-}
-
-// <Wrapper cordovaPaddingTop={cordovaStickyHeaderPaddingTop()}>
-export function cordovaStickyHeaderPaddingTop () {
-  if (isIOS()) {
-    if (isIPhone678Plus()) {
-      return '62px';
-    } else if (isIPhone678()) {
-      return '62px';
-    } else if (hasIPhoneNotch()) {
-      return '76px';
-    } else if (isIPad()) {
-      return '62px';
-    }
-  } else if (isAndroid()) {
-    const sizeString = getAndroidSize();
-    if (isSimulator()) {
-      cordovaOffsetLog(`cordovaStickyHeaderPaddingTop sizeString: >${sizeString}<`);
-    }
-    if (sizeString === '--sm') {
-      return '42px';
-    } else if (sizeString === '--md') {
-      return '40px';
-    } else if (sizeString === '--lg') {
-      return '38px';
-    } else if (sizeString === '--xl') {
-      return '31px';
-    }
-  }
-  return '';
-}
 
 export function getToastClass () {
   let toastClass = '';
@@ -900,3 +495,4 @@ export function restoreStylesAfterCordovaKeyboard (callerString) {
     $('.footroom-wrapper').css('display', '');
   }
 }
+

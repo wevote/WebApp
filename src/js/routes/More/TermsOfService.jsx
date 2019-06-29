@@ -2,7 +2,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router';
 import styled from 'styled-components';
-import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaUtils';
+import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
 import { renderLog } from '../../utils/logging';
 
 export default class TermsOfService extends React.Component {
