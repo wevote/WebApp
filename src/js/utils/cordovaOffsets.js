@@ -28,8 +28,8 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidate:       return '42px';
         case enums.ballotVote:      return '131px';
         case enums.officeWild:      return isSignedIn ? '71px' : '62px';
-        case enums.ballotSmHdrWild: return '146px';
-        case enums.ballotLgHdrWild: return '5px';
+        case enums.ballotSmHdrWild: return '153px';
+        case enums.ballotLgHdrWild: return '24px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '40px';
         case enums.welcomeWild:     return '10px';
@@ -48,8 +48,8 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidate:       return '42px';
         case enums.ballotVote:      return isSignedIn ? '123px' : '122px';
         case enums.officeWild:      return '62px';
-        case enums.ballotSmHdrWild: return isSignedIn ? '133px' : '126px';
-        case enums.ballotLgHdrWild: return '5px';
+        case enums.ballotSmHdrWild: return isSignedIn ? '153px' : '152px';
+        case enums.ballotLgHdrWild: return '28px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '40px';
         case enums.welcomeWild:     return '10px';
@@ -68,8 +68,8 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidate:       return '40px';
         case enums.ballotVote:      return '131px';
         case enums.officeWild:      return '64px';
-        case enums.ballotSmHdrWild: return '130px';
-        case enums.ballotLgHdrWild: return '4px';
+        case enums.ballotSmHdrWild: return '140px';
+        case enums.ballotLgHdrWild: return '11px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '44px';
         case enums.welcomeWild:     return '22px';
@@ -89,8 +89,8 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.officeWild:      return '76px';
         case enums.values:          return '10px';
         case enums.ballotVote:      return isSignedIn ? '137px' : '139px';
-        case enums.ballotSmHdrWild: return '150px';
-        case enums.ballotLgHdrWild: return '18px';
+        case enums.ballotSmHdrWild: return '161px';
+        case enums.ballotLgHdrWild: return '33px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '60px';
         case enums.welcomeWild:     return '22px';
@@ -109,8 +109,8 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidate:       return '56px';
         case enums.officeWild:      return '76px';
         case enums.ballotVote:      return isSignedIn ? '139px' : '147px';
-        case enums.ballotSmHdrWild: return isSignedIn ? '143px' : '134px';
-        case enums.ballotLgHdrWild: return '22px';
+        case enums.ballotSmHdrWild: return '162px';
+        case enums.ballotLgHdrWild: return '34px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '60px';
         case enums.welcomeWild:     return '22px';
@@ -130,8 +130,8 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.opinions:        return '10px';
         case enums.officeWild:      return '76px';
         case enums.ballotVote:      return isSignedIn ? '136px' : '139px';
-        case enums.ballotSmHdrWild: return '150px';
-        case enums.ballotLgHdrWild: return '16px';
+        case enums.ballotSmHdrWild: return '159px';
+        case enums.ballotLgHdrWild: return '34px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '60px';
         case enums.welcomeWild:     return '22px';
@@ -150,7 +150,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.candidate:       return '40px';
         case enums.ballotVote:      return '10px';
         case enums.officeWild:      return '64px';
-        case enums.ballotSmHdrWild: return '116px';
+        case enums.ballotSmHdrWild: return '129px';
         case enums.ballotLgHdrWild: return '4px';
         case enums.moreAbout:       return '0px';
         case enums.moreTerms:       return '44px';
@@ -169,29 +169,29 @@ export function cordovaScrollablePaneTopPadding () {
       }
       switch (pageEnumeration()) {
         case enums.officeWild:      return '79px';
-        case enums.measureWild:     return '40px';
-        case enums.candidate:       return '53px';
-        case enums.ballotSmHdrWild: return '108px';
+        case enums.measureWild:     return '57px';
+        case enums.candidate:       return '64px';
+        case enums.ballotSmHdrWild: return '123px';
         case enums.ballotVote:      return isSignedIn ? '123px' : '119px';
         case enums.moreTerms:       return '32px';
         default:                    return '0px';
       }
     } else if (sizeString === '--lg') {
       switch (pageEnumeration()) {
-        case enums.officeWild:      return '40px';
+        case enums.officeWild:      return '78px';
         case enums.measureWild:     return '40px';
-        case enums.candidate:       return '16px';
-        case enums.ballotSmHdrWild: return '104px';
+        case enums.candidate:       return '55px';
+        case enums.ballotSmHdrWild: return '118px';
         case enums.ballotVote:      return isSignedIn ? '102px' : '109px';
         case enums.moreTerms:       return '32px';
         default:                    return '0px';
       }
     } if (sizeString === '--md') {
       switch (pageEnumeration()) {
-        case enums.officeWild:      return '40px';
-        case enums.measureWild:     return '40px';
-        case enums.candidate:       return '22px';
-        case enums.ballotSmHdrWild: return '108px';
+        case enums.officeWild:      return '77px';
+        case enums.measureWild:     return '53px';
+        case enums.candidate:       return '53px';
+        case enums.ballotSmHdrWild: return '116px';
         case enums.ballotVote:      return isSignedIn ? '106px' : '105px';
         case enums.moreTerms:       return '32px';
         default:                    return '0px';
