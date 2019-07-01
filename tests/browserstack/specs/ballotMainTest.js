@@ -33,7 +33,7 @@ describe('Basic cross-platform We Vote test',  () => {
     }
 
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
-/*
+
     await simpleClick('changeAddressHeaderBar'); // Open the "Change Address" modal
     await simpleCloseBootstrapModal(); // Close the "Change Address" modal
 
@@ -158,7 +158,7 @@ describe('Basic cross-platform We Vote test',  () => {
     // Review the full length of the page
     // await scrollThroughPage(); // Scroll to the bottom of the ballot page
     // TODO: We will need a way to scroll back to the top of the page for the tab navigation to work in Desktop
-*/
+
     await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
 
     // Open sign in modal, then close it by pressing button

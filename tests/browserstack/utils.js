@@ -101,16 +101,6 @@ function writeToLog (message) {
   });
 }
 
-// await browser.performActions([{
-//   type: 'pointer',
-//   id: 'clickTopLeftCornerAction',
-//   actions: [
-//     { type: 'pointerMove', x, y },
-//     { type: 'pointerDown', button: 0 },
-//     { type: 'pointerUp', button: 0 },
-//   ],
-// }]).then(() => browser.releaseActions());
-
 async function clickTopLeftCornerOfElement (selector) {
   const element = await $(selector);
   if (element.isW3C) {

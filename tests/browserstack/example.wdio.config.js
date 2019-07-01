@@ -4,10 +4,6 @@ const date = new Date();
 const dateForDisplay = date.toDateString();
 const buildNameForDisplay = `${browserStackConfig.BUILD}: ${dateForDisplay}`;
 
-const myOnPrepare = function (config, capabilities) {
-  console.log('**** let\'s go ****');
-};
-
 exports.config = {
   user: browserStackConfig.BROWSERSTACK_USER,
   key: browserStackConfig.BROWSERSTACK_KEY,
