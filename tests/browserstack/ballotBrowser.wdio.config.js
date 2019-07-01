@@ -1,4 +1,5 @@
 const browserStackConfig = require('./browserstack.config');
+
 const date = new Date();
 const dateForDisplay = date.toDateString();
 const buildNameForDisplay = `${browserStackConfig.BUILD}: ${dateForDisplay}`;
@@ -12,6 +13,7 @@ exports.config = {
     './tests/browserstack/specs/ballotMainTest.js',
   ],
   exclude: [],
+  logLevel: 'trace',
   capabilities: [
     {
       // Testing with a Windows Desktop Chrome browser
@@ -79,6 +81,23 @@ exports.config = {
       isCordovaFromAppStore: false,
       isIOS: true,
       isMobileScreenSize: false,
+    },
+    {
+      // Testing with an iPhone Safari browser
+      name: 'ballotMainTest-iPadSafariBrowser',
+      build: buildNameForDisplay,
+      device: 'iPad Pro 12.9 2018',
+      os_version: '12',
+      real_mobile: true,
+      browserName: 'Safari',
+      browser_version: '11',
+      'browserstack.console': 'info',
+      'browserstack.debug': true,
+      'browserstack.geoLocation': 'US',
+      isAndroid: false,
+      isCordovaFromAppStore: false,
+      isIOS: true,
+      isMobileScreenSize: true,
     },
   ],
   coloredLogs: true,
