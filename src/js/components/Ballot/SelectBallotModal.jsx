@@ -76,6 +76,7 @@ class SelectBallotModal extends Component {
             defaultIsEditingAddress
             pathname={this.state.pathname}
             toggleFunction={this.props.toggleFunction}
+            cancelButtonAction={this.props.toggleFunction}
           />
           <BallotElectionListWithFilters
             ballotBaseUrl={ballotBaseUrl}
@@ -91,7 +92,7 @@ class SelectBallotModal extends Component {
 const styles = theme => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       minWidth: '95%',
       maxWidth: '95%',
       width: '95%',
