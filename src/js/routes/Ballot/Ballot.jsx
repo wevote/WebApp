@@ -1092,6 +1092,9 @@ const styles = theme => ({
   badgeColorPrimary: {
     background: 'white',
     color: theme.palette.primary.main,
+    '@media print': {
+      color: theme.palette.primary.main,
+    },
   },
   unselectedBadgeColorPrimary: {
     background: 'rgba(0, 0, 0, .2)',
