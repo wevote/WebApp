@@ -6,12 +6,13 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import AnnotatedSlideshow from '../components/Widgets/AnnotatedSlideshow';
 import AppActions from '../actions/AppActions';
+import { cordovaScrollablePaneTopPadding } from '../utils/cordovaOffsets';
+import { historyPush, isCordova } from '../utils/cordovaUtils';
 import Footer from '../components/Welcome/Footer';
 import Header, { Container, Title } from '../components/Welcome/HowItWorksHeader';
 import HeaderSwitch from '../components/Widgets/HeaderSwitch';
 import { renderLog } from '../utils/logging';
 import StepsChips from '../components/Widgets/StepsChips';
-import { cordovaScrollablePaneTopPadding, historyPush, isCordova } from '../utils/cordovaUtils';
 import VoterStore from '../stores/VoterStore';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 

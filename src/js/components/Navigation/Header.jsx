@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
-import { hasIPhoneNotch, cordovaTopHeaderTopMargin, isCordova, isIOS, isWebApp, isIPad } from '../../utils/cordovaUtils';
+import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
+import { hasIPhoneNotch, isCordova, isIOS, isWebApp, isIPad } from '../../utils/cordovaUtils';
 import HeaderBackToBallot from './HeaderBackToBallot';
 import HeaderBackTo from './HeaderBackTo';
 import HeaderBackToVoterGuides from './HeaderBackToVoterGuides';
@@ -146,13 +147,21 @@ export default class Header extends Component {
                pathname === '/welcome') {
       return null;
     } else {
+      let classNameHeadroom = '';  // Value for isCordova is ''
+      if (isWebApp()) {
+        if (stringContains('/ballot', pathname.toLowerCase())) {
+          classNameHeadroom = 'headroom-wrapper-webapp__ballot';
+        } else if (stringContains('/office', pathname.toLowerCase())) {
+          classNameHeadroom = 'headroom-wrapper-webapp__office';
+        } else {
+          classNameHeadroom = 'headroom-wrapper-webapp__default';
+        }
+      }
       // This handles other pages, like the Ballot display
       return (
         <div id="app-header">
           { iPhoneSpacer }
-          <div className={isWebApp() ?    // eslint-disable-line no-nested-ternary
-            stringContains('/ballot', pathname.toLowerCase()) ? 'headroom-wrapper-webapp__ballot' : // eslint-disable-line no-nested-ternary
-              stringContains('/office', pathname.toLowerCase()) ? 'headroom-wrapper-webapp__office' : 'headroom-wrapper-webapp__default' : ''}
+          <div className={classNameHeadroom}
             id="headroom-wrapper"
           >
             <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">

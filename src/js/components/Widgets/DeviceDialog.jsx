@@ -15,6 +15,8 @@ import { Link } from 'react-router';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 
+const webAppConfig = require('../../config');
+
 class DeviceDialog extends Component {
   static propTypes = {
     classes: PropTypes.object,
@@ -36,6 +38,12 @@ class DeviceDialog extends Component {
     }
 
     window.location = ''; // TO REFRESH THE "PAGE"
+  }
+
+  static clearLocationGuessClosedCookie () {
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+    document.cookie = `location_guess_closed=; expires=${d}; path=/;`;
   }
 
   constructor (props) {
@@ -101,17 +109,23 @@ class DeviceDialog extends Component {
               </TableRow>
             </TableBody>
           </Table>
-          {(window.location.href.startsWith('file:///Users') || window.location.href.startsWith('file:///android')) &&
+          {/* Show the developer options if on the simulator, or if Cordova offset logging is turned on -- should not show in release builds */}
+          {(window.location.href.startsWith('file:///Users') || window.location.href.startsWith('file:///android') || webAppConfig.LOG_CORDOVA_OFFSETS ) &&
             (
               <div style={{ marginTop: 20 }}>
                 <div style={{ marginTop: 5 }}>
                   <span className="card-main__candidate-name-link">
-                    <Link onClick={DeviceDialog.clearAllCookies} to="/" onlyActiveOnIndex>Clear Cookies</Link>
+                    <Link to="/wevoteintro/network" onlyActiveOnIndex>Navigate to Welcome</Link>
                   </span>
                 </div>
                 <div style={{ marginTop: 5 }}>
                   <span className="card-main__candidate-name-link">
-                    <Link to="/wevoteintro/network" onlyActiveOnIndex>Navigate to Welcome</Link>
+                    <Link onClick={DeviceDialog.clearLocationGuessClosedCookie} to="/" onlyActiveOnIndex>Clear Location Guess Cookie</Link>
+                  </span>
+                </div>
+                <div style={{ marginTop: 5 }}>
+                  <span className="card-main__candidate-name-link">
+                    <Link onClick={DeviceDialog.clearAllCookies} to="/" onlyActiveOnIndex>Clear Cookies</Link>
                   </span>
                 </div>
               </div>

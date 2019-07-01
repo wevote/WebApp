@@ -4,11 +4,9 @@ import { ToastContainer } from 'react-toastify';
 import styled from 'styled-components';
 import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from './utils/applicationUtils';
 import cookies from './utils/cookies';
-import {
-  cordovaScrollablePaneTopPadding, cordovaVoterGuideTopPadding, getToastClass, historyPush, isCordova, isWebApp,
-} from './utils/cordovaUtils';
+import { getToastClass, historyPush, isCordova, isWebApp } from './utils/cordovaUtils';
+import { cordovaContainerMainOverride, cordovaScrollablePaneTopPadding, cordovaVoterGuideTopPadding } from './utils/cordovaOffsets';
 import ElectionActions from './actions/ElectionActions';
-// import FooterBarCordova from "./components/Navigation/FooterBarCordova";
 import FooterBar from './components/Navigation/FooterBar';
 import FriendActions from './actions/FriendActions';
 import Header from './components/Navigation/Header';
@@ -87,7 +85,7 @@ class Application extends Component {
 
   initCordova () { // eslint-disable-line
     if (isCordova()) {
-      console.log(`Application initCordova ------------ ${__filename}`);
+      console.log(`Application initCordova ------------ ${__filename} uuid: ${window.device.uuid}`);
       window.handleOpenURL = (url) => {
         TwitterSignIn.handleTwitterOpenURL(url);
       };
@@ -276,19 +274,17 @@ class Application extends Component {
       // console.log("inTheaterMode", inTheaterMode);
       return (
         <div className="app-base" id="app-base-id">
-          <div id="the styled div that follows is the wrapper for theatre mode">
-            <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
-              <div className="page-content-container">
-                <div className="container-fluid">
-                  <div className="row">
-                    <div className="col-12 container-main">
-                      { this.props.children }
-                    </div>
+          <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
+            <div className="page-content-container">
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-12 container-main">
+                    { this.props.children }
                   </div>
                 </div>
               </div>
-            </Wrapper>
-          </div>
+            </div>
+          </Wrapper>
         </div>
       );
     } else if (voterGuideMode) {
@@ -303,15 +299,13 @@ class Application extends Component {
                   weVoteBrandingOff={this.state.weVoteBrandingOff}
           />
           <SnackNotifier />
-          <div id="the styled div that follows is the wrapper for voter guide mode">
-            <Wrapper padTop={cordovaVoterGuideTopPadding()}>
-              <div className="page-content-container">
-                <div className="container-voter-guide">
-                  { this.props.children }
-                </div>
+          <Wrapper padTop={cordovaVoterGuideTopPadding()}>
+            <div className="page-content-container">
+              <div className="container-voter-guide">
+                { this.props.children }
               </div>
-            </Wrapper>
-          </div>
+            </div>
+          </Wrapper>
           {(
             <div className="footroom-wrapper">
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
@@ -332,15 +326,13 @@ class Application extends Component {
                   weVoteBrandingOff={this.state.weVoteBrandingOff}
           />
           <SnackNotifier />
-          <div id="the styled div that follows is the wrapper for settings mode">
-            <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
-              <div className="page-content-container">
-                <div className="container-settings">
-                  { this.props.children }
-                </div>
+          <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
+            <div className="page-content-container">
+              <div className="container-settings">
+                { this.props.children }
               </div>
-            </Wrapper>
-          </div>
+            </div>
+          </Wrapper>
           {(
             <div className="footroom-wrapper">
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
@@ -378,7 +370,7 @@ class Application extends Component {
             <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
               <div className="page-content-container">
                 <div className="container-fluid">
-                  <div className="container-main">
+                  <div className="container-main" style={{ paddingTop: `${cordovaContainerMainOverride()}` }}>
                     { this.props.children }
                   </div>
                 </div>
