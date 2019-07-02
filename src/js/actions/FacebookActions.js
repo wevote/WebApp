@@ -134,7 +134,7 @@ export default {
     // package everytime we refresh the avatar in the header in this function -- so first check if the voter is really logged in.
     if (this.facebookApi()) {
       if (isCordova()) {
-        this.facebookApi().getLoginStatus(function (responseReallyLoggedIn) {
+        this.facebookApi().getLoginStatus(function response (responseReallyLoggedIn) {
           if (responseReallyLoggedIn.status === 'connected') {
             this.getPicture();
           }
