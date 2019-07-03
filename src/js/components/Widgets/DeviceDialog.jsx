@@ -110,7 +110,7 @@ class DeviceDialog extends Component {
             </TableBody>
           </Table>
           {/* Show the developer options if on the simulator, or if Cordova offset logging is turned on -- should not show in release builds */}
-          {(window.location.href.startsWith('file:///Users') || window.location.href.startsWith('file:///android') || webAppConfig.LOG_CORDOVA_OFFSETS ) &&
+          {(window.location.href.startsWith('file:///Users') || window.location.href.startsWith('file:///android') || webAppConfig.LOG_CORDOVA_OFFSETS) &&
             (
               <div style={{ marginTop: 20 }}>
                 <div style={{ marginTop: 5 }}>

@@ -422,7 +422,7 @@ export function pageEnumeration () {
     return enums.moreTerms;
   } else if (href.indexOf('/index.html#/more/hamburger') > 0) {
     return enums.moreHamburger;
-  } else if (href.indexOf('/index.html#/more/tools') > 0) {
+  } else if (href.indexOf('/index.html#/settings/tools') > 0) {
     return enums.moreTools;
   } else if (href.indexOf('/index.html#/values/list') > 0) {
     return enums.valuesList;

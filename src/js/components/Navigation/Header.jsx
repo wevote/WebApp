@@ -68,7 +68,8 @@ export default class Header extends Component {
         </div>
       );
     } else if (settingsMode) {
-      const backToSettingsLink = isWebApp() ? '/settings/menu' : '/more/hamburger';
+      const backToSettingsLinkDesktop = '/settings/menu';
+      const backToSettingsLinkMobile = '/more/hamburger';
       const backToSettingsLinkText = 'Settings';
 
       return (
@@ -78,8 +79,11 @@ export default class Header extends Component {
             <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToSettings ? (
                 <span>
-                  <span className="d-block d-sm-none">
-                    <HeaderBackTo backToLink={backToSettingsLink} backToLinkText={backToSettingsLinkText} location={location} params={params} voter={voter} />
+                  <span className="u-show-desktop-tablet">
+                    <HeaderBackTo backToLink={backToSettingsLinkDesktop} backToLinkText={backToSettingsLinkText} location={location} params={params} voter={voter} />
+                  </span>
+                  <span className="u-show-mobile">
+                    <HeaderBackTo backToLink={backToSettingsLinkMobile} backToLinkText={backToSettingsLinkText} location={location} params={params} voter={voter} />
                   </span>
                   <span className="d-none d-sm-block">
                     <HeaderBar location={location} pathname={pathname} voter={voter} />

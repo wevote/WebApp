@@ -122,19 +122,12 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            <tr className="hamburger-menu__tr">
-              <td colSpan={3} style={{ padding: 15 }}>
-                <span className="we-vote-promise" style={{ fontSize: 18, color: 'black', opacity: 0.7 }}>Settings:</span>
-              </td>
-            </tr>
-
             <HamburgerMenuRow
               onClickAction={null}
               to="/settings/profile"
               icon="fa fa-address-card"
               iconStyle={{ fontSize: 28, color: '#1c2f4b' }}
               linkText="Profile"
-              indented
             />
 
             {isSignedIn && (
@@ -142,8 +135,7 @@ export default class HamburgerMenu extends Component {
                 onClickAction={null}
                 to="/settings/account"
                 fullIcon={this.yourAccountIcon(photoUrl)}
-                linkText="Account"
-                indented
+                linkText="Security & Sign In"
               />
             )}
 
@@ -153,7 +145,6 @@ export default class HamburgerMenu extends Component {
               icon="fa fa-home"
               iconStyle={{ fontSize: 30, color: '#1c2f4b' }}
               linkText="Address"
-              indented
             />
 
             <HamburgerMenuRow
@@ -162,7 +153,6 @@ export default class HamburgerMenu extends Component {
               icon="fa fa-cog"
               iconStyle={{ fontSize: 28, color: '#1c2f4b' }}
               linkText="Election Choice"
-              indented
             />
 
 
@@ -173,9 +163,16 @@ export default class HamburgerMenu extends Component {
                 icon="fa fa-bell"
                 iconStyle={{ fontSize: 26, color: '#1c2f4b' }}
                 linkText="Notifications"
-                indented
               />
             )}
+
+            <HamburgerMenuRow
+              onClickAction={null}
+              to="/settings/tools"
+              icon="fa fa-tools"
+              iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
+              linkText="Tools for Your Website"
+            />
 
             <HamburgerMenuRow
               onClickAction={null}
@@ -203,34 +200,49 @@ export default class HamburgerMenu extends Component {
             />
             )}
 
-            <tr className="hamburger-terms__tr">
+            <tr className="hamburger-terms__tr-terms">
               <td className="hamburger-terms__td" colSpan={3}>
                 <div>
                   <span className="hamburger-terms__text">
                     <Link to="/more/terms">
                       <span className="u-no-break">Terms of Service</span>
                     </Link>
-                    <span style={{ paddingLeft: 20 }} />
+                  </span>
+                </div>
+              </td>
+            </tr>
+            <tr className="hamburger-terms__tr-terms">
+              <td className="hamburger-terms__td" colSpan={3}>
+                <div>
+                  <span className="hamburger-terms__text">
                     <Link to="/more/privacy">
                       <span className="u-no-break">Privacy Policy</span>
                     </Link>
                   </span>
                 </div>
+              </td>
+            </tr>
+            <tr className="hamburger-terms__tr-terms">
+              <td className="hamburger-terms__td" colSpan={3}>
                 <div>
                   <span className="hamburger-terms__text">
                     <Link onClick={this.hideProfilePopUp} to="/more/attributions">Attributions</Link>
                   </span>
                 </div>
-                {isCordova() && (
+              </td>
+            </tr>
+            {isCordova() && (
+            <tr className="hamburger-terms__tr-terms">
+              <td className="hamburger-terms__td" colSpan={3}>
                 <div>
                   <span className="hamburger-terms__text" onClick={() => this.deviceTableVisibilityOn()} style={{ color: 'black' }}>
                     Device Information
                   </span>
                   <DeviceDialog visibilityOffFunction={this.deviceTableVisibilityOff} show={this.state.showDeviceDialog} />
                 </div>
-                )}
               </td>
             </tr>
+            )}
           </tbody>
         </Table>
       </div>

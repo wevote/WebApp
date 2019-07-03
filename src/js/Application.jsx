@@ -391,6 +391,7 @@ class Application extends Component {
           !(pathname === '/more/credits') &&
           !(pathname.startsWith('/more/donate')) &&
           !(pathname.startsWith('/more/pricing')) &&
+          !(pathname === '/more/myballot') &&
           !(pathname === '/welcome') && (
           <div className="footroom-wrapper">
             <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />

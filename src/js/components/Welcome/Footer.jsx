@@ -42,8 +42,8 @@ class Footer extends Component {
                 <Link id="footerLinkPollingPlaceLocator" className={classes.link} to="/polling-place-locator">Polling Place Locator</Link> :
                 <OpenExternalWebSite className={classes.link} url="https://wevote.us/vip.html" target="_blank" body={(<span>Polling Place Locator</span>)} />
               }
-              <Link id="footerLinkFreeOnlineTools" className={classes.link} to="/more/tools">Free Online Tools</Link>
-              <Link id="footerLinkPremiumOnlineTools" className={classes.link} to="/more/tools">Premium Online Tools</Link>
+              <Link id="footerLinkFreeOnlineTools" className={classes.link} to="/settings/tools">Free Online Tools</Link>
+              <Link id="footerLinkPremiumOnlineTools" className={classes.link} to="/settings/tools">Premium Online Tools</Link>
             </Column>
             <Column>
               <ColumnTitle>About We Vote</ColumnTitle>
