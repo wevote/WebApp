@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
-import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaUtils';
+import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
 import MeasureStore from '../../stores/MeasureStore';
 
 class MeasureStickyHeader extends Component {

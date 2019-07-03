@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { cordovaDot, cordovaNetworkNextButtonTop, historyPush } from '../../utils/cordovaUtils';
+import { cordovaDot,  historyPush } from '../../utils/cordovaUtils';
+import { cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
 import { renderLog } from '../../utils/logging';
 
 /*

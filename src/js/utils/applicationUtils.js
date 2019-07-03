@@ -17,6 +17,7 @@ export function getApplicationViewBooleans (pathname) {
   if (pathnameLowerCase === '/intro/story' ||
     pathnameLowerCase === '/intro/sample_ballot' ||
     pathnameLowerCase === '/intro/get_started' ||
+    pathnameLowerCase === '/more/myballot' ||
     pathnameLowerCase === '/voterguidechooseelection' ||
     pathnameLowerCase === '/voterguidegetstarted' ||
     pathnameLowerCase === '/voterguideorgtype' ||
@@ -33,7 +34,6 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/more/about' ||
     pathnameLowerCase === '/more/absentee' ||
     pathnameLowerCase === '/more/alerts' ||
-    pathnameLowerCase === '/more/myballot' ||
     pathnameLowerCase === '/more/connect' ||
     pathnameLowerCase === '/more/credits' ||
     pathnameLowerCase.startsWith('/more/donate') ||
@@ -48,7 +48,6 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/more/register' ||
     pathnameLowerCase === '/more/sign_in' ||
     pathnameLowerCase === '/more/terms' ||
-    pathnameLowerCase === '/more/tools' ||
     pathnameLowerCase === '/more/verify' ||
     pathnameLowerCase.startsWith('/verifythisisme/') ||
     pathnameLowerCase === '/welcome') {
@@ -85,9 +84,7 @@ export function getApplicationViewBooleans (pathname) {
   if (stringContains('/btdb/', pathnameLowerCase) || // back-to-default-ballot
     stringContains('/btdo/', pathnameLowerCase) || // back-to-default-office
     stringContains('/bto/', pathnameLowerCase) ||
-    stringContains('/btvg/', pathnameLowerCase) ||
-    stringContains('/more/myballot', pathnameLowerCase)
-  ) {
+    stringContains('/btvg/', pathnameLowerCase)) {
     // If here, we want the top header to be "Back To..."
     // "/btdb/" stands for "Back To Default Ballot Page" back-to-default-ballot
     // "/btdo/" stands for "Back To Default Office Page" back-to-default-office
@@ -100,6 +97,7 @@ export function getApplicationViewBooleans (pathname) {
     stringContains('/settings/issues', pathnameLowerCase) ||
     pathnameLowerCase === '/settings/notifications' ||
     pathnameLowerCase === '/settings/profile' ||
+    pathnameLowerCase === '/settings/tools' ||
     stringContains('/settings/voter_guide', pathnameLowerCase) ||
     pathnameLowerCase === '/settings/voterguidesmenu' ||
     pathnameLowerCase === '/settings/voterguidelist') {

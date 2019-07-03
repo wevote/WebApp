@@ -4,6 +4,9 @@ const overrides = {
   MuiButton: {
     root: {
       userSelect: 'none',
+      '@media print': {
+        color: '#fff',
+      },
     },
   },
   MuiTooltip: {

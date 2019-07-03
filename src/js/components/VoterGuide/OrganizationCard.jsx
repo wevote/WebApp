@@ -207,12 +207,13 @@ export default class OrganizationCard extends Component {
               ) :
                 null
               }
-              { twitterFollowersCount && !this.props.turnOffTwitterHandle && (
+              {(twitterFollowersCount && numberWithCommas(twitterFollowersCount) !== '0' && !this.props.turnOffTwitterHandle) ? (
                 <span className="twitter-followers__badge">
                   <span className="fab fa-twitter twitter-followers__icon" />
                   {numberWithCommas(twitterFollowersCount)}
                 </span>
-              )}
+              ) : null
+              }
               <IssuesByOrganizationDisplayList
                 organizationWeVoteId={this.state.organizationWeVoteId}
                 placement="bottom"

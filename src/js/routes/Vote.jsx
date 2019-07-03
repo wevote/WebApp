@@ -9,13 +9,14 @@ import BallotIcon from '@material-ui/icons/Ballot';
 import Button from '@material-ui/core/Button';
 import BallotActions from '../actions/BallotActions';
 import AppStore from '../stores/AppStore';
+import BallotItemReadyToVote from '../components/Vote/BallotItemReadyToVote';
 import BallotSearch from '../components/Ballot/BallotSearch';
 import BallotStore from '../stores/BallotStore';
+import BallotTitleHeader from './Ballot/BallotTitleHeader';
 import BrowserPushMessage from '../components/Widgets/BrowserPushMessage';
 import cookies from '../utils/cookies';
-import {
-  cordovaVoteMiniHeader, cordovaScrollablePaneTopPadding, historyPush, isCordova, isWebApp,
-} from '../utils/cordovaUtils';
+import { cordovaVoteMiniHeader, cordovaScrollablePaneTopPadding } from '../utils/cordovaOffsets';
+import { historyPush, isCordova, isWebApp } from '../utils/cordovaUtils';
 import ElectionActions from '../actions/ElectionActions';
 import FindPollingLocation from '../components/Vote/FindPollingLocation';
 import IssueActions from '../actions/IssueActions';
@@ -28,7 +29,6 @@ import SupportStore from '../stores/SupportStore';
 import VoterActions from '../actions/VoterActions';
 import VoterGuideStore from '../stores/VoterGuideStore';
 import VoterStore from '../stores/VoterStore';
-import BallotItemReadyToVote from '../components/Vote/BallotItemReadyToVote';
 
 
 class Vote extends Component {
@@ -419,6 +419,13 @@ class Vote extends Component {
 
     const electionDayTextFormatted = electionDayText ? <span>{moment(electionDayText).format('MMM Do, YYYY')}</span> : <span />;
 
+    let votePaddingClass = 'cordova-dummy-class';
+    if (isWebApp() && ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length) {
+      votePaddingClass = 'row ballot__body__ready-to-vote';
+    } else if (isWebApp()) {
+      votePaddingClass = 'row ballot__body__ready-to-vote--empty';
+    }
+
     return (
       <VoteContainer padTop={cordovaScrollablePaneTopPadding()}>
         <div className={`ballot__heading-vote-section ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`} style={cordovaVoteMiniHeader()}>
@@ -428,20 +435,7 @@ class Vote extends Component {
                 <div className="col-md-12">
                   <Helmet title="Vote - We Vote" />
                   <header className="ballot__header__group">
-                    <h1 className={isCordova() ? 'ballot__header__title__cordova' : 'ballot__header__title'}>
-                      { electionName ? (
-                        <span className={isWebApp() ? 'u-push--sm' : 'ballot__header__title__cordova-text'}>
-                          {electionName}
-                          {' '}
-                          <span className="d-none d-sm-inline">&mdash; </span>
-                          <span className="u-gray-mid u-no-break">{electionDayTextFormatted}</span>
-                        </span>
-                      ) : (
-                        <span className="u-push--sm">
-                          Loading Election...
-                        </span>
-                      )}
-                    </h1>
+                    <BallotTitleHeader electionName={electionName} electionDayTextFormatted={electionDayTextFormatted} />
                   </header>
                   <div className="ballot__filter__container">
                     <BallotFilterRow>
@@ -470,13 +464,7 @@ class Vote extends Component {
         <div className="page-content-container">
           <div className="container-fluid">
             <Wrapper cordova={isCordova()}>
-              <div className={ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length ? (
-                'row ballot__body__ready-to-vote'
-              ) : (
-                // No items to display - adjust padding as necessary
-                'row ballot__body__ready-to-vote--empty'
-              )}
-              >
+              <div className={votePaddingClass}>
                 <BrowserPushMessage incomingProps={this.props} />
                 <div className="col-sm-12 col-lg-8">
                   {ballotWithItemsFromCompletionFilterType && ballotWithItemsFromCompletionFilterType.length ? (
@@ -548,8 +536,9 @@ const VoteContainer = styled.div`
   }
 `;
 
+// Breakpoints cause trouble in Cordova
 const Wrapper = styled.div`
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  @media (max-width: ${({ theme, cordova }) => (cordova ? undefined : theme.breakpoints.md)}) {
     margin: 1em 0;
   }
 `;

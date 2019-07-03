@@ -581,6 +581,9 @@ const SupportFollow = styled.div`
   float: right;
   font-size: 16px;
   font-weight: bold;
+  @media print{
+    border: 2px solid grey;
+  }
 `;
 
 const OpposeFollow = styled.div`
@@ -595,6 +598,9 @@ const OpposeFollow = styled.div`
   float: right;
   font-size: 16px;
   font-weight: bold;
+  @media print{
+    border: 2px solid grey;
+  }
 `;
 
 const Support = styled.div`

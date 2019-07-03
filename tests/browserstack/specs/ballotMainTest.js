@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { scrollThroughPage, setNewAddress, setNewAddressIOS, simpleClick, simpleCloseBootstrapModal } = require('../utils');
+const { scrollThroughPage, clickTopLeftCornerOfElement, setNewAddress, setNewAddressIOS, simpleClick, simpleCloseBootstrapModal } = require('../utils');
 
 const ANDROID_CONTEXT = 'WEBVIEW_org.wevote.cordova';
 const IOS_CONTEXT = 'WEBVIEW_1';
@@ -161,9 +161,21 @@ describe('Basic cross-platform We Vote test',  () => {
 
     await browser.pause(PAUSE_DURATION_REVIEW_RESULTS);
 
-    // TODO Figure out how to close a Material UI Dialog so we can test sign in
-    // await simpleClick('signInHeaderBar'); // Open the "Sign In" modal
-    // await simpleCloseModal(); // Close the "Sign In" modal
+    // Open sign in modal, then close it by pressing button
+    await simpleClick('signInHeaderBar');
+    await simpleClick('profileCloseSignInModal');
+
+    // Open sign in modal, then close it by clicking/tapping outside of modal
+    // NOTE: having trouble doing this with W3C Web Driver protocol, so skip for now
+    if (!browser.isW3C) {
+      await simpleClick('signInHeaderBar');
+      await clickTopLeftCornerOfElement('div[role="document"]');
+    }
+    // If keyboard is available, open sign in modal and close by hitting escape key
+    if (!isAndroid && !isIOS) {
+      await simpleClick('signInHeaderBar');
+      browser.keys(['Escape']);
+    }
 
     assert(true);
   });

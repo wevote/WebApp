@@ -11,12 +11,12 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import SelectVoterGuidesSideBar from '../../components/Navigation/SelectVoterGuidesSideBar';
 import SettingsAccount from '../../components/Settings/SettingsAccount';
 import SettingsAddress from '../../components/Settings/SettingsAddress';
-import SettingsBannerAndOrganizationCard from '../../components/Settings/SettingsBannerAndOrganizationCard';
 import SettingsElection from '../../components/Settings/SettingsElection';
 import SettingsIssueLinks from '../../components/Settings/SettingsIssueLinks';
 import SettingsNotifications from '../../components/Settings/SettingsNotifications';
 import SettingsProfile from '../../components/Settings/SettingsProfile';
 import SettingsPersonalSideBar from '../../components/Navigation/SettingsPersonalSideBar';
+import ToolsToShareOnOtherWebsites from '../../components/Settings/ToolsToShareOnOtherWebsites';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideSettingsPositions from '../../components/Settings/VoterGuideSettingsPositions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -32,7 +32,6 @@ export default class SettingsDashboard extends Component {
     this.state = {
       editMode: '',
       linkedOrganizationWeVoteId: '',
-      organization: {},
       voter: {},
       organizationType: '',
       voterGuideWeVoteId: '',
@@ -66,7 +65,6 @@ export default class SettingsDashboard extends Component {
       const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
       if (organization && organization.organization_we_vote_id) {
         this.setState({
-          organization,
           organizationType: organization.organization_type,
         });
       } else {
@@ -105,7 +103,6 @@ export default class SettingsDashboard extends Component {
       const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
       if (organization && organization.organization_we_vote_id) {
         this.setState({
-          organization,
           organizationType: organization.organization_type,
         });
       } else {
@@ -145,7 +142,6 @@ export default class SettingsDashboard extends Component {
     const organization = OrganizationStore.getOrganizationByWeVoteId(this.state.linkedOrganizationWeVoteId);
     if (organization && organization.organization_type) {
       this.setState({
-        organization,
         organizationType: organization.organization_type,
       });
     }
@@ -197,25 +193,16 @@ export default class SettingsDashboard extends Component {
       case 'profile':
         settingsComponentToDisplay = <SettingsProfile />;
         break;
+      case 'tools':
+        settingsComponentToDisplay = <ToolsToShareOnOtherWebsites />;
+        break;
       case 'voter_guide':
         settingsComponentToDisplay = <VoterGuideSettingsPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />;
         break;
     }
 
-    // console.log("this.state.organization.organization_banner_url:", this.state.organization.organization_banner_url);
     return (
       <div className={isWebApp() ? 'settings-dashboard u-stack--xl' : 'settings-dashboard SettingsCardBottomCordova'}>
-        {/* Header Spacing for Desktop */}
-        { isWebApp() && (
-        <div className={isWebApp() ? 'col-md-12 d-none d-sm-block d-print-none' : 'col-md-12 d-print-none'}>
-          <SettingsBannerAndOrganizationCard organization={this.state.organization} />
-        </div>
-        )}
-        {/* Header Spacing for Mobile */}
-        <div className={isWebApp() ? 'd-block d-sm-none d-print-none' : 'd-print-none'}>
-          <SettingsBannerAndOrganizationCard organization={this.state.organization} />
-        </div>
-
         {/* Desktop left navigation + Settings content.
           WebApp only, since the dashboard doesn't go well with the HamburgerMenu on iPad */}
         { isWebApp() && (
