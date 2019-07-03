@@ -1044,12 +1044,13 @@ class Ballot extends Component {
                   null : (
                     <div className="col-lg-3 d-none d-lg-block sidebar-menu">
                       <BallotSideBar
-                      displayTitle
-                      displaySubtitles
-                      rawUrlVariablesString={this.props.location.search}
-                      ballotWithAllItemsByFilterType={this.state.ballotWithItemsFromCompletionFilterType}
-                      ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
-                      raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
+                        activeRaceItem={raceLevelFilterType}
+                        displayTitle
+                        displaySubtitles
+                        rawUrlVariablesString={this.props.location.search}
+                        ballotWithAllItemsByFilterType={this.state.ballotWithItemsFromCompletionFilterType}
+                        ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
+                        raceLevelFilterItemsInThisBallot={raceLevelFilterItemsInThisBallot}
                       />
                     </div>
                   )

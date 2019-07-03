@@ -22,6 +22,7 @@ class BallotSideBar extends Component {
     pathname: PropTypes.string,
     raceLevelFilterItemsInThisBallot: PropTypes.array,
     classes: PropTypes.object,
+    activeRaceItem: PropTypes.string,
   };
 
   static defaultProps = {
@@ -75,9 +76,9 @@ class BallotSideBar extends Component {
     if (this.props.raceLevelFilterItemsInThisBallot !== nextProps.raceLevelFilterItemsInThisBallot) {
       return true;
     }
-    // if (this.state.expanded !== nextState.expanded) {
-    //   return true;
-    // }
+    if (this.props.activeRaceItem !== nextProps.activeRaceItem) {
+      return true;
+    }
     return false;
   }
 
@@ -167,7 +168,11 @@ class BallotSideBar extends Component {
     });
 
     return (
-      <div key={key} label={type === 'Measure' ? 'Ballot Measures' : `${type} (${filteredBallot.length})`}>
+      <div
+        key={key}
+        isOpen={this.props.activeRaceItem === type}
+        label={type}
+      >
         <ul className="BallotItem__summary__list">
           {filteredBallotListItems}
         </ul>
@@ -191,9 +196,8 @@ class BallotSideBar extends Component {
     const { classes, ballotWithAllItemsByFilterType, raceLevelFilterItemsInThisBallot } = this.props;
 
     const BALLOT_ITEM_FILTER_TYPES = raceLevelFilterItemsInThisBallot;
-    console.log('raceLevelFilterItemsInThisBallot', raceLevelFilterItemsInThisBallot);
 
-    if (ballot && ballot.length) {
+    if (ballot && ballot.length && BALLOT_ITEM_FILTER_TYPES) {
       const ballotWithAllItemIdsByFilterType = [];
       ballotWithAllItemsByFilterType.forEach((itemByFilterType) => {
         ballotWithAllItemIdsByFilterType.push(itemByFilterType.we_vote_id);
@@ -203,15 +207,15 @@ class BallotSideBar extends Component {
         <div className="card">
           { this.props.displayTitle ? (
             <>
-              <Typography variant="h3" classes={{ root: classes.typography }}>Ballot Items</Typography>
+              <Typography variant="h3" classes={{ root: classes.typography }}>Summary Of Ballot Items</Typography>
               <Seperator />
             </>
           ) :
             null
           }
           <List>
-            <BallotSummaryAccordion allowMultipleOpen>
-              { BALLOT_ITEM_FILTER_TYPES.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key))}
+            <BallotSummaryAccordion activeRaceItem={this.props.activeRaceItem} allowMultipleOpen>
+              {BALLOT_ITEM_FILTER_TYPES.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key))}
             </BallotSummaryAccordion>
           </List>
           <div className="h4 text-left" />
@@ -243,7 +247,7 @@ const styles = theme => ({
   typography: {
     padding: '16px 0',
     textAlign: 'center',
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 600,
     [theme.breakpoints.down('lg')]: {
       padding: '12px 0',
