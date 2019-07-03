@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import Button from '@material-ui/core/Button';
 import ElectionStore from '../../stores/ElectionStore';
 import { renderLog } from '../../utils/logging';
 import SelectVoterGuidesSideBarLink from './SelectVoterGuidesSideBarLink';
@@ -73,10 +75,19 @@ export default class SelectVoterGuidesSideBar extends Component {
       <div className="card">
         <div className="card-main">
           <div className="SettingsItem__summary__title">Your Voter Guides</div>
-          <SelectVoterGuidesSideBarLink
-            linkTo="/voterguidegetstarted"
-            label="Create New Voter Guide"
-          />
+          <Link
+            id="selectVoterGuidesSideBarNewVoterGuide"
+            to="/voterguidegetstarted"
+            style={{ textDecoration: 'none' }}
+          >
+            <Button
+              color="primary"
+              variant="contained"
+              fullWidth
+            >
+             New Voter Guide
+            </Button>
+          </Link>
           {voterGuideLinksHtml}
         </div>
       </div>
