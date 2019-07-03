@@ -13,8 +13,9 @@
 }
 
 .u-show-desktop-tablet {
-  @include breakpoints(0 xsmall-bootstrap) {
-    display: none !important;
+  display: none !important;
+  @include breakpoints(xsmall-bootstrap) {
+    display: block !important;
   }
 }
 
