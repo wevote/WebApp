@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import BallotSummaryAccordionSection from './BallotSummaryAccordionSection';
 
 class BallotSummaryAccordion extends Component {
@@ -11,15 +12,33 @@ class BallotSummaryAccordion extends Component {
   constructor (props) {
     super(props);
 
+    this.state = {
+      openSections: {},
+    };
+  }
+
+  componentDidMount () {
     const openSections = {};
 
-    // this.props.children.forEach(child => {
-    //   if (child.props.isOpen) {
-    //     openSections[child.props.label] = true;
-    //   }
-    // });
+    this.props.children.forEach((child) => {
+      if (child.props.isOpen) {
+        openSections[child.props.label] = true;
+      }
+    });
 
-    this.state = { openSections };
+    this.setState({ openSections });
+  }
+
+  componentWillReceiveProps (nextProps) {
+    const openSections = {};
+
+    nextProps.children.forEach((child) => {
+      if (child.props.isOpen) {
+        openSections[child.props.label] = true;
+      }
+    });
+
+    this.setState({ openSections });
   }
 
   onClick = (label) => {
@@ -47,12 +66,14 @@ class BallotSummaryAccordion extends Component {
   };
 
   render () {
-    const { children } = this.props;
-    const { openSections } = this.state;
-    const { onClick } = this;
+    const {
+      onClick,
+      props: { children },
+      state: { openSections },
+    } = this;
 
     return (
-      <div>
+      <>
         {children.map(child => (
           <BallotSummaryAccordionSection
             isOpen={!!openSections[child.props.label]}
@@ -62,7 +83,7 @@ class BallotSummaryAccordion extends Component {
             {child.props.children}
           </BallotSummaryAccordionSection>
         ))}
-      </div>
+      </>
     );
   }
 }
