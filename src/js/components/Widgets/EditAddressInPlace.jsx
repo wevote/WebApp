@@ -41,6 +41,14 @@ export default class EditAddressInPlace extends Component {
     });
   }
 
+  incomingCancelButtonAction = () => {
+    if (this.props.cancelButtonAction) {
+      this.props.cancelButtonAction(this.props.pathname);
+      return true;
+    }
+    return false;
+  }
+
   incomingToggleFunction = () => {
     if (this.props.toggleFunction) {
       this.props.toggleFunction();
@@ -75,7 +83,7 @@ export default class EditAddressInPlace extends Component {
         <span>
           <h4 className="h4">Address</h4>
           <AddressBox
-            cancelEditAddress={this.props.cancelButtonAction ? this.props.cancelButtonAction : this.toggleEditingAddress}
+            cancelEditAddress={this.incomingCancelButtonAction ? this.incomingCancelButtonAction : this.toggleEditingAddress}
             saveUrl={ballotBaseUrl}
             toggleSelectAddressModal={this.props.toggleFunction}
           />

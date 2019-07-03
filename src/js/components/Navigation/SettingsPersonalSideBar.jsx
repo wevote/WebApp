@@ -159,6 +159,22 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           ) : null
           }
+
+          <div className={this.props.editMode === 'tools' ?
+            'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
+            'SettingsItem__summary__item-container '}
+          >
+            <div>
+              <Link to="/settings/tools" className="SettingsItem__summary__item">
+                <span className={this.props.editMode === 'tools' ?
+                  'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
+                  'SettingsItem__summary__item__display-name'}
+                >
+                Tools for Your Website
+                </span>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     );

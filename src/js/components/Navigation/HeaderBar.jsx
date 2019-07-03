@@ -292,21 +292,41 @@ class HeaderBar extends Component {
                       </Tooltip>
                     )
                   }
-                  <div id="profileAvatarHeaderBar"
-                    className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
-                    onClick={this.toggleProfilePopUp}
-                  >
-                    <img
-                      className="header-nav__avatar"
-                      style={{
-                        marginLeft: 16,
-                      }}
-                      src={voterPhotoUrlMedium}
-                      height={34}
-                      width={34}
-                      alt="Your Profile"
-                    />
-                  </div>
+                  <span className="u-show-desktop-tablet">
+                    <span id="profileAvatarHeaderBar"
+                      className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
+                      onClick={this.toggleProfilePopUp}
+                    >
+                      <img
+                        className="header-nav__avatar"
+                        style={{
+                          marginLeft: 16,
+                        }}
+                        src={voterPhotoUrlMedium}
+                        height={34}
+                        width={34}
+                        alt="Your Profile"
+                      />
+                    </span>
+                  </span>
+                  <span className="u-show-mobile">
+                    <div
+                      id="profileAvatarHeaderBar"
+                      className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
+                      onClick={() => this.handleNavigation('/more/hamburger')}
+                    >
+                      <img
+                        className="header-nav__avatar"
+                        style={{
+                          marginLeft: 16,
+                        }}
+                        src={voterPhotoUrlMedium}
+                        height={34}
+                        width={34}
+                        alt="Your Profile"
+                      />
+                    </div>
+                  </span>
                   {this.state.profilePopUpOpen && voterIsSignedIn && (
                     <HeaderBarProfilePopUp
                       hideProfilePopUp={this.hideProfilePopUp}

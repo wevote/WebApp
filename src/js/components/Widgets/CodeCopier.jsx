@@ -124,7 +124,7 @@ export default class CodeCopier extends Component {
     switch (this.props.title) {
       case 'Interactive Ballot Tool':
         return (
-          <div className="col-xs-12 col-sm-6 col-md-4">
+          <div className="col-xs-12 col-sm-6">
             <div className="code-copier">
               <h3 className="h3">{this.props.title}</h3>
               <Button
@@ -173,7 +173,7 @@ export default class CodeCopier extends Component {
 
       case 'Voter Guide Tool':
         return (
-          <div className="col-xs-12 col-sm-6 col-md-4">
+          <div className="col-xs-12 col-sm-6">
             <div className="code-copier">
               <h3 className="h3">{this.props.title}</h3>
               <input
@@ -251,7 +251,7 @@ export default class CodeCopier extends Component {
 
       default:
         return (
-          <div className="col-xs-12 col-sm-6 col-md-4">
+          <div className="col-xs-12 col-sm-6">
             <div className="code-copier">
               <h3 className="h3">{this.props.title}</h3>
               <Button
