@@ -60,12 +60,14 @@ export default class ValuesList extends Component {
     }
 
     const issueListForDisplay = issueList.map(issue => (
-      <IssueCard
-        followToggleOn
-        issue={issue}
-        issueImageSize="SMALL"
-        key={`issue-list-key-${issue.issue_we_vote_id}`}
-      />
+      <div className="col col-12 col-md-6 u-stack--md">
+        <IssueCard
+          followToggleOn
+          issue={issue}
+          issueImageSize="SMALL"
+          key={`issue-list-key-${issue.issue_we_vote_id}`}
+        />
+      </div>
     ));
 
     return (

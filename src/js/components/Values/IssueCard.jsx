@@ -138,64 +138,65 @@ class IssueCard extends Component {
 
 
     return (
-      <div className="col col-12 col-md-6 u-stack--md">
-        <div
-          key={`issue-card-${this.state.issueWeVoteId}`}
-          className="card u-inset__h--md u-padding-top--md u-padding-bottom--xs u-full-height"
-        >
-          <Flex>
-            <div className="card-main__media-object-anchor">
-              {this.props.turnOffIssueImage ?
-                null :
-                (
-                  <Link to={this.getIssueLink}
-                    className="u-no-underline"
-                  >
-                    {issueImage}
-                  </Link>
-                )
-              }
-            </div>
-            <IssueName>
+      <Wrapper
+        key={`issue-card-${this.state.issueWeVoteId}`}
+        className="card u-inset__h--md u-padding-top--md u-padding-bottom--xs u-full-height"
+      >
+        <Flex>
+          <div className="card-main__media-object-anchor">
+            {this.props.turnOffIssueImage ?
+              null :
+              (
+                <Link to={this.getIssueLink}
+                  className="u-no-underline"
+                >
+                  {issueImage}
+                </Link>
+              )
+            }
+          </div>
+          <IssueName>
+            <Link to={this.getIssueLink}
+                  className="u-no-underline"
+            >
+              <h3>{issueDisplayName}</h3>
+            </Link>
+          </IssueName>
+          {this.props.followToggleOn && this.state.issueWeVoteId ? (
+            <FollowToggleContainer>
+              <IssueFollowToggleButton
+                ballotItemWeVoteId={this.state.ballotItemWeVoteId}
+                classNameOverride="pull-left"
+                currentBallotIdInUrl={this.props.currentBallotIdInUrl}
+                issueName={this.state.issue.issue_name}
+                issueWeVoteId={this.state.issueWeVoteId}
+                urlWithoutHash={this.props.urlWithoutHash}
+              />
+            </FollowToggleContainer>
+          ) : null
+          }
+        </Flex>
+        { this.props.turnOffDescription ?
+          <span className="card-main__description" /> :
+          (
+            <Description>
               <Link to={this.getIssueLink}
                     className="u-no-underline"
               >
-                <h3>{issueDisplayName}</h3>
-              </Link>
-            </IssueName>
-            {this.props.followToggleOn && this.state.issueWeVoteId ? (
-              <FollowToggleContainer>
-                <IssueFollowToggleButton
-                  ballotItemWeVoteId={this.state.ballotItemWeVoteId}
-                  classNameOverride="pull-left"
-                  currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-                  issueName={this.state.issue.issue_name}
-                  issueWeVoteId={this.state.issueWeVoteId}
-                  urlWithoutHash={this.props.urlWithoutHash}
+                <ReadMore text_to_display={issueDescription}
+                          num_of_lines={numberOfLines}
                 />
-              </FollowToggleContainer>
-            ) : null
-            }
-          </Flex>
-          { this.props.turnOffDescription ?
-            <span className="card-main__description" /> :
-            (
-              <Description>
-                <Link to={this.getIssueLink}
-                      className="u-no-underline"
-                >
-                  <ReadMore text_to_display={issueDescription}
-                            num_of_lines={numberOfLines}
-                  />
-                </Link>
-              </Description>
-            )
-          }
-        </div>
-      </div>
+              </Link>
+            </Description>
+          )
+        }
+      </Wrapper>
     );
   }
 }
+
+const Wrapper = styled.div`
+`;
 
 const IssueName = styled.h3`
   font-size: 18px;
