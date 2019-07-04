@@ -69,7 +69,7 @@ export default class Header extends Component {
       );
     } else if (settingsMode) {
       const backToSettingsLinkDesktop = '/settings/menu';
-      const backToSettingsLinkMobile = '/more/hamburger';
+      const backToSettingsLinkMobile = '/settings/hamburger';
       const backToSettingsLinkText = 'Settings';
 
       return (

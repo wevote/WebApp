@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 // import { Button } from 'react-bootstrap';
 import Button from '@material-ui/core/Button';
-import BallotSideBar from '../../components/Navigation/BallotSideBar';
 import BallotStore from '../../stores/BallotStore';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { historyPush } from '../../utils/cordovaUtils';
@@ -260,7 +259,7 @@ export default class OrganizationVoterGuide extends Component {
                 </div>
                 <br />
               </div>
-              {this.state.active_route === 'ballot' || this.state.active_route === '' ? (
+              {/* this.state.active_route === 'ballot' || this.state.active_route === '' ? (
                 <BallotSideBar
                   displayTitle
                   displaySubtitles
@@ -270,7 +269,7 @@ export default class OrganizationVoterGuide extends Component {
                   pathname={this.props.location.pathname}
                 />
               ) : null
-              }
+              */}
             </div>
 
             <div className="col-12 col-md-8">

@@ -11,11 +11,16 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import SelectVoterGuidesSideBar from '../../components/Navigation/SelectVoterGuidesSideBar';
 import SettingsAccount from '../../components/Settings/SettingsAccount';
 import SettingsAddress from '../../components/Settings/SettingsAddress';
+import SettingsAnalytics from '../../components/Settings/SettingsAnalytics';
+import SettingsDomain from '../../components/Settings/SettingsDomain';
 import SettingsElection from '../../components/Settings/SettingsElection';
 import SettingsIssueLinks from '../../components/Settings/SettingsIssueLinks';
 import SettingsNotifications from '../../components/Settings/SettingsNotifications';
-import SettingsProfile from '../../components/Settings/SettingsProfile';
 import SettingsPersonalSideBar from '../../components/Navigation/SettingsPersonalSideBar';
+import SettingsProfile from '../../components/Settings/SettingsProfile';
+import SettingsPromotedOrganizations from '../../components/Settings/SettingsPromotedOrganizations';
+import SettingsSharing from '../../components/Settings/SettingsSharing';
+import SettingsSubscriptionPlan from '../../components/Settings/SettingsSubscriptionPlan';
 import ToolsToShareOnOtherWebsites from '../../components/Settings/ToolsToShareOnOtherWebsites';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideSettingsPositions from '../../components/Settings/VoterGuideSettingsPositions';
@@ -176,6 +181,12 @@ export default class SettingsDashboard extends Component {
       case 'address':
         settingsComponentToDisplay = <SettingsAddress />;
         break;
+      case 'analytics':
+        settingsComponentToDisplay = <SettingsAnalytics />;
+        break;
+      case 'domain':
+        settingsComponentToDisplay = <SettingsDomain />;
+        break;
       case 'election':
         settingsComponentToDisplay = <SettingsElection />;
         break;
@@ -192,6 +203,15 @@ export default class SettingsDashboard extends Component {
       default:
       case 'profile':
         settingsComponentToDisplay = <SettingsProfile />;
+        break;
+      case 'promoted':
+        settingsComponentToDisplay = <SettingsPromotedOrganizations />;
+        break;
+      case 'sharing':
+        settingsComponentToDisplay = <SettingsSharing />;
+        break;
+      case 'subscription':
+        settingsComponentToDisplay = <SettingsSubscriptionPlan />;
         break;
       case 'tools':
         settingsComponentToDisplay = <ToolsToShareOnOtherWebsites />;

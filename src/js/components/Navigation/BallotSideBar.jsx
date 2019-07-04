@@ -50,27 +50,27 @@ class BallotSideBar extends Component {
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (this.state.componentDidMountFinished === false) {
-      // console.log("shouldComponentUpdate: componentDidMountFinished === false");
+      // console.log('shouldComponentUpdate: componentDidMountFinished === false');
       return true;
     }
     if (this.state.ballot === undefined && nextState.ballot !== undefined) {
-      // console.log("shouldComponentUpdate: new ballot found");
+      // console.log('shouldComponentUpdate: new ballot found');
       return true;
     }
     if (this.state.ballot !== undefined && this.state.ballot.length !== nextState.ballot.length) {
-      // console.log("shouldComponentUpdate: changed this.props.ballot.length", this.state.ballot.length, ", nextState.ballot.length", nextState.ballot.length);
+      // console.log('shouldComponentUpdate: changed this.props.ballot.length', this.state.ballot.length, ', nextState.ballot.length', nextState.ballot.length);
       return true;
     }
     if (this.props.ballotWithAllItemsByFilterType.length !== nextProps.ballotWithAllItemsByFilterType.length) {
-      // console.log("shouldComponentUpdate: changed this.props.ballotWithAllItemsByFilterType.length", this.props.ballotWithAllItemsByFilterType.length, ", nextState.ballotWithAllItemsByFilterType.length", nextProps.ballotWithAllItemsByFilterType.length);
+      // console.log('shouldComponentUpdate: changed this.props.ballotWithAllItemsByFilterType.length', this.props.ballotWithAllItemsByFilterType.length, ', nextState.ballotWithAllItemsByFilterType.length', nextProps.ballotWithAllItemsByFilterType.length);
       return true;
     }
     if (this.props.displayTitle !== nextProps.displayTitle) {
-      // console.log("shouldComponentUpdate: changed this.props.displayTitle", this.props.displayTitle, ", nextState.displayTitle", nextProps.displayTitle);
+      // console.log('shouldComponentUpdate: changed this.props.displayTitle', this.props.displayTitle, ', nextState.displayTitle', nextProps.displayTitle);
       return true;
     }
     if (this.props.pathname !== nextProps.pathname) {
-      // console.log("shouldComponentUpdate: changed this.props.pathname", this.props.pathname, ", nextState.pathname", nextProps.pathname);
+      // console.log('shouldComponentUpdate: changed this.props.pathname', this.props.pathname, ', nextState.pathname', nextProps.pathname);
       return true;
     }
     if (this.props.raceLevelFilterItemsInThisBallot !== nextProps.raceLevelFilterItemsInThisBallot) {
@@ -133,6 +133,7 @@ class BallotSideBar extends Component {
   // }
 
   filteredBallotToRender (ballot, ballotWithAllItemIdsByFilterType, type, key) {
+    // console.log('BallotSideBar, filteredBallotToRender');
     const filteredBallot = ballot.filter((item) => {
       if (item.kind_of_ballot_item === 'MEASURE') {
         return type === 'Measure';
@@ -186,7 +187,7 @@ class BallotSideBar extends Component {
   }
 
   render () {
-    // console.log("BallotSideBar render");
+    // console.log('BallotSideBar render');
     renderLog(__filename);
 
     // let turnedOnNPSInput = false;
@@ -194,15 +195,22 @@ class BallotSideBar extends Component {
 
     const { ballot } = this.state;
     const { classes, ballotWithAllItemsByFilterType, raceLevelFilterItemsInThisBallot } = this.props;
-
-    const BALLOT_ITEM_FILTER_TYPES = raceLevelFilterItemsInThisBallot;
-
-    if (ballot && ballot.length && BALLOT_ITEM_FILTER_TYPES) {
+    const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local']; // Properly ordered
+    const raceLevelFilterItemsInThisBallotOrdered = [];
+    // Make the incoming raceLevelFilterItems match the standard order
+    if (raceLevelFilterItemsInThisBallot) {
+      for (let i = 0; i < BALLOT_ITEM_FILTER_TYPES.length; i++) {
+        if (raceLevelFilterItemsInThisBallot.findIndex(item => BALLOT_ITEM_FILTER_TYPES[i].toLowerCase() === item.toLowerCase()) !== -1) {
+          raceLevelFilterItemsInThisBallotOrdered.push(BALLOT_ITEM_FILTER_TYPES[i]);
+        }
+      }
+    }
+    if (ballot && ballot.length && raceLevelFilterItemsInThisBallotOrdered) {
       const ballotWithAllItemIdsByFilterType = [];
       ballotWithAllItemsByFilterType.forEach((itemByFilterType) => {
         ballotWithAllItemIdsByFilterType.push(itemByFilterType.we_vote_id);
       });
-
+      // console.log('BallotSideBar, raceLevelFilterItemsInThisBallotOrdered:', raceLevelFilterItemsInThisBallotOrdered);
       return (
         <div className="card">
           { this.props.displayTitle ? (
@@ -215,7 +223,7 @@ class BallotSideBar extends Component {
           }
           <List>
             <BallotSummaryAccordion activeRaceItem={this.props.activeRaceItem} allowMultipleOpen>
-              {BALLOT_ITEM_FILTER_TYPES.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key))}
+              {raceLevelFilterItemsInThisBallotOrdered.map((type, key) => this.filteredBallotToRender(ballot, ballotWithAllItemIdsByFilterType, type, key))}
             </BallotSummaryAccordion>
           </List>
           <div className="h4 text-left" />
@@ -224,7 +232,10 @@ class BallotSideBar extends Component {
               <Link id="ballotSideBarTermsOfService" to="/more/terms">
                 <span className="u-no-break">Terms of Service</span>
               </Link>
-              <span style={{ paddingLeft: 20 }} />
+            </span>
+          </SidebarFooter>
+          <SidebarFooter>
+            <span className="terms-and-privacy">
               <Link id="ballotSideBarPrivacyPolicy" to="/more/privacy">
                 <span className="u-no-break">Privacy Policy</span>
               </Link>
@@ -256,7 +267,8 @@ const styles = theme => ({
 });
 
 const SidebarFooter = styled.div`
-  margin-left: 8px;
+  margin-bottom: 10px;
+  text-align: center;
 `;
 
 const Seperator = styled.div`

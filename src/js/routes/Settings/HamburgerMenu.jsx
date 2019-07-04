@@ -122,13 +122,15 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            <HamburgerMenuRow
-              onClickAction={null}
-              to="/settings/profile"
-              icon="fa fa-address-card"
-              iconStyle={{ fontSize: 28, color: '#1c2f4b' }}
-              linkText="Profile"
-            />
+            {isSignedIn && (
+              <HamburgerMenuRow
+                onClickAction={null}
+                to="/settings/profile"
+                icon="fa fa-address-card"
+                iconStyle={{ fontSize: 28, color: '#1c2f4b' }}
+                linkText="General"
+              />
+            )}
 
             {isSignedIn && (
               <HamburgerMenuRow
@@ -138,23 +140,6 @@ export default class HamburgerMenu extends Component {
                 linkText="Security & Sign In"
               />
             )}
-
-            <HamburgerMenuRow
-              onClickAction={null}
-              to="/settings/address"
-              icon="fa fa-home"
-              iconStyle={{ fontSize: 30, color: '#1c2f4b' }}
-              linkText="Address"
-            />
-
-            <HamburgerMenuRow
-              onClickAction={null}
-              to="/settings/election"
-              icon="fa fa-cog"
-              iconStyle={{ fontSize: 28, color: '#1c2f4b' }}
-              linkText="Election Choice"
-            />
-
 
             {isSignedIn && (
               <HamburgerMenuRow
@@ -166,13 +151,65 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            <HamburgerMenuRow
-              onClickAction={null}
-              to="/settings/tools"
-              icon="fa fa-tools"
-              iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
-              linkText="Tools for Your Website"
-            />
+            {isSignedIn && isWebApp() && (
+              <HamburgerMenuRow
+                onClickAction={null}
+                to="/settings/domain"
+                icon="fa fa-globe-americas"
+                iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
+                linkText="Domain"
+              />
+            )}
+
+            {isSignedIn && isWebApp() && (
+              <HamburgerMenuRow
+                onClickAction={null}
+                to="/settings/sharing"
+                icon="fa fa-share"
+                iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
+                linkText="Sharing"
+              />
+            )}
+
+            {isSignedIn && isWebApp() && (
+              <HamburgerMenuRow
+                onClickAction={null}
+                to="/settings/subscription"
+                icon="fa fa-shopping-cart"
+                iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
+                linkText="Subscription Plan"
+              />
+            )}
+
+            {isSignedIn && isWebApp() && (
+              <HamburgerMenuRow
+                onClickAction={null}
+                to="/settings/analytics"
+                icon="fa fa-chart-line"
+                iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
+                linkText="Analytics"
+              />
+            )}
+
+            {isSignedIn && isWebApp() && (
+              <HamburgerMenuRow
+                onClickAction={null}
+                to="/settings/promoted"
+                icon="fa fa-bullhorn"
+                iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
+                linkText="Promoted Organizations"
+              />
+            )}
+
+            {isWebApp() && (
+              <HamburgerMenuRow
+                onClickAction={null}
+                to="/settings/tools"
+                icon="fa fa-tools"
+                iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
+                linkText="Tools for Your Website"
+              />
+            )}
 
             <HamburgerMenuRow
               onClickAction={null}

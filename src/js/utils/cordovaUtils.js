@@ -420,7 +420,7 @@ export function pageEnumeration () {
   } else if (href.indexOf('/index.html#/more/privacy') > 0 ||
              href.indexOf('/index.html#/more/terms') > 0) {
     return enums.moreTerms;
-  } else if (href.indexOf('/index.html#/more/hamburger') > 0) {
+  } else if (href.indexOf('/index.html#/settings/hamburger') > 0) {
     return enums.moreHamburger;
   } else if (href.indexOf('/index.html#/settings/tools') > 0) {
     return enums.moreTools;

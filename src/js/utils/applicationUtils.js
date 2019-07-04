@@ -57,8 +57,7 @@ export function getApplicationViewBooleans (pathname) {
     voteMode = true;
   } else if (pathnameLowerCase.startsWith('/ballot')) {
     contentFullWidthMode = false;
-  } else if (stringContains('/settings', pathnameLowerCase) ||
-    pathnameLowerCase === '/more/hamburger') {
+  } else if (stringContains('/settings', pathnameLowerCase)) {
     contentFullWidthMode = true;
     settingsMode = true;
   } else if (pathnameLowerCase.startsWith('/value') || // '/values'
@@ -93,10 +92,15 @@ export function getApplicationViewBooleans (pathname) {
     showBackToBallotHeader = true;
   } else if (pathnameLowerCase === '/settings/account' ||
     pathnameLowerCase === '/settings/address' ||
+    pathnameLowerCase === '/settings/analytics' ||
+    pathnameLowerCase === '/settings/domain' ||
     pathnameLowerCase === '/settings/election' ||
     stringContains('/settings/issues', pathnameLowerCase) ||
     pathnameLowerCase === '/settings/notifications' ||
     pathnameLowerCase === '/settings/profile' ||
+    pathnameLowerCase === '/settings/promoted' ||
+    pathnameLowerCase === '/settings/sharing' ||
+    pathnameLowerCase === '/settings/subscription' ||
     pathnameLowerCase === '/settings/tools' ||
     stringContains('/settings/voter_guide', pathnameLowerCase) ||
     pathnameLowerCase === '/settings/voterguidesmenu' ||
