@@ -8,7 +8,7 @@ export function extractFirstEndorsementFromPositionList (positionListAsDict, lim
   for (let i = 0; i < positionListAsArray.length; i++) {
     onePosition = positionListAsArray[i];
     // console.log('onePosition.statement_text: ', onePosition.statement_text, 'limitToYes:', limitToYes, 'limitToNo:', limitToNo);
-    if (onePosition && onePosition.statement_text && onePosition.statement_text.length > 2) {
+    if (onePosition && onePosition.statement_text && onePosition.statement_text.length > 2 && onePosition.speaker_type !== 'I') {
       if (limitToYes && !onePosition.is_support_or_positive_rating) {
         // ignore
       } else if (limitToNo && !onePosition.is_oppose_or_negative_rating) {

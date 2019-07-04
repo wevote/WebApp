@@ -396,7 +396,6 @@ class OfficeItemCompressed extends Component {
             <Title>
               {ballotItemDisplayName}
               <ArrowForwardIcon
-                className="u-show-desktop-tablet"
                 classes={{ root: classes.cardHeaderIconRoot }}
               />
             </Title>
@@ -440,15 +439,14 @@ const Container = styled.div`
   }
 `;
 
-const Title = styled.h1`
+const Title = styled.div`
   font-size: 18px;
   font-weight: bold;
-  margin: .1rem 0;
+  margin-bottom: 12px;
   cursor: pointer;
-  padding-bottom: 16px;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     font-size: 16px;
-    padding-bottom: 0;
+    margin-bottom: 8px;
   }
 `;
 

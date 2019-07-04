@@ -22,7 +22,7 @@ class FooterBar extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      friendInvitationsSentToMe: 0,
+      friendInvitationsSentToMe: 0, // eslint-disable-line react/no-unused-state
     };
   }
 
@@ -30,7 +30,7 @@ class FooterBar extends React.Component {
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
 
     this.setState({
-      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(), // eslint-disable-line react/no-unused-state
     });
   }
 
@@ -40,7 +40,7 @@ class FooterBar extends React.Component {
 
   onFriendStoreChange () {
     this.setState({
-      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(), // eslint-disable-line react/no-unused-state
     });
   }
 

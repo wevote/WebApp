@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-// import { Button } from 'react-bootstrap';
 import Button from '@material-ui/core/Button';
-import BallotStore from '../../stores/BallotStore';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { historyPush } from '../../utils/cordovaUtils';
 import FollowToggle from '../../components/Widgets/FollowToggle';
@@ -30,7 +28,6 @@ export default class OrganizationVoterGuide extends Component {
     super(props);
     this.state = {
       active_route: '',
-      ballotWithAllItemsByFilterType: [],
       organizationWeVoteId: '',
       organization: {},
       voter: {},
@@ -83,11 +80,6 @@ export default class OrganizationVoterGuide extends Component {
     this.setState({
       active_route: this.props.active_route,
     });
-
-    const ballotWithAllItemsByFilterType = BallotStore.getBallotByCompletionLevelFilterType();
-    if (ballotWithAllItemsByFilterType !== undefined) {
-      this.setState({ ballotWithAllItemsByFilterType });
-    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -259,17 +251,6 @@ export default class OrganizationVoterGuide extends Component {
                 </div>
                 <br />
               </div>
-              {/* this.state.active_route === 'ballot' || this.state.active_route === '' ? (
-                <BallotSideBar
-                  displayTitle
-                  displaySubtitles
-                  rawUrlVariablesString=""
-                  ballotItemLinkHasBeenClicked={this.ballotItemLinkHasBeenClicked}
-                  ballotWithAllItemsByFilterType={this.state.ballotWithAllItemsByFilterType}
-                  pathname={this.props.location.pathname}
-                />
-              ) : null
-              */}
             </div>
 
             <div className="col-12 col-md-8">

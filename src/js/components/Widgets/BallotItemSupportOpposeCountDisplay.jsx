@@ -151,7 +151,7 @@ class BallotItemSupportOpposeCountDisplay extends Component {
       numberOfInfoOnlyPositions,
       organizationsToFollowSupport,
       organizationsToFollowOppose,
-      positionListFromAdvisersFollowedByVoter,
+      positionListFromAdvisersFollowedByVoter, // eslint-disable-line react/no-unused-state
     }));
   }
 
