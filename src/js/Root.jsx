@@ -26,7 +26,7 @@ import FriendInvitationsSentByMe from './routes/Friends/FriendInvitationsSentByM
 import FriendInvitationsSentToMe from './routes/Friends/FriendInvitationsSentToMe';
 import SuggestedFriends from './routes/Friends/SuggestedFriends';
 import GetStarted from './routes/Intro/GetStarted';
-import HamburgerMenu from './routes/More/HamburgerMenu';
+import HamburgerMenu from './routes/Settings/HamburgerMenu';
 import HowItWorks from './routes/HowItWorks';
 import Intro from './routes/Intro/Intro';
 import IntroNetwork from './routes/Intro/IntroNetwork';
@@ -136,6 +136,7 @@ const routes = () => (
     {/* Complete path on one line for searching */}
     <Route path="/settings" component={SettingsDashboard} />
     <Route path="/settings/claim" component={ClaimYourPage} />
+    <Route path="/settings/hamburger" component={HamburgerMenu} />
     <Route path="/settings/location" component={Location} />
     <Route path="/settings/menu" component={SettingsMenuMobile} />
     <Route path="/settings/voterguidelist" component={VoterGuideListDashboard} />
@@ -176,7 +177,6 @@ const routes = () => (
     <Route path="/more/facebooklandingprocess" component={FacebookLandingProcess} />
     <Route path="/more/facebookredirecttowevote" component={FacebookRedirectToWeVote} />
     <Route path="/more/faq" component={FAQ} />
-    <Route path="/more/hamburger" component={HamburgerMenu} />
     <Route path="/more/jump" component={SignInJumpProcess} />
     <Route path="/more/myballot" component={WeVoteBallotEmbed} />
     <Route path="/more/network" component={Friends} />

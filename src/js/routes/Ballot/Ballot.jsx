@@ -17,7 +17,6 @@ import BallotSideBar from '../../components/Navigation/BallotSideBar';
 import BallotSearch from '../../components/Ballot/BallotSearch';
 import BallotStatusMessage from '../../components/Ballot/BallotStatusMessage';
 import BallotStore from '../../stores/BallotStore';
-import BallotSummaryModal from '../../components/Ballot/BallotSummaryModal';
 import BrowserPushMessage from '../../components/Widgets/BrowserPushMessage';
 import cookies from '../../utils/cookies';
 import { cordovaBallotFilterTopMargin, cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
@@ -41,7 +40,6 @@ import AppStore from '../../stores/AppStore';
 import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 import { formatVoterBallotList, checkShouldUpdate } from './utils';
-// import SelectBallotModal from '../../components/Ballot/SelectBallotModal';
 import AppActions from '../../actions/AppActions';
 
 
@@ -84,7 +82,6 @@ class Ballot extends Component {
       mounted: false,
       showBallotIntroModal: false,
       showSelectBallotModal: false,
-      showBallotSummaryModal: false,
       voterBallotList: [],
       showFilterTabs: false,
       ballotHeaderUnpinned: false,
@@ -96,7 +93,6 @@ class Ballot extends Component {
     this.ballotItems = {};
     this.ballotItemLinkHasBeenClicked = this.ballotItemLinkHasBeenClicked.bind(this);
     this.toggleBallotIntroModal = this.toggleBallotIntroModal.bind(this);
-    this.toggleBallotSummaryModal = this.toggleBallotSummaryModal.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.updateOfficeDisplayUnfurledTracker = this.updateOfficeDisplayUnfurledTracker.bind(this);
   }
@@ -690,13 +686,6 @@ class Ballot extends Component {
     this.setState({ showBallotIntroModal: !showBallotIntroModal });
   }
 
-  toggleBallotSummaryModal () {
-    const { showBallotSummaryModal } = this.state;
-    this.setState({
-      showBallotSummaryModal: !showBallotSummaryModal,
-    });
-  }
-
   toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
     const { showSelectBallotModal } = this.state;
     // console.log('Ballot toggleSelectBallotModal, destinationUrlForHistoryPush:', destinationUrlForHistoryPush, ', showSelectBallotModal:', showSelectBallotModal);
@@ -868,7 +857,6 @@ class Ballot extends Component {
 
     return (
       <div className="ballot_root">
-        { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this.toggleBallotSummaryModal} /> : null }
         <div className={`ballot__heading ${ballotHeaderUnpinned && isWebApp() ? 'ballot__heading__unpinned' : ''}`}>
           <div className="page-content-container" style={{ marginTop: `${cordovaBallotFilterTopMargin()}` }}>
             <div className="container-fluid">

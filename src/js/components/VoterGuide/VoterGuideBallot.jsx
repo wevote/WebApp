@@ -17,7 +17,6 @@ import BallotElectionList from '../Ballot/BallotElectionList';
 import BallotItemCompressed from '../Ballot/BallotItemCompressed';
 import BallotStatusMessage from '../Ballot/BallotStatusMessage';
 import BallotStore from '../../stores/BallotStore';
-import BallotSummaryModal from '../Ballot/BallotSummaryModal';
 import BallotSearch from '../Ballot/BallotSearch';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
@@ -92,7 +91,6 @@ class VoterGuideBallot extends Component {
       organization: {},
       showBallotIntroModal: false,
       showSelectBallotModal: false,
-      showBallotSummaryModal: false,
       voterBallotList: [],
       voterGuideOnStage: undefined,
       showFilterTabs: false,
@@ -105,7 +103,6 @@ class VoterGuideBallot extends Component {
     this.toggleBallotIntroModal = this.toggleBallotIntroModal.bind(this);
     this.ballotItemsCompressedReference = {};
     this.pledgeToVoteWithVoterGuide = this.pledgeToVoteWithVoterGuide.bind(this);
-    this.toggleBallotSummaryModal = this.toggleBallotSummaryModal.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.updateOfficeDisplayUnfurledTracker = this.updateOfficeDisplayUnfurledTracker.bind(this);
   }
@@ -736,13 +733,6 @@ class VoterGuideBallot extends Component {
     this.setState({ showBallotIntroModal: !showBallotIntroModal });
   }
 
-  toggleBallotSummaryModal () {
-    const { showBallotSummaryModal } = this.state;
-    this.setState({
-      showBallotSummaryModal: !showBallotSummaryModal,
-    });
-  }
-
   toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
     const { showSelectBallotModal } = this.state;
     if (showSelectBallotModal) {
@@ -942,7 +932,6 @@ class VoterGuideBallot extends Component {
             toggleFunction={this.toggleSelectBallotModal}
           />
         ) : null }
-        { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this.toggleBallotSummaryModal} /> : null }
         <div className="card">
           <div className="card-main">
             <Helmet title={`${this.state.organization.organization_name} - We Vote`} />

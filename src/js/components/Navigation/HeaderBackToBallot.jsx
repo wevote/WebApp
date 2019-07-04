@@ -411,7 +411,7 @@ class HeaderBackToBallot extends Component {
                       src={voterPhotoUrlMedium}
                       height={34}
                       width={34}
-                      alt="Your Profile"
+                      alt="Your Settings"
                     />
                   </div>
                 ) : (

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import BallotSummaryAccordionSection from './BallotSummaryAccordionSection';
+
 
 class BallotSummaryAccordion extends Component {
   static propTypes = {
@@ -30,6 +30,7 @@ class BallotSummaryAccordion extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    // console.log('BallotSummaryAccordion componentWillReceiveProps');
     const openSections = {};
 
     nextProps.children.forEach((child) => {
@@ -42,6 +43,7 @@ class BallotSummaryAccordion extends Component {
   }
 
   onClick = (label) => {
+    // console.log('BallotSummaryAccordion onClick');
     const {
       props: { allowMultipleOpen },
       state: { openSections },
@@ -66,6 +68,7 @@ class BallotSummaryAccordion extends Component {
   };
 
   render () {
+    // console.log('BallotSummaryAccordion render');
     const {
       onClick,
       props: { children },
@@ -77,6 +80,7 @@ class BallotSummaryAccordion extends Component {
         {children.map(child => (
           <BallotSummaryAccordionSection
             isOpen={!!openSections[child.props.label]}
+            key={`accordionKey-${child.props.label}`}
             label={child.props.label}
             onClick={onClick}
           >

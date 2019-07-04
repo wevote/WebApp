@@ -6,6 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 
+
 class BallotSummaryAccordionSection extends Component {
   static propTypes = {
     children: PropTypes.instanceOf(Object).isRequired,
@@ -20,6 +21,7 @@ class BallotSummaryAccordionSection extends Component {
   };
 
   render () {
+    // console.log('BallotSummaryAccordionSection render');
     const {
       onClick,
       props: { isOpen, label, classes },
