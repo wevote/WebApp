@@ -73,12 +73,11 @@ class VoterGuidesUnderOneValue extends Component {
     return (
       <div className="opinion-view">
         <Helmet title={`${pageTitle} - We Vote`} />
-        <h1 className="h1">{pageTitle}</h1>
         <div>
           <IssueCard
             followToggleOn
             issue={issue}
-            issueImageSize="SMALL"
+            issueImageSize="MEDIUM"
             key={`issue-list-key-${issue.issue_we_vote_id}`}
           />
           <SearchGuidesToFollowBox />

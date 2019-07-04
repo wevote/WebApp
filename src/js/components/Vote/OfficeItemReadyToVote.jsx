@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import Avatar from '@material-ui/core/Avatar/index';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { isCordova } from '../../utils/cordovaUtils';
@@ -8,7 +9,6 @@ import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import SupportStore from '../../stores/SupportStore';
 import { toTitleCase } from '../../utils/textFormat';
-import { Wrapper, InnerWrapper, BioColumn, OfficeColumn, OfficeText, BioInformation, NameText, DescriptionText, HR, DesktopTabletView, MobileView } from './BallotItemReadyToVote';
 
 
 class OfficeItemReadyToVote extends Component {
@@ -140,5 +140,74 @@ class OfficeItemReadyToVote extends Component {
     );
   }
 }
+
+const Wrapper = styled.div`
+  padding: 24px 24px 20px 24px;
+  transition: all 200ms ease-in;
+  border: 1px solid transparent;
+  border-radius: 4px;
+`;
+
+const InnerWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  width: 100%;
+`;
+
+const BioColumn = styled.div`
+  display: flex;
+`;
+
+const OfficeColumn = styled.div`
+  display: flex;
+`;
+
+const OfficeText = styled.p`
+  font-weight: 500;
+  margin: auto 0;
+  margin-right: 16px;
+`;
+
+const BioInformation = styled.div`
+  display: flex;
+  flex-flow: column;
+  margin-left: 8px;
+`;
+
+const NameText = styled.h3`
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+  @media print{
+    font-size: 1.5rem;
+  }
+`;
+
+const DescriptionText = styled.p`
+  font-size: 12px;
+  margin: 0;
+  @media print {
+    font-size: 1.5rem;
+  } 
+`;
+
+const HR = styled.hr`
+  margin: 0 24px;
+`;
+
+const DesktopTabletView = styled.div`
+  display: inherit;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    display: none;
+  }
+`;
+
+const MobileView = styled.div`
+  display: inherit;
+  @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
+    display: none;
+  }
+`;
 
 export default OfficeItemReadyToVote;

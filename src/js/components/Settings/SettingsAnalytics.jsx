@@ -10,7 +10,7 @@ import VoterStore from '../../stores/VoterStore';
 
 export default class SettingsAnalytics extends Component {
   static propTypes = {
-    samplePropName: PropTypes.bool,
+    samplePropName: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
   };
 
   constructor (props) {

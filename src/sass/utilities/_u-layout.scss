@@ -15,7 +15,7 @@
 .u-show-desktop-tablet {
   display: none !important;
   @include breakpoints(xsmall-bootstrap) {
-    display: block !important;
+    display: inline !important;
   }
 }
 
