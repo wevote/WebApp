@@ -4,7 +4,6 @@ const date = new Date();
 const dateForDisplay = date.toDateString();
 const buildNameForDisplay = `${browserStackConfig.BUILD}: ${dateForDisplay}`;
 
-
 exports.config = {
   user: browserStackConfig.BROWSERSTACK_USER,
   key: browserStackConfig.BROWSERSTACK_KEY,
@@ -70,6 +69,7 @@ exports.config = {
     },
   ],
   coloredLogs: true,
+  logLevel: 'trace',
   baseUrl: '',
   waitforTimeout: 180000, // 3 minutes
   connectionRetryTimeout: 90000,

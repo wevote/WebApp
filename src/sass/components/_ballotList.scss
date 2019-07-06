@@ -77,13 +77,13 @@ $ballotBottomPaddingCordova: 300px;  //needed for editable comment on last propo
     }
 
     &__body {
-      padding-left: 8px !important;
+      padding-left: $space-sm !important;
     }
 
     &__list {
       list-style: none !important;
-      margin: 0 !important;
-      padding: 0 !important;
+      margin: $margin-zero !important;
+      padding: $margin-zero !important;
     }
   }
 

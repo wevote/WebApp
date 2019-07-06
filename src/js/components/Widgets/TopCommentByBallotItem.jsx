@@ -233,10 +233,16 @@ export default class TopCommentByBallotItem extends Component {
           {endorsementOrganization}
           .
         </span>
-        {' "'}
-        <span className="u-show-desktop-tablet">{croppedEndorsementTextDesktopTablet}</span>
-        <span className="u-show-mobile">{croppedEndorsementTextMobile}</span>
-        {'"'}
+        <span className="u-show-desktop-tablet">
+          &quot;
+          {croppedEndorsementTextDesktopTablet}
+          &quot;
+        </span>
+        <span className="u-show-mobile">
+          &quot;
+          {croppedEndorsementTextMobile}
+          &quot;
+        </span>
         { this.state.learnMoreUrl ? (
           <span>
             {' '}

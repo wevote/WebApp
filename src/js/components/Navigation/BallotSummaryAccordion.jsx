@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import BallotSummaryAccordionSection from './BallotSummaryAccordionSection';
 
+
 class BallotSummaryAccordion extends Component {
   static propTypes = {
     allowMultipleOpen: PropTypes.bool,
@@ -11,18 +12,38 @@ class BallotSummaryAccordion extends Component {
   constructor (props) {
     super(props);
 
+    this.state = {
+      openSections: {},
+    };
+  }
+
+  componentDidMount () {
     const openSections = {};
 
-    // this.props.children.forEach(child => {
-    //   if (child.props.isOpen) {
-    //     openSections[child.props.label] = true;
-    //   }
-    // });
+    this.props.children.forEach((child) => {
+      if (child.props.isOpen) {
+        openSections[child.props.label] = true;
+      }
+    });
 
-    this.state = { openSections };
+    this.setState({ openSections });
+  }
+
+  componentWillReceiveProps (nextProps) {
+    // console.log('BallotSummaryAccordion componentWillReceiveProps');
+    const openSections = {};
+
+    nextProps.children.forEach((child) => {
+      if (child.props.isOpen) {
+        openSections[child.props.label] = true;
+      }
+    });
+
+    this.setState({ openSections });
   }
 
   onClick = (label) => {
+    // console.log('BallotSummaryAccordion onClick');
     const {
       props: { allowMultipleOpen },
       state: { openSections },
@@ -47,22 +68,26 @@ class BallotSummaryAccordion extends Component {
   };
 
   render () {
-    const { children } = this.props;
-    const { openSections } = this.state;
-    const { onClick } = this;
+    // console.log('BallotSummaryAccordion render');
+    const {
+      onClick,
+      props: { children },
+      state: { openSections },
+    } = this;
 
     return (
-      <div>
+      <>
         {children.map(child => (
           <BallotSummaryAccordionSection
             isOpen={!!openSections[child.props.label]}
+            key={`accordionKey-${child.props.label}`}
             label={child.props.label}
             onClick={onClick}
           >
             {child.props.children}
           </BallotSummaryAccordionSection>
         ))}
-      </div>
+      </>
     );
   }
 }

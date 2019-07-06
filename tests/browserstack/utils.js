@@ -101,4 +101,16 @@ function writeToLog (message) {
   });
 }
 
-module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, simpleCloseBootstrapModal, simpleTextInput, setNewAddress, setNewAddressIOS, writeToLog };
+async function clickTopLeftCornerOfElement (selector) {
+  const element = await $(selector);
+  if (element.isW3C) {
+    // need to figure out how to use webdriverio's performActions with BrowserStack
+  } else {
+    // JSON Wire Protocol
+    await element.moveTo(1, 1);
+    await element.positionClick();
+  }
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
+module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, clickTopLeftCornerOfElement, simpleCloseBootstrapModal, simpleTextInput, setNewAddress, setNewAddressIOS, writeToLog };

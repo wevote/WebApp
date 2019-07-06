@@ -6,7 +6,7 @@ import VoterGuideStore from '../../stores/VoterGuideStore';
 import SearchGuidesToFollowBox from '../../components/Search/SearchGuidesToFollowBox';
 import GuideList from '../../components/VoterGuide/GuideList';
 import IssueStore from '../../stores/IssueStore';
-
+import IssueCard from '../../components/Values/IssueCard';
 
 class VoterGuidesUnderOneValue extends Component {
   static propTypes = {
@@ -73,8 +73,13 @@ class VoterGuidesUnderOneValue extends Component {
     return (
       <div className="opinion-view">
         <Helmet title={`${pageTitle} - We Vote`} />
-        <h1 className="h1">{pageTitle}</h1>
         <div>
+          <IssueCard
+            followToggleOn
+            issue={issue}
+            issueImageSize="MEDIUM"
+            key={`issue-list-key-${issue.issue_we_vote_id}`}
+          />
           <SearchGuidesToFollowBox />
           { ballotHasGuidesForValue || !issueNameFound ?
             <p /> :

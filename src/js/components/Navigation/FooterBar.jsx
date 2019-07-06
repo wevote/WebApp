@@ -8,7 +8,8 @@ import BallotIcon from '@material-ui/icons/Ballot';
 import HowToVoteIcon from '@material-ui/icons/HowToVote';
 // import PeopleIcon from '@material-ui/icons/People'; // DALE: FRIENDS TEMPORARILY DISABLED
 import styled from 'styled-components';
-import { cordovaFooterHeight, historyPush } from '../../utils/cordovaUtils';
+import { cordovaFooterHeight } from '../../utils/cordovaOffsets';
+import { historyPush } from '../../utils/cordovaUtils';
 import { stringContains } from '../../utils/textFormat';
 import FriendStore from '../../stores/FriendStore';
 
@@ -21,7 +22,7 @@ class FooterBar extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      friendInvitationsSentToMe: 0,
+      friendInvitationsSentToMe: 0, // eslint-disable-line react/no-unused-state
     };
   }
 
@@ -29,7 +30,7 @@ class FooterBar extends React.Component {
     this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
 
     this.setState({
-      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(), // eslint-disable-line react/no-unused-state
     });
   }
 
@@ -39,7 +40,7 @@ class FooterBar extends React.Component {
 
   onFriendStoreChange () {
     this.setState({
-      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(), // eslint-disable-line react/no-unused-state
     });
   }
 

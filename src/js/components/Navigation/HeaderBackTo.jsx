@@ -9,7 +9,7 @@ import { withStyles } from '@material-ui/core/styles';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
 import cookies from '../../utils/cookies';
-import { hasIPhoneNotch, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
@@ -136,6 +136,8 @@ class HeaderBackTo extends Component {
     });
   }
 
+  handleNavigation = to => historyPush(to);
+
   transitionToYourVoterGuide () {
     // Positions for this organization, for this voter / election
     OrganizationActions.positionListForOpinionMaker(this.state.voter.linked_organization_we_vote_id, true);
@@ -211,33 +213,63 @@ class HeaderBackTo extends Component {
           />
 
           {isWebApp() && (
-          <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
+          <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
             {voterIsSignedIn ? (
               <span>
                 {voterPhotoUrlMedium ? (
-                  <div
-                    id="profileAvatarHeaderBar"
-                    className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
-                    onClick={this.toggleProfilePopUp}
-                  >
-                    <img
-                      className="header-nav__avatar"
-                      src={voterPhotoUrlMedium}
-                      height={34}
-                      width={34}
-                      alt="Your Profile"
-                    />
-                  </div>
+                  <span>
+                    <span className="u-show-desktop-tablet">
+                      <div
+                        id="profileAvatarHeaderBar"
+                        className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
+                        onClick={this.toggleProfilePopUp}
+                      >
+                        <img
+                          className="header-nav__avatar"
+                          src={voterPhotoUrlMedium}
+                          height={34}
+                          width={34}
+                          alt="Your Settings"
+                        />
+                      </div>
+                    </span>
+                    <span className="u-show-mobile">
+                      <div
+                        id="profileAvatarHeaderBar"
+                        className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
+                        onClick={() => this.handleNavigation('/settings/hamburger')}
+                      >
+                        <img
+                          className="header-nav__avatar"
+                          src={voterPhotoUrlMedium}
+                          height={34}
+                          width={34}
+                          alt="Your Settings"
+                        />
+                      </div>
+                    </span>
+                  </span>
                 ) : (
-                  <div>
-                    <IconButton
-                      classes={{ root: classes.iconButtonRoot }}
-                      id="profileAvatarHeaderBar"
-                      onClick={this.toggleProfilePopUp}
-                    >
-                      <AccountCircleIcon />
-                    </IconButton>
-                  </div>
+                  <span>
+                    <span className="u-show-desktop-tablet">
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot }}
+                        id="profileAvatarHeaderBar"
+                        onClick={this.toggleProfilePopUp}
+                      >
+                        <AccountCircleIcon />
+                      </IconButton>
+                    </span>
+                    <span className="u-show-mobile">
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot }}
+                        id="profileAvatarHeaderBar"
+                        onClick={() => this.handleNavigation('/settings/hamburger')}
+                      >
+                        <AccountCircleIcon />
+                      </IconButton>
+                    </span>
+                  </span>
                 )
                 }
                 {this.state.profilePopUpOpen && (
