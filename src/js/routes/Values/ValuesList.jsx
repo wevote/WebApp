@@ -63,6 +63,7 @@ export default class ValuesList extends Component {
       <div className="col col-12 col-md-6 u-stack--md">
         <IssueCard
           followToggleOn
+          includeLinkToIssue
           issue={issue}
           issueImageSize="SMALL"
           key={`issue-list-key-${issue.issue_we_vote_id}`}
