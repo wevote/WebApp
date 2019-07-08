@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import InputBase from '@material-ui/core/InputBase';
 import styled from 'styled-components';
 import FacebookStore from '../../stores/FacebookStore';
 import LoadingWheel from '../LoadingWheel';
@@ -8,9 +14,9 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
 
-export default class SettingsDomain extends Component {
+class SettingsDomain extends Component {
   static propTypes = {
-    samplePropName: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -20,6 +26,7 @@ export default class SettingsDomain extends Component {
       organizationWeVoteId: '',
       voter: {},
       voterIsSignedIn: false,
+      value: null,
     };
   }
 
@@ -78,6 +85,11 @@ export default class SettingsDomain extends Component {
     });
   }
 
+  handleChange = (event) => {
+    const newValue = event.target.value;
+    this.setState({ value: newValue });
+  }
+
   render () {
     renderLog(__filename);
     const { organization, organizationWeVoteId, voter, voterIsSignedIn } = this.state;
@@ -91,19 +103,91 @@ export default class SettingsDomain extends Component {
     if (organization && organization.we_vote_custom_domain) {
       // console.log('SettingsDomain, Custom Domain: ', organization.we_vote_custom_domain);
     }
+
+    const { value } = this.state;
+    const { classes } = this.props;
+
     return (
       <Wrapper>
         <Helmet title="Domain Settings" />
         <Card className="card">
           <CardMain className="card-main">
-            <h1 className="h3">Domain Settings</h1>
-            Add src/js/components/Settings/SettingsDomain code here.
+            <h1 className="h2">Domain</h1>
+            <FormControl classes={{ root: classes.formControl }}>
+              <RadioGroup
+                name="domainInput"
+                value={value}
+                onChange={this.handleChange}
+              >
+                <InputBoxLabel>
+                  We Vote Subdomain
+                </InputBoxLabel>
+                <FormControlLabel
+                  classes={{ root: classes.formControlLabel }}
+                  value="subdomain"
+                  control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
+                  label={(
+                    <IconInputContainer onClick={null}>
+                      <i className="fas fa-globe-americas" />
+                      <InputBase classes={{ root: classes.inputBase, input: classes.inputItem }} placeholder="Type Domain..." />
+                    </IconInputContainer>
+                  )}
+                  checked={value === 'subdomain'}
+                />
+                <InputBoxLabel>
+                  Custom Domain
+                </InputBoxLabel>
+                <FormControlLabel
+                  classes={{ root: classes.formControlLabel }}
+                  value="custom"
+                  control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
+                  label={(
+                    <IconInputContainer onClick={null}>
+                      <i className="fas fa-globe-americas" />
+                      <InputBase classes={{ root: classes.inputBase, input: classes.inputItem }} placeholder="Type Domain..." />
+                    </IconInputContainer>
+                  )}
+                  checked={value === 'custom'}
+                />
+              </RadioGroup>
+            </FormControl>
           </CardMain>
         </Card>
       </Wrapper>
     );
   }
 }
+
+const styles = () => ({
+  formControl: {
+    width: '100%',
+  },
+  formControlLabel: {
+    border: '1.1px solid rgba(0, 0, 0, 0.45)',
+    borderRadius: '3px',
+    margin: 0,
+    marginBottom: 12,
+    height: 45,
+  },
+  inputBase: {
+    border: 'none',
+    background: 'none',
+    width: '100%',
+    height: '45px',
+    marginLeft: 12,
+    fontSize: 14,
+    flex: '1 0 0',
+  },
+  inputItem: {
+    height: '45px',
+    width: '100%',
+  },
+  radioButton: {
+    width: 45,
+    height: 45,
+    padding: 12,
+  },
+});
 
 const Wrapper = styled.div`
 `;
@@ -113,3 +197,20 @@ const Card = styled.div`
 
 const CardMain = styled.div`
 `;
+
+const IconInputContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-left: 1px solid rgba(0, 0, 0, 0.45);
+  padding-left: 12px;
+  color: rgba(0, 0, 0, 0.54);
+  height: 100%;
+`;
+
+const InputBoxLabel = styled.h4`
+  font-weight: bold;
+  font-size: 13px; 
+`;
+
+export default withStyles(styles)(SettingsDomain);
