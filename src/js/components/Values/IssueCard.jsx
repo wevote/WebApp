@@ -76,6 +76,19 @@ class IssueCard extends Component {
     }
   }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    if (this.state.issueWeVoteId !== nextState.issueWeVoteId) {
+      // console.log('this.state.issueWeVoteId', this.state.issueWeVoteId, ', nextState.issueWeVoteId', nextState.issueWeVoteId);
+      return true;
+    }
+    if (this.state.countOfOrganizationsUnderThisIssue !== nextState.countOfOrganizationsUnderThisIssue) {
+      // console.log('this.state.countOfOrganizationsUnderThisIssue', this.state.countOfOrganizationsUnderThisIssue, ', nextState.countOfOrganizationsUnderThisIssue', nextState.countOfOrganizationsUnderThisIssue);
+      return true;
+    }
+
+    return false;
+  }
+
   getIssueLink () {
     const { issue } = this.state;
     if (issue && issue.issue_name) {

@@ -60,7 +60,11 @@ export default class ValuesList extends Component {
     }
 
     const issueListForDisplay = issueList.map(issue => (
-      <div className="col col-12 col-md-6 u-stack--md">
+      <div
+        className="col col-12 col-md-6 u-stack--md"
+        key={`div-issue-list-key-${issue.issue_we_vote_id}`}
+
+      >
         <IssueCard
           followToggleOn
           includeLinkToIssue
