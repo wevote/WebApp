@@ -148,13 +148,15 @@ export default {
   },
 
   getFacebookInvitableFriendsList (pictureWidth, pictureHeight) {
+    const pictureWidthVerified = pictureWidth || 50;
+    const pictureHeightVerified = pictureHeight || 50;
     if (!webAppConfig.ENABLE_FACEBOOK) {
       console.log('FacebookActions.getFacebookInvitableFriendsList was not invoked, see ENABLE_FACEBOOK in config.js');
       return;
     }
 
     if (this.facebookApi()) {
-      const fbApiForInvitableFriends = `/me?fields=invitable_friends.limit(1000){name,id,picture.width(${pictureWidth}).height(${pictureHeight})}`;
+      const fbApiForInvitableFriends = `/me?fields=invitable_friends.limit(1000){name,id,picture.width(${pictureWidthVerified}).height(${pictureHeightVerified})}`;
       this.facebookApi().api(
         fbApiForInvitableFriends,
         (response) => {
