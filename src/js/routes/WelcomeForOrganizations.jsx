@@ -11,9 +11,6 @@ import { cordovaScrollablePaneTopPadding } from '../utils/cordovaOffsets';
 import { historyPush, cordovaDot } from '../utils/cordovaUtils';
 import { renderLog } from '../utils/logging';
 import Testimonial from '../components/Widgets/Testimonial';
-import validateEmail from '../utils/email-functions';
-import VoterActions from '../actions/VoterActions';
-import VoterConstants from '../constants/VoterConstants';
 import VoterStore from '../stores/VoterStore';
 import { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/HeaderWelcome';
 import Section, {
@@ -39,10 +36,7 @@ class WelcomeForOrganizations extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      submitEnabled: false,
       voter: {},
-      voterEmail: '',
-      voterFullName: '',
       animateTextArray: ['Members', 'Staff', 'Constituents', 'Fans', 'Subscribers', 'Followers', 'Voters'],
       currentAnimateTextIndex: 0,
     };
@@ -60,17 +54,6 @@ class WelcomeForOrganizations extends Component {
     this.voterStoreListener.remove();
   }
 
-  // shouldComponentUpdate (nextState, nextProps) {
-  //   if (this.state.currentAnimateTextIndex !== nextState.currentAnimateTextIndex) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
-  // componentDidUpdate () {
-  //   this.autoAnimateText();
-  // }
-
   onVoterStoreChange () {
     this.setState({
       voter: VoterStore.getVoter(),
@@ -82,7 +65,6 @@ class WelcomeForOrganizations extends Component {
     let isSignedIn = false;
     if (voter) {
       ({ is_signed_in: isSignedIn } = voter);
-      isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
     }
     if (isSignedIn) {
       historyPush('/settings/profile');
@@ -92,49 +74,15 @@ class WelcomeForOrganizations extends Component {
     }
   }
 
-  updateVoterFullName = (event) => {
-    this.setState({
-      voterFullName: event.target.value,
-    });
-  };
-
-  updateVoterEmailAddress = (event) => {
-    const isEmailValid = validateEmail(event.target.value);
-    let submitEnabled = false;
-    if (isEmailValid) {
-      submitEnabled = true;
-    }
-
-    this.setState({
-      voterEmail: event.target.value,
-      submitEnabled,
-    });
-  };
-
-  voterEmailAddressSignUpSave = (event) => {
-    // Only proceed after we have a valid email address, which will enable the submit
-    if (this.state.submitEnabled) {
-      event.preventDefault();
-      const sendLinkToSignIn = true;
-      VoterActions.voterEmailAddressSave(this.state.voterEmail, sendLinkToSignIn);
-      VoterActions.voterFullNameSoftSave('', '', this.state.voterFullName);
-      VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
-    }
-  };
-
-  handleToPageFromMobileNav = (destination) => {
-    this.handleShowMobileNavigation(false);
-    historyPush(destination);
-  };
-
   autoAnimateText () {
     const currentStateAnimateTextIndex = this.state.currentAnimateTextIndex;
+    const showMemberTextForThisLong = 2000;
     if (this.state.currentAnimateTextIndex < this.state.animateTextArray.length - 1) {
       setTimeout(() => {
         this.setState({ currentAnimateTextIndex: currentStateAnimateTextIndex + 1 });
 
         this.autoAnimateText();
-      }, 3000);
+      }, showMemberTextForThisLong);
     }
   }
 
@@ -146,8 +94,7 @@ class WelcomeForOrganizations extends Component {
     const isVoterSignedIn = voter.is_signed_in;
 
     const currentTitleTextToDisplay = animateTextArray[currentAnimateTextIndex];
-
-    console.log(currentTitleTextToDisplay);
+    // console.log(currentTitleTextToDisplay);
 
     const testimonialAuthor = 'Judy J., Oakland, California';
     const testimonialImageUrl = cordovaDot('/img/global/photos/Judy_J-109x109.jpg');

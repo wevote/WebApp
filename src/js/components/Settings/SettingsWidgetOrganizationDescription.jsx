@@ -115,7 +115,6 @@ export default class SettingsWidgetOrganizationDescription extends Component {
     return (
       <div className="">
         <form onSubmit={(e) => { e.preventDefault(); }}>
-          <span className="pull-right u-gray-mid">{this.state.organizationDescriptionSavedStatus}</span>
           <label htmlFor="organizationDescriptionTextArea">{ this.state.isOrganization ? 'Description Shown on Your Voter Guides' : 'Description Shown on Your Voter Guides'}</label>
           <Textarea
             id="organizationDescriptionTextArea"
@@ -128,6 +127,7 @@ export default class SettingsWidgetOrganizationDescription extends Component {
             onChange={this.updateOrganizationDescription}
           />
         </form>
+        <div className="u-gray-mid">{this.state.organizationDescriptionSavedStatus}</div>
       </div>
     );
   }

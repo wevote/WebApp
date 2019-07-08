@@ -32,13 +32,45 @@ export default class IssueFollowToggleButton extends Component {
 
   componentDidMount () {
     const isFollowing = IssueStore.isVoterFollowingThisIssue(this.props.issueWeVoteId);
-    this.setState({ isFollowing });
+    this.setState({
+      isFollowing,
+      visibilityChange: false,
+    });
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if not needed
+    if (this.state.isFollowing !== nextState.isFollowing) {
+      // console.log('this.state.isFollowing: ', this.state.isFollowing, ', nextState.isFollowing', nextState.isFollowing);
+      return true;
+    }
+    if (this.state.visibilityChange !== nextState.visibilityChange) {
+      // console.log('this.state.visibilityChange: ', this.state.visibilityChange, ', nextState.visibilityChange', nextState.visibilityChange);
+      return true;
+    }
+    return false;
+  }
+
+  componentWillUnmount () {
+    this.issueStoreListener.remove();
+  }
+
+  onIssueStoreChange () {
+    const isFollowing = IssueStore.isVoterFollowingThisIssue(this.props.issueWeVoteId);
+    this.setState({
+      isFollowing,
+      visibilityChange: false,
+    });
   }
 
   onIssueFollow () {
     // This check is necessary as we enable follow when user clicks on Issue text
     if (!this.state.isFollowing) {
-      this.setState({ isFollowing: true });
+      this.setState({
+        isFollowing: true,
+        visibilityChange: true,
+      });
       IssueActions.issueFollow(this.props.issueWeVoteId, VoterStore.electionId());
       if (this.props.onIssueFollowFunction) {
         this.props.onIssueFollowFunction(this.props.issueWeVoteId);
@@ -75,30 +107,28 @@ export default class IssueFollowToggleButton extends Component {
       historyPush(`${urlWithoutHash}#${this.props.ballotItemWeVoteId}`);
     }
 
-    if (document.getElementById('dropdown_menu')) {
-      document.getElementById('dropdown_menu').style.visibility = 'hidden';
+    if (document.getElementById('dropdown-toggle')) {
+      document.getElementById('dropdown-toggle').style.visibility = 'hidden';
     }
+    // Force render
+    this.setState({
+      visibilityChange: true,
+    });
   }
 
   render () {
+    // console.log('IssueFollowToggleButton render');
     renderLog(__filename);
     if (!this.state) { return <div />; }
 
     return (
-    //   <div className="issues-follow-container">
-    //     <Button variant="contained" color="primary" size="small" onClick={this.onIssueStopFollowing}>
-    //       <span>Following</span>
-    //     </Button>
-    //   </div>
-    // ) : (
-    //   <div className="intro-modal__text-dark">
-    //     <Button variant="contained" color="primary" size="small" onClick={this.onIssueFollow}>
-    //       <span>Follow</span>
-    //     </Button>
-    //   </div>
       <div className="issues-follow-container">
         {this.state.isFollowing ? (
-          <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn__icon issues-follow-btn--white issues-followed-btn--disabled" disabled>
+          <Button
+            type="button"
+            className="issues-follow-btn issues-follow-btn__main issues-follow-btn__icon issues-follow-btn--white issues-followed-btn--disabled"
+            disabled
+          >
             <span>
               { this.state.isFollowing &&
                 <CheckCircle className="following-icon" /> }
@@ -106,10 +136,9 @@ export default class IssueFollowToggleButton extends Component {
           </Button>
         ) : (
           <Button
-          type="button"
-          className="issues-follow-btn
-          issues-follow-btn__main issues-follow-btn__main--radius issues-follow-btn--blue"
-          onClick={this.onIssueFollow}
+            type="button"
+            className="issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius issues-follow-btn--blue"
+            onClick={this.onIssueFollow}
           >
             Follow
           </Button>
@@ -117,7 +146,14 @@ export default class IssueFollowToggleButton extends Component {
         {this.state.isFollowing ? (
           <React.Fragment>
             <div className="issues-follow-btn__seperator" />
-            <Button type="button" id="dropdown-toggle" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <Button
+              type="button"
+              id="dropdown-toggle"
+              className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
               <span className="sr-only">Toggle Dropdown</span>
             </Button>
           </React.Fragment>

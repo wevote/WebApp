@@ -181,8 +181,8 @@ export default class SettingsWidgetAccountType extends Component {
     return (
       <div className="">
         <div>
-          <span className="pull-right u-gray-mid">{this.state.organizationTypeSavedStatus}</span>
           <h3 className="h3">Type of Profile</h3>
+          <div className="u-gray-mid">{this.state.organizationTypeSavedStatus}</div>
           { this.state.editFormOpen ? (
             <span>
               <div className="create-voter-guide__organization-container">
@@ -214,7 +214,6 @@ export default class SettingsWidgetAccountType extends Component {
             </span>
           ) : (
             <div className="">
-              <span className="pull-right u-gray-mid">{this.state.organizationTypeSavedStatus}</span>
               <span className="u-f4 u-bold">{this.displayOrganizationType(this.state.organizationType)}</span>
               {this.state.showEditToggleOption ? (
                 <span className="">
