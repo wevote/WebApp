@@ -173,10 +173,10 @@ class IssueCard extends Component {
               <Link to={this.getIssueLink}
                     className="u-no-underline"
               >
-                <h3>{`${issueDisplayName} +  ( + ${countOfOrganizationsUnderThisIssue} + )`}</h3>
+                <h3>{`${issueDisplayName} (${countOfOrganizationsUnderThisIssue})`}</h3>
               </Link>
             ) :
-              <h3>{`${issueDisplayName} +  ( + ${countOfOrganizationsUnderThisIssue} + )`}</h3>
+              <h3>{`${issueDisplayName} (${countOfOrganizationsUnderThisIssue})`}</h3>
             }
           </IssueName>
 
