@@ -104,16 +104,18 @@ export function enclosingRectangle (objectNameString, instance) {
 
 export function isDeviceMatchByUUID (deviceString) {
   const array  = webAppConfig.CORDOVA_IPHONE_UUIDS;
-  for (let i = 0; i < array.length; i++) {
-    if (array[i].name === deviceString) {
-      if (array[i].val === window.device.uuid) {
-        return 1;
+  if (array && array.length) {
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].name === deviceString) {
+        if (array[i].val === window.device.uuid) {
+          return 1;
+        }
+        return 0;
       }
-      return 0;
     }
   }
   // alert('CORDOVA_IPHONE_UUIDS does not contain a key for this device type');
-  cordovaOffsetLog(`CORDOVA_IPHONE_UUIDS does not contain a key for the ${deviceString} device type`);
+  cordovaOffsetLog(`CORDOVA_IPHONE_UUIDS in config.js does not contain a key for the ${deviceString} device type`);
   return 0;
 }
 
