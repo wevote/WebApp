@@ -27,6 +27,8 @@ class SettingsDomain extends Component {
       organizationWeVoteId: '',
       voter: {},
       voterIsSignedIn: false,
+      subDomainValue: '',
+      customValue: '',
       value: '',
       buttonsActive: '',
       voterIsPremium: false, /* This is hard-coded for testing purposes, this will be later set based on API calls that aren't set up */
@@ -96,6 +98,36 @@ class SettingsDomain extends Component {
 
   handleChange = (event) => {
     this.setState({ value: event.target.value });
+
+    if (event.target.value === 'custom') {
+      this.handleRadioSwitchCustom(event);
+    }
+
+    if (event.target.value === 'subdomain') {
+      this.handleRadioSwitchSubdomain(event);
+    }
+  }
+
+  handleRadioSwitchCustom = (event) => {
+    const input = event.target.parentElement.parentElement.nextElementSibling.firstElementChild.children[1].firstElementChild;
+
+    if (input.value !== '') {
+      this.setState({ customValue: input.value });
+
+      if (this.state.voterIsPremium) {
+        /* Call API and set the url here */
+      }
+    }
+  }
+
+  handleRadioSwitchSubdomain = (event) => {
+    const input = event.target.parentElement.parentElement.nextElementSibling.firstElementChild.children[1].firstElementChild;
+
+    if (input.value !== '') {
+      this.setState({ subDomainValue: input.value });
+
+      /* Call API and set the url here */
+    }
   }
 
   onCancelButton = () => {
@@ -103,7 +135,11 @@ class SettingsDomain extends Component {
   }
 
   onSaveButton = () => {
-    // Insert code here
+    this.setState({ buttonsActive: '' });
+  }
+
+  openPremiumPage = () => {
+    // Open premium page for payment
   }
 
   onCustomInputChange = (e) => {
@@ -160,7 +196,11 @@ class SettingsDomain extends Component {
                   label={(
                     <IconInputContainer>
                       <i className="fas fa-globe-americas" />
-                      <InputBase onChange={this.onSubdomainInputChange} classes={{ root: classes.inputBase, input: classes.inputItem }} placeholder="Type Domain..." />
+                      <InputBase
+                        onChange={this.onSubdomainInputChange}
+                        classes={{ root: classes.inputBase, input: classes.inputItem }}
+                        placeholder="Type Domain..."
+                      />
                       <SubdomainExtensionText>
                         .WeVote.us
                       </SubdomainExtensionText>
@@ -173,7 +213,7 @@ class SettingsDomain extends Component {
                     <Button classes={{ root: classes.button }} onClick={this.onCancelButton} color="primary" variant="outlined">
                       Cancel
                     </Button>
-                    <Button color="primary" variant="contained">
+                    <Button color="primary" variant="contained" onClick={this.onSaveButton}>
                       Save
                     </Button>
                   </ButtonsContainer>
@@ -192,7 +232,11 @@ class SettingsDomain extends Component {
                   label={(
                     <IconInputContainer>
                       <i className="fas fa-globe-americas" />
-                      <InputBase onChange={this.onCustomInputChange} classes={{ root: classes.inputBase, input: classes.inputItem }} placeholder="Type Domain..." />
+                      <InputBase
+                        onChange={this.onSubdomainInputChange}
+                        classes={{ root: classes.inputBase, input: classes.inputItem }}
+                        placeholder="Type Domain..."
+                      />
                     </IconInputContainer>
                   )}
                   checked={value === 'custom'}
@@ -202,7 +246,7 @@ class SettingsDomain extends Component {
                     <Button classes={{ root: classes.button }} onClick={this.onCancelButton} color="primary" variant="outlined">
                       Cancel
                     </Button>
-                    <Button variant="contained" classes={{ root: classes.goldButton }}>
+                    <Button onClick={this.state.voterIsPremium ? this.onSaveButton : this.openPremiumPage} variant="contained" classes={{ root: classes.goldButton }}>
                       {this.state.voterIsPremium ? 'Save' : 'Upgrade to Professional'}
                     </Button>
                   </ButtonsContainer>
@@ -232,7 +276,6 @@ const styles = () => ({
     border: '1.1px solid rgba(0, 0, 0, 0.45)',
     borderRadius: '3px',
     margin: 0,
-    marginBottom: 12,
     height: 45,
     pointerEvents: 'none',
   },
