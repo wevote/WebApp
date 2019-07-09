@@ -62,6 +62,7 @@ export default class SettingsPersonalSideBar extends Component {
     // console.log("SettingsPersonalSideBar, isOrganization: ", this.state.isOrganization);
     const { editMode } = this.props;
     const { isSignedIn, isOrganization } = this.state;
+    const showSettingsInDevelopment = false; // If developing any of the new settings, change this to true
 
     return (
       <div className="card">
@@ -122,7 +123,7 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && (
+          {isSignedIn && showSettingsInDevelopment && (
             <div className={editMode === 'domain' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
@@ -140,7 +141,7 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && (
+          {isSignedIn && showSettingsInDevelopment && (
             <div className={editMode === 'sharing' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
@@ -158,7 +159,7 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && (
+          {isSignedIn && showSettingsInDevelopment && (
             <div className={editMode === 'subscription' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
@@ -176,7 +177,7 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && (
+          {isSignedIn && showSettingsInDevelopment && (
             <div className={editMode === 'analytics' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
@@ -212,7 +213,7 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && (
+          {isSignedIn && showSettingsInDevelopment && (
             <div className={editMode === 'promoted' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
