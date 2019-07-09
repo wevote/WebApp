@@ -176,7 +176,6 @@ export default class SettingsWidgetFirstLastName extends Component {
                   </div>
                 ) : (
                   <form onSubmit={(e) => { e.preventDefault(); }}>
-                    <span className="pull-right u-gray-mid">{this.state.organizationNameSavedStatus}</span>
                     <label htmlFor="organization-name">
                       Organization Name as Shown on Your Voter Guides
                       <input
@@ -191,6 +190,7 @@ export default class SettingsWidgetFirstLastName extends Component {
                         value={this.state.organizationName}
                       />
                     </label>
+                    <div className="u-gray-mid">{this.state.organizationNameSavedStatus}</div>
                   </form>
                 )}
               </span>
@@ -207,7 +207,6 @@ export default class SettingsWidgetFirstLastName extends Component {
                   </div>
                 ) : (
                   <form onSubmit={(e) => { e.preventDefault(); }}>
-                    <span className="pull-right u-gray-mid">{this.state.voterNameSavedStatus}</span>
                     {!this.props.hideFirstLastName ? (
                       <span>
                         <label htmlFor="first-name">
@@ -238,10 +237,10 @@ export default class SettingsWidgetFirstLastName extends Component {
                             value={this.state.lastName}
                           />
                         </label>
+                        <div className="u-gray-mid">{this.state.voterNameSavedStatus}</div>
                       </span>
                     ) : null
                     }
-                    <span className="pull-right u-gray-mid">{this.state.organizationNameSavedStatus}</span>
                     <label htmlFor="organization-name">
                       Name Shown on Your Voter Guides
                       <input
@@ -256,6 +255,7 @@ export default class SettingsWidgetFirstLastName extends Component {
                         value={this.state.organizationName}
                       />
                     </label>
+                    <div className="u-gray-mid">{this.state.organizationNameSavedStatus}</div>
                   </form>
                 )}
               </span>

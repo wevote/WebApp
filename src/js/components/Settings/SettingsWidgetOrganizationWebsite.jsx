@@ -115,7 +115,6 @@ export default class SettingsWidgetOrganizationWebsite extends Component {
     return (
       <div className="">
         <form onSubmit={(e) => { e.preventDefault(); }}>
-          <span className="pull-right u-gray-mid">{this.state.organizationWebsiteSavedStatus}</span>
           <label htmlFor="organizationWebsiteTextArea">{ this.state.isOrganization ? 'Organization Website' : 'Your Website'}</label>
           <input
             id="organizationWebsiteTextArea"
@@ -127,6 +126,7 @@ export default class SettingsWidgetOrganizationWebsite extends Component {
             onChange={this.updateOrganizationWebsite}
           />
         </form>
+        <div className="u-gray-mid">{this.state.organizationWebsiteSavedStatus}</div>
       </div>
     );
   }
