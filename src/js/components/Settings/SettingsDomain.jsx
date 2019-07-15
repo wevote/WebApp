@@ -175,10 +175,10 @@ class SettingsDomain extends Component {
     const { classes } = this.props;
 
     return (
-      <Wrapper>
+      <div>
         <Helmet title="Domain Settings" />
-        <Card className="card">
-          <CardMain className="card-main">
+        <div className="card">
+          <div className="card-main">
             <h1 className="h2">Domain</h1>
             <FormControl classes={{ root: classes.formControl }}>
               <RadioGroup
@@ -253,9 +253,9 @@ class SettingsDomain extends Component {
                 ) : null}
               </RadioGroup>
             </FormControl>
-          </CardMain>
-        </Card>
-      </Wrapper>
+          </div>
+        </div>
+      </div>
     );
   }
 }
@@ -269,14 +269,14 @@ const styles = () => ({
     width: '100%',
     borderRadius: '3px',
     margin: 0,
-    height: 45,
+    height: 55.4,
   },
   formControlLabelDisabled: {
     width: '100%',
     border: '1.1px solid rgba(0, 0, 0, 0.45)',
     borderRadius: '3px',
     margin: 0,
-    height: 45,
+    height: 55.4,
     pointerEvents: 'none',
   },
   label: {
@@ -286,18 +286,18 @@ const styles = () => ({
     border: 'none',
     background: 'none',
     width: '100%',
-    height: '45px',
+    height: '55.4px',
     marginLeft: 12,
     fontSize: 14,
     flex: '1 0 0',
   },
   inputItem: {
-    height: '45px',
+    height: '55.4px',
     width: '100%',
   },
   radioButton: {
-    width: 45,
-    height: 45,
+    width: 55.4,
+    height: 55.4,
     padding: 12,
     pointerEvents: 'auto',
   },
@@ -309,15 +309,6 @@ const styles = () => ({
     color: 'white',
   },
 });
-
-const Wrapper = styled.div`
-`;
-
-const Card = styled.div`
-`;
-
-const CardMain = styled.div`
-`;
 
 const IconInputContainer = styled.div`
   display: flex;
@@ -344,7 +335,7 @@ const InputBoxHelperLabel = styled.p`
 
 const SubdomainExtensionText = styled.h5`
   margin: 0;
-  height: 43px;
+  height: 53.4px;
   border-left: 1px solid rgba(0, 0, 0, 0.45);
   background-color: #eee;
   color: rgba(0, 0, 0, 0.45);
@@ -367,7 +358,7 @@ const Seperator = styled.div`
   width: 100%;
   height: 2px;
   background: #f7f7f7;
-  margin: 14px 0 16px;
+  margin: 16px 0;
 `;
 
 export default withStyles(styles)(SettingsDomain);
