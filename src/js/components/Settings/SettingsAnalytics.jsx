@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextField from '@material-ui/core/TextField';
 import FacebookStore from '../../stores/FacebookStore';
 import LoadingWheel from '../LoadingWheel';
