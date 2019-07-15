@@ -209,6 +209,9 @@ export function cordovaScrollablePaneTopPadding () {
       }
     }
   }
+  if (isIOS) {
+    cordovaOffsetLog('********* Did not find a UUID match for this simulator *********');
+  }
   return '0px';
 }
 
@@ -411,6 +414,7 @@ export function cordovaTopHeaderTopMargin () {
           case enums.officeWild:      style.marginTop = '16px'; break;
           case enums.measureWild:     style.marginTop = '22px'; break;
           case enums.values:          style.marginTop = '16px'; break;
+          case enums.valueWild:       style.marginTop = '32px'; break;
           case enums.friends:         style.marginTop = '16px'; break;
           case enums.ballot:          style.marginTop = '19px'; break;
           case enums.ballotVote:      style.marginTop = '19px'; break;
@@ -424,6 +428,7 @@ export function cordovaTopHeaderTopMargin () {
           case enums.candidate:       style.marginTop = '35px'; break;
           case enums.valuesList:      style.marginTop = '38px'; break;
           case enums.values:          style.marginTop = '12px'; break;
+          case enums.valueWild:       style.marginTop = '32px'; break;
           case enums.opinions:        style.marginTop = '36px'; break;
           case enums.friends:         style.marginTop = '16px'; break;
           case enums.ballot:          style.marginTop = '16px'; break;
