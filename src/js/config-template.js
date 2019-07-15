@@ -36,9 +36,9 @@ module.exports = {
   // This is the publishable key (not secret)
   STRIPE_API_KEY: 'pk_test_bWuWGC3jrMIFH3wvRvHR6Z5H',
 
-  // Note to Apple:  We only use these codes to determine iPhone device type when using the iOS simulator in XCode
   // Look for a log line like this "Application initCordova ------------ /js/Application.jsx uuid: AC328523-8362-4D90-9805-D5F94203B113"
   // and put that uuid in the following table, to be able to use the XCode simulator for iPhones
+  // NOTE: Doing a "Hardware/Erase All Content and Settings" on a simulator, will reset the uuid to a new value
   CORDOVA_IPHONE_UUIDS: [
     { name: 'i5', val: '' },
     { name: 'i5s', val: '' },

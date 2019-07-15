@@ -403,7 +403,8 @@ export const enums = {
   ballotSmHdrWild: 103,
   ballotLgHdrWild: 104,
   measureWild: 105,
-  welcomeWild: 106,
+  valueWild: 106,
+  welcomeWild: 107,
   candidate: 200,
   friends: 201,
   opinions: 202,
@@ -434,6 +435,8 @@ export function pageEnumeration () {
     return enums.officeWild;
   } else if (href.indexOf('/index.html#/settings/') > 0) {
     return enums.settingsWild;
+  } else if (href.indexOf('/index.html#/value/') > 0) {
+    return enums.valueWild;
   } else if (href.indexOf('/index.html#/wevoteintro/') > 0) {
     return enums.wevoteintroWild;
   } else if (href.indexOf('/index.html#/ballot') > 0) {
