@@ -340,7 +340,7 @@ const SubdomainExtensionText = styled.h5`
   background-color: #eee;
   color: rgba(0, 0, 0, 0.45);
   width: fit-content;
-  padding: 10px 8px 0;
+  padding: 16px 8px 0;
   border-bottom-right-radius: 3px;
   border-top-right-radius: 3px;
 `;
