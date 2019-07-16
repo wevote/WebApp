@@ -28,8 +28,11 @@ export default class SettingsProfile extends Component {
     this.voterStoreListener.remove();
   }
 
-  onVoterStoreChange () {
-    this.setState({ voter: VoterStore.getVoter() });
+  onVoterStoreChange = () => {
+    const voter = VoterStore.getVoter();
+    this.setState({
+      voter,
+    });
   }
 
   render () {

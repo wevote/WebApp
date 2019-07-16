@@ -62,7 +62,7 @@ export default class SettingsPersonalSideBar extends Component {
     // console.log("SettingsPersonalSideBar, isOrganization: ", this.state.isOrganization);
     const { editMode } = this.props;
     const { isSignedIn, isOrganization } = this.state;
-    const showSettingsInDevelopment = true; // If developing any of the new settings, change this to true
+    const showSettingsInDevelopment = false; // If developing any of the new settings, change this to true
 
     return (
       <div className="card">
