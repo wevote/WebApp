@@ -11,8 +11,10 @@ import InputBase from '@material-ui/core/InputBase';
 import styled from 'styled-components';
 import FacebookStore from '../../stores/FacebookStore';
 import LoadingWheel from '../LoadingWheel';
+import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
+import SettingsAccount from './SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
 
 class SettingsDomain extends Component {
@@ -25,18 +27,22 @@ class SettingsDomain extends Component {
     this.state = {
       organization: {},
       organizationWeVoteId: '',
+      organizationChosenDomainName: '',
+      organizationChosenDomainNameSavedValue: '',
+      organizationChosenDomainNameChangedLocally: false,
+      organizationChosenSubDomain: '',
+      organizationChosenSubDomainSavedValue: '',
+      organizationChosenSubDomainChangedLocally: false,
       voter: {},
       voterIsSignedIn: false,
-      subDomainValue: '',
-      customValue: '',
-      value: '',
-      buttonsActive: '',
+      radioGroupValue: 'subDomainRadioButtonSelected',
       voterIsPremium: false, /* This is hard-coded for testing purposes, this will be later set based on API calls that aren't set up */
     };
   }
 
   componentDidMount () {
     // console.log('SettingsDomain componentDidMount');
+    this.onOrganizationStoreChange();
     this.onVoterStoreChange();
     this.organizationStoreListener = FacebookStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
@@ -51,21 +57,48 @@ class SettingsDomain extends Component {
       // console.log('this.state.voterIsSignedIn', this.state.voterIsSignedIn, ', nextState.voterIsSignedIn', nextState.voterIsSignedIn);
       return true;
     }
+    if (this.state.organizationChosenDomainName !== nextState.organizationChosenDomainName) {
+      // console.log('this.state.organizationChosenDomainName', this.state.organizationChosenDomainName, ', nextState.organizationChosenDomainName', nextState.organizationChosenDomainName);
+      return true;
+    }
+    if (this.state.organizationChosenDomainNameChangedLocally !== nextState.organizationChosenDomainNameChangedLocally) {
+      // console.log('this.state.organizationChosenDomainNameChangedLocally', this.state.organizationChosenDomainNameChangedLocally, ', nextState.organizationChosenDomainNameChangedLocally', nextState.organizationChosenDomainNameChangedLocally);
+      return true;
+    }
+    if (this.state.organizationChosenDomainNameSavedValue !== nextState.organizationChosenDomainNameSavedValue) {
+      // console.log('this.state.organizationChosenDomainNameSavedValue', this.state.organizationChosenDomainNameSavedValue, ', nextState.organizationChosenDomainNameSavedValue', nextState.organizationChosenDomainNameSavedValue);
+      return true;
+    }
+    if (this.state.organizationChosenSubDomain !== nextState.organizationChosenSubDomain) {
+      // console.log('this.state.organizationChosenSubDomain', this.state.organizationChosenSubDomain, ', nextState.organizationChosenSubDomain', nextState.organizationChosenSubDomain);
+      return true;
+    }
+    if (this.state.organizationChosenSubDomainChangedLocally !== nextState.organizationChosenSubDomainChangedLocally) {
+      // console.log('this.state.organizationChosenSubDomainChangedLocally', this.state.organizationChosenSubDomainChangedLocally, ', nextState.organizationChosenSubDomainChangedLocally', nextState.organizationChosenSubDomainChangedLocally);
+      return true;
+    }
+    if (this.state.organizationChosenSubDomainSavedValue !== nextState.organizationChosenSubDomainSavedValue) {
+      // console.log('this.state.organizationChosenSubDomainSavedValue', this.state.organizationChosenSubDomainSavedValue, ', nextState.organizationChosenSubDomainSavedValue', nextState.organizationChosenSubDomainSavedValue);
+      return true;
+    }
 
     const priorOrganization = this.state.organization;
     const nextOrganization = nextState.organization;
 
-    const priorWeVoteCustomDomain = priorOrganization.we_vote_custom_domain || '';
-    const nextWeVoteCustomDomain = nextOrganization.we_vote_custom_domain || '';
+    const priorWeVoteChosenDomainNameString = priorOrganization.chosen_domain_name_string || '';
+    const nextWeVoteChosenDomainNameString = nextOrganization.chosen_domain_name_string || '';
+    const priorWeVoteChosenSubDomainString = priorOrganization.chosen_sub_domain_string || '';
+    const nextWeVoteChosenSubDomainString = nextOrganization.chosen_sub_domain_string || '';
 
-    if (priorWeVoteCustomDomain !== nextWeVoteCustomDomain) {
-      // console.log('priorWeVoteCustomDomain', priorWeVoteCustomDomain, ', nextWeVoteCustomDomain', nextWeVoteCustomDomain);
+    if (priorWeVoteChosenDomainNameString !== nextWeVoteChosenDomainNameString) {
+      // console.log('priorWeVoteChosenDomainNameString', priorWeVoteChosenDomainNameString, ', nextWeVoteChosenDomainNameString', nextWeVoteChosenDomainNameString);
       return true;
     }
-    if (this.state.value !== nextState.value) {
+    if (priorWeVoteChosenSubDomainString !== nextWeVoteChosenSubDomainString) {
+      // console.log('priorWeVoteChosenSubDomainString', priorWeVoteChosenSubDomainString, ', nextWeVoteChosenSubDomainString', nextWeVoteChosenSubDomainString);
       return true;
     }
-    if (this.state.buttonsActive !== nextState.buttonsActive) {
+    if (this.state.radioGroupValue !== nextState.radioGroupValue) {
       return true;
     }
     // console.log('shouldComponentUpdate false');
@@ -78,101 +111,183 @@ class SettingsDomain extends Component {
   }
 
   onOrganizationStoreChange = () => {
-    const { organizationWeVoteId } = this.state;
+    const { organizationChosenDomainNameChangedLocally, organizationChosenSubDomainChangedLocally, organizationWeVoteId } = this.state;
+    const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+    const organizationChosenSubDomainSavedValue = organization.chosen_sub_domain_string || '';
+    const organizationChosenDomainNameSavedValue = organization.chosen_domain_name_string || '';
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
+      organization,
+      organizationChosenDomainNameSavedValue,
+      organizationChosenSubDomainSavedValue,
     });
-  }
-
-  onVoterStoreChange = () => {
-    const voter = VoterStore.getVoter();
-    const voterIsSignedIn = voter.is_signed_in;
-    const organizationWeVoteId = voter.linked_organization_we_vote_id;
-    this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
-      organizationWeVoteId,
-      voter,
-      voterIsSignedIn,
-    });
-  }
-
-  handleChange = (event) => {
-    this.setState({ value: event.target.value });
-
-    if (event.target.value === 'custom') {
-      this.handleRadioSwitchCustom(event);
+    // If it hasn't been changed locally, then use the one saved in the API server
+    if (!organizationChosenDomainNameChangedLocally) {
+      this.setState({
+        organizationChosenDomainName: organizationChosenDomainNameSavedValue || '',
+      });
     }
-
-    if (event.target.value === 'subdomain') {
-      this.handleRadioSwitchSubdomain(event);
+    // If it hasn't been changed locally, then use the one saved in the API server
+    if (!organizationChosenSubDomainChangedLocally) {
+      this.setState({
+        organizationChosenSubDomain: organizationChosenSubDomainSavedValue || '',
+      });
     }
-  }
-
-  handleRadioSwitchCustom = (event) => {
-    const input = event.target.parentElement.parentElement.nextElementSibling.firstElementChild.children[1].firstElementChild;
-
-    if (input.value !== '') {
-      this.setState({ customValue: input.value });
-
-      if (this.state.voterIsPremium) {
-        /* Call API and set the url here */
+    if (!organizationChosenDomainNameChangedLocally && !organizationChosenSubDomainChangedLocally) {
+      // If neither name has been changed, switch to the Domain Name input box
+      if (organizationChosenDomainNameSavedValue && organizationChosenDomainNameSavedValue !== '') {
+        this.setState({
+          radioGroupValue: 'domainNameRadioButtonSelected',
+        });
       }
     }
   }
 
-  handleRadioSwitchSubdomain = (event) => {
-    const input = event.target.parentElement.parentElement.nextElementSibling.firstElementChild.children[1].firstElementChild;
-
-    if (input.value !== '') {
-      this.setState({ subDomainValue: input.value });
-
-      /* Call API and set the url here */
+  onVoterStoreChange = () => {
+    const { organizationChosenDomainNameChangedLocally, organizationChosenSubDomainChangedLocally } = this.state;
+    const voter = VoterStore.getVoter();
+    const voterIsSignedIn = voter.is_signed_in;
+    const organizationWeVoteId = voter.linked_organization_we_vote_id;
+    const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+    const organizationChosenSubDomainSavedValue = organization.chosen_sub_domain_string || '';
+    const organizationChosenDomainNameSavedValue = organization.chosen_domain_name_string || '';
+    this.setState({
+      organization,
+      organizationChosenDomainNameSavedValue,
+      organizationChosenSubDomainSavedValue,
+      organizationWeVoteId,
+      voter,
+      voterIsSignedIn,
+    });
+    // If it hasn't been changed locally, then use the one saved in the API server
+    if (!organizationChosenDomainNameChangedLocally) {
+      this.setState({
+        organizationChosenDomainName: organizationChosenDomainNameSavedValue || '',
+      });
+    }
+    // If it hasn't been changed locally, then use the one saved in the API server
+    if (!organizationChosenSubDomainChangedLocally) {
+      this.setState({
+        organizationChosenSubDomain: organizationChosenSubDomainSavedValue || '',
+      });
     }
   }
 
-  onCancelButton = () => {
-    this.setState({ buttonsActive: '' });
-  }
-
-  onSaveButton = () => {
-    this.setState({ buttonsActive: '' });
-  }
-
-  openPremiumPage = () => {
-    // Open premium page for payment
-  }
-
-  onCustomInputChange = (e) => {
-    if (e.target.value === '') {
-      this.setState({ buttonsActive: '' });
-    } else {
-      this.setState({ buttonsActive: 'custom' });
+  handleOrganizationChosenSubDomainChange = (event) => {
+    const { organizationChosenSubDomain } = this.state;
+    // console.log('handleOrganizationChosenSubDomainChange, organizationChosenSubDomain: ', organizationChosenSubDomain);
+    // console.log('handleOrganizationChosenSubDomainChange, event.target.value: ', event.target.value);
+    if (event.target.value !== organizationChosenSubDomain) {
+      this.setState({
+        organizationChosenSubDomain: event.target.value || '',
+        organizationChosenSubDomainChangedLocally: true,
+      });
     }
   }
 
-  onSubdomainInputChange = (e) => {
-    if (e.target.value === '') {
-      this.setState({ buttonsActive: '' });
-    } else {
-      this.setState({ buttonsActive: 'subdomain' });
+  handleOrganizationChosenDomainNameChange = (event) => {
+    const { organizationChosenDomainName } = this.state;
+    // console.log('handleOrganizationChosenDomainNameChange, organizationChosenDomainName: ', organizationChosenDomainName);
+    // console.log('handleOrganizationChosenDomainNameChange, event.target.value: ', event.target.value);
+    if (event.target.value !== organizationChosenDomainName) {
+      this.setState({
+        organizationChosenDomainName: event.target.value || '',
+        organizationChosenDomainNameChangedLocally: true,
+      });
     }
+  }
+
+  handleRadioGroupChange = (event) => {
+    // console.log('handleRadioGroupChange');
+    const { radioGroupValue } = this.state;
+    if (radioGroupValue !== event.target.value) {
+      this.setState({
+        radioGroupValue: event.target.value || '',
+      });
+    }
+  }
+
+  handleRadioGroupChoiceSubDomain = () => {
+    // console.log('handleRadioGroupChoiceSubDomain');
+    const { radioGroupValue } = this.state;
+    if (radioGroupValue !== 'subDomainRadioButtonSelected') {
+      this.setState({
+        radioGroupValue: 'subDomainRadioButtonSelected',
+      });
+    }
+  }
+
+  handleRadioGroupChoiceDomainName = () => {
+    // console.log('handleRadioGroupChoiceDomainName');
+    const { radioGroupValue } = this.state;
+    if (radioGroupValue !== 'domainNameRadioButtonSelected') {
+      this.setState({
+        radioGroupValue: 'domainNameRadioButtonSelected',
+      });
+    }
+  }
+
+  onCancelDomainNameButton = () => {
+    // console.log('onCancelDomainNameButton');
+    const { organizationChosenDomainNameSavedValue } = this.state;
+    this.setState({
+      organizationChosenDomainName: organizationChosenDomainNameSavedValue || '',
+      organizationChosenDomainNameChangedLocally: false,
+    });
+  }
+
+  onCancelSubDomainButton = () => {
+    // console.log('onCancelSubDomainButton');
+    const { organizationChosenSubDomainSavedValue } = this.state;
+    this.setState({
+      organizationChosenSubDomain: organizationChosenSubDomainSavedValue || '',
+      organizationChosenSubDomainChangedLocally: false,
+    });
+  }
+
+  onSaveDomainNameButton = (event) => {
+    // console.log('onSaveDomainNameButton');
+    const { organizationChosenDomainName, organizationWeVoteId } = this.state;
+    OrganizationActions.organizationChosenDomainNameSave(organizationWeVoteId, organizationChosenDomainName);
+    this.setState({
+      organizationChosenDomainNameChangedLocally: false,
+    });
+    event.preventDefault();
+  }
+
+  onSaveDomainNameButtonUpgrade = (event) => {
+    // console.log('onSaveDomainNameButtonUpgrade');
+    // Open popover with package choices
+    event.preventDefault();
+  }
+
+  onSaveSubDomainButton = (event) => {
+    // console.log('onSaveSubDomainButton');
+    const { organizationChosenSubDomain, organizationWeVoteId } = this.state;
+    OrganizationActions.organizationChosenSubDomainSave(organizationWeVoteId, organizationChosenSubDomain);
+    this.setState({
+      organizationChosenSubDomainChangedLocally: false,
+    });
+    event.preventDefault();
   }
 
   render () {
+    // console.log('SettingsDomain render');
     renderLog(__filename);
-    const { organization, organizationWeVoteId, voter, voterIsSignedIn, buttonsActive, value } = this.state;
+    const {
+      organizationChosenDomainNameChangedLocally,
+      organizationChosenSubDomain, organizationChosenSubDomainChangedLocally,
+      organizationWeVoteId, voter, voterIsPremium, voterIsSignedIn, radioGroupValue,
+    } = this.state;
     if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
     }
 
-    if (voterIsSignedIn) {
-      // console.log('SettingsDomain, Signed In.');
-    }
-    if (organization && organization.we_vote_custom_domain) {
-      // console.log('SettingsDomain, Custom Domain: ', organization.we_vote_custom_domain);
-    }
-
     const { classes } = this.props;
+
+    if (!voterIsSignedIn) {
+      // console.log('voterIsSignedIn is false');
+      return <SettingsAccount />;
+    }
 
     return (
       <div>
@@ -183,41 +298,54 @@ class SettingsDomain extends Component {
             <FormControl classes={{ root: classes.formControl }}>
               <RadioGroup
                 name="domainInput"
-                value={value}
-                onChange={this.handleChange}
+                value={radioGroupValue}
+                onChange={this.handleRadioGroupChange}
               >
                 <InputBoxLabel>
-                  We Vote Subdomain
+                  We Vote Sub Domain
                 </InputBoxLabel>
                 <FormControlLabel
-                  classes={value === 'subdomain' ? { root: classes.formControlLabel, label: classes.label } : { root: classes.formControlLabelDisabled, label: classes.label }}
-                  value="subdomain"
+                  classes={radioGroupValue === 'subDomainRadioButtonSelected' ? { root: classes.formControlLabel, label: classes.label } : { root: classes.formControlLabelDisabled, label: classes.label }}
+                  value="subDomainRadioButtonSelected"
                   control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
                   label={(
                     <IconInputContainer>
                       <i className="fas fa-globe-americas" />
                       <InputBase
-                        onChange={this.onSubdomainInputChange}
                         classes={{ root: classes.inputBase, input: classes.inputItem }}
-                        placeholder="Type Domain..."
+                        onChange={this.handleOrganizationChosenSubDomainChange}
+                        placeholder="Type Sub Domain of WeVote.US..."
+                        value={organizationChosenSubDomain || ''}
                       />
-                      <SubdomainExtensionText>
-                        .WeVote.us
-                      </SubdomainExtensionText>
+                      <SubDomainExtensionText>
+                        .WeVote.US
+                      </SubDomainExtensionText>
                     </IconInputContainer>
                   )}
-                  checked={value === 'subdomain'}
+                  onClick={this.handleRadioGroupChoiceSubDomain}
+                  checked={radioGroupValue === 'subDomainRadioButtonSelected'}
                 />
-                {buttonsActive === 'subdomain' ? (
+                {radioGroupValue === 'subDomainRadioButtonSelected' && (
                   <ButtonsContainer>
-                    <Button classes={{ root: classes.button }} onClick={this.onCancelButton} color="primary" variant="outlined">
+                    <Button
+                      classes={{ root: classes.button }}
+                      color="primary"
+                      disabled={!organizationChosenSubDomainChangedLocally}
+                      onClick={this.onCancelSubDomainButton}
+                      variant="outlined"
+                    >
                       Cancel
                     </Button>
-                    <Button color="primary" variant="contained" onClick={this.onSaveButton}>
+                    <Button
+                      color="primary"
+                      disabled={!organizationChosenSubDomainChangedLocally}
+                      onClick={this.onSaveSubDomainButton}
+                      variant="contained"
+                    >
                       Save
                     </Button>
                   </ButtonsContainer>
-                ) : null}
+                )}
                 <Seperator />
                 <InputBoxLabel>
                   Custom Domain
@@ -226,31 +354,58 @@ class SettingsDomain extends Component {
                   If you already own a domain, enter it here. Empty it to disconnect.
                 </InputBoxHelperLabel>
                 <FormControlLabel
-                  classes={value === 'custom' ? { root: classes.formControlLabel, label: classes.label } : { root: classes.formControlLabelDisabled, label: classes.label }}
-                  value="custom"
+                  classes={radioGroupValue === 'domainNameRadioButtonSelected' ? { root: classes.formControlLabel, label: classes.label } : { root: classes.formControlLabelDisabled, label: classes.label }}
+                  value="domainNameRadioButtonSelected"
                   control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
                   label={(
                     <IconInputContainer>
                       <i className="fas fa-globe-americas" />
                       <InputBase
-                        onChange={this.onSubdomainInputChange}
                         classes={{ root: classes.inputBase, input: classes.inputItem }}
+                        onChange={this.handleOrganizationChosenDomainNameChange}
                         placeholder="Type Domain..."
+                        // value={organizationChosenDomainName || ''}
                       />
                     </IconInputContainer>
                   )}
-                  checked={value === 'custom'}
+                  checked={radioGroupValue === 'domainNameRadioButtonSelected'}
+                  onClick={this.handleRadioGroupChoiceDomainName}
                 />
-                {buttonsActive === 'custom' ? (
+                {radioGroupValue === 'domainNameRadioButtonSelected' && (
                   <ButtonsContainer>
-                    <Button classes={{ root: classes.button }} onClick={this.onCancelButton} color="primary" variant="outlined">
+                    <Button
+                      classes={{ root: classes.button }}
+                      color="primary"
+                      disabled={!organizationChosenDomainNameChangedLocally}
+                      onClick={this.onCancelDomainNameButton}
+                      variant="outlined"
+                    >
                       Cancel
                     </Button>
-                    <Button onClick={this.state.voterIsPremium ? this.onSaveButton : this.openPremiumPage} variant="contained" classes={{ root: classes.goldButton }}>
-                      {this.state.voterIsPremium ? 'Save' : 'Upgrade to Professional'}
-                    </Button>
+                    {voterIsPremium ?
+                      (
+                        <Button
+                          color="primary"
+                          classes={{ root: classes.button }}
+                          disabled={!organizationChosenDomainNameChangedLocally}
+                          onClick={this.onSaveDomainNameButton}
+                          variant="contained"
+                        >
+                          Save
+                        </Button>
+                      ) :
+                      (
+                        <Button
+                          classes={{ root: classes.goldButton }}
+                          onClick={this.onSaveDomainNameButtonUpgrade}
+                          variant="contained"
+                        >
+                          Upgrade to Professional
+                        </Button>
+                      )
+                    }
                   </ButtonsContainer>
-                ) : null}
+                )}
               </RadioGroup>
             </FormControl>
           </div>
@@ -277,7 +432,6 @@ const styles = () => ({
     borderRadius: '3px',
     margin: 0,
     height: 55.4,
-    pointerEvents: 'none',
   },
   label: {
     width: '100%',
@@ -333,7 +487,7 @@ const InputBoxHelperLabel = styled.p`
   margin-top: -4px;
 `;
 
-const SubdomainExtensionText = styled.h5`
+const SubDomainExtensionText = styled.h5`
   margin: 0;
   height: 53.4px;
   border-left: 1px solid rgba(0, 0, 0, 0.45);
@@ -343,6 +497,7 @@ const SubdomainExtensionText = styled.h5`
   padding: 16px 8px 0;
   border-bottom-right-radius: 3px;
   border-top-right-radius: 3px;
+  pointer: none;
 `;
 
 const ButtonsContainer = styled.div`

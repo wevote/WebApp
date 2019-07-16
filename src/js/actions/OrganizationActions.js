@@ -77,6 +77,38 @@ export default {
       });
   },
 
+  organizationChosenGoogleAnalyticsTrackerSave (organizationWeVoteId, organizationChosenGoogleAnalyticsTracker) {
+    Dispatcher.loadEndpoint('organizationSave',
+      {
+        chosen_google_analytics_account_number: organizationChosenGoogleAnalyticsTracker,
+        organization_we_vote_id: organizationWeVoteId,
+      });
+  },
+
+  organizationChosenHtmlVerificationSave (organizationWeVoteId, organizationChosenHtmlVerificationString) {
+    Dispatcher.loadEndpoint('organizationSave',
+      {
+        chosen_html_verification_string: organizationChosenHtmlVerificationString,
+        organization_we_vote_id: organizationWeVoteId,
+      });
+  },
+
+  organizationChosenSubDomainSave (organizationWeVoteId, organizationChosenSubDomainName) {
+    Dispatcher.loadEndpoint('organizationSave',
+      {
+        chosen_sub_domain_string: organizationChosenSubDomainName,
+        organization_we_vote_id: organizationWeVoteId,
+      });
+  },
+
+  organizationChosenDomainNameSave (organizationWeVoteId, organizationChosenDomainName) {
+    Dispatcher.loadEndpoint('organizationSave',
+      {
+        chosen_domain_string: organizationChosenDomainName,
+        organization_we_vote_id: organizationWeVoteId,
+      });
+  },
+
   organizationNameSave (organizationWeVoteId, organizationName) {
     Dispatcher.loadEndpoint('organizationSave',
       {
