@@ -55,6 +55,8 @@ describe('Basic cross-platform WeVote test',  () => {
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('footerLinkRegisterToVote'); // Open Register to Vote Page
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('logoHeaderBar'); // Open Register to Vote Page
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     // await simpleClick('logoHeaderBar'); // Open Welcome Page
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
     // await scrollThroughPage(); // Scroll to the bottom of the Page
@@ -63,6 +65,9 @@ describe('Basic cross-platform WeVote test',  () => {
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('footerLinkGetYourAbsenteeBallot'); // Open Get Your Absentee Ballot Page
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('logoHeaderBar'); // Open Register to Vote Page
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await scrollThroughPage();
     // await scrollThroughPage(); // Scroll to the bottom of the Page
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
@@ -228,8 +233,6 @@ describe('Basic cross-platform WeVote test',  () => {
     await simpleClick('footerLinkAbout'); // Open About & Team Page
     await browser.pause(PAUSE_DURATION_MICROSECONDS);   
     await scrollThroughPage(); // Scroll to the bottom of the Page
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);  
-    await browser.pause(PAUSE_DURATION_MICROSECONDS);   
     await simpleClick('footerLinkDonate'); // Open Donate Page
     await browser.pause(PAUSE_DURATION_MICROSECONDS);   
     await scrollThroughPage(); // Scroll to the bottom of the Page
