@@ -28,7 +28,6 @@ exports.config = {
       isIOS: false,
       isMobileScreenSize: false,
     },
-
     {
       // Testing with an iPhone Safari browser
       name: 'marketingTest-iPhoneSafariBrowser',
@@ -44,6 +43,40 @@ exports.config = {
       isAndroid: false,
       isCordovaFromAppStore: false,
       isIOS: true,
+      isMobileScreenSize: true,
+    },
+    {
+      // Testing with an OnePlus Chrome browser
+      name: 'marketingTest-OnePlus6TChromeBrowser',
+      build: buildNameForDisplay,
+      device: 'OnePlus 6T',
+      os_version: '9.0',
+      real_mobile: true,
+      browserName: 'Chrome',
+      browser_version: '72.0',
+      'browserstack.console': 'info',
+      'browserstack.debug': true,
+      'browserstack.geoLocation': 'US',
+      isAndroid: true,
+      isCordovaFromAppStore: false,
+      isIOS: false,
+      isMobileScreenSize: true,
+    },
+    {
+      // Testing with an OnePlus Chrome browser
+      name: 'marketingTest-AndroidGalaxyTabS4ChromeBrowser',
+      build: buildNameForDisplay,
+      device: 'Samsung Galaxy Tab S4',
+      os_version: '8.1',
+      real_mobile: true,
+      browserName: 'Chrome',
+      browser_version: '72.0',
+      'browserstack.console': 'info',
+      'browserstack.debug': true,
+      'browserstack.geoLocation': 'US',
+      isAndroid: true,
+      isCordovaFromAppStore: false,
+      isIOS: false,
       isMobileScreenSize: true,
     },
   ],
