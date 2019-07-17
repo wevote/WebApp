@@ -226,6 +226,9 @@ export function cordovaBallotFilterTopMargin () {
     } else if (isIPhone678()) {
       return '65px';
     } else if (hasIPhoneNotch()) {
+      if (pageEnumeration() === enums.candidateWild) {
+        return '65px';
+      }
       return '74px';
     } else if (isIPhoneXR()) {
       return '46px';
@@ -426,6 +429,7 @@ export function cordovaTopHeaderTopMargin () {
           case enums.officeWild:      style.marginTop = '30px'; break;
           case enums.measureWild:     style.marginTop = '34px'; break;
           case enums.candidate:       style.marginTop = '35px'; break;
+          case enums.candidateWild:   style.marginTop = '17px'; break;
           case enums.valuesList:      style.marginTop = '38px'; break;
           case enums.values:          style.marginTop = '12px'; break;
           case enums.valueWild:       style.marginTop = '32px'; break;
