@@ -402,9 +402,10 @@ export const enums = {
   wevoteintroWild: 102,
   ballotSmHdrWild: 103,
   ballotLgHdrWild: 104,
-  measureWild: 105,
-  valueWild: 106,
-  welcomeWild: 107,
+  candidateWild: 105,
+  measureWild: 106,
+  valueWild: 107,
+  welcomeWild: 108,
   candidate: 200,
   friends: 201,
   opinions: 202,
@@ -431,6 +432,8 @@ export function pageEnumeration () {
     return enums.valuesList;
 
   // then wildcarded second level paths
+  } else if (href.indexOf('/index.html#/candidate/') > 0) {
+    return enums.candidateWild;
   } else if (href.indexOf('/index.html#/office/') > 0) {
     return enums.officeWild;
   } else if (href.indexOf('/index.html#/settings/') > 0) {
