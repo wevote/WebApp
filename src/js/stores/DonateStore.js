@@ -36,14 +36,16 @@ class DonateStore extends ReduceStore {
   }
 
   reduce (state, action) {
-    // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
-    if (!action.res || !action.res.success) return state;
+    if (!action.res) return state;
 
     switch (action.type) {
       case 'donationWithStripe':
+        if (action.res.success === false) {
+          console.log(`donation with stripe failed:  ${action.res.error_message_for_voter}  ---  ${action.res.status}`);
+        }
         return {
           ...state,
-          donationAmount: action.res.donation_amount,
+          donationAmount: action.res.donation_amount || '',
           errorMessageForVoter: action.res.error_message_for_voter,
           monthlyDonation: action.res.monthly_donation,
           savedStripeDonation: action.res.saved_stripe_donation,
