@@ -367,7 +367,7 @@ export default class FollowToggle extends Component {
             {isFollowing || isIgnoring ? (
               <>
                 <div className="issues-follow-btn__seperator" />
-                <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <Button id={`positionItemFollowToggleDropdown-${organizationWeVoteId}`} type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span className="sr-only">Toggle Dropdown</span>
                 </Button>
                 <div className={this.props.anchorLeft ? (
@@ -421,7 +421,7 @@ export default class FollowToggle extends Component {
             {isFollowing || isIgnoring ? (
               <>
                 <div className="issues-follow-btn__seperator" />
-                <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <Button id={`positionItemFollowToggleDropDown-${organizationWeVoteId}`} type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span className="sr-only">Toggle Dropdown</span>
                 </Button>
                 <div className="dropdown-menu issues-follow-btn__menu">
@@ -465,11 +465,11 @@ export default class FollowToggle extends Component {
               <>
                 <div className="issues-follow-btn__seperator" />
                 {this.props.lightModeOn ? (
-                  <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <Button id={`positionItemFollowToggleDropdown-${organizationWeVoteId}`} type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span className="sr-only">Toggle Dropdown</span>
                   </Button>
                 ) : (
-                  <Button type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--blue" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <Button id={`positionItemFollowToggleDropdown-${organizationWeVoteId}`} type="button" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--blue" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span className="sr-only">Toggle Dropdown</span>
                   </Button>
                 )}
