@@ -56,10 +56,6 @@ export default class SettingsProfile extends Component {
                 closeEditFormOnChoice
                 showEditToggleOption
               />
-              <div className="card-child__fine_print">
-                Your internal We Vote id: &nbsp;
-                {VoterStore.getVoter().we_vote_id}
-              </div>
             </div>
           </div>
         </div>

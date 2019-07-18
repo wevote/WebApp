@@ -106,7 +106,7 @@ module.exports = [
   'Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)\n',
   // Jan 2019, https://github.com/FezVrasta/popper.js/blob/master/LICENSE.md
   'FezVrasta/popper.js is licensed under the MIT License (MIT)\n' +
-  'Copyright © 2016 Federico Zivolo and contributors\n',
+  'Copyright (c) 2016 Federico Zivolo and contributors\n',
   // Jan 2019, https://github.com/facebook/prop-types/blob/master/LICENSE
   ' facebook/prop-types is licensed under the MIT License (MIT)\n' +
   '\n' +

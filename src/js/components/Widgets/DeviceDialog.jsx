@@ -14,6 +14,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Link } from 'react-router';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import VoterStore from "../../stores/VoterStore";
 
 const webAppConfig = require('../../config');
 
@@ -109,8 +110,8 @@ class DeviceDialog extends Component {
               </TableRow>
             </TableBody>
           </Table>
-          {/* Show the developer options if on the simulator, or if Cordova offset logging is turned on -- should not show in release builds */}
-          {(window.location.href.startsWith('file:///Users') || window.location.href.startsWith('file:///android') || webAppConfig.LOG_CORDOVA_OFFSETS) &&
+          {/* Show the developer options if on the simulator in iOS, or the SHOW_TEST_OPTIONS is on, or Cordova offset logging is turned on -- should not show in release builds */}
+          {(window.location.href.startsWith('file:///Users') || webAppConfig.SHOW_TEST_OPTIONS || webAppConfig.LOG_CORDOVA_OFFSETS) &&
             (
               <div style={{ marginTop: 20 }}>
                 <div style={{ marginTop: 5 }}>
@@ -131,6 +132,10 @@ class DeviceDialog extends Component {
               </div>
             )
           }
+          <div className="card-child__fine_print" style={{ marginTop: '0.5rem', fontSize: '0.75rem' }}>
+            Your internal We Vote id: &nbsp;
+            {VoterStore.getVoter().we_vote_id}
+          </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={this.props.visibilityOffFunction} color="primary">

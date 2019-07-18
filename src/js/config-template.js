@@ -10,6 +10,7 @@ module.exports = {
   WE_VOTE_SERVER_API_CDN_ROOT_URL: 'https://cdn.wevoteusa.org/apis/v1/',
 
   DEBUG_MODE: false,
+  SHOW_TEST_OPTIONS: false,    // On the DeviceDialog and elsewhere
 
   LOG_RENDER_EVENTS: false,
   LOG_ONLY_FIRST_RENDER_EVENTS: false,
