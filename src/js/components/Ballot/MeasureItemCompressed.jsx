@@ -226,6 +226,7 @@ class MeasureItemCompressed extends Component {
         </InfoRow>
         <ChoicesRow>
           <Choice
+            id={`measureItemCompressedChoiceYes-${measureWeVoteId}`}
             brandBlue={theme.palette.primary.main}
             onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
           >
@@ -244,6 +245,7 @@ class MeasureItemCompressed extends Component {
             </ChoiceInfo>
           </Choice>
           <Choice
+            id={`measureItemCompressedChoiceNo-${measureWeVoteId}`}
             brandBlue={theme.palette.primary.main}
             onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
           >
