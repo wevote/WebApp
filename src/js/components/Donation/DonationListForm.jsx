@@ -38,7 +38,7 @@ export default class DonationListForm extends Component {
       // It takes a 2 to 30 seconds for the charge to come back from the first charge on a subscription,
       VoterActions.voterRefreshDonations();
     }
-  }
+  };
 
   render () {
     renderLog(__filename);

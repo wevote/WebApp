@@ -38,16 +38,16 @@ class Donate extends Component {
       radioSelected: 'monthly',
     };
 
-    this._toggleCustomAmount = this._toggleCustomAmount.bind(this);
-    this._handleKeyPress = this._handleKeyPress.bind(this);
-    this._updateCustomAmount = this._updateCustomAmount.bind(this);
-    this._toggleDonateMonthly = this._toggleDonateMonthly.bind(this);
-    this._donateStoreChange = this._donateStoreChange.bind(this);
+    this.toggleCustomAmount = this.toggleCustomAmount.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.updateCustomAmount = this.updateCustomAmount.bind(this);
+    this.toggleDonateMonthly = this.toggleDonateMonthly.bind(this);
+    this.donateStoreChange = this.donateStoreChange.bind(this);
   }
 
   componentDidMount () {
-    this._donateStoreChange();
-    this.donateStoreListener = DonateStore.addListener(this._donateStoreChange);
+    this.donateStoreChange();
+    this.donateStoreListener = DonateStore.addListener(this.donateStoreChange);
     AnalyticsActions.saveActionDonateVisit(VoterStore.electionId());
   }
 
@@ -55,13 +55,24 @@ class Donate extends Component {
     this.donateStoreListener.remove();
   }
 
-  _donateStoreChange () {
+  /*
+  An enter keystroke in the react-bootstrap InputGroup, (or in the original react "input-group",)
+  causes a page reload, and you lose context.  So swallow the 'Enter' keystroke event while in
+  the InputGroup.
+  */
+  handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
+
+  donateStoreChange () {
     if (!DonateStore.donationSuccess()) {
       this.setState({ donationErrorMessage: DonateStore.donationError() });
     }
   }
 
-  _toggleDonateMonthly (event) {
+  toggleDonateMonthly (event) {
     if (event.target.value === 'once') {
       this.setState({
         donateMonthly: false, radioSelected: 'once',
@@ -73,26 +84,15 @@ class Donate extends Component {
     }
   }
 
-  _toggleCustomAmount () {
+  toggleCustomAmount () {
     const { showCustomInput } = this.state;
     this.setState({
       showCustomInput: !showCustomInput,
     });
   }
 
-  _updateCustomAmount (event) {
+  updateCustomAmount (event) {
     this.setState({ custom_amount: event.target.value });
-  }
-
-  /*
-  An enter keystroke in the react-bootstrap InputGroup, (or in the original react "input-group",)
-  causes a page reload, and you lose context.  So swallow the 'Enter' keystroke event while in
-  the InputGroup.
-   */
-  _handleKeyPress (event) { // eslint-disable-line
-    if (event.key === 'Enter') {
-      event.preventDefault();
-    }
   }
 
   render () {
@@ -110,7 +110,7 @@ class Donate extends Component {
           <DonateDescriptionContainer>
             We Vote is a nonprofit technology startup,
             {' '}
-            <Link to="/more/about">
+            <Link to="/more/about" style={{ color: '#4371cc' }} onlyActiveOnIndex>
               built by volunteers
             </Link>
             {' '}
@@ -141,7 +141,7 @@ class Donate extends Component {
                   bsPrefix="radio"
                   value="monthly"
                   // classes={{ root: classes.radioButtonMargins }}
-                  onChange={this._toggleDonateMonthly}
+                  onChange={this.toggleDonateMonthly}
                   checked={this.state.radioSelected === 'monthly'}
                 />
               </div>
@@ -153,7 +153,7 @@ class Donate extends Component {
                   bsPrefix="radio"
                   value="once"
                   // classes={{ root: classes.radioButtonMargins }}
-                  onChange={this._toggleDonateMonthly}
+                  onChange={this.toggleDonateMonthly}
                   checked={this.state.radioSelected === 'once'}
                 />
               </div>
@@ -185,7 +185,7 @@ class Donate extends Component {
             />
             <Button
               color="primary"
-              onClick={this._toggleCustomAmount}
+              onClick={this.toggleCustomAmount}
               style={{ margin: 5 }}
               variant="contained"
             >
@@ -200,14 +200,14 @@ class Donate extends Component {
                   {/* <FormControl aria-label="Amount" /> */}
                   <FormControl
                     type="text"
-                    onKeyPress={this._handleKeyPress}
-                    onChange={this._updateCustomAmount}
+                    onKeyPress={this.handleKeyPress}
+                    onChange={this.updateCustomAmount}
                     value={this.state.custom_amount}
                     placeholder="250.00"
                   />
                   <InputGroup.Append>
                     <DonationForm
-                      donationAmount={parseInt(parseFloat(this.state.custom_amount.replace(/[^0-9.]+/g, '')) * 100, 10)}
+                      donationAmount={parseInt(parseFloat(this.state.custom_amount.replace(/[^0-9.]+/g, '')) * 100)}
                       donateMonthly={this.state.donateMonthly}
                       donateButtonText="Go"
                       donateOther
@@ -225,12 +225,17 @@ class Donate extends Component {
             }
           </DonateDescriptionContainer>
           <DonateDescriptionContainer>
-            These contributions or gifts are not tax deductible. These donations are for We Vote&apos;s 501(c)(4) nonprofit.
-            We Vote&apos;s 501(c)(3) nonprofit also
+            Contributions or gifts made on this page are not tax deductible, and fund We Vote USA, a 501(c)(4) nonprofit.
+            We Vote also has a 501(c)(3) nonprofit that welcomes
             {' '}
             {/* This is a mailto! Shouldn't be visible in iPhone or Android apps. */}
-            <a href={donateMailtoUrl} title="I would like to donate to We Vote's 501(c)(3)" rel="noopener noreferrer" target="_blank">
-              accepts tax deductible donations
+            <a href={donateMailtoUrl}
+               title="I would like to donate to We Vote's 501(c)(3)"
+               rel="noopener noreferrer"
+               target="_blank"
+               style={{ color: '#4371cc' }}
+            >
+              tax deductible donations
               {' '}
               <i className="fas fa-external-link-alt" />
               .

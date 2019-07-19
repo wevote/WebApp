@@ -33,7 +33,7 @@ export default class ProcessingDonation extends Component {
     this.donateStoreListener.remove();
   }
 
-  onDonateStoreChange () { // eslint-disable-line
+  onDonateStoreChange = () => {
     if (DonateStore.donationResponseReceived()) {
       if (DonateStore.donationSuccess()) {
         historyPush('/more/donate_thank_you');
@@ -41,7 +41,7 @@ export default class ProcessingDonation extends Component {
         historyPush('/more/donate');
       }
     }
-  }
+  };
 
   render () {
     renderLog(__filename);

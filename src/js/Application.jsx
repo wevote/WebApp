@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import { ToastContainer } from 'react-toastify';
 import styled from 'styled-components';
 import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from './utils/applicationUtils';
@@ -34,7 +34,6 @@ class Application extends Component {
       // Do not define voter here. We rely on it being undefined
       voter_initial_retrieve_needed: true,
     };
-    this.loadedHeader = false;
   }
 
   componentDidMount () {
@@ -79,13 +78,13 @@ class Application extends Component {
   componentWillUnmount () {
     this.appStoreListener.remove();
     this.voterStoreListener.remove();
-    this.loadedHeader = false;
     window.removeEventListener('scroll', this.handleWindowScroll);
   }
 
   initCordova () { // eslint-disable-line
     if (isCordova()) {
-      console.log(`Application initCordova ------------ ${__filename} uuid: ${window.device.uuid}`);
+      const { uuid } = window.device;
+      console.log(`Application initCordova ------------ ${__filename} uuid: ${uuid}`);
       window.handleOpenURL = (url) => {
         TwitterSignIn.handleTwitterOpenURL(url);
       };
@@ -95,7 +94,8 @@ class Application extends Component {
   initFacebook () { // eslint-disable-line
     if (webAppConfig.ENABLE_FACEBOOK) {
       window.fbAsyncInit = function () {  // eslint-disable-line func-names
-        window.FB.init({
+        const { FB } = window;
+        FB.init({
           appId: webAppConfig.FACEBOOK_APP_ID,
           autoLogAppEvents: true,
           xfbml: true,
@@ -157,7 +157,7 @@ class Application extends Component {
     // console.log("SignedIn Voter in Application onVoterStoreChange voter: ", VoterStore.getVoter().full_name);
   }
 
-  getAppBaseClass () {
+  getAppBaseClass = () => {
     // console.log("Determine the headroom space pathname:" + pathname);
     let appBaseClass = 'app-base';
     if (isWebApp()) {
@@ -166,7 +166,7 @@ class Application extends Component {
       appBaseClass += ' cordova-base';
     }
     return appBaseClass;
-  }
+  };
 
   handleWindowScroll = (evt) => {
     const { scrollTop } = evt.target.scrollingElement;
@@ -198,7 +198,8 @@ class Application extends Component {
       // Currently not used, but it seems like it should be
       // this.setState({ we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie });
 
-      const hideIntroModalFromUrl = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
+      const { hide_intro_modal: hideIntroModal } = this.props.location.query;
+      const hideIntroModalFromUrl = this.props.location.query ? hideIntroModal : 0;
       const hideIntroModalFromUrlTrue = hideIntroModalFromUrl === 1 || hideIntroModalFromUrl === '1' || hideIntroModalFromUrl === 'true';
       if (hideIntroModalFromUrl) {
         // console.log("hideIntroModalFromUrl: ", hideIntroModalFromUrl);
@@ -214,12 +215,13 @@ class Application extends Component {
       let autoFollowListFromUrl = '';
       if (this.props.location.query) {
         // console.log("this.props.location.query: ", this.props.location.query);
+        const { af, auto_follow: autoFollow, voter_address: voterAddress } = this.props.location.query;
         if (this.props.location.query.af) {
-          autoFollowListFromUrl = this.props.location.query.af;
+          autoFollowListFromUrl = af;
           atLeastOneQueryVariableFound = true;
-        } else if (this.props.location.query.auto_follow) {
+        } else if (autoFollow) {
           atLeastOneQueryVariableFound = true;
-          autoFollowListFromUrl = this.props.location.query.auto_follow;
+          autoFollowListFromUrl = autoFollow;
         }
 
         const autoFollowList = autoFollowListFromUrl ? autoFollowListFromUrl.split(',') : [];
@@ -227,10 +229,9 @@ class Application extends Component {
           OrganizationActions.organizationFollow('', organizationTwitterHandle);
         });
 
-        if (this.props.location.query.voter_address) {
+        if (voterAddress) {
           // console.log("this.props.location.query.voter_address: ", this.props.location.query.voter_address);
           atLeastOneQueryVariableFound = true;
-          const voterAddress = this.props.location.query.voter_address;
           if (voterAddress && voterAddress !== '') {
             // Do not save a blank voterAddress -- we don't want to over-ride an existing address with a blank
             VoterActions.voterAddressSave(voterAddress);
@@ -249,9 +250,14 @@ class Application extends Component {
   render () {
     renderLog(__filename);
     const { location: { pathname } } = this.props;
+    const { StripeCheckout } = window;
+    const waitForStripe = (pathname === '/more/donate' && StripeCheckout === undefined);
     // console.log('Application render, pathname:', pathname);
 
-    if (this.state.voter === undefined || this.props.location === undefined) {
+    if (this.state.voter === undefined || this.props.location === undefined || waitForStripe) {
+      if (waitForStripe) {
+        console.log('Waiting for stripe to load, on an initial direct URL to DonationForm');
+      }
       return (
         <LoadingScreen>
           <div style={{ padding: 30 }}>
