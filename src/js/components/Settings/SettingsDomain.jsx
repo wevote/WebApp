@@ -9,6 +9,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import InputBase from '@material-ui/core/InputBase';
 import styled from 'styled-components';
+import AppActions from '../../actions/AppActions';
 import FacebookStore from '../../stores/FacebookStore';
 import LoadingWheel from '../LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
@@ -81,6 +82,9 @@ class SettingsDomain extends Component {
       // console.log('this.state.organizationChosenSubDomainSavedValue', this.state.organizationChosenSubDomainSavedValue, ', nextState.organizationChosenSubDomainSavedValue', nextState.organizationChosenSubDomainSavedValue);
       return true;
     }
+    if (this.state.radioGroupValue !== nextState.radioGroupValue) {
+      return true;
+    }
 
     const priorOrganization = this.state.organization;
     const nextOrganization = nextState.organization;
@@ -96,9 +100,6 @@ class SettingsDomain extends Component {
     }
     if (priorWeVoteChosenSubDomainString !== nextWeVoteChosenSubDomainString) {
       // console.log('priorWeVoteChosenSubDomainString', priorWeVoteChosenSubDomainString, ', nextWeVoteChosenSubDomainString', nextWeVoteChosenSubDomainString);
-      return true;
-    }
-    if (this.state.radioGroupValue !== nextState.radioGroupValue) {
       return true;
     }
     // console.log('shouldComponentUpdate false');
@@ -254,12 +255,6 @@ class SettingsDomain extends Component {
     event.preventDefault();
   }
 
-  onSaveDomainNameButtonUpgrade = (event) => {
-    // console.log('onSaveDomainNameButtonUpgrade');
-    // Open popover with package choices
-    event.preventDefault();
-  }
-
   onSaveSubDomainButton = (event) => {
     // console.log('onSaveSubDomainButton');
     const { organizationChosenSubDomain, organizationWeVoteId } = this.state;
@@ -268,6 +263,11 @@ class SettingsDomain extends Component {
       organizationChosenSubDomainChangedLocally: false,
     });
     event.preventDefault();
+  }
+
+  openPaidAccountUpgradeModal (paidAccountUpgradeMode) {
+    // console.log('SettingsDomain openPaidAccountUpgradeModal');
+    AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
   }
 
   render () {
@@ -346,7 +346,7 @@ class SettingsDomain extends Component {
                     </Button>
                   </ButtonsContainer>
                 )}
-                <Seperator />
+                <Separator />
                 <InputBoxLabel>
                   Custom Domain
                 </InputBoxLabel>
@@ -397,7 +397,7 @@ class SettingsDomain extends Component {
                       (
                         <Button
                           classes={{ root: classes.goldButton }}
-                          onClick={this.onSaveDomainNameButtonUpgrade}
+                          onClick={() => this.openPaidAccountUpgradeModal('professional')}
                           variant="contained"
                         >
                           Upgrade to Professional
@@ -509,7 +509,7 @@ const ButtonsContainer = styled.div`
   margin-top: 12px;
 `;
 
-const Seperator = styled.div`
+const Separator = styled.div`
   width: 100%;
   height: 2px;
   background: #f7f7f7;

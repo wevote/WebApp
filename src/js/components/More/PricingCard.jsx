@@ -13,6 +13,7 @@ class PricingCard extends Component {
     price: PropTypes.number,
     planName: PropTypes.string,
     priceDescribe: PropTypes.string,
+    pricingPlanStringIdentifier: PropTypes.string,
     description: PropTypes.string,
     classes: PropTypes.object,
     buttonOnClickFunction: PropTypes.func,
@@ -31,7 +32,7 @@ class PricingCard extends Component {
 
   buttonOnClickFunction () {
     if (this.props.buttonOnClickFunction) {
-      this.props.buttonOnClickFunction();
+      this.props.buttonOnClickFunction(this.props.pricingPlanStringIdentifier);
     }
   }
 

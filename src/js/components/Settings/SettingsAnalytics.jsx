@@ -11,6 +11,8 @@ import LoadingWheel from '../LoadingWheel';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
+import OrganizationActions from '../../actions/OrganizationActions';
+import AppActions from '../../actions/AppActions';
 
 class SettingsAnalytics extends Component {
   static propTypes = {
@@ -24,9 +26,13 @@ class SettingsAnalytics extends Component {
       organizationWeVoteId: '',
       voter: {},
       voterIsSignedIn: false,
-      buttonsActive: '',
-      webmasterValue: '',
-      trackerValue: '',
+      analyticsButtonsActive: '',
+      organizationChosenGoogleAnalyticsTracker: '',
+      organizationChosenGoogleAnalyticsTrackerSavedValue: '',
+      organizationChosenGoogleAnalyticsTrackerChangedLocally: false,
+      organizationChosenHtmlVerification: '',
+      organizationChosenHtmlVerificationSavedValue: '',
+      organizationChosenHtmlVerificationChangedLocally: false,
       voterIsPremium: false,
     };
   }
@@ -47,27 +53,52 @@ class SettingsAnalytics extends Component {
       // console.log('this.state.voterIsSignedIn', this.state.voterIsSignedIn, ', nextState.voterIsSignedIn', nextState.voterIsSignedIn);
       return true;
     }
-
-    const priorOrganization = this.state.organization;
-    const nextOrganization = nextState.organization;
-
-    const priorWeVoteCustomDomain = priorOrganization.we_vote_custom_domain || '';
-    const nextWeVoteCustomDomain = nextOrganization.we_vote_custom_domain || '';
-
-    if (priorWeVoteCustomDomain !== nextWeVoteCustomDomain) {
-      // console.log('priorWeVoteCustomDomain', priorWeVoteCustomDomain, ', nextWeVoteCustomDomain', nextWeVoteCustomDomain);
+    if (this.state.analyticsButtonsActive !== nextState.analyticsButtonsActive) {
+      // console.log('this.state.analyticsButtonsActive', this.state.analyticsButtonsActive, ', nextState.analyticsButtonsActive', nextState.analyticsButtonsActive);
       return true;
     }
-    if (this.state.buttonsActive !== nextState.buttonsActive) {
+    if (this.state.organizationChosenGoogleAnalyticsTracker !== nextState.organizationChosenGoogleAnalyticsTracker) {
+      // console.log('this.state.organizationChosenGoogleAnalyticsTracker', this.state.organizationChosenGoogleAnalyticsTracker, ', nextState.organizationChosenGoogleAnalyticsTracker', nextState.organizationChosenGoogleAnalyticsTracker);
       return true;
     }
-    if (this.state.trackerValue !== nextState.trackerValue) {
+    if (this.state.organizationChosenGoogleAnalyticsTrackerChangedLocally !== nextState.organizationChosenGoogleAnalyticsTrackerChangedLocally) {
+      // console.log('this.state.organizationChosenGoogleAnalyticsTrackerChangedLocally', this.state.organizationChosenGoogleAnalyticsTrackerChangedLocally, ', nextState.organizationChosenGoogleAnalyticsTrackerChangedLocally', nextState.organizationChosenGoogleAnalyticsTrackerChangedLocally);
       return true;
     }
-    if (this.state.webmasterValue !== nextState.webmasterValue) {
+    if (this.state.organizationChosenGoogleAnalyticsTrackerSavedValue !== nextState.organizationChosenGoogleAnalyticsTrackerSavedValue) {
+      // console.log('this.state.organizationChosenGoogleAnalyticsTrackerSavedValue', this.state.organizationChosenGoogleAnalyticsTrackerSavedValue, ', nextState.organizationChosenGoogleAnalyticsTrackerSavedValue', nextState.organizationChosenGoogleAnalyticsTrackerSavedValue);
+      return true;
+    }
+    if (this.state.organizationChosenHtmlVerification !== nextState.organizationChosenHtmlVerification) {
+      // console.log('this.state.organizationChosenHtmlVerification', this.state.organizationChosenHtmlVerification, ', nextState.organizationChosenHtmlVerification', nextState.organizationChosenHtmlVerification);
+      return true;
+    }
+    if (this.state.organizationChosenHtmlVerificationChangedLocally !== nextState.organizationChosenHtmlVerificationChangedLocally) {
+      // console.log('this.state.organizationChosenHtmlVerificationChangedLocally', this.state.organizationChosenHtmlVerificationChangedLocally, ', nextState.organizationChosenHtmlVerificationChangedLocally', nextState.organizationChosenHtmlVerificationChangedLocally);
+      return true;
+    }
+    if (this.state.organizationChosenHtmlVerificationSavedValue !== nextState.organizationChosenHtmlVerificationSavedValue) {
+      // console.log('this.state.organizationChosenHtmlVerificationSavedValue', this.state.organizationChosenHtmlVerificationSavedValue, ', nextState.organizationChosenHtmlVerificationSavedValue', nextState.organizationChosenHtmlVerificationSavedValue);
       return true;
     }
     if (this.state.voterIsPremium !== nextState.voterIsPremium) {
+      // console.log('this.state.voterIsPremium', this.state.voterIsPremium, ', nextState.voterIsPremium', nextState.voterIsPremium);
+      return true;
+    }
+    const priorOrganization = this.state.organization;
+    const nextOrganization = nextState.organization;
+
+    const priorChosenGoogleAnalyticsTracker = priorOrganization.chosen_google_analytics_account_number || '';
+    const nextChosenGoogleAnalyticsTracker = nextOrganization.chosen_google_analytics_account_number || '';
+    const priorChosenHtmlVerification = priorOrganization.chosen_html_verification_string || '';
+    const nextChosenHtmlVerification = nextOrganization.chosen_html_verification_string || '';
+
+    if (priorChosenGoogleAnalyticsTracker !== nextChosenGoogleAnalyticsTracker) {
+      // console.log('priorChosenGoogleAnalyticsTracker', priorChosenGoogleAnalyticsTracker, ', nextChosenGoogleAnalyticsTracker', nextChosenGoogleAnalyticsTracker);
+      return true;
+    }
+    if (priorChosenHtmlVerification !== nextChosenHtmlVerification) {
+      // console.log('priorChosenHtmlVerification', priorChosenHtmlVerification, ', nextChosenHtmlVerification', nextChosenHtmlVerification);
       return true;
     }
     // console.log('shouldComponentUpdate false');
@@ -80,55 +111,142 @@ class SettingsAnalytics extends Component {
   }
 
   onOrganizationStoreChange = () => {
-    const { organizationWeVoteId } = this.state;
+    const { organizationChosenGoogleAnalyticsTrackerChangedLocally, organizationChosenHtmlVerificationChangedLocally, organizationWeVoteId } = this.state;
+    const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+    const organizationChosenGoogleAnalyticsTrackerSavedValue = organization.chosen_google_analytics_account_number || '';
+    const organizationChosenHtmlVerificationSavedValue = organization.chosen_html_verification_string || '';
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
+      organization,
+      organizationChosenGoogleAnalyticsTrackerSavedValue,
+      organizationChosenHtmlVerificationSavedValue,
     });
+    // If it hasn't been changed locally, then use the one saved in the API server
+    if (!organizationChosenGoogleAnalyticsTrackerChangedLocally) {
+      this.setState({
+        organizationChosenGoogleAnalyticsTracker: organizationChosenGoogleAnalyticsTrackerSavedValue || '',
+      });
+    }
+    // If it hasn't been changed locally, then use the one saved in the API server
+    if (!organizationChosenHtmlVerificationChangedLocally) {
+      this.setState({
+        organizationChosenHtmlVerification: organizationChosenHtmlVerificationSavedValue || '',
+      });
+    }
   }
 
   onVoterStoreChange = () => {
+    const { organizationChosenGoogleAnalyticsTrackerChangedLocally, organizationChosenHtmlVerificationChangedLocally } = this.state;
     const voter = VoterStore.getVoter();
     const voterIsSignedIn = voter.is_signed_in;
     const organizationWeVoteId = voter.linked_organization_we_vote_id;
+    const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+    const organizationChosenGoogleAnalyticsTrackerSavedValue = organization.chosen_google_analytics_account_number || '';
+    const organizationChosenHtmlVerificationSavedValue = organization.chosen_html_verification_string || '';
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
+      organization,
+      organizationChosenGoogleAnalyticsTrackerSavedValue,
+      organizationChosenHtmlVerificationSavedValue,
       organizationWeVoteId,
       voter,
       voterIsSignedIn,
     });
-  }
-
-  onTrackerInputChange = (e) => {
-    if (e.target.value === '') {
-      this.setState({ buttonsActive: '', trackerValue: '' });
-    } else {
-      this.setState({ buttonsActive: 'tracker', trackerValue: e.target.value });
+    // If it hasn't been changed locally, then use the one saved in the API server
+    if (!organizationChosenGoogleAnalyticsTrackerChangedLocally) {
+      this.setState({
+        organizationChosenGoogleAnalyticsTracker: organizationChosenGoogleAnalyticsTrackerSavedValue || '',
+      });
+    }
+    // If it hasn't been changed locally, then use the one saved in the API server
+    if (!organizationChosenHtmlVerificationChangedLocally) {
+      this.setState({
+        organizationChosenHtmlVerification: organizationChosenHtmlVerificationSavedValue || '',
+      });
     }
   }
 
-  onWebmasterInputChange = (e) => {
-    if (e.target.value === '') {
-      this.setState({ buttonsActive: '', webmasterValue: '' });
-    } else {
-      this.setState({ buttonsActive: 'webmaster', webmasterValue: e.target.value });
+  handleOrganizationChosenHtmlVerificationChange = (event) => {
+    const { organizationChosenHtmlVerification } = this.state;
+    // console.log('handleOrganizationChosenHtmlVerificationChange, organizationChosenHtmlVerification: ', organizationChosenHtmlVerification);
+    // console.log('handleOrganizationChosenHtmlVerificationChange, event.target.value: ', event.target.value);
+    if (event.target.value !== organizationChosenHtmlVerification) {
+      this.setState({
+        analyticsButtonsActive: 'organizationChosenHtmlVerificationButtonsActive',
+        organizationChosenHtmlVerification: event.target.value || '',
+        organizationChosenHtmlVerificationChangedLocally: true,
+      });
     }
   }
 
-  onCancelButton = () => {
-    this.setState({ buttonsActive: '' });
+  handleOrganizationChosenGoogleAnalyticsTrackerChange = (event) => {
+    const { organizationChosenGoogleAnalyticsTracker } = this.state;
+    // console.log('handleOrganizationChosenGoogleAnalyticsTrackerChange, organizationChosenGoogleAnalyticsTracker: ', organizationChosenGoogleAnalyticsTracker);
+    // console.log('handleOrganizationChosenGoogleAnalyticsTrackerChange, event.target.value: ', event.target.value);
+    if (event.target.value !== organizationChosenGoogleAnalyticsTracker) {
+      this.setState({
+        analyticsButtonsActive: 'organizationChosenGoogleAnalyticsTrackerButtonsActive',
+        organizationChosenGoogleAnalyticsTracker: event.target.value || '',
+        organizationChosenGoogleAnalyticsTrackerChangedLocally: true,
+      });
+    }
   }
 
-  onSaveButton = () => {
-    this.setState({ buttonsActive: '' });
+  showChosenGoogleAnalyticsTrackerButtons = () => {
+    const { analyticsButtonsActive } = this.state;
+    if (analyticsButtonsActive !== 'organizationChosenGoogleAnalyticsTrackerButtonsActive') {
+      this.setState({
+        analyticsButtonsActive: 'organizationChosenGoogleAnalyticsTrackerButtonsActive',
+      });
+    }
   }
 
-  openPremiumPage = () => {
-    // Open premium page for payment
+  onCancelGoogleAnalyticsTrackerButton = () => {
+    // console.log('onCancelGoogleAnalyticsTrackerButton');
+    const { organizationChosenGoogleAnalyticsTrackerSavedValue } = this.state;
+    this.setState({
+      organizationChosenGoogleAnalyticsTracker: organizationChosenGoogleAnalyticsTrackerSavedValue || '',
+      organizationChosenGoogleAnalyticsTrackerChangedLocally: false,
+    });
+  }
+
+  onCancelHtmlVerificationButton = () => {
+    // console.log('onCancelHtmlVerificationButton');
+    const { organizationChosenHtmlVerificationSavedValue } = this.state;
+    this.setState({
+      organizationChosenHtmlVerification: organizationChosenHtmlVerificationSavedValue || '',
+      organizationChosenHtmlVerificationChangedLocally: false,
+    });
+  }
+
+  onSaveGoogleAnalyticsTrackerButton = (event) => {
+    // console.log('onSaveGoogleAnalyticsTrackerButton');
+    const { organizationChosenGoogleAnalyticsTracker, organizationWeVoteId } = this.state;
+    OrganizationActions.organizationChosenGoogleAnalyticsTrackerSave(organizationWeVoteId, organizationChosenGoogleAnalyticsTracker);
+    this.setState({
+      organizationChosenGoogleAnalyticsTrackerChangedLocally: false,
+    });
+    event.preventDefault();
+  }
+
+  onSaveHtmlVerificationButton = (event) => {
+    // console.log('onSaveHtmlVerificationButton');
+    const { organizationChosenHtmlVerification, organizationWeVoteId } = this.state;
+    OrganizationActions.organizationChosenHtmlVerificationSave(organizationWeVoteId, organizationChosenHtmlVerification);
+    this.setState({
+      organizationChosenHtmlVerificationChangedLocally: false,
+    });
+    event.preventDefault();
+  }
+
+  openPaidAccountUpgradeModal (paidAccountUpgradeMode) {
+    // console.log('SettingsDomain openPaidAccountUpgradeModal');
+    AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
   }
 
   render () {
     renderLog(__filename);
-    const { organization, organizationWeVoteId, voter, voterIsSignedIn, buttonsActive, trackerValue, webMasterValue } = this.state;
+    const { organization, organizationWeVoteId, voter, voterIsPremium, voterIsSignedIn, analyticsButtonsActive,
+      organizationChosenGoogleAnalyticsTracker, organizationChosenGoogleAnalyticsTrackerChangedLocally,
+      organizationChosenHtmlVerification, organizationChosenHtmlVerificationChangedLocally } = this.state;
     const { classes } = this.props;
     if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
@@ -146,44 +264,80 @@ class SettingsAnalytics extends Component {
         <div className="card">
           <div className="card-main">
             <h1 className="h2">Analytics</h1>
-            <Seperator />
+            <Separator />
             <FormControl classes={{ root: classes.formControl }}>
               <InputLabel>Google Analytics Tracker</InputLabel>
-              <InputLabelHelperText>e.g., UA-XXXXXXX-X</InputLabelHelperText>
+              <InputLabelHelperText>Add your tracking code (e.g., UA-XXXXXXX-X) so you can watch voter activity.</InputLabelHelperText>
               <TextField
-                onChange={this.onTrackerInputChange}
-                label="Paste Here..."
+                onChange={this.handleOrganizationChosenGoogleAnalyticsTrackerChange}
+                onClick={this.showChosenGoogleAnalyticsTrackerButtons}
+                label="Paste Google Analytics ID Here..."
                 variant="outlined"
-                value={trackerValue}
+                value={organizationChosenGoogleAnalyticsTracker}
               />
             </FormControl>
-            {buttonsActive === 'tracker' ? (
+            {analyticsButtonsActive === 'organizationChosenGoogleAnalyticsTrackerButtonsActive' && (
               <ButtonsContainer>
-                <Button classes={{ root: classes.button }} onClick={this.onCancelButton} color="primary" variant="outlined">
+                <Button
+                  classes={{ root: classes.button }}
+                  color="primary"
+                  disabled={!organizationChosenGoogleAnalyticsTrackerChangedLocally}
+                  onClick={this.onCancelGoogleAnalyticsTrackerButton}
+                  variant="outlined"
+                >
                   Cancel
                 </Button>
-                <Button onClick={this.state.voterIsPremium ? this.onSaveButton : this.openPremiumPage} variant="contained" classes={{ root: classes.goldButton }}>
-                  {this.state.voterIsPremium ? 'Save' : 'Upgrade to Professional'}
-                </Button>
+                {voterIsPremium ? (
+                  <Button
+                    color="primary"
+                    disabled={!organizationChosenGoogleAnalyticsTrackerChangedLocally}
+                    onClick={this.onSaveGoogleAnalyticsTrackerButton}
+                    variant="contained"
+                  >
+                    Save
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => this.openPaidAccountUpgradeModal('enterprise')}
+                    variant="contained"
+                    classes={{ root: classes.goldButton }}
+                  >
+                    Upgrade to Enterprise
+                  </Button>
+                )
+                }
               </ButtonsContainer>
-            ) : null}
-            <Seperator />
+            )}
+            <Separator />
             <FormControl classes={{ root: classes.formControl }}>
               <InputLabel>Verify Google Webmaster Tool</InputLabel>
-              <InputLabelHelperText>Paste the meta tag from Google Webmaster Tool</InputLabelHelperText>
+              <InputLabelHelperText>
+                Add your HTML meta tag (e.g., &lt;meta name=&quot;google-site-verification&quot; content=&quot;your verification string&quot;&gt;) to prove to Google that you control this website.
+              </InputLabelHelperText>
               <TextField
-                onChange={this.onWebmasterInputChange}
-                label="Paste Here..."
+                onChange={this.handleOrganizationChosenHtmlVerificationChange}
+                label="Paste the HTML meta tag here..."
                 variant="outlined"
-                value={webMasterValue}
+                value={organizationChosenHtmlVerification}
               />
             </FormControl>
-            {buttonsActive === 'webmaster' ? (
+            {analyticsButtonsActive === 'organizationChosenHtmlVerificationButtonsActive' ? (
               <ButtonsContainer>
-                <Button classes={{ root: classes.button }} onClick={this.onCancelButton} color="primary" variant="outlined">
+                <Button
+                  classes={{ root: classes.button }}
+                  color="primary"
+                  disabled={!organizationChosenHtmlVerificationChangedLocally}
+                  onClick={this.onCancelHtmlVerificationButton}
+                  variant="outlined"
+                >
                   Cancel
                 </Button>
-                <Button color="primary" variant="contained" onClick={this.onSaveButton}>
+                <Button
+                  color="primary"
+                  disabled={!organizationChosenHtmlVerificationChangedLocally}
+                  onClick={this.onSaveHtmlVerificationButton}
+                  variant="contained"
+                >
                   Save
                 </Button>
               </ButtonsContainer>
@@ -230,7 +384,7 @@ const ButtonsContainer = styled.div`
   margin-top: 12px;
 `;
 
-const Seperator = styled.div`
+const Separator = styled.div`
   width: 100%;
   height: 2px;
   background: #eee;
