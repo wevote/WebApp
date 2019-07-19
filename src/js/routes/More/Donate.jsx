@@ -225,7 +225,7 @@ class Donate extends Component {
             }
           </DonateDescriptionContainer>
           <DonateDescriptionContainer>
-            Contributions or gifts made on this page are not tax deductible, and fund the We Vote&apos;s 501(c)(4) nonprofit.
+            Contributions or gifts made on this page are not tax deductible, and fund We Vote USA, a 501(c)(4) nonprofit.
             We Vote also has a 501(c)(3) nonprofit that welcomes
             {' '}
             {/* This is a mailto! Shouldn't be visible in iPhone or Android apps. */}
