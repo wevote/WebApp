@@ -23,7 +23,10 @@ class Pricing extends Component {
 
   static propTypes = {
     classes: PropTypes.object,
+    initialPricingPlan: PropTypes.string,
+    modalDisplayMode: PropTypes.bool,
     params: PropTypes.object,
+    pricingPlanChosenFunction: PropTypes.func,
   };
 
   constructor (props) {
@@ -37,6 +40,7 @@ class Pricing extends Component {
         alternateLinkText: 'For Organizations?',
         Free: {
           planName: 'Free',
+          pricingPlanStringIdentifier: 'free',
           price: 0,
           priceDescribe: 'For life',
           premium: false,
@@ -91,6 +95,7 @@ class Pricing extends Component {
         },
         Professional: {
           planName: 'Professional',
+          pricingPlanStringIdentifier: 'professional',
           price: 125,
           priceDescribe: 'Per month, billed annually',
           premium: true,
@@ -145,6 +150,7 @@ class Pricing extends Component {
         },
         Enterprise: {
           planName: 'Enterprise',
+          pricingPlanStringIdentifier: 'enterprise',
           price: null,
           priceDescribe: null,
           premium: true,
@@ -205,6 +211,7 @@ class Pricing extends Component {
         alternateLinkText: 'For Campaigns?',
         Free: {
           planName: 'Free',
+          pricingPlanStringIdentifier: 'free',
           price: 0,
           priceDescribe: 'For life',
           premium: false,
@@ -247,6 +254,7 @@ class Pricing extends Component {
         },
         Professional: {
           planName: 'Professional',
+          pricingPlanStringIdentifier: 'professional',
           price: 125,
           priceDescribe: 'Per month, billed annually',
           premium: true,
@@ -289,6 +297,7 @@ class Pricing extends Component {
         },
         Enterprise: {
           planName: 'Enterprise',
+          pricingPlanStringIdentifier: 'enterprise',
           price: null,
           priceDescribe: null,
           premium: true,
@@ -330,7 +339,7 @@ class Pricing extends Component {
           ],
         },
       },
-      selectedCategoryIndex: 0,
+      selectedPricingPlanIndex: 0,
       voter: {},
     };
   }
@@ -338,14 +347,30 @@ class Pricing extends Component {
   componentDidMount () {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    const currentPricingChoice = (this.props.params.pricing_choice === 'campaigns') ? 'forCampaigns' : 'forOrganizations';
+    let pricingChoice = '';
+    if (this.props.params && this.props.params.pricing_choice) {
+      pricingChoice = this.props.params.pricing_choice;
+    }
+    const currentPricingChoice = (pricingChoice === 'campaigns') ? 'forCampaigns' : 'forOrganizations';
+    // console.log('componentDidMount, pricingChoice: ', pricingChoice, 'currentPricingChoice: ', currentPricingChoice);
+    let selectedPricingPlanIndex = 0;
+    if (this.props.initialPricingPlan) {
+      selectedPricingPlanIndex = this.convertPricingPlanToIndex(this.props.initialPricingPlan);
+    }
     this.setState({
       currentPricingChoice,
+      selectedPricingPlanIndex,
     });
   }
 
   componentWillReceiveProps (nextProps) {
-    const currentPricingChoice = (nextProps.params.pricing_choice === 'campaigns') ? 'forCampaigns' : 'forOrganizations';
+    this.onVoterStoreChange();
+    let pricingChoice = '';
+    if (nextProps.params && nextProps.params.pricing_choice) {
+      pricingChoice = nextProps.params.pricing_choice;
+    }
+    const currentPricingChoice = (pricingChoice === 'campaigns') ? 'forCampaigns' : 'forOrganizations';
+    // console.log('componentWillReceiveProps, pricingChoice: ', pricingChoice, 'currentPricingChoice: ', currentPricingChoice);
     this.setState({
       currentPricingChoice,
     });
@@ -361,65 +386,110 @@ class Pricing extends Component {
     });
   }
 
-  switchToDifferentCategoryFunction = (selectedCategoryIndex) => {
-    this.setState({ selectedCategoryIndex });
+  switchToDifferentCategoryFunction = (selectedPricingPlanIndex) => {
+    this.setState({ selectedPricingPlanIndex });
   };
 
-  getStartedForOrganizations = () => {
-    const { voter } = this.state;
+  pricingPlanChosenFunctionLocal = (pricingPlanChosen) => {
+    if (this.props.pricingPlanChosenFunction) {
+      this.props.pricingPlanChosenFunction(pricingPlanChosen);
+    }
+  }
+
+  getStartedForOrganizations = (pricingPlanChosen) => {
+    const voter = VoterStore.getVoter();
     let isSignedIn = false;
     if (voter) {
       ({ is_signed_in: isSignedIn } = voter);
-      isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
     }
     // console.log('Pricing getStartedForOrganizations, isSignedIn: ', isSignedIn);
     if (isSignedIn) {
-      historyPush('/settings/profile');
+      if (this.props.modalDisplayMode) {
+        this.pricingPlanChosenFunctionLocal(pricingPlanChosen);
+      } else {
+        historyPush('/settings/profile');
+      }
     } else {
       AppActions.setGetStartedMode('getStartedForOrganizations');
       AppActions.setShowSignInModal(true);
     }
-  };
+  }
+
+  convertPricingPlanToIndex (pricingPlanStringIdentifier) {
+    if (pricingPlanStringIdentifier === 'free') {
+      return 0;
+    } else if (pricingPlanStringIdentifier === 'professional') {
+      return 1;
+    } else if (pricingPlanStringIdentifier === 'enterprise') {
+      return 2;
+    }
+    return 0;
+  }
 
   render () {
     const { classes } = this.props;
-    const { currentPricingChoice, forCampaignsPricingCards, forOrganizationsPricingCards, selectedCategoryIndex } = this.state;
+    const { currentPricingChoice, forCampaignsPricingCards, forOrganizationsPricingCards, selectedPricingPlanIndex } = this.state;
+    // console.log('render currentPricingChoice:', currentPricingChoice);
     const currentPricingDict = (currentPricingChoice === 'forCampaigns') ? forCampaignsPricingCards : forOrganizationsPricingCards;
+
+    const htmlForStandaloneHeader = (
+      <HeaderForPricing>
+        <PricingTitle>{currentPricingDict.pageTitle}</PricingTitle>
+        <PricingSubTitleDesktop className="u-show-desktop">
+          <Link to={currentPricingDict.alternateLinkPath} className={classes.pricingChoiceLink}>
+            {currentPricingDict.alternateLinkText}
+          </Link>
+        </PricingSubTitleDesktop>
+        <PricingSubTitleMobile className="u-show-mobile-tablet">
+          <Link to={currentPricingDict.alternateLinkPath} className={classes.pricingChoiceLink}>
+            {currentPricingDict.alternateLinkText}
+          </Link>
+          <div className={classes.pricingSwitch}>
+            <PricingSwitch
+              choices={this.state.pricingCardLabels}
+              selectedPricingPlanIndex={selectedPricingPlanIndex}
+              switchToDifferentCategoryFunction={this.switchToDifferentCategoryFunction}
+            />
+          </div>
+        </PricingSubTitleMobile>
+      </HeaderForPricing>
+    );
+
+    const chosenBackgroundColor = '#2e3c5d'; // brandBlue;
+    const chosenTextColor = 'white';
+    const htmlForModalHeader = (
+      <HeaderForPricingModal>
+        <div className="u-show-mobile-tablet">
+          <PricingSwitch
+            choices={this.state.pricingCardLabels}
+            chosenTextColor={chosenTextColor}
+            chosenBackgroundColor={chosenBackgroundColor}
+            selectedPricingPlanIndex={selectedPricingPlanIndex}
+            switchToDifferentCategoryFunction={this.switchToDifferentCategoryFunction}
+          />
+        </div>
+      </HeaderForPricingModal>
+    );
 
     renderLog(__filename);
     return (
       <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="Pricing - We Vote" />
-        <WelcomeAppbar pathname="/more/pricing" />
-        <HeaderForPricing>
-          <PricingTitle>{currentPricingDict.pageTitle}</PricingTitle>
-          <PricingSubTitleDesktop className="u-show-desktop">
-            <Link to={currentPricingDict.alternateLinkPath} className={classes.pricingChoiceLink}>
-              {currentPricingDict.alternateLinkText}
-            </Link>
-          </PricingSubTitleDesktop>
-          <PricingSubTitleMobile className="u-show-mobile-tablet">
-            <Link to={currentPricingDict.alternateLinkPath} className={classes.pricingChoiceLink}>
-              {currentPricingDict.alternateLinkText}
-            </Link>
-            <div className={classes.pricingSwitch}>
-              <PricingSwitch
-                choices={this.state.pricingCardLabels}
-                color="white"
-                selectedCategoryIndex={selectedCategoryIndex}
-                switchToDifferentCategoryFunction={this.switchToDifferentCategoryFunction}
-              />
-            </div>
-          </PricingSubTitleMobile>
-        </HeaderForPricing>
-        <Section>
+        {this.props.modalDisplayMode ? null : <WelcomeAppbar pathname="/more/pricing" />}
+        {this.props.modalDisplayMode ? htmlForModalHeader : htmlForStandaloneHeader}
+        <Section
+          noSideMargins={this.props.modalDisplayMode}
+          noTopMargin={this.props.modalDisplayMode}
+          variant={this.props.modalDisplayMode ? 'dark' : 'white'}
+        >
           <PricingDescriptionContainer className="container">
             <div className="u-show-mobile-tablet">
               <div className="row">
-                {selectedCategoryIndex === 0 ? (
+                {selectedPricingPlanIndex === 0 ? (
                   <PricingCard
                     fullWidth
                     planName={currentPricingDict.Free.planName}
+                    pricingPlanStringIdentifier={currentPricingDict.Free.pricingPlanStringIdentifier}
                     price={currentPricingDict.Free.price}
                     priceDescribe={currentPricingDict.Free.priceDescribe}
                     description={currentPricingDict.Free.description}
@@ -431,10 +501,11 @@ class Pricing extends Component {
                   />
                 ) : (
                   <React.Fragment>
-                    {selectedCategoryIndex === 1 ? (
+                    {selectedPricingPlanIndex === 1 ? (
                       <PricingCard
                         fullWidth
                         planName={currentPricingDict.Professional.planName}
+                        pricingPlanStringIdentifier={currentPricingDict.Professional.pricingPlanStringIdentifier}
                         price={currentPricingDict.Professional.price}
                         priceDescribe={currentPricingDict.Professional.priceDescribe}
                         premium
@@ -449,6 +520,7 @@ class Pricing extends Component {
                       <PricingCard
                         fullWidth
                         planName={currentPricingDict.Enterprise.planName}
+                        pricingPlanStringIdentifier={currentPricingDict.Enterprise.pricingPlanStringIdentifier}
                         price={currentPricingDict.Enterprise.price}
                         priceDescribe={currentPricingDict.Enterprise.priceDescribe}
                         premium
@@ -467,6 +539,7 @@ class Pricing extends Component {
             <div className="row u-show-desktop">
               <PricingCard
                 planName={currentPricingDict.Free.planName}
+                pricingPlanStringIdentifier={currentPricingDict.Free.pricingPlanStringIdentifier}
                 price={currentPricingDict.Free.price}
                 priceDescribe={currentPricingDict.Free.priceDescribe}
                 description={currentPricingDict.Free.description}
@@ -478,6 +551,7 @@ class Pricing extends Component {
               />
               <PricingCard
                 planName={currentPricingDict.Professional.planName}
+                pricingPlanStringIdentifier={currentPricingDict.Professional.pricingPlanStringIdentifier}
                 price={currentPricingDict.Professional.price}
                 priceDescribe={currentPricingDict.Professional.priceDescribe}
                 premium
@@ -490,6 +564,7 @@ class Pricing extends Component {
               />
               <PricingCard
                 planName={currentPricingDict.Enterprise.planName}
+                pricingPlanStringIdentifier={currentPricingDict.Enterprise.pricingPlanStringIdentifier}
                 price={currentPricingDict.Enterprise.price}
                 priceDescribe={currentPricingDict.Enterprise.priceDescribe}
                 premium
@@ -503,10 +578,14 @@ class Pricing extends Component {
             </div>
           </PricingDescriptionContainer>
         </Section>
-        <Section>
-          &nbsp;
-        </Section>
-        <Footer />
+        {this.props.modalDisplayMode ? null : (
+          <Section>
+            &nbsp;
+          </Section>
+        )}
+        {this.props.modalDisplayMode ? null : (
+          <Footer />
+        )}
       </Wrapper>
     );
   }
@@ -567,6 +646,13 @@ const HeaderForPricing = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
     height: 240px;
   }
+`;
+
+const HeaderForPricingModal = styled.div`
+  position: relative;
+  width: 110%;
+  padding: 0 0 10px 0;
+  text-align: center;
 `;
 
 const PricingTitle = styled.h1`

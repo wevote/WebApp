@@ -14,7 +14,7 @@ import { withStyles, withTheme } from '@material-ui/core/styles';
 import { Link } from 'react-router';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import VoterStore from "../../stores/VoterStore";
+import VoterStore from '../../stores/VoterStore';
 
 const webAppConfig = require('../../config');
 

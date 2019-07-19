@@ -18,6 +18,7 @@ import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import HeaderBarLogo from './HeaderBarLogo';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
+import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
 import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
@@ -101,6 +102,9 @@ class HeaderBar extends Component {
     if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
       return true;
     }
+    if (this.state.showPaidAccountUpgradeModal !== nextState.showPaidAccountUpgradeModal) {
+      return true;
+    }
     if (this.state.scrolledDown !== nextState.scrolledDown) {
       return true;
     }
@@ -156,9 +160,15 @@ class HeaderBar extends Component {
   }
 
   onAppStoreChange () {
+    const paidAccountUpgradeMode = AppStore.showPaidAccountUpgradeModal();
+    // console.log('HeaderBar paidAccountUpgradeMode:', paidAccountUpgradeMode);
+    const showPaidAccountUpgradeModal = paidAccountUpgradeMode && paidAccountUpgradeMode !== '';
+    // console.log('HeaderBar showPaidAccountUpgradeModal:', showPaidAccountUpgradeModal);
     this.setState({
       scrolledDown: AppStore.getScrolledDown(),
       showEditAddressButton: AppStore.showEditAddressButton(),
+      showPaidAccountUpgradeModal,
+      paidAccountUpgradeMode,
       showSignInModal: AppStore.showSignInModal(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
     });
@@ -195,6 +205,11 @@ class HeaderBar extends Component {
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
     AppActions.setShowSelectBallotModal(!showSelectBallotModal);
+  }
+
+  closePaidAccountUpgradeModal () {
+    // console.log('HeaderBar closePaidAccountUpgradeModal');
+    AppActions.setShowPaidAccountUpgradeModal('');
   }
 
   closeSignInModal () {
@@ -237,7 +252,7 @@ class HeaderBar extends Component {
     }
     renderLog(__filename);
     const { voter, classes, pathname, location } = this.props;
-    const { showEditAddressButton, scrolledDown } = this.state;
+    const { paidAccountUpgradeMode, scrolledDown, showEditAddressButton, showPaidAccountUpgradeModal } = this.state;
     const ballotBaseUrl = '/ballot';
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     // const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0; // DALE: FRIENDS TEMPORARILY DISABLED
@@ -417,7 +432,7 @@ class HeaderBar extends Component {
           show={this.state.showSignInModal}
           toggleFunction={this.closeSignInModal}
         />
-        {this.state.showSelectBallotModal ? (
+        {this.state.showSelectBallotModal && (
           <SelectBallotModal
             ballotBaseUrl="/ballot"
             location={location}
@@ -425,8 +440,15 @@ class HeaderBar extends Component {
             show={this.state.showSelectBallotModal}
             toggleFunction={this.toggleSelectBallotModal}
           />
-        ) : (
-          null
+        )}
+        {showPaidAccountUpgradeModal && (
+          <PaidAccountUpgradeModal
+            initialPricingPlan={paidAccountUpgradeMode}
+            location={location}
+            pathname={pathname}
+            show={showPaidAccountUpgradeModal}
+            toggleFunction={this.closePaidAccountUpgradeModal}
+          />
         )}
       </Wrapper>
     );
