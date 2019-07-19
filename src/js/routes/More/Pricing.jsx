@@ -579,12 +579,12 @@ class Pricing extends Component {
           </PricingDescriptionContainer>
         </Section>
         {this.props.modalDisplayMode ? null : (
-          <span>
-            <Section>
-              &nbsp;
-            </Section>
-            <Footer />
-          </span>
+          <Section>
+            &nbsp;
+          </Section>
+        )}
+        {this.props.modalDisplayMode ? null : (
+          <Footer />
         )}
       </Wrapper>
     );
