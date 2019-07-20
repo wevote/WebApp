@@ -39,8 +39,8 @@ class Application extends Component {
   componentDidMount () {
     // console.log("React Application ---------------   componentDidMount ()");
     polyfillObjectEntries();
-    this.initFacebook();
-    this.initCordova();
+    this.initializeFacebookSdkForJavascript();
+    this.initializationForCordova();
 
     const voterDeviceId = VoterStore.voterDeviceId();
     VoterActions.voterRetrieve();
@@ -60,7 +60,8 @@ class Application extends Component {
     }
   }
 
-  componentDidUpdate () {
+  // eslint-disable-next-line no-unused-vars
+  componentDidUpdate (prevProps, prevState, nextContent) {
     const { location: { pathname } } = this.props;
     const { voteMode, voterGuideMode } = getApplicationViewBooleans(pathname);
 
@@ -81,17 +82,17 @@ class Application extends Component {
     window.removeEventListener('scroll', this.handleWindowScroll);
   }
 
-  initCordova () { // eslint-disable-line
+  initializationForCordova () { // eslint-disable-line
     if (isCordova()) {
       const { uuid } = window.device;
-      console.log(`Application initCordova ------------ ${__filename} uuid: ${uuid}`);
+      console.log(`Application initializationForCordova ------------ ${__filename} uuid: ${uuid}`);
       window.handleOpenURL = (url) => {
         TwitterSignIn.handleTwitterOpenURL(url);
       };
     }
   }
 
-  initFacebook () { // eslint-disable-line
+  initializeFacebookSdkForJavascript () { // eslint-disable-line
     if (webAppConfig.ENABLE_FACEBOOK) {
       window.fbAsyncInit = function () {  // eslint-disable-line func-names
         const { FB } = window;
@@ -99,7 +100,7 @@ class Application extends Component {
           appId: webAppConfig.FACEBOOK_APP_ID,
           autoLogAppEvents: true,
           xfbml: true,
-          version: 'v3.2',
+          version: 'v3.3',
           status: true, // set this status to true, this will fix the popup blocker issue
         });
       };
