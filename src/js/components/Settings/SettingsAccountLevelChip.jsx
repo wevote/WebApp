@@ -15,8 +15,13 @@ const styles = {
   },
 };
 
-class AccountLevelChip extends Component {
-  static propTypes={ classes: PropTypes.object };
+class SettingsAccountLevelChip extends Component {
+  static propTypes = {
+    accountLevel: PropTypes.oneOf(['free', 'pro', 'enterprise']),
+    featureIsEnterpriseLevel: PropTypes.bool,
+    classes: PropTypes.object,
+    size: PropTypes.string,
+  };
 
   constructor (props) {
     super(props);
@@ -25,18 +30,17 @@ class AccountLevelChip extends Component {
 
   render () {
     renderLog(__filename);
-    const { classes } = this.props;
+    const { accountLevel, classes, size } = this.props;
     return (
       <Chip
-        classes={{
+        classes={size === 'small' ? {
           root: classes.root,
           label: classes.label,
-        }}
-        label="testing chip"
-        size="small"
+        } : {}}
+        label={accountLevel === 'enterprise' ? 'ENTERPRISE' : 'PRO'}
       />
     );
   }
 }
 
-export default withStyles(styles)(AccountLevelChip);
+export default withStyles(styles)(SettingsAccountLevelChip);
