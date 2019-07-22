@@ -25,6 +25,7 @@ export default class IssueFollowToggleButton extends Component {
     super(props);
     this.state = {
       isFollowing: false,
+      visibilityChange: false,
     };
     this.onIssueFollow = this.onIssueFollow.bind(this);
     this.onIssueStopFollowing = this.onIssueStopFollowing.bind(this);
@@ -34,9 +35,12 @@ export default class IssueFollowToggleButton extends Component {
     const isFollowing = IssueStore.isVoterFollowingThisIssue(this.props.issueWeVoteId);
     this.setState({
       isFollowing,
-      visibilityChange: false,
     });
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
+  }
+
+  componentWillReceiveProps () {
+    this.setState({ visibilityChange: false });
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -66,17 +70,16 @@ export default class IssueFollowToggleButton extends Component {
 
   onIssueFollow () {
     // This check is necessary as we enable follow when user clicks on Issue text
-    if (!this.state.isFollowing) {
-      this.setState({
-        isFollowing: true,
-        visibilityChange: true,
-      });
-      IssueActions.issueFollow(this.props.issueWeVoteId, VoterStore.electionId());
-      if (this.props.onIssueFollowFunction) {
-        this.props.onIssueFollowFunction(this.props.issueWeVoteId);
-      }
-      openSnackbar({ message: `Now following ${this.props.issueName}!` });
+    IssueActions.issueFollow(this.props.issueWeVoteId, VoterStore.electionId());
+    if (this.props.onIssueFollowFunction) {
+      this.props.onIssueFollowFunction(this.props.issueWeVoteId);
     }
+    openSnackbar({ message: `Now following ${this.props.issueName}!` });
+
+    this.setState({
+      isFollowing: true,
+      visibilityChange: true,
+    });
 
     const { currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId } = this.props;
     if (currentBallotIdInUrl !== ballotItemWeVoteId) {
@@ -85,14 +88,14 @@ export default class IssueFollowToggleButton extends Component {
   }
 
   onIssueStopFollowing (e) {
-    if (this.state.isFollowing) {
-      if (e.target.classList.contains('MuiButton-label-44')) {
-        e.target.parentElement.parentElement.parentElement.classList.remove('show');
-      } else if (e.target.classList.contains('issues-follow-btn__menu-item')) {
-        e.target.parentElement.parentElement.classList.remove('show');
-      }
+    this.setState({ isFollowing: false, visibilityChange: true });
+
+    if (e.target.classList.contains('MuiButton-label-44') || e.target.classList.contains('MuiButton-label-252'))  {
+      e.target.parentElement.parentElement.parentElement.classList.remove('show');
+    } else if (e.target.classList.contains('issues-follow-btn__menu-item')) {
+      e.target.parentElement.parentElement.classList.remove('show');
     }
-    this.setState({ isFollowing: false });
+
     IssueActions.issueStopFollowing(this.props.issueWeVoteId, VoterStore.electionId());
     // console.log("IssueFollowToggleButton, this.props.ballotItemWeVoteId:", this.props.ballotItemWeVoteId);
     if (this.props.ballotItemWeVoteId) {
@@ -110,10 +113,10 @@ export default class IssueFollowToggleButton extends Component {
     if (document.getElementById('dropdown-toggle')) {
       document.getElementById('dropdown-toggle').style.visibility = 'hidden';
     }
-    // Force render
-    this.setState({
-      visibilityChange: true,
-    });
+  }
+
+  npcomponentWillRecieveProps () {
+    this.setState({ visibilityChange: true });
   }
 
   render () {
@@ -168,9 +171,12 @@ export default class IssueFollowToggleButton extends Component {
               </Button>
             </span>
           ) : (
-            <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={this.onIssueFollow}>
-              Follow
-            </Button>
+            <span className="d-print-none">
+              <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={this.onIssueFollow}>
+                Follow
+              </Button>
+            </span>
+
           )}
         </div>
       </div>
