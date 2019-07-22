@@ -4,7 +4,8 @@ import { cordovaOffsetLog } from './logging';
 /* global $  */
 
 // <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
-// renders approximately as ...  <div className="Ballot__Wrapper-sc-11u8kf3-0 dYbfmq"><div>
+// renders approximately as ...  <div className="Ballot__Wrapper-sc-11u8kf3-0 dYbfmq">
+//                               <div className="Application__Wrapper-sc-1ek38e7-0 bYNRzy">
 // <VoteContainer padTop={cordovaScrollablePaneTopPadding()}>   /index.html#/ballot/vote
 export function cordovaScrollablePaneTopPadding () {
   if (isSimulator()) {
@@ -19,13 +20,12 @@ export function cordovaScrollablePaneTopPadding () {
 
   if (isIOS()) {
     if (isIPhone5sSE()) {
-      if (isSimulator()) {
-        cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone5sSE');
-      }
+      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone5sSE');
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '18px';
         case enums.measureWild:     return '42px';
         case enums.candidate:       return '42px';
+        case enums.candidateWild:   return '42px';
         case enums.ballotVote:      return '131px';
         case enums.officeWild:      return isSignedIn ? '71px' : '62px';
         case enums.ballotSmHdrWild: return '153px';
@@ -39,13 +39,12 @@ export function cordovaScrollablePaneTopPadding () {
         default:                    return '0px';
       }
     } else if (isIPhone678()) {
-      if (isSimulator()) {
-        cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone678');
-      }
+      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone678');
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '18px';
         case enums.measureWild:     return '58px';
         case enums.candidate:       return '42px';
+        case enums.candidateWild:   return '57px';
         case enums.ballotVote:      return isSignedIn ? '123px' : '122px';
         case enums.officeWild:      return '62px';
         case enums.ballotSmHdrWild: return isSignedIn ? '153px' : '152px';
@@ -59,13 +58,12 @@ export function cordovaScrollablePaneTopPadding () {
         default:                    return '0px';
       }
     } else if (isIPhone678Plus()) {
-      if (isSimulator()) {
-        cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone678Plus');
-      }
+      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhone678Plus');
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '18px';
         case enums.measureWild:     return '58px';
         case enums.candidate:       return '40px';
+        case enums.candidateWild:   return '59px';
         case enums.ballotVote:      return '131px';
         case enums.officeWild:      return '64px';
         case enums.ballotSmHdrWild: return '140px';
@@ -79,13 +77,12 @@ export function cordovaScrollablePaneTopPadding () {
         default:                    return '0px';
       }
     } else if (isIPhoneXR()) {
-      if (isSimulator()) {
-        cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhoneXR');
-      }
+      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhoneXR');
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '32px';
         case enums.measureWild:     return '58px';
         case enums.candidate:       return '56px';
+        case enums.candidateWild:   return '72px';
         case enums.officeWild:      return '76px';
         case enums.values:          return '10px';
         case enums.ballotVote:      return isSignedIn ? '137px' : '139px';
@@ -100,13 +97,12 @@ export function cordovaScrollablePaneTopPadding () {
         default:                    return '0px';
       }
     } else if (isIPhoneXSMax()) {
-      if (isSimulator()) {
-        cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhoneXSMax');
-      }
+      cordovaOffsetLog('cordovaScrollablePaneTopPadding: isIPhoneXSMax');
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '32px';
         case enums.measureWild:     return '56px';
         case enums.candidate:       return '56px';
+        case enums.candidateWild:   return '73px';
         case enums.officeWild:      return '76px';
         case enums.ballotVote:      return isSignedIn ? '139px' : '147px';
         case enums.ballotSmHdrWild: return '162px';
@@ -120,13 +116,12 @@ export function cordovaScrollablePaneTopPadding () {
         default:                    return '0px';
       }
     } else if (hasIPhoneNotch()) {
-      if (isSimulator()) {
-        cordovaOffsetLog(`cordovaScrollablePaneTopPadding: hasIPhoneNotch -- signed in: ${isSignedIn}`);
-      }
+      cordovaOffsetLog(`cordovaScrollablePaneTopPadding: hasIPhoneNotch -- signed in: ${isSignedIn}`);
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '32px';
         case enums.measureWild:     return '72px';
         case enums.candidate:       return '66px';
+        case enums.candidateWild:   return '69px';
         case enums.opinions:        return '10px';
         case enums.officeWild:      return '76px';
         case enums.ballotVote:      return isSignedIn ? '136px' : '139px';
@@ -141,13 +136,12 @@ export function cordovaScrollablePaneTopPadding () {
         default:                    return '0px';
       }
     } else if (isIPad()) {
-      if (isSimulator()) {
-        cordovaOffsetLog('cordovaScrollablePaneTopPadding: is IPad');
-      }
+      cordovaOffsetLog('cordovaScrollablePaneTopPadding: is IPad');
       switch (pageEnumeration()) {
         case enums.wevoteintroWild: return '18px';
         case enums.measureWild:     return '58px';
         case enums.candidate:       return '40px';
+        case enums.candidateWild:   return '40px';
         case enums.ballotVote:      return '10px';
         case enums.officeWild:      return '64px';
         case enums.ballotSmHdrWild: return '129px';
@@ -164,9 +158,7 @@ export function cordovaScrollablePaneTopPadding () {
   } else if (isAndroid()) {
     const sizeString = getAndroidSize();
     if (sizeString === '--xl') {
-      if (isSimulator()) {
-        cordovaOffsetLog(`cordovaScrollablePaneTopPadding sizeString: ${sizeString}`);
-      }
+      cordovaOffsetLog(`cordovaScrollablePaneTopPadding sizeString: ${sizeString}`);
       switch (pageEnumeration()) {
         case enums.officeWild:      return '79px';
         case enums.measureWild:     return '57px';
@@ -433,7 +425,7 @@ export function cordovaTopHeaderTopMargin () {
           case enums.officeWild:      style.marginTop = '30px'; break;
           case enums.measureWild:     style.marginTop = '34px'; break;
           case enums.candidate:       style.marginTop = '35px'; break;
-          case enums.candidateWild:   style.marginTop = '17px'; break;
+          case enums.candidateWild:   style.marginTop = '33px'; break;
           case enums.valuesList:      style.marginTop = '38px'; break;
           case enums.values:          style.marginTop = '12px'; break;
           case enums.valueWild:       style.marginTop = '32px'; break;
