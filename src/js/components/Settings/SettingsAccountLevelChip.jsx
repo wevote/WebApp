@@ -18,7 +18,7 @@ const styles = {
   notUpgraded: {
     backgroundColor: 'rgb(242, 230, 210)',
     color: 'rgb(192, 133, 17)',
-    '&:hover, &:focus': {
+    '&:hover, &:focus, &:active': {
       backgroundColor: 'rgb(44, 58, 95)',
       color: 'white',
     },
@@ -26,7 +26,7 @@ const styles = {
   alreadyUpgraded: {
     backgroundColor: 'rgb(232, 232, 232)',
     color: 'rgb(170, 170, 170)',
-    '&:hover, &:focus': {
+    '&:hover, &:focus, &:active': {
       backgroundColor: 'rgb(4,193,108)',
       color: 'white',
     },
@@ -49,6 +49,10 @@ class SettingsAccountLevelChip extends Component {
     AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
   }
 
+  preventFocus = (e) => {
+    e.preventDefault();
+  }
+
   render () {
     renderLog(__filename);
     const { userAccountLevel, featureAccountLevel, classes } = this.props;
@@ -62,6 +66,7 @@ class SettingsAccountLevelChip extends Component {
         }}
         label={chipLabel}
         onClick={userAlreadyUpgraded ? undefined : this.onClickHandler}
+        onMouseDown={this.preventFocus}
         clickable
       />
     );
