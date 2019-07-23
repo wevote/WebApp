@@ -35,7 +35,7 @@ describe('Basic cross-platform We Vote test',  () => {
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
 
     await simpleClick('changeAddressHeaderBar'); // Open the "Change Address" modal
-    await simpleCloseBootstrapModal(); // Close the "Change Address" modal
+    await simpleClick('profileCloseSelectBallotModal'); // Close the "Change Address" modal
 
     // //////////////////////
     // We want to start by setting the location, which will automatically choose the next upcoming election for that address
@@ -84,7 +84,19 @@ describe('Basic cross-platform We Vote test',  () => {
     await simpleClick('valueIconAndText-wv02issue66'); // Clicks on the issue icon
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('valueIconAndText-wv02issue66'); // Clicks on the issue icon
+    await simpleClick('itemActionBarSupportButton-desktopVersion-wv02cand40208');
+    await setNewAddress('itemPositionStatementActionBarTextArea', 'This is just a comment that needs to be saved.');
+    await simpleClick('itemPositionStatementActionBarSave');
+    await simpleClick('itemActionBarOpposeButton-mobileVersion-wv02cand40208');
+    await setNewAddress('itemPositionStatementActionBarTextArea', '');
+    await simpleClick('itemPositionStatementActionBarSave');
+    await scrollThroughPage();
+    await simpleClick('positionItemFollowToggleFollow-wv02org21454');
+    await simpleClick('positionItemFollowToggleFollowDropdown-wv02org21454');
+    await simpleClick('positionItemFollowToggleDropdown-wv02org21454');
+    await simpleClick('positionItemFollowToggleUnfollow-wv02org21454');
     await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
+
 
     // //////////////////////
     // Visit the office page
