@@ -109,9 +109,9 @@ const styles = theme => ({
   },
   closeButton: {
     position: 'absolute',
-    right: `${theme.spacing.unit}px`,
-    top: `${theme.spacing.unit}px`,
+    right: `${theme.spacing(1)}px`,
+    top: `${theme.spacing(1)}px`,
   },
 });
 
-export default withTheme()(withStyles(styles)(SelectBallotModal));
+export default withTheme(withStyles(styles)(SelectBallotModal));

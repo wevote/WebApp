@@ -387,4 +387,4 @@ const Info = styled.p`
 //   }
 // `;
 
-export default withTheme()(withStyles(styles)(MeasureItemCompressed));
+export default withTheme(withStyles(styles)(MeasureItemCompressed));

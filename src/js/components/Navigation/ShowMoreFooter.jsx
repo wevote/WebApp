@@ -63,7 +63,7 @@ const ShowMoreFooterStyled = styled.div`
   }
 `;
 
-export default withTheme()(withStyles(styles)(ShowMoreFooter));
+export default withTheme(withStyles(styles)(ShowMoreFooter));
 
 
 

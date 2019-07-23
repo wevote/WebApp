@@ -198,4 +198,4 @@ const SearchWrapper = styled.div`
   }
 `;
 
-export default withTheme()(withStyles(styles)(BallotSearch));
+export default withTheme(withStyles(styles)(BallotSearch));

@@ -106,4 +106,4 @@ const PrintWrapper = styled.h1`
     text-size: 2rem;
   }
 `;
-export default withTheme()((ValuesToFollowPreview));
+export default withTheme((ValuesToFollowPreview));

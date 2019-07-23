@@ -179,8 +179,8 @@ const styles = theme => ({
   },
   closeButton: {
     position: 'absolute',
-    right: `${theme.spacing.unit}px`,
-    top: `${theme.spacing.unit}px`,
+    right: `${theme.spacing(1)}px`,
+    top: `${theme.spacing(1)}px`,
   },
 });
 
@@ -193,4 +193,4 @@ const ButtonsContainer = styled.div`
   margin-top: 12px;
 `;
 
-export default withTheme()(withStyles(styles)(PaidAccountUpgradeModal));
+export default withTheme(withStyles(styles)(PaidAccountUpgradeModal));
