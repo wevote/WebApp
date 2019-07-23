@@ -17,6 +17,7 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import SettingsAccount from './SettingsAccount';
 import VoterStore from '../../stores/VoterStore';
+import SettingsAccountLevelChip from './SettingsAccountLevelChip';
 
 class SettingsDomain extends Component {
   static propTypes = {
@@ -348,7 +349,8 @@ class SettingsDomain extends Component {
                 )}
                 <Separator />
                 <InputBoxLabel>
-                  Custom Domain
+                  <span>Custom Domain</span>
+                  <SettingsAccountLevelChip userAccountLevel="free" featureAccountLevel="pro" />
                 </InputBoxLabel>
                 <InputBoxHelperLabel>
                   If you already own a domain, enter it here. Empty it to disconnect.
