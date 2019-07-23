@@ -117,4 +117,7 @@ const styles = theme => ({
   },
 });
 
-export default withTheme()(withStyles(styles)(SignInModal));
+
+export default withTheme(withStyles(styles)(SignInModal));
+// export default withStyles(styles, withTheme(SignInModal));
+// export default withStyles(styles)(withTheme(SignInModal));

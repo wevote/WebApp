@@ -102,4 +102,4 @@ const Row = styled.div`
   margin: 0px -4px;
 `;
 
-export default withTheme()((ValuesFollowedPreview));
+export default withTheme((ValuesFollowedPreview));

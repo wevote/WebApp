@@ -193,4 +193,4 @@ const ButtonsContainer = styled.div`
   margin-top: 12px;
 `;
 
-export default withTheme()(withStyles(styles)(PaidAccountUpgradeModal));
+export default withTheme(withStyles(styles)(PaidAccountUpgradeModal));

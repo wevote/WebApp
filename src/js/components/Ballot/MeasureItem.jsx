@@ -204,4 +204,4 @@ const SubTitle = styled.h3`
   }
 `;
 
-export default withTheme()(withStyles(styles)(MeasureItem));
+export default withTheme(withStyles(styles)(MeasureItem));

@@ -114,4 +114,4 @@ const styles = theme => ({
   },
 });
 
-export default withTheme()(withStyles(styles)(SelectBallotModal));
+export default withTheme(withStyles(styles)(SelectBallotModal));

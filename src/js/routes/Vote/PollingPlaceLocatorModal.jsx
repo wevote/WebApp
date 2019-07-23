@@ -105,4 +105,4 @@ const styles = theme => ({
   },
 });
 
-export default withTheme()(withStyles(styles)(PollingPlaceLocatorModal));
+export default withTheme(withStyles(styles)(PollingPlaceLocatorModal));

@@ -169,4 +169,4 @@ const styles = theme => ({
   },
 });
 
-export default withTheme()(withStyles(styles)(DeviceDialog));
+export default withTheme(withStyles(styles)(DeviceDialog));

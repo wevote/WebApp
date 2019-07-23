@@ -859,4 +859,4 @@ const PopoverBody = styled.div`
   padding: 8px;
 `;
 
-export default withTheme()(withStyles(styles)(BallotItemSupportOpposeCountDisplay));
+export default withTheme(withStyles(styles)(BallotItemSupportOpposeCountDisplay));

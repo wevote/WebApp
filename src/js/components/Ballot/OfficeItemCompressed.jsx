@@ -496,4 +496,4 @@ const Candidate = styled.div`
   cursor: pointer;
 `;
 
-export default withTheme()(withStyles(styles)(OfficeItemCompressed));
+export default withTheme(withStyles(styles)(OfficeItemCompressed));

@@ -448,4 +448,4 @@ const PostSaveButton = styled.div`
   }
 `;
 
-export default withTheme()(withStyles(styles)(ItemPositionStatementActionBar));
+export default withTheme(withStyles(styles)(ItemPositionStatementActionBar));
