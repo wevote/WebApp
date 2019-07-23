@@ -155,6 +155,13 @@ export default {
       return;
     }
 
+    try {
+      const testURLFragment = `/me?fields=invitable_friends.limit(1000){name,id,picture.width(${pictureWidthVerified}).height(${pictureHeightVerified})}`;
+      console.log("FacebookActions (SUCCESS) testURLFragment = " + testURLFragment);  // eslint-disable-line
+    } catch (error) {
+      console.error("FacebookActions (ERROR) testURLFragment threw ", error);
+    }
+
     if (this.facebookApi()) {
       const fbApiForInvitableFriends = `/me?fields=invitable_friends.limit(1000){name,id,picture.width(${pictureWidthVerified}).height(${pictureHeightVerified})}`;
       this.facebookApi().api(
