@@ -154,6 +154,8 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.settingsWild:    return '15px';
         default:                    return '0px';
       }
+    } else {
+      cordovaOffsetLog('********* Did not find a UUID match for this simulator *********');
     }
   } else if (isAndroid()) {
     const sizeString = getAndroidSize();
@@ -204,9 +206,6 @@ export function cordovaScrollablePaneTopPadding () {
         default:                    return '0px';
       }
     }
-  }
-  if (isIOS) {
-    cordovaOffsetLog('********* Did not find a UUID match for this simulator *********');
   }
   return '0px';
 }
