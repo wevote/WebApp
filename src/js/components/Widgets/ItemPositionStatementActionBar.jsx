@@ -320,6 +320,7 @@ class ItemPositionStatementActionBar extends Component {
         { // Show the edit box (Viewing self)
           editMode ? (
             <Paper
+              elevation={2}
               className={classes.root}
             >
               <form className={classes.flex} onSubmit={this.savePositionStatement.bind(this)} onFocus={this.onFocusInput} onBlur={this.onBlurInput}>
@@ -350,6 +351,7 @@ class ItemPositionStatementActionBar extends Component {
             </Paper>
           ) : (
             <Paper
+              elevation={2}
               className={`${classes.disabled} ${classes.flex} ${classes.root}`}
             >
               <InputBase
