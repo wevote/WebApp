@@ -156,7 +156,7 @@ export default {
     }
 
     if (this.facebookApi()) {
-      const fbApiForInvitableFriends = '/me?fields=invitable_friends.limit(1000){name,id,picture.width(' + pictureWidthVerified + ').height(' + pictureHeightVerified + ')';  // eslint-disable-line
+      const fbApiForInvitableFriends = '/me?fields=invitable_friends.limit(1000){name,id,picture.width(' + pictureWidthVerified + ').height(' + pictureHeightVerified + ')';   // eslint-disable-line
       this.facebookApi().api(
         fbApiForInvitableFriends,
         (response) => {
