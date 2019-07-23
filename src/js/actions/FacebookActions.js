@@ -159,7 +159,8 @@ export default {
       console.log(pictureWidthVerified);
       console.log(pictureHeightVerified);
 
-      const testURLFragment = `/me?fields=invitable_friends.limit(1000){name,id,picture.width(${pictureWidthVerified}).height(${pictureHeightVerified})}`;
+      const testURLFragmenta = '/me?fields=invitable_friends.limit(1000){name,id,picture.width(' + pictureWidthVerified + ').height(${pictureHeightVerified})';
+      const testURLFragment = `/me?fields=invitable_friends.limit(1000){name,id,picture.width(${pictureWidthVerified}).height(${pictureHeightVerified})`;
       console.log("FacebookActions (SUCCESS) testURLFragment = " + testURLFragment);  // eslint-disable-line
     } catch (error) {
       console.error("FacebookActions (ERROR) testURLFragment threw ", error);
