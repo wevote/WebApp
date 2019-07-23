@@ -172,3 +172,10 @@ web_app/build/*
 *.key
 .vscode
 .gitattributes
+/src/js/config for Cordova IOS Android submissions 2.js
+/src/js/config saveoff oct 2018 2.js
+/src/js/config Saveoff Jan 2019 Local Python Server 2.js
+!/src/js/config for Cordova IOS Android submissions 2.txt
+!/src/js/config Saveoff Jan 2019 Local Python Server 2.txt
+!/src/js/config saveoff oct 2018 2.txt
+!/src/js/config.js
