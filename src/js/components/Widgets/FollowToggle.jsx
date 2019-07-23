@@ -321,7 +321,7 @@ export default class FollowToggle extends Component {
                         )}
                     </span>
                   ) : (
-                    <Button id={`positionItemFollowToggleFollow-${organizationWeVoteId}`} type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                    <Button id={`positionItemFollowToggleFollowDropdown-${organizationWeVoteId}`} type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
                       Follow
                     </Button>
                   )}
@@ -386,7 +386,7 @@ export default class FollowToggle extends Component {
                         )}
                     </span>
                   ) : (
-                    <Button id={`positionItemFollowToggleFollow-${organizationWeVoteId}`} type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
+                    <Button id={`positionItemFollowToggleFollowDropDown-${organizationWeVoteId}`} type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={() => this.followInstantly(followFunction, currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId)}>
                       Follow
                     </Button>
                   )}
