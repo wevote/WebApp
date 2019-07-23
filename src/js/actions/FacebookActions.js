@@ -14,7 +14,7 @@ For the WebApp, see initFacebook() in Application.jsx
 For Cordova we rely on the FacebookConnectPlugin4
    from https://www.npmjs.com/package/cordova-plugin-facebook4
 this is the "Jeduan" fork from https://github.com/jeduan/cordova-plugin-facebook4
-The "Jeduan" fork is forked from the VERY OUT OF DATE https://github.com/Wizcorp/phonegap-facebook-plugin
+The "Jeduan" fork is forked from the VERY OUT OF DATE  https://github.com/Wizcorp/phonegap-facebook-plugin
 As of May 2018, the "Wizcorp" fork has not been maintained for 3 years, even though it
 displays the (WRONG) note "This is the official plugin for Facebook in Apache Cordova/PhoneGap!"
  */
