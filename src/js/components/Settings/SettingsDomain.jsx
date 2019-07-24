@@ -90,8 +90,8 @@ class SettingsDomain extends Component {
     const priorOrganization = this.state.organization;
     const nextOrganization = nextState.organization;
 
-    const priorWeVoteChosenDomainNameString = priorOrganization.chosen_domain_name_string || '';
-    const nextWeVoteChosenDomainNameString = nextOrganization.chosen_domain_name_string || '';
+    const priorWeVoteChosenDomainNameString = priorOrganization.chosen_domain_string || '';
+    const nextWeVoteChosenDomainNameString = nextOrganization.chosen_domain_string || '';
     const priorWeVoteChosenSubDomainString = priorOrganization.chosen_sub_domain_string || '';
     const nextWeVoteChosenSubDomainString = nextOrganization.chosen_sub_domain_string || '';
 
@@ -112,11 +112,11 @@ class SettingsDomain extends Component {
     this.voterStoreListener.remove();
   }
 
-  onOrganizationStoreChange = () => {
+  onOrganizationStoreChange () {
     const { organizationChosenDomainNameChangedLocally, organizationChosenSubDomainChangedLocally, organizationWeVoteId } = this.state;
     const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
     const organizationChosenSubDomainSavedValue = organization.chosen_sub_domain_string || '';
-    const organizationChosenDomainNameSavedValue = organization.chosen_domain_name_string || '';
+    const organizationChosenDomainNameSavedValue = organization.chosen_domain_string || '';
     this.setState({
       organization,
       organizationChosenDomainNameSavedValue,
@@ -144,14 +144,14 @@ class SettingsDomain extends Component {
     }
   }
 
-  onVoterStoreChange = () => {
+  onVoterStoreChange () {
     const { organizationChosenDomainNameChangedLocally, organizationChosenSubDomainChangedLocally } = this.state;
     const voter = VoterStore.getVoter();
     const voterIsSignedIn = voter.is_signed_in;
     const organizationWeVoteId = voter.linked_organization_we_vote_id;
     const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
     const organizationChosenSubDomainSavedValue = organization.chosen_sub_domain_string || '';
-    const organizationChosenDomainNameSavedValue = organization.chosen_domain_name_string || '';
+    const organizationChosenDomainNameSavedValue = organization.chosen_domain_string || '';
     this.setState({
       organization,
       organizationChosenDomainNameSavedValue,
@@ -275,7 +275,7 @@ class SettingsDomain extends Component {
     // console.log('SettingsDomain render');
     renderLog(__filename);
     const {
-      organizationChosenDomainNameChangedLocally,
+      organizationChosenDomainName, organizationChosenDomainNameChangedLocally,
       organizationChosenSubDomain, organizationChosenSubDomainChangedLocally,
       organizationWeVoteId, voter, voterIsPremium, voterIsSignedIn, radioGroupValue,
     } = this.state;
@@ -348,6 +348,14 @@ class SettingsDomain extends Component {
                   </ButtonsContainer>
                 )}
                 <Separator />
+              </RadioGroup>
+            </FormControl>
+            <FormControl classes={{ root: classes.formControl }}>
+              <RadioGroup
+                name="domainInput"
+                value={radioGroupValue}
+                onChange={this.handleRadioGroupChange}
+              >
                 <InputBoxLabel>
                   <span>Custom Domain</span>
                   <SettingsAccountLevelChip userAccountLevel="free" featureAccountLevel="pro" />
@@ -366,7 +374,7 @@ class SettingsDomain extends Component {
                         classes={{ root: classes.inputBase, input: classes.inputItem }}
                         onChange={this.handleOrganizationChosenDomainNameChange}
                         placeholder="Type Domain..."
-                        // value={organizationChosenDomainName || ''}
+                        value={organizationChosenDomainName || ''}
                       />
                     </IconInputContainer>
                   )}
