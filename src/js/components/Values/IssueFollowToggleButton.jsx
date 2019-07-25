@@ -25,7 +25,6 @@ export default class IssueFollowToggleButton extends Component {
     super(props);
     this.state = {
       isFollowing: false,
-      visibilityChange: false,
     };
     this.onIssueFollow = this.onIssueFollow.bind(this);
     this.onIssueStopFollowing = this.onIssueStopFollowing.bind(this);
@@ -39,9 +38,9 @@ export default class IssueFollowToggleButton extends Component {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
   }
 
-  componentWillReceiveProps () {
-    this.setState({ visibilityChange: false });
-  }
+  // componentWillReceiveProps () {
+  //   this.setState({ visibilityChange: false });
+  // }
 
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if not needed
@@ -49,10 +48,10 @@ export default class IssueFollowToggleButton extends Component {
       // console.log('this.state.isFollowing: ', this.state.isFollowing, ', nextState.isFollowing', nextState.isFollowing);
       return true;
     }
-    if (this.state.visibilityChange !== nextState.visibilityChange) {
-      // console.log('this.state.visibilityChange: ', this.state.visibilityChange, ', nextState.visibilityChange', nextState.visibilityChange);
-      return true;
-    }
+    // if (this.state.visibilityChange !== nextState.visibilityChange) {
+    //   // console.log('this.state.visibilityChange: ', this.state.visibilityChange, ', nextState.visibilityChange', nextState.visibilityChange);
+    //   return true;
+    // }
     return false;
   }
 
@@ -64,7 +63,6 @@ export default class IssueFollowToggleButton extends Component {
     const isFollowing = IssueStore.isVoterFollowingThisIssue(this.props.issueWeVoteId);
     this.setState({
       isFollowing,
-      visibilityChange: false,
     });
   }
 
@@ -78,7 +76,6 @@ export default class IssueFollowToggleButton extends Component {
 
     this.setState({
       isFollowing: true,
-      visibilityChange: true,
     });
 
     const { currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId } = this.props;
@@ -88,13 +85,13 @@ export default class IssueFollowToggleButton extends Component {
   }
 
   onIssueStopFollowing (e) {
-    this.setState({ isFollowing: false, visibilityChange: true });
+    this.setState({ isFollowing: false });
 
-    if (e.target.classList.contains('MuiButton-label-44') || e.target.classList.contains('MuiButton-label-252'))  {
-      e.target.parentElement.parentElement.parentElement.classList.remove('show');
-    } else if (e.target.classList.contains('issues-follow-btn__menu-item')) {
-      e.target.parentElement.parentElement.classList.remove('show');
-    }
+    // if (e.target.classList.contains('MuiButton-label-44') || e.target.classList.contains('MuiButton-label-252'))  {
+    //   e.target.parentElement.parentElement.parentElement.classList.remove('show');
+    // } else if (e.target.classList.contains('issues-follow-btn__menu-item')) {
+    //   e.target.parentElement.parentElement.classList.remove('show');
+    // }
 
     IssueActions.issueStopFollowing(this.props.issueWeVoteId, VoterStore.electionId());
     // console.log("IssueFollowToggleButton, this.props.ballotItemWeVoteId:", this.props.ballotItemWeVoteId);
@@ -113,10 +110,6 @@ export default class IssueFollowToggleButton extends Component {
     if (document.getElementById('dropdown-toggle')) {
       document.getElementById('dropdown-toggle').style.visibility = 'hidden';
     }
-  }
-
-  npcomponentWillRecieveProps () {
-    this.setState({ visibilityChange: true });
   }
 
   render () {
@@ -163,20 +156,15 @@ export default class IssueFollowToggleButton extends Component {
         ) : (
           null
         )}
-        <div id="issues-follow-btn__menu" className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
+        <div id="issues-follow-btn__menu" className="dropdown-menu issues-follow-btn__menu">
           {this.state.isFollowing ? (
-            <span className="d-print-none">
-              <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={this.onIssueStopFollowing}>
-                Unfollow
-              </Button>
-            </span>
+            <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" data-toggle="dropdown" onClick={this.onIssueStopFollowing}>
+              Unfollow
+            </Button>
           ) : (
-            <span className="d-print-none">
-              <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={this.onIssueFollow}>
-                Follow
-              </Button>
-            </span>
-
+            <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" data-toggle="dropdown" onClick={this.onIssueFollow}>
+              Follow
+            </Button>
           )}
         </div>
       </div>
