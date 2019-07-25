@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import * as PropTypes from 'prop-types';
 import { Table, Card } from 'react-bootstrap';
 import moment from 'moment';
-import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import DonateStore from '../../stores/DonateStore';
 import DonationCancelOrRefund from './DonationCancelOrRefund';
-import VoterActions from '../../actions/VoterActions';
 
 /* global $ */
 
@@ -37,35 +35,30 @@ export default class DonationList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      journal: null,
+      donationHistory: null,
     };
     this.isMobile = this.isMobile.bind(this);
   }
 
   componentDidMount () {
-    this.onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.onDonateStoreChange();
     this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange.bind(this));
+    this.setState({ donationHistory: DonateStore.getVoterDonationHistory() });
   }
 
   componentWillUnmount () {
-    this.voterStoreListener.remove();
     this.donateStoreListener.remove();
   }
 
-  onVoterStoreChange () {
-    this.setState({ journal: VoterStore.getVoterDonationHistory() });
-  }
-
   onDonateStoreChange = () => {
-    VoterActions.voterRefreshDonations();
+    this.setState({ donationHistory: DonateStore.getVoterDonationHistory() });
   };
 
   isMobile = () => $(window).width() < 1280;
 
   render () {
     renderLog(__filename);
-    if (this.state.journal && this.state.journal.length > 0) {
+    if (this.state.donationHistory && this.state.donationHistory.length > 0) {
       const donations = this.props.displayDonations;
       const isMobile = this.isMobile();
 
@@ -88,7 +81,7 @@ export default class DonationList extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.journal.map((item) => {
+                  {this.state.donationHistory.map((item) => {
                     const { record_enum: recordEnum, refund_days_limit: refundDaysLimit, charge_id: chargeId,
                       subscription_id: subscriptionId, created, amount, brand, last4,
                       exp_month: expMonth, exp_year: expYear, stripe_status: stripeStatus } = item;
@@ -145,7 +138,7 @@ export default class DonationList extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.journal.map((item) => {
+                  {this.state.donationHistory.map((item) => {
                     const { record_enum: recordEnum, subscription_canceled_at: subscriptionCanceledAt,
                       charge_id: chargeId, subscription_id: subscriptionId, last_charged: lastCharged, created, amount, brand, last4,
                       exp_month: expMonth, exp_year: expYear, subscription_ended_at: subscriptionEndedAt } = item;
@@ -158,7 +151,7 @@ export default class DonationList extends Component {
                       const waiting = amount === '0.00';
 
                       return (
-                        <tr key={`${chargeId}-${subscriptionId}-journal`}>
+                        <tr key={`${chargeId}-${subscriptionId}-donationHistory`}>
                           <td hidden={isMobile}>{active ? 'Active' : '----'}</td>
                           <td>{moment.utc(created).format('MMM D, YYYY')}</td>
                           <td>{!waiting ? amount : 'waiting'}</td>

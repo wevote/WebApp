@@ -18,6 +18,7 @@ import VoterStore from '../../stores/VoterStore';
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
 import Section from '../../components/Welcome/Section';
 import Footer from '../../components/Welcome/Footer';
+import DonateActions from '../../actions/DonateActions';
 
 class Donate extends Component {
   static getProps () {
@@ -49,6 +50,7 @@ class Donate extends Component {
     this.donateStoreChange();
     this.donateStoreListener = DonateStore.addListener(this.donateStoreChange);
     AnalyticsActions.saveActionDonateVisit(VoterStore.electionId());
+    DonateActions.donationRefreshDonationList();
   }
 
   componentWillUnmount () {
@@ -192,8 +194,8 @@ class Donate extends Component {
               <span className="u-no-break">Other Amount</span>
             </Button>
             {this.state.showCustomInput ? (
-              <span>
-                <InputGroup className="mb-3" style={{ width: '50%' }}>
+              <span style={{ display: 'flex', marginTop: 10, marginLeft: 20 }}>
+                <InputGroup className="mb-3" style={{ width: '30%', marginTop: 4 }}>
                   <InputGroup.Prepend>
                     <InputGroup.Text>$</InputGroup.Text>
                   </InputGroup.Prepend>
@@ -204,16 +206,17 @@ class Donate extends Component {
                     onChange={this.updateCustomAmount}
                     value={this.state.custom_amount}
                     placeholder="250.00"
+                    style={{ left: 34, top: -38 }}
                   />
-                  <InputGroup.Append>
-                    <DonationForm
-                      donationAmount={parseInt(parseFloat(this.state.custom_amount.replace(/[^0-9.]+/g, '')) * 100)}
-                      donateMonthly={this.state.donateMonthly}
-                      donateButtonText="Go"
-                      donateOther
-                    />
-                  </InputGroup.Append>
                 </InputGroup>
+                <span style={{ paddingLeft: 40 }}>
+                  <DonationForm
+                    donationAmount={parseInt(parseFloat(this.state.custom_amount.replace(/[^0-9.]+/g, '')) * 100)}
+                    donateMonthly={this.state.donateMonthly}
+                    donateButtonText="Go"
+                    donateOther
+                  />
+                </span>
               </span>
             ) : null
             }
@@ -242,7 +245,7 @@ class Donate extends Component {
             </a>
           </DonateDescriptionContainer>
           <DonateDescriptionContainer>
-            <DonationListForm />
+            <DonationListForm waitForWebhook={false} />
           </DonateDescriptionContainer>
         </Section>
         <Footer />
@@ -315,7 +318,7 @@ const DonateDescriptionContainer = styled.div`
   @media (min-width: 960px) and (max-width: 991px) {
     > * {
       width: 90%;
-      margin: 0 auto;   
+      margin: 0 auto;
     }
     max-width: 100%;
     min-width: 100%;

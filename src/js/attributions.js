@@ -72,10 +72,6 @@ module.exports = [
   'Awesome Free files already contain embedded comments with sufficient\n' +
   "attribution, so you shouldn't need to do anything additional when using these\n" +
   'files normally.',
-  // Jan 2019, https://github.com/WickyNilliams/headroom.js/blob/master/LICENSE
-  'WickyNilliams/headroom.js is licensed under the MIT License (MIT)\n' +
-  '\n' +
-  'Copyright (c) 2013 Nick Williams\n',
   // Jan 2019, https://github.com/ReactTraining/history/blob/master/LICENSE
   'ReactTraining/history is licensed under MIT License (MIT)\n' +
   'Copyright (c) React Training 2016-2018\n',
@@ -100,6 +96,9 @@ module.exports = [
   // Jan 2019, https://github.com/moment/moment/blob/develop/LICENSE
   'moment/moment is licensed under the MIT License (MIT)\n' +
   'Copyright (c) JS Foundation and other contributors\n',
+  // July 2019, https://github.com/sass/node-sass/blob/master/LICENSE
+  'sass/node-sass is licensed under the MIT License (MIT)\n' +
+  'Copyright (c) 2013-2016 Andrew Nesbitt\n',
   // Jan 2019, https://github.com/sindresorhus/object-assign/blob/master/license
   'sindresorhus/object-assign is licensed under the MIT License (MIT)\n' +
   '\n' +
@@ -125,6 +124,7 @@ module.exports = [
   'nfl/react-helmet is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2015 NFL\n',
   // Jan 2019, https://github.com/yahoo/react-intl/blob/master/LICENSE.md
+  'formatjs/react-intl\n' +
   'Copyright 2014 Yahoo Inc. All rights reserved.\n' +
   '\n' +
   'Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:\n' +
@@ -154,6 +154,9 @@ module.exports = [
   // Jan 2019, https://github.com/taion/react-router-scroll/blob/master/LICENSE
   'taion/react-router-scroll is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2016 Jimmy Jia\n',
+  // https://github.com/akiran/react-slick
+  'akiran/react-slick is licensed under the The MIT License (MIT)\n' +
+  'Copyright (c) 2014 Kiran Abburi\n',
   // Jan 2019, https://github.com/tanem/react-svg/blob/master/LICENSE
   'tanem/react-svg is licensed under the  MIT License (MIT)\n' +
   'Copyright (c) 2014-present Tane Morgan <tane.morgan@gmail.com>\n',
@@ -188,6 +191,20 @@ module.exports = [
   '* Neither the name of the copyright holder nor the names of its\n' +
   '  contributors may be used to endorse or promote products derived from\n' +
   '  this software without specific prior written permission.\n',
+  // July 2019, https://github.com/snyk/snyk/blob/master/LICENSE
+  'snyk/snyk Copyright 2015 Snyk Ltd.\n' +
+  '\n' +
+  'Licensed under the Apache License, Version 2.0 (the "License");\n' +
+  'you may not use this file except in compliance with the License.\n' +
+  'You may obtain a copy of the License at\n' +
+  '\n' +
+  '    http://www.apache.org/licenses/LICENSE-2.0\n' +
+  '\n' +
+  'Unless required by applicable law or agreed to in writing, software\n' +
+  'distributed under the License is distributed on an "AS IS" BASIS,\n' +
+  'WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n' +
+  'See the License for the specific language governing permissions and\n' +
+  'limitations under the License.\n',
   // Jan 2019, https://github.com/styled-components/styled-components/blob/master/LICENSE
   'styled-components/styled-components is licensed under the MIT License (MIT)\n' +
   'Copyright (c) 2016-present Glen Maddern and Maximilian Stoiber\n',
@@ -197,4 +214,7 @@ module.exports = [
   // Jan 2019, https://dev.maxmind.com/geoip/geoip2/geolite2/
   'This product includes GeoLite2 data created by MaxMind\n' +
   'Available from https://www.maxmind.com',
+  // July 2019, https://developer.zendesk.com/embeddables/docs/widget/legal
+  'The Zendesk embeddable contains third-party, open source software and/or libraries. \n' +
+  'To view them and their license terms, go to http://goto.zendesk.com/embeddable-legal-notices',
 ];

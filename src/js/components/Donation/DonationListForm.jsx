@@ -1,48 +1,76 @@
 import React, { Component } from 'react';
-import { Tabs, Tab } from 'react-bootstrap';
+import * as PropTypes from 'prop-types';
+import { Tab, Tabs } from 'react-bootstrap';
+import DonateActions from '../../actions/DonateActions';
 import DonationList from './DonationList';
+import DonateStore from '../../stores/DonateStore';
 import { renderLog } from '../../utils/logging';
-import VoterStore from '../../stores/VoterStore';
-import VoterActions from '../../actions/VoterActions';
 
 
 export default class DonationListForm extends Component {
-  static propTypes = {};
+  static propTypes = {
+    waitForWebhook: PropTypes.bool.isRequired,
+  };
 
   constructor (props) {
     super(props);
     this.state = {
       activeKey: 1,
+      initialDonationCount: -1,
     };
   }
 
   componentDidMount () {
-    this.onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    // VoterActions.voterRefreshDonations();
+    this.onDonateStoreChange();
+    this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange.bind(this));
+    DonateActions.donationRefreshDonationList();  // kick off an initial refresh
+    if (this.props.waitForWebhook) {
+      this.pollForWebhookCompletion(60);
+    }
   }
 
   componentWillUnmount () {
-    this.voterStoreListener.remove();
+    this.donateStoreListener.remove();
   }
 
-  onVoterStoreChange () {
-    this.setState({ journal: VoterStore.getVoterDonationHistory() });
+  onDonateStoreChange () {
+    if (this.state.initialDonationCount < 0) {
+      const count = DonateStore.getVoterDonationHistory() ? DonateStore.getVoterDonationHistory().length : -1;
+      this.setState({ donationHistory: DonateStore.getVoterDonationHistory(), initialDonationCount: count });
+    } else {
+      this.setState({ donationHistory: DonateStore.getVoterDonationHistory() });
+    }
   }
 
   handleSelect = (selectedKey) => {
     this.setState({
       activeKey: selectedKey,
     });
-    if (selectedKey === 2) {
+    if (selectedKey === '2') {
       // It takes a 2 to 30 seconds for the charge to come back from the first charge on a subscription,
-      VoterActions.voterRefreshDonations();
+      DonateActions.donationRefreshDonationList();
     }
   };
 
+  pollForWebhookCompletion (pollCount) {
+    // console.log(`pollForWebhookCompletion polling -- start: ${this.state.donationHistory ? this.state.donationHistory.length : -1}`);
+    // console.log(`pollForWebhookCompletion polling -- start pollCount: ${pollCount}`);
+    this.polling = setTimeout(() => {
+      if (pollCount < 0 || (this.state.donationHistory && (this.state.initialDonationCount !== this.state.donationHistory.length))) {
+        // console.log(`pollForWebhookCompletion polling -- clearTimeout: ${this.state.donationHistory.length}`);
+        // console.log(`pollForWebhookCompletion polling -- pollCount: ${pollCount}`);
+        clearTimeout(this.polling);
+        return;
+      }
+      // console.log(`pollForWebhookCompletion polling ----- ${pollCount}`);
+      DonateActions.donationRefreshDonationList();
+      this.pollForWebhookCompletion(pollCount - 1);
+    }, 500);
+  }
+
   render () {
     renderLog(__filename);
-    if (this.state && this.state.journal && this.state.journal.length > 0) {
+    if (this.state && this.state.donationHistory && this.state.donationHistory.length > 0) {
       return (
         <div>
           <input type="hidden" value={this.state.activeKey} />

@@ -170,5 +170,5 @@ src/javascript/google-analytics-www.js
 web_app/build/*
 *.crt
 *.key
-.vscode
-.gitattributes
+/yarn.lock
+
