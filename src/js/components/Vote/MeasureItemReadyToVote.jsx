@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { withStyles } from '@material-ui/core';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -52,7 +53,7 @@ class MeasureItemReadyToVote extends Component {
             <InnerWrapper>
               <BioColumn>
                 <BioInformation>
-                  <OfficeText>{ballotItemDisplayName}</OfficeText>
+                  <MeasureNameText>{ballotItemDisplayName}</MeasureNameText>
                 </BioInformation>
               </BioColumn>
               <OfficeColumn>
@@ -67,6 +68,9 @@ class MeasureItemReadyToVote extends Component {
     );
   }
 }
+
+const styles = ({
+});
 
 const Wrapper = styled.div`
   padding: 24px 24px 20px 24px;
@@ -90,10 +94,17 @@ const OfficeColumn = styled.div`
   display: flex;
 `;
 
-const OfficeText = styled.p`
+const MeasureNameText = styled.p`
+  font-size: 18px;
   font-weight: 500;
   margin: auto 0;
   margin-right: 16px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 16px;
+  }
+  @media print {
+    font-size: 24px !important;
+  }
 `;
 
 const BioInformation = styled.div`
@@ -106,4 +117,4 @@ const HR = styled.hr`
   margin: 0 24px;
 `;
 
-export default MeasureItemReadyToVote;
+export default withStyles(styles)(MeasureItemReadyToVote);

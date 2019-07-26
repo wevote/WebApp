@@ -27,7 +27,6 @@ class IssueCard extends Component {
     super(props);
     this.state = {
       ballotItemWeVoteId: '',
-      // followToggleOn: false,
       countOfOrganizationsUnderThisIssue: 0,
       issue: {},
       issueImageSize: 'SMALL', // We support SMALL, MEDIUM, LARGE
@@ -48,7 +47,6 @@ class IssueCard extends Component {
       this.setState({
         ballotItemWeVoteId: this.props.ballotItemWeVoteId,
         countOfOrganizationsUnderThisIssue: VoterGuideStore.getVoterGuidesForValue(issueWeVoteId).length,
-        // followToggleOn: this.props.followToggleOn,
         issue: this.props.issue,
         issueImageSize,
         issueWeVoteId,
@@ -67,7 +65,6 @@ class IssueCard extends Component {
       }
       this.setState({
         ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
-        // followToggleOn: nextProps.followToggleOn,
         countOfOrganizationsUnderThisIssue: VoterGuideStore.getVoterGuidesForValue(issueWeVoteId).length,
         issue: nextProps.issue,
         issueImageSize,
@@ -122,11 +119,6 @@ class IssueCard extends Component {
           turnOffIssueFade
         />
       );
-      // if (this.state.followToggleOn) {
-      //   numberOfLines = 5; // Allow more vertical space for Follow button
-      // } else {
-      //   numberOfLines = 2;
-      // }
     } else if (this.state.issueImageSize === 'MEDIUM') {
       issueImage = (
         <IssueImageDisplay
@@ -136,11 +128,6 @@ class IssueCard extends Component {
           turnOffIssueFade
         />
       );
-      // if (this.state.followToggleOn) {
-      //   numberOfLines = 6; // Allow more vertical space for Follow button
-      // } else {
-      //   numberOfLines = 3;
-      // }
     } else if (this.state.issueImageSize === 'LARGE') {
       issueImage = (
         <IssueImageDisplay
@@ -150,11 +137,6 @@ class IssueCard extends Component {
           turnOffIssueFade
         />
       );
-      // if (this.state.followToggleOn) {
-      //   numberOfLines = 7; // Allow more vertical space for Follow button
-      // } else {
-      //   numberOfLines = 4;
-      // }
     }
 
     const { issueWeVoteId, ballotItemWeVoteId } = this.state;
