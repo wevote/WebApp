@@ -12,6 +12,9 @@ import PlaceIcon from '@material-ui/icons/Place';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { withStyles } from '@material-ui/core/styles';
 import { historyPush, isWebApp, isCordova, hasIPhoneNotch } from '../../utils/cordovaUtils';
+import AppActions from '../../actions/AppActions';
+import AppStore from '../../stores/AppStore';
+import BallotActions from '../../actions/BallotActions';
 import cookies from '../../utils/cookies';
 import FriendStore from '../../stores/FriendStore';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
@@ -19,15 +22,13 @@ import HeaderBarLogo from './HeaderBarLogo';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
+import SelectBallotModal from '../Ballot/SelectBallotModal';
 import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import AppActions from '../../actions/AppActions';
-import AppStore from '../../stores/AppStore';
 import { stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
-import SelectBallotModal from '../Ballot/SelectBallotModal';
-import BallotActions from '../../actions/BallotActions';
 // import Badge from '@material-ui/core/Badge'; // DALE: FRIENDS TEMPORARILY DISABLED
 
 class HeaderBar extends Component {
@@ -51,6 +52,8 @@ class HeaderBar extends Component {
       profilePopUpOpen: false,
       friendInvitationsSentToMe: 0,
       showEditAddressButton: false,
+      showSelectBallotModal: false,
+      showNewVoterGuideModal: false,
       showSignInModal: false,
       scrolledDown: false,
     };
@@ -75,6 +78,7 @@ class HeaderBar extends Component {
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
       scrolledDown: AppStore.getScrolledDown(),
       showEditAddressButton: AppStore.showEditAddressButton(),
+      showNewVoterGuideModal: AppStore.showNewVoterGuideModal(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
       showSignInModal: AppStore.showSignInModal(),
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
@@ -100,6 +104,9 @@ class HeaderBar extends Component {
       return true;
     }
     if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
+      return true;
+    }
+    if (this.state.showNewVoterGuideModal !== nextState.showNewVoterGuideModal) {
       return true;
     }
     if (this.state.showPaidAccountUpgradeModal !== nextState.showPaidAccountUpgradeModal) {
@@ -167,6 +174,7 @@ class HeaderBar extends Component {
     this.setState({
       scrolledDown: AppStore.getScrolledDown(),
       showEditAddressButton: AppStore.showEditAddressButton(),
+      showNewVoterGuideModal: AppStore.showNewVoterGuideModal(),
       showPaidAccountUpgradeModal,
       paidAccountUpgradeMode,
       showSignInModal: AppStore.showSignInModal(),
@@ -205,6 +213,11 @@ class HeaderBar extends Component {
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
     AppActions.setShowSelectBallotModal(!showSelectBallotModal);
+  }
+
+  closeNewVoterGuideModal () {
+    // console.log('HeaderBar closeNewVoterGuideModal');
+    AppActions.setShowNewVoterGuideModal(false);
   }
 
   closePaidAccountUpgradeModal () {
@@ -252,7 +265,7 @@ class HeaderBar extends Component {
     }
     renderLog(__filename);
     const { voter, classes, pathname, location } = this.props;
-    const { paidAccountUpgradeMode, scrolledDown, showEditAddressButton, showPaidAccountUpgradeModal } = this.state;
+    const { paidAccountUpgradeMode, scrolledDown, showEditAddressButton, showNewVoterGuideModal, showPaidAccountUpgradeModal, showSelectBallotModal } = this.state;
     const ballotBaseUrl = '/ballot';
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     // const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0; // DALE: FRIENDS TEMPORARILY DISABLED
@@ -432,12 +445,21 @@ class HeaderBar extends Component {
           show={this.state.showSignInModal}
           toggleFunction={this.closeSignInModal}
         />
-        {this.state.showSelectBallotModal && (
+        {showNewVoterGuideModal && (
+          <VoterGuideChooseElectionModal
+            ballotBaseUrl="/ballot"
+            location={location}
+            pathname={pathname}
+            show={showNewVoterGuideModal}
+            toggleFunction={this.closeNewVoterGuideModal}
+          />
+        )}
+        {showSelectBallotModal && (
           <SelectBallotModal
             ballotBaseUrl="/ballot"
             location={location}
             pathname={pathname}
-            show={this.state.showSelectBallotModal}
+            show={showSelectBallotModal}
             toggleFunction={this.toggleSelectBallotModal}
           />
         )}

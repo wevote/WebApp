@@ -849,7 +849,6 @@ class VoterGuideBallot extends Component {
             ballotBaseUrl={ballotBaseUrl}
             ballotElectionList={this.state.voterBallotList}
             organization_we_vote_id={this.state.organization.organization_we_vote_id}
-            showRelevantElections
           />
         </div>
       );

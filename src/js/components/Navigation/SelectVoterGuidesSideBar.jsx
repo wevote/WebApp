@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
 import Button from '@material-ui/core/Button';
+import AppActions from '../../actions/AppActions';
 import ElectionStore from '../../stores/ElectionStore';
 import { renderLog } from '../../utils/logging';
 import SelectVoterGuidesSideBarLink from './SelectVoterGuidesSideBarLink';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-
 
 export default class SelectVoterGuidesSideBar extends Component {
   static propTypes = {
@@ -45,6 +44,11 @@ export default class SelectVoterGuidesSideBar extends Component {
     }
   }
 
+  openNewVoterGuideModal () {
+    // console.log('SettingsDomain openNewVoterGuideModal');
+    AppActions.setShowNewVoterGuideModal(true);
+  }
+
   render () {
     renderLog(__filename);
     const voterGuidesOwnedByVoter = VoterGuideStore.getAllVoterGuidesOwnedByVoter();
@@ -75,19 +79,15 @@ export default class SelectVoterGuidesSideBar extends Component {
       <div className="card">
         <div className="card-main">
           <div className="SettingsItem__summary__title">Your Voter Guides</div>
-          <Link
+          <Button
+            color="primary"
+            fullWidth
             id="selectVoterGuidesSideBarNewVoterGuide"
-            to="/voterguidegetstarted"
-            style={{ textDecoration: 'none' }}
+            onClick={() => this.openNewVoterGuideModal()}
+            variant="contained"
           >
-            <Button
-              color="primary"
-              variant="contained"
-              fullWidth
-            >
-             New Voter Guide
-            </Button>
-          </Link>
+           New Voter Guide
+          </Button>
           {voterGuideLinksHtml}
         </div>
       </div>

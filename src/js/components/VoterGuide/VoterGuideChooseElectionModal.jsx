@@ -7,14 +7,12 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import DialogContent from '@material-ui/core/DialogContent';
 import { withStyles, withTheme } from '@material-ui/core';
-import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import { calculateBallotBaseUrl } from '../../utils/textFormat';
-import EditAddressInPlace from '../Widgets/EditAddressInPlace';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
-import BallotElectionListWithFilters from './BallotElectionListWithFilters';
+import BallotElectionListWithFilters from '../Ballot/BallotElectionListWithFilters';
 
-class SelectBallotModal extends Component {
+class VoterGuideChooseElectionModal extends Component {
   // This modal will show a users ballot guides from previous and current elections.
 
   static propTypes = {
@@ -67,10 +65,8 @@ class SelectBallotModal extends Component {
     renderLog(__filename);
     const { classes } = this.props;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
-    console.log('SelectBallotModal render, ballotBaseUrl: ', ballotBaseUrl);
+    console.log('VoterGuideChooseElectionModal render, ballotBaseUrl: ', ballotBaseUrl);
 
-    const voterAddressObject = VoterStore.getAddressObject();
-    // console.log('SelectBallotModal render, voter_address_object: ', voter_address_object);
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
@@ -78,28 +74,20 @@ class SelectBallotModal extends Component {
         onClose={() => { this.props.toggleFunction(this.state.pathname); }}
       >
         <DialogTitle>
-          <Typography variant="h6" className="text-center">Address & Elections</Typography>
+          <Typography variant="h6" className="text-center">Choose an election to start with</Typography>
           <IconButton
             aria-label="Close"
             classes={{ root: classes.closeButton }}
             onClick={() => { this.props.toggleFunction(); }}
-            id="profileCloseSelectBallotModal"
+            id="profileCloseVoterGuideChooseElectionModal"
           >
             <CloseIcon />
           </IconButton>
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
-          <EditAddressInPlace
-            address={voterAddressObject}
-            defaultIsEditingAddress
-            pathname={this.state.pathname}
-            toggleFunction={this.props.toggleFunction}
-            cancelButtonAction={this.props.toggleFunction}
-          />
           <BallotElectionListWithFilters
             ballotBaseUrl={ballotBaseUrl}
             organizationWeVoteId={this.props.organization_we_vote_id}
-            showPriorElectionsList
             toggleFunction={this.props.toggleFunction}
           />
         </DialogContent>
@@ -132,4 +120,4 @@ const styles = theme => ({
   },
 });
 
-export default withTheme(withStyles(styles)(SelectBallotModal));
+export default withTheme(withStyles(styles)(VoterGuideChooseElectionModal));
