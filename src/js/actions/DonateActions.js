@@ -13,6 +13,12 @@ export default {
     Dispatcher.loadEndpoint('donationRefund', { charge });
   },
 
+  donationRefreshDonationList () {
+    Dispatcher.loadEndpoint('donationHistory',
+      {
+      });
+  },
+
   donationWithStripe (token, email, donationAmount, monthlyDonation) {
     Dispatcher.loadEndpoint('donationWithStripe', {
       token,

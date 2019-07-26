@@ -2,7 +2,7 @@ import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/Dispatcher';
 
 class DonateStore extends ReduceStore {
-  getInitialState () {
+  getInitialState () {  // This is a mandatory override, so it can't be static.
     return {
     };
   }
@@ -23,33 +23,29 @@ class DonateStore extends ReduceStore {
     return this.getState().donationResponseReceived;
   }
 
-  donationCancelCompleted () {
-    this.setState({ donationCancelCompleted: true });
-  }
-
-  donationRefundCompleted () {
-    this.setState({ donationRefundCompleted: true });
-  }
-
-  donationSubscriptionUpdated () {
-    this.setState({ donationSubscriptionUpdated: true });
+  // Voter's donation history
+  getVoterDonationHistory () {
+    return this.getState().donationHistory || {};
   }
 
   reduce (state, action) {
     if (!action.res) return state;
+    const { error_message_for_voter: errorMessageForVoter, saved_stripe_donation: savedStripeDonation, status, success, donation_amount: donationAmount,
+      donation_list: donationHistory, charge_id: charge, subscription_id: subscriptionId, monthly_donation: monthlyDonation } = action.res;
+    const donationAmountSafe = donationAmount || '';
 
     switch (action.type) {
       case 'donationWithStripe':
-        if (action.res.success === false) {
-          console.log(`donation with stripe failed:  ${action.res.error_message_for_voter}  ---  ${action.res.status}`);
+        if (success === false) {
+          console.log(`donation with stripe failed:  ${errorMessageForVoter}  ---  ${status}`);
         }
         return {
           ...state,
-          donationAmount: action.res.donation_amount || '',
-          errorMessageForVoter: action.res.error_message_for_voter,
-          monthlyDonation: action.res.monthly_donation,
-          savedStripeDonation: action.res.saved_stripe_donation,
-          success: action.res.success,
+          donationAmount: donationAmountSafe,
+          errorMessageForVoter,
+          monthlyDonation,
+          savedStripeDonation,
+          success,
           donationResponseReceived: true,
         };
 
@@ -60,14 +56,22 @@ class DonateStore extends ReduceStore {
       case 'donationCancelSubscription':
         console.log(`donationCancelSubscription: ${action}`);
         return {
-          subscriptionId: action.res.subscription_id,
+          subscriptionId,
+          donationHistory,
           donationCancelCompleted: false,
+        };
+
+      case 'donationHistory':
+        // console.log('Donate Store, donationHistory: ', action);
+        return {
+          donationHistory,
         };
 
       case 'donationRefund':
         console.log(`donationRefund: ${action}`);
         return {
-          charge: action.res.charge,
+          charge,
+          donationHistory,
           donationRefundCompleted: false,
         };
 

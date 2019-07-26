@@ -24,7 +24,7 @@ class DonateThankYou extends Component {
               New subscriptions may take a few minutes to appear in this list.  The first payment for new subscriptions may also be delayed.
             </DonateCaveat>
             <div>
-              <DonationListForm />
+              <DonationListForm waitForWebhook />
             </div>
           </div>
         </Section>
