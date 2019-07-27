@@ -43,6 +43,18 @@ class PaidAccountUpgradeModal extends Component {
     });
   }
 
+  backToChoosePlan = () => {
+    this.setState({ paidAccountProcessStep: '' });
+  }
+
+  backToApplyCoupon = () => {
+    this.setState({ paidAccountProcessStep: 'payForPlanMobile' });
+  }
+
+  couponAppliedFunction = () => {
+    this.setState({ paidAccountProcessStep: 'payForPlan' });
+  }
+
   paymentProcessedFunction = () => {
     // console.log('paymentProcessedFunction');
     this.setState({
@@ -51,10 +63,17 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   pricingPlanChosenFunction = (pricingPlanChosen) => {
-    this.setState({
-      paidAccountProcessStep: 'payForPlan',
-      pricingPlanChosen,
-    });
+    if (window.innerWidth > 769) {
+      this.setState({
+        paidAccountProcessStep: 'payForPlan',
+        pricingPlanChosen,
+      });
+    } else {
+      this.setState({
+        paidAccountProcessStep: 'payForPlanMobile',
+        pricingPlanChosen,
+      });
+    }
   }
 
   render () {
@@ -64,6 +83,7 @@ class PaidAccountUpgradeModal extends Component {
 
     const { paidAccountProcessStep, pricingPlanChosen } = this.state;
     let modalTitle = '';
+    let backToButton;
     let modalHtmlContents = <span />;
     switch (paidAccountProcessStep) {
       case 'choosePlan':
@@ -71,16 +91,52 @@ class PaidAccountUpgradeModal extends Component {
         modalTitle = 'Choose Your Plan';
         modalHtmlContents = (
           <Pricing
-            initialPricingPlan={this.props.initialPricingPlan}
+            initialPricingPlan={this.state.pricingPlanChosen ? this.state.pricingPlanChosen : this.props.initialPricingPlan}
             modalDisplayMode
             pricingPlanChosenFunction={this.pricingPlanChosenFunction}
           />
         );
         break;
+      case 'payForPlanMobile':
+        backToButton = (
+          <Button className={classes.backToButton} onClick={this.backToChoosePlan}>
+            Choose Plan
+          </Button>
+        );
+        modalTitle = 'Apply Coupon';
+        modalHtmlContents = (
+          <span>
+            Coupon Processing Center
+            <ButtonsContainer>
+              <Button
+                classes={{ root: classes.button }}
+                color="primary"
+                onClick={() => { this.props.toggleFunction(this.state.pathname); }}
+                variant="outlined"
+              >
+                Cancel
+              </Button>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={this.couponAppliedFunction}
+              >
+                Checkout
+              </Button>
+            </ButtonsContainer>
+          </span>
+        );
+        break;
       case 'payForPlan':
+        backToButton = (
+          <Button className={classes.backToButton} onClick={this.backToApplyCoupon}>
+            Apply Coupon
+          </Button>
+        );
         modalTitle = 'Payment';
         modalHtmlContents = (
           <span>
+            Coupon Processing Center + Payment Proccesing Center
             <ButtonsContainer>
               <Button
                 classes={{ root: classes.button }}
@@ -129,17 +185,18 @@ class PaidAccountUpgradeModal extends Component {
         open={this.props.show}
         onClose={() => { this.props.toggleFunction(this.state.pathname); }}
       >
-        <DialogTitle>
-          <Typography variant="h6" className="text-center">{modalTitle}</Typography>
+        <Title>
+          {backToButton}
+          <h1 className="h1 u-margin-none">{modalTitle}</h1>
           <IconButton
             aria-label="Close"
-            classes={{ root: classes.closeButton }}
+            className={classes.closeButton}
             onClick={() => { this.props.toggleFunction(); }}
             id="profileClosePaidAccountUpgradeModal"
           >
             <CloseIcon />
           </IconButton>
-        </DialogTitle>
+        </Title>
         <DialogContent classes={{ root: classes.dialogContent }}>
           {modalHtmlContents}
         </DialogContent>
@@ -177,20 +234,34 @@ const styles = theme => ({
       padding: '0 8px 8px',
     },
   },
-  closeButton: {
+  backToButton: {
+    margin: 0,
     position: 'absolute',
-    right: `${theme.spacing(1)}px`,
-    top: `${theme.spacing(1)}px`,
+    left: 8,
+    top: 12,
+  },
+  closeButton: {
+    margin: 0,
+    position: 'absolute',
+    right: 8,
+    top: 6,
   },
 });
 
 const ButtonsContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center !important;
   width: fit-content;
   width: 100%;
   margin-top: 12px;
+`;
+
+const Title = styled.div`
+  width: 100%;
+  text-align: center;
+  border-bottom: 2px solid #f7f7f7;
+  padding: 16px 12px;
 `;
 
 export default withTheme(withStyles(styles)(PaidAccountUpgradeModal));
