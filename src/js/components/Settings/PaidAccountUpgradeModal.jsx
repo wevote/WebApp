@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -10,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import DialogContent from '@material-ui/core/DialogContent';
 import { withStyles, withTheme } from '@material-ui/core';
 import { renderLog } from '../../utils/logging';
-import { hasIPhoneNotch } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, isIOS } from '../../utils/cordovaUtils';
 import Pricing from '../../routes/More/Pricing';
 
 class PaidAccountUpgradeModal extends Component {
@@ -102,6 +104,7 @@ class PaidAccountUpgradeModal extends Component {
       case 'payForPlanMobile':
         backToButton = (
           <Button className={classes.backToButton} onClick={this.backToChoosePlan}>
+            {isIOS() ? <ArrowBackIos /> : <ArrowBack />}
             Choose Plan
           </Button>
         );
@@ -131,8 +134,9 @@ class PaidAccountUpgradeModal extends Component {
         break;
       case 'payForPlan':
         backToButton = (
-          <Button className={classes.backToButton} onClick={this.backToApplyCoupon}>
-            Apply Coupon
+          <Button className={classes.backToButton} onClick={this.backToChoosePlan}>
+            {isIOS() ? <ArrowBackIos /> : <ArrowBack />}
+            Choose Plan
           </Button>
         );
         modalTitle = 'Payment';
