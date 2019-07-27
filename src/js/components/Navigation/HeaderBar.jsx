@@ -25,7 +25,6 @@ import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
 import SelectBallotModal from '../Ballot/SelectBallotModal';
 import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import VoterGuideChooseElectionModal from '../VoterGuide/VoterGuideChooseElectionModal';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import { stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
@@ -53,7 +52,6 @@ class HeaderBar extends Component {
       friendInvitationsSentToMe: 0,
       showEditAddressButton: false,
       showSelectBallotModal: false,
-      showNewVoterGuideModal: false,
       showSignInModal: false,
       scrolledDown: false,
     };
@@ -78,7 +76,6 @@ class HeaderBar extends Component {
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
       scrolledDown: AppStore.getScrolledDown(),
       showEditAddressButton: AppStore.showEditAddressButton(),
-      showNewVoterGuideModal: AppStore.showNewVoterGuideModal(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
       showSignInModal: AppStore.showSignInModal(),
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
@@ -104,9 +101,6 @@ class HeaderBar extends Component {
       return true;
     }
     if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
-      return true;
-    }
-    if (this.state.showNewVoterGuideModal !== nextState.showNewVoterGuideModal) {
       return true;
     }
     if (this.state.showPaidAccountUpgradeModal !== nextState.showPaidAccountUpgradeModal) {
@@ -174,7 +168,6 @@ class HeaderBar extends Component {
     this.setState({
       scrolledDown: AppStore.getScrolledDown(),
       showEditAddressButton: AppStore.showEditAddressButton(),
-      showNewVoterGuideModal: AppStore.showNewVoterGuideModal(),
       showPaidAccountUpgradeModal,
       paidAccountUpgradeMode,
       showSignInModal: AppStore.showSignInModal(),
@@ -220,11 +213,6 @@ class HeaderBar extends Component {
     AppActions.setShowNewVoterGuideModal(false);
   }
 
-  closePaidAccountUpgradeModal () {
-    // console.log('HeaderBar closePaidAccountUpgradeModal');
-    AppActions.setShowPaidAccountUpgradeModal('');
-  }
-
   closeSignInModal () {
     AppActions.setShowSignInModal(false);
   }
@@ -265,7 +253,7 @@ class HeaderBar extends Component {
     }
     renderLog(__filename);
     const { voter, classes, pathname, location } = this.props;
-    const { paidAccountUpgradeMode, scrolledDown, showEditAddressButton, showNewVoterGuideModal, showPaidAccountUpgradeModal, showSelectBallotModal } = this.state;
+    const { paidAccountUpgradeMode, scrolledDown, showEditAddressButton, showPaidAccountUpgradeModal, showSelectBallotModal } = this.state;
     const ballotBaseUrl = '/ballot';
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     // const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0; // DALE: FRIENDS TEMPORARILY DISABLED
@@ -445,15 +433,6 @@ class HeaderBar extends Component {
           show={this.state.showSignInModal}
           toggleFunction={this.closeSignInModal}
         />
-        {showNewVoterGuideModal && (
-          <VoterGuideChooseElectionModal
-            ballotBaseUrl="/ballot"
-            location={location}
-            pathname={pathname}
-            show={showNewVoterGuideModal}
-            toggleFunction={this.closeNewVoterGuideModal}
-          />
-        )}
         {showSelectBallotModal && (
           <SelectBallotModal
             ballotBaseUrl="/ballot"

@@ -78,7 +78,11 @@ class SelectBallotModal extends Component {
         onClose={() => { this.props.toggleFunction(this.state.pathname); }}
       >
         <DialogTitle>
-          <Typography variant="h6" className="text-center">Address & Elections</Typography>
+          <Typography className="text-center">
+            <span className="h6">
+              Address & Elections
+            </span>
+          </Typography>
           <IconButton
             aria-label="Close"
             classes={{ root: classes.closeButton }}

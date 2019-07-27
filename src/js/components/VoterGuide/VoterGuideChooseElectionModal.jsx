@@ -8,15 +8,12 @@ import Typography from '@material-ui/core/Typography';
 import DialogContent from '@material-ui/core/DialogContent';
 import { withStyles, withTheme } from '@material-ui/core';
 import { renderLog } from '../../utils/logging';
-import { calculateBallotBaseUrl } from '../../utils/textFormat';
-import { hasIPhoneNotch } from '../../utils/cordovaUtils';
 import BallotElectionListWithFilters from '../Ballot/BallotElectionListWithFilters';
 
 class VoterGuideChooseElectionModal extends Component {
   // This modal will show a users ballot guides from previous and current elections.
 
   static propTypes = {
-    ballotBaseUrl: PropTypes.string,
     classes: PropTypes.object,
     organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
     pathname: PropTypes.string,
@@ -49,10 +46,6 @@ class VoterGuideChooseElectionModal extends Component {
       // console.log('this.props.pathname:', this.props.pathname, ', nextProps.pathname:', nextProps.pathname);
       return true;
     }
-    if (this.props.ballotBaseUrl !== nextProps.ballotBaseUrl) {
-      // console.log('this.props.ballotBaseUrl:', this.props.ballotBaseUrl, ', nextProps.ballotBaseUrl:', nextProps.ballotBaseUrl);
-      return true;
-    }
     if (this.props.organization_we_vote_id !== nextProps.organization_we_vote_id) {
       // console.log('this.props.organization_we_vote_id:', this.props.organization_we_vote_id, ', nextProps.organization_we_vote_id:', nextProps.organization_we_vote_id);
       return true;
@@ -64,17 +57,18 @@ class VoterGuideChooseElectionModal extends Component {
   render () {
     renderLog(__filename);
     const { classes } = this.props;
-    const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
-    console.log('VoterGuideChooseElectionModal render, ballotBaseUrl: ', ballotBaseUrl);
+    // console.log('VoterGuideChooseElectionModal render');
 
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
         open={this.props.show}
-        onClose={() => { this.props.toggleFunction(this.state.pathname); }}
+        onClose={() => { this.props.toggleFunction(); }}
       >
         <DialogTitle>
-          <Typography variant="h6" className="text-center">Choose an election to start with</Typography>
+          <Typography className="text-center">
+            Choose an election
+          </Typography>
           <IconButton
             aria-label="Close"
             classes={{ root: classes.closeButton }}
@@ -86,7 +80,7 @@ class VoterGuideChooseElectionModal extends Component {
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
           <BallotElectionListWithFilters
-            ballotBaseUrl={ballotBaseUrl}
+            hideUpcomingElectionTitle
             organizationWeVoteId={this.props.organization_we_vote_id}
             toggleFunction={this.props.toggleFunction}
           />
@@ -97,7 +91,6 @@ class VoterGuideChooseElectionModal extends Component {
 }
 const styles = theme => ({
   dialogPaper: {
-    marginTop: hasIPhoneNotch() ? 68 : 48,
     [theme.breakpoints.down('xs')]: {
       minWidth: '95%',
       maxWidth: '95%',
@@ -109,6 +102,7 @@ const styles = theme => ({
     },
   },
   dialogContent: {
+    margin: '0 auto',
     [theme.breakpoints.down('md')]: {
       padding: '0 8px 8px',
     },

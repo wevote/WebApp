@@ -275,10 +275,10 @@ class Application extends Component {
     routingLog(pathname);
     setZenDeskHelpVisibility(pathname);
 
-    const { inTheaterMode, contentFullWidthMode, settingsMode, voterGuideMode } = getApplicationViewBooleans(pathname);
+    const { inTheaterMode, contentFullWidthMode, settingsMode, showFooterBar, voterGuideMode } = getApplicationViewBooleans(pathname);
 
     if (inTheaterMode) {
-      // console.log("inTheaterMode", inTheaterMode);
+      // console.log('inTheaterMode', inTheaterMode);
       return (
         <div className="app-base" id="app-base-id">
           <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
@@ -295,7 +295,7 @@ class Application extends Component {
         </div>
       );
     } else if (voterGuideMode) {
-      // console.log("voterGuideMode", voterGuideMode);
+      // console.log('voterGuideMode', voterGuideMode);
       return (
         <div className={this.getAppBaseClass()} id="app-base-id">
           <ToastContainer closeButton={false} className={getToastClass()} />
@@ -322,7 +322,7 @@ class Application extends Component {
         </div>
       );
     } else if (settingsMode) {
-      // console.log("settingsMode", settingsMode);
+      // console.log('settingsMode', settingsMode);
       return (
         <div className={this.getAppBaseClass()} id="app-base-id">
           <ToastContainer closeButton={false} className={getToastClass()} />
@@ -340,7 +340,7 @@ class Application extends Component {
               </div>
             </div>
           </Wrapper>
-          {(
+          {showFooterBar && (
             <div className="footroom-wrapper">
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
             </div>
@@ -349,6 +349,7 @@ class Application extends Component {
       );
     }
     // This handles other pages, like Welcome and the Ballot display
+    // console.log('Application, another mode');
     return (
       <div className={this.getAppBaseClass()} id="app-base-id">
         <ToastContainer closeButton={false} className={getToastClass()} />
@@ -384,22 +385,7 @@ class Application extends Component {
               </div>
             </Wrapper>
           )}
-        {/* Do not show the FooterBar if any of these pathname patterns are found */}
-        { !(pathname && pathname.startsWith('/candidate')) &&
-          !(pathname && pathname.startsWith('/friends/')) &&
-          !(pathname && pathname.startsWith('/measure')) &&
-          !(pathname && pathname.startsWith('/office')) &&
-          !(pathname && pathname.startsWith('/value/')) &&
-          !(pathname && pathname.startsWith('/values/')) &&
-          !(pathname === '/for-campaigns') &&
-          !(pathname === '/for-organizations') &&
-          !(pathname.startsWith('/how')) &&
-          !(pathname === '/more/about') &&
-          !(pathname === '/more/credits') &&
-          !(pathname.startsWith('/more/donate')) &&
-          !(pathname.startsWith('/more/pricing')) &&
-          !(pathname === '/more/myballot') &&
-          !(pathname === '/welcome') && (
+        {showFooterBar && (
           <div className="footroom-wrapper">
             <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
           </div>

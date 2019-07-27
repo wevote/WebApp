@@ -143,7 +143,7 @@ const routes = () => (
     <Route path="/settings/voterguidesmenu" component={VoterGuidesMenuMobile} />
     {/* settings/:edit_mode includes "/settings/account", "/settings/address", "/settings/election",
      "/settings/issues_linked", "/settings/issues_to_link", "/settings/issues", "/settings/notifications",
-     "/settings/profile", "/settings/tools", "/settings/voter_guide" */}
+     "/settings/profile", "/settings/tools" */}
     <Route path="/settings/:edit_mode" component={SettingsDashboard} />
     <Route path="/settings/issues/:edit_mode" component={SettingsDashboard} />
     <Route path="/settings/:edit_mode/:voter_guide_we_vote_id" component={SettingsDashboard} />
@@ -216,7 +216,7 @@ const routes = () => (
     <Route path="/voterguideedit/:organization_we_vote_id" component={OrganizationVoterGuideEdit} />
     <Route path="/voterguideedit/:organization_we_vote_id/:google_civic_election_id" component={OrganizationVoterGuideEdit} />
 
-    {/* Voter Guide Settings go in this structure... */}
+    {/* Voter Guide Settings go in this structure... "/vg/wvYYvgYY/settings/positions", "/vg/wvYYvgYY/settings/addpositions" */}
     <Route path="/vg/:voter_guide_we_vote_id/settings" component={VoterGuideSettingsDashboard} />
     <Route path="/vg/:voter_guide_we_vote_id/settings/menu" component={VoterGuideSettingsMenuMobile} />
     <Route path="/vg/:voter_guide_we_vote_id/settings/:edit_mode" component={VoterGuideSettingsDashboard} />

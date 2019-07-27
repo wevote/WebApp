@@ -23,7 +23,6 @@ import SettingsSharing from '../../components/Settings/SettingsSharing';
 import SettingsSubscriptionPlan from '../../components/Settings/SettingsSubscriptionPlan';
 import ToolsToShareOnOtherWebsites from '../../components/Settings/ToolsToShareOnOtherWebsites';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import VoterGuideSettingsPositions from '../../components/Settings/VoterGuideSettingsPositions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 
@@ -215,9 +214,6 @@ export default class SettingsDashboard extends Component {
         break;
       case 'tools':
         settingsComponentToDisplay = <ToolsToShareOnOtherWebsites />;
-        break;
-      case 'voter_guide':
-        settingsComponentToDisplay = <VoterGuideSettingsPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />;
         break;
     }
 

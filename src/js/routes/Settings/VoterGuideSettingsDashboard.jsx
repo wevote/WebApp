@@ -6,10 +6,7 @@ import BallotStore from '../../stores/BallotStore';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import SettingsBannerAndOrganizationCard from '../../components/Settings/SettingsBannerAndOrganizationCard';
-import VoterGuideSettingsGeneral from '../../components/Settings/VoterGuideSettingsGeneral';
 import VoterGuideSettingsPositions from '../../components/Settings/VoterGuideSettingsPositions';
-import VoterGuideSettingsSideBar from '../../components/Navigation/VoterGuideSettingsSideBar';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
@@ -150,53 +147,23 @@ export default class VoterGuideSettingsDashboard extends Component {
 
   render () {
     renderLog(__filename);
-    let settingsComponentToDisplay = null;
-    switch (this.state.editMode) {
-      default:
-      case 'general':
-        settingsComponentToDisplay = <VoterGuideSettingsGeneral />;
-        break;
-      case 'positions':
-        settingsComponentToDisplay = <VoterGuideSettingsPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />;
-        break;
-    }
+    const { editMode } = this.state;
 
     return (
       <div className="settings-dashboard">
-        {/* Header Spacing for Desktop */}
-        <div className="col-md-12 d-none d-sm-block d-print-none">
-          <SettingsBannerAndOrganizationCard organization={this.state.organization} />
-        </div>
-        {/* Header Spacing for Mobile */}
-        <div className="d-block d-sm-none d-print-none">
-          <SettingsBannerAndOrganizationCard organization={this.state.organization} />
-        </div>
-
-        {/* Desktop left navigation + Settings content */}
-        <div className="d-none d-sm-block">
-          <div className="container-fluid">
-            <div className="row">
-              {/* Desktop mode left navigation */}
-              <div className="col-4 sidebar-menu">
-                <VoterGuideSettingsSideBar
-                  editMode={this.state.editMode}
-                  voterGuide={this.state.voterGuide}
-                />
-              </div>
-              {/* Desktop mode content */}
-              <div className="col-8">
-                {settingsComponentToDisplay}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Settings content */}
-        <div className="d-block d-sm-none">
-          {/* Mobile mode content */}
-          <div className="col-12">
-            {settingsComponentToDisplay}
-          </div>
+        {/* Endorsed/Opposed vs. Add to Voter Guide */}
+        {editMode === 'positions' ? (
+          <div>Endorsed or Opposed</div>
+        ) : (
+          <div>Add to Voter Guide</div>
+        )}
+        {/* Body of page "/vg/wvYYvgYY/settings/positions", "/vg/wvYYvgYY/settings/addpositions" */}
+        <div>
+          {editMode === 'addpositions' ? (
+            <VoterGuideSettingsPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />
+          ) : (
+            <VoterGuideSettingsPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />
+          )}
         </div>
       </div>
     );
