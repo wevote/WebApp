@@ -63,16 +63,18 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   pricingPlanChosenFunction = (pricingPlanChosen) => {
-    if (window.innerWidth > 769) {
+    if (window.innerWidth > 769 && pricingPlanChosen !== 'free') {
       this.setState({
         paidAccountProcessStep: 'payForPlan',
         pricingPlanChosen,
       });
-    } else {
+    } else if (pricingPlanChosen !== 'free') {
       this.setState({
         paidAccountProcessStep: 'payForPlanMobile',
         pricingPlanChosen,
       });
+    } else {
+      this.props.toggleFunction(this.state.pathname);
     }
   }
 
