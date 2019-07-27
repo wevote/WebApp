@@ -11,6 +11,8 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
 import { cleanArray } from '../../utils/textFormat';
+import VoterGuideStore from '../../stores/VoterGuideStore';
+import VoterGuideActions from '../../actions/VoterGuideActions';
 
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 30;
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP = 36;
@@ -19,6 +21,7 @@ const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP = 36;
 export default class BallotElectionListWithFilters extends Component {
   static propTypes = {
     ballotBaseUrl: PropTypes.string,
+    hideUpcomingElectionTitle: PropTypes.bool,
     organizationWeVoteId: PropTypes.string, // If looking at voter guide, we pass in the parent organizationWeVoteId
     showPriorElectionsList: PropTypes.bool,
     toggleFunction: PropTypes.func,
@@ -33,10 +36,13 @@ export default class BallotElectionListWithFilters extends Component {
       loadingNewBallotItems: false,
       updatedElectionId: '',
     };
+    this.executeDifferentElection = this.executeDifferentElection.bind(this);
+    this.goToBallotForDifferentElection = this.goToBallotForDifferentElection.bind(this);
   }
 
   componentDidMount () {
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     let priorElectionId = '';
     if (BallotStore.ballotProperties) {
@@ -45,9 +51,13 @@ export default class BallotElectionListWithFilters extends Component {
       priorElectionId = VoterStore.electionId();
     }
     const ballotElectionList = BallotStore.ballotElectionList();
+    const ballotElectionListCount = ballotElectionList.length;
+    if (ballotElectionListCount === 0) {
+      BallotActions.voterBallotListRetrieve();
+    }
     this.setState({
       ballotElectionList,
-      ballotElectionListCount: ballotElectionList.length,
+      ballotElectionListCount,
       priorElectionId,
     });
   }
@@ -89,6 +99,7 @@ export default class BallotElectionListWithFilters extends Component {
   componentWillUnmount () {
     this.ballotStoreListener.remove();
     this.voterStoreListener.remove();
+    this.voterGuideStoreListener.remove();
   }
 
   onBallotStoreChange () {
@@ -114,6 +125,14 @@ export default class BallotElectionListWithFilters extends Component {
     });
   }
 
+  onVoterGuideStoreChange () {
+    const voter = VoterStore.getVoter();
+    const voterGuideSaveResults = VoterGuideStore.getVoterGuideSaveResults();
+    if (voterGuideSaveResults && voter && voterGuideSaveResults.organization_we_vote_id === voter.linked_organization_we_vote_id) {
+      this.goToVoterGuideForDifferentElection(voterGuideSaveResults.we_vote_id);
+    }
+  }
+
   onVoterStoreChange () {
     // console.log('BallotElectionListWithFilters.jsx onVoterStoreChange, VoterStore.electionId(): ', VoterStore.electionId(), ', priorElectionId: ', this.state.priorElectionId, ', updatedElectionId: ', this.state.updatedElectionId);
     // if (BallotStore.ballotProperties && BallotStore.ballotProperties.ballot_found && BallotStore.ballot && BallotStore.ballot.length !== 0) {
@@ -136,28 +155,42 @@ export default class BallotElectionListWithFilters extends Component {
     }
   }
 
-  goToDifferentElection (ballotLocationShortcut, ballotReturnedWeVoteId, googleCivicElectionId, originalTextForMapSearch = '') {
-    // console.log('BallotElectionListWithFilters, goToDifferentElection');
+  saveVoterGuideForElection = (googleCivicElectionId) => {
+    BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, '', '');
+    VoterGuideActions.voterGuideSave(googleCivicElectionId, '');
+    // When the result comes back from voterGuideSave, onVoterGuideStoreChange triggers a call to goToVoterGuideForDifferentElection
+  }
+
+  goToVoterGuideForDifferentElection = (voterGuideWeVoteId) => {
+    const voterGuideBallotItems = `/vg/${voterGuideWeVoteId}/settings/positions`;
+    historyPush(voterGuideBallotItems);
+    if (this.props.toggleFunction) {
+      this.props.toggleFunction();
+    }
+  }
+
+  goToBallotForDifferentElection (ballotLocationShortcut, ballotReturnedWeVoteId, googleCivicElectionId, originalTextForMapSearch = '') {
+    // console.log('BallotElectionListWithFilters, goToBallotForDifferentElection');
     const ballotBaseUrlClean = this.props.ballotBaseUrl || '/ballot';
     const { organizationWeVoteId } = this.props;
     let destinationUrlForHistoryPush = '';
     if (ballotLocationShortcut && ballotLocationShortcut !== '' && ballotLocationShortcut !== 'none') {
-      // console.log('goToDifferentElection, ballotLocationShortcut: ', ballotLocationShortcut);
+      // console.log('goToBallotForDifferentElection, ballotLocationShortcut: ', ballotLocationShortcut);
       BallotActions.voterBallotItemsRetrieve(0, '', ballotLocationShortcut);
       destinationUrlForHistoryPush = `${ballotBaseUrlClean}/${ballotLocationShortcut}`; // Used with historyPush once modal is closed
     } else if (ballotReturnedWeVoteId && ballotReturnedWeVoteId !== '' && ballotReturnedWeVoteId !== 'none') {
-      // console.log('goToDifferentElection, ballotReturnedWeVoteId: ', ballotReturnedWeVoteId);
+      // console.log('goToBallotForDifferentElection, ballotReturnedWeVoteId: ', ballotReturnedWeVoteId);
       BallotActions.voterBallotItemsRetrieve(0, ballotReturnedWeVoteId, '');
       destinationUrlForHistoryPush = `${ballotBaseUrlClean}/id/${ballotReturnedWeVoteId}`; // Used with historyPush once modal is closed
     } else if (originalTextForMapSearch && originalTextForMapSearch !== '') {
       // Do we still want to be updating addresses? Maybe instead just update google_civic_election_id?
-      // console.log('goToDifferentElection, originalTextForMapSearch: ', originalTextForMapSearch);
+      // console.log('goToBallotForDifferentElection, originalTextForMapSearch: ', originalTextForMapSearch);
       const simpleSave = false;
       VoterActions.voterAddressSave(originalTextForMapSearch, simpleSave, googleCivicElectionId);
       destinationUrlForHistoryPush = ballotBaseUrlClean; // Used with historyPush once modal is closed
     } else if (googleCivicElectionId && googleCivicElectionId !== 0) {
       BallotActions.voterBallotItemsRetrieve(googleCivicElectionId, '', '');
-      // console.log('goToDifferentElection, googleCivicElectionId: ', googleCivicElectionId);
+      // console.log('goToBallotForDifferentElection, googleCivicElectionId: ', googleCivicElectionId);
       destinationUrlForHistoryPush = `${ballotBaseUrlClean}/election/${googleCivicElectionId}`; // Used with historyPush once modal is closed
     }
 
@@ -170,8 +203,8 @@ export default class BallotElectionListWithFilters extends Component {
     }
 
     if (this.props.toggleFunction) {
-      // console.log('goToDifferentElection, loadingNewBallotItems: ', this.state.loadingNewBallotItems);
-      // console.log('goToDifferentElection, priorElectionId: ', this.state.priorElectionId, ', updatedElectionId: ', this.state.updatedElectionId, ', destinationUrlForHistoryPush: ', destinationUrlForHistoryPush, ', BallotStore.ballotProperties.google_civic_election_id: ', BallotStore.ballotProperties.google_civic_election_id, ', VoterStore.electionId():', VoterStore.electionId());
+      // console.log('goToBallotForDifferentElection, loadingNewBallotItems: ', this.state.loadingNewBallotItems);
+      // console.log('goToBallotForDifferentElection, priorElectionId: ', this.state.priorElectionId, ', updatedElectionId: ', this.state.updatedElectionId, ', destinationUrlForHistoryPush: ', destinationUrlForHistoryPush, ', BallotStore.ballotProperties.google_civic_election_id: ', BallotStore.ballotProperties.google_civic_election_id, ', VoterStore.electionId():', VoterStore.electionId());
       this.setState({
         destinationUrlForHistoryPush,
         loadingNewBallotItems: true,
@@ -181,6 +214,15 @@ export default class BallotElectionListWithFilters extends Component {
     } else {
       // console.log('destinationUrlForHistoryPush: ', destinationUrlForHistoryPush);
       historyPush(destinationUrlForHistoryPush);
+    }
+  }
+
+  executeDifferentElection (item) {
+    const { ballotBaseUrl } = this.props;
+    if (ballotBaseUrl) {
+      this.goToBallotForDifferentElection(item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search);
+    } else {
+      this.saveVoterGuideForElection(item.google_civic_election_id);
     }
   }
 
@@ -196,7 +238,7 @@ export default class BallotElectionListWithFilters extends Component {
               fullWidth
               href=""
               id={`ballotElectionListWithFiltersButton-${item.google_civic_election_id}`}
-              onClick={() => this.goToDifferentElection(item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}
+              onClick={() => this.executeDifferentElection(item)}
               variant="contained"
             >
               {/* Mobile */}
@@ -253,7 +295,7 @@ export default class BallotElectionListWithFilters extends Component {
                 fullWidth
                 href=""
                 id={`ballotElectionListWithFiltersButton-${item.google_civic_election_id}`}
-                onClick={() => this.goToDifferentElection(item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}
+                onClick={() => this.executeDifferentElection(item)}
                 variant="contained"
               >
                 {/* Mobile */}
@@ -295,7 +337,7 @@ export default class BallotElectionListWithFilters extends Component {
   }
 
   render () {
-    console.log('BallotElectionListWithFilters render');
+    // console.log('BallotElectionListWithFilters render');
     renderLog(__filename);
     if (this.state.loadingNewBallotItems) {
       return (
@@ -307,7 +349,7 @@ export default class BallotElectionListWithFilters extends Component {
       );
     }
     const currentDate = moment().format('YYYY-MM-DD');
-    const { showPriorElectionsList } = this.props;
+    const { hideUpcomingElectionTitle, showPriorElectionsList } = this.props;
 
     const ballotElectionListUpcomingSorted = this.state.ballotElectionList.concat();
     // We want to sort ascending so the next upcoming election is first
@@ -341,11 +383,13 @@ export default class BallotElectionListWithFilters extends Component {
     return (
       <div className="ballot-election-list__list">
         <div className="ballot-election-list__upcoming">
-          <h4 className="h4">
-            Upcoming Election
-            { (upcomingElectionList && upcomingElectionList.length !== 1) ? 's' : null
-            }
-          </h4>
+          {!hideUpcomingElectionTitle && (
+            <h4 className="h4">
+              Upcoming Election
+              {(upcomingElectionList && upcomingElectionList.length !== 1) ? 's' : null
+              }
+            </h4>
+          )}
           { upcomingElectionList && upcomingElectionList.length ?
             upcomingElectionList :
             'There are no upcoming elections at this time.'

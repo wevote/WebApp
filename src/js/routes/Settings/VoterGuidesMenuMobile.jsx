@@ -82,7 +82,7 @@ export default class VoterGuidesMenuMobile extends Component {
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-12">
-              <SelectVoterGuidesSideBar onOwnPage />
+              <SelectVoterGuidesSideBar />
             </div>
           </div>
         </div>

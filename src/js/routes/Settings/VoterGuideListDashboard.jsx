@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SelectVoterGuidesSideBar from '../../components/Navigation/SelectVoterGuidesSideBar';
 import SettingsAccount from '../../components/Settings/SettingsAccount';
-import SettingsBannerAndOrganizationCard from '../../components/Settings/SettingsBannerAndOrganizationCard';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
@@ -122,28 +122,19 @@ export default class VoterGuideListDashboard extends Component {
     switch (this.state.editMode) {
       default:
       case 'intro':
-        settingsComponentToDisplay = <div>Create your own voter guide by clicking &quot;Create New Voter Guide&quot;.</div>;
+        settingsComponentToDisplay = <div>Create your own voter guide by clicking &quot;New Voter Guide&quot;.</div>;
         break;
     }
 
     return (
       <div className="settings-dashboard">
-        {/* Header Spacing for Desktop */}
-        <div className="d-none d-sm-block d-print-none">
-          <SettingsBannerAndOrganizationCard organization={this.state.organization} />
-        </div>
-        {/* Header Spacing for Mobile */}
-        <div className="d-block d-sm-none d-print-none">
-          <SettingsBannerAndOrganizationCard organization={this.state.organization} />
-        </div>
-
+        <Helmet title="Your Voter Guides - We Vote" />
         <div className="container-fluid">
           <div className="row">
             {/* Mobile and Desktop mode */}
             <div className="col-12 col-md-4 sidebar-menu">
               <SelectVoterGuidesSideBar />
             </div>
-
             <div className="d-none d-sm-block col-md-8">
               { !this.state.voter.is_signed_in ?
                 <SettingsAccount /> :
@@ -153,7 +144,6 @@ export default class VoterGuideListDashboard extends Component {
                   {settingsComponentToDisplay}
                 </div>
               </div>
-
             </div>
           </div>
         </div>
