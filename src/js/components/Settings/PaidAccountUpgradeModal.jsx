@@ -141,26 +141,27 @@ class PaidAccountUpgradeModal extends Component {
         );
         modalTitle = 'Payment';
         modalHtmlContents = (
-          <span>
-            Coupon Processing Center + Payment Proccesing Center
-            <ButtonsContainer>
-              <Button
-                classes={{ root: classes.button }}
-                color="primary"
-                onClick={() => { this.props.toggleFunction(this.state.pathname); }}
-                variant="outlined"
-              >
-                Cancel
-              </Button>
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={this.paymentProcessedFunction}
-              >
-                Process Payment (Simulated)
-              </Button>
-            </ButtonsContainer>
-          </span>
+          <div className="row u-full-height">
+            <div className="col col-6 pr-0 u-full-height">
+              <WrapperLeft className="u-full-height">
+                <div className="u-tc">
+                  <h3 className="h3 u-capitalize">{pricingPlanChosen}</h3>
+                  <Fieldset>
+                    <Legend>
+                      Billed Annually
+                    </Legend>
+                  </Fieldset>
+                </div>
+              </WrapperLeft>
+            </div>
+            <div className="col col-6 pl-0 u-full-height">
+              <WrapperRight className="u-full-height">
+                <div className="u-tc">
+                  <h3 className="h3">Stripe Payment</h3>
+                </div>
+              </WrapperRight>
+            </div>
+          </div>
         );
         break;
       case 'paymentProcessed':
@@ -197,7 +198,7 @@ class PaidAccountUpgradeModal extends Component {
           <IconButton
             aria-label="Close"
             className={classes.closeButton}
-            onClick={() => { this.props.toggleFunction(); }}
+            onClick={() => { this.props.toggleFunction(this.state.pathname); }}
             id="profileClosePaidAccountUpgradeModal"
           >
             <CloseIcon />
@@ -268,6 +269,28 @@ const Title = styled.div`
   text-align: center;
   border-bottom: 2px solid #f7f7f7;
   padding: 16px 12px;
+`;
+
+const WrapperLeft = styled.div`
+  padding: 0 32px 32px;
+  border-right: 1px solid #ddd;
+  margin-top: 32px;
+`;
+
+const WrapperRight = styled.div`
+  padding: 0 32px 32px;
+  border-left: 1px solid #ddd;
+  margin-top: 32px;
+`;
+
+const Fieldset = styled.fieldset`
+  border: 2px solid ${({ theme }) => theme.colors.main};
+  border-radius: 3px;
+`;
+
+const Legend = styled.legend`
+  color: ${({ theme }) => theme.colors.main};
+  font-size: 12px;
 `;
 
 export default withTheme(withStyles(styles)(PaidAccountUpgradeModal));
