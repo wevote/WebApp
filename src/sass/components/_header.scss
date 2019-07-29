@@ -10,6 +10,7 @@ $iphone-x-padding-right: env(safe-area-inset-right);
 $header-height: 48px;
 $header-height-back-to-ballot: 96px;
 $header-height-back-to-ballot-cordova: 71px;
+$header-height-voter-guide-creator: 105px;
 
 .page-header {
   // required overrides for Bootstrap :(
@@ -74,6 +75,10 @@ $header-height-back-to-ballot-cordova: 71px;
     margin: $space-none;
     padding-bottom: $space-xs;
     padding-top: $space-none;
+  }
+
+  &__voter-guide-creator {
+    height: $header-height-voter-guide-creator;
   }
 }
 

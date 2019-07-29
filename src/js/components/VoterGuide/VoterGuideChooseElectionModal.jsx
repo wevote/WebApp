@@ -7,18 +7,13 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import DialogContent from '@material-ui/core/DialogContent';
 import { withStyles, withTheme } from '@material-ui/core';
-import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
-import { calculateBallotBaseUrl } from '../../utils/textFormat';
-import EditAddressInPlace from '../Widgets/EditAddressInPlace';
-import { hasIPhoneNotch } from '../../utils/cordovaUtils';
-import BallotElectionListWithFilters from './BallotElectionListWithFilters';
+import BallotElectionListWithFilters from '../Ballot/BallotElectionListWithFilters';
 
-class SelectBallotModal extends Component {
+class VoterGuideChooseElectionModal extends Component {
   // This modal will show a users ballot guides from previous and current elections.
 
   static propTypes = {
-    ballotBaseUrl: PropTypes.string,
     classes: PropTypes.object,
     organization_we_vote_id: PropTypes.string, // If looking at voter guide, we pass in the parent organization_we_vote_id
     pathname: PropTypes.string,
@@ -29,19 +24,16 @@ class SelectBallotModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      pathname: undefined,
     };
   }
 
   componentDidMount () {
     this.setState({
-      pathname: this.props.pathname,
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps () {
     this.setState({
-      pathname: nextProps.pathname,
     });
   }
 
@@ -49,10 +41,6 @@ class SelectBallotModal extends Component {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     if (this.props.pathname !== nextProps.pathname) {
       // console.log('this.props.pathname:', this.props.pathname, ', nextProps.pathname:', nextProps.pathname);
-      return true;
-    }
-    if (this.props.ballotBaseUrl !== nextProps.ballotBaseUrl) {
-      // console.log('this.props.ballotBaseUrl:', this.props.ballotBaseUrl, ', nextProps.ballotBaseUrl:', nextProps.ballotBaseUrl);
       return true;
     }
     if (this.props.organization_we_vote_id !== nextProps.organization_we_vote_id) {
@@ -66,44 +54,31 @@ class SelectBallotModal extends Component {
   render () {
     renderLog(__filename);
     const { classes } = this.props;
-    const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
-    console.log('SelectBallotModal render, ballotBaseUrl: ', ballotBaseUrl);
+    // console.log('VoterGuideChooseElectionModal render');
 
-    const voterAddressObject = VoterStore.getAddressObject();
-    // console.log('SelectBallotModal render, voter_address_object: ', voter_address_object);
     return (
       <Dialog
         classes={{ paper: classes.dialogPaper }}
         open={this.props.show}
-        onClose={() => { this.props.toggleFunction(this.state.pathname); }}
+        onClose={() => { this.props.toggleFunction(); }}
       >
         <DialogTitle>
           <Typography className="text-center">
-            <span className="h6">
-              Address & Elections
-            </span>
+            Choose an election
           </Typography>
           <IconButton
             aria-label="Close"
             classes={{ root: classes.closeButton }}
             onClick={() => { this.props.toggleFunction(); }}
-            id="profileCloseSelectBallotModal"
+            id="profileCloseVoterGuideChooseElectionModal"
           >
             <CloseIcon />
           </IconButton>
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
-          <EditAddressInPlace
-            address={voterAddressObject}
-            defaultIsEditingAddress
-            pathname={this.state.pathname}
-            toggleFunction={this.props.toggleFunction}
-            cancelButtonAction={this.props.toggleFunction}
-          />
           <BallotElectionListWithFilters
-            ballotBaseUrl={ballotBaseUrl}
+            hideUpcomingElectionTitle
             organizationWeVoteId={this.props.organization_we_vote_id}
-            showPriorElectionsList
             toggleFunction={this.props.toggleFunction}
           />
         </DialogContent>
@@ -113,7 +88,6 @@ class SelectBallotModal extends Component {
 }
 const styles = theme => ({
   dialogPaper: {
-    marginTop: hasIPhoneNotch() ? 68 : 48,
     [theme.breakpoints.down('xs')]: {
       minWidth: '95%',
       maxWidth: '95%',
@@ -126,7 +100,7 @@ const styles = theme => ({
   },
   dialogContent: {
     [theme.breakpoints.down('md')]: {
-      padding: '0 8px 8px',
+      padding: '0 8px',
     },
   },
   closeButton: {
@@ -136,4 +110,4 @@ const styles = theme => ({
   },
 });
 
-export default withTheme(withStyles(styles)(SelectBallotModal));
+export default withTheme(withStyles(styles)(VoterGuideChooseElectionModal));

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Avatar from '@material-ui/core/Avatar/index';
+import { withStyles } from '@material-ui/core';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { isCordova } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
@@ -141,6 +142,9 @@ class OfficeItemReadyToVote extends Component {
   }
 }
 
+const styles = ({
+});
+
 const Wrapper = styled.div`
   padding: 24px 24px 20px 24px;
   transition: all 200ms ease-in;
@@ -164,9 +168,16 @@ const OfficeColumn = styled.div`
 `;
 
 const OfficeText = styled.p`
+  font-size: 18px;
   font-weight: 500;
   margin: auto 0;
   margin-right: 16px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 14px;
+  }
+  @media print {
+    font-size: 16px !important;
+  }
 `;
 
 const BioInformation = styled.div`
@@ -210,4 +221,4 @@ const MobileView = styled.div`
   }
 `;
 
-export default OfficeItemReadyToVote;
+export default withStyles(styles)(OfficeItemReadyToVote);

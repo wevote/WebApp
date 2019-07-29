@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -11,17 +12,17 @@ import AppActions from '../../actions/AppActions';
 import CandidateStore from '../../stores/CandidateStore';
 import cookies from '../../utils/cookies';
 import { isCordova, isWebApp } from '../../utils/cordovaUtils';
+import HeaderBackToButton from './HeaderBackToButton';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
+import OfficeItem from '../Ballot/OfficeItem';
+import OfficeStore from '../../stores/OfficeStore';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
+import { stringContains } from '../../utils/textFormat';
+import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import { stringContains } from '../../utils/textFormat';
-import OfficeStore from '../../stores/OfficeStore';
-import OfficeItem from '../Ballot/OfficeItem';
-import HeaderBackToButton from './HeaderBackToButton';
-import SignInModal from '../Widgets/SignInModal';
 
 class HeaderBackToBallot extends Component {
   static propTypes = {
@@ -456,10 +457,12 @@ class HeaderBackToBallot extends Component {
           )}
         </Toolbar>
         {stringContains('/office', pathname.toLowerCase())  && officeName && (
-          <OfficeItem
-          weVoteId={officeWeVoteId}
-          ballotItemDisplayName={officeName}
-          />
+          <OfficeNameWrapper className="header-toolbar">
+            <OfficeItem
+              weVoteId={officeWeVoteId}
+              ballotItemDisplayName={officeName}
+            />
+          </OfficeNameWrapper>
         )}
         <SignInModal
           show={this.state.showSignInModal}
@@ -488,5 +491,9 @@ const styles = theme => ({
     },
   },
 });
+
+const OfficeNameWrapper = styled.div`
+  margin-left: 30px;
+`;
 
 export default withStyles(styles)(HeaderBackToBallot);

@@ -186,6 +186,134 @@ class ItemActionBar extends PureComponent {
     }
   }
 
+  opposeButton = (uniqueId) => {
+    const { classes } = this.props;
+    return (
+      <Button
+      id={`itemActionBarOpposeButton-${uniqueId}`}
+      variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
+      color="primary"
+      className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
+      onClick={() => this.opposeItem()}
+      classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+      >
+        <NotInterestedIcon classes={{ root: classes.buttonIcon }} />
+        {this.isOpposeCalculated() ? (
+          <span
+            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
+              'item-actionbar__position-btn-label--at-state'}
+          >
+              Opposed
+          </span>
+        ) : (
+          <span
+            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
+              'item-actionbar__position-btn-label'}
+          >
+              Oppose
+          </span>
+        )}
+      </Button>
+    );
+  };
+
+  supportButton = (uniqueId) => {
+    const { classes } = this.props;
+    return (
+      <Button
+       id={`itemActionBarSupportButton-${uniqueId}`}
+       variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
+       color="primary"
+       onClick={() => this.supportItem()}
+       classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+      >
+        <DoneIcon
+        classes={{ root: classes.buttonIcon }}
+        />
+        {this.isSupportCalculated() ? (
+          <span
+             className={this.props.shareButtonHide ? 'item-actionbar--inline__position-choose-btn-label--at-state' :
+               'item-actionbar__position-choose-btn-label--at-state'}
+          >
+              Chosen
+          </span>
+        ) : (
+          <span
+             className={this.props.shareButtonHide ? 'item-actionbar--inline__position-choose-btn-label' :
+               'item-actionbar__position-choose-btn-label'}
+          >
+              Choose
+          </span>
+        )}
+      </Button>
+    );
+  };
+
+  isOpposeCalculated () {
+    // Whenever the value in isOpposeLocalState is NOT undefined, then we ALWAYS listen to that
+    if (this.state.isOpposeLocalState !== undefined) {
+      return this.state.isOpposeLocalState;
+    } else {
+      return this.state.isOpposeAPIState;
+    }
+  }
+
+  isSupportCalculated () {
+    // Whenever the value in isSupportLocalState is NOT undefined, then we ALWAYS listen to that
+    if (this.state.isSupportLocalState !== undefined) {
+      return this.state.isSupportLocalState;
+    } else {
+      return this.state.isSupportAPIState;
+    }
+  }
+
+  toggleSupportOrOpposeHelpModal () {
+    const { showSupportOrOpposeHelpModal } = this.state;
+    this.setState({
+      showSupportOrOpposeHelpModal: !showSupportOrOpposeHelpModal,
+    });
+  }
+
+  supportItem () {
+    // Button to support this item was clicked
+    // const { currentBallotIdInUrl, urlWithoutHash, we_vote_id: weVoteId } = this.props;
+    // DALE 2019-02-26 Verify we still need this
+    // if (currentBallotIdInUrl !== weVoteId) {
+    //   historyPush(`${urlWithoutHash}#${this.props.we_vote_id}`);
+    // }
+
+    if (this.props.supportOrOpposeHasBeenClicked) {
+      this.props.supportOrOpposeHasBeenClicked();
+    }
+    if (this.isSupportCalculated()) {
+      // console.log('supportItem about to call stopSupportingItem after isSupportCalculated');
+      this.stopSupportingItem();
+      return;
+    }
+
+    // console.log('supportItem setState');
+    this.setState({
+      isOpposeLocalState: false,
+      isSupportLocalState: true,
+    });
+    if (this.state.transitioning) {
+      return;
+    }
+
+    const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
+    if (!supportOpposeModalHasBeenShown) {
+      this.toggleSupportOrOpposeHelpModal();
+      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
+    }
+
+    SupportActions.voterSupportingSave(this.state.ballotItemWeVoteId, this.props.type);
+    this.setState({
+      transitioning: true,
+    });
+    openSnackbar({ message: 'Support added!' });
+    // showToastSuccess('Support added!');
+  }
+
   stopSupportingItem () {
     this.setState({
       isOpposeLocalState: false,
@@ -258,140 +386,9 @@ class ItemActionBar extends PureComponent {
     openSnackbar({ message: 'Opposition removed!' });
   }
 
-  toggleSupportOrOpposeHelpModal () {
-    const { showSupportOrOpposeHelpModal } = this.state;
-    this.setState({
-      showSupportOrOpposeHelpModal: !showSupportOrOpposeHelpModal,
-    });
-  }
-
-  isOpposeCalculated () {
-    // Whenever the value in isOpposeLocalState is NOT undefined, then we ALWAYS listen to that
-    if (this.state.isOpposeLocalState !== undefined) {
-      return this.state.isOpposeLocalState;
-    } else {
-      return this.state.isOpposeAPIState;
-    }
-  }
-
-  isSupportCalculated () {
-    // Whenever the value in isSupportLocalState is NOT undefined, then we ALWAYS listen to that
-    if (this.state.isSupportLocalState !== undefined) {
-      return this.state.isSupportLocalState;
-    } else {
-      return this.state.isSupportAPIState;
-    }
-  }
-
-  opposeButton = (uniqueId) => {
-    const { classes } = this.props;
-    return (
-      <Button
-      id={`itemActionBarOpposeButton-${uniqueId}`}
-      variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
-      color="primary"
-      className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
-      onClick={() => this.opposeItem()}
-      classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-      >
-        <NotInterestedIcon classes={{ root: classes.buttonIcon }} />
-        {this.isOpposeCalculated() ? (
-          <span
-            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
-              'item-actionbar__position-btn-label--at-state'}
-          >
-              Opposed
-          </span>
-        ) : (
-          <span
-            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
-              'item-actionbar__position-btn-label'}
-          >
-              Oppose
-          </span>
-        )}
-      </Button>
-    );
-  };
-
-  supportButton = (uniqueId) => {
-    const { classes } = this.props;
-    return (
-      <Button
-       id={`itemActionBarSupportButton-${uniqueId}`}
-       variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
-       color="primary"
-       onClick={() => this.supportItem()}
-       classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-      >
-        <DoneIcon
-        classes={{ root: classes.buttonIcon }}
-        />
-        {this.isSupportCalculated() ? (
-          <span
-             className={this.props.shareButtonHide ? 'item-actionbar--inline__position-choose-btn-label--at-state' :
-               'item-actionbar__position-choose-btn-label--at-state'}
-          >
-              Chosen
-          </span>
-        ) : (
-          <span
-             className={this.props.shareButtonHide ? 'item-actionbar--inline__position-choose-btn-label' :
-               'item-actionbar__position-choose-btn-label'}
-          >
-              Choose
-          </span>
-        )}
-      </Button>
-    );
-  };
-
-  supportItem () {
-    // Button to support this item was clicked
-    // const { currentBallotIdInUrl, urlWithoutHash, we_vote_id: weVoteId } = this.props;
-    // DALE 2019-02-26 Verify we still need this
-    // if (currentBallotIdInUrl !== weVoteId) {
-    //   historyPush(`${urlWithoutHash}#${this.props.we_vote_id}`);
-    // }
-
-    if (this.props.supportOrOpposeHasBeenClicked) {
-      this.props.supportOrOpposeHasBeenClicked();
-    }
-    if (this.isSupportCalculated()) {
-      // console.log('supportItem about to call stopSupportingItem after isSupportCalculated');
-      this.stopSupportingItem();
-      return;
-    }
-
-    // console.log('supportItem setState');
-    this.setState({
-      isOpposeLocalState: false,
-      isSupportLocalState: true,
-    });
-    if (this.state.transitioning) {
-      return;
-    }
-
-    const supportOpposeModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
-    if (!supportOpposeModalHasBeenShown) {
-      this.toggleSupportOrOpposeHelpModal();
-      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.SUPPORT_OPPOSE_MODAL_SHOWN);
-    }
-
-    SupportActions.voterSupportingSave(this.state.ballotItemWeVoteId, this.props.type);
-    this.setState({
-      transitioning: true,
-    });
-    openSnackbar({ message: 'Support added!' });
-    // showToastSuccess('Support added!');
-  }
-
-
   isMeasure () {
     return stringContains('meas', this.state.ballotItemWeVoteId);
   }
-
-
 
   render () {
     // console.log('ItemActionBar render');

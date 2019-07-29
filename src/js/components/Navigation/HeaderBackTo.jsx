@@ -188,6 +188,7 @@ class HeaderBackTo extends Component {
   }
 
   render () {
+    // console.log('HeaderBackTo render');
     renderLog(__filename);
     const { voter } = this.state;
     const { classes } = this.props;

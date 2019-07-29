@@ -9,6 +9,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import InputBase from '@material-ui/core/InputBase';
 import styled from 'styled-components';
+import PremiumableButton from '../Widgets/PremiumableButton';
 import AppActions from '../../actions/AppActions';
 import FacebookStore from '../../stores/FacebookStore';
 import LoadingWheel from '../LoadingWheel';
@@ -392,28 +393,12 @@ class SettingsDomain extends Component {
                     >
                       Cancel
                     </Button>
-                    {voterIsPremium ?
-                      (
-                        <Button
-                          color="primary"
-                          classes={{ root: classes.button }}
-                          disabled={!organizationChosenDomainNameChangedLocally}
-                          onClick={this.onSaveDomainNameButton}
-                          variant="contained"
-                        >
-                          Save
-                        </Button>
-                      ) :
-                      (
-                        <Button
-                          classes={{ root: classes.goldButton }}
-                          onClick={() => this.openPaidAccountUpgradeModal('professional')}
-                          variant="contained"
-                        >
-                          Upgrade to Professional
-                        </Button>
-                      )
-                    }
+                    <PremiumableButton
+                      premium={voterIsPremium ? 1 : 0}
+                      onClick={voterIsPremium ? this.onSaveDomainNameButton : () => this.openPaidAccountUpgradeModal('professional')}
+                    >
+                      {voterIsPremium ? 'Save' : 'Upgrade to Professional'}
+                    </PremiumableButton>
                   </ButtonsContainer>
                 )}
               </RadioGroup>

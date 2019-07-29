@@ -9,6 +9,7 @@ export function getApplicationViewBooleans (pathname) {
   let contentFullWidthMode = false;
   let friendsMode = false;
   const pathnameLowerCase = pathname.toLowerCase() || '';
+  // console.log('applicationUtils, pathnameLowerCase:', pathnameLowerCase);
   let settingsMode = false;
   let voteMode = false;
   let valuesMode = false;
@@ -18,10 +19,6 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/intro/sample_ballot' ||
     pathnameLowerCase === '/intro/get_started' ||
     pathnameLowerCase === '/more/myballot' ||
-    pathnameLowerCase === '/voterguidechooseelection' ||
-    pathnameLowerCase === '/voterguidegetstarted' ||
-    pathnameLowerCase === '/voterguideorgtype' ||
-    pathnameLowerCase === '/voterguideorginfo' ||
     pathnameLowerCase.startsWith('/voterguidepositions') ||
     pathnameLowerCase === '/wevoteintro/network') {
     inTheaterMode = true;
@@ -57,7 +54,9 @@ export function getApplicationViewBooleans (pathname) {
     voteMode = true;
   } else if (pathnameLowerCase.startsWith('/ballot')) {
     contentFullWidthMode = false;
-  } else if (stringContains('/settings', pathnameLowerCase)) {
+  } else if (stringContains('/settings', pathnameLowerCase) ||
+    pathnameLowerCase === '/settings/voterguidesmenu' ||
+    pathnameLowerCase === '/settings/voterguidelist') {
     contentFullWidthMode = true;
     settingsMode = true;
   } else if (pathnameLowerCase.startsWith('/value') || // '/values'
@@ -77,7 +76,8 @@ export function getApplicationViewBooleans (pathname) {
 
   let showBackToFriends = false;
   let showBackToBallotHeader = false;
-  let showBackToSettings = false;
+  let showBackToSettingsDesktop = false;
+  let showBackToSettingsMobile = false;
   let showBackToValues = false;
   let showBackToVoterGuides = false;
   if (stringContains('/btdb/', pathnameLowerCase) || // back-to-default-ballot
@@ -90,6 +90,11 @@ export function getApplicationViewBooleans (pathname) {
     // "/btvg/" stands for "Back To Voter Guide Page"
     // "/bto/" stands for "Back To Voter Guide Office Page"
     showBackToBallotHeader = true;
+  } else if (stringContains('/settings/voter_guide', pathnameLowerCase) ||
+    pathnameLowerCase === '/settings/voterguidesmenu' ||
+    pathnameLowerCase === '/settings/voterguidelist') {
+    showBackToSettingsDesktop = true;
+    showBackToSettingsMobile = true;
   } else if (pathnameLowerCase === '/settings/account' ||
     pathnameLowerCase === '/settings/address' ||
     pathnameLowerCase === '/settings/analytics' ||
@@ -101,11 +106,8 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/settings/promoted' ||
     pathnameLowerCase === '/settings/sharing' ||
     pathnameLowerCase === '/settings/subscription' ||
-    pathnameLowerCase === '/settings/tools' ||
-    stringContains('/settings/voter_guide', pathnameLowerCase) ||
-    pathnameLowerCase === '/settings/voterguidesmenu' ||
-    pathnameLowerCase === '/settings/voterguidelist') {
-    showBackToSettings = true;
+    pathnameLowerCase === '/settings/tools') {
+    showBackToSettingsMobile = true;
   } else if (pathnameLowerCase.startsWith('/value/') ||
     pathnameLowerCase === '/values/list' ||
     pathnameLowerCase === '/opinions' ||
@@ -128,6 +130,34 @@ export function getApplicationViewBooleans (pathname) {
     showBackToBallotHeader = true;
   }
 
+  let showFooterBar = false;
+  if (!pathnameLowerCase) {
+    showFooterBar = false;
+  } else if (!pathnameLowerCase.startsWith('/candidate') &&
+      !pathnameLowerCase.startsWith('/friends/') &&
+      !pathnameLowerCase.startsWith('/measure') &&
+      !pathnameLowerCase.startsWith('/office') &&
+      !pathnameLowerCase.startsWith('/value/') &&
+      !pathnameLowerCase.startsWith('/values/') &&
+      !(pathnameLowerCase === '/for-campaigns') &&
+      !(pathnameLowerCase === '/for-organizations') &&
+      !(pathnameLowerCase.startsWith('/how')) &&
+      !(pathnameLowerCase === '/more/about') &&
+      !(pathnameLowerCase === '/more/credits') &&
+      !(pathnameLowerCase.startsWith('/more/donate')) &&
+      !(pathnameLowerCase.startsWith('/more/pricing')) &&
+      !(pathnameLowerCase === '/more/myballot') &&
+      !(pathnameLowerCase === '/welcome') &&
+      !stringContains('/settings/addpositions', pathnameLowerCase) &&
+      !pathnameLowerCase.startsWith('/settings/voterguidelist') &&
+      !pathnameLowerCase.startsWith('/settings/voterguidesmenu') &&
+      !stringContains('/settings/positions', pathnameLowerCase)) {
+    // We want to show the footer bar on the above path patterns, so we leave the footer bar OFF if NOT on any of these pages
+    showFooterBar = true;
+  }
+
+  // console.log('applicationUtils, showFooterBar: ', showFooterBar, ', pathnameLowerCase:', pathnameLowerCase, ', showBackToSettingsMobile:', showBackToSettingsMobile);
+
   return {
     inTheaterMode,
     contentFullWidthMode,
@@ -139,9 +169,11 @@ export function getApplicationViewBooleans (pathname) {
     voterGuideShowGettingStartedNavigation,
     showBackToFriends,
     showBackToBallotHeader,
-    showBackToSettings,
+    showBackToSettingsDesktop,
+    showBackToSettingsMobile,
     showBackToValues,
     showBackToVoterGuides,
+    showFooterBar,
   };
 }
 

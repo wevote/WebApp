@@ -34,7 +34,7 @@ export default class Header extends Component {
 
     const { params, location, pathname, voter, weVoteBrandingOff } = this.props;
     const { friendsMode, settingsMode, valuesMode, voterGuideMode,
-      showBackToFriends, showBackToBallotHeader, showBackToSettings, showBackToValues, showBackToVoterGuides } = getApplicationViewBooleans(pathname);
+      showBackToFriends, showBackToBallotHeader, showBackToSettingsDesktop, showBackToSettingsMobile, showBackToValues, showBackToVoterGuides } = getApplicationViewBooleans(pathname);
     // const hideGettingStartedButtons = voterGuideShowGettingStartedNavigation;
     let iPhoneSpacer = '';
     if (isCordova() && isIOS() && hasIPhoneNotch()) {
@@ -48,6 +48,7 @@ export default class Header extends Component {
 
 
     if (voterGuideMode) {
+      // console.log('Header in voterGuideMode');
       return (
         <div id="app-header">
           {iPhoneSpacer}
@@ -68,35 +69,46 @@ export default class Header extends Component {
         </div>
       );
     } else if (settingsMode) {
-      const backToSettingsLinkDesktop = '/settings/menu';
+      // console.log('Header in settingsMode, showBackToSettingsDesktop:', showBackToSettingsDesktop, ', showBackToSettingsMobile:', showBackToSettingsMobile);
+      const backToSettingsLinkDesktop = '/settings/profile';
       const backToSettingsLinkMobile = '/settings/hamburger';
       const backToSettingsLinkText = 'Settings';
+      const classNameHeadroom = showBackToVoterGuides ? 'headroom-wrapper-webapp__voter-guide' : 'headroom-wrapper-webapp__default';
 
       return (
         <div id="app-header">
           { iPhoneSpacer }
-          <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
+          <div className={isWebApp ? classNameHeadroom : ''} id="headroom-wrapper">
             <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
-              { showBackToSettings ? (
+              { showBackToSettingsDesktop && (
                 <span>
                   <span className="u-show-desktop-tablet">
                     <HeaderBackTo backToLink={backToSettingsLinkDesktop} backToLinkText={backToSettingsLinkText} location={location} params={params} voter={voter} />
                   </span>
+                  { !showBackToVoterGuides && !showBackToSettingsMobile && (
+                    <span className="u-show-mobile">
+                      <HeaderBar location={location} pathname={pathname} voter={voter} />
+                    </span>
+                  )}
+                </span>
+              )}
+              { showBackToSettingsMobile && (
+                <span>
                   <span className="u-show-mobile">
                     <HeaderBackTo backToLink={backToSettingsLinkMobile} backToLinkText={backToSettingsLinkText} location={location} params={params} voter={voter} />
                   </span>
-                  <span className="d-none d-sm-block">
-                    <HeaderBar location={location} pathname={pathname} voter={voter} />
-                  </span>
+                  { !showBackToVoterGuides && !showBackToSettingsDesktop && (
+                    <span className="u-show-desktop-tablet">
+                      <HeaderBar location={location} pathname={pathname} voter={voter} />
+                    </span>
+                  )}
                 </span>
-              ) : (
-                <span>
-                  { showBackToVoterGuides ?
-                    <HeaderBackToVoterGuides location={location} params={params} pathname={pathname} voter={voter} /> :
-                    <HeaderBar location={location} pathname={pathname} voter={voter} />
-                  }
-                </span>
-              )
+              )}
+              { showBackToVoterGuides &&
+                <HeaderBackToVoterGuides location={location} params={params} pathname={pathname} voter={voter} />
+              }
+              { !showBackToVoterGuides && !showBackToSettingsDesktop && !showBackToSettingsMobile &&
+                <HeaderBar location={location} pathname={pathname} voter={voter} />
               }
             </div>
           </div>
@@ -151,6 +163,7 @@ export default class Header extends Component {
                pathname === '/welcome') {
       return null;
     } else {
+      // console.log('Header not in any mode');
       let classNameHeadroom = '';  // Value for isCordova is ''
       if (isWebApp()) {
         if (stringContains('/ballot', pathname.toLowerCase())) {
