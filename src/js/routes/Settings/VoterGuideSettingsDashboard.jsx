@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { withStyles } from '@material-ui/core';
 import { renderLog } from '../../utils/logging';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
@@ -10,8 +12,9 @@ import VoterGuideSettingsPositions from '../../components/Settings/VoterGuideSet
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
+// import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
 
-export default class VoterGuideSettingsDashboard extends Component {
+class VoterGuideSettingsDashboard extends Component {
   static propTypes = {
     params: PropTypes.object,
   };
@@ -21,7 +24,6 @@ export default class VoterGuideSettingsDashboard extends Component {
     this.state = {
       editMode: '',
       linkedOrganizationWeVoteId: '',
-      organization: {},
       voterGuide: {},
       voterGuideWeVoteId: '',
     };
@@ -63,7 +65,7 @@ export default class VoterGuideSettingsDashboard extends Component {
         const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
         if (organization && organization.organization_we_vote_id) {
           this.setState({
-            organization,
+            // organization,
           });
         } else {
           OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
@@ -99,9 +101,9 @@ export default class VoterGuideSettingsDashboard extends Component {
 
   onOrganizationStoreChange () {
     // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
-    const { linkedOrganizationWeVoteId } = this.state;
+    // const { linkedOrganizationWeVoteId } = this.state;
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId),
+      // organization: OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId),
     });
   }
 
@@ -148,24 +150,38 @@ export default class VoterGuideSettingsDashboard extends Component {
   render () {
     renderLog(__filename);
     const { editMode } = this.state;
+    // console.log("VoterGuideSettingsDashboard, positionListForOneElection:", positionListForOneElection);
+
+    // const cordovaPaddingTop = cordovaScrollablePaneTopPadding();
+    // const paddingTop = cordovaPaddingTop || '125px';
+    const paddingTop = '10px';
 
     return (
-      <div className="settings-dashboard">
-        {/* Endorsed/Opposed vs. Add to Voter Guide */}
-        {editMode === 'positions' ? (
-          <div>Endorsed or Opposed</div>
-        ) : (
-          <div>Add to Voter Guide</div>
-        )}
-        {/* Body of page "/vg/wvYYvgYY/settings/positions", "/vg/wvYYvgYY/settings/addpositions" */}
-        <div>
+      <Wrapper padTop={paddingTop}>
+        <EndorsementListBody>
+          {/* Body of page "/vg/wvYYvgYY/settings/positions", "/vg/wvYYvgYY/settings/addpositions" */}
           {editMode === 'addpositions' ? (
             <VoterGuideSettingsPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />
           ) : (
             <VoterGuideSettingsPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />
           )}
-        </div>
-      </div>
+        </EndorsementListBody>
+      </Wrapper>
     );
   }
 }
+
+const styles = () => ({
+  formControl: {
+    width: '100%',
+  },
+});
+
+const Wrapper = styled.div`
+  padding-top: ${({ padTop }) => padTop};
+`;
+
+const EndorsementListBody = styled.div`
+`;
+
+export default withStyles(styles)(VoterGuideSettingsDashboard);

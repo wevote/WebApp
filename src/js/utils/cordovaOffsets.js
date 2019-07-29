@@ -33,6 +33,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '40px';
         case enums.welcomeWild:     return '10px';
+        case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.moreHamburger:   return '10px';
         case enums.moreTools:       return '44px';
         case enums.settingsWild:    return '16px';
@@ -52,6 +53,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '40px';
         case enums.welcomeWild:     return '10px';
+        case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.moreHamburger:   return '10px';
         case enums.moreTools:       return '44px';
         case enums.settingsWild:    return '16px';
@@ -71,6 +73,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '44px';
         case enums.welcomeWild:     return '22px';
+        case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.moreHamburger:   return '10px';
         case enums.moreTools:       return '44px';
         case enums.settingsWild:    return '16px';
@@ -90,6 +93,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotLgHdrWild: return '33px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '60px';
+        case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.welcomeWild:     return '22px';
         case enums.moreHamburger:   return '35px';
         case enums.moreTools:       return '44px';
@@ -109,6 +113,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotLgHdrWild: return '34px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '60px';
+        case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.welcomeWild:     return '22px';
         case enums.moreHamburger:   return '35px';
         case enums.moreTools:       return '44px';
@@ -129,6 +134,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotLgHdrWild: return '34px';
         case enums.moreAbout:       return '22px';
         case enums.moreTerms:       return '60px';
+        case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.welcomeWild:     return '22px';
         case enums.moreHamburger:   return '35px';
         case enums.moreTools:       return '44px';
@@ -148,6 +154,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotLgHdrWild: return '4px';
         case enums.moreAbout:       return '0px';
         case enums.moreTerms:       return '44px';
+        case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.welcomeWild:     return '0px';
         case enums.moreHamburger:   return '15px';
         case enums.moreTools:       return '44px';
@@ -169,6 +176,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotSmHdrWild: return '123px';
         case enums.ballotVote:      return isSignedIn ? '123px' : '119px';
         case enums.moreTerms:       return '32px';
+        case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         default:                    return '0px';
       }
     } else if (sizeString === '--lg') {
@@ -180,6 +188,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotSmHdrWild: return '118px';
         case enums.ballotVote:      return isSignedIn ? '102px' : '109px';
         case enums.moreTerms:       return '32px';
+        case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         default:                    return '0px';
       }
     } if (sizeString === '--md') {
@@ -191,6 +200,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotSmHdrWild: return '116px';
         case enums.ballotVote:      return isSignedIn ? '106px' : '105px';
         case enums.moreTerms:       return '32px';
+        case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         default:                    return '0px';
       }
     } else if (sizeString === '--sm') {
@@ -202,6 +212,7 @@ export function cordovaScrollablePaneTopPadding () {
         case enums.ballotSmHdrWild: return '130px';
         case enums.ballotVote:      return isSignedIn ? '103px' : '102px';
         case enums.moreTerms:       return '32px';
+        case enums.voterGuideCreatorWild: return '10px'; // $headroom-wrapper-webapp-voter-guide
         case enums.valuesList:
         default:                    return '0px';
       }
@@ -417,6 +428,7 @@ export function cordovaTopHeaderTopMargin () {
           case enums.ballot:          style.marginTop = '19px'; break;
           case enums.ballotVote:      style.marginTop = '19px'; break;
           case enums.settingsWild:    style.marginTop = '22px'; break;
+          case enums.voterGuideCreatorWild: style.marginTop = '10px'; break; // $headroom-wrapper-webapp-voter-guide
           default:                    style.marginTop = '19px'; break;
         }
       } else if (hasIPhoneNotch()) {
@@ -433,6 +445,7 @@ export function cordovaTopHeaderTopMargin () {
           case enums.ballot:          style.marginTop = '16px'; break;
           case enums.ballotVote:      style.marginTop = '16px'; break;
           case enums.settingsWild:    style.marginTop = '38px'; break;
+          case enums.voterGuideCreatorWild: style.marginTop = '10px'; break; // $headroom-wrapper-webapp-voter-guide
           default:                    style.marginTop = '16px'; break;
         }
       } else if (isIPad()) {

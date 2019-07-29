@@ -226,18 +226,6 @@ export default class VoterGuideSettingsPositions extends Component {
     }
   }
 
-  onKeyDownEditMode (event) {
-    const enterAndSpaceKeyCodes = [13, 32];
-    const scope = this;
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      if (this.state.editMode) {
-        // If going from editMode == True to editMode == False, we want to refresh the positions
-        OrganizationActions.positionListForOpinionMaker(this.state.organization.organization_we_vote_id, true, false, this.state.currentGoogleCivicElectionId);
-      }
-      scope.setState({ editMode: !this.state.editMode });
-    }
-  }
-
   // This function is called by BallotSearchResults and SearchBar when an API search has been cleared
   clearSearch () {
     // console.log("VoterGuideSettingsPositions, clearSearch");
@@ -250,7 +238,7 @@ export default class VoterGuideSettingsPositions extends Component {
   goToVoterGuideDisplay () {
     let voterGuideDisplay = '/ballot';
     if (this.state.voterGuide) {
-      voterGuideDisplay = `/voterguide/${this.state.voterGuide.organization_we_vote_id}/ballot/election/${this.state.voterGuide.google_civic_election_id}/ballot`;
+      voterGuideDisplay = `/voterguide/${this.state.voterGuide.organization_we_vote_id}/ballot/election/${this.state.voterGuide.google_civic_election_id}/positions`;
     }
     historyPush(voterGuideDisplay);
   }
@@ -262,15 +250,6 @@ export default class VoterGuideSettingsPositions extends Component {
       clearSearchTextNow: false,
       searchIsUnderway,
     });
-  }
-
-  toggleEditMode () {
-    if (this.state.editMode) {
-      // If going from editMode == True to editMode == False, we want to refresh the positions
-      OrganizationActions.positionListForOpinionMaker(this.state.organization.organization_we_vote_id, true, false, this.state.currentGoogleCivicElectionId);
-    }
-    const { editMode } = this.state;
-    this.setState({ editMode: !editMode });
   }
 
   render () {
@@ -288,12 +267,11 @@ export default class VoterGuideSettingsPositions extends Component {
     }
 
     // console.log("lookingAtSelf: ", lookingAtSelf);
-    const electionName = BallotStore.currentBallotElectionName;
     const atLeastOnePositionFoundForThisElection = positionListForOneElection && positionListForOneElection.length !== 0;
 
     return (
       <div className="">
-        <Helmet title="Voter Guide Positions - We Vote" />
+        <Helmet title="Your Positions - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
         { this.state.voter.is_signed_in ?
           null :
@@ -301,20 +279,6 @@ export default class VoterGuideSettingsPositions extends Component {
         }
         <div className="card">
           <div className="card-main">
-            <h3 className="h3">Your Positions</h3>
-            { lookingAtSelf && atLeastOnePositionFoundForThisElection && !this.state.searchIsUnderway ? (
-              <a // eslint-disable-line
-                className="fa-pull-right u-push--md"
-                onKeyDown={this.onKeyDownEditMode.bind(this)}
-                onClick={this.toggleEditMode.bind(this)}
-              >
-                {this.state.editMode ? 'Done Editing' : 'Edit Positions'}
-              </a>
-            ) : null
-            }
-            <h4 className="h4 card__additional-heading">
-              <span className="u-push--sm">{ electionName || 'This Election'}</span>
-            </h4>
             { lookingAtSelf ? (
               <div className="u-margin-left--md u-push--md">
               Search for candidates or measures to add to your voter guide.
@@ -357,8 +321,7 @@ export default class VoterGuideSettingsPositions extends Component {
             onClick={this.goToVoterGuideDisplay}
             variant="contained"
           >
-            <span className="d-none d-sm-block">See Full Ballot to Enter More Positions&nbsp;&nbsp;&gt;</span>
-            <span className="d-block d-sm-none">Enter More Positions&nbsp;&nbsp;&gt;</span>
+            See Preview&nbsp;&nbsp;&gt;
           </Button>
         </div>
         {this.state.searchIsUnderway ? (

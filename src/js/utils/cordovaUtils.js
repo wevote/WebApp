@@ -405,6 +405,7 @@ export const enums = {
   candidateWild: 105,
   measureWild: 106,
   valueWild: 107,
+  voterGuideCreatorWild: 109,
   welcomeWild: 108,
   candidate: 200,
   friends: 201,
@@ -440,6 +441,8 @@ export function pageEnumeration () {
     return enums.settingsWild;
   } else if (href.indexOf('/index.html#/value/') > 0) {
     return enums.valueWild;
+  } else if (href.indexOf('/index.html#/vg/') > 0) {
+    return enums.voterGuideCreatorWild;
   } else if (href.indexOf('/index.html#/wevoteintro/') > 0) {
     return enums.wevoteintroWild;
   } else if (href.indexOf('/index.html#/ballot') > 0) {
@@ -451,7 +454,7 @@ export function pageEnumeration () {
   } else if (href.indexOf('/index.html#/measure/') > 0) {
     return enums.measureWild;
 
-    // then specific first level paths
+  // then specific first level paths
   } if (href.indexOf('/index.html#/candidate') > 0) {
     return enums.candidate;
   } else if (href.indexOf('/index.html#/friends') > 0) {

@@ -105,22 +105,21 @@ export default class SelectVoterGuidesSideBar extends Component {
       <div className="card">
         <div className="card-main">
           <div className="SettingsItem__summary__title">Your Voter Guides</div>
-          <Button
-            color="primary"
-            fullWidth
-            id="selectVoterGuidesSideBarNewVoterGuide"
-            onClick={() => this.openNewVoterGuideModal()}
-            variant="contained"
-          >
-           New Voter Guide
-          </Button>
-          <span className="u-margin-top--sm">
-            {voterGuideLinksHtml}
-          </span>
+          <div className="u-padding-bottom--md">
+            <Button
+              color="primary"
+              fullWidth
+              id="selectVoterGuidesSideBarNewVoterGuide"
+              onClick={() => this.openNewVoterGuideModal()}
+              variant="contained"
+            >
+             New Voter Guide
+            </Button>
+          </div>
+          {voterGuideLinksHtml}
         </div>
         {showNewVoterGuideModal && (
           <VoterGuideChooseElectionModal
-            ballotBaseUrl="/ballot"
             show={showNewVoterGuideModal}
             toggleFunction={this.closeNewVoterGuideModal}
           />

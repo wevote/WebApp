@@ -340,7 +340,6 @@ class Pricing extends Component {
         },
       },
       selectedPricingPlanIndex: 0,
-      voter: {},
     };
   }
 
@@ -382,7 +381,6 @@ class Pricing extends Component {
 
   onVoterStoreChange () {
     this.setState({
-      voter: VoterStore.getVoter(),
     });
   }
 
