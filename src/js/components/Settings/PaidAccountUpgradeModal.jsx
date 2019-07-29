@@ -5,11 +5,13 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
 import DialogContent from '@material-ui/core/DialogContent';
+import FormControl from '@material-ui/core/FormControl';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
 import { withStyles, withTheme } from '@material-ui/core';
 import { renderLog } from '../../utils/logging';
 import { hasIPhoneNotch, isIOS } from '../../utils/cordovaUtils';
@@ -30,6 +32,7 @@ class PaidAccountUpgradeModal extends Component {
     super(props);
     this.state = {
       pathname: undefined,
+      radioGroupValue: 'annualPlanRadio',
     };
   }
 
@@ -80,9 +83,20 @@ class PaidAccountUpgradeModal extends Component {
     }
   }
 
+  handleRadioGroupChange = (event) => {
+    // console.log('handleRadioGroupChange');
+    const { radioGroupValue } = this.state;
+    if (radioGroupValue !== event.target.value) {
+      this.setState({
+        radioGroupValue: event.target.value || '',
+      });
+    }
+  }
+
   render () {
     renderLog(__filename);
     const { classes } = this.props;
+    const { radioGroupValue } = this.state;
     // console.log('PaidAccountUpgradeModal render');
 
     const { paidAccountProcessStep, pricingPlanChosen } = this.state;
@@ -141,17 +155,129 @@ class PaidAccountUpgradeModal extends Component {
         );
         modalTitle = 'Payment';
         modalHtmlContents = (
-          <div className="row u-full-height">
+          <Row className="row u-full-height">
             <div className="col col-6 pr-0 u-full-height">
               <WrapperLeft className="u-full-height">
                 <div className="u-tc">
-                  <h3 className="h3 u-capitalize">{pricingPlanChosen}</h3>
+                  <h3 className="h3 u-capitalize">
+                    {pricingPlanChosen}
+                     Plan
+                  </h3>
+                </div>
+                {radioGroupValue === 'annualPlanRadio' ? (
                   <Fieldset>
                     <Legend>
                       Billed Annually
                     </Legend>
+                    <FormControl>
+                      <RadioGroup
+                        name="planRadioGroup"
+                        value={radioGroupValue}
+                        onChange={this.handleRadioGroupChange}
+                      >
+                        <FormControlLabel
+                          classes={{ root: classes.formControlLabel }}
+                          value="annualPlanRadio"
+                          control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
+                          label={(
+                            <>
+                              <PriceLabelDollarSign>$</PriceLabelDollarSign>
+                              <PriceLabel>125</PriceLabel>
+                              <PriceLabelSubText> /mo</PriceLabelSubText>
+                            </>
+                          )}
+                          onClick={this.handleRadioGroupChoiceSubDomain}
+                          checked={radioGroupValue === 'annualPlanRadio'}
+                        />
+                      </RadioGroup>
+                    </FormControl>
                   </Fieldset>
-                </div>
+                ) : (
+                  <FieldsetDisabled>
+                    <Legend>
+                      Billed Annually
+                    </Legend>
+                    <FormControl>
+                      <RadioGroup
+                        name="planRadioGroup"
+                        value={radioGroupValue}
+                        onChange={this.handleRadioGroupChange}
+                      >
+                        <FormControlLabel
+                          classes={{ root: classes.formControlLabel }}
+                          value="annualPlanRadio"
+                          control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
+                          label={(
+                            <>
+                              <PriceLabelDollarSign>$</PriceLabelDollarSign>
+                              <PriceLabel>125</PriceLabel>
+                              <PriceLabelSubText> /mo</PriceLabelSubText>
+                            </>
+                          )}
+                          onClick={this.handleRadioGroupChoiceSubDomain}
+                          checked={radioGroupValue === 'annualPlanRadio'}
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </FieldsetDisabled>
+                )}
+                {radioGroupValue === 'monthlyPlanRadio' ? (
+                  <Fieldset>
+                    <Legend>
+                      Billed Monthly
+                    </Legend>
+                    <FormControl>
+                      <RadioGroup
+                        name="planRadioGroup"
+                        value={radioGroupValue}
+                        onChange={this.handleRadioGroupChange}
+                      >
+                        <FormControlLabel
+                          classes={{ root: classes.formControlLabel }}
+                          value="monthlyPlanRadio"
+                          control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
+                          label={(
+                            <>
+                              <PriceLabelDollarSign>$</PriceLabelDollarSign>
+                              <PriceLabel>150</PriceLabel>
+                              <PriceLabelSubText> /mo</PriceLabelSubText>
+                            </>
+                          )}
+                          onClick={this.handleRadioGroupChoiceSubDomain}
+                          checked={radioGroupValue === 'monthlyPlanRadio'}
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </Fieldset>
+                ) : (
+                  <FieldsetDisabled>
+                    <Legend>
+                      Billed Monthly
+                    </Legend>
+                    <FormControl>
+                      <RadioGroup
+                        name="planRadioGroup"
+                        value={radioGroupValue}
+                        onChange={this.handleRadioGroupChange}
+                      >
+                        <FormControlLabel
+                          classes={{ root: classes.formControlLabel }}
+                          value="monthlyPlanRadio"
+                          control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
+                          label={(
+                            <>
+                              <PriceLabelDollarSign>$</PriceLabelDollarSign>
+                              <PriceLabel>150</PriceLabel>
+                              <PriceLabelSubText> /mo</PriceLabelSubText>
+                            </>
+                          )}
+                          onClick={this.handleRadioGroupChoiceSubDomain}
+                          checked={radioGroupValue === 'monthlyPlanRadio'}
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </FieldsetDisabled>
+                )}
               </WrapperLeft>
             </div>
             <div className="col col-6 pl-0 u-full-height">
@@ -161,7 +287,7 @@ class PaidAccountUpgradeModal extends Component {
                 </div>
               </WrapperRight>
             </div>
-          </div>
+          </Row>
         );
         break;
       case 'paymentProcessed':
@@ -253,6 +379,17 @@ const styles = theme => ({
     right: 8,
     top: 6,
   },
+  formControlLabel: {
+    margin: 0,
+    padding: 0,
+    height: '100%',
+  },
+  radioButton: {
+    width: 55.4,
+    height: 55.4,
+    padding: 12,
+    pointerEvents: 'auto',
+  },
 });
 
 const ButtonsContainer = styled.div`
@@ -271,26 +408,65 @@ const Title = styled.div`
   padding: 16px 12px;
 `;
 
+const Row = styled.div`
+  max-width: 700px;
+  margin: 0 auto;
+`;
+
 const WrapperLeft = styled.div`
   padding: 0 32px 32px;
-  border-right: 1px solid #ddd;
+  border-right: 1px solid #f7f7f7;
   margin-top: 32px;
 `;
 
 const WrapperRight = styled.div`
   padding: 0 32px 32px;
-  border-left: 1px solid #ddd;
+  border-left: 1px solid #f7f7f7;
   margin-top: 32px;
 `;
 
 const Fieldset = styled.fieldset`
   border: 2px solid ${({ theme }) => theme.colors.main};
   border-radius: 3px;
+  margin-bottom: 16px;
+  padding-bottom: 0;
+`;
+
+const FieldsetDisabled = styled.fieldset`
+  border: 2px solid #ddd;
+  border-radius: 3px;
+  margin-bottom: 16px;
+  padding-bottom: 0;
 `;
 
 const Legend = styled.legend`
   color: ${({ theme }) => theme.colors.main};
   font-size: 12px;
+  text-align: left;
+  width: fit-content;
+  padding: 0 4px;
+  margin: 0;
+`;
+
+const PriceLabel = styled.span`
+  font-size: 40px;
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.main};
+  margin-left: 8px;
+`;
+
+const PriceLabelDollarSign = styled.span`
+  font-size: 18px;
+  color: ${({ theme }) => theme.colors.main};
+  position: relative;
+  top: -12px;
+  font-weight: bold;
+`;
+
+const PriceLabelSubText = styled.span`
+  font-size: 16px;
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.main};
 `;
 
 export default withTheme(withStyles(styles)(PaidAccountUpgradeModal));
