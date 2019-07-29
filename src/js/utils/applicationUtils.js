@@ -19,10 +19,6 @@ export function getApplicationViewBooleans (pathname) {
     pathnameLowerCase === '/intro/sample_ballot' ||
     pathnameLowerCase === '/intro/get_started' ||
     pathnameLowerCase === '/more/myballot' ||
-    pathnameLowerCase === '/voterguidechooseelection' ||
-    pathnameLowerCase === '/voterguidegetstarted' ||
-    pathnameLowerCase === '/voterguideorgtype' ||
-    pathnameLowerCase === '/voterguideorginfo' ||
     pathnameLowerCase.startsWith('/voterguidepositions') ||
     pathnameLowerCase === '/wevoteintro/network') {
     inTheaterMode = true;

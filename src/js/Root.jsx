@@ -64,12 +64,7 @@ import ValuesList from './routes/Values/ValuesList';
 import Vote from './routes/Vote';
 import VerifyEmailProcess from './routes/Process/VerifyEmailProcess';
 import FriendInvitationByEmailVerifyProcess from './routes/Process/FriendInvitationByEmailVerifyProcess';
-import VoterGuideChooseElection from './routes/VoterGuide/VoterGuideChooseElection';
-import VoterGuideChoosePositions from './routes/VoterGuide/VoterGuideChoosePositions';
-import VoterGuideGetStarted from './routes/VoterGuide/VoterGuideGetStarted';
 import VoterGuideListDashboard from './routes/Settings/VoterGuideListDashboard';
-import VoterGuideOrganizationInfo from './routes/VoterGuide/VoterGuideOrganizationInfo';
-import VoterGuideOrganizationType from './routes/VoterGuide/VoterGuideOrganizationType';
 import VoterGuideSettingsDashboard from './routes/Settings/VoterGuideSettingsDashboard';
 import VoterGuideSettingsMenuMobile from './routes/Settings/VoterGuideSettingsMenuMobile';
 import VoterGuidesMenuMobile from './routes/Settings/VoterGuidesMenuMobile';
@@ -221,11 +216,6 @@ const routes = () => (
     <Route path="/vg/:voter_guide_we_vote_id/settings/menu" component={VoterGuideSettingsMenuMobile} />
     <Route path="/vg/:voter_guide_we_vote_id/settings/:edit_mode" component={VoterGuideSettingsDashboard} />
 
-    <Route path="/voterguidegetstarted" component={VoterGuideGetStarted} />
-    <Route path="/voterguideorgtype" component={VoterGuideOrganizationType} />
-    <Route path="/voterguideorginfo" component={VoterGuideOrganizationInfo} />
-    <Route path="/voterguidechooseelection" component={VoterGuideChooseElection} />
-    <Route path="/voterguidepositions/:voter_guide_we_vote_id" component={VoterGuideChoosePositions} />
     <Route path="/yourpage" component={YourPage} />
 
     <Route path="/facebook_sign_in" component={FacebookSignInProcess} />

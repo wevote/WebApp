@@ -228,6 +228,8 @@ export default class BallotElectionListWithFilters extends Component {
 
   renderUpcomingElectionList (list, currentDate) {
     const renderedList = list.map((item) => {
+      // console.log('item.election_description_text: ', item.election_description_text, 'item.election_day_text: ', item.election_day_text);
+      if (!item.election_description_text || item.election_description_text === '') return null;
       const electionDateTomorrowMoment = moment(item.election_day_text, 'YYYY-MM-DD').add(1, 'days');
       const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
       return electionDateTomorrow > currentDate ? (

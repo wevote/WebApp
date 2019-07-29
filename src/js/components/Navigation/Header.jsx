@@ -73,11 +73,12 @@ export default class Header extends Component {
       const backToSettingsLinkDesktop = '/settings/profile';
       const backToSettingsLinkMobile = '/settings/hamburger';
       const backToSettingsLinkText = 'Settings';
+      const classNameHeadroom = showBackToVoterGuides ? 'headroom-wrapper-webapp__voter-guide' : 'headroom-wrapper-webapp__default';
 
       return (
         <div id="app-header">
           { iPhoneSpacer }
-          <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
+          <div className={isWebApp ? classNameHeadroom : ''} id="headroom-wrapper">
             <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToSettingsDesktop && (
                 <span>

@@ -24,19 +24,16 @@ class VoterGuideChooseElectionModal extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      pathname: undefined,
     };
   }
 
   componentDidMount () {
     this.setState({
-      pathname: this.props.pathname,
     });
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps () {
     this.setState({
-      pathname: nextProps.pathname,
     });
   }
 
@@ -102,9 +99,8 @@ const styles = theme => ({
     },
   },
   dialogContent: {
-    margin: '0 auto',
     [theme.breakpoints.down('md')]: {
-      padding: '0 8px 8px',
+      padding: '0 8px',
     },
   },
   closeButton: {

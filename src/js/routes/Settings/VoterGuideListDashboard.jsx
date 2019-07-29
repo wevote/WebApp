@@ -20,7 +20,6 @@ export default class VoterGuideListDashboard extends Component {
     this.state = {
       editMode: '',
       linkedOrganizationWeVoteId: '',
-      organization: {},
       voter: {},
     };
   }
@@ -49,7 +48,7 @@ export default class VoterGuideListDashboard extends Component {
       const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
       if (organization && organization.organization_we_vote_id) {
         this.setState({
-          organization,
+          // organization,
         });
       } else {
         OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
@@ -72,7 +71,7 @@ export default class VoterGuideListDashboard extends Component {
       const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
       if (organization && organization.organization_we_vote_id) {
         this.setState({
-          organization,
+          // organization,
         });
       } else {
         OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
@@ -90,10 +89,10 @@ export default class VoterGuideListDashboard extends Component {
   }
 
   onOrganizationStoreChange () {
-    const { linkedOrganizationWeVoteId } = this.state;
+    // const { linkedOrganizationWeVoteId } = this.state;
     // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, linkedOrganizationWeVoteId: ", this.state.linkedOrganizationWeVoteId);
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId),
+      // organization: OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId),
     });
   }
 
