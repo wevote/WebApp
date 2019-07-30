@@ -207,58 +207,48 @@ export default class Candidate extends Component {
             showOfficeName
             showPositionStatementActionBar
           />
-          <div className="card__additional">
-            {/* this.state.positionListFromAdvisersFollowedByVoter */}
-            { this.state.allCachedPositionsForThisCandidate.length ? (
+        </section>
+        <section className="card">
+          {/* this.state.positionListFromAdvisersFollowedByVoter */}
+          { this.state.allCachedPositionsForThisCandidate.length ? (
+            <PositionList
+              incomingPositionList={this.state.allCachedPositionsForThisCandidate}
+              ballotItemDisplayName={this.state.candidate.ballot_item_display_name}
+            />
+          ) : null
+          }
+          {/* Formerly voterGuidesToFollowForThisBallotItem */}
+          {/* this.state.voterGuidesForThisBallotItem.length === 0 ?
+            <div className="card__additional-text">{NO_VOTER_GUIDES_TEXT}</div> : (
               <div>
-                <PositionList
-                  incomingPositionList={this.state.allCachedPositionsForThisCandidate}
-                  ballotItemDisplayName={this.state.candidate.ballot_item_display_name}
+                <h3 className="card__additional-heading">{`Opinions about ${this.state.candidate.ballot_item_display_name}`}</h3>
+                <GuideList
+                  id={electionId}
+                  ballotItemWeVoteId={this.state.candidateWeVoteId}
+                  incomingVoterGuideList={this.state.voterGuidesForThisBallotItem}
                 />
               </div>
-            ) : null
-            }
-            {/* Formerly voterGuidesToFollowForThisBallotItem */}
-            {/* this.state.voterGuidesForThisBallotItem.length === 0 ?
-              <div className="card__additional-text">{NO_VOTER_GUIDES_TEXT}</div> : (
-                <div>
-                  <h3 className="card__additional-heading">{`Opinions about ${this.state.candidate.ballot_item_display_name}`}</h3>
-                  <GuideList
-                    id={electionId}
-                    ballotItemWeVoteId={this.state.candidateWeVoteId}
-                    incomingVoterGuideList={this.state.voterGuidesForThisBallotItem}
-                  />
-                </div>
-              )
-            */}
-          </div>
+            )
+          */}
         </section>
         <EndorsementCard
           bsPrefix="u-margin-top--sm u-stack--xs"
           variant="primary"
-          buttonText="Endorsements Missing?"
+          buttonText="ENDORSEMENTS MISSING?"
           text={`Are there endorsements for
           ${candidateName}
           that you expected to see?`}
         />
-        {/* <div className="opinions-followed__missing-org-text">
-          Are there endorsements for
-          {' '}
-          {candidateName}
-          {' '}
-          that you expected to see?
-        </div> */}
-        <br />
         <ThisIsMeAction
-          twitter_handle_being_viewed={this.state.candidate.twitter_handle}
-          name_being_viewed={this.state.candidate.ballot_item_display_name}
-          kind_of_owner="POLITICIAN"
+          twitterHandleBeingViewed={this.state.candidate.twitter_handle}
+          nameBeingViewed={this.state.candidate.ballot_item_display_name}
+          kindOfOwner="POLITICIAN"
         />
         <br />
         {/* Show links to this candidate in the admin tools */}
         { voter.is_admin || voter.is_verified_volunteer ? (
           <span className="u-wrap-links d-print-none">
-            Admin:
+            Admin only:
             <OpenExternalWebSite
               url={candidateAdminEditUrl}
               target="_blank"
@@ -266,6 +256,7 @@ export default class Candidate extends Component {
               body={(
                 <span>
                   edit
+                  {' '}
                   {candidateName}
                 </span>
               )}

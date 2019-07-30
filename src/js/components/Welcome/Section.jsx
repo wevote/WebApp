@@ -3,7 +3,10 @@ import styled from 'styled-components';
 const Section = styled.div`
   display: flex;
   flex-flow: column;
-  padding: ${({ noTopMargin }) => (noTopMargin ? '0' : '3em')} 1em 2em 1em;
+  padding-top: ${({ noTopMargin }) => (noTopMargin ? '0' : '3em')};
+  padding-right: ${({ noSideMargins }) => (noSideMargins ? '0' : '1em')};
+  padding-bottom: ${({ noTopMargin }) => (noTopMargin ? '0' : '2em')};
+  padding-left: ${({ noSideMargins }) => (noSideMargins ? '0' : '1em')};
   text-align: center;
   align-items: center;
   color: #333;
@@ -145,8 +148,8 @@ const NetworkContainer = styled.div`
 
 const NetworkImage = styled.img`
   filter: grayscale(100%);
-  flex: 25%
-  max-width: 25%
+  flex: 25%;
+  max-width: 25%;
   padding: 0 2%;
   object-fit: scale-down;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {

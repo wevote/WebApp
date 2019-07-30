@@ -8,7 +8,6 @@ import { renderLog } from '../../utils/logging';
 import MeasureStore from '../../stores/MeasureStore';
 import SupportStore from '../../stores/SupportStore';
 import { stringContains } from '../../utils/textFormat';
-// import VoterStore from '../../stores/VoterStore';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize complex changes
 /* eslint react/no-find-dom-node: 1 */
@@ -113,17 +112,23 @@ class BallotItemSupportOpposeComment extends PureComponent {
 
   onCandidateStoreChange () {
     if (this.state.isCandidate) {
-      this.setState(state => ({
-        ballotItem: CandidateStore.getCandidate(state.ballotItemWeVoteId),
-      }));
+      const { ballotItemWeVoteId } = this.state;
+      const candidate = CandidateStore.getCandidate(ballotItemWeVoteId);
+      const ballotItemDisplayName = candidate.ballot_item_display_name || '';
+      this.setState({
+        ballotItemDisplayName,
+      });
     }
   }
 
   onMeasureStoreChange () {
     if (this.state.isMeasure) {
-      this.setState(state => ({
-        ballotItem: MeasureStore.getMeasure(state.ballotItemWeVoteId),
-      }));
+      const { ballotItemWeVoteId } = this.state;
+      const measure = MeasureStore.getMeasure(ballotItemWeVoteId);
+      const ballotItemDisplayName = measure.ballot_item_display_name || '';
+      this.setState({
+        ballotItemDisplayName,
+      });
     }
   }
 
@@ -188,7 +193,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
       null;
 
     const commentDisplayMobile = showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText ? (
-      <div className="d-block d-sm-none u-min-50 u-push--xs u-stack--sm">
+      <div className="d-block d-sm-none u-min-50 u-push--xs">
         <ItemPositionStatementActionBar
           ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
           ballotItemDisplayName={this.state.ballotItemDisplayName}
@@ -205,6 +210,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
 
     return (
       <Wrapper showPositionStatementActionBar={showPositionStatementActionBar}>
+        <BallotHeaderDivider className="u-show-mobile" />
         <ActionBar>
           {/* Support/Oppose/Comment toggle here */}
           {itemActionBar}
@@ -232,6 +238,13 @@ const ActionBar = styled.div`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
+`;
+
+const BallotHeaderDivider = styled.div`
+  margin: 8px 0;
+  width: 100%;
+  background: #f7f7f7;
+  height: 2px;
 `;
 
 

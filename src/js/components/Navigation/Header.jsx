@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getApplicationViewBooleans } from '../../utils/applicationUtils';
-import { hasIPhoneNotch, cordovaTopHeaderTopMargin, isCordova, isIOS, isWebApp } from '../../utils/cordovaUtils';
+import { cordovaTopHeaderTopMargin } from '../../utils/cordovaOffsets';
+import { hasIPhoneNotch, isCordova, isIOS, isWebApp, isIPad } from '../../utils/cordovaUtils';
 import HeaderBackToBallot from './HeaderBackToBallot';
 import HeaderBackTo from './HeaderBackTo';
 import HeaderBackToVoterGuides from './HeaderBackToVoterGuides';
@@ -29,18 +30,17 @@ export default class Header extends Component {
   }
 
   render () {
-    // console.log('Header render');
     renderLog(__filename);
 
     const { params, location, pathname, voter, weVoteBrandingOff } = this.props;
     const { friendsMode, settingsMode, valuesMode, voterGuideMode,
-      showBackToFriends, showBackToBallotHeader, showBackToSettings, showBackToValues, showBackToVoterGuides } = getApplicationViewBooleans(pathname);
+      showBackToFriends, showBackToBallotHeader, showBackToSettingsDesktop, showBackToSettingsMobile, showBackToValues, showBackToVoterGuides } = getApplicationViewBooleans(pathname);
     // const hideGettingStartedButtons = voterGuideShowGettingStartedNavigation;
     let iPhoneSpacer = '';
     if (isCordova() && isIOS() && hasIPhoneNotch()) {
       iPhoneSpacer = <div className="ios-notched-spacer" />;
     } else if (isCordova() && isIOS() && !hasIPhoneNotch()) {
-      iPhoneSpacer = <div className="ios-no-notch-spacer" />;
+      iPhoneSpacer = <div className="ios-no-notch-spacer" style={{ height: `${isIPad() ? '0px' : 'undefined'}` }} />;
     }
 
     const pageHeaderStyle = weVoteBrandingOff ? 'page-header__container_branding_off headroom' : 'page-header__container headroom';
@@ -48,6 +48,7 @@ export default class Header extends Component {
 
 
     if (voterGuideMode) {
+      // console.log('Header in voterGuideMode');
       return (
         <div id="app-header">
           {iPhoneSpacer}
@@ -68,31 +69,46 @@ export default class Header extends Component {
         </div>
       );
     } else if (settingsMode) {
-      const backToSettingsLink = isWebApp() ? '/settings/menu' : '/more/hamburger';
+      // console.log('Header in settingsMode, showBackToSettingsDesktop:', showBackToSettingsDesktop, ', showBackToSettingsMobile:', showBackToSettingsMobile);
+      const backToSettingsLinkDesktop = '/settings/profile';
+      const backToSettingsLinkMobile = '/settings/hamburger';
       const backToSettingsLinkText = 'Settings';
+      const classNameHeadroom = showBackToVoterGuides ? 'headroom-wrapper-webapp__voter-guide' : 'headroom-wrapper-webapp__default';
 
       return (
         <div id="app-header">
           { iPhoneSpacer }
-          <div className={isWebApp ? 'headroom-wrapper-webapp__default' : ''} id="headroom-wrapper">
+          <div className={isWebApp ? classNameHeadroom : ''} id="headroom-wrapper">
             <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
-              { showBackToSettings ? (
+              { showBackToSettingsDesktop && (
                 <span>
-                  <span className="d-block d-sm-none">
-                    <HeaderBackTo backToLink={backToSettingsLink} backToLinkText={backToSettingsLinkText} location={location} params={params} voter={voter} />
+                  <span className="u-show-desktop-tablet">
+                    <HeaderBackTo backToLink={backToSettingsLinkDesktop} backToLinkText={backToSettingsLinkText} location={location} params={params} voter={voter} />
                   </span>
-                  <span className="d-none d-sm-block">
-                    <HeaderBar location={location} pathname={pathname} voter={voter} />
-                  </span>
+                  { !showBackToVoterGuides && !showBackToSettingsMobile && (
+                    <span className="u-show-mobile">
+                      <HeaderBar location={location} pathname={pathname} voter={voter} />
+                    </span>
+                  )}
                 </span>
-              ) : (
+              )}
+              { showBackToSettingsMobile && (
                 <span>
-                  { showBackToVoterGuides ?
-                    <HeaderBackToVoterGuides location={location} params={params} pathname={pathname} voter={voter} /> :
-                    <HeaderBar location={location} pathname={pathname} voter={voter} />
-                  }
+                  <span className="u-show-mobile">
+                    <HeaderBackTo backToLink={backToSettingsLinkMobile} backToLinkText={backToSettingsLinkText} location={location} params={params} voter={voter} />
+                  </span>
+                  { !showBackToVoterGuides && !showBackToSettingsDesktop && (
+                    <span className="u-show-desktop-tablet">
+                      <HeaderBar location={location} pathname={pathname} voter={voter} />
+                    </span>
+                  )}
                 </span>
-              )
+              )}
+              { showBackToVoterGuides &&
+                <HeaderBackToVoterGuides location={location} params={params} pathname={pathname} voter={voter} />
+              }
+              { !showBackToVoterGuides && !showBackToSettingsDesktop && !showBackToSettingsMobile &&
+                <HeaderBar location={location} pathname={pathname} voter={voter} />
               }
             </div>
           </div>
@@ -102,6 +118,8 @@ export default class Header extends Component {
       let backToValuesLink = '/values';
       if (stringContains('/value/', pathname)) {
         backToValuesLink = '/values/list';
+      } else if (stringContains('/values/list', pathname)) {
+        backToValuesLink = '/values';
       }
       const backToValuesLinkText = 'Back';
 
@@ -145,13 +163,22 @@ export default class Header extends Component {
                pathname === '/welcome') {
       return null;
     } else {
+      // console.log('Header not in any mode');
+      let classNameHeadroom = '';  // Value for isCordova is ''
+      if (isWebApp()) {
+        if (stringContains('/ballot', pathname.toLowerCase())) {
+          classNameHeadroom = 'headroom-wrapper-webapp__ballot';
+        } else if (stringContains('/office', pathname.toLowerCase())) {
+          classNameHeadroom = 'headroom-wrapper-webapp__office';
+        } else {
+          classNameHeadroom = 'headroom-wrapper-webapp__default';
+        }
+      }
       // This handles other pages, like the Ballot display
       return (
         <div id="app-header">
           { iPhoneSpacer }
-          <div className={isWebApp() ?    // eslint-disable-line no-nested-ternary
-            stringContains('/ballot', pathname.toLowerCase()) ? 'headroom-wrapper-webapp__ballot' : // eslint-disable-line no-nested-ternary
-              stringContains('/office', pathname.toLowerCase()) ? 'headroom-wrapper-webapp__office' : 'headroom-wrapper-webapp__default' : ''}
+          <div className={classNameHeadroom}
             id="headroom-wrapper"
           >
             <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">

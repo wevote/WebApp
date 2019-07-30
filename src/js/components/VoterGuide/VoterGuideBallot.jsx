@@ -10,15 +10,16 @@ import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import { withStyles } from '@material-ui/core/styles';
 import AddressBox from '../AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
+import AppActions from '../../actions/AppActions';
+import AppStore from '../../stores/AppStore';
 import BallotActions from '../../actions/BallotActions';
 import BallotElectionList from '../Ballot/BallotElectionList';
 import BallotItemCompressed from '../Ballot/BallotItemCompressed';
-import BallotIntroModal from '../Ballot/BallotIntroModal';
 import BallotStatusMessage from '../Ballot/BallotStatusMessage';
 import BallotStore from '../../stores/BallotStore';
-import BallotSummaryModal from '../Ballot/BallotSummaryModal';
 import BallotSearch from '../Ballot/BallotSearch';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
+import { calculateBallotBaseUrl } from '../../utils/textFormat';
 import cookies from '../../utils/cookies';
 import {
   historyPush, isCordova, isWebApp,
@@ -27,6 +28,7 @@ import ElectionActions from '../../actions/ElectionActions';
 import ElectionStore from '../../stores/ElectionStore';
 import isMobile from '../../utils/isMobile';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
+import { openSnackbar } from '../Widgets/SnackNotifier';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import PledgeToSupportOrganizationButton from './PledgeToSupportOrganizationButton';
@@ -35,15 +37,12 @@ import { renderLog } from '../../utils/logging';
 import SelectBallotModal from '../Ballot/SelectBallotModal';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
+import ThisIsMeAction from '../Widgets/ThisIsMeAction';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideBallotItemCompressed from './VoterGuideBallotItemCompressed';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import AppStore from '../../stores/AppStore';
-import { calculateBallotBaseUrl } from '../../utils/textFormat';
-import { showToastSuccess } from '../../utils/showToast';
 import webAppConfig from '../../config';
-import AppActions from '../../actions/AppActions';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 1 */
@@ -53,51 +52,14 @@ import AppActions from '../../actions/AppActions';
 
 const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];
 
-const styles = theme => ({
-  badge: {
-    top: 13,
-    minWidth: 16,
-    width: 20,
-    right: 14,
-    background: 'rgba(46, 60, 93, 0.08)',
-    color: '#333',
-    [theme.breakpoints.down('md')]: {
-      fontSize: 9,
-      width: 16,
-      height: 16,
-      top: 11,
-      right: 11,
-    },
-  },
-  badgeColorPrimary: {
-    background: theme.palette.primary.main,
-    color: 'white',
-  },
-  chipRoot: {
-    height: 26,
-    [theme.breakpoints.down('md')]: {
-      height: 22.5,
-    },
-  },
-  iconRoot: {
-    position: 'absolute',
-    left: 3,
-    top: 1,
-    color: theme.palette.primary.main,
-    cursor: 'pointer',
-    [theme.breakpoints.down('md')]: {
-      fontSize: 16,
-      top: 3,
-    },
-  },
-});
-
 class VoterGuideBallot extends Component {
   static propTypes = {
     active_route: PropTypes.string,
+    classes: PropTypes.object,
     location: PropTypes.object,
     organization: PropTypes.object.isRequired,
     params: PropTypes.object,
+    pathname: PropTypes.string,
   };
 
   constructor (props) {
@@ -129,7 +91,6 @@ class VoterGuideBallot extends Component {
       organization: {},
       showBallotIntroModal: false,
       showSelectBallotModal: false,
-      showBallotSummaryModal: false,
       voterBallotList: [],
       voterGuideOnStage: undefined,
       showFilterTabs: false,
@@ -142,7 +103,6 @@ class VoterGuideBallot extends Component {
     this.toggleBallotIntroModal = this.toggleBallotIntroModal.bind(this);
     this.ballotItemsCompressedReference = {};
     this.pledgeToVoteWithVoterGuide = this.pledgeToVoteWithVoterGuide.bind(this);
-    this.toggleBallotSummaryModal = this.toggleBallotSummaryModal.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.updateOfficeDisplayUnfurledTracker = this.updateOfficeDisplayUnfurledTracker.bind(this);
   }
@@ -773,13 +733,6 @@ class VoterGuideBallot extends Component {
     this.setState({ showBallotIntroModal: !showBallotIntroModal });
   }
 
-  toggleBallotSummaryModal () {
-    const { showBallotSummaryModal } = this.state;
-    this.setState({
-      showBallotSummaryModal: !showBallotSummaryModal,
-    });
-  }
-
   toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
     const { showSelectBallotModal } = this.state;
     if (showSelectBallotModal) {
@@ -854,7 +807,7 @@ class VoterGuideBallot extends Component {
     console.log('VoterGuideBallot pledgeToVoteWithVoterGuide, this.state.voterGuideOnStage:', this.state.voterGuideOnStage);
     const toastMessage = `Now you match what ${this.state.organization.organization_name} supports or opposes`;
     VoterGuideActions.pledgeToVoteWithVoterGuide(this.state.voterGuideOnStage.we_vote_id);
-    showToastSuccess(toastMessage);
+    openSnackbar({ message: toastMessage });
   }
 
   updateOfficeDisplayUnfurledTracker (weVoteId, status) {
@@ -883,10 +836,6 @@ class VoterGuideBallot extends Component {
     if (!ballotWithItemsFromCompletionFilterType) {
       return (
         <div className="ballot container-fluid well u-stack--md u-inset--md">
-          { this.state.showBallotIntroModal ?
-            <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> :
-            null
-          }
           <div className={`ballot__header ${isWebApp() ? 'ballot__header__top-cordova' : ''}`}>
             <BrowserPushMessage incomingProps={this.props} />
             <p className="ballot__date_location">
@@ -900,7 +849,6 @@ class VoterGuideBallot extends Component {
             ballotBaseUrl={ballotBaseUrl}
             ballotElectionList={this.state.voterBallotList}
             organization_we_vote_id={this.state.organization.organization_we_vote_id}
-            showRelevantElections
           />
         </div>
       );
@@ -972,7 +920,6 @@ class VoterGuideBallot extends Component {
     // console.log("VoterGuideBallot SelectBallotModal, this.state.organization.organization_we_vote_id:", this.state.organization.organization_we_vote_id);
     return (
       <div className="ballot">
-        { this.state.showBallotIntroModal ? <BallotIntroModal show={this.state.showBallotIntroModal} toggleFunction={this.toggleBallotIntroModal} /> : null }
         { this.state.showSelectBallotModal ? (
           <SelectBallotModal
             ballotElectionList={this.state.ballotElectionList}
@@ -984,7 +931,6 @@ class VoterGuideBallot extends Component {
             toggleFunction={this.toggleSelectBallotModal}
           />
         ) : null }
-        { this.state.showBallotSummaryModal ? <BallotSummaryModal show={this.state.showBallotSummaryModal} toggleFunction={this.toggleBallotSummaryModal} /> : null }
         <div className="card">
           <div className="card-main">
             <Helmet title={`${this.state.organization.organization_name} - We Vote`} />
@@ -1148,6 +1094,14 @@ class VoterGuideBallot extends Component {
                   </div>
                   )}
                 </div>
+                {this.state.organization.organization_twitter_handle && (
+                  <ThisIsMeAction
+                    twitterHandleBeingViewed={this.state.organization.organization_twitter_handle}
+                    nameBeingViewed={this.state.organization.organization_name}
+                    kindOfOwner="ORGANIZATION"
+                  />
+                )
+                }
 
                 {/* Show links to this candidate in the admin tools */}
                 { this.state.voter && (this.state.voter.is_admin || this.state.voter.is_verified_volunteer) &&
@@ -1207,5 +1161,44 @@ class VoterGuideBallot extends Component {
     );
   }
 }
+
+const styles = theme => ({
+  badge: {
+    top: 13,
+    minWidth: 16,
+    width: 20,
+    right: 14,
+    background: 'rgba(46, 60, 93, 0.08)',
+    color: '#333',
+    [theme.breakpoints.down('md')]: {
+      fontSize: 9,
+      width: 16,
+      height: 16,
+      top: 11,
+      right: 11,
+    },
+  },
+  badgeColorPrimary: {
+    background: theme.palette.primary.main,
+    color: 'white',
+  },
+  chipRoot: {
+    height: 26,
+    [theme.breakpoints.down('md')]: {
+      height: 22.5,
+    },
+  },
+  iconRoot: {
+    position: 'absolute',
+    left: 3,
+    top: 1,
+    color: theme.palette.primary.main,
+    cursor: 'pointer',
+    [theme.breakpoints.down('md')]: {
+      fontSize: 16,
+      top: 3,
+    },
+  },
+});
 
 export default withStyles(styles)(VoterGuideBallot);

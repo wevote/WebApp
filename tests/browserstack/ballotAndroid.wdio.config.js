@@ -22,6 +22,10 @@ exports.config = {
       'browserstack.console': 'info',
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
+      isAndroid: true,
+      isCordovaFromAppStore: true,
+      isIOS: false,
+      isMobileScreenSize: true,
     },
     {
       name: 'ballotMainTest-AndroidOnePlus6T',
@@ -32,6 +36,10 @@ exports.config = {
       'browserstack.console': 'info',
       'browserstack.debug': true,
       'browserstack.geoLocation': 'US',
+      isAndroid: true,
+      isCordovaFromAppStore: true,
+      isIOS: false,
+      isMobileScreenSize: true,
     },
 
   ],

@@ -54,13 +54,16 @@ const ShowMoreFooterStyled = styled.div`
     border-top: 1px solid;
     border-bottom: 1px solid;
     border-color: #f8f8f8;
-   }
+  }
   &:hover {
     background-color: #f8f8f8;
-}
+  }
+  @media print{
+    display: none;
+  }
 `;
 
-export default withTheme()(withStyles(styles)(ShowMoreFooter));
+export default withTheme(withStyles(styles)(ShowMoreFooter));
 
 
 

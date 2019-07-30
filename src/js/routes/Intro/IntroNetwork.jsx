@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import Slider from 'react-slick';
-import { cordovaDot, historyPush, isWebApp } from '../../utils/cordovaUtils';
+import { cordovaDot, getAndroidSize, historyPush, isAndroid, isWebApp } from '../../utils/cordovaUtils';
 import IntroNetworkSafety from '../../components/Intro/IntroNetworkSafety';
 import IntroNetworkDefinition from '../../components/Intro/IntroNetworkDefinition';
 import IntroNetworkBallotIsNext from '../../components/Intro/IntroNetworkBallotIsNext';
@@ -41,6 +41,20 @@ export default class IntroNetwork extends Component {
     this.slider.current.slickPrev();
   }
 
+  overrideMediaQueryForAndroidTablets () {
+    // Media queries in CSS often don't work as expected in Cordova, due to window.devicePixelRatio greater than one
+    if (isAndroid()) {
+      const sizeString = getAndroidSize();
+      if (sizeString === '--xl') {
+        return {
+          maxHeight: 'unset',
+          maxWidth: 'unset',
+        };
+      }
+    }
+    return {};
+  }
+
   render () {
     renderLog(__filename);
 
@@ -59,7 +73,7 @@ export default class IntroNetwork extends Component {
     return (
       <div>
         <Helmet title="Welcome to We Vote" />
-        <div className="intro-story container-fluid well u-inset--md">
+        <div className="intro-story container-fluid well u-inset--md" style={this.overrideMediaQueryForAndroidTablets()}>
           <span onClick={IntroNetwork.goToBallotLink}>
             <img
               src={cordovaDot(closeIcon)}

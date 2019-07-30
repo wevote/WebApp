@@ -8,6 +8,8 @@ class AppStore extends ReduceStore {
       headroomUnpinned: false,
       scrolledDown: false,
       showEditAddressButton: false,
+      showNewVoterGuideModal: false,
+      showPaidAccountUpgradeModal: false,
       showSelectBallotModal: false,
       showSignInModal: false,
       storeSignInStartPath: false,
@@ -30,6 +32,15 @@ class AppStore extends ReduceStore {
     return this.getState().showEditAddressButton;
   }
 
+  showNewVoterGuideModal () {
+    return this.getState().showNewVoterGuideModal;
+  }
+
+  showPaidAccountUpgradeModal () {
+    // The chosenPaidAccount values are: free, professional, enterprise
+    return this.getState().showPaidAccountUpgradeModal;
+  }
+
   showSelectBallotModal () {
     return this.getState().showSelectBallotModal;
   }
@@ -50,12 +61,16 @@ class AppStore extends ReduceStore {
         return { ...state, headroomUnpinned: action.payload };
       case 'scrolledDown':
         return { ...state, scrolledDown: action.payload };
+      case 'showEditAddressButton':
+        return { ...state, showEditAddressButton: action.payload };
+      case 'showNewVoterGuideModal':
+        return { ...state, showNewVoterGuideModal: action.payload };
+      case 'showPaidAccountUpgradeModal':
+        return { ...state, showPaidAccountUpgradeModal: action.payload };
       case 'showSelectBallotModal':
         return { ...state, showSelectBallotModal: action.payload };
       case 'showSignInModal':
         return { ...state, showSignInModal: action.payload };
-      case 'showEditAddressButton':
-        return { ...state, showEditAddressButton: action.payload };
       case 'storeSignInStartPath':
         // Send a signal to src/js/Application.jsx to write the current pathname to the cookie 'sign_in_start_path'
         return { ...state, storeSignInStartPath: action.payload };

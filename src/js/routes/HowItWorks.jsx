@@ -6,11 +6,13 @@ import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import AnnotatedSlideshow from '../components/Widgets/AnnotatedSlideshow';
 import AppActions from '../actions/AppActions';
+import { cordovaScrollablePaneTopPadding } from '../utils/cordovaOffsets';
+import { historyPush, isCordova } from '../utils/cordovaUtils';
 import Footer from '../components/Welcome/Footer';
 import Header, { Container, Title } from '../components/Welcome/HowItWorksHeader';
 import HeaderSwitch from '../components/Widgets/HeaderSwitch';
+import { renderLog } from '../utils/logging';
 import StepsChips from '../components/Widgets/StepsChips';
-import { historyPush } from '../utils/cordovaUtils';
 import VoterStore from '../stores/VoterStore';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 
@@ -30,30 +32,35 @@ class HowItWorks extends Component {
           description: 'Sign in & verify your account using your official Twitter account or other secure method. We Vote takes verification very seriously. (No trolls allowed!)',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Claim-20190516.gif?',
           index: 0,
+          delayBeforeAdvancingSlide: 12100,
         },
         Import: {
           title: 'Import your endorsements',
           description: 'We are here to help you get your opinions in front of voters, whether you have 5 endorsements, or 1,005. We Vote’s unique tech instamagically captures endorsement data from your website, spreadsheets, or text lists of candidates. No formatting overhauls required.',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Import-20190425.gif?',
           index: 1,
+          delayBeforeAdvancingSlide: 12000,
         },
         Customize: {
           title: 'Add more customizations for your supporters',
           description: 'Want all the bells and whistles?  We Vote offers a lot for free, but has paid premium features that include the endorsements from your chapters and partners, and give you deeper analytics.',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Customize-20190425.gif?',
           index: 2,
+          delayBeforeAdvancingSlide: 6700,
         },
         Launch: {
           title: 'Launch to your people',
           description: 'Promote your unique url over your email, text, and social media channels. Add the We Vote widget directly to your campaign website.',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-Launch-20190506.gif?',
           index: 3,
+          delayBeforeAdvancingSlide: 13150,
         },
         SocialLift: {
           title: 'Social lift',
           description: 'Let your people share with their friends. Watch your social lift in real time.',
           imgSrc: '/img/how-it-works/HowItWorksForCampaigns-SocialLift-20190506.gif?',
           index: 4,
+          delayBeforeAdvancingSlide: 2000,
         },
       },
       forOrganizationsStepLabels: ['Claim', 'Customize', 'Launch', 'Social Lift'],
@@ -63,24 +70,28 @@ class HowItWorks extends Component {
           description: 'Sign in & verify your organization using your official Twitter account or other secure method. We Vote takes verification very seriously. (No trolls allowed!)',
           imgSrc: '/img/how-it-works/HowItWorksForOrgs-Claim-20190506.gif?',
           index: 0,
+          delayBeforeAdvancingSlide: 10100,
         },
         Customize: {
           title: 'Customize your Election Center',
           description: 'Want all the bells and whistles?  We Vote offers a lot for free, but has paid premium features to help you further customize branding and messaging, and give you deeper analytics.',
           imgSrc: '/img/how-it-works/HowItWorksForOrgs-Customize-20190507.gif?',
           index: 1,
+          delayBeforeAdvancingSlide: 9000,
         },
         Launch: {
           title: 'Launch',
           description: 'Share your unique url over your email, text, and social media channels. Add the We Vote widget directly to your website.',
           imgSrc: '/img/how-it-works/HowItWorksForOrgs-Launch-20190506.gif?',
           index: 2,
+          delayBeforeAdvancingSlide: 11500,
         },
         SocialLift: {
           title: 'Social lift',
           description: 'Let your people share with their friends. Watch your social lift in real time.',
           imgSrc: '/img/how-it-works/HowItWorksForOrgs-SocialLift-20190506.gif?',
           index: 3,
+          delayBeforeAdvancingSlide: 2000,
         },
       },
       forVoterStepLabels: ['Choose', 'Follow', 'Review', 'Decide', 'Friends'],
@@ -90,30 +101,35 @@ class HowItWorks extends Component {
           description: 'Follow topics that interest you. We will suggest endorsements based on your interests.',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Choose-20190507.gif?',
           index: 0,
+          delayBeforeAdvancingSlide: 5600,
         },
         Follow: {
           title: 'Follow organizations and people you trust',
-          description: 'As you follow organizations and people you trust, their recommendations are added to your ballot.',
+          description: 'Their recommendations are highlighted on your ballot.',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Follow-20190507.gif?',
           index: 1,
+          delayBeforeAdvancingSlide: 7000,
         },
         Review: {
           title: 'See who endorsed each choice on your ballot',
           description: 'Learn from the people you trust.',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Review-20190401.gif?',
           index: 2,
+          delayBeforeAdvancingSlide: 9500,
         },
         Decide: {
           title: 'Complete your ballot in under six minutes',
           description: 'We Vote is fast, mobile, and helps you decide on the go. Vote with confidence!',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Decide-20190401.gif?',
           index: 3,
+          delayBeforeAdvancingSlide: 8250,
         },
         Friends: {
           title: 'Share with friends who could use a guide',
           description: 'Are your family and friends feeling lost when it’s time to vote? Be their hero, no matter which state they vote in.',
           imgSrc: '/img/how-it-works/HowItWorksForVoters-Friends-20190401.gif?',
           index: 4,
+          delayBeforeAdvancingSlide: 19000,
         },
       },
       selectedCategoryIndex: 0,
@@ -186,7 +202,7 @@ class HowItWorks extends Component {
 
   handleChangeSlide = (selectedStepIndex) => {
     this.setState({ selectedStepIndex });
-  }
+  };
 
   switchToDifferentCategoryFunction = (selectedCategoryIndex) => {
     let getStartedMode = 'getStartedForVoters';
@@ -204,7 +220,7 @@ class HowItWorks extends Component {
       selectedCategoryIndex: selectedCategoryIndex || 0,
       selectedStepIndex: 0,
     });
-  }
+  };
 
   howItWorksGetStarted () {
     const { getStartedMode, getStartedUrl, voter } = this.state;
@@ -222,6 +238,7 @@ class HowItWorks extends Component {
   }
 
   render () {
+    renderLog(__filename);
     const { classes } = this.props;
     const { forCampaignsStepLabels, forCampaignsSteps,
       forOrganizationsStepLabels, forOrganizationsSteps,
@@ -251,7 +268,7 @@ class HowItWorks extends Component {
     // console.log('HowItWorks, selectedStepIndex: ', selectedStepIndex);
 
     return (
-      <Wrapper>
+      <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title={helmetTitle} />
         <WelcomeAppbar pathname={simulatedPathname} />
         <Header>
@@ -265,7 +282,7 @@ class HowItWorks extends Component {
                 switchToDifferentCategoryFunction={this.switchToDifferentCategoryFunction}
               />
             </DesktopView>
-            <MobileTabletView>
+            <MobileTabletView margin={isCordova()}>
               <StepsChips onSelectStep={this.handleChangeSlide} selected={selectedStepIndex} chips={stepLabels} mobile />
             </MobileTabletView>
           </Container>
@@ -311,6 +328,7 @@ const Wrapper = styled.div`
   align-items: center;
   background: white;
   overflow-x: hidden;
+  padding-top: ${({ padTop }) => padTop};
 `;
 
 const Section = styled.div`
@@ -331,6 +349,7 @@ const DesktopView = styled.div`
 
 const MobileTabletView = styled.div`
   display: inherit;
+  margin-top: ${({ marginTop }) => marginTop || '-11px'};
   @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
     display: none;
   }

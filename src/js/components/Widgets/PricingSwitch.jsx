@@ -4,9 +4,10 @@ import styled, { withTheme } from 'styled-components';
 
 class PricingSwitch extends PureComponent {
   static propTypes = {
-    color: PropTypes.string.isRequired,
+    chosenTextColor: PropTypes.string,
+    chosenBackgroundColor: PropTypes.string,
     choices: PropTypes.array.isRequired,
-    selectedCategoryIndex: PropTypes.number.isRequired,
+    selectedPricingPlanIndex: PropTypes.number.isRequired,
     switchToDifferentCategoryFunction: PropTypes.func,
   };
 
@@ -17,16 +18,41 @@ class PricingSwitch extends PureComponent {
   }
 
   render () {
-    const { color, choices, selectedCategoryIndex } = this.props;
+    const { choices, selectedPricingPlanIndex } = this.props;
+    let { chosenBackgroundColor, chosenTextColor } = this.props;
+    if (!chosenBackgroundColor) {
+      chosenBackgroundColor = 'white';
+    }
+    if (!chosenTextColor) {
+      chosenTextColor = '#2e3c5d'; // brandBlue;
+    }
     return (
-      <Container color={color}>
-        <Choice id="howItWorksSwitchForVoters" selectedCategoryIndex={selectedCategoryIndex === 0} color={color} onClick={() => this.switchToDifferentCategory(0)}>
+      <Container chosenBackgroundColor={chosenBackgroundColor}>
+        <Choice
+          id="howItWorksSwitchForVoters"
+          thisPricingPlanInView={selectedPricingPlanIndex === 0}
+          chosenTextColor={chosenTextColor}
+          chosenBackgroundColor={chosenBackgroundColor}
+          onClick={() => this.switchToDifferentCategory(0)}
+        >
           <ChoiceText>{choices[0]}</ChoiceText>
         </Choice>
-        <Choice id="howItWorksSwitchForOrganizations" selectedCategoryIndex={selectedCategoryIndex === 1} color={color} onClick={() => this.switchToDifferentCategory(1)}>
+        <Choice
+          id="howItWorksSwitchForOrganizations"
+          thisPricingPlanInView={selectedPricingPlanIndex === 1}
+          chosenTextColor={chosenTextColor}
+          chosenBackgroundColor={chosenBackgroundColor}
+          onClick={() => this.switchToDifferentCategory(1)}
+        >
           <ChoiceText>{choices[1]}</ChoiceText>
         </Choice>
-        <Choice id="howItWorksSwitchForCampaigns" selectedCategoryIndex={selectedCategoryIndex === 2} color={color} onClick={() => this.switchToDifferentCategory(2)}>
+        <Choice
+          id="howItWorksSwitchForCampaigns"
+          thisPricingPlanInView={selectedPricingPlanIndex === 2}
+          chosenTextColor={chosenTextColor}
+          chosenBackgroundColor={chosenBackgroundColor}
+          onClick={() => this.switchToDifferentCategory(2)}
+        >
           <ChoiceText>{choices[2]}</ChoiceText>
         </Choice>
       </Container>
@@ -44,14 +70,14 @@ const Container = styled.div`
   margin: 0 auto;
   margin-bottom: 32px;
   cursor: pointer;
-  border: 1px solid ${({ color }) => color};
+  border: 1px solid ${({ chosenBackgroundColor }) => chosenBackgroundColor};
   transition: all 150ms ease-in;
 `;
 
 const Choice = styled.div`
   display: flex;
-  background: ${({ selectedCategoryIndex, color }) => (selectedCategoryIndex ? color : 'transparent')};
-  color: ${({ selectedCategoryIndex, color, theme }) => (selectedCategoryIndex ? theme.colors.brandBlue : color)};
+  background: ${({ thisPricingPlanInView, chosenBackgroundColor }) => (thisPricingPlanInView ? chosenBackgroundColor : 'transparent')};
+  color: ${({ thisPricingPlanInView, chosenBackgroundColor, chosenTextColor }) => (thisPricingPlanInView ? chosenTextColor : chosenBackgroundColor)};
   border-radius: 64px;
   text-transform: uppercase;
   width: 50%;

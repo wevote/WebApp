@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import CandidateStore from '../../stores/CandidateStore';
 import MeasureStore from '../../stores/MeasureStore';
+import VoterGuideStore from '../../stores/VoterGuideStore';
 import { extractFirstEndorsementFromPositionList } from '../../utils/positionFunctions';
 import { shortenText, stringContains } from '../../utils/textFormat';
 import { renderLog } from '../../utils/logging';
@@ -24,6 +25,8 @@ export default class TopCommentByBallotItem extends Component {
       ballotItemWeVoteId: '',
       endorsementOrganization: {},
       endorsementText: '',
+      learnMoreText: '',
+      learnMoreUrl: '',
     };
   }
 
@@ -59,9 +62,14 @@ export default class TopCommentByBallotItem extends Component {
         endorsementText: measureResults.endorsementText,
       });
     }
+    this.setState({
+      learnMoreText: this.props.learnMoreText,
+      learnMoreUrl: this.props.learnMoreUrl,
+    });
 
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
+    this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
   }
 
   componentWillReceiveProps (nextProps) {
@@ -97,6 +105,10 @@ export default class TopCommentByBallotItem extends Component {
         endorsementText: measureResults.endorsementText,
       });
     }
+    this.setState({
+      learnMoreText: nextProps.learnMoreText,
+      learnMoreUrl: nextProps.learnMoreUrl,
+    });
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -115,6 +127,7 @@ export default class TopCommentByBallotItem extends Component {
   componentWillUnmount () {
     this.candidateStoreListener.remove();
     this.measureStoreListener.remove();
+    this.voterGuideStoreListener.remove();
   }
 
   onCandidateStoreChange () {
@@ -151,47 +164,52 @@ export default class TopCommentByBallotItem extends Component {
     }
   }
 
-  getOrganizationsWithPositions = () => this.state.organizationsToFollow.map((organization) => {
-    let organizationPositionForThisBallotItem;
-    if (stringContains('cand', this.state.ballotItemWeVoteId)) {
-      organizationPositionForThisBallotItem = CandidateStore.getPositionAboutCandidateFromOrganization(this.state.ballotItemWeVoteId, organization.organization_we_vote_id);
-      // console.log({ ...organizationPositionForThisBallotItem, ...organization });
-    } else if (stringContains('meas', this.state.ballotItemWeVoteId)) {
-      organizationPositionForThisBallotItem = MeasureStore.getPositionAboutMeasureFromOrganization(this.state.ballotItemWeVoteId, organization.organization_we_vote_id);
-    }
-    return { ...organizationPositionForThisBallotItem, ...organization };
-  });
-
-  sortOrganizations (organizationsList, ballotItemWeVoteId) {
-    // console.log("sortOrganizations: ", organizationsList, "ballotItemWeVoteId: ", ballotItemWeVoteId);
-    if (organizationsList && ballotItemWeVoteId) {
-      // console.log("Checking for resort");
-      const arrayLength = organizationsList.length;
-      let organization;
-      let organizationPositionForThisBallotItem;
-      const sortedOrganizations = [];
-      for (let i = 0; i < arrayLength; i++) {
-        organization = organizationsList[i];
-        organizationPositionForThisBallotItem = null;
-        if (ballotItemWeVoteId && organization.organization_we_vote_id) {
-          if (stringContains('cand', ballotItemWeVoteId)) {
-            organizationPositionForThisBallotItem = CandidateStore.getPositionAboutCandidateFromOrganization(ballotItemWeVoteId, organization.organization_we_vote_id);
-          } else if (stringContains('meas', ballotItemWeVoteId)) {
-            organizationPositionForThisBallotItem = MeasureStore.getPositionAboutMeasureFromOrganization(ballotItemWeVoteId, organization.organization_we_vote_id);
-          }
-        }
-        if (organizationPositionForThisBallotItem && organizationPositionForThisBallotItem.statement_text) {
-          // console.log("sortOrganizations unshift");
-          sortedOrganizations.unshift(organization);
-        } else {
-          // console.log("sortOrganizations push");
-          sortedOrganizations.push(organization);
-        }
-      }
-      return sortedOrganizations;
-    }
-    return organizationsList;
+  onVoterGuideStoreChange () {
+    this.onCandidateStoreChange();
+    this.onMeasureStoreChange();
   }
+
+  // getOrganizationsWithPositions = () => this.state.organizationsToFollow.map((organization) => {
+  //   let organizationPositionForThisBallotItem;
+  //   if (stringContains('cand', this.state.ballotItemWeVoteId)) {
+  //     organizationPositionForThisBallotItem = CandidateStore.getPositionAboutCandidateFromOrganization(this.state.ballotItemWeVoteId, organization.organization_we_vote_id);
+  //     // console.log({ ...organizationPositionForThisBallotItem, ...organization });
+  //   } else if (stringContains('meas', this.state.ballotItemWeVoteId)) {
+  //     organizationPositionForThisBallotItem = MeasureStore.getPositionAboutMeasureFromOrganization(this.state.ballotItemWeVoteId, organization.organization_we_vote_id);
+  //   }
+  //   return { ...organizationPositionForThisBallotItem, ...organization };
+  // });
+  //
+  // sortOrganizations (organizationsList, ballotItemWeVoteId) {
+  //   // console.log("sortOrganizations: ", organizationsList, "ballotItemWeVoteId: ", ballotItemWeVoteId);
+  //   if (organizationsList && ballotItemWeVoteId) {
+  //     // console.log("Checking for resort");
+  //     const arrayLength = organizationsList.length;
+  //     let organization;
+  //     let organizationPositionForThisBallotItem;
+  //     const sortedOrganizations = [];
+  //     for (let i = 0; i < arrayLength; i++) {
+  //       organization = organizationsList[i];
+  //       organizationPositionForThisBallotItem = null;
+  //       if (ballotItemWeVoteId && organization.organization_we_vote_id) {
+  //         if (stringContains('cand', ballotItemWeVoteId)) {
+  //           organizationPositionForThisBallotItem = CandidateStore.getPositionAboutCandidateFromOrganization(ballotItemWeVoteId, organization.organization_we_vote_id);
+  //         } else if (stringContains('meas', ballotItemWeVoteId)) {
+  //           organizationPositionForThisBallotItem = MeasureStore.getPositionAboutMeasureFromOrganization(ballotItemWeVoteId, organization.organization_we_vote_id);
+  //         }
+  //       }
+  //       if (organizationPositionForThisBallotItem && organizationPositionForThisBallotItem.statement_text) {
+  //         // console.log("sortOrganizations unshift");
+  //         sortedOrganizations.unshift(organization);
+  //       } else {
+  //         // console.log("sortOrganizations push");
+  //         sortedOrganizations.push(organization);
+  //       }
+  //     }
+  //     return sortedOrganizations;
+  //   }
+  //   return organizationsList;
+  // }
 
   render () {
     // console.log('TopCommentByBallotItem render');
@@ -205,7 +223,7 @@ export default class TopCommentByBallotItem extends Component {
 
     const croppedEndorsementTextDesktopTablet = shortenText(endorsementText, 200);
     const croppedEndorsementTextMobile = shortenText(endorsementText, 125);
-    const learnMoreText = this.props.learnMoreText ? this.props.learnMoreText : 'more';
+    const learnMoreText = this.state.learnMoreText ? this.state.learnMoreText : 'more';
 
     // console.log("GuideList organizationsToFollow: ", this.state.organizationsToFollow);
     //       on_click={this.goToCandidateLink(this.state.oneCandidate.we_vote_id)}
@@ -215,15 +233,23 @@ export default class TopCommentByBallotItem extends Component {
           {endorsementOrganization}
           .
         </span>
-        {' "'}
-        <span className="u-show-desktop-tablet">{croppedEndorsementTextDesktopTablet}</span>
-        <span className="u-show-mobile">{croppedEndorsementTextMobile}</span>
-        {'"'}
-        { this.props.learnMoreUrl && (
+        <span className="u-show-desktop-tablet">
+          &quot;
+          {croppedEndorsementTextDesktopTablet}
+          &quot;
+        </span>
+        <span className="u-show-mobile">
+          &quot;
+          {croppedEndorsementTextMobile}
+          &quot;
+        </span>
+        { this.state.learnMoreUrl ? (
           <span>
             {' '}
-            <Link to={this.props.learnMoreUrl}>{learnMoreText}</Link>
+            <Link to={this.state.learnMoreUrl}>{learnMoreText}</Link>
           </span>
+        ) : (
+          <span>{learnMoreText}</span>
         )
         }
       </span>

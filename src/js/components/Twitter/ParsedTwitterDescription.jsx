@@ -57,7 +57,7 @@ const ParsedTwitterDescription = (props) => {
               &nbsp;
             </span>
           ) : (
-            <span key={snippet.toString()}>
+            <span key={snippet.toString() + index.toString()}>
               <a
                 href={props.twitter_description.slice(snippet.location[0], snippet.location[1])}
                 target={props.twitter_description.slice(snippet.location[0] + 8, snippet.location[1])}

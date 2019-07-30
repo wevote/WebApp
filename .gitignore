@@ -172,3 +172,5 @@ web_app/build/*
 *.key
 .vscode
 .gitattributes
+/yarn.lock
+

@@ -1,23 +1,27 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import styled from 'styled-components';
+import { withTheme } from '@material-ui/core/styles';
 import IssueActions from '../../actions/IssueActions';
-import IssueFollowToggleSquare from './IssueFollowToggleSquare';
+import IssueCardCompressed from './IssueCardCompressed';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
+import ShowMoreFooter from '../Navigation/ShowMoreFooter';
+import { historyPush } from '../../utils/cordovaUtils';
 
-export default class ValuesFollowedPreview extends Component {
+// To be updated to show values followed instead of values to follow
+class ValuesFollowedPreview extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      editMode: false,
-      issuesFollowed: [],
+      issuesToFollow: [],
     };
   }
 
   componentDidMount () {
-    if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
-      IssueActions.issuesRetrieve();
-    }
+    // if (IssueStore.getPreviousGoogleCivicElectionId() < 1) {
+    //   IssueActions.issuesRetrieve();
+    // }
+    IssueActions.retrieveIssuesToFollow();
 
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
     this.onIssueStoreChange();
@@ -27,39 +31,40 @@ export default class ValuesFollowedPreview extends Component {
     this.issueStoreListener.remove();
   }
 
-  onKeyDownEditMode (event) {
-    const { editMode } = this.state;
-    const enterAndSpaceKeyCodes = [13, 32];
-    if (enterAndSpaceKeyCodes.includes(event.keyCode)) {
-      this.setState({ editMode: !editMode });
-    }
-  }
-
-  getCurrentRoute () { // eslint-disable-line
-    return '/issues_followed';
-  }
-
   onIssueStoreChange () {
     this.setState({
-      issuesFollowed: IssueStore.getIssuesVoterIsFollowing(),
+      issuesToFollow: IssueStore.getIssuesVoterCanFollow(),
     });
   }
 
-  toggleEditMode () {
-    const { editMode } = this.state;
-    this.setState({ editMode: !editMode });
+  goToValuesLink () {
+    historyPush('/values/list');
   }
 
   render () {
+    // const width = document.documentElement.clientWidth;
     renderLog(__filename);
     let issueList = [];
-    if (this.state.issuesFollowed) {
-      issueList = this.state.issuesFollowed;
+    if (this.state.issuesToFollow) {
+      issueList = this.state.issuesToFollow;
     }
 
-    const ISSUES_TO_SHOW = 6;
+    const ISSUES_TO_SHOW = 4;
 
-    const isFollowing = true;
+    // if (width < 768) {
+    //   ISSUES_TO_SHOW = 3;
+    // } else {
+    //   ISSUES_TO_SHOW = 4;
+    // }
+
+    // window.onresize = () => {
+    //   if (width < 768) {
+    //     ISSUES_TO_SHOW = 3;
+    //   } else {
+    //     ISSUES_TO_SHOW = 4;
+    //   }
+    // };
+
     let issueCount = 0;
     const issueListForDisplay = issueList.map((issue) => {
       issueCount++;
@@ -67,18 +72,11 @@ export default class ValuesFollowedPreview extends Component {
         return null;
       } else {
         return (
-          <IssueFollowToggleSquare
-            key={issue.issue_we_vote_id}
-            issueWeVoteId={issue.issue_we_vote_id}
-            issueName={issue.issue_name}
-            issueDescription={issue.issue_description}
-            issueImageUrl={issue.issue_image_url}
-            issueIconLocalPath={issue.issue_icon_local_path}
-            editMode={this.state.editMode}
-            isFollowing={isFollowing}
-            grid="col-sm-6"
-            readOnly
-            sideBar
+          <IssueCardCompressed
+            followToggleOn
+            issue={issue}
+            issueImageSize="SMALL"
+            key={`issue-list-key-${issue.issue_we_vote_id}`}
           />
         );
       }
@@ -88,25 +86,20 @@ export default class ValuesFollowedPreview extends Component {
       <div className="opinions-followed__container">
         <section className="card">
           <div className="card-main">
-            <h1 className="h4">
-              Values You
-              {"'"}
-              re Following
-            </h1>
-            <div className="network-issues-list voter-guide-list card">
+            <h1 className="h4">Values to Follow</h1>
+            <Row className="row">
               { issueListForDisplay }
-              <div>
-                {
-                  this.state.issuesFollowed.length > 0 ?
-                    <span><Link to="/issues_followed">See All</Link></span> :
-                    <span>You are not following any issues yet.</span>
-                }
-              </div>
-            </div>
-            <br />
+            </Row>
+            <ShowMoreFooter showMoreId="valuesToFollowPreviewShowMoreId" showMoreLink={() => this.goToValuesLink()} showMoreText="Explore all 26 values" />
           </div>
         </section>
       </div>
     );
   }
 }
+
+const Row = styled.div`
+  margin: 0px -4px;
+`;
+
+export default withTheme((ValuesFollowedPreview));

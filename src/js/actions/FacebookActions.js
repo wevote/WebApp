@@ -1,4 +1,4 @@
-import { isWebApp } from '../utils/cordovaUtils';
+import { isWebApp, isCordova } from '../utils/cordovaUtils';
 import Dispatcher from '../dispatcher/Dispatcher';
 import FacebookConstants from '../constants/FacebookConstants';
 import FriendActions from './FriendActions';
@@ -106,36 +106,57 @@ export default {
     });
   },
 
+  getPicture () {
+    this.facebookApi().api(
+      '/me?fields=picture.type(large)', ['public_profile', 'email'],
+      (response) => {
+        oAuthLog('getFacebookProfilePicture response', response);
+        Dispatcher.dispatch({
+          type: FacebookConstants.FACEBOOK_RECEIVED_PICTURE,
+          data: response,
+        });
+      },
+    );
+  },
+
   getFacebookProfilePicture () {
     if (!webAppConfig.ENABLE_FACEBOOK) {
       console.log('FacebookActions.getFacebookProfilePicture was not invoked, see ENABLE_FACEBOOK in config.js');
       return;
     }
+    oAuthLog('getFacebookProfilePicture before fields request');
 
+    // Our "signed_in_facebook" field in the postgres database does not mean the user is actually signed in to facebook, it
+    // means that at some point in the past, the voter has logged into facebook and they *might* still be logged into facebook,
+    // but regardless of whether they are actually logged into facebook at this moment, we consider them "logged in to WeVote"
+    // having using facebook auth in the past.  That is ok for our authentication methodology, but if you assume you are really
+    // logged into facebook in Cordova, and your're not, you get a distracting login dialog that comes from the facebook native
+    // package everytime we refresh the avatar in the header in this function -- so first check if the voter is really logged in.
     if (this.facebookApi()) {
-      this.facebookApi().api(
-        '/me?fields=picture.type(large)', ['public_profile', 'email'],
-        (response) => {
-          oAuthLog('getFacebookProfilePicture response', response);
-          Dispatcher.dispatch({
-            type: FacebookConstants.FACEBOOK_RECEIVED_PICTURE,
-            data: response,
-          });
-        },
-      );
+      if (isCordova()) {
+        this.facebookApi().getLoginStatus(function response (responseReallyLoggedIn) {
+          if (responseReallyLoggedIn.status === 'connected') {
+            this.getPicture();
+          }
+        });
+      } else {
+        this.getPicture();
+      }
     } else {
       console.log('FacebookActions.getFacebookProfilePicture was not invoked, this.facebookApi() undefined');
     }
   },
 
   getFacebookInvitableFriendsList (pictureWidth, pictureHeight) {
+    const pictureWidthVerified = pictureWidth || 50;
+    const pictureHeightVerified = pictureHeight || 50;
     if (!webAppConfig.ENABLE_FACEBOOK) {
       console.log('FacebookActions.getFacebookInvitableFriendsList was not invoked, see ENABLE_FACEBOOK in config.js');
       return;
     }
 
     if (this.facebookApi()) {
-      const fbApiForInvitableFriends = `/me?fields=invitable_friends.limit(1000){name,id,picture.width(${pictureWidth}).height(${pictureHeight})}`;
+      const fbApiForInvitableFriends = `/me?fields=invitable_friends.limit(1000){name,id,picture.width(${pictureWidthVerified}).height(${pictureHeightVerified})`;
       this.facebookApi().api(
         fbApiForInvitableFriends,
         (response) => {

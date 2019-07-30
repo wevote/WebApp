@@ -64,6 +64,9 @@ const TestimonialContainer = styled.div`
   background-color: white;
   border-radius: 4px;
   width: 100%;
+  @media print{
+    display: none;
+  }
 `;
 
 const TestimonialAuthor = styled.div`

@@ -26,7 +26,7 @@ export default class SelectAddressModal extends Component {
 
     return (
       <Modal
-        bsPrefix="select-address select-address__modal select-address__modal-mobile"
+        bsPrefix="select-address select-address__modal select-address__modal--mobile"
         show={this.props.show}
         onHide={this.props.toggleFunction}
       >

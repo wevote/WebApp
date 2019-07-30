@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { withStyles } from '@material-ui/core';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import SupportStore from '../../stores/SupportStore';
-import { Wrapper, InnerWrapper, BioColumn, OfficeColumn, OfficeText, BioInformation, HR } from './BallotItemReadyToVote';
 
 
-export default class MeasureItemReadyToVote extends Component {
+class MeasureItemReadyToVote extends Component {
   static propTypes = {
     measureWeVoteId: PropTypes.string.isRequired,
     ballotItemDisplayName: PropTypes.string.isRequired,
@@ -52,7 +53,7 @@ export default class MeasureItemReadyToVote extends Component {
             <InnerWrapper>
               <BioColumn>
                 <BioInformation>
-                  <OfficeText>{ballotItemDisplayName}</OfficeText>
+                  <MeasureNameText>{ballotItemDisplayName}</MeasureNameText>
                 </BioInformation>
               </BioColumn>
               <OfficeColumn>
@@ -67,3 +68,53 @@ export default class MeasureItemReadyToVote extends Component {
     );
   }
 }
+
+const styles = ({
+});
+
+const Wrapper = styled.div`
+  padding: 24px 24px 20px 24px;
+  transition: all 200ms ease-in;
+  border: 1px solid transparent;
+  border-radius: 4px;
+`;
+
+const InnerWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  width: 100%;
+`;
+
+const BioColumn = styled.div`
+  display: flex;
+`;
+
+const OfficeColumn = styled.div`
+  display: flex;
+`;
+
+const MeasureNameText = styled.p`
+  font-size: 18px;
+  font-weight: 500;
+  margin: auto 0;
+  margin-right: 16px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 16px;
+  }
+  @media print {
+    font-size: 24px !important;
+  }
+`;
+
+const BioInformation = styled.div`
+  display: flex;
+  flex-flow: column;
+  margin-left: 8px;
+`;
+
+const HR = styled.hr`
+  margin: 0 24px;
+`;
+
+export default withStyles(styles)(MeasureItemReadyToVote);

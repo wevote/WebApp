@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -8,20 +8,30 @@ import ffwdLogo from '../../img/global/logos/ffwd-logo.png';
 import googleLogo from '../../img/global/logos/google-logo.svg';
 import voteDotOrgLogo from '../../img/global/logos/vote_dot_org_logo-530x200.png';
 import vipLogo from '../../img/global/logos/vip-logo-1000x208.png';
-import { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/HeaderWelcome';
-import Section, { SectionTitle, SectionTitleBold, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage } from '../components/Welcome/Section';
-import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
-import Footer from '../components/Welcome/Footer';
-import { historyPush, cordovaDot } from '../utils/cordovaUtils';
-import Testimonial from '../components/Widgets/Testimonial';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import AppActions from '../actions/AppActions';
-import validateEmail from '../utils/email-functions';
-import VoterActions from '../actions/VoterActions';
-import VoterConstants from '../constants/VoterConstants';
+import Footer from '../components/Welcome/Footer';
+import { cordovaScrollablePaneTopPadding } from '../utils/cordovaOffsets';
+import { historyPush, cordovaDot } from '../utils/cordovaUtils';
+import { renderLog } from '../utils/logging';
+import Testimonial from '../components/Widgets/Testimonial';
 import VoterStore from '../stores/VoterStore';
+import { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/HeaderWelcome';
+import Section, {
+  SectionTitle,
+  SectionTitleBold,
+  DescriptionContainer,
+  DescriptionLeftColumn,
+  DescriptionImageColumn,
+  Description,
+  Image,
+  Bold,
+  NetworkContainer,
+  NetworkImage,
+} from '../components/Welcome/Section';
+import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 
-class WelcomeForOrganizations extends PureComponent {
+class WelcomeForOrganizations extends Component {
   static propTypes = {
     classes: PropTypes.object,
     pathname: PropTypes.string,
@@ -30,10 +40,9 @@ class WelcomeForOrganizations extends PureComponent {
   constructor (props) {
     super(props);
     this.state = {
-      submitEnabled: false,
       voter: {},
-      voterEmail: '',
-      voterFullName: '',
+      animateTextArray: ['Members', 'Staff', 'Constituents', 'Fans', 'Subscribers', 'Followers', 'Voters'],
+      currentAnimateTextIndex: 0,
     };
   }
 
@@ -41,6 +50,8 @@ class WelcomeForOrganizations extends PureComponent {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     AnalyticsActions.saveActionWelcomeVisit(VoterStore.electionId());
+
+    this.autoAnimateText();
   }
 
   componentWillUnmount () {
@@ -58,7 +69,6 @@ class WelcomeForOrganizations extends PureComponent {
     let isSignedIn = false;
     if (voter) {
       ({ is_signed_in: isSignedIn } = voter);
-      isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
     }
     if (isSignedIn) {
       historyPush('/settings/profile');
@@ -68,58 +78,39 @@ class WelcomeForOrganizations extends PureComponent {
     }
   }
 
-  updateVoterFullName = (event) => {
-    this.setState({
-      voterFullName: event.target.value,
-    });
-  };
+  autoAnimateText () {
+    const currentStateAnimateTextIndex = this.state.currentAnimateTextIndex;
+    const showMemberTextForThisLong = 2000;
+    if (this.state.currentAnimateTextIndex < this.state.animateTextArray.length - 1) {
+      setTimeout(() => {
+        this.setState({ currentAnimateTextIndex: currentStateAnimateTextIndex + 1 });
 
-  updateVoterEmailAddress = (event) => {
-    const isEmailValid = validateEmail(event.target.value);
-    let submitEnabled = false;
-    if (isEmailValid) {
-      submitEnabled = true;
+        this.autoAnimateText();
+      }, showMemberTextForThisLong);
     }
-
-    this.setState({
-      voterEmail: event.target.value,
-      submitEnabled,
-    });
-  };
-
-  voterEmailAddressSignUpSave = (event) => {
-    // Only proceed after we have a valid email address, which will enable the submit
-    if (this.state.submitEnabled) {
-      event.preventDefault();
-      const sendLinkToSignIn = true;
-      VoterActions.voterEmailAddressSave(this.state.voterEmail, sendLinkToSignIn);
-      VoterActions.voterFullNameSoftSave('', '', this.state.voterFullName);
-      VoterActions.voterUpdateNotificationSettingsFlags(VoterConstants.NOTIFICATION_NEWSLETTER_OPT_IN);
-    }
-  };
-
-  handleToPageFromMobileNav = (destination) => {
-    this.handleShowMobileNavigation(false);
-    historyPush(destination);
-  };
+  }
 
   render () {
+    renderLog(__filename);
     const { classes, pathname } = this.props;
     // console.log('WelcomeForOrganizations, pathname: ', pathname);
-    const { voter } = this.state;
+    const { voter, animateTextArray, currentAnimateTextIndex } = this.state;
     const isVoterSignedIn = voter.is_signed_in;
+
+    const currentTitleTextToDisplay = animateTextArray[currentAnimateTextIndex];
+    // console.log(currentTitleTextToDisplay);
 
     const testimonialAuthor = 'Judy J., Oakland, California';
     const testimonialImageUrl = cordovaDot('/img/global/photos/Judy_J-109x109.jpg');
     const testimonial = 'Let\'s be real: few people are reading those wonky ballot descriptions. I want deciding how to vote to be as easy and obvious as a solid Yelp review. Finally We Vote helps me plan the whole thing out way faster.';
     return (
-      <Wrapper>
+      <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="Welcome Organizations - We Vote" />
         <WelcomeAppbar pathname={pathname} />
         <HeaderForOrganizations>
           <Title>
-            <BlueTitle>Supercharge </BlueTitle>
-            Your Members
+            Supercharge Your
+            <BlueTitle>{` ${currentTitleTextToDisplay}`}</BlueTitle>
           </Title>
           <SubTitle>Only 6 out of 10 eligible voters are predicted to cast a ballot next year.</SubTitle>
           <PlayerContainer>
@@ -139,17 +130,13 @@ class WelcomeForOrganizations extends PureComponent {
           </SectionTitle>
           <DescriptionContainer>
             <Description>
-              You don
-              {'’'}
-              t have to be involved with politics to boost civic engagement.
+              You don&apos;t have to be involved with politics to boost civic engagement.
               {' '}
               There are easy, appropriate ways for every organization or business to increase voter participation:
             </Description>
             <Description>
               <Bold>
-                Help your staff, customers or members get accurate, helpful information about what
-                {'’'}
-                s on their ballot.
+                Help your staff, customers or members get accurate, helpful information about what&apos;s on their ballot.
               </Bold>
             </Description>
             <Description className="u_margin-center">
@@ -322,6 +309,7 @@ const Wrapper = styled.div`
   align-items: center;
   background: white;
   overflow-x: hidden;
+  padding-top: ${({ padTop }) => padTop};
 `;
 
 const HeaderForOrganizations = styled.div`

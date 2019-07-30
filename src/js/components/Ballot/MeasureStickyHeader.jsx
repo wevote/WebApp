@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
-import MeasureStore from '../../stores/MeasureStore';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
+import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
+import MeasureStore from '../../stores/MeasureStore';
 
 class MeasureStickyHeader extends Component {
   static propTypes = {
@@ -58,7 +59,7 @@ class MeasureStickyHeader extends Component {
       //     </ActionContainer>
       //   </MeasureInfo>
       // </Wrapper>
-      <Wrapper>
+      <Wrapper cordovaPaddingTop={cordovaStickyHeaderPaddingTop()}>
         <Container>
           <Flex>
             <ColumnOne>
@@ -101,7 +102,7 @@ const Wrapper = styled.div`
   max-width: 100%;
   position: fixed;
   padding: 16px;
-  padding-top: 48px;
+  padding-top: ${({ cordovaPaddingTop }) => (cordovaPaddingTop || '48px')};
   top: 0;
   left: 0;
   background: white;

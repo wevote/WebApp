@@ -13,8 +13,6 @@ import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterStore from '../../stores/VoterStore';
 
-
-
 class ItemPositionStatementActionBar extends Component {
   static propTypes = {
     ballot_item_we_vote_id: PropTypes.string.isRequired,
@@ -39,8 +37,8 @@ class ItemPositionStatementActionBar extends Component {
       commentActive: false,
     };
     this.updateStatementTextToBeSaved = this.updateStatementTextToBeSaved.bind(this);
-    // this.onFocusInput = this.onFocusInput.bind(this);
-    // this.onBlurInput = this.onBlurInput.bind(this);
+    this.onFocusInput = this.onFocusInput.bind(this);
+    this.onBlurInput = this.onBlurInput.bind(this);
   }
 
   componentDidMount () {
@@ -88,7 +86,47 @@ class ItemPositionStatementActionBar extends Component {
     }
   }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    if (this.state.commentActive !== nextState.commentActive) {
+      return true;
+    }
+    if (this.state.isPublicPosition !== nextState.isPublicPosition) {
+      return true;
+    }
+    if (this.state.statementTextToBeSaved !== nextState.statementTextToBeSaved) {
+      return true;
+    }
+    if (this.state.showEditPositionStatementInput !== nextState.showEditPositionStatementInput) {
+      return true;
+    }
+    let currentIsSupport = null;
+    if (this.state.supportProps) {
+      currentIsSupport = this.state.supportProps.is_support;
+    }
+    let currentIsOppose = null;
+    if (this.state.supportProps) {
+      currentIsOppose = this.state.supportProps.is_oppose;
+    }
+    let nextIsSupport = null;
+    if (nextState.supportProps) {
+      nextIsSupport = nextState.supportProps.is_support;
+    }
+    let nextIsOppose = null;
+    if (nextState.supportProps) {
+      nextIsOppose = nextState.supportProps.is_oppose;
+    }
+    if (currentIsSupport !== nextIsSupport) {
+      return true;
+    }
+    if (currentIsOppose !== nextIsOppose) {
+      return true;
+    }
+    return false;
+  }
+
   componentDidUpdate (prevProps) {
+    // Note: adding a focus on the textarea in componentDidUpdate can lead to an infinite loop.
+    // We protect against this with shouldComponentUpdate
     if (this.textarea && prevProps.supportProps && this.state.supportProps) {
       if (prevProps.supportProps.is_oppose === true && this.state.supportProps.is_support === true) { // oppose to support
         this.textarea.focus();
@@ -146,12 +184,30 @@ class ItemPositionStatementActionBar extends Component {
   }
 
   closeEditPositionStatementInput = () => {
-    this.setState({ showEditPositionStatementInput: false, commentActive: true/* ,  disabled: true */ });
+    this.setState({ showEditPositionStatementInput: false, commentActive: false/* ,  disabled: true */ });
   }
 
   openEditPositionStatementInput = () => {
     this.setState({ showEditPositionStatementInput: true, commentActive: true /* , disabled: false */ });
   }
+
+  onBlurInput = () => {
+    // if (e.target && e.target.className && !e.target.className.contains('postsave-button')) {
+    this.setState({ commentActive: false });
+    // }
+    // console.log('ItemPositionStatementActionBar, onBlurInput:', e.target);
+
+    restoreStylesAfterCordovaKeyboard(__filename);
+  };
+
+  onFocusInput = () => {
+    // console.log('Setting commentActive to true');
+    // if (e.target && e.target.className && !e.target.className.contains('postsave-button')) {
+    this.setState({ commentActive: true });
+    // }
+
+    prepareForCordovaKeyboard(__filename);
+  };
 
   savePositionStatement (e) {
     // console.log('ItemPositionStatementActionBar this.props.ballot_item_we_vote_id:', this.props.ballot_item_we_vote_id, 'this.props.type: ', this.props.type, 'this.state.statementTextToBeSaved: ', this.state.statementTextToBeSaved);
@@ -225,23 +281,6 @@ class ItemPositionStatementActionBar extends Component {
       }
     }
 
-    const onBlurInput = (e) => {
-      if (e.target && e.target.className && !e.target.className.contains('postsave-button')) {
-        this.setState({ commentActive: false });
-      }
-
-      restoreStylesAfterCordovaKeyboard(__filename);
-    };
-
-    const onFocusInput = (e) => {
-      // console.log('Setting commentActive to true');
-      if (e.target && e.target.className && !e.target.className.contains('postsave-button')) {
-        this.setState({ commentActive: true });
-      }
-
-      prepareForCordovaKeyboard(__filename);
-    };
-
     const noStatementText = !(statementTextToBeSaved !== null && statementTextToBeSaved.length);
     const editMode = this.state.showEditPositionStatementInput || noStatementText;
 
@@ -281,27 +320,29 @@ class ItemPositionStatementActionBar extends Component {
         { // Show the edit box (Viewing self)
           editMode ? (
             <Paper
+              elevation={2}
               className={classes.root}
             >
-              <form className={classes.flex} onSubmit={this.savePositionStatement.bind(this)}>
+              <form className={classes.flex} onSubmit={this.savePositionStatement.bind(this)} onFocus={this.onFocusInput} onBlur={this.onBlurInput}>
                 <InputBase onChange={this.updateStatementTextToBeSaved}
+                  id="itemPositionStatementActionBarTextArea"
                   name="statementTextToBeSaved"
-                  className={classes.input}
+                  classes={{ root: classes.input }}
                   placeholder={statementPlaceholderText}
                   defaultValue={statementTextToBeSaved}
-                  onFocus={onFocusInput}
-                  onBlur={onBlurInput}
                   inputRef={(tag) => { this.textarea = tag; }}
                   multiline
                   rows={rows}
                 />
                 <PostSaveButton className="postsave-button">
-                  <Button className="postsave-button"
-                  variant="outlined"
-                  color="primary"
-                  classes={{ outlinedPrimary: classes.buttonOutlinedPrimary }}
-                  type="submit"
-                  size="small"
+                  <Button
+                    id="itemPositionStatementActionBarSave"
+                    className="postsave-button"
+                    variant="outlined"
+                    color="primary"
+                    classes={{ outlinedPrimary: classes.buttonOutlinedPrimary }}
+                    type="submit"
+                    size="small"
                   >
                     {postButtonText}
                   </Button>
@@ -310,6 +351,7 @@ class ItemPositionStatementActionBar extends Component {
             </Paper>
           ) : (
             <Paper
+              elevation={2}
               className={`${classes.disabled} ${classes.flex} ${classes.root}`}
             >
               <InputBase
@@ -323,7 +365,7 @@ class ItemPositionStatementActionBar extends Component {
                 inputRef={(tag) => { this.textarea = tag; }}
                 multiline
                 disabled
-                rows={2}
+                rows={rows}
               />
               <PostSaveButton className="postsave-button">
                 <Button
@@ -366,6 +408,9 @@ const styles = theme => ({
   input: {
     flex: '1 1 0',
     height: '100%',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 14,
+    },
   },
   disabled: {
     background: '#dcdcdc',
@@ -381,12 +426,15 @@ const styles = theme => ({
     background: 'white',
     color: '#313131',
     [theme.breakpoints.down('md')]: {
+      fontWeight: 500,
+      height: '100%',
+      fontSize: 12,
+    },
+    [theme.breakpoints.down('sm')]: {
       padding: '2px 4px',
       fontWeight: 600,
       height: '100%',
-    },
-    [theme.breakpoints.down('sm')]: {
-      fontWeight: 600,
+      fontSize: 10,
     },
   },
 });
@@ -396,10 +444,10 @@ const PostSaveButton = styled.div`
   margin-left: auto;
   margin-top: auto;
   @media(max-width: 576px) {
-    height: 36.8px;
+    height: 28px;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
   }
 `;
 
-export default withTheme()(withStyles(styles)(ItemPositionStatementActionBar));
+export default withTheme(withStyles(styles)(ItemPositionStatementActionBar));

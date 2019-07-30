@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import { Table, Card } from 'react-bootstrap';
 import moment from 'moment';
-import VoterStore from '../../stores/VoterStore';
 import { renderLog } from '../../utils/logging';
 import DonateStore from '../../stores/DonateStore';
 import DonationCancelOrRefund from './DonationCancelOrRefund';
-import VoterActions from '../../actions/VoterActions';
+
+/* global $ */
 
 const styles = {
   table: {
@@ -22,7 +22,7 @@ const styles = {
   },
   Card: {
     borderTopColor: 'transparent',
-    height: '500px',
+    minHeight: '135px',
     overflowY: 'auto',
   },
 };
@@ -35,42 +35,32 @@ export default class DonationList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      journal: null,
+      donationHistory: null,
     };
-    this.isNotMobile = this.isNotMobile.bind(this);
+    this.isMobile = this.isMobile.bind(this);
   }
 
   componentDidMount () {
-    this.onVoterStoreChange();
-    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    this.onDonateStoreChange();
     this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange.bind(this));
+    this.setState({ donationHistory: DonateStore.getVoterDonationHistory() });
   }
 
   componentWillUnmount () {
-    this.voterStoreListener.remove();
     this.donateStoreListener.remove();
   }
 
-  onVoterStoreChange () {
-    this.setState({ journal: VoterStore.getVoterDonationHistory() });
-  }
+  onDonateStoreChange = () => {
+    this.setState({ donationHistory: DonateStore.getVoterDonationHistory() });
+  };
 
-  onDonateStoreChange () {
-    VoterActions.voterRefreshDonations();
-  }
-
-  // October 2018: This is a workaround, since the current react-bootstrap does not handle the "d-none d-sm-block" correctly in th and td styles
-  isNotMobile () {
-    // eslint-disable-next-line no-undef
-    const bootstrapDetectedSizeXs = $('#users-device-size').find('div:visible').first().attr('id');
-    return bootstrapDetectedSizeXs === undefined;
-  }
+  isMobile = () => $(window).width() < 1280;
 
   render () {
     renderLog(__filename);
-    if (this.state.journal && this.state.journal.length > 0) {
+    if (this.state.donationHistory && this.state.donationHistory.length > 0) {
       const donations = this.props.displayDonations;
-      const isNotMobile = this.isNotMobile();
+      const isMobile = this.isMobile();
 
       if (donations) {
         return (
@@ -82,36 +72,38 @@ export default class DonationList extends Component {
                   <tr>
                     <th>Date</th>
                     <th>Amount</th>
-                    <th hidden={isNotMobile}>Payment</th>
-                    <th hidden={isNotMobile}>Card</th>
-                    <th hidden={isNotMobile}>Expires</th>
-                    <th hidden={isNotMobile}>Status</th>
+                    <th hidden={isMobile}>Payment</th>
+                    <th hidden={isMobile}>Card</th>
+                    <th hidden={isMobile}>Ends with</th>
+                    <th hidden={isMobile}>Expires</th>
+                    <th hidden={isMobile}>Status</th>
                     <th>Info</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.journal.map((item) => {
-                    if (item.record_enum === 'PAYMENT_FROM_UI' || item.record_enum === 'PAYMENT_AUTO_SUBSCRIPTION') {
-                      const refundDays = parseInt(item.refund_days_limit, 10);
+                  {this.state.donationHistory.map((item) => {
+                    const { record_enum: recordEnum, refund_days_limit: refundDaysLimit, charge_id: chargeId,
+                      subscription_id: subscriptionId, created, amount, brand, last4,
+                      exp_month: expMonth, exp_year: expYear, stripe_status: stripeStatus } = item;
+                    if (recordEnum === 'PAYMENT_FROM_UI' || recordEnum === 'PAYMENT_AUTO_SUBSCRIPTION') {
+                      const refundDays = parseInt(refundDaysLimit, 10);
                       const active =
-                    moment.utc(item.created).local().isAfter(moment(new Date()).subtract(refundDays, 'days')) &&
-                    !item.stripe_status.includes('refund');
+                        moment.utc(created).local().isAfter(moment(new Date()).subtract(refundDays, 'days')) &&
+                        !stripeStatus.includes('refund');
                       return (
-                        <tr key={`${item.charge_id}-${item.subscription_id}-donations`}>
-                          <td>{moment.utc(item.created).local().format('MMM D, YYYY')}</td>
-                          <td>{item.amount}</td>
-                          <td hidden={isNotMobile}>
-                            {item.record_enum === 'PAYMENT_FROM_UI' ? 'One time' :
+                        <tr key={`${chargeId}-${subscriptionId}-donations`}>
+                          <td>{moment.utc(created).local().format('MMM D, YYYY')}</td>
+                          <td>{amount}</td>
+                          <td hidden={isMobile}>
+                            {recordEnum === 'PAYMENT_FROM_UI' ? 'One time' :
                               'Subscription'}
                           </td>
-                          <td hidden={isNotMobile}>{item.brand}</td>
-                          <td hidden={isNotMobile}>{`... ${item.last4}`}</td>
-                          <td hidden={isNotMobile}>{`${item.exp_month}/${item.exp_year}`}</td>
-                          <td hidden={isNotMobile}>
-                            {item.stripe_status === 'succeeded' ? 'Paid' :
-                              item.stripe_status}
+                          <td hidden={isMobile}>{brand}</td>
+                          <td hidden={isMobile}>{`... ${last4}`}</td>
+                          <td hidden={isMobile}>{`${expMonth}/${expYear}`}</td>
+                          <td hidden={isMobile}>
+                            {stripeStatus === 'succeeded' ? 'Paid' : stripeStatus}
                           </td>
-                          <td hidden={isNotMobile} />
                           <td>
                             <DonationCancelOrRefund item={item} refundDonation={donations} active={active} cancelText="" />
                           </td>
@@ -134,39 +126,42 @@ export default class DonationList extends Component {
                 { /* Subscriptions */ }
                 <thead>
                   <tr>
-                    <th hidden={isNotMobile}>Active</th>
+                    <th hidden={isMobile}>Active</th>
                     <th>Started</th>
                     <th>Monthly</th>
-                    <th hidden={isNotMobile}>Last Charged</th>
-                    <th hidden={isNotMobile}>Card</th>
-                    <th hidden={isNotMobile}>Ends with</th>
-                    <th hidden={isNotMobile}>Expires</th>
-                    <th hidden={isNotMobile}>Canceled</th>
+                    <th hidden={isMobile}>Last Charged</th>
+                    <th hidden={isMobile}>Card</th>
+                    <th hidden={isMobile}>Ends with</th>
+                    <th hidden={isMobile}>Expires</th>
+                    <th hidden={isMobile}>Canceled</th>
                     <th>Info</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.journal.map((item) => {
-                    if (item.record_enum === 'SUBSCRIPTION_SETUP_AND_INITIAL') {
-                      const active = item.subscription_canceled_at === 'None' && item.subscription_ended_at === 'None';
-                      const cancel = item.subscription_canceled_at !== 'None' ?
-                        moment.utc(item.subscription_canceled_at).format('MMM D, YYYY') : '';
-                      const lastcharged = item.last_charged === 'None' ? '' :
-                        moment.utc(item.last_charged).format('MMM D, YYYY');
-                      const waiting = item.amount === '0.00';
+                  {this.state.donationHistory.map((item) => {
+                    const { record_enum: recordEnum, subscription_canceled_at: subscriptionCanceledAt,
+                      charge_id: chargeId, subscription_id: subscriptionId, last_charged: lastCharged, created, amount, brand, last4,
+                      exp_month: expMonth, exp_year: expYear, subscription_ended_at: subscriptionEndedAt } = item;
+                    if (recordEnum === 'SUBSCRIPTION_SETUP_AND_INITIAL') {
+                      const active = subscriptionCanceledAt === 'None' && subscriptionEndedAt === 'None';
+                      const cancel = subscriptionCanceledAt !== 'None' ?
+                        moment.utc(subscriptionCanceledAt).format('MMM D, YYYY') : '';
+                      const lastcharged = lastCharged === 'None' ? '' :
+                        moment.utc(lastCharged).format('MMM D, YYYY');
+                      const waiting = amount === '0.00';
 
                       return (
-                        <tr key={`${item.charge_id}-${item.subscription_id}-journal`}>
-                          <td hidden={isNotMobile}>{active ? 'Active' : '----'}</td>
-                          <td>{moment.utc(item.created).format('MMM D, YYYY')}</td>
-                          <td>{!waiting ? item.amount : 'waiting'}</td>
-                          <td hidden={isNotMobile}>{!waiting ? lastcharged : 'waiting'}</td>
-                          <td hidden={isNotMobile}>{!waiting ? item.brand : 'waiting'}</td>
-                          <td hidden={isNotMobile}>{!waiting ? `... ${item.last4}` : 'waiting'}</td>
+                        <tr key={`${chargeId}-${subscriptionId}-donationHistory`}>
+                          <td hidden={isMobile}>{active ? 'Active' : '----'}</td>
+                          <td>{moment.utc(created).format('MMM D, YYYY')}</td>
+                          <td>{!waiting ? amount : 'waiting'}</td>
+                          <td hidden={isMobile}>{!waiting ? lastcharged : 'waiting'}</td>
+                          <td hidden={isMobile}>{!waiting ? brand : 'waiting'}</td>
+                          <td hidden={isMobile}>{!waiting ? `... ${last4}` : 'waiting'}</td>
                           <td>
-                            {!waiting > 0 ? `${item.exp_month}/${item.exp_year}` : 'waiting'}
+                            {!waiting > 0 ? `${expMonth}/${expYear}` : 'waiting'}
                           </td>
-                          <td hidden={isNotMobile}>{cancel}</td>
+                          <td hidden={isMobile}>{cancel}</td>
                           <td>
                             <DonationCancelOrRefund item={item} refundDonation={donations} active={active} cancelText={cancel} />
                           </td>

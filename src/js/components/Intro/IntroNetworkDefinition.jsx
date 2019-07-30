@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { renderLog } from '../../utils/logging';
+import { cordovaNetworkNextButtonTop } from '../../utils/cordovaOffsets';
 import { cordovaDot } from '../../utils/cordovaUtils';
 
 /*
@@ -47,7 +48,13 @@ export default class IntroNetworkDefinition extends Component {
           See who endorsed each choice on your ballot
         </div>
         <p className="intro-story__info">Learn from the people you trust.</p>
-        <button type="button" className="btn intro-story__btn intro-story__btn--bottom" onClick={this.props.next}>Next&nbsp;&nbsp;&gt;</button>
+        <button type="button"
+                className="btn intro-story__btn intro-story__btn--bottom"
+                onClick={this.props.next}
+                style={{ top: `${cordovaNetworkNextButtonTop()}` }}
+        >
+          Next&nbsp;&nbsp;&gt;
+        </button>
       </div>
     );
   }

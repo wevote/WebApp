@@ -28,8 +28,11 @@ export default class SettingsProfile extends Component {
     this.voterStoreListener.remove();
   }
 
-  onVoterStoreChange () {
-    this.setState({ voter: VoterStore.getVoter() });
+  onVoterStoreChange = () => {
+    const voter = VoterStore.getVoter();
+    this.setState({
+      voter,
+    });
   }
 
   render () {
@@ -40,11 +43,11 @@ export default class SettingsProfile extends Component {
 
     return (
       <div className="">
-        <Helmet title="Your Profile - We Vote" />
+        <Helmet title="General Settings - We Vote" />
         <BrowserPushMessage incomingProps={this.props} />
         <div className="card u-padding-bottom--lg">
           <div className="card-main">
-            <h1 className="h3">Your Profile</h1>
+            <h1 className="h3">General Settings</h1>
             <div>
               <SettingsWidgetFirstLastName />
               <SettingsWidgetOrganizationWebsite />
@@ -53,10 +56,6 @@ export default class SettingsProfile extends Component {
                 closeEditFormOnChoice
                 showEditToggleOption
               />
-              <div className="card-child__fine_print">
-                Your internal We Vote id: &nbsp;
-                {VoterStore.getVoter().we_vote_id}
-              </div>
             </div>
           </div>
         </div>

@@ -4,12 +4,13 @@ $outline-radius: 3px;
 @include media-object('.card-main__media-object', '.card-main__media-object-anchor', '.card-main__media-object-content');
 
 .card {
+  // position: relative !important;
   $item-padding: $space-md;
   background-color: $white;
   border-radius: $radius-sm;
   box-shadow: $default-box-shadow;
   margin-bottom: $space-md;
-  overflow: hidden;
+  overflow-y: none;
   border: none;
   @include clearfix;
   @include breakpoints(max mid-small) {
@@ -32,7 +33,7 @@ $outline-radius: 3px;
 
 
   &-main { // primary subject of card
-    position: relative;
+    // position: relative;
     border: 1px solid $white;
     padding: $space-md $item-padding $space-sm;
     font-size: 14px; // remove once global defaults are set
@@ -211,7 +212,7 @@ $outline-radius: 3px;
 
     &__description {
       color: $gray-dark;
-      font-size: 12px;
+      font-size: 14px;
     }
 
     &__rating-description {
@@ -343,7 +344,6 @@ $outline-radius: 3px;
   @include media-object('.card-child', '.card-child__media-object-anchor', '.card-child__media-object-content');
 
   .card-child {
-    position: relative;
     padding: $item-padding;
     margin-top: -1px; // stylelint-disable-line sh-waqar/declaration-use-variable
     background-color: $gray-pale;

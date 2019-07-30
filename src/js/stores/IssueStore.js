@@ -346,8 +346,8 @@ class IssueStore extends ReduceStore {
       organizationNameSupportListForEachBallotItem, organizationNameOpposeListForEachBallotItem,
       issueScoreForEachBallotItem, issueWeVoteIdsVoterCanFollow, issueWeVoteIdsLinkedToByOrganizationDict,
     } = state;
-    const { issueWeVoteIdBySlug, issueWeVoteIdsVoterIsFollowing, issueWeVoteIdsToLinkToByOrganizationDict } = state;
-    let { allCachedIssues } = state;
+    const { issueWeVoteIdBySlug, issueWeVoteIdsToLinkToByOrganizationDict } = state;
+    let { allCachedIssues, issueWeVoteIdsVoterIsFollowing } = state;
     let ballotItemWeVoteId;
     let electionsIdsForWhichIssuesHaveBeenRetrievedOnce;
     let issueList;
@@ -388,11 +388,25 @@ class IssueStore extends ReduceStore {
         }
         // Update quickly the list of issues we want to offer to the voter to follow
         if (action.res.issue_we_vote_id) {
-          issueWeVoteIdsVoterCanFollow = removeValueFromArray(issueWeVoteIdsVoterCanFollow, action.res.issue_we_vote_id);
+          if (action.res.follow_value === true) {
+            issueWeVoteIdsVoterCanFollow = removeValueFromArray(issueWeVoteIdsVoterCanFollow, action.res.issue_we_vote_id);
+            if (!arrayContains(action.res.issue_we_vote_id, issueWeVoteIdsVoterIsFollowing)) {
+              issueWeVoteIdsVoterIsFollowing.push(action.res.issue_we_vote_id);
+            }
+          } else if (action.res.follow_value === false) {
+            if (action.res.ignore_value === false) {
+              // As long as the value is not ignored, it can be followed
+              if (!arrayContains(action.res.issue_we_vote_id, issueWeVoteIdsVoterCanFollow)) {
+                issueWeVoteIdsVoterCanFollow.push(action.res.issue_we_vote_id);
+              }
+            }
+            issueWeVoteIdsVoterIsFollowing = removeValueFromArray(issueWeVoteIdsVoterIsFollowing, action.res.issue_we_vote_id);
+          }
         }
         return {
           ...state,
           issueWeVoteIdsVoterCanFollow,
+          issueWeVoteIdsVoterIsFollowing,
         };
 
       case 'issuesRetrieve':
@@ -471,9 +485,12 @@ class IssueStore extends ReduceStore {
 
         // console.log('action.res.voter_issues_only:', action.res.voter_issues_only);
         if (action.res.voter_issues_only === true || action.res.voter_issues_only === 'true') {
+          issueWeVoteIdsVoterIsFollowing = []; // Reset
           issueList.forEach((issue) => {
             allCachedIssues[issue.issue_we_vote_id] = issue;
-            issueWeVoteIdsVoterIsFollowing.push(issue.issue_we_vote_id);
+            if (!arrayContains(issue.issue_we_vote_id, issueWeVoteIdsVoterIsFollowing)) {
+              issueWeVoteIdsVoterIsFollowing.push(issue.issue_we_vote_id);
+            }
           });
         } else {
           issueList.forEach((issue) => {
@@ -481,7 +498,11 @@ class IssueStore extends ReduceStore {
             issueSlug = convertNameToSlug(issue.issue_name);
             issueWeVoteIdBySlug[issueSlug] = issue.issue_we_vote_id;
             if (issue.is_issue_followed === true) {
-              issueWeVoteIdsVoterIsFollowing.push(issue.issue_we_vote_id);
+              if (!arrayContains(issue.issue_we_vote_id, issueWeVoteIdsVoterIsFollowing)) {
+                issueWeVoteIdsVoterIsFollowing.push(issue.issue_we_vote_id);
+              }
+            } else if (issue.is_issue_followed === false) {
+              issueWeVoteIdsVoterIsFollowing = removeValueFromArray(issueWeVoteIdsVoterIsFollowing, issue.issue_we_vote_id);
             }
           });
           revisedState = Object.assign({}, revisedState, {
@@ -653,7 +674,7 @@ class IssueStore extends ReduceStore {
         issueWeVoteIdsLinkedToByOrganizationDict = state.issueWeVoteIdsLinkedToByOrganizationDict || {};
         if (voterGuides) {
           voterGuides.forEach((voterGuide) => {
-            const { issueWeVoteIdsLinked } = voterGuide;
+            const { issue_we_vote_ids_linked: issueWeVoteIdsLinked } = voterGuide;
             linkedIssueListForOneOrganization = issueWeVoteIdsLinkedToByOrganizationDict[voterGuide.organization_we_vote_id] || [];
             // console.log('IssueStore, case voterGuidesToFollowRetrieve, issueWeVoteIdsLinked:', issueWeVoteIdsLinked);
             if (issueWeVoteIdsLinked) {
@@ -774,7 +795,7 @@ class IssueStore extends ReduceStore {
         issueWeVoteIdsLinkedToByOrganizationDict = state.issueWeVoteIdsLinkedToByOrganizationDict || {};
         if (voterGuides) {
           voterGuides.forEach((voterGuide) => {
-            const { issueWeVoteIdsLinked } = voterGuide;
+            const { issue_we_vote_ids_linked: issueWeVoteIdsLinked } = voterGuide;
             linkedIssueListForOneOrganization = issueWeVoteIdsLinkedToByOrganizationDict[voterGuide.organization_we_vote_id] || [];
             // console.log('IssueStore, case voterGuidesToFollowRetrieve, issueWeVoteIdsLinked:', issueWeVoteIdsLinked);
             if (issueWeVoteIdsLinked) {

@@ -8,6 +8,17 @@ import ffwdLogo from '../../img/global/logos/ffwd-logo.png';
 import googleLogo from '../../img/global/logos/google-logo.svg';
 import voteDotOrgLogo from '../../img/global/logos/vote_dot_org_logo-530x200.png';
 import vipLogo from '../../img/global/logos/vip-logo-1000x208.png';
+import AnalyticsActions from '../actions/AnalyticsActions';
+import AppActions from '../actions/AppActions';
+import Footer from '../components/Welcome/Footer';
+import { cordovaScrollablePaneTopPadding } from '../utils/cordovaOffsets';
+import { historyPush, cordovaDot } from '../utils/cordovaUtils';
+import Testimonial from '../components/Widgets/Testimonial';
+import validateEmail from '../utils/email-functions';
+import VoterActions from '../actions/VoterActions';
+import VoterConstants from '../constants/VoterConstants';
+import VoterStore from '../stores/VoterStore';
+import { renderLog } from '../utils/logging';
 import { Title, BlueTitle, SubTitle } from '../components/Welcome/HeaderWelcome';
 import Section, {
   SectionTitle,
@@ -21,15 +32,6 @@ import Section, {
   SectionTitleBold,
 } from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
-import Footer from '../components/Welcome/Footer';
-import { historyPush, cordovaDot } from '../utils/cordovaUtils';
-import Testimonial from '../components/Widgets/Testimonial';
-import AnalyticsActions from '../actions/AnalyticsActions';
-import AppActions from '../actions/AppActions';
-import validateEmail from '../utils/email-functions';
-import VoterActions from '../actions/VoterActions';
-import VoterConstants from '../constants/VoterConstants';
-import VoterStore from '../stores/VoterStore';
 
 class WelcomeForCampaigns extends PureComponent {
   static propTypes = {
@@ -114,6 +116,7 @@ class WelcomeForCampaigns extends PureComponent {
   };
 
   render () {
+    renderLog(__filename);
     const { classes, pathname } = this.props;
     // console.log('WelcomeForCampaigns, pathname: ', pathname);
     const { voter } = this.state;
@@ -123,7 +126,7 @@ class WelcomeForCampaigns extends PureComponent {
     const imageUrl = cordovaDot('/img/global/photos/Neelam_Joshi-200x200.jpg');
     const testimonial = 'I don\'t have time to attend rallies and listen to campaign speeches, and I don’t trust much of what I see on Facebook. We Vote helps me cut through the chatter and use endorsements from people I trust.';
     return (
-      <Wrapper>
+      <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="Welcome Campaigns - We Vote" />
         <WelcomeAppbar pathname={pathname} />
         <HeaderForCampaigns>
@@ -305,6 +308,7 @@ const Wrapper = styled.div`
   align-items: center;
   background: white;
   overflow-x: hidden;
+  padding-top: ${({ padTop }) => padTop};
 `;
 
 const HeaderSection = styled.div`
@@ -386,6 +390,7 @@ const FeatureStep = styled.div`
   width: 600px;
   max-width: 100%;
   margin-top: 1rem;
+  padding-top: ${({ padTop }) => padTop};
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 100%;

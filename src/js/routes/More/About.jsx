@@ -3,7 +3,8 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
-import { cordovaDot, cordovaScrollablePaneTopPadding } from '../../utils/cordovaUtils';
+import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
+import { cordovaDot } from '../../utils/cordovaUtils';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import { renderLog } from '../../utils/logging';
 import Footer from '../../components/Welcome/Footer';
@@ -33,7 +34,7 @@ class About extends Component {
   render () {
     renderLog(__filename);
     return (
-      <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
+      <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="About We Vote" />
         <WelcomeAppbar pathname="/more/about" />
         <HeaderForAbout>
@@ -147,7 +148,7 @@ class About extends Component {
             <div className="row position-relative">
               {
               weVoteFounders.map(teamMember => (
-                <TeamMemberDisplayForList teamMember={teamMember} />
+                <TeamMemberDisplayForList key={`teamDisplay-${teamMember.name}-${teamMember.title[0]}`} teamMember={teamMember} />
               ))
               }
             </div>
@@ -159,7 +160,7 @@ class About extends Component {
             <div className="row position-relative">
               {
               weVoteBoard.map(teamMember => (
-                <TeamMemberDisplayForList teamMember={teamMember} />
+                <TeamMemberDisplayForList key={`teamDisplay-${teamMember.name}-${teamMember.title[0]}`} teamMember={teamMember} />
               ))
               }
             </div>
@@ -171,7 +172,7 @@ class About extends Component {
             <div className="row position-relative">
               {
               weVoteStaff.map(teamMember => (
-                <TeamMemberDisplayForList teamMember={teamMember} />
+                <TeamMemberDisplayForList key={`teamDisplay-${teamMember.name}-${teamMember.title[0]}`} teamMember={teamMember} />
               ))
               }
             </div>

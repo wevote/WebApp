@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { historyPush } from '../../utils/cordovaUtils';
+import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 
 
@@ -29,18 +29,29 @@ class Footer extends Component {
             <Column>
               <ColumnTitle>Elections</ColumnTitle>
               <Link id="footerLinkSupportedElections" className={classes.link} to="/more/elections">Supported Elections</Link>
-              <Link id="footerLinkRegisterToVote" className={classes.link} to="/more/register">Register to Vote</Link>
-              <Link id="footerLinkGetYourAbsenteeBallot" className={classes.link} to="/more/absentee">Get Your Absentee Ballot</Link>
+              {isWebApp() ?
+                <Link id="footerLinkRegisterToVote" className={classes.link} to="/more/register">Register to Vote</Link> :
+                <OpenExternalWebSite className={classes.link} url="https://register.vote.org/?partner=111111&campaign=free-tools" target="_blank" body={(<span>Register to Vote</span>)} />
+              }
+              {isWebApp() ?
+                <Link id="footerLinkGetYourAbsenteeBallot" className={classes.link} to="/more/absentee">Get Your Absentee Ballot</Link> :
+                <OpenExternalWebSite className={classes.link} url="https://absentee.vote.org/?partner=111111&campaign=free-tools" target="_blank" body={(<span>Get Your Absentee Ballot</span>)} />
+              }
               <Link id="footerLinkSeeYourBallot" className={classes.link} to="/ballot">See Your Ballot</Link>
-              <Link id="footerLinkPollingPlaceLocator" className={classes.link} to="/polling-place-locator">Polling Place Locator</Link>
-              <Link id="footerLinkFreeOnlineTools" className={classes.link} to="/more/tools">Free Online Tools</Link>
-              <Link id="footerLinkPremiumOnlineTools" className={classes.link} to="/more/tools">Premium Online Tools</Link>
+              {isWebApp() ?
+                <Link id="footerLinkPollingPlaceLocator" className={classes.link} to="/polling-place-locator">Polling Place Locator</Link> :
+                <OpenExternalWebSite className={classes.link} url="https://wevote.us/vip.html" target="_blank" body={(<span>Polling Place Locator</span>)} />
+              }
+              <Link id="footerLinkFreeOnlineTools" className={classes.link} to="/settings/tools">Free Online Tools</Link>
+              <Link id="footerLinkPremiumOnlineTools" className={classes.link} to="/settings/tools">Premium Online Tools</Link>
             </Column>
             <Column>
               <ColumnTitle>About We Vote</ColumnTitle>
               <Link id="footerLinkAbout" className={classes.link} to="/more/about">About &amp; Team</Link>
               <Link id="footerLinkCredits" className={classes.link} to="/more/credits">Credits &amp; Thanks</Link>
-              <Link id="footerLinkDonate" className={classes.link} to="/more/donate">Donate</Link>
+              {isWebApp() && (
+                <Link id="footerLinkDonate" className={classes.link} to="/more/donate">Donate</Link>
+              )}
               <OpenExternalWebSite
                 linkIdAttribute="footerLinkBlog"
                 url="https://blog.wevote.us/"

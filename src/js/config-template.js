@@ -10,12 +10,14 @@ module.exports = {
   WE_VOTE_SERVER_API_CDN_ROOT_URL: 'https://cdn.wevoteusa.org/apis/v1/',
 
   DEBUG_MODE: false,
+  SHOW_TEST_OPTIONS: false,    // On the DeviceDialog and elsewhere
 
   LOG_RENDER_EVENTS: false,
   LOG_ONLY_FIRST_RENDER_EVENTS: false,
   LOG_HTTP_REQUESTS: false,
   LOG_ROUTING: false,
   LOG_SIGNIN_STEPS: false,
+  LOG_CORDOVA_OFFSETS: false,
 
   // Use 1 or 0 as opposed to true or false
   test: {
@@ -34,4 +36,20 @@ module.exports = {
 
   // This is the publishable key (not secret)
   STRIPE_API_KEY: 'pk_test_bWuWGC3jrMIFH3wvRvHR6Z5H',
+
+  // Look for a log line like this "Application initCordova ------------ /js/Application.jsx uuid: AC328523-8362-4D90-9805-D5F94203B113"
+  // and put that uuid in the following table, to be able to use the XCode simulator for iPhones
+  // NOTE: Doing a "Hardware/Erase All Content and Settings" on a simulator, will reset the uuid to a new value
+  CORDOVA_IPHONE_UUIDS: [
+    { name: 'i5', val: '' },
+    { name: 'i5s', val: '' },
+    { name: 'iSE', val: '' },
+    { name: 'i6', val: '' },
+    { name: 'i6s', val: '' },
+    { name: 'i8', val: '' },
+    { name: 'i8plus', val: '' },
+    { name: 'iX', val: '' },
+    { name: 'iXR', val: '' },
+    { name: 'iXsMax', val: '' },
+  ],
 };

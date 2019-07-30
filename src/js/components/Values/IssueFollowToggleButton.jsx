@@ -6,8 +6,9 @@ import IssueActions from '../../actions/IssueActions';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
-import { showToastError, showToastSuccess } from '../../utils/showToast';
 import { historyPush } from '../../utils/cordovaUtils';
+import { openSnackbar } from '../Widgets/SnackNotifier';
+
 
 export default class IssueFollowToggleButton extends Component {
   static propTypes = {
@@ -23,7 +24,10 @@ export default class IssueFollowToggleButton extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      error: false,
+      errorInfo: null,
       isFollowing: false,
+      isFollowingLocalValue: false,
     };
     this.onIssueFollow = this.onIssueFollow.bind(this);
     this.onIssueStopFollowing = this.onIssueStopFollowing.bind(this);
@@ -31,20 +35,48 @@ export default class IssueFollowToggleButton extends Component {
 
   componentDidMount () {
     const isFollowing = IssueStore.isVoterFollowingThisIssue(this.props.issueWeVoteId);
-    this.setState({ isFollowing });
+    this.setState({
+      isFollowing,
+      isFollowingLocalValue: isFollowing,
+    });
+    this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if not needed
+    if (this.state.isFollowing !== nextState.isFollowing) {
+      // console.log('this.state.isFollowing: ', this.state.isFollowing, ', nextState.isFollowing', nextState.isFollowing);
+      return true;
+    }
+    // console.log('shouldComponentUpdate no change');
+    return false;
+  }
+
+  componentWillUnmount () {
+    this.issueStoreListener.remove();
+  }
+
+  onIssueStoreChange () {
+    const { isFollowingLocalValue } = this.state;
+    const isFollowingApiValue = IssueStore.isVoterFollowingThisIssue(this.props.issueWeVoteId);
+    const apiServerHasCaughtUpWithLocalValue = isFollowingLocalValue === isFollowingApiValue;
+    this.setState({
+      isFollowing: apiServerHasCaughtUpWithLocalValue ? isFollowingApiValue : isFollowingLocalValue,
+    });
   }
 
   onIssueFollow () {
     // This check is necessary as we enable follow when user clicks on Issue text
-    if (!this.state.isFollowing) {
-      this.setState({ isFollowing: true });
-      IssueActions.issueFollow(this.props.issueWeVoteId, VoterStore.electionId());
-      if (this.props.onIssueFollowFunction) {
-        this.props.onIssueFollowFunction(this.props.issueWeVoteId);
-      }
-
-      showToastSuccess(`Now following ${this.props.issueName}!`);
+    IssueActions.issueFollow(this.props.issueWeVoteId, VoterStore.electionId());
+    if (this.props.onIssueFollowFunction) {
+      this.props.onIssueFollowFunction(this.props.issueWeVoteId);
     }
+    openSnackbar({ message: `Now following ${this.props.issueName}!` });
+
+    this.setState({
+      isFollowing: true,
+      isFollowingLocalValue: true,
+    });
 
     const { currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId } = this.props;
     if (currentBallotIdInUrl !== ballotItemWeVoteId) {
@@ -52,91 +84,101 @@ export default class IssueFollowToggleButton extends Component {
     }
   }
 
-  onIssueStopFollowing (e) {
-    if (this.state.isFollowing) {
-      if (e.target.classList.contains('MuiButton-label-44')) {
-        e.target.parentElement.parentElement.parentElement.classList.remove('show');
-      } else if (e.target.classList.contains('issues-follow-btn__menu-item')) {
-        e.target.parentElement.parentElement.classList.remove('show');
-      }
-    }
-    this.setState({ isFollowing: false });
-    IssueActions.issueStopFollowing(this.props.issueWeVoteId, VoterStore.electionId());
+  onIssueStopFollowing () {
+    // console.log('onIssueStopFollowing');
+    const { currentBallotIdInUrl, issueName, issueWeVoteId, urlWithoutHash, ballotItemWeVoteId } = this.props;
+
+    IssueActions.issueStopFollowing(issueWeVoteId, VoterStore.electionId());
     // console.log("IssueFollowToggleButton, this.props.ballotItemWeVoteId:", this.props.ballotItemWeVoteId);
-    if (this.props.ballotItemWeVoteId) {
-      IssueActions.removeBallotItemIssueScoreFromCache(this.props.ballotItemWeVoteId);
+    if (ballotItemWeVoteId) {
+      IssueActions.removeBallotItemIssueScoreFromCache(ballotItemWeVoteId);
     }
     if (this.props.onIssueStopFollowingFunction) {
-      this.props.onIssueStopFollowingFunction(this.props.issueWeVoteId);
+      this.props.onIssueStopFollowingFunction(issueWeVoteId);
     }
-    showToastError(`You've stopped following ${this.props.issueName}.`);
-    const { currentBallotIdInUrl, urlWithoutHash, ballotItemWeVoteId } = this.props;
+    openSnackbar({ message: `You've stopped following ${issueName}.` });
     if (currentBallotIdInUrl !== ballotItemWeVoteId) {
-      historyPush(`${urlWithoutHash}#${this.props.ballotItemWeVoteId}`);
+      historyPush(`${urlWithoutHash}#${ballotItemWeVoteId}`);
     }
 
-    if (document.getElementById('dropdown_menu')) {
-      document.getElementById('dropdown_menu').style.visibility = 'hidden';
-    }
+    this.setState({
+      isFollowing: false,
+      isFollowingLocalValue: false,
+    });
+  }
+
+  // See https://reactjs.org/docs/error-boundaries.html
+  static getDerivedStateFromError (error) { // eslint-disable-line no-unused-vars
+    // Update state so the next render will show the fallback UI, We should have a 'Oh snap' page
+    // console.log('getDerivedStateFromError IssueFollowToggleButton, error:', error);
+    return { hasError: true };
+  }
+
+  componentDidCatch (error, errorInfo) {
+    // console.log('Error in IssueFollowToggleButton, errorInfo:', errorInfo);
+    this.setState({
+      error,
+      errorInfo,
+    });
   }
 
   render () {
+    // console.log('IssueFollowToggleButton render');
     renderLog(__filename);
     if (!this.state) { return <div />; }
 
+    if (this.state.error) {
+      // console.log('error');
+      return <div>{this.state.errorInfo}</div>;
+    }
+
+    const { isFollowing } = this.state;
     return (
-    //   <div className="issues-follow-container">
-    //     <Button variant="contained" color="primary" size="small" onClick={this.onIssueStopFollowing}>
-    //       <span>Following</span>
-    //     </Button>
-    //   </div>
-    // ) : (
-    //   <div className="intro-modal__text-dark">
-    //     <Button variant="contained" color="primary" size="small" onClick={this.onIssueFollow}>
-    //       <span>Follow</span>
-    //     </Button>
-    //   </div>
       <div className="issues-follow-container">
-        {this.state.isFollowing ? (
-          <Button type="button" className="issues-follow-btn issues-follow-btn__main issues-follow-btn__icon issues-follow-btn--white issues-followed-btn--disabled" disabled>
-            <span>
-              { this.state.isFollowing &&
-                <CheckCircle className="following-icon" /> }
-            </span>
-          </Button>
+        {isFollowing ? (
+          <React.Fragment>
+            <Button
+              type="button"
+              className="issues-follow-btn issues-follow-btn__main issues-follow-btn__icon issues-follow-btn--white issues-followed-btn--disabled"
+              disabled
+            >
+              <span>
+                <CheckCircle className="following-icon" />
+              </span>
+            </Button>
+            <div className="issues-follow-btn__seperator" />
+            <Button
+              type="button"
+              id="dropdown-toggle-id"
+              className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              data-reference="parent"
+            >
+              <span className="sr-only">Toggle Dropdown</span>
+            </Button>
+            <div id="issues-follow-btn__menu" className="dropdown-menu issues-follow-btn__menu" aria-labelledby="dropdown-toggle-id">
+              <Button
+                type="button"
+                id="dropdown-item-id"
+                className="dropdown-item issues-follow-btn issues-follow-btn__menu-item"
+                // data-toggle="dropdown"
+                onClick={this.onIssueStopFollowing}
+              >
+                Unfollow
+              </Button>
+            </div>
+          </React.Fragment>
         ) : (
           <Button
-          type="button"
-          className="issues-follow-btn
-          issues-follow-btn__main issues-follow-btn__main--radius issues-follow-btn--blue"
-          onClick={this.onIssueFollow}
+            type="button"
+            className="issues-follow-btn issues-follow-btn__main issues-follow-btn__main--radius issues-follow-btn--blue"
+            onClick={this.onIssueFollow}
           >
             Follow
           </Button>
         )}
-        {this.state.isFollowing ? (
-          <React.Fragment>
-            <div className="issues-follow-btn__seperator" />
-            <Button type="button" id="dropdown-toggle" className="dropdown-toggle dropdown-toggle-split issues-follow-btn issues-follow-btn__dropdown issues-follow-btn--white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span className="sr-only">Toggle Dropdown</span>
-            </Button>
-          </React.Fragment>
-        ) : (
-          null
-        )}
-        <div id="issues-follow-btn__menu" className="dropdown-menu dropdown-menu-right issues-follow-btn__menu">
-          {this.state.isFollowing ? (
-            <span className="d-print-none">
-              <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={this.onIssueStopFollowing}>
-                Unfollow
-              </Button>
-            </span>
-          ) : (
-            <Button type="button" className="dropdown-item issues-follow-btn issues-follow-btn__menu-item" onClick={this.onIssueFollow}>
-              Follow
-            </Button>
-          )}
-        </div>
       </div>
     );
   }

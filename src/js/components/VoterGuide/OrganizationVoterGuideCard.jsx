@@ -8,7 +8,8 @@ import ParsedTwitterDescription from '../Twitter/ParsedTwitterDescription';
 import LoadingWheel from '../LoadingWheel';
 import { renderLog } from '../../utils/logging'; // numberWithCommas,
 import FollowToggle from '../Widgets/FollowToggle';
-import { removeTwitterNameFromDescription } from '../../utils/textFormat';
+import { numberWithCommas, removeTwitterNameFromDescription } from '../../utils/textFormat';
+import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 
 // This Component is used to display the Organization by TwitterHandle
 // Please see VoterGuide/Organization for the Component used by GuideList for Candidate and Opinions (you can follow)
@@ -39,9 +40,10 @@ export default class OrganizationVoterGuideCard extends Component {
 
     const {
       organization_twitter_handle: organizationTwitterHandle, twitter_description: twitterDescriptionRaw,
+      twitter_followers_count: twitterFollowersCount,
       organization_photo_url_large: organizationPhotoUrlLarge, organization_website: organizationWebsiteRaw,
       organization_name: organizationName, organization_we_vote_id: organizationWeVoteId,
-    } = this.props.organization; // , twitter_followers_count
+    } = this.props.organization;
     const organizationWebsite = organizationWebsiteRaw && organizationWebsiteRaw.slice(0, 4) !== 'http' ? `http://${organizationWebsiteRaw}` : organizationWebsiteRaw;
 
     // If the displayName is in the twitterDescription, remove it from twitterDescription
@@ -62,15 +64,19 @@ export default class OrganizationVoterGuideCard extends Component {
         <Link to={voterGuideLink}>
           <h3 className="card-main__display-name">{displayName}</h3>
         </Link>
-        { organizationTwitterHandle ? (
+        { organizationTwitterHandle && (
           <span>
             @
             {organizationTwitterHandle}
             &nbsp;&nbsp;
           </span>
-        ) :
-          null
-        }
+        )}
+        { twitterFollowersCount && (
+          <span className="twitter-followers__badge">
+            <span className="fab fa-twitter twitter-followers__icon" />
+            {numberWithCommas(twitterFollowersCount)}
+          </span>
+        )}
         <br />
         { this.props.is_voter_owner ? (
           <Button
@@ -81,9 +87,6 @@ export default class OrganizationVoterGuideCard extends Component {
           >
             <span>Edit Your Voter Guide</span>
           </Button>
-          // <Button variant="warning" size="small" bsPrefix="pull-right" onClick={this.onEdit}>
-          //   <span>Edit Your Voter Guide</span>
-          // </Button>
         ) :
           <FollowToggle organizationWeVoteId={organizationWeVoteId} showFollowingText />
         }
@@ -94,21 +97,26 @@ export default class OrganizationVoterGuideCard extends Component {
         ) :
           <p className="card-main__description" />
         }
-
+        <IssuesByOrganizationDisplayList
+          organizationWeVoteId={organizationWeVoteId}
+          placement="bottom"
+        />
         { organizationWebsite ? (
-          <span className="u-wrap-links">
-            <OpenExternalWebSite
-              url={organizationWebsite}
-              target="_blank"
-              body={(
-                <span>
-                  {organizationWebsite}
-                  {' '}
-                  <i className="fas fa-external-link-alt" />
-                </span>
-              )}
-            />
-          </span>
+          <div>
+            <span className="u-wrap-links">
+              <OpenExternalWebSite
+                url={organizationWebsite}
+                target="_blank"
+                body={(
+                  <span>
+                    {organizationWebsite}
+                    {' '}
+                    <i className="fas fa-external-link-alt" />
+                  </span>
+                )}
+              />
+            </span>
+          </div>
         ) : null
         }
         {/* 5 of your friends follow Organization Name<br /> */}

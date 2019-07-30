@@ -231,4 +231,4 @@ const Description = styled.div`
   }
 `;
 
-export default withTheme()((IssueCardCompressed));
+export default withTheme((IssueCardCompressed));

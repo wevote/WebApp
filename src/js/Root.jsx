@@ -26,12 +26,10 @@ import FriendInvitationsSentByMe from './routes/Friends/FriendInvitationsSentByM
 import FriendInvitationsSentToMe from './routes/Friends/FriendInvitationsSentToMe';
 import SuggestedFriends from './routes/Friends/SuggestedFriends';
 import GetStarted from './routes/Intro/GetStarted';
-import HamburgerMenu from './routes/More/HamburgerMenu';
+import HamburgerMenu from './routes/Settings/HamburgerMenu';
 import HowItWorks from './routes/HowItWorks';
 import Intro from './routes/Intro/Intro';
 import IntroNetwork from './routes/Intro/IntroNetwork';
-import IssuesToFollow from './routes/IssuesToFollow';
-import IssuesFollowed from './routes/IssuesFollowed';
 import InviteByEmail from './routes/Friends/InviteByEmail';
 import Location from './routes/Settings/Location';
 import Measure from './routes/Ballot/Measure';
@@ -59,7 +57,6 @@ import FacebookLandingProcess from './routes/Process/FacebookLandingProcess';
 import FacebookRedirectToWeVote from './routes/More/FacebookRedirectToWeVote';
 import SignInEmailProcess from './routes/Process/SignInEmailProcess';
 import TermsOfService from './routes/More/TermsOfService';
-import ToolsToShareOnOtherWebsites from './routes/More/ToolsToShareOnOtherWebsites';
 import TwitterHandleLanding from './routes/TwitterHandleLanding';
 import TwitterSignInProcess from './routes/Process/TwitterSignInProcess';
 import Values from './routes/Values';
@@ -67,12 +64,7 @@ import ValuesList from './routes/Values/ValuesList';
 import Vote from './routes/Vote';
 import VerifyEmailProcess from './routes/Process/VerifyEmailProcess';
 import FriendInvitationByEmailVerifyProcess from './routes/Process/FriendInvitationByEmailVerifyProcess';
-import VoterGuideChooseElection from './routes/VoterGuide/VoterGuideChooseElection';
-import VoterGuideChoosePositions from './routes/VoterGuide/VoterGuideChoosePositions';
-import VoterGuideGetStarted from './routes/VoterGuide/VoterGuideGetStarted';
 import VoterGuideListDashboard from './routes/Settings/VoterGuideListDashboard';
-import VoterGuideOrganizationInfo from './routes/VoterGuide/VoterGuideOrganizationInfo';
-import VoterGuideOrganizationType from './routes/VoterGuide/VoterGuideOrganizationType';
 import VoterGuideSettingsDashboard from './routes/Settings/VoterGuideSettingsDashboard';
 import VoterGuideSettingsMenuMobile from './routes/Settings/VoterGuideSettingsMenuMobile';
 import VoterGuidesMenuMobile from './routes/Settings/VoterGuidesMenuMobile';
@@ -139,13 +131,14 @@ const routes = () => (
     {/* Complete path on one line for searching */}
     <Route path="/settings" component={SettingsDashboard} />
     <Route path="/settings/claim" component={ClaimYourPage} />
+    <Route path="/settings/hamburger" component={HamburgerMenu} />
     <Route path="/settings/location" component={Location} />
     <Route path="/settings/menu" component={SettingsMenuMobile} />
     <Route path="/settings/voterguidelist" component={VoterGuideListDashboard} />
     <Route path="/settings/voterguidesmenu" component={VoterGuidesMenuMobile} />
     {/* settings/:edit_mode includes "/settings/account", "/settings/address", "/settings/election",
      "/settings/issues_linked", "/settings/issues_to_link", "/settings/issues", "/settings/notifications",
-     "/settings/profile", "/settings/voter_guide" */}
+     "/settings/profile", "/settings/tools" */}
     <Route path="/settings/:edit_mode" component={SettingsDashboard} />
     <Route path="/settings/issues/:edit_mode" component={SettingsDashboard} />
     <Route path="/settings/:edit_mode/:voter_guide_we_vote_id" component={SettingsDashboard} />
@@ -154,8 +147,6 @@ const routes = () => (
     <Route path="/opinions" component={Opinions} />
     <Route path="/opinions_followed" component={OpinionsFollowed} />
     <Route path="/opinions_ignored" component={OpinionsIgnored} />
-    <Route path="/issues_to_follow" component={IssuesToFollow} />
-    <Route path="/issues_followed" component={IssuesFollowed} />
 
     {/* Friend related Pages */}
     <Route path="/friends" component={Friends} />
@@ -181,7 +172,6 @@ const routes = () => (
     <Route path="/more/facebooklandingprocess" component={FacebookLandingProcess} />
     <Route path="/more/facebookredirecttowevote" component={FacebookRedirectToWeVote} />
     <Route path="/more/faq" component={FAQ} />
-    <Route path="/more/hamburger" component={HamburgerMenu} />
     <Route path="/more/jump" component={SignInJumpProcess} />
     <Route path="/more/myballot" component={WeVoteBallotEmbed} />
     <Route path="/more/network" component={Friends} />
@@ -197,7 +187,6 @@ const routes = () => (
     <Route path="/more/register" component={RegisterToVote} />
     <Route path="/more/search_page" component={SearchPage} />
     <Route path="/more/search_page/:encoded_search_string" component={SearchPage} />
-    <Route path="/more/tools" component={ToolsToShareOnOtherWebsites} />
     <Route path="/more/terms" component={TermsOfService} />
     <Route path="/more/verify" component={VerifyRegistration} />
     <Route path="/values" component={Values} />
@@ -222,16 +211,11 @@ const routes = () => (
     <Route path="/voterguideedit/:organization_we_vote_id" component={OrganizationVoterGuideEdit} />
     <Route path="/voterguideedit/:organization_we_vote_id/:google_civic_election_id" component={OrganizationVoterGuideEdit} />
 
-    {/* Voter Guide Settings go in this structure... */}
+    {/* Voter Guide Settings go in this structure... "/vg/wvYYvgYY/settings/positions", "/vg/wvYYvgYY/settings/addpositions" */}
     <Route path="/vg/:voter_guide_we_vote_id/settings" component={VoterGuideSettingsDashboard} />
     <Route path="/vg/:voter_guide_we_vote_id/settings/menu" component={VoterGuideSettingsMenuMobile} />
     <Route path="/vg/:voter_guide_we_vote_id/settings/:edit_mode" component={VoterGuideSettingsDashboard} />
 
-    <Route path="/voterguidegetstarted" component={VoterGuideGetStarted} />
-    <Route path="/voterguideorgtype" component={VoterGuideOrganizationType} />
-    <Route path="/voterguideorginfo" component={VoterGuideOrganizationInfo} />
-    <Route path="/voterguidechooseelection" component={VoterGuideChooseElection} />
-    <Route path="/voterguidepositions/:voter_guide_we_vote_id" component={VoterGuideChoosePositions} />
     <Route path="/yourpage" component={YourPage} />
 
     <Route path="/facebook_sign_in" component={FacebookSignInProcess} />

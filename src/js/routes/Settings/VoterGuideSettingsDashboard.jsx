@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { withStyles } from '@material-ui/core';
 import { renderLog } from '../../utils/logging';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideActions from '../../actions/VoterGuideActions';
-import SettingsBannerAndOrganizationCard from '../../components/Settings/SettingsBannerAndOrganizationCard';
-import VoterGuideSettingsGeneral from '../../components/Settings/VoterGuideSettingsGeneral';
 import VoterGuideSettingsPositions from '../../components/Settings/VoterGuideSettingsPositions';
-import VoterGuideSettingsSideBar from '../../components/Navigation/VoterGuideSettingsSideBar';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
+// import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
 
-export default class VoterGuideSettingsDashboard extends Component {
+class VoterGuideSettingsDashboard extends Component {
   static propTypes = {
     params: PropTypes.object,
   };
@@ -24,7 +24,6 @@ export default class VoterGuideSettingsDashboard extends Component {
     this.state = {
       editMode: '',
       linkedOrganizationWeVoteId: '',
-      organization: {},
       voterGuide: {},
       voterGuideWeVoteId: '',
     };
@@ -66,7 +65,7 @@ export default class VoterGuideSettingsDashboard extends Component {
         const organization = OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId);
         if (organization && organization.organization_we_vote_id) {
           this.setState({
-            organization,
+            // organization,
           });
         } else {
           OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
@@ -102,9 +101,9 @@ export default class VoterGuideSettingsDashboard extends Component {
 
   onOrganizationStoreChange () {
     // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
-    const { linkedOrganizationWeVoteId } = this.state;
+    // const { linkedOrganizationWeVoteId } = this.state;
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId),
+      // organization: OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId),
     });
   }
 
@@ -150,55 +149,39 @@ export default class VoterGuideSettingsDashboard extends Component {
 
   render () {
     renderLog(__filename);
-    let settingsComponentToDisplay = null;
-    switch (this.state.editMode) {
-      default:
-      case 'general':
-        settingsComponentToDisplay = <VoterGuideSettingsGeneral />;
-        break;
-      case 'positions':
-        settingsComponentToDisplay = <VoterGuideSettingsPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />;
-        break;
-    }
+    const { editMode } = this.state;
+    // console.log("VoterGuideSettingsDashboard, positionListForOneElection:", positionListForOneElection);
+
+    // const cordovaPaddingTop = cordovaScrollablePaneTopPadding();
+    // const paddingTop = cordovaPaddingTop || '125px';
+    const paddingTop = '10px';
 
     return (
-      <div className="settings-dashboard">
-        {/* Header Spacing for Desktop */}
-        <div className="col-md-12 d-none d-sm-block d-print-none">
-          <SettingsBannerAndOrganizationCard organization={this.state.organization} />
-        </div>
-        {/* Header Spacing for Mobile */}
-        <div className="d-block d-sm-none d-print-none">
-          <SettingsBannerAndOrganizationCard organization={this.state.organization} />
-        </div>
-
-        {/* Desktop left navigation + Settings content */}
-        <div className="d-none d-sm-block">
-          <div className="container-fluid">
-            <div className="row">
-              {/* Desktop mode left navigation */}
-              <div className="col-4 sidebar-menu">
-                <VoterGuideSettingsSideBar
-                  editMode={this.state.editMode}
-                  voterGuide={this.state.voterGuide}
-                />
-              </div>
-              {/* Desktop mode content */}
-              <div className="col-8">
-                {settingsComponentToDisplay}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Settings content */}
-        <div className="d-block d-sm-none">
-          {/* Mobile mode content */}
-          <div className="col-12">
-            {settingsComponentToDisplay}
-          </div>
-        </div>
-      </div>
+      <Wrapper padTop={paddingTop}>
+        <EndorsementListBody>
+          {/* Body of page "/vg/wvYYvgYY/settings/positions", "/vg/wvYYvgYY/settings/addpositions" */}
+          {editMode === 'addpositions' ? (
+            <VoterGuideSettingsPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />
+          ) : (
+            <VoterGuideSettingsPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />
+          )}
+        </EndorsementListBody>
+      </Wrapper>
     );
   }
 }
+
+const styles = () => ({
+  formControl: {
+    width: '100%',
+  },
+});
+
+const Wrapper = styled.div`
+  padding-top: ${({ padTop }) => padTop};
+`;
+
+const EndorsementListBody = styled.div`
+`;
+
+export default withStyles(styles)(VoterGuideSettingsDashboard);

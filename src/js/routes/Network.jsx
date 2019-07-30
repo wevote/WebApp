@@ -10,7 +10,6 @@ import LoadingWheel from '../components/LoadingWheel';
 import { renderLog } from '../utils/logging';
 import NetworkFriendRequests from '../components/Network/NetworkFriendRequests';
 import NetworkFriends from '../components/Network/NetworkFriends';
-import NetworkIssuesFollowed from '../components/Network/NetworkIssuesFollowed';
 import NetworkOpinions from '../components/Network/NetworkOpinions';
 import NetworkOpinionsFollowed from '../components/Network/NetworkOpinionsFollowed';
 import TwitterSignIn from '../components/Twitter/TwitterSignIn';
@@ -128,7 +127,7 @@ export default class Network extends Component {
               { this.state.voter.signed_in_twitter ?
                 null : (
                   <div className="network-btn">
-                    <TwitterSignIn className="btn btn-social btn-lg btn-twitter text-center" buttonText="Find Voter Guides" />
+                    <TwitterSignIn buttonText="Find Voter Guides" />
                     <ReadMore
                       className="social-btn-description"
                       text_to_display={twitterInfoText}
@@ -166,7 +165,7 @@ export default class Network extends Component {
               { this.state.voter.signed_in_twitter ?
                 null : (
                   <div className="network-btn">
-                    <TwitterSignIn buttonText="Find" className="btn btn-social btn-md btn-twitter" />
+                    <TwitterSignIn buttonText="Find" />
                   </div>
                 )
               }
@@ -211,7 +210,6 @@ export default class Network extends Component {
           <div className="col-md-4 d-none d-sm-block">
             <NetworkOpinionsFollowed />
             <NetworkFriends />
-            <NetworkIssuesFollowed />
           </div>
         </div>
       </span>

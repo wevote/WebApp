@@ -109,8 +109,8 @@ export default class OrganizationsFollowedOnTwitter extends Component {
           <Popover id={`organization-popover-${organizationWeVoteId}`}>
             <div className="card">
               <div className="card-main">
-                <FollowToggle organizationWeVoteId={oneOrganization.organization_we_vote_id} />
                 <OrganizationCard organization={oneOrganizationForOrganizationCard} />
+                <FollowToggle organizationWeVoteId={oneOrganization.organization_we_vote_id} />
               </div>
             </div>
           </Popover>

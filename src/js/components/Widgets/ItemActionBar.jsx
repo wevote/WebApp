@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
@@ -9,9 +9,14 @@ import ThumbsUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbsDownIcon from '@material-ui/icons/ThumbDown';
 import CommentIcon from '@material-ui/icons/Comment';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
+import DialogContent from '@material-ui/core/DialogContent';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import { showToastError, showToastSuccess } from '../../utils/showToast';
 import { stringContains } from '../../utils/textFormat';
 import ShareButtonDropDown from './ShareButtonDropdown';
 import SupportActions from '../../actions/SupportActions';
@@ -22,6 +27,7 @@ import PositionPublicToggle from './PositionPublicToggle';
 import SupportStore from '../../stores/SupportStore';
 import webAppConfig from '../../config';
 import shareIconSvg from '../../../img/global/svg-icons/share-icon.svg';
+import { openSnackbar } from './SnackNotifier';
 
 class ItemActionBar extends PureComponent {
   static propTypes = {
@@ -61,6 +67,8 @@ class ItemActionBar extends PureComponent {
     this.opposeItem = this.opposeItem.bind(this);
     this.supportItem = this.supportItem.bind(this);
     this.toggleSupportOrOpposeHelpModal = this.toggleSupportOrOpposeHelpModal.bind(this);
+    this.opposeButton = this.opposeButton.bind(this);
+    this.supportButton = this.supportButton.bind(this);
   }
 
   componentDidMount () {
@@ -179,8 +187,92 @@ class ItemActionBar extends PureComponent {
     }
   }
 
-  isMeasure () {
-    return stringContains('meas', this.state.ballotItemWeVoteId);
+  opposeButton = (uniqueId) => {
+    const { classes } = this.props;
+    return (
+      <Button
+      id={`itemActionBarOpposeButton-${uniqueId}`}
+      variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
+      color="primary"
+      className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
+      onClick={() => this.opposeItem()}
+      classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+      >
+        <NotInterestedIcon classes={{ root: classes.buttonIcon }} />
+        {this.isOpposeCalculated() ? (
+          <span
+            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
+              'item-actionbar__position-btn-label--at-state'}
+          >
+              Opposed
+          </span>
+        ) : (
+          <span
+            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
+              'item-actionbar__position-btn-label'}
+          >
+              Oppose
+          </span>
+        )}
+      </Button>
+    );
+  };
+
+  supportButton = (uniqueId) => {
+    const { classes } = this.props;
+    return (
+      <Button
+       id={`itemActionBarSupportButton-${uniqueId}`}
+       variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
+       color="primary"
+       onClick={() => this.supportItem()}
+       classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+      >
+        <DoneIcon
+        classes={{ root: classes.buttonIcon }}
+        />
+        {this.isSupportCalculated() ? (
+          <span
+             className={this.props.shareButtonHide ? 'item-actionbar--inline__position-choose-btn-label--at-state' :
+               'item-actionbar__position-choose-btn-label--at-state'}
+          >
+              Chosen
+          </span>
+        ) : (
+          <span
+             className={this.props.shareButtonHide ? 'item-actionbar--inline__position-choose-btn-label' :
+               'item-actionbar__position-choose-btn-label'}
+          >
+              Choose
+          </span>
+        )}
+      </Button>
+    );
+  };
+
+  isOpposeCalculated () {
+    // Whenever the value in isOpposeLocalState is NOT undefined, then we ALWAYS listen to that
+    if (this.state.isOpposeLocalState !== undefined) {
+      return this.state.isOpposeLocalState;
+    } else {
+      return this.state.isOpposeAPIState;
+    }
+  }
+
+  isSupportCalculated () {
+    // Whenever the value in isSupportLocalState is NOT undefined, then we ALWAYS listen to that
+    if (this.state.isSupportLocalState !== undefined) {
+      return this.state.isSupportLocalState;
+    } else {
+      return this.state.isSupportAPIState;
+    }
+  }
+
+  toggleSupportOrOpposeHelpModal () {
+    const { showSupportOrOpposeHelpModal } = this.state;
+    this.setState({
+      showSupportOrOpposeHelpModal: !showSupportOrOpposeHelpModal,
+    });
   }
 
   supportItem () {
@@ -219,7 +311,8 @@ class ItemActionBar extends PureComponent {
     this.setState({
       transitioning: true,
     });
-    showToastSuccess('Support added!');
+    openSnackbar({ message: 'Support added!' });
+    // showToastSuccess('Support added!');
   }
 
   stopSupportingItem () {
@@ -235,7 +328,8 @@ class ItemActionBar extends PureComponent {
     this.setState({
       transitioning: true,
     });
-    showToastSuccess('Support removed!');
+    openSnackbar({ message: 'Support removed!' });
+    // showToastSuccess('Support removed!');
   }
 
   opposeItem () {
@@ -273,7 +367,7 @@ class ItemActionBar extends PureComponent {
     this.setState({
       transitioning: true,
     });
-    showToastError('Opposition added!');
+    openSnackbar({ message: 'Opposition added!' });
   }
 
   stopOpposingItem () {
@@ -290,38 +384,19 @@ class ItemActionBar extends PureComponent {
     this.setState({
       transitioning: true,
     });
-    showToastError('Opposition removed!');
+    openSnackbar({ message: 'Opposition removed!' });
   }
 
-  toggleSupportOrOpposeHelpModal () {
-    const { showSupportOrOpposeHelpModal } = this.state;
-    this.setState({
-      showSupportOrOpposeHelpModal: !showSupportOrOpposeHelpModal,
-    });
-  }
-
-  isOpposeCalculated () {
-    // Whenever the value in isOpposeLocalState is NOT undefined, then we ALWAYS listen to that
-    if (this.state.isOpposeLocalState !== undefined) {
-      return this.state.isOpposeLocalState;
-    } else {
-      return this.state.isOpposeAPIState;
-    }
-  }
-
-  isSupportCalculated () {
-    // Whenever the value in isSupportLocalState is NOT undefined, then we ALWAYS listen to that
-    if (this.state.isSupportLocalState !== undefined) {
-      return this.state.isSupportLocalState;
-    } else {
-      return this.state.isSupportAPIState;
-    }
+  isMeasure () {
+    return stringContains('meas', this.state.ballotItemWeVoteId);
   }
 
   render () {
     // console.log('ItemActionBar render');
     renderLog(__filename);
     const { classes, type } = this.props;
+    const { ballotItemWeVoteId } = this.state;
+
     if (this.state.supportCount === undefined ||
       this.state.opposeCount === undefined ||
       this.state.isOpposeAPIState === undefined ||
@@ -368,13 +443,23 @@ class ItemActionBar extends PureComponent {
     // This modal is shown when user clicks on support or oppose button for the first time only.
     const modalSupportProps = { is_public_position: false };
     const SupportOrOpposeHelpModal = (
-      <Modal show={this.state.showSupportOrOpposeHelpModal} onHide={() => { this.toggleSupportOrOpposeHelpModal(); }}>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            <div className="text-center">Choose or Oppose</div>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+      <Dialog
+        classes={{ paper: classes.dialogPaper }}
+        open
+        onClose={() => { this.toggleSupportOrOpposeHelpModal(); }}
+      >
+        <DialogTitle>
+          <Typography variant="h6" className="text-center">Choose or Oppose</Typography>
+          <IconButton
+            aria-label="Close"
+            classes={{ root: classes.closeButton }}
+            onClick={() => { this.toggleSupportOrOpposeHelpModal(); }}
+            id="profileCloseItemActionBar"
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent classes={{ root: classes.dialogContent }}>
           <section className="card">
             <div className="text-center">
               <div className="u-f2">Your position is only visible to your We Vote friends.</div>
@@ -403,8 +488,8 @@ class ItemActionBar extends PureComponent {
               <br />
             </div>
           </section>
-        </Modal.Body>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     );
 
     const ballotItemDisplayName = this.props.ballotItemDisplayName || '';
@@ -451,33 +536,6 @@ class ItemActionBar extends PureComponent {
     const supportButtonPopoverTooltip = <Tooltip id="supportButtonTooltip">{this.isSupportCalculated() ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }</Tooltip>;
     const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip">{this.isOpposeCalculated() ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
 
-    const supportButton = (
-      <Button
-        id="itemActionBarSupportButton"
-        variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
-        color="primary"
-        onClick={() => this.supportItem()}
-        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-      >
-        <DoneIcon classes={{ root: classes.buttonIcon }} />
-        { this.isSupportCalculated() ? (
-          <span
-            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-choose-btn-label--at-state' :
-              'item-actionbar__position-choose-btn-label--at-state'}
-          >
-            Chosen
-          </span>
-        ) : (
-          <span
-            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-choose-btn-label' :
-              'item-actionbar__position-choose-btn-label'}
-          >
-            Choose
-          </span>
-        )}
-      </Button>
-    );
-
     const measureYesButton = (
       <Button
         id="itemActionBarYesButton"
@@ -500,34 +558,6 @@ class ItemActionBar extends PureComponent {
               'item-actionbar__position-btn-label'}
           >
             Vote Yes
-          </span>
-        )}
-      </Button>
-    );
-
-    const opposeButton = (
-      <Button
-        id="itemActionBarOpposeButton"
-        variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
-        color="primary"
-        className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
-        onClick={() => this.opposeItem()}
-        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-      >
-        <NotInterestedIcon classes={{ root: classes.buttonIcon }} />
-        { this.isOpposeCalculated() ? (
-          <span
-            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
-              'item-actionbar__position-btn-label--at-state'}
-          >
-            Opposed
-          </span>
-        ) : (
-          <span
-            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
-              'item-actionbar__position-btn-label'}
-          >
-            Oppose
           </span>
         )}
       </Button>
@@ -578,98 +608,93 @@ class ItemActionBar extends PureComponent {
     );
 
     return (
-      <div
-        onMouseOver={handleEnterHoverLocalArea}
-        onFocus={handleEnterHoverLocalArea}
-        onMouseOut={handleLeaveHoverLocalArea}
-        onBlur={handleLeaveHoverLocalArea}
-        className={`${this.props.buttonsOnly && ''} ${this.props.shareButtonHide ? 'item-actionbar--inline' : 'item-actionbar'}`}
-      >
-        {this.props.buttonsOnly ? (
-          null
-        ) : (
-          <hr className="ballot-header-divider u-show-mobile" />
-        )}
-        {this.props.buttonsOnly ? (
-          null
-        ) : (
-          <PositionPublicToggle
-            ballotItemWeVoteId="null"
-            className="null"
-            type={type}
-            supportProps={modalSupportProps}
-            inTestMode
-          />
-        )}
-        <ButtonGroup className={`${this.props.buttonsOnly ? '' : 'btn-group'} ${!this.props.shareButtonHide ? ' u-push--sm' : ''}`}>
-          {/* Start of Support Button */}
-          {/* Visible on desktop screens */}
+      <>
+        <div
+          onMouseOver={handleEnterHoverLocalArea}
+          onFocus={handleEnterHoverLocalArea}
+          onMouseOut={handleLeaveHoverLocalArea}
+          onBlur={handleLeaveHoverLocalArea}
+          className={`${this.props.buttonsOnly && ''} ${this.props.shareButtonHide ? 'item-actionbar--inline' : 'item-actionbar'}`}
+        >
           {this.props.buttonsOnly ? (
-            <StackedButton className="d-none d-lg-block">
-              <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
-                {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
-              </OverlayTrigger>
-            </StackedButton>
+            null
           ) : (
-            <div className="u-push--xs d-none d-lg-block item-actionbar__position-bar">
-              <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
-                {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
-              </OverlayTrigger>
-            </div>
+            <PositionPublicToggle
+              ballotItemWeVoteId={ballotItemWeVoteId}
+              className="null"
+              type={type}
+            />
           )}
-          {/* Visible on mobile devices and tablets */}
-          {this.props.buttonsOnly ? (
-            <StackedButton className="d-lg-none d-xl-none">
-              {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
-            </StackedButton>
-          ) : (
-            <>
-              <div className="u-push--xs u-push--xs d-lg-none">
-                {this.props.type === 'CANDIDATE' ? supportButton : measureYesButton}
-              </div>
-            </>
-          )}
-
-          {/* Start of Oppose Button */}
-          {/* Visible on desktop screens */}
-          {this.props.buttonsOnly ? (
-            <StackedButton className="d-none d-lg-block">
-              <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
-                {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
-              </OverlayTrigger>
-            </StackedButton>
-          ) : (
-            <div className="u-push--xs d-none d-lg-block item-actionbar__position-bar">
-              <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
-                {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
-              </OverlayTrigger>
-            </div>
-          )}
-          {/* Visible on mobile devices and tablets */}
-          {this.props.buttonsOnly ? (
-            <StackedButton className="d-lg-none d-xl-none">
-              {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
-            </StackedButton>
-          ) : (
-            <>
-              <div className="u-push--xs d-lg-none">
-                {this.props.type === 'CANDIDATE' ? opposeButton : measureNoButton}
-              </div>
-            </>
-          )}
-          { this.props.commentButtonHide ?
-            null : (
-              <div className="u-push--sm item-actionbar__position-bar">
-                {commentButton}
+          <ButtonGroup className={`${this.props.buttonsOnly ? '' : 'btn-group'} ${!this.props.shareButtonHide ? ' u-push--sm' : ''}`}>
+            {/* Start of Support Button */}
+            {/* Visible on desktop screens */}
+            {this.props.buttonsOnly ? (
+              <StackedButton className="d-none d-lg-block">
+                <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
+                  {this.props.type === 'CANDIDATE' ? this.supportButton(`desktopVersion-${ballotItemWeVoteId}`) : measureYesButton}
+                </OverlayTrigger>
+              </StackedButton>
+            ) : (
+              <div className="u-push--xs d-none d-lg-block item-actionbar__position-bar">
+                <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
+                  {this.props.type === 'CANDIDATE' ? this.supportButton(`desktopVersion-${ballotItemWeVoteId}`) : measureYesButton}
+                </OverlayTrigger>
               </div>
             )}
+            {/* Visible on mobile devices and tablets */}
+            {this.props.buttonsOnly ? (
+              <StackedButton className="d-lg-none d-xl-none">
+                {this.props.type === 'CANDIDATE' ? this.supportButton(`mobileVersion-${ballotItemWeVoteId}`) : measureYesButton}
+              </StackedButton>
+            ) : (
+              <>
+                <div className="u-push--xs u-push--xs d-lg-none">
+                  {this.props.type === 'CANDIDATE' ? this.supportButton(`mobileVersion-${ballotItemWeVoteId}`) : measureYesButton}
+                </div>
+              </>
+            )}
 
-          { this.props.shareButtonHide ?
-            null :
-            <ShareButtonDropDown showMoreId="itemActionBarShowMoreFooter" urlBeingShared={urlBeingShared} shareIcon={shareIcon} shareText="Share" /> }
-          { this.state.showSupportOrOpposeHelpModal ? SupportOrOpposeHelpModal : null}
-        </ButtonGroup>
-      </div>
+            {/* Start of Oppose Button */}
+            {/* Visible on desktop screens */}
+            {this.props.buttonsOnly ? (
+              <StackedButton className="d-none d-lg-block">
+                <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
+                  {this.props.type === 'CANDIDATE' ? this.opposeButton(`desktopVersion-${ballotItemWeVoteId}`) : measureNoButton}
+                </OverlayTrigger>
+              </StackedButton>
+            ) : (
+              <div className="u-push--xs d-none d-lg-block item-actionbar__position-bar">
+                <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
+                  {this.props.type === 'CANDIDATE' ? this.opposeButton(`desktopVersion-${ballotItemWeVoteId}`) : measureNoButton}
+                </OverlayTrigger>
+              </div>
+            )}
+            {/* Visible on mobile devices and tablets */}
+            {this.props.buttonsOnly ? (
+              <StackedButton className="d-lg-none d-xl-none">
+                {this.props.type === 'CANDIDATE' ? this.opposeButton(`mobileVersion-${ballotItemWeVoteId}`) : measureNoButton}
+              </StackedButton>
+            ) : (
+              <>
+                <div className="u-push--xs d-lg-none">
+                  {this.props.type === 'CANDIDATE' ? this.opposeButton(`mobileVersion-${ballotItemWeVoteId}`) : measureNoButton}
+                </div>
+              </>
+            )}
+            { this.props.commentButtonHide ?
+              null : (
+                <div className="u-push--sm item-actionbar__position-bar">
+                  {commentButton}
+                </div>
+              )}
+
+            { this.props.shareButtonHide ?
+              null :
+              <ShareButtonDropDown showMoreId="itemActionBarShowMoreFooter" urlBeingShared={urlBeingShared} shareIcon={shareIcon} shareText="Share" /> }
+            { this.state.showSupportOrOpposeHelpModal ? SupportOrOpposeHelpModal : null}
+          </ButtonGroup>
+        </div>
+      </>
     );
   }
 }
@@ -678,28 +703,42 @@ const styles = theme => ({
   buttonIcon: {
     fontSize: 18,
     marginRight: '.3rem',
-    [theme.breakpoints.down('lg')]: {
-      fontSize: 12,
-      marginRight: '.1rem',
+    fontWeight: 'bold',
+    [theme.breakpoints.down('md')]: {
+      fontSize: 16,
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 14,
+      marginTop: -2,
     },
   },
   buttonRoot: {
-    marginLeft: '1rem',
+    padding: 4,
+    fontSize: 12,
+    width: 110,
+    height: 32,
+    marginLeft: '.1rem',
+    marginTop: '.3rem',
+    marginBottom: 4,
     [theme.breakpoints.down('md')]: {
-      padding: 0,
-      fontSize: 10,
       width: 100,
-      height: 28,
-      marginLeft: '.1rem',
-      marginTop: '.3rem',
+      height: 30,
     },
     [theme.breakpoints.down('sm')]: {
-      width: 80,
+      width: 'fit-content',
       minWidth: 80,
+      height: 28,
+      padding: '0 8px',
+      fontSize: 10,
     },
   },
   buttonOutlinedPrimary: {
     background: 'white',
+  },
+  closeButton: {
+    position: 'absolute',
+    right: `${theme.spacing(1)}px`,
+    top: `${theme.spacing(1)}px`,
   },
 });
 
@@ -710,8 +749,7 @@ const ButtonGroup = styled.div`
 `;
 
 const StackedButton = styled.div`
-  margin: 0;
-  width: 100%;
+  width: 90% !important;
 `;
 
 export default withStyles(styles)(ItemActionBar);

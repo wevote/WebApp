@@ -211,13 +211,6 @@ export default {
       });
   },
 
-  voterRefreshDonations () {
-    Dispatcher.loadEndpoint('voterUpdate',
-      {
-        send_journal_list: true,
-      });
-  },
-
   voterSplitIntoTwoAccounts () {
     Dispatcher.loadEndpoint('voterSplitIntoTwoAccounts',
       {

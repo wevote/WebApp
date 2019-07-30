@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const PAUSE_DURATION_MICROSECONDS = 1250;
 
 async function clearTextInputValue (elementIdName) {
@@ -53,6 +55,17 @@ function scrollThroughPage () {
 async function setNewAddress (elementIdName, addressValue) {
   const clickableSelector = `#${elementIdName}`;
   const clickableItem = await $(clickableSelector);
+  await clickableItem.click();
+  // Delete 30 characters, add new address, then enter key
+  const addressConcatenation = `\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003${addressValue}\uE007`;
+  await clickableItem.setValue(addressConcatenation);
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
+async function setNewAddressIOS (elementIdName, addressValue) {
+  const clickableSelector = `#${elementIdName}`;
+  const clickableItem = await $(clickableSelector);
+  await clickableItem.click();
   // Delete 30 characters, add new address, then enter key
   const addressConcatenation = `\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003\uE003${addressValue}\uE007`;
   await clickableItem.setValue(addressConcatenation);
@@ -80,4 +93,24 @@ async function simpleTextInput (elementIdName, textValue) {
   await browser.pause(PAUSE_DURATION_MICROSECONDS);
 }
 
-module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, simpleCloseBootstrapModal, simpleTextInput, setNewAddress };
+function writeToLog (message) {
+  const time = (new Date(Date.now())).toISOString();
+  const { name } = driver.config.capabilities;
+  fs.appendFile('./browserstack.log', `${time} ${message} [${name}]\n`, (err) => {
+    if (err) throw err;
+  });
+}
+
+async function clickTopLeftCornerOfElement (selector) {
+  const element = await $(selector);
+  if (element.isW3C) {
+    // need to figure out how to use webdriverio's performActions with BrowserStack
+  } else {
+    // JSON Wire Protocol
+    await element.moveTo(1, 1);
+    await element.positionClick();
+  }
+  await browser.pause(PAUSE_DURATION_MICROSECONDS);
+}
+
+module.exports = { clearTextInputValue, scrollThroughPage, simpleClick, clickTopLeftCornerOfElement, simpleCloseBootstrapModal, simpleTextInput, setNewAddress, setNewAddressIOS, writeToLog };

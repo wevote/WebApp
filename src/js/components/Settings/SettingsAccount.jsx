@@ -10,7 +10,7 @@ import AppStore from '../../stores/AppStore';
 import BrowserPushMessage from '../Widgets/BrowserPushMessage';
 import FacebookActions from '../../actions/FacebookActions';
 import FacebookStore from '../../stores/FacebookStore';
-import { historyPush } from '../../utils/cordovaUtils';
+import { historyPush, isWebApp } from '../../utils/cordovaUtils';
 import FacebookSignIn from '../Facebook/FacebookSignIn';
 import LoadingWheel from '../LoadingWheel';
 import { oAuthLog, renderLog } from '../../utils/logging';
@@ -159,10 +159,10 @@ export default class SettingsAccount extends Component {
 
     const { pleaseSignInTitle, pleaseSignInSubTitle } = this.state;
     let pageTitle = 'Sign In - We Vote';
-    let yourAccountTitle = 'Your Account';
+    let yourAccountTitle = 'Security & Sign In';
     let yourAccountExplanation = '';
     if (this.state.voter.is_signed_in) {
-      pageTitle = 'Your Account - We Vote';
+      pageTitle = 'Security & Sign In - We Vote';
       if (this.state.voter.signed_in_facebook && !this.state.voter.signed_in_twitter) {
         yourAccountTitle = 'Have Twitter Too?';
         yourAccountExplanation = 'By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.';
@@ -191,27 +191,25 @@ export default class SettingsAccount extends Component {
               )
             }
             {!this.state.voter.signed_in_twitter || !this.state.voter.signed_in_facebook ? (
-              <div className="u-stack--md">
-                { !this.state.voter.signed_in_twitter && (
-                  <span>
-                    <RecommendedText className="u-tl u-stack--sm">Recommended</RecommendedText>
-                    <TwitterSignIn buttonText="Sign in with Twitter" />
-                  </span>
-                )
-                }
-                {/* { !this.state.voter.signed_in_twitter && !this.state.voter.signed_in_facebook && (
-                  <span>
-                    <span className="u-margin-left--sm" />
-                  </span>
-                )
-                } */}
-                { !this.state.voter.signed_in_facebook && (
-                  <span>
-                    <FacebookSignIn toggleSignInModal={this.props.toggleSignInModal} buttonText="Sign in with Facebook" />
-                  </span>
-                )
-                }
-              </div>
+              <>
+                <div className="u-stack--md">
+                  { !this.state.voter.signed_in_twitter && (
+                    <span>
+                      <RecommendedText className="u-tl u-stack--sm">Recommended</RecommendedText>
+                      <TwitterSignIn buttonText="Sign in with Twitter" />
+                    </span>
+                  )
+                  }
+                </div>
+                <div className="u-stack--md">
+                  { !this.state.voter.signed_in_facebook && (
+                    <span>
+                      <FacebookSignIn toggleSignInModal={this.props.toggleSignInModal} buttonText="Sign in with Facebook" />
+                    </span>
+                  )
+                  }
+                </div>
+              </>
             ) : null
             }
             {this.state.voter.is_signed_in ? (
@@ -284,7 +282,9 @@ export default class SettingsAccount extends Component {
             ) : null
             }
             <br />
-            <VoterEmailAddressEntry />
+            {isWebApp() &&
+              <VoterEmailAddressEntry />
+            }
 
             {debugMode && (
             <div className="text-center">

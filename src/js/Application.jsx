@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
 import { ToastContainer } from 'react-toastify';
 import styled from 'styled-components';
 import { getApplicationViewBooleans, polyfillObjectEntries, setZenDeskHelpVisibility } from './utils/applicationUtils';
 import cookies from './utils/cookies';
-import {
-  cordovaScrollablePaneTopPadding, cordovaVoterGuideTopPadding, getToastClass, historyPush, isCordova, isWebApp,
-} from './utils/cordovaUtils';
+import { getToastClass, historyPush, isCordova, isWebApp } from './utils/cordovaUtils';
+import { cordovaContainerMainOverride, cordovaScrollablePaneTopPadding, cordovaVoterGuideTopPadding } from './utils/cordovaOffsets';
 import ElectionActions from './actions/ElectionActions';
-// import FooterBarCordova from "./components/Navigation/FooterBarCordova";
 import FooterBar from './components/Navigation/FooterBar';
 import FriendActions from './actions/FriendActions';
 import Header from './components/Navigation/Header';
@@ -21,6 +19,7 @@ import VoterActions from './actions/VoterActions';
 import VoterStore from './stores/VoterStore';
 import webAppConfig from './config';
 import { stringContains } from './utils/textFormat';
+import SnackNotifier from './components/Widgets/SnackNotifier';
 
 class Application extends Component {
   static propTypes = {
@@ -35,14 +34,13 @@ class Application extends Component {
       // Do not define voter here. We rely on it being undefined
       voter_initial_retrieve_needed: true,
     };
-    this.loadedHeader = false;
   }
 
   componentDidMount () {
     // console.log("React Application ---------------   componentDidMount ()");
     polyfillObjectEntries();
-    this.initFacebook();
-    this.initCordova();
+    this.initializeFacebookSdkForJavascript();
+    this.initializationForCordova();
 
     const voterDeviceId = VoterStore.voterDeviceId();
     VoterActions.voterRetrieve();
@@ -56,10 +54,14 @@ class Application extends Component {
 
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    window.addEventListener('scroll', this.handleWindowScroll);
+    if (isWebApp()) {
+      // disabled for cordova June 2019, see note in https://github.com/wevote/WebApp/pull/2303
+      window.addEventListener('scroll', this.handleWindowScroll);
+    }
   }
 
-  componentDidUpdate () {
+  // eslint-disable-next-line no-unused-vars
+  componentDidUpdate (prevProps, prevState, nextContent) {
     const { location: { pathname } } = this.props;
     const { voteMode, voterGuideMode } = getApplicationViewBooleans(pathname);
 
@@ -77,27 +79,28 @@ class Application extends Component {
   componentWillUnmount () {
     this.appStoreListener.remove();
     this.voterStoreListener.remove();
-    this.loadedHeader = false;
     window.removeEventListener('scroll', this.handleWindowScroll);
   }
 
-  initCordova () { // eslint-disable-line
+  initializationForCordova () { // eslint-disable-line
     if (isCordova()) {
-      console.log(`Application initCordova ------------ ${__filename}`);
+      const { uuid } = window.device;
+      console.log(`Application initializationForCordova ------------ ${__filename} uuid: ${uuid}`);
       window.handleOpenURL = (url) => {
         TwitterSignIn.handleTwitterOpenURL(url);
       };
     }
   }
 
-  initFacebook () { // eslint-disable-line
+  initializeFacebookSdkForJavascript () { // eslint-disable-line
     if (webAppConfig.ENABLE_FACEBOOK) {
       window.fbAsyncInit = function () {  // eslint-disable-line func-names
-        window.FB.init({
+        const { FB } = window;
+        FB.init({
           appId: webAppConfig.FACEBOOK_APP_ID,
           autoLogAppEvents: true,
           xfbml: true,
-          version: 'v3.2',
+          version: 'v3.3',
           status: true, // set this status to true, this will fix the popup blocker issue
         });
       };
@@ -155,7 +158,7 @@ class Application extends Component {
     // console.log("SignedIn Voter in Application onVoterStoreChange voter: ", VoterStore.getVoter().full_name);
   }
 
-  getAppBaseClass () {
+  getAppBaseClass = () => {
     // console.log("Determine the headroom space pathname:" + pathname);
     let appBaseClass = 'app-base';
     if (isWebApp()) {
@@ -164,7 +167,7 @@ class Application extends Component {
       appBaseClass += ' cordova-base';
     }
     return appBaseClass;
-  }
+  };
 
   handleWindowScroll = (evt) => {
     const { scrollTop } = evt.target.scrollingElement;
@@ -175,6 +178,7 @@ class Application extends Component {
       AppActions.setScrolled(false);
     }
   };
+
 
   incomingVariableManagement () {
     // console.log("Application, incomingVariableManagement, this.props.location.query: ", this.props.location.query);
@@ -195,7 +199,8 @@ class Application extends Component {
       // Currently not used, but it seems like it should be
       // this.setState({ we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie });
 
-      const hideIntroModalFromUrl = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
+      const { hide_intro_modal: hideIntroModal } = this.props.location.query;
+      const hideIntroModalFromUrl = this.props.location.query ? hideIntroModal : 0;
       const hideIntroModalFromUrlTrue = hideIntroModalFromUrl === 1 || hideIntroModalFromUrl === '1' || hideIntroModalFromUrl === 'true';
       if (hideIntroModalFromUrl) {
         // console.log("hideIntroModalFromUrl: ", hideIntroModalFromUrl);
@@ -211,12 +216,13 @@ class Application extends Component {
       let autoFollowListFromUrl = '';
       if (this.props.location.query) {
         // console.log("this.props.location.query: ", this.props.location.query);
+        const { af, auto_follow: autoFollow, voter_address: voterAddress } = this.props.location.query;
         if (this.props.location.query.af) {
-          autoFollowListFromUrl = this.props.location.query.af;
+          autoFollowListFromUrl = af;
           atLeastOneQueryVariableFound = true;
-        } else if (this.props.location.query.auto_follow) {
+        } else if (autoFollow) {
           atLeastOneQueryVariableFound = true;
-          autoFollowListFromUrl = this.props.location.query.auto_follow;
+          autoFollowListFromUrl = autoFollow;
         }
 
         const autoFollowList = autoFollowListFromUrl ? autoFollowListFromUrl.split(',') : [];
@@ -224,10 +230,9 @@ class Application extends Component {
           OrganizationActions.organizationFollow('', organizationTwitterHandle);
         });
 
-        if (this.props.location.query.voter_address) {
+        if (voterAddress) {
           // console.log("this.props.location.query.voter_address: ", this.props.location.query.voter_address);
           atLeastOneQueryVariableFound = true;
-          const voterAddress = this.props.location.query.voter_address;
           if (voterAddress && voterAddress !== '') {
             // Do not save a blank voterAddress -- we don't want to over-ride an existing address with a blank
             VoterActions.voterAddressSave(voterAddress);
@@ -246,9 +251,14 @@ class Application extends Component {
   render () {
     renderLog(__filename);
     const { location: { pathname } } = this.props;
+    const { StripeCheckout } = window;
+    const waitForStripe = (pathname === '/more/donate' && StripeCheckout === undefined);
     // console.log('Application render, pathname:', pathname);
 
-    if (this.state.voter === undefined || this.props.location === undefined) {
+    if (this.state.voter === undefined || this.props.location === undefined || waitForStripe) {
+      if (waitForStripe) {
+        console.log('Waiting for stripe to load, on an initial direct URL to DonationForm');
+      }
       return (
         <LoadingScreen>
           <div style={{ padding: 30 }}>
@@ -265,29 +275,27 @@ class Application extends Component {
     routingLog(pathname);
     setZenDeskHelpVisibility(pathname);
 
-    const { inTheaterMode, contentFullWidthMode, settingsMode, voterGuideMode } = getApplicationViewBooleans(pathname);
+    const { inTheaterMode, contentFullWidthMode, settingsMode, showFooterBar, voterGuideMode } = getApplicationViewBooleans(pathname);
 
     if (inTheaterMode) {
-      // console.log("inTheaterMode", inTheaterMode);
+      // console.log('inTheaterMode', inTheaterMode);
       return (
         <div className="app-base" id="app-base-id">
-          <div id="the styled div that follows is the wrapper for theatre mode">
-            <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
-              <div className="page-content-container">
-                <div className="container-fluid">
-                  <div className="row">
-                    <div className="col-12 container-main">
-                      { this.props.children }
-                    </div>
+          <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
+            <div className="page-content-container">
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-12 container-main">
+                    { this.props.children }
                   </div>
                 </div>
               </div>
-            </Wrapper>
-          </div>
+            </div>
+          </Wrapper>
         </div>
       );
     } else if (voterGuideMode) {
-      // console.log("voterGuideMode", voterGuideMode);
+      // console.log('voterGuideMode', voterGuideMode);
       return (
         <div className={this.getAppBaseClass()} id="app-base-id">
           <ToastContainer closeButton={false} className={getToastClass()} />
@@ -297,15 +305,14 @@ class Application extends Component {
                   voter={this.state.voter}
                   weVoteBrandingOff={this.state.weVoteBrandingOff}
           />
-          <div id="the styled div that follows is the wrapper for voter guide mode">
-            <Wrapper padTop={cordovaVoterGuideTopPadding()}>
-              <div className="page-content-container">
-                <div className="container-voter-guide">
-                  { this.props.children }
-                </div>
+          <SnackNotifier />
+          <Wrapper padTop={cordovaVoterGuideTopPadding()}>
+            <div className="page-content-container">
+              <div className="container-voter-guide">
+                { this.props.children }
               </div>
-            </Wrapper>
-          </div>
+            </div>
+          </Wrapper>
           {(
             <div className="footroom-wrapper">
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
@@ -315,7 +322,7 @@ class Application extends Component {
         </div>
       );
     } else if (settingsMode) {
-      // console.log("settingsMode", settingsMode);
+      // console.log('settingsMode', settingsMode);
       return (
         <div className={this.getAppBaseClass()} id="app-base-id">
           <ToastContainer closeButton={false} className={getToastClass()} />
@@ -325,16 +332,15 @@ class Application extends Component {
                   voter={this.state.voter}
                   weVoteBrandingOff={this.state.weVoteBrandingOff}
           />
-          <div id="the styled div that follows is the wrapper for settings mode">
-            <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
-              <div className="page-content-container">
-                <div className="container-settings">
-                  { this.props.children }
-                </div>
+          <SnackNotifier />
+          <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
+            <div className="page-content-container">
+              <div className="container-settings">
+                { this.props.children }
               </div>
-            </Wrapper>
-          </div>
-          {(
+            </div>
+          </Wrapper>
+          {showFooterBar && (
             <div className="footroom-wrapper">
               <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
             </div>
@@ -343,6 +349,7 @@ class Application extends Component {
       );
     }
     // This handles other pages, like Welcome and the Ballot display
+    // console.log('Application, another mode');
     return (
       <div className={this.getAppBaseClass()} id="app-base-id">
         <ToastContainer closeButton={false} className={getToastClass()} />
@@ -352,6 +359,7 @@ class Application extends Component {
                 voter={this.state.voter}
                 weVoteBrandingOff={this.state.weVoteBrandingOff}
         />
+        <SnackNotifier />
         { pathname === '/for-campaigns' ||
           pathname === '/for-organizations' ||
           pathname.startsWith('/how') ||
@@ -367,31 +375,17 @@ class Application extends Component {
             </div>
           ) :
           (
-            <Wrapper padTop={cordovaScrollablePaneTopPadding(__filename)}>
+            <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
               <div className="page-content-container">
                 <div className="container-fluid">
-                  <div className="container-main">
+                  <div className="container-main" style={{ paddingTop: `${cordovaContainerMainOverride()}` }}>
                     { this.props.children }
                   </div>
                 </div>
               </div>
             </Wrapper>
           )}
-        {/* Do not show the FooterBar if any of these pathname patterns are found */}
-        { !(pathname && pathname.startsWith('/candidate')) &&
-          !(pathname && pathname.startsWith('/friends/')) &&
-          !(pathname && pathname.startsWith('/measure')) &&
-          !(pathname && pathname.startsWith('/office')) &&
-          !(pathname && pathname.startsWith('/value/')) &&
-          !(pathname && pathname.startsWith('/values/')) &&
-          !(pathname === '/for-campaigns') &&
-          !(pathname === '/for-organizations') &&
-          !(pathname.startsWith('/how')) &&
-          !(pathname === '/more/about') &&
-          !(pathname === '/more/credits') &&
-          !(pathname.startsWith('/more/donate')) &&
-          !(pathname.startsWith('/more/pricing')) &&
-          !(pathname === '/welcome') && (
+        {showFooterBar && (
           <div className="footroom-wrapper">
             <FooterBar location={this.props.location} pathname={pathname} voter={this.state.voter} />
           </div>
@@ -418,6 +412,9 @@ const LoadingScreen = styled.div`
   font-size: '30px',
   color: '#fff',
   flex-direction: 'column',
+  @media print{
+    color: '#2E3C5D';
+  }
 `;
 
 export default Application;

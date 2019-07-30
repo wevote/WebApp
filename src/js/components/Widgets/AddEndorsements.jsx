@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
 import OpenExternalWebSite from './OpenExternalWebSite';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import positionIcon from '../../../img/global/svg-icons/positions-icon-24-x-24.svg';
+import SplitIconButton from './SplitIconButton';
 
 const text = 'Don\'t see your favorite organization or endorsement? We Vote is nonpartisan and welcomes public endorsements of candidates and measures from any organization or public figure.';
 
@@ -28,21 +28,30 @@ class AddEndorsements extends Component {
           <div className="network-btn">
             <OpenExternalWebSite
               url="https://api.wevoteusa.org/vg/create/"
-              className="opinions-followed__missing-org-link"
+              className="u-no-underline"
               target="_blank"
-              title="Endorsements Missing?"
+              title="ENDORSEMENTS MISSING?"
               body={(
-                <Button
-                  bsPrefix="u-margin-top--sm u-stack--xs"
-                  className="btn btn-social btn-lg value-btn value-btn__endorsements text-center"
+                // <Button
+                //   className="split-button split-button__left"
+                //   id="myValuesAddEndorsementsToWeVote"
+                //   color="primary"
+                //   variant="contained"
+                // >
+                //   <span className="split-button__icon">
+                //     <img src={cordovaDot('/img/global/svg-icons/positions-icon-24-x-24.svg')} alt="" />
+                //   </span>
+                //   <div className="split-button__seperator split-button__seperator--left" />
+                //   <span className="split-button__text">
+                //     Add endorsements
+                //   </span>
+                // </Button>
+                <SplitIconButton
+                  title="Endorsements missing?"
                   id="myValuesAddEndorsementsToWeVote"
-                  variant="primary"
-                >
-                  <span>
-                    <img src={cordovaDot(positionIcon)} className="value-btn__endorsements--icon" alt="" />
-                  </span>
-                  Add endorsements to We Vote
-                </Button>
+                  icon={<img src={cordovaDot(positionIcon)} alt="" />}
+                  buttonText="Add endorsements"
+                />
               )}
             />
             {endorsementText}

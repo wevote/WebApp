@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import { renderLog } from '../../utils/logging';
 
 const iframeStyle = {
@@ -13,23 +14,14 @@ export default class PollingPlaceLocator extends Component {
   render () {
     renderLog(__filename);
     return (
-      <div className="intro-modal">
-        <div className="intro-modal__h1">
-          Find Your Polling Location
-        </div>
-
-        <div className="intro-modal-vertical-scroll-contain_without_slider">
-          <div className="intro-modal-vertical-scroll card">
-            <div className="row intro-modal__grid intro-modal__default-text u_margin-center">
-              <div className="container-fluid u-inset--md">
-                <div>
-                  <iframe title="voter-information-project" style={iframeStyle} src="https://tool.votinginfoproject.org/iframe-embed.html" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Wrapper>
+        <iframe className="vit_modal_iframe" title="voter-information-project" style={iframeStyle} src="https://tool.votinginfoproject.org/iframe-embed.html" />
+      </Wrapper>
     );
   }
 }
+
+const Wrapper = styled.div`
+  padding: 0;
+  overflow: none;
+`;

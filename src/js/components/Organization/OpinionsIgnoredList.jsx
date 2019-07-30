@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import FollowToggle from '../Widgets/FollowToggle';
 import VoterGuideDisplayForList from '../VoterGuide/VoterGuideDisplayForList';
 import { renderLog } from '../../utils/logging';
@@ -40,20 +39,15 @@ export default class OpinionsIgnoredList extends Component {
       return null;
     }
 
-    let counter = 0;
 
     return (
       <div className="guidelist card-child__list-group">
-        <TransitionGroup className="org-ignore">
-          {this.state.organizationsIgnored.map(oneOrganization => (
-            <CSSTransition key={counter++} timeout={500} classNames="fade">
-              <VoterGuideDisplayForList key={oneOrganization.organization_we_vote_id} {...oneOrganization}>
-                <FollowToggle organizationWeVoteId={oneOrganization.organization_we_vote_id} />
-              </VoterGuideDisplayForList>
-            </CSSTransition>
-          ))
+        {this.state.organizationsIgnored.map(oneOrganization => (
+          <VoterGuideDisplayForList key={oneOrganization.organization_we_vote_id} {...oneOrganization}>
+            <FollowToggle organizationWeVoteId={oneOrganization.organization_we_vote_id} />
+          </VoterGuideDisplayForList>
+        ))
         }
-        </TransitionGroup>
       </div>
     );
   }

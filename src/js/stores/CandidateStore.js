@@ -248,6 +248,9 @@ class CandidateStore extends ReduceStore {
 
           officePositionList.forEach((one) => {
             candidateId = one.ballot_item_we_vote_id;
+            if (!positionListFromAdvisersFollowedByVoter[candidateId]) {
+              positionListFromAdvisersFollowedByVoter[candidateId] = [];
+            }
             positionListFromAdvisersFollowedByVoter[candidateId].push(one);
 
             ballotItemWeVoteId = one.ballot_item_we_vote_id;

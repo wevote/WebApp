@@ -12,21 +12,22 @@ import PlaceIcon from '@material-ui/icons/Place';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { withStyles } from '@material-ui/core/styles';
 import { historyPush, isWebApp, isCordova, hasIPhoneNotch } from '../../utils/cordovaUtils';
+import AppActions from '../../actions/AppActions';
+import AppStore from '../../stores/AppStore';
+import BallotActions from '../../actions/BallotActions';
 import cookies from '../../utils/cookies';
 import FriendStore from '../../stores/FriendStore';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import HeaderBarLogo from './HeaderBarLogo';
 import { renderLog } from '../../utils/logging';
 import OrganizationActions from '../../actions/OrganizationActions';
+import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
+import SelectBallotModal from '../Ballot/SelectBallotModal';
 import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
-import AppActions from '../../actions/AppActions';
-import AppStore from '../../stores/AppStore';
 import { stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
-import SelectBallotModal from '../Ballot/SelectBallotModal';
-import BallotActions from '../../actions/BallotActions';
 // import Badge from '@material-ui/core/Badge'; // DALE: FRIENDS TEMPORARILY DISABLED
 
 class HeaderBar extends Component {
@@ -50,6 +51,7 @@ class HeaderBar extends Component {
       profilePopUpOpen: false,
       friendInvitationsSentToMe: 0,
       showEditAddressButton: false,
+      showSelectBallotModal: false,
       showSignInModal: false,
       scrolledDown: false,
     };
@@ -101,6 +103,9 @@ class HeaderBar extends Component {
     if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
       return true;
     }
+    if (this.state.showPaidAccountUpgradeModal !== nextState.showPaidAccountUpgradeModal) {
+      return true;
+    }
     if (this.state.scrolledDown !== nextState.scrolledDown) {
       return true;
     }
@@ -135,7 +140,13 @@ class HeaderBar extends Component {
       // console.log("shouldComponentUpdate: this.props.voter.signed_in_facebook", this.props.voter.signed_in_facebook, ", nextProps.voter.signed_in_facebook", nextProps.voter.signed_in_facebook);
       return true;
     }
-    return thisVoterExists && nextVoterExists && this.props.voter.signed_in_with_email !== nextProps.voter.signed_in_with_email;
+    if (thisVoterExists && nextVoterExists && this.props.voter.signed_in_with_email !== nextProps.voter.signed_in_with_email) {
+      return true;
+    }
+    if (thisVoterExists && nextVoterExists && this.props.voter.is_signed_in !== nextProps.voter.is_signed_in) {
+      return true;
+    }
+    return false;
   }
 
   componentWillUnmount () {
@@ -150,9 +161,15 @@ class HeaderBar extends Component {
   }
 
   onAppStoreChange () {
+    const paidAccountUpgradeMode = AppStore.showPaidAccountUpgradeModal();
+    // console.log('HeaderBar paidAccountUpgradeMode:', paidAccountUpgradeMode);
+    const showPaidAccountUpgradeModal = paidAccountUpgradeMode && paidAccountUpgradeMode !== '';
+    // console.log('HeaderBar showPaidAccountUpgradeModal:', showPaidAccountUpgradeModal);
     this.setState({
       scrolledDown: AppStore.getScrolledDown(),
       showEditAddressButton: AppStore.showEditAddressButton(),
+      showPaidAccountUpgradeModal,
+      paidAccountUpgradeMode,
       showSignInModal: AppStore.showSignInModal(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
     });
@@ -175,7 +192,7 @@ class HeaderBar extends Component {
       const { profilePopUpOpen } = this.state;
       this.setState({ profilePopUpOpen: !profilePopUpOpen });
     } else {
-      this.handleNavigation('/more/hamburger');
+      this.handleNavigation('/settings/hamburger');
     }
   }
 
@@ -189,6 +206,11 @@ class HeaderBar extends Component {
       BallotActions.voterBallotListRetrieve(); // Retrieve a list of ballots for the voter from other elections
     }
     AppActions.setShowSelectBallotModal(!showSelectBallotModal);
+  }
+
+  closeNewVoterGuideModal () {
+    // console.log('HeaderBar closeNewVoterGuideModal');
+    AppActions.setShowNewVoterGuideModal(false);
   }
 
   closeSignInModal () {
@@ -231,7 +253,7 @@ class HeaderBar extends Component {
     }
     renderLog(__filename);
     const { voter, classes, pathname, location } = this.props;
-    const { showEditAddressButton, scrolledDown } = this.state;
+    const { paidAccountUpgradeMode, scrolledDown, showEditAddressButton, showPaidAccountUpgradeModal, showSelectBallotModal } = this.state;
     const ballotBaseUrl = '/ballot';
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     // const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0; // DALE: FRIENDS TEMPORARILY DISABLED
@@ -239,6 +261,32 @@ class HeaderBar extends Component {
     const showFullNavigation = true;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
     const showingBallot = stringContains(ballotBaseUrl, pathname.toLowerCase().slice(0, 7));
+    const editAddressButtonHtml = (
+      <Tooltip title="Change my location or election" aria-label="Change Address or Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+        <span>
+          <IconButton
+            classes={{ root: classes.iconButtonRoot }}
+            id="changeAddressHeaderBar"
+            onClick={this.toggleSelectBallotModal}
+          >
+            <PlaceIcon />
+          </IconButton>
+          <Button
+            color="primary"
+            classes={{ root: classes.addressButtonRoot }}
+            id="changeAddressHeaderBarText"
+            onClick={this.toggleSelectBallotModal}
+          >
+            <span className="u-show-desktop-tablet">
+              Address & Elections
+            </span>
+            <span className="u-show-mobile">
+              Address
+            </span>
+          </Button>
+        </span>
+      </Tooltip>
+    );
 
     return (
       <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}>
@@ -271,46 +319,46 @@ class HeaderBar extends Component {
               </Tabs>
             </div>
             {
-              voterIsSignedIn && (
+              voterIsSignedIn && voterPhotoUrlMedium ? (
                 <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
                   {
-                    showEditAddressButton && (
-                      <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-                        <IconButton
-                          classes={{ root: classes.iconButtonRoot }}
-                          id="changeAddressHeaderBar"
-                          onClick={this.toggleSelectBallotModal}
-                        >
-                          <PlaceIcon />
-                        </IconButton>
-                      </Tooltip>
-                    )
+                    showEditAddressButton && editAddressButtonHtml
                   }
-                  {voterPhotoUrlMedium ? (
-                    <div id="profileAvatarHeaderBar"
-                          className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
-                          onClick={this.toggleProfilePopUp}
+                  <span className="u-show-desktop-tablet">
+                    <span id="profileAvatarHeaderBar"
+                      className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
+                      onClick={this.toggleProfilePopUp}
                     >
                       <img
                         className="header-nav__avatar"
+                        style={{
+                          marginLeft: 16,
+                        }}
                         src={voterPhotoUrlMedium}
                         height={34}
                         width={34}
-                        alt="Your Profile"
+                        alt="Your Settings"
+                      />
+                    </span>
+                  </span>
+                  <span className="u-show-mobile">
+                    <div
+                      id="profileAvatarHeaderBar"
+                      className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
+                      onClick={() => this.handleNavigation('/settings/hamburger')}
+                    >
+                      <img
+                        className="header-nav__avatar"
+                        style={{
+                          marginLeft: 16,
+                        }}
+                        src={voterPhotoUrlMedium}
+                        height={34}
+                        width={34}
+                        alt="Your Settings"
                       />
                     </div>
-                  ) : (
-                    <div>
-                      <IconButton
-                        classes={{ root: classes.iconButtonRoot }}
-                        id="profileAvatarHeaderBar"
-                        onClick={this.toggleProfilePopUp}
-                      >
-                        <AccountCircleIcon />
-                      </IconButton>
-                    </div>
-                  )
-                  }
+                  </span>
                   {this.state.profilePopUpOpen && voterIsSignedIn && (
                     <HeaderBarProfilePopUp
                       hideProfilePopUp={this.hideProfilePopUp}
@@ -325,24 +373,49 @@ class HeaderBar extends Component {
                     />
                   )}
                 </div>
+              ) : (
+                voterIsSignedIn && (
+                  <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex">
+                    {showEditAddressButton && editAddressButtonHtml}
+                    <span className="u-show-desktop-tablet">
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot }}
+                        id="profileAvatarHeaderBar"
+                        onClick={this.toggleProfilePopUp}
+                      >
+                        <AccountCircleIcon />
+                      </IconButton>
+                    </span>
+                    <span className="u-show-mobile">
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot }}
+                        id="profileAvatarHeaderBar"
+                        onClick={() => this.handleNavigation('/settings/hamburger')}
+                      >
+                        <AccountCircleIcon />
+                      </IconButton>
+                    </span>
+                    {this.state.profilePopUpOpen && voterIsSignedIn && (
+                      <HeaderBarProfilePopUp
+                        hideProfilePopUp={this.hideProfilePopUp}
+                        onClick={this.toggleProfilePopUp}
+                        profilePopUpOpen={this.state.profilePopUpOpen}
+                        signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+                        toggleProfilePopUp={this.toggleProfilePopUp}
+                        toggleSignInModal={this.toggleSignInModal}
+                        transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+                        voter={this.props.voter}
+                        weVoteBrandingOff={this.state.we_vote_branding_off}
+                      />
+                    )}
+                  </div>
+                )
               )
             }
             {
               !voterIsSignedIn && (
-              <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
-                {
-                  showEditAddressButton && (
-                    <Tooltip title="Change my location" aria-label="Change Address" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
-                      <IconButton
-                        classes={{ root: classes.iconButtonRoot }}
-                        id="changeAddressHeaderBar"
-                        onClick={this.toggleSelectBallotModal}
-                      >
-                        <PlaceIcon />
-                      </IconButton>
-                    </Tooltip>
-                  )
-                }
+              <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none d-print-none">
+                {showEditAddressButton && editAddressButtonHtml}
                 <Button
                   color="primary"
                   classes={{ root: classes.headerButtonRoot }}
@@ -360,16 +433,23 @@ class HeaderBar extends Component {
           show={this.state.showSignInModal}
           toggleFunction={this.closeSignInModal}
         />
-        {this.state.showSelectBallotModal ? (
+        {showSelectBallotModal && (
           <SelectBallotModal
             ballotBaseUrl="/ballot"
             location={location}
             pathname={pathname}
-            show={this.state.showSelectBallotModal}
+            show={showSelectBallotModal}
             toggleFunction={this.toggleSelectBallotModal}
           />
-        ) : (
-          null
+        )}
+        {showPaidAccountUpgradeModal && (
+          <PaidAccountUpgradeModal
+            initialPricingPlan={paidAccountUpgradeMode}
+            location={location}
+            pathname={pathname}
+            show={showPaidAccountUpgradeModal}
+            toggleFunction={this.closePaidAccountUpgradeModal}
+          />
         )}
       </Wrapper>
     );
@@ -382,7 +462,20 @@ const styles = theme => ({
     top: 9,
   },
   padding: {
-    padding: `0 ${theme.spacing.unit * 2}px`,
+    padding: `0 ${theme.spacing(2)}px`,
+  },
+  addressButtonRoot: {
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    color: 'rgba(17, 17, 17, .5)',
+    outline: 'none !important',
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: 6,
+      marginLeft: 2,
+      paddingLeft: 0,
+      paddingRight: 0,
+    },
   },
   headerButtonRoot: {
     paddingTop: 2,
@@ -393,18 +486,20 @@ const styles = theme => ({
     color: 'rgb(6, 95, 212)',
     marginLeft: '1rem',
     outline: 'none !important',
-    [theme.breakpoints.down('md')]: {
-      marginLeft: '.1rem',
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: 12,
+      paddingLeft: 0,
     },
   },
   iconButtonRoot: {
+    paddingTop: 2,
+    paddingRight: 0,
+    paddingBottom: 2,
+    paddingLeft: 0,
     color: 'rgba(17, 17, 17, .4)',
     outline: 'none !important',
     '&:hover': {
       backgroundColor: 'transparent',
-    },
-    [theme.breakpoints.down('md')]: {
-      padding: 4,
     },
   },
   tooltipPlacementBottom: {

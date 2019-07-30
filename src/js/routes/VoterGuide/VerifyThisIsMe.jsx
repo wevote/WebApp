@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
-import { Link } from 'react-router';
 import Helmet from 'react-helmet';
 import CandidateItem from '../../components/Ballot/CandidateItem';
 import CandidateStore from '../../stores/CandidateStore';
@@ -13,6 +11,7 @@ import OrganizationCard from '../../components/VoterGuide/OrganizationCard';
 import OrganizationStore from '../../stores/OrganizationStore';
 import TwitterAccountCard from '../../components/Twitter/TwitterAccountCard';
 import TwitterActions from '../../actions/TwitterActions';
+import TwitterSignIn from '../../components/Twitter/TwitterSignIn';
 import TwitterStore from '../../stores/TwitterStore';
 import VoterStore from '../../stores/VoterStore';
 
@@ -129,8 +128,8 @@ export default class VerifyThisIsMe extends Component {
     if (this.state.status === undefined) {
       // Show a loading wheel while this component's data is loading
       return LoadingWheel;
-    } else if (this.state.kindOfOwner === 'CANDIDATE') {
-      // console.log("VerifyThisIsMe this.state.kindOfOwner === CANDIDATE");
+    } else if (this.state.kindOfOwner === 'POLITICIAN') {
+      // console.log("VerifyThisIsMe this.state.kindOfOwner === POLITICIAN");
       this.props.params.we_vote_id = this.state.ownerWeVoteId;
       return (
         <span>
@@ -155,20 +154,19 @@ export default class VerifyThisIsMe extends Component {
             <br />
           </div>
           { signedInTwitter ? (
-            <Link to="/twittersigninprocess/signinswitchstart">
-              <Button variant="primary">
-                Sign In With @
-                {this.state.twitterHandle}
-                {' '}
-                Account
-              </Button>
-            </Link>
+            <div>
+              Sign out from the Twitter account @
+              {voter.twitter_screen_name}
+              , and then Sign in with
+              {' '}
+              @
+              {this.state.twitterHandle}
+            </div>
           ) : (
-            <Link to="/twittersigninprocess/signinswitchstart">
-              <Button variant="primary">
-                Sign Into Twitter
-              </Button>
-            </Link>
+            <TwitterSignIn
+              buttonText={`Sign in to @${this.state.twitterHandle}`}
+              id="signInToVerifyAccess"
+            />
           )}
         </span>
       );
@@ -186,8 +184,8 @@ export default class VerifyThisIsMe extends Component {
           <Helmet title="Claim This Page - We Vote" />
           <div className="card">
             <div className="card-main">
-              <FollowToggle organizationWeVoteId={this.props.params.we_vote_id} />
               <OrganizationCard organization={organization} />
+              <FollowToggle organizationWeVoteId={this.props.params.we_vote_id} />
             </div>
           </div>
           <div>
@@ -199,20 +197,19 @@ export default class VerifyThisIsMe extends Component {
             </p>
           </div>
           { signedInTwitter ? (
-            <Link to="/twittersigninprocess/signinswitchstart">
-              <Button variant="primary">
-                Sign In With @
-                {this.state.twitterHandle}
-                {' '}
-                Account
-              </Button>
-            </Link>
+            <div>
+              Sign out from the Twitter account @
+              {voter.twitter_screen_name}
+              , and then Sign in with
+              {' '}
+              @
+              {this.state.twitterHandle}
+            </div>
           ) : (
-            <Link to="/twittersigninprocess/signinswitchstart">
-              <Button variant="primary">
-                Sign Into Twitter
-              </Button>
-            </Link>
+            <TwitterSignIn
+              buttonText={`Sign in to @${this.state.twitterHandle}`}
+              id="signInToVerifyAccess"
+            />
           )}
         </span>
       );
@@ -232,20 +229,19 @@ export default class VerifyThisIsMe extends Component {
             <br />
           </div>
           { signedInTwitter ? (
-            <Link to="/twittersigninprocess/signinswitchstart">
-              <Button variant="primary">
-                Sign In With @
-                {this.state.twitterHandle}
-                {' '}
-                Account
-              </Button>
-            </Link>
+            <div>
+              Sign out from the Twitter account @
+              {voter.twitter_screen_name}
+              , and then Sign in with
+              {' '}
+              @
+              {this.state.twitterHandle}
+            </div>
           ) : (
-            <Link to="/twittersigninprocess/signinswitchstart">
-              <Button variant="primary">
-                Sign Into Twitter
-              </Button>
-            </Link>
+            <TwitterSignIn
+              buttonText={`Sign in to @${this.state.twitterHandle}`}
+              id="signInToVerifyAccess"
+            />
           )}
         </div>
       );

@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
 import cookies from '../../utils/cookies';
-import { hasIPhoneNotch, isWebApp } from '../../utils/cordovaUtils';
+import { hasIPhoneNotch, historyPush, isCordova, isWebApp } from '../../utils/cordovaUtils';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
@@ -22,16 +24,19 @@ class HeaderBackTo extends Component {
     backToLinkText: PropTypes.string,
     classes: PropTypes.object,
     location: PropTypes.object,
-    params: PropTypes.object.isRequired,
     voter: PropTypes.object,
+    voterWeVoteId: PropTypes.string,
   };
 
   constructor (props) {
     super(props);
     this.state = {
+      backToLink: '',
+      backToLinkText: '',
       profilePopUpOpen: false,
       showSignInModal: AppStore.showSignInModal(),
       voter: {},
+      voterWeVoteId: '',
     };
     this.hideAccountMenu = this.hideAccountMenu.bind(this);
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
@@ -49,7 +54,10 @@ class HeaderBackTo extends Component {
     const weVoteBrandingOffFromUrl = this.props.location.query ? this.props.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     this.setState({
+      backToLink: this.props.backToLink,
+      backToLinkText: this.props.backToLinkText,
       voter: this.props.voter,
+      voterWeVoteId: this.props.voter.we_vote_id || this.props.voterWeVoteId,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
@@ -59,9 +67,63 @@ class HeaderBackTo extends Component {
     const weVoteBrandingOffFromUrl = nextProps.location.query ? nextProps.location.query.we_vote_branding_off : 0;
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     this.setState({
+      backToLink: nextProps.backToLink,
+      backToLinkText: nextProps.backToLinkText,
       voter: nextProps.voter,
+      voterWeVoteId: nextProps.voter.we_vote_id || nextProps.voterWeVoteId,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if not needed
+    if (this.state.backToLink !== nextState.backToLink) {
+      // console.log('this.state.backToLink: ', this.state.backToLink, ', nextState.backToLink', nextState.backToLink);
+      return true;
+    }
+    if (this.state.backToLinkText !== nextState.backToLinkText) {
+      // console.log('this.state.backToLinkText: ', this.state.backToLinkText, ', nextState.backToLinkText', nextState.backToLinkText);
+      return true;
+    }
+    if (this.state.profilePopUpOpen !== nextState.profilePopUpOpen) {
+      // console.log('this.state.profilePopUpOpen: ', this.state.profilePopUpOpen, ', nextState.profilePopUpOpen', nextState.profilePopUpOpen);
+      return true;
+    }
+    if (this.state.scrolledDown !== nextState.scrolledDown) {
+      // console.log('this.state.scrolledDown: ', this.state.scrolledDown, ', nextState.scrolledDown', nextState.scrolledDown);
+      return true;
+    }
+    if (this.state.showSignInModal !== nextState.showSignInModal) {
+      // console.log('this.state.showSignInModal: ', this.state.showSignInModal, ', nextState.showSignInModal', nextState.showSignInModal);
+      return true;
+    }
+    if (this.state.voterWeVoteId !== nextState.voterWeVoteId) {
+      // console.log('this.state.voterWeVoteId: ', this.state.voterWeVoteId, ', nextState.voterWeVoteId', nextState.voterWeVoteId);
+      return true;
+    }
+    const { voter } = this.state;
+    const { nextVoter } = nextState;
+    let voterIsSignedIn = null;
+    let voterPhotoUrlMedium = null;
+    let nextVoterIsSignedIn = null;
+    let nextVoterPhotoUrlMedium = null;
+    if (voter) {
+      voterIsSignedIn = voter.is_signed_in;
+      voterPhotoUrlMedium = voter.voter_photo_url_medium;
+    }
+    if (nextVoter) {
+      nextVoterIsSignedIn = nextVoter.is_signed_in;
+      nextVoterPhotoUrlMedium = nextVoter.voter_photo_url_medium;
+    }
+    if (nextVoterIsSignedIn && voterIsSignedIn !== nextVoterIsSignedIn) {
+      // console.log('voterIsSignedIn: ', voterIsSignedIn, ', nextVoterIsSignedIn: ', nextVoterIsSignedIn);
+      return true;
+    }
+    if (nextVoterPhotoUrlMedium && voterPhotoUrlMedium !== nextVoterPhotoUrlMedium) {
+      // console.log('voterPhotoUrlMedium: ', voterPhotoUrlMedium, ', nextVoterPhotoUrlMedium: ', nextVoterPhotoUrlMedium);
+      return true;
+    }
+    return false;
   }
 
   componentWillUnmount () {
@@ -73,6 +135,8 @@ class HeaderBackTo extends Component {
       showSignInModal: AppStore.showSignInModal(),
     });
   }
+
+  handleNavigation = to => historyPush(to);
 
   transitionToYourVoterGuide () {
     // Positions for this organization, for this voter / election
@@ -124,9 +188,12 @@ class HeaderBackTo extends Component {
   }
 
   render () {
+    // console.log('HeaderBackTo render');
     renderLog(__filename);
     const { voter } = this.state;
-    const { backToLink, backToLinkText, classes } = this.props;
+    const { classes } = this.props;
+    const { backToLink, backToLinkText } = this.state;
+    const voterIsSignedIn = voter.is_signed_in;
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
 
     const headerClassName = (function header () {
@@ -146,32 +213,80 @@ class HeaderBackTo extends Component {
             id="backToLinkTabHeader"
           />
 
-          {this.state.profilePopUpOpen && voter.is_signed_in && (
-          <HeaderBarProfilePopUp
-            {...this.props}
-            onClick={this.toggleProfilePopUp}
-            profilePopUpOpen={this.state.profilePopUpOpen}
-            weVoteBrandingOff={this.state.we_vote_branding_off}
-            toggleProfilePopUp={this.toggleProfilePopUp}
-            toggleSignInModal={this.toggleSignInModal}
-            hideProfilePopUp={this.hideProfilePopUp}
-            transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-            signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
-          />
-          )}
-
           {isWebApp() && (
-          <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none" onClick={this.toggleAccountMenu}>
-            {voterPhotoUrlMedium ? (
-              <div id="profileAvatarHeaderBar" className="header-nav__avatar-container">
-                <img
-                  className="header-nav__avatar"
-                  alt="profile avatar"
-                  src={voterPhotoUrlMedium}
-                  height={34}
-                  width={34}
+          <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
+            {voterIsSignedIn ? (
+              <span>
+                {voterPhotoUrlMedium ? (
+                  <span>
+                    <span className="u-show-desktop-tablet">
+                      <div
+                        id="profileAvatarHeaderBar"
+                        className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
+                        onClick={this.toggleProfilePopUp}
+                      >
+                        <img
+                          className="header-nav__avatar"
+                          src={voterPhotoUrlMedium}
+                          height={34}
+                          width={34}
+                          alt="Your Settings"
+                        />
+                      </div>
+                    </span>
+                    <span className="u-show-mobile">
+                      <div
+                        id="profileAvatarHeaderBar"
+                        className={`header-nav__avatar-container ${isCordova() ? 'header-nav__avatar-cordova' : undefined}`}
+                        onClick={() => this.handleNavigation('/settings/hamburger')}
+                      >
+                        <img
+                          className="header-nav__avatar"
+                          src={voterPhotoUrlMedium}
+                          height={34}
+                          width={34}
+                          alt="Your Settings"
+                        />
+                      </div>
+                    </span>
+                  </span>
+                ) : (
+                  <span>
+                    <span className="u-show-desktop-tablet">
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot }}
+                        id="profileAvatarHeaderBar"
+                        onClick={this.toggleProfilePopUp}
+                      >
+                        <AccountCircleIcon />
+                      </IconButton>
+                    </span>
+                    <span className="u-show-mobile">
+                      <IconButton
+                        classes={{ root: classes.iconButtonRoot }}
+                        id="profileAvatarHeaderBar"
+                        onClick={() => this.handleNavigation('/settings/hamburger')}
+                      >
+                        <AccountCircleIcon />
+                      </IconButton>
+                    </span>
+                  </span>
+                )
+                }
+                {this.state.profilePopUpOpen && (
+                <HeaderBarProfilePopUp
+                  hideProfilePopUp={this.hideProfilePopUp}
+                  onClick={this.toggleProfilePopUp}
+                  profilePopUpOpen={this.state.profilePopUpOpen}
+                  signOutAndHideProfilePopUp={this.signOutAndHideProfilePopUp}
+                  toggleProfilePopUp={this.toggleProfilePopUp}
+                  toggleSignInModal={this.toggleSignInModal}
+                  transitionToYourVoterGuide={this.transitionToYourVoterGuide}
+                  voter={this.props.voter}
+                  weVoteBrandingOff={this.state.we_vote_branding_off}
                 />
-              </div>
+                )}
+              </span>
             ) : (
               <Button
                 className="header-sign-in"

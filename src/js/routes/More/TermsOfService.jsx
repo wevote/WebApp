@@ -1,6 +1,8 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Link } from 'react-router';
+import styled from 'styled-components';
+import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
 import { renderLog } from '../../utils/logging';
 
 export default class TermsOfService extends React.Component {
@@ -11,7 +13,7 @@ export default class TermsOfService extends React.Component {
   render () {
     renderLog(__filename);
     return (
-      <div>
+      <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="Terms of Service - We Vote" />
         <div className="container-fluid well">
           <h1 className="text-center">WeVote.US Terms of Service</h1>
@@ -108,7 +110,11 @@ export default class TermsOfService extends React.Component {
           </p>
           <p>&nbsp;</p>
         </div>
-      </div>
+      </Wrapper>
     );
   }
 }
+
+const Wrapper = styled.div`
+  padding-top: ${({ padTop }) => padTop};
+`;

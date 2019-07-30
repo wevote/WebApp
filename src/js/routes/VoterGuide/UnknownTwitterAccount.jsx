@@ -26,8 +26,8 @@ export default class UnknownTwitterAccount extends Component {
         />
         <br />
         <ThisIsMeAction
-          twitter_handle_being_viewed={twitterHandle}
-          name_being_viewed={twitterName}
+          twitterHandleBeingViewed={twitterHandle}
+          nameBeingViewed={twitterName}
         />
         <br />
       </div>

@@ -3,6 +3,7 @@ import Helmet from 'react-helmet';
 import { Link } from 'react-router';
 import { Table } from 'react-bootstrap';
 import { cordovaDot, isCordova, isWebApp } from '../../utils/cordovaUtils';
+import DeviceDialog from '../../components/Widgets/DeviceDialog';
 import VoterStore from '../../stores/VoterStore';
 import HamburgerMenuRow from '../../components/Navigation/HamburgerMenuRow';
 import LoadingWheel from '../../components/LoadingWheel';
@@ -11,7 +12,7 @@ import { renderLog } from '../../utils/logging';
 import avatarGeneric from '../../../img/global/svg-icons/avatar-generic.svg';
 
 export default class HamburgerMenu extends Component {
-  // This can only be called by a developer running Cordova in an emulator.  Voters will never see it.
+  // This can only be called by a developer running Cordova in an Simulator.  Voters will never see it.
   static clearAllCookies () {
     const cookies = document.cookie.split(';');
     const d = new Date();
@@ -31,7 +32,10 @@ export default class HamburgerMenu extends Component {
     super(props);
     this.state = {
       voter: undefined,
+      showDeviceDialog: false,
     };
+    this.deviceTableVisibilityOn = this.deviceTableVisibilityOn.bind(this);
+    this.deviceTableVisibilityOff = this.deviceTableVisibilityOff.bind(this);
   }
 
   componentDidMount () {
@@ -75,6 +79,17 @@ export default class HamburgerMenu extends Component {
     );
   }
 
+  deviceTableVisibilityOff () {
+    const { showDeviceDialog } = this.state;
+    if (showDeviceDialog === true) {
+      this.setState({ showDeviceDialog: false });
+    }
+  }
+
+  deviceTableVisibilityOn () {
+    this.setState({ showDeviceDialog: true });
+  }
+
   render () {
     renderLog(__filename);
     const { voter } = this.state;
@@ -85,6 +100,9 @@ export default class HamburgerMenu extends Component {
     let { is_signed_in: isSignedIn } = voter;
     const { voter_photo_url_medium: photoUrl } = voter;
     isSignedIn = isSignedIn === undefined || isSignedIn === null ? false : isSignedIn;
+    const showSettingsInDevelopment = false; // If developing any of the new settings, change this to true
+
+    // console.log("Hamburger menu this.state.showDeviceDialog " + this.state.showDeviceDialog);
 
     return (
       <div>
@@ -106,49 +124,24 @@ export default class HamburgerMenu extends Component {
               />
             )}
 
-            <tr className="hamburger-menu__tr">
-              <td colSpan={3} style={{ padding: 15 }}>
-                <span className="we-vote-promise" style={{ fontSize: 18, color: 'black', opacity: 0.7 }}>Settings:</span>
-              </td>
-            </tr>
-
-            <HamburgerMenuRow
-              onClickAction={null}
-              to="/settings/profile"
-              icon="fa fa-address-card"
-              iconStyle={{ fontSize: 28, color: '#1c2f4b' }}
-              linkText="Profile"
-              indented
-            />
+            {isSignedIn && (
+              <HamburgerMenuRow
+                onClickAction={null}
+                to="/settings/profile"
+                icon="fa fa-address-card"
+                iconStyle={{ fontSize: 28, color: '#1c2f4b' }}
+                linkText="General"
+              />
+            )}
 
             {isSignedIn && (
               <HamburgerMenuRow
                 onClickAction={null}
                 to="/settings/account"
                 fullIcon={this.yourAccountIcon(photoUrl)}
-                linkText="Account"
-                indented
+                linkText="Security & Sign In"
               />
             )}
-
-            <HamburgerMenuRow
-              onClickAction={null}
-              to="/settings/address"
-              icon="fa fa-home"
-              iconStyle={{ fontSize: 30, color: '#1c2f4b' }}
-              linkText="Address"
-              indented
-            />
-
-            <HamburgerMenuRow
-              onClickAction={null}
-              to="/settings/election"
-              icon="fa fa-cog"
-              iconStyle={{ fontSize: 28, color: '#1c2f4b' }}
-              linkText="Election Choice"
-              indented
-            />
-
 
             {isSignedIn && (
               <HamburgerMenuRow
@@ -157,7 +150,66 @@ export default class HamburgerMenu extends Component {
                 icon="fa fa-bell"
                 iconStyle={{ fontSize: 26, color: '#1c2f4b' }}
                 linkText="Notifications"
-                indented
+              />
+            )}
+
+            {isSignedIn && showSettingsInDevelopment && isWebApp() && (
+              <HamburgerMenuRow
+                onClickAction={null}
+                to="/settings/domain"
+                icon="fa fa-globe-americas"
+                iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
+                linkText="Domain"
+              />
+            )}
+
+            {isSignedIn && showSettingsInDevelopment && isWebApp() && (
+              <HamburgerMenuRow
+                onClickAction={null}
+                to="/settings/sharing"
+                icon="fa fa-share"
+                iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
+                linkText="Sharing"
+              />
+            )}
+
+            {isSignedIn && showSettingsInDevelopment && isWebApp() && (
+              <HamburgerMenuRow
+                onClickAction={null}
+                to="/settings/subscription"
+                icon="fa fa-shopping-cart"
+                iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
+                linkText="Subscription Plan"
+              />
+            )}
+
+            {isSignedIn && showSettingsInDevelopment && isWebApp() && (
+              <HamburgerMenuRow
+                onClickAction={null}
+                to="/settings/analytics"
+                icon="fa fa-chart-line"
+                iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
+                linkText="Analytics"
+              />
+            )}
+
+            {isSignedIn && showSettingsInDevelopment && isWebApp() && (
+              <HamburgerMenuRow
+                onClickAction={null}
+                to="/settings/promoted"
+                icon="fa fa-bullhorn"
+                iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
+                linkText="Promoted Organizations"
+              />
+            )}
+
+            {isWebApp() && (
+              <HamburgerMenuRow
+                onClickAction={null}
+                to="/settings/tools"
+                icon="fa fa-tools"
+                iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
+                linkText="Tools for Your Website"
               />
             )}
 
@@ -187,43 +239,49 @@ export default class HamburgerMenu extends Component {
             />
             )}
 
-            <tr className="hamburger-terms__tr">
+            <tr className="hamburger-terms__tr-terms">
               <td className="hamburger-terms__td" colSpan={3}>
                 <div>
                   <span className="hamburger-terms__text">
                     <Link to="/more/terms">
                       <span className="u-no-break">Terms of Service</span>
                     </Link>
-                    <span style={{ paddingLeft: 20 }} />
+                  </span>
+                </div>
+              </td>
+            </tr>
+            <tr className="hamburger-terms__tr-terms">
+              <td className="hamburger-terms__td" colSpan={3}>
+                <div>
+                  <span className="hamburger-terms__text">
                     <Link to="/more/privacy">
                       <span className="u-no-break">Privacy Policy</span>
                     </Link>
                   </span>
                 </div>
+              </td>
+            </tr>
+            <tr className="hamburger-terms__tr-terms">
+              <td className="hamburger-terms__td" colSpan={3}>
                 <div>
                   <span className="hamburger-terms__text">
                     <Link onClick={this.hideProfilePopUp} to="/more/attributions">Attributions</Link>
                   </span>
                 </div>
-                { isCordova() && (window.location.href.startsWith('file:///Users') || window.location.href.startsWith('file:///android')) ?
-                  (
-                    <div>
-                      <div>
-                        <span className="hamburger-terms__text">
-                          <Link onClick={HamburgerMenu.clearAllCookies} to="/">Clear Cookies</Link>
-                        </span>
-                      </div>
-                      <div>
-                        <span className="hamburger-terms__text">
-                          <Link to="/wevoteintro/network">Navigate to Welcome</Link>
-                        </span>
-                      </div>
-                    </div>
-                  ) :
-                  null
-                }
               </td>
             </tr>
+            {isCordova() && (
+            <tr className="hamburger-terms__tr-terms">
+              <td className="hamburger-terms__td" colSpan={3}>
+                <div>
+                  <span className="hamburger-terms__text" onClick={() => this.deviceTableVisibilityOn()} style={{ color: 'black' }}>
+                    Device Information
+                  </span>
+                  <DeviceDialog visibilityOffFunction={this.deviceTableVisibilityOff} show={this.state.showDeviceDialog} />
+                </div>
+              </td>
+            </tr>
+            )}
           </tbody>
         </Table>
       </div>

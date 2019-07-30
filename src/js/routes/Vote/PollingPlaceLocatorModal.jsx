@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
-import { Modal } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import {
-  cordovaDot, cordovaOpenSafariView, hasIPhoneNotch, historyPush, isWebApp,
-} from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
-import closeIcon from '../../../img/global/icons/x-close.png';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import { withStyles, withTheme } from '@material-ui/core';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
 import PollingPlaceLocator from '../../components/Vote/PollingPlaceLocator';
+import { renderLog } from '../../utils/logging';
+import {
+  cordovaOpenSafariView, hasIPhoneNotch, historyPush, isWebApp,
+} from '../../utils/cordovaUtils';
 
-export default class PollingPlaceLocatorModal extends Component {
+
+class PollingPlaceLocatorModal extends Component {
   static propTypes = {
-    onExit: PropTypes.func,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -29,33 +35,74 @@ export default class PollingPlaceLocatorModal extends Component {
 
   render () {
     renderLog(__filename);
+    const { classes } = this.props;
 
     if (isWebApp()) {
       return (
-        <Modal
-          bsPrefix="background-brand-blue modal"
-          show={this.state.showPollingLocatorModal}
-          onHide={() => this.openPollingLocationModal(this)}
+        <Dialog
+          classes={{ paper: classes.dialogPaper }}
+          open
+          onClose={() => { this.openPollingLocationModal(); }}
         >
-          <Modal.Body>
-            <div className="intro-modal__close">
-              <button type="button"
-                onClick={this.openPollingLocationModal}
-                className={`intro-modal__close-anchor ${hasIPhoneNotch() ? 'intro-modal__close-anchor-iphonex' : ''}`}
-              >
-                <img src={cordovaDot(closeIcon)} alt="close" />
-              </button>
-            </div>
+          <DialogTitle>
+            <Typography variant="h6" className="text-center">Find Your Polling Location</Typography>
+            <IconButton
+              aria-label="Close"
+              classes={{ root: classes.closeButton }}
+              onClick={() => { this.openPollingLocationModal(); }}
+              id="profileClosePollingPlaceLocatorModal"
+            >
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+
+          <DialogContent classes={{ root: classes.dialogContent }}>
             <div key={1}><PollingPlaceLocator /></div>
-          </Modal.Body>
-        </Modal>
+          </DialogContent>
+        </Dialog>
       );
     } else {
       return (
         <div>
-          { cordovaOpenSafariView('https://wevote.us/vip.html', this.props.onExit, 50) }
+          { cordovaOpenSafariView('https://wevote.us/vip.html', historyPush('/ballot/vote'), 50) }
         </div>
       );
     }
   }
 }
+const styles = theme => ({
+  dialogPaper: {
+    marginTop: hasIPhoneNotch() ? 68 : 48,
+    [theme.breakpoints.up('sm')]: {
+      minWidth: '80%',
+      maxWidth: '80%',
+      width: '80%',
+      minHeight: '90%',
+      maxHeight: '90%',
+      height: '90%',
+      margin: '0 auto',
+    },
+    [theme.breakpoints.down('sm')]: {
+      minWidth: '95%',
+      maxWidth: '95%',
+      width: '95%',
+      minHeight: '90%',
+      maxHeight: '90%',
+      height: '90%',
+      margin: '0 auto',
+    },
+  },
+  dialogContent: {
+    [theme.breakpoints.down('md')]: {
+      padding: '0 8px 8px',
+      overflow: 'hidden',
+    },
+  },
+  closeButton: {
+    position: 'absolute',
+    right: `${theme.spacing(1)}px`,
+    top: `${theme.spacing(1)}px`,
+  },
+});
+
+export default withTheme(withStyles(styles)(PollingPlaceLocatorModal));

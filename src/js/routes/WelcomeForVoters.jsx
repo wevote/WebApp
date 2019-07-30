@@ -12,18 +12,38 @@ import googleLogo from '../../img/global/logos/google-logo.svg';
 import voteDotOrgLogo from '../../img/global/logos/vote_dot_org_logo-530x200.png';
 import vipLogo from '../../img/global/logos/vip-logo-1000x208.png';
 import { Title, BlueTitle, SubTitle, Video, PlayerContainer } from '../components/Welcome/HeaderWelcome';
-import Section, { SectionTitle, SectionTitleBold, Step, StepNumber, StepLabel, GetStarted, ButtonContainer, DescriptionContainer, DescriptionLeftColumn, DescriptionImageColumn, Description, Image, Bold, NetworkContainer, NetworkImage, SignUpContainer, SignUpMessage } from '../components/Welcome/Section';
-import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
-import Footer from '../components/Welcome/Footer';
-import TextBox from '../components/Welcome/TextBox';
-import AddressBox from '../components/Welcome/AddressBox';
-import { historyPush, cordovaDot } from '../utils/cordovaUtils';
-import Testimonial from '../components/Widgets/Testimonial';
+import AddressBoxWelcome from '../components/Welcome/AddressBoxWelcome';
 import AnalyticsActions from '../actions/AnalyticsActions';
+import { cordovaScrollablePaneTopPadding } from '../utils/cordovaOffsets';
+import { historyPush, cordovaDot } from '../utils/cordovaUtils';
+import Footer from '../components/Welcome/Footer';
+import { renderLog } from '../utils/logging';
+import TextBox from '../components/Welcome/TextBox';
+import Testimonial from '../components/Widgets/Testimonial';
 import validateEmail from '../utils/email-functions';
 import VoterActions from '../actions/VoterActions';
 import VoterConstants from '../constants/VoterConstants';
 import VoterStore from '../stores/VoterStore';
+import Section, {
+  SectionTitle,
+  SectionTitleBold,
+  Step,
+  StepNumber,
+  StepLabel,
+  GetStarted,
+  ButtonContainer,
+  DescriptionContainer,
+  DescriptionLeftColumn,
+  DescriptionImageColumn,
+  Description,
+  Image,
+  Bold,
+  NetworkContainer,
+  NetworkImage,
+  SignUpContainer,
+  SignUpMessage,
+} from '../components/Welcome/Section';
+import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 
 class Welcome extends PureComponent {
   static propTypes = {
@@ -95,6 +115,7 @@ class Welcome extends PureComponent {
   };
 
   render () {
+    renderLog(__filename);
     const { classes, pathname } = this.props;
     // console.log('WelcomeNew, pathname: ', pathname);
     const { voter, newsletterOptInTrue } = this.state;
@@ -104,7 +125,7 @@ class Welcome extends PureComponent {
     const imageUrl = cordovaDot('/img/global/photos/Alissa_B-128x128.jpg');
     const testimonial = 'Great way to sort through my ballot! My husband and I used We Vote during the last election to learn more about our ballots and make some tough choices. Between following various organizations, and friending a couple of trusted friends, we felt like we had an excellent pool of information to draw from. It was so great!';
     return (
-      <Wrapper>
+      <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="Welcome Voters - We Vote" />
         <WelcomeAppbar pathname={pathname} />
         <HeaderForVoters>
@@ -144,7 +165,7 @@ class Welcome extends PureComponent {
             <StepLabel>Fill out the whole thing in under 6 minutes</StepLabel>
           </Step>
           <GetStarted>
-            <AddressBox icon={<LocationIcon />} />
+            <AddressBoxWelcome icon={<LocationIcon />} />
             <ButtonContainer>
               <Button
                 variant="contained"
@@ -291,6 +312,7 @@ const Wrapper = styled.div`
   align-items: center;
   background: white;
   overflow-x: hidden;
+  padding-top: ${({ padTop }) => padTop};
 `;
 
 export default withStyles(styles)(Welcome);

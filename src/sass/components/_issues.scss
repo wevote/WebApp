@@ -1,5 +1,7 @@
 // Issue related styles
 $menu-item-padding: 7px;
+$space-icon: 12px;
+$space-button-span: 10px;
 
 .issue-icon-list {
   &__endorsements-label {
@@ -202,13 +204,18 @@ $menu-item-padding: 7px;
     color: $selected-color !important;
     background: white !important;
     font-weight: 600 !important;
+    border: 1px solid $gray-light !important;
+  }
+  &__icon svg {
+    width: 18px !important;
+    height: 18px !important;
   }
   &__main {
     height: 32px !important;
     border-radius: $radius-sm3 !important;
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
-    border: 1px solid $gray-light !important;
+    // border: 1px solid $gray-light !important;
     border-right: none !important;
     padding: $space-xs $space-sm !important;
     flex: 1 0 0 !important;
@@ -227,13 +234,12 @@ $menu-item-padding: 7px;
   }
   &__seperator {
     display: inline-block;
-    height: 65%;
-    top: 17.5%;
-    width: 1px;
-    background: rgb(187, 187, 187);
+    height: 100%;
+    width: 1.5px;
+    background: rgba(204, 204, 204, .425);
     z-index: 1;
     position: absolute;
-    right: 32.98px;
+    right: 34px;
   }
   &__dropdown {
     display: inline-block !important;
@@ -245,15 +251,11 @@ $menu-item-padding: 7px;
     padding: $space-xs $space-sm !important;
     height: 100% !important;
     vertical-align: middle !important;
-    border: 1px solid $gray-light !important;
+    // border: 1px solid $gray-light !important;
     border-left: none !important;
   }
   &__dropdown ::after {
     font-size: 16px !important;
-  }
-  &__icon svg {
-    width: 18px !important;
-    height: 18px !important;
   }
   &__menu {
     font-size: 12.5px !important;
@@ -262,8 +264,8 @@ $menu-item-padding: 7px;
     min-width: 0 !important;
     max-width: 140px !important;
     padding: $space-none !important;
-    z-index: 999 !important;
-    left: 16px !important;
+    border: none !important;
+    box-shadow: 1px 1px 4px 0 #ddd;
   }
   &__menu * {
     width: 140px !important;
@@ -309,4 +311,55 @@ $menu-item-padding: 7px;
   border: none !important;
   height: 1px !important;
   background: $gray-light !important;
+}
+
+.split-button {
+  padding: $space-none !important;
+  box-shadow: none !important;
+  width: 100%;
+  > span {
+    padding: $space-button-span $space-none !important;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  &__left > span {
+    justify-content: flex-start;
+  }
+  &__seperator {
+    display: inline-block;
+    height: 100%;
+    width: 1.5px !important;
+    flex: none;
+    background: rgba(204, 204, 204, .425);
+    z-index: 1;
+    position: absolute;
+    &--left {
+      left: 44px;
+    }
+    &--right {
+      right: 44px;
+    }
+  }
+  &__icon {
+    width: 44px;
+    flex: none;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: $space-none $space-icon;
+    * {
+      width: 100%;
+      font-size: 22px;
+    }
+  }
+  &__text {
+    padding: $space-none $space-sm $space-none;
+    font-size: 13px;
+    text-align: center;
+    flex: 1 1 0;
+  }
+  * {
+    text-decoration: none !important;
+  }
 }

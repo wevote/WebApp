@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import Helmet from 'react-helmet';
+import { isWebApp } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 import { organizationalDonors, teamOfVolunteers } from '../../components/More/people';
@@ -63,9 +64,7 @@ class Credits extends Component {
           </CreditsDescriptionContainer>
           <CreditsDescriptionContainer>
             <SectionTitle>Volunteers, Interns &amp; Donors</SectionTitle>
-            We couldn
-            {'\''}
-            t do what we do without your help.
+            We couldn&apos;t do what we do without your help.
             {' '}
             Please join us by
             <OpenExternalWebSite
@@ -79,11 +78,15 @@ class Credits extends Component {
                 </span>
               )}
             />
-            , or
-            {' '}
-            <Link to="/more/donate">
-              donating now
-            </Link>
+            {isWebApp() && (
+              <span>
+                , or
+                {' '}
+                <Link to="/more/donate">
+                  donating now
+                </Link>
+              </span>
+            )}
             .
             <br />
             <br />

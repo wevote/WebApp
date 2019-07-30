@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import AccountCircleIcon from '@material-ui/core/SvgIcon/SvgIcon';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Appbar from '@material-ui/core/AppBar/index';
 import Toolbar from '@material-ui/core/Toolbar/index';
 import Button from '@material-ui/core/Button/index';
@@ -12,6 +12,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import cookies from '../../utils/cookies';
 import Navigation, { LogoContainer, Divider, NavLink, MobileNavigationMenu, MobileNavDivider, NavRow } from '../Welcome/Navigation';
 import HeaderBarLogo from './HeaderBarLogo';
+import { cordovaWelcomeAppToolbarTop } from '../../utils/cordovaOffsets';
 import { historyPush } from '../../utils/cordovaUtils';
 import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
@@ -180,7 +181,7 @@ class WelcomeAppbar extends Component {
     const voterPhotoUrlMedium = voter && voter.voter_photo_url_medium;
     return (
       <Appbar position="relative" classes={{ root: classes.appBarRoot }}>
-        <Toolbar classes={{ root: classes.toolbar }} disableGutters>
+        <Toolbar classes={{ root: classes.toolbar }} disableGutters style={{ top: cordovaWelcomeAppToolbarTop() }}>
           <LogoContainer>
             <HeaderBarLogo light />
           </LogoContainer>

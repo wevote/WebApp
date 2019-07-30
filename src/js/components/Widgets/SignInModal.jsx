@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
 import { withStyles, withTheme } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
@@ -52,7 +55,15 @@ class SignInModal extends Component {
         onClose={() => { this.props.toggleFunction(); }}
       >
         <DialogTitle>
-          <div className="text-center">Sign In</div>
+          <Typography variant="h6" className="text-center">Sign In</Typography>
+          <IconButton
+            aria-label="Close"
+            classes={{ root: classes.closeButton }}
+            onClick={() => { this.props.toggleFunction(); }}
+            id="profileCloseSignInModal"
+          >
+            <CloseIcon />
+          </IconButton>
         </DialogTitle>
         <DialogContent classes={{ root: classes.dialogContent }}>
           <section>
@@ -85,9 +96,9 @@ const styles = theme => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
     [theme.breakpoints.down('sm')]: {
-      minWidth: '90%',
-      maxWidth: '90%',
-      width: '90%',
+      minWidth: '95%',
+      maxWidth: '95%',
+      width: '95%',
       minHeight: '90%',
       maxHeight: '90%',
       height: '90%',
@@ -99,6 +110,14 @@ const styles = theme => ({
       padding: '0 8px 8px',
     },
   },
+  closeButton: {
+    position: 'absolute',
+    right: `${theme.spacing(1)}px`,
+    top: `${theme.spacing(1)}px`,
+  },
 });
 
-export default withTheme()(withStyles(styles)(SignInModal));
+
+export default withTheme(withStyles(styles)(SignInModal));
+// export default withStyles(styles, withTheme(SignInModal));
+// export default withStyles(styles)(withTheme(SignInModal));

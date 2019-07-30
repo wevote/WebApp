@@ -55,7 +55,7 @@ class BrowserPushMessage extends Component {
     if (!type) {
       type = 'info';
     }
-
+    const openSnackbar = (this.state.open && message);
     return (
       <Snackbar
         classes={{ anchorOriginBottomCenter: classes.anchorOriginBottomCenter }}
@@ -63,7 +63,7 @@ class BrowserPushMessage extends Component {
           vertical: 'bottom',
           horizontal: 'center',
         }}
-        open={this.state.open && message}
+        open={openSnackbar}
         autoHideDuration={5000}
         onClose={this.handleClose}
         ContentProps={{

@@ -5,8 +5,10 @@ import styled from 'styled-components';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ImageHandler from '../ImageHandler';
+import IssuesByOrganizationDisplayList from '../Values/IssuesByOrganizationDisplayList';
 import { renderLog } from '../../utils/logging';
 import { isSpeakerTypeIndividual, isSpeakerTypeOrganization } from '../../utils/organization-functions';
+import OpenExternalWebSite from '../Widgets/OpenExternalWebSite';
 import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
 import ReadMore from '../Widgets/ReadMore';
 import FollowToggle from '../Widgets/FollowToggle';
@@ -15,26 +17,71 @@ import StickyPopover from './StickyPopover';
 class PositionItem extends Component {
   static propTypes = {
     ballotItemDisplayName: PropTypes.string.isRequired,
-    // organization: PropTypes.object, // .isRequired,
     position: PropTypes.object.isRequired,
   };
 
-  shouldComponentUpdate (nextProps) {
+  constructor (props) {
+    super(props);
+    this.state = {
+      componentDidMount: false,
+    };
+  }
+
+  componentDidMount () {
+    this.setState({
+      componentDidMount: true,
+    });
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    if (this.state.componentDidMount !== nextState.componentDidMount) {
+      // console.log('this.state.componentDidMount: ', this.state.componentDidMount, ', nextState.componentDidMount', nextState.componentDidMount);
+      return true;
+    }
     if (this.props.ballotItemDisplayName !== nextProps.ballotItemDisplayName) {
+      // console.log('this.props.ballotItemDisplayName: ', this.props.ballotItemDisplayName, ', nextProps.ballotItemDisplayName', nextProps.ballotItemDisplayName);
       return true;
     }
     const { position: priorPosition } = this.props;
     const { position: nextPosition } = nextProps;
     if (priorPosition.speaker_we_vote_id !== nextPosition.speaker_we_vote_id) {
+      // console.log('priorPosition.speaker_we_vote_id: ', priorPosition.speaker_we_vote_id, ', nextPosition.speaker_we_vote_id:', nextPosition.speaker_we_vote_id);
       return true;
     }
-    if (priorPosition.organization_we_vote_id !== nextPosition.organization_we_vote_id) {
-      return true;
-    }
+    // if (priorPosition.organization_we_vote_id !== nextPosition.organization_we_vote_id) {
+    //   console.log('priorPosition.organization_we_vote_id: ', priorPosition.organization_we_vote_id, ', nextPosition.organization_we_vote_id:', nextPosition.organization_we_vote_id);
+    //   return true;
+    // }
     if (priorPosition.statement_text !== nextPosition.statement_text) {
+      // console.log('priorPosition.statement_text: ', priorPosition.statement_text, ', nextPosition.statement_text:', nextPosition.statement_text);
       return true;
     }
     if (priorPosition.speaker_twitter_handle !== nextPosition.speaker_twitter_handle) {
+      // console.log('priorPosition.speaker_twitter_handle: ', priorPosition.speaker_twitter_handle, ', nextPosition.speaker_twitter_handle:', nextPosition.speaker_twitter_handle);
+      return true;
+    }
+    if (priorPosition.is_information_only !== nextPosition.is_information_only) {
+      // console.log('priorPosition.is_information_only: ', priorPosition.is_information_only, ', nextPosition.is_information_only:', nextPosition.is_information_only);
+      return true;
+    }
+    if (priorPosition.is_oppose !== nextPosition.is_oppose) {
+      // console.log('priorPosition.is_oppose: ', priorPosition.is_oppose, ', nextPosition.is_oppose:', nextPosition.is_oppose);
+      return true;
+    }
+    if (priorPosition.is_support !== nextPosition.is_support) {
+      // console.log('priorPosition.is_oppose: ', priorPosition.is_oppose, ', nextPosition.is_oppose:', nextPosition.is_oppose);
+      return true;
+    }
+    let priorPositionFollowed = false;
+    let nextPositionFollowed = false;
+    if (priorPosition.followed !== undefined) {
+      priorPositionFollowed = priorPosition.followed;
+    }
+    if (nextPosition.followed !== undefined) {
+      nextPositionFollowed = nextPosition.followed;
+    }
+    if (priorPositionFollowed !== nextPositionFollowed) {
+      // console.log('priorPositionFollowed: ', priorPositionFollowed, ', nextPositionFollowed:', nextPositionFollowed);
       return true;
     }
     return false;
@@ -43,7 +90,7 @@ class PositionItem extends Component {
   render () {
     renderLog(__filename);
     const { position } = this.props;
-    // console.log('PositionItem render, position:', position);
+    // console.log('PositionItem render');
     // TwitterHandle-based link
     const voterGuideWeVoteIdLink = position.organization_we_vote_id ? `/voterguide/${position.organization_we_vote_id}` : `/voterguide/${position.speaker_we_vote_id}`;
     const speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : voterGuideWeVoteIdLink;
@@ -57,13 +104,14 @@ class PositionItem extends Component {
 
     // console.log(position);
     let supportOpposeInfo = 'info';
-
     if (position.is_information_only) {
       supportOpposeInfo = 'info';
     } else if (position.followed && position.is_support) {
       supportOpposeInfo = 'supportFollow';
     } else if (!position.followed && position.is_support) {
       supportOpposeInfo = 'support';
+    } else if (position.followed && position.is_oppose) {
+      supportOpposeInfo = 'opposeFollow';
     } else if (!position.support) {
       supportOpposeInfo = 'oppose';
     }
@@ -82,8 +130,14 @@ class PositionItem extends Component {
 
     if (showPosition) {
       const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
+      let moreInfoUrl = position.more_info_url;
+      if (moreInfoUrl) {
+        if (!moreInfoUrl.toLowerCase().startsWith('http')) {
+          moreInfoUrl = `http://${moreInfoUrl}`;
+        }
+      }
       return (
-        <React.Fragment>
+        <>
           <div className="u-show-desktop-tablet">
             <DesktopContainer>
               <DesktopItemLeft>
@@ -91,7 +145,7 @@ class PositionItem extends Component {
                   <StickyPopover
                     delay={{ show: 700, hide: 100 }}
                     popoverComponent={organizationPopoverCard}
-                    placement="bottom"
+                    placement="auto"
                     id="positions-popover-trigger-click-root-close"
                   >
                     <Link to={speakerLink} className="u-no-underline">
@@ -106,7 +160,7 @@ class PositionItem extends Component {
                     </Link>
                   </StickyPopover>
                 </DesktopItemImage>
-                <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
+                <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing anchorLeft />
               </DesktopItemLeft>
               <PositionItemDesktop className={`position-item--${supportOpposeInfo} position-item`}>
                 <DesktopItemHeader>
@@ -115,7 +169,7 @@ class PositionItem extends Component {
                       <StickyPopover
                         delay={{ show: 700, hide: 100 }}
                         popoverComponent={organizationPopoverCard}
-                        placement="bottom"
+                        placement="auto"
                         id="positions-popover-trigger-click-root-close"
                       >
                         <Link to={speakerLink}>
@@ -123,7 +177,12 @@ class PositionItem extends Component {
                         </Link>
                       </StickyPopover>
                     </DesktopItemName>
-                    <DesktopItemIssues>{/* Issues go here */}</DesktopItemIssues>
+                    <DesktopItemIssues>
+                      <IssuesByOrganizationDisplayList
+                        organizationWeVoteId={organizationWeVoteId}
+                        placement="auto"
+                      />
+                    </DesktopItemIssues>
                   </DesktopItemNameIssueContainer>
                   <DesktopItemEndorsementDisplay>
                     {supportOpposeInfo === 'supportFollow' ? (
@@ -131,23 +190,31 @@ class PositionItem extends Component {
                         +1
                       </SupportFollow>
                     ) : (
-                      <React.Fragment>
-                        {supportOpposeInfo === 'support' ? (
-                          <Support>
-                            <ThumbUpIcon />
-                          </Support>
+                      <span>
+                        {supportOpposeInfo === 'opposeFollow' ? (
+                          <OpposeFollow>
+                            -1
+                          </OpposeFollow>
                         ) : (
-                          <React.Fragment>
-                            {supportOpposeInfo === 'oppose' ? (
-                              <Oppose>
-                                <ThumbDownIcon />
-                              </Oppose>
+                          <span>
+                            {supportOpposeInfo === 'support' ? (
+                              <Support>
+                                <ThumbUpIcon />
+                              </Support>
                             ) : (
-                              null
+                              <span>
+                                {supportOpposeInfo === 'oppose' ? (
+                                  <Oppose>
+                                    <ThumbDownIcon />
+                                  </Oppose>
+                                ) : (
+                                  null
+                                )}
+                              </span>
                             )}
-                          </React.Fragment>
+                          </span>
                         )}
-                      </React.Fragment>
+                      </span>
                     )}
                   </DesktopItemEndorsementDisplay>
                 </DesktopItemHeader>
@@ -161,6 +228,23 @@ class PositionItem extends Component {
                     <div className="u-float-right">
                       Flag Links
                     </div> */}
+                    {moreInfoUrl ? (
+                      <div className="u-float-right">
+                        <OpenExternalWebSite
+                          url={moreInfoUrl}
+                          target="_blank"
+                          className="u-gray-mid"
+                          body={(
+                            <span>
+                              view source
+                              {' '}
+                              <i className="fas fa-external-link-alt" aria-hidden="true" />
+                            </span>
+                          )}
+                        />
+                      </div>
+                    ) : null
+                    }
                   </DesktopItemFooter>
                 </DesktopItemBody>
               </PositionItemDesktop>
@@ -181,106 +265,111 @@ class PositionItem extends Component {
                       imagePlaceholder }
                   </Link>
                 </MobileItemImage>
-                <MobileItemNameIssueContainer>
+                {/* Visible for most phones */}
+                <MobileItemNameIssuesContainer>
                   <MobileItemName>
-                    <Link to={speakerLink}>
+                    <Link to={speakerLink} className="u-break-word">
                       { position.speaker_display_name }
                     </Link>
                   </MobileItemName>
-                  <MobileItemIssues>{/* Issues go here */}</MobileItemIssues>
-                </MobileItemNameIssueContainer>
-                <MobileItemFollowToggleEndorsementDisplay>
+                  <MobileItemIssues>
+                    <IssuesByOrganizationDisplayList
+                      organizationWeVoteId={organizationWeVoteId}
+                      placement="bottom"
+                      fullWidth
+                    />
+                  </MobileItemIssues>
+                </MobileItemNameIssuesContainer>
+                {/* Visible on iPhone 5/se */}
+                <MobileSmallItemNameContainer>
+                  <MobileItemName>
+                    <Link to={speakerLink} className="u-break-word">
+                      { position.speaker_display_name }
+                    </Link>
+                  </MobileItemName>
+                </MobileSmallItemNameContainer>
+                <MobileItemEndorsementContainer>
                   <MobileItemEndorsementDisplay>
                     {supportOpposeInfo === 'supportFollow' ? (
                       <SupportFollow>
                         +1
                       </SupportFollow>
                     ) : (
-                      <React.Fragment>
-                        {supportOpposeInfo === 'support' ? (
-                          <Support>
-                            <ThumbUpIcon />
-                          </Support>
+                      <span>
+                        {supportOpposeInfo === 'opposeFollow' ? (
+                          <OpposeFollow>
+                            -1
+                          </OpposeFollow>
                         ) : (
-                          <React.Fragment>
-                            {supportOpposeInfo === 'oppose' ? (
-                              <Oppose>
-                                <ThumbDownIcon />
-                              </Oppose>
+                          <span>
+                            {supportOpposeInfo === 'support' ? (
+                              <Support>
+                                <ThumbUpIcon />
+                              </Support>
                             ) : (
-                              null
+                              <span>
+                                {supportOpposeInfo === 'oppose' ? (
+                                  <Oppose>
+                                    <ThumbDownIcon />
+                                  </Oppose>
+                                ) : (
+                                  null
+                                )}
+                              </span>
                             )}
-                          </React.Fragment>
+                          </span>
                         )}
-                      </React.Fragment>
+                      </span>
                     )}
                   </MobileItemEndorsementDisplay>
-                  <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
-                </MobileItemFollowToggleEndorsementDisplay>
+                </MobileItemEndorsementContainer>
               </MobileItemHeader>
+              <MobileSmallItemIssuesContainer>
+                <MobileItemIssues>
+                  <IssuesByOrganizationDisplayList
+                    organizationWeVoteId={organizationWeVoteId}
+                    placement="bottom"
+                    fullWidth
+                  />
+                </MobileItemIssues>
+              </MobileSmallItemIssuesContainer>
               <MobileItemBody>
-                <MobileItemDescriptionEndorsementContainer>
+                <MobileItemDescriptionFollowToggleContainer>
                   <MobileItemDescription>
                     {positionDescription}
                   </MobileItemDescription>
-                </MobileItemDescriptionEndorsementContainer>
+                  <MobileItemFollowToggleDisplay>
+                    <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
+                  </MobileItemFollowToggleDisplay>
+                </MobileItemDescriptionFollowToggleContainer>
                 <MobileItemFooter>
                   {/* <strong>Was this Useful?</strong>
                   Yes  No
                   <div className="u-float-right">
                     Flag Links
                   </div> */}
+                  {moreInfoUrl ? (
+                    <SourceLink>
+                      <OpenExternalWebSite
+                        url={moreInfoUrl}
+                        target="_blank"
+                        className="u-gray-mid"
+                        body={(
+                          <span>
+                            source
+                            {' '}
+                            <i className="fas fa-external-link-alt" aria-hidden="true" />
+                          </span>
+                        )}
+                      />
+                    </SourceLink>
+                  ) : null
+                  }
                 </MobileItemFooter>
               </MobileItemBody>
             </PositionItemMobile>
           </div>
-        </React.Fragment>
-
-      // <PositionItemListItem className="card-child position-item">
-      //   {/* One Position on this Candidate */}
-      //   <div className="card-child__media-object-anchor">
-      //     <OverlayTrigger
-      //       delay={{ show: 700, hide: 100 }}
-      //       trigger={['hover', 'focus']}
-      //       rootClose
-      //       placement="bottom"
-      //       overlay={organizationCardPopover}
-      //     >
-      //       <Link to={speakerLink} className="u-no-underline">
-      //         { position.speaker_image_url_https_medium ? (
-      //           <ImageHandler
-      //             className="card-child__avatar"
-      //             sizeClassName="icon-lg"
-      //             imageUrl={position.speaker_image_url_https_medium}
-      //           />
-      //         ) :
-      //           imagePlaceholder }
-      //       </Link>
-      //     </OverlayTrigger>
-      //     <FollowToggle organizationWeVoteId={organizationWeVoteId} lightModeOn hideDropdownButtonUntilFollowing />
-      //   </div>
-      //   <div className="card-child__media-object-content">
-      //     <div className="card-child__content">
-      //       <div className="u-flex">
-      //         <h4 className="card-child__display-name">
-      //           <OverlayTrigger
-      //             delay={{ show: 700, hide: 100 }}
-      //             trigger={['hover', 'focus']}
-      //             rootClose
-      //             placement="bottom"
-      //             overlay={organizationCardPopover}
-      //           >
-      //             <Link to={speakerLink}>
-      //               { position.speaker_display_name }
-      //             </Link>
-      //           </OverlayTrigger>
-      //         </h4>
-      //         <FriendsOnlyIndicator isFriendsOnly={!position.is_public_position} />
-      //       </div>
-      //       {positionDescription}
-      //     </div>
-      //   </div>
-      // </PositionItemListItem>
+        </>
       );
     } else {
       return nothingToDisplay;
@@ -295,36 +384,32 @@ const PositionItemMobile = styled.li`
   @media (max-width: 476px) {
     margin: 16px 0;
   }
+  max-width: 100% !important;
 `;
 
 const MobileItemHeader = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 16px 0 16px 8px;
+  padding: 6px 0 6px 8px;
+  min-height: 46px;
 `;
 
 const MobileItemImage = styled.div`
   margin-right: 16px;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   * {
-    border-radius: 50px;
-    width: 50px !important;
-    height: 50px !important;
-    max-width: 50px !important;
+    border-radius: 40px;
+    width: 40px !important;
+    height: 40px !important;
+    max-width: 40px !important;
     display: flex;
     align-items: flex-start;
     &::before {
-      font-size: 50px !important;
+      font-size: 40px !important;
     }
   }
-`;
-
-const MobileItemNameIssueContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
 `;
 
 const MobileItemName = styled.h4`
@@ -333,42 +418,79 @@ const MobileItemName = styled.h4`
   margin-bottom: 4px;
 `;
 
+const MobileItemNameIssuesContainer = styled.div`
+  display: block;
+  @media (max-width: 374px) {
+    display: none;
+  }
+`;
+
+const MobileSmallItemNameContainer = styled.div`
+  @media (min-width: 375px) {
+    display: none;
+  }
+`;
+
+const MobileSmallItemIssuesContainer = styled.div`
+  @media (min-width: 375px) {
+    display: none;
+  }
+  width: 100%;
+  margin-top: -12px;
+`;
+
 const MobileItemIssues = styled.div`
   margin: 0;
   font-size: 14px;
+  flex: 1 1 0;
 `;
 
-const MobileItemFollowToggleEndorsementDisplay = styled.div`
+const MobileItemEndorsementContainer = styled.div`
   margin-left: auto;
-  margin-top: auto;
   margin-bottom: auto;
+  width: 50px;
+  height: 100%;
+  max-height: 100%;
 `;
 
 const MobileItemEndorsementDisplay = styled.div`
   width: 100%;
   height: 100%;
-  margin-bottom: calc(50px + 16px);
+  margin-bottom: 46px;
 `;
 
 const MobileItemBody = styled.div`
-  padding: 16px;
+  padding: 6px 6px 6px;
   background: #f7f7f7;
   border-bottom-right-radius: 8px;
   border-top-right-radius: 8px;
   border-bottom-left-radius: 5px;
 `;
 
-const MobileItemDescriptionEndorsementContainer = styled.div`
+const MobileItemDescriptionFollowToggleContainer = styled.div`
   left: 2px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const MobileItemDescription = styled.div`
   font-size: 16px;
   color: #333;
+  flex: 1 1 0;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 14px;
+  }
+`;
+
+const MobileItemFollowToggleDisplay = styled.div`
+  width: 75px;
 `;
 
 const MobileItemFooter = styled.div`
-  padding-top: 4px;
+  height: 20px;
+  width: 100%;
+  margin-top: 2px;
+  font-size: 12px;
 `;
 
 const DesktopContainer = styled.div`
@@ -403,7 +525,7 @@ const DesktopItemImage = styled.div`
 const PositionItemDesktop = styled.div`
   border-radius: 5px;
   list-style: none;
-  padding: 16px;
+  padding: 6px 16px;
   background: #f7f7f7;
   flex: 1 1 0;
 `;
@@ -437,58 +559,83 @@ const DesktopItemBody = styled.div`
   margin: 0;
 `;
 
-const DesktopItemDescription = styled.p`
+const DesktopItemDescription = styled.div`
   font-size: 14px;
   margin-top: 8px;
 `;
 
 const DesktopItemFooter = styled.div`
-  margin-top: 8px;
-  font-size: 14px;
+  font-size: 12px;
+  margin-top: 2px;
 `;
 
 const SupportFollow = styled.div`
   color: white;
-  background: #1fc06f;
+  background: ${({ theme }) => theme.colors.supportGreenRgb};
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 5px;
   float: right;
   font-size: 16px;
   font-weight: bold;
+  @media print{
+    border: 2px solid grey;
+  }
+`;
+
+const OpposeFollow = styled.div`
+  color: white;
+  background: ${({ theme }) => theme.colors.opposeRedRgb};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+  float: right;
+  font-size: 16px;
+  font-weight: bold;
+  @media print{
+    border: 2px solid grey;
+  }
 `;
 
 const Support = styled.div`
-  color: #1fc06f;
+  color: ${({ theme }) => theme.colors.supportGreenRgb};
   background: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 5px;
-  border: 3px solid #1fc06f;
+  border: 3px solid ${({ theme }) => theme.colors.supportGreenRgb};
   float: right;
   font-size: 20px;
   font-weight: bold;
 `;
 
 const Oppose = styled.div`
-  color: red;
+  color: ${({ theme }) => theme.colors.opposeRedRgb};
   background: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 5px;
   float: right;
-  border: 3px solid red;
+  border: 3px solid ${({ theme }) => theme.colors.opposeRedRgb};
   font-size: 20px;
   font-weight: bold;
+`;
+
+const SourceLink = styled.div`
+  float: right;
+  margin-bottom: -4px;
 `;
 
 export default PositionItem;

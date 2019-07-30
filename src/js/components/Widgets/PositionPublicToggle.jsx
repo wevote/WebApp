@@ -4,18 +4,22 @@ import styled from 'styled-components';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
 import { hasIPhoneNotch } from '../../utils/cordovaUtils';
-import { showToastSuccess } from '../../utils/showToast';
 import SettingsAccount from '../Settings/SettingsAccount';
 import SupportActions from '../../actions/SupportActions';
+import SupportStore from '../../stores/SupportStore';
 import VoterActions from '../../actions/VoterActions';
 import VoterConstants from '../../constants/VoterConstants';
 import VoterStore from '../../stores/VoterStore';
+import { openSnackbar } from './SnackNotifier';
 
 class PositionPublicToggle extends Component {
   static propTypes = {
@@ -30,26 +34,108 @@ class PositionPublicToggle extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      ballotItemWeVoteId: '',
+      componentDidMount: false,
+      isPublicPosition: null,
+      inTestMode: false,
+      isSignedIn: null,
       showPositionPublicHelpModal: false,
-      showToThePublicOn: false,
+      voterWeVoteId: '',
     };
   }
 
   componentDidMount () {
     this.onVoterStoreChange();
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    const isPublicOpinion = this.props.supportProps && this.props.supportProps.is_public_position;
+    const { ballotItemWeVoteId, inTestMode } = this.props;
+    let { supportProps } = this.props;
+    if (this.props.ballotItemWeVoteId) {
+      supportProps = SupportStore.get(this.props.ballotItemWeVoteId);
+    }
+    let isPublicPosition = false;
+    if (supportProps && supportProps.is_public_position !== undefined) {
+      isPublicPosition = supportProps.is_public_position;
+    }
+
     this.setState({
-      showToThePublicOn: isPublicOpinion || false,
+      ballotItemWeVoteId,
+      componentDidMount: true,
+      inTestMode,
+      isPublicPosition,
     });
   }
 
+  componentWillReceiveProps (nextProps) {
+    this.onVoterStoreChange();
+    const { ballotItemWeVoteId } = nextProps;
+    let { supportProps } = nextProps;
+    if (nextProps.ballotItemWeVoteId) {
+      supportProps = SupportStore.get(nextProps.ballotItemWeVoteId);
+    }
+    let isPublicPosition = false;
+    if (supportProps && supportProps.is_public_position !== undefined) {
+      isPublicPosition = supportProps.is_public_position;
+    }
+
+    this.setState({
+      ballotItemWeVoteId,
+      isPublicPosition,
+    });
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
+      // console.log('this.state.ballotItemWeVoteId:', this.state.ballotItemWeVoteId, ', nextState.ballotItemWeVoteId: ', nextState.ballotItemWeVoteId);
+      return true;
+    }
+    if (this.state.componentDidMount !== nextState.componentDidMount) {
+      // console.log('this.state.componentDidMount:', this.state.componentDidMount, ', nextState.componentDidMount: ', nextState.componentDidMount);
+      return true;
+    }
+    if (this.state.isPublicPosition !== nextState.isPublicPosition) {
+      // console.log('this.state.isPublicPosition:', this.state.isPublicPosition, ', nextState.isPublicPosition: ', nextState.isPublicPosition);
+      return true;
+    }
+    if (this.state.isSignedIn !== nextState.isSignedIn) {
+      // console.log('this.state.isSignedIn:', this.state.isSignedIn, ', nextState.isSignedIn: ', nextState.isSignedIn);
+      return true;
+    }
+    if (this.state.showPositionPublicHelpModal !== nextState.showPositionPublicHelpModal) {
+      // console.log('this.state.showPositionPublicHelpModal:', this.state.showPositionPublicHelpModal, ', nextState.showPositionPublicHelpModal: ', nextState.showPositionPublicHelpModal);
+      return true;
+    }
+    if (this.state.voterWeVoteId !== nextState.voterWeVoteId) {
+      // console.log('this.state.voterWeVoteId:', this.state.voterWeVoteId, ', nextState.voterWeVoteId: ', nextState.voterWeVoteId);
+      return true;
+    }
+    // console.log('shouldComponentUpdate false');
+    return false;
+  }
+
   componentWillUnmount () {
+    this.supportStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
+  onSupportStoreChange () {
+    const supportProps = SupportStore.get(this.state.ballotItemWeVoteId);
+    let isPublicPosition = false;
+    if (supportProps && supportProps.is_public_position !== undefined) {
+      isPublicPosition = supportProps.is_public_position;
+    }
+    this.setState({
+      isPublicPosition,
+    });
+  }
+
   onVoterStoreChange () {
-    this.setState({ voter: VoterStore.getVoter() });
+    const voter = VoterStore.getVoter();
+    const { is_signed_in: isSignedIn, we_vote_id: voterWeVoteId } = voter;
+    this.setState({
+      isSignedIn,
+      voterWeVoteId,
+    });
   }
 
   handlePositionToggle = (evt) => {
@@ -63,29 +149,34 @@ class PositionPublicToggle extends Component {
 
   showItemToFriendsOnly () {
     this.setState({
-      showToThePublicOn: false,
+      isPublicPosition: false,
     });
 
     // console.log("PositionPublicToggle-showItemToFriendsOnly, this.props.type:", this.props.type);
-    SupportActions.voterPositionVisibilitySave(this.props.ballotItemWeVoteId, this.props.type, 'FRIENDS_ONLY');
-    showToastSuccess('Position now visible to friends only!');
+    SupportActions.voterPositionVisibilitySave(this.state.ballotItemWeVoteId, this.props.type, 'FRIENDS_ONLY');
+    openSnackbar({ message: 'Position now visible to friends only!' });
   }
 
   showItemToPublic () {
-    const { voter } = this.state;
+    const { inTestMode, isSignedIn } = this.state;
 
     // console.log("PositionPublicToggle-showItemToPublic, this.props.type:", this.props.type);
-    if (voter && voter.is_signed_in) {
+    if (inTestMode) {
       this.setState({
-        showToThePublicOn: true,
+        isPublicPosition: true,
       });
-      SupportActions.voterPositionVisibilitySave(this.props.ballotItemWeVoteId, this.props.type, 'SHOW_PUBLIC');
+      openSnackbar({ message: 'This position now visible to anyone on We Vote!' });
+    } else if (isSignedIn) {
+      this.setState({
+        isPublicPosition: true,
+      });
+      SupportActions.voterPositionVisibilitySave(this.state.ballotItemWeVoteId, this.props.type, 'SHOW_PUBLIC');
       const positionPublicToggleModalHasBeenShown = VoterStore.getInterfaceFlagState(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
       if (!positionPublicToggleModalHasBeenShown) {
         this.togglePositionPublicHelpModal();
         VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.POSITION_PUBLIC_MODAL_SHOWN);
       } else {
-        showToastSuccess('This position now visible to anyone on We Vote!');
+        openSnackbar({ message: 'This position now visible to anyone on We Vote!' });
       }
     } else {
       this.togglePositionPublicHelpModal();
@@ -102,21 +193,11 @@ class PositionPublicToggle extends Component {
   render () {
     renderLog(__filename);
     const { classes } = this.props;
-    const { voter, showToThePublicOn } = this.state;
-    if (!this.state.voter) {
+    const { inTestMode, isSignedIn, voterWeVoteId } = this.state;
+    let { isPublicPosition } = this.state;
+    if (!voterWeVoteId) {
       return <div className="undefined-props" />;
     }
-
-    if (this.props.supportProps === undefined) {
-      return <div className="undefined-props" />;
-    }
-
-    let inTestMode = false;
-    if (this.props !== undefined && this.props.inTestMode !== undefined && this.props.inTestMode) {
-      inTestMode = true;
-    }
-
-    let { is_public_position: isPublicPosition } = this.props.supportProps;
 
     let onChange;
     const _this = this;
@@ -159,21 +240,27 @@ class PositionPublicToggle extends Component {
         onClose={() => { this.togglePositionPublicHelpModal(); }}
       >
         <DialogTitle>
-          <div className="text-center">Make Your Positions Public</div>
+          <Typography variant="h6" className="text-center">Make Your Positions Public</Typography>
+          <IconButton
+            aria-label="Close"
+            classes={{ root: classes.closeButton }}
+            onClick={() => { this.togglePositionPublicHelpModal(); }}
+            id="profileClosePositionPublicToggle"
+          >
+            <CloseIcon />
+          </IconButton>
         </DialogTitle>
         <DialogContent>
           <section className="card">
             <div className="text-center">
-              {voter && voter.is_signed_in ? (
+              {isSignedIn ? (
                 <div>
                   <div className="u-f2">You have just made your position visible to anyone on We Vote.</div>
                   <div className="u-f4">If you do NOT want to share your position publicly, click the toggle again to restrict visibility to We Vote friends only.</div>
                 </div>
               ) : (
                 <div>
-                  { !this.state.voter.is_signed_in ?
-                    <SettingsAccount /> :
-                    null }
+                  <SettingsAccount />
                 </div>
               )}
               <br />
@@ -206,7 +293,7 @@ class PositionPublicToggle extends Component {
                       <Radio
                         classes={{ colorPrimary: classes.radioPrimary }}
                         color="primary"
-                        checked={showToThePublicOn === false}
+                        checked={isPublicPosition === false}
                       />
                     )
                   }
@@ -224,7 +311,7 @@ class PositionPublicToggle extends Component {
                       <Radio
                         classes={{ colorPrimary: classes.radioPrimary }}
                         color="primary"
-                        checked={showToThePublicOn === true}
+                        checked={isPublicPosition === true}
                       />
                     )
                   }
@@ -260,6 +347,11 @@ const styles = theme => ({
   formControl: {
     width: '100%',
   },
+  closeButton: {
+    position: 'absolute',
+    right: `${theme.spacing(1)}px`,
+    top: `${theme.spacing(1)}px`,
+  },
 });
 
 const Wrapper = styled.div`
@@ -270,7 +362,7 @@ const PublicToggle = styled.div`
   padding-left: 15px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     padding-top: 4px;
-    margin-bottom: 4px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -278,18 +370,9 @@ const RadioItem = styled.div`
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     width: 100% !important;
     min-width: 100% !important;
+    margin-bottom: -6px;
   }
 `;
-
-// const RadioLabel = styled.div`
-//   height: 44px;
-//   padding: 10px 4px;
-//   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-//     font-size: 10px;
-//     position: relative;
-//     top: 4px;
-//   }
-// `;
 
 const RadioGroup = styled.div`
   width: 100%;

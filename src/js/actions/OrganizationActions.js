@@ -27,6 +27,10 @@ export default {
     Dispatcher.loadEndpoint('organizationStopFollowing', { organization_we_vote_id: organizationWeVoteId });
   },
 
+  organizationStopIgnoring (organizationWeVoteId) {
+    Dispatcher.loadEndpoint('organizationStopIgnoring', { organization_we_vote_id: organizationWeVoteId });
+  },
+
   organizationsFollowedRetrieve (autoFollowedFromTwitterSuggestion) {
     Dispatcher.loadEndpoint('organizationsFollowedRetrieve', { auto_followed_from_twitter_suggestion: autoFollowedFromTwitterSuggestion });
   },
@@ -70,6 +74,38 @@ export default {
         organization_name: organizationName,
         organization_we_vote_id: organizationWeVoteId,
         organization_website: organizationWebsite,
+      });
+  },
+
+  organizationChosenGoogleAnalyticsTrackerSave (organizationWeVoteId, organizationChosenGoogleAnalyticsTracker) {
+    Dispatcher.loadEndpoint('organizationSave',
+      {
+        chosen_google_analytics_account_number: organizationChosenGoogleAnalyticsTracker,
+        organization_we_vote_id: organizationWeVoteId,
+      });
+  },
+
+  organizationChosenHtmlVerificationSave (organizationWeVoteId, organizationChosenHtmlVerificationString) {
+    Dispatcher.loadEndpoint('organizationSave',
+      {
+        chosen_html_verification_string: organizationChosenHtmlVerificationString,
+        organization_we_vote_id: organizationWeVoteId,
+      });
+  },
+
+  organizationChosenSubDomainSave (organizationWeVoteId, organizationChosenSubDomainName) {
+    Dispatcher.loadEndpoint('organizationSave',
+      {
+        chosen_sub_domain_string: organizationChosenSubDomainName,
+        organization_we_vote_id: organizationWeVoteId,
+      });
+  },
+
+  organizationChosenDomainNameSave (organizationWeVoteId, organizationChosenDomainName) {
+    Dispatcher.loadEndpoint('organizationSave',
+      {
+        chosen_domain_string: organizationChosenDomainName,
+        organization_we_vote_id: organizationWeVoteId,
       });
   },
 

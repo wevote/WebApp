@@ -143,14 +143,13 @@ class LearnMore extends Component {
       return (
         <span>
           {expandedTextToDisplay}
-          {
-        alwaysShowExternalLink &&
-        externalLink
-      }
+          {alwaysShowExternalLink &&
+            externalLink
+          }
         </span>
       );
     }
-    // console.log('numOfLines: ', numOfLines, ', textToDisplay: ', textToDisplay, ', showMoreText:', showMoreText);
+    // console.log('numOfLines: ', numOfLines, ', textToDisplay: ', textToDisplay, ', readMore:', this.state.readMore, ', showMoreText:', showMoreText, ', learnMoreText:', learnMoreText, ', learnMoreLink:', learnMoreLink);
     if (this.state.readMore) {
       return (
         <span>
@@ -177,9 +176,7 @@ class LearnMore extends Component {
           {' '}
           {expandedTextToDisplay}
           &nbsp;&nbsp;
-          {
-          externalLink
-        }
+          {externalLink}
         </span>
       );
     }

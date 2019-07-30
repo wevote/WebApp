@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 import BallotItemSupportOpposeComment from '../Widgets/BallotItemSupportOpposeComment';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
-// import { toTitleCase } from '../../utils/textFormat';
+import { cordovaStickyHeaderPaddingTop } from '../../utils/cordovaOffsets';
 
 class CandidateStickyHeader extends Component {
   static propTypes = {
@@ -28,7 +28,7 @@ class CandidateStickyHeader extends Component {
     // console.log('CandidateStickyHeader, displayName/candidateWeVoteId:', displayName, candidateWeVoteId);
 
     return (
-      <Wrapper>
+      <Wrapper cordovaPaddingTop={cordovaStickyHeaderPaddingTop()}>
         <Container>
           <Flex>
             <ColumnOne>
@@ -82,7 +82,7 @@ const Wrapper = styled.div`
   max-width: 100%;
   position: fixed;
   padding: 16px;
-  padding-top: 48px;
+  padding-top: ${({ cordovaPaddingTop }) => (cordovaPaddingTop || '48px')};
   top: 0;
   left: 0;
   background: white;

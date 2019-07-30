@@ -7,7 +7,7 @@ $glyph-icon-color: $brand-blue;
 $header-height: 54px;
 $headroom-wrapper-webapp-ballot: 48px;
 $headroom-wrapper-webapp-default: 54px;
-$headroom-wrapper-webapp-voter-guide: 48px;
+$headroom-wrapper-webapp-voter-guide: 105px; // Was 48px
 $headroom-wrapper-webapp-office: 102px;
 $headroom-webapp: 104px;
 $header-height-cordova-ballot-ios: -1vh;
@@ -135,7 +135,7 @@ $container-margin: -15px;
 }
 
 .footroom-wrapper {
-  margin-bottom: $header-height;
+  padding-bottom: $header-height;
   &__hide {
     display: none;
   }
@@ -174,6 +174,9 @@ $container-margin: -15px;
   display: flex;
   width: 920px;
   margin-left: $space-lg;
+  @include breakpoints(max iphone5) {
+    margin-left: $space-md;
+  }
   @include breakpoints(small xsmall-bootstrap) {
     justify-content: flex-end;
   }
@@ -396,15 +399,18 @@ $container-margin: -15px;
     height: 50px;
     border-bottom: 1px solid #e7e7e7;
   }
+  &__tr-terms {
+    height: 40px;
+  }
   &__td-0 {
     padding-left: $space-md !important;
     vertical-align: middle !important;
-    max-width: 2.2em;
+    // max-width: 2.2em;
   }
   &__td-1 {
     font-size: 1.3rem;
     vertical-align: middle !important;
-    max-width: 1.3em;
+    // max-width: 1.3em;
   }
   &__td-2 {
     font-size: 1.3rem;
@@ -421,13 +427,14 @@ $container-margin: -15px;
 }
 
 .hamburger-terms {
-  $terms-top: 23px;
+  $terms-top: 12px;
   $blue: blue;
   &__tr {
     height: 50px !important;
   }
 
   &__td {
+    border-top: 0 !important;
     padding-left: $space-md !important;
     padding-bottom: $space-sm !important;
     padding-top: $terms-top !important;

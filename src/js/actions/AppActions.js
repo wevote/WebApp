@@ -21,6 +21,15 @@ export default {
     Dispatcher.dispatch({ type: 'showSelectBallotModal', payload: show });
   },
 
+  setShowNewVoterGuideModal (show) {
+    Dispatcher.dispatch({ type: 'showNewVoterGuideModal', payload: show });
+  },
+
+  setShowPaidAccountUpgradeModal (chosenPaidAccount) {
+    // The chosenPaidAccount values are: free, professional, enterprise
+    Dispatcher.dispatch({ type: 'showPaidAccountUpgradeModal', payload: chosenPaidAccount });
+  },
+
   setShowSignInModal (show) {
     Dispatcher.dispatch({ type: 'showSignInModal', payload: show });
   },

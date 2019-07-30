@@ -1,5 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
+import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
 import { renderLog } from '../../utils/logging';
 import OpenExternalWebSite from '../../components/Widgets/OpenExternalWebSite';
 
@@ -11,7 +13,7 @@ export default class Privacy extends React.Component {
   render () {
     renderLog(__filename);
     return (
-      <div>
+      <Wrapper padTop={cordovaScrollablePaneTopPadding()}>
         <Helmet title="Privacy Policy - We Vote" />
         <div className="container-fluid well">
           <h1 className="text-center">WeVote.US Privacy Policy</h1>
@@ -134,7 +136,12 @@ export default class Privacy extends React.Component {
           </p>
           <p>&nbsp;</p>
         </div>
-      </div>
+      </Wrapper>
     );
   }
 }
+
+const Wrapper = styled.div`
+  padding-top: ${({ padTop }) => padTop};
+`;
+

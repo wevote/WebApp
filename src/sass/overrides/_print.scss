@@ -2,12 +2,17 @@
   @page {
     size: portrait
   }
+  //FireFox specific CSS
+  @-moz-document url-prefix('') {
+    body {
+      background-color: white !important;
+    }
+  }
   body {
-    background-color: $white !important;
+    background-color: white !important;
     color: $black;
   }
-  .headroom-wrapper,
-  .page-header__container,
+  //.ballot__filter__container,
   .sidebar-menu {
     display: none;
   }
@@ -23,5 +28,9 @@
   }
   a[href]::after {
     content: ""; // Override Bootstrap styles adding href
+    text-decoration: none;
+  }
+  a, a:not(.btn) {
+    text-decoration: none;
   }
 }
