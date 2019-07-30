@@ -71,43 +71,13 @@ export function cordovaOpenSafariView (requestURL, onExit, timeout) {
   setTimeout(cordovaOpenSafariViewSub, timeout, requestURL, onExit);
 }
 
-/*
-  bottom, Set or retrieves the bottom coordinate of the rectangle surrounding the object content. (relative to top of screen)
-  height, Gets the height of the rectangle that surrounds the object content.
-  left, Sets or retrieves the left coordinate of the rectangle surrounding the object content. (relative to left of screen)
-  length, Sets or retrieves the number of objects in a collection.
-  right, Sets or retrieves the right coordinate of the rectangle surrounding the object content. (relative to left of screen)
-  top, Sets or retrieves the top coordinate of the rectangle surrounding the object content. (relative to top of screen)
-  width, Gets the width of the rectangle that surrounds the object content.
-  ----
-  Needed in div you want to get the rectangle info from:
-       <div className={profilePopUpOpen} ref={ (el) => (this.instance = el) }>
-  Then ...
-    componentDidMount () {
-      enclosingRectangle("HeaderBarProfilePopUp, ", this.instance);
-    }
-*/
-export function enclosingRectangle (objectNameString, instance) {
-  const rect = instance.getBoundingClientRect();
-
-  // Please don't remove this console.log line
-  console.log(`${objectNameString
-  } BoundingClientRect: left ${rect.left
-  }, top ${rect.top
-  }, right ${rect.right
-  }, bottom ${rect.bottom
-  }, x ${rect.x
-  }, y ${rect.y
-  }, width ${rect.width
-  }, height ${rect.height}`);
-}
-
 export function isDeviceMatchByUUID (deviceString) {
   const array  = webAppConfig.CORDOVA_IPHONE_UUIDS;
+  const { uuid } = window.device;
   if (array && array.length) {
     for (let i = 0; i < array.length; i++) {
       if (array[i].name === deviceString) {
-        if (array[i].val === window.device.uuid) {
+        if (array[i].val === uuid) {
           return 1;
         }
         return 0;
@@ -128,6 +98,14 @@ export function deviceTypeString () {
   }
 
   return deviceString;
+}
+
+let matchedDevice = false;
+export function logMatch (device, byModel) {
+  if (!matchedDevice) {
+    cordovaOffsetLog(`Matched ---- ${device} by ${byModel ? 'window.device.model' : 'uuid'}`);
+    matchedDevice = true;
+  }
 }
 
 export function isIOS () {
@@ -165,10 +143,10 @@ export function isIPhone5sSE () {
       window.device.model === 'iPhone6,1' ||  // iPhone 5s
       window.device.model === 'iPhone6,2' ||  // iPhone 5s
       window.device.model === 'iPhone8,4') { // iPhone SE
-      cordovaOffsetLog('Matched ---- iPhone 5s SE by window.device.model');
+      logMatch('iPhone 5s SE', true);
       return true;
     } else if (isDeviceMatchByUUID('i5s')) {
-      cordovaOffsetLog('Matched ---- iPhone 5s by uuid');
+      logMatch('iPhone 5s SE', false);
       return true;
     }
   }
@@ -183,16 +161,16 @@ export function isIPhone678 () {
       window.device.model === 'iPhone9,3' ||  // iPhone 7
       window.device.model === 'iPhone10,1' ||  // iPhone 8
       window.device.model === 'iPhone10,4') { // iPhone 8
-      cordovaOffsetLog('Matched ---- iPhone 678 by window.device.model');
+      logMatch('iPhone 678', true);
       return true;
     } else if (isDeviceMatchByUUID('i6')) {
-      cordovaOffsetLog('Matched ---- iPhone 6 by uuid');
+      logMatch('iPhone 6', false);
       return true;
     } else if (isDeviceMatchByUUID('i6s')) {
-      cordovaOffsetLog('Matched ---- iPhone 6s by uuid');
+      logMatch('iPhone 6s', false);
       return true;
     } else if (isDeviceMatchByUUID('i8')) {
-      cordovaOffsetLog('Matched ---- iPhone 8 by uuid');
+      logMatch('iPhone 8', false);
       return true;
     }
   }
@@ -208,10 +186,10 @@ export function isIPhone678Plus () {
         window.device.model === 'iPhone9,4'  ||  // iPhone 7 Plus
         window.device.model === 'iPhone10,2' ||  // iPhone 8 Plus
         window.device.model === 'iPhone10,5') {  // iPhone 8 Plus
-      cordovaOffsetLog('Matched ---- iPhone 678 Plus by window.device.model');
+      logMatch('iPhone 678 Plus', true);
       return true;
     } else if (isDeviceMatchByUUID('i8plus')) {
-      cordovaOffsetLog('Matched ---- iPhone i8plus by uuid');
+      logMatch('iPhone 8 Plus', false);
       return true;
     }
   }
@@ -223,10 +201,10 @@ export function isIPhoneXorXS () {
     if (window.device.model === 'iPhone10,3' ||  // iPhone X
         window.device.model === 'iPhone10,6' ||  // iPhone X
         window.device.model === 'iPhone11,2') {  // iPhone XS
-      cordovaOffsetLog('Matched ---- iPhone X or Xs by window.device.model');
+      logMatch('iPhone X or Xs', true);
       return true;
     } else if (isDeviceMatchByUUID('iX')) {
-      cordovaOffsetLog('Matched ---- iPhone X by uuid');
+      logMatch('iPhone X or Xs', false);
       return true;
     }
   }
@@ -236,10 +214,10 @@ export function isIPhoneXorXS () {
 export function isIPhoneXR () {
   if (isIOS()) {
     if (window.device.model === 'iPhone11,8') { // iPhone XR
-      cordovaOffsetLog('Matched ---- iPhone XR by window.device.model');
+      logMatch('iPhone XR', true);
       return true;
     } else if (isDeviceMatchByUUID('iXR')) {
-      cordovaOffsetLog('Matched ---- iPhone XR by uuid');
+      logMatch('iPhone XR', false);
       return true;
     }
   }
@@ -251,10 +229,10 @@ export function isIPhoneXR () {
 export function isIPhoneXSMax () {
   if (isIOS()) {
     if (window.device.model === 'iPhone11,6') { // iPhone XS Max
-      cordovaOffsetLog('Matched ---- iPhone XsMax by window.device.model');
+      logMatch('iPhone XsMax', true);
       return true;
     } else if (isDeviceMatchByUUID('iXsMax')) {
-      cordovaOffsetLog('Matched ---- iPhone iXsMax by uuid');
+      logMatch('iPhone XsMax', false);
       return true;
     }
   }
@@ -300,7 +278,7 @@ export function isIPad () {
     // window.device.model === 'iPad5,2'  ||  // iPad mini 4
     // window.device.model === 'iPad11,1' ||  // iPad mini (5th generation)
     // window.device.model === 'iPad11,2')) { // iPad mini (5th generation)
-      cordovaOffsetLog('Matched ---- iPad by window.device.model');
+      logMatch('iPad', true);
       return true;
     } else {
       const ratio = window.devicePixelRatio || 1;
@@ -314,7 +292,7 @@ export function isIPad () {
           (screen.width === 1668 && screen.height === 2224) || // iPad Pro 10.5" Gen 2  2017
           (screen.width === 1668 && screen.height === 2388) || // iPad Pro 11", iPad Pro 12.9" October 2018
           (screen.width === 2048 && screen.height === 2732)) { // iPad Pro 12.9" Gen 2, 2018
-        cordovaOffsetLog('Matched ---- iPad by screen dimensions');
+        logMatch('iPad', false);
         return true;
       }
     }
@@ -349,7 +327,7 @@ export function getAndroidSize () {
      June 2019: detecting the Galaxy Tab A by ratio, is a bit of a hack, and could bite us someday if there was an android phone with a 1.33 ratio */
 
   if (window.device.model === 'Moto G (5) Plus') {
-    cordovaOffsetLog('Matched ---- Moto G (5) Plus by window.device.model');
+    logMatch('Moto G (5) Plus', true);
     return '--md';
   } else if (size > 3.7E6 || ratioString === '1.33') {
     sizeString = '--xl';

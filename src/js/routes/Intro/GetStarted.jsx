@@ -7,7 +7,7 @@ import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import TwitterSignIn from '../../components/Twitter/TwitterSignIn';
 import VoterStore from '../../stores/VoterStore';
-import closeIcon from "../../../img/global/icons/x-close.png";
+import closeIcon from '../../../img/global/icons/x-close.png';
 
 export default class GetStarted extends Component {
   constructor (props) {
