@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import { Button } from 'react-bootstrap';
-import { _ } from 'lodash';
+import _ from 'lodash';
 import AnalyticsActions from '../actions/AnalyticsActions';
 import CheckBox from '../components/Connect/CheckBox';
 import webAppConfig from '../config';

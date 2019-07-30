@@ -5,6 +5,7 @@ import { cordovaDot } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import OrganizationActions from '../../actions/OrganizationActions';
 import { renderLog } from '../../utils/logging';
+import checkMarkIcon from '../../../img/global/svg-icons/check-mark-v2-40x43.svg';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
 
@@ -70,7 +71,7 @@ export default class OrganizationFollowToggle extends Component {
         { isFollowing && (
         <ImageHandler
           className="intro-modal__square-check-mark"
-          imageUrl={cordovaDot('/img/global/svg-icons/check-mark-v2-40x43.svg')}
+          imageUrl={cordovaDot(checkMarkIcon)}
           alt="Following"
         />
         ) }

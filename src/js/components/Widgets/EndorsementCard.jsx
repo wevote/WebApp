@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import OpenExternalWebSite from './OpenExternalWebSite';
+import positionIcon from '../../../img/global/svg-icons/positions-icon-24-x-24.svg';
 import SplitIconButton from './SplitIconButton';
 
 class EndorsementCard extends PureComponent {
@@ -41,7 +42,7 @@ class EndorsementCard extends PureComponent {
                   <SplitIconButton
                     title="Add endorsements to We Vote"
                     id="endorsementCardAddEndorsementsToWeVote"
-                    icon={<img src={cordovaDot('/img/global/svg-icons/positions-icon-24-x-24.svg')} alt="" />}
+                    icon={<img src={cordovaDot(positionIcon)} alt="" />}
                     buttonText={this.props.buttonText}
                   />
                 )}

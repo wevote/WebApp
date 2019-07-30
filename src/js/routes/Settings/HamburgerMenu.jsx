@@ -9,6 +9,7 @@ import HamburgerMenuRow from '../../components/Navigation/HamburgerMenuRow';
 import LoadingWheel from '../../components/LoadingWheel';
 import VoterSessionActions from '../../actions/VoterSessionActions';
 import { renderLog } from '../../utils/logging';
+import avatarGeneric from '../../../img/global/svg-icons/avatar-generic.svg';
 
 export default class HamburgerMenu extends Component {
   // This can only be called by a developer running Cordova in an Simulator.  Voters will never see it.
@@ -71,7 +72,7 @@ export default class HamburgerMenu extends Component {
           </div>
         ) : (
           <div id="anonIcon" className={isWebApp() ? 'header-nav__avatar' : 'header-nav__avatar-cordova header-nav__cordova'}>
-            <img src={cordovaDot('/img/global/svg-icons/avatar-generic.svg')} width="34" height="34" color="#c0c0c0" alt="generic voter" />
+            <img src={cordovaDot(avatarGeneric)} width="34" height="34" color="#c0c0c0" alt="generic voter" />
           </div>
         )}
       </span>

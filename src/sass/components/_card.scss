@@ -127,7 +127,10 @@ $outline-radius: 3px;
     }
 
     &__avatar-compressed {
-      background-image: url('../../img/global/svg-icons/avatar-generic.svg');   // March 2019, The paths are different in Cordova (where this fails).
+      // March 2019, The paths are different in Cordova (where this fails).
+      // Revert back to original path to allow webpack resolve correctly
+      // TODO: Need to find a solution to make both Cordova and Webpack happy
+      background-image: url('../img/global/svg-icons/avatar-generic.svg');
       border-radius: $radius-xs;
       width: 40px;
       height: 40px;
