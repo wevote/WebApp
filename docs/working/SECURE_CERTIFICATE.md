@@ -19,16 +19,16 @@ that describes how to install a locally signed secure certificate on the Mac (it
 
 - Set "SECURE_CERTIFICATE_INSTALLED" to true in `WebApp/src/js/config.js` 
   ```
-  // Note that we import these values into "webAppConfig" (so we can search for it)
-    module.exports = {
-      WE_VOTE_URL_PROTOCOL: "https://", // "http://" for local dev or "https://" for live server
-      WE_VOTE_HOSTNAME: "localhost:3000", // This should be without "http...". This is "WeVote.US" on live server.
-      SECURE_CERTIFICATE_INSTALLED: true,
-    
-      WE_VOTE_SERVER_ROOT_URL: "https://api.wevoteusa.org/",
-      WE_VOTE_SERVER_ADMIN_ROOT_URL: "https://api.wevoteusa.org/admin/",
-      WE_VOTE_SERVER_API_ROOT_URL: "https://api.wevoteusa.org/apis/v1/",
-      WE_VOTE_SERVER_API_CDN_ROOT_URL: "https://cdn.wevoteusa.org/apis/v1/",
+  // Note that we import these values where needed as 'webAppConfig'
+  module.exports = {
+    WE_VOTE_URL_PROTOCOL: "https://",   // "http://" for local dev or "https://" for live server
+    WE_VOTE_HOSTNAME: "localhost:3000", // Don't add 'http...' here!  Live server: 'WeVote.US', Quality: 'quality.WeVote.US', developers: 'localhost:3000'
+    SECURE_CERTIFICATE_INSTALLED: true,
+  
+    WE_VOTE_SERVER_ROOT_URL: "https://api.wevoteusa.org/",
+    WE_VOTE_SERVER_ADMIN_ROOT_URL: "https://api.wevoteusa.org/admin/",
+    WE_VOTE_SERVER_API_ROOT_URL: "https://api.wevoteusa.org/apis/v1/",
+    WE_VOTE_SERVER_API_CDN_ROOT_URL: "https://cdn.wevoteusa.org/apis/v1/",
   ```
 
 - Then run `npm start` again.

@@ -26,9 +26,29 @@ Install changes and start web application
     (WebAppEnv) $ npm install
     (WebAppEnv) $ npm start
 
-You should be able to visit WebApp here:
+Webpack will open a tab in your browser, displaying the WebApp at:
 
     http://localhost:3000
+    
+The first start up of Webpack takes a bit of time (30 to 120 seconds), but subsequent compiles only take a few seconds, and are immediately 
+re-rendered in the WebApp instance in the new tab
+
+# Working with https for Twitter Signin
+
+    npm run start-https
+    
+Webpack will open a tab in your browser, displaying the WebApp at:
+    
+    https://localhost:3000
+
+# Building a bundle.js for Cordova or our Production webservers
+
+    npm run prod 
+
+If you look at the start-https command in the package.json file, you can see that it requires your ssl certificates
+to be in `src/cert/server.crt` and your ssl key to be in `src/cert/server.key`
+    
+As of July 31, 2019, this bundle works with Cordova, but hasn't been tested on production servers.    
 
 # How to Update to Latest Changes from “develop” Branch
 
