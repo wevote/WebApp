@@ -27,7 +27,7 @@ export default class SignInEmailProcess extends Component {
   componentDidMount () {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     const { email_secret_key: emailSecretKey } = this.props.params;
-    // console.log("SignInEmailProcess, componentDidMount, this.props.params.emailSecretKey: ", emailSecretKey);
+    console.log('SignInEmailProcess, componentDidMount, this.props.params.emailSecretKey: ', emailSecretKey);
     this.voterEmailAddressSignIn(emailSecretKey);
   }
 
@@ -57,12 +57,12 @@ export default class SignInEmailProcess extends Component {
     renderLog(__filename);
     const { email_secret_key: emailSecretKey } = this.props.params;
     const voterIsSignedIn = this.state.voter && this.state.voter.is_signed_in;
-    // console.log("SignInEmailProcess, emailSecretKey:", emailSecretKey);
+    console.log('SignInEmailProcess, emailSecretKey:', emailSecretKey);
     if (!emailSecretKey ||
       this.state.saving ||
       !this.state.emailSignInStatus ||
       !this.state.emailSignInStatus.email_sign_in_attempted) {
-      // console.log("this.state.emailSignInStatus:", this.state.emailSignInStatus)
+      console.log('this.state.emailSignInStatus:', this.state.emailSignInStatus);
       return LoadingWheel;
     }
 
@@ -71,7 +71,7 @@ export default class SignInEmailProcess extends Component {
 
     // We redirect after voterMergeTwoAccountsByEmailKey comes back
     if (this.state.emailSignInStatus.voter_merge_two_accounts_attempted) {
-      // console.log("voterMergeTwoAccountsByEmailKey attempted - push to /settings/account");
+      console.log('voterMergeTwoAccountsByEmailKey attempted - push to /settings/account');
       redirectPathname = '/ballot';
       if (signInStartPath) {
         redirectPathname = signInStartPath;
@@ -90,7 +90,7 @@ export default class SignInEmailProcess extends Component {
 
     // This process starts when we return from attempting voterEmailAddressSignIn
     if (!this.state.emailSignInStatus.email_address_found) {
-      // console.log("Could not find secret_key in database - push to /settings/account");
+      console.log('Could not find secret_key in database - push to /settings/account');
       if (voterIsSignedIn) {
         // Key isn't found in database, but they are already signed in and are
         //  probably following a link in their email that has already been used
@@ -117,7 +117,7 @@ export default class SignInEmailProcess extends Component {
       // If here we know that the secret key was valid
       if (this.state.emailSignInStatus.email_secret_key_belongs_to_this_voter) {
         // We don't need to do anything more except redirect to the email management page
-        // console.log("secret key owned by this voter - push to /settings/account");
+        console.log('secret key owned by this voter - push to /settings/account');
         redirectPathname = '/ballot';
         if (signInStartPath) {
           redirectPathname = signInStartPath;
@@ -137,11 +137,11 @@ export default class SignInEmailProcess extends Component {
         // If so, ask if they want to connect two accounts?
         if (this.state.emailSignInStatus.yes_please_merge_accounts) {
           // Go ahead and merge this voter record with the voter record that the emailSecretKey belongs to
-          // console.log("this.voterMergeTwoAccountsByEmailKey -- yes please merge accounts");
+          console.log("this.voterMergeTwoAccountsByEmailKey -- yes please merge accounts");
           this.voterMergeTwoAccountsByEmailKey(emailSecretKey);
         } else {
           // Display the question of whether to merge accounts or not
-          // console.log("BEFORE WouldYouLikeToMergeAccountsOld, this.state.emailSignInStatus:", this.state.emailSignInStatus);
+          console.log("BEFORE WouldYouLikeToMergeAccountsOld, this.state.emailSignInStatus:", this.state.emailSignInStatus);
           return (
             <WouldYouLikeToMergeAccountsOld
               emailSecretKey={emailSecretKey}
@@ -154,7 +154,7 @@ export default class SignInEmailProcess extends Component {
         this.voterMergeTwoAccountsByEmailKey(emailSecretKey);
       }
     } else {
-      // console.log("Voter may not be verified yet, redirecting to verfiy page");
+      console.log("Voter may not be verified yet, redirecting to verfiy page");
       historyPush(`/verify_email/${emailSecretKey}`);
     }
 
