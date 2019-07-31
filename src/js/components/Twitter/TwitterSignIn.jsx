@@ -88,7 +88,7 @@ class TwitterSignIn extends Component {
 
   twitterSignInWebApp () {
     const brandingOff = cookies.getItem('we_vote_branding_off') || 0;
-    console.log(`twitterSignInWebApp isWebApp(): ${isWebApp()},  returnURL: ${returnURL} `);
+    oAuthLog(`twitterSignInWebApp isWebApp(): ${isWebApp()},  returnURL: ${returnURL}`);
     $ajax({
       endpoint: 'twitterSignInStart',
       data: { return_url: returnURL },

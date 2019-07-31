@@ -26,7 +26,7 @@ Install changes and start web application
     (WebAppEnv) $ npm install
     (WebAppEnv) $ npm start
 
-Webpack will open a tab in your browser displaying the WebApp here:
+Webpack will open a tab in your browser, displaying the WebApp at:
 
     http://localhost:3000
     
@@ -35,39 +35,18 @@ re-rendered in the WebApp instance in the new tab
 
 # Working with https for Twitter Signin
 
-Download and install ngrok, [https://ngrok.com/](https://ngrok.com/)  (I just installed ngrok into my WebApp directory)
-
-..."What is ngrok?  ngrok exposes local servers behind NATs and firewalls to the public internet over secure tunnels."
-
-After the ngrok install is complete, run it in a terminal window:
-
-    (WebAppEnv) $ ./ngrok http 3000 -host-header="localhost:3000"
-
-ngrok takes over that terminal window and runs with a real time status display:
-
-![ScreenShot](../images/ngrokRunning.png)
-
-Then modify your config.js ...
-
-    /* eslint-disable */
-    // Note that we import these values where needed as "webAppConfig"
-    module.exports = {
-      WE_VOTE_URL_PROTOCOL: "https://", // "http://" for local dev or "https://" for live server
-      WE_VOTE_HOSTNAME: "71ff7065.ngrok.io", // Don't add 'http...' here!  Live server: 'WeVote.US', Quality: 'quality.WeVote.US', developers: 'localhost:3000'
-
-Now (in this example) there is a ssl tunnel from the public internet from https://71ff7065.ngrok.io to http://localhost:3000 on your
-computer.  Your local WebServer can be accessed by anyone in the world, although they would need to know the address, and ngrok generates
-a new address each time it is restarted.
-
-Navigate to https://71ff7065.ngrok.io (for example) in your browser (in any browser) and you will see your local in SSL, and can login with Twitter.
-
-As of July 31, 2019, if you use ssl with ngrok, webpack WILL NOT update your browser when your code changes, you will
-have to manually refresh your browser to see the changes, and refreshes are slower with Webpack.
-
+    npm run start-https
+    
+Webpack will open a tab in your browser, displaying the WebApp at:
+    
+    https://localhost:3000
 
 # Building a bundle.js for Cordova or our Production webservers
 
-    npm run prod
+    npm run prod 
+
+If you look at the start-https command in the package.json file, you can see that it requires your ssl certificates
+to be in `src/cert/server.crt` and your ssl key to be in `src/cert/server.key`
     
 As of July 31, 2019, this bundle works with Cordova, but hasn't been tested on production servers.    
 
