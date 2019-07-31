@@ -65,7 +65,7 @@ class EndorsementModeTabs extends Component {
   render () {
     // console.log("EndorsementModeTabs render, this.props.completionLevelFilterType:", this.props.completionLevelFilterType);
     renderLog(__filename);
-    const { classes, ballotLength, ballotLengthRemaining } = this.props;
+    const { classes } = this.props; // constants ballotLength and ballotLengthRemaining are supposed to be included
     const remainingDecisionsCountIsDifferentThanAllItems = this.props.ballotLength !== this.props.ballotLengthRemaining;
     const showRemainingDecisions = (remainingDecisionsCountIsDifferentThanAllItems && this.props.ballotLengthRemaining) || false;
     //  const showDecisionsMade = (remainingDecisionsCountIsDifferentThanAllItems && this.props.ballotLengthRemaining) || false;
@@ -82,13 +82,7 @@ class EndorsementModeTabs extends Component {
           id="allItemsCompletionLevelTab"
           onClick={() => this.goToDifferentCompletionLevelTab('filterAllBallotItems')}
           label={(
-            <Badge
-              classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 0 ? null : classes.badgeColorPrimary }}
-              color="primary"
-              badgeContent={ballotLength}
-              id="ballotDecisionsTabsAllItems"
-              invisible={ballotLength === 0}
-            >
+            <Badge>
               <span className="u-show-mobile">
                 Endorsed
               </span>
@@ -105,13 +99,7 @@ class EndorsementModeTabs extends Component {
             id="remainingChoicesCompletionLevelTab"
             onClick={() => this.goToDifferentCompletionLevelTab('filterRemaining')}
             label={(
-              <Badge
-                classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 1 ? null : classes.badgeColorPrimary }}
-                color="primary"
-                badgeContent={ballotLengthRemaining}
-                id="ballotDecisionTabsRemainingChoices"
-                invisible={ballotLengthRemaining === 0}
-              >
+              <Badge>
                 <span className="u-show-mobile">
                   Add
                 </span>
