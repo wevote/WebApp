@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import OpenExternalWebSite from './OpenExternalWebSite';
 import { cordovaDot } from '../../utils/cordovaUtils';
+import positionIcon from '../../../img/global/svg-icons/positions-icon-24-x-24.svg';
 import SplitIconButton from './SplitIconButton';
 
 const text = 'Don\'t see your favorite organization or endorsement? We Vote is nonpartisan and welcomes public endorsements of candidates and measures from any organization or public figure.';
@@ -48,7 +49,7 @@ class AddEndorsements extends Component {
                 <SplitIconButton
                   title="Endorsements missing?"
                   id="myValuesAddEndorsementsToWeVote"
-                  icon={<img src={cordovaDot('/img/global/svg-icons/positions-icon-24-x-24.svg')} alt="" />}
+                  icon={<img src={cordovaDot(positionIcon)} alt="" />}
                   buttonText="Add endorsements"
                 />
               )}

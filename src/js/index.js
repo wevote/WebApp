@@ -8,6 +8,7 @@ import { ThemeProvider } from 'styled-components';
 import { useScroll } from 'react-router-scroll';
 import { isCordova } from './utils/cordovaUtils';
 import routes from './Root';
+import '../sass/main.scss';
 import muiTheme from './mui-theme';
 import styledTheme from './styled-theme';
 import stringOccurs from './utils/stringOccurs';

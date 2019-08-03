@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
+import removeCircleIcon from '../../../img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-88-remove-circle.svg';
 
 export default class SearchBar extends Component {
   static propTypes = {
@@ -84,7 +85,7 @@ export default class SearchBar extends Component {
             onClick={this.clearQuery}
             type="button"
           >
-            <img src={cordovaDot('/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-88-remove-circle.svg')} width="28" height="28" color="#ccc" alt="clear query" />
+            <img src={cordovaDot(removeCircleIcon)} width="28" height="28" color="#ccc" alt="clear query" />
           </button>
           <button
             className={this.props.searchButton ? 'search-options-btn' : 'hidden'}

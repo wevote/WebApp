@@ -17,6 +17,7 @@ import OrganizationPositionItem from './OrganizationPositionItem';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SupportStore from '../../stores/SupportStore';
 import VoterGuideStore from '../../stores/VoterGuideStore';
+import triangleBottomIcon from '../../../img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-252-triangle-bottom.svg';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 1 */
@@ -344,7 +345,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
             <span className="u-cursor--pointer" onClick={this.toggleExpandDetails}>
               { this.state.displayOfficeUnfurled ? (
                 <span className="d-print-none u-push--xs">
-                  <img src={cordovaDot('/img/global/svg-icons/glyphicons-pro-halflings/glyphicons-halflings-252-triangle-bottom.svg')}
+                  <img src={cordovaDot(triangleBottomIcon)}
                        width="32"
                        height="32"
                        color=""

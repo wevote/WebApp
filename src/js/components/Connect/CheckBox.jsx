@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import ImageHandler from '../ImageHandler';
 import { renderLog } from '../../utils/logging';
+import checkMarkIcon from '../../../img/global/svg-icons/check-mark-v2-40x43.svg';
 
 export default class CheckBox extends Component {
   static propTypes = {
@@ -43,7 +44,7 @@ export default class CheckBox extends Component {
         { isChecked && (
         <ImageHandler
           className="friends-list__square-check-mark"
-          imageUrl={cordovaDot('/img/global/svg-icons/check-mark-v2-40x43.svg')}
+          imageUrl={cordovaDot(checkMarkIcon)}
           alt="Inviting"
         />
         ) }

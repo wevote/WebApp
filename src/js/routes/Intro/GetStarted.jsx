@@ -7,6 +7,7 @@ import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import TwitterSignIn from '../../components/Twitter/TwitterSignIn';
 import VoterStore from '../../stores/VoterStore';
+import closeIcon from '../../../img/global/icons/x-close.png';
 
 export default class GetStarted extends Component {
   constructor (props) {
@@ -74,7 +75,7 @@ export default class GetStarted extends Component {
         <Helmet title="Welcome to We Vote" />
         <div className="intro-story container-fluid well u-inset--md">
           <span onClick={this.goToBallotLink}>
-            <img src={cordovaDot('/img/global/icons/x-close.png')} className="x-close" alt="close" />
+            <img src={cordovaDot(closeIcon)} className="x-close" alt="close" />
           </span>
           <div className="intro-story__h1 xs-text-left">Sign In</div>
           <div className="intro-story__padding--btm">

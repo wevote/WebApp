@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import { _ } from 'lodash';
+import _ from 'lodash';
 import FriendListCompressed from './FriendListCompressed';
 import FriendActions from '../../actions/FriendActions';
 import FriendStore from '../../stores/FriendStore';

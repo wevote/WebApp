@@ -14,6 +14,7 @@ import BallotStore from '../../stores/BallotStore';
 import CandidateStore from '../../stores/CandidateStore';
 import cookies from '../../utils/cookies';
 import { isWebApp } from '../../utils/cordovaUtils';
+import EndorsementModeTabs from './EndorsementModeTabs';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -275,7 +276,6 @@ class HeaderBackToVoterGuides extends Component {
       backToOrganizationLinkText = 'Your Voter Guides'; // Back to
       backToLink = '/settings/voterguidelist';
     }
-    const editMode = 'positions';
     const electionName = BallotStore.currentBallotElectionName;
     // const atLeastOnePositionFoundForThisElection = positionListForOneElection && positionListForOneElection.length !== 0;
 
@@ -355,12 +355,11 @@ class HeaderBackToVoterGuides extends Component {
           {electionName}
         </VoterGuideTitle>
         <EndorsementModeSwitch className="header-toolbar">
-          {/* Endorsed/Opposed vs. Add to Voter Guide */}
-          {editMode === 'positions' ? (
-            <div>Endorsed or Opposed</div>
-          ) : (
-            <div>Add to Voter Guide</div>
-          )}
+          <EndorsementModeTabs
+            completionLevelFilterType={BallotStore.cleanCompletionLevelFilterType('')}
+            ballotLength={BallotStore.ballotLength}
+            ballotLengthRemaining={BallotStore.ballotRemainingChoicesLength}
+          />
         </EndorsementModeSwitch>
         <SignInModal
           show={this.state.showSignInModal}

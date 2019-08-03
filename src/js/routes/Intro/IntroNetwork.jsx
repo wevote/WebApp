@@ -6,6 +6,7 @@ import IntroNetworkSafety from '../../components/Intro/IntroNetworkSafety';
 import IntroNetworkDefinition from '../../components/Intro/IntroNetworkDefinition';
 import IntroNetworkBallotIsNext from '../../components/Intro/IntroNetworkBallotIsNext';
 import { renderLog } from '../../utils/logging';
+import closeIcon from '../../../img/global/icons/x-close.png';
 
 export default class IntroNetwork extends Component {
   static goToBallotLink () {
@@ -75,7 +76,7 @@ export default class IntroNetwork extends Component {
         <div className="intro-story container-fluid well u-inset--md" style={this.overrideMediaQueryForAndroidTablets()}>
           <span onClick={IntroNetwork.goToBallotLink}>
             <img
-              src={cordovaDot('/img/global/icons/x-close.png')}
+              src={cordovaDot(closeIcon)}
               className={isWebApp() ? 'x-close' : 'x-close x-close__cordova'}
               alt="close"
             />

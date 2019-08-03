@@ -26,6 +26,7 @@ import VoterStore from '../../stores/VoterStore';
 import PositionPublicToggle from './PositionPublicToggle';
 import SupportStore from '../../stores/SupportStore';
 import webAppConfig from '../../config';
+import shareIconSvg from '../../../img/global/svg-icons/share-icon.svg';
 import { openSnackbar } from './SnackNotifier';
 
 class ItemActionBar extends PureComponent {
@@ -430,7 +431,7 @@ class ItemActionBar extends PureComponent {
 
     const shareIcon = (
       <span className="btn__icon">
-        <img src={cordovaDot('/img/global/svg-icons/share-icon.svg')}
+        <img src={cordovaDot(shareIconSvg)}
              width={iconSize}
              height={iconSize}
              color={iconColor}

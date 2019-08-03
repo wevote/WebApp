@@ -20,7 +20,7 @@
     <meta property="og:title"         content="We Vote" />
     <meta property="og:description"   content="View your ballot. Learn from friends. Share your vision." />
     <meta property="og:image"         content="https://WeVote.US/img/global/logos/we-vote-logo-wordmark-vertical-inverted-color-256x256.png" />
-    <link href="/css/loading-screen.css" rel="stylesheet" />
+    <link href="/css/loading-screen.css" rel="stylesheet" type="text/css" />
 
     <link rel="apple-touch-icon" sizes="180x180" href="/img/global/icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="256x256" href="/img/global/icons/android-chrome-256x256.png">
@@ -67,9 +67,7 @@
       '<link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossOrigin="anonymous" rel="stylesheet" />',
       '<link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" rel="stylesheet"/>',
       '<link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" rel="stylesheet" />',
-      '<link href="/css/bootstrap.css" rel="stylesheet" />',
-      '<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.12.0/bootstrap-social.min.css" rel="stylesheet" />',
-      '<link href="/css/main.css" rel="stylesheet" />'];
+      '<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.12.0/bootstrap-social.min.css" rel="stylesheet" />'];
     (function(rest) {
       $("head").append(...rest);
     })(cssTags);
@@ -79,7 +77,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/easing/EasePack.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenLite.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TimelineLite.min.js"></script>
-    <script src="/js/bundle.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="https://checkout.stripe.com/checkout.js"></script>
@@ -89,7 +86,7 @@
     <script>
       window.zESettings = {
         webWidget: {
-          color: { 
+          color: {
             theme: '#2E3C5D',
             launcher: '#fff',
             launcherText: '#757575',

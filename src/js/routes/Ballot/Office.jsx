@@ -14,6 +14,7 @@ import SearchAllActions from '../../actions/SearchAllActions';
 import Testimonial from '../../components/Widgets/Testimonial';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
+import daleMcGrewJpm from '../../../img/global/photos/Dale_McGrew-200x200.jpg';
 
 
 // This is related to routes/VoterGuide/OrganizationVoterGuideOffice
@@ -100,7 +101,7 @@ export default class Office extends Component {
     // =========== Testimonial variables ============================
 
     const testimonialAuthor = 'Dale M., Oakland, California';
-    const imageUrl = cordovaDot('/img/global/photos/Dale_McGrew-200x200.jpg');
+    const imageUrl = cordovaDot(daleMcGrewJpm);
     const testimonial = 'Following values that are important to me lets me see the opinions of other people who share my values.';
 
     // ==============================================================
