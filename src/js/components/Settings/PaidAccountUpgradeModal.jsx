@@ -34,6 +34,8 @@ class PaidAccountUpgradeModal extends Component {
       pathname: undefined,
       radioGroupValue: 'annualPlanRadio',
     };
+
+    this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
   }
 
   componentDidMount () {
@@ -91,6 +93,10 @@ class PaidAccountUpgradeModal extends Component {
         radioGroupValue: event.target.value || '',
       });
     }
+  }
+
+  closePaidAccountUpgradeModal () {
+    this.props.toggleFunction(this.state.pathname);
   }
 
   render () {
@@ -324,7 +330,7 @@ class PaidAccountUpgradeModal extends Component {
           <IconButton
             aria-label="Close"
             className={classes.closeButton}
-            onClick={() => { this.props.toggleFunction(this.state.pathname); }}
+            onClick={this.closePaidAccountUpgradeModal}
             id="profileClosePaidAccountUpgradeModal"
           >
             <CloseIcon />
