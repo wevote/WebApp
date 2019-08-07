@@ -165,17 +165,17 @@ class PaidAccountUpgradeModal extends Component {
             <div className="col col-6 pr-0 u-full-height">
               <WrapperLeft className="u-full-height">
                 <div className="u-tc">
-                  <h3 className="h3 u-capitalize">
+                  <h4 className="h4 u-capitalize">
                     {pricingPlanChosen}
                      Plan
-                  </h3>
+                  </h4>
                 </div>
                 {radioGroupValue === 'annualPlanRadio' ? (
                   <Fieldset>
                     <Legend>
                       Billed Annually
                     </Legend>
-                    <FormControl>
+                    <FormControl classes={{ root: classes.formControl }}>
                       <RadioGroup
                         name="planRadioGroup"
                         value={radioGroupValue}
@@ -203,7 +203,7 @@ class PaidAccountUpgradeModal extends Component {
                     <Legend>
                       Billed Annually
                     </Legend>
-                    <FormControl>
+                    <FormControl classes={{ root: classes.formControl }}>
                       <RadioGroup
                         name="planRadioGroup"
                         value={radioGroupValue}
@@ -232,7 +232,7 @@ class PaidAccountUpgradeModal extends Component {
                     <Legend>
                       Billed Monthly
                     </Legend>
-                    <FormControl>
+                    <FormControl classes={{ root: classes.formControl }}>
                       <RadioGroup
                         name="planRadioGroup"
                         value={radioGroupValue}
@@ -260,7 +260,7 @@ class PaidAccountUpgradeModal extends Component {
                     <Legend>
                       Billed Monthly
                     </Legend>
-                    <FormControl>
+                    <FormControl classes={{ root: classes.formControl }}>
                       <RadioGroup
                         name="planRadioGroup"
                         value={radioGroupValue}
@@ -326,7 +326,7 @@ class PaidAccountUpgradeModal extends Component {
       >
         <Title>
           {backToButton}
-          <h1 className="h1 u-margin-none">{modalTitle}</h1>
+          <h3 className="h3 u-margin-none">{modalTitle}</h3>
           <IconButton
             aria-label="Close"
             className={classes.closeButton}
@@ -373,17 +373,21 @@ const styles = theme => ({
       padding: '0 8px 8px',
     },
   },
+  formControl: {
+    width: '100%',
+    padding: '6px 0 8px',
+  },
   backToButton: {
     margin: 0,
     position: 'absolute',
     left: 8,
-    top: 12,
+    top: 14,
   },
   closeButton: {
     margin: 0,
     position: 'absolute',
     right: 8,
-    top: 6,
+    top: 9,
   },
   formControlLabel: {
     margin: 0,
@@ -391,9 +395,10 @@ const styles = theme => ({
     height: '100%',
   },
   radioButton: {
-    width: 55.4,
-    height: 55.4,
+    width: 45.4,
+    height: 45.4,
     padding: 12,
+    marginLeft: '10px',
     pointerEvents: 'auto',
   },
 });
@@ -412,6 +417,9 @@ const Title = styled.div`
   text-align: center;
   border-bottom: 2px solid #f7f7f7;
   padding: 16px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Row = styled.div`
@@ -450,7 +458,8 @@ const Legend = styled.legend`
   font-size: 12px;
   text-align: left;
   margin: 0;
-  margin-left: 8px;
+  margin-left: 16px;
+  padding: 0px 8px;
   width: fit-content;
 `;
 
