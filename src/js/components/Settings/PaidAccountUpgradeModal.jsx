@@ -349,22 +349,22 @@ const styles = theme => ({
   },
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
-    [theme.breakpoints.up('lg')]: {
-      minWidth: '80%',
-      maxWidth: '80%',
-      width: '80%',
+    [theme.breakpoints.up('md')]: {
+      minWidth: '65%',
+      maxWidth: '769px',
+      width: '65%',
       minHeight: '95%',
       maxHeight: '95%',
       height: '95%',
       margin: '0 auto',
     },
-    [theme.breakpoints.down('lg')]: {
-      minWidth: '99%',
-      maxWidth: '99%',
-      width: '99%',
-      minHeight: '99%',
-      maxHeight: '99%',
-      height: '99%',
+    [theme.breakpoints.down('md')]: {
+      minWidth: '95%',
+      maxWidth: '95%',
+      width: '95%',
+      minHeight: '95%',
+      maxHeight: '95%',
+      height: '95%',
       margin: '0 auto',
     },
   },
@@ -416,7 +416,7 @@ const Title = styled.div`
 
 const Row = styled.div`
   max-width: 700px;
-  margin: 0 auto;
+  margin: 0 auto !important;
 `;
 
 const WrapperLeft = styled.div`
@@ -449,9 +449,9 @@ const Legend = styled.legend`
   color: ${({ theme }) => theme.colors.main};
   font-size: 12px;
   text-align: left;
-  width: fit-content;
-  padding: 0 4px;
   margin: 0;
+  margin-left: 8px;
+  width: fit-content;
 `;
 
 const PriceLabel = styled.span`
