@@ -478,7 +478,7 @@ class Pricing extends Component {
         <Section
           noSideMargins={this.props.modalDisplayMode}
           noTopMargin={this.props.modalDisplayMode}
-          variant={this.props.modalDisplayMode ? 'dark' : 'white'}
+          variant="white"
         >
           <PricingDescriptionContainer className="container">
             <div className="u-show-mobile-tablet">

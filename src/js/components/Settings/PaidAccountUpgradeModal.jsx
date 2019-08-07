@@ -32,6 +32,7 @@ class PaidAccountUpgradeModal extends Component {
     super(props);
     this.state = {
       pathname: undefined,
+      paidAccountProcessStep: '',
       radioGroupValue: 'annualPlanRadio',
     };
 
@@ -416,28 +417,52 @@ class PaidAccountUpgradeModal extends Component {
         open={this.props.show}
         onClose={() => { this.props.toggleFunction(this.state.pathname); }}
       >
-        <ModalTitleArea>
-          {backToButton}
-          <Title>
-            {modalTitle}
-          </Title>
-          <IconButton
-            aria-label="Close"
-            className={classes.closeButton}
-            onClick={this.closePaidAccountUpgradeModal}
-            id="profileClosePaidAccountUpgradeModal"
-          >
-            <CloseIcon />
-          </IconButton>
-        </ModalTitleArea>
-        <DialogContent classes={{ root: classes.dialogContent }}>
-          {modalHtmlContents}
-        </DialogContent>
+        {paidAccountProcessStep === '' ? (
+          <ModalTitleAreaNoBoxShadow>
+            {backToButton}
+            <Title>
+              {modalTitle}
+            </Title>
+            <IconButton
+              aria-label="Close"
+              className={classes.closeButton}
+              onClick={this.closePaidAccountUpgradeModal}
+              id="profileClosePaidAccountUpgradeModal"
+            >
+              <CloseIcon />
+            </IconButton>
+          </ModalTitleAreaNoBoxShadow>
+        ) : (
+          <ModalTitleArea>
+            {backToButton}
+            <Title>
+              {modalTitle}
+            </Title>
+            <IconButton
+              aria-label="Close"
+              className={classes.closeButton}
+              onClick={this.closePaidAccountUpgradeModal}
+              id="profileClosePaidAccountUpgradeModal"
+            >
+              <CloseIcon />
+            </IconButton>
+          </ModalTitleArea>
+        )}
+
+        {paidAccountProcessStep === '' ? (
+          <DialogContent classes={{ root: classes.dialogContentWhite }}>
+            {modalHtmlContents}
+          </DialogContent>
+        ) : (
+          <DialogContent classes={{ root: classes.dialogContent }}>
+            {modalHtmlContents}
+          </DialogContent>
+        )}
       </Dialog>
     );
   }
 }
-const styles = theme => ({
+const styles = () => ({
   button: {
     marginRight: 8,
   },
@@ -465,6 +490,13 @@ const styles = theme => ({
   dialogContent: {
     '@media (max-width: 768px)': {
       background: '#f7f7f7',
+      padding: '0 8px 8px',
+    },
+    background: 'white',
+    overflow: 'hidden',
+  },
+  dialogContentWhite: {
+    '@media (max-width: 768px)': {
       padding: '0 8px 8px',
     },
     background: 'white',
@@ -535,6 +567,16 @@ const ModalTitleArea = styled.div`
   @media (min-width: 768px) {
     text-align: center;
     box-shadow: none;
+    border-bottom: 2px solid #f7f7f7;
+  }
+`;
+
+const ModalTitleAreaNoBoxShadow = styled.div`
+  width: 100%;
+  padding: 16px 12px;
+  z-index: 999;
+  @media (min-width: 768px) {
+    text-align: center;
     border-bottom: 2px solid #f7f7f7;
   }
 `;
