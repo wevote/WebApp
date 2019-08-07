@@ -62,4 +62,5 @@ module.exports = {
     open: true,
     writeToDisk: true,
   },
+  devtool: 'cheap-inline-module-source-map',
 };
