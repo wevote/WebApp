@@ -44,6 +44,7 @@ import Section, {
   SignUpMessage,
 } from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
+import welcomeForVotersImage from '../../img/welcome/WelcomeForVoters-Ballot-20190507.png'
 
 class Welcome extends PureComponent {
   static propTypes = {
@@ -205,7 +206,7 @@ class Welcome extends PureComponent {
               </Description>
             </DescriptionLeftColumn>
             <DescriptionImageColumn>
-              <Image src={cordovaDot('/img/welcome/WelcomeForVoters-Ballot-20190507.png')} />
+              <Image src={cordovaDot(welcomeForVotersImage)} />
             </DescriptionImageColumn>
           </DescriptionContainer>
         </Section>
