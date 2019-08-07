@@ -12,7 +12,7 @@ import FormControl from '@material-ui/core/FormControl';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
-import { withStyles, withTheme } from '@material-ui/core';
+import { withStyles, withTheme, OutlinedInput } from '@material-ui/core';
 import { renderLog } from '../../utils/logging';
 import { hasIPhoneNotch, isIOS } from '../../utils/cordovaUtils';
 import Pricing from '../../routes/More/Pricing';
@@ -34,9 +34,16 @@ class PaidAccountUpgradeModal extends Component {
       pathname: undefined,
       paidAccountProcessStep: '',
       radioGroupValue: 'annualPlanRadio',
+      couponCodeValue: '',
+      couponCodeFromAPI: 'test25',
+      couponApplied: false,
+      couponDiscountValue: 25,
     };
 
     this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
+    this.onCouponInputChange = this.onCouponInputChange.bind(this);
+    this.checkCouponCodeValidity = this.checkCouponCodeValidity.bind(this);
+    this.backToChoosePlan = this.backToChoosePlan.bind(this);
   }
 
   componentDidMount () {
@@ -51,16 +58,26 @@ class PaidAccountUpgradeModal extends Component {
     });
   }
 
-  backToChoosePlan = () => {
-    this.setState({ paidAccountProcessStep: '' });
+  onCouponInputChange (e) {
+    this.setState({ couponCodeValue: e.target.value });
   }
 
   backToApplyCoupon = () => {
-    this.setState({ paidAccountProcessStep: 'payForPlanMobile' });
+    this.setState({ paidAccountProcessStep: 'selectPlanDetailsMobile' });
   }
 
   couponAppliedFunction = () => {
     this.setState({ paidAccountProcessStep: 'payForPlan' });
+
+    if (window.innerWidth > 769) {
+      this.setState({
+        paidAccountProcessStep: 'payForPlan',
+      });
+    } else {
+      this.setState({
+        paidAccountProcessStep: 'payForPlanMobile',
+      });
+    }
   }
 
   paymentProcessedFunction = () => {
@@ -78,7 +95,7 @@ class PaidAccountUpgradeModal extends Component {
       });
     } else if (pricingPlanChosen !== 'free') {
       this.setState({
-        paidAccountProcessStep: 'payForPlanMobile',
+        paidAccountProcessStep: 'selectPlanDetailsMobile',
         pricingPlanChosen,
       });
     } else {
@@ -96,6 +113,18 @@ class PaidAccountUpgradeModal extends Component {
     }
   }
 
+  backToChoosePlan () {
+    this.setState({ paidAccountProcessStep: '' });
+  }
+
+  checkCouponCodeValidity () {
+    const { couponCodeValue, couponCodeFromAPI } = this.state;
+
+    if (couponCodeValue.toLowerCase() === couponCodeFromAPI.toLowerCase()) {
+      this.setState({ couponApplied: true });
+    }
+  }
+
   closePaidAccountUpgradeModal () {
     this.props.toggleFunction(this.state.pathname);
   }
@@ -103,10 +132,10 @@ class PaidAccountUpgradeModal extends Component {
   render () {
     renderLog(__filename);
     const { classes } = this.props;
-    const { radioGroupValue } = this.state;
-    // console.log('PaidAccountUpgradeModal render');
+    const { radioGroupValue, couponCodeValue, couponDiscountValue, couponApplied, paidAccountProcessStep, pricingPlanChosen } = this.state;
 
-    const { paidAccountProcessStep, pricingPlanChosen } = this.state;
+    console.log(paidAccountProcessStep);
+
     let modalTitle = '';
     let backToButton;
     let modalHtmlContents = <span />;
@@ -124,7 +153,7 @@ class PaidAccountUpgradeModal extends Component {
           />
         );
         break;
-      case 'payForPlanMobile':
+      case 'selectPlanDetailsMobile':
         backToButton = (
           <Button className={classes.backToButton} onClick={this.backToChoosePlan}>
             {isIOS() ? <ArrowBackIos /> : <ArrowBack />}
@@ -134,115 +163,180 @@ class PaidAccountUpgradeModal extends Component {
         modalTitle = 'Payment Plan';
         modalHtmlContents = (
           <MobileWrapper className="u-full-height">
-            <PlanChosenTitle>
-              {planNameTitle}
-            </PlanChosenTitle>
-            {radioGroupValue === 'annualPlanRadio' ? (
-              <Fieldset>
-                <FormControl classes={{ root: classes.formControl }}>
-                  <RadioGroup
-                    name="planRadioGroup"
-                    value={radioGroupValue}
-                    onChange={this.handleRadioGroupChange}
-                  >
-                    <FormControlLabel
-                      classes={{ root: classes.formControlLabel, label: classes.formControlLabelSpan }}
-                      value="annualPlanRadio"
-                      control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
-                      label={(
-                        <>
-                          <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                          <PriceLabel>125</PriceLabel>
-                          <PriceLabelSubText> /mo</PriceLabelSubText>
-                          <MobilePricingPlanName>Billed Annually</MobilePricingPlanName>
-                        </>
-                      )}
-                      onClick={this.handleRadioGroupChoiceSubDomain}
-                      checked={radioGroupValue === 'annualPlanRadio'}
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </Fieldset>
-            ) : (
-              <FieldsetDisabled>
-                <FormControl classes={{ root: classes.formControl }}>
-                  <RadioGroup
-                    name="planRadioGroup"
-                    value={radioGroupValue}
-                    onChange={this.handleRadioGroupChange}
-                  >
-                    <FormControlLabel
-                      classes={{ root: classes.formControlLabel, label: classes.formControlLabelSpan }}
-                      value="annualPlanRadio"
-                      control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
-                      label={(
-                        <>
-                          <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                          <PriceLabel>125</PriceLabel>
-                          <PriceLabelSubText> /mo</PriceLabelSubText>
-                          <MobilePricingPlanName>Billed Annually</MobilePricingPlanName>
-                        </>
-                      )}
-                      onClick={this.handleRadioGroupChoiceSubDomain}
-                      checked={radioGroupValue === 'annualPlanRadio'}
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </FieldsetDisabled>
-            )}
-            {radioGroupValue === 'monthlyPlanRadio' ? (
-              <Fieldset>
-                <FormControl classes={{ root: classes.formControl }}>
-                  <RadioGroup
-                    name="planRadioGroup"
-                    value={radioGroupValue}
-                    onChange={this.handleRadioGroupChange}
-                  >
-                    <FormControlLabel
-                      classes={{ root: classes.formControlLabel, label: classes.formControlLabelSpan }}
-                      value="monthlyPlanRadio"
-                      control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
-                      label={(
-                        <>
-                          <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                          <PriceLabel>150</PriceLabel>
-                          <PriceLabelSubText> /mo</PriceLabelSubText>
-                          <MobilePricingPlanName>Billed Monthly</MobilePricingPlanName>
-                        </>
-                      )}
-                      onClick={this.handleRadioGroupChoiceSubDomain}
-                      checked={radioGroupValue === 'monthlyPlanRadio'}
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </Fieldset>
-            ) : (
-              <FieldsetDisabled>
-                <FormControl classes={{ root: classes.formControl }}>
-                  <RadioGroup
-                    name="planRadioGroup"
-                    value={radioGroupValue}
-                    onChange={this.handleRadioGroupChange}
-                  >
-                    <FormControlLabel
-                      classes={{ root: classes.formControlLabel, label: classes.formControlLabelSpan }}
-                      value="monthlyPlanRadio"
-                      control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
-                      label={(
-                        <>
-                          <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                          <PriceLabel>150</PriceLabel>
-                          <PriceLabelSubText> /mo</PriceLabelSubText>
-                          <MobilePricingPlanName>Billed Monthly</MobilePricingPlanName>
-                        </>
-                      )}
-                      onClick={this.handleRadioGroupChoiceSubDomain}
-                      checked={radioGroupValue === 'monthlyPlanRadio'}
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </FieldsetDisabled>
-            )}
+            <FlexSectionOne>
+              <SectionTitle>
+                {planNameTitle}
+              </SectionTitle>
+              {couponApplied ? (
+                <div
+                  className={classes.couponAlert}
+                >
+                  Coupon Applied. Deducted $25
+                </div>
+              ) : null}
+              {radioGroupValue === 'annualPlanRadio' ? (
+                <Fieldset>
+                  <FormControl classes={{ root: classes.formControl }}>
+                    <RadioGroup
+                      name="planRadioGroup"
+                      value={radioGroupValue}
+                      onChange={this.handleRadioGroupChange}
+                    >
+                      <FormControlLabel
+                        classes={{ root: classes.formControlLabel, label: classes.formControlLabelSpan }}
+                        value="annualPlanRadio"
+                        control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
+                        label={(
+                          <>
+                            <PriceLabelDollarSign>$</PriceLabelDollarSign>
+                            <PriceLabel>{couponApplied ? (125 - couponDiscountValue) : 125}</PriceLabel>
+                            <PriceLabelSubText> /mo</PriceLabelSubText>
+                            <MobilePricingPlanName>Billed Annually</MobilePricingPlanName>
+                          </>
+                        )}
+                        onClick={this.handleRadioGroupChoiceSubDomain}
+                        checked={radioGroupValue === 'annualPlanRadio'}
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </Fieldset>
+              ) : (
+                <FieldsetDisabled>
+                  <FormControl classes={{ root: classes.formControl }}>
+                    <RadioGroup
+                      name="planRadioGroup"
+                      value={radioGroupValue}
+                      onChange={this.handleRadioGroupChange}
+                    >
+                      <FormControlLabel
+                        classes={{ root: classes.formControlLabel, label: classes.formControlLabelSpan }}
+                        value="annualPlanRadio"
+                        control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
+                        label={(
+                          <>
+                            <PriceLabelDollarSign>$</PriceLabelDollarSign>
+                            <PriceLabel>{couponApplied ? (125 - couponDiscountValue) : 125}</PriceLabel>
+                            <PriceLabelSubText> /mo</PriceLabelSubText>
+                            <MobilePricingPlanName>Billed Annually</MobilePricingPlanName>
+                          </>
+                        )}
+                        onClick={this.handleRadioGroupChoiceSubDomain}
+                        checked={radioGroupValue === 'annualPlanRadio'}
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </FieldsetDisabled>
+              )}
+              {radioGroupValue === 'monthlyPlanRadio' ? (
+                <Fieldset>
+                  <FormControl classes={{ root: classes.formControl }}>
+                    <RadioGroup
+                      name="planRadioGroup"
+                      value={radioGroupValue}
+                      onChange={this.handleRadioGroupChange}
+                    >
+                      <FormControlLabel
+                        classes={{ root: classes.formControlLabel, label: classes.formControlLabelSpan }}
+                        value="monthlyPlanRadio"
+                        control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
+                        label={(
+                          <>
+                            <PriceLabelDollarSign>$</PriceLabelDollarSign>
+                            <PriceLabel>{couponApplied ? (150 - couponDiscountValue) : 150}</PriceLabel>
+                            <PriceLabelSubText> /mo</PriceLabelSubText>
+                            <MobilePricingPlanName>Billed Monthly</MobilePricingPlanName>
+                          </>
+                        )}
+                        onClick={this.handleRadioGroupChoiceSubDomain}
+                        checked={radioGroupValue === 'monthlyPlanRadio'}
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </Fieldset>
+              ) : (
+                <FieldsetDisabled>
+                  <FormControl classes={{ root: classes.formControl }}>
+                    <RadioGroup
+                      name="planRadioGroup"
+                      value={radioGroupValue}
+                      onChange={this.handleRadioGroupChange}
+                    >
+                      <FormControlLabel
+                        classes={{ root: classes.formControlLabel, label: classes.formControlLabelSpan }}
+                        value="monthlyPlanRadio"
+                        control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
+                        label={(
+                          <>
+                            <PriceLabelDollarSign>$</PriceLabelDollarSign>
+                            <PriceLabel>{couponApplied ? (150 - couponDiscountValue) : 150}</PriceLabel>
+                            <PriceLabelSubText> /mo</PriceLabelSubText>
+                            <MobilePricingPlanName>Billed Monthly</MobilePricingPlanName>
+                          </>
+                        )}
+                        onClick={this.handleRadioGroupChoiceSubDomain}
+                        checked={radioGroupValue === 'monthlyPlanRadio'}
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </FieldsetDisabled>
+              )}
+              <br />
+              <SectionTitle>Coupon Code</SectionTitle>
+              <OutlinedInput
+                classes={{ root: couponApplied ? classes.textFieldCouponApplied : classes.textField, input: couponCodeValue !== '' ? classes.textFieldInputUppercase : classes.textFieldInput }}
+                inputProps={{ }}
+                margin="normal"
+                // variant="outlined"
+                placeholder="Enter Code..."
+                fullWidth
+                onChange={this.onCouponInputChange}
+                disabled={couponApplied}
+              />
+              {couponApplied ? (
+                <div
+                  className={classes.couponAlert}
+                >
+                  APPLIED
+                </div>
+              ) : (
+                <Button
+                  disabled={couponCodeValue === ''}
+                  fullWidth
+                  variant="contained"
+                  margin="normal"
+                  color="primary"
+                  classes={{ root: classes.couponButton }}
+                  onClick={this.checkCouponCodeValidity}
+                >
+                  APPLY
+                </Button>
+              )}
+            </FlexSectionOne>
+            <FlexSectionTwo>
+              <Button
+                color="primary"
+                variant="contained"
+                classes={{ root: classes.nextButton }}
+                onClick={this.couponAppliedFunction}
+              >
+                NEXT
+              </Button>
+            </FlexSectionTwo>
+
+          </MobileWrapper>
+        );
+        break;
+      case 'payForPlanMobile':
+        backToButton = (
+          <Button className={classes.backToButton} onClick={this.backToApplyCoupon}>
+            {isIOS() ? <ArrowBackIos /> : <ArrowBack />}
+            Select Plan Details
+          </Button>
+        );
+        modalTitle = 'Payment';
+        modalHtmlContents = (
+          <MobileWrapper>
+            <SectionTitle>Stripe Payment Section</SectionTitle>
           </MobileWrapper>
         );
         break;
@@ -259,9 +353,9 @@ class PaidAccountUpgradeModal extends Component {
             <div className="col col-6 pr-0 u-full-height">
               <WrapperLeft className="u-full-height">
                 <div className="u-tc">
-                  <PlanChosenTitle>
+                  <SectionTitle>
                     {planNameTitle}
-                  </PlanChosenTitle>
+                  </SectionTitle>
                 </div>
                 {radioGroupValue === 'annualPlanRadio' ? (
                   <Fieldset>
@@ -281,7 +375,7 @@ class PaidAccountUpgradeModal extends Component {
                           label={(
                             <>
                               <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                              <PriceLabel>125</PriceLabel>
+                              <PriceLabel>{couponApplied ? (125 - couponDiscountValue) : 125}</PriceLabel>
                               <PriceLabelSubText> /mo</PriceLabelSubText>
                             </>
                           )}
@@ -309,7 +403,7 @@ class PaidAccountUpgradeModal extends Component {
                           label={(
                             <>
                               <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                              <PriceLabel>125</PriceLabel>
+                              <PriceLabel>{couponApplied ? (125 - couponDiscountValue) : 125}</PriceLabel>
                               <PriceLabelSubText> /mo</PriceLabelSubText>
                             </>
                           )}
@@ -338,7 +432,7 @@ class PaidAccountUpgradeModal extends Component {
                           label={(
                             <>
                               <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                              <PriceLabel>150</PriceLabel>
+                              <PriceLabel>{couponApplied ? (150 - couponDiscountValue) : 150}</PriceLabel>
                               <PriceLabelSubText> /mo</PriceLabelSubText>
                             </>
                           )}
@@ -366,7 +460,7 @@ class PaidAccountUpgradeModal extends Component {
                           label={(
                             <>
                               <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                              <PriceLabel>150</PriceLabel>
+                              <PriceLabel>{couponApplied ? (150 - couponDiscountValue) : 150}</PriceLabel>
                               <PriceLabelSubText> /mo</PriceLabelSubText>
                             </>
                           )}
@@ -532,11 +626,14 @@ const styles = () => ({
   },
   formControlLabel: {
     margin: 0,
-    padding: 0,
+    padding: '0px 16px 0 8px',
     height: '100%',
     width: '100%',
     '@media (max-width: 768px)': {
       padding: '8px 16px 8px 8px',
+    },
+    '@media (max-width: 569px)': {
+      padding: '4px 8px 4px 4px',
     },
   },
   formControlLabelSpan: {
@@ -547,6 +644,74 @@ const styles = () => ({
     height: 45.4,
     padding: 12,
     pointerEvents: 'auto',
+  },
+  textField: {
+    background: 'white',
+    marginTop: 0,
+    marginBottom: 8,
+    height: 50,
+    fontSize: 18,
+    '@media (max-width: 569px)': {
+      height: 40,
+      fontSize: 16,
+    },
+  },
+  textFieldCouponApplied: {
+    height: 50,
+    fontSize: 18,
+    '@media (max-width: 569px)': {
+      height: 40,
+      fontSize: 16,
+    },
+    background: 'white',
+    marginTop: 0,
+    marginBottom: 8,
+    color: '#386949',
+  },
+  textFieldInput: {
+    fontWeight: 'bold',
+  },
+  textFieldInputUppercase: {
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
+  },
+  couponButton: {
+    height: 50,
+    fontSize: 18,
+    fontWeight: 'bold',
+    '@media (max-width: 569px)': {
+      height: 40,
+      fontSize: 16,
+    },
+  },
+  couponAlert: {
+    background: '#c1f4c9',
+    color: '#386949',
+    boxShadow: 'none',
+    pointerEvents: 'none',
+    fontWeight: 'bold',
+    marginBottom: 8,
+    height: 50,
+    fontSize: 18,
+    width: '100%',
+    padding: '8px 16px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '4px',
+    '@media (max-width: 569px)': {
+      height: 40,
+      fontSize: 16,
+    },
+  },
+  nextButton: {
+    height: 50,
+    fontSize: 18,
+    '@media (max-width: 569px)': {
+      height: 40,
+      fontSize: 16,
+    },
+    width: '100%',
   },
 });
 
@@ -579,6 +744,9 @@ const ModalTitleAreaNoBoxShadow = styled.div`
     text-align: center;
     border-bottom: 2px solid #f7f7f7;
   }
+  @media (max-width: 376px) {
+    padding: 8px 6px;
+  }
 `;
 
 // const BackToButton = styled.div`
@@ -605,15 +773,18 @@ const Title = styled.h3`
   }
 `;
 
-const PlanChosenTitle = styled.h4`
+const SectionTitle = styled.h4`
   color: #666;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
   text-transform: capitalize;
   margin-bottom: 16px;
   @media (min-width: 768px) {
     color: black;
     font-weight: bold;
+  }
+  @media (max-width: 376px) {
+    font-size: 18px;
   }
 `;
 
@@ -623,8 +794,20 @@ const Row = styled.div`
 `;
 
 const MobileWrapper = styled.div`
-  padding: 0 18px;
-  margin-top: 32px;
+  padding: 32px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: space-between;
+  max-height: 
+`;
+
+const FlexSectionOne = styled.div`
+  margin: 0;  
+`;
+
+const FlexSectionTwo = styled.div`
+  margin: 0;
 `;
 
 const WrapperLeft = styled.div`
@@ -669,7 +852,10 @@ const PriceLabel = styled.span`
   font-size: 40px;
   font-weight: bold;
   color: ${({ theme }) => theme.colors.main};
-  margin-left: 8px;
+  margin-left: 4px;
+  @media (max-width: 569px) {
+    font-size: 32px;
+  }
 `;
 
 const PriceLabelDollarSign = styled.span`
@@ -678,12 +864,18 @@ const PriceLabelDollarSign = styled.span`
   position: relative;
   top: -12px;
   font-weight: bold;
+  @media (max-width: 569px) {
+    font-size: 16px;
+  }
 `;
 
 const PriceLabelSubText = styled.span`
   font-size: 16px;
   font-weight: bold;
   color: ${({ theme }) => theme.colors.main};
+  @media (max-width: 569px) {
+    font-size: 14px;
+  }
 `;
 
 const MobilePricingPlanName = styled.span`
@@ -694,6 +886,9 @@ const MobilePricingPlanName = styled.span`
   position: relative;
   top: 16.8px;
   float: right;
+  @media (max-width: 569px) {
+    font-size: 14px;
+  }
 `;
 
 export default withTheme(withStyles(styles)(PaidAccountUpgradeModal));
