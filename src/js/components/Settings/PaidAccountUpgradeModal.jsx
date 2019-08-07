@@ -109,6 +109,8 @@ class PaidAccountUpgradeModal extends Component {
     let modalTitle = '';
     let backToButton;
     let modalHtmlContents = <span />;
+    const planNameTitle = `${pricingPlanChosen} Plan`;
+
     switch (paidAccountProcessStep) {
       case 'choosePlan':
       default:
@@ -128,28 +130,119 @@ class PaidAccountUpgradeModal extends Component {
             Choose Plan
           </Button>
         );
-        modalTitle = 'Apply Coupon';
+        modalTitle = 'Payment Plan';
         modalHtmlContents = (
-          <span>
-            Coupon Processing Center
-            <ButtonsContainer>
-              <Button
-                classes={{ root: classes.button }}
-                color="primary"
-                onClick={() => { this.props.toggleFunction(this.state.pathname); }}
-                variant="outlined"
-              >
-                Cancel
-              </Button>
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={this.couponAppliedFunction}
-              >
-                Checkout
-              </Button>
-            </ButtonsContainer>
-          </span>
+          <MobileWrapper className="u-full-height">
+            <PlanChosenTitle>
+              {planNameTitle}
+            </PlanChosenTitle>
+            {radioGroupValue === 'annualPlanRadio' ? (
+              <Fieldset>
+                <FormControl classes={{ root: classes.formControl }}>
+                  <RadioGroup
+                    name="planRadioGroup"
+                    value={radioGroupValue}
+                    onChange={this.handleRadioGroupChange}
+                  >
+                    <FormControlLabel
+                      classes={{ root: classes.formControlLabel, label: classes.formControlLabelSpan }}
+                      value="annualPlanRadio"
+                      control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
+                      label={(
+                        <>
+                          <PriceLabelDollarSign>$</PriceLabelDollarSign>
+                          <PriceLabel>125</PriceLabel>
+                          <PriceLabelSubText> /mo</PriceLabelSubText>
+                          <MobilePricingPlanName>Billed Annually</MobilePricingPlanName>
+                        </>
+                      )}
+                      onClick={this.handleRadioGroupChoiceSubDomain}
+                      checked={radioGroupValue === 'annualPlanRadio'}
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Fieldset>
+            ) : (
+              <FieldsetDisabled>
+                <FormControl classes={{ root: classes.formControl }}>
+                  <RadioGroup
+                    name="planRadioGroup"
+                    value={radioGroupValue}
+                    onChange={this.handleRadioGroupChange}
+                  >
+                    <FormControlLabel
+                      classes={{ root: classes.formControlLabel, label: classes.formControlLabelSpan }}
+                      value="annualPlanRadio"
+                      control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
+                      label={(
+                        <>
+                          <PriceLabelDollarSign>$</PriceLabelDollarSign>
+                          <PriceLabel>125</PriceLabel>
+                          <PriceLabelSubText> /mo</PriceLabelSubText>
+                          <MobilePricingPlanName>Billed Annually</MobilePricingPlanName>
+                        </>
+                      )}
+                      onClick={this.handleRadioGroupChoiceSubDomain}
+                      checked={radioGroupValue === 'annualPlanRadio'}
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </FieldsetDisabled>
+            )}
+            {radioGroupValue === 'monthlyPlanRadio' ? (
+              <Fieldset>
+                <FormControl classes={{ root: classes.formControl }}>
+                  <RadioGroup
+                    name="planRadioGroup"
+                    value={radioGroupValue}
+                    onChange={this.handleRadioGroupChange}
+                  >
+                    <FormControlLabel
+                      classes={{ root: classes.formControlLabel, label: classes.formControlLabelSpan }}
+                      value="monthlyPlanRadio"
+                      control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
+                      label={(
+                        <>
+                          <PriceLabelDollarSign>$</PriceLabelDollarSign>
+                          <PriceLabel>150</PriceLabel>
+                          <PriceLabelSubText> /mo</PriceLabelSubText>
+                          <MobilePricingPlanName>Billed Monthly</MobilePricingPlanName>
+                        </>
+                      )}
+                      onClick={this.handleRadioGroupChoiceSubDomain}
+                      checked={radioGroupValue === 'monthlyPlanRadio'}
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Fieldset>
+            ) : (
+              <FieldsetDisabled>
+                <FormControl classes={{ root: classes.formControl }}>
+                  <RadioGroup
+                    name="planRadioGroup"
+                    value={radioGroupValue}
+                    onChange={this.handleRadioGroupChange}
+                  >
+                    <FormControlLabel
+                      classes={{ root: classes.formControlLabel, label: classes.formControlLabelSpan }}
+                      value="monthlyPlanRadio"
+                      control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
+                      label={(
+                        <>
+                          <PriceLabelDollarSign>$</PriceLabelDollarSign>
+                          <PriceLabel>150</PriceLabel>
+                          <PriceLabelSubText> /mo</PriceLabelSubText>
+                          <MobilePricingPlanName>Billed Monthly</MobilePricingPlanName>
+                        </>
+                      )}
+                      onClick={this.handleRadioGroupChoiceSubDomain}
+                      checked={radioGroupValue === 'monthlyPlanRadio'}
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </FieldsetDisabled>
+            )}
+          </MobileWrapper>
         );
         break;
       case 'payForPlan':
@@ -165,10 +258,9 @@ class PaidAccountUpgradeModal extends Component {
             <div className="col col-6 pr-0 u-full-height">
               <WrapperLeft className="u-full-height">
                 <div className="u-tc">
-                  <h4 className="h4 u-capitalize">
-                    {pricingPlanChosen}
-                     Plan
-                  </h4>
+                  <PlanChosenTitle>
+                    {planNameTitle}
+                  </PlanChosenTitle>
                 </div>
                 {radioGroupValue === 'annualPlanRadio' ? (
                   <Fieldset>
@@ -324,9 +416,11 @@ class PaidAccountUpgradeModal extends Component {
         open={this.props.show}
         onClose={() => { this.props.toggleFunction(this.state.pathname); }}
       >
-        <Title>
+        <ModalTitleArea>
           {backToButton}
-          <h3 className="h3 u-margin-none">{modalTitle}</h3>
+          <Title>
+            {modalTitle}
+          </Title>
           <IconButton
             aria-label="Close"
             className={classes.closeButton}
@@ -335,7 +429,7 @@ class PaidAccountUpgradeModal extends Component {
           >
             <CloseIcon />
           </IconButton>
-        </Title>
+        </ModalTitleArea>
         <DialogContent classes={{ root: classes.dialogContent }}>
           {modalHtmlContents}
         </DialogContent>
@@ -349,56 +443,77 @@ const styles = theme => ({
   },
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
-    [theme.breakpoints.up('md')]: {
+    '@media (min-width: 768px)': {
       minWidth: '65%',
-      maxWidth: '769px',
-      width: '65%',
+      maxWidth: '720px',
+      width: '85%',
       minHeight: '95%',
       maxHeight: '95%',
       height: '95%',
       margin: '0 auto',
     },
-    [theme.breakpoints.down('md')]: {
-      minWidth: '95%',
-      maxWidth: '95%',
-      width: '95%',
-      minHeight: '95%',
-      maxHeight: '95%',
-      height: '95%',
+    '@media (max-width: 768px)': {
+      minWidth: '100%',
+      maxWidth: '100%',
+      width: '100%',
+      minHeight: '100%',
+      maxHeight: '100%',
+      height: '100%',
       margin: '0 auto',
     },
   },
   dialogContent: {
-    [theme.breakpoints.down('md')]: {
+    '@media (max-width: 768px)': {
+      background: '#f7f7f7',
       padding: '0 8px 8px',
     },
+    background: 'white',
+    overflow: 'hidden',
   },
   formControl: {
     width: '100%',
-    padding: '6px 0 8px',
+    padding: '0 0 3px',
+    '@media (max-width: 768px)': {
+      padding: 0,
+    },
   },
   backToButton: {
+    color: '#666',
+    fontWeight: 'bold',
     margin: 0,
-    position: 'absolute',
-    left: 8,
-    top: 14,
+    textTransform: 'none',
+    '@media (min-width: 768px)': {
+      position: 'absolute',
+      top: 16,
+      left: 12,
+    },
   },
   closeButton: {
     margin: 0,
-    position: 'absolute',
-    right: 8,
-    top: 9,
+    display: 'none',
+    '@media (min-width: 768px)': {
+      display: 'block',
+      position: 'absolute',
+      top: 9,
+      right: 8,
+    },
   },
   formControlLabel: {
     margin: 0,
     padding: 0,
     height: '100%',
+    width: '100%',
+    '@media (max-width: 768px)': {
+      padding: '8px 16px 8px 8px',
+    },
+  },
+  formControlLabelSpan: {
+    width: '100%',
   },
   radioButton: {
     width: 45.4,
     height: 45.4,
     padding: 12,
-    marginLeft: '10px',
     pointerEvents: 'auto',
   },
 });
@@ -412,19 +527,62 @@ const ButtonsContainer = styled.div`
   margin-top: 12px;
 `;
 
-const Title = styled.div`
+const ModalTitleArea = styled.div`
   width: 100%;
-  text-align: center;
-  border-bottom: 2px solid #f7f7f7;
   padding: 16px 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  box-shadow: 0 20px 40px -25px #999;
+  z-index: 999;
+  @media (min-width: 768px) {
+    text-align: center;
+    box-shadow: none;
+    border-bottom: 2px solid #f7f7f7;
+  }
+`;
+
+// const BackToButton = styled.div`
+//   margin: 0;
+//   @media (min-width: 768px) {
+//     position: absolute;
+//     top: 8;
+//     left: 4;
+//   }
+// `;
+
+const Title = styled.h3`
+  font-weight: bold;
+  font-size: 24px;
+  margin-top: 8px;
+  position: relative;
+  left: 8px;
+  color: black;
+  @media (min-width: 768px) {
+    font-size: 28px;
+    left: 0;
+    margin: 0 auto;
+    width: fit-content;
+  }
+`;
+
+const PlanChosenTitle = styled.h4`
+  color: #666;
+  font-size: 22px;
+  font-weight: bold;
+  text-transform: capitalize;
+  margin-bottom: 16px;
+  @media (min-width: 768px) {
+    color: black;
+    font-weight: bold;
+  }
 `;
 
 const Row = styled.div`
   max-width: 700px;
   margin: 0 auto !important;
+`;
+
+const MobileWrapper = styled.div`
+  padding: 0 18px;
+  margin-top: 32px;
 `;
 
 const WrapperLeft = styled.div`
@@ -444,6 +602,7 @@ const Fieldset = styled.fieldset`
   border-radius: 3px;
   margin-bottom: 16px;
   padding-bottom: 0;
+  background: white;
 `;
 
 const FieldsetDisabled = styled.fieldset`
@@ -451,6 +610,7 @@ const FieldsetDisabled = styled.fieldset`
   border-radius: 3px;
   margin-bottom: 16px;
   padding-bottom: 0;
+  background: white;
 `;
 
 const Legend = styled.legend`
@@ -482,6 +642,16 @@ const PriceLabelSubText = styled.span`
   font-size: 16px;
   font-weight: bold;
   color: ${({ theme }) => theme.colors.main};
+`;
+
+const MobilePricingPlanName = styled.span`
+  color: ${({ theme }) => theme.colors.main};
+  font-size: 18px;
+  font-weight: bold;
+  v-align: middle;
+  position: relative;
+  top: 16.8px;
+  float: right;
 `;
 
 export default withTheme(withStyles(styles)(PaidAccountUpgradeModal));
