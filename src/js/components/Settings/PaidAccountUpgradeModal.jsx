@@ -34,9 +34,9 @@ class PaidAccountUpgradeModal extends Component {
       pathname: undefined,
       paidAccountProcessStep: '',
       radioGroupValue: 'annualPlanRadio',
-      couponCodeValue: '',
-      couponCodeFromAPI: 'test25',
-      couponApplied: false,
+      couponCodeInputValue: '',
+      couponCodesFromAPI: [],
+      isCouponApplied: false,
       couponDiscountValue: 25,
     };
 
@@ -44,11 +44,22 @@ class PaidAccountUpgradeModal extends Component {
     this.onCouponInputChange = this.onCouponInputChange.bind(this);
     this.checkCouponCodeValidity = this.checkCouponCodeValidity.bind(this);
     this.backToChoosePlan = this.backToChoosePlan.bind(this);
+    this.resetCouponCode = this.resetCouponCode.bind(this);
   }
 
   componentDidMount () {
     this.setState({
       pathname: this.props.pathname,
+      couponCodesFromAPI: [
+        {
+          code: '25OFF',
+          discount: 25,
+        },
+        {
+          code: '10OFF',
+          discount: 10,
+        },
+      ],
     });
   }
 
@@ -59,7 +70,7 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   onCouponInputChange (e) {
-    this.setState({ couponCodeValue: e.target.value });
+    this.setState({ couponCodeInputValue: e.target.value });
   }
 
   backToApplyCoupon = () => {
@@ -101,6 +112,17 @@ class PaidAccountUpgradeModal extends Component {
     } else {
       this.props.toggleFunction(this.state.pathname);
     }
+
+    switch (pricingPlanChosen) {
+      case 'professional':
+        this.setState({ monthlyPlanPrice: 150, annualPlanPrice: 125 });
+        break;
+      case 'enterprise':
+        this.setState({ monthlyPlanPrice: 200, annualPlanPrice: 175 });
+        break;
+      default:
+        this.setState({ monthlyPlanPrice: 150, annualPlanPrice: 125 });
+    }
   }
 
   handleRadioGroupChange = (event) => {
@@ -117,11 +139,22 @@ class PaidAccountUpgradeModal extends Component {
     this.setState({ paidAccountProcessStep: '' });
   }
 
-  checkCouponCodeValidity () {
-    const { couponCodeValue, couponCodeFromAPI } = this.state;
+  resetCouponCode () {
+    this.setState({ isCouponApplied: false, couponCodeInputValue: '' });
+  }
 
-    if (couponCodeValue.toLowerCase() === couponCodeFromAPI.toLowerCase()) {
-      this.setState({ couponApplied: true });
+  checkCouponCodeValidity () {
+    const { couponCodeInputValue, couponCodesFromAPI } = this.state;
+
+    for (let i = 0; i < couponCodesFromAPI.length; i++) {
+      if (couponCodesFromAPI[i].code.toLowerCase() === couponCodeInputValue.toLowerCase()) {
+        this.setState({ isCouponApplied: true, couponDiscountValue: couponCodesFromAPI[i].discount });
+      } else if (i === couponCodesFromAPI.length - 1) {
+        this.setState({ couponCodeError: true, couponCodeInputValue: '' });
+        setTimeout(() => {
+          this.setState({ couponCodeError: false });
+        }, 3000)
+      }
     }
   }
 
@@ -132,7 +165,7 @@ class PaidAccountUpgradeModal extends Component {
   render () {
     renderLog(__filename);
     const { classes } = this.props;
-    const { radioGroupValue, couponCodeValue, couponDiscountValue, couponApplied, paidAccountProcessStep, pricingPlanChosen } = this.state;
+    const { radioGroupValue, couponCodeInputValue, couponDiscountValue, isCouponApplied, paidAccountProcessStep, pricingPlanChosen, monthlyPlanPrice, annualPlanPrice, couponCodeError } = this.state;
 
     console.log(paidAccountProcessStep);
 
@@ -167,11 +200,18 @@ class PaidAccountUpgradeModal extends Component {
               <SectionTitle>
                 {planNameTitle}
               </SectionTitle>
-              {couponApplied ? (
+              {isCouponApplied ? (
                 <div
                   className={classes.couponAlert}
                 >
                   Coupon Applied. Deducted $25
+                </div>
+              ) : null}
+              {couponCodeError ? (
+                <div
+                  className={classes.couponAlertError}
+                >
+                  Invalid Coupon Code
                 </div>
               ) : null}
               {radioGroupValue === 'annualPlanRadio' ? (
@@ -189,7 +229,7 @@ class PaidAccountUpgradeModal extends Component {
                         label={(
                           <>
                             <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                            <PriceLabel>{couponApplied ? (125 - couponDiscountValue) : 125}</PriceLabel>
+                            <PriceLabel>{isCouponApplied ? (annualPlanPrice - couponDiscountValue) : annualPlanPrice}</PriceLabel>
                             <PriceLabelSubText> /mo</PriceLabelSubText>
                             <MobilePricingPlanName>Billed Annually</MobilePricingPlanName>
                           </>
@@ -215,7 +255,7 @@ class PaidAccountUpgradeModal extends Component {
                         label={(
                           <>
                             <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                            <PriceLabel>{couponApplied ? (125 - couponDiscountValue) : 125}</PriceLabel>
+                            <PriceLabel>{isCouponApplied ? (annualPlanPrice - couponDiscountValue) : annualPlanPrice}</PriceLabel>
                             <PriceLabelSubText> /mo</PriceLabelSubText>
                             <MobilePricingPlanName>Billed Annually</MobilePricingPlanName>
                           </>
@@ -242,7 +282,7 @@ class PaidAccountUpgradeModal extends Component {
                         label={(
                           <>
                             <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                            <PriceLabel>{couponApplied ? (150 - couponDiscountValue) : 150}</PriceLabel>
+                            <PriceLabel>{isCouponApplied ? (monthlyPlanPrice - couponDiscountValue) : monthlyPlanPrice}</PriceLabel>
                             <PriceLabelSubText> /mo</PriceLabelSubText>
                             <MobilePricingPlanName>Billed Monthly</MobilePricingPlanName>
                           </>
@@ -268,7 +308,7 @@ class PaidAccountUpgradeModal extends Component {
                         label={(
                           <>
                             <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                            <PriceLabel>{couponApplied ? (150 - couponDiscountValue) : 150}</PriceLabel>
+                            <PriceLabel>{isCouponApplied ? (monthlyPlanPrice - couponDiscountValue) : monthlyPlanPrice}</PriceLabel>
                             <PriceLabelSubText> /mo</PriceLabelSubText>
                             <MobilePricingPlanName>Billed Monthly</MobilePricingPlanName>
                           </>
@@ -283,24 +323,30 @@ class PaidAccountUpgradeModal extends Component {
               <br />
               <SectionTitle>Coupon Code</SectionTitle>
               <OutlinedInput
-                classes={{ root: couponApplied ? classes.textFieldCouponApplied : classes.textField, input: couponCodeValue !== '' ? classes.textFieldInputUppercase : classes.textFieldInput }}
+                classes={{ root: isCouponApplied ? classes.textFieldCouponApplied : classes.textField, input: couponCodeInputValue !== '' ? classes.textFieldInputUppercase : classes.textFieldInput }}
                 inputProps={{ }}
                 margin="normal"
                 // variant="outlined"
-                placeholder="Enter Code..."
+                placeholder="Enter Here..."
                 fullWidth
                 onChange={this.onCouponInputChange}
-                disabled={couponApplied}
+                disabled={isCouponApplied}
+                value={couponCodeInputValue}
               />
-              {couponApplied ? (
-                <div
-                  className={classes.couponAlert}
-                >
-                  APPLIED
-                </div>
+              {isCouponApplied ? (
+                <>
+                  <div
+                    className={classes.couponAlert}
+                  >
+                    APPLIED
+                  </div>
+                  <Button size="small" className={classes.resetButton} onClick={this.resetCouponCode}>
+                    Use new code
+                  </Button>
+                </>
               ) : (
                 <Button
-                  disabled={couponCodeValue === ''}
+                  disabled={couponCodeInputValue === ''}
                   fullWidth
                   variant="contained"
                   margin="normal"
@@ -375,7 +421,7 @@ class PaidAccountUpgradeModal extends Component {
                           label={(
                             <>
                               <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                              <PriceLabel>{couponApplied ? (125 - couponDiscountValue) : 125}</PriceLabel>
+                              <PriceLabel>{isCouponApplied ? (annualPlanPrice - couponDiscountValue) : annualPlanPrice}</PriceLabel>
                               <PriceLabelSubText> /mo</PriceLabelSubText>
                             </>
                           )}
@@ -403,7 +449,7 @@ class PaidAccountUpgradeModal extends Component {
                           label={(
                             <>
                               <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                              <PriceLabel>{couponApplied ? (125 - couponDiscountValue) : 125}</PriceLabel>
+                              <PriceLabel>{isCouponApplied ? (annualPlanPrice - couponDiscountValue) : annualPlanPrice}</PriceLabel>
                               <PriceLabelSubText> /mo</PriceLabelSubText>
                             </>
                           )}
@@ -432,7 +478,7 @@ class PaidAccountUpgradeModal extends Component {
                           label={(
                             <>
                               <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                              <PriceLabel>{couponApplied ? (150 - couponDiscountValue) : 150}</PriceLabel>
+                              <PriceLabel>{isCouponApplied ? (monthlyPlanPrice - couponDiscountValue) : monthlyPlanPrice}</PriceLabel>
                               <PriceLabelSubText> /mo</PriceLabelSubText>
                             </>
                           )}
@@ -460,7 +506,7 @@ class PaidAccountUpgradeModal extends Component {
                           label={(
                             <>
                               <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                              <PriceLabel>{couponApplied ? (150 - couponDiscountValue) : 150}</PriceLabel>
+                              <PriceLabel>{isCouponApplied ? (monthlyPlanPrice - couponDiscountValue) : monthlyPlanPrice}</PriceLabel>
                               <PriceLabelSubText> /mo</PriceLabelSubText>
                             </>
                           )}
@@ -703,6 +749,30 @@ const styles = () => ({
       height: 40,
       fontSize: 16,
     },
+  },
+  couponAlertError: {
+    background: 'rgb(255, 177, 160)',
+    color: 'rgb(163, 40, 38)',
+    boxShadow: 'none',
+    pointerEvents: 'none',
+    fontWeight: 'bold',
+    marginBottom: 8,
+    height: 50,
+    fontSize: 18,
+    width: '100%',
+    padding: '8px 16px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '4px',
+    '@media (max-width: 569px)': {
+      height: 40,
+      fontSize: 16,
+    },
+  },
+  resetButton: {
+    float: 'right',
+    textDecoration: 'underline',
   },
   nextButton: {
     height: 50,
