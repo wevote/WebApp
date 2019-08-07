@@ -8,6 +8,9 @@ import PositionRatingSnippet from '../Widgets/PositionRatingSnippet';
 import PositionInformationOnlySnippet from '../Widgets/PositionInformationOnlySnippet';
 import PositionSupportOpposeSnippet from '../Widgets/PositionSupportOpposeSnippet';
 import ReadMore from '../Widgets/ReadMore';
+import StickyPopover from '../Ballot/StickyPopover';
+import OrganizationPopoverCard from '../Organization/OrganizationPopoverCard';
+
 
 // VoterGuideDisplayForList is used by GuideList for viewing voter guides you can follow on the Candidate
 // and Opinions (you can follow) Components
@@ -70,19 +73,35 @@ export default class VoterGuideDisplayForList extends PureComponent {
     } else {
       // console.log('VoterGuideDisplayForList NO positionDescription');
     }
+    const organizationPopoverCard = (<OrganizationPopoverCard organizationWeVoteId={organizationWeVoteId} />);
 
     return (
       <div className="card-child card-child--not-followed">
         <div className="card-child__media-object-anchor">
-          <Link to={voterGuideLink} className="u-no-underline">
-            <ImageHandler className="card-child__avatar" sizeClassName="image-lg " imageUrl={voterGuideImageUrlLarge} />
-          </Link>
+          <StickyPopover
+            delay={{ show: 700, hide: 100 }}
+            popoverComponent={organizationPopoverCard}
+            placement="auto"
+            id="organization-sticky-popover"
+          >
+            <Link to={voterGuideLink} className="u-no-underline">
+              <ImageHandler className="card-child__avatar" sizeClassName="image-lg " imageUrl={voterGuideImageUrlLarge} />
+            </Link>
+          </StickyPopover>
         </div>
         <div className="card-child__media-object-content">
           <div className="card-child__content">
-            <Link to={voterGuideLink}>
-              <h4 className="card-child__display-name">{voterGuideDisplayName}</h4>
-            </Link>
+            <StickyPopover
+              delay={{ show: 700, hide: 100 }}
+              popoverComponent={organizationPopoverCard}
+              placement="auto"
+              id="organization-sticky-popover"
+            >
+              <Link to={voterGuideLink}>
+                <h4 className="card-child__display-name">{voterGuideDisplayName}</h4>
+              </Link>
+            </StickyPopover>
+
             { twitterDescriptionMinusName ? (
               <ReadMore
                 className="card-child__organization-description"
