@@ -33,9 +33,16 @@ describe('Basic cross-platform We Vote test',  () => {
     }
 
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
-
+ 
     await simpleClick('changeAddressHeaderBar'); // Open the "Change Address" modal
-    await simpleClick('profileCloseSelectBallotModal'); // Close the "Change Address" modal
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    await simpleClick('profileCloseSelectBallotModal');
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+    //await browser.closeWindow();
+    //await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    //await simpleClick('profileCloseSelectBallotModal');
+    //await simpleCloseBootstrapModal(); // Close the "Change Address" modal
 
     // //////////////////////
     // We want to start by setting the location, which will automatically choose the next upcoming election for that address
@@ -46,17 +53,23 @@ describe('Basic cross-platform We Vote test',  () => {
     }
 
     if (isIOS) {
-      await setNewAddressIOS('addressBoxText', 'Oakland, CA 94602'); // Sets the text for the address box and hits enter
+      // await setNewAddressIOS('addressBoxText', 'Oakland, CA 94602'); // Sets the text for the address box and hits enter
+      await setNewAddressIOS('addressBoxText', 'Redmond, WA 98052'); // Sets the text for the address box and hits enter
     } else {
-      await setNewAddress('addressBoxText', 'Oakland, CA 94602'); // Sets the text for the address box and hits enter
+      // await setNewAddress('addressBoxText', 'Oakland, CA 94602'); // Sets the text for the address box and hits enter
+      await setNewAddressIOS('addressBoxText', 'Redmond, WA 98052'); // Sets the text for the address box and hits enter
     }
     await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
 
     // //////////////////////
     // Next we want to switch to a known election
     await simpleClick('changeAddressHeaderBar'); // Opens the Enter Your Full Address link
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('ballotElectionListWithFiltersButton-6000'); // Clicks on US 2018 Midterm Election
-    await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+
+    // await simpleClick('profileCloseSelectBallotModal');
+    // await browser.pause(PAUSE_DURATION_BALLOT_LOAD);
 
     await simpleClick('ballotBadge-State');
     await simpleClick('ballotBadge-Measure');
@@ -65,8 +78,8 @@ describe('Basic cross-platform We Vote test',  () => {
 
     // //////////////////////
     // Visit the candidate page
-    await simpleClick('officeItemCompressedCandidateInfo-wv02cand40208'); // Clicks the candidate
-    await simpleClick('valueIconAndText-wv02issue25'); // Clicks on the issue icon
+    await simpleClick('officeItemCompressedCandidateInfo-wv02cand53915'); // Clicks the candidate
+    //await simpleClick('valueIconAndText-wv02issue25'); // Clicks on the issue icon
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('valueIconAndText-wv02issue25'); // Clicks on the issue icon
     await simpleClick('valueIconAndText-wv02issue65'); // Clicks on the issue icon
@@ -84,20 +97,20 @@ describe('Basic cross-platform We Vote test',  () => {
     await simpleClick('valueIconAndText-wv02issue66'); // Clicks on the issue icon
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
     await simpleClick('valueIconAndText-wv02issue66'); // Clicks on the issue icon
-    await simpleClick('itemActionBarSupportButton-desktopVersion-wv02cand40208');
-    await setNewAddress('itemPositionStatementActionBarTextArea', 'This is just a comment that needs to be saved.');
-    await simpleClick('itemPositionStatementActionBarSave');
-    await simpleClick('itemActionBarOpposeButton-mobileVersion-wv02cand40208');
-    await setNewAddress('itemPositionStatementActionBarTextArea', '');
-    await simpleClick('itemPositionStatementActionBarSave');
-    await scrollThroughPage();
-    await simpleClick('positionItemFollowToggleFollow-wv02org21454');
-    await simpleClick('positionItemFollowToggleFollowDropdown-wv02org21454');
-    await simpleClick('positionItemFollowToggleDropdown-wv02org21454');
-    await simpleClick('positionItemFollowToggleUnfollow-wv02org21454');
     await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
-
+        // //////////////////////
+    // Visit the candidate page
+    await simpleClick('officeItemCompressedCandidateInfo-wv02cand53902'); // Clicks the candidate
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // await simpleClick('//*[@id="itemActionBarSupportButton-desktopVersion-wv02cand53902"]'); // To choose the candidate
+    // await simpleClick('itemActionBarSupportButton-desktopVersion-wv02cand53902'); // To choose the candidate
+    await browser.pause(PAUSE_DURATION_MICROSECONDS);
+    // const valuesButton =   await $('signInHeaderBar'); // To choose the candidate
+    // await valuesButton.click();
+    // await browser.pause(PAUSE_DURATION_MICROSECONDS);
+ 
     // //////////////////////
     // Visit the office page
     // await simpleClick('officeItemCompressedShowMoreFooter-wv02off19922'); // Clicks Show More link
