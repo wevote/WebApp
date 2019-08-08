@@ -54,6 +54,7 @@ class HeaderBar extends Component {
       showSelectBallotModal: false,
       showSignInModal: false,
       scrolledDown: false,
+      showPaidAccountUpgradeModal: false,
     };
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
     this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);

@@ -262,7 +262,7 @@ const CardWrapper = styled.div`
 `;
 
 const PricingCardHeader = styled.div`
-  min-height: 75px;
+  min-height: 105px;
   @media (min-width: 960px) and (max-width: 991px) {
     min-height: 100px;
   }

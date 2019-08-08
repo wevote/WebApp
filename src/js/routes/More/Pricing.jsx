@@ -482,7 +482,7 @@ class Pricing extends Component {
         >
           <PricingDescriptionContainer className="container">
             <div className="u-show-mobile-tablet">
-              <div className="row">
+              <Row className="row">
                 {selectedPricingPlanIndex === 0 ? (
                   <PricingCard
                     fullWidth
@@ -532,7 +532,7 @@ class Pricing extends Component {
                     )}
                   </React.Fragment>
                 )}
-              </div>
+              </Row>
             </div>
             <div className="row u-show-desktop">
               <PricingCard
@@ -685,15 +685,15 @@ const PricingDescriptionContainer = styled.div`
     margin-top: -2em;
   }
   @media (min-width: 960px) and (max-width: 991px) {
-    > * {
-      width: 90%;
-      margin: 0 auto;   
-    }
     max-width: 100%;
     min-width: 100%;
     width: 100%;
     margin: 0 auto;
   }
+`;
+
+const Row = styled.div`
+  margin: 0 auto !important;
 `;
 
 export default withStyles(styles)(Pricing);

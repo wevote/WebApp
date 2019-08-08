@@ -37,7 +37,7 @@ class PaidAccountUpgradeModal extends Component {
       couponCodeInputValue: '',
       couponCodesFromAPI: [],
       isCouponApplied: false,
-      couponDiscountValue: 25,
+      couponDiscountValue: 0,
     };
 
     this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
@@ -50,14 +50,19 @@ class PaidAccountUpgradeModal extends Component {
   componentDidMount () {
     this.setState({
       pathname: this.props.pathname,
+      // Test coupon codes to simulate having multiple promotions running at the same time
       couponCodesFromAPI: [
+        {
+          code: '10OFF',
+          discount: 10,
+        },
         {
           code: '25OFF',
           discount: 25,
         },
         {
-          code: '10OFF',
-          discount: 10,
+          code: '50OFF',
+          discount: 50,
         },
       ],
     });
@@ -68,6 +73,14 @@ class PaidAccountUpgradeModal extends Component {
       pathname: nextProps.pathname,
     });
   }
+
+  // componentDidUpdate () {
+  //   const { currentSelectedPlanCost, annualPlanPrice } = this.state;
+
+  //   if (!currentSelectedPlanCost) {
+  //     this.setState({  currentSelectedPlanCost: currentSelectedPlanCost || annualPlanPrice });
+  //   }
+  // }
 
   onCouponInputChange (e) {
     this.setState({ couponCodeInputValue: e.target.value });
@@ -115,23 +128,28 @@ class PaidAccountUpgradeModal extends Component {
 
     switch (pricingPlanChosen) {
       case 'professional':
-        this.setState({ monthlyPlanPrice: 150, annualPlanPrice: 125 });
+        this.setState({ monthlyPlanPrice: 150, annualPlanPrice: 125, monthlyPlanPriceWithDiscount: 150, annualPlanPriceWithDiscount: 125, currentSelectedPlanCost: 125 });
         break;
       case 'enterprise':
-        this.setState({ monthlyPlanPrice: 200, annualPlanPrice: 175 });
+        this.setState({ monthlyPlanPrice: 200, annualPlanPrice: 175, monthlyPlanPriceWithDiscount: 200, annualPlanPriceWithDiscount: 175, currentSelectedPlanCost: 175 });
         break;
       default:
-        this.setState({ monthlyPlanPrice: 150, annualPlanPrice: 125 });
+        this.setState({ monthlyPlanPrice: 150, annualPlanPrice: 125, monthlyPlanPriceWithDiscount: 150, annualPlanPriceWithDiscount: 125, currentSelectedPlanCost: 125 });
     }
   }
 
   handleRadioGroupChange = (event) => {
     // console.log('handleRadioGroupChange');
-    const { radioGroupValue } = this.state;
+    const { radioGroupValue, monthlyPlanPriceWithDiscount, annualPlanPriceWithDiscount } = this.state;
     if (radioGroupValue !== event.target.value) {
       this.setState({
         radioGroupValue: event.target.value || '',
       });
+    }
+    if (event.target.value === 'annualPlanRadio') {
+      this.setState({ currentSelectedPlanCost: annualPlanPriceWithDiscount });
+    } else {
+      this.setState({ currentSelectedPlanCost: monthlyPlanPriceWithDiscount });
     }
   }
 
@@ -140,21 +158,43 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   resetCouponCode () {
-    this.setState({ isCouponApplied: false, couponCodeInputValue: '' });
+    const { annualPlanPrice, monthlyPlanPrice, radioGroupValue } = this.state;
+
+    this.setState({ isCouponApplied: false, couponCodeInputValue: '', monthlyPlanPriceWithDiscount: monthlyPlanPrice, annualPlanPriceWithDiscount: annualPlanPrice });
+
+    if (radioGroupValue === 'annualPlanRadio') {
+      this.setState({ currentSelectedPlanCost: annualPlanPrice });
+    } else {
+      this.setState({ currentSelectedPlanCost: monthlyPlanPrice });
+    }
   }
 
   checkCouponCodeValidity () {
-    const { couponCodeInputValue, couponCodesFromAPI } = this.state;
+    const { couponCodeInputValue, couponCodesFromAPI, monthlyPlanPrice, annualPlanPrice, currentSelectedPlanCost: oldCurrentSelectedPlanCost } = this.state;
+
+    let wasCouponMatchFound = false;
 
     for (let i = 0; i < couponCodesFromAPI.length; i++) {
       if (couponCodesFromAPI[i].code.toLowerCase() === couponCodeInputValue.toLowerCase()) {
-        this.setState({ isCouponApplied: true, couponDiscountValue: couponCodesFromAPI[i].discount });
-      } else if (i === couponCodesFromAPI.length - 1) {
-        this.setState({ couponCodeError: true, couponCodeInputValue: '' });
-        setTimeout(() => {
-          this.setState({ couponCodeError: false });
-        }, 3000)
+        this.setState({
+          isCouponApplied: true,
+          couponDiscountValue: couponCodesFromAPI[i].discount,
+          monthlyPlanPriceWithDiscount: monthlyPlanPrice - couponCodesFromAPI[i].discount,
+          annualPlanPriceWithDiscount: annualPlanPrice - couponCodesFromAPI[i].discount,
+          currentSelectedPlanCost: oldCurrentSelectedPlanCost - couponCodesFromAPI[i].discount,
+        });
+
+        console.log(couponCodesFromAPI[i], 'match was found');
+
+        wasCouponMatchFound = true;
       }
+    }
+
+    if (wasCouponMatchFound === false) {
+      this.setState({ couponCodeError: true, couponCodeInputValue: '' });
+      setTimeout(() => {
+        this.setState({ couponCodeError: false });
+      }, 3000);
     }
   }
 
@@ -165,14 +205,19 @@ class PaidAccountUpgradeModal extends Component {
   render () {
     renderLog(__filename);
     const { classes } = this.props;
-    const { radioGroupValue, couponCodeInputValue, couponDiscountValue, isCouponApplied, paidAccountProcessStep, pricingPlanChosen, monthlyPlanPrice, annualPlanPrice, couponCodeError } = this.state;
+    const { radioGroupValue, couponCodeInputValue, couponDiscountValue, isCouponApplied, paidAccountProcessStep, pricingPlanChosen, monthlyPlanPrice, annualPlanPrice, couponCodeError, monthlyPlanPriceWithDiscount, annualPlanPriceWithDiscount, currentSelectedPlanCost } = this.state;
 
-    console.log(paidAccountProcessStep);
+    console.log('Annual plan price:', annualPlanPriceWithDiscount);
+    console.log('Monthly plan price:', monthlyPlanPriceWithDiscount);
+    console.log('Current selected plan price:', currentSelectedPlanCost);
+
+
 
     let modalTitle = '';
     let backToButton;
     let modalHtmlContents = <span />;
     const planNameTitle = `${pricingPlanChosen} Plan`;
+    const couponDiscountValueString = ` $${couponDiscountValue}`;
 
     switch (paidAccountProcessStep) {
       case 'choosePlan':
@@ -204,7 +249,8 @@ class PaidAccountUpgradeModal extends Component {
                 <div
                   className={classes.couponAlert}
                 >
-                  Coupon Applied. Deducted $25
+                  Coupon Applied. Deducted
+                  {couponDiscountValueString}
                 </div>
               ) : null}
               {couponCodeError ? (
@@ -229,7 +275,7 @@ class PaidAccountUpgradeModal extends Component {
                         label={(
                           <>
                             <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                            <PriceLabel>{isCouponApplied ? (annualPlanPrice - couponDiscountValue) : annualPlanPrice}</PriceLabel>
+                            <PriceLabel>{annualPlanPriceWithDiscount}</PriceLabel>
                             <PriceLabelSubText> /mo</PriceLabelSubText>
                             <MobilePricingPlanName>Billed Annually</MobilePricingPlanName>
                           </>
@@ -255,7 +301,7 @@ class PaidAccountUpgradeModal extends Component {
                         label={(
                           <>
                             <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                            <PriceLabel>{isCouponApplied ? (annualPlanPrice - couponDiscountValue) : annualPlanPrice}</PriceLabel>
+                            <PriceLabel>{annualPlanPriceWithDiscount}</PriceLabel>
                             <PriceLabelSubText> /mo</PriceLabelSubText>
                             <MobilePricingPlanName>Billed Annually</MobilePricingPlanName>
                           </>
@@ -282,7 +328,7 @@ class PaidAccountUpgradeModal extends Component {
                         label={(
                           <>
                             <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                            <PriceLabel>{isCouponApplied ? (monthlyPlanPrice - couponDiscountValue) : monthlyPlanPrice}</PriceLabel>
+                            <PriceLabel>{monthlyPlanPriceWithDiscount}</PriceLabel>
                             <PriceLabelSubText> /mo</PriceLabelSubText>
                             <MobilePricingPlanName>Billed Monthly</MobilePricingPlanName>
                           </>
@@ -308,7 +354,7 @@ class PaidAccountUpgradeModal extends Component {
                         label={(
                           <>
                             <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                            <PriceLabel>{isCouponApplied ? (monthlyPlanPrice - couponDiscountValue) : monthlyPlanPrice}</PriceLabel>
+                            <PriceLabel>{monthlyPlanPriceWithDiscount}</PriceLabel>
                             <PriceLabelSubText> /mo</PriceLabelSubText>
                             <MobilePricingPlanName>Billed Monthly</MobilePricingPlanName>
                           </>
@@ -382,7 +428,10 @@ class PaidAccountUpgradeModal extends Component {
         modalTitle = 'Payment';
         modalHtmlContents = (
           <MobileWrapper>
-            <SectionTitle>Stripe Payment Section</SectionTitle>
+            <SectionTitle>
+              Payment for $
+              {currentSelectedPlanCost}
+            </SectionTitle>
           </MobileWrapper>
         );
         break;
@@ -421,7 +470,7 @@ class PaidAccountUpgradeModal extends Component {
                           label={(
                             <>
                               <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                              <PriceLabel>{isCouponApplied ? (annualPlanPrice - couponDiscountValue) : annualPlanPrice}</PriceLabel>
+                              <PriceLabel>{annualPlanPriceWithDiscount}</PriceLabel>
                               <PriceLabelSubText> /mo</PriceLabelSubText>
                             </>
                           )}
@@ -449,7 +498,7 @@ class PaidAccountUpgradeModal extends Component {
                           label={(
                             <>
                               <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                              <PriceLabel>{isCouponApplied ? (annualPlanPrice - couponDiscountValue) : annualPlanPrice}</PriceLabel>
+                              <PriceLabel>{annualPlanPriceWithDiscount}</PriceLabel>
                               <PriceLabelSubText> /mo</PriceLabelSubText>
                             </>
                           )}
@@ -478,7 +527,7 @@ class PaidAccountUpgradeModal extends Component {
                           label={(
                             <>
                               <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                              <PriceLabel>{isCouponApplied ? (monthlyPlanPrice - couponDiscountValue) : monthlyPlanPrice}</PriceLabel>
+                              <PriceLabel>{monthlyPlanPriceWithDiscount}</PriceLabel>
                               <PriceLabelSubText> /mo</PriceLabelSubText>
                             </>
                           )}
@@ -506,7 +555,7 @@ class PaidAccountUpgradeModal extends Component {
                           label={(
                             <>
                               <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                              <PriceLabel>{isCouponApplied ? (monthlyPlanPrice - couponDiscountValue) : monthlyPlanPrice}</PriceLabel>
+                              <PriceLabel>{monthlyPlanPriceWithDiscount}</PriceLabel>
                               <PriceLabelSubText> /mo</PriceLabelSubText>
                             </>
                           )}
@@ -537,7 +586,8 @@ class PaidAccountUpgradeModal extends Component {
             {' '}
             {pricingPlanChosen}
             {' '}
-            plan! Your payment has been processed, and features have been unlocked.
+            plan! Your payment has been processed, and features have been unlocked. You payed $
+            {currentSelectedPlanCost}
             <ButtonsContainer>
               <Button
                 color="primary"
@@ -696,18 +746,18 @@ const styles = () => ({
     marginTop: 0,
     marginBottom: 8,
     height: 50,
-    fontSize: 18,
+    fontSize: 16.5,
     '@media (max-width: 569px)': {
       height: 40,
-      fontSize: 16,
+      fontSize: 14,
     },
   },
   textFieldCouponApplied: {
     height: 50,
-    fontSize: 18,
+    fontSize: 16.5,
     '@media (max-width: 569px)': {
       height: 40,
-      fontSize: 16,
+      fontSize: 14,
     },
     background: 'white',
     marginTop: 0,
@@ -722,12 +772,12 @@ const styles = () => ({
     fontWeight: 'bold',
   },
   couponButton: {
-    height: 50,
-    fontSize: 18,
+    height: 45,
+    fontSize: 16.5,
     fontWeight: 'bold',
     '@media (max-width: 569px)': {
-      height: 40,
-      fontSize: 16,
+      height: 35,
+      fontSize: 14,
     },
   },
   couponAlert: {
@@ -737,8 +787,8 @@ const styles = () => ({
     pointerEvents: 'none',
     fontWeight: 'bold',
     marginBottom: 8,
-    height: 50,
-    fontSize: 18,
+    height: 45,
+    fontSize: 16.5,
     width: '100%',
     padding: '8px 16px',
     display: 'flex',
@@ -746,8 +796,8 @@ const styles = () => ({
     justifyContent: 'center',
     borderRadius: '4px',
     '@media (max-width: 569px)': {
-      height: 40,
-      fontSize: 16,
+      height: 35,
+      fontSize: 14,
     },
   },
   couponAlertError: {
@@ -757,8 +807,8 @@ const styles = () => ({
     pointerEvents: 'none',
     fontWeight: 'bold',
     marginBottom: 8,
-    height: 50,
-    fontSize: 18,
+    height: 45,
+    fontSize: 16.5,
     width: '100%',
     padding: '8px 16px',
     display: 'flex',
@@ -766,8 +816,8 @@ const styles = () => ({
     justifyContent: 'center',
     borderRadius: '4px',
     '@media (max-width: 569px)': {
-      height: 40,
-      fontSize: 16,
+      height: 35,
+      fontSize: 14,
     },
   },
   resetButton: {
@@ -775,11 +825,11 @@ const styles = () => ({
     textDecoration: 'underline',
   },
   nextButton: {
-    height: 50,
-    fontSize: 18,
+    height: 45,
+    fontSize: 16.5,
     '@media (max-width: 569px)': {
-      height: 40,
-      fontSize: 16,
+      height: 35,
+      fontSize: 14,
     },
     width: '100%',
   },
@@ -958,6 +1008,7 @@ const MobilePricingPlanName = styled.span`
   float: right;
   @media (max-width: 569px) {
     font-size: 14px;
+    top: 13.6px;
   }
 `;
 
