@@ -4,6 +4,7 @@ import Dispatcher from '../dispatcher/AppDispatcher';
 class AppStore extends ReduceStore {
   getInitialState () {
     return {
+      getVoterGuideSettingsDashboardEditMode: '',
       getStartedMode: '',
       headroomUnpinned: false,
       scrolledDown: false,
@@ -22,6 +23,10 @@ class AppStore extends ReduceStore {
 
   getStartedMode () {
     return this.getState().getStartedMode;
+  }
+
+  getVoterGuideSettingsDashboardEditMode () {
+    return this.getState().getVoterGuideSettingsDashboardEditMode;
   }
 
   headroomIsUnpinned () {
@@ -57,6 +62,8 @@ class AppStore extends ReduceStore {
     switch (action.type) {
       case 'getStartedMode':
         return { ...state, getStartedMode: action.payload };
+      case 'getVoterGuideSettingsDashboardEditMode':
+        return { ...state, getVoterGuideSettingsDashboardEditMode: action.payload };
       case 'headroomUnpinned':
         return { ...state, headroomUnpinned: action.payload };
       case 'scrolledDown':

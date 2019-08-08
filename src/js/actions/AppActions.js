@@ -5,6 +5,10 @@ export default {
     Dispatcher.dispatch({ type: 'getStartedMode', payload: getStartedMode });
   },
 
+  setVoterGuideSettingsDashboardEditMode (getVoterGuideSettingsDashboardEditMode) {
+    Dispatcher.dispatch({ type: 'getVoterGuideSettingsDashboardEditMode', payload: getVoterGuideSettingsDashboardEditMode });
+  },
+
   setHeadroomUnpinned (unpinned) {
     Dispatcher.dispatch({ type: 'headroomUnpinned', payload: unpinned });
   },
