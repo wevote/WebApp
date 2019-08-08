@@ -44,7 +44,7 @@ import Section, {
   SignUpMessage,
 } from '../components/Welcome/Section';
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
-import welcomeForVotersImage from '../../img/welcome/WelcomeForVoters-Ballot-20190507.png'
+import welcomeForVotersImage from '../../img/welcome/WelcomeForVoters-Ballot-20190507.png';
 
 class Welcome extends PureComponent {
   static propTypes = {

@@ -148,7 +148,6 @@ export function getApplicationViewBooleans (pathname) {
       !(pathnameLowerCase.startsWith('/more/pricing')) &&
       !(pathnameLowerCase === '/more/myballot') &&
       !(pathnameLowerCase === '/welcome') &&
-      !stringContains('/settings/addpositions', pathnameLowerCase) &&
       !pathnameLowerCase.startsWith('/settings/voterguidelist') &&
       !pathnameLowerCase.startsWith('/settings/voterguidesmenu') &&
       !stringContains('/settings/positions', pathnameLowerCase)) {

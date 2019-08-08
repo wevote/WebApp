@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { withStyles } from '@material-ui/core';
 import { renderLog } from '../../utils/logging';
+import AppStore from '../../stores/AppStore';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import VoterGuideActions from '../../actions/VoterGuideActions';
+import VoterGuideSettingsAddPositions from '../../components/Settings/VoterGuideSettingsAddPositions';
 import VoterGuideSettingsPositions from '../../components/Settings/VoterGuideSettingsPositions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
@@ -22,7 +24,7 @@ class VoterGuideSettingsDashboard extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      editMode: '',
+      getVoterGuideSettingsDashboardEditMode: '',
       linkedOrganizationWeVoteId: '',
       voterGuide: {},
       voterGuideWeVoteId: '',
@@ -30,11 +32,9 @@ class VoterGuideSettingsDashboard extends Component {
   }
 
   componentDidMount () {
-    if (this.props.params.edit_mode) {
-      this.setState({ editMode: this.props.params.edit_mode });
-    } else {
-      this.setState({ editMode: 'general' });
-    }
+    // console.log('VoterGuideSettingsDashboard componentDidMount');
+    // if (this.props.params.edit_mode) {  // We are going to ignore the incoming edit_mode
+    this.onAppStoreChange();
     // Get Voter Guide information
     let voterGuideFound = false;
     if (this.props.params.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(this.props.params.voter_guide_we_vote_id)) {
@@ -48,7 +48,7 @@ class VoterGuideSettingsDashboard extends Component {
         });
         voterGuideFound = true;
         if (voterGuide.google_civic_election_id && voterGuide.google_civic_election_id !== BallotStore.currentBallotGoogleCivicElectionId) {
-          // console.log("VoterGuideSettingsDashboard componentDidMount retrieving ballot for: ", voterGuide.google_civic_election_id);
+          // console.log('VoterGuideSettingsDashboard componentDidMount retrieving ballot for: ', voterGuide.google_civic_election_id);
           BallotActions.voterBallotItemsRetrieve(voterGuide.google_civic_election_id, '', '');
         }
       }
@@ -57,7 +57,7 @@ class VoterGuideSettingsDashboard extends Component {
     const voter = VoterStore.getVoter();
     if (voter) {
       const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
-      // console.log("VoterGuideSettingsDashboard componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
+      // console.log('VoterGuideSettingsDashboard componentDidMount linkedOrganizationWeVoteId: ', linkedOrganizationWeVoteId);
       if (linkedOrganizationWeVoteId) {
         this.setState({
           linkedOrganizationWeVoteId,
@@ -71,20 +71,20 @@ class VoterGuideSettingsDashboard extends Component {
           OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
         }
         if (!voterGuideFound) {
-          // console.log("VoterGuideSettingsDashboard voterGuide NOT FOUND calling VoterGuideActions.voterGuidesRetrieve");
+          // console.log('VoterGuideSettingsDashboard voterGuide NOT FOUND calling VoterGuideActions.voterGuidesRetrieve');
           VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
         }
       }
     }
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.params.edit_mode) {
-      this.setState({ editMode: nextProps.params.edit_mode });
-    }
+    // console.log('VoterGuideSettingsDashboard componentDidMount');
+    this.onAppStoreChange();
     if (nextProps.params.voter_guide_we_vote_id && isProperlyFormattedVoterGuideWeVoteId(nextProps.params.voter_guide_we_vote_id)) {
       this.setState({
         voterGuide: VoterGuideStore.getVoterGuideByVoterGuideId(nextProps.params.voter_guide_we_vote_id),
@@ -94,13 +94,20 @@ class VoterGuideSettingsDashboard extends Component {
   }
 
   componentWillUnmount () {
+    this.appStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
+  onAppStoreChange () {
+    this.setState({
+      getVoterGuideSettingsDashboardEditMode: AppStore.getVoterGuideSettingsDashboardEditMode(),
+    });
+  }
+
   onOrganizationStoreChange () {
-    // console.log("VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ", this.state.linkedOrganizationWeVoteId);
+    // console.log('VoterGuideSettingsDashboard onOrganizationStoreChange, org_we_vote_id: ', this.state.linkedOrganizationWeVoteId);
     // const { linkedOrganizationWeVoteId } = this.state;
     this.setState({
       // organization: OrganizationStore.getOrganizationByWeVoteId(linkedOrganizationWeVoteId),
@@ -108,17 +115,17 @@ class VoterGuideSettingsDashboard extends Component {
   }
 
   onVoterGuideStoreChange () {
-    // console.log("VoterGuideSettingsDashboard onVoterGuideStoreChange, this.state.voterGuideWeVoteId", this.state.voterGuideWeVoteId);
+    // console.log('VoterGuideSettingsDashboard onVoterGuideStoreChange, this.state.voterGuideWeVoteId', this.state.voterGuideWeVoteId);
     if (this.state.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(this.state.voterGuideWeVoteId)) {
       const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.state.voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
-        // console.log("VoterGuideSettingsDashboard onVoterGuideStoreChange voterGuide FOUND");
+        // console.log('VoterGuideSettingsDashboard onVoterGuideStoreChange voterGuide FOUND');
         this.setState({
           voterGuide,
         });
         // May not be necessary
         // if (voterGuide.google_civic_election_id && voterGuide.google_civic_election_id !== BallotStore.currentBallotGoogleCivicElectionId) {
-        //   console.log("VoterGuideSettingsDashboard onVoterGuideStoreChange retrieving ballot for: ", voterGuide.google_civic_election_id);
+        //   console.log('VoterGuideSettingsDashboard onVoterGuideStoreChange retrieving ballot for: ', voterGuide.google_civic_election_id);
         //   BallotActions.voterBallotItemsRetrieve(voterGuide.google_civic_election_id, "", "");
         // }
       }
@@ -128,7 +135,7 @@ class VoterGuideSettingsDashboard extends Component {
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
     const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
-    // console.log("VoterGuideSettingsDashboard onVoterStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
+    // console.log('VoterGuideSettingsDashboard onVoterStoreChange linkedOrganizationWeVoteId: ', linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
       OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
       this.setState({
@@ -141,7 +148,7 @@ class VoterGuideSettingsDashboard extends Component {
         voterGuideNeeded = false;
       }
       if (voterGuideNeeded) {
-        // console.log("VoterGuideSettingsDashboard onVoterStoreChange calling VoterGuideActions.voterGuidesRetrieve");
+        // console.log('VoterGuideSettingsDashboard onVoterStoreChange calling VoterGuideActions.voterGuidesRetrieve');
         VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
       }
     }
@@ -149,8 +156,8 @@ class VoterGuideSettingsDashboard extends Component {
 
   render () {
     renderLog(__filename);
-    const { editMode } = this.state;
-    // console.log("VoterGuideSettingsDashboard, positionListForOneElection:", positionListForOneElection);
+    const { getVoterGuideSettingsDashboardEditMode } = this.state;
+    // console.log('VoterGuideSettingsDashboard, getVoterGuideSettingsDashboardEditMode:', getVoterGuideSettingsDashboardEditMode);
 
     // const cordovaPaddingTop = cordovaScrollablePaneTopPadding();
     // const paddingTop = cordovaPaddingTop || '125px';
@@ -159,9 +166,9 @@ class VoterGuideSettingsDashboard extends Component {
     return (
       <Wrapper padTop={paddingTop}>
         <EndorsementListBody>
-          {/* Body of page "/vg/wvYYvgYY/settings/positions", "/vg/wvYYvgYY/settings/addpositions" */}
-          {editMode === 'addpositions' ? (
-            <VoterGuideSettingsPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />
+          {/* Body of page "/vg/wvYYvgYY/settings/positions" */}
+          {getVoterGuideSettingsDashboardEditMode === 'addpositions' ? (
+            <VoterGuideSettingsAddPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />
           ) : (
             <VoterGuideSettingsPositions voterGuideWeVoteId={this.state.voterGuideWeVoteId} />
           )}

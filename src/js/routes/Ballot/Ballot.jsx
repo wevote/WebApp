@@ -976,6 +976,8 @@ class Ballot extends Component {
                         if ((raceLevelFilterType === 'All' || (isSearching && ballotSearchResults.length) ||
                           (item.kind_of_ballot_item === raceLevelFilterType.toUpperCase()) ||
                           raceLevelFilterType === item.race_office_level)) {
+                          // console.log('Ballot item for BallotItemCompressed:', item);
+                          // {...item}
                           return (
                             <BallotItemCompressed
                               currentBallotIdInUrl={this.props.location.hash.slice(1)}
@@ -984,7 +986,10 @@ class Ballot extends Component {
                               allBallotItemsCount={ballotWithItemsFromCompletionFilterType.length}
                               urlWithoutHash={this.props.location.pathname + this.props.location.search}
                               ref={(ref) => { this.ballotItems[item.we_vote_id] = ref; }}
-                              {...item}
+                              ballot_item_display_name={item.ballot_item_display_name}
+                              candidate_list={item.candidate_list}
+                              kind_of_ballot_item={item.kind_of_ballot_item}
+                              we_vote_id={item.we_vote_id}
                             />
                           );
                         } else {

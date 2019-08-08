@@ -218,11 +218,13 @@ export default class BallotElectionListWithFilters extends Component {
   }
 
   executeDifferentElection (item) {
-    const { ballotBaseUrl } = this.props;
-    if (ballotBaseUrl) {
-      this.goToBallotForDifferentElection(item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search);
-    } else {
-      this.saveVoterGuideForElection(item.google_civic_election_id);
+    if (item) {
+      const { ballotBaseUrl } = this.props;
+      if (ballotBaseUrl) {
+        this.goToBallotForDifferentElection(item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search);
+      } else {
+        this.saveVoterGuideForElection(item.google_civic_election_id);
+      }
     }
   }
 

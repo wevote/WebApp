@@ -214,7 +214,7 @@ const routes = () => (
     {/* Voter Guide Settings go in this structure... "/vg/wvYYvgYY/settings/positions", "/vg/wvYYvgYY/settings/addpositions" */}
     <Route path="/vg/:voter_guide_we_vote_id/settings" component={VoterGuideSettingsDashboard} />
     <Route path="/vg/:voter_guide_we_vote_id/settings/menu" component={VoterGuideSettingsMenuMobile} />
-    <Route path="/vg/:voter_guide_we_vote_id/settings/:edit_mode" component={VoterGuideSettingsDashboard} />
+    <Route path="/vg/:voter_guide_we_vote_id/settings/positions" component={VoterGuideSettingsDashboard} />
 
     <Route path="/yourpage" component={YourPage} />
 

@@ -58,11 +58,11 @@ class HeaderBackToVoterGuides extends Component {
 
   componentDidMount () {
     // console.log('HeaderBackToVoterGuides componentDidMount, this.props: ', this.props);
+    this.onBallotStoreChange();
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
-    this.onBallotStoreChange();
 
     let candidateWeVoteId;
     let officeWeVoteId;
@@ -280,7 +280,7 @@ class HeaderBackToVoterGuides extends Component {
     // const atLeastOnePositionFoundForThisElection = positionListForOneElection && positionListForOneElection.length !== 0;
 
     const changeElectionButtonHtml = (
-      <Tooltip title="Change election" aria-label="Change Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
+      <Tooltip title="Change Election" aria-label="Change Election" classes={{ tooltipPlacementBottom: classes.tooltipPlacementBottom }}>
         <span>
           <IconButton
             classes={{ root: classes.iconButtonRoot }}
@@ -289,14 +289,16 @@ class HeaderBackToVoterGuides extends Component {
           >
             <PlaceIcon />
           </IconButton>
-          <Button
-            color="primary"
-            classes={{ root: classes.addressButtonRoot }}
-            id="changeVoterGuideElectionHeaderBarText"
-            onClick={this.toggleVoterGuideModal}
-          >
-            Change Election
-          </Button>
+          <span className="u-show-desktop-tablet">
+            <Button
+              color="primary"
+              classes={{ root: classes.addressButtonRoot }}
+              id="changeVoterGuideElectionHeaderBarText"
+              onClick={this.toggleVoterGuideModal}
+            >
+              Change Election
+            </Button>
+          </span>
         </span>
       </Tooltip>
     );
@@ -355,11 +357,7 @@ class HeaderBackToVoterGuides extends Component {
           {electionName}
         </VoterGuideTitle>
         <EndorsementModeSwitch className="header-toolbar">
-          <EndorsementModeTabs
-            completionLevelFilterType={BallotStore.cleanCompletionLevelFilterType('')}
-            ballotLength={BallotStore.ballotLength}
-            ballotLengthRemaining={BallotStore.ballotRemainingChoicesLength}
-          />
+          <EndorsementModeTabs />
         </EndorsementModeSwitch>
         <SignInModal
           show={this.state.showSignInModal}
@@ -420,6 +418,9 @@ const styles = theme => ({
     outline: 'none !important',
     '&:hover': {
       backgroundColor: 'transparent',
+    },
+    [theme.breakpoints.down('sm')]: {
+      paddingRight: 10,
     },
   },
   tooltipPlacementBottom: {

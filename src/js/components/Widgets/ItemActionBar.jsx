@@ -191,12 +191,12 @@ class ItemActionBar extends PureComponent {
     const { classes } = this.props;
     return (
       <Button
-      id={`itemActionBarOpposeButton-${uniqueId}`}
-      variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
-      color="primary"
-      className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
-      onClick={() => this.opposeItem()}
-      classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+        id={`itemActionBarOpposeButton-${uniqueId}`}
+        variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
+        color="primary"
+        className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
+        onClick={() => this.opposeItem()}
+        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
       >
         <NotInterestedIcon classes={{ root: classes.buttonIcon }} />
         {this.isOpposeCalculated() ? (
@@ -214,6 +214,22 @@ class ItemActionBar extends PureComponent {
               Oppose
           </span>
         )}
+      </Button>
+    );
+  };
+
+  opposeButtonNoText = (uniqueId) => {
+    const { classes } = this.props;
+    return (
+      <Button
+        id={`itemActionBarOpposeButton-${uniqueId}`}
+        variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
+        color="primary"
+        className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
+        onClick={() => this.opposeItem()}
+        classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+      >
+        <NotInterestedIcon classes={{ root: classes.buttonIcon }} />
       </Button>
     );
   };
@@ -246,6 +262,23 @@ class ItemActionBar extends PureComponent {
               Choose
           </span>
         )}
+      </Button>
+    );
+  };
+
+  supportButtonNoText = (uniqueId) => {
+    const { classes } = this.props;
+    return (
+      <Button
+       id={`itemActionBarSupportButton-${uniqueId}`}
+       variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
+       color="primary"
+       onClick={() => this.supportItem()}
+       classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+      >
+        <DoneIcon
+          classes={{ root: classes.buttonIcon }}
+        />
       </Button>
     );
   };
@@ -607,6 +640,21 @@ class ItemActionBar extends PureComponent {
       </Button>
     );
 
+    const commentButtonNoText = (
+      <StackedButton>
+        <Button
+          id="itemActionBarCommentButton"
+          variant="contained"
+          className={`${this.props.commentButtonHideInMobile ? 'd-none d-sm-block ' : null}item-actionbar__btn item-actionbar__btn--comment btn btn-default`}
+          onClick={this.props.toggleFunction}
+          classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+        >
+          <CommentIcon classes={{ root: classes.buttonIcon }} />
+        </Button>
+      </StackedButton>
+    );
+
+    // console.log('ItemActionBar this.props.buttonsOnly:', this.props.buttonsOnly);
     return (
       <>
         <div
@@ -614,25 +662,23 @@ class ItemActionBar extends PureComponent {
           onFocus={handleEnterHoverLocalArea}
           onMouseOut={handleLeaveHoverLocalArea}
           onBlur={handleLeaveHoverLocalArea}
-          className={`${this.props.buttonsOnly && ''} ${this.props.shareButtonHide ? 'item-actionbar--inline' : 'item-actionbar'}`}
+          className={`${this.props.buttonsOnly || this.props.shareButtonHide ? 'item-actionbar--inline' : 'item-actionbar'}`}
         >
-          {this.props.buttonsOnly ? (
-            null
-          ) : (
+          {this.props.buttonsOnly ? null : (
             <PositionPublicToggle
               ballotItemWeVoteId={ballotItemWeVoteId}
               className="null"
               type={type}
             />
           )}
-          <ButtonGroup className={`${this.props.buttonsOnly ? '' : 'btn-group'} ${!this.props.shareButtonHide ? ' u-push--sm' : ''}`}>
+          <ButtonGroup className={`${this.props.buttonsOnly ? 'btn-group' : 'btn-group'} ${!this.props.shareButtonHide ? ' u-push--sm' : ''}`}>
             {/* Start of Support Button */}
             {/* Visible on desktop screens */}
             {this.props.buttonsOnly ? (
               <StackedButton className="d-none d-lg-block">
-                <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
-                  {this.props.type === 'CANDIDATE' ? this.supportButton(`desktopVersion-${ballotItemWeVoteId}`) : measureYesButton}
-                </OverlayTrigger>
+                {/* <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
+                </OverlayTrigger> */}
+                {this.props.type === 'CANDIDATE' ? this.supportButtonNoText(`desktopVersion-${ballotItemWeVoteId}`) : measureYesButton}
               </StackedButton>
             ) : (
               <div className="u-push--xs d-none d-lg-block item-actionbar__position-bar">
@@ -644,7 +690,7 @@ class ItemActionBar extends PureComponent {
             {/* Visible on mobile devices and tablets */}
             {this.props.buttonsOnly ? (
               <StackedButton className="d-lg-none d-xl-none">
-                {this.props.type === 'CANDIDATE' ? this.supportButton(`mobileVersion-${ballotItemWeVoteId}`) : measureYesButton}
+                {this.props.type === 'CANDIDATE' ? this.supportButtonNoText(`mobileVersion-${ballotItemWeVoteId}`) : measureYesButton}
               </StackedButton>
             ) : (
               <>
@@ -658,9 +704,9 @@ class ItemActionBar extends PureComponent {
             {/* Visible on desktop screens */}
             {this.props.buttonsOnly ? (
               <StackedButton className="d-none d-lg-block">
-                <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
-                  {this.props.type === 'CANDIDATE' ? this.opposeButton(`desktopVersion-${ballotItemWeVoteId}`) : measureNoButton}
-                </OverlayTrigger>
+                {/* <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
+                </OverlayTrigger> */}
+                {this.props.type === 'CANDIDATE' ? this.opposeButtonNoText(`desktopVersion-${ballotItemWeVoteId}`) : measureNoButton}
               </StackedButton>
             ) : (
               <div className="u-push--xs d-none d-lg-block item-actionbar__position-bar">
@@ -672,7 +718,7 @@ class ItemActionBar extends PureComponent {
             {/* Visible on mobile devices and tablets */}
             {this.props.buttonsOnly ? (
               <StackedButton className="d-lg-none d-xl-none">
-                {this.props.type === 'CANDIDATE' ? this.opposeButton(`mobileVersion-${ballotItemWeVoteId}`) : measureNoButton}
+                {this.props.type === 'CANDIDATE' ? this.opposeButtonNoText(`mobileVersion-${ballotItemWeVoteId}`) : measureNoButton}
               </StackedButton>
             ) : (
               <>
@@ -683,9 +729,17 @@ class ItemActionBar extends PureComponent {
             )}
             { this.props.commentButtonHide ?
               null : (
-                <div className="u-push--sm item-actionbar__position-bar">
-                  {commentButton}
-                </div>
+                <span>
+                  {this.props.buttonsOnly ? (
+                    <div className="u-push--sm item-actionbar__position-bar">
+                      {commentButtonNoText}
+                    </div>
+                  ) : (
+                    <div className="u-push--sm item-actionbar__position-bar">
+                      {commentButton}
+                    </div>
+                  )}
+                </span>
               )}
 
             { this.props.shareButtonHide ?
@@ -732,6 +786,26 @@ const styles = theme => ({
       fontSize: 10,
     },
   },
+  buttonNoTextRoot: {
+    padding: 4,
+    fontSize: 12,
+    width: 32,
+    height: 32,
+    marginLeft: '.1rem',
+    marginTop: '.3rem',
+    marginBottom: 4,
+    [theme.breakpoints.down('md')]: {
+      width: 30,
+      height: 30,
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: 'fit-content',
+      minWidth: 28,
+      height: 28,
+      padding: '0 8px',
+      fontSize: 10,
+    },
+  },
   buttonOutlinedPrimary: {
     background: 'white',
   },
@@ -742,14 +816,15 @@ const styles = theme => ({
   },
 });
 
+// width: fit-content;
+// flex: none;
 const ButtonGroup = styled.div`
   margin-left: auto;
-  width: fit-content;
-  flex: none;
 `;
 
 const StackedButton = styled.div`
-  width: 90% !important;
+  margin-left: 3px;
+  width: 30% !important;
 `;
 
 export default withStyles(styles)(ItemActionBar);

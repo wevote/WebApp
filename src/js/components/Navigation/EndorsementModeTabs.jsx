@@ -4,72 +4,67 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Badge from '@material-ui/core/Badge';
 import { withStyles } from '@material-ui/core/styles';
-import BallotActions from '../../actions/BallotActions';
+import AppActions from '../../actions/AppActions';
+import AppStore from '../../stores/AppStore';
 import { renderLog } from '../../utils/logging';
 
 class EndorsementModeTabs extends Component {
   static propTypes = {
-    completionLevelFilterType: PropTypes.string,
-    ballotLength: PropTypes.number,
-    ballotLengthRemaining: PropTypes.number,
     classes: PropTypes.object,
   };
 
-  shouldComponentUpdate (nextProps) {
+  constructor (props) {
+    super(props);
+    this.state = {
+      getVoterGuideSettingsDashboardEditMode: '',
+    };
+  }
+
+  componentDidMount () {
+    // console.log('EndorsementModeTabs componentDidMount, this.props: ', this.props);
+    this.onAppStoreChange();
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+  }
+
+  shouldComponentUpdate (nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     // console.log("EndorsementModeTabs shouldComponentUpdate");
-    if (this.props.completionLevelFilterType !== nextProps.completionLevelFilterType) {
-      // console.log("shouldComponentUpdate: this.props.completionLevelFilterType", this.props.completionLevelFilterType, ", nextProps.completionLevelFilterType", nextProps.completionLevelFilterType);
-      return true;
-    }
-    if (this.props.ballotLength !== nextProps.ballotLength) {
-      // console.log("shouldComponentUpdate: this.props.ballotLength", this.props.ballotLength, ", nextProps.ballotLength", nextProps.ballotLength);
-      return true;
-    }
-    if (this.props.ballotLengthRemaining !== nextProps.ballotLengthRemaining) {
-      // console.log("shouldComponentUpdate: this.props.ballotLengthRemaining", this.props.ballotLengthRemaining, ", nextProps.ballotLengthRemaining", nextProps.ballotLengthRemaining);
+    if (this.state.getVoterGuideSettingsDashboardEditMode !== nextState.getVoterGuideSettingsDashboardEditMode) {
+      // console.log("shouldComponentUpdate: this.state.getVoterGuideSettingsDashboardEditMode", this.state.getVoterGuideSettingsDashboardEditMode, ", nextProps.getVoterGuideSettingsDashboardEditMode", nextProps.getVoterGuideSettingsDashboardEditMode);
       return true;
     }
     return false;
   }
 
+  componentWillUnmount () {
+    this.appStoreListener.remove();
+  }
+
+  onAppStoreChange () {
+    this.setState({
+      getVoterGuideSettingsDashboardEditMode: AppStore.getVoterGuideSettingsDashboardEditMode(),
+    });
+  }
+
   getSelectedTab = () => {
-    const { ballotLength, ballotLengthRemaining, completionLevelFilterType } = this.props;
-    const remainingDecisionsCountIsDifferentThanAllItems = ballotLength !== ballotLengthRemaining;
-    const showRemainingDecisions = (remainingDecisionsCountIsDifferentThanAllItems && ballotLengthRemaining) || false;
-    const showDecisionsMade = (remainingDecisionsCountIsDifferentThanAllItems && ballotLengthRemaining) || false;
-    switch (completionLevelFilterType) {
-      case 'filterAllBallotItems':
-        return 0;
-      case 'filterRemaining':
-        if (showRemainingDecisions) {
-          return 1;
-        } else {
-          return 0;
-        }
-      case 'filterDecided':
-        if (showDecisionsMade) {
-          return 2;
-        } else {
-          return 0;
-        }
+    const { getVoterGuideSettingsDashboardEditMode } = this.state;
+    switch (getVoterGuideSettingsDashboardEditMode) {
       default:
+      case 'positions':
         return 0;
+      case 'addpositions':
+        return 1;
     }
   }
 
-  goToDifferentCompletionLevelTab (completionLevelFilterType = '') {
-    BallotActions.completionLevelFilterTypeSave(completionLevelFilterType);
+  goToDifferentVoterGuideSettingsDashboardTab (dashboardEditMode = '') {
+    AppActions.setVoterGuideSettingsDashboardEditMode(dashboardEditMode);
   }
 
   render () {
-    // console.log("EndorsementModeTabs render, this.props.completionLevelFilterType:", this.props.completionLevelFilterType);
+    // console.log('EndorsementModeTabs render, this.state.getVoterGuideSettingsDashboardEditMode:', this.state.getVoterGuideSettingsDashboardEditMode);
     renderLog(__filename);
     const { classes } = this.props; // constants ballotLength and ballotLengthRemaining are supposed to be included
-    const remainingDecisionsCountIsDifferentThanAllItems = this.props.ballotLength !== this.props.ballotLengthRemaining;
-    const showRemainingDecisions = (remainingDecisionsCountIsDifferentThanAllItems && this.props.ballotLengthRemaining) || false;
-    //  const showDecisionsMade = (remainingDecisionsCountIsDifferentThanAllItems && this.props.ballotLengthRemaining) || false;
-    //  const itemsDecidedCount = this.props.ballotLength - this.props.ballotLengthRemaining || 0;
 
     return (
       <Tabs
@@ -80,7 +75,7 @@ class EndorsementModeTabs extends Component {
         <Tab
           classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot }}
           id="allItemsCompletionLevelTab"
-          onClick={() => this.goToDifferentCompletionLevelTab('filterAllBallotItems')}
+          onClick={() => this.goToDifferentVoterGuideSettingsDashboardTab('positions')}
           label={(
             <Badge>
               <span className="u-show-mobile">
@@ -93,24 +88,21 @@ class EndorsementModeTabs extends Component {
           )}
         />
 
-        { showRemainingDecisions ? (
-          <Tab
-            classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot }}
-            id="remainingChoicesCompletionLevelTab"
-            onClick={() => this.goToDifferentCompletionLevelTab('filterRemaining')}
-            label={(
-              <Badge>
-                <span className="u-show-mobile">
-                  Add
-                </span>
-                <span className="u-show-desktop-tablet">
-                  Add to Voter Guide
-                </span>
-              </Badge>
-            )}
-          />
-        ) : null
-        }
+        <Tab
+          classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot }}
+          id="remainingChoicesCompletionLevelTab"
+          onClick={() => this.goToDifferentVoterGuideSettingsDashboardTab('addpositions')}
+          label={(
+            <Badge>
+              <span className="u-show-mobile">
+                Add Endorsements
+              </span>
+              <span className="u-show-desktop-tablet">
+                Add Endorsements
+              </span>
+            </Badge>
+          )}
+        />
       </Tabs>
     );
   }
