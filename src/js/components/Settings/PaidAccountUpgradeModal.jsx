@@ -128,6 +128,7 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   pricingPlanChosenFunction = (pricingPlanChosen) => {
+    const { couponDiscountValue, radioGroupValue } = this.state;
     if (window.innerWidth > 769 && pricingPlanChosen !== 'free') {
       this.setState({
         paidAccountProcessStep: 'payForPlan',
@@ -144,13 +145,13 @@ class PaidAccountUpgradeModal extends Component {
 
     switch (pricingPlanChosen) {
       case 'professional':
-        this.setState({ monthlyPlanPrice: 150, annualPlanPrice: 125, monthlyPlanPriceWithDiscount: 150, annualPlanPriceWithDiscount: 125, currentSelectedPlanCost: 125 });
+        this.setState({ monthlyPlanPrice: 150, annualPlanPrice: 125, monthlyPlanPriceWithDiscount: 150 - couponDiscountValue, annualPlanPriceWithDiscount: 125 - couponDiscountValue, currentSelectedPlanCost: radioGroupValue === 'annualPlanRadio' ? 125 - couponDiscountValue : 150 - couponDiscountValue });
         break;
       case 'enterprise':
-        this.setState({ monthlyPlanPrice: 200, annualPlanPrice: 175, monthlyPlanPriceWithDiscount: 200, annualPlanPriceWithDiscount: 175, currentSelectedPlanCost: 175 });
+        this.setState({ monthlyPlanPrice: 200, annualPlanPrice: 175, monthlyPlanPriceWithDiscount: 200 - couponDiscountValue, annualPlanPriceWithDiscount: 175 - couponDiscountValue, currentSelectedPlanCost: radioGroupValue === 'annualPlanRadio' ? 175 - couponDiscountValue : 200 - couponDiscountValue });
         break;
       default:
-        this.setState({ monthlyPlanPrice: 150, annualPlanPrice: 125, monthlyPlanPriceWithDiscount: 150, annualPlanPriceWithDiscount: 125, currentSelectedPlanCost: 125 });
+        this.setState({ monthlyPlanPrice: 150, annualPlanPrice: 125, monthlyPlanPriceWithDiscount: 150 - couponDiscountValue, annualPlanPriceWithDiscount: 125 - couponDiscountValue, currentSelectedPlanCost: radioGroupValue === 'annualPlanRadio' ? 125 - couponDiscountValue : 150 - couponDiscountValue });
     }
   }
 
@@ -625,6 +626,7 @@ class PaidAccountUpgradeModal extends Component {
                     </FormControl>
                   </FieldsetDisabled>
                 )}
+                <br />
                 <div className="u-tc">
                   <SectionTitle>Coupon Code</SectionTitle>
                 </div>
@@ -668,7 +670,7 @@ class PaidAccountUpgradeModal extends Component {
             <div className="col col-6 p-0 u-full-height">
               <WrapperRight className="u-full-height">
                 <div className="u-tc">
-                  <h3 className="h3">Stripe Payment</h3>
+                  <SectionTitle className="h3">Stripe Payment</SectionTitle>
                 </div>
               </WrapperRight>
             </div>
