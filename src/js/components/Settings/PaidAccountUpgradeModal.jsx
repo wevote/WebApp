@@ -848,7 +848,7 @@ const styles = () => ({
       fontSize: 16,
     },
     '@media (max-width: 569px)': {
-      height: 35,
+      height: 40,
       fontSize: 14,
     },
   },
@@ -864,7 +864,7 @@ const styles = () => ({
       fontSize: 16,
     },
     '@media (max-width: 569px)': {
-      height: 35,
+      height: 40,
       fontSize: 14,
     },
   },
