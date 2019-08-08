@@ -37,6 +37,7 @@ class PaidAccountUpgradeModal extends Component {
       couponCodeInputValue: '',
       couponCodesFromAPI: [],
       isCouponApplied: false,
+      couponAppliedFromAPI: {},
       couponDiscountValue: 0,
       windowWidth: undefined,
     };
@@ -55,16 +56,22 @@ class PaidAccountUpgradeModal extends Component {
       // Test coupon codes to simulate having multiple promotions running at the same time
       couponCodesFromAPI: [
         {
-          code: '10OFF',
+          code: '10ALL',
           discount: 10,
+          validForProfessionalPlan: true,
+          validForEnterprisePlan: true,
         },
         {
-          code: '25OFF',
+          code: '25PRO',
           discount: 25,
+          validForProfessionalPlan: true,
+          validForEnterprisePlan: false,
         },
         {
-          code: '50OFF',
+          code: '50ENTERPRISE',
           discount: 50,
+          validForProfessionalPlan: false,
+          validForEnterprisePlan: true,
         },
       ],
     });
@@ -143,6 +150,16 @@ class PaidAccountUpgradeModal extends Component {
       this.props.toggleFunction(this.state.pathname);
     }
 
+    if (this.state.isCouponApplied) {
+      if (pricingPlanChosen === 'professional') {
+        if (!this.state.couponAppliedFromAPI.validForProfessionalPlan) {
+          this.setState({ isCouponApplied: false, couponAppliedFromAPI: {}, couponDiscountValue: 0, couponCodeInputValue: '' });
+        }
+      } else if (!this.state.couponAppliedFromAPI.validForEnterprisePlan) {
+        this.setState({ isCouponApplied: false, couponAppliedFromAPI: {}, couponDiscountValue: 0, couponCodeInputValue: '' });
+      }
+    }
+
     switch (pricingPlanChosen) {
       case 'professional':
         this.setState({ monthlyPlanPrice: 150, annualPlanPrice: 125, monthlyPlanPriceWithDiscount: 150 - couponDiscountValue, annualPlanPriceWithDiscount: 125 - couponDiscountValue, currentSelectedPlanCost: radioGroupValue === 'annualPlanRadio' ? 125 - couponDiscountValue : 150 - couponDiscountValue });
@@ -206,7 +223,7 @@ class PaidAccountUpgradeModal extends Component {
   resetCouponCode () {
     const { annualPlanPrice, monthlyPlanPrice, radioGroupValue } = this.state;
 
-    this.setState({ isCouponApplied: false, couponCodeInputValue: '', monthlyPlanPriceWithDiscount: monthlyPlanPrice, annualPlanPriceWithDiscount: annualPlanPrice });
+    this.setState({ isCouponApplied: false, couponCodeInputValue: '', monthlyPlanPriceWithDiscount: monthlyPlanPrice, annualPlanPriceWithDiscount: annualPlanPrice, couponAppliedFromAPI: {}, couponDiscountValue: 0, });
 
     if (radioGroupValue === 'annualPlanRadio') {
       this.setState({ currentSelectedPlanCost: annualPlanPrice });
@@ -216,18 +233,19 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   checkCouponCodeValidity () {
-    const { couponCodeInputValue, couponCodesFromAPI, monthlyPlanPrice, annualPlanPrice, currentSelectedPlanCost: oldCurrentSelectedPlanCost } = this.state;
+    const { couponCodeInputValue, couponCodesFromAPI, monthlyPlanPrice, annualPlanPrice, currentSelectedPlanCost: oldCurrentSelectedPlanCost, pricingPlanChosen } = this.state;
 
     let wasCouponMatchFound = false;
 
     for (let i = 0; i < couponCodesFromAPI.length; i++) {
-      if (couponCodesFromAPI[i].code.toLowerCase() === couponCodeInputValue.toLowerCase()) {
+      if (couponCodesFromAPI[i].code.toLowerCase() === couponCodeInputValue.toLowerCase() && (pricingPlanChosen === 'professional' ? couponCodesFromAPI[i].validForProfessionalPlan : couponCodesFromAPI[i].validForEnterprisePlan)) {
         this.setState({
           isCouponApplied: true,
           couponDiscountValue: couponCodesFromAPI[i].discount,
           monthlyPlanPriceWithDiscount: monthlyPlanPrice - couponCodesFromAPI[i].discount,
           annualPlanPriceWithDiscount: annualPlanPrice - couponCodesFromAPI[i].discount,
           currentSelectedPlanCost: oldCurrentSelectedPlanCost - couponCodesFromAPI[i].discount,
+          couponAppliedFromAPI: couponCodesFromAPI[i],
         });
 
         console.log(couponCodesFromAPI[i], 'match was found');
@@ -878,7 +896,6 @@ const styles = () => ({
     fontWeight: 'bold',
   },
   couponButton: {
-    fontWeight: 'bold',
     '@media (max-width: 569px)': {
       height: 35,
       fontSize: 14,
