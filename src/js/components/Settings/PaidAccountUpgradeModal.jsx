@@ -683,14 +683,12 @@ const styles = () => ({
       padding: '0 8px 8px',
     },
     background: 'white',
-    overflow: 'hidden',
   },
   dialogContentWhite: {
     '@media (max-width: 768px)': {
       padding: '0 8px 8px',
     },
     background: 'white',
-    overflow: 'hidden',
   },
   formControl: {
     width: '100%',

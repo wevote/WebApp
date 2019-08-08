@@ -480,7 +480,7 @@ class Pricing extends Component {
           noTopMargin={this.props.modalDisplayMode}
           variant="white"
         >
-          <PricingDescriptionContainer className="container">
+          <PricingDescriptionContainer>
             <div className="u-show-mobile-tablet">
               <Row className="row">
                 {selectedPricingPlanIndex === 0 ? (
@@ -678,11 +678,11 @@ const PricingSubTitleMobile = styled.div`
 
 const PricingDescriptionContainer = styled.div`
   margin: 1em auto;
-  width: 960px;
-  max-width: 90vw;
+  width: 100%;
+  min-width: 100%;
   text-align: left;
   @media (max-width: 569px) {
-    margin-top: -2em;
+    margin-top: -1em;
   }
   @media (min-width: 960px) and (max-width: 991px) {
     max-width: 100%;
