@@ -638,7 +638,6 @@ class PaidAccountUpgradeModal extends Component {
             </IconButton>
           </ModalTitleArea>
         )}
-
         {paidAccountProcessStep === '' ? (
           <DialogContent classes={{ root: classes.dialogContentWhite }}>
             {modalHtmlContents}
