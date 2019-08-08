@@ -38,6 +38,7 @@ class PaidAccountUpgradeModal extends Component {
       couponCodesFromAPI: [],
       isCouponApplied: false,
       couponDiscountValue: 0,
+      windowWidth: undefined,
     };
 
     this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
@@ -45,6 +46,7 @@ class PaidAccountUpgradeModal extends Component {
     this.checkCouponCodeValidity = this.checkCouponCodeValidity.bind(this);
     this.backToChoosePlan = this.backToChoosePlan.bind(this);
     this.resetCouponCode = this.resetCouponCode.bind(this);
+    this.handleResize = this.handleResize.bind(this);
   }
 
   componentDidMount () {
@@ -66,12 +68,26 @@ class PaidAccountUpgradeModal extends Component {
         },
       ],
     });
+
+    this.handleResize();
+    window.addEventListener('resize', this.handleResize);
   }
 
   componentWillReceiveProps (nextProps) {
     this.setState({
       pathname: nextProps.pathname,
     });
+  }
+
+  shouldComponentUpdate (nextState) {
+    if (this.state.windowWidth !== nextState.windowWidth) {
+      return true;
+    }
+    return false;
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('resize', this.handleResize);
   }
 
   // componentDidUpdate () {
@@ -153,6 +169,35 @@ class PaidAccountUpgradeModal extends Component {
     }
   }
 
+  handleResize () {
+    this.setState({
+      windowWidth: window.innerWidth,
+    });
+
+    if (window.innerWidth < 769) {
+      switch (this.state.paidAccountProcessStep) {
+        case 'payForPlan':
+          this.setState({ paidAccountProcessStep: 'selectPlanDetailsMobile' });
+          break;
+        case 'selectPlanDetailsMobile':
+          break;
+        default:
+          break;
+      }
+    } else if (window.innerWidth >= 769) {
+      switch (this.state.paidAccountProcessStep) {
+        default:
+          break;
+        case 'selectPlanDetailsMobile':
+          this.setState({ paidAccountProcessStep: 'payForPlan' });
+          break;
+        case 'payForPlanMobile':
+          this.setState({ paidAccountProcessStep: 'payForPlan' });
+          break;
+      }
+    }
+  }
+
   backToChoosePlan () {
     this.setState({ paidAccountProcessStep: '' });
   }
@@ -210,8 +255,8 @@ class PaidAccountUpgradeModal extends Component {
     console.log('Annual plan price:', annualPlanPriceWithDiscount);
     console.log('Monthly plan price:', monthlyPlanPriceWithDiscount);
     console.log('Current selected plan price:', currentSelectedPlanCost);
-
-
+    console.log('The window width is', this.state.windowWidth);
+    console.log('The selected plan step is', paidAccountProcessStep);
 
     let modalTitle = '';
     let backToButton;
@@ -414,7 +459,6 @@ class PaidAccountUpgradeModal extends Component {
                 NEXT
               </Button>
             </FlexSectionTwo>
-
           </MobileWrapper>
         );
         break;
@@ -445,13 +489,28 @@ class PaidAccountUpgradeModal extends Component {
         modalTitle = 'Payment';
         modalHtmlContents = (
           <Row className="row u-full-height">
-            <div className="col col-6 pr-0 u-full-height">
+            <div className="col col-6 p-0 u-full-height">
               <WrapperLeft className="u-full-height">
                 <div className="u-tc">
                   <SectionTitle>
                     {planNameTitle}
                   </SectionTitle>
                 </div>
+                {isCouponApplied ? (
+                  <div
+                    className={classes.couponAlert}
+                  >
+                    Coupon Applied. Deducted
+                    {couponDiscountValueString}
+                  </div>
+                ) : null}
+                {couponCodeError ? (
+                  <div
+                    className={classes.couponAlertError}
+                  >
+                    Invalid Coupon Code
+                  </div>
+                ) : null}
                 {radioGroupValue === 'annualPlanRadio' ? (
                   <Fieldset>
                     <Legend>
@@ -566,9 +625,47 @@ class PaidAccountUpgradeModal extends Component {
                     </FormControl>
                   </FieldsetDisabled>
                 )}
+                <div className="u-tc">
+                  <SectionTitle>Coupon Code</SectionTitle>
+                </div>
+                <OutlinedInput
+                  classes={{ root: isCouponApplied ? classes.textFieldCouponApplied : classes.textField, input: couponCodeInputValue !== '' ? classes.textFieldInputUppercase : classes.textFieldInput }}
+                  inputProps={{ }}
+                  margin="normal"
+                  // variant="outlined"
+                  placeholder="Enter Here..."
+                  fullWidth
+                  onChange={this.onCouponInputChange}
+                  disabled={isCouponApplied}
+                  value={couponCodeInputValue}
+                />
+                {isCouponApplied ? (
+                  <>
+                    <div
+                      className={classes.couponAlert}
+                    >
+                      APPLIED
+                    </div>
+                    <Button size="small" className={classes.resetButton} onClick={this.resetCouponCode}>
+                      Use new code
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    disabled={couponCodeInputValue === ''}
+                    fullWidth
+                    variant="contained"
+                    margin="normal"
+                    color="primary"
+                    classes={{ root: classes.couponButton }}
+                    onClick={this.checkCouponCodeValidity}
+                  >
+                    APPLY
+                  </Button>
+                )}
               </WrapperLeft>
             </div>
-            <div className="col col-6 pl-0 u-full-height">
+            <div className="col col-6 p-0 u-full-height">
               <WrapperRight className="u-full-height">
                 <div className="u-tc">
                   <h3 className="h3">Stripe Payment</h3>
@@ -658,7 +755,6 @@ const styles = () => ({
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
     '@media (min-width: 768px)': {
-      minWidth: '65%',
       maxWidth: '720px',
       width: '85%',
       minHeight: '95%',
@@ -682,12 +778,14 @@ const styles = () => ({
       padding: '0 8px 8px',
     },
     background: 'white',
+    padding: '0px 16px',
   },
   dialogContentWhite: {
     '@media (max-width: 768px)': {
       padding: '0 8px 8px',
     },
     background: 'white',
+    padding: '0px 16px',
   },
   formControl: {
     width: '100%',
@@ -718,15 +816,16 @@ const styles = () => ({
     },
   },
   formControlLabel: {
-    margin: 0,
-    padding: '0px 16px 0 8px',
+    padding: '0px 16px 0px 8px',
     height: '100%',
     width: '100%',
-    '@media (max-width: 768px)': {
-      padding: '8px 16px 8px 8px',
+    margin: 0,
+    '@media (min-width: 768px)': {
+      marginTop: '-5px',
     },
     '@media (max-width: 569px)': {
       padding: '4px 8px 4px 4px',
+      margin: 0,
     },
   },
   formControlLabelSpan: {
@@ -742,24 +841,32 @@ const styles = () => ({
     background: 'white',
     marginTop: 0,
     marginBottom: 8,
-    height: 50,
-    fontSize: 16.5,
+    height: 45,
+    fontSize: '14px',
+    '@media (max-width: 769px)': {
+      height: 45,
+      fontSize: 16,
+    },
     '@media (max-width: 569px)': {
-      height: 40,
+      height: 35,
       fontSize: 14,
     },
   },
   textFieldCouponApplied: {
-    height: 50,
-    fontSize: 16.5,
-    '@media (max-width: 569px)': {
-      height: 40,
-      fontSize: 14,
-    },
     background: 'white',
     marginTop: 0,
     marginBottom: 8,
+    height: 45,
+    fontSize: '14px',
     color: '#386949',
+    '@media (max-width: 769px)': {
+      height: 45,
+      fontSize: 16,
+    },
+    '@media (max-width: 569px)': {
+      height: 35,
+      fontSize: 14,
+    },
   },
   textFieldInput: {
     fontWeight: 'bold',
@@ -769,12 +876,14 @@ const styles = () => ({
     fontWeight: 'bold',
   },
   couponButton: {
-    height: 45,
-    fontSize: 16.5,
     fontWeight: 'bold',
     '@media (max-width: 569px)': {
       height: 35,
       fontSize: 14,
+    },
+    '@media (max-width: 769px)': {
+      height: 45,
+      fontSize: 16,
     },
   },
   couponAlert: {
@@ -784,8 +893,6 @@ const styles = () => ({
     pointerEvents: 'none',
     fontWeight: 'bold',
     marginBottom: 8,
-    height: 45,
-    fontSize: 16.5,
     width: '100%',
     padding: '8px 16px',
     display: 'flex',
@@ -795,6 +902,10 @@ const styles = () => ({
     '@media (max-width: 569px)': {
       height: 35,
       fontSize: 14,
+    },
+    '@media (max-width: 769px)': {
+      height: 45,
+      fontSize: 16,
     },
   },
   couponAlertError: {
@@ -804,8 +915,8 @@ const styles = () => ({
     pointerEvents: 'none',
     fontWeight: 'bold',
     marginBottom: 8,
-    height: 45,
-    fontSize: 16.5,
+    height: 40,
+    fontSize: 14,
     width: '100%',
     padding: '8px 16px',
     display: 'flex',
@@ -816,17 +927,23 @@ const styles = () => ({
       height: 35,
       fontSize: 14,
     },
+    '@media (max-width: 769px)': {
+      height: 45,
+      fontSize: 16,
+    },
   },
   resetButton: {
     float: 'right',
     textDecoration: 'underline',
   },
   nextButton: {
-    height: 45,
-    fontSize: 16.5,
     '@media (max-width: 569px)': {
       height: 35,
       fontSize: 14,
+    },
+    '@media (max-width: 769px)': {
+      height: 45,
+      fontSize: 16,
     },
     width: '100%',
   },
@@ -899,6 +1016,7 @@ const SectionTitle = styled.h4`
   @media (min-width: 768px) {
     color: black;
     font-weight: bold;
+    font-size: 18px;
   }
   @media (max-width: 376px) {
     font-size: 18px;
@@ -928,13 +1046,13 @@ const FlexSectionTwo = styled.div`
 `;
 
 const WrapperLeft = styled.div`
-  padding: 0 32px 32px;
+  padding: 0 32px 32px 16px;
   border-right: 1px solid #f7f7f7;
   margin-top: 32px;
 `;
 
 const WrapperRight = styled.div`
-  padding: 0 32px 32px;
+  padding: 0 16px 32px 32px;
   border-left: 1px solid #f7f7f7;
   margin-top: 32px;
 `;
@@ -945,6 +1063,9 @@ const Fieldset = styled.fieldset`
   margin-bottom: 16px;
   padding-bottom: 0;
   background: white;
+  @media (min-width: 768px) {
+    height: 76px;
+  }
 `;
 
 const FieldsetDisabled = styled.fieldset`
@@ -953,6 +1074,10 @@ const FieldsetDisabled = styled.fieldset`
   margin-bottom: 16px;
   padding-bottom: 0;
   background: white;
+  @media (min-width: 768px) {
+    height: 76px;
+    margin-bottom: 12px;
+  }
 `;
 
 const Legend = styled.legend`
