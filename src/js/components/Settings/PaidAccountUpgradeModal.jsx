@@ -295,7 +295,7 @@ class PaidAccountUpgradeModal extends Component {
   render () {
     renderLog(__filename);
     const { classes } = this.props;
-    const { radioGroupValue, couponCodeInputValue, couponDiscountValue, isCouponApplied, paidAccountProcessStep, pricingPlanChosen, monthlyPlanPrice, annualPlanPrice, couponCodeError, monthlyPlanPriceWithDiscount, annualPlanPriceWithDiscount, currentSelectedPlanCost } = this.state;
+    const { radioGroupValue, couponCodeInputValue, couponDiscountValue, isCouponApplied, paidAccountProcessStep, pricingPlanChosen, couponCodeError, monthlyPlanPriceWithDiscount, annualPlanPriceWithDiscount, currentSelectedPlanCost } = this.state;
 
     console.log(this.state);
 
