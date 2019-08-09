@@ -54,6 +54,7 @@ class HeaderBar extends Component {
       showSelectBallotModal: false,
       showSignInModal: false,
       scrolledDown: false,
+      showPaidAccountUpgradeModal: false,
     };
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
     this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
@@ -61,6 +62,7 @@ class HeaderBar extends Component {
     this.transitionToYourVoterGuide = this.transitionToYourVoterGuide.bind(this);
     this.toggleSignInModal = this.toggleSignInModal.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
+    this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
   }
 
   componentDidMount () {
@@ -244,6 +246,10 @@ class HeaderBar extends Component {
     VoterGuideActions.voterGuideFollowersRetrieve(this.props.voter.linked_organization_we_vote_id);
     VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.voter.linked_organization_we_vote_id);
     this.setState({ profilePopUpOpen: false });
+  }
+
+  closePaidAccountUpgradeModal () {
+    this.setState({ showPaidAccountUpgradeModal: false });
   }
 
   render () {

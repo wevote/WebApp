@@ -478,11 +478,11 @@ class Pricing extends Component {
         <Section
           noSideMargins={this.props.modalDisplayMode}
           noTopMargin={this.props.modalDisplayMode}
-          variant={this.props.modalDisplayMode ? 'dark' : 'white'}
+          variant="white"
         >
-          <PricingDescriptionContainer className="container">
+          <PricingDescriptionContainer>
             <div className="u-show-mobile-tablet">
-              <div className="row">
+              <Row className="row">
                 {selectedPricingPlanIndex === 0 ? (
                   <PricingCard
                     fullWidth
@@ -532,7 +532,7 @@ class Pricing extends Component {
                     )}
                   </React.Fragment>
                 )}
-              </div>
+              </Row>
             </div>
             <div className="row u-show-desktop">
               <PricingCard
@@ -678,22 +678,22 @@ const PricingSubTitleMobile = styled.div`
 
 const PricingDescriptionContainer = styled.div`
   margin: 1em auto;
-  width: 960px;
-  max-width: 90vw;
+  width: 100%;
+  min-width: 100%;
   text-align: left;
   @media (max-width: 569px) {
-    margin-top: -2em;
+    margin-top: -1em;
   }
   @media (min-width: 960px) and (max-width: 991px) {
-    > * {
-      width: 90%;
-      margin: 0 auto;   
-    }
     max-width: 100%;
     min-width: 100%;
     width: 100%;
     margin: 0 auto;
   }
+`;
+
+const Row = styled.div`
+  margin: 0 auto !important;
 `;
 
 export default withStyles(styles)(Pricing);
