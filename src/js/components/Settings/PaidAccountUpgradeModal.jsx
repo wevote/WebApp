@@ -32,7 +32,7 @@ class PaidAccountUpgradeModal extends Component {
     super(props);
     this.state = {
       pathname: undefined,
-      paidAccountProcessStep: '',
+      paidAccountProcessStep: 'choosePlan',
       radioGroupValue: 'annualPlanRadio',
       couponCodeInputValue: '',
       couponCodesFromAPI: [],
@@ -90,6 +90,27 @@ class PaidAccountUpgradeModal extends Component {
     if (this.state.windowWidth !== nextState.windowWidth) {
       return true;
     }
+    if (this.state.isCouponApplied !== nextState.isCouponApplied) {
+      return true;
+    }
+    if (this.state.couponAppliedFromAPI !== nextState.couponAppliedFromAPI) {
+      return true;
+    }
+    if (this.state.couponCodeInputValue !== nextState.couponCodeInputValue) {
+      return true;
+    }
+    if (this.state.couponDiscountValue !== nextState.couponDiscountValue) {
+      return true;
+    }
+    if (this.state.radioGroupValue !== nextState.radioGroupValue) {
+      return true;
+    }
+    if (this.state.paidAccountProcessStep !== nextState.couponCodeInputValue) {
+      return true;
+    }
+    if (this.state.pricingPlanChosen !== nextState.pricingPlanChosen) {
+      return true;
+    }
     return false;
   }
 
@@ -116,7 +137,7 @@ class PaidAccountUpgradeModal extends Component {
   couponAppliedFunction = () => {
     this.setState({ paidAccountProcessStep: 'payForPlan' });
 
-    if (window.innerWidth > 769) {
+    if (window.innerWidth > 768) {
       this.setState({
         paidAccountProcessStep: 'payForPlan',
       });
@@ -128,15 +149,14 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   paymentProcessedFunction = () => {
-    // console.log('paymentProcessedFunction');
     this.setState({
       paidAccountProcessStep: 'paymentProcessed',
     });
   }
 
   pricingPlanChosenFunction = (pricingPlanChosen) => {
-    const { couponDiscountValue, radioGroupValue } = this.state;
-    if (window.innerWidth > 769 && pricingPlanChosen !== 'free') {
+    const { couponDiscountValue, radioGroupValue, couponAppliedFromAPI } = this.state;
+    if (window.innerWidth > 768 && pricingPlanChosen !== 'free') {
       this.setState({
         paidAccountProcessStep: 'payForPlan',
         pricingPlanChosen,
@@ -150,30 +170,38 @@ class PaidAccountUpgradeModal extends Component {
       this.props.toggleFunction(this.state.pathname);
     }
 
-    if (this.state.isCouponApplied) {
-      if (pricingPlanChosen === 'professional') {
-        if (!this.state.couponAppliedFromAPI.validForProfessionalPlan) {
-          this.setState({ isCouponApplied: false, couponAppliedFromAPI: {}, couponDiscountValue: 0, couponCodeInputValue: '' });
-        }
-      } else if (!this.state.couponAppliedFromAPI.validForEnterprisePlan) {
-        this.setState({ isCouponApplied: false, couponAppliedFromAPI: {}, couponDiscountValue: 0, couponCodeInputValue: '' });
-      }
+    let currentSelectedPlanCostForPro = 0;
+    let currentSelectedPlanCostForEnterprise = 0;
+
+    if (radioGroupValue === 'annualPlanRadio') {
+      currentSelectedPlanCostForPro = couponAppliedFromAPI.validForProfessionalPlan ? 125 - couponDiscountValue : 125;
+      currentSelectedPlanCostForEnterprise = couponAppliedFromAPI.validForEnterprisePlan ? 175 - couponDiscountValue : 175;
+    } else {
+      currentSelectedPlanCostForPro = couponAppliedFromAPI.validForProfessionalPlan ? 150 - couponDiscountValue : 150;
+      currentSelectedPlanCostForEnterprise = couponAppliedFromAPI.validForEnterprisePlan ? 200 - couponDiscountValue : 200;
     }
 
     switch (pricingPlanChosen) {
       case 'professional':
-        this.setState({ monthlyPlanPrice: 150, annualPlanPrice: 125, monthlyPlanPriceWithDiscount: 150 - couponDiscountValue, annualPlanPriceWithDiscount: 125 - couponDiscountValue, currentSelectedPlanCost: radioGroupValue === 'annualPlanRadio' ? 125 - couponDiscountValue : 150 - couponDiscountValue });
+        this.setState({ monthlyPlanPrice: 150, annualPlanPrice: 125, monthlyPlanPriceWithDiscount: couponAppliedFromAPI.validForProfessionalPlan ? 150 - couponDiscountValue : 150, annualPlanPriceWithDiscount: couponAppliedFromAPI.validForProfessionalPlan ? 125 - couponDiscountValue : 125, currentSelectedPlanCost: currentSelectedPlanCostForPro });
+
+        if (!couponAppliedFromAPI.validForProfessionalPlan) {
+          this.setState({ isCouponApplied: false, couponAppliedFromAPI: {}, couponDiscountValue: 0, couponCodeInputValue: '' });
+        }
         break;
       case 'enterprise':
-        this.setState({ monthlyPlanPrice: 200, annualPlanPrice: 175, monthlyPlanPriceWithDiscount: 200 - couponDiscountValue, annualPlanPriceWithDiscount: 175 - couponDiscountValue, currentSelectedPlanCost: radioGroupValue === 'annualPlanRadio' ? 175 - couponDiscountValue : 200 - couponDiscountValue });
+        this.setState({ monthlyPlanPrice: 200, annualPlanPrice: 175, monthlyPlanPriceWithDiscount: couponAppliedFromAPI.validForEnterprisePlan ? 200 - couponDiscountValue : 200, annualPlanPriceWithDiscount: couponAppliedFromAPI.validForEnterprisePlan ? 175 - couponDiscountValue : 175, currentSelectedPlanCost: currentSelectedPlanCostForEnterprise });
+
+        if (!couponAppliedFromAPI.validForEnterprisePlan) {
+          this.setState({ isCouponApplied: false, couponAppliedFromAPI: {}, couponDiscountValue: 0, couponCodeInputValue: '' });
+        }
         break;
       default:
-        this.setState({ monthlyPlanPrice: 150, annualPlanPrice: 125, monthlyPlanPriceWithDiscount: 150 - couponDiscountValue, annualPlanPriceWithDiscount: 125 - couponDiscountValue, currentSelectedPlanCost: radioGroupValue === 'annualPlanRadio' ? 125 - couponDiscountValue : 150 - couponDiscountValue });
+        this.setState({ monthlyPlanPrice: 150, annualPlanPrice: 125, monthlyPlanPriceWithDiscount: couponAppliedFromAPI.validForProfessionalPlan ? 150 - couponDiscountValue : 150, annualPlanPriceWithDiscount: couponAppliedFromAPI.validForProfessionalPlan ? 125 - couponDiscountValue : 125, currentSelectedPlanCost: currentSelectedPlanCostForPro });
     }
   }
 
   handleRadioGroupChange = (event) => {
-    // console.log('handleRadioGroupChange');
     const { radioGroupValue, monthlyPlanPriceWithDiscount, annualPlanPriceWithDiscount } = this.state;
     if (radioGroupValue !== event.target.value) {
       this.setState({
@@ -217,13 +245,13 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   backToChoosePlan () {
-    this.setState({ paidAccountProcessStep: '' });
+    this.setState({ paidAccountProcessStep: 'choosePlan' });
   }
 
   resetCouponCode () {
     const { annualPlanPrice, monthlyPlanPrice, radioGroupValue } = this.state;
 
-    this.setState({ isCouponApplied: false, couponCodeInputValue: '', monthlyPlanPriceWithDiscount: monthlyPlanPrice, annualPlanPriceWithDiscount: annualPlanPrice, couponAppliedFromAPI: {}, couponDiscountValue: 0, });
+    this.setState({ isCouponApplied: false, couponCodeInputValue: '', monthlyPlanPriceWithDiscount: monthlyPlanPrice, annualPlanPriceWithDiscount: annualPlanPrice, couponAppliedFromAPI: {}, couponDiscountValue: 0 });
 
     if (radioGroupValue === 'annualPlanRadio') {
       this.setState({ currentSelectedPlanCost: annualPlanPrice });
@@ -248,8 +276,6 @@ class PaidAccountUpgradeModal extends Component {
           couponAppliedFromAPI: couponCodesFromAPI[i],
         });
 
-        console.log(couponCodesFromAPI[i], 'match was found');
-
         wasCouponMatchFound = true;
       }
     }
@@ -271,11 +297,7 @@ class PaidAccountUpgradeModal extends Component {
     const { classes } = this.props;
     const { radioGroupValue, couponCodeInputValue, couponDiscountValue, isCouponApplied, paidAccountProcessStep, pricingPlanChosen, monthlyPlanPrice, annualPlanPrice, couponCodeError, monthlyPlanPriceWithDiscount, annualPlanPriceWithDiscount, currentSelectedPlanCost } = this.state;
 
-    console.log('Annual plan price:', annualPlanPriceWithDiscount);
-    console.log('Monthly plan price:', monthlyPlanPriceWithDiscount);
-    console.log('Current selected plan price:', currentSelectedPlanCost);
-    console.log('The window width is', this.state.windowWidth);
-    console.log('The selected plan step is', paidAccountProcessStep);
+    console.log(this.state);
 
     let modalTitle = '';
     let backToButton;
@@ -507,9 +529,9 @@ class PaidAccountUpgradeModal extends Component {
         );
         modalTitle = 'Payment';
         modalHtmlContents = (
-          <Row className="row u-full-height">
-            <div className="col col-6 p-0 u-full-height">
-              <WrapperLeft className="u-full-height">
+          <Row className="row">
+            <div className="col col-6 p-0">
+              <WrapperLeft>
                 <div className="u-tc">
                   <SectionTitle>
                     {planNameTitle}
@@ -685,10 +707,10 @@ class PaidAccountUpgradeModal extends Component {
                 )}
               </WrapperLeft>
             </div>
-            <div className="col col-6 p-0 u-full-height">
-              <WrapperRight className="u-full-height">
+            <div className="col col-6 p-0">
+              <WrapperRight>
                 <div className="u-tc">
-                  <SectionTitle className="h3">Stripe Payment</SectionTitle>
+                  <SectionTitle>Stripe Payment</SectionTitle>
                 </div>
               </WrapperRight>
             </div>
@@ -724,7 +746,7 @@ class PaidAccountUpgradeModal extends Component {
         open={this.props.show}
         onClose={() => { this.props.toggleFunction(this.state.pathname); }}
       >
-        {paidAccountProcessStep === '' ? (
+        {paidAccountProcessStep === 'choosePlan' ? (
           <ModalTitleAreaNoBoxShadow>
             {backToButton}
             <Title>
@@ -755,7 +777,7 @@ class PaidAccountUpgradeModal extends Component {
             </IconButton>
           </ModalTitleArea>
         )}
-        {paidAccountProcessStep === '' ? (
+        {paidAccountProcessStep === 'choosePlan' ? (
           <DialogContent classes={{ root: classes.dialogContentWhite }}>
             {modalHtmlContents}
           </DialogContent>
@@ -774,7 +796,7 @@ const styles = () => ({
   },
   dialogPaper: {
     marginTop: hasIPhoneNotch() ? 68 : 48,
-    '@media (min-width: 768px)': {
+    '@media (min-width: 769px)': {
       maxWidth: '720px',
       width: '85%',
       minHeight: '95%',
@@ -799,6 +821,7 @@ const styles = () => ({
     },
     background: 'white',
     padding: '0px 16px',
+    height: 'fit-content',
   },
   dialogContentWhite: {
     '@media (max-width: 768px)': {
@@ -819,7 +842,7 @@ const styles = () => ({
     fontWeight: 'bold',
     margin: 0,
     textTransform: 'none',
-    '@media (min-width: 768px)': {
+    '@media (min-width: 769px)': {
       position: 'absolute',
       top: 16,
       left: 12,
@@ -828,7 +851,7 @@ const styles = () => ({
   closeButton: {
     margin: 0,
     display: 'none',
-    '@media (min-width: 768px)': {
+    '@media (min-width: 769px)': {
       display: 'block',
       position: 'absolute',
       top: 9,
@@ -840,7 +863,7 @@ const styles = () => ({
     height: '100%',
     width: '100%',
     margin: 0,
-    '@media (min-width: 768px)': {
+    '@media (min-width: 769px)': {
       marginTop: '-5px',
     },
     '@media (max-width: 569px)': {
@@ -982,7 +1005,7 @@ const ModalTitleArea = styled.div`
   padding: 16px 12px;
   box-shadow: 0 20px 40px -25px #999;
   z-index: 999;
-  @media (min-width: 768px) {
+  @media (min-width: 769px) {
     text-align: center;
     box-shadow: none;
     border-bottom: 2px solid #f7f7f7;
@@ -993,7 +1016,7 @@ const ModalTitleAreaNoBoxShadow = styled.div`
   width: 100%;
   padding: 16px 12px;
   z-index: 999;
-  @media (min-width: 768px) {
+  @media (min-width: 769px) {
     text-align: center;
     border-bottom: 2px solid #f7f7f7;
   }
@@ -1004,7 +1027,7 @@ const ModalTitleAreaNoBoxShadow = styled.div`
 
 // const BackToButton = styled.div`
 //   margin: 0;
-//   @media (min-width: 768px) {
+//   @media (min-width: 769px) {
 //     position: absolute;
 //     top: 8;
 //     left: 4;
@@ -1018,7 +1041,7 @@ const Title = styled.h3`
   position: relative;
   left: 8px;
   color: black;
-  @media (min-width: 768px) {
+  @media (min-width: 769px) {
     font-size: 28px;
     left: 0;
     margin: 0 auto;
@@ -1032,7 +1055,7 @@ const SectionTitle = styled.h4`
   font-weight: bold;
   text-transform: capitalize;
   margin-bottom: 16px;
-  @media (min-width: 768px) {
+  @media (min-width: 769px) {
     color: black;
     font-weight: bold;
     font-size: 18px;
@@ -1067,12 +1090,14 @@ const FlexSectionTwo = styled.div`
 const WrapperLeft = styled.div`
   padding: 0 32px 32px 16px;
   border-right: 1px solid #f7f7f7;
+  height: calc(100% - 32px);
   margin-top: 32px;
 `;
 
 const WrapperRight = styled.div`
   padding: 0 16px 32px 32px;
   border-left: 1px solid #f7f7f7;
+  height: calc(100% - 32px);
   margin-top: 32px;
 `;
 
@@ -1082,7 +1107,7 @@ const Fieldset = styled.fieldset`
   margin-bottom: 16px;
   padding-bottom: 0;
   background: white;
-  @media (min-width: 768px) {
+  @media (min-width: 769px) {
     height: 76px;
   }
 `;
@@ -1093,7 +1118,7 @@ const FieldsetDisabled = styled.fieldset`
   margin-bottom: 16px;
   padding-bottom: 0;
   background: white;
-  @media (min-width: 768px) {
+  @media (min-width: 769px) {
     height: 76px;
     margin-bottom: 12px;
   }
