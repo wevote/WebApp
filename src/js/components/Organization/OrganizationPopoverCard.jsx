@@ -206,16 +206,18 @@ class OrganizationPopoverCard extends Component {
 
 const Wrapper = styled.div`
   overflow-x: hidden;
-  width: calc(100% + 24px);
-  height: calc(100% + 16px);
+  width: 100%;
+  height: 100%;
   position: relative;
   right: 12px;
   bottom: 8px;
   border-radius: 3px;
+  margin-left: 12px;
+  margin-top: 8px;
 `;
 
 const Container = styled.div`
-  padding: 0 8px;
+  padding: 8px;
 `;
 
 const BannerImage = styled.div`
