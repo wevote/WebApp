@@ -20,6 +20,7 @@ module.exports = {
     }),
     new CopyPlugin([
       { from: 'src/javascript/', to: 'javascript/' },
+      { from: 'src/img/global/icons/', to: 'img/global/icons/' },
     ]),
   ],
   module: {
