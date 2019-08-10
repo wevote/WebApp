@@ -19,7 +19,10 @@ export default class SettingsSubscriptionPlan extends Component {
       organization: {},
       organizationWeVoteId: '',
       voter: {},
+      windowWidth: 0,
+      mobileMode: false,
     };
+    this.handleResize = this.handleResize.bind(this);
   }
 
   componentDidMount () {
@@ -27,6 +30,9 @@ export default class SettingsSubscriptionPlan extends Component {
     this.onVoterStoreChange();
     this.organizationStoreListener = FacebookStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+
+    this.handleResize();
+    window.addEventListener('resize', this.handleResize);
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -35,6 +41,14 @@ export default class SettingsSubscriptionPlan extends Component {
       return true;
     }
     if (this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
+      // console.log('this.state.voterIsSignedIn', this.state.voterIsSignedIn, ', nextState.voterIsSignedIn', nextState.voterIsSignedIn);
+      return true;
+    }
+    if (this.state.windowWidth !== nextState.windowWidth) {
+      // console.log('this.state.voterIsSignedIn', this.state.voterIsSignedIn, ', nextState.voterIsSignedIn', nextState.voterIsSignedIn);
+      return true;
+    }
+    if (this.state.mobileMode !== nextState.mobileMode) {
       // console.log('this.state.voterIsSignedIn', this.state.voterIsSignedIn, ', nextState.voterIsSignedIn', nextState.voterIsSignedIn);
       return true;
     }
@@ -77,9 +91,21 @@ export default class SettingsSubscriptionPlan extends Component {
     });
   }
 
+  handleResize () {
+    this.setState({
+      windowWidth: window.innerWidth,
+    });
+
+    if (window.innerWidth < 569) {
+      this.setState({ mobileMode: true });
+    } else if (window.innerWidth >= 569) {
+      this.setState({ mobileMode: false });
+    }
+  }
+
   render () {
     renderLog(__filename);
-    const { organization, organizationWeVoteId, voter, voterIsSignedIn } = this.state;
+    const { organization, organizationWeVoteId, voter, voterIsSignedIn, mobileMode } = this.state;
     if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
     }
@@ -90,25 +116,90 @@ export default class SettingsSubscriptionPlan extends Component {
     if (organization && organization.we_vote_custom_domain) {
       // console.log('SettingsSubscriptionPlan, Custom Domain: ', organization.we_vote_custom_domain);
     }
-    return (
-      <Wrapper>
-        <Helmet title="Domain Settings" />
+
+    let subscriptionPageHtmlContents = (<span />);
+
+    if (mobileMode) {
+      subscriptionPageHtmlContents = (
+        <MobileWrapper className="d-block d-sm-none">
+          <SectionCard>
+            <SectionTitle>
+              Payment
+            </SectionTitle>
+              <SectionParagraph>
+                Card ending in: <strong>0223</strong> | Expires: <strong>02/23</strong> | Next bill: <strong>June 21, 2019</strong>
+              </SectionParagraph>
+          </SectionCard>
+        </MobileWrapper>
+      );
+    } else {
+      subscriptionPageHtmlContents = (
         <Card className="card">
           <CardMain className="card-main">
             <h1 className="h3">Subscription Plan</h1>
-            Add src/js/components/Settings/SettingsSubscriptionPlan code here.
+            <Seperator />
+            <SectionCard>
+              <SectionTitle>
+                Payment
+              </SectionTitle>
+              <SectionParagraph>
+                Card ending in: <strong>0223</strong> | Expires: <strong>02/23</strong> | Next bill: <strong>June 21, 2019</strong>
+              </SectionParagraph>
+            </SectionCard>
           </CardMain>
         </Card>
+      );
+    }
+
+    return (
+      <Wrapper>
+        <Helmet title="Domain Settings" />
+        {subscriptionPageHtmlContents}
       </Wrapper>
     );
   }
 }
 
 const Wrapper = styled.div`
+  padding-top: 32px;
 `;
 
 const Card = styled.div`
 `;
 
 const CardMain = styled.div`
+`;
+
+const MobileWrapper = styled.div`
+`;
+
+const Seperator = styled.div`
+  height: 1px;
+  background: #ddd;
+  width: 100%;
+  margin: 16px 0;
+`;
+
+const SectionCard = styled.div`
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  border-radius: 3px;
+  padding: 16px;
+  @media (min-width: 569px) {
+    border: 1px solid #ddd;
+    box-shadow: none;
+  }
+`;
+
+const SectionTitle = styled.h3`
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+`;
+
+const SectionParagraph = styled.p`
+  font-size: 14px;
+  @media (min-width: 569px) {
+    font-size: 14px;
+  } 
 `;
