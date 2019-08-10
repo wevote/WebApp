@@ -21,6 +21,15 @@ module.exports = {
     new CopyPlugin([
       { from: 'src/javascript/', to: 'javascript/' },
       { from: 'src/img/global/icons/', to: 'img/global/icons/' },
+      { from: 'src/img/global/intro-story/', to: 'img/global/intro-story/' },
+      { from: 'src/img/global/logos/', to: 'img/global/logos/' },
+      { from: 'src/img/global/photos/', to: 'img/global/photos/' },
+      { from: 'src/img/global/svg-icons/', to: 'img/global/svg-icons/' },
+      { from: 'src/img/how-it-works/', to: 'img/how-it-works/' },
+      { from: 'src/img/tools/', to: 'img/tools/' },
+      { from: 'src/img/welcome/', to: 'img/welcome/' },
+      { from: 'src/img/welcome/benefits/', to: 'img/welcome/benefits/' },
+      { from: 'src/img/welcome/partners/', to: 'img/welcome/partners/' },
     ]),
   ],
   module: {
