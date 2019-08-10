@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Edit from '@material-ui/icons/Edit';
+import { IconButton, withStyles, Table, TableBody, TableCell, TableHead, TableRow, Button } from '@material-ui/core';
 import FacebookStore from '../../stores/FacebookStore';
 import LoadingWheel from '../LoadingWheel';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
 
-export default class SettingsSubscriptionPlan extends Component {
+class SettingsSubscriptionPlan extends Component {
   static propTypes = {
-    samplePropName: PropTypes.bool, // eslint-disable-line react/no-unused-prop-types
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -106,6 +108,7 @@ export default class SettingsSubscriptionPlan extends Component {
   render () {
     renderLog(__filename);
     const { organization, organizationWeVoteId, voter, voterIsSignedIn, mobileMode } = this.state;
+    const { classes } = this.props;
     if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
     }
@@ -116,6 +119,16 @@ export default class SettingsSubscriptionPlan extends Component {
     if (organization && organization.we_vote_custom_domain) {
       // console.log('SettingsSubscriptionPlan, Custom Domain: ', organization.we_vote_custom_domain);
     }
+
+    function createData (date, period, amount, actions) {
+      return { date, period, amount, actions };
+    }
+
+    const rows = [
+      createData('12/10/2012', '12/10/2012 - 12/12/2012', '$1200', <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>),
+      createData('12/10/2012', '12/10/2012 - 12/12/2012', '$1200', <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>),
+      createData('12/10/2012', '12/10/2012 - 12/12/2012', '$1200', <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>),
+    ];
 
     let subscriptionPageHtmlContents = (<span />);
 
@@ -138,13 +151,48 @@ export default class SettingsSubscriptionPlan extends Component {
           <CardMain className="card-main">
             <h1 className="h3">Subscription Plan</h1>
             <Seperator />
-            <SectionCard>
+            <SectionCard className="u-position-relative">
               <SectionTitle>
                 Payment
               </SectionTitle>
+              <EditIcon>
+                <IconButton size="medium" classes={{ root: classes.iconButton }}>
+                  <Edit />
+                </IconButton>
+              </EditIcon>
               <SectionParagraph>
                 Card ending in: <strong>0223</strong> | Expires: <strong>02/23</strong> | Next bill: <strong>June 21, 2019</strong>
               </SectionParagraph>
+              <SectionParagraph>
+                Billing contact: <strong>barrack-obama@gmail.com</strong>
+              </SectionParagraph>
+            </SectionCard>
+            <SectionCard>
+              <SectionTitle>
+                Invoices
+              </SectionTitle>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell classes={{ root: classes.tableHeadLeft }}>Date</TableCell>
+                    <TableCell classes={{ root: classes.tableHead }}>Period</TableCell>
+                    <TableCell classes={{ root: classes.tableHead }}>Amount</TableCell>
+                    <TableCell classes={{ root: classes.tableHeadRight }} align="right">Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.map(row => (
+                    <TableRow key={row.date}>
+                      <TableCell classes={{ root: classes.tableCellLeft }} component="th" scope="row">
+                        {row.date}
+                      </TableCell>
+                      <TableCell classes={{ root: classes.tableCell }}>{row.period}</TableCell>
+                      <TableCell classes={{ root: classes.tableCell }}>{row.amount}</TableCell>
+                      <TableCell classes={{ root: classes.tableCellRight }} align="right">{row.actions}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </SectionCard>
           </CardMain>
         </Card>
@@ -160,8 +208,74 @@ export default class SettingsSubscriptionPlan extends Component {
   }
 }
 
+const styles = () => ({
+  iconButton: {
+    padding: 8,
+  },
+  tableCell: {
+    '@media (min-width: 769px) and (max-width: 937px), (max-width: 632px)': {
+      padding: '12px 14px 12px 8px !important',
+    },
+    '@media (min-width: 937px), (max-width: 768px) and (min-width: 633px)': {
+      padding: '12px 20px 12px 12px !important',
+    },
+  },
+  tableCellLeft: {
+    '@media (min-width: 769px) and (max-width: 937px), (max-width: 632px)': {
+      padding: '12px 14px 12px 0px !important',
+    },
+    '@media (min-width: 937px), (max-width: 768px) and (min-width: 633px)': {
+      padding: '12px 20px 12px 0 !important',
+    },
+  },
+  tableCellRight: {
+    '@media (min-width: 769px) and (max-width: 937px), (max-width: 632px)': {
+      padding: '12px 0 12px 8px !important',
+    },
+    '@media (min-width: 937px), (max-width: 768px) and (min-width: 633px)': {
+      padding: '12px 0 12px 12px !important',
+    },
+  },
+  tableHead: {
+    fontWeight: 'bold',
+    fontSize: '14px',
+    color: '#000',
+    '@media (min-width: 769px) and (max-width: 937px), (max-width: 632px)': {
+      padding: '12px 14px 12px 8px !important',
+    },
+    '@media (min-width: 937px), (max-width: 768px) and (min-width: 633px)': {
+      padding: '12px 20px 12px 12px !important',
+    },
+  },
+  tableHeadLeft: {
+    fontWeight: 'bold',
+    fontSize: '14px',
+    color: '#000',
+    '@media (min-width: 769px) and (max-width: 937px), (max-width: 632px)': {
+      padding: '12px 14px 12px 0px !important',
+    },
+    '@media (min-width: 937px), (max-width: 768px) and (min-width: 633px)': {
+      padding: '12px 20px 12px 0 !important',
+    },
+  },
+  tableHeadRight: {
+    fontWeight: 'bold',
+    fontSize: '14px',
+    color: '#000',
+    '@media (min-width: 769px) and (max-width: 937px), (max-width: 632px)': {
+      padding: '12px 0 12px 8px !important',
+    },
+    '@media (min-width: 937px), (max-width: 768px) and (min-width: 633px)': {
+      padding: '12px 0 12px 12px !important',
+    },
+  },
+  viewInvoiceButton: {
+    fontWeight: 'bold',
+    fontSize: 12,
+  },
+});
+
 const Wrapper = styled.div`
-  padding-top: 32px;
 `;
 
 const Card = styled.div`
@@ -185,6 +299,7 @@ const SectionCard = styled.div`
   width: 100%;
   border-radius: 3px;
   padding: 16px;
+  margin-bottom: 16px;
   @media (min-width: 569px) {
     border: 1px solid #ddd;
     box-shadow: none;
@@ -194,12 +309,23 @@ const SectionCard = styled.div`
 const SectionTitle = styled.h3`
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 8px;
+  margin: 0;
+  margin-bottom: 16px;
+  width: fit-content;
+`;
+
+const EditIcon = styled.div`
+  position: absolute;
+  right: 8px;
+  top: 8px;
 `;
 
 const SectionParagraph = styled.p`
   font-size: 14px;
+  margin-bottom: 4px;
   @media (min-width: 569px) {
     font-size: 14px;
   } 
 `;
+
+export default withStyles(styles)(SettingsSubscriptionPlan);
