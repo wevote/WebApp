@@ -176,6 +176,7 @@ class SettingsSubscriptionPlan extends Component {
                 Billing contact: <strong>barrack-obama@gmail.com</strong>
               </SectionParagraph>
             </SectionCard>
+            <Seperator />
             <SectionCard>
               <SectionTitle>
                 Invoices
@@ -414,14 +415,14 @@ const Seperator = styled.div`
   height: 1px;
   background: #ddd;
   width: 100%;
-  margin: 16px 0;
+  margin: 24px 0;
 `;
 
 const SectionCard = styled.div`
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
   width: 100%;
   border-radius: 3px;
-  padding: 16px;
+  padding: 24px;
   margin-bottom: 16px;
   @media (min-width: 569px) {
     border: 1px solid #ddd;
