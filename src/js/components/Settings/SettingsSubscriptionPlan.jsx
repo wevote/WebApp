@@ -144,14 +144,127 @@ class SettingsSubscriptionPlan extends Component {
     if (mobileMode) {
       subscriptionPageHtmlContents = (
         <MobileWrapper className="d-block d-sm-none">
-          <SectionCard>
+          <SectionCardMobile className="u-position-relative">
             <SectionTitle>
               Payment
             </SectionTitle>
-              <SectionParagraph>
-                Card ending in: <strong>0223</strong> • Expires: <strong>02/23</strong> • Next bill: <strong>June 21, 2019</strong>
-              </SectionParagraph>
-          </SectionCard>
+            <EditIcon>
+              <IconButton size="medium" classes={{ root: classes.iconButton }}>
+                <Edit />
+              </IconButton>
+            </EditIcon>
+            <SectionParagraph>
+              <InvoiceFlexContainer>
+                <FlexOne>Card ending in</FlexOne>
+                <FlexTwo>0223</FlexTwo>
+              </InvoiceFlexContainer>
+              <InvoiceFlexContainer>
+                <FlexOne>Expires</FlexOne>
+                <FlexTwo>02/23</FlexTwo>
+              </InvoiceFlexContainer>
+              <InvoiceFlexContainer>
+                <FlexOne>Next bill</FlexOne>
+                <FlexTwo>June 21, 2019</FlexTwo>
+              </InvoiceFlexContainer>
+              <InvoiceFlexContainer>
+                <FlexOne>Billing contact</FlexOne>
+                <FlexTwo>barrack-obama@gmail.com</FlexTwo>
+              </InvoiceFlexContainer>
+            </SectionParagraph>
+          </SectionCardMobile>
+          <Seperator />
+          <SectionCardMobile>
+            <SectionTitle>
+              Invoices
+            </SectionTitle>
+            {completedInvoices.map(row => (
+              <SectionCard>
+                <SectionParagraph>
+                  <InvoiceFlexContainer>
+                    <FlexOne>Date</FlexOne>
+                    <FlexTwo>{row.date}</FlexTwo>
+                  </InvoiceFlexContainer>
+                  <InvoiceFlexContainer>
+                    <FlexOne>Period</FlexOne>
+                    <FlexTwo>{row.period}</FlexTwo>
+                  </InvoiceFlexContainer>
+                  <InvoiceFlexContainer>
+                    <FlexOne>Amount</FlexOne>
+                    <FlexTwo>{row.amount}</FlexTwo>
+                  </InvoiceFlexContainer>
+                </SectionParagraph>
+                <Button color="primary" size="small" classes={{ root: classes.viewInvoiceButton }}>
+                  View Invoice
+                </Button>
+              </SectionCard>
+            ))}
+            <Button size="small" classes={{ root: classes.showMoreButton }}>
+              Show More
+              <ArrowBackIos classes={{ root: classes.showMoreIcon }} />
+            </Button>
+          </SectionCardMobile>
+          <Seperator />
+          <SectionCardMobile>
+            <SectionTitle>
+              Next Invoice
+            </SectionTitle>
+            <Table classes={{ root: classes.table }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell classes={{ root: classes.tableHeadLeft }}>Date</TableCell>
+                  <TableCell classes={{ root: classes.tableHead }}>Period</TableCell>
+                  <TableCell classes={{ root: classes.tableHead }}>Amount</TableCell>
+                  <TableCell classes={{ root: classes.tableHeadRight }} align="right">Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {upcomingInvoices.map(row => (
+                  <TableRow key={row.date}>
+                    <TableCell classes={{ root: classes.tableCellLeft }} component="th" scope="row">
+                      {row.date}
+                    </TableCell>
+                    <TableCell classes={{ root: classes.tableCell }}>{row.period}</TableCell>
+                    <TableCell classes={{ root: classes.tableCell }}>{row.amount}</TableCell>
+                    <TableCell classes={{ root: classes.tableCellRight }} align="right">{row.actions}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </SectionCardMobile>
+          <Seperator />
+          <SectionCardMobile className="u-position-relative">
+            <SectionTitle>
+              My Plan
+            </SectionTitle>
+            <h4 className="h4"><strong>Premium Plan • Monthly</strong></h4>
+            <Button variant="outlined" color="primary" size="small" classes={{ root: classes.changeCancelPlanButton }}>
+              Change Plan
+            </Button>
+          </SectionCardMobile>
+          <Seperator />
+          <SectionCardMobile className="u-position-relative">
+            <SectionTitle>
+              Cancel Plan
+            </SectionTitle>
+
+            <div className="row m-0">
+              <div className="col col-8 p-0">
+                <SectionParagraph>
+                  Upon cancelling, you and your team will lose access to customer data in FullStory. You can switch to our Free Plan to continue using FullStory at no cost.
+                  <a
+                    href="https://google.com"
+                  >
+                    {learnMoreLink}
+                  </a>
+                </SectionParagraph>
+              </div>
+              <StaticColumn className="col col-4 p-0">
+                <Button variant="outlined" color="primary" size="small" classes={{ root: classes.changeCancelPlanButton }}>
+                  Cancel Plan
+                </Button>
+              </StaticColumn>
+            </div>
+          </SectionCardMobile>
         </MobileWrapper>
       );
     } else {
@@ -362,19 +475,32 @@ const styles = () => ({
   },
   checkIcon: {
     position: 'relative',
-    left: '8px',
+    left: '6px',
     bottom: 1,
     fontSize: 20,
   },
   viewInvoiceButton: {
     fontWeight: 'bold',
     fontSize: 12,
+    '@media (max-width: 575px)': {
+      width: 'calc(100% + 49px)',
+      position: 'relative',
+      left: '-25px',
+      bottom: '-17px',
+      border: 'none',
+      borderTop: '1px solid #ddd',
+      borderRadius: 3,
+      borderTopRightRadius: 0,
+      borderTopLeftRadius: 0,
+      boxShadow: 'none',
+      padding: '8px',
+    },
   },
   showMoreButton: {
-    width: 'calc(100% + 33px)',
+    width: 'calc(100% + 49px)',
     position: 'relative',
-    left: '-17px',
-    bottom: '-17px',
+    left: '-25px',
+    bottom: '-25px',
     border: 'none',
     borderTop: '1px solid #ddd',
     borderRadius: 3,
@@ -384,6 +510,7 @@ const styles = () => ({
     fontWeight: 'bold',
     textTransform: 'none',
     boxShadow: 'none',
+    padding: '8px',
   },
   showMoreIcon: {
     transform: 'rotate(180deg)',
@@ -419,15 +546,22 @@ const Seperator = styled.div`
 `;
 
 const SectionCard = styled.div`
+  width: 100%;
+  border-radius: 3px;
+  border: 1px solid #ddd;
+  box-shadow: none;
+  margin-bottom: 16px;
+  padding: 16px 24px;
+  @media (min-width: 576px) {
+    padding: 24px;
+  }
+`;
+
+const SectionCardMobile = styled.div`
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
   width: 100%;
   border-radius: 3px;
   padding: 24px;
-  margin-bottom: 16px;
-  @media (min-width: 569px) {
-    border: 1px solid #ddd;
-    box-shadow: none;
-  }
 `;
 
 const SectionTitle = styled.h3`
@@ -457,4 +591,20 @@ const StaticColumn = styled.div`
   position: static !important;
 `;
 
+const InvoiceFlexContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 4px;
+`;
+
+const FlexOne = styled.div`
+  font-weight: 500;
+  color: #444;
+`;
+const FlexTwo = styled.div`
+  font-weight: 500;
+  color: black;
+`;
 export default withStyles(styles)(SettingsSubscriptionPlan);
