@@ -208,28 +208,27 @@ class SettingsSubscriptionPlan extends Component {
             <SectionTitle>
               Next Invoice
             </SectionTitle>
-            <Table classes={{ root: classes.table }}>
-              <TableHead>
-                <TableRow>
-                  <TableCell classes={{ root: classes.tableHeadLeft }}>Date</TableCell>
-                  <TableCell classes={{ root: classes.tableHead }}>Period</TableCell>
-                  <TableCell classes={{ root: classes.tableHead }}>Amount</TableCell>
-                  <TableCell classes={{ root: classes.tableHeadRight }} align="right">Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {upcomingInvoices.map(row => (
-                  <TableRow key={row.date}>
-                    <TableCell classes={{ root: classes.tableCellLeft }} component="th" scope="row">
-                      {row.date}
-                    </TableCell>
-                    <TableCell classes={{ root: classes.tableCell }}>{row.period}</TableCell>
-                    <TableCell classes={{ root: classes.tableCell }}>{row.amount}</TableCell>
-                    <TableCell classes={{ root: classes.tableCellRight }} align="right">{row.actions}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            {upcomingInvoices.map(row => (
+              <SectionCard>
+                <SectionParagraph>
+                  <InvoiceFlexContainer>
+                    <FlexOne>Date</FlexOne>
+                    <FlexTwo>{row.date}</FlexTwo>
+                  </InvoiceFlexContainer>
+                  <InvoiceFlexContainer>
+                    <FlexOne>Period</FlexOne>
+                    <FlexTwo>{row.period}</FlexTwo>
+                  </InvoiceFlexContainer>
+                  <InvoiceFlexContainer>
+                    <FlexOne>Amount</FlexOne>
+                    <FlexTwo>{row.amount}</FlexTwo>
+                  </InvoiceFlexContainer>
+                </SectionParagraph>
+                <Button color="primary" size="small" classes={{ root: classes.viewInvoiceButton }}>
+                  View Invoice
+                </Button>
+              </SectionCard>
+            ))}
           </SectionCardMobile>
           <Seperator />
           <SectionCardMobile className="u-position-relative">
@@ -246,24 +245,17 @@ class SettingsSubscriptionPlan extends Component {
             <SectionTitle>
               Cancel Plan
             </SectionTitle>
-
-            <div className="row m-0">
-              <div className="col col-8 p-0">
-                <SectionParagraph>
-                  Upon cancelling, you and your team will lose access to customer data in FullStory. You can switch to our Free Plan to continue using FullStory at no cost.
-                  <a
-                    href="https://google.com"
-                  >
-                    {learnMoreLink}
-                  </a>
-                </SectionParagraph>
-              </div>
-              <StaticColumn className="col col-4 p-0">
-                <Button variant="outlined" color="primary" size="small" classes={{ root: classes.changeCancelPlanButton }}>
-                  Cancel Plan
-                </Button>
-              </StaticColumn>
-            </div>
+            <SectionParagraph>
+              Upon cancelling, you and your team will lose access to customer data in FullStory. You can switch to our Free Plan to continue using FullStory at no cost.
+              <a
+                href="https://google.com"
+              >
+                {learnMoreLink}
+              </a>
+            </SectionParagraph>
+            <Button variant="outlined" color="primary" size="small" classes={{ root: classes.changeCancelPlanButton }}>
+              Cancel Plan
+            </Button>
           </SectionCardMobile>
         </MobileWrapper>
       );
@@ -483,10 +475,10 @@ const styles = () => ({
     fontWeight: 'bold',
     fontSize: 12,
     '@media (max-width: 575px)': {
-      width: 'calc(100% + 49px)',
+      width: 'calc(100% + 48px)',
       position: 'relative',
-      left: '-25px',
-      bottom: '-17px',
+      left: '-24px',
+      bottom: '-16px',
       border: 'none',
       borderTop: '1px solid #ddd',
       borderRadius: 3,
@@ -497,10 +489,10 @@ const styles = () => ({
     },
   },
   showMoreButton: {
-    width: 'calc(100% + 49px)',
+    width: 'calc(100% + 48px)',
     position: 'relative',
-    left: '-25px',
-    bottom: '-25px',
+    left: '-24px',
+    bottom: '-24px',
     border: 'none',
     borderTop: '1px solid #ddd',
     borderRadius: 3,
@@ -511,6 +503,11 @@ const styles = () => ({
     textTransform: 'none',
     boxShadow: 'none',
     padding: '8px',
+    '@media (max-width: 575px)': {
+      width: 'calc(100% + 32px)',
+      left: '-16px',
+      bottom: '-16px',
+    },
   },
   showMoreIcon: {
     transform: 'rotate(180deg)',
@@ -518,11 +515,18 @@ const styles = () => ({
     fontSize: 14,
   },
   changeCancelPlanButton: {
-    position: 'absolute',
-    top: 16,
-    right: 16,
+    position: 'inherit',
+    width: '100%',
     fontWeight: 'bold',
     padding: '4px 28px',
+    margin: 0,
+    marginTop: '12px',
+    '@media (min-width: 576px)': {
+      position: 'absolute',
+      top: 16,
+      right: 16,
+      fontWeight: 'bold',
+    },
   },
 });
 
@@ -561,7 +565,7 @@ const SectionCardMobile = styled.div`
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
   width: 100%;
   border-radius: 3px;
-  padding: 24px;
+  padding: 16px;
 `;
 
 const SectionTitle = styled.h3`
