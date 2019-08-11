@@ -3,6 +3,8 @@ import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Edit from '@material-ui/icons/Edit';
+import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
+import CheckCircle from '@material-ui/icons/CheckCircle';
 import { IconButton, withStyles, Table, TableBody, TableCell, TableHead, TableRow, Button } from '@material-ui/core';
 import FacebookStore from '../../stores/FacebookStore';
 import LoadingWheel from '../LoadingWheel';
@@ -124,13 +126,20 @@ class SettingsSubscriptionPlan extends Component {
       return { date, period, amount, actions };
     }
 
-    const rows = [
-      createData('12/10/2012', '12/10/2012 - 12/12/2012', '$1200', <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>),
-      createData('12/10/2012', '12/10/2012 - 12/12/2012', '$1200', <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>),
+    // Simulated invoices: these will come from the API
+    const completedInvoices = [
+      createData('2/10/2019', '2/10/2019 - 4/10/2019', '$1200', <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>),
+      createData('4/10/2019', '4/10/2019 - 6/10/2019', '$1200', <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>),
+      createData('6/10/2019', '6/10/2019 - 8/10/2019', '$1200', <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>),
+    ];
+
+    // Simulated invoices: these will come from the API
+    const upcomingInvoices = [
       createData('12/10/2012', '12/10/2012 - 12/12/2012', '$1200', <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>),
     ];
 
     let subscriptionPageHtmlContents = (<span />);
+    const learnMoreLink = ' Learn more';
 
     if (mobileMode) {
       subscriptionPageHtmlContents = (
@@ -140,7 +149,7 @@ class SettingsSubscriptionPlan extends Component {
               Payment
             </SectionTitle>
               <SectionParagraph>
-                Card ending in: <strong>0223</strong> | Expires: <strong>02/23</strong> | Next bill: <strong>June 21, 2019</strong>
+                Card ending in: <strong>0223</strong> • Expires: <strong>02/23</strong> • Next bill: <strong>June 21, 2019</strong>
               </SectionParagraph>
           </SectionCard>
         </MobileWrapper>
@@ -161,7 +170,7 @@ class SettingsSubscriptionPlan extends Component {
                 </IconButton>
               </EditIcon>
               <SectionParagraph>
-                Card ending in: <strong>0223</strong> | Expires: <strong>02/23</strong> | Next bill: <strong>June 21, 2019</strong>
+                Card ending in: <strong>0223</strong> • Expires: <strong>02/23</strong> • Next bill: <strong>June 21, 2019</strong>
               </SectionParagraph>
               <SectionParagraph>
                 Billing contact: <strong>barrack-obama@gmail.com</strong>
@@ -171,7 +180,41 @@ class SettingsSubscriptionPlan extends Component {
               <SectionTitle>
                 Invoices
               </SectionTitle>
-              <Table>
+              <Table classes={{ root: classes.table }}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell classes={{ root: classes.tableCellCheckmark }} />
+                    <TableCell classes={{ root: classes.tableHead }}>Date</TableCell>
+                    <TableCell classes={{ root: classes.tableHead }}>Period</TableCell>
+                    <TableCell classes={{ root: classes.tableHead }}>Amount</TableCell>
+                    <TableCell classes={{ root: classes.tableHeadRight }} align="right">Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {completedInvoices.map(row => (
+                    <TableRow key={row.date}>
+                      <TableCell classes={{ root: classes.tableCellCheckmark }} component="th" scope="row">
+                        <CheckCircle classes={{ root: classes.checkIcon }} />
+                      </TableCell>
+                      <TableCell classes={{ root: classes.tableCell }}>{row.date}</TableCell>
+                      <TableCell classes={{ root: classes.tableCell }}>{row.period}</TableCell>
+                      <TableCell classes={{ root: classes.tableCell }}>{row.amount}</TableCell>
+                      <TableCell classes={{ root: classes.tableCellRight }} align="right">{row.actions}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <Button size="small" classes={{ root: classes.showMoreButton }}>
+                Show More
+                <ArrowBackIos classes={{ root: classes.showMoreIcon }} />
+              </Button>
+            </SectionCard>
+            <Seperator />
+            <SectionCard>
+              <SectionTitle>
+                Next Invoice
+              </SectionTitle>
+              <Table classes={{ root: classes.table }}>
                 <TableHead>
                   <TableRow>
                     <TableCell classes={{ root: classes.tableHeadLeft }}>Date</TableCell>
@@ -181,7 +224,7 @@ class SettingsSubscriptionPlan extends Component {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map(row => (
+                  {upcomingInvoices.map(row => (
                     <TableRow key={row.date}>
                       <TableCell classes={{ root: classes.tableCellLeft }} component="th" scope="row">
                         {row.date}
@@ -193,6 +236,41 @@ class SettingsSubscriptionPlan extends Component {
                   ))}
                 </TableBody>
               </Table>
+            </SectionCard>
+            <Seperator />
+            <SectionCard className="u-position-relative">
+              <SectionTitle>
+                My Plan
+              </SectionTitle>
+              <h4 className="h4"><strong>Premium Plan • Monthly</strong></h4>
+              <Button variant="outlined" color="primary" size="small" classes={{ root: classes.changeCancelPlanButton }}>
+                Change Plan
+              </Button>
+            </SectionCard>
+            <Seperator />
+            <SectionCard className="u-position-relative">
+              <SectionTitle>
+                Cancel Plan
+              </SectionTitle>
+
+              <div className="row m-0">
+                <div className="col col-8 p-0">
+                  <SectionParagraph>
+                    Upon cancelling, you and your team will lose access to customer data in FullStory. You can switch to our Free Plan to continue using FullStory at no cost.
+                    <a
+                      href="https://google.com"
+                    >
+                      {learnMoreLink}
+                    </a>
+                  </SectionParagraph>
+                </div>
+                <StaticColumn className="col col-4 p-0">
+                  <Button variant="outlined" color="primary" size="small" classes={{ root: classes.changeCancelPlanButton }}>
+                    Cancel Plan
+                  </Button>
+                </StaticColumn>
+              </div>
+
             </SectionCard>
           </CardMain>
         </Card>
@@ -211,6 +289,18 @@ class SettingsSubscriptionPlan extends Component {
 const styles = () => ({
   iconButton: {
     padding: 8,
+  },
+  table: {
+    marginBottom: 8,
+  },
+  tableCellCheckmark: {
+    color: 'rgb(31, 192, 111)',
+    '@media (min-width: 769px) and (max-width: 937px), (max-width: 632px)': {
+      padding: '12px 0 12px 0px !important',
+    },
+    '@media (min-width: 937px), (max-width: 768px) and (min-width: 633px)': {
+      padding: '12px 0 12px 0 !important',
+    },
   },
   tableCell: {
     '@media (min-width: 769px) and (max-width: 937px), (max-width: 632px)': {
@@ -269,9 +359,42 @@ const styles = () => ({
       padding: '12px 0 12px 12px !important',
     },
   },
+  checkIcon: {
+    position: 'relative',
+    left: '8px',
+    bottom: 1,
+    fontSize: 20,
+  },
   viewInvoiceButton: {
     fontWeight: 'bold',
     fontSize: 12,
+  },
+  showMoreButton: {
+    width: 'calc(100% + 33px)',
+    position: 'relative',
+    left: '-17px',
+    bottom: '-17px',
+    border: 'none',
+    borderTop: '1px solid #ddd',
+    borderRadius: 3,
+    borderTopRightRadius: 0,
+    borderTopLeftRadius: 0,
+    color: '#444',
+    fontWeight: 'bold',
+    textTransform: 'none',
+    boxShadow: 'none',
+  },
+  showMoreIcon: {
+    transform: 'rotate(180deg)',
+    color: '#444',
+    fontSize: 14,
+  },
+  changeCancelPlanButton: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    fontWeight: 'bold',
+    padding: '4px 28px',
   },
 });
 
@@ -312,6 +435,7 @@ const SectionTitle = styled.h3`
   margin: 0;
   margin-bottom: 16px;
   width: fit-content;
+  color: #333;
 `;
 
 const EditIcon = styled.div`
@@ -326,6 +450,10 @@ const SectionParagraph = styled.p`
   @media (min-width: 569px) {
     font-size: 14px;
   } 
+`;
+
+const StaticColumn = styled.div`
+  position: static !important;
 `;
 
 export default withStyles(styles)(SettingsSubscriptionPlan);
