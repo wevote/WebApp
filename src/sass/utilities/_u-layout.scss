@@ -7,26 +7,32 @@
 // -------------------------------------------
 
 .u-show-mobile {
-  @include breakpoints(xsmall-bootstrap) {
+  @include breakpoints(576px) {
     display: none !important;
   }
 }
 
 .u-show-desktop-tablet {
   display: none !important;
-  @include breakpoints(xsmall-bootstrap) {
+  @include breakpoints(576px) {
     display: inline !important;
   }
 }
 
+.u-show-tablet {
+  @include breakpoints(0 769px) {
+    display: none !important;
+  }
+}
+
 .u-show-mobile-tablet {
-  @include breakpoints(large) {
+  @include breakpoints(960px) {
     display: none !important;
   }
 }
 
 .u-show-desktop {
-  @include breakpoints(0 large) {
+  @include breakpoints(0 960px) {
     display: none !important;
   }
 }

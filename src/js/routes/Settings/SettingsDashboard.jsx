@@ -222,11 +222,11 @@ export default class SettingsDashboard extends Component {
         {/* Desktop left navigation + Settings content.
           WebApp only, since the dashboard doesn't go well with the HamburgerMenu on iPad */}
         { isWebApp() && (
-        <div className="d-none d-sm-block">
+        <div className="d-none d-md-block">
           <div className="container-fluid">
             <div className="row">
               {/* Desktop mode left navigation */}
-              <div className="col-4 sidebar-menu">
+              <div className="col-md-4 sidebar-menu">
                 <SettingsPersonalSideBar
                   editMode={this.state.editMode}
                   isSignedIn={this.state.voter.is_signed_in}
@@ -256,7 +256,7 @@ export default class SettingsDashboard extends Component {
                 </div>
               </div>
               {/* Desktop mode content */}
-              <div className="col-8">
+              <div className="col-md-8">
                 {settingsComponentToDisplay}
               </div>
             </div>
@@ -266,7 +266,7 @@ export default class SettingsDashboard extends Component {
 
         {/* Mobile Settings content */}
         { isWebApp() ? (
-          <div className="d-block d-sm-none">
+          <div className="d-block d-md-none">
             {/* Mobile mode content */}
             <div className="col-12">
               {settingsComponentToDisplay}
