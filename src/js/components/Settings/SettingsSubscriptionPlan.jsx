@@ -526,6 +526,7 @@ const styles = () => ({
       top: 16,
       right: 16,
       fontWeight: 'bold',
+      width: 'fit-content',
     },
   },
 });
@@ -559,6 +560,8 @@ const SectionCard = styled.div`
   @media (min-width: 576px) {
     padding: 24px;
   }
+  max-width: 100%;
+  overflow: hidden;
 `;
 
 const SectionCardMobile = styled.div`
@@ -566,6 +569,8 @@ const SectionCardMobile = styled.div`
   width: 100%;
   border-radius: 3px;
   padding: 16px;
+  max-width: 100%;
+  overflow: hidden;
 `;
 
 const SectionTitle = styled.h3`
