@@ -102,12 +102,12 @@ describe('Basic cross-platform We Vote test',  () => {
 
         // //////////////////////
     // Visit the candidate page
-    await simpleClick('officeItemCompressedCandidateInfo-wv02cand53902'); // Clicks the candidate
+    await simpleClick('officeItemCompressedCandidateInfo-wv02cand53902'); // Clicks the candidate Maria Cantwell
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // await simpleClick('//*[@id="itemActionBarSupportButton-desktopVersion-wv02cand53902"]'); // To choose the candidate
-    // await simpleClick('itemActionBarSupportButton-desktopVersion-wv02cand53902'); // To choose the candidate
+    // await simpleClick('//*[@id="itemActionBarSupportButton-desktopVersion-wv02cand53902"]'); // To choose the candidate Maria Cantwell
+    // await simpleClick('itemActionBarSupportButton-desktopVersion-wv02cand53902'); // To choose the candidate Maria Cantwell
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    // const valuesButton =   await $('signInHeaderBar'); // To choose the candidate
+    // const valuesButton =   await $('signInHeaderBar'); // To choose the candidate Maria Cantwell
     // await valuesButton.click();
     // await browser.pause(PAUSE_DURATION_MICROSECONDS);
  
