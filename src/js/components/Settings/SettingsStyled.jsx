@@ -2,6 +2,9 @@ import styled from 'styled-components';
 
 const ImageDescription = styled.div`
   display: flex;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    flex-flow: column-reverse;
+  }
 `;
 
 const PreviewImage = styled.img`
@@ -10,6 +13,9 @@ const PreviewImage = styled.img`
 
 const DescriptionText = styled.p`
   margin: .5em auto;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    min-width: 180px;
+  }
 `;
 
 const SharingRow = styled.div`
@@ -25,6 +31,9 @@ const SharingColumn = styled.div`
   flex-flow: column;
   ${({ alignRight }) => (alignRight ? 'align-items: flex-end;' : '')}
   padding-right: ${({ alignRight }) => (alignRight ? '0' : '8px')};
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    justify-content: center;
+  }
 `;
 
 const GiantTextInput = styled.input`
@@ -33,6 +42,10 @@ const GiantTextInput = styled.input`
   width: 100%;
   border-radius: 4px;
   border: 1px solid #ccc;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    padding: 8px 16px;
+    font-size: 16px;
+  }
 `;
 
 const HiddenInput = styled.input`

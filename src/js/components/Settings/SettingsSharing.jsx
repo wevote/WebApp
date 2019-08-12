@@ -68,6 +68,14 @@ class SettingsSharing extends Component {
       return true;
     }
 
+    if (this.state.shareImageSource !== prevState.shareImageSource) {
+      return true;
+    }
+
+    if (this.state.faviconImageSource !== prevState.faviconImageSource) {
+      return true;
+    }
+
     const priorOrganization = this.state.organization;
     const nextOrganization = prevState.organization;
 
@@ -134,16 +142,19 @@ class SettingsSharing extends Component {
   }
 
   handleUploadHeaderLogo = () => {
+    this.fileSelector.value = null;
     this.fileSelector.click();
     this.setState({ uploadImageType: 'headerLogo' });
   }
 
   handleUploadFavicon = () => {
+    this.fileSelector.value = null;
     this.fileSelector.click();
     this.setState({ uploadImageType: 'favicon' });
   }
 
   handleUploadShareImage = () => {
+    this.fileSelector.value = null;
     this.fileSelector.click();
     this.setState({ uploadImageType: 'shareImage' });
   }
@@ -211,11 +222,24 @@ class SettingsSharing extends Component {
               <SharingColumn alignRight>
                 <Button
                   color="primary"
+                  classes={{ root: classes.uploadButton }}
                   variant="contained"
                   onClick={this.handleUploadHeaderLogo}
                 >
                   Upload
                 </Button>
+                {
+                  headerLogoImageSource !== null && (
+                    <Button
+                      classes={{ root: classes.uploadButton }}
+                      color="primary"
+                      variant="outlined"
+                      onClick={() => this.setState({ headerLogoImageSource: null })}
+                    >
+                      Remove
+                    </Button>
+                  )
+                }
               </SharingColumn>
             </SharingRow>
             <SharingRow>
@@ -231,11 +255,33 @@ class SettingsSharing extends Component {
               </SharingColumn>
               <SharingColumn alignRight>
                 <PremiumableButton
+                  classes={{ root: voterHasFreeAccount ? '' : classes.uploadButton }}
                   premium={!voterHasFreeAccount ? 1 : 0}
                   onClick={!voterHasFreeAccount ? this.handleUploadFavicon : () => this.openPaidAccountUpgradeModal('professional')}
                 >
-                  {voterHasFreeAccount ? 'Upgrade to Professional' : 'Upload'}
+                  {voterHasFreeAccount ? (
+                    <React.Fragment>
+                      <DesktopView>
+                        Upgrade to Premium
+                      </DesktopView>
+                      <MobileTabletView>
+                        Upgrade
+                      </MobileTabletView>
+                    </React.Fragment>
+                  ) : 'Upload'}
                 </PremiumableButton>
+                {
+                  faviconImageSource !== null && (
+                    <Button
+                      classes={{ root: classes.uploadButton }}
+                      color="primary"
+                      variant="outlined"
+                      onClick={() => this.setState({ faviconImageSource: null })}
+                    >
+                      Remove
+                    </Button>
+                  )
+                }
               </SharingColumn>
             </SharingRow>
             <SharingRow>
@@ -251,11 +297,33 @@ class SettingsSharing extends Component {
               </SharingColumn>
               <SharingColumn alignRight>
                 <PremiumableButton
+                  classes={{ root: voterHasFreeAccount ? '' : classes.uploadButton }}
                   premium={!voterHasFreeAccount ? 1 : 0}
                   onClick={!voterHasFreeAccount ? this.handleUploadShareImage : () => this.openPaidAccountUpgradeModal('professional')}
                 >
-                  {voterHasFreeAccount ? 'Upgrade to Professional' : 'Upload'}
+                  {voterHasFreeAccount ? (
+                    <React.Fragment>
+                      <DesktopView>
+                        Upgrade to Premium
+                      </DesktopView>
+                      <MobileTabletView>
+                        Upgrade
+                      </MobileTabletView>
+                    </React.Fragment>
+                  )  : 'Upload'}
                 </PremiumableButton>
+                {
+                  shareImageSource !== null && (
+                    <Button
+                      classes={{ root: classes.uploadButton }}
+                      color="primary"
+                      variant="outlined"
+                      onClick={() => this.setState({ shareImageSource: null })}
+                    >
+                      Remove
+                    </Button>
+                  )
+                }
               </SharingColumn>
             </SharingRow>
             <SharingRow>
@@ -274,10 +342,20 @@ class SettingsSharing extends Component {
                     Cancel
                   </Button>
                   <PremiumableButton
+                    classes={{ root: voterHasFreeAccount ? '' : classes.uploadButton }}
                     premium={!voterHasFreeAccount ? 1 : 0}
                     onClick={!voterHasFreeAccount ? this.handleSaveDescription : () => this.openPaidAccountUpgradeModal('professional')}
                   >
-                    {voterHasFreeAccount ? 'Upgrade to Professional' : 'Upload'}
+                    {voterHasFreeAccount ? (
+                      <React.Fragment>
+                        <DesktopView>
+                        Upgrade to Premium
+                        </DesktopView>
+                        <MobileTabletView>
+                        Upgrade
+                        </MobileTabletView>
+                      </React.Fragment>
+                    ) : 'Save'}
                   </PremiumableButton>
                 </Actions>
               </SharingColumn>
@@ -290,9 +368,18 @@ class SettingsSharing extends Component {
   }
 }
 
-const styles = ({
+const styles = theme => ({
   button: {
     marginRight: 8,
+  },
+  uogradeButton: {
+    [theme.breakpoints.down('md')]: {
+      width: 97,
+    },
+  },
+  uploadButton: {
+    width: 97,
+    margin: '4px 0',
   },
 });
 
@@ -316,6 +403,20 @@ const Title = styled.h3`
 const SubTitle = styled.h4`
   font-weight: bold;
   margin-top: .5em;
+`;
+
+const DesktopView = styled.div`
+  display: inherit;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    display: none;
+  }
+`;
+
+const MobileTabletView = styled.div`
+  display: inherit;
+  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+    display: none;
+  }
 `;
 
 export default withStyles(styles)(SettingsSharing);

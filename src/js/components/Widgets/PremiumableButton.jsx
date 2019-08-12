@@ -27,7 +27,7 @@ class PremiumableButton extends PureComponent {
           (
             <Button
               {...this.props}
-              classes={{ root: classes.goldButton }}
+              classes={{ root: classes.containedSecondary }}
               variant="contained"
             >
               {children}
@@ -40,11 +40,12 @@ class PremiumableButton extends PureComponent {
 }
 
 const styles = ({
-  goldButton: {
+  containedSecondary: {
     background: 'linear-gradient(70deg, rgba(219,179,86,1) 14%, rgba(162,124,33,1) 94%)',
     color: 'white',
     whiteSpace: 'nowrap',
   },
+  root: {},
 });
 
 export default withStyles(styles)(PremiumableButton);
