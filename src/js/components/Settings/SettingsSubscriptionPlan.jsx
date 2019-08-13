@@ -172,7 +172,6 @@ class SettingsSubscriptionPlan extends Component {
               </InvoiceFlexContainer>
             </SectionParagraph>
           </SectionCardMobile>
-          <Seperator />
           <SectionCardMobile>
             <SectionTitle>
               Invoices
@@ -203,7 +202,6 @@ class SettingsSubscriptionPlan extends Component {
               <ArrowBackIos classes={{ root: classes.showMoreIcon }} />
             </Button>
           </SectionCardMobile>
-          <Seperator />
           <SectionCardMobile>
             <SectionTitle>
               Next Invoice
@@ -230,7 +228,6 @@ class SettingsSubscriptionPlan extends Component {
               </SectionCard>
             ))}
           </SectionCardMobile>
-          <Seperator />
           <SectionCardMobile className="u-position-relative">
             <SectionTitle>
               My Plan
@@ -240,7 +237,6 @@ class SettingsSubscriptionPlan extends Component {
               Change Plan
             </Button>
           </SectionCardMobile>
-          <Seperator />
           <SectionCardMobile className="u-position-relative">
             <SectionTitle>
               Cancel Plan
@@ -587,6 +583,8 @@ const SectionCardMobile = styled.div`
   padding: 16px;
   max-width: 100%;
   overflow: hidden;
+  background: white;
+  margin-bottom: 16px;
 `;
 
 const SectionTitle = styled.h3`
