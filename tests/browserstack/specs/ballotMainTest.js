@@ -79,28 +79,51 @@ describe('Basic cross-platform We Vote test',  () => {
     // //////////////////////
     // Visit the candidate page
     await simpleClick('officeItemCompressedCandidateInfo-wv02cand53915'); // Clicks the candidate
-    //await simpleClick('valueIconAndText-wv02issue25'); // Clicks on the issue icon
+    await simpleClick('valueIconAndText-wv02issue25'); // Clicks to OPEN the issue icon
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('valueIconAndText-wv02issue25'); // Clicks on the issue icon
-    await simpleClick('valueIconAndText-wv02issue65'); // Clicks on the issue icon
+    await simpleClick('valueIconAndText-wv02issue25'); // Clicks to CLOSE the issue icon
+
+    await simpleClick('valueIconAndText-wv02issue65'); // Clicks to OPEN the issue icon
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('valueIconAndText-wv02issue65'); // Clicks on the issue icon
-    await simpleClick('valueIconAndText-wv02issue4'); // Clicks on the issue icon
+    await simpleClick('valueIconAndText-wv02issue65'); // Clicks to CLOSE the issue icon
+
+    await simpleClick('valueIconAndText-wv02issue4'); // Clicks to OPEN the issue icon
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('valueIconAndText-wv02issue4'); // Clicks on the issue icon
-    await simpleClick('valueIconAndText-wv02issue2'); // Clicks on the issue icon
+    await simpleClick('valueIconAndText-wv02issue4'); // Clicks to CLOSE the issue icon
+
+    await simpleClick('valueIconAndText-wv02issue2'); // Clicks to OPEN the issue icon
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('valueIconAndText-wv02issue2'); // Clicks on the issue icon
-    await simpleClick('valueIconAndText-wv02issue84'); // Clicks on the issue icon
+    await simpleClick('valueIconAndText-wv02issue2'); // Clicks to CLOSE the issue icon
+
+    await simpleClick('valueIconAndText-wv02issue84'); // Clicks to OPEN the issue icon
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('valueIconAndText-wv02issue84'); // Clicks on the issue icon
-    await simpleClick('valueIconAndText-wv02issue66'); // Clicks on the issue icon
+    await simpleClick('valueIconAndText-wv02issue84'); // Clicks to CLOSE the issue icon
+
+    await simpleClick('valueIconAndText-wv02issue66'); // Clicks to OPEN issue icon
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
-    await simpleClick('valueIconAndText-wv02issue66'); // Clicks on the issue icon
+    await simpleClick('valueIconAndText-wv02issue66'); // Clicks to CLOSE the issue icon
+    
+    // //////////////////////
+    // Test out saving comment and then removing comment at the top of the candidate page
+    // await simpleClick('itemActionBarSupportButton-desktopVersion-wv02cand53915');	
+    // await setNewAddress('itemPositionStatementActionBarTextArea', 'This is just a comment that needs to be saved.');	
+    // await simpleClick('itemPositionStatementActionBarSave');	
+    // await simpleClick('itemActionBarOpposeButton-mobileVersion-wv02cand53915');	
+    // await setNewAddress('itemPositionStatementActionBarTextArea', '');	
+    // await simpleClick('itemPositionStatementActionBarSave');	
+    // await scrollThroughPage();	
+    
+    // //////////////////////
+    // Test Following an organization endorsing this candidate
+    // await simpleClick('positionItemFollowToggleFollow-wv02org21454');	
+    // await simpleClick('positionItemFollowToggleFollowDropdown-wv02org21454');	
+    // await simpleClick('positionItemFollowToggleDropdown-wv02org21454');	
+    // await simpleClick('positionItemFollowToggleUnfollow-wv02org21454');
+
     await simpleClick('backToLinkTabHeader'); // Clicks the back Ballot button
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
 
-        // //////////////////////
+    // //////////////////////
     // Visit the candidate page
     await simpleClick('officeItemCompressedCandidateInfo-wv02cand53902'); // Clicks the candidate Maria Cantwell
     await browser.pause(PAUSE_DURATION_MICROSECONDS);
