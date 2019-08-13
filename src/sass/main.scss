@@ -4,6 +4,8 @@
 // 1. Setup
 // ===============================================
 
+@import '~bootstrap/dist/css/bootstrap';
+
 // -------------------------------
 // Base Variables & Mixins
 // -------------------------------
@@ -116,5 +118,3 @@
 // ===============================================
 
 @import 'vendor/react-toggle-style';
-
-@import '~bootstrap/dist/css/bootstrap';
