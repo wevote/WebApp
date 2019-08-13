@@ -80,6 +80,7 @@ class MeasureStickyHeader extends Component {
           <BallotCommentContainer>
             <BallotItemSupportOpposeComment
               ballotItemWeVoteId={measureWeVoteId}
+              externalUniqueId="measureStickyHeader"
               showPositionStatementActionBar={false}
             />
           </BallotCommentContainer>

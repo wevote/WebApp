@@ -60,6 +60,7 @@ class CandidateStickyHeader extends Component {
           <BallotCommentContainer>
             <BallotItemSupportOpposeComment
               ballotItemWeVoteId={candidateWeVoteId}
+              externalUniqueId="candidateStickyHeader"
               showPositionStatementActionBar={false}
             />
           </BallotCommentContainer>

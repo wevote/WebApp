@@ -15,12 +15,13 @@ import VoterStore from '../../stores/VoterStore';
 
 class ItemPositionStatementActionBar extends Component {
   static propTypes = {
-    ballot_item_we_vote_id: PropTypes.string.isRequired,
+    ballotItemWeVoteId: PropTypes.string.isRequired,
     ballotItemDisplayName: PropTypes.string,
     type: PropTypes.string.isRequired,
-    comment_edit_mode_on: PropTypes.bool,
+    commentEditModeOn: PropTypes.bool,
+    externalUniqueId: PropTypes.string,
     supportProps: PropTypes.object,
-    shown_in_list: PropTypes.bool,
+    shownInList: PropTypes.bool,
     shouldFocus: PropTypes.bool,
     classes: PropTypes.object,
     mobile: PropTypes.bool,
@@ -54,8 +55,8 @@ class ItemPositionStatementActionBar extends Component {
     }
 
     this.setState({
-      showEditPositionStatementInput: this.props.comment_edit_mode_on,
-      // disabled: !this.props.comment_edit_mode_on,
+      showEditPositionStatementInput: this.props.commentEditModeOn,
+      // disabled: !this.props.commentEditModeOn,
       voterIsSignedIn: VoterStore.getVoterIsSignedIn(),
     });
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
@@ -80,8 +81,8 @@ class ItemPositionStatementActionBar extends Component {
       const voterStatementText = (nextProps.supportProps && nextProps.supportProps.voter_statement_text) || '';
       this.setState({
         statementTextToBeSaved: voterStatementText,
-        showEditPositionStatementInput: nextProps.comment_edit_mode_on,
-        // disabled: !nextProps.comment_edit_mode_on,
+        showEditPositionStatementInput: nextProps.commentEditModeOn,
+        // disabled: !nextProps.commentEditModeOn,
       });
     }
   }
@@ -152,7 +153,7 @@ class ItemPositionStatementActionBar extends Component {
   }
 
   onSupportStoreChange () {
-    const supportProps = SupportStore.get(this.props.ballot_item_we_vote_id);
+    const supportProps = SupportStore.get(this.props.ballotItemWeVoteId);
     let statementTextToBeSaved = '';
     let isPublicPosition = '';
 
@@ -210,9 +211,9 @@ class ItemPositionStatementActionBar extends Component {
   };
 
   savePositionStatement (e) {
-    // console.log('ItemPositionStatementActionBar this.props.ballot_item_we_vote_id:', this.props.ballot_item_we_vote_id, 'this.props.type: ', this.props.type, 'this.state.statementTextToBeSaved: ', this.state.statementTextToBeSaved);
+    // console.log('ItemPositionStatementActionBar this.props.ballotItemWeVoteId:', this.props.ballotItemWeVoteId, 'this.props.type: ', this.props.type, 'this.state.statementTextToBeSaved: ', this.state.statementTextToBeSaved);
     e.preventDefault();
-    SupportActions.voterPositionCommentSave(this.props.ballot_item_we_vote_id, this.props.type, this.state.statementTextToBeSaved);
+    SupportActions.voterPositionCommentSave(this.props.ballotItemWeVoteId, this.props.type, this.state.statementTextToBeSaved);
     if (this.state.statementTextToBeSaved.length) {
       this.closeEditPositionStatementInput();
     }
@@ -237,7 +238,7 @@ class ItemPositionStatementActionBar extends Component {
       return <div />;
     }
 
-    const { classes } = this.props;
+    const { classes, ballotItemWeVoteId, externalUniqueId } = this.props;
 
     let rows = 1;
 
@@ -316,7 +317,7 @@ class ItemPositionStatementActionBar extends Component {
     // console.log('ItemPositionStatementActionBar, editMode: ', editMode);
     // minRows={1}
     return (
-      <div className={this.props.shown_in_list ? 'position-statement__container__in-list' : 'position-statement__container'}>
+      <div className={this.props.shownInList ? 'position-statement__container__in-list' : 'position-statement__container'}>
         { // Show the edit box (Viewing self)
           editMode ? (
             <Paper
@@ -325,7 +326,7 @@ class ItemPositionStatementActionBar extends Component {
             >
               <form className={classes.flex} onSubmit={this.savePositionStatement.bind(this)} onFocus={this.onFocusInput} onBlur={this.onBlurInput}>
                 <InputBase onChange={this.updateStatementTextToBeSaved}
-                  id="itemPositionStatementActionBarTextArea"
+                  id={`itemPositionStatementActionBarTextArea-${ballotItemWeVoteId}-${externalUniqueId}`}
                   name="statementTextToBeSaved"
                   classes={{ root: classes.input }}
                   placeholder={statementPlaceholderText}
@@ -336,7 +337,7 @@ class ItemPositionStatementActionBar extends Component {
                 />
                 <PostSaveButton className="postsave-button">
                   <Button
-                    id="itemPositionStatementActionBarSave"
+                    id={`itemPositionStatementActionBarSave-${ballotItemWeVoteId}-${externalUniqueId}`}
                     className="postsave-button"
                     variant="outlined"
                     color="primary"

@@ -138,6 +138,7 @@ class MeasureItem extends Component {
         </InfoRow>
         <BallotItemSupportOpposeComment
           ballotItemWeVoteId={measureWeVoteId}
+          externalUniqueId="measureItem"
           showPositionStatementActionBar={this.state.showPositionStatementActionBar}
         />
       </Card>

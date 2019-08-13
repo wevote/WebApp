@@ -419,6 +419,7 @@ class CandidateItem extends Component {
                 null : (
                   <BallotItemSupportOpposeComment
                     ballotItemWeVoteId={candidateWeVoteId}
+                    externalUniqueId="candidateItem"
                     showPositionStatementActionBar={this.state.showPositionStatementActionBar}
                   />
                 )

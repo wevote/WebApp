@@ -72,8 +72,9 @@ class EndorsementModeTabs extends Component {
         indicatorColor="primary"
         classes={{ root: classes.tabsRoot, flexContainer: classes.tabsFlexContainer, scroller: classes.scroller }}
       >
+        {/* labelContainer: classes.tabLabelContainer, */}
         <Tab
-          classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot }}
+          classes={{ root: classes.tabRoot }}
           id="allItemsCompletionLevelTab"
           onClick={() => this.goToDifferentVoterGuideSettingsDashboardTab('positions')}
           label={(
@@ -87,9 +88,9 @@ class EndorsementModeTabs extends Component {
             </Badge>
           )}
         />
-
+        {/* labelContainer: classes.tabLabelContainer, */}
         <Tab
-          classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot }}
+          classes={{ root: classes.tabRoot }}
           id="remainingChoicesCompletionLevelTab"
           onClick={() => this.goToDifferentVoterGuideSettingsDashboardTab('addpositions')}
           label={(

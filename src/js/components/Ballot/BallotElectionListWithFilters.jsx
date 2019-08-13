@@ -205,10 +205,14 @@ export default class BallotElectionListWithFilters extends Component {
     if (this.props.toggleFunction) {
       // console.log('goToBallotForDifferentElection, loadingNewBallotItems: ', this.state.loadingNewBallotItems);
       // console.log('goToBallotForDifferentElection, priorElectionId: ', this.state.priorElectionId, ', updatedElectionId: ', this.state.updatedElectionId, ', destinationUrlForHistoryPush: ', destinationUrlForHistoryPush, ', BallotStore.ballotProperties.google_civic_election_id: ', BallotStore.ballotProperties.google_civic_election_id, ', VoterStore.electionId():', VoterStore.electionId());
+      let ballotPropertiesGoogleCivicElectionId = 0;
+      if (BallotStore.ballotProperties) {
+        ballotPropertiesGoogleCivicElectionId = BallotStore.ballotProperties.google_civic_election_id;
+      }
       this.setState({
         destinationUrlForHistoryPush,
         loadingNewBallotItems: true,
-        priorElectionId: BallotStore.ballotProperties.google_civic_election_id || VoterStore.electionId() || 0,
+        priorElectionId: ballotPropertiesGoogleCivicElectionId || VoterStore.electionId() || 0,
         updatedElectionId: 0,
       });
     } else {
