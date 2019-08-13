@@ -166,7 +166,7 @@ class HeaderBar extends Component {
     const paidAccountUpgradeMode = AppStore.showPaidAccountUpgradeModal();
     // console.log('HeaderBar paidAccountUpgradeMode:', paidAccountUpgradeMode);
     const showPaidAccountUpgradeModal = paidAccountUpgradeMode && paidAccountUpgradeMode !== '';
-    // console.log('HeaderBar showPaidAccountUpgradeModal:', showPaidAccountUpgradeModal);
+    // console.log('HeaderBar onAppStoreChange showPaidAccountUpgradeModal:', showPaidAccountUpgradeModal);
     this.setState({
       scrolledDown: AppStore.getScrolledDown(),
       showEditAddressButton: AppStore.showEditAddressButton(),
@@ -249,7 +249,7 @@ class HeaderBar extends Component {
   }
 
   closePaidAccountUpgradeModal () {
-    this.setState({ showPaidAccountUpgradeModal: false });
+    AppActions.setShowPaidAccountUpgradeModal(false);
   }
 
   render () {

@@ -34,6 +34,7 @@ class ItemActionBar extends PureComponent {
     ballotItemWeVoteId: PropTypes.string.isRequired,
     commentButtonHide: PropTypes.bool,
     commentButtonHideInMobile: PropTypes.bool,
+    externalUniqueId: PropTypes.string,
     // currentBallotIdInUrl: PropTypes.string,
     opposeHideInMobile: PropTypes.bool,
     shareButtonHide: PropTypes.bool,
@@ -187,11 +188,11 @@ class ItemActionBar extends PureComponent {
     }
   }
 
-  opposeButton = (uniqueId) => {
-    const { classes } = this.props;
+  opposeButton = (localUniqueId) => {
+    const { classes, externalUniqueId } = this.props;
     return (
       <Button
-        id={`itemActionBarOpposeButton-${uniqueId}`}
+        id={`itemActionBarOpposeButton-${externalUniqueId}-${localUniqueId}`}
         variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
         color="primary"
         className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
@@ -218,11 +219,11 @@ class ItemActionBar extends PureComponent {
     );
   };
 
-  opposeButtonNoText = (uniqueId) => {
-    const { classes } = this.props;
+  opposeButtonNoText = (localUniqueId) => {
+    const { classes, externalUniqueId } = this.props;
     return (
       <Button
-        id={`itemActionBarOpposeButton-${uniqueId}`}
+        id={`itemActionBarOpposeButton-${externalUniqueId}-${localUniqueId}`}
         variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
         color="primary"
         className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
@@ -234,11 +235,11 @@ class ItemActionBar extends PureComponent {
     );
   };
 
-  supportButton = (uniqueId) => {
-    const { classes } = this.props;
+  supportButton = (localUniqueId) => {
+    const { classes, externalUniqueId } = this.props;
     return (
       <Button
-       id={`itemActionBarSupportButton-${uniqueId}`}
+       id={`itemActionBarSupportButton-${externalUniqueId}-${localUniqueId}`}
        variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
        color="primary"
        onClick={() => this.supportItem()}
@@ -266,11 +267,11 @@ class ItemActionBar extends PureComponent {
     );
   };
 
-  supportButtonNoText = (uniqueId) => {
-    const { classes } = this.props;
+  supportButtonNoText = (localUniqueId) => {
+    const { classes, externalUniqueId } = this.props;
     return (
       <Button
-       id={`itemActionBarSupportButton-${uniqueId}`}
+       id={`itemActionBarSupportButton-${externalUniqueId}-${localUniqueId}`}
        variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
        color="primary"
        onClick={() => this.supportItem()}
@@ -280,6 +281,133 @@ class ItemActionBar extends PureComponent {
           classes={{ root: classes.buttonIcon }}
         />
       </Button>
+    );
+  };
+
+  measureYesButton = (localUniqueId) => {
+    const { classes, externalUniqueId } = this.props;
+    return (
+      <Button
+        id={`itemActionBarYesButton-${externalUniqueId}-${localUniqueId}`}
+        variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
+        color="primary"
+        onClick={() => this.supportItem()}
+        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+      >
+        <ThumbsUpIcon classes={{ root: classes.buttonIcon }} />
+        { this.isSupportCalculated() ? (
+          <span
+            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
+              'item-actionbar__position-btn-label--at-state'}
+          >
+            Voting Yes
+          </span>
+        ) : (
+          <span
+            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
+              'item-actionbar__position-btn-label'}
+          >
+            Vote Yes
+          </span>
+        )}
+      </Button>
+    );
+  };
+
+  measureYesButtonNoText = (localUniqueId) => {
+    const { classes, externalUniqueId } = this.props;
+    return (
+      <Button
+        id={`itemActionBarYesButton-${externalUniqueId}-${localUniqueId}`}
+        variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
+        color="primary"
+        onClick={() => this.supportItem()}
+        classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+      >
+        <ThumbsUpIcon classes={{ root: classes.buttonIcon }} />
+      </Button>
+    );
+  };
+
+  measureNoButton = (localUniqueId) => {
+    const { classes, externalUniqueId } = this.props;
+    return (
+      <Button
+        id={`itemActionBarNoButton-${externalUniqueId}-${localUniqueId}`}
+        variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
+        color="primary"
+        onClick={() => this.opposeItem()}
+        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+      >
+        <ThumbsDownIcon classes={{ root: classes.buttonIcon }} />
+        { this.isOpposeCalculated() ? (
+          <span
+            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
+              'item-actionbar__position-btn-label--at-state'}
+          >
+            Voting No
+          </span>
+        ) : (
+          <span
+            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
+              'item-actionbar__position-btn-label'}
+          >
+            Vote No
+          </span>
+        )}
+      </Button>
+    );
+  };
+
+  measureNoButtonNoText = (localUniqueId) => {
+    const { classes, externalUniqueId } = this.props;
+    return (
+      <Button
+        id={`itemActionBarNoButton-${externalUniqueId}-${localUniqueId}`}
+        variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
+        color="primary"
+        onClick={() => this.opposeItem()}
+        classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+      >
+        <ThumbsDownIcon classes={{ root: classes.buttonIcon }} />
+      </Button>
+    );
+  };
+
+  commentButton = (localUniqueId) => {
+    const { classes, externalUniqueId } = this.props;
+    return (
+      <Button
+        id={`itemActionBarCommentButton-${externalUniqueId}-${localUniqueId}`}
+        variant="contained"
+        className={`${this.props.commentButtonHideInMobile ? 'd-none d-sm-block ' : null}item-actionbar__btn item-actionbar__btn--comment btn btn-default`}
+        onClick={this.props.toggleFunction}
+        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+      >
+        <CommentIcon classes={{ root: classes.buttonIcon }} />
+        <span className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
+          'item-actionbar__position-btn-label'}
+        >
+          Comment
+        </span>
+      </Button>
+    );
+  };
+
+  commentButtonNoText = (localUniqueId) => {
+    const { classes, externalUniqueId } = this.props;
+    return (
+      <StackedButton>
+        <Button
+          id={`itemActionBarCommentButton-${externalUniqueId}-${localUniqueId}`}
+          variant="contained"
+          className={`${this.props.commentButtonHideInMobile ? 'd-none d-sm-block ' : null}item-actionbar__btn item-actionbar__btn--comment btn btn-default`}
+          onClick={this.props.toggleFunction}
+          classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+        >
+          <CommentIcon classes={{ root: classes.buttonIcon }} />
+        </Button>
+      </StackedButton>
     );
   };
 
@@ -569,91 +697,6 @@ class ItemActionBar extends PureComponent {
     const supportButtonPopoverTooltip = <Tooltip id="supportButtonTooltip">{this.isSupportCalculated() ? supportButtonUnselectedPopOverText : supportButtonSelectedPopOverText }</Tooltip>;
     const opposeButtonPopoverTooltip = <Tooltip id="opposeButtonTooltip">{this.isOpposeCalculated() ? opposeButtonUnselectedPopOverText : opposeButtonSelectedPopOverText}</Tooltip>;
 
-    const measureYesButton = (
-      <Button
-        id="itemActionBarYesButton"
-        variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
-        color="primary"
-        onClick={() => this.supportItem()}
-        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-      >
-        <ThumbsUpIcon classes={{ root: classes.buttonIcon }} />
-        { this.isSupportCalculated() ? (
-          <span
-            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
-              'item-actionbar__position-btn-label--at-state'}
-          >
-            Voting Yes
-          </span>
-        ) : (
-          <span
-            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
-              'item-actionbar__position-btn-label'}
-          >
-            Vote Yes
-          </span>
-        )}
-      </Button>
-    );
-
-    const measureNoButton = (
-      <Button
-        id="itemActionBarNoButton"
-        variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
-        color="primary"
-        onClick={() => this.opposeItem()}
-        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-      >
-        <ThumbsDownIcon classes={{ root: classes.buttonIcon }} />
-        { this.isOpposeCalculated() ? (
-          <span
-            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label--at-state' :
-              'item-actionbar__position-btn-label--at-state'}
-          >
-            Voting No
-          </span>
-        ) : (
-          <span
-            className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
-              'item-actionbar__position-btn-label'}
-          >
-            Vote No
-          </span>
-        )}
-      </Button>
-    );
-
-    const commentButton = (
-      <Button
-        id="itemActionBarCommentButton"
-        variant="contained"
-        className={`${this.props.commentButtonHideInMobile ? 'd-none d-sm-block ' : null}item-actionbar__btn item-actionbar__btn--comment btn btn-default`}
-        onClick={this.props.toggleFunction}
-        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-      >
-        <CommentIcon classes={{ root: classes.buttonIcon }} />
-        <span className={this.props.shareButtonHide ? 'item-actionbar--inline__position-btn-label' :
-          'item-actionbar__position-btn-label'}
-        >
-          Comment
-        </span>
-      </Button>
-    );
-
-    const commentButtonNoText = (
-      <StackedButton>
-        <Button
-          id="itemActionBarCommentButton"
-          variant="contained"
-          className={`${this.props.commentButtonHideInMobile ? 'd-none d-sm-block ' : null}item-actionbar__btn item-actionbar__btn--comment btn btn-default`}
-          onClick={this.props.toggleFunction}
-          classes={{ root: classes.buttonNoTextRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
-        >
-          <CommentIcon classes={{ root: classes.buttonIcon }} />
-        </Button>
-      </StackedButton>
-    );
-
     // console.log('ItemActionBar this.props.buttonsOnly:', this.props.buttonsOnly);
     return (
       <>
@@ -678,24 +721,24 @@ class ItemActionBar extends PureComponent {
               <StackedButton className="d-none d-lg-block">
                 {/* <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
                 </OverlayTrigger> */}
-                {this.props.type === 'CANDIDATE' ? this.supportButtonNoText(`desktopVersion-${ballotItemWeVoteId}`) : measureYesButton}
+                {this.props.type === 'CANDIDATE' ? this.supportButtonNoText(`desktopVersion-${ballotItemWeVoteId}`) : this.measureYesButtonNoText(`desktopVersion-${ballotItemWeVoteId}`)}
               </StackedButton>
             ) : (
               <div className="u-push--xs d-none d-lg-block item-actionbar__position-bar">
                 <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
-                  {this.props.type === 'CANDIDATE' ? this.supportButton(`desktopVersion-${ballotItemWeVoteId}`) : measureYesButton}
+                  {this.props.type === 'CANDIDATE' ? this.supportButton(`desktopVersion-${ballotItemWeVoteId}`) : this.measureYesButton(`desktopVersion-${ballotItemWeVoteId}`)}
                 </OverlayTrigger>
               </div>
             )}
             {/* Visible on mobile devices and tablets */}
             {this.props.buttonsOnly ? (
               <StackedButton className="d-lg-none d-xl-none">
-                {this.props.type === 'CANDIDATE' ? this.supportButtonNoText(`mobileVersion-${ballotItemWeVoteId}`) : measureYesButton}
+                {this.props.type === 'CANDIDATE' ? this.supportButtonNoText(`mobileVersion-${ballotItemWeVoteId}`) : this.measureYesButtonNoText(`mobileVersion-${ballotItemWeVoteId}`)}
               </StackedButton>
             ) : (
               <>
                 <div className="u-push--xs u-push--xs d-lg-none">
-                  {this.props.type === 'CANDIDATE' ? this.supportButton(`mobileVersion-${ballotItemWeVoteId}`) : measureYesButton}
+                  {this.props.type === 'CANDIDATE' ? this.supportButton(`mobileVersion-${ballotItemWeVoteId}`) : this.measureYesButton(`mobileVersion-${ballotItemWeVoteId}`)}
                 </div>
               </>
             )}
@@ -706,24 +749,24 @@ class ItemActionBar extends PureComponent {
               <StackedButton className="d-none d-lg-block">
                 {/* <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
                 </OverlayTrigger> */}
-                {this.props.type === 'CANDIDATE' ? this.opposeButtonNoText(`desktopVersion-${ballotItemWeVoteId}`) : measureNoButton}
+                {this.props.type === 'CANDIDATE' ? this.opposeButtonNoText(`desktopVersion-${ballotItemWeVoteId}`) : this.measureNoButtonNoText(`desktopVersion-${ballotItemWeVoteId}`)}
               </StackedButton>
             ) : (
               <div className="u-push--xs d-none d-lg-block item-actionbar__position-bar">
                 <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
-                  {this.props.type === 'CANDIDATE' ? this.opposeButton(`desktopVersion-${ballotItemWeVoteId}`) : measureNoButton}
+                  {this.props.type === 'CANDIDATE' ? this.opposeButton(`desktopVersion-${ballotItemWeVoteId}`) : this.measureNoButton(`desktopVersion-${ballotItemWeVoteId}`)}
                 </OverlayTrigger>
               </div>
             )}
             {/* Visible on mobile devices and tablets */}
             {this.props.buttonsOnly ? (
               <StackedButton className="d-lg-none d-xl-none">
-                {this.props.type === 'CANDIDATE' ? this.opposeButtonNoText(`mobileVersion-${ballotItemWeVoteId}`) : measureNoButton}
+                {this.props.type === 'CANDIDATE' ? this.opposeButtonNoText(`mobileVersion-${ballotItemWeVoteId}`) : this.measureNoButtonNoText(`mobileVersion-${ballotItemWeVoteId}`)}
               </StackedButton>
             ) : (
               <>
                 <div className="u-push--xs d-lg-none">
-                  {this.props.type === 'CANDIDATE' ? this.opposeButton(`mobileVersion-${ballotItemWeVoteId}`) : measureNoButton}
+                  {this.props.type === 'CANDIDATE' ? this.opposeButton(`mobileVersion-${ballotItemWeVoteId}`) : this.measureNoButton(`mobileVersion-${ballotItemWeVoteId}`)}
                 </div>
               </>
             )}
@@ -732,11 +775,11 @@ class ItemActionBar extends PureComponent {
                 <span>
                   {this.props.buttonsOnly ? (
                     <div className="u-push--sm item-actionbar__position-bar">
-                      {commentButtonNoText}
+                      {this.commentButtonNoText(`${ballotItemWeVoteId}`)}
                     </div>
                   ) : (
                     <div className="u-push--sm item-actionbar__position-bar">
-                      {commentButton}
+                      {this.commentButton(`${ballotItemWeVoteId}`)}
                     </div>
                   )}
                 </span>

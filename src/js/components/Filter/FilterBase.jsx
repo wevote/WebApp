@@ -22,22 +22,61 @@ class FilterBase extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
+      componentDidMount: false,
+      filteredItems: [],
+      lastFilterAdded: '',
       showAllFilters: false,
       selectedFilters: [],
-      filteredItems: [],
     };
   }
 
   componentDidMount () {
     this.setState({
+      componentDidMount: true,
       selectedFilters: this.props.selectedFiltersDefault || [],
     });
   }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    // console.log('FilterBase this.props:', this.props);
+    // console.log('FilterBase nextProps:', nextProps);
+    // console.log('FilterBase this.state:', this.state);
+    // console.log('FilterBase nextState:', nextState);
+    if (this.state.componentDidMount !== nextState.componentDidMount) {
+      // console.log('this.state.componentDidMount:', this.state.componentDidMount, ', nextState.componentDidMount:', nextState.componentDidMount);
+      return true;
+    }
+    if (this.state.lastFilterAdded !== nextState.lastFilterAdded) {
+      // console.log('this.state.lastFilterAdded:', this.state.lastFilterAdded, ', nextState.lastFilterAdded:', nextState.lastFilterAdded);
+      return true;
+    }
+    if (this.state.showAllFilters !== nextState.showAllFilters) {
+      // console.log('this.state.showAllFilters:', this.state.showAllFilters, ', nextState.showAllFilters:', nextState.showAllFilters);
+      return true;
+    }
+    if (JSON.stringify(this.state.selectedFilters) !== JSON.stringify(nextState.selectedFilters)) {
+      // console.log('this.state.selectedFilters:', this.state.selectedFilters, ', nextState.selectedFilters:', nextState.selectedFilters);
+      return true;
+    }
+    if (JSON.stringify(this.state.filteredItems) !== JSON.stringify(nextState.filteredItems)) {
+      // console.log('this.state.filteredItems:', this.state.filteredItems, ', nextState.filteredItems:', nextState.filteredItems);
+      return true;
+    }
+    // console.log('shouldComponentUpdate no change');
+    return false;
+  }
 
   toggleShowAllFilters = () => {
     const { showAllFilters } = this.state;
     this.setState({ showAllFilters: !showAllFilters });
+  }
+
+  updateSelectedFilters = (freshSelectedFilters) => {
+    // console.log('FilterBase updateSelectedFilters freshSelectedFilters:', freshSelectedFilters);
+    this.setState({
+      selectedFilters: freshSelectedFilters,
+    });
   }
 
   toggleFilter = (filterName) => {
@@ -47,7 +86,10 @@ class FilterBase extends React.Component {
       this.setState({ selectedFilters: selectedFilters.filter(filter => filter !== filterName) });
     } else {
       // Add this filter
-      this.setState({ selectedFilters: [...selectedFilters, filterName]});
+      this.setState({
+        lastFilterAdded: filterName,
+        selectedFilters: [...selectedFilters, filterName],
+      });
     }
   }
 
@@ -65,7 +107,7 @@ class FilterBase extends React.Component {
     this.setState({ selectedFilters: updatedFilters.filter(item => !remainingSortFiltersToRemove.includes(item)) });
   }
 
-  setFilteredItems = filteredItems => this.setState({ filteredItems }, () => this.props.onFilteredItemsChange(this.state.filteredItems));
+  onFilteredItemsChange = filteredItems => this.setState({ filteredItems }, () => this.props.onFilteredItemsChange(this.state.filteredItems));
 
   generateGroupedFilters = () => this.props.groupedFilters.map((item, itemIndex) => (
     <div
@@ -114,7 +156,7 @@ class FilterBase extends React.Component {
     const { classes } = this.props;
     const selectedFiltersWithoutSorts = selectedFilters.filter(item => !sortFilters.includes(item));
     const numberOfFiltersSelected = selectedFiltersWithoutSorts.length;
-    // console.log('FilterBase, selectedFilters: ', selectedFilters, ', filteredItems: ', filteredItems);
+    // console.log('FilterBase, selectedFilters: ', selectedFilters);
     return (
       <Wrapper>
         <FilterTop>
@@ -144,11 +186,13 @@ class FilterBase extends React.Component {
         {
           React.cloneElement(this.props.children, {
             allItems: this.props.allItems,
-            selectedFilters: this.state.selectedFilters,
+            lastFilterAdded: this.state.lastFilterAdded,
             onSelectSortByFilter: this.selectSortByFilter,
             onToggleFilter: this.toggleFilter,
-            onFilteredItemsChange: this.setFilteredItems,
+            onFilteredItemsChange: this.onFilteredItemsChange,
+            selectedFilters: this.state.selectedFilters,
             showAllFilters: this.state.showAllFilters,
+            updateSelectedFilters: this.updateSelectedFilters,
           })
         }
       </Wrapper>

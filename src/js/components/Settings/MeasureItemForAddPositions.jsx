@@ -2,88 +2,81 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Card from '@material-ui/core/Card';
-import Divider from '@material-ui/core/Divider';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { withStyles, withTheme } from '@material-ui/core/styles';
-import BallotStore from '../../stores/BallotStore';
-import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
-import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
-import extractNumber from '../../utils/extractNumber';
-import MeasureActions from '../../actions/MeasureActions';
-import MeasureStore from '../../stores/MeasureStore';
-import ShowMoreFooter from '../Navigation/ShowMoreFooter';
+import ItemActionBar from '../Widgets/ItemActionBar';
 import SupportStore from '../../stores/SupportStore';
 import { capitalizeString, shortenText } from '../../utils/textFormat';
-import TopCommentByBallotItem from '../Widgets/TopCommentByBallotItem';
+import ItemPositionStatementActionBar from '../Widgets/ItemPositionStatementActionBar';
 
 
 class MeasureItemForAddPositions extends Component {
   static propTypes = {
-    // currentBallotIdInUrl: PropTypes.string,
+    ballotItemDisplayName: PropTypes.string.isRequired,
+    ballotItemWeVoteId: PropTypes.string.isRequired,
+    classes: PropTypes.object,
+    measureText: PropTypes.string,
     organization: PropTypes.object,
     organization_we_vote_id: PropTypes.string,
     showPositionStatementActionBar: PropTypes.bool,
-    // urlWithoutHash: PropTypes.string,
-    measureWeVoteId: PropTypes.string.isRequired,
-    classes: PropTypes.object,
-    theme: PropTypes.object,
   };
 
   constructor (props) {
     super(props);
     this.state = {
-      // ballotItemWeVoteId: '',
       componentDidMountFinished: false,
       measureText: '',
-      measureWeVoteId: '',
-      noVoteDescription: '',
+      ballotItemWeVoteId: '',
       organizationWeVoteId: '',
       showPositionStatement: false,
-      yesVoteDescription: '',
     };
-    this.getMeasureLink = this.getMeasureLink.bind(this);
-    this.goToMeasureLink = this.goToMeasureLink.bind(this);
+    // this.getMeasureLink = this.getMeasureLink.bind(this);
+    this.openMeasureLinkModal = this.openMeasureLinkModal.bind(this);
     this.togglePositionStatement = this.togglePositionStatement.bind(this);
   }
 
   componentDidMount () {
     this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    const measure = MeasureStore.getMeasure(this.props.measureWeVoteId);
 
-    if (this.props.measureWeVoteId && !BallotStore.positionListHasBeenRetrievedOnce(this.props.measureWeVoteId)) {
-      MeasureActions.positionListForBallotItemPublic(this.props.measureWeVoteId);
-    }
     const organizationWeVoteId = (this.props.organization && this.props.organization.organization_we_vote_id) ? this.props.organization.organization_we_vote_id : this.props.organization_we_vote_id;
+    if (this.props.ballotItemWeVoteId) {
+      const ballotItemSupportProps = SupportStore.get(this.props.ballotItemWeVoteId);
+      const { is_voter_support: isVoterSupport, is_voter_oppose: isVoterOppose, voter_statement_text: voterStatementText } = ballotItemSupportProps || {};
+      this.setState({
+        ballotItemSupportProps,
+        ballotItemWeVoteId: this.props.ballotItemWeVoteId,
+        isVoterOppose,
+        isVoterSupport,
+        voterStatementText,
+      });
+    }
     this.setState({
-      ballotItemDisplayName: measure.ballot_item_display_name,
+      ballotItemDisplayName: this.props.ballotItemDisplayName,
+      ballotItemWeVoteId: this.props.ballotItemWeVoteId,
       componentDidMountFinished: true,
-      measure,
-      // measureSubtitle: measure.measure_subtitle,
-      measureSupportProps: SupportStore.get(this.props.measureWeVoteId),
-      measureText: measure.measure_text,
-      measureWeVoteId: this.props.measureWeVoteId,
-      noVoteDescription: measure.no_vote_description,
-      yesVoteDescription: measure.yes_vote_description,
+      measureText: this.props.measureText,
       organizationWeVoteId,
     });
   }
 
   componentWillReceiveProps (nextProps) {
     const organizationWeVoteId = (nextProps.organization && nextProps.organization.organization_we_vote_id) ? nextProps.organization.organization_we_vote_id : nextProps.organization_we_vote_id;
-    const measure = MeasureStore.getMeasure(nextProps.measureWeVoteId);
-    if (nextProps.measureWeVoteId && !BallotStore.positionListHasBeenRetrievedOnce(nextProps.measureWeVoteId)) {
-      MeasureActions.positionListForBallotItemPublic(nextProps.measureWeVoteId);
+    if (nextProps.ballotItemWeVoteId) {
+      const ballotItemSupportProps = SupportStore.get(nextProps.ballotItemWeVoteId);
+      const { is_voter_support: isVoterSupport, is_voter_oppose: isVoterOppose, voter_statement_text: voterStatementText } = ballotItemSupportProps || {};
+      this.setState({
+        ballotItemDisplayName: nextProps.ballotItemDisplayName,
+        ballotItemSupportProps,
+        ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
+        isVoterOppose,
+        isVoterSupport,
+        voterStatementText,
+      });
     }
     this.setState({
-      ballotItemDisplayName: measure.ballot_item_display_name,
-      measure,
-      // measureSubtitle: measure.measure_subtitle,
-      measureSupportProps: SupportStore.get(nextProps.measureWeVoteId),
-      measureText: measure.measure_text,
-      measureWeVoteId: nextProps.measureWeVoteId,
-      noVoteDescription: measure.no_vote_description,
-      yesVoteDescription: measure.yes_vote_description,
+      ballotItemDisplayName: nextProps.ballotItemDisplayName,
+      ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
+      measureText: nextProps.measureText,
       organizationWeVoteId,
     });
   }
@@ -110,19 +103,21 @@ class MeasureItemForAddPositions extends Component {
       // console.log('this.props.showPositionStatementActionBar change');
       return true;
     }
-    if (this.state.showPositionStatement !== nextState.showPositionStatement) {
-      // console.log('this.state.showPositionStatement change');
+    if (this.state.isVoterOppose !== nextState.isVoterOppose) {
+      // console.log('this.state.isVoterOppose: ', this.state.isVoterOppose, ', nextState.isVoterOppose: ', nextState.isVoterOppose);
       return true;
     }
-    if (this.state.measureSupportProps !== undefined && nextState.measureSupportProps !== undefined) {
-      const currentNetworkSupportCount = parseInt(this.state.measureSupportProps.support_count) || 0;
-      const nextNetworkSupportCount = parseInt(nextState.measureSupportProps.support_count) || 0;
-      const currentNetworkOpposeCount = parseInt(this.state.measureSupportProps.oppose_count) || 0;
-      const nextNetworkOpposeCount = parseInt(nextState.measureSupportProps.oppose_count) || 0;
-      if (currentNetworkSupportCount !== nextNetworkSupportCount || currentNetworkOpposeCount !== nextNetworkOpposeCount) {
-        // console.log('shouldComponentUpdate: support or oppose count change');
-        return true;
-      }
+    if (this.state.isVoterSupport !== nextState.isVoterSupport) {
+      // console.log('this.state.isVoterSupport: ', this.state.isVoterSupport, ', nextState.isVoterSupport: ', nextState.isVoterSupport);
+      return true;
+    }
+    if (this.state.showPositionStatement !== nextState.showPositionStatement) {
+      // console.log('this.state.showPositionStatement: ', this.state.showPositionStatement, ', nextState.showPositionStatement: ', nextState.showPositionStatement);
+      return true;
+    }
+    if (this.state.voterStatementText !== nextState.voterStatementText) {
+      // console.log('this.state.voterStatementText: ', this.state.voterStatementText, ', nextState.voterStatementText: ', nextState.voterStatementText);
+      return true;
     }
     return false;
   }
@@ -132,140 +127,112 @@ class MeasureItemForAddPositions extends Component {
   }
 
   onSupportStoreChange () {
-    const { measureWeVoteId } = this.state;
-    // Whenever positions change, we want to make sure to get the latest organization, because it has
-    //  position_list_for_one_election and position_list_for_all_except_one_election attached to it
+    const { ballotItemWeVoteId } = this.state;
+    const ballotItemSupportProps = SupportStore.get(ballotItemWeVoteId);
+    const { is_voter_support: isVoterSupport, is_voter_oppose: isVoterOppose, voter_statement_text: voterStatementText } = ballotItemSupportProps || {};
     this.setState({
-      measureSupportProps: SupportStore.get(measureWeVoteId),
+      ballotItemSupportProps,
+      isVoterOppose,
+      isVoterSupport,
+      voterStatementText,
     });
   }
 
-  getMeasureLink (oneMeasureWeVoteId) {
-    if (this.state.organizationWeVoteId) {
-      // If there is an organization_we_vote_id, signal that we want to link back to voter_guide for that organization
-      return `/measure/${oneMeasureWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
-    } else {
-      // If no organization_we_vote_id, signal that we want to link back to default ballot
-      return `/measure/${oneMeasureWeVoteId}/b/btdb/`; // back-to-default-ballot
-    }
-  }
+  // getMeasureLink (oneMeasureWeVoteId) {
+  //   if (this.state.organizationWeVoteId) {
+  //     // If there is an organization_we_vote_id, signal that we want to link back to voter_guide for that organization
+  //     return `/measure/${oneMeasureWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
+  //   } else {
+  //     // If no organization_we_vote_id, signal that we want to link back to default ballot
+  //     return `/measure/${oneMeasureWeVoteId}/b/btdb/`; // back-to-default-ballot
+  //   }
+  // }
 
-  goToMeasureLink (oneMeasureWeVoteId) {
-    const measureLink = this.getMeasureLink(oneMeasureWeVoteId);
-    historyPush(measureLink);
+  openMeasureLinkModal (oneMeasureWeVoteId) {
+    console.log('Open measure viewer for ', oneMeasureWeVoteId);
   }
 
   togglePositionStatement () {
     const { showPositionStatement } = this.state;
     this.setState({
       showPositionStatement: !showPositionStatement,
+      shouldFocusCommentArea: true,
     });
   }
 
   render () {
     // console.log('MeasureItemForAddPositions render');
     renderLog(__filename);
-    const { noVoteDescription, yesVoteDescription } = this.state;
     let { ballotItemDisplayName } = this.state;
-    const { measureText, measureWeVoteId } = this.state;
-    if (!measureWeVoteId) {
+    const { ballotItemSupportProps, measureText, ballotItemWeVoteId, showPositionStatement } = this.state;
+    if (!ballotItemWeVoteId) {
       return null;
     }
-    const { classes, theme } = this.props;
+    const { classes } = this.props;
     let ballotDisplay = [];
     if (ballotItemDisplayName) {
       ballotDisplay = ballotItemDisplayName.split(':');
     }
     // measureSubtitle = capitalizeString(measureSubtitle);
     ballotItemDisplayName = capitalizeString(ballotItemDisplayName);
+    const { is_voter_support: isVoterSupport, is_voter_oppose: isVoterOppose, voter_statement_text: voterStatementText } = ballotItemSupportProps || {};
 
-    // let measureGuidesList = VoterGuideStore.getVoterGuidesToFollowForBallotItemId(measureWeVoteId);
+    const commentDisplayDesktop = isVoterSupport || isVoterOppose || voterStatementText || showPositionStatement ? (
+      <div className="d-none d-sm-block u-min-50 u-stack--sm u-push--xs">
+        <ItemPositionStatementActionBar
+          ballotItemWeVoteId={ballotItemWeVoteId}
+          ballotItemDisplayName={ballotItemDisplayName}
+          commentEditModeOn={showPositionStatement}
+          supportProps={ballotItemSupportProps}
+          shouldFocus={this.state.shouldFocusCommentArea}
+          transitioning={this.state.transitioning}
+          type="MEASURE"
+          shownInList
+        />
+      </div>
+    ) :
+      null;
 
-    // let measure_for_modal = {
-    //   ballotItemDisplayName: ballotItemDisplayName,
-    //   voter_guides_to_follow_for_ballot_item_id: measureGuidesList,
-    //   kind_of_ballot_item: this.props.kind_of_ballot_item,
-    //   measureSubtitle: measureSubtitle,
-    //   measure_text: this.props.measure_text,
-    //   measure_url: this.props.measure_url,
-    //   measureWeVoteId,
-    //   position_list: this.props.position_list,
-    // };
-
-    // let measureSupportStore = SupportStore.get(measureWeVoteId);
-    // let organizationsToFollowSupport = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdSupports(measureWeVoteId);
-    // let organizationsToFollowOppose = VoterGuideStore.getVoterGuidesToFollowForBallotItemIdOpposes(measureWeVoteId);
-
-    // // Voter Support or opposition
-    // let isVoterSupport = false;
-    // let isVoterOppose = false;
-    // let voterStatementText = false;
-    // const ballotItemSupportStore = SupportStore.get(this.state.ballotItemWeVoteId);
-    // if (ballotItemSupportStore !== undefined) {
-    //   // console.log('ballotItemSupportStore: ', ballotItemSupportStore);
-    //   isVoterSupport = ballotItemSupportStore.is_support;
-    //   isVoterOppose = ballotItemSupportStore.is_oppose;
-    //   voterStatementText = ballotItemSupportStore.voter_statement_text;
-    // }
+    const commentDisplayMobile = isVoterSupport || isVoterOppose || voterStatementText ? (
+      <div className="d-block d-sm-none u-min-50 u-push--xs">
+        <ItemPositionStatementActionBar
+          ballotItemWeVoteId={ballotItemWeVoteId}
+          ballotItemDisplayName={ballotItemDisplayName}
+          supportProps={ballotItemSupportProps}
+          shouldFocus={this.state.shouldFocusCommentArea}
+          transitioning={this.state.transitioning}
+          type="MEASURE"
+          shownInList
+          mobile
+        />
+      </div>
+    ) :
+      null;
 
     return (
       <Card classes={{ root: classes.cardRoot }}>
         <InfoRow>
-          <MeasureInfoWrapper onClick={() => { this.goToMeasureLink(measureWeVoteId); }}>
+          <MeasureInfoWrapper onClick={() => { this.openMeasureLinkModal(ballotItemWeVoteId); }}>
             <Title>
               {ballotDisplay[0]}
-              <ArrowForwardIcon
-                className="u-show-desktop"
-                classes={{ root: classes.cardHeaderIconRoot }}
-              />
             </Title>
             <SubTitle>{ballotDisplay[1]}</SubTitle>
             <Info>{shortenText(measureText, 200)}</Info>
           </MeasureInfoWrapper>
-          <BallotItemSupportOpposeCountDisplay ballotItemWeVoteId={measureWeVoteId} />
+          {/* Action Buttons: Support/Oppose/Comment */}
+          <ItemActionBar
+            ballotItemDisplayName={ballotItemDisplayName}
+            ballotItemWeVoteId={ballotItemWeVoteId}
+            buttonsOnly
+            shareButtonHide
+            // supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
+            toggleFunction={this.togglePositionStatement}
+            // transitioning={this.state.transitioning}
+            type="MEASURE"
+          />
         </InfoRow>
-        <ChoicesRow>
-          <Choice
-            id={`measureItemCompressedChoiceYes-${measureWeVoteId}`}
-            brandBlue={theme.palette.primary.main}
-            onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
-          >
-            <ChoiceTitle brandBlue={theme.palette.primary.main}>
-              {`Yes On ${extractNumber(ballotItemDisplayName)}`}
-            </ChoiceTitle>
-            <ChoiceInfo>
-              {/* If there is a "yes vote" quote about the measure, show that. If not, show the yesVoteDescription */}
-              <TopCommentByBallotItem
-                ballotItemWeVoteId={measureWeVoteId}
-                learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
-                limitToYes
-              >
-                <span>{shortenText(yesVoteDescription, 200)}</span>
-              </TopCommentByBallotItem>
-            </ChoiceInfo>
-          </Choice>
-          <Choice
-            id={`measureItemCompressedChoiceNo-${measureWeVoteId}`}
-            brandBlue={theme.palette.primary.main}
-            onClick={() => { this.goToMeasureLink(measureWeVoteId); }}
-          >
-            <ChoiceTitle brandBlue={theme.palette.primary.main}>
-              {`No On ${extractNumber(ballotItemDisplayName)}`}
-            </ChoiceTitle>
-            <ChoiceInfo>
-              {/* If there is a "yes vote" quote about the measure, show that. If not, show the yesVoteDescription */}
-              <TopCommentByBallotItem
-                ballotItemWeVoteId={measureWeVoteId}
-                learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
-                limitToNo
-              >
-                <span>{shortenText(noVoteDescription, 200)}</span>
-              </TopCommentByBallotItem>
-            </ChoiceInfo>
-          </Choice>
-        </ChoicesRow>
-        <Divider />
-        <ShowMoreFooter showMoreId="measureItemCompressedShowMoreFooter" showMoreLink={() => this.goToMeasureLink(measureWeVoteId)} />
+        {commentDisplayDesktop}
+        {commentDisplayMobile}
       </Card>
     );
   }
@@ -296,45 +263,6 @@ const InfoRow = styled.div`
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
-`;
-
-const ChoicesRow = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-`;
-
-const Choice = styled.div`
-  display: flex;
-  flex-flow: column;
-  padding-right: 8px;
-  cursor: pointer;
-  transition: all 200ms ease-in;
-  @media (min-width: 768px) {
-    max-width: 47%;
-    border: none;
-    border: 1px solid #eee;
-    border-radius: 4px;
-    padding: 0 16px;
-    margin-right: 10px;
-    margin-bottom: 16px;
-    &:hover {
-      border: 1px solid ${({ brandBlue }) => brandBlue};
-      box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
-    }
-  }
-`;
-
-const ChoiceTitle = styled.h1`
-  font-weight: bold;
-  color: #4371cc;
-`;
-
-const ChoiceInfo = styled.p`
-  font-size: 12px;
-  color: #777;
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    max-width: 140%;
-  }
 `;
 
 const MeasureInfoWrapper = styled.div`

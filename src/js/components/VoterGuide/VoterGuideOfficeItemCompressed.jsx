@@ -500,11 +500,11 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                             <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
                               <ItemPositionStatementActionBar
                                 ballotItemDisplayName={oneCandidate.ballot_item_display_name}
-                                ballot_item_we_vote_id={candidateWeVoteId}
+                                ballotItemWeVoteId={candidateWeVoteId}
                                 supportProps={candidateSupportStore}
                                 transitioning={this.state.transitioning}
                                 type="CANDIDATE"
-                                shown_in_list
+                                shownInList
                               />
                             </div>
                           </div>
@@ -518,12 +518,12 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                             </div>
                             <div className="o-media-object__body u-flex u-flex-column u-flex-auto u-justify-between">
                               <ItemPositionStatementActionBar
-                                ballot_item_display_name={oneCandidate.ballot_item_display_name}
-                                ballot_item_we_vote_id={candidateWeVoteId}
+                                ballotItemDisplayName={oneCandidate.ballot_item_display_name}
+                                ballotItemWeVoteId={candidateWeVoteId}
                                 supportProps={candidateSupportStore}
                                 transitioning={this.state.transitioning}
                                 type="CANDIDATE"
-                                shown_in_list
+                                shownInList
                               />
                             </div>
                           </div>

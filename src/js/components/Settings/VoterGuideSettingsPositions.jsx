@@ -17,7 +17,6 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationPositionItem from '../VoterGuide/OrganizationPositionItem';
 import OrganizationStore from '../../stores/OrganizationStore';
 import SettingsAccount from './SettingsAccount';
-import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import { isProperlyFormattedVoterGuideWeVoteId } from '../../utils/textFormat';
@@ -58,14 +57,12 @@ class VoterGuideSettingsPositions extends Component {
       voterGuideWeVoteId: this.props.voterGuideWeVoteId,
     });
     let voterGuide;
-    let voterGuideFound = false;
     if (this.props.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(this.props.voterGuideWeVoteId)) {
       voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.props.voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
           voterGuide,
         });
-        voterGuideFound = true;
       }
     }
     // Get Voter and Voter's Organization
@@ -89,8 +86,8 @@ class VoterGuideSettingsPositions extends Component {
           if (voterGuide && voterGuide.google_civic_election_id) {
             if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(voterGuide.google_civic_election_id, organization.organization_we_vote_id)) {
               OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, false, true, voterGuide.google_civic_election_id);
+              OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, true, false, voterGuide.google_civic_election_id);
             }
-            OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, true, false, voterGuide.google_civic_election_id);
           }
         } else {
           OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
@@ -98,10 +95,10 @@ class VoterGuideSettingsPositions extends Component {
           OrganizationActions.positionListForOpinionMaker(linkedOrganizationWeVoteId, true, false); // , voterGuide.google_civic_election_id
           // }
         }
-        if (!voterGuideFound) {
-          // console.log('VoterGuideSettingsDashboard voterGuide NOT FOUND calling VoterGuideActions.voterGuidesRetrieve');
-          VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
-        }
+        // if (!voterGuideFound) {
+        //   // console.log("VoterGuideSettingsDashboard voterGuide NOT FOUND calling VoterGuideActions.voterGuidesRetrieve");
+        //   VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
+        // }
       }
     }
 
@@ -117,14 +114,12 @@ class VoterGuideSettingsPositions extends Component {
       voterGuideWeVoteId: nextProps.voterGuideWeVoteId,
     });
     let voterGuide;
-    let voterGuideFound = false;
     if (nextProps.voterGuideWeVoteId && isProperlyFormattedVoterGuideWeVoteId(nextProps.voterGuideWeVoteId)) {
       voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(nextProps.voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
           voterGuide,
         });
-        voterGuideFound = true;
       }
     }
     // Get Voter and Voter's Organization
@@ -148,8 +143,8 @@ class VoterGuideSettingsPositions extends Component {
             this.setState({ currentGoogleCivicElectionId: voterGuide.google_civic_election_id });
             if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(voterGuide.google_civic_election_id, organization.organization_we_vote_id)) {
               OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, false, true, voterGuide.google_civic_election_id);
+              OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, true, false, voterGuide.google_civic_election_id);
             }
-            OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, true, false, voterGuide.google_civic_election_id);
           }
           // Positions for this organization, for this election
           // Might cause a loop
@@ -160,10 +155,10 @@ class VoterGuideSettingsPositions extends Component {
           OrganizationActions.positionListForOpinionMaker(linkedOrganizationWeVoteId, true, false); // , voterGuide.google_civic_election_id
           // }
         }
-        if (!voterGuideFound) {
-          // console.log('VoterGuideSettingsPositions voterGuide NOT FOUND calling VoterGuideActions.voterGuidesRetrieve');
-          VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
-        }
+        // if (!voterGuideFound) {
+        //   // console.log('VoterGuideSettingsPositions voterGuide NOT FOUND calling VoterGuideActions.voterGuidesRetrieve');
+        //   VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
+        // }
       }
     }
   }
@@ -213,7 +208,7 @@ class VoterGuideSettingsPositions extends Component {
         } else {
           OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
           // if (voterGuide && voterGuide.google_civic_election_id) {
-          OrganizationActions.positionListForOpinionMaker(linkedOrganizationWeVoteId, true, false); // , voterGuide.google_civic_election_id
+          // OrganizationActions.positionListForOpinionMaker(linkedOrganizationWeVoteId, true, false); // , voterGuide.google_civic_election_id
           // }
         }
       }

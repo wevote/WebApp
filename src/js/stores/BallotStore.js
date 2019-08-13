@@ -74,8 +74,10 @@ class BallotStore extends ReduceStore {
 
   get currentBallotGoogleCivicElectionId () {
     if (!this.isLoaded()) { return undefined; }
-    const civicId = VoterStore.electionId();
-    return this.getState().ballots[civicId].google_civic_election_id;
+    const googleCivicElectionId = VoterStore.electionId();
+    // return this.getState().ballots[civicId].google_civic_election_id;
+    // We want to return the current googleCivicElectionId even if there aren't any ballot items
+    return googleCivicElectionId;
   }
 
   get currentBallotPollingLocationSource () {

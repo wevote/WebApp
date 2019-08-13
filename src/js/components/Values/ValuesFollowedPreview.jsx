@@ -90,7 +90,7 @@ class ValuesFollowedPreview extends Component {
             <Row className="row">
               { issueListForDisplay }
             </Row>
-            <ShowMoreFooter showMoreId="valuesToFollowPreviewShowMoreId" showMoreLink={() => this.goToValuesLink()} showMoreText="Explore all 26 values" />
+            <ShowMoreFooter showMoreId="valuesToFollowPreviewShowMoreId" showMoreLink={() => this.goToValuesLink()} showMoreText="Explore all 30 values" />
           </div>
         </section>
       </div>

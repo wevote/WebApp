@@ -15,8 +15,6 @@ import SupportStore from '../../stores/SupportStore';
 class CandidateItemForAddPositions extends Component {
   static propTypes = {
     oneCandidate: PropTypes.object,
-    classes: PropTypes.object,
-    theme: PropTypes.object,
     // togglePositionStatement: PropTypes.func,
   };
 
@@ -146,14 +144,14 @@ class CandidateItemForAddPositions extends Component {
     const commentDisplayDesktop = isVoterSupport || isVoterOppose || voterStatementText || showPositionStatement ? (
       <div className="d-none d-sm-block u-min-50 u-stack--sm u-push--xs">
         <ItemPositionStatementActionBar
-          ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
+          ballotItemWeVoteId={this.state.ballotItemWeVoteId}
           ballotItemDisplayName={this.state.ballotItemDisplayName}
-          comment_edit_mode_on={this.state.showPositionStatement}
+          commentEditModeOn={this.state.showPositionStatement}
           supportProps={this.state.ballotItemSupportProps}
           shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
           type="CANDIDATE"
-          shown_in_list
+          shownInList
         />
       </div>
     ) :
@@ -162,13 +160,13 @@ class CandidateItemForAddPositions extends Component {
     const commentDisplayMobile = isVoterSupport || isVoterOppose || voterStatementText ? (
       <div className="d-block d-sm-none u-min-50 u-push--xs">
         <ItemPositionStatementActionBar
-          ballot_item_we_vote_id={this.state.ballotItemWeVoteId}
+          ballotItemWeVoteId={this.state.ballotItemWeVoteId}
           ballotItemDisplayName={this.state.ballotItemDisplayName}
           supportProps={this.state.ballotItemSupportProps}
           shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
           type="CANDIDATE"
-          shown_in_list
+          shownInList
           mobile
         />
       </div>
@@ -199,7 +197,7 @@ class CandidateItemForAddPositions extends Component {
           </Candidate>
           {/* Action Buttons: Support/Oppose/Comment */}
           <ItemActionBar
-            ballot_item_display_name={oneCandidate.ballot_item_display_name}
+            ballotItemDisplayName={oneCandidate.ballot_item_display_name}
             ballotItemWeVoteId={oneCandidate.we_vote_id}
             buttonsOnly
             shareButtonHide

@@ -267,10 +267,9 @@ export default class OrganizationPositionItem extends Component {
                 { this.state.hidePositionStatement ?
                   null : (
                     <ItemPositionStatementActionBar
-                      ballot_item_we_vote_id={position.ballot_item_we_vote_id}
+                      ballotItemWeVoteId={position.ballot_item_we_vote_id}
                       ballotItemDisplayName={position.ballot_item_display_name}
-                      comment_edit_mode_on
-                      stance_display_off={stanceDisplayOff}
+                      commentEditModeOn
                       supportProps={supportProps}
                       transitioning={this.state.transitioning}
                       type={position.kind_of_ballot_item}

@@ -275,10 +275,26 @@ class SettingsSubscriptionPlan extends Component {
                 </IconButton>
               </EditIcon>
               <SectionParagraph>
-                Card ending in: <strong>0223</strong> • Expires: <strong>02/23</strong> • Next bill: <strong>June 21, 2019</strong>
+                Card ending in:
+                {' '}
+                <strong>0223</strong>
+                {' '}
+                •
+                {' '}
+                Expires:
+                {' '}
+                <strong>02/23</strong>
+                {' '}
+                •
+                {' '}
+                Next bill:
+                {' '}
+                <strong>June 21, 2019</strong>
               </SectionParagraph>
               <SectionParagraph>
-                Billing contact: <strong>barrack-obama@gmail.com</strong>
+                Billing contact:
+                {' '}
+                <strong>barrack-obama@gmail.com</strong>
               </SectionParagraph>
             </SectionCard>
             <Seperator />

@@ -4,14 +4,12 @@ import styled from 'styled-components';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
-import BallotStore from '../../stores/BallotStore';
 import { historyPush } from '../../utils/cordovaUtils';
 import { toTitleCase } from '../../utils/textFormat';
 import CandidateItemForAddPositions from './CandidateItemForAddPositions';
 import CandidateStore from '../../stores/CandidateStore';
 import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
-import OfficeActions from '../../actions/OfficeActions';
 import SupportStore from '../../stores/SupportStore';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
@@ -19,13 +17,14 @@ import SupportStore from '../../stores/SupportStore';
 
 class OfficeItemForAddPositions extends Component {
   static propTypes = {
-    we_vote_id: PropTypes.string.isRequired,
-    ballot_item_display_name: PropTypes.string.isRequired,
-    candidate_list: PropTypes.array,
-    organization: PropTypes.object,
-    organization_we_vote_id: PropTypes.string,
-    theme: PropTypes.object,
+    ballotItemWeVoteId: PropTypes.string.isRequired,
+    ballotItemDisplayName: PropTypes.string.isRequired,
+    candidateList: PropTypes.array,
     classes: PropTypes.object,
+    organization: PropTypes.object,
+    organizationWeVoteId: PropTypes.string,
+    theme: PropTypes.object,
+    externalUniqueId: PropTypes.string,
   };
 
   constructor (props) {
@@ -47,25 +46,20 @@ class OfficeItemForAddPositions extends Component {
   componentDidMount () {
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.onCandidateStoreChange();
-    const organizationWeVoteId = (this.props.organization && this.props.organization.organization_we_vote_id) ? this.props.organization.organization_we_vote_id : this.props.organization_we_vote_id;
+    const organizationWeVoteId = (this.props.organization && this.props.organization.organization_we_vote_id) ? this.props.organization.organization_we_vote_id : this.props.organizationWeVoteId;
     // console.log('OfficeItemForAddPositions componentDidMount, organizationWeVoteId:', organizationWeVoteId);
     this.setState({
+      candidateList: this.props.candidateList,
       organizationWeVoteId,
       componentDidMount: true,
     });
   }
 
   componentWillReceiveProps (nextProps) {
-    // 2018-05-10 I don't think we need to trigger a new render because the incoming candidate_list should be the same
-    // if (nextProps.candidate_list && nextProps.candidate_list.length) {
-    //   this.setState({
-    //     candidateList: nextProps.candidate_list,
-    //   });
-    // }
-
-    const organizationWeVoteId = (nextProps.organization && nextProps.organization.organization_we_vote_id) ? nextProps.organization.organization_we_vote_id : nextProps.organization_we_vote_id;
+    const organizationWeVoteId = (nextProps.organization && nextProps.organization.organization_we_vote_id) ? nextProps.organization.organization_we_vote_id : nextProps.organizationWeVoteId;
     // console.log('officeItemCompressed componentWillReceiveProps, organizationWeVoteId:', organizationWeVoteId);
     this.setState({
+      candidateList: nextProps.candidateList,
       organizationWeVoteId,
     });
   }
@@ -83,8 +77,8 @@ class OfficeItemForAddPositions extends Component {
       // console.log('this.state.changeFound: ', this.state.changeFound, ', nextState.changeFound: ', nextState.changeFound);
       return true;
     }
-    if (this.props.ballot_item_display_name !== nextProps.ballot_item_display_name) {
-      // console.log('this.props.ballot_item_display_name: ', this.props.ballot_item_display_name, ', nextProps.ballot_item_display_name: ', nextProps.ballot_item_display_name);
+    if (this.props.ballotItemDisplayName !== nextProps.ballotItemDisplayName) {
+      // console.log('this.props.ballotItemDisplayName: ', this.props.ballotItemDisplayName, ', nextProps.ballotItemDisplayName: ', nextProps.ballotItemDisplayName);
       return true;
     }
     if (this.state.showCandidates !== nextState.showCandidates) {
@@ -105,12 +99,10 @@ class OfficeItemForAddPositions extends Component {
   }
 
   onCandidateStoreChange () {
-    const { candidate_list: candidateList, we_vote_id: officeWeVoteId } = this.props;
+    const { ballotItemWeVoteId } = this.props;
+    const { candidateList } = this.state;
     let changeFound = false;
-    if (candidateList && candidateList.length && officeWeVoteId) {
-      if (!BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)) {
-        OfficeActions.positionListForBallotItemPublic(officeWeVoteId);
-      }
+    if (candidateList && candidateList.length && ballotItemWeVoteId) {
       const newCandidateList = [];
       let newCandidate = {};
       if (candidateList) {
@@ -141,21 +133,21 @@ class OfficeItemForAddPositions extends Component {
 
   getCandidateLink (candidateWeVoteId) {
     if (this.state.organizationWeVoteId) {
-      // If there is an organization_we_vote_id, signal that we want to link back to voter_guide for that organization
+      // If there is an organizationWeVoteId, signal that we want to link back to voter_guide for that organization
       return `/candidate/${candidateWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
     } else {
-      // If no organization_we_vote_id, signal that we want to link back to default ballot
+      // If no organizationWeVoteId, signal that we want to link back to default ballot
       return `/candidate/${candidateWeVoteId}/b/btdb/`; // back-to-default-ballot
     }
   }
 
   getOfficeLink () {
     if (this.state.organizationWeVoteId) {
-      // If there is an organization_we_vote_id, signal that we want to link back to voter_guide for that organization
-      return `/office/${this.props.we_vote_id}/btvg/${this.state.organizationWeVoteId}`;
+      // If there is an organizationWeVoteId, signal that we want to link back to voter_guide for that organization
+      return `/office/${this.props.ballotItemWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
     } else {
-      // If no organization_we_vote_id, signal that we want to link back to default ballot
-      return `/office/${this.props.we_vote_id}/b/btdb/`; // back-to-default-ballot
+      // If no organizationWeVoteId, signal that we want to link back to default ballot
+      return `/office/${this.props.ballotItemWeVoteId}/b/btdb/`; // back-to-default-ballot
     }
   }
 
@@ -184,8 +176,8 @@ class OfficeItemForAddPositions extends Component {
   render () {
     // console.log('OfficeItemForAddPositions render');
     renderLog(__filename);
-    let { ballot_item_display_name: ballotItemDisplayName } = this.props;
-    const { we_vote_id: weVoteId, classes, theme } = this.props;
+    let { ballotItemDisplayName } = this.props;
+    const { ballotItemWeVoteId, classes, theme, externalUniqueId } = this.props;
     const { candidateList, showCandidates } = this.state;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
     const unsortedCandidateList = this.state.candidateList ? this.state.candidateList.slice(0) : {};
@@ -244,15 +236,15 @@ class OfficeItemForAddPositions extends Component {
     }
 
     return (
-      <div className="card-main office-item">
+      <div className="card-main office-item" key={`officeItemForAddPositions-${ballotItemWeVoteId}-${externalUniqueId}`}>
         <a // eslint-disable-line
           className="anchor-under-header"
-          name={weVoteId}
+          name={ballotItemWeVoteId}
         />
         <div className="card-main__content">
           {/* Desktop */}
           <div
-            id={`officeItemForAddPositionsTopNameLink-${weVoteId}`}
+            id={`officeItemForAddPositionsTopNameLink-${ballotItemWeVoteId}`}
             onClick={() => this.toggleShowCandidates()}
           >
             <Title>
@@ -282,7 +274,7 @@ class OfficeItemForAddPositions extends Component {
                     brandBlue={theme.palette.primary.main}
                     candidateLength={candidateList.length}
                     id={`officeItemCompressedCandidateInfo-${oneCandidate.we_vote_id}`}
-                    key={`candidate_preview-${oneCandidate.we_vote_id}`}
+                    key={`${externalUniqueId}-candidatePreview-${oneCandidate.we_vote_id}`}
                   >
                     <CandidateItemForAddPositions
                       oneCandidate={oneCandidate}

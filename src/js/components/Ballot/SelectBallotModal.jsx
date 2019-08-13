@@ -67,7 +67,7 @@ class SelectBallotModal extends Component {
     renderLog(__filename);
     const { classes } = this.props;
     const ballotBaseUrl = calculateBallotBaseUrl(this.props.ballotBaseUrl, this.props.pathname);
-    console.log('SelectBallotModal render, ballotBaseUrl: ', ballotBaseUrl);
+    // console.log('SelectBallotModal render, ballotBaseUrl: ', ballotBaseUrl);
 
     const voterAddressObject = VoterStore.getAddressObject();
     // console.log('SelectBallotModal render, voter_address_object: ', voter_address_object);
