@@ -9,6 +9,7 @@ import { renderLog } from '../../utils/logging';
 import StickyPopover from '../Ballot/StickyPopover';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 
+
 // Show a voter a horizontal list of all of the issues they are following that relate to this ballot item
 class IssuesByBallotItemDisplayList extends Component {
   static propTypes = {
@@ -23,8 +24,14 @@ class IssuesByBallotItemDisplayList extends Component {
     document.body.click();
   }
 
+  isOverflown = (elem) => {
+    const { clientWidth, clientHeight, scrollWidth, scrollHeight } = elem;
+    return scrollHeight > clientHeight || scrollWidth > clientWidth;
+  }
+
   constructor (props) {
     super(props);
+    this.myRef = React.createRef();
     this.state = {
       issuesUnderThisBallotItemVoterIsFollowing: [],
       issuesUnderThisBallotItemVoterIsNotFollowing: [],
@@ -32,6 +39,7 @@ class IssuesByBallotItemDisplayList extends Component {
       issuesUnderThisBallotItemVoterIsNotFollowingLength: 0,
       maximumNumberOfIssuesToDisplay: 26,
       expand: false,
+      issuesListOverflows: false,
     };
   }
 
@@ -83,7 +91,19 @@ class IssuesByBallotItemDisplayList extends Component {
       // console.log('this.state.issuesUnderThisBallotItemVoterIsNotFollowingLength: ', this.state.issuesUnderThisBallotItemVoterIsNotFollowingLength, ', nextState.issuesUnderThisBallotItemVoterIsNotFollowingLength', nextState.issuesUnderThisBallotItemVoterIsNotFollowingLength);
       return true;
     }
+    if (this.state.issuesListOverflows !== nextState.issuesListOverflows) {
+      return true;
+    }
     return false;
+  }
+
+  componentDidUpdate () {
+    if (this.myRef.current) {
+      console.log(this.isOverflown(this.myRef.current));
+    }
+    if (this.myRef.current && this.isOverflown(this.myRef.current)) {
+      this.setState({ issuesListOverflows: true });
+    }
   }
 
   componentWillUnmount () {
@@ -246,14 +266,14 @@ class IssuesByBallotItemDisplayList extends Component {
       >
         <Issues>
           {/* Show a break-down of the current positions in your network */}
-          <IssueList key={`issuesByBallotItemDisplayList-${ballotItemWeVoteId}`} expand={expand}>
+          <IssueList id="issueslist" ref={this.myRef} key={`issuesByBallotItemDisplayList-${ballotItemWeVoteId}`} expand={expand}>
             {/* Issues the voter is already following */}
             {issuesVoterIsFollowingHtml}
             {/* Issues the voter is not following yet */}
             {issuesVoterIsNotFollowingHtml}
           </IssueList>
         </Issues>
-        {(expand || this.props.disableMoreWrapper) ? null : (
+        {(expand || this.props.disableMoreWrapper || !this.state.issuesListOverflows) ? null : (
           <MoreWrapper onClick={this.handleExpandIssues}>
             <MoreHorizIcon
               id="issuesByBallotItemDisplayListMoreIssuesIcon"
