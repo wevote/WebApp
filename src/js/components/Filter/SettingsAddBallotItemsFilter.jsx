@@ -55,7 +55,7 @@ class SettingsAddBallotItemsFilter extends Component {
     if (JSON.stringify(prevProps.selectedFilters) !== JSON.stringify(this.props.selectedFilters)) {
       // console.log('+++SettingsAddBallotItemsFilter componentDidUpdate, change to selectedFilters');
       const newFilteredItems = this.getNewFilteredItems();
-      this.props.onFilteredItemsChange(newFilteredItems);
+      this.props.onFilteredItemsChange(newFilteredItems, this.props.selectedFilters);
     } else {
       // console.log('---SettingsAddBallotItemsFilter componentDidUpdate, no change to selectedFilters');
     }
@@ -149,7 +149,11 @@ class SettingsAddBallotItemsFilter extends Component {
     }
     if (containsAtLeastOneRaceFilter) {
       // console.log('After containsAtLeastOneRaceFilter, filteredItems:', filteredItems);
-      const filterItemsSnapshot = filteredItems;
+      let filterItemsSnapshot = filteredItems;
+      filteredItems = [];
+      // Remove all candidates
+      filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.kind_of_ballot_item !== 'CANDIDATE')];
+      filterItemsSnapshot = filteredItems;
       filteredItems = [];
       selectedFilters.forEach((filter) => {
         switch (filter) {
@@ -219,6 +223,7 @@ class SettingsAddBallotItemsFilter extends Component {
     // return _.uniqBy(filteredItems, x => x.we_vote_id);
 
     // We no longer filter for a unique we_vote_id because we sometimes pass items into this routine that don't have a we_vote_id
+    // console.log('filteredItems:', filteredItems);
     return filteredItems;
   }
 

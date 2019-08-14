@@ -206,6 +206,7 @@ export default class OrganizationVoterGuideCandidateItem extends Component {
             <div className="u-flex u-flex-auto u-flex-row u-justify-between u-items-center u-min-50">
               <BallotItemSupportOpposeComment
                 ballotItemWeVoteId={candidateWeVoteId}
+                externalUniqueId="organizationVoterGuideCandidateItem"
                 showPositionStatementActionBar={this.state.showPositionStatementActionBar}
               />
             </div>

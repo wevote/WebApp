@@ -223,7 +223,7 @@ class ItemActionBar extends PureComponent {
     const { classes, externalUniqueId } = this.props;
     return (
       <Button
-        id={`itemActionBarOpposeButton-${externalUniqueId}-${localUniqueId}`}
+        id={`itemActionBarOpposeButtonNoText-${externalUniqueId}-${localUniqueId}`}
         variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
         color="primary"
         className={`${this.props.opposeHideInMobile ? 'd-none d-sm-block ' : ''}`}
@@ -271,7 +271,7 @@ class ItemActionBar extends PureComponent {
     const { classes, externalUniqueId } = this.props;
     return (
       <Button
-       id={`itemActionBarSupportButton-${externalUniqueId}-${localUniqueId}`}
+       id={`itemActionBarSupportButtonNoText-${externalUniqueId}-${localUniqueId}`}
        variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
        color="primary"
        onClick={() => this.supportItem()}
@@ -318,7 +318,7 @@ class ItemActionBar extends PureComponent {
     const { classes, externalUniqueId } = this.props;
     return (
       <Button
-        id={`itemActionBarYesButton-${externalUniqueId}-${localUniqueId}`}
+        id={`itemActionBarYesButtonNoText-${externalUniqueId}-${localUniqueId}`}
         variant={this.isSupportCalculated() ? 'contained' : 'outlined'}
         color="primary"
         onClick={() => this.supportItem()}
@@ -363,7 +363,7 @@ class ItemActionBar extends PureComponent {
     const { classes, externalUniqueId } = this.props;
     return (
       <Button
-        id={`itemActionBarNoButton-${externalUniqueId}-${localUniqueId}`}
+        id={`itemActionBarNoButtonNoText-${externalUniqueId}-${localUniqueId}`}
         variant={this.isOpposeCalculated() ? 'contained' : 'outlined'}
         color="primary"
         onClick={() => this.opposeItem()}
@@ -399,7 +399,7 @@ class ItemActionBar extends PureComponent {
     return (
       <StackedButton>
         <Button
-          id={`itemActionBarCommentButton-${externalUniqueId}-${localUniqueId}`}
+          id={`itemActionBarCommentButtonNoText-${externalUniqueId}-${localUniqueId}`}
           variant="contained"
           className={`${this.props.commentButtonHideInMobile ? 'd-none d-sm-block ' : null}item-actionbar__btn item-actionbar__btn--comment btn btn-default`}
           onClick={this.props.toggleFunction}
@@ -634,6 +634,7 @@ class ItemActionBar extends PureComponent {
               <PositionPublicToggle
                 ballotItemWeVoteId="null"
                 className="null"
+                externalUniqueId={`practiceToggle-${this.props.externalUniqueId}`}
                 type={type}
                 supportProps={modalSupportProps}
                 inTestMode
@@ -711,6 +712,7 @@ class ItemActionBar extends PureComponent {
             <PositionPublicToggle
               ballotItemWeVoteId={ballotItemWeVoteId}
               className="null"
+              externalUniqueId={`itemActionBar-${this.props.externalUniqueId}`}
               type={type}
             />
           )}

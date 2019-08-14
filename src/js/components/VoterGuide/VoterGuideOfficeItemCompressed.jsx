@@ -429,6 +429,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                               <BallotItemSupportOpposeComment
                                 ballotItemWeVoteId={candidateWeVoteId}
                                 showPositionStatementActionBar={this.state.showPositionStatementActionBar}
+                                externalUniqueId="voterGuideOfficeItemCompressed"
                               />
                             </div>
                           </div>
@@ -485,6 +486,7 @@ export default class VoterGuideOfficeItemCompressed extends Component {
                             ballotItemWeVoteId={candidateWeVoteId}
                             commentButtonHide
                             currentBallotIdInUrl={this.props.location.hash.slice(1)}
+                            externalUniqueId={`voterGuideOfficeItemCompressed-${candidateWeVoteId}`}
                             shareButtonHide
                             transitioning={this.state.transitioning}
                             type="CANDIDATE"

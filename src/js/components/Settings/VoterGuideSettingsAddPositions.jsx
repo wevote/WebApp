@@ -6,6 +6,7 @@ import BallotIcon from '@material-ui/icons/Ballot';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import BallotItemForAddPositions from './BallotItemForAddPositions';
+import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
 import { renderLog } from '../../utils/logging';
 import FilterBase from '../Filter/FilterBase';
@@ -64,11 +65,18 @@ class VoterGuideSettingsAddPositions extends Component {
     super(props);
     this.state = {
       addNewPositionsMode: false,
-      ballotItemList: [],
-      filteredBallotItemList: [],
+      allBallotItems: [],
+      currentSelectedBallotFilters: [], // So we know when the ballot filters change
+      currentSelectedPositionFilters: [], // So we know when the position filters change
+      filteredBallotItems: [],
       filteredPositionListForOneElection: [],
+      localAllBallotItemsHaveBeenRetrieved: {},
       localPositionListHasBeenRetrieved: {},
+      numberOfBallotItemsToDisplay: 5,
+      numberOfPositionItemsToDisplay: 5,
       positionListForOneElection: [],
+      stateCodeFromIpAddress: '',
+      stateCodeFromVoterGuide: '',
     };
   }
 
@@ -120,8 +128,8 @@ class VoterGuideSettingsAddPositions extends Component {
 
   componentDidUpdate (prevProps, prevState) {
     // Whenever a voter goes from "Add Endorsements" to "Endorsed or Opposed" we want to refresh the position list
-    const { addNewPositionsMode } = this.state;
-    const { addNewPositionsMode: previousAddNewPositionsMode } = prevState;
+    const { addNewPositionsMode, currentSelectedBallotFilters, currentSelectedPositionFilters } = this.state;
+    const { addNewPositionsMode: previousAddNewPositionsMode, currentSelectedBallotFilters: previousSelectedBallotFilters, currentSelectedPositionFilters: previousSelectedPositionFilters } = prevState;
     // console.log('componentDidUpdate addNewPositionsMode:', addNewPositionsMode, ', previousAddNewPositionsMode:', previousAddNewPositionsMode);
     // If previously we were in addNewPositionsMode, and now we are NOT, update the positionListForOpinionMaker
     if (previousAddNewPositionsMode && !addNewPositionsMode) {
@@ -132,6 +140,22 @@ class VoterGuideSettingsAddPositions extends Component {
         // console.log('componentDidUpdate we have what we need');
         OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, false, true, voterGuide.google_civic_election_id);
         OrganizationActions.positionListForOpinionMaker(organization.organization_we_vote_id, true, false, voterGuide.google_civic_election_id);
+      }
+    }
+    // If the position filters have changed, reset the numberOfPositionItemsToDisplay
+    if (currentSelectedPositionFilters && previousSelectedPositionFilters) {
+      if (JSON.stringify(currentSelectedPositionFilters) !== JSON.stringify(previousSelectedPositionFilters)) {
+        this.setState({
+          numberOfPositionItemsToDisplay: 5,
+        });
+      }
+    }
+    // If the ballot filters have changed, reset the numberOfBallotItemsToDisplay
+    if (currentSelectedBallotFilters && previousSelectedBallotFilters) {
+      if (JSON.stringify(currentSelectedBallotFilters) !== JSON.stringify(previousSelectedBallotFilters)) {
+        this.setState({
+          numberOfBallotItemsToDisplay: 5,
+        });
       }
     }
   }
@@ -158,8 +182,8 @@ class VoterGuideSettingsAddPositions extends Component {
   //     console.log('this.state.filteredPositionListForOneElection:', this.state.filteredPositionListForOneElection, ', nextState.filteredPositionListForOneElection:', nextState.filteredPositionListForOneElection);
   //     return true;
   //   }
-  //   if (JSON.stringify(this.state.filteredBallotItemList) !== JSON.stringify(nextState.filteredBallotItemList)) {
-  //     console.log('this.state.filteredBallotItemList:', this.state.filteredBallotItemList, ', nextState.filteredBallotItemList:', nextState.filteredBallotItemList);
+  //   if (JSON.stringify(this.state.filteredBallotItems) !== JSON.stringify(nextState.filteredBallotItems)) {
+  //     console.log('this.state.filteredBallotItems:', this.state.filteredBallotItems, ', nextState.filteredBallotItems:', nextState.filteredBallotItems);
   //     return true;
   //   }
   //   console.log('shouldComponentUpdate no change');
@@ -174,16 +198,17 @@ class VoterGuideSettingsAddPositions extends Component {
   }
 
   onBallotStoreChange () {
-    const incomingBallotItemList = BallotStore.ballot;
+    const allBallotItemsFlattened = BallotStore.getAllBallotItemsFlattened();
     // console.log('VoterGuideSettingsAddPositions, onBallotStoreChange incomingBallotItemList:', incomingBallotItemList);
     this.setState({
-      ballotItemList: incomingBallotItemList,
-      filteredBallotItemList: incomingBallotItemList,
+      allBallotItems: allBallotItemsFlattened,
+      filteredBallotItems: allBallotItemsFlattened,
     });
   }
 
   onOrganizationStoreChange () {
-    const { linkedOrganizationWeVoteId, localPositionListHasBeenRetrieved, voterGuide } = this.state;
+    const { linkedOrganizationWeVoteId, localAllBallotItemsHaveBeenRetrieved, localPositionListHasBeenRetrieved, stateCodeFromVoterGuide, voterGuide } = this.state;
+    let { stateCodeFromIpAddress } = this.state;
     // console.log('onOrganizationStoreChange, linkedOrganizationWeVoteId: ', linkedOrganizationWeVoteId);
     if (!linkedOrganizationWeVoteId) {
       const voter = VoterStore.getVoter();
@@ -196,6 +221,14 @@ class VoterGuideSettingsAddPositions extends Component {
             linkedOrganizationWeVoteId: newLinkedOrganizationWeVoteId,
           });
           OrganizationActions.organizationRetrieve(newLinkedOrganizationWeVoteId);
+        }
+      }
+      if (voter && voter.state_code_from_ip_address) {
+        stateCodeFromIpAddress = voter.state_code_from_ip_address;
+        if (stateCodeFromIpAddress) {
+          this.setState({
+            stateCodeFromIpAddress,
+          });
         }
       }
     } else {
@@ -219,6 +252,31 @@ class VoterGuideSettingsAddPositions extends Component {
         }
       }
     }
+    // console.log('VoterGuideSettingsAddPositions onOrganizationStoreChange voterGuide:', voterGuide);
+    let stateCodeToRetrieve = '';
+    if (stateCodeFromVoterGuide) {
+      stateCodeToRetrieve = stateCodeFromVoterGuide.toLowerCase();
+    }
+    if (!stateCodeToRetrieve && stateCodeFromIpAddress) {
+      stateCodeToRetrieve = stateCodeFromIpAddress.toLowerCase();
+    }
+    // console.log('onOrganizationStoreChange stateCodeToRetrieve:', stateCodeToRetrieve);
+    if (voterGuide && voterGuide.google_civic_election_id && stateCodeToRetrieve) {
+      if (!localAllBallotItemsHaveBeenRetrieved[voterGuide.google_civic_election_id]) {
+        localAllBallotItemsHaveBeenRetrieved[voterGuide.google_civic_election_id] = {};
+      }
+      if (!localAllBallotItemsHaveBeenRetrieved[voterGuide.google_civic_election_id][stateCodeToRetrieve]) {
+        localAllBallotItemsHaveBeenRetrieved[voterGuide.google_civic_election_id][stateCodeToRetrieve] = false;
+      }
+      const doNotRetrieveAllBallotItems = localAllBallotItemsHaveBeenRetrieved[voterGuide.google_civic_election_id][stateCodeToRetrieve] || BallotStore.allBallotItemsHaveBeenRetrievedForElection(voterGuide.google_civic_election_id, stateCodeToRetrieve);
+      if (!doNotRetrieveAllBallotItems) {
+        localAllBallotItemsHaveBeenRetrieved[voterGuide.google_civic_election_id][stateCodeToRetrieve] = true;
+        this.setState({
+          localAllBallotItemsHaveBeenRetrieved,
+        });
+        BallotActions.allBallotItemsRetrieve(voterGuide.google_civic_election_id, stateCodeToRetrieve);
+      }
+    }
   }
 
   onVoterGuideStoreChange () {
@@ -231,6 +289,13 @@ class VoterGuideSettingsAddPositions extends Component {
           voterGuide,
         });
       }
+      if (voterGuide && voterGuide.state_code) {
+        const stateCodeFromVoterGuide = voterGuide.state_code;
+        this.setState({
+          // localGoogleCivicElectionId: voterGuide.google_civic_election_id,
+          stateCodeFromVoterGuide,
+        });
+      }
     }
   }
 
@@ -238,6 +303,7 @@ class VoterGuideSettingsAddPositions extends Component {
     // Get Voter and Voter's Organization
     const voter = VoterStore.getVoter();
     let linkedOrganizationWeVoteId;
+    // console.log('onVoterStoreChange, voter:', voter);
     if (voter && voter.we_vote_id) {
       linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
       if (linkedOrganizationWeVoteId) {
@@ -255,6 +321,14 @@ class VoterGuideSettingsAddPositions extends Component {
         }
       }
     }
+    if (voter && voter.state_code_from_ip_address) {
+      const stateCodeFromIpAddress = voter.state_code_from_ip_address;
+      if (stateCodeFromIpAddress) {
+        this.setState({
+          stateCodeFromIpAddress,
+        });
+      }
+    }
     // console.log('onVoterStoreChange, linkedOrganizationWeVoteId: ', linkedOrganizationWeVoteId);
   }
 
@@ -266,9 +340,29 @@ class VoterGuideSettingsAddPositions extends Component {
     historyPush(voterGuideDisplay);
   }
 
-  handleFilteredBallotItemsChange = filteredBallotItemList => this.setState({ filteredBallotItemList });
+  onFilteredItemsChangeFromBallotItemsFilterBase = (filteredBallotItems, currentSelectedBallotFilters) => {
+    this.setState({ currentSelectedBallotFilters, filteredBallotItems });
+  }
 
-  handleFilteredPositionListChange = filteredPositionListForOneElection => this.setState({ filteredPositionListForOneElection });
+  onFilteredItemsChangeFromPositionItemsFilterBase = (filteredPositionListForOneElection, currentSelectedPositionFilters) => {
+    this.setState({ currentSelectedPositionFilters, filteredPositionListForOneElection });
+  }
+
+  increaseNumberOfBallotItemsToDisplay = () => {
+    let { numberOfBallotItemsToDisplay } = this.state;
+    numberOfBallotItemsToDisplay += 5;
+    this.setState({
+      numberOfBallotItemsToDisplay,
+    });
+  }
+
+  increaseNumberOfPositionItemsToDisplay = () => {
+    let { numberOfPositionItemsToDisplay } = this.state;
+    numberOfPositionItemsToDisplay += 5;
+    this.setState({
+      numberOfPositionItemsToDisplay,
+    });
+  }
 
   goToDifferentVoterGuideSettingsDashboardTab (dashboardEditMode = '') {
     AppActions.setVoterGuideSettingsDashboardEditMode(dashboardEditMode);
@@ -282,11 +376,16 @@ class VoterGuideSettingsAddPositions extends Component {
     if (!addNewPositionsMode) {
       // ////////////////////////
       // Current Positions - First Tab
-      const selectedFiltersCurrentDefault = ['showFederalRaceFilter', 'showStateRaceFilter', 'showMeasureRaceFilter', 'showLocalRaceFilter'];
-      const { positionListForOneElection, filteredPositionListForOneElection } = this.state;
+      const selectedFiltersCurrentDefault = [];
+      const { filteredPositionListForOneElection, numberOfPositionItemsToDisplay, positionListForOneElection } = this.state;
       // console.log('VoterGuideSettingsAddPositions render, filteredPositionListForOneElection:', filteredPositionListForOneElection);
-      const atLeastOnePositionFoundForThisElection = positionListForOneElection && positionListForOneElection.length !== 0;
-      if (!atLeastOnePositionFoundForThisElection) {
+      const atLeastOnePositionFoundWithTheseFilters = positionListForOneElection && positionListForOneElection.length !== 0;
+      let numberOfPositionItemsDisplayed = 0;
+      let totalNumberOfPositionItems = 0;
+      if (atLeastOnePositionFoundWithTheseFilters) {
+        totalNumberOfPositionItems = positionListForOneElection.length;
+      }
+      if (!atLeastOnePositionFoundWithTheseFilters) {
         return (
           <Card>
             <EmptyBallotMessageContainer>
@@ -318,7 +417,7 @@ class VoterGuideSettingsAddPositions extends Component {
             groupedFilters={groupedFilters}
             islandFilters={islandFilters}
             allItems={positionListForOneElection}
-            onFilteredItemsChange={this.handleFilteredPositionListChange}
+            onFilteredItemsChange={this.onFilteredItemsChangeFromPositionItemsFilterBase}
             selectedFiltersDefault={selectedFiltersCurrentDefault}
           >
             {/* props get added to this component in FilterBase */}
@@ -332,6 +431,10 @@ class VoterGuideSettingsAddPositions extends Component {
               if (!ballotItemDisplayNameForPosition || !ballotItemWeVoteIdForPosition) {
                 return null;
               }
+              if (numberOfPositionItemsDisplayed >= numberOfPositionItemsToDisplay) {
+                return null;
+              }
+              numberOfPositionItemsDisplayed += 1;
               if (onePosition.kind_of_ballot_item === 'CANDIDATE') {
                 // We create a simulated candidateList from the positionList
                 candidateListForPosition = [{
@@ -370,7 +473,21 @@ class VoterGuideSettingsAddPositions extends Component {
             })
             }
           </ul>
-          {atLeastOnePositionFoundForThisElection && (
+          <ShowMoreItems>
+            Displaying
+            {' '}
+            {numberOfPositionItemsDisplayed}
+            {' '}
+            out of
+            {' '}
+            {totalNumberOfPositionItems}
+            {' '}
+            ::
+            {' '}
+            <span onClick={() => this.increaseNumberOfPositionItemsToDisplay()}>Show More</span>
+          </ShowMoreItems>
+
+          {atLeastOnePositionFoundWithTheseFilters && (
             <div className="fa-pull-right">
               <Button
                 color="primary"
@@ -389,50 +506,73 @@ class VoterGuideSettingsAddPositions extends Component {
       // ////////////////////////
       // Add New Positions - Second Tab
       const selectedFiltersAddDefault = ['showFederalRaceFilter'];
-      const { ballotItemList, filteredBallotItemList } = this.state;
-      // console.log('VoterGuideSettingsAddPositions render, filteredBallotItemList:', filteredBallotItemList);
-      if (!ballotItemList) {
+      const { allBallotItems, filteredBallotItems, numberOfBallotItemsToDisplay } = this.state;
+      if (!allBallotItems) {
         return LoadingWheel;
       }
-      const atLeastOnePositionFoundWithTheseFilters = filteredBallotItemList && filteredBallotItemList.length !== 0;
-
+      const atLeastOnePositionFoundWithTheseFilters = filteredBallotItems && filteredBallotItems.length !== 0;
+      let numberOfBallotItemsDisplayed = 0;
+      let totalNumberOfBallotItems = 0;
+      if (atLeastOnePositionFoundWithTheseFilters) {
+        totalNumberOfBallotItems = filteredBallotItems.length;
+      }
       // const { classes } = this.props;
-      // console.log('ballotItemList: ', ballotItemList);
+      // console.log('allBallotItems: ', allBallotItems);
       return (
         <div>
           <FilterBase
             key="addPositionsFilterBase"
             groupedFilters={groupedFilters}
             islandFilters={islandFilters}
-            allItems={ballotItemList}
-            onFilteredItemsChange={this.handleFilteredBallotItemsChange}
+            allItems={allBallotItems}
+            onFilteredItemsChange={this.onFilteredItemsChangeFromBallotItemsFilterBase}
             selectedFiltersDefault={selectedFiltersAddDefault}
           >
             {/* props get added to this component in FilterBase */}
             <SettingsAddBallotItemsFilter />
           </FilterBase>
           {atLeastOnePositionFoundWithTheseFilters ? (
-            <ul className="card-child__list-group">
-              {filteredBallotItemList.map((oneBallotItem) => {
-                // console.log('oneBallotItem: ', oneBallotItem);
-                if (!oneBallotItem.we_vote_id) {
-                  return null;
+            <div>
+              <ul className="card-child__list-group">
+                {filteredBallotItems.map((oneBallotItem) => {
+                  // console.log('oneBallotItem: ', oneBallotItem);
+                  if (!oneBallotItem.we_vote_id) {
+                    return null;
+                  }
+                  if (numberOfBallotItemsDisplayed >= numberOfBallotItemsToDisplay) {
+                    return null;
+                  }
+                  numberOfBallotItemsDisplayed += 1;
+                  // console.log('numberOfBallotItemsDisplayed: ', numberOfBallotItemsDisplayed);
+                  return (
+                    <BallotItemForAddPositions
+                      key={`addNewPositionKey-${oneBallotItem.we_vote_id}`}
+                      externalUniqueId={`addNewPositionKey-${oneBallotItem.we_vote_id}`}
+                      allBallotItemsCount={2}
+                      // ref={(ref) => { this.ballotItems[oneBallotItem.we_vote_id] = ref; }}
+                      ballotItemDisplayName={oneBallotItem.ballot_item_display_name}
+                      candidateList={oneBallotItem.candidate_list}
+                      kindOfBallotItem={oneBallotItem.kind_of_ballot_item}
+                      ballotItemWeVoteId={oneBallotItem.we_vote_id}
+                    />
+                  );
+                })
                 }
-                return (
-                  <BallotItemForAddPositions
-                    key={`addNewPositionKey-${oneBallotItem.we_vote_id}`}
-                    externalUniqueId={`addNewPositionKey-${oneBallotItem.we_vote_id}`}
-                    allBallotItemsCount={2}
-                    // ref={(ref) => { this.ballotItems[oneBallotItem.we_vote_id] = ref; }}
-                    ballotItemDisplayName={oneBallotItem.ballot_item_display_name}
-                    candidateList={oneBallotItem.candidate_list}
-                    kindOfBallotItem={oneBallotItem.kind_of_ballot_item}
-                    ballotItemWeVoteId={oneBallotItem.we_vote_id}
-                  />
-                );
-              })
-              }
-            </ul>
+              </ul>
+              <ShowMoreItems>
+                Displaying
+                {' '}
+                {numberOfBallotItemsDisplayed}
+                {' '}
+                out of
+                {' '}
+                {totalNumberOfBallotItems}
+                {' '}
+                ::
+                {' '}
+                <span onClick={() => this.increaseNumberOfBallotItemsToDisplay()}>Show More</span>
+              </ShowMoreItems>
+            </div>
           ) : (
             <Card>
               <EmptyBallotMessageContainer>
@@ -470,6 +610,26 @@ const EmptyBallotText = styled.p`
   margin: 1em 2em;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     margin: 1em;
+  }
+`;
+
+const ShowMoreItems = styled.div`
+  font-size: 18px;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    padding-top: 5px;
+    padding-bottom: 3px;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    border-color: #f8f8f8;
+  }
+  &:hover {
+    background-color: #f8f8f8;
+  }
+  @media print{
+    display: none;
   }
 `;
 

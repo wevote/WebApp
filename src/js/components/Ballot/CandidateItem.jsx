@@ -39,7 +39,6 @@ class CandidateItem extends Component {
     super(props);
     this.state = {
       ballotItemDisplayName: '',
-      ballotpediaCandidateSummary: '',
       // ballotpediaCandidateUrl: '',
       candidatePhotoUrl: '',
       candidateWeVoteId: '',
@@ -49,7 +48,6 @@ class CandidateItem extends Component {
       officeWeVoteId: '',
       organizationWeVoteId: '',
       politicalParty: '',
-      twitterDescription: '',
       twitterFollowersCount: '',
       showPositionStatementActionBar: false,
     };
@@ -72,24 +70,28 @@ class CandidateItem extends Component {
       // console.log('CandidateItem, componentDidMount, candidate:', candidate);
 
       let candidatePhotoUrl;
-      if (this.props.showLargeImage) {
-        if (candidate.candidate_photo_url_large) {
-          candidatePhotoUrl = candidate.candidate_photo_url_large;
-        }
+      if (this.props.showLargeImage && candidate.candidate_photo_url_large) {
+        candidatePhotoUrl = candidate.candidate_photo_url_large;
       } else if (candidate.candidate_photo_url_medium) {
         candidatePhotoUrl = candidate.candidate_photo_url_medium;
+      } else if (candidate.candidate_photo_url_tiny) {
+        candidatePhotoUrl = candidate.candidate_photo_url_tiny;
       }
-
+      const twitterDescription = candidate.twitter_description;
+      const twitterDescriptionText = twitterDescription && twitterDescription.length ? `${twitterDescription} ` : '';
+      const ballotpediaCandidateSummary = candidate.ballotpedia_candidate_summary;
+      let ballotpediaCandidateSummaryText = ballotpediaCandidateSummary && ballotpediaCandidateSummary.length ? ballotpediaCandidateSummary : '';
+      ballotpediaCandidateSummaryText = ballotpediaCandidateSummaryText.split(/<[^<>]*>/).join(''); // Strip away any HTML tags
+      const candidateText = twitterDescriptionText + ballotpediaCandidateSummaryText;
       this.setState({
         ballotItemDisplayName: candidate.ballot_item_display_name,
-        ballotpediaCandidateSummary: candidate.ballotpedia_candidate_summary,
         // ballotpediaCandidateUrl: candidate.ballotpedia_candidate_url,
         candidatePhotoUrl,
+        candidateText,
         candidateWeVoteId: this.props.candidateWeVoteId,
         contestOfficeName: candidate.contest_office_name,
         officeWeVoteId: candidate.contest_office_we_vote_id,
         politicalParty: candidate.party,
-        twitterDescription: candidate.twitter_description,
         twitterFollowersCount: candidate.twitter_followers_count,
       });
     }
@@ -111,6 +113,15 @@ class CandidateItem extends Component {
     if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
       return true;
     }
+    if (this.state.candidatePhotoUrl !== nextState.candidatePhotoUrl) {
+      return true;
+    }
+    if (this.state.candidateText !== nextState.candidateText) {
+      return true;
+    }
+    if (this.state.candidateWeVoteId !== nextState.candidateWeVoteId) {
+      return true;
+    }
     if (this.state.largeAreaHoverColorOnNow !== nextState.largeAreaHoverColorOnNow) {
       return true;
     }
@@ -127,26 +138,31 @@ class CandidateItem extends Component {
   }
 
   onCandidateStoreChange () {
-    // console.log('Candidate onCandidateStoreChange');
     const { candidateWeVoteId } = this.state;
+    console.log('CandidateItem onCandidateStoreChange, candidateWeVoteId:', candidateWeVoteId);
     const candidate = CandidateStore.getCandidate(candidateWeVoteId);
     let candidatePhotoUrl;
-    if (this.props.showLargeImage) {
-      if (candidate.candidate_photo_url_large) {
-        candidatePhotoUrl = candidate.candidate_photo_url_large;
-      }
+    if (this.props.showLargeImage && candidate.candidate_photo_url_large) {
+      candidatePhotoUrl = candidate.candidate_photo_url_large;
     } else if (candidate.candidate_photo_url_medium) {
       candidatePhotoUrl = candidate.candidate_photo_url_medium;
+    } else if (candidate.candidate_photo_url_tiny) {
+      candidatePhotoUrl = candidate.candidate_photo_url_tiny;
     }
+    const twitterDescription = candidate.twitter_description;
+    const twitterDescriptionText = twitterDescription && twitterDescription.length ? `${twitterDescription} ` : '';
+    const ballotpediaCandidateSummary = candidate.ballotpedia_candidate_summary;
+    let ballotpediaCandidateSummaryText = ballotpediaCandidateSummary && ballotpediaCandidateSummary.length ? ballotpediaCandidateSummary : '';
+    ballotpediaCandidateSummaryText = ballotpediaCandidateSummaryText.split(/<[^<>]*>/).join(''); // Strip away any HTML tags
+    const candidateText = twitterDescriptionText + ballotpediaCandidateSummaryText;
     this.setState({
       ballotItemDisplayName: candidate.ballot_item_display_name,
-      ballotpediaCandidateSummary: candidate.ballotpedia_candidate_summary,
       // ballotpediaCandidateUrl: candidate.ballotpedia_candidate_url,
       candidatePhotoUrl,
+      candidateText,
       contestOfficeName: candidate.contest_office_name,
       officeWeVoteId: candidate.contest_office_we_vote_id,
       politicalParty: candidate.party,
-      twitterDescription: candidate.twitter_description,
       twitterFollowersCount: candidate.twitter_followers_count,
     });
   }
@@ -163,11 +179,15 @@ class CandidateItem extends Component {
 
   getCandidateLink () {
     // If here, we assume the voter is on the Office page
-    if (this.state.organizationWeVoteId) {
-      return `/candidate/${this.state.candidateWeVoteId}/bto/${this.state.organizationWeVoteId}`; // back-to-office
-    } else {
-      return `/candidate/${this.state.candidateWeVoteId}/b/btdo/`; // back-to-default-office
+    const { candidateWeVoteId, organizationWeVoteId } = this.state;
+    if (candidateWeVoteId) {
+      if (organizationWeVoteId) {
+        return `/candidate/${candidateWeVoteId}/bto/${organizationWeVoteId}`; // back-to-office
+      } else {
+        return `/candidate/${candidateWeVoteId}/b/btdo/`; // back-to-default-office
+      }
     }
+    return '';
   }
 
   getOfficeLink () {
@@ -192,99 +212,27 @@ class CandidateItem extends Component {
     }
   }
 
-  handleEnableLink = () => {
-    // console.log('Handle largeAreaHoverColorOnNow', e.target);
-    if (this.props.showHover) {
-      this.setState({ largeAreaHoverLinkOnNow: true });
-    }
-  }
-
-  handleDisableLink = () => {
-    // console.log('Handle leave', e.target);
-    if (this.props.showHover) {
-      this.setState({ largeAreaHoverLinkOnNow: false });
-    }
-  }
-
-  togglePositionStatement () {
-    const { showPositionStatementActionBar } = this.state;
-    this.setState({ showPositionStatementActionBar: !showPositionStatementActionBar });
-  }
-
-  goToCandidateLink () {
-    // If here, we assume the voter is on the Office page
-    historyPush(this.getCandidateLink());
-  }
-
-  goToOfficeLink () {
-    historyPush(this.getOfficeLink());
-  }
-
-  render () {
-    // console.log('CandidateItem render');
-    renderLog(__filename);
+  candidateRenderBlock = (candidateWeVoteId) => {
     const {
       ballotItemDisplayName,
-      ballotpediaCandidateSummary,
-      // ballotpediaCandidateUrl,
       politicalParty,
-      twitterDescription,
       twitterFollowersCount,
       contestOfficeName,
-      candidateWeVoteId,
       candidatePhotoUrl,
     } = this.state;
-
-    const candidatePhotoUrlHtml = (
-      <ImageHandler
-        className="card-main__avatar"
-        sizeClassName="icon-office-child "
-        imageUrl={candidatePhotoUrl}
-        alt="candidate-photo"
-        kind_of_ballot_item="CANDIDATE"
-      />
-    );
-
-    const twitterDescriptionText = twitterDescription && twitterDescription.length ? `${twitterDescription} ` : '';
-    let ballotpediaCandidateSummaryText = ballotpediaCandidateSummary && ballotpediaCandidateSummary.length ? ballotpediaCandidateSummary : '';
-
-    // Strip away any HTML tags
-    ballotpediaCandidateSummaryText = ballotpediaCandidateSummaryText.split(/<[^<>]*>/).join('');
-    const candidateText = twitterDescriptionText + ballotpediaCandidateSummaryText;
-
-    // learnMoreUrl={this.getCandidateLink()}
-    const topCommentByBallotItem = (
-      <TopCommentByBallotItem
-        ballotItemWeVoteId={candidateWeVoteId}
-      >
-        {/* If there aren't any comments about the candidate, show the text description of the candidate */}
-        { candidateText.length ? (
-          <div className={`u-stack--sm${this.props.linkToBallotItemPage ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
-            <div className="card-main__description">
-              <TextTruncate
-                line={2}
-                truncateText="..."
-                text={candidateText}
-                textTruncateChild={null}
-              />
-            </div>
-            <span className="card-main__read-more-pseudo" />
-            <span className="card-main__read-more-link">
-              &nbsp;more
-            </span>
-          </div>
-        ) :
-          null
-        }
-      </TopCommentByBallotItem>
-    );
-
-    const candidateRenderBlock = (
+    // console.log('candidateRenderBlock candidatePhotoUrl: ', candidatePhotoUrl);
+    return (
       <div>
         <CandidateWrapper className="card-main__media-object">
           <CandidateInfo>
             <div className="card-main__media-object-anchor">
-              {candidatePhotoUrlHtml}
+              <ImageHandler
+                className="card-main__avatar"
+                sizeClassName="icon-office-child "
+                imageUrl={candidatePhotoUrl}
+                alt="candidate-photo"
+                kind_of_ballot_item="CANDIDATE"
+              />
             </div>
             <Candidate>
               <h2 className={`card-main__display-name ${this.props.linkToBallotItemPage && this.state.largeAreaHoverColorOnNow && this.props.showHover ? 'card__blue' : ''}`}>
@@ -346,8 +294,37 @@ class CandidateItem extends Component {
         </span>
       </div>
     );
+  }
 
-    const candidateIssuesAndCommentBlock = (
+  topCommentByBallotItem = (candidateWeVoteId, candidateText) => (
+    <TopCommentByBallotItem
+      ballotItemWeVoteId={candidateWeVoteId}
+    >
+      {/* If there aren't any comments about the candidate, show the text description of the candidate */}
+      { candidateText.length ? (
+        <div className={`u-stack--sm${this.props.linkToBallotItemPage ? ' card-main__description-container--truncated' : ' card-main__description-container'}`}>
+          <div className="card-main__description">
+            <TextTruncate
+              line={2}
+              truncateText="..."
+              text={candidateText}
+              textTruncateChild={null}
+            />
+          </div>
+          <span className="card-main__read-more-pseudo" />
+          <span className="card-main__read-more-link">
+            &nbsp;more
+          </span>
+        </div>
+      ) :
+        null
+      }
+    </TopCommentByBallotItem>
+  )
+
+  candidateIssuesAndCommentBlock = (candidateText, localUniqueId) => {
+    const { candidateWeVoteId, largeAreaHoverColorOnNow, largeAreaHoverLinkOnNow, showPositionStatementActionBar } = this.state;
+    return (
       <div>
         <div className="card-main__actions">
           <div>
@@ -357,15 +334,15 @@ class CandidateItem extends Component {
               placement="bottom"
             />
             {/* If there is a quote about the candidate, show that too. */}
-            { this.props.showTopCommentByBallotItem ? (
+            {this.props.showTopCommentByBallotItem ? (
               <div>
                 <div className="u-show-desktop">
-                  { this.props.linkToBallotItemPage && this.state.largeAreaHoverLinkOnNow && this.props.showHover ?
+                  {this.props.linkToBallotItemPage && largeAreaHoverLinkOnNow && this.props.showHover ?
                     (
                       <div className="row">
                         <div className="col col-9 card__blue">
-                          <Link to={this.getCandidateLink} className="card-main__no-underline">
-                            {topCommentByBallotItem}
+                          <Link to={this.getCandidateLink()} className="card-main__no-underline">
+                            {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
                           </Link>
                         </div>
                         <div className="col col-3">
@@ -374,6 +351,7 @@ class CandidateItem extends Component {
                             buttonsOnly
                             className="u-float-right"
                             commentButtonHide
+                            externalUniqueId={`candidateItem-ItemActionBar-${localUniqueId}`}
                             shareButtonHide
                             type="CANDIDATE"
                           />
@@ -381,27 +359,30 @@ class CandidateItem extends Component {
                       </div>
                     ) :
                     (
-                      <div className={this.props.linkToBallotItemPage && this.state.largeAreaHoverColorOnNow && this.props.showHover ? (
-                        'card__blue'
-                      ) : (
-                        ''
-                      )}
+                      <div
+                        className={this.props.linkToBallotItemPage && largeAreaHoverColorOnNow && this.props.showHover ? (
+                          'card__blue'
+                        ) : (
+                          ''
+                        )}
                       >
-                        {topCommentByBallotItem}
+                        {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
                       </div>
                     )
                   }
                 </div>
                 <div className="u-show-mobile-tablet">
-                  <Link to={this.getCandidateLink} className="card-main__no-underline">
-                    {topCommentByBallotItem}
+                  <Link to={this.getCandidateLink()} className="card-main__no-underline">
+                    {this.topCommentByBallotItem(candidateWeVoteId, candidateText)}
                   </Link>
                 </div>
               </div>
             ) : (
               <span>
-                { candidateText.length ? (
-                  <div className={`u-stack--sm ${this.props.linkToBallotItemPage ? 'card-main__description-container--truncated' : 'card-main__description-container'}`}>
+                {candidateText.length ? (
+                  <div
+                    className={`u-stack--sm ${this.props.linkToBallotItemPage ? 'card-main__description-container--truncated' : 'card-main__description-container'}`}
+                  >
                     <div className="card-main__description">
                       <ReadMore
                         text_to_display={candidateText}
@@ -419,8 +400,8 @@ class CandidateItem extends Component {
                 null : (
                   <BallotItemSupportOpposeComment
                     ballotItemWeVoteId={candidateWeVoteId}
-                    externalUniqueId="candidateItem"
-                    showPositionStatementActionBar={this.state.showPositionStatementActionBar}
+                    externalUniqueId={`candidateItem-${localUniqueId}`}
+                    showPositionStatementActionBar={showPositionStatementActionBar}
                   />
                 )
               }
@@ -433,6 +414,24 @@ class CandidateItem extends Component {
         }
       </div>
     );
+  }
+
+  goToCandidateLink () {
+    // If here, we assume the voter is on the Office page
+    historyPush(this.getCandidateLink());
+  }
+
+  goToOfficeLink () {
+    historyPush(this.getOfficeLink());
+  }
+
+  render () {
+    // console.log('CandidateItem render');
+    renderLog(__filename);
+    const { candidateText, candidateWeVoteId } = this.state;
+    if (!candidateWeVoteId) {
+      return null;
+    }
 
     return (
       <div>
@@ -442,30 +441,30 @@ class CandidateItem extends Component {
           onMouseLeave={this.handleLeave}
         >
           {this.props.linkToBallotItemPage && this.state.largeAreaHoverLinkOnNow && this.props.showHover ? (
-            <Link to={this.getCandidateLink} className="card-main__no-underline">
-              {candidateRenderBlock}
+            <Link to={this.getCandidateLink()} className="card-main__no-underline">
+              {this.candidateRenderBlock(candidateWeVoteId)}
             </Link>
           ) : (
             <div>
-              {candidateRenderBlock}
+              {this.candidateRenderBlock(candidateWeVoteId)}
             </div>
           )}
           <div>
-            {candidateIssuesAndCommentBlock}
+            {this.candidateIssuesAndCommentBlock(candidateText, 'desktopIssuesComment')}
           </div>
         </div>
         <div className="u-show-mobile-tablet card-main candidate-card u-no-scroll">
           {this.props.linkToBallotItemPage ? (
-            <Link to={this.getCandidateLink} className="card-main__no-underline">
-              {candidateRenderBlock}
+            <Link to={this.getCandidateLink()} className="card-main__no-underline">
+              {this.candidateRenderBlock(candidateWeVoteId)}
             </Link>
           ) : (
             <span>
-              {candidateRenderBlock}
+              {this.candidateRenderBlock(candidateWeVoteId)}
             </span>
           )}
           <div>
-            {candidateIssuesAndCommentBlock}
+            {this.candidateIssuesAndCommentBlock(candidateText, 'mobileIssuesComment')}
           </div>
         </div>
       </div>

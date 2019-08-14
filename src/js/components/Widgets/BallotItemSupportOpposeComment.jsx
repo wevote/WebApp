@@ -168,7 +168,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
         commentButtonHide={commentBoxIsVisible}
         commentButtonHideInMobile
         currentBallotIdInUrl={this.props.currentBallotIdInUrl}
-        externalUniqueId={this.props.externalUniqueId}
+        externalUniqueId={`${this.props.externalUniqueId}-ballotItemSupportOpposeComment-${this.state.ballotItemWeVoteId}`}
         shareButtonHide
         supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
         toggleFunction={this.togglePositionStatement}
@@ -184,7 +184,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
           ballotItemWeVoteId={this.state.ballotItemWeVoteId}
           ballotItemDisplayName={this.state.ballotItemDisplayName}
           commentEditModeOn={this.state.showPositionStatement}
-          externalUniqueId={this.props.externalUniqueId}
+          externalUniqueId={`${this.props.externalUniqueId}-desktop-fromBallotItemSupportOpposeComment-${this.state.ballotItemWeVoteId}`}
           supportProps={this.state.ballotItemSupportProps}
           shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
@@ -204,6 +204,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
           shouldFocus={this.state.shouldFocusCommentArea}
           transitioning={this.state.transitioning}
           type={this.state.ballotItemType}
+          externalUniqueId={`${this.props.externalUniqueId}-mobile-fromBallotItemSupportOpposeComment-${this.state.ballotItemWeVoteId}`}
           shownInList
           mobile
         />

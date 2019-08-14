@@ -24,11 +24,12 @@ import { openSnackbar } from './SnackNotifier';
 class PositionPublicToggle extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string.isRequired,
+    classes: PropTypes.object,
     className: PropTypes.string.isRequired,
+    externalUniqueId: PropTypes.string,
     inTestMode: PropTypes.bool,
     supportProps: PropTypes.object,
     type: PropTypes.string.isRequired,
-    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -284,7 +285,7 @@ class PositionPublicToggle extends Component {
               <RadioItem>
                 <FormControlLabel
                   classes={{ label: classes.radioLabel }}
-                  id="positionPublicToggleFriendsOnly"
+                  id={`positionPublicToggleFriendsOnly-${this.props.externalUniqueId}`}
                   value="Friends Only"
                   label="Friends Only"
                   labelPlacement="end"
@@ -301,7 +302,7 @@ class PositionPublicToggle extends Component {
               </RadioItem>
               <RadioItem>
                 <FormControlLabel
-                  id="positionPublicTogglePublic"
+                  id={`positionPublicTogglePublic-${this.props.externalUniqueId}`}
                   classes={{ label: classes.radioLabel }}
                   value="Public"
                   label="Public"

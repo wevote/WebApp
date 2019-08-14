@@ -107,7 +107,10 @@ class FilterBase extends React.Component {
     this.setState({ selectedFilters: updatedFilters.filter(item => !remainingSortFiltersToRemove.includes(item)) });
   }
 
-  onFilteredItemsChange = filteredItems => this.setState({ filteredItems }, () => this.props.onFilteredItemsChange(this.state.filteredItems));
+  onFilteredItemsChange = (filteredItems, currentSelectedBallotFilters) => {
+    // console.log('FilterBase currentSelectedBallotFilters:', currentSelectedBallotFilters);
+    this.setState({ filteredItems }, () => this.props.onFilteredItemsChange(this.state.filteredItems, currentSelectedBallotFilters));
+  }
 
   generateGroupedFilters = () => this.props.groupedFilters.map((item, itemIndex) => (
     <div

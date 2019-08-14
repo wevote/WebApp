@@ -77,8 +77,9 @@ class BallotDecisionsTabs extends Component {
         indicatorColor="primary"
         classes={{ root: classes.tabsRoot, flexContainer: classes.tabsFlexContainer, scroller: classes.scroller }}
       >
+        {/* labelContainer: classes.tabLabelContainer,  */}
         <Tab
-          classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot }}
+          classes={{ root: classes.tabRoot }}
           id="allItemsCompletionLevelTab"
           onClick={() => this.goToDifferentCompletionLevelTab('filterAllBallotItems')}
           label={(
@@ -101,7 +102,7 @@ class BallotDecisionsTabs extends Component {
 
         { showRemainingDecisions ? (
           <Tab
-            classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot }}
+            classes={{ root: classes.tabRoot }}
             id="remainingChoicesCompletionLevelTab"
             onClick={() => this.goToDifferentCompletionLevelTab('filterRemaining')}
             label={(
@@ -126,7 +127,7 @@ class BallotDecisionsTabs extends Component {
 
         { showDecisionsMade ? (
           <Tab
-            classes={{ labelContainer: classes.tabLabelContainer, root: classes.tabRoot }}
+            classes={{ root: classes.tabRoot }}
             id="decidedItemsCompletionLevelTab"
             onClick={() => this.goToDifferentCompletionLevelTab('filterDecided')}
             label={(
