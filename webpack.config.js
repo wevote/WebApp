@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 
 module.exports = {
   mode: 'development',
-  entry: './src/js/index.js',
+  entry: ['./src/js/index.js', './src/sass/loading-screen.scss', './src/sass/main.scss'],
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'build'),
@@ -42,9 +42,21 @@ module.exports = {
       {
         test: /\.scss$/,
         use: [
-          'style-loader', // creates style nodes from JS strings
-          'css-loader', // translates CSS into CommonJS
-          'sass-loader', // compiles Sass to CSS, using Node Sass by default
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'css/[name].css',
+            },
+          },
+          {
+            loader: 'extract-loader',
+          },
+          {
+            loader: 'css-loader?-url',
+          },
+          {
+            loader: 'sass-loader',
+          },
         ],
       },
       {
