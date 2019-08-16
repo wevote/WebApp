@@ -218,7 +218,7 @@ export default class HamburgerMenu extends Component {
               to="/settings/voterguidesmenu"
               icon="fa fa-list"
               iconStyle={{ fontSize: 24, color: '#1c2f4b' }}
-              linkText="Your Voter Guides"
+              linkText="Your Endorsements"
             />
 
             <HamburgerMenuRow

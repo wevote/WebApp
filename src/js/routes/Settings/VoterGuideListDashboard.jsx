@@ -121,13 +121,13 @@ export default class VoterGuideListDashboard extends Component {
     switch (this.state.editMode) {
       default:
       case 'intro':
-        settingsComponentToDisplay = <div>Create your own voter guide by clicking &quot;New Voter Guide&quot;.</div>;
+        settingsComponentToDisplay = <div>Create your own voter guide by clicking &quot;Choose New Election&quot;.</div>;
         break;
     }
 
     return (
       <div className="settings-dashboard">
-        <Helmet title="Your Voter Guides - We Vote" />
+        <Helmet title="Your Endorsements - We Vote" />
         <div className="container-fluid">
           <div className="row">
             {/* Mobile and Desktop mode */}

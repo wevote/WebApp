@@ -52,8 +52,17 @@ class BallotStore extends ReduceStore {
     return this.getState().allBallotItemsByOfficeOrMeasure || [];
   }
 
-  getAllBallotItemsFlattened () {
-    return this.getState().allBallotItemsFlattened || [];
+  getAllBallotItemsFlattened (googleCivicElectionId = 0) {
+    if (googleCivicElectionId) {
+      const allBallotItemsSnapshot = this.getState().allBallotItemsFlattened || [];
+      return allBallotItemsSnapshot.filter(item => item.google_civic_election_id === googleCivicElectionId);
+    } else {
+      return this.getState().allBallotItemsFlattened || [];
+    }
+  }
+
+  get getAllBallotItemsLastStateCodeReceived () {
+    return this.getState().allBallotItemsLastStateCodeReceived;
   }
 
   get ballotProperties () {
@@ -322,6 +331,7 @@ class BallotStore extends ReduceStore {
           allBallotItemsFlattened: Object.values(allBallotItemsFlattenedDict),
           allBallotItemsFlattenedDict,
           allBallotItemsHaveBeenRetrievedForElection,
+          allBallotItemsLastStateCodeReceived: allBallotItemsStateCode,
         });
         return revisedState;
 

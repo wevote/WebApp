@@ -22,6 +22,7 @@ class FilterBase extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
+      changeTrigger: '',
       componentDidMount: false,
       filteredItems: [],
       lastFilterAdded: '',
@@ -31,41 +32,47 @@ class FilterBase extends React.Component {
   }
 
   componentDidMount () {
+    // console.log('FilterBase componentDidMount, selectedFiltersDefault:', this.props.selectedFiltersDefault);
     this.setState({
       componentDidMount: true,
       selectedFilters: this.props.selectedFiltersDefault || [],
     });
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    // console.log('FilterBase this.props:', this.props);
-    // console.log('FilterBase nextProps:', nextProps);
-    // console.log('FilterBase this.state:', this.state);
-    // console.log('FilterBase nextState:', nextState);
-    if (this.state.componentDidMount !== nextState.componentDidMount) {
-      // console.log('this.state.componentDidMount:', this.state.componentDidMount, ', nextState.componentDidMount:', nextState.componentDidMount);
-      return true;
-    }
-    if (this.state.lastFilterAdded !== nextState.lastFilterAdded) {
-      // console.log('this.state.lastFilterAdded:', this.state.lastFilterAdded, ', nextState.lastFilterAdded:', nextState.lastFilterAdded);
-      return true;
-    }
-    if (this.state.showAllFilters !== nextState.showAllFilters) {
-      // console.log('this.state.showAllFilters:', this.state.showAllFilters, ', nextState.showAllFilters:', nextState.showAllFilters);
-      return true;
-    }
-    if (JSON.stringify(this.state.selectedFilters) !== JSON.stringify(nextState.selectedFilters)) {
-      // console.log('this.state.selectedFilters:', this.state.selectedFilters, ', nextState.selectedFilters:', nextState.selectedFilters);
-      return true;
-    }
-    if (JSON.stringify(this.state.filteredItems) !== JSON.stringify(nextState.filteredItems)) {
-      // console.log('this.state.filteredItems:', this.state.filteredItems, ', nextState.filteredItems:', nextState.filteredItems);
-      return true;
-    }
-    // console.log('shouldComponentUpdate no change');
-    return false;
-  }
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+  //   // console.log('FilterBase this.props:', this.props);
+  //   // console.log('FilterBase nextProps:', nextProps);
+  //   // console.log('FilterBase this.state:', this.state);
+  //   // console.log('FilterBase nextState:', nextState);
+  //   // console.log('shouldComponentUpdate START');
+  //   if (this.state.componentDidMount !== nextState.componentDidMount) {
+  //     // console.log('this.state.componentDidMount:', this.state.componentDidMount, ', nextState.componentDidMount:', nextState.componentDidMount);
+  //     return true;
+  //   }
+  //   if (this.state.changeTrigger !== nextState.changeTrigger) {
+  //     // console.log('this.state.changeTrigger:', this.state.changeTrigger, ', nextState.changeTrigger:', nextState.changeTrigger);
+  //     return true;
+  //   }
+  //   if (this.state.lastFilterAdded !== nextState.lastFilterAdded) {
+  //     // console.log('this.state.lastFilterAdded:', this.state.lastFilterAdded, ', nextState.lastFilterAdded:', nextState.lastFilterAdded);
+  //     return true;
+  //   }
+  //   if (this.state.showAllFilters !== nextState.showAllFilters) {
+  //     // console.log('this.state.showAllFilters:', this.state.showAllFilters, ', nextState.showAllFilters:', nextState.showAllFilters);
+  //     return true;
+  //   }
+  //   if (JSON.stringify(this.state.selectedFilters) !== JSON.stringify(nextState.selectedFilters)) {
+  //     // console.log('this.state.selectedFilters:', JSON.stringify(this.state.selectedFilters), ', nextState.selectedFilters:', JSON.stringify(nextState.selectedFilters));
+  //     return true;
+  //   }
+  //   if (JSON.stringify(this.state.filteredItems) !== JSON.stringify(nextState.filteredItems)) {
+  //     // console.log('this.state.filteredItems:', this.state.filteredItems, ', nextState.filteredItems:', nextState.filteredItems);
+  //     return true;
+  //   }
+  //   // console.log('shouldComponentUpdate no change');
+  //   return false;
+  // }
 
   toggleShowAllFilters = () => {
     const { showAllFilters } = this.state;
@@ -109,7 +116,16 @@ class FilterBase extends React.Component {
 
   onFilteredItemsChange = (filteredItems, currentSelectedBallotFilters) => {
     // console.log('FilterBase currentSelectedBallotFilters:', currentSelectedBallotFilters);
-    this.setState({ filteredItems }, () => this.props.onFilteredItemsChange(this.state.filteredItems, currentSelectedBallotFilters));
+    this.setState({
+      filteredItems,
+    }, () => this.props.onFilteredItemsChange(this.state.filteredItems, currentSelectedBallotFilters));
+  }
+
+  forceChangeTrigger = (changeTrigger) => {
+    // There are cases where we receive data in the Filter.jsx file (like SettingsAddBallotItemsFilter.jsx)
+    // and we want to tell FilterBase to re-render, and then subsequently tell the Filter.jsx file to rerender too.
+    // console.log('forceChangeTrigger:', changeTrigger);
+    this.setState({ changeTrigger });
   }
 
   generateGroupedFilters = () => this.props.groupedFilters.map((item, itemIndex) => (
@@ -189,6 +205,8 @@ class FilterBase extends React.Component {
         {
           React.cloneElement(this.props.children, {
             allItems: this.props.allItems,
+            changeTrigger: this.state.changeTrigger,
+            forceChangeTrigger: this.forceChangeTrigger,
             lastFilterAdded: this.state.lastFilterAdded,
             onSelectSortByFilter: this.selectSortByFilter,
             onToggleFilter: this.toggleFilter,

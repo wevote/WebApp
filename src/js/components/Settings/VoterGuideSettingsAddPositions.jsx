@@ -77,6 +77,7 @@ class VoterGuideSettingsAddPositions extends Component {
       positionListForOneElection: [],
       stateCodeFromIpAddress: '',
       stateCodeFromVoterGuide: '',
+      stateCodeToRetrieve: '',
     };
   }
 
@@ -91,7 +92,7 @@ class VoterGuideSettingsAddPositions extends Component {
       voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.props.voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
-          // localGoogleCivicElectionId: voterGuide.google_civic_election_id,
+          localGoogleCivicElectionId: parseInt(voterGuide.google_civic_election_id, 10),
           voterGuide,
         });
       }
@@ -116,7 +117,7 @@ class VoterGuideSettingsAddPositions extends Component {
       voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(nextProps.voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
-          // localGoogleCivicElectionId: voterGuide.google_civic_election_id,
+          localGoogleCivicElectionId: parseInt(voterGuide.google_civic_election_id, 10),
           voterGuide,
         });
       }
@@ -198,7 +199,8 @@ class VoterGuideSettingsAddPositions extends Component {
   }
 
   onBallotStoreChange () {
-    const allBallotItemsFlattened = BallotStore.getAllBallotItemsFlattened();
+    const { localGoogleCivicElectionId } = this.state;
+    const allBallotItemsFlattened = BallotStore.getAllBallotItemsFlattened(localGoogleCivicElectionId);
     // console.log('VoterGuideSettingsAddPositions, onBallotStoreChange incomingBallotItemList:', incomingBallotItemList);
     this.setState({
       allBallotItems: allBallotItemsFlattened,
@@ -260,6 +262,11 @@ class VoterGuideSettingsAddPositions extends Component {
     if (!stateCodeToRetrieve && stateCodeFromIpAddress) {
       stateCodeToRetrieve = stateCodeFromIpAddress.toLowerCase();
     }
+    if (stateCodeToRetrieve) {
+      this.setState({
+        stateCodeToRetrieve,
+      });
+    }
     // console.log('onOrganizationStoreChange stateCodeToRetrieve:', stateCodeToRetrieve);
     if (voterGuide && voterGuide.google_civic_election_id && stateCodeToRetrieve) {
       if (!localAllBallotItemsHaveBeenRetrieved[voterGuide.google_civic_election_id]) {
@@ -277,6 +284,11 @@ class VoterGuideSettingsAddPositions extends Component {
         BallotActions.allBallotItemsRetrieve(voterGuide.google_civic_election_id, stateCodeToRetrieve);
       }
     }
+    if (voterGuide && voterGuide.google_civic_election_id) {
+      this.setState({
+        localGoogleCivicElectionId: parseInt(voterGuide.google_civic_election_id, 10),
+      });
+    }
   }
 
   onVoterGuideStoreChange () {
@@ -285,14 +297,17 @@ class VoterGuideSettingsAddPositions extends Component {
       const voterGuide = VoterGuideStore.getVoterGuideByVoterGuideId(this.state.voterGuideWeVoteId);
       if (voterGuide && voterGuide.we_vote_id) {
         this.setState({
-          // localGoogleCivicElectionId: voterGuide.google_civic_election_id,
           voterGuide,
+        });
+      }
+      if (voterGuide && voterGuide.google_civic_election_id) {
+        this.setState({
+          localGoogleCivicElectionId: parseInt(voterGuide.google_civic_election_id, 10),
         });
       }
       if (voterGuide && voterGuide.state_code) {
         const stateCodeFromVoterGuide = voterGuide.state_code;
         this.setState({
-          // localGoogleCivicElectionId: voterGuide.google_civic_election_id,
           stateCodeFromVoterGuide,
         });
       }
@@ -369,10 +384,10 @@ class VoterGuideSettingsAddPositions extends Component {
   }
 
   render () {
-    // console.log('VoterGuideSettingsAddPositions render');
     renderLog(__filename);
     const { classes } = this.props;
-    const { addNewPositionsMode } = this.state;
+    const { addNewPositionsMode, localGoogleCivicElectionId, stateCodeToRetrieve } = this.state;
+    // console.log('VoterGuideSettingsAddPositions render, stateCodeToRetrieve:', stateCodeToRetrieve);
     if (!addNewPositionsMode) {
       // ////////////////////////
       // Current Positions - First Tab
@@ -481,10 +496,14 @@ class VoterGuideSettingsAddPositions extends Component {
             out of
             {' '}
             {totalNumberOfPositionItems}
-            {' '}
-            ::
-            {' '}
-            <span onClick={() => this.increaseNumberOfPositionItemsToDisplay()}>Show More</span>
+            {numberOfPositionItemsDisplayed !== totalNumberOfPositionItems && (
+              <span>
+                {' '}
+                ::
+                {' '}
+                <span onClick={() => this.increaseNumberOfPositionItemsToDisplay()}>Show More</span>
+              </span>
+            )}
           </ShowMoreItems>
 
           {atLeastOnePositionFoundWithTheseFilters && (
@@ -529,7 +548,10 @@ class VoterGuideSettingsAddPositions extends Component {
             selectedFiltersDefault={selectedFiltersAddDefault}
           >
             {/* props get added to this component in FilterBase */}
-            <SettingsAddBallotItemsFilter />
+            <SettingsAddBallotItemsFilter
+              filtersPassedInOnce={stateCodeToRetrieve ? [stateCodeToRetrieve.toUpperCase()] : []}
+              googleCivicElectionId={localGoogleCivicElectionId}
+            />
           </FilterBase>
           {atLeastOnePositionFoundWithTheseFilters ? (
             <div>
@@ -567,10 +589,15 @@ class VoterGuideSettingsAddPositions extends Component {
                 out of
                 {' '}
                 {totalNumberOfBallotItems}
-                {' '}
-                ::
-                {' '}
-                <span onClick={() => this.increaseNumberOfBallotItemsToDisplay()}>Show More</span>
+                {numberOfBallotItemsDisplayed !== totalNumberOfBallotItems && (
+                  <span>
+                    {' '}
+                    ::
+                    {' '}
+                    <span onClick={() => this.increaseNumberOfBallotItemsToDisplay()}>Show More</span>
+                  </span>
+                )
+                }
               </ShowMoreItems>
             </div>
           ) : (

@@ -262,7 +262,7 @@ class HeaderBackToVoterGuides extends Component {
     const pathnameLowerCase = pathname.toLowerCase() || '';
 
     if (stringContains('/settings/menu', pathnameLowerCase)) {
-      backToOrganizationLinkText = 'Your Voter Guides'; // Back to
+      backToOrganizationLinkText = ''; // Back to 'Your Endorsements'
       if (isWebApp()) {
         backToLink = isMobile() ? '/settings/voterguidesmenu' : '/settings/voterguidelist';
       } else {
@@ -270,10 +270,10 @@ class HeaderBackToVoterGuides extends Component {
       }
     } else if (stringContains('/settings/general', pathnameLowerCase) || stringContains('/settings/positions', pathnameLowerCase)) {
       // const voterGuideWeVoteId = this.props.params.voter_guide_we_vote_id;
-      backToOrganizationLinkText = 'Your Voter Guides';
+      backToOrganizationLinkText = ''; // Back to 'Your Endorsements'
       backToLink = '/settings/voterguidelist';
     } else if (stringContains('/vg/', pathnameLowerCase) && stringContains('/settings', pathnameLowerCase)) {
-      backToOrganizationLinkText = 'Your Voter Guides'; // Back to
+      backToOrganizationLinkText = ''; // Back to 'Your Endorsements'
       backToLink = '/settings/voterguidelist';
     }
     const electionName = BallotStore.currentBallotElectionName;
