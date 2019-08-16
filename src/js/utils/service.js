@@ -44,11 +44,14 @@ export default function $ajax (options) {
   options.success = options.success || defaults.success;
   options.error = options.error || defaults.error;
   // console.log("service.js, options.endpoint: ", options.endpoint);
-  if (options.endpoint === 'positionListForBallotItem' ||
+  if (options.endpoint === 'allBallotItemsRetrieve' ||
+      options.endpoint === 'positionListForBallotItem' ||
       options.endpoint === 'voterGuidesUpcomingRetrieve') {
+    // Retrieve API data from CDN
     options.data = assign({}, options.data || {}); // Do not pass voter_device_id
     options.url = `${url.resolve(defaults.baseCdnUrl, options.endpoint)}/`;
   } else {
+    // Retrieve API from API Server Pool
     options.data = assign({}, defaults.data(), options.data || {});
     options.url = `${url.resolve(defaults.baseUrl, options.endpoint)}/`;
   }

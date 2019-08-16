@@ -1,6 +1,18 @@
 import Dispatcher from '../dispatcher/Dispatcher';
 
 export default {
+  allBallotItemsRetrieve (googleCivicElectionId, stateCode = '') {
+    // This API is always retrieved from our CDN per: WebApp/src/js/utils/service.js
+    Dispatcher.loadEndpoint('allBallotItemsRetrieve', {
+      google_civic_election_id: googleCivicElectionId,
+      state_code: stateCode,
+    });
+  },
+
+  allBallotItemsRetrieveCalled () {
+    Dispatcher.dispatch({ type: 'allBallotItemsRetrieveCalled', payload: true });
+  },
+
   ballotItemOptionsClear () {
     Dispatcher.dispatch({
       type: 'ballotItemOptionsClear',

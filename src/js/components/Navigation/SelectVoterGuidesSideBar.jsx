@@ -104,7 +104,7 @@ export default class SelectVoterGuidesSideBar extends Component {
     return (
       <div className="card">
         <div className="card-main">
-          <div className="SettingsItem__summary__title">Your Voter Guides</div>
+          <div className="SettingsItem__summary__title">Your Endorsements</div>
           <div className="u-padding-bottom--md">
             <Button
               color="primary"
@@ -113,7 +113,7 @@ export default class SelectVoterGuidesSideBar extends Component {
               onClick={() => this.openNewVoterGuideModal()}
               variant="contained"
             >
-             New Voter Guide
+             Choose New Election
             </Button>
           </div>
           {voterGuideLinksHtml}

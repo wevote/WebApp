@@ -37,6 +37,7 @@ export default class GuidePositionListForVoter extends Component {
               positionListForOneElection.map(item => (
                 <VoterPositionItem
                   key={item.position_we_vote_id}
+                  externalUniqueId={`guidePositionListForVoter-oneElection-${item.position_we_vote_id}`}
                   position={item}
                   organization={this.state.organization}
                   popover_off
@@ -56,6 +57,7 @@ export default class GuidePositionListForVoter extends Component {
                 { positionListForAllExceptOneElection.map(item => (
                   <VoterPositionItem
                     key={item.position_we_vote_id}
+                    externalUniqueId={`guidePositionListForVoter-otherElections-${item.position_we_vote_id}`}
                     position={item}
                     organization={this.state.organization}
                     popover_off

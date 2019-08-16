@@ -13,12 +13,13 @@ import { capitalizeString } from '../../utils/textFormat';
 
 export default class VoterPositionItem extends Component {
   static propTypes = {
-    position: PropTypes.object.isRequired,
+    comment_text_off: PropTypes.bool,
+    externalUniqueId: PropTypes.string,
     link_to_edit_modal_off: PropTypes.bool,
     stance_display_off: PropTypes.bool,
-    comment_text_off: PropTypes.bool,
-    popover_off: PropTypes.bool,
     placement: PropTypes.string,
+    popover_off: PropTypes.bool,
+    position: PropTypes.object.isRequired,
   };
 
   constructor (props) {
@@ -155,9 +156,10 @@ export default class VoterPositionItem extends Component {
             {positionDescription}
             <PositionPublicToggle
               ballotItemWeVoteId={position.ballot_item_we_vote_id}
-              type={position.kind_of_ballot_item}
-              supportProps={supportProps}
               className="organization-position-item-toggle"
+              externalUniqueId={`voterPositionItem-${this.props.externalUniqueId}`}
+              supportProps={supportProps}
+              type={position.kind_of_ballot_item}
             />
           </div>
         </div>

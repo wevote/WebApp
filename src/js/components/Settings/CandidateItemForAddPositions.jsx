@@ -200,6 +200,7 @@ class CandidateItemForAddPositions extends Component {
             ballotItemDisplayName={oneCandidate.ballot_item_display_name}
             ballotItemWeVoteId={oneCandidate.we_vote_id}
             buttonsOnly
+            externalUniqueId={`candidateItemForAddPositions-${oneCandidate.we_vote_id}`}
             shareButtonHide
             // supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
             toggleFunction={this.togglePositionStatement}

@@ -224,6 +224,7 @@ class MeasureItemForAddPositions extends Component {
             ballotItemDisplayName={ballotItemDisplayName}
             ballotItemWeVoteId={ballotItemWeVoteId}
             buttonsOnly
+            externalUniqueId={`measureItemForAddPositions-${ballotItemWeVoteId}`}
             shareButtonHide
             // supportOrOpposeHasBeenClicked={this.passDataBetweenItemActionToItemPosition}
             toggleFunction={this.togglePositionStatement}

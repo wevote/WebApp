@@ -11,6 +11,11 @@ import VoterStore from './VoterStore';
 class BallotStore extends ReduceStore {
   getInitialState () {
     return {
+      allBallotItemsByOfficeOrMeasure: [],
+      allBallotItemsByOfficeOrMeasureDict: {},
+      allBallotItemsFlattened: [],
+      allBallotItemsFlattenedDict: {},
+      allBallotItemsHaveBeenRetrievedForElection: {},
       ballotItemSearchResultsList: [],
       ballotItemUnfurledTracker: {},
       ballotItemListCandidatesDict: {}, // Dictionary with ballot_item_we_vote_id as key and list of candidate we_vote_ids as value
@@ -25,6 +30,39 @@ class BallotStore extends ReduceStore {
   isLoaded () {
     const civicId = VoterStore.electionId();
     return !!(this.getState().ballots && this.getState().ballots[civicId] && SupportStore.supportList);
+  }
+
+  allBallotItemsRetrieveCalled () {
+    return this.getState().allBallotItemsRetrieveCalled;
+  }
+
+  allBallotItemsHaveBeenRetrievedForElection (googleCivicElectionId, stateCode) {
+    let stateCodeLowerCase;
+    if (stateCode) {
+      stateCodeLowerCase = stateCode.toLowerCase();
+    }
+    if (this.getState().allBallotItemsHaveBeenRetrievedForElection[googleCivicElectionId]) {
+      return this.getState().allBallotItemsHaveBeenRetrievedForElection[googleCivicElectionId][stateCodeLowerCase] || false;
+    } else {
+      return false;
+    }
+  }
+
+  getAllBallotItemsByOfficeOrMeasure () {
+    return this.getState().allBallotItemsByOfficeOrMeasure || [];
+  }
+
+  getAllBallotItemsFlattened (googleCivicElectionId = 0) {
+    if (googleCivicElectionId) {
+      const allBallotItemsSnapshot = this.getState().allBallotItemsFlattened || [];
+      return allBallotItemsSnapshot.filter(item => item.google_civic_election_id === googleCivicElectionId);
+    } else {
+      return this.getState().allBallotItemsFlattened || [];
+    }
+  }
+
+  get getAllBallotItemsLastStateCodeReceived () {
+    return this.getState().allBallotItemsLastStateCodeReceived;
   }
 
   get ballotProperties () {
@@ -219,6 +257,10 @@ class BallotStore extends ReduceStore {
     // Exit if we don't have a successful response (since we expect certain variables in a successful response below)
     if (!action.res || !action.res.success) return state;
 
+    let allBallotItemsByOfficeOrMeasureDict = {}; // Key is office or measure weVoteId
+    let allBallotItemsFlattenedDict = {}; // Key is office, candidate or measure weVoteId
+    let allBallotItemsHaveBeenRetrievedForElection = {};
+    let allBallotItemsStateCode = '';
     let ballotCaveat = '';
     let googleCivicElectionId;
     let newBallots = {};
@@ -229,6 +271,74 @@ class BallotStore extends ReduceStore {
     const { ballotItemListCandidatesDict, ballotItemUnfurledTracker: newBallotItemUnfurledTracker } = state;
 
     switch (action.type) {
+      case 'allBallotItemsRetrieve':
+        // console.log('BallotStore, voterBallotItemsRetrieve response received.');
+        tempBallotItemList = action.res.ballot_item_list;
+        // console.log('BallotStore, voterBallotItemsRetrieve, action.res.ballot_item_list: ', action.res.ballot_item_list);
+        allBallotItemsByOfficeOrMeasureDict = {};
+        if (state.allBallotItemsByOfficeOrMeasureDict) {
+          ({ allBallotItemsByOfficeOrMeasureDict } = state);
+        }
+        // We use this dict for searching
+        allBallotItemsFlattenedDict = {};
+        if (state.allBallotItemsFlattenedDict) {
+          ({ allBallotItemsFlattenedDict } = state);
+        }
+        allBallotItemsHaveBeenRetrievedForElection = {};
+        if (state.allBallotItemsHaveBeenRetrievedForElection) {
+          ({ allBallotItemsHaveBeenRetrievedForElection } = state);
+        }
+        googleCivicElectionId = action.res.google_civic_election_id || 0;
+        googleCivicElectionId = parseInt(googleCivicElectionId, 10);
+        allBallotItemsStateCode = action.res.state_code;
+        if (allBallotItemsStateCode) {
+          allBallotItemsStateCode = allBallotItemsStateCode.toLowerCase();
+        }
+        if (googleCivicElectionId && allBallotItemsStateCode) {
+          if (!allBallotItemsHaveBeenRetrievedForElection[googleCivicElectionId]) {
+            allBallotItemsHaveBeenRetrievedForElection[googleCivicElectionId] = {};
+          }
+          allBallotItemsHaveBeenRetrievedForElection[googleCivicElectionId][allBallotItemsStateCode] = true;
+        }
+
+        revisedState = state;
+
+        tempBallotItemList.forEach((topBallotItem) => {
+          // If office data is received without a race_office_level, default to 'Federal'
+          if (topBallotItem.kind_of_ballot_item === 'OFFICE' && !topBallotItem.race_office_level) {
+            topBallotItem.race_office_level = 'Federal';
+          }
+          allBallotItemsByOfficeOrMeasureDict[topBallotItem.we_vote_id] = topBallotItem;
+          allBallotItemsFlattenedDict[topBallotItem.we_vote_id] = topBallotItem;
+          if (topBallotItem.candidate_list) {
+            topBallotItem.candidate_list.forEach((oneCandidate) => {
+              // Add the following for filtering
+              // If candidate data is received without a race_office_level, default to 'Federal'
+              if (!oneCandidate.race_office_level) {
+                oneCandidate.race_office_level = topBallotItem.race_office_level;
+              }
+              oneCandidate.kind_of_ballot_item = 'CANDIDATE';
+              oneCandidate.office_we_vote_id = topBallotItem.we_vote_id;
+              oneCandidate.google_civic_election_id = topBallotItem.google_civic_election_id;
+              allBallotItemsFlattenedDict[oneCandidate.we_vote_id] = oneCandidate;
+            });
+          }
+        });
+
+        revisedState = Object.assign({}, revisedState, {
+          allBallotItemsByOfficeOrMeasure: Object.values(allBallotItemsByOfficeOrMeasureDict),
+          allBallotItemsByOfficeOrMeasureDict,
+          allBallotItemsFlattened: Object.values(allBallotItemsFlattenedDict),
+          allBallotItemsFlattenedDict,
+          allBallotItemsHaveBeenRetrievedForElection,
+          allBallotItemsLastStateCodeReceived: allBallotItemsStateCode,
+        });
+        return revisedState;
+
+      case 'allBallotItemsRetrieveCalled':
+        // Make note that allBallotItemsRetrieved has been called - do not call again
+        return { ...state, allBallotItemsRetrieveCalled: action.payload };
+
       case 'ballotItemOptionsClear':
         // console.log('action.res', action.res)
         return {

@@ -5,12 +5,34 @@ import _ from 'lodash';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
 import Radio from '@material-ui/core/Radio';
+import Select from '@material-ui/core/Select';
+import Chip from '@material-ui/core/Chip';
+import Input from '@material-ui/core/Input';
+import MenuItem from '@material-ui/core/MenuItem';
+import { arrayContains, removeValueFromArray } from '../../utils/textFormat';
+import { convertStateCodeToStateText, convertStateTextToStateCode, stateCodeMap } from '../../utils/address-functions';
+import BallotActions from '../../actions/BallotActions';
+import BallotStore from '../../stores/BallotStore';
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 
 class SettingsAddBallotItemsFilter extends Component {
   static propTypes = {
+    // Passed in through FilterBase
     allItems: PropTypes.array,
     classes: PropTypes.object,
+    changeTrigger: PropTypes.string,
+    forceChangeTrigger: PropTypes.func,
     lastFilterAdded: PropTypes.string,
     onFilteredItemsChange: PropTypes.func,
     onSelectSortByFilter: PropTypes.func,
@@ -18,19 +40,102 @@ class SettingsAddBallotItemsFilter extends Component {
     selectedFilters: PropTypes.array,
     showAllFilters: PropTypes.bool,
     updateSelectedFilters: PropTypes.func,
+    // Passed in directly
+    filtersPassedInOnce: PropTypes.array,
+    googleCivicElectionId: PropTypes.number,
   };
 
   constructor (props) {
     super(props);
     this.state = {
+      allBallotItemsLastStateCodeReceived: '',
       componentDidMount: false,
+      filtersAlreadyPassedInOnce: [],
+      localAllBallotItemsHaveBeenRetrieved: {},
+      selectedStates: [],
     };
+  }
+
+  componentDidMount () {
+    const { selectedFilters } = this.props;
+    const { selectedStates } = this.state;
+    let selectedStateFound = false;
+    const stateCodeList = Object.keys(stateCodeMap);
+    // console.log('componentDidMount selectedFilters:', selectedFilters);
+    // console.log('componentDidMount stateCodeList:', stateCodeList);
+    selectedFilters.forEach((filter) => {
+      // console.log('componentDidMount filter:', filter);
+      if (arrayContains(filter, stateCodeList)) {
+        selectedStates.push(filter);
+        selectedStateFound = true;
+      }
+    });
+    // console.log('componentDidMount selectedStates:', selectedStates);
+    if (selectedStateFound) {
+      this.setState({
+        selectedStates,
+      });
+    }
+    this.ballotStoreListener = BallotStore.addListener(this.onBallotStoreChange.bind(this));
+  }
+
+  componentWillReceiveProps (nextProps) {
+    const { filtersAlreadyPassedInOnce, selectedStates } = this.state;
+    const { filtersPassedInOnce, selectedFilters } = nextProps;
+    // console.log('componentWillReceiveProps selectedFilters at start:', selectedFilters);
+    let newFilterPassedIn = false;
+    filtersPassedInOnce.forEach((incomingFilter) => {
+      if (!arrayContains(incomingFilter, filtersAlreadyPassedInOnce)) {
+        newFilterPassedIn = true;
+        filtersAlreadyPassedInOnce.push(incomingFilter);
+        if (!arrayContains(incomingFilter, selectedFilters)) {
+          selectedFilters.push(incomingFilter);
+        }
+      }
+    });
+    if (newFilterPassedIn) {
+      // console.log('newFilterPassedIn TRUE, selectedFilters:', selectedFilters);
+      this.setState({
+        filtersAlreadyPassedInOnce,
+      });
+      // Now see if any of these need to be added to the selectedStates
+      let selectedStateFound = false;
+      const stateCodeList = Object.keys(stateCodeMap);
+      // console.log('componentDidMount stateCodeList:', stateCodeList);
+      selectedFilters.forEach((filter) => {
+        // console.log('componentDidMount filter:', filter);
+        if (arrayContains(filter, stateCodeList) && !arrayContains(filter, selectedStates)) {
+          selectedStates.push(filter);
+          selectedStateFound = true;
+        }
+      });
+      // console.log('componentDidMount selectedStates:', selectedStates);
+      if (selectedStateFound) {
+        this.setState({
+          selectedStates,
+        });
+      }
+      // And finally, end by resetting all filters in FilterBase with the updated set
+      this.props.updateSelectedFilters(selectedFilters);
+    }
   }
 
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    if (this.state.allBallotItemsLastStateCodeReceived !== nextState.allBallotItemsLastStateCodeReceived) {
+      // console.log('this.state.allBallotItemsLastStateCodeReceived:', this.state.allBallotItemsLastStateCodeReceived, ', nextState.allBallotItemsLastStateCodeReceived:', nextState.allBallotItemsLastStateCodeReceived);
+      return true;
+    }
     if (this.state.componentDidMount !== nextState.componentDidMount) {
       // console.log('this.state.componentDidMount:', this.state.componentDidMount, ', nextState.componentDidMount:', nextState.componentDidMount);
+      return true;
+    }
+    if (JSON.stringify(this.state.selectedStates) !== JSON.stringify(nextState.selectedStates)) {
+      // console.log('this.state.selectedStates:', this.state.selectedStates, ', nextState.selectedStates:', nextState.selectedStates);
+      return true;
+    }
+    if (this.props.changeTrigger !== nextProps.changeTrigger) {
+      // console.log('this.props.changeTrigger:', this.props.changeTrigger, ', nextProps.changeTrigger:', nextProps.changeTrigger);
       return true;
     }
     if (this.props.lastFilterAdded !== nextProps.lastFilterAdded) {
@@ -49,16 +154,75 @@ class SettingsAddBallotItemsFilter extends Component {
     return false;
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate (prevProps, prevState) {
     // console.log('prevProps.selectedFilters:', prevProps.selectedFilters, ', this.props.selectedFilters:', this.props.selectedFilters);
     // console.log('prevProps.selectedFilters-stringify:', JSON.stringify(prevProps.selectedFilters), ', this.props.selectedFilters-stringify:', JSON.stringify(this.props.selectedFilters));
     if (JSON.stringify(prevProps.selectedFilters) !== JSON.stringify(this.props.selectedFilters)) {
       // console.log('+++SettingsAddBallotItemsFilter componentDidUpdate, change to selectedFilters');
       const newFilteredItems = this.getNewFilteredItems();
-      this.props.onFilteredItemsChange(newFilteredItems);
+      this.props.onFilteredItemsChange(newFilteredItems, this.props.selectedFilters);
+    } else if ((prevState.allBallotItemsLastStateCodeReceived !== this.state.allBallotItemsLastStateCodeReceived) || (prevProps.changeTrigger !== this.props.changeTrigger)) {
+      // console.log('+++componentDidUpdate, change to allBallotItemsLastStateCodeReceived:', this.state.allBallotItemsLastStateCodeReceived, ', or changeTrigger:', this.props.changeTrigger);
+      const newFilteredItems = this.getNewFilteredItems();
+      this.props.onFilteredItemsChange(newFilteredItems, this.props.selectedFilters);
+      this.props.forceChangeTrigger(this.state.allBallotItemsLastStateCodeReceived);
     } else {
       // console.log('---SettingsAddBallotItemsFilter componentDidUpdate, no change to selectedFilters');
     }
+    // If a stateCode has been added that hasn't been retrieved from the API server, retrieve it now
+    const { googleCivicElectionId } = this.props;
+    let { selectedFilters } = this.props;
+    const { localAllBallotItemsHaveBeenRetrieved, selectedStates: newSelectedStates } = this.state;
+    if (googleCivicElectionId && JSON.stringify(prevState.selectedStates) !== JSON.stringify(newSelectedStates)) {
+      // console.log('componentDidUpdate change in selectedStates found');
+      // Find new states just added
+      this.state.selectedStates.forEach((stateCodeToRetrieve) => {
+        // Is there a state in this list that is NOT in the previous list?
+        if (!arrayContains(stateCodeToRetrieve, prevState.selectedStates)) {
+          // console.log('New stateCode found:', stateCodeToRetrieve);
+          if (!localAllBallotItemsHaveBeenRetrieved[googleCivicElectionId]) {
+            localAllBallotItemsHaveBeenRetrieved[googleCivicElectionId] = {};
+          }
+          if (!localAllBallotItemsHaveBeenRetrieved[googleCivicElectionId][stateCodeToRetrieve]) {
+            localAllBallotItemsHaveBeenRetrieved[googleCivicElectionId][stateCodeToRetrieve] = false;
+          }
+          const doNotRetrieveAllBallotItems = localAllBallotItemsHaveBeenRetrieved[googleCivicElectionId][stateCodeToRetrieve] || BallotStore.allBallotItemsHaveBeenRetrievedForElection(googleCivicElectionId, stateCodeToRetrieve);
+          // console.log('doNotRetrieveAllBallotItems:', doNotRetrieveAllBallotItems);
+          if (!doNotRetrieveAllBallotItems) {
+            localAllBallotItemsHaveBeenRetrieved[googleCivicElectionId][stateCodeToRetrieve] = true;
+            this.setState({
+              localAllBallotItemsHaveBeenRetrieved,
+            });
+            BallotActions.allBallotItemsRetrieve(googleCivicElectionId, stateCodeToRetrieve);
+          }
+        }
+      });
+      let stateCodeRemoved = false;
+      prevState.selectedStates.forEach((stateCode) => {
+        // Is there a state in the previous selectedStates that is not in the current list? If so, trigger re-render
+        if (!arrayContains(stateCode, newSelectedStates)) {
+          // console.log('stateCodeRemoved: ', stateCodeRemoved, ', stateCode:', stateCode);
+          selectedFilters = removeValueFromArray(selectedFilters, stateCode);
+          // console.log('Updated selectedFilters:', selectedFilters);
+          stateCodeRemoved = true;
+        }
+      });
+      if (stateCodeRemoved) {
+        this.props.updateSelectedFilters(selectedFilters);
+      }
+    }
+  }
+
+  componentWillUnmount () {
+    this.ballotStoreListener.remove();
+  }
+
+  onBallotStoreChange () {
+    const allBallotItemsLastStateCodeReceived = BallotStore.getAllBallotItemsLastStateCodeReceived;
+    // console.log('onBallotStoreChange allBallotItemsLastStateCodeReceived:', allBallotItemsLastStateCodeReceived);
+    this.setState({
+      allBallotItemsLastStateCodeReceived,
+    });
   }
 
   getFilteredItemsByLinkedIssue = (issueFilter) => {
@@ -87,6 +251,27 @@ class SettingsAddBallotItemsFilter extends Component {
       return [];
     }
     let filteredItems = allItems; // Start with all items
+
+    // Remove all Candidates
+    let filterItemsSnapshot = filteredItems;
+    filteredItems = [];
+    filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => item.kind_of_ballot_item !== 'CANDIDATE')];
+
+    // Remove states that aren't in the selectedFilters?
+    const stateCodeList = Object.keys(stateCodeMap);
+    const stateCodesSelected = ['na', ''];
+    selectedFilters.forEach((filter) => {
+      if (arrayContains(filter, stateCodeList)) {
+        stateCodesSelected.push(filter.toLowerCase());
+      }
+    });
+    // console.log('stateCodesSelected:', stateCodesSelected);
+    // console.log('filteredItems:', filteredItems);
+    if (stateCodesSelected.length) {
+      filterItemsSnapshot = filteredItems;
+      filteredItems = [];
+      filteredItems = [...filteredItems, ...filterItemsSnapshot.filter(item => arrayContains(item.state_code, stateCodesSelected))];
+    }
 
     // Which showFederalRaceFilter/showOpposeFilter/showCommentFilter to show?
     // Make sure one of them is chosen. If not, do not limit by race level
@@ -147,9 +332,11 @@ class SettingsAddBallotItemsFilter extends Component {
       this.removeTheseFilters(filtersToRemove);
       return [];
     }
+
+    // Now limit to one kind of race level
     if (containsAtLeastOneRaceFilter) {
       // console.log('After containsAtLeastOneRaceFilter, filteredItems:', filteredItems);
-      const filterItemsSnapshot = filteredItems;
+      filterItemsSnapshot = filteredItems;
       filteredItems = [];
       selectedFilters.forEach((filter) => {
         switch (filter) {
@@ -170,6 +357,7 @@ class SettingsAddBallotItemsFilter extends Component {
         }
       });
     }
+
     // Comment or no comment?
     let containsCommentFilter = false;
     selectedFilters.forEach((filter) => {
@@ -219,6 +407,7 @@ class SettingsAddBallotItemsFilter extends Component {
     // return _.uniqBy(filteredItems, x => x.we_vote_id);
 
     // We no longer filter for a unique we_vote_id because we sometimes pass items into this routine that don't have a we_vote_id
+    // console.log('filteredItems:', filteredItems);
     return filteredItems;
   }
 
@@ -237,10 +426,59 @@ class SettingsAddBallotItemsFilter extends Component {
     this.props.onSelectSortByFilter(name);
   }
 
+  // getStyles(name, personName, theme) {
+  //   return {
+  //     fontWeight:
+  //       personName.indexOf(name) === -1
+  //         ? theme.typography.fontWeightRegular
+  //         : theme.typography.fontWeightMedium,
+  //   };
+  // }
+
+  onSelectedStatesChange = (event, index) => {
+    const { selectedFilters } = this.props;
+    const { selectedStates: priorValues } = this.state;
+    const newValue = index.key;
+    // console.log('onSelectedStatesChange newValue:', newValue);
+    if (newValue) {
+      let newSelectedFilters = [];
+      if (arrayContains(newValue, priorValues)) {
+        // Remove newValue
+        const newValues = removeValueFromArray(priorValues, newValue);
+        this.setState({
+          selectedStates: newValues,
+        });
+        // And finally, end by resetting all filters in FilterBase with the updated set
+        newSelectedFilters = removeValueFromArray(selectedFilters, newValue);
+        // console.log('onSelectedStatesChange, REMOVE selectedFilters:', newSelectedFilters);
+        this.props.updateSelectedFilters(newSelectedFilters);
+        this.props.forceChangeTrigger('REMOVE-STATE');
+      } else {
+        // Add newValue
+        this.setState({
+          selectedStates: [...priorValues, newValue],
+        });
+        // And finally, end by resetting all filters in FilterBase with the updated set
+        selectedFilters.push(newValue);
+        // console.log('onSelectedStatesChange, ADD new selectedFilters:', selectedFilters);
+        this.props.updateSelectedFilters(selectedFilters);
+        this.props.forceChangeTrigger('ADD-STATE');
+      }
+    }
+  }
+
   render () {
     const { classes, showAllFilters, selectedFilters } = this.props;
+    const { selectedStates } = this.state;
     // console.log('SettingsAddBallotItemsFilter render selectedFilters:', selectedFilters);
 
+    // console.log('selectedStates:', selectedStates);
+    // console.log('stateCodeMap:', stateCodeMap);
+    const stateNameList = Object.values(stateCodeMap);
+    // console.log('stateNameList:', stateNameList);
+    let stateAlreadySelected = false;
+    let tempStateCode = '';
+    let tempStateName = '';
     return (
       <Wrapper showAllFilters={showAllFilters}>
         <FilterRow>
@@ -295,6 +533,41 @@ class SettingsAddBallotItemsFilter extends Component {
               label="Local"
             />
           </FilterColumn>
+          <FilterColumn>
+            <b>State(s)</b>
+            <FormControlLabel
+              classes={{ label: classes.formControlLabel }}
+              control={(
+                <Select
+                  multiple
+                  value={selectedStates}
+                  onChange={this.onSelectedStatesChange}
+                  input={<Input id="select-multiple-chip" />}
+                  renderValue={() => (
+                    <div className={classes.chips}>
+                      {selectedStates.map((thisStateCode) => {
+                        tempStateName = convertStateCodeToStateText(thisStateCode);
+                        // console.log('thisStateCode:', thisStateCode, ', tempStateName:', tempStateName);
+                        return <Chip key={thisStateCode} label={tempStateName} className={classes.chip} component="div" />;
+                      })}
+                    </div>
+                  )}
+                  MenuProps={MenuProps}
+                >
+                  {stateNameList.map((stateName) => {
+                    tempStateCode = convertStateTextToStateCode(stateName);
+                    stateAlreadySelected = arrayContains(tempStateCode, selectedStates);
+                    // console.log('tempStateCode:', tempStateCode, ', stateAlreadySelected:', stateAlreadySelected);
+                    return (
+                      <MenuItem key={tempStateCode} value={tempStateCode}>
+                        {stateAlreadySelected ? <strong>{stateName}</strong> : <span>{stateName}</span>}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              )}
+            />
+          </FilterColumn>
         </FilterRow>
       </Wrapper>
     );
@@ -306,6 +579,16 @@ const styles = theme => ({
     [theme.breakpoints.down('lg')]: {
       fontSize: 14,
     },
+  },
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  chip: {
+    margin: 2,
+  },
+  noLabel: {
+    marginTop: theme.spacing(3),
   },
 });
 

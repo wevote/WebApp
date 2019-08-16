@@ -1,6 +1,6 @@
 // For functions related to addresses
 
-const stateCodeMap = {
+export const stateCodeMap = {
   AK: 'Alaska',
   AL: 'Alabama',
   AR: 'Arkansas',
@@ -60,9 +60,19 @@ const stateCodeMap = {
   WY: 'Wyoming',
 };
 
-export default function convertStateCodeToStateText (stateCode) {
-  if (Object.prototype.hasOwnProperty.call(stateCode, stateCodeMap)) {
+export function convertStateCodeToStateText (stateCode) {
+  // console.log('Incoming stateCode:', stateCode);
+  if (stateCode in stateCodeMap) {
+    // console.log('stateCodeMap.stateCode:', stateCodeMap[stateCode]);
     return stateCodeMap[stateCode];
+  }
+  return '';
+}
+
+export function convertStateTextToStateCode (stateText) {
+  if (stateText) {
+    const stateTextInArray = Object.keys(stateCodeMap).filter(stateCode => stateCodeMap[stateCode] === stateText);
+    return stateTextInArray[0];
   }
   return '';
 }

@@ -49,7 +49,7 @@ class SettingsSeePositionsFilter extends Component {
     if (JSON.stringify(prevProps.selectedFilters) !== JSON.stringify(this.props.selectedFilters)) {
       // console.log('+++SettingsSeePositionsFilter componentDidUpdate, change to selectedFilters');
       const newFilteredItems = this.getNewFilteredItems();
-      this.props.onFilteredItemsChange(newFilteredItems);
+      this.props.onFilteredItemsChange(newFilteredItems, this.props.selectedFilters);
     } else {
       // console.log('---SettingsSeePositionsFilter componentDidUpdate, no change to selectedFilters');
     }

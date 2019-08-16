@@ -11,7 +11,7 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import VoterActions from '../../actions/VoterActions';
 import VoterStore from '../../stores/VoterStore';
 import { cleanArray } from '../../utils/textFormat';
-import convertStateCodeToStateText from '../../utils/address-functions';
+import { convertStateCodeToStateText } from '../../utils/address-functions';
 
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 36;
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP = 36;
