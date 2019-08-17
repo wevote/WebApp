@@ -242,7 +242,7 @@ export default class SettingsWidgetFirstLastName extends Component {
                     ) : null
                     }
                     <label htmlFor="organization-name">
-                      Name Shown on Your Voter Guides
+                      Name Shown with Endorsements
                       <input
                         type="text"
                         autoComplete="organization"

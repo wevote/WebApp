@@ -115,13 +115,13 @@ export default class SettingsWidgetOrganizationDescription extends Component {
     return (
       <div className="">
         <form onSubmit={(e) => { e.preventDefault(); }}>
-          <label htmlFor="organizationDescriptionTextArea">{ this.state.isOrganization ? 'Description Shown on Your Voter Guides' : 'Description Shown on Your Voter Guides'}</label>
+          <label htmlFor="organizationDescriptionTextArea">{ this.state.isOrganization ? 'Description Shown with Endorsements' : 'Description Shown with Endorsements'}</label>
           <Textarea
             id="organizationDescriptionTextArea"
             name="organizationDescription"
             className="form-control"
             minRows={2}
-            placeholder={this.state.isOrganization ? 'Organization Description' : 'Description of You'}
+            placeholder={this.state.isOrganization ? 'Type Organization Description...' : 'Type Description of Yourself...'}
             value={this.state.organizationDescription}
             onKeyDown={this.handleKeyPress}
             onChange={this.updateOrganizationDescription}

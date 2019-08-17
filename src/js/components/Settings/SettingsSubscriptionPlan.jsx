@@ -263,7 +263,7 @@ class SettingsSubscriptionPlan extends Component {
       subscriptionPageHtmlContents = (
         <Card className="card">
           <CardMain className="card-main">
-            <h1 className="h3">Subscription Plan</h1>
+            <h1 className="h2">Subscription Plan</h1>
             <Seperator />
             <SectionCard className="u-position-relative">
               <SectionTitle>
@@ -589,8 +589,8 @@ const SectionCardMobile = styled.div`
   overflow: hidden;
 `;
 
-const SectionTitle = styled.h3`
-  font-size: 18px;
+const SectionTitle = styled.h4`
+  font-size: 14px;
   font-weight: bold;
   margin: 0;
   margin-bottom: 16px;

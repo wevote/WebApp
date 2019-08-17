@@ -195,10 +195,10 @@ class SettingsSharing extends Component {
         <Helmet title="Domain Settings" />
         <Card className="card">
           <CardMain className="card-main">
-            <Title>Sharing Information</Title>
+            <h1 className="h2">Sharing Information</h1>
             <SharingRow>
               <SharingColumn>
-                <SubTitle>Hide We Vote Logo</SubTitle>
+                <InputBoxLabel>Hide We Vote Logo</InputBoxLabel>
                 <DescriptionText>Remove the We Vote logo from the header bar.</DescriptionText>
               </SharingColumn>
               <SharingColumn alignRight>
@@ -213,7 +213,7 @@ class SettingsSharing extends Component {
             </SharingRow>
             <SharingRow>
               <SharingColumn>
-                <SubTitle>Upload Your Own Logo</SubTitle>
+                <InputBoxLabel>Upload Your Own Logo</InputBoxLabel>
                 <ImageDescription>
                   <PreviewImage alt="We Vote logo" width="125px" src={headerLogoImageSource || cordovaDot('/img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg')}  />
                   <DescriptionText>Place your logo in the header bar. Image must be 125x30.</DescriptionText>
@@ -244,10 +244,10 @@ class SettingsSharing extends Component {
             </SharingRow>
             <SharingRow>
               <SharingColumn>
-                <SubTitle>
+                <InputBoxLabel>
                   Upload Favicon
                   <SettingsAccountLevelChip userAccountLevel={voterHasFreeAccount ? 'free' : 'pro'} featureAccountLevel="pro" />
-                </SubTitle>
+                </InputBoxLabel>
                 <ImageDescription>
                   <PreviewImage alt="We Vote logo" width="48px" src={faviconImageSource || cordovaDot('/img/global/svg-icons/we-vote-icon-square-color-dark.svg')}  />
                   <DescriptionText>The icon for your site in the browser&apos;s tab. PNG files only. Optimal size is 16x16.</DescriptionText>
@@ -286,10 +286,10 @@ class SettingsSharing extends Component {
             </SharingRow>
             <SharingRow>
               <SharingColumn>
-                <SubTitle>
+                <InputBoxLabel>
                   Social Share Image
                   <SettingsAccountLevelChip userAccountLevel={voterHasFreeAccount ? 'free' : 'pro'} featureAccountLevel="pro" />
-                </SubTitle>
+                </InputBoxLabel>
                 <ImageDescription>
                   <PreviewImage alt="We Vote logo" width="96px" src={shareImageSource || cordovaDot('/img/global/svg-icons/we-vote-icon-square-color-dark.svg')}  />
                   <DescriptionText>The icon used when your page is shared on social media. Size must be at least 200x200.</DescriptionText>
@@ -328,10 +328,10 @@ class SettingsSharing extends Component {
             </SharingRow>
             <SharingRow>
               <SharingColumn>
-                <SubTitle>
+                <InputBoxLabel>
                   Social Share Site Description
                   <SettingsAccountLevelChip userAccountLevel={voterHasFreeAccount ? 'free' : 'pro'} featureAccountLevel="pro" />
-                </SubTitle>
+                </InputBoxLabel>
                 <DescriptionText>A few sentences describing your site. The text used on search engines, or when your page is shared on social media.</DescriptionText>
                 <GiantTextInput placeholder="Type Description..." onChange={this.handleChangeDescription} />
                 <Actions>
@@ -394,14 +394,9 @@ const Card = styled.div`
 const CardMain = styled.div`
 `;
 
-const Title = styled.h3`
+const InputBoxLabel = styled.h4`
   font-weight: bold;
-  font-size: 24px;
-  margin-bottom: 1em;
-`;
-
-const SubTitle = styled.h4`
-  font-weight: bold;
+  font-size: 14px;
   margin-top: .5em;
 `;
 
