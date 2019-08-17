@@ -12,7 +12,7 @@ module.exports = {
   DEBUG_MODE: false,
   SHOW_TEST_OPTIONS: false,    // On the DeviceDialog and elsewhere
 
-  LOG_RENDER_EVENTS: false,
+  LOG_RENDER_EVENTS: true,
   LOG_ONLY_FIRST_RENDER_EVENTS: false,
   LOG_HTTP_REQUESTS: false,
   LOG_ROUTING: false,

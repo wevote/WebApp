@@ -19,12 +19,23 @@ export default {
       });
   },
 
-  donationWithStripe (token, email, donationAmount, monthlyDonation) {
+  donationWithStripe (token, email, donationAmount, monthlyDonation, isOrganizationPlan, planType, couponCode) {
     Dispatcher.loadEndpoint('donationWithStripe', {
       token,
       email,
       donation_amount: donationAmount,
       monthly_donation: monthlyDonation,
+      is_organization_plan: isOrganizationPlan,
+      plan_type_enum: planType,
+      coupon_code: couponCode,
+    });
+  },
+
+  validateCoupon (planType, couponCode) {
+    console.log('validateCoupon');
+    Dispatcher.loadEndpoint('validateCoupon', {
+      plan_type_enum: planType,
+      coupon_code: couponCode,
     });
   },
 };
