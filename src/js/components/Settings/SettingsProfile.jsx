@@ -47,7 +47,7 @@ export default class SettingsProfile extends Component {
         <BrowserPushMessage incomingProps={this.props} />
         <div className="card u-padding-bottom--lg">
           <div className="card-main">
-            <h1 className="h3">General Settings</h1>
+            <h1 className="h2">General Settings</h1>
             <div>
               <SettingsWidgetFirstLastName />
               <SettingsWidgetOrganizationWebsite />

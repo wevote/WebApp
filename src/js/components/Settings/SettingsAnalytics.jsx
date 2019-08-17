@@ -316,7 +316,7 @@ class SettingsAnalytics extends Component {
               </InputLabelHelperText>
               <TextField
                 onChange={this.handleOrganizationChosenHtmlVerificationChange}
-                label="Paste the HTML meta tag here..."
+                label="Paste the HTML Meta Tag Here..."
                 variant="outlined"
                 value={organizationChosenHtmlVerification}
               />
@@ -366,12 +366,12 @@ const styles = () => ({
 });
 
 const InputLabel = styled.h4`
+  font-size: 14px;
   font-weight: bold;
-  font-size: 13px;
 `;
 
 const InputLabelHelperText = styled.p`
-  font-size: 11px;
+  font-size: 14px;
   font-weight: normal;
 `;
 

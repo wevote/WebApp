@@ -12,6 +12,7 @@ const PreviewImage = styled.img`
 `;
 
 const DescriptionText = styled.p`
+  font-size: 14px;
   margin: .5em auto;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     min-width: 180px;
@@ -37,7 +38,7 @@ const SharingColumn = styled.div`
 `;
 
 const GiantTextInput = styled.input`
-  font-size: 20px;
+  font-size: 16px;
   padding: 20px 16px;
   width: 100%;
   border-radius: 4px;

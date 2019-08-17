@@ -120,7 +120,7 @@ export default class SettingsWidgetOrganizationWebsite extends Component {
             id="organizationWebsiteTextArea"
             name="organizationWebsite"
             className="form-control"
-            placeholder={this.state.isOrganization ? 'Organization Website' : 'Your Website'}
+            placeholder={this.state.isOrganization ? 'Type Organization\'s Website, www...' : 'Type Your Website Address, www...'}
             value={this.state.organizationWebsite}
             onKeyDown={this.handleKeyPress}
             onChange={this.updateOrganizationWebsite}

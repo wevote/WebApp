@@ -74,8 +74,7 @@ export default class SettingsNotifications extends Component {
           <div className="card-main">
             {this.state.voter.is_signed_in ? (
               <div>
-                <span className="h3">Notification Settings</span>
-                <br />
+                <h1 className="h2">Notification Settings</h1>
                 <label htmlFor="newsletterOptIn">
                   <input
                     id="newsletterOptIn"

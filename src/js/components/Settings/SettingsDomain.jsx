@@ -471,13 +471,13 @@ const IconInputContainer = styled.div`
 `;
 
 const InputBoxLabel = styled.h4`
+  font-size: 14px; 
   font-weight: bold;
-  font-size: 13px; 
 `;
 
 const InputBoxHelperLabel = styled.p`
   margin: 0;
-  font-size: 11px;
+  font-size: 14px;
   margin-bottom: 4px;
   margin-top: -4px;
 `;
