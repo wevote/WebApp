@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 import { withStyles, withTheme } from '@material-ui/core';
 import { renderLog } from '../../utils/logging';
 import MeasureItemForAddPositions from './MeasureItemForAddPositions';
