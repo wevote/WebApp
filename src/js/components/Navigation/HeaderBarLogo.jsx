@@ -9,11 +9,6 @@ import logoDark from '../../../img/global/svg-icons/we-vote-logo-horizontal-colo
 const HeaderBarLogo = ({ isBeta, light }) => (
   <HeaderBarWrapper>
     <Link to={`${isCordova() ? '/ballot' : '/welcome'}`} className="page-logo page-logo-full-size" id="logoHeaderBar">
-      {/* <img */}
-      {/*  className="header-logo-img" */}
-      {/*  alt="We Vote logo" */}
-      {/*  src={cordovaDot(`/img/global/svg-icons/we-vote-logo-horizontal-color${light ? '-200x66' : '-dark-141x46'}.svg`)} */}
-      {/* /> */}
       <img
         className="header-logo-img"
         alt="We Vote logo"

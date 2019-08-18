@@ -28,10 +28,23 @@ class DonateStore extends ReduceStore {
     return this.getState().donationHistory || {};
   }
 
+  getCouponMessage () {
+    return this.getState().couponAppliedMessage || '';
+  }
+
+  getOrgSubscriptionAlreadyExists () {
+    return this.getState().orgSubsAlreadyExists || false;
+  }
+
+
   reduce (state, action) {
     if (!action.res) return state;
     const { error_message_for_voter: errorMessageForVoter, saved_stripe_donation: savedStripeDonation, status, success, donation_amount: donationAmount,
-      donation_list: donationHistory, charge_id: charge, subscription_id: subscriptionId, monthly_donation: monthlyDonation } = action.res;
+      donation_list: donationHistory, charge_id: charge, subscription_id: subscriptionId, monthly_donation: monthlyDonation,
+      coupon_applied_message: couponAppliedMessage, coupon_match_found: couponMatchFound, coupon_still_valid: couponStillValid,
+      discounted_price_monthly_credit: discountedPriceMonthlyCredit, list_price_monthly_credit: listPriceMonthlyCredit,
+      org_subs_already_exists: orgSubsAlreadyExists,
+    } = action.res;
     const donationAmountSafe = donationAmount || '';
 
     switch (action.type) {
@@ -46,6 +59,7 @@ class DonateStore extends ReduceStore {
           monthlyDonation,
           savedStripeDonation,
           success,
+          orgSubsAlreadyExists,
           donationResponseReceived: true,
         };
 
@@ -78,6 +92,17 @@ class DonateStore extends ReduceStore {
       case 'voterSignOut':
         // console.log("resetting DonateStore");
         return this.resetState();
+
+      case 'validateCoupon':
+        return {
+          success: true,
+          couponAppliedMessage,
+          couponMatchFound,
+          couponStillValid,
+          discountedPriceMonthlyCredit,
+          listPriceMonthlyCredit,
+          status,
+        };
 
       default:
         return state;

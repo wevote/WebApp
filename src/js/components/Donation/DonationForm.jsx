@@ -46,8 +46,12 @@ export default class DonationForm extends Component {
         image: cordovaDot('https://stripe.com/img/documentation/checkout/marketplace.png'),
         locale: 'auto',
         token (token) {
-          // console.log("token generated " + token.id + " token.email " + token.email);
-          DonateActions.donationWithStripe(token.id, token.email, self.props.donationAmount, self.props.donateMonthly);
+          console.log(`token generated ${token.id} token.email ${token.email}`);
+          const isOrganizationPlan = false;
+          const couponCode = '';
+          const planType = '';
+          DonateActions.donationWithStripe(token.id, token.email, self.props.donationAmount, self.props.donateMonthly,
+            isOrganizationPlan, planType, couponCode);
           historyPush('/more/processing_donation');
         },
       });

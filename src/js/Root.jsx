@@ -14,6 +14,7 @@ import Connect from './routes/Connect';
 import Credits from './routes/More/Credits';
 import Donate from './routes/More/Donate';
 import DonateThankYou from './routes/More/DonateThankYou';
+import StripeElementsTest from './routes/More/StripeElementsTest';
 import ElectionReminder from './routes/More/ElectionReminder';
 import Elections from './routes/More/Elections';
 import EmailBallot from './routes/More/EmailBallot';
@@ -167,6 +168,7 @@ const routes = () => (
     <Route path="/more/credits" component={Credits} />
     <Route path="/more/donate" component={Donate} />
     <Route path="/more/donate_thank_you" component={DonateThankYou} />
+    <Route path="/more/stripe_elements_test" component={StripeElementsTest} />
     <Route path="/more/elections" component={Elections} />
     <Route path="/more/email_ballot" component={EmailBallot} />
     <Route path="/more/facebooklandingprocess" component={FacebookLandingProcess} />
