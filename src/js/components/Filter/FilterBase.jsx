@@ -28,6 +28,7 @@ class FilterBase extends React.Component {
       lastFilterAdded: '',
       showAllFilters: false,
       selectedFilters: [],
+      fullWidth: PropTypes.bool,
     };
   }
 
@@ -177,46 +178,90 @@ class FilterBase extends React.Component {
     const numberOfFiltersSelected = selectedFiltersWithoutSorts.length;
     // console.log('FilterBase, selectedFilters: ', selectedFilters);
     return (
-      <Wrapper>
-        <FilterTop>
-          <Badge
-            classes={{ badge: classes.badge }}
-            badgeContent={numberOfFiltersSelected}
-            invisible={numberOfFiltersSelected === 0}
-            color="primary"
-          >
-            <div
-              className={`listFilter ${showAllFilters ? 'listFilterSelected' : ''}`}
-              id="filterBaseFilters"
-              onClick={this.toggleShowAllFilters}
+      this.props.fullWidth ? (
+        <WrapperFullWidth>
+          <FilterTop>
+            <Badge
+              classes={{ badge: classes.badge }}
+              badgeContent={numberOfFiltersSelected}
+              invisible={numberOfFiltersSelected === 0}
+              color="primary"
             >
-              <FilterListIcon />
-              &nbsp;
-              <span className="listFilter__text">Filters</span>
-            </div>
-          </Badge>
+              <div
+                className={`listFilter ${showAllFilters ? 'listFilterSelected' : ''}`}
+                id="filterBaseFilters"
+                onClick={this.toggleShowAllFilters}
+              >
+                <FilterListIcon />
+                &nbsp;
+                <span className="listFilter__text">Filters</span>
+              </div>
+            </Badge>
+            {
+              this.generateGroupedFilters()
+            }
+            {
+              this.generateIslandFilters()
+            }
+          </FilterTop>
           {
-            this.generateGroupedFilters()
+            React.cloneElement(this.props.children, {
+              allItems: this.props.allItems,
+              changeTrigger: this.state.changeTrigger,
+              forceChangeTrigger: this.forceChangeTrigger,
+              lastFilterAdded: this.state.lastFilterAdded,
+              onSelectSortByFilter: this.selectSortByFilter,
+              onToggleFilter: this.toggleFilter,
+              onFilteredItemsChange: this.onFilteredItemsChange,
+              selectedFilters: this.state.selectedFilters,
+              showAllFilters: this.state.showAllFilters,
+              updateSelectedFilters: this.updateSelectedFilters,
+            })
           }
+        </WrapperFullWidth>
+      ) : (
+        <Wrapper>
+          <FilterTop>
+            <Badge
+              classes={{ badge: classes.badge }}
+              badgeContent={numberOfFiltersSelected}
+              invisible={numberOfFiltersSelected === 0}
+              color="primary"
+            >
+              <div
+                className={`listFilter ${showAllFilters ? 'listFilterSelected' : ''}`}
+                id="filterBaseFilters"
+                onClick={this.toggleShowAllFilters}
+              >
+                <FilterListIcon />
+                &nbsp;
+                <span className="listFilter__text">Filters</span>
+              </div>
+            </Badge>
+            {
+              this.generateGroupedFilters()
+            }
+            {
+              this.generateIslandFilters()
+            }
+          </FilterTop>
           {
-            this.generateIslandFilters()
+            React.cloneElement(this.props.children, {
+              allItems: this.props.allItems,
+              changeTrigger: this.state.changeTrigger,
+              forceChangeTrigger: this.forceChangeTrigger,
+              lastFilterAdded: this.state.lastFilterAdded,
+              onSelectSortByFilter: this.selectSortByFilter,
+              onToggleFilter: this.toggleFilter,
+              onFilteredItemsChange: this.onFilteredItemsChange,
+              selectedFilters: this.state.selectedFilters,
+              showAllFilters: this.state.showAllFilters,
+              updateSelectedFilters: this.updateSelectedFilters,
+            })
           }
-        </FilterTop>
-        {
-          React.cloneElement(this.props.children, {
-            allItems: this.props.allItems,
-            changeTrigger: this.state.changeTrigger,
-            forceChangeTrigger: this.forceChangeTrigger,
-            lastFilterAdded: this.state.lastFilterAdded,
-            onSelectSortByFilter: this.selectSortByFilter,
-            onToggleFilter: this.toggleFilter,
-            onFilteredItemsChange: this.onFilteredItemsChange,
-            selectedFilters: this.state.selectedFilters,
-            showAllFilters: this.state.showAllFilters,
-            updateSelectedFilters: this.updateSelectedFilters,
-          })
-        }
-      </Wrapper>
+        </Wrapper>        
+      )
+
     );
   }
 }
@@ -235,6 +280,14 @@ const Wrapper = styled.div`
   display: flex;
   flex-flow: column;
   padding: 1rem;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+`;
+
+const WrapperFullWidth = styled.div`
+  display: flex;
+  flex-flow: column;
+  padding: 1rem 0;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
 `;

@@ -116,7 +116,7 @@ class BallotItemForAddPositions extends Component {
       return null;
     }
     return (
-      <div className="BallotItem card" key={`ballotItemForAddPositions-${ballotItemWeVoteId}-${externalUniqueId}`}>
+      <BallotItemCard className="BallotItem card" key={`ballotItemForAddPositions-${ballotItemWeVoteId}-${externalUniqueId}`}>
         { this.isMeasure() ? (
           <MeasureItemForAddPositions
             ballotItemDisplayName={ballotItemDisplayName}
@@ -138,7 +138,7 @@ class BallotItemForAddPositions extends Component {
             externalUniqueId={`officeItem-${externalUniqueId}`}
           />
         )}
-      </div>
+      </BallotItemCard>
     );
   }
 }
@@ -159,20 +159,17 @@ const styles = theme => ({
 });
 
 // Dale to update when I have time to work out the kinks
-// const BallotItemCard = styled.div`
-//   $item-padding: 16px;
-//   background-color: #fff;
-//   border-radius: 4px;
-//   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 2px 1px -1px rgba(0, 0, 0, .12);
-//   margin-bottom: 16px;
-//   overflow-y: none;
-//   border: none;
-//   @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-//     margin-bottom: 8px;
-//     margin-right: -15px;
-//     margin-left: -15px;
-//     border-radius: 0;
-//   }
-// `;
+const BallotItemCard = styled.div`
+  $item-padding: 16px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 2px 1px -1px rgba(0, 0, 0, .12);
+  margin-bottom: 16px;
+  overflow-y: none;
+  border: none;
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    border-radius: 0;
+  }
+`;
 
 export default withTheme(withStyles(styles)(BallotItemForAddPositions));
