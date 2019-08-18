@@ -850,13 +850,10 @@ const styles = () => ({
   },
   closeButton: {
     margin: 0,
-    display: 'none',
-    '@media (min-width: 769px)': {
-      display: 'block',
-      position: 'absolute',
-      top: 9,
-      right: 8,
-    },
+    display: 'block',
+    position: 'absolute',
+    top: 9,
+    right: 8,
   },
   formControlLabel: {
     padding: '0px 16px 0px 8px',

@@ -402,21 +402,23 @@ class VoterGuideSettingsAddPositions extends Component {
       }
       if (!atLeastOnePositionFoundWithTheseFilters) {
         return (
-          <Card>
-            <EmptyBallotMessageContainer>
-              <BallotIcon classes={{ root: classes.ballotIconRoot }} />
-              <EmptyBallotText>You haven&apos;t endorsed any candidates or measures yet. Click &quot;Add Endorsements&quot; to help people who trust you make better voting decisions.</EmptyBallotText>
-              <Button
-                classes={{ root: classes.ballotButtonRoot }}
-                color="primary"
-                variant="contained"
-                onClick={() => this.goToDifferentVoterGuideSettingsDashboardTab('addpositions')}
-              >
-                <BallotIcon classes={{ root: classes.ballotButtonIconRoot }} />
-                Add Endorsements
-              </Button>
-            </EmptyBallotMessageContainer>
-          </Card>
+          <div className="container">
+            <Card>
+              <EmptyBallotMessageContainer>
+                <BallotIcon classes={{ root: classes.ballotIconRoot }} />
+                <EmptyBallotText>You haven&apos;t endorsed any candidates or measures yet. Click &quot;Add Endorsements&quot; to help people who trust you make better voting decisions.</EmptyBallotText>
+                <Button
+                  classes={{ root: classes.ballotButtonRoot }}
+                  color="primary"
+                  variant="contained"
+                  onClick={() => this.goToDifferentVoterGuideSettingsDashboardTab('addpositions')}
+                >
+                  <BallotIcon classes={{ root: classes.ballotButtonIconRoot }} />
+                  Add Endorsements
+                </Button>
+              </EmptyBallotMessageContainer>
+            </Card>            
+          </div>
         );
       }
       // const { classes } = this.props;
@@ -426,8 +428,9 @@ class VoterGuideSettingsAddPositions extends Component {
       let candidateListForPosition;
       let kindOfBallotItemForPosition;
       return (
-        <div>
+        <div className="container">
           <FilterBase
+            fullWidth
             key="currentPositionsFilterBase"
             groupedFilters={groupedFilters}
             islandFilters={islandFilters}
@@ -438,7 +441,7 @@ class VoterGuideSettingsAddPositions extends Component {
             {/* props get added to this component in FilterBase */}
             <SettingsSeePositionsFilter />
           </FilterBase>
-          <ul className="card-child__list-group">
+          <CardChildListGroup className="card-child__list-group">
             {filteredPositionListForOneElection.map((onePosition) => {
               // console.log('onePosition:', onePosition);
               ballotItemDisplayNameForPosition = (onePosition.kind_of_ballot_item === 'CANDIDATE') ? onePosition.contest_office_name : onePosition.ballot_item_display_name;
@@ -487,7 +490,7 @@ class VoterGuideSettingsAddPositions extends Component {
               );
             })
             }
-          </ul>
+          </CardChildListGroup>
           <ShowMoreItems>
             Displaying
             {' '}
@@ -538,8 +541,9 @@ class VoterGuideSettingsAddPositions extends Component {
       // const { classes } = this.props;
       // console.log('allBallotItems: ', allBallotItems);
       return (
-        <div>
+        <div className="container">
           <FilterBase
+            fullWidth
             key="addPositionsFilterBase"
             groupedFilters={groupedFilters}
             islandFilters={islandFilters}
@@ -555,7 +559,7 @@ class VoterGuideSettingsAddPositions extends Component {
           </FilterBase>
           {atLeastOnePositionFoundWithTheseFilters ? (
             <div>
-              <ul className="card-child__list-group">
+              <CardChildListGroup className="card-child__list-group">
                 {filteredBallotItems.map((oneBallotItem) => {
                   // console.log('oneBallotItem: ', oneBallotItem);
                   if (!oneBallotItem.we_vote_id) {
@@ -580,7 +584,7 @@ class VoterGuideSettingsAddPositions extends Component {
                   );
                 })
                 }
-              </ul>
+              </CardChildListGroup>
               <ShowMoreItems>
                 Displaying
                 {' '}
@@ -658,6 +662,10 @@ const ShowMoreItems = styled.div`
   @media print{
     display: none;
   }
+`;
+
+const CardChildListGroup = styled.ul`
+  padding: 0;
 `;
 
 const styles = theme => ({
