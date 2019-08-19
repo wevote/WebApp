@@ -8,19 +8,21 @@ import CloseIcon from '@material-ui/icons/Close';
 import styled from 'styled-components';
 import _ from 'lodash';
 import { isCordova } from '../../utils/cordovaUtils';
+import addVoterGuideSearchPriority from '../../utils/addVoterGuideSearchPriority';
 import ballotSearchPriority from '../../utils/ballotSearchPriority';
 
 const delayBeforeSearchExecution = 400;
 
 class BallotSearch extends Component {
   static propTypes = {
+    addVoterGuideMode: PropTypes.bool,
+    alwaysOpen: PropTypes.bool,
     classes: PropTypes.object,
-    theme: PropTypes.object,
     isSearching: PropTypes.bool,
-    onToggleSearch: PropTypes.func,
     items: PropTypes.array,
     onBallotSearch: PropTypes.func,
-    alwaysOpen: PropTypes.bool,
+    onToggleSearch: PropTypes.func,
+    theme: PropTypes.object,
   };
 
   constructor (props) {
@@ -56,14 +58,22 @@ class BallotSearch extends Component {
   }
 
   filterItems = search => this.props.items.map((item) => {
-    const priority = ballotSearchPriority(search, item);
+    let priority = 0;
+    if (this.props.addVoterGuideMode) {
+      priority = addVoterGuideSearchPriority(search, item);
+    } else {
+      priority = ballotSearchPriority(search, item);
+    }
     return { ...item, priority };
   });
 
   toggleSearch = () => {
     const { isSearching } = this.props;
+    // console.log('toggleSearch, isSearching:', isSearching);
     if (isSearching) {
       this.setState({ searchValue: '', showCloser: false });
+      // Reset to the original items
+      this.props.onBallotSearch(this.props.items);
     } else {
       this.searchInput.focus();
     }
@@ -78,17 +88,16 @@ class BallotSearch extends Component {
     clearTimeout(this.searchInputTimer);
     const { value } = event.target;
     this.setState({ searchValue: value, showCloser: value.length > 0 });
-
-    // If search value is empty, exit
-    if (!value.length) return this.props.onBallotSearch([]);
+    // If search value is empty, exit and return all items
+    if (!value.length) return this.props.onBallotSearch(this.props.items);
 
     // If search value shorter than minimum length, exit
     // if (value.length < 3) return null;
 
     this.searchInputTimer = setTimeout(() => {
       // Filter out items without the search terms, and put the most likely search result at the top
-      const sortedFiltered = _.sortBy(this.filterItems(value), ['priority']).reverse().filter(item => item.priority > 0);
       // Only return results if they get past the filter
+      const sortedFiltered = _.sortBy(this.filterItems(value), ['priority']).reverse().filter(item => item.priority > 0);
       return this.props.onBallotSearch(sortedFiltered.length ? sortedFiltered : []);
     }, delayBeforeSearchExecution);
   }

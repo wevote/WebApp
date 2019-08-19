@@ -356,10 +356,12 @@ class VoterGuideSettingsAddPositions extends Component {
   }
 
   onFilteredItemsChangeFromBallotItemsFilterBase = (filteredBallotItems, currentSelectedBallotFilters) => {
+    // console.log('onFilteredItemsChangeFromBallotItemsFilterBase, currentSelectedBallotFilters: ', currentSelectedBallotFilters);
     this.setState({ currentSelectedBallotFilters, filteredBallotItems });
   }
 
   onFilteredItemsChangeFromPositionItemsFilterBase = (filteredPositionListForOneElection, currentSelectedPositionFilters) => {
+    // console.log('onFilteredItemsChangeFromPositionItemsFilterBase, currentSelectedPositionFilters: ', currentSelectedPositionFilters);
     this.setState({ currentSelectedPositionFilters, filteredPositionListForOneElection });
   }
 
@@ -417,7 +419,7 @@ class VoterGuideSettingsAddPositions extends Component {
                   Add Endorsements
                 </Button>
               </EmptyBallotMessageContainer>
-            </Card>            
+            </Card>
           </div>
         );
       }
@@ -437,6 +439,7 @@ class VoterGuideSettingsAddPositions extends Component {
             allItems={positionListForOneElection}
             onFilteredItemsChange={this.onFilteredItemsChangeFromPositionItemsFilterBase}
             selectedFiltersDefault={selectedFiltersCurrentDefault}
+            totalNumberOfItemsFound={totalNumberOfPositionItems}
           >
             {/* props get added to this component in FilterBase */}
             <SettingsSeePositionsFilter />
@@ -550,6 +553,7 @@ class VoterGuideSettingsAddPositions extends Component {
             allItems={allBallotItems}
             onFilteredItemsChange={this.onFilteredItemsChangeFromBallotItemsFilterBase}
             selectedFiltersDefault={selectedFiltersAddDefault}
+            totalNumberOfItemsFound={totalNumberOfBallotItems}
           >
             {/* props get added to this component in FilterBase */}
             <SettingsAddBallotItemsFilter

@@ -5,6 +5,7 @@ import Badge from '@material-ui/core/Badge';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { withStyles } from '@material-ui/core/styles';
 import getGroupedFilterSecondClass from './utils/grouped-filter-second-class';
+import BallotSearch from '../Ballot/BallotSearch';
 
 const sortFilters = ['sortByNetwork', 'sortByReach'];
 
@@ -18,24 +19,27 @@ class FilterBase extends React.Component {
     onFilteredItemsChange: PropTypes.func,
     selectedFiltersDefault: PropTypes.array,
     fullWidth: PropTypes.bool,
+    totalNumberOfItemsFound: PropTypes.number,
   };
 
   constructor (props) {
     super(props);
     this.state = {
       changeTrigger: '',
-      componentDidMount: false,
+      // componentDidMount: false,
       filteredItems: [],
+      isSearching: false,
       lastFilterAdded: '',
       showAllFilters: false,
       selectedFilters: [],
+      // fullWidth: PropTypes.bool,
     };
   }
 
   componentDidMount () {
     // console.log('FilterBase componentDidMount, selectedFiltersDefault:', this.props.selectedFiltersDefault);
     this.setState({
-      componentDidMount: true,
+      // componentDidMount: true,
       selectedFilters: this.props.selectedFiltersDefault || [],
     });
   }
@@ -129,26 +133,54 @@ class FilterBase extends React.Component {
     this.setState({ changeTrigger });
   }
 
-  generateGroupedFilters = () => this.props.groupedFilters.map((item, itemIndex) => (
-    <div
+  getGroupedFilterCountsFromFilteredItems = () => {
+    const { allItems, groupedFilters } = this.props;
+    let allItemsWithoutCandidates = [];
+    allItemsWithoutCandidates = [...allItemsWithoutCandidates, ...allItems.filter(item => item.kind_of_ballot_item !== 'CANDIDATE')];
+    const resultsDict = {};
+    let oneRaceOfficeLevelItems = [];
+    groupedFilters.forEach((oneFilter) => {
+      oneRaceOfficeLevelItems = [];
+      // console.log('getGroupedFilterCountsFromFilteredItems oneFilter.filterDisplayName:', oneFilter.filterDisplayName);
+      oneRaceOfficeLevelItems = [...oneRaceOfficeLevelItems, ...allItemsWithoutCandidates.filter(item => item.race_office_level === oneFilter.filterDisplayName)];
+      resultsDict[oneFilter.filterName] = oneRaceOfficeLevelItems.length;
+    });
+    // console.log('resultsDict:', resultsDict);
+    return resultsDict;
+  }
+
+  generateGroupedFilters = () => {
+    const groupedFilterCounts = this.getGroupedFilterCountsFromFilteredItems();
+    return this.props.groupedFilters.map((item, itemIndex) => (
+      <div
         key={item.filterName}
         className={`groupedFilter ${getGroupedFilterSecondClass(itemIndex, this.props.groupedFilters.length)} ${this.state.selectedFilters.indexOf(item.filterName) > -1 ? 'listFilterSelected' : ''}`}
         onClick={() => this.toggleFilter(item.filterName)}
         id={item.filterId}
-    >
-      {
+      >
+        {
           item.icon ? item.icon : null
-      }
-      {
-        item.filterDisplayName ? (
-          <span className="listFilter__text">
-            &nbsp;
-            {item.filterDisplayName}
-          </span>
-        ) : null
-      }
-    </div>
-  ));
+        }
+        {
+          item.filterDisplayName ? (
+            <span className="listFilter__text">
+              &nbsp;
+              {item.filterDisplayName}
+              {(groupedFilterCounts[item.filterName] && groupedFilterCounts[item.filterName] > 0) ? (
+                <span>
+                  {' '}
+                  (
+                  {groupedFilterCounts[item.filterName]}
+                  )
+                </span>
+              ) : null
+              }
+            </span>
+          ) : null
+        }
+      </div>
+    ));
+  }
 
   generateIslandFilters = () => this.props.islandFilters.map(item => (
     <div
@@ -171,12 +203,24 @@ class FilterBase extends React.Component {
     </div>
   ));
 
+  handleIsSearchingToggle = () => {
+    const { isSearching } = this.state;
+    this.setState({ isSearching: !isSearching });
+  };
+
+  onSearch = (filteredItems) => {
+    this.setState({
+      filteredItems,
+    }, () => this.props.onFilteredItemsChange(this.state.filteredItems, this.state.selectedFilters));
+  }
+
   render () {
-    const { selectedFilters, showAllFilters } = this.state;
-    const { classes } = this.props;
+    const { isSearching, selectedFilters, showAllFilters } = this.state;
+    const { allItems, classes, totalNumberOfItemsFound } = this.props;
     const selectedFiltersWithoutSorts = selectedFilters.filter(item => !sortFilters.includes(item));
     const numberOfFiltersSelected = selectedFiltersWithoutSorts.length;
     // console.log('FilterBase, selectedFilters: ', selectedFilters);
+    // console.log('render filteredItems: ', filteredItems);
     return (
       <Wrapper theme={{ spacing: this.props.fullWidth ? 0 : '1rem' }}>
         <FilterTop>
@@ -196,12 +240,24 @@ class FilterBase extends React.Component {
               <span className="listFilter__text">Filters</span>
             </div>
           </Badge>
+          <BallotSearch
+            addVoterGuideMode
+            isSearching={isSearching}
+            items={allItems}
+            onBallotSearch={this.onSearch}
+            onToggleSearch={this.handleIsSearchingToggle}
+          />
           {
             this.generateGroupedFilters()
           }
           {
             this.generateIslandFilters()
           }
+          {totalNumberOfItemsFound > 0 && (
+            <NumberFound>
+              {totalNumberOfItemsFound > 1 ? `${totalNumberOfItemsFound} Items Found` : `${totalNumberOfItemsFound} Item Found`}
+            </NumberFound>
+          )}
         </FilterTop>
         {
           React.cloneElement(this.props.children, {
@@ -236,6 +292,7 @@ const Wrapper = styled.div`
   padding: 1rem ${props => props.theme.spacing};
   display: flex;
   flex-flow: column;
+  padding: 1rem 0;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
 `;
@@ -245,6 +302,12 @@ const FilterTop = styled.div`
   flex-flow: row nowrap;
   // overflow-x: scroll;
   padding: 0.7rem 0;
+`;
+
+const NumberFound = styled.div`
+  font-size: 16px; 
+  font-weight: bold;
+  padding-top: 8px;
 `;
 
 export default withStyles(styles)(FilterBase);

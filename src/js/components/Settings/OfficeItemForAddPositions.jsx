@@ -8,9 +8,7 @@ import { historyPush } from '../../utils/cordovaUtils';
 import { toTitleCase } from '../../utils/textFormat';
 import CandidateItemForAddPositions from './CandidateItemForAddPositions';
 import CandidateStore from '../../stores/CandidateStore';
-import IssueStore from '../../stores/IssueStore';
 import { renderLog } from '../../utils/logging';
-import SupportStore from '../../stores/SupportStore';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint no-param-reassign: 0 */
@@ -69,6 +67,10 @@ class OfficeItemForAddPositions extends Component {
       // console.log('this.state.componentDidMount: ', this.state.componentDidMount, ', nextState.componentDidMount: ', nextState.componentDidMount);
       return true;
     }
+    if (JSON.stringify(this.state.candidateList) !== JSON.stringify(nextState.candidateList)) {
+      console.log('this.state.candidateList:', this.state.candidateList, ', nextState.candidateList:', nextState.candidateList);
+      return true;
+    }
     if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
       // console.log('this.state.organizationWeVoteId: ', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId: ', nextState.organizationWeVoteId);
       return true;
@@ -85,6 +87,7 @@ class OfficeItemForAddPositions extends Component {
       // console.log('this.state.showCandidates: ', this.state.showCandidates, ', nextState.showCandidates: ', nextState.showCandidates);
       return true;
     }
+    // console.log('shouldComponentUpdate no change');
     return false;
   }
 
@@ -105,27 +108,30 @@ class OfficeItemForAddPositions extends Component {
     if (candidateList && candidateList.length && ballotItemWeVoteId) {
       const newCandidateList = [];
       let newCandidate = {};
-      if (candidateList) {
-        candidateList.forEach((candidate) => {
-          if (candidate && candidate.we_vote_id) {
-            newCandidate = CandidateStore.getCandidate(candidate.we_vote_id);
-            newCandidateList.push(newCandidate);
-            if (!changeFound) {
-              if (candidate.ballot_item_display_name !== newCandidate.ballot_item_display_name) {
-                changeFound = true;
-              }
-              if (candidate.candidate_photo_url_medium !== newCandidate.candidate_photo_url_medium) {
-                changeFound = true;
-              }
-              if (candidate.party !== newCandidate.party) {
-                changeFound = true;
-              }
-            }
+      candidateList.forEach((candidate) => {
+        if (candidate && candidate.we_vote_id) {
+          newCandidate = CandidateStore.getCandidate(candidate.we_vote_id);
+          if (newCandidate.ballot_item_display_name && candidate.ballot_item_display_name !== newCandidate.ballot_item_display_name) {
+            candidate.ballot_item_display_name = newCandidate.ballot_item_display_name;
+            changeFound = true;
           }
-        });
-      }
+          if (newCandidate.candidate_photo_url_medium && candidate.candidate_photo_url_medium !== newCandidate.candidate_photo_url_medium) {
+            candidate.candidate_photo_url_medium = newCandidate.candidate_photo_url_medium;
+            changeFound = true;
+          }
+          if (newCandidate.party && candidate.party !== newCandidate.party) {
+            candidate.party = newCandidate.party;
+            changeFound = true;
+          }
+          newCandidateList.push(candidate);
+        }
+      });
       this.setState({
         candidateList: newCandidateList,
+        changeFound,
+      });
+    } else {
+      this.setState({
         changeFound,
       });
     }
@@ -180,60 +186,6 @@ class OfficeItemForAddPositions extends Component {
     const { ballotItemWeVoteId, classes, theme, externalUniqueId } = this.props;
     const { candidateList, showCandidates } = this.state;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
-    const unsortedCandidateList = this.state.candidateList ? this.state.candidateList.slice(0) : {};
-    const arrayOfCandidatesVoterSupports = [];
-    let supportProps;
-    let candidateHasVoterSupport;
-    let voterIssuesScoreForCandidate;
-
-    // Prepare an array of candidate names that are supported by voter
-    unsortedCandidateList.forEach((candidate) => {
-      supportProps = SupportStore.get(candidate.we_vote_id);
-      if (supportProps) {
-        candidateHasVoterSupport = supportProps.is_support;
-        voterIssuesScoreForCandidate = IssueStore.getIssuesScoreByBallotItemWeVoteId(candidate.we_vote_id);
-        candidate.voterNetworkScoreForCandidate = Math.abs(supportProps.support_count - supportProps.oppose_count);
-        candidate.voterIssuesScoreForCandidate = Math.abs(voterIssuesScoreForCandidate);
-        candidate.is_support = supportProps.is_support;
-        if (candidateHasVoterSupport) {
-          arrayOfCandidatesVoterSupports.push(candidate.ballot_item_display_name);
-          // voterSupportsAtLeastOneCandidate = true;
-        }
-      }
-    });
-
-    const sortedCandidateList = unsortedCandidateList;
-    sortedCandidateList.sort((optionA, optionB) => optionB.voterNetworkScoreForCandidate - optionA.voterNetworkScoreForCandidate ||
-                                                   (optionA.is_support === optionB.is_support ? 0 : optionA.is_support ? -1 : 1) ||  // eslint-disable-line no-nested-ternary
-                                                   optionB.voterIssuesScoreForCandidate - optionA.voterIssuesScoreForCandidate);
-
-    // If the voter isn't supporting any candidates, then figure out which candidate the voter's network likes the best
-    if (arrayOfCandidatesVoterSupports.length === 0) {
-      // This function finds the highest support count for each office but does not handle ties. If two candidates have
-      // the same network support count, only the first candidate will be displayed.
-      let largestNetworkSupportCount = 0;
-      let networkSupportCount;
-      let networkOpposeCount;
-      let largestIssueScore = 0;
-      sortedCandidateList.forEach((candidate) => {
-        // Support in voter's network
-        supportProps = SupportStore.get(candidate.we_vote_id);
-        if (supportProps) {
-          networkSupportCount = supportProps.support_count;
-          networkOpposeCount = supportProps.oppose_count;
-
-          if (networkSupportCount > networkOpposeCount) {
-            if (networkSupportCount > largestNetworkSupportCount) {
-              largestNetworkSupportCount = networkSupportCount;
-            }
-          }
-        }
-        // Support based on Issue score
-        if (voterIssuesScoreForCandidate > largestIssueScore) {
-          largestIssueScore = voterIssuesScoreForCandidate;
-        }
-      });
-    }
 
     return (
       <div className="card-main office-item" key={`officeItemForAddPositions-${ballotItemWeVoteId}-${externalUniqueId}`}>

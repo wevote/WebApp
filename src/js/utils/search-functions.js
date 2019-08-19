@@ -1,4 +1,4 @@
-export default function makeSearchLink (twitterHandle, weVoteId, kindOfOwner, linkInternal, googleCivicElectionId) {
+export function makeSearchLink (twitterHandle, weVoteId, kindOfOwner, linkInternal, googleCivicElectionId) {
   let searchLink = '';
   switch (kindOfOwner) {
     case 'CANDIDATE':
@@ -23,4 +23,9 @@ export default function makeSearchLink (twitterHandle, weVoteId, kindOfOwner, li
       break;
   }
   return searchLink;
+}
+
+export function numberOfNeedlesFoundInString (needle) {
+  const regExp = new RegExp(needle, 'gi');
+  return (this.match(regExp) || []).length;
 }

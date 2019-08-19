@@ -10,7 +10,7 @@ import { isCordova } from './utils/cordovaUtils';
 import routes from './Root';
 import muiTheme from './mui-theme';
 import styledTheme from './styled-theme';
-import stringOccurs from './utils/stringOccurs';
+import { numberOfNeedlesFoundInString } from './utils/search-functions';
 
 // December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize massive changes
 /* eslint global-require: 1 */
@@ -24,7 +24,7 @@ if (!Object.assign) {
 
 // Adding functions to the String prototype will make stuff like `for (char in str)` break, because it will loop over the substringOccurences property.
 // As long as we use `forEach()` or `for (char of str)` then that side effect will be mitigated.
-String.prototype.substringOccurrences = stringOccurs; // eslint-disable-line
+String.prototype.numberOfNeedlesFoundInString = numberOfNeedlesFoundInString; // eslint-disable-line
 
 function startApp () {
   // http://harrymoreno.com/2015/07/14/Deploying-a-React-App-to-Cordova.html
