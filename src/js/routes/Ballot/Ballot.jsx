@@ -664,7 +664,7 @@ class Ballot extends Component {
     }
   };
 
-  handleSearch = (filteredItems) => {
+  onBallotSearch = (filteredItems) => {
     this.setState({ ballotSearchResults: filteredItems });
   };
 
@@ -889,7 +889,7 @@ class Ballot extends Component {
                                 isSearching={isSearching}
                                 onToggleSearch={this.handleToggleSearchBallot}
                                 items={ballotWithAllItems}
-                                onBallotSearch={this.handleSearch}
+                                onBallotSearch={this.onBallotSearch}
                                 alwaysOpen={!showFilterTabs}
                               />
                               { showFilterTabs ? (

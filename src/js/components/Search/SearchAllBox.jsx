@@ -7,7 +7,7 @@ import { hasIPhoneNotch, historyPush, isCordova } from '../../utils/cordovaUtils
 import { renderLog } from '../../utils/logging';
 import SearchAllActions from '../../actions/SearchAllActions';
 import SearchAllStore from '../../stores/SearchAllStore';
-import makeSearchLink from '../../utils/search-functions';
+import { makeSearchLink } from '../../utils/search-functions';
 import SearchResultsDisplay from './SearchResultsDisplay';
 
 export default class SearchAllBox extends Component {

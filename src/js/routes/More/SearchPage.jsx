@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { isCordova } from '../../utils/cordovaUtils';
-import makeSearchLink from '../../utils/search-functions';
+import { makeSearchLink } from '../../utils/search-functions';
 import { renderLog } from '../../utils/logging';
 import SearchAllActions from '../../actions/SearchAllActions';
 import SearchAllStore from '../../stores/SearchAllStore';
