@@ -5,30 +5,30 @@ class DonateStore extends ReduceStore {
   getInitialState () {  // This is a mandatory override, so it can't be static.
     return {
       defaultPricing: {
-        success: true,
-        proPlanFullPricePerMonthPayMonthly: 15000,
-        proPlanFullPricePerMonthPayAnnually: 12500,
         enterprisePlanFullPricePerMonthPayMonthly: 0,
         enterprisePlanFullPricePerMonthPayAnnually: 0,
+        proPlanFullPricePerMonthPayMonthly: 15000,
+        proPlanFullPricePerMonthPayAnnually: 12500,
         status: 'From getInitialState',
+        success: true,
       },
       lastCouponResponseReceived: {
-        success: false,
         couponAppliedMessage: '',
+        couponCodeString: '',
         couponDiscountValue: 0,
         couponMatchFound: false,
         couponReceived: false,
         couponStillValid: '',
         discountedPriceMonthlyCredit: '',
-        listPriceMonthlyCredit: '',
-        couponCodeString: '',
-        proPlanCouponPricePerMonthPayMonthly: 0,
-        proPlanCouponPricePerMonthPayAnnually: 0,
         enterprisePlanCouponPricePerMonthPayMonthly: 0,
         enterprisePlanCouponPricePerMonthPayAnnually: 0,
+        listPriceMonthlyCredit: '',
+        proPlanCouponPricePerMonthPayMonthly: 0,
+        proPlanCouponPricePerMonthPayAnnually: 0,
         validForProfessionalPlan: true,
         validForEnterprisePlan: false,
         status: 'From getInitialState',
+        success: false,
       },
     };
   }
@@ -83,7 +83,6 @@ class DonateStore extends ReduceStore {
     } = action.res;
     const donationAmountSafe = donationAmount || '';
     let { defaultPricing, lastCouponResponseReceived } = state;
-    let couponMatchFound = false;
     switch (action.type) {
       case 'donationWithStripe':
         if (success === false) {
@@ -140,12 +139,12 @@ class DonateStore extends ReduceStore {
 
       case 'defaultPricing':
         defaultPricing = {
-          success: action.res.success,
-          proPlanFullPricePerMonthPayMonthly: 15000,
-          proPlanFullPricePerMonthPayAnnually: 12500,
           enterprisePlanFullPricePerMonthPayMonthly: 0,
           enterprisePlanFullPricePerMonthPayAnnually: 0,
+          proPlanFullPricePerMonthPayMonthly: 15000,
+          proPlanFullPricePerMonthPayAnnually: 12500,
           status: action.res.status,
+          success: action.res.success,
         };
         return {
           ...state,
@@ -153,20 +152,17 @@ class DonateStore extends ReduceStore {
         };
 
       case 'validateCoupon':
-        couponMatchFound = action.res.coupon_match_found || false;
         lastCouponResponseReceived = {
-          success: action.res.success,
-          couponViewed: false,
-          couponMatchFound,
+          couponDiscountValue: 10,
+          discountedPriceMonthlyCredit: action.res.discounted_price_monthly_credit,
+          listPriceMonthlyCredit: action.res.list_price_monthly_credit,
+          //
+          couponAppliedMessage: action.res.coupon_applied_message,
+          couponCodeString: '25OFF',
+          couponMatchFound: action.res.coupon_match_found,
           couponReceived: true,
           couponStillValid: action.res.coupon_still_valid,
-          //
-          couponAppliedMessage: action.res.coupon_applied_message, // Steve
-          couponDiscountValue: 10, // Jarod
-          discountedPriceMonthlyCredit: action.res.discounted_price_monthly_credit, // Steve
-          listPriceMonthlyCredit: action.res.list_price_monthly_credit, // Steve
-          //
-          couponCodeString: '25OFF',
+          couponViewed: false,
           proPlanCouponPricePerMonthPayMonthly: 14000,
           proPlanCouponPricePerMonthPayAnnually: 11500,
           enterprisePlanCouponPricePerMonthPayMonthly: 0,
@@ -174,6 +170,7 @@ class DonateStore extends ReduceStore {
           validForProfessionalPlan: true,
           validForEnterprisePlan: false,
           status: action.res.status,
+          success: action.res.success,
         };
         return {
           ...state,
