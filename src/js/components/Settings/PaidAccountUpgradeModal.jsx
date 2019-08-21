@@ -15,6 +15,10 @@ import Radio from '@material-ui/core/Radio';
 import { withStyles, withTheme, OutlinedInput } from '@material-ui/core';
 import { renderLog } from '../../utils/logging';
 import { hasIPhoneNotch, isIOS } from '../../utils/cordovaUtils';
+import extractNumber from '../../utils/extractNumber';
+import { numberWithCommas } from '../../utils/textFormat';
+import DonateStore from '../../stores/DonateStore';
+import DonateActions from '../../actions/DonateActions';
 import Pricing from '../../routes/More/Pricing';
 
 class PaidAccountUpgradeModal extends Component {
@@ -25,19 +29,38 @@ class PaidAccountUpgradeModal extends Component {
     initialPricingPlan: PropTypes.string,
     pathname: PropTypes.string,
     show: PropTypes.bool,
+    stripe: PropTypes.object,
     toggleFunction: PropTypes.func.isRequired,
   };
 
   constructor (props) {
     super(props);
     this.state = {
+      contactSalesRequired: false,
+      couponCodeError: false,
+      defaultPricing: {
+        success: false,
+        proPlanFullPricePerMonthPayMonthly: 0,
+        proPlanFullPricePerMonthPayAnnually: 0,
+        enterprisePlanFullPricePerMonthPayMonthly: 0,
+        enterprisePlanFullPricePerMonthPayAnnually: 0,
+        status: 'From constructor',
+      },
+      lastCouponResponseReceivedFromAPI: {
+        success: false,
+        couponAppliedMessage: '',
+        couponMatchFound: false,
+        couponStillValid: false,
+        discountedPriceMonthlyCredit: '',
+        listPriceMonthlyCredit: '',
+        status: 'From constructor',
+      },
       pathname: undefined,
       paidAccountProcessStep: 'choosePlan',
       radioGroupValue: 'annualPlanRadio',
       couponCodeInputValue: '',
-      couponCodesFromAPI: [],
-      isCouponApplied: false,
-      couponAppliedFromAPI: {},
+      // couponCodesFromAPI: [],
+      isCouponCodeApplied: false,
       couponDiscountValue: 0,
       windowWidth: undefined,
     };
@@ -51,33 +74,16 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   componentDidMount () {
+    DonateStore.resetState();
+    const defaultPricing = DonateStore.getDefaultPricing();
     this.setState({
+      defaultPricing,
       pathname: this.props.pathname,
-      // Test coupon codes to simulate having multiple promotions running at the same time
-      couponCodesFromAPI: [
-        {
-          code: '10ALL',
-          discount: 10,
-          validForProfessionalPlan: true,
-          validForEnterprisePlan: true,
-        },
-        {
-          code: '25PRO',
-          discount: 25,
-          validForProfessionalPlan: true,
-          validForEnterprisePlan: false,
-        },
-        {
-          code: '50ENTERPRISE',
-          discount: 50,
-          validForProfessionalPlan: false,
-          validForEnterprisePlan: true,
-        },
-      ],
     });
-
     this.handleResize();
+    this.donateStoreChange(); // Load up default pricing
     window.addEventListener('resize', this.handleResize);
+    this.donateStoreListener = DonateStore.addListener(this.donateStoreChange);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -90,10 +96,13 @@ class PaidAccountUpgradeModal extends Component {
     if (this.state.windowWidth !== nextState.windowWidth) {
       return true;
     }
-    if (this.state.isCouponApplied !== nextState.isCouponApplied) {
+    if (this.state.isCouponCodeApplied !== nextState.isCouponCodeApplied) {
       return true;
     }
-    if (this.state.couponAppliedFromAPI !== nextState.couponAppliedFromAPI) {
+    if (this.state.lastCouponResponseReceivedFromAPI !== nextState.lastCouponResponseReceivedFromAPI) {
+      return true;
+    }
+    if (this.state.contactSalesRequired !== nextState.contactSalesRequired) {
       return true;
     }
     if (this.state.couponCodeInputValue !== nextState.couponCodeInputValue) {
@@ -115,20 +124,89 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   componentWillUnmount () {
+    this.donateStoreListener.remove();
     window.removeEventListener('resize', this.handleResize);
   }
-
-  // componentDidUpdate () {
-  //   const { currentSelectedPlanCost, annualPlanPrice } = this.state;
-
-  //   if (!currentSelectedPlanCost) {
-  //     this.setState({  currentSelectedPlanCost: currentSelectedPlanCost || annualPlanPrice });
-  //   }
-  // }
 
   onCouponInputChange (e) {
     this.setState({ couponCodeInputValue: e.target.value });
   }
+
+  donateStoreChange = () => {
+    // const msg = DonateStore.getCouponMessage();
+    // if (msg.length > 0) {
+    //   console.log('updating coupon message success validating coupon');
+    //   $('.u-no-break').html(msg);
+    // }
+    //
+    // if (DonateStore.getOrgSubscriptionAlreadyExists()) {
+    //   console.log('updating coupon message organization subscription already exists');
+    //   $('.u-no-break').html('A subscription already exists for this organization<br>The existing subscription was not altered, no credit card charge was made.');
+    // }
+    const { pricingPlanChosen, radioGroupValue } = this.state;
+    const defaultPricing = DonateStore.getDefaultPricing();
+    const lastCouponResponseReceivedFromAPI = DonateStore.getLastCouponResponseReceived();
+    // console.log('donateStoreChange, lastCouponResponseReceivedFromAPI:', lastCouponResponseReceivedFromAPI);
+    const { enterprisePlanFullPricePerMonthPayMonthly, enterprisePlanFullPricePerMonthPayAnnually, proPlanFullPricePerMonthPayAnnually, proPlanFullPricePerMonthPayMonthly } = defaultPricing;
+    const { couponDiscountValue, couponReceived, couponViewed, couponMatchFound, couponStillValid, enterprisePlanCouponPricePerMonthPayMonthly, enterprisePlanCouponPricePerMonthPayAnnually, proPlanCouponPricePerMonthPayAnnually, proPlanCouponPricePerMonthPayMonthly } = lastCouponResponseReceivedFromAPI;
+
+    // These values are different based on the plan chosen
+    let contactSalesRequired;
+    let planPriceForDisplayBilledMonthly;
+    let planPriceForDisplayBilledAnnually;
+    let currentSelectedPlanCostForPayment;
+    if (couponMatchFound && couponStillValid) {
+      contactSalesRequired = false;
+      if (pricingPlanChosen === 'enterprise') {
+        planPriceForDisplayBilledMonthly = enterprisePlanCouponPricePerMonthPayMonthly;
+        planPriceForDisplayBilledAnnually = enterprisePlanCouponPricePerMonthPayAnnually;
+      } else {
+        planPriceForDisplayBilledMonthly = proPlanCouponPricePerMonthPayMonthly;
+        planPriceForDisplayBilledAnnually = proPlanCouponPricePerMonthPayAnnually;
+      }
+    } else if (pricingPlanChosen === 'enterprise') {
+      contactSalesRequired = true;
+      planPriceForDisplayBilledMonthly = enterprisePlanFullPricePerMonthPayMonthly;
+      planPriceForDisplayBilledAnnually = enterprisePlanFullPricePerMonthPayAnnually;
+    } else {
+      contactSalesRequired = false;
+      planPriceForDisplayBilledMonthly = proPlanFullPricePerMonthPayMonthly;
+      planPriceForDisplayBilledAnnually = proPlanFullPricePerMonthPayAnnually;
+    }
+    if (radioGroupValue === 'annualPlanRadio') {
+      currentSelectedPlanCostForPayment = planPriceForDisplayBilledAnnually;
+    } else {
+      currentSelectedPlanCostForPayment = planPriceForDisplayBilledMonthly;
+    }
+
+    this.setState({
+      contactSalesRequired,
+      couponDiscountValue, // Replace this dollar discount with percentage
+      currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForPayment),
+      defaultPricing,
+      isCouponCodeApplied: couponMatchFound,
+      lastCouponResponseReceivedFromAPI,
+      planPriceForDisplayBilledMonthly: this.convertPriceFromPenniesToDollars(planPriceForDisplayBilledMonthly),
+      planPriceForDisplayBilledAnnually: this.convertPriceFromPenniesToDollars(planPriceForDisplayBilledAnnually),
+    });
+
+    if (couponReceived && !couponViewed) {
+      // console.log('couponViewed:', couponViewed);
+      if (couponMatchFound === false) {
+        this.setState({ couponCodeError: true, couponCodeInputValue: '' });
+        setTimeout(() => {
+          DonateActions.setLatestCouponViewed(true);
+          this.setState({ couponCodeError: false });
+        }, 3000);
+      } else if (couponStillValid === false) {
+        this.setState({ couponCodeError: true, couponCodeInputValue: '' });
+        setTimeout(() => {
+          DonateActions.setLatestCouponViewed(true);
+          this.setState({ couponCodeError: false });
+        }, 3000);
+      }
+    }
+  };
 
   backToApplyCoupon = () => {
     this.setState({ paidAccountProcessStep: 'selectPlanDetailsMobile' });
@@ -155,7 +233,8 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   pricingPlanChosenFunction = (pricingPlanChosen) => {
-    const { couponDiscountValue, radioGroupValue, couponAppliedFromAPI } = this.state;
+    const { radioGroupValue, defaultPricing, lastCouponResponseReceivedFromAPI } = this.state;
+    // console.log('pricingPlanChosenFunction pricingPlanChosen:', pricingPlanChosen, ', lastCouponResponseReceivedFromAPI:', lastCouponResponseReceivedFromAPI);
     if (window.innerWidth > 768 && pricingPlanChosen !== 'free') {
       this.setState({
         paidAccountProcessStep: 'payForPlan',
@@ -172,46 +251,75 @@ class PaidAccountUpgradeModal extends Component {
 
     let currentSelectedPlanCostForPro = 0;
     let currentSelectedPlanCostForEnterprise = 0;
+    const proPlanPriceForDisplayBilledAnnually = lastCouponResponseReceivedFromAPI.validForProfessionalPlan ? lastCouponResponseReceivedFromAPI.proPlanCouponPricePerMonthPayAnnually : defaultPricing.proPlanFullPricePerMonthPayAnnually;
+    const enterprisePlanPriceForDisplayBilledAnnually = lastCouponResponseReceivedFromAPI.validForEnterprisePlan ? lastCouponResponseReceivedFromAPI.enterprisePlanCouponPricePerMonthPayAnnually : defaultPricing.enterprisePlanFullPricePerMonthPayAnnually;
+    const proPlanPriceForDisplayBilledMonthly = lastCouponResponseReceivedFromAPI.validForProfessionalPlan ? lastCouponResponseReceivedFromAPI.proPlanCouponPricePerMonthPayMonthly : defaultPricing.proPlanFullPricePerMonthPayMonthly;
+    const enterprisePlanPriceForDisplayBilledMonthly = lastCouponResponseReceivedFromAPI.validForEnterprisePlan ? lastCouponResponseReceivedFromAPI.enterprisePlanCouponPricePerMonthPayMonthly : defaultPricing.enterprisePlanFullPricePerMonthPayMonthly;
 
     if (radioGroupValue === 'annualPlanRadio') {
-      currentSelectedPlanCostForPro = couponAppliedFromAPI.validForProfessionalPlan ? 125 - couponDiscountValue : 125;
-      currentSelectedPlanCostForEnterprise = couponAppliedFromAPI.validForEnterprisePlan ? 175 - couponDiscountValue : 175;
+      currentSelectedPlanCostForPro = proPlanPriceForDisplayBilledAnnually;
+      currentSelectedPlanCostForEnterprise = enterprisePlanPriceForDisplayBilledAnnually;
     } else {
-      currentSelectedPlanCostForPro = couponAppliedFromAPI.validForProfessionalPlan ? 150 - couponDiscountValue : 150;
-      currentSelectedPlanCostForEnterprise = couponAppliedFromAPI.validForEnterprisePlan ? 200 - couponDiscountValue : 200;
+      currentSelectedPlanCostForPro = proPlanPriceForDisplayBilledMonthly;
+      currentSelectedPlanCostForEnterprise = enterprisePlanPriceForDisplayBilledMonthly;
     }
 
     switch (pricingPlanChosen) {
       case 'professional':
-        this.setState({ monthlyPlanPrice: 150, annualPlanPrice: 125, monthlyPlanPriceWithDiscount: couponAppliedFromAPI.validForProfessionalPlan ? 150 - couponDiscountValue : 150, annualPlanPriceWithDiscount: couponAppliedFromAPI.validForProfessionalPlan ? 125 - couponDiscountValue : 125, currentSelectedPlanCost: currentSelectedPlanCostForPro });
+        this.setState({
+          contactSalesRequired: false,
+          planPriceForDisplayBilledMonthly: this.convertPriceFromPenniesToDollars(proPlanPriceForDisplayBilledMonthly),
+          planPriceForDisplayBilledAnnually: this.convertPriceFromPenniesToDollars(proPlanPriceForDisplayBilledAnnually),
+          currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForPro),
+        });
 
-        if (!couponAppliedFromAPI.validForProfessionalPlan) {
-          this.setState({ isCouponApplied: false, couponAppliedFromAPI: {}, couponDiscountValue: 0, couponCodeInputValue: '' });
+        if (!lastCouponResponseReceivedFromAPI.validForProfessionalPlan) {
+          this.setState({
+            isCouponCodeApplied: false,
+            lastCouponResponseReceivedFromAPI: {},
+            couponDiscountValue: 0,
+            couponCodeInputValue: '',
+          });
         }
         break;
       case 'enterprise':
-        this.setState({ monthlyPlanPrice: 200, annualPlanPrice: 175, monthlyPlanPriceWithDiscount: couponAppliedFromAPI.validForEnterprisePlan ? 200 - couponDiscountValue : 200, annualPlanPriceWithDiscount: couponAppliedFromAPI.validForEnterprisePlan ? 175 - couponDiscountValue : 175, currentSelectedPlanCost: currentSelectedPlanCostForEnterprise });
+        this.setState({
+          planPriceForDisplayBilledMonthly: this.convertPriceFromPenniesToDollars(enterprisePlanPriceForDisplayBilledMonthly),
+          planPriceForDisplayBilledAnnually: this.convertPriceFromPenniesToDollars(enterprisePlanPriceForDisplayBilledAnnually),
+          currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForEnterprise),
+        });
 
-        if (!couponAppliedFromAPI.validForEnterprisePlan) {
-          this.setState({ isCouponApplied: false, couponAppliedFromAPI: {}, couponDiscountValue: 0, couponCodeInputValue: '' });
+        if (!lastCouponResponseReceivedFromAPI.validForEnterprisePlan) {
+          this.setState({
+            contactSalesRequired: true,
+            isCouponCodeApplied: false,
+            lastCouponResponseReceivedFromAPI: {},
+            couponDiscountValue: 0,
+            couponCodeInputValue: '',
+          });
         }
         break;
       default:
-        this.setState({ monthlyPlanPrice: 150, annualPlanPrice: 125, monthlyPlanPriceWithDiscount: couponAppliedFromAPI.validForProfessionalPlan ? 150 - couponDiscountValue : 150, annualPlanPriceWithDiscount: couponAppliedFromAPI.validForProfessionalPlan ? 125 - couponDiscountValue : 125, currentSelectedPlanCost: currentSelectedPlanCostForPro });
+        this.setState({
+          contactSalesRequired: false,
+          planPriceForDisplayBilledMonthly: this.convertPriceFromPenniesToDollars(proPlanPriceForDisplayBilledMonthly),
+          planPriceForDisplayBilledAnnually: this.convertPriceFromPenniesToDollars(proPlanPriceForDisplayBilledAnnually),
+          currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForPro),
+        });
     }
   }
 
   handleRadioGroupChange = (event) => {
-    const { radioGroupValue, monthlyPlanPriceWithDiscount, annualPlanPriceWithDiscount } = this.state;
+    const { radioGroupValue, planPriceForDisplayBilledMonthly, planPriceForDisplayBilledAnnually } = this.state;
     if (radioGroupValue !== event.target.value) {
       this.setState({
         radioGroupValue: event.target.value || '',
       });
     }
     if (event.target.value === 'annualPlanRadio') {
-      this.setState({ currentSelectedPlanCost: annualPlanPriceWithDiscount });
+      this.setState({ currentSelectedPlanCostForPayment: planPriceForDisplayBilledAnnually });
     } else {
-      this.setState({ currentSelectedPlanCost: monthlyPlanPriceWithDiscount });
+      this.setState({ currentSelectedPlanCostForPayment: planPriceForDisplayBilledMonthly });
     }
   }
 
@@ -249,55 +357,77 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   resetCouponCode () {
-    const { annualPlanPrice, monthlyPlanPrice, radioGroupValue } = this.state;
+    const { defaultPricing, pricingPlanChosen, radioGroupValue } = this.state;
 
-    this.setState({ isCouponApplied: false, couponCodeInputValue: '', monthlyPlanPriceWithDiscount: monthlyPlanPrice, annualPlanPriceWithDiscount: annualPlanPrice, couponAppliedFromAPI: {}, couponDiscountValue: 0 });
-
-    if (radioGroupValue === 'annualPlanRadio') {
-      this.setState({ currentSelectedPlanCost: annualPlanPrice });
+    let planPriceForDisplayBilledMonthly = 0;
+    let planPriceForDisplayBilledAnnually = 0;
+    let currentSelectedPlanCostForPayment = 0;
+    let contactSalesRequired;
+    if (pricingPlanChosen === 'enterprise') {
+      contactSalesRequired = true;
+      planPriceForDisplayBilledMonthly = defaultPricing.enterprisePlanFullPricePerMonthPayMonthly;
+      planPriceForDisplayBilledAnnually = defaultPricing.enterprisePlanFullPricePerMonthPayAnnually;
     } else {
-      this.setState({ currentSelectedPlanCost: monthlyPlanPrice });
+      contactSalesRequired = false;
+      planPriceForDisplayBilledMonthly = defaultPricing.proPlanFullPricePerMonthPayMonthly;
+      planPriceForDisplayBilledAnnually = defaultPricing.proPlanFullPricePerMonthPayAnnually;
     }
+    if (radioGroupValue === 'annualPlanRadio') {
+      currentSelectedPlanCostForPayment = planPriceForDisplayBilledAnnually;
+    } else {
+      currentSelectedPlanCostForPayment = planPriceForDisplayBilledMonthly;
+    }
+    this.setState({
+      contactSalesRequired,
+      isCouponCodeApplied: false,
+      couponCodeInputValue: '',
+      currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForPayment),
+      planPriceForDisplayBilledMonthly: this.convertPriceFromPenniesToDollars(planPriceForDisplayBilledMonthly),
+      planPriceForDisplayBilledAnnually: this.convertPriceFromPenniesToDollars(planPriceForDisplayBilledAnnually),
+      lastCouponResponseReceivedFromAPI: {},
+      couponDiscountValue: 0,
+    });
   }
 
   checkCouponCodeValidity () {
-    const { couponCodeInputValue, couponCodesFromAPI, monthlyPlanPrice, annualPlanPrice, currentSelectedPlanCost: oldCurrentSelectedPlanCost, pricingPlanChosen } = this.state;
+    const { couponCodeInputValue } = this.state;
 
-    let wasCouponMatchFound = false;
-
-    for (let i = 0; i < couponCodesFromAPI.length; i++) {
-      if (couponCodesFromAPI[i].code.toLowerCase() === couponCodeInputValue.toLowerCase() && (pricingPlanChosen === 'professional' ? couponCodesFromAPI[i].validForProfessionalPlan : couponCodesFromAPI[i].validForEnterprisePlan)) {
-        this.setState({
-          isCouponApplied: true,
-          couponDiscountValue: couponCodesFromAPI[i].discount,
-          monthlyPlanPriceWithDiscount: monthlyPlanPrice - couponCodesFromAPI[i].discount,
-          annualPlanPriceWithDiscount: annualPlanPrice - couponCodesFromAPI[i].discount,
-          currentSelectedPlanCost: oldCurrentSelectedPlanCost - couponCodesFromAPI[i].discount,
-          couponAppliedFromAPI: couponCodesFromAPI[i],
-        });
-
-        wasCouponMatchFound = true;
-      }
-    }
-
-    if (wasCouponMatchFound === false) {
-      this.setState({ couponCodeError: true, couponCodeInputValue: '' });
-      setTimeout(() => {
-        this.setState({ couponCodeError: false });
-      }, 3000);
-    }
+    const planType = 'PROFESSIONAL_MONTHLY';
+    DonateActions.validateCoupon(planType, couponCodeInputValue);
   }
 
   closePaidAccountUpgradeModal () {
     this.props.toggleFunction(this.state.pathname);
   }
 
+  convertPriceFromPenniesToDollars (priceInPennies) {
+    if (!priceInPennies) {
+      return 0;
+    }
+    let priceInPenniesInt = 0;
+    if (priceInPennies === parseInt(priceInPennies, 10)) {
+      priceInPenniesInt = priceInPennies;
+    } else {
+      priceInPenniesInt = extractNumber(priceInPennies);
+    }
+    const priceInDollars = priceInPenniesInt / 100;
+    return numberWithCommas(priceInDollars);
+  }
+
+  convertPriceFromDollarsStringToPenniesInt (priceInDollarsString) {
+    if (!priceInDollarsString) {
+      return 0;
+    }
+    const priceInDollarsInt = extractNumber(priceInDollarsString);
+    return priceInDollarsInt * 100;
+  }
+
   render () {
     renderLog(__filename);
     const { classes } = this.props;
-    const { radioGroupValue, couponCodeInputValue, couponDiscountValue, isCouponApplied, paidAccountProcessStep, pricingPlanChosen, couponCodeError, monthlyPlanPriceWithDiscount, annualPlanPriceWithDiscount, currentSelectedPlanCost } = this.state;
+    const { contactSalesRequired, radioGroupValue, couponCodeInputValue, couponDiscountValue, isCouponCodeApplied, paidAccountProcessStep, pricingPlanChosen, couponCodeError, planPriceForDisplayBilledMonthly, planPriceForDisplayBilledAnnually, currentSelectedPlanCostForPayment } = this.state;
 
-    console.log(this.state);
+    // console.log(this.state);
 
     let modalTitle = '';
     let backToButton;
@@ -331,7 +461,7 @@ class PaidAccountUpgradeModal extends Component {
               <SectionTitle>
                 {planNameTitle}
               </SectionTitle>
-              {isCouponApplied ? (
+              {isCouponCodeApplied ? (
                 <div
                   className={classes.couponAlert}
                 >
@@ -346,70 +476,76 @@ class PaidAccountUpgradeModal extends Component {
                   Invalid Coupon Code
                 </div>
               ) : null}
-              <Fieldset disabledMode={(radioGroupValue !== 'annualPlanRadio')}>
-                <FormControl classes={{ root: classes.formControl }}>
-                  <RadioGroup
-                    name="planRadioGroup"
-                    value={radioGroupValue}
-                    onChange={this.handleRadioGroupChange}
-                  >
-                    <FormControlLabel
-                      classes={{ root: classes.formControlLabel, label: classes.formControlLabelSpan }}
-                      value="annualPlanRadio"
-                      control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
-                      label={(
-                        <>
-                          <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                          <PriceLabel>{annualPlanPriceWithDiscount}</PriceLabel>
-                          <PriceLabelSubText> /mo</PriceLabelSubText>
-                          <MobilePricingPlanName>Billed Annually</MobilePricingPlanName>
-                        </>
-                      )}
-                      onClick={this.handleRadioGroupChoiceSubDomain}
-                      checked={radioGroupValue === 'annualPlanRadio'}
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </Fieldset>
-              <Fieldset disabledMode={(radioGroupValue !== 'monthlyPlanRadio')}>
-                <FormControl classes={{ root: classes.formControl }}>
-                  <RadioGroup
-                    name="planRadioGroup"
-                    value={radioGroupValue}
-                    onChange={this.handleRadioGroupChange}
-                  >
-                    <FormControlLabel
-                      classes={{ root: classes.formControlLabel, label: classes.formControlLabelSpan }}
-                      value="monthlyPlanRadio"
-                      control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
-                      label={(
-                        <>
-                          <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                          <PriceLabel>{monthlyPlanPriceWithDiscount}</PriceLabel>
-                          <PriceLabelSubText> /mo</PriceLabelSubText>
-                          <MobilePricingPlanName>Billed Monthly</MobilePricingPlanName>
-                        </>
-                      )}
-                      onClick={this.handleRadioGroupChoiceSubDomain}
-                      checked={radioGroupValue === 'monthlyPlanRadio'}
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </Fieldset>
+              {contactSalesRequired ? (
+                <div>Contact Sales for Enterprise Coupon Code</div>
+              ) : (
+                <>
+                  <Fieldset disabledMode={(radioGroupValue !== 'annualPlanRadio')}>
+                    <FormControl classes={{ root: classes.formControl }}>
+                      <RadioGroup
+                        name="planRadioGroup"
+                        value={radioGroupValue}
+                        onChange={this.handleRadioGroupChange}
+                      >
+                        <FormControlLabel
+                          classes={{ root: classes.formControlLabel, label: classes.formControlLabelSpan }}
+                          value="annualPlanRadio"
+                          control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
+                          label={(
+                            <>
+                              <PriceLabelDollarSign>$</PriceLabelDollarSign>
+                              <PriceLabel>{planPriceForDisplayBilledAnnually}</PriceLabel>
+                              <PriceLabelSubText> /mo</PriceLabelSubText>
+                              <MobilePricingPlanName>Billed Annually</MobilePricingPlanName>
+                            </>
+                          )}
+                          onClick={this.handleRadioGroupChoiceSubDomain}
+                          checked={radioGroupValue === 'annualPlanRadio'}
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </Fieldset>
+                  <Fieldset disabledMode={(radioGroupValue !== 'monthlyPlanRadio')}>
+                    <FormControl classes={{ root: classes.formControl }}>
+                      <RadioGroup
+                        name="planRadioGroup"
+                        value={radioGroupValue}
+                        onChange={this.handleRadioGroupChange}
+                      >
+                        <FormControlLabel
+                          classes={{ root: classes.formControlLabel, label: classes.formControlLabelSpan }}
+                          value="monthlyPlanRadio"
+                          control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
+                          label={(
+                            <>
+                              <PriceLabelDollarSign>$</PriceLabelDollarSign>
+                              <PriceLabel>{planPriceForDisplayBilledMonthly}</PriceLabel>
+                              <PriceLabelSubText> /mo</PriceLabelSubText>
+                              <MobilePricingPlanName>Billed Monthly</MobilePricingPlanName>
+                            </>
+                          )}
+                          onClick={this.handleRadioGroupChoiceSubDomain}
+                          checked={radioGroupValue === 'monthlyPlanRadio'}
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </Fieldset>
+                </>
+              )}
               <br />
               <SectionTitle>Coupon Code</SectionTitle>
               <OutlinedInput
-                classes={{ root: isCouponApplied ? classes.textFieldCouponApplied : classes.textField, input: couponCodeInputValue !== '' ? classes.textFieldInputUppercase : classes.textFieldInput }}
+                classes={{ root: isCouponCodeApplied ? classes.textFieldCouponApplied : classes.textField, input: couponCodeInputValue !== '' ? classes.textFieldInputUppercase : classes.textFieldInput }}
                 inputProps={{ }}
-                margin="normal"
+                // margin="normal"
                 // variant="outlined"
                 placeholder="Enter Here..."
                 fullWidth
                 onChange={this.onCouponInputChange}
-                disabled={isCouponApplied}
+                disabled={isCouponCodeApplied}
                 value={couponCodeInputValue}
               />
-              {isCouponApplied ? (
+              {isCouponCodeApplied ? (
                 <>
                   <div
                     className={classes.couponAlert}
@@ -459,7 +595,7 @@ class PaidAccountUpgradeModal extends Component {
           <MobileWrapper>
             <SectionTitle>
               Payment for $
-              {currentSelectedPlanCost}
+              {currentSelectedPlanCostForPayment}
             </SectionTitle>
           </MobileWrapper>
         );
@@ -481,7 +617,7 @@ class PaidAccountUpgradeModal extends Component {
                     {planNameTitle}
                   </SectionTitle>
                 </div>
-                {isCouponApplied ? (
+                {isCouponCodeApplied ? (
                   <div
                     className={classes.couponAlert}
                   >
@@ -496,76 +632,82 @@ class PaidAccountUpgradeModal extends Component {
                     Invalid Coupon Code
                   </div>
                 ) : null}
-                <Fieldset disabledMode={(radioGroupValue !== 'annualPlanRadio')}>
-                  <Legend>
-                    Billed Annually
-                  </Legend>
-                  <FormControl classes={{ root: classes.formControl }}>
-                    <RadioGroup
-                      name="planRadioGroup"
-                      value={radioGroupValue}
-                      onChange={this.handleRadioGroupChange}
-                    >
-                      <FormControlLabel
-                        classes={{ root: classes.formControlLabel }}
-                        value="annualPlanRadio"
-                        control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
-                        label={(
-                          <>
-                            <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                            <PriceLabel>{annualPlanPriceWithDiscount}</PriceLabel>
-                            <PriceLabelSubText> /mo</PriceLabelSubText>
-                          </>
-                        )}
-                        onClick={this.handleRadioGroupChoiceSubDomain}
-                        checked={radioGroupValue === 'annualPlanRadio'}
-                      />
-                    </RadioGroup>
-                  </FormControl>
-                </Fieldset>
-                <Fieldset disabledMode={(radioGroupValue !== 'monthlyPlanRadio')}>
-                  <Legend>
-                    Billed Monthly
-                  </Legend>
-                  <FormControl classes={{ root: classes.formControl }}>
-                    <RadioGroup
-                      name="planRadioGroup"
-                      value={radioGroupValue}
-                      onChange={this.handleRadioGroupChange}
-                    >
-                      <FormControlLabel
-                        classes={{ root: classes.formControlLabel }}
-                        value="monthlyPlanRadio"
-                        control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
-                        label={(
-                          <>
-                            <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                            <PriceLabel>{monthlyPlanPriceWithDiscount}</PriceLabel>
-                            <PriceLabelSubText> /mo</PriceLabelSubText>
-                          </>
-                        )}
-                        onClick={this.handleRadioGroupChoiceSubDomain}
-                        checked={radioGroupValue === 'monthlyPlanRadio'}
-                      />
-                    </RadioGroup>
-                  </FormControl>
-                </Fieldset>
+                {contactSalesRequired ? (
+                  <div>Contact Sales for Enterprise Coupon Code</div>
+                ) : (
+                  <>
+                    <Fieldset disabledMode={(radioGroupValue !== 'annualPlanRadio')}>
+                      <Legend>
+                        Billed Annually
+                      </Legend>
+                      <FormControl classes={{ root: classes.formControl }}>
+                        <RadioGroup
+                          name="planRadioGroup"
+                          value={radioGroupValue}
+                          onChange={this.handleRadioGroupChange}
+                        >
+                          <FormControlLabel
+                            classes={{ root: classes.formControlLabel }}
+                            value="annualPlanRadio"
+                            control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
+                            label={(
+                              <>
+                                <PriceLabelDollarSign>$</PriceLabelDollarSign>
+                                <PriceLabel>{planPriceForDisplayBilledAnnually}</PriceLabel>
+                                <PriceLabelSubText> /mo</PriceLabelSubText>
+                              </>
+                            )}
+                            onClick={this.handleRadioGroupChoiceSubDomain}
+                            checked={radioGroupValue === 'annualPlanRadio'}
+                          />
+                        </RadioGroup>
+                      </FormControl>
+                    </Fieldset>
+                    <Fieldset disabledMode={(radioGroupValue !== 'monthlyPlanRadio')}>
+                      <Legend>
+                        Billed Monthly
+                      </Legend>
+                      <FormControl classes={{ root: classes.formControl }}>
+                        <RadioGroup
+                          name="planRadioGroup"
+                          value={radioGroupValue}
+                          onChange={this.handleRadioGroupChange}
+                        >
+                          <FormControlLabel
+                            classes={{ root: classes.formControlLabel }}
+                            value="monthlyPlanRadio"
+                            control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
+                            label={(
+                              <>
+                                <PriceLabelDollarSign>$</PriceLabelDollarSign>
+                                <PriceLabel>{planPriceForDisplayBilledMonthly}</PriceLabel>
+                                <PriceLabelSubText> /mo</PriceLabelSubText>
+                              </>
+                            )}
+                            onClick={this.handleRadioGroupChoiceSubDomain}
+                            checked={radioGroupValue === 'monthlyPlanRadio'}
+                          />
+                        </RadioGroup>
+                      </FormControl>
+                    </Fieldset>
+                  </>
+                )}
                 <br />
                 <div className="u-tc">
                   <SectionTitle>Coupon Code</SectionTitle>
                 </div>
                 <OutlinedInput
-                  classes={{ root: isCouponApplied ? classes.textFieldCouponApplied : classes.textField, input: couponCodeInputValue !== '' ? classes.textFieldInputUppercase : classes.textFieldInput }}
+                  classes={{ root: isCouponCodeApplied ? classes.textFieldCouponApplied : classes.textField, input: couponCodeInputValue !== '' ? classes.textFieldInputUppercase : classes.textFieldInput }}
                   inputProps={{ }}
-                  margin="normal"
+                  // margin="normal"
                   // variant="outlined"
                   placeholder="Enter Here..."
                   fullWidth
                   onChange={this.onCouponInputChange}
-                  disabled={isCouponApplied}
+                  disabled={isCouponCodeApplied}
                   value={couponCodeInputValue}
                 />
-                {isCouponApplied ? (
+                {isCouponCodeApplied ? (
                   <>
                     <div
                       className={classes.couponAlert}
@@ -610,7 +752,7 @@ class PaidAccountUpgradeModal extends Component {
             {pricingPlanChosen}
             {' '}
             plan! Your payment has been processed, and features have been unlocked. You payed $
-            {currentSelectedPlanCost}
+            {currentSelectedPlanCostForPayment}
             <ButtonsContainer>
               <Button
                 color="primary"
@@ -867,11 +1009,11 @@ const ButtonsContainer = styled.div`
 const ModalTitleArea = styled.div`
   width: 100%;
   padding: 16px 12px;
-  ${({noBoxShadowMode}) => ((noBoxShadowMode) ? '' : 'box-shadow: 0 20px 40px -25px #999')};
+  ${({ noBoxShadowMode }) => ((noBoxShadowMode) ? '' : 'box-shadow: 0 20px 40px -25px #999')};
   z-index: 999;
   @media (min-width: 769px) {
     text-align: center;
-    ${({noBoxShadowMode}) => ((noBoxShadowMode) ? '' : 'box-shadow: none')};
+    ${({ noBoxShadowMode }) => ((noBoxShadowMode) ? '' : 'box-shadow: none')};
     border-bottom: 2px solid #f7f7f7;
   }
   ${({ noBoxShadowMode }) => ((noBoxShadowMode) ? '@media (max-width: 376px) {\n    padding: 8px 6px;\n  }' : '')}

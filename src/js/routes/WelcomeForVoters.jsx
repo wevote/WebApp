@@ -189,7 +189,7 @@ class Welcome extends PureComponent {
             <DescriptionLeftColumn>
               <Description>
                 <Bold>We&apos;ve all been there. </Bold>
-                Election day is almost here, but besides the President and a few other choices we&apos;ve made, we don&apos;t know how we are going to vote! Between the nonstop misleading TV ads, texts, calls and oveflowing mailboxes, who has time to make sense of the madness? There has to be a better way.
+                Election day is almost here, but besides the President and a few other choices we&apos;ve made, we don&apos;t know how we are going to vote! Between the nonstop misleading TV ads, texts, calls and overflowing mailboxes, who has time to make sense of the madness? There has to be a better way.
               </Description>
               <Description>Now, there is!</Description>
               <Description>We&apos;ll help you confidently fill out your specific ballot with endorsements from organizations and friends you trust, all in one place.</Description>

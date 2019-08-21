@@ -31,8 +31,11 @@ export default {
     });
   },
 
+  setLatestCouponViewed (latestCouponViewed) {
+    Dispatcher.dispatch({ type: 'latestCouponViewed', payload: latestCouponViewed });
+  },
+
   validateCoupon (planType, couponCode) {
-    console.log('validateCoupon');
     Dispatcher.loadEndpoint('validateCoupon', {
       plan_type_enum: planType,
       coupon_code: couponCode,

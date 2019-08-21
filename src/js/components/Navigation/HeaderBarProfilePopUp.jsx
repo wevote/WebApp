@@ -76,6 +76,18 @@ class HeaderBarProfilePopUp extends Component {
               </Link>
             </li>
             {/* Desktop or Mobile */}
+            <li>
+              <Link id="profilePopUpYourEndorsements" onClick={this.hideProfilePopUp} to="/settings/voterguidelist">
+                <Button
+                  variant="text"
+                  color="primary"
+                  classes={{ root: classes.signOutButton }}
+                >
+                  <span className="header-slide-out-menu-text-left">Your Endorsements</span>
+                </Button>
+              </Link>
+            </li>
+            {/* Desktop or Mobile */}
             {voter && isSignedIn ?
               null : (
                 <li>
