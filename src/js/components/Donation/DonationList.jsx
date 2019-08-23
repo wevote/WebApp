@@ -5,6 +5,8 @@ import moment from 'moment';
 import { renderLog } from '../../utils/logging';
 import DonateStore from '../../stores/DonateStore';
 import DonationCancelOrRefund from './DonationCancelOrRefund';
+import LoadingWheel from '../LoadingWheel';
+import DonateActions from '../../actions/DonateActions';
 
 /* global $ */
 
@@ -30,6 +32,7 @@ const styles = {
 export default class DonationList extends Component {
   static propTypes = {
     displayDonations: PropTypes.bool,
+    showOrganizationPlan: PropTypes.bool,
   };
 
   constructor (props) {
@@ -44,6 +47,9 @@ export default class DonationList extends Component {
     this.onDonateStoreChange();
     this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange.bind(this));
     this.setState({ donationHistory: DonateStore.getVoterDonationHistory() });
+    if (this.props.showOrganizationPlan) {
+      DonateActions.donationRefreshDonationList();
+    }
   }
 
   componentWillUnmount () {
@@ -57,12 +63,17 @@ export default class DonationList extends Component {
   isMobile = () => $(window).width() < 1280;
 
   render () {
-    renderLog(__filename);
+    renderLog('DonationList');
+    if (!this.state.donationHistory) {
+      console.log('donationHistory not yet received in DonationList render');
+      return LoadingWheel;
+    }
+
     if (this.state.donationHistory && this.state.donationHistory.length > 0) {
-      const donations = this.props.displayDonations;
+      const { displayDonations, showOrganizationPlan } = this.props;
       const isMobile = this.isMobile();
 
-      if (donations) {
+      if (displayDonations) {
         return (
           <Card style={styles.Card}>
             <Card.Body>
@@ -84,8 +95,9 @@ export default class DonationList extends Component {
                   {this.state.donationHistory.map((item) => {
                     const { record_enum: recordEnum, refund_days_limit: refundDaysLimit, charge_id: chargeId,
                       subscription_id: subscriptionId, created, amount, brand, last4,
-                      exp_month: expMonth, exp_year: expYear, stripe_status: stripeStatus } = item;
-                    if (recordEnum === 'PAYMENT_FROM_UI' || recordEnum === 'PAYMENT_AUTO_SUBSCRIPTION') {
+                      exp_month: expMonth, exp_year: expYear, stripe_status: stripeStatus, is_organization_plan: isOrgPlan } = item;
+                    if ((recordEnum === 'PAYMENT_FROM_UI' || recordEnum === 'PAYMENT_AUTO_SUBSCRIPTION') &&
+                        ((!showOrganizationPlan && !isOrgPlan) || (showOrganizationPlan && isOrgPlan))) {
                       const refundDays = parseInt(refundDaysLimit, 10);
                       const active =
                         moment.utc(created).local().isAfter(moment(new Date()).subtract(refundDays, 'days')) &&
@@ -105,11 +117,12 @@ export default class DonationList extends Component {
                             {stripeStatus === 'succeeded' ? 'Paid' : stripeStatus}
                           </td>
                           <td>
-                            <DonationCancelOrRefund item={item} refundDonation={donations} active={active} cancelText="" />
+                            <DonationCancelOrRefund item={item} refundDonation={displayDonations} active={active} cancelText="" showOrganizationPlan={showOrganizationPlan} />
                           </td>
                         </tr>
                       );
                     } else {
+                      console.log("no records of the type 'PAYMENT_FROM_UI' or 'PAYMENT_AUTO_SUBSCRIPTION' were found.");
                       return null;
                     }
                   })}
@@ -141,8 +154,9 @@ export default class DonationList extends Component {
                   {this.state.donationHistory.map((item) => {
                     const { record_enum: recordEnum, subscription_canceled_at: subscriptionCanceledAt,
                       charge_id: chargeId, subscription_id: subscriptionId, last_charged: lastCharged, created, amount, brand, last4,
-                      exp_month: expMonth, exp_year: expYear, subscription_ended_at: subscriptionEndedAt } = item;
-                    if (recordEnum === 'SUBSCRIPTION_SETUP_AND_INITIAL') {
+                      exp_month: expMonth, exp_year: expYear, subscription_ended_at: subscriptionEndedAt, is_organization_plan: isOrgPlan } = item;
+                    if (recordEnum === 'SUBSCRIPTION_SETUP_AND_INITIAL' &&
+                      ((!showOrganizationPlan && !isOrgPlan) || (showOrganizationPlan && isOrgPlan))) {
                       const active = subscriptionCanceledAt === 'None' && subscriptionEndedAt === 'None';
                       const cancel = subscriptionCanceledAt !== 'None' ?
                         moment.utc(subscriptionCanceledAt).format('MMM D, YYYY') : '';
@@ -163,11 +177,12 @@ export default class DonationList extends Component {
                           </td>
                           <td hidden={isMobile}>{cancel}</td>
                           <td>
-                            <DonationCancelOrRefund item={item} refundDonation={donations} active={active} cancelText={cancel} />
+                            <DonationCancelOrRefund item={item} refundDonation={displayDonations} active={active} cancelText={cancel} showOrganizationPlan={showOrganizationPlan} />
                           </td>
                         </tr>
                       );
                     } else {
+                      console.log("no records of the type 'SUBSCRIPTION_SETUP_AND_INITIAL' found.");
                       return null;
                     }
                   })}

@@ -75,8 +75,8 @@ export default class DonationListForm extends Component {
         <div>
           <input type="hidden" value={this.state.activeKey} />
           <Tabs defaultActiveKey={1} activeKey={this.state.activeKey} onSelect={this.handleSelect} id="tabbed_donation_history">
-            <Tab eventKey={1} title="Donations"><DonationList displayDonations /></Tab>
-            <Tab eventKey={2} title="Subscriptions"><DonationList displayDonations={false} /></Tab>
+            <Tab eventKey={1} title="Donations"><DonationList displayDonations showOrganizationPlan={false} /></Tab>
+            <Tab eventKey={2} title="Subscriptions"><DonationList displayDonations={false} showOrganizationPlan={false} /></Tab>
           </Tabs>
         </div>
       );
