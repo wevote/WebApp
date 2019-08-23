@@ -5,6 +5,7 @@ import moment from 'moment';
 import styled from 'styled-components';
 import Badge from '@material-ui/core/Badge';
 import Chip from '@material-ui/core/Chip';
+import Link from '@material-ui/core/Link';
 import { withStyles } from '@material-ui/core/styles';
 import AddressBox from '../../components/AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
@@ -793,9 +794,21 @@ class Ballot extends Component {
         <div className="ballot container-fluid well u-stack--md u-inset--md">
           <div className="ballot__header" style={{ marginTop: `${isCordova() ? '100px' : 'undefined'}` }}>
             <p>
-              <span className="u-cursor--pointer" id="ballotIfBallotDoesNotAppear" onClick={this.toggleSelectBallotModal}>
-                If your ballot does not appear momentarily, please click to change your address.
-              </span>
+              <div style={{ textAlign: 'center' }}>
+                If your ballot does not appear momentarily,
+                {' '}
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                <Link
+                  // since we use a button as the component, we can disable that es-lint rule
+                  component="button"
+                  id="ballotIfBallotDoesNotAppear"
+                  onClick={this.toggleSelectBallotModal}
+                  style={{ color: 'rgb(6, 95, 212)' }}
+                >
+                  please click here to change your address
+                </Link>
+                .
+              </div>
             </p>
           </div>
         </div>
