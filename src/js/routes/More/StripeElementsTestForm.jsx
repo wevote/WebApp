@@ -7,6 +7,7 @@ import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import DonateActions from '../../actions/DonateActions';
 import DonateStore from '../../stores/DonateStore';
+import DonationList from '../../components/Donation/DonationList';
 
 /* global $ */
 
@@ -154,6 +155,17 @@ class StripeElementsTestForm extends Component {
         >
           <span>Start my Subscription</span>
         </Button>
+
+        <br />
+        <br />
+        <br />
+          Plan Payments
+        <br />
+        <DonationList displayDonations showOrganizationPlan />
+        <br />
+        Plan Subscriptions
+        <br />
+        <DonationList displayDonations={false} showOrganizationPlan />
 
       </div>
     );
