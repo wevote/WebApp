@@ -1,5 +1,6 @@
 import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
@@ -7,6 +8,7 @@ import SearchGuidesToFollowBox from '../../components/Search/SearchGuidesToFollo
 import GuideList from '../../components/VoterGuide/GuideList';
 import IssueStore from '../../stores/IssueStore';
 import IssueCard from '../../components/Values/IssueCard';
+import ValuesList from './ValuesList';
 
 class VoterGuidesUnderOneValue extends Component {
   static propTypes = {
@@ -99,11 +101,20 @@ class VoterGuidesUnderOneValue extends Component {
               <GuideList incomingVoterGuideList={voterGuidesForValue} />
             </Suspense>
           </div>
+          <Title>Explore More Values</Title>
+          <ValuesList displayOnlyIssuesNotFollowedByVoter />
         </div>
         <br />
       </div>
     );
   }
 }
+
+const Title = styled.h3`
+  color: #333;
+  font-size: 22px;
+  margin-bottom: 32px;
+  margin-top: 24px;
+`;
 
 export default VoterGuidesUnderOneValue;

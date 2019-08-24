@@ -48,9 +48,13 @@ export default class ValuesList extends Component {
     const { allIssues, searchQuery } = this.state;
     renderLog(__filename);
     let issueList = [];
+    let issuesNotFollowedByVoterList = [];
     if (allIssues) {
       issueList = allIssues;
+      issuesNotFollowedByVoterList = allIssues.filter(issue => issue.is_issue_followed === false);
     }
+
+    console.log(allIssues);
 
     if (searchQuery.length > 0) {
       const searchQueryLowercase = searchQuery.toLowerCase();
@@ -59,7 +63,7 @@ export default class ValuesList extends Component {
             oneIssue.issue_description.toLowerCase().includes(searchQueryLowercase));
     }
 
-    const issueListForDisplay = issueList.map(issue => (
+    let issueListForDisplay = issueList.map(issue => (
       <div
         className="col col-12 col-md-6 u-stack--md"
         key={`div-issue-list-key-${issue.issue_we_vote_id}`}
@@ -75,36 +79,64 @@ export default class ValuesList extends Component {
       </div>
     ));
 
+    if (this.props.displayOnlyIssuesNotFollowedByVoter) {
+      issueListForDisplay = issuesNotFollowedByVoterList.map(issue => (
+        <div
+          className="col col-12 col-md-6 u-stack--md"
+          key={`div-issue-list-key-${issue.issue_we_vote_id}`}
+
+        >
+          <IssueCard
+            condensed
+            followToggleOn
+            includeLinkToIssue
+            issue={issue}
+            issueImageSize="SMALL"
+            key={`issue-list-key-${issue.issue_we_vote_id}`}
+          />
+        </div>
+      ));
+    }
+
     return (
-      <div className="opinions-followed__container">
-        <Helmet title="Values - We Vote" />
-        <section className="card">
-          <div className="card-main">
-            <h1 className="h1">Values</h1>
-            <p>
-              Follow the values and issues you care about, so we can highlight the organizations that care about the same issues you do.
-            </p>
-            <SearchBar
-              clearButton
-              searchButton
-              placeholder="Search by name or Description"
-              searchFunction={this.searchFunction}
-              clearFunction={this.clearFunction}
-              searchUpdateDelayTime={0}
-            />
-            <br />
-            <div className="network-issues-list voter-guide-list">
-              { this.state.allIssues && this.state.allIssues.length ? (
-                <Row className="row">
-                  {issueListForDisplay}
-                </Row>
-              ) :
-                null
-              }
-            </div>
+      <>
+        {this.props.displayOnlyIssuesNotFollowedByVoter ? (
+          <Row className="row" noMargin>
+            {issueListForDisplay}
+          </Row>
+        ) : (
+          <div className="opinions-followed__container">
+            <Helmet title="Values - We Vote" />
+            <section className="card">
+              <div className="card-main">
+                <h1 className="h1">Values</h1>
+                <p>
+                  Follow the values and issues you care about, so we can highlight the organizations that care about the same issues you do.
+                </p>
+                <SearchBar
+                  clearButton
+                  searchButton
+                  placeholder="Search by name or Description"
+                  searchFunction={this.searchFunction}
+                  clearFunction={this.clearFunction}
+                  searchUpdateDelayTime={0}
+                />
+                <br />
+                <div className="network-issues-list voter-guide-list">
+                  { this.state.allIssues && this.state.allIssues.length ? (
+                    <Row className="row">
+                      {issueListForDisplay}
+                    </Row>
+                  ) :
+                    null
+                  }
+                </div>
+              </div>
+            </section>
           </div>
-        </section>
-      </div>
+        )}
+      </>
+
     );
   }
 }
@@ -112,4 +144,5 @@ export default class ValuesList extends Component {
 const Row = styled.div`
   margin-left: -16px;
   margin-right: -16px;
+  width: ${props => (props.noMargin ? 'calc(100% + 32px)' : '100%')}
 `;
