@@ -30,7 +30,7 @@ class BallotSummaryAccordionSection extends Component {
     return (
       <AccordionWrapper>
         <AccordionBorderWrapper>
-          <AccordionTitle isOpen={isOpen ? true : false} onClick={onClick} style={{ cursor: 'pointer' }}>
+          <AccordionTitle isOpen={!!isOpen} onClick={onClick} style={{ cursor: 'pointer' }}>
             {label}
             <div style={{ float: 'right' }}>
               <IconButton
@@ -40,22 +40,6 @@ class BallotSummaryAccordionSection extends Component {
               </IconButton>
             </div>
           </AccordionTitle>
-          {/* {isOpen  ? (
-            <AccordionTitleSelected onClick={onClick} style={{ cursor: 'pointer' }}>
-
-            </AccordionTitleSelected>
-          ) : (
-            <AccordionTitleUnselected onClick={onClick} style={{ cursor: 'pointer' }}>
-              {label}
-              <div style={{ float: 'right' }}>
-                <IconButton
-                  classes={{ root: classes.iconButtonRoot }}
-                >
-                  <ArrowDropDown />
-                </IconButton>
-              </div>
-            </AccordionTitleUnselected>
-          )} */}
           {isOpen && (
             <AccordionBody>
               {this.props.children}
