@@ -2,6 +2,16 @@ import Dispatcher from '../dispatcher/Dispatcher';
 
 
 export default {
+  couponSummaryRetrieve (couponCode) {
+    Dispatcher.loadEndpoint('couponSummaryRetrieve', {
+      coupon_code: couponCode,
+    });
+  },
+
+  defaultPricing () {
+    Dispatcher.loadEndpoint('defaultPricing', {});
+  },
+
   donationCancelSubscriptionAction (subscriptionId) {
     Dispatcher.loadEndpoint('donationCancelSubscription',
       {

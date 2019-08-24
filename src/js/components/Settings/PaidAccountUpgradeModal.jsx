@@ -40,9 +40,9 @@ class PaidAccountUpgradeModal extends Component {
       couponCodeError: false,
       defaultPricing: {
         enterprisePlanFullPricePerMonthPayMonthly: 0,
-        enterprisePlanFullPricePerMonthPayAnnually: 0,
+        enterprisePlanFullPricePerMonthPayYearly: 0,
         proPlanFullPricePerMonthPayMonthly: 0,
-        proPlanFullPricePerMonthPayAnnually: 0,
+        proPlanFullPricePerMonthPayYearly: 0,
         status: 'From constructor',
         success: false,
       },
@@ -52,9 +52,9 @@ class PaidAccountUpgradeModal extends Component {
         couponMatchFound: false,
         couponStillValid: false,
         enterprisePlanCouponPricePerMonthPayMonthly: 0,
-        enterprisePlanCouponPricePerMonthPayAnnually: 0,
+        enterprisePlanCouponPricePerMonthPayYearly: 0,
         proPlanCouponPricePerMonthPayMonthly: 14000,
-        proPlanCouponPricePerMonthPayAnnually: 11500,
+        proPlanCouponPricePerMonthPayYearly: 11500,
         validForProfessionalPlan: true,
         validForEnterprisePlan: false,
         status: 'From constructor',
@@ -81,6 +81,9 @@ class PaidAccountUpgradeModal extends Component {
   componentDidMount () {
     DonateStore.resetState();
     const defaultPricing = DonateStore.getDefaultPricing();
+    if (!defaultPricing.validForEnterprisePlan && !defaultPricing.validForProfessionalPlan) {
+      DonateActions.defaultPricing();
+    }
     this.setState({
       defaultPricing,
       pathname: this.props.pathname,
@@ -125,6 +128,12 @@ class PaidAccountUpgradeModal extends Component {
     if (this.state.pricingPlanChosen !== nextState.pricingPlanChosen) {
       return true;
     }
+    if (this.state.validForEnterprisePlan !== nextState.validForEnterprisePlan) {
+      return true;
+    }
+    if (this.state.validForProfessionalPlan !== nextState.validForProfessionalPlan) {
+      return true;
+    }
     return false;
   }
 
@@ -152,34 +161,39 @@ class PaidAccountUpgradeModal extends Component {
     const defaultPricing = DonateStore.getDefaultPricing();
     const lastCouponResponseReceivedFromAPI = DonateStore.getLastCouponResponseReceived();
     // console.log('donateStoreChange, lastCouponResponseReceivedFromAPI:', lastCouponResponseReceivedFromAPI);
-    const { enterprisePlanFullPricePerMonthPayMonthly, enterprisePlanFullPricePerMonthPayAnnually, proPlanFullPricePerMonthPayAnnually, proPlanFullPricePerMonthPayMonthly } = defaultPricing;
-    const { couponDiscountValue, couponReceived, couponViewed, couponMatchFound, couponStillValid, enterprisePlanCouponPricePerMonthPayMonthly, enterprisePlanCouponPricePerMonthPayAnnually, proPlanCouponPricePerMonthPayAnnually, proPlanCouponPricePerMonthPayMonthly } = lastCouponResponseReceivedFromAPI;
+    const { proPlanFullPricePerMonthPayYearly, proPlanFullPricePerMonthPayMonthly } = defaultPricing;
+    const { couponDiscountValue, couponReceived, couponViewed, couponMatchFound, couponStillValid, enterprisePlanCouponPricePerMonthPayMonthly, enterprisePlanCouponPricePerMonthPayYearly, proPlanCouponPricePerMonthPayYearly, proPlanCouponPricePerMonthPayMonthly, validForEnterprisePlan, validForProfessionalPlan } = lastCouponResponseReceivedFromAPI;
 
     // These values are different based on the plan chosen
     let contactSalesRequired;
     let planPriceForDisplayBilledMonthly;
-    let planPriceForDisplayBilledAnnually;
+    let planPriceForDisplayBilledYearly;
     let currentSelectedPlanCostForPayment;
     if (couponMatchFound && couponStillValid) {
-      contactSalesRequired = false;
       if (pricingPlanChosen === 'enterprise') {
-        planPriceForDisplayBilledMonthly = enterprisePlanCouponPricePerMonthPayMonthly;
-        planPriceForDisplayBilledAnnually = enterprisePlanCouponPricePerMonthPayAnnually;
-      } else {
+        if (validForEnterprisePlan) {
+          contactSalesRequired = false;
+          planPriceForDisplayBilledMonthly = enterprisePlanCouponPricePerMonthPayMonthly;
+          planPriceForDisplayBilledYearly = enterprisePlanCouponPricePerMonthPayYearly;
+        } else {
+          contactSalesRequired = true;
+        }
+      } else if (validForProfessionalPlan) {
         planPriceForDisplayBilledMonthly = proPlanCouponPricePerMonthPayMonthly;
-        planPriceForDisplayBilledAnnually = proPlanCouponPricePerMonthPayAnnually;
+        planPriceForDisplayBilledYearly = proPlanCouponPricePerMonthPayYearly;
+      } else {
+        planPriceForDisplayBilledMonthly = proPlanFullPricePerMonthPayMonthly;
+        planPriceForDisplayBilledYearly = proPlanFullPricePerMonthPayYearly;
       }
     } else if (pricingPlanChosen === 'enterprise') {
       contactSalesRequired = true;
-      planPriceForDisplayBilledMonthly = enterprisePlanFullPricePerMonthPayMonthly;
-      planPriceForDisplayBilledAnnually = enterprisePlanFullPricePerMonthPayAnnually;
     } else {
       contactSalesRequired = false;
       planPriceForDisplayBilledMonthly = proPlanFullPricePerMonthPayMonthly;
-      planPriceForDisplayBilledAnnually = proPlanFullPricePerMonthPayAnnually;
+      planPriceForDisplayBilledYearly = proPlanFullPricePerMonthPayYearly;
     }
     if (radioGroupValue === 'annualPlanRadio') {
-      currentSelectedPlanCostForPayment = planPriceForDisplayBilledAnnually;
+      currentSelectedPlanCostForPayment = planPriceForDisplayBilledYearly;
     } else {
       currentSelectedPlanCostForPayment = planPriceForDisplayBilledMonthly;
     }
@@ -192,7 +206,9 @@ class PaidAccountUpgradeModal extends Component {
       isCouponCodeApplied: couponMatchFound,
       lastCouponResponseReceivedFromAPI,
       planPriceForDisplayBilledMonthly: this.convertPriceFromPenniesToDollars(planPriceForDisplayBilledMonthly),
-      planPriceForDisplayBilledAnnually: this.convertPriceFromPenniesToDollars(planPriceForDisplayBilledAnnually),
+      planPriceForDisplayBilledYearly: this.convertPriceFromPenniesToDollars(planPriceForDisplayBilledYearly),
+      validForProfessionalPlan,
+      validForEnterprisePlan,
     });
 
     if (couponReceived && !couponViewed) {
@@ -218,11 +234,11 @@ class PaidAccountUpgradeModal extends Component {
   }
 
   couponAppliedFunction = () => {
-    this.setState({ paidAccountProcessStep: 'payForPlan' });
+    this.setState({ paidAccountProcessStep: 'payForPlanDesktop' });
 
     if (window.innerWidth > 768) {
       this.setState({
-        paidAccountProcessStep: 'payForPlan',
+        paidAccountProcessStep: 'payForPlanDesktop',
       });
     } else {
       this.setState({
@@ -242,7 +258,7 @@ class PaidAccountUpgradeModal extends Component {
     // console.log('pricingPlanChosenFunction pricingPlanChosen:', pricingPlanChosen, ', lastCouponResponseReceivedFromAPI:', lastCouponResponseReceivedFromAPI);
     if (window.innerWidth > 768 && pricingPlanChosen !== 'free') {
       this.setState({
-        paidAccountProcessStep: 'payForPlan',
+        paidAccountProcessStep: 'payForPlanDesktop',
         pricingPlanChosen,
       });
     } else if (pricingPlanChosen !== 'free') {
@@ -256,14 +272,14 @@ class PaidAccountUpgradeModal extends Component {
 
     let currentSelectedPlanCostForPro = 0;
     let currentSelectedPlanCostForEnterprise = 0;
-    const proPlanPriceForDisplayBilledAnnually = lastCouponResponseReceivedFromAPI.validForProfessionalPlan ? lastCouponResponseReceivedFromAPI.proPlanCouponPricePerMonthPayAnnually : defaultPricing.proPlanFullPricePerMonthPayAnnually;
-    const enterprisePlanPriceForDisplayBilledAnnually = lastCouponResponseReceivedFromAPI.validForEnterprisePlan ? lastCouponResponseReceivedFromAPI.enterprisePlanCouponPricePerMonthPayAnnually : defaultPricing.enterprisePlanFullPricePerMonthPayAnnually;
-    const proPlanPriceForDisplayBilledMonthly = lastCouponResponseReceivedFromAPI.validForProfessionalPlan ? lastCouponResponseReceivedFromAPI.proPlanCouponPricePerMonthPayMonthly : defaultPricing.proPlanFullPricePerMonthPayMonthly;
+    const enterprisePlanPriceForDisplayBilledYearly = lastCouponResponseReceivedFromAPI.validForEnterprisePlan ? lastCouponResponseReceivedFromAPI.enterprisePlanCouponPricePerMonthPayYearly : defaultPricing.enterprisePlanFullPricePerMonthPayYearly;
     const enterprisePlanPriceForDisplayBilledMonthly = lastCouponResponseReceivedFromAPI.validForEnterprisePlan ? lastCouponResponseReceivedFromAPI.enterprisePlanCouponPricePerMonthPayMonthly : defaultPricing.enterprisePlanFullPricePerMonthPayMonthly;
+    const proPlanPriceForDisplayBilledYearly = lastCouponResponseReceivedFromAPI.validForProfessionalPlan ? lastCouponResponseReceivedFromAPI.proPlanCouponPricePerMonthPayYearly : defaultPricing.proPlanFullPricePerMonthPayYearly;
+    const proPlanPriceForDisplayBilledMonthly = lastCouponResponseReceivedFromAPI.validForProfessionalPlan ? lastCouponResponseReceivedFromAPI.proPlanCouponPricePerMonthPayMonthly : defaultPricing.proPlanFullPricePerMonthPayMonthly;
 
     if (radioGroupValue === 'annualPlanRadio') {
-      currentSelectedPlanCostForPro = proPlanPriceForDisplayBilledAnnually;
-      currentSelectedPlanCostForEnterprise = enterprisePlanPriceForDisplayBilledAnnually;
+      currentSelectedPlanCostForPro = proPlanPriceForDisplayBilledYearly;
+      currentSelectedPlanCostForEnterprise = enterprisePlanPriceForDisplayBilledYearly;
     } else {
       currentSelectedPlanCostForPro = proPlanPriceForDisplayBilledMonthly;
       currentSelectedPlanCostForEnterprise = enterprisePlanPriceForDisplayBilledMonthly;
@@ -274,14 +290,18 @@ class PaidAccountUpgradeModal extends Component {
         this.setState({
           contactSalesRequired: false,
           planPriceForDisplayBilledMonthly: this.convertPriceFromPenniesToDollars(proPlanPriceForDisplayBilledMonthly),
-          planPriceForDisplayBilledAnnually: this.convertPriceFromPenniesToDollars(proPlanPriceForDisplayBilledAnnually),
+          planPriceForDisplayBilledYearly: this.convertPriceFromPenniesToDollars(proPlanPriceForDisplayBilledYearly),
           currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForPro),
         });
-
-        if (!lastCouponResponseReceivedFromAPI.validForProfessionalPlan) {
+        // console.log('lastCouponResponseReceivedFromAPI.validForProfessionalPlan:', lastCouponResponseReceivedFromAPI.validForProfessionalPlan);
+        if (lastCouponResponseReceivedFromAPI.validForProfessionalPlan) {
+          // Leave other values in place
+          this.setState({
+            isCouponCodeApplied: true,
+          });
+        } else {
           this.setState({
             isCouponCodeApplied: false,
-            lastCouponResponseReceivedFromAPI: {},
             couponDiscountValue: 0,
             couponCodeInputValue: '',
           });
@@ -290,15 +310,20 @@ class PaidAccountUpgradeModal extends Component {
       case 'enterprise':
         this.setState({
           planPriceForDisplayBilledMonthly: this.convertPriceFromPenniesToDollars(enterprisePlanPriceForDisplayBilledMonthly),
-          planPriceForDisplayBilledAnnually: this.convertPriceFromPenniesToDollars(enterprisePlanPriceForDisplayBilledAnnually),
+          planPriceForDisplayBilledYearly: this.convertPriceFromPenniesToDollars(enterprisePlanPriceForDisplayBilledYearly),
           currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForEnterprise),
         });
-
-        if (!lastCouponResponseReceivedFromAPI.validForEnterprisePlan) {
+        // console.log('lastCouponResponseReceivedFromAPI.validForEnterprisePlan:', lastCouponResponseReceivedFromAPI.validForEnterprisePlan);
+        if (lastCouponResponseReceivedFromAPI.validForEnterprisePlan) {
+          // Leave other values in place
+          this.setState({
+            contactSalesRequired: false,
+            isCouponCodeApplied: true,
+          });
+        } else {
           this.setState({
             contactSalesRequired: true,
             isCouponCodeApplied: false,
-            lastCouponResponseReceivedFromAPI: {},
             couponDiscountValue: 0,
             couponCodeInputValue: '',
           });
@@ -308,21 +333,21 @@ class PaidAccountUpgradeModal extends Component {
         this.setState({
           contactSalesRequired: false,
           planPriceForDisplayBilledMonthly: this.convertPriceFromPenniesToDollars(proPlanPriceForDisplayBilledMonthly),
-          planPriceForDisplayBilledAnnually: this.convertPriceFromPenniesToDollars(proPlanPriceForDisplayBilledAnnually),
+          planPriceForDisplayBilledYearly: this.convertPriceFromPenniesToDollars(proPlanPriceForDisplayBilledYearly),
           currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForPro),
         });
     }
   }
 
   handleRadioGroupChange = (event) => {
-    const { radioGroupValue, planPriceForDisplayBilledMonthly, planPriceForDisplayBilledAnnually } = this.state;
+    const { radioGroupValue, planPriceForDisplayBilledMonthly, planPriceForDisplayBilledYearly } = this.state;
     if (radioGroupValue !== event.target.value) {
       this.setState({
         radioGroupValue: event.target.value || '',
       });
     }
     if (event.target.value === 'annualPlanRadio') {
-      this.setState({ currentSelectedPlanCostForPayment: planPriceForDisplayBilledAnnually });
+      this.setState({ currentSelectedPlanCostForPayment: planPriceForDisplayBilledYearly });
     } else {
       this.setState({ currentSelectedPlanCostForPayment: planPriceForDisplayBilledMonthly });
     }
@@ -335,7 +360,7 @@ class PaidAccountUpgradeModal extends Component {
 
     if (window.innerWidth < 769) {
       switch (this.state.paidAccountProcessStep) {
-        case 'payForPlan':
+        case 'payForPlanDesktop':
           this.setState({ paidAccountProcessStep: 'selectPlanDetailsMobile' });
           break;
         case 'selectPlanDetailsMobile':
@@ -348,10 +373,10 @@ class PaidAccountUpgradeModal extends Component {
         default:
           break;
         case 'selectPlanDetailsMobile':
-          this.setState({ paidAccountProcessStep: 'payForPlan' });
+          this.setState({ paidAccountProcessStep: 'payForPlanDesktop' });
           break;
         case 'payForPlanMobile':
-          this.setState({ paidAccountProcessStep: 'payForPlan' });
+          this.setState({ paidAccountProcessStep: 'payForPlanDesktop' });
           break;
       }
     }
@@ -365,20 +390,20 @@ class PaidAccountUpgradeModal extends Component {
     const { defaultPricing, pricingPlanChosen, radioGroupValue } = this.state;
 
     let planPriceForDisplayBilledMonthly = 0;
-    let planPriceForDisplayBilledAnnually = 0;
+    let planPriceForDisplayBilledYearly = 0;
     let currentSelectedPlanCostForPayment = 0;
     let contactSalesRequired;
     if (pricingPlanChosen === 'enterprise') {
       contactSalesRequired = true;
       planPriceForDisplayBilledMonthly = defaultPricing.enterprisePlanFullPricePerMonthPayMonthly;
-      planPriceForDisplayBilledAnnually = defaultPricing.enterprisePlanFullPricePerMonthPayAnnually;
+      planPriceForDisplayBilledYearly = defaultPricing.enterprisePlanFullPricePerMonthPayYearly;
     } else {
       contactSalesRequired = false;
       planPriceForDisplayBilledMonthly = defaultPricing.proPlanFullPricePerMonthPayMonthly;
-      planPriceForDisplayBilledAnnually = defaultPricing.proPlanFullPricePerMonthPayAnnually;
+      planPriceForDisplayBilledYearly = defaultPricing.proPlanFullPricePerMonthPayYearly;
     }
     if (radioGroupValue === 'annualPlanRadio') {
-      currentSelectedPlanCostForPayment = planPriceForDisplayBilledAnnually;
+      currentSelectedPlanCostForPayment = planPriceForDisplayBilledYearly;
     } else {
       currentSelectedPlanCostForPayment = planPriceForDisplayBilledMonthly;
     }
@@ -388,7 +413,7 @@ class PaidAccountUpgradeModal extends Component {
       couponCodeInputValue: '',
       currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForPayment),
       planPriceForDisplayBilledMonthly: this.convertPriceFromPenniesToDollars(planPriceForDisplayBilledMonthly),
-      planPriceForDisplayBilledAnnually: this.convertPriceFromPenniesToDollars(planPriceForDisplayBilledAnnually),
+      planPriceForDisplayBilledYearly: this.convertPriceFromPenniesToDollars(planPriceForDisplayBilledYearly),
       lastCouponResponseReceivedFromAPI: {},
       couponDiscountValue: 0,
     });
@@ -396,9 +421,7 @@ class PaidAccountUpgradeModal extends Component {
 
   checkCouponCodeValidity () {
     const { couponCodeInputValue } = this.state;
-
-    const planType = 'PROFESSIONAL_MONTHLY';
-    DonateActions.validateCoupon(planType, couponCodeInputValue);
+    DonateActions.couponSummaryRetrieve(couponCodeInputValue);
   }
 
   closePaidAccountUpgradeModal () {
@@ -430,7 +453,7 @@ class PaidAccountUpgradeModal extends Component {
   render () {
     renderLog(__filename);
     const { classes } = this.props;
-    const { contactSalesRequired, radioGroupValue, couponCodeInputValue, couponDiscountValue, isCouponCodeApplied, paidAccountProcessStep, pricingPlanChosen, couponCodeError, planPriceForDisplayBilledMonthly, planPriceForDisplayBilledAnnually, currentSelectedPlanCostForPayment } = this.state;
+    const { contactSalesRequired, radioGroupValue, couponCodeInputValue, couponDiscountValue, isCouponCodeApplied, paidAccountProcessStep, pricingPlanChosen, couponCodeError, planPriceForDisplayBilledMonthly, planPriceForDisplayBilledYearly, currentSelectedPlanCostForPayment } = this.state;
 
     // console.log(this.state);
 
@@ -499,9 +522,9 @@ class PaidAccountUpgradeModal extends Component {
                           label={(
                             <>
                               <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                              <PriceLabel>{planPriceForDisplayBilledAnnually}</PriceLabel>
+                              <PriceLabel>{planPriceForDisplayBilledYearly}</PriceLabel>
                               <PriceLabelSubText> /mo</PriceLabelSubText>
-                              <MobilePricingPlanName>Billed Annually</MobilePricingPlanName>
+                              <MobilePricingPlanName>Billed Yearly</MobilePricingPlanName>
                             </>
                           )}
                           onClick={this.handleRadioGroupChoiceSubDomain}
@@ -605,7 +628,7 @@ class PaidAccountUpgradeModal extends Component {
           </MobileWrapper>
         );
         break;
-      case 'payForPlan':
+      case 'payForPlanDesktop':
         backToButton = (
           <Button className={classes.backToButton} onClick={this.backToChoosePlan}>
             {isIOS() ? <ArrowBackIos /> : <ArrowBack />}
@@ -643,7 +666,7 @@ class PaidAccountUpgradeModal extends Component {
                   <>
                     <Fieldset disabledMode={(radioGroupValue !== 'annualPlanRadio')}>
                       <Legend>
-                        Billed Annually
+                        Billed Yearly
                       </Legend>
                       <FormControl classes={{ root: classes.formControl }}>
                         <RadioGroup
@@ -658,7 +681,7 @@ class PaidAccountUpgradeModal extends Component {
                             label={(
                               <>
                                 <PriceLabelDollarSign>$</PriceLabelDollarSign>
-                                <PriceLabel>{planPriceForDisplayBilledAnnually}</PriceLabel>
+                                <PriceLabel>{planPriceForDisplayBilledYearly}</PriceLabel>
                                 <PriceLabelSubText> /mo</PriceLabelSubText>
                               </>
                             )}
