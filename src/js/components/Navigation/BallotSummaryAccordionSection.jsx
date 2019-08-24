@@ -30,16 +30,19 @@ class BallotSummaryAccordionSection extends Component {
     return (
       <AccordionWrapper>
         <AccordionBorderWrapper>
-          {isOpen  ? (
+          <AccordionTitle isOpen={isOpen ? true : false} onClick={onClick} style={{ cursor: 'pointer' }}>
+            {label}
+            <div style={{ float: 'right' }}>
+              <IconButton
+                classes={{ root: classes.iconButtonRoot }}
+              >
+                {isOpen ? <ArrowDropUp /> : <ArrowDropDown />}
+              </IconButton>
+            </div>
+          </AccordionTitle>
+          {/* {isOpen  ? (
             <AccordionTitleSelected onClick={onClick} style={{ cursor: 'pointer' }}>
-              {label}
-              <div style={{ float: 'right' }}>
-                <IconButton
-                  classes={{ root: classes.iconButtonRoot }}
-                >
-                  <ArrowDropUp />
-                </IconButton>
-              </div>
+
             </AccordionTitleSelected>
           ) : (
             <AccordionTitleUnselected onClick={onClick} style={{ cursor: 'pointer' }}>
@@ -52,7 +55,7 @@ class BallotSummaryAccordionSection extends Component {
                 </IconButton>
               </div>
             </AccordionTitleUnselected>
-          )}
+          )} */}
           {isOpen && (
             <AccordionBody>
               {this.props.children}
@@ -84,14 +87,8 @@ const AccordionBorderWrapper = styled.div`
   padding: 16px 0;
 `;
 
-const AccordionTitleUnselected = styled.div`
-  font-weight: 500;
-  font-size: 16px;
-  width: 100%;
-`;
-
-const AccordionTitleSelected = styled.div`
-  font-weight: 600;
+const AccordionTitle = styled.div`
+  font-weight: ${props => (props.isOpen ? 600 : 500)};
   font-size: 16px;
   width: 100%;
 `;
