@@ -128,7 +128,7 @@ class IssuesByOrganizationDisplayList extends Component {
 
     return (
       <StickyPopover
-        delay={{ show: 10000000, hide: 100 }}
+        delay={{ show: 10000000, hide: 100 }} // Long show delay so popover is only triggered on click
         popoverComponent={valuePopover}
         placement="auto"
         id="issues-popover-trigger-click-root-close"
@@ -192,19 +192,11 @@ class IssuesByOrganizationDisplayList extends Component {
         onMouseOut={this.handleLeaveHoverLocalArea}
         onMouseOver={this.handleEnterHoverLocalArea}
       >
-        {this.props.fullWidth ? (
-          <IssuesByOrganizationFullWidth>
-            <IssueByOrganizationList>
-              {issuesUnderThisOrganizationHtml}
-            </IssueByOrganizationList>
-          </IssuesByOrganizationFullWidth>
-        ) : (
-          <IssuesByOrganization>
-            <IssueByOrganizationList>
-              {issuesUnderThisOrganizationHtml}
-            </IssueByOrganizationList>
-          </IssuesByOrganization>
-        )}
+        <IssuesByOrganization fullWidth={!!this.props.fullWidth}>
+          <IssueByOrganizationList>
+            {issuesUnderThisOrganizationHtml}
+          </IssueByOrganizationList>
+        </IssuesByOrganization>
       </Wrapper>
     );
   }
@@ -218,16 +210,11 @@ const Wrapper = styled.div`
 `;
 
 const IssuesByOrganization = styled.div`
-  width: 85%
+  width: ${props => (props.fullWidth ? '100%' : '85%')};
   padding: 8px 0;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    width: 90%;
+    width: ${props => (props.fullWidth ? '100%' : '90%')};
   }
-`;
-
-const IssuesByOrganizationFullWidth = styled.div`
-  width: 100%
-  padding: 8px 0;
 `;
 
 const IssueByOrganizationList = styled.ul`
