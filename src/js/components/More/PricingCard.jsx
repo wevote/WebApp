@@ -74,165 +74,80 @@ class PricingCard extends Component {
     ));
 
     return (
-      <React.Fragment>
-        {fullWidth ? (
-          <div className="col col-12">
-            <CardMobile>
-              <CardWrapper>
-                {premium ? (
-                  <PremiumName>{planName}</PremiumName>
-                ) : (
-                  <DefaultName>{planName}</DefaultName>
-                )}
-                {price === 0 || price ? (
-                  <React.Fragment>
-                    <DollarSign>$</DollarSign>
-                    <Price>{price}</Price>
-                    <PriceDescribe>
-                      {priceDescribe}
-                      {planName === 'Professional' ? (
-                        <PriceDescribeLight>or $150 month to month</PriceDescribeLight>
-                      ) : (
-                        null
-                      )}
-                    </PriceDescribe>
-                  </React.Fragment>
-                ) : (
-                  <React.Fragment>
-                    <h6 className="mb-0"
-                    style={{
-                      fontSize: '20px',
-                    }}
-                    >
-                    Contact
-                    </h6>
-                    <p style={{
-                      fontSize: '10px',
-                      color: '#333',
-                    }}
-                    >
-                      <strong>
-                        our sales team for a quote.
-                      </strong>
-                    </p>
-                  </React.Fragment>
-                )}
-                <hr />
-                <Description>
-                  {description}
-                </Description>
-                <Bullets>
-                  <BulletItem>{bullets[0]}</BulletItem>
-                  <BulletItem>{bullets[1]}</BulletItem>
-                  <BulletItem>{bullets[2]}</BulletItem>
-                </Bullets>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                  className={premium ? (
-                    classes.goldButton
-                  ) : (
-                    null
-                  )}
-                  classes={{ containedPrimary: classes.buttonContained }}
-                  id={buttonOnClickId}
-                  onClick={() => this.buttonOnClickFunction()}
-                >
-                  <ButtonText>{buttonText}</ButtonText>
-                </Button>
-                <br />
-                <Collection>
-                  {items}
-                </Collection>
-              </CardWrapper>
-            </CardMobile>
-          </div>
-        ) : (
-          <div className="col col-4">
-            <Card>
-              <CardWrapper>
-                <PricingCardHeader>
-                  {premium ? (
-                    <PremiumName>{planName}</PremiumName>
-                  ) : (
-                    <DefaultName>{planName}</DefaultName>
-                  )}
-                  {price === 0 || price ? (
-                    <React.Fragment>
-                      <span style={{
-                        fontSize: '18px',
-                        fontWeight: '500',
-                        position: 'relative',
-                        bottom: '8px',
-                      }}
-                      >
-                      $
-                      </span>
-                      <Price>{price}</Price>
-                      <PriceDescribe>
-                        {priceDescribe}
-                        {planName === 'Professional' ? (
-                          <PriceDescribeLight>or $150 month to month</PriceDescribeLight>
-                        ) : (
-                          null
-                        )}
-                      </PriceDescribe>
-                    </React.Fragment>
-                  ) : (
-                    <React.Fragment>
-                      <h6 className="mb-0"
-                      style={{
-                        fontSize: '20px',
-                      }}
-                      >
-                      Contact
-                      </h6>
-                      <p style={{
-                        fontSize: '10px',
-                        color: '#333',
-                      }}
-                      >
-                        <strong>
-                          our sales team for a quote.
-                        </strong>
-                      </p>
-                    </React.Fragment>
-                  )}
-                </PricingCardHeader>
-                <hr />
-                <Description>
-                  {description}
-                </Description>
-                <Bullets>
-                  <BulletItem>{bullets[0]}</BulletItem>
-                  <BulletItem>{bullets[1]}</BulletItem>
-                  <BulletItem>{bullets[2]}</BulletItem>
-                </Bullets>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                  className={premium ? (
-                    classes.goldButton
-                  ) : (
-                    null
-                  )}
-                  classes={{ containedPrimary: classes.buttonContained }}
-                  id={buttonOnClickId}
-                  onClick={() => this.buttonOnClickFunction()}
-                >
-                  <ButtonText>{buttonText}</ButtonText>
-                </Button>
-                <br />
-                <Collection>
-                  {items}
-                </Collection>
-              </CardWrapper>
-            </Card>
-          </div>
-        )}
-      </React.Fragment>
+      <div className={fullWidth ? 'col col-12' : 'col col-4'}>
+        <Card mobile={!!fullWidth}>
+          <CardWrapper>
+            <PricingCardHeader mobile={!!fullWidth}>
+              {premium ? (
+                <PremiumName>{planName}</PremiumName>
+              ) : (
+                <DefaultName>{planName}</DefaultName>
+              )}
+              {price === 0 || price ? (
+                <React.Fragment>
+                  <DollarSign>$</DollarSign>
+                  <Price>{price}</Price>
+                  <PriceDescribe>
+                    {priceDescribe}
+                    {planName === 'Professional' ? (
+                      <PriceDescribeLight>or $150 month to month</PriceDescribeLight>
+                    ) : (
+                      null
+                    )}
+                  </PriceDescribe>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <h6 className="mb-0"
+                  style={{
+                    fontSize: '20px',
+                  }}
+                  >
+                  Contact
+                  </h6>
+                  <p style={{
+                    fontSize: '10px',
+                    color: '#333',
+                  }}
+                  >
+                    <strong>
+                      our sales team for a quote.
+                    </strong>
+                  </p>
+                </React.Fragment>
+              )}
+            </PricingCardHeader>
+            <hr />
+            <Description>
+              {description}
+            </Description>
+            <Bullets>
+              <BulletItem>{bullets[0]}</BulletItem>
+              <BulletItem>{bullets[1]}</BulletItem>
+              <BulletItem>{bullets[2]}</BulletItem>
+            </Bullets>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              className={premium ? (
+                classes.goldButton
+              ) : (
+                null
+              )}
+              classes={{ containedPrimary: classes.buttonContained }}
+              id={buttonOnClickId}
+              onClick={() => this.buttonOnClickFunction()}
+            >
+              <ButtonText>{buttonText}</ButtonText>
+            </Button>
+            <br />
+            <Collection>
+              {items}
+            </Collection>
+          </CardWrapper>
+        </Card>
+      </div>
     );
   }
 }
@@ -249,12 +164,7 @@ const styles = () => ({
 
 const Card = styled.div`
   border-radius: 2px;
-  box-shadow: 1px 1px 8px 2px #e3e3e3;
-`;
-
-const CardMobile = styled.div`
-  border-radius: 2px;
-  box-shadow: 1px 1px 10px 4px #e1e1e1;
+  box-shadow: ${props => (props.mobile ? '1px 1px 10px 4px #e1e1e1' : '1px 1px 8px 2px #e3e3e3')};
 `;
 
 const CardWrapper = styled.div`
@@ -262,7 +172,7 @@ const CardWrapper = styled.div`
 `;
 
 const PricingCardHeader = styled.div`
-  min-height: 105px;
+  min-height: ${props => (props.mobile ? '75px' : '105px')}
   @media (min-width: 960px) and (max-width: 991px) {
     min-height: 100px;
   }

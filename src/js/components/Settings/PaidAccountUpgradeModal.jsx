@@ -1033,6 +1033,21 @@ const ModalTitleArea = styled.div`
 //   }
 // `;
 
+const MobilePricingPlanName = styled.span`
+  color: ${({ theme }) => theme.colors.main};
+  font-size: 18px;
+  font-weight: bold;
+  v-align: middle;
+  position: relative;
+  top: 16.8px;
+  float: right;
+  @media (max-width: 569px) {
+    font-size: 14px;
+    top: 13.6px;
+  }
+`;
+
+
 const Title = styled.h3`
   font-weight: bold;
   font-size: 24px;
@@ -1075,7 +1090,6 @@ const MobileWrapper = styled.div`
   flex-direction: column;
   align-content: center;
   justify-content: space-between;
-  max-height: 
 `;
 
 const FlexSectionOne = styled.div`
@@ -1149,20 +1163,6 @@ const PriceLabelSubText = styled.span`
   color: ${({ theme }) => theme.colors.main};
   @media (max-width: 569px) {
     font-size: 14px;
-  }
-`;
-
-const MobilePricingPlanName = styled.span`
-  color: ${({ theme }) => theme.colors.main};
-  font-size: 18px;
-  font-weight: bold;
-  v-align: middle;
-  position: relative;
-  top: 16.8px;
-  float: right;
-  @media (max-width: 569px) {
-    font-size: 14px;
-    top: 13.6px;
   }
 `;
 
