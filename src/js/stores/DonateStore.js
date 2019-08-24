@@ -6,9 +6,11 @@ class DonateStore extends ReduceStore {
     return {
       defaultPricing: {
         enterprisePlanFullPricePerMonthPayMonthly: 0,
-        enterprisePlanFullPricePerMonthPayAnnually: 0,
-        proPlanFullPricePerMonthPayMonthly: 15000,
-        proPlanFullPricePerMonthPayAnnually: 12500,
+        enterprisePlanFullPricePerMonthPayYearly: 0,
+        proPlanFullPricePerMonthPayMonthly: 0,
+        proPlanFullPricePerMonthPayYearly: 0,
+        validForProfessionalPlan: false,
+        validForEnterprisePlan: false,
         status: 'From getInitialState',
         success: true,
       },
@@ -19,13 +21,12 @@ class DonateStore extends ReduceStore {
         couponMatchFound: false,
         couponReceived: false,
         couponStillValid: '',
-        discountedPriceMonthlyCredit: '',
         enterprisePlanCouponPricePerMonthPayMonthly: 0,
-        enterprisePlanCouponPricePerMonthPayAnnually: 0,
+        enterprisePlanCouponPricePerMonthPayYearly: 0,
         listPriceMonthlyCredit: '',
         proPlanCouponPricePerMonthPayMonthly: 0,
-        proPlanCouponPricePerMonthPayAnnually: 0,
-        validForProfessionalPlan: true,
+        proPlanCouponPricePerMonthPayYearly: 0,
+        validForProfessionalPlan: false,
         validForEnterprisePlan: false,
         status: 'From getInitialState',
         success: false,
@@ -77,12 +78,38 @@ class DonateStore extends ReduceStore {
 
   reduce (state, action) {
     if (!action.res) return state;
-    const { error_message_for_voter: errorMessageForVoter, saved_stripe_donation: savedStripeDonation, status, success, donation_amount: donationAmount,
-      donation_list: donationHistory, charge_id: charge, subscription_id: subscriptionId, monthly_donation: monthlyDonation,
+    const {
+      error_message_for_voter: errorMessageForVoter,
+      saved_stripe_donation: savedStripeDonation,
+      status,
+      success,
+      donation_amount: donationAmount,
+      donation_list: donationHistory,
+      charge_id: charge,
+      subscription_id: subscriptionId,
+      monthly_donation: monthlyDonation,
       org_subs_already_exists: orgSubsAlreadyExists,
     } = action.res;
     const donationAmountSafe = donationAmount || '';
     let { defaultPricing, lastCouponResponseReceived } = state;
+    let apiStatus = '';
+    let apiSuccess = false;
+    let couponAppliedMessage = '';
+    let couponCodeString = '';
+    let couponMatchFound = '';
+    let couponStillValid = '';
+    const discountedPriceMonthlyCredit = '';
+    let listPriceMonthlyCredit = '';
+    let enterprisePlanCouponPricePerMonthPayMonthly = '';
+    let enterprisePlanCouponPricePerMonthPayYearly = '';
+    let enterprisePlanFullPricePerMonthPayMonthly = '';
+    let enterprisePlanFullPricePerMonthPayYearly = '';
+    let proPlanCouponPricePerMonthPayMonthly = '';
+    let proPlanCouponPricePerMonthPayYearly = '';
+    let proPlanFullPricePerMonthPayMonthly = '';
+    let proPlanFullPricePerMonthPayYearly = '';
+    let validForProfessionalPlan = '';
+    let validForEnterprisePlan = '';
     switch (action.type) {
       case 'donationWithStripe':
         if (success === false) {
@@ -138,43 +165,81 @@ class DonateStore extends ReduceStore {
         return this.resetState();
 
       case 'defaultPricing':
+        ({
+          enterprise_plan_full_price_per_month_pay_monthly: enterprisePlanFullPricePerMonthPayMonthly,
+          enterprise_plan_full_price_per_month_pay_yearly: enterprisePlanFullPricePerMonthPayYearly,
+          pro_plan_full_price_per_month_pay_monthly: proPlanFullPricePerMonthPayMonthly,
+          pro_plan_full_price_per_month_pay_yearly: proPlanFullPricePerMonthPayYearly,
+          valid_for_enterprise_plan: validForEnterprisePlan,
+          valid_for_professional_plan: validForProfessionalPlan,
+          status: apiStatus,
+          success: apiSuccess,
+        } = action.res);
         defaultPricing = {
-          enterprisePlanFullPricePerMonthPayMonthly: 0,
-          enterprisePlanFullPricePerMonthPayAnnually: 0,
-          proPlanFullPricePerMonthPayMonthly: 15000,
-          proPlanFullPricePerMonthPayAnnually: 12500,
-          status: action.res.status,
-          success: action.res.success,
+          enterprisePlanFullPricePerMonthPayMonthly,
+          enterprisePlanFullPricePerMonthPayYearly,
+          proPlanFullPricePerMonthPayMonthly,
+          proPlanFullPricePerMonthPayYearly,
+          validForEnterprisePlan,
+          validForProfessionalPlan,
+          status: apiStatus,
+          success: apiSuccess,
         };
         return {
           ...state,
           defaultPricing,
         };
 
-      case 'validateCoupon':
+      case 'couponSummaryRetrieve':
+        ({
+          coupon_applied_message: couponAppliedMessage,
+          coupon_code_string: couponCodeString,
+          coupon_match_found: couponMatchFound,
+          coupon_still_valid: couponStillValid,
+          enterprise_plan_coupon_price_per_month_pay_monthly: enterprisePlanCouponPricePerMonthPayMonthly,
+          enterprise_plan_coupon_price_per_month_pay_yearly: enterprisePlanCouponPricePerMonthPayYearly,
+          pro_plan_coupon_price_per_month_pay_monthly: proPlanCouponPricePerMonthPayMonthly,
+          pro_plan_coupon_price_per_month_pay_yearly: proPlanCouponPricePerMonthPayYearly,
+          valid_for_enterprise_plan: validForEnterprisePlan,
+          valid_for_professional_plan: validForProfessionalPlan,
+          status: apiStatus,
+          success: apiSuccess,
+        } = action.res);
         lastCouponResponseReceived = {
-          couponDiscountValue: 10,
-          discountedPriceMonthlyCredit: action.res.discounted_price_monthly_credit,
-          listPriceMonthlyCredit: action.res.list_price_monthly_credit,
-          //
-          couponAppliedMessage: action.res.coupon_applied_message,
-          couponCodeString: '25OFF',
-          couponMatchFound: action.res.coupon_match_found,
+          couponAppliedMessage,
+          couponCodeString,
+          couponMatchFound,
           couponReceived: true,
-          couponStillValid: action.res.coupon_still_valid,
+          couponStillValid,
           couponViewed: false,
-          proPlanCouponPricePerMonthPayMonthly: 14000,
-          proPlanCouponPricePerMonthPayAnnually: 11500,
-          enterprisePlanCouponPricePerMonthPayMonthly: 0,
-          enterprisePlanCouponPricePerMonthPayAnnually: 0,
-          validForProfessionalPlan: true,
-          validForEnterprisePlan: false,
-          status: action.res.status,
-          success: action.res.success,
+          enterprisePlanCouponPricePerMonthPayMonthly,
+          enterprisePlanCouponPricePerMonthPayYearly,
+          proPlanCouponPricePerMonthPayMonthly,
+          proPlanCouponPricePerMonthPayYearly,
+          validForEnterprisePlan,
+          validForProfessionalPlan,
+          status: apiStatus,
+          success: apiSuccess,
         };
         return {
           ...state,
           lastCouponResponseReceived,
+        };
+
+      case 'validateCoupon':
+        ({
+          coupon_applied_message: couponAppliedMessage,
+          coupon_match_found: couponMatchFound,
+          list_price_monthly_credit: listPriceMonthlyCredit,
+        } = action.res);
+        return {
+          success: true,
+          couponAppliedMessage,
+          couponMatchFound,
+          couponStillValid,
+          discountedPriceMonthlyCredit,
+          listPriceMonthlyCredit,
+          status,
         };
 
       default:

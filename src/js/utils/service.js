@@ -45,6 +45,7 @@ export default function $ajax (options) {
   options.error = options.error || defaults.error;
   // console.log("service.js, options.endpoint: ", options.endpoint);
   if (options.endpoint === 'allBallotItemsRetrieve' ||
+      options.endpoint === 'defaultPricing' ||
       options.endpoint === 'positionListForBallotItem' ||
       options.endpoint === 'voterGuidesUpcomingRetrieve') {
     // Retrieve API data from CDN

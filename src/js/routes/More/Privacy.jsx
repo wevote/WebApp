@@ -17,7 +17,7 @@ export default class Privacy extends React.Component {
         <Helmet title="Privacy Policy - We Vote" />
         <div className="container-fluid well">
           <h1 className="text-center">WeVote.US Privacy Policy</h1>
-          <p><strong>Last updated: September 10, 2018</strong></p>
+          <p><strong>Last updated: August 22, 2019</strong></p>
           <p>
             <span>We Vote USA has created this privacy policy to explain how We Vote (or “we”) uses information that we collect from you while you visit the We Vote websites, currently located at</span>
             <span>
@@ -26,8 +26,18 @@ export default class Privacy extends React.Component {
                 target="_blank"
                 body={<span>WeVote.US</span>}
               />
-              (the “Site”), or while you use a portion of We Vote that is embedded on another website (the “Services”).  We Vote may modify this policy from time to time, so we encourage you to check this page when revisiting the Site.  The date of the most recent revision is listed below.
+              {' '}
+              (the “Site”), or while you use a portion of We Vote that is embedded on another website (the “Services”).  We Vote may modify this policy from time to time, so we encourage you to check this page when revisiting the Site.  The date of the most recent revision is listed above.
             </span>
+          </p>
+          <p>
+            You can find additional explanations of our Privacy Policy in our
+            <OpenExternalWebSite
+              url="https://help.wevote.us/hc/en-us/sections/115000140987-Security-Technology"
+              target="_blank"
+              body={<span>Help Center</span>}
+            />
+            .
           </p>
           <h2><b>How we use your information</b></h2>
           <p>
