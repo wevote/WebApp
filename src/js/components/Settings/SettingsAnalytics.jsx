@@ -6,7 +6,6 @@ import { withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
-import FacebookStore from '../../stores/FacebookStore';
 import LoadingWheel from '../LoadingWheel';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
@@ -40,7 +39,7 @@ class SettingsAnalytics extends Component {
   componentDidMount () {
     // console.log("SettingsAnalytics componentDidMount");
     this.onVoterStoreChange();
-    this.organizationStoreListener = FacebookStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 

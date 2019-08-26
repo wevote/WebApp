@@ -37,7 +37,9 @@ class Application extends Component {
   }
 
   componentDidMount () {
-    // console.log("React Application ---------------   componentDidMount ()");
+    const { hostname } = window.location;
+    AppActions.siteConfigurationRetrieve(hostname);
+    console.log('React Application ---------------   componentDidMount () hostname: ', hostname);
     polyfillObjectEntries();
     this.initializeFacebookSdkForJavascript();
     this.initializationForCordova();

@@ -59,6 +59,9 @@ class AppStore extends ReduceStore {
   }
 
   reduce (state, action) {
+    let apiSuccess;
+    let siteLogoUrl;
+    let siteOwnerOrganizationWeVoteId;
     switch (action.type) {
       case 'getStartedMode':
         return { ...state, getStartedMode: action.payload };
@@ -78,6 +81,21 @@ class AppStore extends ReduceStore {
         return { ...state, showSelectBallotModal: action.payload };
       case 'showSignInModal':
         return { ...state, showSignInModal: action.payload };
+      case 'siteConfigurationRetrieve':
+        ({
+          success: apiSuccess,
+          organization_we_vote_id: siteOwnerOrganizationWeVoteId,
+          site_logo_url: siteLogoUrl,
+        } = action.res);
+        if (apiSuccess) {
+          return {
+            ...state,
+            siteLogoUrl,
+            siteOwnerOrganizationWeVoteId,
+          };
+        } else {
+          return state;
+        }
       case 'storeSignInStartPath':
         // Send a signal to src/js/Application.jsx to write the current pathname to the cookie 'sign_in_start_path'
         return { ...state, storeSignInStartPath: action.payload };

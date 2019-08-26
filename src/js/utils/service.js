@@ -47,6 +47,7 @@ export default function $ajax (options) {
   if (options.endpoint === 'allBallotItemsRetrieve' ||
       options.endpoint === 'defaultPricing' ||
       options.endpoint === 'positionListForBallotItem' ||
+      options.endpoint === 'siteConfigurationRetrieve' ||
       options.endpoint === 'voterGuidesUpcomingRetrieve') {
     // Retrieve API data from CDN
     options.data = assign({}, options.data || {}); // Do not pass voter_device_id

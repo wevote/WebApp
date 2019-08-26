@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import FacebookStore from '../../stores/FacebookStore';
 import LoadingWheel from '../LoadingWheel';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
@@ -26,7 +25,7 @@ export default class SettingsPromotedOrganizations extends Component {
   componentDidMount () {
     // console.log("SettingsPromotedOrganizations componentDidMount");
     this.onVoterStoreChange();
-    this.organizationStoreListener = FacebookStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
