@@ -6,7 +6,6 @@ import Edit from '@material-ui/icons/Edit';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import { IconButton, withStyles, Table, TableBody, TableCell, TableHead, TableRow, Button } from '@material-ui/core';
-import FacebookStore from '../../stores/FacebookStore';
 import LoadingWheel from '../LoadingWheel';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
@@ -32,7 +31,7 @@ class SettingsSubscriptionPlan extends Component {
   componentDidMount () {
     // console.log("SettingsSubscriptionPlan componentDidMount");
     this.onVoterStoreChange();
-    this.organizationStoreListener = FacebookStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
 
     this.handleResize();

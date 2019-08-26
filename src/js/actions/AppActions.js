@@ -38,6 +38,14 @@ export default {
     Dispatcher.dispatch({ type: 'showSignInModal', payload: show });
   },
 
+  siteConfigurationRetrieve (hostname, refresh_string = '') {
+    Dispatcher.loadEndpoint('siteConfigurationRetrieve',
+      {
+        hostname,
+        refresh_string,
+      });
+  },
+
   storeSignInStartPath () {
     Dispatcher.dispatch({ type: 'storeSignInStartPath', payload: true });
   },

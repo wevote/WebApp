@@ -11,7 +11,6 @@ import InputBase from '@material-ui/core/InputBase';
 import styled from 'styled-components';
 import PremiumableButton from '../Widgets/PremiumableButton';
 import AppActions from '../../actions/AppActions';
-import FacebookStore from '../../stores/FacebookStore';
 import LoadingWheel from '../LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -31,9 +30,11 @@ class SettingsDomain extends Component {
       organization: {},
       organizationWeVoteId: '',
       organizationChosenDomainName: '',
+      organizationChosenDomainNameAlreadyTaken: false,
       organizationChosenDomainNameSavedValue: '',
       organizationChosenDomainNameChangedLocally: false,
       organizationChosenSubDomain: '',
+      organizationChosenSubDomainAlreadyTaken: false,
       organizationChosenSubDomainSavedValue: '',
       organizationChosenSubDomainChangedLocally: false,
       voter: {},
@@ -47,7 +48,7 @@ class SettingsDomain extends Component {
     // console.log('SettingsDomain componentDidMount');
     this.onOrganizationStoreChange();
     this.onVoterStoreChange();
-    this.organizationStoreListener = FacebookStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
@@ -64,6 +65,10 @@ class SettingsDomain extends Component {
       // console.log('this.state.organizationChosenDomainName', this.state.organizationChosenDomainName, ', nextState.organizationChosenDomainName', nextState.organizationChosenDomainName);
       return true;
     }
+    if (this.state.organizationChosenDomainNameAlreadyTaken !== nextState.organizationChosenDomainNameAlreadyTaken) {
+      // console.log('this.state.organizationChosenDomainNameAlreadyTaken', this.state.organizationChosenDomainNameAlreadyTaken, ', nextState.organizationChosenDomainNameAlreadyTaken', nextState.organizationChosenDomainNameAlreadyTaken);
+      return true;
+    }
     if (this.state.organizationChosenDomainNameChangedLocally !== nextState.organizationChosenDomainNameChangedLocally) {
       // console.log('this.state.organizationChosenDomainNameChangedLocally', this.state.organizationChosenDomainNameChangedLocally, ', nextState.organizationChosenDomainNameChangedLocally', nextState.organizationChosenDomainNameChangedLocally);
       return true;
@@ -74,6 +79,10 @@ class SettingsDomain extends Component {
     }
     if (this.state.organizationChosenSubDomain !== nextState.organizationChosenSubDomain) {
       // console.log('this.state.organizationChosenSubDomain', this.state.organizationChosenSubDomain, ', nextState.organizationChosenSubDomain', nextState.organizationChosenSubDomain);
+      return true;
+    }
+    if (this.state.organizationChosenSubDomainAlreadyTaken !== nextState.organizationChosenSubDomainAlreadyTaken) {
+      // console.log('this.state.organizationChosenSubDomainAlreadyTaken', this.state.organizationChosenSubDomainAlreadyTaken, ', nextState.organizationChosenSubDomainAlreadyTaken', nextState.organizationChosenSubDomainAlreadyTaken);
       return true;
     }
     if (this.state.organizationChosenSubDomainChangedLocally !== nextState.organizationChosenSubDomainChangedLocally) {
@@ -117,10 +126,14 @@ class SettingsDomain extends Component {
     const { organizationChosenDomainNameChangedLocally, organizationChosenSubDomainChangedLocally, organizationWeVoteId } = this.state;
     const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
     const organizationChosenSubDomainSavedValue = organization.chosen_sub_domain_string || '';
+    const organizationChosenSubDomainAlreadyTaken = organization.sub_domain_string_already_taken || false;
     const organizationChosenDomainNameSavedValue = organization.chosen_domain_string || '';
+    const organizationChosenDomainNameAlreadyTaken = organization.full_domain_string_already_taken || false;
     this.setState({
       organization,
+      organizationChosenDomainNameAlreadyTaken,
       organizationChosenDomainNameSavedValue,
+      organizationChosenSubDomainAlreadyTaken,
       organizationChosenSubDomainSavedValue,
     });
     // If it hasn't been changed locally, then use the one saved in the API server
@@ -276,8 +289,8 @@ class SettingsDomain extends Component {
     // console.log('SettingsDomain render');
     renderLog(__filename);
     const {
-      organizationChosenDomainName, organizationChosenDomainNameChangedLocally,
-      organizationChosenSubDomain, organizationChosenSubDomainChangedLocally,
+      organizationChosenDomainName, organizationChosenDomainNameAlreadyTaken, organizationChosenDomainNameChangedLocally,
+      organizationChosenSubDomain, organizationChosenSubDomainAlreadyTaken, organizationChosenSubDomainChangedLocally,
       organizationWeVoteId, voter, voterIsPremium, voterIsSignedIn, radioGroupValue,
     } = this.state;
     if (!voter || !organizationWeVoteId) {
@@ -290,7 +303,6 @@ class SettingsDomain extends Component {
       // console.log('voterIsSignedIn is false');
       return <SettingsAccount />;
     }
-
     return (
       <div>
         <Helmet title="Domain Settings" />
@@ -305,6 +317,9 @@ class SettingsDomain extends Component {
               >
                 <InputBoxLabel>
                   We Vote Sub Domain
+                  {organizationChosenSubDomainAlreadyTaken &&
+                    <div>TAKEN</div>
+                  }
                 </InputBoxLabel>
                 <FormControlLabel
                   classes={radioGroupValue === 'subDomainRadioButtonSelected' ? { root: classes.formControlLabel, label: classes.label } : { root: classes.formControlLabelDisabled, label: classes.label }}
@@ -363,6 +378,9 @@ class SettingsDomain extends Component {
                 </InputBoxLabel>
                 <InputBoxHelperLabel>
                   If you already own a domain, enter it here. Empty it to disconnect.
+                  {organizationChosenDomainNameAlreadyTaken &&
+                    <div>TAKEN</div>
+                  }
                 </InputBoxHelperLabel>
                 <FormControlLabel
                   classes={radioGroupValue === 'domainNameRadioButtonSelected' ? { root: classes.formControlLabel, label: classes.label } : { root: classes.formControlLabelDisabled, label: classes.label }}

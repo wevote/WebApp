@@ -6,7 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
 import SettingsAccountLevelChip from './SettingsAccountLevelChip';
-import FacebookStore from '../../stores/FacebookStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import LoadingWheel from '../LoadingWheel';
 import PremiumableButton from '../Widgets/PremiumableButton';
@@ -42,7 +41,7 @@ class SettingsSharing extends Component {
   componentDidMount () {
     // console.log("SettingsSharing componentDidMount");
     this.onVoterStoreChange();
-    this.organizationStoreListener = FacebookStore.addListener(this.onOrganizationStoreChange.bind(this));
+    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
