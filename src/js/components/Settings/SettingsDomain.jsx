@@ -40,7 +40,7 @@ class SettingsDomain extends Component {
       voter: {},
       voterIsSignedIn: false,
       radioGroupValue: 'subDomainRadioButtonSelected',
-      voterIsPremium: false, /* This is hard-coded for testing purposes, this will be later set based on API calls that aren't set up */
+      voterIsPremium: true, /* This is hard-coded for testing purposes, this will be later set based on API calls that aren't set up */
     };
   }
 
@@ -266,6 +266,7 @@ class SettingsDomain extends Component {
     OrganizationActions.organizationChosenDomainNameSave(organizationWeVoteId, organizationChosenDomainName);
     this.setState({
       organizationChosenDomainNameChangedLocally: false,
+      chosenDomainNameBeforeErrorCheck: organizationChosenDomainName,
     });
     event.preventDefault();
   }
@@ -276,6 +277,7 @@ class SettingsDomain extends Component {
     OrganizationActions.organizationChosenSubDomainSave(organizationWeVoteId, organizationChosenSubDomain);
     this.setState({
       organizationChosenSubDomainChangedLocally: false,
+      chosenSubDomainBeforeErrorCheck: organizationChosenSubDomain,
     });
     event.preventDefault();
   }
@@ -291,7 +293,7 @@ class SettingsDomain extends Component {
     const {
       organizationChosenDomainName, organizationChosenDomainNameAlreadyTaken, organizationChosenDomainNameChangedLocally,
       organizationChosenSubDomain, organizationChosenSubDomainAlreadyTaken, organizationChosenSubDomainChangedLocally,
-      organizationWeVoteId, voter, voterIsPremium, voterIsSignedIn, radioGroupValue,
+      organizationWeVoteId, voter, voterIsPremium, voterIsSignedIn, radioGroupValue, chosenDomainNameBeforeErrorCheck, chosenSubDomainBeforeErrorCheck,
     } = this.state;
     if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
@@ -309,32 +311,30 @@ class SettingsDomain extends Component {
         <div className="card">
           <div className="card-main">
             <h1 className="h2">Domain</h1>
+            <br />
             <FormControl classes={{ root: classes.formControl }}>
               <RadioGroup
                 name="domainInput"
                 value={radioGroupValue}
                 onChange={this.handleRadioGroupChange}
               >
-                <InputBoxLabel>
+                <InputBoxLabel error={organizationChosenSubDomainAlreadyTaken}>
                   We Vote Sub Domain
-                  {organizationChosenSubDomainAlreadyTaken &&
-                    <div>TAKEN</div>
-                  }
                 </InputBoxLabel>
                 <FormControlLabel
-                  classes={radioGroupValue === 'subDomainRadioButtonSelected' ? { root: classes.formControlLabel, label: classes.label } : { root: classes.formControlLabelDisabled, label: classes.label }}
+                  classes={!organizationChosenSubDomainAlreadyTaken ? { root: classes.formControlLabel, label: classes.label } : { root: classes.formControlLabelError, label: classes.label }}
                   value="subDomainRadioButtonSelected"
                   control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
                   label={(
-                    <IconInputContainer>
+                    <IconInputContainer error={organizationChosenSubDomainAlreadyTaken}>
                       <i className="fas fa-globe-americas" />
                       <InputBase
                         classes={{ root: classes.inputBase, input: classes.inputItem }}
                         onChange={this.handleOrganizationChosenSubDomainChange}
                         placeholder="Type Sub Domain of WeVote.US..."
-                        value={organizationChosenSubDomain || ''}
+                        value={organizationChosenSubDomainAlreadyTaken ? chosenSubDomainBeforeErrorCheck : (organizationChosenSubDomain || '')}
                       />
-                      <SubDomainExtensionText>
+                      <SubDomainExtensionText error={organizationChosenSubDomainAlreadyTaken}>
                         .WeVote.US
                       </SubDomainExtensionText>
                     </IconInputContainer>
@@ -342,6 +342,11 @@ class SettingsDomain extends Component {
                   onClick={this.handleRadioGroupChoiceSubDomain}
                   checked={radioGroupValue === 'subDomainRadioButtonSelected'}
                 />
+                {organizationChosenSubDomainAlreadyTaken ? (
+                  <InputBoxHelperLabel error>
+                    "{chosenSubDomainBeforeErrorCheck}.wevote.us" domain is already taken
+                  </InputBoxHelperLabel>
+                ) : null}
                 {radioGroupValue === 'subDomainRadioButtonSelected' && (
                   <ButtonsContainer>
                     <Button
@@ -372,34 +377,36 @@ class SettingsDomain extends Component {
                 value={radioGroupValue}
                 onChange={this.handleRadioGroupChange}
               >
-                <InputBoxLabel>
+                <InputBoxLabel error={organizationChosenDomainNameAlreadyTaken}>
                   <span>Custom Domain</span>
                   <SettingsAccountLevelChip userAccountLevel="free" featureAccountLevel="pro" />
                 </InputBoxLabel>
                 <InputBoxHelperLabel>
                   If you already own a domain, enter it here. Empty it to disconnect.
-                  {organizationChosenDomainNameAlreadyTaken &&
-                    <div>TAKEN</div>
-                  }
                 </InputBoxHelperLabel>
                 <FormControlLabel
-                  classes={radioGroupValue === 'domainNameRadioButtonSelected' ? { root: classes.formControlLabel, label: classes.label } : { root: classes.formControlLabelDisabled, label: classes.label }}
+                  classes={!organizationChosenDomainNameAlreadyTaken ? { root: classes.formControlLabel, label: classes.label } : { root: classes.formControlLabelError, label: classes.label }}
                   value="domainNameRadioButtonSelected"
                   control={<Radio color="primary" classes={{ root: classes.radioButton }} />}
                   label={(
-                    <IconInputContainer>
+                    <IconInputContainer error={organizationChosenDomainNameAlreadyTaken}>
                       <i className="fas fa-globe-americas" />
                       <InputBase
                         classes={{ root: classes.inputBase, input: classes.inputItem }}
                         onChange={this.handleOrganizationChosenDomainNameChange}
                         placeholder="Type Domain..."
-                        value={organizationChosenDomainName || ''}
+                        value={organizationChosenDomainNameAlreadyTaken ? chosenDomainNameBeforeErrorCheck : (organizationChosenDomainName || '')}
                       />
                     </IconInputContainer>
                   )}
                   checked={radioGroupValue === 'domainNameRadioButtonSelected'}
                   onClick={this.handleRadioGroupChoiceDomainName}
                 />
+                {organizationChosenDomainNameAlreadyTaken ? (
+                  <InputBoxHelperLabel error>
+                    "{chosenDomainNameBeforeErrorCheck}" domain is already taken
+                  </InputBoxHelperLabel>
+                ) : null}
                 {radioGroupValue === 'domainNameRadioButtonSelected' && (
                   <ButtonsContainer>
                     <Button
@@ -439,9 +446,9 @@ const styles = () => ({
     margin: 0,
     height: 55.4,
   },
-  formControlLabelDisabled: {
+  formControlLabelError: {
     width: '100%',
-    border: '1.1px solid rgba(0, 0, 0, 0.45)',
+    border: '1.6px solid rgb(255, 73, 34)',
     borderRadius: '3px',
     margin: 0,
     height: 55.4,
@@ -481,7 +488,7 @@ const IconInputContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  border-left: 1px solid rgba(0, 0, 0, 0.45);
+  border-left: ${props => (props.error ? '1.6px solid rgb(255, 73, 34)' : '1px solid rgba(0, 0, 0, 0.45)')} ;
   padding-left: 12px;
   color: rgba(0, 0, 0, 0.54);
   height: 100%;
@@ -491,19 +498,21 @@ const IconInputContainer = styled.div`
 const InputBoxLabel = styled.h4`
   font-size: 14px; 
   font-weight: bold;
+  color: ${props => (props.error ? 'rgb(255, 73, 34)' : 'black' )}
 `;
 
 const InputBoxHelperLabel = styled.p`
   margin: 0;
   font-size: 14px;
-  margin-bottom: 4px;
-  margin-top: -4px;
+  margin-bottom:  ${props => (props.error ? '6px' : '4px')};
+  margin-top:  ${props => (props.error ? '6px' : '-4px')};
+  color: ${props => (props.error ? 'rgb(255, 73, 34)' : 'black')};
 `;
 
 const SubDomainExtensionText = styled.h5`
   margin: 0;
-  height: 53.4px;
-  border-left: 1px solid rgba(0, 0, 0, 0.45);
+  height: ${props => (props.error ? '52.4px' : '53.4px')};
+  border-left: ${props => (props.error ? '1.6px solid rgb(255, 73, 34)' : '1px solid rgba(0, 0, 0, 0.45)')};
   background-color: #eee;
   color: rgba(0, 0, 0, 0.45);
   width: fit-content;
