@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import styled from 'styled-components';
@@ -21,6 +22,7 @@ class IssueCard extends Component {
     turnOffDescription: PropTypes.bool,
     turnOffIssueImage: PropTypes.bool,
     urlWithoutHash: PropTypes.string,
+    condensed: PropTypes.bool,
   };
 
   constructor (props) {
@@ -144,9 +146,10 @@ class IssueCard extends Component {
     return (
       <Wrapper
         key={`issue-card-${issueWeVoteId}`}
-        className="card u-inset__h--md u-padding-top--md u-padding-bottom--xs u-full-height"
+        className={this.props.condensed ? "card u-full-height" : "card u-inset__h--md u-padding-top--md u-padding-bottom--xs u-full-height"}
+        condensed={!!this.props.condensed}
       >
-        <Flex>
+        <Flex condensed={!!this.props.condensed}>
           <div className="card-main__media-object-anchor">
             {!turnOffIssueImage && (
               <span>
@@ -156,25 +159,26 @@ class IssueCard extends Component {
                   >
                     {issueImage}
                   </Link>
-                ) :
-                  <span>{issueImage}</span>
-                }
+                ) : (
+                  <span>
+                    {issueImage}
+                  </span>
+                )}
               </span>
             )
             }
           </div>
-          <IssueName>
+          <>
             {includeLinkToIssue ? (
               <Link to={this.getIssueLink}
                     className="u-no-underline"
               >
-                <h3>{`${issueDisplayName} (${countOfOrganizationsUnderThisIssue})`}</h3>
+                <IssueName>{`${issueDisplayName} (${countOfOrganizationsUnderThisIssue})`}</IssueName>
               </Link>
             ) :
-              <h3>{`${issueDisplayName} (${countOfOrganizationsUnderThisIssue})`}</h3>
+              <IssueName>{`${issueDisplayName} (${countOfOrganizationsUnderThisIssue})`}</IssueName>
             }
-          </IssueName>
-
+          </>
           {followToggleOn && issueWeVoteId ? (
             <FollowToggleContainer>
               <IssueFollowToggleButton
@@ -189,7 +193,7 @@ class IssueCard extends Component {
           ) : null
           }
         </Flex>
-        { !turnOffDescription && (
+        { !turnOffDescription && !this.props.condensed && (
         <Description>
             { includeLinkToIssue ? (
               <Link to={this.getIssueLink}
@@ -214,15 +218,18 @@ class IssueCard extends Component {
 }
 
 const Wrapper = styled.div`
+  background: white;
+  border: ${props => (props.condensed ? '1px solid #888' : 'none')};
+  box-shadow: ${props => (props.condensed ? 'none !important' : null)};
+  padding: ${props => (props.condensed ? '16px 12px' : null)};
+  height: ${props => (props.condensed ? 'fit-content' : null)};
+  margin: ${props => (props.condensed ? '4px 0' : null)};
 `;
 
 const IssueName = styled.h3`
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 0;
-  h3 {
-    margin-bottom: 0;
-  }
 `;
 
 const FollowToggleContainer = styled.div`
@@ -233,6 +240,7 @@ const Flex = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  width: ${props => (props.condensed ? '100%' : null)};
 `;
 
 const Description = styled.div`
