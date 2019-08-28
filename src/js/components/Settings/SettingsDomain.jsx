@@ -40,7 +40,7 @@ class SettingsDomain extends Component {
       voter: {},
       voterIsSignedIn: false,
       radioGroupValue: 'subDomainRadioButtonSelected',
-      voterIsPremium: true, /* This is hard-coded for testing purposes, this will be later set based on API calls that aren't set up */
+      voterIsPremium: false, /* This is hard-coded for testing purposes, this will be later set based on API calls that aren't set up */
     };
   }
 
