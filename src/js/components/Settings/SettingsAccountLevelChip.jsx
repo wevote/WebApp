@@ -3,7 +3,63 @@ import Chip from '@material-ui/core/Chip';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { renderLog } from '../../utils/logging';
+import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 import AppActions from '../../actions/AppActions';
+
+class SettingsAccountLevelChip extends Component {
+  static propTypes = {
+    chosenFeaturePackage: PropTypes.oneOf(['FREE', 'PROFESSIONAL', 'ENTERPRISE']),
+    requiredFeaturePackage: PropTypes.oneOf(['PROFESSIONAL', 'ENTERPRISE']),
+    classes: PropTypes.object,
+  };
+
+  constructor (props) {
+    super(props);
+
+    this.state = {};
+  }
+
+  onClickHandler = () => {
+    const mode = this.props.requiredFeaturePackage === 'pro' ? 'professional' : 'enterprise';
+    this.openPaidAccountUpgradeModal(mode);
+  }
+
+  openPaidAccountUpgradeModal = (paidAccountUpgradeMode) => {
+    AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
+  }
+
+  preventFocus = (e) => {
+    e.preventDefault();
+  }
+
+  render () {
+    renderLog(__filename);
+    const { chosenFeaturePackage, requiredFeaturePackage, classes } = this.props;
+    let chipLabel;
+    const yourFeaturePackageExceedsOrEquals = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, requiredFeaturePackage);
+    switch (requiredFeaturePackage.toUpperCase()) {
+      default:
+      case 'PROFESSIONAL':
+        chipLabel = 'PRO';
+        break;
+      case 'ENTERPRISE':
+        chipLabel = 'ENTERPRISE';
+        break;
+    }
+    return (
+      <Chip
+        classes={{
+          root: `${classes.root} ${yourFeaturePackageExceedsOrEquals ? classes.alreadyUpgraded : classes.notUpgraded}`,
+          label: classes.label,
+        }}
+        label={chipLabel}
+        onClick={yourFeaturePackageExceedsOrEquals ? undefined : this.onClickHandler}
+        onMouseDown={this.preventFocus}
+        clickable
+      />
+    );
+  }
+}
 
 const styles = {
   root: {
@@ -32,45 +88,5 @@ const styles = {
     },
   },
 };
-
-class SettingsAccountLevelChip extends Component {
-  static propTypes = {
-    userAccountLevel: PropTypes.oneOf(['free', 'pro', 'enterprise']),
-    featureAccountLevel: PropTypes.oneOf(['pro', 'enterprise']),
-    classes: PropTypes.object,
-  };
-
-  onClickHandler = () => {
-    const mode = this.props.featureAccountLevel === 'pro' ? 'professional' : 'enterprise';
-    this.openPaidAccountUpgradeModal(mode);
-  }
-
-  openPaidAccountUpgradeModal = (paidAccountUpgradeMode) => {
-    AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
-  }
-
-  preventFocus = (e) => {
-    e.preventDefault();
-  }
-
-  render () {
-    renderLog(__filename);
-    const { userAccountLevel, featureAccountLevel, classes } = this.props;
-    const userAlreadyUpgraded = userAccountLevel === 'enterprise' || (userAccountLevel === 'pro' && featureAccountLevel === 'pro');
-    const chipLabel = userAccountLevel === 'enterprise' ? 'ENTERPRISE' : featureAccountLevel.toUpperCase();
-    return (
-      <Chip
-        classes={{
-          root: `${classes.root} ${userAlreadyUpgraded ? classes.alreadyUpgraded : classes.notUpgraded}`,
-          label: classes.label,
-        }}
-        label={chipLabel}
-        onClick={userAlreadyUpgraded ? undefined : this.onClickHandler}
-        onMouseDown={this.preventFocus}
-        clickable
-      />
-    );
-  }
-}
 
 export default withStyles(styles)(SettingsAccountLevelChip);

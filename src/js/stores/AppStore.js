@@ -4,21 +4,37 @@ import Dispatcher from '../dispatcher/AppDispatcher';
 class AppStore extends ReduceStore {
   getInitialState () {
     return {
+      chosenSiteLogoUrl: '',
       getVoterGuideSettingsDashboardEditMode: '',
       getStartedMode: '',
       headroomUnpinned: false,
+      hideWeVoteLogo: false,
+      hostname: '',
       scrolledDown: false,
       showEditAddressButton: false,
       showNewVoterGuideModal: false,
       showPaidAccountUpgradeModal: false,
       showSelectBallotModal: false,
       showSignInModal: false,
+      siteOwnerOrganizationWeVoteId: '',
       storeSignInStartPath: false,
     };
   }
 
+  getHideWeVoteLogo () {
+    return this.getState().hideWeVoteLogo;
+  }
+
+  getHostname () {
+    return this.getState().hostname;
+  }
+
   getScrolledDown () {
     return this.getState().scrolledDown;
+  }
+
+  getSiteOwnerOrganizationWeVoteId () {
+    return this.getState().siteOwnerOrganizationWeVoteId;
   }
 
   getStartedMode () {
@@ -59,8 +75,11 @@ class AppStore extends ReduceStore {
   }
 
   reduce (state, action) {
+    let apiStatus;
     let apiSuccess;
-    let siteLogoUrl;
+    let hideWeVoteLogo;
+    let hostname;
+    let chosenSiteLogoUrl;
     let siteOwnerOrganizationWeVoteId;
     switch (action.type) {
       case 'getStartedMode':
@@ -83,14 +102,21 @@ class AppStore extends ReduceStore {
         return { ...state, showSignInModal: action.payload };
       case 'siteConfigurationRetrieve':
         ({
+          status: apiStatus,
           success: apiSuccess,
+          hostname,
           organization_we_vote_id: siteOwnerOrganizationWeVoteId,
-          site_logo_url: siteLogoUrl,
+          chosen_hide_we_vote_logo: hideWeVoteLogo,
+          chosen_logo_url_https: chosenSiteLogoUrl,
         } = action.res);
         if (apiSuccess) {
           return {
             ...state,
-            siteLogoUrl,
+            apiStatus,
+            apiSuccess,
+            hideWeVoteLogo,
+            hostname,
+            chosenSiteLogoUrl,
             siteOwnerOrganizationWeVoteId,
           };
         } else {

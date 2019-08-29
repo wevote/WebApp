@@ -241,12 +241,12 @@ class SettingsSubscriptionPlan extends Component {
               Cancel Plan
             </SectionTitle>
             <SectionParagraph>
-              Upon cancelling, you and your team will lose access to customer data in FullStory. You can switch to our Free Plan to continue using FullStory at no cost.
-              <a
+              Upon cancelling, you and your team will lose the premium features you have been using. You can switch to our Free Plan to continue using We Vote at no cost.
+              {/* <a
                 href="https://google.com"
               >
                 {learnMoreLink}
-              </a>
+              </a> */}
             </SectionParagraph>
             <Button variant="outlined" color="primary" size="small" classes={{ root: classes.changeCancelPlanButton }}>
               Cancel Plan

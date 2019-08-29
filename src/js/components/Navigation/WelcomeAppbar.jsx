@@ -18,6 +18,8 @@ import AppStore from '../../stores/AppStore';
 import AppActions from '../../actions/AppActions';
 import HeaderBarProfilePopUp from './HeaderBarProfilePopUp';
 import OrganizationActions from '../../actions/OrganizationActions';
+// eslint-disable-next-line import/no-cycle
+import PaidAccountUpgradeModal from '../Settings/PaidAccountUpgradeModal';
 import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterStore from '../../stores/VoterStore';
@@ -32,10 +34,13 @@ class WelcomeAppbar extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      paidAccountUpgradeMode: '',
       profilePopUpOpen: false,
       showMobileNavigationMenu: false,
+      showPaidAccountUpgradeModal: false,
       showSignInModal: AppStore.showSignInModal(),
     };
+    this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
   }
 
   componentDidMount () {
@@ -44,20 +49,70 @@ class WelcomeAppbar extends Component {
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    if (this.state.linkedOrganizationWeVoteId !== nextState.linkedOrganizationWeVoteId) {
+      // console.log('this.state.linkedOrganizationWeVoteId', this.state.linkedOrganizationWeVoteId, ', nextState.linkedOrganizationWeVoteId', nextState.linkedOrganizationWeVoteId);
+      return true;
+    }
+    if (this.state.paidAccountUpgradeMode !== nextState.paidAccountUpgradeMode) {
+      // console.log('this.state.paidAccountUpgradeMode', this.state.paidAccountUpgradeMode, ', nextState.paidAccountUpgradeMode', nextState.paidAccountUpgradeMode);
+      return true;
+    }
+    if (this.state.showPaidAccountUpgradeModal !== nextState.showPaidAccountUpgradeModal) {
+      // console.log('this.state.showPaidAccountUpgradeModal', this.state.showPaidAccountUpgradeModal, ', nextState.showPaidAccountUpgradeModal', nextState.showPaidAccountUpgradeModal);
+      return true;
+    }
+    if (this.state.showMobileNavigationMenu !== nextState.showMobileNavigationMenu) {
+      // console.log('this.state.showMobileNavigationMenu', this.state.showMobileNavigationMenu, ', nextState.showMobileNavigationMenu', nextState.showMobileNavigationMenu);
+      return true;
+    }
+    if (this.state.showSignInModal !== nextState.showSignInModal) {
+      // console.log('this.state.showSignInModal', this.state.showSignInModal, ', nextState.showSignInModal', nextState.showSignInModal);
+      return true;
+    }
+    if (this.state.profilePopUpOpen !== nextState.profilePopUpOpen) {
+      // console.log('this.state.profilePopUpOpen', this.state.profilePopUpOpen, ', nextState.profilePopUpOpen', nextState.profilePopUpOpen);
+      return true;
+    }
+    if (this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
+      // console.log('this.state.voterIsSignedIn', this.state.voterIsSignedIn, ', nextState.voterIsSignedIn', nextState.voterIsSignedIn);
+      return true;
+    }
+    if (this.state.voterPhotoUrlMedium !== nextState.voterPhotoUrlMedium) {
+      // console.log('this.state.voterPhotoUrlMedium', this.state.voterPhotoUrlMedium, ', nextState.voterPhotoUrlMedium', nextState.voterPhotoUrlMedium);
+      return true;
+    }
+    if (this.props.pathname !== nextProps.pathname) {
+      // console.log('this.state.pathname', this.state.pathname, ', nextState.pathname', nextState.pathname);
+      return true;
+    }
+    return false;
+  }
+
   componentWillUnmount () {
     this.appStoreListener.remove();
     this.voterStoreListener.remove();
   }
 
   onAppStoreChange () {
+    const paidAccountUpgradeMode = AppStore.showPaidAccountUpgradeModal();
+    // console.log('HeaderBar paidAccountUpgradeMode:', paidAccountUpgradeMode);
+    const showPaidAccountUpgradeModal = paidAccountUpgradeMode && paidAccountUpgradeMode !== '';
     this.setState({
+      paidAccountUpgradeMode,
+      showPaidAccountUpgradeModal,
       showSignInModal: AppStore.showSignInModal(),
     });
   }
 
   onVoterStoreChange () {
+    const voter = VoterStore.getVoter();
+    const { linked_organization_we_vote_id: linkedOrganizationWeVoteId, is_signed_in: voterIsSignedIn, voter_photo_url_medium: voterPhotoUrlMedium } = voter;
     this.setState({
-      voter: VoterStore.getVoter(),
+      linkedOrganizationWeVoteId,
+      voter,
+      voterIsSignedIn,
+      voterPhotoUrlMedium,
     });
   }
 
@@ -107,14 +162,19 @@ class WelcomeAppbar extends Component {
 
   transitionToYourVoterGuide = () => {
     // Positions for this organization, for this voter/election
-    OrganizationActions.positionListForOpinionMaker(this.state.voter.linked_organization_we_vote_id, true);
+    const { linkedOrganizationWeVoteId } = this.state;
+    OrganizationActions.positionListForOpinionMaker(linkedOrganizationWeVoteId, true);
 
     // Positions for this organization, NOT including for this voter / election
-    OrganizationActions.positionListForOpinionMaker(this.state.voter.linked_organization_we_vote_id, false, true);
+    OrganizationActions.positionListForOpinionMaker(linkedOrganizationWeVoteId, false, true);
     OrganizationActions.organizationsFollowedRetrieve();
-    VoterGuideActions.voterGuideFollowersRetrieve(this.state.voter.linked_organization_we_vote_id);
-    VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.state.voter.linked_organization_we_vote_id);
+    VoterGuideActions.voterGuideFollowersRetrieve(linkedOrganizationWeVoteId);
+    VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(linkedOrganizationWeVoteId);
     this.setState({ profilePopUpOpen: false });
+  }
+
+  closePaidAccountUpgradeModal () {
+    AppActions.setShowPaidAccountUpgradeModal(false);
   }
 
   closeSignInModal () {
@@ -123,8 +183,8 @@ class WelcomeAppbar extends Component {
 
   render () {
     const { classes, pathname } = this.props;
-    // console.log('WelcomeAppbar, pathname: ', pathname);
-    const { showMobileNavigationMenu, voter } = this.state;
+    // console.log('WelcomeAppbar render');
+    const { paidAccountUpgradeMode, showMobileNavigationMenu, showPaidAccountUpgradeModal, showSignInModal, voterIsSignedIn, voterPhotoUrlMedium } = this.state;
     let showWelcomeForVoters = false;
     let showWelcomeForOrganizations = false;
     let showWelcomeForCampaigns = false;
@@ -135,50 +195,48 @@ class WelcomeAppbar extends Component {
     let showHowItWorksForCampaigns = false;
     let showHowItWorksForOrganizations = false;
     let showHowItWorksForVoters = false;
-    if (pathname === '/how' || pathname === '/how/for-voters') {
+    if (String(pathname) === '/how' || String(pathname) === '/how/for-voters') {
       showWelcomeForVoters = true;
-    } else if (pathname === '/how/for-organizations') {
+    } else if (String(pathname) === '/how/for-organizations') {
       showWelcomeForOrganizations = true;
-    } else if (pathname === '/how/for-campaigns') {
+    } else if (String(pathname) === '/how/for-campaigns') {
       showWelcomeForCampaigns = true;
     }
-    if (pathname === '/welcome') {
+    if (String(pathname) === '/welcome') {
       showForOrganizations = true;
     }
     if (!pathname.startsWith('/how') &&
-      pathname !== '/welcome' &&
-      pathname !== '/more/credits' &&
+      String(pathname) !== '/welcome' &&
+      String(pathname) !== '/more/credits' &&
       !pathname.startsWith('/more/donate') &&
       !pathname.startsWith('/more/pricing')) {
       showForVoters = true;
     }
     if (!pathname.startsWith('/how') &&
-      (pathname === '/for-campaigns' ||
-        pathname === '/more/about' ||
-        pathname === '/more/credits' ||
+      (String(pathname) === '/for-campaigns' ||
+        String(pathname) === '/more/about' ||
+        String(pathname) === '/more/credits' ||
         pathname.startsWith('/more/donate') ||
         pathname.startsWith('/more/pricing'))) {
       showForOrganizationsDesktop = true;
     }
     if (!pathname.startsWith('/how') &&
-      (pathname === '/welcome' ||
-        pathname === '/for-organizations' ||
-        pathname === '/more/credits' ||
+      (String(pathname) === '/welcome' ||
+        String(pathname) === '/for-organizations' ||
+        String(pathname) === '/more/credits' ||
         pathname.startsWith('/more/donate') ||
         pathname.startsWith('/more/pricing'))) {
       showForCampaignsDesktop = true;
     }
-    if (pathname === '/for-campaigns') {
+    if (String(pathname) === '/for-campaigns') {
       showHowItWorksForCampaigns = true;
     }
-    if (pathname === '/for-organizations') {
+    if (String(pathname) === '/for-organizations') {
       showHowItWorksForOrganizations = true;
     }
-    if (pathname === '/welcome' || pathname === '/more/about') {
+    if (String(pathname) === '/welcome' || String(pathname) === '/more/about') {
       showHowItWorksForVoters = true;
     }
-    const voterIsSignedIn = voter && voter.is_signed_in;
-    const voterPhotoUrlMedium = voter && voter.voter_photo_url_medium;
     return (
       <Appbar position="relative" classes={{ root: classes.appBarRoot }}>
         <Toolbar classes={{ root: classes.toolbar }} disableGutters style={{ top: cordovaWelcomeAppToolbarTop() }}>
@@ -356,9 +414,18 @@ class WelcomeAppbar extends Component {
           </Navigation>
         </Toolbar>
         <SignInModal
-          show={this.state.showSignInModal}
+          show={showSignInModal}
           toggleFunction={this.closeSignInModal}
         />
+        {showPaidAccountUpgradeModal && (
+          <PaidAccountUpgradeModal
+            initialPaidAccountProcessStep="payForPlan"
+            initialPricingPlan={paidAccountUpgradeMode}
+            pathname={pathname}
+            show={showPaidAccountUpgradeModal}
+            toggleFunction={this.closePaidAccountUpgradeModal}
+          />
+        )}
       </Appbar>
     );
   }

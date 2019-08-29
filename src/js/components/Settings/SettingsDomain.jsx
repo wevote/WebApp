@@ -16,8 +16,9 @@ import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import SettingsAccount from './SettingsAccount';
-import VoterStore from '../../stores/VoterStore';
 import SettingsAccountLevelChip from './SettingsAccountLevelChip';
+import VoterStore from '../../stores/VoterStore';
+import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 
 class SettingsDomain extends Component {
   static propTypes = {
@@ -27,6 +28,7 @@ class SettingsDomain extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      chosenFeaturePackage: 'FREE',
       organization: {},
       organizationWeVoteId: '',
       organizationChosenDomainName: '',
@@ -39,15 +41,15 @@ class SettingsDomain extends Component {
       organizationChosenSubDomainChangedLocally: false,
       voter: {},
       voterIsSignedIn: false,
+      voterFeaturePackageExceedsOrEqualsProfessional: false,
       radioGroupValue: 'subDomainRadioButtonSelected',
-      voterIsPremium: false, /* This is hard-coded for testing purposes, this will be later set based on API calls that aren't set up */
     };
   }
 
   componentDidMount () {
     // console.log('SettingsDomain componentDidMount');
-    this.onOrganizationStoreChange();
     this.onVoterStoreChange();
+    this.onOrganizationStoreChange();
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
@@ -93,6 +95,10 @@ class SettingsDomain extends Component {
       // console.log('this.state.organizationChosenSubDomainSavedValue', this.state.organizationChosenSubDomainSavedValue, ', nextState.organizationChosenSubDomainSavedValue', nextState.organizationChosenSubDomainSavedValue);
       return true;
     }
+    if (this.state.voterFeaturePackageExceedsOrEqualsProfessional !== nextState.voterFeaturePackageExceedsOrEqualsProfessional) {
+      // console.log('this.state.voterFeaturePackageExceedsOrEqualsProfessional', this.state.voterFeaturePackageExceedsOrEqualsProfessional, ', nextState.voterFeaturePackageExceedsOrEqualsProfessional', nextState.voterFeaturePackageExceedsOrEqualsProfessional);
+      return true;
+    }
     if (this.state.radioGroupValue !== nextState.radioGroupValue) {
       return true;
     }
@@ -129,12 +135,16 @@ class SettingsDomain extends Component {
     const organizationChosenSubDomainAlreadyTaken = organization.sub_domain_string_already_taken || false;
     const organizationChosenDomainNameSavedValue = organization.chosen_domain_string || '';
     const organizationChosenDomainNameAlreadyTaken = organization.full_domain_string_already_taken || false;
+    const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
+    const voterFeaturePackageExceedsOrEqualsProfessional = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'PROFESSIONAL');
     this.setState({
+      chosenFeaturePackage,
       organization,
       organizationChosenDomainNameAlreadyTaken,
       organizationChosenDomainNameSavedValue,
       organizationChosenSubDomainAlreadyTaken,
       organizationChosenSubDomainSavedValue,
+      voterFeaturePackageExceedsOrEqualsProfessional,
     });
     // If it hasn't been changed locally, then use the one saved in the API server
     if (!organizationChosenDomainNameChangedLocally) {
@@ -166,13 +176,17 @@ class SettingsDomain extends Component {
     const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
     const organizationChosenSubDomainSavedValue = organization.chosen_sub_domain_string || '';
     const organizationChosenDomainNameSavedValue = organization.chosen_domain_string || '';
+    const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
+    const voterFeaturePackageExceedsOrEqualsProfessional = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'PROFESSIONAL');
     this.setState({
+      chosenFeaturePackage,
       organization,
       organizationChosenDomainNameSavedValue,
       organizationChosenSubDomainSavedValue,
       organizationWeVoteId,
       voter,
       voterIsSignedIn,
+      voterFeaturePackageExceedsOrEqualsProfessional,
     });
     // If it hasn't been changed locally, then use the one saved in the API server
     if (!organizationChosenDomainNameChangedLocally) {
@@ -291,9 +305,10 @@ class SettingsDomain extends Component {
     // console.log('SettingsDomain render');
     renderLog(__filename);
     const {
+      chosenFeaturePackage,
       organizationChosenDomainName, organizationChosenDomainNameAlreadyTaken, organizationChosenDomainNameChangedLocally,
       organizationChosenSubDomain, organizationChosenSubDomainAlreadyTaken, organizationChosenSubDomainChangedLocally,
-      organizationWeVoteId, voter, voterIsPremium, voterIsSignedIn, radioGroupValue, chosenDomainNameBeforeErrorCheck, chosenSubDomainBeforeErrorCheck,
+      organizationWeVoteId, voter, voterFeaturePackageExceedsOrEqualsProfessional, voterIsSignedIn, radioGroupValue, chosenDomainNameBeforeErrorCheck, chosenSubDomainBeforeErrorCheck,
     } = this.state;
     if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
@@ -344,7 +359,12 @@ class SettingsDomain extends Component {
                 />
                 {organizationChosenSubDomainAlreadyTaken ? (
                   <InputBoxHelperLabel error>
-                    "{chosenSubDomainBeforeErrorCheck}.wevote.us" domain is already taken
+                    &quot;
+                    {chosenSubDomainBeforeErrorCheck}
+                    .WeVote.US
+                    &quot;
+                    {' '}
+                    domain is already taken
                   </InputBoxHelperLabel>
                 ) : null}
                 {radioGroupValue === 'subDomainRadioButtonSelected' && (
@@ -379,7 +399,7 @@ class SettingsDomain extends Component {
               >
                 <InputBoxLabel error={organizationChosenDomainNameAlreadyTaken}>
                   <span>Custom Domain</span>
-                  <SettingsAccountLevelChip userAccountLevel="free" featureAccountLevel="pro" />
+                  <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="PROFESSIONAL" />
                 </InputBoxLabel>
                 <InputBoxHelperLabel>
                   If you already own a domain, enter it here. Empty it to disconnect.
@@ -404,7 +424,11 @@ class SettingsDomain extends Component {
                 />
                 {organizationChosenDomainNameAlreadyTaken ? (
                   <InputBoxHelperLabel error>
-                    "{chosenDomainNameBeforeErrorCheck}" domain is already taken
+                    &quot;
+                    {chosenDomainNameBeforeErrorCheck}
+                    &quot;
+                    {' '}
+                    domain is already taken
                   </InputBoxHelperLabel>
                 ) : null}
                 {radioGroupValue === 'domainNameRadioButtonSelected' && (
@@ -419,10 +443,10 @@ class SettingsDomain extends Component {
                       Cancel
                     </Button>
                     <PremiumableButton
-                      premium={voterIsPremium ? 1 : 0}
-                      onClick={voterIsPremium ? this.onSaveDomainNameButton : () => this.openPaidAccountUpgradeModal('professional')}
+                      premium={voterFeaturePackageExceedsOrEqualsProfessional ? 1 : 0}
+                      onClick={voterFeaturePackageExceedsOrEqualsProfessional ? this.onSaveDomainNameButton : () => this.openPaidAccountUpgradeModal('professional')}
                     >
-                      {voterIsPremium ? 'Save' : 'Upgrade to Professional'}
+                      {voterFeaturePackageExceedsOrEqualsProfessional ? 'Save' : 'Upgrade to Professional'}
                     </PremiumableButton>
                   </ButtonsContainer>
                 )}

@@ -6,13 +6,13 @@ import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import AppActions from '../../actions/AppActions';
 import { cordovaScrollablePaneTopPadding } from '../../utils/cordovaOffsets';
-import { historyPush } from '../../utils/cordovaUtils';
 import { renderLog } from '../../utils/logging';
 import Footer from '../../components/Welcome/Footer';
 import Section from '../../components/Welcome/Section';
 import PricingCard from '../../components/More/PricingCard';
 import PricingSwitch from '../../components/Widgets/PricingSwitch';
 import VoterStore from '../../stores/VoterStore';
+// eslint-disable-next-line import/no-cycle
 import WelcomeAppbar from '../../components/Navigation/WelcomeAppbar';
 
 
@@ -69,19 +69,23 @@ class Pricing extends Component {
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'WeVote.US Subdomain',
-            },
-            {
-              iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
               featureDescription: 'Upload Your Logo',
             },
             {
-              iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
-              featureDescription: 'Edit Social Media Sharing Links',
+              iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
+              featureDescription: 'WeVote.US Subdomain',
+            },
+            {
+              iconType: 'notAvailable',  // 'paidCheckMark', 'notAvailable'
+              featureDescription: 'Custom Full Domain Name',
             },
             {
               iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
               featureDescription: 'Create Multi-Organization Voter Guides',
+            },
+            {
+              iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
+              featureDescription: 'Edit Social Media Sharing Links',
             },
             {
               iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
@@ -101,7 +105,7 @@ class Pricing extends Component {
           premium: true,
           description: 'Best for regional campaigns.',
           bullets: ['Custom domain name', 'Prioritize unlimited endorsements', 'Fine tune for social media sharing'],
-          buttonText: 'Start with Pro',
+          buttonText: 'Choose Pro',
           buttonOnClickId: 'pricingStartWithPro',
           buttonOnClickFunction: this.getStartedForOrganizations,
           index: 1,
@@ -124,19 +128,23 @@ class Pricing extends Component {
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'Custom Domain Name',
-            },
-            {
-              iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
               featureDescription: 'Upload Your Logo',
             },
             {
-              iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
-              featureDescription: 'Edit Social Media Sharing Links',
+              iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
+              featureDescription: 'WeVote.US Subdomain',
+            },
+            {
+              iconType: 'paidCheckMark',  // 'paidCheckMark', 'notAvailable'
+              featureDescription: 'Custom Full Domain Name',
             },
             {
               iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
               featureDescription: 'Create Multi-Organization Voter Guides',
+            },
+            {
+              iconType: 'notAvailable',  // 'notAvailable', 'checkMark'
+              featureDescription: 'Edit Social Media Sharing Links',
             },
             {
               iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
@@ -156,7 +164,7 @@ class Pricing extends Component {
           premium: true,
           description: 'Best for statewide or national campaigns.',
           bullets: ['Deeper branding control', 'Analytics integration', 'Add additional administrators'],
-          buttonText: 'Start with Enterprise',
+          buttonText: 'Choose Enterprise',
           buttonOnClickId: 'pricingStartWithEnterprise',
           buttonOnClickFunction: this.getStartedForOrganizations,
           index: 2,
@@ -179,19 +187,23 @@ class Pricing extends Component {
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'Custom Domain Name',
-            },
-            {
-              iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
               featureDescription: 'Upload Your Logo',
             },
             {
-              iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
-              featureDescription: 'Edit Social Media Sharing Links',
+              iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
+              featureDescription: 'WeVote.US Subdomain',
+            },
+            {
+              iconType: 'paidCheckMark',  // 'paidCheckMark', 'notAvailable'
+              featureDescription: 'Custom Full Domain Name',
             },
             {
               iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
               featureDescription: 'Create Multi-Organization Voter Guides',
+            },
+            {
+              iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
+              featureDescription: 'Edit Social Media Sharing Links',
             },
             {
               iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
@@ -232,11 +244,15 @@ class Pricing extends Component {
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'WeVote.US Subdomain',
+              featureDescription: 'Upload Your Logo',
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'Upload Your Logo',
+              featureDescription: 'WeVote.US Subdomain',
+            },
+            {
+              iconType: 'notAvailable',  // 'paidCheckMark', 'notAvailable'
+              featureDescription: 'Custom Full Domain Name',
             },
             {
               iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
@@ -260,7 +276,7 @@ class Pricing extends Component {
           premium: true,
           description: 'Best for regional or statewide organizations or companies.',
           bullets: ['Custom domain name', 'Fine tune for social media sharing', 'See engagement metrics'],
-          buttonText: 'Start with Pro',
+          buttonText: 'Choose Pro',
           buttonOnClickId: 'pricingStartWithPro',
           buttonOnClickFunction: this.getStartedForOrganizations,
           index: 1,
@@ -275,14 +291,18 @@ class Pricing extends Component {
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'Custom Domain Name',
-            },
-            {
-              iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
               featureDescription: 'Upload Your Logo',
             },
             {
-              iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
+              iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
+              featureDescription: 'WeVote.US Subdomain',
+            },
+            {
+              iconType: 'paidCheckMark',  // 'paidCheckMark', 'notAvailable'
+              featureDescription: 'Custom Full Domain Name',
+            },
+            {
+              iconType: 'notAvailable',  // 'notAvailable', 'checkMark'
               featureDescription: 'Edit Social Media Sharing Links',
             },
             {
@@ -303,7 +323,7 @@ class Pricing extends Component {
           premium: true,
           description: 'Best for statewide or national organizations or companies.',
           bullets: ['Deeper branding control', 'Analytics integration', 'Add additional administrators'],
-          buttonText: 'Start with Enterprise',
+          buttonText: 'Choose Enterprise',
           buttonOnClickId: 'pricingStartWithEnterprise',
           buttonOnClickFunction: this.getStartedForOrganizations,
           index: 2,
@@ -318,11 +338,15 @@ class Pricing extends Component {
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'Custom Domain Name',
+              featureDescription: 'Upload Your Logo',
             },
             {
               iconType: 'checkMark',  // 'paidCheckMark', 'notAvailable'
-              featureDescription: 'Upload Your Logo',
+              featureDescription: 'WeVote.US Subdomain',
+            },
+            {
+              iconType: 'paidCheckMark',  // 'paidCheckMark', 'notAvailable'
+              featureDescription: 'Custom Full Domain Name',
             },
             {
               iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
@@ -375,6 +399,18 @@ class Pricing extends Component {
     });
   }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    if (this.state.currentPricingChoice !== nextState.currentPricingChoice) {
+      // console.log('this.state.currentPricingChoice', this.state.currentPricingChoice, ', nextState.currentPricingChoice', nextState.currentPricingChoice);
+      return true;
+    }
+    if (this.state.selectedPricingPlanIndex !== nextState.selectedPricingPlanIndex) {
+      // console.log('this.state.selectedPricingPlanIndex', this.state.selectedPricingPlanIndex, ', nextState.selectedPricingPlanIndex', nextState.selectedPricingPlanIndex);
+      return true;
+    }
+    return false;
+  }
+
   componentWillUnmount () {
     this.voterStoreListener.remove();
   }
@@ -400,12 +436,12 @@ class Pricing extends Component {
     if (voter) {
       ({ is_signed_in: isSignedIn } = voter);
     }
-    // console.log('Pricing getStartedForOrganizations, isSignedIn: ', isSignedIn);
+    console.log('Pricing getStartedForOrganizations, isSignedIn: ', isSignedIn, ', pricingPlanChosen:', pricingPlanChosen);
     if (isSignedIn) {
       if (this.props.modalDisplayMode) {
         this.pricingPlanChosenFunctionLocal(pricingPlanChosen);
       } else {
-        historyPush('/settings/profile');
+        AppActions.setShowPaidAccountUpgradeModal(pricingPlanChosen);
       }
     } else {
       AppActions.setGetStartedMode('getStartedForOrganizations');
@@ -425,6 +461,7 @@ class Pricing extends Component {
   }
 
   render () {
+    // console.log('Pricing render');
     const { classes } = this.props;
     const { currentPricingChoice, forCampaignsPricingCards, forOrganizationsPricingCards, selectedPricingPlanIndex } = this.state;
     // console.log('render currentPricingChoice:', currentPricingChoice);
@@ -485,6 +522,7 @@ class Pricing extends Component {
               <Row className="row">
                 {selectedPricingPlanIndex === 0 ? (
                   <PricingCard
+                    featurePackage="FREE"
                     fullWidth
                     planName={currentPricingDict.Free.planName}
                     pricingPlanStringIdentifier={currentPricingDict.Free.pricingPlanStringIdentifier}
@@ -501,12 +539,12 @@ class Pricing extends Component {
                   <React.Fragment>
                     {selectedPricingPlanIndex === 1 ? (
                       <PricingCard
+                        featurePackage="PROFESSIONAL"
                         fullWidth
                         planName={currentPricingDict.Professional.planName}
                         pricingPlanStringIdentifier={currentPricingDict.Professional.pricingPlanStringIdentifier}
                         price={currentPricingDict.Professional.price}
                         priceDescribe={currentPricingDict.Professional.priceDescribe}
-                        premium
                         description={currentPricingDict.Professional.description}
                         bullets={currentPricingDict.Professional.bullets}
                         buttonText={currentPricingDict.Professional.buttonText}
@@ -516,12 +554,12 @@ class Pricing extends Component {
                       />
                     ) : (
                       <PricingCard
+                        featurePackage="ENTERPRISE"
                         fullWidth
                         planName={currentPricingDict.Enterprise.planName}
                         pricingPlanStringIdentifier={currentPricingDict.Enterprise.pricingPlanStringIdentifier}
                         price={currentPricingDict.Enterprise.price}
                         priceDescribe={currentPricingDict.Enterprise.priceDescribe}
-                        premium
                         description={currentPricingDict.Enterprise.description}
                         bullets={currentPricingDict.Enterprise.bullets}
                         buttonText={currentPricingDict.Enterprise.buttonText}
@@ -536,6 +574,7 @@ class Pricing extends Component {
             </div>
             <div className="row u-show-desktop">
               <PricingCard
+                featurePackage="FREE"
                 planName={currentPricingDict.Free.planName}
                 pricingPlanStringIdentifier={currentPricingDict.Free.pricingPlanStringIdentifier}
                 price={currentPricingDict.Free.price}
@@ -548,11 +587,11 @@ class Pricing extends Component {
                 pricingCardFeatures={currentPricingDict.Free.pricingCardFeatures}
               />
               <PricingCard
+                featurePackage="PROFESSIONAL"
                 planName={currentPricingDict.Professional.planName}
                 pricingPlanStringIdentifier={currentPricingDict.Professional.pricingPlanStringIdentifier}
                 price={currentPricingDict.Professional.price}
                 priceDescribe={currentPricingDict.Professional.priceDescribe}
-                premium
                 description={currentPricingDict.Professional.description}
                 bullets={currentPricingDict.Professional.bullets}
                 buttonText={currentPricingDict.Professional.buttonText}
@@ -561,11 +600,11 @@ class Pricing extends Component {
                 pricingCardFeatures={currentPricingDict.Professional.pricingCardFeatures}
               />
               <PricingCard
+                featurePackage="ENTERPRISE"
                 planName={currentPricingDict.Enterprise.planName}
                 pricingPlanStringIdentifier={currentPricingDict.Enterprise.pricingPlanStringIdentifier}
                 price={currentPricingDict.Enterprise.price}
                 priceDescribe={currentPricingDict.Enterprise.priceDescribe}
-                premium
                 description={currentPricingDict.Enterprise.description}
                 bullets={currentPricingDict.Enterprise.bullets}
                 buttonText={currentPricingDict.Enterprise.buttonText}

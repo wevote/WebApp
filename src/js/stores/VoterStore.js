@@ -4,6 +4,7 @@ import cookies from '../utils/cookies';
 import Dispatcher from '../dispatcher/Dispatcher';
 import FacebookActions from '../actions/FacebookActions';
 import FriendActions from '../actions/FriendActions';
+import OrganizationActions from '../actions/OrganizationActions';
 import SupportActions from '../actions/SupportActions';
 import VoterActions from '../actions/VoterActions';
 import VoterGuideActions from '../actions/VoterGuideActions';
@@ -100,6 +101,10 @@ class VoterStore extends ReduceStore {
 
   getFullName () {
     return this.getState().voter.full_name || '';
+  }
+
+  getLinkedOrganizationWeVoteId () {
+    return this.getState().voter.linked_organization_we_vote_id || '';
   }
 
   getStateCodeFromIPAddress () {
@@ -481,6 +486,9 @@ class VoterStore extends ReduceStore {
           } else {
             // console.log("voter_device_id not returned by voterRetrieve");
           }
+        }
+        if (incomingVoter.linked_organization_we_vote_id) {
+          OrganizationActions.organizationRetrieve(incomingVoter.linked_organization_we_vote_id);
         }
 
         return {

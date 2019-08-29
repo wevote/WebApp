@@ -48,8 +48,10 @@ class HeaderBar extends Component {
     this.state = {
       aboutMenuOpen: false,
       componentDidMountFinished: false,
-      profilePopUpOpen: false,
       friendInvitationsSentToMe: 0,
+      hideWeVoteLogo: false,
+      paidAccountUpgradeMode: '',
+      profilePopUpOpen: false,
       showEditAddressButton: false,
       showSelectBallotModal: false,
       showSignInModal: false,
@@ -76,6 +78,7 @@ class HeaderBar extends Component {
     this.setState({
       componentDidMountFinished: true,
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+      hideWeVoteLogo: AppStore.getHideWeVoteLogo(),
       scrolledDown: AppStore.getScrolledDown(),
       showEditAddressButton: AppStore.showEditAddressButton(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
@@ -96,6 +99,10 @@ class HeaderBar extends Component {
     }
     if (this.state.aboutMenuOpen === true || nextState.aboutMenuOpen === true) {
       // console.log("shouldComponentUpdate: this.state.aboutMenuOpen", this.state.aboutMenuOpen, ", nextState.aboutMenuOpen", nextState.aboutMenuOpen);
+      return true;
+    }
+    if (this.state.hideWeVoteLogo === true || nextState.hideWeVoteLogo === true) {
+      // console.log("shouldComponentUpdate: this.state.hideWeVoteLogo", this.state.hideWeVoteLogo, ", nextState.hideWeVoteLogo", nextState.hideWeVoteLogo);
       return true;
     }
     if (this.state.friendInvitationsSentToMe !== nextState.friendInvitationsSentToMe) {
@@ -168,10 +175,11 @@ class HeaderBar extends Component {
     const showPaidAccountUpgradeModal = paidAccountUpgradeMode && paidAccountUpgradeMode !== '';
     // console.log('HeaderBar onAppStoreChange showPaidAccountUpgradeModal:', showPaidAccountUpgradeModal);
     this.setState({
+      hideWeVoteLogo: AppStore.getHideWeVoteLogo(),
+      paidAccountUpgradeMode,
       scrolledDown: AppStore.getScrolledDown(),
       showEditAddressButton: AppStore.showEditAddressButton(),
       showPaidAccountUpgradeModal,
-      paidAccountUpgradeMode,
       showSignInModal: AppStore.showSignInModal(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
     });
@@ -259,7 +267,7 @@ class HeaderBar extends Component {
     }
     renderLog(__filename);
     const { voter, classes, pathname, location } = this.props;
-    const { paidAccountUpgradeMode, scrolledDown, showEditAddressButton, showPaidAccountUpgradeModal, showSelectBallotModal } = this.state;
+    const { hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, showEditAddressButton, showPaidAccountUpgradeModal, showSelectBallotModal } = this.state;
     const ballotBaseUrl = '/ballot';
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     // const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0; // DALE: FRIENDS TEMPORARILY DISABLED
@@ -294,11 +302,13 @@ class HeaderBar extends Component {
       </Tooltip>
     );
 
+    const doNotShowWeVoteLogo = weVoteBrandingOff || hideWeVoteLogo;
+    const showWeVoteLogo = !doNotShowWeVoteLogo;
     return (
       <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}>
         <AppBar position="relative" color="default" className={`page-header${!isWebApp() ? ' page-header__cordova' : ''}${showingBallot ? ' page-header__ballot' : ''}`}>
           <Toolbar className="header-toolbar" disableGutters>
-            {!weVoteBrandingOff && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />}
+            {showWeVoteLogo && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />}
             <div className="header-nav">
               <Tabs
                 className="u-show-desktop"
@@ -451,7 +461,6 @@ class HeaderBar extends Component {
         {showPaidAccountUpgradeModal && (
           <PaidAccountUpgradeModal
             initialPricingPlan={paidAccountUpgradeMode}
-            location={location}
             pathname={pathname}
             show={showPaidAccountUpgradeModal}
             toggleFunction={this.closePaidAccountUpgradeModal}
