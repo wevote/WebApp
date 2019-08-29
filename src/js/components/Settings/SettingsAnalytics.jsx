@@ -6,12 +6,14 @@ import { withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
+import AppActions from '../../actions/AppActions';
 import LoadingWheel from '../LoadingWheel';
+import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
+import SettingsAccountLevelChip from './SettingsAccountLevelChip';
+import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 import VoterStore from '../../stores/VoterStore';
-import OrganizationActions from '../../actions/OrganizationActions';
-import AppActions from '../../actions/AppActions';
 
 class SettingsAnalytics extends Component {
   static propTypes = {
@@ -21,24 +23,26 @@ class SettingsAnalytics extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      chosenFeaturePackage: 'FREE',
+      analyticsButtonsActive: '',
       organization: {},
       organizationWeVoteId: '',
-      voter: {},
-      voterIsSignedIn: false,
-      analyticsButtonsActive: '',
       organizationChosenGoogleAnalyticsTracker: '',
       organizationChosenGoogleAnalyticsTrackerSavedValue: '',
       organizationChosenGoogleAnalyticsTrackerChangedLocally: false,
       organizationChosenHtmlVerification: '',
       organizationChosenHtmlVerificationSavedValue: '',
       organizationChosenHtmlVerificationChangedLocally: false,
-      voterIsPremium: false,
+      voter: {},
+      voterFeaturePackageExceedsOrEqualsEnterprise: false,
+      voterIsSignedIn: false,
     };
   }
 
   componentDidMount () {
     // console.log("SettingsAnalytics componentDidMount");
     this.onVoterStoreChange();
+    this.onOrganizationStoreChange();
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
@@ -80,8 +84,8 @@ class SettingsAnalytics extends Component {
       // console.log('this.state.organizationChosenHtmlVerificationSavedValue', this.state.organizationChosenHtmlVerificationSavedValue, ', nextState.organizationChosenHtmlVerificationSavedValue', nextState.organizationChosenHtmlVerificationSavedValue);
       return true;
     }
-    if (this.state.voterIsPremium !== nextState.voterIsPremium) {
-      // console.log('this.state.voterIsPremium', this.state.voterIsPremium, ', nextState.voterIsPremium', nextState.voterIsPremium);
+    if (this.state.voterFeaturePackageExceedsOrEqualsEnterprise !== nextState.voterFeaturePackageExceedsOrEqualsEnterprise) {
+      // console.log('this.state.voterFeaturePackageExceedsOrEqualsEnterprise', this.state.voterFeaturePackageExceedsOrEqualsEnterprise, ', nextState.voterFeaturePackageExceedsOrEqualsEnterprise', nextState.voterFeaturePackageExceedsOrEqualsEnterprise);
       return true;
     }
     const priorOrganization = this.state.organization;
@@ -114,10 +118,14 @@ class SettingsAnalytics extends Component {
     const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
     const organizationChosenGoogleAnalyticsTrackerSavedValue = organization.chosen_google_analytics_account_number || '';
     const organizationChosenHtmlVerificationSavedValue = organization.chosen_html_verification_string || '';
+    const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
+    const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
     this.setState({
+      chosenFeaturePackage,
       organization,
       organizationChosenGoogleAnalyticsTrackerSavedValue,
       organizationChosenHtmlVerificationSavedValue,
+      voterFeaturePackageExceedsOrEqualsEnterprise,
     });
     // If it hasn't been changed locally, then use the one saved in the API server
     if (!organizationChosenGoogleAnalyticsTrackerChangedLocally) {
@@ -141,13 +149,17 @@ class SettingsAnalytics extends Component {
     const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
     const organizationChosenGoogleAnalyticsTrackerSavedValue = organization.chosen_google_analytics_account_number || '';
     const organizationChosenHtmlVerificationSavedValue = organization.chosen_html_verification_string || '';
+    const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
+    const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
     this.setState({
+      chosenFeaturePackage,
       organization,
       organizationChosenGoogleAnalyticsTrackerSavedValue,
       organizationChosenHtmlVerificationSavedValue,
       organizationWeVoteId,
       voter,
       voterIsSignedIn,
+      voterFeaturePackageExceedsOrEqualsEnterprise,
     });
     // If it hasn't been changed locally, then use the one saved in the API server
     if (!organizationChosenGoogleAnalyticsTrackerChangedLocally) {
@@ -243,9 +255,13 @@ class SettingsAnalytics extends Component {
 
   render () {
     renderLog(__filename);
-    const { organization, organizationWeVoteId, voter, voterIsPremium, voterIsSignedIn, analyticsButtonsActive,
+    const {
+      chosenFeaturePackage,
+      organization, organizationWeVoteId, voter, voterIsSignedIn, analyticsButtonsActive,
       organizationChosenGoogleAnalyticsTracker, organizationChosenGoogleAnalyticsTrackerChangedLocally,
-      organizationChosenHtmlVerification, organizationChosenHtmlVerificationChangedLocally } = this.state;
+      organizationChosenHtmlVerification, organizationChosenHtmlVerificationChangedLocally,
+      voterFeaturePackageExceedsOrEqualsEnterprise,
+    } = this.state;
     const { classes } = this.props;
     if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
@@ -265,7 +281,10 @@ class SettingsAnalytics extends Component {
             <h1 className="h2">Analytics</h1>
             <Separator />
             <FormControl classes={{ root: classes.formControl }}>
-              <InputLabel>Google Analytics Tracker</InputLabel>
+              <InputLabel>
+                Google Analytics Tracker
+                <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="ENTERPRISE" />
+              </InputLabel>
               <InputLabelHelperText>Add your tracking code (e.g., UA-XXXXXXX-X) so you can watch voter activity.</InputLabelHelperText>
               <TextField
                 onChange={this.handleOrganizationChosenGoogleAnalyticsTrackerChange}
@@ -286,7 +305,7 @@ class SettingsAnalytics extends Component {
                 >
                   Cancel
                 </Button>
-                {voterIsPremium ? (
+                {voterFeaturePackageExceedsOrEqualsEnterprise ? (
                   <Button
                     color="primary"
                     disabled={!organizationChosenGoogleAnalyticsTrackerChangedLocally}

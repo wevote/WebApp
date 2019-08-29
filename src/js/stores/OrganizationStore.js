@@ -1,7 +1,10 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/Dispatcher';
+import AppActions from '../actions/AppActions';
+import AppStore from './AppStore';
 import OrganizationActions from '../actions/OrganizationActions';
 import SupportActions from '../actions/SupportActions';
+import VoterConstants from '../constants/VoterConstants';
 import VoterGuideActions from '../actions/VoterGuideActions';
 import VoterStore from './VoterStore';
 import { arrayContains } from '../utils/textFormat';
@@ -23,6 +26,16 @@ class OrganizationStore extends ReduceStore {
         organization_twitter_handle: '',
         number_of_search_results: 0,
         search_results: [],
+      },
+      voterOrganizationFeaturesProvided: {
+        chosenFaviconAllowed: false,
+        chosenFeaturePackage: 'FREE',
+        chosenFullDomainAllowed: false,
+        chosenGoogleAnalyticsAllowed: false,
+        chosenSocialShareImageAllowed: false,
+        chosenSocialShareDescriptionAllowed: false,
+        chosenPromotedOrganizationsAllowed: false,
+        featuresProvidedBitmap: 0,
       },
       positionListForOpinionMakerHasBeenRetrievedOnce: {}, // Dictionary with googleCivicElectionId as key and organizationWeVoteId as key and true/false as value
     };
@@ -78,6 +91,84 @@ class OrganizationStore extends ReduceStore {
 
   getOrganizationsFollowedByVoterOnTwitter () {
     return this.returnOrganizationsFromListOfIds(this.getState().organizationWeVoteIdsVoterIsFollowingOnTwitter) || [];
+  }
+
+  getChosenSettingsFlagState (flag) {
+    // Look in js/Constants/VoterConstants.js for list of flag constant definitions
+    const { voterOrganizationFeaturesProvided } = this.getState();
+    if (!voterOrganizationFeaturesProvided || !voterOrganizationFeaturesProvided.featuresProvidedBitmap) {
+      return false;
+    }
+    const featuresProvidedBitmap = voterOrganizationFeaturesProvided.featuresProvidedBitmap || 0;
+    // return True if bit specified by the flag is also set
+    //  in notificationSettingsFlags (voter.notification_settings_flags)
+    // Eg: if interfaceStatusFlags = 5, then we can confirm that bits representing 1 and 4 are set (i.e., 0101)
+    // so for value of flag = 1 and 4, we return a positive integer,
+    // but, the bit representing 2 and 8 are not set, so for flag = 2 and 8, we return zero
+    return featuresProvidedBitmap & flag; // eslint-disable-line no-bitwise
+  }
+
+  getChosenFaviconAllowed () {
+    // Is this voter/organization allowed to add a custom favicon?
+    const { voterOrganizationFeaturesProvided } = this.getState();
+    if (!voterOrganizationFeaturesProvided) {
+      return false;
+    }
+    return voterOrganizationFeaturesProvided.chosenFaviconAllowed || false;
+  }
+
+  getChosenFeaturePackage () {
+    // Is this voter/organization allowed to add a custom full domain?
+    const { voterOrganizationFeaturesProvided } = this.getState();
+    if (!voterOrganizationFeaturesProvided || !voterOrganizationFeaturesProvided.chosenFeaturePackage) {
+      return 'FREE';
+    }
+    return voterOrganizationFeaturesProvided.chosenFeaturePackage;
+  }
+
+  getChosenFullDomainAllowed () {
+    // Is this voter/organization allowed to add a custom full domain?
+    const { voterOrganizationFeaturesProvided } = this.getState();
+    if (!voterOrganizationFeaturesProvided) {
+      return false;
+    }
+    return voterOrganizationFeaturesProvided.chosenFullDomainAllowed || false;
+  }
+
+  getChosenGoogleAnalyticsAllowed () {
+    // Is this voter/organization allowed to add a custom Google Analytics Code?
+    const { voterOrganizationFeaturesProvided } = this.getState();
+    if (!voterOrganizationFeaturesProvided) {
+      return false;
+    }
+    return voterOrganizationFeaturesProvided.chosenGoogleAnalyticsAllowed || false;
+  }
+
+  getChosenSocialShareImageAllowed () {
+    // Is this voter/organization allowed to add custom social sharing images?
+    const { voterOrganizationFeaturesProvided } = this.getState();
+    if (!voterOrganizationFeaturesProvided) {
+      return false;
+    }
+    return voterOrganizationFeaturesProvided.chosenSocialShareImageAllowed || false;
+  }
+
+  getChosenSocialShareDescriptionAllowed () {
+    // Is this voter/organization allowed to add a custom description of their site?
+    const { voterOrganizationFeaturesProvided } = this.getState();
+    if (!voterOrganizationFeaturesProvided) {
+      return false;
+    }
+    return voterOrganizationFeaturesProvided.chosenSocialShareDescriptionAllowed || false;
+  }
+
+  getChosenPromotedOrganizationsAllowed () {
+    // Is this voter/organization allowed to add or display promoted organizations?
+    const { voterOrganizationFeaturesProvided } = this.getState();
+    if (!voterOrganizationFeaturesProvided) {
+      return false;
+    }
+    return voterOrganizationFeaturesProvided.chosenPromotedOrganizationsAllowed || false;
   }
 
   doesOrganizationHavePositionOnCandidate (organizationWeVoteId, candidateWeVoteId) {
@@ -221,18 +312,28 @@ class OrganizationStore extends ReduceStore {
     let {
       organizationWeVoteIdsVoterIsFollowing, organizationWeVoteIdsVoterIsIgnoring,
     } = state;
-    // let add_voterGuides_not_from_election;
+    let chosenFeaturePackage;
+    let featuresProvidedBitmap;
     let googleCivicElectionId;
     let organizationWeVoteId;
     let organization;
     let priorCopyOfOrganization;
     let organizationsFollowedOnTwitterList;
+    let revisedState;
     // let search_string;
     let voterLinkedOrganizationWeVoteId;
     let voterGuides;
+    let voterOrganizationFeaturesProvided;
     const organizationsList = action.res.organizations_list || [];
     const numberOfSearchResults = organizationsList.length;
     const organizationWeVoteIdForVoterGuideOwner = action.res.organization_we_vote_id;
+    let time;
+    const today = new Date();
+    let hours;
+    let minutes;
+    let seconds;
+    let hostname;
+    let siteOwnerOrganizationWeVoteId;
 
     switch (action.type) {
       case 'organizationFollow':
@@ -378,6 +479,20 @@ class OrganizationStore extends ReduceStore {
             organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
           }
           allCachedOrganizationsDict[organizationWeVoteId] = organization;
+          // Now request fresh siteConfiguration data if the siteOwner was updated
+          siteOwnerOrganizationWeVoteId = AppStore.getSiteOwnerOrganizationWeVoteId();
+          if (siteOwnerOrganizationWeVoteId === organizationWeVoteId) {
+            hostname = AppStore.getHostname();
+            if (hostname) {
+              // We calculate a time so we can pass a refresh variable through siteConfigurationRetrieve. This is necessary
+              // to force the CDN to send us a new file
+              hours = today.getHours();
+              minutes = today.getMinutes();
+              seconds = today.getSeconds();
+              time = `${hours}:${minutes}:${seconds}`;
+              AppActions.siteConfigurationRetrieve(hostname, time);
+            }
+          }
           return {
             ...state,
             allCachedOrganizationsDict,
@@ -430,8 +545,12 @@ class OrganizationStore extends ReduceStore {
         return state;
 
       case 'organizationRetrieve':
-        organizationWeVoteId = action.res.organization_we_vote_id;
+        ({ organization_we_vote_id: organizationWeVoteId } = action.res);
+        if (!organizationWeVoteId || organizationWeVoteId === '') {
+          return state;
+        }
         organization = action.res;
+        revisedState = state;
 
         // Make sure to maintain the lists we attach to the organization from other API calls
         if (allCachedOrganizationsDict[organizationWeVoteId]) {
@@ -439,10 +558,27 @@ class OrganizationStore extends ReduceStore {
           organization = this._copyListsToNewOrganization(organization, priorCopyOfOrganization);
         }
         allCachedOrganizationsDict[organizationWeVoteId] = organization;
-        return {
-          ...state,
+        revisedState = Object.assign({}, revisedState, {
           allCachedOrganizationsDict,
-        };
+        });
+        voterLinkedOrganizationWeVoteId = VoterStore.getLinkedOrganizationWeVoteId();
+        if (organizationWeVoteId === voterLinkedOrganizationWeVoteId) {
+          ({ features_provided_bitmap: featuresProvidedBitmap, chosen_feature_package: chosenFeaturePackage } = organization);
+          voterOrganizationFeaturesProvided = {
+            chosenFaviconAllowed: this.getChosenSettingsFlagState(VoterConstants.CHOSEN_FAVICON_ALLOWED),
+            chosenFeaturePackage,
+            chosenFullDomainAllowed: this.getChosenSettingsFlagState(VoterConstants.CHOSEN_FULL_DOMAIN_ALLOWED),
+            chosenGoogleAnalyticsAllowed: this.getChosenSettingsFlagState(VoterConstants.CHOSEN_GOOGLE_ANALYTICS_ALLOWED),
+            chosenSocialShareImageAllowed: this.getChosenSettingsFlagState(VoterConstants.CHOSEN_SOCIAL_SHARE_IMAGE_ALLOWED),
+            chosenSocialShareDescriptionAllowed: this.getChosenSettingsFlagState(VoterConstants.CHOSEN_SOCIAL_SHARE_DESCRIPTION_ALLOWED),
+            chosenPromotedOrganizationsAllowed: this.getChosenSettingsFlagState(VoterConstants.CHOSEN_PROMOTED_ORGANIZATIONS_ALLOWED),
+            featuresProvidedBitmap,
+          };
+          revisedState = Object.assign({}, revisedState, {
+            voterOrganizationFeaturesProvided,
+          });
+        }
+        return revisedState;
 
       case 'positionListForOpinionMaker': // ...and positionListForOpinionMakerForFriends
         // console.log('OrganizationStore, positionListForOpinionMaker response');

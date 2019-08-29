@@ -1,3 +1,4 @@
+// textFormat.js
 
 export function abbreviateNumber (num) {
   // =< 1,000,000 - round to hundred-thousand (1.4M)

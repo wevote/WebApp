@@ -16,6 +16,15 @@ const VoterConstants = {
   // Used for notification_settings bits. Which notification options has the voter chosen?
   NOTIFICATION_ZERO: 0,
   NOTIFICATION_NEWSLETTER_OPT_IN: 1, // "I would like to receive the We Vote newsletter"
+
+  // Used for converting features_provided_bitmap into which features this voter can choose to use
+  // Mirrored in WeVoteServer/organization/models.py
+  CHOSEN_FAVICON_ALLOWED: 1, // Able to upload/display custom favicon in browser
+  CHOSEN_FULL_DOMAIN_ALLOWED: 2, // Able to specify full domain for white label version of WeVote.US
+  CHOSEN_GOOGLE_ANALYTICS_ALLOWED: 4, // Able to specify and have rendered org's Google Analytics Javascript
+  CHOSEN_SOCIAL_SHARE_IMAGE_ALLOWED: 8, // Able to specify sharing images for white label version of WeVote.US
+  CHOSEN_SOCIAL_SHARE_DESCRIPTION_ALLOWED: 16, // Able to specify sharing description for white label version of WeVote.US
+  CHOSEN_PROMOTED_ORGANIZATIONS_ALLOWED: 32, // Able to promote endorsements from specific organizations
 };
 
 export default VoterConstants;

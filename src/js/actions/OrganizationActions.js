@@ -109,6 +109,14 @@ export default {
       });
   },
 
+  organizationChosenHideWeVoteLogoSave (organizationWeVoteId, organizationChosenHideWeVoteLogo) {
+    Dispatcher.loadEndpoint('organizationSave',
+      {
+        chosen_hide_we_vote_logo: organizationChosenHideWeVoteLogo,
+        organization_we_vote_id: organizationWeVoteId,
+      });
+  },
+
   organizationNameSave (organizationWeVoteId, organizationName) {
     Dispatcher.loadEndpoint('organizationSave',
       {

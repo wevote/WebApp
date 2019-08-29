@@ -5,6 +5,12 @@ class DonateStore extends ReduceStore {
   getInitialState () {  // This is a mandatory override, so it can't be static.
     return {
       defaultPricing: {
+        chosenFaviconRecommendedPlan: '',
+        chosenFullDomainRecommendedPlan: '',
+        chosenGoogleAnalyticsRecommendedPlan: '',
+        chosenPromotedOrganizationsRecommendedPlan: '',
+        chosenSocialShareImageRecommendedPlan: '',
+        chosenSocialShareDescriptionRecommendedPlan: '',
         enterprisePlanFullPricePerMonthPayMonthly: 0,
         enterprisePlanFullPricePerMonthPayYearly: 0,
         proPlanFullPricePerMonthPayMonthly: 0,

@@ -5,21 +5,23 @@ import { withStyles } from '@material-ui/core/styles';
 import styled from 'styled-components';
 import Close from '@material-ui/icons/Close';
 import Check from '@material-ui/icons/Check';
+import OrganizationStore from '../../stores/OrganizationStore';
+import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 
 class PricingCard extends Component {
   static propTypes = {
-    premium: PropTypes.bool,
     bullets: PropTypes.array,
-    price: PropTypes.number,
-    planName: PropTypes.string,
-    priceDescribe: PropTypes.string,
-    pricingPlanStringIdentifier: PropTypes.string,
-    description: PropTypes.string,
-    classes: PropTypes.object,
     buttonOnClickFunction: PropTypes.func,
     buttonOnClickId: PropTypes.string,
     buttonText: PropTypes.string,
+    classes: PropTypes.object,
+    description: PropTypes.string,
+    featurePackage: PropTypes.string,
     fullWidth: PropTypes.bool,
+    planName: PropTypes.string,
+    price: PropTypes.number,
+    priceDescribe: PropTypes.string,
+    pricingPlanStringIdentifier: PropTypes.string,
     pricingCardFeatures: PropTypes.array,
   };
 
@@ -37,7 +39,11 @@ class PricingCard extends Component {
   }
 
   render () {
-    const { premium, bullets, price, planName, priceDescribe, description, classes, buttonOnClickId, buttonText, fullWidth, pricingCardFeatures } = this.props;
+    // console.log('PricingCard render');
+    const { bullets, buttonOnClickId, buttonText, classes, description, featurePackage, fullWidth, planName, price, priceDescribe, pricingCardFeatures } = this.props;
+    const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
+    const isPremiumFeaturePlan = (String(featurePackage) === 'ENTERPRISE' || String(featurePackage) === 'PROFESSIONAL');
+    const voterFeaturePackageExceedsOrEquals = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, featurePackage);
 
     const items = pricingCardFeatures.map(item => (
       <CollectionItem key={`pricingItem-${item.featureDescription}`}>
@@ -65,10 +71,8 @@ class PricingCard extends Component {
           </React.Fragment>
         )}
         <ItemText>{item.featureDescription}</ItemText>
-        {item.iconType === 'notAvailable' ? (
+        {item.iconType === 'notAvailable' && (
           <CollectionItemLight />
-        ) : (
-          null
         )}
       </CollectionItem>
     ));
@@ -78,7 +82,7 @@ class PricingCard extends Component {
         <Card mobile={!!fullWidth}>
           <CardWrapper>
             <PricingCardHeader mobile={!!fullWidth}>
-              {premium ? (
+              {isPremiumFeaturePlan ? (
                 <PremiumName>{planName}</PremiumName>
               ) : (
                 <DefaultName>{planName}</DefaultName>
@@ -89,10 +93,8 @@ class PricingCard extends Component {
                   <Price>{price}</Price>
                   <PriceDescribe>
                     {priceDescribe}
-                    {planName === 'Professional' ? (
+                    {planName === 'Professional' && (
                       <PriceDescribeLight>or $150 month to month</PriceDescribeLight>
-                    ) : (
-                      null
                     )}
                   </PriceDescribe>
                 </React.Fragment>
@@ -126,21 +128,35 @@ class PricingCard extends Component {
               <BulletItem>{bullets[1]}</BulletItem>
               <BulletItem>{bullets[2]}</BulletItem>
             </Bullets>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              className={premium ? (
-                classes.goldButton
-              ) : (
-                null
-              )}
-              classes={{ containedPrimary: classes.buttonContained }}
-              id={buttonOnClickId}
-              onClick={() => this.buttonOnClickFunction()}
-            >
-              <ButtonText>{buttonText}</ButtonText>
-            </Button>
+            {voterFeaturePackageExceedsOrEquals ? (
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                className={isPremiumFeaturePlan ? (
+                  classes.goldButton
+                ) : null}
+                classes={{ containedPrimary: classes.buttonContained }}
+                id={buttonOnClickId}
+                disabled
+              >
+                <ButtonText>{String(chosenFeaturePackage) === String(featurePackage) ? 'Your Plan' : 'Your Plan Includes'}</ButtonText>
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                className={isPremiumFeaturePlan ? (
+                  classes.goldButton
+                ) : null}
+                classes={{ containedPrimary: classes.buttonContained }}
+                id={buttonOnClickId}
+                onClick={() => this.buttonOnClickFunction()}
+              >
+                <ButtonText>{buttonText}</ButtonText>
+              </Button>
+            )}
             <br />
             <Collection>
               {items}

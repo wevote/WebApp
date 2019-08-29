@@ -21,7 +21,7 @@ class BallotSummaryAccordion extends Component {
     const openSections = {};
 
     this.props.children.forEach((child) => {
-      if (child.props.isOpen) {
+      if (child && child.props && child.props.isOpen) {
         openSections[child.props.label] = true;
       }
     });
@@ -34,7 +34,7 @@ class BallotSummaryAccordion extends Component {
     const openSections = {};
 
     nextProps.children.forEach((child) => {
-      if (child.props.isOpen) {
+      if (child && child.props && child.props.isOpen) {
         openSections[child.props.label] = true;
       }
     });

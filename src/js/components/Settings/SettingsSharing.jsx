@@ -5,15 +5,17 @@ import styled from 'styled-components';
 import { withStyles } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
-import SettingsAccountLevelChip from './SettingsAccountLevelChip';
+import AppActions from '../../actions/AppActions';
 import { cordovaDot } from '../../utils/cordovaUtils';
 import LoadingWheel from '../LoadingWheel';
-import PremiumableButton from '../Widgets/PremiumableButton';
-import { ImageDescription, PreviewImage, DescriptionText, SharingRow, SharingColumn, GiantTextInput, HiddenInput, Actions } from './SettingsStyled';
+import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
+import PremiumableButton from '../Widgets/PremiumableButton';
 import { renderLog } from '../../utils/logging';
-import AppActions from '../../actions/AppActions';
+import SettingsAccountLevelChip from './SettingsAccountLevelChip';
+import { ImageDescription, PreviewImage, DescriptionText, SharingRow, SharingColumn, GiantTextInput, HiddenInput, Actions } from './SettingsStyled';
 import VoterStore from '../../stores/VoterStore';
+import { voterFeaturePackageExceedsOrEqualsRequired } from '../../utils/pricingFunctions';
 
 class SettingsSharing extends Component {
   static propTypes = {
@@ -23,60 +25,61 @@ class SettingsSharing extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      chosenFeaturePackage: 'FREE',
+      faviconImageSource: null,
+      headerLogoImageSource: null,
+      hideLogo: false,
       organization: {},
       organizationWeVoteId: '',
-      voter: {},
-      hideLogo: false,
-      voterHasFreeAccount: true,
-      voterHasProfessionalAccount: false,
-      voterHasEnterpriseAccount: false,
+      shareImageSource: null,
       siteDescription: '',
       uploadImageType: 'headerLogo',
-      headerLogoImageSource: null,
-      faviconImageSource: null,
-      shareImageSource: null,
+      voter: {},
+      voterFeaturePackageExceedsOrEqualsEnterprise: false,
     };
   }
 
   componentDidMount () {
-    // console.log("SettingsSharing componentDidMount");
+    console.log('SettingsSharing componentDidMount');
     this.onVoterStoreChange();
+    this.onOrganizationStoreChange();
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
-  shouldComponentUpdate (nextProps, prevState) {
-    if (this.state.organizationWeVoteId !== prevState.organizationWeVoteId) {
-      // console.log('this.state.organizationWeVoteId', this.state.organizationWeVoteId, ', prevState.organizationWeVoteId', prevState.organizationWeVoteId);
+  shouldComponentUpdate (nextProps, nextState) {
+    if (this.state.chosenFeaturePackage !== nextState.chosenFeaturePackage) {
+      // console.log('this.state.chosenFeaturePackage', this.state.chosenFeaturePackage, ', nextState.chosenFeaturePackage', nextState.chosenFeaturePackage);
       return true;
     }
-    if (this.state.voterIsSignedIn !== prevState.voterIsSignedIn) {
-      // console.log('this.state.voterIsSignedIn', this.state.voterIsSignedIn, ', prevState.voterIsSignedIn', prevState.voterIsSignedIn);
+    if (this.state.organizationWeVoteId !== nextState.organizationWeVoteId) {
+      // console.log('this.state.organizationWeVoteId', this.state.organizationWeVoteId, ', nextState.organizationWeVoteId', nextState.organizationWeVoteId);
       return true;
     }
-
-    if (this.state.hideLogo !== prevState.hideLogo) {
+    if (this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
+      // console.log('this.state.voterIsSignedIn', this.state.voterIsSignedIn, ', nextState.voterIsSignedIn', nextState.voterIsSignedIn);
       return true;
     }
-
-    if (this.state.siteDescription !== prevState.siteDescription) {
+    if (this.state.hideLogo !== nextState.hideLogo) {
       return true;
     }
-
-    if (this.state.headerLogoImageSource !== prevState.headerLogoImageSource) {
+    if (this.state.siteDescription !== nextState.siteDescription) {
       return true;
     }
-
-    if (this.state.shareImageSource !== prevState.shareImageSource) {
+    if (this.state.headerLogoImageSource !== nextState.headerLogoImageSource) {
       return true;
     }
-
-    if (this.state.faviconImageSource !== prevState.faviconImageSource) {
+    if (this.state.shareImageSource !== nextState.shareImageSource) {
       return true;
     }
-
+    if (this.state.faviconImageSource !== nextState.faviconImageSource) {
+      return true;
+    }
+    if (this.state.voterFeaturePackageExceedsOrEqualsEnterprise !== nextState.voterFeaturePackageExceedsOrEqualsEnterprise) {
+      return true;
+    }
     const priorOrganization = this.state.organization;
-    const nextOrganization = prevState.organization;
+    const nextOrganization = nextState.organization;
 
     const priorWeVoteCustomDomain = priorOrganization.we_vote_custom_domain || '';
     const nextWeVoteCustomDomain = nextOrganization.we_vote_custom_domain || '';
@@ -95,9 +98,24 @@ class SettingsSharing extends Component {
   }
 
   onOrganizationStoreChange = () => {
-    const { organizationWeVoteId } = this.state;
+    let { organizationWeVoteId } = this.state;
+    if (!organizationWeVoteId) {
+      const voter = VoterStore.getVoter();
+      organizationWeVoteId = voter.linked_organization_we_vote_id;
+      if (organizationWeVoteId) {
+        this.setState({
+          organizationWeVoteId,
+        });
+      }
+    }
+    const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+    const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
+    const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
     this.setState({
-      organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
+      chosenFeaturePackage,
+      hideLogo: organization.chosen_hide_we_vote_logo || false,
+      organization,
+      voterFeaturePackageExceedsOrEqualsEnterprise,
     });
   }
 
@@ -105,18 +123,27 @@ class SettingsSharing extends Component {
     const voter = VoterStore.getVoter();
     const voterIsSignedIn = voter.is_signed_in;
     const organizationWeVoteId = voter.linked_organization_we_vote_id;
+    const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
+    const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
     this.setState({
+      chosenFeaturePackage,
       organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
       organizationWeVoteId,
       voter,
+      voterFeaturePackageExceedsOrEqualsEnterprise,
       voterIsSignedIn,
     });
   }
 
-  handleToggleHideLogo = () => {
-    const { hideLogo } = this.state;
-    console.log('hidelogo', hideLogo);
-    this.setState({ hideLogo: !hideLogo });
+  handleToggleHideLogo = (event) => {
+    const { hideLogo, organizationWeVoteId } = this.state;
+    console.log('hidelogo', !hideLogo);
+    OrganizationActions.organizationChosenHideWeVoteLogoSave(organizationWeVoteId, !hideLogo);
+    this.setState({
+      hideLogo: !hideLogo,
+      // organizationChosenHideWeVoteLogoChangedLocally: false,
+    });
+    event.preventDefault();
   }
 
   handleChangeDescription = ({ target }) => this.setState({ siteDescription: target.value });
@@ -164,17 +191,17 @@ class SettingsSharing extends Component {
   }
 
   render () {
+    console.log('SettingsSharing render');
     renderLog(__filename);
     const { classes } = this.props;
     const {
+      chosenFeaturePackage,
       organization,
       organizationWeVoteId,
       voter,
       voterIsSignedIn,
       hideLogo,
-      voterHasFreeAccount,
-      voterHasProfessionalAccount, // eslint-disable-line
-      voterHasEnterpriseAccount, // eslint-disable-line
+      voterFeaturePackageExceedsOrEqualsEnterprise,
       headerLogoImageSource,
       faviconImageSource,
       shareImageSource,
@@ -245,7 +272,7 @@ class SettingsSharing extends Component {
               <SharingColumn>
                 <InputBoxLabel>
                   Upload Favicon
-                  <SettingsAccountLevelChip userAccountLevel={voterHasFreeAccount ? 'free' : 'pro'} featureAccountLevel="pro" />
+                  <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="ENTERPRISE" />
                 </InputBoxLabel>
                 <ImageDescription>
                   <PreviewImage alt="We Vote logo" width="48px" src={faviconImageSource || cordovaDot('/img/global/svg-icons/we-vote-icon-square-color-dark.svg')}  />
@@ -254,20 +281,22 @@ class SettingsSharing extends Component {
               </SharingColumn>
               <SharingColumn alignRight>
                 <PremiumableButton
-                  classes={{ root: voterHasFreeAccount ? '' : classes.uploadButton }}
-                  premium={!voterHasFreeAccount ? 1 : 0}
-                  onClick={!voterHasFreeAccount ? this.handleUploadFavicon : () => this.openPaidAccountUpgradeModal('professional')}
+                  classes={{ root: voterFeaturePackageExceedsOrEqualsEnterprise ? classes.uploadButton : '' }}
+                  premium={voterFeaturePackageExceedsOrEqualsEnterprise ? 1 : 0}
+                  onClick={voterFeaturePackageExceedsOrEqualsEnterprise ? this.handleUploadFavicon : () => this.openPaidAccountUpgradeModal('enterprise')}
                 >
-                  {voterHasFreeAccount ? (
+                  {voterFeaturePackageExceedsOrEqualsEnterprise ? (
+                    'Upload'
+                  ) : (
                     <React.Fragment>
                       <DesktopView>
-                        Upgrade to Premium
+                        Upgrade to Enterprise
                       </DesktopView>
                       <MobileTabletView>
                         Upgrade
                       </MobileTabletView>
                     </React.Fragment>
-                  ) : 'Upload'}
+                  )}
                 </PremiumableButton>
                 {
                   faviconImageSource !== null && (
@@ -287,7 +316,7 @@ class SettingsSharing extends Component {
               <SharingColumn>
                 <InputBoxLabel>
                   Social Share Image
-                  <SettingsAccountLevelChip userAccountLevel={voterHasFreeAccount ? 'free' : 'pro'} featureAccountLevel="pro" />
+                  <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="ENTERPRISE" />
                 </InputBoxLabel>
                 <ImageDescription>
                   <PreviewImage alt="We Vote logo" width="96px" src={shareImageSource || cordovaDot('/img/global/svg-icons/we-vote-icon-square-color-dark.svg')}  />
@@ -296,20 +325,22 @@ class SettingsSharing extends Component {
               </SharingColumn>
               <SharingColumn alignRight>
                 <PremiumableButton
-                  classes={{ root: voterHasFreeAccount ? '' : classes.uploadButton }}
-                  premium={!voterHasFreeAccount ? 1 : 0}
-                  onClick={!voterHasFreeAccount ? this.handleUploadShareImage : () => this.openPaidAccountUpgradeModal('professional')}
+                  classes={{ root: voterFeaturePackageExceedsOrEqualsEnterprise ? classes.uploadButton : '' }}
+                  premium={voterFeaturePackageExceedsOrEqualsEnterprise ? 1 : 0}
+                  onClick={voterFeaturePackageExceedsOrEqualsEnterprise ? this.handleUploadShareImage : () => this.openPaidAccountUpgradeModal('enterprise')}
                 >
-                  {voterHasFreeAccount ? (
+                  {voterFeaturePackageExceedsOrEqualsEnterprise ? (
+                    'Upload'
+                  ) : (
                     <React.Fragment>
                       <DesktopView>
-                        Upgrade to Premium
+                        Upgrade to Enterprise
                       </DesktopView>
                       <MobileTabletView>
                         Upgrade
                       </MobileTabletView>
                     </React.Fragment>
-                  )  : 'Upload'}
+                  )}
                 </PremiumableButton>
                 {
                   shareImageSource !== null && (
@@ -329,7 +360,7 @@ class SettingsSharing extends Component {
               <SharingColumn>
                 <InputBoxLabel>
                   Social Share Site Description
-                  <SettingsAccountLevelChip userAccountLevel={voterHasFreeAccount ? 'free' : 'pro'} featureAccountLevel="pro" />
+                  <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="ENTERPRISE" />
                 </InputBoxLabel>
                 <DescriptionText>A few sentences describing your site. The text used on search engines, or when your page is shared on social media.</DescriptionText>
                 <GiantTextInput placeholder="Type Description..." onChange={this.handleChangeDescription} />
@@ -341,20 +372,22 @@ class SettingsSharing extends Component {
                     Cancel
                   </Button>
                   <PremiumableButton
-                    classes={{ root: voterHasFreeAccount ? '' : classes.uploadButton }}
-                    premium={!voterHasFreeAccount ? 1 : 0}
-                    onClick={!voterHasFreeAccount ? this.handleSaveDescription : () => this.openPaidAccountUpgradeModal('professional')}
+                    classes={{ root: voterFeaturePackageExceedsOrEqualsEnterprise ? classes.uploadButton : '' }}
+                    premium={voterFeaturePackageExceedsOrEqualsEnterprise ? 1 : 0}
+                    onClick={voterFeaturePackageExceedsOrEqualsEnterprise ? this.handleSaveDescription : () => this.openPaidAccountUpgradeModal('enterprise')}
                   >
-                    {voterHasFreeAccount ? (
+                    {voterFeaturePackageExceedsOrEqualsEnterprise ? (
+                      'Save'
+                    ) : (
                       <React.Fragment>
                         <DesktopView>
-                        Upgrade to Premium
+                        Upgrade to Enterprise
                         </DesktopView>
                         <MobileTabletView>
                         Upgrade
                         </MobileTabletView>
                       </React.Fragment>
-                    ) : 'Save'}
+                    )}
                   </PremiumableButton>
                 </Actions>
               </SharingColumn>

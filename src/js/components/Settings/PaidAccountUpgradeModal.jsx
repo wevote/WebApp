@@ -19,6 +19,7 @@ import extractNumber from '../../utils/extractNumber';
 import { numberWithCommas } from '../../utils/textFormat';
 import DonateStore from '../../stores/DonateStore';
 import DonateActions from '../../actions/DonateActions';
+// eslint-disable-next-line import/no-cycle
 import Pricing from '../../routes/More/Pricing';
 
 class PaidAccountUpgradeModal extends Component {
@@ -26,6 +27,7 @@ class PaidAccountUpgradeModal extends Component {
 
   static propTypes = {
     classes: PropTypes.object,
+    initialPaidAccountProcessStep: PropTypes.string,
     initialPricingPlan: PropTypes.string,
     pathname: PropTypes.string,
     show: PropTypes.bool,
@@ -62,6 +64,7 @@ class PaidAccountUpgradeModal extends Component {
       },
       pathname: undefined,
       paidAccountProcessStep: 'choosePlan',
+      pricingPlanChosen: undefined,
       radioGroupValue: 'annualPlanRadio',
       couponCodeInputValue: '',
       // couponCodesFromAPI: [],
@@ -83,6 +86,10 @@ class PaidAccountUpgradeModal extends Component {
     const defaultPricing = DonateStore.getDefaultPricing();
     if (!defaultPricing.validForEnterprisePlan && !defaultPricing.validForProfessionalPlan) {
       DonateActions.defaultPricing();
+    }
+    if (this.props.initialPaidAccountProcessStep === 'payForPlan') {
+      // set state of paidAccountProcessStep based on window size
+      this.moveToPayForPlanStep();
     }
     this.setState({
       defaultPricing,
@@ -122,7 +129,7 @@ class PaidAccountUpgradeModal extends Component {
     if (this.state.radioGroupValue !== nextState.radioGroupValue) {
       return true;
     }
-    if (this.state.paidAccountProcessStep !== nextState.couponCodeInputValue) {
+    if (this.state.paidAccountProcessStep !== nextState.paidAccountProcessStep) {
       return true;
     }
     if (this.state.pricingPlanChosen !== nextState.pricingPlanChosen) {
@@ -233,9 +240,7 @@ class PaidAccountUpgradeModal extends Component {
     this.setState({ paidAccountProcessStep: 'selectPlanDetailsMobile' });
   }
 
-  couponAppliedFunction = () => {
-    this.setState({ paidAccountProcessStep: 'payForPlanDesktop' });
-
+  moveToPayForPlanStep = () => {
     if (window.innerWidth > 768) {
       this.setState({
         paidAccountProcessStep: 'payForPlanDesktop',
@@ -603,7 +608,7 @@ class PaidAccountUpgradeModal extends Component {
                 color="primary"
                 variant="contained"
                 classes={{ root: classes.nextButton }}
-                onClick={this.couponAppliedFunction}
+                onClick={this.moveToPayForPlanStep}
               >
                 NEXT
               </Button>
