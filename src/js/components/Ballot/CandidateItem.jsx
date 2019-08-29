@@ -139,7 +139,7 @@ class CandidateItem extends Component {
 
   onCandidateStoreChange () {
     const { candidateWeVoteId } = this.state;
-    console.log('CandidateItem onCandidateStoreChange, candidateWeVoteId:', candidateWeVoteId);
+    // console.log('CandidateItem onCandidateStoreChange, candidateWeVoteId:', candidateWeVoteId);
     const candidate = CandidateStore.getCandidate(candidateWeVoteId);
     let candidatePhotoUrl;
     if (this.props.showLargeImage && candidate.candidate_photo_url_large) {

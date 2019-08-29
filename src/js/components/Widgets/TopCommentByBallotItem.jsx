@@ -12,6 +12,7 @@ export default class TopCommentByBallotItem extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     children: PropTypes.object,
+    childChangeIndicator: PropTypes.string,
     learnMoreText: PropTypes.string,
     learnMoreUrl: PropTypes.string,
     limitToNo: PropTypes.bool,
@@ -113,6 +114,10 @@ export default class TopCommentByBallotItem extends Component {
 
   shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+    if (this.props.childChangeIndicator !== nextProps.childChangeIndicator) {
+      // console.log("shouldComponentUpdate: this.props.childChangeIndicator", this.props.childChangeIndicator, ", nextProps.childChangeIndicator", nextProps.childChangeIndicator);
+      return true;
+    }
     if (this.state.endorsementOrganization !== nextState.endorsementOrganization) {
       // console.log("shouldComponentUpdate: this.state.endorsementOrganization", this.state.endorsementOrganization, ", nextState.endorsementOrganization", nextState.endorsementOrganization);
       return true;

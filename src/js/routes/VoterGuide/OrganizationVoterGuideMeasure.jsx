@@ -15,7 +15,6 @@ import SupportActions from '../../actions/SupportActions';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import SearchAllActions from '../../actions/SearchAllActions';
 import webAppConfig from '../../config';
 
 // This is based on routes/Ballot/Measure
@@ -49,8 +48,6 @@ export default class OrganizationVoterGuideMeasure extends Component {
     SupportActions.retrievePositionsCountsForOneBallotItem(this.props.params.measure_we_vote_id);
     OrganizationActions.organizationsFollowedRetrieve();
 
-    SearchAllActions.exitSearch();
-
     // TODO CREATE THIS
     // AnalyticsActions.saveActionMeasure(VoterStore.electionId(), this.props.params.measure_we_vote_id);
     this.setState({
@@ -72,10 +69,6 @@ export default class OrganizationVoterGuideMeasure extends Component {
         voterGuidesToFollowForLatestBallotItem: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
       });
     }
-    // Display the measure's name in the search box
-    // var { measure } = this.state;
-    // var searchBoxText = measure.ballot_item_display_name || "";  // TODO DALE Not working right now
-    SearchAllActions.exitSearch();
   }
 
   componentWillUnmount () {

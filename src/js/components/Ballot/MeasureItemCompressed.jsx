@@ -48,25 +48,30 @@ class MeasureItemCompressed extends Component {
   }
 
   componentDidMount () {
-    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
-    const measure = MeasureStore.getMeasure(this.props.measureWeVoteId);
-
-    if (this.props.measureWeVoteId && !BallotStore.positionListHasBeenRetrievedOnce(this.props.measureWeVoteId)) {
-      MeasureActions.positionListForBallotItemPublic(this.props.measureWeVoteId);
+    const { measureWeVoteId, organization, organization_we_vote_id } = this.props;
+    const measure = MeasureStore.getMeasure(measureWeVoteId);
+    // console.log('componentDidMount, measure:', measure, ', measureWeVoteId: ', measureWeVoteId);
+    if (!measure.we_vote_id) {
+      MeasureActions.measureRetrieve(measureWeVoteId);
     }
-    const organizationWeVoteId = (this.props.organization && this.props.organization.organization_we_vote_id) ? this.props.organization.organization_we_vote_id : this.props.organization_we_vote_id;
+    if (measureWeVoteId && !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)) {
+      MeasureActions.positionListForBallotItemPublic(measureWeVoteId);
+    }
+    const organizationWeVoteId = (organization && organization.organization_we_vote_id) ? organization.organization_we_vote_id : organization_we_vote_id;
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
       componentDidMountFinished: true,
       measure,
       // measureSubtitle: measure.measure_subtitle,
-      measureSupportProps: SupportStore.get(this.props.measureWeVoteId),
+      measureSupportProps: SupportStore.get(measureWeVoteId),
       measureText: measure.measure_text,
-      measureWeVoteId: this.props.measureWeVoteId,
+      measureWeVoteId,
       noVoteDescription: measure.no_vote_description,
       yesVoteDescription: measure.yes_vote_description,
       organizationWeVoteId,
     });
+    this.measureStoreListener = MeasureStore.addListener(this.onMeasureStoreChange.bind(this));
+    this.supportStoreListener = SupportStore.addListener(this.onSupportStoreChange.bind(this));
   }
 
   componentWillReceiveProps (nextProps) {
@@ -102,7 +107,7 @@ class MeasureItemCompressed extends Component {
       // console.log('this.state.ballotItemDisplayName:', this.state.ballotItemDisplayName, ', nextState.ballotItemDisplayName:', nextState.ballotItemDisplayName);
       return true;
     }
-    if (this.state.measure !== nextState.measure) {
+    if (JSON.stringify(this.state.measure) !== JSON.stringify(nextState.measure)) {
       // console.log('this.state.measure:', this.state.measure, ', nextState.measure:', nextState.measure);
       return true;
     }
@@ -124,11 +129,30 @@ class MeasureItemCompressed extends Component {
         return true;
       }
     }
+    // console.log('shouldComponentUpdate no change');
     return false;
   }
 
   componentWillUnmount () {
+    this.measureStoreListener.remove();
     this.supportStoreListener.remove();
+  }
+
+  onMeasureStoreChange () {
+    const { measureWeVoteId } = this.state;
+    const measure = MeasureStore.getMeasure(measureWeVoteId);
+    // console.log('MeasureItemCompressed, onMeasureStoreChange, measure:', measure);
+    if (measureWeVoteId && !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)) {
+      MeasureActions.positionListForBallotItemPublic(measureWeVoteId);
+    }
+    this.setState({
+      ballotItemDisplayName: measure.ballot_item_display_name,
+      measure,
+      // measureSubtitle: measure.measure_subtitle,
+      measureText: measure.measure_text,
+      noVoteDescription: measure.no_vote_description,
+      yesVoteDescription: measure.yes_vote_description,
+    });
   }
 
   onSupportStoreChange () {
@@ -237,6 +261,7 @@ class MeasureItemCompressed extends Component {
               {/* If there is a "yes vote" quote about the measure, show that. If not, show the yesVoteDescription */}
               <TopCommentByBallotItem
                 ballotItemWeVoteId={measureWeVoteId}
+                childChangeIndicator={yesVoteDescription}
                 learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
                 limitToYes
               >
@@ -256,6 +281,7 @@ class MeasureItemCompressed extends Component {
               {/* If there is a "yes vote" quote about the measure, show that. If not, show the yesVoteDescription */}
               <TopCommentByBallotItem
                 ballotItemWeVoteId={measureWeVoteId}
+                childChangeIndicator={noVoteDescription}
                 learnMoreUrl={this.getMeasureLink(measureWeVoteId)}
                 limitToNo
               >
