@@ -16,7 +16,6 @@ import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
-import SearchAllActions from '../../actions/SearchAllActions';
 import webAppConfig from '../../config';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
 import { renderLog } from '../../utils/logging';
@@ -55,9 +54,6 @@ export default class OrganizationVoterGuideCandidate extends Component {
     SupportActions.retrievePositionsCountsForOneBallotItem(this.props.params.candidate_we_vote_id);
     OrganizationActions.organizationsFollowedRetrieve();
 
-    // Display the candidate's name in the search box
-    const searchBoxText = this.state.candidate.ballot_item_display_name || ''; // TODO DALE Not working right now
-    SearchAllActions.exitSearch(searchBoxText); // TODO: still not used :)
     AnalyticsActions.saveActionCandidate(VoterStore.electionId(), this.props.params.candidate_we_vote_id);
     this.setState({
       candidateWeVoteId: this.props.params.candidate_we_vote_id,
@@ -81,11 +77,6 @@ export default class OrganizationVoterGuideCandidate extends Component {
         voterGuidesToFollowForLatestBallotItem: VoterGuideStore.getVoterGuidesToFollowForLatestBallotItem(),
       });
     }
-
-    // Display the candidate's name in the search box
-    // var { candidate } = this.state;
-    // var searchBoxText = candidate.ballot_item_display_name || '';  // TODO DALE Not working right now
-    SearchAllActions.exitSearch('');
   }
 
   componentWillUnmount () {

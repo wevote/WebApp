@@ -10,7 +10,6 @@ import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import OfficeActions from '../../actions/OfficeActions';
 import OfficeStore from '../../stores/OfficeStore';
-import SearchAllActions from '../../actions/SearchAllActions';
 import Testimonial from '../../components/Widgets/Testimonial';
 import VoterStore from '../../stores/VoterStore';
 import { cordovaDot } from '../../utils/cordovaUtils';
@@ -50,7 +49,6 @@ export default class Office extends Component {
     });
 
     AnalyticsActions.saveActionOffice(VoterStore.electionId(), this.props.params.office_we_vote_id);
-    SearchAllActions.exitSearch();
   }
 
   componentWillReceiveProps (nextProps) {
@@ -63,11 +61,6 @@ export default class Office extends Component {
     } else {
       this.setState({ office, officeWeVoteId: nextProps.params.office_we_vote_id });
     }
-
-    // Display the office name in the search box
-    // var { candidate } = this.state;
-    // var searchBoxText = candidate.ballot_item_display_name || "";  // TODO DALE Not working right now
-    SearchAllActions.exitSearch();
   }
 
   componentWillUnmount () {

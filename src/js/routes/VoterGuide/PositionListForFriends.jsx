@@ -8,7 +8,6 @@ import OrganizationStore from '../../stores/OrganizationStore';
 import OrganizationPositionItem from '../../components/VoterGuide/OrganizationPositionItem';
 import LoadingWheel from '../../components/LoadingWheel';
 import ThisIsMeAction from '../../components/Widgets/ThisIsMeAction';
-import SearchAllActions from '../../actions/SearchAllActions';
 
 export default class PositionListForFriends extends Component {
   static propTypes = {
@@ -30,8 +29,6 @@ export default class PositionListForFriends extends Component {
     OrganizationActions.positionListForOpinionMakerForFriends(organizationWeVoteId, true);
     // Positions for this organization, NOT including for this voter / election
     OrganizationActions.positionListForOpinionMakerForFriends(organizationWeVoteId, false, true);
-
-    SearchAllActions.exitSearch();
   }
 
   componentWillReceiveProps (nextProps) {
@@ -43,8 +40,6 @@ export default class PositionListForFriends extends Component {
     OrganizationActions.positionListForOpinionMakerForFriends(nextProps.params.organization_we_vote_id, true);
     // Positions for this organization, NOT including for this voter / election
     OrganizationActions.positionListForOpinionMakerForFriends(nextProps.params.organization_we_vote_id, false, true);
-
-    SearchAllActions.exitSearch();
   }
 
   componentWillUnmount () {

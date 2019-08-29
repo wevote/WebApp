@@ -21,7 +21,6 @@ import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import VoterStore from '../../stores/VoterStore';
 import AppStore from '../../stores/AppStore';
-import SearchAllActions from '../../actions/SearchAllActions';
 import webAppConfig from '../../config';
 import EndorsementCard from '../../components/Widgets/EndorsementCard';
 
@@ -90,8 +89,6 @@ export default class Candidate extends Component {
     const allCachedPositionsForThisCandidate = Object.values(allCachedPositionsForThisCandidateDict);
 
     // Display the candidate's name in the search box
-    const searchBoxText = this.state.candidate.ballot_item_display_name || ''; // TODO DALE Not working right now
-    SearchAllActions.exitSearch(searchBoxText); // TODO: still not used :)
     AnalyticsActions.saveActionCandidate(VoterStore.electionId(), this.props.params.candidate_we_vote_id);
     this.setState({
       allCachedPositionsForThisCandidate,
@@ -119,11 +116,6 @@ export default class Candidate extends Component {
         allCachedPositionsForThisCandidate,
       });
     }
-
-    // Display the candidate's name in the search box
-    // var { candidate } = this.state;
-    // var searchBoxText = candidate.ballot_item_display_name || '';  // TODO DALE Not working right now
-    // SearchAllActions.exitSearch('');
   }
 
   componentWillUnmount () {
