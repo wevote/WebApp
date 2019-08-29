@@ -40,15 +40,19 @@ class StripeElementsTestForm extends Component {
 
   // This is really minimal, just for testing
   donateStoreChange = () => {
-    const msg = DonateStore.getCouponMessage();
-    if (msg.length > 0) {
-      console.log('updating coupon message success validating coupon');
-      $('.u-no-break').html(msg);
-    }
+    try {
+      const msg = DonateStore.getCouponMessageTest();
+      if (msg.length > 0) {
+        console.log('updating coupon message success validating coupon');
+        $('.u-no-break').html(msg);
+      }
 
-    if (DonateStore.getOrgSubscriptionAlreadyExists()) {
-      console.log('updating coupon message organization subscription already exists');
-      $('.u-no-break').html('A subscription already exists for this organization<br>The existing subscription was not altered, no credit card charge was made.');
+      if (DonateStore.getOrgSubscriptionAlreadyExists()) {
+        console.log('updating coupon message organization subscription already exists');
+        $('.u-no-break').html('A subscription already exists for this organization<br>The existing subscription was not altered, no credit card charge was made.');
+      }
+    } catch (err) {
+      console.log('donateStoreChange caught error: ', err);
     }
   };
 
@@ -68,23 +72,8 @@ class StripeElementsTestForm extends Component {
     const isOrganizationPlan = true;
     const donateMonthly = true;
     const email  = '';
-    DonateActions.donationWithStripe(token.id, email, 100, donateMonthly,  // TEMPORARY HACK STEVE $100
+    DonateActions.donationWithStripe(token.id, email, 0, donateMonthly,  // TEMPORARY HACK STEVE $100
       isOrganizationPlan, planType, couponCode);
-
-    // DonateActions.businessInitialCharge(token.id, planType, couponCode);
-    // const url = `https://bb94acbb.ngrok.io/apis/v1/businessInitialCharge/?token=${token.id}&voter_device_id=${cookies.getItem('voter_device_id')}`;
-    // console.log('Stripe Test URL: ', url);
-    // const response = await fetch(url, {
-    //   method: 'GET',
-    //   headers: { 'Content-Type': 'text/plain' },
-    //   credentials: 'include',
-    // });
-    //
-    // if (response.ok) {
-    //   // eslint-disable-next-line react/no-unused-state
-    //   this.setState({ complete: true });
-    //   console.log('Purchase Complete! ', response);
-    // }
   }
 
   async redeem () {

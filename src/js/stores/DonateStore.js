@@ -61,6 +61,10 @@ class DonateStore extends ReduceStore {
     return this.getState().donationHistory || {};
   }
 
+  getCouponMessageTest () {
+    return this.getState().coupon_applied_message;
+  }
+
   getCouponMessage () {
     const { lastCouponResponseReceived } = this.state;
     if (!lastCouponResponseReceived) {
@@ -104,8 +108,6 @@ class DonateStore extends ReduceStore {
     let couponCodeString = '';
     let couponMatchFound = '';
     let couponStillValid = '';
-    const discountedPriceMonthlyCredit = '';
-    let listPriceMonthlyCredit = '';
     let enterprisePlanCouponPricePerMonthPayMonthly = '';
     let enterprisePlanCouponPricePerMonthPayYearly = '';
     let enterprisePlanFullPricePerMonthPayMonthly = '';
@@ -233,20 +235,32 @@ class DonateStore extends ReduceStore {
         };
 
       case 'validateCoupon':
-        ({
-          coupon_applied_message: couponAppliedMessage,
-          coupon_match_found: couponMatchFound,
-          list_price_monthly_credit: listPriceMonthlyCredit,
-        } = action.res);
         return {
-          success: true,
-          couponAppliedMessage,
-          couponMatchFound,
-          couponStillValid,
-          discountedPriceMonthlyCredit,
-          listPriceMonthlyCredit,
-          status,
+          annual_price_stripe: action.res.annual_price_stripe,
+          coupon_applied_message: action.res.coupon_applied_message,
+          coupon_match_found: action.res.coupon_match_found,
+          coupon_still_valid: action.res.coupon_still_valid,
+          monthly_price_stripe: action.res.monthly_price_stripe,
+          status: action.res.status,
+          success: action.res.success,
         };
+
+        // // TODO: Dale needs to revive for his new upgrade, contains test code
+        // case 'validateCoupon':
+        //   ({
+        //     coupon_applied_message: couponAppliedMessage,
+        //     coupon_match_found: couponMatchFound,
+        //     list_price_monthly_credit: listPriceMonthlyCredit,
+        //   } = action.res);
+        //   return {
+        //     success: true,
+        //     couponAppliedMessage,
+        //     couponMatchFound,
+        //     couponStillValid,
+        //     discountedPriceMonthlyCredit,
+        //     listPriceMonthlyCredit,
+        //     status,
+        //   };
 
       default:
         return state;
