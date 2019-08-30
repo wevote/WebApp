@@ -25,9 +25,11 @@ class ShowMoreFooter extends React.Component {
 
     return (
       <ShowMoreFooterStyled id={showMoreId} onClick={showMoreLink}>
-        { showMoreText }
-        {' '}
-        <ArrowForwardIcon classes={{ root: classes.cardFooterIconRoot }} />
+        <ShowMoreFooterText>
+          { showMoreText }
+          {' '}
+          <ArrowForwardIcon classes={{ root: classes.cardFooterIconRoot }} />
+        </ShowMoreFooterText>
       </ShowMoreFooterStyled>
     );
   }
@@ -35,16 +37,20 @@ class ShowMoreFooter extends React.Component {
 
 const styles = theme => ({
   cardFooterIconRoot: {
-    fontSize: 14,
+    fontSize: 16,
     margin: '0 0 .1rem .3rem',
     [theme.breakpoints.down('lg')]: {
       marginBottom: '.2rem',
+    },
+    [theme.breakpoints.up('md')]: {
+      fontSize: 18,
     },
   },
 });
 
 const ShowMoreFooterStyled = styled.div`
-  font-size: 12px;
+  color: #4371cc;
+  font-size: 16px;
   text-align: center;
   user-select: none;
   cursor: pointer;
@@ -55,11 +61,20 @@ const ShowMoreFooterStyled = styled.div`
     border-bottom: 1px solid;
     border-color: #f8f8f8;
   }
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 18px;
+  }
   &:hover {
-    background-color: #f8f8f8;
+    background-color: #eee;
   }
   @media print{
     display: none;
+  }
+`;
+
+const ShowMoreFooterText = styled.div`
+  &:hover {
+    text-decoration: underline;
   }
 `;
 

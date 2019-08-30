@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Badge from '@material-ui/core/Badge';
@@ -17,17 +18,17 @@ class BallotDecisionsTabs extends Component {
 
   shouldComponentUpdate (nextProps) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    // console.log("BallotDecisionsTabs shouldComponentUpdate");
+    // console.log('BallotDecisionsTabs shouldComponentUpdate');
     if (this.props.completionLevelFilterType !== nextProps.completionLevelFilterType) {
-      // console.log("shouldComponentUpdate: this.props.completionLevelFilterType", this.props.completionLevelFilterType, ", nextProps.completionLevelFilterType", nextProps.completionLevelFilterType);
+      // console.log('shouldComponentUpdate: this.props.completionLevelFilterType', this.props.completionLevelFilterType, ', nextProps.completionLevelFilterType', nextProps.completionLevelFilterType);
       return true;
     }
     if (this.props.ballotLength !== nextProps.ballotLength) {
-      // console.log("shouldComponentUpdate: this.props.ballotLength", this.props.ballotLength, ", nextProps.ballotLength", nextProps.ballotLength);
+      // console.log('shouldComponentUpdate: this.props.ballotLength', this.props.ballotLength, ', nextProps.ballotLength', nextProps.ballotLength);
       return true;
     }
     if (this.props.ballotLengthRemaining !== nextProps.ballotLengthRemaining) {
-      // console.log("shouldComponentUpdate: this.props.ballotLengthRemaining", this.props.ballotLengthRemaining, ", nextProps.ballotLengthRemaining", nextProps.ballotLengthRemaining);
+      // console.log('shouldComponentUpdate: this.props.ballotLengthRemaining', this.props.ballotLengthRemaining, ', nextProps.ballotLengthRemaining', nextProps.ballotLengthRemaining);
       return true;
     }
     return false;
@@ -63,7 +64,7 @@ class BallotDecisionsTabs extends Component {
   }
 
   render () {
-    // console.log("BallotDecisionsTabs render, this.props.completionLevelFilterType:", this.props.completionLevelFilterType);
+    // console.log('BallotDecisionsTabs render, this.props.completionLevelFilterType:', this.props.completionLevelFilterType);
     renderLog(__filename);
     const { classes, ballotLength, ballotLengthRemaining } = this.props;
     const remainingDecisionsCountIsDifferentThanAllItems = this.props.ballotLength !== this.props.ballotLengthRemaining;
@@ -79,14 +80,14 @@ class BallotDecisionsTabs extends Component {
       >
         {/* labelContainer: classes.tabLabelContainer,  */}
         <Tab
-          classes={{ root: classes.tabRoot }}
+          classes={{ root: classes.tabRootAllChoice }}
           id="allItemsCompletionLevelTab"
           onClick={() => this.goToDifferentCompletionLevelTab('filterAllBallotItems')}
           label={(
             <Badge
               classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 0 ? null : classes.badgeColorPrimary }}
               color="primary"
-              badgeContent={ballotLength}
+              badgeContent={<BadgeCountWrapper>{ballotLength}</BadgeCountWrapper>}
               id="ballotDecisionsTabsAllItems"
               invisible={ballotLength === 0}
             >
@@ -109,7 +110,7 @@ class BallotDecisionsTabs extends Component {
               <Badge
                 classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 1 ? null : classes.badgeColorPrimary }}
                 color="primary"
-                badgeContent={ballotLengthRemaining}
+                badgeContent={<BadgeCountWrapper>{ballotLengthRemaining}</BadgeCountWrapper>}
                 id="ballotDecisionTabsRemainingChoices"
                 invisible={ballotLengthRemaining === 0}
               >
@@ -134,7 +135,7 @@ class BallotDecisionsTabs extends Component {
               <Badge
                 classes={{ badge: classes.badge, colorPrimary: this.getSelectedTab() === 2 ? null : classes.badgeColorPrimary }}
                 color="primary"
-                badgeContent={itemsDecidedCount}
+                badgeContent={<BadgeCountWrapper>{itemsDecidedCount}</BadgeCountWrapper>}
                 id="ballotDecisionsTabsItemsDecided"
                 invisible={itemsDecidedCount === 0}
               >
@@ -156,7 +157,7 @@ class BallotDecisionsTabs extends Component {
 
 const styles = theme => ({
   badge: {
-    top: 9,
+    top: 12,
     right: -14,
     minWidth: 16,
     width: 20,
@@ -189,7 +190,18 @@ const styles = theme => ({
   tabsFlexContainer: {
     height: 38,
   },
+  tabRootAllChoice: {
+    [theme.breakpoints.down('md')]: {
+      minWidth: 75,
+    },
+    [theme.breakpoints.up('md')]: {
+      minWidth: 200,
+    },
+  },
   tabRoot: {
+    [theme.breakpoints.down('md')]: {
+      minWidth: 100,
+    },
     [theme.breakpoints.up('md')]: {
       minWidth: 200,
     },
@@ -203,6 +215,13 @@ const styles = theme => ({
     overflowY: 'hidden',
   },
 });
+
+const BadgeCountWrapper = styled.span`
+  padding-top: 2px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    padding-top: 1px;
+  }
+`;
 
 export default withStyles(styles)(BallotDecisionsTabs);
 

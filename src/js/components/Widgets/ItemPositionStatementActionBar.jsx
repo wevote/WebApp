@@ -317,7 +317,7 @@ class ItemPositionStatementActionBar extends Component {
     // console.log('ItemPositionStatementActionBar, editMode: ', editMode);
     // minRows={1}
     return (
-      <div className={this.props.shownInList ? 'position-statement__container__in-list' : 'position-statement__container'}>
+      <Wrapper shownInList={this.props.shownInList}>
         { // Show the edit box (Viewing self)
           editMode ? (
             <Paper
@@ -383,7 +383,7 @@ class ItemPositionStatementActionBar extends Component {
             </Paper>
           )
        }
-      </div>
+      </Wrapper>
     );
   }
 }
@@ -439,6 +439,15 @@ const styles = theme => ({
     },
   },
 });
+
+const Wrapper = styled.div`
+  ${({ shownInList }) => (shownInList ? '' : (
+    'background-color: #f8f8f8;' +
+    'padding: 8px 16px;' +
+    'margin: 0 -16px 8px 0;'
+  )
+  )}
+`;
 
 const PostSaveButton = styled.div`
   width: auto;

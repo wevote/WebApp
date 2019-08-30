@@ -346,7 +346,7 @@ class SettingsDomain extends Component {
                       <InputBase
                         classes={{ root: classes.inputBase, input: classes.inputItem }}
                         onChange={this.handleOrganizationChosenSubDomainChange}
-                        placeholder="Type Sub Domain of WeVote.US..."
+                        placeholder="Type Sub Domain..."
                         value={organizationChosenSubDomainAlreadyTaken ? chosenSubDomainBeforeErrorCheck : (organizationChosenSubDomain || '')}
                       />
                       <SubDomainExtensionText error={organizationChosenSubDomainAlreadyTaken}>
@@ -414,7 +414,7 @@ class SettingsDomain extends Component {
                       <InputBase
                         classes={{ root: classes.inputBase, input: classes.inputItem }}
                         onChange={this.handleOrganizationChosenDomainNameChange}
-                        placeholder="Type Domain..."
+                        placeholder="Type Full Domain..."
                         value={organizationChosenDomainNameAlreadyTaken ? chosenDomainNameBeforeErrorCheck : (organizationChosenDomainName || '')}
                       />
                     </IconInputContainer>
@@ -446,7 +446,16 @@ class SettingsDomain extends Component {
                       premium={voterFeaturePackageExceedsOrEqualsProfessional ? 1 : 0}
                       onClick={voterFeaturePackageExceedsOrEqualsProfessional ? this.onSaveDomainNameButton : () => this.openPaidAccountUpgradeModal('professional')}
                     >
-                      {voterFeaturePackageExceedsOrEqualsProfessional ? 'Save' : 'Upgrade to Professional'}
+                      {voterFeaturePackageExceedsOrEqualsProfessional ? 'Save' : (
+                        <span>
+                          <span className="u-show-desktop-tablet">
+                            Upgrade to Professional
+                          </span>
+                          <span className="u-show-mobile">
+                            Upgrade to Pro
+                          </span>
+                        </span>
+                      )}
                     </PremiumableButton>
                   </ButtonsContainer>
                 )}
@@ -522,7 +531,7 @@ const IconInputContainer = styled.div`
 const InputBoxLabel = styled.h4`
   font-size: 14px; 
   font-weight: bold;
-  color: ${props => (props.error ? 'rgb(255, 73, 34)' : 'black' )}
+  color: ${props => (props.error ? 'rgb(255, 73, 34)' : 'black')}
 `;
 
 const InputBoxHelperLabel = styled.p`

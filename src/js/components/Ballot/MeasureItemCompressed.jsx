@@ -22,7 +22,7 @@ class MeasureItemCompressed extends Component {
   static propTypes = {
     // currentBallotIdInUrl: PropTypes.string,
     organization: PropTypes.object,
-    organization_we_vote_id: PropTypes.string,
+    organizationWeVoteId: PropTypes.string,
     showPositionStatementActionBar: PropTypes.bool,
     // urlWithoutHash: PropTypes.string,
     measureWeVoteId: PropTypes.string.isRequired,
@@ -48,7 +48,7 @@ class MeasureItemCompressed extends Component {
   }
 
   componentDidMount () {
-    const { measureWeVoteId, organization, organization_we_vote_id } = this.props;
+    const { measureWeVoteId, organization } = this.props;
     const measure = MeasureStore.getMeasure(measureWeVoteId);
     // console.log('componentDidMount, measure:', measure, ', measureWeVoteId: ', measureWeVoteId);
     if (!measure.we_vote_id) {
@@ -57,7 +57,7 @@ class MeasureItemCompressed extends Component {
     if (measureWeVoteId && !BallotStore.positionListHasBeenRetrievedOnce(measureWeVoteId)) {
       MeasureActions.positionListForBallotItemPublic(measureWeVoteId);
     }
-    const organizationWeVoteId = (organization && organization.organization_we_vote_id) ? organization.organization_we_vote_id : organization_we_vote_id;
+    const organizationWeVoteId = (organization && organization.organization_we_vote_id) ? organization.organization_we_vote_id : this.props.organizationWeVoteId;
     this.setState({
       ballotItemDisplayName: measure.ballot_item_display_name,
       componentDidMountFinished: true,
@@ -75,7 +75,7 @@ class MeasureItemCompressed extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    const organizationWeVoteId = (nextProps.organization && nextProps.organization.organization_we_vote_id) ? nextProps.organization.organization_we_vote_id : nextProps.organization_we_vote_id;
+    const organizationWeVoteId = (nextProps.organization && nextProps.organization.organization_we_vote_id) ? nextProps.organization.organization_we_vote_id : nextProps.organizationWeVoteId;
     const measure = MeasureStore.getMeasure(nextProps.measureWeVoteId);
     if (nextProps.measureWeVoteId && !BallotStore.positionListHasBeenRetrievedOnce(nextProps.measureWeVoteId)) {
       MeasureActions.positionListForBallotItemPublic(nextProps.measureWeVoteId);
@@ -166,10 +166,10 @@ class MeasureItemCompressed extends Component {
 
   getMeasureLink (oneMeasureWeVoteId) {
     if (this.state.organizationWeVoteId) {
-      // If there is an organization_we_vote_id, signal that we want to link back to voter_guide for that organization
+      // If there is an organizationWeVoteId, signal that we want to link back to voter_guide for that organization
       return `/measure/${oneMeasureWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
     } else {
-      // If no organization_we_vote_id, signal that we want to link back to default ballot
+      // If no organizationWeVoteId, signal that we want to link back to default ballot
       return `/measure/${oneMeasureWeVoteId}/b/btdb/`; // back-to-default-ballot
     }
   }

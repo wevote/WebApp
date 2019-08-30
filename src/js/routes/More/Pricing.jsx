@@ -23,6 +23,7 @@ class Pricing extends Component {
 
   static propTypes = {
     classes: PropTypes.object,
+    initialPricingChoice: PropTypes.string,
     initialPricingPlan: PropTypes.string,
     modalDisplayMode: PropTypes.bool,
     params: PropTypes.object,
@@ -371,7 +372,9 @@ class Pricing extends Component {
     this.onVoterStoreChange();
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     let pricingChoice = '';
-    if (this.props.params && this.props.params.pricing_choice) {
+    if (this.props.initialPricingChoice === 'campaigns' || this.props.initialPricingChoice === 'organizations') {
+      pricingChoice = this.props.initialPricingChoice;
+    } else if (this.props.params && this.props.params.pricing_choice) {
       pricingChoice = this.props.params.pricing_choice;
     }
     const currentPricingChoice = (pricingChoice === 'campaigns') ? 'forCampaigns' : 'forOrganizations';

@@ -299,6 +299,7 @@ class CandidateItem extends Component {
   topCommentByBallotItem = (candidateWeVoteId, candidateText) => (
     <TopCommentByBallotItem
       ballotItemWeVoteId={candidateWeVoteId}
+      hideMoreButton
     >
       {/* If there aren't any comments about the candidate, show the text description of the candidate */}
       { candidateText.length ? (

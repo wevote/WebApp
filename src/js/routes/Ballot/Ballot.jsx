@@ -10,7 +10,7 @@ import { withStyles } from '@material-ui/core/styles';
 import AddressBox from '../../components/AddressBox';
 import AnalyticsActions from '../../actions/AnalyticsActions';
 import BallotActions from '../../actions/BallotActions';
-import BallotElectionList from '../../components/Ballot/BallotElectionList';
+import BallotElectionListWithFilters from '../../components/Ballot/BallotElectionListWithFilters';
 import BallotDecisionsTabs from '../../components/Navigation/BallotDecisionsTabs';
 import BallotItemCompressed from '../../components/Ballot/BallotItemCompressed';
 import BallotTitleHeader from './BallotTitleHeader';
@@ -805,9 +805,8 @@ class Ballot extends Component {
                   onClick={this.toggleSelectBallotModal}
                   style={{ color: 'rgb(6, 95, 212)' }}
                 >
-                  please click here to change your address
+                  please click here to change your address.
                 </Link>
-                .
               </div>
             </p>
           </div>
@@ -848,7 +847,7 @@ class Ballot extends Component {
         <h3 className="text-center">{this.getEmptyMessageByFilterType(completionLevelFilterType)}</h3>
         {emptyBallotButton}
         <div className="container-fluid well u-stack--md u-inset--md">
-          <BallotElectionList
+          <BallotElectionListWithFilters
             ballotBaseUrl={ballotBaseUrl}
             ballotElectionList={this.state.voterBallotList}
           />
@@ -1116,7 +1115,11 @@ const styles = theme => ({
     },
   },
   chipLabel: {
+    fontSize: 13,
     paddingLeft: 0,
+    [theme.breakpoints.up('md')]: {
+      fontSize: 14,
+    },
   },
   iconRoot: {
     position: 'absolute',

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
@@ -34,6 +35,7 @@ export default class BallotElectionListWithFilters extends Component {
       ballotElectionList: [],
       ballotElectionListCount: 0,
       loadingNewBallotItems: false,
+      priorElectionListOpen: false,
       updatedElectionId: '',
     };
     this.executeDifferentElection = this.executeDifferentElection.bind(this);
@@ -77,6 +79,10 @@ export default class BallotElectionListWithFilters extends Component {
     }
     if (this.state.priorElectionId !== nextState.priorElectionId) {
       // console.log('this.state.priorElectionId', this.state.priorElectionId, ', nextState.priorElectionId', nextState.priorElectionId);
+      return true;
+    }
+    if (this.state.priorElectionListOpen !== nextState.priorElectionListOpen) {
+      // console.log('this.state.priorElectionListOpen', this.state.priorElectionListOpen, ', nextState.priorElectionListOpen', nextState.priorElectionListOpen);
       return true;
     }
     if (this.state.updatedElectionId !== nextState.updatedElectionId) {
@@ -232,6 +238,13 @@ export default class BallotElectionListWithFilters extends Component {
     }
   }
 
+  togglePriorElectionList () {
+    const { priorElectionListOpen } = this.state;
+    this.setState({
+      priorElectionListOpen: !priorElectionListOpen,
+    });
+  }
+
   renderUpcomingElectionList (list, currentDate) {
     const renderedList = list.map((item) => {
       // console.log('item.election_description_text: ', item.election_description_text, 'item.election_day_text: ', item.election_day_text);
@@ -240,7 +253,7 @@ export default class BallotElectionListWithFilters extends Component {
       const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
       return electionDateTomorrow > currentDate ? (
         <div key={`upcoming-election-${item.google_civic_election_id}`}>
-          <dl className="list-unstyled text-center">
+          <dl className="list-unstyled">
             <Button
               color="primary"
               fullWidth
@@ -249,38 +262,41 @@ export default class BallotElectionListWithFilters extends Component {
               onClick={() => this.executeDifferentElection(item)}
               variant="contained"
             >
-              {/* Mobile */}
-              <span className="d-block d-sm-none">
-                { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
-                  <span>
-                    {item.election_description_text}
-                    &nbsp;
+              <ButtonContentsWrapper>
+                <ElectionName>
+                  {/* Mobile */}
+                  <span className="d-block d-sm-none">
+                    { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
+                      <span>
+                        {item.election_description_text}
+                        &nbsp;
+                      </span>
+                    ) : (
+                      <span>
+                        {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
+                        ...&nbsp;
+                      </span>
+                    )}
                   </span>
-                ) : (
-                  <span>
-                    {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
-                    ...&nbsp;
+                  {/* Desktop */}
+                  <span className="d-none d-sm-block">
+                    { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP ? (
+                      <span>
+                        {item.election_description_text}
+                        &nbsp;
+                      </span>
+                    ) : (
+                      <span>
+                        {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP - 3)}
+                        ...&nbsp;
+                      </span>
+                    )}
                   </span>
-                )}
-              </span>
-              {/* Desktop */}
-              <span className="d-none d-sm-block">
-                { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP ? (
-                  <span>
-                    {item.election_description_text}
-                    &nbsp;
-                  </span>
-                ) : (
-                  <span>
-                    {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP - 3)}
-                    ...&nbsp;
-                  </span>
-                )}
-              </span>
-
-              <div className="ballot-election-list__h2">
-                {moment(item.election_day_text).format('MMM Do, YYYY')}
-              </div>
+                </ElectionName>
+                <ElectionDate>
+                  {moment(item.election_day_text).format('MMM Do, YYYY')}
+                </ElectionDate>
+              </ButtonContentsWrapper>
             </Button>
           </dl>
         </div>
@@ -297,7 +313,7 @@ export default class BallotElectionListWithFilters extends Component {
       return electionDateTomorrow > currentDate ?
         null : (
           <div key={`prior-election-${item.google_civic_election_id}`}>
-            <dl className="list-unstyled text-center prior-election-list">
+            <dl className="list-unstyled prior-election-list">
               <Button
                 color="primary"
                 fullWidth
@@ -306,36 +322,41 @@ export default class BallotElectionListWithFilters extends Component {
                 onClick={() => this.executeDifferentElection(item)}
                 variant="contained"
               >
-                {/* Mobile */}
-                <span className="d-block d-sm-none">
-                  { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
-                    <span>
-                      {item.election_description_text}
-                      &nbsp;
+                <ButtonContentsWrapper>
+                  <ElectionName>
+                    {/* Mobile */}
+                    <span className="d-block d-sm-none">
+                      { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
+                        <span>
+                          {item.election_description_text}
+                          &nbsp;
+                        </span>
+                      ) : (
+                        <span>
+                          {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
+                          ...&nbsp;
+                        </span>
+                      )}
                     </span>
-                  ) : (
-                    <span>
-                      {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
-                      ...&nbsp;
+                    {/* Desktop */}
+                    <span className="d-none d-sm-block">
+                      { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP ? (
+                        <span>
+                          {item.election_description_text}
+                          &nbsp;
+                        </span>
+                      ) : (
+                        <span>
+                          {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP - 3)}
+                          ...&nbsp;
+                        </span>
+                      )}
                     </span>
-                  )}
-                </span>
-                {/* Desktop */}
-                <span className="d-none d-sm-block">
-                  { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP ? (
-                    <span>
-                      {item.election_description_text}
-                      &nbsp;
-                    </span>
-                  ) : (
-                    <span>
-                      {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP - 3)}
-                      ...&nbsp;
-                    </span>
-                  )}
-                </span>
-
-                <div className="ballot-election-list__h2">{moment(item.election_day_text).format('MMM Do, YYYY')}</div>
+                  </ElectionName>
+                  <ElectionDate>
+                    {moment(item.election_day_text).format('MMM Do, YYYY')}
+                  </ElectionDate>
+                </ButtonContentsWrapper>
               </Button>
             </dl>
           </div>
@@ -358,6 +379,7 @@ export default class BallotElectionListWithFilters extends Component {
     }
     const currentDate = moment().format('YYYY-MM-DD');
     const { hideUpcomingElectionTitle, showPriorElectionsList } = this.props;
+    const { priorElectionListOpen } = this.state;
 
     const ballotElectionListUpcomingSorted = this.state.ballotElectionList.concat();
     // We want to sort ascending so the next upcoming election is first
@@ -373,7 +395,7 @@ export default class BallotElectionListWithFilters extends Component {
     const upcomingElectionList = this.renderUpcomingElectionList(ballotElectionListUpcomingSorted, currentDate);
 
     let priorElectionList = [];
-    if (showPriorElectionsList) {
+    if (showPriorElectionsList && priorElectionListOpen) {
       const ballotElectionListPastSorted = this.state.ballotElectionList.concat();
       // We want to sort descending so the most recent election is first
       ballotElectionListPastSorted.sort((a, b) => {
@@ -394,8 +416,7 @@ export default class BallotElectionListWithFilters extends Component {
           {!hideUpcomingElectionTitle && (
             <h4 className="h4">
               Upcoming Election
-              {(upcomingElectionList && upcomingElectionList.length !== 1) ? 's' : null
-              }
+              {(upcomingElectionList && upcomingElectionList.length !== 1) ? 's' : null }
             </h4>
           )}
           { upcomingElectionList && upcomingElectionList.length ?
@@ -404,11 +425,52 @@ export default class BallotElectionListWithFilters extends Component {
           }
         </div>
         { showPriorElectionsList && (
-          <div className="ballot-election-list__prior">
-            {priorElectionList}
+          <div>
+            {priorElectionListOpen ? (
+              <div className="ballot-election-list__prior">
+                <h4 className="h4">
+                  Prior Election
+                  {(priorElectionList && priorElectionList.length !== 1) ? 's' : null }
+                </h4>
+                {priorElectionList}
+              </div>
+            ) : (
+              <ShowPriorElectionsWrapper>
+                <Button
+                  color="primary"
+                  fullWidth
+                  href=""
+                  id="ballotElectionListWithFiltersShowPriorElections"
+                  onClick={() => this.togglePriorElectionList()}
+                  variant="outlined"
+                >
+                  Show Prior Elections
+                </Button>
+              </ShowPriorElectionsWrapper>
+            )}
           </div>
         )}
       </div>
     );
   }
 }
+
+const ButtonContentsWrapper = styled.div`
+  display: flex;
+  flex-flow: row;
+`;
+
+const ElectionName = styled.div`
+`;
+
+const ElectionDate = styled.div`
+  font-size: 12px;
+  font-weight: 100;
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 12px;
+  }
+`;
+
+const ShowPriorElectionsWrapper = styled.div`
+  margin-bottom: 20px;
+`;

@@ -26,16 +26,6 @@ $post-button-padding: 3px 7px;
     hyphens: auto;
   }
 
-  &__container {
-    background-color: $gray-pale;
-    padding: $space-sm $space-md;
-    margin: $space-none $negative-space-md (-$space-sm);
-
-    &__in-list {
-      // margin-left: $space-position-comment;
-    }
-  }
-
   &__post-button {
     margin: $post-button-margin;
     padding: $post-button-padding;
