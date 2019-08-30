@@ -86,6 +86,10 @@ class DonateStore extends ReduceStore {
     return this.getState().orgSubsAlreadyExists || false;
   }
 
+  doesOrgHavePaidPlan () {
+    return this.getState().doesOrgHavePaidPlan || false;
+  }
+
   reduce (state, action) {
     if (!action.res) return state;
     const {
@@ -99,6 +103,7 @@ class DonateStore extends ReduceStore {
       subscription_id: subscriptionId,
       monthly_donation: monthlyDonation,
       org_subs_already_exists: orgSubsAlreadyExists,
+      org_has_active_paid_plan: doesOrgHavePaidPlan,
     } = action.res;
     const donationAmountSafe = donationAmount || '';
     let { defaultPricing, lastCouponResponseReceived } = state;
@@ -161,6 +166,12 @@ class DonateStore extends ReduceStore {
           charge,
           donationHistory,
           donationRefundCompleted: false,
+        };
+
+      case 'doesOrgHavePaidPlan':
+        console.log(`doesOrgHavePaidPlan: ${action}`);
+        return {
+          doesOrgHavePaidPlan,
         };
 
       case 'latestCouponViewed':

@@ -45,6 +45,10 @@ export default {
     Dispatcher.dispatch({ type: 'latestCouponViewed', payload: latestCouponViewed });
   },
 
+  doesOrgHavePaidPlan () {
+    Dispatcher.loadEndpoint('doesOrgHavePaidPlan', {} );
+  },
+
   validateCoupon (planType, couponCode) {
     Dispatcher.loadEndpoint('validateCoupon', {
       plan_type_enum: planType,

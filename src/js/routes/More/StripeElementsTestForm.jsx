@@ -32,6 +32,8 @@ class StripeElementsTestForm extends Component {
 
   componentDidMount () {
     this.donateStoreListener = DonateStore.addListener(this.donateStoreChange);
+    DonateActions.doesOrgHavePaidPlan();
+    DonateActions.donationRefreshDonationList();
   }
 
   componentWillUnmount () {
@@ -42,14 +44,20 @@ class StripeElementsTestForm extends Component {
   donateStoreChange = () => {
     try {
       const msg = DonateStore.getCouponMessageTest();
-      if (msg.length > 0) {
+      if (msg && msg.length > 0) {
         console.log('updating coupon message success validating coupon');
-        $('.u-no-break').html(msg);
+        $('.u-no-break').html(msg).css('color', 'green');
       }
 
       if (DonateStore.getOrgSubscriptionAlreadyExists()) {
         console.log('updating coupon message organization subscription already exists');
-        $('.u-no-break').html('A subscription already exists for this organization<br>The existing subscription was not altered, no credit card charge was made.');
+        $('.u-no-break').html('A subscription already exists for this organization<br>The existing subscription was not altered, no credit card charge was made.')
+          .css('color', 'black');
+      }
+
+      if (DonateStore.doesOrgHavePaidPlan()) {
+        console.log('updating coupon message doesOrgHavePaidPlan (before we try)');
+        $('.u-no-break').html('A subscription already exists for this organization -- Cancel the exising subscription first.<br>').css('color', 'red');
       }
     } catch (err) {
       console.log('donateStoreChange caught error: ', err);
@@ -148,14 +156,15 @@ class StripeElementsTestForm extends Component {
         <br />
         <br />
         <br />
-          Plan Payments
-        <br />
-        <DonationList displayDonations showOrganizationPlan />
-        <br />
         Plan Subscriptions
         <br />
         <DonationList displayDonations={false} showOrganizationPlan />
-
+        <br />
+        <br />
+        Plan Payments
+        <br />
+        <DonationList displayDonations showOrganizationPlan />
+        <br />
       </div>
     );
   }
