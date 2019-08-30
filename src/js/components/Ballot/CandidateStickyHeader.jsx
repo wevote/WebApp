@@ -82,8 +82,10 @@ const slideDown = keyframes`
 const Wrapper = styled.div`
   max-width: 100%;
   position: fixed;
-  padding: 16px;
   padding-top: ${({ cordovaPaddingTop }) => (cordovaPaddingTop || '48px')};
+  padding-right: 16px;
+  padding-bottom: 0;
+  padding-left: 16px;
   top: 0;
   left: 0;
   background: white;
@@ -92,7 +94,6 @@ const Wrapper = styled.div`
   box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
   animation: ${slideDown} 150ms ease-in;
   @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
-    padding: 32px;
     padding-top: 48px;
   }
 `;
@@ -161,22 +162,26 @@ const Avatar = styled.img`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  margin: 0 1em 1em 0;
+  margin: 0 1em 4px 0;
 `;
 
 const Flex = styled.div`
   display: flex;
   jusitify-content: space-evenly;
   position: relative;
-  top: 8px;
+  top: 0px;
 `;
 
+// margin-top: 8px;
+// padding-top: 8px;
 const BallotCommentContainer = styled.div`
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
   width: fit-content;
-  margin-top: 8px;
   width: 100%;
   @media (max-width : ${({ theme }) => theme.breakpoints.sm}) {
-    padding-top: 8px;
   }
   > * {
     padding: 0;

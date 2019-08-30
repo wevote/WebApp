@@ -320,7 +320,14 @@ class SettingsAnalytics extends Component {
                     variant="contained"
                     classes={{ root: classes.goldButton }}
                   >
-                    Upgrade to Enterprise
+                    <span>
+                      <span className="u-show-desktop-tablet">
+                        Upgrade to Enterprise
+                      </span>
+                      <span className="u-show-mobile">
+                        Upgrade
+                      </span>
+                    </span>
                   </Button>
                 )
                 }

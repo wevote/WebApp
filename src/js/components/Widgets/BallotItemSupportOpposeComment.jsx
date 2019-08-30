@@ -9,10 +9,6 @@ import MeasureStore from '../../stores/MeasureStore';
 import SupportStore from '../../stores/SupportStore';
 import { stringContains } from '../../utils/textFormat';
 
-// December 2018:  We want to work toward being airbnb style compliant, but for now these are disabled in this file to minimize complex changes
-/* eslint react/no-find-dom-node: 1 */
-/* eslint array-callback-return: 1 */
-
 class BallotItemSupportOpposeComment extends PureComponent {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
@@ -196,7 +192,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
       null;
 
     const commentDisplayMobile = showPositionStatementActionBar || isVoterSupport || isVoterOppose || voterStatementText ? (
-      <div className="d-block d-sm-none u-min-50 u-push--xs">
+      <div className="d-block d-sm-none u-min-50 u-push--xs u-stack--xs">
         <ItemPositionStatementActionBar
           ballotItemWeVoteId={this.state.ballotItemWeVoteId}
           ballotItemDisplayName={this.state.ballotItemDisplayName}
@@ -214,7 +210,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
 
     return (
       <Wrapper showPositionStatementActionBar={showPositionStatementActionBar}>
-        <BallotHeaderDivider className="u-show-mobile" />
+        {/* <BallotHeaderDivider className="u-show-mobile" /> */}
         <ActionBar>
           {/* Support/Oppose/Comment toggle here */}
           {itemActionBar}
@@ -229,8 +225,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
 const Wrapper = styled.div`
   width: 100%;
   background-color: ${({ showPositionStatementActionBar }) => (showPositionStatementActionBar ? '#F5F5F5' : 'white')};
-  padding: 16px;
-  /* padding-left: 0; */
+  padding: 16px 16px 0 16px;
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     background-color: white;
@@ -242,13 +237,7 @@ const ActionBar = styled.div`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
-`;
-
-const BallotHeaderDivider = styled.div`
-  margin: 8px 0;
-  width: 100%;
-  background: #f7f7f7;
-  height: 2px;
+  padding: 0px;
 `;
 
 

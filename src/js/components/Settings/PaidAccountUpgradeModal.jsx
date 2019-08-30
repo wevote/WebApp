@@ -474,6 +474,7 @@ class PaidAccountUpgradeModal extends Component {
         modalTitle = 'Choose Your Plan';
         modalHtmlContents = (
           <Pricing
+            initialPricingChoice="campaigns"
             initialPricingPlan={this.state.pricingPlanChosen ? this.state.pricingPlanChosen : this.props.initialPricingPlan}
             modalDisplayMode
             pricingPlanChosenFunction={this.pricingPlanChosenFunction}
@@ -867,7 +868,7 @@ const styles = () => ({
   },
   dialogContentWhite: {
     '@media (max-width: 768px)': {
-      padding: '0 8px 8px',
+      padding: '8px 8px 8px',
     },
     background: 'white',
     padding: '0px 16px',
@@ -894,7 +895,7 @@ const styles = () => ({
     margin: 0,
     display: 'block',
     position: 'absolute',
-    top: 9,
+    top: 4,
     right: 8,
   },
   formControlLabel: {
@@ -1041,7 +1042,7 @@ const ButtonsContainer = styled.div`
 
 const ModalTitleArea = styled.div`
   width: 100%;
-  padding: 16px 12px;
+  padding: 4px 12px;
   ${({ noBoxShadowMode }) => ((noBoxShadowMode) ? '' : 'box-shadow: 0 20px 40px -25px #999')};
   z-index: 999;
   @media (min-width: 769px) {

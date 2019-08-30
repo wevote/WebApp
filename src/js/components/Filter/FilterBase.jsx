@@ -222,7 +222,7 @@ class FilterBase extends React.Component {
     // console.log('FilterBase, selectedFilters: ', selectedFilters);
     // console.log('render filteredItems: ', filteredItems);
     return (
-      <Wrapper theme={{ spacing: this.props.fullWidth ? 0 : '1rem' }}>
+      <Wrapper theme={{ spacing: this.props.fullWidth ? '15px' : '1rem' }}>
         <FilterTop>
           <Badge
             classes={{ badge: classes.badge }}
@@ -292,7 +292,6 @@ const Wrapper = styled.div`
   padding: 1rem ${props => props.theme.spacing};
   display: flex;
   flex-flow: column;
-  padding: 1rem 0;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
 `;

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import BallotActions from '../../actions/BallotActions';
 import BallotStore from '../../stores/BallotStore';
@@ -16,6 +17,8 @@ import { convertStateCodeToStateText } from '../../utils/address-functions';
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW = 36;
 const MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP = 36;
 
+// DEPRECATED - MIGRATE AWAY FROM THIS - DEPRECATED - DEPRECATED - DEPRECATED
+// New file is BallotElectionListWithFilters
 export default class BallotElectionList extends Component {
   static propTypes = {
     ballotElectionList: PropTypes.array.isRequired,
@@ -175,7 +178,7 @@ export default class BallotElectionList extends Component {
       const electionDateTomorrow = electionDateTomorrowMoment.format('YYYY-MM-DD');
       return electionDateTomorrow > currentDate ? (
         <div key={`upcoming-election-${item.google_civic_election_id}`}>
-          <dl className="list-unstyled text-center">
+          <dl>
             <Button
               color="primary"
               fullWidth
@@ -183,38 +186,41 @@ export default class BallotElectionList extends Component {
               onClick={() => this.goToDifferentElection(item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}
               variant="contained"
             >
-              {/* Mobile */}
-              <span className="d-block d-sm-none">
-                { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
-                  <span>
-                    {item.election_description_text}
-                    &nbsp;
+              <ButtonContentsWrapper>
+                <ElectionName>
+                  {/* Mobile */}
+                  <span className="d-block d-sm-none">
+                    { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
+                      <span>
+                        {item.election_description_text}
+                        &nbsp;
+                      </span>
+                    ) : (
+                      <span>
+                        {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
+                        ...&nbsp;
+                      </span>
+                    )}
                   </span>
-                ) : (
-                  <span>
-                    {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
-                    ...&nbsp;
+                  {/* Desktop */}
+                  <span className="d-none d-sm-block">
+                    { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP ? (
+                      <span>
+                        {item.election_description_text}
+                        &nbsp;
+                      </span>
+                    ) : (
+                      <span>
+                        {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP - 3)}
+                        ...&nbsp;
+                      </span>
+                    )}
                   </span>
-                )}
-              </span>
-              {/* Desktop */}
-              <span className="d-none d-sm-block">
-                { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP ? (
-                  <span>
-                    {item.election_description_text}
-                    &nbsp;
-                  </span>
-                ) : (
-                  <span>
-                    {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP - 3)}
-                    ...&nbsp;
-                  </span>
-                )}
-              </span>
-
-              <div className="ballot-election-list__h2">
-                {moment(item.election_day_text).format('MMM Do, YYYY')}
-              </div>
+                </ElectionName>
+                <ElectionDate>
+                  {moment(item.election_day_text).format('MMM Do, YYYY')}
+                </ElectionDate>
+              </ButtonContentsWrapper>
             </Button>
           </dl>
         </div>
@@ -231,7 +237,7 @@ export default class BallotElectionList extends Component {
       return electionDateTomorrow > currentDate ?
         null : (
           <div key={`prior-election-${item.google_civic_election_id}`}>
-            <dl className="list-unstyled text-center">
+            <dl>
               <Button
                 color="primary"
                 fullWidth
@@ -239,36 +245,41 @@ export default class BallotElectionList extends Component {
                 onClick={() => this.goToDifferentElection(item.ballot_location_shortcut, item.ballot_returned_we_vote_id, item.google_civic_election_id, item.original_text_for_map_search)}
                 variant="contained"
               >
-                {/* Mobile */}
-                <span className="d-block d-sm-none">
-                  { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
-                    <span>
-                      {item.election_description_text}
-                      &nbsp;
+                <ButtonContentsWrapper>
+                  <ElectionName>
+                    {/* Mobile */}
+                    <span className="d-block d-sm-none">
+                      { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW ? (
+                        <span>
+                          {item.election_description_text}
+                          &nbsp;
+                        </span>
+                      ) : (
+                        <span>
+                          {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
+                          ...&nbsp;
+                        </span>
+                      )}
                     </span>
-                  ) : (
-                    <span>
-                      {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW - 3)}
-                      ...&nbsp;
+                    {/* Desktop */}
+                    <span className="d-none d-sm-block">
+                      { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP ? (
+                        <span>
+                          {item.election_description_text}
+                          &nbsp;
+                        </span>
+                      ) : (
+                        <span>
+                          {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP - 3)}
+                          ...&nbsp;
+                        </span>
+                      )}
                     </span>
-                  )}
-                </span>
-                {/* Desktop */}
-                <span className="d-none d-sm-block">
-                  { item.election_description_text.length < MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP ? (
-                    <span>
-                      {item.election_description_text}
-                      &nbsp;
-                    </span>
-                  ) : (
-                    <span>
-                      {item.election_description_text.substring(0, MAXIMUM_NUMBER_OF_CHARACTERS_TO_SHOW_DESKTOP - 3)}
-                      ...&nbsp;
-                    </span>
-                  )}
-                </span>
-
-                <div className="ballot-election-list__h2">{moment(item.election_day_text).format('MMM Do, YYYY')}</div>
+                  </ElectionName>
+                  <ElectionDate>
+                    {moment(item.election_day_text).format('MMM Do, YYYY')}
+                  </ElectionDate>
+                </ButtonContentsWrapper>
               </Button>
             </dl>
           </div>
@@ -469,3 +480,19 @@ export default class BallotElectionList extends Component {
     }
   }
 }
+
+const ButtonContentsWrapper = styled.div`
+  display: flex;
+  flex-flow: column;
+`;
+
+const ElectionName = styled.div`
+`;
+
+const ElectionDate = styled.div`
+  font-size: 12px;
+  font-weight: 100;
+  @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: 12px;
+  }
+`;

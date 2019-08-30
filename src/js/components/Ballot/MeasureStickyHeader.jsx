@@ -102,8 +102,10 @@ const slideDown = keyframes`
 const Wrapper = styled.div`
   max-width: 100%;
   position: fixed;
-  padding: 16px;
   padding-top: ${({ cordovaPaddingTop }) => (cordovaPaddingTop || '48px')};
+  padding-right: 16px;
+  padding-bottom: 8px;
+  padding-left: 16px;
   top: 0;
   left: 0;
   background: white;
@@ -112,7 +114,6 @@ const Wrapper = styled.div`
   box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
   animation: ${slideDown} 150ms ease-in;
   @media (min-width: ${({ theme }) => theme.breakpoints.sm}) {
-    padding: 32px;
     padding-top: 48px;
   }
 `;

@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import styled from 'styled-components';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import Button from '@material-ui/core/Button';
 import BallotItemSupportOpposeCountDisplay from '../Widgets/BallotItemSupportOpposeCountDisplay';
 import BallotStore from '../../stores/BallotStore';
 import { historyPush } from '../../utils/cordovaUtils';
@@ -26,13 +27,14 @@ const NUMBER_OF_CANDIDATES_TO_DISPLAY = 4;
 // This is related to components/VoterGuide/VoterGuideOfficeItemCompressed
 class OfficeItemCompressed extends Component {
   static propTypes = {
-    we_vote_id: PropTypes.string.isRequired,
-    ballot_item_display_name: PropTypes.string.isRequired,
-    candidate_list: PropTypes.array,
-    organization: PropTypes.object,
-    organization_we_vote_id: PropTypes.string,
-    theme: PropTypes.object,
+    officeWeVoteId: PropTypes.string.isRequired,
+    ballotItemDisplayName: PropTypes.string.isRequired,
+    candidateList: PropTypes.array,
     classes: PropTypes.object,
+    externalUniqueId: PropTypes.string,
+    organization: PropTypes.object,
+    organizationWeVoteId: PropTypes.string,
+    theme: PropTypes.object,
   };
 
   constructor (props) {
@@ -55,7 +57,7 @@ class OfficeItemCompressed extends Component {
   componentDidMount () {
     this.candidateStoreListener = CandidateStore.addListener(this.onCandidateStoreChange.bind(this));
     this.onCandidateStoreChange();
-    const organizationWeVoteId = (this.props.organization && this.props.organization.organization_we_vote_id) ? this.props.organization.organization_we_vote_id : this.props.organization_we_vote_id;
+    const organizationWeVoteId = (this.props.organization && this.props.organization.organization_we_vote_id) ? this.props.organization.organization_we_vote_id : this.props.organizationWeVoteId;
     // console.log('OfficeItemCompressed componentDidMount, organizationWeVoteId:', organizationWeVoteId);
     this.setState({
       organizationWeVoteId,
@@ -64,14 +66,14 @@ class OfficeItemCompressed extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    // 2018-05-10 I don't think we need to trigger a new render because the incoming candidate_list should be the same
-    // if (nextProps.candidate_list && nextProps.candidate_list.length) {
+    // 2018-05-10 I don't think we need to trigger a new render because the incoming candidateList should be the same
+    // if (nextProps.candidateList && nextProps.candidateList.length) {
     //   this.setState({
-    //     candidateList: nextProps.candidate_list,
+    //     candidateList: nextProps.candidateList,
     //   });
     // }
 
-    const organizationWeVoteId = (nextProps.organization && nextProps.organization.organization_we_vote_id) ? nextProps.organization.organization_we_vote_id : nextProps.organization_we_vote_id;
+    const organizationWeVoteId = (nextProps.organization && nextProps.organization.organization_we_vote_id) ? nextProps.organization.organization_we_vote_id : nextProps.organizationWeVoteId;
     // console.log('officeItemCompressed componentWillReceiveProps, organizationWeVoteId:', organizationWeVoteId);
     this.setState({
       organizationWeVoteId,
@@ -91,8 +93,8 @@ class OfficeItemCompressed extends Component {
       // console.log('this.state.changeFound: ', this.state.changeFound, ', nextState.changeFound: ', nextState.changeFound);
       return true;
     }
-    if (this.props.ballot_item_display_name !== nextProps.ballot_item_display_name) {
-      // console.log('this.props.ballot_item_display_name: ', this.props.ballot_item_display_name, ', nextProps.ballot_item_display_name: ', nextProps.ballot_item_display_name);
+    if (this.props.ballotItemDisplayName !== nextProps.ballotItemDisplayName) {
+      // console.log('this.props.ballotItemDisplayName: ', this.props.ballotItemDisplayName, ', nextProps.ballotItemDisplayName: ', nextProps.ballotItemDisplayName);
       return true;
     }
     return false;
@@ -109,7 +111,7 @@ class OfficeItemCompressed extends Component {
   }
 
   onCandidateStoreChange () {
-    const { candidate_list: candidateList, we_vote_id: officeWeVoteId } = this.props;
+    const { candidateList, officeWeVoteId } = this.props;
     let changeFound = false;
     if (candidateList && candidateList.length && officeWeVoteId) {
       if (!BallotStore.positionListHasBeenRetrievedOnce(officeWeVoteId)) {
@@ -145,21 +147,21 @@ class OfficeItemCompressed extends Component {
 
   getCandidateLink (candidateWeVoteId) {
     if (this.state.organizationWeVoteId) {
-      // If there is an organization_we_vote_id, signal that we want to link back to voter_guide for that organization
+      // If there is an organizationWeVoteId, signal that we want to link back to voter_guide for that organization
       return `/candidate/${candidateWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
     } else {
-      // If no organization_we_vote_id, signal that we want to link back to default ballot
+      // If no organizationWeVoteId, signal that we want to link back to default ballot
       return `/candidate/${candidateWeVoteId}/b/btdb/`; // back-to-default-ballot
     }
   }
 
   getOfficeLink () {
     if (this.state.organizationWeVoteId) {
-      // If there is an organization_we_vote_id, signal that we want to link back to voter_guide for that organization
-      return `/office/${this.props.we_vote_id}/btvg/${this.state.organizationWeVoteId}`;
+      // If there is an organizationWeVoteId, signal that we want to link back to voter_guide for that organization
+      return `/office/${this.props.officeWeVoteId}/btvg/${this.state.organizationWeVoteId}`;
     } else {
-      // If no organization_we_vote_id, signal that we want to link back to default ballot
-      return `/office/${this.props.we_vote_id}/b/btdb/`; // back-to-default-ballot
+      // If no organizationWeVoteId, signal that we want to link back to default ballot
+      return `/office/${this.props.officeWeVoteId}/b/btdb/`; // back-to-default-ballot
     }
   }
 
@@ -179,7 +181,7 @@ class OfficeItemCompressed extends Component {
   }
 
   generateCandidates () {
-    const { theme } = this.props;
+    const { classes, externalUniqueId, theme } = this.props;
     const { candidateList } = this.state;
     const candidatePreviewLimit = this.state.maximumNumberOrganizationsToDisplay;
     const supportedCandidatesList = candidateList.filter(candidate => SupportStore.get(candidate.we_vote_id) && SupportStore.get(candidate.we_vote_id).is_support);
@@ -192,7 +194,7 @@ class OfficeItemCompressed extends Component {
               return null;
             }
             const candidatePartyText = oneCandidate.party && oneCandidate.party.length ? `${oneCandidate.party}` : '';
-
+            const localUniqueId = oneCandidate.we_vote_id;
             return (
               <CandidateInfo
                 brandBlue={theme.palette.primary.main}
@@ -227,12 +229,23 @@ class OfficeItemCompressed extends Component {
                   {/* If there is a quote about the candidate, show that. If not, show issues related to candidate */}
                   <TopCommentByBallotItem
                     ballotItemWeVoteId={oneCandidate.we_vote_id}
-                    learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
+                    // learnMoreUrl={this.getCandidateLink(oneCandidate.we_vote_id)}
                   >
-                    <IssuesByBallotItemDisplayList
-                      ballotItemWeVoteId={oneCandidate.we_vote_id}
-                      disableMoreWrapper
-                    />
+                    <span>
+                      <IssuesByBallotItemDisplayList
+                        ballotItemWeVoteId={oneCandidate.we_vote_id}
+                        disableMoreWrapper
+                      />
+                      <Button
+                        id={`topCommentButton-${externalUniqueId}-${localUniqueId}`}
+                        variant="outlined"
+                        color="primary"
+                        className="u-float-right"
+                        classes={{ root: classes.buttonRoot, outlinedPrimary: classes.buttonOutlinedPrimary }}
+                      >
+                        More
+                      </Button>
+                    </span>
                   </TopCommentByBallotItem>
                 </div>
               </CandidateInfo>
@@ -245,8 +258,8 @@ class OfficeItemCompressed extends Component {
   render () {
     // console.log('OfficeItemCompressed render');
     renderLog(__filename);
-    let { ballot_item_display_name: ballotItemDisplayName } = this.props;
-    const { we_vote_id: weVoteId, classes } = this.props;
+    let { ballotItemDisplayName } = this.props;
+    const { officeWeVoteId, classes } = this.props;
     ballotItemDisplayName = toTitleCase(ballotItemDisplayName);
     const unsortedCandidateList = this.state.candidateList ? this.state.candidateList.slice(0) : {};
     const totalNumberOfCandidatesToDisplay = this.state.candidateList.length;
@@ -388,11 +401,11 @@ class OfficeItemCompressed extends Component {
       <div className="card-main office-item">
         <a // eslint-disable-line
           className="anchor-under-header"
-          name={weVoteId}
+          name={officeWeVoteId}
         />
         <div className="card-main__content">
           {/* Desktop */}
-          <Link id={`officeItemCompressedTopNameLink-${weVoteId}`} to={this.getOfficeLink()}>
+          <Link id={`officeItemCompressedTopNameLink-${officeWeVoteId}`} to={this.getOfficeLink()}>
             <Title>
               {ballotItemDisplayName}
               <ArrowForwardIcon
@@ -406,8 +419,8 @@ class OfficeItemCompressed extends Component {
           {this.generateCandidates()}
 
           { totalNumberOfCandidatesToDisplay > this.state.maximumNumberOrganizationsToDisplay ?
-            <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${weVoteId}`} showMoreLink={() => this.goToOfficeLink()} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay} candidates`} /> :
-            <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${weVoteId}`} showMoreLink={() => this.goToOfficeLink()} />
+            <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} showMoreText={`Show all ${totalNumberOfCandidatesToDisplay} candidates`} /> :
+            <ShowMoreFooter showMoreId={`officeItemCompressedShowMoreFooter-${officeWeVoteId}`} showMoreLink={() => this.goToOfficeLink()} />
           }
         </div>
       </div>
@@ -416,6 +429,26 @@ class OfficeItemCompressed extends Component {
 }
 
 const styles = theme => ({
+  buttonRoot: {
+    padding: 4,
+    fontSize: 12,
+    width: 60,
+    height: 30,
+    [theme.breakpoints.down('md')]: {
+      width: 60,
+      height: 30,
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: 'fit-content',
+      minWidth: 50,
+      height: 30,
+      padding: '0 8px',
+      fontSize: 10,
+    },
+  },
+  buttonOutlinedPrimary: {
+    background: 'white',
+  },
   cardHeaderIconRoot: {
     marginTop: '-.3rem',
     fontSize: 20,

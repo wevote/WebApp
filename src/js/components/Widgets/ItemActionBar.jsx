@@ -555,7 +555,7 @@ class ItemActionBar extends PureComponent {
   render () {
     // console.log('ItemActionBar render');
     renderLog(__filename);
-    const { classes, type } = this.props;
+    const { commentButtonHide, commentButtonHideInMobile, classes, type } = this.props;
     const { ballotItemWeVoteId } = this.state;
 
     if (this.state.supportCount === undefined ||
@@ -701,12 +701,12 @@ class ItemActionBar extends PureComponent {
     // console.log('ItemActionBar this.props.buttonsOnly:', this.props.buttonsOnly);
     return (
       <>
-        <div
+        <ItemActionBarWrapper
+          displayInline={this.props.buttonsOnly || this.props.shareButtonHide}
           onMouseOver={handleEnterHoverLocalArea}
           onFocus={handleEnterHoverLocalArea}
           onMouseOut={handleLeaveHoverLocalArea}
           onBlur={handleLeaveHoverLocalArea}
-          className={`${this.props.buttonsOnly || this.props.shareButtonHide ? 'item-actionbar--inline' : 'item-actionbar'}`}
         >
           {this.props.buttonsOnly ? null : (
             <PositionPublicToggle
@@ -720,7 +720,7 @@ class ItemActionBar extends PureComponent {
             {/* Start of Support Button */}
             {/* Visible on desktop screens */}
             {this.props.buttonsOnly ? (
-              <StackedButton className="d-none d-lg-block">
+              <StackedButton onlyTwoButtons={commentButtonHide} className="d-none d-lg-block">
                 {/* <OverlayTrigger placement="top" overlay={supportButtonPopoverTooltip}>
                 </OverlayTrigger> */}
                 {this.props.type === 'CANDIDATE' ? this.supportButtonNoText(`desktopVersion-${ballotItemWeVoteId}`) : this.measureYesButtonNoText(`desktopVersion-${ballotItemWeVoteId}`)}
@@ -734,7 +734,7 @@ class ItemActionBar extends PureComponent {
             )}
             {/* Visible on mobile devices and tablets */}
             {this.props.buttonsOnly ? (
-              <StackedButton className="d-lg-none d-xl-none">
+              <StackedButton onlyTwoButtons={commentButtonHideInMobile} className="d-lg-none d-xl-none">
                 {this.props.type === 'CANDIDATE' ? this.supportButtonNoText(`mobileVersion-${ballotItemWeVoteId}`) : this.measureYesButtonNoText(`mobileVersion-${ballotItemWeVoteId}`)}
               </StackedButton>
             ) : (
@@ -748,7 +748,7 @@ class ItemActionBar extends PureComponent {
             {/* Start of Oppose Button */}
             {/* Visible on desktop screens */}
             {this.props.buttonsOnly ? (
-              <StackedButton className="d-none d-lg-block">
+              <StackedButton onlyTwoButtons={commentButtonHide} className="d-none d-lg-block">
                 {/* <OverlayTrigger placement="top" overlay={opposeButtonPopoverTooltip}>
                 </OverlayTrigger> */}
                 {this.props.type === 'CANDIDATE' ? this.opposeButtonNoText(`desktopVersion-${ballotItemWeVoteId}`) : this.measureNoButtonNoText(`desktopVersion-${ballotItemWeVoteId}`)}
@@ -762,7 +762,7 @@ class ItemActionBar extends PureComponent {
             )}
             {/* Visible on mobile devices and tablets */}
             {this.props.buttonsOnly ? (
-              <StackedButton className="d-lg-none d-xl-none">
+              <StackedButton onlyTwoButtons={commentButtonHideInMobile} className="d-lg-none d-xl-none">
                 {this.props.type === 'CANDIDATE' ? this.opposeButtonNoText(`mobileVersion-${ballotItemWeVoteId}`) : this.measureNoButtonNoText(`mobileVersion-${ballotItemWeVoteId}`)}
               </StackedButton>
             ) : (
@@ -792,7 +792,7 @@ class ItemActionBar extends PureComponent {
               <ShareButtonDropDown showMoreId="itemActionBarShowMoreFooter" urlBeingShared={urlBeingShared} shareIcon={shareIcon} shareText="Share" /> }
             { this.state.showSupportOrOpposeHelpModal ? SupportOrOpposeHelpModal : null}
           </ButtonGroup>
-        </div>
+        </ItemActionBarWrapper>
       </>
     );
   }
@@ -863,13 +863,29 @@ const styles = theme => ({
 
 // width: fit-content;
 // flex: none;
+const ItemActionBarWrapper = styled.div`
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  flex: auto;
+  border-top: ${({ displayInline }) => (displayInline ? '' : '1px solid #eee !default')};
+  margin-top: ${({ displayInline }) => (displayInline ? '' : '16px')};
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  padding-top: ${({ displayInline }) => (displayInline ? '0' : '8px')};
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin-bottom: 8px;
+  }
+`;
+
 const ButtonGroup = styled.div`
   margin-left: auto;
 `;
 
 const StackedButton = styled.div`
   margin-left: 3px;
-  width: 30% !important;
+  width:  ${({ onlyTwoButtons }) => (onlyTwoButtons ? '50% !important' : '33% !important')};
 `;
 
 export default withStyles(styles)(ItemActionBar);
