@@ -12,6 +12,7 @@ import IssueCard from '../../components/Values/IssueCard';
 export default class ValuesList extends Component {
   static propTypes = {
     displayOnlyIssuesNotFollowedByVoter: PropTypes.bool,
+    currentIssue: PropTypes.object,
   };
 
   constructor (props) {
@@ -19,6 +20,7 @@ export default class ValuesList extends Component {
     this.state = {
       allIssues: [],
       searchQuery: '',
+      currentIssue: {},
     };
 
     this.searchFunction = this.searchFunction.bind(this);
@@ -28,7 +30,21 @@ export default class ValuesList extends Component {
   componentDidMount () {
     IssueActions.retrieveIssuesToFollow();
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
+
+    this.setState({ currentIssue: this.props.currentIssue });
   }
+
+  componentWillReceiveProps (nextProps) {
+    this.setState({ currentIssue: nextProps.currentIssue });
+  }
+
+  shouldComponentUpdate (nextState) {
+    if (this.state.currentIssue !== nextState.currentIssue) {
+      return true;
+    }
+    return false;
+  }
+
 
   componentWillUnmount () {
     this.issueStoreListener.remove();
@@ -50,16 +66,20 @@ export default class ValuesList extends Component {
 
   render () {
     // console.log('ValuesList render');
-    const { allIssues, searchQuery } = this.state;
+    const { allIssues, searchQuery, currentIssue } = this.state;
     renderLog(__filename);
     let issueList = [];
     let issuesNotFollowedByVoterList = [];
+    let issuesNotCurrentIssue = [];
     if (allIssues) {
       issueList = allIssues;
-      issuesNotFollowedByVoterList = allIssues.filter(issue => issue.is_issue_followed === false);
+
+      issuesNotCurrentIssue = allIssues.filter(issue => issue.issue_we_vote_id !== currentIssue.issue_we_vote_id);
+
+      issuesNotFollowedByVoterList = issuesNotCurrentIssue.filter(issue => issue.is_issue_followed === false);
     }
 
-    console.log(allIssues);
+    console.log('All issues:', issuesNotFollowedByVoterList);
 
     if (searchQuery.length > 0) {
       const searchQueryLowercase = searchQuery.toLowerCase();

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CandidateStore from '../../stores/CandidateStore';
 import FollowToggle from '../Widgets/FollowToggle';
@@ -9,7 +9,7 @@ import { renderLog } from '../../utils/logging';
 import EndorsementCard from '../Widgets/EndorsementCard';
 import { openSnackbar } from '../Widgets/SnackNotifier';
 
-export default class GuideList extends PureComponent {
+export default class GuideList extends Component {
   static propTypes = {
     ballotItemWeVoteId: PropTypes.string,
     incomingVoterGuideList: PropTypes.array,
@@ -49,16 +49,24 @@ export default class GuideList extends PureComponent {
     const voterGuideList = this.sortOrganizations(nextProps.incomingVoterGuideList, ballotItemWeVoteId);
     this.setState({
       voterGuideList,
-      ballotItemWeVoteId: nextProps.ballotItemWeVoteId,
+      ballotItemWeVoteId: this.props.ballotItemWeVoteId,
     }, () => {
       const orgsWithPositions = this.getOrganizationsWithPositions();
-      // this.setState({
-      //   organizationsWithPositions: orgsWithPositions,
-      // });
-      if (!this.state.filteredOrganizationsWithPositions || !this.state.filteredOrganizationsWithPositions.length) {
-        this.setState({ filteredOrganizationsWithPositions: orgsWithPositions });
-      }
+      this.setState({
+        // organizationsWithPositions: orgsWithPositions,
+        filteredOrganizationsWithPositions: orgsWithPositions,
+      });
     });
+  }
+
+  shouldComponentUpdate (nextState) {
+    if (this.state.voterGuideList !== nextState.voterGuideList) {
+      return true;
+    }
+    if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
+      return true;
+    }
+    return false;
   }
 
   getOrganizationsWithPositions = () => this.state.voterGuideList.map((organization) => {
