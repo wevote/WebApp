@@ -37,6 +37,32 @@ class VoterGuidesUnderOneValue extends Component {
     this.voterGuideStoreListener.remove();
   }
 
+  shouldComponentUpdate (nextState) {
+    if (this.state.issue !== nextState.issue) {
+      return true;
+    }
+    if (this.state.issueWeVoteId !== nextState.issueWeVoteId) {
+      return true;
+    }
+    if (this.state.voterGuidesForValue !== nextState.voterGuidesForValue) {
+      return true;
+    }
+    if (this.state.ballotHasGuidesForValue !== nextState.ballotHasGuidesForValue) {
+      return true;
+    }
+    return false;
+  }
+
+  componentWillReceiveProps (nextProps) {
+    const issue = IssueStore.getIssueBySlug(nextProps.params.value_slug);
+    this.setState({
+      ballotHasGuidesForValue: VoterGuideStore.ballotHasGuidesForValue(issue.issue_we_vote_id),
+      voterGuidesForValue: VoterGuideStore.getVoterGuidesForValue(issue.issue_we_vote_id),
+      issue,
+      issueWeVoteId: issue.issue_we_vote_id,
+    });
+  }
+
   onIssueStoreChange () {
     const issue = IssueStore.getIssueBySlug(this.props.params.value_slug);
     // console.log('VoterGuidesUnderOneValue onIssueStoreChange, value_slug', this.props.params.value_slug);
@@ -102,7 +128,7 @@ class VoterGuidesUnderOneValue extends Component {
             </Suspense>
           </div>
           <Title>Explore More Values</Title>
-          <ValuesList displayOnlyIssuesNotFollowedByVoter />
+          <ValuesList displayOnlyIssuesNotFollowedByVoter currentIssue={issue} />
         </div>
         <br />
       </div>
