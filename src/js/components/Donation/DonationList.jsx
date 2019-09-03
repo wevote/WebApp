@@ -104,7 +104,7 @@ export default class DonationList extends Component {
                         !stripeStatus.includes('refund');
                       return (
                         <tr key={`${chargeId}-${subscriptionId}-donations`}>
-                          <td>{moment.utc(created).local().format('MMM D, YYYY')}</td>
+                          <td>{moment.utc(created).format('MMM D, YYYY')}</td>
                           <td>{amount}</td>
                           <td hidden={isMobile}>
                             {recordEnum === 'PAYMENT_FROM_UI' ? 'One time' :

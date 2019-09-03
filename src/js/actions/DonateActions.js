@@ -46,7 +46,7 @@ export default {
   },
 
   doesOrgHavePaidPlan () {
-    Dispatcher.loadEndpoint('doesOrgHavePaidPlan', {} );
+    Dispatcher.loadEndpoint('doesOrgHavePaidPlan', {});
   },
 
   validateCoupon (planType, couponCode) {
