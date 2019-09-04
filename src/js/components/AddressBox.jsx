@@ -212,10 +212,10 @@ class AddressBox extends Component {
           </Paper>
           { this.props.cancelEditAddress ? (
             <Button
-              className={classes.cancelButton}
               color="primary"
               id="addressBoxModalCancelButton"
               onClick={this.props.cancelEditAddress}
+              classes={{ root: classes.cancelButton }}
             >
               Cancel
             </Button>
@@ -223,11 +223,12 @@ class AddressBox extends Component {
           }
           <br />
           <Button
-            className={classes.saveButton}
             color="primary"
             id="addressBoxModalSaveButton"
             onClick={this.voterAddressSave}
             variant="contained"
+            classes={this.props.cancelEditAddress ? { root: classes.saveButton } : { root: classes.fullWidthSaveButton }}
+            fullWidth={!this.props.cancelEditAddress}
           >
             Save
           </Button>
@@ -246,14 +247,30 @@ const styles = {
     alignItems: 'center',
     width: '100%',
     marginBottom: '1rem',
-    marginRight: '1rem',
+    // marginRight: '1rem',
   },
+  // button: {
+  //   width: '50%',
+  //   margin: 0,
+  // },
+  // fullWidthButton: {
+  //   width: '100%',
+  //   margin: 0,
+  // },
   saveButton: {
-    marginRight: '.3rem',
+    // marginRight: '.3rem',
     height: 'fit-content',
+    width: 'calc(50% - 8px)',
+    left: 16,
+  },
+  fullWidthSaveButton: {
+    // marginRight: '.3rem',
+    height: 'fit-content',
+    margin: 0,
   },
   cancelButton: {
-    marginRight: '.3rem',
+    // marginRight: '.3rem',
+    width: 'calc(50% - 8px)',
   },
   input: {
     marginLeft: 8,

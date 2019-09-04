@@ -458,12 +458,17 @@ export default class BallotElectionListWithFilters extends Component {
 const ButtonContentsWrapper = styled.div`
   display: flex;
   flex-flow: row;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
 `;
 
 const ElectionName = styled.div`
+  margin-right: auto;
 `;
 
 const ElectionDate = styled.div`
+  margin-left: auto;
   font-size: 12px;
   font-weight: 100;
   @media (min-width: ${({ theme }) => theme.breakpoints.md}) {
