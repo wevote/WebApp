@@ -77,6 +77,7 @@ class HeaderBar extends Component {
     const weVoteBrandingOffFromCookie = cookies.getItem('we_vote_branding_off');
     this.setState({
       componentDidMountFinished: true,
+      chosenSiteLogoUrl: AppStore.getChosenSiteLogoUrl(),
       friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
       hideWeVoteLogo: AppStore.getHideWeVoteLogo(),
       scrolledDown: AppStore.getScrolledDown(),
@@ -99,6 +100,10 @@ class HeaderBar extends Component {
     }
     if (this.state.aboutMenuOpen === true || nextState.aboutMenuOpen === true) {
       // console.log("shouldComponentUpdate: this.state.aboutMenuOpen", this.state.aboutMenuOpen, ", nextState.aboutMenuOpen", nextState.aboutMenuOpen);
+      return true;
+    }
+    if (this.state.chosenSiteLogoUrl === true || nextState.chosenSiteLogoUrl === true) {
+      // console.log("shouldComponentUpdate: this.state.chosenSiteLogoUrl", this.state.chosenSiteLogoUrl, ", nextState.chosenSiteLogoUrl", nextState.chosenSiteLogoUrl);
       return true;
     }
     if (this.state.hideWeVoteLogo === true || nextState.hideWeVoteLogo === true) {
@@ -175,6 +180,7 @@ class HeaderBar extends Component {
     const showPaidAccountUpgradeModal = paidAccountUpgradeMode && paidAccountUpgradeMode !== '';
     // console.log('HeaderBar onAppStoreChange showPaidAccountUpgradeModal:', showPaidAccountUpgradeModal);
     this.setState({
+      chosenSiteLogoUrl: AppStore.getChosenSiteLogoUrl(),
       hideWeVoteLogo: AppStore.getHideWeVoteLogo(),
       paidAccountUpgradeMode,
       scrolledDown: AppStore.getScrolledDown(),
@@ -267,7 +273,7 @@ class HeaderBar extends Component {
     }
     renderLog(__filename);
     const { voter, classes, pathname, location } = this.props;
-    const { hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, showEditAddressButton, showPaidAccountUpgradeModal, showSelectBallotModal } = this.state;
+    const { chosenSiteLogoUrl, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, showEditAddressButton, showPaidAccountUpgradeModal, showSelectBallotModal } = this.state;
     const ballotBaseUrl = '/ballot';
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     // const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0; // DALE: FRIENDS TEMPORARILY DISABLED
@@ -308,7 +314,13 @@ class HeaderBar extends Component {
       <Wrapper hasNotch={hasIPhoneNotch()} scrolledDown={scrolledDown && isWebApp() && shouldHeaderRetreat(pathname)}>
         <AppBar position="relative" color="default" className={`page-header${!isWebApp() ? ' page-header__cordova' : ''}${showingBallot ? ' page-header__ballot' : ''}`}>
           <Toolbar className="header-toolbar" disableGutters>
-            {showWeVoteLogo && <HeaderBarLogo showFullNavigation={!!showFullNavigation} isBeta />}
+            {(showWeVoteLogo || chosenSiteLogoUrl) && (
+              <HeaderBarLogo
+                chosenSiteLogoUrl={chosenSiteLogoUrl}
+                showFullNavigation={!!showFullNavigation}
+                isBeta={showWeVoteLogo && !chosenSiteLogoUrl}
+              />
+            )}
             <div className="header-nav">
               <Tabs
                 className="u-show-desktop"

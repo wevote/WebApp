@@ -26,12 +26,15 @@ class SettingsSharing extends Component {
     super(props);
     this.state = {
       chosenFeaturePackage: 'FREE',
-      faviconImageSource: null,
-      headerLogoImageSource: null,
+      chosenFaviconFromFileReader: null,
+      chosenFaviconUrlHttps: null,
+      chosenLogoFromFileReader: null,
+      chosenLogoUrlHttps: null,
+      chosenSocialShareMasterImageFromFileReader: null,
+      chosenSocialShareMasterImageUrlHttps: null,
       hideLogo: false,
       organization: {},
       organizationWeVoteId: '',
-      shareImageSource: null,
       siteDescription: '',
       uploadImageType: 'headerLogo',
       voter: {},
@@ -40,7 +43,7 @@ class SettingsSharing extends Component {
   }
 
   componentDidMount () {
-    console.log('SettingsSharing componentDidMount');
+    // console.log('SettingsSharing componentDidMount');
     this.onVoterStoreChange();
     this.onOrganizationStoreChange();
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
@@ -66,13 +69,26 @@ class SettingsSharing extends Component {
     if (this.state.siteDescription !== nextState.siteDescription) {
       return true;
     }
-    if (this.state.headerLogoImageSource !== nextState.headerLogoImageSource) {
+    if (this.state.chosenFaviconFromFileReader !== nextState.chosenFaviconFromFileReader) {
       return true;
     }
-    if (this.state.shareImageSource !== nextState.shareImageSource) {
+    if (this.state.chosenFaviconUrlHttps !== nextState.chosenFaviconUrlHttps) {
+      // console.log('this.state.chosenFaviconUrlHttps', this.state.chosenFaviconUrlHttps, ', nextState.chosenFaviconUrlHttps', nextState.chosenFaviconUrlHttps);
       return true;
     }
-    if (this.state.faviconImageSource !== nextState.faviconImageSource) {
+    if (this.state.chosenLogoFromFileReader !== nextState.chosenLogoFromFileReader) {
+      // console.log('this.state.chosenLogoFromFileReader', this.state.chosenLogoFromFileReader, ', nextState.chosenLogoFromFileReader', nextState.chosenLogoFromFileReader);
+      return true;
+    }
+    if (this.state.chosenLogoUrlHttps !== nextState.chosenLogoUrlHttps) {
+      // console.log('this.state.chosenLogoUrlHttps', this.state.chosenLogoUrlHttps, ', nextState.chosenLogoUrlHttps', nextState.chosenLogoUrlHttps);
+      return true;
+    }
+    if (this.state.chosenSocialShareMasterImageFromFileReader !== nextState.chosenSocialShareMasterImageFromFileReader) {
+      return true;
+    }
+    if (this.state.chosenSocialShareMasterImageUrlHttps !== nextState.chosenSocialShareMasterImageUrlHttps) {
+      // console.log('this.state.chosenSocialShareMasterImageUrlHttps', this.state.chosenSocialShareMasterImageUrlHttps, ', nextState.chosenSocialShareMasterImageUrlHttps', nextState.chosenSocialShareMasterImageUrlHttps);
       return true;
     }
     if (this.state.voterFeaturePackageExceedsOrEqualsEnterprise !== nextState.voterFeaturePackageExceedsOrEqualsEnterprise) {
@@ -113,6 +129,9 @@ class SettingsSharing extends Component {
     const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
     this.setState({
       chosenFeaturePackage,
+      chosenFaviconUrlHttps: organization.chosen_favicon_url_https,
+      chosenLogoUrlHttps: organization.chosen_logo_url_https,
+      chosenSocialShareMasterImageUrlHttps: organization.chosen_social_share_master_image_url_https,
       hideLogo: organization.chosen_hide_we_vote_logo || false,
       organization,
       voterFeaturePackageExceedsOrEqualsEnterprise,
@@ -123,11 +142,15 @@ class SettingsSharing extends Component {
     const voter = VoterStore.getVoter();
     const voterIsSignedIn = voter.is_signed_in;
     const organizationWeVoteId = voter.linked_organization_we_vote_id;
+    const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
     const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
     const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
     this.setState({
       chosenFeaturePackage,
-      organization: OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId),
+      chosenFaviconUrlHttps: organization.chosen_favicon_url_https,
+      chosenLogoUrlHttps: organization.chosen_logo_url_https,
+      chosenSocialShareMasterImageUrlHttps: organization.chosen_social_share_master_image_url_https,
+      organization,
       organizationWeVoteId,
       voter,
       voterFeaturePackageExceedsOrEqualsEnterprise,
@@ -137,7 +160,7 @@ class SettingsSharing extends Component {
 
   handleToggleHideLogo = (event) => {
     const { hideLogo, organizationWeVoteId } = this.state;
-    console.log('hidelogo', !hideLogo);
+    // console.log('hidelogo', !hideLogo);
     OrganizationActions.organizationChosenHideWeVoteLogoSave(organizationWeVoteId, !hideLogo);
     this.setState({
       hideLogo: !hideLogo,
@@ -149,19 +172,28 @@ class SettingsSharing extends Component {
   handleChangeDescription = ({ target }) => this.setState({ siteDescription: target.value });
 
   handleAddImage = () => {
-    const { uploadImageType } = this.state;
+    const { organizationWeVoteId, uploadImageType } = this.state;
     const file = this.fileSelector.files[0];
     if (!file) return;
     const fileReader = new FileReader();
     fileReader.addEventListener('load', () => {
       if (uploadImageType === 'headerLogo') {
-        this.setState({ headerLogoImageSource: fileReader.result });
+        const chosenLogoFromFileReader = fileReader.result;
+        this.setState({ chosenLogoFromFileReader });
+        // console.log('chosenLogoFromFileReader:', chosenLogoFromFileReader);
+        OrganizationActions.organizationChosenLogoSave(organizationWeVoteId, chosenLogoFromFileReader);
       }
       if (uploadImageType === 'favicon') {
-        this.setState({ faviconImageSource: fileReader.result });
+        const chosenFaviconFromFileReader = fileReader.result;
+        this.setState({ chosenFaviconFromFileReader });
+        // console.log('chosenFaviconFromFileReader:', chosenFaviconFromFileReader);
+        OrganizationActions.organizationChosenFaviconSave(organizationWeVoteId, chosenFaviconFromFileReader);
       }
       if (uploadImageType === 'shareImage') {
-        this.setState({ shareImageSource: fileReader.result });
+        const chosenSocialShareMasterImageFromFileReader = fileReader.result;
+        this.setState({ chosenSocialShareMasterImageFromFileReader });
+        // console.log('chosenSocialShareMasterImageFromFileReader:', chosenSocialShareMasterImageFromFileReader);
+        OrganizationActions.organizationChosenSocialShareMasterImageSave(organizationWeVoteId, chosenSocialShareMasterImageFromFileReader);
       }
     });
     fileReader.readAsDataURL(file);
@@ -185,13 +217,37 @@ class SettingsSharing extends Component {
     this.setState({ uploadImageType: 'shareImage' });
   }
 
+  organizationChosenFaviconDelete = () => {
+    const { organizationWeVoteId } = this.state;
+    OrganizationActions.organizationChosenFaviconDelete(organizationWeVoteId);
+    this.setState({
+      chosenFaviconFromFileReader: null,
+    });
+  }
+
+  organizationChosenLogoDelete = () => {
+    const { organizationWeVoteId } = this.state;
+    OrganizationActions.organizationChosenLogoDelete(organizationWeVoteId);
+    this.setState({
+      chosenLogoFromFileReader: null,
+    });
+  }
+
+  organizationChosenSocialShareMasterImageDelete = () => {
+    const { organizationWeVoteId } = this.state;
+    OrganizationActions.organizationChosenSocialShareMasterImageDelete(organizationWeVoteId);
+    this.setState({
+      chosenSocialShareMasterImageFromFileReader: null,
+    });
+  }
+
   openPaidAccountUpgradeModal (paidAccountUpgradeMode) {
     // console.log('SettingsDomain openPaidAccountUpgradeModal');
     AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
   }
 
   render () {
-    console.log('SettingsSharing render');
+    // console.log('SettingsSharing render');
     renderLog(__filename);
     const { classes } = this.props;
     const {
@@ -202,13 +258,20 @@ class SettingsSharing extends Component {
       voterIsSignedIn,
       hideLogo,
       voterFeaturePackageExceedsOrEqualsEnterprise,
-      headerLogoImageSource,
-      faviconImageSource,
-      shareImageSource,
+      chosenLogoFromFileReader,
+      chosenFaviconFromFileReader,
+      chosenSocialShareMasterImageFromFileReader,
     } = this.state;
+    const {
+      chosen_favicon_url_https: chosenFaviconUrlHttps,
+      chosen_logo_url_https: chosenLogoUrlHttps,
+      chosen_social_share_master_image_url_https: chosenSocialShareMasterImageUrlHttps,
+    } = organization;
     if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
     }
+    // console.log('organization: ', organization);
+    // console.log('chosenLogoUrlHttps: ', chosenLogoUrlHttps);
 
     if (voterIsSignedIn) {
       // console.log('SettingsSharing, Signed In.');
@@ -241,8 +304,8 @@ class SettingsSharing extends Component {
               <SharingColumn>
                 <InputBoxLabel>Upload Your Own Logo</InputBoxLabel>
                 <ImageDescription>
-                  <PreviewImage alt="We Vote logo" width="125px" src={headerLogoImageSource || cordovaDot('/img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg')}  />
-                  <DescriptionText>Place your logo in the header bar. Image must be 125x30.</DescriptionText>
+                  <PreviewImage alt="Uploaded logo" width="125px" src={chosenLogoFromFileReader || chosenLogoUrlHttps || cordovaDot('/img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg')}  />
+                  <DescriptionText>Place your logo in the header bar. Image will be resized to be no more than 125px wide, and 30px tall.</DescriptionText>
                 </ImageDescription>
               </SharingColumn>
               <SharingColumn alignRight>
@@ -255,12 +318,12 @@ class SettingsSharing extends Component {
                   Upload
                 </Button>
                 {
-                  headerLogoImageSource !== null && (
+                  (chosenLogoFromFileReader !== null || chosenLogoUrlHttps !== null) && (
                     <Button
                       classes={{ root: classes.uploadButton }}
                       color="primary"
                       variant="outlined"
-                      onClick={() => this.setState({ headerLogoImageSource: null })}
+                      onClick={() => this.organizationChosenLogoDelete()}
                     >
                       Remove
                     </Button>
@@ -275,8 +338,12 @@ class SettingsSharing extends Component {
                   <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="ENTERPRISE" />
                 </InputBoxLabel>
                 <ImageDescription>
-                  <PreviewImage alt="We Vote logo" width="48px" src={faviconImageSource || cordovaDot('/img/global/svg-icons/we-vote-icon-square-color-dark.svg')}  />
-                  <DescriptionText>The icon for your site in the browser&apos;s tab. PNG files only. Optimal size is 16x16.</DescriptionText>
+                  <PreviewImage
+                    alt="Favicon"
+                    width="32px"
+                    src={chosenFaviconFromFileReader || chosenFaviconUrlHttps || cordovaDot('/img/global/svg-icons/we-vote-icon-square-color-dark.svg')}
+                  />
+                  <DescriptionText>The icon for your site in the browser&apos;s tab. Optimal size is 32x32.</DescriptionText>
                 </ImageDescription>
               </SharingColumn>
               <SharingColumn alignRight>
@@ -299,12 +366,12 @@ class SettingsSharing extends Component {
                   )}
                 </PremiumableButton>
                 {
-                  faviconImageSource !== null && (
+                  (chosenFaviconFromFileReader !== null || chosenFaviconUrlHttps !== null) && (
                     <Button
                       classes={{ root: classes.uploadButton }}
                       color="primary"
                       variant="outlined"
-                      onClick={() => this.setState({ faviconImageSource: null })}
+                      onClick={() => this.organizationChosenFaviconDelete()}
                     >
                       Remove
                     </Button>
@@ -319,8 +386,12 @@ class SettingsSharing extends Component {
                   <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="ENTERPRISE" />
                 </InputBoxLabel>
                 <ImageDescription>
-                  <PreviewImage alt="We Vote logo" width="96px" src={shareImageSource || cordovaDot('/img/global/svg-icons/we-vote-icon-square-color-dark.svg')}  />
-                  <DescriptionText>The icon used when your page is shared on social media. Size must be at least 200x200.</DescriptionText>
+                  <PreviewImage
+                    alt="Social share image"
+                    width="96px"
+                    src={chosenSocialShareMasterImageFromFileReader || chosenSocialShareMasterImageUrlHttps || cordovaDot('/img/global/svg-icons/we-vote-icon-square-color-dark.svg')}
+                  />
+                  <DescriptionText>The icon used when your page is shared on social media. Ideal size is 1600x900. Size must be at least 200x200.</DescriptionText>
                 </ImageDescription>
               </SharingColumn>
               <SharingColumn alignRight>
@@ -343,12 +414,12 @@ class SettingsSharing extends Component {
                   )}
                 </PremiumableButton>
                 {
-                  shareImageSource !== null && (
+                  (chosenSocialShareMasterImageFromFileReader || chosenSocialShareMasterImageUrlHttps) && (
                     <Button
                       classes={{ root: classes.uploadButton }}
                       color="primary"
                       variant="outlined"
-                      onClick={() => this.setState({ shareImageSource: null })}
+                      onClick={() => this.organizationChosenSocialShareMasterImageDelete()}
                     >
                       Remove
                     </Button>

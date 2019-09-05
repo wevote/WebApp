@@ -327,6 +327,7 @@ class OrganizationStore extends ReduceStore {
     const organizationsList = action.res.organizations_list || [];
     const numberOfSearchResults = organizationsList.length;
     const organizationWeVoteIdForVoterGuideOwner = action.res.organization_we_vote_id;
+    let refreshString = '';
     let time;
     const today = new Date();
     let hours;
@@ -544,6 +545,15 @@ class OrganizationStore extends ReduceStore {
         }
         return state;
 
+      case 'organizationPhotosSave':
+        ({ hostname } = window.location);
+        hours = today.getHours();
+        minutes = today.getMinutes();
+        seconds = today.getSeconds();
+        refreshString = `${hours}:${minutes}:${seconds}`;
+        // console.log('AppStore organizationPhotosSave hostname:', hostname, ', refreshString:', refreshString);
+        AppActions.siteConfigurationRetrieve(hostname, refreshString);
+        // ...and now fall through
       case 'organizationRetrieve':
         ({ organization_we_vote_id: organizationWeVoteId } = action.res);
         if (!organizationWeVoteId || organizationWeVoteId === '') {
