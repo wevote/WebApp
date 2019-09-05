@@ -6,20 +6,29 @@ import { cordovaDot, isCordova } from '../../utils/cordovaUtils';
 import logoLight from '../../../img/global/svg-icons/we-vote-logo-horizontal-color-200x66.svg';
 import logoDark from '../../../img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg';
 
-const HeaderBarLogo = ({ isBeta, light }) => (
+const HeaderBarLogo = ({ chosenSiteLogoUrl, isBeta, light }) => (
   <HeaderBarWrapper>
-    <Link to={`${isCordova() ? '/ballot' : '/welcome'}`} className="page-logo page-logo-full-size" id="logoHeaderBar">
+    {chosenSiteLogoUrl ? (
       <img
         className="header-logo-img"
-        alt="We Vote logo"
-        src={light ? cordovaDot(logoLight) : cordovaDot(logoDark)}
+        alt="Logo"
+        src={chosenSiteLogoUrl}
       />
-      {isBeta && <span className="beta-marker"><BetaMarkerInner light={light}>beta</BetaMarkerInner></span>}
-    </Link>
+    ) : (
+      <Link to={`${isCordova() ? '/ballot' : '/welcome'}`} className="page-logo page-logo-full-size" id="logoHeaderBar">
+        <img
+          className="header-logo-img"
+          alt="We Vote logo"
+          src={light ? cordovaDot(logoLight) : cordovaDot(logoDark)}
+        />
+        {isBeta && <span className="beta-marker"><BetaMarkerInner light={light}>beta</BetaMarkerInner></span>}
+      </Link>
+    )}
   </HeaderBarWrapper>
 );
 
 HeaderBarLogo.propTypes = {
+  chosenSiteLogoUrl: PropTypes.string,
   isBeta: PropTypes.bool,
   light: PropTypes.bool,
 };

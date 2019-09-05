@@ -21,6 +21,10 @@ class AppStore extends ReduceStore {
     };
   }
 
+  getChosenSiteLogoUrl () {
+    return this.getState().chosenSiteLogoUrl;
+  }
+
   getHideWeVoteLogo () {
     return this.getState().hideWeVoteLogo;
   }

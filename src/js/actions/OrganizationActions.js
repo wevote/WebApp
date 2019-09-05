@@ -1,15 +1,6 @@
 import Dispatcher from '../dispatcher/Dispatcher';
 
 export default {
-  organizationSearch (organizationSearchTerm, organization_twitter_handle = '', exact_match = false) {
-    // console.log("OrganizationActions.organizationSearch, organizationSearchTerm: ", organizationSearchTerm);
-    Dispatcher.loadEndpoint('organizationSearch', {
-      exact_match,
-      organization_search_term: organizationSearchTerm,
-      organization_twitter_handle,
-    });
-  },
-
   organizationFollow (organizationWeVoteId, organization_twitter_handle = '', organization_follow_based_on_issue = false) {
     // console.log("OrganizationActions.organizationFollow, organization_twitter_handle: ", organization_twitter_handle);
     Dispatcher.loadEndpoint('organizationFollow', {
@@ -33,24 +24,6 @@ export default {
 
   organizationsFollowedRetrieve (autoFollowedFromTwitterSuggestion) {
     Dispatcher.loadEndpoint('organizationsFollowedRetrieve', { auto_followed_from_twitter_suggestion: autoFollowedFromTwitterSuggestion });
-  },
-
-  saveFromFacebook (facebookId, facebookEmail, facebookProfileImageUrlHttps, organizationName) {
-    Dispatcher.loadEndpoint('organizationSave',
-      {
-        facebook_id: facebookId,
-        facebook_email: facebookEmail,
-        facebook_profile_image_url_https: facebookProfileImageUrlHttps,
-        organization_name: organizationName,
-      });
-  },
-
-  saveFromTwitter (twitterHandle) {
-    Dispatcher.loadEndpoint('organizationSave',
-      {
-        organization_twitter_handle: twitterHandle,
-        refresh_from_twitter: 1,
-      });
   },
 
   organizationRetrieve (weVoteId) {
@@ -81,6 +54,54 @@ export default {
     Dispatcher.loadEndpoint('organizationSave',
       {
         chosen_google_analytics_account_number: organizationChosenGoogleAnalyticsTracker,
+        organization_we_vote_id: organizationWeVoteId,
+      });
+  },
+
+  organizationChosenFaviconDelete (organizationWeVoteId) {
+    Dispatcher.loadEndpoint('organizationPhotosSave',
+      {
+        delete_chosen_favicon: true,
+        organization_we_vote_id: organizationWeVoteId,
+      });
+  },
+
+  organizationChosenFaviconSave (organizationWeVoteId, chosenFaviconFromFileReader) {
+    Dispatcher.loadEndpoint('organizationPhotosSave',
+      {
+        chosen_favicon_from_file_reader: chosenFaviconFromFileReader,
+        organization_we_vote_id: organizationWeVoteId,
+      });
+  },
+
+  organizationChosenLogoDelete (organizationWeVoteId) {
+    Dispatcher.loadEndpoint('organizationPhotosSave',
+      {
+        delete_chosen_logo: true,
+        organization_we_vote_id: organizationWeVoteId,
+      });
+  },
+
+  organizationChosenLogoSave (organizationWeVoteId, chosenLogoFromFileReader) {
+    Dispatcher.loadEndpoint('organizationPhotosSave',
+      {
+        chosen_logo_from_file_reader: chosenLogoFromFileReader,
+        organization_we_vote_id: organizationWeVoteId,
+      });
+  },
+
+  organizationChosenSocialShareMasterImageDelete (organizationWeVoteId) {
+    Dispatcher.loadEndpoint('organizationPhotosSave',
+      {
+        delete_chosen_social_share_master_image: true,
+        organization_we_vote_id: organizationWeVoteId,
+      });
+  },
+
+  organizationChosenSocialShareMasterImageSave (organizationWeVoteId, chosenSocialShareMasterImageFromFileReader) {
+    Dispatcher.loadEndpoint('organizationPhotosSave',
+      {
+        chosen_social_share_master_image_from_file_reader: chosenSocialShareMasterImageFromFileReader,
         organization_we_vote_id: organizationWeVoteId,
       });
   },
@@ -125,6 +146,15 @@ export default {
       });
   },
 
+  organizationSearch (organizationSearchTerm, organization_twitter_handle = '', exact_match = false) {
+    // console.log("OrganizationActions.organizationSearch, organizationSearchTerm: ", organizationSearchTerm);
+    Dispatcher.loadEndpoint('organizationSearch', {
+      exact_match,
+      organization_search_term: organizationSearchTerm,
+      organization_twitter_handle,
+    });
+  },
+
   organizationTypeSave (organizationWeVoteId, organizationType) {
     Dispatcher.loadEndpoint('organizationSave',
       {
@@ -160,6 +190,24 @@ export default {
         filter_out_voter: filterOutVoter,
         friends_vs_public: 'FRIENDS_ONLY',
         kind_of_opinion_maker: 'ORGANIZATION',
+      });
+  },
+
+  saveFromFacebook (facebookId, facebookEmail, facebookProfileImageUrlHttps, organizationName) {
+    Dispatcher.loadEndpoint('organizationSave',
+      {
+        facebook_id: facebookId,
+        facebook_email: facebookEmail,
+        facebook_profile_image_url_https: facebookProfileImageUrlHttps,
+        organization_name: organizationName,
+      });
+  },
+
+  saveFromTwitter (twitterHandle) {
+    Dispatcher.loadEndpoint('organizationSave',
+      {
+        organization_twitter_handle: twitterHandle,
+        refresh_from_twitter: 1,
       });
   },
 };
