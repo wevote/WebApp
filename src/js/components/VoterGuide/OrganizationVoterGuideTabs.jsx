@@ -99,6 +99,19 @@ export default class OrganizationVoterGuideTabs extends Component {
     });
   }
 
+  shouldComponentUpdate (nextState) {
+    if (this.state.activeRoute !== nextState.activeRoute) {
+      return true;
+    }
+    if (this.state.currentOrganizationWeVoteId !== nextState.currentOrganizationWeVoteId) {
+      return true;
+    }
+    if (this.state.activeRoute !== nextState.activeRoute) {
+      return true;
+    }
+    return false;
+  }
+
   componentWillUnmount () {
     this.organizationStoreListener.remove();
     this.voterGuideStoreListener.remove();
@@ -157,7 +170,7 @@ export default class OrganizationVoterGuideTabs extends Component {
       }
       modifiedUrl = `${modifiedUrl}/${destinationTab}`;
       history.pushState({
-        id: '1',
+        id: `tabs-${modifiedUrl}`,
       }, '', `${modifiedUrl}`);
     }
   }
