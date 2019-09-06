@@ -47,15 +47,16 @@ class HeaderBar extends Component {
     super(props);
     this.state = {
       aboutMenuOpen: false,
+      chosenSiteLogoUrl: '',
       componentDidMountFinished: false,
       friendInvitationsSentToMe: 0,
       hideWeVoteLogo: false,
       paidAccountUpgradeMode: '',
       profilePopUpOpen: false,
+      scrolledDown: false,
       showEditAddressButton: false,
       showSelectBallotModal: false,
       showSignInModal: false,
-      scrolledDown: false,
       showPaidAccountUpgradeModal: false,
     };
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
@@ -94,19 +95,19 @@ class HeaderBar extends Component {
       // console.log("shouldComponentUpdate: componentDidMountFinished === false");
       return true;
     }
-    if (this.state.profilePopUpOpen === true || nextState.profilePopUpOpen === true) {
+    if (this.state.profilePopUpOpen !== nextState.profilePopUpOpen) {
       // console.log("shouldComponentUpdate: this.state.profilePopUpOpen", this.state.profilePopUpOpen, ", nextState.profilePopUpOpen", nextState.profilePopUpOpen);
       return true;
     }
-    if (this.state.aboutMenuOpen === true || nextState.aboutMenuOpen === true) {
+    if (this.state.aboutMenuOpen !== nextState.aboutMenuOpen) {
       // console.log("shouldComponentUpdate: this.state.aboutMenuOpen", this.state.aboutMenuOpen, ", nextState.aboutMenuOpen", nextState.aboutMenuOpen);
       return true;
     }
-    if (this.state.chosenSiteLogoUrl === true || nextState.chosenSiteLogoUrl === true) {
+    if (this.state.chosenSiteLogoUrl !== nextState.chosenSiteLogoUrl) {
       // console.log("shouldComponentUpdate: this.state.chosenSiteLogoUrl", this.state.chosenSiteLogoUrl, ", nextState.chosenSiteLogoUrl", nextState.chosenSiteLogoUrl);
       return true;
     }
-    if (this.state.hideWeVoteLogo === true || nextState.hideWeVoteLogo === true) {
+    if (this.state.hideWeVoteLogo !== nextState.hideWeVoteLogo) {
       // console.log("shouldComponentUpdate: this.state.hideWeVoteLogo", this.state.hideWeVoteLogo, ", nextState.hideWeVoteLogo", nextState.hideWeVoteLogo);
       return true;
     }

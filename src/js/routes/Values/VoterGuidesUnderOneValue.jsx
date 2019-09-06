@@ -32,9 +32,14 @@ class VoterGuidesUnderOneValue extends Component {
     this.voterGuideStoreListener = VoterGuideStore.addListener(this.onVoterGuideStoreChange.bind(this));
   }
 
-  componentWillUnmount () {
-    this.issueStoreListener.remove();
-    this.voterGuideStoreListener.remove();
+  componentWillReceiveProps (nextProps) {
+    const issue = IssueStore.getIssueBySlug(nextProps.params.value_slug);
+    this.setState({
+      ballotHasGuidesForValue: VoterGuideStore.ballotHasGuidesForValue(issue.issue_we_vote_id),
+      voterGuidesForValue: VoterGuideStore.getVoterGuidesForValue(issue.issue_we_vote_id),
+      issue,
+      issueWeVoteId: issue.issue_we_vote_id,
+    });
   }
 
   shouldComponentUpdate (nextState) {
@@ -53,14 +58,9 @@ class VoterGuidesUnderOneValue extends Component {
     return false;
   }
 
-  componentWillReceiveProps (nextProps) {
-    const issue = IssueStore.getIssueBySlug(nextProps.params.value_slug);
-    this.setState({
-      ballotHasGuidesForValue: VoterGuideStore.ballotHasGuidesForValue(issue.issue_we_vote_id),
-      voterGuidesForValue: VoterGuideStore.getVoterGuidesForValue(issue.issue_we_vote_id),
-      issue,
-      issueWeVoteId: issue.issue_we_vote_id,
-    });
+  componentWillUnmount () {
+    this.issueStoreListener.remove();
+    this.voterGuideStoreListener.remove();
   }
 
   onIssueStoreChange () {

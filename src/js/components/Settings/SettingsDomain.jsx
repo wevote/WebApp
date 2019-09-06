@@ -42,14 +42,14 @@ class SettingsDomain extends Component {
       voter: {},
       voterIsSignedIn: false,
       voterFeaturePackageExceedsOrEqualsProfessional: false,
-      radioGroupValue: 'subDomainRadioButtonSelected',
+      radioGroupValue: 'domainNameRadioButtonSelected',
     };
   }
 
   componentDidMount () {
     // console.log('SettingsDomain componentDidMount');
     this.onVoterStoreChange();
-    this.onOrganizationStoreChange();
+    // this.onOrganizationStoreChange();
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
@@ -130,13 +130,21 @@ class SettingsDomain extends Component {
 
   onOrganizationStoreChange () {
     const { organizationChosenDomainNameChangedLocally, organizationChosenSubDomainChangedLocally, organizationWeVoteId } = this.state;
+    let { organizationChosenDomainNameAlreadyTaken, organizationChosenSubDomainAlreadyTaken } = this.state;
     const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-    const organizationChosenSubDomainSavedValue = organization.chosen_sub_domain_string || '';
-    const organizationChosenSubDomainAlreadyTaken = organization.sub_domain_string_already_taken || false;
+    if (!organizationChosenSubDomainAlreadyTaken) {
+      organizationChosenSubDomainAlreadyTaken = organization.sub_domain_string_already_taken || false;
+    }
+    if (!organizationChosenDomainNameAlreadyTaken) {
+      organizationChosenDomainNameAlreadyTaken = organization.full_domain_string_already_taken || false;
+    }
     const organizationChosenDomainNameSavedValue = organization.chosen_domain_string || '';
-    const organizationChosenDomainNameAlreadyTaken = organization.full_domain_string_already_taken || false;
+    const organizationChosenSubDomainSavedValue = organization.chosen_sub_domain_string || '';
     const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
     const voterFeaturePackageExceedsOrEqualsProfessional = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'PROFESSIONAL');
+    // console.log('onOrganizationStoreChange organization: ', organization);
+    // console.log('onOrganizationStoreChange organizationChosenDomainNameChangedLocally: ', organizationChosenDomainNameChangedLocally);
+    // console.log('onOrganizationStoreChange organizationChosenSubDomainChangedLocally: ', organizationChosenSubDomainChangedLocally);
     this.setState({
       chosenFeaturePackage,
       organization,
@@ -164,6 +172,10 @@ class SettingsDomain extends Component {
         this.setState({
           radioGroupValue: 'domainNameRadioButtonSelected',
         });
+      } else {
+        this.setState({
+          radioGroupValue: 'subDomainRadioButtonSelected',
+        });
       }
     }
   }
@@ -178,6 +190,7 @@ class SettingsDomain extends Component {
     const organizationChosenDomainNameSavedValue = organization.chosen_domain_string || '';
     const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
     const voterFeaturePackageExceedsOrEqualsProfessional = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'PROFESSIONAL');
+    // console.log('onVoterStoreChange organization: ', organization);
     this.setState({
       chosenFeaturePackage,
       organization,
@@ -209,6 +222,7 @@ class SettingsDomain extends Component {
     if (event.target.value !== organizationChosenSubDomain) {
       this.setState({
         organizationChosenSubDomain: event.target.value || '',
+        organizationChosenSubDomainAlreadyTaken: false,
         organizationChosenSubDomainChangedLocally: true,
       });
     }
@@ -221,6 +235,7 @@ class SettingsDomain extends Component {
     if (event.target.value !== organizationChosenDomainName) {
       this.setState({
         organizationChosenDomainName: event.target.value || '',
+        organizationChosenDomainNameAlreadyTaken: false,
         organizationChosenDomainNameChangedLocally: true,
       });
     }
@@ -346,8 +361,8 @@ class SettingsDomain extends Component {
                       <InputBase
                         classes={{ root: classes.inputBase, input: classes.inputItem }}
                         onChange={this.handleOrganizationChosenSubDomainChange}
-                        placeholder="Type Sub Domain..."
-                        value={organizationChosenSubDomainAlreadyTaken ? chosenSubDomainBeforeErrorCheck : (organizationChosenSubDomain || '')}
+                        placeholder="Sub Domain..."
+                        value={organizationChosenSubDomainAlreadyTaken ? chosenSubDomainBeforeErrorCheck : organizationChosenSubDomain || ''}
                       />
                       <SubDomainExtensionText error={organizationChosenSubDomainAlreadyTaken}>
                         .WeVote.US
@@ -415,7 +430,7 @@ class SettingsDomain extends Component {
                         classes={{ root: classes.inputBase, input: classes.inputItem }}
                         onChange={this.handleOrganizationChosenDomainNameChange}
                         placeholder="Type Full Domain..."
-                        value={organizationChosenDomainNameAlreadyTaken ? chosenDomainNameBeforeErrorCheck : (organizationChosenDomainName || '')}
+                        value={organizationChosenDomainNameAlreadyTaken ? chosenDomainNameBeforeErrorCheck : organizationChosenDomainName || ''}
                       />
                     </IconInputContainer>
                   )}

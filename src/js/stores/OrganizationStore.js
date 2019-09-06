@@ -1,7 +1,6 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/Dispatcher';
 import AppActions from '../actions/AppActions';
-import AppStore from './AppStore';
 import OrganizationActions from '../actions/OrganizationActions';
 import SupportActions from '../actions/SupportActions';
 import VoterConstants from '../constants/VoterConstants';
@@ -327,14 +326,7 @@ class OrganizationStore extends ReduceStore {
     const organizationsList = action.res.organizations_list || [];
     const numberOfSearchResults = organizationsList.length;
     const organizationWeVoteIdForVoterGuideOwner = action.res.organization_we_vote_id;
-    let refreshString = '';
-    let time;
-    const today = new Date();
-    let hours;
-    let minutes;
-    let seconds;
     let hostname;
-    let siteOwnerOrganizationWeVoteId;
 
     switch (action.type) {
       case 'organizationFollow':
@@ -481,19 +473,9 @@ class OrganizationStore extends ReduceStore {
           }
           allCachedOrganizationsDict[organizationWeVoteId] = organization;
           // Now request fresh siteConfiguration data if the siteOwner was updated
-          siteOwnerOrganizationWeVoteId = AppStore.getSiteOwnerOrganizationWeVoteId();
-          if (siteOwnerOrganizationWeVoteId === organizationWeVoteId) {
-            hostname = AppStore.getHostname();
-            if (hostname) {
-              // We calculate a time so we can pass a refresh variable through siteConfigurationRetrieve. This is necessary
-              // to force the CDN to send us a new file
-              hours = today.getHours();
-              minutes = today.getMinutes();
-              seconds = today.getSeconds();
-              time = `${hours}:${minutes}:${seconds}`;
-              AppActions.siteConfigurationRetrieve(hostname, time);
-            }
-          }
+          ({ hostname } = window.location);
+          // console.log('OrganizationStore organizationPhotosSave hostname:', hostname, ', organizationWeVoteId:', organizationWeVoteId);
+          AppActions.siteConfigurationRetrieve(hostname);
           return {
             ...state,
             allCachedOrganizationsDict,
@@ -546,14 +528,15 @@ class OrganizationStore extends ReduceStore {
         return state;
 
       case 'organizationPhotosSave':
+        ({ organization_we_vote_id: organizationWeVoteId } = action.res);
         ({ hostname } = window.location);
-        hours = today.getHours();
-        minutes = today.getMinutes();
-        seconds = today.getSeconds();
-        refreshString = `${hours}:${minutes}:${seconds}`;
-        // console.log('AppStore organizationPhotosSave hostname:', hostname, ', refreshString:', refreshString);
-        AppActions.siteConfigurationRetrieve(hostname, refreshString);
-        // ...and now fall through
+        // console.log('OrganizationStore organizationPhotosSave hostname:', hostname, ', organizationWeVoteId:', organizationWeVoteId);
+        AppActions.siteConfigurationRetrieve(hostname);
+        if (organizationWeVoteId) {
+          OrganizationActions.organizationRetrieve(organizationWeVoteId);
+        }
+        return state;
+
       case 'organizationRetrieve':
         ({ organization_we_vote_id: organizationWeVoteId } = action.res);
         if (!organizationWeVoteId || organizationWeVoteId === '') {
