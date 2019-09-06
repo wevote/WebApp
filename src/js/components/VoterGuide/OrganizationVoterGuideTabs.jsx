@@ -31,9 +31,11 @@ export default class OrganizationVoterGuideTabs extends Component {
       voter: {},
       voterGuideFollowedList: [],
       voterGuideFollowersList: [],
+      scrollDownValue: 0,
     };
 
     this.voterGuideBallotReference = {};
+    this.handleScroll = this.handleScroll.bind(this);
   }
 
   componentDidMount () {
@@ -59,6 +61,10 @@ export default class OrganizationVoterGuideTabs extends Component {
       pathname: this.props.location.pathname,
       voter: VoterStore.getVoter(),
     });
+
+    window.addEventListener('scroll', this.handleScroll);
+
+    document.body.scrollTop = this.state.scrollDownValue;
   }
 
   componentWillReceiveProps (nextProps) {
@@ -122,6 +128,12 @@ export default class OrganizationVoterGuideTabs extends Component {
     });
   }
 
+  handleScroll () {
+    this.setState({ scrollDownValue: window.scrollY });
+
+    console.log('Scrolling', window.scrollY);
+  }
+
   switchTab (destinationTab) {
     const availableTabsArray = ['ballot', 'following', 'followers', 'positions'];
     if (arrayContains(destinationTab, availableTabsArray)) {
@@ -144,11 +156,14 @@ export default class OrganizationVoterGuideTabs extends Component {
         }
       }
       modifiedUrl = `${modifiedUrl}/${destinationTab}`;
-      historyPush(modifiedUrl);
+      history.pushState({
+        id: '1',
+      }, '', `${modifiedUrl}`);
     }
   }
 
   render () {
+    document.body.scrollTop = this.state.scrollDownValue;
     if (!this.state.pathname || !this.state.activeRoute || !this.state.organization || !this.state.voter) {
       return <div>{LoadingWheel}</div>;
     }
