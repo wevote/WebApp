@@ -32,6 +32,10 @@ export default class ValuesList extends Component {
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
 
     this.setState({ currentIssue: this.props.currentIssue });
+
+    this.setState({
+      allIssues: IssueStore.getAllIssues(),
+    });
   }
 
   componentWillReceiveProps (nextProps) {
@@ -44,7 +48,6 @@ export default class ValuesList extends Component {
     }
     return false;
   }
-
 
   componentWillUnmount () {
     this.issueStoreListener.remove();
@@ -68,27 +71,27 @@ export default class ValuesList extends Component {
     // console.log('ValuesList render');
     const { allIssues, searchQuery, currentIssue } = this.state;
     renderLog(__filename);
-    let issueList = [];
-    let issuesNotFollowedByVoterList = [];
-    let issuesNotCurrentIssue = [];
+    let issuesList = [];
+    // let issuesNotFollowedByVoterList = [];
+    // let issuesNotCurrentIssue = [];
     if (allIssues) {
-      issueList = allIssues;
-
-      issuesNotCurrentIssue = allIssues.filter(issue => issue.issue_we_vote_id !== currentIssue.issue_we_vote_id);
-
-      issuesNotFollowedByVoterList = issuesNotCurrentIssue.filter(issue => issue.is_issue_followed === false);
+      if (this.props.displayOnlyIssuesNotFollowedByVoter) {
+        issuesList = allIssues.filter(issue => issue.issue_we_vote_id !== currentIssue.issue_we_vote_id).filter(issue => issue.is_issue_followed === false);
+      } else {
+        issuesList = allIssues;
+      }
     }
 
-    console.log('All issues:', issuesNotFollowedByVoterList);
+    console.log('All issues:', issuesList);
 
     if (searchQuery.length > 0) {
       const searchQueryLowercase = searchQuery.toLowerCase();
-      issueList = _.filter(issueList,
+      issuesList = _.filter(issuesList,
         oneIssue => oneIssue.issue_name.toLowerCase().includes(searchQueryLowercase) ||
             oneIssue.issue_description.toLowerCase().includes(searchQueryLowercase));
     }
 
-    let issueListForDisplay = issueList.map(issue => (
+    const issuesListForDisplay = issuesList.map(issue => (
       <div
         className="col col-12 col-md-6 u-stack--md"
         key={`div-issue-list-key-${issue.issue_we_vote_id}`}
@@ -104,30 +107,11 @@ export default class ValuesList extends Component {
       </div>
     ));
 
-    if (this.props.displayOnlyIssuesNotFollowedByVoter) {
-      issueListForDisplay = issuesNotFollowedByVoterList.map(issue => (
-        <div
-          className="col col-12 col-md-6 u-stack--md"
-          key={`div-issue-list-key-${issue.issue_we_vote_id}`}
-
-        >
-          <IssueCard
-            condensed
-            followToggleOn
-            includeLinkToIssue
-            issue={issue}
-            issueImageSize="SMALL"
-            key={`issue-list-key-${issue.issue_we_vote_id}`}
-          />
-        </div>
-      ));
-    }
-
     return (
       <>
         {this.props.displayOnlyIssuesNotFollowedByVoter ? (
           <Row className="row" noMargin>
-            {issueListForDisplay}
+            {issuesListForDisplay}
           </Row>
         ) : (
           <div className="opinions-followed__container">
@@ -150,7 +134,7 @@ export default class ValuesList extends Component {
                 <div className="network-issues-list voter-guide-list">
                   { this.state.allIssues && this.state.allIssues.length ? (
                     <Row className="row">
-                      {issueListForDisplay}
+                      {issuesListForDisplay}
                     </Row>
                   ) :
                     null
