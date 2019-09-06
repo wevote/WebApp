@@ -14,9 +14,10 @@ const defaults = {
   baseCdnUrl: webAppConfig.WE_VOTE_SERVER_API_CDN_ROOT_URL,
   url: webAppConfig.WE_VOTE_SERVER_API_ROOT_URL,
   query: {},
-  type: 'GET',
+  method: 'GET',
   data () {
     return cookies.getItem('voter_device_id') ? {
+      // csrfmiddlewaretoken: cookies.getItem('csrftoken'),
       voter_device_id: cookies.getItem('voter_device_id'),
     } : {};
   },
@@ -43,7 +44,20 @@ export default function $ajax (options) {
   options.crossDomain = true;
   options.success = options.success || defaults.success;
   options.error = options.error || defaults.error;
-  // console.log("service.js, options.endpoint: ", options.endpoint);
+  // console.log('service.js, options.endpoint: ', options.endpoint);
+  if (options.endpoint === 'organizationPhotosSave') {
+    options.method = 'POST';
+    // const csrftoken = cookies.getItem('csrftoken');
+    // const headers = new Headers();
+    // headers.append('X-CSRFToken', csrftoken);
+    // headers.append('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
+    // headers.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
+    // headers.append('Access-Control-Allow-Origin', '*');
+    // options.headers = headers;
+  } else {
+    options.method = 'GET';
+  }
+  // Switch between master API server and CDN
   if (options.endpoint === 'allBallotItemsRetrieve' ||
       options.endpoint === 'defaultPricing' ||
       options.endpoint === 'positionListForBallotItem' ||
