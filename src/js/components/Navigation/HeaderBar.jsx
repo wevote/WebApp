@@ -94,81 +94,81 @@ class HeaderBar extends Component {
     });
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    if (this.state.componentDidMountFinished === false) {
-      // console.log("shouldComponentUpdate: componentDidMountFinished === false");
-      return true;
-    }
-    if (this.state.profilePopUpOpen !== nextState.profilePopUpOpen) {
-      // console.log("shouldComponentUpdate: this.state.profilePopUpOpen", this.state.profilePopUpOpen, ", nextState.profilePopUpOpen", nextState.profilePopUpOpen);
-      return true;
-    }
-    if (this.state.aboutMenuOpen !== nextState.aboutMenuOpen) {
-      // console.log("shouldComponentUpdate: this.state.aboutMenuOpen", this.state.aboutMenuOpen, ", nextState.aboutMenuOpen", nextState.aboutMenuOpen);
-      return true;
-    }
-    if (this.state.chosenSiteLogoUrl !== nextState.chosenSiteLogoUrl) {
-      // console.log("shouldComponentUpdate: this.state.chosenSiteLogoUrl", this.state.chosenSiteLogoUrl, ", nextState.chosenSiteLogoUrl", nextState.chosenSiteLogoUrl);
-      return true;
-    }
-    if (this.state.hideWeVoteLogo !== nextState.hideWeVoteLogo) {
-      // console.log("shouldComponentUpdate: this.state.hideWeVoteLogo", this.state.hideWeVoteLogo, ", nextState.hideWeVoteLogo", nextState.hideWeVoteLogo);
-      return true;
-    }
-    if (this.state.friendInvitationsSentToMe !== nextState.friendInvitationsSentToMe) {
-      // console.log("shouldComponentUpdate: this.state.friendInvitationsSentToMe", this.state.friendInvitationsSentToMe, ", nextState.friendInvitationsSentToMe", nextState.friendInvitationsSentToMe);
-      return true;
-    }
-    if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
-      return true;
-    }
-    if (this.state.showPaidAccountUpgradeModal !== nextState.showPaidAccountUpgradeModal) {
-      return true;
-    }
-    if (this.state.scrolledDown !== nextState.scrolledDown) {
-      return true;
-    }
-    if (this.state.showSignInModal !== nextState.showSignInModal) {
-      return true;
-    }
-    if (this.state.showSelectBallotModal !== nextState.showSelectBallotModal) {
-      return true;
-    }
-    if (this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
-      return true;
-    }
-    const currentPathnameExists = this.props.location && this.props.location.pathname;
-    const nextPathnameExists = nextProps.location && nextProps.location.pathname;
-    // One exists, and the other doesn't
-    if ((currentPathnameExists && !nextPathnameExists) || (!currentPathnameExists && nextPathnameExists)) {
-      // console.log("shouldComponentUpdate: PathnameExistsDifference");
-      return true;
-    }
-    if (currentPathnameExists && nextPathnameExists && this.props.location.pathname !== nextProps.location.pathname) {
-      // console.log("shouldComponentUpdate: this.props.location.pathname", this.props.location.pathname, ", nextProps.location.pathname", nextProps.location.pathname);
-      return true;
-    }
-    const thisVoterExists = this.state.voter !== undefined;
-    const nextVoterExists = nextState.voter !== undefined;
-    if (nextVoterExists && !thisVoterExists) {
-      // console.log("shouldComponentUpdate: thisVoterExists", thisVoterExists, ", nextVoterExists", nextVoterExists);
-      return true;
-    }
-    if (thisVoterExists && nextVoterExists && this.state.voter.signed_in_twitter !== nextState.voter.signed_in_twitter) {
-      // console.log("shouldComponentUpdate: this.state.voter.signed_in_twitter", this.state.voter.signed_in_twitter, ", nextState.voter.signed_in_twitter", nextState.voter.signed_in_twitter);
-      return true;
-    }
-    if (thisVoterExists && nextVoterExists && this.state.voter.signed_in_facebook !== nextState.voter.signed_in_facebook) {
-      // console.log("shouldComponentUpdate: this.state.voter.signed_in_facebook", this.state.voter.signed_in_facebook, ", nextState.voter.signed_in_facebook", nextState.voter.signed_in_facebook);
-      return true;
-    }
-    if (thisVoterExists && nextVoterExists && this.state.voter.signed_in_with_email !== nextState.voter.signed_in_with_email) {
-      return true;
-    }
-    console.log('HeaderBar shouldComponentUpdate false');
-    return false;
-  }
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+  //   if (this.state.componentDidMountFinished === false) {
+  //     // console.log("shouldComponentUpdate: componentDidMountFinished === false");
+  //     return true;
+  //   }
+  //   if (this.state.profilePopUpOpen !== nextState.profilePopUpOpen) {
+  //     // console.log("shouldComponentUpdate: this.state.profilePopUpOpen", this.state.profilePopUpOpen, ", nextState.profilePopUpOpen", nextState.profilePopUpOpen);
+  //     return true;
+  //   }
+  //   if (this.state.aboutMenuOpen !== nextState.aboutMenuOpen) {
+  //     // console.log("shouldComponentUpdate: this.state.aboutMenuOpen", this.state.aboutMenuOpen, ", nextState.aboutMenuOpen", nextState.aboutMenuOpen);
+  //     return true;
+  //   }
+  //   if (this.state.chosenSiteLogoUrl !== nextState.chosenSiteLogoUrl) {
+  //     // console.log("shouldComponentUpdate: this.state.chosenSiteLogoUrl", this.state.chosenSiteLogoUrl, ", nextState.chosenSiteLogoUrl", nextState.chosenSiteLogoUrl);
+  //     return true;
+  //   }
+  //   if (this.state.hideWeVoteLogo !== nextState.hideWeVoteLogo) {
+  //     // console.log("shouldComponentUpdate: this.state.hideWeVoteLogo", this.state.hideWeVoteLogo, ", nextState.hideWeVoteLogo", nextState.hideWeVoteLogo);
+  //     return true;
+  //   }
+  //   if (this.state.friendInvitationsSentToMe !== nextState.friendInvitationsSentToMe) {
+  //     // console.log("shouldComponentUpdate: this.state.friendInvitationsSentToMe", this.state.friendInvitationsSentToMe, ", nextState.friendInvitationsSentToMe", nextState.friendInvitationsSentToMe);
+  //     return true;
+  //   }
+  //   if (this.state.showEditAddressButton !== nextState.showEditAddressButton) {
+  //     return true;
+  //   }
+  //   if (this.state.showPaidAccountUpgradeModal !== nextState.showPaidAccountUpgradeModal) {
+  //     return true;
+  //   }
+  //   if (this.state.scrolledDown !== nextState.scrolledDown) {
+  //     return true;
+  //   }
+  //   if (this.state.showSignInModal !== nextState.showSignInModal) {
+  //     return true;
+  //   }
+  //   if (this.state.showSelectBallotModal !== nextState.showSelectBallotModal) {
+  //     return true;
+  //   }
+  //   if (this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
+  //     return true;
+  //   }
+  //   const currentPathnameExists = this.props.location && this.props.location.pathname;
+  //   const nextPathnameExists = nextProps.location && nextProps.location.pathname;
+  //   // One exists, and the other doesn't
+  //   if ((currentPathnameExists && !nextPathnameExists) || (!currentPathnameExists && nextPathnameExists)) {
+  //     // console.log("shouldComponentUpdate: PathnameExistsDifference");
+  //     return true;
+  //   }
+  //   if (currentPathnameExists && nextPathnameExists && this.props.location.pathname !== nextProps.location.pathname) {
+  //     // console.log("shouldComponentUpdate: this.props.location.pathname", this.props.location.pathname, ", nextProps.location.pathname", nextProps.location.pathname);
+  //     return true;
+  //   }
+  //   const thisVoterExists = this.state.voter !== undefined;
+  //   const nextVoterExists = nextState.voter !== undefined;
+  //   if (nextVoterExists && !thisVoterExists) {
+  //     // console.log("shouldComponentUpdate: thisVoterExists", thisVoterExists, ", nextVoterExists", nextVoterExists);
+  //     return true;
+  //   }
+  //   if (thisVoterExists && nextVoterExists && this.state.voter.signed_in_twitter !== nextState.voter.signed_in_twitter) {
+  //     // console.log("shouldComponentUpdate: this.state.voter.signed_in_twitter", this.state.voter.signed_in_twitter, ", nextState.voter.signed_in_twitter", nextState.voter.signed_in_twitter);
+  //     return true;
+  //   }
+  //   if (thisVoterExists && nextVoterExists && this.state.voter.signed_in_facebook !== nextState.voter.signed_in_facebook) {
+  //     // console.log("shouldComponentUpdate: this.state.voter.signed_in_facebook", this.state.voter.signed_in_facebook, ", nextState.voter.signed_in_facebook", nextState.voter.signed_in_facebook);
+  //     return true;
+  //   }
+  //   if (thisVoterExists && nextVoterExists && this.state.voter.signed_in_with_email !== nextState.voter.signed_in_with_email) {
+  //     return true;
+  //   }
+  //   console.log('HeaderBar shouldComponentUpdate false');
+  //   return false;
+  // }
 
   componentWillUnmount () {
     this.appStoreListener.remove();
@@ -284,7 +284,7 @@ class HeaderBar extends Component {
   }
 
   render () {
-    // console.log('HeaderBar render, this.state.showSelectBallotModal:', this.state.showSelectBallotModal, ', this.state.componentDidMountFinished:', this.state.componentDidMountFinished);
+    console.log('HeaderBar render, this.state.showSelectBallotModal:', this.state.showSelectBallotModal, ', this.state.componentDidMountFinished:', this.state.componentDidMountFinished);
     if (!this.state.componentDidMountFinished) {
       return null;
     }
