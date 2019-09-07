@@ -63,32 +63,21 @@ export default class TwitterSignInProcess extends Component {
       // Prevent voterMergeTwoAccountsByFacebookKey from being called multiple times
       this.setState({ mergingTwoAccounts: true });
     }
-    let redirectPathname = '';
-    const signInStartPath = cookies.getItem('sign_in_start_path');
-    if (voterHasDataToPreserve) {
-      redirectPathname = '/more/network';
-      if (signInStartPath) {
-        redirectPathname = signInStartPath;
-        AppActions.unsetStoreSignInStartPath();
-        cookies.removeItem('sign_in_start_path', '/');
+    let redirectFullUrl = '';
+    const signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
+    if (signInStartFullUrl) {
+      AppActions.unsetStoreSignInStartPath();
+      cookies.removeItem('sign_in_start_full_url', '/');
+      redirectFullUrl = signInStartFullUrl;
+      if (!voterHasDataToPreserve) {
+        redirectFullUrl += '?wait_until_voter_sign_in_completes=1';
       }
-      historyPush({
-        pathname: redirectPathname,
-        state: {
-          message: 'You have signed in with Twitter.',
-          message_type: 'success',
-        },
-      });
+      window.location.assign(redirectFullUrl);
     } else {
-      redirectPathname = '/ballot';
-      if (signInStartPath) {
-        redirectPathname = signInStartPath;
-        AppActions.unsetStoreSignInStartPath();
-        cookies.removeItem('sign_in_start_path', '/');
-      }
+      const redirectPathname = '/ballot';
       historyPush({
         pathname: redirectPathname,
-        query: { wait_until_voter_sign_in_completes: 1 },
+        query: { wait_until_voter_sign_in_completes: voterHasDataToPreserve ? 0 : 1 },
         state: {
           message: 'You have successfully signed in with Twitter.',
           message_type: 'success',
@@ -101,20 +90,21 @@ export default class TwitterSignInProcess extends Component {
   // to establish is_signed_in within the voter.voter
   voterTwitterSaveToCurrentAccount () {
     VoterActions.voterTwitterSaveToCurrentAccount();
-    let redirectPathname = '/more/network';
-    const signInStartPath = cookies.getItem('sign_in_start_path');
-    if (signInStartPath) {
-      redirectPathname = signInStartPath;
+    const signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
+    if (signInStartFullUrl) {
       AppActions.unsetStoreSignInStartPath();
-      cookies.removeItem('sign_in_start_path', '/');
+      cookies.removeItem('sign_in_start_full_url', '/');
+      window.location.assign(signInStartFullUrl);
+    } else {
+      const redirectPathname = '/more/network';
+      historyPush({
+        pathname: redirectPathname,
+        state: {
+          message: 'You have successfully signed in with Twitter.',
+          message_type: 'success',
+        },
+      });
     }
-    historyPush({
-      pathname: redirectPathname,
-      state: {
-        message: 'You have successfully signed in with Twitter.',
-        message_type: 'success',
-      },
-    });
     if (VoterStore.getVoterPhotoUrlMedium().length === 0) {
       // This only fires once, for brand new users on their very first login
       VoterActions.voterRetrieve();

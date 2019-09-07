@@ -26,6 +26,7 @@ import SelectBallotModal from '../Ballot/SelectBallotModal';
 import SignInModal from '../Widgets/SignInModal';
 import VoterGuideActions from '../../actions/VoterGuideActions';
 import VoterSessionActions from '../../actions/VoterSessionActions';
+import VoterStore from '../../stores/VoterStore';
 import { stringContains } from '../../utils/textFormat';
 import shouldHeaderRetreat from '../../utils/shouldHeaderRetreat';
 // import Badge from '@material-ui/core/Badge'; // DALE: FRIENDS TEMPORARILY DISABLED
@@ -58,6 +59,7 @@ class HeaderBar extends Component {
       showSelectBallotModal: false,
       showSignInModal: false,
       showPaidAccountUpgradeModal: false,
+      voter: {},
     };
     this.hideProfilePopUp = this.hideProfilePopUp.bind(this);
     this.signOutAndHideProfilePopUp = this.signOutAndHideProfilePopUp.bind(this);
@@ -69,8 +71,9 @@ class HeaderBar extends Component {
   }
 
   componentDidMount () {
-    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
+    this.friendStoreListener = FriendStore.addListener(this.onFriendStoreChange.bind(this));
+    this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     // this.onBallotStoreChange();
 
     // this.props.location &&
@@ -85,6 +88,8 @@ class HeaderBar extends Component {
       showEditAddressButton: AppStore.showEditAddressButton(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
       showSignInModal: AppStore.showSignInModal(),
+      voter: this.props.voter,
+      voterIsSignedIn: this.props.voter && this.props.voter.is_signed_in,
       we_vote_branding_off: weVoteBrandingOffFromUrl || weVoteBrandingOffFromCookie,
     });
   }
@@ -141,38 +146,34 @@ class HeaderBar extends Component {
       // console.log("shouldComponentUpdate: this.props.location.pathname", this.props.location.pathname, ", nextProps.location.pathname", nextProps.location.pathname);
       return true;
     }
-    const thisVoterExists = this.props.voter !== undefined;
-    const nextVoterExists = nextProps.voter !== undefined;
+    const thisVoterExists = this.state.voter !== undefined;
+    const nextVoterExists = nextState.voter !== undefined;
     if (nextVoterExists && !thisVoterExists) {
       // console.log("shouldComponentUpdate: thisVoterExists", thisVoterExists, ", nextVoterExists", nextVoterExists);
       return true;
     }
-    if (thisVoterExists && nextVoterExists && this.props.voter.signed_in_twitter !== nextProps.voter.signed_in_twitter) {
-      // console.log("shouldComponentUpdate: this.props.voter.signed_in_twitter", this.props.voter.signed_in_twitter, ", nextProps.voter.signed_in_twitter", nextProps.voter.signed_in_twitter);
+    if (thisVoterExists && nextVoterExists && this.state.voter.signed_in_twitter !== nextState.voter.signed_in_twitter) {
+      // console.log("shouldComponentUpdate: this.state.voter.signed_in_twitter", this.state.voter.signed_in_twitter, ", nextState.voter.signed_in_twitter", nextState.voter.signed_in_twitter);
       return true;
     }
-    if (thisVoterExists && nextVoterExists && this.props.voter.signed_in_facebook !== nextProps.voter.signed_in_facebook) {
-      // console.log("shouldComponentUpdate: this.props.voter.signed_in_facebook", this.props.voter.signed_in_facebook, ", nextProps.voter.signed_in_facebook", nextProps.voter.signed_in_facebook);
+    if (thisVoterExists && nextVoterExists && this.state.voter.signed_in_facebook !== nextState.voter.signed_in_facebook) {
+      // console.log("shouldComponentUpdate: this.state.voter.signed_in_facebook", this.state.voter.signed_in_facebook, ", nextState.voter.signed_in_facebook", nextState.voter.signed_in_facebook);
       return true;
     }
-    if (thisVoterExists && nextVoterExists && this.props.voter.signed_in_with_email !== nextProps.voter.signed_in_with_email) {
+    if (thisVoterExists && nextVoterExists && this.state.voter.signed_in_with_email !== nextState.voter.signed_in_with_email) {
       return true;
     }
-    if (thisVoterExists && nextVoterExists && this.props.voter.is_signed_in !== nextProps.voter.is_signed_in) {
+    if (thisVoterExists && nextVoterExists && this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
       return true;
     }
+    console.log('HeaderBar shouldComponentUpdate false');
     return false;
   }
 
   componentWillUnmount () {
-    this.friendStoreListener.remove();
     this.appStoreListener.remove();
-  }
-
-  onFriendStoreChange () {
-    this.setState({
-      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
-    });
+    this.friendStoreListener.remove();
+    this.voterStoreListener.remove();
   }
 
   onAppStoreChange () {
@@ -189,6 +190,21 @@ class HeaderBar extends Component {
       showPaidAccountUpgradeModal,
       showSignInModal: AppStore.showSignInModal(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
+    });
+  }
+
+  onFriendStoreChange () {
+    this.setState({
+      friendInvitationsSentToMe: FriendStore.friendInvitationsSentToMe(),
+    });
+  }
+
+  onVoterStoreChange () {
+    const voter = VoterStore.getVoter();
+    const voterIsSignedIn = voter.is_signed_in || false;
+    this.setState({
+      voter,
+      voterIsSignedIn,
     });
   }
 
@@ -250,16 +266,16 @@ class HeaderBar extends Component {
 
   transitionToYourVoterGuide () {
     // Positions for this organization, for this voter/election
-    OrganizationActions.positionListForOpinionMaker(this.props.voter.linked_organization_we_vote_id, true);
+    OrganizationActions.positionListForOpinionMaker(this.state.voter.linked_organization_we_vote_id, true);
 
     // Positions for this organization, NOT including for this voter / election
     // const googleCivicElectionId = 0;
-    // if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(googleCivicElectionId, this.props.voter.linked_organization_we_vote_id)) {
-    OrganizationActions.positionListForOpinionMaker(this.props.voter.linked_organization_we_vote_id, false, true);
+    // if (!OrganizationStore.positionListForOpinionMakerHasBeenRetrievedOnce(googleCivicElectionId, this.state.voter.linked_organization_we_vote_id)) {
+    OrganizationActions.positionListForOpinionMaker(this.state.voter.linked_organization_we_vote_id, false, true);
     // }
     OrganizationActions.organizationsFollowedRetrieve();
-    VoterGuideActions.voterGuideFollowersRetrieve(this.props.voter.linked_organization_we_vote_id);
-    VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.props.voter.linked_organization_we_vote_id);
+    VoterGuideActions.voterGuideFollowersRetrieve(this.state.voter.linked_organization_we_vote_id);
+    VoterGuideActions.voterGuidesFollowedByOrganizationRetrieve(this.state.voter.linked_organization_we_vote_id);
     this.setState({ profilePopUpOpen: false });
   }
 
@@ -273,12 +289,11 @@ class HeaderBar extends Component {
       return null;
     }
     renderLog(__filename);
-    const { voter, classes, pathname, location } = this.props;
-    const { chosenSiteLogoUrl, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, showEditAddressButton, showPaidAccountUpgradeModal, showSelectBallotModal } = this.state;
+    const { classes, pathname, location } = this.props;
+    const { chosenSiteLogoUrl, hideWeVoteLogo, paidAccountUpgradeMode, scrolledDown, showEditAddressButton, showPaidAccountUpgradeModal, showSelectBallotModal, voter, voterIsSignedIn } = this.state;
     const ballotBaseUrl = '/ballot';
     const voterPhotoUrlMedium = voter.voter_photo_url_medium;
     // const numberOfIncomingFriendRequests = this.state.friendInvitationsSentToMe.length || 0; // DALE: FRIENDS TEMPORARILY DISABLED
-    const voterIsSignedIn = this.props.voter && this.props.voter.is_signed_in;
     const showFullNavigation = true;
     const weVoteBrandingOff = this.state.we_vote_branding_off;
     const showingBallot = stringContains(ballotBaseUrl, pathname.toLowerCase().slice(0, 7));
@@ -397,7 +412,7 @@ class HeaderBar extends Component {
                       toggleProfilePopUp={this.toggleProfilePopUp}
                       toggleSignInModal={this.toggleSignInModal}
                       transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-                      voter={this.props.voter}
+                      voter={voter}
                       weVoteBrandingOff={this.state.we_vote_branding_off}
                     />
                   )}
@@ -433,7 +448,7 @@ class HeaderBar extends Component {
                         toggleProfilePopUp={this.toggleProfilePopUp}
                         toggleSignInModal={this.toggleSignInModal}
                         transitionToYourVoterGuide={this.transitionToYourVoterGuide}
-                        voter={this.props.voter}
+                        voter={voter}
                         weVoteBrandingOff={this.state.we_vote_branding_off}
                       />
                     )}

@@ -25,8 +25,8 @@ const debugMode = false;
 
 export default class SettingsAccount extends Component {
   static propTypes = {
-    toggleSignInModal: PropTypes.func,
     inModal: PropTypes.bool,
+    toggleSignInModal: PropTypes.func,
   };
 
   constructor (props) {
@@ -55,29 +55,34 @@ export default class SettingsAccount extends Component {
     this.onVoterStoreChange();
     this.facebookStoreListener = FacebookStore.addListener(this.onFacebookChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
-    cookies.removeItem('sign_in_start_path', '/');
+    cookies.removeItem('sign_in_start_full_url', '/');
     const oneDayExpires = 86400;
-    let  pathname = '';
+    let pathname = '';
 
     const getStartedMode = AppStore.getStartedMode();
     AnalyticsActions.saveActionAccountPage(VoterStore.electionId());
+    const { origin } = window.location;
+    let signInStartFullUrl = '';
     if (getStartedMode && getStartedMode === 'getStartedForCampaigns') {
       pathname = '/settings/profile';
-      cookies.setItem('sign_in_start_path', pathname, oneDayExpires, '/');
+      signInStartFullUrl = `${origin}${pathname}`;
+      cookies.setItem('sign_in_start_full_url', signInStartFullUrl, oneDayExpires, '/', 'wevote.us');
       this.setState({
         pleaseSignInTitle: 'Please sign in to get started.',
         pleaseSignInSubTitle: 'Use Twitter to verify your account most quickly.',
       });
     } else if (getStartedMode && getStartedMode === 'getStartedForOrganizations') {
       pathname = '/settings/profile';
-      cookies.setItem('sign_in_start_path', pathname, oneDayExpires, '/');
+      signInStartFullUrl = `${origin}${pathname}`;
+      cookies.setItem('sign_in_start_full_url', signInStartFullUrl, oneDayExpires, '/', 'wevote.us');
       this.setState({
         pleaseSignInTitle: 'Please sign in to get started.',
         pleaseSignInSubTitle: 'Use Twitter to verify your account most quickly.',
       });
     } else if (getStartedMode && getStartedMode === 'getStartedForVoters') {
       pathname = '/settings/profile';
-      cookies.setItem('sign_in_start_path', pathname, oneDayExpires, '/');
+      signInStartFullUrl = `${origin}${pathname}`;
+      cookies.setItem('sign_in_start_full_url', signInStartFullUrl, oneDayExpires, '/', 'wevote.us');
       this.setState({
         pleaseSignInTitle: 'Please sign in to get started.',
         pleaseSignInSubTitle: 'Don\'t worry, we won\'t post anything automatically.',
