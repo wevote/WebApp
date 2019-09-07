@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { historyPush } from '../../utils/cordovaUtils';
 import LoadingWheel from '../LoadingWheel';
 import OrganizationActions from '../../actions/OrganizationActions';
 import OrganizationStore from '../../stores/OrganizationStore';
@@ -143,8 +142,7 @@ export default class OrganizationVoterGuideTabs extends Component {
 
   handleScroll () {
     this.setState({ scrollDownValue: window.scrollY });
-
-    console.log('Scrolling', window.scrollY);
+    // console.log('Scrolling', window.scrollY);
   }
 
   switchTab (destinationTab) {
@@ -169,6 +167,7 @@ export default class OrganizationVoterGuideTabs extends Component {
         }
       }
       modifiedUrl = `${modifiedUrl}/${destinationTab}`;
+      // eslint-disable-next-line no-restricted-globals
       history.pushState({
         id: `tabs-${modifiedUrl}`,
       }, '', `${modifiedUrl}`);

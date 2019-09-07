@@ -103,6 +103,7 @@ class Ballot extends Component {
     const hideIntroModalFromUrl = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
     const hideIntroModalFromCookie = cookies.getItem('hide_intro_modal') || 0;
     const waitUntilVoterSignInCompletes = this.props.location.query ? this.props.location.query.wait_until_voter_sign_in_completes : 0;
+    console.log('Ballot componentDidMount waitUntilVoterSignInCompletes: ', waitUntilVoterSignInCompletes);
     const issuesVoterCanFollow = IssueStore.getIssuesVoterCanFollow(); // Check to see if the issues have been retrieved yet
     const issuesVoterCanFollowExist = issuesVoterCanFollow && issuesVoterCanFollow.length;
     // console.log('Ballot componentDidMount issuesVoterCanFollowExist: ', issuesVoterCanFollowExist);

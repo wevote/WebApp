@@ -6,6 +6,7 @@ import FacebookActions from '../actions/FacebookActions';
 import FriendActions from '../actions/FriendActions';
 import OrganizationActions from '../actions/OrganizationActions';
 import SupportActions from '../actions/SupportActions';
+import { stringContains } from '../utils/textFormat';
 import VoterActions from '../actions/VoterActions';
 import VoterGuideActions from '../actions/VoterGuideActions';
 
@@ -141,7 +142,13 @@ class VoterStore extends ReduceStore {
   setVoterDeviceIdCookie (id) { // eslint-disable-line
     cookies.removeItem('voter_device_id');
     cookies.removeItem('voter_device_id', '/');
-    cookies.setItem('voter_device_id', id, Infinity, '/');
+    const { hostname } = window.location;
+    console.log('setVoterDeviceIdCookie hostname:', hostname);
+    if (hostname && stringContains('wevote.us', hostname)) {
+      cookies.setItem('voter_device_id', id, Infinity, '/', 'wevote.us');
+    } else {
+      cookies.setItem('voter_device_id', id, Infinity, '/');
+    }
   }
 
   // Airbnb doesnt like bitwise operators in JavaScript

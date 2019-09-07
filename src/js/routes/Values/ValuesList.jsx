@@ -82,7 +82,7 @@ export default class ValuesList extends Component {
       }
     }
 
-    console.log('All issues:', issuesList);
+    // console.log('All issues:', issuesList);
 
     if (searchQuery.length > 0) {
       const searchQueryLowercase = searchQuery.toLowerCase();
