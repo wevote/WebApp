@@ -135,6 +135,9 @@ class HeaderBar extends Component {
     if (this.state.showSelectBallotModal !== nextState.showSelectBallotModal) {
       return true;
     }
+    if (this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
+      return true;
+    }
     const currentPathnameExists = this.props.location && this.props.location.pathname;
     const nextPathnameExists = nextProps.location && nextProps.location.pathname;
     // One exists, and the other doesn't
@@ -161,9 +164,6 @@ class HeaderBar extends Component {
       return true;
     }
     if (thisVoterExists && nextVoterExists && this.state.voter.signed_in_with_email !== nextState.voter.signed_in_with_email) {
-      return true;
-    }
-    if (thisVoterExists && nextVoterExists && this.state.voterIsSignedIn !== nextState.voterIsSignedIn) {
       return true;
     }
     console.log('HeaderBar shouldComponentUpdate false');
