@@ -9,11 +9,13 @@ export default {
     Dispatcher.loadEndpoint('voterSignOut', { sign_out_all_devices: false });
     cookies.removeItem('voter_device_id');
     cookies.removeItem('voter_device_id', '/');
+    cookies.removeItem('voter_device_id', '/', 'wevote.us');
     cookies.removeItem('ballot_has_been_visited');
     cookies.removeItem('ballot_has_been_visited', '/');
     cookies.removeItem('show_full_navigation');
     cookies.removeItem('show_full_navigation', '/');
     cookies.removeItem('sign_in_start_full_url', '/');
+    cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
   },
 
   setVoterDeviceIdCookie (id) {

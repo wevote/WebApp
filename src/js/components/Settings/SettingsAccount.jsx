@@ -56,6 +56,7 @@ export default class SettingsAccount extends Component {
     this.facebookStoreListener = FacebookStore.addListener(this.onFacebookChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     cookies.removeItem('sign_in_start_full_url', '/');
+    cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
     const oneDayExpires = 86400;
     let pathname = '';
 

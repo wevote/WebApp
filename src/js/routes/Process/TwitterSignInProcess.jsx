@@ -68,6 +68,7 @@ export default class TwitterSignInProcess extends Component {
     if (signInStartFullUrl) {
       AppActions.unsetStoreSignInStartPath();
       cookies.removeItem('sign_in_start_full_url', '/');
+      cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
       redirectFullUrl = signInStartFullUrl;
       if (!voterHasDataToPreserve) {
         redirectFullUrl += '?wait_until_voter_sign_in_completes=1';
@@ -94,6 +95,7 @@ export default class TwitterSignInProcess extends Component {
     if (signInStartFullUrl) {
       AppActions.unsetStoreSignInStartPath();
       cookies.removeItem('sign_in_start_full_url', '/');
+      cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
       window.location.assign(signInStartFullUrl);
     } else {
       const redirectPathname = '/more/network';

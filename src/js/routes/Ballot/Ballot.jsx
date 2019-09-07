@@ -35,7 +35,6 @@ import { renderLog } from '../../utils/logging';
 import SupportActions from '../../actions/SupportActions';
 import SupportStore from '../../stores/SupportStore';
 import VoterActions from '../../actions/VoterActions';
-import VoterConstants from '../../constants/VoterConstants';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import AppStore from '../../stores/AppStore';
 import VoterStore from '../../stores/VoterStore';
@@ -46,6 +45,7 @@ import AppActions from '../../actions/AppActions';
 
 // Related to WebApp/src/js/components/VoterGuide/VoterGuideBallot.jsx
 const BALLOT_ITEM_FILTER_TYPES = ['Federal', 'State', 'Measure', 'Local'];
+const delayBeforeVoterRefreshCall = 1000;
 
 class Ballot extends Component {
   static propTypes = {
@@ -73,15 +73,13 @@ class Ballot extends Component {
         position_list: [],
       },
       componentDidMountFinished: false,
-      hideIntroModalFromUrl: 0,
-      hideIntroModalFromCookie: 0,
       lastHashUsedInLinkScroll: '',
       measureForModal: {
         voter_guides_to_follow_for_latest_ballot_item: [],
         position_list: [],
       },
       mounted: false,
-      showBallotIntroModal: false,
+      numberOfVoterRetrieveAttempts: 0,
       showSelectBallotModal: false,
       voterBallotList: [],
       showFilterTabs: false,
@@ -93,40 +91,23 @@ class Ballot extends Component {
 
     this.ballotItems = {};
     this.ballotItemLinkHasBeenClicked = this.ballotItemLinkHasBeenClicked.bind(this);
-    this.toggleBallotIntroModal = this.toggleBallotIntroModal.bind(this);
     this.toggleSelectBallotModal = this.toggleSelectBallotModal.bind(this);
     this.updateOfficeDisplayUnfurledTracker = this.updateOfficeDisplayUnfurledTracker.bind(this);
   }
 
   componentDidMount () {
     const ballotBaseUrl = '/ballot';
-    const hideIntroModalFromUrl = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
-    const hideIntroModalFromCookie = cookies.getItem('hide_intro_modal') || 0;
-    const waitUntilVoterSignInCompletes = this.props.location.query ? this.props.location.query.wait_until_voter_sign_in_completes : 0;
+    let waitUntilVoterSignInCompletes = false;
+    if (this.props.location && this.props.location.query && this.props.location.query.wait_until_voter_sign_in_completes) {
+      waitUntilVoterSignInCompletes = (this.props.location.query.wait_until_voter_sign_in_completes);
+    }
     console.log('Ballot componentDidMount waitUntilVoterSignInCompletes: ', waitUntilVoterSignInCompletes);
-    const issuesVoterCanFollow = IssueStore.getIssuesVoterCanFollow(); // Check to see if the issues have been retrieved yet
-    const issuesVoterCanFollowExist = issuesVoterCanFollow && issuesVoterCanFollow.length;
-    // console.log('Ballot componentDidMount issuesVoterCanFollowExist: ', issuesVoterCanFollowExist);
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
 
-    if (waitUntilVoterSignInCompletes !== undefined ||
-        hideIntroModalFromCookie ||
-        hideIntroModalFromUrl ||
-        !issuesVoterCanFollowExist) {
-      this.setState({
-        componentDidMountFinished: true,
-        mounted: true,
-        showBallotIntroModal: false,
-      });
-    } else {
-      // hide_intro_modal is the default now
-      // showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
-      this.setState({
-        componentDidMountFinished: true,
-        mounted: true,
-        showBallotIntroModal: false,
-      });
-    }
+    this.setState({
+      componentDidMountFinished: true,
+      mounted: true,
+    });
 
     const completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || 'all';
     const ballotWithItemsFromCompletionFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
@@ -262,12 +243,9 @@ class Ballot extends Component {
       ballotReturnedWeVoteId,
       ballotLocationShortcut,
       googleCivicElectionId: parseInt(googleCivicElectionId, 10),
-      hideIntroModalFromUrl,
-      hideIntroModalFromCookie,
       location,
       pathname,
       raceLevelFilterType: BallotStore.getRaceLevelFilterTypeSaved() || 'Federal',
-      waitUntilVoterSignInCompletes,
     });
 
     const { hash } = location;
@@ -427,6 +405,7 @@ class Ballot extends Component {
     this.voterGuideStoreListener.remove();
     this.voterStoreListener.remove();
     this.appStoreListener.remove();
+    this.timer = null;
   }
 
   // See https://reactjs.org/docs/error-boundaries.html
@@ -443,47 +422,40 @@ class Ballot extends Component {
   }
 
   onVoterStoreChange () {
-    // console.log('Ballot.jsx onVoterStoreChange, voter: ', VoterStore.getVoter());
-    if (this.state.mounted) {
-      let considerOpeningBallotIntroModal = true;
-      if (this.state.waitUntilVoterSignInCompletes) {
-        considerOpeningBallotIntroModal = false;
-        if (this.state.voter && this.state.voter.is_signed_in) {
-          considerOpeningBallotIntroModal = true;
-          this.setState({
-            waitUntilVoterSignInCompletes: undefined,
-          });
-          // console.log('onVoterStoreChange, about to historyPush(this.state.pathname):', this.state.pathname);
+    // console.log('Ballot.jsx onVoterStoreChange');
+    const { mounted } = this.state;
+    if (mounted) {
+      let waitUntilVoterSignInCompletes = false;
+      if (this.props.location && this.props.location.query && this.props.location.query.wait_until_voter_sign_in_completes) {
+        waitUntilVoterSignInCompletes = (this.props.location.query.wait_until_voter_sign_in_completes);
+        console.log('onVoterStoreChange waitUntilVoterSignInCompletes: ', waitUntilVoterSignInCompletes);
+      } else {
+        console.log('onVoterStoreChange waitUntilVoterSignInCompletes is FALSE');
+      }
+      if (waitUntilVoterSignInCompletes) {
+        const voter = VoterStore.getVoter();
+        const { numberOfVoterRetrieveAttempts } = this.state;
+        if (voter && voter.is_signed_in) {
+          console.log('onVoterStoreChange, about to historyPush(this.state.pathname):', this.state.pathname);
+          // Return to the same page without the "wait_until_voter_sign_in_completes" variable
+          historyPush(this.state.pathname);
+        } else if (numberOfVoterRetrieveAttempts < 3) {
+          console.log('About to startTimerToRetrieveVoter');
+          this.startTimerToRetrieveVoter();
+        } else {
+          // We have exceeded the number of allowed attempts and want to "turn off" the request to refresh the voter object
+          // Return to the same page without the "wait_until_voter_sign_in_completes" variable
+          console.log('Exiting waitUntilVoterSignInCompletes');
           historyPush(this.state.pathname);
         }
-      }
-
-      const issuesVoterCanFollow = IssueStore.getIssuesVoterCanFollow(); // Check to see if the issues have been retrieved yet
-      const issuesVoterCanFollowExist = issuesVoterCanFollow && issuesVoterCanFollow.length;
-      // console.log('Ballot onVoterStoreChange issuesVoterCanFollowExist: ', issuesVoterCanFollowExist);
-
-      if (this.state.hideIntroModalFromCookie || this.state.hideIntroModalFromUrl || !issuesVoterCanFollowExist) {
-        considerOpeningBallotIntroModal = false;
-      }
-
-      // console.log('Ballot.jsx onVoterStoreChange VoterStore.getVoter: ', VoterStore.getVoter());
-      if (considerOpeningBallotIntroModal) {
-        // hide_intro_modal is the default now
-        // showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
-        this.setState({
-          voter: VoterStore.getVoter(),
-          showBallotIntroModal: false,
-          googleCivicElectionId: parseInt(VoterStore.electionId(), 10),
-        });
       } else {
+        // console.log('Ballot.jsx onVoterStoreChange VoterStore.getVoter: ', VoterStore.getVoter());
         this.setState({
-          voter: VoterStore.getVoter(),
           googleCivicElectionId: parseInt(VoterStore.electionId(), 10),
+          textForMapSearch: VoterStore.getTextForMapSearch(),
+          voter: VoterStore.getVoter(),
         });
       }
-      this.setState({
-        textForMapSearch: VoterStore.getTextForMapSearch(),
-      });
     }
   }
 
@@ -675,17 +647,17 @@ class Ballot extends Component {
     this.setState({ isSearching: !isSearching });
   };
 
-  toggleBallotIntroModal () {
-    const { showBallotIntroModal, location, pathname } = this.state;
-    if (showBallotIntroModal) {
-      // Saved to the voter record that the ballot introduction has been seen
-      VoterActions.voterUpdateInterfaceStatusFlags(VoterConstants.BALLOT_INTRO_MODAL_SHOWN);
-    } else if (location.hash.includes('#')) {
-      // Clear out any # from anchors in the URL
-      historyPush(pathname);
-    }
-
-    this.setState({ showBallotIntroModal: !showBallotIntroModal });
+  startTimerToRetrieveVoter = () => {
+    let { numberOfVoterRetrieveAttempts } = this.state;
+    console.log('startTimerToRetrieveVoter, numberOfVoterRetrieveAttempts:', numberOfVoterRetrieveAttempts);
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      VoterActions.voterRetrieve();
+      numberOfVoterRetrieveAttempts += 1;
+      this.setState({
+        numberOfVoterRetrieveAttempts,
+      });
+    }, delayBeforeVoterRefreshCall);
   }
 
   toggleSelectBallotModal (destinationUrlForHistoryPush = '') {
@@ -772,7 +744,6 @@ class Ballot extends Component {
       ballotItemUnfurledTracker: newBallotItemUnfurledTracker,
     });
   }
-
 
   render () {
     // console.log('Ballot render');

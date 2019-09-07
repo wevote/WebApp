@@ -120,6 +120,7 @@ class WelcomeAppbar extends Component {
     if (show) {
       // If the voter opens the mobile drop-down, set the sign_in_start_path
       cookies.removeItem('sign_in_start_full_url', '/');
+      cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
       AppActions.storeSignInStartPath();
     }
     this.setState({ showMobileNavigationMenu: show });
