@@ -461,6 +461,7 @@ class VoterStore extends ReduceStore {
 
           cookies.removeItem('voter_device_id');
           cookies.removeItem('voter_device_id', '/');
+          cookies.removeItem('voter_device_id', '/', 'wevote.us');
 
           // ...and then ask for a new voter. When it returns a voter with a new voter_device_id, we will set new cookie
           if (!cookies.getItem('voter_device_id')) {
