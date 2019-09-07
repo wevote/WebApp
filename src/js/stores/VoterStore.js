@@ -459,6 +459,7 @@ class VoterStore extends ReduceStore {
           console.log(`This voter_device_id is not in the db and is invalid, so delete it: ${
             cookies.getItem('voter_device_id')}`);
 
+          // Attempt to delete in a variety of ways
           cookies.removeItem('voter_device_id');
           cookies.removeItem('voter_device_id', '/');
           cookies.removeItem('voter_device_id', '/', 'wevote.us');
