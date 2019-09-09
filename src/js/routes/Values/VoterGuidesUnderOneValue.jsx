@@ -2,6 +2,10 @@ import React, { Component, Suspense } from 'react';
 import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import Card from '@material-ui/core/Card';
+import BallotIcon from '@material-ui/icons/Ballot';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/core';
 import { renderLog } from '../../utils/logging';
 import VoterGuideStore from '../../stores/VoterGuideStore';
 import SearchGuidesToFollowBox from '../../components/Search/SearchGuidesToFollowBox';
@@ -13,6 +17,7 @@ import ValuesList from './ValuesList';
 class VoterGuidesUnderOneValue extends Component {
   static propTypes = {
     params: PropTypes.object.isRequired,
+    classes: PropTypes.object,
   };
 
   constructor (props) {
@@ -87,6 +92,9 @@ class VoterGuidesUnderOneValue extends Component {
   render () {
     renderLog(__filename);
     const { ballotHasGuidesForValue, issue, voterGuidesForValue } = this.state;
+
+    const { classes } = this.props;
+
     // console.log('VoterGuidesUnderOneValue render, issue:', issue);
     // if (!issueWeVoteId) {
     //   return null;
@@ -110,18 +118,25 @@ class VoterGuidesUnderOneValue extends Component {
           />
           <SearchGuidesToFollowBox />
           { ballotHasGuidesForValue || !issueNameFound ?
-            <p /> :
-            (
-              <p>
-                We don
-                {'\'t '}
-                have any endorsements for
-                {' '}
-                {issue.issue_name}
-                .
-              </p>
-            )
-          }
+            <p /> : (
+              <>
+                <br />
+                <Card>
+                  <EmptyBallotMessageContainer>
+                    <BallotIcon classes={{ root: classes.ballotIconRoot }} />
+                    <EmptyBallotText>There are no endorsements for this issue yet. Click &quot;Add Endorsements&quot; to help people who trust you make better voting decisions.</EmptyBallotText>
+                    <Button
+                      classes={{ root: classes.ballotButtonRoot }}
+                      color="primary"
+                      variant="contained"
+                    >
+                      <BallotIcon classes={{ root: classes.ballotButtonIconRoot }} />
+                      Add Endorsements
+                    </Button>
+                  </EmptyBallotMessageContainer>
+                </Card>
+              </>
+            )}
           <div className="card">
             <Suspense fallback={<span>Loading...</span>}>
               <GuideList incomingVoterGuideList={voterGuidesForValue} />
@@ -136,6 +151,39 @@ class VoterGuidesUnderOneValue extends Component {
   }
 }
 
+const styles = theme => ({
+  ballotIconRoot: {
+    width: 100,
+    height: 100,
+    color: 'rgb(171, 177, 191)',
+  },
+  ballotButtonIconRoot: {
+    marginRight: 8,
+  },
+  ballotButtonRoot: {
+    width: 250,
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
+  },
+});
+
+const EmptyBallotMessageContainer = styled.div`
+  padding: 1.5em 2em;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+`;
+
+const EmptyBallotText = styled.p`
+  font-size: 16px;
+  text-align: center;
+  margin: 1em 2em;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin: 1em;
+  }
+`;
+
 const Title = styled.h3`
   color: #333;
   font-size: 22px;
@@ -143,4 +191,4 @@ const Title = styled.h3`
   margin-top: 24px;
 `;
 
-export default VoterGuidesUnderOneValue;
+export default withStyles(styles)(VoterGuidesUnderOneValue);
