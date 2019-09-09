@@ -186,7 +186,7 @@ class VoterEmailAddressEntry extends Component {
               className={classes.input}
               type="email"
               name="voter_email_address"
-              id=""
+              id="enterVoterEmailAddress"
               value={this.state.voterEmailAddress}
               onChange={this.updateVoterEmailAddress}
               placeholder="Type email here..."

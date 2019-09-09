@@ -33,6 +33,9 @@ export default class SettingsAccount extends Component {
     super(props);
     this.state = {
       facebookAuthResponse: {},
+      isOnWeVoteRootUrl: true,
+      isOnWeVoteSubDomainUrl: false,
+      isOnChosenFullDomainUrl: false,
       pleaseSignInTitle: '',
       pleaseSignInSubTitle: '',
       showTwitterDisconnect: false,
@@ -53,6 +56,7 @@ export default class SettingsAccount extends Component {
   componentDidMount () {
     // console.log("SignIn componentDidMount");
     this.onVoterStoreChange();
+    this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
     this.facebookStoreListener = FacebookStore.addListener(this.onFacebookChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
     cookies.removeItem('sign_in_start_full_url', '/');
@@ -89,19 +93,33 @@ export default class SettingsAccount extends Component {
         pleaseSignInSubTitle: 'Don\'t worry, we won\'t post anything automatically.',
       });
     } else {
-      AppActions.storeSignInStartPath();
+      AppActions.storeSignInStartFullUrl();
       this.setState({
         pleaseSignInTitle: '',
         pleaseSignInSubTitle: 'Don\'t worry, we won\'t post anything automatically.',
       });
     }
+    this.setState({
+      isOnWeVoteRootUrl: AppStore.isOnWeVoteRootUrl(),
+      isOnWeVoteSubDomainUrl: AppStore.isOnWeVoteSubDomainUrl(),
+      isOnChosenFullDomainUrl: AppStore.isOnChosenFullDomainUrl(),
+    });
   }
 
   componentWillUnmount () {
     // console.log("SignIn ---- UN mount");
+    this.appStoreListener.remove();
     this.facebookStoreListener.remove();
     this.voterStoreListener.remove();
     this.timer = null;
+  }
+
+  onAppStoreChange () {
+    this.setState({
+      isOnWeVoteRootUrl: AppStore.isOnWeVoteRootUrl(),
+      isOnWeVoteSubDomainUrl: AppStore.isOnWeVoteSubDomainUrl(),
+      isOnChosenFullDomainUrl: AppStore.isOnChosenFullDomainUrl(),
+    });
   }
 
   onVoterStoreChange () {
@@ -163,7 +181,7 @@ export default class SettingsAccount extends Component {
       return LoadingWheel;
     }
 
-    const { pleaseSignInTitle, pleaseSignInSubTitle } = this.state;
+    const { isOnWeVoteRootUrl, isOnWeVoteSubDomainUrl, pleaseSignInTitle, pleaseSignInSubTitle } = this.state;
     let pageTitle = 'Sign In - We Vote';
     let yourAccountTitle = 'Security & Sign In';
     let yourAccountExplanation = '';
@@ -199,7 +217,7 @@ export default class SettingsAccount extends Component {
             {!this.state.voter.signed_in_twitter || !this.state.voter.signed_in_facebook ? (
               <>
                 <div className="u-stack--md">
-                  { !this.state.voter.signed_in_twitter && (
+                  { !this.state.voter.signed_in_twitter && (isOnWeVoteRootUrl || isOnWeVoteSubDomainUrl) && (
                     <span>
                       <RecommendedText className="u-tl u-stack--sm">Recommended</RecommendedText>
                       <TwitterSignIn buttonText="Sign in with Twitter" />
@@ -208,7 +226,7 @@ export default class SettingsAccount extends Component {
                   }
                 </div>
                 <div className="u-stack--md">
-                  { !this.state.voter.signed_in_facebook && (
+                  { !this.state.voter.signed_in_facebook && isOnWeVoteRootUrl && (
                     <span>
                       <FacebookSignIn toggleSignInModal={this.props.toggleSignInModal} buttonText="Sign in with Facebook" />
                     </span>
@@ -245,17 +263,27 @@ export default class SettingsAccount extends Component {
                         <div>
                           <Button
                             className="btn-sm"
-                            variant="danger"
-                            type="submit"
+                            id="voterSplitIntoTwoAccounts"
                             onClick={this.voterSplitIntoTwoAccounts}
+                            type="submit"
+                            variant="danger"
                           >
                             Are you sure you want to un-link?
                           </Button>
-                          <span className="u-margin-left--sm" onClick={this.toggleTwitterDisconnectClose}>cancel</span>
+                          <span
+                            className="u-margin-left--sm"
+                            id="toggleTwitterDisconnectClose"
+                            onClick={this.toggleTwitterDisconnectClose}
+                          >
+                            cancel
+                          </span>
                         </div>
                       ) : (
                         <div>
-                          <span onClick={this.toggleTwitterDisconnectOpen}>
+                          <span
+                            id="toggleTwitterDisconnectOpen"
+                            onClick={this.toggleTwitterDisconnectOpen}
+                          >
                             un-link @
                             {this.state.voter.twitter_screen_name}
                             {' '}

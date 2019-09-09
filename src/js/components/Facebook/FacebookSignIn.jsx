@@ -29,7 +29,7 @@ class FacebookSignIn extends Component {
   }
 
   didClickFacebookSignInButton = () => {
-    AppActions.unsetStoreSignInStartPath();
+    AppActions.unsetStoreSignInStartFullUrl();
     FacebookActions.login();
   }
 
@@ -44,12 +44,13 @@ class FacebookSignIn extends Component {
     const { buttonText } = this.props;
     return (
       <SplitIconButton
-        seperatorColor="rgba(250, 250, 250, .6)"
         buttonText={buttonText}
         backgroundColor="#3b5998"
+        externalUniqueId="facebookSignIn"
         icon={<span className="fab fa-facebook-square" />}
         onClick={this.didClickFacebookSignInButton}
         onKeyDown={this.onKeyDown}
+        separatorColor="rgba(250, 250, 250, .6)"
       />
     );
   }

@@ -8,16 +8,16 @@ import { getTextColorFromBackground } from '../../utils/color';
 
 class SplitIconButton extends PureComponent {
   static propTypes = {
+    backgroundColor: PropTypes.string,
     buttonText: PropTypes.string,
     classes: PropTypes.object,
+    externalUniqueId: PropTypes.string,
     icon: PropTypes.node,
-    backgroundColor: PropTypes.string,
     iconRight: PropTypes.bool,
-    seperatorColor: PropTypes.string,
-    title: PropTypes.string,
     onClick: PropTypes.func,
     onKeyDown: PropTypes.func,
-
+    separatorColor: PropTypes.string,
+    title: PropTypes.string,
   };
 
   render () {
@@ -28,6 +28,7 @@ class SplitIconButton extends PureComponent {
       <Button
         className={classes.splitButton}
         classes={{ root: classes.splitButton, label: classes.label }}
+        id={`${this.props.externalUniqueId}-splitIconButton`}
         variant="contained"
         title={title}
         style={{
@@ -43,17 +44,17 @@ class SplitIconButton extends PureComponent {
         </SplitButtonIcon>
         {this.props.iconRight ? (
           <SplitButtonSeperatorRight
-            style={this.props.seperatorColor ? (
+            style={this.props.separatorColor ? (
               {
-                backgroundColor: this.props.seperatorColor,
+                backgroundColor: this.props.separatorColor,
               }
             ) : null}
           />
         ) : (
           <SplitButtonSeperatorLeft
-            style={this.props.seperatorColor ? (
+            style={this.props.separatorColor ? (
               {
-                backgroundColor: this.props.seperatorColor,
+                backgroundColor: this.props.separatorColor,
               }
             ) : null}
           />

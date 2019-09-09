@@ -592,7 +592,7 @@ export default class FacebookBallotToFriendsModal extends Component {
                           Send Ballot Through Facebook
                         </Button> */}
                         <SplitIconButton
-                          seperatorColor="rgba(250, 250, 250, .6)"
+                          separatorColor="rgba(250, 250, 250, .6)"
                           backgroundColor="rgb(255, 73, 34)"
                           title="Send ballot through Facebook"
                           onClick={this.sendDirectMessageToFacebookFriends}
@@ -617,7 +617,7 @@ export default class FacebookBallotToFriendsModal extends Component {
                             Share Ballot on Facebook
                           </Button> */}
                           <SplitIconButton
-                            seperatorColor="rgba(250, 250, 250, .6)"
+                            separatorColor="rgba(250, 250, 250, .6)"
                             backgroundColor="rgb(255, 73, 34)"
                             title="Share ballot on Facebook"
                             onClick={this.shareOnFacebook}
