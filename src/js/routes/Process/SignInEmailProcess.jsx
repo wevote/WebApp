@@ -66,25 +66,35 @@ export default class SignInEmailProcess extends Component {
       return LoadingWheel;
     }
 
-    let redirectPathname;
-    const signInStartPath = cookies.getItem('sign_in_start_path');
+    let redirectFullUrl = '';
+    let redirectPathname = '';
+    const signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
 
     // We redirect after voterMergeTwoAccountsByEmailKey comes back
     if (this.state.emailSignInStatus.voter_merge_two_accounts_attempted) {
       oAuthLog('voterMergeTwoAccountsByEmailKey attempted - push to /settings/account');
-      redirectPathname = '/ballot';
-      if (signInStartPath) {
-        redirectPathname = signInStartPath;
-        AppActions.unsetStoreSignInStartPath();
-        cookies.removeItem('sign_in_start_path', '/');
+      if (signInStartFullUrl) {
+        AppActions.unsetStoreSignInStartFullUrl();
+        cookies.removeItem('sign_in_start_full_url', '/');
+        cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+        redirectFullUrl = signInStartFullUrl;
+        // The Email sign in delay isn't as great as Twitter, so this isn't needed.
+        // if (!voterHasDataToPreserve) {
+        //   redirectFullUrl += '?voter_refresh_timer_on=1';
+        // }
+        window.location.assign(redirectFullUrl);
+      } else {
+        redirectPathname = '/ballot';
+        historyPush({
+          pathname: redirectPathname,
+          // The Email sign in delay isn't as great as Twitter, so this isn't needed.
+          // query: { voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1 },
+          state: {
+            message: 'You have successfully signed in.',
+            message_type: 'success',
+          },
+        });
       }
-      historyPush({
-        pathname: redirectPathname,
-        state: {
-          message: 'You have successfully signed in.',
-          message_type: 'success',
-        },
-      });
       return LoadingWheel;
     }
 
@@ -94,14 +104,32 @@ export default class SignInEmailProcess extends Component {
       if (voterIsSignedIn) {
         // Key isn't found in database, but they are already signed in and are
         //  probably following a link in their email that has already been used
-        redirectPathname = '/settings/account';
-        if (signInStartPath) {
-          redirectPathname = signInStartPath;
-          AppActions.unsetStoreSignInStartPath();
-          cookies.removeItem('sign_in_start_path', '/');
+        if (signInStartFullUrl) {
+          AppActions.unsetStoreSignInStartFullUrl();
+          cookies.removeItem('sign_in_start_full_url', '/');
+          cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+          redirectFullUrl = signInStartFullUrl;
+          // The Email sign in delay isn't as great as Twitter, so this isn't needed.
+          // if (!voterHasDataToPreserve) {
+          //   redirectFullUrl += '?voter_refresh_timer_on=1';
+          // }
+          window.location.assign(redirectFullUrl);
+        } else {
+          redirectPathname = '/settings/account';
+          historyPush({
+            pathname: redirectPathname,
+            // The Email sign in delay isn't as great as Twitter, so this isn't needed.
+            // query: { voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1 },
+            state: {
+              message: 'You have successfully signed in.',
+              message_type: 'success',
+            },
+          });
         }
-        historyPush(redirectPathname);
       } else {
+        AppActions.unsetStoreSignInStartFullUrl();
+        cookies.removeItem('sign_in_start_full_url', '/');
+        cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
         historyPush({
           pathname: '/settings/account',
           state: {
@@ -118,19 +146,28 @@ export default class SignInEmailProcess extends Component {
       if (this.state.emailSignInStatus.email_secret_key_belongs_to_this_voter) {
         // We don't need to do anything more except redirect to the email management page
         oAuthLog('secret key owned by this voter - push to /settings/account');
-        redirectPathname = '/ballot';
-        if (signInStartPath) {
-          redirectPathname = signInStartPath;
-          AppActions.unsetStoreSignInStartPath();
-          cookies.removeItem('sign_in_start_path', '/');
+        if (signInStartFullUrl) {
+          AppActions.unsetStoreSignInStartFullUrl();
+          cookies.removeItem('sign_in_start_full_url', '/');
+          cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+          redirectFullUrl = signInStartFullUrl;
+          // The Email sign in delay isn't as great as Twitter, so this isn't needed.
+          // if (!voterHasDataToPreserve) {
+          //   redirectFullUrl += '?voter_refresh_timer_on=1';
+          // }
+          window.location.assign(redirectFullUrl);
+        } else {
+          redirectPathname = '/ballot';
+          historyPush({
+            pathname: redirectPathname,
+            // The Email sign in delay isn't as great as Twitter, so this isn't needed.
+            // query: { voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1 },
+            state: {
+              message: 'You have successfully signed in.',
+              message_type: 'success',
+            },
+          });
         }
-        historyPush({
-          pathname: redirectPathname,
-          state: {
-            message: 'You have successfully signed in.',
-            message_type: 'success',
-          },
-        });
         return LoadingWheel;
       } else if (this.state.voter.has_data_to_preserve) {
         // console.log("this.state.voter.has_data_to_preserve");
@@ -154,7 +191,7 @@ export default class SignInEmailProcess extends Component {
         this.voterMergeTwoAccountsByEmailKey(emailSecretKey);
       }
     } else {
-      oAuthLog('Voter may not be verified yet, redirecting to verfiy page');
+      oAuthLog('Voter may not be verified yet, redirecting to verify page');
       historyPush(`/verify_email/${emailSecretKey}`);
     }
 

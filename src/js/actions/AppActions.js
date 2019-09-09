@@ -46,11 +46,11 @@ export default {
       });
   },
 
-  storeSignInStartPath () {
-    Dispatcher.dispatch({ type: 'storeSignInStartPath', payload: true });
+  storeSignInStartFullUrl () {
+    Dispatcher.dispatch({ type: 'storeSignInStartFullUrl', payload: true });
   },
 
-  unsetStoreSignInStartPath () {
-    Dispatcher.dispatch({ type: 'unsetStoreSignInStartPath', payload: false });
+  unsetStoreSignInStartFullUrl () {
+    Dispatcher.dispatch({ type: 'unsetStoreSignInStartFullUrl', payload: false });
   },
 };

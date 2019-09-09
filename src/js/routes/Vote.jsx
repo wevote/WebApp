@@ -66,22 +66,11 @@ class Vote extends Component {
 
   componentDidMount () {
     const ballotBaseUrl = '/ballot';
-    const hideIntroModalFromUrl = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
-    const hideIntroModalFromCookie = cookies.getItem('hide_intro_modal') || 0;
-    const waitUntilVoterSignInCompletes = this.props.location.query ? this.props.location.query.wait_until_voter_sign_in_completes : 0;
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
 
-    if (waitUntilVoterSignInCompletes !== undefined ||
-        hideIntroModalFromCookie ||
-        hideIntroModalFromUrl) {
-      this.setState({
-        mounted: true,
-      });
-    } else {
-      this.setState({
-        mounted: true,
-      });
-    }
+    this.setState({
+      mounted: true,
+    });
 
     const completionLevelFilterType = 'filterDecided';
     const ballotWithItemsFromCompletionFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
@@ -191,10 +180,7 @@ class Vote extends Component {
       ballotReturnedWeVoteId,
       ballotLocationShortcut,
       googleCivicElectionId: parseInt(googleCivicElectionId, 10),
-      hideIntroModalFromUrl,
-      hideIntroModalFromCookie,
       pathname,
-      waitUntilVoterSignInCompletes,
     });
   }
 

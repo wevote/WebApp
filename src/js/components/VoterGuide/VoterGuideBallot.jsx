@@ -111,27 +111,11 @@ class VoterGuideBallot extends Component {
     const ballotBaseUrl = calculateBallotBaseUrl(null, this.props.location.pathname);
     // console.log("VoterGuideBallot componentDidMount, ballotBaseUrl", ballotBaseUrl);
 
-    const hideIntroModalFromUrl = this.props.location.query ? this.props.location.query.hide_intro_modal : 0;
-    const hideIntroModalFromCookie = cookies.getItem('hide_intro_modal') || 0;
-    const waitUntilVoterSignInCompletes = this.props.location.query ? this.props.location.query.wait_until_voter_sign_in_completes : 0;
-
-    if (waitUntilVoterSignInCompletes !== undefined ||
-        hideIntroModalFromCookie ||
-        hideIntroModalFromUrl) {
-      this.setState({
-        componentDidMountFinished: true,
-        mounted: true,
-        showBallotIntroModal: false,
-      });
-    } else {
-      // hide_intro_modal is the default now
-      // showBallotIntroModal: !VoterStore.getInterfaceFlagState(VoterConstants.BALLOT_INTRO_MODAL_SHOWN),
-      this.setState({
-        componentDidMountFinished: true,
-        mounted: true,
-        showBallotIntroModal: false,
-      });
-    }
+    this.setState({
+      componentDidMountFinished: true,
+      mounted: true,
+      showBallotIntroModal: false,
+    });
 
     const completionLevelFilterType = BallotStore.getCompletionLevelFilterTypeSaved() || 'all';
     const ballotWithItemsFromCompletionFilterType = BallotStore.getBallotByCompletionLevelFilterType(completionLevelFilterType);
@@ -261,14 +245,11 @@ class VoterGuideBallot extends Component {
       ballotReturnedWeVoteId,
       ballotLocationShortcut,
       googleCivicElectionId: parseInt(googleCivicElectionId, 10),
-      hideIntroModalFromUrl,
-      hideIntroModalFromCookie,
       location,
       organization: this.props.organization,
       pathname,
       raceLevelFilterType: BallotStore.getRaceLevelFilterTypeSaved() || 'Federal',
       voterGuideOnStage: VoterGuideStore.getVoterGuideForOrganizationIdAndElection(this.props.organization.organization_we_vote_id, VoterStore.electionId()),
-      waitUntilVoterSignInCompletes,
     });
 
     const { hash } = location;

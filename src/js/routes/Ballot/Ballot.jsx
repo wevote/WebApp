@@ -97,11 +97,6 @@ class Ballot extends Component {
 
   componentDidMount () {
     const ballotBaseUrl = '/ballot';
-    let waitUntilVoterSignInCompletes = false;
-    if (this.props.location && this.props.location.query && this.props.location.query.wait_until_voter_sign_in_completes) {
-      waitUntilVoterSignInCompletes = (this.props.location.query.wait_until_voter_sign_in_completes);
-    }
-    console.log('Ballot componentDidMount waitUntilVoterSignInCompletes: ', waitUntilVoterSignInCompletes);
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
 
     this.setState({
@@ -425,27 +420,27 @@ class Ballot extends Component {
     // console.log('Ballot.jsx onVoterStoreChange');
     const { mounted } = this.state;
     if (mounted) {
-      let waitUntilVoterSignInCompletes = false;
-      if (this.props.location && this.props.location.query && this.props.location.query.wait_until_voter_sign_in_completes) {
-        waitUntilVoterSignInCompletes = (this.props.location.query.wait_until_voter_sign_in_completes);
-        console.log('onVoterStoreChange waitUntilVoterSignInCompletes: ', waitUntilVoterSignInCompletes);
+      let voterRefreshTimerOn = false;
+      if (this.props.location && this.props.location.query && this.props.location.query.voter_refresh_timer_on) {
+        voterRefreshTimerOn = (this.props.location.query.voter_refresh_timer_on);
+        // console.log('onVoterStoreChange voterRefreshTimerOn: ', voterRefreshTimerOn);
       } else {
-        console.log('onVoterStoreChange waitUntilVoterSignInCompletes is FALSE');
+        // console.log('onVoterStoreChange voterRefreshTimerOn is FALSE');
       }
-      if (waitUntilVoterSignInCompletes) {
+      if (voterRefreshTimerOn) {
         const voter = VoterStore.getVoter();
         const { numberOfVoterRetrieveAttempts } = this.state;
         if (voter && voter.is_signed_in) {
-          console.log('onVoterStoreChange, about to historyPush(this.state.pathname):', this.state.pathname);
-          // Return to the same page without the "wait_until_voter_sign_in_completes" variable
+          // console.log('onVoterStoreChange, about to historyPush(this.state.pathname):', this.state.pathname);
+          // Return to the same page without the "voter_refresh_timer_on" variable
           historyPush(this.state.pathname);
         } else if (numberOfVoterRetrieveAttempts < 3) {
-          console.log('About to startTimerToRetrieveVoter');
+          // console.log('About to startTimerToRetrieveVoter');
           this.startTimerToRetrieveVoter();
         } else {
           // We have exceeded the number of allowed attempts and want to "turn off" the request to refresh the voter object
-          // Return to the same page without the "wait_until_voter_sign_in_completes" variable
-          console.log('Exiting waitUntilVoterSignInCompletes');
+          // Return to the same page without the "voter_refresh_timer_on" variable
+          // console.log('Exiting voterRefreshTimerOn');
           historyPush(this.state.pathname);
         }
       } else {

@@ -5,7 +5,7 @@ import { stringContains } from '../utils/textFormat';
 
 export default {
   voterSignOut () {
-    AppActions.unsetStoreSignInStartPath();
+    AppActions.unsetStoreSignInStartFullUrl();
     Dispatcher.loadEndpoint('voterSignOut', { sign_out_all_devices: false });
     cookies.removeItem('voter_device_id');
     cookies.removeItem('voter_device_id', '/');

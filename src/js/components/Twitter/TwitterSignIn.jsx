@@ -148,31 +148,14 @@ class TwitterSignIn extends Component {
     const { buttonText } = this.props;
     renderLog(__filename);
     return (
-      // <Button
-      //   className="split-button split-button__left"
-      //   color="primary"
-      //   variant="contained"
-      //   onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova}
-      //   style={{
-      //     backgroundColor: '#55acee',
-      //   }}
-      //   title="Sign in to find voter guides"
-      // >
-      //   <span className="split-button__icon">
-      //     <i className="fab fa-twitter" />
-      //   </span>
-      //   <div className="split-button__seperator split-button__seperator--left" />
-      //   <span className="split-button__text">
-      //     {shortenText(buttonText, 22)}
-      //   </span>
-      // </Button>
       <SplitIconButton
         backgroundColor="#55acee"
-        seperatorColor="rgba(250, 250, 250, .6)"
-        title="Sign in to find voter guides"
-        onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova}
-        icon={<i className="fab fa-twitter" />}
         buttonText={shortenText(buttonText, 22)}
+        externalUniqueId="twitterSignIn"
+        icon={<i className="fab fa-twitter" />}
+        onClick={isWebApp() ? this.twitterSignInWebApp : this.twitterSignInWebAppCordova}
+        separatorColor="rgba(250, 250, 250, .6)"
+        title="Sign in to find voter guides"
       />
     );
   }

@@ -335,7 +335,7 @@ export default class FacebookBallotModal extends Component {
                           Send to Your Facebook Email &gt;
                         </Button> */}
                         <SplitIconButton
-                          seperatorColor="rgba(250, 250, 250, .6)"
+                          separatorColor="rgba(250, 250, 250, .6)"
                           backgroundColor="rgb(255, 73, 34)"
                           title="Send a link to your Facebook email"
                           onClick={this.sendDirectMessageToSelfFacebook}
@@ -357,7 +357,7 @@ export default class FacebookBallotModal extends Component {
                             Send to Your Email &gt;
                           </Button> */}
                           <SplitIconButton
-                            seperatorColor="rgba(250, 250, 250, .6)"
+                            separatorColor="rgba(250, 250, 250, .6)"
                             backgroundColor="rgb(255, 73, 34)"
                             title="Send to your email"
                             onClick={this.shareOnFacebook}

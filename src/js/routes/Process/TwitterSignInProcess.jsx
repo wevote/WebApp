@@ -43,17 +43,6 @@ export default class TwitterSignInProcess extends Component {
     });
   }
 
-  // This will be needed in the future
-  // cancelMergeFunction () {
-  //   historyPush({
-  //     pathname: "/more/network",
-  //     state: {
-  //     },
-  //   });
-  //   // message: "You have chosen to NOT merge your two accounts.",
-  //   // message_type: "success"
-  // }
-
   voterMergeTwoAccountsByTwitterKey (twitterSecretKey, voterHasDataToPreserve = true) {
     if (this.state.mergingTwoAccounts) {
       // console.log("In process of mergingTwoAccounts");
@@ -66,19 +55,19 @@ export default class TwitterSignInProcess extends Component {
     let redirectFullUrl = '';
     const signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
     if (signInStartFullUrl) {
-      AppActions.unsetStoreSignInStartPath();
+      AppActions.unsetStoreSignInStartFullUrl();
       cookies.removeItem('sign_in_start_full_url', '/');
       cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
       redirectFullUrl = signInStartFullUrl;
       if (!voterHasDataToPreserve) {
-        redirectFullUrl += '?wait_until_voter_sign_in_completes=1';
+        redirectFullUrl += '?voter_refresh_timer_on=1';
       }
       window.location.assign(redirectFullUrl);
     } else {
       const redirectPathname = '/ballot';
       historyPush({
         pathname: redirectPathname,
-        query: { wait_until_voter_sign_in_completes: voterHasDataToPreserve ? 0 : 1 },
+        query: { voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1 },
         state: {
           message: 'You have successfully signed in with Twitter.',
           message_type: 'success',
@@ -93,12 +82,12 @@ export default class TwitterSignInProcess extends Component {
     VoterActions.voterTwitterSaveToCurrentAccount();
     const signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
     if (signInStartFullUrl) {
-      AppActions.unsetStoreSignInStartPath();
+      AppActions.unsetStoreSignInStartFullUrl();
       cookies.removeItem('sign_in_start_full_url', '/');
       cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
       window.location.assign(signInStartFullUrl);
     } else {
-      const redirectPathname = '/more/network';
+      const redirectPathname = '/ballot';
       historyPush({
         pathname: redirectPathname,
         state: {

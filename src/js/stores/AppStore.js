@@ -1,5 +1,6 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/AppDispatcher';
+import { stringContains } from '../utils/textFormat';
 
 class AppStore extends ReduceStore {
   getInitialState () {
@@ -17,7 +18,7 @@ class AppStore extends ReduceStore {
       showSelectBallotModal: false,
       showSignInModal: false,
       siteOwnerOrganizationWeVoteId: '',
-      storeSignInStartPath: false,
+      storeSignInStartFullUrl: false,
     };
   }
 
@@ -49,6 +50,18 @@ class AppStore extends ReduceStore {
     return this.getState().getVoterGuideSettingsDashboardEditMode;
   }
 
+  isOnWeVoteRootUrl () {
+    return this.getState().onWeVoteRootUrl;
+  }
+
+  isOnWeVoteSubDomainUrl () {
+    return this.getState().onWeVoteSubDomainUrl;
+  }
+
+  isOnChosenFullDomainUrl () {
+    return this.getState().onChosenFullDomainUrl;
+  }
+
   headroomIsUnpinned () {
     return this.getState().headroomUnpinned;
   }
@@ -74,8 +87,8 @@ class AppStore extends ReduceStore {
     return this.getState().showSignInModal;
   }
 
-  storeSignInStartPath () {
-    return this.getState().storeSignInStartPath;
+  storeSignInStartFullUrl () {
+    return this.getState().storeSignInStartFullUrl;
   }
 
   reduce (state, action) {
@@ -114,24 +127,38 @@ class AppStore extends ReduceStore {
           chosen_logo_url_https: chosenSiteLogoUrl,
         } = action.res);
         if (apiSuccess) {
+          let onWeVoteRootUrl = false;
+          let onWeVoteSubDomainUrl = false;
+          let onChosenFullDomainUrl = false;
+          // console.log('siteConfigurationRetrieve hostname:', hostname);
+          if (hostname === 'wevote.us' || hostname === 'localhost') {
+            onWeVoteRootUrl = true;
+          } else if (stringContains('wevote.us', hostname)) {
+            onWeVoteSubDomainUrl = true;
+          } else {
+            onChosenFullDomainUrl = true;
+          }
           return {
             ...state,
             apiStatus,
             apiSuccess,
+            chosenSiteLogoUrl,
             hideWeVoteLogo,
             hostname,
-            chosenSiteLogoUrl,
+            onChosenFullDomainUrl,
+            onWeVoteSubDomainUrl,
+            onWeVoteRootUrl,
             siteOwnerOrganizationWeVoteId,
           };
         } else {
           return state;
         }
-      case 'storeSignInStartPath':
-        // Send a signal to src/js/Application.jsx to write the current pathname to the cookie 'sign_in_start_path'/'sign_in_start_full_url'
-        return { ...state, storeSignInStartPath: action.payload };
-      case 'unsetStoreSignInStartPath':
-        // Turn off the signal to src/js/Application.jsx to write the current pathname to the cookie 'sign_in_start_path'/'sign_in_start_full_url'
-        return { ...state, storeSignInStartPath: action.payload };
+      case 'storeSignInStartFullUrl':
+        // Send a signal to src/js/Application.jsx to write the current pathname to the cookie 'sign_in_start_full_url'
+        return { ...state, storeSignInStartFullUrl: action.payload };
+      case 'unsetStoreSignInStartFullUrl':
+        // Turn off the signal to src/js/Application.jsx to write the current pathname to the cookie 'sign_in_start_full_url'
+        return { ...state, storeSignInStartFullUrl: action.payload };
       default:
         return state;
     }

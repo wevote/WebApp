@@ -7,8 +7,6 @@ import LoadingWheel from '../../components/LoadingWheel';
 import { renderLog } from '../../utils/logging';
 import VoterActions from '../../actions/VoterActions';
 import cookies from '../../utils/cookies';
-// This will be needed in the future
-// import WouldYouLikeToMergeAccounts from "../../components/WouldYouLikeToMergeAccounts";
 
 export default class FacebookSignInProcess extends Component {
   static propTypes = {
@@ -22,9 +20,6 @@ export default class FacebookSignInProcess extends Component {
       yesPleaseMergeAccounts: false,
       mergingTwoAccounts: false,
     };
-    // These will be needed in the future
-    // this.cancelMergeFunction = this.cancelMergeFunction.bind(this);
-    // this.yesPleaseMergeAccounts = this.yesPleaseMergeAccounts.bind(this);
   }
 
   componentDidMount () {
@@ -44,17 +39,6 @@ export default class FacebookSignInProcess extends Component {
     });
   }
 
-  // This will be needed in the future
-  // cancelMergeFunction () {
-  //   historyPush({
-  //     pathname: "/more/network",
-  //     state: {
-  //     },
-  //   });
-  //   // message: "You have chosen to NOT merge your two accounts.",
-  //   // message_type: "success"
-  // }
-
   voterMergeTwoAccountsByFacebookKey (facebookSecretKey, voterHasDataToPreserve = true) {
     // console.log("In voterMergeTwoAccountsByFacebookKey, facebookSecretKey: ", facebookSecretKey, ", voterHasDataToPreserve: ", voterHasDataToPreserve);
     if (this.state.mergingTwoAccounts) {
@@ -65,32 +49,24 @@ export default class FacebookSignInProcess extends Component {
       // Prevent voterMergeTwoAccountsByFacebookKey from being called multiple times
       this.setState({ mergingTwoAccounts: true });
     }
-    let redirectPathname;
-    const signInStartPath = cookies.getItem('sign_in_start_path');
-    if (voterHasDataToPreserve) {
-      redirectPathname = '/more/network';
-      if (signInStartPath) {
-        redirectPathname = signInStartPath;
-        AppActions.unsetStoreSignInStartPath();
-        cookies.removeItem('sign_in_start_path', '/');
+    let redirectFullUrl = '';
+    const signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
+    if (signInStartFullUrl) {
+      AppActions.unsetStoreSignInStartFullUrl();
+      cookies.removeItem('sign_in_start_full_url', '/');
+      cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+      redirectFullUrl = signInStartFullUrl;
+      // The Facebook sign in delay isn't as great as Twitter, so this might not be needed.
+      if (!voterHasDataToPreserve) {
+        redirectFullUrl += '?voter_refresh_timer_on=1';
       }
-      historyPush({
-        pathname: redirectPathname,
-        state: {
-          message: 'Your have signed in with Facebook.',
-          message_type: 'success',
-        },
-      });
+      window.location.assign(redirectFullUrl);
     } else {
-      redirectPathname = '/ballot';
-      if (signInStartPath) {
-        redirectPathname = signInStartPath;
-        AppActions.unsetStoreSignInStartPath();
-        cookies.removeItem('sign_in_start_path', '/');
-      }
+      const redirectPathname = '/ballot';
       historyPush({
         pathname: redirectPathname,
-        query: { wait_until_voter_sign_in_completes: 1 },
+        // The Facebook sign in delay isn't as great as Twitter, so this might not needed.
+        query: { voter_refresh_timer_on: voterHasDataToPreserve ? 0 : 1 },
         state: {
           message: 'You have successfully signed in with Facebook.',
           message_type: 'success',
@@ -102,20 +78,22 @@ export default class FacebookSignInProcess extends Component {
   voterFacebookSaveToCurrentAccount () {
     // console.log("In voterFacebookSaveToCurrentAccount");
     VoterActions.voterFacebookSaveToCurrentAccount();
-    let redirectPathname = '/friends';
-    const signInStartPath = cookies.getItem('sign_in_start_path');
-    if (signInStartPath) {
-      redirectPathname = signInStartPath;
-      AppActions.unsetStoreSignInStartPath();
-      cookies.removeItem('sign_in_start_path', '/');
+    const signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
+    if (signInStartFullUrl) {
+      AppActions.unsetStoreSignInStartFullUrl();
+      cookies.removeItem('sign_in_start_full_url', '/');
+      cookies.removeItem('sign_in_start_full_url', '/', 'wevote.us');
+      window.location.assign(signInStartFullUrl);
+    } else {
+      const redirectPathname = '/ballot';
+      historyPush({
+        pathname: redirectPathname,
+        state: {
+          message: 'You have successfully signed in with Facebook.',
+          message_type: 'success',
+        },
+      });
     }
-    historyPush({
-      pathname: redirectPathname,
-      state: {
-        message: 'You have successfully signed in with Facebook.',
-        message_type: 'success',
-      },
-    });
   }
 
   voterFacebookSignInRetrieve () {
@@ -125,11 +103,6 @@ export default class FacebookSignInProcess extends Component {
       this.setState({ saving: true });
     }
   }
-
-  // This will be needed in the future
-  // yesPleaseMergeAccounts () {
-  //   this.setState({ yesPleaseMergeAccounts: true });
-  // }
 
   render () {
     renderLog(__filename);
@@ -184,29 +157,6 @@ export default class FacebookSignInProcess extends Component {
       // For now are not asking to merge accounts
       this.voterMergeTwoAccountsByFacebookKey(facebookSecretKey, facebookAuthResponse.voter_has_data_to_preserve);
       return LoadingWheel;
-
-      // In the future we want to use the following code to ask people before we merge their current account into
-      //  their account that they previously signed into Facebook with
-
-      // // Is there anything to save from this voter account?
-      // if (facebookAuthResponse.voter_has_data_to_preserve) {
-      //   console.log("FacebookSignInProcess voterHasDataToPreserve is TRUE");
-      //   const cancelMergeFunction = this.cancelMergeFunction;
-      //   const pleaseMergeAccountsFunction = this.yesPleaseMergeAccounts;
-      //   // Display the question of whether to merge accounts or not
-      //   return (
-      //     <WouldYouLikeToMergeAccounts
-      //       cancelMergeFunction={cancelMergeFunction}
-      //       pleaseMergeAccountsFunction={pleaseMergeAccountsFunction}
-      //     />
-      //   );
-      //   // return <span>WouldYouLikeToMergeAccounts</span>;
-      // } else {
-      //   // Go ahead and merge the accounts, which means deleting the current voter and switching to the facebook-linked account
-      //   console.log("FacebookSignInProcess this.voterMergeTwoAccountsByFacebookKey - No data to merge");
-      //   this.voterMergeTwoAccountsByFacebookKey(facebookSecretKey, facebookAuthResponse.voter_has_data_to_preserve);
-      //   return LoadingWheel;
-      // }
     } else {
       // console.log("Setting up new Facebook entry - voterFacebookSaveToCurrentAccount");
       this.voterFacebookSaveToCurrentAccount();

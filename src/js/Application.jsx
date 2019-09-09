@@ -125,19 +125,19 @@ class Application extends Component {
   onAppStoreChange () {
     let signInStartFullUrl = cookies.getItem('sign_in_start_full_url');
     // console.log('Application onAppStoreChange, current signInStartPath: ', signInStartPath);
-    // Do not let sign_in_start_full_url be set again. Different logic while we figure out how to call AppActions.unsetStoreSignInStartPath()
-    if (AppStore.storeSignInStartPath() && !signInStartFullUrl) {
+    // Do not let sign_in_start_full_url be set again. Different logic while we figure out how to call AppActions.unsetStoreSignInStartFullUrl()
+    if (AppStore.storeSignInStartFullUrl() && !signInStartFullUrl) {
       const { origin, pathname } = window.location;
       // console.log('window.location:', window.location);
       const oneDayExpires = 86400;
       signInStartFullUrl = `${origin}${pathname}`;
-      console.log('Application onAppStoreChange, new origin: ', origin, ', pathname: ', pathname, ', signInStartFullUrl: ', signInStartFullUrl);
+      // console.log('Application onAppStoreChange, new origin: ', origin, ', pathname: ', pathname, ', signInStartFullUrl: ', signInStartFullUrl);
       if (origin && stringContains('wevote.us', origin)) {
         cookies.setItem('sign_in_start_full_url', signInStartFullUrl, oneDayExpires, '/', 'wevote.us');
       } else {
         cookies.setItem('sign_in_start_full_url', signInStartFullUrl, oneDayExpires, '/');
       }
-      // AppActions.unsetStoreSignInStartPath(); // Throws this error: Cannot dispatch in the middle of a dispatch.
+      // AppActions.unsetStoreSignInStartFullUrl(); // Throws this error: Cannot dispatch in the middle of a dispatch.
     }
   }
 
