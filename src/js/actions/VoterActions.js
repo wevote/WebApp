@@ -48,6 +48,10 @@ export default {
     });
   },
 
+  setExternalVoterId (externalVoterId) {
+    Dispatcher.dispatch({ type: 'setExternalVoterId', payload: externalVoterId });
+  },
+
   twitterRetrieveIdsIfollow () {
     Dispatcher.loadEndpoint('twitterRetrieveIdsIFollow', {});
   },
@@ -97,6 +101,14 @@ export default {
     Dispatcher.loadEndpoint('voterEmailAddressVerify', {
       email_secret_key: emailSecretKey,
     });
+  },
+
+  voterExternalIdSave (externalVoterId, membershipOrganizationWeVoteId) {
+    Dispatcher.loadEndpoint('voterUpdate',
+      {
+        external_voter_id: externalVoterId,
+        membership_organization_we_vote_id: membershipOrganizationWeVoteId,
+      });
   },
 
   voterFacebookSaveToCurrentAccount () {

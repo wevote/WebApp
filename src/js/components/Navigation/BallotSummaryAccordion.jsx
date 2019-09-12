@@ -19,27 +19,29 @@ class BallotSummaryAccordion extends Component {
 
   componentDidMount () {
     const openSections = {};
-
-    this.props.children.forEach((child) => {
-      if (child && child.props && child.props.isOpen) {
-        openSections[child.props.label] = true;
-      }
-    });
-
-    this.setState({ openSections });
+    const { children } = this.props;
+    if (children) {
+      children.forEach((child) => {
+        if (child && child.props && child.props.isOpen) {
+          openSections[child.props.label] = true;
+        }
+      });
+      this.setState({ openSections });
+    }
   }
 
   componentWillReceiveProps (nextProps) {
     // console.log('BallotSummaryAccordion componentWillReceiveProps');
     const openSections = {};
-
-    nextProps.children.forEach((child) => {
-      if (child && child.props && child.props.isOpen) {
-        openSections[child.props.label] = true;
-      }
-    });
-
-    this.setState({ openSections });
+    const { children } = nextProps;
+    if (children) {
+      nextProps.children.forEach((child) => {
+        if (child && child.props && child.props.isOpen) {
+          openSections[child.props.label] = true;
+        }
+      });
+      this.setState({ openSections });
+    }
   }
 
   onClick = (label) => {
@@ -77,16 +79,23 @@ class BallotSummaryAccordion extends Component {
 
     return (
       <>
-        {children.map(child => (
-          <BallotSummaryAccordionSection
-            isOpen={!!openSections[child.props.label]}
-            key={`accordionKey-${child.props.label}`}
-            label={child.props.label}
-            onClick={onClick}
-          >
-            {child.props.children}
-          </BallotSummaryAccordionSection>
-        ))}
+        {children.map((child) => {
+          if (child && child.props && child.props.label) {
+            return (
+              <BallotSummaryAccordionSection
+                isOpen={!!openSections[child.props.label]}
+                key={`accordionKey-${child.props.label}`}
+                label={child.props.label}
+                onClick={onClick}
+              >
+                {child.props.children}
+              </BallotSummaryAccordionSection>
+            );
+          } else {
+            return null;
+          }
+        })
+        }
       </>
     );
   }

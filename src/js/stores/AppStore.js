@@ -1,6 +1,8 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/AppDispatcher';
 import { stringContains } from '../utils/textFormat';
+import VoterActions from '../actions/VoterActions';
+import VoterStore from './VoterStore'; // eslint-disable-line import/no-cycle
 
 class AppStore extends ReduceStore {
   getInitialState () {
@@ -19,6 +21,7 @@ class AppStore extends ReduceStore {
       showSignInModal: false,
       siteOwnerOrganizationWeVoteId: '',
       storeSignInStartFullUrl: false,
+      voterExternalIdHasBeenSavedOnce: {}, // Dict with externalVoterId and membershipOrganizationWeVoteId as keys, and true/false as value
     };
   }
 
@@ -91,13 +94,23 @@ class AppStore extends ReduceStore {
     return this.getState().storeSignInStartFullUrl;
   }
 
+  voterExternalIdHasBeenSavedOnce (externalVoterId, membershipOrganizationWeVoteId) {
+    if (this.getState().voterExternalIdHasBeenSavedOnce[externalVoterId]) {
+      return this.getState().voterExternalIdHasBeenSavedOnce[externalVoterId][membershipOrganizationWeVoteId] || false;
+    } else {
+      return false;
+    }
+  }
+
   reduce (state, action) {
     let apiStatus;
     let apiSuccess;
+    let chosenSiteLogoUrl;
+    let externalVoterId;
     let hideWeVoteLogo;
     let hostname;
-    let chosenSiteLogoUrl;
     let siteOwnerOrganizationWeVoteId;
+    let voterExternalIdHasBeenSavedOnce;
     switch (action.type) {
       case 'getStartedMode':
         return { ...state, getStartedMode: action.payload };
@@ -138,6 +151,22 @@ class AppStore extends ReduceStore {
           } else {
             onChosenFullDomainUrl = true;
           }
+          externalVoterId = VoterStore.getExternalVoterId();
+          // console.log('AppStore externalVoterId:', externalVoterId, ', siteOwnerOrganizationWeVoteId:', siteOwnerOrganizationWeVoteId);
+          ({ voterExternalIdHasBeenSavedOnce } = state);
+          if (externalVoterId && siteOwnerOrganizationWeVoteId) {
+            if (!this.voterExternalIdHasBeenSavedOnce(externalVoterId, siteOwnerOrganizationWeVoteId)) {
+              // console.log('voterExternalIdHasBeenSavedOnce has NOT been saved before.');
+              VoterActions.voterExternalIdSave(externalVoterId, siteOwnerOrganizationWeVoteId);
+              if (!voterExternalIdHasBeenSavedOnce[externalVoterId]) {
+                voterExternalIdHasBeenSavedOnce[externalVoterId] = {};
+              }
+              voterExternalIdHasBeenSavedOnce[externalVoterId][siteOwnerOrganizationWeVoteId] = true;
+              // AnalyticsActions.saveActionBallotVisit(VoterStore.electionId());
+            } else {
+              // console.log('voterExternalIdHasBeenSavedOnce has been saved before.');
+            }
+          }
           return {
             ...state,
             apiStatus,
@@ -149,6 +178,7 @@ class AppStore extends ReduceStore {
             onWeVoteSubDomainUrl,
             onWeVoteRootUrl,
             siteOwnerOrganizationWeVoteId,
+            voterExternalIdHasBeenSavedOnce,
           };
         } else {
           return state;

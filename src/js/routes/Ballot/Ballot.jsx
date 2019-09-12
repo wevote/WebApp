@@ -78,6 +78,7 @@ class Ballot extends Component {
         voter_guides_to_follow_for_latest_ballot_item: [],
         position_list: [],
       },
+      memberViewedBallotHasBeenSavedOnce: {},
       mounted: false,
       numberOfVoterRetrieveAttempts: 0,
       showSelectBallotModal: false,
@@ -277,10 +278,9 @@ class Ballot extends Component {
         location: nextProps.location,
         pathname: nextProps.location.pathname,
       });
-
       if (googleCivicElectionId && googleCivicElectionId !== 0) {
         AnalyticsActions.saveActionBallotVisit(googleCivicElectionId);
-      } else {
+      } else if (VoterStore.electionId()) {
         AnalyticsActions.saveActionBallotVisit(VoterStore.electionId());
       }
     } else {
@@ -414,11 +414,26 @@ class Ballot extends Component {
       ballotHeaderUnpinned: AppStore.getScrolledDown(),
       showSelectBallotModal: AppStore.showSelectBallotModal(),
     });
+    const { googleCivicElectionId } = this.state;
+    const membershipOrganizationWeVoteId = AppStore.getSiteOwnerOrganizationWeVoteId();
+    // console.log('onAppStoreChange membershipOrganizationWeVoteId: ', membershipOrganizationWeVoteId);
+    if (membershipOrganizationWeVoteId) {
+      const googleCivicElectionIdViewed = googleCivicElectionId || VoterStore.electionId();
+      if (!this.memberViewedBallotHasBeenSavedOnce(membershipOrganizationWeVoteId, googleCivicElectionIdViewed)) {
+        // console.log('onAppStoreChange getting ready to save: ', googleCivicElectionIdViewed);
+        if (googleCivicElectionIdViewed && googleCivicElectionIdViewed !== 0) {
+          AnalyticsActions.saveActionBallotVisit(googleCivicElectionIdViewed);
+          this.memberViewedBallot(membershipOrganizationWeVoteId, googleCivicElectionIdViewed);
+        }
+      } else {
+        // console.log('onAppStoreChange already saved: ', googleCivicElectionIdViewed);
+      }
+    }
   }
 
   onVoterStoreChange () {
     // console.log('Ballot.jsx onVoterStoreChange');
-    const { mounted } = this.state;
+    const { mounted, googleCivicElectionId } = this.state;
     if (mounted) {
       let voterRefreshTimerOn = false;
       if (this.props.location && this.props.location.query && this.props.location.query.voter_refresh_timer_on) {
@@ -450,6 +465,20 @@ class Ballot extends Component {
           textForMapSearch: VoterStore.getTextForMapSearch(),
           voter: VoterStore.getVoter(),
         });
+      }
+      const membershipOrganizationWeVoteId = AppStore.getSiteOwnerOrganizationWeVoteId();
+      // console.log('onVoterStoreChange membershipOrganizationWeVoteId: ', membershipOrganizationWeVoteId);
+      if (membershipOrganizationWeVoteId) {
+        const googleCivicElectionIdViewed = googleCivicElectionId || VoterStore.electionId();
+        if (!this.memberViewedBallotHasBeenSavedOnce(membershipOrganizationWeVoteId, googleCivicElectionIdViewed)) {
+          // console.log('onVoterStoreChange getting ready to save: ', googleCivicElectionIdViewed);
+          if (googleCivicElectionIdViewed && googleCivicElectionIdViewed !== 0) {
+            AnalyticsActions.saveActionBallotVisit(googleCivicElectionIdViewed);
+            this.memberViewedBallot(membershipOrganizationWeVoteId, googleCivicElectionIdViewed);
+          }
+        } else {
+          // console.log('onVoterStoreChange already saved: ', googleCivicElectionIdViewed);
+        }
       }
     }
   }
@@ -584,6 +613,36 @@ class Ballot extends Component {
       default:
         return '';
     }
+  }
+
+  memberViewedBallotHasBeenSavedOnce = (membershipOrganizationWeVoteId, googleCivicElectionId) => {
+    if (!membershipOrganizationWeVoteId || !googleCivicElectionId) {
+      return false;
+    }
+    const { memberViewedBallotHasBeenSavedOnce } = this.state;
+    if (memberViewedBallotHasBeenSavedOnce[membershipOrganizationWeVoteId]) {
+      return memberViewedBallotHasBeenSavedOnce[membershipOrganizationWeVoteId][googleCivicElectionId] || false;
+    } else {
+      return false;
+    }
+  }
+
+  memberViewedBallot = (membershipOrganizationWeVoteId, googleCivicElectionId) => {
+    if (!membershipOrganizationWeVoteId || !googleCivicElectionId) {
+      return false;
+    }
+    let { memberViewedBallotHasBeenSavedOnce } = this.state;
+    if (!memberViewedBallotHasBeenSavedOnce) {
+      memberViewedBallotHasBeenSavedOnce = {};
+    }
+    if (!memberViewedBallotHasBeenSavedOnce[membershipOrganizationWeVoteId]) {
+      memberViewedBallotHasBeenSavedOnce[membershipOrganizationWeVoteId] = {};
+    }
+    memberViewedBallotHasBeenSavedOnce[membershipOrganizationWeVoteId][googleCivicElectionId] = true;
+    this.setState({
+      memberViewedBallotHasBeenSavedOnce,
+    });
+    return true;
   }
 
   showUserEmptyOptions = () => {

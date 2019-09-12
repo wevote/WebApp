@@ -1,4 +1,5 @@
 import { ReduceStore } from 'flux/utils';
+import AppStore from './AppStore'; // eslint-disable-line import/no-cycle
 import BallotActions from '../actions/BallotActions';
 import cookies from '../utils/cookies';
 import Dispatcher from '../dispatcher/Dispatcher';
@@ -21,10 +22,12 @@ class VoterStore extends ReduceStore {
       emailAddressStatus: {},
       emailSignInStatus: {},
       emailAddressList: [],
+      externalVoterId: '',
       facebookSignInStatus: {},
       facebookPhotoRetrieveLoopCount: 0,
-      voterFound: false,
       latestGoogleCivicElectionId: 0,
+      voterFound: false,
+      voterExternalIdHasBeenSavedOnce: {}, // Dict with externalVoterId and membershipOrganizationWeVoteId as keys, and true/false as value
     };
   }
 
@@ -82,6 +85,10 @@ class VoterStore extends ReduceStore {
 
   getEmailSignInStatus () {
     return this.getState().emailSignInStatus;
+  }
+
+  getExternalVoterId () {
+    return this.getState().externalVoterId;
   }
 
   getFacebookPhoto () {
@@ -188,24 +195,37 @@ class VoterStore extends ReduceStore {
     return this.getState().voterFound;
   }
 
+  voterExternalIdHasBeenSavedOnce (externalVoterId, membershipOrganizationWeVoteId) {
+    if (!externalVoterId || !membershipOrganizationWeVoteId) {
+      return false;
+    }
+    if (this.getState().voterExternalIdHasBeenSavedOnce[externalVoterId]) {
+      return this.getState().voterExternalIdHasBeenSavedOnce[externalVoterId][membershipOrganizationWeVoteId] || false;
+    } else {
+      return false;
+    }
+  }
+
   // isVerificationEmailSent () {
   //   return this.getState().emailAddressStatus.verification_email_sent;
   // }
 
   reduce (state, action) {
     // Exit if we don't have a response. "success" is not required though -- we should deal with error conditions below.
-    if (!action.res) {
-      console.log('VoterStore, no action.res received. action: ', action);
+    if (!action.res && !action.payload) {
+      console.log('VoterStore, no action.res or action.payload received. action: ', action);
       return state;
     }
 
-    const { facebookPhotoRetrieveLoopCount } = state;
-    let { address } = action.res;
-
-    let voterDeviceId;
+    let facebookPhotoRetrieveLoopCount;
+    let address;
+    let currentVoterDeviceId;
+    let externalVoterId;
     let googleCivicElectionId;
     let incomingVoter;
-    let currentVoterDeviceId;
+    let membershipOrganizationWeVoteId;
+    let voterDeviceId;
+    let voterExternalIdHasBeenSavedOnce;
 
     switch (action.type) {
       case 'organizationSave':
@@ -269,6 +289,30 @@ class VoterStore extends ReduceStore {
           };
         }
 
+      case 'setExternalVoterId':
+        externalVoterId = action.payload;
+        membershipOrganizationWeVoteId = AppStore.getSiteOwnerOrganizationWeVoteId();
+        ({ voterExternalIdHasBeenSavedOnce } = state);
+        // console.log('VoterStore externalVoterId:', externalVoterId, ', membershipOrganizationWeVoteId:', membershipOrganizationWeVoteId);
+        if (externalVoterId && membershipOrganizationWeVoteId) {
+          if (!this.voterExternalIdHasBeenSavedOnce(externalVoterId, membershipOrganizationWeVoteId)) {
+            // console.log('voterExternalIdHasBeenSavedOnce has NOT been saved before.');
+            VoterActions.voterExternalIdSave(externalVoterId, membershipOrganizationWeVoteId);
+            if (!voterExternalIdHasBeenSavedOnce[externalVoterId]) {
+              voterExternalIdHasBeenSavedOnce[externalVoterId] = {};
+            }
+            voterExternalIdHasBeenSavedOnce[externalVoterId][membershipOrganizationWeVoteId] = true;
+            // AnalyticsActions.saveActionBallotVisit(VoterStore.electionId());
+          } else {
+            // console.log('voterExternalIdHasBeenSavedOnce has been saved before.');
+          }
+        }
+        return {
+          ...state,
+          externalVoterId,
+          voterExternalIdHasBeenSavedOnce,
+        };
+
       case 'twitterRetrieveIdsIFollow':
         // console.log("twitterRetrieveIdsIFollow")
         if (action.res.success) {
@@ -298,9 +342,10 @@ class VoterStore extends ReduceStore {
 
       case 'voterAddressRetrieve':
         // console.log("VoterStore, voterAddressRetrieve, address:", action.res);
+        address = action.res || {};
         return {
           ...state,
-          address: action.res,
+          address,
         };
 
       case 'voterAddressSave':
@@ -311,7 +356,7 @@ class VoterStore extends ReduceStore {
           BallotActions.voterBallotItemsRetrieve();
           SupportActions.positionsCountForAllBallotItems(action.res.google_civic_election_id);
         }
-
+        ({ address } = action.res);
         if (!address) {
           address = {
             text_for_map_search: '',
@@ -453,6 +498,7 @@ class VoterStore extends ReduceStore {
 
         // Preserve address within voter
         incomingVoter = action.res;
+        ({ facebookPhotoRetrieveLoopCount } = state);
 
         currentVoterDeviceId = cookies.getItem('voter_device_id');
         if (!action.res.voter_found) {
