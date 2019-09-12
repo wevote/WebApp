@@ -47,7 +47,7 @@ class Application extends Component {
     const voterDeviceId = VoterStore.voterDeviceId();
     VoterActions.voterRetrieve();
 
-    // console.log("Application, componentDidMount, voterDeviceId:", voterDeviceId);
+    // console.log('Application, componentDidMount, voterDeviceId:', voterDeviceId);
     if (voterDeviceId) {
       this.onVoterStoreChange();
     }
@@ -142,7 +142,7 @@ class Application extends Component {
   }
 
   onVoterStoreChange () {
-    // console.log("Application, onVoterStoreChange");
+    // console.log('Application, onVoterStoreChange');
     const voterDeviceId = VoterStore.voterDeviceId();
     if (voterDeviceId && voterDeviceId !== '') {
       if (this.state.voter_initial_retrieve_needed) {
@@ -160,12 +160,12 @@ class Application extends Component {
       }
     }
 
-    // console.log("Application onVoterStoreChange voter: ", VoterStore.getVoter());
-    // console.log("SignedIn Voter in Application onVoterStoreChange voter: ", VoterStore.getVoter().full_name);
+    // console.log('Application onVoterStoreChange voter: ', VoterStore.getVoter());
+    // console.log('SignedIn Voter in Application onVoterStoreChange voter: ', VoterStore.getVoter().full_name);
   }
 
   getAppBaseClass = () => {
-    // console.log("Determine the headroom space pathname:" + pathname);
+    // console.log('Determine the headroom space pathname:' + pathname);
     let appBaseClass = 'app-base';
     if (isWebApp()) {
       appBaseClass += ' headroom-webapp';
@@ -187,7 +187,7 @@ class Application extends Component {
 
 
   incomingVariableManagement () {
-    // console.log("Application, incomingVariableManagement, this.props.location.query: ", this.props.location.query);
+    // console.log('Application, incomingVariableManagement, this.props.location.query: ', this.props.location.query);
     if (this.props.location.query) {
       // Cookie needs to expire in One day i.e. 24*60*60 = 86400
       let atLeastOneQueryVariableFound = false;
@@ -209,7 +209,7 @@ class Application extends Component {
       const hideIntroModalFromUrl = this.props.location.query ? hideIntroModal : 0;
       const hideIntroModalFromUrlTrue = hideIntroModalFromUrl === 1 || hideIntroModalFromUrl === '1' || hideIntroModalFromUrl === 'true';
       if (hideIntroModalFromUrl) {
-        // console.log("hideIntroModalFromUrl: ", hideIntroModalFromUrl);
+        // console.log('hideIntroModalFromUrl: ', hideIntroModalFromUrl);
         atLeastOneQueryVariableFound = true;
       }
 
@@ -219,10 +219,20 @@ class Application extends Component {
         cookies.setItem('hide_intro_modal', hideIntroModalFromUrl, oneDayExpires, '/');
       }
 
+      const { id: externalVoterId } = this.props.location.query;
+      if (externalVoterId) {
+        // console.log('externalVoterId: ', externalVoterId);
+        VoterActions.setExternalVoterId(externalVoterId);
+        atLeastOneQueryVariableFound = true;
+      }
+
       let autoFollowListFromUrl = '';
       if (this.props.location.query) {
-        // console.log("this.props.location.query: ", this.props.location.query);
-        const { af, auto_follow: autoFollow, voter_address: voterAddress } = this.props.location.query;
+        // console.log('this.props.location.query: ', this.props.location.query);
+        const {
+          af, auto_follow: autoFollow,
+          voter_address: voterAddress,
+        } = this.props.location.query;
         if (this.props.location.query.af) {
           autoFollowListFromUrl = af;
           atLeastOneQueryVariableFound = true;
@@ -237,7 +247,7 @@ class Application extends Component {
         });
 
         if (voterAddress) {
-          // console.log("this.props.location.query.voter_address: ", this.props.location.query.voter_address);
+          // console.log('this.props.location.query.voter_address: ', this.props.location.query.voter_address);
           atLeastOneQueryVariableFound = true;
           if (voterAddress && voterAddress !== '') {
             // Do not save a blank voterAddress -- we don't want to over-ride an existing address with a blank
@@ -246,8 +256,8 @@ class Application extends Component {
         }
 
         if (atLeastOneQueryVariableFound && this.props.location.pathname) {
-          // console.log("atLeastOneQueryVariableFound push: ", AtLeastOneQueryVariableFound);
-          // console.log("this.props.location.pathname: ", this.props.location.pathname);
+          // console.log('atLeastOneQueryVariableFound push: ', AtLeastOneQueryVariableFound);
+          // console.log('this.props.location.pathname: ', this.props.location.pathname);
           historyPush(this.props.location.pathname);
         }
       }

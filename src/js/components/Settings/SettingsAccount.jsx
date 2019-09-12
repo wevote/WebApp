@@ -35,7 +35,6 @@ export default class SettingsAccount extends Component {
       facebookAuthResponse: {},
       isOnWeVoteRootUrl: true,
       isOnWeVoteSubDomainUrl: false,
-      isOnChosenFullDomainUrl: false,
       pleaseSignInTitle: '',
       pleaseSignInSubTitle: '',
       showTwitterDisconnect: false,
@@ -102,7 +101,6 @@ export default class SettingsAccount extends Component {
     this.setState({
       isOnWeVoteRootUrl: AppStore.isOnWeVoteRootUrl(),
       isOnWeVoteSubDomainUrl: AppStore.isOnWeVoteSubDomainUrl(),
-      isOnChosenFullDomainUrl: AppStore.isOnChosenFullDomainUrl(),
     });
   }
 
@@ -118,7 +116,6 @@ export default class SettingsAccount extends Component {
     this.setState({
       isOnWeVoteRootUrl: AppStore.isOnWeVoteRootUrl(),
       isOnWeVoteSubDomainUrl: AppStore.isOnWeVoteSubDomainUrl(),
-      isOnChosenFullDomainUrl: AppStore.isOnChosenFullDomainUrl(),
     });
   }
 
