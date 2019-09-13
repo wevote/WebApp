@@ -8,6 +8,7 @@ import Activity from './routes/Activity';
 import Attributions from './routes/More/Attributions';
 import Ballot from './routes/Ballot/Ballot';
 import BallotIndex from './routes/Ballot/BallotIndex';
+import BallotRedirect from './routes/Ballot/BallotRedirect';
 import Candidate from './routes/Ballot/Candidate';
 import ClaimYourPage from './routes/Settings/ClaimYourPage';
 import Connect from './routes/Connect';
@@ -72,7 +73,7 @@ import VoterGuidesMenuMobile from './routes/Settings/VoterGuidesMenuMobile';
 import VoterGuidesUnderOneValue from './routes/Values/VoterGuidesUnderOneValue';
 import VerifyRegistration from './routes/More/VerifyRegistration';
 import VerifyThisIsMe from './routes/VoterGuide/VerifyThisIsMe';
-import Welcome from './routes/WelcomeForVoters';
+import WelcomeForVoters from './routes/WelcomeForVoters';
 import WelcomeForCampaigns from './routes/WelcomeForCampaigns';
 import WelcomeForOrganizations from './routes/WelcomeForOrganizations';
 import WeVoteBallotEmbed from './routes/More/WeVoteBallotEmbed';
@@ -82,6 +83,9 @@ import { isWebApp } from './utils/cordovaUtils';
 // See /js/components/Navigation/HeaderBar.jsx for show_full_navigation cookie
 const ballotHasBeenVisited = cookies.getItem('ballot_has_been_visited');
 const firstVisit = !cookies.getItem('voter_device_id');
+const { hostname } = window.location;
+const isWeVoteMarketingSite = (String(hostname) === 'wevote.us' || String(hostname) === 'quality.wevote.us'); //  || String(hostname) === 'localhost'
+const isNotWeVoteMarketingSite = !isWeVoteMarketingSite;
 
 const routes = () => (
   <Route path="/" component={Application}>
@@ -96,7 +100,7 @@ const routes = () => (
       }
       )()
     }
-    <Route path="/welcome" component={props => <Welcome {...props} pathname="/welcome" />} />
+    <Route path="/welcome" component={isNotWeVoteMarketingSite ? BallotRedirect : props => <WelcomeForVoters {...props} pathname="/welcome" />} />
     <Route path="/activity" component={Activity} />
     <Route path="/ballot" component={BallotIndex}>
       <IndexRoute component={Ballot} />
@@ -119,10 +123,10 @@ const routes = () => (
     <Route path="/ballot/election/:google_civic_election_id" component={Ballot} />
 
     <Route path="/polling-place-locator" component={PollingPlaceLocatorModal} />
-    <Route path="/for-campaigns" component={props => <WelcomeForCampaigns {...props} pathname="/for-campaigns" />} />
-    <Route path="/for-organizations" component={props => <WelcomeForOrganizations {...props} pathname="/for-organizations" />} />
-    <Route path="/how" component={HowItWorks} />
-    <Route path="/how/:category_string" component={HowItWorks} />
+    <Route path="/for-campaigns" component={isNotWeVoteMarketingSite ? BallotRedirect : props => <WelcomeForCampaigns {...props} pathname="/for-campaigns" />} />
+    <Route path="/for-organizations" component={isNotWeVoteMarketingSite ? BallotRedirect : props => <WelcomeForOrganizations {...props} pathname="/for-organizations" />} />
+    <Route path="/how" component={isNotWeVoteMarketingSite ? BallotRedirect : HowItWorks} />
+    <Route path="/how/:category_string" component={isNotWeVoteMarketingSite ? BallotRedirect : HowItWorks} />
     <Route path="/intro" component={Intro} />
     <Route path="/wevoteintro/network" component={IntroNetwork} />
     <Route path="/intro/sample_ballot" component={SampleBallot} />
@@ -160,14 +164,14 @@ const routes = () => (
     <Route path="/facebook_invitable_friends" component={FacebookInvitableFriends} />
 
     {/* More Menu Pages */}
-    <Route path="/more/about" component={About} />
+    <Route path="/more/about" component={isNotWeVoteMarketingSite ? BallotRedirect : About} />
     <Route path="/more/absentee" component={AbsenteeBallot} />
     <Route path="/more/alerts" component={ElectionReminder} />
     <Route path="/more/attributions" component={Attributions} />
     <Route path="/more/connect" component={Connect} />
     <Route path="/more/credits" component={Credits} />
-    <Route path="/more/donate" component={Donate} />
-    <Route path="/more/donate_thank_you" component={DonateThankYou} />
+    <Route path="/more/donate" component={isNotWeVoteMarketingSite ? BallotRedirect : Donate} />
+    <Route path="/more/donate_thank_you" component={isNotWeVoteMarketingSite ? BallotRedirect : DonateThankYou} />
     <Route path="/more/stripe_elements_test" component={StripeElementsTest} />
     <Route path="/more/elections" component={Elections} />
     <Route path="/more/email_ballot" component={EmailBallot} />
@@ -182,8 +186,8 @@ const routes = () => (
     {/* Redirecting old URLs to new components */}
     <Route path="/more/network/friends" component={Friends} />
     <Route path="/more/network/organizations" component={Values} />
-    <Route path="/more/pricing" component={Pricing} />
-    <Route path="/more/pricing/:pricing_choice" component={Pricing} />
+    <Route path="/more/pricing" component={isNotWeVoteMarketingSite ? BallotRedirect : Pricing} />
+    <Route path="/more/pricing/:pricing_choice" component={isNotWeVoteMarketingSite ? BallotRedirect : Pricing} />
     <Route path="/more/privacy" component={Privacy} />
     <Route path="/more/processing_donation" component={ProcessingDonation} />
     <Route path="/more/register" component={RegisterToVote} />
@@ -232,7 +236,7 @@ const routes = () => (
     <Route path="/twittersigninprocess/:sign_in_step" component={TwitterSignInProcess} />
 
     {/* Temporary scratchpad for component testing */}
-    <Route path="/testing/scratchpad" component={ScratchPad} />
+    <Route path="/testing/scratchpad" component={isNotWeVoteMarketingSite ? BallotRedirect : ScratchPad} />
 
     <Route path=":twitter_handle/ballot/empty" component={TwitterHandleLanding} />
     <Route path=":twitter_handle/ballot/:ballot_location_shortcut" component={TwitterHandleLanding} />
@@ -248,7 +252,6 @@ const routes = () => (
     <Route path=":twitter_handle/following" component={props => <TwitterHandleLanding {...props} active_route="following" />} />
     <Route path=":twitter_handle/positions" component={props => <TwitterHandleLanding {...props} active_route="positions" />} />
     <Route path=":twitter_handle/:action_variable" component={TwitterHandleLanding} />
-
   </Route>
 );
 

@@ -316,7 +316,7 @@ class SettingsSharing extends Component {
                       textAlign: 'left',
                     }}
                   >
-                    <img
+                    <PreviewImage
                       alt="Uploaded logo"
                       style={{
                         width: 'auto',

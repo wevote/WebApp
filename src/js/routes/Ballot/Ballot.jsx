@@ -703,7 +703,7 @@ class Ballot extends Component {
 
   startTimerToRetrieveVoter = () => {
     let { numberOfVoterRetrieveAttempts } = this.state;
-    console.log('startTimerToRetrieveVoter, numberOfVoterRetrieveAttempts:', numberOfVoterRetrieveAttempts);
+    // console.log('startTimerToRetrieveVoter, numberOfVoterRetrieveAttempts:', numberOfVoterRetrieveAttempts);
     clearTimeout(this.timer);
     this.timer = setTimeout(() => {
       VoterActions.voterRetrieve();

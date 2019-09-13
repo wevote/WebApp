@@ -35,6 +35,7 @@ export default class SettingsAccount extends Component {
       facebookAuthResponse: {},
       isOnWeVoteRootUrl: true,
       isOnWeVoteSubDomainUrl: false,
+      isOnFacebookSupportedDomainUrl: false,
       pleaseSignInTitle: '',
       pleaseSignInSubTitle: '',
       showTwitterDisconnect: false,
@@ -101,6 +102,7 @@ export default class SettingsAccount extends Component {
     this.setState({
       isOnWeVoteRootUrl: AppStore.isOnWeVoteRootUrl(),
       isOnWeVoteSubDomainUrl: AppStore.isOnWeVoteSubDomainUrl(),
+      isOnFacebookSupportedDomainUrl: AppStore.isOnFacebookSupportedDomainUrl(),
     });
   }
 
@@ -116,6 +118,7 @@ export default class SettingsAccount extends Component {
     this.setState({
       isOnWeVoteRootUrl: AppStore.isOnWeVoteRootUrl(),
       isOnWeVoteSubDomainUrl: AppStore.isOnWeVoteSubDomainUrl(),
+      isOnFacebookSupportedDomainUrl: AppStore.isOnFacebookSupportedDomainUrl(),
     });
   }
 
@@ -178,16 +181,16 @@ export default class SettingsAccount extends Component {
       return LoadingWheel;
     }
 
-    const { isOnWeVoteRootUrl, isOnWeVoteSubDomainUrl, pleaseSignInTitle, pleaseSignInSubTitle } = this.state;
+    const { isOnWeVoteRootUrl, isOnWeVoteSubDomainUrl, isOnFacebookSupportedDomainUrl, pleaseSignInTitle, pleaseSignInSubTitle } = this.state;
     let pageTitle = 'Sign In - We Vote';
     let yourAccountTitle = 'Security & Sign In';
     let yourAccountExplanation = '';
     if (this.state.voter.is_signed_in) {
       pageTitle = 'Security & Sign In - We Vote';
-      if (this.state.voter.signed_in_facebook && !this.state.voter.signed_in_twitter) {
+      if (this.state.voter.signed_in_facebook && !this.state.voter.signed_in_twitter && (isOnWeVoteRootUrl || isOnWeVoteSubDomainUrl)) {
         yourAccountTitle = 'Have Twitter Too?';
         yourAccountExplanation = 'By adding your Twitter account to your We Vote profile, you get access to the voter guides of everyone you follow.';
-      } else if (this.state.voter.signed_in_twitter && !this.state.voter.signed_in_facebook) {
+      } else if (this.state.voter.signed_in_twitter && !this.state.voter.signed_in_facebook && isOnFacebookSupportedDomainUrl) {
         yourAccountTitle = 'Have Facebook Too?';
         yourAccountExplanation = 'By adding Facebook to your We Vote profile, it is easier to invite friends.';
       }
@@ -223,7 +226,7 @@ export default class SettingsAccount extends Component {
                   }
                 </div>
                 <div className="u-stack--md">
-                  { !this.state.voter.signed_in_facebook && isOnWeVoteRootUrl && (
+                  { !this.state.voter.signed_in_facebook && isOnFacebookSupportedDomainUrl && (
                     <span>
                       <FacebookSignIn toggleSignInModal={this.props.toggleSignInModal} buttonText="Sign in with Facebook" />
                     </span>

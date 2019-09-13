@@ -46,7 +46,7 @@ import Section, {
 import WelcomeAppbar from '../components/Navigation/WelcomeAppbar';
 import welcomeForVotersImage from '../../img/welcome/WelcomeForVoters-Ballot-20190507.png';
 
-class Welcome extends PureComponent {
+class WelcomeForVoters extends PureComponent {
   static propTypes = {
     classes: PropTypes.object,
     pathname: PropTypes.string,
@@ -118,7 +118,7 @@ class Welcome extends PureComponent {
   render () {
     renderLog(__filename);
     const { classes, pathname } = this.props;
-    // console.log('WelcomeNew, pathname: ', pathname);
+    // console.log('WelcomeForVoters, pathname: ', pathname);
     const { voter, newsletterOptInTrue } = this.state;
     const isVoterSignedIn = voter.is_signed_in;
 
@@ -316,4 +316,4 @@ const Wrapper = styled.div`
   padding-top: ${({ padTop }) => padTop};
 `;
 
-export default withStyles(styles)(Welcome);
+export default withStyles(styles)(WelcomeForVoters);

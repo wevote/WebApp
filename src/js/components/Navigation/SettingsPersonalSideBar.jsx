@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { renderLog } from '../../utils/logging';
+import AppStore from '../../stores/AppStore';
 
 // https://stackoverflow.com/questions/32647215/declaring-static-constants-in-es6-classes
 const CORPORATION = 'C';
@@ -22,8 +23,10 @@ export default class SettingsPersonalSideBar extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      isOnPartnerUrl: false,
       isOrganization: false,
       isSignedIn: false,
+      voterIsAdminForThisUrl: false,
     };
   }
 
@@ -33,6 +36,8 @@ export default class SettingsPersonalSideBar extends Component {
     }
     const { isSignedIn } = this.props;
     this.setState({
+      isOnPartnerUrl: AppStore.isOnPartnerUrl(),
+      voterIsAdminForThisUrl: AppStore.voterIsAdminForThisUrl(),
       isSignedIn,
     });
   }
@@ -40,6 +45,8 @@ export default class SettingsPersonalSideBar extends Component {
   componentWillReceiveProps (nextProps) {
     const { isSignedIn } = nextProps;
     this.setState({
+      isOnPartnerUrl: AppStore.isOnPartnerUrl(),
+      voterIsAdminForThisUrl: AppStore.voterIsAdminForThisUrl(),
       isSignedIn,
     });
   }
@@ -61,8 +68,9 @@ export default class SettingsPersonalSideBar extends Component {
     renderLog(__filename);
     // console.log("SettingsPersonalSideBar, isOrganization: ", this.state.isOrganization);
     const { editMode } = this.props;
-    const { isSignedIn, isOrganization } = this.state;
+    const { isOnPartnerUrl, isSignedIn, isOrganization, voterIsAdminForThisUrl } = this.state;
     const showSettingsInDevelopment = true; // If developing any of the new settings, change this to true
+    const isOnPartnerUrlAndNotAdmin = isOnPartnerUrl && !voterIsAdminForThisUrl;
 
     return (
       <div className="card">
@@ -70,13 +78,13 @@ export default class SettingsPersonalSideBar extends Component {
           <div className="SettingsItem__summary__title">Your Settings</div>
 
           {isSignedIn && (
-            <div className={editMode === 'profile' ?
+            <div className={String(editMode) === 'profile' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
             >
               <div>
                 <Link to="/settings/profile" className="SettingsItem__summary__item">
-                  <span className={editMode === 'profile' ?
+                  <span className={String(editMode) === 'profile' ?
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
                   >
@@ -87,13 +95,13 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          <div className={editMode === 'account' ?
+          <div className={String(editMode) === 'account' ?
             'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
             'SettingsItem__summary__item-container'}
           >
             <div>
               <Link to="/settings/account" className="SettingsItem__summary__item">
-                <span className={editMode === 'account' ?
+                <span className={String(editMode) === 'account' ?
                   'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                   'SettingsItem__summary__item__display-name'}
                 >
@@ -105,14 +113,14 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           </div>
 
-          {isSignedIn && (
-            <div className={editMode === 'notifications' ?
+          {isSignedIn && !isOnPartnerUrl && (
+            <div className={String(editMode) === 'notifications' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container'}
             >
               <div>
                 <Link to="/settings/notifications" className="SettingsItem__summary__item">
-                  <span className={editMode === 'notifications' ?
+                  <span className={String(editMode) === 'notifications' ?
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
                   >
@@ -123,14 +131,14 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && showSettingsInDevelopment && (
-            <div className={editMode === 'domain' ?
+          {isSignedIn && showSettingsInDevelopment && !isOnPartnerUrlAndNotAdmin && (
+            <div className={String(editMode) === 'domain' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
             >
               <div>
                 <Link to="/settings/domain" className="SettingsItem__summary__item">
-                  <span className={editMode === 'domain' ?
+                  <span className={String(editMode) === 'domain' ?
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
                   >
@@ -141,14 +149,14 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && showSettingsInDevelopment && (
-            <div className={editMode === 'sharing' ?
+          {isSignedIn && showSettingsInDevelopment && !isOnPartnerUrlAndNotAdmin && (
+            <div className={String(editMode) === 'sharing' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
             >
               <div>
                 <Link to="/settings/sharing" className="SettingsItem__summary__item">
-                  <span className={editMode === 'sharing' ?
+                  <span className={String(editMode) === 'sharing' ?
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
                   >
@@ -159,14 +167,14 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && showSettingsInDevelopment && (
-            <div className={editMode === 'subscription' ?
+          {isSignedIn && showSettingsInDevelopment && !isOnPartnerUrlAndNotAdmin && (
+            <div className={String(editMode) === 'subscription' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
             >
               <div>
                 <Link to="/settings/subscription" className="SettingsItem__summary__item">
-                  <span className={editMode === 'subscription' ?
+                  <span className={String(editMode) === 'subscription' ?
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
                   >
@@ -177,14 +185,14 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && showSettingsInDevelopment && (
-            <div className={editMode === 'analytics' ?
+          {isSignedIn && showSettingsInDevelopment && !isOnPartnerUrlAndNotAdmin && (
+            <div className={String(editMode) === 'analytics' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
             >
               <div>
                 <Link to="/settings/analytics" className="SettingsItem__summary__item">
-                  <span className={editMode === 'analytics' ?
+                  <span className={String(editMode) === 'analytics' ?
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
                   >
@@ -195,14 +203,14 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && isOrganization && (
-            <div className={editMode === 'issues' || editMode === 'issues_to_link' || editMode === 'issues_linked' ?
+          {isSignedIn && isOrganization && !isOnPartnerUrlAndNotAdmin && (
+            <div className={String(editMode) === 'issues' || String(editMode) === 'issues_to_link' || String(editMode) === 'issues_linked' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
             >
               <div>
                 <Link to="/settings/issues" className="SettingsItem__summary__item">
-                  <span className={editMode === 'issues' || editMode === 'issues_to_link' || editMode === 'issues_linked' ?
+                  <span className={String(editMode) === 'issues' || String(editMode) === 'issues_to_link' || String(editMode) === 'issues_linked' ?
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
                   >
@@ -213,14 +221,14 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && showSettingsInDevelopment && (
-            <div className={editMode === 'promoted' ?
+          {isSignedIn && showSettingsInDevelopment && !isOnPartnerUrlAndNotAdmin && (
+            <div className={String(editMode) === 'promoted' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
             >
               <div>
                 <Link to="/settings/promoted" className="SettingsItem__summary__item">
-                  <span className={editMode === 'promoted' ?
+                  <span className={String(editMode) === 'promoted' ?
                     'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
                     'SettingsItem__summary__item__display-name'}
                   >
@@ -231,21 +239,23 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          <div className={editMode === 'tools' ?
-            'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
-            'SettingsItem__summary__item-container '}
-          >
-            <div>
-              <Link to="/settings/tools" className="SettingsItem__summary__item">
-                <span className={editMode === 'tools' ?
-                  'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
-                  'SettingsItem__summary__item__display-name'}
-                >
-                Tools for Your Website
-                </span>
-              </Link>
+          { !isOnPartnerUrlAndNotAdmin && (
+            <div className={String(editMode) === 'tools' ?
+              'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
+              'SettingsItem__summary__item-container '}
+            >
+              <div>
+                <Link to="/settings/tools" className="SettingsItem__summary__item">
+                  <span className={String(editMode) === 'tools' ?
+                    'SettingsItem__summary__item__display-name SettingsItem__summary__item__display-name--selected' :
+                    'SettingsItem__summary__item__display-name'}
+                  >
+                  Tools for Your Website
+                  </span>
+                </Link>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     );
