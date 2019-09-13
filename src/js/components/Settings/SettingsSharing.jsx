@@ -304,8 +304,12 @@ class SettingsSharing extends Component {
               <SharingColumn>
                 <InputBoxLabel>Upload Your Own Logo</InputBoxLabel>
                 <ImageDescription>
-                  <PreviewImage alt="Uploaded logo" width="125px" src={chosenLogoFromFileReader || chosenLogoUrlHttps || cordovaDot('/img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg')}  />
-                  <DescriptionText>Place your logo in the header bar. Image will be resized to be no more than 125px wide, and 30px tall.</DescriptionText>
+                  <PreviewImage
+                    alt="Uploaded logo"
+                    width="128px"
+                    src={chosenLogoFromFileReader || chosenLogoUrlHttps || cordovaDot('/img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg')}
+                  />
+                  <DescriptionText>Place your logo in the header bar. Image will be resized to be no more than 128px wide, and 32px tall.</DescriptionText>
                 </ImageDescription>
               </SharingColumn>
               <SharingColumn alignRight>

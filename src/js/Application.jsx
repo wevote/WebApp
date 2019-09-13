@@ -268,7 +268,7 @@ class Application extends Component {
     renderLog(__filename);
     const { location: { pathname } } = this.props;
     const { StripeCheckout } = window;
-    const waitForStripe = (pathname === '/more/donate' && StripeCheckout === undefined);
+    const waitForStripe = (String(pathname) === '/more/donate' && StripeCheckout === undefined);
     // console.log('Application render, pathname:', pathname);
 
     if (this.state.voter === undefined || this.props.location === undefined || waitForStripe) {
@@ -376,14 +376,14 @@ class Application extends Component {
                 weVoteBrandingOff={this.state.weVoteBrandingOff}
         />
         <SnackNotifier />
-        { pathname === '/for-campaigns' ||
-          pathname === '/for-organizations' ||
+        { String(pathname) === '/for-campaigns' ||
+          String(pathname) === '/for-organizations' ||
           pathname.startsWith('/how') ||
-          pathname === '/more/about' ||
-          pathname === '/more/credits' ||
+          String(pathname) === '/more/about' ||
+          String(pathname) === '/more/credits' ||
           pathname.startsWith('/more/donate') ||
           pathname.startsWith('/more/pricing') ||
-          pathname === '/welcome' ||
+          String(pathname) === '/welcome' ||
           !contentFullWidthMode ?
           (
             <div className="welcome-or-not-full-width">
