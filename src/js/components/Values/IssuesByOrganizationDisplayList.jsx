@@ -233,11 +233,8 @@ const ValueIconAndTextOrganization = styled.span`
 `;
 
 const PopoverWrapper = styled.div`
-  width: calc(100% + 24px);
+  width: calc(100%);
   height: 100%;
-  position: relative;
-  right: 12px;
-  bottom: 8px;
   border-radius: 3px;
 `;
 
