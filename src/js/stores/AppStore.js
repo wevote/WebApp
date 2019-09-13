@@ -19,6 +19,7 @@ class AppStore extends ReduceStore {
       showPaidAccountUpgradeModal: false,
       showSelectBallotModal: false,
       showSignInModal: false,
+      siteConfigurationHasBeenRetrieved: false,
       siteOwnerOrganizationWeVoteId: '',
       storeSignInStartFullUrl: false,
       voterExternalIdHasBeenSavedOnce: {}, // Dict with externalVoterId and membershipOrganizationWeVoteId as keys, and true/false as value
@@ -61,6 +62,19 @@ class AppStore extends ReduceStore {
     return this.getState().onWeVoteSubDomainUrl;
   }
 
+  isOnPartnerUrl () {
+    return this.getState().onWeVoteSubDomainUrl || this.getState().onChosenFullDomainUrl;
+  }
+
+  voterIsAdminForThisUrl () {
+    const linkedOrganizationWeVoteId = VoterStore.getLinkedOrganizationWeVoteId();
+    return this.getState().siteOwnerOrganizationWeVoteId === linkedOrganizationWeVoteId;
+  }
+
+  isOnFacebookSupportedDomainUrl () {
+    return this.getState().onFacebookSupportedDomainUrl;
+  }
+
   isOnChosenFullDomainUrl () {
     return this.getState().onChosenFullDomainUrl;
   }
@@ -88,6 +102,10 @@ class AppStore extends ReduceStore {
 
   showSignInModal () {
     return this.getState().showSignInModal;
+  }
+
+  siteConfigurationHasBeenRetrieved () {
+    return this.getState().siteConfigurationHasBeenRetrieved;
   }
 
   storeSignInStartFullUrl () {
@@ -142,14 +160,19 @@ class AppStore extends ReduceStore {
         if (apiSuccess) {
           let onWeVoteRootUrl = false;
           let onWeVoteSubDomainUrl = false;
+          let onFacebookSupportedDomainUrl = false;
           let onChosenFullDomainUrl = false;
           // console.log('siteConfigurationRetrieve hostname:', hostname);
-          if (hostname === 'wevote.us' || hostname === 'localhost') {
+          if (hostname === 'wevote.us' || hostname === 'quality.wevote.us' || hostname === 'localhost') {
             onWeVoteRootUrl = true;
           } else if (stringContains('wevote.us', hostname)) {
             onWeVoteSubDomainUrl = true;
           } else {
             onChosenFullDomainUrl = true;
+          }
+          if (hostname === 'wevote.us' || hostname === 'quality.wevote.us' || hostname === 'localhost') {
+            // We should move this to the server if we can't change the Facebook sign in root url
+            onFacebookSupportedDomainUrl = true;
           }
           externalVoterId = VoterStore.getExternalVoterId();
           // console.log('AppStore externalVoterId:', externalVoterId, ', siteOwnerOrganizationWeVoteId:', siteOwnerOrganizationWeVoteId);
@@ -175,8 +198,10 @@ class AppStore extends ReduceStore {
             hideWeVoteLogo,
             hostname,
             onChosenFullDomainUrl,
+            onFacebookSupportedDomainUrl,
             onWeVoteSubDomainUrl,
             onWeVoteRootUrl,
+            siteConfigurationHasBeenRetrieved: true,
             siteOwnerOrganizationWeVoteId,
             voterExternalIdHasBeenSavedOnce,
           };
