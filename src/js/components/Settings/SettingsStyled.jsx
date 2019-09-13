@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 const ImageDescription = styled.div`
   display: flex;
+  align-items: center;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     flex-flow: column-reverse;
   }
