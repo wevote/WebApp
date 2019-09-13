@@ -10,24 +10,20 @@ import ThumbsDownIcon from '@material-ui/icons/ThumbDown';
 import CommentIcon from '@material-ui/icons/Comment';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
-import DialogContent from '@material-ui/core/DialogContent';
-import { cordovaDot } from '../../utils/cordovaUtils';
-import { renderLog } from '../../utils/logging';
-import { stringContains } from '../../utils/textFormat';
-import ShareButtonDropDown from './ShareButtonDropdown';
-import SupportActions from '../../actions/SupportActions';
-import VoterActions from '../../actions/VoterActions';
-import VoterConstants from '../../constants/VoterConstants';
-import VoterStore from '../../stores/VoterStore';
-import PositionPublicToggle from './PositionPublicToggle';
-import SupportStore from '../../stores/SupportStore';
-import webAppConfig from '../../config';
-import shareIconSvg from '../../../img/global/svg-icons/share-icon.svg';
-import { openSnackbar } from './SnackNotifier';
+import { cordovaDot } from '../../../utils/cordovaUtils';
+import { renderLog } from '../../../utils/logging';
+import { stringContains } from '../../../utils/textFormat';
+import ShareButtonDropDown from '../ShareButtonDropdown';
+import SupportActions from '../../../actions/SupportActions';
+import VoterActions from '../../../actions/VoterActions';
+import VoterConstants from '../../../constants/VoterConstants';
+import VoterStore from '../../../stores/VoterStore';
+import PositionPublicToggle from '../PositionPublicToggle';
+import SupportStore from '../../../stores/SupportStore';
+import webAppConfig from '../../../config';
+import shareIconSvg from '../../../../img/global/svg-icons/share-icon.svg';
+import { openSnackbar } from '../SnackNotifier';
+import ChooseOrOppose from './ChooseOrOppose';
 
 class ItemActionBar extends PureComponent {
   static propTypes = {
@@ -609,48 +605,12 @@ class ItemActionBar extends PureComponent {
         open
         onClose={() => { this.toggleSupportOrOpposeHelpModal(); }}
       >
-        <DialogTitle>
-          <Typography variant="h6" className="text-center">Choose or Oppose</Typography>
-          <IconButton
-            aria-label="Close"
-            classes={{ root: classes.closeButton }}
-            onClick={() => { this.toggleSupportOrOpposeHelpModal(); }}
-            id="profileCloseItemActionBar"
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent classes={{ root: classes.dialogContent }}>
-          <section className="card">
-            <div className="text-center">
-              <div className="u-f2">Your position is only visible to your We Vote friends.</div>
-              <div className="u-f4">
-                Change the privacy toggle to make your views public.
-                <br />
-                Test the toggle here:
-                <br />
-              </div>
-              <br />
-              <PositionPublicToggle
-                ballotItemWeVoteId="null"
-                className="null"
-                externalUniqueId={`practiceToggle-${this.props.externalUniqueId}`}
-                type={type}
-                supportProps={modalSupportProps}
-                inTestMode
-              />
-              <br />
-              We Vote helps you get ready to vote,
-              {' '}
-              <strong>but you cannot use We Vote to cast your vote</strong>
-              .
-              <br />
-              Make sure to return your official ballot to your polling place!
-              <br />
-              <br />
-            </div>
-          </section>
-        </DialogContent>
+        <ChooseOrOppose
+          type={type}
+          modalSupportProps={modalSupportProps}
+          externalUniqueId={this.props.externalUniqueId}
+          onClose={this.toggleSupportOrOpposeHelpModal}
+        />
       </Dialog>
     );
 
@@ -811,6 +771,10 @@ const styles = theme => ({
       marginTop: -2,
     },
   },
+  dialogPaper: {
+    minHeight: 282,
+    margin: '0 8px',
+  },
   buttonRoot: {
     padding: 4,
     fontSize: 12,
@@ -858,6 +822,10 @@ const styles = theme => ({
     position: 'absolute',
     right: `${theme.spacing(1)}px`,
     top: `${theme.spacing(1)}px`,
+  },
+  dialogTitle: {
+    paddingTop: 22,
+    paddingBottom: 5,
   },
 });
 
