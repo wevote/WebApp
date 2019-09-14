@@ -225,7 +225,7 @@ class BallotItemSupportOpposeComment extends PureComponent {
 const Wrapper = styled.div`
   width: 100%;
   background-color: ${({ showPositionStatementActionBar }) => (showPositionStatementActionBar ? '#F5F5F5' : 'white')};
-  padding: 16px 16px 0 16px;
+  padding: 16px 16px 8px 16px;
   border-radius: 4px;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     background-color: white;
