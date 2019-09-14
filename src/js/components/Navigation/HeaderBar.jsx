@@ -419,7 +419,7 @@ class HeaderBar extends Component {
                 </div>
               ) : (
                 voterIsSignedIn && (
-                  <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex">
+                  <div className="header-nav__avatar-wrapper u-cursor--pointer u-flex-none">
                     {showEditAddressButton && editAddressButtonHtml}
                     <span className="u-show-desktop-tablet">
                       <IconButton

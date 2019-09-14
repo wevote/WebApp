@@ -7,7 +7,7 @@
 // -------------------------------------------
 
 .u-show-mobile {
-  @include breakpoints(576px) {
+  @include breakpoints(575px) {
     display: none !important;
   }
 }
@@ -26,7 +26,7 @@
 }
 
 .u-show-mobile-tablet {
-  @include breakpoints(960px) {
+  @include breakpoints(959px) {
     display: none !important;
   }
 }

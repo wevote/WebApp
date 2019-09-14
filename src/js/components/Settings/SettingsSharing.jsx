@@ -376,10 +376,10 @@ class SettingsSharing extends Component {
                     'Upload'
                   ) : (
                     <React.Fragment>
-                      <DesktopView>
+                      <DesktopView className="u-show-desktop">
                         Upgrade to Enterprise
                       </DesktopView>
-                      <MobileTabletView>
+                      <MobileTabletView className="u-show-mobile-tablet">
                         Upgrade
                       </MobileTabletView>
                     </React.Fragment>
@@ -424,10 +424,10 @@ class SettingsSharing extends Component {
                     'Upload'
                   ) : (
                     <React.Fragment>
-                      <DesktopView>
+                      <DesktopView className="u-show-desktop">
                         Upgrade to Enterprise
                       </DesktopView>
-                      <MobileTabletView>
+                      <MobileTabletView className="u-show-mobile-tablet">
                         Upgrade
                       </MobileTabletView>
                     </React.Fragment>
@@ -471,11 +471,11 @@ class SettingsSharing extends Component {
                       'Save'
                     ) : (
                       <React.Fragment>
-                        <DesktopView>
-                        Upgrade to Enterprise
+                        <DesktopView className="u-show-desktop">
+                          Upgrade to Enterprise
                         </DesktopView>
-                        <MobileTabletView>
-                        Upgrade
+                        <MobileTabletView className="u-show-mobile-tablet">
+                          Upgrade
                         </MobileTabletView>
                       </React.Fragment>
                     )}
@@ -495,7 +495,7 @@ const styles = theme => ({
   button: {
     marginRight: 8,
   },
-  uogradeButton: {
+  upgradeButton: {
     [theme.breakpoints.down('md')]: {
       width: 97,
     },
@@ -525,16 +525,10 @@ const InputBoxLabel = styled.h4`
 
 const DesktopView = styled.div`
   display: inherit;
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    display: none;
-  }
 `;
 
 const MobileTabletView = styled.div`
   display: inherit;
-  @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
-    display: none;
-  }
 `;
 
 export default withStyles(styles)(SettingsSharing);

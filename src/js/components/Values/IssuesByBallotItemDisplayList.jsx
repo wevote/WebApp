@@ -276,7 +276,7 @@ const Wrapper = styled.div`
 `;
 
 const Issues = styled.div`
-  width: 90%;
+  width: 100%;
   margin-left: -10px;
 `;
 
