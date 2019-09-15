@@ -7,32 +7,45 @@
 // -------------------------------------------
 
 .u-show-mobile {
-  @include breakpoints(575px) {
+  @include breakpoints(576px) {
+    // Hide when 576px or greater
+    // At 576px we see tablet and larger
     display: none !important;
   }
 }
 
 .u-show-desktop-tablet {
-  display: none !important;
-  @include breakpoints(576px) {
-    display: inline !important;
+  @include breakpoints(0 576px) {
+    // Hide when 575px or less
+    // At 575px we see mobile
+    // At 576px we see tablet or larger
+    display: none !important;
+    // display: inline !important;
   }
 }
 
 .u-show-tablet {
-  @include breakpoints(0 769px) {
+  // 576px - 959px
+  @include breakpoints(0 576px) {
+    // Hide when 575px or less
+    display: none !important;
+  }
+  @include breakpoints(960px) {
+    // Hide when 960px or greater
     display: none !important;
   }
 }
 
 .u-show-mobile-tablet {
-  @include breakpoints(959px) {
+  @include breakpoints(960px) {
+    // Hide when 960px or greater
     display: none !important;
   }
 }
 
 .u-show-desktop {
   @include breakpoints(0 960px) {
+    // Hide when 959px or less
     display: none !important;
   }
 }

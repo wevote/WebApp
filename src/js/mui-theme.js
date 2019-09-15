@@ -42,6 +42,8 @@ const overrides = {
   },
 };
 
+// See also styled-theme.js
+// I recommend being cautious about using 'md' for transitions relating explicitly to mobile, tablet, desktop
 const breakpoints = {
   keys: ['xs', 'sm', 'md', 'lg', 'xl'],
   values: {
