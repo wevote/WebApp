@@ -1,3 +1,5 @@
+// See also mui-theme.js
+// I recommend being cautious about using 'md' for transitions relating explicitly to mobile, tablet, desktop
 const theme = {
   breakpoints: {
     xs: '320px',

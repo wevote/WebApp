@@ -82,7 +82,7 @@ export default class Header extends Component {
             <div className={pageHeaderStyle} style={cordovaTopHeaderTopMargin()} id="header-container">
               { showBackToSettingsDesktop && (
                 <span>
-                  <span className="u-show-tablet">
+                  <span className="u-show-desktop-tablet">
                     <HeaderBackTo backToLink={backToSettingsLinkDesktop} backToLinkText={backToSettingsLinkText} location={location} params={params} voter={voter} />
                   </span>
                   { !showBackToVoterGuides && !showBackToSettingsMobile && (
@@ -98,7 +98,7 @@ export default class Header extends Component {
                     <HeaderBackTo backToLink={backToSettingsLinkMobile} backToLinkText={backToSettingsLinkText} location={location} params={params} voter={voter} />
                   </span>
                   { !showBackToVoterGuides && !showBackToSettingsDesktop && (
-                    <span className="u-show-tablet">
+                    <span className="u-show-desktop-tablet">
                       <HeaderBar location={location} pathname={pathname} voter={voter} />
                     </span>
                   )}

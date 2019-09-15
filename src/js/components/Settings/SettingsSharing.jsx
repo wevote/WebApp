@@ -307,11 +307,12 @@ class SettingsSharing extends Component {
                   <div
                     style={{
                       overflow: 'hidden',
-                      width: '125px',
-                      minWidth: '125px',
-                      minHeight: '30px',
-                      height: '30px',
-                      maxHeight: '30px !important',
+                      width: '132px',
+                      minWidth: '132px',
+                      // minHeight: '42px',
+                      // height: '42px',
+                      maxWidth: '132px !important',
+                      // maxHeight: '42px !important',
                       marginRight: 'auto',
                       textAlign: 'left',
                     }}
@@ -325,7 +326,7 @@ class SettingsSharing extends Component {
                       src={chosenLogoFromFileReader || chosenLogoUrlHttps || cordovaDot('/img/global/svg-icons/we-vote-logo-horizontal-color-dark-141x46.svg')}
                     />
                   </div>
-                  <DescriptionText>Place your logo in the header bar. Image will be resized to be no more than 125px wide, and 30px tall.</DescriptionText>
+                  <DescriptionText>Place your logo in the header bar. Image will be resized to be no more than 132px wide, and 42px tall.</DescriptionText>
                 </ImageDescription>
               </SharingColumn>
               <SharingColumn alignRight>

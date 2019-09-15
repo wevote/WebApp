@@ -96,13 +96,17 @@ $header-height-voter-guide-creator: 110px;  // Was 105px
 }
 
 .header-logo-img {
-  max-width: 200px;
-  @include breakpoints(mid-small small-bootstrap) {
-    min-width: 120px;
-  }
+  max-width: 132px;
+  max-height: 42px;
 
   @include breakpoints(small mid-small) {
-    min-width: 110px;
+    max-width: 110px;
+    max-height: 36px;
+  }
+
+  @include breakpoints(0 small) {
+    max-width: 100px;
+    max-height: 32px;
   }
 }
 
