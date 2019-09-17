@@ -64,7 +64,7 @@ class Slides extends Component {
           {
             currentIndex < this.props.slides.length - 1 && (
               <Button
-                classes={{ root: classes.optionsButton }}
+                classes={{ root: numberOfButtons > 1 ? classes.optionsButton : classes.nextButton }}
                 variant="contained"
                 color="primary"
                 onClick={() => this.handleSwitchSlide(1)}
@@ -79,11 +79,18 @@ class Slides extends Component {
   }
 }
 
-const styles = ({
+const styles = theme => ({
   optionsButton: {
     minWidth: '40%',
     width: '100%',
-    margin: '8px 4px',
+    margin: '8px 0',
+    [theme.breakpoints.down('md')]: {
+      width: '40%',
+    },
+  },
+  nextButton: {
+    width: '100%',
+    margin: '8px 0',
   },
 });
 
@@ -95,6 +102,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 100%;
+    min-width: 260px;
   }
 `;
 
