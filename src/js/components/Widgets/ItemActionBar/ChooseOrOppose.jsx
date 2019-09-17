@@ -112,6 +112,10 @@ const HR = styled.div`
   height: 2px;
   margin: 0 24px;
   margin-bottom: 8px;
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    margin 0;
+    margin-bottom: 8px;
+  }
 `;
 
 const TitleText = styled.p`
