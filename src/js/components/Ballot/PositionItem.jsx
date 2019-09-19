@@ -148,7 +148,10 @@ class PositionItem extends Component {
                     placement="auto"
                     id="positions-popover-trigger-click-root-close"
                   >
-                    <Link to={speakerLink} className="u-no-underline">
+                    <Link
+                      to={`${speakerLink}/btcand/${position.candidate_we_vote_id}/b/${this.props.params.back_to_variable}`}
+                      className="u-no-underline"
+                    >
                       { position.speaker_image_url_https_medium ? (
                         <ImageHandler
                           className="card-child__avatar"

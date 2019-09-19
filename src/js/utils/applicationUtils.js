@@ -83,6 +83,9 @@ export function getApplicationViewBooleans (pathname) {
   if (stringContains('/btdb/', pathnameLowerCase) || // back-to-default-ballot
     stringContains('/btdo/', pathnameLowerCase) || // back-to-default-office
     stringContains('/bto/', pathnameLowerCase) ||
+    stringContains('/btdb', pathnameLowerCase) || // back-to-default-ballot
+    stringContains('/btdo', pathnameLowerCase) || // back-to-default-office
+    stringContains('/bto', pathnameLowerCase) ||
     stringContains('/btvg/', pathnameLowerCase)) {
     // If here, we want the top header to be "Back To..."
     // "/btdb/" stands for "Back To Default Ballot Page" back-to-default-ballot

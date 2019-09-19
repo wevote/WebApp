@@ -144,6 +144,7 @@ export default class PositionList extends Component {
               key={`${onePosition.position_we_vote_id}-${onePosition.voter_guide_we_vote_id}-${onePosition.speaker_display_name}`}
               ballotItemDisplayName={this.props.ballotItemDisplayName}
               position={onePosition}
+              params={this.props.params}
             />
           ))
         }

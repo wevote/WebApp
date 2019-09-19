@@ -337,7 +337,9 @@ class HeaderBackToBallot extends Component {
     // console.log('HeaderBackToBallot render');
 
     let backToLink;
-    if (organizationWeVoteId && candidate && candidate.google_civic_election_id) {
+    if (this.props.params.back_to_cand_we_vote_id) {
+      backToLink = `/candidate/${this.props.params.back_to_cand_we_vote_id}/b/${this.props.params.back_to_variable}`;
+    } else if (organizationWeVoteId && candidate && candidate.google_civic_election_id) {
       backToLink = this.getVoterGuideLink(); // Default to this when there is an organizationWeVoteId
     } else if (candidate && candidate.google_civic_election_id) {
       backToLink = `/ballot/election/${candidate.google_civic_election_id}`;
