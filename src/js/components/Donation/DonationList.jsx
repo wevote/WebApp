@@ -38,7 +38,7 @@ export default class DonationList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      donationHistory: null,
+      donationJournalList: null,
     };
     this.isMobile = this.isMobile.bind(this);
   }
@@ -46,7 +46,7 @@ export default class DonationList extends Component {
   componentDidMount () {
     this.onDonateStoreChange();
     this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange.bind(this));
-    this.setState({ donationHistory: DonateStore.getVoterDonationHistory() });
+    this.setState({ donationJournalList: DonateStore.getVoterDonationHistory() });
     if (this.props.showOrganizationPlan) {
       DonateActions.donationRefreshDonationList();
     }
@@ -57,19 +57,19 @@ export default class DonationList extends Component {
   }
 
   onDonateStoreChange = () => {
-    this.setState({ donationHistory: DonateStore.getVoterDonationHistory() });
+    this.setState({ donationJournalList: DonateStore.getVoterDonationHistory() });
   };
 
   isMobile = () => $(window).width() < 1280;
 
   render () {
     renderLog('DonationList');
-    if (!this.state.donationHistory) {
-      console.log('donationHistory not yet received in DonationList render');
+    if (!this.state.donationJournalList) {
+      console.log('donationJournalList not yet received in DonationList render');
       return LoadingWheel;
     }
 
-    if (this.state.donationHistory && this.state.donationHistory.length > 0) {
+    if (this.state.donationJournalList && this.state.donationJournalList.length > 0) {
       const { displayDonations, showOrganizationPlan } = this.props;
       const isMobile = this.isMobile();
 
@@ -92,7 +92,7 @@ export default class DonationList extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.donationHistory.map((item) => {
+                  {this.state.donationJournalList.map((item) => {
                     const { record_enum: recordEnum, refund_days_limit: refundDaysLimit, charge_id: chargeId,
                       subscription_id: subscriptionId, created, amount, brand, last4,
                       exp_month: expMonth, exp_year: expYear, stripe_status: stripeStatus, is_organization_plan: isOrgPlan } = item;
@@ -151,7 +151,7 @@ export default class DonationList extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.state.donationHistory.map((item) => {
+                  {this.state.donationJournalList.map((item) => {
                     const { record_enum: recordEnum, subscription_canceled_at: subscriptionCanceledAt,
                       charge_id: chargeId, subscription_id: subscriptionId, last_charged: lastCharged, created, amount, brand, last4,
                       exp_month: expMonth, exp_year: expYear, subscription_ended_at: subscriptionEndedAt, is_organization_plan: isOrgPlan } = item;
@@ -165,7 +165,7 @@ export default class DonationList extends Component {
                       const waiting = amount === '0.00';
 
                       return (
-                        <tr key={`${chargeId}-${subscriptionId}-donationHistory`}>
+                        <tr key={`${chargeId}-${subscriptionId}-donationJournalList`}>
                           <td hidden={isMobile}>{active ? 'Active' : '----'}</td>
                           <td>{moment.utc(created).format('MMM D, YYYY')}</td>
                           <td>{!waiting ? amount : 'waiting'}</td>

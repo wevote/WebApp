@@ -69,7 +69,7 @@ export default class SettingsPersonalSideBar extends Component {
     // console.log("SettingsPersonalSideBar, isOrganization: ", this.state.isOrganization);
     const { editMode } = this.props;
     const { isOnPartnerUrl, isSignedIn, isOrganization, voterIsAdminForThisUrl } = this.state;
-    const showSettingsInDevelopment = true; // If developing any of the new settings, change this to true
+    const showSettingsInDevelopment = false; // If developing any of the new settings, change this to true
     const isOnPartnerUrlAndNotAdmin = isOnPartnerUrl && !voterIsAdminForThisUrl;
 
     return (
@@ -131,7 +131,7 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && showSettingsInDevelopment && !isOnPartnerUrlAndNotAdmin && (
+          {isSignedIn && !isOnPartnerUrlAndNotAdmin && (
             <div className={String(editMode) === 'domain' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
@@ -149,7 +149,7 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && showSettingsInDevelopment && !isOnPartnerUrlAndNotAdmin && (
+          {isSignedIn && !isOnPartnerUrlAndNotAdmin && (
             <div className={String(editMode) === 'sharing' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
@@ -167,7 +167,7 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && showSettingsInDevelopment && !isOnPartnerUrlAndNotAdmin && (
+          {isSignedIn && !isOnPartnerUrlAndNotAdmin && (
             <div className={String(editMode) === 'subscription' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}
@@ -185,7 +185,7 @@ export default class SettingsPersonalSideBar extends Component {
             </div>
           )}
 
-          {isSignedIn && showSettingsInDevelopment && !isOnPartnerUrlAndNotAdmin && (
+          {isSignedIn && !isOnPartnerUrlAndNotAdmin && (
             <div className={String(editMode) === 'analytics' ?
               'SettingsItem__summary__item-container SettingsItem__summary__item-container--selected' :
               'SettingsItem__summary__item-container '}

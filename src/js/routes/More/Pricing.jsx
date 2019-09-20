@@ -80,18 +80,18 @@ class Pricing extends Component {
               iconType: 'notAvailable',  // 'paidCheckMark', 'notAvailable'
               featureDescription: 'Custom Full Domain Name',
             },
-            {
-              iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
-              featureDescription: 'Create Multi-Organization Voter Guides',
-            },
+            // {
+            //   iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
+            //   featureDescription: 'Create Multi-Organization Voter Guides',
+            // },
             {
               iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
               featureDescription: 'Edit Social Media Sharing Links',
             },
-            {
-              iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
-              featureDescription: 'Additional Administrators',
-            },
+            // {
+            //   iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
+            //   featureDescription: 'Additional Administrators',
+            // },
             {
               iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
               featureDescription: 'Analytics Integration',
@@ -139,18 +139,18 @@ class Pricing extends Component {
               iconType: 'paidCheckMark',  // 'paidCheckMark', 'notAvailable'
               featureDescription: 'Custom Full Domain Name',
             },
-            {
-              iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
-              featureDescription: 'Create Multi-Organization Voter Guides',
-            },
+            // {
+            //   iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
+            //   featureDescription: 'Create Multi-Organization Voter Guides',
+            // },
             {
               iconType: 'notAvailable',  // 'notAvailable', 'checkMark'
               featureDescription: 'Edit Social Media Sharing Links',
             },
-            {
-              iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
-              featureDescription: 'Additional Administrators',
-            },
+            // {
+            //   iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
+            //   featureDescription: 'Additional Administrators',
+            // },
             {
               iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
               featureDescription: 'Analytics Integration',
@@ -198,18 +198,18 @@ class Pricing extends Component {
               iconType: 'paidCheckMark',  // 'paidCheckMark', 'notAvailable'
               featureDescription: 'Custom Full Domain Name',
             },
-            {
-              iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
-              featureDescription: 'Create Multi-Organization Voter Guides',
-            },
+            // {
+            //   iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
+            //   featureDescription: 'Create Multi-Organization Voter Guides',
+            // },
             {
               iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
               featureDescription: 'Edit Social Media Sharing Links',
             },
-            {
-              iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
-              featureDescription: 'Additional Administrators',
-            },
+            // {
+            //   iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
+            //   featureDescription: 'Additional Administrators',
+            // },
             {
               iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
               featureDescription: 'Analytics Integration',
@@ -259,10 +259,10 @@ class Pricing extends Component {
               iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
               featureDescription: 'Edit Social Media Sharing Links',
             },
-            {
-              iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
-              featureDescription: 'Additional Administrators',
-            },
+            // {
+            //   iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
+            //   featureDescription: 'Additional Administrators',
+            // },
             {
               iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
               featureDescription: 'Analytics Integration',
@@ -306,10 +306,10 @@ class Pricing extends Component {
               iconType: 'notAvailable',  // 'notAvailable', 'checkMark'
               featureDescription: 'Edit Social Media Sharing Links',
             },
-            {
-              iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
-              featureDescription: 'Additional Administrators',
-            },
+            // {
+            //   iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
+            //   featureDescription: 'Additional Administrators',
+            // },
             {
               iconType: 'notAvailable',  // 'paidCheckMark', 'checkMark'
               featureDescription: 'Analytics Integration',
@@ -353,10 +353,10 @@ class Pricing extends Component {
               iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
               featureDescription: 'Edit Social Media Sharing Links',
             },
-            {
-              iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
-              featureDescription: 'Additional Administrators',
-            },
+            // {
+            //   iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
+            //   featureDescription: 'Additional Administrators',
+            // },
             {
               iconType: 'paidCheckMark',  // 'notAvailable', 'checkMark'
               featureDescription: 'Analytics Integration',

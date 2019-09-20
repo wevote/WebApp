@@ -20,8 +20,8 @@ class SettingsAccountLevelChip extends Component {
   }
 
   onClickHandler = () => {
-    const mode = this.props.requiredFeaturePackage === 'pro' ? 'professional' : 'enterprise';
-    this.openPaidAccountUpgradeModal(mode);
+    const paidAccountUpgradeMode = this.props.requiredFeaturePackage === 'PROFESSIONAL' ? 'professional' : 'enterprise';
+    this.openPaidAccountUpgradeModal(paidAccountUpgradeMode);
   }
 
   openPaidAccountUpgradeModal = (paidAccountUpgradeMode) => {

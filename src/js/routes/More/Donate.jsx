@@ -43,18 +43,24 @@ class Donate extends Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.updateCustomAmount = this.updateCustomAmount.bind(this);
     this.toggleDonateMonthly = this.toggleDonateMonthly.bind(this);
-    this.donateStoreChange = this.donateStoreChange.bind(this);
+    this.onDonateStoreChange = this.onDonateStoreChange.bind(this);
   }
 
   componentDidMount () {
-    this.donateStoreChange();
-    this.donateStoreListener = DonateStore.addListener(this.donateStoreChange);
+    this.onDonateStoreChange();
+    this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange);
     AnalyticsActions.saveActionDonateVisit(VoterStore.electionId());
     DonateActions.donationRefreshDonationList();
   }
 
   componentWillUnmount () {
     this.donateStoreListener.remove();
+  }
+
+  onDonateStoreChange () {
+    if (!DonateStore.donationSuccess()) {
+      this.setState({ donationErrorMessage: DonateStore.donationError() });
+    }
   }
 
   /*
@@ -67,12 +73,6 @@ class Donate extends Component {
       event.preventDefault();
     }
   };
-
-  donateStoreChange () {
-    if (!DonateStore.donationSuccess()) {
-      this.setState({ donationErrorMessage: DonateStore.donationError() });
-    }
-  }
 
   toggleDonateMonthly (event) {
     if (event.target.value === 'once') {
