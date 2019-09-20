@@ -31,7 +31,7 @@ class StripeElementsTestForm extends Component {
   }
 
   componentDidMount () {
-    this.donateStoreListener = DonateStore.addListener(this.donateStoreChange);
+    this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange);
     DonateActions.doesOrgHavePaidPlan();
     DonateActions.donationRefreshDonationList();
   }
@@ -41,7 +41,7 @@ class StripeElementsTestForm extends Component {
   }
 
   // This is really minimal, just for testing
-  donateStoreChange = () => {
+  onDonateStoreChange = () => {
     try {
       const msg = DonateStore.getCouponMessageTest();
       if (msg && msg.length > 0) {
@@ -60,7 +60,7 @@ class StripeElementsTestForm extends Component {
         $('.u-no-break').html('A subscription already exists for this organization -- Cancel the exising subscription first.<br>').css('color', 'red');
       }
     } catch (err) {
-      console.log('donateStoreChange caught error: ', err);
+      console.log('onDonateStoreChange caught error: ', err);
     }
   };
 

@@ -46,6 +46,7 @@ export default {
   },
 
   doesOrgHavePaidPlan () {
+    // DALE 2019-09-19 Migrate away from this -- donationHistory provides what we need
     Dispatcher.loadEndpoint('doesOrgHavePaidPlan', {});
   },
 

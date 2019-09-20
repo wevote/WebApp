@@ -6,10 +6,14 @@ import Edit from '@material-ui/icons/Edit';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import { IconButton, withStyles, Table, TableBody, TableCell, TableHead, TableRow, Button } from '@material-ui/core';
+import DonateStore from '../../stores/DonateStore';
+import DonateActions from '../../actions/DonateActions';
 import LoadingWheel from '../LoadingWheel';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
+import { formatDateToYearMonthDay, stringContains } from '../../utils/textFormat';
+import AppActions from '../../actions/AppActions';
 
 class SettingsSubscriptionPlan extends Component {
   static propTypes = {
@@ -24,6 +28,10 @@ class SettingsSubscriptionPlan extends Component {
       voter: {},
       windowWidth: 0,
       mobileMode: false,
+      subscriptionJournalHistory: {
+        created: '',
+        amount: '',
+      },
     };
     this.handleResize = this.handleResize.bind(this);
   }
@@ -31,8 +39,11 @@ class SettingsSubscriptionPlan extends Component {
   componentDidMount () {
     // console.log("SettingsSubscriptionPlan componentDidMount");
     this.onVoterStoreChange();
+    this.onDonateStoreChange();
+    this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    DonateActions.donationRefreshDonationList();
 
     this.handleResize();
     window.addEventListener('resize', this.handleResize);
@@ -48,11 +59,19 @@ class SettingsSubscriptionPlan extends Component {
       return true;
     }
     if (this.state.windowWidth !== nextState.windowWidth) {
-      // console.log('this.state.voterIsSignedIn', this.state.voterIsSignedIn, ', nextState.voterIsSignedIn', nextState.voterIsSignedIn);
+      // console.log('this.state.windowWidth', this.state.windowWidth, ', nextState.windowWidth', nextState.windowWidth);
       return true;
     }
     if (this.state.mobileMode !== nextState.mobileMode) {
-      // console.log('this.state.voterIsSignedIn', this.state.voterIsSignedIn, ', nextState.voterIsSignedIn', nextState.voterIsSignedIn);
+      // console.log('this.state.mobileMode', this.state.mobileMode, ', nextState.mobileMode', nextState.mobileMode);
+      return true;
+    }
+    if (this.state.activePaidPlan !== nextState.activePaidPlan) {
+      // console.log('this.state.activePaidPlan', this.state.activePaidPlan, ', nextState.activePaidPlan', nextState.activePaidPlan);
+      return true;
+    }
+    if (this.state.activePaidPlanChosen !== nextState.activePaidPlanChosen) {
+      // console.log('this.state.activePaidPlanChosen', this.state.activePaidPlanChosen, ', nextState.activePaidPlanChosen', nextState.activePaidPlanChosen);
       return true;
     }
 
@@ -71,9 +90,53 @@ class SettingsSubscriptionPlan extends Component {
   }
 
   componentWillUnmount () {
+    this.donateStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
   }
+
+  onDonateStoreChange = () => {
+    const activePaidPlan = DonateStore.getActivePaidPlan();
+    let activePaidPlanChosen = '';
+    let activePaidPlanChosenDisplay = '';
+    // let activePaidPlanBillingFrequency = '';
+    let activePaidPlanBillingFrequencyDisplay = '';
+    // Kind of plan
+    if (stringContains('PROFESSIONAL', activePaidPlan.plan_type_enum)) {
+      activePaidPlanChosen = 'professional';
+      activePaidPlanChosenDisplay = 'Professional Plan';
+    } else if (stringContains('ENTERPRISE', activePaidPlan.plan_type_enum)) {
+      activePaidPlanChosen = 'enterprise';
+      activePaidPlanChosenDisplay = 'Enterprise Plan';
+    } else {
+      activePaidPlanChosen = 'free';
+      activePaidPlanChosenDisplay = 'Free Plan';
+    }
+    // Billing frequency
+    if (stringContains('MONTHLY', activePaidPlan.plan_type_enum)) {
+      // activePaidPlanBillingFrequency = 'monthly';
+      activePaidPlanBillingFrequencyDisplay = 'Billed Monthly';
+    } else if (stringContains('YEARLY', activePaidPlan.plan_type_enum)) {
+      // activePaidPlanBillingFrequency = 'yearly';
+      activePaidPlanBillingFrequencyDisplay = 'Billed Yearly';
+    } else if (stringContains('ONCE', activePaidPlan.plan_type_enum)) {
+      // activePaidPlanBillingFrequency = 'once';
+      activePaidPlanBillingFrequencyDisplay = 'One Time Payment';
+    } else {
+      // activePaidPlanBillingFrequency = '';
+      activePaidPlanBillingFrequencyDisplay = '';
+    }
+    const subscriptionJournalHistory = DonateStore.getSubscriptionJournalHistory();
+
+    this.setState({
+      activePaidPlan,
+      activePaidPlanChosen,
+      activePaidPlanChosenDisplay,
+      // activePaidPlanBillingFrequency,
+      activePaidPlanBillingFrequencyDisplay,
+      subscriptionJournalHistory,
+    });
+  };
 
   onOrganizationStoreChange = () => {
     const { organizationWeVoteId } = this.state;
@@ -94,6 +157,28 @@ class SettingsSubscriptionPlan extends Component {
     });
   }
 
+  openPaidAccountUpgradeModal = (paidAccountUpgradeMode) => {
+    AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
+  }
+
+  onClickHandler = () => {
+    const { activePaidPlanChosen } = this.state;
+    let paidAccountUpgradeMode = '';
+    switch (activePaidPlanChosen) {
+      default:
+      case 'free':
+        paidAccountUpgradeMode = 'professional';
+        break;
+      case 'professional':
+        paidAccountUpgradeMode = 'enterprise';
+        break;
+      case 'enterprise':
+        paidAccountUpgradeMode = 'professional';
+        break;
+    }
+    this.openPaidAccountUpgradeModal(paidAccountUpgradeMode);
+  }
+
   handleResize () {
     this.setState({
       windowWidth: window.innerWidth,
@@ -108,7 +193,7 @@ class SettingsSubscriptionPlan extends Component {
 
   render () {
     renderLog(__filename);
-    const { organization, organizationWeVoteId, voter, voterIsSignedIn, mobileMode } = this.state;
+    const { activePaidPlanChosen, activePaidPlanChosenDisplay, activePaidPlanBillingFrequencyDisplay, organization, organizationWeVoteId, subscriptionJournalHistory, voter, voterIsSignedIn, mobileMode } = this.state;
     const { classes } = this.props;
     if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
@@ -126,11 +211,11 @@ class SettingsSubscriptionPlan extends Component {
     }
 
     // Simulated invoices: these will come from the API
-    const completedInvoices = [
-      createData('2/10/2019', '2/10/2019 - 4/10/2019', '$1200', <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>),
-      createData('4/10/2019', '4/10/2019 - 6/10/2019', '$1200', <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>),
-      createData('6/10/2019', '6/10/2019 - 8/10/2019', '$1200', <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>),
-    ];
+    // const paidInvoices = [
+    //   createData('2/10/2019', '2/10/2019 - 4/10/2019', '$1200', <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>),
+    //   createData('4/10/2019', '4/10/2019 - 6/10/2019', '$1200', <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>),
+    //   createData('6/10/2019', '6/10/2019 - 8/10/2019', '$1200', <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>),
+    // ];
 
     // Simulated invoices: these will come from the API
     const upcomingInvoices = [
@@ -138,11 +223,33 @@ class SettingsSubscriptionPlan extends Component {
     ];
 
     let subscriptionPageHtmlContents = (<span />);
-    const learnMoreLink = ' Learn more';
 
     if (mobileMode) {
       subscriptionPageHtmlContents = (
         <MobileWrapper className="d-block d-sm-none">
+          <SectionCardMobile className="u-position-relative">
+            <SectionTitle>
+              Your Plan
+            </SectionTitle>
+            <h4 className="h4">
+              <strong>
+                {activePaidPlanChosenDisplay}
+                {' '}
+                {activePaidPlanBillingFrequencyDisplay && <span>•</span>}
+                {' '}
+                {activePaidPlanBillingFrequencyDisplay}
+              </strong>
+            </h4>
+            <Button
+              classes={{ root: classes.changeCancelPlanButton }}
+              color="primary"
+              onClick={this.onClickHandler}
+              size="small"
+              variant="outlined"
+            >
+              Change Plan
+            </Button>
+          </SectionCardMobile>
           <SectionCardMobile className="u-position-relative">
             <SectionTitle>
               Payment
@@ -167,20 +274,20 @@ class SettingsSubscriptionPlan extends Component {
               </InvoiceFlexContainer>
               <InvoiceFlexContainer>
                 <FlexOne>Billing contact</FlexOne>
-                <FlexTwo>barrack-obama@gmail.com</FlexTwo>
+                <FlexTwo>email@domain.com</FlexTwo>
               </InvoiceFlexContainer>
             </SectionParagraph>
           </SectionCardMobile>
           <SectionCardMobile>
             <SectionTitle>
-              Invoices
+              Paid Invoices
             </SectionTitle>
-            {completedInvoices.map(row => (
-              <SectionCard>
+            {subscriptionJournalHistory.map(row => (
+              <SectionCard key={`mobile-${row.donation_journal_id}`}>
                 <SectionParagraph>
                   <InvoiceFlexContainer>
                     <FlexOne>Date</FlexOne>
-                    <FlexTwo>{row.date}</FlexTwo>
+                    <FlexTwo>{formatDateToYearMonthDay(row.created)}</FlexTwo>
                   </InvoiceFlexContainer>
                   <InvoiceFlexContainer>
                     <FlexOne>Period</FlexOne>
@@ -188,7 +295,10 @@ class SettingsSubscriptionPlan extends Component {
                   </InvoiceFlexContainer>
                   <InvoiceFlexContainer>
                     <FlexOne>Amount</FlexOne>
-                    <FlexTwo>{row.amount}</FlexTwo>
+                    <FlexTwo>
+                      $
+                      {row.amount}
+                    </FlexTwo>
                   </InvoiceFlexContainer>
                 </SectionParagraph>
                 <Button color="primary" size="small" classes={{ root: classes.viewInvoiceButton }}>
@@ -210,7 +320,7 @@ class SettingsSubscriptionPlan extends Component {
                 <SectionParagraph>
                   <InvoiceFlexContainer>
                     <FlexOne>Date</FlexOne>
-                    <FlexTwo>{row.date}</FlexTwo>
+                    <FlexTwo>{formatDateToYearMonthDay(row.date)}</FlexTwo>
                   </InvoiceFlexContainer>
                   <InvoiceFlexContainer>
                     <FlexOne>Period</FlexOne>
@@ -218,7 +328,9 @@ class SettingsSubscriptionPlan extends Component {
                   </InvoiceFlexContainer>
                   <InvoiceFlexContainer>
                     <FlexOne>Amount</FlexOne>
-                    <FlexTwo>{row.amount}</FlexTwo>
+                    <FlexTwo>
+                      {row.amount}
+                    </FlexTwo>
                   </InvoiceFlexContainer>
                 </SectionParagraph>
                 <Button color="primary" size="small" classes={{ root: classes.viewInvoiceButton }}>
@@ -227,31 +339,27 @@ class SettingsSubscriptionPlan extends Component {
               </SectionCard>
             ))}
           </SectionCardMobile>
-          <SectionCardMobile className="u-position-relative">
-            <SectionTitle>
-              My Plan
-            </SectionTitle>
-            <h4 className="h4"><strong>Premium Plan • Monthly</strong></h4>
-            <Button variant="outlined" color="primary" size="small" classes={{ root: classes.changeCancelPlanButton }}>
-              Change Plan
-            </Button>
-          </SectionCardMobile>
-          <SectionCardMobile className="u-position-relative">
-            <SectionTitle>
-              Cancel Plan
-            </SectionTitle>
-            <SectionParagraph>
-              Upon cancelling, you and your team will lose the premium features you have been using. You can switch to our Free Plan to continue using We Vote at no cost.
-              {/* <a
-                href="https://google.com"
-              >
-                {learnMoreLink}
-              </a> */}
-            </SectionParagraph>
-            <Button variant="outlined" color="primary" size="small" classes={{ root: classes.changeCancelPlanButton }}>
-              Cancel Plan
-            </Button>
-          </SectionCardMobile>
+          {activePaidPlanChosen !== 'free' && (
+            <SectionCardMobile className="u-position-relative">
+              <SectionTitle>
+                Cancel Plan
+              </SectionTitle>
+              <SectionParagraph>
+                Upon cancelling, your team and members will lose the premium features provided by the
+                {' '}
+                {activePaidPlanChosenDisplay}
+                . Cancelling will switch you to our Free Plan, which provides many features at no cost.
+                {/* <a
+                  href="https://google.com"
+                >
+                  {learnMoreLink}
+                </a> */}
+              </SectionParagraph>
+              <Button variant="outlined" color="primary" size="small" classes={{ root: classes.changeCancelPlanButton }}>
+                Cancel Plan
+              </Button>
+            </SectionCardMobile>
+          )}
         </MobileWrapper>
       );
     } else {
@@ -259,6 +367,29 @@ class SettingsSubscriptionPlan extends Component {
         <Card className="card">
           <CardMain className="card-main">
             <h1 className="h2">Subscription Plan</h1>
+            <SectionCard className="u-position-relative">
+              <SectionTitle>
+                Your Plan
+              </SectionTitle>
+              <h4 className="h4">
+                <strong>
+                  {activePaidPlanChosenDisplay}
+                  {' '}
+                  {activePaidPlanBillingFrequencyDisplay && <span>•</span>}
+                  {' '}
+                  {activePaidPlanBillingFrequencyDisplay}
+                </strong>
+              </h4>
+              <Button
+                classes={{ root: classes.changeCancelPlanButton }}
+                color="primary"
+                onClick={this.onClickHandler}
+                size="small"
+                variant="outlined"
+              >
+                Change Plan
+              </Button>
+            </SectionCard>
             <Seperator />
             <SectionCard className="u-position-relative">
               <SectionTitle>
@@ -289,13 +420,13 @@ class SettingsSubscriptionPlan extends Component {
               <SectionParagraph>
                 Billing contact:
                 {' '}
-                <strong>barrack-obama@gmail.com</strong>
+                <strong>email@domain.com</strong>
               </SectionParagraph>
             </SectionCard>
             <Seperator />
             <SectionCard>
               <SectionTitle>
-                Invoices
+                Paid Invoices
               </SectionTitle>
               <Table classes={{ root: classes.table }}>
                 <TableHead>
@@ -308,15 +439,20 @@ class SettingsSubscriptionPlan extends Component {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {completedInvoices.map(row => (
-                    <TableRow key={row.date}>
+                  {subscriptionJournalHistory.map(row => (
+                    <TableRow key={`desktop-${row.donation_journal_id}`}>
                       <TableCell classes={{ root: classes.tableCellCheckmark }} component="th" scope="row">
                         <CheckCircle classes={{ root: classes.checkIcon }} />
                       </TableCell>
-                      <TableCell classes={{ root: classes.tableCell }}>{row.date}</TableCell>
+                      <TableCell classes={{ root: classes.tableCell }}>{formatDateToYearMonthDay(row.created)}</TableCell>
                       <TableCell classes={{ root: classes.tableCell }}>{row.period}</TableCell>
-                      <TableCell classes={{ root: classes.tableCell }}>{row.amount}</TableCell>
-                      <TableCell classes={{ root: classes.tableCellRight }} align="right">{row.actions}</TableCell>
+                      <TableCell classes={{ root: classes.tableCell }}>
+                        $
+                        {row.amount}
+                      </TableCell>
+                      <TableCell classes={{ root: classes.tableCellRight }} align="right">
+                        <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -348,47 +484,39 @@ class SettingsSubscriptionPlan extends Component {
                       </TableCell>
                       <TableCell classes={{ root: classes.tableCell }}>{row.period}</TableCell>
                       <TableCell classes={{ root: classes.tableCell }}>{row.amount}</TableCell>
-                      <TableCell classes={{ root: classes.tableCellRight }} align="right">{row.actions}</TableCell>
+                      <TableCell classes={{ root: classes.tableCellRight }} align="right">
+                        <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </SectionCard>
-            <Seperator />
-            <SectionCard className="u-position-relative">
-              <SectionTitle>
-                My Plan
-              </SectionTitle>
-              <h4 className="h4"><strong>Premium Plan • Monthly</strong></h4>
-              <Button variant="outlined" color="primary" size="small" classes={{ root: classes.changeCancelPlanButton }}>
-                Change Plan
-              </Button>
-            </SectionCard>
-            <Seperator />
-            <SectionCard className="u-position-relative">
-              <SectionTitle>
-                Cancel Plan
-              </SectionTitle>
-
-              <div className="row m-0">
-                <div className="col col-8 p-0">
-                  <SectionParagraph>
-                    Upon cancelling, you and your team will lose access to customer data in FullStory. You can switch to our Free Plan to continue using FullStory at no cost.
-                    <a
-                      href="https://google.com"
-                    >
-                      {learnMoreLink}
-                    </a>
-                  </SectionParagraph>
-                </div>
-                <StaticColumn className="col col-4 p-0">
-                  <Button variant="outlined" color="primary" size="small" classes={{ root: classes.changeCancelPlanButton }}>
+            {activePaidPlanChosen !== 'free' && (
+              <>
+                <Seperator />
+                <SectionCard className="u-position-relative">
+                  <SectionTitle>
                     Cancel Plan
-                  </Button>
-                </StaticColumn>
-              </div>
-
-            </SectionCard>
+                  </SectionTitle>
+                  <div className="row m-0">
+                    <div className="col col-8 p-0">
+                      <SectionParagraph>
+                        Upon cancelling, your team and members will lose the premium features provided by the
+                        {' '}
+                        {activePaidPlanChosenDisplay}
+                        . Cancelling will switch you to our Free Plan, which provides many features at no cost.
+                      </SectionParagraph>
+                    </div>
+                    <StaticColumn className="col col-4 p-0">
+                      <Button variant="outlined" color="primary" size="small" classes={{ root: classes.changeCancelPlanButton }}>
+                        Cancel Plan
+                      </Button>
+                    </StaticColumn>
+                  </div>
+                </SectionCard>
+              </>
+            )}
           </CardMain>
         </Card>
       );

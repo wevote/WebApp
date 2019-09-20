@@ -36,9 +36,9 @@ export default class DonationListForm extends Component {
   onDonateStoreChange () {
     if (this.state.initialDonationCount < 0) {
       const count = DonateStore.getVoterDonationHistory() ? DonateStore.getVoterDonationHistory().length : -1;
-      this.setState({ donationHistory: DonateStore.getVoterDonationHistory(), initialDonationCount: count });
+      this.setState({ donationJournalList: DonateStore.getVoterDonationHistory(), initialDonationCount: count });
     } else {
-      this.setState({ donationHistory: DonateStore.getVoterDonationHistory() });
+      this.setState({ donationJournalList: DonateStore.getVoterDonationHistory() });
     }
   }
 
@@ -53,11 +53,11 @@ export default class DonationListForm extends Component {
   };
 
   pollForWebhookCompletion (pollCount) {
-    // console.log(`pollForWebhookCompletion polling -- start: ${this.state.donationHistory ? this.state.donationHistory.length : -1}`);
+    // console.log(`pollForWebhookCompletion polling -- start: ${this.state.donationJournalList ? this.state.donationJournalList.length : -1}`);
     // console.log(`pollForWebhookCompletion polling -- start pollCount: ${pollCount}`);
     this.polling = setTimeout(() => {
-      if (pollCount < 0 || (this.state.donationHistory && (this.state.initialDonationCount !== this.state.donationHistory.length))) {
-        // console.log(`pollForWebhookCompletion polling -- clearTimeout: ${this.state.donationHistory.length}`);
+      if (pollCount < 0 || (this.state.donationJournalList && (this.state.initialDonationCount !== this.state.donationJournalList.length))) {
+        // console.log(`pollForWebhookCompletion polling -- clearTimeout: ${this.state.donationJournalList.length}`);
         // console.log(`pollForWebhookCompletion polling -- pollCount: ${pollCount}`);
         clearTimeout(this.polling);
         return;
@@ -70,7 +70,7 @@ export default class DonationListForm extends Component {
 
   render () {
     renderLog(__filename);
-    if (this.state && this.state.donationHistory && this.state.donationHistory.length > 0) {
+    if (this.state && this.state.donationJournalList && this.state.donationJournalList.length > 0) {
       return (
         <div>
           <input type="hidden" value={this.state.activeKey} />

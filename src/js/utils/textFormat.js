@@ -1,5 +1,7 @@
 // textFormat.js
 
+import moment from 'moment';
+
 export function abbreviateNumber (num) {
   // =< 1,000,000 - round to hundred-thousand (1.4M)
   if (num >= 1000000) {
@@ -158,6 +160,20 @@ export function extractTwitterHandleFromTextString (rawString) {
   lowerCaseString = lowerCaseString.replace('@', '');
   lowerCaseString = lowerCaseString.replace('/', '');
   return lowerCaseString;
+}
+
+export function formatDateToYearMonthDay (dateString) {
+  // console.log('dateString:', dateString);
+  const momentDate = moment(dateString, 'YYYY-MM-DD');
+  return momentDate.format('YYYY/M/D');
+}
+
+export function isNumber (value) {
+  return typeof value === 'number' && Number.isFinite(value);
+}
+
+export function isString (value) {
+  return typeof value === 'string' || value instanceof String;
 }
 
 export function isValidUrl (rawString) {
