@@ -5,14 +5,12 @@ import { withStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import styled from 'styled-components';
 import LoadingWheel from '../LoadingWheel';
-import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
 import DonateActions from '../../actions/DonateActions';
 import DonateStore from '../../stores/DonateStore';
-import { numberWithCommas, stringContains } from '../../utils/textFormat';
+import { numberWithCommas } from '../../utils/textFormat';
 
-/* global $ */
 
 class SettingsStripePayment extends Component {
   static propTypes = {
@@ -30,15 +28,14 @@ class SettingsStripePayment extends Component {
     super(props);
     this.state = {
       couponCode: '',
+      donationWithStripeSubmitted: false,
       numberOfMonthsService: 0,
       payByYearCostPerYear: 0,
       paymentError: false,
-      organization: {},
       organizationWeVoteId: '',
       payByMonthCostPerMonth: 0,
       pricingPlanChosen: '',
       voter: {},
-      voterIsSignedIn: false,
     };
     this.submitStripePayment = this.submitStripePayment.bind(this);
   }
@@ -56,7 +53,6 @@ class SettingsStripePayment extends Component {
       pricingPlanChosen: this.props.pricingPlanChosen,
     });
     this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange);
-    this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
   }
 
@@ -82,67 +78,22 @@ class SettingsStripePayment extends Component {
 
   componentWillUnmount () {
     this.donateStoreListener.remove();
-    this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
-  }
-
-  onOrganizationStoreChange () {
   }
 
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
-    const voterIsSignedIn = voter.is_signed_in;
     const organizationWeVoteId = voter.linked_organization_we_vote_id;
-    const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-    const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
-    // console.log('onVoterStoreChange organization: ', organization);
+    // console.log('onVoterStoreChange organizationWeVoteId: ', organizationWeVoteId);
     this.setState({
-      chosenFeaturePackage,
-      organization,
       organizationWeVoteId,
       voter,
-      voterIsSignedIn,
     });
   }
 
   onDonateStoreChange = () => {
     // console.log('onDonateStoreChange');
     try {
-      const activePaidPlan = DonateStore.getActivePaidPlan();
-      if (activePaidPlan && activePaidPlan.subscription_active) {
-        let activePaidPlanChosen = '';
-        let activePaidPlanChosenDisplay = '';
-        if (stringContains('PROFESSIONAL', activePaidPlan.plan_type_enum)) {
-          activePaidPlanChosen = 'professional';
-          activePaidPlanChosenDisplay = 'Professional';
-        } else if (stringContains('ENTERPRISE', activePaidPlan.plan_type_enum)) {
-          activePaidPlanChosen = 'enterprise';
-          activePaidPlanChosenDisplay = 'Enterprise';
-        } else {
-          activePaidPlanChosen = 'unknown';
-          activePaidPlanChosenDisplay = 'Unknown';
-        }
-        this.setState({
-          activePaidPlanChosen,
-          activePaidPlanChosenDisplay,
-        });
-      }
-      const msg = DonateStore.getCouponMessageTest();
-      if (msg && msg.length > 0) {
-        console.log('updating coupon message success validating coupon');
-        $('.u-no-break').html(msg).css('color', 'green');
-      }
-
-      if (DonateStore.getOrgSubscriptionAlreadyExists()) {
-        console.log('updating coupon message organization subscription already exists');
-        $('.u-no-break').html('A subscription already exists for this organization<br>The existing subscription was not altered, no credit card charge was made.')
-          .css('color', 'black');
-      }
-
-      // if (DonateStore.doesOrgHavePaidPlan()) {
-      //   console.log('updating coupon message doesOrgHavePaidPlan (before we try)');
-      //   $('.u-no-break').html('A subscription already exists for this organization -- Cancel the existing subscription first.<br>').css('color', 'red');
-      // }
       const stripeErrorMessageForVoter = DonateStore.donationError();
       if (stripeErrorMessageForVoter) {
         this.setState({
@@ -161,6 +112,9 @@ class SettingsStripePayment extends Component {
       if (getAmountPaidViaStripe) {
         // Tell the parent component to move past this step
         this.paymentProcessedFunction();
+        this.setState({
+          donationWithStripeSubmitted: false,
+        });
       }
     } catch (err) {
       console.log('onDonateStoreChange caught error: ', err);
@@ -218,6 +172,9 @@ class SettingsStripePayment extends Component {
     if (token) {
       DonateActions.donationWithStripe(token.id, email, 0, donateMonthly,  // donationAmount is 0 because the actual amount should come from API server
         isOrganizationPlan, planType, couponCode);
+      this.setState({
+        donationWithStripeSubmitted: true,
+      });
     } else {
       this.setState({
         paymentError: true,
@@ -235,11 +192,11 @@ class SettingsStripePayment extends Component {
   }
 
   render () {
-    console.log('SettingsStripePayment render, this.state:', this.state);
+    // console.log('SettingsStripePayment render, this.state:', this.state);
     renderLog(__filename);
     const { classes } = this.props;
     const {
-      numberOfMonthsService, organizationWeVoteId, payByMonthCostPerMonth, payByYearCostPerYear, paymentError, pricingPlanChosen, stripeErrorMessageForVoter, voter,
+      donationWithStripeSubmitted, numberOfMonthsService, organizationWeVoteId, payByMonthCostPerMonth, payByYearCostPerYear, paymentError, pricingPlanChosen, stripeErrorMessageForVoter, voter,
     } = this.state;
     if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
@@ -290,7 +247,7 @@ class SettingsStripePayment extends Component {
               <CardElement />
             </StripeElementContainer>
             <Button
-              disabled={false}
+              disabled={donationWithStripeSubmitted}
               fullWidth
               variant="contained"
               margin="normal"

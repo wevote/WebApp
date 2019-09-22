@@ -345,7 +345,7 @@ class PaidAccountUpgradeModal extends Component {
         if (numberOfMonthsService === 1) {
           payByMonthCostPerMonth = proPlanPriceForDisplayBilledMonthly;
         } else {
-          payByYearCostPerYear = proPlanPriceForDisplayBilledYearly;
+          payByYearCostPerYear = proPlanPriceForDisplayBilledYearly * 12;
         }
         this.setState({
           contactSalesRequired: false,
@@ -374,7 +374,7 @@ class PaidAccountUpgradeModal extends Component {
         if (numberOfMonthsService === 1) {
           payByMonthCostPerMonth = enterprisePlanPriceForDisplayBilledMonthly;
         } else {
-          payByYearCostPerYear = enterprisePlanPriceForDisplayBilledYearly;
+          payByYearCostPerYear = enterprisePlanPriceForDisplayBilledYearly * 12;
         }
         this.setState({
           // currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForEnterprise),
@@ -404,7 +404,7 @@ class PaidAccountUpgradeModal extends Component {
         if (numberOfMonthsService === 1) {
           payByMonthCostPerMonth = proPlanPriceForDisplayBilledMonthly;
         } else {
-          payByYearCostPerYear = proPlanPriceForDisplayBilledYearly;
+          payByYearCostPerYear = proPlanPriceForDisplayBilledYearly * 12;
         }
         this.setState({
           contactSalesRequired: false,
@@ -941,8 +941,11 @@ class PaidAccountUpgradeModal extends Component {
             {' '}
             {pricingPlanChosen}
             {' '}
-            plan! Your payment has been processed, and features have been unlocked. You payed $
-            {amountPaidViaStripe}
+            plan! Your payment has been processed, and features have been unlocked.
+            {' '}
+            You paid $
+            {amountPaidViaStripe / 100}
+            .
             <ButtonsContainer>
               <Button
                 color="primary"
