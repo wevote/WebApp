@@ -439,7 +439,7 @@ class Pricing extends Component {
     if (voter) {
       ({ is_signed_in: isSignedIn } = voter);
     }
-    console.log('Pricing getStartedForOrganizations, isSignedIn: ', isSignedIn, ', pricingPlanChosen:', pricingPlanChosen);
+    // console.log('Pricing getStartedForOrganizations, isSignedIn: ', isSignedIn, ', pricingPlanChosen:', pricingPlanChosen);
     if (isSignedIn) {
       if (this.props.modalDisplayMode) {
         this.pricingPlanChosenFunctionLocal(pricingPlanChosen);

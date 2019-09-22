@@ -12,9 +12,10 @@ export default {
     Dispatcher.loadEndpoint('defaultPricing', {});
   },
 
-  donationCancelSubscriptionAction (subscriptionId) {
+  donationCancelSubscriptionAction (subscriptionId, planTypeEnum = '') {
     Dispatcher.loadEndpoint('donationCancelSubscription',
       {
+        plan_type_enum: planTypeEnum,
         subscription_id: subscriptionId,
       });
   },
