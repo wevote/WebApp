@@ -149,7 +149,7 @@ class PositionItem extends Component {
                     id="positions-popover-trigger-click-root-close"
                   >
                     <Link
-                      to={`${speakerLink}/btcand/${position.candidate_we_vote_id}/b/${this.props.params.back_to_variable}`}
+                      to={`${speakerLink}/btcand/${this.props.params.candidate_we_vote_id}/b/${this.props.params.back_to_variable}`}
                       className="u-no-underline"
                     >
                       { position.speaker_image_url_https_medium ? (

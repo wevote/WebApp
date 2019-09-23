@@ -337,8 +337,9 @@ class HeaderBackToBallot extends Component {
     // console.log('HeaderBackToBallot render');
 
     let backToLink;
+    let backToLinkText;
     if (this.props.params.back_to_cand_we_vote_id) {
-      backToLink = `/candidate/${this.props.params.back_to_cand_we_vote_id}/b/${this.props.params.back_to_variable}`;
+      backToLink = `/candidate/${this.props.params.back_to_cand_we_vote_id}/b/${this.props.params.back_to_variable}/`;
     } else if (organizationWeVoteId && candidate && candidate.google_civic_election_id) {
       backToLink = this.getVoterGuideLink(); // Default to this when there is an organizationWeVoteId
     } else if (candidate && candidate.google_civic_election_id) {
@@ -347,20 +348,23 @@ class HeaderBackToBallot extends Component {
       backToLink = `/ballot#${this.props.params.measure_we_vote_id}`;
     } else {
       backToLink = '/ballot'; // Default to this
+      backToLinkText = 'Back';
     }
 
-    if (this.props.params.back_to_variable === 'bto' || this.props.params.back_to_variable === 'btdo') { // back-to-default-office
+    if ((this.props.params.back_to_variable === 'bto' || this.props.params.back_to_variable === 'btdo') && !this.props.params.back_to_cand_we_vote_id) { // back-to-default-office
       backToLink = this.getOfficeLink();
     }
 
-    let backToLinkText;
     if (organizationWeVoteId) {
       backToLinkText = 'Voter Guide'; // Back to
     } else {
       backToLinkText = 'Ballot'; // Back to
     }
 
-    if (this.props.params.back_to_variable === 'bto' || this.props.params.back_to_variable === 'btdo') { // back-to-default-office
+
+    if (this.props.params.back_to_cand_we_vote_id) {
+      backToLinkText = 'Candidate';
+    } else if (this.props.params.back_to_variable === 'bto' || this.props.params.back_to_variable === 'btdo') { // back-to-default-office
       if (this.state.officeName) {
         backToLinkText = `${this.state.officeName}`; // Back to
       } else {
