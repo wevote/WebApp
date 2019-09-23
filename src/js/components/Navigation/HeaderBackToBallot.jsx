@@ -348,7 +348,6 @@ class HeaderBackToBallot extends Component {
       backToLink = `/ballot#${this.props.params.measure_we_vote_id}`;
     } else {
       backToLink = '/ballot'; // Default to this
-      backToLinkText = 'Back';
     }
 
     if ((this.props.params.back_to_variable === 'bto' || this.props.params.back_to_variable === 'btdo') && !this.props.params.back_to_cand_we_vote_id) { // back-to-default-office
@@ -361,9 +360,8 @@ class HeaderBackToBallot extends Component {
       backToLinkText = 'Ballot'; // Back to
     }
 
-
     if (this.props.params.back_to_cand_we_vote_id) {
-      backToLinkText = 'Candidate';
+      backToLinkText = this.state.candidate.ballot_item_display_name;
     } else if (this.props.params.back_to_variable === 'bto' || this.props.params.back_to_variable === 'btdo') { // back-to-default-office
       if (this.state.officeName) {
         backToLinkText = `${this.state.officeName}`; // Back to
