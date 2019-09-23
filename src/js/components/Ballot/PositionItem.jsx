@@ -18,6 +18,7 @@ class PositionItem extends Component {
   static propTypes = {
     ballotItemDisplayName: PropTypes.string.isRequired,
     position: PropTypes.object.isRequired,
+    params: PropTypes.object,
   };
 
   constructor (props) {
@@ -286,7 +287,7 @@ class PositionItem extends Component {
                 {/* Visible on iPhone 5/se */}
                 <MobileSmallItemNameContainer>
                   <MobileItemName>
-                    <Link to={`${speakerLink}/btcand/${this.props.params.candidate_we_vote_id}/b/${this.props.params.back_to_variable}`}className="u-break-word">
+                    <Link to={`${speakerLink}/btcand/${this.props.params.candidate_we_vote_id}/b/${this.props.params.back_to_variable}`} className="u-break-word">
                       { position.speaker_display_name }
                     </Link>
                   </MobileItemName>
