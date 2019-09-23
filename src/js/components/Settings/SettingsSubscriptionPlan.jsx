@@ -2,14 +2,19 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Edit from '@material-ui/icons/Edit';
-import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
+// import Edit from '@material-ui/icons/Edit';
+// import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import CheckCircle from '@material-ui/icons/CheckCircle';
-import { IconButton, withStyles, Table, TableBody, TableCell, TableHead, TableRow, Button } from '@material-ui/core';
+// IconButton,
+import { withStyles, Table, TableBody, TableCell, TableHead, TableRow, Button } from '@material-ui/core';
+import DonateStore from '../../stores/DonateStore';
+import DonateActions from '../../actions/DonateActions';
 import LoadingWheel from '../LoadingWheel';
 import OrganizationStore from '../../stores/OrganizationStore';
 import { renderLog } from '../../utils/logging';
 import VoterStore from '../../stores/VoterStore';
+import { formatDateToYearMonthDay, stringContains } from '../../utils/textFormat';
+import AppActions from '../../actions/AppActions';
 
 class SettingsSubscriptionPlan extends Component {
   static propTypes = {
@@ -24,6 +29,11 @@ class SettingsSubscriptionPlan extends Component {
       voter: {},
       windowWidth: 0,
       mobileMode: false,
+      subscriptionJournalHistory: {
+        created: '',
+        amount: '',
+      },
+      subscriptionJournalHistoryCount: 0,
     };
     this.handleResize = this.handleResize.bind(this);
   }
@@ -31,8 +41,11 @@ class SettingsSubscriptionPlan extends Component {
   componentDidMount () {
     // console.log("SettingsSubscriptionPlan componentDidMount");
     this.onVoterStoreChange();
+    this.onDonateStoreChange();
+    this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange.bind(this));
     this.organizationStoreListener = OrganizationStore.addListener(this.onOrganizationStoreChange.bind(this));
     this.voterStoreListener = VoterStore.addListener(this.onVoterStoreChange.bind(this));
+    DonateActions.donationRefreshDonationList();
 
     this.handleResize();
     window.addEventListener('resize', this.handleResize);
@@ -48,11 +61,19 @@ class SettingsSubscriptionPlan extends Component {
       return true;
     }
     if (this.state.windowWidth !== nextState.windowWidth) {
-      // console.log('this.state.voterIsSignedIn', this.state.voterIsSignedIn, ', nextState.voterIsSignedIn', nextState.voterIsSignedIn);
+      // console.log('this.state.windowWidth', this.state.windowWidth, ', nextState.windowWidth', nextState.windowWidth);
       return true;
     }
     if (this.state.mobileMode !== nextState.mobileMode) {
-      // console.log('this.state.voterIsSignedIn', this.state.voterIsSignedIn, ', nextState.voterIsSignedIn', nextState.voterIsSignedIn);
+      // console.log('this.state.mobileMode', this.state.mobileMode, ', nextState.mobileMode', nextState.mobileMode);
+      return true;
+    }
+    if (this.state.activePaidPlanChosen !== nextState.activePaidPlanChosen) {
+      // console.log('this.state.activePaidPlanChosen', this.state.activePaidPlanChosen, ', nextState.activePaidPlanChosen', nextState.activePaidPlanChosen);
+      return true;
+    }
+    if (this.state.subscriptionJournalHistoryCount !== nextState.subscriptionJournalHistoryCount) {
+      // console.log('this.state.subscriptionJournalHistoryCount', this.state.subscriptionJournalHistoryCount, ', nextState.subscriptionJournalHistoryCount', nextState.subscriptionJournalHistoryCount);
       return true;
     }
 
@@ -71,9 +92,56 @@ class SettingsSubscriptionPlan extends Component {
   }
 
   componentWillUnmount () {
+    this.donateStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
   }
+
+  onDonateStoreChange = () => {
+    const activePaidPlan = DonateStore.getActivePaidPlan();
+    let activePaidPlanChosen = '';
+    let activePaidPlanChosenDisplay = '';
+    // let activePaidPlanBillingFrequency = '';
+    let activePaidPlanBillingFrequencyDisplay = '';
+    // Kind of plan
+    if (stringContains('PROFESSIONAL', activePaidPlan.plan_type_enum)) {
+      activePaidPlanChosen = 'professional';
+      activePaidPlanChosenDisplay = 'Professional Plan';
+    } else if (stringContains('ENTERPRISE', activePaidPlan.plan_type_enum)) {
+      activePaidPlanChosen = 'enterprise';
+      activePaidPlanChosenDisplay = 'Enterprise Plan';
+    } else {
+      activePaidPlanChosen = 'free';
+      activePaidPlanChosenDisplay = 'Free Plan';
+    }
+    // Billing frequency
+    if (stringContains('MONTHLY', activePaidPlan.plan_type_enum)) {
+      // activePaidPlanBillingFrequency = 'monthly';
+      activePaidPlanBillingFrequencyDisplay = 'Billed Monthly';
+    } else if (stringContains('YEARLY', activePaidPlan.plan_type_enum)) {
+      // activePaidPlanBillingFrequency = 'yearly';
+      activePaidPlanBillingFrequencyDisplay = 'Billed Yearly';
+    } else if (stringContains('ONCE', activePaidPlan.plan_type_enum)) {
+      // activePaidPlanBillingFrequency = 'once';
+      activePaidPlanBillingFrequencyDisplay = 'One Time Payment';
+    } else {
+      // activePaidPlanBillingFrequency = '';
+      activePaidPlanBillingFrequencyDisplay = '';
+    }
+    const subscriptionJournalHistoryRaw = DonateStore.getSubscriptionJournalHistory();
+    const subscriptionJournalHistory = subscriptionJournalHistoryRaw.filter(item => item.record_enum !== 'SUBSCRIPTION_SETUP_AND_INITIAL');
+    const subscriptionJournalHistoryCount = subscriptionJournalHistory.length;
+    const nextInvoice = DonateStore.getNextInvoice();
+    this.setState({
+      activePaidPlanChosen,
+      activePaidPlanChosenDisplay,
+      // activePaidPlanBillingFrequency,
+      activePaidPlanBillingFrequencyDisplay,
+      nextInvoice,
+      subscriptionJournalHistory,
+      subscriptionJournalHistoryCount,
+    });
+  };
 
   onOrganizationStoreChange = () => {
     const { organizationWeVoteId } = this.state;
@@ -94,6 +162,35 @@ class SettingsSubscriptionPlan extends Component {
     });
   }
 
+  openPaidAccountUpgradeModal = (paidAccountUpgradeMode) => {
+    AppActions.setShowPaidAccountUpgradeModal(paidAccountUpgradeMode);
+  }
+
+  onChangePlan = () => {
+    const { activePaidPlanChosen } = this.state;
+    let paidAccountUpgradeMode = '';
+    switch (activePaidPlanChosen) {
+      default:
+      case 'free':
+        paidAccountUpgradeMode = 'professional';
+        break;
+      case 'professional':
+        paidAccountUpgradeMode = 'enterprise';
+        break;
+      case 'enterprise':
+        paidAccountUpgradeMode = 'professional';
+        break;
+    }
+    this.openPaidAccountUpgradeModal(paidAccountUpgradeMode);
+  }
+
+  onCancelPlan = () => {
+    const activePaidPlan = DonateStore.getActivePaidPlan();
+    const subscriptionId = '';
+    // console.log('onCancelPlan');
+    DonateActions.donationCancelSubscriptionAction(subscriptionId, activePaidPlan.plan_type_enum);
+  };
+
   handleResize () {
     this.setState({
       windowWidth: window.innerWidth,
@@ -108,7 +205,7 @@ class SettingsSubscriptionPlan extends Component {
 
   render () {
     renderLog(__filename);
-    const { organization, organizationWeVoteId, voter, voterIsSignedIn, mobileMode } = this.state;
+    const { activePaidPlanChosen, activePaidPlanChosenDisplay, activePaidPlanBillingFrequencyDisplay, nextInvoice, organization, organizationWeVoteId, subscriptionJournalHistory, subscriptionJournalHistoryCount, voter, voterIsSignedIn, mobileMode } = this.state;
     const { classes } = this.props;
     if (!voter || !organizationWeVoteId) {
       return LoadingWheel;
@@ -121,137 +218,180 @@ class SettingsSubscriptionPlan extends Component {
       // console.log('SettingsSubscriptionPlan, Custom Domain: ', organization.we_vote_custom_domain);
     }
 
-    function createData (date, period, amount, actions) {
-      return { date, period, amount, actions };
-    }
-
-    // Simulated invoices: these will come from the API
-    const completedInvoices = [
-      createData('2/10/2019', '2/10/2019 - 4/10/2019', '$1200', <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>),
-      createData('4/10/2019', '4/10/2019 - 6/10/2019', '$1200', <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>),
-      createData('6/10/2019', '6/10/2019 - 8/10/2019', '$1200', <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>),
-    ];
-
-    // Simulated invoices: these will come from the API
-    const upcomingInvoices = [
-      createData('12/10/2012', '12/10/2012 - 12/12/2012', '$1200', <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>),
-    ];
-
     let subscriptionPageHtmlContents = (<span />);
-    const learnMoreLink = ' Learn more';
 
     if (mobileMode) {
       subscriptionPageHtmlContents = (
         <MobileWrapper className="d-block d-sm-none">
           <SectionCardMobile className="u-position-relative">
             <SectionTitle>
-              Payment
+              Your Plan
             </SectionTitle>
-            <EditIcon>
-              <IconButton size="medium" classes={{ root: classes.iconButton }}>
-                <Edit />
-              </IconButton>
-            </EditIcon>
-            <SectionParagraph>
-              <InvoiceFlexContainer>
-                <FlexOne>Card ending in</FlexOne>
-                <FlexTwo>0223</FlexTwo>
-              </InvoiceFlexContainer>
-              <InvoiceFlexContainer>
-                <FlexOne>Expires</FlexOne>
-                <FlexTwo>02/23</FlexTwo>
-              </InvoiceFlexContainer>
-              <InvoiceFlexContainer>
-                <FlexOne>Next bill</FlexOne>
-                <FlexTwo>June 21, 2019</FlexTwo>
-              </InvoiceFlexContainer>
-              <InvoiceFlexContainer>
-                <FlexOne>Billing contact</FlexOne>
-                <FlexTwo>barrack-obama@gmail.com</FlexTwo>
-              </InvoiceFlexContainer>
-            </SectionParagraph>
-          </SectionCardMobile>
-          <SectionCardMobile>
-            <SectionTitle>
-              Invoices
-            </SectionTitle>
-            {completedInvoices.map(row => (
-              <SectionCard>
-                <SectionParagraph>
-                  <InvoiceFlexContainer>
-                    <FlexOne>Date</FlexOne>
-                    <FlexTwo>{row.date}</FlexTwo>
-                  </InvoiceFlexContainer>
-                  <InvoiceFlexContainer>
-                    <FlexOne>Period</FlexOne>
-                    <FlexTwo>{row.period}</FlexTwo>
-                  </InvoiceFlexContainer>
-                  <InvoiceFlexContainer>
-                    <FlexOne>Amount</FlexOne>
-                    <FlexTwo>{row.amount}</FlexTwo>
-                  </InvoiceFlexContainer>
-                </SectionParagraph>
-                <Button color="primary" size="small" classes={{ root: classes.viewInvoiceButton }}>
-                  View Invoice
-                </Button>
-              </SectionCard>
-            ))}
-            <Button size="small" classes={{ root: classes.showMoreButton }}>
-              Show More
-              <ArrowBackIos classes={{ root: classes.showMoreIcon }} />
-            </Button>
-          </SectionCardMobile>
-          <SectionCardMobile>
-            <SectionTitle>
-              Next Invoice
-            </SectionTitle>
-            {upcomingInvoices.map(row => (
-              <SectionCard>
-                <SectionParagraph>
-                  <InvoiceFlexContainer>
-                    <FlexOne>Date</FlexOne>
-                    <FlexTwo>{row.date}</FlexTwo>
-                  </InvoiceFlexContainer>
-                  <InvoiceFlexContainer>
-                    <FlexOne>Period</FlexOne>
-                    <FlexTwo>{row.period}</FlexTwo>
-                  </InvoiceFlexContainer>
-                  <InvoiceFlexContainer>
-                    <FlexOne>Amount</FlexOne>
-                    <FlexTwo>{row.amount}</FlexTwo>
-                  </InvoiceFlexContainer>
-                </SectionParagraph>
-                <Button color="primary" size="small" classes={{ root: classes.viewInvoiceButton }}>
-                  View Invoice
-                </Button>
-              </SectionCard>
-            ))}
-          </SectionCardMobile>
-          <SectionCardMobile className="u-position-relative">
-            <SectionTitle>
-              My Plan
-            </SectionTitle>
-            <h4 className="h4"><strong>Premium Plan • Monthly</strong></h4>
-            <Button variant="outlined" color="primary" size="small" classes={{ root: classes.changeCancelPlanButton }}>
+            <h4 className="h4">
+              <strong>
+                {activePaidPlanChosenDisplay}
+                {' '}
+                {activePaidPlanBillingFrequencyDisplay && <span>•</span>}
+                {' '}
+                {activePaidPlanBillingFrequencyDisplay}
+              </strong>
+            </h4>
+            <Button
+              classes={{ root: classes.changeCancelPlanButton }}
+              color="primary"
+              onClick={this.onChangePlan}
+              size="small"
+              variant="outlined"
+            >
               Change Plan
             </Button>
           </SectionCardMobile>
-          <SectionCardMobile className="u-position-relative">
+          {nextInvoice && nextInvoice.next_invoice_found && (
+            <>
+              <SectionCardMobile className="u-position-relative">
+                <SectionTitle>
+                  Payment Method
+                </SectionTitle>
+                {/*
+                <EditIcon>
+                  <IconButton size="medium" classes={{ root: classes.iconButton }}>
+                    <Edit />
+                  </IconButton>
+                </EditIcon>
+                */}
+                <SectionParagraph>
+                  <InvoiceFlexContainer>
+                    <FlexOne>Card ending in</FlexOne>
+                    <FlexTwo>
+                      ...
+                      {nextInvoice.credit_card_last_four}
+                    </FlexTwo>
+                  </InvoiceFlexContainer>
+                  <InvoiceFlexContainer>
+                    <FlexOne>Expires</FlexOne>
+                    <FlexTwo>{nextInvoice.credit_card_expiration}</FlexTwo>
+                  </InvoiceFlexContainer>
+                  {nextInvoice.billing_contact && (
+                    <InvoiceFlexContainer>
+                      <FlexOne>Billing contact</FlexOne>
+                      <FlexTwo>{nextInvoice.billing_contact}</FlexTwo>
+                    </InvoiceFlexContainer>
+                  )}
+                </SectionParagraph>
+              </SectionCardMobile>
+              <SectionCardMobile>
+                <SectionTitle>
+                  Next Invoice
+                </SectionTitle>
+                <SectionCard>
+                  <SectionParagraph>
+                    <InvoiceFlexContainer>
+                      <FlexOne>Date</FlexOne>
+                      <FlexTwo>{formatDateToYearMonthDay(nextInvoice.invoice_date)}</FlexTwo>
+                    </InvoiceFlexContainer>
+                    <InvoiceFlexContainer>
+                      <FlexOne>Period</FlexOne>
+                      <FlexTwo>
+                        {formatDateToYearMonthDay(nextInvoice.period_start)}
+                        {' '}
+                        -
+                        {' '}
+                        {formatDateToYearMonthDay(nextInvoice.period_end)}
+                      </FlexTwo>
+                    </InvoiceFlexContainer>
+                    <InvoiceFlexContainer>
+                      <FlexOne>Amount</FlexOne>
+                      <FlexTwo>
+                        $
+                        {nextInvoice.amount_due}
+                      </FlexTwo>
+                    </InvoiceFlexContainer>
+                  </SectionParagraph>
+                  {/*
+                  <Button color="primary" size="small" classes={{ root: classes.viewInvoiceButton }}>
+                    View Invoice
+                  </Button>
+                  */}
+                </SectionCard>
+              </SectionCardMobile>
+            </>
+          )}
+          <SectionCardMobile>
             <SectionTitle>
-              Cancel Plan
+              Paid Invoices (
+              { subscriptionJournalHistoryCount }
+              )
             </SectionTitle>
-            <SectionParagraph>
-              Upon cancelling, you and your team will lose the premium features you have been using. You can switch to our Free Plan to continue using We Vote at no cost.
-              {/* <a
-                href="https://google.com"
-              >
-                {learnMoreLink}
-              </a> */}
-            </SectionParagraph>
-            <Button variant="outlined" color="primary" size="small" classes={{ root: classes.changeCancelPlanButton }}>
-              Cancel Plan
-            </Button>
+            {subscriptionJournalHistory.map((row) => {
+              if (row.record_enum !== 'SUBSCRIPTION_SETUP_AND_INITIAL') {
+                return (
+                  <SectionCard key={`mobile-${row.donation_journal_id}`}>
+                    <SectionParagraph>
+                      <InvoiceFlexContainer>
+                        <FlexOne>Date</FlexOne>
+                        <FlexTwo>{formatDateToYearMonthDay(row.created)}</FlexTwo>
+                      </InvoiceFlexContainer>
+                      <InvoiceFlexContainer>
+                        <FlexOne>Period</FlexOne>
+                        <FlexTwo>{row.period}</FlexTwo>
+                      </InvoiceFlexContainer>
+                      <InvoiceFlexContainer>
+                        <FlexOne>Amount</FlexOne>
+                        <FlexTwo>
+                          $
+                          {row.amount}
+                        </FlexTwo>
+                      </InvoiceFlexContainer>
+                    </SectionParagraph>
+                    {/*
+                    <Button
+                      color="primary"
+                      size="small"
+                      classes={{ root: classes.viewInvoiceButton }}
+                    >
+                      View Invoice
+                    </Button>
+                    */}
+                  </SectionCard>
+                );
+              } else {
+                return null;
+              }
+            })}
+            {/* subscriptionJournalHistoryCount > 3 && (
+              <Button size="small" classes={{ root: classes.showMoreButton }}>
+                Show More
+                <ArrowBackIos classes={{ root: classes.showMoreIcon }} />
+              </Button>
+            ) */}
           </SectionCardMobile>
+          {activePaidPlanChosen !== 'free' && (
+            <SectionCardMobile className="u-position-relative">
+              <SectionTitle>
+                Cancel Plan
+              </SectionTitle>
+              <SectionParagraph>
+                Upon cancelling, your team and members will lose the premium features provided by the
+                {' '}
+                {activePaidPlanChosenDisplay}
+                . Cancelling will switch you to our Free Plan, which provides many features at no cost.
+                {/* <a
+                  href="https://google.com"
+                >
+                  {learnMoreLink}
+                </a> */}
+              </SectionParagraph>
+              <Button
+                color="primary"
+                classes={{ root: classes.changeCancelPlanButton }}
+                onClick={this.onCancelPlan}
+                size="small"
+                variant="outlined"
+              >
+                Cancel Plan
+              </Button>
+            </SectionCardMobile>
+          )}
         </MobileWrapper>
       );
     } else {
@@ -259,43 +399,127 @@ class SettingsSubscriptionPlan extends Component {
         <Card className="card">
           <CardMain className="card-main">
             <h1 className="h2">Subscription Plan</h1>
-            <Seperator />
             <SectionCard className="u-position-relative">
               <SectionTitle>
-                Payment
+                Your Plan
               </SectionTitle>
-              <EditIcon>
-                <IconButton size="medium" classes={{ root: classes.iconButton }}>
-                  <Edit />
-                </IconButton>
-              </EditIcon>
-              <SectionParagraph>
-                Card ending in:
-                {' '}
-                <strong>0223</strong>
-                {' '}
-                •
-                {' '}
-                Expires:
-                {' '}
-                <strong>02/23</strong>
-                {' '}
-                •
-                {' '}
-                Next bill:
-                {' '}
-                <strong>June 21, 2019</strong>
-              </SectionParagraph>
-              <SectionParagraph>
-                Billing contact:
-                {' '}
-                <strong>barrack-obama@gmail.com</strong>
-              </SectionParagraph>
+              <h4 className="h4">
+                <strong>
+                  {activePaidPlanChosenDisplay}
+                  {' '}
+                  {activePaidPlanBillingFrequencyDisplay && <span>•</span>}
+                  {' '}
+                  {activePaidPlanBillingFrequencyDisplay}
+                </strong>
+              </h4>
+              <Button
+                classes={{ root: classes.changeCancelPlanButton }}
+                color="primary"
+                onClick={this.onChangePlan}
+                size="small"
+                variant="outlined"
+              >
+                Change Plan
+              </Button>
             </SectionCard>
+            {nextInvoice && nextInvoice.next_invoice_found && (
+              <>
+                <Seperator />
+                <SectionCard className="u-position-relative">
+                  <SectionTitle>
+                    Payment Method
+                  </SectionTitle>
+                  {/*
+                  <EditIcon>
+                    <IconButton size="medium" classes={{ root: classes.iconButton }}>
+                      <Edit />
+                    </IconButton>
+                  </EditIcon>
+                  */}
+                  <SectionParagraph>
+                    {nextInvoice.credit_card_last_four && (
+                      <>
+                        Card ending in:
+                        {' '}
+                        <strong>
+                          ...
+                          {nextInvoice.credit_card_last_four}
+                        </strong>
+                      </>
+                    )}
+                    {(nextInvoice.credit_card_expiration && nextInvoice.credit_card_last_four) && (
+                      <>
+                        {' '}
+                        •
+                        {' '}
+                      </>
+                    )}
+                    {nextInvoice.credit_card_expiration && (
+                      <>
+                        Expires:
+                        {' '}
+                        <strong>{nextInvoice.credit_card_expiration}</strong>
+                      </>
+                    )}
+                  </SectionParagraph>
+                  {nextInvoice.billing_contact && (
+                    <SectionParagraph>
+                      Billing contact:
+                      {' '}
+                      <strong>{nextInvoice.billing_contact}</strong>
+                    </SectionParagraph>
+                  )}
+                </SectionCard>
+              </>
+            )}
+            {nextInvoice && nextInvoice.next_invoice_found && (
+              <>
+                <Seperator />
+                <SectionCard>
+                  <SectionTitle>
+                    Next Invoice
+                  </SectionTitle>
+                  <Table classes={{ root: classes.table }}>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell classes={{ root: classes.tableHeadLeft }}>Date</TableCell>
+                        <TableCell classes={{ root: classes.tableHead }}>Period</TableCell>
+                        <TableCell classes={{ root: classes.tableHead }}>Amount</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell classes={{ root: classes.tableCellLeft }} component="th" scope="row">
+                          {formatDateToYearMonthDay(nextInvoice.invoice_date)}
+                        </TableCell>
+                        <TableCell classes={{ root: classes.tableCell }}>
+                          {formatDateToYearMonthDay(nextInvoice.period_start)}
+                          {' '}
+                          -
+                          {' '}
+                          {formatDateToYearMonthDay(nextInvoice.period_end)}
+                        </TableCell>
+                        <TableCell classes={{ root: classes.tableCell }}>
+                          $
+                          {nextInvoice.amount_due}
+                        </TableCell>
+                        {/*
+                        <TableCell classes={{ root: classes.tableCellRight }} align="right">
+                          <Button size="small" color="primary" classes={{ root: classes.viewInvoiceButton }}>View Invoice</Button>
+                        </TableCell>
+                        */}
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </SectionCard>
+              </>
+            )}
             <Seperator />
             <SectionCard>
               <SectionTitle>
-                Invoices
+                Paid Invoices (
+                { subscriptionJournalHistoryCount }
+                )
               </SectionTitle>
               <Table classes={{ root: classes.table }}>
                 <TableHead>
@@ -304,91 +528,88 @@ class SettingsSubscriptionPlan extends Component {
                     <TableCell classes={{ root: classes.tableHead }}>Date</TableCell>
                     <TableCell classes={{ root: classes.tableHead }}>Period</TableCell>
                     <TableCell classes={{ root: classes.tableHead }}>Amount</TableCell>
+                    {/*
                     <TableCell classes={{ root: classes.tableHeadRight }} align="right">Actions</TableCell>
+                    */}
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {completedInvoices.map(row => (
-                    <TableRow key={row.date}>
-                      <TableCell classes={{ root: classes.tableCellCheckmark }} component="th" scope="row">
-                        <CheckCircle classes={{ root: classes.checkIcon }} />
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCell }}>{row.date}</TableCell>
-                      <TableCell classes={{ root: classes.tableCell }}>{row.period}</TableCell>
-                      <TableCell classes={{ root: classes.tableCell }}>{row.amount}</TableCell>
-                      <TableCell classes={{ root: classes.tableCellRight }} align="right">{row.actions}</TableCell>
-                    </TableRow>
-                  ))}
+                  {subscriptionJournalHistory.map((row) => {
+                    if (row.record_enum !== 'SUBSCRIPTION_SETUP_AND_INITIAL') {
+                      return (
+                        <TableRow key={`desktop-${row.donation_journal_id}`}>
+                          <TableCell
+                            classes={{ root: classes.tableCellCheckmark }}
+                            component="th"
+                            scope="row"
+                          >
+                            <CheckCircle classes={{ root: classes.checkIcon }} />
+                          </TableCell>
+                          <TableCell classes={{ root: classes.tableCell }}>{formatDateToYearMonthDay(row.created)}</TableCell>
+                          <TableCell classes={{ root: classes.tableCell }}>{row.period}</TableCell>
+                          <TableCell classes={{ root: classes.tableCell }}>
+                            $
+                            {row.amount}
+                          </TableCell>
+                          {/*
+                          <TableCell classes={{ root: classes.tableCellRight }} align="right">
+                            <Button
+                              size="small"
+                              color="primary"
+                              classes={{ root: classes.viewInvoiceButton }}
+                            >
+                              View Invoice
+                            </Button>
+                          </TableCell>
+                          */}
+                        </TableRow>
+                      );
+                    } else {
+                      return null;
+                    }
+                  })}
                 </TableBody>
               </Table>
-              <Button size="small" classes={{ root: classes.showMoreButton }}>
-                Show More
-                <ArrowBackIos classes={{ root: classes.showMoreIcon }} />
-              </Button>
+              {/* subscriptionJournalHistoryCount > 3 && (
+                <Button size="small" classes={{ root: classes.showMoreButton }}>
+                  Show More
+                  <ArrowBackIos classes={{ root: classes.showMoreIcon }} />
+                </Button>
+              ) */}
             </SectionCard>
-            <Seperator />
-            <SectionCard>
-              <SectionTitle>
-                Next Invoice
-              </SectionTitle>
-              <Table classes={{ root: classes.table }}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell classes={{ root: classes.tableHeadLeft }}>Date</TableCell>
-                    <TableCell classes={{ root: classes.tableHead }}>Period</TableCell>
-                    <TableCell classes={{ root: classes.tableHead }}>Amount</TableCell>
-                    <TableCell classes={{ root: classes.tableHeadRight }} align="right">Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {upcomingInvoices.map(row => (
-                    <TableRow key={row.date}>
-                      <TableCell classes={{ root: classes.tableCellLeft }} component="th" scope="row">
-                        {row.date}
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCell }}>{row.period}</TableCell>
-                      <TableCell classes={{ root: classes.tableCell }}>{row.amount}</TableCell>
-                      <TableCell classes={{ root: classes.tableCellRight }} align="right">{row.actions}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </SectionCard>
-            <Seperator />
-            <SectionCard className="u-position-relative">
-              <SectionTitle>
-                My Plan
-              </SectionTitle>
-              <h4 className="h4"><strong>Premium Plan • Monthly</strong></h4>
-              <Button variant="outlined" color="primary" size="small" classes={{ root: classes.changeCancelPlanButton }}>
-                Change Plan
-              </Button>
-            </SectionCard>
-            <Seperator />
-            <SectionCard className="u-position-relative">
-              <SectionTitle>
-                Cancel Plan
-              </SectionTitle>
-
-              <div className="row m-0">
-                <div className="col col-8 p-0">
-                  <SectionParagraph>
-                    Upon cancelling, you and your team will lose access to customer data in FullStory. You can switch to our Free Plan to continue using FullStory at no cost.
-                    <a
-                      href="https://google.com"
-                    >
-                      {learnMoreLink}
-                    </a>
-                  </SectionParagraph>
-                </div>
-                <StaticColumn className="col col-4 p-0">
-                  <Button variant="outlined" color="primary" size="small" classes={{ root: classes.changeCancelPlanButton }}>
+            {activePaidPlanChosen !== 'free' && (
+              <>
+                <Seperator />
+                <SectionCard className="u-position-relative">
+                  <SectionTitle>
                     Cancel Plan
-                  </Button>
-                </StaticColumn>
-              </div>
-
-            </SectionCard>
+                  </SectionTitle>
+                  <div className="row m-0">
+                    <div className="col col-8 p-0">
+                      <SectionParagraph>
+                        Upon cancelling, your team and members will lose the premium features provided by the
+                        {' '}
+                        {activePaidPlanChosenDisplay}
+                        . You will still have access to your data and analytics already gathered.
+                        {' '}
+                        Cancelling will switch you to our Free Plan, which provides many features at no cost.
+                      </SectionParagraph>
+                    </div>
+                    <StaticColumn className="col col-4 p-0">
+                      <Button
+                        classes={{ root: classes.changeCancelPlanButton }}
+                        color="primary"
+                        onClick={this.onCancelPlan}
+                        size="small"
+                        variant="outlined"
+                      >
+                        Cancel Plan
+                      </Button>
+                    </StaticColumn>
+                  </div>
+                </SectionCard>
+              </>
+            )}
           </CardMain>
         </Card>
       );
@@ -595,13 +816,13 @@ const SectionTitle = styled.h4`
   color: #333;
 `;
 
-const EditIcon = styled.div`
-  position: absolute;
-  right: 8px;
-  top: 8px;
-`;
+// const EditIcon = styled.div`
+//   position: absolute;
+//   right: 8px;
+//   top: 8px;
+// `;
 
-const SectionParagraph = styled.p`
+const SectionParagraph = styled.span`
   font-size: 14px;
   margin-bottom: 4px;
   @media (min-width: 569px) {

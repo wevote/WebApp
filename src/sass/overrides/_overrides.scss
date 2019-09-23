@@ -9,10 +9,10 @@ $white-text-color: $white;
 }
 
 
-// Required because Google Auto-complete needs to appear above modal: https://github.com/twbs/bootstrap/issues/4160
+// Required because Google Auto-complete needs to appear above Material-UI modal: https://material-ui.com/customization/z-index/
 // This is used for the address auto-complete field (.pac-container is injected via Google)
 .pac-container {
-  z-index: 1051 !important;
+  z-index: 1301 !important;
 }
 
 // Used to prevent scrolling underneath a modal(modal)

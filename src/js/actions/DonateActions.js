@@ -12,9 +12,10 @@ export default {
     Dispatcher.loadEndpoint('defaultPricing', {});
   },
 
-  donationCancelSubscriptionAction (subscriptionId) {
+  donationCancelSubscriptionAction (subscriptionId, planTypeEnum = '') {
     Dispatcher.loadEndpoint('donationCancelSubscription',
       {
+        plan_type_enum: planTypeEnum,
         subscription_id: subscriptionId,
       });
   },
@@ -46,6 +47,7 @@ export default {
   },
 
   doesOrgHavePaidPlan () {
+    // DALE 2019-09-19 Migrate away from this -- donationHistory provides what we need
     Dispatcher.loadEndpoint('doesOrgHavePaidPlan', {});
   },
 

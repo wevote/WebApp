@@ -1,9 +1,26 @@
 import { ReduceStore } from 'flux/utils';
 import Dispatcher from '../dispatcher/Dispatcher';
+import OrganizationActions from '../actions/OrganizationActions';
+import VoterStore from './VoterStore';
 
 class DonateStore extends ReduceStore {
   getInitialState () {  // This is a mandatory override, so it can't be static.
     return {
+      activePaidPlan: {
+        coupon_code: '',
+        next_invoice: {
+          invoice_date: '',
+          amount_due: '',
+          period_start: '',
+          period_end: '',
+          credit_card_last_four: '',
+          credit_card_expiration: '',
+          billing_contact: '',
+        },
+        plan_type_enum: '',
+        subscription_active: '',
+        donation_plan_id: '',
+      },
       defaultPricing: {
         chosenFaviconRecommendedPlan: '',
         chosenFullDomainRecommendedPlan: '',
@@ -20,6 +37,18 @@ class DonateStore extends ReduceStore {
         status: 'From getInitialState',
         success: true,
       },
+      donationJournalList: [
+        {
+          created: '',
+          amount: '',
+        },
+      ],
+      subscriptionJournalHistory: [
+        {
+          created: '',
+          amount: '',
+        },
+      ],
       lastCouponResponseReceived: {
         couponAppliedMessage: '',
         couponCodeString: '',
@@ -49,7 +78,7 @@ class DonateStore extends ReduceStore {
   }
 
   donationError () {
-    return this.getState().errorMessageForVoter || '';
+    return this.getState().stripeErrorMessageForVoter || '';
   }
 
   donationResponseReceived () {
@@ -58,7 +87,32 @@ class DonateStore extends ReduceStore {
 
   // Voter's donation history
   getVoterDonationHistory () {
-    return this.getState().donationHistory || {};
+    return this.getState().donationJournalList || [];
+  }
+
+  // Organization's subscription payment history
+  getSubscriptionJournalHistory () {
+    return this.getState().subscriptionJournalHistory || [];
+  }
+
+  getActivePaidPlan () {
+    return this.getState().activePaidPlan || {};
+  }
+
+  getAmountPaidViaStripe () {
+    return this.getState().amountPaidViaStripe || 0;
+  }
+
+  getNextInvoice () {
+    const activePaidPlan = this.getState().activePaidPlan || null;
+    if (activePaidPlan && activePaidPlan.next_invoice) {
+      return this.getState().activePaidPlan.next_invoice || {};
+    }
+    return {};
+  }
+
+  getPlanTypeEnum () {
+    return this.getState().planTypeEnum || '';
   }
 
   getCouponMessageTest () {
@@ -66,7 +120,7 @@ class DonateStore extends ReduceStore {
   }
 
   getCouponMessage () {
-    const { lastCouponResponseReceived } = this.state;
+    const lastCouponResponseReceived = this.getState().lastCouponResponseReceived || {};
     if (!lastCouponResponseReceived) {
       return '';
     } else {
@@ -92,48 +146,77 @@ class DonateStore extends ReduceStore {
 
   reduce (state, action) {
     if (!action.res) return state;
+    // DALE 2019-09-19 Migrate away from orgSubsAlreadyExists and doesOrgHavePaidPlan -- donationHistory/activePaidPlan provides what we need
     const {
-      error_message_for_voter: errorMessageForVoter,
-      saved_stripe_donation: savedStripeDonation,
-      status,
-      success,
-      donation_amount: donationAmount,
-      donation_list: donationHistory,
       charge_id: charge,
-      subscription_id: subscriptionId,
+      donation_amount: donationAmount,
       monthly_donation: monthlyDonation,
       org_subs_already_exists: orgSubsAlreadyExists,
       org_has_active_paid_plan: doesOrgHavePaidPlan,
+      saved_stripe_donation: savedStripeDonation,
+      subscription_id: subscriptionId,
+      success,
     } = action.res;
     const donationAmountSafe = donationAmount || '';
     let { defaultPricing, lastCouponResponseReceived } = state;
+    let activePaidPlan = {};
+    let amountPaidViaStripe = 0;
     let apiStatus = '';
     let apiSuccess = false;
+    let completeDonationJournalList = [];
     let couponAppliedMessage = '';
     let couponCodeString = '';
     let couponMatchFound = '';
     let couponStillValid = '';
+    let donationJournalList = [];
     let enterprisePlanCouponPricePerMonthPayMonthly = '';
     let enterprisePlanCouponPricePerMonthPayYearly = '';
     let enterprisePlanFullPricePerMonthPayMonthly = '';
     let enterprisePlanFullPricePerMonthPayYearly = '';
+    let organizationSaved = false;
+    let planTypeEnum = '';
     let proPlanCouponPricePerMonthPayMonthly = '';
     let proPlanCouponPricePerMonthPayYearly = '';
     let proPlanFullPricePerMonthPayMonthly = '';
     let proPlanFullPricePerMonthPayYearly = '';
+    let stripeErrorMessageForVoter = '';
+    let subscriptionJournalHistory = [];
     let validForProfessionalPlan = '';
     let validForEnterprisePlan = '';
     switch (action.type) {
       case 'donationWithStripe':
+        ({
+          active_paid_plan: activePaidPlan,
+          amount_paid: amountPaidViaStripe,
+          donation_list: completeDonationJournalList,
+          error_message_for_voter: stripeErrorMessageForVoter,
+          organization_saved: organizationSaved,
+          plan_type_enum: planTypeEnum,
+          status: apiStatus,
+          success: apiSuccess,
+        } = action.res);
+        donationJournalList = completeDonationJournalList.filter(item => (item.is_organization_plan === false));
+        subscriptionJournalHistory = completeDonationJournalList.filter(item => (item.is_organization_plan === true));
         if (success === false) {
-          console.log(`donation with stripe failed:  ${errorMessageForVoter}  ---  ${status}`);
+          console.log(`donation with stripe failed:  ${stripeErrorMessageForVoter}  ---  ${apiStatus}`);
+        }
+        // console.log('amountPaidViaStripe: ', amountPaidViaStripe);
+        // DALE 2019-09-19 Migrate away from orgSubsAlreadyExists -- donationHistory provides what we need
+        if (organizationSaved) {
+          OrganizationActions.organizationRetrieve(VoterStore.getLinkedOrganizationWeVoteId());
         }
         return {
           ...state,
+          activePaidPlan,
+          amountPaidViaStripe,
+          apiStatus,
           donationAmount: donationAmountSafe,
-          errorMessageForVoter,
+          donationJournalList,
+          stripeErrorMessageForVoter,
           monthlyDonation,
+          planTypeEnum,
           savedStripeDonation,
+          subscriptionJournalHistory,
           success,
           orgSubsAlreadyExists,
           donationResponseReceived: true,
@@ -144,40 +227,71 @@ class DonateStore extends ReduceStore {
         return state;
 
       case 'donationCancelSubscription':
-        console.log(`donationCancelSubscription: ${action}`);
+        // console.log(`donationCancelSubscription: ${action}`);
+        ({
+          active_paid_plan: activePaidPlan,
+          donation_list: completeDonationJournalList,
+          organization_saved: organizationSaved,
+        } = action.res);
+        donationJournalList = completeDonationJournalList.filter(item => (item.is_organization_plan === false));
+        subscriptionJournalHistory = completeDonationJournalList.filter(item => (item.is_organization_plan === true));
+        if (organizationSaved) {
+          OrganizationActions.organizationRetrieve(VoterStore.getLinkedOrganizationWeVoteId());
+        }
         return {
           ...state,
-          subscriptionId,
-          donationHistory,
+          activePaidPlan,
           donationCancelCompleted: false,
+          donationJournalList,
+          subscriptionId,
+          subscriptionJournalHistory,
         };
 
       case 'donationHistory':
-        // console.log('Donate Store, donationHistory: ', action);
+        // console.log('Donate Store, donationHistory action.res: ', action.res);
+        ({
+          active_paid_plan: activePaidPlan,
+          donation_list: completeDonationJournalList,
+        } = action.res);
+        donationJournalList = completeDonationJournalList.filter(item => (item.is_organization_plan === false));
+        subscriptionJournalHistory = completeDonationJournalList.filter(item => (item.is_organization_plan === true));
         return {
           ...state,
-          donationHistory,
+          activePaidPlan,
+          donationJournalList,
+          subscriptionJournalHistory,
         };
 
       case 'donationRefund':
-        console.log(`donationRefund: ${action}`);
+        // console.log(`donationRefund: ${action}`);
+        ({
+          donation_list: completeDonationJournalList,
+        } = action.res);
+        donationJournalList = completeDonationJournalList.filter(item => (item.is_organization_plan === false));
+        subscriptionJournalHistory = completeDonationJournalList.filter(item => (item.is_organization_plan === true));
         return {
           ...state,
           charge,
-          donationHistory,
+          donationJournalList,
           donationRefundCompleted: false,
+          subscriptionJournalHistory,
         };
 
       case 'doesOrgHavePaidPlan':
-        console.log(`doesOrgHavePaidPlan: ${action}`);
+        // DALE 2019-09-19 Migrate away from this -- donationHistory provides what we need
+        // console.log(`doesOrgHavePaidPlan: ${action}`);
         return {
+          ...state,
           doesOrgHavePaidPlan,
         };
 
       case 'latestCouponViewed':
         // Update the lastCouponResponseReceived with the information that it has been viewed by another component
         lastCouponResponseReceived = { ...lastCouponResponseReceived, couponViewed: action.payload };
-        return { ...state, lastCouponResponseReceived };
+        return {
+          ...state,
+          lastCouponResponseReceived,
+        };
 
       case 'voterSignOut':
         // console.log("resetting DonateStore");
@@ -247,6 +361,7 @@ class DonateStore extends ReduceStore {
 
       case 'validateCoupon':
         return {
+          ...state,
           annual_price_stripe: action.res.annual_price_stripe,
           coupon_applied_message: action.res.coupon_applied_message,
           coupon_match_found: action.res.coupon_match_found,

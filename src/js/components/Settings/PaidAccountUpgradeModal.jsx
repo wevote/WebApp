@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Elements, StripeProvider } from 'react-stripe-elements';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
@@ -16,11 +17,14 @@ import { withStyles, withTheme, OutlinedInput } from '@material-ui/core';
 import { renderLog } from '../../utils/logging';
 import { hasIPhoneNotch, isIOS } from '../../utils/cordovaUtils';
 import extractNumber from '../../utils/extractNumber';
-import { numberWithCommas } from '../../utils/textFormat';
+import { numberWithCommas, stringContains } from '../../utils/textFormat';
 import DonateStore from '../../stores/DonateStore';
 import DonateActions from '../../actions/DonateActions';
-// eslint-disable-next-line import/no-cycle
-import Pricing from '../../routes/More/Pricing';
+import Pricing from '../../routes/More/Pricing'; // eslint-disable-line import/no-cycle
+import SettingsStripePayment from './SettingsStripePayment';
+import webAppConfig from '../../config';
+
+/* global $ */
 
 class PaidAccountUpgradeModal extends Component {
   // This modal will show a users ballot guides from previous and current elections.
@@ -31,13 +35,14 @@ class PaidAccountUpgradeModal extends Component {
     initialPricingPlan: PropTypes.string,
     pathname: PropTypes.string,
     show: PropTypes.bool,
-    stripe: PropTypes.object,
+    // stripe: PropTypes.object,
     toggleFunction: PropTypes.func.isRequired,
   };
 
   constructor (props) {
     super(props);
     this.state = {
+      amountPaidViaStripe: 0,
       contactSalesRequired: false,
       couponCodeError: false,
       defaultPricing: {
@@ -73,12 +78,13 @@ class PaidAccountUpgradeModal extends Component {
       windowWidth: undefined,
     };
 
-    this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
-    this.onCouponInputChange = this.onCouponInputChange.bind(this);
-    this.checkCouponCodeValidity = this.checkCouponCodeValidity.bind(this);
     this.backToChoosePlan = this.backToChoosePlan.bind(this);
-    this.resetCouponCode = this.resetCouponCode.bind(this);
+    this.closePaidAccountUpgradeModal = this.closePaidAccountUpgradeModal.bind(this);
+    this.checkCouponCodeValidity = this.checkCouponCodeValidity.bind(this);
     this.handleResize = this.handleResize.bind(this);
+    this.onCouponInputChange = this.onCouponInputChange.bind(this);
+    this.paymentProcessedFunction = this.paymentProcessedFunction.bind(this);
+    this.resetCouponCode = this.resetCouponCode.bind(this);
   }
 
   componentDidMount () {
@@ -96,9 +102,10 @@ class PaidAccountUpgradeModal extends Component {
       pathname: this.props.pathname,
     });
     this.handleResize();
-    this.donateStoreChange(); // Load up default pricing
+    this.onDonateStoreChange(); // Load up default pricing
     window.addEventListener('resize', this.handleResize);
-    this.donateStoreListener = DonateStore.addListener(this.donateStoreChange);
+    DonateActions.donationRefreshDonationList();
+    this.donateStoreListener = DonateStore.addListener(this.onDonateStoreChange);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -132,6 +139,15 @@ class PaidAccountUpgradeModal extends Component {
     if (this.state.paidAccountProcessStep !== nextState.paidAccountProcessStep) {
       return true;
     }
+    if (this.state.numberOfMonthsService !== nextState.numberOfMonthsService) {
+      return true;
+    }
+    if (this.state.payByMonthCostPerMonth !== nextState.payByMonthCostPerMonth) {
+      return true;
+    }
+    if (this.state.payByYearCostPerYear !== nextState.payByYearCostPerYear) {
+      return true;
+    }
     if (this.state.pricingPlanChosen !== nextState.pricingPlanChosen) {
       return true;
     }
@@ -153,29 +169,51 @@ class PaidAccountUpgradeModal extends Component {
     this.setState({ couponCodeInputValue: e.target.value });
   }
 
-  donateStoreChange = () => {
-    // const msg = DonateStore.getCouponMessage();
-    // if (msg.length > 0) {
-    //   console.log('updating coupon message success validating coupon');
-    //   $('.u-no-break').html(msg);
-    // }
-    //
-    // if (DonateStore.getOrgSubscriptionAlreadyExists()) {
-    //   console.log('updating coupon message organization subscription already exists');
-    //   $('.u-no-break').html('A subscription already exists for this organization<br>The existing subscription was not altered, no credit card charge was made.');
-    // }
+  onDonateStoreChange = () => {
+    const activePaidPlan = DonateStore.getActivePaidPlan();
+    if (activePaidPlan && activePaidPlan.subscription_active) {
+      let activePaidPlanChosen = '';
+      let activePaidPlanChosenDisplay = '';
+      if (stringContains('PROFESSIONAL', activePaidPlan.plan_type_enum)) {
+        activePaidPlanChosen = 'professional';
+        activePaidPlanChosenDisplay = 'Professional';
+      } else if (stringContains('ENTERPRISE', activePaidPlan.plan_type_enum)) {
+        activePaidPlanChosen = 'enterprise';
+        activePaidPlanChosenDisplay = 'Enterprise';
+      } else {
+        activePaidPlanChosen = 'unknown';
+        activePaidPlanChosenDisplay = 'Unknown';
+      }
+      this.setState({
+        activePaidPlanChosen,
+        activePaidPlanChosenDisplay,
+      });
+    }
+    const msg = DonateStore.getCouponMessage();
+    if (msg.length > 0) {
+      console.log('PaidAccountUpgradeModal updating coupon message success validating coupon');
+      $('.u-no-break').html(msg);
+    }
+
+    if (DonateStore.getOrgSubscriptionAlreadyExists()) {
+      console.log('PaidAccountUpgradeModal updating coupon message organization subscription already exists');
+      $('.u-no-break').html('A subscription already exists for this organization<br>The existing subscription was not altered, no credit card charge was made.');
+    }
     const { pricingPlanChosen, radioGroupValue } = this.state;
     const defaultPricing = DonateStore.getDefaultPricing();
     const lastCouponResponseReceivedFromAPI = DonateStore.getLastCouponResponseReceived();
-    // console.log('donateStoreChange, lastCouponResponseReceivedFromAPI:', lastCouponResponseReceivedFromAPI);
+    // console.log('onDonateStoreChange, lastCouponResponseReceivedFromAPI:', lastCouponResponseReceivedFromAPI);
     const { proPlanFullPricePerMonthPayYearly, proPlanFullPricePerMonthPayMonthly } = defaultPricing;
     const { couponDiscountValue, couponReceived, couponViewed, couponMatchFound, couponStillValid, enterprisePlanCouponPricePerMonthPayMonthly, enterprisePlanCouponPricePerMonthPayYearly, proPlanCouponPricePerMonthPayYearly, proPlanCouponPricePerMonthPayMonthly, validForEnterprisePlan, validForProfessionalPlan } = lastCouponResponseReceivedFromAPI;
 
     // These values are different based on the plan chosen
     let contactSalesRequired;
+    let numberOfMonthsService = 0;
+    let payByMonthCostPerMonth = 0;
+    let payByYearCostPerYear = 0;
     let planPriceForDisplayBilledMonthly;
     let planPriceForDisplayBilledYearly;
-    let currentSelectedPlanCostForPayment;
+    // let currentSelectedPlanCostForPayment;
     if (couponMatchFound && couponStillValid) {
       if (pricingPlanChosen === 'enterprise') {
         if (validForEnterprisePlan) {
@@ -200,18 +238,26 @@ class PaidAccountUpgradeModal extends Component {
       planPriceForDisplayBilledYearly = proPlanFullPricePerMonthPayYearly;
     }
     if (radioGroupValue === 'annualPlanRadio') {
-      currentSelectedPlanCostForPayment = planPriceForDisplayBilledYearly;
+      // currentSelectedPlanCostForPayment = planPriceForDisplayBilledYearly;
+      payByYearCostPerYear = 12 * planPriceForDisplayBilledYearly;
+      numberOfMonthsService = 12;
     } else {
-      currentSelectedPlanCostForPayment = planPriceForDisplayBilledMonthly;
+      // currentSelectedPlanCostForPayment = planPriceForDisplayBilledMonthly;
+      payByMonthCostPerMonth = planPriceForDisplayBilledMonthly;
+      numberOfMonthsService = 1;
     }
 
     this.setState({
+      amountPaidViaStripe: DonateStore.getAmountPaidViaStripe(),
       contactSalesRequired,
       couponDiscountValue, // Replace this dollar discount with percentage
-      currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForPayment),
+      // currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForPayment),
       defaultPricing,
       isCouponCodeApplied: couponMatchFound,
       lastCouponResponseReceivedFromAPI,
+      numberOfMonthsService,
+      payByMonthCostPerMonth,
+      payByYearCostPerYear,
       planPriceForDisplayBilledMonthly: this.convertPriceFromPenniesToDollars(planPriceForDisplayBilledMonthly),
       planPriceForDisplayBilledYearly: this.convertPriceFromPenniesToDollars(planPriceForDisplayBilledYearly),
       validForProfessionalPlan,
@@ -219,7 +265,7 @@ class PaidAccountUpgradeModal extends Component {
     });
 
     if (couponReceived && !couponViewed) {
-      // console.log('couponViewed:', couponViewed);
+      console.log('couponViewed:', couponViewed);
       if (couponMatchFound === false) {
         this.setState({ couponCodeError: true, couponCodeInputValue: '' });
         setTimeout(() => {
@@ -252,16 +298,15 @@ class PaidAccountUpgradeModal extends Component {
     }
   }
 
-  paymentProcessedFunction = () => {
-    this.setState({
-      paidAccountProcessStep: 'paymentProcessed',
-    });
-  }
-
   pricingPlanChosenFunction = (pricingPlanChosen) => {
-    const { radioGroupValue, defaultPricing, lastCouponResponseReceivedFromAPI } = this.state;
+    const { activePaidPlanChosen, radioGroupValue, defaultPricing, lastCouponResponseReceivedFromAPI } = this.state;
     // console.log('pricingPlanChosenFunction pricingPlanChosen:', pricingPlanChosen, ', lastCouponResponseReceivedFromAPI:', lastCouponResponseReceivedFromAPI);
-    if (window.innerWidth > 768 && pricingPlanChosen !== 'free') {
+    if (pricingPlanChosen === activePaidPlanChosen) {
+      this.setState({
+        paidAccountProcessStep: 'activePaidPlanExists',
+        pricingPlanChosen,
+      });
+    } else if (window.innerWidth > 768 && pricingPlanChosen !== 'free') {
       this.setState({
         paidAccountProcessStep: 'payForPlanDesktop',
         pricingPlanChosen,
@@ -275,28 +320,41 @@ class PaidAccountUpgradeModal extends Component {
       this.props.toggleFunction(this.state.pathname);
     }
 
-    let currentSelectedPlanCostForPro = 0;
-    let currentSelectedPlanCostForEnterprise = 0;
+    // let currentSelectedPlanCostForPro = 0;
+    // let currentSelectedPlanCostForEnterprise = 0;
     const enterprisePlanPriceForDisplayBilledYearly = lastCouponResponseReceivedFromAPI.validForEnterprisePlan ? lastCouponResponseReceivedFromAPI.enterprisePlanCouponPricePerMonthPayYearly : defaultPricing.enterprisePlanFullPricePerMonthPayYearly;
     const enterprisePlanPriceForDisplayBilledMonthly = lastCouponResponseReceivedFromAPI.validForEnterprisePlan ? lastCouponResponseReceivedFromAPI.enterprisePlanCouponPricePerMonthPayMonthly : defaultPricing.enterprisePlanFullPricePerMonthPayMonthly;
+    let numberOfMonthsService = 0;
+    let payByMonthCostPerMonth = 0;
+    let payByYearCostPerYear = 0;
     const proPlanPriceForDisplayBilledYearly = lastCouponResponseReceivedFromAPI.validForProfessionalPlan ? lastCouponResponseReceivedFromAPI.proPlanCouponPricePerMonthPayYearly : defaultPricing.proPlanFullPricePerMonthPayYearly;
     const proPlanPriceForDisplayBilledMonthly = lastCouponResponseReceivedFromAPI.validForProfessionalPlan ? lastCouponResponseReceivedFromAPI.proPlanCouponPricePerMonthPayMonthly : defaultPricing.proPlanFullPricePerMonthPayMonthly;
 
     if (radioGroupValue === 'annualPlanRadio') {
-      currentSelectedPlanCostForPro = proPlanPriceForDisplayBilledYearly;
-      currentSelectedPlanCostForEnterprise = enterprisePlanPriceForDisplayBilledYearly;
+      // currentSelectedPlanCostForPro = proPlanPriceForDisplayBilledYearly;
+      // currentSelectedPlanCostForEnterprise = enterprisePlanPriceForDisplayBilledYearly;
+      numberOfMonthsService = 12;
     } else {
-      currentSelectedPlanCostForPro = proPlanPriceForDisplayBilledMonthly;
-      currentSelectedPlanCostForEnterprise = enterprisePlanPriceForDisplayBilledMonthly;
+      // currentSelectedPlanCostForPro = proPlanPriceForDisplayBilledMonthly;
+      // currentSelectedPlanCostForEnterprise = enterprisePlanPriceForDisplayBilledMonthly;
+      numberOfMonthsService = 1;
     }
 
     switch (pricingPlanChosen) {
       case 'professional':
+        if (numberOfMonthsService === 1) {
+          payByMonthCostPerMonth = proPlanPriceForDisplayBilledMonthly;
+        } else {
+          payByYearCostPerYear = proPlanPriceForDisplayBilledYearly * 12;
+        }
         this.setState({
           contactSalesRequired: false,
+          numberOfMonthsService,
+          payByMonthCostPerMonth,
+          payByYearCostPerYear,
           planPriceForDisplayBilledMonthly: this.convertPriceFromPenniesToDollars(proPlanPriceForDisplayBilledMonthly),
           planPriceForDisplayBilledYearly: this.convertPriceFromPenniesToDollars(proPlanPriceForDisplayBilledYearly),
-          currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForPro),
+          // currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForPro),
         });
         // console.log('lastCouponResponseReceivedFromAPI.validForProfessionalPlan:', lastCouponResponseReceivedFromAPI.validForProfessionalPlan);
         if (lastCouponResponseReceivedFromAPI.validForProfessionalPlan) {
@@ -313,10 +371,18 @@ class PaidAccountUpgradeModal extends Component {
         }
         break;
       case 'enterprise':
+        if (numberOfMonthsService === 1) {
+          payByMonthCostPerMonth = enterprisePlanPriceForDisplayBilledMonthly;
+        } else {
+          payByYearCostPerYear = enterprisePlanPriceForDisplayBilledYearly * 12;
+        }
         this.setState({
+          // currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForEnterprise),
+          numberOfMonthsService,
+          payByMonthCostPerMonth,
+          payByYearCostPerYear,
           planPriceForDisplayBilledMonthly: this.convertPriceFromPenniesToDollars(enterprisePlanPriceForDisplayBilledMonthly),
           planPriceForDisplayBilledYearly: this.convertPriceFromPenniesToDollars(enterprisePlanPriceForDisplayBilledYearly),
-          currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForEnterprise),
         });
         // console.log('lastCouponResponseReceivedFromAPI.validForEnterprisePlan:', lastCouponResponseReceivedFromAPI.validForEnterprisePlan);
         if (lastCouponResponseReceivedFromAPI.validForEnterprisePlan) {
@@ -335,11 +401,19 @@ class PaidAccountUpgradeModal extends Component {
         }
         break;
       default:
+        if (numberOfMonthsService === 1) {
+          payByMonthCostPerMonth = proPlanPriceForDisplayBilledMonthly;
+        } else {
+          payByYearCostPerYear = proPlanPriceForDisplayBilledYearly * 12;
+        }
         this.setState({
           contactSalesRequired: false,
+          // currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForPro),
+          numberOfMonthsService,
+          payByMonthCostPerMonth,
+          payByYearCostPerYear,
           planPriceForDisplayBilledMonthly: this.convertPriceFromPenniesToDollars(proPlanPriceForDisplayBilledMonthly),
           planPriceForDisplayBilledYearly: this.convertPriceFromPenniesToDollars(proPlanPriceForDisplayBilledYearly),
-          currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForPro),
         });
     }
   }
@@ -351,11 +425,36 @@ class PaidAccountUpgradeModal extends Component {
         radioGroupValue: event.target.value || '',
       });
     }
+    let numberOfMonthsService;
+    let payByMonthCostPerMonth = 0;
+    let payByYearCostPerYear = 0;
     if (event.target.value === 'annualPlanRadio') {
-      this.setState({ currentSelectedPlanCostForPayment: planPriceForDisplayBilledYearly });
+      numberOfMonthsService = 12;
+      payByMonthCostPerMonth = 0;
+      payByYearCostPerYear = planPriceForDisplayBilledYearly * 12 * 100;
+      this.setState({
+        // currentSelectedPlanCostForPayment: planPriceForDisplayBilledYearly,
+        numberOfMonthsService,
+        payByMonthCostPerMonth,
+        payByYearCostPerYear,
+      });
     } else {
-      this.setState({ currentSelectedPlanCostForPayment: planPriceForDisplayBilledMonthly });
+      numberOfMonthsService = 1;
+      payByMonthCostPerMonth = planPriceForDisplayBilledMonthly * 100;
+      payByYearCostPerYear = 0;
+      this.setState({
+        // currentSelectedPlanCostForPayment: planPriceForDisplayBilledMonthly,
+        numberOfMonthsService,
+        payByMonthCostPerMonth,
+        payByYearCostPerYear,
+      });
     }
+  }
+
+  paymentProcessedFunction () {
+    this.setState({
+      paidAccountProcessStep: 'paymentProcessed',
+    });
   }
 
   handleResize () {
@@ -394,9 +493,12 @@ class PaidAccountUpgradeModal extends Component {
   resetCouponCode () {
     const { defaultPricing, pricingPlanChosen, radioGroupValue } = this.state;
 
+    let numberOfMonthsService = 0;
+    let payByMonthCostPerMonth = 0;
+    let payByYearCostPerYear = 0;
     let planPriceForDisplayBilledMonthly = 0;
     let planPriceForDisplayBilledYearly = 0;
-    let currentSelectedPlanCostForPayment = 0;
+    // let currentSelectedPlanCostForPayment = 0;
     let contactSalesRequired;
     if (pricingPlanChosen === 'enterprise') {
       contactSalesRequired = true;
@@ -408,15 +510,22 @@ class PaidAccountUpgradeModal extends Component {
       planPriceForDisplayBilledYearly = defaultPricing.proPlanFullPricePerMonthPayYearly;
     }
     if (radioGroupValue === 'annualPlanRadio') {
-      currentSelectedPlanCostForPayment = planPriceForDisplayBilledYearly;
+      // currentSelectedPlanCostForPayment = planPriceForDisplayBilledYearly;
+      payByYearCostPerYear = 12 * planPriceForDisplayBilledYearly;
+      numberOfMonthsService = 12;
     } else {
-      currentSelectedPlanCostForPayment = planPriceForDisplayBilledMonthly;
+      // currentSelectedPlanCostForPayment = planPriceForDisplayBilledMonthly;
+      payByMonthCostPerMonth = planPriceForDisplayBilledMonthly;
+      numberOfMonthsService = 1;
     }
     this.setState({
       contactSalesRequired,
       isCouponCodeApplied: false,
       couponCodeInputValue: '',
-      currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForPayment),
+      // currentSelectedPlanCostForPayment: this.convertPriceFromPenniesToDollars(currentSelectedPlanCostForPayment),
+      numberOfMonthsService,
+      payByMonthCostPerMonth,
+      payByYearCostPerYear,
       planPriceForDisplayBilledMonthly: this.convertPriceFromPenniesToDollars(planPriceForDisplayBilledMonthly),
       planPriceForDisplayBilledYearly: this.convertPriceFromPenniesToDollars(planPriceForDisplayBilledYearly),
       lastCouponResponseReceivedFromAPI: {},
@@ -458,8 +567,15 @@ class PaidAccountUpgradeModal extends Component {
   render () {
     renderLog(__filename);
     const { classes } = this.props;
-    const { contactSalesRequired, radioGroupValue, couponCodeInputValue, couponDiscountValue, isCouponCodeApplied, paidAccountProcessStep, pricingPlanChosen, couponCodeError, planPriceForDisplayBilledMonthly, planPriceForDisplayBilledYearly, currentSelectedPlanCostForPayment } = this.state;
-
+    const {
+      activePaidPlanChosen, activePaidPlanChosenDisplay, amountPaidViaStripe, numberOfMonthsService,
+      payByMonthCostPerMonth,
+      payByYearCostPerYear,
+      contactSalesRequired, radioGroupValue, couponCodeInputValue, couponDiscountValue,
+      isCouponCodeApplied, paidAccountProcessStep, pricingPlanChosen, couponCodeError, planPriceForDisplayBilledMonthly,
+      planPriceForDisplayBilledYearly,
+    } = this.state;
+    // console.log('currentSelectedPlanCostForPayment:', currentSelectedPlanCostForPayment);
     // console.log(this.state);
 
     let modalTitle = '';
@@ -488,7 +604,7 @@ class PaidAccountUpgradeModal extends Component {
             Choose Plan
           </Button>
         );
-        modalTitle = 'Payment Plan';
+        modalTitle = 'Billing Options';
         modalHtmlContents = (
           <MobileWrapper className="u-full-height">
             <FlexSectionOne>
@@ -510,6 +626,17 @@ class PaidAccountUpgradeModal extends Component {
                   Invalid Coupon Code
                 </div>
               ) : null}
+              {activePaidPlanChosen && (
+                <div
+                  className={classes.couponAlertError}
+                >
+                  You are already subscribed to a
+                  {' '}
+                  {activePaidPlanChosenDisplay}
+                  {' '}
+                  Plan.
+                </div>
+              )}
               {contactSalesRequired ? (
                 <div>Contact Sales for Enterprise Coupon Code</div>
               ) : (
@@ -529,7 +656,7 @@ class PaidAccountUpgradeModal extends Component {
                             <>
                               <PriceLabelDollarSign>$</PriceLabelDollarSign>
                               <PriceLabel>{planPriceForDisplayBilledYearly}</PriceLabel>
-                              <PriceLabelSubText> /mo</PriceLabelSubText>
+                              <PriceLabelSubText> /month</PriceLabelSubText>
                               <MobilePricingPlanName>Billed Yearly</MobilePricingPlanName>
                             </>
                           )}
@@ -554,7 +681,7 @@ class PaidAccountUpgradeModal extends Component {
                             <>
                               <PriceLabelDollarSign>$</PriceLabelDollarSign>
                               <PriceLabel>{planPriceForDisplayBilledMonthly}</PriceLabel>
-                              <PriceLabelSubText> /mo</PriceLabelSubText>
+                              <PriceLabelSubText> /month</PriceLabelSubText>
                               <MobilePricingPlanName>Billed Monthly</MobilePricingPlanName>
                             </>
                           )}
@@ -621,16 +748,23 @@ class PaidAccountUpgradeModal extends Component {
         backToButton = (
           <Button className={classes.backToButton} onClick={this.backToApplyCoupon}>
             {isIOS() ? <ArrowBackIos /> : <ArrowBack />}
-            Select Plan Details
+            Billing Options
           </Button>
         );
-        modalTitle = 'Payment';
+        modalTitle = 'Credit Card';
         modalHtmlContents = (
           <MobileWrapper>
-            <SectionTitle>
-              Payment for $
-              {currentSelectedPlanCostForPayment}
-            </SectionTitle>
+            <StripeProvider apiKey={webAppConfig.STRIPE_API_KEY}>
+              <Elements>
+                <SettingsStripePayment
+                  numberOfMonthsService={numberOfMonthsService}
+                  payByMonthCostPerMonth={payByMonthCostPerMonth}
+                  payByYearCostPerYear={payByYearCostPerYear}
+                  paymentProcessedFunction={this.paymentProcessedFunction}
+                  pricingPlanChosen={pricingPlanChosen}
+                />
+              </Elements>
+            </StripeProvider>
           </MobileWrapper>
         );
         break;
@@ -666,6 +800,17 @@ class PaidAccountUpgradeModal extends Component {
                     Invalid Coupon Code
                   </div>
                 ) : null}
+                {activePaidPlanChosen && (
+                  <div
+                    className={classes.couponAlertError}
+                  >
+                    You are already subscribed to a
+                    {' '}
+                    {activePaidPlanChosenDisplay}
+                    {' '}
+                    Plan.
+                  </div>
+                )}
                 {contactSalesRequired ? (
                   <div>Contact Sales for Enterprise Coupon Code</div>
                 ) : (
@@ -688,7 +833,7 @@ class PaidAccountUpgradeModal extends Component {
                               <>
                                 <PriceLabelDollarSign>$</PriceLabelDollarSign>
                                 <PriceLabel>{planPriceForDisplayBilledYearly}</PriceLabel>
-                                <PriceLabelSubText> /mo</PriceLabelSubText>
+                                <PriceLabelSubText> /month</PriceLabelSubText>
                               </>
                             )}
                             onClick={this.handleRadioGroupChoiceSubDomain}
@@ -715,7 +860,7 @@ class PaidAccountUpgradeModal extends Component {
                               <>
                                 <PriceLabelDollarSign>$</PriceLabelDollarSign>
                                 <PriceLabel>{planPriceForDisplayBilledMonthly}</PriceLabel>
-                                <PriceLabelSubText> /mo</PriceLabelSubText>
+                                <PriceLabelSubText> /month</PriceLabelSubText>
                               </>
                             )}
                             onClick={this.handleRadioGroupChoiceSubDomain}
@@ -770,7 +915,18 @@ class PaidAccountUpgradeModal extends Component {
             <div className="col col-6 p-0">
               <WrapperRight>
                 <div className="u-tc">
-                  <SectionTitle>Stripe Payment</SectionTitle>
+                  <SectionTitle>Credit Card</SectionTitle>
+                  <StripeProvider apiKey={webAppConfig.STRIPE_API_KEY}>
+                    <Elements>
+                      <SettingsStripePayment
+                        numberOfMonthsService={numberOfMonthsService}
+                        payByMonthCostPerMonth={payByMonthCostPerMonth}
+                        payByYearCostPerYear={payByYearCostPerYear}
+                        paymentProcessedFunction={this.paymentProcessedFunction}
+                        pricingPlanChosen={pricingPlanChosen}
+                      />
+                    </Elements>
+                  </StripeProvider>
                 </div>
               </WrapperRight>
             </div>
@@ -785,8 +941,38 @@ class PaidAccountUpgradeModal extends Component {
             {' '}
             {pricingPlanChosen}
             {' '}
-            plan! Your payment has been processed, and features have been unlocked. You payed $
-            {currentSelectedPlanCostForPayment}
+            plan! Your payment has been processed, and features have been unlocked.
+            {' '}
+            You paid $
+            {amountPaidViaStripe / 100}
+            .
+            <ButtonsContainer>
+              <Button
+                color="primary"
+                onClick={() => { this.props.toggleFunction(this.state.pathname); }}
+                variant="contained"
+              >
+                Continue
+              </Button>
+            </ButtonsContainer>
+          </span>
+        );
+        break;
+      case 'activePaidPlanExists':
+        backToButton = (
+          <Button className={classes.backToButton} onClick={this.backToChoosePlan}>
+            {isIOS() ? <ArrowBackIos /> : <ArrowBack />}
+            Choose Different Plan
+          </Button>
+        );
+        modalTitle = 'Current Subscription';
+        modalHtmlContents = (
+          <span>
+            You are already subscribed to the
+            {' '}
+            {activePaidPlanChosenDisplay}
+            {' '}
+            Plan.
             <ButtonsContainer>
               <Button
                 color="primary"
@@ -982,11 +1168,11 @@ const styles = () => ({
     justifyContent: 'center',
     borderRadius: '4px',
     '@media (max-width: 569px)': {
-      height: 35,
+      // height: 35,
       fontSize: 14,
     },
     '@media (max-width: 769px)': {
-      height: 45,
+      // height: 45,
       fontSize: 16,
     },
   },
@@ -997,7 +1183,7 @@ const styles = () => ({
     pointerEvents: 'none',
     fontWeight: 'bold',
     marginBottom: 8,
-    height: 40,
+    // height: 40,
     fontSize: 14,
     width: '100%',
     padding: '8px 16px',
@@ -1006,11 +1192,11 @@ const styles = () => ({
     justifyContent: 'center',
     borderRadius: '4px',
     '@media (max-width: 569px)': {
-      height: 35,
+      // height: 35,
       fontSize: 14,
     },
     '@media (max-width: 769px)': {
-      height: 45,
+      // height: 45,
       fontSize: 16,
     },
   },
@@ -1042,7 +1228,7 @@ const ButtonsContainer = styled.div`
 
 const ModalTitleArea = styled.div`
   width: 100%;
-  padding: 4px 12px;
+  padding: 12px 12px 4px 12px;
   ${({ noBoxShadowMode }) => ((noBoxShadowMode) ? '' : 'box-shadow: 0 20px 40px -25px #999')};
   z-index: 999;
   @media (min-width: 769px) {
@@ -1052,15 +1238,6 @@ const ModalTitleArea = styled.div`
   }
   ${({ noBoxShadowMode }) => ((noBoxShadowMode) ? '@media (max-width: 376px) {\n    padding: 8px 6px;\n  }' : '')}
 `;
-//
-// const BackToButton = styled.div`
-//   margin: 0;
-//   @media (min-width: 769px) {
-//     position: absolute;
-//     top: 8;
-//     left: 4;
-//   }
-// `;
 
 const MobilePricingPlanName = styled.span`
   color: ${({ theme }) => theme.colors.main};
@@ -1081,6 +1258,7 @@ const Title = styled.h3`
   font-weight: bold;
   font-size: 24px;
   margin-top: 8px;
+  padding: 0 10px;
   position: relative;
   left: 8px;
   color: black;
@@ -1114,7 +1292,7 @@ const Row = styled.div`
 `;
 
 const MobileWrapper = styled.div`
-  padding: 32px 18px 16px;
+  padding: 16px 18px 16px;
   display: flex;
   flex-direction: column;
   align-content: center;
