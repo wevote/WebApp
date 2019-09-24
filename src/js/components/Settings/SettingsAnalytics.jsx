@@ -115,29 +115,31 @@ class SettingsAnalytics extends Component {
 
   onOrganizationStoreChange = () => {
     const { organizationChosenGoogleAnalyticsTrackerChangedLocally, organizationChosenHtmlVerificationChangedLocally, organizationWeVoteId } = this.state;
-    const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-    const organizationChosenGoogleAnalyticsTrackerSavedValue = organization.chosen_google_analytics_account_number || '';
-    const organizationChosenHtmlVerificationSavedValue = organization.chosen_html_verification_string || '';
-    const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
-    const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
-    this.setState({
-      chosenFeaturePackage,
-      organization,
-      organizationChosenGoogleAnalyticsTrackerSavedValue,
-      organizationChosenHtmlVerificationSavedValue,
-      voterFeaturePackageExceedsOrEqualsEnterprise,
-    });
-    // If it hasn't been changed locally, then use the one saved in the API server
-    if (!organizationChosenGoogleAnalyticsTrackerChangedLocally) {
+    if (organizationWeVoteId) {
+      const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      const organizationChosenGoogleAnalyticsTrackerSavedValue = organization.chosen_google_analytics_account_number || '';
+      const organizationChosenHtmlVerificationSavedValue = organization.chosen_html_verification_string || '';
+      const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
+      const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
       this.setState({
-        organizationChosenGoogleAnalyticsTracker: organizationChosenGoogleAnalyticsTrackerSavedValue || '',
+        chosenFeaturePackage,
+        organization,
+        organizationChosenGoogleAnalyticsTrackerSavedValue,
+        organizationChosenHtmlVerificationSavedValue,
+        voterFeaturePackageExceedsOrEqualsEnterprise,
       });
-    }
-    // If it hasn't been changed locally, then use the one saved in the API server
-    if (!organizationChosenHtmlVerificationChangedLocally) {
-      this.setState({
-        organizationChosenHtmlVerification: organizationChosenHtmlVerificationSavedValue || '',
-      });
+      // If it hasn't been changed locally, then use the one saved in the API server
+      if (!organizationChosenGoogleAnalyticsTrackerChangedLocally) {
+        this.setState({
+          organizationChosenGoogleAnalyticsTracker: organizationChosenGoogleAnalyticsTrackerSavedValue || '',
+        });
+      }
+      // If it hasn't been changed locally, then use the one saved in the API server
+      if (!organizationChosenHtmlVerificationChangedLocally) {
+        this.setState({
+          organizationChosenHtmlVerification: organizationChosenHtmlVerificationSavedValue || '',
+        });
+      }
     }
   }
 
@@ -145,33 +147,37 @@ class SettingsAnalytics extends Component {
     const { organizationChosenGoogleAnalyticsTrackerChangedLocally, organizationChosenHtmlVerificationChangedLocally } = this.state;
     const voter = VoterStore.getVoter();
     const voterIsSignedIn = voter.is_signed_in;
-    const organizationWeVoteId = voter.linked_organization_we_vote_id;
-    const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-    const organizationChosenGoogleAnalyticsTrackerSavedValue = organization.chosen_google_analytics_account_number || '';
-    const organizationChosenHtmlVerificationSavedValue = organization.chosen_html_verification_string || '';
-    const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
-    const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
     this.setState({
-      chosenFeaturePackage,
-      organization,
-      organizationChosenGoogleAnalyticsTrackerSavedValue,
-      organizationChosenHtmlVerificationSavedValue,
-      organizationWeVoteId,
       voter,
       voterIsSignedIn,
-      voterFeaturePackageExceedsOrEqualsEnterprise,
     });
-    // If it hasn't been changed locally, then use the one saved in the API server
-    if (!organizationChosenGoogleAnalyticsTrackerChangedLocally) {
+    const organizationWeVoteId = voter.linked_organization_we_vote_id;
+    if (organizationWeVoteId) {
+      const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      const organizationChosenGoogleAnalyticsTrackerSavedValue = organization.chosen_google_analytics_account_number || '';
+      const organizationChosenHtmlVerificationSavedValue = organization.chosen_html_verification_string || '';
+      const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
+      const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
       this.setState({
-        organizationChosenGoogleAnalyticsTracker: organizationChosenGoogleAnalyticsTrackerSavedValue || '',
+        chosenFeaturePackage,
+        organization,
+        organizationChosenGoogleAnalyticsTrackerSavedValue,
+        organizationChosenHtmlVerificationSavedValue,
+        organizationWeVoteId,
+        voterFeaturePackageExceedsOrEqualsEnterprise,
       });
-    }
-    // If it hasn't been changed locally, then use the one saved in the API server
-    if (!organizationChosenHtmlVerificationChangedLocally) {
-      this.setState({
-        organizationChosenHtmlVerification: organizationChosenHtmlVerificationSavedValue || '',
-      });
+      // If it hasn't been changed locally, then use the one saved in the API server
+      if (!organizationChosenGoogleAnalyticsTrackerChangedLocally) {
+        this.setState({
+          organizationChosenGoogleAnalyticsTracker: organizationChosenGoogleAnalyticsTrackerSavedValue || '',
+        });
+      }
+      // If it hasn't been changed locally, then use the one saved in the API server
+      if (!organizationChosenHtmlVerificationChangedLocally) {
+        this.setState({
+          organizationChosenHtmlVerification: organizationChosenHtmlVerificationSavedValue || '',
+        });
+      }
     }
   }
 
@@ -217,6 +223,15 @@ class SettingsAnalytics extends Component {
       organizationChosenGoogleAnalyticsTracker: organizationChosenGoogleAnalyticsTrackerSavedValue || '',
       organizationChosenGoogleAnalyticsTrackerChangedLocally: false,
     });
+  }
+
+  showHtmlVerificationButtons = () => {
+    const { analyticsButtonsActive } = this.state;
+    if (analyticsButtonsActive !== 'organizationChosenHtmlVerificationButtonsActive') {
+      this.setState({
+        analyticsButtonsActive: 'organizationChosenHtmlVerificationButtonsActive',
+      });
+    }
   }
 
   onCancelHtmlVerificationButton = () => {
@@ -335,12 +350,13 @@ class SettingsAnalytics extends Component {
             )}
             <Separator />
             <FormControl classes={{ root: classes.formControl }}>
-              <InputLabel>Verify Google Webmaster Tool</InputLabel>
+              <InputLabel>Verify Webmaster Tool</InputLabel>
               <InputLabelHelperText>
-                Add your HTML meta tag (e.g., &lt;meta name=&quot;google-site-verification&quot; content=&quot;your verification string&quot;&gt;) to prove to Google that you control this website.
+                Add your entire HTML verification meta tag (e.g., &lt;meta name=&quot;google-site-verification&quot; content=&quot;your verification string&quot;&gt;) to prove that you control this website.
               </InputLabelHelperText>
               <TextField
                 onChange={this.handleOrganizationChosenHtmlVerificationChange}
+                onClick={this.showHtmlVerificationButtons}
                 label="Paste the HTML Meta Tag Here..."
                 variant="outlined"
                 value={organizationChosenHtmlVerification}
