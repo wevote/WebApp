@@ -91,10 +91,26 @@ class PositionItem extends Component {
   render () {
     renderLog(__filename);
     const { position } = this.props;
-    // console.log('PositionItem render');
+    // console.log('PositionItem render, position:', position);
     // TwitterHandle-based link
     const voterGuideWeVoteIdLink = position.organization_we_vote_id ? `/voterguide/${position.organization_we_vote_id}` : `/voterguide/${position.speaker_we_vote_id}`;
-    const speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : voterGuideWeVoteIdLink;
+    let speakerLink = position.speaker_twitter_handle ? `/${position.speaker_twitter_handle}` : voterGuideWeVoteIdLink;
+    let backToCandidateFound = false;
+    let backToMeasureFound = false;
+    if (this.props.params) {
+      if (this.props.params.candidate_we_vote_id) {
+        speakerLink += `/btcand/${this.props.params.candidate_we_vote_id}`;
+        backToCandidateFound = true;
+      } else if (this.props.params.measure_we_vote_id) {
+        speakerLink += `/btmeas/${this.props.params.measure_we_vote_id}`;
+        backToMeasureFound = true;
+      }
+      if (backToCandidateFound || backToMeasureFound) {
+        if (this.props.params.back_to_variable) {
+          speakerLink += `/b/${this.props.params.back_to_variable}`;
+        }
+      }
+    }
 
     let imagePlaceholder = '';
     if (isSpeakerTypeOrganization(position.speaker_type)) {
@@ -150,7 +166,7 @@ class PositionItem extends Component {
                     id="positions-popover-trigger-click-root-close"
                   >
                     <Link
-                      to={`${speakerLink}/btcand/${this.props.params.candidate_we_vote_id}/b/${this.props.params.back_to_variable}`}
+                      to={speakerLink}
                       className="u-no-underline"
                     >
                       { position.speaker_image_url_https_medium ? (
@@ -176,7 +192,7 @@ class PositionItem extends Component {
                         placement="auto"
                         id="positions-popover-trigger-click-root-close"
                       >
-                        <Link to={`${speakerLink}/btcand/${this.props.params.candidate_we_vote_id}/b/${this.props.params.back_to_variable}`}>
+                        <Link to={speakerLink}>
                           { position.speaker_display_name }
                         </Link>
                       </StickyPopover>
@@ -207,12 +223,10 @@ class PositionItem extends Component {
                               </Support>
                             ) : (
                               <span>
-                                {supportOpposeInfo === 'oppose' ? (
+                                {supportOpposeInfo === 'oppose' && (
                                   <Oppose>
                                     <ThumbDownIcon />
                                   </Oppose>
-                                ) : (
-                                  null
                                 )}
                               </span>
                             )}
@@ -258,7 +272,7 @@ class PositionItem extends Component {
             <PositionItemMobile className={`position-item--${supportOpposeInfo} position-item`}>
               <MobileItemHeader>
                 <MobileItemImage>
-                  <Link to={`${speakerLink}/btcand/${this.props.params.candidate_we_vote_id}/b/${this.props.params.back_to_variable}`} className="u-no-underline">
+                  <Link to={speakerLink} className="u-no-underline">
                     { position.speaker_image_url_https_medium ? (
                       <ImageHandler
                         className="card-child__avatar"
@@ -272,7 +286,7 @@ class PositionItem extends Component {
                 {/* Visible for most phones */}
                 <MobileItemNameIssuesContainer>
                   <MobileItemName>
-                    <Link to={`${speakerLink}/btcand/${this.props.params.candidate_we_vote_id}/b/${this.props.params.back_to_variable}`} className="u-break-word">
+                    <Link to={speakerLink} className="u-break-word">
                       { position.speaker_display_name }
                     </Link>
                   </MobileItemName>
@@ -287,7 +301,7 @@ class PositionItem extends Component {
                 {/* Visible on iPhone 5/se */}
                 <MobileSmallItemNameContainer>
                   <MobileItemName>
-                    <Link to={`${speakerLink}/btcand/${this.props.params.candidate_we_vote_id}/b/${this.props.params.back_to_variable}`} className="u-break-word">
+                    <Link to={speakerLink} className="u-break-word">
                       { position.speaker_display_name }
                     </Link>
                   </MobileItemName>

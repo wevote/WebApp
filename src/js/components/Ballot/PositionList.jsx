@@ -43,6 +43,7 @@ export default class PositionList extends Component {
   static propTypes = {
     ballotItemDisplayName: PropTypes.string.isRequired,
     incomingPositionList: PropTypes.array.isRequired,
+    params: PropTypes.object,
     positionListExistsTitle: PropTypes.object,
   };
 

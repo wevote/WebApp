@@ -27,9 +27,9 @@ class ChooseOrOppose extends Component {
       (
         <React.Fragment>
           <SubTitle>Your position is only visible to your We Vote friends.</SubTitle>
-          <P>You can change the privacy toggle to make your views public.</P>
+          <PlainText>You can change the privacy toggle to make your views public.</PlainText>
           <Row>
-            <B>Test the toggle here:</B>
+            <BoldText>Test the toggle here:</BoldText>
             <PositionPublicToggle
                 ballotItemWeVoteId="null"
                 className="null"
@@ -43,23 +43,23 @@ class ChooseOrOppose extends Component {
       ),
       (
         <React.Fragment>
-          <SubTitle>We Vote helps you get ready,</SubTitle>
-          <B>but you cannot use We Vote to cast your vote.</B>
-          <P>Make sure to return your official ballot to your polling location!</P>
+          <SubTitle>We Vote helps you get ready.</SubTitle>
+          <BoldText>BUT, you cannot use We Vote to cast your vote.</BoldText>
+          <PlainText>Make sure to return your official ballot to your polling location!</PlainText>
         </React.Fragment>
       ),
       (
         <React.Fragment>
           <SubTitle>Sign in to save your choices!</SubTitle>
-          <P>Your choices are archived on the same browser if you don&apos;t sign in.</P>
-          <B>Recommended</B>
+          <PlainText>Your choices are archived on the same browser if you don&apos;t sign in.</PlainText>
+          <BoldText>Recommended</BoldText>
           <SignInButtonContainer>
             <FacebookSignIn buttonText="Sign in with Facebook" />
           </SignInButtonContainer>
           <SignInButtonContainer>
             <TwitterSignIn buttonText="Sign in with Twitter" />
           </SignInButtonContainer>
-          <HR />
+          <HorizontalLine />
           <VoterEmailAddressEntry />
         </React.Fragment>
       ),
@@ -82,7 +82,7 @@ class ChooseOrOppose extends Component {
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <HR />
+        <HorizontalLine />
         <DialogContent classes={{ root: classes.dialogContent }}>
           <Slides slides={this.getSlides()} onClose={this.props.onClose} />
         </DialogContent>
@@ -107,7 +107,7 @@ const styles = theme => ({
   },
 });
 
-const HR = styled.div`
+const HorizontalLine = styled.div`
   background-color: #eee;
   height: 2px;
   margin: 0 24px;
@@ -118,27 +118,27 @@ const HR = styled.div`
   }
 `;
 
-const TitleText = styled.p`
+const TitleText = styled.div`
   font-weight: bold;
   font-size: 20px;
   color: #333;
   margin-bottom: 4px;
 `;
 
-const SubTitle = styled.p`
-  font-size: 20px;
+const SubTitle = styled.div`
+  font-size: 18px;
   color: #333;
   text-align: left;
   margin-bottom: 4px;
 `;
 
-const P = styled.p`
+const PlainText = styled.div`
   font-size: 14px;
   color: #666;
   text-align: left;
 `;
 
-const B = styled.p`
+const BoldText = styled.span`
   font-weight: bold;
 `;
 

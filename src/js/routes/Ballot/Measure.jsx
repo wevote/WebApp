@@ -131,19 +131,19 @@ export default class Measure extends Component {
         }
         <MeasureItem measureWeVoteId={measure.we_vote_id} />
         <div className="card__additional">
-          { positionListFromAdvisersFollowedByVoter ? (
+          { positionListFromAdvisersFollowedByVoter && (
             <div>
               <PositionList
                 incomingPositionList={positionListFromAdvisersFollowedByVoter}
                 hideSimpleSupportOrOppose
                 ballotItemDisplayName={measure.ballot_item_display_name}
+                params={this.props.params}
               />
             </div>
-          ) : null
-          }
+          )}
         </div>
         {/* Show links to this candidate in the admin tools */}
-        { voter.is_admin || voter.is_verified_volunteer ? (
+        { (voter.is_admin || voter.is_verified_volunteer) && (
           <span className="u-wrap-links d-print-none">
             Admin:
             <OpenExternalWebSite
@@ -158,8 +158,7 @@ export default class Measure extends Component {
               )}
             />
           </span>
-        ) : null
-        }
+        )}
       </section>
     );
   }
