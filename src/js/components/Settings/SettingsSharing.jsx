@@ -35,7 +35,9 @@ class SettingsSharing extends Component {
       hideLogo: false,
       organization: {},
       organizationWeVoteId: '',
-      siteDescription: '',
+      chosenSocialShareDescription: '',
+      chosenSocialShareDescriptionChangedLocally: false,
+      chosenSocialShareDescriptionSavedValue: '',
       uploadImageType: 'headerLogo',
       voter: {},
       voterFeaturePackageExceedsOrEqualsEnterprise: false,
@@ -66,7 +68,7 @@ class SettingsSharing extends Component {
     if (this.state.hideLogo !== nextState.hideLogo) {
       return true;
     }
-    if (this.state.siteDescription !== nextState.siteDescription) {
+    if (this.state.chosenSocialShareDescription !== nextState.chosenSocialShareDescription) {
       return true;
     }
     if (this.state.chosenFaviconFromFileReader !== nextState.chosenFaviconFromFileReader) {
@@ -114,6 +116,7 @@ class SettingsSharing extends Component {
   }
 
   onOrganizationStoreChange = () => {
+    const { chosenSocialShareDescriptionChangedLocally } = this.state;
     let { organizationWeVoteId } = this.state;
     if (!organizationWeVoteId) {
       const voter = VoterStore.getVoter();
@@ -124,38 +127,61 @@ class SettingsSharing extends Component {
         });
       }
     }
-    const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-    const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
-    const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
-    this.setState({
-      chosenFeaturePackage,
-      chosenFaviconUrlHttps: organization.chosen_favicon_url_https,
-      chosenLogoUrlHttps: organization.chosen_logo_url_https,
-      chosenSocialShareMasterImageUrlHttps: organization.chosen_social_share_master_image_url_https,
-      hideLogo: organization.chosen_hide_we_vote_logo || false,
-      organization,
-      voterFeaturePackageExceedsOrEqualsEnterprise,
-    });
+    if (organizationWeVoteId) {
+      const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
+      const chosenSocialShareDescriptionSavedValue = organization.chosen_social_share_description || '';
+      const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
+      this.setState({
+        chosenFeaturePackage,
+        chosenFaviconUrlHttps: organization.chosen_favicon_url_https,
+        chosenLogoUrlHttps: organization.chosen_logo_url_https,
+        chosenSocialShareDescriptionSavedValue,
+        chosenSocialShareMasterImageUrlHttps: organization.chosen_social_share_master_image_url_https,
+        hideLogo: organization.chosen_hide_we_vote_logo || false,
+        organization,
+        voterFeaturePackageExceedsOrEqualsEnterprise,
+      });
+      // If it hasn't been changed locally, then use the one saved in the API server
+      if (!chosenSocialShareDescriptionChangedLocally) {
+        this.setState({
+          chosenSocialShareDescription: chosenSocialShareDescriptionSavedValue || '',
+        });
+      }
+    }
   }
 
   onVoterStoreChange = () => {
+    const { chosenSocialShareDescriptionChangedLocally } = this.state;
     const voter = VoterStore.getVoter();
     const voterIsSignedIn = voter.is_signed_in;
-    const organizationWeVoteId = voter.linked_organization_we_vote_id;
-    const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
-    const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
-    const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
     this.setState({
-      chosenFeaturePackage,
-      chosenFaviconUrlHttps: organization.chosen_favicon_url_https,
-      chosenLogoUrlHttps: organization.chosen_logo_url_https,
-      chosenSocialShareMasterImageUrlHttps: organization.chosen_social_share_master_image_url_https,
-      organization,
-      organizationWeVoteId,
       voter,
-      voterFeaturePackageExceedsOrEqualsEnterprise,
       voterIsSignedIn,
     });
+    const organizationWeVoteId = voter.linked_organization_we_vote_id;
+    if (organizationWeVoteId) {
+      const organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
+      const chosenFeaturePackage = OrganizationStore.getChosenFeaturePackage();
+      const chosenSocialShareDescriptionSavedValue = organization.chosen_social_share_description || '';
+      const voterFeaturePackageExceedsOrEqualsEnterprise = voterFeaturePackageExceedsOrEqualsRequired(chosenFeaturePackage, 'ENTERPRISE');
+      this.setState({
+        chosenFeaturePackage,
+        chosenFaviconUrlHttps: organization.chosen_favicon_url_https,
+        chosenLogoUrlHttps: organization.chosen_logo_url_https,
+        chosenSocialShareDescriptionSavedValue,
+        chosenSocialShareMasterImageUrlHttps: organization.chosen_social_share_master_image_url_https,
+        organization,
+        organizationWeVoteId,
+        voterFeaturePackageExceedsOrEqualsEnterprise,
+      });
+      // If it hasn't been changed locally, then use the one saved in the API server
+      if (!chosenSocialShareDescriptionChangedLocally) {
+        this.setState({
+          chosenSocialShareDescription: chosenSocialShareDescriptionSavedValue || '',
+        });
+      }
+    }
   }
 
   handleToggleHideLogo = (event) => {
@@ -164,12 +190,36 @@ class SettingsSharing extends Component {
     OrganizationActions.organizationChosenHideWeVoteLogoSave(organizationWeVoteId, !hideLogo);
     this.setState({
       hideLogo: !hideLogo,
-      // organizationChosenHideWeVoteLogoChangedLocally: false,
     });
     event.preventDefault();
   }
 
-  handleChangeDescription = ({ target }) => this.setState({ siteDescription: target.value });
+  handleChosenSocialShareDescriptionChange = (event) => {
+    const { chosenSocialShareDescription } = this.state;
+    if (event.target.value !== chosenSocialShareDescription) {
+      this.setState({
+        chosenSocialShareDescription: event.target.value || '',
+        chosenSocialShareDescriptionChangedLocally: true,
+      });
+    }
+  }
+
+  onSaveChosenSocialShareDescriptionButton = (event) => {
+    const { chosenSocialShareDescription, organizationWeVoteId } = this.state;
+    OrganizationActions.organizationChosenSocialShareDescriptionSave(organizationWeVoteId, chosenSocialShareDescription);
+    this.setState({
+      chosenSocialShareDescriptionChangedLocally: false,
+    });
+    event.preventDefault();
+  }
+
+  onCancelChosenSocialShareDescriptionButton = () => {
+    const { chosenSocialShareDescriptionSavedValue } = this.state;
+    this.setState({
+      chosenSocialShareDescription: chosenSocialShareDescriptionSavedValue || '',
+      chosenSocialShareDescriptionChangedLocally: false,
+    });
+  }
 
   handleAddImage = () => {
     const { organizationWeVoteId, uploadImageType } = this.state;
@@ -251,16 +301,18 @@ class SettingsSharing extends Component {
     renderLog(__filename);
     const { classes } = this.props;
     const {
+      chosenFaviconFromFileReader,
       chosenFeaturePackage,
+      chosenLogoFromFileReader,
+      chosenSocialShareDescription,
+      chosenSocialShareDescriptionChangedLocally,
+      chosenSocialShareMasterImageFromFileReader,
+      hideLogo,
       organization,
       organizationWeVoteId,
       voter,
-      voterIsSignedIn,
-      hideLogo,
       voterFeaturePackageExceedsOrEqualsEnterprise,
-      chosenLogoFromFileReader,
-      chosenFaviconFromFileReader,
-      chosenSocialShareMasterImageFromFileReader,
+      voterIsSignedIn,
     } = this.state;
     const {
       chosen_favicon_url_https: chosenFaviconUrlHttps,
@@ -288,7 +340,13 @@ class SettingsSharing extends Component {
             <SharingRow>
               <SharingColumn>
                 <InputBoxLabel>Hide We Vote Logo</InputBoxLabel>
-                <DescriptionText>Remove the We Vote logo from the header bar.</DescriptionText>
+                <DescriptionText>
+                  Remove the We Vote logo from the header bar.
+                  {' '}
+                  This setting will also hide the We Vote logo from the favicon and social share images for Enterprise Plans, even if you haven
+                  &apos;
+                  t uploaded your own.
+                </DescriptionText>
               </SharingColumn>
               <SharingColumn alignRight>
                 <Switch
@@ -455,18 +513,25 @@ class SettingsSharing extends Component {
                   <SettingsAccountLevelChip chosenFeaturePackage={chosenFeaturePackage} requiredFeaturePackage="ENTERPRISE" />
                 </InputBoxLabel>
                 <DescriptionText>A few sentences describing your site. The text used on search engines, or when your page is shared on social media.</DescriptionText>
-                <GiantTextInput placeholder="Type Description..." onChange={this.handleChangeDescription} />
+                <GiantTextInput
+                  onChange={this.handleChosenSocialShareDescriptionChange}
+                  value={chosenSocialShareDescription}
+                  placeholder="Type Description..."
+                />
                 <Actions>
                   <Button
                     color="primary"
                     classes={{ root: classes.button }}
+                    disabled={!chosenSocialShareDescriptionChangedLocally}
+                    onClick={this.onCancelChosenSocialShareDescriptionButton}
                   >
                     Cancel
                   </Button>
                   <PremiumableButton
                     classes={{ root: voterFeaturePackageExceedsOrEqualsEnterprise ? classes.uploadButton : '' }}
+                    disabled={voterFeaturePackageExceedsOrEqualsEnterprise ? !chosenSocialShareDescriptionChangedLocally : false}
                     premium={voterFeaturePackageExceedsOrEqualsEnterprise ? 1 : 0}
-                    onClick={voterFeaturePackageExceedsOrEqualsEnterprise ? this.handleSaveDescription : () => this.openPaidAccountUpgradeModal('enterprise')}
+                    onClick={voterFeaturePackageExceedsOrEqualsEnterprise ? this.onSaveChosenSocialShareDescriptionButton : () => this.openPaidAccountUpgradeModal('enterprise')}
                   >
                     {voterFeaturePackageExceedsOrEqualsEnterprise ? (
                       'Save'

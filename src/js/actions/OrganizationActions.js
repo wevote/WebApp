@@ -114,6 +114,14 @@ export default {
       });
   },
 
+  organizationChosenSocialShareDescriptionSave (organizationWeVoteId, organizationChosenSocialShareDescription) {
+    Dispatcher.loadEndpoint('organizationSave',
+      {
+        chosen_social_share_description: organizationChosenSocialShareDescription,
+        organization_we_vote_id: organizationWeVoteId,
+      });
+  },
+
   organizationChosenSubDomainSave (organizationWeVoteId, organizationChosenSubDomainName) {
     Dispatcher.loadEndpoint('organizationSave',
       {
