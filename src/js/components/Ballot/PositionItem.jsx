@@ -18,6 +18,7 @@ class PositionItem extends Component {
   static propTypes = {
     ballotItemDisplayName: PropTypes.string.isRequired,
     position: PropTypes.object.isRequired,
+    params: PropTypes.object,
   };
 
   constructor (props) {
@@ -148,7 +149,10 @@ class PositionItem extends Component {
                     placement="auto"
                     id="positions-popover-trigger-click-root-close"
                   >
-                    <Link to={speakerLink} className="u-no-underline">
+                    <Link
+                      to={`${speakerLink}/btcand/${this.props.params.candidate_we_vote_id}/b/${this.props.params.back_to_variable}`}
+                      className="u-no-underline"
+                    >
                       { position.speaker_image_url_https_medium ? (
                         <ImageHandler
                           className="card-child__avatar"
@@ -172,7 +176,7 @@ class PositionItem extends Component {
                         placement="auto"
                         id="positions-popover-trigger-click-root-close"
                       >
-                        <Link to={speakerLink}>
+                        <Link to={`${speakerLink}/btcand/${this.props.params.candidate_we_vote_id}/b/${this.props.params.back_to_variable}`}>
                           { position.speaker_display_name }
                         </Link>
                       </StickyPopover>
@@ -254,7 +258,7 @@ class PositionItem extends Component {
             <PositionItemMobile className={`position-item--${supportOpposeInfo} position-item`}>
               <MobileItemHeader>
                 <MobileItemImage>
-                  <Link to={speakerLink} className="u-no-underline">
+                  <Link to={`${speakerLink}/btcand/${this.props.params.candidate_we_vote_id}/b/${this.props.params.back_to_variable}`} className="u-no-underline">
                     { position.speaker_image_url_https_medium ? (
                       <ImageHandler
                         className="card-child__avatar"
@@ -268,7 +272,7 @@ class PositionItem extends Component {
                 {/* Visible for most phones */}
                 <MobileItemNameIssuesContainer>
                   <MobileItemName>
-                    <Link to={speakerLink} className="u-break-word">
+                    <Link to={`${speakerLink}/btcand/${this.props.params.candidate_we_vote_id}/b/${this.props.params.back_to_variable}`} className="u-break-word">
                       { position.speaker_display_name }
                     </Link>
                   </MobileItemName>
@@ -283,7 +287,7 @@ class PositionItem extends Component {
                 {/* Visible on iPhone 5/se */}
                 <MobileSmallItemNameContainer>
                   <MobileItemName>
-                    <Link to={speakerLink} className="u-break-word">
+                    <Link to={`${speakerLink}/btcand/${this.props.params.candidate_we_vote_id}/b/${this.props.params.back_to_variable}`} className="u-break-word">
                       { position.speaker_display_name }
                     </Link>
                   </MobileItemName>

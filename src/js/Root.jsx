@@ -248,6 +248,7 @@ const routes = () => (
 
     {/* Any route that is not found -> @return TwitterHandleLanding component */}
     <Route path=":twitter_handle" component={TwitterHandleLanding} />
+    <Route path=":twitter_handle/btcand/:back_to_cand_we_vote_id/b/:back_to_variable" component={TwitterHandleLanding} />
     <Route path=":twitter_handle/followers" component={props => <TwitterHandleLanding {...props} active_route="followers" />} />
     <Route path=":twitter_handle/following" component={props => <TwitterHandleLanding {...props} active_route="following" />} />
     <Route path=":twitter_handle/positions" component={props => <TwitterHandleLanding {...props} active_route="positions" />} />

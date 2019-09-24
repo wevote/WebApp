@@ -206,6 +206,7 @@ export default class Candidate extends Component {
             <PositionList
               incomingPositionList={this.state.allCachedPositionsForThisCandidate}
               ballotItemDisplayName={this.state.candidate.ballot_item_display_name}
+              params={this.props.params}
             />
           ) : null
           }
