@@ -41,7 +41,6 @@ import VoterStore from '../../stores/VoterStore';
 import webAppConfig from '../../config';
 import { formatVoterBallotList, checkShouldUpdate } from './utils';
 import AppActions from '../../actions/AppActions';
-import {Button} from '@material-ui/core';
 
 
 // Related to WebApp/src/js/components/VoterGuide/VoterGuideBallot.jsx
