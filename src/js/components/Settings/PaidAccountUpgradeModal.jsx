@@ -114,7 +114,7 @@ class PaidAccountUpgradeModal extends Component {
     });
   }
 
-  shouldComponentUpdate (nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     if (this.state.windowWidth !== nextState.windowWidth) {
       return true;
     }

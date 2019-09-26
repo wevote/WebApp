@@ -47,7 +47,7 @@ class VoterGuidesUnderOneValue extends Component {
     });
   }
 
-  shouldComponentUpdate (nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     if (this.state.issue !== nextState.issue) {
       return true;
     }

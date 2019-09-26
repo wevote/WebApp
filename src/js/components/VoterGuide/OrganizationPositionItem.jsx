@@ -20,7 +20,6 @@ export default class OrganizationPositionItem extends Component {
     ballotItemLink: PropTypes.string,
     comment_text_off: PropTypes.bool,
     editMode: PropTypes.bool,
-    link_to_edit_modal_off: PropTypes.bool,
     organization: PropTypes.object.isRequired,
     placement: PropTypes.string,
     position: PropTypes.object.isRequired,

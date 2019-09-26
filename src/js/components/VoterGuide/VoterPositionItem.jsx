@@ -15,7 +15,6 @@ export default class VoterPositionItem extends Component {
   static propTypes = {
     comment_text_off: PropTypes.bool,
     externalUniqueId: PropTypes.string,
-    link_to_edit_modal_off: PropTypes.bool,
     stance_display_off: PropTypes.bool,
     placement: PropTypes.string,
     popover_off: PropTypes.bool,

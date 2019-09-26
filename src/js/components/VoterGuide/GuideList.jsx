@@ -59,7 +59,7 @@ export default class GuideList extends Component {
     });
   }
 
-  shouldComponentUpdate (nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     if (this.state.voterGuideList !== nextState.voterGuideList) {
       return true;
     }

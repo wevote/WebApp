@@ -42,7 +42,7 @@ export default class ValuesList extends Component {
     this.setState({ currentIssue: nextProps.currentIssue });
   }
 
-  shouldComponentUpdate (nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     if (this.state.currentIssue !== nextState.currentIssue) {
       return true;
     }

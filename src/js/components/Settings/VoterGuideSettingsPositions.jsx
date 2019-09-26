@@ -50,7 +50,7 @@ class VoterGuideSettingsPositions extends Component {
   // Set up this component upon first entry
   // componentWillMount is used in WebApp
   componentDidMount () {
-    // console.log('VoterGuideSettingsPositions componentDidMount this.props.voterGuideWeVoteId:', this.props.voterGuideWeVoteId);
+    // console.log('VoterGuideSettingsPositions componentDidMount');
     // Get Voter Guide information
     this.setState({
       editMode: true,

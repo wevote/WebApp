@@ -24,7 +24,7 @@ export default class VoterGuidesMenuMobile extends Component {
     // Get Voter and Voter's Organization
     const voter = VoterStore.getVoter();
     const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
-    // console.log("VoterGuidesMenuMobile componentDidMount linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
+    // console.log('VoterGuidesMenuMobile componentDidMount linkedOrganizationWeVoteId: ', linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId) {
       VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
       this.setState({
@@ -40,7 +40,7 @@ export default class VoterGuidesMenuMobile extends Component {
   componentWillReceiveProps () {
     const voter = VoterStore.getVoter();
     const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
-    // console.log("VoterGuidesMenuMobile componentWillReceiveProps linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
+    // console.log('VoterGuidesMenuMobile componentWillReceiveProps linkedOrganizationWeVoteId: ', linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
       VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);
       this.setState({
@@ -65,7 +65,7 @@ export default class VoterGuidesMenuMobile extends Component {
   onVoterStoreChange () {
     const voter = VoterStore.getVoter();
     const linkedOrganizationWeVoteId = voter.linked_organization_we_vote_id;
-    // console.log("VoterGuidesMenuMobile onVoterStoreChange linkedOrganizationWeVoteId: ", linkedOrganizationWeVoteId);
+    // console.log('VoterGuidesMenuMobile onVoterStoreChange linkedOrganizationWeVoteId: ', linkedOrganizationWeVoteId);
     if (linkedOrganizationWeVoteId && this.state.linkedOrganizationWeVoteId !== linkedOrganizationWeVoteId) {
       OrganizationActions.organizationRetrieve(linkedOrganizationWeVoteId);
       VoterGuideActions.voterGuidesRetrieve(linkedOrganizationWeVoteId);

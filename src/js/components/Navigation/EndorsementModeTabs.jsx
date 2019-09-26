@@ -26,7 +26,7 @@ class EndorsementModeTabs extends Component {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
   }
 
-  shouldComponentUpdate (nextState) {
+  shouldComponentUpdate (nextProps, nextState) {
     // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
     // console.log("EndorsementModeTabs shouldComponentUpdate");
     if (this.state.getVoterGuideSettingsDashboardEditMode !== nextState.getVoterGuideSettingsDashboardEditMode) {

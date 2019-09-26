@@ -29,6 +29,11 @@ class StickyPopover extends Component {
     this.closePopover = this.closePopover.bind(this);
   }
 
+  componentWillUnmount () {
+    clearTimeout(this.enterTimeoutId);
+    clearTimeout(this.leaveTimeoutId);
+  }
+
   onMouseEnterTarget () {
     const { delay } = this.props;
     this.enterTimeoutId = setTimeout(() => this.setState({ showPopover: true }), delay.show);
@@ -90,12 +95,10 @@ class StickyPopover extends Component {
             id={popoverId}
           >
             {popoverComponent}
-            {this.props.showCloseIcon ? (
+            {this.props.showCloseIcon && (
               <CloseIcon>
                 <span className="fas fa-times u-cursor--pointer" aria-hidden="true" onClick={this.closePopover} />
               </CloseIcon>
-            ) : (
-              null
             )}
           </Popover>
         </Overlay>
