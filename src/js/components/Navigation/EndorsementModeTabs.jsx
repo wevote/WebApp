@@ -26,15 +26,16 @@ class EndorsementModeTabs extends Component {
     this.appStoreListener = AppStore.addListener(this.onAppStoreChange.bind(this));
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
-    // console.log("EndorsementModeTabs shouldComponentUpdate");
-    if (this.state.getVoterGuideSettingsDashboardEditMode !== nextState.getVoterGuideSettingsDashboardEditMode) {
-      // console.log("shouldComponentUpdate: this.state.getVoterGuideSettingsDashboardEditMode", this.state.getVoterGuideSettingsDashboardEditMode, ", nextProps.getVoterGuideSettingsDashboardEditMode", nextProps.getVoterGuideSettingsDashboardEditMode);
-      return true;
-    }
-    return false;
-  }
+  // This needs to be tested before being turned back on
+  // shouldComponentUpdate (nextProps, nextState) {
+  //   // This lifecycle method tells the component to NOT render if componentWillReceiveProps didn't see any changes
+  //   // console.log("EndorsementModeTabs shouldComponentUpdate");
+  //   if (this.state.getVoterGuideSettingsDashboardEditMode !== nextState.getVoterGuideSettingsDashboardEditMode) {
+  //     // console.log("shouldComponentUpdate: this.state.getVoterGuideSettingsDashboardEditMode", this.state.getVoterGuideSettingsDashboardEditMode, ", nextProps.getVoterGuideSettingsDashboardEditMode", nextProps.getVoterGuideSettingsDashboardEditMode);
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   componentWillUnmount () {
     this.appStoreListener.remove();
@@ -62,7 +63,7 @@ class EndorsementModeTabs extends Component {
   }
 
   render () {
-    // console.log('EndorsementModeTabs render, this.state.getVoterGuideSettingsDashboardEditMode:', this.state.getVoterGuideSettingsDashboardEditMode);
+    console.log('EndorsementModeTabs render');
     renderLog(__filename);
     const { classes } = this.props; // constants ballotLength and ballotLengthRemaining are supposed to be included
 

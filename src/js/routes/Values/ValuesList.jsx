@@ -31,19 +31,54 @@ export default class ValuesList extends Component {
     IssueActions.retrieveIssuesToFollow();
     this.issueStoreListener = IssueStore.addListener(this.onIssueStoreChange.bind(this));
 
-    this.setState({ currentIssue: this.props.currentIssue });
-
+    const { currentIssue } = this.props;
+    let currentIssueWeVoteId = '';
+    if (currentIssue) {
+      currentIssueWeVoteId = currentIssue.issue_we_vote_id;
+    }
+    const allIssues = IssueStore.getAllIssues();
+    let allIssuesCount = 0;
+    if (allIssues) {
+      allIssuesCount = allIssues.length;
+    }
     this.setState({
-      allIssues: IssueStore.getAllIssues(),
+      allIssues,
+      allIssuesCount,
+      currentIssue,
+      currentIssueWeVoteId,
     });
   }
 
   componentWillReceiveProps (nextProps) {
-    this.setState({ currentIssue: nextProps.currentIssue });
+    const { currentIssue } = nextProps;
+    let currentIssueWeVoteId = '';
+    if (currentIssue) {
+      currentIssueWeVoteId = currentIssue.issue_we_vote_id;
+    }
+    const allIssues = IssueStore.getAllIssues();
+    let allIssuesCount = 0;
+    if (allIssues) {
+      allIssuesCount = allIssues.length;
+    }
+    this.setState({
+      allIssues,
+      allIssuesCount,
+      currentIssue,
+      currentIssueWeVoteId,
+    });
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.currentIssue !== nextState.currentIssue) {
+    if (this.state.allIssuesCount !== nextState.allIssuesCount) {
+      // console.log("shouldComponentUpdate: this.state.allIssuesCount", this.state.allIssuesCount, ", nextState.allIssuesCount", nextState.allIssuesCount);
+      return true;
+    }
+    if (this.state.currentIssueWeVoteId !== nextState.currentIssueWeVoteId) {
+      // console.log("shouldComponentUpdate: this.state.currentIssueWeVoteId", this.state.currentIssueWeVoteId, ", nextState.currentIssueWeVoteId", nextState.currentIssueWeVoteId);
+      return true;
+    }
+    if (this.props.displayOnlyIssuesNotFollowedByVoter !== nextProps.displayOnlyIssuesNotFollowedByVoter) {
+      // console.log("shouldComponentUpdate: this.props.displayOnlyIssuesNotFollowedByVoter", this.props.displayOnlyIssuesNotFollowedByVoter, ", nextProps.displayOnlyIssuesNotFollowedByVoter", nextProps.displayOnlyIssuesNotFollowedByVoter);
       return true;
     }
     return false;
@@ -54,8 +89,14 @@ export default class ValuesList extends Component {
   }
 
   onIssueStoreChange () {
+    const allIssues = IssueStore.getAllIssues();
+    let allIssuesCount = 0;
+    if (allIssues) {
+      allIssuesCount = allIssues.length;
+    }
     this.setState({
-      allIssues: IssueStore.getAllIssues(),
+      allIssues,
+      allIssuesCount,
     });
   }
 
@@ -68,8 +109,8 @@ export default class ValuesList extends Component {
   }
 
   render () {
-    // console.log('ValuesList render');
     const { allIssues, searchQuery, currentIssue } = this.state;
+    // console.log('ValuesList render:', currentIssue);
     renderLog(__filename);
     let issuesList = [];
     // let issuesNotFollowedByVoterList = [];

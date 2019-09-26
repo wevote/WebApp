@@ -19,9 +19,10 @@ export default class GuideList extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      filteredOrganizationsWithPositions: [],
       voterGuideList: [],
+      voterGuideListCount: 0,
       ballotItemWeVoteId: '',
-      // organizationsWithPositions: [],
     };
   }
 
@@ -29,16 +30,24 @@ export default class GuideList extends Component {
     // console.log('GuideList componentDidMount');
     const { ballotItemWeVoteId } = this.state;
     const voterGuideList = this.sortOrganizations(this.props.incomingVoterGuideList, ballotItemWeVoteId);
+    let voterGuideListCount = 0;
+    if (voterGuideList) {
+      voterGuideListCount = voterGuideList.length;
+    }
     this.setState({
       voterGuideList,
+      voterGuideListCount,
       ballotItemWeVoteId: this.props.ballotItemWeVoteId,
     }, () => {
-      const orgsWithPositions = this.getOrganizationsWithPositions();
+      const organizationsWithPositions = this.getOrganizationsWithPositions();
+      let filteredOrganizationsWithPositionsCount = 0;
+      if (organizationsWithPositions) {
+        filteredOrganizationsWithPositionsCount = organizationsWithPositions.length;
+      }
       this.setState({
-        // organizationsWithPositions: orgsWithPositions,
-        filteredOrganizationsWithPositions: orgsWithPositions,
+        filteredOrganizationsWithPositions: organizationsWithPositions,
+        filteredOrganizationsWithPositionsCount,
       });
-      // console.log(orgsWithPositions);
     });
   }
 
@@ -47,20 +56,32 @@ export default class GuideList extends Component {
     // Do not update the state if the voterGuideList list looks the same, and the ballotItemWeVoteId hasn't changed
     const { ballotItemWeVoteId } = this.state;
     const voterGuideList = this.sortOrganizations(nextProps.incomingVoterGuideList, ballotItemWeVoteId);
+    let voterGuideListCount = 0;
+    if (voterGuideList) {
+      voterGuideListCount = voterGuideList.length;
+    }
     this.setState({
       voterGuideList,
+      voterGuideListCount,
       ballotItemWeVoteId: this.props.ballotItemWeVoteId,
     }, () => {
-      const orgsWithPositions = this.getOrganizationsWithPositions();
+      const organizationsWithPositions = this.getOrganizationsWithPositions();
+      let filteredOrganizationsWithPositionsCount = 0;
+      if (organizationsWithPositions) {
+        filteredOrganizationsWithPositionsCount = organizationsWithPositions.length;
+      }
       this.setState({
-        // organizationsWithPositions: orgsWithPositions,
-        filteredOrganizationsWithPositions: orgsWithPositions,
+        filteredOrganizationsWithPositions: organizationsWithPositions,
+        filteredOrganizationsWithPositionsCount,
       });
     });
   }
 
   shouldComponentUpdate (nextProps, nextState) {
-    if (this.state.voterGuideList !== nextState.voterGuideList) {
+    if (this.state.filteredOrganizationsWithPositionsCount !== nextState.filteredOrganizationsWithPositionsCount) {
+      return true;
+    }
+    if (this.state.voterGuideListCount !== nextState.voterGuideListCount) {
       return true;
     }
     if (this.state.ballotItemWeVoteId !== nextState.ballotItemWeVoteId) {
@@ -114,25 +135,32 @@ export default class GuideList extends Component {
   handleIgnore (organizationWeVoteId) {
     const { voterGuideList } = this.state;
     // OrganizationActions.organizationFollowIgnore(organizationWeVoteId); // This is run within FollowToggle
+    const newVoterGuideList = voterGuideList.filter(
+      org => org.organization_we_vote_id !== organizationWeVoteId,
+    );
+    let voterGuideListCount = 0;
+    if (newVoterGuideList) {
+      voterGuideListCount = newVoterGuideList.length;
+    }
     this.setState({
-      voterGuideList: voterGuideList.filter(
-        org => org.organization_we_vote_id !== organizationWeVoteId,
-      ),
+      voterGuideList: newVoterGuideList,
+      voterGuideListCount,
     });
     openSnackbar({ message: 'Added to ignore list.' });
   }
 
   render () {
     // console.log('GuideList render');
+    const { filteredOrganizationsWithPositions } = this.state;
     renderLog(__filename);
-    if (this.state.filteredOrganizationsWithPositions === undefined) {
+    if (filteredOrganizationsWithPositions === undefined) {
       // console.log('GuideList this.state.organizations_to_follow === undefined');
       return null;
     }
 
     // console.log('GuideList voterGuideList: ', this.state.voterGuideList);
 
-    if (!this.state.filteredOrganizationsWithPositions) {
+    if (!filteredOrganizationsWithPositions) {
       return (
         <div className="guidelist card-child__list-group">
           <div className="u-flex u-flex-column u-items-center">
@@ -152,7 +180,7 @@ export default class GuideList extends Component {
     }
     return (
       <div className="guidelist card-child__list-group">
-        {this.state.filteredOrganizationsWithPositions.map((organization) => {
+        {filteredOrganizationsWithPositions.map((organization) => {
           const handleIgnoreFunc = () => {
             this.handleIgnore(organization.organization_we_vote_id);
           };
