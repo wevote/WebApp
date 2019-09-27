@@ -95,6 +95,7 @@ class SettingsSubscriptionPlan extends Component {
     this.donateStoreListener.remove();
     this.organizationStoreListener.remove();
     this.voterStoreListener.remove();
+    window.removeEventListener('resize', this.handleResize);
   }
 
   onDonateStoreChange = () => {

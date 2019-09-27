@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { renderLog } from '../../utils/logging';
-import MeasureItemCompressed from '../Ballot/MeasureItemCompressed';
+import VoterGuideMeasureItemCompressed from './VoterGuideMeasureItemCompressed';
 import VoterGuideOfficeItemCompressed from './VoterGuideOfficeItemCompressed';
 
 const TYPES = require('keymirror')({
@@ -15,7 +15,7 @@ export default class VoterGuideBallotItemCompressed extends Component {
     candidate_list: PropTypes.array,
     kind_of_ballot_item: PropTypes.string.isRequired,
     organization: PropTypes.object.isRequired,
-    organization_we_vote_id: PropTypes.string.isRequired,
+    organizationWeVoteId: PropTypes.string.isRequired,
     urlWithoutHash: PropTypes.string,
     we_vote_id: PropTypes.string.isRequired,
   };
@@ -26,17 +26,18 @@ export default class VoterGuideBallotItemCompressed extends Component {
 
   render () {
     renderLog(__filename);
+    // console.log('VoterGuideBallotItemCompressed this.props.organizationWeVoteId:', this.props.organizationWeVoteId);
     return (
       <div className="BallotItem card" id={this.props.we_vote_id}>
         { this.isMeasure() ? (
-          <MeasureItemCompressed
+          <VoterGuideMeasureItemCompressed
             measureWeVoteId={this.props.we_vote_id}
             organization={this.props.organization}
           />
         ) : (
           <VoterGuideOfficeItemCompressed
             {...this.props}
-            link_to_ballot_item_page
+            organizationWeVoteId={this.props.organizationWeVoteId}
           />
         )}
       </div>

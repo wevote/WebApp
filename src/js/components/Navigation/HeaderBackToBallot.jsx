@@ -51,6 +51,7 @@ class HeaderBackToBallot extends Component {
       showSignInModal: AppStore.showSignInModal(),
       scrolledDown: AppStore.getScrolledDown(),
       voter: {},
+      organizationHasBeenRetrievedOnce: {},
     };
     this.toggleAccountMenu = this.toggleAccountMenu.bind(this);
     this.hideAccountMenu = this.hideAccountMenu.bind(this);
@@ -111,6 +112,11 @@ class HeaderBackToBallot extends Component {
       if (organizationWeVoteId && organizationWeVoteId !== '' && !organization.organization_we_vote_id) {
         // Retrieve the organization object
         OrganizationActions.organizationRetrieve(organizationWeVoteId);
+        const { organizationHasBeenRetrievedOnce } = this.state;
+        organizationHasBeenRetrievedOnce[organizationWeVoteId] = true;
+        this.setState({
+          organizationHasBeenRetrievedOnce,
+        });
       }
       // console.log('backToMeasureWeVoteId: ', backToMeasureWeVoteId);
       this.setState({
@@ -178,7 +184,14 @@ class HeaderBackToBallot extends Component {
       organization = OrganizationStore.getOrganizationByWeVoteId(organizationWeVoteId);
       if (organizationWeVoteId && organizationWeVoteId !== '' && !organization.organization_we_vote_id) {
         // Retrieve the organization object
-        OrganizationActions.organizationRetrieve(organizationWeVoteId);
+        if (!this.localOrganizationHasBeenRetrievedOnce(organizationWeVoteId)) {
+          OrganizationActions.organizationRetrieve(organizationWeVoteId);
+          const { organizationHasBeenRetrievedOnce } = this.state;
+          organizationHasBeenRetrievedOnce[organizationWeVoteId] = true;
+          this.setState({
+            organizationHasBeenRetrievedOnce,
+          });
+        }
       }
       // console.log('backToMeasureWeVoteId: ', backToMeasureWeVoteId);
       this.setState({
@@ -402,6 +415,14 @@ class HeaderBackToBallot extends Component {
   signOutAndHideProfilePopUp () {
     VoterSessionActions.voterSignOut();
     this.setState({ profilePopUpOpen: false });
+  }
+
+  localOrganizationHasBeenRetrievedOnce (organizationWeVoteId) {
+    if (organizationWeVoteId) {
+      const { organizationHasBeenRetrievedOnce } = this.state;
+      return organizationHasBeenRetrievedOnce[organizationWeVoteId];
+    }
+    return false;
   }
 
   render () {

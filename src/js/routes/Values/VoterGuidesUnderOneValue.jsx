@@ -47,14 +47,8 @@ class VoterGuidesUnderOneValue extends Component {
     });
   }
 
-  shouldComponentUpdate (nextState) {
-    if (this.state.issue !== nextState.issue) {
-      return true;
-    }
+  shouldComponentUpdate (nextProps, nextState) {
     if (this.state.issueWeVoteId !== nextState.issueWeVoteId) {
-      return true;
-    }
-    if (this.state.voterGuidesForValue !== nextState.voterGuidesForValue) {
       return true;
     }
     if (this.state.ballotHasGuidesForValue !== nextState.ballotHasGuidesForValue) {
@@ -96,9 +90,6 @@ class VoterGuidesUnderOneValue extends Component {
     const { classes } = this.props;
 
     // console.log('VoterGuidesUnderOneValue render, issue:', issue);
-    // if (!issueWeVoteId) {
-    //   return null;
-    // }
     let issueNameFound = false;
     let pageTitle = 'Value';
     if (issue && issue.issue_name) {

@@ -24,14 +24,17 @@ export default class TwitterHandleLanding extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      activeRoute: '',
       twitterHandle: '',
     };
-    this.getIncomingActiveRoute = this.getIncomingActiveRoute.bind(this);
   }
 
   componentDidMount () {
     // console.log("TwitterHandleLanding componentDidMount, this.props.params.twitter_handle: " + this.props.params.twitter_handle);
-    this.setState({ twitterHandle: this.props.params.twitter_handle });
+    this.setState({
+      activeRoute: this.props.active_route,
+      twitterHandle: this.props.params.twitter_handle,
+    });
     TwitterActions.twitterIdentityRetrieve(this.props.params.twitter_handle);
     this.twitterStoreListener = TwitterStore.addListener(this.onTwitterStoreChange.bind(this));
 
@@ -41,6 +44,9 @@ export default class TwitterHandleLanding extends Component {
 
   componentWillReceiveProps (nextProps) {
     // console.log("TwitterHandleLanding componentWillReceiveProps");
+    this.setState({
+      activeRoute: nextProps.active_route,
+    });
     if (nextProps.params.twitter_handle && this.state.twitterHandle.toLowerCase() !== nextProps.params.twitter_handle.toLowerCase()) {
       // We need this test to prevent an infinite loop
       // console.log("TwitterHandleLanding componentWillReceiveProps, different twitterHandle: ", nextProps.params.twitter_handle);
@@ -84,12 +90,6 @@ export default class TwitterHandleLanding extends Component {
     this.setState({ voter: VoterStore.getVoter() });
   }
 
-  getIncomingActiveRoute () {
-    const incomingActiveRoute = this.props.active_route || '';
-    // console.log("TwitterHandleLanding, getIncomingActiveRoute incomingActiveRoute: ", incomingActiveRoute);
-    return incomingActiveRoute;
-  }
-
   organizationCreateFromTwitter (newTwitterHandle) {
     // console.log("TwitterHandleLanding organizationCreateFromTwitter");
     OrganizationActions.saveFromTwitter(newTwitterHandle);
@@ -104,7 +104,7 @@ export default class TwitterHandleLanding extends Component {
     }
 
     const {
-      voter, kindOfOwner, ownerWeVoteId, twitterHandle,
+      activeRoute, voter, kindOfOwner, ownerWeVoteId, twitterHandle,
     } = this.state;
     const signedInTwitter = voter === undefined ? false : voter.signed_in_twitter;
     let signedInWithThisTwitterAccount = false;
@@ -148,7 +148,7 @@ export default class TwitterHandleLanding extends Component {
             {...this.props}
             location={this.props.location}
             params={this.props.params}
-            active_route={this.getIncomingActiveRoute()}
+            active_route={activeRoute}
           />
         );
       }
