@@ -15,6 +15,10 @@ $white-text-color: $white;
   z-index: 1301 !important;
 }
 
+.pac-icon {
+  display: none !important;
+}
+
 // Used to prevent scrolling underneath a modal(modal)
 // Reference: Issue #1415
 .modal-open {
